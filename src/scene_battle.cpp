@@ -627,3 +627,9 @@ void Scene_Battle::CallDebug() {
 	}
 }
 
+void Scene_Battle::SelectionFlash(Game_Battler* battler) {
+	if (battler) {
+		// FIXME: Verify this color and time
+		battler->Flash(31, 31, 31, 12, 15);
+	}
+}

@@ -97,6 +97,8 @@ public:
 		State_Escape
 	};
 
+	static void SelectionFlash(Game_Battler* battler);
+
 protected:
 	Scene_Battle();
 

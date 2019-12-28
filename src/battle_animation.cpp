@@ -31,7 +31,6 @@
 #include "game_temp.h"
 #include "options.h"
 #include "drawable_mgr.h"
-#include "flash.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
 	Sprite(TypeDefault),
@@ -311,11 +310,8 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 	}
 }
 void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
-	auto color = Flash::MakeColor(r, g, b, p);
 	for (auto& battler: battlers) {
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
-		if (sprite)
-			sprite->Flash(color, 0);
+		battler->Flash(r, g, b, p, 0);
 	}
 }
 

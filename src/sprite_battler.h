@@ -88,9 +88,6 @@ public:
 	 */
 	bool IsIdling();
 
-	void Flash(int duration) override;
-	void Flash(Color color, int duration) override;
-
 	bool GetVisible() const override;
 	void SetVisible(bool visible) override;
 
