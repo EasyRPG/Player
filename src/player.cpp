@@ -120,8 +120,8 @@ namespace Player {
 }
 
 namespace {
-	double start_time;
-	double next_frame;
+	Game_Clock::time_point start_time;
+	Game_Clock::time_point next_frame;
 
 	// Overwritten by --encoding
 	std::string forced_encoding;
@@ -214,7 +214,7 @@ void Player::Run() {
 	reset_flag = false;
 
 	// Reset frames before starting
-	FrameReset();
+	FrameReset(Game_Clock::now());
 
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
@@ -256,14 +256,14 @@ void Player::Pause() {
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
-	FrameReset();
+	FrameReset(Game_Clock::now());
 }
 
 void Player::Update(bool update_scene) {
 	// available ms per frame, game logic expects 60 fps
-	next_frame = start_time + std::chrono::duration_cast<std::chrono::milliseconds>(Game_Clock::GetSimulationTimeStep()).count();
+	next_frame = start_time + Game_Clock::GetSimulationTimeStep();
 
-	double cur_time = (double)Game_Clock::GetTicks();
+	auto cur_time = Game_Clock::now();
 
 #if !defined(USE_LIBRETRO)
 	// libretro: The frontend handles this, cores should not do rate
@@ -349,17 +349,18 @@ void Player::Update(bool update_scene) {
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	cur_time = (double)Game_Clock::GetTicks();
+	cur_time = Game_Clock::now();
 	if (cur_time < next_frame) {
 		Graphics::Draw(*disp);
-		cur_time = (double)Game_Clock::GetTicks();
+		cur_time = Game_Clock::now();
 		// Don't use sleep when the port uses an external timing source
 #if !defined(USE_LIBRETRO)
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
 			iframe_scope.End();
 			did_sleep_this_frame = true;
-			DisplayUi->Sleep(static_cast<uint32_t>(next_frame - cur_time));
+			auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(next_frame - cur_time);
+			DisplayUi->Sleep(dt.count());
 			iframe_scope.Begin();
 		}
 #endif
@@ -371,16 +372,11 @@ void Player::IncFrame() {
 	Game_System::IncFrameCounter();
 }
 
-void Player::FrameReset() {
-	// When update started
-	FrameReset(Game_Clock::GetTicks());
-}
-
-void Player::FrameReset(uint32_t start_ticks) {
+void Player::FrameReset(Game_Clock::time_point now) {
 	// When next frame is expected
-	next_frame = start_ticks + std::chrono::duration_cast<std::chrono::milliseconds>(Game_Clock::GetSimulationTimeStep()).count();
+	next_frame = now + Game_Clock::GetSimulationTimeStep();
 
-	Graphics::FrameReset(start_ticks);
+	Graphics::FrameReset(now);
 }
 
 int Player::GetFrames() {
@@ -812,7 +808,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
-	FrameReset();
+	FrameReset(Game_Clock::now());
 }
 
 void Player::LoadDatabase() {

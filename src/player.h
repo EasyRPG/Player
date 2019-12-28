@@ -20,6 +20,7 @@
 
 // Headers
 #include "meta.h"
+#include "game_clock.h"
 #include <vector>
 #include <memory>
 
@@ -84,18 +85,10 @@ namespace Player {
 	/**
 	 * Resets the fps count (both updates and frames per second).
 	 * Should be called after an expensive operation.
-	 */
-	void FrameReset();
-
-	/**
-	 * Resets the fps count (both updates and frames per second).
-	 * Should be called after an expensive operation.
-	 * Instead of using DisplayUi->GetTicks uses the start_ticks arg which
-	 * saves a system call.
 	 *
-	 * @param start_ticks time in ticks when this function was called
+	 * @param now the current time
 	 */
-	void FrameReset(uint32_t start_ticks);
+	void FrameReset(Game_Clock::time_point now);
 
 	/**
 	 * Increment the frame counters.
