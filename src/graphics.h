@@ -48,14 +48,6 @@ namespace Graphics {
 	 */
 	void Update();
 
-	/**
-	 * Resets the fps count.
-	 * Don't call this. Use Player::FrameReset instead.
-	 *
-	 * @param now the current time.
-	 */
-	void FrameReset(Game_Clock::time_point now);
-
 	void Draw(Bitmap& dst);
 
 	void LocalDraw(Bitmap& dst, int min_z, int max_z);

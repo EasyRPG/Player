@@ -93,14 +93,6 @@ namespace Player {
 	int GetFrames();
 
 	/**
-	 * Resets the fps count (both updates and frames per second).
-	 * Should be called after an expensive operation.
-	 *
-	 * @param now the current time
-	 */
-	void FrameReset(Game_Clock::time_point now);
-
-	/**
 	 * Increment the frame counters.
 	 */
 	void IncFrame();

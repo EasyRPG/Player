@@ -213,9 +213,6 @@ void Player::Run() {
 
 	reset_flag = false;
 
-	// Reset frames before starting
-	FrameReset(Game_Clock::now());
-
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
@@ -278,7 +275,7 @@ void Player::Pause() {
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
-	FrameReset(Game_Clock::now());
+	Game_Clock::ResetFrame(Game_Clock::now());
 }
 
 void Player::UpdateInput() {
@@ -360,11 +357,6 @@ void Player::Draw() {
 void Player::IncFrame() {
 	++frames;
 	Game_System::IncFrameCounter();
-}
-
-void Player::FrameReset(Game_Clock::time_point now) {
-	Game_Clock::ResetFrame(now);
-	Graphics::FrameReset(now);
 }
 
 int Player::GetFrames() {
@@ -832,7 +824,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
-	FrameReset(Game_Clock::now());
+	Game_Clock::ResetFrame(Game_Clock::now());
 }
 
 void Player::LoadDatabase() {
