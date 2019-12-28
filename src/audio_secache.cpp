@@ -37,7 +37,7 @@ namespace {
 	int cache_size = 0;
 
 	void FreeCacheMemory() {
-		auto cur_time = Game_Clock::now();
+		auto cur_time = Game_Clock::GetFrameTime();
 
 		for (auto it = cache.begin(); it != cache.end(); ) {
 			if (it->second.use_count() > 1) {
@@ -229,7 +229,7 @@ AudioSeRef AudioSeCache::Decode() {
 
 	if (IsCached()) {
 		se = cache.find(filename)->second;
-		se->last_access = Game_Clock::now();
+		se->last_access = Game_Clock::GetFrameTime();
 
 		if (GetPitch() == 100) {
 			// Nothing extra to do
@@ -295,7 +295,7 @@ AudioSeRef AudioSeCache::Decode() {
 		// This codepath is only taken the first time upon cache miss
 		cache.insert(std::make_pair(filename, se));
 
-		se->last_access = Game_Clock::now();
+		se->last_access = Game_Clock::GetFrameTime();
 
 		cache_size += se->buffer.size();
 
