@@ -26,6 +26,7 @@
 #include "game_map.h"
 #include "main_data.h"
 #include "drawable_mgr.h"
+#include "baseui.h"
 
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...

@@ -74,6 +74,7 @@
 #include "scene_title.h"
 #include "instrumentation.h"
 #include "scope_guard.h"
+#include "baseui.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.

@@ -29,6 +29,7 @@
 #include "scene.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
+#include "baseui.h"
 
 namespace Graphics {
 	void UpdateTitle();

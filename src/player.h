@@ -19,7 +19,6 @@
 #define EP_PLAYER_H
 
 // Headers
-#include "baseui.h"
 #include "meta.h"
 #include <vector>
 #include <memory>

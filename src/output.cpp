@@ -48,6 +48,7 @@
 #include "message_overlay.h"
 #include "utils.h"
 #include "font.h"
+#include "baseui.h"
 
 namespace {
 	std::ofstream LOG_FILE;

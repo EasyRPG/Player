@@ -51,6 +51,7 @@
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
+#include "baseui.h"
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1

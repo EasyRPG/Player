@@ -23,6 +23,7 @@
 #include "input.h"
 #include "font.h"
 #include "drawable_mgr.h"
+#include "baseui.h"
 
 FpsOverlay::FpsOverlay() :
 	Drawable(TypeOverlay, Priority_Overlay + 100, true)
