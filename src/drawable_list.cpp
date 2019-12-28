@@ -90,7 +90,7 @@ void DrawableList::TakeFrom(DrawableList& other) noexcept {
 	other.SetClean();
 }
 
-void DrawableList::Draw(Bitmap& dst, int max_z) {
+void DrawableList::Draw(Bitmap& dst, int min_z, int max_z) {
 	if (IsDirty()) {
 		Sort();
 	} else {
@@ -98,7 +98,11 @@ void DrawableList::Draw(Bitmap& dst, int max_z) {
 	}
 
 	for (auto* drawable : _list) {
-		if (drawable->GetZ() > max_z) {
+		auto z = drawable->GetZ();
+		if (z < min_z) {
+			continue;
+		}
+		if (z > max_z) {
 			break;
 		}
 		if (drawable->IsVisible()) {

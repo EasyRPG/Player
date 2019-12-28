@@ -58,8 +58,8 @@ namespace Graphics {
 
 	void Draw(Bitmap& dst);
 
-	void LocalDraw(Bitmap& dst, int priority);
-	void GlobalDraw(Bitmap& dst, int priority);
+	void LocalDraw(Bitmap& dst, int min_z, int max_z);
+	void GlobalDraw(Bitmap& dst, int min_z, int max_z);
 
 	void UpdateSceneCallback();
 
