@@ -24,16 +24,29 @@
 constexpr bool Game_Clock::is_steady;
 Game_Clock::Data Game_Clock::data;
 
+// Damping factor fps computation.
+static constexpr auto _fps_smooth = 2.0f / 241.0f;
+
 Game_Clock::duration Game_Clock::OnNextFrame(time_point now, int speed) {
-	auto dt = now - data.frame_time;
+	const auto dt = now - data.frame_time;
 	data.frame_time = now;
 	data.frame_accumulator += dt * speed;
+
+	const auto fps = (1.0f / std::chrono::duration<float>(dt).count());
+	data.fps = (data.fps * _fps_smooth) + (fps * (1.0f - _fps_smooth));
+
+	++data.frame;
+
 	return dt;
 }
 
-void Game_Clock::ResetFrame(time_point now) {
-	data = {};
+void Game_Clock::ResetFrame(time_point now, bool reset_frame_counter) {
 	data.frame_time = now;
+	data.frame_accumulator = {};
+	data.fps = 0.0;
+	if (reset_frame_counter) {
+		data.frame = 0;
+	}
 }
 
 void Game_Clock::logClockInfo() {

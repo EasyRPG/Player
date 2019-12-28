@@ -61,6 +61,12 @@ public:
 	/** Get the time of the current frame */
 	static time_point GetFrameTime();
 
+	/** @return the number of the current frame */
+	static int GetFrame();
+
+	/** @return the estimated frames per second */
+	static float GetFPS();
+
 	/**
 	 * Call on each frame. Updates the current frame time to now
 	 *
@@ -83,12 +89,15 @@ public:
 	 * Reset the frame accumulator and time
 	 *
 	 * @param now the current time
+	 * @param reset_frame_counter if true, reset the frame count also.
 	 */
-	static void ResetFrame(time_point now);
+	static void ResetFrame(time_point now, bool reset_frame_counter = false);
 private:
 	struct Data {
 		time_point frame_time;
 		duration frame_accumulator;
+		float fps = 0.0;
+		int frame = 0;
 	};
 	static Data data;
 };
@@ -121,6 +130,14 @@ constexpr const char* Game_Clock::Name() {
 
 inline Game_Clock::time_point Game_Clock::GetFrameTime() {
 	return data.frame_time;
+}
+
+inline int Game_Clock::GetFrame() {
+	return data.frame;
+}
+
+inline float Game_Clock::GetFPS() {
+	return data.fps;
 }
 
 inline bool Game_Clock::NextSimulationTimeStep() {
