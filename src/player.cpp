@@ -196,6 +196,12 @@ void Player::Init(int argc, char *argv[]) {
 	Input::Init(replay_input_path, record_input_path);
 }
 
+namespace {
+// FIXME: Refactor the main loop and get rid of these global objects.
+Instrumentation::FrameScope iframe_scope(false);
+bool did_sleep_this_frame = false;
+}
+
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
 	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
@@ -219,16 +225,23 @@ void Player::Run() {
 #  endif
 		MainLoop();
 	}
+	iframe_scope.End();
 #endif
 }
 
 void Player::MainLoop() {
+	did_sleep_this_frame = false;
+	iframe_scope.Begin();
+
 	Scene::instance->MainFunction();
 
 	Scene::old_instances.clear();
 
 	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
 		Exit();
+	}
+	if (!did_sleep_this_frame) {
+		iframe_scope.End();
 	}
 }
 
@@ -341,7 +354,10 @@ void Player::Update(bool update_scene) {
 #if !defined(USE_LIBRETRO)
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
+			iframe_scope.End();
+			did_sleep_this_frame = true;
 			DisplayUi->Sleep(static_cast<uint32_t>(next_frame - cur_time));
+			iframe_scope.Begin();
 		}
 #endif
 	}
