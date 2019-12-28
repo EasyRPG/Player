@@ -26,6 +26,7 @@
 #include "rpg_system.h"
 #include "rpg_savesystem.h"
 #include "color.h"
+#include "transition.h"
 
 struct FileRequestResult;
 
@@ -203,7 +204,7 @@ namespace Game_System {
 	 * @param which which "context" to get the transition for.
 	 * @return the transition.
 	 */
-	int GetTransition(int which);
+	Transition::Type GetTransition(int which);
 
 	/**
 	 * Sets the system transitions.

@@ -88,7 +88,7 @@ void Scene_Skill::Update() {
 void Scene_Skill::TransitionOut(SceneType next_scene) {
 	const auto* skill = skill_window->GetSkill();
 	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {
-		Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
+		Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	} else {
 		Scene::TransitionOut(next_scene);
 	}

@@ -154,14 +154,6 @@ void Graphics::GlobalDraw(Bitmap& dst, int priority) {
 	drawable_list.Draw(dst, priority);
 }
 
-
-BitmapRef Graphics::SnapToBitmap(int priority) {
-	BitmapRef disp = DisplayUi->GetDisplaySurface();
-	LocalDraw(*disp, priority);
-	GlobalDraw(*disp, priority);
-	return DisplayUi->CaptureScreen();
-}
-
 void Graphics::FrameReset(Game_Clock::time_point now) {
 	next_fps_time = now + 1s;
 	fps_overlay->ResetCounter();

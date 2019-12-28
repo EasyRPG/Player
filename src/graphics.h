@@ -56,13 +56,10 @@ namespace Graphics {
 	 */
 	void FrameReset(Game_Clock::time_point now);
 
-	/**
-	 * Gets a bitmap with the actual contents of the screen.
-	 * @return screen contents
-	 */
-	BitmapRef SnapToBitmap(int priority = Priority::Priority_Maximum);
-
 	void Draw(Bitmap& dst);
+
+	void LocalDraw(Bitmap& dst, int priority);
+	void GlobalDraw(Bitmap& dst, int priority);
 
 	void UpdateSceneCallback();
 

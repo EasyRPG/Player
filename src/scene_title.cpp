@@ -85,7 +85,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Transition::instance().Init(Transition::TransitionFadeIn, this, 32);
+	Transition::instance().InitShow(Transition::TransitionFadeIn, this);
 }
 
 void Scene_Title::TransitionOut(Scene::SceneType next_scene) {
@@ -259,7 +259,7 @@ void Scene_Title::CommandImport() {
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-	Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
+	Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	Scene::Pop();
 }
 

@@ -111,7 +111,7 @@ void Scene_Battle::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+	Transition::instance().InitShow(Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this);
 }
 
 void Scene_Battle::TransitionOut(SceneType next_scene) {
@@ -121,7 +121,7 @@ void Scene_Battle::TransitionOut(SceneType next_scene) {
 		Scene::TransitionOut(next_scene);
 		return;
 	}
-	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
+	Transition::instance().InitErase(Game_System::GetTransition(Game_System::Transition_EndBattleErase), this);
 }
 
 void Scene_Battle::DrawBackground(Bitmap& dst) {

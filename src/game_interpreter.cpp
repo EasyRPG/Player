@@ -2054,8 +2054,7 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 
 	switch (com.parameters[0]) {
 	case -1:
-		tt = (Transition::TransitionType)Game_System::GetTransition(
-			Game_System::Transition_TeleportErase);
+		tt = Game_System::GetTransition(Game_System::Transition_TeleportErase);
 		break;
 	case 0:
 		tt = Transition::TransitionFadeOut;
@@ -2115,7 +2114,7 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 		tt = Transition::TransitionWaveOut;
 		break;
 	case 19:
-		tt = Transition::TransitionErase;
+		tt = Transition::TransitionCutOut;
 		break;
 	default:
 		tt = Transition::TransitionNone;
@@ -2136,8 +2135,7 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 
 	switch (com.parameters[0]) {
 	case -1:
-		tt = (Transition::TransitionType)Game_System::GetTransition(
-			Game_System::Transition_TeleportShow);
+		tt = Game_System::GetTransition(Game_System::Transition_TeleportShow);
 		break;
 	case 0:
 		tt = Transition::TransitionFadeIn;
@@ -2197,7 +2195,7 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 		tt = Transition::TransitionWaveIn;
 		break;
 	case 19:
-		tt = Transition::TransitionErase;
+		tt = Transition::TransitionCutIn;
 		break;
 	default:
 		tt = Transition::TransitionNone;
