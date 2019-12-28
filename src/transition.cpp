@@ -16,9 +16,11 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <cmath>
 
 #include "transition.h"
 #include "bitmap.h"
@@ -357,13 +359,14 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	case TransitionWaveIn:
 	case TransitionWaveOut:
-		// If TransitionWaveIn, invert percentage and screen:
-		if (transition_type == TransitionWaveIn) { percentage = 100 - percentage; }
-		screen_pointer1 = transition_type == TransitionWaveIn ? screen2 : screen1;
-		screen_pointer2 = transition_type == TransitionWaveIn ? screen1 : screen2;
-
-		dst.Blit(0, 0, *screen_pointer2, screen_pointer1->GetRect(), 255);
-		dst.WaverBlit(0, 0, 1, 1, *screen_pointer1, screen_pointer2->GetRect(), percentage * 2 / 5, percentage * 8, 255);
+		{
+			// If TransitionWaveIn, invert percentage and screen:
+			auto p = (transition_type == TransitionWaveIn) ? 100 - percentage : percentage;
+			auto& screen = (transition_type == TransitionWaveIn) ? *screen2 : *screen1;
+			auto depth = p * 40 / 100;
+			auto phase = p * 5 * M_PI / 100.0 + M_PI;
+			dst.WaverBlit(0, 0, 1, 1, screen, screen.GetRect(), depth, phase, Opacity::Opaque());
+		}
 		break;
 	case TransitionCutIn:
 		dst.Blit(0, 0, *screen2, screen2->GetRect(), Opacity::Opaque());
