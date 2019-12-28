@@ -104,8 +104,8 @@ void Scene_Logo::Update() {
 	}
 }
 
-void Scene_Logo::DrawBackground() {
-	DisplayUi->CleanDisplay();
+void Scene_Logo::DrawBackground(Bitmap& dst) {
+	dst.Clear();
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {

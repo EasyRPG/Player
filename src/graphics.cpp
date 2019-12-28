@@ -137,8 +137,9 @@ void Graphics::Draw(Bitmap& dst) {
 void Graphics::LocalDraw(Bitmap& dst, int priority) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
-	if (!drawable_list.empty())
-		current_scene->DrawBackground();
+	if (!drawable_list.empty()) {
+		current_scene->DrawBackground(dst);
+	}
 
 	drawable_list.Draw(dst, priority);
 }

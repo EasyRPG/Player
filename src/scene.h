@@ -198,7 +198,7 @@ public:
 	static const char scene_names[SceneMax][12];
 
 	/** Called by the graphic system to request drawing of a background, usually a system color background */
-	virtual void DrawBackground();
+	virtual void DrawBackground(Bitmap& dst);
 
 	DrawableList& GetDrawableList();
 

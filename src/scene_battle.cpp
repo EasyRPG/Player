@@ -130,8 +130,8 @@ void Scene_Battle::TransitionOut(SceneType next_scene) {
 	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
 }
 
-void Scene_Battle::DrawBackground() {
-	DisplayUi->CleanDisplay();
+void Scene_Battle::DrawBackground(Bitmap& dst) {
+	dst.Clear();
 }
 
 void Scene_Battle::CreateUi() {

@@ -261,8 +261,8 @@ std::shared_ptr<Scene> Scene::Find(SceneType type) {
 	return std::shared_ptr<Scene>();
 }
 
-void Scene::DrawBackground() {
-	DisplayUi->GetDisplaySurface()->Fill(Game_System::GetBackgroundColor());
+void Scene::DrawBackground(Bitmap& dst) {
+	dst.Fill(Game_System::GetBackgroundColor());
 }
 
 bool Scene::CheckSceneExit(AsyncOp aop) {
