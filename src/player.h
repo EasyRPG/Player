@@ -333,6 +333,12 @@ namespace Player {
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif
+
+	/**
+	 * Vsync mode was requested. This does not mean it's actually being used.
+	 * One must ask the DisplayUi if it's configured for vsync.
+	 */
+	extern bool vsync;
 }
 
 inline bool Player::IsRPG2k() {

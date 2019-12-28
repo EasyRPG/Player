@@ -58,6 +58,11 @@ for some additional binary patches.
   Set to 0 to disable the frame limiter. This option may not be supported on
   all platforms.
 
+*--vsync*::
+  Lock the frame rate to the display refresh rate using vsync. This option may not
+  be supported on all platforms. If vsync fails, the engine will fall back to
+  the behavior specified by --fps-limit.
+
 *--enable-mouse*::
   Use mouse click for decision and scroll wheel for lists.
 

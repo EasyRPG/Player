@@ -121,11 +121,8 @@ namespace Player {
 #ifdef _3DS
 	bool is_3dsx;
 #endif
-#if defined(USE_LIBRETRO)
-	Game_Clock::duration frame_limit = {};
-#else
 	Game_Clock::duration frame_limit = Game_Clock::GetSimulationTimeStep();
-#endif
+	bool vsync = false;
 }
 
 namespace {
@@ -255,7 +252,7 @@ void Player::MainLoop() {
 		return;
 	}
 
-	if (frame_limit == Game_Clock::duration()) {
+	if (DisplayUi->IsFrameRateSynchronized() || frame_limit == Game_Clock::duration()) {
 		return;
 	}
 
@@ -453,6 +450,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "--fps-render-window") {
 			fps_render_window = true;
+		}
+		else if (*it == "--vsync") {
+			vsync = true;
 		}
 		else if (*it == "--enable-mouse") {
 			mouse_flag = true;
@@ -1115,6 +1115,8 @@ Options:
       --fps-limit          Set a custom frames per second limit. The default is 60 FPS.
                            Set to 0 to run with unlimited frames per second.
                            This option is not supported on all platforms.
+      --vsync              Enable vertical sync. This option may not be supported on
+                           all platforms. If it fails, falls back to fps-limit.
       --enable-mouse       Use mouse click for decision and scroll wheel for lists
       --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the
@@ -1199,9 +1201,6 @@ std::string Player::GetEngineVersion() {
 }
 
 void Player::SetTargetFps(int fps) {
-#if defined(USE_LIBRETRO)
-	return;
-#endif
 	if (fps == 0) {
 		frame_limit = {};
 	} else {

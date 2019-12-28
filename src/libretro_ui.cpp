@@ -71,6 +71,9 @@ LibretroUi::LibretroUi(int width, int height) {
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 
+	// libretro always owns main loop
+	SetFrameRateSynchronized(true);
+
 	const DynamicFormat format(
 		32,
 		0x00FF0000,

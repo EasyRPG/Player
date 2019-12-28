@@ -58,10 +58,6 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 }
 
 BaseUi::BaseUi()
-	: mouse_focus(false)
-	, mouse_x(0)
-	, mouse_y(0)
-	, cursor_visible(false)
 {
 	keys.reset();
 }
