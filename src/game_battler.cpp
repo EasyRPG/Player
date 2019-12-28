@@ -739,6 +739,8 @@ void Game_Battler::UpdateBattle() {
 			shake_time_left = 0;
 		}
 	}
+
+	UpdateFlash();
 }
 
 const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
@@ -886,5 +888,17 @@ void Game_Battler::ShakeOnce(int strength, int speed, int frames) {
 	shake_speed = speed;
 	shake_time_left = frames;
 	// FIXME: RPG_RT doesn't reset position for screen shake. So we guess? it doesn't do so here either.
+}
+
+void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
+	flash.red = r;
+	flash.green = g;
+	flash.blue = b;
+	flash.current_level = power;
+	flash.time_left = frames;
+}
+
+void Game_Battler::UpdateFlash() {
+	Flash::Update(flash.current_level, flash.time_left);
 }
 
