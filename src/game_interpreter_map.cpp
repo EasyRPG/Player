@@ -38,6 +38,12 @@
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_map.h"
+#include "scene_battle.h"
+#include "scene_menu.h"
+#include "scene_save.h"
+#include "scene_load.h"
+#include "scene_name.h"
+#include "scene_shop.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -226,7 +232,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
-	Scene::instance->SetRequestedScene(Scene::Battle);
+	Scene::instance->SetRequestedScene(Scene_Battle::Create());
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
 
@@ -319,7 +325,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
-	Scene::instance->SetRequestedScene(Scene::Shop);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Shop>());
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
 
 	// save game compatibility with RPG_RT
@@ -513,7 +519,7 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 		Game_Temp::hero_name.clear();
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Name);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Name>());
 	++index;
 	return false;
 }
@@ -673,7 +679,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Save);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 	++index;
 	return false;
 }
@@ -687,7 +693,7 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Menu);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 	++index;
 	return false;
 }
@@ -701,7 +707,7 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Load);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
 	++index;
 	return false;
 }

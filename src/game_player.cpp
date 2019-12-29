@@ -33,6 +33,8 @@
 #include "output.h"
 #include "reader_util.h"
 #include "scope_guard.h"
+#include "scene_battle.h"
+#include "scene_menu.h"
 #include <algorithm>
 #include <cmath>
 
@@ -240,7 +242,7 @@ void Game_Player::UpdateSelfMovement() {
 
 		if (IsEncounterCalling()) {
 			if (Game_Map::PrepareEncounter()) {
-				Scene::instance->SetRequestedScene(Scene::Battle);
+				Scene::instance->SetRequestedScene(Scene_Battle::Create());
 			}
 			SetEncounterCalling(false);
 			did_call_encounter = true;
@@ -249,7 +251,7 @@ void Game_Player::UpdateSelfMovement() {
 		if (IsMenuCalling()) {
 			if (!did_call_encounter) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Scene::instance->SetRequestedScene(Scene::Menu);
+				Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 				did_call_menu = true;
 			}
 			SetMenuCalling(false);

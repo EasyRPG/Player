@@ -31,6 +31,7 @@
 #include "scene_load.h"
 #include "scene_save.h"
 #include "scene_map.h"
+#include "scene_battle.h"
 #include "player.h"
 #include "window_command.h"
 #include "window_varlist.h"
@@ -686,7 +687,7 @@ void Scene_Debug::DoBattle() {
 			Game_Temp::battle_first_strike = 0;
 			Game_Temp::battle_result = Game_Temp::BattleVictory;
 			Game_Battle::SetBattleMode(0);
-			static_cast<Scene_Map*>(Scene::instance.get())->CallBattle();
+			Scene::Push(Scene_Battle::Create());
 		}
 	}
 }

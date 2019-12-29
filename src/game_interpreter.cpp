@@ -39,6 +39,7 @@
 #include "game_picture.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
+#include "scene_gameover.h"
 #include "scene_map.h"
 #include "scene.h"
 #include "graphics.h"
@@ -466,7 +467,7 @@ bool Game_Interpreter::CheckGameOver() {
 	if (!Game_Battle::IsBattleRunning() && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
 		if (Main_Data::game_party->GetBattlerCount() > 0) {
-			Scene::instance->SetRequestedScene(Scene::Gameover);
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Gameover>());
 			return true;
 		}
 	}
@@ -1824,7 +1825,7 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Gameover);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Gameover>());
 	++index;
 	return false;
 }

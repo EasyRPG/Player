@@ -205,8 +205,11 @@ public:
 	/** @return true if the Scene has been initialized */
 	bool IsInitialized() const;
 
-	/** @return the scene requested by events */
-	SceneType GetRequestedScene();
+	/**
+	 * @return the scene requested by events
+	 * @post the internally stored requested scene is cleared
+	 */
+	std::shared_ptr<Scene> TakeRequestedScene();
 
 	/** @return true if a scene is being requested */
 	bool HasRequestedScene();
@@ -216,7 +219,7 @@ public:
 	 *
 	 * @param scene the scene to call
 	 */
-	void SetRequestedScene(SceneType scene);
+	void SetRequestedScene(std::shared_ptr<Scene> scene);
 
 	/**
 	 * Check if the async operation wants to end the scene.
@@ -268,7 +271,7 @@ private:
 	static void DebugValidate(const char* caller);
 	static void UpdatePrevScene();
 
-	Scene::SceneType request_scene = Null;
+	std::shared_ptr<Scene> request_scene;
 	int delay_frames = 0;
 };
 
@@ -276,16 +279,18 @@ inline bool Scene::IsInitialized() const {
 	return initialized;
 }
 
-inline Scene::SceneType Scene::GetRequestedScene() {
-	return request_scene;
+inline std::shared_ptr<Scene> Scene::TakeRequestedScene() {
+	auto ptr = std::move(request_scene);
+	request_scene.reset();
+	return ptr;
 }
 
 inline bool Scene::HasRequestedScene() {
-	return GetRequestedScene() != Null;
+	return request_scene != nullptr;
 }
 
-inline void Scene::SetRequestedScene(SceneType scene) {
-	request_scene = scene;
+inline void Scene::SetRequestedScene(std::shared_ptr<Scene> scene) {
+	request_scene = std::move(scene);
 }
 
 inline void Scene::SetDelayFrames(int frames) {
