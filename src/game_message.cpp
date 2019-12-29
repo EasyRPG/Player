@@ -19,7 +19,6 @@
 #include "game_message.h"
 #include "game_player.h"
 #include "game_battle.h"
-#include "game_temp.h"
 #include "main_data.h"
 #include "window_message.h"
 #include "font.h"

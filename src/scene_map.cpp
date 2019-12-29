@@ -32,7 +32,6 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_screen.h"
 #include "rpg_system.h"
 #include "player.h"

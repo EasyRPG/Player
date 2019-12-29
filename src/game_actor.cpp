@@ -30,7 +30,6 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 #include "utils.h"
-#include "game_temp.h"
 #include "pending_message.h"
 #include "compiler.h"
 

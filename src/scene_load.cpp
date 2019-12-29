@@ -18,7 +18,6 @@
 // Headers
 #include <sstream>
 #include "filefinder.h"
-#include "game_temp.h"
 #include "output.h"
 #include "player.h"
 #include "scene_load.h"

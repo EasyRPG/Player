@@ -27,7 +27,6 @@
 #include "game_player.h"
 #include "game_battle.h"
 #include "game_targets.h"
-#include "game_temp.h"
 #include "game_system.h"
 #include "reader_util.h"
 #include "output.h"

@@ -22,7 +22,6 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
-#include "game_temp.h"
 #include "reader_util.h"
 #include "game_battle.h"
 #include "output.h"

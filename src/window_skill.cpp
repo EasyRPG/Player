@@ -22,7 +22,6 @@
 #include "game_actor.h"
 #include "game_actors.h"
 #include "game_party.h"
-#include "game_temp.h"
 #include "bitmap.h"
 #include "font.h"
 #include "player.h"

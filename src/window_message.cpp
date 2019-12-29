@@ -27,7 +27,6 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_variables.h"
-#include "game_temp.h"
 #include "input.h"
 #include "output.h"
 #include "player.h"

@@ -28,7 +28,6 @@
 #include "baseui.h"
 #include "spriteset_battle.h"
 #include "player.h"
-#include "game_temp.h"
 #include "options.h"
 #include "drawable_mgr.h"
 

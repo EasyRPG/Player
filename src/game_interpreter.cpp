@@ -29,7 +29,6 @@
 #include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_targets.h"
-#include "game_temp.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"

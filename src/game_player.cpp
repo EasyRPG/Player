@@ -23,7 +23,6 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
 #include "main_data.h"
