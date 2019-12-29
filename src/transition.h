@@ -104,7 +104,7 @@ public:
 	 */
 	void InitErase(Type type, Scene *linked_scene, int duration = -1);
 
-	void AppendBefore(Color color, int duration, int iterations);
+	void PrependFlashes(int r, int g, int b, int power, int duration, int iterations);
 
 	void Draw(Bitmap& dst) override;
 	void Update();
@@ -128,7 +128,16 @@ private:
 	int total_frames = 0;
 	bool screen_erased = false;
 
-	Color flash_color;
+	struct FlashData {
+		int32_t red = 0;
+		int32_t blue = 0;
+		int32_t green = 0;
+		double current_level = 0.0;
+		int32_t time_left = 0;
+	};
+	FlashData flash;
+
+	int flash_power = 0;
 	int flash_duration = 0;
 	int flash_iterations = 0;
 
@@ -153,7 +162,7 @@ inline void Transition::InitErase(Type type, Scene *linked_scene, int duration) 
 }
 
 inline bool Transition::IsActive() {
-	return current_frame < total_frames;
+	return current_frame < total_frames || flash_iterations != 0;
 }
 
 inline bool Transition::IsErased() {

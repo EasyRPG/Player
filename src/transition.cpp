@@ -54,15 +54,16 @@ Transition::Transition() : Drawable(Priority_Transition, Drawable::Flags::Global
 	DrawableMgr::Register(this);
 }
 
-void Transition::AppendBefore(Color color, int duration, int iterations) {
-	if (!IsActive()) {
-		current_frame = 0;
-		total_frames = 0;
-	}
-	flash_color = color;
+void Transition::PrependFlashes(int r, int g, int b, int p, int duration, int iterations) {
+	flash.red = r;
+	flash.green = g;
+	flash.blue = b;
+	flash.current_level = 0.0;
+	flash.time_left = 0;
+
+	flash_power = p;
 	flash_duration = std::max(1, duration);
 	flash_iterations = std::max(1, iterations);
-	total_frames += flash_duration * flash_iterations;
 }
 
 void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) {
@@ -73,6 +74,8 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	scene = linked_scene;
 
 	current_frame = 0;
+	flash = {};
+	flash_power = 0;
 	flash_iterations = 0;
 	flash_duration = 0;
 	total_frames = 0;
@@ -186,13 +189,13 @@ void Transition::Draw(Bitmap& dst) {
 	int w = dst.GetWidth();
 	int h = dst.GetHeight();
 
-	if (current_frame < flash_duration * flash_iterations) {
-		Color current_color = Color(flash_color.red, flash_color.green, flash_color.blue, (flash_duration - current_frame % flash_duration) * 255 / flash_duration);
-		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), current_color, 255);
+	if (flash_iterations > 0) {
+		auto color = Flash::MakeColor(flash.red, flash.green, flash.blue, flash.current_level);
+		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), color, 255);
 		return;
 	}
 
-	int percentage = (current_frame - flash_duration * flash_iterations) * 100 / (total_frames - flash_duration * flash_iterations);
+	int percentage = (current_frame) * 100 / (total_frames);
 
 	switch (transition_type) {
 	case TransitionFadeIn:
@@ -388,6 +391,20 @@ void Transition::Draw(Bitmap& dst) {
 
 void Transition::Update() {
 	if (IsActive()) {
+		if (flash_iterations > 0) {
+			if (flash.time_left > 0) {
+				Flash::Update(flash.current_level, flash.time_left);
+				if (flash.time_left > 0) {
+					return;
+				}
+				--flash_iterations;
+			}
+			if (flash_iterations > 0) {
+				flash.current_level = flash_power;
+				flash.time_left = flash_duration;
+				return;
+			}
+		}
 		//Update current_frame:
 		current_frame++;
 	}

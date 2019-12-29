@@ -204,7 +204,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 	if (next_scene == Scene::Battle) {
 		if (!transition.IsErased()) {
 			transition.InitErase(Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this);
-			transition.AppendBefore(Color(255, 255, 255, 255), 12, 2);
+			transition.PrependFlashes(31, 31, 31, 31, 10, 2);
 		} else {
 			// If screen is already erased, do nothing for 40 frames.
 			transition.InitErase(Transition::TransitionNone, this, 40);
