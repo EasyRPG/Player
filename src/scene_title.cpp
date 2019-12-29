@@ -204,6 +204,7 @@ void Scene_Title::PrepareBattleTest() {
 	BattleArgs args;
 	args.troop_id = Game_Battle::battle_test.troop_id;
 	args.first_strike = false;
+	args.allow_escape = true;
 	args.background = Data::system.battletest_background;
 	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
 

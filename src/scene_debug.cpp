@@ -37,7 +37,6 @@
 #include "window_varlist.h"
 #include "window_numberinput.h"
 #include "bitmap.h"
-#include "game_temp.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "data.h"
@@ -676,14 +675,10 @@ void Scene_Debug::DoBattle() {
 			prev.troop.range_page = range_page;
 			prev.troop.range_page_index = var_window->GetIndex();
 
-			Game_Temp::battle_random_encounter = false;
-			Game_Temp::battle_escape_mode = 2;
-			Game_Temp::battle_defeat_mode = 1;
-			Game_Temp::battle_result = Game_Temp::BattleVictory;
-
 			BattleArgs args;
 			args.troop_id = GetIndex();
 			args.first_strike = false;
+			args.allow_escape = true;
 
 			Game_Map::SetupBattle(args);
 

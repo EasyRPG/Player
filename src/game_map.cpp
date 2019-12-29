@@ -29,7 +29,6 @@
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_switches.h"
-#include "game_temp.h"
 #include "game_player.h"
 #include "game_party.h"
 #include "game_message.h"
@@ -48,6 +47,7 @@
 #include "input.h"
 #include "utils.h"
 #include "scope_guard.h"
+#include "scene_gameover.h"
 
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
@@ -64,7 +64,6 @@ namespace {
 
 	int animation_type;
 	bool animation_fast;
-
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
 	std::vector<Game_Event> events;
@@ -91,23 +90,6 @@ namespace {
 
 void Game_Map::OnContinueFromBattle() {
 	Game_System::BgmPlay(Game_System::GetBeforeBattleMusic());
-
-	// 2k3 Death Handlers
-	if (Game_Temp::battle_result == Game_Temp::BattleDefeat
-			&& Game_Temp::battle_random_encounter
-			&& Game_Battle::HasDeathHandler())
-	{
-		auto* ce = ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
-		if (ce) {
-			auto& interp = GetInterpreter();
-			interp.Push(ce);
-		}
-
-		auto tt = Game_Battle::GetDeathHandlerTeleport();
-		if (tt.IsActive()) {
-			Main_Data::game_player->ReserveTeleport(tt.GetMapId(), tt.GetX(), tt.GetY(), tt.GetDirection(), tt.GetType());
-		}
-	}
 }
 
 static Game_Map::Parallax::Params GetParallaxParams();
@@ -1296,6 +1278,30 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	return out;
 }
 
+static void OnEncounterEnd(BattleResult result) {
+	if (result != BattleResult::Defeat) {
+		return;
+	}
+
+	if (!Game_Battle::HasDeathHandler()) {
+		Scene::Push(std::make_shared<Scene_Gameover>());
+		return;
+	}
+
+	//2k3 death handler
+
+	auto* ce = ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
+	if (ce) {
+		auto& interp = Game_Map::GetInterpreter();
+		interp.Push(ce);
+	}
+
+	auto tt = Game_Battle::GetDeathHandlerTeleport();
+	if (tt.IsActive()) {
+		Main_Data::game_player->ReserveTeleport(tt.GetMapId(), tt.GetX(), tt.GetY(), tt.GetDirection(), tt.GetType());
+	}
+}
+
 bool Game_Map::PrepareEncounter(BattleArgs& args) {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
@@ -1314,7 +1320,8 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 	}
 
 	SetupBattle(args);
-	Game_Temp::battle_random_encounter = true;
+	args.on_battle_end = OnEncounterEnd;
+	args.allow_escape = true;
 
 	return true;
 }
@@ -1324,7 +1331,6 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 	int y = Main_Data::game_player->GetY();
 
 	args.terrain_id = GetTerrainTag(x, y);
-	Game_Temp::battle_escape_mode = -1;
 
 	int current_index = GetMapIndex(location.map_id);
 	while (Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {

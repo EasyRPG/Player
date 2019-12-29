@@ -139,8 +139,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_system.h \
 	src/game_targets.cpp \
 	src/game_targets.h \
-	src/game_temp.cpp \
-	src/game_temp.h \
 	src/game_variables.cpp \
 	src/game_variables.h \
 	src/game_vehicle.cpp \

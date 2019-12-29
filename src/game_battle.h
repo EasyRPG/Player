@@ -30,6 +30,14 @@ namespace RPG {
 	class EventPage;
 }
 
+enum class BattleResult {
+	Victory,
+	Escape,
+	Defeat,
+	Abort
+};
+
+
 namespace Game_Battle {
 	/**
 	 * Initialize Game_Battle.
@@ -59,7 +67,12 @@ namespace Game_Battle {
 	 */
 	void UpdateGraphics();
 
-	void Terminate();
+	/**
+	 * Terminate the current battle with the given result.
+	 *
+	 * @param result the result of the battle.
+	 */
+	void Terminate(BattleResult result);
 
 	/**
 	 * Checks if a victory condition for the player party (enemy dead) is fulfilled.
@@ -137,8 +150,8 @@ namespace Game_Battle {
 	 */
 	void RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate);
 
-	bool IsEscapeAllowed();
 	bool IsTerminating();
+	BattleResult TerminationResult();
 
 	/**
 	 * Gets the game interpreter.

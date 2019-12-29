@@ -257,7 +257,6 @@ protected:
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
-	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
@@ -268,6 +267,7 @@ protected:
 	int GetSubcommandIndex(int indent) const;
 
 	void ForegroundTextPush(PendingMessage pm);
+	void EndEventProcessing();
 
 	FileRequestBinding request_id;
 	enum class Keys {

@@ -46,13 +46,17 @@ class SpriteAction;
 
 class Game_Battler;
 
+using BattleContinuation = std::function<void(BattleResult)>;
+
 struct BattleArgs {
+	BattleContinuation on_battle_end;
 	std::string background;
 	int troop_id = 0;
 	int terrain_id = 0;
 	RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
 	RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
 	bool first_strike = false;
+	bool allow_escape = true;
 };
 
 constexpr int option_command_mov = 76;
@@ -124,6 +128,7 @@ protected:
 	void NextTurn(Game_Battler* battler);
 
 	bool IsWindowMoving();
+	bool IsEscapeAllowed() const;
 
 	virtual void EnemySelected();
 	virtual void AllySelected();
@@ -161,6 +166,8 @@ protected:
 
 	void CallDebug();
 
+	void EndBattle(BattleResult result);
+
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
@@ -173,6 +180,7 @@ protected:
 	int skill_id;
 	int pending_command;
 	int troop_id = 0;
+	bool allow_escape = false;
 
 	int actor_index = 0;
 	Game_Actor* active_actor = nullptr;
@@ -191,6 +199,12 @@ protected:
 	std::unique_ptr<Window_Message> message_window;
 
 	std::deque<Game_Battler*> battle_actions;
+
+	BattleContinuation on_battle_end;
 };
+
+inline bool Scene_Battle::IsEscapeAllowed() const {
+	return allow_escape;
+}
 
 #endif

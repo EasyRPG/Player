@@ -27,7 +27,6 @@
 #include "reader_util.h"
 #include "output.h"
 #include "player.h"
-#include "game_temp.h"
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
@@ -105,8 +104,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_pincers) {
-			Game_Temp::battle_result = Game_Temp::BattleEscape;
-			Game_Battle::Terminate();
+			Game_Battle::Terminate(BattleResult::Escape);
 			result = true;
 		}
 	    break;
@@ -303,7 +301,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
-	Game_Battle::Terminate();
+	Game_Battle::Terminate(BattleResult::Abort);
 	return false;
 }
 

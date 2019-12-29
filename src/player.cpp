@@ -56,7 +56,6 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_variables.h"
 #include "game_targets.h"
 #include "graphics.h"
@@ -78,6 +77,7 @@
 #include "game_quit.h"
 #include "scene_title.h"
 #include "instrumentation.h"
+#include "transition.h"
 #include "scope_guard.h"
 #include "baseui.h"
 #include "game_clock.h"
@@ -830,7 +830,6 @@ void Player::ResetGameObjects() {
 	Game_Map::Init();
 	Game_Message::Init();
 	Game_System::Init();
-	Game_Temp::Init();
 
 	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
@@ -949,7 +948,6 @@ void Player::LoadSavegame(const std::string& save_name) {
 	}
 
 	Scene::PopUntil(Scene::Title);
-	Game_Temp::Init();
 	Game_Map::Dispose();
 
 	Main_Data::game_data = *save.get();

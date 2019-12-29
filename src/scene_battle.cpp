@@ -27,7 +27,6 @@
 #include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
@@ -44,12 +43,13 @@
 #include "game_interpreter.h"
 
 Scene_Battle::Scene_Battle(const BattleArgs& args)
-	: troop_id(args.troop_id)
+	: troop_id(args.troop_id),
+	allow_escape(args.allow_escape),
+	on_battle_end(args.on_battle_end)
 {
 	SetUseSharedDrawables(true);
 
 	Scene::type = Scene::Battle;
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
 
 	// Face graphic is cleared when battle scene is created.
 	// Even if the battle gets interrupted by another scene and never starts.
@@ -76,12 +76,10 @@ void Scene_Battle::Start() {
 
 	if (!troop) {
 		Output::Warning("Invalid Monster Party ID %d", troop_id);
-		Game_Temp::battle_result = Game_Temp::BattleVictory;
-		Scene::Pop();
+		EndBattle(BattleResult::Victory);
 		return;
 	}
 
-	// Game_Temp::battle_troop_id is valid during the whole battle
 	Output::Debug("Starting battle %d (%s)", troop_id, troop->name.c_str());
 
 	if (Game_Battle::battle_test.enabled) {
@@ -187,7 +185,8 @@ void Scene_Battle::Update() {
 	// If it reached zero during update was a running battle timer.
 	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
 		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
-		Scene::Pop();
+		EndBattle(BattleResult::Abort);
+		return;
 	}
 
 	bool events_finished = Game_Battle::UpdateEvents();
@@ -223,7 +222,7 @@ void Scene_Battle::Update() {
 	}
 
 	if (Game_Battle::IsTerminating()) {
-		Scene::Pop();
+		EndBattle(Game_Battle::TerminationResult());
 	}
 }
 
@@ -635,3 +634,23 @@ void Scene_Battle::SelectionFlash(Game_Battler* battler) {
 		battler->Flash(31, 31, 31, 24, 16);
 	}
 }
+
+void Scene_Battle::EndBattle(BattleResult result) {
+	assert(Scene::instance.get() == this && "EndBattle called multiple times!");
+
+	Main_Data::game_party->IncBattleCount();
+	switch (result) {
+		case BattleResult::Victory: Main_Data::game_party->IncWinCount(); break;
+		case BattleResult::Escape: Main_Data::game_party->IncRunCount(); break;
+		case BattleResult::Defeat: Main_Data::game_party->IncDefeatCount(); break;
+		case BattleResult::Abort: break;
+	}
+
+	Scene::Pop();
+
+	if (on_battle_end) {
+		on_battle_end(result);
+		on_battle_end = {};
+	}
+}
+

@@ -1804,13 +1804,17 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com */) { // code 12310
+	EndEventProcessing();
+	return true;
+}
+
+void Game_Interpreter::EndEventProcessing() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
 	index = static_cast<int>(list.size());
-	return true;
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
@@ -3301,11 +3305,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	index++;
 	return true;
 }
-
-// Dummy Continuations
-
-bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
-
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()

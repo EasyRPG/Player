@@ -23,7 +23,6 @@
 #include "game_enemyparty.h"
 #include "game_message.h"
 #include "game_party.h"
-#include "game_temp.h"
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
@@ -39,7 +38,7 @@
 namespace Game_Battle {
 	const RPG::Troop* troop;
 
-	bool terminate;
+	int terminate = -1;
 	std::string background_name;
 
 	std::unique_ptr<Game_Interpreter> interpreter;
@@ -73,7 +72,7 @@ void Game_Battle::Init(int troop_id) {
 
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
-	terminate = false;
+	terminate = -1;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
 	need_refresh = false;
@@ -117,14 +116,6 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
-	Main_Data::game_party->IncBattleCount();
-	switch (Game_Temp::battle_result) {
-		case Game_Temp::BattleVictory: Main_Data::game_party->IncWinCount(); break;
-		case Game_Temp::BattleEscape: Main_Data::game_party->IncRunCount(); break;
-		case Game_Temp::BattleDefeat: Main_Data::game_party->IncDefeatCount(); break;
-		case Game_Temp::BattleAbort: break;
-	}
-
 	page_executed.clear();
 	page_can_run.clear();
 
@@ -135,7 +126,7 @@ void Game_Battle::Quit() {
 void Game_Battle::RunEvents() {
 	interpreter->Update();
 	if (interpreter->IsAsyncPending()) {
-		terminate = true;
+		Terminate(BattleResult::Abort);
 		return;
 	}
 }
@@ -168,9 +159,8 @@ void Game_Battle::UpdateGraphics() {
 	}
 }
 
-void Game_Battle::Terminate() {
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
-	terminate = true;
+void Game_Battle::Terminate(BattleResult result) {
+	terminate = static_cast<int>(result);
 }
 
 bool Game_Battle::CheckWin() {
@@ -436,12 +426,12 @@ void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predi
 	last_event_filter = predicate;
 }
 
-bool Game_Battle::IsEscapeAllowed() {
-	return Game_Temp::battle_escape_mode != 0;
+bool Game_Battle::IsTerminating() {
+	return terminate >= 0;
 }
 
-bool Game_Battle::IsTerminating() {
-	return terminate;
+BattleResult Game_Battle::TerminationResult() {
+	return static_cast<BattleResult>(terminate);
 }
 
 Game_Interpreter& Game_Battle::GetInterpreter() {
