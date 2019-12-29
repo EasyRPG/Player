@@ -196,6 +196,11 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 		screen_erased_by_event = false;
 	}
 
+	if (next_scene == Scene::Debug) {
+		transition.InitErase(Transition::TransitionCutOut, this);
+		return;
+	}
+
 	if (next_scene == Scene::Battle) {
 		transition.InitErase(Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this);
 		transition.AppendBefore(Color(255, 255, 255, 255), 12, 2);
