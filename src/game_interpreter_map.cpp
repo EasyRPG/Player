@@ -359,17 +359,17 @@ bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& /* com */) { 
 
 bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // code 10730
 	int inn_type = com.parameters[0];
-	Game_Temp::inn_price = com.parameters[1];
+	auto inn_price = com.parameters[1];
 	// Not used, but left here for documentation purposes
 	// bool has_inn_handlers = com.parameters[2] != 0;
 
-	if (Game_Temp::inn_price == 0) {
+	if (inn_price == 0) {
 		if (Game_Message::IsMessageActive()) {
 			return false;
 		}
 
 		// Skip prompt.
-		ContinuationShowInnStart(com.indent, 0);
+		ContinuationShowInnStart(com.indent, 0, inn_price);
 		return true;
 	}
 
@@ -385,7 +385,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	switch (inn_type) {
 		case 0:
 			if (Player::IsRPG2kE()) {
-				out << Game_Temp::inn_price;
+				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_a_greeting_1,
@@ -403,7 +403,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_a_greeting_1
-					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_a_greeting_2;
 				pm.PushLine(out.str());
 				pm.PushLine(Data::terms.inn_a_greeting_3);
@@ -411,7 +411,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			break;
 		case 1:
 			if (Player::IsRPG2kE()) {
-				out << Game_Temp::inn_price;
+				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_b_greeting_1,
@@ -429,7 +429,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_b_greeting_1
-					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_b_greeting_2;
 				pm.PushLine(out.str());
 				pm.PushLine(Data::terms.inn_b_greeting_3);
@@ -439,7 +439,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			return false;
 	}
 
-	bool can_afford = (Main_Data::game_party->GetGold() >= Game_Temp::inn_price);
+	bool can_afford = (Main_Data::game_party->GetGold() >= inn_price);
 	pm.SetChoiceResetColors(true);
 
 	switch (inn_type) {
@@ -458,8 +458,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	pm.SetShowGoldWindow(true);
 
 	int indent = com.indent;
-	pm.SetChoiceContinuation([this,indent](int choice_result) {
-			ContinuationShowInnStart(indent, choice_result);
+	pm.SetChoiceContinuation([this, indent, inn_price](int choice_result) {
+			ContinuationShowInnStart(indent, choice_result, inn_price);
 			});
 
 	// save game compatibility with RPG_RT
@@ -471,13 +471,13 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result) {
+void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result, int price) {
 	bool inn_stay = (choice_result == 0);
 
 	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	if (inn_stay) {
-		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
+		Main_Data::game_party->GainGold(-price);
 
 		_async_op = AsyncOp::MakeCallInn();
 	}

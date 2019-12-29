@@ -24,7 +24,6 @@ bool Game_Temp::shop_sells;
 int Game_Temp::shop_type;
 std::vector<int> Game_Temp::shop_goods;
 bool Game_Temp::shop_transaction;
-int Game_Temp::inn_price;
 int Game_Temp::battle_troop_id;
 std::string Game_Temp::battle_background;
 int Game_Temp::battle_formation;
@@ -40,7 +39,6 @@ void Game_Temp::Init() {
 	shop_type = 0;
 	shop_goods = {};
 	shop_transaction = false;
-	inn_price = 0;
 	battle_troop_id = 0;
 	battle_background = {};
 	battle_formation = 0;
