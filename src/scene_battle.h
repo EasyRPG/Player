@@ -34,7 +34,6 @@
 #include "window_item.h"
 #include "window_skill.h"
 #include "window_command.h"
-#include "window_battleoption.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 #include "window_message.h"

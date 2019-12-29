@@ -322,8 +322,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_battlecommand.h \
 	src/window_battlemessage.cpp \
 	src/window_battlemessage.h \
-	src/window_battleoption.cpp \
-	src/window_battleoption.h \
 	src/window_battlestatus.cpp \
 	src/window_battlestatus.h \
 	src/window_command.cpp \
