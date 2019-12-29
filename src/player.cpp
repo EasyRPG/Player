@@ -871,8 +871,9 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 
 	Main_Data::game_player->Refresh();
 
+	auto current_music = Game_System::GetCurrentBGM();
 	Game_System::BgmStop();
-	Game_System::BgmPlay(Game_System::GetCurrentBGM());
+	Game_System::BgmPlay(current_music);
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
