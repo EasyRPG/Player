@@ -125,32 +125,31 @@ void Game_Battle::Quit() {
 	Main_Data::game_party->ResetBattle();
 }
 
-void Game_Battle::Update() {
+void Game_Battle::RunEvents() {
 	interpreter->Update();
 	if (interpreter->IsAsyncPending()) {
 		terminate = true;
 		return;
 	}
+}
 
-	Main_Data::game_screen->Update();
-
-	spriteset->Update();
+void Game_Battle::UpdateAnimation() {
 	if (animation) {
 		animation->Update();
 		if (animation->IsDone()) {
 			animation.reset();
 		}
 	}
+}
 
-	std::vector<Game_Battler*> battlers;
-	(*Main_Data::game_party).GetBattlers(battlers);
-	(*Main_Data::game_enemyparty).GetBattlers(battlers);
-	for (Game_Battler* b : battlers) {
-		b->UpdateBattle();
-	}
+void Game_Battle::UpdateGraphics() {
+	spriteset->Update();
 
 	if (need_refresh) {
 		need_refresh = false;
+		std::vector<Game_Battler*> battlers;
+		Main_Data::game_party->GetBattlers(battlers);
+		Main_Data::game_enemyparty->GetBattlers(battlers);
 		for (Game_Battler* b : battlers) {
 			Sprite_Battler* spr = spriteset->FindBattler(b);
 			if (spr) {

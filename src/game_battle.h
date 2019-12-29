@@ -42,9 +42,19 @@ namespace Game_Battle {
 	void Quit();
 
 	/**
-	 * Updates the battle state.
+	 * Updates the battle animation
 	 */
-	void Update();
+	void UpdateAnimation();
+
+	/**
+	 * Runs the interpreter
+	 */
+	void RunEvents();
+
+	/**
+	 * Updates spriteset graphics
+	 */
+	void UpdateGraphics();
 
 	void Terminate();
 
