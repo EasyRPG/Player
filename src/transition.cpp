@@ -77,33 +77,43 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	flash_duration = 0;
 	total_frames = 0;
 
-	if (duration > 0) {
-		// FIXME: Break this dependency on DisplayUI
-		if (screen_erased) {
-			screen1 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-		} else {
-			if (erase) {
-				screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
-				Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
-				Graphics::GlobalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
-			} else {
-				screen1 = DisplayUi->CaptureScreen();
-			}
-		}
-		if (erase) {
-			screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-		} else {
-			screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
-			Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
-			Graphics::GlobalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
-		}
+	// Erase transitions are skipped entirely if screen already erased.
+	if (type != TransitionNone && screen_erased && erase) {
+		transition_type = TransitionNone;
+		return;
 	}
 
+	// FIXME: Break this dependency on DisplayUI
+	if (screen_erased) {
+		screen1 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	} else {
+		if (erase) {
+			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
+			Graphics::GlobalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
+		} else {
+			screen1 = DisplayUi->CaptureScreen();
+		}
+	}
+	if (erase) {
+		screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	} else {
+		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+		Graphics::GlobalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+	}
+
+	// Total frames and erased have to be set *after* the above drawing code.
+	// Otherwise IsActive() / IsErased() will mess up drawing.
 	total_frames = duration;
 
-	if (type != TransitionNone) {
-		screen_erased = erase;
+	// TransitionNone is neither a Show or Erase, it just waits and does nothing.
+	// Screen state is not changed.
+	if (type == TransitionNone) {
+		return;
 	}
+
+	screen_erased = erase;
 
 	SetAttributesTransitions();
 }
@@ -179,9 +189,6 @@ void Transition::Draw(Bitmap& dst) {
 	if (current_frame < flash_duration * flash_iterations) {
 		Color current_color = Color(flash_color.red, flash_color.green, flash_color.blue, (flash_duration - current_frame % flash_duration) * 255 / flash_duration);
 		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), current_color, 255);
-		return;
-	}
-	else if (total_frames == flash_duration * flash_iterations) {
 		return;
 	}
 
