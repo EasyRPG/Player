@@ -202,7 +202,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			int frame = frames[(cycle / 15) % 4];
 			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
 
-			if (cycle % 60 == 0) {
+			if (cycle % 30 == 0) {
 				SelectionFlash(actor);
 			}
 		}
