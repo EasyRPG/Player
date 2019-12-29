@@ -45,6 +45,11 @@ class SpriteAction;
 
 class Game_Battler;
 
+struct BattleArgs {
+	int troop_id = 0;
+	bool first_strike = false;
+};
+
 constexpr int option_command_mov = 76;
 constexpr int option_command_time = 8;
 
@@ -55,7 +60,7 @@ constexpr int option_command_time = 8;
 class Scene_Battle : public Scene {
 
 public:
-	static std::shared_ptr<Scene_Battle> Create();
+	static std::shared_ptr<Scene_Battle> Create(const BattleArgs& args);
 
 	~Scene_Battle() override;
 
@@ -99,11 +104,11 @@ public:
 	static void SelectionFlash(Game_Battler* battler);
 
 protected:
-	Scene_Battle();
+	explicit Scene_Battle(const BattleArgs& args);
 
 	friend class Battle::SpriteAction;
 
-	virtual void InitBattleTest();
+	virtual void InitBattleTest() = 0;
 
 	virtual void CreateUi();
 
@@ -164,9 +169,10 @@ protected:
 	std::deque<std::shared_ptr<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;
+	int troop_id = 0;
 
-	int actor_index;
-	Game_Actor* active_actor;
+	int actor_index = 0;
+	Game_Actor* active_actor = nullptr;
 
 	/** Displays Fight, Autobattle, Flee */
 	std::unique_ptr<Window_Command> options_window;

@@ -37,6 +37,7 @@
 #include "scene_load.h"
 #include "window_command.h"
 #include "baseui.h"
+#include "reader_util.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -200,7 +201,16 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	Scene::Push(Scene_Battle::Create(), true);
+	BattleArgs args;
+	args.troop_id = Game_Battle::battle_test.troop_id;
+	args.first_strike = false;
+
+	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);
+	if (troop == nullptr) {
+		Output::Error("BattleTest: Invalid Monster Party ID %d", args.troop_id);
+	}
+
+	Scene::Push(Scene_Battle::Create(std::move(args)), true);
 }
 
 void Scene_Title::CommandNewGame() {

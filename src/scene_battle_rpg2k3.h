@@ -70,7 +70,7 @@ public:
 
 
 public:
-	Scene_Battle_Rpg2k3();
+	explicit Scene_Battle_Rpg2k3(const BattleArgs& args);
 	~Scene_Battle_Rpg2k3() override;
 
 	void Update() override;

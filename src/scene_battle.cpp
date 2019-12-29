@@ -43,9 +43,8 @@
 #include "scene_debug.h"
 #include "game_interpreter.h"
 
-Scene_Battle::Scene_Battle() :
-	actor_index(0),
-	active_actor(NULL)
+Scene_Battle::Scene_Battle(const BattleArgs& args)
+	: troop_id(args.troop_id)
 {
 	SetUseSharedDrawables(true);
 
@@ -69,36 +68,25 @@ void Scene_Battle::Start() {
 	// wiping out all flash LSD chunks.
 	Main_Data::game_screen->FlashOnce(0, 0, 0, 0, 0);
 
-	if (Game_Battle::battle_test.enabled) {
-		Game_Temp::battle_troop_id = Game_Battle::battle_test.troop_id;
-	}
-
-	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, Game_Temp::battle_troop_id);
+	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
 
 	if (!troop) {
-		const char* error_msg = "Invalid Monster Party ID %d";
-		if (Game_Battle::battle_test.enabled) {
-			Output::Error(error_msg, Game_Temp::battle_troop_id);
-		}
-		else {
-			Output::Warning(error_msg, Game_Temp::battle_troop_id);
-		}
+		Output::Warning("Invalid Monster Party ID %d", troop_id);
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		Scene::Pop();
 		return;
 	}
 
 	// Game_Temp::battle_troop_id is valid during the whole battle
-	Output::Debug("Starting battle %d (%s)", Game_Temp::battle_troop_id, troop->name.c_str());
+	Output::Debug("Starting battle %d (%s)", troop_id, troop->name.c_str());
 
 	if (Game_Battle::battle_test.enabled) {
-		InitBattleTest();
-	} else {
-		Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-		Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
+		Main_Data::game_party->SetupBattleTestMembers();
 	}
+	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
+	Main_Data::game_enemyparty->Setup(troop_id);
 
-	Game_Battle::Init();
+	Game_Battle::Init(troop_id);
 
 	cycle = 0;
 	auto_battle = false;
@@ -237,15 +225,6 @@ void Scene_Battle::Update() {
 
 bool Scene_Battle::IsWindowMoving() {
 	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
-}
-
-void Scene_Battle::InitBattleTest()
-{
-	Game_Temp::battle_troop_id = Game_Battle::battle_test.troop_id;
-	Main_Data::game_party->SetupBattleTestMembers();
-
-	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-	Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
 }
 
 void Scene_Battle::NextTurn(Game_Battler* battler) {
@@ -454,13 +433,13 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill, const RPG::Item* item) {
 	}
 }
 
-std::shared_ptr<Scene_Battle> Scene_Battle::Create()
+std::shared_ptr<Scene_Battle> Scene_Battle::Create(const BattleArgs& args)
 {
 	if (Player::IsRPG2k()) {
-		return std::make_shared<Scene_Battle_Rpg2k>();
+		return std::make_shared<Scene_Battle_Rpg2k>(args);
 	}
 	else {
-		return std::make_shared<Scene_Battle_Rpg2k3>();
+		return std::make_shared<Scene_Battle_Rpg2k3>(args);
 	}
 }
 

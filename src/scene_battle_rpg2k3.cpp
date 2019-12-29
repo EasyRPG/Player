@@ -36,7 +36,8 @@
 #include "utils.h"
 #include "font.h"
 
-Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
+Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
+	Scene_Battle(args),
 	battle_action_wait(30),
 	battle_action_state(BattleActionState_Execute)
 {
@@ -1267,6 +1268,4 @@ void Scene_Battle_Rpg2k3::InitBattleTest() {
 		// FIXME: figure out how the terrain is configured
 		Game_Battle::SetTerrainId(1);
 	}
-
-	Scene_Battle::InitBattleTest();
 }

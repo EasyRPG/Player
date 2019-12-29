@@ -33,12 +33,10 @@ public:
 	 */
 	static void Init();
 
-	static int battle_troop_id;
 	static std::string battle_background;
 	static int battle_formation;
 	static int battle_escape_mode;
 	static int battle_defeat_mode;
-	static bool battle_first_strike;
 	static int battle_result;
 	static bool battle_random_encounter;
 

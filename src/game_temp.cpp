@@ -19,22 +19,18 @@
 #include "game_temp.h"
 #include "transition.h"
 
-int Game_Temp::battle_troop_id;
 std::string Game_Temp::battle_background;
 int Game_Temp::battle_formation;
 int Game_Temp::battle_escape_mode;
 int Game_Temp::battle_defeat_mode;
-bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_result;
 bool Game_Temp::battle_random_encounter;
 
 void Game_Temp::Init() {
-	battle_troop_id = 0;
 	battle_background = {};
 	battle_formation = 0;
 	battle_escape_mode = -1;
 	battle_defeat_mode = 0;
-	battle_first_strike = false;
 	battle_result = BattleAbort;
 	battle_random_encounter = false;
 }

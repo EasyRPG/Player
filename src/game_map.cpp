@@ -35,6 +35,7 @@
 #include "game_message.h"
 #include "game_screen.h"
 #include "game_pictures.h"
+#include "scene_battle.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -1295,7 +1296,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	return out;
 }
 
-bool Game_Map::PrepareEncounter() {
+bool Game_Map::PrepareEncounter(BattleArgs& args) {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
@@ -1306,10 +1307,10 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
+	args.troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
 
 	if (Utils::GetRandomNumber(1, 32) == 1) {
-		Game_Temp::battle_first_strike = true;
+		args.first_strike = true;
 	}
 
 	SetupBattle();

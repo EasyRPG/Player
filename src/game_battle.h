@@ -34,7 +34,7 @@ namespace Game_Battle {
 	/**
 	 * Initialize Game_Battle.
 	 */
-	void Init();
+	void Init(int troop_id);
 
 	/** @return true if a battle is currently running */
 	bool IsBattleRunning();

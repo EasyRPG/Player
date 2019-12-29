@@ -65,7 +65,7 @@ namespace {
 	std::function<bool(const RPG::TroopPage&)> last_event_filter;
 }
 
-void Game_Battle::Init() {
+void Game_Battle::Init(int troop_id) {
 	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle());
 	spriteset->Update();
@@ -79,7 +79,7 @@ void Game_Battle::Init() {
 	need_refresh = false;
 
 	// troop_id is guaranteed to be valid
-	troop = ReaderUtil::GetElement(Data::troops, Game_Temp::battle_troop_id);
+	troop = ReaderUtil::GetElement(Data::troops, troop_id);
 	page_executed.resize(troop->pages.size());
 	std::fill(page_executed.begin(), page_executed.end(), false);
 	page_can_run.resize(troop->pages.size());

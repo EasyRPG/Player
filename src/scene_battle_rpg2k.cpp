@@ -37,9 +37,10 @@
 #include "scene_gameover.h"
 #include "output.h"
 
-Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle()
+Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
+	Scene_Battle(args)
 {
-	first_strike = Game_Temp::battle_first_strike;
+	first_strike = args.first_strike;
 }
 
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
@@ -1604,6 +1605,4 @@ bool Scene_Battle_Rpg2k::CheckResultConditions() {
 void Scene_Battle_Rpg2k::InitBattleTest() {
 	Game_Temp::battle_background = Data::system.battletest_background;
 	Game_Battle::SetTerrainId(Data::system.battletest_terrain);
-
-	Scene_Battle::InitBattleTest();
 }

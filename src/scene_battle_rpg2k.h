@@ -99,10 +99,8 @@ public:
 		BattleActionState_Finished
 	};
 
-
-
 public:
-	Scene_Battle_Rpg2k();
+	explicit Scene_Battle_Rpg2k(const BattleArgs& args);
 	~Scene_Battle_Rpg2k() override;
 
 	void Update() override;
