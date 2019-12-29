@@ -77,7 +77,6 @@ Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight)
 	index = 1;
 
 	Refresh();
-	UpdateCursorRect();
 }
 
 void Window_Shop::UpdateCursorRect() {
@@ -156,6 +155,8 @@ void Window_Shop::Refresh() {
 			contents->TextDraw(x, 2, Font::ColorDefault, sold_msg);
 			break;
 	}
+
+	UpdateCursorRect();
 }
 
 void Window_Shop::SetMode(int nmode) {
