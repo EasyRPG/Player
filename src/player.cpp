@@ -303,7 +303,7 @@ void Player::Update(bool update_scene) {
 
 	if (exit_flag) {
 		Scene::PopUntil(Scene::Null);
-	} else if (reset_flag) {
+	} else if (reset_flag && !Scene::IsAsyncPending()) {
 		reset_flag = false;
 		if (Scene::ReturnToTitleScene()) {
 			// Fade out music and stop sound effects before returning
