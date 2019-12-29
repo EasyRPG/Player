@@ -19,11 +19,6 @@
 #include "game_temp.h"
 #include "transition.h"
 
-bool Game_Temp::shop_buys;
-bool Game_Temp::shop_sells;
-int Game_Temp::shop_type;
-std::vector<int> Game_Temp::shop_goods;
-bool Game_Temp::shop_transaction;
 int Game_Temp::battle_troop_id;
 std::string Game_Temp::battle_background;
 int Game_Temp::battle_formation;
@@ -34,11 +29,6 @@ int Game_Temp::battle_result;
 bool Game_Temp::battle_random_encounter;
 
 void Game_Temp::Init() {
-	shop_buys = true;
-	shop_sells = true;
-	shop_type = 0;
-	shop_goods = {};
-	shop_transaction = false;
 	battle_troop_id = 0;
 	battle_background = {};
 	battle_formation = 0;

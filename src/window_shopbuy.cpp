@@ -21,16 +21,19 @@
 #include "window_base.h"
 #include "window_shopbuy.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
 #include "output.h"
 #include "reader_util.h"
 
-Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_ShopBuy::Window_ShopBuy(const std::vector<int>& goods,
+		int ix, int iy, int iwidth, int iheight)
+	: Window_Selectable(ix, iy, iwidth, iheight)
+	  , data(goods)
+{
 	index = 0;
+	item_max = data.size();
 }
 
 int Window_ShopBuy::GetItemId() {
@@ -42,9 +45,6 @@ int Window_ShopBuy::GetItemId() {
 }
 
 void Window_ShopBuy::Refresh() {
-	data = Game_Temp::shop_goods;
-	item_max = data.size();
-
 	CreateContents();
 
 	contents->Clear();

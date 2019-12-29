@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include "game_temp.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
@@ -24,17 +23,39 @@
 #include "scene_shop.h"
 #include "output.h"
 
-Scene_Shop::Scene_Shop() {
+Scene_Shop::Scene_Shop(
+		std::vector<int> goods,
+		int shop_type,
+		bool allow_buy,
+		bool allow_sell,
+		Continuation on_finish)
+	: on_finish(std::move(on_finish)),
+	goods(std::move(goods)),
+	shop_type(shop_type),
+	allow_buy(allow_buy),
+	allow_sell(allow_sell)
+{
 	Scene::type = Scene::Shop;
 }
 
 void Scene_Shop::Start() {
-	shop_window.reset(new Window_Shop(0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
+	// Sanitize shop items
+	for (auto it = goods.begin(); it != goods.end();) {
+		const auto* item = ReaderUtil::GetElement(Data::items, *it);
+		if (!item) {
+			Output::Warning("Removed invalid item %d from shop", *it);
+			it = goods.erase(it);
+		} else {
+			++it;
+		}
+	}
+
+	shop_window.reset(new Window_Shop(shop_type, 0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	gold_window.reset(new Window_Gold(184, 128, 136, 32));
 	empty_window.reset(new Window_Base(0, 32, SCREEN_TARGET_WIDTH, 128));
 	empty_window2.reset(new Window_Base(0, 32, 184, 128));
-	buy_window.reset(new Window_ShopBuy(0, 32, 184, 128));
+	buy_window.reset(new Window_ShopBuy(goods, 0, 32, 184, 128));
 	party_window.reset(new Window_ShopParty(184, 32, 136, 48));
 	sell_window.reset(new Window_ShopSell(0, 32, SCREEN_TARGET_WIDTH, 128));
 	status_window.reset(new Window_ShopStatus(184, 80, 136, 48));
@@ -56,25 +77,11 @@ void Scene_Shop::Start() {
 	sell_window->SetIndex(0);
 	sell_window->SetActive(true);
 
-	Game_Temp::shop_transaction = false;
 	timer = 0;
 
-	if (Game_Temp::shop_buys) {
-		// Sanitize shop items
-		for (auto it = Game_Temp::shop_goods.begin(); it != Game_Temp::shop_goods.end();) {
-			const RPG::Item *item = ReaderUtil::GetElement(Data::items, *it);
-			if (!item) {
-				Output::Warning("Removed invalid item %d from shop", *it);
-				it = Game_Temp::shop_goods.erase(it);
-			} else {
-				++it;
-			}
-		}
-	}
-
-	if (Game_Temp::shop_buys && Game_Temp::shop_sells) {
+	if (allow_buy && allow_sell) {
 		SetMode(BuySellLeave);
-	} else if (Game_Temp::shop_buys) {
+	} else if (allow_buy) {
 		shop_window->SetChoice(Buy);
 		SetMode(Buy);
 	} else {
@@ -231,7 +238,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		if (Game_Temp::shop_sells) {
+		if (allow_sell) {
 			SetMode(BuySellLeave2);
 		} else {
 			Scene::Pop();
@@ -265,7 +272,7 @@ void Scene_Shop::UpdateBuySelection() {
 void Scene_Shop::UpdateSellSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		if (Game_Temp::shop_buys) {
+		if (allow_buy) {
 			SetMode(BuySellLeave2);
 		} else {
 			Scene::Pop();
@@ -317,6 +324,12 @@ void Scene_Shop::UpdateNumberInput() {
 		}
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-		Game_Temp::shop_transaction = true;
+		did_transaction = true;
+	}
+}
+
+void Scene_Shop::Suspend(SceneType /* next_scene */) {
+	if (on_finish) {
+		on_finish(did_transaction);
 	}
 }

@@ -3321,7 +3321,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 
 // Dummy Continuations
 
-bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
 

@@ -37,12 +37,19 @@
 class Scene_Shop : public Scene {
 
 public:
+	using Continuation = std::function<void(bool)>;
 	/**
 	 * Constructor.
 	 */
-	Scene_Shop();
+	Scene_Shop(
+		std::vector<int> goods,
+		int shop_type,
+		bool allow_buy,
+		bool allow_sell,
+		Continuation on_finish);
 
 	void Start() override;
+	void Suspend(SceneType next_scene) override;
 
 	enum ShopMode {
 		BuySellLeave,
@@ -76,8 +83,15 @@ private:
 	std::unique_ptr<Window_Base> empty_window;
 	std::unique_ptr<Window_Base> empty_window2;
 	std::unique_ptr<Window_Shop> shop_window;
-	int mode;
-	int timer;
+	Continuation on_finish;
+
+	std::vector<int> goods;
+	int shop_type = 0;
+	int mode = 0;
+	int timer = 0;
+	bool allow_buy = false;
+	bool allow_sell = false;
+	bool did_transaction = false;
 };
 
 #endif

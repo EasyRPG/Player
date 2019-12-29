@@ -31,7 +31,8 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopBuy(int ix, int iy, int iwidth = SCREEN_TARGET_WIDTH, int iheight = 80);
+	Window_ShopBuy(const std::vector<int>& goods,
+			int ix, int iy, int iwidth = SCREEN_TARGET_WIDTH, int iheight = 80);
 
 	/**
 	 * Gets item ID of the selected item.
@@ -66,7 +67,7 @@ public:
 	bool CheckEnable(int item_id);
 
 protected:
-	std::vector<int> data;
+	const std::vector<int>& data;
 };
 
 #endif

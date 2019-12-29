@@ -20,19 +20,18 @@
 #include "input.h"
 #include "scene.h"
 #include "scene_shop.h"
-#include "game_temp.h"
 #include "game_system.h"
 #include "game_message.h"
 #include "window_shop.h"
 #include "bitmap.h"
 #include "font.h"
 
-Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
+Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
-	switch (Game_Temp::shop_type) {
+	switch (shop_type) {
 		case 0:
 			greeting = Data::terms.shop_greeting1;
 			regreeting = Data::terms.shop_regreeting1;

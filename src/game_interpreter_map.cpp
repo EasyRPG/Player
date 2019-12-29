@@ -298,51 +298,50 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		return false;
 	}
 
+	bool allow_buy = false;
+	bool allow_sell = false;
+
 	switch (com.parameters[0]) {
 		case 0:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = true;
+			allow_buy = true;
+			allow_sell = true;
 			break;
 		case 1:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = false;
+			allow_buy = true;
 			break;
 		case 2:
-			Game_Temp::shop_buys = false;
-			Game_Temp::shop_sells = true;
+			allow_sell = true;
 			break;
 		default:
-			return false;
+			break;
 	}
 
-	Game_Temp::shop_type = com.parameters[1];
+	auto shop_type = com.parameters[1];
+
 	// Not used, but left here for documentation purposes
 	//bool has_shop_handlers = com.parameters[2] != 0;
 
-	Game_Temp::shop_goods.clear();
-	std::vector<int32_t>::const_iterator it;
-	for (it = com.parameters.begin() + 4; it < com.parameters.end(); ++it)
-		Game_Temp::shop_goods.push_back(*it);
+	std::vector<int> goods;
+	for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ++it) {
+		goods.push_back(*it);
+	}
 
-	Game_Temp::shop_transaction = false;
-	Scene::instance->SetRequestedScene(std::make_shared<Scene_Shop>());
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
+	auto indent = com.indent;
+	auto continuation = [this, indent](bool did_transaction) {
+		int sub_idx = did_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
+		SetSubcommandIndex(indent, sub_idx);
+	};
+
+	auto scene = std::make_shared<Scene_Shop>(
+			std::move(goods), shop_type, allow_buy, allow_sell, std::move(continuation));
+
+	Scene::instance->SetRequestedScene(std::move(scene));
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
 	++index;
 	return false;
-}
-
-bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
-	continuation = nullptr;
-
-	int sub_idx = Game_Temp::shop_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
-
-	SetSubcommandIndex(com.indent, sub_idx);
-
-	return true;
 }
 
 bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
