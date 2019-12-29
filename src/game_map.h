@@ -359,8 +359,10 @@ namespace Game_Map {
 
 	/**
 	 * Updates all battle data based on the current player position.
+	 *
+	 * @param args the arguments to pass to battle scene.
 	 */
-	void SetupBattle();
+	void SetupBattle(BattleArgs& args);
 
 	/**
 	 * Gets lower layer map data.

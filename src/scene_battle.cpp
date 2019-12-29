@@ -57,6 +57,9 @@ Scene_Battle::Scene_Battle(const BattleArgs& args)
 	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
+
+	Game_Battle::SetTerrainId(args.terrain_id);
+	Game_Battle::ChangeBackground(args.background);
 }
 
 Scene_Battle::~Scene_Battle() {

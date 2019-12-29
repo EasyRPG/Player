@@ -1313,17 +1313,17 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 		args.first_strike = true;
 	}
 
-	SetupBattle();
+	SetupBattle(args);
 	Game_Temp::battle_random_encounter = true;
 
 	return true;
 }
 
-void Game_Map::SetupBattle() {
+void Game_Map::SetupBattle(BattleArgs& args) {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
-	Game_Battle::SetTerrainId(GetTerrainTag(x, y));
+	args.terrain_id = GetTerrainTag(x, y);
 	Game_Temp::battle_escape_mode = -1;
 
 	int current_index = GetMapIndex(location.map_id);
@@ -1331,7 +1331,7 @@ void Game_Map::SetupBattle() {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 	if (Data::treemap.maps[current_index].background_type == 2) {
-		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
+		args.background = Data::treemap.maps[current_index].background_name;
 	}
 }
 

@@ -31,7 +31,7 @@ class Game_Battler;
  */
 class Spriteset_Battle {
 public:
-	Spriteset_Battle();
+	explicit Spriteset_Battle(std::string background, int terrain_id);
 
 	void Update();
 	Sprite_Battler* FindBattler(const Game_Battler* battler);

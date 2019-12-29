@@ -1602,7 +1602,3 @@ bool Scene_Battle_Rpg2k::CheckResultConditions() {
 	return CheckLose() || CheckWin();
 }
 
-void Scene_Battle_Rpg2k::InitBattleTest() {
-	Game_Temp::battle_background = Data::system.battletest_background;
-	Game_Battle::SetTerrainId(Data::system.battletest_terrain);
-}

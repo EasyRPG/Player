@@ -46,7 +46,9 @@ class SpriteAction;
 class Game_Battler;
 
 struct BattleArgs {
+	std::string background;
 	int troop_id = 0;
+	int terrain_id = 0;
 	bool first_strike = false;
 };
 
@@ -107,8 +109,6 @@ protected:
 	explicit Scene_Battle(const BattleArgs& args);
 
 	friend class Battle::SpriteAction;
-
-	virtual void InitBattleTest() = 0;
 
 	virtual void CreateUi();
 

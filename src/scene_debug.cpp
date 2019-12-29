@@ -676,9 +676,6 @@ void Scene_Debug::DoBattle() {
 			prev.troop.range_page = range_page;
 			prev.troop.range_page_index = var_window->GetIndex();
 
-			Game_Character *player = Main_Data::game_player.get();
-			Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
-			Game_Map::SetupBattle();
 			Game_Temp::battle_random_encounter = false;
 			Game_Temp::battle_formation = 0;
 			Game_Temp::battle_escape_mode = 2;
@@ -689,6 +686,8 @@ void Scene_Debug::DoBattle() {
 			BattleArgs args;
 			args.troop_id = GetIndex();
 			args.first_strike = false;
+			Game_Map::SetupBattle(args);
+
 			Scene::Push(Scene_Battle::Create(std::move(args)));
 		}
 	}

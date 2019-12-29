@@ -79,7 +79,6 @@ protected:
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
-	void InitBattleTest() override;
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();

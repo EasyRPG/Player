@@ -201,17 +201,14 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	BattleArgs args;
 
 	Game_Temp::battle_random_encounter = false;
-	args.troop_id = ValueOrVariable(com.parameters[0],
-		com.parameters[1]);
-	Game_Character *player = Main_Data::game_player.get();
-	Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+	args.troop_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
 
 	switch (com.parameters[2]) {
 	case 0:
-		Game_Map::SetupBattle();
+		Game_Map::SetupBattle(args);
 		break;
 	case 1:
-		Game_Temp::battle_background = com.string;
+		args.background = com.string;
 
 		if (Player::IsRPG2k())
 			Game_Temp::battle_formation = 0;
@@ -219,7 +216,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 			Game_Temp::battle_formation = com.parameters[7];
 		break;
 	case 2:
-		Game_Battle::SetTerrainId(com.parameters[8]);
+		args.terrain_id = com.parameters[8];
 		break;
 	default:
 		return false;

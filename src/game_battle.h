@@ -147,7 +147,7 @@ namespace Game_Battle {
 	 */
 	Game_Interpreter& GetInterpreter();
 
-	void SetTerrainId(int terrain_id_);
+	void SetTerrainId(int id);
 	int GetTerrainId();
 
 	enum BattleMode {

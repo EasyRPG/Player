@@ -67,7 +67,7 @@ namespace {
 
 void Game_Battle::Init(int troop_id) {
 	interpreter.reset(new Game_Interpreter_Battle());
-	spriteset.reset(new Spriteset_Battle());
+	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
 	animation.reset();
 
@@ -106,8 +106,7 @@ void Game_Battle::Quit() {
 	animation.reset();
 
 	Game_Battle::battle_running = false;
-	Game_Temp::battle_background = "";
-	SetTerrainId(0);
+	terrain_id = 0;
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);
@@ -450,8 +449,8 @@ Game_Interpreter& Game_Battle::GetInterpreter() {
 	return *interpreter;
 }
 
-void Game_Battle::SetTerrainId(int terrain_id_) {
-	terrain_id = terrain_id_;
+void Game_Battle::SetTerrainId(int id) {
+	terrain_id = id;
 }
 
 int Game_Battle::GetTerrainId() {

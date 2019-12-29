@@ -205,6 +205,23 @@ void Scene_Title::PrepareBattleTest() {
 	args.troop_id = Game_Battle::battle_test.troop_id;
 	args.first_strike = false;
 
+	if (Player::IsRPG2k3()) {
+		int terrain_id = Game_Battle::battle_test.terrain_id;
+		// Allow fallback to battle background battle when the additional 2k3
+		// command line args are not passed (terrain_id = 0)
+		if (Game_Battle::battle_test.formation == RPG::System::BattleFormation_terrain &&
+				terrain_id > 0) {
+			args.terrain_id = terrain_id;
+		} else {
+			// FIXME: figure out how the terrain is configured
+			args.terrain_id = 1;
+			args.background = Data::system.battletest_background;
+		}
+	} else {
+		args.terrain_id = Data::system.battletest_terrain;
+		args.background = Data::system.battletest_background;
+	}
+
 	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);
 	if (troop == nullptr) {
 		Output::Error("BattleTest: Invalid Monster Party ID %d", args.troop_id);

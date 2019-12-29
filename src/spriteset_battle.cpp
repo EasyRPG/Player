@@ -30,15 +30,17 @@
 #include "player.h"
 #include "sprite_battler.h"
 
-Spriteset_Battle::Spriteset_Battle() {
+Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
+{
+	background_name = std::move(bg_name);
+
 	// Create background
-	if (!Game_Temp::battle_background.empty()) {
-		background.reset(new Background(Game_Temp::battle_background));
+	if (!background_name.empty()) {
+		background.reset(new Background(background_name));
 	} else {
 		// Background verifies that the Terrain ID is valid
-		background.reset(new Background(Game_Battle::GetTerrainId()));
+		background.reset(new Background(terrain_id));
 	}
-	background_name = Game_Temp::battle_background;
 	Game_Battle::ChangeBackground(background_name);
 
 	// Create the sprites
@@ -76,7 +78,7 @@ void Spriteset_Battle::Update() {
 	if (background_name != current_bg) {
 		background_name = current_bg;
 		if (!background_name.empty()) {
-			background.reset(new Background(Game_Temp::battle_background));
+			background.reset(new Background(background_name));
 		} else {
 			background.reset();
 		}
