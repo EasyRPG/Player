@@ -2050,6 +2050,12 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 		return true;
 	}
 
+	// Transition commands in battle have glitchy behavior in RPG_RT, but they don't affect the map.
+	// We disable in them in Player.
+	if (Game_Battle::IsBattleRunning()) {
+		return true;
+	}
+
 	int tt = Transition::TransitionNone;
 
 	switch (com.parameters[0]) {
@@ -2129,6 +2135,12 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
 	if (Game_Message::IsMessageActive()) {
 		return false;
+	}
+
+	// Transition commands in battle have glitchy behavior in RPG_RT, but they don't affect the map.
+	// We disable in them in Player.
+	if (Game_Battle::IsBattleRunning()) {
+		return true;
 	}
 
 	int tt = Transition::TransitionNone;
