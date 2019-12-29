@@ -159,7 +159,7 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 	ProcessAnimationFlash(timing);
 
 	// Shake (only happens in battle).
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		switch (timing.screen_shake) {
 		case RPG::AnimationTiming::ScreenShake_nothing:
 			break;

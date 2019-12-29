@@ -28,7 +28,6 @@ int Game_Temp::inn_price;
 std::string Game_Temp::hero_name;
 int Game_Temp::hero_name_id;
 int Game_Temp::hero_name_charset;
-bool Game_Temp::battle_running;
 int Game_Temp::battle_troop_id;
 std::string Game_Temp::battle_background;
 int Game_Temp::battle_formation;
@@ -48,7 +47,6 @@ void Game_Temp::Init() {
 	hero_name = "";
 	hero_name_id = 0;
 	hero_name_charset = 0;
-	battle_running = false;
 	battle_troop_id = 0;
 	battle_background = {};
 	battle_formation = 0;

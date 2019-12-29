@@ -44,7 +44,6 @@ public:
 	static int hero_name_id;
 	static int hero_name_charset;
 
-	static bool battle_running;
 	static int battle_troop_id;
 	static std::string battle_background;
 	static int battle_formation;

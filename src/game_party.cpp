@@ -276,7 +276,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 			return IsSkillUsable(item->skill_id, nullptr, true);
 	}
 
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		switch (item->type) {
 			case RPG::Item::Type_medicine:
 				return !item->occasion_field1;
@@ -370,14 +370,14 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 	}
 
 	if (skill->type == RPG::Skill::Type_escape) {
-		return !Game_Temp::battle_running && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
 	} else if (skill->type == RPG::Skill::Type_teleport) {
-		return !Game_Temp::battle_running && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
 	} else if (skill->type == RPG::Skill::Type_normal ||
 		skill->type >= RPG::Skill::Type_subskill) {
 		int scope = skill->scope;
 
-		if (Game_Temp::battle_running) {
+		if (Game_Battle::IsBattleRunning()) {
 			return true;
 		}
 
@@ -403,7 +403,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 			return false;
 		}
 	} else if (skill->type == RPG::Skill::Type_switch) {
-		if (Game_Temp::battle_running) {
+		if (Game_Battle::IsBattleRunning()) {
 			return skill->occasion_battle;
 		}
 
@@ -534,7 +534,7 @@ void Game_Party::StopTimer(int which) {
 }
 
 void Game_Party::UpdateTimers() {
-	const bool battle = Game_Temp::battle_running;
+	const bool battle = Game_Battle::IsBattleRunning();
 	bool seconds_changed = false;
 
 	if (data.timer1_active && (data.timer1_battle || !battle) && data.timer1_frames > 0) {

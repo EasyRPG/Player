@@ -28,6 +28,7 @@
 #include "player.h"
 #include "output.h"
 #include "reader_util.h"
+#include "game_battle.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
@@ -100,7 +101,7 @@ void Window_Skill::UpdateHelp() {
 }
 
 bool Window_Skill::CheckInclude(int skill_id) {
-	if (!Game_Temp::battle_running) {
+	if (!Game_Battle::IsBattleRunning()) {
 		return true;
 	}
 

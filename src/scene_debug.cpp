@@ -260,7 +260,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 			{
 				auto addItem = [&](int idx, const char* name, bool battle_ok) {
 					range_window->SetItemText(idx, name);
-					if (!battle_ok && Game_Temp::battle_running) {
+					if (!battle_ok && Game_Battle::IsBattleRunning()) {
 						range_window->DisableItem(idx);
 					}
 				};
@@ -447,7 +447,7 @@ void Scene_Debug::UseNumberWindow() {
 void Scene_Debug::EnterFromMain() {
 	switch (range_window->GetIndex()) {
 		case 0:
-			if (Game_Temp::battle_running) {
+			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Scene::PopUntil(Scene::Map);
@@ -474,7 +474,7 @@ void Scene_Debug::EnterFromMain() {
 			SetupListOption(eItem, Window_VarList::eItem, prev.item);
 			break;
 		case 6:
-			if (Game_Temp::battle_running) {
+			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -482,7 +482,7 @@ void Scene_Debug::EnterFromMain() {
 			}
 			break;
 		case 7:
-			if (Game_Temp::battle_running) {
+			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -729,7 +729,7 @@ void Scene_Debug::DoCallEvent() {
 
 	auto& ce = Game_Map::GetCommonEvents()[GetIndex() - 1];
 
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		Game_Battle::GetInterpreter().Push(&ce);
 		Scene::PopUntil(Scene::Battle);
 		Output::Debug("Debug Scene Forced execution of common event %d on the battle foreground interpreter.", ce.GetIndex());
