@@ -32,14 +32,16 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Name();
+	Scene_Name(int actor_id, int charset, bool use_default_name);
 
 	void Start() override;
 	void Update() override;
 
 protected:
 	std::vector<Window_Keyboard::Mode> layouts;
-	size_t layout_index;
+	int actor_id = 0;
+	int layout_index = 0;
+	bool use_default_name = false;
 
 private:
 	std::unique_ptr<Window_Keyboard> kbd_window;

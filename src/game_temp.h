@@ -40,10 +40,6 @@ public:
 	static bool shop_transaction;
 	static int inn_price;
 
-	static std::string hero_name;
-	static int hero_name_id;
-	static int hero_name_charset;
-
 	static int battle_troop_id;
 	static std::string battle_background;
 	static int battle_formation;

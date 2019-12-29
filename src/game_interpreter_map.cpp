@@ -504,22 +504,13 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 		return false;
 	}
 
-	Game_Temp::hero_name_id = com.parameters[0];
-	Game_Temp::hero_name_charset = com.parameters[1];
+	auto actor_id = com.parameters[0];
+	auto charset = com.parameters[1];
+	auto use_default_name = com.parameters[2];
 
-	Game_Actor *actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
+	auto scene = std::make_shared<Scene_Name>(actor_id, charset, use_default_name);
+	Scene::instance->SetRequestedScene(std::move(scene));
 
-	if (!actor) {
-		Output::Error("EnterHeroName: Invalid actor ID %d", Game_Temp::hero_name_id);
-	}
-
-	if (com.parameters[2]) {
-		Game_Temp::hero_name = actor->GetName();
-	} else {
-		Game_Temp::hero_name.clear();
-	}
-
-	Scene::instance->SetRequestedScene(std::make_shared<Scene_Name>());
 	++index;
 	return false;
 }
