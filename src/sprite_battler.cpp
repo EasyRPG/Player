@@ -59,8 +59,6 @@ void Sprite_Battler::Update() {
 
 	old_hidden = battler->IsHidden();
 
-	Sprite::Update();
-
 	++cycle;
 
 	if (battler->GetBattleAnimationId() <= 0) {
@@ -181,15 +179,7 @@ void Sprite_Battler::Update() {
 	// needed for flying enemies
 	SetY(battler->GetDisplayY());
 
-	auto color = battler->GetFlashColor();
-	if (color.alpha == 0) {
-		color = {};
-	}
-	if (animation) {
-		animation->Flash(color, 0);
-	} else {
-		Sprite::Flash(color, 0);
-	}
+	SetFlashEffect(battler->GetFlashColor());
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {

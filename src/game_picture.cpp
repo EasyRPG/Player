@@ -113,12 +113,7 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetTone(tone);
 
 	if (data.flags.affected_by_flash) {
-		auto flash_color = Main_Data::game_screen->GetFlashColor();
-		if (flash_color.alpha > 0) {
-			sprite->Flash(flash_color, 0);
-		} else {
-			sprite->Flash(Color(), 0);
-		}
+		sprite->SetFlashEffect(Main_Data::game_screen->GetFlashColor());
 	}
 }
 

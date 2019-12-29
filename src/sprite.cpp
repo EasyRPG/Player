@@ -117,34 +117,6 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 	}
 }
 
-void Sprite::Update() {
-	if (flash_duration != 0) {
-		flash_frame += 1;
-		if (flash_duration == flash_frame) {
-			flash_duration = 0;
-			SetFlashEffect(Color());
-		} else {
-			Color flash_effect = flash_color;
-			flash_effect.alpha = flash_duration == 0 || flash_frame >= flash_duration
-				? 0
-				: flash_effect.alpha * (flash_duration - flash_frame) / flash_duration;
-			SetFlashEffect(flash_effect);
-		}
-	}
-}
-
-void Sprite::Flash(int duration){
-	SetFlashEffect(flash_color);
-	flash_duration = duration;
-	flash_frame = 0;
-}
-void Sprite::Flash(Color color, int duration){
-	flash_color = color;
-	flash_duration = duration;
-	flash_frame = 0;
-	SetFlashEffect(color);
-}
-
 void Sprite::SetFlashEffect(const Color &color) {
 	if (flash_effect != color) {
 		flash_effect = color;

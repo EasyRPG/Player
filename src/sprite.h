@@ -34,10 +34,6 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
-	virtual void Flash(int duration);
-	virtual void Flash(Color color, int duration);
-	void Update();
-
 	virtual int GetWidth() const;
 	virtual int GetHeight() const;
 
@@ -103,6 +99,11 @@ public:
 	 */
 	void SetWaverPhase(double phase);
 
+	/**
+	 * Set the flash effect color
+	 */
+	void SetFlashEffect(const Color &color);
+
 protected:
 	Sprite(DrawableType type);
 
@@ -114,11 +115,6 @@ private:
 	int y = 0;
 	int ox = 0;
 	int oy = 0;
-
-	Color flash_color;
-	int flash_duration = 0;
-	int flash_frame = 0;
-
 
 	Rect src_rect_effect;
 	int opacity_top_effect = 255;
@@ -152,7 +148,6 @@ private:
 	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
 							Rect const& src_rect) const;
 	BitmapRef Refresh(Rect& rect);
-	void SetFlashEffect(const Color &color);
 };
 
 inline int Sprite::GetWidth() const {

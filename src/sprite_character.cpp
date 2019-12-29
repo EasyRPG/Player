@@ -35,7 +35,6 @@ Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
 }
 
 void Sprite_Character::Update() {
-	Sprite::Update();
 	if (tile_id != character->GetTileId() ||
 		character_name != character->GetSpriteName() ||
 		character_index != character->GetSpriteIndex() ||
@@ -66,11 +65,7 @@ void Sprite_Character::Update() {
 		SetSrcRect({frame * chara_width, row * chara_height, chara_width, chara_height});
 	}
 
-	if (character->GetFlashLevel() > 0) {
-		Flash(character->GetFlashColor(), 0);
-	} else {
-		Flash(Color(), 0);
-	}
+	SetFlashEffect(character->GetFlashColor());
 
 	SetVisible(character->GetVisible());
 	if (GetVisible()) {
