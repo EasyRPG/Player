@@ -106,8 +106,16 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 		StartPendingTeleport(tp);
 		return;
 	}
+
+	// We do the start game fade in transition here instead of TransitionIn callback,
+	// in order to make async logic work properly.
+	auto& transition = Transition::instance();
+	if (transition.IsErased()) {
+		transition.InitShow(Transition::TransitionFadeIn, this);
+	}
+
 	// Call any requested scenes when transition is done.
-	async_continuation = [&]() { UpdateSceneCalling(); };
+	AsyncNext([this]() { UpdateSceneCalling(); });
 }
 
 void Scene_Map::Continue(SceneType prev_scene) {
@@ -138,24 +146,6 @@ void Scene_Map::UpdateGraphics() {
 	Main_Data::game_pictures->UpdateGraphics(false);
 }
 
-static bool IsMenuScene(Scene::SceneType scene) {
-	switch (scene) {
-		case Scene::Shop:
-		case Scene::Name:
-		case Scene::Menu:
-		case Scene::Save:
-		case Scene::Load:
-		case Scene::Debug:
-		case Scene::Skill:
-		case Scene::Item:
-		case Scene::Teleport:
-			return true;
-		default:
-			break;
-	}
-	return false;
-}
-
 void Scene_Map::TransitionIn(SceneType prev_scene) {
 	auto& transition = Transition::instance();
 
@@ -174,12 +164,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 		return;
 	}
 
-	if (IsMenuScene(prev_scene)) {
-		Scene::TransitionIn(prev_scene);
-		return;
-	}
-
-	transition.InitShow(Transition::TransitionFadeIn, this);
+	Scene::TransitionIn(prev_scene);
 }
 
 void Scene_Map::Suspend(SceneType next_scene) {
