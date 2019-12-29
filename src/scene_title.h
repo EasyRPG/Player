@@ -101,9 +101,9 @@ public:
 	void CommandShutdown();
 
 	/**
-	 * Invoked by the load scene to notify that a game was loaded.
+	 * Invoked when a new game is started or a save game is loaded.
 	 */
-	void OnGameLoad();
+	void OnGameStart();
 
 private:
 	void OnTitleSpriteReady(FileRequestResult* result);
@@ -123,7 +123,7 @@ private:
 	/** Contains the state of continue button. */
 	bool continue_enabled = false;
 
-	bool restart_title_cache = true;
+	bool restart_title_cache = false;
 
 	FileRequestBinding request_id;
 };
