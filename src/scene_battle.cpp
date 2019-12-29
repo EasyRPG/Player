@@ -204,6 +204,7 @@ void Scene_Battle::Update() {
 		ProcessActions();
 		ProcessInput();
 	}
+	UpdateCursors();
 
 	auto& interp = Game_Battle::GetInterpreter();
 

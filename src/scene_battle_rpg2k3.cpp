@@ -101,7 +101,6 @@ void Scene_Battle_Rpg2k3::Update() {
 	}
 
 	Scene_Battle::Update();
-	UpdateCursors();
 
 	//enemy_status_window->Update();
 }
