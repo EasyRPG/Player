@@ -203,10 +203,16 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 
 	if (next_scene == Scene::Battle) {
 		if (!transition.IsErased()) {
-			transition.InitErase(Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this);
+			auto tt = Game_System::GetTransition(Game_System::Transition_BeginBattleErase);
+			if (tt == Transition::TransitionNone) {
+				// If transition type is none, RPG_RT flashes and then waits 40 frames before starting the battle.
+				transition.InitErase(Transition::TransitionCutOut, this, 40);
+			} else {
+				transition.InitErase(tt, this);
+			}
 			transition.PrependFlashes(31, 31, 31, 31, 10, 2);
 		} else {
-			// If screen is already erased, do nothing for 40 frames.
+			// If screen is already erased, RPG_RT does nothing for 40 frames.
 			transition.InitErase(Transition::TransitionNone, this, 40);
 		}
 		return;
