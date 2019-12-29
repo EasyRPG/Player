@@ -221,7 +221,7 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionBlindOpen:
 		for (int i = 0; i < h / 8; i++) {
 			dst.Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - 8 * percentage / 100), 255);
-			dst.Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255 * percentage / 100);
+			dst.Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255);
 		}
 		break;
 	case TransitionBlindClose:
