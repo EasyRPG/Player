@@ -52,6 +52,9 @@ Scene_Battle::Scene_Battle() :
 	// Face graphic is cleared when battle scene is created.
 	// Even if the battle gets interrupted by another scene and never starts.
 	Game_Message::ClearFace();
+	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
+	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 }
 
 Scene_Battle::~Scene_Battle() {
@@ -97,8 +100,6 @@ void Scene_Battle::Start() {
 	cycle = 0;
 	auto_battle = false;
 	enemy_action = NULL;
-
-	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
 	CreateUi();
 

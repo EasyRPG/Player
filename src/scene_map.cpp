@@ -386,10 +386,6 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
-	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
-
 	Scene::Push(Scene_Battle::Create());
 }
 
