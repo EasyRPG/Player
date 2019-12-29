@@ -681,8 +681,6 @@ public:
 	/** @return current flash color */
 	Color GetFlashColor() const;
 
-private:
-	void UpdateFlash();
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
@@ -705,10 +703,13 @@ protected:
 
 	int battle_order = 0;
 
-	int shake_position = 0;
-	int shake_time_left = 0;
-	int shake_strength = 0;
-	int shake_speed = 0;
+	struct ShakeData {
+		int32_t position = 0;
+		int32_t time_left = 0;
+		int32_t strength = 0;
+		int32_t speed = 0;
+	};
+	ShakeData shake;
 
 	struct FlashData {
 		int32_t red = 0;

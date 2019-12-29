@@ -255,6 +255,7 @@ add_library(${PROJECT_NAME}
 	src/scene_title.h
 	src/screen.cpp
 	src/screen.h
+	src/shake.h
 	src/shinonome_gothic.h
 	src/shinonome_mincho.h
 	src/sprite_airshipshadow.cpp
