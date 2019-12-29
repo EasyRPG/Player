@@ -73,7 +73,6 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	continuation = NULL;			// function to execute to resume command
 	_state = {};
 	_keyinput = {};
 	_async_op = {};
@@ -236,10 +235,6 @@ void Game_Interpreter::SetupWait(int duration) {
 	}
 }
 
-void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
-	continuation = func;
-}
-
 bool Game_Interpreter::ReachedLoopLimit() const {
 	return loop_count >= loop_limit;
 }
@@ -371,27 +366,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		auto* frame = GetFrame();
 		if (frame == nullptr) {
-			break;
-		}
-
-		if (continuation) {
-			const auto& list = frame->commands;
-			auto& index = frame->current_command;
-
-			bool result;
-			if (index >= static_cast<int>(list.size())) {
-				result = (this->*continuation)(RPG::EventCommand());
-			} else {
-				result = (this->*continuation)(list[index]);
-			}
-
-			if (!result) {
-				break;
-			}
-		}
-
-		// continuation triggered an async operation.
-		if (IsAsyncPending()) {
 			break;
 		}
 
@@ -3296,18 +3270,9 @@ bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com *
 	return true;
 }
 
-bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
-	continuation = NULL;
-	index++;
-	return true;
-}
-
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
 		: Game_Map::GetInterpreter();
 }
+

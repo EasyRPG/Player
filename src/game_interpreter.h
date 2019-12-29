@@ -111,9 +111,6 @@ protected:
 
 	int loop_count = 0;
 
-	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
-	ContinuationFunction continuation;
-
 	/**
 	 * Gets strings for choice selection.
 	 * This is just a helper (private) method
@@ -144,7 +141,6 @@ protected:
 	 * @param indent the indentation level to check
 	 */
 	void SkipToNextConditional(std::initializer_list<int> codes, int indent);
-	void SetContinuation(ContinuationFunction func);
 
 	/**
 	 * Sets up a wait (and closes the message box)
@@ -255,8 +251,6 @@ protected:
 	bool CommandChangeBattleCommands(RPG::EventCommand const& com);
 	bool CommandExitGame(RPG::EventCommand const& com);
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
-
-	virtual bool DefaultContinuation(RPG::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
