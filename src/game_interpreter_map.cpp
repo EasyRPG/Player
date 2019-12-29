@@ -210,10 +210,9 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	case 1:
 		args.background = com.string;
 
-		if (Player::IsRPG2k())
-			Game_Temp::battle_formation = 0;
-		else
-			Game_Temp::battle_formation = com.parameters[7];
+		if (Player::IsRPG2k3()) {
+			args.formation = static_cast<RPG::System::BattleFormation>(com.parameters[7]);
+		}
 		break;
 	case 2:
 		args.terrain_id = com.parameters[8];
@@ -225,10 +224,9 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Game_Temp::battle_defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
 	args.first_strike = com.parameters[5] != 0;
 
-	if (Player::IsRPG2k())
-		Game_Battle::SetBattleMode(0);
-	else
-		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
+	if (Player::IsRPG2k3()) {
+		args.condition = static_cast<RPG::System::BattleCondition>(com.parameters[6]);
+	}
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 	Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));

@@ -37,6 +37,7 @@
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 #include "window_message.h"
+#include "game_battle.h"
 
 namespace Battle {
 class Action;
@@ -49,6 +50,8 @@ struct BattleArgs {
 	std::string background;
 	int troop_id = 0;
 	int terrain_id = 0;
+	RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
+	RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
 	bool first_strike = false;
 };
 

@@ -204,22 +204,21 @@ void Scene_Title::PrepareBattleTest() {
 	BattleArgs args;
 	args.troop_id = Game_Battle::battle_test.troop_id;
 	args.first_strike = false;
+	args.background = Data::system.battletest_background;
+	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
 
 	if (Player::IsRPG2k3()) {
-		int terrain_id = Game_Battle::battle_test.terrain_id;
-		// Allow fallback to battle background battle when the additional 2k3
-		// command line args are not passed (terrain_id = 0)
-		if (Game_Battle::battle_test.formation == RPG::System::BattleFormation_terrain &&
-				terrain_id > 0) {
-			args.terrain_id = terrain_id;
-		} else {
-			// FIXME: figure out how the terrain is configured
-			args.terrain_id = 1;
-			args.background = Data::system.battletest_background;
+		args.formation = Game_Battle::battle_test.formation;
+		args.condition = Game_Battle::battle_test.condition;
+
+		if (args.formation == RPG::System::BattleFormation_terrain) {
+			args.terrain_id = Game_Battle::battle_test.terrain_id;
 		}
+
+		Output::Debug("BattleTest Mode 2k3 troop=(%d) background=(%s) formation=(%d) condition=(%d) terrain=(%d)",
+				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
 	} else {
-		args.terrain_id = Data::system.battletest_terrain;
-		args.background = Data::system.battletest_background;
+		Output::Debug("BattleTest Mode 2k troop=(%d) background=(%s)", args.troop_id, args.background.c_str());
 	}
 
 	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);

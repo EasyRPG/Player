@@ -60,6 +60,7 @@ Scene_Battle::Scene_Battle(const BattleArgs& args)
 
 	Game_Battle::SetTerrainId(args.terrain_id);
 	Game_Battle::ChangeBackground(args.background);
+	Game_Battle::SetBattleCondition(args.condition);
 }
 
 Scene_Battle::~Scene_Battle() {

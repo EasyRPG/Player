@@ -57,7 +57,7 @@ namespace Game_Battle {
 namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
-	int battle_mode;
+	RPG::System::BattleCondition battle_cond = RPG::System::BattleCondition_none;
 	int target_enemy_index;
 	bool need_refresh;
 	std::vector<bool> page_can_run;
@@ -457,12 +457,12 @@ int Game_Battle::GetTerrainId() {
 	return terrain_id;
 }
 
-void Game_Battle::SetBattleMode(int battle_mode_) {
-	battle_mode = battle_mode_;
+void Game_Battle::SetBattleCondition(RPG::System::BattleCondition cond) {
+	battle_cond = cond;
 }
 
-int Game_Battle::GetBattleMode() {
-	return battle_mode;
+RPG::System::BattleCondition Game_Battle::GetBattleCondition() {
+	return battle_cond;
 }
 
 void Game_Battle::SetEnemyTargetIndex(int target_enemy) {

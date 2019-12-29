@@ -150,16 +150,8 @@ namespace Game_Battle {
 	void SetTerrainId(int id);
 	int GetTerrainId();
 
-	enum BattleMode {
-		BattleNormal,
-		BattleInitiative,
-		BattleSurround,
-		BattleBackAttack,
-		BattlePincer
-	};
-
-	void SetBattleMode(int battle_mode_);
-	int GetBattleMode();
+	void SetBattleCondition(RPG::System::BattleCondition cond);
+	RPG::System::BattleCondition GetBattleCondition();
 
 	/**
 	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"

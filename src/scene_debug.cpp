@@ -677,15 +677,14 @@ void Scene_Debug::DoBattle() {
 			prev.troop.range_page_index = var_window->GetIndex();
 
 			Game_Temp::battle_random_encounter = false;
-			Game_Temp::battle_formation = 0;
 			Game_Temp::battle_escape_mode = 2;
 			Game_Temp::battle_defeat_mode = 1;
 			Game_Temp::battle_result = Game_Temp::BattleVictory;
-			Game_Battle::SetBattleMode(0);
 
 			BattleArgs args;
 			args.troop_id = GetIndex();
 			args.first_strike = false;
+
 			Game_Map::SetupBattle(args);
 
 			Scene::Push(Scene_Battle::Create(std::move(args)));
