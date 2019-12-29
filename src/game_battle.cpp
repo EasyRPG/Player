@@ -192,6 +192,7 @@ bool Game_Battle::CheckLose() {
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
+	assert(spriteset);
 	return *spriteset;
 }
 
