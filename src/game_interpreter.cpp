@@ -2043,6 +2043,12 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 		return false;
 	}
 
+	// Emulates RPG_RT behavior where any transition out is skipped when these scenes are pending.
+	auto st = Scene::instance->GetRequestedSceneType();
+	if (st == Scene::Battle || st == Scene::Gameover) {
+		return true;
+	}
+
 	int tt = Transition::TransitionNone;
 
 	switch (com.parameters[0]) {

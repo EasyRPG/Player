@@ -215,8 +215,11 @@ public:
 	 */
 	std::shared_ptr<Scene> TakeRequestedScene();
 
+	/** @return the type of the requested scene, or Null if there is none */
+	SceneType GetRequestedSceneType() const;
+
 	/** @return true if a scene is being requested */
-	bool HasRequestedScene();
+	bool HasRequestedScene() const;
 
 	/**
 	 * Sets the requested scene to change to
@@ -305,7 +308,11 @@ inline std::shared_ptr<Scene> Scene::TakeRequestedScene() {
 	return ptr;
 }
 
-inline bool Scene::HasRequestedScene() {
+inline Scene::SceneType Scene::GetRequestedSceneType() const {
+	return request_scene ? request_scene->type : Null;
+}
+
+inline bool Scene::HasRequestedScene() const {
 	return request_scene != nullptr;
 }
 
