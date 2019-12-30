@@ -485,7 +485,7 @@ void Scene_Map::FinishInn() {
 
 void Scene_Map::UpdateInn() {
 	// Allow message box to render during inn sequence.
-	if (Game_Message::IsMessageVisible()) {
+	if (Game_Message::IsMessageActive()) {
 		Game_Message::Update();
 		return;
 	}

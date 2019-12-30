@@ -198,22 +198,6 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 	return line_count;
 }
 
-bool Game_Message::CanShowMessage(bool foreground) {
-	// If there's a text already, return immediately
-	if (IsMessagePending())
-		return false;
-
-	// Forground interpreters: If the message box already started animating we wait for it to finish.
-	if (foreground && IsMessageVisible() && !window->GetAllowNextMessage())
-		return false;
-
-	// Parallel interpreters must wait until the message window is closed
-	if (!foreground && IsMessageVisible())
-		return false;
-
-	return true;
-}
-
 AsyncOp Game_Message::Update() {
 	if (window) {
 		window->Update();
@@ -229,16 +213,17 @@ void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 }
 
 bool Game_Message::IsMessagePending() {
-	return window ? window->GetPendingMessage().IsActive() : false;
-}
-
-bool Game_Message::IsMessageVisible() {
-	return window ? window->IsVisible() : false;
+	return window ? window->IsMessagePending() : false;
 }
 
 bool Game_Message::IsMessageActive() {
-	return IsMessagePending() || IsMessageVisible();
+	return window ? !window->GetAllowNextMessage(false) : false;
 }
+
+bool Game_Message::CanShowMessage(bool foreground) {
+	return window ? window->GetAllowNextMessage(foreground) : false;
+}
+
 
 static Game_Message::ParseParamResult ParseParamImpl(
 		const char upper,
