@@ -79,11 +79,7 @@ public:
 	 */
 	void InsertNewLine();
 
-	/**
-	 * Closes the Messagebox and clears the waiting-flag
-	 * (allows the interpreter to continue).
-	 */
-	void TerminateMessage();
+	void OnFinishPage();
 
 	/**
 	 * Stub.
@@ -122,8 +118,11 @@ public:
 	/** @return the stored PendingMessage */
 	const PendingMessage& GetPendingMessage() const;
 
+	/** @return true if there is still text pending */
+	bool IsMessagePending() const;
+
 	/** @return true if we can push a new message this frame */
-	bool GetAllowNextMessage() const;
+	bool GetAllowNextMessage(bool foreground) const;
 
 protected:
 	/** X-position of next char. */
@@ -137,15 +136,17 @@ protected:
 	/** text message that will be displayed. */
 	std::string text;
 	/** Used by Message kill command \^. */
-	bool kill_message = false;
+	bool kill_page = false;
 	/** Text color. */
 	int text_color = 0;
 	/** Current speed modifier. */
 	int speed = 1;
-	/** If true inserts a new page after pause ended */
-	bool new_page_after_pause = false;
-	/** If true, we allow a new message to be pushed this frame */
-	bool allow_next_message = false;
+
+	// FIXME: This hacky flags exist because RPG_RT likely animates the message window
+	// after the game loop finishes. Our code isn't structured that way, so we must hack
+	// around it.
+	bool close_started_this_frame = false;
+	bool close_finished_this_frame = false;
 
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
@@ -163,8 +164,8 @@ protected:
 	void DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont);
 	void IncrementLineCharCounter(int width);
 
-	void SetWaitForCharacter(int width);
-	void SetWaitForPage();
+	void SetWaitForCharacter(int width, bool instant_speed);
+	void SetWaitForNonPrintable(int frames, bool instant_speed);
 	void SetWait(int frames);
 
 	bool IsFaceEnabled() const;
@@ -174,8 +175,14 @@ inline const PendingMessage& Window_Message::GetPendingMessage() const {
 	return pending_message;
 }
 
-inline bool Window_Message::GetAllowNextMessage() const {
-	return allow_next_message;
+inline bool Window_Message::IsMessagePending() const {
+	return IsVisible() && !IsClosing();
 }
+
+inline bool Window_Message::GetAllowNextMessage(bool foreground) const {
+	bool is_active = (IsVisible() || close_finished_this_frame);
+	return foreground ? !is_active || close_started_this_frame : !is_active;
+}
+
 
 #endif

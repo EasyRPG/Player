@@ -322,7 +322,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::IsMessagePending())
 				break;
 		} else {
-			if ((Game_Message::IsMessageActive()) && _state.show_message) {
+			if (Game_Message::IsMessageActive() && _state.show_message) {
 				break;
 			}
 		}

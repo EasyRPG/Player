@@ -202,7 +202,7 @@ void Scene_Battle::Update() {
 		Scene::Push(std::move(call));
 	}
 
-	if (!Game_Message::IsMessageVisible() && events_finished) {
+	if (!Game_Message::IsMessageActive() && events_finished) {
 		ProcessActions();
 		ProcessInput();
 	}
