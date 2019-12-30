@@ -38,7 +38,6 @@
 namespace Game_Battle {
 	const RPG::Troop* troop;
 
-	int terminate = -1;
 	std::string background_name;
 
 	std::unique_ptr<Game_Interpreter> interpreter;
@@ -72,7 +71,6 @@ void Game_Battle::Init(int troop_id) {
 
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
-	terminate = -1;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
 	need_refresh = false;
@@ -123,14 +121,6 @@ void Game_Battle::Quit() {
 	Main_Data::game_pictures->OnBattleEnd();
 }
 
-void Game_Battle::RunEvents() {
-	interpreter->Update();
-	if (interpreter->IsAsyncPending()) {
-		Terminate(BattleResult::Abort);
-		return;
-	}
-}
-
 void Game_Battle::UpdateAnimation() {
 	if (animation) {
 		animation->Update();
@@ -157,10 +147,6 @@ void Game_Battle::UpdateGraphics() {
 			}
 		}
 	}
-}
-
-void Game_Battle::Terminate(BattleResult result) {
-	terminate = static_cast<int>(result);
 }
 
 bool Game_Battle::CheckWin() {
@@ -424,14 +410,6 @@ void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predi
 	}
 
 	last_event_filter = predicate;
-}
-
-bool Game_Battle::IsTerminating() {
-	return terminate >= 0;
-}
-
-BattleResult Game_Battle::TerminationResult() {
-	return static_cast<BattleResult>(terminate);
 }
 
 Game_Interpreter& Game_Battle::GetInterpreter() {

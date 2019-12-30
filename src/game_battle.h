@@ -58,21 +58,9 @@ namespace Game_Battle {
 	void UpdateAnimation();
 
 	/**
-	 * Runs the interpreter
-	 */
-	void RunEvents();
-
-	/**
 	 * Updates spriteset graphics
 	 */
 	void UpdateGraphics();
-
-	/**
-	 * Terminate the current battle with the given result.
-	 *
-	 * @param result the result of the battle.
-	 */
-	void Terminate(BattleResult result);
 
 	/**
 	 * Checks if a victory condition for the player party (enemy dead) is fulfilled.
@@ -149,9 +137,6 @@ namespace Game_Battle {
 	 * @param predicate Predicate to fulfill
 	 */
 	void RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate);
-
-	bool IsTerminating();
-	BattleResult TerminationResult();
 
 	/**
 	 * Gets the game interpreter.

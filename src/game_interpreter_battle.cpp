@@ -104,7 +104,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_pincers) {
-			Game_Battle::Terminate(BattleResult::Escape);
+			_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Escape));
 			result = true;
 		}
 	    break;
@@ -301,7 +301,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
-	Game_Battle::Terminate(BattleResult::Abort);
+	_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Abort));
 	return false;
 }
 

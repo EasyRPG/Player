@@ -37,7 +37,8 @@ class AsyncOp {
 			eCallInn,
 			eQuickTeleport,
 			eToTitle,
-			eExitGame
+			eExitGame,
+			eTerminateBattle,
 		};
 
 		AsyncOp() = default;
@@ -59,6 +60,9 @@ class AsyncOp {
 
 		/** @return an ExitGame async operation */
 		static AsyncOp MakeExitGame();
+
+		/** @return a TerminateBattle async operation */
+		static AsyncOp MakeTerminateBattle(int result);
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -89,6 +93,12 @@ class AsyncOp {
 		 * @pre If GetType() is not eQuickTeleport, the return value is undefined.
 		 */
 		int GetTeleportY() const;
+
+		/**
+		 * @return the desired result of the battle to terminate.
+		 * @pre If GetType() is not eTerminateBattle, the return value is undefined.
+		 **/
+		int GetBattleResult() const;
 
 	private:
 		Type _type = eNone;
@@ -127,6 +137,11 @@ inline int AsyncOp::GetTeleportY() const  {
 	return _args[2];
 }
 
+inline int AsyncOp::GetBattleResult() const {
+	assert(GetType() == eTerminateBattle);
+	return _args[0];
+}
+
 template <typename... Args>
 inline AsyncOp::AsyncOp(Type type, Args&&... args)
 	: _type(type), _args{std::forward<Args>(args)...}
@@ -154,6 +169,10 @@ inline AsyncOp AsyncOp::MakeToTitle() {
 
 inline AsyncOp AsyncOp::MakeExitGame() {
 	return AsyncOp(eExitGame);
+}
+
+inline AsyncOp AsyncOp::MakeTerminateBattle(int transition_type) {
+	return AsyncOp(eTerminateBattle, transition_type);
 }
 
 #endif

@@ -205,7 +205,8 @@ void Scene_Battle::Update() {
 	auto& interp = Game_Battle::GetInterpreter();
 
 	bool events_running = interp.IsRunning();
-	Game_Battle::RunEvents();
+	interp.Update();
+
 	Game_Battle::UpdateGraphics();
 	if (events_running && !interp.IsRunning()) {
 		// If an event that changed status finishes without displaying a message window,
@@ -214,15 +215,15 @@ void Scene_Battle::Update() {
 	}
 	if (interp.IsAsyncPending()) {
 		auto aop = interp.GetAsyncOp();
-		if (CheckSceneExit(aop)) {
+
+		if (aop.GetType() == AsyncOp::eTerminateBattle) {
+			EndBattle(static_cast<BattleResult>(aop.GetBattleResult()));
 			return;
 		}
 
-		// Note: ShowScreen / HideScreen is ignored.
-	}
-
-	if (Game_Battle::IsTerminating()) {
-		EndBattle(Game_Battle::TerminationResult());
+		if (CheckSceneExit(aop)) {
+			return;
+		}
 	}
 }
 
