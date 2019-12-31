@@ -139,7 +139,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		bool force_page_break = (!line.empty() && line.back() == '\f');
 
 		text.append(line, 0, line.size() - force_page_break);
-		if (!line.empty() && text.back() != '\n') {
+		if (line.empty() || text.back() != '\n') {
 			text.push_back('\n');
 		}
 		++num_lines;
@@ -271,7 +271,8 @@ void Window_Message::InsertNewPage() {
 	speed = 1;
 	kill_page = false;
 	instant_speed = false;
-	printable_did_not_wait = false;
+	prev_char_printable = false;
+	prev_char_waited = true;
 
 	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
@@ -316,7 +317,8 @@ void Window_Message::InsertNewLine() {
 		contents_x += 12;
 	}
 	line_char_counter = 0;
-	printable_did_not_wait = false;
+	prev_char_printable = false;
+	prev_char_waited = true;
 }
 
 void Window_Message::FinishMessageProcessing() {
@@ -474,19 +476,26 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (ch == '\n') {
+			int wait_frames = 0;
+			bool end_page = (*text_index == '\f');
+
+			if (!instant_speed) {
+				if (!prev_char_printable) {
+					wait_frames += 1 + end_page;
+				}
+			} else if (end_page) {
+				// When the page ends and speed is instant, RPG_RT always waits 2 frames.
+				wait_frames += 2;
+			}
+
 			InsertNewLine();
 
 			if (*text_index == '\f') {
 				++text_index;
 
 				OnFinishPage();
-
-				if (instant_speed) {
-					// When the page ends and speed is instant, RPG_RT always waits 2 frames.
-					SetWait(2);
-				}
-
 			}
+			SetWait(wait_frames);
 
 			if (instant_speed && !instant_speed_forced) {
 				// instant_speed stops at the end of the line
@@ -556,7 +565,7 @@ void Window_Message::UpdateMessage() {
 			case '>':
 				// Instant speed start
 				DebugLogText("%d: MSG Instant Speed Start \\>");
-				SetWaitForNonPrintable(0, false);
+				SetWaitForNonPrintable(0);
 				instant_speed = true;
 				break;
 			case '<':
@@ -610,12 +619,12 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 	};
 
 	// Wide characters cause an extra wait if the last printed character did not wait.
-	if (printable_did_not_wait) {
+	if (prev_char_printable && !prev_char_waited) {
 		auto& wide_font = is_exfont ? *Font::exfont : font;
 		auto rect = wide_font.GetSize(glyph);
 		auto width = get_width(rect.width);
 		if (width >= 2) {
-			printable_did_not_wait = false;
+			prev_char_waited = true;
 			++line_char_counter;
 			SetWait(1);
 			return false;
@@ -710,24 +719,15 @@ void Window_Message::InputNumber() {
 	}
 }
 
-void Window_Message::SetWaitForNonPrintable(int frames, bool check_end) {
+void Window_Message::SetWaitForNonPrintable(int frames) {
 	if (!instant_speed) {
-		if (check_end) {
-			bool is_last_for_page = (text.data() + text.size() - text_index) < 2 || (*text_index == '\n' && *(text_index + 1) == '\f');
-			if (is_last_for_page) {
-				// If the page ends with a non-printable, RPG_RT waits 2 extra frames.
-				frames += 2;
-			} else if (*text_index == '\n') {
-				// If the line ends with a non-printable, RPG_RT waits 1 extra frame.
-				frames += 1;
-			}
-		}
-
 		if (speed <= 1) {
 			frames += (line_char_counter & 1);
 		}
 		SetWait(frames);
 	}
+	prev_char_waited = (instant_speed || frames > 0);
+	prev_char_printable = false;
 	// Non printables only contribute to character count after the first printable..
 	if (line_char_counter > 0) {
 		IncrementLineCharCounter(1);
@@ -758,7 +758,8 @@ void Window_Message::SetWaitForCharacter(int width) {
 			}
 		}
 	}
-	printable_did_not_wait = (!instant_speed && frames == 0);
+	prev_char_waited = (instant_speed || frames > 0);
+	prev_char_printable = true;
 	SetWait(frames);
 	IncrementLineCharCounter(width);
 }
