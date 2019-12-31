@@ -163,8 +163,10 @@ protected:
 
 	/**
 	 * Triggers a game over when all party members are dead.
+	 *
+	 * @return true if game over was started.
 	 */
-	void CheckGameOver();
+	bool CheckGameOver();
 
 	bool CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next);
 

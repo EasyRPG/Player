@@ -31,6 +31,7 @@
 #include "util_macro.h"
 #include "utils.h"
 #include "game_temp.h"
+#include "pending_message.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -678,7 +679,7 @@ void Game_Actor::SetExp(int _exp) {
 	GetData().exp = min(max(_exp, 0), max_exp_value());
 }
 
-void Game_Actor::ChangeExp(int exp, bool level_up_message) {
+void Game_Actor::ChangeExp(int exp, PendingMessage* pm) {
 	int new_level = GetLevel();
 	int new_exp = min(max(exp, 0), max_exp_value());
 
@@ -701,7 +702,7 @@ void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 	SetExp(new_exp);
 
 	if (new_level != GetLevel()) {
-		ChangeLevel(new_level, level_up_message);
+		ChangeLevel(new_level, pm);
 	}
 }
 
@@ -766,7 +767,7 @@ std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
 	}
 }
 
-void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
+void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {
 	const std::vector<RPG::Learning>* skills;
 	if (GetData().class_id > 0) {
 		skills = &GetClass()->skills;
@@ -780,12 +781,9 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	SetLevel(new_level);
 	new_level = GetLevel(); // Level adjusted to max
 
-	auto pm = PendingMessage();
-
 	if (new_level > old_level) {
-		if (level_up_message) {
-			//FIXME: If message box already active??
-			pm.PushLine(GetLevelUpMessage(new_level));
+		if (pm) {
+			pm->PushLine(GetLevelUpMessage(new_level));
 			level_up = true;
 		}
 
@@ -794,15 +792,15 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 			// Skill learning, up to current level
 			if (learn.level > old_level && learn.level <= new_level) {
 				LearnSkill(learn.skill_id);
-				if (level_up_message) {
-					pm.PushLine(GetLearningMessage(learn));
+				if (pm) {
+					pm->PushLine(GetLearningMessage(learn));
 					level_up = true;
 				}
 			}
 		}
 
 		if (level_up) {
-			pm.PushPageEnd();
+			pm->PushPageEnd();
 		}
 
 		// Experience adjustment:
@@ -814,10 +812,6 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		if (GetExp() >= GetNextExp()) {
 			SetExp(GetBaseExp());
 		}
-	}
-
-	if (pm.NumLines()) {
-		Game_Message::SetPendingMessage(std::move(pm));
 	}
 }
 

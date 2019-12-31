@@ -1120,10 +1120,12 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::vector<Game_Battler*> ally_battlers;
 		Main_Data::game_party->GetActiveBattlers(ally_battlers);
 
+		pm.PushPageEnd();
+
 		for (std::vector<Game_Battler*>::iterator it = ally_battlers.begin();
 			it != ally_battlers.end(); ++it) {
 				Game_Actor* actor = static_cast<Game_Actor*>(*it);
-				actor->ChangeExp(actor->GetExp() + exp, true);
+				actor->ChangeExp(actor->GetExp() + exp, &pm);
 		}
 
 		Main_Data::game_party->GainGold(money);

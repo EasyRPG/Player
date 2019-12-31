@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 #include "rpg_saveactor.h"
 #include "rpg_learning.h"
 #include "game_battler.h"
@@ -33,6 +33,8 @@ namespace RPG {
 	class Item;
 	class Class;
 }
+
+class PendingMessage;
 
 /**
  * Game_Actor class.
@@ -371,18 +373,18 @@ public:
 	 * experience.
 	 *
 	 * @param exp new exp.
-	 * @param level_up_message Whether to show level up message and learned skills.
+	 * @param pm If non-null, will push the level up message and learned skills.
 	 */
-	void ChangeExp(int exp, bool level_up_message);
+	void ChangeExp(int exp, PendingMessage* pm);
 
 	/**
 	 * Changes level of actor and handles experience changes, skill
 	 * learning and other attributes based on the new level.
 	 *
 	 * @param level new level.
-	 * @param level_up_message Whether to show level up message and learned skills.
+	 * @param pm If non-null, will push the level up message and learned skills.
 	 */
-	void ChangeLevel(int level, bool level_up_message);
+	void ChangeLevel(int level, PendingMessage* pm);
 
 	/**
 	 * Sets level of actor.

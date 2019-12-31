@@ -108,7 +108,7 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetEquipment(RPG::Item::Type_armor, ids[2]);
 		actor->SetEquipment(RPG::Item::Type_helmet, ids[3]);
 		actor->SetEquipment(RPG::Item::Type_accessory, ids[4]);
-		actor->ChangeLevel(btdata.level, false);
+		actor->ChangeLevel(btdata.level, nullptr);
 		actor->SetHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 	}
