@@ -157,13 +157,16 @@ protected:
 	 * or by 2 for any other character */
 	int line_char_counter = 0;
 
+	/** Did the last printable character wait? */
+	bool printable_did_not_wait = false;
+
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;
 
 	PendingMessage pending_message;
 
-	void DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont);
+	bool DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont);
 	void IncrementLineCharCounter(int width);
 
 	void SetWaitForCharacter(int width);

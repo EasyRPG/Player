@@ -271,6 +271,7 @@ void Window_Message::InsertNewPage() {
 	speed = 1;
 	kill_page = false;
 	instant_speed = false;
+	printable_did_not_wait = false;
 
 	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
@@ -304,6 +305,7 @@ void Window_Message::InsertNewLine() {
 		contents_x += 12;
 	}
 	line_char_counter = 0;
+	printable_did_not_wait = false;
 }
 
 void Window_Message::FinishMessageProcessing() {
@@ -445,6 +447,7 @@ void Window_Message::UpdateMessage() {
 		}
 
 		auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+		auto text_prev = text_index;
 		text_index = tret.next;
 
 		if (EP_UNLIKELY(!tret)) {
@@ -453,7 +456,9 @@ void Window_Message::UpdateMessage() {
 
 		const auto ch = tret.ch;
 		if (tret.is_exfont) {
-			DrawGlyph(*font, *system, ch, true);
+			if (!DrawGlyph(*font, *system, ch, true)) {
+				text_index = text_prev;
+			}
 			continue;
 		}
 
@@ -568,11 +573,14 @@ void Window_Message::UpdateMessage() {
 			continue;
 		}
 
-		DrawGlyph(*font, *system, ch, false);
+		if (!DrawGlyph(*font, *system, ch, false)) {
+			text_index = text_prev;
+			continue;
+		}
 	}
 }
 
-void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont) {
+bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
 		DebugLogText("%d: MSG DrawGlyph Exfont %d", static_cast<int>(glyph));
 	} else {
@@ -583,20 +591,39 @@ void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 		}
 	}
 
+	// RPG_RT compatible for half-width (6) and full-width (12)
+	// generalizes the algo for even bigger glyphs
+	auto get_width = [](int w) {
+		return (w > 0) ? (w - 1) / 6 + 1 : 0;
+	};
+
+	// Wide characters cause an extra wait if the last printed character did not wait.
+	if (printable_did_not_wait) {
+		auto& wide_font = is_exfont ? *Font::exfont : font;
+		auto rect = wide_font.GetSize(glyph);
+		auto width = get_width(rect.width);
+		if (width >= 2) {
+			printable_did_not_wait = false;
+			++line_char_counter;
+			SetWait(1);
+			return false;
+		}
+	}
+
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
 
 	int glyph_width = rect.width;
 	contents_x += glyph_width;
-	int width = (glyph_width > 0) ? (glyph_width - 1) / 6 + 1 : 0;
-	// RPG_RT compatible for half-width (6) and full-width (12)
-	// generalizes the algo for even bigger glyphs
+	int width = get_width(glyph_width);
 	SetWaitForCharacter(width);
+
+	return true;
 }
 
 void Window_Message::IncrementLineCharCounter(int width) {
-	// For speed 1, RPG_RT prints 2 half width chars every frame. This 
+	// For speed 1, RPG_RT prints 2 half width chars every frame. This
 	// resets anytime we print a full width character or another
-	// character with a different speed. 
+	// character with a different speed.
 	// To emulate this, we increment by 2 and clear the low bit anytime
 	// we're not a speed 1 half width char.
 	if (width == 1 && speed <= 1) {
@@ -719,6 +746,7 @@ void Window_Message::SetWaitForCharacter(int width) {
 			}
 		}
 	}
+	printable_did_not_wait = (!instant_speed && frames == 0);
 	SetWait(frames);
 	IncrementLineCharCounter(width);
 }
