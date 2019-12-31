@@ -135,12 +135,14 @@ protected:
 	const char* text_index = nullptr;
 	/** text message that will be displayed. */
 	std::string text;
-	/** Used by Message kill command \^. */
-	bool kill_page = false;
 	/** Text color. */
 	int text_color = 0;
 	/** Current speed modifier. */
 	int speed = 1;
+	/** Used by Message kill command \^. */
+	bool kill_page = false;
+	/** If instant speed is enabled */
+	bool instant_speed = false;
 
 	// FIXME: This hacky flags exist because RPG_RT likely animates the message window
 	// after the game loop finishes. Our code isn't structured that way, so we must hack
@@ -161,11 +163,11 @@ protected:
 
 	PendingMessage pending_message;
 
-	void DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont);
+	void DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont);
 	void IncrementLineCharCounter(int width);
 
-	void SetWaitForCharacter(int width, bool instant_speed);
-	void SetWaitForNonPrintable(int frames, bool instant_speed);
+	void SetWaitForCharacter(int width);
+	void SetWaitForNonPrintable(int frames, bool check_end = true);
 	void SetWait(int frames);
 
 	bool IsFaceEnabled() const;
