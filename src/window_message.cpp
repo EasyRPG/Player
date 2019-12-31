@@ -125,22 +125,20 @@ Window_Message::~Window_Message() {
 }
 
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
-	contents->Clear();
+	text.clear();
 	pending_message = std::move(pm);
-	SetIndex(-1);
-	kill_page = false;
 
 	if (!IsVisible()) {
 		DebugLogResetFrameCounter();
 	}
 	DebugLog("{}: MSG START");
 
-	const auto& lines = pending_message.GetLines();
-	if (!(pending_message.NumLines() > 0 || pending_message.HasNumberInput())) {
+	if (!pending_message.IsActive()) {
 		return;
 	}
 
-	text.clear();
+	const auto& lines = pending_message.GetLines();
+
 	int num_lines = 0;
 	auto append = [&](const std::string& line) {
 		bool force_page_break = (!line.empty() && line.back() == '\f');
@@ -181,6 +179,8 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	item_max = min(4, pending_message.GetNumChoices());
 
 	text_index = text.data();
+
+	DebugLog("%d: MSG TEXT \n%s", text.c_str());
 
 	auto open_frames = (!IsVisible() && !Game_Battle::IsBattleRunning()) ? message_animation_frames : 0;
 	SetOpenAnimation(open_frames);
@@ -245,6 +245,18 @@ void Window_Message::InsertNewPage() {
 	face_request_ids.clear();
 
 	contents->Clear();
+	SetIndex(-1);
+	SetPause(false);
+	number_input_window->SetActive(false);
+	number_input_window->SetVisible(false);
+	kill_page = false;
+	line_count = 0;
+	text_color = Font::ColorDefault;
+	speed = 1;
+	kill_page = false;
+	instant_speed = false;
+	prev_char_printable = false;
+	prev_char_waited = true;
 
 	y = Game_Message::GetRealPosition() * 80;
 
@@ -273,13 +285,6 @@ void Window_Message::InsertNewPage() {
 	}
 
 	contents_y = 2;
-	line_count = 0;
-	text_color = Font::ColorDefault;
-	speed = 1;
-	kill_page = false;
-	instant_speed = false;
-	prev_char_printable = false;
-	prev_char_waited = true;
 
 	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
