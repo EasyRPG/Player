@@ -179,11 +179,6 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	SetOpenAnimation(open_frames);
 	DebugLog("%d: MSG START OPEN %d", open_frames);
 
-	if (pending_message.ShowGoldWindow()) {
-		//GOld window on multiple pages? Does it stay up?
-		ShowGoldWindow();
-	}
-
 	InsertNewPage();
 }
 
@@ -217,18 +212,23 @@ void Window_Message::StartNumberInputProcessing() {
 	}
 	number_input_window->SetY(y + contents_y - 2);
 	number_input_window->SetActive(true);
-	if (visible && !IsOpeningOrClosing()) {
+	if (IsVisible() && !IsOpeningOrClosing()) {
 		number_input_window->SetVisible(true);
 	}
 	number_input_window->Update();
 }
 
 void Window_Message::ShowGoldWindow() {
-	if (!gold_window->IsVisible() && !Game_Battle::IsBattleRunning()) {
-		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
-		gold_window->Refresh();
-		gold_window->SetOpenAnimation(message_animation_frames);
+	if (Game_Battle::IsBattleRunning()) {
+		return;
 	}
+	if (!gold_window->IsVisible()) {
+		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
+		gold_window->SetOpenAnimation(message_animation_frames);
+	} else if (gold_window->IsClosing()) {
+		gold_window->SetOpenAnimation(0);
+	}
+	gold_window->Refresh();
 }
 
 void Window_Message::InsertNewPage() {
@@ -278,6 +278,17 @@ void Window_Message::InsertNewPage() {
 		StartNumberInputProcessing();
 	}
 	line_char_counter = 0;
+
+	if (pending_message.ShowGoldWindow()) {
+		ShowGoldWindow();
+	} else {
+		// If first character is gold, the gold window appears immediately and animates open with the main window.
+		auto tret = Utils::TextNext(text_index, &*text.end(), Player::escape_char);
+		if (tret && tret.is_escape && tret.ch == '$') {
+			ShowGoldWindow();
+		}
+	}
+
 }
 
 void Window_Message::InsertNewLine() {
