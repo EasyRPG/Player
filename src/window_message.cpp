@@ -217,7 +217,9 @@ void Window_Message::StartNumberInputProcessing() {
 	}
 	number_input_window->SetY(y + contents_y - 2);
 	number_input_window->SetActive(true);
-	number_input_window->SetVisible(true);
+	if (visible && !IsOpeningOrClosing()) {
+		number_input_window->SetVisible(true);
+	}
 	number_input_window->Update();
 }
 
@@ -429,7 +431,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (GetPause()) {
+		if (GetPause() || GetIndex() >= 0 || number_input_window->GetActive()) {
 			break;
 		}
 
@@ -660,6 +662,7 @@ void Window_Message::InputChoice() {
 }
 
 void Window_Message::InputNumber() {
+	number_input_window->SetVisible(true);
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
