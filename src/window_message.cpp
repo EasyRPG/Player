@@ -589,6 +589,8 @@ void Window_Message::UpdateMessage() {
 				DebugLogText("%d: MSG Sleep \\|");
 				break;
 			default:
+				// Unknown characters will not display anything but do wait.
+				SetWaitForNonPrintable(speed);
 				break;
 			}
 			continue;
