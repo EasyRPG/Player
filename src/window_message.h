@@ -163,8 +163,10 @@ protected:
 	 * or by 2 for any other character */
 	int line_char_counter = 0;
 
-	/** Did the last printable character wait? */
-	bool printable_did_not_wait = false;
+	/** Did we wait for the prev character */
+	bool prev_char_waited = true;
+	/** Was the previous character printable? */
+	bool prev_char_printable = false;
 
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
@@ -176,7 +178,7 @@ protected:
 	void IncrementLineCharCounter(int width);
 
 	void SetWaitForCharacter(int width);
-	void SetWaitForNonPrintable(int frames, bool check_end = true);
+	void SetWaitForNonPrintable(int frames);
 	void SetWait(int frames);
 
 	bool IsFaceEnabled() const;
