@@ -224,7 +224,7 @@ void Window_Message::StartNumberInputProcessing() {
 	}
 	number_input_window->SetY(y + contents_y - 2);
 	number_input_window->SetActive(true);
-	if (visible && !IsOpeningOrClosing()) {
+	if (IsVisible() && !IsOpeningOrClosing()) {
 		number_input_window->SetVisible(true);
 	}
 	number_input_window->Update();
@@ -277,6 +277,7 @@ void Window_Message::InsertNewPage() {
 	text_color = Font::ColorDefault;
 	speed = 1;
 	kill_page = false;
+	instant_speed = false;
 
 	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
@@ -419,7 +420,6 @@ void Window_Message::Update() {
 
 void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
-	bool instant_speed = false;
 	bool instant_speed_forced = false;
 
 	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
@@ -461,7 +461,7 @@ void Window_Message::UpdateMessage() {
 
 		const auto ch = tret.ch;
 		if (tret.is_exfont) {
-			DrawGlyph(*font, *system, ch, instant_speed, true);
+			DrawGlyph(*font, *system, ch, true);
 			continue;
 		}
 
@@ -505,7 +505,7 @@ void Window_Message::UpdateMessage() {
 					text_color = value > 19 ? 0 : value;
 					text_index = pres.next;
 					DebugLogText("{}: MSG Color \\c[{}]", text_color);
-					SetWaitForNonPrintable(0, instant_speed);
+					SetWaitForNonPrintable(0);
 				}
 				break;
 			case 's':
@@ -516,20 +516,20 @@ void Window_Message::UpdateMessage() {
 					speed = Utils::Clamp(pres.value, 1, 20);
 					text_index = pres.next;
 					DebugLogText("{}: MSG Speed \\s[{}]", speed);
-					SetWaitForNonPrintable(0, instant_speed);
+					SetWaitForNonPrintable(0);
 				}
 				break;
 			case '_':
 				// Insert half size space
 				contents_x += Font::Default()->GetSize(" ").width / 2;
 				DebugLogText("{}: MSG HalfWait \\_");
-				SetWaitForCharacter(1, instant_speed);
+				SetWaitForCharacter(1);
 				break;
 			case '$':
 				// Show Gold Window
 				ShowGoldWindow();
 				DebugLogText("{}: MSG Gold \\$");
-				SetWaitForNonPrintable(speed, instant_speed);
+				SetWaitForNonPrintable(speed);
 				break;
 			case '!':
 				// Text pause
@@ -543,13 +543,12 @@ void Window_Message::UpdateMessage() {
 				// the ^ is encountered
 				DebugLogText("{}: MSG Kill Page \\^");
 				kill_page = true;
-				SetWaitForNonPrintable(speed, instant_speed);
+				SetWaitForNonPrintable(speed);
 				break;
 			case '>':
 				// Instant speed start
 				DebugLogText("{}: MSG Instant Speed Start \\>");
-				// FIXME: Support this.
-				//SetWaitForNonPrintable(0, instant_speed);
+				SetWaitForNonPrintable(0, false);
 				instant_speed = true;
 				break;
 			case '<':
@@ -557,18 +556,18 @@ void Window_Message::UpdateMessage() {
 				instant_speed = false;
 				instant_speed_forced = false;
 				DebugLogText("{}: MSG Instant Speed Stop \\<");
-				SetWaitForNonPrintable(speed, instant_speed);
+				SetWaitForNonPrintable(speed);
 				break;
 			case '.':
 				// 1/4 second sleep
 				// Despite documentation saying 1/4 second, RPG_RT waits for 16 frames.
-				SetWaitForNonPrintable(16, instant_speed);
+				SetWaitForNonPrintable(16);
 				DebugLogText("{}: MSG Quick Sleep \\.");
 				break;
 			case '|':
 				// Second sleep
 				// Despite documentation saying 1 second, RPG_RT waits for 61 frames.
-				SetWaitForNonPrintable(61, instant_speed);
+				SetWaitForNonPrintable(61);
 				DebugLogText("{}: MSG Sleep \\|");
 				break;
 			default:
@@ -577,11 +576,11 @@ void Window_Message::UpdateMessage() {
 			continue;
 		}
 
-		DrawGlyph(*font, *system, ch, instant_speed, false);
+		DrawGlyph(*font, *system, ch, false);
 	}
 }
 
-void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont) {
+void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
 		DebugLogText("{}: MSG DrawGlyph Exfont {}", static_cast<uint32_t>(glyph));
 	} else {
@@ -599,7 +598,7 @@ void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 	int width = (glyph_width > 0) ? (glyph_width - 1) / 6 + 1 : 0;
 	// RPG_RT compatible for half-width (6) and full-width (12)
 	// generalizes the algo for even bigger glyphs
-	SetWaitForCharacter(width, instant_speed);
+	SetWaitForCharacter(width);
 }
 
 void Window_Message::IncrementLineCharCounter(int width) {
@@ -680,15 +679,17 @@ void Window_Message::InputNumber() {
 	}
 }
 
-void Window_Message::SetWaitForNonPrintable(int frames, bool instant_speed) {
+void Window_Message::SetWaitForNonPrintable(int frames, bool check_end) {
 	if (!instant_speed) {
-		bool is_last_for_page = (text.data() + text.size() - text_index) < 2 || (*text_index == '\n' && *(text_index + 1) == '\f');
-		if (is_last_for_page) {
-			// If the page ends with a non-printable, RPG_RT waits 2 extra frames.
-			frames += 2;
-		} else if (*text_index == '\n') {
-			// If the line ends with a non-printable, RPG_RT waits 1 extra frame.
-			frames += 1;
+		if (check_end) {
+			bool is_last_for_page = (text.data() + text.size() - text_index) < 2 || (*text_index == '\n' && *(text_index + 1) == '\f');
+			if (is_last_for_page) {
+				// If the page ends with a non-printable, RPG_RT waits 2 extra frames.
+				frames += 2;
+			} else if (*text_index == '\n') {
+				// If the line ends with a non-printable, RPG_RT waits 1 extra frame.
+				frames += 1;
+			}
 		}
 
 		if (speed <= 1) {
@@ -702,7 +703,7 @@ void Window_Message::SetWaitForNonPrintable(int frames, bool instant_speed) {
 	}
 }
 
-void Window_Message::SetWaitForCharacter(int width, bool instant_speed) {
+void Window_Message::SetWaitForCharacter(int width) {
 	int frames = 0;
 	if (!instant_speed && width > 0) {
 		bool is_last_for_page = (text.data() + text.size() - text_index) < 2 || (*text_index == '\n' && *(text_index + 1) == '\f');
