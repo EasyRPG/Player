@@ -510,10 +510,10 @@ void Window_Message::UpdateMessage() {
 					// Color
 					auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
 					auto value = pres.value;
-					text_color = value > 19 ? 0 : value;
 					text_index = pres.next;
-					DebugLogText("%d: MSG Color \\c[%d]", text_color);
+					DebugLogText("%d: MSG Color \\c[%d]", value);
 					SetWaitForNonPrintable(0);
+					text_color = value > 19 ? 0 : value;
 				}
 				break;
 			case 's':
@@ -521,10 +521,10 @@ void Window_Message::UpdateMessage() {
 				{
 					// Speed modifier
 					auto pres = Game_Message::ParseSpeed(text_index, end, Player::escape_char, true);
-					speed = Utils::Clamp(pres.value, 1, 20);
 					text_index = pres.next;
-					DebugLogText("%d: MSG Speed \\s[%d]", speed);
+					DebugLogText("%d: MSG Speed \\s[%d]", pres.value);
 					SetWaitForNonPrintable(0);
+					speed = Utils::Clamp(pres.value, 1, 20);
 				}
 				break;
 			case '_':
