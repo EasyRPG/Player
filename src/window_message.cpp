@@ -558,7 +558,8 @@ void Window_Message::UpdateMessage() {
 			case '.':
 				// 1/4 second sleep
 				// Despite documentation saying 1/4 second, RPG_RT waits for 16 frames.
-				SetWaitForNonPrintable(16);
+				// RPG_RT also has a bug(??) where speeds >= 17 slow this down by 1 more frame per speed.
+				SetWaitForNonPrintable(16 + Utils::Clamp(speed - 16, 0, 4));
 				DebugLogText("%d: MSG Quick Sleep \\.");
 				break;
 			case '|':
