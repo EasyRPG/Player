@@ -32,6 +32,7 @@
 #include "drawable.h"
 #include "drawable_mgr.h"
 #include "output.h"
+#include "game_message.h"
 
 int Transition::GetDefaultFrames(Transition::Type type)
 {
@@ -66,7 +67,7 @@ void Transition::PrependFlashes(int r, int g, int b, int p, int duration, int it
 	flash_iterations = std::max(1, iterations);
 }
 
-void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) {
+void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase, const TransitionCallback& cb) {
 	if (duration < 0) {
 		duration = GetDefaultFrames(type);
 	}
@@ -84,6 +85,11 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	if (type != TransitionNone && screen_erased && erase) {
 		transition_type = TransitionNone;
 		return;
+	}
+
+	// Allow visual game logic to animate to the end of transition.
+	if (cb) {
+		cb(duration);
 	}
 
 	// FIXME: Break this dependency on DisplayUI

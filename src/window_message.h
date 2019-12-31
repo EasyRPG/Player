@@ -89,10 +89,18 @@ public:
 	void Update() override;
 
 	/**
+	 * Force the window animations to advance by a number of frames.
+	 * This is exercised by some edge cases with transitions
+	 * 
+	 * @params frames number of frames of the transition.
+	 */
+	void AdvanceAnimationFrames(int frames);
+
+	/**
 	 * Continues outputting more text. Also handles the
 	 * CommandCode parsing.
 	 */
-	virtual void UpdateMessage();
+	void UpdateMessage();
 
 	/**
 	 * Stub. For choice.

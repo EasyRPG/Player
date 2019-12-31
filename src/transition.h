@@ -86,14 +86,17 @@ public:
 	/** @return the transition singleton */
 	static Transition& instance();
 
+	using TransitionCallback = std::function<void(int)>;
+
 	/**
 	 * Initiate a ShowScreen transition
 	 *
 	 * @param type transition type.
 	 * @param linked_scene scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get())
 	 * @param duration transition duration, set to -1 to use the default number of frames.
+	 * @param cb callback to call with number of frames of transition before it occurs.
 	 */
-	void InitShow(Type type, Scene *linked_scene, int duration = -1);
+	void InitShow(Type type, Scene *linked_scene, int duration = -1, const TransitionCallback& cb = {});
 
 	/**
 	 * Initiate an EraseScreen transition
@@ -101,8 +104,9 @@ public:
 	 * @param type transition type.
 	 * @param linked_scene scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get())
 	 * @param duration transition duration, set to -1 to use the default number of frames.
+	 * @param cb callback to call with number of frames of transition before it occurs.
 	 */
-	void InitErase(Type type, Scene *linked_scene, int duration = -1);
+	void InitErase(Type type, Scene *linked_scene, int duration = -1, const TransitionCallback& cb = {});
 
 	void PrependFlashes(int r, int g, int b, int power, int duration, int iterations);
 
@@ -114,7 +118,7 @@ public:
 
 private:
 	Transition();
-	void Init(Type type, Scene *linked_scene, int duration, bool erase);
+	void Init(Type type, Scene *linked_scene, int duration, bool erase, const TransitionCallback& cb);
 
 	const uint32_t size_random_blocks = 4;
 
@@ -153,12 +157,12 @@ inline Transition& Transition::instance() {
 	return transition;
 }
 
-inline void Transition::InitShow(Type type, Scene *linked_scene, int duration) {
-	Init(type, linked_scene, duration, false);
+inline void Transition::InitShow(Type type, Scene *linked_scene, int duration, const TransitionCallback& cb) {
+	Init(type, linked_scene, duration, false, cb);
 }
 
-inline void Transition::InitErase(Type type, Scene *linked_scene, int duration) {
-	Init(type, linked_scene, duration, true);
+inline void Transition::InitErase(Type type, Scene *linked_scene, int duration, const TransitionCallback& cb) {
+	Init(type, linked_scene, duration, true, cb);
 }
 
 inline bool Transition::IsActive() {

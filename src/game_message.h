@@ -39,6 +39,9 @@ namespace Game_Message {
 
 	void Update();
 
+	/** Calls AdvanceAnimationFrames() on the Window_Message */
+	void AdvanceAnimationFrames(int frames);
+
 	/** Reset the face graphic. */
 	void ClearFace();
 

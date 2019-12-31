@@ -24,6 +24,7 @@
 #include "window_message.h"
 #include "window_varlist.h"
 #include "game_map.h"
+#include "transition.h"
 
 /**
  * Scene Map class.
@@ -83,6 +84,9 @@ private:
 	void StartInn();
 	void UpdateInn();
 	void FinishInn();
+
+	void InitTransitionShow(Transition::Type tt, int frames = -1);
+	void InitTransitionErase(Transition::Type tt, int frames = -1);
 
 	template <typename F> void AsyncNext(F&& f);
 	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);

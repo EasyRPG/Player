@@ -364,6 +364,21 @@ void Window_Message::ResetWindow() {
 
 }
 
+void Window_Message::AdvanceAnimationFrames(int frames) {
+	if (frames == 0) {
+		return;
+	}
+
+	close_started_this_frame = false;
+
+	while (frames > 0) {
+		bool was_closing = IsClosing();
+		Window::Update();
+		close_finished_this_frame = was_closing && !IsClosing();
+		--frames;
+	}
+}
+
 void Window_Message::Update() {
 	if (IsOpening()) { DebugLog("%d: MSG OPENING"); }
 	if (IsClosing()) { DebugLog("%d: MSG CLOSING"); }

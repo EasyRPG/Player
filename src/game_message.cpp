@@ -196,6 +196,12 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 	return line_count;
 }
 
+void Game_Message::AdvanceAnimationFrames(int frames) {
+	if (window) {
+		window->AdvanceAnimationFrames(frames);
+	}
+}
+
 void Game_Message::Update() {
 	if (window) {
 		window->Update();

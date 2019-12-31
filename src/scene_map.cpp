@@ -111,7 +111,7 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	// in order to make async logic work properly.
 	auto& transition = Transition::instance();
 	if (transition.IsErased()) {
-		transition.InitShow(Transition::TransitionFadeIn, this);
+		InitTransitionShow(Transition::TransitionFadeIn);
 	}
 
 	// Call any requested scenes when transition is done.
@@ -160,7 +160,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	}
 
 	if (prev_scene == Scene::Battle) {
-		transition.InitShow(Game_System::GetTransition(Game_System::Transition_EndBattleShow), this);
+		InitTransitionShow(Game_System::GetTransition(Game_System::Transition_EndBattleShow));
 		return;
 	}
 
@@ -182,7 +182,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 	}
 
 	if (next_scene == Scene::Debug) {
-		transition.InitErase(Transition::TransitionCutOut, this);
+		InitTransitionErase(Transition::TransitionCutOut);
 		return;
 	}
 
@@ -191,22 +191,23 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 			auto tt = Game_System::GetTransition(Game_System::Transition_BeginBattleErase);
 			if (tt == Transition::TransitionNone) {
 				// If transition type is none, RPG_RT flashes and then waits 40 frames before starting the battle.
-				transition.InitErase(Transition::TransitionCutOut, this, 40);
+				InitTransitionErase(Transition::TransitionCutOut, 40);
 			} else {
-				transition.InitErase(tt, this);
+				InitTransitionErase(tt);
 			}
 			transition.PrependFlashes(31, 31, 31, 31, 10, 2);
 		} else {
 			// If screen is already erased, RPG_RT does nothing for 40 frames.
-			transition.InitErase(Transition::TransitionNone, this, 40);
+			InitTransitionErase(Transition::TransitionNone, 40);
 		}
 		return;
 	}
 	if (next_scene == Scene::Gameover) {
-		transition.InitErase(Transition::TransitionFadeOut, this);
+		InitTransitionErase(Transition::TransitionFadeOut);
 		return;
 	}
-	Scene::TransitionOut(next_scene);
+
+	InitTransitionErase(Transition::TransitionFadeOut, 6);
 }
 
 void Scene_Map::DrawBackground(Bitmap& dst) {
@@ -309,7 +310,7 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	request->Start();
 
 	if (!transition.IsErased() && tp.erase_screen) {
-		transition.InitErase(Game_System::GetTransition(Game_System::Transition_TeleportErase), this);
+		InitTransitionErase(Game_System::GetTransition(Game_System::Transition_TeleportErase));
 	}
 
 	AsyncNext([=]() { FinishPendingTeleport(tp); });
@@ -347,9 +348,9 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 
 	// This logic was tested against RPG_RT and works this way ...
 	if (tp.use_default_transition_in && transition.IsErased()) {
-		transition.InitShow(Transition::TransitionFadeIn, this);
+		InitTransitionShow(Transition::TransitionFadeIn);
 	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-		transition.InitShow(Game_System::GetTransition(Game_System::Transition_TeleportShow), this);
+		InitTransitionShow(Game_System::GetTransition(Game_System::Transition_TeleportShow));
 	}
 
 	// Call any requested scenes when transition is done.
@@ -411,16 +412,14 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		return;
 	}
 
-	auto& transition = Transition::instance();
-
 	if (aop.GetType() == AsyncOp::eEraseScreen) {
 		auto tt = static_cast<Transition::Type>(aop.GetTransitionType());
 		if (tt == Transition::TransitionNone) {
 			// Emulates an RPG_RT bug where instantaneous transitions cause a
 			// 30 frame pause and then make the screen black.
-			transition.InitErase(Transition::TransitionCutOut, this, 30);
+			InitTransitionErase(Transition::TransitionCutOut, 30);
 		} else {
-			transition.InitErase(tt, this);
+			InitTransitionErase(tt);
 		}
 
 		if (!is_preupdate) {
@@ -431,7 +430,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 	if (aop.GetType() == AsyncOp::eShowScreen) {
 		auto tt = static_cast<Transition::Type>(aop.GetTransitionType());
-		transition.InitShow(tt, this);
+		InitTransitionShow(tt);
 		screen_erased_by_event = false;
 	}
 
@@ -442,7 +441,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 		Game_System::BgmFade(800);
 
-		transition.InitErase(Transition::TransitionFadeOut, Scene::instance.get());
+		InitTransitionErase(Transition::TransitionFadeOut);
 
 		AsyncNext([=]() { StartInn(); });
 		return;
@@ -480,9 +479,7 @@ void Scene_Map::FinishInn() {
 	// was issued previously.
 	screen_erased_by_event = false;
 
-	auto& transition = Transition::instance();
-
-	transition.InitShow(Transition::TransitionFadeIn, Scene::instance.get());
+	InitTransitionShow(Transition::TransitionFadeIn);
 	Game_System::BgmPlay(music_before_inn);
 
 	// Full heal
@@ -501,3 +498,20 @@ void Scene_Map::UpdateInn() {
 		FinishInn();
 	}
 }
+
+void Scene_Map::InitTransitionShow(Transition::Type tt, int frames) {
+	// Message animation not known to happen on show screen.
+	Transition::instance().InitShow(tt, this, frames);
+}
+
+void Scene_Map::InitTransitionErase(Transition::Type tt, int frames) {
+	// In rare cases where a message and a transition are triggered on the same frame, RPG_RT
+	// will still animate the message box open/close and the transition effect will show
+	// the resulting message box state. This can affect interpreter timing so we try to emulate it.
+	// See #1706 Tests 17 and 18
+	auto cb = [this](int frames) {
+		message_window->AdvanceAnimationFrames(frames);
+	};
+	Transition::instance().InitErase(tt, this, frames, cb);
+}
+
