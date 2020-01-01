@@ -232,7 +232,7 @@ void Player::MainLoop() {
 	Instrumentation::FrameScope iframe;
 
 	const auto frame_time = Game_Clock::now();
-	Game_Clock::OnNextFrame(frame_time, GetSpeedModifier());
+	Game_Clock::OnNextFrame(frame_time);
 
 	Player::UpdateInput();
 
@@ -292,6 +292,11 @@ void Player::UpdateInput() {
 	if (Input::IsTriggered(Input::TOGGLE_FULLSCREEN)) {
 		DisplayUi->ToggleFullscreen();
 	}
+	float speed = 1.0;
+	if (Input::IsPressed(Input::FAST_FORWARD)) {
+		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
+	}
+	Game_Clock::SetSimulationSpeedFactor(speed);
 
 	if (Main_Data::game_quit) {
 		reset_flag |= Main_Data::game_quit->ShouldQuit();
@@ -1069,14 +1074,6 @@ std::string Player::GetEncoding() {
 	}
 
 	return encoding;
-}
-
-int Player::GetSpeedModifier() {
-	if (Input::IsPressed(Input::FAST_FORWARD)) {
-		return Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
-	}
-
-	return 1;
 }
 
 void Player::PrintVersion() {

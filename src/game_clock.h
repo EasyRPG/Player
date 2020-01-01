@@ -70,6 +70,12 @@ public:
 	 */
 	static void SetMaxSimulationTimePerFrame(duration dt);
 
+	/** Set the speed up or slowdown factor we'll use to run the game. */
+	static void SetSimulationSpeedFactor(float speed);
+
+	/** @return the speed up or slowdown factor we'll use to run the game. */
+	static float GetSimulationSpeedFactor();
+
 	/** Get the time of the current frame */
 	static time_point GetFrameTime();
 
@@ -83,11 +89,10 @@ public:
 	 * Call on each frame. Updates the current frame time to now
 	 *
 	 * @param now the current time
-	 * @param speed which speed to run the simulation. Default is 1.
 	 *
 	 * @return The amount of time elapsed since the previous frame.
 	 */
-	static Game_Clock::duration OnNextFrame(time_point now, int speed);
+	static Game_Clock::duration OnNextFrame(time_point now);
 
 	/**
 	 * Call before running the next time step. Tells us whether we should simulate one more
@@ -109,6 +114,7 @@ private:
 		time_point frame_time;
 		duration frame_accumulator;
 		duration max_frame_accumulator = std::chrono::milliseconds(200);
+		float speed = 1.0;
 		float fps = 0.0;
 		int frame = 0;
 	};
@@ -164,6 +170,14 @@ inline bool Game_Clock::NextSimulationTimeStep() {
 
 inline void Game_Clock::SetMaxSimulationTimePerFrame(duration dt) {
 	data.max_frame_accumulator = std::max(dt, GetSimulationTimeStep());
+}
+
+inline void Game_Clock::SetSimulationSpeedFactor(float s) {
+	data.speed = s;
+}
+
+inline float Game_Clock::GetSimulationSpeedFactor() {
+	return data.speed;
 }
 
 #endif

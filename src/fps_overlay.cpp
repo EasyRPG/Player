@@ -18,7 +18,7 @@
 #include <sstream>
 
 #include "fps_overlay.h"
-#include "player.h"
+#include "game_clock.h"
 #include "bitmap.h"
 #include "input.h"
 #include "font.h"
@@ -43,7 +43,7 @@ void FpsOverlay::UpdateText() {
 }
 
 bool FpsOverlay::Update() {
-	int mod = Player::GetSpeedModifier();
+	int mod = static_cast<int>(Game_Clock::GetSimulationSpeedFactor());
 	if (mod != last_speed_mod) {
 		speedup_dirty = true;
 		last_speed_mod = mod;

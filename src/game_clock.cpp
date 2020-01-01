@@ -28,11 +28,13 @@ Game_Clock::Data Game_Clock::data;
 // Damping factor fps computation.
 static constexpr auto _fps_smooth = 2.0f / 241.0f;
 
-Game_Clock::duration Game_Clock::OnNextFrame(time_point now, int speed) {
+Game_Clock::duration Game_Clock::OnNextFrame(time_point now) {
+	const auto mfa = std::chrono::duration_cast<duration>(data.max_frame_accumulator * data.speed);
+
 	const auto dt = now - data.frame_time;
 	data.frame_time = now;
-	data.frame_accumulator += dt * speed;
-	data.frame_accumulator = std::min(data.frame_accumulator, data.max_frame_accumulator * speed);
+	data.frame_accumulator += std::chrono::duration_cast<duration>(dt * data.speed);
+	data.frame_accumulator = std::min(data.frame_accumulator, mfa);
 
 	const auto fps = (1.0f / std::chrono::duration<float>(dt).count());
 	data.fps = (data.fps * _fps_smooth) + (fps * (1.0f - _fps_smooth));

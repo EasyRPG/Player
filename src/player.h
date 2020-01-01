@@ -228,11 +228,6 @@ namespace Player {
 	int EngineVersion();
 	std::string GetEngineVersion();
 
-	/**
-	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
-	 */
-	int GetSpeedModifier();
-
 	/** Output program version on stdout */
 	void PrintVersion();
 
