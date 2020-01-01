@@ -468,10 +468,6 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (text_index != &*text.begin() && *(text_index - 1) == '\f') {
-			InsertNewPage();
-		}
-
 		auto tret = Utils::TextNext(text_index, end, Player::escape_char);
 		auto text_prev = text_index;
 		text_index = tret.next;
@@ -484,6 +480,14 @@ void Window_Message::UpdateMessage() {
 		if (tret.is_exfont) {
 			if (!DrawGlyph(*font, *system, ch, true)) {
 				text_index = text_prev;
+			}
+			continue;
+		}
+
+		if (ch == '\f') {
+			if (text_index != end) {
+				InsertNewPage();
+				SetWait(1);
 			}
 			continue;
 		}
@@ -503,9 +507,7 @@ void Window_Message::UpdateMessage() {
 
 			InsertNewLine();
 
-			if (*text_index == '\f') {
-				++text_index;
-
+			if (end_page) {
 				OnFinishPage();
 			}
 			SetWait(wait_frames);
