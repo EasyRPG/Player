@@ -731,12 +731,43 @@ public:
 	 */
 	const RPG::Class* GetClass() const;
 
+	/** Describes how skills change when we change class */
+	enum ClassChangeSkillMode {
+		/** Don't change skills */
+		eSkillNoChange,
+		/** Reset skills based on level of new class */
+		eSkillReset,
+		/** Add all skills for new class */
+		eSkillAdd,
+	};
+
+	/** Describes how parameters change before we change class */
+	enum ClassChangeParamMode {
+		/** Don't change parameters */
+		eParamNoChange,
+		/** Halve all parameters */
+		eParamHalf,
+		/** Reset parameters based on level 1 of new class */
+		eParamResetLevel1,
+		/** Reset parameters based on level of new class */
+		eParamReset,
+	};
+
 	/**
 	 * Sets new Rpg2k3 hero class.
 	 *
-	 * @param class_id mew Rpg2k3 hero class.
+	 * @param class_id new Rpg2k3 hero class.
+	 * @param level change hero level to level
+	 * @param skill the skill change behavior
+	 * @param param the parameter change behavior
+	 * @param pm If non-null, will push the level up message and learned skills.
 	 */
-	void SetClass(int class_id);
+	void ChangeClass(int class_id,
+			int new_level,
+			ClassChangeSkillMode skill,
+			ClassChangeParamMode param,
+			PendingMessage* pm
+			);
 
 	/**
 	 * Gets the actor's class name as a string.

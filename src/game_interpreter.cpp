@@ -3239,10 +3239,10 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
-	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
-	bool show = com.parameters[6] > 0;
+	int param_mode = com.parameters[5]; // no change, halve, level 1, current level
+	bool show_msg = com.parameters[6] > 0;
 
-	if (show && !Game_Message::CanShowMessage(true)) {
+	if (show_msg && !Game_Message::CanShowMessage(true)) {
 		return false;
 	}
 
@@ -3255,118 +3255,19 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	}
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		int actor_id = actor->GetId();
-
-		int cur_lvl = actor->GetLevel();
-		int cur_exp = actor->GetExp();
-		int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
-
-		actor->RemoveWholeEquipment();
-
-		switch (stats_mode) {
-		case 2:
-			actor->SetClass(class_id);
-			actor->SetLevel(1);
-			actor->SetExp(0);
-			break;
-		case 3:
-			actor->SetClass(class_id);
-			break;
-		}
-
-		int cur_hp = actor->GetBaseMaxHp();
-		int cur_sp = actor->GetBaseMaxSp();
-		int cur_atk = actor->GetBaseAtk();
-		int cur_def = actor->GetBaseDef();
-		int cur_spi = actor->GetBaseSpi();
-		int cur_agi = actor->GetBaseAgi();
-
-		switch (stats_mode) {
-		case 1:
-			cur_hp /= 2;
-			cur_sp /= 2;
-			cur_atk /= 2;
-			cur_def /= 2;
-			cur_spi /= 2;
-			cur_agi /= 2;
-			break;
-		}
-
-		actor->SetClass(class_id);
-		if (level1) {
-			actor->SetLevel(1);
-			actor->SetExp(0);
-		} else {
-			// FIXME: Messages?
-			actor->SetExp(cur_exp);
-			actor->SetLevel(cur_lvl);
-		}
-
-		actor->SetBaseMaxHp(cur_hp);
-		actor->SetBaseMaxSp(cur_sp);
-		actor->SetBaseAtk(cur_atk);
-		actor->SetBaseDef(cur_def);
-		actor->SetBaseSpi(cur_spi);
-		actor->SetBaseAgi(cur_agi);
-
-		int level = actor->GetLevel();
-
-		// same class, not doing skill processing
-		if (class_id == cur_cid)
-			return true;
-
-		bool level_up = false;
-
-		if (show && !level1) {
-			std::stringstream ss;
-			ss << actor->GetName();
-			if (Player::IsRPG2k3E()) {
-				ss << " " << Data::terms.level_up << " ";
-				ss << " " << Data::terms.level << " " << level;
-			} else {
-				std::string particle, space = "";
-				if (Player::IsCP932()) {
-					particle = "は";
-					space += " ";
-				}
-				else {
-					particle = " ";
-				}
-				ss << particle << Data::terms.level << " ";
-				ss << level << space << Data::terms.level_up;
-			}
-			pm.PushLine(ss.str());
-			level_up = true;
-		}
-
-		if (skill_mode == 1) {
-			// Learn based on level (replace)
-			actor->UnlearnAllSkills();
-		}
-		if (skill_mode > 0 && cls) {
-			// Learn additionally
-			for (const RPG::Learning& learn : cls->skills) {
-				if (level >= learn.level) {
-					level_up |= actor->LearnSkill(learn.skill_id, &pm);
-				}
-			}
-		}
-		else {
-			for (const RPG::Learning& learn : Data::actors[actor_id - 1].skills) {
-				if (level >= learn.level) {
-					level_up |= actor->LearnSkill(learn.skill_id, &pm);
-				}
-			}
-		}
-
-		if (show && level_up) {
-			pm.PushPageEnd();
-		}
+		int level = level1 ? 1 : actor->GetLevel();
+		actor->ChangeClass(class_id, level,
+				static_cast<Game_Actor::ClassChangeSkillMode>(skill_mode),
+				static_cast<Game_Actor::ClassChangeParamMode>(param_mode),
+				show_msg ? &pm : nullptr
+				);
 	}
 
-	// FIXME: Check Gameover?
+	if (CheckGameOver()) {
+		return true;
+	}
 
-	if (show && pm.IsActive()) {
+	if (show_msg && pm.IsActive()) {
 		ForegroundTextPush(std::move(pm));
 	}
 
