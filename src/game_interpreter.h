@@ -45,6 +45,8 @@ namespace RPG {
 class Game_Interpreter
 {
 public:
+	static Game_Interpreter& GetForegroundInterpreter();
+
 	Game_Interpreter(bool _main_flag = false);
 #ifndef EMSCRIPTEN
 	// No idea why but emscripten will complain about a missing destructor when
@@ -263,6 +265,8 @@ protected:
 	void SetSubcommandIndex(int indent, int idx);
 	uint8_t& ReserveSubcommandIndex(int indent);
 	int GetSubcommandIndex(int indent) const;
+
+	void ForegroundTextPush(PendingMessage pm);
 
 	FileRequestBinding request_id;
 	enum class Keys {

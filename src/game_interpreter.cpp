@@ -1446,6 +1446,13 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	return true;
 }
 
+void Game_Interpreter::ForegroundTextPush(PendingMessage pm) {
+	auto& fg_interp = GetForegroundInterpreter();
+	fg_interp._state.show_message = true;
+
+	Game_Message::SetPendingMessage(std::move(pm));
+}
+
 bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
 	bool show_msg = com.parameters[5];
 
@@ -1469,7 +1476,7 @@ bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 
 	}
 
 	if (show_msg) {
-		Game_Message::SetPendingMessage(std::move(pm));
+		ForegroundTextPush(std::move(pm));
 	}
 	return true;
 }
@@ -1498,7 +1505,7 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 	}
 
 	if (show_msg && pm.IsActive()) {
-		Game_Message::SetPendingMessage(std::move(pm));
+		ForegroundTextPush(std::move(pm));
 	}
 	return true;
 }
@@ -3374,7 +3381,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	// FIXME: Check Gameover?
 
 	if (show && pm.IsActive()) {
-		Game_Message::SetPendingMessage(std::move(pm));
+		ForegroundTextPush(std::move(pm));
 	}
 
 	return true;
@@ -3422,3 +3429,9 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
+
+Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
+	return Game_Temp::battle_running
+		? Game_Battle::GetInterpreter()
+		: Game_Map::GetInterpreter();
+}
