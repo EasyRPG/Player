@@ -20,6 +20,7 @@
 
 #include <thread>
 #include <cinttypes>
+#include <algorithm>
 
 constexpr bool Game_Clock::is_steady;
 Game_Clock::Data Game_Clock::data;
@@ -31,6 +32,7 @@ Game_Clock::duration Game_Clock::OnNextFrame(time_point now, int speed) {
 	const auto dt = now - data.frame_time;
 	data.frame_time = now;
 	data.frame_accumulator += dt * speed;
+	data.frame_accumulator = std::min(data.frame_accumulator, data.max_frame_accumulator * speed);
 
 	const auto fps = (1.0f / std::chrono::duration<float>(dt).count());
 	data.fps = (data.fps * _fps_smooth) + (fps * (1.0f - _fps_smooth));

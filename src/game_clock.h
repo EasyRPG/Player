@@ -21,6 +21,8 @@
 #include "options.h"
 #include <chrono>
 #include "platform_clock.h"
+#include <type_traits>
+#include <algorithm>
 
 /**
  * Used for time keeping in Player
@@ -57,6 +59,16 @@ public:
 
 	/** Log information about the Game_Clock */
 	static void logClockInfo();
+
+	/**
+	 * Set the maximum amount of simulation time we'll allow to pass per frame.
+	 * Normally, if the main loop is slow we'll run multiple simulation steps per
+	 * frame to keep the game running at constant time. However if the main loop falls
+	 * below this value, we'll cap how many simulation steps we run and start running
+	 * the game loop slower. This can happen on slow machines, frame spikes, large
+	 * file IO, or debugger breakpoints.
+	 */
+	static void SetMaxSimulationTimePerFrame(duration dt);
 
 	/** Get the time of the current frame */
 	static time_point GetFrameTime();
@@ -96,6 +108,7 @@ private:
 	struct Data {
 		time_point frame_time;
 		duration frame_accumulator;
+		duration max_frame_accumulator = std::chrono::milliseconds(200);
 		float fps = 0.0;
 		int frame = 0;
 	};
@@ -147,6 +160,10 @@ inline bool Game_Clock::NextSimulationTimeStep() {
 	}
 	data.frame_accumulator -= dt;
 	return true;
+}
+
+inline void Game_Clock::SetMaxSimulationTimePerFrame(duration dt) {
+	data.max_frame_accumulator = std::max(dt, GetSimulationTimeStep());
 }
 
 #endif
