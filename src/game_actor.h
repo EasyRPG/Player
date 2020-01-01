@@ -98,8 +98,19 @@ public:
 	 *
 	 * @param skill_id database skill ID.
 	 * @return If skill was learned (fails if already had the skill)
+	 * @param pm If non-null, will push the learned skill message if learned.
 	 */
-	bool LearnSkill(int skill_id);
+	bool LearnSkill(int skill_id, PendingMessage* pm);
+
+	/**
+	 * Learn all the skills from min_level to max_level
+	 *
+	 * @param min_level the minimum level to determine which skills to learn.
+	 * @param max_level the minimum level to determine which skills to learn.
+	 * @param pm If non-null, will push the learned skill messages if learned.
+	 * @return number of skills learned
+	 */
+	int LearnLevelSkills(int min_level, int max_level, PendingMessage* pm);
 
 	/**
 	 * Unlearns a skill.
@@ -807,7 +818,7 @@ public:
 	float GetCriticalHitChance() const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
-	std::string GetLearningMessage(const RPG::Learning& learn) const;
+	std::string GetLearningMessage(const RPG::Skill& skill) const;
 
 	BattlerType GetType() const override;
 

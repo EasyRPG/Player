@@ -1569,7 +1569,7 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 		if (remove)
 			actor->UnlearnSkill(skill_id);
 		else
-			actor->LearnSkill(skill_id);
+			actor->LearnSkill(skill_id, nullptr);
 	}
 
 	CheckGameOver();
@@ -3347,33 +3347,19 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 			// Learn additionally
 			for (const RPG::Learning& learn : cls->skills) {
 				if (level >= learn.level) {
-					actor->LearnSkill(learn.skill_id);
-					if (show) {
-						std::stringstream ss;
-						ss << Data::skills[learn.skill_id - 1].name;
-						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						pm.PushLine(ss.str());
-						level_up = true;
-					}
+					level_up |= actor->LearnSkill(learn.skill_id, &pm);
 				}
 			}
 		}
 		else {
 			for (const RPG::Learning& learn : Data::actors[actor_id - 1].skills) {
 				if (level >= learn.level) {
-					actor->LearnSkill(learn.skill_id);
-					if (show) {
-						std::stringstream ss;
-						ss << Data::skills[learn.skill_id - 1].name;
-						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						pm.PushLine(ss.str());
-						level_up = true;
-					}
+					level_up |= actor->LearnSkill(learn.skill_id, &pm);
 				}
 			}
 		}
 
-		if (level_up) {
+		if (show && level_up) {
 			pm.PushPageEnd();
 		}
 	}
