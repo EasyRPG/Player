@@ -222,6 +222,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	auto escape_mode = com.parameters[3]; // 0 disallow, 1 end event processing, 2 victory/escape custom handler
 	auto defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
 
+	if (escape_mode == 1) {
+		_state.abort_on_escape = true;
+	}
+
 	args.allow_escape = (escape_mode != 0);
 	args.first_strike = com.parameters[5] != 0;
 
@@ -230,7 +234,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	}
 
 	auto indent = com.indent;
-	auto continuation = [this, indent, escape_mode, defeat_mode](BattleResult result) {
+	auto continuation = [this, indent, defeat_mode](BattleResult result) {
 		int sub_idx = subcommand_sentinel;
 
 		switch (result) {
@@ -239,7 +243,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 				break;
 			case BattleResult::Escape:
 				sub_idx = eOptionEnemyEncounterEscape;
-				if (escape_mode == 1) {
+				if (_state.abort_on_escape) {
 					return EndEventProcessing();
 				}
 				break;

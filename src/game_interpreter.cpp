@@ -328,6 +328,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		_state.show_message = false;
+		_state.abort_on_escape = false;
 
 		if (_state.wait_time > 0) {
 			_state.wait_time--;
