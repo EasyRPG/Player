@@ -145,7 +145,7 @@ void Window_Message::StartChoiceProcessing() {
 
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
-	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
+	if (IsFaceEnabled() && !Game_Message::IsFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
@@ -181,7 +181,7 @@ void Window_Message::InsertNewPage() {
 		gold_window->SetBackOpacity(GetBackOpacity());
 	}
 
-	if (!Game_Message::GetFaceName().empty()) {
+	if (IsFaceEnabled()) {
 		if (!Game_Message::IsFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
 			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin, TopMargin, Game_Message::IsFaceFlipped());
@@ -210,7 +210,7 @@ void Window_Message::InsertNewPage() {
 }
 
 void Window_Message::InsertNewLine() {
-	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
+	if (IsFaceEnabled() && !Game_Message::IsFaceRightPosition()) {
 		contents_x = LeftMargin + FaceSize + RightFaceMargin;
 	} else {
 		contents_x = 0;
@@ -546,7 +546,7 @@ void Window_Message::UpdateCursorRect() {
 		int y_pos = (pending_message.GetChoiceStartLine() + index) * 16;
 		int width = contents->GetWidth();
 
-		if (!Game_Message::GetFaceName().empty()) {
+		if (IsFaceEnabled()) {
 			if (!Game_Message::IsFaceRightPosition()) {
 				x_pos += LeftMargin + FaceSize + RightFaceMargin;
 			}
@@ -645,3 +645,8 @@ void Window_Message::SetWait(int frames) {
 #endif
 	wait_count = frames;
 }
+
+bool Window_Message::IsFaceEnabled() const {
+	return pending_message.IsFaceEnabled() && !Game_Message::GetFaceName().empty();
+}
+

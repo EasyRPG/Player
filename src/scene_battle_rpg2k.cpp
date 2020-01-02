@@ -1537,6 +1537,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		auto pm = PendingMessage();
+		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
 		pm.PushLine(Data::terms.victory + Player::escape_symbol + "|");
@@ -1585,6 +1586,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 		Game_Message::SetTransparent(false);
 
 		auto pm = PendingMessage();
+		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
 

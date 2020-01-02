@@ -57,6 +57,8 @@ class PendingMessage {
 		int GetNumberInputVariable() const { return num_input_variable; }
 		int GetNumberInputStartLine() const { return NumLines(); }
 
+		void SetEnableFace(bool value) { enable_face = value; }
+		bool IsFaceEnabled() const { return enable_face; }
 	private:
 		int PushLineImpl(std::string msg);
 
@@ -73,6 +75,7 @@ class PendingMessage {
 		bool word_wrapped = false;
 		bool choice_reset_color = false;
 		bool show_gold_window = false;
+		bool enable_face = true;
 };
 
 

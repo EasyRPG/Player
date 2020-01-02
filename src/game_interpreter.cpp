@@ -1466,6 +1466,7 @@ bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 
 	);
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeExp(actor->GetExp() + value, show_msg ? &pm : nullptr);
@@ -1495,6 +1496,7 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 	);
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeLevel(actor->GetLevel() + value, show_msg ? &pm : nullptr);
@@ -3247,6 +3249,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	}
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
 	if (!cls && class_id != 0) {
