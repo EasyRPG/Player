@@ -557,8 +557,8 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '!':
 				// Text pause
-				// FIXME Timing this? When is arrow?
 				DebugLogText("%d: MSG Pause \\!");
+				SetWaitForNonPrintable(0);
 				SetPause(true);
 				break;
 			case '^':
