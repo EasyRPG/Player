@@ -48,6 +48,10 @@ Scene_Battle::Scene_Battle() :
 {
 	Scene::type = Scene::Battle;
 	Game_Temp::battle_result = Game_Temp::BattleAbort;
+
+	// Face graphic is cleared when battle scene is created.
+	// Even if the battle gets interrupted by another scene and never starts.
+	Game_Message::ClearFace();
 }
 
 Scene_Battle::~Scene_Battle() {
