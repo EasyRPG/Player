@@ -568,19 +568,17 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString() const {
-	std::stringstream ss;
-	ss << GetExp();
-	return ss.str();
+	if (GetNextExp() == -1) {
+        return Player::IsRPG2k3() ? "-------" : "------";
+	}
+	return std::to_string(GetExp());
 }
 
 std::string Game_Actor::GetNextExpString() const {
 	if (GetNextExp() == -1) {
-		return "------";
-	} else {
-		std::stringstream ss;
-		ss << GetNextExp();
-		return ss.str();
+        return Player::IsRPG2k3() ? "-------" : "------";
 	}
+	return std::to_string(GetNextExp());
 }
 
 int Game_Actor::GetBaseExp() const {
