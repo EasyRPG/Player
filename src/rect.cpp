@@ -69,7 +69,7 @@ bool Rect::IsOutOfBounds(const Rect &src_rect) const {
 	return false;
 }
 
-Rect Rect::GetSubRect(const Rect &src_rect) {
+Rect Rect::GetSubRect(const Rect src_rect) const {
 	Rect rect = src_rect;
 
 	rect.x += x;

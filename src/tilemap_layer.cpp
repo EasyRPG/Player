@@ -156,15 +156,15 @@ TilemapLayer::TilemapLayer(int ilayer) :
 }
 
 void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit) {
-	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
+	auto op = screen.GetTileOpacity(row, col);
 
-	if (op == Bitmap::Transparent)
+	if (op == ImageOpacity::Transparent)
 		return;
 
 	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 	bool use_fast_blit = fast_blit && allow_fast_blit;
-	if (op == Bitmap::Opaque || use_fast_blit) {
+	if (op == ImageOpacity::Opaque || use_fast_blit) {
 		dst.BlitFast(x, y, screen, rect, 255);
 	} else {
 		dst.Blit(x, y, screen, rect, 255);

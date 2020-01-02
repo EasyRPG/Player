@@ -56,4 +56,18 @@ struct Opacity {
 	private:
 };
 
+/**
+ * Enum used to describe the opacity of an entire image.
+ * This is used to decide whether we can shortcut fast blit
+ * operations
+ */
+enum class ImageOpacity {
+	/** Image has alpha and needs an alpha blit */
+	Partial,
+	/** Image is full opaque and can be blitted fast */
+	Opaque,
+	/** Image is complately transparent and blitting can be skipped entirely */
+	Transparent
+};
+
 #endif

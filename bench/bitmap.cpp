@@ -45,6 +45,35 @@ static void BM_FindFormat(benchmark::State& state) {
 
 BENCHMARK(BM_FindFormat);
 
+static void BM_ComputeImageOpacity(benchmark::State& state) {
+	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	auto bm = Bitmap::Create(320, 240);
+	auto rect = bm->GetRect();
+	for (auto _: state) {
+		bm->ComputeImageOpacity(rect);
+	}
+}
+
+BENCHMARK(BM_ComputeImageOpacity);
+
+static void BM_ComputeImageOpacityChipset(benchmark::State& state) {
+	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	const int w = 480;
+	const int h = 256;
+	const int dx = 16;
+	const int dy = 16;
+	auto bm = Bitmap::Create(w, h);
+	for (auto _: state) {
+		for (int y = 0; y < h; y += dy) {
+			for (int x = 0; x < w; x += dx) {
+				bm->ComputeImageOpacity(Rect{ x, y, dx, dy });
+			}
+		}
+	}
+}
+
+BENCHMARK(BM_ComputeImageOpacityChipset);
+
 static void BM_Create(benchmark::State& state) {
 	Bitmap::SetFormat(format);
 	for (auto _: state) {
