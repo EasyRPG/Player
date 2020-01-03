@@ -48,9 +48,8 @@ BENCHMARK(BM_FindFormat);
 static void BM_ComputeImageOpacity(benchmark::State& state) {
 	Bitmap::SetFormat(format_R8G8B8A8_a().format());
 	auto bm = Bitmap::Create(320, 240);
-	auto rect = bm->GetRect();
 	for (auto _: state) {
-		bm->ComputeImageOpacity(rect);
+		bm->ComputeImageOpacity();
 	}
 }
 

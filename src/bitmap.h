@@ -530,6 +530,7 @@ public:
 	int bpp() const;
 	int pitch() const;
 
+	ImageOpacity ComputeImageOpacity() const;
 	ImageOpacity ComputeImageOpacity(Rect rect) const;
 
 protected:
