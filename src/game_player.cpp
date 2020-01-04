@@ -101,8 +101,6 @@ void Game_Player::PerformTeleport() {
 		Game_Map::SetupFromTeleportSelf();
 	}
 
-	SetTransparency(0);
-
 	MoveTo(teleport_target.GetX(), teleport_target.GetY());
 
 	if (teleport_target.GetDirection() >= 0) {
@@ -445,16 +443,16 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 }
 
 void Game_Player::Refresh() {
-	Game_Actor* actor;
 
-	if (Main_Data::game_party->GetActors().empty()) {
+	auto* actor = Main_Data::game_party->GetActor(0);
+	if (actor == nullptr) {
 		SetSpriteGraphic("", 0);
+		SetTransparency(0);
 		return;
 	}
 
-	actor = Main_Data::game_party->GetActors()[0];
-
 	SetSpriteGraphic(actor->GetSpriteName(), actor->GetSpriteIndex());
+	SetTransparency(actor->GetSpriteTransparency());
 
 	if (data()->aboard)
 		GetVehicle()->SyncWithPlayer();

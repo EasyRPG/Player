@@ -645,30 +645,6 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	return GetAttributeRate(attribute_id, rate);
 }
 
-const std::string& Game_Actor::GetName() const {
-	return GetData().name;
-}
-
-const std::string& Game_Actor::GetSpriteName() const {
-	return GetData().sprite_name;
-}
-
-int Game_Actor::GetSpriteIndex() const {
-	return GetData().sprite_id;
-}
-
-std::string Game_Actor::GetFaceName() const {
-	return GetData().face_name;
-}
-
-int Game_Actor::GetFaceIndex() const {
-	return GetData().face_id;
-}
-
-std::string Game_Actor::GetTitle() const {
-	return GetData().title;
-}
-
 int Game_Actor::GetWeaponId() const {
 	int item_id = GetData().equipped[0];
 	return item_id <= (int)Data::items.size() ? item_id : 0;
@@ -694,16 +670,8 @@ int Game_Actor::GetAccessoryId() const {
 	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
-int Game_Actor::GetLevel() const {
-	return GetData().level;
-}
-
 int Game_Actor::GetMaxLevel() const {
 	return std::max<int32_t>(1, std::min<int32_t>(GetActor().final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
-}
-
-int Game_Actor::GetExp() const {
-	return GetData().exp;
 }
 
 void Game_Actor::SetExp(int _exp) {
@@ -1078,7 +1046,7 @@ void Game_Actor::SetTitle(const std::string &new_title) {
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
 	GetData().sprite_name = file;
 	GetData().sprite_id = index;
-	GetData().sprite_flags = transparent ? 3 : 0;
+	GetData().transparency = transparent ? 3 : 0;
 }
 
 void Game_Actor::ChangeBattleCommands(bool add, int id) {

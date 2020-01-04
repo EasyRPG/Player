@@ -245,11 +245,16 @@ public:
 	int GetSpriteIndex() const;
 
 	/**
+	 * Gets the transparency level of the actor sprite
+	 */
+	int GetSpriteTransparency() const;
+
+	/**
 	 * Gets actor face graphic filename.
 	 *
 	 * @return face graphic filename.
 	 */
-	std::string GetFaceName() const;
+	const std::string& GetFaceName() const;
 
 	/**
 	 * Gets actor face graphic index.
@@ -263,7 +268,7 @@ public:
 	 *
 	 * @return title.
 	 */
-	std::string GetTitle() const;
+	const std::string& GetTitle() const;
 
 	/**
 	 * Gets actor equipped weapon ID.
@@ -838,5 +843,41 @@ private:
 	int actor_id;
 	std::vector<int> exp_list;
 };
+
+inline const std::string& Game_Actor::GetName() const {
+	return GetData().name;
+}
+
+inline const std::string& Game_Actor::GetTitle() const {
+	return GetData().title;
+}
+
+inline const std::string& Game_Actor::GetSpriteName() const {
+	return GetData().sprite_name;
+}
+
+inline int Game_Actor::GetSpriteIndex() const {
+	return GetData().sprite_id;
+}
+
+inline int Game_Actor::GetSpriteTransparency() const {
+	return GetData().transparency;
+}
+
+inline const std::string& Game_Actor::GetFaceName() const {
+	return GetData().face_name;
+}
+
+inline int Game_Actor::GetFaceIndex() const {
+	return GetData().face_id;
+}
+
+inline int Game_Actor::GetLevel() const {
+	return GetData().level;
+}
+
+inline int Game_Actor::GetExp() const {
+	return GetData().exp;
+}
 
 #endif

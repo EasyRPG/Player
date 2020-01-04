@@ -215,6 +215,15 @@ public:
 	std::vector<Game_Actor*> GetActors() const;
 
 	/**
+	 * Get's the i'th actor in the party.
+	 *
+	 * @param idx the party index starting from 0.
+	 *
+	 * @return actor at index, or nullptr if no such actor
+	 */
+	Game_Actor* GetActor(int idx) const;
+
+	/**
 	 * Gets number of battles.
 	 *
 	 * @return number of battles.
