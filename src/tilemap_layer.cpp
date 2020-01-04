@@ -214,6 +214,9 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 		++tiles_y;
 	}
 
+	const bool loop_h = Game_Map::LoopHorizontal();
+	const bool loop_v = Game_Map::LoopVertical();
+
 	for (int y = 0; y < tiles_y; y++) {
 		for (int x = 0; x < tiles_x; x++) {
 
@@ -229,8 +232,8 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 			// Get the real maps tile coordinates
 			int map_x = div_rounding_down(ox, TILE_SIZE) + x;
 			int map_y = div_rounding_down(oy, TILE_SIZE) + y;
-			if (Game_Map::LoopHorizontal()) map_x = mod(map_x, width);
-			if (Game_Map::LoopVertical()) map_y = mod(map_y, height);
+			if (loop_h) map_x = mod(map_x, width);
+			if (loop_v) map_y = mod(map_y, height);
 
 			int map_draw_x = x * TILE_SIZE - mod(ox, TILE_SIZE);
 			int map_draw_y = y * TILE_SIZE - mod(oy, TILE_SIZE);
