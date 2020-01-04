@@ -147,7 +147,9 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
-	std::vector<std::shared_ptr<TilemapSubLayer> > sublayers;
+
+	TilemapSubLayer lower_layer;
+	TilemapSubLayer upper_layer;
 
 	Tone tone;
 };

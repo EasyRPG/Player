@@ -142,14 +142,14 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	substitutions(ilayer >= 1
 			? Main_Data::game_data.map_info.upper_tiles
 			: Main_Data::game_data.map_info.lower_tiles),
-	layer(ilayer) {
-
-	// SubLayer for the tiles with Wall or Above passability
-	// Its z-value should be between the z of the events in the upper layer and the hero
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetAbove + layer));
+	layer(ilayer),
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow + layer));
+	lower_layer(this, Priority_TilesetBelow + layer),
+	// SubLayer for the tiles with Wall or Above passability
+	// Its z-value should be between the z of the events in the upper layer and the hero
+	upper_layer(this, Priority_TilesetAbove + layer)
+{
 }
 
 void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit) {
