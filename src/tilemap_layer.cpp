@@ -560,7 +560,7 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::unordered_map<ui
 				rect.x = (x * 2 + i) * (TILE_SIZE/2);
 				rect.y = (y * 2 + j) * (TILE_SIZE/2);
 
-				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2), *chipset, rect, 255);
+				tiles->BlitFast((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2), *chipset, rect, 255);
 			}
 		}
 	}
