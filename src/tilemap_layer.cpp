@@ -184,8 +184,8 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 		++tiles_y;
 	}
 
-	for (int x = 0; x < tiles_x; x++) {
-		for (int y = 0; y < tiles_y; y++) {
+	for (int y = 0; y < tiles_y; y++) {
+		for (int x = 0; x < tiles_x; x++) {
 
 			auto div_rounding_down = [](int n, int m) {
 				if (n >= 0) return n / m;
@@ -214,7 +214,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 			}
 
 			// Get the tile data
-			TileData &tile = data_cache[map_x][map_y];
+			TileData &tile = GetDataCache(map_x, map_y);
 
 			// Draw the sublayer if its z is being draw now
 			if (z_order == tile.z) {
@@ -341,9 +341,8 @@ TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD(short ID) {
 }
 
 void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
-	data_cache.resize(width);
+	data_cache_vec.resize(width * height);
 	for (int x = 0; x < width; x++) {
-		data_cache[x].resize(height);
 		for (int y = 0; y < height; y++) {
 			TileData tile;
 
@@ -373,7 +372,7 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 
 				}
 			}
-			data_cache[x][y] = tile;
+			GetDataCache(x, y) = tile;
 		}
 	}
 }
@@ -630,16 +629,16 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 
-				if (data_cache[x][y].ID < BLOCK_C) {
+				if (GetDataCache(x, y).ID < BLOCK_C) {
 					// If blocks A and B
 
-					GenerateAutotileAB(data_cache[x][y].ID, 0);
-					GenerateAutotileAB(data_cache[x][y].ID, 1);
-					GenerateAutotileAB(data_cache[x][y].ID, 2);
-				} else if (data_cache[x][y].ID >= BLOCK_D && data_cache[x][y].ID < BLOCK_E) {
+					GenerateAutotileAB(GetDataCache(x, y).ID, 0);
+					GenerateAutotileAB(GetDataCache(x, y).ID, 1);
+					GenerateAutotileAB(GetDataCache(x, y).ID, 2);
+				} else if (GetDataCache(x, y).ID >= BLOCK_D && GetDataCache(x, y).ID < BLOCK_E) {
 					// If block D
 
-					GenerateAutotileD(data_cache[x][y].ID);
+					GenerateAutotileD(GetDataCache(x, y).ID);
 				}
 			}
 		}

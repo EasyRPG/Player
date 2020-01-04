@@ -146,7 +146,10 @@ private:
 		short ID;
 		int z;
 	};
-	std::vector<std::vector<TileData> > data_cache;
+
+	TileData& GetDataCache(int x, int y);
+
+	std::vector<TileData> data_cache_vec;
 
 	TilemapSubLayer lower_layer;
 	TilemapSubLayer upper_layer;
@@ -224,6 +227,10 @@ inline void TilemapLayer::SetAnimationType(int type) {
 
 inline void TilemapLayer::SetFastBlit(bool fast) {
 	fast_blit = fast;
+}
+
+inline TilemapLayer::TileData& TilemapLayer::GetDataCache(int x, int y) {
+	return data_cache_vec[x + y * width];
 }
 
 
