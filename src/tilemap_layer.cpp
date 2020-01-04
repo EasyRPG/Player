@@ -144,9 +144,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 			: Main_Data::game_data.map_info.lower_tiles),
 	layer(ilayer) {
 
-	memset(autotiles_ab, 0, sizeof(autotiles_ab));
-	memset(autotiles_d, 0, sizeof(autotiles_d));
-
 	// SubLayer for the tiles with Wall or Above passability
 	// Its z-value should be between the z of the events in the upper layer and the hero
 	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetAbove + layer));
@@ -464,8 +461,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 			}
 
 	// check whether we have already generated this tile
-	std::map<uint32_t, TileXY>::iterator it;
-	it = autotiles_ab_map.find(quarters_hash);
+	auto it = autotiles_ab_map.find(quarters_hash);
 	if (it != autotiles_ab_map.end()) {
 		autotiles_ab[animID][block][b_subtile][a_subtile] = it->second;
 		return;
@@ -528,8 +524,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 			}
 
 	// check whether we have already generated this tile
-	std::map<uint32_t, TileXY>::iterator it;
-	it = autotiles_d_map.find(quarters_hash);
+	auto it = autotiles_d_map.find(quarters_hash);
 	if (it != autotiles_d_map.end()) {
 		autotiles_d[block][subtile] = it->second;
 		return;
@@ -544,16 +539,15 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	autotiles_d[block][subtile] = tile_xy;
 }
 
-BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
+BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::unordered_map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
 	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * TILE_SIZE, rows * TILE_SIZE);
 	tiles->Clear();
 	Rect rect(0, 0, TILE_SIZE/2, TILE_SIZE/2);
 
-	std::map<uint32_t, TileXY>::const_iterator it;
-	for (it = map.begin(); it != map.end(); ++it) {
-		uint32_t quarters_hash = it->first;
-		TileXY dst = it->second;
+	for (auto& p: map) {
+		uint32_t quarters_hash = p.first;
+		TileXY dst = p.second;
 
 		// unpack the quarters data
 		for (int j = 0; j < 2; j++) {

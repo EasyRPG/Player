@@ -21,7 +21,8 @@
 // Headers
 #include <vector>
 #include <map>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 #include "system.h"
 #include "drawable.h"
 #include "tone.h"
@@ -88,7 +89,7 @@ public:
 private:
 	BitmapRef chipset;
 	BitmapRef chipset_effect;
-	std::set<short> chipset_tone_tiles;
+	std::unordered_set<short> chipset_tone_tiles;
 
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
@@ -121,25 +122,25 @@ private:
 		TileXY(uint8_t x, uint8_t y) : x(x), y(y), valid(true) {}
 	};
 
-	BitmapRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
+	BitmapRef GenerateAutotiles(int count, const std::unordered_map<uint32_t, TileXY>& map);
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
 	BitmapRef autotiles_ab_screen;
 	BitmapRef autotiles_ab_screen_effect;
-	std::set<short> autotiles_ab_screen_tone_tiles;
+	std::unordered_set<short> autotiles_ab_screen_tone_tiles;
 	BitmapRef autotiles_d_screen;
 	BitmapRef autotiles_d_screen_effect;
-	std::set<short> autotiles_d_screen_tone_tiles;
+	std::unordered_set<short> autotiles_d_screen_tone_tiles;
 
 	int autotiles_ab_next = -1;
 	int autotiles_d_next = -1;
 
-	TileXY autotiles_ab[3][3][16][47];
-	TileXY autotiles_d[12][50];
+	TileXY autotiles_ab[3][3][16][47] = {};
+	TileXY autotiles_d[12][50] = {};
 
-	std::map<uint32_t, TileXY> autotiles_ab_map;
-	std::map<uint32_t, TileXY> autotiles_d_map;
+	std::unordered_map<uint32_t, TileXY> autotiles_ab_map;
+	std::unordered_map<uint32_t, TileXY> autotiles_d_map;
 
 	struct TileData {
 		short ID;
