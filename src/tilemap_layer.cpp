@@ -217,26 +217,32 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 	const bool loop_h = Game_Map::LoopHorizontal();
 	const bool loop_v = Game_Map::LoopVertical();
 
+	auto div_rounding_down = [](int n, int m) {
+		if (n >= 0) return n / m;
+		return (n - m + 1) / m;
+	};
+	auto mod = [](int n, int m) {
+		int rem = n % m;
+		return rem >= 0 ? rem : m + rem;
+	};
+
+	const int div_ox = div_rounding_down(ox, TILE_SIZE);
+	const int div_oy = div_rounding_down(oy, TILE_SIZE);
+
+	const int mod_ox = mod(ox, TILE_SIZE);
+	const int mod_oy = mod(oy, TILE_SIZE);
+
 	for (int y = 0; y < tiles_y; y++) {
 		for (int x = 0; x < tiles_x; x++) {
 
-			auto div_rounding_down = [](int n, int m) {
-				if (n >= 0) return n / m;
-				return (n - m + 1) / m;
-			};
-			auto mod = [](int n, int m) {
-				int rem = n % m;
-				return rem >= 0 ? rem : m + rem;
-			};
-
 			// Get the real maps tile coordinates
-			int map_x = div_rounding_down(ox, TILE_SIZE) + x;
-			int map_y = div_rounding_down(oy, TILE_SIZE) + y;
+			int map_x = div_ox + x;
+			int map_y = div_oy + y;
 			if (loop_h) map_x = mod(map_x, width);
 			if (loop_v) map_y = mod(map_y, height);
 
-			int map_draw_x = x * TILE_SIZE - mod(ox, TILE_SIZE);
-			int map_draw_y = y * TILE_SIZE - mod(oy, TILE_SIZE);
+			int map_draw_x = x * TILE_SIZE - mod_ox;
+			int map_draw_y = y * TILE_SIZE - mod_oy;
 
 			bool out_of_bounds =
 				map_x < 0 || map_x >= width ||
