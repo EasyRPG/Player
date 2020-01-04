@@ -89,8 +89,7 @@ public:
 private:
 	BitmapRef chipset;
 	BitmapRef chipset_effect;
-	std::unordered_set<short> chipset_tone_tiles;
-
+	std::unordered_set<uint32_t> chipset_tone_tiles;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	// FIXME Should be span<uint8_t>
@@ -128,10 +127,8 @@ private:
 	TileXY GetCachedAutotileD(short ID);
 	BitmapRef autotiles_ab_screen;
 	BitmapRef autotiles_ab_screen_effect;
-	std::unordered_set<short> autotiles_ab_screen_tone_tiles;
 	BitmapRef autotiles_d_screen;
 	BitmapRef autotiles_d_screen_effect;
-	std::unordered_set<short> autotiles_d_screen_tone_tiles;
 
 	int autotiles_ab_next = -1;
 	int autotiles_d_next = -1;
