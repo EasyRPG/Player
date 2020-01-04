@@ -536,8 +536,8 @@ public:
 protected:
 	DynamicFormat format;
 
-	std::vector<std::vector<ImageOpacity>> tile_opacity;
 	ImageOpacity image_opacity = ImageOpacity::Partial;
+	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
@@ -576,7 +576,7 @@ inline ImageOpacity Bitmap::GetImageOpacity() const {
 }
 
 inline ImageOpacity Bitmap::GetTileOpacity(int row, int col) const {
-	return !tile_opacity.empty() ? tile_opacity[row][col] : ImageOpacity::Partial;
+	return !tile_opacity.Empty() ? tile_opacity.Get(row, col) : ImageOpacity::Partial;
 }
 
 inline Color Bitmap::GetBackgroundColor() const {

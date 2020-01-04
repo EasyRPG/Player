@@ -153,7 +153,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 }
 
 void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit) {
-	auto op = tileset.GetTileOpacity(row, col);
+	auto op = tileset.GetTileOpacity(col, row);
 
 	if (op == ImageOpacity::Transparent)
 		return;

@@ -273,13 +273,15 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	}
 
 	if (flags & Flag_Chipset) {
-		tile_opacity.clear();
-		tile_opacity.resize(height() / 16);
-		for (int row = 0; row < height() / 16; row++) {
-			tile_opacity[row].resize(width() / 16);
-			for (int col = 0; col < width() / 16; col++) {
-				Rect rect(col * 16, row * 16, 16, 16);
-				tile_opacity[row][col] = ComputeImageOpacity(rect);
+		const int h = height() / TILE_SIZE;
+		const int w = width() / TILE_SIZE;
+		tile_opacity = TileOpacity(w, h);
+
+		for (int ty = 0; ty < h; ++ty) {
+			for (int tx = 0; tx < w; ++tx) {
+				Rect rect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				auto op = ComputeImageOpacity(rect);
+				tile_opacity.Set(tx, ty, op);
 			}
 		}
 	}
