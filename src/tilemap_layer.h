@@ -26,6 +26,7 @@
 #include "system.h"
 #include "drawable.h"
 #include "tone.h"
+#include "opacity.h"
 
 class TilemapLayer;
 
@@ -49,7 +50,6 @@ class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
 
-	void DrawTile(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit = true);
 	void Draw(Bitmap& dst, int z_order);
 
 	void Update();
@@ -110,6 +110,8 @@ private:
 	void CreateTileCache(const std::vector<short>& nmap_data);
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
+	void DrawTile(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit = true);
+	void DrawTileImpl(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit);
 
 	static const int TILES_PER_ROW = 64;
 

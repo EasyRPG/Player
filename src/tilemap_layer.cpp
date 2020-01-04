@@ -23,6 +23,7 @@
 #include "player.h"
 #include "map_data.h"
 #include "bitmap.h"
+#include "compiler.h"
 #include "game_map.h"
 #include "main_data.h"
 #include "drawable_mgr.h"
@@ -152,11 +153,15 @@ TilemapLayer::TilemapLayer(int ilayer) :
 {
 }
 
+EP_ALWAYS_INLINE
 void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit) {
 	auto op = tileset.GetTileOpacity(col, row);
+	if (op != ImageOpacity::Transparent) {
+		DrawTileImpl(dst, tileset, tone_tileset, x, y, row, col, tone_hash, op, allow_fast_blit);
+	}
+}
 
-	if (op == ImageOpacity::Transparent)
-		return;
+void TilemapLayer::DrawTileImpl(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit) {
 
 	auto rect = Rect{ col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE };
 
