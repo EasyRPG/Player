@@ -201,7 +201,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 }
 
 void Scene_Map::DrawBackground(Bitmap& dst) {
-	if (spriteset->RequireBackground(GetDrawableList())) {
+	if (spriteset->RequireClear(GetDrawableList())) {
 		dst.Clear();
 	}
 }
