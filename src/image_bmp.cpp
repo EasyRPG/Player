@@ -24,13 +24,68 @@
 #include "output.h"
 #include "image_bmp.h"
 
-static uint16_t get_2(const uint8_t *p) {
-	return (uint16_t) p[0] | (p[1] << 8);
+static uint16_t get_2(const uint8_t *&p, const uint8_t* e) {
+	if (e - p < 2) {
+		p = e;
+		return 0;
+	}
+	auto value = static_cast<uint16_t>(p[0] | (p[1] << 8));
+	p += 2;
+	return value;
 }
 
-static uint32_t get_4(const uint8_t *p) {
-	return (uint32_t) p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24);
+static uint32_t get_4(const uint8_t *&p, const uint8_t* e) {
+	if (e - p < 4) {
+		p = e;
+		return 0;
+	}
+	auto value = static_cast<uint32_t>(p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24));
+	p+= 4;
+	return value;
 }
+
+namespace {
+struct BitmapHeader {
+	int w = 0;
+	int h = 0;
+	int planes = 0;
+	int depth = 0;
+	int compression = 0;
+	int num_colors = 0;
+	int palette_size = 0;
+};
+
+BitmapHeader parseHeader(const uint8_t*& ptr, uint8_t const* const e) {
+	BitmapHeader hdr;
+
+	auto* hdr_start = ptr;
+
+	auto size = get_4(ptr, e);
+
+	if (size == 12) {
+		//BITMAPCOREHEADER
+		hdr.w = get_2(ptr, e);
+		hdr.h = get_2(ptr, e);
+		hdr.planes = get_2(ptr, e);
+		hdr.depth = get_2(ptr, e);
+		hdr.num_colors = (1 << hdr.depth);
+		hdr.palette_size = 3;
+	} else {
+		//BITMAPINFOHEADER, BITMAPV4HEADER, or BITMAPV5HEADER
+		hdr.w = get_4(ptr, e);
+		hdr.h = get_4(ptr, e);
+		hdr.planes = get_2(ptr, e);
+		hdr.depth = get_2(ptr, e);
+		hdr.compression = get_4(ptr, e);
+		ptr += 12;
+		hdr.num_colors = std::min(256u, get_4(ptr, e));
+		hdr.palette_size = 4;
+	}
+
+	ptr = hdr_start + size;
+	return hdr;
+}
+} //namespace 
 
 bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 					   int& width, int& height, void*& pixels) {
@@ -40,90 +95,89 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		Output::Warning("Not a valid BMP file.");
 		return false;
 	}
+	auto* ptr = data;
+	auto* e = data + len;
 
 	static const unsigned BITMAPFILEHEADER_SIZE = 14;
-	const unsigned bits_offset = get_4(&data[BITMAPFILEHEADER_SIZE - 4]);
 
-	unsigned int w = get_4(&data[BITMAPFILEHEADER_SIZE + 4]);
-	unsigned int h = get_4(&data[BITMAPFILEHEADER_SIZE + 8]);
+	ptr += BITMAPFILEHEADER_SIZE - 4;
+	const unsigned bits_offset = get_4(ptr, e);
 
-	bool vflip = h > 0;
+	auto hdr = parseHeader(ptr, e);
+
+	bool vflip = hdr.h > 0;
 	if (!vflip)
-		h = -h;
+		hdr.h = -hdr.h;
 
-	const int planes = get_2(&data[BITMAPFILEHEADER_SIZE + 12]);
-	if (planes != 1) {
+	if (hdr.planes != 1) {
 		Output::Warning("BMP planes is not 1.");
 		return false;
 	}
 
-	const int depth = get_2(&data[BITMAPFILEHEADER_SIZE + 14]);
-	if (depth != 8 && depth != 4) {
-		Output::Warning("BMP image depth unsupported: %i bit.", depth);
+	if (hdr.depth != 8 && hdr.depth != 4) {
+		Output::Warning("BMP image depth unsupported: %i bit.", hdr.depth);
 		return false;
 	}
 
-	const int compression = get_4(&data[BITMAPFILEHEADER_SIZE + 16]);
-	if (compression) {
+	if (hdr.compression) {
 		Output::Warning("BMP image is compressed.");
 		return false;
 	}
 
-	int num_colors = std::min((uint32_t) 256, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
-	if (num_colors == 0) // 0 means default, i.e. max.
-		num_colors = depth << 2;
+	auto* palette = ptr;
 
-	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE +
-		get_4(&data[BITMAPFILEHEADER_SIZE + 0])];
+	auto get_palette = [&](int idx) {
+		return palette + idx * hdr.palette_size;
+	};
 
 	// Ensure no palette entry is an exact duplicate of the transparent color at #0
-	for (int i = 1; i < num_colors; i++) {
-		if (palette[i][0] == palette[0][0] &&
-			palette[i][1] == palette[0][1] &&
-			palette[i][2] == palette[0][2]) {
-			palette[i][0] ^= 1;
+	for (int i = 1; i < hdr.num_colors; i++) {
+		auto* p = get_palette(i);
+		if (p[0] == palette[0] && p[1] == palette[1] && p[2] == palette[2]) {
+			// FIXME: Remove the need for this const_cast
+			const_cast<uint8_t*>(p)[0] ^= 1;
 		}
 	}
 
 	const uint8_t* src_pixels = &data[bits_offset];
 
 	// bitmap scan lines need to be aligned to 32 bit boundaries, add padding if needed
-	int line_width = (depth == 4) ? (w + 1) >> 1 : w;
+	int line_width = (hdr.depth == 4) ? (hdr.w + 1) >> 1 : hdr.w;
 	int padding = (-line_width)&3;
 
-	pixels = malloc(w * h * 4);
+	pixels = malloc(hdr.w * hdr.h * 4);
 	if (!pixels) {
 		Output::Warning("Error allocating BMP pixel buffer.");
 		return false;
 	}
 
 	uint8_t* dst = (uint8_t*) pixels;
-	for (unsigned int y = 0; y < h; y++) {
-		const uint8_t* src = src_pixels + (vflip ? h - 1 - y : y) * (line_width + padding);
-		for (unsigned int x = 0; x < w; x += 2) {
+	for (int y = 0; y < hdr.h; y++) {
+		const uint8_t* src = src_pixels + (vflip ? hdr.h - 1 - y : y) * (line_width + padding);
+		for (int x = 0; x < hdr.w; x += 2) {
 			uint8_t pix = *src++;
 			uint8_t pix2 = 0;
 			const uint8_t* color;
 
 			// split up packed pixel
-			if (depth == 4) {
+			if (hdr.depth == 4) {
 				pix2 = pix & 15;
 				pix >>= 4;
 			}
 
-			color = palette[pix];
+			color = get_palette(pix);
 			*dst++ = color[2];
 			*dst++ = color[1];
 			*dst++ = color[0];
 			*dst++ = (transparent && pix == 0) ? 0 : 255;
 
 			// end of line
-			if (x + 1 == w)
+			if (x + 1 == hdr.w)
 				break;
 
-			pix = (depth == 8) ? *src++ : pix2;
+			pix = (hdr.depth == 8) ? *src++ : pix2;
 
-			color = palette[pix];
+			color = get_palette(pix);
 			*dst++ = color[2];
 			*dst++ = color[1];
 			*dst++ = color[0];
@@ -131,8 +185,8 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		}
 	}
 
-	width = w;
-	height = h;
+	width = hdr.w;
+	height = hdr.h;
 	return true;
 }
 
