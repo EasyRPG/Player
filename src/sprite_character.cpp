@@ -38,11 +38,13 @@ void Sprite_Character::Update() {
 	Sprite::Update();
 	if (tile_id != character->GetTileId() ||
 		character_name != character->GetSpriteName() ||
-		character_index != character->GetSpriteIndex()
+		character_index != character->GetSpriteIndex() ||
+		refresh_bitmap
 	) {
 		tile_id = character->GetTileId();
 		character_name = character->GetSpriteName();
 		character_index = character->GetSpriteIndex();
+		refresh_bitmap = false;
 
 		if (UsesCharset()) {
 			FileRequestAsync* char_request = AsyncHandler::RequestFile("CharSet", character_name);
@@ -113,6 +115,13 @@ void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
 	SetOy(16);
 
 	Update();
+}
+
+void Sprite_Character::ChipsetUpdated() {
+	if (UsesCharset()) {
+		return;
+	}
+	refresh_bitmap = true;
 }
 
 Rect Sprite_Character::GetCharacterRect(const std::string& name, int index, const Rect bitmap_rect) {
