@@ -352,6 +352,8 @@ add_library(${PROJECT_NAME}
 	src/window_savefile.h
 	src/window_selectable.cpp
 	src/window_selectable.h
+	src/window_settings.cpp
+	src/window_settings.h
 	src/window_shopbuy.cpp
 	src/window_shopbuy.h
 	src/window_shop.cpp
