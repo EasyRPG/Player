@@ -22,7 +22,10 @@
 #include <vector>
 #include "scene.h"
 #include "window_command.h"
+#include "window_settings.h"
 #include "async_handler.h"
+#include "sprite.h"
+#include "game_config.h"
 
 /**
  * Scene allowing configuration of system state.
@@ -74,16 +77,20 @@ private:
 	Mode mode = eMain;
 
 	void CreateMainWindow();
+	void CreateOptionsWindow();
 
 	void CreateTitleGraphic();
 	void OnTitleSpriteReady(FileRequestResult* result);
 
+	void SetMode(Mode mode);
+	void RefreshOptionsWindow();
+
 	void UpdateMain();
-	void UpdateInput();
-	void UpdateVideo();
-	void UpdateAudio();
+	void UpdateOptions();
 
 	std::unique_ptr<Window_Command> main_window;
+	std::unique_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Settings> options_window;
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;

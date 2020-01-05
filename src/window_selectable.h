@@ -44,6 +44,9 @@ public:
 	int GetPageRowMax() const;
 	int GetPageItemMax();
 
+	/** Change the max item */
+	void SetItemMax(int value);
+
 	/**
 	 * Returns the Item Rect used for item drawing.
 	 *
@@ -103,5 +106,9 @@ protected:
 	int scroll_dir = 0;
 	int scroll_progress = 0;
 };
+
+inline void Window_Selectable::SetItemMax(int value) {
+	item_max = value;
+}
 
 #endif

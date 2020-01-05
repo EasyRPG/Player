@@ -18,16 +18,26 @@
 #include "input.h"
 #include "game_system.h"
 #include "cache.h"
+#include "player.h"
+#include "baseui.h"
+#include "output.h"
+
+constexpr int option_window_num_items = 10;
 
 Scene_Settings::Scene_Settings() {
 	Scene::type = Scene::Settings;
 }
 
-void Scene_Settings::Start() {
-	CreateTitleGraphic();
-	CreateMainWindow();
-
-	main_window->SetActive(true);
+void Scene_Settings::CreateTitleGraphic() {
+	// Load Title Graphic
+	if (lcf::Data::system.title_name.empty()) {
+		return;
+	}
+	title = std::make_unique<Sprite>();
+	FileRequestAsync* request = AsyncHandler::RequestFile("Title", lcf::Data::system.title_name);
+	request->SetGraphicFile(true);
+	request_id = request->Bind(&Scene_Settings::OnTitleSpriteReady, this);
+	request->Start();
 }
 
 void Scene_Settings::CreateMainWindow() {
@@ -35,7 +45,6 @@ void Scene_Settings::CreateMainWindow() {
 		"Input",
 		"Video",
 		"Audio",
-		"Exit"
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options), 96);
 	main_window->SetHeight(176);
@@ -43,58 +52,108 @@ void Scene_Settings::CreateMainWindow() {
 	main_window->SetX((SCREEN_TARGET_WIDTH - main_window->GetWidth()) / 2);
 }
 
+void Scene_Settings::CreateOptionsWindow() {
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	options_window = std::make_unique<Window_Settings>(32, 32, SCREEN_TARGET_WIDTH - 64, 176);
+	options_window->SetHelpWindow(help_window.get());
+}
+
+void Scene_Settings::Start() {
+	CreateTitleGraphic();
+	CreateMainWindow();
+	CreateOptionsWindow();
+
+	SetMode(eMain);
+}
+
+void Scene_Settings::SetMode(Mode mode) {
+	main_window->SetActive(false);
+	main_window->SetVisible(false);
+	options_window->SetActive(false);
+	options_window->SetVisible(false);
+	help_window->SetVisible(false);
+
+	this->mode = mode;
+
+	switch (mode) {
+		case eMain:
+			main_window->SetActive(true);
+			main_window->SetVisible(true);
+			break;
+		case eInput:
+			help_window->SetVisible(true);
+			options_window->SetActive(true);
+			options_window->SetVisible(true);
+			options_window->SetMode(Window_Settings::eInput);
+			break;
+		case eAudio:
+			help_window->SetVisible(true);
+			options_window->SetActive(true);
+			options_window->SetVisible(true);
+			options_window->SetMode(Window_Settings::eAudio);
+			break;
+		case eVideo:
+			help_window->SetVisible(true);
+			options_window->SetActive(true);
+			options_window->SetVisible(true);
+			options_window->SetMode(Window_Settings::eVideo);
+			break;
+	}
+}
+
 void Scene_Settings::Update() {
 	main_window->Update();
+	help_window->Update();
+	options_window->Update();
+
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cancel));
+		switch (mode) {
+			case eMain:
+				Scene::Pop();
+				break;
+			case eInput:
+			case eAudio:
+			case eVideo:
+				SetMode(eMain);
+				break;
+		}
+
+	}
 
 	switch (mode) {
 		case eMain:
 			UpdateMain();
 			break;
 		case eInput:
-			UpdateInput();
-			break;
 		case eVideo:
-			UpdateVideo();
-			break;
 		case eAudio:
-			UpdateAudio();
+			UpdateOptions();
 			break;
 	}
 }
 
-void Scene_Settings::CreateTitleGraphic() {
-	// Load Title Graphic
-	if (Data::system.title_name.empty()) {
-		return;
-	}
-	title = std::make_unique<Sprite>();
-	FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
-	request->SetGraphicFile(true);
-	request_id = request->Bind(&Scene_Settings::OnTitleSpriteReady, this);
-	request->Start();
-}
 
 void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(Cache::Title(result->file));
 }
 
-
 void Scene_Settings::UpdateMain() {
-	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	if (Input::IsTriggered(Input::DECISION)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+		auto idx = main_window->GetIndex();
+		SetMode(static_cast<Mode>(idx + 1));
 	}
 }
 
-void Scene_Settings::UpdateInput() {
-}
-
-void Scene_Settings::UpdateVideo() {
-}
-
-void Scene_Settings::UpdateAudio() {
+void Scene_Settings::UpdateOptions() {
+	if (Input::IsTriggered(Input::DECISION)) {
+		if (options_window->IsCurrentActionEnabled()) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+			options_window->DoCurrentAction();
+			options_window->Refresh();
+		}
+	}
 }
 
 void Scene_Settings::DrawBackground(Bitmap& dst) {
@@ -102,3 +161,4 @@ void Scene_Settings::DrawBackground(Bitmap& dst) {
 		Scene::DrawBackground(dst);
 	}
 }
+
