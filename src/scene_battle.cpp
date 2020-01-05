@@ -40,6 +40,7 @@
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
 #include "scene_gameover.h"
+#include "scene_settings.h"
 #include "scene_debug.h"
 #include "game_interpreter.h"
 #include "rand.h"
@@ -268,7 +269,7 @@ bool Scene_Battle::UpdateEvents() {
 	}
 
 	auto call = TakeRequestedScene();
-	if (call && call->type == Scene::Gameover) {
+	if (call && (call->type == Scene::Gameover || call->type == Scene::Settings)) {
 		Scene::Push(std::move(call));
 	}
 
