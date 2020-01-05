@@ -751,3 +751,23 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		return 0;
 	}
 }
+
+void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
+#ifdef GEKKO
+	cfg.renderer.Lock("SDL1 (Software, Wii)");
+#else
+	cfg.renderer.Lock("SDL1 (Software)");
+#endif
+
+	cfg.vsync.Lock(false);
+	if (zoom_available) {
+		cfg.window_zoom.Set(current_display_mode.zoom);
+	} else {
+		cfg.window_zoom.Lock(1);
+	}
+	if (toggle_fs_available) {
+		cfg.fullscreen.Set(IsFullscreen());
+	} else {
+		cfg.fullscreen.Lock(IsFullscreen());
+	}
+}

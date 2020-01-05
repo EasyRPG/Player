@@ -47,6 +47,7 @@ public:
 	/** @{ */
 	void UpdateDisplay() override;
 	void ProcessEvents() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;

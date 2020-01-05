@@ -511,3 +511,10 @@ bool NxUi::LogMessage(const std::string &message) {
 	else
 		return true;
 }
+
+void NxUi::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("Switch NX (Software)");
+	cfg.vsync.Disable();
+	cfg.window_zoom.Disable();
+	cfg.fullscreen.Lock(IsFullscreen());
+}

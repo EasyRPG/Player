@@ -1050,3 +1050,14 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		return 0;
 	}
 }
+
+void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+#ifdef EMSCRIPTEN
+	cfg.renderer.Lock("SDL2 (Software, Emscripten)");
+#else
+	cfg.renderer.Lock("SDL2 (Software)");
+#endif
+	cfg.vsync.Set(current_display_mode.vsync);
+	cfg.window_zoom.Set(current_display_mode.zoom);
+	cfg.fullscreen.Set(IsFullscreen());
+}

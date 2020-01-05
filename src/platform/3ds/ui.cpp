@@ -436,3 +436,10 @@ bool CtrUi::LogMessage(const std::string &message) {
 	return true;
 #endif
 }
+
+void Ctr2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("3DS Citro (Software)");
+	cfg.vsync.Disable();
+	cfg.window_zoom.Disable();
+	cfg.fullscreen.Lock(IsFullscreen());
+}

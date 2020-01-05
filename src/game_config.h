@@ -38,6 +38,7 @@ struct Game_ConfigPlayer {
 };
 
 struct Game_ConfigVideo {
+	LockedConfigParam<std::string> renderer{ "auto" };
 	BoolConfigParam vsync{ true };
 	BoolConfigParam fullscreen{ true };
 	BoolConfigParam show_fps{ false };
