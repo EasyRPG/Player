@@ -257,6 +257,7 @@ protected:
 	bool CommandChangeBattleCommands(lcf::rpg::EventCommand const& com);
 	bool CommandExitGame(lcf::rpg::EventCommand const& com);
 	bool CommandToggleFullscreen(lcf::rpg::EventCommand const& com);
+	bool CommandOpenVideoOptions(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
