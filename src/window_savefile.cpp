@@ -49,7 +49,7 @@ void Window_SaveFile::UpdateCursorRect() {
 std::string Window_SaveFile::GetSaveFileName() const {
 	std::ostringstream out;
 	if (!override_name.empty()) {
-		if (override_name.size() > 14 && !party.empty()) {
+		if (override_name.size() > 14 && has_party) {
 			out << override_name.substr(0, 11) << "...";
 		} else {
 			out << override_name;
@@ -69,12 +69,9 @@ void Window_SaveFile::SetDisplayOverride(const std::string& name, int index) {
 	override_index = index;
 }
 
-void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& actors,
-	std::string name, int hp, int level) {
-	party = actors;
-	hero_name = name;
-	hero_hp = hp;
-	hero_level = level;
+void Window_SaveFile::SetParty(RPG::SaveTitle title) {
+	data = std::move(title);
+	has_party = true;
 }
 
 void Window_SaveFile::SetCorrupted(bool corrupted) {
@@ -101,16 +98,16 @@ void Window_SaveFile::Refresh() {
 		return;
 	}
 
-	if (party.empty())
+	if (!has_party) {
 		return;
-
+	}
 
 	std::stringstream out;
 	if (override_index > 0) {
 		out << Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
 		contents->TextDraw(4, 16+2, fc, out.str());
 	} else {
-		contents->TextDraw(4, 16 + 2, fc, hero_name);
+		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
 	}
 
 	auto lvl_short = Data::terms.lvl_short;
@@ -122,7 +119,7 @@ void Window_SaveFile::Refresh() {
 
 	int lx = Font::Default()->GetSize(lvl_short).width;
 	out.str("");
-	out << std::setw(2) << std::setfill(' ') << hero_level;
+	out << std::setw(2) << std::setfill(' ') << data.hero_level;
 	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
 
 	auto hp_short = Data::terms.hp_short;
@@ -134,12 +131,14 @@ void Window_SaveFile::Refresh() {
 
 	int hx = Font::Default()->GetSize(hp_short).width;
 	out.str("");
-	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << hero_hp;
+	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << data.hero_hp;
 	contents->TextDraw(46 + hx, 32 + 2, fc, out.str());
 
-	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
-		DrawFace(party[i].second, party[i].first, 92 + i * 56, 0, false);
-	}
+	int i = 0;
+	DrawFace(data.face1_name, data.face1_id, 92 + i++ * 56, 0, false);
+	DrawFace(data.face2_name, data.face2_id, 92 + i++ * 56, 0, false);
+	DrawFace(data.face3_name, data.face3_id, 92 + i++ * 56, 0, false);
+	DrawFace(data.face4_name, data.face4_id, 92 + i++ * 56, 0, false);
 }
 
 void Window_SaveFile::Update() {
