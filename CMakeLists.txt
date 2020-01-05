@@ -777,7 +777,7 @@ if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_INSTRUMENTATION=${PLAYER_ENABLE_INSTRUMENTATION})
 	if (${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
 		find_package(VTune REQUIRED)
-		target_link_libraries(${PROJECT_NAME} ittnotify)
+		target_link_libraries(${PROJECT_NAME} VTune::ITT)
 	endif()
 endif()
 
