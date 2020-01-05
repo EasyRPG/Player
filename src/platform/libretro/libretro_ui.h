@@ -52,8 +52,8 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-
 	void ProcessEvents() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;

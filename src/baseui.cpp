@@ -71,3 +71,27 @@ void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
 
+Game_ConfigVideo BaseUi::GetConfig() const {
+	Game_ConfigVideo cfg;
+
+	cfg.fullscreen.Set(IsFullscreen());
+	cfg.show_fps.Set(show_fps);
+	cfg.fps_render_window.Set(fps_render_window);
+	cfg.fps_limit.Set(fps_limit);
+
+	vGetConfig(cfg);
+
+	if (cfg.vsync.Enabled()
+			&& cfg.vsync.Get()
+			&& cfg.fps_limit.Enabled()) {
+		cfg.fps_limit.Lock(cfg.fps_limit.Get());
+	}
+
+	if (cfg.fullscreen.Enabled()
+			&& cfg.fullscreen.Get()
+			&& cfg.window_zoom.Enabled()) {
+		cfg.window_zoom.Lock(cfg.window_zoom.Get());
+	}
+
+	return cfg;
+}
