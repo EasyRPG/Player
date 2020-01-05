@@ -16,7 +16,21 @@
  */
 
 #include "instrumentation.h"
+#include "utils.h"
 
 #ifdef PLAYER_INSTRUMENTATION_VTUNE
 __itt_domain* Instrumentation::domain = nullptr;
 #endif
+
+void Instrumentation::Init(const char* name) {
+#ifdef PLAYER_INSTRUMENTATION_VTUNE
+	assert(!domain);
+#ifdef _WIN32
+	domain = __itt_domain_create(Utils::ToWideString(name).c_str());
+#else
+	domain = __itt_domain_create(name);
+#endif
+#else
+	(void)name;
+#endif
+}

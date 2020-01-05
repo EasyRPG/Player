@@ -79,15 +79,6 @@ private:
 #endif
 };
 
-inline void Instrumentation::Init(const char* name) {
-#ifdef PLAYER_INSTRUMENTATION_VTUNE
-	assert(!domain);
-	domain = __itt_domain_create(name);
-#else
-	(void)name;
-#endif
-}
-
 inline void Instrumentation::FrameBegin() {
 #ifdef PLAYER_INSTRUMENTATION_VTUNE
 	assert(domain);
