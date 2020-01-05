@@ -17,12 +17,14 @@
 #include "scene_settings.h"
 #include "input.h"
 #include "game_system.h"
+#include "cache.h"
 
 Scene_Settings::Scene_Settings() {
 	Scene::type = Scene::Settings;
 }
 
 void Scene_Settings::Start() {
+	CreateTitleGraphic();
 	CreateMainWindow();
 
 	main_window->SetActive(true);
@@ -60,6 +62,23 @@ void Scene_Settings::Update() {
 	}
 }
 
+void Scene_Settings::CreateTitleGraphic() {
+	// Load Title Graphic
+	if (Data::system.title_name.empty()) {
+		return;
+	}
+	title = std::make_unique<Sprite>();
+	FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+	request->SetGraphicFile(true);
+	request_id = request->Bind(&Scene_Settings::OnTitleSpriteReady, this);
+	request->Start();
+}
+
+void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
+	title->SetBitmap(Cache::Title(result->file));
+}
+
+
 void Scene_Settings::UpdateMain() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
@@ -78,3 +97,8 @@ void Scene_Settings::UpdateVideo() {
 void Scene_Settings::UpdateAudio() {
 }
 
+void Scene_Settings::DrawBackground(Bitmap& dst) {
+	if (!title || !title->GetBitmap()) {
+		Scene::DrawBackground(dst);
+	}
+}
