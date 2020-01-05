@@ -301,6 +301,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/scene_skill.h
 	src/scene_status.cpp
 	src/scene_status.h
+	src/scene_settings.h
+	src/scene_settings.cpp
 	src/scene_teleport.cpp
 	src/scene_teleport.h
 	src/scene_title.cpp

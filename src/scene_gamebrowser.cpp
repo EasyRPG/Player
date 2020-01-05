@@ -19,6 +19,7 @@
 #include "scene_gamebrowser.h"
 
 #include <memory>
+#include "scene_settings.h"
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_system.h"
@@ -82,9 +83,10 @@ void Scene_GameBrowser::CreateWindows() {
 	// Create Options Window
 	std::vector<std::string> options;
 
-	options.emplace_back("Games");
-	options.emplace_back("About");
-	options.emplace_back("Exit");
+	options.push_back("Games");
+	options.push_back("About");
+	options.push_back("Settings");
+	options.push_back("Exit");
 
 	command_window = std::make_unique<Window_Command>(options, 60);
 	command_window->SetY(32);
@@ -141,6 +143,9 @@ void Scene_GameBrowser::UpdateCommand() {
 				gamelist_window->SetIndex(old_gamelist_index);
 				break;
 			case About:
+				break;
+			case Options:
+				Scene::Push(std::make_shared<Scene_Settings>());
 				break;
 			default:
 				Scene::Pop();

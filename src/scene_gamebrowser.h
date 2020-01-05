@@ -63,6 +63,7 @@ public:
 	enum CommandOptionType {
 		GameList = 0,
 		About,
+		Options,
 		Quit
 	};
 
