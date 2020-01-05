@@ -22,6 +22,7 @@
 #include <vector>
 #include "scene.h"
 #include "window_command.h"
+#include "async_handler.h"
 
 /**
  * Scene allowing configuration of system state.
@@ -36,6 +37,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void DrawBackground(Bitmap& dst) override;
 
 	/**
 	 * Updates the range list window.
@@ -73,13 +75,18 @@ private:
 
 	void CreateMainWindow();
 
+	void CreateTitleGraphic();
+	void OnTitleSpriteReady(FileRequestResult* result);
+
 	void UpdateMain();
 	void UpdateInput();
 	void UpdateVideo();
 	void UpdateAudio();
 
-	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> main_window;
+
+	std::unique_ptr<Sprite> title;
+	FileRequestBinding request_id;
 };
 
 #endif
