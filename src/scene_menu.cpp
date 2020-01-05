@@ -24,6 +24,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
+#include "scene_settings.h"
 #include "scene_debug.h"
 #include "scene_end.h"
 #include "scene_equip.h"
@@ -76,6 +77,7 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options.push_back(Skill);
 		command_options.push_back(Equipment);
 		command_options.push_back(Save);
+		command_options.push_back(Settings);
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);
 		}
@@ -85,6 +87,7 @@ void Scene_Menu::CreateCommandWindow() {
 			it != lcf::Data::system.menu_commands.end(); ++it) {
 				command_options.push_back((CommandOptionType)*it);
 		}
+		command_options.push_back(Settings);
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);
 		}
@@ -119,6 +122,9 @@ void Scene_Menu::CreateCommandWindow() {
 		case Wait:
 			options.push_back(Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
 			break;
+		case Settings:
+			options.push_back("Settings");
+			break;
 		case Debug:
 			options.push_back("Debug");
 			break;
@@ -141,6 +147,7 @@ void Scene_Menu::CreateCommandWindow() {
 			}
 		case Wait:
 		case Quit:
+		case Settings:
 		case Debug:
 			break;
 		case Order:
@@ -207,6 +214,10 @@ void Scene_Menu::UpdateCommand() {
 			Game_System::ToggleAtbMode();
 			command_window->SetItemText(menu_index,
 				Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
+			break;
+		case Settings:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Scene::Push(std::make_shared<Scene_Settings>());
 			break;
 		case Debug:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
