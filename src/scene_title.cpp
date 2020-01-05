@@ -34,6 +34,7 @@
 #include "player.h"
 #include "scene_battle.h"
 #include "scene_import.h"
+#include "scene_settings.h"
 #include "scene_load.h"
 #include "window_command.h"
 #include "baseui.h"
@@ -72,7 +73,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 		CreateTitleGraphic();
 	}
 
-	if (prev_scene != Scene::Load && !Player::hide_title_flag) {
+	if (prev_scene != Scene::Load && prev_scene != Scene::Settings && !Player::hide_title_flag) {
 		command_window->SetOpenAnimation(8);
 	}
 }
@@ -119,6 +120,8 @@ void Scene_Title::Update() {
 			CommandContinue();
 		} else if (index == import_index) {  // Import (multi-part games)
 			CommandImport();
+		} else if (index == settings_index) {  // Settings Menu
+			CommandSettings();
 		} else if (index == exit_index) {  // Exit Game
 			CommandShutdown();
 		}
@@ -149,8 +152,10 @@ void Scene_Title::CreateCommandWindow() {
 	if (Player::meta->IsImportEnabled()) {
 		options.push_back(Player::meta->GetExVocabImportSaveTitleText());
 		import_index = 2;
-		exit_index = 3;
+		settings_index = 3;
+		exit_index = 4;
 	}
+	options.push_back("Settings");
 
 	options.push_back(lcf::Data::terms.exit_game);
 
@@ -256,6 +261,14 @@ void Scene_Title::CommandImport() {
 
 	Scene::Push(std::make_shared<Scene_Import>());
 }
+
+void Scene_Title::CommandSettings() {
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+
+	restart_title_cache = false;
+	Scene::Push(std::make_shared<Scene_Settings>());
+}
+
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));

@@ -95,6 +95,12 @@ public:
 	void CommandImport();
 
 	/**
+	 * Option Settings.
+	 * Shows the Settings-Screen (Scene_Settings).
+	 */
+	void CommandSettings();
+
+	/**
 	 * Option Shutdown.
 	 * Does a player shutdown.
 	 */
@@ -117,7 +123,8 @@ private:
 	/** Offsets for each selection, in case "Import" is enabled. */
 	int new_game_index =  0;
 	int continue_index =  1;
-	int exit_index     =  2;
+	int settings_index =  2;
+	int exit_index     =  3;
 	int import_index   = -1;
 
 	/** Contains the state of continue button. */
