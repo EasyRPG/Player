@@ -55,15 +55,11 @@ public:
 	void SetDisplayOverride(const std::string& name, int index);
 
 	/**
-	 * Party data displayed in the savegame slot.
+	 * Set party data displayed in the savegame slot.
 	 *
-	 * @param actors face_id and face_name of all party members.
-	 * @param name name of the First party member.
-	 * @param hp HP of the first party member.
-	 * @param level level of the First party member.
+	 * @param title the savegame party data to set.
 	 */
-	void SetParty(const std::vector<std::pair<int, std::string> >& actors,
-		std::string name, int hp, int level);
+	void SetParty(RPG::SaveTitle title);
 
 	/**
 	 * Gets if the slot holds a valid save.
@@ -94,12 +90,10 @@ protected:
 	int index = 0;
 	std::string override_name;
 	int override_index = 0;
-	std::vector<std::pair<int, std::string> > party;
-	std::string hero_name;
-	int hero_hp = 0;
-	int hero_level = 0;
+	RPG::SaveTitle data;
 	bool corrupted = false;
 	bool has_save = false;
+	bool has_party = false;
 };
 
 #endif
