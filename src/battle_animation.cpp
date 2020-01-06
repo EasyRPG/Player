@@ -255,15 +255,11 @@ void BattleAnimationMap::Draw(Bitmap& dst) {
 }
 
 void BattleAnimationMap::DrawGlobal(Bitmap& dst) {
-	// The animations are played at the vertices of a regular grid,
-	// 20 tiles wide by 10 tiles high, independant of the map.
-	const int x_stride = 20 * TILE_SIZE;
-	const int y_stride = 10 * TILE_SIZE;
-	int x_offset = Main_Data::game_screen->GetPanX() / TILE_SIZE;
-	int y_offset = Main_Data::game_screen->GetPanY() / TILE_SIZE;
-	for (int y = 0; y != 3; ++y) {
-		for (int x = 0; x != 3; ++x) {
-			DrawAt(dst, x_stride*x + x_offset, y_stride*y + y_offset);
+	auto rect = Main_Data::game_screen->GetScreenEffectsRect();
+
+	for (int y = -1; y < 2; ++y) {
+		for (int x = -1; x < 2; ++x) {
+			DrawAt(dst, rect.width * x + rect.x, rect.height * y + rect.y);
 		}
 	}
 }

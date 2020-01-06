@@ -50,13 +50,14 @@ void Plane::Draw(Bitmap& dst) {
 	int src_y = -oy;
 
 	// Apply screen shaking
-	int shake_pos = Main_Data::game_data.screen.shake_position;
+	const int shake_x = Main_Data::game_screen->GetShakeOffsetX();
+	const int shake_y = Main_Data::game_screen->GetShakeOffsetY();
 	if (Game_Map::LoopHorizontal()) {
-		src_x += shake_pos;
+		src_x += shake_x;
 	} else {
 		// The panorama occupies the same rectangle as the whole map.
 		// Using coordinates where the top-left of the screen is the origin...
-		int bg_x = -Game_Map::GetDisplayX() / TILE_SIZE + shake_pos;
+		int bg_x = -Game_Map::GetDisplayX() / TILE_SIZE + shake_x;
 		int bg_width = Game_Map::GetWidth() * TILE_SIZE;
 
 		// Clip the panorama to the screen
@@ -80,8 +81,9 @@ void Plane::Draw(Bitmap& dst) {
 		dst_rect.width = bg_width;
 
 		// Correct the offset if the top-left corner moved.
-		src_x += shake_pos + bg_x;
+		src_x += shake_x + bg_x;
 	}
+	src_y += shake_y;
 
 	dst.TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
 }

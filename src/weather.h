@@ -23,6 +23,7 @@
 #include "drawable.h"
 #include "system.h"
 #include "tone.h"
+#include "rect.h"
 
 /**
  * Renders the weather effects.
@@ -37,24 +38,34 @@ public:
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
+	void OnWeatherChanged();
+
 private:
 	void DrawRain(Bitmap& dst);
 	void DrawSnow(Bitmap& dst);
 	void DrawFog(Bitmap& dst);
 	void DrawSandstorm(Bitmap& dst);
+	void CreateRainParticle();
+	void CreateSnowParticle();
 	void CreateFogOverlay();
+	void DrawParticles(Bitmap& dst, const Bitmap& particle, BitmapRef& tone_particle);
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay);
+	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, BitmapRef& tone_bitmap, Rect rect);
 
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 	BitmapRef fog_bitmap;
 	BitmapRef sand_bitmap;
 
+	BitmapRef snow_tone_bitmap;
+	BitmapRef rain_tone_bitmap;
 	BitmapRef fog_tone_bitmap;
 	BitmapRef sand_tone_bitmap;
 
+	BitmapRef weather_surface;
+
 	Tone tone_effect;
-	bool tone_dirty = false;
+	bool tone_dirty = true;
 };
 
 inline Tone Weather::GetTone() const {

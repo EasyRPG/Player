@@ -20,17 +20,20 @@
 
 #include <vector>
 #include "system.h"
+#include "options.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
 
 class Game_Battler;
 class Screen;
+class Weather;
 
 class Game_Screen {
 
 public:
 	Game_Screen();
+	~Game_Screen();
 
 	void SetupNewGame();
 	void SetupFromSave();
@@ -81,15 +84,15 @@ public:
 	 */
 	int GetWeatherStrength();
 
-	struct Snowflake {
-		uint16_t x;
-		uint8_t y;
-		uint8_t life;
+	struct Particle {
+		int16_t x = 0;
+		int16_t y = 0;
+		int16_t life = 0;
 	};
 
-	const std::vector<Snowflake>& GetSnowflakes();
+	const std::vector<Particle>& GetParticles();
 
-	enum Weather {
+	enum WeatherType {
 		Weather_None,
 		Weather_Rain,
 		Weather_Snow,
@@ -136,23 +139,31 @@ public:
 	 */
 	static int AnimateShake(int strength, int speed, int time_left, int position);
 
-	/**
-	 * Get the X panning offset for full screen effects
-	 *
-	 * @return pan_x offset
-	 */
-	int GetPanX();
+	/** @return current pan_x offset for screen effects in 1/16 pixels */
+	int GetPanX() const;
 
-	/**
-	 * Get the Y panning offset for full screen effects
-	 *
-	 * @return pan_y offset
-	 */
-	int GetPanY();
+	/** @return current pan_y offset for screen effects in 1/16 pixels */
+	int GetPanY() const;
+
+	/** @return maximum pan_x offset for screen effects in 1/16 pixels */
+	static constexpr int GetPanLimitX();
+
+	/** @return maximum pan_y offset for screen effects in 1/16 pixels */
+	static constexpr int GetPanLimitY();
+
+	/** @return a Rect describing position and size of screen effects in pixels */
+	Rect GetScreenEffectsRect() const;
+
+	/** @return Return screen shake X offset */
+	int GetShakeOffsetX() const;
+
+	/** @return Return screen shake Y offset */
+	int GetShakeOffsetY() const;
 
 private:
 	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
+	std::unique_ptr<Weather> weather;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
@@ -165,14 +176,71 @@ private:
 	int movie_res_y;
 
 protected:
-	std::vector<Snowflake> snowflakes;
+	std::vector<Particle> particles;
 
 	void StopWeather();
-	void InitSnowRain();
-	void UpdateSnowRain(int speed);
+	void UpdateRain();
+	void UpdateSnow();
 	void UpdateFog(int dx, int dy);
+	void OnWeatherChanged();
+	void InitRainSnow(int lifetime);
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
+
+inline int Game_Screen::GetPanX() const {
+	return data.pan_x;
+}
+
+inline int Game_Screen::GetPanY() const {
+	return data.pan_y;
+}
+
+inline constexpr int Game_Screen::GetPanLimitX() {
+	return SCREEN_TARGET_WIDTH * 16;
+}
+
+inline constexpr int Game_Screen::GetPanLimitY() {
+	return SCREEN_TARGET_HEIGHT * 16 * 2 / 3;
+}
+
+inline Rect Game_Screen::GetScreenEffectsRect() const {
+	return Rect{ GetPanX() / 16, GetPanY() / 16, GetPanLimitX() / 16, GetPanLimitY() / 16 };
+}
+
+inline int Game_Screen::GetShakeOffsetX() const {
+	return data.shake_position;
+}
+
+inline int Game_Screen::GetShakeOffsetY() const {
+	return data.shake_position_y;
+}
+
+inline Tone Game_Screen::GetTone() {
+	return Tone((int) ((data.tint_current_red) * 128 / 100),
+		(int) ((data.tint_current_green) * 128 / 100),
+		(int) ((data.tint_current_blue) * 128 / 100),
+		(int) ((data.tint_current_sat) * 128 / 100));
+}
+
+inline Color Game_Screen::GetFlashColor() const {
+	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
+}
+
+inline int Game_Screen::GetWeatherType() {
+	return data.weather;
+}
+
+inline int Game_Screen::GetWeatherStrength() {
+	return data.weather_strength;
+}
+
+inline const std::vector<Game_Screen::Particle>& Game_Screen::GetParticles() {
+	return particles;
+}
+
+inline bool Game_Screen::IsBattleAnimationWaiting() {
+	return (bool)animation;
+}
 
 #endif

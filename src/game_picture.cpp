@@ -76,8 +76,8 @@ void Game_Picture::UpdateSprite() {
 	int x = data.current_x;
 	int y = data.current_y;
 	if (data.flags.affected_by_shake) {
-		x -= Main_Data::game_data.screen.shake_position;
-		y += Main_Data::game_data.screen.shake_position_y;
+		x -= Main_Data::game_screen->GetShakeOffsetX();
+		y -= Main_Data::game_screen->GetShakeOffsetY();
 	}
 
 	sprite->SetX(x);
