@@ -472,6 +472,13 @@ std::vector<Game_Actor*> Game_Party::GetActors() const {
 	return actors;
 }
 
+Game_Actor* Game_Party::GetActor(int idx) const {
+	if (idx < static_cast<int>(data.party.size())) {
+		return Game_Actors::GetActor(data.party[idx]);
+	}
+	return nullptr;
+}
+
 void Game_Party::ApplyDamage(int damage, bool lethal) {
 	if (damage <= 0) {
 		return;
