@@ -71,6 +71,7 @@
 #include "utils.h"
 #include "version.h"
 #include "game_quit.h"
+#include "scene_title.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -879,6 +880,11 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 void Player::LoadSavegame(const std::string& save_name) {
 	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
 
+	auto title_scene = Scene::Find(Scene::Title);
+	if (title_scene) {
+		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
+	}
+
 	std::unique_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
@@ -955,6 +961,10 @@ static void OnMapFileReady(FileRequestResult*) {
 
 void Player::SetupNewGame() {
 	Game_System::ResetFrameCounter();
+	auto title = Scene::Find(Scene::Title);
+	if (title) {
+		static_cast<Scene_Title*>(title.get())->OnGameStart();
+	}
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();

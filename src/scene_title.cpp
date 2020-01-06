@@ -70,7 +70,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 		Player::ResetGameObjects();
 
 		Start();
-	} else if (prev_scene == Scene::Load && CheckEnableTitleGraphicAndMusic()) {
+	} else if (CheckEnableTitleGraphicAndMusic()) {
 		CreateTitleGraphic();
 	}
 
@@ -227,14 +227,12 @@ void Scene_Title::CommandContinue() {
 		return;
 	}
 
-	restart_title_cache = false;
 	Scene::Push(std::make_shared<Scene_Load>());
 }
 
 void Scene_Title::CommandImport() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	restart_title_cache = false;
 	Scene::Push(std::make_shared<Scene_Import>());
 }
 
@@ -248,6 +246,6 @@ void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(Cache::Title(result->file));
 }
 
-void Scene_Title::OnGameLoad() {
+void Scene_Title::OnGameStart() {
 	restart_title_cache = true;
 }
