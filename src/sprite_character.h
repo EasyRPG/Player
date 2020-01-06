@@ -76,6 +76,11 @@ public:
 	 */
 	static Rect GetCharacterRect(const std::string& name, int index, Rect bitmap_rect);
 
+	/**
+	 * Called when the map chipset is changed by an event
+	 */
+	void ChipsetUpdated();
+
 private:
 	Game_Character* character;
 
@@ -91,6 +96,7 @@ private:
 
 	bool x_shift = false;
 	bool y_shift = false;
+	bool refresh_bitmap = false;
 
 	void OnTileSpriteReady(FileRequestResult*);
 	void OnCharSpriteReady(FileRequestResult*);

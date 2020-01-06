@@ -136,6 +136,10 @@ void Spriteset_Map::ChipsetUpdated() {
 	else {
 		OnTilemapSpriteReady(NULL);
 	}
+
+	for (auto& sprite: character_sprites) {
+		sprite->ChipsetUpdated();
+	}
 }
 
 void Spriteset_Map::SystemGraphicUpdated() {
