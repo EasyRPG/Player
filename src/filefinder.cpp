@@ -30,36 +30,6 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#  define StatBuf struct _stat
-#  define GetStat _stat
-#  ifdef __MINGW32__
-#    include <dirent.h>
-#  elif defined(_MSC_VER)
-#    include "dirent_win.h"
-#  endif
-#else
-#  ifdef PSP2
-#    include <psp2/io/dirent.h>
-#    include <psp2/io/stat.h>
-#    define S_ISDIR SCE_S_ISDIR
-#    define opendir sceIoDopen
-#    define closedir sceIoDclose
-#    define dirent SceIoDirent
-#    define readdir sceIoDread
-#    define stat SceIoStat
-#    define lstat sceIoGetstat
-#    define StatBuf SceIoStat
-#    define GetStat sceIoGetstat
-#  else
-#    include <dirent.h>
-#    include <sys/stat.h>
-#    define StatBuf struct stat
-#    define GetStat stat
-#  endif
-#  include <unistd.h>
-#  include <sys/types.h>
 #endif
 
 #if defined(USE_SDL) && defined(__ANDROID__)
@@ -81,6 +51,7 @@
 #include "rtp.h"
 #include "main_data.h"
 #include "reader_util.h"
+#include "platform.h"
 
 #ifdef USE_LIBRETRO
 #include "libretro_ui.h"
@@ -640,7 +611,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 		env_paths.insert(env_paths.end(), tmp.begin(), tmp.end());
 	}
 
-	for (const std::string p : env_paths) {
+	for (const std::string& p : env_paths) {
 		add_rtp_path(p);
 	}
 }
@@ -779,42 +750,11 @@ std::string FileFinder::FindSound(const std::string& name) {
 }
 
 bool FileFinder::Exists(const std::string& filename) {
-#ifdef _WIN32
-	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
-#elif (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
-	struct stat sb;
-	return ::stat(filename.c_str(), &sb) == 0;
-#elif defined(PSP2)
-	struct SceIoStat sb;
-	return (sceIoGetstat(filename.c_str(), &sb) >= 0);
-#else
-	return ::access(filename.c_str(), F_OK) != -1;
-#endif
+	return Platform::File(filename).Exists();
 }
 
 bool FileFinder::IsDirectory(const std::string& dir, bool follow_symlinks) {
-#if !(defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
-	if (!Exists(dir)) {
-		return false;
-	}
-#endif
-
-#ifdef _WIN32
-	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
-	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
-	      == FILE_ATTRIBUTE_DIRECTORY;
-#else
-	struct stat sb;
-#  if (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
-	auto fn = ::stat;
-#  else
-	auto fn = follow_symlinks ? ::stat : ::lstat;
-#  endif
-	if (fn(dir.c_str(), &sb) == 0) {
-		return S_ISDIR(sb.st_mode);
-	}
-	return false;
-#endif
+	return Platform::File(dir).IsDirectory(follow_symlinks);
 }
 
 FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m, const std::string& parent) {
@@ -825,59 +765,25 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	result.base = path;
 
-#ifdef _WIN32
-#  define DIR _WDIR
-#  define opendir _wopendir
-#  define closedir _wclosedir
-#  define wpath Utils::ToWideString(path)
-#  define dirent _wdirent
-#  define readdir _wreaddir
-#else
-#  define wpath path
-#endif
-	#ifdef PSP2
-	int dir = opendir(wpath.c_str());
-	if (dir < 0) {
-	#else
-	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), [](::DIR* d) { if (d) ::closedir(d); });
+	Platform::Directory dir(path);
 	if (!dir) {
-	#endif
 		Output::Debug("Error opening dir %s: %s", path.c_str(),
 					  ::strerror(errno));
 		return result;
 	}
 
-#ifdef PSP2
-	struct dirent ent;
-	while (readdir(dir, &ent) > 0) {
-#else
-	struct dirent* ent;
-	while ((ent = ::readdir(dir.get())) != NULL) {
-#endif
-#ifdef _WIN32
-		std::string const name = Utils::FromWideString(ent->d_name);
-#else
-	#ifdef PSP2
-		std::string const name = ent.d_name;
-	#else
-		std::string const name = ent->d_name;
-	#endif
-#endif
+	while (dir.Read()) {
+		const std::string name = dir.GetEntryName();
+		Platform::FileType type = dir.GetEntryType();
 
 		static bool has_fast_dir_stat = true;
 		bool is_directory = false;
 		if (has_fast_dir_stat) {
-			#ifdef PSP2
-			is_directory = S_ISDIR(ent.d_stat.st_mode);
-			#elif defined(_DIRENT_HAVE_D_TYPE) || defined(_3DS)
-			if (ent->d_type == DT_UNKNOWN) {
+			if (type == Platform::FileType::Unknown) {
 				has_fast_dir_stat = false;
 			} else {
-				is_directory = ent->d_type == DT_DIR;
+				is_directory = type == Platform::FileType::Directory;
 			}
-			#else
-			has_fast_dir_stat = false;
-			#endif
 		}
 
 		if (!has_fast_dir_stat) {
@@ -920,29 +826,14 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		}
 	}
 
-#ifdef _WIN32
-#  undef DIR
-#  undef opendir
-#  undef closedir
-#  undef dirent
-#  undef readdir
-#endif
-#undef wpath
-#ifdef PSP2
-	closedir(dir);
-#endif
 	return result;
 }
 
-EasyRPG_Offset FileFinder::GetFileSize(const std::string& file) {
-	StatBuf sb;
-	int result = GetStat(file.c_str(), &sb);
-	return (result == 0) ? sb.st_size : -1;
+int64_t FileFinder::GetFileSize(const std::string& file) {
+	return Platform::File(file).GetSize();
 }
 
 bool FileFinder::IsMajorUpdatedTree() {
-	EasyRPG_Offset size;
-
 	// Find an MP3 music file only when official Harmony.dll exists
 	// in the gamedir or the file doesn't exist because
 	// the detection doesn't return reliable results for games created with
@@ -950,7 +841,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	bool find_mp3 = true;
 	std::string harmony = FindDefault("Harmony.dll");
 	if (!harmony.empty()) {
-		size = GetFileSize(harmony);
+		auto size = GetFileSize(harmony);
 		if (size != -1 && size != KnownFileSize::OFFICIAL_HARMONY_DLL) {
 			Output::Debug("Non-official Harmony.dll found, skipping MP3 test");
 			find_mp3 = false;
@@ -974,7 +865,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// Compare the size of RPG_RT.exe with threshold
 	std::string rpg_rt = FindDefault("RPG_RT.exe");
 	if (!rpg_rt.empty()) {
-		size = GetFileSize(rpg_rt);
+		auto size = GetFileSize(rpg_rt);
 		if (size != -1) {
 			return size > (Player::IsRPG2k() ? RpgrtMajorUpdateThreshold::RPG2K : RpgrtMajorUpdateThreshold::RPG2K3);
 		}

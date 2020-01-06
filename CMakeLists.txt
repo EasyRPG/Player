@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.7)
 
 project(EasyRPG_Player VERSION 0.6.1 LANGUAGES CXX)
 
+# Extra CMake Module files
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
+include(ConfigureWindows)
+include(PlayerFindPackage)
+
 # C++14 is required
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -183,6 +188,8 @@ add_library(${PROJECT_NAME}
 	src/pixman_image_ptr.h
 	src/plane.cpp
 	src/plane.h
+	src/platform.cpp
+	src/platform.h
 	src/player.cpp
 	src/player.h
 	src/psp2_ui.cpp
@@ -373,12 +380,6 @@ include(CMakeDependentOption)
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-# Extra CMake Module files
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
-
-include(ConfigureWindows)
-include(PlayerFindPackage)
 
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
