@@ -78,7 +78,7 @@ BitmapHeader parseHeader(const uint8_t*& ptr, uint8_t const* const e) {
 		hdr.depth = get_2(ptr, e);
 		hdr.compression = get_4(ptr, e);
 		ptr += 12;
-		hdr.num_colors = std::min(256u, get_4(ptr, e));
+		hdr.num_colors = std::min(uint32_t(256), get_4(ptr, e));
 		hdr.palette_size = 4;
 	}
 
