@@ -40,7 +40,7 @@ public:
 	~Game_Screen();
 
 	void SetupNewGame();
-	void SetupFromSave(std::vector<RPG::SavePicture> pictures);
+	void SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> pictures);
 
 	const RPG::SaveScreen& GetScreenSaveData() const;
 	std::vector<RPG::SavePicture> GetPictureSaveData() const;
@@ -170,7 +170,7 @@ private:
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;
 
-	RPG::SaveScreen& data;
+	RPG::SaveScreen data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
 
@@ -266,6 +266,10 @@ inline void Game_Screen::PreallocatePictureData(int id) {
 		DoPreallocatePictureData(id);
 		return;
 	}
+}
+
+inline const RPG::SaveScreen& Game_Screen::GetScreenSaveData() const {
+	return data;
 }
 
 #endif

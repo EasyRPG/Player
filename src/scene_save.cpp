@@ -118,6 +118,7 @@ void Scene_Save::Action(int index) {
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();
 
+	data_copy.screen = Main_Data::game_screen->GetScreenSaveData();
 	data_copy.pictures = Main_Data::game_screen->GetPictureSaveData();
 
 	// RPG_RT saves always have the scene set to this.

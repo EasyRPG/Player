@@ -27,7 +27,6 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_map.h"
-#include "main_data.h"
 #include "output.h"
 #include "utils.h"
 #include "options.h"
@@ -54,12 +53,10 @@ static int GetDefaultNumberOfPictures() {
 }
 
 Game_Screen::Game_Screen()
-	: data(Main_Data::game_data.screen)
 {
 }
 
 Game_Screen::~Game_Screen() {
-	data = {};
 }
 
 void Game_Screen::SetupNewGame() {
@@ -72,7 +69,9 @@ void Game_Screen::SetupNewGame() {
 	PreallocatePictureData(GetDefaultNumberOfPictures());
 }
 
-void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
+void Game_Screen::SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> save_pics) {
+	data = std::move(screen);
+
 	weather = std::make_unique<Weather>();
 
 	pictures.clear();
@@ -85,11 +84,11 @@ void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
 		pictures.emplace_back(std::move(sp));
 	}
 
-	if (Main_Data::game_data.screen.battleanim_active) {
-		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
-				Main_Data::game_data.screen.battleanim_target,
-				Main_Data::game_data.screen.battleanim_global,
-				Main_Data::game_data.screen.battleanim_frame);
+	if (data.battleanim_active) {
+		ShowBattleAnimation(data.battleanim_id,
+				data.battleanim_target,
+				data.battleanim_global,
+				data.battleanim_frame);
 	}
 }
 
@@ -204,7 +203,7 @@ void Game_Screen::FlashEnd() {
 }
 
 void Game_Screen::FlashMapStepDamage() {
-	Main_Data::game_screen->FlashOnce(31, 10, 10, 20, 6);
+	FlashOnce(31, 10, 10, 20, 6);
 }
 
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
@@ -452,11 +451,11 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 		return 0;
 	}
 
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-	Main_Data::game_data.screen.battleanim_target = target_id;
-	Main_Data::game_data.screen.battleanim_global = global;
-	Main_Data::game_data.screen.battleanim_active = true;
-	Main_Data::game_data.screen.battleanim_frame = start_frame;
+	data.battleanim_id = animation_id;
+	data.battleanim_target = target_id;
+	data.battleanim_global = global;
+	data.battleanim_active = true;
+	data.battleanim_frame = start_frame;
 
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
@@ -474,7 +473,7 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 void Game_Screen::UpdateBattleAnimation() {
 	if (animation) {
 		animation->Update();
-		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
+		data.battleanim_frame = animation->GetFrame();
 		if (animation->IsDone()) {
 			CancelBattleAnimation();
 		}
@@ -482,9 +481,9 @@ void Game_Screen::UpdateBattleAnimation() {
 }
 
 void Game_Screen::CancelBattleAnimation() {
-	Main_Data::game_data.screen.battleanim_frame = animation ?
+	data.battleanim_frame = animation ?
 		animation->GetFrames() : 0;
-	Main_Data::game_data.screen.battleanim_active = false;
+	data.battleanim_active = false;
 	animation.reset();
 }
 
