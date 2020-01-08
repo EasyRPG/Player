@@ -1,4 +1,12 @@
 #include "pending_message.h"
+#include "game_variables.h"
+#include "game_message.h"
+#include "data.h"
+#include "reader_util.h"
+#include "output.h"
+#include "utils.h"
+#include "player.h"
+#include "main_data.h"
 #include <cassert>
 #include <cctype>
 #include <algorithm>
@@ -11,6 +19,7 @@ static void RemoveControlChars(std::string& s) {
 
 int PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
+	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char);
 	texts.push_back(std::move(msg));
 	return texts.size();
 }
@@ -59,4 +68,74 @@ void PendingMessage::SetChoiceCancelType(int value) {
 void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
+
+std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char) {
+	if (input.empty()) {
+		return std::move(input);
+	}
+
+	std::string output;
+
+	auto iter = input.data();
+	const auto end = input.data() + input.size();
+
+	auto start_copy = iter;
+	while (iter != end) {
+		auto ret = Utils::UTF8Next(iter, end);
+		if (ret.ch != escape_char) {
+			iter = ret.iter;
+			continue;
+		}
+
+		// utf8 parsing failed
+		if (ret.ch == 0) {
+			break;
+		}
+
+		output.append(start_copy, iter);
+		start_copy = iter;
+
+		iter = ret.iter;
+		if (iter == end) {
+			break;
+		}
+
+		const auto ch = *iter;
+		++iter;
+
+		if (ch == 'N' || ch == 'n') {
+			auto parse_ret = Game_Message::ParseActor(iter, end, escape_char, true);
+			iter = parse_ret.next;
+			int value = parse_ret.value;
+
+			const auto* actor = ReaderUtil::GetElement(Data::actors, value);
+			if (!actor) {
+				Output::Warning("Invalid Actor Id %d in message text", value);
+			} else{
+				output.append(actor->name);
+			}
+
+			start_copy = iter;
+		} else if (ch == 'V' || ch == 'v') {
+			auto parse_ret = Game_Message::ParseVariable(iter, end, escape_char, true);
+			iter = parse_ret.next;
+			int value = parse_ret.value;
+
+			int variable_value = Main_Data::game_variables->Get(value);
+			output.append(std::to_string(variable_value));
+
+			start_copy = iter;
+		}
+	}
+
+	if (start_copy == input.data()) {
+		// Fast path - no substitutions occured, so just move the input into the return value.
+		output = std::move(input);
+	} else {
+		output.append(start_copy, end);
+	}
+
+	return output;
+}
+
 

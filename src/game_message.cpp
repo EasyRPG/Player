@@ -23,6 +23,10 @@
 #include "window_message.h"
 #include "font.h"
 #include "player.h"
+#include "game_variables.h"
+#include "data.h"
+#include "reader_util.h"
+#include "output.h"
 
 #include <cctype>
 
@@ -230,6 +234,119 @@ bool Game_Message::IsMessageVisible() {
 
 bool Game_Message::IsMessageActive() {
 	return IsMessagePending() || IsMessageVisible();
+}
+
+static Game_Message::ParseParamResult ParseParamImpl(
+		const char upper,
+		const char lower,
+		const char* iter,
+		const char* end,
+		uint32_t escape_char,
+		bool skip_prefix,
+		int max_recursion)
+{
+	if (!skip_prefix) {
+		const auto begin = iter;
+		if (iter == end) {
+			return { begin, 0 };
+		}
+		auto ret = Utils::UTF8Next(iter, end);
+		// Invalid commands
+		if (ret.ch != escape_char) {
+			return { begin, 0 };
+		}
+		iter = ret.iter;
+		if (iter == end || (*iter != upper && *iter != lower)) {
+			return { begin, 0 };
+		}
+		++iter;
+	}
+
+	// If no bracket, RPG_RT will return 0.
+	if (iter == end || *iter != '[') {
+		return { iter, 0 };
+	}
+
+	int value = 0;
+	++iter;
+	bool stop_parsing = false;
+	bool got_valid_number = false;
+
+	while (iter != end && *iter != ']') {
+		if (stop_parsing) {
+			++iter;
+			continue;
+		}
+
+		// Fast inline isdigit()
+		if (*iter >= '0' && *iter <= '9') {
+			value *= 10;
+			value += (*iter - '0');
+			++iter;
+			got_valid_number = true;
+			continue;
+		}
+
+		if (max_recursion > 0) {
+			auto ret = Utils::UTF8Next(iter, end);
+			auto ch = ret.ch;
+			iter = ret.iter;
+
+			// Recursive variable case.
+			if (ch == escape_char) {
+				if (iter != end && (*iter == 'V' || *iter == 'v')) {
+					++iter;
+
+					auto ret = ParseParamImpl('V', 'v', iter, end, escape_char, true, max_recursion - 1);
+					iter = ret.next;
+					int var_val = Main_Data::game_variables->Get(ret.value);
+
+					got_valid_number = true;
+
+					// RPG_RT concatenates the variable value.
+					int m = 10;
+					if (value != 0) {
+						while (m < var_val) {
+							m *= 10;
+						}
+					}
+					value = value * m + var_val;
+					continue;
+				}
+			}
+		}
+
+		// If we hit a non-digit, RPG_RT will stop parsing until the next closing bracket.
+		stop_parsing = true;
+	}
+
+	if (iter != end) {
+		++iter;
+	}
+
+	// RPG_RT will replace varible substitutions that result in 0
+	// with 1 to avoid invalid actor crash.
+	if (upper == 'N' && value == 0 && got_valid_number) {
+		value = 1;
+	}
+
+	return { iter, value };
+}
+
+Game_Message::ParseParamResult Game_Message::ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('V', 'v', iter, end, escape_char, skip_prefix, max_recursion - 1);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('C', 'c', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseSpeed(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('S', 's', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('N', 'n', iter, end, escape_char, skip_prefix, max_recursion);
 }
 
 

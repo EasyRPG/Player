@@ -56,8 +56,12 @@ class PendingMessage {
 		int GetNumberInputDigits() const { return num_input_digits; }
 		int GetNumberInputVariable() const { return num_input_variable; }
 		int GetNumberInputStartLine() const { return NumLines(); }
+
 	private:
 		int PushLineImpl(std::string msg);
+
+		std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char);
+
 	private:
 		ChoiceContinuation choice_continuation;
 		std::vector<std::string> texts;

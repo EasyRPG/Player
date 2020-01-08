@@ -78,66 +78,6 @@ Window_Message::~Window_Message() {
 	}
 }
 
-void Window_Message::ApplyTextInsertingCommands() {
-	text_index = text.end();
-	end = text.end();
-
-	// Contains already substitued \N actors to prevent endless recursion
-	std::vector<int> replaced_actors;
-	int actor_replacement_start = std::distance(text.begin(), end);
-
-	if (!text.empty()) {
-		// Move on first valid char
-		--text_index;
-
-		// Apply commands that insert text
-		while (std::distance(text_index, text.begin()) <= -1) {
-			char ch = tolower(*text_index--);
-			switch (ch) {
-			case 'n':
-			case 'v':
-			{
-				if (*text_index != Player::escape_char) {
-					continue;
-				}
-				++text_index;
-
-				auto start_code = text_index - 1;
-				bool success;
-				int parsed_num;
-				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, parsed_num));
-				if (start_code < text.begin() + actor_replacement_start) {
-					replaced_actors.clear();
-				}
-
-				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
-					text_index = start_code;
-					continue;
-				}
-
-				if (ch == 'n') {
-					replaced_actors.push_back(parsed_num);
-					actor_replacement_start = std::min<int>(std::distance(text.begin(), start_code), actor_replacement_start);
-				}
-
-				text.replace(start_code, text_index + 1, command_result);
-				// Start from the beginning, the inserted text might add new commands
-				text_index = text.end();
-				end = text.end();
-				actor_replacement_start = std::min<int> (std::distance(text.begin(), end), actor_replacement_start);
-
-				// Move on first valid char
-				--text_index;
-
-				break;
-			}
-			default:
-				break;
-			}
-		}
-	}
-}
-
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	contents->Clear();
 	pending_message = std::move(pm);
@@ -148,36 +88,32 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		return;
 	}
 
+	text.clear();
+	auto append = [&](const std::string& line) {
+		text.append(line);
+		if (text.empty() || (text.back() != '\n' && text.back() != '\f')) {
+			text.append(1, '\n');
+		}
+	};
 	if (pending_message.IsWordWrapped()) {
-		std::u32string wrapped_text;
 		for (const std::string& line : lines) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
-			if (pending_message.IsWordWrapped()) {
-				// since ApplyTextInsertingCommands works for the text variable,
-				// we store line into text and use wrapped_text for the real 'text'
-				text = Utils::DecodeUTF32(line);
-				ApplyTextInsertingCommands();
-				Game_Message::WordWrap(
-						Utils::EncodeUTF(text),
-						width - 24,
-						[&wrapped_text](const std::string& wrapped_line) {
-							wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
-						}
-				);
-				text = wrapped_text;
-			}
+			Game_Message::WordWrap(
+					line,
+					width - 24,
+					[&](const std::string& wrapped_line) {
+						append(wrapped_line);
+					}
+			);
 		}
-	}
-	else {
-		text.clear();
+	} else {
 		for (const std::string& line : lines) {
-			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
+			append(line);
 		}
 	}
 	item_max = min(4, pending_message.GetNumChoices());
 
-	ApplyTextInsertingCommands();
-	text_index = text.begin();
+	text_index = text.data();
 
 	// If we're displaying a new message, reset the closing animation.
 	if (closing) {
@@ -199,8 +135,7 @@ void Window_Message::FinishMessageProcessing() {
 	}
 
 	text.clear();
-	text_index = text.begin();
-	end = text.end();
+	text_index = text.data();
 }
 
 void Window_Message::StartChoiceProcessing() {
@@ -349,10 +284,10 @@ void Window_Message::Update() {
 				SetOpenAnimation(0);
 			} else {
 				//Handled after base class updates.
-				if (text_index != text.end()) {
+				if (text_index != &*text.end()) {
 					update_message_processing = true;
 				}
-				if (text_index == text.end() && wait_count <= 0) {
+				if (text_index == &*text.end() && wait_count <= 0) {
 					FinishMessageProcessing();
 				}
 			}
@@ -395,6 +330,8 @@ void Window_Message::UpdateMessage() {
 	}
 
 	while (true) {
+		const auto* end = &*text.end();
+
 		if (wait_count > 0) {
 			--wait_count;
 			break;
@@ -422,14 +359,23 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (*text_index == '\r') {
-			// Not handled
-			++text_index;
+		const auto start_index = text_index;
+
+		auto res = Utils::UTF8Next(text_index, end);
+		text_index = res.iter;
+		auto ch = res.ch;
+
+		if (ch == 0) {
 			continue;
 		}
 
-		if (*text_index == '\n') {
-			if (text_index + 1 != end) {
+		if (ch == '\r') {
+			// Not handled
+			continue;
+		}
+
+		if (ch == '\n') {
+			if (text_index != end) {
 				if (!instant_speed && line_char_counter == 0) {
 					// RPG_RT will always wait 1 frame for each empty line.
 					SetWait(1);
@@ -441,17 +387,13 @@ void Window_Message::UpdateMessage() {
 				}
 			}
 			InsertNewLine();
-			++text_index;
 			continue;
 		}
 
-		if (*text_index == '\f') {
+		if (ch == '\f') {
 			// Used by our code to inject form feeds.
 			instant_speed = false;
-			++text_index;
-			if (*text_index == '\n') {
-				++text_index;
-			}
+
 			if (text_index != end) {
 				SetPause(true);
 				new_page_after_pause = true;
@@ -460,22 +402,33 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
+		if (ch == Player::escape_char && text_index != end) {
 			// Special message codes
-			++text_index;
+			const auto prev_index = text_index;
 
-			int parameter;
-			bool is_valid;
-			switch (tolower(*text_index)) {
+			auto res = Utils::UTF8Next(text_index, end);
+			ch = res.ch;
+			text_index = res.iter;
+
+			switch (ch) {
 			case 'c':
-				// Color
-				parameter = ParseParameter(is_valid);
-				text_color = parameter > 19 ? 0 : parameter;
+			case 'C':
+				{
+					// Color
+					auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+					auto value = pres.value;
+					text_color = value > 19 ? 0 : value;
+					text_index = pres.next;
+				}
 				break;
 			case 's':
-				// Speed modifier
-				parameter = ParseParameter(is_valid);
-				speed = Utils::Clamp(parameter, 1, 20);
+			case 'S':
+				{
+					// Speed modifier
+					auto pres = Game_Message::ParseSpeed(text_index, end, Player::escape_char, true);
+					speed = Utils::Clamp(pres.value, 1, 20);
+					text_index = pres.next;
+				}
 				break;
 			case '_':
 				// Insert half size space
@@ -530,29 +483,31 @@ void Window_Message::UpdateMessage() {
 			case '\n':
 			case '\f':
 				// \ followed by linebreak, don't skip them
-				--text_index;
+				text_index = prev_index;
 				break;
 			default:
-				if (*text_index == Player::escape_char) {
+				if (ch == Player::escape_char) {
 					DrawGlyph(Player::escape_symbol, instant_speed);
 				}
 				break;
 			}
-			++text_index;
 			continue;
 		}
 
-		if (*text_index == '$'
-				   && std::distance(text_index, end) > 1
-				   && std::isalpha(*std::next(text_index))) {
-			// ExFont
-			DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))), instant_speed);
-			text_index += 2;
-			continue;
+		if (ch == '$' && text_index != end) {
+			auto res = Utils::UTF8Next(text_index, end);
+			ch = res.ch;
+
+			if (ch < 128 && std::isalpha(static_cast<char>(ch))) {
+				text_index = res.iter;
+
+				// ExFont
+				DrawGlyph(std::string(start_index, text_index), instant_speed);
+				continue;
+			}
 		}
 
-		DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))), instant_speed);
-		++text_index;
+		DrawGlyph(std::string(start_index, text_index), instant_speed);
 	}
 }
 
@@ -585,113 +540,6 @@ void Window_Message::IncrementLineCharCounter(int width) {
 	}
 }
 
-int Window_Message::ParseParameter(bool& is_valid) {
-	++text_index;
-
-	if (text_index == end ||
-		*text_index != '[') {
-		--text_index;
-		is_valid = false;
-		return 0;
-	}
-
-	++text_index; // Skip the [
-
-	bool null_at_start = false;
-	std::stringstream ss;
-	for (;;) {
-		if (text_index == end) {
-			break;
-		} else if (*text_index == '\n') {
-			--text_index;
-			break;
-		}
-		else if (*text_index == '0') {
-			// Truncate 0 at the start
-			if (!ss.str().empty()) {
-				ss << "0";
-			} else {
-				null_at_start = true;
-			}
-		}
-		else if (*text_index >= '1' &&
-			*text_index <= '9') {
-			ss << std::string(text_index, std::next(text_index));
-		} else if (*text_index == ']') {
-			break;
-		} else {
-			// End of number
-			// Search for ] or line break
-			while (text_index != end) {
-					if (*text_index == '\n') {
-						--text_index;
-						break;
-					} else if (*text_index == ']') {
-						break;
-					}
-					++text_index;
-			}
-			break;
-		}
-		++text_index;
-	}
-
-	if (ss.str().empty()) {
-		if (null_at_start) {
-			ss << "0";
-		} else {
-			is_valid = false;
-			return 0;
-		}
-	}
-
-	int num;
-	ss >> num;
-	is_valid = true;
-	return num;
-}
-
-std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
-	bool is_valid;
-	uint32_t cmd_char = *text_index;
-	success = true;
-	parameter = -1;
-
-	switch (tolower(cmd_char)) {
-	case 'n':
-		// Output Hero name
-		parameter = ParseParameter(is_valid);
-		if (is_valid) {
-			Game_Actor* actor = NULL;
-			if (parameter == 0) {
-				// Party hero
-				if (Main_Data::game_party->GetBattlerCount() > 0) {
-					actor = Main_Data::game_party->GetActors()[0];
-				}
-			} else {
-				actor = Game_Actors::GetActor(parameter);
-			}
-			if (actor != NULL) {
-				return actor->GetName();
-			}
-		}
-		break;
-	case 'v':
-		// Show Variable value
-		parameter = ParseParameter(is_valid);
-		if (is_valid) {
-			return std::to_string(Main_Data::game_variables->Get(parameter));
-		} else {
-			// Invalid Var is always 0
-			return "0";
-		}
-	default:;
-		// When this happens text_index was not on a \ during calling
-	}
-	success = false;
-	return "";
-}
-
 void Window_Message::UpdateCursorRect() {
 	if (index >= 0) {
 		int x_pos = 2;
@@ -720,7 +568,7 @@ void Window_Message::WaitForInput() {
 
 		if (text.empty()) {
 			TerminateMessage();
-		} else if (text_index != end && new_page_after_pause) {
+		} else if (text_index != &*text.end() && new_page_after_pause) {
 			new_page_after_pause = false;
 			InsertNewPage();
 		}

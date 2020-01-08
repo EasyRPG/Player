@@ -462,13 +462,15 @@ void Game_Interpreter::Push(Game_CommonEvent* ev) {
 	Push(ev->GetList(), 0, false);
 }
 
-void Game_Interpreter::CheckGameOver() {
+bool Game_Interpreter::CheckGameOver() {
 	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
 		if (Main_Data::game_party->GetBattlerCount() > 0) {
 			Scene::instance->SetRequestedScene(Scene::Gameover);
+			return true;
 		}
 	}
+	return false;
 }
 
 void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
@@ -1445,32 +1447,59 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 }
 
 bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
+	bool show_msg = com.parameters[5];
+
+	if (show_msg && !Game_Message::CanShowMessage(true)) {
+		return false;
+	}
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[3],
 		com.parameters[4]
 	);
 
+	PendingMessage pm;
+
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
+		actor->ChangeExp(actor->GetExp() + value, show_msg ? &pm : nullptr);
 	}
 
-	CheckGameOver();
+	if (CheckGameOver()) {
+		return true;
+	}
+
+	if (show_msg) {
+		Game_Message::SetPendingMessage(std::move(pm));
+	}
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
+	bool show_msg = com.parameters[5];
+
+	if (show_msg && !Game_Message::CanShowMessage(true)) {
+		return false;
+	}
+
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[3],
 		com.parameters[4]
 	);
 
+	PendingMessage pm;
+
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
+		actor->ChangeLevel(actor->GetLevel() + value, show_msg ? &pm : nullptr);
 	}
 
-	CheckGameOver();
+	if (CheckGameOver()) {
+		return true;
+	}
+
+	if (show_msg && pm.IsActive()) {
+		Game_Message::SetPendingMessage(std::move(pm));
+	}
 	return true;
 }
 
@@ -3206,13 +3235,17 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
 	bool show = com.parameters[6] > 0;
 
+	if (show && !Game_Message::CanShowMessage(true)) {
+		return false;
+	}
+
+	PendingMessage pm;
+
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
 	if (!cls && class_id != 0) {
 		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
 		return true;
 	}
-
-	auto pm = PendingMessage();
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int actor_id = actor->GetId();
@@ -3257,6 +3290,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 			actor->SetLevel(1);
 			actor->SetExp(0);
 		} else {
+			// FIXME: Messages?
 			actor->SetExp(cur_exp);
 			actor->SetLevel(cur_lvl);
 		}
@@ -3337,7 +3371,9 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		}
 	}
 
-	if (pm.NumLines() > 0) {
+	// FIXME: Check Gameover?
+
+	if (show && pm.IsActive()) {
 		Game_Message::SetPendingMessage(std::move(pm));
 	}
 
