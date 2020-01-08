@@ -569,9 +569,9 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString() const {
-	if (GetNextExp() == -1) {
-		return Player::IsRPG2k3() ? "-------" : "------";
-	}
+	// RPG_RT displays dashes for max level. As a customization
+	// we always display the amount of EXP.
+	// if (GetNextExp() == -1) { return Player::IsRPG2k3() ? "-------" : "------"; }
 	return std::to_string(GetExp());
 }
 
