@@ -88,6 +88,8 @@ public:
 		int16_t x = 0;
 		int16_t y = 0;
 		int16_t life = 0;
+		int16_t speed = 0;
+		float angle = 0.0f;
 	};
 
 	const std::vector<Particle>& GetParticles();
@@ -181,9 +183,10 @@ protected:
 	void StopWeather();
 	void UpdateRain();
 	void UpdateSnow();
-	void UpdateFog(int dx, int dy);
+	void UpdateSand();
 	void OnWeatherChanged();
 	void InitRainSnow(int lifetime);
+	void InitSand();
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };

@@ -266,7 +266,10 @@ void Game_Screen::OnWeatherChanged() {
 		case Weather_Snow:
 			InitRainSnow(255);
 			break;
-		default:
+		case Weather_Fog:
+			break;
+		case Weather_Sandstorm:
+			InitSand();
 			break;
 	}
 
@@ -315,6 +318,64 @@ void Game_Screen::UpdateSnow() {
 			p.x = Utils::GetRandomNumber(0, rect.width);
 			p.y = Utils::GetRandomNumber(0, rect.height);
 			p.life = 255;
+		}
+	}
+}
+
+static constexpr int sand_acceleration = 8;
+static constexpr int sand_min_alpha = 232;
+static constexpr int sand_max_alpha = 255;
+
+void Game_Screen::InitSand() {
+	const auto num_particles = 32;
+	particles.resize(num_particles);
+
+	const int w = SCREEN_TARGET_WIDTH * 16;
+	const int h = SCREEN_TARGET_HEIGHT * 16;
+	for (auto& p: particles) {
+		auto angle = Utils::GetRandomNumber(0, 360);
+		if (angle <= 180) {
+			p.angle = angle * M_PI / 180.0;
+
+			auto n = Utils::GetRandomNumber(0, 64);
+			p.speed = n * sand_acceleration;
+			auto dist = (n + 1) * n * sand_acceleration / 2;
+
+			p.x = std::round(std::cos(p.angle) * dist) + w / 2;
+			p.y = std::round(std::sin(p.angle) * dist);
+			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_min_alpha);
+		}
+	}
+}
+
+
+
+void Game_Screen::UpdateSand() {
+	const int w = SCREEN_TARGET_WIDTH * 16;
+	const int h = SCREEN_TARGET_HEIGHT * 16;
+
+	for (auto& p: particles) {
+		if (p.life > 0) {
+			if (p.speed > 0) {
+				p.x += std::round(std::cos(p.angle) * p.speed);
+				p.y += std::round(std::sin(p.angle) * p.speed);
+			}
+			p.speed += sand_acceleration;
+
+			if (p.x >= w || p.x < 0 || p.y >= h) {
+				p.life = 0;
+			}
+		} else {
+			auto angle = Utils::GetRandomNumber(0, 360);
+			if (angle <= 180) {
+				p.angle = angle * M_PI / 180.0;
+				p.speed = Utils::GetRandomNumber(-sand_acceleration, 64);
+
+				auto dist = Utils::GetRandomNumber(0 * 16, 32 * 16);
+				p.x = std::round(std::cos(p.angle) * dist) + w / 2;
+				p.y = std::round(std::sin(p.angle) * dist);
+				p.life = Utils::GetRandomNumber(sand_min_alpha, sand_min_alpha);
+			}
 		}
 	}
 }
@@ -394,6 +455,7 @@ void Game_Screen::Update() {
 		case Weather_Fog:
 			break;
 		case Weather_Sandstorm:
+			UpdateSand();
 			break;
 	}
 
