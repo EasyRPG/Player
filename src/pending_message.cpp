@@ -110,7 +110,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 
 			const auto* actor = ReaderUtil::GetElement(Data::actors, value);
 			if (!actor) {
-				Output::Error("Invalid Actor Id %d in message text", value);
+				Output::Warning("Invalid Actor Id %d in message text", value);
 			} else{
 				output.append(actor->name);
 			}
