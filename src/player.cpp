@@ -168,10 +168,6 @@ void Player::Init(int argc, char *argv[]) {
 	// Create initial directory structure in our private area
 	// Retrieve save directory from persistent storage
 	EM_ASM(({
-
-		FS.mkdir("easyrpg");
-		FS.chdir("easyrpg");
-
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
@@ -207,11 +203,8 @@ void Player::Run() {
 	FrameReset();
 
 	// Main loop
-#ifdef EMSCRIPTEN
-	emscripten_set_main_loop(Player::MainLoop, 0, 0);
-#elif defined(USE_LIBRETRO)
-	// Do nothing
-#else
+	// libretro invokes the MainLoop through a retro_run-callback
+#ifndef USE_LIBRETRO
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null) {
 #  if defined(_3DS)
 		if (!aptMainLoop())
@@ -336,9 +329,6 @@ void Player::Update(bool update_scene) {
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-#ifdef EMSCRIPTEN
-	Graphics::Draw(*disp);
-#else
 	cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < next_frame) {
 		Graphics::Draw(*disp);
@@ -347,11 +337,10 @@ void Player::Update(bool update_scene) {
 #if !defined(USE_LIBRETRO)
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
-			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
+			DisplayUi->Sleep(static_cast<uint32_t>(next_frame - cur_time));
 		}
 #endif
 	}
-#endif
 }
 
 void Player::IncFrame() {
@@ -380,8 +369,6 @@ int Player::GetFrames() {
 
 void Player::Exit() {
 #ifdef EMSCRIPTEN
-	emscripten_cancel_main_loop();
-
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
 

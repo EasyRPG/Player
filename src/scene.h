@@ -76,7 +76,7 @@ public:
 	 * executes the scene that is currently on the top of
 	 * the stack.
 	 */
-	virtual void MainFunction();
+	void MainFunction();
 
 	/**
 	 * Start processing.
