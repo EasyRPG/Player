@@ -161,7 +161,7 @@ void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
 }
 
-void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, bool draw_max) const {
+void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max) const {
 	// Draw HP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.hp_short);
 
@@ -174,7 +174,7 @@ void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, bool dr
 	} else if (actor.GetHp() <= actor.GetMaxHp() / 4) {
 		color = Font::ColorCritical;
 	}
-	auto dx = (Player::IsRPG2k() ? 3 : 4) * 6;
+	auto dx = digits * 6;
 	contents->TextDraw(cx + dx, cy, color, std::to_string(actor.GetHp()), Text::AlignRight);
 
 	if (!draw_max)
@@ -189,7 +189,7 @@ void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, bool dr
 	contents->TextDraw(cx + dx, cy, Font::ColorDefault, std::to_string(actor.GetMaxHp()), Text::AlignRight);
 }
 
-void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, bool draw_max) const {
+void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max) const {
 	// Draw SP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.sp_short);
 
@@ -200,7 +200,7 @@ void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, bool dr
 	if (actor.GetMaxSp() != 0 && actor.GetSp() <= actor.GetMaxSp() / 4) {
 		color = Font::ColorCritical;
 	}
-	auto dx = (Player::IsRPG2k() ? 3 : 4) * 6;
+	auto dx = digits * 6;
 	contents->TextDraw(cx + dx, cy, color, std::to_string(actor.GetSp()), Text::AlignRight);
 
 	if (!draw_max)

@@ -21,6 +21,7 @@
 #include "game_actors.h"
 #include "bitmap.h"
 #include "font.h"
+#include "player.h"
 
 Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), actor_id(-1) {
@@ -47,7 +48,7 @@ void Window_SkillStatus::Refresh() {
 	x += 44;
 	DrawActorState(actor, x, y);
 	x += 54;
-	DrawActorHp(actor, x, y);
+	DrawActorHp(actor, x, y, (Player::IsRPG2k() ? 3 : 4));
 	x += 72;
-	DrawActorSp(actor, x, y);
+	DrawActorSp(actor, x, y, 3);
 }
