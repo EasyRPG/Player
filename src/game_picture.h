@@ -32,6 +32,9 @@ class Sprite;
 class Game_Picture {
 public:
 	explicit Game_Picture(int ID);
+	explicit Game_Picture(RPG::SavePicture sp);
+
+	const RPG::SavePicture& GetSaveData() const;
 
 	struct Params {
 		int position_x;
@@ -70,31 +73,37 @@ public:
 	void Move(const MoveParams& params);
 	void Erase(bool force_erase);
 
+	static void Update(std::vector<Game_Picture>& pictures);
+	static void UpdateSprite(std::vector<Game_Picture>& pictures);
+
 	void Update();
 	void UpdateSprite();
 
 private:
-	int id;
+	RPG::SavePicture data;
 	std::unique_ptr<Sprite> sprite;
-	BitmapRef whole_bitmap;
-	BitmapRef sheet_bitmap;
-	int last_spritesheet_frame = 0;
+	BitmapRef bitmap;
 	FileRequestBinding request_id;
+	int last_spritesheet_frame = 0;
+	bool needs_update = false;
 
 	void SetNonEffectParams(const Params& params, bool set_positions);
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
 	int NumSpriteSheetFrames() const;
-	/**
-	 * Compared to other classes picture doesn't hold a direct reference.
-	 * Resizing the picture vector when the ID is larger then the vector can
-	 * result in a memmove on resize, resulting in data pointers pointing into
-	 * garbage.
-	 *
-	 * @return Reference to the SavePicture data
-	 */
-	RPG::SavePicture& GetData() const;
+
+	bool UpdateWouldBeNop() const;
+
 };
+
+inline Game_Picture::Game_Picture(int id) {
+	data.ID = id;
+	needs_update = false;
+}
+
+inline const RPG::SavePicture& Game_Picture::GetSaveData() const {
+	return data;
+}
 
 #endif

@@ -25,20 +25,19 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
-#include "reader_util.h"
 
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-Game_Picture::Game_Picture(int ID) :
-	id(ID)
+Game_Picture::Game_Picture(RPG::SavePicture sp)
+	: data(std::move(sp))
 {
+	needs_update = !UpdateWouldBeNop();
 	RequestPictureSprite();
 }
 
-void Game_Picture::UpdateSprite() {
-	RPG::SavePicture& data = GetData();
 
+void Game_Picture::UpdateSprite() {
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
 	}
@@ -46,31 +45,16 @@ void Game_Picture::UpdateSprite() {
 	// RPG Maker 2k3 1.12: Spritesheets
 	if (Player::IsRPG2k3E()
 			&& NumSpriteSheetFrames() > 1
-			&& (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap))
+			&& (data.spritesheet_frame != last_spritesheet_frame))
 	{
-		// Usage of an additional bitmap instead of Subrect is necessary because the Subrect
-		// approach will fail while the bitmap is rotated because the outer parts will be
-		// visible for degrees != 90 * n
-		if (!sheet_bitmap) {
-			int frame_width = whole_bitmap->GetWidth() / data.spritesheet_cols;
-			int frame_height = whole_bitmap->GetHeight() / data.spritesheet_rows;
-
-			sheet_bitmap = Bitmap::Create(frame_width, frame_height);
-		}
-
 		last_spritesheet_frame = data.spritesheet_frame;
 
-		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame) % data.spritesheet_cols);
-		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
-		Rect r(sx, sy, sheet_bitmap->GetWidth(), sheet_bitmap->GetHeight());
+		const int sw = bitmap->GetWidth() / data.spritesheet_cols;
+		const int sh = bitmap->GetHeight() / data.spritesheet_rows;
+		const int sx = sw * ((last_spritesheet_frame) % data.spritesheet_cols);
+		const int sy = sh * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 
-		sheet_bitmap->Clear();
-
-		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < NumSpriteSheetFrames()) {
-			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::Opaque());
-		}
-
-		sprite->SetBitmap(sheet_bitmap);
+		sprite->SetSrcRect(Rect{ sx, sy, sw, sh });
 	}
 
 	int x = data.current_x;
@@ -94,8 +78,10 @@ void Game_Picture::UpdateSprite() {
 	}
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
-	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
-	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
+
+	auto sr = sprite->GetSrcRect();
+	sprite->SetOx(sr.width / 2);
+	sprite->SetOy(sr.height / 2);
 
 	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
@@ -136,8 +122,14 @@ void Game_Picture::UpdateSprite() {
 	}
 }
 
+void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.UpdateSprite();
+	}
+}
+
 void Game_Picture::Show(const ShowParams& params) {
-	RPG::SavePicture& data = GetData();
+	needs_update = true;
 
 	data.name = params.name;
 	data.use_transparent_color = params.use_transparent_color;
@@ -174,7 +166,6 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 	last_spritesheet_frame = -1;
-	sheet_bitmap.reset();
 
 	const auto num_frames = NumSpriteSheetFrames();
 
@@ -193,8 +184,6 @@ void Game_Picture::Show(const ShowParams& params) {
 }
 
 void Game_Picture::Move(const MoveParams& params) {
-	RPG::SavePicture& data = GetData();
-
 	const bool ignore_position = Player::IsLegacy() && data.fixed_to_map;
 
 	SetNonEffectParams(params, !ignore_position);
@@ -238,8 +227,6 @@ void Game_Picture::Move(const MoveParams& params) {
 }
 
 void Game_Picture::Erase(bool force_erase) {
-	RPG::SavePicture& data = GetData();
-
 	if (!(force_erase || data.flags.erase_on_map_change)) {
 		return;
 	}
@@ -248,12 +235,11 @@ void Game_Picture::Erase(bool force_erase) {
 
 	data.name.clear();
 	sprite.reset();
-	whole_bitmap.reset();
-	sheet_bitmap.reset();
+	bitmap.reset();
 }
 
 void Game_Picture::RequestPictureSprite() {
-	const std::string& name = GetData().name;
+	const std::string& name = data.name;
 	if (name.empty()) return;
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
@@ -263,18 +249,34 @@ void Game_Picture::RequestPictureSprite() {
 }
 
 void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
-	RPG::SavePicture& data = GetData();
-
-	whole_bitmap = Cache::Picture(data.name, data.use_transparent_color);
+	bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
 		sprite.reset(new Sprite());
 	}
-	sprite->SetBitmap(whole_bitmap);
+	sprite->SetBitmap(bitmap);
 }
 
+bool Game_Picture::UpdateWouldBeNop() const {
+	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
+	// Write unit tests to ensure it's correct.
+	// Then add it to ErasePicture()
+	RPG::SavePicture empty;
+	empty.ID = data.ID;
+	empty.frames = data.frames;
+
+	return data == empty;
+}
+
+
 void Game_Picture::Update() {
-	RPG::SavePicture& data = GetData();
+	if (Player::IsRPG2k3E()) {
+		++data.frames;
+	}
+
+	if (!needs_update) {
+		return;
+	}
 
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
@@ -347,28 +349,29 @@ void Game_Picture::Update() {
 	}
 
 	// RPG Maker 2k3 1.12: Animated spritesheets
-	if (Player::IsRPG2k3E()) {
-		data.frames = data.frames + 1;
+	if (Player::IsRPG2k3E()
+			&& data.spritesheet_speed > 0
+			&& data.frames > data.spritesheet_speed)
+	{
+		data.frames = 1;
+		data.spritesheet_frame = data.spritesheet_frame + 1;
 
-		if (data.spritesheet_speed > 0) {
-			if (data.frames > data.spritesheet_speed) {
-				data.frames = 1;
-				data.spritesheet_frame = data.spritesheet_frame + 1;
-
-				if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
-					data.spritesheet_frame = 0;
-					if (data.spritesheet_play_once && !data.name.empty()) {
-						Erase(true);
-					}
-				}
+		if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
+			data.spritesheet_frame = 0;
+			if (data.spritesheet_play_once && !data.name.empty()) {
+				Erase(true);
 			}
 		}
 	}
 }
 
-void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) {
-	RPG::SavePicture& data = GetData();
+void Game_Picture::Update(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.Update();
+	}
+}
 
+void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) {
 	if (set_positions) {
 		data.finish_x = params.position_x;
 		data.finish_y = params.position_y;
@@ -383,8 +386,6 @@ void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) 
 }
 
 void Game_Picture::SyncCurrentToFinish() {
-	RPG::SavePicture& data = GetData();
-
 	data.current_x = data.finish_x;
 	data.current_y = data.finish_y;
 	data.current_red = data.finish_red;
@@ -397,12 +398,6 @@ void Game_Picture::SyncCurrentToFinish() {
 	data.current_effect_power = data.finish_effect_power;
 }
 
-RPG::SavePicture& Game_Picture::GetData() const {
-	// Save: Picture array is guaranteed to be of correct size
-	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
-}
-
 inline int Game_Picture::NumSpriteSheetFrames() const {
-	auto& data = GetData();
 	return data.spritesheet_cols * data.spritesheet_rows;
 }

@@ -118,6 +118,8 @@ void Scene_Save::Action(int index) {
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();
 
+	data_copy.pictures = Main_Data::game_screen->GetPictureSaveData();
+
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;
 	// 2k RPG_RT always stores SaveMapEvent with map_id == 0.

@@ -11,7 +11,15 @@ constexpr auto opacity_0 = Opacity(0);
 constexpr auto opacity_50 = Opacity(128);
 constexpr auto opacity_75_25 = Opacity(192, 64, 1);
 
-auto opacity = opacity_opaque;
+constexpr auto opacity = opacity_opaque;
+
+const auto fmt_rgba = format_R8G8B8A8_a().format();
+const auto fmt_bgra = format_B8G8R8A8_a().format();
+const auto fmt_argb = format_A8R8G8B8_a().format();
+const auto fmt_abgr = format_A8B8G8R8_a().format();
+
+const DynamicFormat formats[] = { fmt_rgba, fmt_bgra, fmt_argb, fmt_abgr };
+const auto format = fmt_rgba;
 
 struct BitmapAccess : public Bitmap {
 	static pixman_format_code_t find_format(const DynamicFormat& format) {
@@ -20,9 +28,8 @@ struct BitmapAccess : public Bitmap {
 };
 
 static void BM_FindFormatSingle(benchmark::State& state) {
-	const auto fmt = format_R8G8B8A8_a().format();
 	for (auto _: state) {
-		BitmapAccess::find_format(fmt);
+		BitmapAccess::find_format(format);
 	}
 }
 
@@ -30,17 +37,16 @@ BENCHMARK(BM_FindFormatSingle);
 
 static void BM_FindFormat(benchmark::State& state) {
 	for (auto _: state) {
-		BitmapAccess::find_format(format_R8G8B8A8_a().format());
-		BitmapAccess::find_format(format_B8G8R8A8_a().format());
-		BitmapAccess::find_format(format_A8B8G8R8_n().format());
-		BitmapAccess::find_format(format_B8G8R8A8_n().format());
+		for (auto& f: formats) {
+			BitmapAccess::find_format(f);
+		}
 	}
 }
 
 BENCHMARK(BM_FindFormat);
 
 static void BM_Create(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	for (auto _: state) {
 		auto bm = Bitmap::Create(320, 240);
 		(void)bm;
@@ -50,7 +56,7 @@ static void BM_Create(benchmark::State& state) {
 BENCHMARK(BM_Create);
 
 static void BM_Blit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -62,7 +68,7 @@ static void BM_Blit(benchmark::State& state) {
 BENCHMARK(BM_Blit);
 
 static void BM_BlitFast(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -74,7 +80,7 @@ static void BM_BlitFast(benchmark::State& state) {
 BENCHMARK(BM_BlitFast);
 
 static void BM_TiledBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -86,7 +92,7 @@ static void BM_TiledBlit(benchmark::State& state) {
 BENCHMARK(BM_TiledBlit);
 
 static void BM_TiledBlitOffset(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -98,7 +104,7 @@ static void BM_TiledBlitOffset(benchmark::State& state) {
 BENCHMARK(BM_TiledBlitOffset);
 
 static void BM_StretchBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(20, 20);
 	auto rect = src->GetRect();
@@ -110,7 +116,7 @@ static void BM_StretchBlit(benchmark::State& state) {
 BENCHMARK(BM_StretchBlit);
 
 static void BM_StretchBlitRect(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto dst_rect = dest->GetRect();
 	auto src = Bitmap::Create(20, 20);
@@ -123,7 +129,7 @@ static void BM_StretchBlitRect(benchmark::State& state) {
 BENCHMARK(BM_StretchBlitRect);
 
 static void BM_FlipBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -134,22 +140,32 @@ static void BM_FlipBlit(benchmark::State& state) {
 
 BENCHMARK(BM_FlipBlit);
 
-static void BM_TransformBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+static void BM_ZoomOpacityBlit(benchmark::State& state) {
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
-	auto dst_rect = dest->GetRect();
-	auto src = Bitmap::Create(320, 240);
+	auto src = Bitmap::Create(60, 60);
 	auto rect = src->GetRect();
-	auto xform = Transform::Rotation(2 * M_PI);
 	for (auto _: state) {
-		dest->TransformBlit(dst_rect, *src, rect, xform, opacity);
+		dest->ZoomOpacityBlit(0, 0, 30, 30, *src, rect, 2.0, 2.0, opacity);
 	}
 }
 
-BENCHMARK(BM_TransformBlit);
+BENCHMARK(BM_ZoomOpacityBlit);
+
+static void BM_RotateZoomOpacityBlit(benchmark::State& state) {
+	Bitmap::SetFormat(format);
+	auto dest = Bitmap::Create(320, 240);
+	auto src = Bitmap::Create(60, 60);
+	auto rect = src->GetRect();
+	for (auto _: state) {
+		dest->RotateZoomOpacityBlit(0, 0, 30, 30, *src, rect, M_PI, 2.0, 2.0, opacity);
+	}
+}
+
+BENCHMARK(BM_RotateZoomOpacityBlit);
 
 static void BM_WaverBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -165,7 +181,7 @@ static void BM_WaverBlit(benchmark::State& state) {
 BENCHMARK(BM_WaverBlit);
 
 static void BM_Fill(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto color = Color(255, 255, 255, 255);
 	for (auto _: state) {
@@ -176,7 +192,7 @@ static void BM_Fill(benchmark::State& state) {
 BENCHMARK(BM_Fill);
 
 static void BM_FillRect(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto rect = dest->GetRect();
 	auto color = Color(255, 255, 255, 255);
@@ -188,7 +204,7 @@ static void BM_FillRect(benchmark::State& state) {
 BENCHMARK(BM_FillRect);
 
 static void BM_Clear(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	for (auto _: state) {
 		dest->Clear();
@@ -198,7 +214,7 @@ static void BM_Clear(benchmark::State& state) {
 BENCHMARK(BM_Clear);
 
 static void BM_ClearRect(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto rect = dest->GetRect();
 	for (auto _: state) {
@@ -209,7 +225,7 @@ static void BM_ClearRect(benchmark::State& state) {
 BENCHMARK(BM_ClearRect);
 
 static void BM_HueChangeBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -222,7 +238,7 @@ static void BM_HueChangeBlit(benchmark::State& state) {
 BENCHMARK(BM_HueChangeBlit);
 
 static void BM_ToneBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -235,7 +251,7 @@ static void BM_ToneBlit(benchmark::State& state) {
 BENCHMARK(BM_ToneBlit);
 
 static void BM_BlendBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
@@ -248,7 +264,7 @@ static void BM_BlendBlit(benchmark::State& state) {
 BENCHMARK(BM_BlendBlit);
 
 static void BM_Flip(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto rect = dest->GetRect();
 	for (auto _: state) {
@@ -259,7 +275,7 @@ static void BM_Flip(benchmark::State& state) {
 BENCHMARK(BM_Flip);
 
 static void BM_MaskedBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto dst_rect = dest->GetRect();
 	auto src = Bitmap::Create(320, 240);
@@ -272,7 +288,7 @@ static void BM_MaskedBlit(benchmark::State& state) {
 BENCHMARK(BM_MaskedBlit);
 
 static void BM_MaskedColorBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto dst_rect = dest->GetRect();
 	auto mask = Bitmap::Create(320, 240);
@@ -285,7 +301,7 @@ static void BM_MaskedColorBlit(benchmark::State& state) {
 BENCHMARK(BM_MaskedColorBlit);
 
 static void BM_Blit2x(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto dst_rect = dest->GetRect();
 	auto src = Bitmap::Create(320, 240);
@@ -298,7 +314,7 @@ static void BM_Blit2x(benchmark::State& state) {
 BENCHMARK(BM_Blit2x);
 
 static void BM_TransformRectangle(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto rect = dest->GetRect();
 	auto xform = Transform::Rotation(M_PI);
@@ -310,7 +326,7 @@ static void BM_TransformRectangle(benchmark::State& state) {
 BENCHMARK(BM_TransformRectangle);
 
 static void BM_EffectsBlit(benchmark::State& state) {
-	Bitmap::SetFormat(format_R8G8B8A8_a().format());
+	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();

@@ -71,10 +71,16 @@ void Game_Screen::SetupNewGame() {
 	PreallocatePictureData(GetDefaultNumberOfPictures());
 }
 
-void Game_Screen::SetupFromSave() {
-	CreatePicturesFromSave();
+void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
+	pictures.clear();
+	pictures.reserve(save_pics.size());
+
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
+
+	for (auto& sp: save_pics) {
+		pictures.emplace_back(std::move(sp));
+	}
 
 	if (Main_Data::game_data.screen.battleanim_active) {
 		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
@@ -84,15 +90,13 @@ void Game_Screen::SetupFromSave() {
 	}
 }
 
-void Game_Screen::CreatePicturesFromSave() {
-	const auto& save_pics = Main_Data::game_data.pictures;
-
-	pictures.clear();
-	pictures.reserve(save_pics.size());
-
-	while (pictures.size() < save_pics.size()) {
-		pictures.emplace_back(pictures.size() + 1);
+std::vector<RPG::SavePicture> Game_Screen::GetPictureSaveData() const {
+	std::vector<RPG::SavePicture> save_pics;
+	save_pics.reserve(pictures.size());
+	for (auto& pic: pictures) {
+		save_pics.push_back(pic.GetSaveData());
 	}
+	return save_pics;
 }
 
 void Game_Screen::Reset() {
@@ -127,34 +131,11 @@ void Game_Screen::Reset() {
 	animation.reset();
 }
 
-void Game_Screen::PreallocatePictureData(int id) {
-	if (id <= (int)pictures.size()) {
-		return;
-	}
-
-	const auto old_size = Main_Data::game_data.pictures.size();
-
-	// Some games use more pictures then RPG_RT officially supported
-	Main_Data::game_data.pictures.resize(id);
-
-	for (auto i = old_size; i < Main_Data::game_data.pictures.size(); ++i) {
-		Main_Data::game_data.pictures[i].ID = i + 1;
-	}
-
+void Game_Screen::DoPreallocatePictureData(int id) {
 	pictures.reserve(id);
 	while (static_cast<int>(pictures.size()) < id) {
 		pictures.emplace_back(pictures.size() + 1);
 	}
-}
-
-Game_Picture* Game_Screen::GetPicture(int id) {
-	if (id <= 0) {
-		return NULL;
-	}
-
-	PreallocatePictureData(id);
-
-	return &pictures[id - 1];
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -388,7 +369,7 @@ int Game_Screen::AnimateShake(int strength, int speed, int time_left, int positi
 	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
 }
 
-void Game_Screen::Update() {
+void Game_Screen::UpdateScreenEffects() {
 	constexpr auto pan_limit_x = GetPanLimitX();
 	constexpr auto pan_limit_y = GetPanLimitY();
 
@@ -434,15 +415,15 @@ void Game_Screen::Update() {
 			data.shake_time_left = 0;
 		}
 	}
+}
 
-	for (auto& picture : pictures) {
-		picture.Update();
-	}
-
+void Game_Screen::UpdateMovie() {
 	if (!movie_filename.empty()) {
 		/* update movie */
 	}
+}
 
+void Game_Screen::UpdateWeather() {
 	switch (data.weather) {
 		case Weather_None:
 			break;
@@ -458,7 +439,13 @@ void Game_Screen::Update() {
 			UpdateSand();
 			break;
 	}
+}
 
+void Game_Screen::Update() {
+	UpdateScreenEffects();
+	Game_Picture::Update(pictures);
+	UpdateMovie();
+	UpdateWeather();
 	UpdateBattleAnimation();
 }
 
@@ -506,8 +493,6 @@ void Game_Screen::CancelBattleAnimation() {
 }
 
 void Game_Screen::UpdateGraphics() {
-	for (auto& picture: pictures) {
-		picture.UpdateSprite();
-	}
+	Game_Picture::UpdateSprite(pictures);
 	weather->SetTone(GetTone());
 }
