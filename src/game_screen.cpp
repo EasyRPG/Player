@@ -335,7 +335,6 @@ void Game_Screen::InitSand() {
 	particles.resize(num_particles);
 
 	const int w = SCREEN_TARGET_WIDTH * 16;
-	const int h = SCREEN_TARGET_HEIGHT * 16;
 	for (auto& p: particles) {
 		auto angle = Utils::GetRandomNumber(0, 360);
 		if (angle <= 180) {
