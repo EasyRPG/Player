@@ -84,7 +84,7 @@ protected:
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
 
-	void UpdateCursors();
+	void UpdateCursors() override;
 	void DrawFloatText(int x, int y, int color, const std::string& text);
 
 	void RefreshCommandWindow();

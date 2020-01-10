@@ -349,14 +349,11 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
 		Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		if (sprite) {
-			++select_target_flash_count;
+		++select_target_flash_count;
 
-			if (select_target_flash_count == 60) {
-				sprite->Flash(Color(255, 255, 255, 100), 15);
-				select_target_flash_count = 0;
-			}
+		if (select_target_flash_count == 60) {
+			SelectionFlash(target);
+			select_target_flash_count = 0;
 		}
 		break;
 	}
@@ -510,10 +507,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 		}
 
 		if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
-			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			if (source_sprite) {
-				source_sprite->Flash(Color(255, 255, 255, 100), 15);
-			}
+			SelectionFlash(action->GetSource());
 		}
 
 		if (show_message) {

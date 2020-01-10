@@ -168,13 +168,26 @@ void Scene_Battle::Update() {
 	item_window->Update();
 	skill_window->Update();
 	target_window->Update();
+
+	const int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
+	const int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
+
+	// Update Battlers
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_party->GetBattlers(battlers);
+	Main_Data::game_enemyparty->GetBattlers(battlers);
+	for (auto* b : battlers) {
+		b->UpdateBattle();
+	}
+
+	// Screen Effects
 	Game_Message::Update();
+	Main_Data::game_party->UpdateTimers();
+	Main_Data::game_screen->Update();
+	Game_Battle::UpdateAnimation();
 
 	// Query Timer before and after update.
 	// If it reached zero during update was a running battle timer.
-	int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
-	int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
-	Main_Data::game_party->UpdateTimers();
 	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
 		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
 		Scene::Pop();
@@ -191,11 +204,13 @@ void Scene_Battle::Update() {
 		ProcessActions();
 		ProcessInput();
 	}
+	UpdateCursors();
 
 	auto& interp = Game_Battle::GetInterpreter();
 
 	bool events_running = interp.IsRunning();
-	Game_Battle::Update();
+	Game_Battle::RunEvents();
+	Game_Battle::UpdateGraphics();
 	if (events_running && !interp.IsRunning()) {
 		// If an event that changed status finishes without displaying a message window,
 		// we need this so it can update automatically the status_window
@@ -627,3 +642,8 @@ void Scene_Battle::CallDebug() {
 	}
 }
 
+void Scene_Battle::SelectionFlash(Game_Battler* battler) {
+	if (battler) {
+		battler->Flash(31, 31, 31, 24, 16);
+	}
+}

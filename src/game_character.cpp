@@ -213,15 +213,7 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 }
 
 void Game_Character::UpdateFlash() {
-	if (data()->flash_current_level > 0) {
-		if (data()->flash_time_left > 0) {
-			data()->flash_current_level = data()->flash_current_level - (data()->flash_current_level / data()->flash_time_left);
-			--data()->flash_time_left;
-		} else {
-			data()->flash_current_level = 0.0;
-			data()->flash_time_left = 0;
-		}
-	}
+	Flash::Update(data()->flash_current_level, data()->flash_time_left);
 }
 
 void Game_Character::UpdateJump() {

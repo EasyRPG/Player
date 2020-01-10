@@ -57,8 +57,6 @@ void Sprite_AirshipShadow::RecreateShadow() {
 }
 
 void Sprite_AirshipShadow::Update() {
-	Sprite::Update();
-
 	if (!Main_Data::game_player->InAirship()) {
 		SetVisible(false);
 		return;

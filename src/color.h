@@ -55,18 +55,6 @@ public:
 	uint8_t alpha = 0;
 };
 
-/**
- * Create a Color object from RPG_RT flash values [0,31]
- *
- * @param r red color
- * @param g green color
- * @param b blue color
- * @param current_level strength of flash
- */
-inline Color MakeFlashColor(int r, int g, int b, double current_level) {
-	return Color(r * 8, g * 8, b * 8, current_level * 8);
-}
-
 inline bool operator==(const Color &l, const Color& r) {
 	return l.red == r.red
 		   && l.green == r.green

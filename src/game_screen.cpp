@@ -17,6 +17,7 @@
 
 // Headers
 #define _USE_MATH_DEFINES
+#include <cmath>
 #include "bitmap.h"
 #include "data.h"
 #include "player.h"
@@ -33,9 +34,8 @@
 #include "reader_util.h"
 #include "scene.h"
 #include "weather.h"
-#include <cmath>
-
-static constexpr int kShakeContinuousTimeStart = 65535;
+#include "flash.h"
+#include "shake.h"
 
 static int GetDefaultNumberOfPictures() {
 	if (Player::IsEnglish()) {
@@ -195,7 +195,7 @@ void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
 void Game_Screen::ShakeBegin(int power, int speed) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
-	data.shake_time_left = kShakeContinuousTimeStart;
+	data.shake_time_left = Shake::kShakeContinuousTimeStart;
 	data.shake_continuous = true;
 	// Shake position is not reset in RPG_RT, so that multiple shakes
 	// which interrupt each other flow smoothly.
@@ -361,14 +361,6 @@ void Game_Screen::UpdateSand() {
 	}
 }
 
-int Game_Screen::AnimateShake(int strength, int speed, int time_left, int position) {
-	int amplitude = 1 + 2 * strength;
-	int newpos = amplitude * sin((time_left * 4 * (speed + 2)) % 256 * M_PI / 128);
-	int cutoff = (speed * amplitude / 8) + 1;
-
-	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
-}
-
 void Game_Screen::UpdateScreenEffects() {
 	constexpr auto pan_limit_x = GetPanLimitX();
 	constexpr auto pan_limit_y = GetPanLimitY();
@@ -384,37 +376,17 @@ void Game_Screen::UpdateScreenEffects() {
 		data.tint_time_left = data.tint_time_left - 1;
 	}
 
-	if (data.flash_current_level > 0 || data.flash_continuous) {
-		if (data.flash_time_left > 0) {
-			data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
-			--data.flash_time_left;
-		}
-		if (data.flash_time_left <= 0) {
-			data.flash_time_left = 0;
-			data.flash_current_level = 0;
-			if (data.flash_continuous) {
-				data.flash_time_left = flash_period;
-				data.flash_current_level = flash_sat;
-			}
-		}
-	}
+	Flash::Update(data.flash_current_level,
+			data.flash_time_left,
+			data.flash_continuous,
+			flash_period,
+			flash_sat);
 
-	if (data.shake_time_left > 0) {
-		--data.shake_time_left;
-
-		// This fixes a bug in RPG_RT where continuous shake would actually stop after
-		// 18m12s of gameplay.
-		if (data.shake_time_left <= 0 && data.shake_continuous) {
-			data.shake_time_left = kShakeContinuousTimeStart;
-		}
-
-		if (data.shake_time_left > 0) {
-			data.shake_position = AnimateShake(data.shake_strength, data.shake_speed, data.shake_time_left, data.shake_position);
-		} else {
-			data.shake_position = 0;
-			data.shake_time_left = 0;
-		}
-	}
+	Shake::Update(data.shake_position,
+			data.shake_time_left,
+			data.shake_strength,
+			data.shake_speed,
+			data.shake_continuous);
 }
 
 void Game_Screen::UpdateMovie() {

@@ -24,6 +24,8 @@
 #include "rpg_state.h"
 #include "system.h"
 #include "state.h"
+#include "color.h"
+#include "flash.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -665,6 +667,20 @@ public:
 	 */
 	void ShakeOnce(int strength, int speed, int frames);
 
+	/**
+	 * Begins a flash.
+	 *
+	 * @param r red color
+	 * @param g blue color
+	 * @param b green color
+	 * @param power power of the flash
+	 * @param frames Duration of the flash in frames
+	 */
+	void Flash(int r, int g, int b, int power, int frames);
+
+	/** @return current flash color */
+	Color GetFlashColor() const;
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
@@ -687,10 +703,26 @@ protected:
 
 	int battle_order = 0;
 
-	int shake_position = 0;
-	int shake_time_left = 0;
-	int shake_strength = 0;
-	int shake_speed = 0;
+	struct ShakeData {
+		int32_t position = 0;
+		int32_t time_left = 0;
+		int32_t strength = 0;
+		int32_t speed = 0;
+	};
+	ShakeData shake;
+
+	struct FlashData {
+		int32_t red = 0;
+		int32_t green = 0;
+		int32_t blue = 0;
+		int32_t time_left = 0;
+		double current_level = 0.0;
+	};
+	FlashData flash;
 };
+
+inline Color Game_Battler::GetFlashColor() const {
+	return Flash::MakeColor(flash.red, flash.green, flash.blue, flash.current_level);
+}
 
 #endif

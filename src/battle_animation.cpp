@@ -74,14 +74,7 @@ void BattleAnimation::Update() {
 	UpdateScreenFlash();
 	UpdateTargetFlash();
 
-	auto flash_color = Main_Data::game_screen->GetFlashColor();
-	if (flash_color.alpha > 0) {
-		Sprite::Flash(flash_color, 0);
-	} else {
-		Sprite::Flash(Color(), 0);
-	}
-
-	Sprite::Update();
+	SetFlashEffect(Main_Data::game_screen->GetFlashColor());
 
 	frame++;
 }
@@ -310,11 +303,8 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 	}
 }
 void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
-	auto color = MakeFlashColor(r, g, b, p);
 	for (auto& battler: battlers) {
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
-		if (sprite)
-			sprite->Flash(color, 0);
+		battler->Flash(r, g, b, p, 0);
 	}
 }
 

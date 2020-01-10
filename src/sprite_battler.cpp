@@ -59,8 +59,6 @@ void Sprite_Battler::Update() {
 
 	old_hidden = battler->IsHidden();
 
-	Sprite::Update();
-
 	++cycle;
 
 	if (battler->GetBattleAnimationId() <= 0) {
@@ -180,6 +178,8 @@ void Sprite_Battler::Update() {
 	SetX(battler->GetDisplayX());
 	// needed for flying enemies
 	SetY(battler->GetDisplayY());
+
+	SetFlashEffect(battler->GetFlashColor());
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
@@ -251,22 +251,6 @@ void Sprite_Battler::DetectStateChange() {
 
 bool Sprite_Battler::IsIdling() {
 	return idling;
-}
-
-void Sprite_Battler::Flash(int duration) {
-	if (animation) {
-		animation->Flash(duration);
-	} else {
-		Sprite::Flash(duration);
-	}
-}
-
-void Sprite_Battler::Flash(Color color, int duration) {
-	if (animation) {
-		animation->Flash(color, duration);
-	} else {
-		Sprite::Flash(color, duration);
-	}
 }
 
 bool Sprite_Battler::GetVisible() const {

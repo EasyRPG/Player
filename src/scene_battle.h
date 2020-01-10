@@ -97,6 +97,8 @@ public:
 		State_Escape
 	};
 
+	static void SelectionFlash(Game_Battler* battler);
+
 protected:
 	Scene_Battle();
 
@@ -108,6 +110,7 @@ protected:
 
 	virtual void ProcessActions() = 0;
 	virtual void ProcessInput() = 0;
+	virtual void UpdateCursors() {}
 
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 

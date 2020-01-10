@@ -26,6 +26,7 @@
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
+#include "flash.h"
 
 class Game_Battler;
 class Screen;
@@ -133,18 +134,6 @@ public:
 	 */
 	bool IsBattleAnimationWaiting();
 
-	/**
-	 * Animates the screen shake algorithm given the parameters
-	 *
-	 * @param strength the strength of the shake
-	 * @param speed of the shake
-	 * @param time_left how much time is left in frames
-	 * @param position current shake displacement
-	 *
-	 * @return next shake displacement
-	 */
-	static int AnimateShake(int strength, int speed, int time_left, int position);
-
 	/** @return current pan_x offset for screen effects in 1/16 pixels */
 	int GetPanX() const;
 
@@ -235,7 +224,7 @@ inline Tone Game_Screen::GetTone() {
 }
 
 inline Color Game_Screen::GetFlashColor() const {
-	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
+	return Flash::MakeColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
 }
 
 inline int Game_Screen::GetWeatherType() {

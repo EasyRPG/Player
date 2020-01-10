@@ -87,6 +87,7 @@ add_library(${PROJECT_NAME}
 	src/exfont.h
 	src/filefinder.cpp
 	src/filefinder.h
+	src/flash.h
 	src/font.cpp
 	src/font.h
 	src/fps_overlay.cpp
@@ -254,6 +255,7 @@ add_library(${PROJECT_NAME}
 	src/scene_title.h
 	src/screen.cpp
 	src/screen.h
+	src/shake.h
 	src/shinonome_gothic.h
 	src/shinonome_mincho.h
 	src/sprite_airshipshadow.cpp
