@@ -73,9 +73,7 @@ public:
 	void Move(const MoveParams& params);
 	void Erase(bool force_erase);
 
-	// FIXME: Use C++20 span
 	static void Update(std::vector<Game_Picture>& pictures);
-	// FIXME: Use C++20 span
 	static void UpdateSprite(std::vector<Game_Picture>& pictures);
 
 	void Update();

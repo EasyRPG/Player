@@ -336,7 +336,7 @@ public:
 	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity);
 
 	/**
-	 * Blits source bitmap with waver effect.
+	 * Blits source bitmap with waver, zoom, and opacity effects.
 	 *
 	 * @param x x position.
 	 * @param y y position.
@@ -351,11 +351,17 @@ public:
 	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity);
 
 	/**
-	 * Blits source bitmap with transformation and opacity scaling.
+	 * Blits source bitmap with rotation, zoom, and opacity effects.
 	 *
-	 * @param fwd forward (src->dst) transformation matrix.
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
+	 * @param src_rect source bitmap rect.
+	 * @param angle rotation angle in radians.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
 	 * @param opacity opacity.
 	 */
 	void RotateZoomOpacityBlit(int x, int y, int ox, int oy,
