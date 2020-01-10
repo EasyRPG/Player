@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(EasyRPG_Player VERSION 0.6.2.1 LANGUAGES CXX)
+project(EasyRPG_Player VERSION 0.6.2.1 LANGUAGES C CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -452,6 +452,15 @@ if(APPLE)
 		src/platform/macos/utils.h)
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+	option(PLAYER_JS_BUILD_SHELL "Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
+	set(PLAYER_JS_PREJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-pre.js" CACHE STRING "File to use for --pre-js")
+	set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js" CACHE STRING "File to use for --post-js")
+	set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html" CACHE STRING "Shell file to use (--shell-file). Requires PLAYER_JS_BUILD_SHELL=ON")
+	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
+	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
@@ -713,7 +722,7 @@ if (${PLAYER_BUILD_EXECUTABLE})
 		add_executable(${EXE_NAME} WIN32 "src/main.cpp")
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
-	
+
 	if(WIN32)
 		# Open console for Debug builds
 		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -729,6 +738,22 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
+	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		# These must be set before calling em_link_*
+		# See emscripten repo: tests/cmake/target_js/CMakeLists.txt#L94
+		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY=1")
+
+		if(PLAYER_JS_BUILD_SHELL)
+			set_target_properties(${PROJECT_NAME}_exe PROPERTIES SUFFIX ".html")
+			set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "--shell-file ${PLAYER_JS_SHELL}")
+		endif()
+
+		target_link_libraries(${PROJECT_NAME}_exe "idbfs.js")
+		em_link_pre_js(${PROJECT_NAME}_exe "${PLAYER_JS_PREJS}")
+		em_link_post_js(${PROJECT_NAME}_exe "${PLAYER_JS_POSTJS}")
+	endif()
+
+	# installation
 	include(GNUInstallDirs)
 	if(APPLE)
 		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION BUNDLE DESTINATION "${CMAKE_BINARY_DIR}/Package")
