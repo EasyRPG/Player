@@ -1211,7 +1211,7 @@ void Game_Actor::ChangeClass(int new_class_id,
 	}
 
 	// RPG_RT always resets EXP when class is changed, even if level unchanged.
-	SetExp(max(GetBaseExp(), GetExp()));
+	SetExp(GetBaseExp());
 
 	if (new_param != eParamReset) {
 		SetBaseMaxHp(max_hp);
