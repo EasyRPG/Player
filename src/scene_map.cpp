@@ -377,6 +377,17 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 			OnAsyncSuspend([=] { FinishPendingTeleport3(actx, tp); }, actx.GetAsyncOp(), true);
 			return;
 		}
+
+		if (!tp.defer_recursive_teleports) {
+			// See comments about defer_recursive_teleports in FinishPendingTeleport2
+			// Deferring in this block can actually never occur, since an Escape/Teleport won't ever
+			// also trigger foreground events to run in pre-update. We leave the check in here for symmetry.
+			if (Main_Data::game_player->IsPendingTeleport()) {
+				tp.erase_screen = false;
+				StartPendingTeleport(tp);
+				return;
+			}
+		}
 	}
 
 	// Call any requested scenes when transition is done.
