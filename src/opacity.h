@@ -96,10 +96,6 @@ class TileOpacity {
 		std::unique_ptr<uint8_t[]> _p;
 		int _w = 0;
 		int _h = 0;
-
-		/** Must be enough bits to store all valid ImageOpacity values */
-		static constexpr int tile_bit = 2;
-		static constexpr int tile_mask = (1 << tile_bit) - 1;
 };
 
 inline TileOpacity::TileOpacity(int w, int h)

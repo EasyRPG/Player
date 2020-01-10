@@ -164,12 +164,12 @@ public:
 	 * Provides opacity information about a tile on a tilemap.
 	 * This influences the selected operator when blitting a tile.
 	 *
-	 * @param row tile row
-	 * @param col tile col
+	 * @param x tile x coordinate
+	 * @param y tile y coordinate
 	 *
 	 * @return opacity information
 	 */
-	ImageOpacity GetTileOpacity(int row, int col) const;
+	ImageOpacity GetTileOpacity(int x, int y) const;
 
 	/**
 	 * Writes PNG converted bitmap to output stream.
@@ -575,8 +575,8 @@ inline ImageOpacity Bitmap::GetImageOpacity() const {
 	return image_opacity;
 }
 
-inline ImageOpacity Bitmap::GetTileOpacity(int row, int col) const {
-	return !tile_opacity.Empty() ? tile_opacity.Get(row, col) : ImageOpacity::Partial;
+inline ImageOpacity Bitmap::GetTileOpacity(int x, int y) const {
+	return !tile_opacity.Empty() ? tile_opacity.Get(x, y) : ImageOpacity::Partial;
 }
 
 inline Color Bitmap::GetBackgroundColor() const {
