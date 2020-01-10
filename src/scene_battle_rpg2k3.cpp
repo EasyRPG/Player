@@ -1079,6 +1079,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		auto pm = PendingMessage();
+		pm.SetEnableFace(false);
 
 		pm.PushLine(Data::terms.victory + Player::escape_symbol + "|");
 		pm.PushPageEnd();
@@ -1150,6 +1151,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 		Game_Message::SetTransparent(false);
 
 		auto pm = PendingMessage();
+		pm.SetEnableFace(false);
 		pm.PushLine(Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));

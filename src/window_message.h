@@ -166,6 +166,8 @@ protected:
 	void SetWaitForCharacter(int width);
 	void SetWaitForPage();
 	void SetWait(int frames);
+
+	bool IsFaceEnabled() const;
 };
 
 inline const PendingMessage& Window_Message::GetPendingMessage() const {

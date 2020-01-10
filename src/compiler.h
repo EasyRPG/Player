@@ -21,9 +21,11 @@
 #ifdef __GNUC__
 #define EP_LIKELY(x) __builtin_expect(!!(x), 1)
 #define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
+#define EP_FALLTHROUGH __attribute__((fallthrough))
 #else
 #define EP_LIKELY(x) (x)
 #define EP_UNLIKELY(x) (x)
+#define EP_FALLTHROUGH do {} while (false)
 #endif
 
 #endif

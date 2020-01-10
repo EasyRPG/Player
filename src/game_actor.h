@@ -98,8 +98,19 @@ public:
 	 *
 	 * @param skill_id database skill ID.
 	 * @return If skill was learned (fails if already had the skill)
+	 * @param pm If non-null, will push the learned skill message if learned.
 	 */
-	bool LearnSkill(int skill_id);
+	bool LearnSkill(int skill_id, PendingMessage* pm);
+
+	/**
+	 * Learn all the skills from min_level to max_level
+	 *
+	 * @param min_level the minimum level to determine which skills to learn.
+	 * @param max_level the minimum level to determine which skills to learn.
+	 * @param pm If non-null, will push the learned skill messages if learned.
+	 * @return number of skills learned
+	 */
+	int LearnLevelSkills(int min_level, int max_level, PendingMessage* pm);
 
 	/**
 	 * Unlearns a skill.
@@ -720,12 +731,43 @@ public:
 	 */
 	const RPG::Class* GetClass() const;
 
+	/** Describes how skills change when we change class */
+	enum ClassChangeSkillMode {
+		/** Don't change skills */
+		eSkillNoChange,
+		/** Reset skills based on level of new class */
+		eSkillReset,
+		/** Add all skills for new class */
+		eSkillAdd,
+	};
+
+	/** Describes how parameters change before we change class */
+	enum ClassChangeParamMode {
+		/** Don't change parameters */
+		eParamNoChange,
+		/** Halve all parameters */
+		eParamHalf,
+		/** Reset parameters based on level 1 of new class */
+		eParamResetLevel1,
+		/** Reset parameters based on level of new class */
+		eParamReset,
+	};
+
 	/**
 	 * Sets new Rpg2k3 hero class.
 	 *
-	 * @param class_id mew Rpg2k3 hero class.
+	 * @param class_id new Rpg2k3 hero class.
+	 * @param level change hero level to level
+	 * @param skill the skill change behavior
+	 * @param param the parameter change behavior
+	 * @param pm If non-null, will push the level up message and learned skills.
 	 */
-	void SetClass(int class_id);
+	void ChangeClass(int class_id,
+			int new_level,
+			ClassChangeSkillMode skill,
+			ClassChangeParamMode param,
+			PendingMessage* pm
+			);
 
 	/**
 	 * Gets the actor's class name as a string.
@@ -807,7 +849,7 @@ public:
 	float GetCriticalHitChance() const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
-	std::string GetLearningMessage(const RPG::Learning& learn) const;
+	std::string GetLearningMessage(const RPG::Skill& skill) const;
 
 	BattlerType GetType() const override;
 

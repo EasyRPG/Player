@@ -32,6 +32,7 @@
 #include "utils.h"
 #include "game_temp.h"
 #include "pending_message.h"
+#include "compiler.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -67,7 +68,7 @@ void Game_Actor::Init() {
 	const std::vector<RPG::Learning>& skills = GetActor().skills;
 	for (int i = 0; i < (int)skills.size(); i++) {
 		if (skills[i].level <= GetLevel()) {
-			LearnSkill(skills[i].skill_id);
+			LearnSkill(skills[i].skill_id, nullptr);
 		}
 	}
 
@@ -110,7 +111,7 @@ bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 
 	if (!IsDead()) {
 		if (item->type == RPG::Item::Type_book) {
-			return LearnSkill(item->skill_id);
+			return LearnSkill(item->skill_id, nullptr);
 		}
 
 		if (item->type == RPG::Item::Type_material) {
@@ -210,7 +211,7 @@ int Game_Actor::CalculateWeaponSpCost() const {
 	return cost;
 }
 
-bool Game_Actor::LearnSkill(int skill_id) {
+bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 		if (!skill) {
@@ -221,9 +222,29 @@ bool Game_Actor::LearnSkill(int skill_id) {
 		GetData().skills.push_back((int16_t)skill_id);
 		GetData().skills_size = GetData().skills.size();
 		std::sort(GetData().skills.begin(), GetData().skills.end());
+
+		if (pm) {
+			pm->PushLine(GetLearningMessage(*skill));
+		}
+
 		return true;
 	}
 	return false;
+}
+
+int Game_Actor::LearnLevelSkills(int min_level, int max_level, PendingMessage* pm) {
+	auto& skills = GetData().class_id > 0 ? GetClass()->skills : GetActor().skills;
+
+	int count = 0;
+
+	// Learn new skills
+	for (const RPG::Learning& learn : skills) {
+		// Skill learning, up to current level
+		if (learn.level >= min_level && learn.level <= max_level) {
+			count += LearnSkill(learn.skill_id, pm);
+		}
+	}
+	return count;
 }
 
 bool Game_Actor::UnlearnSkill(int skill_id) {
@@ -548,19 +569,17 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString() const {
-	std::stringstream ss;
-	ss << GetExp();
-	return ss.str();
+	// RPG_RT displays dashes for max level. As a customization
+	// we always display the amount of EXP.
+	// if (GetNextExp() == -1) { return Player::IsRPG2k3() ? "-------" : "------"; }
+	return std::to_string(GetExp());
 }
 
 std::string Game_Actor::GetNextExpString() const {
 	if (GetNextExp() == -1) {
-		return "------";
-	} else {
-		std::stringstream ss;
-		ss << GetNextExp();
-		return ss.str();
+		return Player::IsRPG2k3() ? "-------" : "------";
 	}
+	return std::to_string(GetNextExp());
 }
 
 int Game_Actor::GetBaseExp() const {
@@ -744,39 +763,19 @@ std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 	}
 }
 
-std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
-	std::stringstream ss;
-
-	std::string skill_name = "??? BAD SKILL ???";
-	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, learn.skill_id);
-	if (skill) {
-		skill_name = skill->name;
-	}
-
+std::string Game_Actor::GetLearningMessage(const RPG::Skill& skill) const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			Data::terms.skill_learned,
 			{'S', 'O'},
-			{GetData().name, skill_name}
+			{GetData().name, skill.name}
 		);
 	}
-	else {
-		ss << skill_name;
-		ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-		return ss.str();
-	}
+
+	return skill.name + (Player::IsRPG2k3E() ? " " : "") + Data::terms.skill_learned;
 }
 
 void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {
-	const std::vector<RPG::Learning>* skills;
-	if (GetData().class_id > 0) {
-		skills = &GetClass()->skills;
-	} else {
-		skills = &GetActor().skills;
-	}
-
-	bool level_up = false;
-
 	int old_level = GetLevel();
 	SetLevel(new_level);
 	new_level = GetLevel(); // Level adjusted to max
@@ -784,22 +783,12 @@ void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {
 	if (new_level > old_level) {
 		if (pm) {
 			pm->PushLine(GetLevelUpMessage(new_level));
-			level_up = true;
 		}
 
 		// Learn new skills
-		for (const RPG::Learning& learn : *skills) {
-			// Skill learning, up to current level
-			if (learn.level > old_level && learn.level <= new_level) {
-				LearnSkill(learn.skill_id);
-				if (pm) {
-					pm->PushLine(GetLearningMessage(learn));
-					level_up = true;
-				}
-			}
-		}
+		LearnLevelSkills(old_level + 1, new_level, pm);
 
-		if (level_up) {
+		if (pm) {
 			pm->PushPageEnd();
 		}
 
@@ -1130,31 +1119,56 @@ const RPG::Class* Game_Actor::GetClass() const {
 	return ReaderUtil::GetElement(Data::classes, id);
 }
 
-void Game_Actor::SetClass(int _class_id) {
-	if (_class_id != 0) {
-		const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, _class_id);
-
-		if (!cls) {
-			Output::Warning("Actor %d: Can't change to invalid class %d", GetId(), _class_id);
-			return;
-		}
+void Game_Actor::ChangeClass(int new_class_id,
+		int new_level,
+		ClassChangeSkillMode new_skill,
+		ClassChangeParamMode new_param,
+		PendingMessage* pm
+		)
+{
+	const auto* cls = ReaderUtil::GetElement(Data::classes, new_class_id);
+	if (new_class_id != 0 && cls == nullptr) {
+		Output::Warning("Actor %d: Can't change to invalid class %d", GetId(), new_class_id);
+		return;
 	}
 
-	GetData().class_id = _class_id;
+	// RPG_RT always removes all equipment on level change.
+	RemoveWholeEquipment();
+
+	const auto prev_level = GetLevel();
+	const auto hp = GetHp();
+	const auto sp = GetSp();
+
+	auto max_hp = GetBaseMaxHp();
+	auto max_sp = GetBaseMaxSp();
+	auto atk = GetBaseAtk();
+	auto def = GetBaseDef();
+	auto spi = GetBaseSpi();
+	auto agi = GetBaseAgi();
+
+	SetLevel(1);
+	GetData().hp_mod = 0;
+	GetData().sp_mod = 0;
+	GetData().attack_mod = 0;
+	GetData().defense_mod = 0;
+	GetData().spirit_mod = 0;
+	GetData().agility_mod = 0;
+
+	GetData().class_id = new_class_id;
 	GetData().changed_battle_commands = true; // Any change counts as a battle commands change.
 
 	// The class settings are not applied when the actor has a class on startup
 	// but only when the "Change Class" event command is used.
 
-	if (_class_id > 0) {
-		GetData().super_guard = GetClass()->super_guard;
-		GetData().lock_equipment = GetClass()->lock_equipment;
-		GetData().two_weapon = GetClass()->two_weapon;
-		GetData().auto_battle = GetClass()->auto_battle;
+	if (cls) {
+		GetData().super_guard = cls->super_guard;
+		GetData().lock_equipment = cls->lock_equipment;
+		GetData().two_weapon = cls->two_weapon;
+		GetData().auto_battle = cls->auto_battle;
 
-		GetData().battler_animation = GetClass()->battler_animation;
+		GetData().battler_animation = cls->battler_animation;
 
-		GetData().battle_commands = GetClass()->battle_commands;
+		GetData().battle_commands = cls->battle_commands;
 	} else {
 		GetData().super_guard = GetActor().super_guard;
 		GetData().lock_equipment = GetActor().lock_equipment;
@@ -1165,11 +1179,63 @@ void Game_Actor::SetClass(int _class_id) {
 
 		GetData().battle_commands = GetActor().battle_commands;
 	}
+
 	MakeExpList();
 
-	// Set EXP to at least minimum value
-	if (GetExp() < GetBaseExp()) {
-		SetExp(GetBaseExp());
+	switch (new_param) {
+		case eParamNoChange:
+			break;
+		case eParamHalf:
+			max_hp /= 2;
+			max_sp /= 2;
+			atk /= 2;
+			def /= 2;
+			spi /= 2;
+			agi /= 2;
+			break;
+		case eParamResetLevel1:
+			max_hp = GetBaseMaxHp();
+			max_sp = GetBaseMaxSp();
+			atk = GetBaseAtk();
+			def = GetBaseDef();
+			spi = GetBaseSpi();
+			agi = GetBaseAgi();
+			break;
+		case eParamReset:
+			break;
+	}
+
+	SetLevel(new_level);
+	if (new_level > 1 && (new_level > prev_level || new_skill != eSkillNoChange)) {
+		pm->PushLine(GetLevelUpMessage(new_level));
+	}
+
+	// RPG_RT always resets EXP when class is changed, even if level unchanged.
+	SetExp(GetBaseExp());
+
+	if (new_param != eParamReset) {
+		SetBaseMaxHp(max_hp);
+		SetBaseMaxSp(max_sp);
+		SetBaseAtk(atk);
+		SetBaseDef(def);
+		SetBaseSpi(spi);
+		SetBaseAgi(agi);
+	}
+
+	SetHp(hp);
+	SetSp(sp);
+
+	switch (new_skill) {
+		case eSkillNoChange:
+			break;
+		case eSkillReset:
+			// RPG_RT has a bug where if (new_level == 1 && new_class_id == prev_class_id) no skills are removed.
+			UnlearnAllSkills();
+			EP_FALLTHROUGH;
+		case eSkillAdd:
+			// RPG_RT has a bug where if (new_class_id == prev_class_id) level 1 skills are not learned.
+			LearnLevelSkills(1, new_level, pm);
+			break;
 	}
 }
 
@@ -1370,7 +1436,7 @@ void Game_Actor::RemoveInvalidData() {
 		const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, GetData().class_id);
 		if (!cls) {
 			Output::Warning("Actor %d: Removing invalid class %d", GetId(), GetData().class_id);
-			SetClass(0);
+			ChangeClass(0, GetLevel(), eSkillNoChange, eParamNoChange, nullptr);
 		}
 	}
 

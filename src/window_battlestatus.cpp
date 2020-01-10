@@ -83,8 +83,9 @@ void Window_BattleStatus::Refresh() {
 			if (Player::IsRPG2k3() && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
 				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
-				DrawActorHp(*actor, 126, y, true);
-				DrawActorSp(*actor, 198, y, false);
+				int digits = Player::IsRPG2k() ? 3 : 4;
+				DrawActorHp(*actor, 126, y, digits, true);
+				DrawActorSp(*actor, 198, y, 3, false);
 			}
 		}
 	}
@@ -140,7 +141,7 @@ void Window_BattleStatus::RefreshGauge() {
 
 				DrawGauge(*actor, 198 - 10, y - 2);
 				if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
-					DrawActorSp(*actor, 198, y, false);
+					DrawActorSp(*actor, 198, y, 3, false);
 				}
 			}
 		}

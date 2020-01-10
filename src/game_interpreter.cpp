@@ -103,7 +103,7 @@ void Game_Interpreter::Push(
 	frame.triggered_by_decision_key = started_by_decision_key;
 	frame.event_id = event_id;
 
-	if (_state.stack.empty() && main_flag) {
+	if (_state.stack.empty() && main_flag && !Game_Temp::battle_running) {
 		Game_Message::ClearFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
@@ -734,7 +734,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 
 	const bool is_base_frame = _state.stack.size() == 1;
 
-	if (main_flag && is_base_frame) {
+	if (main_flag && is_base_frame && !Game_Temp::battle_running) {
 		Game_Message::ClearFace();
 	}
 
@@ -1446,6 +1446,13 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	return true;
 }
 
+void Game_Interpreter::ForegroundTextPush(PendingMessage pm) {
+	auto& fg_interp = GetForegroundInterpreter();
+	fg_interp._state.show_message = true;
+
+	Game_Message::SetPendingMessage(std::move(pm));
+}
+
 bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
 	bool show_msg = com.parameters[5];
 
@@ -1459,6 +1466,7 @@ bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 
 	);
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeExp(actor->GetExp() + value, show_msg ? &pm : nullptr);
@@ -1469,7 +1477,7 @@ bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 
 	}
 
 	if (show_msg) {
-		Game_Message::SetPendingMessage(std::move(pm));
+		ForegroundTextPush(std::move(pm));
 	}
 	return true;
 }
@@ -1488,6 +1496,7 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 	);
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeLevel(actor->GetLevel() + value, show_msg ? &pm : nullptr);
@@ -1498,7 +1507,7 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 	}
 
 	if (show_msg && pm.IsActive()) {
-		Game_Message::SetPendingMessage(std::move(pm));
+		ForegroundTextPush(std::move(pm));
 	}
 	return true;
 }
@@ -1562,7 +1571,7 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 		if (remove)
 			actor->UnlearnSkill(skill_id);
 		else
-			actor->LearnSkill(skill_id);
+			actor->LearnSkill(skill_id, nullptr);
 	}
 
 	CheckGameOver();
@@ -3232,14 +3241,15 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
-	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
-	bool show = com.parameters[6] > 0;
+	int param_mode = com.parameters[5]; // no change, halve, level 1, current level
+	bool show_msg = com.parameters[6] > 0;
 
-	if (show && !Game_Message::CanShowMessage(true)) {
+	if (show_msg && !Game_Message::CanShowMessage(true)) {
 		return false;
 	}
 
 	PendingMessage pm;
+	pm.SetEnableFace(false);
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
 	if (!cls && class_id != 0) {
@@ -3248,133 +3258,20 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	}
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		int actor_id = actor->GetId();
-
-		int cur_lvl = actor->GetLevel();
-		int cur_exp = actor->GetExp();
-		int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
-
-		actor->RemoveWholeEquipment();
-
-		switch (stats_mode) {
-		case 2:
-			actor->SetClass(class_id);
-			actor->SetLevel(1);
-			actor->SetExp(0);
-			break;
-		case 3:
-			actor->SetClass(class_id);
-			break;
-		}
-
-		int cur_hp = actor->GetBaseMaxHp();
-		int cur_sp = actor->GetBaseMaxSp();
-		int cur_atk = actor->GetBaseAtk();
-		int cur_def = actor->GetBaseDef();
-		int cur_spi = actor->GetBaseSpi();
-		int cur_agi = actor->GetBaseAgi();
-
-		switch (stats_mode) {
-		case 1:
-			cur_hp /= 2;
-			cur_sp /= 2;
-			cur_atk /= 2;
-			cur_def /= 2;
-			cur_spi /= 2;
-			cur_agi /= 2;
-			break;
-		}
-
-		actor->SetClass(class_id);
-		if (level1) {
-			actor->SetLevel(1);
-			actor->SetExp(0);
-		} else {
-			// FIXME: Messages?
-			actor->SetExp(cur_exp);
-			actor->SetLevel(cur_lvl);
-		}
-
-		actor->SetBaseMaxHp(cur_hp);
-		actor->SetBaseMaxSp(cur_sp);
-		actor->SetBaseAtk(cur_atk);
-		actor->SetBaseDef(cur_def);
-		actor->SetBaseSpi(cur_spi);
-		actor->SetBaseAgi(cur_agi);
-
-		int level = actor->GetLevel();
-
-		// same class, not doing skill processing
-		if (class_id == cur_cid)
-			return true;
-
-		bool level_up = false;
-
-		if (show && !level1) {
-			std::stringstream ss;
-			ss << actor->GetName();
-			if (Player::IsRPG2k3E()) {
-				ss << " " << Data::terms.level_up << " ";
-				ss << " " << Data::terms.level << " " << level;
-			} else {
-				std::string particle, space = "";
-				if (Player::IsCP932()) {
-					particle = "は";
-					space += " ";
-				}
-				else {
-					particle = " ";
-				}
-				ss << particle << Data::terms.level << " ";
-				ss << level << space << Data::terms.level_up;
-			}
-			pm.PushLine(ss.str());
-			level_up = true;
-		}
-
-		if (skill_mode == 1) {
-			// Learn based on level (replace)
-			actor->UnlearnAllSkills();
-		}
-		if (skill_mode > 0 && cls) {
-			// Learn additionally
-			for (const RPG::Learning& learn : cls->skills) {
-				if (level >= learn.level) {
-					actor->LearnSkill(learn.skill_id);
-					if (show) {
-						std::stringstream ss;
-						ss << Data::skills[learn.skill_id - 1].name;
-						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						pm.PushLine(ss.str());
-						level_up = true;
-					}
-				}
-			}
-		}
-		else {
-			for (const RPG::Learning& learn : Data::actors[actor_id - 1].skills) {
-				if (level >= learn.level) {
-					actor->LearnSkill(learn.skill_id);
-					if (show) {
-						std::stringstream ss;
-						ss << Data::skills[learn.skill_id - 1].name;
-						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						pm.PushLine(ss.str());
-						level_up = true;
-					}
-				}
-			}
-		}
-
-		if (level_up) {
-			pm.PushPageEnd();
-		}
+		int level = level1 ? 1 : actor->GetLevel();
+		actor->ChangeClass(class_id, level,
+				static_cast<Game_Actor::ClassChangeSkillMode>(skill_mode),
+				static_cast<Game_Actor::ClassChangeParamMode>(param_mode),
+				show_msg ? &pm : nullptr
+				);
 	}
 
-	// FIXME: Check Gameover?
+	if (CheckGameOver()) {
+		return true;
+	}
 
-	if (show && pm.IsActive()) {
-		Game_Message::SetPendingMessage(std::move(pm));
+	if (show_msg && pm.IsActive()) {
+		ForegroundTextPush(std::move(pm));
 	}
 
 	return true;
@@ -3422,3 +3319,9 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
+
+Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
+	return Game_Temp::battle_running
+		? Game_Battle::GetInterpreter()
+		: Game_Map::GetInterpreter();
+}

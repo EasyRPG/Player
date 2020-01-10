@@ -52,8 +52,9 @@ void Window_MenuStatus::Refresh() {
 		DrawActorLevel(actor, 48 + 8, i*48 + 2 + 16 + y);
 		DrawActorState(actor, 48 + 8 + 42, i*48 + 2 + 16 + y);
 		DrawActorExp(actor, 48 + 8, i*48 + 2 + 16 + 16 + y);
-		DrawActorHp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + y);
-		DrawActorSp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + 16 + y);
+		int digits = (Player::IsRPG2k() ? 3 : 4);
+		DrawActorHp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + y, digits);
+		DrawActorSp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + 16 + y, digits);
 
 		y += 10;
 	}
