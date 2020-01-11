@@ -84,6 +84,7 @@ void Game_Picture::UpdateSprite() {
 		// Battle Animations are below pictures
 		sprite->SetZ(Priority_PictureOld + data.ID);
 	}
+	sprite->SetVisible(Game_Temp::battle_running ? IsOnBattle() : IsOnMap());
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 
@@ -153,10 +154,8 @@ void Game_Picture::OnBattleStart(Scene* map_scene, Scene& battle_scene) {
 		map_scene->GetDrawableList().Take(sprite.get());
 	}
 
-	if (IsOnBattle()) {
-		battle_scene.GetDrawableList().Append(sprite.get());
-		UpdateSprite();
-	}
+	battle_scene.GetDrawableList().Append(sprite.get());
+	UpdateSprite();
 }
 
 void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene) {
@@ -171,7 +170,7 @@ void Game_Picture::OnBattleEnd(Scene* map_scene) {
 		return;
 	}
 
-	if (map_scene && sprite && IsOnMap()) {
+	if (map_scene && sprite) {
 		map_scene->GetDrawableList().Append(sprite.get());
 		UpdateSprite();
 	}
@@ -303,11 +302,6 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 
 	if (!sprite) {
 		sprite.reset(new Sprite());
-		// Don't display on map if it's not map picture
-		// Don't display on battle if it's not battle picture
-		if ((Game_Temp::battle_running && !IsOnBattle()) || (!Game_Temp::battle_running && !IsOnMap())) {
-			DrawableMgr::Remove(sprite.get());
-		}
 	}
 	sprite->SetBitmap(bitmap);
 }
