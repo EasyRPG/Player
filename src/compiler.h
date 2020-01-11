@@ -19,10 +19,9 @@
 #define EP_COMPILER_H
 
 #ifdef __GNUC__
+
 #define EP_LIKELY(x) __builtin_expect(!!(x), 1)
 #define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
-
-#define EP_FALLTHROUGH __attribute__((fallthrough))
 
 #define EP_ALWAYS_INLINE __attribute__((always_inline)) inline
 
@@ -30,8 +29,6 @@
 
 #define EP_LIKELY(x) (x)
 #define EP_UNLIKELY(x) (x)
-
-#define EP_FALLTHROUGH do {} while (false)
 
 #define EP_ALWAYS_INLINE __forceinline
 
@@ -42,7 +39,6 @@
 
 #define EP_ALWAYS_INLINE inline
 
-#define EP_FALLTHROUGH do {} while (false)
 #endif
 
 #endif
