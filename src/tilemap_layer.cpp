@@ -153,6 +153,9 @@ TilemapLayer::TilemapLayer(int ilayer) :
 {
 }
 
+// This setup of having an always inlined DrawTile() which dispatches to DrawTileImpl()
+// was created intentionally. Inlining the transparency check was measured and shown
+// to provide a performance improvement
 EP_ALWAYS_INLINE
 void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit) {
 	auto op = tileset.GetTileOpacity(col, row);
