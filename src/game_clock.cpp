@@ -19,23 +19,18 @@
 
 #include <thread>
 
-// FIXME: For platform specific sleep functions. Can we remove these?
 #if defined(PSP2)
 #include <psp2/kernel/threadmgr.h>
 #elif defined(_3DS)
 #include <3ds/svc.h>
-#elif defined(__SWITCH__)
-#include <switch/kernel/svc.h>
 #endif
 
 constexpr bool Game_Clock::is_steady;
 
 void Game_Clock::SleepFor(std::chrono::nanoseconds ns) {
-#if defined(_3DS) || defined(__SWITCH__)
-	// FIXME: Can we use std::this_thread::sleep_for() for 3ds and switch?
+#if defined(_3DS)
 	svcSleepThread(ns.count());
 #elif defined(PSP2)
-	// FIXME: Can we use std::this_thread::sleep_for() for psp?
 	auto us = std::chrono::duration_cast<std::chrono::microseconds>(ns);
 	sceKernelDelayThread(us.count());
 #else
