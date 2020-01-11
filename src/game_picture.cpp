@@ -23,7 +23,6 @@
 #include "output.h"
 #include "game_map.h"
 #include "game_picture.h"
-#include "game_temp.h"
 #include "player.h"
 #include "main_data.h"
 #include "scene.h"
@@ -40,7 +39,7 @@ Game_Picture::Game_Picture(RPG::SavePicture sp)
 }
 
 
-void Game_Picture::UpdateSprite() {
+void Game_Picture::UpdateSprite(bool is_battle) {
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
 	}
@@ -72,7 +71,7 @@ void Game_Picture::UpdateSprite() {
 	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
 		int priority = 0;
-		if (Game_Temp::battle_running) {
+		if (is_battle) {
 			priority = Drawable::GetPriorityForBattleLayer(data.battle_layer);
 		} else {
 			priority = Drawable::GetPriorityForMapLayer(data.map_layer);
@@ -84,7 +83,7 @@ void Game_Picture::UpdateSprite() {
 		// Battle Animations are below pictures
 		sprite->SetZ(Priority_PictureOld + data.ID);
 	}
-	sprite->SetVisible(Game_Temp::battle_running ? IsOnBattle() : IsOnMap());
+	sprite->SetVisible(is_battle ? IsOnBattle() : IsOnMap());
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 
@@ -126,9 +125,9 @@ void Game_Picture::UpdateSprite() {
 	}
 }
 
-void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures) {
+void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle) {
 	for (auto& pic: pictures) {
-		pic.UpdateSprite();
+		pic.UpdateSprite(is_battle);
 	}
 }
 
@@ -155,7 +154,7 @@ void Game_Picture::OnBattleStart(Scene* map_scene, Scene& battle_scene) {
 	}
 
 	battle_scene.GetDrawableList().Append(sprite.get());
-	UpdateSprite();
+	UpdateSprite(true);
 }
 
 void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene) {
@@ -172,7 +171,7 @@ void Game_Picture::OnBattleEnd(Scene* map_scene) {
 
 	if (map_scene && sprite) {
 		map_scene->GetDrawableList().Append(sprite.get());
-		UpdateSprite();
+		UpdateSprite(false);
 	}
 }
 

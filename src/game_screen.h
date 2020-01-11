@@ -59,7 +59,7 @@ public:
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void Update(bool is_battle);
-	void UpdateGraphics();
+	void UpdateGraphics(bool is_battle);
 
 	/**
 	 * Returns the current screen tone.

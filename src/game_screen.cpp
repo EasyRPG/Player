@@ -487,7 +487,7 @@ void Game_Screen::CancelBattleAnimation() {
 	animation.reset();
 }
 
-void Game_Screen::UpdateGraphics() {
-	Game_Picture::UpdateSprite(pictures);
+void Game_Screen::UpdateGraphics(bool is_battle) {
+	Game_Picture::UpdateSprite(pictures, is_battle);
 	weather->SetTone(GetTone());
 }

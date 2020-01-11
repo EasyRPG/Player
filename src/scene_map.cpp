@@ -135,7 +135,7 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 void Scene_Map::UpdateGraphics() {
 	spriteset->Update();
-	Main_Data::game_screen->UpdateGraphics();
+	Main_Data::game_screen->UpdateGraphics(false);
 }
 
 static bool IsMenuScene(Scene::SceneType scene) {

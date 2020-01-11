@@ -78,10 +78,10 @@ public:
 	void Erase();
 
 	void Update(bool is_battle);
-	void UpdateSprite();
+	void UpdateSprite(bool is_battle);
 
 	static void Update(std::vector<Game_Picture>& pictures, bool is_battle);
-	static void UpdateSprite(std::vector<Game_Picture>& pictures);
+	static void UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle);
 
 	void OnMapChange();
 	void OnBattleStart(Scene* map_scene, Scene& battle_scene);
