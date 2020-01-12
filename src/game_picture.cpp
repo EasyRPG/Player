@@ -25,6 +25,8 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
+#include "scene.h"
+#include "drawable_mgr.h"
 
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
@@ -37,7 +39,7 @@ Game_Picture::Game_Picture(RPG::SavePicture sp)
 }
 
 
-void Game_Picture::UpdateSprite() {
+void Game_Picture::UpdateSprite(bool is_battle) {
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
 	}
@@ -68,7 +70,12 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetY(y);
 	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
-		int priority = Drawable::GetPriorityForMapLayer(data.map_layer);
+		int priority = 0;
+		if (is_battle) {
+			priority = Drawable::GetPriorityForBattleLayer(data.battle_layer);
+		} else {
+			priority = Drawable::GetPriorityForMapLayer(data.map_layer);
+		}
 		if (priority > 0) {
 			sprite->SetZ(priority + z_mask + data.ID);
 		}
@@ -76,6 +83,7 @@ void Game_Picture::UpdateSprite() {
 		// Battle Animations are below pictures
 		sprite->SetZ(Priority_PictureOld + data.ID);
 	}
+	sprite->SetVisible(is_battle ? IsOnBattle() : IsOnMap());
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 
@@ -117,9 +125,59 @@ void Game_Picture::UpdateSprite() {
 	}
 }
 
-void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures) {
+void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle) {
 	for (auto& pic: pictures) {
-		pic.UpdateSprite();
+		pic.UpdateSprite(is_battle);
+	}
+}
+
+void Game_Picture::OnMapChange() {
+	if (data.flags.erase_on_map_change) {
+		Erase();
+	}
+}
+
+void Game_Picture::OnMapChange(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.OnMapChange();
+	}
+}
+
+void Game_Picture::OnBattleStart(Scene* map_scene, Scene& battle_scene) {
+	if (!sprite) {
+		return;
+	}
+
+	if (map_scene) {
+		// FIXME: O(n) for every sprite. Can we batch this faster?
+		map_scene->GetDrawableList().Take(sprite.get());
+	}
+
+	battle_scene.GetDrawableList().Append(sprite.get());
+	UpdateSprite(true);
+}
+
+void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene) {
+	for (auto& pic: pictures) {
+		pic.OnBattleStart(map_scene, battle_scene);
+	}
+}
+
+void Game_Picture::OnBattleEnd(Scene* map_scene) {
+	if (data.flags.erase_on_battle_end) {
+		Erase();
+		return;
+	}
+
+	if (map_scene && sprite) {
+		map_scene->GetDrawableList().Append(sprite.get());
+		UpdateSprite(false);
+	}
+}
+
+void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene) {
+	for (auto& pic: pictures) {
+		pic.OnBattleEnd(map_scene);
 	}
 }
 
@@ -221,13 +279,8 @@ void Game_Picture::Move(const MoveParams& params) {
 	}
 }
 
-void Game_Picture::Erase(bool force_erase) {
-	if (!(force_erase || data.flags.erase_on_map_change)) {
-		return;
-	}
-
-	request_id = FileRequestBinding();
-
+void Game_Picture::Erase() {
+	request_id = {};
 	data.name.clear();
 	sprite.reset();
 	bitmap.reset();
@@ -264,7 +317,11 @@ bool Game_Picture::UpdateWouldBeNop() const {
 }
 
 
-void Game_Picture::Update() {
+void Game_Picture::Update(bool is_battle) {
+	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
+		return;
+	}
+
 	if (Player::IsRPG2k3E()) {
 		++data.frames;
 	}
@@ -354,15 +411,15 @@ void Game_Picture::Update() {
 		if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
 			data.spritesheet_frame = 0;
 			if (data.spritesheet_play_once && !data.name.empty()) {
-				Erase(true);
+				Erase();
 			}
 		}
 	}
 }
 
-void Game_Picture::Update(std::vector<Game_Picture>& pictures) {
+void Game_Picture::Update(std::vector<Game_Picture>& pictures, bool is_battle) {
 	for (auto& pic: pictures) {
-		pic.Update();
+		pic.Update(is_battle);
 	}
 }
 

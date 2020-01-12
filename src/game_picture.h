@@ -25,6 +25,7 @@
 #include "sprite.h"
 
 class Sprite;
+class Scene;
 
 /**
  * Picture class.
@@ -69,15 +70,26 @@ public:
 		int duration;
 	};
 
+	bool IsOnMap() const;
+	bool IsOnBattle() const;
+
 	void Show(const ShowParams& params);
 	void Move(const MoveParams& params);
-	void Erase(bool force_erase);
+	void Erase();
 
-	static void Update(std::vector<Game_Picture>& pictures);
-	static void UpdateSprite(std::vector<Game_Picture>& pictures);
+	void Update(bool is_battle);
+	void UpdateSprite(bool is_battle);
 
-	void Update();
-	void UpdateSprite();
+	static void Update(std::vector<Game_Picture>& pictures, bool is_battle);
+	static void UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle);
+
+	void OnMapChange();
+	void OnBattleStart(Scene* map_scene, Scene& battle_scene);
+	void OnBattleEnd(Scene* map_scene);
+
+	static void OnMapChange(std::vector<Game_Picture>& pictures);
+	static void OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene);
+	static void OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene);
 
 private:
 	RPG::SavePicture data;
@@ -104,6 +116,14 @@ inline Game_Picture::Game_Picture(int id) {
 
 inline const RPG::SavePicture& Game_Picture::GetSaveData() const {
 	return data;
+}
+
+inline bool Game_Picture::IsOnMap() const {
+	return data.map_layer > 0;
+}
+
+inline bool Game_Picture::IsOnBattle() const {
+	return data.battle_layer > 0;
 }
 
 #endif

@@ -27,7 +27,6 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_map.h"
-#include "main_data.h"
 #include "output.h"
 #include "utils.h"
 #include "options.h"
@@ -53,16 +52,15 @@ static int GetDefaultNumberOfPictures() {
 	return 0;
 }
 
-Game_Screen::Game_Screen() :
-	data(Main_Data::game_data.screen)
+Game_Screen::Game_Screen()
 {
-	Reset();
 }
 
-Game_Screen::~Game_Screen() {}
+Game_Screen::~Game_Screen() {
+}
 
 void Game_Screen::SetupNewGame() {
-	Reset();
+	data = {};
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
 
@@ -71,7 +69,11 @@ void Game_Screen::SetupNewGame() {
 	PreallocatePictureData(GetDefaultNumberOfPictures());
 }
 
-void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
+void Game_Screen::SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> save_pics) {
+	data = std::move(screen);
+
+	weather = std::make_unique<Weather>();
+
 	pictures.clear();
 	pictures.reserve(save_pics.size());
 
@@ -82,11 +84,11 @@ void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
 		pictures.emplace_back(std::move(sp));
 	}
 
-	if (Main_Data::game_data.screen.battleanim_active) {
-		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
-				Main_Data::game_data.screen.battleanim_target,
-				Main_Data::game_data.screen.battleanim_global,
-				Main_Data::game_data.screen.battleanim_frame);
+	if (data.battleanim_active) {
+		ShowBattleAnimation(data.battleanim_id,
+				data.battleanim_target,
+				data.battleanim_global,
+				data.battleanim_frame);
 	}
 }
 
@@ -99,10 +101,8 @@ std::vector<RPG::SavePicture> Game_Screen::GetPictureSaveData() const {
 	return save_pics;
 }
 
-void Game_Screen::Reset() {
-	for (auto& pic : pictures) {
-		pic.Erase(false);
-	}
+void Game_Screen::OnMapChange() {
+	Game_Picture::OnMapChange(pictures);
 
 	data.flash_red = 0;
 	data.flash_green = 0;
@@ -129,6 +129,29 @@ void Game_Screen::Reset() {
 	movie_res_y = 0;
 
 	animation.reset();
+}
+
+void Game_Screen::OnBattleStart() {
+	auto battle_scene = Scene::Find(Scene::Battle);
+	assert(battle_scene);
+	auto map_scene = Scene::Find(Scene::Map);
+
+	if (map_scene) {
+		// FIXME: O(n) for every sprite. Can we batch this faster?
+		map_scene->GetDrawableList().Take(weather.get());
+	}
+	battle_scene->GetDrawableList().Append(weather.get());
+
+	Game_Picture::OnBattleStart(pictures, map_scene.get(), *battle_scene);
+}
+
+void Game_Screen::OnBattleEnd() {
+	auto map_scene = Scene::Find(Scene::Map);
+	if (map_scene) {
+		map_scene->GetDrawableList().Append(weather.get());
+	}
+
+	Game_Picture::OnBattleEnd(pictures, map_scene.get());
 }
 
 void Game_Screen::DoPreallocatePictureData(int id) {
@@ -180,7 +203,7 @@ void Game_Screen::FlashEnd() {
 }
 
 void Game_Screen::FlashMapStepDamage() {
-	Main_Data::game_screen->FlashOnce(31, 10, 10, 20, 6);
+	FlashOnce(31, 10, 10, 20, 6);
 }
 
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
@@ -413,9 +436,9 @@ void Game_Screen::UpdateWeather() {
 	}
 }
 
-void Game_Screen::Update() {
+void Game_Screen::Update(bool is_battle) {
 	UpdateScreenEffects();
-	Game_Picture::Update(pictures);
+	Game_Picture::Update(pictures, is_battle);
 	UpdateMovie();
 	UpdateWeather();
 	UpdateBattleAnimation();
@@ -428,11 +451,11 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 		return 0;
 	}
 
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-	Main_Data::game_data.screen.battleanim_target = target_id;
-	Main_Data::game_data.screen.battleanim_global = global;
-	Main_Data::game_data.screen.battleanim_active = true;
-	Main_Data::game_data.screen.battleanim_frame = start_frame;
+	data.battleanim_id = animation_id;
+	data.battleanim_target = target_id;
+	data.battleanim_global = global;
+	data.battleanim_active = true;
+	data.battleanim_frame = start_frame;
 
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
@@ -450,7 +473,7 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 void Game_Screen::UpdateBattleAnimation() {
 	if (animation) {
 		animation->Update();
-		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
+		data.battleanim_frame = animation->GetFrame();
 		if (animation->IsDone()) {
 			CancelBattleAnimation();
 		}
@@ -458,13 +481,13 @@ void Game_Screen::UpdateBattleAnimation() {
 }
 
 void Game_Screen::CancelBattleAnimation() {
-	Main_Data::game_data.screen.battleanim_frame = animation ?
+	data.battleanim_frame = animation ?
 		animation->GetFrames() : 0;
-	Main_Data::game_data.screen.battleanim_active = false;
+	data.battleanim_active = false;
 	animation.reset();
 }
 
-void Game_Screen::UpdateGraphics() {
-	Game_Picture::UpdateSprite(pictures);
+void Game_Screen::UpdateGraphics(bool is_battle) {
+	Game_Picture::UpdateSprite(pictures, is_battle);
 	weather->SetTone(GetTone());
 }

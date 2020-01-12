@@ -76,7 +76,7 @@ void Scene_Map::Start() {
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
-		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.pictures));
+		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen), std::move(Main_Data::game_data.pictures));
 	} else {
 		Main_Data::game_screen->SetupNewGame();
 	}
@@ -135,7 +135,7 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 void Scene_Map::UpdateGraphics() {
 	spriteset->Update();
-	Main_Data::game_screen->UpdateGraphics();
+	Main_Data::game_screen->UpdateGraphics(false);
 }
 
 static bool IsMenuScene(Scene::SceneType scene) {

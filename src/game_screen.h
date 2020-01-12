@@ -27,6 +27,7 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
+#include "rpg_savescreen.h"
 
 class Game_Battler;
 class Screen;
@@ -39,13 +40,13 @@ public:
 	~Game_Screen();
 
 	void SetupNewGame();
-	void SetupFromSave(std::vector<RPG::SavePicture> pictures);
+	void SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> pictures);
 
+	const RPG::SaveScreen& GetScreenSaveData() const;
 	std::vector<RPG::SavePicture> GetPictureSaveData() const;
 
 	Game_Picture& GetPicture(int id);
 
-	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int frames);
 	void FlashBegin(int r, int g, int b, int s, int frames);
@@ -57,8 +58,8 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void Update();
-	void UpdateGraphics();
+	void Update(bool is_battle);
+	void UpdateGraphics(bool is_battle);
 
 	/**
 	 * Returns the current screen tone.
@@ -155,12 +156,21 @@ public:
 	/** @return Return screen shake Y offset */
 	int GetShakeOffsetY() const;
 
+	/** To be called when the map changes */
+	void OnMapChange();
+
+	/** To be called when a battle starts */
+	void OnBattleStart();
+
+	/** To be called when a battle ends */
+	void OnBattleEnd();
+
 private:
 	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;
 
-	RPG::SaveScreen& data;
+	RPG::SaveScreen data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
 
@@ -256,6 +266,10 @@ inline void Game_Screen::PreallocatePictureData(int id) {
 		DoPreallocatePictureData(id);
 		return;
 	}
+}
+
+inline const RPG::SaveScreen& Game_Screen::GetScreenSaveData() const {
+	return data;
 }
 
 #endif

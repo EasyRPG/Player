@@ -91,6 +91,8 @@ void Game_Battle::Init() {
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
 	}
+
+	Main_Data::game_screen->OnBattleStart();
 }
 
 void Game_Battle::Quit() {
@@ -123,6 +125,7 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
+	Main_Data::game_screen->OnBattleEnd();
 }
 
 void Game_Battle::RunEvents() {
@@ -144,6 +147,7 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
+	Main_Data::game_screen->UpdateGraphics(true);
 
 	if (need_refresh) {
 		need_refresh = false;

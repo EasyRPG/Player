@@ -143,26 +143,23 @@ void Game_Map::Init() {
 	last_map_id = -1;
 }
 
-void Game_Map::Dispose(bool clear_screen) {
+void Game_Map::Dispose() {
 	events.clear();
 	pending.clear();
-
-	if (Main_Data::game_screen && clear_screen) {
-		Main_Data::game_screen->Reset();
-	}
-
 	map.reset();
 }
 
 void Game_Map::Quit() {
 	Dispose();
-
 	common_events.clear();
 	interpreter.reset();
 }
 
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
-	Dispose(tt != TeleportTarget::eVehicleHackTeleport);
+	Dispose();
+	if (tt != TeleportTarget::eVehicleHackTeleport) {
+		Main_Data::game_screen->OnMapChange();
+	}
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -991,7 +988,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 		Game_Message::Update();
 		Main_Data::game_party->UpdateTimers();
-		Main_Data::game_screen->Update();
+		Main_Data::game_screen->Update(false);
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {

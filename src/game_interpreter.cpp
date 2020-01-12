@@ -2418,11 +2418,6 @@ namespace PicPointerPatch {
 }
 
 bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
-	if (Game_Temp::battle_running) {
-		Output::Warning("ShowPicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2504,11 +2499,6 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
-	if (Game_Temp::battle_running) {
-		Output::Warning("MovePicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2573,11 +2563,6 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
-	if (Game_Temp::battle_running) {
-		Output::Warning("ErasePicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2603,7 +2588,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 			}
 
 			auto& picture = Main_Data::game_screen->GetPicture(i);
-			picture.Erase(true);
+			picture.Erase();
 		}
 	} else {
 		PicPointerPatch::AdjustId(pic_id);
@@ -2613,7 +2598,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 		}
 
 		auto& picture = Main_Data::game_screen->GetPicture(pic_id);
-		picture.Erase(true);
+		picture.Erase();
 	}
 
 	return true;
