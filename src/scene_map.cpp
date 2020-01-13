@@ -100,7 +100,6 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 		tp.erase_screen = false;
 		tp.use_default_transition_in = true;
 		tp.defer_recursive_teleports = false;
-		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 		StartPendingTeleport(tp);
 		return;
 	}
@@ -249,7 +248,6 @@ void Scene_Map::UpdateStage2() {
 		tp.erase_screen = true;
 		tp.use_default_transition_in = false;
 		tp.defer_recursive_teleports = false;
-		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 
 		StartPendingTeleport(tp);
 		return;
@@ -301,7 +299,7 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!transition.IsErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && tp.erase_screen) {
+	if (!transition.IsErased() && tp.erase_screen) {
 		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
@@ -337,12 +335,10 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	auto& transition = Transition::instance();
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (!tp.no_transition_in) {
-		if (tp.use_default_transition_in && transition.IsErased()) {
-			transition.Init(Transition::TransitionFadeIn, this, 32, false);
-		} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-			transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-		}
+	if (tp.use_default_transition_in && transition.IsErased()) {
+		transition.Init(Transition::TransitionFadeIn, this, 32, false);
+	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
+		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 	}
 
 	// Call any requested scenes when transition is done.
