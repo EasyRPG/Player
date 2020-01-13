@@ -37,9 +37,9 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	if (use_item) {
-		contents->TextDraw(0, 0, 1, lcf::Data::terms.possessed_items);
+		contents->TextDraw(0, 2, 1, lcf::Data::terms.possessed_items);
 	} else {
-		contents->TextDraw(0, 0, 1, lcf::Data::terms.sp_cost);
+		contents->TextDraw(0, 2, 1, lcf::Data::terms.sp_cost);
 	}
 
 	// Scene_ActorTarget validates items and skills
@@ -51,7 +51,7 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	FontRef font = Font::Default();
-	contents->TextDraw(contents->GetWidth() - font->GetSize(str).width, 0, Font::ColorDefault, str, Text::AlignRight);
+	contents->TextDraw(contents->GetWidth(), 2, Font::ColorDefault, str, Text::AlignRight);
 }
 
 void Window_TargetStatus::SetData(int id, bool is_item, int actor_index) {
