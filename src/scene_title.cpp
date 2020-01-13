@@ -211,7 +211,6 @@ void Scene_Title::CommandNewGame() {
 	} else {
 		Output::Debug("Starting new game");
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Game_System::BgmStop();
 		Player::SetupNewGame();
 		Scene::Push(std::make_shared<Scene_Map>());
 	}

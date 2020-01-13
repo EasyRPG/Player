@@ -76,8 +76,12 @@ void Scene_Map::Start() {
 	// is used.
 	if (from_save) {
 		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen), std::move(Main_Data::game_data.pictures));
+		auto current_music = Game_System::GetCurrentBGM();
+		Game_System::BgmStop();
+		Game_System::BgmPlay(current_music);
 	} else {
 		Main_Data::game_screen->SetupNewGame();
+		Game_Map::PlayBgm();
 	}
 
 	Player::FrameReset();
@@ -112,8 +116,6 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 	if (prev_scene == Scene::Battle) {
 		Game_Map::OnContinueFromBattle();
-	} else {
-		Game_Map::PlayBgm();
 	}
 
 	// Player cast Escape / Teleport from menu
@@ -178,6 +180,12 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	}
 
 	transition.Init(Transition::TransitionFadeIn, this, 32);
+}
+
+void Scene_Map::Suspend(SceneType next_scene) {
+	if (next_scene == Scene::Title) {
+		Game_System::BgmStop();
+	}
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
@@ -308,7 +316,6 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 
 void Scene_Map::FinishPendingTeleport(TeleportParams tp) {
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 	FinishPendingTeleport2(MapUpdateAsyncContext(), tp);
@@ -377,7 +384,6 @@ void Scene_Map::PerformAsyncTeleport(int map_id, int x, int y) {
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eAsyncQuickTeleport);
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::PlayBgm();
 
 	Main_Data::game_player->ResetTeleportTarget(tt);
 
