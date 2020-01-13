@@ -157,7 +157,7 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Dispose();
-	if (tt != TeleportTarget::eVehicleHackTeleport) {
+	if (tt != TeleportTarget::eAsyncQuickTeleport) {
 		Main_Data::game_screen->OnMapChange();
 	}
 	SetupCommon(_id, false);
@@ -229,7 +229,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 
 	if (interpreter) {
-		if (tt != TeleportTarget::eVehicleHackTeleport) {
+		if (tt != TeleportTarget::eAsyncQuickTeleport) {
 			interpreter->OnMapChange();
 		}
 	}

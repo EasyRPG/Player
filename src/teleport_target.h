@@ -33,8 +33,11 @@ class TeleportTarget {
 			eForegroundTeleport,
 			/** An escape or teleport skill */
 			eSkillTeleport,
-			/** A hacky teleport from a SetVehicleLocation() (RPG_RT bug) */
-			eVehicleHackTeleport,
+			/**
+			 * An immediate asynchronous teleport from a SetVehicleLocation() command.
+			 * This is an RPG_RT bug we emulate because it is abused by some games.
+			 */
+			eAsyncQuickTeleport,
 		};
 
 		/** Construct an inactive target */

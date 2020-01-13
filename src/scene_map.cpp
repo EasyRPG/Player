@@ -48,7 +48,7 @@ static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 			return true;
 		case TeleportTarget::eParallelTeleport:
 		case TeleportTarget::eSkillTeleport:
-		case TeleportTarget::eVehicleHackTeleport:
+		case TeleportTarget::eAsyncQuickTeleport:
 			break;
 	}
 	return false;
@@ -375,7 +375,7 @@ void Scene_Map::PerformAsyncTeleport(int map_id, int x, int y) {
 	// the async teleport.
 	auto tt = Main_Data::game_player->GetTeleportTarget();
 
-	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eVehicleHackTeleport);
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eAsyncQuickTeleport);
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
