@@ -130,7 +130,8 @@ void Window_BattleStatus::RefreshGauge() {
 
 					// Center
 					const auto fill_x = x;
-					contents->StretchBlit(Rect(x, y, 25, 48), *system2, Rect(16, 32, 16, 48), Opacity::Opaque());
+					contents->StretchBlit(Rect(x, y, 13, 48), *system2, Rect(16, 32, 8, 48), Opacity::Opaque());
+					contents->StretchBlit(Rect(x + 13, y, 12, 48), *system2, Rect(24, 32, 8, 48), Opacity::Opaque());
 					x += 25;
 
 					// Right
@@ -180,7 +181,12 @@ void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_
 		gauge_width = 25 * cur_value / max_value;
 	}
 
-	contents->StretchBlit(Rect(x, y, gauge_width, 16), *system2, Rect(48 + gauge_x, 32 + 16 * which, 16, 16), Opacity::Opaque());
+	if (gauge_width >= 13) {
+		contents->StretchBlit(Rect(x, y, 13, 16), *system2, Rect(48 + gauge_x, 32 + 16 * which, 8, 16), Opacity::Opaque());
+		contents->StretchBlit(Rect(x + 13, y, gauge_width - 13, 16), *system2, Rect(56 + gauge_x, 32 + 16 * which, 8, 16), Opacity::Opaque());
+	} else {
+		contents->StretchBlit(Rect(x, y, gauge_width, 16), *system2, Rect(48 + gauge_x, 32 + 16 * which, 8, 16), Opacity::Opaque());
+	}
 }
 
 void Window_BattleStatus::DrawNumberSystem2(int x, int y, int value) {
