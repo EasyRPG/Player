@@ -68,6 +68,8 @@ private:
 	void FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParams tp);
 	void FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParams tp);
 
+	void PerformAsyncTeleport(int map_id, int x, int y);
+
 	void PreUpdate(MapUpdateAsyncContext& actx);
 	void PreUpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
@@ -93,8 +95,8 @@ private:
 	bool from_save;
 	bool screen_erased_by_event = false;
 
+	AsyncContinuation map_async_continuation = {};
 	RPG::Music music_before_inn = {};
-	AsyncContinuation inn_continuation = {};
 	bool activate_inn = false;
 };
 

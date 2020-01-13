@@ -1986,8 +1986,9 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 
 		// This implements a bug in RPG_RT which allows moving the party to a new map while boarded (or when using -1)
 		// without doing a teleport + transition.
-		// The implementation of this bug does a normal teleport with transition because other solution would be too
-		// invasive for little gain.
+		// In player we implement this as an async "Quick Teleport" which immediately switches to
+		// the other map with no transition and no change in screen effects such as pictures and
+		// battle animations.
 
 		if (vehicle) {
 			vehicle->SetPosition(map_id, x, y);
@@ -1998,14 +1999,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 			Output::Error("VehicleTeleport not allowed from parallel map event! Id=%d", event_id);
 		}
 
-		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eVehicleHackTeleport);
-
-		// Parallel events should keep on running in 2k and 2k3, unlike in later versions
-		if (!main_flag)
-			return true;
-
-		index++;
-		return false;
+		_async_op = AsyncOp::MakeQuickTeleport(map_id, x, y);
 	} else if (vehicle) {
 		vehicle->SetPosition(map_id, x, y);
 	}

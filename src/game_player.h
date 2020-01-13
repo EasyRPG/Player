@@ -54,7 +54,7 @@ public:
 
 	bool IsPendingTeleport() const;
 	TeleportTarget GetTeleportTarget() const;
-	void ResetTeleportTarget();
+	void ResetTeleportTarget(TeleportTarget tt = {});
 
 	/**
 	 * Sets the map, position and direction that the game player must have after the teleport is over
@@ -143,8 +143,8 @@ inline TeleportTarget Game_Player::GetTeleportTarget() const {
 	return teleport_target;
 }
 
-inline void Game_Player::ResetTeleportTarget() {
-	teleport_target = {};
+inline void Game_Player::ResetTeleportTarget(TeleportTarget tt) {
+	teleport_target = std::move(tt);
 }
 
 inline void Game_Player::SetMenuCalling(bool value) {

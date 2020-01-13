@@ -40,6 +40,7 @@
 #include "input.h"
 #include "screen.h"
 #include "scene_load.h"
+#include "output.h"
 
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
@@ -373,6 +374,22 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 	AsyncNext([this]() { UpdateSceneCalling(); });
 }
 
+void Scene_Map::PerformAsyncTeleport(int map_id, int x, int y) {
+	// If there is already a real teleport pending we need to make sure it gets executed after
+	// the async teleport.
+	auto tt = Main_Data::game_player->GetTeleportTarget();
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eVehicleHackTeleport);
+	Main_Data::game_player->PerformTeleport();
+	Game_Map::PlayBgm();
+
+	Main_Data::game_player->ResetTeleportTarget(tt);
+
+	spriteset.reset(new Spriteset_Map());
+
+	AsyncNext(std::move(map_async_continuation));
+}
+
 template <typename F>
 void Scene_Map::AsyncNext(F&& f) {
 	if (IsAsyncPending()) {
@@ -408,7 +425,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (aop.GetType() == AsyncOp::eCallInn) {
 		activate_inn = true;
 		music_before_inn = Game_System::GetCurrentBGM();
-		inn_continuation = std::forward<F>(f);
+		map_async_continuation = std::forward<F>(f);
 
 		Game_System::BgmFade(800);
 
@@ -416,6 +433,20 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		transition.Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 
 		AsyncNext([=]() { StartInn(); });
+		return;
+	}
+
+	if (aop.GetType() == AsyncOp::eQuickTeleport) {
+		FileRequestAsync* request = Game_Map::RequestMap(aop.GetTeleportMapId());
+		request->SetImportantFile(true);
+		request->Start();
+
+		map_async_continuation = std::forward<F>(f);
+		auto map_id = aop.GetTeleportMapId();
+		auto x = aop.GetTeleportX();
+		auto y = aop.GetTeleportY();
+
+		AsyncNext([=]() { PerformAsyncTeleport(map_id, x, y); });
 		return;
 	}
 
@@ -450,7 +481,7 @@ void Scene_Map::FinishInn() {
 	}
 
 	activate_inn = false;
-	AsyncNext(std::move(inn_continuation));
+	AsyncNext(std::move(map_async_continuation));
 }
 
 void Scene_Map::UpdateInn() {
