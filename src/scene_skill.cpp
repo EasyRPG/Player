@@ -46,6 +46,11 @@ void Scene_Skill::Start() {
 	skill_window->SetHelpWindow(help_window.get());
 }
 
+void Scene_Skill::Continue(SceneType) {
+	skillstatus_window->Refresh();
+	skill_window->Refresh();
+}
+
 void Scene_Skill::Update() {
 	help_window->Update();
 	skillstatus_window->Update();

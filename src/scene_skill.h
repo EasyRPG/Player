@@ -36,6 +36,7 @@ public:
 	Scene_Skill(int actor_index, int skill_index = 0);
 
 	void Start() override;
+	void Continue(SceneType prev_scene) override;
 	void Update() override;
 	void TransitionOut(SceneType next_scene) override;
 
