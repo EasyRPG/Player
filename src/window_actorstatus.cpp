@@ -39,35 +39,37 @@ void Window_ActorStatus::Refresh() {
 	DrawStatus();
 }
 
-void Window_ActorStatus::DrawStatus(){
+void Window_ActorStatus::DrawStatus() {
 
 	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	// Draw Hp
 	contents->TextDraw(1, 2, 1, lcf::Data::terms.health_points);
-	DrawMinMax(90,2,actor->GetHp(), actor->GetMaxHp());
+	int color = (actor->GetHp() == 0 ? Font::ColorKnockout : (actor->GetHp() <= actor->GetMaxHp() / 4 ? Font::ColorCritical : Font::ColorDefault));
+	DrawMinMax(90, 2, actor->GetHp(), actor->GetMaxHp(), color);
 
 	// Draw Sp
 	contents->TextDraw(1, 18, 1, lcf::Data::terms.spirit_points);
-	DrawMinMax(90,18,actor->GetSp(), actor->GetMaxSp());
+	color = (actor->GetMaxSp() > 0 && actor->GetSp() <= actor->GetMaxSp() / 4 ? Font::ColorCritical : Font::ColorDefault);
+	DrawMinMax(90, 18, actor->GetSp(), actor->GetMaxSp(), color);
 
 	// Draw Exp
-	contents->TextDraw(1, 32, 1, lcf::Data::terms.exp_short);
-	DrawMinMax(90,34, -1, -1);
+	contents->TextDraw(1, 34, 1, lcf::Data::terms.exp_short);
+	DrawMinMax(90, 34, -1, -1);
 }
 
-void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
+void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max, int color) {
 	std::stringstream ss;
 	if (max >= 0)
 		ss << min;
 	else
 		ss << Main_Data::game_actors->GetActor(actor_id)->GetExpString();
-	contents->TextDraw(cx, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx, cy, color, ss.str(), Text::AlignRight);
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 	ss.str("");
 	if (max >= 0)
 		ss << max;
 	else
 		ss << Main_Data::game_actors->GetActor(actor_id)->GetNextExpString();
-	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
