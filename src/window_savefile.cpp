@@ -40,7 +40,11 @@ void Window_SaveFile::UpdateCursorRect() {
 	Rect rect = Rect();
 
 	if (GetActive()) {
-		rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + 6, 16);
+		if (override_index > 0) {
+			rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + 6, 16);
+		} else {
+			rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + Font::Default()->GetSize(" ").width * 5 / 2 + 8, 16);
+		}
 	}
 
 	SetCursorRect(rect);
@@ -55,7 +59,7 @@ std::string Window_SaveFile::GetSaveFileName() const {
 			out << override_name;
 		}
 	} else {
-		out << lcf::Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
+		out << lcf::Data::terms.file;
 	}
 	return out.str();
 }
@@ -92,6 +96,11 @@ void Window_SaveFile::Refresh() {
 	Font::SystemColor fc = has_save ? Font::ColorDefault : Font::ColorDisabled;
 
 	contents->TextDraw(4, 2, fc, GetSaveFileName());
+	contents->TextDraw(4 + Font::Default()->GetSize(GetSaveFileName()).width, 2, fc, " ");
+
+	std::stringstream out;
+	out << std::setw(2) << std::setfill(' ') << index + 1;
+	contents->TextDraw(4 + Font::Default()->GetSize(GetSaveFileName()).width + Font::Default()->GetSize(" ").width / 2, 2, fc, out.str());
 
 	if (corrupted) {
 		contents->TextDraw(4, 16 + 2, Font::ColorKnockout, "Savegame corrupted");
@@ -102,9 +111,9 @@ void Window_SaveFile::Refresh() {
 		return;
 	}
 
-	std::stringstream out;
+	out.str("");
 	if (override_index > 0) {
-		out << lcf::Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
+		out << lcf::Data::terms.file << std::setw(3) << std::setfill(' ') << override_index;
 		contents->TextDraw(4, 16+2, fc, out.str());
 	} else {
 		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
