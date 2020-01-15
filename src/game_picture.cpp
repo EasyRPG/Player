@@ -23,6 +23,7 @@
 #include "output.h"
 #include "game_map.h"
 #include "game_picture.h"
+#include "game_screen.h"
 #include "player.h"
 #include "main_data.h"
 #include "scene.h"
@@ -292,7 +293,18 @@ void Game_Picture::RequestPictureSprite() {
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
 	request->SetGraphicFile(true);
-	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
+
+	int pic_id = data.ID;
+
+	// FIXME: This lambda is here because it's possible the picture vector can be
+	// resized before the async call of onPictureSpriteReady().
+	// Pictures should be refactored so this ugly hack is not needed.
+	request_id = request->Bind([pic_id](FileRequestResult* res) {
+			if (Main_Data::game_screen) {
+				auto& pic = Main_Data::game_screen->GetPicture(pic_id);
+				pic.OnPictureSpriteReady(res);
+			}
+			});
 	request->Start();
 }
 
