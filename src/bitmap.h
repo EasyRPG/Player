@@ -151,14 +151,6 @@ public:
 		Flag_ReadOnly = 1 << 16
 	};
 
-	enum TileOpacity {
-		// Image is full opaque and can be blitted fast
-		Opaque,
-		// Image has alpha and needs an alpha blit
-		Partial,
-		// Image is complately transparent
-		Transparent
-	};
 
 	/**
 	 * Provides opacity information about the image.
@@ -166,18 +158,18 @@ public:
 	 *
 	 * @return opacity information
 	 */
-	TileOpacity GetOpacity() const;
+	ImageOpacity GetImageOpacity() const;
 
 	/**
 	 * Provides opacity information about a tile on a tilemap.
 	 * This influences the selected operator when blitting a tile.
 	 *
-	 * @param row tile row
-	 * @param col tile col
+	 * @param x tile x coordinate
+	 * @param y tile y coordinate
 	 *
 	 * @return opacity information
 	 */
-	TileOpacity GetTileOpacity(int row, int col) const;
+	ImageOpacity GetTileOpacity(int x, int y) const;
 
 	/**
 	 * Writes PNG converted bitmap to output stream.
@@ -537,13 +529,14 @@ public:
 	int bpp() const;
 	int pitch() const;
 
-protected:
-	TileOpacity CheckOpacity(Rect const& rect);
+	ImageOpacity ComputeImageOpacity() const;
+	ImageOpacity ComputeImageOpacity(Rect rect) const;
 
+protected:
 	DynamicFormat format;
 
-	std::vector<std::vector<TileOpacity>> tile_opacity;
-	TileOpacity opacity = Partial;
+	ImageOpacity image_opacity = ImageOpacity::Partial;
+	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
@@ -576,5 +569,21 @@ protected:
 	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
 	bool read_only = false;
 };
+
+inline ImageOpacity Bitmap::GetImageOpacity() const {
+	return image_opacity;
+}
+
+inline ImageOpacity Bitmap::GetTileOpacity(int x, int y) const {
+	return !tile_opacity.Empty() ? tile_opacity.Get(x, y) : ImageOpacity::Partial;
+}
+
+inline Color Bitmap::GetBackgroundColor() const {
+	return bg_color;
+}
+
+inline Color Bitmap::GetShadowColor() const {
+	return sh_color;
+}
 
 #endif

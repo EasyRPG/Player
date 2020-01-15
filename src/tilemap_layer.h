@@ -21,10 +21,12 @@
 // Headers
 #include <vector>
 #include <map>
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 #include "system.h"
 #include "drawable.h"
 #include "tone.h"
+#include "opacity.h"
 
 class TilemapLayer;
 
@@ -48,7 +50,6 @@ class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
 
-	void DrawTile(Bitmap& dst, Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit = true);
 	void Draw(Bitmap& dst, int z_order);
 
 	void Update();
@@ -88,8 +89,7 @@ public:
 private:
 	BitmapRef chipset;
 	BitmapRef chipset_effect;
-	std::set<short> chipset_tone_tiles;
-
+	std::unordered_set<uint32_t> chipset_tone_tiles;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	// FIXME Should be span<uint8_t>
@@ -110,6 +110,8 @@ private:
 	void CreateTileCache(const std::vector<short>& nmap_data);
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
+	void DrawTile(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit = true);
+	void DrawTileImpl(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit);
 
 	static const int TILES_PER_ROW = 64;
 
@@ -121,32 +123,35 @@ private:
 		TileXY(uint8_t x, uint8_t y) : x(x), y(y), valid(true) {}
 	};
 
-	BitmapRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
+	BitmapRef GenerateAutotiles(int count, const std::unordered_map<uint32_t, TileXY>& map);
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
 	BitmapRef autotiles_ab_screen;
 	BitmapRef autotiles_ab_screen_effect;
-	std::set<short> autotiles_ab_screen_tone_tiles;
 	BitmapRef autotiles_d_screen;
 	BitmapRef autotiles_d_screen_effect;
-	std::set<short> autotiles_d_screen_tone_tiles;
 
 	int autotiles_ab_next = -1;
 	int autotiles_d_next = -1;
 
-	TileXY autotiles_ab[3][3][16][47];
-	TileXY autotiles_d[12][50];
+	TileXY autotiles_ab[3][3][16][47] = {};
+	TileXY autotiles_d[12][50] = {};
 
-	std::map<uint32_t, TileXY> autotiles_ab_map;
-	std::map<uint32_t, TileXY> autotiles_d_map;
+	std::unordered_map<uint32_t, TileXY> autotiles_ab_map;
+	std::unordered_map<uint32_t, TileXY> autotiles_d_map;
 
 	struct TileData {
 		short ID;
 		int z;
 	};
-	std::vector<std::vector<TileData> > data_cache;
-	std::vector<std::shared_ptr<TilemapSubLayer> > sublayers;
+
+	TileData& GetDataCache(int x, int y);
+
+	std::vector<TileData> data_cache_vec;
+
+	TilemapSubLayer lower_layer;
+	TilemapSubLayer upper_layer;
 
 	Tone tone;
 };
@@ -221,6 +226,10 @@ inline void TilemapLayer::SetAnimationType(int type) {
 
 inline void TilemapLayer::SetFastBlit(bool fast) {
 	fast_blit = fast;
+}
+
+inline TilemapLayer::TileData& TilemapLayer::GetDataCache(int x, int y) {
+	return data_cache_vec[x + y * width];
 }
 
 

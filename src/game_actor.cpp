@@ -1230,7 +1230,7 @@ void Game_Actor::ChangeClass(int new_class_id,
 		case eSkillReset:
 			// RPG_RT has a bug where if (new_level == 1 && new_class_id == prev_class_id) no skills are removed.
 			UnlearnAllSkills();
-			EP_FALLTHROUGH;
+			// fall through
 		case eSkillAdd:
 			// RPG_RT has a bug where if (new_class_id == prev_class_id) level 1 skills are not learned.
 			LearnLevelSkills(1, new_level, pm);

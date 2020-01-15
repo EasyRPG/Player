@@ -87,7 +87,7 @@ public:
 	 *
 	 * @param rect rect.
 	 */
-	Rect GetSubRect(Rect const& rect);
+	Rect GetSubRect(Rect rect) const;
 
 	/** X coordinate. */
 	int x = 0;

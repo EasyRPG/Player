@@ -212,29 +212,51 @@ bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
 }
 
-Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
-	bool all = true;
-	bool any = false;
+ImageOpacity Bitmap::ComputeImageOpacity() const {
+	bool all_opaque = true;
+	bool all_transp = true;
 
-	DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
-	std::vector<uint32_t> pixels;
-	pixels.resize(rect.width * rect.height);
-	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), rect.width, rect.height, rect.width*4, format);
-	bmp.Blit(0, 0, *this, rect, Opacity::Opaque());
+	auto* p = reinterpret_cast<const uint32_t*>(pixels());
+	const auto mask = pixel_format.rgba_to_uint32_t(0, 0, 0, 0xFF);
 
-	for (std::vector<uint32_t>::const_iterator p = pixels.begin(); p != pixels.end(); ++p) {
-		if ((*p & 0xFF) != 0)
-			any = true;
-		else
-			all = false;
-		if (any && !all)
-			break;
+	int n = GetSize() / sizeof(uint32_t);
+	for (int i = 0; i < n; ++i ) {
+		auto px = p[i] & mask;
+		all_opaque &= (px == mask);
+		all_transp &= (px == 0);
 	}
 
 	return
-		all ? Bitmap::Opaque :
-		any ? Bitmap::Partial :
-		Bitmap::Transparent;
+		all_transp ? ImageOpacity::Transparent :
+		all_opaque ? ImageOpacity::Opaque :
+		ImageOpacity::Partial;
+}
+
+ImageOpacity Bitmap::ComputeImageOpacity(Rect rect) const {
+	bool all_opaque = true;
+	bool all_transp = true;
+
+	const auto full_rect = GetRect();
+	rect = full_rect.GetSubRect(rect);
+
+	auto* p = reinterpret_cast<const uint32_t*>(pixels());
+	const int stride = pitch() / sizeof(uint32_t);
+	const auto mask = pixel_format.rgba_to_uint32_t(0, 0, 0, 0xFF);
+
+	int xend = (rect.x + rect.width);
+	int yend = (rect.y + rect.height);
+	for (int y = rect.y * stride; y < yend * stride; y += stride) {
+		for (int x = rect.x; x < xend; ++x) {
+			auto px = p[x + y] & mask;
+			all_transp &= (px == 0);
+			all_opaque &= (px == mask);
+		}
+	}
+
+	return
+		all_transp ? ImageOpacity::Transparent :
+		all_opaque ? ImageOpacity::Opaque :
+		ImageOpacity::Partial;
 }
 
 void Bitmap::CheckPixels(uint32_t flags) {
@@ -251,13 +273,15 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	}
 
 	if (flags & Flag_Chipset) {
-		tile_opacity.clear();
-		tile_opacity.resize(height() / 16);
-		for (int row = 0; row < height() / 16; row++) {
-			tile_opacity[row].resize(width() / 16);
-			for (int col = 0; col < width() / 16; col++) {
-				Rect rect(col * 16, row * 16, 16, 16);
-				tile_opacity[row][col] = CheckOpacity(rect);
+		const int h = height() / TILE_SIZE;
+		const int w = width() / TILE_SIZE;
+		tile_opacity = TileOpacity(w, h);
+
+		for (int ty = 0; ty < h; ++ty) {
+			for (int tx = 0; tx < w; ++tx) {
+				Rect rect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				auto op = ComputeImageOpacity(rect);
+				tile_opacity.Set(tx, ty, op);
 			}
 		}
 	}
@@ -265,24 +289,8 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	if (flags & Flag_ReadOnly) {
 		read_only = true;
 
-		opacity = CheckOpacity(GetRect());
+		image_opacity = ComputeImageOpacity();
 	}
-}
-
-Bitmap::TileOpacity Bitmap::GetOpacity() const {
-	return opacity;
-}
-
-Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) const {
-	return !tile_opacity.empty() ? tile_opacity[row][col] : Partial;
-}
-
-Color Bitmap::GetBackgroundColor() const {
-	return bg_color;
-}
-
-Color Bitmap::GetShadowColor() const {
-	return sh_color;
 }
 
 void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double hue_) {
@@ -1145,7 +1153,7 @@ void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 }
 
 pixman_op_t Bitmap::GetOperator(pixman_image_t* mask) const {
-	if (!mask && (!GetTransparent() || GetOpacity() == Opaque)) {
+	if (!mask && (!GetTransparent() || GetImageOpacity() == ImageOpacity::Opaque)) {
 		return PIXMAN_OP_SRC;
 	}
 

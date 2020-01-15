@@ -159,7 +159,11 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	}
 }
 
-bool Spriteset_Map::RequireBackground(const DrawableList& drawable_list) {
+bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
+	if (drawable_list.empty()) {
+		return true;
+	}
+
 	// Speed optimisation:
 	// When there is nothing below the tilemap it can be drawn opaque (faster)
 	tilemap->SetFastBlitDown(false);
@@ -170,20 +174,16 @@ bool Spriteset_Map::RequireBackground(const DrawableList& drawable_list) {
 		return false;
 	}
 
-	for (const Drawable* d : drawable_list) {
-		if (d->GetZ() > Priority_Background) {
-			if (d->GetZ() < Priority_TilesetBelow) {
-				// There is a picture below the tilemap -> No opaque tilemap blit possible
-				return true;
-			} else {
-				tilemap->SetFastBlitDown(true);
-				return true;
-			}
-		}
+	// The list is about to be drawn, so we can just sort it now if needed.
+	if (drawable_list.IsDirty()) {
+		drawable_list.Sort();
 	}
 
-	// shouldn't happen
-	assert(false);
+	// Only if there is nothing below the tileset, can we do fast blitting.
+	if ((*drawable_list.begin())->GetZ() >= Priority_TilesetBelow) {
+		tilemap->SetFastBlitDown(true);
+	}
+
 	return true;
 }
 

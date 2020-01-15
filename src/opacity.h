@@ -19,6 +19,8 @@
 #define EP_OPACITY_H
 
 #include <cassert>
+#include <climits>
+#include <memory>
 
 /** Opacity class.  */
 struct Opacity {
@@ -55,5 +57,70 @@ struct Opacity {
 
 	private:
 };
+
+/**
+ * Enum used to describe the opacity of an entire image.
+ * This is used to decide whether we can shortcut fast blit
+ * operations
+ */
+enum class ImageOpacity {
+	/** Image has alpha and needs an alpha blit */
+	Partial,
+	/** Image is full opaque and can be blitted fast */
+	Opaque,
+	/** Image is completely transparent and blitting can be skipped entirely */
+	Transparent
+};
+
+/**
+ * Structure used to compactly store ImageOpacity values for a tiled bitmap
+ */
+class TileOpacity {
+	public:
+		/** Initialize with no tiles */
+		constexpr TileOpacity() = default;
+
+		/** Initialize with num_tiles tiles */
+		explicit TileOpacity(int w, int h);
+
+		/** Get ImageOpacity for tile at x, y */
+		ImageOpacity Get(int x, int y) const;
+
+		/** Set ImageOpacity for tile at x, y */
+		void Set(int x, int y, ImageOpacity op);
+
+		/** @return true if no tile opacities stored */
+		bool Empty() const;
+
+	private:
+		std::unique_ptr<uint8_t[]> _p;
+		int _w = 0;
+		int _h = 0;
+};
+
+inline TileOpacity::TileOpacity(int w, int h)
+	: _p(new uint8_t[w * h]), _w(w), _h(h)
+{
+	assert(_w > 0);
+	assert(_h > 0);
+}
+
+inline ImageOpacity TileOpacity::Get(int x, int y) const {
+	assert(x >= 0 && x < _w);
+	assert(y >= 0 && y < _h);
+
+	return static_cast<ImageOpacity>(_p[x + y * _w]);
+}
+
+inline void TileOpacity::Set(int x, int y, ImageOpacity op) {
+	assert(x >= 0 && x < _w);
+	assert(y >= 0 && y < _h);
+
+	_p[x + y * _w] = static_cast<uint8_t>(op);
+}
+
+inline bool TileOpacity::Empty() const {
+	return _w * _h == 0;
+}
 
 #endif

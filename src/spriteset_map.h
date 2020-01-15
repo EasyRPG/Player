@@ -69,7 +69,10 @@ public:
 	 */
 	void SubstituteUp(int old_id, int new_id);
 
-	bool RequireBackground(const DrawableList& drawable_list);
+	/**
+	 * @return true if we should clear the screen before drawing the map
+	 */
+	bool RequireClear(DrawableList& drawable_list);
 
 protected:
 	std::unique_ptr<Tilemap> tilemap;

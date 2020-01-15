@@ -23,6 +23,7 @@
 #include "player.h"
 #include "map_data.h"
 #include "bitmap.h"
+#include "compiler.h"
 #include "game_map.h"
 #include "main_data.h"
 #include "drawable_mgr.h"
@@ -142,33 +143,67 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	substitutions(ilayer >= 1
 			? Main_Data::game_data.map_info.upper_tiles
 			: Main_Data::game_data.map_info.lower_tiles),
-	layer(ilayer) {
-
-	memset(autotiles_ab, 0, sizeof(autotiles_ab));
-	memset(autotiles_d, 0, sizeof(autotiles_d));
-
-	// SubLayer for the tiles with Wall or Above passability
-	// Its z-value should be between the z of the events in the upper layer and the hero
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetAbove + layer));
+	layer(ilayer),
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow + layer));
+	lower_layer(this, Priority_TilesetBelow + layer),
+	// SubLayer for the tiles with Wall or Above passability
+	// Its z-value should be between the z of the events in the upper layer and the hero
+	upper_layer(this, Priority_TilesetAbove + layer)
+{
 }
 
-void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit) {
-	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
+// This setup of having an always inlined DrawTile() which dispatches to DrawTileImpl()
+// was created intentionally. Inlining the transparency check was measured and shown
+// to provide a performance improvement
+EP_ALWAYS_INLINE
+void TilemapLayer::DrawTile(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit) {
+	auto op = tileset.GetTileOpacity(col, row);
+	if (op != ImageOpacity::Transparent) {
+		DrawTileImpl(dst, tileset, tone_tileset, x, y, row, col, tone_hash, op, allow_fast_blit);
+	}
+}
 
-	if (op == Bitmap::Transparent)
-		return;
+void TilemapLayer::DrawTileImpl(Bitmap& dst, Bitmap& tileset, Bitmap& tone_tileset, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit) {
 
-	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+	auto rect = Rect{ col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE };
+
+	auto* src = &tileset;
+
+	// Create tone changed tile
+	if (tone != Tone()) {
+		if (chipset_tone_tiles.insert(tone_hash).second) {
+			tone_tileset.ToneBlit(col * TILE_SIZE, row * TILE_SIZE, tileset, rect, tone, Opacity::Opaque());
+		}
+		src = &tone_tileset;
+	}
 
 	bool use_fast_blit = fast_blit && allow_fast_blit;
-	if (op == Bitmap::Opaque || use_fast_blit) {
-		dst.BlitFast(x, y, screen, rect, 255);
+	if (op == ImageOpacity::Opaque || use_fast_blit) {
+		dst.BlitFast(x, y, *src, rect, 255);
 	} else {
-		dst.Blit(x, y, screen, rect, 255);
+		dst.Blit(x, y, *src, rect, 255);
 	}
+}
+
+static uint32_t MakeFTileHash(int id) {
+	return static_cast<uint32_t>(id);
+}
+
+static uint32_t MakeETileHash(int id) {
+	return static_cast<uint32_t>(id | (1 << 24));
+}
+
+static uint32_t MakeDTileHash(int id) {
+	return static_cast<uint32_t>(id | (2 << 24));
+}
+
+static uint32_t MakeCTileHash(int id, int anim_step) {
+	return static_cast<uint32_t>((id + (anim_step << 12)) | (3 << 24));
+}
+
+static uint32_t MakeAbTileHash(int id, int anim_step) {
+	return static_cast<uint32_t>((id + (anim_step << 12)) | (4 << 24));
 }
 
 void TilemapLayer::Draw(Bitmap& dst, int z_order) {
@@ -187,26 +222,35 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 		++tiles_y;
 	}
 
-	for (int x = 0; x < tiles_x; x++) {
-		for (int y = 0; y < tiles_y; y++) {
+	const bool loop_h = Game_Map::LoopHorizontal();
+	const bool loop_v = Game_Map::LoopVertical();
 
-			auto div_rounding_down = [](int n, int m) {
-				if (n >= 0) return n / m;
-				return (n - m + 1) / m;
-			};
-			auto mod = [](int n, int m) {
-				int rem = n % m;
-				return rem >= 0 ? rem : m + rem;
-			};
+	auto div_rounding_down = [](int n, int m) {
+		if (n >= 0) return n / m;
+		return (n - m + 1) / m;
+	};
+	auto mod = [](int n, int m) {
+		int rem = n % m;
+		return rem >= 0 ? rem : m + rem;
+	};
+
+	const int div_ox = div_rounding_down(ox, TILE_SIZE);
+	const int div_oy = div_rounding_down(oy, TILE_SIZE);
+
+	const int mod_ox = mod(ox, TILE_SIZE);
+	const int mod_oy = mod(oy, TILE_SIZE);
+
+	for (int y = 0; y < tiles_y; y++) {
+		for (int x = 0; x < tiles_x; x++) {
 
 			// Get the real maps tile coordinates
-			int map_x = div_rounding_down(ox, TILE_SIZE) + x;
-			int map_y = div_rounding_down(oy, TILE_SIZE) + y;
-			if (Game_Map::LoopHorizontal()) map_x = mod(map_x, width);
-			if (Game_Map::LoopVertical()) map_y = mod(map_y, height);
+			int map_x = div_ox + x;
+			int map_y = div_oy + y;
+			if (loop_h) map_x = mod(map_x, width);
+			if (loop_v) map_y = mod(map_y, height);
 
-			int map_draw_x = x * TILE_SIZE - mod(ox, TILE_SIZE);
-			int map_draw_y = y * TILE_SIZE - mod(oy, TILE_SIZE);
+			int map_draw_x = x * TILE_SIZE - mod_ox;
+			int map_draw_y = y * TILE_SIZE - mod_oy;
 
 			bool out_of_bounds =
 				map_x < 0 || map_x >= width ||
@@ -217,7 +261,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 			}
 
 			// Get the tile data
-			TileData &tile = data_cache[map_x][map_y];
+			TileData &tile = GetDataCache(map_x, map_y);
 
 			// Draw the sublayer if its z is being draw now
 			if (z_order == tile.z) {
@@ -242,14 +286,8 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 							row = (id - 96) / 6;
 						}
 
-						// Create tone changed tile
-						if (chipset_tone_tiles.find(id) == chipset_tone_tiles.end()) {
-							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
-							chipset_tone_tiles.insert(id);
-						}
-
-						DrawTile(dst, *chipset_effect, map_draw_x, map_draw_y, row, col, allow_fast_blit);
+						auto tone_hash = MakeETileHash(id);
+						DrawTile(dst, *chipset, *chipset_effect, map_draw_x, map_draw_y, row, col, tone_hash, allow_fast_blit);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
@@ -257,43 +295,31 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						int col = 3 + (tile.ID - BLOCK_C) / 50;
 						int row = 4 + animation_step_c;
 
-						// Create tone changed tile
-						if (chipset_tone_tiles.find(tile.ID + (animation_step_c << 12)) == chipset_tone_tiles.end()) {
-							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
-							chipset_tone_tiles.insert(tile.ID + (animation_step_c << 12));
-						}
-
-						// Draw the tile
-						DrawTile(dst, *chipset_effect, map_draw_x, map_draw_y, row, col, allow_fast_blit);
+						auto tone_hash = MakeCTileHash(tile.ID, animation_step_c);
+						DrawTile(dst, *chipset, *chipset_effect, map_draw_x, map_draw_y, row, col, tone_hash, allow_fast_blit);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
 						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
 
-						// Create tone changed tile
-						if (autotiles_ab_screen_tone_tiles.find(tile.ID + (animation_step_ab << 12)) == autotiles_ab_screen_tone_tiles.end()) {
-							Rect r(pos.x * TILE_SIZE, pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							autotiles_ab_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_ab_screen, r, tone, Opacity::Opaque());
-							autotiles_ab_screen_tone_tiles.insert(tile.ID + (animation_step_ab << 12));
-						}
+						int col = pos.x;
+						int row = pos.y;
 
-						DrawTile(dst, *autotiles_ab_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x, allow_fast_blit);
+						// Create tone changed tile
+						auto tone_hash = MakeAbTileHash(tile.ID,  animation_step_ab);
+						DrawTile(dst, *autotiles_ab_screen, *autotiles_ab_screen_effect, map_draw_x, map_draw_y, row, col, tone_hash, allow_fast_blit);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileD(tile.ID);
 
-						// Create tone changed tile
-						if (autotiles_d_screen_tone_tiles.find(tile.ID) == autotiles_d_screen_tone_tiles.end()) {
-							Rect r(pos.x * TILE_SIZE, pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							autotiles_d_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_d_screen, r, tone, Opacity::Opaque());
-							autotiles_d_screen_tone_tiles.insert(tile.ID);
-						}
+						int col = pos.x;
+						int row = pos.y;
 
-						DrawTile(dst, *autotiles_d_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x, allow_fast_blit);
+						auto tone_hash = MakeDTileHash(tile.ID);
+						DrawTile(dst, *autotiles_d_screen, *autotiles_d_screen_effect, map_draw_x, map_draw_y, row, col, tone_hash, allow_fast_blit);
 					}
 				} else {
 					// If upper layer
@@ -314,15 +340,8 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 							row = (id - 48) / 6;
 						}
 
-						// Create tone changed tile
-						if (chipset_tone_tiles.find(id) == chipset_tone_tiles.end()) {
-							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
-							chipset_tone_tiles.insert(id);
-						}
-
-						// Draw the tile
-						DrawTile(dst, *chipset_effect, map_draw_x, map_draw_y, row, col);
+						auto tone_hash = MakeFTileHash(id);
+						DrawTile(dst, *chipset, *chipset_effect, map_draw_x, map_draw_y, row, col, tone_hash);
 					}
 				}
 			}
@@ -344,9 +363,8 @@ TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD(short ID) {
 }
 
 void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
-	data_cache.resize(width);
+	data_cache_vec.resize(width * height);
 	for (int x = 0; x < width; x++) {
-		data_cache[x].resize(height);
 		for (int y = 0; y < height; y++) {
 			TileData tile;
 
@@ -376,7 +394,7 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 
 				}
 			}
-			data_cache[x][y] = tile;
+			GetDataCache(x, y) = tile;
 		}
 	}
 }
@@ -464,8 +482,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 			}
 
 	// check whether we have already generated this tile
-	std::map<uint32_t, TileXY>::iterator it;
-	it = autotiles_ab_map.find(quarters_hash);
+	auto it = autotiles_ab_map.find(quarters_hash);
 	if (it != autotiles_ab_map.end()) {
 		autotiles_ab[animID][block][b_subtile][a_subtile] = it->second;
 		return;
@@ -528,8 +545,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 			}
 
 	// check whether we have already generated this tile
-	std::map<uint32_t, TileXY>::iterator it;
-	it = autotiles_d_map.find(quarters_hash);
+	auto it = autotiles_d_map.find(quarters_hash);
 	if (it != autotiles_d_map.end()) {
 		autotiles_d[block][subtile] = it->second;
 		return;
@@ -544,16 +560,15 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	autotiles_d[block][subtile] = tile_xy;
 }
 
-BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
+BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::unordered_map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
 	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * TILE_SIZE, rows * TILE_SIZE);
 	tiles->Clear();
 	Rect rect(0, 0, TILE_SIZE/2, TILE_SIZE/2);
 
-	std::map<uint32_t, TileXY>::const_iterator it;
-	for (it = map.begin(); it != map.end(); ++it) {
-		uint32_t quarters_hash = it->first;
-		TileXY dst = it->second;
+	for (auto& p: map) {
+		uint32_t quarters_hash = p.first;
+		TileXY dst = p.second;
 
 		// unpack the quarters data
 		for (int j = 0; j < 2; j++) {
@@ -567,7 +582,7 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, Ti
 				rect.x = (x * 2 + i) * (TILE_SIZE/2);
 				rect.y = (y * 2 + j) * (TILE_SIZE/2);
 
-				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2), *chipset, rect, 255);
+				tiles->BlitFast((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2), *chipset, rect, 255);
 			}
 		}
 	}
@@ -616,9 +631,6 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 
 		autotiles_ab_screen_effect = Bitmap::Create(autotiles_ab_screen->width(), autotiles_ab_screen->height());
 		autotiles_d_screen_effect = Bitmap::Create(autotiles_d_screen->width(), autotiles_d_screen->height());
-
-		autotiles_ab_screen_tone_tiles.clear();
-		autotiles_d_screen_tone_tiles.clear();
 	}
 }
 
@@ -636,16 +648,16 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 
-				if (data_cache[x][y].ID < BLOCK_C) {
+				if (GetDataCache(x, y).ID < BLOCK_C) {
 					// If blocks A and B
 
-					GenerateAutotileAB(data_cache[x][y].ID, 0);
-					GenerateAutotileAB(data_cache[x][y].ID, 1);
-					GenerateAutotileAB(data_cache[x][y].ID, 2);
-				} else if (data_cache[x][y].ID >= BLOCK_D && data_cache[x][y].ID < BLOCK_E) {
+					GenerateAutotileAB(GetDataCache(x, y).ID, 0);
+					GenerateAutotileAB(GetDataCache(x, y).ID, 1);
+					GenerateAutotileAB(GetDataCache(x, y).ID, 2);
+				} else if (GetDataCache(x, y).ID >= BLOCK_D && GetDataCache(x, y).ID < BLOCK_E) {
 					// If block D
 
-					GenerateAutotileD(data_cache[x][y].ID);
+					GenerateAutotileD(GetDataCache(x, y).ID);
 				}
 			}
 		}
@@ -655,8 +667,7 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 		autotiles_ab_screen_effect = Bitmap::Create(autotiles_ab_screen->width(), autotiles_ab_screen->height());
 		autotiles_d_screen_effect = Bitmap::Create(autotiles_d_screen->width(), autotiles_d_screen->height());
 
-		autotiles_ab_screen_tone_tiles.clear();
-		autotiles_d_screen_tone_tiles.clear();
+		chipset_tone_tiles.clear();
 	}
 
 	map_data = std::move(nmap_data);
@@ -698,14 +709,12 @@ void TilemapLayer::SetTone(Tone tone) {
 
 	if (autotiles_d_screen_effect) {
 		autotiles_d_screen_effect->Clear();
-		autotiles_d_screen_tone_tiles.clear();
 	}
 	if (autotiles_ab_screen_effect) {
 		autotiles_ab_screen_effect->Clear();
-		autotiles_ab_screen_tone_tiles.clear();
 	}
 	if (chipset_effect) {
 		chipset_effect->Clear();
-		chipset_tone_tiles.clear();
 	}
+	chipset_tone_tiles.clear();
 }
