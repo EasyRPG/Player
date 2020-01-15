@@ -36,7 +36,7 @@ namespace {
 	FileRequestBinding music_request_id;
 	FileRequestBinding system_request_id;
 	std::map<std::string, FileRequestBinding> se_request_ids;
-
+	Color bg_color = Color{ 0, 0, 0, 255 };
 }
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -199,7 +199,7 @@ const std::string& Game_System::GetSystemName() {
 
 static void OnChangeSystemGraphicReady(FileRequestResult* result) {
 	Cache::SetSystemName(result->file);
-	DisplayUi->SetBackcolor(Cache::SystemOrBlack()->GetBackgroundColor());
+	bg_color = Cache::SystemOrBlack()->GetBackgroundColor();
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 
@@ -543,4 +543,8 @@ void Game_System::ResetFrameCounter() {
 
 void Game_System::IncFrameCounter() {
 	++data.frame_count;
+}
+
+Color Game_System::GetBackgroundColor() {
+	return bg_color;
 }

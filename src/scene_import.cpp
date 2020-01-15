@@ -19,7 +19,6 @@
 #include <sstream>
 #include "filefinder.h"
 #include "game_system.h"
-#include "graphics.h"
 #include "input.h"
 #include "lsd_reader.h"
 #include "output.h"

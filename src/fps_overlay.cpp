@@ -19,11 +19,11 @@
 
 #include "fps_overlay.h"
 #include "player.h"
-#include "graphics.h"
 #include "bitmap.h"
 #include "input.h"
 #include "font.h"
 #include "drawable_mgr.h"
+#include "baseui.h"
 
 FpsOverlay::FpsOverlay() :
 	Drawable(TypeOverlay, Priority_Overlay + 100, true)
@@ -44,7 +44,7 @@ void FpsOverlay::Draw(Bitmap& dst) {
 	// FIXME: Break this dependency on DisplayUi
 	bool fps_draw = (
 #ifndef EMSCRIPTEN
-		DisplayUi->IsFullscreen() &&
+		(Player::fps_render_window || DisplayUi->IsFullscreen()) &&
 #endif
 		Player::fps_flag);
 

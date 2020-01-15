@@ -197,8 +197,12 @@ public:
 	/** Contains name of the Scenes. For debug purposes. */
 	static const char scene_names[SceneMax][12];
 
-	/** Called by the graphic system to request drawing of a background, usually a system color background */
-	virtual void DrawBackground();
+	/**
+	 * Called by the graphic system to request drawing of a background, usually a system color background
+	 *
+	 * @param dst The bitmap to draw the background to.
+	 */
+	virtual void DrawBackground(Bitmap& dst);
 
 	DrawableList& GetDrawableList();
 

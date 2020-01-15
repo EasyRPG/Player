@@ -17,7 +17,6 @@
 
 // Headers
 #include "window_menustatus.h"
-#include "graphics.h"
 #include "cache.h"
 #include "game_party.h"
 #include "player.h"

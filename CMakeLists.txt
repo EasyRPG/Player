@@ -168,6 +168,8 @@ add_library(${PROJECT_NAME}
 	src/input.h
 	src/input_source.cpp
 	src/input_source.h
+	src/instrumentation.cpp
+	src/instrumentation.h
 	src/keys.h
 	src/logo.h
 	src/main_data.cpp
@@ -767,6 +769,18 @@ if(PLAYER_ENABLE_TESTS)
 	add_dependencies(check_player test_runner_player)
 	add_dependencies(check check_player)
 endif()
+
+# Instrumentation framework
+set(PLAYER_ENABLE_INSTRUMENTATION "OFF" CACHE STRING "Build performance instrumentation hooks")
+set_property(CACHE PLAYER_ENABLE_INSTRUMENTATION PROPERTY STRINGS OFF VTune)
+if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_INSTRUMENTATION=${PLAYER_ENABLE_INSTRUMENTATION})
+	if (${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
+		find_package(VTune REQUIRED)
+		target_link_libraries(${PROJECT_NAME} VTune::ITT)
+	endif()
+endif()
+
 
 # Benchmarks
 option(PLAYER_ENABLE_BENCHMARKS "Build benchmarks" OFF)

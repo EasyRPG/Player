@@ -20,7 +20,6 @@
 #include "scene_menu.h"
 #include "audio.h"
 #include "cache.h"
-#include "graphics.h"
 #include "game_party.h"
 #include "game_system.h"
 #include "game_temp.h"

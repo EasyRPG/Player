@@ -26,6 +26,7 @@
 #include "audio.h"
 #include "transition.h"
 #include "game_interpreter.h"
+#include "game_system.h"
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -154,11 +155,11 @@ void Scene::Suspend(SceneType /* next_scene */) {
 }
 
 void Scene::TransitionIn(SceneType) {
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
+	Transition::instance().Init(Transition::TransitionFadeIn, this, 6);
 }
 
 void Scene::TransitionOut(SceneType) {
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
+	Transition::instance().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
 void Scene::SetAsyncFromMainLoop() {
@@ -185,7 +186,7 @@ void Scene::OnFinishAsync() {
 }
 
 bool Scene::IsAsyncPending() {
-	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending()
+	return Transition::instance().IsActive() || AsyncHandler::IsImportantFilePending()
 		|| (instance != nullptr && instance->HasDelayFrames());
 }
 
@@ -260,8 +261,8 @@ std::shared_ptr<Scene> Scene::Find(SceneType type) {
 	return std::shared_ptr<Scene>();
 }
 
-void Scene::DrawBackground() {
-	DisplayUi->AddBackground();
+void Scene::DrawBackground(Bitmap& dst) {
+	dst.Fill(Game_System::GetBackgroundColor());
 }
 
 bool Scene::CheckSceneExit(AsyncOp aop) {

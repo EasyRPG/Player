@@ -38,7 +38,6 @@
 #include "scene_map.h"
 #include "window_command.h"
 #include "baseui.h"
-#include "graphics.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -86,7 +85,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
+	Transition::instance().Init(Transition::TransitionFadeIn, this, 32);
 }
 
 void Scene_Title::TransitionOut(Scene::SceneType next_scene) {
@@ -237,7 +236,7 @@ void Scene_Title::CommandImport() {
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
 	Scene::Pop();
 }
 

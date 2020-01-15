@@ -24,7 +24,6 @@
 #include "drawable.h"
 #include "drawable_list.h"
 
-class Transition;
 class MessageOverlay;
 class Scene;
 
@@ -62,16 +61,6 @@ namespace Graphics {
 	 */
 	BitmapRef SnapToBitmap(int priority = Priority::Priority_Maximum);
 
-	/**
-	 * Gets if a screen transition is executing.
-	 */
-	bool IsTransitionPending();
-
-	/**
-	 * Gets if the screen is erased due to transition.
-	 */
-	bool IsTransitionErased();
-
 	void Draw(Bitmap& dst);
 
 	void UpdateSceneCallback();
@@ -90,8 +79,6 @@ namespace Graphics {
 	 * @return message overlay
 	 */
 	MessageOverlay& GetMessageOverlay();
-
-	Transition& GetTransition();
 }
 
 #endif

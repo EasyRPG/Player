@@ -25,6 +25,7 @@
 #include "rpg_sound.h"
 #include "rpg_system.h"
 #include "rpg_savesystem.h"
+#include "color.h"
 
 struct FileRequestResult;
 
@@ -342,6 +343,9 @@ namespace Game_System {
 
 	/** Increment the RPG_RT compatible frame counter */
 	void IncFrameCounter();
+
+	/** Get the system background color */
+	Color GetBackgroundColor();
 }
 
 inline bool Game_System::HasSystemGraphic() {

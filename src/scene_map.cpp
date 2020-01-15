@@ -40,7 +40,6 @@
 #include "input.h"
 #include "screen.h"
 #include "scene_load.h"
-#include "graphics.h"
 
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
@@ -156,8 +155,10 @@ static bool IsMenuScene(Scene::SceneType scene) {
 }
 
 void Scene_Map::TransitionIn(SceneType prev_scene) {
+	auto& transition = Transition::instance();
+
 	// Teleport already setup a transition.
-	if (Graphics::IsTransitionPending()) {
+	if (transition.IsActive()) {
 		return;
 	}
 
@@ -167,7 +168,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	}
 
 	if (prev_scene == Scene::Battle) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
+		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 		return;
 	}
 
@@ -176,30 +177,32 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 		return;
 	}
 
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
+	transition.Init(Transition::TransitionFadeIn, this, 32);
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
+	auto& transition = Transition::instance();
+
 	if (next_scene != Scene::Battle
 			&& next_scene != Scene::Debug) {
 		screen_erased_by_event = false;
 	}
 
 	if (next_scene == Scene::Battle) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
-		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
+		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
+		transition.AppendBefore(Color(255, 255, 255, 255), 12, 2);
 		return;
 	}
 	if (next_scene == Scene::Gameover) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		transition.Init(Transition::TransitionFadeOut, this, 32, true);
 		return;
 	}
 	Scene::TransitionOut(next_scene);
 }
 
-void Scene_Map::DrawBackground() {
+void Scene_Map::DrawBackground(Bitmap& dst) {
 	if (spriteset->RequireBackground(GetDrawableList())) {
-		DisplayUi->CleanDisplay();
+		dst.Clear();
 	}
 }
 
@@ -290,14 +293,15 @@ void Scene_Map::UpdateSceneCalling() {
 }
 
 void Scene_Map::StartPendingTeleport(TeleportParams tp) {
+	auto& transition = Transition::instance();
 	const auto& tt = Main_Data::game_player->GetTeleportTarget();
 
 	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && tp.erase_screen) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
+	if (!transition.IsErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && tp.erase_screen) {
+		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
 	AsyncNext([=]() { FinishPendingTeleport(tp); });
@@ -329,12 +333,14 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 		}
 	}
 
+	auto& transition = Transition::instance();
+
 	// This logic was tested against RPG_RT and works this way ...
 	if (!tp.no_transition_in) {
-		if (tp.use_default_transition_in && Graphics::IsTransitionErased()) {
-			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+		if (tp.use_default_transition_in && transition.IsErased()) {
+			transition.Init(Transition::TransitionFadeIn, this, 32, false);
 		} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+			transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 		}
 	}
 
@@ -382,9 +388,11 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		return;
 	}
 
+	auto& transition = Transition::instance();
+
 	if (aop.GetType() == AsyncOp::eEraseScreen) {
 		auto tt = static_cast<Transition::TransitionType>(aop.GetTransitionType());
-		Graphics::GetTransition().Init(tt, this, 32, true);
+		transition.Init(tt, this, 32, true);
 		if (!is_preupdate) {
 			// RPG_RT behavior: EraseScreen commands performed during pre-update don't stick.
 			screen_erased_by_event = true;
@@ -393,7 +401,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 	if (aop.GetType() == AsyncOp::eShowScreen) {
 		auto tt = static_cast<Transition::TransitionType>(aop.GetTransitionType());
-		Graphics::GetTransition().Init(tt, this, 32, false);
+		transition.Init(tt, this, 32, false);
 		screen_erased_by_event = false;
 	}
 
@@ -405,7 +413,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		Game_System::BgmFade(800);
 
 		// FIXME: Is 36 correct here?
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
+		transition.Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 
 		AsyncNext([=]() { StartInn(); });
 		return;
@@ -429,8 +437,10 @@ void Scene_Map::FinishInn() {
 	// was issued previously.
 	screen_erased_by_event = false;
 
+	auto& transition = Transition::instance();
+
 	// FIXME: Is 36 correct here?
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
+	transition.Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
 	Game_System::BgmPlay(music_before_inn);
 
 	// Full heal

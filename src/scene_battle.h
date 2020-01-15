@@ -66,7 +66,7 @@ public:
 	void Continue(SceneType prev_scene) override;
 	void TransitionIn(SceneType prev_scene) override;
 	void TransitionOut(SceneType next_scene) override;
-	void DrawBackground() override;
+	void DrawBackground(Bitmap& dst) override;
 
 	enum State {
 		/** Battle has started (Display encounter message) */

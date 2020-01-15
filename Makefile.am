@@ -164,6 +164,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/input_buttons_psp.cpp \
 	src/input_source.cpp \
 	src/input_source.h \
+	src/instrumentation.cpp \
+	src/instrumentation.h \
 	src/keys.h \
 	src/libretro_ui.cpp \
 	src/libretro_ui.h \

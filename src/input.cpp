@@ -21,6 +21,7 @@
 #include "output.h"
 #include "player.h"
 #include "system.h"
+#include "baseui.h"
 
 #include <algorithm>
 #include <array>

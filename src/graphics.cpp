@@ -29,6 +29,7 @@
 #include "scene.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
+#include "baseui.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -41,7 +42,6 @@ namespace Graphics {
 
 	std::shared_ptr<Scene> current_scene;
 
-	std::unique_ptr<Transition> transition;
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
 }
@@ -54,8 +54,6 @@ void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
 	current_scene = Scene::instance;
 
-	// Is a drawable, must be init after state
-	transition.reset(new Transition());
 	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
 
@@ -65,7 +63,6 @@ void Graphics::Init() {
 void Graphics::Quit() {
 	DrawableMgr::GetGlobalList().Clear();
 
-	transition.reset();
 	fps_overlay.reset();
 	message_overlay.reset();
 
@@ -100,7 +97,7 @@ void Graphics::Update() {
 	fps_overlay->Update();
 	fps_overlay->AddUpdate();
 	message_overlay->Update();
-	transition->Update();
+	Transition::instance().Update();
 }
 
 void Graphics::UpdateTitle() {
@@ -127,7 +124,7 @@ void Graphics::Draw(Bitmap& dst) {
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	if (transition->IsErased()) {
+	if (Transition::instance().IsErased()) {
 		DisplayUi->CleanDisplay();
 		GlobalDraw(dst);
 		DisplayUi->UpdateDisplay();
@@ -141,8 +138,9 @@ void Graphics::Draw(Bitmap& dst) {
 void Graphics::LocalDraw(Bitmap& dst, int priority) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
-	if (!drawable_list.empty())
-		current_scene->DrawBackground();
+	if (!drawable_list.empty()) {
+		current_scene->DrawBackground(dst);
+	}
 
 	drawable_list.Draw(dst, priority);
 }
@@ -159,14 +157,6 @@ BitmapRef Graphics::SnapToBitmap(int priority) {
 	LocalDraw(*disp, priority);
 	GlobalDraw(*disp, priority);
 	return DisplayUi->CaptureScreen();
-}
-
-bool Graphics::IsTransitionPending() {
-	return (transition ? transition->IsActive() : false);
-}
-
-bool Graphics::IsTransitionErased() {
-	return (transition ? transition->IsErased() : false);
 }
 
 void Graphics::FrameReset(uint32_t start_ticks) {
@@ -187,6 +177,3 @@ MessageOverlay& Graphics::GetMessageOverlay() {
 	return *message_overlay;
 }
 
-Transition& Graphics::GetTransition() {
-	return *transition;
-}

@@ -182,25 +182,6 @@ public:
 	 */
 	int GetMousePosY() const;
 
-	/**
-	 * Gets background color.
-	 *
-	 * @return background color.
-	 */
-	Color const& GetBackcolor() const;
-
-	/**
-	 * Sets background color.
-	 *
-	 * @param color new background color.
-	 */
-	void SetBackcolor(const Color &color);
-
-	/**
-	 * Fills the screen with the background color.
-	 */
-	void AddBackground();
-
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();
 

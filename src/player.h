@@ -19,7 +19,6 @@
 #define EP_PLAYER_H
 
 // Headers
-#include "baseui.h"
 #include "meta.h"
 #include <vector>
 #include <memory>
@@ -262,6 +261,9 @@ namespace Player {
 
 	/** FPS flag, if true will display frames per second counter. */
 	extern bool fps_flag;
+
+	/** FPS render window flag, if true will draw the FPS on the screen even in windowed mode. */
+	extern bool fps_render_window;
 
 	/** Mouse flag, if true enables mouse click and scroll wheel */
 	extern bool mouse_flag;

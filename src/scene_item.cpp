@@ -30,7 +30,6 @@
 #include "scene_teleport.h"
 #include "output.h"
 #include "transition.h"
-#include "graphics.h"
 
 Scene_Item::Scene_Item(int item_index) :
 	item_index(item_index) {
@@ -117,7 +116,7 @@ void Scene_Item::TransitionOut(Scene::SceneType next_scene) {
 	}
 
 	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
 	} else {
 		Scene::TransitionOut(next_scene);
 	}
