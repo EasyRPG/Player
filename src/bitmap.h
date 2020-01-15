@@ -452,11 +452,10 @@ public:
 	/**
 	 * Flips the bitmap pixels.
 	 *
-	 * @param dst_rect the rectangle to flip.
 	 * @param horizontal flip horizontally (mirror).
 	 * @param vertical flip vertically.
 	 */
-	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
+	void Flip(bool horizontal, bool vertical);
 
 	/**
 	 * Blits source bitmap to this one through a mask bitmap.

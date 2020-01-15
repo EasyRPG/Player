@@ -71,7 +71,7 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 
 std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char) {
 	if (input.empty()) {
-		return std::move(input);
+		return input;
 	}
 
 	std::string output;

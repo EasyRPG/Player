@@ -486,7 +486,7 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 		if (flip_x || flip_y) {
 			if (bitmap_effects) {
 				// Tone or blend blit was applied
-				bitmap_effects->Flip(bitmap_effects->GetRect(), flip_x, flip_y);
+				bitmap_effects->Flip(flip_x, flip_y);
 			} else {
 				bitmap_effects = create();
 				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::Opaque());
