@@ -68,7 +68,7 @@ enum class ImageOpacity {
 	Partial,
 	/** Image is full opaque and can be blitted fast */
 	Opaque,
-	/** Image is complately transparent and blitting can be skipped entirely */
+	/** Image is completely transparent and blitting can be skipped entirely */
 	Transparent
 };
 
