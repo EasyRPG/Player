@@ -26,7 +26,6 @@
 #include "game_battle.h"
 #include "game_screen.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "transition.h"
 #include "input.h"
 #include "main_data.h"

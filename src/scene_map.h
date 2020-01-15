@@ -44,15 +44,6 @@ public:
 	void TransitionOut(SceneType next_scene) override;
 	void DrawBackground() override;
 
-	void CallBattle();
-	void CallShop();
-	void CallName();
-	void CallMenu();
-	void CallSave();
-	void CallLoad();
-	void CallDebug();
-	void CallGameover();
-
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:

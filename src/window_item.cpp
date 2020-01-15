@@ -22,8 +22,8 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
-#include "game_temp.h"
 #include "reader_util.h"
+#include "game_battle.h"
 #include "output.h"
 
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
@@ -53,7 +53,7 @@ bool Window_Item::CheckEnable(int item_id) {
 		return false;
 	}
 	if (item->type == RPG::Item::Type_medicine
-			&& (!Game_Temp::battle_running || !item->occasion_field1)) {
+			&& (!Game_Battle::IsBattleRunning() || !item->occasion_field1)) {
 		return true;
 	}
 	return Main_Data::game_party->IsItemUsable(item_id, actor);
@@ -71,7 +71,7 @@ void Window_Item::Refresh() {
 		}
 	}
 
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		// Include equipped accessories that invoke skills in sorted order.
 		if (actor) {
 			for (int i = 1; i <= 5; ++i) {

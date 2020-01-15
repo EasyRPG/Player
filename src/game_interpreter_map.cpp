@@ -38,6 +38,12 @@
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_map.h"
+#include "scene_battle.h"
+#include "scene_menu.h"
+#include "scene_save.h"
+#include "scene_load.h"
+#include "scene_name.h"
+#include "scene_shop.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -226,7 +232,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
-	Scene::instance->SetRequestedScene(Scene::Battle);
+	Scene::instance->SetRequestedScene(Scene_Battle::Create());
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
 
@@ -292,51 +298,50 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		return false;
 	}
 
+	bool allow_buy = false;
+	bool allow_sell = false;
+
 	switch (com.parameters[0]) {
 		case 0:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = true;
+			allow_buy = true;
+			allow_sell = true;
 			break;
 		case 1:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = false;
+			allow_buy = true;
 			break;
 		case 2:
-			Game_Temp::shop_buys = false;
-			Game_Temp::shop_sells = true;
+			allow_sell = true;
 			break;
 		default:
-			return false;
+			break;
 	}
 
-	Game_Temp::shop_type = com.parameters[1];
+	auto shop_type = com.parameters[1];
+
 	// Not used, but left here for documentation purposes
 	//bool has_shop_handlers = com.parameters[2] != 0;
 
-	Game_Temp::shop_goods.clear();
-	std::vector<int32_t>::const_iterator it;
-	for (it = com.parameters.begin() + 4; it < com.parameters.end(); ++it)
-		Game_Temp::shop_goods.push_back(*it);
+	std::vector<int> goods;
+	for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ++it) {
+		goods.push_back(*it);
+	}
 
-	Game_Temp::shop_transaction = false;
-	Scene::instance->SetRequestedScene(Scene::Shop);
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
+	auto indent = com.indent;
+	auto continuation = [this, indent](bool did_transaction) {
+		int sub_idx = did_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
+		SetSubcommandIndex(indent, sub_idx);
+	};
+
+	auto scene = std::make_shared<Scene_Shop>(
+			std::move(goods), shop_type, allow_buy, allow_sell, std::move(continuation));
+
+	Scene::instance->SetRequestedScene(std::move(scene));
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
 	++index;
 	return false;
-}
-
-bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
-	continuation = nullptr;
-
-	int sub_idx = Game_Temp::shop_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
-
-	SetSubcommandIndex(com.indent, sub_idx);
-
-	return true;
 }
 
 bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
@@ -353,17 +358,17 @@ bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& /* com */) { 
 
 bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // code 10730
 	int inn_type = com.parameters[0];
-	Game_Temp::inn_price = com.parameters[1];
+	auto inn_price = com.parameters[1];
 	// Not used, but left here for documentation purposes
 	// bool has_inn_handlers = com.parameters[2] != 0;
 
-	if (Game_Temp::inn_price == 0) {
+	if (inn_price == 0) {
 		if (Game_Message::IsMessageActive()) {
 			return false;
 		}
 
 		// Skip prompt.
-		ContinuationShowInnStart(com.indent, 0);
+		ContinuationShowInnStart(com.indent, 0, inn_price);
 		return true;
 	}
 
@@ -379,7 +384,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	switch (inn_type) {
 		case 0:
 			if (Player::IsRPG2kE()) {
-				out << Game_Temp::inn_price;
+				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_a_greeting_1,
@@ -397,7 +402,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_a_greeting_1
-					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_a_greeting_2;
 				pm.PushLine(out.str());
 				pm.PushLine(Data::terms.inn_a_greeting_3);
@@ -405,7 +410,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			break;
 		case 1:
 			if (Player::IsRPG2kE()) {
-				out << Game_Temp::inn_price;
+				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_b_greeting_1,
@@ -423,7 +428,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_b_greeting_1
-					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_b_greeting_2;
 				pm.PushLine(out.str());
 				pm.PushLine(Data::terms.inn_b_greeting_3);
@@ -433,7 +438,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			return false;
 	}
 
-	bool can_afford = (Main_Data::game_party->GetGold() >= Game_Temp::inn_price);
+	bool can_afford = (Main_Data::game_party->GetGold() >= inn_price);
 	pm.SetChoiceResetColors(true);
 
 	switch (inn_type) {
@@ -452,8 +457,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	pm.SetShowGoldWindow(true);
 
 	int indent = com.indent;
-	pm.SetChoiceContinuation([this,indent](int choice_result) {
-			ContinuationShowInnStart(indent, choice_result);
+	pm.SetChoiceContinuation([this, indent, inn_price](int choice_result) {
+			ContinuationShowInnStart(indent, choice_result, inn_price);
 			});
 
 	// save game compatibility with RPG_RT
@@ -465,13 +470,13 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result) {
+void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result, int price) {
 	bool inn_stay = (choice_result == 0);
 
 	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	if (inn_stay) {
-		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
+		Main_Data::game_party->GainGold(-price);
 
 		_async_op = AsyncOp::MakeCallInn();
 	}
@@ -498,22 +503,13 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 		return false;
 	}
 
-	Game_Temp::hero_name_id = com.parameters[0];
-	Game_Temp::hero_name_charset = com.parameters[1];
+	auto actor_id = com.parameters[0];
+	auto charset = com.parameters[1];
+	auto use_default_name = com.parameters[2];
 
-	Game_Actor *actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
+	auto scene = std::make_shared<Scene_Name>(actor_id, charset, use_default_name);
+	Scene::instance->SetRequestedScene(std::move(scene));
 
-	if (!actor) {
-		Output::Error("EnterHeroName: Invalid actor ID %d", Game_Temp::hero_name_id);
-	}
-
-	if (com.parameters[2]) {
-		Game_Temp::hero_name = actor->GetName();
-	} else {
-		Game_Temp::hero_name.clear();
-	}
-
-	Scene::instance->SetRequestedScene(Scene::Name);
 	++index;
 	return false;
 }
@@ -673,7 +669,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Save);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 	++index;
 	return false;
 }
@@ -687,7 +683,7 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Menu);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 	++index;
 	return false;
 }
@@ -701,7 +697,7 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Load);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
 	++index;
 	return false;
 }

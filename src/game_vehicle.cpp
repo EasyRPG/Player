@@ -67,7 +67,7 @@ void Game_Vehicle::LoadSystemSettings() {
 	}
 }
 
-RPG::Music& Game_Vehicle::GetBGM() {
+const RPG::Music& Game_Vehicle::GetBGM() {
 	switch (GetVehicleType()) {
 	case None:
 		assert(false);
@@ -80,8 +80,8 @@ RPG::Music& Game_Vehicle::GetBGM() {
 		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
 	}
 
-	// keeping the compiler happy
-	return Game_System::GetSystemBGM(Game_System::BGM_Battle);
+	static RPG::Music empty;
+	return empty;
 }
 
 void Game_Vehicle::Refresh() {

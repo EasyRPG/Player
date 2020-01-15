@@ -32,7 +32,6 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_screen.h"
 #include "rpg_system.h"
 #include "player.h"
@@ -256,10 +255,9 @@ void Scene_Map::UpdateStage2() {
 
 void Scene_Map::UpdateSceneCalling() {
 
-	auto call = GetRequestedScene();
-	SetRequestedScene(Null);
+	auto call = TakeRequestedScene();
 
-	if (call == Null
+	if (call == nullptr
 			&& Player::debug_flag
 			&& !Game_Message::IsMessageActive())
 	{
@@ -268,7 +266,7 @@ void Scene_Map::UpdateSceneCalling() {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					call = Menu;
+					call = std::make_shared<Scene_Menu>();
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -276,43 +274,18 @@ void Scene_Map::UpdateSceneCalling() {
 			debug_menuoverwrite_counter = 0;
 		}
 
-		if (call == Null) {
+		if (call == nullptr) {
 			if (Input::IsTriggered(Input::DEBUG_MENU)) {
-				call = Debug;
+				call = std::make_shared<Scene_Debug>();
 			}
 			else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-				call = Save;
+				call = std::make_shared<Scene_Save>();
 			}
 		}
 	}
 
-	switch (call) {
-		case Scene::Menu:
-			CallMenu();
-			break;
-		case Scene::Shop:
-			CallShop();
-			break;
-		case Scene::Name:
-			CallName();
-			break;
-		case Scene::Save:
-			CallSave();
-			break;
-		case Scene::Load:
-			CallLoad();
-			break;
-		case Scene::Battle:
-			CallBattle();
-			break;
-		case Scene::Gameover:
-			CallGameover();
-			break;
-		case Scene::Debug:
-			CallDebug();
-			break;
-		default:
-			break;
+	if (call != nullptr) {
+		Scene::Push(std::move(call));
 	}
 }
 
@@ -392,56 +365,6 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 
 	// Call any requested scenes when transition is done.
 	AsyncNext([this]() { UpdateSceneCalling(); });
-}
-
-// Scene calling stuff.
-
-void Scene_Map::CallBattle() {
-	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
-	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
-
-	Scene::Push(Scene_Battle::Create());
-}
-
-void Scene_Map::CallShop() {
-	Scene::Push(std::make_shared<Scene_Shop>());
-}
-
-void Scene_Map::CallName() {
-	Scene::Push(std::make_shared<Scene_Name>());
-}
-
-void Scene_Map::CallMenu() {
-	// TODO: Main_Data::game_player->Straighten();
-
-	Scene::Push(std::make_shared<Scene_Menu>());
-
-	/*
-	FIXME:
-	The intention was that you can still exit the game with ESC when the menu
-	is disabled. But this conflicts with parallel events listening for ESC.
-	else {
-		Scene::Push(std::make_shared<Scene_End>());
-	}*/
-}
-
-void Scene_Map::CallSave() {
-	Scene::Push(std::make_shared<Scene_Save>());
-}
-
-void Scene_Map::CallLoad() {
-	Scene::Push(std::make_shared<Scene_Load>());
-}
-
-void Scene_Map::CallDebug() {
-	if (Player::debug_flag) {
-		Scene::Push(std::make_shared<Scene_Debug>());
-	}
-}
-
-void Scene_Map::CallGameover() {
-	Scene::Push(std::make_shared<Scene_Gameover>());
 }
 
 template <typename F>

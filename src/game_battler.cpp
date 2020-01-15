@@ -24,6 +24,7 @@
 #include "game_battler.h"
 #include "game_actor.h"
 #include "game_enemyparty.h"
+#include "game_battle.h"
 #include "game_party.h"
 #include "game_party_base.h"
 #include "game_switches.h"
@@ -175,15 +176,15 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	}
 
 	if (skill->type == RPG::Skill::Type_escape) {
-		return !Game_Temp::battle_running && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
 	}
 
 	if (skill->type == RPG::Skill::Type_teleport) {
-		return !Game_Temp::battle_running && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
 	}
 
 	if (skill->type == RPG::Skill::Type_switch) {
-		if (Game_Temp::battle_running) {
+		if (Game_Battle::IsBattleRunning()) {
 			return skill->occasion_battle;
 		} else {
 			return skill->occasion_field;

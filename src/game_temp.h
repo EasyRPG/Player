@@ -33,18 +33,6 @@ public:
 	 */
 	static void Init();
 
-	static bool shop_buys;
-	static bool shop_sells;
-	static int shop_type;		// message set A, B, or C
-	static std::vector<int> shop_goods;
-	static bool shop_transaction;
-	static int inn_price;
-
-	static std::string hero_name;
-	static int hero_name_id;
-	static int hero_name_charset;
-
-	static bool battle_running;
 	static int battle_troop_id;
 	static std::string battle_background;
 	static int battle_formation;

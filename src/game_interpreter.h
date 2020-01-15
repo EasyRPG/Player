@@ -255,7 +255,6 @@ protected:
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
-	virtual bool ContinuationOpenShop(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);

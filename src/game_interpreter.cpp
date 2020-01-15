@@ -29,7 +29,6 @@
 #include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_targets.h"
-#include "game_temp.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
@@ -39,6 +38,7 @@
 #include "game_picture.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
+#include "scene_gameover.h"
 #include "scene_map.h"
 #include "scene.h"
 #include "graphics.h"
@@ -103,7 +103,7 @@ void Game_Interpreter::Push(
 	frame.triggered_by_decision_key = started_by_decision_key;
 	frame.event_id = event_id;
 
-	if (_state.stack.empty() && main_flag && !Game_Temp::battle_running) {
+	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
 		Game_Message::ClearFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
@@ -420,7 +420,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
-		if (Game_Temp::battle_running && Player::IsRPG2k3() && Game_Battle::CheckWin()) {
+		if (Game_Battle::IsBattleRunning() && Player::IsRPG2k3() && Game_Battle::CheckWin()) {
 			// Interpreter is cancelled when a win condition is fulfilled in RPG2k3 battle
 			break;
 		}
@@ -463,10 +463,10 @@ void Game_Interpreter::Push(Game_CommonEvent* ev) {
 }
 
 bool Game_Interpreter::CheckGameOver() {
-	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
+	if (!Game_Battle::IsBattleRunning() && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
 		if (Main_Data::game_party->GetBattlerCount() > 0) {
-			Scene::instance->SetRequestedScene(Scene::Gameover);
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Gameover>());
 			return true;
 		}
 	}
@@ -734,7 +734,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 
 	const bool is_base_frame = _state.stack.size() == 1;
 
-	if (main_flag && is_base_frame && !Game_Temp::battle_running) {
+	if (main_flag && is_base_frame && !Game_Battle::IsBattleRunning()) {
 		Game_Message::ClearFace();
 	}
 
@@ -1700,7 +1700,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 		if (remove) {
 			// RPG_RT: On the map, will remove battle states even if actor has
 			// state inflicted by equipment.
-			actor->RemoveState(state_id, !Game_Temp::battle_running);
+			actor->RemoveState(state_id, !Game_Battle::IsBattleRunning());
 			Game_Battle::SetNeedRefresh(true);
 		} else {
 			// RPG_RT always adds states from event commands, even battle states.
@@ -1824,7 +1824,7 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(Scene::Gameover);
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Gameover>());
 	++index;
 	return false;
 }
@@ -3320,12 +3320,11 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 
 // Dummy Continuations
 
-bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
-	return Game_Temp::battle_running
+	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
 		: Game_Map::GetInterpreter();
 }

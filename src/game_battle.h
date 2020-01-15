@@ -36,6 +36,9 @@ namespace Game_Battle {
 	 */
 	void Init();
 
+	/** @return true if a battle is currently running */
+	bool IsBattleRunning();
+
 	/**
 	 * Quits (frees) Game_Battle.
 	 */
@@ -199,6 +202,13 @@ namespace Game_Battle {
 
 	/** @return death teleport handler if one is installed, otherwise an inactive target */
 	TeleportTarget GetDeathHandlerTeleport();
+
+	/** Don't reference this, use IsBattleRunning()! */
+	extern bool battle_running;
+}
+
+inline bool Game_Battle::IsBattleRunning() {
+	return battle_running;
 }
 
 #endif

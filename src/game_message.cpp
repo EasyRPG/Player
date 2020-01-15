@@ -18,7 +18,7 @@
 // Headers
 #include "game_message.h"
 #include "game_player.h"
-#include "game_temp.h"
+#include "game_battle.h"
 #include "main_data.h"
 #include "window_message.h"
 #include "font.h"
@@ -84,7 +84,7 @@ void Game_Message::SetFaceRightPosition(bool right) {
 }
 
 bool Game_Message::IsTransparent() {
-	if (Player::IsRPG2k() && Game_Temp::battle_running) {
+	if (Player::IsRPG2k() && Game_Battle::IsBattleRunning()) {
 		return false;
 	}
 
@@ -120,7 +120,7 @@ void Game_Message::SetContinueEvents(bool continue_events) {
 }
 
 int Game_Message::GetRealPosition() {
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		if (Player::IsRPG2k()) {
 			return 2;
 		}

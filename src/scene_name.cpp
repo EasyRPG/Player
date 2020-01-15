@@ -20,26 +20,34 @@
 #include "scene_name.h"
 #include "game_actors.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "input.h"
 #include "player.h"
+#include "output.h"
 
-Scene_Name::Scene_Name() {
+Scene_Name::Scene_Name(int actor_id, int charset, bool use_default_name)
+	: actor_id(actor_id), layout_index(charset), use_default_name(use_default_name)
+{
 	Scene::type = Scene::Name;
+
+	auto *actor = Game_Actors::GetActor(actor_id);
+	if (!actor) {
+		Output::Error("EnterHeroName: Invalid actor ID %d", actor_id);
+	}
 }
 
 void Scene_Name::Start() {
 	// Create the windows
 
+	auto *actor = Game_Actors::GetActor(actor_id);
+	assert(actor);
+
 	name_window.reset(new Window_Name(96, 40, 192, 32));
-	name_window->Set(Game_Temp::hero_name);
+	name_window->Set(use_default_name ? actor->GetName() : "");
 	name_window->Refresh();
 
 	face_window.reset(new Window_Face(32, 8, 64, 64));
-	face_window->Set(Game_Temp::hero_name_id);
+	face_window->Set(actor_id);
 	face_window->Refresh();
-
-	layout_index = Game_Temp::hero_name_charset;
 
 	const char* done = Window_Keyboard::DONE;
 	// Japanese pages
@@ -73,8 +81,8 @@ void Scene_Name::Start() {
 	layouts.push_back(Window_Keyboard::Symbol);
 	kbd_window.reset(new Window_Keyboard(32, 72, 256, SCREEN_TARGET_WIDTH / 2, done));
 
-	size_t next_index = layout_index + 1;
-	if (next_index >= layouts.size()) {
+	auto next_index = layout_index + 1;
+	if (next_index >= static_cast<int>(layouts.size())) {
 		next_index = 0;
 	}
 	kbd_window->SetMode(layouts[layout_index], layouts[next_index]);
@@ -101,25 +109,24 @@ void Scene_Name::Update() {
 		assert(!s.empty());
 
 		if (s == Window_Keyboard::DONE) {
-			Game_Temp::hero_name = name_window->Get();
-			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
-			if (actor != NULL) {
+			auto* actor = Game_Actors::GetActor(actor_id);
+			if (actor != nullptr) {
 				if (name_window->Get().empty()) {
 					name_window->Set(actor->GetName());
 					name_window->Refresh();
 				} else {
 					actor->SetName(name_window->Get());
-					Scene::Pop();
 				}
 			}
+			Scene::Pop();
 		} else if (s == Window_Keyboard::NEXT_PAGE) {
 			++layout_index;
-			if (layout_index >= layouts.size()) {
+			if (layout_index >= static_cast<int>(layouts.size())) {
 				layout_index = 0;
 			}
 
-			size_t next_index = layout_index + 1;
-			if (next_index >= layouts.size()) {
+			auto next_index = layout_index + 1;
+			if (next_index >= static_cast<int>(layouts.size())) {
 				next_index = 0;
 			}
 			kbd_window->SetMode(layouts[layout_index], layouts[next_index]);

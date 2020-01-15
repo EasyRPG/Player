@@ -27,11 +27,11 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_variables.h"
-#include "game_temp.h"
 #include "input.h"
 #include "output.h"
 #include "player.h"
 #include "util_macro.h"
+#include "game_battle.h"
 #include "bitmap.h"
 #include "font.h"
 
@@ -117,7 +117,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	// If we're displaying a new message, reset the closing animation.
 	if (closing) {
-		SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+		SetCloseAnimation(Game_Battle::IsBattleRunning() ? 0 : message_animation_frames);
 	}
 
 	InsertNewPage();
@@ -157,7 +157,7 @@ void Window_Message::StartNumberInputProcessing() {
 }
 
 void Window_Message::ShowGoldWindow() {
-	if (!gold_window->GetVisible() && !Game_Temp::battle_running) {
+	if (!gold_window->GetVisible() && !Game_Battle::IsBattleRunning()) {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
 		gold_window->SetOpenAnimation(message_animation_frames);
@@ -278,7 +278,7 @@ void Window_Message::Update() {
 			if (!visible) {
 				// The MessageBox is not open yet but text output is needed
 				// Open and Close Animations are skipped in battle
-				SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+				SetOpenAnimation(Game_Battle::IsBattleRunning() ? 0 : message_animation_frames);
 			} else if (closing) {
 				// If a message was requested while closing, cancel it and display the message immediately.
 				SetOpenAnimation(0);
@@ -295,7 +295,7 @@ void Window_Message::Update() {
 
 		if (!Game_Message::IsMessagePending() && visible && !closing) {
 			// Start the closing animation
-			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			SetCloseAnimation(Game_Battle::IsBattleRunning() ? 0 : message_animation_frames);
 			// This frame a foreground event may push a new message and interupt the close animation.
 			allow_next_message = true;
 		}

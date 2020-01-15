@@ -51,7 +51,7 @@ public:
 	void Update();
 
 	void LoadSystemSettings();
-	RPG::Music& GetBGM();
+	const RPG::Music& GetBGM();
 	void Refresh();
 	void SetPosition(int _map_id, int _x, int _y);
 	bool IsInCurrentMap() const;

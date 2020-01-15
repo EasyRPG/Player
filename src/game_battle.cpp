@@ -46,6 +46,7 @@ namespace Game_Battle {
 
 	std::unique_ptr<BattleAnimation> animation;
 
+	bool battle_running = false;
 	int escape_fail_count;
 
 	struct BattleTest battle_test;
@@ -68,7 +69,7 @@ void Game_Battle::Init() {
 	spriteset->Update();
 	animation.reset();
 
-	Game_Temp::battle_running = true;
+	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
 	terminate = false;
 	escape_fail_count = 0;
@@ -96,11 +97,15 @@ void Game_Battle::Init() {
 }
 
 void Game_Battle::Quit() {
+	if (!IsBattleRunning()) {
+		return;
+	}
+
 	interpreter.reset();
 	spriteset.reset();
 	animation.reset();
 
-	Game_Temp::battle_running = false;
+	Game_Battle::battle_running = false;
 	Game_Temp::battle_background = "";
 	SetTerrainId(0);
 

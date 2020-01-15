@@ -22,7 +22,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_system.h"
-#include "game_temp.h"
+#include "game_battle.h"
 
 Sprite_Timer::Sprite_Timer(int which) :
 	which(which)
@@ -64,7 +64,7 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 }
 
 void Sprite_Timer::Update() {
-	const bool visible = Main_Data::game_party->GetTimerVisible(which, Game_Temp::battle_running);
+	const bool visible = Main_Data::game_party->GetTimerVisible(which, Game_Battle::IsBattleRunning());
 
 	SetVisible(visible);
 
@@ -88,7 +88,7 @@ void Sprite_Timer::Update() {
 	digits[3].x = 32 + 8 * secs_10;
 	digits[4].x = 32 + 8 * secs_1;
 
-	if (Game_Temp::battle_running) {
+	if (Game_Battle::IsBattleRunning()) {
 		SetY(SCREEN_TARGET_HEIGHT / 3 * 2 - 20);
 	}
 	else if (Game_Message::IsMessageVisible() && Game_Message::GetRealPosition() == 0) {
