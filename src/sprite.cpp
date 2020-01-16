@@ -27,7 +27,7 @@
 // Constructor
 Sprite::Sprite() : Sprite(TypeSprite) {}
 
-Sprite::Sprite(const DrawableType type) : Drawable(type, 0, false)
+Sprite::Sprite(const DrawableType type) : Drawable(type, 0)
 {
 	DrawableMgr::Register(this);
 }

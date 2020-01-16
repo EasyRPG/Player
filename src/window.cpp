@@ -27,7 +27,7 @@
 
 constexpr int pause_animation_frames = 20;
 
-Window::Window(bool is_global): Drawable(TypeWindow, Priority_Window, is_global)
+Window::Window(Drawable::Flags flags): Drawable(TypeWindow, Priority_Window, flags)
 {
 	DrawableMgr::Register(this);
 }

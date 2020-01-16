@@ -28,7 +28,7 @@
  */
 class Window : public Drawable {
 public:
-	Window(bool is_global = false);
+	Window(Drawable::Flags flags = Drawable::Flags::Default);
 
 	void Draw(Bitmap& dst) override;
 

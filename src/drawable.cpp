@@ -19,13 +19,6 @@
 #include "rpg_savepicture.h"
 #include "drawable_mgr.h"
 
-Drawable::Drawable(DrawableType type, int z, bool is_global)
-	: _z(z),
-	_type(static_cast<decltype(_type)>(type)),
-	_is_global(is_global)
-{
-}
-
 Drawable::~Drawable() {
 	DrawableMgr::Remove(this);
 }

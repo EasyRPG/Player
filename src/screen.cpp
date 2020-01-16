@@ -24,7 +24,7 @@
 #include "screen.h"
 #include "drawable_mgr.h"
 
-Screen::Screen() : Drawable(TypeScreen, Priority_Screen, false)
+Screen::Screen() : Drawable(TypeScreen, Priority_Screen)
 {
 	DrawableMgr::Register(this);
 }

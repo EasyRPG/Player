@@ -69,7 +69,17 @@ enum Priority {
  */
 class Drawable {
 public:
-	Drawable(DrawableType type, int z, bool is_global);
+	/** Flags with dictate certain attributes of drawables */
+	enum class Flags : uint16_t {
+		/** No flags */
+		None = 0,
+		/** This is a global drawable which will appear in all scenes */
+		Global = 1,
+		/** The default flag set */
+		Default = None
+	};
+
+	Drawable(DrawableType type, int z, Flags flags = Flags::Default);
 
 	Drawable(const Drawable&) = delete;
 	Drawable& operator=(const Drawable&) = delete;
@@ -84,6 +94,7 @@ public:
 
 	DrawableType GetType() const;
 
+	/* @return true if this drawable should appear in all scenes */
 	bool IsGlobal() const;
 
 	/**
@@ -102,8 +113,31 @@ public:
 private:
 	int _z = 0;
 	uint16_t _type = TypeDefault;
-	bool _is_global = false;
+	Flags _flags = Flags::Default;
 };
+
+inline Drawable::Flags operator|(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) | static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator&(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) & static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator^(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) ^ static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator~(Drawable::Flags f) {
+	return static_cast<Drawable::Flags>(~static_cast<unsigned>(f));
+}
+
+inline Drawable::Drawable(DrawableType type, int z, Flags flags)
+	: _z(z),
+	_type(static_cast<decltype(_type)>(type)),
+	_flags(flags)
+{
+}
 
 inline int Drawable::GetZ() const {
 	return _z;
@@ -114,8 +148,7 @@ inline DrawableType Drawable::GetType() const {
 }
 
 inline bool Drawable::IsGlobal() const {
-	return _is_global;
+	return static_cast<bool>(_flags & Flags::Global);
 }
-
 
 #endif

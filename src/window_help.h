@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Help(int ix, int iy, int iwidth, int iheight, bool is_global = false);
+	Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flags flags = Drawable::Flags::Default);
 
 	/**
 	 * Sets the text that will be shown.
