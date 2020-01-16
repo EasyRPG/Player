@@ -30,7 +30,7 @@
 #include "drawable.h"
 #include "drawable_mgr.h"
 
-Transition::Transition() : Drawable(TypeTransition, Priority_Transition, Drawable::Flags::Global)
+Transition::Transition() : Drawable(Priority_Transition, Drawable::Flags::Global)
 {
 }
 

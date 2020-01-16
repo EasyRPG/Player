@@ -102,9 +102,6 @@ public:
 	 */
 	void SetFlashEffect(const Color &color);
 
-protected:
-	Sprite(DrawableType type, Drawable::Flags flags = Drawable::Flags::Default);
-
 private:
 	BitmapRef bitmap;
 

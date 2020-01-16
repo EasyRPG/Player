@@ -8,7 +8,7 @@ namespace {
 
 class TestSprite : public Drawable {
 	public:
-		TestSprite(Drawable::Flags flags) : Drawable(TypeSprite, 0, flags) { DrawableMgr::Register(this); }
+		TestSprite(Drawable::Flags flags) : Drawable(0, flags) { DrawableMgr::Register(this); }
 		void Draw(Bitmap&) override {}
 };
 

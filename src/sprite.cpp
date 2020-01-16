@@ -25,9 +25,7 @@
 #include "drawable_mgr.h"
 
 // Constructor
-Sprite::Sprite(Drawable::Flags flags) : Sprite(TypeSprite, flags) {}
-
-Sprite::Sprite(const DrawableType type, Drawable::Flags flags) : Drawable(type, 0, flags)
+Sprite::Sprite(Drawable::Flags flags) : Drawable(0, flags)
 {
 	DrawableMgr::Register(this);
 }

@@ -684,7 +684,7 @@ void TilemapLayer::OnSubstitute() {
 }
 
 TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
-	Drawable(TypeTilemap, z),
+	Drawable(z),
 	tilemap(tilemap)
 {
 	DrawableMgr::Register(this);

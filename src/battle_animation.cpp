@@ -32,7 +32,6 @@
 #include "drawable_mgr.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
-	Sprite(TypeDefault),
 	animation(anim), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;

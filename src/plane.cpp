@@ -23,7 +23,7 @@
 #include "game_map.h"
 #include "drawable_mgr.h"
 
-Plane::Plane() : Drawable(TypePlane, 0)
+Plane::Plane() : Drawable(0)
 {
 	DrawableMgr::Register(this);
 }
