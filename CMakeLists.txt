@@ -16,6 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(${PROJECT_NAME}
 	src/3ds_ui.cpp
 	src/3ds_ui.h
+	src/align.h
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
@@ -195,6 +196,9 @@ add_library(${PROJECT_NAME}
 	src/platform.h
 	src/player.cpp
 	src/player.h
+	src/pool_allocator.h
+	src/pool_allocator_base.h
+	src/pool_allocator_base.cpp
 	src/psp2_ui.cpp
 	src/psp2_ui.h
 	src/rect.cpp

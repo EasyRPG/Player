@@ -33,14 +33,34 @@
 #include "text.h"
 #include "pixman_image_ptr.h"
 #include "opacity.h"
+#include "pool_allocator.h"
 
 struct Transform;
+
+
+class BitmapAllocator : public PoolAllocator<Bitmap> {
+	public:
+		static BitmapAllocator& instance() {
+			static BitmapAllocator alloc(1024);
+			return alloc;
+		}
+	private:
+		using PoolAllocator<Bitmap>::PoolAllocator;
+};
 
 /**
  * Base Bitmap class.
  */
 class Bitmap {
 public:
+	static void* operator new(size_t /* sz */) {
+		return BitmapAllocator::instance().AllocUninitialized();
+	}
+
+	static void operator delete(void* ptr) {
+		BitmapAllocator::instance().FreeUninitialized(static_cast<Bitmap*>(ptr));
+	}
+
 	/**
 	 * Creates bitmap with empty surface.
 	 *
