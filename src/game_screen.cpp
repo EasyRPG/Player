@@ -132,27 +132,8 @@ void Game_Screen::OnMapChange() {
 	animation.reset();
 }
 
-void Game_Screen::OnBattleStart() {
-	auto battle_scene = Scene::Find(Scene::Battle);
-	assert(battle_scene);
-	auto map_scene = Scene::Find(Scene::Map);
-
-	if (map_scene) {
-		// FIXME: O(n) for every sprite. Can we batch this faster?
-		map_scene->GetDrawableList().Take(weather.get());
-	}
-	battle_scene->GetDrawableList().Append(weather.get());
-
-	Game_Picture::OnBattleStart(pictures, map_scene.get(), *battle_scene);
-}
-
 void Game_Screen::OnBattleEnd() {
-	auto map_scene = Scene::Find(Scene::Map);
-	if (map_scene) {
-		map_scene->GetDrawableList().Append(weather.get());
-	}
-
-	Game_Picture::OnBattleEnd(pictures, map_scene.get());
+	Game_Picture::OnBattleEnd(pictures);
 }
 
 void Game_Screen::DoPreallocatePictureData(int id) {

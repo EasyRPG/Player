@@ -28,7 +28,7 @@
 /**
  * Scene virtual class.
  */
-class Scene {
+class Scene : public std::enable_shared_from_this<Scene> {
 public:
 	/** Scene types. */
 	enum SceneType {
@@ -252,9 +252,26 @@ public:
 	 */
 	static bool ReturnToTitleScene();
 
+	/** 
+	 * Transfer drawables from the previous scene. This is called
+	 * when we do a scene change.
+	 *
+	 * @param prev_scene can be nullptr if this is the first scene.
+	 */
+	void TransferDrawablesFrom(Scene* prev_scene);
+
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;
+
+	/**
+	 * Set whether or not this scene will use shared drawables.
+	 * If true, when started the scene will transfer all shared
+	 * drawables from the previous scene.
+	 *
+	 * @param value whether to use shared drawables.
+	 */
+	void SetUseSharedDrawables(bool value);
 
 private:
 	/** Scene stack. */
@@ -269,11 +286,10 @@ private:
 	 * other Continue(). This enforces calling Start().
 	 */
 	bool initialized = false;
-
 	bool was_async_from_main_loop = false;
+	bool uses_shared_drawables = false;
 
 	static void DebugValidate(const char* caller);
-	static void UpdatePrevScene();
 
 	std::shared_ptr<Scene> request_scene;
 	int delay_frames = 0;
@@ -313,6 +329,10 @@ inline void Scene::UpdateDelayFrames() {
 
 inline DrawableList& Scene::GetDrawableList() {
 	return drawable_list;
+}
+
+inline void Scene::SetUseSharedDrawables(bool value) {
+	uses_shared_drawables = value;
 }
 
 #endif

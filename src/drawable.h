@@ -75,6 +75,8 @@ public:
 		None = 0,
 		/** This is a global drawable which will appear in all scenes */
 		Global = 1,
+		/** This is a shared drawable which will appear in all scenes that use shared drawables */
+		Shared = 2,
 		/** The default flag set */
 		Default = None
 	};
@@ -96,6 +98,9 @@ public:
 
 	/* @return true if this drawable should appear in all scenes */
 	bool IsGlobal() const;
+
+	/* @return true if this drawable should appear in all scenes that use shared drawables */
+	bool IsShared() const;
 
 	/**
 	 * Converts a RPG Maker map layer value into a EasyRPG priority value.
@@ -149,6 +154,10 @@ inline DrawableType Drawable::GetType() const {
 
 inline bool Drawable::IsGlobal() const {
 	return static_cast<bool>(_flags & Flags::Global);
+}
+
+inline bool Drawable::IsShared() const {
+	return static_cast<bool>(_flags & Flags::Shared);
 }
 
 #endif

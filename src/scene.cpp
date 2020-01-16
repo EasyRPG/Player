@@ -72,7 +72,6 @@ enum PushPopOperation {
 };
 
 int Scene::push_pop_operation = 0;
-Scene::SceneType prev_scene = Scene::Null;
 
 Scene::Scene() {
 	type = Scene::Null;
@@ -80,6 +79,7 @@ Scene::Scene() {
 
 void Scene::MainFunction() {
 	static bool init = false;
+	static std::shared_ptr<Scene> prev_scene;
 
 	if (IsAsyncPending()) {
 		Player::Update(false);
@@ -95,6 +95,11 @@ void Scene::MainFunction() {
 	// it could have changed the scene.
 	if (!IsAsyncPending() && Scene::instance.get() == this) {
 		if (!init) {
+			auto prev_scene_type = prev_scene ? prev_scene->type : Null;
+			TransferDrawablesFrom(prev_scene.get());
+			// Destroy the previous scene here, before any initialization logic / transition in occurs.
+			prev_scene.reset();
+
 			// Initialization after scene switch
 			switch (push_pop_operation) {
 				case ScenePushed:
@@ -106,7 +111,7 @@ void Scene::MainFunction() {
 						Start();
 						initialized = true;
 					} else {
-						Continue(prev_scene);
+						Continue(prev_scene_type);
 					}
 					break;
 				default:;
@@ -114,8 +119,9 @@ void Scene::MainFunction() {
 
 			push_pop_operation = 0;
 
-			TransitionIn(prev_scene);
-			Resume(prev_scene);
+			TransitionIn(prev_scene_type);
+			Resume(prev_scene_type);
+
 
 			init = true;
 			return;
@@ -138,6 +144,7 @@ void Scene::MainFunction() {
 		// TransitionOut stored a screenshot of the last scene
 		Graphics::UpdateSceneCallback();
 
+		prev_scene = this->shared_from_this();
 		init = false;
 	}
 }
@@ -193,12 +200,7 @@ bool Scene::IsAsyncPending() {
 void Scene::Update() {
 }
 
-void Scene::UpdatePrevScene() {
-	prev_scene = instance ? instance->type : Null;
-}
-
 void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
-	UpdatePrevScene();
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
 		instances.pop_back();
@@ -213,7 +215,6 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 }
 
 void Scene::Pop() {
-	UpdatePrevScene();
 	old_instances.push_back(instances.back());
 	instances.pop_back();
 
@@ -229,7 +230,6 @@ void Scene::Pop() {
 }
 
 void Scene::PopUntil(SceneType type) {
-	UpdatePrevScene();
 	int count = 0;
 
 	for (int i = (int)instances.size() - 1 ; i >= 0; --i) {
@@ -321,4 +321,15 @@ bool Scene::ReturnToTitleScene() {
 	title_scene->SetDelayFrames(Scene::kReturnTitleDelayFrames);
 	Scene::PopUntil(Scene::Title);
 	return true;
+}
+
+
+void Scene::TransferDrawablesFrom(Scene* prev_scene) {
+	if (prev_scene == nullptr) {
+		return;
+	}
+
+	if (uses_shared_drawables) {
+		drawable_list.TakeFrom(prev_scene->GetDrawableList(), [](auto* draw) { return draw->IsShared(); });
+	}
 }

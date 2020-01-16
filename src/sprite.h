@@ -30,7 +30,7 @@
  */
 class Sprite : public Drawable {
 public:
-	Sprite();
+	explicit Sprite(Drawable::Flags flags = Drawable::Flags::Default);
 
 	void Draw(Bitmap& dst) override;
 
@@ -105,7 +105,7 @@ public:
 	void SetFlashEffect(const Color &color);
 
 protected:
-	Sprite(DrawableType type);
+	Sprite(DrawableType type, Drawable::Flags flags = Drawable::Flags::Default);
 
 private:
 	BitmapRef bitmap;

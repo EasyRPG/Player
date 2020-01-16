@@ -58,6 +58,8 @@ Scene_Map::Scene_Map(bool from_save) :
 	from_save(from_save) {
 	type = Scene::Map;
 
+	SetUseSharedDrawables(true);
+
 	// New Game and Load Game always have a delay, so it set it by default in constructor.
 	SetDelayFrames(Scene::kStartGameDelayFrames);
 }
