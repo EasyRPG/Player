@@ -943,29 +943,21 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 		return;
 	}
 
-	pixman_image_t* mask = nullptr;
-	int mask_x = 0;
-	int mask_y = 0;
-
-	if (&src != this) {
+	if (&src != this)
 		pixman_image_composite32(src.GetOperator(),
 								 src.bitmap.get(), nullptr, bitmap.get(),
 								 src_rect.x, src_rect.y,
 								 0, 0,
 								 x, y,
 								 src_rect.width, src_rect.height);
-		mask = src.bitmap.get();
-		mask_x = src_rect.x;
-		mask_y = src_rect.y;
-	}
 
 	pixman_color_t tcolor = PixmanColor(color);
 	auto timage = PixmanImagePtr{ pixman_image_create_solid_fill(&tcolor) };
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
-							 timage.get(), mask, bitmap.get(),
+							 timage.get(), src.bitmap.get(), bitmap.get(),
 							 0, 0,
-							 mask_x, mask_y,
+							 src_rect.x, src_rect.y,
 							 x, y,
 							 src_rect.width, src_rect.height);
 }
