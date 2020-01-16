@@ -101,7 +101,9 @@ void DrawableList::Draw(Bitmap& dst, int max_z) {
 		if (drawable->GetZ() > max_z) {
 			break;
 		}
-		drawable->Draw(dst);
+		if (drawable->IsVisible()) {
+			drawable->Draw(dst);
+		}
 	}
 }
 

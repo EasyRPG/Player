@@ -29,7 +29,7 @@ Plane::Plane() : Drawable(TypePlane, 0)
 }
 
 void Plane::Draw(Bitmap& dst) {
-	if (!visible || !bitmap) return;
+	if (!bitmap) return;
 
 	if (needs_refresh) {
 		needs_refresh = false;

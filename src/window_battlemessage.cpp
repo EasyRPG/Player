@@ -30,7 +30,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 {
 	SetContents(Bitmap::Create(width - 20, height - 16));
 
-	visible = false;
+	SetVisible(false);
 	// Above other windows but below the messagebox
 	SetZ(Priority_Window + 50);
 }

@@ -47,10 +47,10 @@ Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
 void Scene_Battle_Rpg2k::Update() {
 	battle_message_window->Update();
 
-	if (message_window->GetVisible() && !message_box_got_visible) {
+	if (message_window->IsVisible() && !message_box_got_visible) {
 		battle_message_window->Clear();
 		message_box_got_visible = true;
-	} else if (!message_window->GetVisible() && message_box_got_visible) {
+	} else if (!message_window->IsVisible() && message_box_got_visible) {
 		message_box_got_visible = false;
 	}
 
@@ -292,7 +292,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_AutoBattle:
 		CheckResultConditions();
 
-		if (help_window->GetVisible() && message_timer > 0) {
+		if (help_window->IsVisible() && message_timer > 0) {
 			message_timer--;
 			if (message_timer <= 0)
 				help_window->SetVisible(false);
@@ -1035,7 +1035,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_SelectOption:
 			// Interpreter message boxes pop up in this state
-			if (!message_window->GetVisible()) {
+			if (!message_window->IsVisible()) {
 				OptionSelected();
 			}
 			break;

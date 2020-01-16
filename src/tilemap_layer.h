@@ -60,7 +60,7 @@ public:
 	void SetMapData(std::vector<short> nmap_data);
 	const std::vector<unsigned char>& GetPassable() const;
 	void SetPassable(std::vector<unsigned char> npassable);
-	bool GetVisible() const;
+	bool IsVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
 	void SetOx(int nox);
@@ -94,7 +94,6 @@ private:
 	std::vector<uint8_t> passable;
 	// FIXME Should be span<uint8_t>
 	const std::vector<uint8_t>& substitutions;
-	bool visible = true;
 	int ox = 0;
 	int oy = 0;
 	int width = 0;
@@ -168,12 +167,14 @@ inline const std::vector<unsigned char>& TilemapLayer::GetPassable() const {
 	return passable;
 }
 
-inline bool TilemapLayer::GetVisible() const {
-	return visible;
+inline bool TilemapLayer::IsVisible() const {
+	// Both layers always the same, so just return 1.
+	return lower_layer.IsVisible();
 }
 
 inline void TilemapLayer::SetVisible(bool nvisible) {
-	visible = nvisible;
+	lower_layer.SetVisible(nvisible);
+	upper_layer.SetVisible(nvisible);
 }
 
 inline int TilemapLayer::GetOx() const {

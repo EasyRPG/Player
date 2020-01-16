@@ -114,9 +114,6 @@ int Background::Scale(int x) {
 }
 
 void Background::Draw(Bitmap& dst) {
-	if (!visible)
-		return;
-
 	Rect dst_rect = dst.GetRect();
 
 	dst_rect.x += Main_Data::game_screen->GetShakeOffsetX();

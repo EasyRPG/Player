@@ -77,6 +77,8 @@ public:
 		Global = 1,
 		/** This is a shared drawable which will appear in all scenes that use shared drawables */
 		Shared = 2,
+		/** This flag indicates the drawable should not be drawn */
+		Invisible = 4,
 		/** The default flag set */
 		Default = None
 	};
@@ -101,6 +103,16 @@ public:
 
 	/* @return true if this drawable should appear in all scenes that use shared drawables */
 	bool IsShared() const;
+
+	/* @return true if the drawable is currently visible */
+	bool IsVisible() const;
+
+	/**
+	 * Set if the drawable should be visisble
+	 *
+	 * @param value whether is visible or not.
+	 */
+	void SetVisible(bool value);
 
 	/**
 	 * Converts a RPG Maker map layer value into a EasyRPG priority value.
@@ -158,6 +170,14 @@ inline bool Drawable::IsGlobal() const {
 
 inline bool Drawable::IsShared() const {
 	return static_cast<bool>(_flags & Flags::Shared);
+}
+
+inline bool Drawable::IsVisible() const {
+	return !static_cast<bool>(_flags & Flags::Invisible);
+}
+
+inline void Drawable::SetVisible(bool value) {
+	_flags = value ? _flags & ~Flags::Invisible : _flags | Flags::Invisible;
 }
 
 #endif

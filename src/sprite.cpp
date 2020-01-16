@@ -34,7 +34,6 @@ Sprite::Sprite(const DrawableType type, Drawable::Flags flags) : Drawable(type, 
 
 // Draw
 void Sprite::Draw(Bitmap& dst) {
-	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
 	BlitScreen(dst);

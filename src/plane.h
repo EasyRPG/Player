@@ -35,8 +35,6 @@ public:
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);
-	bool GetVisible() const;
-	void SetVisible(bool visible);
 	int GetOx() const;
 	void SetOx(int ox);
 	int GetOy() const;
@@ -52,7 +50,6 @@ private:
 
 	int ox = 0;
 	int oy = 0;
-	bool visible = true;
 	bool needs_refresh = false;
 };
 
@@ -64,14 +61,6 @@ inline void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
 
 	needs_refresh = true;
-}
-
-inline bool Plane::GetVisible() const {
-	return visible;
-}
-
-inline void Plane::SetVisible(bool nvisible) {
-	visible = nvisible;
 }
 
 inline int Plane::GetOx() const {

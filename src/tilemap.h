@@ -48,7 +48,7 @@ public:
 	const std::vector<unsigned char>& GetPassableDown() const;
 	void SetPassableDown(std::vector<unsigned char> down);
 
-	bool GetVisible() const;
+	bool IsVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
 	void SetOx(int nox);

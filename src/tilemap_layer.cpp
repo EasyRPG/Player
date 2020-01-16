@@ -207,8 +207,6 @@ static uint32_t MakeAbTileHash(int id, int anim_step) {
 }
 
 void TilemapLayer::Draw(Bitmap& dst, int z_order) {
-	if (!visible) return;
-
 	// Get the number of tiles that can be displayed on window
 	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);

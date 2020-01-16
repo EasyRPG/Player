@@ -94,9 +94,6 @@ void BattleAnimation::DrawAt(Bitmap& dst, int x, int y) {
 	if (IsDone()) {
 		return;
 	}
-	if (!GetVisible()) {
-		return;
-	}
 
 	const RPG::AnimationFrame& anim_frame = animation.frames[GetRealFrame()];
 

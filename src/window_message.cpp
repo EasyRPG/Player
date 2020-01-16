@@ -55,7 +55,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	}
 	gold_window->SetBackOpacity(GetBackOpacity());
 
-	visible = false;
+	SetVisible(false);
 	// Above other windows
 	SetZ(Priority_Window + 100);
 
@@ -157,7 +157,7 @@ void Window_Message::StartNumberInputProcessing() {
 }
 
 void Window_Message::ShowGoldWindow() {
-	if (!gold_window->GetVisible() && !Game_Battle::IsBattleRunning()) {
+	if (!gold_window->IsVisible() && !Game_Battle::IsBattleRunning()) {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
 		gold_window->SetOpenAnimation(message_animation_frames);
@@ -242,12 +242,12 @@ void Window_Message::TerminateMessage() {
 	line_char_counter = 0;
 	index = -1;
 
-	if (number_input_window->GetVisible()) {
+	if (number_input_window->IsVisible()) {
 		number_input_window->SetActive(false);
 		number_input_window->SetVisible(false);
 	}
 
-	if (gold_window->GetVisible()) {
+	if (gold_window->IsVisible()) {
 		gold_window->SetCloseAnimation(message_animation_frames);
 	}
 
@@ -272,10 +272,10 @@ void Window_Message::Update() {
 			WaitForInput();
 		} else if (active) {
 			InputChoice();
-		} else if (number_input_window->GetVisible()) {
+		} else if (number_input_window->IsVisible()) {
 			InputNumber();
 		} else if (!text.empty()) {
-			if (!visible) {
+			if (!IsVisible()) {
 				// The MessageBox is not open yet but text output is needed
 				// Open and Close Animations are skipped in battle
 				SetOpenAnimation(Game_Battle::IsBattleRunning() ? 0 : message_animation_frames);
@@ -293,7 +293,7 @@ void Window_Message::Update() {
 			}
 		}
 
-		if (!Game_Message::IsMessagePending() && visible && !closing) {
+		if (!Game_Message::IsMessagePending() && IsVisible() && !closing) {
 			// Start the closing animation
 			SetCloseAnimation(Game_Battle::IsBattleRunning() ? 0 : message_animation_frames);
 			// This frame a foreground event may push a new message and interupt the close animation.

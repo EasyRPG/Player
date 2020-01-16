@@ -43,8 +43,6 @@ public:
 	void SetCursorRect(Rect const& ncursor_rect);
 	bool GetActive() const;
 	void SetActive(bool nactive);
-	bool GetVisible() const;
-	void SetVisible(bool nvisible);
 	bool GetPause() const;
 	void SetPause(bool npause);
 	bool GetUpArrow() const;
@@ -86,7 +84,6 @@ protected:
 	bool stretch = true;
 	Rect cursor_rect;
 	bool active = true;
-	bool visible = true;
 	bool closing = false;
 	bool up_arrow = false;
 	bool down_arrow = false;
@@ -161,14 +158,6 @@ inline bool Window::GetActive() const {
 
 inline void Window::SetActive(bool nactive) {
 	active = nactive;
-}
-
-inline bool Window::GetVisible() const {
-	return visible;
-}
-
-inline void Window::SetVisible(bool nvisible) {
-	visible = nvisible;
 }
 
 inline bool Window::GetPause() const {
