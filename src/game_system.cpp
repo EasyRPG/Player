@@ -343,26 +343,35 @@ RPG::System::Font Game_System::GetFontId() {
 int Game_System::GetTransition(int which) {
 	int transition = 0;
 
+	auto get = [&](int local, int db) {
+		return local >= 0 ? local : db;
+	};
+
 	switch (which) {
 		case Transition_TeleportErase:
-			transition = data.transition_out;
+			transition = get(data.transition_out, Data::system.transition_out);
 			break;
 		case Transition_TeleportShow:
-			transition = data.transition_in;
+			transition = get(data.transition_in, Data::system.transition_in);
 			break;
 		case Transition_BeginBattleErase:
-			transition = data.battle_start_fadeout;
+			transition = get(data.battle_start_fadeout, Data::system.battle_start_fadeout);
 			break;
 		case Transition_BeginBattleShow:
-			transition = data.battle_start_fadein;
+			transition = get(data.battle_start_fadein, Data::system.battle_start_fadein);
 			break;
 		case Transition_EndBattleErase:
-			transition = data.battle_end_fadeout;
+			transition = get(data.battle_end_fadeout, Data::system.battle_end_fadeout);
 			break;
 		case Transition_EndBattleShow:
-			transition = data.battle_end_fadein;
+			transition = get(data.battle_end_fadein, Data::system.battle_end_fadein);
 			break;
 		default: assert(false && "Bad transition");
+	}
+
+	if (transition < 0 || transition > 20) {
+		Output::Warning("Invalid transition value %d", transition);
+		transition = Utils::Clamp(transition, 0, 20);
 	}
 
 	static const int fades[2][21] = {
@@ -418,13 +427,28 @@ int Game_System::GetTransition(int which) {
 }
 
 void Game_System::SetTransition(int which, int transition) {
+	auto set = [&](int t, int db) {
+		return t != db ? t : -1;
+	};
 	switch (which) {
-		case Transition_TeleportErase:		data.transition_out			= transition; break;
-		case Transition_TeleportShow:		data.transition_in			= transition; break;
-		case Transition_BeginBattleErase:	data.battle_start_fadeout	= transition; break;
-		case Transition_BeginBattleShow:	data.battle_start_fadein	= transition; break;
-		case Transition_EndBattleErase:		data.battle_end_fadeout		= transition; break;
-		case Transition_EndBattleShow:		data.battle_end_fadein		= transition; break;
+		case Transition_TeleportErase:
+			data.transition_out = set(transition, Data::system.transition_out);
+			break;
+		case Transition_TeleportShow:
+			data.transition_in = set(transition, Data::system.transition_in);
+			break;
+		case Transition_BeginBattleErase:
+			data.battle_start_fadeout = set(transition, Data::system.battle_start_fadeout);
+			break;
+		case Transition_BeginBattleShow:
+			data.battle_start_fadein = set(transition, Data::system.battle_start_fadein);
+			break;
+		case Transition_EndBattleErase:
+			data.battle_end_fadeout = set(transition, Data::system.battle_end_fadeout);
+			break;
+		case Transition_EndBattleShow:
+			data.battle_end_fadein = set(transition, Data::system.battle_end_fadein);
+			break;
 		default: assert(false && "Bad transition");
 	}
 }
