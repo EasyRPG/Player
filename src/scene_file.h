@@ -25,6 +25,7 @@
 #include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"
+#include "sprite.h"
 
 
 /**

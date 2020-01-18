@@ -25,6 +25,7 @@
 #include "game_character.h"
 #include "game_player.h"
 #include "game_vehicle.h"
+#include "game_screen.h"
 #include "bitmap.h"
 #include "player.h"
 #include "drawable_list.h"

@@ -127,8 +127,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_party.h \
 	src/game_party_base.cpp \
 	src/game_party_base.h \
-	src/game_picture.cpp \
-	src/game_picture.h \
+	src/game_pictures.cpp \
+	src/game_pictures.h \
 	src/game_player.cpp \
 	src/game_player.h \
 	src/game_screen.cpp \

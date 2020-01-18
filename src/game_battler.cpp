@@ -31,6 +31,7 @@
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_targets.h"
+#include "game_screen.h"
 #include "util_macro.h"
 #include "main_data.h"
 #include "utils.h"

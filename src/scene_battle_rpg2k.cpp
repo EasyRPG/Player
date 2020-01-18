@@ -29,6 +29,7 @@
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
+#include "game_screen.h"
 #include "battle_animation.h"
 #include "reader_util.h"
 #include "scene_battle_rpg2k.h"

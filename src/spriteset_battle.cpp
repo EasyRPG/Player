@@ -25,6 +25,7 @@
 #include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_temp.h"
+#include "game_screen.h"
 #include "main_data.h"
 #include "player.h"
 #include "sprite_battler.h"

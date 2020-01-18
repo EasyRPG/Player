@@ -53,6 +53,8 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "game_switches.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_variables.h"
@@ -794,6 +796,7 @@ void Player::ResetGameObjects() {
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
+	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 
 	Game_Actors::Init();
 	Game_Map::Init();

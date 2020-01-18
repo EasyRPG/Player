@@ -30,6 +30,7 @@
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
+#include "game_screen.h"
 #include "reader_util.h"
 #include "scene_gameover.h"
 #include "utils.h"

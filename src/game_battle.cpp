@@ -28,6 +28,8 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_interpreter_battle.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "battle_animation.h"
 #include "game_battle.h"
 #include "reader_util.h"
@@ -128,7 +130,7 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
-	Main_Data::game_screen->OnBattleEnd();
+	Main_Data::game_pictures->OnBattleEnd();
 }
 
 void Game_Battle::RunEvents() {
@@ -150,7 +152,8 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
-	Main_Data::game_screen->UpdateGraphics(true);
+	Main_Data::game_screen->UpdateGraphics();
+	Main_Data::game_pictures->UpdateGraphics(true);
 
 	if (need_refresh) {
 		need_refresh = false;

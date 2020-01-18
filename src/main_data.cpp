@@ -23,6 +23,7 @@
 #include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
+#include "game_pictures.h"
 #include "game_map.h"
 #include "game_variables.h"
 #include "game_switches.h"
@@ -57,6 +58,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
+	std::unique_ptr<Game_Pictures> game_pictures;
 	std::unique_ptr<Game_Player> game_player;
 	std::unique_ptr<Game_Party> game_party;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
@@ -161,6 +163,7 @@ void Main_Data::Cleanup() {
 
 	game_switches.reset();
 	game_screen.reset();
+	game_pictures.reset();
 	game_player.reset();
 	game_party.reset();
 	game_enemyparty.reset();

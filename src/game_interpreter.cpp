@@ -35,7 +35,8 @@
 #include "game_actors.h"
 #include "game_system.h"
 #include "game_message.h"
-#include "game_picture.h"
+#include "game_pictures.h"
+#include "game_screen.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -2330,7 +2331,7 @@ namespace PicPointerPatch {
 		}
 	}
 
-	static void AdjustParams(Game_Picture::Params& params) {
+	static void AdjustParams(Game_Pictures::Params& params) {
 		if (params.magnify > 10000) {
 			int new_magnify = Main_Data::game_variables->Get(params.magnify - 10000);
 			Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
@@ -2376,7 +2377,7 @@ namespace PicPointerPatch {
 		return new_pic_name;
 	}
 
-	static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
+	static void AdjustShowParams(int& pic_id, Game_Pictures::ShowParams& params) {
 		// Adjust name
 		if (pic_id >= 50000) {
 			// Name substitution is pic_id + 1
@@ -2391,7 +2392,7 @@ namespace PicPointerPatch {
 		AdjustParams(params);
 	}
 
-	static void AdjustMoveParams(int& pic_id, Game_Picture::MoveParams& params) {
+	static void AdjustMoveParams(int& pic_id, Game_Pictures::MoveParams& params) {
 		AdjustId(pic_id);
 		AdjustParams(params);
 
@@ -2412,7 +2413,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 
 	int pic_id = com.parameters[0];
 
-	Game_Picture::ShowParams params = {};
+	Game_Pictures::ShowParams params = {};
 	params.name = com.string;
 	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -2479,8 +2480,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	// RPG_RT will crash if you ask for a picture id greater than the limit that
 	// version of the engine allows. We allow an arbitrary number of pictures in Player.
 
-	auto& picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture.Show(params);
+	Main_Data::game_pictures->Show(pic_id, params);
 
 	return true;
 }
@@ -2493,7 +2493,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 
 	int pic_id = com.parameters[0];
 
-	Game_Picture::MoveParams params;
+	Game_Pictures::MoveParams params;
 	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	params.magnify = com.parameters[5];
@@ -2540,8 +2540,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 		Output::Error("MovePicture: Requested invalid picture id (%d)", pic_id);
 	}
 
-	Game_Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture.Move(params);
+	Main_Data::game_pictures->Move(pic_id, params);
 
 	if (wait)
 		SetupWait(params.duration);
@@ -2574,8 +2573,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 				Output::Error("ErasePicture: Requested invalid picture id (%d)", i);
 			}
 
-			auto& picture = Main_Data::game_screen->GetPicture(i);
-			picture.Erase();
+			Main_Data::game_pictures->Erase(i);
 		}
 	} else {
 		PicPointerPatch::AdjustId(pic_id);
@@ -2584,8 +2582,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 			Output::Error("ErasePicture: Requested invalid picture id (%d)", pic_id);
 		}
 
-		auto& picture = Main_Data::game_screen->GetPicture(pic_id);
-		picture.Erase();
+		Main_Data::game_pictures->Erase(pic_id);
 	}
 
 	return true;

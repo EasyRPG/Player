@@ -33,6 +33,7 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "game_screen.h"
+#include "game_pictures.h"
 #include "rpg_system.h"
 #include "player.h"
 #include "transition.h"
@@ -77,12 +78,14 @@ void Scene_Map::Start() {
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
-		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen), std::move(Main_Data::game_data.pictures));
+		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen));
+		Main_Data::game_pictures = std::make_unique<Game_Pictures>(std::move(Main_Data::game_data.pictures));
 		auto current_music = Game_System::GetCurrentBGM();
 		Game_System::BgmStop();
 		Game_System::BgmPlay(current_music);
 	} else {
 		Main_Data::game_screen->SetupNewGame();
+		Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 		Game_Map::PlayBgm();
 	}
 
@@ -137,7 +140,8 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 void Scene_Map::UpdateGraphics() {
 	spriteset->Update();
-	Main_Data::game_screen->UpdateGraphics(false);
+	Main_Data::game_screen->UpdateGraphics();
+	Main_Data::game_pictures->UpdateGraphics(false);
 }
 
 static bool IsMenuScene(Scene::SceneType scene) {
