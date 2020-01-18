@@ -276,7 +276,7 @@ void Game_Screen::InitSand() {
 
 			p.x = std::round(std::cos(p.angle) * dist) + w / 2;
 			p.y = std::round(std::sin(p.angle) * dist);
-			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_min_alpha);
+			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_max_alpha);
 		}
 	}
 }
