@@ -45,13 +45,17 @@ Game_Pictures::Picture::Picture(RPG::SavePicture save)
 	needs_update = !UpdateWouldBeNop();
 }
 
-Game_Pictures::Game_Pictures(std::vector<RPG::SavePicture> save)
+void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
 {
+	pictures.clear();
+
 	pictures.reserve(save.size());
 	for (auto& d: save) {
 		pictures.emplace_back(std::move(d));
 	}
+}
 
+void Game_Pictures::InitGraphics() {
 	for (auto& pic: pictures) {
 		RequestPictureSprite(pic);
 	}

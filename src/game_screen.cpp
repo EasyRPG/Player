@@ -43,15 +43,13 @@ Game_Screen::Game_Screen()
 Game_Screen::~Game_Screen() {
 }
 
-void Game_Screen::SetupNewGame() {
-	data = {};
-	weather = std::make_unique<Weather>();
-	OnWeatherChanged();
+void Game_Screen::SetSaveData(RPG::SaveScreen screen)
+{
+	data = std::move(screen);
 }
 
-void Game_Screen::SetupFromSave(RPG::SaveScreen screen) {
-	data = std::move(screen);
 
+void Game_Screen::InitGraphics() {
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
 

@@ -25,7 +25,6 @@
 #include "player.h"
 #include "scene_file.h"
 #include "scene_import.h"
-#include "scene_map.h"
 
 Scene_Import::Scene_Import() :
 	Scene_File(Player::meta->GetExVocabImportSaveHelpText()) {
@@ -138,8 +137,6 @@ void Scene_Import::FinishScan() {
 
 void Scene_Import::Action(int index) {
 	Player::LoadSavegame(files[index].full_path);
-
-	Scene::Push(std::make_shared<Scene_Map>(true));
 }
 
 bool Scene_Import::IsSlotValid(int index) {

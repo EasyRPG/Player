@@ -33,9 +33,11 @@ class Scene;
 class Game_Pictures {
 public:
 	Game_Pictures();
-	explicit Game_Pictures(std::vector<RPG::SavePicture> save);
 
+	void SetSaveData(std::vector<RPG::SavePicture> save);
 	std::vector<RPG::SavePicture> GetSaveData() const;
+
+	void InitGraphics();
 
 	static int GetDefaultNumberOfPictures();
 

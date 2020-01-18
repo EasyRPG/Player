@@ -55,8 +55,9 @@ static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	return false;
 }
 
-Scene_Map::Scene_Map(bool from_save) :
-	from_save(from_save) {
+Scene_Map::Scene_Map(bool from_save)
+	: from_save(from_save)
+{
 	type = Scene::Map;
 
 	SetUseSharedDrawables(true);
@@ -78,17 +79,15 @@ void Scene_Map::Start() {
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
-		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen));
-		Main_Data::game_pictures = std::make_unique<Game_Pictures>(std::move(Main_Data::game_data.pictures));
 		auto current_music = Game_System::GetCurrentBGM();
 		Game_System::BgmStop();
 		Game_System::BgmPlay(current_music);
 	} else {
-		Main_Data::game_screen->SetupNewGame();
-		Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 		Game_Map::PlayBgm();
 	}
 
+	Main_Data::game_screen->InitGraphics();
+	Main_Data::game_pictures->InitGraphics();
 	Player::FrameReset(Game_Clock::now());
 
 	Start2(MapUpdateAsyncContext());

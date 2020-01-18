@@ -23,7 +23,6 @@
 #include "game_battle.h"
 #include "input.h"
 #include "player.h"
-#include "scene_map.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
 #include "output.h"
@@ -95,7 +94,6 @@ void Scene_Logo::Update() {
 
 				std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 				Player::LoadSavegame(save_name);
-				Scene::Push(std::make_shared<Scene_Map>(true));
 			}
 		}
 		else {

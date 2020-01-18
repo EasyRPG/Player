@@ -38,9 +38,9 @@ public:
 	Game_Screen();
 	~Game_Screen();
 
-	void SetupNewGame();
-	void SetupFromSave(RPG::SaveScreen screen);
+	void InitGraphics();
 
+	void SetSaveData(RPG::SaveScreen screen);
 	const RPG::SaveScreen& GetSaveData() const;
 
 	void TintScreen(int r, int g, int b, int s, int tenths);
