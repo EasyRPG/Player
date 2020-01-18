@@ -26,28 +26,37 @@ class Game_Targets {
 		Game_Targets() = default;
 
 		void SetSaveData(std::vector<RPG::SaveTarget> save);
-		const std::vector<RPG::SaveTarget>& GetSaveData();
+		std::vector<RPG::SaveTarget> GetSaveData() const;
 
 		void AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 		void RemoveTeleportTarget(int map_id);
-		bool HasTeleportTarget() const;
-		RPG::SaveTarget* GetTeleportTarget(int map_id);
-		std::vector<RPG::SaveTarget*> GetTeleportTargets();
+		bool HasTeleportTargets() const;
+		const RPG::SaveTarget* GetTeleportTarget(int map_id) const;
+		const std::vector<RPG::SaveTarget>& GetTeleportTargets() const;
+
 		void SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 		bool HasEscapeTarget() const;
-		RPG::SaveTarget* GetEscapeTarget();
+		const RPG::SaveTarget& GetEscapeTarget() const;
 	private:
-		std::vector<RPG::SaveTarget>::iterator FindTarget(int id, bool create);
-
-		std::vector<RPG::SaveTarget> data;
+		RPG::SaveTarget escape;
+		std::vector<RPG::SaveTarget> teleports;
 };
 
-inline void Game_Targets::SetSaveData(std::vector<RPG::SaveTarget> save) {
-	data = std::move(save);
+
+inline bool Game_Targets::HasTeleportTargets() const {
+	return !teleports.empty();
 }
 
-inline const std::vector<RPG::SaveTarget>& Game_Targets::GetSaveData() {
-	return data;
+inline const std::vector<RPG::SaveTarget>& Game_Targets::GetTeleportTargets() const {
+	return teleports;
+}
+
+inline bool Game_Targets::HasEscapeTarget() const {
+	return escape.map_id != 0;
+}
+
+inline const RPG::SaveTarget& Game_Targets::GetEscapeTarget() const {
+	return escape;
 }
 
 

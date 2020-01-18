@@ -180,7 +180,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	}
 
 	if (skill->type == RPG::Skill::Type_teleport) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
 	}
 
 	if (skill->type == RPG::Skill::Type_switch) {
