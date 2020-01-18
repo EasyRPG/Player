@@ -16,15 +16,7 @@
  */
 
 // Headers
-#include <vector>
-#include "main_data.h"
 #include "game_targets.h"
-
-static std::vector<RPG::SaveTarget>& data = Main_Data::game_data.targets;
-
-namespace Game_Targets {
-	std::vector<RPG::SaveTarget>::iterator FindTarget(int id, bool create);
-}
 
 std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
 	std::vector<RPG::SaveTarget>::iterator it;
@@ -55,7 +47,7 @@ void Game_Targets::RemoveTeleportTarget(int map_id) {
 	data.erase(target);
 }
 
-bool Game_Targets::HasTeleportTarget() {
+bool Game_Targets::HasTeleportTarget() const {
 	// Escape target has ID 0
 
 	if (data.empty()) {
@@ -96,7 +88,7 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int
 	target->switch_id = switch_id;
 }
 
-bool Game_Targets::HasEscapeTarget() {
+bool Game_Targets::HasEscapeTarget() const {
 	return data[0].map_id != 0;
 }
 

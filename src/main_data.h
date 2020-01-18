@@ -33,6 +33,7 @@ class Game_Party;
 class Game_EnemyParty;
 class Game_Switches;
 class Game_Variables;
+class Game_Targets;
 class Game_Quit;
 
 namespace Main_Data {
@@ -43,6 +44,7 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_Player> game_player;
 	extern std::unique_ptr<Game_Party> game_party;
 	extern std::unique_ptr<Game_EnemyParty> game_enemyparty;
+	extern std::unique_ptr<Game_Targets> game_targets;
 	extern std::unique_ptr<Game_Quit> game_quit;
 	extern RPG::Save game_data;
 
