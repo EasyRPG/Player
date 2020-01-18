@@ -32,7 +32,7 @@ class Scene;
  */
 class Game_Pictures {
 public:
-	Game_Pictures();
+	Game_Pictures() = default;
 
 	void SetSaveData(std::vector<RPG::SavePicture> save);
 	std::vector<RPG::SavePicture> GetSaveData() const;
@@ -100,7 +100,6 @@ private:
 
 		bool IsOnMap() const;
 		bool IsOnBattle() const;
-		bool UpdateWouldBeNop() const;
 		int NumSpriteSheetFrames() const;
 
 		void SetNonEffectParams(const Params& params, bool set_positions);
@@ -119,6 +118,7 @@ private:
 	void OnPictureSpriteReady(int id);
 
 	std::vector<Picture> pictures;
+	int frame_counter = 0;
 };
 
 inline bool Game_Pictures::Picture::IsOnMap() const {

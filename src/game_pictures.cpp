@@ -32,27 +32,25 @@
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-Game_Pictures::Game_Pictures() {
-	// RPG_RT Save game data always has a constant number of pictures.
-	// FIXME: Do this resize when we write save data instead of doing it here
-	// because calling Update() on all the empty pictures is slow.
-	GetPicture(GetDefaultNumberOfPictures());
+static bool IsEmpty(const RPG::SavePicture& data, int frames) {
+	RPG::SavePicture empty;
+	empty.ID = data.ID;
+	empty.frames = frames;
+
+	return data == empty;
+}
+
+static bool IsEmpty(const RPG::SavePicture& data) {
+	return IsEmpty(data, data.frames);
 }
 
 Game_Pictures::Picture::Picture(RPG::SavePicture save)
 	: data(std::move(save))
 {
-	needs_update = !UpdateWouldBeNop();
-}
-
-void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
-{
-	pictures.clear();
-
-	pictures.reserve(save.size());
-	for (auto& d: save) {
-		pictures.emplace_back(std::move(d));
-	}
+	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
+	// Write unit tests to ensure it's correct.
+	// Then add it to ErasePicture()
+	needs_update = !IsEmpty(data);
 }
 
 void Game_Pictures::InitGraphics() {
@@ -61,12 +59,47 @@ void Game_Pictures::InitGraphics() {
 	}
 }
 
+void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
+{
+	pictures.clear();
+
+	frame_counter = save.empty() ? 0 : save.back().frames;
+
+	// Don't create pictures for empty save picture data at the end of the vector.
+	int num_pictures = static_cast<int>(save.size());
+	while (num_pictures > 0) {
+		if (!IsEmpty(save[num_pictures - 1], frame_counter)) {
+			break;
+		}
+		--num_pictures;
+	}
+
+	pictures.reserve(num_pictures);
+	for (int i = 0; i < num_pictures; ++i) {
+		pictures.emplace_back(std::move(save[i]));
+	}
+}
+
 std::vector<RPG::SavePicture> Game_Pictures::GetSaveData() const {
 	std::vector<RPG::SavePicture> save;
 
-	save.reserve(pictures.size());
+	auto data_size = std::max(static_cast<int>(pictures.size()), GetDefaultNumberOfPictures());
+	save.reserve(data_size);
+
 	for (auto& pic: pictures) {
 		save.push_back(pic.data);
+	}
+
+	// RPG_RT Save game data always has a constant number of pictures
+	// depending on the engine version. We replicate this, unless we have even
+	// more pictures than that.
+	while (data_size > static_cast<int>(save.size())) {
+		RPG::SavePicture data;
+		data.ID = static_cast<int>(save.size());
+		if (Player::IsRPG2k3E()) {
+			data.frames = frame_counter;
+		}
+		save.push_back(std::move(data));
 	}
 
 	return save;
@@ -369,17 +402,6 @@ void Game_Pictures::OnPictureSpriteReady(int id) {
 	}
 }
 
-bool Game_Pictures::Picture::UpdateWouldBeNop() const {
-	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
-	// Write unit tests to ensure it's correct.
-	// Then add it to ErasePicture()
-	RPG::SavePicture empty;
-	empty.ID = data.ID;
-	empty.frames = data.frames;
-
-	return data == empty;
-}
-
 void Game_Pictures::Picture::Update(bool is_battle) {
 	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
 		return;
@@ -481,6 +503,7 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 }
 
 void Game_Pictures::Update(bool is_battle) {
+	++frame_counter;
 	for (auto& pic: pictures) {
 		pic.Update(is_battle);
 	}
