@@ -86,14 +86,13 @@ namespace Text {
 
 
 	/**
-	 * Draws the character onto dest bitmap with given parameters. does not draw a shadow.
+	 * Draws the character onto dest bitmap with given parameters. Does not draw a shadow.
 	 *
 	 * @param dest the bitmap to render to.
 	 * @param x X offset to render text.
 	 * @param y Y offset to render text.
 	 * @param font the font used to render.
-	 * @param system the system graphic to use to render.
-	 * @param color which color from the system graphic to use.
+	 * @param color which color to use.
 	 * @param ch the character to render.
 	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character. 
 	 *

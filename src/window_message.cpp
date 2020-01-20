@@ -407,7 +407,7 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (std::iscntrl(static_cast<unsigned char>(ch))) {
-			// Not handled
+			// control characters not handled
 			continue;
 		}
 

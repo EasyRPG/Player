@@ -85,7 +85,6 @@ class Font {
 	 * @param dest the bitmap to render to
 	 * @param x X offset to render glyph
 	 * @param y Y offset to render glyph
-	 * @param sys system graphic to use
 	 * @param color which color in the system graphic
 	 * @param glyph which utf32 glyph to render
 	 *
