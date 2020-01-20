@@ -33,7 +33,8 @@ class Scene;
 class Game_Picture {
 public:
 	explicit Game_Picture(int ID);
-	explicit Game_Picture(RPG::SavePicture sp);
+
+	void SetupFromSave(RPG::SavePicture sp);
 
 	const RPG::SavePicture& GetSaveData() const;
 

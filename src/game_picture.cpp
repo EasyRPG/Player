@@ -32,9 +32,10 @@
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-Game_Picture::Game_Picture(RPG::SavePicture sp)
-	: data(std::move(sp))
+void Game_Picture::SetupFromSave(RPG::SavePicture sp)
 {
+	// FIXME: This should be a constructor. But we can't change it until we can remove the lambda hack from RequestPictureSprite().
+	data = std::move(sp);
 	needs_update = !UpdateWouldBeNop();
 	RequestPictureSprite();
 }

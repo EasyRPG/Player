@@ -81,7 +81,8 @@ void Game_Screen::SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePic
 	OnWeatherChanged();
 
 	for (auto& sp: save_pics) {
-		pictures.emplace_back(std::move(sp));
+		pictures.emplace_back(sp.ID);
+		pictures.back().SetupFromSave(std::move(sp));
 	}
 
 	if (data.battleanim_active) {
