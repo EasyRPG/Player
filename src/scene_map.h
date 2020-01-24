@@ -39,6 +39,7 @@ public:
 
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
+	void Suspend(SceneType next_scene) override;
 	void Update() override;
 	void TransitionIn(SceneType prev_scene) override;
 	void TransitionOut(SceneType next_scene) override;
@@ -61,12 +62,13 @@ private:
 		bool erase_screen = false;
 		bool use_default_transition_in = false;
 		bool defer_recursive_teleports = false;
-		bool no_transition_in = false;
 	};
 	void StartPendingTeleport(TeleportParams tp);
 	void FinishPendingTeleport(TeleportParams tp);
 	void FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParams tp);
 	void FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParams tp);
+
+	void PerformAsyncTeleport(int map_id, int x, int y);
 
 	void PreUpdate(MapUpdateAsyncContext& actx);
 	void PreUpdateForegroundEvents(MapUpdateAsyncContext& actx);
@@ -93,8 +95,8 @@ private:
 	bool from_save;
 	bool screen_erased_by_event = false;
 
+	AsyncContinuation map_async_continuation = {};
 	RPG::Music music_before_inn = {};
-	AsyncContinuation inn_continuation = {};
 	bool activate_inn = false;
 };
 

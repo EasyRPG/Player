@@ -35,6 +35,7 @@ class AsyncOp {
 			eShowScreen,
 			eEraseScreen,
 			eCallInn,
+			eQuickTeleport,
 			eToTitle,
 			eExitGame
 		};
@@ -47,8 +48,11 @@ class AsyncOp {
 		/** @return an EraseScreen async operation */
 		static AsyncOp MakeEraseScreen(int transition_type);
 
-		/** @return an CallInn async operation */
+		/** @return a CallInn async operation */
 		static AsyncOp MakeCallInn();
+
+		/** @return a QuickTeleport async operation */
+		static AsyncOp MakeQuickTeleport(int map_id, int x, int y);
 
 		/** @return a ToTitle async operation */
 		static AsyncOp MakeToTitle();
@@ -68,9 +72,27 @@ class AsyncOp {
 		 **/
 		int GetTransitionType() const;
 
+		/**
+		 * @return the map id to teleport to
+		 * @pre If GetType() is not eQuickTeleport, the return value is undefined.
+		 */
+		int GetTeleportMapId() const;
+
+		/**
+		 * @return the x coordinate to teleport to
+		 * @pre If GetType() is not eQuickTeleport, the return value is undefined.
+		 */
+		int GetTeleportX() const;
+
+		/**
+		 * @return the y coordinate teleport to
+		 * @pre If GetType() is not eQuickTeleport, the return value is undefined.
+		 */
+		int GetTeleportY() const;
+
 	private:
 		Type _type = eNone;
-		int _args[1] = {};
+		int _args[3] = {};
 
 		template <typename... Args>
 		explicit AsyncOp(Type type, Args&&... args);
@@ -90,6 +112,21 @@ inline int AsyncOp::GetTransitionType() const {
 	return _args[0];
 }
 
+inline int AsyncOp::GetTeleportMapId() const {
+	assert(GetType() == eQuickTeleport);
+	return _args[0];
+}
+
+inline int AsyncOp::GetTeleportX() const {
+	assert(GetType() == eQuickTeleport);
+	return _args[1];
+}
+
+inline int AsyncOp::GetTeleportY() const  {
+	assert(GetType() == eQuickTeleport);
+	return _args[2];
+}
+
 template <typename... Args>
 inline AsyncOp::AsyncOp(Type type, Args&&... args)
 	: _type(type), _args{std::forward<Args>(args)...}
@@ -105,6 +142,10 @@ inline AsyncOp AsyncOp::MakeEraseScreen(int transition_type) {
 
 inline AsyncOp AsyncOp::MakeCallInn() {
 	return AsyncOp(eCallInn);
+}
+
+inline AsyncOp AsyncOp::MakeQuickTeleport(int map_id, int x, int y) {
+	return AsyncOp(eQuickTeleport, map_id, x, y);
 }
 
 inline AsyncOp AsyncOp::MakeToTitle() {

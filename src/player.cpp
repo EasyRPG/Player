@@ -882,14 +882,11 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 	FixSaveGames();
 
 	Main_Data::game_player->Refresh();
-
-	auto current_music = Game_System::GetCurrentBGM();
-	Game_System::BgmStop();
-	Game_System::BgmPlay(current_music);
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
 	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
+	Game_System::BgmStop();
 
 	auto title_scene = Scene::Find(Scene::Title);
 	if (title_scene) {
@@ -967,10 +964,10 @@ static void OnMapFileReady(FileRequestResult*) {
 	Game_Map::Setup(map_id, TeleportTarget::eParallelTeleport);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
-	Game_Map::PlayBgm();
 }
 
 void Player::SetupNewGame() {
+	Game_System::BgmStop();
 	Game_System::ResetFrameCounter();
 	auto title = Scene::Find(Scene::Title);
 	if (title) {

@@ -763,7 +763,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	return !is_base_frame;
 }
 
-std::vector<std::string> Game_Interpreter::GetChoices() {
+std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
@@ -773,21 +773,17 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 	int current_indent = list[index + 1].indent;
 	std::vector<std::string> s_choices;
 	for (int index_temp = index + 1; index_temp < static_cast<int>(list.size()); ++index_temp) {
-		if (list[index_temp].indent != current_indent) {
+		const auto& com = list[index_temp];
+		if (com.indent != current_indent) {
 			continue;
 		}
 
-		if (list[index_temp].code == Cmd::ShowChoiceOption) {
+		if (com.code == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 
-		if (list[index_temp].code == Cmd::ShowChoiceEnd) {
-			// End of choices found
-			if (s_choices.size() > 1 && s_choices.back().empty()) {
-				// Remove cancel branch
-				s_choices.pop_back();
-			}
+		if (com.code == Cmd::ShowChoiceEnd) {
 			break;
 		}
 	}
@@ -833,7 +829,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
 		if (list[index].code == Cmd::ShowChoice) {
-			std::vector<std::string> s_choices = GetChoices();
+			std::vector<std::string> s_choices = GetChoices(4);
 			// If choices fit on screen
 			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
 				pm.SetChoiceCancelType(list[index].parameters[0]);
@@ -909,7 +905,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	auto pm = PendingMessage();
 
 	// Choices setup
-	std::vector<std::string> choices = GetChoices();
+	std::vector<std::string> choices = GetChoices(4);
 	pm.SetChoiceCancelType(com.parameters[0]);
 	SetupChoices(choices, com.indent, pm);
 
@@ -1986,8 +1982,9 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 
 		// This implements a bug in RPG_RT which allows moving the party to a new map while boarded (or when using -1)
 		// without doing a teleport + transition.
-		// The implementation of this bug does a normal teleport with transition because other solution would be too
-		// invasive for little gain.
+		// In player we implement this as an async "Quick Teleport" which immediately switches to
+		// the other map with no transition and no change in screen effects such as pictures and
+		// battle animations.
 
 		if (vehicle) {
 			vehicle->SetPosition(map_id, x, y);
@@ -1998,14 +1995,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 			Output::Error("VehicleTeleport not allowed from parallel map event! Id=%d", event_id);
 		}
 
-		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eVehicleHackTeleport);
-
-		// Parallel events should keep on running in 2k and 2k3, unlike in later versions
-		if (!main_flag)
-			return true;
-
-		index++;
-		return false;
+		_async_op = AsyncOp::MakeQuickTeleport(map_id, x, y);
 	} else if (vehicle) {
 		vehicle->SetPosition(map_id, x, y);
 	}

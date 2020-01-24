@@ -73,9 +73,6 @@ namespace {
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-
-	int last_map_id;
-
 	RPG::Chipset* chipset;
 
 	int last_encounter_idx = 0;
@@ -140,7 +137,6 @@ void Game_Map::Init() {
 	location.pan_finish_y = default_pan_y;
 	location.pan_current_x = default_pan_x;
 	location.pan_current_y = default_pan_y;
-	last_map_id = -1;
 }
 
 void Game_Map::Dispose() {
@@ -157,7 +153,7 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Dispose();
-	if (tt != TeleportTarget::eVehicleHackTeleport) {
+	if (tt != TeleportTarget::eAsyncQuickTeleport) {
 		Main_Data::game_screen->OnMapChange();
 	}
 	SetupCommon(_id, false);
@@ -229,7 +225,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 
 	if (interpreter) {
-		if (tt != TeleportTarget::eVehicleHackTeleport) {
+		if (tt != TeleportTarget::eAsyncQuickTeleport) {
 			interpreter->OnMapChange();
 		}
 	}
@@ -380,14 +376,6 @@ void Game_Map::PrepareSave() {
 }
 
 void Game_Map::PlayBgm() {
-	if (last_map_id == location.map_id) {
-		// Don't change BGM when the map stayed the same
-		// e.g. when returning from menu or teleporting on same map
-		return;
-	}
-
-	last_map_id = location.map_id;
-
 	int current_index = GetMapIndex(location.map_id);
 	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);

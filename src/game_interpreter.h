@@ -118,8 +118,10 @@ protected:
 	 * Gets strings for choice selection.
 	 * This is just a helper (private) method
 	 * to avoid repeating code.
+	 *
+	 * @param max_num_choices The maximum number of choices to allow. Any choice with id >= this value (cancel handler) is ignored.
 	 */
-	std::vector<std::string> GetChoices();
+	std::vector<std::string> GetChoices(int max_num_choices);
 
 	/**
 	 * Calculates operated value.

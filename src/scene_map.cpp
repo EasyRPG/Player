@@ -40,6 +40,7 @@
 #include "input.h"
 #include "screen.h"
 #include "scene_load.h"
+#include "output.h"
 
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
@@ -47,7 +48,7 @@ static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 			return true;
 		case TeleportTarget::eParallelTeleport:
 		case TeleportTarget::eSkillTeleport:
-		case TeleportTarget::eVehicleHackTeleport:
+		case TeleportTarget::eAsyncQuickTeleport:
 			break;
 	}
 	return false;
@@ -75,8 +76,12 @@ void Scene_Map::Start() {
 	// is used.
 	if (from_save) {
 		Main_Data::game_screen->SetupFromSave(std::move(Main_Data::game_data.screen), std::move(Main_Data::game_data.pictures));
+		auto current_music = Game_System::GetCurrentBGM();
+		Game_System::BgmStop();
+		Game_System::BgmPlay(current_music);
 	} else {
 		Main_Data::game_screen->SetupNewGame();
+		Game_Map::PlayBgm();
 	}
 
 	Player::FrameReset();
@@ -99,7 +104,6 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 		tp.erase_screen = false;
 		tp.use_default_transition_in = true;
 		tp.defer_recursive_teleports = false;
-		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 		StartPendingTeleport(tp);
 		return;
 	}
@@ -112,8 +116,6 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 	if (prev_scene == Scene::Battle) {
 		Game_Map::OnContinueFromBattle();
-	} else {
-		Game_Map::PlayBgm();
 	}
 
 	// Player cast Escape / Teleport from menu
@@ -178,6 +180,12 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	}
 
 	transition.Init(Transition::TransitionFadeIn, this, 32);
+}
+
+void Scene_Map::Suspend(SceneType next_scene) {
+	if (next_scene == Scene::Title) {
+		Game_System::BgmStop();
+	}
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
@@ -248,7 +256,6 @@ void Scene_Map::UpdateStage2() {
 		tp.erase_screen = true;
 		tp.use_default_transition_in = false;
 		tp.defer_recursive_teleports = false;
-		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 
 		StartPendingTeleport(tp);
 		return;
@@ -300,7 +307,7 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!transition.IsErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && tp.erase_screen) {
+	if (!transition.IsErased() && tp.erase_screen) {
 		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
@@ -309,7 +316,6 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 
 void Scene_Map::FinishPendingTeleport(TeleportParams tp) {
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 	FinishPendingTeleport2(MapUpdateAsyncContext(), tp);
@@ -336,12 +342,10 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	auto& transition = Transition::instance();
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (!tp.no_transition_in) {
-		if (tp.use_default_transition_in && transition.IsErased()) {
-			transition.Init(Transition::TransitionFadeIn, this, 32, false);
-		} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-			transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-		}
+	if (tp.use_default_transition_in && transition.IsErased()) {
+		transition.Init(Transition::TransitionFadeIn, this, 32, false);
+	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
+		transition.Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 	}
 
 	// Call any requested scenes when transition is done.
@@ -371,6 +375,21 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 
 	// Call any requested scenes when transition is done.
 	AsyncNext([this]() { UpdateSceneCalling(); });
+}
+
+void Scene_Map::PerformAsyncTeleport(int map_id, int x, int y) {
+	// If there is already a real teleport pending we need to make sure it gets executed after
+	// the async teleport.
+	auto tt = Main_Data::game_player->GetTeleportTarget();
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eAsyncQuickTeleport);
+	Main_Data::game_player->PerformTeleport();
+
+	Main_Data::game_player->ResetTeleportTarget(tt);
+
+	spriteset.reset(new Spriteset_Map());
+
+	AsyncNext(std::move(map_async_continuation));
 }
 
 template <typename F>
@@ -408,7 +427,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (aop.GetType() == AsyncOp::eCallInn) {
 		activate_inn = true;
 		music_before_inn = Game_System::GetCurrentBGM();
-		inn_continuation = std::forward<F>(f);
+		map_async_continuation = std::forward<F>(f);
 
 		Game_System::BgmFade(800);
 
@@ -416,6 +435,20 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		transition.Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 
 		AsyncNext([=]() { StartInn(); });
+		return;
+	}
+
+	if (aop.GetType() == AsyncOp::eQuickTeleport) {
+		FileRequestAsync* request = Game_Map::RequestMap(aop.GetTeleportMapId());
+		request->SetImportantFile(true);
+		request->Start();
+
+		map_async_continuation = std::forward<F>(f);
+		auto map_id = aop.GetTeleportMapId();
+		auto x = aop.GetTeleportX();
+		auto y = aop.GetTeleportY();
+
+		AsyncNext([=]() { PerformAsyncTeleport(map_id, x, y); });
 		return;
 	}
 
@@ -450,7 +483,7 @@ void Scene_Map::FinishInn() {
 	}
 
 	activate_inn = false;
-	AsyncNext(std::move(inn_continuation));
+	AsyncNext(std::move(map_async_continuation));
 }
 
 void Scene_Map::UpdateInn() {

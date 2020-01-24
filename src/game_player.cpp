@@ -97,6 +97,7 @@ void Game_Player::PerformTeleport() {
 	ResetAnimation();
 	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
 		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
+		Game_Map::PlayBgm();
 	} else {
 		Game_Map::SetupFromTeleportSelf();
 	}
