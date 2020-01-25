@@ -21,10 +21,8 @@
 
 template <typename T>
 static auto FindTarget(T&& targets, int map_id) {
-	return std::lower_bound(targets.begin(),
-			targets.end(),
-			map_id,
-			[](auto& tgt, int map_id) { return tgt.map_id < map_id; }
+	return std::find_if(targets.begin(), targets.end(),
+			[map_id](auto& tgt) { return tgt.map_id < map_id; }
 			);
 }
 
