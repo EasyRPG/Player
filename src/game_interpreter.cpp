@@ -1945,10 +1945,6 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
