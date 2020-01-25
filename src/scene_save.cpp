@@ -31,6 +31,7 @@
 #include "game_variables.h"
 #include "game_party.h"
 #include "game_system.h"
+#include "game_targets.h"
 #include "lsd_reader.h"
 #include "output.h"
 #include "player.h"
@@ -114,6 +115,7 @@ void Scene_Save::Action(int index) {
 		}
 	}
 
+	data_copy.targets = Main_Data::game_targets->GetSaveData();
 	data_copy.system.switches = Main_Data::game_switches->GetData();
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();

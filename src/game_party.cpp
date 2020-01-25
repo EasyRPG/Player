@@ -369,9 +369,9 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 	}
 
 	if (skill->type == RPG::Skill::Type_escape) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget();
 	} else if (skill->type == RPG::Skill::Type_teleport) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
 	} else if (skill->type == RPG::Skill::Type_normal ||
 		skill->type >= RPG::Skill::Type_subskill) {
 		int scope = skill->scope;

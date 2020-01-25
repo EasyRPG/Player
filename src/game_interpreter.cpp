@@ -1945,10 +1945,6 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
@@ -2817,7 +2813,7 @@ bool Game_Interpreter::CommandTeleportTargets(RPG::EventCommand const& com) { //
 	int map_id = com.parameters[1];
 
 	if (com.parameters[0] != 0) {
-		Game_Targets::RemoveTeleportTarget(map_id);
+		Main_Data::game_targets->RemoveTeleportTarget(map_id);
 		return true;
 	}
 
@@ -2825,7 +2821,7 @@ bool Game_Interpreter::CommandTeleportTargets(RPG::EventCommand const& com) { //
 	int y = com.parameters[3];
 	bool switch_on = static_cast<bool>(com.parameters[4]);
 	int switch_id = com.parameters[5];
-	Game_Targets::AddTeleportTarget(map_id, x, y, switch_on, switch_id);
+	Main_Data::game_targets->AddTeleportTarget(map_id, x, y, switch_on, switch_id);
 	return true;
 }
 
@@ -2840,7 +2836,7 @@ bool Game_Interpreter::CommandEscapeTarget(RPG::EventCommand const& com) { // co
 	int y = com.parameters[2];
 	bool switch_on = static_cast<bool>(com.parameters[3]);
 	int switch_id = com.parameters[4];
-	Game_Targets::SetEscapeTarget(map_id, x, y, switch_on, switch_id);
+	Main_Data::game_targets->SetEscapeTarget(map_id, x, y, switch_on, switch_id);
 	return true;
 }
 

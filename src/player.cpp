@@ -55,6 +55,7 @@
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_variables.h"
+#include "game_targets.h"
 #include "graphics.h"
 #include "inireader.h"
 #include "input.h"
@@ -807,6 +808,7 @@ void Player::ResetGameObjects() {
 	Game_System::Init();
 	Game_Temp::Init();
 
+	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
@@ -940,6 +942,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
 	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
+	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
 
 	Game_System::ReloadSystemGraphic();
 

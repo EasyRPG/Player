@@ -31,13 +31,13 @@ Window_Teleport::Window_Teleport(int ix, int iy, int iwidth, int iheight) :
 }
 
 const RPG::SaveTarget& Window_Teleport::GetTarget() const {
-	std::vector<RPG::SaveTarget*> targets = Game_Targets::GetTeleportTargets();
+	const auto& targets = Main_Data::game_targets->GetTeleportTargets();
 
-	return *targets[GetIndex()];
+	return targets[GetIndex()];
 }
 
 void Window_Teleport::Refresh() {
-	std::vector<RPG::SaveTarget*> targets = Game_Targets::GetTeleportTargets();
+	const auto& targets = Main_Data::game_targets->GetTeleportTargets();
 	item_max = (int)targets.size();
 	CreateContents();
 
@@ -45,6 +45,6 @@ void Window_Teleport::Refresh() {
 		Rect rect = GetItemRect(i);
 		contents->ClearRect(rect);
 
-		contents->TextDraw(rect, Font::ColorDefault, Game_Map::GetMapName(targets[i]->map_id));
+		contents->TextDraw(rect, Font::ColorDefault, Game_Map::GetMapName(targets[i].map_id));
 	}
 }

@@ -18,19 +18,46 @@
 #ifndef EP_GAME_TARGETS_H
 #define EP_GAME_TARGETS_H
 
-namespace RPG {
-	class SaveTarget;
+#include <vector>
+#include "rpg_savetarget.h"
+
+class Game_Targets {
+	public:
+		Game_Targets() = default;
+
+		void SetSaveData(std::vector<RPG::SaveTarget> save);
+		std::vector<RPG::SaveTarget> GetSaveData() const;
+
+		void AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id);
+		void RemoveTeleportTarget(int map_id);
+		bool HasTeleportTargets() const;
+		const RPG::SaveTarget* GetTeleportTarget(int map_id) const;
+		const std::vector<RPG::SaveTarget>& GetTeleportTargets() const;
+
+		void SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id);
+		bool HasEscapeTarget() const;
+		const RPG::SaveTarget& GetEscapeTarget() const;
+	private:
+		RPG::SaveTarget escape;
+		std::vector<RPG::SaveTarget> teleports;
+};
+
+
+inline bool Game_Targets::HasTeleportTargets() const {
+	return !teleports.empty();
 }
 
-namespace Game_Targets {
-	void AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id);
-	void RemoveTeleportTarget(int map_id);
-	bool HasTeleportTarget();
-	RPG::SaveTarget* GetTeleportTarget(int map_id);
-	std::vector<RPG::SaveTarget*> GetTeleportTargets();
-	void SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id);
-	bool HasEscapeTarget();
-	RPG::SaveTarget* GetEscapeTarget();
+inline const std::vector<RPG::SaveTarget>& Game_Targets::GetTeleportTargets() const {
+	return teleports;
 }
+
+inline bool Game_Targets::HasEscapeTarget() const {
+	return escape.map_id != 0;
+}
+
+inline const RPG::SaveTarget& Game_Targets::GetEscapeTarget() const {
+	return escape;
+}
+
 
 #endif

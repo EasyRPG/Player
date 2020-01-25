@@ -16,91 +16,68 @@
  */
 
 // Headers
-#include <vector>
-#include "main_data.h"
 #include "game_targets.h"
+#include <algorithm>
 
-static std::vector<RPG::SaveTarget>& data = Main_Data::game_data.targets;
-
-namespace Game_Targets {
-	std::vector<RPG::SaveTarget>::iterator FindTarget(int id, bool create);
-}
-
-std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
-	std::vector<RPG::SaveTarget>::iterator it;
-	for (it = data.begin(); it != data.end(); ++it)
-		if (it->ID == id)
-			return it;
-	if (!create)
-		return data.end();
-	data.resize(data.size() + 1);
-	data.back().ID = id;
-	return data.end() - 1;
+template <typename T>
+static auto FindTarget(T&& targets, int map_id) {
+	return std::find_if(targets.begin(), targets.end(),
+			[map_id](auto& tgt) { return tgt.map_id < map_id; }
+			);
 }
 
 void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
-	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, true);
+	auto iter = FindTarget(teleports, map_id);
+	if (iter == teleports.end() || iter->map_id != map_id) {
+		RPG::SaveTarget tgt;
+		// RPG_RT duplicates the map_id into the save object's id.
+		tgt.ID = map_id;
+		iter = teleports.insert(iter, std::move(tgt));
+	}
 
-	target->map_id = map_id;
-	target->map_x = x;
-	target->map_y = y;
-	target->switch_on = switch_on;
-	target->switch_id = switch_id;
+	iter->map_id = map_id;
+	iter->map_x = x;
+	iter->map_y = y;
+	iter->switch_on = switch_on;
+	iter->switch_id = switch_id;
 }
 
 void Game_Targets::RemoveTeleportTarget(int map_id) {
-	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
-	if (target == data.end())
-		return;
-	data.erase(target);
+	auto iter = FindTarget(teleports, map_id);
+	if (iter != teleports.end() && iter->map_id == map_id) {
+		teleports.erase(iter);
+	}
 }
 
-bool Game_Targets::HasTeleportTarget() {
-	// Escape target has ID 0
-
-	if (data.empty()) {
-		return false;
-	}
-
-	if (data.size() > 1) {
-		return true;
-	}
-
-	return data[0].ID != 0;
-}
-
-RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) {
-	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
-	return target == data.end() ? NULL : &*target;
-}
-
-std::vector<RPG::SaveTarget*> Game_Targets::GetTeleportTargets() {
-	std::vector<RPG::SaveTarget*> targets;
-
-	for (auto& target : data) {
-		if (target.ID != 0) {
-			targets.push_back(&target);
-		}
-	}
-
-	return targets;
+const RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) const {
+	auto iter = FindTarget(teleports, map_id);
+	return (iter != teleports.end() && iter->map_id == map_id) ? &*iter : nullptr;
 }
 
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
-	auto* target = &data[0];
-
-	target->map_id = map_id;
-	target->map_x = x;
-	target->map_y = y;
-	target->switch_on = switch_on;
-	target->switch_id = switch_id;
+	escape.map_id = map_id;
+	escape.map_x = x;
+	escape.map_y = y;
+	escape.switch_on = switch_on;
+	escape.switch_id = switch_id;
 }
 
-bool Game_Targets::HasEscapeTarget() {
-	return data[0].map_id != 0;
+void Game_Targets::SetSaveData(std::vector<RPG::SaveTarget> save) {
+	for (auto& data: save) {
+		if (data.ID == 0) {
+			escape = std::move(data);
+		} else {
+			teleports.push_back(data);
+			// Protect against bad save data. Teleports must be sorted by map id.
+			std::sort(teleports.begin(), teleports.end(), [](auto& l, auto& r) { return l.map_id < r.map_id; });
+		}
+	}
 }
 
-RPG::SaveTarget* Game_Targets::GetEscapeTarget() {
-	return HasEscapeTarget() ? &data[0] : nullptr;
+std::vector<RPG::SaveTarget> Game_Targets::GetSaveData() const {
+	std::vector<RPG::SaveTarget> save;
+	save.push_back(escape);
+	save.insert(save.end(), teleports.begin(), teleports.end());
+	return save;
 }
 
