@@ -67,10 +67,8 @@ void Sprite_Character::Update() {
 
 	SetFlashEffect(character->GetFlashColor());
 
+	SetOpacity(character->GetOpacity());
 	SetVisible(character->GetVisible());
-	if (GetVisible()) {
-		SetOpacity(character->GetOpacity());
-	}
 
 	SetX(character->GetScreenX(x_shift));
 	SetY(character->GetScreenY(y_shift));

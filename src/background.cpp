@@ -27,7 +27,7 @@
 #include "output.h"
 #include "drawable_mgr.h"
 
-Background::Background(const std::string& name) : Drawable(TypeBackground, Priority_Background, false)
+Background::Background(const std::string& name) : Drawable(Priority_Background)
 {
 	DrawableMgr::Register(this);
 
@@ -39,7 +39,7 @@ Background::Background(const std::string& name) : Drawable(TypeBackground, Prior
 	}
 }
 
-Background::Background(int terrain_id) : Drawable(TypeBackground, Priority_Background, false)
+Background::Background(int terrain_id) : Drawable(Priority_Background)
 {
 	DrawableMgr::Register(this);
 
@@ -114,9 +114,6 @@ int Background::Scale(int x) {
 }
 
 void Background::Draw(Bitmap& dst) {
-	if (!visible)
-		return;
-
 	Rect dst_rect = dst.GetRect();
 
 	dst_rect.x += Main_Data::game_screen->GetShakeOffsetX();

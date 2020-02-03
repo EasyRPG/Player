@@ -27,21 +27,6 @@ class Drawable;
 template <typename T>
 static constexpr bool IsDrawable = std::is_base_of<Drawable,T>::value;
 
-// What kind of drawable is the current one?
-enum DrawableType {
-	TypeWindow,
-	TypeTilemap,
-	TypeSprite,
-	TypePlane,
-	TypeBackground,
-	TypeScreen,
-	TypeFrame,
-	TypeWeather,
-	TypeOverlay,
-	TypeTransition,
-	TypeDefault
-};
-
 enum Priority {
 	Priority_Background = 5 << 24,
 	Priority_TilesetBelow = 10 << 24,
@@ -69,7 +54,21 @@ enum Priority {
  */
 class Drawable {
 public:
-	Drawable(DrawableType type, int z, bool is_global);
+	/** Flags with dictate certain attributes of drawables */
+	enum class Flags : uint32_t {
+		/** No flags */
+		None = 0,
+		/** This is a global drawable which will appear in all scenes */
+		Global = 1,
+		/** This is a shared drawable which will appear in all scenes that use shared drawables */
+		Shared = 2,
+		/** This flag indicates the drawable should not be drawn */
+		Invisible = 4,
+		/** The default flag set */
+		Default = None
+	};
+
+	Drawable(int z, Flags flags = Flags::Default);
 
 	Drawable(const Drawable&) = delete;
 	Drawable& operator=(const Drawable&) = delete;
@@ -82,9 +81,21 @@ public:
 
 	void SetZ(int z);
 
-	DrawableType GetType() const;
-
+	/* @return true if this drawable should appear in all scenes */
 	bool IsGlobal() const;
+
+	/* @return true if this drawable should appear in all scenes that use shared drawables */
+	bool IsShared() const;
+
+	/* @return true if the drawable is currently visible */
+	bool IsVisible() const;
+
+	/**
+	 * Set if the drawable should be visisble
+	 *
+	 * @param value whether is visible or not.
+	 */
+	void SetVisible(bool value);
 
 	/**
 	 * Converts a RPG Maker map layer value into a EasyRPG priority value.
@@ -100,22 +111,50 @@ public:
 	 */
 	static int GetPriorityForBattleLayer(int which);
 private:
-	int _z = 0;
-	uint16_t _type = TypeDefault;
-	bool _is_global = false;
+	int32_t _z = 0;
+	Flags _flags = Flags::Default;
 };
+
+inline Drawable::Flags operator|(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) | static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator&(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) & static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator^(Drawable::Flags l, Drawable::Flags r) {
+	return static_cast<Drawable::Flags>(static_cast<unsigned>(l) ^ static_cast<unsigned>(r));
+}
+
+inline Drawable::Flags operator~(Drawable::Flags f) {
+	return static_cast<Drawable::Flags>(~static_cast<unsigned>(f));
+}
+
+inline Drawable::Drawable(int z, Flags flags)
+	: _z(z),
+	_flags(flags)
+{
+}
 
 inline int Drawable::GetZ() const {
 	return _z;
 }
 
-inline DrawableType Drawable::GetType() const {
-	return static_cast<DrawableType>(_type);
-}
-
 inline bool Drawable::IsGlobal() const {
-	return _is_global;
+	return static_cast<bool>(_flags & Flags::Global);
 }
 
+inline bool Drawable::IsShared() const {
+	return static_cast<bool>(_flags & Flags::Shared);
+}
+
+inline bool Drawable::IsVisible() const {
+	return !static_cast<bool>(_flags & Flags::Invisible);
+}
+
+inline void Drawable::SetVisible(bool value) {
+	_flags = value ? _flags & ~Flags::Invisible : _flags | Flags::Invisible;
+}
 
 #endif

@@ -26,7 +26,7 @@
 #include "baseui.h"
 
 FpsOverlay::FpsOverlay() :
-	Drawable(TypeOverlay, Priority_Overlay + 100, true)
+	Drawable(Priority_Overlay + 100, Drawable::Flags::Global)
 {
 	DrawableMgr::Register(this);
 }

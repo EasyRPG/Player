@@ -23,13 +23,13 @@
 #include "game_map.h"
 #include "drawable_mgr.h"
 
-Plane::Plane() : Drawable(TypePlane, 0, false)
+Plane::Plane() : Drawable(0)
 {
 	DrawableMgr::Register(this);
 }
 
 void Plane::Draw(Bitmap& dst) {
-	if (!visible || !bitmap) return;
+	if (!bitmap) return;
 
 	if (needs_refresh) {
 		needs_refresh = false;

@@ -145,41 +145,15 @@ void Game_Picture::OnMapChange(std::vector<Game_Picture>& pictures) {
 	}
 }
 
-void Game_Picture::OnBattleStart(Scene* map_scene, Scene& battle_scene) {
-	if (!sprite) {
-		return;
-	}
-
-	if (map_scene) {
-		// FIXME: O(n) for every sprite. Can we batch this faster?
-		map_scene->GetDrawableList().Take(sprite.get());
-	}
-
-	battle_scene.GetDrawableList().Append(sprite.get());
-	UpdateSprite(true);
-}
-
-void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene) {
-	for (auto& pic: pictures) {
-		pic.OnBattleStart(map_scene, battle_scene);
-	}
-}
-
-void Game_Picture::OnBattleEnd(Scene* map_scene) {
+void Game_Picture::OnBattleEnd() {
 	if (data.flags.erase_on_battle_end) {
 		Erase();
-		return;
-	}
-
-	if (map_scene && sprite) {
-		map_scene->GetDrawableList().Append(sprite.get());
-		UpdateSprite(false);
 	}
 }
 
-void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene) {
+void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures) {
 	for (auto& pic: pictures) {
-		pic.OnBattleEnd(map_scene);
+		pic.OnBattleEnd();
 	}
 }
 
@@ -313,7 +287,7 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
-		sprite.reset(new Sprite());
+		sprite.reset(new Sprite(Drawable::Flags::Shared));
 	}
 	sprite->SetBitmap(bitmap);
 }

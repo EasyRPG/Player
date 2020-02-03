@@ -11,13 +11,13 @@ namespace {
 
 class TestSprite : public Drawable {
 	public:
-		TestSprite(int z = 0) : Drawable(TypeSprite, z, true) {}
+		TestSprite(int z = 0) : Drawable(z, Drawable::Flags::Global) {}
 		void Draw(Bitmap&) override {}
 };
 
 class TestFrame : public Drawable {
 	public:
-		TestFrame(int z = 0) : Drawable(TypeFrame, z, true) {}
+		TestFrame(int z = 0) : Drawable(z, Drawable::Flags::Global | Drawable::Flags::Shared) {}
 		void Draw(Bitmap&) override {}
 };
 
@@ -296,28 +296,28 @@ TEST_CASE("TakeFromPred") {
 	REQUIRE_FALSE(list1.IsDirty());
 	REQUIRE_FALSE(list2.IsDirty());
 
-	list1.TakeFrom(list2, [](auto* d) { return d->GetType() == TypeSprite; });
+	list1.TakeFrom(list2, [](auto* d) { return !d->IsShared(); });
 
 	REQUIRE_EQ(list1.size(), 3L);
 	REQUIRE_EQ(list2.size(), 1L);
 	REQUIRE(list1.IsDirty());
 	REQUIRE_FALSE(list2.IsDirty());
 
-	list2.TakeFrom(list1, [](auto* d) { return d->GetType() == TypeSprite; });
+	list2.TakeFrom(list1, [](auto* d) { return !d->IsShared(); });
 
 	REQUIRE_EQ(list1.size(), 1L);
 	REQUIRE_EQ(list2.size(), 3L);
 	REQUIRE(list1.IsDirty());
 	REQUIRE(list2.IsDirty());
 
-	list2.TakeFrom(list1, [](auto* d) { return d->GetType() == TypeSprite; });
+	list2.TakeFrom(list1, [](auto* d) { return !d->IsShared(); });
 
 	REQUIRE_EQ(list1.size(), 1L);
 	REQUIRE_EQ(list2.size(), 3L);
 	REQUIRE(list1.IsDirty());
 	REQUIRE(list2.IsDirty());
 
-	list2.TakeFrom(list1, [](auto* d) { return d->GetType() == TypeFrame; });
+	list2.TakeFrom(list1, [](auto* d) { return d->IsShared(); });
 
 	REQUIRE_EQ(list1.size(), 0L);
 	REQUIRE_EQ(list2.size(), 4L);

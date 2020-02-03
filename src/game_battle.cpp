@@ -92,8 +92,6 @@ void Game_Battle::Init() {
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
 	}
-
-	Main_Data::game_screen->OnBattleStart();
 }
 
 void Game_Battle::Quit() {

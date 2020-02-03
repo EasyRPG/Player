@@ -30,7 +30,7 @@
  */
 class Sprite : public Drawable {
 public:
-	Sprite();
+	explicit Sprite(Drawable::Flags flags = Drawable::Flags::Default);
 
 	void Draw(Bitmap& dst) override;
 
@@ -42,8 +42,6 @@ public:
 	Rect const& GetSrcRect() const;
 	void SetSrcRect(Rect const& src_rect);
 	void SetSpriteRect(Rect const& sprite_rect);
-	virtual bool GetVisible() const;
-	virtual void SetVisible(bool visible);
 	int GetX() const;
 	void SetX(int x);
 	int GetY() const;
@@ -104,9 +102,6 @@ public:
 	 */
 	void SetFlashEffect(const Color &color);
 
-protected:
-	Sprite(DrawableType type);
-
 private:
 	BitmapRef bitmap;
 
@@ -142,7 +137,6 @@ private:
 	bool current_flip_y = false;
 	bool needs_refresh = true;
 	bool bitmap_changed = true;
-	bool visible = true;
 
 	void BlitScreen(Bitmap& dst);
 	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
@@ -168,14 +162,6 @@ inline Rect const& Sprite::GetSrcRect() const {
 
 inline void Sprite::SetSrcRect(Rect const& nsrc_rect) {
 	src_rect = nsrc_rect;
-}
-
-inline bool Sprite::GetVisible() const {
-	return visible;
-}
-
-inline void Sprite::SetVisible(bool nvisible) {
-	visible = nvisible;
 }
 
 inline int Sprite::GetX() const {

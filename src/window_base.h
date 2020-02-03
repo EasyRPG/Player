@@ -39,9 +39,9 @@ public:
 	 * @param y window y position.
 	 * @param width window width.
 	 * @param height window height.
-	 * @param is_global if this is global drawable
+	 * @param flags flags to pass to drawable base class
 	 */
-	Window_Base(int x, int y, int width, int height, bool is_global = false);
+	Window_Base(int x, int y, int width, int height, Drawable::Flags flags = Drawable::Flags::Default);
 
 	/**
 	 * Updates the window.

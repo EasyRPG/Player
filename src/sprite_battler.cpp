@@ -42,7 +42,7 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 }
 
 void Sprite_Battler::Update() {
-	if (GetVisible() &&
+	if (IsVisible() &&
 		(sprite_name != battler->GetSpriteName() ||
 		hue != battler->GetHue())) {
 
@@ -180,6 +180,10 @@ void Sprite_Battler::Update() {
 	SetY(battler->GetDisplayY());
 
 	SetFlashEffect(battler->GetFlashColor());
+
+	if (animation) {
+		animation->SetVisible(IsVisible());
+	}
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
@@ -251,21 +255,6 @@ void Sprite_Battler::DetectStateChange() {
 
 bool Sprite_Battler::IsIdling() {
 	return idling;
-}
-
-bool Sprite_Battler::GetVisible() const {
-	if (animation) {
-		return animation->GetVisible();
-	} else {
-		return Sprite::GetVisible();
-	}
-}
-
-void Sprite_Battler::SetVisible(bool nvisible) {
-	if (animation) {
-		animation->SetVisible(nvisible);
-	}
-	Sprite::SetVisible(nvisible);
 }
 
 int Sprite_Battler::GetWidth() const {

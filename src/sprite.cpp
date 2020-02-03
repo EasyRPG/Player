@@ -25,16 +25,13 @@
 #include "drawable_mgr.h"
 
 // Constructor
-Sprite::Sprite() : Sprite(TypeSprite) {}
-
-Sprite::Sprite(const DrawableType type) : Drawable(type, 0, false)
+Sprite::Sprite(Drawable::Flags flags) : Drawable(0, flags)
 {
 	DrawableMgr::Register(this);
 }
 
 // Draw
 void Sprite::Draw(Bitmap& dst) {
-	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
 	BlitScreen(dst);

@@ -38,8 +38,8 @@ void Tilemap::SetChipset(BitmapRef const& chipset) {
 	layer_up.SetChipset(chipset);
 }
 
-bool Tilemap::GetVisible() const {
-	return layer_down.GetVisible();
+bool Tilemap::IsVisible() const {
+	return layer_down.IsVisible();
 }
 void Tilemap::SetVisible(bool nvisible) {
 	layer_down.SetVisible(nvisible);

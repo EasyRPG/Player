@@ -27,14 +27,14 @@
 
 constexpr int pause_animation_frames = 20;
 
-Window::Window(bool is_global): Drawable(TypeWindow, Priority_Window, is_global)
+Window::Window(Drawable::Flags flags): Drawable(Priority_Window, flags)
 {
 	DrawableMgr::Register(this);
 }
 
 void Window::SetOpenAnimation(int frames) {
 	closing = false;
-	visible = true;
+	SetVisible(true);
 
 	if (frames > 0) {
 		animation_frames = frames;
@@ -53,12 +53,12 @@ void Window::SetCloseAnimation(int frames) {
 		animation_count = (height / 2.0);
 		animation_increment = - animation_count / frames;
 	} else {
-		visible = false;
+		SetVisible(false);
 	}
 }
 
 void Window::Draw(Bitmap& dst) {
-	if (!visible) return;
+	if (!IsVisible()) return;
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > dst.GetWidth() || y < -height || y > dst.GetHeight()) return;
 
@@ -293,7 +293,7 @@ void Window::Update() {
 		animation_frames -= 1;
 		animation_count += animation_increment;
 		if (closing && animation_frames <= 0) {
-			visible = false;
+			SetVisible(false);
 			closing = false;
 		}
 	}

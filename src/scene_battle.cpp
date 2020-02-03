@@ -45,6 +45,8 @@ Scene_Battle::Scene_Battle() :
 	actor_index(0),
 	active_actor(NULL)
 {
+	SetUseSharedDrawables(true);
+
 	Scene::type = Scene::Battle;
 	Game_Temp::battle_result = Game_Temp::BattleAbort;
 

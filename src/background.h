@@ -42,8 +42,6 @@ private:
 	void OnBackgroundGraphicReady(FileRequestResult* result);
 	void OnForegroundFrameGraphicReady(FileRequestResult* result);
 
-	bool visible = true;
-
 	Tone tone_effect;
 	Tone current_tone;
 	BitmapRef bg_bitmap;

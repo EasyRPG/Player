@@ -39,10 +39,6 @@ Sprite_Timer::~Sprite_Timer() {
 }
 
 void Sprite_Timer::Draw(Bitmap& dst) {
-	if (!GetVisible()) {
-		return;
-	}
-
 	// RPG_RT never displays timers if there is no system graphic.
 	BitmapRef system = Cache::System();
 	if (!system) {

@@ -88,9 +88,6 @@ public:
 	 */
 	bool IsIdling();
 
-	bool GetVisible() const override;
-	void SetVisible(bool visible) override;
-
 	int GetWidth() const override;
 	int GetHeight() const override;
 

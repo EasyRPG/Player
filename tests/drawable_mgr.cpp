@@ -8,7 +8,7 @@ namespace {
 
 class TestSprite : public Drawable {
 	public:
-		TestSprite(bool global) : Drawable(TypeSprite, 0, global) { DrawableMgr::Register(this); }
+		TestSprite(Drawable::Flags flags) : Drawable(0, flags) { DrawableMgr::Register(this); }
 		void Draw(Bitmap&) override {}
 };
 
@@ -44,7 +44,7 @@ TEST_CASE("Drawables") {
 
 	auto& glist = DrawableMgr::GetGlobalList();
 
-	auto global = std::make_unique<TestSprite>(true);
+	auto global = std::make_unique<TestSprite>(Drawable::Flags::Global);
 
 	REQUIRE_EQ(glist.size(), 1L);
 	REQUIRE_EQ(*glist.begin(), global.get());
@@ -53,7 +53,7 @@ TEST_CASE("Drawables") {
 
 	REQUIRE_EQ(list.size(), 0L);
 
-	auto local = std::make_unique<TestSprite>(false);
+	auto local = std::make_unique<TestSprite>(Drawable::Flags::Default);
 
 	REQUIRE_EQ(glist.size(), 1L);
 	REQUIRE_EQ(*glist.begin(), global.get());

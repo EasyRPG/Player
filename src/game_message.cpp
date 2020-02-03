@@ -229,7 +229,7 @@ bool Game_Message::IsMessagePending() {
 }
 
 bool Game_Message::IsMessageVisible() {
-	return window ? window->GetVisible() : false;
+	return window ? window->IsVisible() : false;
 }
 
 bool Game_Message::IsMessageActive() {

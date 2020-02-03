@@ -25,7 +25,7 @@
 #include "drawable_mgr.h"
 
 Frame::Frame() :
-	Drawable(TypeFrame, Priority_Frame, false)
+	Drawable(Priority_Frame)
 {
 	if (!Data::system.frame_name.empty() && Data::system.show_frame) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", Data::system.frame_name);

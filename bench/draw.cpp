@@ -12,7 +12,7 @@ constexpr int num_sprites = 5000;
 
 class TestSprite : public Drawable {
 	public:
-		TestSprite() : Drawable(TypeDefault, 0, false) { DrawableMgr::Register(this); }
+		TestSprite() : Drawable(0) { DrawableMgr::Register(this); }
 		void Draw(Bitmap&) override {}
 };
 

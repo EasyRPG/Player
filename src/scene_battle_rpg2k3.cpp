@@ -566,7 +566,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		}
 	}
 
-	if (help_window->GetVisible() && message_timer > 0) {
+	if (help_window->IsVisible() && message_timer > 0) {
 		message_timer--;
 		if (message_timer <= 0)
 			help_window->SetVisible(false);
@@ -855,7 +855,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_SelectOption:
 			// Interpreter message boxes pop up in this state
-			if (!message_window->GetVisible()) {
+			if (!message_window->IsVisible()) {
 				OptionSelected();
 			}
 			break;

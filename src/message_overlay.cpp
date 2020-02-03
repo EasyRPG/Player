@@ -24,7 +24,7 @@
 #include "drawable_mgr.h"
 #include "baseui.h"
 
-MessageOverlay::MessageOverlay() : Drawable(TypeOverlay, Priority_Overlay, true)
+MessageOverlay::MessageOverlay() : Drawable(Priority_Overlay, Drawable::Flags::Global)
 {
 	// Graphics::RegisterDrawable is in the Update function
 }

@@ -27,7 +27,7 @@
 #include "player.h"
 
 Weather::Weather() :
-	Drawable(TypeWeather, Priority_Weather, false)
+	Drawable(Priority_Weather, Drawable::Flags::Shared)
 {
 	DrawableMgr::Register(this);
 

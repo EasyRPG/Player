@@ -85,12 +85,10 @@ public:
 	static void UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle);
 
 	void OnMapChange();
-	void OnBattleStart(Scene* map_scene, Scene& battle_scene);
-	void OnBattleEnd(Scene* map_scene);
+	void OnBattleEnd();
 
 	static void OnMapChange(std::vector<Game_Picture>& pictures);
-	static void OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene);
-	static void OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene);
+	static void OnBattleEnd(std::vector<Game_Picture>& pictures);
 
 private:
 	RPG::SavePicture data;
