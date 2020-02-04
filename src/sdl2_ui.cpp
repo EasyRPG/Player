@@ -211,14 +211,6 @@ Sdl2Ui::~Sdl2Ui() {
 	SDL_Quit();
 }
 
-uint32_t Sdl2Ui::GetTicks() const {
-	return SDL_GetTicks();
-}
-
-void Sdl2Ui::Sleep(uint32_t time) {
-	SDL_Delay(time);
-}
-
 bool Sdl2Ui::RequestVideoMode(int width, int height, int zoom) {
 	// SDL2 documentation says that resolution dependent code should not be used
 	// anymore. The library takes care of it now.

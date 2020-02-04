@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <thread>
 
 #ifdef _WIN32
 #  include "util_win.h"
@@ -76,6 +77,7 @@
 #include "instrumentation.h"
 #include "scope_guard.h"
 #include "baseui.h"
+#include "game_clock.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -119,8 +121,8 @@ namespace Player {
 }
 
 namespace {
-	double start_time;
-	double next_frame;
+	Game_Clock::time_point start_time;
+	Game_Clock::time_point next_frame;
 
 	// Overwritten by --encoding
 	std::string forced_encoding;
@@ -206,13 +208,13 @@ bool did_sleep_this_frame = false;
 
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
-	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
+	Scene::Push(std::make_shared<Scene_Logo>());
 	Graphics::UpdateSceneCallback();
 
 	reset_flag = false;
 
 	// Reset frames before starting
-	FrameReset();
+	FrameReset(Game_Clock::now());
 
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
@@ -254,15 +256,14 @@ void Player::Pause() {
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
-	FrameReset();
+	FrameReset(Game_Clock::now());
 }
 
 void Player::Update(bool update_scene) {
 	// available ms per frame, game logic expects 60 fps
-	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
-	next_frame = start_time + framerate_interval;
+	next_frame = start_time + Game_Clock::GetSimulationTimeStep();
 
-	double cur_time = (double)DisplayUi->GetTicks();
+	auto cur_time = Game_Clock::now();
 
 #if !defined(USE_LIBRETRO)
 	// libretro: The frontend handles this, cores should not do rate
@@ -348,17 +349,17 @@ void Player::Update(bool update_scene) {
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	cur_time = (double)DisplayUi->GetTicks();
+	cur_time = Game_Clock::now();
 	if (cur_time < next_frame) {
 		Graphics::Draw(*disp);
-		cur_time = (double)DisplayUi->GetTicks();
+		cur_time = Game_Clock::now();
 		// Don't use sleep when the port uses an external timing source
 #if !defined(USE_LIBRETRO)
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
 			iframe_scope.End();
 			did_sleep_this_frame = true;
-			DisplayUi->Sleep(static_cast<uint32_t>(next_frame - cur_time));
+			Game_Clock::SleepFor(next_frame - cur_time);
 			iframe_scope.Begin();
 		}
 #endif
@@ -370,19 +371,11 @@ void Player::IncFrame() {
 	Game_System::IncFrameCounter();
 }
 
-void Player::FrameReset() {
-	// When update started
-	FrameReset(DisplayUi->GetTicks());
-}
-
-void Player::FrameReset(uint32_t start_ticks) {
-	// available ms per frame, game logic expects 60 fps
-	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
-
+void Player::FrameReset(Game_Clock::time_point now) {
 	// When next frame is expected
-	next_frame = start_ticks + framerate_interval;
+	next_frame = now + Game_Clock::GetSimulationTimeStep();
 
-	Graphics::FrameReset(start_ticks);
+	Graphics::FrameReset(now);
 }
 
 int Player::GetFrames() {
@@ -814,7 +807,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
-	FrameReset();
+	FrameReset(Game_Clock::now());
 }
 
 void Player::LoadDatabase() {

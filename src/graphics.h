@@ -23,6 +23,7 @@
 #include "bitmap.h"
 #include "drawable.h"
 #include "drawable_list.h"
+#include "game_clock.h"
 
 class MessageOverlay;
 class Scene;
@@ -51,9 +52,9 @@ namespace Graphics {
 	 * Resets the fps count.
 	 * Don't call this. Use Player::FrameReset instead.
 	 *
-	 * @param start_ticks time in ticks
+	 * @param now the current time.
 	 */
-	void FrameReset(uint32_t start_ticks);
+	void FrameReset(Game_Clock::time_point now);
 
 	/**
 	 * Gets a bitmap with the actual contents of the screen.
@@ -64,13 +65,6 @@ namespace Graphics {
 	void Draw(Bitmap& dst);
 
 	void UpdateSceneCallback();
-
-	/**
-	 * Gets target frame rate.
-	 *
-	 * @return target frame rate
-	 */
-	constexpr int GetDefaultFps() { return DEFAULT_FPS; }
 
 	/**
 	 * Returns a handle to the message overlay.

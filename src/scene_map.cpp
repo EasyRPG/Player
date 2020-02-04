@@ -86,7 +86,7 @@ void Scene_Map::Start() {
 		Game_Map::PlayBgm();
 	}
 
-	Player::FrameReset();
+	Player::FrameReset(Game_Clock::now());
 
 	Start2(MapUpdateAsyncContext());
 }

@@ -147,20 +147,6 @@ CtrUi::~CtrUi() {
 	}
 }
 
-void CtrUi::Sleep(uint32_t time) {
-	u64 nsecs = time * 1000000;
-	svcSleepThread(nsecs);
-}
-
-static inline double u64_to_double(u64 value) {
-	return (((double)(u32)(value >> 32)) * 0x100000000ULL + (u32)value);
-}
-
-uint32_t CtrUi::GetTicks() const {
-	double ticks = u64_to_double(svcGetSystemTick());
-	u64 usecs = (u64)(ticks / ticks_per_msec);
-	return usecs;
-}
 void CtrUi::BeginDisplayModeChange() {
 	// no-op
 }

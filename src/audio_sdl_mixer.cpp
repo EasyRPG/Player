@@ -27,6 +27,7 @@
 #include "baseui.h"
 #include "filefinder.h"
 #include "output.h"
+#include "game_clock.h"
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
@@ -40,14 +41,18 @@
 
 #define BGS_CHANNEL_NUM 0
 
+using namespace std::chrono_literals;
+
 namespace {
 	void bgm_played_once() {
+		// FIXME: Can we break this reference to DisplayUi?
 		if (DisplayUi)
 			static_cast<SdlMixerAudio&>(Audio()).BGM_OnPlayedOnce();
 	}
 
 #if SDL_MAJOR_VERSION>1
 	void bgs_played_once(int channel) {
+		// FIXME: Can we break this reference to DisplayUi?
 		if (DisplayUi && channel == BGS_CHANNEL_NUM)
 			bgm_played_once();
 	}
@@ -316,7 +321,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		return;
 	}
 
-	bgm_starttick = SDL_GetTicks();
+	bgm_starttick = Game_Clock::now();
 
 #if SDL_MAJOR_VERSION>1
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
@@ -363,7 +368,7 @@ void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int
 #endif
 
 	audio_decoder->SetLooping(true);
-	bgm_starttick = SDL_GetTicks();
+	bgm_starttick = Game_Clock::now();
 
 	int audio_rate;
 	Uint16 sdl_format;
@@ -415,7 +420,7 @@ void SdlMixerAudio::BGM_Pause() {
 
 void SdlMixerAudio::BGM_Resume() {
 	if (audio_decoder) {
-		bgm_starttick = SDL_GetTicks();
+		bgm_starttick = Game_Clock::now();
 		audio_decoder->Resume();
 		return;
 	}
@@ -457,7 +462,7 @@ bool SdlMixerAudio::BGM_IsPlaying() const {
 	return audio_decoder || !bgm_stop || !bgs_stop;
 }
 
-unsigned SdlMixerAudio::BGM_GetTicks() const {
+int SdlMixerAudio::BGM_GetTicks() const {
 	if (!BGM_IsPlaying()) {
 		return 0;
 	}
@@ -467,7 +472,8 @@ unsigned SdlMixerAudio::BGM_GetTicks() const {
 	}
 
 	// Should work for everything except MIDI
-	return SDL_GetTicks() + 1 - bgm_starttick;
+	auto dt = Game_Clock::now() + 1ms - bgm_starttick;
+	return std::chrono::duration_cast<std::chrono::milliseconds>(dt).count();
 }
 
 void SdlMixerAudio::BGM_Volume(int volume) {
@@ -498,7 +504,7 @@ void SdlMixerAudio::BGM_Pitch(int pitch) {
 
 void SdlMixerAudio::BGM_Fade(int fade) {
 	if (audio_decoder) {
-		bgm_starttick = DisplayUi->GetTicks();
+		bgm_starttick = Game_Clock::now();
 		audio_decoder->SetFade(audio_decoder->GetVolume(), 0, fade);
 		return;
 	}
@@ -631,9 +637,10 @@ void SdlMixerAudio::SE_Stop() {
 }
 
 void SdlMixerAudio::Update() {
-	if (audio_decoder && bgm_starttick > 0) {
-		int t = DisplayUi->GetTicks();
-		audio_decoder->Update(t - bgm_starttick);
+	if (audio_decoder && bgm_starttick > Game_Clock::time_point()) {
+		auto t = Game_Clock::now();
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t - bgm_starttick);
+		audio_decoder->Update(ms.count());
 		bgm_starttick = t;
 	}
 }

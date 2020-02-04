@@ -149,14 +149,6 @@ SdlUi::~SdlUi() {
 	SDL_Quit();
 }
 
-uint32_t SdlUi::GetTicks() const {
-	return SDL_GetTicks();
-}
-
-void SdlUi::Sleep(uint32_t time) {
-	SDL_Delay(time);
-}
-
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	// FIXME: Split method into submethods, really, this method isn't nice.
 	// Note to Zhek, don't delete this fixme again.

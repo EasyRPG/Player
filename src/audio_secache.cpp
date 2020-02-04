@@ -22,9 +22,11 @@
 #include <set>
 #include "audio_resampler.h"
 #include "audio_secache.h"
-#include "baseui.h"
+#include "game_clock.h"
 #include "filefinder.h"
 #include "output.h"
+
+using namespace std::chrono_literals;
 
 namespace {
 	typedef std::map<std::string, AudioSeRef> cache_type;
@@ -35,7 +37,7 @@ namespace {
 	int cache_size = 0;
 
 	void FreeCacheMemory() {
-		int32_t cur_ticks = DisplayUi->GetTicks();
+		auto cur_time = Game_Clock::now();
 
 		for (auto it = cache.begin(); it != cache.end(); ) {
 			if (it->second.use_count() > 1) {
@@ -44,7 +46,7 @@ namespace {
 				continue;
 			}
 
-			if (cache_size <= cache_limit && cur_ticks - it->second->last_access < 3000) {
+			if (cache_size <= cache_limit && cur_time - it->second->last_access < 3s) {
 				// Below memory limit and last access < 3s
 				++it;
 				continue;
@@ -227,7 +229,7 @@ AudioSeRef AudioSeCache::Decode() {
 
 	if (IsCached()) {
 		se = cache.find(filename)->second;
-		se->last_access = DisplayUi->GetTicks();
+		se->last_access = Game_Clock::now();
 
 		if (GetPitch() == 100) {
 			// Nothing extra to do
@@ -293,7 +295,7 @@ AudioSeRef AudioSeCache::Decode() {
 		// This codepath is only taken the first time upon cache miss
 		cache.insert(std::make_pair(filename, se));
 
-		se->last_access = DisplayUi->GetTicks();
+		se->last_access = Game_Clock::now();
 
 		cache_size += se->buffer.size();
 

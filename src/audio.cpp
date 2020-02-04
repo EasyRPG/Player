@@ -20,7 +20,7 @@
 #include "system.h"
 #include "baseui.h"
 #include "player.h"
-#include "graphics.h"
+#include "game_clock.h"
 
 AudioInterface& Audio() {
 	static EmptyAudio default_;
@@ -40,16 +40,16 @@ void EmptyAudio::BGM_Stop() {
 	playing = false;
 }
 
-unsigned EmptyAudio::BGM_GetTicks() const {
+int EmptyAudio::BGM_GetTicks() const {
 	if (!playing) {
 		return 0;
 	}
 
 	// Time since BGM_Play was called, works for everything except MIDI
-	return (Player::GetFrames() - bgm_starttick + 1) / Graphics::GetDefaultFps();
+	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetSimulationFps();
 }
 
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
-	return BGM_GetTicks() > (Graphics::GetDefaultFps() * 5);
+	return BGM_GetTicks() > (Game_Clock::GetSimulationFps() * 5);
 }

@@ -206,14 +206,6 @@ bool LibretroUi::IsFullscreen() {
 	return false;
 }
 
-uint32_t LibretroUi::GetTicks() const {
-	return (uint32_t)(time_in_microseconds/1000);
-}
-
-void LibretroUi::Sleep(uint32_t) {
-	// Sleep is not needed libretro will ensure 60 fps
-}
-
 retro_video_refresh_t LibretroUi::UpdateWindow = nullptr;
 void LibretroUi::SetRetroVideoCallback(retro_video_refresh_t cb) {
 	UpdateWindow = cb;
@@ -473,7 +465,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
 	static retro_frame_time_callback frame_time_definition = {
 		retro_time_update,
-		1000000 / Graphics::GetDefaultFps()
+		1000000 / Game_Clock::GetSimulationFps()
 	};
 
 	static retro_audio_callback audio_callback_definition = {
@@ -585,7 +577,7 @@ RETRO_API void retro_get_system_av_info(struct retro_system_av_info* info) {
 	info->geometry.max_width = SCREEN_TARGET_WIDTH;
 	info->geometry.max_height = SCREEN_TARGET_HEIGHT;
 	info->geometry.aspect_ratio = 0.0f;
-	info->timing.fps = Graphics::GetDefaultFps();
+	info->timing.fps = Game_Clock::GetSimulationFps();
 	info->timing.sample_rate = AUDIO_SAMPLERATE;
 }
 

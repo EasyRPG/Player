@@ -21,7 +21,7 @@
 
 #include "audio_3ds.h"
 #include "filefinder.h"
-#include "baseui.h"
+#include "game_clock.h"
 #include "output.h"
 #include "audio_secache.h"
 
@@ -110,7 +110,7 @@ void CtrAudio::BGM_Resume()  {
 	if (!dsp_inited)
 		return;
 
-	bgm_starttick = DisplayUi->GetTicks();
+	bgm_starttick = Game_Clock::now();
 	ndspChnSetPaused(bgm_channel, false);
 }
 
@@ -137,7 +137,7 @@ bool CtrAudio::BGM_IsPlaying() const {
 	return res;
 }
 
-unsigned CtrAudio::BGM_GetTicks() const {
+int CtrAudio::BGM_GetTicks() const {
 	if (bgm_decoder) {
 		return bgm_decoder->GetTicks();
 	}
@@ -147,7 +147,7 @@ unsigned CtrAudio::BGM_GetTicks() const {
 
 void CtrAudio::BGM_Fade(int fade) {
 	if (bgm_decoder) {
-		bgm_starttick = DisplayUi->GetTicks();
+		bgm_starttick = Game_Clock::now();
 		bgm_decoder->SetFade(bgm_decoder->GetVolume(),0,fade);
 	}
 }
@@ -233,8 +233,9 @@ void CtrAudio::SE_Stop() {
 
 void CtrAudio::Update() {
 	if (bgm_decoder) {
-		int t = DisplayUi->GetTicks();
-		bgm_decoder->Update(t - bgm_starttick);
+		auto t = Game_Clock::now();
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t - bgm_starttick);
+		bgm_decoder->Update(ms.count());
 		bgm_starttick = t;
 	}
 }

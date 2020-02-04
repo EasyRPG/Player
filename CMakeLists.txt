@@ -106,6 +106,8 @@ add_library(${PROJECT_NAME}
 	src/game_battler.h
 	src/game_character.cpp
 	src/game_character.h
+	src/game_clock.cpp
+	src/game_clock.h
 	src/game_commonevent.cpp
 	src/game_commonevent.h
 	src/game_enemy.cpp

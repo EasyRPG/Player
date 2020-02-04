@@ -124,20 +124,6 @@ public:
 	 */
 	virtual bool IsFullscreen() = 0;
 
-	/**
-	 * Gets ticks in ms for time measurement.
-	 *
-	 * @return time in ms.
-	 */
-	virtual uint32_t GetTicks() const = 0;
-
-	/**
-	 * Sleeps some time.
-	 *
-	 * @param time_milli ms to sleep.
-	 */
-	virtual void Sleep(uint32_t time_milli) = 0;
-
 #ifdef SUPPORT_AUDIO
 	/**
 	 * Returns audio instance.

@@ -17,6 +17,7 @@
 
 // Headers
 #include <sstream>
+#include <chrono>
 #include <array>
 
 #include "graphics.h"
@@ -30,6 +31,9 @@
 #include "drawable.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
+#include "game_clock.h"
+
+using namespace std::chrono_literals;
 
 namespace Graphics {
 	void UpdateTitle();
@@ -38,7 +42,7 @@ namespace Graphics {
 
 	int framerate;
 
-	uint32_t next_fps_time;
+	Game_Clock::time_point next_fps_time;
 
 	std::shared_ptr<Scene> current_scene;
 
@@ -57,7 +61,7 @@ void Graphics::Init() {
 	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
 
-	next_fps_time = 0;
+	next_fps_time = {};
 }
 
 void Graphics::Quit() {
@@ -71,22 +75,22 @@ void Graphics::Quit() {
 
 void Graphics::Update() {
 	//FPS:
-	if (next_fps_time == 0) {
-		next_fps_time = DisplayUi->GetTicks() + 1000;
+	auto now = Game_Clock::now();
+	if (next_fps_time == Game_Clock::time_point()) {
+		next_fps_time = now + 1s;
 	}
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	uint32_t current_time = DisplayUi->GetTicks();
-	if (current_time >= next_fps_time) {
-		next_fps_time += 1000;
+	if (now >= next_fps_time) {
+		next_fps_time += 1s;
 
 		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
 			Draw(*disp);
-			Player::FrameReset(current_time);
+			Player::FrameReset(now);
 		} else {
-			next_fps_time = current_time + 1000;
+			next_fps_time = now + 1s;
 			fps_overlay->ResetCounter();
 		}
 
@@ -159,8 +163,8 @@ BitmapRef Graphics::SnapToBitmap(int priority) {
 	return DisplayUi->CaptureScreen();
 }
 
-void Graphics::FrameReset(uint32_t start_ticks) {
-	next_fps_time = start_ticks + 1000;
+void Graphics::FrameReset(Game_Clock::time_point now) {
+	next_fps_time = now + 1s;
 	fps_overlay->ResetCounter();
 }
 

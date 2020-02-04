@@ -24,6 +24,7 @@
 #include "audio.h"
 #include "audio_decoder.h"
 #include "audio_secache.h"
+#include "game_clock.h"
 
 #include <map>
 
@@ -41,7 +42,7 @@ public:
 	void BGM_Stop() override;
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override;
-	unsigned BGM_GetTicks() const override;
+	int BGM_GetTicks() const override;
 	void BGM_Fade(int) override;
 	void BGM_Volume(int) override;
 	void BGM_Pitch(int) override;
@@ -64,7 +65,7 @@ private:
 
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
-	unsigned bgm_starttick = 0;
+	Game_Clock::time_point bgm_starttick;
 	bool bgm_stop = true;
 	std::shared_ptr<Mix_Chunk> bgs;
 	bool bgs_playing = false;

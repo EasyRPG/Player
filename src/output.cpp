@@ -23,6 +23,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <thread>
+#include <chrono>
 
 #include "graphics.h"
 
@@ -49,6 +51,8 @@
 #include "utils.h"
 #include "font.h"
 #include "baseui.h"
+
+using namespace std::chrono_literals;
 
 namespace {
 	std::ofstream LOG_FILE;
@@ -195,7 +199,9 @@ static void HandleErrorOutput(const std::string& err) {
 
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
-		DisplayUi->Sleep(1);
+#if !defined(USE_LIBRETRO)
+		Game_Clock::SleepFor(1ms);
+#endif
 		DisplayUi->ProcessEvents();
 
 		if (Player::exit_flag) break;
