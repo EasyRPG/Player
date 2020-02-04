@@ -147,10 +147,6 @@ CtrUi::~CtrUi() {
 	}
 }
 
-static inline double u64_to_double(u64 value) {
-	return (((double)(u32)(value >> 32)) * 0x100000000ULL + (u32)value);
-}
-
 void CtrUi::BeginDisplayModeChange() {
 	// no-op
 }

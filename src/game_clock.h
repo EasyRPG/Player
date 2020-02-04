@@ -63,7 +63,6 @@ constexpr int Game_Clock::GetSimulationFps() {
 	return DEFAULT_FPS;
 }
 
-/** Get the amount of time each logical frame should take */
 constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
 	return TimeStepFromFps(GetSimulationFps());
 }
