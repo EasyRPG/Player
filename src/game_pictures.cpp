@@ -376,9 +376,6 @@ void Game_Pictures::RequestPictureSprite(Picture& pic) {
 
 	int pic_id = pic.data.ID;
 
-	// FIXME: This lambda is here because it's possible the picture vector can be
-	// resized before the async call of onPictureSpriteReady().
-	// Pictures should be refactored so this ugly hack is not needed.
 	pic.request_id = request->Bind([this, pic_id](FileRequestResult*) {
 			OnPictureSpriteReady(pic_id);
 			});
