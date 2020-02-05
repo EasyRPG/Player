@@ -22,7 +22,7 @@
 #include "cache.h"
 #include "output.h"
 #include "game_map.h"
-#include "game_picture.h"
+#include "game_pictures.h"
 #include "game_screen.h"
 #include "player.h"
 #include "main_data.h"
@@ -32,16 +32,111 @@
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-void Game_Picture::SetupFromSave(RPG::SavePicture sp)
-{
-	// FIXME: This should be a constructor. But we can't change it until we can remove the lambda hack from RequestPictureSprite().
-	data = std::move(sp);
-	needs_update = !UpdateWouldBeNop();
-	RequestPictureSprite();
+static bool IsEmpty(const RPG::SavePicture& data, int frames) {
+	RPG::SavePicture empty;
+	empty.ID = data.ID;
+	empty.frames = frames;
+
+	return data == empty;
 }
 
+static bool IsEmpty(const RPG::SavePicture& data) {
+	return IsEmpty(data, data.frames);
+}
 
-void Game_Picture::UpdateSprite(bool is_battle) {
+Game_Pictures::Picture::Picture(RPG::SavePicture save)
+	: data(std::move(save))
+{
+	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
+	// Write unit tests to ensure it's correct.
+	// Then add it to ErasePicture()
+	needs_update = !IsEmpty(data);
+}
+
+void Game_Pictures::InitGraphics() {
+	for (auto& pic: pictures) {
+		RequestPictureSprite(pic);
+	}
+}
+
+void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
+{
+	pictures.clear();
+
+	frame_counter = save.empty() ? 0 : save.back().frames;
+
+	// Don't create pictures for empty save picture data at the end of the vector.
+	int num_pictures = static_cast<int>(save.size());
+	while (num_pictures > 0) {
+		if (!IsEmpty(save[num_pictures - 1], frame_counter)) {
+			break;
+		}
+		--num_pictures;
+	}
+
+	pictures.reserve(num_pictures);
+	for (int i = 0; i < num_pictures; ++i) {
+		pictures.emplace_back(std::move(save[i]));
+	}
+}
+
+std::vector<RPG::SavePicture> Game_Pictures::GetSaveData() const {
+	std::vector<RPG::SavePicture> save;
+
+	auto data_size = std::max(static_cast<int>(pictures.size()), GetDefaultNumberOfPictures());
+	save.reserve(data_size);
+
+	for (auto& pic: pictures) {
+		save.push_back(pic.data);
+	}
+
+	// RPG_RT Save game data always has a constant number of pictures
+	// depending on the engine version. We replicate this, unless we have even
+	// more pictures than that.
+	while (data_size > static_cast<int>(save.size())) {
+		RPG::SavePicture data;
+		data.ID = static_cast<int>(save.size());
+		if (Player::IsRPG2k3E()) {
+			data.frames = frame_counter;
+		}
+		save.push_back(std::move(data));
+	}
+
+	return save;
+}
+
+int Game_Pictures::GetDefaultNumberOfPictures() {
+	if (Player::IsEnglish()) {
+		return 1000;
+	}
+	else if (Player::IsMajorUpdatedVersion()) {
+		return 50;
+	}
+	else if (Player::IsRPG2k3Legacy()) {
+		return 40;
+	}
+	else if (Player::IsRPG2kLegacy()) {
+		return 20;
+	}
+	return 0;
+}
+
+Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
+	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
+		pictures.reserve(id);
+		while (static_cast<int>(pictures.size()) < id) {
+			pictures.emplace_back(pictures.size() + 1);
+		}
+	}
+	return pictures[id - 1];
+}
+
+Game_Pictures::Picture* Game_Pictures::GetPicturePtr(int id) {
+	return id <= static_cast<int>(pictures.size())
+		? &pictures[id - 1] : nullptr;
+}
+
+void Game_Pictures::Picture::UpdateGraphics(bool is_battle) {
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
 	}
@@ -53,8 +148,8 @@ void Game_Picture::UpdateSprite(bool is_battle) {
 	{
 		last_spritesheet_frame = data.spritesheet_frame;
 
-		const int sw = bitmap->GetWidth() / data.spritesheet_cols;
-		const int sh = bitmap->GetHeight() / data.spritesheet_rows;
+		const int sw = sprite->GetBitmap()->GetWidth() / data.spritesheet_cols;
+		const int sh = sprite->GetBitmap()->GetHeight() / data.spritesheet_rows;
 		const int sx = sw * ((last_spritesheet_frame) % data.spritesheet_cols);
 		const int sy = sh * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 
@@ -127,37 +222,29 @@ void Game_Picture::UpdateSprite(bool is_battle) {
 	}
 }
 
-void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle) {
+void Game_Pictures::UpdateGraphics(bool is_battle) {
 	for (auto& pic: pictures) {
-		pic.UpdateSprite(is_battle);
+		pic.UpdateGraphics(is_battle);
 	}
 }
 
-void Game_Picture::OnMapChange() {
-	if (data.flags.erase_on_map_change) {
-		Erase();
-	}
-}
-
-void Game_Picture::OnMapChange(std::vector<Game_Picture>& pictures) {
+void Game_Pictures::OnMapChange() {
 	for (auto& pic: pictures) {
-		pic.OnMapChange();
+		if (pic.data.flags.erase_on_map_change) {
+			pic.Erase();
+		}
 	}
 }
 
-void Game_Picture::OnBattleEnd() {
-	if (data.flags.erase_on_battle_end) {
-		Erase();
-	}
-}
-
-void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures) {
+void Game_Pictures::OnBattleEnd() {
 	for (auto& pic: pictures) {
-		pic.OnBattleEnd();
+		if (pic.data.flags.erase_on_battle_end) {
+			pic.Erase();
+		}
 	}
 }
 
-void Game_Picture::Show(const ShowParams& params) {
+bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	needs_update = true;
 
 	data.name = params.name;
@@ -206,13 +293,20 @@ void Game_Picture::Show(const ShowParams& params) {
 		if (sprite) {
 			sprite->SetBitmap(nullptr);
 		}
-		return;
+		return false;
 	}
 
-	RequestPictureSprite();
+	return true;
 }
 
-void Game_Picture::Move(const MoveParams& params) {
+void Game_Pictures::Show(int id, const ShowParams& params) {
+	auto& pic = GetPicture(id);
+	if (pic.Show(params)) {
+		RequestPictureSprite(pic);
+	}
+}
+
+void Game_Pictures::Picture::Move(const MoveParams& params) {
 	const bool ignore_position = Player::IsLegacy() && data.fixed_to_map;
 
 	SetNonEffectParams(params, !ignore_position);
@@ -255,36 +349,42 @@ void Game_Picture::Move(const MoveParams& params) {
 	}
 }
 
-void Game_Picture::Erase() {
+void Game_Pictures::Move(int id, const MoveParams& params) {
+	auto& pic = GetPicture(id);
+	pic.Move(params);
+}
+
+void Game_Pictures::Picture::Erase() {
 	request_id = {};
 	data.name.clear();
 	sprite.reset();
-	bitmap.reset();
 }
 
-void Game_Picture::RequestPictureSprite() {
-	const std::string& name = data.name;
+void Game_Pictures::Erase(int id) {
+	auto* pic = GetPicturePtr(id);
+	if (EP_LIKELY(pic)) {
+		pic->Erase();
+	}
+}
+
+void Game_Pictures::RequestPictureSprite(Picture& pic) {
+	const auto& name = pic.data.name;
 	if (name.empty()) return;
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
 	request->SetGraphicFile(true);
 
-	int pic_id = data.ID;
+	int pic_id = pic.data.ID;
 
-	// FIXME: This lambda is here because it's possible the picture vector can be
-	// resized before the async call of onPictureSpriteReady().
-	// Pictures should be refactored so this ugly hack is not needed.
-	request_id = request->Bind([pic_id](FileRequestResult* res) {
-			if (Main_Data::game_screen) {
-				auto& pic = Main_Data::game_screen->GetPicture(pic_id);
-				pic.OnPictureSpriteReady(res);
-			}
+	pic.request_id = request->Bind([this, pic_id](FileRequestResult*) {
+			OnPictureSpriteReady(pic_id);
 			});
 	request->Start();
 }
 
-void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
-	bitmap = Cache::Picture(data.name, data.use_transparent_color);
+
+void Game_Pictures::Picture::OnPictureSpriteReady() {
+	auto bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
 		sprite.reset(new Sprite(Drawable::Flags::Shared));
@@ -292,19 +392,14 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	sprite->SetBitmap(bitmap);
 }
 
-bool Game_Picture::UpdateWouldBeNop() const {
-	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
-	// Write unit tests to ensure it's correct.
-	// Then add it to ErasePicture()
-	RPG::SavePicture empty;
-	empty.ID = data.ID;
-	empty.frames = data.frames;
-
-	return data == empty;
+void Game_Pictures::OnPictureSpriteReady(int id) {
+	auto* pic = GetPicturePtr(id);
+	if (EP_LIKELY(pic)) {
+		pic->OnPictureSpriteReady();
+	}
 }
 
-
-void Game_Picture::Update(bool is_battle) {
+void Game_Pictures::Picture::Update(bool is_battle) {
 	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
 		return;
 	}
@@ -404,13 +499,14 @@ void Game_Picture::Update(bool is_battle) {
 	}
 }
 
-void Game_Picture::Update(std::vector<Game_Picture>& pictures, bool is_battle) {
+void Game_Pictures::Update(bool is_battle) {
+	++frame_counter;
 	for (auto& pic: pictures) {
 		pic.Update(is_battle);
 	}
 }
 
-void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) {
+void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_positions) {
 	if (set_positions) {
 		data.finish_x = params.position_x;
 		data.finish_y = params.position_y;
@@ -424,7 +520,7 @@ void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) 
 	data.finish_sat = params.saturation;
 }
 
-void Game_Picture::SyncCurrentToFinish() {
+void Game_Pictures::Picture::SyncCurrentToFinish() {
 	data.current_x = data.finish_x;
 	data.current_y = data.finish_y;
 	data.current_red = data.finish_red;
@@ -437,6 +533,6 @@ void Game_Picture::SyncCurrentToFinish() {
 	data.current_effect_power = data.finish_effect_power;
 }
 
-inline int Game_Picture::NumSpriteSheetFrames() const {
+inline int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
 }

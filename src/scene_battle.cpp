@@ -32,6 +32,8 @@
 #include "game_enemy.h"
 #include "game_enemyparty.h"
 #include "game_battle.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "battle_animation.h"
 #include "reader_util.h"
 #include "scene_battle.h"
@@ -185,7 +187,8 @@ void Scene_Battle::Update() {
 	// Screen Effects
 	Game_Message::Update();
 	Main_Data::game_party->UpdateTimers();
-	Main_Data::game_screen->Update(true);
+	Main_Data::game_screen->Update();
+	Main_Data::game_pictures->Update(true);
 	Game_Battle::UpdateAnimation();
 
 	// Query Timer before and after update.

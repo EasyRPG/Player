@@ -20,6 +20,7 @@
 #include "output.h"
 #include "game_battle.h"
 #include "game_system.h"
+#include "game_screen.h"
 #include "game_map.h"
 #include "main_data.h"
 #include "filefinder.h"

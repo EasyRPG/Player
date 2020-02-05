@@ -53,6 +53,8 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "game_switches.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_variables.h"
@@ -70,6 +72,7 @@
 #include "reader_util.h"
 #include "scene_battle.h"
 #include "scene_logo.h"
+#include "scene_map.h"
 #include "utils.h"
 #include "version.h"
 #include "game_quit.h"
@@ -794,6 +797,7 @@ void Player::ResetGameObjects() {
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
+	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 
 	Game_Actors::Init();
 	Game_Map::Init();
@@ -926,6 +930,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	Game_Actors::Fixup();
 	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
+	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
+	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
+	Main_Data::game_screen->SetSaveData(std::move(Main_Data::game_data.screen));
+	Main_Data::game_pictures->SetSaveData(std::move(Main_Data::game_data.pictures));
+	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
 
 	int map_id = save->party_location.map_id;
 
@@ -933,13 +942,10 @@ void Player::LoadSavegame(const std::string& save_name) {
 	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
 
-	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
-	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
-	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
-
 	Game_System::ReloadSystemGraphic();
 
 	map->Start();
+	Scene::Push(std::make_shared<Scene_Map>(true));
 }
 
 static void OnMapFileReady(FileRequestResult*) {
@@ -972,6 +978,7 @@ void Player::SetupNewGame() {
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
+	Scene::Push(std::make_shared<Scene_Map>(false));
 }
 
 void Player::SetupPlayerSpawn() {

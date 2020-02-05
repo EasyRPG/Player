@@ -36,22 +36,6 @@
 #include "flash.h"
 #include "shake.h"
 
-static int GetDefaultNumberOfPictures() {
-	if (Player::IsEnglish()) {
-		return 1000;
-	}
-	else if (Player::IsMajorUpdatedVersion()) {
-		return 50;
-	}
-	else if (Player::IsRPG2k3Legacy()) {
-		return 40;
-	}
-	else if (Player::IsRPG2kLegacy()) {
-		return 20;
-	}
-	return 0;
-}
-
 Game_Screen::Game_Screen()
 {
 }
@@ -59,31 +43,15 @@ Game_Screen::Game_Screen()
 Game_Screen::~Game_Screen() {
 }
 
-void Game_Screen::SetupNewGame() {
-	data = {};
-	weather = std::make_unique<Weather>();
-	OnWeatherChanged();
-
-	// Pre-allocate pictures depending on detected game version.
-	// This makes our savegames match RPG_RT.
-	PreallocatePictureData(GetDefaultNumberOfPictures());
+void Game_Screen::SetSaveData(RPG::SaveScreen screen)
+{
+	data = std::move(screen);
 }
 
-void Game_Screen::SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> save_pics) {
-	data = std::move(screen);
 
-	weather = std::make_unique<Weather>();
-
-	pictures.clear();
-	pictures.reserve(save_pics.size());
-
+void Game_Screen::InitGraphics() {
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
-
-	for (auto& sp: save_pics) {
-		pictures.emplace_back(sp.ID);
-		pictures.back().SetupFromSave(std::move(sp));
-	}
 
 	if (data.battleanim_active) {
 		ShowBattleAnimation(data.battleanim_id,
@@ -93,18 +61,7 @@ void Game_Screen::SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePic
 	}
 }
 
-std::vector<RPG::SavePicture> Game_Screen::GetPictureSaveData() const {
-	std::vector<RPG::SavePicture> save_pics;
-	save_pics.reserve(pictures.size());
-	for (auto& pic: pictures) {
-		save_pics.push_back(pic.GetSaveData());
-	}
-	return save_pics;
-}
-
 void Game_Screen::OnMapChange() {
-	Game_Picture::OnMapChange(pictures);
-
 	data.flash_red = 0;
 	data.flash_green = 0;
 	data.flash_blue = 0;
@@ -130,17 +87,6 @@ void Game_Screen::OnMapChange() {
 	movie_res_y = 0;
 
 	animation.reset();
-}
-
-void Game_Screen::OnBattleEnd() {
-	Game_Picture::OnBattleEnd(pictures);
-}
-
-void Game_Screen::DoPreallocatePictureData(int id) {
-	pictures.reserve(id);
-	while (static_cast<int>(pictures.size()) < id) {
-		pictures.emplace_back(pictures.size() + 1);
-	}
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -328,7 +274,7 @@ void Game_Screen::InitSand() {
 
 			p.x = std::round(std::cos(p.angle) * dist) + w / 2;
 			p.y = std::round(std::sin(p.angle) * dist);
-			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_min_alpha);
+			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_max_alpha);
 		}
 	}
 }
@@ -417,9 +363,8 @@ void Game_Screen::UpdateWeather() {
 	}
 }
 
-void Game_Screen::Update(bool is_battle) {
+void Game_Screen::Update() {
 	UpdateScreenEffects();
-	Game_Picture::Update(pictures, is_battle);
 	UpdateMovie();
 	UpdateWeather();
 	UpdateBattleAnimation();
@@ -468,7 +413,6 @@ void Game_Screen::CancelBattleAnimation() {
 	animation.reset();
 }
 
-void Game_Screen::UpdateGraphics(bool is_battle) {
-	Game_Picture::UpdateSprite(pictures, is_battle);
+void Game_Screen::UpdateGraphics() {
 	weather->SetTone(GetTone());
 }

@@ -25,6 +25,7 @@
 #include "input.h"
 #include "main_data.h"
 #include "game_message.h"
+#include "drawable.h"
 #include "player.h"
 #include "utils.h"
 #include "util_macro.h"

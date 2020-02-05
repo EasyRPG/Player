@@ -26,6 +26,7 @@
 #include "reader_util.h"
 #include "output.h"
 #include "drawable_mgr.h"
+#include "game_screen.h"
 
 Background::Background(const std::string& name) : Drawable(Priority_Background)
 {

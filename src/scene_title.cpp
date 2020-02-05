@@ -35,7 +35,6 @@
 #include "scene_battle.h"
 #include "scene_import.h"
 #include "scene_load.h"
-#include "scene_map.h"
 #include "window_command.h"
 #include "baseui.h"
 
@@ -103,7 +102,6 @@ void Scene_Title::Update() {
 
 	if (!Data::system.show_title || Player::new_game_flag) {
 		Player::SetupNewGame();
-		Scene::Push(std::make_shared<Scene_Map>());
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
 		}
@@ -212,7 +210,6 @@ void Scene_Title::CommandNewGame() {
 		Output::Debug("Starting new game");
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Player::SetupNewGame();
-		Scene::Push(std::make_shared<Scene_Map>());
 	}
 }
 

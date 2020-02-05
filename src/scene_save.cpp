@@ -32,6 +32,8 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_targets.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "lsd_reader.h"
 #include "output.h"
 #include "player.h"
@@ -120,8 +122,8 @@ void Scene_Save::Action(int index) {
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();
 
-	data_copy.screen = Main_Data::game_screen->GetScreenSaveData();
-	data_copy.pictures = Main_Data::game_screen->GetPictureSaveData();
+	data_copy.screen = Main_Data::game_screen->GetSaveData();
+	data_copy.pictures = Main_Data::game_pictures->GetSaveData();
 
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;

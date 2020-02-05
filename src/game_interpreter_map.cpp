@@ -34,7 +34,7 @@
 #include "game_actors.h"
 #include "game_system.h"
 #include "game_message.h"
-#include "game_picture.h"
+#include "game_screen.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_map.h"

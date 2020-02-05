@@ -23,7 +23,6 @@
 #include "system.h"
 #include "options.h"
 #include "compiler.h"
-#include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
@@ -39,13 +38,10 @@ public:
 	Game_Screen();
 	~Game_Screen();
 
-	void SetupNewGame();
-	void SetupFromSave(RPG::SaveScreen screen, std::vector<RPG::SavePicture> pictures);
+	void InitGraphics();
 
-	const RPG::SaveScreen& GetScreenSaveData() const;
-	std::vector<RPG::SavePicture> GetPictureSaveData() const;
-
-	Game_Picture& GetPicture(int id);
+	void SetSaveData(RPG::SaveScreen screen);
+	const RPG::SaveScreen& GetSaveData() const;
 
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int frames);
@@ -58,8 +54,8 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void Update(bool is_battle);
-	void UpdateGraphics(bool is_battle);
+	void Update();
+	void UpdateGraphics();
 
 	/**
 	 * Returns the current screen tone.
@@ -163,7 +159,6 @@ public:
 	void OnBattleEnd();
 
 private:
-	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;
 
@@ -191,8 +186,6 @@ protected:
 	void OnWeatherChanged();
 	void InitRainSnow(int lifetime);
 	void InitSand();
-	void PreallocatePictureData(int id);
-	void DoPreallocatePictureData(int id);
 };
 
 inline int Game_Screen::GetPanX() const {
@@ -250,22 +243,7 @@ inline bool Game_Screen::IsBattleAnimationWaiting() {
 	return (bool)animation;
 }
 
-inline Game_Picture& Game_Screen::GetPicture(int id) {
-	assert(id >= 0);
-
-	PreallocatePictureData(id);
-
-	return pictures[id - 1];
-}
-
-inline void Game_Screen::PreallocatePictureData(int id) {
-	if (EP_UNLIKELY(id > (int)pictures.size())) {
-		DoPreallocatePictureData(id);
-		return;
-	}
-}
-
-inline const RPG::SaveScreen& Game_Screen::GetScreenSaveData() const {
+inline const RPG::SaveScreen& Game_Screen::GetSaveData() const {
 	return data;
 }
 

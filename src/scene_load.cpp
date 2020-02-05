@@ -36,8 +36,6 @@ void Scene_Load::Action(int index) {
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 
 	Player::LoadSavegame(save_name);
-
-	Scene::Push(std::make_shared<Scene_Map>(true));
 }
 
 bool Scene_Load::IsSlotValid(int index) {

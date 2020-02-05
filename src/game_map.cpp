@@ -33,6 +33,8 @@
 #include "game_player.h"
 #include "game_party.h"
 #include "game_message.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -155,6 +157,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Dispose();
 	if (tt != TeleportTarget::eAsyncQuickTeleport) {
 		Main_Data::game_screen->OnMapChange();
+		Main_Data::game_pictures->OnMapChange();
 	}
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
@@ -976,7 +979,8 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 		Game_Message::Update();
 		Main_Data::game_party->UpdateTimers();
-		Main_Data::game_screen->Update(false);
+		Main_Data::game_screen->Update();
+		Main_Data::game_pictures->Update(false);
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {

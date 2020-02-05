@@ -130,8 +130,8 @@ add_library(${PROJECT_NAME}
 	src/game_party_base.h
 	src/game_party.cpp
 	src/game_party.h
-	src/game_picture.cpp
-	src/game_picture.h
+	src/game_pictures.cpp
+	src/game_pictures.h
 	src/game_player.cpp
 	src/game_player.h
 	src/game_quit.cpp

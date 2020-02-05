@@ -28,15 +28,18 @@ class Sprite;
 class Scene;
 
 /**
- * Picture class.
+ * Pictures class.
  */
-class Game_Picture {
+class Game_Pictures {
 public:
-	explicit Game_Picture(int ID);
+	Game_Pictures() = default;
 
-	void SetupFromSave(RPG::SavePicture sp);
+	void SetSaveData(std::vector<RPG::SavePicture> save);
+	std::vector<RPG::SavePicture> GetSaveData() const;
 
-	const RPG::SavePicture& GetSaveData() const;
+	void InitGraphics();
+
+	static int GetDefaultNumberOfPictures();
 
 	struct Params {
 		int position_x;
@@ -71,57 +74,58 @@ public:
 		int duration;
 	};
 
-	bool IsOnMap() const;
-	bool IsOnBattle() const;
-
-	void Show(const ShowParams& params);
-	void Move(const MoveParams& params);
-	void Erase();
+	void Show(int id, const ShowParams& params);
+	void Move(int id, const MoveParams& params);
+	void Erase(int id);
 
 	void Update(bool is_battle);
-	void UpdateSprite(bool is_battle);
-
-	static void Update(std::vector<Game_Picture>& pictures, bool is_battle);
-	static void UpdateSprite(std::vector<Game_Picture>& pictures, bool is_battle);
+	void UpdateGraphics(bool is_battle);
 
 	void OnMapChange();
 	void OnBattleEnd();
 
-	static void OnMapChange(std::vector<Game_Picture>& pictures);
-	static void OnBattleEnd(std::vector<Game_Picture>& pictures);
-
 private:
-	RPG::SavePicture data;
-	std::unique_ptr<Sprite> sprite;
-	BitmapRef bitmap;
-	FileRequestBinding request_id;
-	int last_spritesheet_frame = 0;
-	bool needs_update = false;
+	struct Picture {
+		Picture(int id) { data.ID = id; }
+		Picture(RPG::SavePicture data);
 
-	void SetNonEffectParams(const Params& params, bool set_positions);
-	void SyncCurrentToFinish();
-	void RequestPictureSprite();
-	void OnPictureSpriteReady(FileRequestResult*);
-	int NumSpriteSheetFrames() const;
+		RPG::SavePicture data;
+		std::unique_ptr<Sprite> sprite;
+		FileRequestBinding request_id;
+		int last_spritesheet_frame = 0;
+		bool needs_update = false;
 
-	bool UpdateWouldBeNop() const;
+		void Update(bool is_battle);
+		void UpdateGraphics(bool is_battle);
 
+		bool IsOnMap() const;
+		bool IsOnBattle() const;
+		int NumSpriteSheetFrames() const;
+
+		void SetNonEffectParams(const Params& params, bool set_positions);
+		void SyncCurrentToFinish();
+
+		bool Show(const ShowParams& params);
+		void Move(const MoveParams& params);
+		void Erase();
+
+		void OnPictureSpriteReady();
+	};
+
+	Picture& GetPicture(int id);
+	Picture* GetPicturePtr(int id);
+	void RequestPictureSprite(Picture& pic);
+	void OnPictureSpriteReady(int id);
+
+	std::vector<Picture> pictures;
+	int frame_counter = 0;
 };
 
-inline Game_Picture::Game_Picture(int id) {
-	data.ID = id;
-	needs_update = false;
-}
-
-inline const RPG::SavePicture& Game_Picture::GetSaveData() const {
-	return data;
-}
-
-inline bool Game_Picture::IsOnMap() const {
+inline bool Game_Pictures::Picture::IsOnMap() const {
 	return data.map_layer > 0;
 }
 
-inline bool Game_Picture::IsOnBattle() const {
+inline bool Game_Pictures::Picture::IsOnBattle() const {
 	return data.battle_layer > 0;
 }
 

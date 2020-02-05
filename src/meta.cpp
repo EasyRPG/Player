@@ -20,6 +20,7 @@
 // Headers
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 #include <zlib.h>
 #include "data.h"
 #include "filefinder.h"
