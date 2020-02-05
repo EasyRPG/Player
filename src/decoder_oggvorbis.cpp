@@ -21,13 +21,6 @@
 
 // Headers
 #include <cassert>
-#ifdef HAVE_TREMOR
-#include <tremor/ivorbiscodec.h>
-#include <tremor/ivorbisfile.h>
-#else
-#include <vorbis/codec.h>
-#include <vorbis/vorbisfile.h>
-#endif
 #include "audio_decoder.h"
 #include "output.h"
 #include "decoder_oggvorbis.h"
