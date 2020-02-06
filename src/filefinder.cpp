@@ -535,8 +535,8 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	add_rtp_path("./rtp/" + version_str + "/");
 	add_rtp_path("/switch/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(_3DS)
-	add_rtp_path("romfs:/data/rtp/" + version_str + "/");
-	add_rtp_path("sdmc:/data/rtp/" + version_str + "/");
+	add_rtp_path("romfs:/data/rtp/" + version_str);
+	add_rtp_path("sdmc:/data/rtp/" + version_str);
 #elif defined(PSP2)
 	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(USE_LIBRETRO)
