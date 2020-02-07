@@ -899,7 +899,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	}
 
 	std::stringstream verstr;
-	int32_t ver = save->easyrpg_data.version;
+	int ver = save->easyrpg_data.version;
 	if (ver == 0) {
 		verstr << "RPG_RT or EasyRPG Player Pre-0.6.0";
 	} else if (ver >= 10000) {

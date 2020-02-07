@@ -490,11 +490,13 @@ static void add_rtp_path(const std::string& p) {
 				best = rate;
 			}
 		}
+	} else {
+		Output::Debug("RTP path %s is invalid, not adding", p.c_str());
 	}
 }
 
-static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
 #if defined(USE_WINE_REGISTRY) || defined(_WIN32)
+static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
@@ -504,10 +506,8 @@ static void read_rtp_registry(const std::string& company, const std::string& pro
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
-#else
-	(void)company; (void)product; (void)key;
-#endif
 }
+#endif
 
 void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	rtp_state = {};
@@ -562,8 +562,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	env->DeleteLocalRef(sdl_activity);
 	env->DeleteLocalRef(cls);
 	add_rtp_path(cs + "/" + version_str + "/");
-#else
-	// Windows/Wine
+#elif defined(USE_WINE_REGISTRY) || defined(_WIN32)
 	std::string const product = "RPG" + version_str;
 	if (Player::IsRPG2k()) {
 		// Prefer original 2000 RTP over Kadokawa, because there is no
@@ -587,7 +586,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 
 	// Our RTP is for all engines
 	read_rtp_registry("EasyRPG", "RTP", "path");
-
+#else
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
 	std::vector<std::string> env_paths;

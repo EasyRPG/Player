@@ -172,6 +172,7 @@ Platform::FileType Platform::Directory::GetEntryType() const {
 		   entry->d_type == DT_DIR ? FileType::Directory :
 		   entry->d_type == DT_UNKNOWN ? FileType::Unknown : FileType::Other;
 #	else
+	#warning Current Platform does not populate directory entry types
 	return FileType::Unknown;
 #	endif
 #endif

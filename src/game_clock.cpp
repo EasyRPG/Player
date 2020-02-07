@@ -22,7 +22,7 @@
 #if defined(PSP2)
 #include <psp2/kernel/threadmgr.h>
 #elif defined(_3DS)
-#include <3ds/svc.h>
+#include <3ds.h>
 #endif
 
 constexpr bool Game_Clock::is_steady;
