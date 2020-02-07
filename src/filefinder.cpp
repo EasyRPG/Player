@@ -490,6 +490,8 @@ static void add_rtp_path(const std::string& p) {
 				best = rate;
 			}
 		}
+	} else {
+		Output::Debug("RTP path %s is invalid, not adding", p.c_str());
 	}
 }
 
