@@ -19,21 +19,4 @@
 
 #include <thread>
 
-#if defined(PSP2)
-#include <psp2/kernel/threadmgr.h>
-#elif defined(_3DS)
-#include <3ds.h>
-#endif
-
 constexpr bool Game_Clock::is_steady;
-
-void Game_Clock::SleepFor(std::chrono::nanoseconds ns) {
-#if defined(_3DS)
-	svcSleepThread(ns.count());
-#elif defined(PSP2)
-	auto us = std::chrono::duration_cast<std::chrono::microseconds>(ns);
-	sceKernelDelayThread(us.count());
-#else
-	std::this_thread::sleep_for(ns);
-#endif
-}

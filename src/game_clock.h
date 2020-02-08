@@ -21,6 +21,7 @@
 #include "options.h"
 #include <chrono>
 #include <type_traits>
+#include <thread>
 #include "3ds_clock.h"
 #include "psp2_clock.h"
 
@@ -51,7 +52,8 @@ public:
 	static time_point now();
 
 	/** Sleep for the specified duration */
-	static void SleepFor(std::chrono::nanoseconds ns);
+	template <typename R, typename P>
+	static void SleepFor(std::chrono::duration<R,P> dt);
 
 	/** Get the target frames per second for the game simulation */
 	static constexpr int GetSimulationFps();
@@ -78,6 +80,15 @@ constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
 constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
 	auto ns = std::chrono::nanoseconds(std::chrono::seconds(1)) / fps;
 	return std::chrono::duration_cast<Game_Clock::duration>(ns);
+}
+
+template <typename R, typename P>
+inline void Game_Clock::SleepFor(std::chrono::duration<R,P> dt) {
+#if defined(_3DS) || defined(PSP2)
+	clock::SleepFor(dt);
+#else
+	std::this_thread::sleep_for(dt);
+#endif
 }
 
 #endif
