@@ -197,6 +197,8 @@ add_library(${PROJECT_NAME}
 	src/platform.h
 	src/player.cpp
 	src/player.h
+	src/psp2_clock.cpp
+	src/psp2_clock.h
 	src/psp2_ui.cpp
 	src/psp2_ui.h
 	src/rect.cpp

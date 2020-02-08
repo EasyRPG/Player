@@ -22,14 +22,17 @@
 #include <chrono>
 #include <type_traits>
 #include "3ds_clock.h"
+#include "psp2_clock.h"
 
 /**
  * Used for time keeping in Player
  */
 class Game_Clock {
 public:
-#ifdef _3DS
+#if defined(_3DS)
 	using clock = CtrClock;
+#elif defined(PSP2)
+	using clock = Psp2Clock;
 #else
 	using clock = std::conditional_t<
 		std::chrono::high_resolution_clock::is_steady,
