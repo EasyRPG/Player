@@ -109,8 +109,6 @@ static constexpr int fog_opacity[2][4] = {
 	{ 64, 80, 160, 255 },
 };
 
-static constexpr int snowflake_visible = 150;
-
 const Bitmap* Weather::ApplyToneEffect(const Bitmap& bitmap, Rect rect) {
 	if (tone_effect == Tone()) {
 		return &bitmap;
