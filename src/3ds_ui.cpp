@@ -49,7 +49,6 @@ AudioInterface& CtrUi::GetAudio() {
 #endif
 
 namespace {
-	const double ticks_per_msec = 268123.480;
 	int touch_x, touch_y;
 	int touch_state = 0; // 0 not, 1 touched, 2 touched before, wait clear
 	u32 old_time_limit;

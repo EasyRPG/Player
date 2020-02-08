@@ -21,16 +21,21 @@
 #include "options.h"
 #include <chrono>
 #include <type_traits>
+#include "3ds_clock.h"
 
 /**
  * Used for time keeping in Player
  */
 class Game_Clock {
 public:
+#ifdef _3DS
+	using clock = CtrClock;
+#else
 	using clock = std::conditional_t<
 		std::chrono::high_resolution_clock::is_steady,
 		std::chrono::high_resolution_clock,
 		std::chrono::steady_clock>;
+#endif
 
 	using rep = clock::rep;
 	using period = clock::period;

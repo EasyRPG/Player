@@ -14,6 +14,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Source Files
 add_library(${PROJECT_NAME}
+	src/3ds_clock.cpp
+	src/3ds_clock.h
 	src/3ds_ui.cpp
 	src/3ds_ui.h
 	src/async_handler.cpp
