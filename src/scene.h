@@ -28,7 +28,7 @@
 /**
  * Scene virtual class.
  */
-class Scene : public std::enable_shared_from_this<Scene> {
+class Scene {
 public:
 	/** Scene types. */
 	enum SceneType {
@@ -259,9 +259,9 @@ public:
 	 * Transfer drawables from the previous scene. This is called
 	 * when we do a scene change.
 	 *
-	 * @param prev_scene can be nullptr if this is the first scene.
+	 * @param prev_scene the scene to take from.
 	 */
-	void TransferDrawablesFrom(Scene* prev_scene);
+	void TransferDrawablesFrom(Scene& prev_scene);
 
 protected:
 	using AsyncContinuation = std::function<void(void)>;

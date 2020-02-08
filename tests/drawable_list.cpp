@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "utils.h"
 #include "drawable_list.h"
+#include "drawable_mgr.h"
 #include "bitmap.h"
 #include "doctest.h"
 
@@ -56,6 +57,9 @@ TEST_CASE("DirtyDraw") {
 
 template <typename F>
 void testAppend(F&& f) {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1(5);
@@ -107,6 +111,9 @@ TEST_CASE("AppendDraw") {
 }
 
 TEST_CASE("AppendUnSorted") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1(2);
@@ -130,6 +137,9 @@ TEST_CASE("AppendUnSorted") {
 }
 
 TEST_CASE("AppendSorted") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1(1);
@@ -153,6 +163,9 @@ TEST_CASE("AppendSorted") {
 }
 
 TEST_CASE("AppendSame") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1;
@@ -176,6 +189,9 @@ TEST_CASE("AppendSame") {
 }
 
 TEST_CASE("TakeSorted") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1(1);
@@ -209,6 +225,9 @@ TEST_CASE("TakeSorted") {
 }
 
 TEST_CASE("TakeNotSorted") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	DrawableList list;
 
 	TestSprite s1(3);
@@ -242,6 +261,9 @@ TEST_CASE("TakeNotSorted") {
 }
 
 TEST_CASE("TakeFromAll") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	TestSprite s1;
 	TestSprite s2;
 	TestFrame f1;
@@ -277,6 +299,9 @@ TEST_CASE("TakeFromAll") {
 }
 
 TEST_CASE("TakeFromPred") {
+	DrawableList default_list;
+	DrawableMgr::SetLocalList(&default_list);
+
 	TestSprite s1;
 	TestSprite s2;
 	TestFrame f1;

@@ -59,9 +59,8 @@ namespace Graphics {
 	void Draw(Bitmap& dst);
 
 	void LocalDraw(Bitmap& dst, int min_z, int max_z);
-	void GlobalDraw(Bitmap& dst, int min_z, int max_z);
 
-	void UpdateSceneCallback();
+	std::shared_ptr<Scene> UpdateSceneCallback();
 
 	/**
 	 * Returns a handle to the message overlay.

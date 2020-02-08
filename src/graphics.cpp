@@ -54,7 +54,7 @@ unsigned SecondToFrame(float const second) {
 
 void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
-	current_scene = Scene::instance;
+	UpdateSceneCallback();
 
 	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
@@ -63,8 +63,6 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
-	DrawableMgr::GetGlobalList().Clear();
-
 	fps_overlay.reset();
 	message_overlay.reset();
 
@@ -123,38 +121,28 @@ void Graphics::UpdateTitle() {
 void Graphics::Draw(Bitmap& dst) {
 	fps_overlay->AddFrame();
 
-	BitmapRef disp = DisplayUi->GetDisplaySurface();
 	auto& transition = Transition::instance();
 
 	int min_z = std::numeric_limits<int>::min();
 	int max_z = std::numeric_limits<int>::max();
-	if (transition.IsActive()) {
+	if (transition.IsActive() || transition.IsErased()) {
 		min_z = transition.GetZ();
 	}
 
 	if (transition.IsErased()) {
-		DisplayUi->CleanDisplay();
-		GlobalDraw(dst, min_z, max_z);
-		DisplayUi->UpdateDisplay();
+		dst.Clear();
+		LocalDraw(dst, min_z, max_z);
 		return;
 	}
 	LocalDraw(dst, min_z, max_z);
-	GlobalDraw(dst, min_z, max_z);
-	DisplayUi->UpdateDisplay();
 }
 
 void Graphics::LocalDraw(Bitmap& dst, int min_z, int max_z) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
-	if (!drawable_list.empty()) {
+	if (!drawable_list.empty() && min_z == std::numeric_limits<int>::min()) {
 		current_scene->DrawBackground(dst);
 	}
-
-	drawable_list.Draw(dst, min_z, max_z);
-}
-
-void Graphics::GlobalDraw(Bitmap& dst, int min_z, int max_z) {
-	auto& drawable_list = DrawableMgr::GetGlobalList();
 
 	drawable_list.Draw(dst, min_z, max_z);
 }
@@ -164,13 +152,20 @@ void Graphics::FrameReset(Game_Clock::time_point now) {
 	fps_overlay->ResetCounter();
 }
 
-void Graphics::UpdateSceneCallback() {
+std::shared_ptr<Scene> Graphics::UpdateSceneCallback() {
+	auto prev_scene = current_scene;
 	current_scene = Scene::instance;
+
 	if (current_scene) {
+		if (prev_scene) {
+			current_scene->TransferDrawablesFrom(*prev_scene);
+		}
 		DrawableMgr::SetLocalList(&current_scene->GetDrawableList());
 	} else {
 		DrawableMgr::SetLocalList(nullptr);
 	}
+
+	return prev_scene;
 }
 
 MessageOverlay& Graphics::GetMessageOverlay() {
