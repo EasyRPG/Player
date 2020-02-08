@@ -43,8 +43,6 @@ TEST_CASE("GetSize") {
 }
 
 TEST_CASE("ReadDirectory") {
-	//FIXME: This test will only work on platforms that populate the type field correctly
-
 	Platform::Directory dir(EP_TEST_PATH "/platform");
 
 	CHECK(dir);
@@ -55,11 +53,11 @@ TEST_CASE("ReadDirectory") {
 	while (dir.Read()) {
 		if (dir.GetEntryName() == "folder") {
 			++matches;
-			WARN(dir.GetEntryType() == Platform::FileType::Directory);
+			CHECK(dir.GetEntryType() == Platform::FileType::Directory);
 		} else if (dir.GetEntryName() == "empty" ||
 				dir.GetEntryName() == "1kb") {
 			++matches;
-			WARN(dir.GetEntryType() == Platform::FileType::File);
+			CHECK(dir.GetEntryType() == Platform::FileType::File);
 		}
 		++iterations;
 	}

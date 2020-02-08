@@ -160,6 +160,17 @@ std::string Platform::Directory::GetEntryName() const {
 #endif
 }
 
+static inline Platform::FileType GetEntryType(...) {
+	return Platform::FileType::Unknown;
+}
+
+template <typename T, typename = decltype(std::declval<T>().d_type)>
+static inline Platform::FileType GetEntryType(T* entry) {
+	return entry->d_type == DT_REG ? Platform::FileType::File :
+		   entry->d_type == DT_DIR ? Platform::FileType::Directory :
+		   entry->d_type == DT_UNKNOWN ? Platform::FileType::Unknown : Platform::FileType::Other;
+}
+
 Platform::FileType Platform::Directory::GetEntryType() const {
 	assert(valid_entry);
 
@@ -167,14 +178,7 @@ Platform::FileType Platform::Directory::GetEntryType() const {
 	return SCE_S_ISREG(entry.d_stat.st_mode) ? FileType::File :
 			SCE_S_ISDIR(entry.d_stat.st_mode) ? FileType::Directory : FileType::Other;
 #else
-#	if defined(_DIRENT_HAVE_D_TYPE) || defined(_3DS)
-	return entry->d_type == DT_REG ? FileType::File :
-		   entry->d_type == DT_DIR ? FileType::Directory :
-		   entry->d_type == DT_UNKNOWN ? FileType::Unknown : FileType::Other;
-#	else
-	#warning Current Platform does not populate directory entry types
-	return FileType::Unknown;
-#	endif
+	return ::GetEntryType(entry);
 #endif
 }
 
