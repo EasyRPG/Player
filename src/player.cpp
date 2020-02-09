@@ -142,18 +142,13 @@ void Player::Init(int argc, char *argv[]) {
 	Graphics::Init();
 
 	// Display a nice version string
-	std::stringstream header;
-	std::string addtl_ver(PLAYER_ADDTL);
-	header << "EasyRPG Player " << PLAYER_VERSION;
-	if (!addtl_ver.empty())
-		header << " " << addtl_ver;
-	header << " started";
-	Output::Debug(header.str().c_str());
+	auto header = GetFullVersionString() + " started";
+	Output::Debug(header.c_str());
 
-	unsigned int header_width = header.str().length();
-	header.str("");
-	header << std::setfill('=') << std::setw(header_width) << "=";
-	Output::Debug(header.str().c_str());
+	for (auto& c: header) {
+		c = '=';
+	}
+	Output::Debug(header.c_str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
@@ -1075,16 +1070,18 @@ int Player::GetSpeedModifier() {
 	return 1;
 }
 
-void Player::PrintVersion() {
-	std::string additional(PLAYER_ADDTL);
+std::string Player::GetFullVersionString() {
 	std::stringstream version;
+	version << "EasyRPG PLayer " << PLAYER_VERSION;
+	if (std::strlen(PLAYER_ADDTL) > 0) {
+		version << " " << PLAYER_ADDTL;
+	}
+	version << " " << PLAYER_GIT_VERSION;
+	return version.str();
+}
 
-	version << PLAYER_VERSION;
-
-	if (!additional.empty())
-		version << " " << additional;
-
-	std::cout << "EasyRPG Player " << version.str() << std::endl;
+void Player::PrintVersion() {
+	std::cout << GetFullVersionString() << std::endl;
 }
 
 void Player::PrintUsage() {

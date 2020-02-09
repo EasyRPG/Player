@@ -143,6 +143,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_variables.h \
 	src/game_vehicle.cpp \
 	src/game_vehicle.h \
+	src/git_version.cpp \
 	src/graphics.cpp \
 	src/graphics.h \
 	src/hslrgb.cpp \
@@ -476,6 +477,8 @@ test_runner_LDADD = \
 
 check-local:
 	$(AM_V_at)./test_runner
+
+include builds/git_version.mk
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests

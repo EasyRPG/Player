@@ -236,6 +236,9 @@ namespace Player {
 	 */
 	int GetSpeedModifier();
 
+	/** @return full version string for player */
+	std::string GetFullVersionString();
+
 	/** Output program version on stdout */
 	void PrintVersion();
 

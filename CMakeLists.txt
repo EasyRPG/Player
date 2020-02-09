@@ -383,6 +383,21 @@ include(CMakeDependentOption)
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+# Git version file
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
+	# If we're building within the git repo, auto generate the version
+	include(GetGitRevisionDescription)
+	get_git_head_revision(GIT_REFSPEC GIT_VERSION)
+
+	set(GIT_VERSION_SRC ${CMAKE_CURRENT_BINARY_DIR}/src/git_version.cpp)
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/git_version.cpp.in ${GIT_VERSION_SRC})
+else()
+	# This is a source distribution tarball, assume the file is already generated and packaged.
+	set(GIT_VERSION_SRC src/git_version.cpp)
+endif()
+
+target_sources(${PROJECT_NAME} PRIVATE ${GIT_VERSION_SRC})
+
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)

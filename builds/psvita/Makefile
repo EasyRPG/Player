@@ -22,6 +22,9 @@ LIBS = -llcf -lexpat -lvita2d \
 	-lvitashaders -lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub \
 	-lScePgf_stub -lScePower_stub -lSceCommonDialog_stub -lSceAudio_stub
 
+include ../../builds/git_version.mk
+CPPFILES	+= $(GIT_VERSION_OUT)
+
 ifeq ($(strip $(LIBLCF_DIR)),)
 LIBLCF_DIR := $(TOOLCHAIN_DIR)
 endif

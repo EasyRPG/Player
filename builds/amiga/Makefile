@@ -10,6 +10,9 @@ CFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.c))
 CPPFILES := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 OBJS     := $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 
+include ../../builds/git_version.mk
+CPPFILES	+= $(GIT_VERSION_OUT)
+
 ifeq ($(OSTYPE), MorphOS)
 PREFIX  = ppc-morphos
 CC      = $(PREFIX)-gcc -noixemul
