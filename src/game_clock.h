@@ -63,6 +63,9 @@ public:
 
 	/** Get the timestep for a given frames per second value */
 	static constexpr duration TimeStepFromFps(int fps);
+
+	/** Log information about the Game_Clock */
+	static void logClockInfo();
 };
 
 inline Game_Clock::time_point Game_Clock::now() {
