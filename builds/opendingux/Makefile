@@ -4,6 +4,9 @@
 #                     - Based on Rikku2000's -                   #
 ##################################################################
 
+# Default Target
+all:
+
 # Compiler Device option
 BUILD_TARGET ?= gcwzero
 

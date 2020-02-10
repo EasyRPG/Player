@@ -1,3 +1,6 @@
+# Default Target
+all:
+
 TARGET  := EasyRPG
 BUILD   := build
 SOURCES := ../../src

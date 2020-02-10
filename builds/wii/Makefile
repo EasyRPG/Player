@@ -18,6 +18,9 @@ endif
 
 include $(DEVKITPPC)/wii_rules
 
+# Default Target
+all:
+
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
