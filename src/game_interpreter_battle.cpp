@@ -27,7 +27,6 @@
 #include "reader_util.h"
 #include "output.h"
 #include "player.h"
-#include "game_temp.h"
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
@@ -104,14 +103,13 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer) {
-			Game_Temp::battle_result = Game_Temp::BattleEscape;
-			Game_Battle::Terminate();
+		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_pincers) {
+			_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Escape));
 			result = true;
 		}
 	    break;
 	case 1:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_surround) {
 			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
 				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
 				enemy.Kill();
@@ -121,7 +119,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 		}
 	    break;
 	case 2:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_surround) {
 			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
 			enemy.Kill();
 			Game_Battle::SetNeedRefresh(true);
@@ -303,7 +301,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
-	Game_Battle::Terminate();
+	_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Abort));
 	return false;
 }
 

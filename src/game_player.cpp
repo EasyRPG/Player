@@ -241,8 +241,9 @@ void Game_Player::UpdateSelfMovement() {
 			&& !IsMoveRouteOverwritten()) {
 
 		if (IsEncounterCalling()) {
-			if (Game_Map::PrepareEncounter()) {
-				Scene::instance->SetRequestedScene(Scene_Battle::Create());
+			BattleArgs args;
+			if (Game_Map::PrepareEncounter(args)) {
+				Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
 			}
 			SetEncounterCalling(false);
 			did_call_encounter = true;

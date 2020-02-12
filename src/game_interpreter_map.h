@@ -84,7 +84,6 @@ private:
 	bool CommandOpenVideoOptions(RPG::EventCommand const& com);
 
 	void ContinuationShowInnStart(int indent, int choice_result, int price);
-	bool ContinuationEnemyEncounter(RPG::EventCommand const& com) override;
 
 	static std::vector<Game_Character*> pending;
 };

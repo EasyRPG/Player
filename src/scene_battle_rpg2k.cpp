@@ -22,7 +22,6 @@
 #include "sprite.h"
 #include "game_battler.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
@@ -37,9 +36,10 @@
 #include "scene_gameover.h"
 #include "output.h"
 
-Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle()
+Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
+	Scene_Battle(args)
 {
-	first_strike = Game_Temp::battle_first_strike;
+	first_strike = args.first_strike;
 }
 
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
@@ -66,7 +66,7 @@ void Scene_Battle_Rpg2k::CreateUi() {
 
 	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 
-	if (!Game_Battle::IsEscapeAllowed()) {
+	if (!IsEscapeAllowed()) {
 		options_window->DisableItem(2);
 	}
 }
@@ -359,18 +359,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	}
 	case State_Victory:
-		Scene::Pop();
+		EndBattle(BattleResult::Victory);
 		break;
 	case State_Defeat:
-		if (Game_Battle::battle_test.enabled
-				|| Game_Temp::battle_defeat_mode != 0
-				|| (Game_Temp::battle_random_encounter && Game_Battle::HasDeathHandler()))
-		{
-			Scene::Pop();
-		}
-		else {
-			Scene::Push(std::make_shared<Scene_Gameover>());
-		}
+		EndBattle(BattleResult::Defeat);
 		break;
 	case State_Escape:
 		Escape();
@@ -1128,7 +1120,7 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			break;
 		case 2: // Escape
-			if (!Game_Battle::IsEscapeAllowed()) {
+			if (!IsEscapeAllowed()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			}
 			else {
@@ -1199,9 +1191,7 @@ void Scene_Battle_Rpg2k::Escape() {
 	if (battle_action_substate == eSuccess) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 
-		Game_Temp::battle_result = Game_Temp::BattleEscape;
-
-		Scene::Pop();
+		EndBattle(BattleResult::Escape);
 		return;
 	}
 
@@ -1523,7 +1513,6 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 
 bool Scene_Battle_Rpg2k::CheckWin() {
 	if (Game_Battle::CheckWin()) {
-		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
 		int exp = Main_Data::game_enemyparty->GetExp();
@@ -1573,7 +1562,6 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 
 bool Scene_Battle_Rpg2k::CheckLose() {
 	if (Game_Battle::CheckLose()) {
-		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
 		Game_Message::SetPositionFixed(true);
@@ -1601,9 +1589,3 @@ bool Scene_Battle_Rpg2k::CheckResultConditions() {
 	return CheckLose() || CheckWin();
 }
 
-void Scene_Battle_Rpg2k::InitBattleTest() {
-	Game_Temp::battle_background = Data::system.battletest_background;
-	Game_Battle::SetTerrainId(Data::system.battletest_terrain);
-
-	Scene_Battle::InitBattleTest();
-}

@@ -22,7 +22,6 @@
 #include "cache.h"
 #include "game_party.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "input.h"
 #include "player.h"
 #include "scene_debug.h"

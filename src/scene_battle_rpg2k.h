@@ -99,16 +99,13 @@ public:
 		BattleActionState_Finished
 	};
 
-
-
 public:
-	Scene_Battle_Rpg2k();
+	explicit Scene_Battle_Rpg2k(const BattleArgs& args);
 	~Scene_Battle_Rpg2k() override;
 
 	void Update() override;
 
 protected:
-	void InitBattleTest() override;
 	void SetState(State new_state) override;
 
 	void NextTurn();

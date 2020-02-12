@@ -920,14 +920,14 @@ int Game_Actor::GetBattleX() const {
 			break;
 		}
 
-		switch (Game_Battle::GetBattleMode()) {
-			case Game_Battle::BattleNormal:
-			case Game_Battle::BattleInitiative:
+		switch (Game_Battle::GetBattleCondition()) {
+			case RPG::System::BattleCondition_none:
+			case RPG::System::BattleCondition_initiative:
 				return SCREEN_TARGET_WIDTH - position;
-			case Game_Battle::BattleBackAttack:
+			case RPG::System::BattleCondition_back:
 				return position;
-			case Game_Battle::BattlePincer:
-			case Game_Battle::BattleSurround:
+			case RPG::System::BattleCondition_surround:
+			case RPG::System::BattleCondition_pincers:
 				// ToDo: Correct position
 				return SCREEN_TARGET_WIDTH - position;
 		}

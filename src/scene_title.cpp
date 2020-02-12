@@ -37,6 +37,7 @@
 #include "scene_load.h"
 #include "window_command.h"
 #include "baseui.h"
+#include "reader_util.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -200,7 +201,33 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	Scene::Push(Scene_Battle::Create(), true);
+	BattleArgs args;
+	args.troop_id = Game_Battle::battle_test.troop_id;
+	args.first_strike = false;
+	args.allow_escape = true;
+	args.background = Data::system.battletest_background;
+	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
+
+	if (Player::IsRPG2k3()) {
+		args.formation = Game_Battle::battle_test.formation;
+		args.condition = Game_Battle::battle_test.condition;
+
+		if (args.formation == RPG::System::BattleFormation_terrain) {
+			args.terrain_id = Game_Battle::battle_test.terrain_id;
+		}
+
+		Output::Debug("BattleTest Mode 2k3 troop=(%d) background=(%s) formation=(%d) condition=(%d) terrain=(%d)",
+				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
+	} else {
+		Output::Debug("BattleTest Mode 2k troop=(%d) background=(%s)", args.troop_id, args.background.c_str());
+	}
+
+	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);
+	if (troop == nullptr) {
+		Output::Error("BattleTest: Invalid Monster Party ID %d", args.troop_id);
+	}
+
+	Scene::Push(Scene_Battle::Create(std::move(args)), true);
 }
 
 void Scene_Title::CommandNewGame() {

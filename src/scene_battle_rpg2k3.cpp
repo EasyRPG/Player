@@ -23,7 +23,6 @@
 #include "sprite.h"
 #include "cache.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
@@ -36,7 +35,8 @@
 #include "utils.h"
 #include "font.h"
 
-Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
+Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
+	Scene_Battle(args),
 	battle_action_wait(30),
 	battle_action_state(BattleActionState_Execute)
 {
@@ -312,7 +312,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		for (const RPG::BattleCommand* command : bcmds) {
 			commands.push_back(command->name);
 
-			if (!Game_Battle::IsEscapeAllowed() && command->type == RPG::BattleCommand::Type_escape) {
+			if (!IsEscapeAllowed() && command->type == RPG::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);
 			}
 			++i;
@@ -540,8 +540,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
 	if (Main_Data::game_party->GetBattlerCount() == 0) {
-		Game_Temp::battle_result = Game_Temp::BattleVictory;
-		Scene::Pop();
+		EndBattle(BattleResult::Victory);
+		return;
 	}
 
 	if (!battle_actions.empty()) {
@@ -596,18 +596,10 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			break;
 		}
 		case State_Victory:
-			Scene::Pop();
+			EndBattle(BattleResult::Victory);
 			break;
 		case State_Defeat:
-			if (Game_Battle::battle_test.enabled
-					|| Game_Temp::battle_defeat_mode != 0
-					|| (Game_Temp::battle_random_encounter && Game_Battle::HasDeathHandler()))
-			{
-				Scene::Pop();
-			}
-			else {
-				Scene::Push(std::make_shared<Scene_Gameover>());
-			}
+			EndBattle(BattleResult::Defeat);
 			break;
 		case State_Escape:
 			Escape();
@@ -962,7 +954,7 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 		DefendSelected();
 		break;
 	case RPG::BattleCommand::Type_escape:
-		if (!Game_Battle::IsEscapeAllowed()) {
+		if (!IsEscapeAllowed()) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 		else {
@@ -1049,16 +1041,12 @@ void Scene_Battle_Rpg2k3::Escape() {
 	}
 	else {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
-		Game_Temp::battle_result = Game_Temp::BattleEscape;
-
-		// ToDo: Run away animation
-		Scene::Pop();
+		EndBattle(BattleResult::Escape);
 	}
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
 	if (Game_Battle::CheckWin()) {
-		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
 		std::vector<Game_Battler*> battlers;
@@ -1139,7 +1127,6 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 bool Scene_Battle_Rpg2k3::CheckLose() {
 	if (Game_Battle::CheckLose()) {
-		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
 		message_window->SetHeight(32);
@@ -1255,18 +1242,3 @@ void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {
 	help_window->SetText(text);
 }
 
-void Scene_Battle_Rpg2k3::InitBattleTest() {
-	int terrain_id = Game_Battle::battle_test.terrain_id;
-	// Allow fallback to battle background battle when the additional 2k3
-	// command line args are not passed (terrain_id = 0)
-	if (Game_Battle::battle_test.formation == RPG::System::BattleFormation_terrain &&
-			terrain_id > 0) {
-		Game_Battle::SetTerrainId(terrain_id);
-	} else {
-		Game_Temp::battle_background = Data::system.battletest_background;
-		// FIXME: figure out how the terrain is configured
-		Game_Battle::SetTerrainId(1);
-	}
-
-	Scene_Battle::InitBattleTest();
-}

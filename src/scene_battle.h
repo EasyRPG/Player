@@ -34,10 +34,10 @@
 #include "window_item.h"
 #include "window_skill.h"
 #include "window_command.h"
-#include "window_battleoption.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 #include "window_message.h"
+#include "game_battle.h"
 
 namespace Battle {
 class Action;
@@ -45,6 +45,19 @@ class SpriteAction;
 }
 
 class Game_Battler;
+
+using BattleContinuation = std::function<void(BattleResult)>;
+
+struct BattleArgs {
+	BattleContinuation on_battle_end;
+	std::string background;
+	int troop_id = 0;
+	int terrain_id = 0;
+	RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
+	RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
+	bool first_strike = false;
+	bool allow_escape = true;
+};
 
 constexpr int option_command_mov = 76;
 constexpr int option_command_time = 8;
@@ -56,7 +69,7 @@ constexpr int option_command_time = 8;
 class Scene_Battle : public Scene {
 
 public:
-	static std::shared_ptr<Scene_Battle> Create();
+	static std::shared_ptr<Scene_Battle> Create(const BattleArgs& args);
 
 	~Scene_Battle() override;
 
@@ -100,11 +113,9 @@ public:
 	static void SelectionFlash(Game_Battler* battler);
 
 protected:
-	Scene_Battle();
+	explicit Scene_Battle(const BattleArgs& args);
 
 	friend class Battle::SpriteAction;
-
-	virtual void InitBattleTest();
 
 	virtual void CreateUi();
 
@@ -117,6 +128,7 @@ protected:
 	void NextTurn(Game_Battler* battler);
 
 	bool IsWindowMoving();
+	bool IsEscapeAllowed() const;
 
 	virtual void EnemySelected();
 	virtual void AllySelected();
@@ -154,6 +166,8 @@ protected:
 
 	void CallDebug();
 
+	void EndBattle(BattleResult result);
+
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
@@ -165,9 +179,11 @@ protected:
 	std::deque<std::shared_ptr<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;
+	int troop_id = 0;
+	bool allow_escape = false;
 
-	int actor_index;
-	Game_Actor* active_actor;
+	int actor_index = 0;
+	Game_Actor* active_actor = nullptr;
 
 	/** Displays Fight, Autobattle, Flee */
 	std::unique_ptr<Window_Command> options_window;
@@ -183,6 +199,12 @@ protected:
 	std::unique_ptr<Window_Message> message_window;
 
 	std::deque<Game_Battler*> battle_actions;
+
+	BattleContinuation on_battle_end;
 };
+
+inline bool Scene_Battle::IsEscapeAllowed() const {
+	return allow_escape;
+}
 
 #endif

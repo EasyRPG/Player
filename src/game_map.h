@@ -32,6 +32,7 @@
 #include "async_op.h"
 
 class FileRequestAsync;
+class BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
@@ -349,15 +350,19 @@ namespace Game_Map {
 	 * Updates all battle data based on the current player position and starts
 	 * a random encounter.
 	 *
+	 * @param args the arguments to pass to battle scene.
+	 *
 	 * @return true if battle starts, false if no monsters are at the current
 	 * map position or encounter rate is 0
 	 */
-	bool PrepareEncounter();
+	bool PrepareEncounter(BattleArgs& args);
 
 	/**
 	 * Updates all battle data based on the current player position.
+	 *
+	 * @param args the arguments to pass to battle scene.
 	 */
-	void SetupBattle();
+	void SetupBattle(BattleArgs& args);
 
 	/**
 	 * Gets lower layer map data.

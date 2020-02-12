@@ -73,7 +73,6 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	continuation = NULL;			// function to execute to resume command
 	_state = {};
 	_keyinput = {};
 	_async_op = {};
@@ -236,10 +235,6 @@ void Game_Interpreter::SetupWait(int duration) {
 	}
 }
 
-void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
-	continuation = func;
-}
-
 bool Game_Interpreter::ReachedLoopLimit() const {
 	return loop_count >= loop_limit;
 }
@@ -333,6 +328,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		_state.show_message = false;
+		_state.abort_on_escape = false;
 
 		if (_state.wait_time > 0) {
 			_state.wait_time--;
@@ -371,27 +367,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		auto* frame = GetFrame();
 		if (frame == nullptr) {
-			break;
-		}
-
-		if (continuation) {
-			const auto& list = frame->commands;
-			auto& index = frame->current_command;
-
-			bool result;
-			if (index >= static_cast<int>(list.size())) {
-				result = (this->*continuation)(RPG::EventCommand());
-			} else {
-				result = (this->*continuation)(list[index]);
-			}
-
-			if (!result) {
-				break;
-			}
-		}
-
-		// continuation triggered an async operation.
-		if (IsAsyncPending()) {
 			break;
 		}
 
@@ -1804,13 +1779,17 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com */) { // code 12310
+	EndEventProcessing();
+	return true;
+}
+
+void Game_Interpreter::EndEventProcessing() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
 	index = static_cast<int>(list.size());
-	return true;
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
@@ -2063,6 +2042,12 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
 	if (Game_Message::IsMessageActive()) {
 		return false;
+	}
+
+	// Emulates RPG_RT behavior where any transition out is skipped when these scenes are pending.
+	auto st = Scene::instance->GetRequestedSceneType();
+	if (st == Scene::Battle || st == Scene::Gameover) {
+		return true;
 	}
 
 	int tt = Transition::TransitionNone;
@@ -3292,23 +3277,9 @@ bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com *
 	return true;
 }
 
-bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
-	continuation = NULL;
-	index++;
-	return true;
-}
-
-// Dummy Continuations
-
-bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
-
-
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
 		: Game_Map::GetInterpreter();
 }
+

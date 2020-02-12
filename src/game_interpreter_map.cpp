@@ -27,7 +27,6 @@
 #include "game_battle.h"
 #include "game_event.h"
 #include "game_player.h"
-#include "game_temp.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
@@ -44,6 +43,7 @@
 #include "scene_load.h"
 #include "scene_name.h"
 #include "scene_shop.h"
+#include "scene_gameover.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -198,79 +198,77 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		return false;
 	}
 
-	Game_Temp::battle_random_encounter = false;
-	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
-		com.parameters[1]);
-	Game_Character *player = Main_Data::game_player.get();
-	Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+	BattleArgs args;
+
+	args.troop_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
 
 	switch (com.parameters[2]) {
 	case 0:
-		Game_Map::SetupBattle();
+		Game_Map::SetupBattle(args);
 		break;
 	case 1:
-		Game_Temp::battle_background = com.string;
+		args.background = com.string;
 
-		if (Player::IsRPG2k())
-			Game_Temp::battle_formation = 0;
-		else
-			Game_Temp::battle_formation = com.parameters[7];
+		if (Player::IsRPG2k3()) {
+			args.formation = static_cast<RPG::System::BattleFormation>(com.parameters[7]);
+		}
 		break;
 	case 2:
-		Game_Battle::SetTerrainId(com.parameters[8]);
+		args.terrain_id = com.parameters[8];
 		break;
 	default:
 		return false;
 	}
-	Game_Temp::battle_escape_mode = com.parameters[3]; // 0 disallow, 1 end event processing, 2 victory/escape custom handler
-	Game_Temp::battle_defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
-	Game_Temp::battle_first_strike = com.parameters[5] != 0;
+	auto escape_mode = com.parameters[3]; // 0 disallow, 1 end event processing, 2 victory/escape custom handler
+	auto defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
 
-	if (Player::IsRPG2k())
-		Game_Battle::SetBattleMode(0);
-	else
-		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
+	if (escape_mode == 1) {
+		_state.abort_on_escape = true;
+	}
 
-	Game_Temp::battle_result = Game_Temp::BattleVictory;
-	Scene::instance->SetRequestedScene(Scene_Battle::Create());
+	args.allow_escape = (escape_mode != 0);
+	args.first_strike = com.parameters[5] != 0;
 
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
+	if (Player::IsRPG2k3()) {
+		args.condition = static_cast<RPG::System::BattleCondition>(com.parameters[6]);
+	}
+
+	auto indent = com.indent;
+	auto continuation = [this, indent, defeat_mode](BattleResult result) {
+		int sub_idx = subcommand_sentinel;
+
+		switch (result) {
+			case BattleResult::Victory:
+				sub_idx = eOptionEnemyEncounterVictory;
+				break;
+			case BattleResult::Escape:
+				sub_idx = eOptionEnemyEncounterEscape;
+				if (_state.abort_on_escape) {
+					return EndEventProcessing();
+				}
+				break;
+			case BattleResult::Defeat:
+				sub_idx = eOptionEnemyEncounterDefeat;
+				if (defeat_mode == 0) {
+					Scene::Push(std::make_shared<Scene_Gameover>());
+				}
+				break;
+			case BattleResult::Abort:
+				break;
+		}
+
+		SetSubcommandIndex(indent, sub_idx);
+	};
+
+	args.on_battle_end = continuation;
+
+	Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
 	++index;
 	return false;
-}
-
-bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
-	continuation = NULL;
-
-	int sub_idx = subcommand_sentinel;
-
-	if (Game_Temp::battle_result == Game_Temp::BattleVictory) {
-		sub_idx = eOptionEnemyEncounterVictory;
-	}
-
-	if (Game_Temp::battle_result == Game_Temp::BattleEscape) {
-		sub_idx = eOptionEnemyEncounterEscape;
-		//FIXME: subidx set before this anyway??
-		if (Game_Temp::battle_escape_mode == 1) {
-			return CommandEndEventProcessing(com);
-		}
-	}
-
-	if (Game_Temp::battle_result == Game_Temp::BattleDefeat) {
-		sub_idx = eOptionEnemyEncounterDefeat;
-		//FIXME: subidx set before this anyway??
-		if (Game_Temp::battle_defeat_mode == 0) {
-			return CommandGameOver(com);
-		}
-	}
-
-	SetSubcommandIndex(com.indent, sub_idx);
-
-	return true;
 }
 
 bool Game_Interpreter_Map::CommandVictoryHandler(RPG::EventCommand const& com) { // code 20710

@@ -56,7 +56,6 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_variables.h"
 #include "game_targets.h"
 #include "graphics.h"
@@ -78,6 +77,7 @@
 #include "game_quit.h"
 #include "scene_title.h"
 #include "instrumentation.h"
+#include "transition.h"
 #include "scope_guard.h"
 #include "baseui.h"
 #include "game_clock.h"
@@ -408,6 +408,17 @@ void Player::Exit() {
 #endif
 }
 
+static bool parseInt(const std::string& s, long& value) {
+	auto* p = s.c_str();
+	auto* e = p + s.size();
+	long v = strtol(p, const_cast<char**>(&e), 10);
+	if (p == e) {
+		return false;
+	}
+	value = v;
+	return true;
+}
+
 void Player::ParseCommandLine(int argc, char *argv[]) {
 #ifdef _3DS
 	is_3dsx = argc > 0;
@@ -502,6 +513,22 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			}
 			Game_Battle::battle_test.enabled = true;
 			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
+
+			++it;
+			// If the next 3 parameters are numbers, assume they're 2k3 formation, condition, and terrain
+			long fct[3] = { 0, 0, 1 };
+			for (int i = 0; i < 3; ++i) {
+				if (it == args.end() || !parseInt(*it, fct[i])) {
+					break;
+				}
+				++it;
+			}
+
+			Game_Battle::battle_test.formation = static_cast<RPG::System::BattleFormation>(fct[0]);
+			Game_Battle::battle_test.condition = static_cast<RPG::System::BattleCondition>(fct[1]);
+			Game_Battle::battle_test.terrain_id = fct[2];
+
+			--it;
 		}
 		else if (*it == "--project-path") {
 			++it;
@@ -803,7 +830,6 @@ void Player::ResetGameObjects() {
 	Game_Map::Init();
 	Game_Message::Init();
 	Game_System::Init();
-	Game_Temp::Init();
 
 	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
@@ -922,7 +948,6 @@ void Player::LoadSavegame(const std::string& save_name) {
 	}
 
 	Scene::PopUntil(Scene::Title);
-	Game_Temp::Init();
 	Game_Map::Dispose();
 
 	Main_Data::game_data = *save.get();

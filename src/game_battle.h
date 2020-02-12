@@ -30,11 +30,19 @@ namespace RPG {
 	class EventPage;
 }
 
+enum class BattleResult {
+	Victory,
+	Escape,
+	Defeat,
+	Abort
+};
+
+
 namespace Game_Battle {
 	/**
 	 * Initialize Game_Battle.
 	 */
-	void Init();
+	void Init(int troop_id);
 
 	/** @return true if a battle is currently running */
 	bool IsBattleRunning();
@@ -50,16 +58,9 @@ namespace Game_Battle {
 	void UpdateAnimation();
 
 	/**
-	 * Runs the interpreter
-	 */
-	void RunEvents();
-
-	/**
 	 * Updates spriteset graphics
 	 */
 	void UpdateGraphics();
-
-	void Terminate();
 
 	/**
 	 * Checks if a victory condition for the player party (enemy dead) is fulfilled.
@@ -137,9 +138,6 @@ namespace Game_Battle {
 	 */
 	void RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate);
 
-	bool IsEscapeAllowed();
-	bool IsTerminating();
-
 	/**
 	 * Gets the game interpreter.
 	 *
@@ -147,19 +145,11 @@ namespace Game_Battle {
 	 */
 	Game_Interpreter& GetInterpreter();
 
-	void SetTerrainId(int terrain_id_);
+	void SetTerrainId(int id);
 	int GetTerrainId();
 
-	enum BattleMode {
-		BattleNormal,
-		BattleInitiative,
-		BattleSurround,
-		BattleBackAttack,
-		BattlePincer
-	};
-
-	void SetBattleMode(int battle_mode_);
-	int GetBattleMode();
+	void SetBattleCondition(RPG::System::BattleCondition cond);
+	RPG::System::BattleCondition GetBattleCondition();
 
 	/**
 	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"

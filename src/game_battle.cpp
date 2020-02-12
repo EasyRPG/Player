@@ -23,7 +23,6 @@
 #include "game_enemyparty.h"
 #include "game_message.h"
 #include "game_party.h"
-#include "game_temp.h"
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
@@ -39,7 +38,6 @@
 namespace Game_Battle {
 	const RPG::Troop* troop;
 
-	bool terminate;
 	std::string background_name;
 
 	std::unique_ptr<Game_Interpreter> interpreter;
@@ -57,7 +55,7 @@ namespace Game_Battle {
 namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
-	int battle_mode;
+	RPG::System::BattleCondition battle_cond = RPG::System::BattleCondition_none;
 	int target_enemy_index;
 	bool need_refresh;
 	std::vector<bool> page_can_run;
@@ -65,21 +63,20 @@ namespace {
 	std::function<bool(const RPG::TroopPage&)> last_event_filter;
 }
 
-void Game_Battle::Init() {
+void Game_Battle::Init(int troop_id) {
 	interpreter.reset(new Game_Interpreter_Battle());
-	spriteset.reset(new Spriteset_Battle());
+	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
 	animation.reset();
 
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
-	terminate = false;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
 	need_refresh = false;
 
 	// troop_id is guaranteed to be valid
-	troop = ReaderUtil::GetElement(Data::troops, Game_Temp::battle_troop_id);
+	troop = ReaderUtil::GetElement(Data::troops, troop_id);
 	page_executed.resize(troop->pages.size());
 	std::fill(page_executed.begin(), page_executed.end(), false);
 	page_can_run.resize(troop->pages.size());
@@ -106,8 +103,7 @@ void Game_Battle::Quit() {
 	animation.reset();
 
 	Game_Battle::battle_running = false;
-	Game_Temp::battle_background = "";
-	SetTerrainId(0);
+	terrain_id = 0;
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);
@@ -118,27 +114,11 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
-	Main_Data::game_party->IncBattleCount();
-	switch (Game_Temp::battle_result) {
-		case Game_Temp::BattleVictory: Main_Data::game_party->IncWinCount(); break;
-		case Game_Temp::BattleEscape: Main_Data::game_party->IncRunCount(); break;
-		case Game_Temp::BattleDefeat: Main_Data::game_party->IncDefeatCount(); break;
-		case Game_Temp::BattleAbort: break;
-	}
-
 	page_executed.clear();
 	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
 	Main_Data::game_pictures->OnBattleEnd();
-}
-
-void Game_Battle::RunEvents() {
-	interpreter->Update();
-	if (interpreter->IsAsyncPending()) {
-		terminate = true;
-		return;
-	}
 }
 
 void Game_Battle::UpdateAnimation() {
@@ -167,11 +147,6 @@ void Game_Battle::UpdateGraphics() {
 			}
 		}
 	}
-}
-
-void Game_Battle::Terminate() {
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
-	terminate = true;
 }
 
 bool Game_Battle::CheckWin() {
@@ -437,33 +412,25 @@ void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predi
 	last_event_filter = predicate;
 }
 
-bool Game_Battle::IsEscapeAllowed() {
-	return Game_Temp::battle_escape_mode != 0;
-}
-
-bool Game_Battle::IsTerminating() {
-	return terminate;
-}
-
 Game_Interpreter& Game_Battle::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
 }
 
-void Game_Battle::SetTerrainId(int terrain_id_) {
-	terrain_id = terrain_id_;
+void Game_Battle::SetTerrainId(int id) {
+	terrain_id = id;
 }
 
 int Game_Battle::GetTerrainId() {
 	return terrain_id;
 }
 
-void Game_Battle::SetBattleMode(int battle_mode_) {
-	battle_mode = battle_mode_;
+void Game_Battle::SetBattleCondition(RPG::System::BattleCondition cond) {
+	battle_cond = cond;
 }
 
-int Game_Battle::GetBattleMode() {
-	return battle_mode;
+RPG::System::BattleCondition Game_Battle::GetBattleCondition() {
+	return battle_cond;
 }
 
 void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
