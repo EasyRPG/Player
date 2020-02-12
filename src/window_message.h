@@ -160,7 +160,7 @@ protected:
 
 	PendingMessage pending_message;
 
-	void DrawGlyph(const std::string& glyph, bool instant_speed);
+	void DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont);
 	void IncrementLineCharCounter(int width);
 
 	void SetWaitForCharacter(int width);

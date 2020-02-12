@@ -539,8 +539,6 @@ protected:
 	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
-
 	/** Bitmap data. */
 	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;
@@ -584,6 +582,22 @@ inline Color Bitmap::GetBackgroundColor() const {
 
 inline Color Bitmap::GetShadowColor() const {
 	return sh_color;
+}
+
+inline int Bitmap::GetWidth() const {
+	return width();
+}
+
+inline int Bitmap::GetHeight() const {
+	return height();
+}
+
+inline Rect Bitmap::GetRect() const {
+	return Rect(0, 0, width(), height());
+}
+
+inline bool Bitmap::GetTransparent() const {
+	return format.alpha_type != PF::NoAlpha;
 }
 
 #endif

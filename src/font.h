@@ -20,6 +20,8 @@
 
 // Headers
 #include "system.h"
+#include "memory_management.h"
+#include "rect.h"
 #include <string>
 
 class Color;
@@ -32,13 +34,63 @@ class Font {
  public:
 	virtual ~Font() {}
 
-	Rect GetSize(std::string const& txt) const;
-	virtual Rect GetSize(std::u32string const& txt) const = 0;
+	/**
+	 * Returns the size of the rendered string, not including shadows.
+	 *
+	 * @param txt the string to measure
+	 * @return Rect describing the rendered string boundary
+	 */
+	virtual Rect GetSize(std::string const& txt) const = 0;
+	/**
+	 * Returns the size of the rendered utf32 character, not including shadows.
+	 *
+	 * @param ch the character to measure
+	 * @return Rect describing the rendered character boundary
+	 */
+	virtual Rect GetSize(char32_t ch) const = 0;
 
-	virtual BitmapRef Glyph(char32_t code) = 0;
+	struct GlyphRet {
+		/* bitmap which the glyph pixels are located within */
+		BitmapRef bitmap;
+		/* sub-rect of the bitmap which contains glyph pixels */
+		Rect rect;
+	};
 
-	void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, char32_t glyph);
-	void Render(Bitmap& bmp, int x, int y, Color const& color, char32_t glyph);
+	/* Returns a bitmap and rect containing the pixels of the glyph.
+	 * The bitmap may be larger than the size of the glyph, and so the
+	 * rect must be used to get the pixels out of the bitmap
+	 *
+	 * @param code which utf32 glyph to return.
+	 * @return @refer GlyphRet
+	 */
+	virtual GlyphRet Glyph(char32_t code) = 0;
+
+	/**
+	 * Renders the glyph onto bitmap at the given position with system graphic and color
+	 *
+	 * @param dest the bitmap to render to
+	 * @param x X offset to render glyph
+	 * @param y Y offset to render glyph
+	 * @param sys system graphic to use
+	 * @param color which color in the system graphic
+	 * @param glyph which utf32 glyph to render
+	 *
+	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
+	 */
+	Rect Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
+
+	/**
+	 * Renders the glyph onto bitmap at the given position with system graphic and color
+	 *
+	 * @param dest the bitmap to render to
+	 * @param x X offset to render glyph
+	 * @param y Y offset to render glyph
+	 * @param color which color in the system graphic
+	 * @param glyph which utf32 glyph to render
+	 *
+	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest.
+	 */
+	Rect Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
 	static FontRef Default();

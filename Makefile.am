@@ -458,11 +458,13 @@ test_runner_SOURCES = \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
 	tests/filefinder.cpp \
+	tests/font.cpp \
 	tests/output.cpp \
 	tests/parse.cpp \
 	tests/platform.cpp \
 	tests/rtp.cpp \
 	tests/switches.cpp \
+	tests/text.cpp \
 	tests/utils.cpp \
 	tests/utf.cpp \
 	tests/variables.cpp \

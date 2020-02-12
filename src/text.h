@@ -19,22 +19,85 @@
 #define EP_TEXT_H
 
 #include "system.h"
-#include "font.h"
+#include "memory_management.h"
+#include "rect.h"
+#include "color.h"
 #include <string>
+
+class Font;
+class Bitmap;
 
 namespace Text {
 	/** TextDraw alignment options. */
 	enum Alignment {
+		/** Align text to the left. */
 		AlignLeft,
+		/** Align text to the center. */
 		AlignCenter,
+		/** Align text to the right. */
 		AlignRight
 	};
 
-	void Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	/**
+	 * Draws the text onto dest bitmap with given parameters.
+	 *
+	 * @param dest the bitmap to render to.
+	 * @param x X offset to render text.
+	 * @param y Y offset to render text.
+	 * @param font the font used to render.
+	 * @param system the system graphic to use to render.
+	 * @param color which color from the system graphic to use.
+	 * @param text the utf8 / exfont text to render.
+	 * @param align the text alignment to use
+	 *
+	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 */
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, const std::string& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text using the specified color on dest
+	 * Draws the text onto dest bitmap with given parameters. Does not draw a shadow.
+	 *
+	 * @param dest the bitmap to render to.
+	 * @param x X offset to render text.
+	 * @param y Y offset to render text.
+	 * @param font the font used to render.
+	 * @param color which color to use.
+	 * @param text the utf8 / exfont text to render.
+	 *
+	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
 	 */
-	void Draw(Bitmap& dest, int x, int y, Color color, FontRef font, std::string const& text);
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, const std::string& text);
+
+	/**
+	 * Draws the character onto dest bitmap with given parameters.
+	 *
+	 * @param dest the bitmap to render to.
+	 * @param x X offset to render text.
+	 * @param y Y offset to render text.
+	 * @param font the font used to render.
+	 * @param system the system graphic to use to render.
+	 * @param color which color from the system graphic to use.
+	 * @param ch the character to render.
+	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character. 
+	 *
+	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 */
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont);
+
+
+	/**
+	 * Draws the character onto dest bitmap with given parameters. Does not draw a shadow.
+	 *
+	 * @param dest the bitmap to render to.
+	 * @param x X offset to render text.
+	 * @param y Y offset to render text.
+	 * @param font the font used to render.
+	 * @param color which color to use.
+	 * @param ch the character to render.
+	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character. 
+	 *
+	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 */
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont);
 }
 #endif

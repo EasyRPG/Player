@@ -20,6 +20,7 @@
 #include <sstream>
 #include <iterator>
 
+#include "compiler.h"
 #include "window_message.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -34,6 +35,8 @@
 #include "game_battle.h"
 #include "bitmap.h"
 #include "font.h"
+#include "cache.h"
+#include "text.h"
 
 constexpr int message_animation_frames = 8;
 
@@ -329,6 +332,9 @@ void Window_Message::UpdateMessage() {
 		instant_speed_forced = true;
 	}
 
+	auto system = Cache::SystemOrBlack();
+	auto font = Font::Default();
+
 	while (true) {
 		const auto* end = &*text.end();
 
@@ -359,18 +365,16 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		const auto start_index = text_index;
+		auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+		text_index = tret.next;
 
-		auto res = Utils::UTF8Next(text_index, end);
-		text_index = res.iter;
-		auto ch = res.ch;
-
-		if (ch == 0) {
+		if (EP_UNLIKELY(!tret)) {
 			continue;
 		}
 
-		if (ch == '\r') {
-			// Not handled
+		const auto ch = tret.ch;
+		if (tret.is_exfont) {
+			DrawGlyph(*font, *system, ch, instant_speed, true);
 			continue;
 		}
 
@@ -402,14 +406,13 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (ch == Player::escape_char && text_index != end) {
+		if (std::iscntrl(static_cast<unsigned char>(ch))) {
+			// control characters not handled
+			continue;
+		}
+
+		if (tret.is_escape && ch != Player::escape_char) {
 			// Special message codes
-			const auto prev_index = text_index;
-
-			auto res = Utils::UTF8Next(text_index, end);
-			ch = res.ch;
-			text_index = res.iter;
-
 			switch (ch) {
 			case 'c':
 			case 'C':
@@ -479,44 +482,23 @@ void Window_Message::UpdateMessage() {
 					SetWait(61);
 				}
 				break;
-			case '\r':
-			case '\n':
-			case '\f':
-				// \ followed by linebreak, don't skip them
-				text_index = prev_index;
-				break;
 			default:
-				if (ch == Player::escape_char) {
-					DrawGlyph(Player::escape_symbol, instant_speed);
-				}
 				break;
 			}
 			continue;
 		}
 
-		if (ch == '$' && text_index != end) {
-			auto res = Utils::UTF8Next(text_index, end);
-			ch = res.ch;
-
-			if (ch < 128 && std::isalpha(static_cast<char>(ch))) {
-				text_index = res.iter;
-
-				// ExFont
-				DrawGlyph(std::string(start_index, text_index), instant_speed);
-				continue;
-			}
-		}
-
-		DrawGlyph(std::string(start_index, text_index), instant_speed);
+		DrawGlyph(*font, *system, ch, instant_speed, false);
 	}
 }
 
-void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
+void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont) {
 #ifdef EP_DEBUG_MESSAGE
-	Output::Debug("Msg Draw Glyph %s %d", glyph.c_str(), instant_speed);
+	Output::Debug("Msg Draw Glyph %d %d", glyph, instant_speed);
 #endif
-	contents->TextDraw(contents_x, contents_y, text_color, glyph);
-	int glyph_width = Font::Default()->GetSize(glyph).width;
+	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
+
+	int glyph_width = rect.width;
 	contents_x += glyph_width;
 	int width = (glyph_width - 1) / 6 + 1;
 	if (!instant_speed && glyph_width > 0) {

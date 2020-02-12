@@ -20,6 +20,16 @@ static void BM_FontSizeStr(benchmark::State& state) {
 
 BENCHMARK(BM_FontSizeStr);
 
+static void BM_FontSizeChar(benchmark::State& state) {
+	auto font = Font::Default();
+	for (auto _: state) {
+		auto rect = font->GetSize(symbol);
+		(void)rect;
+	}
+}
+
+BENCHMARK(BM_FontSizeChar);
+
 static void BM_Glyph(benchmark::State& state) {
 	auto font = Font::Default();
 	for (auto _: state) {
