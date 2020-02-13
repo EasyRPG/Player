@@ -193,6 +193,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/plane.h \
 	src/platform.cpp \
 	src/platform.h \
+	src/platform_clock.h \
 	src/player.cpp \
 	src/player.h \
 	src/psp2_clock.cpp \
@@ -284,6 +285,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/spriteset_map.h \
 	src/state.cpp \
 	src/state.h \
+	src/std_clock.h \
 	src/switch_ui.cpp \
 	src/switch_ui.h \
 	src/system.h \

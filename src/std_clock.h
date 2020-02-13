@@ -15,19 +15,18 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_GAME_CLOCK_H
-#define EP_GAME_CLOCK_H
+#ifndef EP_STD_CLOCK_H
+#define EP_STD_CLOCK_H
 
-#include "options.h"
 #include <chrono>
-#include "platform_clock.h"
+#include <type_traits>
+#include <thread>
 
-/**
- * Used for time keeping in Player
- */
-class Game_Clock {
-public:
-	using clock = Platform_Clock;
+struct StdClock {
+	using clock = std::conditional_t<
+		std::chrono::high_resolution_clock::is_steady,
+		std::chrono::high_resolution_clock,
+		std::chrono::steady_clock>;
 
 	using rep = clock::rep;
 	using period = clock::period;
@@ -42,40 +41,16 @@ public:
 	/** Sleep for the specified duration */
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
-
-	/** Get the target frames per second for the game simulation */
-	static constexpr int GetSimulationFps();
-
-	/** Get the amount of time each logical frame should take */
-	static constexpr duration GetSimulationTimeStep();
-
-	/** Get the timestep for a given frames per second value */
-	static constexpr duration TimeStepFromFps(int fps);
-
-	/** Log information about the Game_Clock */
-	static void logClockInfo();
 };
 
-inline Game_Clock::time_point Game_Clock::now() {
+inline StdClock::time_point StdClock::now() {
 	return clock::now();
 }
 
-constexpr int Game_Clock::GetSimulationFps() {
-	return DEFAULT_FPS;
-}
-
-constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
-	return TimeStepFromFps(GetSimulationFps());
-}
-
-constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
-	auto ns = std::chrono::nanoseconds(std::chrono::seconds(1)) / fps;
-	return std::chrono::duration_cast<Game_Clock::duration>(ns);
-}
-
 template <typename R, typename P>
-inline void Game_Clock::SleepFor(std::chrono::duration<R,P> dt) {
-	clock::SleepFor(dt);
+inline void StdClock::SleepFor(std::chrono::duration<R,P> dt) {
+	std::this_thread::sleep_for(dt);
 }
 
 #endif
+
