@@ -203,12 +203,6 @@ void Player::Init(int argc, char *argv[]) {
 	Input::Init(replay_input_path, record_input_path);
 }
 
-namespace {
-// FIXME: Refactor the main loop and get rid of these global objects.
-Instrumentation::FrameScope iframe_scope(false);
-bool did_sleep_this_frame = false;
-}
-
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
 	Scene::Push(std::make_shared<Scene_Logo>());
@@ -218,6 +212,8 @@ void Player::Run() {
 
 	// Reset frames before starting
 	FrameReset(Game_Clock::now());
+
+	start_time = Game_Clock::now();
 
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
@@ -232,24 +228,40 @@ void Player::Run() {
 #  endif
 		MainLoop();
 	}
-	iframe_scope.End();
 #endif
 }
 
 void Player::MainLoop() {
-	did_sleep_this_frame = false;
-	iframe_scope.Begin();
+	Instrumentation::FrameScope iframe;
 
-	Scene::instance->MainFunction();
+	next_frame = start_time + Game_Clock::GetSimulationTimeStep();
+
+	auto speed_modifier = GetSpeedModifier();
+	for (int i = 0; i < speed_modifier; ++i) {
+		Scene::old_instances.clear();
+		Scene::instance->MainFunction();
+	}
+
+	Player::Draw();
 
 	Scene::old_instances.clear();
 
+	start_time = next_frame;
+
 	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
 		Exit();
+		return;
 	}
-	if (!did_sleep_this_frame) {
-		iframe_scope.End();
+
+	// Don't use sleep when the port uses an external timing source
+#if !defined(USE_LIBRETRO)
+	auto cur_time = Game_Clock::now();
+	// Still time after graphic update? Yield until it's time for next one.
+	if (cur_time < next_frame) {
+		iframe.End();
+		Game_Clock::SleepFor(next_frame - cur_time);
 	}
+#endif
 }
 
 void Player::Pause() {
@@ -263,22 +275,6 @@ void Player::Resume() {
 }
 
 void Player::Update(bool update_scene) {
-	// available ms per frame, game logic expects 60 fps
-	next_frame = start_time + Game_Clock::GetSimulationTimeStep();
-
-	auto cur_time = Game_Clock::now();
-
-#if !defined(USE_LIBRETRO)
-	// libretro: The frontend handles this, cores should not do rate
-	// limiting
-	if (cur_time < start_time) {
-		// Ensure this function is only called 60 times per second.
-		// Main purpose is for emscripten where the calls per second
-		// equal the display refresh rate.
-		return;
-	}
-#endif
-
 	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
@@ -297,7 +293,6 @@ void Player::Update(bool update_scene) {
 	}
 
 	if (Main_Data::game_quit) {
-		Main_Data::game_quit->Update();
 		reset_flag |= Main_Data::game_quit->ShouldQuit();
 	}
 
@@ -322,50 +317,37 @@ void Player::Update(bool update_scene) {
 	Audio().Update();
 	Input::Update();
 
-	int speed_modifier = GetSpeedModifier();
-
-	for (int i = 0; i < speed_modifier; ++i) {
-		auto was_transition_pending = Transition::instance().IsActive();
-		Graphics::Update();
-		// If we aren't waiting on a transition, but we are waiting for scene delay.
-		if (!was_transition_pending) {
-			Scene::instance->UpdateDelayFrames();
-		}
-		if (update_scene) {
-			Scene::instance->Update();
-			// Async file loading or transition. Don't increment the frame
-			// counter as we now have to "suspend" and "resume"
-			if (Scene::IsAsyncPending()) {
-				old_instance->SetAsyncFromMainLoop();
-				break;
-			}
-			IncFrame();
-
-			// Not save to Update again, setup code must run:
-			if (&*old_instance != &*Scene::instance) {
-				break;
-			}
-		}
+	if (Main_Data::game_quit) {
+		Main_Data::game_quit->Update();
 	}
 
-	start_time = next_frame;
+	auto& transition = Transition::instance();
+	auto was_transition_pending = transition.IsActive();
 
-	BitmapRef disp = DisplayUi->GetDisplaySurface();
+	transition.Update();
 
-	cur_time = Game_Clock::now();
-	if (cur_time < next_frame) {
-		Graphics::Draw(*disp);
-		cur_time = Game_Clock::now();
-		// Don't use sleep when the port uses an external timing source
-#if !defined(USE_LIBRETRO)
-		// Still time after graphic update? Yield until it's time for next one.
-		if (cur_time < next_frame) {
-			iframe_scope.End();
-			did_sleep_this_frame = true;
-			Game_Clock::SleepFor(next_frame - cur_time);
-			iframe_scope.Begin();
+	// If we aren't waiting on a transition, but we are waiting for scene delay.
+	if (!was_transition_pending) {
+		Scene::instance->UpdateDelayFrames();
+	}
+	if (update_scene) {
+		Scene::instance->Update();
+		// Async file loading or transition. Don't increment the frame
+		// counter as we now have to "suspend" and "resume"
+		if (Scene::IsAsyncPending()) {
+			old_instance->SetAsyncFromMainLoop();
+			return;
 		}
-#endif
+		IncFrame();
+	}
+}
+
+void Player::Draw() {
+	Graphics::Update();
+
+	auto cur_time = Game_Clock::now();
+	if (cur_time < next_frame) {
+		Graphics::Draw(*DisplayUi->GetDisplaySurface());
 	}
 }
 
@@ -386,6 +368,7 @@ int Player::GetFrames() {
 }
 
 void Player::Exit() {
+	Graphics::UpdateSceneCallback();
 #ifdef EMSCRIPTEN
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";

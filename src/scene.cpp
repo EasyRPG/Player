@@ -95,6 +95,8 @@ void Scene::MainFunction() {
 	// it could have changed the scene.
 	if (!IsAsyncPending() && Scene::instance.get() == this) {
 		if (!init) {
+			Graphics::UpdateSceneCallback();
+
 			auto prev_scene_type = prev_scene ? prev_scene->type : Null;
 			TransferDrawablesFrom(prev_scene.get());
 			// Destroy the previous scene here, before any initialization logic / transition in occurs.
@@ -140,9 +142,6 @@ void Scene::MainFunction() {
 		auto next_scene = instance ? instance->type : Null;
 		Suspend(next_scene);
 		TransitionOut(next_scene);
-
-		// TransitionOut stored a screenshot of the last scene
-		Graphics::UpdateSceneCallback();
 
 		prev_scene = this->shared_from_this();
 		init = false;
