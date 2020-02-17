@@ -27,7 +27,7 @@
 
 namespace Utils {
 	/**
-	 * Converts a string to lower case.
+	 * Converts a string to lower case (ASCII only)
 	 *
 	 * @param str string to convert.
 	 * @return the converted string.
@@ -35,7 +35,15 @@ namespace Utils {
 	std::string LowerCase(const std::string& str);
 
 	/**
-	 * Converts a string to upper case.
+	 * Converts a string to lower case in-place (ASCII only, faster)
+	 *
+	 * @param str string to convert.
+	 * @return the passed and lowered string
+	 */
+	std::string& LowerCaseInPlace(std::string& str);
+
+	/**
+	 * Converts a string to upper case. (ASCII only)
 	 *
 	 * @param str string to convert.
 	 * @return the converted string.

@@ -85,8 +85,8 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 
 	// Custom, simple INI parser because liblcf ini is not efficient enough
 	// (lcf ini stores all keys/values but we only need one)
-	std::string formatted_key_search = "[" + Utils::LowerCase(formatted_key) + "]";
-	formatted_val = Utils::LowerCase(formatted_val);
+	std::string formatted_key_search = "[" + Utils::LowerCaseInPlace(formatted_key) + "]";
+	Utils::LowerCaseInPlace(formatted_val);
 	std::string path;
 	std::ifstream registry(registry_file);
 	if (!registry) {
@@ -101,7 +101,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 		if (!in_section) {
 			if (line.empty() || line[0] != '[') {
 				continue;
-			} else if (Utils::StartsWith(Utils::LowerCase(line), formatted_key_search)) {
+			} else if (Utils::StartsWith(Utils::LowerCaseInPlace(line), formatted_key_search)) {
 				// Found the section
 				in_section = true;
 			}
