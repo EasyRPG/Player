@@ -73,17 +73,17 @@ namespace {
 	std::string fonts_path;
 
 	struct {
-		// all RTP search paths
+		/** all RTP search paths */
 		search_path_list search_paths;
-		// RTP was disabled with --disable-rtp
+		/** RTP was disabled with --disable-rtp */
 		bool disable_rtp = true;
-		// Game has FullPackageFlag=1, RTP will still be used as RPG_RT does
+		/** Game has FullPackageFlag=1, RTP will still be used as RPG_RT does */
 		bool game_has_full_package_flag = false;
-		// warning about "game has FullPackageFlag=1 but needs RTP" shown
+		/** warning about "game has FullPackageFlag=1 but needs RTP" shown */
 		bool warning_broken_rtp_game_shown = false;
-		// RTP candidates per search_pathwarning_broken_rtp_game_shown
+		/** RTP candidates per search_path */
 		std::vector<RTP::RtpHitInfo> detected_rtp;
-		// the RTP the game uses, when only one left the RTP of the game is known
+		/** the RTP the game uses, when only one left the RTP of the game is known */
 		std::vector<RTP::Type> game_rtp;
 	} rtp_state;
 

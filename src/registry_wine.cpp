@@ -20,10 +20,11 @@
 #ifdef USE_WINE_REGISTRY
 
 #include <cstdlib>
+#include <fstream>
 #include "registry.h"
 #include "filefinder.h"
 #include "output.h"
-#include "inireader.h"
+#include "utils.h"
 
 /*
 Wine registry file example:
@@ -51,8 +52,8 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 		pos += 2;
 	}
 
-	// Puts value between quotes
-	std::string formatted_val = "\"" + val + "\"";
+	// Puts value between quotes and add =
+	std::string formatted_val = "\"" + val + "\""  + "=";
 
 	if (prefix.empty() || !FileFinder::Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
@@ -82,12 +83,43 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 		formatted_key.insert(pos, R"(\\Wow6432Node)");
 	}
 
-	INIReader registry(registry_file);
+	// Custom, simple INI parser because liblcf ini is not efficient enough
+	// (lcf ini stores all keys/values but we only need one)
+	std::string formatted_key_search = "[" + Utils::LowerCaseInPlace(formatted_key) + "]";
+	Utils::LowerCaseInPlace(formatted_val);
 	std::string path;
+	std::ifstream registry(registry_file);
+	if (!registry) {
+		return path;
+	}
 
-	if (registry.ParseError() != -1) {
-		string_value = registry.Get(formatted_key, formatted_val, "");
+	bool in_section = false;
+	std::string line;
+	line.reserve(1024);
+	do {
+		std::getline(registry, line);
+		if (!in_section) {
+			if (line.empty() || line[0] != '[') {
+				continue;
+			} else if (Utils::StartsWith(Utils::LowerCaseInPlace(line), formatted_key_search)) {
+				// Found the section
+				in_section = true;
+			}
+		} else {
+			if (!line.empty() && line[0] == '[') {
+				// value not found
+				break;
+			}
 
+			if (Utils::StartsWith(Utils::LowerCase(line), formatted_val)) {
+				// value found
+				string_value = line.substr(formatted_val.length());
+				break;
+			}
+		}
+	} while (!registry.eof());
+
+	if (!string_value.empty()) {
 		// Removes begin and end quotes but keeps all other inner just in case
 		if (!string_value.empty()) {
 			string_value.erase(0, 1);

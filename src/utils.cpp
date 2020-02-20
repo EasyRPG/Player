@@ -36,13 +36,34 @@ namespace {
 
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
-	std::transform(result.begin(), result.end(), result.begin(), tolower);
+	LowerCaseInPlace(result);
 	return result;
 }
 
+std::string& Utils::LowerCaseInPlace(std::string& str) {
+	auto lower = [](char& c) -> char {
+		if (c >= 'A' && c <= 'Z') {
+			return c + 'a' - 'A';
+		} else {
+			return c;
+		}
+	};
+
+	std::transform(str.begin(), str.end(), str.begin(), lower);
+	return str;
+}
+
 std::string Utils::UpperCase(const std::string& str) {
+	auto upper = [](char& c) -> char {
+		if (c >= 'a' && c <= 'z') {
+			return c + 'A' - 'a';
+		} else {
+			return c;
+		}
+	};
+
 	std::string result = str;
-	std::transform(result.begin(), result.end(), result.begin(), toupper);
+	std::transform(result.begin(), result.end(), result.begin(), upper);
 	return result;
 }
 
