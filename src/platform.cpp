@@ -160,6 +160,7 @@ std::string Platform::Directory::GetEntryName() const {
 #endif
 }
 
+#ifndef PSP2
 static inline Platform::FileType GetEntryType(...) {
 	return Platform::FileType::Unknown;
 }
@@ -170,6 +171,7 @@ static inline Platform::FileType GetEntryType(T* entry) {
 		   entry->d_type == DT_DIR ? Platform::FileType::Directory :
 		   entry->d_type == DT_UNKNOWN ? Platform::FileType::Unknown : Platform::FileType::Other;
 }
+#endif
 
 Platform::FileType Platform::Directory::GetEntryType() const {
 	assert(valid_entry);

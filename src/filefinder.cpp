@@ -529,23 +529,23 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	assert(!version_str.empty());
 
 #ifdef GEKKO
-	add_rtp_path("sd:/data/rtp/" + version_str + "/");
-	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+	add_rtp_path("sd:/data/rtp/" + version_str);
+	add_rtp_path("usb:/data/rtp/" + version_str);
 #elif defined(__SWITCH__)
-	add_rtp_path("./rtp/" + version_str + "/");
-	add_rtp_path("/switch/easyrpg-player/rtp/" + version_str + "/");
+	add_rtp_path("./rtp/" + version_str);
+	add_rtp_path("/switch/easyrpg-player/rtp/" + version_str);
 #elif defined(_3DS)
-	add_rtp_path("romfs:/data/rtp/" + version_str + "/");
-	add_rtp_path("sdmc:/data/rtp/" + version_str + "/");
+	add_rtp_path("romfs:/data/rtp/" + version_str);
+	add_rtp_path("sdmc:/data/rtp/" + version_str);
 #elif defined(PSP2)
-	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
+	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str);
 #elif defined(USE_LIBRETRO)
 	const char* dir = nullptr;
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
-		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
+		add_rtp_path(std::string(dir) + "/rtp/" + version_str);
 	}
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
-		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
+		add_rtp_path(std::string(dir) + "/rtp/" + version_str);
 	}
 #elif defined(__ANDROID__)
 	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
@@ -561,7 +561,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	env->ReleaseStringUTFChars(return_string, js);
 	env->DeleteLocalRef(sdl_activity);
 	env->DeleteLocalRef(cls);
-	add_rtp_path(cs + "/" + version_str + "/");
+	add_rtp_path(cs + "/" + version_str);
 #elif defined(USE_WINE_REGISTRY) || defined(_WIN32)
 	std::string const product = "RPG" + version_str;
 	if (Player::IsRPG2k()) {
@@ -587,7 +587,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	// Our RTP is for all engines
 	read_rtp_registry("EasyRPG", "RTP", "path");
 #else
-	add_rtp_path("/data/rtp/" + version_str + "/");
+	add_rtp_path("/data/rtp/" + version_str);
 #endif
 	std::vector<std::string> env_paths;
 
