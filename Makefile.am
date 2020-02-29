@@ -286,6 +286,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/state.cpp \
 	src/state.h \
 	src/std_clock.h \
+	src/switch_clock.cpp \
+	src/switch_clock.h \
 	src/switch_ui.cpp \
 	src/switch_ui.h \
 	src/system.h \

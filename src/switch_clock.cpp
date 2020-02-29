@@ -14,26 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef EP_PLATFORM_CLOCK_H
-#define EP_PLATFORM_CLOCK_H
-
-#include <chrono>
-#include <type_traits>
-#include <thread>
-#include "3ds_clock.h"
 #include "switch_clock.h"
-#include "psp2_clock.h"
-#include "std_clock.h"
 
-#if defined(_3DS)
-using Platform_Clock = CtrClock;
-#elif defined(__SWITCH__)
-using Platform_Clock = NxClock;
-#elif defined(PSP2)
-using Platform_Clock = Psp2Clock;
-#else
-using Platform_Clock = StdClock;
-#endif
-
+#ifdef __SWITCH__
+constexpr bool NxClock::is_steady;
+constexpr int64_t NxClock::ticks_per_sec;
 #endif

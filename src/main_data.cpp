@@ -79,7 +79,7 @@ void Main_Data::Init() {
 			// first set to current directory for all platforms
 			project_path = ".";
 
-#if defined(GEKKO) || defined(SWITCH) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 			// Working directory not correctly handled
 			char working_dir[256];
 			getcwd(working_dir, 255);
