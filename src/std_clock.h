@@ -22,6 +22,7 @@
 #include <type_traits>
 #include <thread>
 
+#if !defined(_3DS) && !defined(__SWITCH__) && !defined(PSP2)
 struct StdClock {
 	using clock = std::conditional_t<
 		std::chrono::high_resolution_clock::is_steady,
@@ -65,5 +66,6 @@ constexpr const char* StdClock::Name() {
 	return "Unknown";
 }
 
+#endif
 #endif
 
