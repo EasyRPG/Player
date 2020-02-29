@@ -38,4 +38,6 @@
  */
 #define PLAYER_SAVEGAME_VERSION (PLAYER_MAJOR * 1000 + PLAYER_MINOR * 100 + PLAYER_PATCH * 10 + 0)
 
+extern const char PLAYER_GIT_VERSION[];
+
 #endif /* EP_VERSION_H */

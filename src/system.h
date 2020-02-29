@@ -79,7 +79,7 @@
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(SWITCH)
+#elif defined(__SWITCH__)
 #elif defined(__MORPHOS__) || defined(__amigaos4__)
 #  define SUPPORT_ZOOM
 #  define WORDS_BIGENDIAN

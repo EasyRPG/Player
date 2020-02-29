@@ -4,6 +4,9 @@
 #                     - Based on Rikku2000's -                   #
 ##################################################################
 
+# Default Target
+all:
+
 # Compiler Device option
 BUILD_TARGET ?= gcwzero
 
@@ -67,6 +70,9 @@ SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
+
+include ../../builds/git_version.mk
+CPPFILES	+= $(GIT_VERSION_OUT)
 
 # Compiler flags
 CFLAGS += -Wall -DNDEBUG -DUSE_SDL=$(SDL_TARGET) -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)

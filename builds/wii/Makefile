@@ -18,6 +18,9 @@ endif
 
 include $(DEVKITPPC)/wii_rules
 
+# Default Target
+all:
+
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
@@ -88,6 +91,9 @@ CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cpp)
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+include $(TOPDIR)/builds/git_version.mk
+CPPFILES	+= $(GIT_VERSION_OUT)
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

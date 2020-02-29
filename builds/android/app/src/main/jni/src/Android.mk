@@ -17,6 +17,9 @@ LOCAL_SRC_FILES := \
 	org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp))
 
+include $(LOCAL_PATH)/$(PLAYER_PATH)/builds/git_version.mk
+LOCAL_SRC_FILES	+= $(patsubst $(LOCAL_PATH)/%, %, $(GIT_VERSION_OUT))
+
 LOCAL_SHARED_LIBRARIES := SDL2 hidapi
 
 LOCAL_STATIC_LIBRARIES := \
