@@ -82,7 +82,7 @@ void Scene_ActorTarget::Start() {
 		}
 
 		if (skill->scope == RPG::Skill::Scope_self) {
-			target_window->SetIndex(-actor_index);
+			target_window->SetIndex(-actor_index - 1);
 		} else if (skill->scope == RPG::Skill::Scope_party) {
 			target_window->SetIndex(-100);
 		}
