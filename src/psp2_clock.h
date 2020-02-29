@@ -37,6 +37,8 @@ struct Psp2Clock {
 
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
+
+	static constexpr const char* Name();
 };
 
 inline Psp2Clock::time_point Psp2Clock::now() {
@@ -48,6 +50,10 @@ template <typename R, typename P>
 inline void Psp2Clock::SleepFor(std::chrono::duration<R,P> dt) {
 	auto us = std::chrono::duration_cast<std::chrono::microseconds>(dt);
 	sceKernelDelayThread(us.count());
+}
+
+constexpr const char* Psp2Clock::Name() {
+	return "Psp2Clock";
 }
 
 #endif

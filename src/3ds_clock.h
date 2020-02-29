@@ -38,6 +38,8 @@ struct CtrClock {
 
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
+
+	static constexpr const char* Name();
 };
 
 inline CtrClock::time_point CtrClock::now() {
@@ -49,6 +51,10 @@ template <typename R, typename P>
 inline void CtrClock::SleepFor(std::chrono::duration<R,P> dt) {
 	auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(dt);
 	svcSleepThread(ns.count());
+}
+
+constexpr const char* CtrClock::Name() {
+	return "CtrClock";
 }
 
 #endif

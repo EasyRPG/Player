@@ -41,6 +41,8 @@ struct StdClock {
 	/** Sleep for the specified duration */
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
+
+	static constexpr const char* Name();
 };
 
 inline StdClock::time_point StdClock::now() {
@@ -50,6 +52,17 @@ inline StdClock::time_point StdClock::now() {
 template <typename R, typename P>
 inline void StdClock::SleepFor(std::chrono::duration<R,P> dt) {
 	std::this_thread::sleep_for(dt);
+}
+
+constexpr const char* StdClock::Name() {
+	if (std::is_same<clock,std::chrono::high_resolution_clock>::value) {
+		return "StdHigRes";
+	} else if (std::is_same<clock,std::chrono::steady_clock>::value) {
+		return "StdSteady";
+	} else if (std::is_same<clock,std::chrono::system_clock>::value) {
+		return "StdSystem";
+	}
+	return "Unknown";
 }
 
 #endif

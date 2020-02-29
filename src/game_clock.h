@@ -52,6 +52,9 @@ public:
 	/** Get the timestep for a given frames per second value */
 	static constexpr duration TimeStepFromFps(int fps);
 
+	/** Get the name of the underlying clock type */
+	static constexpr const char* Name();
+
 	/** Log information about the Game_Clock */
 	static void logClockInfo();
 };
@@ -76,6 +79,10 @@ constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
 template <typename R, typename P>
 inline void Game_Clock::SleepFor(std::chrono::duration<R,P> dt) {
 	clock::SleepFor(dt);
+}
+
+constexpr const char* Game_Clock::Name() {
+	return clock::Name();
 }
 
 #endif

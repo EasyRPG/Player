@@ -38,6 +38,8 @@ struct NxClock {
 
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
+
+	static constexpr const char* Name();
 };
 
 inline NxClock::time_point NxClock::now() {
@@ -49,6 +51,10 @@ template <typename R, typename P>
 inline void NxClock::SleepFor(std::chrono::duration<R,P> dt) {
 	auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(dt);
 	svcSleepThread(ns.count());
+}
+
+constexpr const char* NxClock::Name() {
+	return "NxClock";
 }
 
 #endif
