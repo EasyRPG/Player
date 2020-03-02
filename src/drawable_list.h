@@ -119,9 +119,17 @@ class DrawableList {
 		 * Sort the list if it's dirty, then call Draw() on every drawable in order.
 		 *
 		 * @param dst The bitmap to draw onto
-		 * @param max_z Skip any drawables with z > max_priority
 		 */
-		void Draw(Bitmap& dst, int max_z = std::numeric_limits<int>::max());
+		void Draw(Bitmap& dst);
+
+		/**
+		 * Sort the list if it's dirty, then call Draw() on every drawable in order.
+		 *
+		 * @param dst The bitmap to draw onto
+		 * @param min_z Skip any drawables with z < min_z
+		 * @param max_z Skip any drawables with z > max_z
+		 */
+		void Draw(Bitmap& dst, int min_z, int max_z);
 
 	private:
 		std::vector<Drawable*> _list;
@@ -177,6 +185,10 @@ inline void DrawableList::SetDirty() {
 
 inline void DrawableList::SetClean() {
 	_dirty = false;
+}
+
+inline void DrawableList::Draw(Bitmap& dst) {
+	Draw(dst, std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 }
 
 #endif

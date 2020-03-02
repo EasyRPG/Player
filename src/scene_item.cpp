@@ -116,7 +116,7 @@ void Scene_Item::TransitionOut(Scene::SceneType next_scene) {
 	}
 
 	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {
-		Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
+		Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	} else {
 		Scene::TransitionOut(next_scene);
 	}

@@ -66,7 +66,7 @@ void Scene_Teleport::Update() {
 
 void Scene_Teleport::TransitionOut(SceneType next_scene) {
 	if (next_scene == Map) {
-		Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
+		Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	} else {
 		Scene::TransitionOut(next_scene);
 	}

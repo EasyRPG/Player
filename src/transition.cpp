@@ -16,9 +16,11 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <cmath>
 
 #include "transition.h"
 #include "bitmap.h"
@@ -29,51 +31,92 @@
 #include "baseui.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
+#include "output.h"
+
+int Transition::GetDefaultFrames(Transition::Type type)
+{
+	switch (type) {
+		case TransitionFadeIn:
+		case TransitionFadeOut:
+			return 32;
+		case TransitionCutIn:
+		case TransitionCutOut:
+		case TransitionNone:
+			return 0;
+		default:
+			return 40;
+	}
+	return 0;
+}
 
 Transition::Transition() : Drawable(Priority_Transition, Drawable::Flags::Global)
 {
+	DrawableMgr::Register(this);
 }
 
-void Transition::AppendBefore(Color color, int duration, int iterations) {
-	if (!IsActive()) {
-		current_frame = 0;
-		total_frames = 0;
-	}
-	flash_color = color;
+void Transition::PrependFlashes(int r, int g, int b, int p, int duration, int iterations) {
+	flash.red = r;
+	flash.green = g;
+	flash.blue = b;
+	flash.current_level = 0.0;
+	flash.time_left = 0;
+
+	flash_power = p;
 	flash_duration = std::max(1, duration);
 	flash_iterations = std::max(1, iterations);
-	total_frames += flash_duration * flash_iterations;
 }
 
-void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bool erase) {
-	// FIXME: Break this dependency on DisplayUI
-	if (!black_screen && DisplayUi) {
-		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-		DrawableMgr::Register(this);
+void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) {
+	if (duration < 0) {
+		duration = GetDefaultFrames(type);
 	}
-
-	if (erase && type == TransitionNone) {
-		old_frozen_screen = Graphics::SnapToBitmap(GetZ());
-		screen1 = old_frozen_screen;
-		return;
-	}
-	else if ((screen_erased && erase) || type == TransitionNone) {
-		return;
-	}
-
-	frozen_screen = Graphics::SnapToBitmap(GetZ());
-	screen1 = erase ? frozen_screen : old_frozen_screen? old_frozen_screen : black_screen;
-	screen2 = erase ? black_screen : frozen_screen;
-
 	transition_type = type;
 	scene = linked_scene;
-	screen_erased = erase;
-	old_frozen_screen = nullptr;
 
 	current_frame = 0;
+	flash = {};
+	flash_power = 0;
 	flash_iterations = 0;
 	flash_duration = 0;
-	total_frames = transition_type == TransitionErase ? 1 : duration;
+	total_frames = 0;
+
+	// Erase transitions are skipped entirely if screen already erased.
+	if (type != TransitionNone && screen_erased && erase) {
+		transition_type = TransitionNone;
+		return;
+	}
+
+	// FIXME: Break this dependency on DisplayUI
+	if (screen_erased) {
+		screen1 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	} else {
+		if (erase) {
+			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
+			Graphics::GlobalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
+		} else {
+			screen1 = DisplayUi->CaptureScreen();
+		}
+	}
+	if (erase) {
+		screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	} else {
+		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+		Graphics::GlobalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+	}
+
+	// Total frames and erased have to be set *after* the above drawing code.
+	// Otherwise IsActive() / IsErased() will mess up drawing.
+	total_frames = duration;
+
+	// TransitionNone is neither a Show or Erase, it just waits and does nothing.
+	// Screen state is not changed.
+	if (type == TransitionNone) {
+		return;
+	}
+
+	screen_erased = erase;
 
 	SetAttributesTransitions();
 }
@@ -146,16 +189,13 @@ void Transition::Draw(Bitmap& dst) {
 	int w = dst.GetWidth();
 	int h = dst.GetHeight();
 
-	if (current_frame < flash_duration * flash_iterations) {
-		Color current_color = Color(flash_color.red, flash_color.green, flash_color.blue, (flash_duration - current_frame % flash_duration) * 255 / flash_duration);
-		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), current_color, 255);
-		return;
-	}
-	else if (total_frames == flash_duration * flash_iterations) {
+	if (flash_iterations > 0) {
+		auto color = Flash::MakeColor(flash.red, flash.green, flash.blue, flash.current_level);
+		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), color, 255);
 		return;
 	}
 
-	int percentage = (current_frame - flash_duration * flash_iterations) * 100 / (total_frames - flash_duration * flash_iterations);
+	int percentage = (current_frame) * 100 / (total_frames);
 
 	switch (transition_type) {
 	case TransitionFadeIn:
@@ -181,7 +221,7 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionBlindOpen:
 		for (int i = 0; i < h / 8; i++) {
 			dst.Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - 8 * percentage / 100), 255);
-			dst.Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255 * percentage / 100);
+			dst.Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255);
 		}
 		break;
 	case TransitionBlindClose:
@@ -329,31 +369,44 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	case TransitionWaveIn:
 	case TransitionWaveOut:
-		// If TransitionWaveIn, invert percentage and screen:
-		if (transition_type == TransitionWaveIn) { percentage = 100 - percentage; }
-		screen_pointer1 = transition_type == TransitionWaveIn ? screen2 : screen1;
-		screen_pointer2 = transition_type == TransitionWaveIn ? screen1 : screen2;
-
-		dst.Blit(0, 0, *screen_pointer2, screen_pointer1->GetRect(), 255);
-		dst.WaverBlit(0, 0, 1, 1, *screen_pointer1, screen_pointer2->GetRect(), percentage * 2 / 5, percentage * 8, 255);
+		{
+			// If TransitionWaveIn, invert percentage and screen:
+			auto p = (transition_type == TransitionWaveIn) ? 100 - percentage : percentage;
+			auto& screen = (transition_type == TransitionWaveIn) ? *screen2 : *screen1;
+			auto depth = p * 40 / 100;
+			auto phase = p * 5 * M_PI / 100.0 + M_PI;
+			dst.WaverBlit(0, 0, 1, 1, screen, screen.GetRect(), depth, phase, Opacity::Opaque());
+		}
 		break;
-	default:
-		if (screen_erased)
-			dst.Clear();
-		else
-			dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
+	case TransitionCutIn:
+		dst.Blit(0, 0, *screen2, screen2->GetRect(), Opacity::Opaque());
+		break;
+	case TransitionCutOut:
+		dst.Blit(0, 0, *screen1, screen1->GetRect(), Opacity::Opaque());
+		break;
+	case TransitionNone:
 		break;
 	}
 }
 
 void Transition::Update() {
 	if (IsActive()) {
+		if (flash_iterations > 0) {
+			if (flash.time_left > 0) {
+				Flash::Update(flash.current_level, flash.time_left);
+				if (flash.time_left > 0) {
+					return;
+				}
+				--flash_iterations;
+			}
+			if (flash_iterations > 0) {
+				flash.current_level = flash_power;
+				flash.time_left = flash_duration;
+				return;
+			}
+		}
 		//Update current_frame:
 		current_frame++;
-	}
-	else if (frozen_screen) {
-		frozen_screen.reset();
-		frozen_screen = nullptr;
 	}
 }
 

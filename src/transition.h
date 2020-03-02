@@ -33,7 +33,7 @@
  */
 class Transition : public Drawable {
 public:
-	enum TransitionType {
+	enum Type {
 		TransitionFadeIn,
 		TransitionFadeOut,
 		TransitionRandomBlocks,
@@ -69,23 +69,42 @@ public:
 		TransitionMosaicOut,
 		TransitionWaveIn,
 		TransitionWaveOut,
-		TransitionErase,
+		TransitionCutIn,
+		TransitionCutOut,
 		TransitionNone
 	};
 
+	/**
+	 * Gets the default number of frames for the given transition type.
+	 *
+	 * @param type Which type to request
+	 *
+	 * @return default number of frames for this transition type
+	 */
+	static int GetDefaultFrames(Type type);
+
+	/** @return the transition singleton */
 	static Transition& instance();
 
 	/**
-	 * Defines a screen transition.
+	 * Initiate a ShowScreen transition
 	 *
 	 * @param type transition type.
 	 * @param linked_scene scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get())
-	 * @param duration transition duration.
-	 * @param erase erase screen flag.
+	 * @param duration transition duration, set to -1 to use the default number of frames.
 	 */
-	void Init(TransitionType type, Scene *linked_scene, int duration, bool erase = false);
+	void InitShow(Type type, Scene *linked_scene, int duration = -1);
 
-	void AppendBefore(Color color, int duration, int iterations);
+	/**
+	 * Initiate an EraseScreen transition
+	 *
+	 * @param type transition type.
+	 * @param linked_scene scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get())
+	 * @param duration transition duration, set to -1 to use the default number of frames.
+	 */
+	void InitErase(Type type, Scene *linked_scene, int duration = -1);
+
+	void PrependFlashes(int r, int g, int b, int power, int duration, int iterations);
 
 	void Draw(Bitmap& dst) override;
 	void Update();
@@ -95,23 +114,30 @@ public:
 
 private:
 	Transition();
+	void Init(Type type, Scene *linked_scene, int duration, bool erase);
 
 	const uint32_t size_random_blocks = 4;
 
-	BitmapRef black_screen;
-	BitmapRef frozen_screen;
-	BitmapRef old_frozen_screen;
 	BitmapRef screen1;
 	BitmapRef screen2;
 	BitmapRef random_block_transition;
 
-	TransitionType transition_type;
-	Scene *scene;
-	int current_frame = -1;
-	int total_frames = -2;
+	Type transition_type = TransitionNone;
+	Scene *scene = nullptr;
+	int current_frame = 0;
+	int total_frames = 0;
 	bool screen_erased = false;
 
-	Color flash_color;
+	struct FlashData {
+		int32_t red = 0;
+		int32_t blue = 0;
+		int32_t green = 0;
+		double current_level = 0.0;
+		int32_t time_left = 0;
+	};
+	FlashData flash;
+
+	int flash_power = 0;
 	int flash_duration = 0;
 	int flash_iterations = 0;
 
@@ -127,8 +153,16 @@ inline Transition& Transition::instance() {
 	return transition;
 }
 
+inline void Transition::InitShow(Type type, Scene *linked_scene, int duration) {
+	Init(type, linked_scene, duration, false);
+}
+
+inline void Transition::InitErase(Type type, Scene *linked_scene, int duration) {
+	Init(type, linked_scene, duration, true);
+}
+
 inline bool Transition::IsActive() {
-	return current_frame <= total_frames;
+	return current_frame < total_frames || flash_iterations != 0;
 }
 
 inline bool Transition::IsErased() {

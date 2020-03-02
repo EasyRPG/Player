@@ -37,8 +37,6 @@ using namespace std::chrono_literals;
 
 namespace Graphics {
 	void UpdateTitle();
-	void LocalDraw(Bitmap& dst, int priority = Priority::Priority_Maximum);
-	void GlobalDraw(Bitmap& dst, int priority = Priority::Priority_Maximum);
 
 	int framerate;
 
@@ -126,40 +124,39 @@ void Graphics::Draw(Bitmap& dst) {
 	fps_overlay->AddFrame();
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
+	auto& transition = Transition::instance();
 
-	if (Transition::instance().IsErased()) {
+	int min_z = std::numeric_limits<int>::min();
+	int max_z = std::numeric_limits<int>::max();
+	if (transition.IsActive()) {
+		min_z = transition.GetZ();
+	}
+
+	if (transition.IsErased()) {
 		DisplayUi->CleanDisplay();
-		GlobalDraw(dst);
+		GlobalDraw(dst, min_z, max_z);
 		DisplayUi->UpdateDisplay();
 		return;
 	}
-	LocalDraw(dst);
-	GlobalDraw(dst);
+	LocalDraw(dst, min_z, max_z);
+	GlobalDraw(dst, min_z, max_z);
 	DisplayUi->UpdateDisplay();
 }
 
-void Graphics::LocalDraw(Bitmap& dst, int priority) {
+void Graphics::LocalDraw(Bitmap& dst, int min_z, int max_z) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
 	if (!drawable_list.empty()) {
 		current_scene->DrawBackground(dst);
 	}
 
-	drawable_list.Draw(dst, priority);
+	drawable_list.Draw(dst, min_z, max_z);
 }
 
-void Graphics::GlobalDraw(Bitmap& dst, int priority) {
+void Graphics::GlobalDraw(Bitmap& dst, int min_z, int max_z) {
 	auto& drawable_list = DrawableMgr::GetGlobalList();
 
-	drawable_list.Draw(dst, priority);
-}
-
-
-BitmapRef Graphics::SnapToBitmap(int priority) {
-	BitmapRef disp = DisplayUi->GetDisplaySurface();
-	LocalDraw(*disp, priority);
-	GlobalDraw(*disp, priority);
-	return DisplayUi->CaptureScreen();
+	drawable_list.Draw(dst, min_z, max_z);
 }
 
 void Graphics::FrameReset(Game_Clock::time_point now) {

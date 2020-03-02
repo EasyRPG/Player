@@ -161,11 +161,11 @@ void Scene::Suspend(SceneType /* next_scene */) {
 }
 
 void Scene::TransitionIn(SceneType) {
-	Transition::instance().Init(Transition::TransitionFadeIn, this, 6);
+	Transition::instance().InitShow(Transition::TransitionFadeIn, this, 6);
 }
 
 void Scene::TransitionOut(SceneType) {
-	Transition::instance().Init(Transition::TransitionFadeOut, this, 6, true);
+	Transition::instance().InitErase(Transition::TransitionFadeOut, this, 6);
 }
 
 void Scene::SetAsyncFromMainLoop() {

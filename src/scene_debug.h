@@ -39,6 +39,8 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void TransitionIn(SceneType prev_scene) override;
+	void TransitionOut(SceneType next_scene) override;
 
 	/**
 	 * Updates the range list window.

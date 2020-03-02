@@ -111,17 +111,23 @@ void Scene_Battle::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+	Transition::instance().InitShow(Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this);
 }
 
 void Scene_Battle::TransitionOut(SceneType next_scene) {
-	if (Player::exit_flag
-			|| Game_Battle::battle_test.enabled
-			|| next_scene == Scene::Debug || next_scene == Scene::Title) {
+	auto& transition = Transition::instance();
+
+	if (next_scene == Scene::Debug) {
+		transition.InitErase(Transition::TransitionCutOut, this);
+		return;
+	}
+
+	if (next_scene == Scene::Null || next_scene == Scene::Title) {
 		Scene::TransitionOut(next_scene);
 		return;
 	}
-	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
+
+	transition.InitErase(Game_System::GetTransition(Game_System::Transition_EndBattleErase), this);
 }
 
 void Scene_Battle::DrawBackground(Bitmap& dst) {

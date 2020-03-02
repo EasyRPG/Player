@@ -52,9 +52,9 @@ void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 }
 
 void Scene_Gameover::TransitionIn(SceneType /* prev_scene */) {
-	Transition::instance().Init(Transition::TransitionFadeIn, this, 80);
+	Transition::instance().InitShow(Transition::TransitionFadeIn, this, 80);
 }
 
 void Scene_Gameover::TransitionOut(SceneType /* next_scene */) {
-	Transition::instance().Init(Transition::TransitionFadeOut, this, 80, true);
+	Transition::instance().InitErase(Transition::TransitionFadeOut, this, 80);
 }

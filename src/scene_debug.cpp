@@ -41,6 +41,7 @@
 #include "game_player.h"
 #include "data.h"
 #include "output.h"
+#include "transition.h"
 
 struct Scene_Debug::IndexSet {
 	int range_index = 0;
@@ -734,5 +735,12 @@ void Scene_Debug::DoCallEvent() {
 		Scene::PopUntil(Scene::Map);
 		Output::Debug("Debug Scene Forced execution of common event %d on the map foreground interpreter.", ce.GetIndex());
 	}
+}
 
+void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {
+	Transition::instance().InitShow(Transition::TransitionCutIn, this);
+}
+
+void Scene_Debug::TransitionOut(SceneType /* next_scene */) {
+	Transition::instance().InitErase(Transition::TransitionCutOut, this);
 }
