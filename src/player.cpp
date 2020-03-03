@@ -349,6 +349,7 @@ void Player::Draw() {
 	auto cur_time = Game_Clock::now();
 	if (cur_time < next_frame) {
 		Graphics::Draw(*DisplayUi->GetDisplaySurface());
+		DisplayUi->UpdateDisplay();
 	}
 }
 

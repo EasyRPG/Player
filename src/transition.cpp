@@ -93,7 +93,6 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 		if (erase) {
 			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
 			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
-			Graphics::GlobalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
 		} else {
 			screen1 = DisplayUi->CaptureScreen();
 		}
@@ -103,7 +102,6 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	} else {
 		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
 		Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
-		Graphics::GlobalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
 	}
 
 	// Total frames and erased have to be set *after* the above drawing code.

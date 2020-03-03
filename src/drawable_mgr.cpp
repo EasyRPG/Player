@@ -34,18 +34,10 @@ void DrawableMgr::SetLocalList(DrawableList* list) {
 }
 
 void DrawableMgr::Register(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		GetGlobalList().Append(drawable);
-	} else {
-		GetLocalList().Append(drawable);
-	}
+	GetLocalList().Append(drawable);
 }
 
 void DrawableMgr::Remove(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		GetGlobalList().Take(drawable);
-	} else {
-		GetLocalList().Take(drawable);
-	}
+	GetLocalList().Take(drawable);
 }
 

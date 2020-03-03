@@ -24,7 +24,6 @@
 
 struct DrawableMgr {
 	public:
-		static DrawableList& GetGlobalList();
 		static DrawableList& GetLocalList();
 		static DrawableList* GetLocalListPtr();
 
@@ -38,12 +37,6 @@ struct DrawableMgr {
 };
 
 
-inline DrawableList& DrawableMgr::GetGlobalList() {
-	// FIXME: Make DrawableList constructor constexpr to optimize this.
-	static DrawableList _global;
-	return _global;
-}
-
 inline DrawableList& DrawableMgr::GetLocalList() {
 	auto* local = GetLocalListPtr();
 	assert(local != nullptr);
@@ -54,12 +47,8 @@ inline DrawableList* DrawableMgr::GetLocalListPtr() {
 	return _local;
 }
 
-inline void DrawableMgr::OnUpdateZ(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		GetGlobalList().SetDirty();
-	} else {
-		GetLocalList().SetDirty();
-	}
+inline void DrawableMgr::OnUpdateZ(Drawable* /* drawable */) {
+	GetLocalList().SetDirty();
 }
 
 #endif

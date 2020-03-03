@@ -29,7 +29,6 @@ TEST_CASE("LocalSet") {
 
 		REQUIRE_EQ(DrawableMgr::GetLocalListPtr(), &list);
 		REQUIRE_EQ(&DrawableMgr::GetLocalList(), &list);
-		REQUIRE_NE(&DrawableMgr::GetGlobalList(), &list);
 	}
 	REQUIRE_EQ(DrawableMgr::GetLocalListPtr(), nullptr);
 }
@@ -42,44 +41,17 @@ TEST_CASE("Drawables") {
 	list.Sort();
 	REQUIRE_FALSE(list.IsDirty());
 
-	auto& glist = DrawableMgr::GetGlobalList();
-
-	auto global = std::make_unique<TestSprite>(Drawable::Flags::Global);
-
-	REQUIRE_EQ(glist.size(), 1L);
-	REQUIRE_EQ(*glist.begin(), global.get());
-	REQUIRE_FALSE(glist.IsDirty());
-	REQUIRE_FALSE(list.IsDirty());
-
-	REQUIRE_EQ(list.size(), 0L);
-
 	auto local = std::make_unique<TestSprite>(Drawable::Flags::Default);
 
-	REQUIRE_EQ(glist.size(), 1L);
-	REQUIRE_EQ(*glist.begin(), global.get());
-	REQUIRE_FALSE(glist.IsDirty());
-	REQUIRE_FALSE(list.IsDirty());
-
-	global->SetZ(10);
-
-	REQUIRE(glist.IsDirty());
 	REQUIRE_FALSE(list.IsDirty());
 
 	local->SetZ(10);
-
-	REQUIRE(glist.IsDirty());
 	REQUIRE(list.IsDirty());
-
-	global.reset();
-
-	REQUIRE_EQ(glist.size(), 0L);
 
 	REQUIRE_EQ(list.size(), 1L);
 	REQUIRE_EQ(*list.begin(), local.get());
 
 	local.reset();
-
-	REQUIRE_EQ(glist.size(), 0L);
 
 	REQUIRE_EQ(list.size(), 0L);
 }
