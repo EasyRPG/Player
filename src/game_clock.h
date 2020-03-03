@@ -20,17 +20,14 @@
 
 #include "options.h"
 #include <chrono>
-#include <type_traits>
+#include "platform_clock.h"
 
 /**
  * Used for time keeping in Player
  */
 class Game_Clock {
 public:
-	using clock = std::conditional_t<
-		std::chrono::high_resolution_clock::is_steady,
-		std::chrono::high_resolution_clock,
-		std::chrono::steady_clock>;
+	using clock = Platform_Clock;
 
 	using rep = clock::rep;
 	using period = clock::period;
@@ -43,7 +40,8 @@ public:
 	static time_point now();
 
 	/** Sleep for the specified duration */
-	static void SleepFor(std::chrono::nanoseconds ns);
+	template <typename R, typename P>
+	static void SleepFor(std::chrono::duration<R,P> dt);
 
 	/** Get the target frames per second for the game simulation */
 	static constexpr int GetSimulationFps();
@@ -53,6 +51,12 @@ public:
 
 	/** Get the timestep for a given frames per second value */
 	static constexpr duration TimeStepFromFps(int fps);
+
+	/** Get the name of the underlying clock type */
+	static constexpr const char* Name();
+
+	/** Log information about the Game_Clock */
+	static void logClockInfo();
 };
 
 inline Game_Clock::time_point Game_Clock::now() {
@@ -70,6 +74,15 @@ constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
 constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
 	auto ns = std::chrono::nanoseconds(std::chrono::seconds(1)) / fps;
 	return std::chrono::duration_cast<Game_Clock::duration>(ns);
+}
+
+template <typename R, typename P>
+inline void Game_Clock::SleepFor(std::chrono::duration<R,P> dt) {
+	clock::SleepFor(dt);
+}
+
+constexpr const char* Game_Clock::Name() {
+	return clock::Name();
 }
 
 #endif

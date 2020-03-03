@@ -15,27 +15,25 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "game_clock.h"
-#include "output.h"
+#ifndef EP_PLATFORM_CLOCK_H
+#define EP_PLATFORM_CLOCK_H
 
+#include <chrono>
+#include <type_traits>
 #include <thread>
-#include <cinttypes>
+#include "3ds_clock.h"
+#include "switch_clock.h"
+#include "psp2_clock.h"
+#include "std_clock.h"
 
-constexpr bool Game_Clock::is_steady;
+#if defined(_3DS)
+using Platform_Clock = CtrClock;
+#elif defined(__SWITCH__)
+using Platform_Clock = NxClock;
+#elif defined(PSP2)
+using Platform_Clock = Psp2Clock;
+#else
+using Platform_Clock = StdClock;
+#endif
 
-void Game_Clock::logClockInfo() {
-	const char* period_name = "custom";
-	if (std::is_same<period,std::nano>::value) {
-		period_name = "ns";
-	} else if (std::is_same<period,std::micro>::value) {
-		period_name = "us";
-	} else if (std::is_same<period,std::milli>::value) {
-		period_name = "ms";
-	}
-	Output::Debug("Clock: %s steady=%d period=%s (%" PRIdMAX " / %" PRIdMAX ")",
-			Name(),
-			is_steady,
-			period_name,
-			period::num,
-			period::den);
-}
+#endif

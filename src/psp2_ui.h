@@ -74,7 +74,6 @@ public:
 	/** @} */
 	int frame;
 	bool trigger_state;
-	uint64_t starttick;
 	int touch_x_start;
 	SceUID GPU_Thread;
 	

@@ -47,8 +47,6 @@ AudioInterface& NxUi::GetAudio() {
 #endif
 
 namespace {
-	const double ticks_per_msec = 19200.0f;
-
 	int nxlinkSocket = -1;
 
 	EGLDisplay eglDisplay;

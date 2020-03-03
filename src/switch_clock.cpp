@@ -14,28 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "switch_clock.h"
 
-#include "game_clock.h"
-#include "output.h"
-
-#include <thread>
-#include <cinttypes>
-
-constexpr bool Game_Clock::is_steady;
-
-void Game_Clock::logClockInfo() {
-	const char* period_name = "custom";
-	if (std::is_same<period,std::nano>::value) {
-		period_name = "ns";
-	} else if (std::is_same<period,std::micro>::value) {
-		period_name = "us";
-	} else if (std::is_same<period,std::milli>::value) {
-		period_name = "ms";
-	}
-	Output::Debug("Clock: %s steady=%d period=%s (%" PRIdMAX " / %" PRIdMAX ")",
-			Name(),
-			is_steady,
-			period_name,
-			period::num,
-			period::den);
-}
+#ifdef __SWITCH__
+constexpr bool NxClock::is_steady;
+constexpr int64_t NxClock::ticks_per_sec;
+#endif

@@ -7,6 +7,8 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LIBRARIES = libeasyrpg-player.a
 libeasyrpg_player_a_SOURCES = \
+	src/3ds_clock.cpp \
+	src/3ds_clock.h \
 	src/3ds_ui.cpp \
 	src/3ds_ui.h \
 	src/async_handler.cpp \
@@ -191,8 +193,11 @@ libeasyrpg_player_a_SOURCES = \
 	src/plane.h \
 	src/platform.cpp \
 	src/platform.h \
+	src/platform_clock.h \
 	src/player.cpp \
 	src/player.h \
+	src/psp2_clock.cpp \
+	src/psp2_clock.h \
 	src/psp2_ui.cpp \
 	src/psp2_ui.h \
 	src/game_quit.cpp \
@@ -280,6 +285,9 @@ libeasyrpg_player_a_SOURCES = \
 	src/spriteset_map.h \
 	src/state.cpp \
 	src/state.h \
+	src/std_clock.h \
+	src/switch_clock.cpp \
+	src/switch_clock.h \
 	src/switch_ui.cpp \
 	src/switch_ui.h \
 	src/system.h \

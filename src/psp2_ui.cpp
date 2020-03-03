@@ -124,7 +124,6 @@ static int renderThread(unsigned int args, void* arg){
 Psp2Ui::Psp2Ui(int width, int height) :
 	BaseUi() {
 	
-	starttick = sceKernelGetProcessTimeWide() / 1000;
 	frame = 0;
 	zoom_state = 0;
 	in_use_shader = 0;

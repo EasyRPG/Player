@@ -168,6 +168,7 @@ void Player::Init(int argc, char *argv[]) {
 	WindowsUtils::InitMiniDumpWriter();
 #endif
 
+	Game_Clock::logClockInfo();
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	ParseCommandLine(argc, argv);
