@@ -26,7 +26,7 @@ constexpr bool Game_Clock::is_steady;
 Game_Clock::Data Game_Clock::data;
 
 // Damping factor fps computation.
-static constexpr auto _fps_smooth = 2.0f / 241.0f;
+static constexpr auto _fps_smooth = 2.0f / 121.0f;
 
 Game_Clock::duration Game_Clock::OnNextFrame(time_point now) {
 	const auto mfa = std::chrono::duration_cast<duration>(data.max_frame_accumulator * data.speed);

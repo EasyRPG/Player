@@ -26,7 +26,7 @@
 
 using namespace std::chrono_literals;
 
-static constexpr auto refresh_frequency = 200ms;
+static constexpr auto refresh_frequency = 1s;
 
 FpsOverlay::FpsOverlay() :
 	Drawable(Priority_Overlay + 100, Drawable::Flags::Global)
