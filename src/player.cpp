@@ -121,7 +121,7 @@ namespace Player {
 #ifdef _3DS
 	bool is_3dsx;
 #endif
-	Game_Clock::duration frame_limit = Game_Clock::GetSimulationTimeStep();
+	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
 	bool vsync = false;
 }
 
@@ -237,7 +237,7 @@ void Player::MainLoop() {
 	Player::UpdateInput();
 
 	int num_updates = 0;
-	while (Game_Clock::NextSimulationTimeStep()) {
+	while (Game_Clock::NextGameTimeStep()) {
 		Scene::old_instances.clear();
 		Scene::instance->MainFunction();
 		++num_updates;
@@ -296,7 +296,7 @@ void Player::UpdateInput() {
 	if (Input::IsPressed(Input::FAST_FORWARD)) {
 		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
 	}
-	Game_Clock::SetSimulationSpeedFactor(speed);
+	Game_Clock::SetGameSpeedFactor(speed);
 
 	if (Main_Data::game_quit) {
 		reset_flag |= Main_Data::game_quit->ShouldQuit();

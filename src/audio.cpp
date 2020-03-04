@@ -46,10 +46,10 @@ int EmptyAudio::BGM_GetTicks() const {
 	}
 
 	// Time since BGM_Play was called, works for everything except MIDI
-	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetSimulationFps();
+	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
 }
 
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
-	return BGM_GetTicks() > (Game_Clock::GetSimulationFps() * 5);
+	return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
 }

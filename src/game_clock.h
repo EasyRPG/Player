@@ -46,10 +46,10 @@ public:
 	static void SleepFor(std::chrono::duration<R,P> dt);
 
 	/** Get the target frames per second for the game simulation */
-	static constexpr int GetSimulationFps();
+	static constexpr int GetTargetGameFps();
 
 	/** Get the amount of time each logical frame should take */
-	static constexpr duration GetSimulationTimeStep();
+	static constexpr duration GetTargetGameTimeStep();
 
 	/** Get the timestep for a given frames per second value */
 	static constexpr duration TimeStepFromFps(int fps);
@@ -68,13 +68,13 @@ public:
 	 * the game loop slower. This can happen on slow machines, frame spikes, large
 	 * file IO, or debugger breakpoints.
 	 */
-	static void SetMaxSimulationTimePerFrame(duration dt);
+	static void SetMaxGameTimePerFrame(duration dt);
 
 	/** Set the speed up or slowdown factor we'll use to run the game. */
-	static void SetSimulationSpeedFactor(float speed);
+	static void SetGameSpeedFactor(float speed);
 
 	/** @return the speed up or slowdown factor we'll use to run the game. */
-	static float GetSimulationSpeedFactor();
+	static float GetGameSpeedFactor();
 
 	/** Get the time of the current frame */
 	static time_point GetFrameTime();
@@ -82,7 +82,7 @@ public:
 	/** @return the number of the current frame */
 	static int GetFrame();
 
-	/** @return the estimated frames per second */
+	/** @return the estimated real frames per second */
 	static float GetFPS();
 
 	/**
@@ -100,7 +100,7 @@ public:
 	 *
 	 * @return Whether we should run an update
 	 */
-	static bool NextSimulationTimeStep();
+	static bool NextGameTimeStep();
 
 	/**
 	 * Reset the frame accumulator and time
@@ -125,12 +125,12 @@ inline Game_Clock::time_point Game_Clock::now() {
 	return clock::now();
 }
 
-constexpr int Game_Clock::GetSimulationFps() {
+constexpr int Game_Clock::GetTargetGameFps() {
 	return DEFAULT_FPS;
 }
 
-constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
-	return TimeStepFromFps(GetSimulationFps());
+constexpr Game_Clock::duration Game_Clock::GetTargetGameTimeStep() {
+	return TimeStepFromFps(GetTargetGameFps());
 }
 
 constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
@@ -159,8 +159,8 @@ inline float Game_Clock::GetFPS() {
 	return data.fps;
 }
 
-inline bool Game_Clock::NextSimulationTimeStep() {
-	constexpr auto dt = GetSimulationTimeStep();
+inline bool Game_Clock::NextGameTimeStep() {
+	constexpr auto dt = GetTargetGameTimeStep();
 	if (data.frame_accumulator < dt) {
 		return false;
 	}
@@ -168,15 +168,15 @@ inline bool Game_Clock::NextSimulationTimeStep() {
 	return true;
 }
 
-inline void Game_Clock::SetMaxSimulationTimePerFrame(duration dt) {
-	data.max_frame_accumulator = std::max(dt, GetSimulationTimeStep());
+inline void Game_Clock::SetMaxGameTimePerFrame(duration dt) {
+	data.max_frame_accumulator = std::max(dt, GetTargetGameTimeStep());
 }
 
-inline void Game_Clock::SetSimulationSpeedFactor(float s) {
+inline void Game_Clock::SetGameSpeedFactor(float s) {
 	data.speed = s;
 }
 
-inline float Game_Clock::GetSimulationSpeedFactor() {
+inline float Game_Clock::GetGameSpeedFactor() {
 	return data.speed;
 }
 

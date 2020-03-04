@@ -43,7 +43,7 @@ void FpsOverlay::UpdateText() {
 }
 
 bool FpsOverlay::Update() {
-	int mod = static_cast<int>(Game_Clock::GetSimulationSpeedFactor());
+	int mod = static_cast<int>(Game_Clock::GetGameSpeedFactor());
 	if (mod != last_speed_mod) {
 		speedup_dirty = true;
 		last_speed_mod = mod;
