@@ -88,8 +88,8 @@ TEST_CASE("next") {
 
 TEST_CASE("TextNext") {
 	std::string text = u8"H $A$B\\\\\\^\\n\nぽ";
-	const auto* iter = &*text.begin();
-	const auto* end = &*text.end();
+	const auto* iter = text.data();
+	const auto* end = text.data() + text.size();
 
 	Utils::TextRet ret;
 	ret = Utils::TextNext(iter, end, escape);
@@ -158,8 +158,8 @@ TEST_CASE("TextNext") {
 
 TEST_CASE("TextNextNoEscape") {
 	std::string text = u8"\\$";
-	const auto* iter = &*text.begin();
-	const auto* end = &*text.end();
+	const auto* iter = text.data();
+	const auto* end = text.data() + text.size();
 
 	Utils::TextRet ret;
 
