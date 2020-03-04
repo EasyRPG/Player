@@ -73,8 +73,8 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
-	auto iter = &*text.begin();
-	const auto end = &*text.end();
+	auto iter = text.data();
+	const auto end = iter + text.size();
 	while (iter != end) {
 		auto ret = Utils::TextNext(iter, end, 0);
 
@@ -96,8 +96,8 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color 
 	int dy = y;
 	int ny = 0;
 
-	auto iter = &*text.begin();
-	const auto end = &*text.end();
+	auto iter = text.data();
+	const auto end = iter + text.size();
 	while (iter != end) {
 		auto ret = Utils::UTF8Next(iter, end);
 

@@ -43,6 +43,8 @@ if(MSVC)
 
 	option(MSVC_MULTICORE "MSVC: Build using multiple cores (/MP)" ON)
 	if (MSVC_MULTICORE)
-		add_compile_options(/MP)
+		add_compile_options("/MP")
 	endif()
+
+	add_compile_options("/utf-8")
 endif()

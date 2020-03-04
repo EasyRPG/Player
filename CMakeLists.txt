@@ -664,11 +664,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	endif()
 endif()
 
-# MSVC: Set UTF-8 encoding for all files (important for rtp table)
-if(MSVC)
-	target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8")
-endif()
-
 # Executable
 if (${PLAYER_BUILD_EXECUTABLE})
 	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
