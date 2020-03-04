@@ -37,37 +37,37 @@ TEST_CASE("Actors") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\n[0]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[1]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[2]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 2);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[3]HelloWorld";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, msg.data() + 5);
 
 	msg = u8"\\n[55]HelloWorld";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 55);
 	REQUIRE_EQ(ret.next, msg.data() + 6);
 
 	msg = u8"\\N[55]HelloWorld";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 55);
 	REQUIRE_EQ(ret.next, msg.data() + 6);
 
 	msg = u8"\\C[55]HelloWorld";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
 	REQUIRE_EQ(ret.next, msg.data());
 }
@@ -79,59 +79,59 @@ TEST_CASE("BadActors") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\n[A]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[2A]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 2);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[A2]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[2A2]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 2);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[2";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 2);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[01]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[000]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 }
 
 TEST_CASE("ActorVars") {
@@ -141,46 +141,46 @@ TEST_CASE("ActorVars") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\n[\\v[0]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 0);
 	msg = u8"\\n[\\v[1]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 1);
 	msg = u8"\\n[\\v[1]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 5);
 	msg = u8"\\n[\\v[1]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 5);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 3);
 	msg = u8"\\n[\\v[2]\\v[1]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 32);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 3);
 	msg = u8"\\n[\\v[1]\\v[0]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 20);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[\\v[0]\\v[0]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 }
 
 TEST_CASE("ActorVarsRecurse") {
@@ -192,16 +192,16 @@ TEST_CASE("ActorVarsRecurse") {
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\n[\\v[\\v[1]]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape, false, Game_Message::easyrpg_default_max_recursion);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::easyrpg_default_max_recursion);
 	REQUIRE_EQ(ret.value, 50);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\n[\\v[\\v[1]]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape, false, Game_Message::rpg_rt_default_max_recursion);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end() - 1);
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 
 TEST_CASE("ActorsUnicode") {
@@ -213,15 +213,15 @@ TEST_CASE("ActorsUnicode") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"σn[1]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), esc);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), esc);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 25);
 	msg = u8"σn[σv[1]]";
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), esc);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), esc);
 	REQUIRE_EQ(ret.value, 25);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 }
 
 TEST_CASE("Variables") {
@@ -231,27 +231,27 @@ TEST_CASE("Variables") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\v[0]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\v[1]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\v[A]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\v[999]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 999);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\v[1]HelloWorld";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
 	REQUIRE_EQ(ret.next, &*msg.data() + 5);
 }
@@ -264,15 +264,15 @@ TEST_CASE("VarsRecurse") {
 
 	Main_Data::game_variables->Set(1, 2);
 	msg = u8"\\v[\\v[1]]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape, false, Game_Message::easyrpg_default_max_recursion);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::easyrpg_default_max_recursion);
 	REQUIRE_EQ(ret.value, 2);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	msg = u8"\\v[\\v[1]]";
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape, false, Game_Message::rpg_rt_default_max_recursion);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end() - 1);
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 
 TEST_CASE("Colors") {
@@ -282,27 +282,27 @@ TEST_CASE("Colors") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\c[0]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\c[1]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\c[A]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\c[999]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 999);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\c[1]HelloWorld";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
 	REQUIRE_EQ(ret.next, &*msg.data() + 5);
 }
@@ -316,16 +316,16 @@ TEST_CASE("ColorVarsRecurse") {
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\c[\\v[\\v[1]]]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape, false, Game_Message::easyrpg_default_max_recursion);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::easyrpg_default_max_recursion);
 	REQUIRE_EQ(ret.value, 50);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\c[\\v[\\v[1]]]";
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape, false, Game_Message::rpg_rt_default_max_recursion);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end() - 1);
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 
 TEST_CASE("Speed") {
@@ -335,27 +335,27 @@ TEST_CASE("Speed") {
 	Game_Message::ParseParamResult ret;
 
 	msg = u8"\\s[0]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\s[1]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\s[A]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\s[999]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 999);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\s[1]HelloWorld";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 1);
 	REQUIRE_EQ(ret.next, &*msg.data() + 5);
 }
@@ -369,16 +369,16 @@ TEST_CASE("SpeedVarsRecurse") {
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\s[\\v[\\v[1]]]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape, false, Game_Message::easyrpg_default_max_recursion);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::easyrpg_default_max_recursion);
 	REQUIRE_EQ(ret.value, 50);
-	REQUIRE_EQ(ret.next, &*msg.end());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 2);
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\s[\\v[\\v[1]]]";
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape, false, Game_Message::rpg_rt_default_max_recursion);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.end() - 1);
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 
 TEST_CASE("BadActor") {
@@ -389,17 +389,17 @@ TEST_CASE("BadActor") {
 
 	msg = u8"\\n[3]";
 
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 }
 
 TEST_CASE("BadVariable") {
@@ -410,17 +410,17 @@ TEST_CASE("BadVariable") {
 
 	msg = u8"\\v[3]";
 
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 }
 
 TEST_CASE("BadColor") {
@@ -431,17 +431,17 @@ TEST_CASE("BadColor") {
 
 	msg = u8"\\c[3]";
 
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseSpeed(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseSpeed(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 }
 
 TEST_CASE("BadSpeed") {
@@ -452,17 +452,17 @@ TEST_CASE("BadSpeed") {
 
 	msg = u8"\\s[3]";
 
-	ret = Game_Message::ParseActor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseVariable(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseVariable(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 
-	ret = Game_Message::ParseColor(&*msg.begin(), &*msg.end(), escape);
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
-	REQUIRE_EQ(ret.next, &*msg.begin());
+	REQUIRE_EQ(ret.next, msg.data());
 }
 
 TEST_SUITE_END();
