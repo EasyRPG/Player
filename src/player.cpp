@@ -668,10 +668,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 void Player::CreateGameObjects() {
 	GetEncoding();
 	escape_symbol = ReaderUtil::Recode("\\", encoding);
-	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	if (escape_symbol.empty()) {
 		Output::Error("Invalid encoding: %s.", encoding.c_str());
 	}
+	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
 	std::string game_path = Main_Data::GetProjectPath();
 	std::string save_path = Main_Data::GetSavePath();

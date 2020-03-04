@@ -287,10 +287,10 @@ void Window_Message::Update() {
 				SetOpenAnimation(0);
 			} else {
 				//Handled after base class updates.
-				if (text_index != &*text.end()) {
+				if (text_index != (text.data() + text.size())) {
 					update_message_processing = true;
 				}
-				if (text_index == &*text.end() && wait_count <= 0) {
+				if (text_index == (text.data() + text.size()) && wait_count <= 0) {
 					FinishMessageProcessing();
 				}
 			}
@@ -336,7 +336,7 @@ void Window_Message::UpdateMessage() {
 	auto font = Font::Default();
 
 	while (true) {
-		const auto* end = &*text.end();
+		const auto* end = text.data() + text.size();
 
 		if (wait_count > 0) {
 			--wait_count;
@@ -550,7 +550,7 @@ void Window_Message::WaitForInput() {
 
 		if (text.empty()) {
 			TerminateMessage();
-		} else if (text_index != &*text.end() && new_page_after_pause) {
+		} else if (text_index != (text.data() + text.size()) && new_page_after_pause) {
 			new_page_after_pause = false;
 			InsertNewPage();
 		}
