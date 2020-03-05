@@ -15,9 +15,9 @@ _easyrpg-player ()
   # all possible options
   ouropts='--battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
            --encoding --engine --fps-limit --fps-render-window --fullscreen -h --help \
-           --hide-title --load-game-id --new-game --project-path --record-input \
+           --hide-title --load-game-id --new-game --no-vsync --project-path --record-input \
            --replay-input --save-path --seed --show-fps --start-map-id --start-party \
-           --start-position --test-play --window -v --version --vsync'
+           --start-position --test-play --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
   engines='rpg2k rpg2kv150 rpg2ke rpg2k3 rpg2k3v105 rpg2k3e'
 

@@ -122,7 +122,7 @@ namespace Player {
 	bool is_3dsx;
 #endif
 	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
-	bool vsync = false;
+	bool vsync = true;
 }
 
 namespace {
@@ -456,8 +456,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--fps-render-window") {
 			fps_render_window = true;
 		}
-		else if (*it == "--vsync") {
-			vsync = true;
+		else if (*it == "--no-vsync") {
+			vsync = false;
 		}
 		else if (*it == "--enable-mouse") {
 			mouse_flag = true;
@@ -1112,8 +1112,8 @@ Options:
       --fps-limit          Set a custom frames per second limit. The default is 60 FPS.
                            Set to 0 to run with unlimited frames per second.
                            This option is not supported on all platforms.
-      --vsync              Enable vertical sync. This option may not be supported on
-                           all platforms. If it fails, falls back to fps-limit.
+      --no-vsync           Disable vertical sync and use fps-limit. Even without
+						   this option, vsync may not be supported on all platforms.
       --enable-mouse       Use mouse click for decision and scroll wheel for lists
       --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the
