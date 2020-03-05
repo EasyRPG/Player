@@ -1,8 +1,8 @@
 #include "pending_message.h"
 #include "game_variables.h"
+#include "game_actors.h"
 #include "game_message.h"
 #include "data.h"
-#include "reader_util.h"
 #include "output.h"
 #include "utils.h"
 #include "player.h"
@@ -108,11 +108,11 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			iter = parse_ret.next;
 			int value = parse_ret.value;
 
-			const auto* actor = ReaderUtil::GetElement(Data::actors, value);
+			const auto* actor = Game_Actors::GetActor(value);
 			if (!actor) {
 				Output::Warning("Invalid Actor Id %d in message text", value);
 			} else{
-				output.append(actor->name);
+				output.append(actor->GetName());
 			}
 
 			start_copy = iter;
