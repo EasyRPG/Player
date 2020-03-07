@@ -259,10 +259,9 @@ int Game_Interpreter::GetThisEventId() const {
 }
 
 uint8_t& Game_Interpreter::ReserveSubcommandIndex(int indent) {
-	auto* frame = GetFrame();
-	assert(frame);
+	auto& frame = GetFrame();
 
-	auto& path = frame->subcommand_path;
+	auto& path = frame.subcommand_path;
 	if (indent >= (int)path.size()) {
 		// This fixes an RPG_RT bug where RPG_RT would resize
 		// the array with uninitialized values.
@@ -276,7 +275,7 @@ void Game_Interpreter::SetSubcommandIndex(int indent, int idx) {
 }
 
 int Game_Interpreter::GetSubcommandIndex(int indent) const {
-	auto* frame = GetFrame();
+	auto* frame = GetFramePtr();
 	if (frame == nullptr) {
 		return subcommand_sentinel;
 	}
@@ -365,7 +364,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			_keyinput.wait = false;
 		}
 
-		auto* frame = GetFrame();
+		auto* frame = GetFramePtr();
 		if (frame == nullptr) {
 			break;
 		}
@@ -376,7 +375,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		// Previous operations could have modified the stack.
 		// So we need to fetch the frame again.
-		frame = GetFrame();
+		frame = GetFramePtr();
 		if (frame == nullptr) {
 			break;
 		}
@@ -419,7 +418,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	} // for
 
 	if (loop_count > loop_limit - 1) {
-		auto* frame = GetFrame();
+		auto* frame = GetFramePtr();
 		int event_id = frame ? frame->event_id : 0;
 		// Executed Events Count exceeded (10000)
 		Output::Debug("Event %d exceeded execution limit", event_id);
@@ -451,10 +450,9 @@ bool Game_Interpreter::CheckGameOver() {
 }
 
 void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	if (index >= static_cast<int>(list.size())) {
 		return;
@@ -523,12 +521,8 @@ RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterat
 
 // Execute Command.
 bool Game_Interpreter::ExecuteCommand() {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
-
-	RPG::EventCommand const& com = list[index];
+	auto& frame = GetFrame();
+	const auto& com = frame.commands[frame.current_command];
 
 	switch (com.code) {
 		case Cmd::ShowMessage:
@@ -706,8 +700,7 @@ bool Game_Interpreter::ExecuteCommand() {
 }
 
 bool Game_Interpreter::OnFinishStackFrame() {
-	auto* frame = GetFrame();
-	assert(frame);
+	auto& frame = GetFrame();
 
 	const bool is_base_frame = _state.stack.size() == 1;
 
@@ -715,7 +708,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 		Game_Message::ClearFace();
 	}
 
-	int event_id = frame->event_id;
+	int event_id = frame.event_id;
 
 	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
@@ -730,7 +723,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 		// Parallel events will never clear the base stack frame. Instead we just
 		// reset the index back to 0 and wait for a frame.
 		// This not only optimizes away copying event code, it's also RPG_RT compatible.
-		frame->current_command = 0;
+		frame.current_command = 0;
 	} else {
 		// If a called frame, or base frame of foreground interpreter, pop the stack.
 		_state.stack.pop_back();
@@ -740,10 +733,9 @@ bool Game_Interpreter::OnFinishStackFrame() {
 }
 
 std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	const auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
@@ -778,10 +770,9 @@ bool Game_Interpreter::CommandOptionGeneric(RPG::EventCommand const& com, int op
 }
 
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
@@ -870,9 +861,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int
 }
 
 bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& index = GetFrame().current_command;
 
 	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
@@ -1728,9 +1717,7 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& index = GetFrame().current_command;
 
 	// Wait a given time
 	if (com.parameters.size() <= 1 ||
@@ -1784,18 +1771,15 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 }
 
 void Game_Interpreter::EndEventProcessing() {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	index = static_cast<int>(list.size());
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& index = GetFrame().current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -2848,8 +2832,7 @@ bool Game_Interpreter::CommandChangeMainMenuAccess(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { // Code 12010
-	auto* frame = GetFrame();
-	assert(frame);
+	const auto& frame = GetFrame();
 
 	bool result = false;
 	int value1, value2;
@@ -3005,7 +2988,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 	}
 	case 8:
 		// Key decision initiated this event
-		result = frame->triggered_by_decision_key;
+		result = frame.triggered_by_decision_key;
 		break;
 	case 9:
 		// BGM looped at least once
@@ -3069,10 +3052,9 @@ bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& /* com */) { //
 }
 
 bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	int label_id = com.parameters[0];
 
@@ -3089,10 +3071,9 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& /* com */) { // code 12220
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	// BreakLoop will jump to the end of the event if there is no loop.
 
@@ -3110,10 +3091,9 @@ bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& /* com */) { //
 }
 
 bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
 
 	int indent = com.indent;
 
@@ -3129,7 +3109,7 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 	}
 
 	// Jump past the Cmd::Loop to the first command.
-	if (index < (int)frame->commands.size()) {
+	if (index < (int)frame.commands.size()) {
 		++index;
 	}
 
@@ -3137,9 +3117,8 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 }
 
 bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { // code 12320
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	auto event_id = GetThisEventId();
 
