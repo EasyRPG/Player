@@ -57,6 +57,10 @@ bool Game_Player::GetVisible() const {
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt) {
 	teleport_target = TeleportTarget(map_id, x, y, direction, tt);
+
+	FileRequestAsync* request = Game_Map::RequestMap(map_id);
+	request->SetImportantFile(true);
+	request->Start();
 }
 
 void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
@@ -73,11 +77,6 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 		Main_Data::game_switches->Set(target.switch_id, true);
 		Game_Map::SetNeedRefresh(true);
 	}
-
-	// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
-	FileRequestAsync* request = Game_Map::RequestMap(target.map_id);
-	request->SetImportantFile(true);
-	request->Start();
 }
 
 void Game_Player::PerformTeleport() {

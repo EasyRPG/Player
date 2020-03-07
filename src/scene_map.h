@@ -68,7 +68,7 @@ private:
 	void FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParams tp);
 	void FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParams tp);
 
-	void PerformAsyncTeleport(int map_id, int x, int y);
+	void PerformAsyncTeleport(TeleportTarget original_tt);
 
 	void PreUpdate(MapUpdateAsyncContext& actx);
 	void PreUpdateForegroundEvents(MapUpdateAsyncContext& actx);
