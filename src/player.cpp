@@ -1029,12 +1029,12 @@ std::string Player::GetEncoding() {
 			// When yes is a good encoding. Otherwise try the next ones.
 
 			escape_symbol = ReaderUtil::Recode("\\", enc);
-			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 			if (escape_symbol.empty()) {
 				// Bad encoding
 				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
 				continue;
 			}
+			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
 			if ((Data::system.title_name.empty() ||
 					!FileFinder::FindImage("Title", ReaderUtil::Recode(Data::system.title_name, enc)).empty()) &&
