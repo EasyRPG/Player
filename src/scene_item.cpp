@@ -68,7 +68,7 @@ void Scene_Item::Update() {
 				Main_Data::game_party->ConsumeItemUse(item_id);
 				Main_Data::game_switches->Set(item.switch_id, true);
 				Scene::PopUntil(Scene::Map);
-				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+				Game_Map::SetNeedRefresh(true);
 			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
 				const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item.skill_id);
 				if (!skill) {
@@ -91,7 +91,7 @@ void Scene_Item::Update() {
 					Game_System::SePlay(skill->sound_effect);
 					Main_Data::game_switches->Set(skill->switch_id, true);
 					Scene::PopUntil(Scene::Map);
-					Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+					Game_Map::SetNeedRefresh(true);
 				} else {
 					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 					Scene::Push(std::make_shared<Scene_ActorTarget>(item_id));

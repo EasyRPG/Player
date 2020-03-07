@@ -67,12 +67,6 @@ class MapUpdateAsyncContext {
  * Game_Map namespace
  */
 namespace Game_Map {
-	enum RefreshMode {
-		Refresh_None,
-		Refresh_All,
-		Refresh_Map
-	};
-
 	/**
 	 * Initialize Game_Map.
 	 */
@@ -450,11 +444,9 @@ namespace Game_Map {
 	void SetPositionY(int new_position_y);
 
 	/**
-	 * Gets need refresh flag.
-	 *
 	 * @return need refresh flag.
 	 */
-	RefreshMode GetNeedRefresh();
+	bool GetNeedRefresh();
 
 	/**
 	 * Gets the game interpreter.
@@ -466,9 +458,9 @@ namespace Game_Map {
 	/**
 	 * Sets the need refresh flag.
 	 *
-	 * @param refresh_mode need refresh state.
+	 * @param refresh need refresh flag.
 	 */
-	void SetNeedRefresh(RefreshMode refresh_mode);
+	void SetNeedRefresh(bool refresh);
 
 	/**
 	 * Gets lower passages list.

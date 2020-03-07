@@ -352,7 +352,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		if (_keyinput.wait) {
 			const int key = _keyinput.CheckInput();
 			Main_Data::game_variables->Set(_keyinput.variable, key);
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+			Game_Map::SetNeedRefresh(true);
 			if (key == 0) {
 				++_keyinput.wait_frames;
 				break;
@@ -945,7 +945,7 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 			}
 		}
 
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+		Game_Map::SetNeedRefresh(true);
 	}
 
 	return true;
@@ -1234,7 +1234,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			}
 		}
 
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+		Game_Map::SetNeedRefresh(true);
 	}
 
 	return true;
@@ -1381,7 +1381,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 			value
 		);
 	}
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 	// Continue
 	return true;
 }
@@ -1413,7 +1413,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	}
 
 	CheckGameOver();
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 
 	// Continue
 	return true;
@@ -1719,7 +1719,7 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 
 		if (com.parameters[6] != 0) {
 			Main_Data::game_variables->Set(com.parameters[7], result);
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+			Game_Map::SetNeedRefresh(true);
 		}
 	}
 
@@ -1920,7 +1920,7 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 	Main_Data::game_variables->Set(var_map_id, Game_Map::GetMapId());
 	Main_Data::game_variables->Set(var_x, player->GetX());
 	Main_Data::game_variables->Set(var_y, player->GetY());
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -2025,7 +2025,7 @@ bool Game_Interpreter::CommandStoreTerrainID(RPG::EventCommand const& com) { // 
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	Main_Data::game_variables->Set(var_id, Game_Map::GetTerrainTag(x, y));
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -2035,7 +2035,7 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 	int var_id = com.parameters[3];
 	auto* ev = Game_Map::GetEventAt(x, y, false);
 	Main_Data::game_variables->Set(var_id, ev ? ev->GetId() : 0);
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -2684,7 +2684,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 	if (wait) {
 		// While waiting the variable is reset to 0 each frame.
 		Main_Data::game_variables->Set(var_id, 0);
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+		Game_Map::SetNeedRefresh(true);
 	}
 
 	if (wait && Game_Message::IsMessageActive()) {
@@ -2738,7 +2738,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	int key = _keyinput.CheckInput();
 	Main_Data::game_variables->Set(_keyinput.variable, key);
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	Game_Map::SetNeedRefresh(true);
 
 	return true;
 }

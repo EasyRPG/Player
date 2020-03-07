@@ -71,7 +71,7 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 
 	if (target.switch_on) {
 		Main_Data::game_switches->Set(target.switch_id, true);
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+		Game_Map::SetNeedRefresh(true);
 	}
 
 	// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map

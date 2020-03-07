@@ -60,7 +60,7 @@ namespace {
 
 	std::string chipset_name;
 	std::string battleback_name;
-	Game_Map::RefreshMode refresh_type;
+	bool need_refresh;
 
 	int animation_type;
 	bool animation_fast;
@@ -99,7 +99,7 @@ void Game_Map::Init() {
 
 	map_info.position_x = 0;
 	map_info.position_y = 0;
-	refresh_type = Refresh_All;
+	SetNeedRefresh(true);
 
 	location.map_id = 0;
 	interpreter.reset(new Game_Interpreter_Map(true));
@@ -295,7 +295,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 
-	refresh_type = Refresh_All;
+	SetNeedRefresh(true);
 
 	int current_index = GetMapIndex(location.map_id);
 
@@ -387,7 +387,7 @@ void Game_Map::Refresh() {
 		}
 	}
 
-	refresh_type = Refresh_None;
+	need_refresh = false;
 }
 
 Game_Interpreter_Map& Game_Map::GetInterpreter() {
@@ -924,7 +924,9 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	// Reset the scrolled amount when we exit this function.
 	auto sg = makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
 
-	if (GetNeedRefresh() != Refresh_None) Refresh();
+	if (GetNeedRefresh()) {
+		Refresh();
+	}
 
 	if (!actx.IsActive()) {
 		//If not resuming from async op ...
@@ -1405,11 +1407,12 @@ void Game_Map::SetPositionY(int y) {
 	Parallax::ResetPositionY();
 }
 
-Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
-	return refresh_type;
+bool Game_Map::GetNeedRefresh() {
+	return need_refresh;
 }
-void Game_Map::SetNeedRefresh(Game_Map::RefreshMode refresh_mode) {
-	refresh_type = refresh_mode;
+
+void Game_Map::SetNeedRefresh(bool refresh) {
+	need_refresh = refresh;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {
