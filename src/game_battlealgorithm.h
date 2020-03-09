@@ -478,6 +478,7 @@ protected:
 
 	mutable bool first_attack;
 	bool healing;
+	bool negative_effect;
 	bool success;
 	bool lethal = false;
 	bool killed_by_dmg = false;
