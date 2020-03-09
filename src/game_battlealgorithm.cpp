@@ -1233,8 +1233,13 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
-			if (skill.affect_hp)
-				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
+			if (skill.affect_hp) {
+				if (Player::IsRPG2k3()) {
+					this->hp = effect;
+				} else {
+					this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
+				}
+			}
 			if (skill.affect_sp) {
 				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
 				this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost));
@@ -1612,7 +1617,11 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 		// HP recovery
 		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
-			this->hp = std::max<int>(0, std::min<int>(item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
+			if (Player::IsRPG2k3()) {
+				this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
+			} else {
+				this->hp = std::max<int>(0, std::min<int>(item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
+			}
 		}
 
 		// SP recovery
