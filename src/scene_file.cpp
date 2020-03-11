@@ -109,7 +109,10 @@ void Scene_File::Start() {
 	top_index = std::max(0, index - 2);
 
 	Refresh();
-	Update();
+
+	for (auto& fw: file_windows) {
+		fw->Update();
+	}
 }
 
 void Scene_File::Refresh() {
