@@ -87,14 +87,8 @@ void Game_Interpreter_Map::OnMapChange() {
  * Execute Command.
  */
 bool Game_Interpreter_Map::ExecuteCommand() {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
-
-	assert(index < (int)list.size());
-
-	RPG::EventCommand const& com = list[index];
+	auto& frame = GetFrame();
+	const auto& com = frame.commands[frame.current_command];
 
 	switch (com.code) {
 		case Cmd::RecallToLocation:
@@ -166,9 +160,8 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 		return false;
 	}
 
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
@@ -190,9 +183,8 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -288,9 +280,8 @@ bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& /* com */) 
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -493,9 +484,8 @@ bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& /* com */) { /
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -518,9 +508,8 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 		return false;
 	}
 
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
@@ -659,9 +648,8 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -673,9 +661,8 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -687,9 +674,8 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	if (Game_Message::IsMessageActive()) {
 		return false;

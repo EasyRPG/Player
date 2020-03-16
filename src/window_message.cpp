@@ -593,7 +593,7 @@ void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+		Game_Map::SetNeedRefresh(true);
 		TerminateMessage();
 		number_input_window->SetNumber(0);
 	}

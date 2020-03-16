@@ -495,11 +495,11 @@ void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
 			data.timer1_frames = seconds * DEFAULT_FPS + (DEFAULT_FPS - 1);
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+			Game_Map::SetNeedRefresh(true);
 			break;
 		case Timer2:
 			data.timer2_frames = seconds * DEFAULT_FPS + (DEFAULT_FPS -1);
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+			Game_Map::SetNeedRefresh(true);
 			break;
 	}
 }
@@ -561,7 +561,7 @@ void Game_Party::UpdateTimers() {
 	}
 
 	if (seconds_changed) {
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+		Game_Map::SetNeedRefresh(true);
 	}
 }
 

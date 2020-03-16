@@ -221,7 +221,7 @@ void Scene_Debug::Update() {
 				DoCallEvent();
 				break;
 		}
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
 		if (range_page < GetLastPage()) {
 			++range_page;
@@ -634,7 +634,7 @@ void Scene_Debug::ReturnToMain(int from_idx) {
 void Scene_Debug::DoSwitch() {
 	if (Main_Data::game_switches->IsValid(GetIndex())) {
 		Main_Data::game_switches->Flip(GetIndex());
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+		Game_Map::SetNeedRefresh(true);
 
 		var_window->Refresh();
 	}
@@ -642,7 +642,7 @@ void Scene_Debug::DoSwitch() {
 
 void Scene_Debug::DoVariable() {
 	Main_Data::game_variables->Set(GetIndex(), numberinput_window->GetNumber());
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+	Game_Map::SetNeedRefresh(true);
 
 	var_window->Refresh();
 
@@ -660,7 +660,7 @@ void Scene_Debug::DoItem() {
 	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
 	Main_Data::game_party->AddItem(GetIndex(), delta);
 
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+	Game_Map::SetNeedRefresh(true);
 
 	var_window->Refresh();
 
@@ -693,11 +693,6 @@ void Scene_Debug::DoMap() {
 	Scene::PopUntil(Scene::Map);
 	if (Scene::instance) {
 		Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1, TeleportTarget::eSkillTeleport);
-
-		// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
-		FileRequestAsync* request = Game_Map::RequestMap(pending_map_id);
-		request->SetImportantFile(true);
-		request->Start();
 	}
 }
 

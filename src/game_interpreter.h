@@ -104,8 +104,10 @@ protected:
 	static constexpr int call_stack_limit = 1000;
 	static constexpr int subcommand_sentinel = 255;
 
-	const RPG::SaveEventExecFrame* GetFrame() const;
-	RPG::SaveEventExecFrame* GetFrame();
+	const RPG::SaveEventExecFrame& GetFrame() const;
+	RPG::SaveEventExecFrame& GetFrame();
+	const RPG::SaveEventExecFrame* GetFramePtr() const;
+	RPG::SaveEventExecFrame* GetFramePtr();
 
 	bool main_flag;
 
@@ -294,13 +296,26 @@ protected:
 	AsyncOp _async_op = {};
 };
 
-inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
+inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
 }
 
-inline RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() {
+inline RPG::SaveEventExecFrame* Game_Interpreter::GetFramePtr() {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
 }
+
+inline const RPG::SaveEventExecFrame& Game_Interpreter::GetFrame() const {
+	auto* frame = GetFramePtr();
+	assert(frame);
+	return *frame;
+}
+
+inline RPG::SaveEventExecFrame& Game_Interpreter::GetFrame() {
+	auto* frame = GetFramePtr();
+	assert(frame);
+	return *frame;
+}
+
 
 inline int Game_Interpreter::GetCurrentEventId() const {
 	return !_state.stack.empty() ? _state.stack.back().event_id : 0;

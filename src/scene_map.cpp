@@ -302,11 +302,6 @@ void Scene_Map::UpdateSceneCalling() {
 
 void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	auto& transition = Transition::instance();
-	const auto& tt = Main_Data::game_player->GetTeleportTarget();
-
-	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
-	request->SetImportantFile(true);
-	request->Start();
 
 	if (!transition.IsErased() && tp.erase_screen) {
 		transition.InitErase(Game_System::GetTransition(Game_System::Transition_TeleportErase), this);
@@ -381,15 +376,9 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 	AsyncNext([this]() { UpdateSceneCalling(); });
 }
 
-void Scene_Map::PerformAsyncTeleport(int map_id, int x, int y) {
-	// If there is already a real teleport pending we need to make sure it gets executed after
-	// the async teleport.
-	auto tt = Main_Data::game_player->GetTeleportTarget();
-
-	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eAsyncQuickTeleport);
+void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 	Main_Data::game_player->PerformTeleport();
-
-	Main_Data::game_player->ResetTeleportTarget(tt);
+	Main_Data::game_player->ResetTeleportTarget(original_tt);
 
 	spriteset.reset(new Spriteset_Map());
 
@@ -449,16 +438,15 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	}
 
 	if (aop.GetType() == AsyncOp::eQuickTeleport) {
-		FileRequestAsync* request = Game_Map::RequestMap(aop.GetTeleportMapId());
-		request->SetImportantFile(true);
-		request->Start();
-
 		map_async_continuation = std::forward<F>(f);
-		auto map_id = aop.GetTeleportMapId();
-		auto x = aop.GetTeleportX();
-		auto y = aop.GetTeleportY();
 
-		AsyncNext([=]() { PerformAsyncTeleport(map_id, x, y); });
+		// If there is already a real teleport pending we need to make sure it gets executed after
+		// the async teleport.
+		auto orig_tt = Main_Data::game_player->GetTeleportTarget();
+
+		Main_Data::game_player->ReserveTeleport(aop.GetTeleportMapId(), aop.GetTeleportX(), aop.GetTeleportY(), -1, TeleportTarget::eAsyncQuickTeleport);
+
+		AsyncNext([=]() { PerformAsyncTeleport(orig_tt); });
 		return;
 	}
 

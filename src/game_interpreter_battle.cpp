@@ -40,14 +40,8 @@ Game_Interpreter_Battle::Game_Interpreter_Battle()
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
-
-	assert(index < (int)list.size());
-
-	RPG::EventCommand const& com = list[index];
+	auto& frame = GetFrame();
+	const auto& com = frame.commands[frame.current_command];
 
 	switch (com.code) {
 		case Cmd::CallCommonEvent:

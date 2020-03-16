@@ -64,7 +64,7 @@ void Scene_Skill::Update() {
 				Game_System::SePlay(skill->sound_effect);
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
-				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+				Game_Map::SetNeedRefresh(true);
 			} else if (skill->type == RPG::Skill::Type_normal || skill->type >= RPG::Skill::Type_subskill) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
