@@ -587,6 +587,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	// Our RTP is for all engines
 	read_rtp_registry("EasyRPG", "RTP", "path");
 #else
+	// Fallback for unknown platforms
 	add_rtp_path("/data/rtp/" + version_str);
 #endif
 	std::vector<std::string> env_paths;
@@ -610,6 +611,30 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 		env_paths.insert(env_paths.end(), tmp.begin(), tmp.end());
 	}
 
+#ifdef USE_XDG_RTP
+	std::string xdg_rtp;
+
+	// Search in the local data directory
+	xdg_rtp = getenv("XDG_DATA_HOME") ? std::string(getenv("XDG_DATA_HOME")) :
+		std::string(getenv("HOME")) + "/.local/share";
+	xdg_rtp += "/rtp/" + version_str;
+	if (Exists(xdg_rtp)) {
+		env_paths.push_back(xdg_rtp);
+	}
+
+	// Search in the global data directories
+	xdg_rtp = getenv("XDG_DATA_DIRS") ? std::string(getenv("XDG_DATA_DIRS")) :
+		std::string("/usr/local/share/:/usr/share/");
+	std::vector<std::string> tmp = Utils::Tokenize(xdg_rtp, f);
+	for (const std::string& p : tmp) {
+		xdg_rtp = p + (p.back() == '/' ? "" : "/") + "rtp/" + version_str;
+		if (Exists(xdg_rtp)) {
+			env_paths.push_back(xdg_rtp);
+		}
+	}
+#endif
+
+	// Add all found paths from the environment
 	for (const std::string& p : env_paths) {
 		add_rtp_path(p);
 	}
