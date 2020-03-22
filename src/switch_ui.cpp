@@ -241,7 +241,6 @@ NxUi::NxUi(int width, int height) :
 	initEgl();
 	gladLoadGL();
 
-	fullscreen = false;
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
@@ -352,13 +351,12 @@ void NxUi::ProcessEvents() {
 	hidScanInput();
 
 	u32 input = hidKeysHeld(CONTROLLER_P1_AUTO);
-	keys[Input::Keys::UP] = (input & KEY_DUP);
-	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
-	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
-	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
+	keys[Input::Keys::UP] = (input & (KEY_DUP|KEY_LSTICK_UP)) > 0;
+	keys[Input::Keys::DOWN] = (input & (KEY_DDOWN|KEY_LSTICK_DOWN)) > 0;
+	keys[Input::Keys::RIGHT] = (input & (KEY_DRIGHT|KEY_LSTICK_RIGHT)) > 0;
+	keys[Input::Keys::LEFT] = (input & (KEY_DLEFT|KEY_LSTICK_LEFT)) > 0;
 	keys[Input::Keys::Z] = (input & KEY_A);
-	keys[Input::Keys::X] = (input & KEY_B);
-	keys[Input::Keys::X] = (input & KEY_X);
+	keys[Input::Keys::X] = (input & (KEY_B|KEY_X)) > 0;
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	keys[Input::Keys::F] = (input & KEY_R);

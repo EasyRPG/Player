@@ -71,8 +71,6 @@ public:
 	/** @} */
 
 private:
-	bool fullscreen;
-
 	BitmapRef touch_ui;
 	bool update_ui = true;
 	int ui_mode = 0;
