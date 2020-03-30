@@ -20,6 +20,7 @@
 #if defined(HAVE_LIBSPEEXDSP) || defined(HAVE_LIBSAMPLERATE) 
 
 #include <cassert>
+#include <cstring>
 #include "audio_resampler.h"
 #include "output.h"
 
@@ -309,7 +310,7 @@ bool AudioResampler::IsFinished() const {
 void AudioResampler::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	frequency = output_rate;
 	format = output_format;
-	channels = nr_of_channels;
+	channels = mono_to_stereo_resample ? 2 : nr_of_channels;
 }
 
 bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
@@ -330,7 +331,12 @@ bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels)
 	wrapped_decoder->GetFormat(input_rate, input_format, nr_of_channels);
 	output_rate = freq;
 
-	return ((nr_of_channels == channels) && (output_format == fmt));
+	mono_to_stereo_resample = false;
+	if (channels == 2 && nr_of_channels == 1) {
+		mono_to_stereo_resample = true;
+	}
+
+	return ((nr_of_channels == channels || mono_to_stereo_resample) && (output_format == fmt));
 }
 
 int AudioResampler::GetPitch() const {
@@ -352,19 +358,40 @@ bool AudioResampler::SetPitch(int pitch_) {
 
 int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 	int amount_filled = 0;
-	if((input_rate == output_rate) && ((pitch == STANDARD_PITCH) || pitch_handled_by_decoder)) {
-		//Do only format conversion
-		amount_filled = FillBufferSameRate(buffer, length);
+
+	int bytes_to_read = length;
+	if (mono_to_stereo_resample) {
+		bytes_to_read /= 2;
+	}
+
+	if ((input_rate == output_rate) && ((pitch == STANDARD_PITCH) || pitch_handled_by_decoder)) {
+		// Do only format conversion
+		amount_filled = FillBufferSameRate(buffer, bytes_to_read);
 	} else {
 		if (!conversion_state) {
 			error_message = "internal error: state pointer is a nullptr";
 			amount_filled = ERROR;
 		} else {
 			//Do samplerate conversion
-			amount_filled = FillBufferDifferentRate(buffer, length);
+			amount_filled = FillBufferDifferentRate(buffer, bytes_to_read);
 		}
 	}
-	//Clear the remaining buffer as specified in audio_decoder.h
+
+	if (mono_to_stereo_resample) {
+		int sample_size = AudioDecoder::GetSamplesizeForFormat(output_format);
+
+		// Duplicate data from the back, allows writing to the buffer directly
+		for (size_t i = amount_filled - sample_size; i > 0; i -= sample_size) {
+			// left channel
+			memcpy(&buffer[i * 2 - sample_size * 2], &buffer[i], sample_size);
+			// right channel
+			memcpy(&buffer[i * 2 - sample_size], &buffer[i], sample_size);
+		}
+
+		amount_filled *= 2;
+	}
+
+	// Clear the remaining buffer as specified in audio_decoder.h
 	for (int i = (amount_filled > 0) ? amount_filled : 0; i < length; i++) {
 		buffer[i] = 0;
 	}

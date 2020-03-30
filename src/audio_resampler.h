@@ -201,6 +201,8 @@ private:
 	 * (In the cpp file sizeof is used therefore it can be adjusted to fit the available memory)
 	 */
 	uint8_t internal_buffer[256*sizeof(float)];
+
+	bool mono_to_stereo_resample = false;
 };
 
 #endif
