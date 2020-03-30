@@ -156,19 +156,7 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 	assert(audio_decoder);
 
 	audio_decoder->GetFormat(se->frequency, se->format, se->channels);
-
-	const int buffer_size = 8192;
-	se->buffer.resize(buffer_size);
-
-	while (!audio_decoder->IsFinished()) {
-		int read = audio_decoder->Decode(se->buffer.data() + se->buffer.size() - buffer_size, buffer_size);
-		if (read < 8192) {
-			se->buffer.resize(se->buffer.size() - (buffer_size - read));
-			break;
-		}
-
-		se->buffer.resize(se->buffer.size() + buffer_size);
-	}
+	se->buffer = audio_decoder->DecodeAll();
 
 	cache.insert(std::make_pair(filename, se));
 
@@ -187,6 +175,12 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 	dec->Open(nullptr);
 	return dec;
 }
+
+AudioSeRef AudioSeCache::GetSeData() const {
+    assert(IsCached());
+
+    return cache.find(filename)->second;
+};
 
 void AudioSeCache::Clear() {
 	cache_size = 0;

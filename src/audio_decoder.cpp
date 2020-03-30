@@ -80,6 +80,25 @@ int AudioDecoder::Decode(uint8_t* buffer, int length, int recursion_depth) {
 	return res;
 }
 
+std::vector<uint8_t> AudioDecoder::DecodeAll() {
+	const int buffer_size = 8192;
+
+	std::vector<uint8_t> buffer;
+	buffer.resize(buffer_size);
+
+	while (!IsFinished()) {
+		int read = Decode(buffer.data() + buffer.size() - buffer_size, buffer_size);
+		if (read < buffer_size) {
+			buffer.resize(buffer.size() - (buffer_size - read));
+			break;
+		}
+
+		buffer.resize(buffer.size() + buffer_size);
+	}
+
+	return buffer;
+}
+
 int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	int freq; Format format; int channels;
 	GetFormat(freq, format, channels);

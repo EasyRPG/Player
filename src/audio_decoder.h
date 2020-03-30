@@ -65,6 +65,14 @@ public:
 	int Decode(uint8_t* buffer, int size);
 
 	/**
+	 * Decodes the whole audio sample. The data matches the format reported by
+	 * GetFormat.
+	 *
+	 * @return output buffer
+	 */
+	std::vector<uint8_t> DecodeAll();
+
+	/**
 	 * Splits stereo into mono and Writes 'size' bytes in each of the buffers.
 	 * The data matches the format reported by GetFormat, except that both
 	 * buffers will contain Mono audio. When the source format was already mono

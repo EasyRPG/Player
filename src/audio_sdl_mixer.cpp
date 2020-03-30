@@ -584,8 +584,7 @@ void SdlMixerAudio::BGS_Volume(int volume) {
 
 void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
-	std::shared_ptr<Mix_Chunk> sound;
-	AudioSeRef se_ref = nullptr;
+	sound_data snd_data;
 
 	if (cache) {
 		int audio_rate;
@@ -597,36 +596,36 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		}
 		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
 
+		std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
+		snd_data.se_ref = cache->GetSeData();
+
 		// When this fails the resampler is probably not compiled in and output will be garbage, just use SDL
-		if (cache->SetFormat(audio_rate, audio_format, audio_channels)) {
-			cache->SetPitch(pitch);
+		if (dec->SetFormat(audio_rate, audio_format, audio_channels)) {
+			dec->SetPitch(pitch);
+			snd_data.buffer = dec->DecodeAll();
+			snd_data.chunk.reset(Mix_QuickLoad_RAW(snd_data.buffer.data(), snd_data.buffer.size()), &Mix_FreeChunk);
 
-			se_ref = cache->Decode();
-
-			sound.reset(Mix_QuickLoad_RAW(se_ref->buffer.data(), se_ref->buffer.size()), &Mix_FreeChunk);
-
-			if (!sound) {
+			if (!snd_data.chunk) {
 				Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 			}
 		}
 	}
 
-	if (!sound) {
-		sound.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
-		if (!sound) {
+	if (!snd_data.chunk) {
+		snd_data.chunk.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
+		if (!snd_data.chunk) {
 			Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 			return;
 		}
 	}
 
-	int channel = Mix_PlayChannel(-1, sound.get(), 0);
+	int channel = Mix_PlayChannel(-1, snd_data.chunk.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
 		Output::Warning("Couldn't play %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
-	sounds[channel].first = sound;
-	sounds[channel].second = se_ref;
+	sounds[channel] = snd_data;
 }
 
 void SdlMixerAudio::SE_Stop() {

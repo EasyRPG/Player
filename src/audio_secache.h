@@ -122,6 +122,13 @@ public:
 	 */
 	std::unique_ptr<AudioDecoder> CreateSeDecoder();
 
+	/**
+	 * Returns the SE sample data handled by this SeCache.
+	 *
+	 * @return sample data
+	 */
+	AudioSeRef GetSeData() const;
+
 	static void Clear();
 private:
 	std::unique_ptr<AudioDecoder> audio_decoder;
