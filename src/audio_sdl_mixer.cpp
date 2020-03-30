@@ -629,8 +629,8 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 }
 
 void SdlMixerAudio::SE_Stop() {
-	for (sounds_type::iterator i = sounds.begin(); i != sounds.end(); ++i) {
-		if (Mix_Playing(i->first)) Mix_HaltChannel(i->first);
+	for (auto& sound : sounds) {
+		if (Mix_Playing(sound.first)) Mix_HaltChannel(sound.first);
 	}
 	sounds.clear();
 }

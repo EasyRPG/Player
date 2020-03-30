@@ -34,11 +34,11 @@ unsigned GenericAudio::scrap_buffer_size = 0;
 std::vector<float> GenericAudio::mixer_buffer;
 
 GenericAudio::GenericAudio() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].decoder.reset();
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.decoder.reset();
 	}
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		SE_Channels[i].decoder.reset();
+	for (auto& SE_Channel : SE_Channels) {
+		SE_Channel.decoder.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
 
@@ -52,43 +52,43 @@ GenericAudio::~GenericAudio() {
 
 void GenericAudio::BGM_Play(const std::string& file, int volume, int pitch, int fadein) {
 	bool bgm_set = false;
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].stopped = true; //Stop all running background music
-		if (!BGM_Channels[i].decoder && !bgm_set) {
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.stopped = true; //Stop all running background music
+		if (!BGM_Channel.decoder && !bgm_set) {
 			//If there is an unused bgm channel
 			bgm_set = true;
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
 			UnlockMutex();
-			PlayOnChannel(BGM_Channels[i], file, volume, pitch, fadein);
+			PlayOnChannel(BGM_Channel, file, volume, pitch, fadein);
 		}
 	}
 }
 
 void GenericAudio::BGM_Pause() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].paused = true;
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.paused = true;
 		}
 	}
 }
 
 void GenericAudio::BGM_Resume() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].paused = false;
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.paused = false;
 		}
 	}
 }
 
 void GenericAudio::BGM_Stop() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].stopped = true; //Stop all running background music
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.stopped = true; //Stop all running background music
 		LockMutex();
 		if (Muted) {
 			// If the audio is muted the audio thread doesn't perform the deletion (it isn't running)
 			// Do the cleanup on our own.
-			BGM_Channels[i].decoder.reset();
+			BGM_Channel.decoder.reset();
 		}
 		UnlockMutex();
 	}
@@ -99,8 +99,8 @@ bool GenericAudio::BGM_PlayedOnce() const {
 }
 
 bool GenericAudio::BGM_IsPlaying() const {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (!BGM_Channels[i].stopped) {
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (!BGM_Channel.stopped) {
 			return true;
 		};
 	}
@@ -110,9 +110,9 @@ bool GenericAudio::BGM_IsPlaying() const {
 int GenericAudio::BGM_GetTicks() const {
 	unsigned ticks = 0;
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			ticks = BGM_Channels[i].decoder->GetTicks();
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			ticks = BGM_Channel.decoder->GetTicks();
 			break;
 		}
 	}
@@ -122,9 +122,9 @@ int GenericAudio::BGM_GetTicks() const {
 
 void GenericAudio::BGM_Fade(int fade) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetFade(BGM_Channels[i].decoder->GetVolume(), 0, fade);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, fade);
 		}
 	}
 	UnlockMutex();
@@ -132,9 +132,9 @@ void GenericAudio::BGM_Fade(int fade) {
 
 void GenericAudio::BGM_Volume(int volume) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetVolume(volume);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetVolume(volume);
 		}
 	}
 	UnlockMutex();
@@ -142,9 +142,9 @@ void GenericAudio::BGM_Volume(int volume) {
 
 void GenericAudio::BGM_Pitch(int pitch) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetPitch(pitch);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetPitch(pitch);
 		}
 	}
 	UnlockMutex();
@@ -152,10 +152,10 @@ void GenericAudio::BGM_Pitch(int pitch) {
 
 void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 	if (Muted) return;
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		if (!SE_Channels[i].decoder) {
+	for (auto& SE_Channel : SE_Channels) {
+		if (!SE_Channel.decoder) {
 			//If there is an unused se channel
-			PlayOnChannel(SE_Channels[i], file, volume, pitch);
+			PlayOnChannel(SE_Channel, file, volume, pitch);
 			return;
 		}
 	}
@@ -164,8 +164,8 @@ void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 }
 
 void GenericAudio::SE_Stop() {
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		SE_Channels[i].stopped = true; //Stop all running sound effects
+	for (auto& SE_Channel : SE_Channels) {
+		SE_Channel.stopped = true; //Stop all running sound effects
 	}
 }
 
