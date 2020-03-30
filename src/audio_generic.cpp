@@ -38,7 +38,7 @@ GenericAudio::GenericAudio() {
 		BGM_Channels[i].decoder.reset();
 	}
 	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		SE_Channels[i].se.reset();
+		SE_Channels[i].decoder.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
 
@@ -153,7 +153,7 @@ void GenericAudio::BGM_Pitch(int pitch) {
 void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 	if (Muted) return;
 	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		if (!SE_Channels[i].se) {
+		if (!SE_Channels[i].decoder) {
 			//If there is an unused se channel
 			PlayOnChannel(SE_Channels[i], file, volume, pitch);
 			return;
@@ -213,14 +213,11 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int v
 
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
 	if (cache) {
-		cache->SetPitch(pitch);
-		cache->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-
-		chan.se = cache->Decode();
-		chan.buffer_pos = 0;
+		chan.decoder = cache->CreateSeDecoder();
+		chan.decoder->SetPitch(pitch);
+		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
 		chan.volume = volume;
 		chan.paused = false; // Unpause channel -> Play it.
-
 		return true;
 	} else {
 		Output::Warning("Couldn't play SE %s. Format not supported", FileFinder::GetPathInsideGamePath(file).c_str());
@@ -297,13 +294,12 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 			SeChannel& currently_mixed_channel = SE_Channels[i - nr_of_bgm_channels];
 			float current_master_volume = 1.0;
 
-			if (currently_mixed_channel.se && !currently_mixed_channel.paused) {
+			if (currently_mixed_channel.decoder && !currently_mixed_channel.paused) {
 				if (currently_mixed_channel.stopped) {
-					currently_mixed_channel.se.reset();
+					currently_mixed_channel.decoder.reset();
 				} else {
 					volume = current_master_volume * (currently_mixed_channel.volume / 100.0);
-					channels = currently_mixed_channel.se->channels;
-					sampleformat = currently_mixed_channel.se->format;
+					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
 					total_volume += volume;
@@ -312,23 +308,12 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
 					bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
 
-					if (currently_mixed_channel.buffer_pos + bytes_to_read >
-						currently_mixed_channel.se->buffer.size()) {
-						bytes_to_read = currently_mixed_channel.se->buffer.size() - currently_mixed_channel.buffer_pos;
-					}
-
-					memcpy(scrap_buffer.data(),
-						   &currently_mixed_channel.se->buffer[currently_mixed_channel.buffer_pos],
-						   bytes_to_read);
-
-					currently_mixed_channel.buffer_pos += bytes_to_read;
-
-					read_bytes = bytes_to_read;
+					read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
 
 					// Now decide what to do when a channel has reached its end
-					if (currently_mixed_channel.buffer_pos >= currently_mixed_channel.se->buffer.size()) {
+					if (currently_mixed_channel.decoder->IsFinished()) {
 						// SE are only played once so free the se if finished
-						currently_mixed_channel.se.reset();
+						currently_mixed_channel.decoder.reset();
 					}
 
 					channel_used = true;

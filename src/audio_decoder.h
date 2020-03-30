@@ -90,9 +90,10 @@ public:
 	 *
 	 * @param file File handle to parse
 	 * @param filename Path to the file handle
+	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename);
+	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename, bool resample = true);
 
 	/**
 	 * Updates the volume for the fade in/out effect.

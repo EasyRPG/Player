@@ -69,12 +69,10 @@ private:
 		bool stopped;
 	};
 	struct SeChannel {
-		AudioSeRef se;
-		size_t buffer_pos;
+		std::unique_ptr<AudioDecoder> decoder;
 		int volume;
 		bool paused;
 		bool stopped;
-		bool finished;
 	};
 	struct Format {
 		int frequency;
@@ -100,4 +98,4 @@ private:
 	static std::vector<float> mixer_buffer;
 };
 
-#endif //EASYRPG_AUDIOGENERIC_H_
+#endif
