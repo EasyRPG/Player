@@ -73,21 +73,6 @@ public:
 	std::vector<uint8_t> DecodeAll();
 
 	/**
-	 * Splits stereo into mono and Writes 'size' bytes in each of the buffers.
-	 * The data matches the format reported by GetFormat, except that both
-	 * buffers will contain Mono audio. When the source format was already mono
-	 * the 'right' buffer is ignored (and not cleared)
-	 * When size is is smaller then the amount of written bytes or an error occurs
-	 * the remaining buffer space is cleared.
-	 *
-	 * @param left Output buffer of the left channel
-	 * @param right Output buffer of the right channel (or nothing if source is mono)
-	 * @param size Size of each of the buffers
-	 * @return Number of bytes written in one of the buffers or -1 on error
-	 */
-	int DecodeAsMono(uint8_t* left, uint8_t* right, int size);
-
-	/**
 	 * Parses the specified file handle and open a proper audio decoder to handle
 	 * the audio file.
 	 * Upon success the file handle is owned by the audio decoder and further

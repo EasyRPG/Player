@@ -99,40 +99,6 @@ std::vector<uint8_t> AudioDecoder::DecodeAll() {
 	return buffer;
 }
 
-int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
-	int freq; Format format; int channels;
-	GetFormat(freq, format, channels);
-
-	if (channels == 1) {
-		return Decode(left, size);
-	}
-
-	if ((int)mono_buffer.size() < size * 2) {
-		mono_buffer.resize(size * 2);
-	}
-
-	int read = Decode(mono_buffer.data(), size * 2);
-	if (read < 0) {
-		memset(left, '\0', size);
-		memset(right, '\0', size);
-		return -1;
-	}
-
-	int sample_size = GetSamplesizeForFormat(format);
-
-	for (int i = 0; i <= read / 2; i += sample_size) {
-		memcpy(&left[i], &mono_buffer.data()[i * channels], sample_size);
-		memcpy(&right[i], &mono_buffer.data()[i * channels + sample_size], sample_size);
-	}
-
-	if (read < size / 2) {
-		memset(&left[read / 2], '\0', size);
-		memset(&right[read / 2], '\0', size);
-	}
-
-	return read / 2;
-}
-
 class WMAUnsupportedFormatDecoder : public AudioDecoder {
 public:
 	WMAUnsupportedFormatDecoder() {
