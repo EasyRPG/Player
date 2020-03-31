@@ -359,7 +359,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (_keyinput.timed) {
 				// 10 per second
 				Main_Data::game_variables->Set(_keyinput.time_variable,
-						(_keyinput.wait_frames * 10) / Game_Clock::GetSimulationFps());
+						(_keyinput.wait_frames * 10) / Game_Clock::GetTargetGameFps());
 			}
 			_keyinput.wait = false;
 		}

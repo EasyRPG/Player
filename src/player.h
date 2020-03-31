@@ -75,6 +75,11 @@ namespace Player {
 	void Update(bool update_scene = true);
 
 	/**
+	 * Process input events
+	 */
+	void UpdateInput();
+
+	/**
 	 * Renders EasyRPG Player state to the screen
 	 */
 	void Draw();
@@ -86,14 +91,6 @@ namespace Player {
 	 * @return Update frames since player start
 	 */
 	int GetFrames();
-
-	/**
-	 * Resets the fps count (both updates and frames per second).
-	 * Should be called after an expensive operation.
-	 *
-	 * @param now the current time
-	 */
-	void FrameReset(Game_Clock::time_point now);
 
 	/**
 	 * Increment the frame counters.
@@ -231,16 +228,14 @@ namespace Player {
 	int EngineVersion();
 	std::string GetEngineVersion();
 
-	/**
-	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
-	 */
-	int GetSpeedModifier();
-
 	/** Output program version on stdout */
 	void PrintVersion();
 
 	/** Output program usage information on stdout */
 	void PrintUsage();
+
+	/** Set the desired rendering frames per second */
+	void SetTargetFps(int fps);
 
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
@@ -333,6 +328,12 @@ namespace Player {
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif
+
+	/**
+	 * Vsync mode was requested. This does not mean it's actually being used.
+	 * One must ask the DisplayUi if it's configured for vsync.
+	 */
+	extern bool vsync;
 }
 
 inline bool Player::IsRPG2k() {

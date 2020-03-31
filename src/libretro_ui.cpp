@@ -71,6 +71,9 @@ LibretroUi::LibretroUi(int width, int height) {
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 
+	// libretro always owns main loop
+	SetFrameRateSynchronized(true);
+
 	const DynamicFormat format(
 		32,
 		0x00FF0000,
@@ -465,7 +468,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
 	static retro_frame_time_callback frame_time_definition = {
 		retro_time_update,
-		1000000 / Game_Clock::GetSimulationFps()
+		1000000 / Game_Clock::GetTargetGameFps()
 	};
 
 	static retro_audio_callback audio_callback_definition = {
@@ -577,7 +580,7 @@ RETRO_API void retro_get_system_av_info(struct retro_system_av_info* info) {
 	info->geometry.max_width = SCREEN_TARGET_WIDTH;
 	info->geometry.max_height = SCREEN_TARGET_HEIGHT;
 	info->geometry.aspect_ratio = 0.0f;
-	info->timing.fps = Game_Clock::GetSimulationFps();
+	info->timing.fps = Game_Clock::GetTargetGameFps();
 	info->timing.sample_rate = AUDIO_SAMPLERATE;
 }
 

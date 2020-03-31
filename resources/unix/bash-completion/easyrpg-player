@@ -14,10 +14,10 @@ _easyrpg-player ()
 
   # all possible options
   ouropts='--battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
-           --encoding --engine --fps-render-window --fullscreen -h --help --hide-title \
-           --load-game-id --new-game --project-path --record-input --replay-input \
-           --save-path --seed --show-fps --start-map-id --start-party --start-position \
-           --test-play --window -v --version'
+           --encoding --engine --fps-limit --fps-render-window --fullscreen -h --help \
+           --hide-title --load-game-id --new-game --no-vsync --project-path --record-input \
+           --replay-input --save-path --seed --show-fps --start-map-id --start-party \
+           --start-position --test-play --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
   engines='rpg2k rpg2kv150 rpg2ke rpg2k3 rpg2k3v105 rpg2k3e'
 
@@ -51,7 +51,7 @@ _easyrpg-player ()
       return
       ;;
     # argument required but no completions available
-    --@(battle-test|encoding|seed|start-position|start-party)|BattleTest|battletest)
+    --@(battle-test|encoding|fps-limit|seed|start-position|start-party)|BattleTest|battletest)
       return
       ;;
     # these have no argument and shall be used exclusively

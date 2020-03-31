@@ -40,8 +40,6 @@ namespace Graphics {
 
 	int framerate;
 
-	Game_Clock::time_point next_fps_time;
-
 	std::shared_ptr<Scene> current_scene;
 
 	std::unique_ptr<MessageOverlay> message_overlay;
@@ -58,8 +56,6 @@ void Graphics::Init() {
 
 	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
-
-	next_fps_time = {};
 }
 
 void Graphics::Quit() {
@@ -70,32 +66,19 @@ void Graphics::Quit() {
 }
 
 void Graphics::Update() {
-	//FPS:
-	auto now = Game_Clock::now();
-	if (next_fps_time == Game_Clock::time_point()) {
-		next_fps_time = now + 1s;
-	}
-
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	if (now >= next_fps_time) {
-		next_fps_time += 1s;
-
-		if (fps_overlay->GetFps() == 0) {
-			Output::Debug("Framerate is 0 FPS!");
-			Draw(*disp);
-			Player::FrameReset(now);
-		} else {
-			next_fps_time = now + 1s;
-			fps_overlay->ResetCounter();
-		}
-
-		UpdateTitle();
-	}
+	bool fps_visible = (
+#ifndef EMSCRIPTEN
+		(Player::fps_render_window || DisplayUi->IsFullscreen()) &&
+#endif
+		Player::fps_flag);
+	fps_overlay->SetDrawFps(fps_visible);
 
 	//Update Graphics:
-	fps_overlay->Update();
-	fps_overlay->AddUpdate();
+	if (fps_overlay->Update()) {
+		UpdateTitle();
+	}
 	message_overlay->Update();
 }
 
@@ -119,8 +102,6 @@ void Graphics::UpdateTitle() {
 }
 
 void Graphics::Draw(Bitmap& dst) {
-	fps_overlay->AddFrame();
-
 	auto& transition = Transition::instance();
 
 	int min_z = std::numeric_limits<int>::min();
@@ -145,11 +126,6 @@ void Graphics::LocalDraw(Bitmap& dst, int min_z, int max_z) {
 	}
 
 	drawable_list.Draw(dst, min_z, max_z);
-}
-
-void Graphics::FrameReset(Game_Clock::time_point now) {
-	next_fps_time = now + 1s;
-	fps_overlay->ResetCounter();
 }
 
 std::shared_ptr<Scene> Graphics::UpdateSceneCallback() {

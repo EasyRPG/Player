@@ -46,5 +46,6 @@ if(MSVC)
 		add_compile_options("/MP")
 	endif()
 
+	# Interpret character literals as UTF-8
 	add_compile_options("/utf-8")
 endif()

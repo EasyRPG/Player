@@ -23,6 +23,7 @@
 #include "drawable.h"
 #include "memory_management.h"
 #include "rect.h"
+#include "game_clock.h"
 
 /**
  * FpsOverlay class.
@@ -34,36 +35,12 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
-	void Update();
-
 	/**
-	 * Returns the value the FPS counter had when ResetCounter() was called.
+	 * Update the fps overlay.
 	 *
-	 * @return fps counter value
+	 * @return true if the fps string was changed
 	 */
-	int GetFps() const;
-
-	/**
-	 * Returns the value the UPS counter had when ResetCounter() was called.
-	 *
-	 * @return ups counter value
-	 */
-	int GetUps() const;
-
-	/**
-	 * Increments the FPS counter by one.
-	 */
-	void AddFrame();
-
-	/**
-	 * Increments the UPS (updates) counter by one.
-	 */
-	void AddUpdate();
-
-	/**
-	 * Resets FPS and UPS counter to 0.
-	 */
-	void ResetCounter();
+	bool Update();
 
 	/**
 	 * Formats a string containing FPS.
@@ -72,25 +49,38 @@ public:
 	 */
 	std::string GetFpsString() const;
 
+	/**
+	 * Set whether we will render the fps.
+	 *
+	 * @param value true if we want to draw to screen
+	 */
+	void SetDrawFps(bool value);
+
 private:
+	void UpdateText();
+
 	BitmapRef fps_bitmap;
 	BitmapRef speedup_bitmap;
-
-	bool fps_dirty = false;
-	bool speedup_dirty = false;
-
-	/** Frames per second */
-	int fps = 0;
-	int last_fps = 0;
-	/** Logic updates per second */
-	int ups = 0;
-	int last_ups = 0;
+	Game_Clock::time_point last_refresh_time;
 
 	/** Rect to draw on screen */
 	Rect fps_rect;
 	Rect speedup_rect;
 
+	std::string text;
+
 	int last_speed_mod = 1;
+	bool speedup_dirty = true;
+	bool fps_dirty = true;
+	bool draw_fps = true;
 };
+
+inline std::string FpsOverlay::GetFpsString() const {
+	return text;
+}
+
+inline void FpsOverlay::SetDrawFps(bool value) {
+	draw_fps = value;
+}
 
 #endif

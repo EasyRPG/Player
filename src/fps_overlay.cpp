@@ -18,37 +18,51 @@
 #include <sstream>
 
 #include "fps_overlay.h"
-#include "player.h"
+#include "game_clock.h"
 #include "bitmap.h"
 #include "input.h"
 #include "font.h"
 #include "drawable_mgr.h"
-#include "baseui.h"
+
+using namespace std::chrono_literals;
+
+static constexpr auto refresh_frequency = 1s;
 
 FpsOverlay::FpsOverlay() :
 	Drawable(Priority_Overlay + 100, Drawable::Flags::Global)
 {
 	DrawableMgr::Register(this);
+
+	UpdateText();
 }
 
-void FpsOverlay::Update() {
-	int mod = Player::GetSpeedModifier();
+void FpsOverlay::UpdateText() {
+	auto fps = static_cast<int>(std::round(Game_Clock::GetFPS()));
+	text = "FPS: " + std::to_string(fps);
+	fps_dirty = true;
+}
 
+bool FpsOverlay::Update() {
+	int mod = static_cast<int>(Game_Clock::GetGameSpeedFactor());
 	if (mod != last_speed_mod) {
 		speedup_dirty = true;
 		last_speed_mod = mod;
 	}
+
+	auto now = Game_Clock::GetFrameTime();
+	auto dt = now - last_refresh_time;
+	if (dt < refresh_frequency) {
+		return false;
+	}
+	last_refresh_time = now;
+
+	UpdateText();
+
+	return true;
 }
 
 void FpsOverlay::Draw(Bitmap& dst) {
-	// FIXME: Break this dependency on DisplayUi
-	bool fps_draw = (
-#ifndef EMSCRIPTEN
-		(Player::fps_render_window || DisplayUi->IsFullscreen()) &&
-#endif
-		Player::fps_flag);
-
-	if (fps_draw) {
+	if (draw_fps) {
 		if (fps_dirty) {
 			std::string text = GetFpsString();
 			Rect rect = Font::Default()->GetSize(text);
@@ -89,39 +103,8 @@ void FpsOverlay::Draw(Bitmap& dst) {
 			speedup_dirty = false;
 		}
 
-		int dwidth = DisplayUi->GetDisplaySurface()->GetWidth();
+		int dwidth = dst.GetWidth();
 		dst.Blit(dwidth - speedup_rect.width - 1, 2, *speedup_bitmap, speedup_rect, 255);
 	}
 }
 
-int FpsOverlay::GetFps() const {
-	return last_fps;
-}
-
-int FpsOverlay::GetUps() const {
-	return last_ups;
-}
-
-void FpsOverlay::AddFrame() {
-	++fps;
-}
-
-void FpsOverlay::AddUpdate() {
-	++ups;
-}
-
-void FpsOverlay::ResetCounter() {
-	last_fps = fps;
-	last_ups = ups;
-
-	fps = 0;
-	ups = 0;
-
-	fps_dirty = true;
-}
-
-std::string FpsOverlay::GetFpsString() const {
-	std::stringstream text;
-	text << "FPS: " << GetFps();
-	return text.str();
-}

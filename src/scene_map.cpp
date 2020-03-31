@@ -83,7 +83,7 @@ void Scene_Map::Start() {
 
 	Main_Data::game_screen->InitGraphics();
 	Main_Data::game_pictures->InitGraphics();
-	Player::FrameReset(Game_Clock::now());
+	Game_Clock::ResetFrame(Game_Clock::now());
 
 	Start2(MapUpdateAsyncContext());
 }

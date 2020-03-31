@@ -176,11 +176,6 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 }
 
 static void HandleErrorOutput(const std::string& err) {
-#ifdef EMSCRIPTEN
-	// Do not execute any game logic after an error happened
-	emscripten_cancel_main_loop();
-#endif
-
 	// Drawing directly on the screen because message_overlay is not visible
 	// when faded out
 	BitmapRef surface = DisplayUi->GetDisplaySurface();

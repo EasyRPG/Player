@@ -297,11 +297,14 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SetAppIcon();
 
 		// OS X needs the rendered to be vsync
-		#if defined(__APPLE__) && defined(__MACH__)
-			uint32_t rendered_flag = SDL_RENDERER_PRESENTVSYNC;
-		#else
-			uint32_t rendered_flag = 0;
-		#endif
+#if defined(__APPLE__) && defined(__MACH__)
+		uint32_t rendered_flag = SDL_RENDERER_PRESENTVSYNC;
+#else
+		uint32_t rendered_flag = 0;
+#endif
+		if (Player::vsync) {
+			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
+		}
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer) {
@@ -324,6 +327,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_GetRendererInfo failed : %s", SDL_GetError());
 		}
 
+		SetFrameRateSynchronized(rinfo.flags & SDL_RENDERER_PRESENTVSYNC);
 
 		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
 			texture_format = GetDefaultFormat();

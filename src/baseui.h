@@ -180,11 +180,16 @@ public:
 	 */
 	KeyStatus& GetKeyStates();
 
+	/** @return true if the display manages the framerate */
+	bool IsFrameRateSynchronized() const;
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
 	 */
 	BaseUi();
+
+	void SetFrameRateSynchronized(bool value);
 
 	/**
 	 * Display mode data struct.
@@ -206,23 +211,34 @@ protected:
 	/** Surface used for zoom. */
 	BitmapRef main_surface;
 
-	/** Mouse hovering the window flag. */
-	bool mouse_focus;
-
 	/** Mouse x coordinate on screen relative to the window. */
-	int mouse_x;
+	int mouse_x = 0;
 
 	/** Mouse y coordinate on screen relative to the window. */
-	int mouse_y;
-
-	/** Cursor visibility flag. */
-	bool cursor_visible;
+	int mouse_y = 0;
 
 	/** Color for display background. */
-	Color back_color;
+	Color back_color = Color{ 0, 0, 0, 255 };
+
+	/** Mouse hovering the window flag. */
+	bool mouse_focus = false;
+
+	/** Cursor visibility flag. */
+	bool cursor_visible = false;
+
+	/** Ui manages frame rate externally */
+	bool external_frame_rate = false;
 };
 
 /** Global DisplayUi variable. */
 extern std::shared_ptr<BaseUi> DisplayUi;
+
+inline bool BaseUi::IsFrameRateSynchronized() const {
+	return external_frame_rate;
+}
+
+inline void BaseUi::SetFrameRateSynchronized(bool value) {
+	external_frame_rate = value;
+}
 
 #endif
