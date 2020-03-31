@@ -188,29 +188,30 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		return;
 	}
 
-	cache->SetPitch(pitch);
-	cache->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
-
-	AudioSeRef se_ref = cache->Decode();
+	std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
+	dec->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
+	dec->SetPitch(pitch);
 
 	if (se_buf[se_channel].data_pcm16 != nullptr) {
 		linearFree(se_buf[se_channel].data_pcm16);
 	}
 
-	size_t bsize = se_ref->buffer.size();
+	std::vector<uint8_t> dec_buf = dec->DecodeAll();
+
+	size_t bsize = dec_buf.size();
 	size_t aligned_bsize = 8192;
 	// Buffer must be correctly aligned to prevent audio glitches
 	for (; ; aligned_bsize *= 2) {
 		if (aligned_bsize > bsize) {
 			se_buf[se_channel].data_pcm16 = reinterpret_cast<s16*>(linearAlloc(aligned_bsize));
-			memset(se_buf[se_channel].data_pcm16, '\0', aligned_bsize);
+			memset(se_buf[se_channel].data_pcm16 + bsize, '\0', aligned_bsize - bsize);
 			break;
 		}
 	}
 
 	se_buf[se_channel].nsamples = bsize / 4;
 
-	memcpy(se_buf[se_channel].data_pcm16, se_ref->buffer.data(), se_ref->buffer.size());
+	memcpy(se_buf[se_channel].data_pcm16, dec_buf.data(), dec_buf.size());
 
 	DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
 
