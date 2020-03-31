@@ -168,10 +168,15 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	if (!dsp_inited)
 		return;
 
+	// Important!
+	// When indexing se_buf use se_channel
+	// In ndsp-Api functions use ndsp_channel
 	int se_channel = -1;
+	int ndsp_channel = -1;
 
 	for (int i = se_channel_begin; i <= se_channel_end; ++i) {
 		if (!ndspChnIsPlaying(i)) {
+			ndsp_channel = i;
 			se_channel = i - 1;
 			break;
 		}
@@ -189,7 +194,16 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
-	dec->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
+
+	int frequency;
+	AudioDecoder::Format format, out_format;
+	int channels;
+
+	dec->GetFormat(frequency, format, channels);
+	if (!set_channel_format(ndsp_channel, format, channels, out_format)) {
+		dec->SetFormat(frequency, out_format, channels);
+	}
+	ndspChnSetRate(ndsp_channel, frequency);
 	dec->SetPitch(pitch);
 
 	if (se_buf[se_channel].data_pcm16 != nullptr) {
@@ -209,7 +223,8 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		}
 	}
 
-	se_buf[se_channel].nsamples = bsize / 4;
+	const int samplesize = AudioDecoder::GetSamplesizeForFormat(out_format);
+	se_buf[se_channel].nsamples = bsize / (samplesize * channels);
 
 	memcpy(se_buf[se_channel].data_pcm16, dec_buf.data(), dec_buf.size());
 
@@ -220,7 +235,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	mix[1] = mix[0];
 	ndspChnSetMix(0, mix);
 
-	ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
+	ndspChnWaveBufAdd(ndsp_channel, &se_buf[se_channel]);
 }
 
 void CtrAudio::SE_Stop() {
