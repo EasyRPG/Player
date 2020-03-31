@@ -113,7 +113,7 @@ private:
 	struct Data {
 		time_point frame_time;
 		duration frame_accumulator;
-		duration max_frame_accumulator = std::chrono::milliseconds(200);
+		duration max_frame_accumulator = std::chrono::duration_cast<duration>(std::chrono::milliseconds(200));
 		float speed = 1.0;
 		float fps = 0.0;
 		int frame = 0;
