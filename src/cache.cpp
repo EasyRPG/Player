@@ -94,14 +94,16 @@ namespace {
 	void FreeBitmapMemory() {
 		auto cur_ticks = Game_Clock::GetFrameTime();
 
-		for (auto& i : cache) {
-			if (i.second.bitmap.use_count() != 1) {
+		for (auto it = cache.begin(); it != cache.end();) {
+			if (it->second.bitmap.use_count() != 1) {
 				// Bitmap is referenced
+				++it;
 				continue;
 			}
 
-			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3s) {
+			if (cache_size <= cache_limit && cur_ticks - it->second.last_access < 3s) {
 				// Below memory limit and last access < 3s
+				++it;
 				continue;
 			}
 
@@ -110,8 +112,9 @@ namespace {
 						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str());
 #endif
 
-			cache_size -= i.second.bitmap->GetSize();
-			i.second.bitmap.reset();
+			cache_size -= it->second.bitmap->GetSize();
+
+			it = cache.erase(it);
 		}
 
 #ifdef CACHE_DEBUG
@@ -136,7 +139,7 @@ namespace {
 
 		auto it = cache.find(key);
 
-		if (it == cache.end() || !it->second.bitmap) {
+		if (it == cache.end()) {
 			const std::string path = FileFinder::FindImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
@@ -152,7 +155,10 @@ namespace {
 				}
 			}
 
-			return AddToCache(key, bmp);
+			if (bmp) {
+				return AddToCache(key, bmp);
+			}
+			return nullptr;
 		} else {
 			it->second.last_access = Game_Clock::GetFrameTime();
 			return it->second.bitmap;
@@ -253,7 +259,7 @@ namespace {
 
 		auto it = cache.find(key);
 
-		if (it == cache.end() || !it->second.bitmap) {
+		if (it == cache.end()) {
 			FreeBitmapMemory();
 
 			BitmapRef bitmap = s.dummy_renderer();
@@ -395,7 +401,7 @@ BitmapRef Cache::Exfont() {
 
 	auto it = cache.find(key);
 
-	if (it == cache.end() || !it->second.bitmap) {
+	if (it == cache.end()) {
 		// Allow overwriting of built-in exfont with a custom ExFont image file
 		// exfont_custom is filled by Player::CreateGameObjects
 		BitmapRef exfont_img;
