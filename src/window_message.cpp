@@ -413,7 +413,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (std::iscntrl(static_cast<unsigned char>(ch))) {
+		if (Utils::IsControlCharacter(ch)) {
 			// control characters not handled
 			continue;
 		}

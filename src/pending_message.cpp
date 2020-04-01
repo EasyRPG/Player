@@ -13,7 +13,7 @@
 
 static void RemoveControlChars(std::string& s) {
 	// RPG_RT ignores any control characters within messages.
-	auto iter = std::remove_if(s.begin(), s.end(), [](const char c) { return std::iscntrl(c); });
+	auto iter = std::remove_if(s.begin(), s.end(), [](const char c) { return Utils::IsControlCharacter(c); });
 	s.erase(iter, s.end());
 }
 

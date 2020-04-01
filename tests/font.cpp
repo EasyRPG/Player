@@ -23,6 +23,7 @@ TEST_CASE("FontSizeStr") {
 	REQUIRE_EQ(font->GetSize("\n"), Rect(0, 0, 0, ch));
 	REQUIRE_EQ(font->GetSize("$A"), Rect(0, 0, cwh * 2, ch));
 	REQUIRE_EQ(font->GetSize("X\nX"), Rect(0, 0, cwh * 2, ch));
+	REQUIRE_EQ(font->GetSize("下"), Rect(0, 0, cwf, ch));
 }
 
 TEST_CASE("FontSizeChar") {
@@ -33,6 +34,7 @@ TEST_CASE("FontSizeChar") {
 	REQUIRE_EQ(font->GetSize(U'\n'), Rect(0, 0, 0, ch));
 	REQUIRE_EQ(font->GetSize(U'X'), Rect(0, 0, cwh, ch));
 	REQUIRE_EQ(font->GetSize(U'ぽ'), Rect(0, 0, cwf, ch));
+	REQUIRE_EQ(font->GetSize(U'下'), Rect(0, 0, cwf, ch));
 }
 
 TEST_CASE("FontSizeStrEx") {
@@ -65,6 +67,7 @@ TEST_CASE("FontGlyphChar") {
 	check(U'\n', Rect(0, 0, 0, ch));
 	check(U'X', Rect(0, 0, cwh, ch));
 	check(U'ぽ', Rect(0, 0, cwf, ch));
+	check(U'下', Rect(0, 0, cwf, ch));
 }
 
 TEST_CASE("FontGlyphCharEx") {
@@ -93,6 +96,7 @@ TEST_CASE("FontGlyphChar") {
 	check(U'\n', Rect(0, 0, 0, ch));
 	check(U'X', Rect(0, 0, cwh, ch));
 	check(U'ぽ', Rect(0, 0, cwf, ch));
+	check(U'下', Rect(0, 0, cwf, ch));
 }
 
 TEST_CASE("FontGlyphCharEx") {
