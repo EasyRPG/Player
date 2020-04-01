@@ -194,25 +194,40 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
+	dec->SetPitch(pitch);
 
 	int frequency;
 	AudioDecoder::Format format, out_format;
 	int channels;
 
+	std::vector<uint8_t> dec_buf;
+	std::vector<uint8_t>* out_buf = nullptr;
+	AudioSeRef se_ref;
+	bool use_raw_buf = false;
+
 	dec->GetFormat(frequency, format, channels);
-	if (!set_channel_format(ndsp_channel, format, channels, out_format)) {
-		dec->SetFormat(frequency, out_format, channels);
+	if (set_channel_format(ndsp_channel, format, channels, out_format)) {
+		// When the DSP supports the format and the audio is not pitched the raw
+		// buffer can be used directly
+		use_raw_buf = pitch == 100;
 	}
+
+	if (use_raw_buf) {
+		se_ref = cache->GetSeData();
+		out_buf = &se_ref->buffer;
+	} else {
+		dec->SetFormat(frequency, out_format, channels);
+		dec_buf = dec->DecodeAll();
+		out_buf = &dec_buf;
+	}
+
 	ndspChnSetRate(ndsp_channel, frequency);
-	dec->SetPitch(pitch);
 
 	if (se_buf[se_channel].data_pcm16 != nullptr) {
 		linearFree(se_buf[se_channel].data_pcm16);
 	}
 
-	std::vector<uint8_t> dec_buf = dec->DecodeAll();
-
-	size_t bsize = dec_buf.size();
+	size_t bsize = out_buf->size();
 	size_t aligned_bsize = 8192;
 	// Buffer must be correctly aligned to prevent audio glitches
 	for (; ; aligned_bsize *= 2) {
@@ -226,7 +241,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	const int samplesize = AudioDecoder::GetSamplesizeForFormat(out_format);
 	se_buf[se_channel].nsamples = bsize / (samplesize * channels);
 
-	memcpy(se_buf[se_channel].data_pcm16, dec_buf.data(), dec_buf.size());
+	memcpy(se_buf[se_channel].data_pcm16, out_buf->data(), out_buf->size());
 
 	DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
 
