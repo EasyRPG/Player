@@ -244,12 +244,12 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename) {
+	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
 
-		const auto key = MakeHashKey(folder_name, filename, false);
+		const auto key = MakeHashKey(folder_name, filename, transparent);
 
 		auto it = cache.find(key);
 
@@ -272,7 +272,7 @@ namespace {
 		const Spec& s = spec[T];
 
 		if (f == CACHE_DEFAULT_BITMAP) {
-			return LoadDummyBitmap<T>(s.directory, f);
+			return LoadDummyBitmap<T>(s.directory, f, true);
 		}
 
 #ifndef NDEBUG
@@ -289,9 +289,7 @@ namespace {
 										 0));
 
 		if (!ret) {
-			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
-
-			return LoadDummyBitmap<T>(s.directory, f);
+			return LoadDummyBitmap<T>(s.directory, f, transparent);
 		}
 
 		if (s.oob_check) {
