@@ -238,8 +238,13 @@ void Player::MainLoop() {
 
 	int num_updates = 0;
 	while (Game_Clock::NextGameTimeStep()) {
+		if (num_updates > 0) {
+			Player::UpdateInput();
+		}
+
 		Scene::old_instances.clear();
 		Scene::instance->MainFunction();
+
 		++num_updates;
 	}
 
