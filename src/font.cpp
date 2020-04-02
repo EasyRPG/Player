@@ -179,7 +179,7 @@ BitmapFont::BitmapFont(const std::string& name, function_type func)
 
 Rect BitmapFont::GetSize(char32_t ch) const {
 	size_t units = 0;
-	if (EP_LIKELY(!std::iscntrl(static_cast<unsigned char>(ch)))) {
+	if (EP_LIKELY(!Utils::IsControlCharacter(ch))) {
 		auto glyph = func(ch);
 		units += glyph->is_full? 2 : 1;
 	}
@@ -194,7 +194,7 @@ Rect BitmapFont::GetSize(std::string const& txt) const {
 		auto resp = Utils::UTF8Next(iter, end);
 		auto ch = resp.ch;
 		iter = resp.next;
-		if (EP_LIKELY(!std::iscntrl(static_cast<unsigned char>(resp.ch)))) {
+		if (EP_LIKELY(!Utils::IsControlCharacter(resp.ch))) {
 			auto glyph = func(ch);
 			units += glyph->is_full? 2 : 1;
 		}
@@ -206,7 +206,7 @@ Font::GlyphRet BitmapFont::Glyph(char32_t code) {
 	if (EP_UNLIKELY(!glyph_bm)) {
 		glyph_bm = Bitmap::Create(nullptr, FULL_WIDTH, HEIGHT, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
 	}
-	if (EP_UNLIKELY(std::iscntrl(static_cast<unsigned char>(code)))) {
+	if (EP_UNLIKELY(Utils::IsControlCharacter(code))) {
 		return { glyph_bm, Rect(0, 0, 0, HEIGHT) };
 	}
 	auto glyph = func(code);

@@ -322,7 +322,14 @@ namespace Utils {
 	 * @return value clamped between min and max
 	 */
 	template <typename T>
-		constexpr T Clamp(T value, const T& minv, const T& maxv);
+	constexpr T Clamp(T value, const T& minv, const T& maxv);
+
+	/**
+	 * Determines if a char is a control character (0x00-0x1F and 0x7F)
+	 * @return true when ch is a control character
+	 */
+	template <typename T>
+	bool IsControlCharacter(T ch);
 
 } // namespace Utils
 
@@ -351,6 +358,11 @@ inline void Utils::ForEachLine(const std::string& line, F&& f) {
 		f(line.substr(next, idx - next));
 		next = idx + 1;
 	} while(next < line.size());
+}
+
+template <typename T>
+inline bool Utils::IsControlCharacter(T ch) {
+	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
 }
 
 #endif
