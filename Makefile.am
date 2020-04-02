@@ -488,6 +488,7 @@ test_runner_SOURCES = \
 	tests/doctest.h \
 	tests/test_main.cpp \
 	tests/bitmapfont.cpp \
+	tests/config_param.cpp \
 	tests/directorytree.cpp \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
