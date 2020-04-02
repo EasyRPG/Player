@@ -26,8 +26,7 @@
 #include "audio_secache.h"
 
 namespace {
-	const int samples_per_buf = 4096;
-	const int bytes_per_sample = 4;
+	const int bgm_buf_size = 8192;
 	const int bgm_channel = 0;
 	const int se_channel_begin = 1;
 	const int se_channel_end = 23;
@@ -90,6 +89,11 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 			bgm_decoder->SetFormat(frequency, out_format, channels);
 		}
 		ndspChnSetRate(bgm_channel, frequency);
+
+		const int samplesize = AudioDecoder::GetSamplesizeForFormat(out_format);
+		const int nsamples = bgm_buf_size / (samplesize * channels);
+		bgm_buf[0].nsamples = nsamples;
+		bgm_buf[1].nsamples = nsamples;
 	} else {
 		Output::Warning("Couldn't play BGM %s: Format not supported", file.c_str());
 		fclose(filehandle);
@@ -312,10 +316,9 @@ void n3ds_audio_thread(void* userdata) {
 		}
 
 		audio->bgm_decoder->Decode(reinterpret_cast<uint8_t*>(
-			audio->bgm_buf[target_block].data_pcm16),
-			samples_per_buf * bytes_per_sample
+			audio->bgm_buf[target_block].data_pcm16), bgm_buf_size
 		);
-		DSP_FlushDataCache(audio->bgm_buf[target_block].data_pcm16,samples_per_buf);
+		DSP_FlushDataCache(audio->bgm_buf[target_block].data_pcm16, bgm_buf_size);
 
 		mix[0] = audio->bgm_decoder->GetVolume() / 100.0f;
 		mix[1] = mix[0];
@@ -341,7 +344,7 @@ CtrAudio::CtrAudio() {
 	}
 
 	dsp_inited = true;
-	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(samples_per_buf * bytes_per_sample * 2));
+	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(bgm_buf_size * 2));
 	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
 
 	for (int i = 0; i <= se_channel_end; ++i) {
@@ -353,10 +356,10 @@ CtrAudio::CtrAudio() {
 	memset(bgm_buf, '\0', sizeof(bgm_buf));
 	memset(se_buf, '\0', sizeof(se_buf));
 	bgm_buf[0].data_vaddr = &bgm_audio_buffer[0];
-	bgm_buf[0].nsamples = samples_per_buf;
+	bgm_buf[0].nsamples = bgm_buf_size / 4;
 	bgm_buf[0].status = NDSP_WBUF_DONE;
-	bgm_buf[1].data_vaddr = &bgm_audio_buffer[samples_per_buf];
-	bgm_buf[1].nsamples = samples_per_buf;
+	bgm_buf[1].data_vaddr = &bgm_audio_buffer[bgm_buf_size];
+	bgm_buf[1].nsamples = bgm_buf_size / 4;
 	bgm_buf[1].status = NDSP_WBUF_DONE;
 
 	LightEvent_Init(&audio_event, RESET_ONESHOT);
