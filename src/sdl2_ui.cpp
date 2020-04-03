@@ -138,12 +138,6 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 	toggle_fs_available(false),
 	mode_changing(false) {
 
-	uint32_t flags = SDL_INIT_VIDEO;
-
-#ifndef EMSCRIPTEN
-	flags |= SDL_INIT_TIMER;
-#endif
-
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
 #ifdef __LINUX__
@@ -151,7 +145,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
 #endif
 
-	if (SDL_Init(flags) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
