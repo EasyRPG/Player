@@ -23,9 +23,9 @@
 #include "game_screen.h"
 #include "input.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_menu.h"
-#include "rpg_item.h"
+#include <lcf/rpg_item.h>
 
 Scene_Equip::Scene_Equip(Game_Actor& actor, int equip_index) :
 	actor(actor),

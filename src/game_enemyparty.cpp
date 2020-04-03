@@ -21,7 +21,7 @@
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "utils.h"
 #include "output.h"
 
@@ -42,7 +42,7 @@ int Game_EnemyParty::GetBattlerCount() const {
 
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
-	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, battle_troop_id);
+	const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);
 	if (!troop) {
 		// Shouldn't happen because Scene_Battle verifies this
 		Output::Warning("Invalid battle troop ID {}", battle_troop_id);

@@ -38,7 +38,7 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 
 	index = -1;
 
-	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+	if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 		// Simulate a borderless window
 		// Doing it this way for gauge style makes the implementation on
 		// scene-side easier
@@ -73,7 +73,7 @@ void Window_BattleStatus::Refresh() {
 			actor = &(*Main_Data::game_party)[i];
 		}
 
-		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+		if (!enemy && lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 		}
 		else {
@@ -81,7 +81,7 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			DrawActorState(*actor, 84, y);
-			if (Player::IsRPG2k3() && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
 				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
 				int digits = Player::IsRPG2k() ? 3 : 4;
@@ -96,7 +96,7 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 		}
 
@@ -110,7 +110,7 @@ void Window_BattleStatus::RefreshGauge() {
 				actor = &(*Main_Data::game_party)[i];
 			}
 
-			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+			if (!enemy && lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 				BitmapRef system2 = Cache::System2();
 				if (system2) {
 					// Clear number and gauge drawing area
@@ -153,7 +153,7 @@ void Window_BattleStatus::RefreshGauge() {
 				int y = 2 + i * 16;
 
 				DrawGauge(*actor, 198 - 10, y - 2);
-				if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+				if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 					DrawActorSp(*actor, 198, y, 3, false);
 				}
 			}
@@ -277,7 +277,7 @@ void Window_BattleStatus::Update() {
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+	if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 		SetCursorRect(Rect());
 		return;
 	}

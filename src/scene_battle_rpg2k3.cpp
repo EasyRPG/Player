@@ -16,7 +16,7 @@
  */
 
 #include "scene_battle_rpg2k3.h"
-#include "rpg_battlecommand.h"
+#include <lcf/rpg_battlecommand.h>
 #include "input.h"
 #include "output.h"
 #include "player.h"
@@ -30,7 +30,7 @@
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
 #include "game_screen.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_gameover.h"
 #include "utils.h"
 #include "font.h"
@@ -185,7 +185,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
 
-	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+	if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 		item_window->SetY(64);
 		skill_window->SetY(64);
 
@@ -193,8 +193,8 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 		status_window.reset(new Window_BattleStatus(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 	}
 
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
-		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+	if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = lcf::Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
 		options_window->SetBackOpacity(transp);
 		item_window->SetBackOpacity(transp);
 		skill_window->SetBackOpacity(transp);
@@ -229,7 +229,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 
 		std::vector<Game_Battler*> actors;
 
-		if (ally_index >= 0 && Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		if (ally_index >= 0 && lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 			ally_cursor->SetVisible(true);
 			Main_Data::game_party->GetBattlers(actors);
 			Game_Battler* actor = actors[ally_index];
@@ -267,7 +267,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				int text_width = 0;
 				for (auto state_id : states) {
 					// States are sanitized in Game_Battler
-					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+					const RPG::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 					std::string name = state->name;
 					int color = state->color;
 					FontRef font = Font::Default();
@@ -325,8 +325,8 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
 
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
-		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+	if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = lcf::Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
 		target_window->SetBackOpacity(transp);
 	}
 }
@@ -364,7 +364,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	}
 
 	command_window->SetHeight(80);
-	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+	if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 		command_window->SetX(0);
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2);
 	}
@@ -373,8 +373,8 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 	}
 
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
-		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+	if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = lcf::Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
 		command_window->SetBackOpacity(transp);
 	}
 }
@@ -472,7 +472,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
 		status_window->Refresh();
-		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+		if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 			command_window->SetX(SCREEN_TARGET_WIDTH);
 			command_window->SetIndex(-1);
 		}
@@ -486,12 +486,12 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
 		command_window->SetIndex(-1);
 		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			command_window->SetVisible(true);
 		}
 		break;
 	case State_SelectCommand:
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 			options_window->SetVisible(true);
 		}
 		status_window->SetVisible(true);
@@ -501,11 +501,11 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetVisible(true);
 		target_window->SetActive(true);
 
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			command_window->SetVisible(true);
 		}
 
-		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
 			target_window->SetVisible(true);
 		}
 		break;
@@ -526,14 +526,14 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		skill_window->SetVisible(true);
 		skill_window->SetHelpWindow(help_window.get());
 		help_window->SetVisible(true);
-		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
 			sp_window->SetVisible(true);
 		}
 		break;
 	case State_Victory:
 	case State_Defeat:
 		status_window->SetVisible(true);
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			command_window->SetVisible(true);
 		}
 		status_window->SetX(0);
@@ -546,7 +546,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	}
 
 	// If SelectOption <-> SelectCommand => Display Movement:
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+	if (lcf::Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 		if ((previous_state == State_SelectActor || previous_state == State_AutoBattle || previous_state == State_SelectCommand) && state == State_SelectOption) {
 			options_window->InitMovement(options_window->GetX() - option_command_mov, options_window->GetY(),
 				options_window->GetX(), options_window->GetY(), option_command_time);
@@ -554,7 +554,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			status_window->InitMovement(status_window->GetX() - option_command_mov, status_window->GetY(),
 				status_window->GetX(), status_window->GetY(), option_command_time);
 
-			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+			if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 				command_window->SetVisible(true);
 				command_window->InitMovement(command_window->GetX() - option_command_mov, command_window->GetY(),
 					command_window->GetX(), command_window->GetY(), option_command_time);
@@ -568,7 +568,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			status_window->InitMovement(status_window->GetX() + option_command_mov, status_window->GetY(),
 				status_window->GetX(), status_window->GetY(), option_command_time);
 
-			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+			if (lcf::Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 				command_window->InitMovement(command_window->GetX() + option_command_mov, command_window->GetY(),
 					command_window->GetX(), command_window->GetY(), option_command_time);
 			}
@@ -794,7 +794,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						target->GetBattleX(),
 						target->GetBattleY(),
 						0,
-						Data::terms.miss);
+						lcf::Data::terms.miss);
 				}
 
 				targets.push_back(target);
@@ -1038,7 +1038,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 
 	// Loop through all battle commands smaller then that ID and count subsets
 	int i = 0;
-	for (RPG::BattleCommand& cmd : Data::battlecommands.commands) {
+	for (RPG::BattleCommand& cmd : lcf::Data::battlecommands.commands) {
 		if (i >= command_id) {
 			break;
 		}
@@ -1075,9 +1075,9 @@ void Scene_Battle_Rpg2k3::Escape() {
 	if (!escape_success) {
 		SetState(State_SelectActor);
 		if (escape_success) {
-			ShowNotification(Data::terms.escape_success);
+			ShowNotification(lcf::Data::terms.escape_success);
 		} else {
-			ShowNotification(Data::terms.escape_failure);
+			ShowNotification(lcf::Data::terms.escape_failure);
 		}
 	}
 	else {
@@ -1107,25 +1107,25 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.PushLine(Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
 		pm.PushPageEnd();
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
 		std::stringstream ss;
 		if (exp > 0) {
-			ss << exp << space << Data::terms.exp_received;
+			ss << exp << space << lcf::Data::terms.exp_received;
 			pm.PushLine(ss.str());
 			pm.PushPageEnd();
 		}
 		if (money > 0) {
 			ss.str("");
-			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+			ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b;
 			pm.PushLine(ss.str());
 			pm.PushPageEnd();
 		}
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			const RPG::Item* item = ReaderUtil::GetElement(Data::items, *it);
+			const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 			// No Output::Warning needed here, reported later when the item is added
 			std::string item_name = "??? BAD ITEM ???";
 			if (item) {
@@ -1133,7 +1133,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 			}
 
 			ss.str("");
-			ss << item_name << space << Data::terms.item_recieved;
+			ss << item_name << space << lcf::Data::terms.item_recieved;
 			pm.PushLine(ss.str());
 			pm.PushPageEnd();
 		}
@@ -1177,7 +1177,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
-		pm.PushLine(Data::terms.defeat);
+		pm.PushLine(lcf::Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 		Game_Message::SetPendingMessage(std::move(pm));

@@ -22,7 +22,7 @@
 #  include <emscripten.h>
 #endif
 
-#include "data.h"
+#include <lcf/data.h>
 #include "filefinder.h"
 #include "game_actor.h"
 #include "game_map.h"
@@ -34,16 +34,16 @@
 #include "game_targets.h"
 #include "game_screen.h"
 #include "game_pictures.h"
-#include "lsd_reader.h"
+#include <lcf/lsd_reader.h>
 #include "output.h"
 #include "player.h"
 #include "scene_save.h"
 #include "scene_file.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "version.h"
 
 Scene_Save::Scene_Save() :
-	Scene_File(Data::terms.save_game_message) {
+	Scene_File(lcf::Data::terms.save_game_message) {
 	Scene::type = Scene::Save;
 }
 
@@ -105,8 +105,8 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath((*tree).directory_path, save_file);
 	}
 
-	LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
-	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
+	lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
+	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
 	if (Player::IsRPG2k()) {
 		for (auto& actor: data_copy.actors) {
@@ -133,7 +133,7 @@ void Scene_Save::Action(int index) {
 			sme.map_id = 0;
 		}
 	}
-	LSD_Reader::Save(filename, data_copy, Player::encoding);
+	lcf::LSD_Reader::Save(filename, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system

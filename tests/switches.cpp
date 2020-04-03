@@ -6,7 +6,7 @@ TEST_SUITE_BEGIN("Switches");
 constexpr int max_switches = 5;
 
 static Game_Switches make() {
-	Data::switches.resize(max_switches);
+	lcf::Data::switches.resize(max_switches);
 	Game_Switches s;
 	s.SetWarning(0);
 	return s;

@@ -41,7 +41,7 @@
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
-#include "scope_guard.h"
+#include "lcf/scope_guard.h"
 
 #include "audio.h"
 
@@ -280,7 +280,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
-		auto window_sg = makeScopeGuard([&]() {
+		auto window_sg = lcf::makeScopeGuard([&]() {
 				SDL_DestroyWindow(sdl_window);
 				sdl_window = nullptr;
 				});
@@ -301,7 +301,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
-		auto renderer_sg = makeScopeGuard([&]() {
+		auto renderer_sg = lcf::makeScopeGuard([&]() {
 				SDL_DestroyRenderer(sdl_renderer);
 				sdl_renderer = nullptr;
 				});

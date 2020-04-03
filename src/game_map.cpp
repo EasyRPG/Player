@@ -35,8 +35,8 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "scene_battle.h"
-#include "lmu_reader.h"
-#include "reader_lcf.h"
+#include <lcf/lmu_reader.h>
+#include <lcf/reader_lcf.h>
 #include "map_data.h"
 #include "main_data.h"
 #include "output.h"
@@ -46,7 +46,7 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
-#include "scope_guard.h"
+#include <lcf/scope_guard.h>
 #include "scene_gameover.h"
 
 namespace {
@@ -106,8 +106,8 @@ void Game_Map::Init() {
 	map_info.encounter_rate = 0;
 
 	common_events.clear();
-	common_events.reserve(Data::commonevents.size());
-	for (const RPG::CommonEvent& ev : Data::commonevents) {
+	common_events.reserve(lcf::Data::commonevents.size());
+	for (const RPG::CommonEvent& ev : lcf::Data::commonevents) {
 		common_events.emplace_back(ev.ID);
 	}
 
@@ -174,15 +174,15 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 
 	// Save allowed
 	int current_index = GetMapIndex(location.map_id);
-	int can_save = Data::treemap.maps[current_index].save;
-	int can_escape = Data::treemap.maps[current_index].escape;
-	int can_teleport = Data::treemap.maps[current_index].teleport;
+	int can_save = lcf::Data::treemap.maps[current_index].save;
+	int can_escape = lcf::Data::treemap.maps[current_index].escape;
+	int can_teleport = lcf::Data::treemap.maps[current_index].teleport;
 
 	while (can_save == RPG::MapInfo::TriState_parent
 			|| can_escape == RPG::MapInfo::TriState_parent
 			|| can_teleport == RPG::MapInfo::TriState_parent)
 	{
-		int parent_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+		int parent_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 		if (parent_index == 0) {
 			// If parent is 0 and flag is parent, it's implicitly enabled.
 			break;
@@ -192,18 +192,18 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 			break;
 		}
 		if (parent_index < 0) {
-			Output::Warning("Map {} has invalid parent id {}!", Data::treemap.maps[current_index].ID, Data::treemap.maps[current_index].parent_map);
+			Output::Warning("Map {} has invalid parent id {}!", lcf::Data::treemap.maps[current_index].ID, lcf::Data::treemap.maps[current_index].parent_map);
 			break;
 		}
 		current_index = parent_index;
 		if (can_save == RPG::MapInfo::TriState_parent) {
-			can_save = Data::treemap.maps[current_index].save;
+			can_save = lcf::Data::treemap.maps[current_index].save;
 		}
 		if (can_escape == RPG::MapInfo::TriState_parent) {
-			can_escape = Data::treemap.maps[current_index].escape;
+			can_escape = lcf::Data::treemap.maps[current_index].escape;
 		}
 		if (can_teleport == RPG::MapInfo::TriState_parent) {
-			can_teleport = Data::treemap.maps[current_index].teleport;
+			can_teleport = lcf::Data::treemap.maps[current_index].teleport;
 		}
 	}
 	Game_System::SetAllowSave(can_save != RPG::MapInfo::TriState_forbid);
@@ -284,15 +284,15 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", ss.str());
 		}
 
-		map = LMU_Reader::Load(map_file, Player::encoding);
+		map = lcf::LMU_Reader::Load(map_file, Player::encoding);
 	} else {
-		map = LMU_Reader::LoadXml(map_file);
+		map = lcf::LMU_Reader::LoadXml(map_file);
 	}
 
 	Output::Debug("Loading Map {}", ss.str());
 
 	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
+		Output::ErrorStr(lcf::LcfReader::GetError());
 	}
 
 	SetNeedRefresh(true);
@@ -301,12 +301,12 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 	ss.str("");
 	for (int cur = current_index;
-		GetMapIndex(Data::treemap.maps[cur].parent_map) != cur;
-		cur = GetMapIndex(Data::treemap.maps[cur].parent_map)) {
+		GetMapIndex(lcf::Data::treemap.maps[cur].parent_map) != cur;
+		cur = GetMapIndex(lcf::Data::treemap.maps[cur].parent_map)) {
 		if (cur != current_index) {
 			ss << " < ";
 		}
-		ss << Data::treemap.maps[cur].name.c_str();
+		ss << lcf::Data::treemap.maps[cur].name.c_str();
 	}
 	Output::Debug("Tree: {}", ss.str());
 
@@ -331,7 +331,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 			Main_Data::game_data.foreground_event_execstate = {};
 			Main_Data::game_data.map_info.events = {};
 			Main_Data::game_data.panorama = {};
-		} else if (location.database_save_count != Data::system.save_count) {
+		} else if (location.database_save_count != lcf::Data::system.save_count) {
 			Main_Data::game_data.common_events = {};
 		}
 	}
@@ -339,7 +339,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
 	location.map_save_count = map_save_count;
-	location.database_save_count = Data::system.save_count;
+	location.database_save_count = lcf::Data::system.save_count;
 }
 
 void Game_Map::PrepareSave() {
@@ -363,15 +363,15 @@ void Game_Map::PrepareSave() {
 
 void Game_Map::PlayBgm() {
 	int current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	while (lcf::Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
 
-	if ((current_index > 0) && !Data::treemap.maps[current_index].music.name.empty()) {
-		if (Data::treemap.maps[current_index].music_type == 1) {
+	if ((current_index > 0) && !lcf::Data::treemap.maps[current_index].music.name.empty()) {
+		if (lcf::Data::treemap.maps[current_index].music_type == 1) {
 			return;
 		}
-		auto& music = Data::treemap.maps[current_index].music;
+		auto& music = lcf::Data::treemap.maps[current_index].music;
 		if (!Main_Data::game_player->IsAboard()) {
 			Game_System::BgmPlay(music);
 		} else {
@@ -632,7 +632,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 bool Game_Map::CanLandAirship(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+	const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
 		Output::Warning("CanLandAirship: Invalid terrain at ({}, {})", x, y);
 		return false;
@@ -729,7 +729,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 		? self->GetVehicleType() : Game_Vehicle::None;
 
 	if (vehicle_type != Game_Vehicle::None) {
-		const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
 		if (!terrain) {
 			Output::Warning("IsPassableTile: Invalid terrain at ({}, {})", x, y);
 			return false;
@@ -799,7 +799,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 int Game_Map::GetBushDepth(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return 0;
 
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
+	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("GetBushDepth: Invalid terrain at ({}, {})", x, y);
 		return 0;
@@ -922,7 +922,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	scrolled_down = 0;
 
 	// Reset the scrolled amount when we exit this function.
-	auto sg = makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
+	auto sg = lcf::makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
 
 	if (GetNeedRefresh()) {
 		Refresh();
@@ -1143,7 +1143,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {
 	auto idx = GetMapIndex(location.map_id);
-	return Data::treemap.maps[idx];
+	return lcf::Data::treemap.maps[idx];
 }
 
 RPG::Map const& Game_Map::GetMap() {
@@ -1163,7 +1163,7 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
-	return Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
+	return lcf::Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
 }
 
 int Game_Map::GetEncounterRate() {
@@ -1196,7 +1196,7 @@ bool Game_Map::UpdateEncounterSteps() {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
+	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
 		return false;
@@ -1262,7 +1262,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	int terrain_tag = GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
-		const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
+		const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
 		if (!troop) {
 			Output::Warning("GetEncountersAt: Invalid troop ID {} in encounter list", troop_id);
 			return false;
@@ -1277,8 +1277,8 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 
 	std::vector<int> out;
 
-	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
-		RPG::MapInfo& map = Data::treemap.maps[i];
+	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
+		RPG::MapInfo& map = lcf::Data::treemap.maps[i];
 
 		if (map.ID == location.map_id) {
 			for (const RPG::Encounter& enc : map.encounters) {
@@ -1316,7 +1316,7 @@ static void OnEncounterEnd(BattleResult result) {
 
 	//2k3 death handler
 
-	auto* ce = ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
+	auto* ce = lcf::ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
 	if (ce) {
 		auto& interp = Game_Map::GetInterpreter();
 		interp.Push(ce);
@@ -1359,11 +1359,11 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 	args.terrain_id = GetTerrainTag(x, y);
 
 	int current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	while (lcf::Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
-	if (Data::treemap.maps[current_index].background_type == 2) {
-		args.background = Data::treemap.maps[current_index].background_name;
+	if (lcf::Data::treemap.maps[current_index].background_type == 2) {
+		args.background = lcf::Data::treemap.maps[current_index].background_name;
 	}
 }
 
@@ -1470,8 +1470,8 @@ std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 }
 
 int Game_Map::GetMapIndex(int id) {
-	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
-		if (Data::treemap.maps[i].ID == id) {
+	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
+		if (lcf::Data::treemap.maps[i].ID == id) {
 			return i;
 		}
 	}
@@ -1480,9 +1480,9 @@ int Game_Map::GetMapIndex(int id) {
 }
 
 std::string Game_Map::GetMapName(int id) {
-	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
-		if (Data::treemap.maps[i].ID == id) {
-			return Data::treemap.maps[i].name;
+	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
+		if (lcf::Data::treemap.maps[i].ID == id) {
+			return lcf::Data::treemap.maps[i].name;
 		}
 	}
 	// nothing found
@@ -1495,7 +1495,7 @@ int Game_Map::GetMapType(int map_id) {
 		return 0;
 	}
 
-	return Data::treemap.maps[index].type;
+	return lcf::Data::treemap.maps[index].type;
 }
 
 int Game_Map::GetParentId(int map_id) {
@@ -1504,13 +1504,13 @@ int Game_Map::GetParentId(int map_id) {
 		return 0;
 	}
 
-	return Data::treemap.maps[index].parent_map;
+	return lcf::Data::treemap.maps[index].parent_map;
 }
 
 void Game_Map::SetChipset(int id) {
 	map_info.chipset_id = id;
 
-	chipset = ReaderUtil::GetElement(Data::chipsets, map_info.chipset_id);
+	chipset = lcf::ReaderUtil::GetElement(lcf::Data::chipsets, map_info.chipset_id);
 	if (!chipset) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {

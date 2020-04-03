@@ -19,13 +19,13 @@
 #define EP_MAIN_DATA_H
 
 // Headers
-#include "data.h"
-#include "rpg_save.h"
+#include <lcf/data.h>
+#include <lcf/rpg_save.h>
 #include <string>
 #include <memory>
 
 /**
- * Main Data namespace.
+ * Main lcf::Data namespace.
  */
 class Game_Player;
 class Game_Screen;
@@ -38,7 +38,7 @@ class Game_Targets;
 class Game_Quit;
 
 namespace Main_Data {
-	// Dynamic Game Data
+	// Dynamic Game lcf::Data
 	extern std::unique_ptr<Game_Switches> game_switches;
 	extern std::unique_ptr<Game_Variables> game_variables;
 	extern std::unique_ptr<Game_Screen> game_screen;

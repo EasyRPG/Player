@@ -19,7 +19,7 @@
 #include "window_equip.h"
 #include "game_actors.h"
 #include "bitmap.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 
 Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
@@ -54,12 +54,12 @@ void Window_Equip::Refresh() {
 		DrawEquipmentType(*actor, 0, (12 + 4) * i + 2, i);
 		if (data[i] > 0) {
 			// Equipment and items are guaranteed to be valid
-			DrawItemName(*ReaderUtil::GetElement(Data::items, data[i]), 60, (12 + 4) * i + 2);
+			DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, data[i]), 60, (12 + 4) * i + 2);
 		}
 	}
 }
 
 void Window_Equip::UpdateHelp() {
 	help_window->SetText(GetItemId() == 0 ? "" :
-		ReaderUtil::GetElement(Data::items, GetItemId())->description);
+		lcf::ReaderUtil::GetElement(lcf::Data::items, GetItemId())->description);
 }

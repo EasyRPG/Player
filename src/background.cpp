@@ -17,13 +17,13 @@
 
 // Headers
 #include <string>
-#include "data.h"
-#include "rpg_terrain.h"
+#include <lcf/data.h>
+#include <lcf/rpg_terrain.h>
 #include "cache.h"
 #include "background.h"
 #include "bitmap.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "drawable_mgr.h"
 #include "game_screen.h"
@@ -44,7 +44,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 {
 	DrawableMgr::Register(this);
 
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 
 	if (!terrain) {
 		Output::Warning("Background: Invalid terrain ID {}", terrain_id);

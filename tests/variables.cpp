@@ -8,7 +8,7 @@ constexpr int minval = Game_Variables::min_2k3;
 constexpr int maxval = Game_Variables::max_2k3;
 
 static Game_Variables make() {
-	Data::variables.resize(max_vars);
+	lcf::Data::variables.resize(max_vars);
 	Game_Variables v(minval, maxval);
 	v.SetWarning(0);
 	return v;

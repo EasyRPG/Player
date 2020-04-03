@@ -19,7 +19,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "bitmap.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "player.h"
 #include "game_battle.h"
 #include "game_battler.h"
@@ -30,7 +30,7 @@
 #include "output.h"
 #include "utils.h"
 #include "options.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene.h"
 #include "weather.h"
 #include "flash.h"
@@ -353,7 +353,7 @@ void Game_Screen::Update() {
 }
 
 int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	const RPG::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation: Invalid battle animation ID {}", animation_id);
 		return 0;

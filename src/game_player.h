@@ -19,10 +19,10 @@
 #define EP_GAME_PLAYER_H
 
 // Headers
-#include "rpg_music.h"
-#include "rpg_savepartylocation.h"
+#include <lcf/rpg_music.h>
+#include <lcf/rpg_savepartylocation.h>
 #include "game_character.h"
-#include "flag_set.h"
+#include <lcf/flag_set.h>
 #include "teleport_target.h"
 #include <vector>
 
@@ -112,7 +112,7 @@ protected:
 	RPG::SavePartyLocation* data();
 	const RPG::SavePartyLocation* data() const;
 private:
-	using TriggerSet = FlagSet<RPG::EventPage::Trigger>;
+	using TriggerSet = lcf::FlagSet<RPG::EventPage::Trigger>;
 
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();

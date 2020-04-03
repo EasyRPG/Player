@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include "game_character.h"
-#include "rpg_eventcommand.h"
+#include <lcf/rpg_eventcommand.h>
 #include "system.h"
 #include "game_interpreter.h"
 

@@ -20,9 +20,9 @@
 
 // Headers
 #include <deque>
-#include "rpg_troopmember.h"
-#include "rpg_actor.h"
-#include "rpg_enemy.h"
+#include <lcf/rpg_troopmember.h>
+#include <lcf/rpg_actor.h>
+#include <lcf/rpg_enemy.h>
 
 #include "battle_animation.h"
 #include "drawable.h"

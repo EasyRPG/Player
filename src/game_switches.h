@@ -21,7 +21,7 @@
 // Headers
 #include <vector>
 #include <string>
-#include "data.h"
+#include <lcf/data.h>
 #include "compiler.h"
 
 /**
@@ -72,7 +72,7 @@ inline const Game_Switches::Switches_t& Game_Switches::GetData() const {
 }
 
 inline int Game_Switches::GetSize() const {
-	return static_cast<int>(Data::switches.size());
+	return static_cast<int>(lcf::Data::switches.size());
 }
 
 inline bool Game_Switches::IsValid(int variable_id) const {
@@ -80,7 +80,7 @@ inline bool Game_Switches::IsValid(int variable_id) const {
 }
 
 inline bool Game_Switches::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > static_cast<int>(Data::switches.size())) && (_warnings > 0);
+	return (first_id <= 0 || last_id > static_cast<int>(lcf::Data::switches.size())) && (_warnings > 0);
 }
 
 inline bool Game_Switches::Get(int switch_id) const {

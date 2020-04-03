@@ -22,7 +22,7 @@
 #include "game_actor.h"
 #include "window_shopparty.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "sprite_character.h"
 
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
@@ -92,7 +92,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::SystemOrBlack();
 
-	if (item_id < 0 || item_id > static_cast<int>(Data::items.size()))
+	if (item_id < 0 || item_id > static_cast<int>(lcf::Data::items.size()))
 		return;
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
@@ -110,7 +110,7 @@ void Window_ShopParty::Refresh() {
 			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
 		}
 
-		const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
+		const auto* new_item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 		if (new_item == nullptr) {
 			// Can be null for an empty shop, in which case there is only 1 item 0.
 			return;

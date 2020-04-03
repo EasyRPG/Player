@@ -24,11 +24,11 @@
 #include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
-#include "rpg_eventcommand.h"
+#include <lcf/rpg_eventcommand.h>
 #include "system.h"
-#include "command_codes.h"
-#include "rpg_saveeventexecstate.h"
-#include "flag_set.h"
+#include <lcf/command_codes.h>
+#include <lcf/rpg_saveeventexecstate.h>
+#include <lcf/flag_set.h>
 #include "async_op.h"
 
 class Game_Event;
@@ -279,7 +279,7 @@ protected:
 	};
 
 	struct KeyInputState {
-		FlagSet<Keys> keys = {};
+		lcf::FlagSet<Keys> keys = {};
 		int variable = 0;
 		int time_variable = 0;
 		int wait_frames = 0;

@@ -20,7 +20,7 @@
 
 #include <string>
 #include <vector>
-#include "rpg_state.h"
+#include <lcf/rpg_state.h>
 
 class Game_Battler;
 class Game_Party_Base;

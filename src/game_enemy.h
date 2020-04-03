@@ -20,7 +20,7 @@
 
 // Headers
 #include "game_battler.h"
-#include "rpg_enemy.h"
+#include <lcf/rpg_enemy.h>
 
 /**
  * Represents a single enemy in the battle scene

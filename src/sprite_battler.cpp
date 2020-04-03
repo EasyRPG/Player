@@ -23,7 +23,7 @@
 #include "cache.h"
 #include "main_data.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 
 Sprite_Battler::Sprite_Battler(Game_Battler* battler, int index) :
@@ -136,13 +136,13 @@ void Sprite_Battler::Update() {
 			if (frame == sprite_frame)
 				return;
 
-			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
+			const RPG::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
 			if (!anim) {
 				Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
 				return;
 			}
 
-			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
+			const RPG::BattlerAnimationExtension* ext = lcf::ReaderUtil::GetElement(anim->base_data, anim_state);
 			if (!ext) {
 				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
@@ -205,13 +205,13 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 	if (Player::IsRPG2k3()) {
 		if (battler->GetBattleAnimationId() > 0) {
-			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
+			const RPG::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
 			if (!anim) {
 				Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
 				return;
 			}
 
-			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
+			const RPG::BattlerAnimationExtension* ext = lcf::ReaderUtil::GetElement(anim->base_data, anim_state);
 			if (!ext) {
 				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
@@ -221,7 +221,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			if (ext->animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				RPG::Animation* battle_anim = ReaderUtil::GetElement(Data::animations, ext->animation_id);
+				RPG::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->animation_id);
 				if (!battle_anim) {
 					Output::Warning("Invalid battle animation ID {}", ext->animation_id);
 					animation.reset();

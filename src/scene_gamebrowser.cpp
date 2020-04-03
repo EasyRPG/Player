@@ -53,7 +53,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 
 	Cache::Clear();
 	AudioSeCache::Clear();
-	Data::Clear();
+	lcf::Data::Clear();
 	Main_Data::Cleanup();
 	FileFinder::Quit();
 

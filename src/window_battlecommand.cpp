@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "data.h"
+#include <lcf/data.h>
 #include "color.h"
 #include "cache.h"
 #include "input.h"
@@ -137,10 +137,10 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	commands.clear();
 
 	if (actor_id == 0) {
-		commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack : "Attack");
-		commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend : "Defend");
-		commands.push_back(!Data::terms.command_item.empty() ? Data::terms.command_item : "Item");
-		commands.push_back(!Data::terms.command_skill.empty() ? Data::terms.command_skill : "Skill");
+		commands.push_back(!lcf::Data::terms.command_attack.empty() ? lcf::Data::terms.command_attack : "Attack");
+		commands.push_back(!lcf::Data::terms.command_defend.empty() ? lcf::Data::terms.command_defend : "Defend");
+		commands.push_back(!lcf::Data::terms.command_item.empty() ? lcf::Data::terms.command_item : "Item");
+		commands.push_back(!lcf::Data::terms.command_skill.empty() ? lcf::Data::terms.command_skill : "Skill");
 	}
 	else {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
@@ -184,7 +184,7 @@ int Window_BattleCommand::GetSkillSubset() {
 
 	int idx = 4;
 	for (int i = 0; i < bcmd - 1; i++) {
-		const RPG::BattleCommand& command = Data::battlecommands.commands[i];
+		const RPG::BattleCommand& command = lcf::Data::battlecommands.commands[i];
 		if (command.type == RPG::BattleCommand::Type_subskill)
 			idx++;
 	}

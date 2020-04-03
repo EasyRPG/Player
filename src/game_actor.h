@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 #include <cstdint>
-#include "rpg_saveactor.h"
-#include "rpg_learning.h"
+#include <lcf/rpg_saveactor.h>
+#include <lcf/rpg_learning.h>
 #include "game_battler.h"
 
 namespace RPG {

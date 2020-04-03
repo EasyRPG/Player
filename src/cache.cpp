@@ -33,7 +33,7 @@
 #include "bitmap.h"
 #include "output.h"
 #include "player.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_clock.h"
 
 using namespace std::chrono_literals;

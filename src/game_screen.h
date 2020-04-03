@@ -26,7 +26,7 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
-#include "rpg_savescreen.h"
+#include <lcf/rpg_savescreen.h>
 
 class Game_Battler;
 class Screen;

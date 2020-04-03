@@ -28,7 +28,7 @@
 #include "game_battle.h"
 #include "game_targets.h"
 #include "game_system.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 
 Game_Party::Game_Party() {
@@ -92,14 +92,14 @@ int Game_Party::GetBattlerCount() const {
 void Game_Party::SetupBattleTestMembers() {
 	Clear();
 
-	for (auto& btdata : Data::system.battletest_data) {
+	for (auto& btdata : lcf::Data::system.battletest_data) {
 		AddActor(btdata.actor_id);
 		Game_Actor* actor = Game_Actors::GetActor(btdata.actor_id);
 
 		// Filter garbage btdata inserted by the editor
 		std::array<int, 5> ids = {{ btdata.weapon_id, btdata.shield_id, btdata.armor_id, btdata.helmet_id, btdata.accessory_id }};
 		std::replace_if(ids.begin(), ids.end(), [] (const int& item_id) {
-			return ReaderUtil::GetElement(Data::items, item_id) == nullptr;
+			return lcf::ReaderUtil::GetElement(lcf::Data::items, item_id) == nullptr;
 		}, 0);
 
 		actor->SetEquipment(RPG::Item::Type_weapon, ids[0]);
@@ -150,7 +150,7 @@ void Game_Party::LoseGold(int n) {
 }
 
 void Game_Party::AddItem(int item_id, int amount) {
-	if (item_id < 1 || item_id > (int) Data::items.size()) {
+	if (item_id < 1 || item_id > (int) lcf::Data::items.size()) {
 		Output::Debug("Can't add item to party. {} is not a valid item ID.", item_id);
 		return;
 	}
@@ -191,7 +191,7 @@ void Game_Party::RemoveItem(int item_id, int amount) {
 }
 
 void Game_Party::ConsumeItemUse(int item_id) {
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	if (!item) {
 		Output::Warning("ConsumeItemUse: Invalid item ID {}.", item_id);
@@ -241,7 +241,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		return false;
 	}
 
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 	if (!item) {
 		Output::Warning("IsItemUsable: Invalid item ID {}", item_id);
 		return false;
@@ -258,7 +258,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
 			if (item->use_skill) {
-				auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+				auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 				if (skill && (
 							skill->type == RPG::Skill::Type_escape
 							|| skill->type == RPG::Skill::Type_teleport
@@ -298,7 +298,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	bool was_used = false;
 
-	auto* item = ReaderUtil::GetElement(Data::items, item_id);
+	auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 	if (!item) {
 		Output::Warning("UseItem: Can't use item with invalid ID {}", item_id);
 		return false;
@@ -316,7 +316,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 
 	const RPG::Skill* skill = nullptr;
 	if (do_skill) {
-		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+		skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 		if (skill == nullptr) {
 			Output::Warning("UseItem: Can't use item {} skill with invalid ID {}", item->ID, item->skill_id);
 			return false;
@@ -353,7 +353,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 }
 
 bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from_item) const {
-	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+	if (skill_id <= 0 || skill_id > (int)lcf::Data::skills.size()) {
 		return false;
 	}
 
@@ -361,7 +361,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		return false;
 	}
 
-	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+	const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
 	if (!skill) {
 		Output::Warning("IsSkillUsable: Can't use skill with invalid ID {}", skill_id);
 		return false;
@@ -393,7 +393,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 				return true;
 			}
 			for (size_t i = 0; i < skill->state_effects.size(); ++i) {
-				auto& state = Data::states[i];
+				auto& state = lcf::Data::states[i];
 				if (skill->state_effects[i] && state.type == RPG::State::Persistence_persists) {
 					return true;
 				}
@@ -653,7 +653,7 @@ void Game_Party::RemoveInvalidData() {
 
 	// Remove non existing items
 	for (it = data.item_ids.begin(); it != data.item_ids.end(); ) {
-		if (!ReaderUtil::GetElement(Data::items, *it)) {
+		if (!ReaderUtil::GetElement(lcf::Data::items, *it)) {
 			Output::Warning("Removing invalid item {} from party", *it);
 			it = data.item_ids.erase(it);
 		} else {
@@ -684,7 +684,7 @@ bool Game_Party::ApplyStateDamage() {
 	const auto steps = GetSteps();
 
 	for (auto state_id : states) {
-		RPG::State *state = ReaderUtil::GetElement(Data::states, state_id);
+		RPG::State *state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 
 		if (state->hp_change_map_steps > 0
 				&& state->hp_change_map_val > 0

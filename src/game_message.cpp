@@ -26,8 +26,8 @@
 #include "font.h"
 #include "player.h"
 #include "game_variables.h"
-#include "data.h"
-#include "reader_util.h"
+#include <lcf/data.h>
+#include <lcf/reader_util.h>
 #include "output.h"
 
 #include <cctype>

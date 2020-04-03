@@ -25,7 +25,7 @@
 #include "scene_item.h"
 #include "scene_skill.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Scene_ActorTarget::Scene_ActorTarget(int item_id) :
 	id(item_id), actor_index(0), use_item(true) {
@@ -48,7 +48,7 @@ void Scene_ActorTarget::Start() {
 	target_window->SetIndex(0);
 
 	if (use_item) {
-		const RPG::Item* item = ReaderUtil::GetElement(Data::items, id);
+		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, id);
 		if (!item) {
 			Output::Warning("Scene ActorTarget: Invalid item ID {}", id);
 			Scene::Pop();
@@ -56,7 +56,7 @@ void Scene_ActorTarget::Start() {
 		}
 		const RPG::Skill* skill = nullptr;
 		if (item->type == RPG::Item::Type_special) {
-			skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+			skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("Scene ActorTarget: Item {} has invalid skill ID {}", id, item->skill_id);
 				Scene::Pop();
@@ -74,7 +74,7 @@ void Scene_ActorTarget::Start() {
 		help_window->SetText(item->name);
 		return;
 	} else {
-		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
+		const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
 		if (!skill) {
 			Output::Warning("Scene ActorTarget: Invalid skill ID {}", id);
 			Scene::Pop();
@@ -116,7 +116,7 @@ void Scene_ActorTarget::UpdateItem() {
 			return;
 		}
 		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
-			auto* item = ReaderUtil::GetElement(Data::items, id);
+			auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, id);
 			assert(item);
 
 			bool do_skill = (item->type == RPG::Item::Type_special)
@@ -130,9 +130,9 @@ void Scene_ActorTarget::UpdateItem() {
 				   );
 
 			if (do_skill) {
-				auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+				auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 				assert(skill);
-				auto* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
+				auto* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
 				if (animation) {
 					Game_System::SePlay(*animation);
 				}
@@ -158,8 +158,8 @@ void Scene_ActorTarget::UpdateSkill() {
 			return;
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
-			RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
-			RPG::Animation* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
+			RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
+			RPG::Animation* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
 			if (animation) {
 				Game_System::SePlay(*animation);
 			}

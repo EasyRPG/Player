@@ -31,7 +31,7 @@
 #	include FT_MODULE_H
 #endif
 
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "bitmapfont.h"
 
 #include "filefinder.h"

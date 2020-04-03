@@ -17,7 +17,7 @@
 
 #include <algorithm>
 #include <cassert>
-#include "data.h"
+#include <lcf/data.h>
 #include "player.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
@@ -31,7 +31,7 @@
 #include "game_pictures.h"
 #include "battle_animation.h"
 #include "game_battle.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "spriteset_battle.h"
 #include "output.h"
 #include "utils.h"
@@ -77,7 +77,7 @@ void Game_Battle::Init(int troop_id) {
 	need_refresh = false;
 
 	// troop_id is guaranteed to be valid
-	troop = ReaderUtil::GetElement(Data::troops, troop_id);
+	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
 	page_executed.resize(troop->pages.size());
 	std::fill(page_executed.begin(), page_executed.end(), false);
 	page_can_run.resize(troop->pages.size());
@@ -157,7 +157,6 @@ bool Game_Battle::CheckWin() {
 bool Game_Battle::CheckLose() {
 	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability (including death), it's game over
 	// Physical recovery doesn't matter in this case
-
 	for (auto& actor : Main_Data::game_party->GetActors()) {
 		if (!actor->IsHidden() && actor->CanActOrRecoverable()) {
 			return false;
@@ -173,7 +172,7 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 }
 
 int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound, int cutoff) {
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	const RPG::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation Many: Invalid animation ID {}", animation_id);
 		return 0;
@@ -450,12 +449,12 @@ void Game_Battle::SetNeedRefresh(bool refresh) {
 bool Game_Battle::HasDeathHandler() {
 	// RPG Maker Editor always sets both death_handler and death_handler_unused chunks.
 	// However, RPG_RT will only trigger death handler based on the death_handler chunk.
-	auto& db = Data::battlecommands;
+	auto& db = lcf::Data::battlecommands;
 	return Player::IsRPG2k3() && db.death_handler;
 }
 
 int Game_Battle::GetDeathHandlerCommonEvent() {
-	auto& db = Data::battlecommands;
+	auto& db = lcf::Data::battlecommands;
 	if (HasDeathHandler()) {
 		return db.death_event;
 	}
@@ -463,7 +462,7 @@ int Game_Battle::GetDeathHandlerCommonEvent() {
 }
 
 TeleportTarget Game_Battle::GetDeathHandlerTeleport() {
-	auto& db = Data::battlecommands;
+	auto& db = lcf::Data::battlecommands;
 	if (HasDeathHandler() && db.death_teleport) {
 		return TeleportTarget(db.death_teleport_id, db.death_teleport_x, db.death_teleport_y, db.death_teleport_face -1, TeleportTarget::eParallelTeleport);
 	}

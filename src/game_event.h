@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 #include "game_character.h"
-#include "rpg_event.h"
-#include "rpg_savemapevent.h"
+#include <lcf/rpg_event.h>
+#include <lcf/rpg_savemapevent.h>
 #include "game_interpreter_map.h"
 #include "async_op.h"
 

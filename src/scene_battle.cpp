@@ -34,7 +34,7 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "battle_animation.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
@@ -78,7 +78,7 @@ void Scene_Battle::Start() {
 	// wiping out all flash LSD chunks.
 	Main_Data::game_screen->FlashOnce(0, 0, 0, 0, 0);
 
-	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
+	const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
 
 	if (!troop) {
 		Output::Warning("Invalid Monster Party ID {}", troop_id);
@@ -145,9 +145,9 @@ void Scene_Battle::DrawBackground(Bitmap& dst) {
 
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
-	commands.push_back(Data::terms.battle_fight);
-	commands.push_back(Data::terms.battle_auto);
-	commands.push_back(Data::terms.battle_escape);
+	commands.push_back(lcf::Data::terms.battle_fight);
+	commands.push_back(lcf::Data::terms.battle_auto);
+	commands.push_back(lcf::Data::terms.battle_escape);
 	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
@@ -278,7 +278,7 @@ void Scene_Battle::EnemySelected() {
 						|| item->type == RPG::Item::Type_helmet
 						|| item->type == RPG::Item::Type_accessory)))
 		{
-			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("EnemySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -316,7 +316,7 @@ void Scene_Battle::AllySelected() {
 						|| item->type == RPG::Item::Type_helmet
 						|| item->type == RPG::Item::Type_accessory)))
 		{
-			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("AllySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -374,7 +374,7 @@ void Scene_Battle::ItemSelected() {
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
 		case RPG::Item::Type_special: {
-			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("ItemSelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -591,7 +591,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		return;
 	}
 
-	RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, action->skill_id);
+	RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, action->skill_id);
 	if (!skill) {
 		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill {}", action->skill_id);
 		return;

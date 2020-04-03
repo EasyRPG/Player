@@ -20,7 +20,7 @@
 #include <sstream>
 #include "window_base.h"
 #include "cache.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_system.h"
 #include "bitmap.h"
 #include "font.h"
@@ -122,7 +122,7 @@ void Window_Base::DrawActorClass(const Game_Actor& actor, int cx, int cy) const 
 
 void Window_Base::DrawActorLevel(const Game_Actor& actor, int cx, int cy) const {
 	// Draw LV-String
-	contents->TextDraw(cx, cy, 1, Data::terms.lvl_short);
+	contents->TextDraw(cx, cy, 1, lcf::Data::terms.lvl_short);
 
 	// Draw Level of the Actor
 	std::stringstream ss;
@@ -134,7 +134,7 @@ void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) cons
 	// Unit has Normal state if no state is set
 	const RPG::State* state = actor.GetSignificantState();
 	if (!state) {
-		contents->TextDraw(cx, cy, Font::ColorDefault, Data::terms.normal_status);
+		contents->TextDraw(cx, cy, Font::ColorDefault, lcf::Data::terms.normal_status);
 	} else {
 		contents->TextDraw(cx, cy, state->color, state->name);
 	}
@@ -145,7 +145,7 @@ void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 	int width = 7;
 	if (Player::IsRPG2k()) {
 		width = 6;
-		contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+		contents->TextDraw(cx, cy, 1, lcf::Data::terms.exp_short);
 	}
 
 	// Current Exp of the Actor
@@ -163,7 +163,7 @@ void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 
 void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max) const {
 	// Draw HP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.hp_short);
+	contents->TextDraw(cx, cy, 1, lcf::Data::terms.hp_short);
 
 	// Draw Current HP of the Actor
 	cx += 12;
@@ -191,7 +191,7 @@ void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, int dig
 
 void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max) const {
 	// Draw SP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.sp_short);
+	contents->TextDraw(cx, cy, 1, lcf::Data::terms.sp_short);
 
 	// Draw Current SP of the Actor
 	cx += 12;
@@ -221,19 +221,19 @@ void Window_Base::DrawActorParameter(const Game_Battler& actor, int cx, int cy, 
 
 	switch (type) {
 	case 0:
-		name = Data::terms.attack;
+		name = lcf::Data::terms.attack;
 		value = actor.GetAtk();
 		break;
 	case 1:
-		name = Data::terms.defense;
+		name = lcf::Data::terms.defense;
 		value = actor.GetDef();
 		break;
 	case 2:
-		name = Data::terms.spirit;
+		name = lcf::Data::terms.spirit;
 		value = actor.GetSpi();
 		break;
 	case 3:
-		name = Data::terms.agility;
+		name = lcf::Data::terms.agility;
 		value = actor.GetAgi();
 		break;
 	default:
@@ -254,23 +254,23 @@ void Window_Base::DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int
 
 	switch (type) {
 	case 0:
-		name = Data::terms.weapon;
+		name = lcf::Data::terms.weapon;
 		break;
 	case 1:
 		if (actor.HasTwoWeapons()) {
-			name = Data::terms.weapon;
+			name = lcf::Data::terms.weapon;
 		} else {
-			name = Data::terms.shield;
+			name = lcf::Data::terms.shield;
 		}
 		break;
 	case 2:
-		name = Data::terms.armor;
+		name = lcf::Data::terms.armor;
 		break;
 	case 3:
-		name = Data::terms.helmet;
+		name = lcf::Data::terms.helmet;
 		break;
 	case 4:
-		name = Data::terms.accessory;
+		name = lcf::Data::terms.accessory;
 		break;
 	default:
 		return;
@@ -297,8 +297,8 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 	std::stringstream gold;
 	gold << money;
 
-	Rect gold_text_size = Font::Default()->GetSize(Data::terms.gold);
-	contents->TextDraw(cx, cy, 1, Data::terms.gold, Text::AlignRight);
+	Rect gold_text_size = Font::Default()->GetSize(lcf::Data::terms.gold);
+	contents->TextDraw(cx, cy, 1, lcf::Data::terms.gold, Text::AlignRight);
 
 	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
 }

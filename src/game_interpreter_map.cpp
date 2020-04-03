@@ -52,7 +52,9 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_interpreter_map.h"
-#include "reader_lcf.h"
+#include <lcf/reader_lcf.h>
+
+using lcf::Cmd;
 
 enum EnemyEncounterSubcommand {
 	eOptionEnemyEncounterVictory = 0,
@@ -376,25 +378,25 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_a_greeting_1,
+						lcf::Data::terms.inn_a_greeting_1,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_a_greeting_3,
+						lcf::Data::terms.inn_a_greeting_3,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 			}
 			else {
-				out << Data::terms.inn_a_greeting_1
-					<< " " << inn_price << Data::terms.gold
-					<< " " << Data::terms.inn_a_greeting_2;
+				out << lcf::Data::terms.inn_a_greeting_1
+					<< " " << inn_price << lcf::Data::terms.gold
+					<< " " << lcf::Data::terms.inn_a_greeting_2;
 				pm.PushLine(out.str());
-				pm.PushLine(Data::terms.inn_a_greeting_3);
+				pm.PushLine(lcf::Data::terms.inn_a_greeting_3);
 			}
 			break;
 		case 1:
@@ -402,25 +404,25 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_b_greeting_1,
+						lcf::Data::terms.inn_b_greeting_1,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_b_greeting_3,
+						lcf::Data::terms.inn_b_greeting_3,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 			}
 			else {
-				out << Data::terms.inn_b_greeting_1
-					<< " " << inn_price << Data::terms.gold
-					<< " " << Data::terms.inn_b_greeting_2;
+				out << lcf::Data::terms.inn_b_greeting_1
+					<< " " << inn_price << lcf::Data::terms.gold
+					<< " " << lcf::Data::terms.inn_b_greeting_2;
 				pm.PushLine(out.str());
-				pm.PushLine(Data::terms.inn_b_greeting_3);
+				pm.PushLine(lcf::Data::terms.inn_b_greeting_3);
 			}
 			break;
 		default:
@@ -432,12 +434,12 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	switch (inn_type) {
 		case 0:
-			pm.PushChoice(Data::terms.inn_a_accept, can_afford);
-			pm.PushChoice(Data::terms.inn_a_cancel);
+			pm.PushChoice(lcf::Data::terms.inn_a_accept, can_afford);
+			pm.PushChoice(lcf::Data::terms.inn_a_cancel);
 			break;
 		case 1:
-			pm.PushChoice(Data::terms.inn_b_accept, can_afford);
-			pm.PushChoice(Data::terms.inn_b_cancel);
+			pm.PushChoice(lcf::Data::terms.inn_b_accept, can_afford);
+			pm.PushChoice(lcf::Data::terms.inn_b_cancel);
 			break;
 		default:
 			return false;

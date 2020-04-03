@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
-#include "rpg_state.h"
+#include <lcf/rpg_state.h>
 #include "system.h"
 #include "state.h"
 #include "color.h"

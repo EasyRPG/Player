@@ -24,7 +24,7 @@
 #include "game_system.h"
 #include "game_targets.h"
 #include "input.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_actortarget.h"
 #include "scene_map.h"
 #include "scene_teleport.h"
@@ -70,7 +70,7 @@ void Scene_Item::Update() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
-				const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item.skill_id);
+				const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item.skill_id);
 				if (!skill) {
 					Output::Warning("Scene Item: Item references invalid skill ID {}", item.skill_id);
 					return;
@@ -112,7 +112,7 @@ void Scene_Item::TransitionOut(Scene::SceneType next_scene) {
 	const auto* item = item_window->GetItem();
 	const RPG::Skill* skill = nullptr;
 	if (item && item->type == RPG::Item::Type_special && item->skill_id > 0) {
-		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+		skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 	}
 
 	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {

@@ -55,7 +55,7 @@ std::string Window_SaveFile::GetSaveFileName() const {
 			out << override_name;
 		}
 	} else {
-		out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
+		out << lcf::Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
 	}
 	return out.str();
 }
@@ -104,13 +104,13 @@ void Window_SaveFile::Refresh() {
 
 	std::stringstream out;
 	if (override_index > 0) {
-		out << Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
+		out << lcf::Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
 		contents->TextDraw(4, 16+2, fc, out.str());
 	} else {
 		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
 	}
 
-	auto lvl_short = Data::terms.lvl_short;
+	auto lvl_short = lcf::Data::terms.lvl_short;
 	if (lvl_short.size() != 2) {
 		lvl_short.resize(2, ' ');
 	}
@@ -122,7 +122,7 @@ void Window_SaveFile::Refresh() {
 	out << std::setw(2) << std::setfill(' ') << data.hero_level;
 	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
 
-	auto hp_short = Data::terms.hp_short;
+	auto hp_short = lcf::Data::terms.hp_short;
 	if (hp_short.size() != 2) {
 		hp_short.resize(2, ' ');
 	}

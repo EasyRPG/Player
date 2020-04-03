@@ -19,7 +19,7 @@
 #include "window_equipitem.h"
 #include "game_actors.h"
 #include "game_party.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 
 Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
@@ -46,7 +46,7 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 	bool result = false;
 
 	// Equipment and items are guaranteed to be valid
-	RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	switch (equip_type) {
 	case Window_EquipItem::weapon:

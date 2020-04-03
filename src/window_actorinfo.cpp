@@ -66,6 +66,6 @@ void Window_ActorInfo::DrawInfo() {
 	DrawActorState(actor, 36, 162);
 
 	//Draw Level
-	contents->TextDraw(0, 178, 1, Data::terms.level);
+	contents->TextDraw(0, 178, 1, lcf::Data::terms.level);
 	contents->TextDraw(78, 178, Font::ColorDefault, std::to_string(actor.GetLevel()), Text::AlignRight);
 }

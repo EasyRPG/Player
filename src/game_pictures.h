@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include "async_handler.h"
-#include "rpg_save.h"
+#include <lcf/rpg_save.h>
 #include "sprite.h"
 
 class Sprite;

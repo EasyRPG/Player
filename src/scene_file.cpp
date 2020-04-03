@@ -21,15 +21,15 @@
 #include <vector>
 #include "baseui.h"
 #include "cache.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
-#include "lsd_reader.h"
+#include <lcf/lsd_reader.h>
 #include "player.h"
 #include "scene_file.h"
 #include "bitmap.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Scene_File::Scene_File(std::string message) :
 	message(message) {
@@ -74,7 +74,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	if (!file.empty()) {
 		// File found
 		std::unique_ptr<RPG::Save> savegame =
-			LSD_Reader::Load(file, Player::encoding);
+			lcf::LSD_Reader::Load(file, Player::encoding);
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);

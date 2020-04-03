@@ -24,12 +24,14 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "player.h"
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
+
+using lcf::Cmd;
 
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
@@ -80,7 +82,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
 	int evt_id = com.parameters[0];
 
-	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+	Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 	if (!common_event) {
 		Output::Warning("CallCommonEvent: Can't call invalid common event {}", evt_id);
 		return true;

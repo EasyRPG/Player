@@ -19,7 +19,7 @@
 #define EP_GAME_TARGETS_H
 
 #include <vector>
-#include "rpg_savetarget.h"
+#include <lcf/rpg_savetarget.h>
 
 class Game_Targets {
 	public:

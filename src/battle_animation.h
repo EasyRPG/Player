@@ -22,7 +22,7 @@
 #include "game_battler.h"
 #include "game_character.h"
 #include "system.h"
-#include "rpg_animation.h"
+#include <lcf/rpg_animation.h>
 #include "drawable.h"
 #include "sprite_battler.h"
 

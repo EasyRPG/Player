@@ -16,7 +16,7 @@
  */
 
 #include "drawable.h"
-#include "rpg_savepicture.h"
+#include <lcf/rpg_savepicture.h>
 #include "drawable_mgr.h"
 
 Drawable::~Drawable() {

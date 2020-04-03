@@ -27,7 +27,7 @@ namespace {
 }
 
 void Game_Actors::Init() {
-	data.resize(Data::actors.size());
+	data.resize(lcf::Data::actors.size());
 	for (size_t i = 1; i <= data.size(); i++)
 		GetActor(i)->Init();
 }

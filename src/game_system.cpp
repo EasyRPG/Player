@@ -28,7 +28,7 @@
 #include "transition.h"
 #include "main_data.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_save.h"
 #include "scene_map.h"
 
@@ -194,7 +194,7 @@ void Game_System::SePlay(const RPG::Animation &animation) {
 
 const std::string& Game_System::GetSystemName() {
 	return !data.graphics_name.empty() ?
-		data.graphics_name : Data::system.system_name;
+		data.graphics_name : lcf::Data::system.system_name;
 }
 
 static void OnChangeSystemGraphicReady(FileRequestResult* result) {
@@ -241,7 +241,7 @@ void Game_System::ResetSystemGraphic() {
 }
 
 const std::string& Game_System::GetSystem2Name() {
-	return Data::system.system2_name;
+	return lcf::Data::system.system2_name;
 }
 
 RPG::Music& Game_System::GetSystemBGM(int which) {
@@ -331,13 +331,13 @@ bool Game_System::GetAllowMenu() {
 RPG::System::Stretch Game_System::GetMessageStretch() {
 	return static_cast<RPG::System::Stretch>(!data.graphics_name.empty()
 		? data.message_stretch
-		: Data::system.message_stretch);
+		: lcf::Data::system.message_stretch);
 }
 
 RPG::System::Font Game_System::GetFontId() {
 	return static_cast<RPG::System::Font>(!data.graphics_name.empty()
 		? data.font_id
-		: Data::system.font_id);
+		: lcf::Data::system.font_id);
 }
 
 Transition::Type Game_System::GetTransition(int which) {
@@ -349,22 +349,22 @@ Transition::Type Game_System::GetTransition(int which) {
 
 	switch (which) {
 		case Transition_TeleportErase:
-			transition = get(data.transition_out, Data::system.transition_out);
+			transition = get(data.transition_out, lcf::Data::system.transition_out);
 			break;
 		case Transition_TeleportShow:
-			transition = get(data.transition_in, Data::system.transition_in);
+			transition = get(data.transition_in, lcf::Data::system.transition_in);
 			break;
 		case Transition_BeginBattleErase:
-			transition = get(data.battle_start_fadeout, Data::system.battle_start_fadeout);
+			transition = get(data.battle_start_fadeout, lcf::Data::system.battle_start_fadeout);
 			break;
 		case Transition_BeginBattleShow:
-			transition = get(data.battle_start_fadein, Data::system.battle_start_fadein);
+			transition = get(data.battle_start_fadein, lcf::Data::system.battle_start_fadein);
 			break;
 		case Transition_EndBattleErase:
-			transition = get(data.battle_end_fadeout, Data::system.battle_end_fadeout);
+			transition = get(data.battle_end_fadeout, lcf::Data::system.battle_end_fadeout);
 			break;
 		case Transition_EndBattleShow:
-			transition = get(data.battle_end_fadein, Data::system.battle_end_fadein);
+			transition = get(data.battle_end_fadein, lcf::Data::system.battle_end_fadein);
 			break;
 		default: assert(false && "Bad transition");
 	}
@@ -434,22 +434,22 @@ void Game_System::SetTransition(int which, int transition) {
 	};
 	switch (which) {
 		case Transition_TeleportErase:
-			data.transition_out = set(transition, Data::system.transition_out);
+			data.transition_out = set(transition, lcf::Data::system.transition_out);
 			break;
 		case Transition_TeleportShow:
-			data.transition_in = set(transition, Data::system.transition_in);
+			data.transition_in = set(transition, lcf::Data::system.transition_in);
 			break;
 		case Transition_BeginBattleErase:
-			data.battle_start_fadeout = set(transition, Data::system.battle_start_fadeout);
+			data.battle_start_fadeout = set(transition, lcf::Data::system.battle_start_fadeout);
 			break;
 		case Transition_BeginBattleShow:
-			data.battle_start_fadein = set(transition, Data::system.battle_start_fadein);
+			data.battle_start_fadein = set(transition, lcf::Data::system.battle_start_fadein);
 			break;
 		case Transition_EndBattleErase:
-			data.battle_end_fadeout = set(transition, Data::system.battle_end_fadeout);
+			data.battle_end_fadeout = set(transition, lcf::Data::system.battle_end_fadeout);
 			break;
 		case Transition_EndBattleShow:
-			data.battle_end_fadein = set(transition, Data::system.battle_end_fadein);
+			data.battle_end_fadein = set(transition, lcf::Data::system.battle_end_fadein);
 			break;
 		default: assert(false && "Bad transition");
 	}
@@ -478,7 +478,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 		// The first line contains the path to the actual audio file to play
 		std::string line = Utils::ReadLine(*stream.get());
-		line = ReaderUtil::Recode(line, Player::encoding);
+		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
 		Output::Debug("Ineluki link file: {} -> {}", path, line);
 

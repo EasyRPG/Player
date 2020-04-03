@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 #include "window_base.h"
-#include "rpg_battlecommand.h"
+#include <lcf/rpg_battlecommand.h>
 #include "font.h"
 
 /**

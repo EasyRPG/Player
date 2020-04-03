@@ -29,7 +29,7 @@
 #include "game_system.h"
 #include "game_screen.h"
 #include "game_pictures.h"
-#include "rpg_system.h"
+#include <lcf/rpg_system.h>
 #include "player.h"
 #include "transition.h"
 #include "audio.h"

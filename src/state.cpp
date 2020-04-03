@@ -16,15 +16,15 @@
  */
 
 #include "state.h"
-#include "reader_util.h"
-#include "data.h"
+#include <lcf/reader_util.h>
+#include <lcf/data.h>
 #include "output.h"
 #include <cassert>
 
 namespace State {
 
 bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_battle_states) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const RPG::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 	if (!state) {
 		Output::Warning("State::Add: Can't add state with invalid ID {}", state_id);
 		return false;
@@ -53,7 +53,7 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 	const RPG::State* sig_state = GetSignificantState(states);
 
 	for (int i = 0; i < (int)states.size(); ++i) {
-		if (Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
+		if (lcf::Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
 			states[i] = 0;
 		}
 	}
@@ -62,7 +62,7 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 }
 
 bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const RPG::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 	if (!state) {
 		Output::Warning("State::Remove: Can't remove state with invalid ID {}", state_id);
 		return false;
@@ -89,7 +89,7 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 void RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
 			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID {}", state_id);
 			continue;
@@ -124,7 +124,7 @@ RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {
 			continue;
 		}
 
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
 			Output::Warning("State::GetSignificantRestriction: Can't remove state with invalid ID {}", state_id);
 			continue;
@@ -163,7 +163,7 @@ const RPG::State* GetSignificantState(const StateVec& states) {
 			continue;
 		}
 
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
 			Output::Warning("State::GetSignificantState: Can't remove state with invalid ID {}", state_id);
 			continue;
@@ -185,7 +185,7 @@ const RPG::State* GetSignificantState(const StateVec& states) {
 }
 
 int GetStateRate(int state_id, int rate) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const RPG::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 
 	if (!state) {
 		Output::Warning("State::GetStateRate: Invalid state ID {}", state_id);

@@ -22,7 +22,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "game_battle.h"
 #include "output.h"
 
@@ -36,7 +36,7 @@ const RPG::Item* Window_Item::GetItem() const {
 		return nullptr;
 	}
 
-	return ReaderUtil::GetElement(Data::items, data[index]);
+	return lcf::ReaderUtil::GetElement(lcf::Data::items, data[index]);
 }
 
 bool Window_Item::CheckInclude(int item_id) {
@@ -48,7 +48,7 @@ bool Window_Item::CheckInclude(int item_id) {
 }
 
 bool Window_Item::CheckEnable(int item_id) {
-	auto* item = ReaderUtil::GetElement(Data::items, item_id);
+	auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 	if (!item) {
 		return false;
 	}
@@ -113,7 +113,7 @@ void Window_Item::DrawItem(int index) {
 		int number = Main_Data::game_party->GetItemCount(item_id);
 
 		// Items are guaranteed to be valid
-		const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 		if (actor) {
 			if (item->use_skill) {
 				number += actor->GetItemCount(item_id);

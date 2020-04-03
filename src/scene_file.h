@@ -21,7 +21,7 @@
 // Headers
 #include <vector>
 #include "filefinder.h"
-#include "rpg_save.h"
+#include <lcf/rpg_save.h>
 #include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"

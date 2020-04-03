@@ -20,8 +20,8 @@
 
 // Headers
 #include <string>
-#include "rpg_music.h"
-#include "rpg_savevehiclelocation.h"
+#include <lcf/rpg_music.h>
+#include <lcf/rpg_savevehiclelocation.h>
 #include "game_character.h"
 
 /**

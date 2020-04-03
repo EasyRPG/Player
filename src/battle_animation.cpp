@@ -16,7 +16,7 @@
  */
 
 #include "bitmap.h"
-#include "rpg_animation.h"
+#include <lcf/rpg_animation.h>
 #include "output.h"
 #include "game_battle.h"
 #include "game_system.h"

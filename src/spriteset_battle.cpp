@@ -46,7 +46,7 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 	std::vector<Game_Battler*> battler;
 	Main_Data::game_enemyparty->GetBattlers(battler);
 	if (Player::IsRPG2k3()) {
-		for (unsigned int i = 0; i < Data::actors.size(); ++i) {
+		for (unsigned int i = 0; i < lcf::Data::actors.size(); ++i) {
 			battler.push_back(Game_Actors::GetActor(i + 1));
 		}
 	}

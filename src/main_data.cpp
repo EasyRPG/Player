@@ -54,7 +54,7 @@ std::string project_path;
 std::string save_path;
 
 namespace Main_Data {
-	// Dynamic Game Data
+	// Dynamic Game lcf::Data
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;

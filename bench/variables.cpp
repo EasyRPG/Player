@@ -1,10 +1,11 @@
 #include <benchmark/benchmark.h>
 #include "game_variables.h"
+#include <lcf/data.h>
 
 constexpr int max_vars = 1024; // Keep this a power of 2 so no expensive modulus instructions
 
 static Game_Variables make(int size = max_vars) {
-	Data::variables.resize(size);
+	lcf::Data::variables.resize(size);
 	Game_Variables variables(Game_Variables::min_2k3, Game_Variables::max_2k3);
 	variables.SetRange(1, size, 1);
 	return variables;

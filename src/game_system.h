@@ -20,11 +20,11 @@
 
 // Headers
 #include <string>
-#include "rpg_animation.h"
-#include "rpg_music.h"
-#include "rpg_sound.h"
-#include "rpg_system.h"
-#include "rpg_savesystem.h"
+#include <lcf/rpg_animation.h>
+#include <lcf/rpg_music.h>
+#include <lcf/rpg_sound.h>
+#include <lcf/rpg_system.h>
+#include <lcf/rpg_savesystem.h>
 #include "color.h"
 #include "transition.h"
 

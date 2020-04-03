@@ -22,9 +22,9 @@
 #include <string>
 #include "color.h"
 #include "flash.h"
-#include "rpg_moveroute.h"
-#include "rpg_eventpage.h"
-#include "rpg_savemapeventbase.h"
+#include <lcf/rpg_moveroute.h>
+#include <lcf/rpg_eventpage.h>
+#include <lcf/rpg_savemapeventbase.h>
 #include "utils.h"
 
 /**

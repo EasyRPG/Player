@@ -17,13 +17,13 @@
 
 // Headers
 #include <algorithm>
-#include "data.h"
-#include "rpg_enemy.h"
+#include <lcf/data.h>
+#include <lcf/rpg_enemy.h>
 #include "game_battle.h"
 #include "game_enemy.h"
 #include "game_party.h"
 #include "game_switches.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "utils.h"
 #include "player.h"
@@ -106,7 +106,7 @@ int Game_Enemy::GetBattleY() const {
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
 
-	enemy = ReaderUtil::GetElement(Data::enemies, enemy_id);
+	enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy_id);
 
 	if (!enemy) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.

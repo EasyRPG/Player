@@ -26,9 +26,9 @@
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "game_player.h"
-#include "rpg_encounter.h"
-#include "rpg_map.h"
-#include "rpg_mapinfo.h"
+#include <lcf/rpg_encounter.h>
+#include <lcf/rpg_map.h>
+#include <lcf/rpg_mapinfo.h>
 #include "async_op.h"
 
 class FileRequestAsync;

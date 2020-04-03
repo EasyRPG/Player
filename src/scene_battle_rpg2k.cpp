@@ -30,7 +30,7 @@
 #include "game_battlealgorithm.h"
 #include "game_screen.h"
 #include "battle_animation.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"
 #include "scene_gameover.h"
@@ -90,10 +90,10 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
-	commands.push_back(Data::terms.command_attack);
-	commands.push_back(Data::terms.command_skill);
-	commands.push_back(Data::terms.command_defend);
-	commands.push_back(Data::terms.command_item);
+	commands.push_back(lcf::Data::terms.command_attack);
+	commands.push_back(lcf::Data::terms.command_skill);
+	commands.push_back(lcf::Data::terms.command_defend);
+	commands.push_back(lcf::Data::terms.command_item);
 
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
@@ -483,13 +483,13 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 
 		const RPG::State* pri_state = nullptr;
 		bool pri_was_healed = false;
-		for (size_t id = 1; id <= Data::states.size(); ++id) {
+		for (size_t id = 1; id <= lcf::Data::states.size(); ++id) {
 			auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
 			if (!was_healed && !src->HasState(id)) {
 				continue;
 			}
 
-			auto* state = ReaderUtil::GetElement(Data::states, id);
+			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, id);
 			if (!pri_state || state->priority >= pri_state->priority) {
 				pri_state = state;
 				pri_was_healed = was_healed;
@@ -736,7 +736,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		if (action->GetAffectedHp() == 0) {
 			msg = action->GetUndamagedMessage();
 		} else  if (action->IsAbsorb()) {
-			msg = action->GetHpSpAbsorbedMessage(action->GetAffectedHp(), Data::terms.health_points);
+			msg = action->GetHpSpAbsorbedMessage(action->GetAffectedHp(), lcf::Data::terms.health_points);
 		} else {
 			msg = action->GetDamagedMessage();
 		}
@@ -763,7 +763,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		auto& idx = battle_action_substate_index;
 		for (;idx < (int)states.size(); ++idx) {
 			auto& se = states[idx];
-			auto* state = ReaderUtil::GetElement(Data::states, se.state_id);
+			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
 			if (!state || se.effect != Game_BattleAlgorithm::StateEffect::HealedByAttack) {
 				continue;
 			}
@@ -831,7 +831,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			// Damage is handled by Damage state, so only check healing here.
 			if (action->IsPositive() && action->GetAffectedHp() != -1) {
 				if (!action->IsRevived() && (action->GetAffectedHp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item)) {
-					pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedHp(), Data::terms.health_points);
+					pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedHp(), lcf::Data::terms.health_points);
 				}
 			}
 			checkNext();
@@ -841,14 +841,14 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			if (action->GetAffectedSp() != -1) {
 				if (action->IsPositive()) {
 					if (action->GetAffectedSp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item) {
-						pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedSp(), Data::terms.spirit_points);
+						pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedSp(), lcf::Data::terms.spirit_points);
 					}
 				} else if (action->GetAffectedSp() > 0) {
 					if (action->IsAbsorb()) {
-						pending_message = action->GetHpSpAbsorbedMessage(action->GetAffectedSp(), Data::terms.spirit_points);
+						pending_message = action->GetHpSpAbsorbedMessage(action->GetAffectedSp(), lcf::Data::terms.spirit_points);
 					}
 					else {
-						pending_message = action->GetParameterChangeMessage(false, action->GetAffectedSp(), Data::terms.spirit_points);
+						pending_message = action->GetParameterChangeMessage(false, action->GetAffectedSp(), lcf::Data::terms.spirit_points);
 					}
 				}
 			}
@@ -857,28 +857,28 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 
 		if (battle_action_substate == ePreAtk) {
 			if (action->GetAffectedAttack() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAttack(), Data::terms.attack);
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAttack(), lcf::Data::terms.attack);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreDef) {
 			if (action->GetAffectedDefense() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedDefense(), Data::terms.defense);
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedDefense(), lcf::Data::terms.defense);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreSpi) {
 			if (action->GetAffectedSpirit() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedSpirit(), Data::terms.spirit);
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedSpirit(), lcf::Data::terms.spirit);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreAgi) {
 			if (action->GetAffectedAgility() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAgility(), Data::terms.agility);
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAgility(), lcf::Data::terms.agility);
 			}
 			checkNext();
 		}
@@ -888,7 +888,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			auto& idx = battle_action_substate_index;
 			for (;idx < (int)states.size(); ++idx) {
 				auto& se = states[idx];
-				auto* state = ReaderUtil::GetElement(Data::states, se.state_id);
+				auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
 				if (!state) {
 					continue;
 				}
@@ -920,7 +920,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			const auto& attrs = action->GetShiftedAttributes();
 			if (battle_action_substate_index < (int)attrs.size()) {
 				int attr_id = attrs[battle_action_substate_index];
-				pending_message = action->GetAttributeShiftMessage(ReaderUtil::GetElement(Data::attributes, attr_id)->name);
+				pending_message = action->GetAttributeShiftMessage(lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
 				++battle_action_substate_index;
 			}
 			checkNext();
@@ -1189,9 +1189,9 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_alg.Apply();
 
 		if (next_ss == eSuccess) {
-			battle_message_window->Push(Data::terms.escape_success);
+			battle_message_window->Push(lcf::Data::terms.escape_success);
 		} else {
-			battle_message_window->Push(Data::terms.escape_failure);
+			battle_message_window->Push(lcf::Data::terms.escape_failure);
 		}
 		SetWait(10, 60);
 		SetBattleActionSubState(next_ss);
@@ -1414,7 +1414,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 		for (auto& enemy: visible_enemies) {
 			// Format and wordwrap all messages, then pull them out and push them back 1 at a time.
-			battle_message_window->PushWithSubject(Data::terms.encounter, enemy->GetName());
+			battle_message_window->PushWithSubject(lcf::Data::terms.encounter, enemy->GetName());
 		}
 
 		battle_result_messages = battle_message_window->GetLines();
@@ -1435,7 +1435,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (battle_result_messages_it == battle_result_messages.end()) {
 		battle_message_window->Clear();
 		if (first_strike && !encounter_message_first_strike) {
-			battle_message_window->Push(Data::terms.special_combat);
+			battle_message_window->Push(lcf::Data::terms.special_combat);
 			encounter_message_first_strike = true;
 			SetWait(30, 70);
 			return DisplayMonstersInMessageWindow();;
@@ -1472,15 +1472,15 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp
 	if (Player::IsRPG2kE()) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
-				Data::terms.exp_received,
+				lcf::Data::terms.exp_received,
 				{'V', 'U'},
-				{std::to_string(exp), Data::terms.exp_short}
+				{std::to_string(exp), lcf::Data::terms.exp_short}
 			) + Player::escape_symbol + "."
 		);
 	}
 	else {
 		std::stringstream ss;
-		ss << exp << Data::terms.exp_received << Player::escape_symbol << ".";
+		ss << exp << lcf::Data::terms.exp_received << Player::escape_symbol << ".";
 		pm.PushLine(ss.str());
 	}
 }
@@ -1490,15 +1490,15 @@ void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) 
 	if (Player::IsRPG2kE()) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
-				Data::terms.gold_recieved_a,
+				lcf::Data::terms.gold_recieved_a,
 				{'V', 'U'},
-				{std::to_string(money), Data::terms.gold}
+				{std::to_string(money), lcf::Data::terms.gold}
 			) + Player::escape_symbol + "."
 		);
 	}
 	else {
 		std::stringstream ss;
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << Player::escape_symbol << ".";
+		ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b << Player::escape_symbol << ".";
 		pm.PushLine(ss.str());
 	}
 }
@@ -1507,7 +1507,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 	std::stringstream ss;
 
 	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-		const RPG::Item* item = ReaderUtil::GetElement(Data::items, *it);
+		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 		// No Output::Warning needed here, reported later when the item is added
 		std::string item_name = "??? BAD ITEM ???";
 		if (item) {
@@ -1517,7 +1517,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 		if (Player::IsRPG2kE()) {
 			pm.PushLine(
 				Utils::ReplacePlaceholders(
-					Data::terms.item_recieved,
+					lcf::Data::terms.item_recieved,
 					{'S'},
 					{item_name}
 				) + Player::escape_symbol + "."
@@ -1525,7 +1525,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 		}
 		else {
 			ss.str("");
-			ss << item_name << Data::terms.item_recieved << Player::escape_symbol << ".";
+			ss << item_name << lcf::Data::terms.item_recieved << Player::escape_symbol << ".";
 			pm.PushLine(ss.str());
 		}
 	}
@@ -1544,7 +1544,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
-		pm.PushLine(Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
 
 		std::stringstream ss;
 		if (exp > 0) {
@@ -1593,7 +1593,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
 
-		pm.PushLine(Data::terms.defeat);
+		pm.PushLine(lcf::Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 

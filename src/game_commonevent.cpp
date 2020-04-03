@@ -21,13 +21,13 @@
 #include "game_switches.h"
 #include "game_interpreter_map.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include <cassert>
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id)
 {
-	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
 
 	if (ce->trigger == RPG::EventPage::Trigger_parallel
 			&& !ce->event_commands.empty()) {
@@ -70,23 +70,23 @@ int Game_CommonEvent::GetIndex() const {
 // Game_Map ensures validity of Common Events
 
 std::string Game_CommonEvent::GetName() const {
-	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->name;
+	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->name;
 }
 
 bool Game_CommonEvent::GetSwitchFlag() const {
-	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->switch_flag;
+	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->switch_flag;
 }
 
 int Game_CommonEvent::GetSwitchId() const {
-	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->switch_id;
+	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->switch_id;
 }
 
 int Game_CommonEvent::GetTrigger() const {
-	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->trigger;
+	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->trigger;
 }
 
 std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
-	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->event_commands;
+	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->event_commands;
 }
 
 RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
@@ -102,14 +102,14 @@ RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
 }
 
 bool Game_CommonEvent::IsWaitingForegroundExecution() const {
-	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
 	return ce->trigger == RPG::EventPage::Trigger_auto_start &&
 		(!ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id))
 		&& !ce->event_commands.empty();
 }
 
 bool Game_CommonEvent::IsWaitingBackgroundExecution(bool force_run) const {
-	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
 	return ce->trigger == RPG::EventPage::Trigger_parallel &&
 		(force_run || !ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id));
 }

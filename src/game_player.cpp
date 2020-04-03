@@ -30,8 +30,8 @@
 #include "util_macro.h"
 #include "game_switches.h"
 #include "output.h"
-#include "reader_util.h"
-#include "scope_guard.h"
+#include <lcf/reader_util.h>
+#include <lcf/scope_guard.h>
 #include "scene_battle.h"
 #include "scene_menu.h"
 #include <algorithm>
@@ -274,7 +274,7 @@ void Game_Player::UpdateSelfMovement() {
 			if (force_through) {
 				SetThrough(true);
 			}
-			auto sg = makeScopeGuard([&](){
+			auto sg = lcf::makeScopeGuard([&](){
 					if (force_through) { SetThrough(false); }
 					});
 
@@ -569,7 +569,7 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 
 void Game_Player::BeginMove() {
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 	bool red_flash = false;
 
 	if (terrain) {

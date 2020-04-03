@@ -19,7 +19,7 @@
 #define EP_STATE_H
 #include <vector>
 #include <cstdint>
-#include "rpg_state.h"
+#include <lcf/rpg_state.h>
 
 /** A vector of state conditions.
  * The index is the state_id - 1, and the value is the number of

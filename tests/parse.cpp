@@ -2,7 +2,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "options.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_variables.h"
 #include "main_data.h"
 #include <iostream>
@@ -23,9 +23,9 @@ struct DataInit {
 		}
 
 		for (const auto& actor : actors) {
-			Data::actors.push_back({});
-			Data::actors.back().ID = actor.ID;
-			Data::actors.back().Setup();
+			lcf::Data::actors.push_back({});
+			lcf::Data::actors.back().ID = actor.ID;
+			lcf::Data::actors.back().Setup();
 		}
 		Main_Data::game_data.inventory.party.push_back(3);
 
@@ -37,7 +37,7 @@ struct DataInit {
 	}
 	~DataInit() {
 		Main_Data::game_data = RPG::Save();
-		Data::actors.clear();
+		lcf::Data::actors.clear();
 		Main_Data::game_party.reset();
 		Main_Data::game_variables.reset();
 	}

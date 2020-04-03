@@ -2,7 +2,7 @@
 #include "game_variables.h"
 #include "game_actors.h"
 #include "game_message.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
 #include "utils.h"
 #include "player.h"

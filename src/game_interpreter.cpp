@@ -48,11 +48,13 @@
 #include "output.h"
 #include "player.h"
 #include "util_macro.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
 #include "baseui.h"
+
+using lcf::Cmd;
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1
@@ -490,7 +492,7 @@ const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char)*it++;
 
-	std::string result = ReaderUtil::Recode(out.str(), Player::encoding);
+	std::string result = lcf::ReaderUtil::Recode(out.str(), Player::encoding);
 
 	return result;
 }
@@ -1641,7 +1643,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 		case 0:
 			item_id = ValueOrVariable(com.parameters[3],
 									  com.parameters[4]);
-			item = ReaderUtil::GetElement(Data::items, item_id);
+			item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 			if (!item) {
 				Output::Warning("ChangeEquipment: Invalid item ID {}", item_id);
 				return true;
@@ -1682,9 +1684,9 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 			}
 
 			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon && item_id != 0) {
-				RPG::Item* new_equipment = ReaderUtil::GetElement(Data::items, item_id);
-				RPG::Item* equipment1 = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
-				RPG::Item* equipment2 = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
+				RPG::Item* new_equipment = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+				RPG::Item* equipment1 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetWeaponId());
+				RPG::Item* equipment2 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetShieldId());
 
 				if (equipment1 && !equipment2 && !equipment1->two_handed && !new_equipment->two_handed) {
 					// Assign to 2nd weapon slot when empty
@@ -3265,7 +3267,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	switch (com.parameters[0]) {
 	case 0: { // Common Event
 		evt_id = com.parameters[1];
-		Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+		Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 		if (!common_event) {
 			Output::Warning("CallEvent: Can't call invalid common event {}", evt_id);
 			return true;
@@ -3327,7 +3329,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	PendingMessage pm;
 	pm.SetEnableFace(false);
 
-	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
+	const RPG::Class* cls = lcf::ReaderUtil::GetElement(lcf::Data::classes, class_id);
 	if (!cls && class_id != 0) {
 		Output::Warning("ChangeClass: Can't change class. Class {} is invalid", class_id);
 		return true;

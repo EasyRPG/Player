@@ -18,7 +18,7 @@
 // Headers
 #include "game_variables.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "utils.h"
 
 constexpr int Game_Variables::max_warnings;
@@ -257,7 +257,7 @@ void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var
 }
 
 std::string Game_Variables::GetName(int _id) const {
-	const RPG::Variable* var = ReaderUtil::GetElement(Data::variables, _id);
+	const auto* var = lcf::ReaderUtil::GetElement(lcf::Data::variables, _id);
 
 	if (!var) {
 		// No warning, is valid because the variable array resizes dynamic during runtime

@@ -48,9 +48,9 @@ void Window_ParamStatus::Refresh() {
 	};
 
 	int y = 2;
-	y = draw(y, Data::terms.attack, actor->GetAtk());
-	y = draw(y, Data::terms.defense, actor->GetDef());
-	y = draw(y, Data::terms.spirit, actor->GetSpi());
-	y = draw(y, Data::terms.agility, actor->GetAgi());
+	y = draw(y, lcf::Data::terms.attack, actor->GetAtk());
+	y = draw(y, lcf::Data::terms.defense, actor->GetDef());
+	y = draw(y, lcf::Data::terms.spirit, actor->GetSpi());
+	y = draw(y, lcf::Data::terms.agility, actor->GetAgi());
 }
 

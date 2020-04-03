@@ -21,7 +21,7 @@
 #include "window_shopsell.h"
 #include "game_party.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
 	Window_Item(ix, iy, iwidth, iheight) {}
@@ -29,7 +29,7 @@ Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
 bool Window_ShopSell::CheckEnable(int item_id) {
 	// Items are guaranteed to be valid
 
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	return item->price > 0;
 }

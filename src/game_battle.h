@@ -19,8 +19,8 @@
 #define EP_GAME_BATTLE_H
 
 #include <functional>
-#include "rpg_system.h"
-#include "rpg_troop.h"
+#include <lcf/rpg_system.h>
+#include <lcf/rpg_troop.h>
 #include "teleport_target.h"
 #include "utils.h"
 

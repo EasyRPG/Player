@@ -26,7 +26,7 @@
 #include "font.h"
 #include "player.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "game_battle.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
@@ -44,7 +44,7 @@ const RPG::Skill* Window_Skill::GetSkill() const {
 		return nullptr;
 	}
 
-	return ReaderUtil::GetElement(Data::skills, data[index]);
+	return lcf::ReaderUtil::GetElement(lcf::Data::skills, data[index]);
 }
 
 void Window_Skill::Refresh() {
@@ -90,7 +90,7 @@ void Window_Skill::DrawItem(int index) {
 		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
 
 		// Skills are guaranteed to be valid
-		DrawSkillName(*ReaderUtil::GetElement(Data::skills, skill_id), rect.x, rect.y, enabled);
+		DrawSkillName(*lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id), rect.x, rect.y, enabled);
 	}
 }
 
@@ -112,7 +112,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 			return true;
 		}
 
-		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+		const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
 		if (skill) {
 			return skill->type == subset;
 		}

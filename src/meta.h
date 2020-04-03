@@ -23,7 +23,7 @@
 #include <memory>
 #include <string>
 #include "filefinder.h"
-#include "inireader.h"
+#include "lcf/inireader.h"
 
 
 /**
@@ -129,8 +129,8 @@ private:
 	 */
 	bool Empty() const;
 
-	/** Root of the INIReader */
-	std::unique_ptr<INIReader> ini;
+	/** Root of the lcf::INIReader */
+	std::unique_ptr<lcf::INIReader> ini;
 
 	/**
 	 * Current canonical lookup string in easyrpg.ini

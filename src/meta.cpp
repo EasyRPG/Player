@@ -22,15 +22,15 @@
 #include <iomanip>
 #include <sstream>
 #include <zlib.h>
-#include "data.h"
+#include <lcf/data.h>
 #include "filefinder.h"
-#include "lmt_reader.h"
-#include "lsd_reader.h"
+#include <lcf/lmt_reader.h>
+#include <lcf/lsd_reader.h>
 #include "main_data.h"
 #include "meta.h"
 #include "output.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 
 // Constants used for identifying fields in the easyrpg.ini file.
@@ -65,7 +65,7 @@ std::string crc32file(std::string file_name) {
 
 
 Meta::Meta(const std::string& meta_file) {
-	ini.reset(new INIReader(meta_file));
+	ini.reset(new lcf::INIReader(meta_file));
 
 	// Cache per-game lookups
 	if (!Empty()) {
@@ -153,7 +153,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::Dir
 			// Note that corruptness is checked later (in window_savefile.cpp)
 			std::string file = FileFinder::FindDefault(*child_tree, ss.str());
 			if (!file.empty()) {
-				std::unique_ptr<RPG::Save> savegame = LSD_Reader::Load(file, Player::encoding);
+				std::unique_ptr<RPG::Save> savegame = lcf::LSD_Reader::Load(file, Player::encoding);
 				if (savegame != nullptr) {
 					if (savegame->party_location.map_id == pivot_map_id || pivot_map_id==0) {
 						FileItem item;
