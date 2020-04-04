@@ -126,9 +126,6 @@ private:
 	/** Last display mode. */
 	DisplayMode last_display_mode;
 
-	/** Mode is being changing flag */
-	bool mode_changing = false;
-
 	/** Main SDL window. */
 	SDL_Texture* sdl_texture = nullptr;
 	SDL_Window* sdl_window = nullptr;

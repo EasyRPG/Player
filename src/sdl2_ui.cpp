@@ -216,16 +216,14 @@ void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) 
 void Sdl2Ui::BeginDisplayModeChange() {
 	last_display_mode = current_display_mode;
 	current_display_mode.effective = false;
-	mode_changing = true;
 }
 
 void Sdl2Ui::EndDisplayModeChange() {
 	// Check if the new display mode is different from last one
-	if (mode_changing && (
-		current_display_mode.flags != last_display_mode.flags ||
+	if (current_display_mode.flags != last_display_mode.flags ||
 		current_display_mode.zoom != last_display_mode.zoom ||
 		current_display_mode.width != last_display_mode.width ||
-		current_display_mode.height != last_display_mode.height)) {
+		current_display_mode.height != last_display_mode.height) {
 
 			if (!RefreshDisplayMode()) {
 				// Mode change failed, check if last one was effective
@@ -242,8 +240,6 @@ void Sdl2Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
-
-			mode_changing = false;
 	}
 }
 
@@ -379,10 +375,8 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 #ifdef SUPPORT_FULL_SCALING
 void Sdl2Ui::Resize(long width, long height) {
-	if (mode_changing) {
-		current_display_mode.width = width;
-		current_display_mode.height = height;
-	}
+	current_display_mode.width = width;
+	current_display_mode.height = height;
 }
 #else
 void Sdl2Ui::Resize(long /*width*/, long /*height*/) {
@@ -391,12 +385,10 @@ void Sdl2Ui::Resize(long /*width*/, long /*height*/) {
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-	if (mode_changing) {
-		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
-			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
-		else
-			current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-	}
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
+	else
+		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	EndDisplayModeChange();
 }
 
@@ -410,24 +402,22 @@ void Sdl2Ui::ToggleZoom() {
 		SDL_RestoreWindow(sdl_window);
 	}
 
-	if (mode_changing) {
-		// get current window size, calculate next bigger zoom factor
-		int w, h;
-		SDL_GetWindowSize(sdl_window, &w, &h);
-		last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
-		current_display_mode.zoom = last_display_mode.zoom + 1;
+	// get current window size, calculate next bigger zoom factor
+	int w, h;
+	SDL_GetWindowSize(sdl_window, &w, &h);
+	last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
+	current_display_mode.zoom = last_display_mode.zoom + 1;
 
-		// get maximum usable window size
-		int display_index = SDL_GetWindowDisplayIndex(sdl_window);
-		SDL_Rect max_mode;
-		// this takes account of the menu bar and dock on macOS and task bar on windows
-		SDL_GetDisplayUsableBounds(display_index, &max_mode);
+	// get maximum usable window size
+	int display_index = SDL_GetWindowDisplayIndex(sdl_window);
+	SDL_Rect max_mode;
+	// this takes account of the menu bar and dock on macOS and task bar on windows
+	SDL_GetDisplayUsableBounds(display_index, &max_mode);
 
-		// reset zoom, if it does not fit
-		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
-			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
-			current_display_mode.zoom = 1;
-		}
+	// reset zoom, if it does not fit
+	if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
+		(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
+		current_display_mode.zoom = 1;
 	}
 	EndDisplayModeChange();
 #endif
