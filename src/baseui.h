@@ -28,6 +28,7 @@
 #include "rect.h"
 #include "keys.h"
 #include "game_config.h"
+#include "game_clock.h"
 
 #ifdef SUPPORT_AUDIO
 	struct AudioInterface;
@@ -174,6 +175,12 @@ public:
 	/** Toggle whether we should show fps */
 	void ToggleShowFps();
 
+	/**
+	 * @return the minimum amount of time each physical frame should take.
+	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
+	 */
+	Game_Clock::duration GetFrameLimit() const;
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
@@ -215,6 +222,12 @@ protected:
 
 	/** Mouse hovering the window flag. */
 	bool mouse_focus = false;
+
+	/** The frames per second limit */
+	int fps_limit = Game_Clock::GetTargetGameFps();
+
+	/** The amount of time each frame should take, based on fps limit */
+	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
 
 	/** Cursor visibility flag. */
 	bool cursor_visible = false;
@@ -293,6 +306,10 @@ inline bool BaseUi::ShowFpsOnTitle() const {
 
 inline void BaseUi::ToggleShowFps() {
 	show_fps = !show_fps;
+}
+
+inline Game_Clock::duration BaseUi::GetFrameLimit() const {
+	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
 }
 
 #endif

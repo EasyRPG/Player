@@ -118,7 +118,6 @@ namespace Player {
 #ifdef _3DS
 	bool is_3dsx;
 #endif
-	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
 }
 
 namespace {
@@ -167,7 +166,6 @@ void Player::Init(int argc, char *argv[]) {
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	auto cfg = ParseCommandLine(argc, argv);
-	SetTargetFps(cfg.video.fps_limit.Get());
 
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
@@ -257,7 +255,8 @@ void Player::MainLoop() {
 		return;
 	}
 
-	if (DisplayUi->IsFrameRateSynchronized() || frame_limit == Game_Clock::duration()) {
+	auto frame_limit = DisplayUi->GetFrameLimit();
+	if (frame_limit == Game_Clock::duration()) {
 		return;
 	}
 
@@ -1192,10 +1191,3 @@ std::string Player::GetEngineVersion() {
 	return std::string();
 }
 
-void Player::SetTargetFps(int fps) {
-	if (fps == 0) {
-		frame_limit = {};
-	} else {
-		frame_limit = Game_Clock::TimeStepFromFps(fps);
-	}
-}

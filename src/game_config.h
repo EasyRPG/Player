@@ -19,13 +19,15 @@
 #define EP_GAME_CONFIG_H
 
 #include "config_param.h"
+#include "options.h"
 
 struct Game_ConfigVideo {
 	BoolConfigParam vsync{ true };
 	BoolConfigParam fullscreen{ true };
 	BoolConfigParam show_fps{ false };
 	BoolConfigParam fps_render_window{ false };
-	RangeConfigParam<int> fps_limit{ 60, 0, std::numeric_limits<int>::max() };
+	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
+	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
 };
 
 struct Game_ConfigAudio {
