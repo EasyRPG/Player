@@ -305,13 +305,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		SetAppIcon();
 
-		// OS X needs the rendered to be vsync
-#if defined(__APPLE__) && defined(__MACH__)
-		uint32_t rendered_flag = SDL_RENDERER_PRESENTVSYNC;
-#else
 		uint32_t rendered_flag = 0;
-#endif
-
 #ifndef __MORPHOS__
 		if (Player::vsync) {
 			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
