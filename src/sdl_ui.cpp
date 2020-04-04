@@ -81,7 +81,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
-	uint32_t flags = SDL_INIT_VIDEO|SDL_INIT_TIMER;
+	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
