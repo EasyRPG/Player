@@ -67,13 +67,7 @@ void Graphics::Quit() {
 
 void Graphics::Update() {
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
-
-	bool fps_visible = (
-#ifndef EMSCRIPTEN
-		(Player::fps_render_window || DisplayUi->IsFullscreen()) &&
-#endif
-		Player::fps_flag);
-	fps_overlay->SetDrawFps(fps_visible);
+	fps_overlay->SetDrawFps(DisplayUi->RenderFps());
 
 	//Update Graphics:
 	if (fps_overlay->Update()) {
@@ -94,7 +88,7 @@ void Graphics::UpdateTitle() {
 	}
 	title << GAME_TITLE;
 
-	if (Player::fps_flag) {
+	if (DisplayUi->ShowFpsOnTitle()) {
 		title << " - " << fps_overlay->GetFpsString();
 	}
 

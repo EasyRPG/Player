@@ -250,12 +250,6 @@ namespace Player {
 	/** Hide Title flag, if true title scene will run without image and music. */
 	extern bool hide_title_flag;
 
-	/** FPS flag, if true will display frames per second counter. */
-	extern bool fps_flag;
-
-	/** FPS render window flag, if true will draw the FPS on the screen even in windowed mode. */
-	extern bool fps_render_window;
-
 	/** Mouse flag, if true enables mouse click and scroll wheel */
 	extern bool mouse_flag;
 

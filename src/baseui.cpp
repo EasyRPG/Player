@@ -35,28 +35,26 @@
 
 std::shared_ptr<BaseUi> DisplayUi;
 
-std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, int zoom, bool fullscreen, bool vsync) {
+std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_ConfigVideo& cfg) {
 #if USE_SDL==2
-	return std::make_shared<Sdl2Ui>(width, height, zoom, fullscreen, vsync);
+	auto ui = std::make_shared<Sdl2Ui>(width, height, cfg.window_zoom.Get(), cfg.fullscreen.Get(), cfg.vsync.Get());
 #elif USE_SDL==1
-	return std::make_shared<SdlUi>(width, height, fullscreen);
-	(void)vsync;
-#else
-	(void)zoom;
-	(void)fullscreen;
-	(void)vsync;
-#if defined(USE_LIBRETRO)
-	return std::make_shared<LibretroUi>(width, height);
+	auto ui = std::make_shared<SdlUi>(width, height, cfg.fullscreen.Get());
+#elif defined(USE_LIBRETRO)
+	auto ui = std::make_shared<LibretroUi>(width, height);
 #elif defined(_3DS)
-	return std::make_shared<CtrUi>(width, height);
+	auto ui = std::make_shared<CtrUi>(width, height);
 #elif defined(PSP2)
-	return std::make_shared<Psp2Ui>(width, height);
+	auto ui = std::make_shared<Psp2Ui>(width, height);
 #elif defined(__SWITCH__)
-	return std::make_shared<NxUi>(width, height);
+	auto ui = std::make_shared<NxUi>(width, height);
 #else
 #  error cannot create UI
 #endif
-#endif
+	ui->show_fps = cfg.show_fps.Get();
+	ui->fps_render_window = cfg.fps_render_window.Get();
+
+	return ui;
 }
 
 BaseUi::BaseUi()

@@ -251,7 +251,11 @@ void Sdl2Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
+#ifdef EMSCRIPTEN
+			SetIsFullscreen(true);
+#else
 			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+#endif
 	}
 }
 

@@ -92,8 +92,6 @@ namespace Player {
 	bool reset_flag;
 	bool debug_flag;
 	bool hide_title_flag;
-	bool fps_flag;
-	bool fps_render_window = false;
 	bool new_game_flag;
 	int load_game_id;
 	int party_x_position;
@@ -169,8 +167,6 @@ void Player::Init(int argc, char *argv[]) {
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	auto cfg = ParseCommandLine(argc, argv);
-	Player::fps_flag = cfg.video.show_fps.Get();
-	Player::fps_render_window = cfg.video.fps_render_window.Get();
 	SetTargetFps(cfg.video.fps_limit.Get());
 
 #ifdef EMSCRIPTEN
@@ -194,12 +190,7 @@ void Player::Init(int argc, char *argv[]) {
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
-		DisplayUi = BaseUi::CreateUi
-			(SCREEN_TARGET_WIDTH,
-			 SCREEN_TARGET_HEIGHT,
-			 cfg.video.window_zoom.Get(),
-			 cfg.video.fullscreen.Get(),
-			 cfg.video.vsync.Get());
+		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg.video);
 	}
 
 	auto buttons = Input::GetDefaultButtonMappings();
@@ -292,7 +283,7 @@ void Player::Resume() {
 void Player::UpdateInput() {
 	// Input Logic:
 	if (Input::IsSystemTriggered(Input::TOGGLE_FPS)) {
-		fps_flag = !fps_flag;
+		DisplayUi->ToggleShowFps();
 	}
 	if (Input::IsSystemTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
@@ -427,7 +418,6 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 #endif
 
 	engine = EngineNone;
-	fps_flag = false;
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;

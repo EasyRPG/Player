@@ -27,6 +27,7 @@
 #include "font.h"
 #include "rect.h"
 #include "keys.h"
+#include "game_config.h"
 
 #ifdef SUPPORT_AUDIO
 	struct AudioInterface;
@@ -47,11 +48,9 @@ public:
 	 *
 	 * @param width display client width.
 	 * @param height display client height.
-	 * @param zoom initial magnification factor.
-	 * @param fullscreen start in fullscreen flag.
-	 * @param vsync start in vsync mode flag.
+	 * @param cfg video config options
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, int zoom, bool fullscreen, bool vsync);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Toggles fullscreen.
@@ -166,6 +165,15 @@ public:
 	/** @return true if the display manages the framerate */
 	bool IsFrameRateSynchronized() const;
 
+	/** @return true if we should render the fps counter to the screen */
+	bool RenderFps() const;
+
+	/** @return true if we should render the fps counter to the title bar */
+	bool ShowFpsOnTitle() const;
+
+	/** Toggle whether we should show fps */
+	void ToggleShowFps();
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
@@ -216,6 +224,12 @@ protected:
 
 	/** Whether UI is currently fullscreen */
 	bool is_fullscreen = false;
+
+	/** Whether we will show fps counter the screen */
+	bool show_fps = false;
+
+	/** If we will render fps on the screen even in windowed mode */
+	bool fps_render_window = false;
 };
 
 /** Global DisplayUi variable. */
@@ -267,6 +281,18 @@ inline int BaseUi::GetMousePosX() const {
 
 inline int BaseUi::GetMousePosY() const {
 	return mouse_y;
+}
+
+inline bool BaseUi::RenderFps() const {
+	return show_fps && (IsFullscreen() || fps_render_window);
+}
+
+inline bool BaseUi::ShowFpsOnTitle() const {
+	return show_fps;
+}
+
+inline void BaseUi::ToggleShowFps() {
+	show_fps = !show_fps;
 }
 
 #endif
