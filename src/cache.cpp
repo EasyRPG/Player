@@ -94,14 +94,16 @@ namespace {
 	void FreeBitmapMemory() {
 		auto cur_ticks = Game_Clock::GetFrameTime();
 
-		for (auto& i : cache) {
-			if (i.second.bitmap.use_count() != 1) {
+		for (auto it = cache.begin(); it != cache.end();) {
+			if (it->second.bitmap.use_count() != 1) {
 				// Bitmap is referenced
+				++it;
 				continue;
 			}
 
-			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3s) {
+			if (cache_size <= cache_limit && cur_ticks - it->second.last_access < 3s) {
 				// Below memory limit and last access < 3s
+				++it;
 				continue;
 			}
 
@@ -110,8 +112,9 @@ namespace {
 						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str());
 #endif
 
-			cache_size -= i.second.bitmap->GetSize();
-			i.second.bitmap.reset();
+			cache_size -= it->second.bitmap->GetSize();
+
+			it = cache.erase(it);
 		}
 
 #ifdef CACHE_DEBUG
@@ -136,7 +139,7 @@ namespace {
 
 		auto it = cache.find(key);
 
-		if (it == cache.end() || !it->second.bitmap) {
+		if (it == cache.end()) {
 			const std::string path = FileFinder::FindImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
@@ -152,7 +155,10 @@ namespace {
 				}
 			}
 
-			return AddToCache(key, bmp);
+			if (bmp) {
+				return AddToCache(key, bmp);
+			}
+			return nullptr;
 		} else {
 			it->second.last_access = Game_Clock::GetFrameTime();
 			return it->second.bitmap;
@@ -244,16 +250,16 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename) {
+	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
 
-		const auto key = MakeHashKey(folder_name, filename, false);
+		const auto key = MakeHashKey(folder_name, filename, transparent);
 
 		auto it = cache.find(key);
 
-		if (it == cache.end() || !it->second.bitmap) {
+		if (it == cache.end()) {
 			FreeBitmapMemory();
 
 			BitmapRef bitmap = s.dummy_renderer();
@@ -272,7 +278,7 @@ namespace {
 		const Spec& s = spec[T];
 
 		if (f == CACHE_DEFAULT_BITMAP) {
-			return LoadDummyBitmap<T>(s.directory, f);
+			return LoadDummyBitmap<T>(s.directory, f, true);
 		}
 
 #ifndef NDEBUG
@@ -289,9 +295,7 @@ namespace {
 										 0));
 
 		if (!ret) {
-			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
-
-			return LoadDummyBitmap<T>(s.directory, f);
+			return LoadDummyBitmap<T>(s.directory, f, transparent);
 		}
 
 		if (s.oob_check) {
@@ -397,7 +401,7 @@ BitmapRef Cache::Exfont() {
 
 	auto it = cache.find(key);
 
-	if (it == cache.end() || !it->second.bitmap) {
+	if (it == cache.end()) {
 		// Allow overwriting of built-in exfont with a custom ExFont image file
 		// exfont_custom is filled by Player::CreateGameObjects
 		BitmapRef exfont_img;
