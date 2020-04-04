@@ -92,7 +92,6 @@ namespace Player {
 	bool reset_flag;
 	bool debug_flag;
 	bool hide_title_flag;
-	bool window_flag;
 	bool fps_flag;
 	bool fps_render_window = false;
 	bool new_game_flag;
@@ -170,7 +169,11 @@ void Player::Init(int argc, char *argv[]) {
 	Game_Clock::logClockInfo();
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
-	ParseCommandLine(argc, argv);
+	auto cfg = ParseCommandLine(argc, argv);
+	Player::vsync = cfg.video.vsync.Get();
+	Player::fps_flag = cfg.video.show_fps.Get();
+	Player::fps_render_window = cfg.video.fps_render_window.Get();
+	SetTargetFps(cfg.video.fps_limit.Get());
 
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
@@ -196,8 +199,8 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 !window_flag,
-			 RUN_ZOOM);
+			 cfg.video.fullscreen.Get(),
+			 cfg.video.window_zoom.Get());
 	}
 
 	auto buttons = Input::GetDefaultButtonMappings();
@@ -415,7 +418,7 @@ static bool parseInt(const std::string& s, long& value) {
 	return true;
 }
 
-void Player::ParseCommandLine(int argc, char *argv[]) {
+Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 #ifdef _3DS
 	is_3dsx = argc > 0;
 #endif
@@ -425,11 +428,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 #endif
 
 	engine = EngineNone;
-#ifdef EMSCRIPTEN
-	window_flag = true;
-#else
-	window_flag = false;
-#endif
 	fps_flag = false;
 	debug_flag = false;
 	hide_title_flag = false;
@@ -446,33 +444,28 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	touch_flag = false;
 	Game_Battle::battle_test.enabled = false;
 
-	std::vector<std::string> args;
-
 	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
 		ss << argv[i] << " ";
+	}
+	Output::Debug("CLI: {}", ss.str());
+
+	auto cfg = Game_Config::Create(&argc, argv);
+
+	std::vector<std::string> args;
+	for (int i = 1; i < argc; ++i) {
 #if defined(_WIN32) && !defined(__WINRT__)
 		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
 #else
 		args.push_back(Utils::LowerCase(argv[i]));
 #endif
 	}
-	Output::Debug("CLI: {}", ss.str());
 
 	std::vector<std::string>::const_iterator it;
 
 	for (it = args.begin(); it != args.end(); ++it) {
-		if (*it == "window" || *it == "--window") {
-			window_flag = true;
-		}
-		else if (*it == "--show-fps") {
-			fps_flag = true;
-		}
-		else if (*it == "--fps-render-window") {
-			fps_render_window = true;
-		}
-		else if (*it == "--no-vsync") {
-			vsync = false;
+		if (*it == "window") {
+			cfg.video.fullscreen.Set(false);
 		}
 		else if (*it == "--enable-mouse") {
 			mouse_flag = true;
@@ -486,18 +479,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "hidetitle" || *it == "--hide-title") {
 			hide_title_flag = true;
 		}
-		else if (*it == "--fps-limit") {
-			++it;
-			if (it == args.end()) {
-				return;
-			}
-			auto fps =  atoi((*it).c_str());
-			SetTargetFps(fps);
-		}
 		else if (*it == "battletest") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			Game_Battle::battle_test.enabled = true;
 			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
@@ -516,7 +501,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--battle-test") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			Game_Battle::battle_test.enabled = true;
 			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
@@ -540,7 +525,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--project-path") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 #ifdef _WIN32
 			Main_Data::SetProjectPath(*it);
@@ -556,7 +541,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--save-path") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			// case sensitive
 			Main_Data::SetSavePath(argv[it - args.begin() + 1]);
@@ -567,7 +552,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--load-game-id") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			load_game_id = atoi((*it).c_str());
 		}
@@ -586,21 +571,21 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--seed") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			Utils::SeedRandomNumberGenerator(atoi((*it).c_str()));
 		}
 		else if (*it == "--start-map-id") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			start_map_id = atoi((*it).c_str());
 		}
 		else if (*it == "--start-position") {
 			++it;
 			if (it == args.end() || it == args.end()-1) {
-				return;
+				continue;
 			}
 			party_x_position = atoi((*it).c_str());
 			++it;
@@ -615,7 +600,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--engine") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			if (*it == "rpg2k" || *it == "2000") {
 				engine = EngineRpg2k;
@@ -639,21 +624,21 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--record-input") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			record_input_path = *it;
 		}
 		else if (*it == "--replay-input") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			replay_input_path = *it;
 		}
 		else if (*it == "--encoding") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			forced_encoding = *it;
 		}
@@ -675,7 +660,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--game") {
 			++it;
 			if (it == args.end()) {
-				return;
+				continue;
 			}
 			emscripten_game_name = *it;
 		}
@@ -685,6 +670,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 #if defined(_WIN32) && !defined(__WINRT__)
 	LocalFree(argv_w);
 #endif
+	return cfg;
 }
 
 void Player::CreateGameObjects() {

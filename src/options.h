@@ -39,9 +39,6 @@
 /** Run game in fullscreen mode. */
 #define RUN_FULLSCREEN 0
 
-/** Run game with this magnification factor. */
-#define RUN_ZOOM 2
-
 /**
  * Pause the game process when the player window
  * looses its focus.

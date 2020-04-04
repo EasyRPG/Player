@@ -111,19 +111,19 @@ void Game_Config::loadFromConfig(const std::string& path) {
 		video.vsync.Set(ini.GetBoolean("video", "vsync", false));
 	}
 	if (ini.HasValue("video", "fullscreen")) {
-		video.vsync.Set(ini.GetBoolean("video", "fullscreen", false));
+		video.fullscreen.Set(ini.GetBoolean("video", "fullscreen", false));
 	}
 	if (ini.HasValue("video", "show-fps")) {
-		video.vsync.Set(ini.GetBoolean("video", "show-fps", false));
+		video.show_fps.Set(ini.GetBoolean("video", "show-fps", false));
 	}
 	if (ini.HasValue("video", "fps-render-window")) {
-		video.vsync.Set(ini.GetBoolean("video", "fps-render-window", false));
+		video.fps_render_window.Set(ini.GetBoolean("video", "fps-render-window", false));
 	}
 	if (ini.HasValue("video", "fps-limit")) {
-		video.vsync.Set(ini.GetInteger("video", "fps-limit", 0));
+		video.fps_limit.Set(ini.GetInteger("video", "fps-limit", 0));
 	}
 	if (ini.HasValue("video", "window-zoom")) {
-		video.vsync.Set(ini.GetInteger("video", "window-zoom", 0));
+		video.window_zoom.Set(ini.GetInteger("video", "window-zoom", 0));
 	}
 }
 

@@ -21,6 +21,7 @@
 // Headers
 #include "meta.h"
 #include "game_clock.h"
+#include "game_config.h"
 #include <vector>
 #include <memory>
 
@@ -105,7 +106,7 @@ namespace Player {
 	/**
 	 * Parses the command line arguments.
 	 */
-	void ParseCommandLine(int argc, char *argv[]);
+	Game_Config ParseCommandLine(int argc, char *argv[]);
 
 	/**
 	 * Initializes all game objects
@@ -248,9 +249,6 @@ namespace Player {
 
 	/** Hide Title flag, if true title scene will run without image and music. */
 	extern bool hide_title_flag;
-
-	/** Window flag, if true will run in window mode instead of full screen. */
-	extern bool window_flag;
 
 	/** FPS flag, if true will display frames per second counter. */
 	extern bool fps_flag;
