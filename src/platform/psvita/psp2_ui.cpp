@@ -271,14 +271,6 @@ void Psp2Ui::UpdateDisplay() {
 	sceKernelSignalSema(GPU_Mutex, 1);
 }
 
-void Psp2Ui::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef Psp2Ui::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
 void Psp2Ui::SetTitle(const std::string& /* title */) {
 	// no-op
 }

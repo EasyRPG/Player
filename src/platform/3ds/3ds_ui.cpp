@@ -333,14 +333,6 @@ void CtrUi::UpdateDisplay() {
 	C3D_FrameEnd(0);
 }
 
-void CtrUi::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef CtrUi::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
 void CtrUi::SetTitle(const std::string& /* title */) {
 	// no-op
 }

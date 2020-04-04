@@ -431,14 +431,6 @@ void NxUi::UpdateDisplay() {
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
-void NxUi::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef NxUi::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
 void NxUi::SetTitle(const std::string& /* title */) {
 	// no-op
 }
