@@ -121,21 +121,20 @@ private:
 	 */
 	void ResetKeys();
 
-	bool zoom_available;
-	bool toggle_fs_available;
+	bool toggle_fs_available = false;
 
-	bool RequestVideoMode(int width, int height, int zoom);
+	void RequestVideoMode(int width, int height, bool fullscreen, int zoom);
 
 	/** Last display mode. */
 	DisplayMode last_display_mode;
 
 	/** Mode is being changing flag */
-	bool mode_changing;
+	bool mode_changing = false;
 
 	/** Main SDL window. */
-	SDL_Texture* sdl_texture;
-	SDL_Window* sdl_window;
-	SDL_Renderer* sdl_renderer;
+	SDL_Texture* sdl_texture = nullptr;
+	SDL_Window* sdl_window = nullptr;
+	SDL_Renderer* sdl_renderer = nullptr;
 
 	std::unique_ptr<AudioInterface> audio_;
 };

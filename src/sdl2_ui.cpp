@@ -129,19 +129,15 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 static int FilterUntilFocus(const SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-	static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
+static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
+static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
-	BaseUi(),
-	zoom_available(false),
-	toggle_fs_available(false),
-	mode_changing(false) {
-
+Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
+{
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
 #ifdef __LINUX__
@@ -153,18 +149,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
-	sdl_window = NULL;
-
-	BeginDisplayModeChange();
-		if (!RequestVideoMode(width, height, zoom)) {
-			Output::Error("No suitable video resolution found. Aborting.");
-		}
-	EndDisplayModeChange();
-
-	// Work around some SDL bugs, window properties are incorrect when started
-	// as full screen, e.g. height lacks title bar size, icon is not added, etc.
-	if (fullscreen)
-		ToggleFullscreen();
+	RequestVideoMode(width, height, fullscreen, zoom);
 
 	SetTitle(GAME_TITLE);
 
@@ -209,7 +194,9 @@ Sdl2Ui::~Sdl2Ui() {
 	SDL_Quit();
 }
 
-bool Sdl2Ui::RequestVideoMode(int width, int height, int zoom) {
+void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) {
+	BeginDisplayModeChange();
+
 	// SDL2 documentation says that resolution dependent code should not be used
 	// anymore. The library takes care of it now.
 	current_display_mode.width = width;
@@ -218,13 +205,13 @@ bool Sdl2Ui::RequestVideoMode(int width, int height, int zoom) {
 	toggle_fs_available = true;
 
 	current_display_mode.zoom = zoom;
-#ifdef SUPPORT_ZOOM
-	zoom_available = true;
-#else
-	zoom_available = false;
-#endif
 
-	return true;
+	EndDisplayModeChange();
+
+	// Work around some SDL bugs, window properties are incorrect when started
+	// as full screen, e.g. height lacks title bar size, icon is not added, etc.
+	if (fullscreen)
+		ToggleFullscreen();
 }
 
 void Sdl2Ui::BeginDisplayModeChange() {
@@ -266,10 +253,10 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
-	if (zoom_available) {
-		display_width *= current_display_mode.zoom;
-		display_height *= current_display_mode.zoom;
-	}
+#ifdef SUPPORT_ZOOM
+	display_width *= current_display_mode.zoom;
+	display_height *= current_display_mode.zoom;
+#endif
 
 	if (!sdl_window) {
 		#ifdef __ANDROID__
@@ -415,6 +402,7 @@ void Sdl2Ui::ToggleFullscreen() {
 }
 
 void Sdl2Ui::ToggleZoom() {
+#ifdef SUPPORT_ZOOM
 	BeginDisplayModeChange();
 	// Work around a SDL bug which doesn't demaximize the window when the size
 	// is changed
@@ -423,7 +411,7 @@ void Sdl2Ui::ToggleZoom() {
 		SDL_RestoreWindow(sdl_window);
 	}
 
-	if (zoom_available && mode_changing) {
+	if (mode_changing) {
 		// get current window size, calculate next bigger zoom factor
 		int w, h;
 		SDL_GetWindowSize(sdl_window, &w, &h);
@@ -443,6 +431,7 @@ void Sdl2Ui::ToggleZoom() {
 		}
 	}
 	EndDisplayModeChange();
+#endif
 }
 
 void Sdl2Ui::ProcessEvents() {
