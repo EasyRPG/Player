@@ -65,7 +65,8 @@ enum PadInputState {
 	PadInputState_Keyboard = 2
 };
 
-LibretroUi::LibretroUi(int width, int height) {
+LibretroUi::LibretroUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+{
 	// Handled by libretro
 	// FIXME: There is currently no callback from libretro telling us whether or not fullscreen is enabled.
 	SetIsFullscreen(false);

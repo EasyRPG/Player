@@ -69,12 +69,9 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static void GekkoResetCallback(u32 irq, void *ctx);
 #endif
 
-SdlUi::SdlUi(long width, long height, bool fs_flag) :
-	BaseUi(),
-	zoom_available(true),
-	toggle_fs_available(false),
-	mode_changing(false) {
-
+SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+{
+	auto fs_flag = cfg.fullscreen.Get();
 #ifdef GEKKO
 	WPAD_Init();
 

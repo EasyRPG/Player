@@ -37,29 +37,28 @@ std::shared_ptr<BaseUi> DisplayUi;
 
 std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_ConfigVideo& cfg) {
 #if USE_SDL==2
-	auto ui = std::make_shared<Sdl2Ui>(width, height, cfg.window_zoom.Get(), cfg.fullscreen.Get(), cfg.vsync.Get());
+	return std::make_shared<Sdl2Ui>(width, height, cfg);
 #elif USE_SDL==1
-	auto ui = std::make_shared<SdlUi>(width, height, cfg.fullscreen.Get());
+	return std::make_shared<SdlUi>(width, height, cfg);
 #elif defined(USE_LIBRETRO)
-	auto ui = std::make_shared<LibretroUi>(width, height);
+	return std::make_shared<LibretroUi>(width, height, cfg);
 #elif defined(_3DS)
-	auto ui = std::make_shared<CtrUi>(width, height);
+	return std::make_shared<CtrUi>(width, height, cfg);
 #elif defined(PSP2)
-	auto ui = std::make_shared<Psp2Ui>(width, height);
+	return std::make_shared<Psp2Ui>(width, height, cfg);
 #elif defined(__SWITCH__)
-	auto ui = std::make_shared<NxUi>(width, height);
+	return std::make_shared<NxUi>(width, height, cfg);
 #else
 #  error cannot create UI
 #endif
-	ui->show_fps = cfg.show_fps.Get();
-	ui->fps_render_window = cfg.fps_render_window.Get();
-
-	return ui;
 }
 
-BaseUi::BaseUi()
+BaseUi::BaseUi(const Game_ConfigVideo& cfg)
 {
 	keys.reset();
+
+	show_fps = cfg.show_fps.Get();
+	fps_render_window = cfg.fps_render_window.Get();
 }
 
 BitmapRef BaseUi::CaptureScreen() {

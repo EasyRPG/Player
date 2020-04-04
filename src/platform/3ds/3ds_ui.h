@@ -38,8 +38,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
+	 * @param cfg video config options
 	 */
-	CtrUi(int width, int height);
+	CtrUi(int width, int height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Destructor.

@@ -178,7 +178,7 @@ protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
 	 */
-	BaseUi();
+	explicit BaseUi(const Game_ConfigVideo& cfg);
 
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);

@@ -36,8 +36,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
+	 * @param cfg video config options
 	 */
-	NxUi(int width, int height);
+	NxUi(int width, int height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Destructor.

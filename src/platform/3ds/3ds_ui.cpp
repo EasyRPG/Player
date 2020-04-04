@@ -61,7 +61,7 @@ namespace {
 	u32* main_buffer;
 }
 
-CtrUi::CtrUi(int width, int height)
+CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 

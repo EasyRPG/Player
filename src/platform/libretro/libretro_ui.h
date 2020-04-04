@@ -39,8 +39,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
+	 * @param cfg video config options
 	 */
-	LibretroUi(int width, int height);
+	LibretroUi(int width, int height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Inherited from BaseUi.

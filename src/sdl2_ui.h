@@ -45,11 +45,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param zoom initial magnification factor.
-	 * @param fullscreen start in fullscreen flag.
-	 * @param vsync start in vsync flag.
+	 * @param cfg video config options
 	 */
-	Sdl2Ui(long width, long height, int zoom, bool fullscreen, bool vsync);
+	Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Destructor.
