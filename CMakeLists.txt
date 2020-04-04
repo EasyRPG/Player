@@ -49,6 +49,8 @@ add_library(${PROJECT_NAME}
 	src/bitmap_hslrgb.h
 	src/cache.cpp
 	src/cache.h
+	src/cmdline_parser.cpp
+	src/cmdline_parser.h
 	src/color.h
 	src/compiler.h
 	src/config_param.h
