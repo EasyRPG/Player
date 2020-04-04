@@ -42,6 +42,15 @@ namespace Input {
 		const std::bitset<BUTTON_COUNT>& GetPressedButtons() const {
 			return pressed_buttons;
 		}
+		std::bitset<BUTTON_COUNT> GetPressedNonSystemButtons() const {
+			auto pressed = pressed_buttons;
+			for(unsigned i = 0; i < BUTTON_COUNT; ++i) {
+				if (IsSystemButton(static_cast<InputButton>(i))) {
+					pressed[i] = false;
+				}
+			}
+			return pressed;
+		}
 
 	protected:
 		std::bitset<BUTTON_COUNT> pressed_buttons;

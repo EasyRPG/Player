@@ -132,7 +132,7 @@ void Input::Update() {
 	auto& pressed_buttons = source->GetPressedButtons();
 
 	if (recording_input) {
-		record_log << pressed_buttons << '\n';
+		record_log << source->GetPressedNonSystemButtons() << '\n';
 	}
 
 	// Check button states
