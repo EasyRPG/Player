@@ -73,9 +73,6 @@ public:
 
 	/** @} */
 
-	/** Get display surface. */
-	BitmapRef GetDisplaySurface();
-
 private:
 	/**
 	 * Refreshes the display mode after it was changed.
