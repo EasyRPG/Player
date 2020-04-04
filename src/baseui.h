@@ -47,10 +47,11 @@ public:
 	 *
 	 * @param width display client width.
 	 * @param height display client height.
-	 * @param fullscreen start in fullscreen flag.
 	 * @param zoom initial magnification factor.
+	 * @param fullscreen start in fullscreen flag.
+	 * @param vsync start in vsync mode flag.
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, int zoom, bool fullscreen, bool vsync);
 
 	/**
 	 * Toggles fullscreen.
@@ -178,12 +179,13 @@ protected:
 	 * Display mode data struct.
 	 */
 	struct DisplayMode {
-		bool effective = false;
 		int zoom = 0;
 		int width = 0;
 		int height = 0;
-		uint8_t bpp = 0;
 		uint32_t flags = 0;
+		uint8_t bpp = 0;
+		bool effective = false;
+		bool vsync = false;
 	};
 
 	/** Current display mode. */

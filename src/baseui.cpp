@@ -35,16 +35,17 @@
 
 std::shared_ptr<BaseUi> DisplayUi;
 
-std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, int zoom) {
-#if USE_SDL!=2
-	/* unused */
-	(void) zoom;
-#endif
+std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, int zoom, bool fullscreen, bool vsync) {
 #if USE_SDL==2
-	return std::make_shared<Sdl2Ui>(width, height, fs_flag, zoom);
+	return std::make_shared<Sdl2Ui>(width, height, zoom, fullscreen, vsync);
 #elif USE_SDL==1
-	return std::make_shared<SdlUi>(width, height, fs_flag);
-#elif defined(USE_LIBRETRO)
+	return std::make_shared<SdlUi>(width, height, fullscreen);
+	(void)vsync;
+#else
+	(void)zoom;
+	(void)fullscreen;
+	(void)vsync;
+#if defined(USE_LIBRETRO)
 	return std::make_shared<LibretroUi>(width, height);
 #elif defined(_3DS)
 	return std::make_shared<CtrUi>(width, height);
@@ -54,6 +55,7 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 	return std::make_shared<NxUi>(width, height);
 #else
 #  error cannot create UI
+#endif
 #endif
 }
 

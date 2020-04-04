@@ -138,7 +138,7 @@ static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
+Sdl2Ui::Sdl2Ui(long width, long height, int zoom, bool fullscreen, bool vsync)
 {
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
@@ -151,7 +151,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
 		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
 	}
 
-	RequestVideoMode(width, height, fullscreen, zoom);
+	RequestVideoMode(width, height, zoom, fullscreen, vsync);
 
 	SetTitle(GAME_TITLE);
 
@@ -205,7 +205,7 @@ Sdl2Ui::~Sdl2Ui() {
 	SDL_Quit();
 }
 
-void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) {
+void Sdl2Ui::RequestVideoMode(int width, int height, int zoom, bool fullscreen, bool vsync) {
 	BeginDisplayModeChange();
 
 	// SDL2 documentation says that resolution dependent code should not be used
@@ -214,6 +214,7 @@ void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) 
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 	current_display_mode.zoom = zoom;
+	current_display_mode.vsync = vsync;
 
 	EndDisplayModeChange();
 
@@ -258,6 +259,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
+	bool& vsync = current_display_mode.vsync;
 
 #ifdef SUPPORT_ZOOM
 	display_width *= current_display_mode.zoom;
@@ -303,7 +305,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		uint32_t rendered_flag = 0;
 
 #ifndef __MORPHOS__
-		if (Player::vsync) {
+		if (vsync) {
 			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
 		}
 #endif
@@ -328,13 +330,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 					!!(rinfo.flags & SDL_RENDERER_SOFTWARE),
 					!!(rinfo.flags & SDL_RENDERER_PRESENTVSYNC)
 					);
-
 			texture_format = SelectFormat(rinfo, false);
 		} else {
 			Output::Debug("SDL_GetRendererInfo failed : {}", SDL_GetError());
 		}
 
-		SetFrameRateSynchronized(rinfo.flags & SDL_RENDERER_PRESENTVSYNC);
+		vsync = rinfo.flags & SDL_RENDERER_PRESENTVSYNC;
+		SetFrameRateSynchronized(vsync);
 
 		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
 			texture_format = GetDefaultFormat();

@@ -121,7 +121,6 @@ namespace Player {
 	bool is_3dsx;
 #endif
 	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
-	bool vsync = true;
 }
 
 namespace {
@@ -170,7 +169,6 @@ void Player::Init(int argc, char *argv[]) {
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	auto cfg = ParseCommandLine(argc, argv);
-	Player::vsync = cfg.video.vsync.Get();
 	Player::fps_flag = cfg.video.show_fps.Get();
 	Player::fps_render_window = cfg.video.fps_render_window.Get();
 	SetTargetFps(cfg.video.fps_limit.Get());
@@ -199,8 +197,9 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
+			 cfg.video.window_zoom.Get(),
 			 cfg.video.fullscreen.Get(),
-			 cfg.video.window_zoom.Get());
+			 cfg.video.vsync.Get());
 	}
 
 	auto buttons = Input::GetDefaultButtonMappings();
