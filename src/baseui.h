@@ -104,7 +104,7 @@ public:
 	 *
 	 * @return whether fullscreen mode is active.
 	 */
-	virtual bool IsFullscreen() = 0;
+	bool IsFullscreen() const;
 
 #ifdef SUPPORT_AUDIO
 	/**
@@ -172,6 +172,7 @@ protected:
 	BaseUi();
 
 	void SetFrameRateSynchronized(bool value);
+	void SetIsFullscreen(bool value);
 
 	/**
 	 * Display mode data struct.
@@ -210,6 +211,9 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
+
+	/** Whether UI is currently fullscreen */
+	bool is_fullscreen = false;
 };
 
 /** Global DisplayUi variable. */
@@ -221,6 +225,14 @@ inline bool BaseUi::IsFrameRateSynchronized() const {
 
 inline void BaseUi::SetFrameRateSynchronized(bool value) {
 	external_frame_rate = value;
+}
+
+inline bool BaseUi::IsFullscreen() const {
+	return is_fullscreen;
+}
+
+inline void BaseUi::SetIsFullscreen(bool fs) {
+	is_fullscreen = fs;
 }
 
 #endif

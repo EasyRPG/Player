@@ -239,6 +239,7 @@ void Sdl2Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
+			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 }
 
@@ -802,10 +803,6 @@ void Sdl2Ui::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
-}
-
-bool Sdl2Ui::IsFullscreen() {
-	return (current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)

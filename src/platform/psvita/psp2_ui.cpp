@@ -121,9 +121,10 @@ static int renderThread(unsigned int args, void* arg){
 	
 }
 
-Psp2Ui::Psp2Ui(int width, int height) :
-	BaseUi() {
-	
+Psp2Ui::Psp2Ui(int width, int height)
+{
+	SetIsFullscreen(true);
+
 	frame = 0;
 	zoom_state = 0;
 	in_use_shader = 0;
@@ -200,10 +201,6 @@ void Psp2Ui::ToggleFullscreen() {
 
 void Psp2Ui::ToggleZoom() {
 	// no-op
-}
-
-bool Psp2Ui::IsFullscreen() {
-	return true;
 }
 
 void Psp2Ui::ProcessEvents() {

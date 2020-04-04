@@ -49,15 +49,12 @@ public:
 	 */
 	/** @{ */
 
-	void ToggleFullscreen();
-	void ToggleZoom();
-	void UpdateDisplay();
-	void SetTitle(const std::string &title);
-	bool ShowCursor(bool flag);
-
-	void ProcessEvents();
-
-	bool IsFullscreen();
+	void ToggleFullscreen() override;
+	void ToggleZoom() override;
+	void UpdateDisplay() override;
+	void SetTitle(const std::string &title) override;
+	bool ShowCursor(bool flag) override;
+	void ProcessEvents() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();

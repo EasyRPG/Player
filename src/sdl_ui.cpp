@@ -294,6 +294,7 @@ void SdlUi::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
+			SetIsFullscreen((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN);
 
 			mode_changing = false;
 	}
@@ -687,10 +688,6 @@ void SdlUi::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
-}
-
-bool SdlUi::IsFullscreen() {
-	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)

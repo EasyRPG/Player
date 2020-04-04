@@ -61,8 +61,9 @@ namespace {
 	u32* main_buffer;
 }
 
-CtrUi::CtrUi(int width, int height) :
-	BaseUi() {
+CtrUi::CtrUi(int width, int height)
+{
+	SetIsFullscreen(true);
 
 	fullscreen = false;
 	trigger_state = false;
@@ -152,10 +153,6 @@ void CtrUi::ToggleFullscreen() {
 
 void CtrUi::ToggleZoom() {
 	// no-op
-}
-
-bool CtrUi::IsFullscreen() {
-	return true;
 }
 
 void CtrUi::ProcessEvents() {

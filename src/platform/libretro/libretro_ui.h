@@ -54,8 +54,6 @@ public:
 
 	void ProcessEvents() override;
 
-	bool IsFullscreen() override;
-
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
 	std::unique_ptr<AudioInterface> audio_;

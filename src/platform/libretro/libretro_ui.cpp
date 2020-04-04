@@ -66,6 +66,10 @@ enum PadInputState {
 };
 
 LibretroUi::LibretroUi(int width, int height) {
+	// Handled by libretro
+	// FIXME: There is currently no callback from libretro telling us whether or not fullscreen is enabled.
+	SetIsFullscreen(false);
+
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
@@ -189,11 +193,6 @@ void LibretroUi::ProcessEvents() {
 	}
 #	endif
 #	endif
-}
-
-bool LibretroUi::IsFullscreen() {
-	// Handled by libretro
-	return false;
 }
 
 retro_video_refresh_t LibretroUi::UpdateWindow = nullptr;

@@ -62,10 +62,7 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-
 	void ProcessEvents() override;
-
-	bool IsFullscreen() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
