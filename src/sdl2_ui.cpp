@@ -41,6 +41,7 @@
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
+#include "scope_guard.h"
 
 #include "audio.h"
 
@@ -191,6 +192,15 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
 }
 
 Sdl2Ui::~Sdl2Ui() {
+	if (sdl_texture) {
+		SDL_DestroyTexture(sdl_texture);
+	}
+	if (sdl_renderer) {
+		SDL_DestroyRenderer(sdl_renderer);
+	}
+	if (sdl_window) {
+		SDL_DestroyWindow(sdl_window);
+	}
 	SDL_Quit();
 }
 
@@ -274,6 +284,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
+		auto window_sg = makeScopeGuard([&]() {
+				SDL_DestroyWindow(sdl_window);
+				sdl_window = nullptr;
+				});
+
 		SetAppIcon();
 
 		uint32_t rendered_flag = 0;
@@ -287,6 +302,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_CreateRenderer failed : %s", SDL_GetError());
 			return false;
 		}
+
+		auto renderer_sg = makeScopeGuard([&]() {
+				SDL_DestroyRenderer(sdl_renderer);
+				sdl_renderer = nullptr;
+				});
 
 		uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
@@ -331,6 +351,9 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_CreateTexture failed : %s", SDL_GetError());
 			return false;
 		}
+
+		renderer_sg.Dismiss();
+		window_sg.Dismiss();
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
 #ifndef EMSCRIPTEN
