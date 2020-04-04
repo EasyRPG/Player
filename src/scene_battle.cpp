@@ -68,6 +68,12 @@ Scene_Battle::~Scene_Battle() {
 }
 
 void Scene_Battle::Start() {
+	if (Scene::Find(Scene::Map) == nullptr) {
+		// Battletest mode - need to initialize screen
+		Main_Data::game_screen->InitGraphics();
+		Main_Data::game_pictures->InitGraphics();
+	}
+
 	// RPG_RT will cancel any active screen flash from the map, including
 	// wiping out all flash LSD chunks.
 	Main_Data::game_screen->FlashOnce(0, 0, 0, 0, 0);

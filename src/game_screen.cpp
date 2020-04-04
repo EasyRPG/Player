@@ -48,7 +48,6 @@ void Game_Screen::SetSaveData(RPG::SaveScreen screen)
 	data = std::move(screen);
 }
 
-
 void Game_Screen::InitGraphics() {
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
