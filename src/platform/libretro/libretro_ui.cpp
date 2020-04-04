@@ -96,10 +96,6 @@ LibretroUi::LibretroUi(int width, int height) {
 	UpdateVariables();
 }
 
-void LibretroUi::Resize(long width, long height) {
-	// no-op
-}
-
 void LibretroUi::ToggleFullscreen() {
 	// no-op
 }

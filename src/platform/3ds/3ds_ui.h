@@ -51,7 +51,6 @@ public:
 	 */
 	/** @{ */
 
-	void Resize(long width, long height);
 	void ToggleFullscreen();
 	void ToggleZoom();
 	void UpdateDisplay();

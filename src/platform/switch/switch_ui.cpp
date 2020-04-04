@@ -323,10 +323,6 @@ NxUi::~NxUi() {
 	deinitEgl();
 }
 
-void NxUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void NxUi::ToggleFullscreen() {
 	// no-op
 }

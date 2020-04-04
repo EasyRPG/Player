@@ -202,7 +202,6 @@ void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
-
 	current_display_mode.zoom = zoom;
 
 	EndDisplayModeChange();
@@ -372,16 +371,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 	return true;
 }
-
-#ifdef SUPPORT_FULL_SCALING
-void Sdl2Ui::Resize(long width, long height) {
-	current_display_mode.width = width;
-	current_display_mode.height = height;
-}
-#else
-void Sdl2Ui::Resize(long /*width*/, long /*height*/) {
-}
-#endif
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();

@@ -354,10 +354,6 @@ bool SdlUi::RefreshDisplayMode() {
 	return true;
 }
 
-void SdlUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void SdlUi::ToggleFullscreen() {
 	BeginDisplayModeChange();
 	if (toggle_fs_available && mode_changing) {

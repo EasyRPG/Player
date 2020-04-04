@@ -146,10 +146,6 @@ CtrUi::~CtrUi() {
 	}
 }
 
-void CtrUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void CtrUi::ToggleFullscreen() {
 	// no-op
 }

@@ -53,14 +53,6 @@ public:
 	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
 
 	/**
-	 * Resizes display.
-	 *
-	 * @param width display client width.
-	 * @param height display client height.
-	 */
-	virtual void Resize(long width, long height) = 0;
-
-	/**
 	 * Toggles fullscreen.
 	 */
 	virtual void ToggleFullscreen() = 0;

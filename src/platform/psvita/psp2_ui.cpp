@@ -194,10 +194,6 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void Psp2Ui::ToggleFullscreen() {
 	// no-op
 }

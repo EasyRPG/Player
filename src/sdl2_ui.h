@@ -60,7 +60,6 @@ public:
 	 */
 	/** @{ */
 
-	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;
