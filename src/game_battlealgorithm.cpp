@@ -1160,7 +1160,7 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 		return true;
 	}
 
-	return (!GetTarget()->IsDead());
+	return GetTarget()->Exists();
 }
 
 
