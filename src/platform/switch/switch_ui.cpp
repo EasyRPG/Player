@@ -323,14 +323,6 @@ NxUi::~NxUi() {
 	deinitEgl();
 }
 
-void NxUi::BeginDisplayModeChange() {
-	// no-op
-}
-
-void NxUi::EndDisplayModeChange() {
-	// no-op
-}
-
 void NxUi::Resize(long /*width*/, long /*height*/) {
 	// no-op
 }

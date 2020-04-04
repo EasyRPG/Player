@@ -96,14 +96,6 @@ LibretroUi::LibretroUi(int width, int height) {
 	UpdateVariables();
 }
 
-void LibretroUi::BeginDisplayModeChange() {
-	// no-op
-}
-
-void LibretroUi::EndDisplayModeChange() {
-	// no-op
-}
-
 void LibretroUi::Resize(long width, long height) {
 	// no-op
 }

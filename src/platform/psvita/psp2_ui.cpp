@@ -194,14 +194,6 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::BeginDisplayModeChange() {
-	// no-op
-}
-
-void Psp2Ui::EndDisplayModeChange() {
-	// no-op
-}
-
 void Psp2Ui::Resize(long /*width*/, long /*height*/) {
 	// no-op
 }

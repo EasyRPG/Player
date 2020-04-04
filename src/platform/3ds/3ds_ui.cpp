@@ -146,14 +146,6 @@ CtrUi::~CtrUi() {
 	}
 }
 
-void CtrUi::BeginDisplayModeChange() {
-	// no-op
-}
-
-void CtrUi::EndDisplayModeChange() {
-	// no-op
-}
-
 void CtrUi::Resize(long /*width*/, long /*height*/) {
 	// no-op
 }

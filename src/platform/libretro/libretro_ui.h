@@ -46,8 +46,6 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
-	void BeginDisplayModeChange() override;
-	void EndDisplayModeChange() override;
 	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;

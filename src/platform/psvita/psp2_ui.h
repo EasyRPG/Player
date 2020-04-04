@@ -51,8 +51,6 @@ public:
 	 */
 	/** @{ */
 
-	void BeginDisplayModeChange();
-	void EndDisplayModeChange();
 	void Resize(long width, long height);
 	void ToggleFullscreen();
 	void ToggleZoom();

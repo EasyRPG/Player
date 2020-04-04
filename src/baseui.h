@@ -53,16 +53,6 @@ public:
 	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
 
 	/**
-	 * Begins a display mode change.
-	 */
-	virtual void BeginDisplayModeChange() = 0;
-
-	/**
-	 * Ends a display mode change.
-	 */
-	virtual void EndDisplayModeChange() = 0;
-
-	/**
 	 * Resizes display.
 	 *
 	 * @param width display client width.

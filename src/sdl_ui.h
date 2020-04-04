@@ -57,8 +57,6 @@ public:
 	 */
 	/** @{ */
 
-	void BeginDisplayModeChange() override;
-	void EndDisplayModeChange() override;
 	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
@@ -86,6 +84,9 @@ private:
 	 * @return whether the change was successful.
 	 */
 	bool RefreshDisplayMode();
+
+	void BeginDisplayModeChange();
+	void EndDisplayModeChange();
 
 	/**
 	 * Processes a SDL Event.
