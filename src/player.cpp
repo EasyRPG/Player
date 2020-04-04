@@ -247,6 +247,10 @@ void Player::MainLoop() {
 
 		++num_updates;
 	}
+	if (num_updates == 0) {
+		// If no logical frames ran, we need to update the system keys only.
+		Input::UpdateSystem();
+	}
 
 	Player::Draw();
 
@@ -282,24 +286,24 @@ void Player::Resume() {
 
 void Player::UpdateInput() {
 	// Input Logic:
-	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
+	if (Input::IsSystemTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
 	}
-	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
+	if (Input::IsSystemTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
 	}
-	if (Input::IsTriggered(Input::SHOW_LOG)) {
+	if (Input::IsSystemTriggered(Input::SHOW_LOG)) {
 		Output::ToggleLog();
 	}
-	if (Input::IsTriggered(Input::TOGGLE_ZOOM)) {
+	if (Input::IsSystemTriggered(Input::TOGGLE_ZOOM)) {
 		DisplayUi->ToggleZoom();
 	}
-	if (Input::IsTriggered(Input::TOGGLE_FULLSCREEN)) {
+	if (Input::IsSystemTriggered(Input::TOGGLE_FULLSCREEN)) {
 		DisplayUi->ToggleFullscreen();
 	}
 	float speed = 1.0;
-	if (Input::IsPressed(Input::FAST_FORWARD)) {
-		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
+	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
+		speed = Input::IsSystemPressed(Input::PLUS) ? 10 : speed_modifier;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 

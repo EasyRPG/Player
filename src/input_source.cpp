@@ -21,16 +21,27 @@
 #include "input_source.h"
 #include "player.h"
 
-void Input::UiSource::Update() {
+void Input::UiSource::DoUpdate(bool system_only) {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
+		if (system_only && !Input::IsSystemButton(static_cast<InputButton>(i))) {
+			continue;
+		}
 		bool pressed = std::any_of(
 			buttons[i].cbegin(), buttons[i].cend(),
 			[&](int key) { return keystates[key]; }
 		);
 		pressed_buttons[i] = pressed;
 	}
+}
+
+void Input::UiSource::Update() {
+	DoUpdate(false);
+}
+
+void Input::UiSource::UpdateSystem() {
+	DoUpdate(true);
 }
 
 Input::LogSource::LogSource(const char* log_path) :
@@ -43,4 +54,8 @@ void Input::LogSource::Update() {
 	if (!log_file) {
 		Player::exit_flag = true;
 	}
+}
+
+void Input::LogSource::UpdateSystem() {
+	// input log does not record actions outside of logical frames.
 }
