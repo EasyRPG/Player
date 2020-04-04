@@ -298,9 +298,6 @@ void Player::UpdateInput() {
 	if (Input::IsSystemTriggered(Input::TOGGLE_ZOOM)) {
 		DisplayUi->ToggleZoom();
 	}
-	if (Input::IsSystemTriggered(Input::TOGGLE_FULLSCREEN)) {
-		DisplayUi->ToggleFullscreen();
-	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
 		speed = Input::IsSystemPressed(Input::PLUS) ? 10 : speed_modifier;
@@ -333,6 +330,12 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+
+	// Game events can query full screen status and change their behavior, so this needs to
+	// be a game key and not a system key.
+	if (Input::IsTriggered(Input::TOGGLE_FULLSCREEN)) {
+		DisplayUi->ToggleFullscreen();
+	}
 
 	if (Main_Data::game_quit) {
 		Main_Data::game_quit->Update();

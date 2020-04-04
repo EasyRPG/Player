@@ -88,7 +88,6 @@ namespace Input {
 			case TAKE_SCREENSHOT:
 			case SHOW_LOG:
 			case TOGGLE_ZOOM:
-			case TOGGLE_FULLSCREEN:
 			case FAST_FORWARD:
 			case PLUS:
 				return true;
