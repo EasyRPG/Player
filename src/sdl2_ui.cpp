@@ -453,12 +453,8 @@ void Sdl2Ui::ToggleZoom() {
 		// get maximum usable window size
 		int display_index = SDL_GetWindowDisplayIndex(sdl_window);
 		SDL_Rect max_mode;
-#if SDL_VERSION_ATLEAST(2, 0, 5)
 		// this takes account of the menu bar and dock on macOS and task bar on windows
 		SDL_GetDisplayUsableBounds(display_index, &max_mode);
-#else
-		SDL_GetDisplayBounds(display_index, &max_mode);
-#endif
 		// reset zoom, if it does not fit
 		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
 			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
@@ -656,12 +652,9 @@ void Sdl2Ui::ProcessMouseWheelEvent(SDL_Event& evnt) {
 
 	int amount = evnt.wheel.y;
 
-	// FIXME: Debian ships older SDL2
-#if SDL_VERSION_ATLEAST(2, 0, 4)
 	// translate direction
 	if (evnt.wheel.direction == SDL_MOUSEWHEEL_FLIPPED)
 		amount *= -1;
-#endif
 
 	keys[Input::Keys::MOUSE_SCROLLUP] = amount > 0;
 	keys[Input::Keys::MOUSE_SCROLLDOWN] = amount < 0;

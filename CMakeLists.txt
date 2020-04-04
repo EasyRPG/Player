@@ -392,7 +392,7 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		src/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
-	find_package(SDL2 REQUIRED)
+	find_package(SDL2 2.0.5 REQUIRED)
 	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_sources(${PROJECT_NAME} PRIVATE
