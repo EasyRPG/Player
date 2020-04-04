@@ -121,8 +121,6 @@ private:
 	 */
 	void ResetKeys();
 
-	bool toggle_fs_available = false;
-
 	void RequestVideoMode(int width, int height, bool fullscreen, int zoom);
 
 	/** Last display mode. */

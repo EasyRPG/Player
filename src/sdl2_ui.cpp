@@ -202,7 +202,6 @@ void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
-	toggle_fs_available = true;
 
 	current_display_mode.zoom = zoom;
 
@@ -392,7 +391,7 @@ void Sdl2Ui::Resize(long /*width*/, long /*height*/) {
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-	if (toggle_fs_available && mode_changing) {
+	if (mode_changing) {
 		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
 		else
