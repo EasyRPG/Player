@@ -215,20 +215,6 @@ namespace Input {
 	/** All cardinal directions state. */
 	extern int dir8;
 
-	/**
-	 * Start repeat time (in frames) a key has
-	 * to be maintained pressed before being
-	 * repeated for fist time.
-	 */
-	extern int start_repeat_time;
-
-	/**
-	 * Repeat time (in frames) a key has to be
-	 * maintained pressed after the start repeat time
-	 * has passed for being repeated again.
-	 */
-	extern int repeat_time;
-
 	bool IsWaitingInput();
 	void WaitInput(bool val);
 }

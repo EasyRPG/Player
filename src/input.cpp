@@ -30,12 +30,24 @@
 #include <cassert>
 
 namespace Input {
+	/**
+	 * Start repeat time (in frames) a key has
+	 * to be maintained pressed before being
+	 * repeated for fist time.
+	 */
+	constexpr int start_repeat_time = 20;
+
+	/**
+	 * Repeat time (in frames) a key has to be
+	 * maintained pressed after the start repeat time
+	 * has passed for being repeated again.
+	 */
+	constexpr int repeat_time = 5;
+
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
 	int dir4;
 	int dir8;
-	int start_repeat_time;
-	int repeat_time;
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
@@ -154,9 +166,6 @@ void Input::Init(
 	triggered.reset();
 	repeated.reset();
 	released.reset();
-
-	start_repeat_time = 20;
-	repeat_time = 5;
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
