@@ -69,6 +69,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{MULTIPLY, Keys::MULTIPLY},
 		{DIVIDE, Keys::DIVIDE},
 		{PERIOD, Keys::PERIOD},
+		{SETTINGS_MENU, Keys::F8},
 		{DEBUG_MENU, Keys::F9},
 		{DEBUG_THROUGH, Keys::LCTRL},
 		{DEBUG_THROUGH, Keys::RCTRL},
