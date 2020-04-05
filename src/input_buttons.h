@@ -24,6 +24,7 @@
 #include <cassert>
 #include <initializer_list>
 #include <algorithm>
+#include <ostream>
 
 #include "enum_tags.h"
 #include "keys.h"
@@ -201,6 +202,9 @@ namespace Input {
 
 	/** A mapping for a single button to a key */
 	struct ButtonMapping {
+		using domain_type = InputButton;
+		using range_type = Keys::InputKey;
+
 		InputButton button = BUTTON_COUNT;
 		Keys::InputKey key = Keys::NONE;
 	};
@@ -236,6 +240,9 @@ namespace Input {
 
 	/** A mapping for a single direction to a button */
 	struct DirectionMapping {
+		using domain_type = Direction::InputDirection;
+		using range_type = InputButton;
+
 		Direction::InputDirection direction = Direction::NONE;
 		InputButton button = BUTTON_COUNT;
 	};
@@ -269,16 +276,85 @@ namespace Input {
 		return os;
 	}
 
+	/** Container which contains all button mappings. The mappings are stored in sorted order. */
+	template <typename T>
+	class InputMappingArray {
+		public:
+			using value_type = T;
+			using container_type = std::vector<value_type>;
+			using domain_type = typename value_type::domain_type;
+			using range_type = typename value_type::range_type;
+
+			using iterator = typename container_type::iterator;
+			using const_iterator = typename container_type::const_iterator;
+
+			InputMappingArray() = default;
+			InputMappingArray(std::initializer_list<T> ilist);
+
+			/**
+			 * Check whether the input mapping is in the array.
+			 * @param im the mapping to check.
+			 * @return true if im is in the set.
+			 */
+			bool Has(value_type im) const;
+
+			/**
+			 * Adds the input mapping if it doesn't exist.
+			 * @param im the mapping to add
+			 * @return true if was added.
+			 */
+			bool Add(value_type im);
+
+			/**
+			 * Removes the input mapping if it exists.
+			 * @param im the mapping to remove
+			 * @return true if im was removed.
+			 */
+			bool Remove(value_type im);
+
+			/**
+			 * Removes all mappings for the given domain type.
+			 * @param d the domain to remove
+			 * @return the number of mappings removed.
+			 */
+			int RemoveAll(domain_type d);
+
+			/**
+			 * Replace all mappings for the given domain type with range type objects.
+			 * @param d the domain to remove
+			 * @param r the range to replace with.
+			 */
+			void ReplaceAll(domain_type d, const std::vector<range_type>& r);
+
+			/** Iterator to beginning */
+			iterator begin() { return mappings.begin(); }
+			/** Iterator to end */
+			iterator end() { return mappings.end(); }
+
+			/** Iterator to beginning */
+			const_iterator begin() const { return mappings.begin(); }
+			/** Iterator to end */
+			const_iterator end() const { return mappings.end(); }
+
+			/** @return the number of button mappings */
+			size_t size() const { return mappings.size(); }
+		private:
+			container_type mappings;
+	};
+
+	using ButtonMappingArray = InputMappingArray<ButtonMapping>;
+	using DirectionMappingArray = InputMappingArray<DirectionMapping>;
+
 	/**
 	 * Initializes input buttons to their mappings.
 	 */
 	void InitButtons();
 
 	/** Buttons list of equivalent keys. */
-	extern std::vector<ButtonMapping> buttons;
+	extern ButtonMappingArray buttons;
 
 	/** Direction buttons list of equivalent buttons. */
-	extern std::vector<DirectionMapping> dir_buttons;
+	extern DirectionMappingArray dir_buttons;
 }
 
 #endif
