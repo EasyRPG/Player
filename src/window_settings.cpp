@@ -178,6 +178,7 @@ void Window_Settings::RefreshAudio() {
 }
 
 void Window_Settings::RefreshInput() {
+#if 0
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
@@ -206,5 +207,6 @@ void Window_Settings::RefreshInput() {
 				[](){},
 				help);
 	}
+#endif
 }
 
