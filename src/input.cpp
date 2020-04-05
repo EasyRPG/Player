@@ -36,7 +36,7 @@ namespace Input {
 	int dir8;
 	int start_repeat_time;
 	int repeat_time;
-	std::vector<std::vector<int> > buttons;
+	std::vector<ButtonMapping> buttons;
 	std::vector<std::vector<int> > dir_buttons;
 	std::unique_ptr<Source> source;
 

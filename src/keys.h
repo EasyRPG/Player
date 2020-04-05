@@ -27,9 +27,8 @@ namespace Input {
 	 * Keys namespace
 	 */
 	namespace Keys {
-		enum InputKey {
+		enum InputKey : uint8_t {
 			NONE,
-
 			BACKSPACE,
 			TAB,
 			CLEAR,

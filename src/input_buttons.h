@@ -20,15 +20,20 @@
 
 // Headers
 #include <vector>
+#include <array>
+#include <cassert>
+#include <initializer_list>
+#include <algorithm>
 
 #include "enum_tags.h"
+#include "keys.h"
 
 /**
  * Input namespace.
  */
 namespace Input {
 	/** Input buttons list. */
-	enum InputButton {
+	enum InputButton : uint8_t {
 		UP,
 		DOWN,
 		LEFT,
@@ -147,13 +152,42 @@ namespace Input {
 		"Toggle Window Zoom level",
 		"Total Button Count");
 
+	struct ButtonMapping {
+		InputButton button = BUTTON_COUNT;
+		Keys::InputKey key = Keys::NONE;
+	};
+
+	inline bool operator==(ButtonMapping l, ButtonMapping r) {
+		return l.button == r.button && l.key == r.key;
+	}
+
+	inline bool operator!=(ButtonMapping l, ButtonMapping r) {
+		return !(l == r);
+	}
+
+	inline bool operator<(ButtonMapping l, ButtonMapping r) {
+		return l.button < r.button || (l.button == r.button && l.key < r.key);
+	}
+
+	inline bool operator>(ButtonMapping l, ButtonMapping r) {
+		return l.button > r.button || (l.button == r.button && l.key > r.key);
+	}
+
+	inline bool operator<=(ButtonMapping l, ButtonMapping r) {
+		return !(l > r);
+	}
+
+	inline bool operator>=(ButtonMapping l, ButtonMapping r) {
+		return !(l < r);
+	}
+
 	/**
 	 * Initializes input buttons to their mappings.
 	 */
 	void InitButtons();
 
 	/** Buttons list of equivalent keys. */
-	extern std::vector<std::vector<int> > buttons;
+	extern std::vector<ButtonMapping> buttons;
 
 	/** Direction buttons list of equivalent buttons. */
 	extern std::vector<std::vector<int> > dir_buttons;

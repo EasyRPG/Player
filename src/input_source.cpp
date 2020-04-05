@@ -24,15 +24,12 @@
 void Input::UiSource::DoUpdate(bool system_only) {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
-	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
-		if (system_only && !Input::IsSystemButton(static_cast<InputButton>(i))) {
-			continue;
+	pressed_buttons = {};
+
+	for (auto& bm: buttons) {
+		if (!system_only || Input::IsSystemButton(bm.button)) {
+			pressed_buttons[bm.button] = pressed_buttons[bm.button] | keystates[bm.key];
 		}
-		bool pressed = std::any_of(
-			buttons[i].cbegin(), buttons[i].cend(),
-			[&](int key) { return keystates[key]; }
-		);
-		pressed_buttons[i] = pressed;
 	}
 }
 

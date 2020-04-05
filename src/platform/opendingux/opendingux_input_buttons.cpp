@@ -22,21 +22,21 @@
 #include "keys.h"
 
 void Input::InitButtons() {
-	buttons.resize(BUTTON_COUNT);
-	
-	buttons[UP].push_back(Keys::UP);
-	buttons[DOWN].push_back(Keys::DOWN);
-	buttons[LEFT].push_back(Keys::LEFT);
-	buttons[RIGHT].push_back(Keys::RIGHT);
-	buttons[DECISION].push_back(Keys::RETURN); //START
-	buttons[DECISION].push_back(Keys::LCTRL); //A
-	buttons[CANCEL].push_back(Keys::ESCAPE); //SELECT
-	buttons[CANCEL].push_back(Keys::LALT); //B
-	buttons[N1].push_back(Keys::LSHIFT);//Y
-	buttons[N2].push_back(Keys::SPACE);//X
+	buttons = {
+		{UP, Keys::UP}
+		,{DOWN, Keys::DOWN}
+		,{LEFT, Keys::LEFT}
+		,{RIGHT, Keys::RIGHT}
+		,{DECISION, Keys::RETURN} //START
+		,{DECISION, Keys::LCTRL} //A
+		,{CANCEL, Keys::ESCAPE} //SELECT
+		,{CANCEL, Keys::LALT} //B
+		,{N1, Keys::LSHIFT}//Y
+		,{N2, Keys::SPACE}//X
 
-	buttons[DEBUG_MENU].push_back(Keys::TAB);//L
-	buttons[DEBUG_THROUGH].push_back(Keys::BACKSPACE);//R
+		,{DEBUG_MENU, Keys::TAB}//L
+		,{DEBUG_THROUGH, Keys::BACKSPACE}//R
+	};
 
 	dir_buttons.resize(10);
 	dir_buttons[2].push_back(DOWN);
