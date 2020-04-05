@@ -200,7 +200,10 @@ void Player::Init(int argc, char *argv[]) {
 			 RUN_ZOOM);
 	}
 
-	Input::Init(replay_input_path, record_input_path);
+	auto buttons = Input::GetDefaultButtonMappings();
+	auto directions = Input::GetDefaultDirectionMappings();
+
+	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
 }
 
 void Player::Run() {

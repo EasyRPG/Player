@@ -345,16 +345,11 @@ namespace Input {
 	using ButtonMappingArray = InputMappingArray<ButtonMapping>;
 	using DirectionMappingArray = InputMappingArray<DirectionMapping>;
 
-	/**
-	 * Initializes input buttons to their mappings.
-	 */
-	void InitButtons();
+	/** Returns default button mappings */
+	ButtonMappingArray GetDefaultButtonMappings();
 
-	/** Buttons list of equivalent keys. */
-	extern ButtonMappingArray buttons;
-
-	/** Direction buttons list of equivalent buttons. */
-	extern DirectionMappingArray dir_buttons;
+	/** Returns default direction mappings */
+	DirectionMappingArray GetDefaultDirectionMappings();
 }
 
 #endif

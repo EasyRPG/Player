@@ -21,9 +21,9 @@
 #include "input_buttons.h"
 #include "keys.h"
 
-void Input::InitButtons() {
+Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Remote
-	buttons = {
+	return {
 		{TOGGLE_FPS, Keys::JOY_0} // A
 		,{SHIFT, Keys::JOY_1} // B
 		,{CANCEL, Keys::JOY_2} // 1
@@ -59,8 +59,10 @@ void Input::InitButtons() {
 		,{DOWN, Keys::JOY_AXIS_Y_DOWN}
 		,{UP, Keys::JOY_AXIS_Y_UP}
 	};
+}
 
-	dir_buttons = {
+Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+	return {
 		{ Direction::DOWN, DOWN },
 		{ Direction::LEFT, LEFT },
 		{ Direction::RIGHT, RIGHT },

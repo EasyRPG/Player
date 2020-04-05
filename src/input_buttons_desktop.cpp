@@ -21,8 +21,8 @@
 #include "input_buttons.h"
 #include "keys.h"
 
-void Input::InitButtons() {
-	buttons = {
+Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
+	return {
 		{UP, Keys::UP}
 		,{UP, Keys::K}
 		,{UP, Keys::KP8}
@@ -139,8 +139,10 @@ void Input::InitButtons() {
 		,{CANCEL, Keys::TWO_FINGERS}
 #endif
 	};
+}
 
-	dir_buttons = {
+Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+	return {
 		{ Direction::DOWN, DOWN },
 		{ Direction::LEFT, LEFT },
 		{ Direction::RIGHT, RIGHT },

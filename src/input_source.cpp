@@ -20,13 +20,36 @@
 #include "baseui.h"
 #include "input_source.h"
 #include "player.h"
+#include "output.h"
+
+std::unique_ptr<Input::Source> Input::Source::Create(
+		Input::ButtonMappingArray buttons,
+		Input::DirectionMappingArray directions,
+		const std::string& replay_from_path)
+{
+	if (!replay_from_path.empty()) {
+		auto path = replay_from_path.c_str();
+
+		auto log_src = std::make_unique<Input::LogSource>(path, std::move(buttons), std::move(directions));
+
+		if (*log_src) {
+			return log_src;
+		}
+		Output::Warning("Failed to open file for input replaying: %s", path);
+
+		buttons = std::move(log_src->GetButtonMappings());
+		directions = std::move(log_src->GetDirectionMappings());
+	}
+
+	return std::make_unique<Input::UiSource>(std::move(buttons), std::move(directions));
+}
 
 void Input::UiSource::DoUpdate(bool system_only) {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
 	pressed_buttons = {};
 
-	for (auto& bm: buttons) {
+	for (auto& bm: button_mappings) {
 		if (!system_only || Input::IsSystemButton(bm.button)) {
 			pressed_buttons[bm.button] = pressed_buttons[bm.button] | keystates[bm.key];
 		}
@@ -41,7 +64,8 @@ void Input::UiSource::UpdateSystem() {
 	DoUpdate(true);
 }
 
-Input::LogSource::LogSource(const char* log_path) :
+Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
+	: Source(std::move(buttons), std::move(directions)),
 	log_file(log_path, std::ios::in)
 {}
 

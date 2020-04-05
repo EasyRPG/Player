@@ -36,8 +36,6 @@ namespace Input {
 	int dir8;
 	int start_repeat_time;
 	int repeat_time;
-	ButtonMappingArray buttons;
-	DirectionMappingArray dir_buttons;
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
@@ -165,34 +163,12 @@ static bool InitRecording(const std::string& record_to_path) {
 	return true;
 }
 
-static std::unique_ptr<Input::Source> InitSource(const std::string& replay_from_path) {
-	std::unique_ptr<Input::Source> src;
-
-	if (!replay_from_path.empty()) {
-		auto path = replay_from_path.c_str();
-
-		std::unique_ptr<Input::LogSource> log_src(new Input::LogSource(path));
-
-		if (!*log_src) {
-			Output::Warning("Failed to open file for input replaying: %s", path);
-		} else {
-			src = std::move(log_src);
-		}
-	}
-
-	if (!src) {
-		src.reset(new Input::UiSource);
-	}
-
-	return src;
-}
-
 void Input::Init(
+	ButtonMappingArray buttons,
+	DirectionMappingArray directions,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
-	InitButtons();
-
 	std::fill(press_time.begin(), press_time.end(), 0);
 	triggered.reset();
 	repeated.reset();
@@ -201,7 +177,7 @@ void Input::Init(
 	start_repeat_time = 20;
 	repeat_time = 5;
 
-	source = InitSource(replay_from_path);
+	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	recording_input = InitRecording(record_to_path);
 }
 
@@ -241,11 +217,13 @@ void Input::Update() {
 		UpdateButton(i, pressed);
 	}
 
+	auto& directions = source->GetDirectionMappings();
+
 	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
 	int dirpress[Direction::NUM_DIRECTIONS] = {};
 
 	// Get max pressed time for each directional button
-	for (auto& dm: dir_buttons) {
+	for (auto& dm: directions) {
 		if (dirpress[dm.direction] < press_time[dm.button]) {
 			dirpress[dm.direction] = press_time[dm.button];
 		};

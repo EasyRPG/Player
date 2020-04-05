@@ -37,12 +37,16 @@ namespace Input {
 	/**
 	 * Initializes Input.
 	 *
+	 * @param buttons the button mappings to use
+	 * @param directions the direction mappings to use
 	 * @param replay_from_path path to a log file to
 	 *  replay from, or the empty string if not replaying
 	 * @param record_to_path path to a file to record
 	 *  input to, or the empty string if not recording
 	 */
 	void Init(
+		ButtonMappingArray buttons,
+		DirectionMappingArray directions,
 		const std::string& replay_from_path,
 		const std::string& record_to_path
 	);

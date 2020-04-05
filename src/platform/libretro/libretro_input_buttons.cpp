@@ -22,11 +22,11 @@
 #include "keys.h"
 #include "libretro.h"
 
-void Input::InitButtons() {
+Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Basically the desktop keyboard mapping but with some functionality
 	// disabled because it is provided by libretro or not usable on these
 	// keys due to global hotkey pollution
-	buttons = {
+	return {
 		,{UP, Keys::UP}
 		,{UP, Keys::KP8}
 		,{UP, Keys::W}
@@ -119,8 +119,10 @@ void Input::InitButtons() {
 		,{UP, Keys::JOY_AXIS_Y_UP}
 #endif
 	};
+}
 
-	dir_buttons = {
+Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+	return {
 		{ Direction::DOWN, DOWN },
 		{ Direction::LEFT, LEFT },
 		{ Direction::RIGHT, RIGHT },
