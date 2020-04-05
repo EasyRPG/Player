@@ -120,11 +120,12 @@ void Input::InitButtons() {
 #endif
 	};
 
-	dir_buttons.resize(10);
-	dir_buttons[2].push_back(DOWN);
-	dir_buttons[4].push_back(LEFT);
-	dir_buttons[6].push_back(RIGHT);
-	dir_buttons[8].push_back(UP);
+	dir_buttons = {
+		{ Direction::DOWN, DOWN },
+		{ Direction::LEFT, LEFT },
+		{ Direction::RIGHT, RIGHT },
+		{ Direction::UP, UP },
+	};
 }
 
 #endif

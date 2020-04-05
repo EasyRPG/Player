@@ -152,6 +152,54 @@ namespace Input {
 		"Toggle Window Zoom level",
 		"Total Button Count");
 
+	/**
+	 * Return true if the given button is a system button.
+	 * System buttons are refreshed on every physical frame
+	 * and do not affect the game logic.
+	 */
+	constexpr bool IsSystemButton(InputButton b) {
+		switch (b) {
+			case TOGGLE_FPS:
+			case TAKE_SCREENSHOT:
+			case SHOW_LOG:
+			case TOGGLE_ZOOM:
+			case FAST_FORWARD:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	namespace Direction {
+		enum InputDirection : uint8_t {
+			NONE = 0,
+			DOWNLEFT = 1,
+			DOWN = 2,
+			DOWNRIGHT = 3,
+			LEFT = 4,
+			CENTER = 5,
+			RIGHT = 6,
+			UPLEFT = 7,
+			UP = 8,
+			UPRIGHT = 9,
+			NUM_DIRECTIONS = 10,
+		};
+
+		static constexpr auto kNames = makeEnumTags<InputDirection>(
+			"NONE",
+			"DOWNLEFT",
+			"DOWN",
+			"DOWNRIGHT",
+			"LEFT",
+			"CENTER",
+			"RIGHT",
+			"UPLEFT",
+			"UP",
+			"UPRIGHT",
+			"NUM_DIRECTIONS");
+	};
+
+	/** A mapping for a single button to a key */
 	struct ButtonMapping {
 		InputButton button = BUTTON_COUNT;
 		Keys::InputKey key = Keys::NONE;
@@ -181,6 +229,46 @@ namespace Input {
 		return !(l < r);
 	}
 
+	inline std::ostream& operator<<(std::ostream& os, ButtonMapping bm) {
+		os << "{ " << kButtonNames.tag(bm.button) << ", " << Keys::kNames.tag(bm.key) << " }";
+		return os;
+	}
+
+	/** A mapping for a single direction to a button */
+	struct DirectionMapping {
+		Direction::InputDirection direction = Direction::NONE;
+		InputButton button = BUTTON_COUNT;
+	};
+
+	inline bool operator==(DirectionMapping l, DirectionMapping r) {
+		return l.direction == r.direction && l.button == r.button;
+	}
+
+	inline bool operator!=(DirectionMapping l, DirectionMapping r) {
+		return !(l == r);
+	}
+
+	inline bool operator<(DirectionMapping l, DirectionMapping r) {
+		return l.direction < r.direction || (l.direction == r.direction && l.button < r.button);
+	}
+
+	inline bool operator>(DirectionMapping l, DirectionMapping r) {
+		return l.direction > r.direction || (l.direction == r.direction && l.button > r.button);
+	}
+
+	inline bool operator<=(DirectionMapping l, DirectionMapping r) {
+		return !(l > r);
+	}
+
+	inline bool operator>=(DirectionMapping l, DirectionMapping r) {
+		return !(l < r);
+	}
+
+	inline std::ostream& operator<<(std::ostream& os, DirectionMapping bm) {
+		os << "{ " << Direction::kNames.tag(bm.direction) << ", " << kButtonNames.tag(bm.button) << " }";
+		return os;
+	}
+
 	/**
 	 * Initializes input buttons to their mappings.
 	 */
@@ -190,25 +278,7 @@ namespace Input {
 	extern std::vector<ButtonMapping> buttons;
 
 	/** Direction buttons list of equivalent buttons. */
-	extern std::vector<std::vector<int> > dir_buttons;
-
-	/**
-	 * Return true if the given button is a system button.
-	 * System buttons are refreshed on every physical frame
-	 * and do not affect the game logic.
-	 */
-	constexpr bool IsSystemButton(InputButton b) {
-		switch (b) {
-			case TOGGLE_FPS:
-			case TAKE_SCREENSHOT:
-			case SHOW_LOG:
-			case TOGGLE_ZOOM:
-			case FAST_FORWARD:
-				return true;
-			default:
-				return false;
-		}
-	}
+	extern std::vector<DirectionMapping> dir_buttons;
 }
 
 #endif

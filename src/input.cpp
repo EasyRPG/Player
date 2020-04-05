@@ -37,7 +37,7 @@ namespace Input {
 	int start_repeat_time;
 	int repeat_time;
 	std::vector<ButtonMapping> buttons;
-	std::vector<std::vector<int> > dir_buttons;
+	std::vector<DirectionMapping> dir_buttons;
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
@@ -142,28 +142,26 @@ void Input::Update() {
 	}
 
 	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
-	int dirpress[10];
+	int dirpress[Direction::NUM_DIRECTIONS] = {};
 
 	// Get max pressed time for each directional button
-	for (unsigned i = 1; i < 10; i++) {
-		dirpress[i] = 0;
-		for (unsigned e = 0; e < dir_buttons[i].size(); e++) {
-			if (dirpress[i] < press_time[dir_buttons[i][e]])
-				dirpress[i] = press_time[dir_buttons[i][e]];
-		}
+	for (auto& dm: dir_buttons) {
+		if (dirpress[dm.direction] < press_time[dm.button]) {
+			dirpress[dm.direction] = press_time[dm.button];
+		};
 	}
 
 	// Calculate diagonal directions pressed time by dir4 combinations
-	dirpress[1] += (dirpress[2] > 0 && dirpress[4] > 0) ? dirpress[2] + dirpress[4] : 0;
-	dirpress[3] += (dirpress[2] > 0 && dirpress[6] > 0) ? dirpress[2] + dirpress[6] : 0;
-	dirpress[7] += (dirpress[8] > 0 && dirpress[4] > 0) ? dirpress[8] + dirpress[4] : 0;
-	dirpress[9] += (dirpress[8] > 0 && dirpress[6] > 0) ? dirpress[8] + dirpress[6] : 0;
+	dirpress[Direction::DOWNLEFT] += (dirpress[Direction::DOWN] > 0 && dirpress[Direction::LEFT] > 0) ? dirpress[Direction::DOWN] + dirpress[Direction::LEFT] : 0;
+	dirpress[Direction::DOWNRIGHT] += (dirpress[Direction::DOWN] > 0 && dirpress[Direction::RIGHT] > 0) ? dirpress[Direction::DOWN] + dirpress[Direction::RIGHT] : 0;
+	dirpress[Direction::UPLEFT] += (dirpress[Direction::UP] > 0 && dirpress[Direction::LEFT] > 0) ? dirpress[Direction::UP] + dirpress[Direction::LEFT] : 0;
+	dirpress[Direction::UPRIGHT] += (dirpress[Direction::UP] > 0 && dirpress[Direction::RIGHT] > 0) ? dirpress[Direction::UP] + dirpress[Direction::RIGHT] : 0;
 
-	dir4 = 0;
-	dir8 = 0;
+	dir4 = Direction::NONE;
+	dir8 = Direction::NONE;
 
 	// Check if no opposed keys are being pressed at the same time
-	if (!(dirpress[2] > 0 && dirpress[8] > 0) && !(dirpress[4] > 0 && dirpress[6] > 0)) {
+	if (!(dirpress[Direction::DOWN] > 0 && dirpress[Direction::UP] > 0) && !(dirpress[Direction::LEFT] > 0 && dirpress[Direction::RIGHT] > 0)) {
 
 		// Get dir4 by the with lowest press time (besides 0 frames)
 		int min_press_time = 0;
@@ -180,10 +178,10 @@ void Input::Update() {
 		dir8 = dir4;
 
 		// Check diagonal directions (There is a priority order)
-		if		(dirpress[9] > 0)	dir8 = 9;
-		else if (dirpress[7] > 0)	dir8 = 7;
-		else if (dirpress[3] > 0)	dir8 = 3;
-		else if (dirpress[1] > 0)	dir8 = 1;
+		if		(dirpress[Direction::UPRIGHT] > 0)	dir8 = Direction::UPRIGHT;
+		else if (dirpress[Direction::UPLEFT] > 0)	dir8 = Direction::UPLEFT;
+		else if (dirpress[Direction::DOWNRIGHT] > 0)	dir8 = Direction::DOWNRIGHT;
+		else if (dirpress[Direction::DOWNLEFT] > 0)	dir8 = Direction::DOWNLEFT;
 	}
 }
 
@@ -209,8 +207,8 @@ void Input::ResetKeys() {
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		press_time[i] = 0;
 	}
-	dir4 = 0;
-	dir8 = 0;
+	dir4 = Direction::NONE;
+	dir8 = Direction::NONE;
 
 	// TODO: we want Input to be agnostic to where the button
 	// presses are coming from, and if there's a UI at all.
