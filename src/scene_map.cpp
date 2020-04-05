@@ -21,6 +21,7 @@
 #include "scene_menu.h"
 #include "scene_save.h"
 #include "scene_debug.h"
+#include "scene_settings.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_actors.h"
@@ -280,29 +281,38 @@ void Scene_Map::UpdateSceneCalling() {
 
 	auto call = TakeRequestedScene();
 
-	if (call == nullptr
-			&& Player::debug_flag
-			&& !Game_Message::IsMessageActive())
+	if (call == nullptr && !Game_Message::IsMessageActive())
 	{
-		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
-		if (Input::IsPressed(Input::SHIFT)) {
-			if (Input::IsTriggered(Input::CANCEL)) {
-				debug_menuoverwrite_counter++;
-				if (debug_menuoverwrite_counter >= 5) {
-					call = std::make_shared<Scene_Menu>();
+		if (Input::IsTriggered(Input::SETTINGS_MENU)) {
+			call = std::make_shared<Scene_Settings>();
+		}
+
+		if (Player::debug_flag) {
+			if (call == nullptr) {
+				// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
+				if (Input::IsPressed(Input::SHIFT)) {
+					if (Input::IsTriggered(Input::CANCEL)) {
+						debug_menuoverwrite_counter++;
+						if (debug_menuoverwrite_counter >= 5) {
+							call = std::make_shared<Scene_Menu>();
+							debug_menuoverwrite_counter = 0;
+						}
+					}
+				} else {
 					debug_menuoverwrite_counter = 0;
 				}
 			}
-		} else {
-			debug_menuoverwrite_counter = 0;
-		}
 
-		if (call == nullptr) {
-			if (Input::IsTriggered(Input::DEBUG_MENU)) {
-				call = std::make_shared<Scene_Debug>();
-			}
-			else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-				call = std::make_shared<Scene_Save>();
+			if (call == nullptr) {
+				if (Input::IsTriggered(Input::DEBUG_MENU)) {
+					call = std::make_shared<Scene_Debug>();
+				}
+				else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+					call = std::make_shared<Scene_Save>();
+				}
+				else if (Input::IsTriggered(Input::SETTINGS_MENU)) {
+					call = std::make_shared<Scene_Settings>();
+				}
 			}
 		}
 	}
