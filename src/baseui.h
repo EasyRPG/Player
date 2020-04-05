@@ -235,4 +235,36 @@ inline void BaseUi::SetIsFullscreen(bool fs) {
 	is_fullscreen = fs;
 }
 
+inline BaseUi::KeyStatus& BaseUi::GetKeyStates() {
+	return keys;
+}
+
+inline BitmapRef const& BaseUi::GetDisplaySurface() const {
+	return main_surface;
+}
+
+inline BitmapRef& BaseUi::GetDisplaySurface() {
+	return main_surface;
+}
+
+inline long BaseUi::GetWidth() const {
+	return current_display_mode.width;
+}
+
+inline long BaseUi::GetHeight() const {
+	return current_display_mode.height;
+}
+
+inline bool BaseUi::GetMouseFocus() const {
+	return mouse_focus;
+}
+
+inline int BaseUi::GetMousePosX() const {
+	return mouse_x;
+}
+
+inline int BaseUi::GetMousePosY() const {
+	return mouse_y;
+}
+
 #endif
