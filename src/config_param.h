@@ -60,6 +60,40 @@ private:
 	T _value = {};
 };
 
+/** A configuration parameter which is always locked */
+template <typename T>
+class LockedConfigParam {
+public:
+	using value_type = T;
+
+    explicit LockedConfigParam(T value) : _value(std::move(value)) {}
+
+    const T& Get() const { return _value; }
+
+    bool Set(const T& value) {
+		return IsValid(value);
+    }
+
+    bool IsValid(const T& value) const {
+		return value == _value;
+	}
+
+	bool Enabled() const {
+		return true;
+	}
+
+	bool Locked() const {
+		return true;
+	}
+
+	void Lock(T value) {
+		_value = std::move(value);
+	}
+
+private:
+    T _value = {};
+};
+
 using StringConfigParam = ConfigParam<std::string>;
 
 /** A configuration parameter with a range */

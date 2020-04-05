@@ -10,6 +10,9 @@ enum class Color { Red, Blue, Green };
 template class ConfigParam<int>;
 template class ConfigParam<std::string>;
 
+template class LockedConfigParam<int>;
+template class LockedConfigParam<std::string>;
+
 template class RangeConfigParam<int>;
 template class RangeConfigParam<float>;
 
@@ -17,9 +20,11 @@ template class SetConfigParam<int>;
 template class SetConfigParam<float>;
 template class SetConfigParam<std::string>;
 
+
 template class EnumConfigParam<Color>;
 
 static_assert(IsConfigParamT<ConfigParam<int>>::value, "ConfigParam Broken");
+static_assert(IsConfigParamT<LockedConfigParam<int>>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<RangeConfigParam<int>>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<BoolConfigParam>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<SetConfigParam<int>>::value, "ConfigParam Broken");
