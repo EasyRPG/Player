@@ -41,11 +41,6 @@ namespace Input {
 	bool wait_input = false;
 }
 
-namespace {
-	bool recording_input;
-	std::ofstream record_log;
-}
-
 namespace Input {
 
 static auto GetDomain(ButtonMapping bm) {
@@ -149,20 +144,6 @@ template class InputMappingArray<DirectionMapping>;
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
-static bool InitRecording(const std::string& record_to_path) {
-	if (!record_to_path.empty()) {
-		auto path = record_to_path.c_str();
-
-		record_log.open(path, std::ios::out|std::ios::trunc);
-
-		if (!record_log) {
-			Output::Warning("Failed to open file for input recording: %s", path);
-			return false;
-		}
-	}
-	return true;
-}
-
 void Input::Init(
 	ButtonMappingArray buttons,
 	DirectionMappingArray directions,
@@ -178,7 +159,7 @@ void Input::Init(
 	repeat_time = 5;
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
-	recording_input = InitRecording(record_to_path);
+	source->InitRecording(record_to_path);
 }
 
 static void UpdateButton(int i, bool pressed) {
@@ -206,10 +187,6 @@ void Input::Update() {
 
 	source->Update();
 	auto& pressed_buttons = source->GetPressedButtons();
-
-	if (recording_input) {
-		record_log << source->GetPressedNonSystemButtons() << '\n';
-	}
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {

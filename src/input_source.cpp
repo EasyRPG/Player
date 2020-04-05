@@ -16,6 +16,8 @@
  */
 
 #include <algorithm>
+#include <cstring>
+#include <cerrno>
 
 #include "baseui.h"
 #include "input_source.h"
@@ -54,6 +56,8 @@ void Input::UiSource::DoUpdate(bool system_only) {
 			pressed_buttons[bm.button] = pressed_buttons[bm.button] | keystates[bm.key];
 		}
 	}
+
+	Record();
 }
 
 void Input::UiSource::Update() {
@@ -74,6 +78,29 @@ void Input::LogSource::Update() {
 
 	if (!log_file) {
 		Player::exit_flag = true;
+	}
+
+	Record();
+}
+
+
+bool Input::Source::InitRecording(const std::string& record_to_path) {
+	if (!record_to_path.empty()) {
+		auto path = record_to_path.c_str();
+
+		record_log.open(path, std::ios::out|std::ios::trunc);
+
+		if (!record_log) {
+			Output::Warning("Failed to open file %s for input recording : %s", path, strerror(errno));
+			return false;
+		}
+	}
+	return true;
+}
+
+void Input::Source::Record() {
+	if (record_log.is_open()) {
+		record_log << pressed_buttons << '\n';
 	}
 }
 

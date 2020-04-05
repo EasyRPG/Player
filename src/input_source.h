@@ -21,6 +21,7 @@
 #include <bitset>
 #include <fstream>
 #include <memory>
+#include <fstream>
 #include "input_buttons.h"
 
 namespace Input {
@@ -65,10 +66,15 @@ namespace Input {
 		DirectionMappingArray& GetDirectionMappings() { return direction_mappings; }
 		const DirectionMappingArray& GetDirectionMappings() const { return direction_mappings; }
 
+		bool InitRecording(const std::string& record_to_path);
+
 	protected:
+		void Record();
+
 		std::bitset<BUTTON_COUNT> pressed_buttons;
 		ButtonMappingArray button_mappings;
 		DirectionMappingArray direction_mappings;
+		std::ofstream record_log;
 	};
 
 	/**
