@@ -910,6 +910,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
 	Game_System::BgmStop();
 
+	// We erase the screen now before loading the saved game. This prevents an issue where
+	// if the save game has a different system graphic, the load screen would change before
+	// transitioning out.
+	Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get(), 6);
+
 	auto title_scene = Scene::Find(Scene::Title);
 	if (title_scene) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
