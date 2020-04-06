@@ -90,7 +90,7 @@ struct Component {
 		bits((uint8_t)bits),
 		shift((uint8_t)shift),
 		byte((uint8_t)(shift / 8)),
-		mask(((1 << bits)-1) << shift) {}
+		mask(((1u << bits)-1) << shift) {}
 
 	constexpr Component(uint32_t mask) :
 		mask(mask) { convert_mask(); }
