@@ -154,6 +154,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	reflect = -1;
 	states.clear();
+	shift_attributes.clear();
 
 	if (!IsFirstAttack()) {
 		switch_on.clear();
