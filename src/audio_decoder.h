@@ -65,19 +65,12 @@ public:
 	int Decode(uint8_t* buffer, int size);
 
 	/**
-	 * Splits stereo into mono and Writes 'size' bytes in each of the buffers.
-	 * The data matches the format reported by GetFormat, except that both
-	 * buffers will contain Mono audio. When the source format was already mono
-	 * the 'right' buffer is ignored (and not cleared)
-	 * When size is is smaller then the amount of written bytes or an error occurs
-	 * the remaining buffer space is cleared.
+	 * Decodes the whole audio sample. The data matches the format reported by
+	 * GetFormat.
 	 *
-	 * @param left Output buffer of the left channel
-	 * @param right Output buffer of the right channel (or nothing if source is mono)
-	 * @param size Size of each of the buffers
-	 * @return Number of bytes written in one of the buffers or -1 on error
+	 * @return output buffer
 	 */
-	int DecodeAsMono(uint8_t* left, uint8_t* right, int size);
+	std::vector<uint8_t> DecodeAll();
 
 	/**
 	 * Parses the specified file handle and open a proper audio decoder to handle
@@ -90,9 +83,10 @@ public:
 	 *
 	 * @param file File handle to parse
 	 * @param filename Path to the file handle
+	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename);
+	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename, bool resample = true);
 
 	/**
 	 * Updates the volume for the fade in/out effect.

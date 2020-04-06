@@ -79,7 +79,7 @@ bool LibsndfileDecoder::Open(FILE* file) {
 	file_=file;
 	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,file);
 	sf_command(soundfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
-	output_format=Format::F32;
+	output_format=Format::S16;
 	finished=false;
 	return soundfile!=0;
 }

@@ -85,7 +85,7 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 			return se;
 		}
 
-		se->audio_decoder = AudioDecoder::Create(f, filename);
+		se->audio_decoder = AudioDecoder::Create(f, filename, false);
 
 		if (se->audio_decoder) {
 			if (!se->audio_decoder->Open(f)) {
@@ -105,61 +105,13 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 void AudioSeCache::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	if (!audio_decoder) {
 		if (!GetCachedFormat(frequency, format, channels)) {
-			frequency = 0;
-			channels = 0;
-			format = AudioDecoder::Format::S16;
+			assert(false);
 		}
 
 		return;
 	}
 
 	audio_decoder->GetFormat(frequency, format, channels);
-
-	if (mono_to_stereo_resample) {
-		channels = 2;
-	}
-}
-
-bool AudioSeCache::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
-	int cfrequency;
-	AudioDecoder::Format cformat;
-	int cchannels;
-
-	if (!audio_decoder) {
-		// This file is already cached, don't allow uncached format changes
-		if (GetCachedFormat(cfrequency, cformat, cchannels)) {
-			return frequency == cfrequency &&
-					format == cformat &&
-					channels == cchannels;
-		}
-	}
-
-	bool success = audio_decoder->SetFormat(frequency, format, channels);
-
-	if (!success) {
-		audio_decoder->GetFormat(cfrequency, cformat, cchannels);
-		// Handle Mono->Stereo conversion, is quite common for SE
-		if (cfrequency == frequency && cformat == format && cchannels == 1 && channels == 2) {
-			mono_to_stereo_resample = true;
-			return true;
-		}
-	}
-
-	return success;
-}
-
-int AudioSeCache::GetPitch() const {
-	return pitch;
-}
-
-bool AudioSeCache::SetPitch(int pitch) {
-#ifdef USE_AUDIO_RESAMPLER
-	this->pitch = pitch;
-
-	return pitch > 0;
-#else
-	return pitch == 100;
-#endif
 }
 
 bool AudioSeCache::IsCached() const {
@@ -180,143 +132,89 @@ bool AudioSeCache::GetCachedFormat(int& frequency, AudioDecoder::Format& format,
 	return false;
 }
 
-class MemoryPitchResampler : public AudioDecoder {
-public:
-	MemoryPitchResampler(const AudioSeRef se) :
-		se(se) {
-		// no-op
-	}
-
-	bool Open(FILE*) {
-		// No file operations needed
-		return true;
-	}
-
-	bool IsFinished() const {
-		return offset >= se->buffer.size();
-	}
-
-	void GetFormat(int& frequency, Format& format, int& channels) const {
-		frequency = se->frequency;
-		format = se->format;
-		channels = se->channels;
-	}
-
-private:
-	int FillBuffer(uint8_t* buffer, int size) {
-		int real_size = size;
-
-		if (offset + size > se->buffer.size()) {
-			real_size = se->buffer.size() - offset;
-		}
-
-		memcpy(buffer, se->buffer.data() + offset, real_size);
-		offset += real_size;
-
-		return real_size;
-	}
-
-	const AudioSeRef se;
-	size_t offset = 0;
-};
-
-AudioSeRef AudioSeCache::Decode() {
-	// Writes a SE with pitch = 100 to the cache if it is not cached yet,
-	// otherwise returns the cached result
-	// For pitch != 100 the cached result is pitch-adjusted and returned.
-
+std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 	AudioSeRef se;
 
 	if (IsCached()) {
 		se = cache.find(filename)->second;
 		se->last_access = Game_Clock::GetFrameTime();
 
-		if (GetPitch() == 100) {
-			// Nothing extra to do
-			return se;
-		}
-
+		std::unique_ptr<AudioDecoder> dec = std::unique_ptr<AudioDecoder>(new AudioSeDecoder(se));
 #ifdef USE_AUDIO_RESAMPLER
-		// Code path is only taken with a resampler, otherwise pitch is always 100 here
-		// Falls through to the decoding logic but does not overwrite the cache
-
-		// Don't overwrite our real cached entry
-		se.reset(new AudioSeData());
-		GetCachedFormat(se->frequency, se->format, se->channels);
-
-		audio_decoder.reset(new AudioResampler(std::unique_ptr<AudioDecoder>(new MemoryPitchResampler(cache.find(filename)->second))));
-		audio_decoder->Open(nullptr);
-#else
-		assert(false && "SeCache: Unexpected code path taken");
+		dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
 #endif
+		dec->Open(nullptr);
+		return dec;
 	}
+
+	// Not cached yet: Decode the sample without any resampling
 
 	if (!se) {
 		se.reset(new AudioSeData());
 	}
 
-	GetFormat(se->frequency, se->format, se->channels);
+	assert(audio_decoder);
 
-	if (IsCached()) {
-		audio_decoder->SetPitch(GetPitch());
-	} else {
-		audio_decoder->SetPitch(100);
-	}
+	audio_decoder->GetFormat(se->frequency, se->format, se->channels);
+	se->buffer = audio_decoder->DecodeAll();
 
-	const int buffer_size = 8192;
-	se->buffer.resize(buffer_size);
+	cache.insert(std::make_pair(filename, se));
 
-	while (!audio_decoder->IsFinished()) {
-		int read = audio_decoder->Decode(se->buffer.data() + se->buffer.size() - buffer_size, buffer_size);
-		if (read < 8192) {
-			se->buffer.resize(se->buffer.size() - (buffer_size - read));
-			break;
-		}
-
-		se->buffer.resize(se->buffer.size() + buffer_size);
-	}
-
-	if (mono_to_stereo_resample) {
-		se->buffer.resize(se->buffer.size() * 2);
-
-		int sample_size = AudioDecoder::GetSamplesizeForFormat(se->format);
-
-		// Duplicate data from the back, allows writing to the buffer directly
-		for (size_t i = se->buffer.size() / 2 - sample_size; i > 0; i -= sample_size) {
-			// left channel
-			memcpy(&se->buffer[i * 2 - sample_size * 2], &se->buffer[i], sample_size);
-			// right channel
-			memcpy(&se->buffer[i * 2 - sample_size], &se->buffer[i], sample_size);
-		}
-	}
-
-	if (!IsCached()) {
-		// Write normal pitched sample to cache
-		// This codepath is only taken the first time upon cache miss
-		cache.insert(std::make_pair(filename, se));
-
-		se->last_access = Game_Clock::GetFrameTime();
-
-		cache_size += se->buffer.size();
+	cache_size += se->buffer.size();
 
 #ifdef CACHE_DEBUG
-		Output::Debug("SE cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+	Output::Debug("SE cache size (Add): %f", cache_size / 1024.0 / 1024.0);
 #endif
 
-		FreeCacheMemory();
+	FreeCacheMemory();
 
-		if (GetPitch() != 100) {
-			// Also handle a requested resampling
-			// Takes the "IsCached" codepath now
-			mono_to_stereo_resample = false;
-			return Decode();
-		}
-	}
-
-	return se;
+	std::unique_ptr<AudioDecoder> dec = std::unique_ptr<AudioDecoder>(new AudioSeDecoder(se));
+#ifdef USE_AUDIO_RESAMPLER
+	dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
+#endif
+	dec->Open(nullptr);
+	return dec;
 }
+
+AudioSeRef AudioSeCache::GetSeData() const {
+    assert(IsCached());
+
+    return cache.find(filename)->second;
+};
 
 void AudioSeCache::Clear() {
 	cache_size = 0;
 	cache.clear();
+}
+
+AudioSeDecoder::AudioSeDecoder(AudioSeRef se) :
+	se(se) {
+	se->last_access = Game_Clock::GetFrameTime();
+}
+
+bool AudioSeDecoder::IsFinished() const {
+	return offset >= se->buffer.size();
+}
+
+void AudioSeDecoder::GetFormat(int &frequency, AudioDecoder::Format &format, int &channels) const {
+	frequency = se->frequency;
+	format = se->format;
+	channels = se->channels;
+}
+
+int AudioSeDecoder::FillBuffer(uint8_t *buffer, int size) {
+	int real_size = size;
+
+	if (offset + size > se->buffer.size()) {
+		real_size = se->buffer.size() - offset;
+	}
+
+	memcpy(buffer, se->buffer.data() + offset, real_size);
+	offset += real_size;
+
+	return real_size;
+}
+
+int AudioSeDecoder::GetPitch() const {
+	return 100;
 }

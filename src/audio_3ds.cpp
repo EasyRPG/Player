@@ -26,8 +26,7 @@
 #include "audio_secache.h"
 
 namespace {
-	const int samples_per_buf = 4096;
-	const int bytes_per_sample = 4;
+	const int bgm_buf_size = 8192;
 	const int bgm_channel = 0;
 	const int se_channel_begin = 1;
 	const int se_channel_end = 23;
@@ -90,6 +89,11 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 			bgm_decoder->SetFormat(frequency, out_format, channels);
 		}
 		ndspChnSetRate(bgm_channel, frequency);
+
+		const int samplesize = AudioDecoder::GetSamplesizeForFormat(out_format);
+		const int nsamples = bgm_buf_size / (samplesize * channels);
+		bgm_buf[0].nsamples = nsamples;
+		bgm_buf[1].nsamples = nsamples;
 	} else {
 		Output::Warning("Couldn't play BGM %s: Format not supported", file.c_str());
 		fclose(filehandle);
@@ -168,10 +172,15 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	if (!dsp_inited)
 		return;
 
+	// Important!
+	// When indexing se_buf use se_channel
+	// In ndsp-Api functions use ndsp_channel
 	int se_channel = -1;
+	int ndsp_channel = -1;
 
 	for (int i = se_channel_begin; i <= se_channel_end; ++i) {
 		if (!ndspChnIsPlaying(i)) {
+			ndsp_channel = i;
 			se_channel = i - 1;
 			break;
 		}
@@ -188,29 +197,55 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		return;
 	}
 
-	cache->SetPitch(pitch);
-	cache->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
+	std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
+	dec->SetPitch(pitch);
 
-	AudioSeRef se_ref = cache->Decode();
+	int frequency;
+	AudioDecoder::Format format, out_format;
+	int channels;
+
+	std::vector<uint8_t> dec_buf;
+	std::vector<uint8_t>* out_buf = nullptr;
+	AudioSeRef se_ref;
+	bool use_raw_buf = false;
+
+	dec->GetFormat(frequency, format, channels);
+	if (set_channel_format(ndsp_channel, format, channels, out_format)) {
+		// When the DSP supports the format and the audio is not pitched the raw
+		// buffer can be used directly
+		use_raw_buf = pitch == 100;
+	}
+
+	if (use_raw_buf) {
+		se_ref = cache->GetSeData();
+		out_buf = &se_ref->buffer;
+	} else {
+		dec->SetFormat(frequency, out_format, channels);
+		dec_buf = dec->DecodeAll();
+		out_buf = &dec_buf;
+	}
+
+	ndspChnSetRate(ndsp_channel, frequency);
 
 	if (se_buf[se_channel].data_pcm16 != nullptr) {
 		linearFree(se_buf[se_channel].data_pcm16);
 	}
 
-	size_t bsize = se_ref->buffer.size();
+	size_t bsize = out_buf->size();
 	size_t aligned_bsize = 8192;
 	// Buffer must be correctly aligned to prevent audio glitches
 	for (; ; aligned_bsize *= 2) {
 		if (aligned_bsize > bsize) {
 			se_buf[se_channel].data_pcm16 = reinterpret_cast<s16*>(linearAlloc(aligned_bsize));
-			memset(se_buf[se_channel].data_pcm16, '\0', aligned_bsize);
+			memset(se_buf[se_channel].data_pcm16 + bsize, '\0', aligned_bsize - bsize);
 			break;
 		}
 	}
 
-	se_buf[se_channel].nsamples = bsize / 4;
+	const int samplesize = AudioDecoder::GetSamplesizeForFormat(out_format);
+	se_buf[se_channel].nsamples = bsize / (samplesize * channels);
 
-	memcpy(se_buf[se_channel].data_pcm16, se_ref->buffer.data(), se_ref->buffer.size());
+	memcpy(se_buf[se_channel].data_pcm16, out_buf->data(), out_buf->size());
 
 	DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
 
@@ -219,7 +254,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	mix[1] = mix[0];
 	ndspChnSetMix(0, mix);
 
-	ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
+	ndspChnWaveBufAdd(ndsp_channel, &se_buf[se_channel]);
 }
 
 void CtrAudio::SE_Stop() {
@@ -281,10 +316,9 @@ void n3ds_audio_thread(void* userdata) {
 		}
 
 		audio->bgm_decoder->Decode(reinterpret_cast<uint8_t*>(
-			audio->bgm_buf[target_block].data_pcm16),
-			samples_per_buf * bytes_per_sample
+			audio->bgm_buf[target_block].data_pcm16), bgm_buf_size
 		);
-		DSP_FlushDataCache(audio->bgm_buf[target_block].data_pcm16,samples_per_buf);
+		DSP_FlushDataCache(audio->bgm_buf[target_block].data_pcm16, bgm_buf_size);
 
 		mix[0] = audio->bgm_decoder->GetVolume() / 100.0f;
 		mix[1] = mix[0];
@@ -310,7 +344,7 @@ CtrAudio::CtrAudio() {
 	}
 
 	dsp_inited = true;
-	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(samples_per_buf * bytes_per_sample * 2));
+	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(bgm_buf_size * 2));
 	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
 
 	for (int i = 0; i <= se_channel_end; ++i) {
@@ -322,10 +356,10 @@ CtrAudio::CtrAudio() {
 	memset(bgm_buf, '\0', sizeof(bgm_buf));
 	memset(se_buf, '\0', sizeof(se_buf));
 	bgm_buf[0].data_vaddr = &bgm_audio_buffer[0];
-	bgm_buf[0].nsamples = samples_per_buf;
+	bgm_buf[0].nsamples = bgm_buf_size / 4;
 	bgm_buf[0].status = NDSP_WBUF_DONE;
-	bgm_buf[1].data_vaddr = &bgm_audio_buffer[samples_per_buf];
-	bgm_buf[1].nsamples = samples_per_buf;
+	bgm_buf[1].data_vaddr = &bgm_audio_buffer[bgm_buf_size];
+	bgm_buf[1].nsamples = bgm_buf_size / 4;
 	bgm_buf[1].status = NDSP_WBUF_DONE;
 
 	LightEvent_Init(&audio_event, RESET_ONESHOT);

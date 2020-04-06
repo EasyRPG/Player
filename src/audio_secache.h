@@ -28,9 +28,10 @@
 #include "audio_decoder.h"
 #include "game_clock.h"
 
+class AudioSeCache;
+
 /**
- * AudioSeData is the decoded sample of AudioSeCache.
- * Format changes and pitch are already applied to the buffer.
+ * AudioSeData contains the decoded sample of AudioSeCache.
  */
 class AudioSeData {
 public:
@@ -42,6 +43,26 @@ public:
 };
 
 typedef std::shared_ptr<AudioSeData> AudioSeRef;
+
+/**
+ * AudioSeDecoder operates on supplied AudioSeData and does format
+ * conversions through the resamplers.
+ */
+class AudioSeDecoder : public AudioDecoder {
+public:
+	AudioSeDecoder(AudioSeRef se);
+
+	bool Open(FILE*) override { return true; };
+	bool IsFinished() const override;
+	void GetFormat(int& frequency, Format& format, int& channels) const override;
+	int GetPitch() const override;
+
+private:
+	int FillBuffer(uint8_t* buffer, int size) override;
+
+	AudioSeRef se;
+	size_t offset = 0;
+};
 
 /**
  * AudioSeCache provides an interface for accessing sound effects.
@@ -72,37 +93,6 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;
 
 	/**
-	 * Requests a prefered format from the internal audio decoder. Not all decoders
-	 * support everything and it's recommended to use the audio hardware
-	 * for audio processing.
-	 * When false is returned use GetFormat to get the real format of the
-	 * output data.
-	 *
-	 * @param frequency Audio frequency
-	 * @param format Audio format
-	 * @param channels Number of channels
-	 * @return true when all settings were set, otherwise false (use GetFormat)
-	 */
-	bool SetFormat(int frequency, AudioDecoder::Format format, int channels);
-
-	/**
-	 * Gets the pitch multiplier of the internal audio decoder.
-	 *
-	 * @return pitch multiplier
-	 */
-	int GetPitch() const;
-
-	/**
-	 * Sets the pitch multiplier of the internal audio decoder.
-	 * 100 = normal speed
-	 * 200 = double speed and so on
-	 * 
-	 * @param pitch Pitch multiplier to use
-	 * @return true if pitch was set, false otherwise
-	 */
-	bool SetPitch(int pitch);
-
-	/**
 	 * Tells if Decode will have a cache hit when executed.
 	 * SetFormat will fail when this returns true.
 	 *
@@ -124,24 +114,26 @@ public:
 	bool GetCachedFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;
 
 	/**
-	 * Decodes the whole sample with the settings specified by SetFormat and
-	 * SetPitch (uses default settings of the audio file if not used).
-	 * In case of a cache hit the decoding is skipped.
-	 * Calling Decode multiple times with different settings is supported.
+	 * Decodes the whole sample without doing any resampling and caches it.
+	 * When cached the decoding step is skipped.
+	 * The returned AudioDecoder contains the SE sample.
 	 *
 	 * @return Decoded sound effect
 	 */
-	AudioSeRef Decode();
+	std::unique_ptr<AudioDecoder> CreateSeDecoder();
+
+	/**
+	 * Returns the SE sample data handled by this SeCache.
+	 *
+	 * @return sample data
+	 */
+	AudioSeRef GetSeData() const;
 
 	static void Clear();
 private:
-	int pitch = 100;
-
 	std::unique_ptr<AudioDecoder> audio_decoder;
 
 	std::string filename;
-
-	bool mono_to_stereo_resample = false;
 };
 
 #endif

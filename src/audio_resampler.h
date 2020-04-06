@@ -51,7 +51,7 @@ public:
 	 * @param[in] pitch_handled Defines whether the decoder handles pitch changes by itself or not. 
 	 * @param[in] quality Sets the quality rting of the resampler - higher quality implies slower filtering
 	 */
-	AudioResampler(std::unique_ptr<AudioDecoder> decoder, bool pitch_handled=false, Quality quality=Quality::Medium);
+	AudioResampler(std::unique_ptr<AudioDecoder> decoder, bool pitch_handled=false, Quality quality=Quality::Low);
 	
 	/**
 	 * Destroys the resampler as well as its owned ressources
@@ -201,6 +201,8 @@ private:
 	 * (In the cpp file sizeof is used therefore it can be adjusted to fit the available memory)
 	 */
 	uint8_t internal_buffer[256*sizeof(float)];
+
+	bool mono_to_stereo_resample = false;
 };
 
 #endif

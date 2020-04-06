@@ -34,11 +34,11 @@ unsigned GenericAudio::scrap_buffer_size = 0;
 std::vector<float> GenericAudio::mixer_buffer;
 
 GenericAudio::GenericAudio() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].decoder.reset();
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.decoder.reset();
 	}
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		SE_Channels[i].se.reset();
+	for (auto& SE_Channel : SE_Channels) {
+		SE_Channel.decoder.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
 
@@ -52,43 +52,43 @@ GenericAudio::~GenericAudio() {
 
 void GenericAudio::BGM_Play(const std::string& file, int volume, int pitch, int fadein) {
 	bool bgm_set = false;
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].stopped = true; //Stop all running background music
-		if (!BGM_Channels[i].decoder && !bgm_set) {
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.stopped = true; //Stop all running background music
+		if (!BGM_Channel.decoder && !bgm_set) {
 			//If there is an unused bgm channel
 			bgm_set = true;
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
 			UnlockMutex();
-			PlayOnChannel(BGM_Channels[i], file, volume, pitch, fadein);
+			PlayOnChannel(BGM_Channel, file, volume, pitch, fadein);
 		}
 	}
 }
 
 void GenericAudio::BGM_Pause() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].paused = true;
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.paused = true;
 		}
 	}
 }
 
 void GenericAudio::BGM_Resume() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].paused = false;
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.paused = false;
 		}
 	}
 }
 
 void GenericAudio::BGM_Stop() {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].stopped = true; //Stop all running background music
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.stopped = true; //Stop all running background music
 		LockMutex();
 		if (Muted) {
 			// If the audio is muted the audio thread doesn't perform the deletion (it isn't running)
 			// Do the cleanup on our own.
-			BGM_Channels[i].decoder.reset();
+			BGM_Channel.decoder.reset();
 		}
 		UnlockMutex();
 	}
@@ -99,8 +99,8 @@ bool GenericAudio::BGM_PlayedOnce() const {
 }
 
 bool GenericAudio::BGM_IsPlaying() const {
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (!BGM_Channels[i].stopped) {
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (!BGM_Channel.stopped) {
 			return true;
 		};
 	}
@@ -110,9 +110,9 @@ bool GenericAudio::BGM_IsPlaying() const {
 int GenericAudio::BGM_GetTicks() const {
 	unsigned ticks = 0;
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			ticks = BGM_Channels[i].decoder->GetTicks();
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			ticks = BGM_Channel.decoder->GetTicks();
 			break;
 		}
 	}
@@ -122,9 +122,9 @@ int GenericAudio::BGM_GetTicks() const {
 
 void GenericAudio::BGM_Fade(int fade) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetFade(BGM_Channels[i].decoder->GetVolume(), 0, fade);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, fade);
 		}
 	}
 	UnlockMutex();
@@ -132,9 +132,9 @@ void GenericAudio::BGM_Fade(int fade) {
 
 void GenericAudio::BGM_Volume(int volume) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetVolume(volume);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetVolume(volume);
 		}
 	}
 	UnlockMutex();
@@ -142,9 +142,9 @@ void GenericAudio::BGM_Volume(int volume) {
 
 void GenericAudio::BGM_Pitch(int pitch) {
 	LockMutex();
-	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		if (BGM_Channels[i].decoder) {
-			BGM_Channels[i].decoder->SetPitch(pitch);
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.decoder) {
+			BGM_Channel.decoder->SetPitch(pitch);
 		}
 	}
 	UnlockMutex();
@@ -152,10 +152,10 @@ void GenericAudio::BGM_Pitch(int pitch) {
 
 void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 	if (Muted) return;
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		if (!SE_Channels[i].se) {
+	for (auto& SE_Channel : SE_Channels) {
+		if (!SE_Channel.decoder) {
 			//If there is an unused se channel
-			PlayOnChannel(SE_Channels[i], file, volume, pitch);
+			PlayOnChannel(SE_Channel, file, volume, pitch);
 			return;
 		}
 	}
@@ -164,8 +164,8 @@ void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 }
 
 void GenericAudio::SE_Stop() {
-	for (unsigned i = 0; i < nr_of_se_channels; i++) {
-		SE_Channels[i].stopped = true; //Stop all running sound effects
+	for (auto& SE_Channel : SE_Channels) {
+		SE_Channel.stopped = true; //Stop all running sound effects
 	}
 }
 
@@ -213,14 +213,11 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int v
 
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
 	if (cache) {
-		cache->SetPitch(pitch);
-		cache->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-
-		chan.se = cache->Decode();
-		chan.buffer_pos = 0;
+		chan.decoder = cache->CreateSeDecoder();
+		chan.decoder->SetPitch(pitch);
+		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
 		chan.volume = volume;
 		chan.paused = false; // Unpause channel -> Play it.
-
 		return true;
 	} else {
 		Output::Warning("Couldn't play SE %s. Format not supported", FileFinder::GetPathInsideGamePath(file).c_str());
@@ -297,13 +294,12 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 			SeChannel& currently_mixed_channel = SE_Channels[i - nr_of_bgm_channels];
 			float current_master_volume = 1.0;
 
-			if (currently_mixed_channel.se && !currently_mixed_channel.paused) {
+			if (currently_mixed_channel.decoder && !currently_mixed_channel.paused) {
 				if (currently_mixed_channel.stopped) {
-					currently_mixed_channel.se.reset();
+					currently_mixed_channel.decoder.reset();
 				} else {
 					volume = current_master_volume * (currently_mixed_channel.volume / 100.0);
-					channels = currently_mixed_channel.se->channels;
-					sampleformat = currently_mixed_channel.se->format;
+					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
 					total_volume += volume;
@@ -312,23 +308,18 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
 					bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
 
-					if (currently_mixed_channel.buffer_pos + bytes_to_read >
-						currently_mixed_channel.se->buffer.size()) {
-						bytes_to_read = currently_mixed_channel.se->buffer.size() - currently_mixed_channel.buffer_pos;
+					read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
+
+					if (read_bytes < 0) {
+						// An error occured when reading - the channel is faulty - discard
+						currently_mixed_channel.decoder.reset();
+						continue; // skip this loop run - there is nothing to mix
 					}
 
-					memcpy(scrap_buffer.data(),
-						   &currently_mixed_channel.se->buffer[currently_mixed_channel.buffer_pos],
-						   bytes_to_read);
-
-					currently_mixed_channel.buffer_pos += bytes_to_read;
-
-					read_bytes = bytes_to_read;
-
 					// Now decide what to do when a channel has reached its end
-					if (currently_mixed_channel.buffer_pos >= currently_mixed_channel.se->buffer.size()) {
+					if (currently_mixed_channel.decoder->IsFinished()) {
 						// SE are only played once so free the se if finished
-						currently_mixed_channel.se.reset();
+						currently_mixed_channel.decoder.reset();
 					}
 
 					channel_used = true;
