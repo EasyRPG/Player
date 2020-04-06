@@ -397,9 +397,14 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 
 void Game_Screen::UpdateBattleAnimation() {
 	if (animation) {
-		animation->Update();
-		data.battleanim_frame = animation->GetFrame();
-		if (animation->IsDone()) {
+		if (!animation->IsDone()) {
+			animation->Update();
+			data.battleanim_frame = animation->GetFrame();
+		}
+
+		if (animation->IsDone() && !Game_Battle::IsBattleRunning()) {
+			// FIXME: Lifetime is flawed but we need the animation in battle for
+			// SE and flash. Delay destruction until back on the map.
 			CancelBattleAnimation();
 		}
 	}
