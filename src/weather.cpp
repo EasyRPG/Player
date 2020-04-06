@@ -16,6 +16,7 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <string>
 #include <vector>
 #include "bitmap.h"
@@ -291,6 +292,9 @@ void Weather::CreateFogOverlay() {
 		fog_img[i] = fog_pixels[px];
 		sand_img[i] = sand_pixels[px];
 	}
+
+	fog_fg_frames = Utils::GetRandomNumber(0, SCREEN_TARGET_WIDTH - 1);
+	fog_bg_frames = Utils::GetRandomNumber(0, SCREEN_TARGET_WIDTH - 1);
 }
 
 void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
@@ -306,15 +310,23 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
 	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
 
-	// FIXME: Confirm exact speed in x direction
-	// FIXME: Confirm algorithm for changes in y. Appears to be very slow and random.
-	int frames = Player::GetFrames();
-	const int x = (frames * 32 / 256) % sr.width + shake_x;
-	const int y = (frames * 1 / 256) % sr.height - shake_y;
+	// Front layer moves left one pixel every 16 frames.
+	const int fx = shake_x + (fog_fg_frames / 16) % sr.width;
+	// Back layer moves left one pixel every 8 frames.
+	const int bx = shake_x - (fog_bg_frames / 8) % sr.width;
+	// Front layer moves vertically up and down using this algorithm. And it uses the background frame counter!
+	// Confirmed to be matching RPG_RT
+	const int fy = shake_y - std::round(sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2));
+	// Another similar function which produces a triangle wave movement instead of sinusoidal
+	// const int fy = shake_y - std::abs((fog_bg_frames + sr.height * 128) % (sr.height * 512) - (sr.height * 256)) / (sr.height * 16) - (sr.height / 2);
+	// Back layer never moves vertically
+	const int by = shake_y;
 
-	// FIXME: Confirm whether back layer moves right or is still?
-	dst.TiledBlit(-x + 8, -y, sr, *src, dr, back_opacity);
-	dst.TiledBlit(x, -y, sr, *src, dr, front_opacity);
+	dst.TiledBlit(bx, by, sr, *src, dr, back_opacity);
+	dst.TiledBlit(fx, fy, sr, *src, dr, front_opacity);
+
+	++fog_fg_frames;
+	++fog_bg_frames;
 }
 
 void Weather::SetTone(Tone tone) {

@@ -65,6 +65,11 @@ private:
 	BitmapRef weather_surface;
 
 	Tone tone_effect;
+
+	// FIXME: Re-use particles for this like RPG_RT does.
+	int fog_fg_frames = 0;
+	int fog_bg_frames = 0;
+
 	bool tone_dirty = true;
 };
 
