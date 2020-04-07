@@ -26,7 +26,6 @@
 GenericAudio::BgmChannel GenericAudio::BGM_Channels[nr_of_bgm_channels];
 GenericAudio::SeChannel GenericAudio::SE_Channels[nr_of_se_channels];
 bool GenericAudio::BGM_PlayedOnceIndicator;
-bool GenericAudio::Muted = false;
 
 std::vector<int16_t> GenericAudio::sample_buffer;
 std::vector<uint8_t> GenericAudio::scrap_buffer;
@@ -85,11 +84,7 @@ void GenericAudio::BGM_Stop() {
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
 		LockMutex();
-		if (Muted) {
-			// If the audio is muted the audio thread doesn't perform the deletion (it isn't running)
-			// Do the cleanup on our own.
-			BGM_Channel.decoder.reset();
-		}
+		BGM_Channel.decoder.reset();
 		UnlockMutex();
 	}
 }
@@ -151,7 +146,6 @@ void GenericAudio::BGM_Pitch(int pitch) {
 }
 
 void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
-	if (Muted) return;
 	for (auto& SE_Channel : SE_Channels) {
 		if (!SE_Channel.decoder) {
 			//If there is an unused se channel
