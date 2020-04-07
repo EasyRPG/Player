@@ -139,7 +139,7 @@ namespace Input {
 	bool IsSystemPressed(InputButton button);
 
 	/**
-	 * Gets if a button is starting to being pressed.
+	 * Gets if a system button is starting to being pressed.
 	 *
 	 * @param button button ID.
 	 * @return whether the button is being triggered.
