@@ -797,6 +797,7 @@ void Game_Battler::ResetBattle() {
 	battle_combo_times = -1;
 	attribute_shift.clear();
 	attribute_shift.resize(Data::attributes.size());
+	SetBattleAlgorithm(nullptr);
 }
 
 int Game_Battler::GetBattleTurn() const {
