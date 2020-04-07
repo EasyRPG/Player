@@ -114,6 +114,9 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+	if (source) {
+		source->SetIsDefending(false);
+	}
 
 	current_target = targets.end();
 }
@@ -123,6 +126,9 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+	if (source) {
+		source->SetIsDefending(false);
+	}
 
 	SetTarget(target);
 }
@@ -132,6 +138,9 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+	if (source) {
+		source->SetIsDefending(false);
+	}
 
 	target->GetBattlers(targets);
 	current_target = targets.begin();
