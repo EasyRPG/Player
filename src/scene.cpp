@@ -119,7 +119,10 @@ void Scene::MainFunction() {
 
 			push_pop_operation = 0;
 
-			TransitionIn(prev_scene_type);
+			// Scene could have manually triggered transition earlier
+			if (!Transition::instance().IsActive()) {
+				TransitionIn(prev_scene_type);
+			}
 			Resume(prev_scene_type);
 
 
@@ -139,7 +142,10 @@ void Scene::MainFunction() {
 
 		auto next_scene = instance ? instance->type : Null;
 		Suspend(next_scene);
-		TransitionOut(next_scene);
+		// Scene could have manually triggered transition earlier
+		if (!Transition::instance().IsActive()) {
+			TransitionOut(next_scene);
+		}
 
 		init = false;
 	}
