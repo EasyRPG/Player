@@ -87,18 +87,26 @@ public class VirtualButton extends View {
 
     /** Draw "text" centered in "canvas" */
     protected void drawCenter(Canvas canvas, Paint paint, String text) {
-        // Set the text size
-        painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
-
         // Draw the text
         Rect bound = new Rect();
         canvas.getClipBounds(bound);
         int cHeight = bound.height();
         int cWidth = bound.width();
         paint.setTextAlign(Paint.Align.LEFT);
+
+        // Set the text size
+        int originalLetterSizeDec = originalLetterSize / 10;
+        painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
         paint.getTextBounds(text, 0, text.length(), bound);
-        float x = cWidth / 2f - bound.width() / 2f - bound.left;
-        float y = cHeight / 2f + bound.height() / 2f - bound.bottom;
+        while (bound.height() >= cHeight * 0.6) {
+            // Decrement until the text fits in the circle
+            originalLetterSize -= originalLetterSizeDec;
+            painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
+            paint.getTextBounds(text, 0, text.length(), bound);
+        }
+
+        float x = cWidth / 2f - (bound.width() - bound.left) / 2f - bound.left;
+        float y = cHeight / 2f + (bound.height() - bound.bottom) / 2f - bound.bottom;
         canvas.drawText(text, x, y, paint);
     }
 
