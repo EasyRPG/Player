@@ -53,6 +53,11 @@ namespace Input {
 	void Update();
 
 	/**
+	 * Updates Input state for only system keys not used by game logic
+	 */
+	void UpdateSystem();
+
+	/**
 	 * Resets all button states.
 	 */
 	void ResetKeys();
@@ -124,6 +129,41 @@ namespace Input {
 	 * @return whether any button is being released.
 	 */
 	bool IsAnyReleased();
+
+	/**
+	 * Gets if a system button is being pressed.
+	 *
+	 * @param button button ID.
+	 * @return whether the button is being pressed.
+	 */
+	bool IsSystemPressed(InputButton button);
+
+	/**
+	 * Gets if a system button is starting to being pressed.
+	 *
+	 * @param button button ID.
+	 * @return whether the button is being triggered.
+	 */
+	bool IsSystemTriggered(InputButton button);
+
+	/**
+	 * Gets if a system button is being repeated. A button is being
+	 * repeated while it is maintained pressed and a
+	 * certain amount of frames has passed after last
+	 * repetition.
+	 *
+	 * @param button button ID.
+	 * @return whether the button is being repeated.
+	 */
+	bool IsSystemRepeated(InputButton button);
+
+	/**
+	 * Gets if a system button is being released.
+	 *
+	 * @param button button ID.
+	 * @return whether the button is being released.
+	 */
+	bool IsSystemReleased(InputButton button);
 
 	/**
 	 * Gets all buttons being pressed.

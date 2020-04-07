@@ -27,6 +27,7 @@
 #include <array>
 #include <fstream>
 #include <utility>
+#include <cassert>
 
 namespace Input {
 	std::array<int, BUTTON_COUNT> press_time;
@@ -104,6 +105,26 @@ void Input::Init(
 	recording_input = InitRecording(record_to_path);
 }
 
+static void UpdateButton(int i, bool pressed) {
+	using namespace Input;
+
+	if (pressed) {
+		released[i] = false;
+		press_time[i] += 1;
+	} else {
+		released[i] = press_time[i] > 0;
+		press_time[i] = 0;
+	}
+
+	if (press_time[i] > 0) {
+		triggered[i] = press_time[i] == 1;
+		repeated[i] = press_time[i] == 1 || (press_time[i] >= start_repeat_time && press_time[i] % repeat_time == 0);
+	} else {
+		triggered[i] = false;
+		repeated[i] = false;
+	}
+}
+
 void Input::Update() {
 	wait_input = false; // clear each frame
 
@@ -111,28 +132,13 @@ void Input::Update() {
 	auto& pressed_buttons = source->GetPressedButtons();
 
 	if (recording_input) {
-		record_log << pressed_buttons << '\n';
+		record_log << source->GetPressedNonSystemButtons() << '\n';
 	}
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
 		bool pressed = pressed_buttons[i];
-
-		if (pressed) {
-			released[i] = false;
-			press_time[i] += 1;
-		} else {
-			released[i] = press_time[i] > 0;
-			press_time[i] = 0;
-		}
-
-		if (press_time[i] > 0) {
-			triggered[i] = press_time[i] == 1;
-			repeated[i] = press_time[i] == 1 || (press_time[i] >= start_repeat_time &&	press_time[i] % repeat_time == 0);
-		} else {
-			triggered[i] = false;
-			repeated[i] = false;
-		}
+		UpdateButton(i, pressed);
 	}
 
 	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
@@ -181,6 +187,21 @@ void Input::Update() {
 	}
 }
 
+void Input::UpdateSystem() {
+	source->UpdateSystem();
+	auto& pressed_buttons = source->GetPressedButtons();
+
+	// Check button states
+	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
+		if (IsSystemButton(static_cast<InputButton>(i))) {
+			bool pressed = pressed_buttons[i];
+			UpdateButton(i, pressed);
+		}
+	}
+}
+
+
+
 void Input::ResetKeys() {
 	triggered.reset();
 	repeated.reset();
@@ -202,22 +223,46 @@ void Input::ResetTriggerKeys() {
 }
 
 bool Input::IsPressed(InputButton button) {
+	assert(!IsSystemButton(button));
 	WaitInput(true);
 	return press_time[button] > 0;
 }
 
 bool Input::IsTriggered(InputButton button) {
+	assert(!IsSystemButton(button));
 	WaitInput(true);
 	return triggered[button];
 }
 
 bool Input::IsRepeated(InputButton button) {
+	assert(!IsSystemButton(button));
 	WaitInput(true);
 	return repeated[button];
 }
 
 bool Input::IsReleased(InputButton button) {
+	assert(!IsSystemButton(button));
 	WaitInput(false);
+	return released[button];
+}
+
+bool Input::IsSystemPressed(InputButton button) {
+	assert(IsSystemButton(button));
+	return press_time[button] > 0;
+}
+
+bool Input::IsSystemTriggered(InputButton button) {
+	assert(IsSystemButton(button));
+	return triggered[button];
+}
+
+bool Input::IsSystemRepeated(InputButton button) {
+	assert(IsSystemButton(button));
+	return repeated[button];
+}
+
+bool Input::IsSystemReleased(InputButton button) {
+	assert(IsSystemButton(button));
 	return released[button];
 }
 

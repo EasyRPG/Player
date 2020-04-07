@@ -33,13 +33,23 @@ namespace Input {
 
 		virtual ~Source() = default;
 
-		/**
-		 * Called once each frame to update pressed_buttons.
-		 */
+		/** Called once each logical frame to update pressed_buttons. */
 		virtual void Update() = 0;
+
+		/** Called once each physical frame when no logical frames occured to update pressed_buttons for system buttons. */
+		virtual void UpdateSystem() = 0;
 
 		const std::bitset<BUTTON_COUNT>& GetPressedButtons() const {
 			return pressed_buttons;
+		}
+		std::bitset<BUTTON_COUNT> GetPressedNonSystemButtons() const {
+			auto pressed = pressed_buttons;
+			for(unsigned i = 0; i < BUTTON_COUNT; ++i) {
+				if (IsSystemButton(static_cast<InputButton>(i))) {
+					pressed[i] = false;
+				}
+			}
+			return pressed;
 		}
 
 	protected:
@@ -56,8 +66,11 @@ namespace Input {
 		~UiSource() override = default;
 
 		void Update() override;
+		void UpdateSystem() override;
 
 		// NOTE: buttons/dir_buttons/InitButtons could be moved here
+	private:
+		void DoUpdate(bool system_only);
 	};
 
 	/**
@@ -69,6 +82,7 @@ namespace Input {
 		~LogSource() override = default;
 
 		void Update() override;
+		void UpdateSystem() override;
 
 		operator bool() const { return bool(log_file); }
 	private:
