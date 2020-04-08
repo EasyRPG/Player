@@ -97,10 +97,6 @@ void Game_Actor::Fixup() {
 	ResetEquipmentStates(false);
 }
 
-int Game_Actor::GetId() const {
-	return actor_id;
-}
-
 bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
@@ -313,10 +309,6 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	}
 }
 
-const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
-	return GetData().equipped;
-}
-
 bool Game_Actor::IsEquipped(int equip_id) const {
 	for (auto equip : GetWholeEquipment()) {
 		if (equip == equip_id) {
@@ -346,28 +338,12 @@ int Game_Actor::GetItemCount(int item_id) {
 	return number;
 }
 
-const std::vector<int16_t>& Game_Actor::GetStates() const {
-	return GetData().status;
-}
-
-std::vector<int16_t>& Game_Actor::GetStates() {
-	return GetData().status;
-}
-
 void Game_Actor::FullHeal() {
 	RemoveAllStates();
 	ChangeHp(GetMaxHp());
 	SetSp(GetMaxSp());
 	// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
 	ResetEquipmentStates(true);
-}
-
-int Game_Actor::GetHp() const {
-	return GetData().current_hp;
-}
-
-int Game_Actor::GetSp() const {
-	return GetData().current_sp;
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
@@ -832,14 +808,6 @@ bool Game_Actor::IsEquipmentFixed() const {
 	return false;
 }
 
-bool Game_Actor::HasStrongDefense() const {
-	return GetData().super_guard;
-}
-
-const std::vector<int16_t>& Game_Actor::GetSkills() const {
-	return GetData().skills;
-}
-
 const RPG::Skill* Game_Actor::GetRandomSkill() const {
 	const std::vector<int16_t>& skills = GetSkills();
 	if (skills.empty()) {
@@ -848,14 +816,6 @@ const RPG::Skill* Game_Actor::GetRandomSkill() const {
 
 	// Skills are guaranteed to be valid
 	return ReaderUtil::GetElement(Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
-}
-
-bool Game_Actor::HasTwoWeapons() const {
-	return GetData().two_weapon;
-}
-
-bool Game_Actor::GetAutoBattle() const {
-	return GetData().auto_battle;
 }
 
 int Game_Actor::GetBattleX() const {
@@ -1015,14 +975,6 @@ int Game_Actor::GetBattleY() const {
 const std::string& Game_Actor::GetSkillName() const {
 	auto& a = GetActor();
 	return a.rename_skill ? a.skill_name : Data::terms.command_skill;
-}
-
-void Game_Actor::SetName(const std::string &new_name) {
-	GetData().name = new_name;
-}
-
-void Game_Actor::SetTitle(const std::string &new_title) {
-	GetData().title = new_title;
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
@@ -1369,10 +1321,6 @@ float Game_Actor::GetCriticalHitChance() const {
 	checkWeapon(Get2ndWeapon());
 
 	return crit_chance + (weapon_bonus / 100.0f);
-}
-
-Game_Battler::BattlerType Game_Actor::GetType() const {
-	return Game_Battler::Type_Ally;
 }
 
 int Game_Actor::IsControllable() const {
