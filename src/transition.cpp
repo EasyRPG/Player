@@ -67,6 +67,9 @@ void Transition::PrependFlashes(int r, int g, int b, int p, int duration, int it
 }
 
 void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) {
+	// Triggering multiple transitions on a single frame is a bug.
+	assert(!IsActive());
+
 	if (duration < 0) {
 		duration = GetDefaultFrames(type);
 	}
