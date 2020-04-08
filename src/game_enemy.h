@@ -153,8 +153,6 @@ public:
 	int GetSp() const override;
 	void SetSp(int _sp) override;
 
-	void SetHidden(bool _hidden);
-	bool IsHidden() const override;
 	void Transform(int new_enemy_id);
 
 	int GetHitChance() const override;
@@ -250,14 +248,6 @@ inline void Game_Enemy::SetBattleY(int new_y) {
 
 inline int Game_Enemy::GetHue() const {
 	return enemy->battler_hue;
-}
-
-inline void Game_Enemy::SetHidden(bool _hidden) {
-	hidden = _hidden;
-}
-
-inline bool Game_Enemy::IsHidden() const {
-	return hidden;
 }
 
 inline int Game_Enemy::GetId() const {

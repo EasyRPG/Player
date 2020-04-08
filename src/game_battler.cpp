@@ -680,6 +680,7 @@ void Game_Battler::ResetBattle() {
 	}
 	SetCharged(false);
 	SetIsDefending(false);
+	SetHidden(false);
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;

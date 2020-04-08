@@ -344,7 +344,8 @@ public:
 	 */
 	virtual int GetBaseAgi() const = 0;
 
-	virtual bool IsHidden() const;
+	void SetHidden(bool hidden);
+	bool IsHidden() const;
 	virtual bool IsImmortal() const;
 
 	virtual bool Exists() const;
@@ -688,8 +689,6 @@ protected:
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
 
-	bool defending = false;
-	bool charged;
 	int atk_modifier;
 	int def_modifier;
 	int spi_modifier;
@@ -698,6 +697,9 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+	bool defending = false;
+	bool charged = false;
+	bool hidden = false;
 
 	std::vector<int> attribute_shift;
 
@@ -793,8 +795,12 @@ inline bool Game_Battler::HasPreemptiveAttack() const {
 	return false;
 }
 
+inline void Game_Battler::SetHidden(bool _hidden) {
+	hidden = _hidden;
+}
+
 inline bool Game_Battler::IsHidden() const {
-	return false;
+	return hidden;
 }
 
 inline bool Game_Battler::IsImmortal() const {

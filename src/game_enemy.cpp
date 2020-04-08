@@ -43,7 +43,7 @@ void Game_Enemy::Setup(int enemy_id) {
 	sp = GetMaxSp();
 	x = 0;
 	y = 0;
-	hidden = false;
+	SetHidden(false);
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
 	flying_offset = 0;
 }
