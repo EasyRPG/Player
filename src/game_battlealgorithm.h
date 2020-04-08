@@ -449,9 +449,10 @@ protected:
 	bool TargetNextInternal() const;
 
 	Type type = Type::Null;
-	Game_Battler* source;
+	Game_Battler* source = nullptr;
 	std::vector<Game_Battler*> targets;
 	mutable std::vector<Game_Battler*>::iterator current_target;
+	Game_Party_Base* party_target = nullptr;
 
 	bool no_target;
 

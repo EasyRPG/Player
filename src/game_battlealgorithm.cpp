@@ -148,8 +148,8 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 		source->SetCharged(false);
 	}
 
-	target->GetBattlers(targets);
-	current_target = targets.begin();
+	current_target = targets.end();
+	party_target = target;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
@@ -762,6 +762,11 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+	if (party_target) {
+		party_target->GetBattlers(targets);
+		party_target = nullptr;
+	}
+
 	current_target = targets.begin();
 	cur_repeat = 0;
 
@@ -1168,6 +1173,7 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 		skill.scope == RPG::Skill::Scope_party) {
 		if (GetTarget()->IsDead()) {
 			// Cures death
+			// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
 			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
 
