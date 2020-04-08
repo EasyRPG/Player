@@ -114,11 +114,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
-	if (source) {
-		source->SetIsDefending(false);
-		physical_charged = source->IsCharged();
-		source->SetCharged(false);
-	}
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	current_target = targets.end();
 }
@@ -128,11 +127,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
-	if (source) {
-		source->SetIsDefending(false);
-		physical_charged = source->IsCharged();
-		source->SetCharged(false);
-	}
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	SetTarget(target);
 }
@@ -142,11 +140,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
-	if (source) {
-		source->SetIsDefending(false);
-		physical_charged = source->IsCharged();
-		source->SetCharged(false);
-	}
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	current_target = targets.end();
 	party_target = target;
