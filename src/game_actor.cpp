@@ -1597,3 +1597,6 @@ PermanentStates Game_Actor::GetPermanentStates() const {
 	return ps;
 }
 
+bool Game_Actor::IsInParty() const {
+	return Main_Data::game_party->IsActorInParty(GetId());
+}

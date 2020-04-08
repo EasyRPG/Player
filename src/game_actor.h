@@ -865,6 +865,8 @@ public:
 	 */
 	void ResetEquipmentStates(bool allow_battle_states);
 
+	bool IsInParty() const override;
+
 private:
 	void AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states);
 

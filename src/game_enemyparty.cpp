@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <algorithm>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "main_data.h"

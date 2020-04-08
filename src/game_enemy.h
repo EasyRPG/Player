@@ -188,6 +188,7 @@ public:
 
 	bool IsActionValid(const RPG::EnemyAction& action);
 	const RPG::EnemyAction* ChooseRandomAction();
+	bool IsInParty() const override;
 
 protected:
 	void Setup(int enemy_id);
@@ -300,6 +301,11 @@ inline const std::string& Game_Enemy::GetName() const {
 
 inline const std::string& Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
+}
+
+inline bool Game_Enemy::IsInParty() const {
+	// Enemies can never be removed from enemy party
+	return true;
 }
 
 #endif

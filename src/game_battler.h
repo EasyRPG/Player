@@ -348,6 +348,9 @@ public:
 	bool IsHidden() const;
 	virtual bool IsImmortal() const;
 
+	/** @return true if this battler is in it's party */
+	virtual bool IsInParty() const = 0;
+
 	virtual bool Exists() const;
 	bool IsDead() const;
 
@@ -736,7 +739,7 @@ inline bool Game_Battler::IsDead() const {
 }
 
 inline bool Game_Battler::Exists() const {
-	return !IsHidden() && !IsDead();
+	return !IsHidden() && !IsDead() && IsInParty();
 }
 
 inline void Game_Battler::SetAtkModifier(int modifier) {
