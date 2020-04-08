@@ -94,7 +94,7 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 		screen1 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
 	} else {
 		if (erase) {
-			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
 			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
 		} else {
 			screen1 = DisplayUi->CaptureScreen();
@@ -103,7 +103,7 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	if (erase) {
 		screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
 	} else {
-		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
 		Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
 	}
 
