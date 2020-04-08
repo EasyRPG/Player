@@ -101,11 +101,6 @@ public:
 	 */
 	virtual int GetAverageAgility();
 
-	/**
-	 * Resets battle modifiers of all members (gauge, defense and charge).
-	 */
-	void ResetBattle();
-
 private:
 
 };
