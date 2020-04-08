@@ -300,7 +300,7 @@ void Player::UpdateInput() {
 	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
-		speed = Input::IsSystemPressed(Input::PLUS) ? 10 : speed_modifier;
+		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 
