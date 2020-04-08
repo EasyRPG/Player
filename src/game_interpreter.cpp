@@ -1693,7 +1693,6 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 	int var = com.parameters[5];
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		actor->ResetBattle();
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
 		result -= (actor->GetSpi() * spi) / 800;
