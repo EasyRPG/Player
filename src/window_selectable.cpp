@@ -22,14 +22,11 @@
 #include "util_macro.h"
 #include "bitmap.h"
 
+constexpr int arrow_animation_frames = 20;
+
 // Constructor
 Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	item_max(1),
-	column_max(1),
-	index(-1),
-	help_window(NULL) {
-}
+	Window_Base(ix, iy, iwidth, iheight) { }
 
 void Window_Selectable::CreateContents() {
 	SetContents(Bitmap::Create(width - 16, max(height - 16, GetRowMax() * 16)));
@@ -117,7 +114,18 @@ void Window_Selectable::UpdateCursorRect() {
 
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
+}
 
+void Window_Selectable::UpdateArrows() {
+	bool show_up_arrow = (GetTopRow() > 0);
+	bool show_down_arrow = (GetTopRow() < (GetRowMax() - GetPageRowMax()));
+
+	if (show_up_arrow || show_down_arrow) {
+		arrow_frame = (arrow_frame + 1) % (arrow_animation_frames * 2);
+	}
+	bool arrow_visible = (arrow_frame < arrow_animation_frames);
+	SetUpArrow(show_up_arrow && arrow_visible);
+	SetDownArrow(show_down_arrow && arrow_visible);
 }
 
 // Update
@@ -168,4 +176,5 @@ void Window_Selectable::Update() {
 		UpdateHelp();
 	}
 	UpdateCursorRect();
+	UpdateArrows();
 }
