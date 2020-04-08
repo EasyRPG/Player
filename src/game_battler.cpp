@@ -427,7 +427,6 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 
 	if (state_id == RPG::State::kDeathID) {
 		SetGauge(0);
-		SetCharged(false);
 		SetHp(0);
 		SetAtkModifier(0);
 		SetDefModifier(0);
@@ -439,8 +438,9 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		attribute_shift.resize(Data::attributes.size());
 	}
 
-	if (IsDefending() && GetSignificantRestriction() != RPG::State::Restriction_normal) {
+	if (GetSignificantRestriction() != RPG::State::Restriction_normal) {
 		SetIsDefending(false);
+		SetCharged(false);
 	}
 
 	return was_added;
@@ -785,8 +785,8 @@ void Game_Battler::ResetBattle() {
 	if (!HasPreemptiveAttack()) {
 		gauge /= 2;
 	}
-	charged = false;
-	defending = false;
+	SetCharged(false);
+	SetIsDefending(false);
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;

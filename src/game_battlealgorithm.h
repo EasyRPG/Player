@@ -471,6 +471,7 @@ protected:
 	bool critical_hit;
 	bool absorb;
 	bool revived = false;
+	bool physical_charged = false;
 	mutable int reflect;
 	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
 	int cur_repeat = 0;

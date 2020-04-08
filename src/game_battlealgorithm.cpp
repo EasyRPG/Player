@@ -116,6 +116,8 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	Reset();
 	if (source) {
 		source->SetIsDefending(false);
+		physical_charged = source->IsCharged();
+		source->SetCharged(false);
 	}
 
 	current_target = targets.end();
@@ -128,6 +130,8 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	Reset();
 	if (source) {
 		source->SetIsDefending(false);
+		physical_charged = source->IsCharged();
+		source->SetCharged(false);
 	}
 
 	SetTarget(target);
@@ -140,6 +144,8 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	Reset();
 	if (source) {
 		source->SetIsDefending(false);
+		physical_charged = source->IsCharged();
+		source->SetCharged(false);
 	}
 
 	target->GetBattlers(targets);
@@ -978,7 +984,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		effect *= multiplier;
 		if (critical_hit) {
 			effect *= 3;
-		} else if(source->IsCharged()) {
+		} else if(physical_charged) {
 			effect *= 2;
 		}
 		if (GetTarget()->IsDefending()) {
@@ -1079,7 +1085,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
-	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
 	}

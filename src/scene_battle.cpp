@@ -470,7 +470,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	if (!battler->CanAct()) {
 		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
 			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-			battler->SetCharged(false);
 		}
 		return;
 	}
@@ -481,7 +480,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 			Main_Data::game_party->GetRandomActiveBattler();
 
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
-		battler->SetCharged(false);
 		return;
 	}
 
@@ -491,7 +489,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 			Main_Data::game_party->GetRandomActiveBattler();
 
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
-		battler->SetCharged(false);
 		return;
 	}
 
@@ -499,7 +496,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_normal) {
 		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
 			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-			battler->SetCharged(false);
 		}
 		return;
 	}
@@ -507,7 +503,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	// If we can no longer perform the action (no more items, ran out of SP, etc..)
 	if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-		battler->SetCharged(false);
 	}
 }
 
