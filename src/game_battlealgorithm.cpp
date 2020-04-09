@@ -115,6 +115,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 {
 	Reset();
 
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
+
 	current_target = targets.end();
 }
 
@@ -123,6 +127,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	SetTarget(target);
 }
@@ -133,8 +141,12 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 {
 	Reset();
 
-	target->GetBattlers(targets);
-	current_target = targets.begin();
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
+
+	current_target = targets.end();
+	party_target = target;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
@@ -747,6 +759,11 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+	if (party_target) {
+		party_target->GetBattlers(targets);
+		party_target = nullptr;
+	}
+
 	current_target = targets.begin();
 	cur_repeat = 0;
 
@@ -969,7 +986,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		effect *= multiplier;
 		if (critical_hit) {
 			effect *= 3;
-		} else if(source->IsCharged()) {
+		} else if(physical_charged) {
 			effect *= 2;
 		}
 		if (GetTarget()->IsDefending()) {
@@ -1070,7 +1087,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
-	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
 	}
@@ -1154,13 +1170,14 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 		skill.scope == RPG::Skill::Scope_party) {
 		if (GetTarget()->IsDead()) {
 			// Cures death
+			// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
 			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
 
 		return true;
 	}
 
-	return (!GetTarget()->IsDead());
+	return GetTarget()->Exists();
 }
 
 

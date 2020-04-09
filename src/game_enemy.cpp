@@ -43,7 +43,7 @@ void Game_Enemy::Setup(int enemy_id) {
 	sp = GetMaxSp();
 	x = 0;
 	y = 0;
-	hidden = false;
+	SetHidden(false);
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
 	flying_offset = 0;
 }
@@ -58,22 +58,6 @@ int Game_Enemy::MaxStatBattleValue() const {
 
 int Game_Enemy::MaxStatBaseValue() const {
 	return 999;
-}
-
-const std::vector<int16_t>& Game_Enemy::GetStates() const {
-	return states;
-}
-
-std::vector<int16_t>& Game_Enemy::GetStates() {
-	return states;
-}
-
-const std::string& Game_Enemy::GetName() const {
-	return enemy->name;
-}
-
-const std::string& Game_Enemy::GetSpriteName() const {
-	return enemy->battler_name;
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {
@@ -103,42 +87,6 @@ int Game_Enemy::GetAttributeModifier(int attribute_id) const {
 	return GetAttributeRate(attribute_id, rate);
 }
 
-int Game_Enemy::GetId() const {
-	return enemy_id;
-}
-
-int Game_Enemy::GetBaseMaxHp() const {
-	return enemy->max_hp;
-}
-
-int Game_Enemy::GetBaseMaxSp() const {
-	return enemy->max_sp;
-}
-
-int Game_Enemy::GetBaseAtk() const {
-	return enemy->attack;
-}
-
-int Game_Enemy::GetBaseDef() const {
-	return enemy->defense;
-}
-
-int Game_Enemy::GetBaseSpi() const {
-	return enemy->spirit;
-}
-
-int Game_Enemy::GetBaseAgi() const {
-	return enemy->agility;
-}
-
-int Game_Enemy::GetHp() const {
-	return hp;
-}
-
-int Game_Enemy::GetSp() const {
-	return sp;
-}
-
 void Game_Enemy::SetHp(int _hp) {
 	hp = std::min(std::max(_hp, 0), GetMaxHp());
 }
@@ -153,26 +101,6 @@ int Game_Enemy::GetBattleX() const {
 
 int Game_Enemy::GetBattleY() const {
 	return (y*SCREEN_TARGET_HEIGHT/240);
-}
-
-void Game_Enemy::SetBattleX(int new_x) {
-	x = new_x;
-}
-
-void Game_Enemy::SetBattleY(int new_y) {
-	y = new_y;
-}
-
-int Game_Enemy::GetHue() const {
-	return enemy->battler_hue;
-}
-
-void Game_Enemy::SetHidden(bool _hidden) {
-	hidden = _hidden;
-}
-
-bool Game_Enemy::IsHidden() const {
-	return hidden;
 }
 
 void Game_Enemy::Transform(int new_enemy_id) {
@@ -191,10 +119,6 @@ void Game_Enemy::Transform(int new_enemy_id) {
 	}
 }
 
-int Game_Enemy::GetBattleAnimationId() const {
-	return 0;
-}
-
 int Game_Enemy::GetHitChance() const {
 	return enemy->miss ? 70 : 90;
 }
@@ -203,25 +127,6 @@ float Game_Enemy::GetCriticalHitChance() const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
-Game_Battler::BattlerType Game_Enemy::GetType() const {
-	return Game_Battler::Type_Enemy;
-}
-
-int Game_Enemy::GetExp() const {
-	return enemy->exp;
-}
-
-int Game_Enemy::GetMoney() const {
-	return enemy->gold;
-}
-
-int Game_Enemy::GetDropId() const {
-	return enemy->drop_id;
-}
-
-int Game_Enemy::GetDropProbability() const {
-	return enemy->drop_prob;
-}
 
 int Game_Enemy::GetFlyingOffset() const {
 	// 2k does not support flying, albeit mentioned in the help file
@@ -340,6 +245,3 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	return nullptr;
 }
 
-bool Game_Enemy::IsTransparent() const {
-	return enemy->transparent;
-}

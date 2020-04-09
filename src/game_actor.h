@@ -39,7 +39,7 @@ class PendingMessage;
 /**
  * Game_Actor class.
  */
-class Game_Actor : public Game_Battler {
+class Game_Actor final : public Game_Battler {
 public:
 	using RowType = RPG::SaveActor::RowType;
 	/**
@@ -865,6 +865,8 @@ public:
 	 */
 	void ResetEquipmentStates(bool allow_battle_states);
 
+	bool IsInParty() const override;
+
 private:
 	void AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states);
 
@@ -888,8 +890,21 @@ private:
 	std::vector<int> exp_list;
 };
 
+inline Game_Battler::BattlerType Game_Actor::GetType() const {
+	return Game_Battler::Type_Ally;
+}
+
+inline void Game_Actor::SetName(const std::string &new_name) {
+	GetData().name = new_name;
+}
+
+
 inline const std::string& Game_Actor::GetName() const {
 	return GetData().name;
+}
+
+inline void Game_Actor::SetTitle(const std::string &new_title) {
+	GetData().title = new_title;
 }
 
 inline const std::string& Game_Actor::GetTitle() const {
@@ -923,5 +938,47 @@ inline int Game_Actor::GetLevel() const {
 inline int Game_Actor::GetExp() const {
 	return GetData().exp;
 }
+
+inline int Game_Actor::GetHp() const {
+	return GetData().current_hp;
+}
+
+inline int Game_Actor::GetSp() const {
+	return GetData().current_sp;
+}
+
+inline bool Game_Actor::HasTwoWeapons() const {
+	return GetData().two_weapon;
+}
+
+inline bool Game_Actor::GetAutoBattle() const {
+	return GetData().auto_battle;
+}
+
+inline bool Game_Actor::HasStrongDefense() const {
+	return GetData().super_guard;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetSkills() const {
+	return GetData().skills;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetStates() const {
+	return GetData().status;
+}
+
+inline std::vector<int16_t>& Game_Actor::GetStates() {
+	return GetData().status;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
+	return GetData().equipped;
+}
+
+inline int Game_Actor::GetId() const {
+	return actor_id;
+}
+
+
 
 #endif

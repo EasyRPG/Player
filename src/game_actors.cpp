@@ -71,3 +71,10 @@ Game_Actor* Game_Actors::GetActor(int actor_id) {
 bool Game_Actors::ActorExists(int actor_id) {
 	return actor_id > 0 && (size_t)actor_id <= data.size();
 }
+
+void Game_Actors::ResetBattle() {
+	for (size_t i = 1; i <= data.size(); ++i) {
+		GetActor(i)->ResetBattle();
+	}
+
+}

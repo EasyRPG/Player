@@ -344,8 +344,12 @@ public:
 	 */
 	virtual int GetBaseAgi() const = 0;
 
-	virtual bool IsHidden() const;
+	void SetHidden(bool hidden);
+	bool IsHidden() const;
 	virtual bool IsImmortal() const;
+
+	/** @return true if this battler is in it's party */
+	virtual bool IsInParty() const = 0;
 
 	virtual bool Exists() const;
 	bool IsDead() const;
@@ -688,8 +692,6 @@ protected:
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
 
-	bool defending = false;
-	bool charged;
 	int atk_modifier;
 	int def_modifier;
 	int spi_modifier;
@@ -698,6 +700,9 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+	bool defending = false;
+	bool charged = false;
+	bool hidden = false;
 
 	std::vector<int> attribute_shift;
 
@@ -724,5 +729,149 @@ protected:
 inline Color Game_Battler::GetFlashColor() const {
 	return Flash::MakeColor(flash.red, flash.green, flash.blue, flash.current_level);
 }
+
+inline void Game_Battler::Kill() {
+	ChangeHp(-GetHp());
+}
+
+inline bool Game_Battler::IsDead() const {
+	return HasState(RPG::State::kDeathID);
+}
+
+inline bool Game_Battler::Exists() const {
+	return !IsHidden() && !IsDead() && IsInParty();
+}
+
+inline void Game_Battler::SetAtkModifier(int modifier) {
+	atk_modifier = modifier;
+}
+
+inline void Game_Battler::SetDefModifier(int modifier) {
+	def_modifier = modifier;
+}
+
+inline void Game_Battler::SetSpiModifier(int modifier) {
+	spi_modifier = modifier;
+}
+
+inline void Game_Battler::SetAgiModifier(int modifier) {
+	agi_modifier = modifier;
+}
+
+inline void Game_Battler::ChangeAtkModifier(int modifier) {
+	SetAtkModifier(atk_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeDefModifier(int modifier) {
+	SetDefModifier(def_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeSpiModifier(int modifier) {
+	SetSpiModifier(spi_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeAgiModifier(int modifier) {
+	SetAgiModifier(agi_modifier + modifier);
+}
+
+inline bool Game_Battler::IsCharged() const {
+	return charged;
+}
+
+inline void Game_Battler::SetCharged(bool charge) {
+	charged = charge;
+}
+
+inline bool Game_Battler::IsDefending() const {
+	return defending;
+}
+
+inline void Game_Battler::SetIsDefending(bool val) {
+	defending = val;
+}
+
+inline bool Game_Battler::HasStrongDefense() const {
+	return false;
+}
+
+inline bool Game_Battler::HasPreemptiveAttack() const {
+	return false;
+}
+
+inline void Game_Battler::SetHidden(bool _hidden) {
+	hidden = _hidden;
+}
+
+inline bool Game_Battler::IsHidden() const {
+	return hidden;
+}
+
+inline bool Game_Battler::IsImmortal() const {
+	return false;
+}
+
+inline int Game_Battler::GetHue() const {
+	return 0;
+}
+
+inline int Game_Battler::GetMaxGauge() const {
+	return 120000;
+}
+
+inline int Game_Battler::GetGauge() const {
+	return gauge / (GetMaxGauge() / 100);
+}
+
+
+inline bool Game_Battler::IsGaugeFull() const {
+	return gauge >= GetMaxGauge();
+}
+
+inline int Game_Battler::GetFlyingOffset() const {
+	return 0;
+}
+
+inline const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
+	return battle_algorithm;
+}
+
+inline void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
+	this->battle_algorithm = battle_algorithm;
+}
+
+inline void Game_Battler::NextBattleTurn() {
+	++battle_turn;
+}
+
+inline int Game_Battler::GetBattleTurn() const {
+	return battle_turn;
+}
+
+inline void Game_Battler::SetLastBattleAction(int battle_action) {
+	last_battle_action = battle_action;
+}
+
+inline int Game_Battler::GetLastBattleAction() const {
+	return last_battle_action;
+}
+
+inline void Game_Battler::SetBattleCombo(int command_id, int times) {
+	battle_combo_command_id = command_id;
+	battle_combo_times = times;
+}
+
+inline void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
+	command_id = battle_combo_command_id;
+	times = battle_combo_times;
+}
+
+inline void Game_Battler::SetBattleOrderAgi(int val) {
+	battle_order = val;
+}
+
+inline int Game_Battler::GetBattleOrderAgi() {
+	return battle_order;
+}
+
 
 #endif

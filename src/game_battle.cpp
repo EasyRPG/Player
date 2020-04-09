@@ -86,7 +86,7 @@ void Game_Battle::Init(int troop_id) {
 		return false;
 	});
 
-	Main_Data::game_party->ResetBattle();
+	Game_Actors::ResetBattle();
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
@@ -117,7 +117,7 @@ void Game_Battle::Quit() {
 	page_executed.clear();
 	page_can_run.clear();
 
-	Main_Data::game_party->ResetBattle();
+	Game_Actors::ResetBattle();
 	Main_Data::game_pictures->OnBattleEnd();
 }
 

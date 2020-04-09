@@ -89,18 +89,6 @@ bool Game_Battler::CanAct() const {
 	return true;
 }
 
-bool Game_Battler::IsDead() const {
-	return HasState(RPG::State::kDeathID);
-}
-
-void Game_Battler::Kill() {
-	ChangeHp(-GetHp());
-}
-
-bool Game_Battler::Exists() const {
-	return !IsHidden() && !IsDead();
-}
-
 const RPG::State* Game_Battler::GetSignificantState() const {
 	return State::GetSignificantState(GetStates());
 }
@@ -386,38 +374,6 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 		: skill->sp_cost;
 }
 
-void Game_Battler::SetAtkModifier(int modifier) {
-	atk_modifier = modifier;
-}
-
-void Game_Battler::SetDefModifier(int modifier) {
-	def_modifier = modifier;
-}
-
-void Game_Battler::SetSpiModifier(int modifier) {
-	spi_modifier = modifier;
-}
-
-void Game_Battler::SetAgiModifier(int modifier) {
-	agi_modifier = modifier;
-}
-
-void Game_Battler::ChangeAtkModifier(int modifier) {
-	SetAtkModifier(atk_modifier + modifier);
-}
-
-void Game_Battler::ChangeDefModifier(int modifier) {
-	SetDefModifier(def_modifier + modifier);
-}
-
-void Game_Battler::ChangeSpiModifier(int modifier) {
-	SetSpiModifier(spi_modifier + modifier);
-}
-
-void Game_Battler::ChangeAgiModifier(int modifier) {
-	SetAgiModifier(agi_modifier + modifier);
-}
-
 bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	auto was_added = State::Add(state_id, GetStates(), GetPermanentStates(), allow_battle_states);
 
@@ -427,7 +383,6 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 
 	if (state_id == RPG::State::kDeathID) {
 		SetGauge(0);
-		SetCharged(false);
 		SetHp(0);
 		SetAtkModifier(0);
 		SetDefModifier(0);
@@ -439,8 +394,9 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		attribute_shift.resize(Data::attributes.size());
 	}
 
-	if (IsDefending() && GetSignificantRestriction() != RPG::State::Restriction_normal) {
+	if (GetSignificantRestriction() != RPG::State::Restriction_normal) {
 		SetIsDefending(false);
+		SetCharged(false);
 	}
 
 	return was_added;
@@ -522,37 +478,6 @@ void Game_Battler::RemoveAllStates() {
 	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
-bool Game_Battler::IsCharged() const {
-	return charged;
-}
-
-void Game_Battler::SetCharged(bool charge) {
-	charged = charge;
-}
-
-bool Game_Battler::IsDefending() const {
-	return defending;
-}
-
-void Game_Battler::SetIsDefending(bool val) {
-	defending = val;
-}
-
-bool Game_Battler::HasStrongDefense() const {
-	return false;
-}
-
-bool Game_Battler::HasPreemptiveAttack() const {
-	return false;
-}
-
-bool Game_Battler::IsHidden() const {
-	return false;
-}
-
-bool Game_Battler::IsImmortal() const {
-	return false;
-}
 
 void Game_Battler::ChangeHp(int hp) {
 	if (!IsDead()) {
@@ -682,10 +607,6 @@ int Game_Battler::GetDisplayY() const {
 	return GetBattleY() + GetFlyingOffset() + shake_pos;
 }
 
-int Game_Battler::GetHue() const {
-	return 0;
-}
-
 Game_Party_Base& Game_Battler::GetParty() const {
 	if (GetType() == Type_Ally) {
 		return *Main_Data::game_party;
@@ -694,22 +615,10 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
-int Game_Battler::GetMaxGauge() const {
-	return 120000;
-}
-
-int Game_Battler::GetGauge() const {
-	return gauge / (GetMaxGauge() / 100);
-}
-
 void Game_Battler::SetGauge(int new_gauge) {
 	new_gauge = min(max(new_gauge, 0), 100);
 
 	gauge = new_gauge * (GetMaxGauge() / 100);
-}
-
-bool Game_Battler::IsGaugeFull() const {
-	return gauge >= GetMaxGauge();
 }
 
 void Game_Battler::UpdateGauge(int multiplier) {
@@ -728,25 +637,9 @@ void Game_Battler::UpdateGauge(int multiplier) {
 	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
 }
 
-int Game_Battler::GetFlyingOffset() const {
-	return 0;
-}
-
 void Game_Battler::UpdateBattle() {
 	Shake::Update(shake.position, shake.time_left, shake.strength, shake.speed, false);
 	Flash::Update(flash.current_level, flash.time_left);
-}
-
-const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
-	return battle_algorithm;
-}
-
-void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
-	this->battle_algorithm = battle_algorithm;
-}
-
-void Game_Battler::NextBattleTurn() {
-	++battle_turn;
 }
 
 std::vector<int16_t> Game_Battler::BattleStateHeal() {
@@ -785,8 +678,9 @@ void Game_Battler::ResetBattle() {
 	if (!HasPreemptiveAttack()) {
 		gauge /= 2;
 	}
-	charged = false;
-	defending = false;
+	SetCharged(false);
+	SetIsDefending(false);
+	SetHidden(false);
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;
@@ -797,28 +691,7 @@ void Game_Battler::ResetBattle() {
 	battle_combo_times = -1;
 	attribute_shift.clear();
 	attribute_shift.resize(Data::attributes.size());
-}
-
-int Game_Battler::GetBattleTurn() const {
-	return battle_turn;
-}
-
-void Game_Battler::SetLastBattleAction(int battle_action) {
-	last_battle_action = battle_action;
-}
-
-int Game_Battler::GetLastBattleAction() const {
-	return last_battle_action;
-}
-
-void Game_Battler::SetBattleCombo(int command_id, int times) {
-	battle_combo_command_id = command_id;
-	battle_combo_times = times;
-}
-
-void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
-	command_id = battle_combo_command_id;
-	times = battle_combo_times;
+	SetBattleAlgorithm(nullptr);
 }
 
 void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
@@ -855,14 +728,6 @@ bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
 	}
 	auto new_shift = attribute_shift[attribute_id - 1] + shift;
 	return new_shift >= -1 && new_shift <= 1;
-}
-
-void Game_Battler::SetBattleOrderAgi(int val) {
-	battle_order = val;
-}
-
-int Game_Battler::GetBattleOrderAgi() {
-	return battle_order;
 }
 
 int Game_Battler::GetHitChanceModifierFromStates() const {

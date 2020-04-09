@@ -58,6 +58,11 @@ namespace Game_Actors {
 	 * @return whether the actor exists.
 	 */
 	bool ActorExists(int actor_id);
+
+	/**
+	 * Resets battle modifiers of all actors.
+	 */
+	void ResetBattle();
 }
 
 #endif
