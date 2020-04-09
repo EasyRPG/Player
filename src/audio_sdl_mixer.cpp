@@ -625,7 +625,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		Output::Warning("Couldn't play %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
-	sounds[channel] = snd_data;
+	sounds[channel] = std::move(snd_data);
 }
 
 void SdlMixerAudio::SE_Stop() {

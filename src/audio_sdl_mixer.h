@@ -73,6 +73,12 @@ private:
 	bool played_once = false;
 
 	struct sound_data {
+		sound_data() = default;
+		sound_data(const sound_data&) = delete;
+		sound_data(sound_data&&) = default;
+		sound_data& operator=(const sound_data&) = delete;
+		sound_data& operator=(sound_data&&) = default;
+
 		std::shared_ptr<Mix_Chunk> chunk;
 		AudioSeRef se_ref;
 		std::vector<uint8_t> buffer;
