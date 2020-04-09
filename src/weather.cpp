@@ -338,15 +338,13 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
 	const auto fog_bg_frames = particles[0].x;
 	const auto fog_fg_frames = particles[1].x;
 
-	// Front layer moves left one pixel every 16 frames.
-	const int fx = shake_x + (fog_fg_frames / 16) % sr.width;
-	// Back layer moves left one pixel every 8 frames.
-	const int bx = shake_x - (fog_bg_frames / 8) % sr.width;
+	// Front layer moves left one pixel every 8 frames.
+	const int fx = shake_x + (fog_fg_frames / 8) % sr.width;
+	// Back layer moves left one pixel every 4 frames.
+	const int bx = shake_x - (fog_bg_frames / 4) % sr.width;
 	// Front layer moves vertically up and down using this algorithm. And it uses the background frame counter!
 	// Confirmed to be matching RPG_RT
-	const int fy = shake_y - std::round(sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2));
-	// Another similar function which produces a triangle wave movement instead of sinusoidal
-	// const int fy = shake_y - std::abs((fog_bg_frames + sr.height * 128) % (sr.height * 512) - (sr.height * 256)) / (sr.height * 16) - (sr.height / 2);
+	const int fy = shake_y - std::sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2) - (sr.height / 4);
 	// Back layer never moves vertically
 	const int by = shake_y;
 

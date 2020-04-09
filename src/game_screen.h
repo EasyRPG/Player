@@ -90,7 +90,7 @@ public:
 		int16_t t = 0;
 		int16_t x = 0;
 		int16_t y = 0;
-		// Thse are only used for sandstorm particles.
+		// These are only used for sandstorm particles.
 		// RPG_RT uses double. We use float to save space.
 		int16_t alpha = 0;
 		float vx = 0.0;
