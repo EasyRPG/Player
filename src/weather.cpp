@@ -167,7 +167,7 @@ void Weather::DrawRain(Bitmap& dst) {
 	if (!rain_bitmap) {
 		CreateRainParticle();
 	}
-	DrawParticles(dst, *rain_bitmap, rain_bitmap_rect, 80, 12);
+	DrawParticles(dst, *rain_bitmap, rain_bitmap_rect, 5, 12);
 }
 
 
@@ -189,10 +189,10 @@ void Weather::DrawSnow(Bitmap& dst) {
 	if (!snow_bitmap) {
 		CreateSnowParticle();
 	}
-	DrawParticles(dst, *snow_bitmap, snow_bitmap_rect, 255, 30);
+	DrawParticles(dst, *snow_bitmap, snow_bitmap_rect, 7, 30);
 }
 
-void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect, int amax, int tmax) {
+void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect, int abase, int tmax) {
 	auto* bitmap = ApplyToneEffect(particle, rect);
 
 	const auto strength = Main_Data::game_screen->GetWeatherStrength();
@@ -200,6 +200,7 @@ void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect
 	const auto& screen_rect = Main_Data::game_screen->GetScreenEffectsRect();
 
 	const int num_particles = num_rain_or_snow_particles[Utils::Clamp(strength, 0, num_strength - 1)];
+	const auto ainc = abase + strength;
 
 	auto surface_rect = weather_surface->GetRect();
 	weather_surface->Clear();
@@ -212,7 +213,7 @@ void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect
 			continue;
 		}
 
-		auto alpha = amax * p.t / tmax;
+		auto alpha = std::min(ainc * p.t, 255);
 
 		weather_surface->EdgeMirrorBlit(p.x, p.y, *bitmap, rect, true, true, alpha);
 	}

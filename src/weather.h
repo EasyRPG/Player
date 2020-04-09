@@ -52,7 +52,7 @@ private:
 	void CreateSandParticle();
 	void CreateFogOverlay();
 
-	void DrawParticles(Bitmap& dst, const Bitmap& particle, Rect rect, int amax, int tmax);
+	void DrawParticles(Bitmap& dst, const Bitmap& particle, Rect rect, int abase, int tmax);
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay);
 	void DrawSandParticles(Bitmap& dst, const Bitmap& particle);
 	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, Rect rect);
