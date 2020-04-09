@@ -972,7 +972,7 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 
 	Blit(x, y, src, rect, opacity);
 
-	if (!has_xform) {
+	if (has_xform) {
 		pixman_image_set_transform(src.bitmap.get(), nullptr);
 	}
 }
