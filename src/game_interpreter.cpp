@@ -2684,6 +2684,8 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	const size_t param_size = com.parameters.size();
 
+	// All engines support older versions of the command depending on the
+	// length of the parameter list
 	if (param_size < 6) {
 		// For Rpg2k <1.50
 		if (com.parameters[2] != 0) {
@@ -2692,7 +2694,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 			_keyinput.keys[Keys::eRight] = true;
 			_keyinput.keys[Keys::eUp] = true;
 		}
-	} else if (param_size < 11) {
+	} else if (param_size < 11 || Player::IsRPG2k()) {
 		// For Rpg2k >=1.50
 		_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
 		_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
@@ -2701,6 +2703,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 	} else {
 		// For Rpg2k3
+		// (Not supported by 2k engines)
 		_keyinput.keys[Keys::eNumbers] = com.parameters[5] != 0;
 		_keyinput.keys[Keys::eOperators] = com.parameters[6] != 0;
 		_keyinput.time_variable = com.parameters[7];
