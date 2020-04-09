@@ -89,7 +89,6 @@ namespace Input {
 			case SHOW_LOG:
 			case TOGGLE_ZOOM:
 			case FAST_FORWARD:
-			case PLUS:
 				return true;
 			default:
 				return false;
