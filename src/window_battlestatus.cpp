@@ -122,19 +122,32 @@ void Window_BattleStatus::RefreshGauge() {
 					// to clear the number area (e.g. Ara Fell)
 					DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 
-					// Background
-					contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::Opaque());
+					int x = 32 + i * 80;
+					int y = 24;
+
+					// Left Gauge
+					contents->Blit(x, y, *system2, Rect(0, 32, 16, 48), Opacity::Opaque());
+					x += 16;
+
+					// Center
+					const auto fill_x = x;
+					contents->StretchBlit(Rect(x, y, 25, 48), *system2, Rect(16, 32, 16, 48), Opacity::Opaque());
+					x += 25;
+
+					// Right
+					contents->Blit(x, y, *system2, Rect(32, 32, 16, 48), Opacity::Opaque());
 
 					// HP
-					DrawGaugeSystem2(48 + i * 80, 24, actor->GetHp(), actor->GetMaxHp(), 0);
+					DrawGaugeSystem2(fill_x, y, actor->GetHp(), actor->GetMaxHp(), 0);
 					// SP
-					DrawGaugeSystem2(48 + i * 80, 24 + 16, actor->GetSp(), actor->GetMaxSp(), 1);
+					DrawGaugeSystem2(fill_x, y + 16, actor->GetSp(), actor->GetMaxSp(), 1);
 					// Gauge
-					DrawGaugeSystem2(48 + i * 80, 24 + 16 * 2, actor->GetAtbGauge(), actor->GetMaxAtbGauge(), 2);
+					DrawGaugeSystem2(fill_x, y + 16 * 2, actor->GetAtbGauge(), actor->GetMaxAtbGauge(), 2);
 
 					// Numbers
-					DrawNumberSystem2(40 + 80 * i, 24, actor->GetHp());
-					DrawNumberSystem2(40 + 80 * i, 24 + 12 + 4, actor->GetSp());
+					x = 40 + 80 * i;
+					DrawNumberSystem2(x, y, actor->GetHp());
+					DrawNumberSystem2(x, y + 12 + 4, actor->GetSp());
 				}
 			}
 			else {
