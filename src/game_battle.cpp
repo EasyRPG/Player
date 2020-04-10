@@ -237,6 +237,8 @@ void Game_Battle::UpdateAtbGauges() {
 	Main_Data::game_enemyparty->GetBattlers(battlers);
 	Main_Data::game_party->GetBattlers(battlers);
 
+	const auto use_2k3e_algo = Player::IsRPG2k3E();
+
 	int sum_agi = 0;
 	for (auto* bat: battlers) {
 		// RPG_RT uses dead and state restricted battlers to contribute to the sum.
@@ -249,12 +251,16 @@ void Game_Battle::UpdateAtbGauges() {
 	const int max_atb = Game_Battler::GetMaxAtbGauge();
 
 	for (auto* bat: battlers) {
-		int increment = 0;
 		// RPG_RT always updates atb for non-hidden enemies, even if they can't act.
 		if (bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
 		{
 			const auto agi = bat->GetAgi();
-			increment = max_atb / (sum_agi / (agi + 1));
+			auto increment = max_atb / (sum_agi / (agi + 1));
+			if (use_2k3e_algo) {
+				const auto cur_atb = bat->GetAtbGauge();
+				const auto multiplier = std::max(1.0, static_cast<double>(275000 - cur_atb) / 55000.0);
+				increment = static_cast<int>(multiplier * increment);
+			}
 			bat->IncrementAtbGauge(increment);
 		}
 	}
