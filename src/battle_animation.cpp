@@ -75,6 +75,8 @@ void BattleAnimation::Update() {
 
 	SetFlashEffect(Main_Data::game_screen->GetFlashColor());
 
+	UpdateShake();
+
 	frame++;
 }
 
@@ -144,6 +146,18 @@ void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) 
 	}
 }
 
+void BattleAnimation::ProcessAnimationShake(const RPG::AnimationTiming& timing) {
+	if (IsOnlySound()) {
+		return;
+	}
+
+	if (timing.screen_shake == RPG::AnimationTiming::ScreenShake_target) {
+		target_shake_timing = &timing - animation.timings.data();
+	} else if (timing.screen_shake == RPG::AnimationTiming::ScreenShake_screen) {
+		screen_shake_timing = &timing - animation.timings.data();
+	}
+}
+
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
@@ -153,26 +167,7 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 
 	// Flash.
 	ProcessAnimationFlash(timing);
-
-	// Shake (only happens in battle).
-	if (Game_Battle::IsBattleRunning()) {
-		switch (timing.screen_shake) {
-		case RPG::AnimationTiming::ScreenShake_nothing:
-			break;
-		case RPG::AnimationTiming::ScreenShake_target:
-			// FIXME: Estimate, see below for screen shake.
-			ShakeTargets(3, 5, 32);
-			break;
-		case RPG::AnimationTiming::ScreenShake_screen:
-			Game_Screen* screen = Main_Data::game_screen.get();
-			// FIXME: This is not proven accurate. Screen captures show that
-			// the shake effect lasts for 16 animation frames (32 real frames).
-			// The maximum offset observed was 6 or 7, which makes these numbers
-			// seem reasonable.
-			screen->ShakeOnce(3, 5, 32);
-			break;
-		}
-	}
+	ProcessAnimationShake(timing);
 }
 
 static int CalculateFlashPower(int frames, int power) {
@@ -196,6 +191,16 @@ void BattleAnimation::UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b,
 			p = CalculateFlashPower(delta_frames, timing.flash_power);
 		}
 	}
+}
+
+bool BattleAnimation::CheckShakeGeneric(int timing_idx) {
+	if (timing_idx >= 0) {
+		auto& timing = animation.timings[timing_idx];
+		int start_frame = (timing.frame - 1) * 2;
+		int delta_frames = GetFrame() - start_frame;
+		return (delta_frames <= 10);
+	}
+	return false;
 }
 
 void BattleAnimation::UpdateScreenFlash() {
@@ -269,7 +274,8 @@ void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
 	target.Flash(r, g, b, p, 0);
 }
 
-void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time */) {
+void BattleAnimationMap::UpdateShake() {
+	// RPG_RT only implements this for battle
 }
 
 /////////
@@ -298,15 +304,22 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 		DrawAt(dst, battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
 }
+
 void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
 	for (auto& battler: battlers) {
 		battler->Flash(r, g, b, p, 0);
 	}
 }
 
-void BattleAnimationBattle::ShakeTargets(int str, int spd, int time) {
-	for (auto& battler: battlers) {
-		battler->ShakeOnce(str, spd, time);
+void BattleAnimationBattle::UpdateShake() {
+	if (CheckShakeGeneric(screen_shake_timing)) {
+		Main_Data::game_screen->ShakeOnce(3, 4, 31);
+	}
+
+	if (CheckShakeGeneric(target_shake_timing)) {
+		for (auto& battler: battlers) {
+			battler->ShakeOnce(3, 4, 31);
+		}
 	}
 }
 
@@ -315,11 +328,14 @@ void BattleAnimation::SetFrame(int frame) {
 	int real_frame = frame / 2;
 	screen_flash_timing = -1;
 	target_flash_timing = -1;
+	screen_shake_timing = -1;
+	target_shake_timing = -1;
 	for (auto& timing: animation.timings) {
 		if (timing.frame > real_frame + 1) {
 			break;
 		}
 		ProcessAnimationFlash(timing);
+		ProcessAnimationShake(timing);
 	}
 
 	this->frame = frame;

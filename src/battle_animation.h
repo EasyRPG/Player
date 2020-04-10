@@ -66,21 +66,25 @@ protected:
 	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
 
 	virtual void FlashTargets(int r, int g, int b, int p) = 0;
-	virtual void ShakeTargets(int str, int spd, int time) = 0;
+	virtual void UpdateShake() = 0;
 	void DrawAt(Bitmap& dst, int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
 	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
+	void ProcessAnimationShake(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
 	void UpdateScreenFlash();
 	void UpdateTargetFlash();
 	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
+	bool CheckShakeGeneric(int timing_idx);
 
 	const RPG::Animation& animation;
 	int frame = 0;
 	int num_frames = 0;
 	int screen_flash_timing = -1;
 	int target_flash_timing = -1;
+	int screen_shake_timing = -1;
+	int target_shake_timing = -1;
 
 	FileRequestBinding request_id;
 	bool only_sound = false;
@@ -93,7 +97,7 @@ public:
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
-	void ShakeTargets(int str, int spd, int time) override;
+	void UpdateShake() override;
 	void DrawSingle(Bitmap& dst);
 	void DrawGlobal(Bitmap& dst);
 
@@ -108,7 +112,7 @@ public:
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
-	void ShakeTargets(int str, int spd, int time) override;
+	void UpdateShake() override;
 	std::vector<Game_Battler*> battlers;
 };
 
