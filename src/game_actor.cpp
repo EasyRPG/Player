@@ -1157,7 +1157,7 @@ void Game_Actor::ChangeClass(int new_class_id,
 	}
 
 	SetLevel(new_level);
-	if (new_level > 1 && (new_level > prev_level || new_skill != eSkillNoChange)) {
+	if (pm && new_level > 1 && (new_level > prev_level || new_skill != eSkillNoChange)) {
 		pm->PushLine(GetLevelUpMessage(new_level));
 	}
 
