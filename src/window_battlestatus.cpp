@@ -113,9 +113,8 @@ void Window_BattleStatus::RefreshGauge() {
 			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 				BitmapRef system2 = Cache::System2();
 				if (system2) {
-					// Clear number drawing area
-					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
-					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
+					// Clear number and gauge drawing area
+					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 48));
 
 					// Number clearing removed part of the face, but both, clear and redraw
 					// are needed because some games don't have face graphics that are huge enough
