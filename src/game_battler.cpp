@@ -652,12 +652,7 @@ bool Game_Battler::HasReflectState() const {
 }
 
 void Game_Battler::ResetBattle() {
-	auto atb = GetMaxAtbGauge();
-	if (!HasPreemptiveAttack()) {
-		atb /= 2;
-	}
-	SetAtbGauge(atb);
-
+	SetAtbGauge(0);
 	SetCharged(false);
 	SetIsDefending(false);
 	SetHidden(false);

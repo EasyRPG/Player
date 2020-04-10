@@ -38,12 +38,43 @@
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
 	battle_action_wait(30),
-	battle_action_state(BattleActionState_Execute)
+	battle_action_state(BattleActionState_Execute),
+	first_strike(args.first_strike)
 {
+}
+
+void Scene_Battle_Rpg2k3::Start() {
+	Scene_Battle::Start();
+	InitAtbGauges();
 }
 
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
+
+void Scene_Battle_Rpg2k3::InitAtbGauges() {
+	switch(Game_Battle::GetBattleCondition()) {
+		case RPG::System::BattleCondition_initiative:
+		case RPG::System::BattleCondition_surround:
+			Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
+			Main_Data::game_enemyparty->SetPartyAtbGauge(0, false);
+			break;
+		case RPG::System::BattleCondition_back:
+		case RPG::System::BattleCondition_pincers:
+			Main_Data::game_party->SetPartyAtbGauge(0, false);
+			Main_Data::game_enemyparty->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
+			break;
+		default:
+			if (first_strike) {
+				Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
+				Main_Data::game_enemyparty->SetPartyAtbGauge(0, false);
+			} else {
+				Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge() / 2, true);
+				Main_Data::game_enemyparty->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge() / 2, true);
+			}
+			break;
+	}
+}
+
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {

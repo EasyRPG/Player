@@ -118,3 +118,15 @@ int Game_Party_Base::GetAverageAgility() {
 	return agi /= battlers.size();
 }
 
+void Game_Party_Base::SetPartyAtbGauge(int atb, bool allow_preemptive_attack) {
+	int count = GetBattlerCount();
+	for (int i = 0; i < count; ++i) {
+		Game_Battler* battler = &(*this)[i];
+
+		if (allow_preemptive_attack && battler->HasPreemptiveAttack()) {
+			battler->SetAtbGauge(Game_Battler::GetMaxAtbGauge());
+		} else {
+			battler->SetAtbGauge(atb);
+		}
+	}
+}
