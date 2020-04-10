@@ -309,8 +309,8 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 		return;
 	}
 
-	bool full = actor.IsGaugeFull();
-	int gauge_w = actor.GetGauge() / 4;
+	bool full = actor.IsAtbGaugeFull();
+	int gauge_w = 25 * actor.GetAtbGauge() / actor.GetMaxAtbGauge();
 
 	// Which gauge (0 - 2)
 	int gauge_y = 32 + 2 * 16;

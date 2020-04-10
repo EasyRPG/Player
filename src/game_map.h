@@ -32,7 +32,7 @@
 #include "async_op.h"
 
 class FileRequestAsync;
-class BattleArgs;
+struct BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;

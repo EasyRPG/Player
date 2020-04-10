@@ -26,6 +26,7 @@
 #include "state.h"
 #include "color.h"
 #include "flash.h"
+#include "utils.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -558,35 +559,35 @@ public:
 	Game_Party_Base& GetParty() const;
 
 	/**
-	 * Gets the maximal gauge value.
+	 * Gets the maximal atb gauge value.
+	 * When GetAtbGauge() >= this, the battler can act.
+	 * Used by RPG2k3 battle system.
  	 */
-	int GetMaxGauge() const;
+	static constexpr int GetMaxAtbGauge();
 
 	/**
-	 * Gets the current state of the battle gauge in percent.
+	 * Gets the current value of the atb gauge.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @return gauge in percent
+	 * @return atb gauge value
 	 */
-	int GetGauge() const;
+	int GetAtbGauge() const;
 
 	/**
-	 * Sets the gauge to a new percentage in range 0-100
+	 * Sets the gauge to the specified value.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @param new_gauge new gauge value in percent
+	 * @param value the new value to set
 	 */
-	void SetGauge(int new_gauge);
+	void SetAtbGauge(int value);
 
 	/**
-	 * Increments the gauge by current agi.
-	 * The size of the step is altered by the multiplier (usually based on
-	 * the highest agi of all battlers)
+	 * Increments the gauge by specified amount.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @param multiplier gauge increment factor
+	 * @param value the value to add
 	 */
-	void UpdateGauge(int multiplier);
+	void IncrementAtbGauge(int value);
 
 	/**
 	 * Tests if the battler is ready for an action.
@@ -594,7 +595,7 @@ public:
 	 *
 	 * @return If gauge is full
 	 */
-	bool IsGaugeFull() const;
+	bool IsAtbGaugeFull() const;
 
 	/**
 	 * @return Offset of flying enemies
@@ -687,7 +688,7 @@ public:
 
 protected:
 	/** Gauge for RPG2k3 Battle */
-	int gauge;
+	int gauge = 0;
 
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
@@ -814,17 +815,24 @@ inline int Game_Battler::GetHue() const {
 	return 0;
 }
 
-inline int Game_Battler::GetMaxGauge() const {
-	return 120000;
+constexpr int Game_Battler::GetMaxAtbGauge() {
+	return 300000;
 }
 
-inline int Game_Battler::GetGauge() const {
-	return gauge / (GetMaxGauge() / 100);
+inline void Game_Battler::SetAtbGauge(int value) {
+	gauge = Utils::Clamp(value, 0, GetMaxAtbGauge());
 }
 
+inline int Game_Battler::GetAtbGauge() const {
+	return gauge;
+}
 
-inline bool Game_Battler::IsGaugeFull() const {
-	return gauge >= GetMaxGauge();
+inline void Game_Battler::IncrementAtbGauge(int amount) {
+	SetAtbGauge(GetAtbGauge() + amount);
+}
+
+inline bool Game_Battler::IsAtbGaugeFull() const {
+	return gauge >= GetMaxAtbGauge();
 }
 
 inline int Game_Battler::GetFlyingOffset() const {

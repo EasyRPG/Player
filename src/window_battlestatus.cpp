@@ -130,7 +130,7 @@ void Window_BattleStatus::RefreshGauge() {
 					// SP
 					DrawGaugeSystem2(48 + i * 80, 24 + 16, actor->GetSp(), actor->GetMaxSp(), 1);
 					// Gauge
-					DrawGaugeSystem2(48 + i * 80, 24 + 16 * 2, actor->GetGauge() * actor->GetMaxGauge() / 100, actor->GetMaxGauge(), 2);
+					DrawGaugeSystem2(48 + i * 80, 24 + 16 * 2, actor->GetAtbGauge(), actor->GetMaxAtbGauge(), 2);
 
 					// Numbers
 					DrawNumberSystem2(40 + 80 * i, 24, actor->GetHp());
@@ -204,7 +204,7 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 	index = -1;
 	for (int i = 0; i < item_max; i++) {
 		int new_index = (old_index + i) % item_max;
-		if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
+		if ((*Main_Data::game_party)[new_index].IsAtbGaugeFull()) {
 			index = new_index;
 			return index;
 		}
@@ -285,7 +285,7 @@ bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
 		case ChoiceMode_Dead:
 			return battler.IsDead();
 		case ChoiceMode_Ready:
-			return battler.IsGaugeFull();
+			return battler.IsAtbGaugeFull();
 		case ChoiceMode_None:
 			return false;
 		default:
