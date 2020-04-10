@@ -34,6 +34,7 @@
 #include "reader_util.h"
 #include "spriteset_battle.h"
 #include "output.h"
+#include "utils.h"
 
 namespace Game_Battle {
 	const RPG::Troop* troop;
@@ -259,7 +260,7 @@ void Game_Battle::UpdateAtbGauges() {
 			if (use_2k3e_algo) {
 				const auto cur_atb = bat->GetAtbGauge();
 				const auto multiplier = std::max(1.0, static_cast<double>(275000 - cur_atb) / 55000.0);
-				increment = static_cast<int>(multiplier * increment);
+				increment = Utils::RoundToInt(multiplier * increment);
 			}
 			bat->IncrementAtbGauge(increment);
 		}

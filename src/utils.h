@@ -331,6 +331,77 @@ namespace Utils {
 	template <typename T>
 	bool IsControlCharacter(T ch);
 
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToInt(double v) {
+		return std::lrint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToInt(float v) {
+		return std::lrint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToLong(double v) {
+		return std::lrint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToLong(float v) {
+		return std::lrint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToLongLong(double v) {
+		return std::llrint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point to integer.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline int RoundToLongLong(float v) {
+		return std::llrint(v);
+	}
 } // namespace Utils
 
 template <typename T>
