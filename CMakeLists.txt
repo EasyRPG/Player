@@ -391,6 +391,11 @@ include(CMakeDependentOption)
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+# Optimize floating point math functions into intrinsics and don't check or set errno (i.e. sqrt(-1))
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
+endif()
+
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)

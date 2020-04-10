@@ -36,7 +36,7 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		= 	-g -O2 -Wall -Wextra \
+CFLAGS		= 	-g -O2 -Wall -Wextra -fno-math-errno \
 				-fomit-frame-pointer -fdata-sections -ffunction-sections \
 				-DUSE_SDL=1 -DNDEBUG \
 				-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
