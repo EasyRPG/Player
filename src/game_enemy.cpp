@@ -33,19 +33,17 @@ namespace {
 	constexpr int levitation_frame_cycle = 20;
 }
 
-Game_Enemy::Game_Enemy(int enemy_id) : Game_Battler() {
-	Setup(enemy_id);
-}
+Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember& member)
+	: troop_member(&member)
+{
+	Transform(troop_member->enemy_id);
 
-void Game_Enemy::Setup(int enemy_id) {
-	Transform(enemy_id);
 	hp = GetMaxHp();
 	sp = GetMaxSp();
-	x = 0;
-	y = 0;
-	SetHidden(false);
+	SetHidden(troop_member->invisible);
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
-	flying_offset = 0;
+	x = troop_member->x;
+	y = troop_member->y;
 }
 
 int Game_Enemy::MaxHpValue() const {
@@ -103,20 +101,23 @@ int Game_Enemy::GetBattleY() const {
 	return (y*SCREEN_TARGET_HEIGHT/240);
 }
 
-void Game_Enemy::Transform(int new_enemy_id) {
-	enemy_id = new_enemy_id;
+static lcf::rpg::Enemy makeDummyEnemy() {
+	lcf::rpg::Enemy enemy;
+	enemy.ID = 1;
+	return enemy;
+}
 
-	enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy_id);
+void Game_Enemy::Transform(int new_enemy_id) {
+	enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_enemy_id);
 
 	if (!enemy) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.
 		// This case will fail in RPG Maker and the game will exit with an error message.
 		// Create a warning instead and continue the battle.
 		Output::Warning("Invalid enemy ID {}", new_enemy_id);
-		enemy_id = 1;
 		// This generates an invisible monster with 0 HP
-		static lcf::rpg::Enemy dummy_enemy;
-		enemy = &dummy_enemy;
+		static auto dummy = makeDummyEnemy();
+		enemy = &dummy;
 	}
 }
 
@@ -204,6 +205,7 @@ bool Game_Enemy::IsActionValid(const lcf::rpg::EnemyAction& action) {
 
 const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	if (IsCharged()) {
+		static lcf::rpg::EnemyAction normal_atk;
 		return &normal_atk;
 	}
 

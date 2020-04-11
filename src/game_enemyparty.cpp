@@ -49,32 +49,28 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 		return;
 	}
 
-	int non_hidden = 0;
-	for (const lcf::rpg::TroopMember& mem : troop->members) {
-		non_hidden += (!mem.invisible ? 1 : 0);
+	int non_hidden = static_cast<int>(troop->members.size());
+	for (const auto& mem : troop->members) {
+		enemies.push_back(std::make_shared<Game_Enemy>(mem));
+		non_hidden -= enemies.back()->IsHidden();
 	}
 
-	for (const lcf::rpg::TroopMember& mem : troop->members) {
-		std::shared_ptr<Game_Enemy> enemy = std::make_shared<Game_Enemy>(mem.enemy_id);
-		enemy->SetBattleX(mem.x);
-		enemy->SetBattleY(mem.y);
-
-		if (!mem.invisible) {
-			if (troop->appear_randomly) {
+	if (troop->appear_randomly) {
+		for (auto& enemy: enemies) {
+			if (non_hidden <= 1) {
 				// At least one party member must be visible
-				if (non_hidden > 1) {
-					bool hide = Utils::ChanceOf(1, 2);
-					enemy->SetHidden(hide);
-					non_hidden -= (hide ? 1 : 0);
-				}
-			} else {
-				enemy->SetHidden(false);
+				break;
 			}
-		} else {
-			enemy->SetHidden(true);
-		}
+			if (enemy->IsHidden()) {
+				continue;
+			}
 
-		enemies.push_back(enemy);
+			const bool hide = Utils::ChanceOf(1, 2);
+			if (hide) {
+				enemy->SetHidden(true);
+				--non_hidden;
+			}
+		}
 	}
 }
 

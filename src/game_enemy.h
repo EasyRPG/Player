@@ -21,6 +21,8 @@
 // Headers
 #include "game_battler.h"
 #include <lcf/rpg/enemy.h>
+#include <lcf/rpg/enemyaction.h>
+#include <lcf/rpg/troopmember.h>
 
 /**
  * Represents a single enemy in the battle scene
@@ -28,7 +30,7 @@
 class Game_Enemy final : public Game_Battler
 {
 public:
-	Game_Enemy(int enemy_id);
+	explicit Game_Enemy(const lcf::rpg::TroopMember& tm);
 
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
@@ -124,6 +126,7 @@ public:
 	 * @return enemy X position
 	 */
 	int GetBattleX() const override;
+
 	/**
 	 * Gets enemy Y position
 	 *
@@ -191,24 +194,15 @@ public:
 	bool IsInParty() const override;
 
 protected:
-	void Setup(int enemy_id);
-
-	int x;
-	int y;
-
-	int enemy_id;
-	// hidden at battle begin
-	bool hidden;
-	int hp;
-	int sp;
-	int cycle;
-	int flying_offset;
+	const lcf::rpg::Enemy* enemy = nullptr;
+	const lcf::rpg::TroopMember* troop_member = nullptr;
 	std::vector<int16_t> states;
-
-	lcf::rpg::Enemy* enemy;
-
-	// normal attack instance for use after charge
-	lcf::rpg::EnemyAction normal_atk;
+	int hp = 0;
+	int sp = 0;
+	int cycle = 0;
+	int flying_offset = 0;
+	int x = 0;
+	int y = 0;
 };
 
 inline Game_Battler::BattlerType Game_Enemy::GetType() const {
@@ -252,7 +246,7 @@ inline int Game_Enemy::GetHue() const {
 }
 
 inline int Game_Enemy::GetId() const {
-	return enemy_id;
+	return enemy->ID;
 }
 
 inline int Game_Enemy::GetBaseMaxHp() const {
