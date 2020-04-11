@@ -45,19 +45,19 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	InitBattleCondition(args.condition);
 }
 
-void Scene_Battle_Rpg2k3::InitBattleCondition(RPG::System::BattleCondition condition) {
-	if (condition == RPG::System::BattleCondition_pincers
-			&& (Data::battlecommands.placement == RPG::BattleCommands::Placement_manual
+void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {
+	if (condition == lcf::rpg::System::BattleCondition_pincers
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
 				|| Main_Data::game_enemyparty->GetBattlerCount() <= 1))
 	{
-		condition = RPG::System::BattleCondition_back;
+		condition = lcf::rpg::System::BattleCondition_back;
 	}
 
-	if (condition == RPG::System::BattleCondition_surround
-			&& (Data::battlecommands.placement == RPG::BattleCommands::Placement_manual
+	if (condition == lcf::rpg::System::BattleCondition_surround
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
 				|| Main_Data::game_party->GetBattlerCount() <= 1))
 	{
-		condition = RPG::System::BattleCondition_initiative;
+		condition = lcf::rpg::System::BattleCondition_initiative;
 	}
 
 	Game_Battle::SetBattleCondition(condition);

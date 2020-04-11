@@ -76,7 +76,7 @@ public:
 
 protected:
 	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
-	void InitBattleCondition(RPG::System::BattleCondition condition);
+	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
 	void InitAtbGauges();
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();

@@ -114,8 +114,9 @@ void Game_Enemy::Transform(int new_enemy_id) {
 		// Create a warning instead and continue the battle.
 		Output::Warning("Invalid enemy ID {}", new_enemy_id);
 		enemy_id = 1;
-		// This generates an invisible monster with 0 HP and a minor memory leak
-		enemy = new lcf::rpg::Enemy();
+		// This generates an invisible monster with 0 HP
+		static lcf::rpg::Enemy dummy_enemy;
+		enemy = &dummy_enemy;
 	}
 }
 
