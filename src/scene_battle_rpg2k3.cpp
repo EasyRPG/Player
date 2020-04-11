@@ -38,8 +38,6 @@
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
-	battle_action_wait(30),
-	battle_action_state(BattleActionState_Execute),
 	first_strike(args.first_strike)
 {
 	InitBattleCondition(args.condition);
@@ -68,116 +66,18 @@ void Scene_Battle_Rpg2k3::Start() {
 	InitEnemies();
 	InitActors();
 	InitAtbGauges();
-}
 
-void Scene_Battle_Rpg2k3::PlaceActor(Game_Actor& actor) {
-	auto position = actor.GetOriginalPosition();
-
-	if (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
-		int party_size = Main_Data::game_party->GetBattlerCount();
-
-		float left = actor.GetBattleRow() == lcf::rpg::SaveActor::RowType_back ? 25.0 : 50.0;
-		float right = left;
-		float top = 0.0f;
-		float bottom = 0.0f;
-
-		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Battle::GetTerrainId());
-		if (terrain) {
-			// No warning, already reported on battle start
-			right = left + terrain->grid_inclination / 1103;
-			top = terrain->grid_top_y;
-			bottom = top + terrain->grid_elongation / 13;
-		}
-
-		switch (party_size) {
-		case 1:
-			position.x = left + ((right - left) / 2);
-			position.y = top + ((bottom - top) / 2);
-			break;
-		case 2:
-			switch (party_pos) {
-			case 0:
-				position.x = right;
-				position.y = top;
-				break;
-			case 1:
-				position.x = left;
-				position.y = bottom;
-				break;
-			}
-			break;
-		case 3:
-			switch (party_pos) {
-			case 0:
-				position.x = right;
-				position.y = top;
-				break;
-			case 1:
-				position.x = left + ((right - left) / 2);
-				position.y = top + ((bottom - top) / 2);
-				break;
-			case 2:
-				position.x = left;
-				position.y = bottom;
-				break;
-			}
-			break;
-		case 4:
-			switch (party_pos) {
-			case 0:
-				position.x = right;
-				position.y = top;
-				break;
-			case 1:
-				position.x = left + ((right - left) * 2.0/3);
-				position.y = top + ((bottom - top) * 1.0 / 3);
-				break;
-			case 2:
-				position.x = left + ((right - left) * 1.0/3);
-				position.y = top + ((bottom - top) * 2.0 / 3);
-				break;
-			case 3:
-				position.x = left;
-				position.y = bottom;
-				break;
-			}
-			break;
-		}
-
-		position.x = 320 - position.x;
-		position.y -= 24;
-	}
-
-	// Resolution independent screen adjustments done in GetDisplayX() / GetDisplayY()
-	switch (Game_Battle::GetBattleCondition()) {
-		case lcf::rpg::System::BattleCondition_back:
-			// FIXME: Set facing
-			position.x = 320 - position.x;
-			break;
-		case lcf::rpg::System::BattleCondition_surround:
-		case lcf::rpg::System::BattleCondition_pincers:
-			// FIXME Implement this.
-			break;
-		default:
-			break;
-	}
-
-	// FIXME: Move row adjustment here.
-
-	actor.SetBattlePosition(position);
-}
-
-void Scene_Battle_Rpg2k3::PlaceEnemy(Game_Enemy& actor) {
+	// Needed so transition in reflects updated battler positions
+	Game_Battle::UpdateGraphics();
 }
 
 void Scene_Battle_Rpg2k3::InitEnemies() {
 	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
-		PlaceEnemy(*enemy);
+		enemy->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*enemy));
 	}
 }
 
-void Scene_Battle_Rpg2k3::InitActors() {
+void Scene_Battle_Rpg2k3::InitActorsRow() {
 	const auto& actors = Main_Data::game_party->GetActors();
 
 	// If all actors in the front row have battle loss conditions,
@@ -196,9 +96,13 @@ void Scene_Battle_Rpg2k3::InitActors() {
 			actor->SetBattleRow(Game_Actor::RowType::RowType_front);
 		}
 	}
+}
+
+void Scene_Battle_Rpg2k3::InitActors() {
+	InitActorsRow();
 
 	for (auto& actor: Main_Data::game_party->GetActors()) {
-		PlaceActor(*actor);
+		actor->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*actor));
 	}
 }
 

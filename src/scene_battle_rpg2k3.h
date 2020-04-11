@@ -79,9 +79,8 @@ protected:
 	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
 	void InitEnemies();
 	void InitActors();
+	void InitActorsRow();
 	void InitAtbGauges();
-	void PlaceActor(Game_Actor& actor);
-	void PlaceEnemy(Game_Enemy& actor);
 
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
@@ -127,9 +126,8 @@ protected:
 	};
 
 	std::vector<FloatText> floating_texts;
-
-	int battle_action_wait;
-	int battle_action_state;
+	int battle_action_wait = 30;
+	int battle_action_state = BattleActionState_Execute;
 	bool battle_action_need_event_refresh = true;
 	int combo_repeat = 1;
 	bool play_reflected_anim = false;
