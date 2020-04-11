@@ -179,6 +179,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/platform_clock.h \
 	src/player.cpp \
 	src/player.h \
+	src/point.h \
 	src/game_quit.cpp \
 	src/game_quit.h \
 	src/rect.cpp \

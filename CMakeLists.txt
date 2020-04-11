@@ -186,6 +186,7 @@ add_library(${PROJECT_NAME}
 	src/platform_clock.h
 	src/player.cpp
 	src/player.h
+	src/point.h
 	src/rect.cpp
 	src/rect.h
 	src/registry.h
