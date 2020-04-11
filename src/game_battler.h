@@ -27,6 +27,7 @@
 #include "color.h"
 #include "flash.h"
 #include "utils.h"
+#include "point.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -493,6 +494,9 @@ public:
 	 * @return Y position in battle scene
 	 */
 	virtual int GetBattleY() const = 0;
+
+	/** @return original (x,y) position from the database */
+	virtual Point GetOriginalPosition() const  = 0;
 
 	/**
 	 * Gets X position on the screen.

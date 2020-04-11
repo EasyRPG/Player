@@ -59,6 +59,8 @@ public:
 
 	virtual PermanentStates GetPermanentStates() const override;
 
+	Point GetOriginalPosition() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.

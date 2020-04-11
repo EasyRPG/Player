@@ -817,6 +817,11 @@ const lcf::rpg::Skill* Game_Actor::GetRandomSkill() const {
 	return lcf::ReaderUtil::GetElement(lcf::Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
 }
 
+Point Game_Actor::GetOriginalPosition() const {
+	auto& actor = GetActor();
+	return { actor.battle_x, actor.battle_y };
+}
+
 int Game_Actor::GetBattleX() const {
 	float position = 0.0;
 

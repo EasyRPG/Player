@@ -93,6 +93,10 @@ void Game_Enemy::SetSp(int _sp) {
 	sp = std::min(std::max(_sp, 0), GetMaxSp());
 }
 
+Point Game_Enemy::GetOriginalPosition() const {
+	return { troop_member->x, troop_member->y };
+}
+
 int Game_Enemy::GetBattleX() const {
 	return (x*SCREEN_TARGET_WIDTH/320);
 }

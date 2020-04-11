@@ -41,6 +41,8 @@ public:
 
 	int MaxStatBaseValue() const override;
 
+	Point GetOriginalPosition() const override;
+
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
