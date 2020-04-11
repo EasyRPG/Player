@@ -77,7 +77,11 @@ public:
 protected:
 	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
 	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
+	void InitBattlerPositions();
 	void InitAtbGauges();
+	void PlaceActor(Game_Actor& actor);
+	void PlaceEnemy(Game_Enemy& actor);
+
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;

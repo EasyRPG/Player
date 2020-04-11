@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
+#include <limits>
 #include <lcf/rpg/state.h>
 #include "system.h"
 #include "state.h"
@@ -481,34 +482,23 @@ public:
 	 */
 	bool HasReflectState() const;
 
-	/**
-	 * Gets X position against the battle background.
-	 *
-	 * @return X position in battle scene
-	 */
-	virtual int GetBattleX() const = 0;
+	/* @return current (x,y) position in the battle scene */
+	Point GetBattlePosition() const;
 
 	/**
-	 * Gets Y position against the battle background.
+	 *  Set (x,y) position in the battle scene.
 	 *
-	 * @return Y position in battle scene
+	 *  @param pos new position to set
 	 */
-	virtual int GetBattleY() const = 0;
+	void SetBattlePosition(Point pos);
 
 	/** @return original (x,y) position from the database */
 	virtual Point GetOriginalPosition() const  = 0;
 
-	/**
-	 * Gets X position on the screen.
-	 *
-	 * This is equal to GetBattleX, plus a displacement for
-	 * any screen shaking.
-	 */
+	/** @return Adjusted X position on the screen.  */
 	int GetDisplayX() const;
 
-	/**
-	 * Gets Y position on the screen.
-	 */
+	/** @return Adjusted Y position on the screen.  */
 	int GetDisplayY() const;
 
 	virtual int GetHue() const;
@@ -713,6 +703,7 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+	Point position;
 	bool defending = false;
 	bool charged = false;
 	bool hidden = false;
@@ -891,6 +882,14 @@ inline void Game_Battler::SetBattleOrderAgi(int val) {
 
 inline int Game_Battler::GetBattleOrderAgi() {
 	return battle_order;
+}
+
+inline Point Game_Battler::GetBattlePosition() const {
+	return position;
+}
+
+inline void Game_Battler::SetBattlePosition(Point pos) {
+	position = pos;
 }
 
 #endif

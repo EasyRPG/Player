@@ -42,8 +42,8 @@ Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember& member)
 	sp = GetMaxSp();
 	SetHidden(troop_member->invisible);
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
-	x = troop_member->x;
-	y = troop_member->y;
+
+	SetBattlePosition(GetOriginalPosition());
 }
 
 int Game_Enemy::MaxHpValue() const {
@@ -95,14 +95,6 @@ void Game_Enemy::SetSp(int _sp) {
 
 Point Game_Enemy::GetOriginalPosition() const {
 	return { troop_member->x, troop_member->y };
-}
-
-int Game_Enemy::GetBattleX() const {
-	return (x*SCREEN_TARGET_WIDTH/320);
-}
-
-int Game_Enemy::GetBattleY() const {
-	return (y*SCREEN_TARGET_HEIGHT/240);
 }
 
 static lcf::rpg::Enemy makeDummyEnemy() {

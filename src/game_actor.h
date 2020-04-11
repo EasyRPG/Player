@@ -677,20 +677,6 @@ public:
 	bool GetAutoBattle() const;
 
 	/**
-	 * Gets X position on battlefield
-	 *
-	 * @return X position in battle scene
-	 */
-	int GetBattleX() const override;
-
-	/**
-	 * Gets Y position on battlefield
-	 *
-	 * @return Y position in battle scene
-	 */
-	int GetBattleY() const override;
-
-	/**
 	 * Gets name of skill menu item
 	 *
 	 * @return name of skill menu item

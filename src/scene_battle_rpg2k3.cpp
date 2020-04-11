@@ -65,8 +65,123 @@ void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition 
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
+	InitBattlerPositions();
 	InitAtbGauges();
 }
+
+void Scene_Battle_Rpg2k3::PlaceActor(Game_Actor& actor) {
+	auto position = actor.GetOriginalPosition();
+
+	if (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_automatic) {
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
+		int party_size = Main_Data::game_party->GetBattlerCount();
+
+		float left = actor.GetBattleRow() == lcf::rpg::SaveActor::RowType_back ? 25.0 : 50.0;
+		float right = left;
+		float top = 0.0f;
+		float bottom = 0.0f;
+
+		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Battle::GetTerrainId());
+		if (terrain) {
+			// No warning, already reported on battle start
+			right = left + terrain->grid_inclination / 1103;
+			top = terrain->grid_top_y;
+			bottom = top + terrain->grid_elongation / 13;
+		}
+
+		switch (party_size) {
+		case 1:
+			position.x = left + ((right - left) / 2);
+			position.y = top + ((bottom - top) / 2);
+			break;
+		case 2:
+			switch (party_pos) {
+			case 0:
+				position.x = right;
+				position.y = top;
+				break;
+			case 1:
+				position.x = left;
+				position.y = bottom;
+				break;
+			}
+			break;
+		case 3:
+			switch (party_pos) {
+			case 0:
+				position.x = right;
+				position.y = top;
+				break;
+			case 1:
+				position.x = left + ((right - left) / 2);
+				position.y = top + ((bottom - top) / 2);
+				break;
+			case 2:
+				position.x = left;
+				position.y = bottom;
+				break;
+			}
+			break;
+		case 4:
+			switch (party_pos) {
+			case 0:
+				position.x = right;
+				position.y = top;
+				break;
+			case 1:
+				position.x = left + ((right - left) * 2.0/3);
+				position.y = top + ((bottom - top) * 1.0 / 3);
+				break;
+			case 2:
+				position.x = left + ((right - left) * 1.0/3);
+				position.y = top + ((bottom - top) * 2.0 / 3);
+				break;
+			case 3:
+				position.x = left;
+				position.y = bottom;
+				break;
+			}
+			break;
+		}
+
+		position.x = 320 - position.x;
+		position.y -= 24;
+	}
+
+	// Resolution independent screen adjustments done in GetDisplayX() / GetDisplayY()
+	switch (Game_Battle::GetBattleCondition()) {
+		case lcf::rpg::System::BattleCondition_back:
+			// FIXME: Set facing
+			position.x = 320 - position.x;
+			break;
+		case lcf::rpg::System::BattleCondition_surround:
+		case lcf::rpg::System::BattleCondition_pincers:
+			// FIXME Implement this.
+			break;
+		default:
+			break;
+	}
+
+	// FIXME: Move row adjustment here.
+
+	actor.SetBattlePosition(position);
+}
+
+void Scene_Battle_Rpg2k3::PlaceEnemy(Game_Enemy& actor) {
+}
+
+void Scene_Battle_Rpg2k3::InitBattlerPositions() {
+	float position = 0.0;
+
+	for (auto& actor: Main_Data::game_party->GetActors()) {
+		PlaceActor(*actor);
+	}
+
+	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		PlaceEnemy(*enemy);
+	}
+}
+
 
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
@@ -254,8 +369,8 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			Main_Data::game_party->GetBattlers(actors);
 			Game_Battler* actor = actors[ally_index];
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
-			ally_cursor->SetX(actor->GetBattleX());
-			ally_cursor->SetY(actor->GetBattleY() - sprite->GetHeight() / 2);
+			ally_cursor->SetX(actor->GetBattlePosition().x);
+			ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
@@ -271,8 +386,8 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			Main_Data::game_enemyparty->GetActiveBattlers(actors);
 			const Game_Battler* actor = actors[enemy_index];
 			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
-			enemy_cursor->SetX(actor->GetBattleX() + sprite->GetWidth() / 2 + 2);
-			enemy_cursor->SetY(actor->GetBattleY() - enemy_cursor->GetHeight() / 2);
+			enemy_cursor->SetX(actor->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
+			enemy_cursor->SetY(actor->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
@@ -763,8 +878,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					int damageTaken = b->ApplyConditions();
 					if (damageTaken != 0) {
 						DrawFloatText(
-								b->GetBattleX(),
-								b->GetBattleY(),
+								b->GetBattlePosition().x,
+								b->GetBattlePosition().y,
 								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
 								std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
 					}
@@ -804,15 +919,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					}
 					if (action->GetAffectedHp() != -1) {
 						DrawFloatText(
-							target->GetBattleX(),
-							target->GetBattleY(),
+							target->GetBattlePosition().x,
+							target->GetBattlePosition().y,
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							std::to_string(action->GetAffectedHp()));
 					}
 				} else {
 					DrawFloatText(
-						target->GetBattleX(),
-						target->GetBattleY(),
+						target->GetBattlePosition().x,
+						target->GetBattlePosition().y,
 						0,
 						lcf::Data::terms.miss);
 				}

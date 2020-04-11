@@ -276,7 +276,7 @@ void Sprite_Battler::ResetZ() {
 
 	constexpr int id_limit = 128;
 
-	int y = battler->GetBattleY();
+	int y = battler->GetBattlePosition().y;
 	if (battler->GetType() == Game_Battler::Type_Enemy && graphic) {
 		y += graphic->GetHeight() / 2;
 	}

@@ -122,34 +122,6 @@ public:
 	 */
 	int GetBaseAgi() const override;
 
-	/**
-	 * Gets enemy X position
-	 *
-	 * @return enemy X position
-	 */
-	int GetBattleX() const override;
-
-	/**
-	 * Gets enemy Y position
-	 *
-	 * @return enemy Y position
-	 */
-	int GetBattleY() const override;
-
-	/**
-	 * Sets enemy X position
-	 * 
-	 * @param new_x New X position
-	 */
-	void SetBattleX(int new_x);
-
-	/**
-	 * Sets enemy Y position
-	 * 
-	 * @param new_y New Y position
-	 */
-	void SetBattleY(int new_y);
-
 	int GetHue() const override;
 
 	int GetHp() const override;
@@ -203,8 +175,6 @@ protected:
 	int sp = 0;
 	int cycle = 0;
 	int flying_offset = 0;
-	int x = 0;
-	int y = 0;
 };
 
 inline Game_Battler::BattlerType Game_Enemy::GetType() const {
@@ -233,14 +203,6 @@ inline bool Game_Enemy::IsTransparent() const {
 
 inline int Game_Enemy::GetBattleAnimationId() const {
 	return 0;
-}
-
-inline void Game_Enemy::SetBattleX(int new_x) {
-	x = new_x;
-}
-
-inline void Game_Enemy::SetBattleY(int new_y) {
-	y = new_y;
 }
 
 inline int Game_Enemy::GetHue() const {
