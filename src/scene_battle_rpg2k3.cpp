@@ -34,6 +34,7 @@
 #include "scene_gameover.h"
 #include "utils.h"
 #include "font.h"
+#include "output.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -41,6 +42,25 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	battle_action_state(BattleActionState_Execute),
 	first_strike(args.first_strike)
 {
+	InitBattleCondition(args.condition);
+}
+
+void Scene_Battle_Rpg2k3::InitBattleCondition(RPG::System::BattleCondition condition) {
+	if (condition == RPG::System::BattleCondition_pincers
+			&& (Data::battlecommands.placement == RPG::BattleCommands::Placement_manual
+				|| Main_Data::game_enemyparty->GetBattlerCount() <= 1))
+	{
+		condition = RPG::System::BattleCondition_back;
+	}
+
+	if (condition == RPG::System::BattleCondition_surround
+			&& (Data::battlecommands.placement == RPG::BattleCommands::Placement_manual
+				|| Main_Data::game_party->GetBattlerCount() <= 1))
+	{
+		condition = RPG::System::BattleCondition_initiative;
+	}
+
+	Game_Battle::SetBattleCondition(condition);
 }
 
 void Scene_Battle_Rpg2k3::Start() {
