@@ -74,10 +74,9 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 
 	/* On 64bit Windows 32bit keys are redirected in some cases, see:
 	 * https://msdn.microsoft.com/en-us/library/aa384253(v=vs.85).aspx
-	 * Contrary to Windows, Wine redirects in 64 bit wine prefixes
-	 * "Software" to "Software\Wow6432Node" in both HKLM and HKCU.
+	 * We only support redirecting "Software" in HKLM.
 	 */
-	if ((hkey == HKEY_LOCAL_MACHINE || hkey == HKEY_CURRENT_USER) &&
+	if (hkey == HKEY_LOCAL_MACHINE &&
 		use_redirect && (formatted_key.rfind(R"(Software\\)", 0) == 0)) {
 		pos = formatted_key.find(R"(\\)", 0);
 		formatted_key.insert(pos, R"(\\Wow6432Node)");
