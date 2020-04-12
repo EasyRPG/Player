@@ -317,9 +317,9 @@ void Sprite_Battler::CreateSprite() {
 	else { // animated
 		SetOx(24);
 		SetOy(24);
+		ResetZ();
 		SetAnimationState(anim_state);
 		idling = true;
-		ResetZ();
 	}
 
 	SetVisible(!battler->IsHidden());
