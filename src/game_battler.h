@@ -118,6 +118,14 @@ public:
 	bool CanAct() const;
 
 	/**
+	 * Tests if the battler has a "No Action" condition which does not auto recover.
+	 * If all actors have these conditions, the battle is lost.
+	 *
+	 * @return true if actor can act or if they cannot act but the state is auto recoverable
+	 */
+	bool CanActOrRecoverable() const;
+
+	/**
 	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
@@ -686,6 +694,8 @@ public:
 	/** @return current flash color */
 	Color GetFlashColor() const;
 
+private:
+	bool CanActImpl(int max_arp) const;
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge = 0;
@@ -881,5 +891,12 @@ inline int Game_Battler::GetBattleOrderAgi() {
 	return battle_order;
 }
 
+inline bool Game_Battler::CanAct() const {
+	return CanActImpl(std::numeric_limits<int>::max());
+}
+
+inline bool Game_Battler::CanActOrRecoverable() const {
+	return CanActImpl(0);
+}
 
 #endif

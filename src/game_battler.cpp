@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <limits>
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
@@ -77,13 +78,18 @@ RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 	return State::GetSignificantRestriction(GetStates());
 }
 
-bool Game_Battler::CanAct() const {
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (int i = 0; i < (int)states.size(); i++) {
-		// States are guaranteed to be valid
-		const RPG::State* state = ReaderUtil::GetElement(Data::states, states[i]);
-		if (state->restriction == RPG::State::Restriction_do_nothing) {
-			return false;
+bool Game_Battler::CanActImpl(int max_arp) const {
+	const auto& states = GetStates();
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			const auto* state = ReaderUtil::GetElement(Data::states, i + 1);
+			if (state
+					&& state->restriction == RPG::State::Restriction_do_nothing
+					&& state->auto_release_prob <= max_arp
+					)
+			{
+				return false;
+			}
 		}
 	}
 	return true;
