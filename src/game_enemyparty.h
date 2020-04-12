@@ -39,11 +39,11 @@ public:
 	int GetVisibleBattlerCount() const override;
 
 	/**
-	 * Setups initial enemy party.
+	 * Reset the party for a new battle.
 	 * 
-	 * @param battle_troop_id ID of the enemy party
+	 * @param battle_troop_id ID of the enemy party, or 0 for empty.
 	 */
-	void Setup(int battle_troop_id);
+	void ResetBattle(int battle_troop_id);
 
 	/**
 	 * Gets a list with all party members

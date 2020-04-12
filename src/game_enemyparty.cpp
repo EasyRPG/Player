@@ -48,12 +48,11 @@ int Game_EnemyParty::GetVisibleBattlerCount() const {
 	return visible;
 }
 
-void Game_EnemyParty::Setup(int battle_troop_id) {
+void Game_EnemyParty::ResetBattle(int battle_troop_id) {
 	enemies.clear();
-	const lcf::rpg::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);
+	const auto* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);
 	if (!troop) {
-		// Shouldn't happen because Scene_Battle verifies this
-		Output::Warning("Invalid battle troop ID {}", battle_troop_id);
+		// Valid case when battle quits
 		return;
 	}
 

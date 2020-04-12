@@ -92,8 +92,6 @@ void Scene_Battle::Start() {
 	if (Game_Battle::battle_test.enabled) {
 		Main_Data::game_party->SetupBattleTestMembers();
 	}
-	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-	Main_Data::game_enemyparty->Setup(troop_id);
 
 	Game_Battle::Init(troop_id);
 

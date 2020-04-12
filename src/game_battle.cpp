@@ -66,6 +66,7 @@ namespace {
 }
 
 void Game_Battle::Init(int troop_id) {
+	Main_Data::game_enemyparty->ResetBattle(troop_id);
 	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
@@ -120,6 +121,7 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Game_Actors::ResetBattle();
+	Main_Data::game_enemyparty->ResetBattle(0);
 	Main_Data::game_pictures->OnBattleEnd();
 }
 
