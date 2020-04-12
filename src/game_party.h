@@ -45,6 +45,7 @@ public:
 	Game_Actor& operator[] (const int index) override;
 
 	int GetBattlerCount() const override;
+	int GetVisibleBattlerCount() const override;
 
 	/**
 	 * Setups battle test party.

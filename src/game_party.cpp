@@ -89,6 +89,14 @@ int Game_Party::GetBattlerCount() const {
 	return (int)GetActors().size();
 }
 
+int Game_Party::GetVisibleBattlerCount() const {
+	int visible = 0;
+	for (const auto& actor: GetActors()) {
+		visible += !actor->IsHidden();
+	}
+	return visible;
+}
+
 void Game_Party::SetupBattleTestMembers() {
 	Clear();
 

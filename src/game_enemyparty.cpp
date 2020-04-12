@@ -40,6 +40,14 @@ int Game_EnemyParty::GetBattlerCount() const {
 	return (int)enemies.size();
 }
 
+int Game_EnemyParty::GetVisibleBattlerCount() const {
+	int visible = 0;
+	for (const auto& enemy: enemies) {
+		visible += !enemy->IsHidden();
+	}
+	return visible;
+}
+
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
 	const lcf::rpg::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);

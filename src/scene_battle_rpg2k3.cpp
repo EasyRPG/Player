@@ -40,35 +40,35 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
 	first_strike(args.first_strike)
 {
-	InitBattleCondition(args.condition);
-}
-
-void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {
-	if (condition == lcf::rpg::System::BattleCondition_pincers
-			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
-				|| Main_Data::game_enemyparty->GetBattlerCount() <= 1))
-	{
-		condition = lcf::rpg::System::BattleCondition_back;
-	}
-
-	if (condition == lcf::rpg::System::BattleCondition_surround
-			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
-				|| Main_Data::game_party->GetBattlerCount() <= 1))
-	{
-		condition = lcf::rpg::System::BattleCondition_initiative;
-	}
-
-	Game_Battle::SetBattleCondition(condition);
 }
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
+	InitBattleCondition(Game_Battle::GetBattleCondition());
 	InitEnemies();
 	InitActors();
 	InitAtbGauges();
 
 	// Needed so transition in reflects updated battler positions
 	Game_Battle::UpdateGraphics();
+}
+
+void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {
+	if (condition == lcf::rpg::System::BattleCondition_pincers
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
+				|| Main_Data::game_enemyparty->GetVisibleBattlerCount() <= 1))
+	{
+		condition = lcf::rpg::System::BattleCondition_back;
+	}
+
+	if (condition == lcf::rpg::System::BattleCondition_surround
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
+				|| Main_Data::game_party->GetVisibleBattlerCount() <= 1))
+	{
+		condition = lcf::rpg::System::BattleCondition_initiative;
+	}
+
+	Game_Battle::SetBattleCondition(condition);
 }
 
 void Scene_Battle_Rpg2k3::InitEnemies() {

@@ -45,6 +45,13 @@ public:
 	virtual int GetBattlerCount() const = 0;
 
 	/**
+	 * Returns how many members are in the party and not hidden
+	 *
+	 * @return Number of members in the party who are not hidden
+	 */
+	virtual int GetVisibleBattlerCount() const = 0;
+
+	/**
 	 * Returns a list of all battlers in the party
 	 *
 	 * @param out List of all battlers

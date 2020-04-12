@@ -36,6 +36,7 @@ public:
 	Game_Enemy& operator[] (const int index) override;
 
 	int GetBattlerCount() const override;
+	int GetVisibleBattlerCount() const override;
 
 	/**
 	 * Setups initial enemy party.
