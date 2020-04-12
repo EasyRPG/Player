@@ -87,11 +87,16 @@ public:
 	int GetWeatherStrength();
 
 	struct Particle {
+		int16_t t = 0;
 		int16_t x = 0;
 		int16_t y = 0;
-		int16_t life = 0;
-		int16_t speed = 0;
-		float angle = 0.0f;
+		// These are only used for sandstorm particles.
+		// RPG_RT uses double. We use float to save space.
+		int16_t alpha = 0;
+		float vx = 0.0;
+		float vy = 0.0;
+		float ax = 0.0;
+		float ay = 0.0;
 	};
 
 	const std::vector<Particle>& GetParticles();
@@ -178,14 +183,15 @@ protected:
 	void StopWeather();
 	void UpdateRain();
 	void UpdateSnow();
-	void UpdateSand();
+	void UpdateFog();
+	void UpdateSandstorm();
 	void UpdateScreenEffects();
 	void UpdateMovie();
 	void UpdateWeather();
 	void UpdateFog(int dx, int dy);
 	void OnWeatherChanged();
-	void InitRainSnow(int lifetime);
-	void InitSand();
+
+	void InitParticles(int n);
 };
 
 inline int Game_Screen::GetPanX() const {

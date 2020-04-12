@@ -16,6 +16,7 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <string>
 #include <vector>
 #include "bitmap.h"
@@ -25,6 +26,7 @@
 #include "weather.h"
 #include "drawable_mgr.h"
 #include "player.h"
+#include "output.h"
 
 Weather::Weather() :
 	Drawable(Priority_Weather, Drawable::Flags::Shared)
@@ -57,18 +59,22 @@ void Weather::Draw(Bitmap& dst) {
 	}
 }
 
+static constexpr int num_strength = 3;
+static constexpr int num_rain_or_snow_particles[] = { 20, 60, 100 };
 static constexpr auto rain_bitmap_rect = Rect{ 0, 0, 6, 24 };
 static constexpr auto snow_bitmap_rect = Rect{ 0, 0, 2, 2 };
 static constexpr auto overlay_bitmap_rect = Rect{ 0, 0, TILE_SIZE, TILE_SIZE };
 
+static constexpr auto num_fog_particles = 2;
+
+static constexpr int num_sand_particles[] = { 128, 191, 255 };
 static constexpr int num_sand_colors = 4;
-static constexpr int num_sand_strength = 3;
 static constexpr auto sand_particle_rect = Rect{ 0, 0, 1, 2 };
 
 static constexpr auto sand_particle_bitmap_rect = Rect{
 	0, 0,
 	sand_particle_rect.width,
-	sand_particle_rect.height * num_sand_colors * num_sand_strength
+	sand_particle_rect.height * num_sand_colors,
 };
 
 static constexpr Rect MakeMaxBitmapRect(std::initializer_list<Rect> list) {
@@ -109,6 +115,22 @@ static constexpr int fog_opacity[2][4] = {
 	{ 64, 80, 160, 255 },
 };
 
+
+int Weather::GetMaxNumParticles(int weather_type) {
+	switch (weather_type) {
+		case Game_Screen::Weather_None:
+			return 0;
+		case Game_Screen::Weather_Rain:
+		case Game_Screen::Weather_Snow:
+			return num_rain_or_snow_particles[num_strength - 1];
+		case Game_Screen::Weather_Fog:
+			return num_fog_particles;
+		case Game_Screen::Weather_Sandstorm:
+			return num_sand_particles[num_strength - 1];
+	}
+	return 0;
+}
+
 const Bitmap* Weather::ApplyToneEffect(const Bitmap& bitmap, Rect rect) {
 	if (tone_effect == Tone()) {
 		return &bitmap;
@@ -145,7 +167,7 @@ void Weather::DrawRain(Bitmap& dst) {
 	if (!rain_bitmap) {
 		CreateRainParticle();
 	}
-	DrawParticles(dst, *rain_bitmap, rain_bitmap_rect);
+	DrawParticles(dst, *rain_bitmap, rain_bitmap_rect, 5, 12);
 }
 
 
@@ -167,22 +189,33 @@ void Weather::DrawSnow(Bitmap& dst) {
 	if (!snow_bitmap) {
 		CreateSnowParticle();
 	}
-	DrawParticles(dst, *snow_bitmap, snow_bitmap_rect);
+	DrawParticles(dst, *snow_bitmap, snow_bitmap_rect, 7, 30);
 }
 
-void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect) {
+void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect, int abase, int tmax) {
 	auto* bitmap = ApplyToneEffect(particle, rect);
 
+	const auto strength = Main_Data::game_screen->GetWeatherStrength();
 	const auto& particles = Main_Data::game_screen->GetParticles();
+	const auto& screen_rect = Main_Data::game_screen->GetScreenEffectsRect();
+
+	const int num_particles = num_rain_or_snow_particles[Utils::Clamp(strength, 0, num_strength - 1)];
+	const auto ainc = abase + strength;
 
 	auto surface_rect = weather_surface->GetRect();
 	weather_surface->Clear();
 
-	for (auto& p: particles) {
-		auto x = Utils::PositiveModulo(p.x, surface_rect.width);
-		auto y = Utils::PositiveModulo(p.y, surface_rect.height);
+	assert(num_particles <= static_cast<int>(particles.size()));
 
-		weather_surface->EdgeMirrorBlit(x, y, *bitmap, rect, true, true, p.life);
+	for (int i = 0; i < num_particles; ++i) {
+		auto& p = particles[i];
+		if (p.t > tmax) {
+			continue;
+		}
+
+		auto alpha = std::min(ainc * p.t, 255);
+
+		weather_surface->EdgeMirrorBlit(p.x, p.y, *bitmap, rect, true, true, alpha);
 	}
 
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
@@ -217,23 +250,11 @@ void Weather::CreateSandParticle() {
 
 	sand_particle_bitmap = Bitmap::Create(w, h, true);
 
-	// FIXME: Close but probably not accurate
-	const std::array<uint32_t,num_sand_colors * num_sand_strength> pixels = {{
-		// Strength 0
-		Bitmap::pixel_format.rgba_to_uint32_t(212,212,196,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(208,48,40,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(208,208,40,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(208,152,40,255),
-		// Strength 1
-		Bitmap::pixel_format.rgba_to_uint32_t(236,236,215,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(222,54,45,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(218,218,45,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(222,164,44,255),
-		// Strength 2
-		Bitmap::pixel_format.rgba_to_uint32_t(236,236,215,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(240,64,52,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(236,236,60,255),
-		Bitmap::pixel_format.rgba_to_uint32_t(236,180,60,255),
+	const std::array<uint32_t,num_sand_colors> pixels = {{
+		Bitmap::pixel_format.rgba_to_uint32_t(255,255,32,255), // Yellow
+		Bitmap::pixel_format.rgba_to_uint32_t(255,184,32,255), // Orange
+		Bitmap::pixel_format.rgba_to_uint32_t(255,32,32,255), // Red
+		Bitmap::pixel_format.rgba_to_uint32_t(255,255,248,255), // White
 	}};
 
 	auto* img = reinterpret_cast<uint32_t*>(sand_particle_bitmap->pixels());
@@ -244,23 +265,28 @@ void Weather::CreateSandParticle() {
 }
 
 void Weather::DrawSandParticles(Bitmap& dst, const Bitmap& particle_bitmap) {
+	const auto strength = Main_Data::game_screen->GetWeatherStrength();
 	const auto& particles = Main_Data::game_screen->GetParticles();
-	const auto strength = Utils::Clamp(Main_Data::game_screen->GetWeatherStrength(), 0, num_sand_strength - 1);
-	const auto offset = strength * sand_particle_rect.height * num_sand_colors;
+	const auto offset = sand_particle_rect.height * num_sand_colors;
 
 	auto* bitmap = ApplyToneEffect(particle_bitmap, particle_bitmap.GetRect());
 
-	for (int i = 0; i < static_cast<int>(particles.size()); ++i) {
+	const int num_particles = num_sand_particles[Utils::Clamp(strength, 0, num_strength - 1)];
+
+	assert(num_particles <= static_cast<int>(particles.size()));
+
+	for (int i = 0; i < num_particles; ++i) {
 		auto& p = particles[i];
+		const int color = (i % num_sand_colors);
+
 		auto rect = Rect{
 			0,
-			(i % num_sand_colors) * sand_particle_rect.height + offset,
+			color * sand_particle_rect.height,
 			sand_particle_rect.width,
 			sand_particle_rect.height
 		};
-		auto x = p.x / 16;
-		auto y = p.y / 16;
-		dst.Blit(x, y, *bitmap, rect, p.life);
+
+		dst.Blit(p.x, p.y, *bitmap, rect, p.alpha);
 	}
 }
 
@@ -306,15 +332,24 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
 	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
 
-	// FIXME: Confirm exact speed in x direction
-	// FIXME: Confirm algorithm for changes in y. Appears to be very slow and random.
-	int frames = Player::GetFrames();
-	const int x = (frames * 32 / 256) % sr.width + shake_x;
-	const int y = (frames * 1 / 256) % sr.height - shake_y;
+	// RPG_RT uses the first 2 particles for fog layer graphics
+	const auto& particles = Main_Data::game_screen->GetParticles();
+	assert(particles.size() >= num_fog_particles);
+	const auto fog_bg_frames = particles[0].x;
+	const auto fog_fg_frames = particles[1].x;
 
-	// FIXME: Confirm whether back layer moves right or is still?
-	dst.TiledBlit(-x + 8, -y, sr, *src, dr, back_opacity);
-	dst.TiledBlit(x, -y, sr, *src, dr, front_opacity);
+	// Front layer moves left one pixel every 8 frames.
+	const int fx = shake_x + (fog_fg_frames / 8) % sr.width;
+	// Back layer moves left one pixel every 4 frames.
+	const int bx = shake_x - (fog_bg_frames / 4) % sr.width;
+	// Front layer moves vertically up and down using this algorithm. And it uses the background frame counter!
+	// Confirmed to be matching RPG_RT
+	const int fy = shake_y - std::lrint(std::sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2)) - (sr.height / 4);
+	// Back layer never moves vertically
+	const int by = shake_y;
+
+	dst.TiledBlit(bx, by, sr, *src, dr, back_opacity);
+	dst.TiledBlit(fx, fy, sr, *src, dr, front_opacity);
 }
 
 void Weather::SetTone(Tone tone) {
