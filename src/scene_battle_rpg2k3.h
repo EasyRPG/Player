@@ -81,6 +81,9 @@ protected:
 	void InitActors();
 	void InitAtbGauges();
 
+	void UpdateEnemiesDirection();
+	void UpdateActorsDirection();
+
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
@@ -141,6 +144,7 @@ protected:
 	FileRequestBinding request_id;
 	bool battle_action_pending = false;
 	bool first_strike = false;
+	bool initial_directions_updated = false;
 };
 
 #endif
