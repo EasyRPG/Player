@@ -355,6 +355,16 @@ public:
 	 */
 	virtual int GetBaseAgi() const = 0;
 
+	/** @return whether the battler is facing the opposite it's normal direction */
+	bool IsDirectionFlipped() const;
+
+	/**
+	 * Set whether the battler is facing the opposite it's normal direction
+	 *
+	 * @param flip to flip or not
+	 */
+	void SetDirectionFlipped(bool flip);
+
 	void SetHidden(bool hidden);
 	bool IsHidden() const;
 	virtual bool IsImmortal() const;
@@ -707,6 +717,7 @@ protected:
 	bool defending = false;
 	bool charged = false;
 	bool hidden = false;
+	bool direction_flipped = false;
 
 	std::vector<int> attribute_shift;
 
@@ -890,6 +901,14 @@ inline Point Game_Battler::GetBattlePosition() const {
 
 inline void Game_Battler::SetBattlePosition(Point pos) {
 	position = pos;
+}
+
+inline bool Game_Battler::IsDirectionFlipped() const {
+	return direction_flipped;
+}
+
+inline void Game_Battler::SetDirectionFlipped(bool flip) {
+	direction_flipped = flip;
 }
 
 #endif

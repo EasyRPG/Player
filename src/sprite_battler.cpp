@@ -184,6 +184,12 @@ void Sprite_Battler::Update() {
 	if (animation) {
 		animation->SetVisible(IsVisible());
 	}
+
+	const bool flip = battler->IsDirectionFlipped();
+	SetFlipX(flip);
+	if (animation) {
+		SetFlipX(flip);
+	}
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
