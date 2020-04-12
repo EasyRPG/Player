@@ -65,8 +65,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 				continue;
 			}
 
-			const bool hide = Utils::ChanceOf(1, 2);
-			if (hide) {
+			if (Utils::PercentChance(40)) {
 				enemy->SetHidden(true);
 				--non_hidden;
 			}
