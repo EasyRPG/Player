@@ -101,7 +101,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	text.clear();
 	auto append = [&](const std::string& line) {
 		text.append(line);
-		if (text.empty() || (text.back() != '\n' && text.back() != '\f')) {
+		if (line.empty() || (text.back() != '\n' && text.back() != '\f')) {
 			text.append(1, '\n');
 		}
 	};
