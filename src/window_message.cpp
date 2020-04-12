@@ -296,7 +296,7 @@ void Window_Message::InsertNewPage() {
 		ShowGoldWindow();
 	} else {
 		// If first character is gold, the gold window appears immediately and animates open with the main window.
-		auto tret = Utils::TextNext(text_index, &*text.end(), Player::escape_char);
+		auto tret = Utils::TextNext(text_index, (text.data() + text.size()), Player::escape_char);
 		if (tret && tret.is_escape && tret.ch == '$') {
 			ShowGoldWindow();
 		}
