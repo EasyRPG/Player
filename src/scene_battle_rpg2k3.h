@@ -79,7 +79,6 @@ protected:
 	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
 	void InitEnemies();
 	void InitActors();
-	void InitActorsRow();
 	void InitAtbGauges();
 
 	void OnSystem2Ready(FileRequestResult* result);

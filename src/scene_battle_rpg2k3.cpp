@@ -72,14 +72,39 @@ void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition 
 }
 
 void Scene_Battle_Rpg2k3::InitEnemies() {
-	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
-		enemy->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*enemy));
+	const auto& enemies = Main_Data::game_enemyparty->GetEnemies();
+	const auto cond = Game_Battle::GetBattleCondition();
+
+	// PLACEMENT AND DIRECTION
+	for (int real_idx = 0, visible_idx = 0; real_idx < static_cast<int>(enemies.size()); ++real_idx) {
+		auto& enemy = *enemies[real_idx];
+		const auto idx = enemy.IsHidden() ? real_idx : visible_idx;
+
+		enemy.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(enemy));
+
+		switch(cond) {
+			case RPG::System::BattleCondition_none:
+				enemy.SetDirectionFlipped(false);
+				break;
+			case RPG::System::BattleCondition_initiative:
+			case RPG::System::BattleCondition_back:
+			case RPG::System::BattleCondition_surround:
+				enemy.SetDirectionFlipped(true);
+				break;
+			case RPG::System::BattleCondition_pincers:
+				enemy.SetDirectionFlipped(!(idx & 1));
+				break;
+		}
+
+		visible_idx += !enemy.IsHidden();
 	}
 }
 
-void Scene_Battle_Rpg2k3::InitActorsRow() {
+void Scene_Battle_Rpg2k3::InitActors() {
 	const auto& actors = Main_Data::game_party->GetActors();
+	const auto cond = Game_Battle::GetBattleCondition();
 
+	// ROW ADJUSTMENT
 	// If all actors in the front row have battle loss conditions,
 	// all back row actors forced to the front row.
 	// FIXME: Does this happen mid battle too?
@@ -96,13 +121,18 @@ void Scene_Battle_Rpg2k3::InitActorsRow() {
 			actor->SetBattleRow(Game_Actor::RowType::RowType_front);
 		}
 	}
-}
 
-void Scene_Battle_Rpg2k3::InitActors() {
-	InitActorsRow();
+	// PLACEMENT AND DIRECTION
+	for (int idx = 0; idx < static_cast<int>(actors.size()); ++idx) {
+		auto& actor = *actors[idx];
 
-	for (auto& actor: Main_Data::game_party->GetActors()) {
-		actor->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*actor));
+		actor.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(actor));
+
+		if (cond == RPG::System::BattleCondition_surround) {
+			actor.SetDirectionFlipped(idx & 1);
+		} else {
+			actor.SetDirectionFlipped(false);
+		}
 	}
 }
 
