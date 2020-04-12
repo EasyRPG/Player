@@ -65,7 +65,8 @@ void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition 
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
-	InitBattlerPositions();
+	InitEnemies();
+	InitActors();
 	InitAtbGauges();
 }
 
@@ -170,18 +171,36 @@ void Scene_Battle_Rpg2k3::PlaceActor(Game_Actor& actor) {
 void Scene_Battle_Rpg2k3::PlaceEnemy(Game_Enemy& actor) {
 }
 
-void Scene_Battle_Rpg2k3::InitBattlerPositions() {
-	float position = 0.0;
-
-	for (auto& actor: Main_Data::game_party->GetActors()) {
-		PlaceActor(*actor);
-	}
-
+void Scene_Battle_Rpg2k3::InitEnemies() {
 	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
 		PlaceEnemy(*enemy);
 	}
 }
 
+void Scene_Battle_Rpg2k3::InitActors() {
+	const auto& actors = Main_Data::game_party->GetActors();
+
+	// If all actors in the front row have battle loss conditions,
+	// all back row actors forced to the front row.
+	// FIXME: Does this happen mid battle too?
+	bool force_front_row = true;
+	for (auto& actor: actors) {
+		if (actor->GetBattleRow() == Game_Actor::RowType::RowType_front
+				&& !actor->IsHidden()
+				&& actor->CanActOrRecoverable()) {
+			force_front_row = false;
+		}
+	}
+	if (force_front_row) {
+		for (auto& actor: actors) {
+			actor->SetBattleRow(Game_Actor::RowType::RowType_front);
+		}
+	}
+
+	for (auto& actor: Main_Data::game_party->GetActors()) {
+		PlaceActor(*actor);
+	}
+}
 
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
