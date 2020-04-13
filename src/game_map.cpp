@@ -1691,7 +1691,7 @@ namespace {
  * Otherwise, the result is filled out from the default for the current map.
  */
 static Game_Map::Parallax::Params GetParallaxParams() {
-	Game_Map::Parallax::Params params;
+	Game_Map::Parallax::Params params = {};
 
 	if (!map_info.parallax_name.empty()) {
 		params.name = map_info.parallax_name;
