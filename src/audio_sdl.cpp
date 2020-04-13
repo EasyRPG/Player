@@ -80,7 +80,7 @@ SdlAudio::SdlAudio() :
 	want.userdata = this;
 
 #if SDL_MAJOR_VERSION >= 2
-	audio_dev_id = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
+	audio_dev_id = SDL_OpenAudioDevice(nullptr, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
 	bool init_success = audio_dev_id > 0;
 #else
 	bool init_success = SDL_OpenAudio(&want, &have) >= 0;
@@ -110,11 +110,19 @@ SdlAudio::~SdlAudio() {
 }
 
 void SdlAudio::LockMutex() const {
+#if SDL_MAJOR_VERSION >= 2
+	SDL_LockAudioDevice(audio_dev_id);
+#else
 	SDL_LockAudio();
+#endif
 }
 
 void SdlAudio::UnlockMutex() const {
+#if SDL_MAJOR_VERSION >= 2
+	SDL_UnlockAudioDevice(audio_dev_id);
+#else
 	SDL_UnlockAudio();
+#endif
 }
 
 #endif
