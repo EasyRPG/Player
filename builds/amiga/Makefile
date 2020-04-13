@@ -45,7 +45,7 @@ ifeq ($(strip $(LIBLCF_DIR)),)
 LIBLCF_DIR := $(TOOLCHAIN_DIR)
 endif
 
-CFLAGS  = -g -O2
+CFLAGS  = -g -O2 -fno-math-errno
 CXXFLAGS = $(CFLAGS) $(PLATFORM_CXXFLAGS) -std=gnu++14 -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 CPPFLAGS = -DUSE_SDL -DHAVE_SDL_MIXER -DHAVE_FREETYPE -DSUPPORT_AUDIO \

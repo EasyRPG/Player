@@ -27,7 +27,7 @@ PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX     = $(PREFIX)-g++
 
-CFLAGS  = -Wl,-q -g -O3
+CFLAGS  = -Wl,-q -g -O3 -fno-math-errno
 CXXFLAGS = $(CFLAGS) -fno-exceptions -std=gnu++14 -fno-rtti
 ASFLAGS = $(CFLAGS)
 CPPFLAGS = -DPSP2 -DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \

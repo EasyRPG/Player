@@ -15,7 +15,7 @@ LOCAL_LDLIBS := -llog -lz -latomic
 
 LOCAL_STATIC_LIBRARIES := png
 
-LOCAL_CFLAGS := -O2 -Wall -Wextra
+LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-math-errno
 
 LOCAL_CXXFLAGS := $(LOCAL_C_FLAGS) -std=c++14 -fno-rtti
 

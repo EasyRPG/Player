@@ -59,7 +59,7 @@ APP_AUTHOR	:=	EasyRPG Team & Rinnegatamante
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
-CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
+CFLAGS	:=	-g0 -Wall -O2 -mword-relocations -fno-math-errno \
 			-fomit-frame-pointer -flto -ffunction-sections \
 			$(ARCH)
 
