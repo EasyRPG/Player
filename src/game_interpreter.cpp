@@ -2685,33 +2685,53 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	// All engines support older versions of the command depending on the
 	// length of the parameter list
-	if (param_size < 6) {
-		// For Rpg2k <1.50
-		if (com.parameters[2] != 0) {
-			_keyinput.keys[Keys::eDown] = true;
-			_keyinput.keys[Keys::eLeft] = true;
-			_keyinput.keys[Keys::eRight] = true;
-			_keyinput.keys[Keys::eUp] = true;
+	if (Player::IsRPG2k()) {
+		if (param_size < 6 || Player::IsRPG2kLegacy()) {
+			// For Rpg2k <1.50
+			if (com.parameters[2] != 0) {
+				_keyinput.keys[Keys::eDown] = true;
+				_keyinput.keys[Keys::eLeft] = true;
+				_keyinput.keys[Keys::eRight] = true;
+				_keyinput.keys[Keys::eUp] = true;
+			}
+		} else {
+			// For Rpg2k >=1.50
+			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
+			_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
+			_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
+			_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
+			_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 		}
-	} else if (param_size < 11 || Player::IsRPG2k()) {
-		// For Rpg2k >=1.50
-		_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-		_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
-		_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
-		_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
-		_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 	} else {
-		// For Rpg2k3
-		// (Not supported by 2k engines)
-		_keyinput.keys[Keys::eNumbers] = com.parameters[5] != 0;
-		_keyinput.keys[Keys::eOperators] = com.parameters[6] != 0;
-		_keyinput.time_variable = com.parameters[7];
-		_keyinput.timed = com.parameters[8] != 0;
-		_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
-		_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
-		_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
-		_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
-		_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
+		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
+			if (param_size < 10 && com.parameters[2] != 0) {
+				// For RPG2k3 <1.05 (later versions got individual key checks)
+				_keyinput.keys[Keys::eDown] = true;
+				_keyinput.keys[Keys::eLeft] = true;
+				_keyinput.keys[Keys::eRight] = true;
+				_keyinput.keys[Keys::eUp] = true;
+			}
+			_keyinput.keys[Keys::eNumbers] = param_size > 5 ? com.parameters[5] != 0 : false;
+			_keyinput.keys[Keys::eOperators] = param_size > 6 ? com.parameters[6] != 0 : false;
+			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : false;
+			_keyinput.timed = param_size > 8 ? com.parameters[8] != 0 : false;
+			if (param_size > 10 && Player::IsMajorUpdatedVersion()) {
+				// For Rpg2k3 >=1.05
+				_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
+				_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
+				_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
+				_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
+				_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
+			}
+		} else {
+			// Since RPG2k3 1.05
+			// Support for RPG2k >=1.50 games imported into RPG2k3
+			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
+			_keyinput.keys[Keys::eDown] = com.parameters[6] != 0;
+			_keyinput.keys[Keys::eLeft] = com.parameters[7] != 0;
+			_keyinput.keys[Keys::eRight] = com.parameters[8] != 0;
+			_keyinput.keys[Keys::eUp] = com.parameters[9] != 0;
+		}
 	}
 
 	if (_keyinput.wait) {
