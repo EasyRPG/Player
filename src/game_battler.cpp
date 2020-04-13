@@ -658,7 +658,8 @@ bool Game_Battler::HasReflectState() const {
 }
 
 void Game_Battler::ResetBattle() {
-	SetAtbGauge(0);
+	// Note: ATB gauge is not reset here. This is on purpose because RPG_RT will freeze
+	// the gauge and carry it between battles if !CanActOrRecoverable().
 	SetCharged(false);
 	SetIsDefending(false);
 	SetHidden(false);

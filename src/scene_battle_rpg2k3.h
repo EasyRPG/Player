@@ -75,6 +75,7 @@ public:
 	void Update() override;
 
 protected:
+	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
 	void InitAtbGauges();
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();

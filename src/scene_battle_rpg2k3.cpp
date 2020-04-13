@@ -51,30 +51,38 @@ void Scene_Battle_Rpg2k3::Start() {
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
 
-void Scene_Battle_Rpg2k3::InitAtbGauges() {
+void Scene_Battle_Rpg2k3::InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb) {
+	if (battler.IsHidden() || !battler.CanActOrRecoverable()) {
+		return;
+	}
+
 	switch(Game_Battle::GetBattleCondition()) {
 		case RPG::System::BattleCondition_initiative:
 		case RPG::System::BattleCondition_surround:
-			Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
-			Main_Data::game_enemyparty->SetPartyAtbGauge(0, false);
+			battler.SetAtbGauge(preempt_atb);
 			break;
 		case RPG::System::BattleCondition_back:
 		case RPG::System::BattleCondition_pincers:
-			Main_Data::game_party->SetPartyAtbGauge(0, false);
-			Main_Data::game_enemyparty->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
+			battler.SetAtbGauge(ambush_atb);
 			break;
-		default:
-			if (first_strike) {
-				Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge(), false);
-				Main_Data::game_enemyparty->SetPartyAtbGauge(0, false);
+		case RPG::System::BattleCondition_none:
+			if (first_strike || battler.HasPreemptiveAttack()) {
+				battler.SetAtbGauge(preempt_atb);
 			} else {
-				Main_Data::game_party->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge() / 2, true);
-				Main_Data::game_enemyparty->SetPartyAtbGauge(Game_Battler::GetMaxAtbGauge() / 2, true);
+				battler.SetAtbGauge(Game_Battler::GetMaxAtbGauge() / 2);
 			}
 			break;
 	}
 }
 
+void Scene_Battle_Rpg2k3::InitAtbGauges() {
+	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		InitAtbGauge(*enemy, 0, Game_Battler::GetMaxAtbGauge());
+	}
+	for (auto& actor: Main_Data::game_party->GetActors()) {
+		InitAtbGauge(*actor, Game_Battler::GetMaxAtbGauge(), 0);
+	}
+}
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {

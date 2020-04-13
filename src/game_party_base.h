@@ -101,14 +101,6 @@ public:
 	 */
 	virtual int GetAverageAgility();
 
-	/**
-	 * Reset the ATB gauges for the entire party
-	 *
-	 * @param atb value to set
-	 * @param allow_preemptive_attack if true, allow individual HasPreemptiveAttack() to override
-	 */
-	void SetPartyAtbGauge(int atb, bool allow_preemptive_attack);
-
 private:
 
 };
