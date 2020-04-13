@@ -116,9 +116,9 @@ void Scene_Name::Update() {
 					name_window->Refresh();
 				} else {
 					actor->SetName(name_window->Get());
+					Scene::Pop();
 				}
 			}
-			Scene::Pop();
 		} else if (s == Window_Keyboard::NEXT_PAGE) {
 			++layout_index;
 			if (layout_index >= static_cast<int>(layouts.size())) {
