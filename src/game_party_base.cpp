@@ -115,6 +115,6 @@ int Game_Party_Base::GetAverageAgility() {
 		agi += (*it)->GetAgi();
 	}
 
-	return agi /= battlers.size();
+	return battlers.empty() ? 1 : agi /= battlers.size();
 }
 

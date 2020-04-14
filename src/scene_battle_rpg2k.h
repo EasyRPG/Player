@@ -226,7 +226,6 @@ protected:
 	bool encounter_message_first_strike = false;
 	bool message_box_got_visible = false;
 	bool move_screen = false;
-	bool first_strike = false;
 
 };
 

@@ -1857,8 +1857,8 @@ void Game_BattleAlgorithm::SelfDestruct::Apply() {
 	}
 }
 
-Game_BattleAlgorithm::Escape::Escape(Game_Battler* source, bool always_succeed) :
-	AlgorithmBase(Type::Escape, source), always_succeed(always_succeed) {
+Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
+	AlgorithmBase(Type::Escape, source) {
 	// no-op
 }
 
@@ -1901,35 +1901,13 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 bool Game_BattleAlgorithm::Escape::Execute() {
 	Reset();
 
-	// Monsters always escape
 	this->success = true;
-
-	if (source->GetType() == Game_Battler::Type_Ally && !always_succeed) {
-		int ally_agi = Main_Data::game_party->GetAverageAgility();
-		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
-
-		// flee chance is 0% when ally has less than 70% of enemy agi
-		// 100% -> 50% flee, 200% -> 100% flee
-		float to_hit = std::max(0.0f, 1.5f - ((float)enemy_agi / ally_agi));
-
-		// Every failed escape is worth 10% higher escape chance
-		to_hit += Game_Battle::GetEscapeFailureCount() * 0.1f;
-
-		to_hit *= 100;
-		this->success = Utils::PercentChance((int)to_hit);
-	}
 
 	return this->success;
 }
 
 void Game_BattleAlgorithm::Escape::Apply() {
-	if (!this->success) {
-		Game_Battle::IncEscapeFailureCount();
-	}
-
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		static_cast<Game_Enemy*>(source)->SetHidden(true);
-	}
+	static_cast<Game_Enemy*>(source)->SetHidden(true);
 	ApplyActionSwitches();
 }
 

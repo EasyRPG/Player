@@ -117,10 +117,6 @@ namespace Game_Battle {
 
 	const std::string& GetBackground();
 
-	int GetEscapeFailureCount();
-
-	void IncEscapeFailureCount();
-
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
 

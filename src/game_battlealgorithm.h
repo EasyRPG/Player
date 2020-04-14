@@ -611,15 +611,13 @@ public:
 
 class Escape : public AlgorithmBase {
 public:
-	Escape(Game_Battler* source, bool always_succeed = false);
+	Escape(Game_Battler* source);
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
-private:
-	bool always_succeed = false;
 };
 
 class Transform : public AlgorithmBase {

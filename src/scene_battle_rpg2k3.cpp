@@ -348,9 +348,6 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
-	// No escape. FIXME: Only enabled when party has initiative.
-	options_window->DisableItem(2);
-
 	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - option_command_mov, 80, true));
 	enemy_status_window->SetVisible(false);
 	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
@@ -525,7 +522,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		for (const lcf::rpg::BattleCommand* command : bcmds) {
 			commands.push_back(command->name);
 
-			if (!IsEscapeAllowed() && command->type == lcf::rpg::BattleCommand::Type_escape) {
+			if (!IsEscapeAllowedFromActorCommand() && command->type == lcf::rpg::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);
 			}
 			++i;
@@ -584,6 +581,12 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectOption:
 		options_window->SetActive(true);
+		if (IsEscapeAllowedFromOptionWindow()) {
+			options_window->EnableItem(2);
+		} else {
+			options_window->DisableItem(2);
+		}
+
 		break;
 	case State_SelectActor:
 		// no-op
@@ -1155,6 +1158,19 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 	}
 }
 
+bool Scene_Battle_Rpg2k3::IsEscapeAllowedFromOptionWindow() const {
+	auto cond = Game_Battle::GetBattleCondition();
+
+	return Scene_Battle::IsEscapeAllowed() && (Game_Battle::GetTurn() == 0)
+		&& (first_strike || cond == lcf::rpg::System::BattleCondition_initiative || cond == lcf::rpg::System::BattleCondition_surround);
+}
+
+bool Scene_Battle_Rpg2k3::IsEscapeAllowedFromActorCommand() const {
+	auto cond = Game_Battle::GetBattleCondition();
+
+	return Scene_Battle::IsEscapeAllowed() && cond != lcf::rpg::System::BattleCondition_pincers;
+}
+
 void Scene_Battle_Rpg2k3::OptionSelected() {
 	switch (options_window->GetIndex()) {
 		case 0: // Battle
@@ -1168,9 +1184,12 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			break;
 		case 2: // Escape
-			// FIXME : Only enabled when party has initiative.
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-			//SetState(State_Escape);
+			if (IsEscapeAllowedFromOptionWindow()) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Escape(true);
+			} else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			}
 			break;
 	}
 }
@@ -1186,11 +1205,12 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 		DefendSelected();
 		break;
 	case lcf::rpg::BattleCommand::Type_escape:
-		if (!IsEscapeAllowed()) {
+		if (!IsEscapeAllowedFromActorCommand()) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 		else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			active_actor->SetAtbGauge(0);
 			SetState(State_Escape);
 		}
 		break;
@@ -1254,27 +1274,16 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 	ActionSelectedCallback(active_actor);
 }
 
-void Scene_Battle_Rpg2k3::Escape() {
-
-	//FIXME: Handle first strike etc.. here.
-	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor, false);
-	active_actor->SetAtbGauge(0);
-
-	bool escape_success = escape_alg.Execute();
-	escape_alg.Apply();
-
-	if (!escape_success) {
-		SetState(State_SelectActor);
-		if (escape_success) {
-			ShowNotification(lcf::Data::terms.escape_success);
-		} else {
-			ShowNotification(lcf::Data::terms.escape_failure);
-		}
-	}
-	else {
+void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
+	if (force_allow || TryEscape()) {
+		// There is no success text for escape in 2k3
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 		EndBattle(BattleResult::Escape);
+		return;
 	}
+
+	SetState(State_SelectActor);
+	ShowNotification(lcf::Data::terms.escape_failure);
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
@@ -1461,6 +1470,9 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	enemy_cursor->SetVisible(false);
 
 	Scene_Battle::ActionSelectedCallback(for_battler);
+
+	// First strike escape bonus cancelled on actor non-escape action.
+	first_strike = false;
 }
 
 void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {

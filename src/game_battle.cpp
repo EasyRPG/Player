@@ -48,7 +48,6 @@ namespace Game_Battle {
 	std::unique_ptr<BattleAnimation> animation;
 
 	bool battle_running = false;
-	int escape_fail_count;
 
 	struct BattleTest battle_test;
 }
@@ -74,7 +73,6 @@ void Game_Battle::Init(int troop_id) {
 
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
-	escape_fail_count = 0;
 	target_enemy_index = 0;
 	need_refresh = false;
 
@@ -266,15 +264,6 @@ void Game_Battle::ChangeBackground(const std::string& name) {
 const std::string& Game_Battle::GetBackground() {
 	return background_name;
 }
-
-int Game_Battle::GetEscapeFailureCount() {
-	return escape_fail_count;
-}
-
-void Game_Battle::IncEscapeFailureCount() {
-	++escape_fail_count;
-}
-
 
 int Game_Battle::GetTurn() {
 	return Main_Data::game_party->GetTurns();

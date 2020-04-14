@@ -114,13 +114,17 @@ protected:
 	void SubskillSelected();
 	void SpecialSelected();
 
-	void Escape();
+	void Escape(bool force_allow = false);
 
 	void SelectNextActor();
 
 	void ActionSelectedCallback(Game_Battler* for_battler) override;
 
 	void ShowNotification(const std::string& text);
+
+	bool IsEscapeAllowed() const = delete; // disable accidental calls to base class version
+	bool IsEscapeAllowedFromOptionWindow() const;
+	bool IsEscapeAllowedFromActorCommand() const;
 
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 

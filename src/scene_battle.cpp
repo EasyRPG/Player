@@ -45,6 +45,7 @@
 Scene_Battle::Scene_Battle(const BattleArgs& args)
 	: troop_id(args.troop_id),
 	allow_escape(args.allow_escape),
+	first_strike(args.first_strike),
 	on_battle_end(args.on_battle_end)
 {
 	SetUseSharedDrawables(true);
@@ -104,7 +105,25 @@ void Scene_Battle::Start() {
 
 	CreateUi();
 
+	InitEscapeChance();
+
 	SetState(State_Start);
+}
+
+void Scene_Battle::InitEscapeChance() {
+	int avg_enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
+	int avg_actor_agi = Main_Data::game_party->GetAverageAgility();
+
+	int base_chance = Utils::RoundTo<int>(100.0 * static_cast<double>(avg_enemy_agi) / static_cast<double>(avg_actor_agi));
+	this->escape_chance = Utils::Clamp(150 - base_chance, 64, 100);
+}
+
+bool Scene_Battle::TryEscape() {
+	if (first_strike || Utils::PercentChance(escape_chance)) {
+		return true;
+	}
+	escape_chance += 10;
+	return false;
 }
 
 void Scene_Battle::Continue(SceneType /* prev_scene */) {

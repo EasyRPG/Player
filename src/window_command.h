@@ -53,6 +53,13 @@ public:
 	void DisableItem(int index);
 
 	/**
+	 * Enables a command.
+	 *
+	 * @param index command index.
+	 */
+	void EnableItem(int index);
+
+	/**
 	 * Replaces the text of an item.
 	 *
 	 * @param index command index.
