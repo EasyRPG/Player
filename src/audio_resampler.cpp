@@ -385,7 +385,7 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 		int sample_size = AudioDecoder::GetSamplesizeForFormat(output_format);
 
 		// Duplicate data from the back, allows writing to the buffer directly
-		for (size_t i = amount_filled - sample_size; i > 0; i -= sample_size) {
+		for (int i = amount_filled - sample_size; i > 0; i -= sample_size) {
 			// left channel
 			memcpy(&buffer[i * 2], &buffer[i], sample_size);
 			// right channel
@@ -410,7 +410,7 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 	int total_output_frames = length / (output_samplesize*nr_of_channels);
 	int amount_of_data_to_read = 0;
 	int amount_of_data_read = total_output_frames*nr_of_channels;
-	
+
 	int decoded = 0;
 
 	if (input_samplesize > output_samplesize) {
