@@ -377,28 +377,22 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 		}
 	}
 
-	if (amount_filled < 0) {
+	if (!mono_to_stereo_resample || amount_filled <= 0) {
 		return amount_filled;
 	}
 
-	if (mono_to_stereo_resample) {
-		int sample_size = AudioDecoder::GetSamplesizeForFormat(output_format);
+	// Resample mono to stereo
+	int sample_size = AudioDecoder::GetSamplesizeForFormat(output_format);
 
-		// Duplicate data from the back, allows writing to the buffer directly
-		for (int i = amount_filled - sample_size; i > 0; i -= sample_size) {
-			// left channel
-			memcpy(&buffer[i * 2], &buffer[i], sample_size);
-			// right channel
-			memcpy(&buffer[i * 2 + sample_size], &buffer[i], sample_size);
-		}
-
-		amount_filled *= 2;
+	// Duplicate data from the back, allows writing to the buffer directly
+	for (int i = amount_filled - sample_size; i > 0; i -= sample_size) {
+		// left channel
+		memcpy(&buffer[i * 2], &buffer[i], sample_size);
+		// right channel
+		memcpy(&buffer[i * 2 + sample_size], &buffer[i], sample_size);
 	}
 
-	// Clear the remaining buffer as specified in audio_decoder.h
-	memset(buffer + amount_filled, '\0', length - amount_filled);
-
-	return amount_filled;
+	return amount_filled * 2;
 }
 
 int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
