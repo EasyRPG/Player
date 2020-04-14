@@ -1,4 +1,6 @@
+#include "game_actors.h"
 #include "game_message.h"
+#include "game_party.h"
 #include "options.h"
 #include "data.h"
 #include "game_variables.h"
@@ -12,20 +14,30 @@ constexpr char escape = '\\';
 
 struct DataInit {
 	DataInit() {
-		Data::actors.push_back({});
-		Data::actors.back().name = "Alex";
-		Data::actors.push_back({});
-		Data::actors.back().name = "Brian";
-		Data::actors.push_back({});
-		Data::actors.back().name = "Carol";
-		Data::actors.push_back({});
-		Data::actors.back().name = "Daisy";
-		Data::actors.push_back({});
+		Main_Data::game_data = RPG::Save();
+		auto& actors = Main_Data::game_data.actors;
+		for (auto id : {1,2,3,4}) {
+			Main_Data::game_data.actors.push_back({});
+			Main_Data::game_data.actors.back().ID = id;
+			Main_Data::game_data.actors.back().level = 1;
+		}
 
+		for (const auto& actor : actors) {
+			Data::actors.push_back({});
+			Data::actors.back().ID = actor.ID;
+			Data::actors.back().Setup();
+		}
+		Main_Data::game_data.inventory.party.push_back(3);
+
+		Game_Actors::Init();
+		Main_Data::game_party = std::make_unique<Game_Party>();
+		Main_Data::game_party->SetupFromSave(Main_Data::game_data.inventory);
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
 	}
 	~DataInit() {
+		Main_Data::game_data = RPG::Save();
 		Data::actors.clear();
+		Main_Data::game_party.reset();
 		Main_Data::game_variables.reset();
 	}
 };
@@ -38,7 +50,7 @@ TEST_CASE("Actors") {
 
 	msg = u8"\\n[0]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	msg = u8"\\n[1]";
@@ -128,9 +140,14 @@ TEST_CASE("BadActors") {
 	REQUIRE_EQ(ret.value, 1);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
+	msg = u8"\\n[02]";
+	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
+	REQUIRE_EQ(ret.value, 2);
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
+
 	msg = u8"\\n[000]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 }
 
@@ -142,13 +159,13 @@ TEST_CASE("ActorVars") {
 
 	msg = u8"\\n[\\v[0]]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 0);
 	msg = u8"\\n[\\v[1]]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 
 	Main_Data::game_variables->Set(1, 1);
@@ -179,7 +196,7 @@ TEST_CASE("ActorVars") {
 
 	msg = u8"\\n[\\v[0]\\v[0]]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
 }
 
@@ -200,7 +217,7 @@ TEST_CASE("ActorVarsRecurse") {
 	Main_Data::game_variables->Set(2, 50);
 	msg = u8"\\n[\\v[\\v[1]]]";
 	ret = Game_Message::ParseActor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion);
-	REQUIRE_EQ(ret.value, 1);
+	REQUIRE_EQ(ret.value, 3);
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 

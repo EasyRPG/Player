@@ -17,6 +17,8 @@
 
 // Headers
 #include "game_message.h"
+#include "game_actor.h"
+#include "game_party.h"
 #include "game_player.h"
 #include "game_battle.h"
 #include "main_data.h"
@@ -324,10 +326,12 @@ static Game_Message::ParseParamResult ParseParamImpl(
 		++iter;
 	}
 
-	// RPG_RT will replace varible substitutions that result in 0
-	// with 1 to avoid invalid actor crash.
+	// Actor 0 references the first party member
 	if (upper == 'N' && value == 0 && got_valid_number) {
-		value = 1;
+		auto* party = Main_Data::game_party.get();
+		if (party->GetBattlerCount() > 0) {
+			value = (*party)[0].GetId();
+		}
 	}
 
 	return { iter, value };
