@@ -1788,11 +1788,8 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
 		result -= (actor->GetSpi() * spi) / 800;
-		if (var != 0) {
-			int rperc = var * 5;
-			int rval = Utils::GetRandomNumber(-rperc, rperc - 1);
-			result += result * rval / 100;
-		}
+		result = std::max(result, 0);
+		result = Game_Battle::VarianceAdjustEffect(result, var);
 
 		result = std::max(0, result);
 		actor->ChangeHp(-result);

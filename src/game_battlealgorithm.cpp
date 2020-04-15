@@ -997,8 +997,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 		}
 
-		auto var = Utils::GetRandomNumber(-20, 20);
-		effect += (effect * var) / 100;
+		if (effect > 0) {
+			effect = Game_Battle::VarianceAdjustEffect(effect, 4);
+		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1220,7 +1221,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1261,7 +1262,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1819,14 +1820,9 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
 	int effect = source->GetAtk() - GetTarget()->GetDef() / 2;
-
-	if (effect < 0)
-		effect = 0;
-
-	// up to 20% stronger/weaker
-	int act_perc = Utils::GetRandomNumber(-20, 20);
-	int change = (int)(std::ceil(effect * act_perc / 100.0));
-	effect += change;
+	if (effect > 0) {
+		effect = Game_Battle::VarianceAdjustEffect(effect, 4);
+	}
 
 	effect /= GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1;
 
