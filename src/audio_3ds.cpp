@@ -30,7 +30,7 @@ namespace {
 	const int bgm_channel = 0;
 	const int se_channel_begin = 1;
 	const int se_channel_end = 23;
-	const int samplerate = 22050;
+	const int samplerate = 44100;
 	int fill_block = 0;
 	bool is_new_3ds;
 	bool dsp_inited = false;
