@@ -19,7 +19,7 @@
 
 #include <cstring>
 
-#include "audio_3ds.h"
+#include "3ds_audio.h"
 #include "filefinder.h"
 #include "game_clock.h"
 #include "output.h"

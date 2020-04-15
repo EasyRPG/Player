@@ -42,7 +42,7 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES		:=	../../src
+SOURCES		:=	../../src ../../src/platform/3ds
 DATA		:=	data
 INCLUDES	:=	../../src
 GRAPHICS	:=	gfx

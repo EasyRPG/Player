@@ -42,7 +42,7 @@
 u32 __ctru_linear_heap_size = 12*1024*1024;
 
 #ifdef SUPPORT_AUDIO
-#include "audio_3ds.h"
+#include "3ds_audio.h"
 AudioInterface& CtrUi::GetAudio() {
 	return *audio_;
 }

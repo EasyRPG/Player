@@ -14,27 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef EP_PLATFORM_PSP2_AUDIO_H
+#define EP_PLATFORM_PSP2_AUDIO_H
 
-#ifndef EP_AUDIO_LIBRETRO_H
-#define EP_AUDIO_LIBRETRO_H
+#if defined(PSP2)
 
-#if defined(USE_LIBRETRO)
+#include <psp2/types.h>
 
-#include "libretro.h"
 #include "audio_generic.h"
 
-class LibretroAudio : public GenericAudio {
+class Psp2Audio : public GenericAudio {
 public:
-	LibretroAudio();
-	~LibretroAudio();
+	Psp2Audio();
+	~Psp2Audio();
 
 	void LockMutex() const override;
 	void UnlockMutex() const override;
 
-	static void EnableAudio(bool enabled);
-	static void AudioThreadCallback();
-	static void SetRetroAudioCallback(retro_audio_sample_batch_t cb);
-};
+	volatile bool termStream = false;
+
+private:
+	SceUID audio_mutex;
+	SceUID audio_thread;
+}; // class Psp2Audio
 
 #endif
+
 #endif

@@ -15,13 +15,13 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_LIBRETRO_UI_H
-#define EP_LIBRETRO_UI_H
+#ifndef EP_PLATFORM_LIBRETRO_UI_H
+#define EP_PLATFORM_LIBRETRO_UI_H
 
 #ifdef USE_LIBRETRO
 
 // Headers
-#include "audio_libretro.h"
+#include "libretro_audio.h"
 #include "baseui.h"
 #include "color.h"
 #include "rect.h"

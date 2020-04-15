@@ -19,7 +19,7 @@
 
 // Headers
 #include "system.h"
-#include "util_win.h"
+#include "utils.h"
 
 #ifndef _DEBUG
 #  include <winioctl.h>

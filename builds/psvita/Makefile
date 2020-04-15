@@ -1,6 +1,6 @@
 TARGET  := EasyRPG
 BUILD   := build
-SOURCES := ../../src
+SOURCES := ../../src ../../src/platform/psvita
 DATA    := data
 
 APP_TITLE := EasyRPG Player

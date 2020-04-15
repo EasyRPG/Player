@@ -16,7 +16,7 @@
  */
 
 #if defined(__SWITCH__) && defined(SUPPORT_AUDIO)
-#include "audio_switch.h"
+#include "switch_audio.h"
 #include "output.h"
 
 #include <switch.h>

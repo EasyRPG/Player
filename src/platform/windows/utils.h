@@ -14,29 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef EP_AUDIO_SWITCH_H
-#define EP_AUDIO_SWITCH_H
 
-#ifdef __SWITCH__
+#ifndef EP_PLATFORM_WINDOWS_UTILS_H
+#define EP_PLATFORM_WINDOWS_UTILS_H
 
-#include <switch.h>
+#ifdef _WIN32
 
-#include "audio_generic.h"
+// Headers
+#include <string>
+#include <windows.h>
 
-class NxAudio : public GenericAudio {
-public:
-	NxAudio();
-	~NxAudio();
+/**
+ * Windows Utils namespace
+ */
+namespace WindowsUtils {
+	/**
+	 * Detects the Windows version during runtime.
+	 * Vista (and later) have version 6 and higher.
+	 */
+	int GetWindowsVersion();
 
-	void LockMutex() const override;
-	void UnlockMutex() const override;
-	
-	volatile bool termStream = false;
-
-private:
-	Thread audio_thread;
-	Mutex audio_mutex;
-}; // class NxAudio
+	/**
+	 * Configures creation of minidumps when the release build crashes.
+	 */
+	void InitMiniDumpWriter();
+}
 
 #endif
 

@@ -7,27 +7,17 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LIBRARIES = libeasyrpg-player.a
 libeasyrpg_player_a_SOURCES = \
-	src/3ds_clock.cpp \
-	src/3ds_clock.h \
-	src/3ds_ui.cpp \
-	src/3ds_ui.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
 	src/async_op.h \
 	src/audio.cpp \
 	src/audio.h \
-	src/audio_3ds.cpp \
-	src/audio_3ds.h \
 	src/audio_al.cpp \
 	src/audio_al.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
-	src/audio_libretro.cpp \
-	src/audio_libretro.h \
-	src/audio_psp2.cpp \
-	src/audio_psp2.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
@@ -36,8 +26,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
-	src/audio_switch.cpp \
-	src/audio_switch.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
@@ -160,17 +148,11 @@ libeasyrpg_player_a_SOURCES = \
 	src/input.h \
 	src/input_buttons.h \
 	src/input_buttons_desktop.cpp \
-	src/input_buttons_gekko.cpp \
-	src/input_buttons_libretro.cpp \
-	src/input_buttons_opendingux.cpp \
-	src/input_buttons_psp.cpp \
 	src/input_source.cpp \
 	src/input_source.h \
 	src/instrumentation.cpp \
 	src/instrumentation.h \
 	src/keys.h \
-	src/libretro_ui.cpp \
-	src/libretro_ui.h \
 	src/logo.h \
 	src/main_data.cpp \
 	src/main_data.h \
@@ -196,10 +178,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/platform_clock.h \
 	src/player.cpp \
 	src/player.h \
-	src/psp2_clock.cpp \
-	src/psp2_clock.h \
-	src/psp2_ui.cpp \
-	src/psp2_ui.h \
 	src/game_quit.cpp \
 	src/game_quit.h \
 	src/rect.cpp \
@@ -286,10 +264,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/state.cpp \
 	src/state.h \
 	src/std_clock.h \
-	src/switch_clock.cpp \
-	src/switch_clock.h \
-	src/switch_ui.cpp \
-	src/switch_ui.h \
 	src/system.h \
 	src/teleport_target.h \
 	src/text.cpp \
@@ -305,8 +279,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/util_macro.h \
 	src/utils.cpp \
 	src/utils.h \
-	src/util_win.cpp \
-	src/util_win.h \
 	src/version.h \
 	src/weather.cpp \
 	src/weather.h \
@@ -397,6 +369,37 @@ libeasyrpg_player_a_SOURCES += \
 	src/midisynth.cpp \
 	src/midisynth.h
 endif
+
+# These are only taken in by the legacy homebrew Makefiles
+EXTRA_DIST += \
+	src/platform/3ds/3ds_clock.cpp \
+	src/platform/3ds/3ds_clock.h \
+	src/platform/3ds/3ds_ui.cpp \
+	src/platform/3ds/3ds_ui.h \
+	src/platform/3ds/3ds_audio.cpp \
+	src/platform/3ds/3ds_audio.h \
+	src/platform/libretro/libretro_audio.cpp \
+	src/platform/libretro/libretro_audio.h \
+	src/platform/libretro/libretro_input_buttons.cpp \
+	src/platform/libretro/libretro_ui.cpp \
+	src/platform/libretro/libretro_ui.h \
+	src/platform/psvita/psp2_clock.cpp \
+	src/platform/psvita/psp2_clock.h \
+	src/platform/psvita/psp2_ui.cpp \
+	src/platform/psvita/psp2_ui.h \
+	src/platform/psvita/psp2_audio.cpp \
+	src/platform/psvita/psp2_audio.h \
+	src/platform/switch/switch_clock.cpp \
+	src/platform/switch/switch_clock.h \
+	src/platform/switch/switch_ui.cpp \
+	src/platform/switch/switch_ui.h \
+	src/platform/switch/switch_audio.cpp \
+	src/platform/switch/switch_audio.h \
+	src/platform/wii/wii_input_buttons.cpp \
+	src/platform/opendingux/opendingux_input_buttons.cpp \
+	src/platform/psp/psp_input_buttons.cpp \
+	src/platform/windows/utils.cpp \
+	src/platform/windows/utils.h
 
 libeasyrpg_player_a_CXXFLAGS = \
 	-fno-math-errno \
