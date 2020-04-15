@@ -206,6 +206,11 @@ void CtrUi::ProcessEvents() {
 	touchscreen_state = (input & KEY_Y);
 	if ((touchscreen_state != old_touchscreen_state) && touchscreen_state) {
 		touchscreen_on = !touchscreen_on;
+		if (touchscreen_on) {
+			GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM );
+		} else {
+			GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM );
+		}
 	}
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
@@ -357,7 +362,7 @@ void CtrUi::UpdateDisplay() {
 			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
 		}
 	}else{
-		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 0));
+		GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM );
 	}
 #endif
 
