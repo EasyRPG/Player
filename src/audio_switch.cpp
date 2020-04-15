@@ -65,7 +65,7 @@ void switch_audio_thread(void*) {
 			return;
 		}
 
-		audoutWaitPlayFinish(&released_buffer, &released_count, U64_MAX);
+		audoutWaitPlayFinish(&released_buffer, &released_count, UINT64_MAX);
 		instance->LockMutex();
 		instance->Decode((uint8_t*)released_buffer->buffer, buf_size);
 		instance->UnlockMutex();
