@@ -1066,10 +1066,20 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			// Characters
 			character = GetCharacter(com.parameters[5]);
 			if (character != NULL) {
+				int event_id = com.parameters[5];
 				switch (com.parameters[6]) {
 					case 0:
 						// Map ID
-						value = character->GetMapId();
+						if (!Player::IsRPG2k()
+								|| event_id == Game_Character::CharPlayer
+								|| event_id == Game_Character::CharBoat
+								|| event_id == Game_Character::CharShip
+								|| event_id == Game_Character::CharAirship) {
+							value = character->GetMapId();
+						} else {
+							// This is an RPG_RT bug for 2k only. Requesting the map id of an event always returns 0.
+							value = 0;
+						}
 						break;
 					case 1:
 						// X Coordinate
