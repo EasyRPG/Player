@@ -95,6 +95,22 @@ void Game_Variables::SetOpRange(const int first_id, const int last_id, const Var
 	}
 }
 
+template <typename F>
+void Game_Variables::SetOpRangeRandom(const int first_id, const int last_id, const Var_t minval, const Var_t maxval, F&& op, const char* warn) {
+	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
+		Output::Debug(warn, first_id, last_id, minval, maxval);
+		--_warnings;
+	}
+	auto& vv = _variables;
+	if (EP_UNLIKELY(last_id > static_cast<int>(vv.size()))) {
+		vv.resize(last_id, 0);
+	}
+	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
+		auto& v = vv[i];
+		v = Utils::Clamp(op(v, Utils::GetRandomNumber(minval, maxval)), _min, _max);
+	}
+}
+
 Game_Variables::Var_t Game_Variables::Set(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarSet, "Invalid write var[%d] = %d!");
 }
@@ -141,6 +157,30 @@ void Game_Variables::DivRange(int first_id, int last_id, Var_t value) {
 
 void Game_Variables::ModRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarMod, "Invalid write var[%d,%d] %= %d!");
+}
+
+void Game_Variables::SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarSet, "Invalid write var[%d,%d] = rand(%d,%d)!");
+}
+
+void Game_Variables::AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarAdd, "Invalid write var[%d,%d] += rand(%d,%d)!");
+}
+
+void Game_Variables::SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarSub, "Invalid write var[%d,%d] -= rand(%d,%d)!");
+}
+
+void Game_Variables::MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarMult, "Invalid write var[%d,%d] *= rand(%d,%d)!");
+}
+
+void Game_Variables::DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarDiv, "Invalid write var[%d,%d] /= rand(%d,%d)!");
+}
+
+void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	SetOpRangeRandom(first_id, last_id, minval, maxval, VarMod, "Invalid write var[%d,%d] %= rand(%d,%d)!");
 }
 
 std::string Game_Variables::GetName(int _id) const {

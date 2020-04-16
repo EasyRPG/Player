@@ -58,6 +58,13 @@ public:
 	void DivRange(int first_id, int last_id, Var_t value);
 	void ModRange(int first_id, int last_id, Var_t value);
 
+	void SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+
 	std::string GetName(int _id) const;
 
 	int GetSize() const;
@@ -72,6 +79,8 @@ private:
 		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
 	template <typename F>
 		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
+	template <typename F>
+		void SetOpRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval, F&& op, const char* warn);
 private:
 	Variables_t _variables;
 	Var_t _min = 0;
