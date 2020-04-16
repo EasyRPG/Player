@@ -23,6 +23,7 @@ struct DataInit {
 		Data::actors.push_back({});
 
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
+		Main_Data::game_variables->SetWarning(0);
 	}
 	~DataInit() {
 		Data::actors.clear();
