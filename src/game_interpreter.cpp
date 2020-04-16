@@ -956,25 +956,22 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 1:
 			// Var A ops B
-			value = Main_Data::game_variables->Get(com.parameters[5]);
+			if (com.parameters[0] != 1) {
+				value = Main_Data::game_variables->Get(com.parameters[5]);
+			}
 			break;
 		case 2:
 			// Number of var A ops B
-			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			if (com.parameters[0] != 1) {
+				value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			}
 			break;
 		case 3:
 			// Random between range
-			int a, b;
-			a = max(com.parameters[5], com.parameters[6]);
-			b = min(com.parameters[5], com.parameters[6]);
 			if (com.parameters[0] != 1) {
-				// In the set single value case, we just set the value to a random number here.
-				// This avoids adding a branch check for random in the other more common code paths.
-				value = Utils::GetRandomNumber(b, a);
-			} else {
-				// In the set multiple values case, we need to call the SetRangeRandom() methods.
-				value = b;
-				max_random_value = a;
+				int rmax = max(com.parameters[5], com.parameters[6]);
+				int rmin = min(com.parameters[5], com.parameters[6]);
+				value = Utils::GetRandomNumber(rmin, rmax);
 			}
 			break;
 		case 4:
@@ -1223,8 +1220,78 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					Main_Data::game_variables->Mod(start, value);
 					break;
 			}
-		} else if (max_random_value <= value) {
-			// Multiple variables - not random
+		} else if (com.parameters[4] == 1) {
+			// Multiple variables - Direct variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariable(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariable(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariable(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariable(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariable(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariable(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 2) {
+			// Multiple variables - Indirect variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariableIndirect(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariableIndirect(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariableIndirect(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariableIndirect(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariableIndirect(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariableIndirect(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 3) {
+			// Multiple variables - random
+			int rmax = max(com.parameters[5], com.parameters[6]);
+			int rmin = min(com.parameters[5], com.parameters[6]);
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeRandom(start, end, rmin, rmax);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeRandom(start, end, rmin, rmax);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeRandom(start, end, rmin, rmax);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeRandom(start, end, rmin, rmax);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeRandom(start, end, rmin, rmax);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeRandom(start, end, rmin, rmax);
+					break;
+			}
+		} else {
+			// Multiple variables - constant
 			switch (com.parameters[3]) {
 				case 0:
 					Main_Data::game_variables->SetRange(start, end, value);
@@ -1243,28 +1310,6 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					break;
 				case 5:
 					Main_Data::game_variables->ModRange(start, end, value);
-					break;
-			}
-		} else {
-			// Multiple variables - random
-			switch (com.parameters[3]) {
-				case 0:
-					Main_Data::game_variables->SetRangeRandom(start, end, value, max_random_value);
-					break;
-				case 1:
-					Main_Data::game_variables->AddRangeRandom(start, end, value, max_random_value);
-					break;
-				case 2:
-					Main_Data::game_variables->SubRangeRandom(start, end, value, max_random_value);
-					break;
-				case 3:
-					Main_Data::game_variables->MultRangeRandom(start, end, value, max_random_value);
-					break;
-				case 4:
-					Main_Data::game_variables->DivRangeRandom(start, end, value, max_random_value);
-					break;
-				case 5:
-					Main_Data::game_variables->ModRangeRandom(start, end, value, max_random_value);
 					break;
 			}
 		}
