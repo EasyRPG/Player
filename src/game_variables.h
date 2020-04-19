@@ -58,6 +58,27 @@ public:
 	void DivRange(int first_id, int last_id, Var_t value);
 	void ModRange(int first_id, int last_id, Var_t value);
 
+	void SetRangeVariable(int first_id, int last_id, int var_id);
+	void AddRangeVariable(int first_id, int last_id, int var_id);
+	void SubRangeVariable(int first_id, int last_id, int var_id);
+	void MultRangeVariable(int first_id, int last_id, int var_id);
+	void DivRangeVariable(int first_id, int last_id, int var_id);
+	void ModRangeVariable(int first_id, int last_id, int var_id);
+
+	void SetRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void AddRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void SubRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void MultRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void DivRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void ModRangeVariableIndirect(int first_id, int last_id, int var_id);
+
+	void SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+
 	std::string GetName(int _id) const;
 
 	int GetSize() const;
@@ -70,8 +91,12 @@ private:
 	void WarnGet(int variable_id) const;
 	template <typename F>
 		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
+	template <typename... Args>
+		void PrepareRange(const int first_id, const int last_id, const char* warn, Args... args);
+	template <typename V, typename F>
+		void WriteRange(const int first_id, const int last_id, V&& value, F&& op);
 	template <typename F>
-		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
+		void WriteRangeVariable(const int first_id, const int last_id, int var_id, F&& op);
 private:
 	Variables_t _variables;
 	Var_t _min = 0;

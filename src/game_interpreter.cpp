@@ -942,8 +942,12 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
 	int value = 0;
-	Game_Actor* actor;
-	Game_Character* character;
+	// If max is < value, it was never set. If they are equal, we don't need to call the RNG.
+	// If max > value, we have random number range to compute.
+	int max_random_value = INT_MIN;
+
+	Game_Actor* actor = nullptr;
+	Game_Character* character = nullptr;
 
 	switch (com.parameters[4]) {
 		case 0:
@@ -952,18 +956,23 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 1:
 			// Var A ops B
-			value = Main_Data::game_variables->Get(com.parameters[5]);
+			if (com.parameters[0] != 1) {
+				value = Main_Data::game_variables->Get(com.parameters[5]);
+			}
 			break;
 		case 2:
 			// Number of var A ops B
-			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			if (com.parameters[0] != 1) {
+				value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			}
 			break;
 		case 3:
 			// Random between range
-			int a, b;
-			a = max(com.parameters[5], com.parameters[6]);
-			b = min(com.parameters[5], com.parameters[6]);
-			value = Utils::GetRandomNumber(b, a);
+			if (com.parameters[0] != 1) {
+				int rmax = max(com.parameters[5], com.parameters[6]);
+				int rmin = min(com.parameters[5], com.parameters[6]);
+				value = Utils::GetRandomNumber(rmin, rmax);
+			}
 			break;
 		case 4:
 			// Items
@@ -1054,10 +1063,20 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			// Characters
 			character = GetCharacter(com.parameters[5]);
 			if (character != NULL) {
+				int event_id = com.parameters[5];
 				switch (com.parameters[6]) {
 					case 0:
 						// Map ID
-						value = character->GetMapId();
+						if (!Player::IsRPG2k()
+								|| event_id == Game_Character::CharPlayer
+								|| event_id == Game_Character::CharBoat
+								|| event_id == Game_Character::CharShip
+								|| event_id == Game_Character::CharAirship) {
+							value = character->GetMapId();
+						} else {
+							// This is an RPG_RT bug for 2k only. Requesting the map id of an event always returns 0.
+							value = 0;
+						}
 						break;
 					case 1:
 						// X Coordinate
@@ -1180,6 +1199,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
 		if (start == end) {
+			// Single variable case - if this is random value, we already called the RNG earlier.
 			switch (com.parameters[3]) {
 				case 0:
 					Main_Data::game_variables->Set(start, value);
@@ -1200,7 +1220,78 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					Main_Data::game_variables->Mod(start, value);
 					break;
 			}
+		} else if (com.parameters[4] == 1) {
+			// Multiple variables - Direct variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariable(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariable(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariable(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariable(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariable(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariable(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 2) {
+			// Multiple variables - Indirect variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariableIndirect(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariableIndirect(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariableIndirect(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariableIndirect(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariableIndirect(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariableIndirect(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 3) {
+			// Multiple variables - random
+			int rmax = max(com.parameters[5], com.parameters[6]);
+			int rmin = min(com.parameters[5], com.parameters[6]);
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeRandom(start, end, rmin, rmax);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeRandom(start, end, rmin, rmax);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeRandom(start, end, rmin, rmax);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeRandom(start, end, rmin, rmax);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeRandom(start, end, rmin, rmax);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeRandom(start, end, rmin, rmax);
+					break;
+			}
 		} else {
+			// Multiple variables - constant
 			switch (com.parameters[3]) {
 				case 0:
 					Main_Data::game_variables->SetRange(start, end, value);

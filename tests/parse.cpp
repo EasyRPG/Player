@@ -33,6 +33,7 @@ struct DataInit {
 		Main_Data::game_party = std::make_unique<Game_Party>();
 		Main_Data::game_party->SetupFromSave(Main_Data::game_data.inventory);
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
+		Main_Data::game_variables->SetWarning(0);
 	}
 	~DataInit() {
 		Main_Data::game_data = RPG::Save();
