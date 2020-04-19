@@ -832,7 +832,7 @@ int Game_Actor::GetBattleX() const {
 		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
 		if (terrain) {
 			// No warning, already reported on battle start
-			right = left + terrain->grid_c / 1103;
+			right = left + terrain->grid_inclination / 1103;
 		}
 
 		switch (party_size) {
@@ -893,7 +893,7 @@ int Game_Actor::GetBattleX() const {
 		}
 	}
 	else {
-		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
+		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_top_y, Data::terrains[0].grid_elongation, Data::terrains[0].grid_inclination, Data::terrains[0].grid_location);
 
 		position = GetActor().battle_x * SCREEN_TARGET_WIDTH / 320;
 	}
@@ -914,8 +914,8 @@ int Game_Actor::GetBattleY() const {
 		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
 		if (terrain) {
 			// No warning, already reported on battle start
-			top = terrain->grid_a;
-			bottom = top + terrain->grid_b / 13;
+			top = terrain->grid_top_y;
+			bottom = top + terrain->grid_elongation / 13;
 		}
 
 		switch (party_size) {
