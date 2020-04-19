@@ -11,7 +11,7 @@ ifeq ($(OSTYPE), MorphOS)
 PREFIX  = ppc-morphos
 CC      = $(PREFIX)-gcc -noixemul
 CXX     = $(PREFIX)-g++ -noixemul
-PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99
+PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99 -D_NO_PPCINLINE
 TOOLCHAIN_DIR := /gg/usr
 SDL_LIBS = -L$(TOOLCHAIN_DIR)/local/lib -lSDL_mixer -lSDL
 SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/local/include/SDL -I$(TOOLCHAIN_DIR)/local/include

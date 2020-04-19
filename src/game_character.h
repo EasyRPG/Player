@@ -27,10 +27,6 @@
 #include "rpg_savemapeventbase.h"
 #include "utils.h"
 
-#ifdef __MORPHOS__
-#undef Wait
-#endif
-
 /**
  * Game_Character class.
  */
