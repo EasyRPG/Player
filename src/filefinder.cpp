@@ -37,10 +37,6 @@
 #   include <SDL_system.h>
 #endif
 
-#ifdef __MORPHOS__
-#undef bind
-#endif
-
 #include "system.h"
 #include "options.h"
 #include "utils.h"

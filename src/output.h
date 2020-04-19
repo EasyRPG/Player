@@ -22,10 +22,6 @@
 #include <string>
 #include <iosfwd>
 
-#ifdef __MORPHOS__
-#undef Debug
-#endif
-
 /**
  * Output Namespace.
  */
