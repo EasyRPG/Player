@@ -41,7 +41,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES		:=	../../src
+SOURCES		:=	../../src ../../src/platform/switch
 DATA		:=	data
 INCLUDES	:=	../../src
 EXEFS_SRC	:=	exefs_src

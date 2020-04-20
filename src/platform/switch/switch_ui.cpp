@@ -39,7 +39,7 @@
 #include "touch_ui_png.h"
 
 #ifdef SUPPORT_AUDIO
-#include "audio_switch.h"
+#include "switch_audio.h"
 
 AudioInterface& NxUi::GetAudio() {
 	return *audio_;

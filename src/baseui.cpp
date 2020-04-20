@@ -24,13 +24,13 @@
 #elif USE_SDL==1
 #  include "sdl_ui.h"
 #elif USE_LIBRETRO
-#  include "libretro_ui.h"
+#  include "platform/libretro/libretro_ui.h"
 #elif defined(_3DS)
-#  include "3ds_ui.h"
+#  include "platform/3ds/3ds_ui.h"
 #elif defined(PSP2)
-#  include "psp2_ui.h"
+#  include "platform/psvita/psp2_ui.h"
 #elif defined(__SWITCH__)
-#  include "switch_ui.h"
+#  include "platform/switch/switch_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;

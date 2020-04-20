@@ -32,7 +32,7 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #elif defined(_WIN32)
-#  include "util_win.h"
+#  include "platform/windows/utils.h"
 #endif
 
 #if WANT_FMMIDI == 2

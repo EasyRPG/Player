@@ -16,7 +16,7 @@
  */
 
 #if defined(USE_LIBRETRO) && defined(SUPPORT_AUDIO)
-#include "audio_libretro.h"
+#include "libretro_audio.h"
 #include "output.h"
 #include "game_clock.h"
 

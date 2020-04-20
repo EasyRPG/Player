@@ -63,10 +63,9 @@ INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated
+SOURCES = ../../src ../../src/platform/opendingux ../../lib/liblcf/src ../../lib/liblcf/src/generated
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
-BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
-OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
+OBJS = $(CPPFILES:.cpp=.o)
 
 # Compiler flags
 CFLAGS += -Wall -DNDEBUG -DUSE_SDL=$(SDL_TARGET) -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)

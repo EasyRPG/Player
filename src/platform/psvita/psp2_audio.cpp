@@ -16,7 +16,7 @@
  */
 
 #if defined(PSP2) && defined(SUPPORT_AUDIO)
-#include "audio_psp2.h"
+#include "psp2_audio.h"
 #include "output.h"
 
 #include <psp2/audioout.h>

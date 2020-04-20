@@ -30,7 +30,7 @@
 #include "decoder_wildmidi.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro_ui.h"
+#include "platform/libretro/libretro_ui.h"
 #endif
 
 #if defined(GEKKO) || defined(_3DS)

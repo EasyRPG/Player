@@ -19,7 +19,6 @@
 
 // Headers
 #include "libretro_ui.h"
-#include "audio_libretro.h"
 #include "bitmap.h"
 #include "color.h"
 #include "graphics.h"
@@ -41,7 +40,7 @@
 #include <math.h>
 
 #ifdef SUPPORT_AUDIO
-#include "audio_libretro.h"
+#include "libretro_audio.h"
 AudioInterface& LibretroUi::GetAudio() {
 	return *audio_;
 }

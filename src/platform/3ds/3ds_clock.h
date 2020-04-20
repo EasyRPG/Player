@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_3DS_CLOCK_H
-#define EP_3DS_CLOCK_H
+#ifndef EP_PLATFORM_3DS_CLOCK_H
+#define EP_PLATFORM_3DS_CLOCK_H
 
 #ifdef _3DS
 

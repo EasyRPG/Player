@@ -19,17 +19,14 @@
 
 // Headers
 #include "system.h"
-#include "util_win.h"
+#include "utils.h"
 
 #ifndef _DEBUG
 #  include <winioctl.h>
 #  include <dbghelp.h>
 #endif
 
-#ifdef USE_SDL
-#  include "SDL_syswm.h"
-#endif
-
+// FIXME: This does not work reliably for Windows 8.1 and later
 int WindowsUtils::GetWindowsVersion() {
 	static DWORD major_version = 0;
 	if (major_version != 0) {
@@ -38,9 +35,11 @@ int WindowsUtils::GetWindowsVersion() {
 
 	OSVERSIONINFO osvi;
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
+	if (GetVersionEx(&osvi)) {
+		major_version = osvi.dwMajorVersion;
+	}
 
-	return osvi.dwMajorVersion;
+	return major_version;
 }
 
 #if (!defined(_DEBUG) && defined(WINVER) && WINVER >= 0x0600)

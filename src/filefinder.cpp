@@ -50,7 +50,7 @@
 #include "platform.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro_ui.h"
+#include "platform/libretro/libretro_ui.h"
 #endif
 
 // MinGW shlobj.h does not define this

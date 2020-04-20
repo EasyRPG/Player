@@ -50,7 +50,7 @@ extern "C"{
 }
 
 #ifdef SUPPORT_AUDIO
-#include "audio_psp2.h"
+#include "psp2_audio.h"
 AudioInterface& Psp2Ui::GetAudio() {
 	return *audio_;
 }

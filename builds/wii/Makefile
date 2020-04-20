@@ -28,7 +28,7 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	boot
 BUILD		:=	obj
 TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
-SOURCES		:=	src
+SOURCES		:=	src src/platform/wii
 DATA		:=	data
 INCLUDES	:=	src
 

@@ -26,7 +26,7 @@
 #include <thread>
 
 #ifdef _WIN32
-#  include "util_win.h"
+#  include "platform/windows/utils.h"
 #  include <Windows.h>
 #  include <Shellapi.h>
 #elif defined(GEKKO)
