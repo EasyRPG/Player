@@ -23,6 +23,10 @@ endif
 PREFIX  = arm-vita-eabi
 CXX     = $(PREFIX)-g++
 
+ifneq ($(strip $(shell command -v ccache 2> /dev/null)),)
+CCACHE = ccache
+endif
+
 CFLAGS  = -Wl,-q -g -O3 -fno-math-errno
 CXXFLAGS = $(CFLAGS) -fno-exceptions -std=gnu++14 -fno-rtti
 ASFLAGS = $(CFLAGS)
@@ -60,11 +64,11 @@ $(TARGET).velf: $(TARGET).elf
 
 %.o: %.cpp
 	@echo "[CXX] $<"
-	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+	@$(CCACHE) $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(TARGET).elf: $(OBJS)
 	@echo "[CXXLD] $@"
-	@$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) $(LIBS) -o $@
+	@$(CCACHE) $(CXX) $(CXXFLAGS) $^ $(LDFLAGS) $(LIBS) -o $@
 
 clean:
 	@rm -rf $(TARGET).velf $(TARGET).elf $(TARGET)-stripped.elf $(OBJS) param.sfo eboot.bin
