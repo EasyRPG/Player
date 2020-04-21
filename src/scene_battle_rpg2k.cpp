@@ -317,7 +317,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				// such as death, paralyze, confuse, etc..
 				PrepareBattleAction(battler);
 			}
+
 			auto* alg = battler->GetBattleAlgorithm().get();
+			if (alg == nullptr) {
+				Output::Warning("ProcessActions: Invalid action for battler %d (%s)", battler->GetId(), battler->GetName().c_str());
+				Output::Warning("Please report a bug!");
+			}
 
 			if (ProcessBattleAction(alg)) {
 				battle_action_pending = false;
@@ -395,6 +400,12 @@ bool Scene_Battle_Rpg2k::ProcessNextSubState(int substate, Game_BattleAlgorithm:
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	if (action == nullptr) {
+		Output::Warning("ProcessBattleAction: Invalid battle action");
+		Output::Warning("Please report a bug!");
+		return true;
+	}
+
 	if (!battle_action_pending) {
 		// First time we are called, do initialization.
 		battle_action_wait = 0;
@@ -538,7 +549,8 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 		if (!action->GetTarget()) {
 			// No target but not a target-only action.
 			// Maybe a bug report will help later
-			Output::Warning("Battle: BattleAction without valid target.");
+			Output::Warning("ProcessActionUsage1: BattleAction without valid target.");
+			Output::Warning("Please report a bug!");
 			return true;
 		}
 
@@ -1313,6 +1325,14 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 			[](Game_Battler* l, Game_Battler* r) {
 			return l->GetBattleOrderAgi() > r->GetBattleOrderAgi();
 			});
+
+	for (const auto& battler : battle_actions) {
+		if (std::count(battle_actions.begin(), battle_actions.end(), battler) > 1) {
+			Output::Warning("CreateExecutionOrder: Battler %d (%s) has multiple battle actions", battler->GetId(), battler->GetName().c_str());
+			Output::Warning("Please report a bug!");
+			break;
+		}
+	}
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
