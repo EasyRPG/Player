@@ -359,17 +359,20 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 		return 0;
 	}
 
+	auto* chara = Game_Character::GetCharacter(target_id, target_id);
+	if (!chara) {
+		Output::Warning("ShowBattleAnimation: Invalid target event ID %d", target_id);
+		CancelBattleAnimation();
+		return 0;
+	}
+
 	data.battleanim_id = animation_id;
 	data.battleanim_target = target_id;
 	data.battleanim_global = global;
 	data.battleanim_active = true;
 	data.battleanim_frame = start_frame;
 
-	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
-
-	if (chara) {
-		animation.reset(new BattleAnimationMap(*anim, *chara, global));
-	}
+	animation.reset(new BattleAnimationMap(*anim, *chara, global));
 
 	if (start_frame) {
 		animation->SetFrame(start_frame);
