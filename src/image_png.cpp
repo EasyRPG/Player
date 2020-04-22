@@ -16,9 +16,6 @@
  */
 
 // Headers
-#ifdef __MORPHOS__
-#define __MORPHOS_SHAREDLIBS
-#endif
 #include <png.h>
 #include <cstdlib>
 #include <cstring>
