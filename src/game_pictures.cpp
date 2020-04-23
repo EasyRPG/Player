@@ -416,13 +416,13 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
 
-		double dx = Game_Map::GetScrolledRight() / TILE_SIZE;
+		auto dx = static_cast<double>(Game_Map::GetScrolledRight()) / TILE_SIZE;
 
 		data.finish_x = data.finish_x - dx;
 		data.current_x = data.current_x - dx;
 		data.start_x = data.start_x - dx;
 
-		double dy = Game_Map::GetScrolledDown() / TILE_SIZE;
+		auto dy = static_cast<double>(Game_Map::GetScrolledDown()) / TILE_SIZE;
 
 		data.finish_y = data.finish_y - dy;
 		data.current_y = data.current_y - dy;
