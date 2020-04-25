@@ -627,6 +627,13 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 	assert(for_battler->GetBattleAlgorithm() != nullptr);
+
+	if (for_battler->GetBattleAlgorithm() == nullptr) {
+		Output::Warning("ActionSelectedCallback: Invalid action for battler %d (%s)",
+				for_battler->GetId(), for_battler->GetName().c_str());
+		Output::Warning("Please report a bug!");
+	}
+
 	battle_actions.push_back(for_battler);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
