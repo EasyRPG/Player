@@ -1,0 +1,7 @@
+EasyRPG Player és un programari que permet jugar a jocs creats amb RPG Maker 2000 i RPG Maker 2003 (els nous motors com XP, VX, VX Ace i MV no són compatibles.
+
+Web: https://easyrpg.org/
+Canvis: https://blog.easyrpg.org/
+Informar errors: https://github.com/EasyRPG/Player/issues/
+
+Aquest programari no té cap relació amb Kadokawa Corporation.
