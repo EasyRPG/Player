@@ -32,7 +32,7 @@ Você pode adicionar novos diretórios de jogos nas configurações.</string>
   <string name="choose_layout">Escolha layout</string>
   <string name="unknown_region">Região desconhecida</string>
   <string name="region_modification_failed">Falha ao tentar mudar região</string>
-  <string name="refresh">Recarregar</string>
+  <string name="refresh">Atualizar</string>
   <string name="change_default_mapping">Reconfigurar botões</string>
   <string name="how_to_use_easy_rpg">Como usar o EasyRPG player</string>
   <string name="how_to_use_easy_rpg_explanation">Instruções de Instalação\n\nPor padrão, O EasyRPG Player busca os jogos no diretório /easyrpg/games. Você pode adicionar novos diretórios de jogos nas configurações.\n\nOpcional: Cole o RTP no diretório /easyrpg/rtp/2000 para o RPG Maker 2000 e em /easyrpg/rtp/2003 para o RPG Maker 2003.\n\nPara ter acesso aos jogos, eles devem ser colocados em um subdiretório de /easyrpg/games (por padrão), ex.:\n\n\t/easyrpg/games/MeuJogo.\n\t</string>
@@ -62,6 +62,7 @@ Por favor nos diga em detalhes o que deu errado.\n\n
   <string name="no_read_access_on_dir">Sem acesso de leitura em %1$s</string>
   <string name="quick_access">Acesso rápido</string>
   <string name="force_landscape_mode">Forçar modo de orientação Paisagem</string>
+  <string name="fast_forward_factor">Multiplicador de velocidade:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Gerenciar layouts de entrada</string>
   <string name="add_an_input_layout">Adicionar layout de entrada</string>
