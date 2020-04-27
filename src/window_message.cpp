@@ -379,12 +379,6 @@ void Window_Message::Update() {
 	close_started_this_frame = false;
 	close_finished_this_frame = false;
 
-#if 0
-	if (IsVisible() && text.empty() && !IsClosing()) {
-		TerminateMessage();
-	}
-#endif
-
 	const bool was_closing = IsClosing();
 
 	Window_Selectable::Update();
