@@ -332,6 +332,31 @@ namespace Utils {
 	bool IsControlCharacter(T ch);
 
 	/**
+	 * RPG_RT / Delphi compatible rounding of floating point.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline float Round(float v) {
+		return std::rint(v);
+	}
+
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	inline double Round(double v) {
+		return std::rint(v);
+	}
+
+
+	/**
 	 * RPG_RT / Delphi compatible rounding of floating point to integer.
 	 *
 	 * @param v the float value to convert
