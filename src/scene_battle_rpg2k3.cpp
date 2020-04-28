@@ -342,9 +342,10 @@ void Scene_Battle_Rpg2k3::ResetAllBattlerZ() {
 	}
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
-		auto* sprite = actor->GetBattleSprite();
+		auto* sprite = actor->GetActorBattleSprite();
 		if (sprite) {
 			sprite->ResetZ();
+			sprite->DetectStateChange();
 		}
 	}
 }
