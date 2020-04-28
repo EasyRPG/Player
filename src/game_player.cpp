@@ -40,9 +40,9 @@
 Game_Player::Game_Player():
 	Game_Character(Player, &Main_Data::game_data.party_location)
 {
-	SetDirection(RPG::EventPage::Direction_down);
+	SetDirection(lcf::rpg::EventPage::Direction_down);
 	SetMoveSpeed(4);
-	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
+	SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
 }
 
 int Game_Player::GetScreenZ(bool apply_shift) const {
@@ -63,10 +63,10 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, Telep
 	request->Start();
 }
 
-void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
+void Game_Player::ReserveTeleport(const lcf::rpg::SaveTarget& target) {
 	int map_id = target.map_id;
 
-	if (Game_Map::GetMapType(target.map_id) == RPG::TreeMap::MapType_area) {
+	if (Game_Map::GetMapType(target.map_id) == lcf::rpg::TreeMap::MapType_area) {
 		// Area: Obtain the map the area belongs to
 		map_id = Game_Map::GetParentId(target.map_id);
 	}
@@ -333,7 +333,7 @@ void Game_Player::OnMoveFailed(int x, int y) {
 		return;
 	}
 
-	CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, x, y, true, false);
+	CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, x, y, true, false);
 }
 
 void Game_Player::Update() {
@@ -363,7 +363,7 @@ void Game_Player::Update() {
 		TriggerSet triggers;
 
 		if (!Game_Map::GetInterpreter().IsRunning()) {
-			triggers[RPG::EventPage::Trigger_collision] = true;
+			triggers[lcf::rpg::EventPage::Trigger_collision] = true;
 		}
 
 		// When the last command of a move route is a move command, there is special
@@ -372,8 +372,8 @@ void Game_Player::Update() {
 		// Checking was_moving is not enough, because there could have been 0 frame
 		// commands after the move in the move route, in which case index would be > 0.
 		if (was_moving && (!was_move_route_overriden || GetMoveRouteIndex() == 0)) {
-			triggers[RPG::EventPage::Trigger_touched] = true;
-			triggers[RPG::EventPage::Trigger_collision] = true;
+			triggers[lcf::rpg::EventPage::Trigger_touched] = true;
+			triggers[lcf::rpg::EventPage::Trigger_collision] = true;
 		}
 
 		if (triggers.count() > 0 && CheckEventTriggerHere(triggers, true, false)) {
@@ -387,15 +387,15 @@ bool Game_Player::CheckActionEvent() {
 		return false;
 	}
 
-	bool result = CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true, true);
+	bool result = CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true, true);
 
 	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	result |= CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, true, true);
+	result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, true, true);
 
 	// Counter tile loop stops only if you talk to an action event.
-	bool got_action = CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+	bool got_action = CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true, true);
 	// RPG_RT allows maximum of 3 counter tiles
 	for (int i = 0; !got_action && i < 3; ++i) {
 		if (!Game_Map::IsCounter(front_x, front_y)) {
@@ -405,7 +405,7 @@ bool Game_Player::CheckActionEvent() {
 		front_x = Game_Map::XwithDirection(front_x, GetDirection());
 		front_y = Game_Map::YwithDirection(front_y, GetDirection());
 
-		got_action |= CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+		got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true, true);
 	}
 	return result || got_action;
 }
@@ -418,7 +418,7 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool face_hero, boo
 
 	for (auto* ev: events) {
 		const auto trigger = ev->GetTrigger();
-		if (ev->GetLayer() != RPG::EventPage::Layers_same
+		if (ev->GetLayer() != lcf::rpg::EventPage::Layers_same
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
@@ -435,7 +435,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 
 	for (const auto& ev : events) {
 		const auto trigger = ev->GetTrigger();
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same
+		if ( ev->GetLayer() == lcf::rpg::EventPage::Layers_same
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
@@ -517,9 +517,9 @@ bool Game_Player::GetOnVehicle() {
 			vehicle->CancelMoveRoute();
 		}
 		SetMoveSpeed(vehicle->GetMoveSpeed());
-		SetDirection(RPG::EventPage::Direction_left);
+		SetDirection(lcf::rpg::EventPage::Direction_left);
 		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(RPG::EventPage::Direction_left);
+		SetSpriteDirection(lcf::rpg::EventPage::Direction_left);
 		vehicle->SetX(GetX());
 		vehicle->SetY(GetY());
 	}
@@ -547,7 +547,7 @@ bool Game_Player::GetOffVehicle() {
 	return true;
 }
 
-void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route) {
+void Game_Player::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) {
 	auto* vehicle = GetVehicle();
 	if (vehicle && vehicle->IsAscendingOrDescending()) {
 		return;
@@ -569,7 +569,7 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 
 void Game_Player::BeginMove() {
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
-	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
+	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 	bool red_flash = false;
 
 	if (terrain) {
@@ -613,9 +613,9 @@ bool Game_Player::IsBoardingOrUnboarding() const {
 void Game_Player::UnboardingFinished() {
 	Unboard();
 	if (InAirship()) {
-		SetDirection(RPG::EventPage::Direction_down);
+		SetDirection(lcf::rpg::EventPage::Direction_down);
 		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(RPG::EventPage::Direction_down);
+		SetSpriteDirection(lcf::rpg::EventPage::Direction_down);
 	} else {
 		data()->unboarding = true;
 		if (!IsMoving() && !IsJumping()) {

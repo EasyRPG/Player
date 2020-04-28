@@ -52,12 +52,12 @@ void Scene_File::CreateHelpWindow() {
 	help_window->SetZ(Priority_Window + 1);
 }
 
-void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int /* id */, RPG::Save& savegame) {
+void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int /* id */, lcf::rpg::Save& savegame) {
 	win.SetParty(savegame.title);
 	win.SetHasSave(true);
 }
 
-void Scene_File::UpdateLatestTimestamp(int id, RPG::Save& savegame) {
+void Scene_File::UpdateLatestTimestamp(int id, lcf::rpg::Save& savegame) {
 	if (savegame.title.timestamp > latest_time) {
 		latest_time = savegame.title.timestamp;
 		latest_slot = id;
@@ -73,7 +73,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 
 	if (!file.empty()) {
 		// File found
-		std::unique_ptr<RPG::Save> savegame =
+		std::unique_ptr<lcf::rpg::Save> savegame =
 			lcf::LSD_Reader::Load(file, Player::encoding);
 
 		if (savegame.get()) {

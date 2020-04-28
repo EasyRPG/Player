@@ -42,7 +42,7 @@ int Game_EnemyParty::GetBattlerCount() const {
 
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
-	const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);
+	const lcf::rpg::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, battle_troop_id);
 	if (!troop) {
 		// Shouldn't happen because Scene_Battle verifies this
 		Output::Warning("Invalid battle troop ID {}", battle_troop_id);
@@ -50,11 +50,11 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 
 	int non_hidden = 0;
-	for (const RPG::TroopMember& mem : troop->members) {
+	for (const lcf::rpg::TroopMember& mem : troop->members) {
 		non_hidden += (!mem.invisible ? 1 : 0);
 	}
 
-	for (const RPG::TroopMember& mem : troop->members) {
+	for (const lcf::rpg::TroopMember& mem : troop->members) {
 		std::shared_ptr<Game_Enemy> enemy = std::make_shared<Game_Enemy>(mem.enemy_id);
 		enemy->SetBattleX(mem.x);
 		enemy->SetBattleY(mem.y);

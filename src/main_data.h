@@ -20,7 +20,7 @@
 
 // Headers
 #include <lcf/data.h>
-#include <lcf/rpg_save.h>
+#include <lcf/rpg/save.h>
 #include <string>
 #include <memory>
 
@@ -48,7 +48,7 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	extern std::unique_ptr<Game_Targets> game_targets;
 	extern std::unique_ptr<Game_Quit> game_quit;
-	extern RPG::Save game_data;
+	extern lcf::rpg::Save game_data;
 
 	void Init();
 	void Cleanup();

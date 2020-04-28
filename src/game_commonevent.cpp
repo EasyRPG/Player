@@ -29,7 +29,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
 
-	if (ce->trigger == RPG::EventPage::Trigger_parallel
+	if (ce->trigger == lcf::rpg::EventPage::Trigger_parallel
 			&& !ce->event_commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
 		interpreter->Push(this);
@@ -38,7 +38,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 
 }
 
-void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
+void Game_CommonEvent::SetSaveData(const lcf::rpg::SaveEventExecState& data) {
 	// RPG_RT Savegames have empty stacks for parallel events.
 	// We are LSD compatible but don't load these into interpreter.
 	if (!data.stack.empty() && !data.stack.front().commands.empty()) {
@@ -85,16 +85,16 @@ int Game_CommonEvent::GetTrigger() const {
 	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->trigger;
 }
 
-std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
+std::vector<lcf::rpg::EventCommand>& Game_CommonEvent::GetList() {
 	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->event_commands;
 }
 
-RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
-	RPG::SaveEventExecState state;
+lcf::rpg::SaveEventExecState Game_CommonEvent::GetSaveData() {
+	lcf::rpg::SaveEventExecState state;
 	if (interpreter) {
 		state = interpreter->GetState();
 	}
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel && state.stack.empty()) {
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel && state.stack.empty()) {
 		// RPG_RT always stores an empty stack frame for parallel events.
 		state.stack.push_back({});
 	}
@@ -103,13 +103,13 @@ RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
 
 bool Game_CommonEvent::IsWaitingForegroundExecution() const {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
-	return ce->trigger == RPG::EventPage::Trigger_auto_start &&
+	return ce->trigger == lcf::rpg::EventPage::Trigger_auto_start &&
 		(!ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id))
 		&& !ce->event_commands.empty();
 }
 
 bool Game_CommonEvent::IsWaitingBackgroundExecution(bool force_run) const {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
-	return ce->trigger == RPG::EventPage::Trigger_parallel &&
+	return ce->trigger == lcf::rpg::EventPage::Trigger_parallel &&
 		(force_run || !ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id));
 }

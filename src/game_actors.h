@@ -21,7 +21,7 @@
 // Headers
 #include <vector>
 #include "game_actor.h"
-#include <lcf/rpg_saveactor.h>
+#include <lcf/rpg/saveactor.h>
 
 /**
  * Game_Actors namespace.

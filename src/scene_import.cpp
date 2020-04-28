@@ -36,7 +36,7 @@ void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	if (id < static_cast<int>(files.size())) {
 		win.SetDisplayOverride(files[id].short_path, files[id].file_id);
 
-		std::unique_ptr<RPG::Save> savegame =
+		std::unique_ptr<lcf::rpg::Save> savegame =
 			lcf::LSD_Reader::Load(files[id].full_path, Player::encoding);
 
 		if (savegame.get()) {

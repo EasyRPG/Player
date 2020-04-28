@@ -26,7 +26,7 @@
 #include <algorithm>
 #include <ostream>
 
-#include "lcf/enum_tags.h"
+#include <lcf/enum_tags.h>
 #include "flat_map.h"
 #include "keys.h"
 

@@ -20,7 +20,7 @@
 
 // Headers
 #include "system.h"
-#include "enum_tags.h"
+#include <lcf/enum_tags.h>
 
 namespace Input {
 	/**
@@ -199,7 +199,7 @@ namespace Input {
 			KEYS_COUNT
 		};
 
-		constexpr auto kNames = makeEnumTags<InputKey>(
+		constexpr auto kNames = lcf::makeEnumTags<InputKey>(
 			"NONE",
 			"BACKSPACE",
 			"TAB",

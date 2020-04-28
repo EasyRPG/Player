@@ -507,9 +507,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				Game_Battle::battle_test.troop_id = (argc > 4) ? atoi(argv[4]) : 0;
 				// 2k3 passes formation, condition and terrain_id as args 5-7
 				if (argc > 7) {
-					Game_Battle::battle_test.formation = (RPG::System::BattleFormation)atoi(argv[5]);
-					Game_Battle::battle_test.condition = (RPG::System::BattleCondition)atoi(argv[6]);
-					Game_Battle::battle_test.terrain_id = (RPG::System::BattleFormation)atoi(argv[7]);
+					Game_Battle::battle_test.formation = (lcf::rpg::System::BattleFormation)atoi(argv[5]);
+					Game_Battle::battle_test.condition = (lcf::rpg::System::BattleCondition)atoi(argv[6]);
+					Game_Battle::battle_test.terrain_id = (lcf::rpg::System::BattleFormation)atoi(argv[7]);
 				}
 			}
 		}
@@ -531,8 +531,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				++it;
 			}
 
-			Game_Battle::battle_test.formation = static_cast<RPG::System::BattleFormation>(fct[0]);
-			Game_Battle::battle_test.condition = static_cast<RPG::System::BattleCondition>(fct[1]);
+			Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(fct[0]);
+			Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(fct[1]);
 			Game_Battle::battle_test.terrain_id = fct[2];
 
 			--it;
@@ -930,7 +930,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	std::unique_ptr<RPG::Save> save = lcf::LSD_Reader::Load(save_name, encoding);
+	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("{}", lcf::LcfReader::GetError());

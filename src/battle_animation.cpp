@@ -16,7 +16,7 @@
  */
 
 #include "bitmap.h"
-#include <lcf/rpg_animation.h>
+#include <lcf/rpg/animation.h>
 #include "output.h"
 #include "game_battle.h"
 #include "game_system.h"
@@ -32,7 +32,7 @@
 #include "options.h"
 #include "drawable_mgr.h"
 
-BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
+BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound, int cutoff) :
 	animation(anim), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
@@ -95,11 +95,11 @@ void BattleAnimation::DrawAt(Bitmap& dst, int x, int y) {
 		return;
 	}
 
-	const RPG::AnimationFrame& anim_frame = animation.frames[GetRealFrame()];
+	const lcf::rpg::AnimationFrame& anim_frame = animation.frames[GetRealFrame()];
 
-	std::vector<RPG::AnimationCellData>::const_iterator it;
+	std::vector<lcf::rpg::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
-		const RPG::AnimationCellData& cell = *it;
+		const lcf::rpg::AnimationCellData& cell = *it;
 
 		if (!cell.valid) {
 			// Skip unused cells (they are created by deleting cells in the
@@ -132,19 +132,19 @@ void BattleAnimation::DrawAt(Bitmap& dst, int x, int y) {
 	}
 }
 
-void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) {
+void BattleAnimation::ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing) {
 	if (IsOnlySound()) {
 		return;
 	}
 
-	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
+	if (timing.flash_scope == lcf::rpg::AnimationTiming::FlashScope_target) {
 		target_flash_timing = &timing - animation.timings.data();
-	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen) {
+	} else if (timing.flash_scope == lcf::rpg::AnimationTiming::FlashScope_screen) {
 		screen_flash_timing = &timing - animation.timings.data();
 	}
 }
 
-void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
+void BattleAnimation::ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
 	if (IsOnlySound()) {
@@ -157,13 +157,13 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 	// Shake (only happens in battle).
 	if (Game_Battle::IsBattleRunning()) {
 		switch (timing.screen_shake) {
-		case RPG::AnimationTiming::ScreenShake_nothing:
+		case lcf::rpg::AnimationTiming::ScreenShake_nothing:
 			break;
-		case RPG::AnimationTiming::ScreenShake_target:
+		case lcf::rpg::AnimationTiming::ScreenShake_target:
 			// FIXME: Estimate, see below for screen shake.
 			ShakeTargets(3, 5, 32);
 			break;
-		case RPG::AnimationTiming::ScreenShake_screen:
+		case lcf::rpg::AnimationTiming::ScreenShake_screen:
 			Game_Screen* screen = Main_Data::game_screen.get();
 			// FIXME: This is not proven accurate. Screen captures show that
 			// the shake effect lasts for 16 animation frames (32 real frames).
@@ -211,13 +211,13 @@ void BattleAnimation::UpdateTargetFlash() {
 }
 
 // For handling the vertical position.
-// (The first argument should be an RPG::Animation::Position,
+// (The first argument should be an lcf::rpg::Animation::Position,
 // but the position member is an int, so take an int.)
 static int CalculateOffset(int pos, int target_height) {
 	switch (pos) {
-	case RPG::Animation::Position_down:
+	case lcf::rpg::Animation::Position_down:
 		return target_height / 2;
-	case RPG::Animation::Position_up:
+	case lcf::rpg::Animation::Position_up:
 		return -(target_height / 2);
 	default:
 		return 0;
@@ -226,7 +226,7 @@ static int CalculateOffset(int pos, int target_height) {
 
 /////////
 
-BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global) :
+BattleAnimationMap::BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global) :
 	BattleAnimation(anim), target(target), global(global)
 {
 }
@@ -255,7 +255,7 @@ void BattleAnimationMap::DrawGlobal(Bitmap& dst) {
 
 void BattleAnimationMap::DrawSingle(Bitmap& dst) {
 	//If animation is targeted on the screen
-	if (animation.scope == RPG::Animation::Scope_screen) {
+	if (animation.scope == lcf::rpg::Animation::Scope_screen) {
 		DrawAt(dst, SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2);
 		return;
 	}
@@ -274,7 +274,7 @@ void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time 
 
 /////////
 
-BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
+BattleAnimationBattle::BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
 	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
 }
@@ -282,7 +282,7 @@ BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::ve
 void BattleAnimationBattle::Draw(Bitmap& dst) {
 	if (IsOnlySound())
 		return;
-	if (animation.scope == RPG::Animation::Scope_screen) {
+	if (animation.scope == lcf::rpg::Animation::Scope_screen) {
 		DrawAt(dst, SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
 		return;
 	}

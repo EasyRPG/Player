@@ -95,7 +95,7 @@ void Window_VarList::UpdateList(int first_value){
 	int map_idx = 0;
 	if (mode == eMap) {
 		auto iter = std::lower_bound(lcf::Data::treemap.maps.begin(), lcf::Data::treemap.maps.end(), first_value,
-				[](const RPG::MapInfo& l, int r) { return l.ID < r; });
+				[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
 		map_idx = iter - lcf::Data::treemap.maps.begin();
 	}
 	for (int i = 0; i < 10; i++){

@@ -153,7 +153,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::Dir
 			// Note that corruptness is checked later (in window_savefile.cpp)
 			std::string file = FileFinder::FindDefault(*child_tree, ss.str());
 			if (!file.empty()) {
-				std::unique_ptr<RPG::Save> savegame = lcf::LSD_Reader::Load(file, Player::encoding);
+				std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(file, Player::encoding);
 				if (savegame != nullptr) {
 					if (savegame->party_location.map_id == pivot_map_id || pivot_map_id==0) {
 						FileItem item;

@@ -63,7 +63,7 @@ void Scene_Save::Action(int index) {
 	Output::Debug("Saving to {}", ss.str());
 
 	// TODO: Maybe find a better place to setup the save file?
-	RPG::SaveTitle title;
+	lcf::rpg::SaveTitle title;
 
 	int size = (int)Main_Data::game_party->GetActors().size();
 	Game_Actor* actor;
@@ -126,7 +126,7 @@ void Scene_Save::Action(int index) {
 	data_copy.pictures = Main_Data::game_pictures->GetSaveData();
 
 	// RPG_RT saves always have the scene set to this.
-	data_copy.system.scene = RPG::SaveSystem::Scene_file;
+	data_copy.system.scene = lcf::rpg::SaveSystem::Scene_file;
 	// 2k RPG_RT always stores SaveMapEvent with map_id == 0.
 	if (Player::IsRPG2k()) {
 		for (auto& sme: data_copy.map_info.events) {

@@ -175,7 +175,7 @@ void Scene_Title::CreateCommandWindow() {
 		command_window->SetOpenAnimation(8);
 	}
 
-	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
+	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		command_window->SetBackOpacity(128);
 	}
 
@@ -212,7 +212,7 @@ void Scene_Title::PrepareBattleTest() {
 		args.formation = Game_Battle::battle_test.formation;
 		args.condition = Game_Battle::battle_test.condition;
 
-		if (args.formation == RPG::System::BattleFormation_terrain) {
+		if (args.formation == lcf::rpg::System::BattleFormation_terrain) {
 			args.terrain_id = Game_Battle::battle_test.terrain_id;
 		}
 

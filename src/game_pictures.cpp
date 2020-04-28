@@ -32,20 +32,20 @@
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-static bool IsEmpty(const RPG::SavePicture& data, int frames) {
-	RPG::SavePicture empty;
+static bool IsEmpty(const lcf::rpg::SavePicture& data, int frames) {
+	lcf::rpg::SavePicture empty;
 	empty.ID = data.ID;
 	empty.frames = frames;
 
 	return data == empty;
 }
 
-static bool IsEmpty(const RPG::SavePicture& data) {
+static bool IsEmpty(const lcf::rpg::SavePicture& data) {
 	return IsEmpty(data, data.frames);
 }
 
 template <bool do_effect>
-void SyncCurrentToFinish(RPG::SavePicture& data) {
+void SyncCurrentToFinish(lcf::rpg::SavePicture& data) {
 	data.current_x = data.finish_x;
 	data.current_y = data.finish_y;
 	data.current_red = data.finish_red;
@@ -60,7 +60,7 @@ void SyncCurrentToFinish(RPG::SavePicture& data) {
 	}
 }
 
-Game_Pictures::Picture::Picture(RPG::SavePicture save)
+Game_Pictures::Picture::Picture(lcf::rpg::SavePicture save)
 	: data(std::move(save))
 {
 	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
@@ -75,7 +75,7 @@ void Game_Pictures::InitGraphics() {
 	}
 }
 
-void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
+void Game_Pictures::SetSaveData(std::vector<lcf::rpg::SavePicture> save)
 {
 	pictures.clear();
 
@@ -96,8 +96,8 @@ void Game_Pictures::SetSaveData(std::vector<RPG::SavePicture> save)
 	}
 }
 
-std::vector<RPG::SavePicture> Game_Pictures::GetSaveData() const {
-	std::vector<RPG::SavePicture> save;
+std::vector<lcf::rpg::SavePicture> Game_Pictures::GetSaveData() const {
+	std::vector<lcf::rpg::SavePicture> save;
 
 	auto data_size = std::max(static_cast<int>(pictures.size()), GetDefaultNumberOfPictures());
 	save.reserve(data_size);
@@ -110,7 +110,7 @@ std::vector<RPG::SavePicture> Game_Pictures::GetSaveData() const {
 	// depending on the engine version. We replicate this, unless we have even
 	// more pictures than that.
 	while (data_size > static_cast<int>(save.size())) {
-		RPG::SavePicture data;
+		lcf::rpg::SavePicture data;
 		data.ID = static_cast<int>(save.size());
 		if (Player::IsRPG2k3E()) {
 			data.frames = frame_counter;
@@ -204,9 +204,9 @@ void Game_Pictures::Picture::UpdateGraphics(bool is_battle) {
 	sprite->SetOx(sr.width / 2);
 	sprite->SetOy(sr.height / 2);
 
-	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
-	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
+	sprite->SetAngle(data.effect_mode != lcf::rpg::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
+	sprite->SetWaverDepth(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 
 	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.
 	const bool use_bottom_trans = (Player::IsRPG2k3() && !Player::IsRPG2k3E());
@@ -269,7 +269,7 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	SetNonEffectParams(params, true);
 
 	data.effect_mode = params.effect_mode;
-	if (data.effect_mode == RPG::SavePicture::Effect_none) {
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_none) {
 		// params.effect_power seems to contain garbage here
 		data.finish_effect_power = 0.0;
 	} else {
@@ -331,32 +331,32 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 	// Note that data.effect_mode doesn't necessarily reflect the
 	// last effect set. Possible states are:
 	//
-	// * effect_mode == RPG::SavePicture::Effect_none && finish_effect_power == 0
+	// * effect_mode == lcf::rpg::SavePicture::Effect_none && finish_effect_power == 0
 	//   Picture has not had an effect set since Show.
-	// * effect_mode == RPG::SavePicture::Effect_none && finish_effect_power != 0
+	// * effect_mode == lcf::rpg::SavePicture::Effect_none && finish_effect_power != 0
 	//   Picture was set to no effect; previously, it was rotating.
-	// * effect_mode == RPG::SavePicture::Effect_wave && finish_effect_power == 0
+	// * effect_mode == lcf::rpg::SavePicture::Effect_wave && finish_effect_power == 0
 	//   Picture was set to no effect; previously, it was wavering.
-	// * effect_mode == RPG::SavePicture::Effect_rotation
+	// * effect_mode == lcf::rpg::SavePicture::Effect_rotation
 	//   Picture was set to rotate.
-	// * effect_mode == RPG::SavePicture::Effect_wave && finish_effect_power != 0
+	// * effect_mode == lcf::rpg::SavePicture::Effect_wave && finish_effect_power != 0
 	//   Picture was set to waver.
 
 	bool started_with_no_effect =
-		data.effect_mode == RPG::SavePicture::Effect_none && data.finish_effect_power == 0.0;
+		data.effect_mode == lcf::rpg::SavePicture::Effect_none && data.finish_effect_power == 0.0;
 	if (Player::IsRPG2k() && started_with_no_effect) {
 		// Possibly a bug(?) in RM2k: if Show Picture command has no
 		// effect, a Move Picture command cannot add one
 		return;
 	}
 
-	if (data.effect_mode == RPG::SavePicture::Effect_none && params.effect_mode == RPG::SavePicture::Effect_none) {
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_none && params.effect_mode == lcf::rpg::SavePicture::Effect_none) {
 		// Nothing to do
 	} else if (data.effect_mode == params.effect_mode) {
 		data.finish_effect_power = params.effect_power;
-	} else if (data.effect_mode == RPG::SavePicture::Effect_rotation && params.effect_mode == RPG::SavePicture::Effect_none) {
-		data.effect_mode = RPG::SavePicture::Effect_none;
-	} else if (data.effect_mode == RPG::SavePicture::Effect_wave && params.effect_mode == RPG::SavePicture::Effect_none) {
+	} else if (data.effect_mode == lcf::rpg::SavePicture::Effect_rotation && params.effect_mode == lcf::rpg::SavePicture::Effect_none) {
+		data.effect_mode = lcf::rpg::SavePicture::Effect_none;
+	} else if (data.effect_mode == lcf::rpg::SavePicture::Effect_wave && params.effect_mode == lcf::rpg::SavePicture::Effect_none) {
 		data.finish_effect_power = 0;
 	} else {
 		data.effect_mode = params.effect_mode;
@@ -470,7 +470,7 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 	// When a move picture disables rotation effect, we continue rotating
 	// until one full revolution is done. There is a bug in RPG_RT where this
 	// only happens when the current rotation and power is positive. We emulate this for now.
-	if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_effect_power > 0) {
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_none && data.current_effect_power > 0) {
 		// RPG_RT calculates this and compares it against remaining time.
 		const auto et = 256 / static_cast<int>(data.current_effect_power);
 
@@ -483,17 +483,17 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		}
 	}
 
-	if (data.effect_mode != RPG::SavePicture::Effect_none) {
+	if (data.effect_mode != lcf::rpg::SavePicture::Effect_none) {
 		data.current_effect_power = interpolate(data.current_effect_power, data.finish_effect_power);
 	}
 
 	// Update rotation
-	if (data.effect_mode == RPG::SavePicture::Effect_rotation) {
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_rotation) {
 		data.current_rotation += data.current_effect_power;
 	}
 
 	// Update waver phase
-	if (data.effect_mode == RPG::SavePicture::Effect_wave) {
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_wave) {
 		data.current_waver += 8;
 	}
 

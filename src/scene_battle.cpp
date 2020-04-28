@@ -78,7 +78,7 @@ void Scene_Battle::Start() {
 	// wiping out all flash LSD chunks.
 	Main_Data::game_screen->FlashOnce(0, 0, 0, 0, 0);
 
-	const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
+	const lcf::rpg::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
 
 	if (!troop) {
 		Output::Warning("Invalid Monster Party ID {}", troop_id);
@@ -271,14 +271,14 @@ void Scene_Battle::EnemySelected() {
 	} else if (previous_state == State_SelectItem) {
 		auto* item = item_window->GetItem();
 		assert(item);
-		if (item->type == RPG::Item::Type_special
-				|| (item->use_skill && (item->type == RPG::Item::Type_weapon
-						|| item->type == RPG::Item::Type_shield
-						|| item->type == RPG::Item::Type_armor
-						|| item->type == RPG::Item::Type_helmet
-						|| item->type == RPG::Item::Type_accessory)))
+		if (item->type == lcf::rpg::Item::Type_special
+				|| (item->use_skill && (item->type == lcf::rpg::Item::Type_weapon
+						|| item->type == lcf::rpg::Item::Type_shield
+						|| item->type == lcf::rpg::Item::Type_armor
+						|| item->type == lcf::rpg::Item::Type_helmet
+						|| item->type == lcf::rpg::Item::Type_accessory)))
 		{
-			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
+			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("EnemySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -309,14 +309,14 @@ void Scene_Battle::AllySelected() {
 	} else if (previous_state == State_SelectItem) {
 		auto* item = item_window->GetItem();
 		assert(item);
-		if (item->type == RPG::Item::Type_special
-				|| (item->use_skill && (item->type == RPG::Item::Type_weapon
-						|| item->type == RPG::Item::Type_shield
-						|| item->type == RPG::Item::Type_armor
-						|| item->type == RPG::Item::Type_helmet
-						|| item->type == RPG::Item::Type_accessory)))
+		if (item->type == lcf::rpg::Item::Type_special
+				|| (item->use_skill && (item->type == lcf::rpg::Item::Type_weapon
+						|| item->type == lcf::rpg::Item::Type_shield
+						|| item->type == lcf::rpg::Item::Type_armor
+						|| item->type == lcf::rpg::Item::Type_helmet
+						|| item->type == lcf::rpg::Item::Type_accessory)))
 		{
-			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
+			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("AllySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -353,7 +353,7 @@ void Scene_Battle::DefendSelected() {
 }
 
 void Scene_Battle::ItemSelected() {
-	const RPG::Item* item = item_window->GetItem();
+	const lcf::rpg::Item* item = item_window->GetItem();
 
 	if (!item || !item_window->CheckEnable(item->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
@@ -363,18 +363,18 @@ void Scene_Battle::ItemSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	switch (item->type) {
-		case RPG::Item::Type_normal:
-		case RPG::Item::Type_book:
-		case RPG::Item::Type_material:
+		case lcf::rpg::Item::Type_normal:
+		case lcf::rpg::Item::Type_book:
+		case lcf::rpg::Item::Type_material:
 			assert(false);
 			return;
-		case RPG::Item::Type_weapon:
-		case RPG::Item::Type_shield:
-		case RPG::Item::Type_armor:
-		case RPG::Item::Type_helmet:
-		case RPG::Item::Type_accessory:
-		case RPG::Item::Type_special: {
-			const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
+		case lcf::rpg::Item::Type_weapon:
+		case lcf::rpg::Item::Type_shield:
+		case lcf::rpg::Item::Type_armor:
+		case lcf::rpg::Item::Type_helmet:
+		case lcf::rpg::Item::Type_accessory:
+		case lcf::rpg::Item::Type_special: {
+			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("ItemSelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
@@ -382,7 +382,7 @@ void Scene_Battle::ItemSelected() {
 			AssignSkill(skill, item);
 			break;
 		}
-		case RPG::Item::Type_medicine:
+		case lcf::rpg::Item::Type_medicine:
 			if (item->entire_party) {
 				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
 				ActionSelectedCallback(active_actor);
@@ -391,7 +391,7 @@ void Scene_Battle::ItemSelected() {
 				status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
 			}
 			break;
-		case RPG::Item::Type_switch:
+		case lcf::rpg::Item::Type_switch:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
 			ActionSelectedCallback(active_actor);
 			break;
@@ -399,7 +399,7 @@ void Scene_Battle::ItemSelected() {
 }
 
 void Scene_Battle::SkillSelected() {
-	const RPG::Skill* skill = skill_window->GetSkill();
+	const lcf::rpg::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !skill_window->CheckEnable(skill->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
@@ -411,40 +411,40 @@ void Scene_Battle::SkillSelected() {
 	AssignSkill(skill, nullptr);
 }
 
-void Scene_Battle::AssignSkill(const RPG::Skill* skill, const RPG::Item* item) {
+void Scene_Battle::AssignSkill(const lcf::rpg::Skill* skill, const lcf::rpg::Item* item) {
 	switch (skill->type) {
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-		case RPG::Skill::Type_switch: {
+		case lcf::rpg::Skill::Type_teleport:
+		case lcf::rpg::Skill::Type_escape:
+		case lcf::rpg::Skill::Type_switch: {
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, *skill, item));
 			ActionSelectedCallback(active_actor);
 			return;
 		}
-		case RPG::Skill::Type_normal:
-		case RPG::Skill::Type_subskill:
+		case lcf::rpg::Skill::Type_normal:
+		case lcf::rpg::Skill::Type_subskill:
 		default:
 			break;
 	}
 
 	switch (skill->scope) {
-		case RPG::Skill::Scope_enemy:
+		case lcf::rpg::Skill::Scope_enemy:
 			SetState(State_SelectEnemyTarget);
 			break;
-		case RPG::Skill::Scope_ally:
+		case lcf::rpg::Skill::Scope_ally:
 			SetState(State_SelectAllyTarget);
 			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
 			break;
-		case RPG::Skill::Scope_enemies:
+		case lcf::rpg::Skill::Scope_enemies:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
 					active_actor, Main_Data::game_enemyparty.get(), *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
-		case RPG::Skill::Scope_self:
+		case lcf::rpg::Skill::Scope_self:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
 					active_actor, active_actor, *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
-		case RPG::Skill::Scope_party:
+		case lcf::rpg::Skill::Scope_party:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
 					active_actor, Main_Data::game_party.get(), *skill, item));
 			ActionSelectedCallback(active_actor);
@@ -474,7 +474,7 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 		return;
 	}
 
-	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
+	if (battler->GetSignificantRestriction() == lcf::rpg::State::Restriction_attack_ally) {
 		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
 			Main_Data::game_enemyparty->GetRandomActiveBattler() :
 			Main_Data::game_party->GetRandomActiveBattler();
@@ -483,7 +483,7 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 		return;
 	}
 
-	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
+	if (battler->GetSignificantRestriction() == lcf::rpg::State::Restriction_attack_enemy) {
 		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
 			Main_Data::game_enemyparty->GetRandomActiveBattler() :
 			Main_Data::game_party->GetRandomActiveBattler();
@@ -493,7 +493,7 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	}
 
 	// If we had a state restriction previously but were recovered, we do nothing for this round.
-	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_normal) {
+	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != lcf::rpg::State::Restriction_normal) {
 		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
 			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
 		}
@@ -506,15 +506,15 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	}
 }
 
-void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
+void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
 	switch (action->kind) {
-		case RPG::EnemyAction::Kind_basic:
+		case lcf::rpg::EnemyAction::Kind_basic:
 			CreateEnemyActionBasic(enemy, action);
 			break;
-		case RPG::EnemyAction::Kind_skill:
+		case lcf::rpg::EnemyAction::Kind_skill:
 			CreateEnemyActionSkill(enemy, action);
 			break;
-		case RPG::EnemyAction::Kind_transformation:
+		case lcf::rpg::EnemyAction::Kind_transformation:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
 			if (action->switch_on) {
 				enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
@@ -526,35 +526,35 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 	}
 }
 
-void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action) {
-	if (action->kind != RPG::EnemyAction::Kind_basic) {
+void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
+	if (action->kind != lcf::rpg::EnemyAction::Kind_basic) {
 		return;
 	}
 
 	switch (action->basic) {
-		case RPG::EnemyAction::Basic_attack:
+		case lcf::rpg::EnemyAction::Basic_attack:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
-		case RPG::EnemyAction::Basic_dual_attack:
+		case lcf::rpg::EnemyAction::Basic_dual_attack:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			enemy->GetBattleAlgorithm()->SetRepeat(2);
 			break;
-		case RPG::EnemyAction::Basic_defense:
+		case lcf::rpg::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));
 			break;
-		case RPG::EnemyAction::Basic_observe:
+		case lcf::rpg::EnemyAction::Basic_observe:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Observe>(enemy));
 			break;
-		case RPG::EnemyAction::Basic_charge:
+		case lcf::rpg::EnemyAction::Basic_charge:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Charge>(enemy));
 			break;
-		case RPG::EnemyAction::Basic_autodestruction:
+		case lcf::rpg::EnemyAction::Basic_autodestruction:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
 			break;
-		case RPG::EnemyAction::Basic_escape:
+		case lcf::rpg::EnemyAction::Basic_escape:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Escape>(enemy));
 			break;
-		case RPG::EnemyAction::Basic_nothing:
+		case lcf::rpg::EnemyAction::Basic_nothing:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(enemy));
 			break;
 	}
@@ -586,31 +586,31 @@ void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.pop_front();
 }
 
-void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action) {
-	if (action->kind != RPG::EnemyAction::Kind_skill) {
+void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
+	if (action->kind != lcf::rpg::EnemyAction::Kind_skill) {
 		return;
 	}
 
-	RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, action->skill_id);
+	lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, action->skill_id);
 	if (!skill) {
 		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill {}", action->skill_id);
 		return;
 	}
 
 	switch (skill->scope) {
-		case RPG::Skill::Scope_enemy:
+		case lcf::rpg::Skill::Scope_enemy:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), *skill));
 			break;
-		case RPG::Skill::Scope_ally:
+		case lcf::rpg::Skill::Scope_ally:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), *skill));
 			break;
-		case RPG::Skill::Scope_enemies:
+		case lcf::rpg::Skill::Scope_enemies:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill));
 			break;
-		case RPG::Skill::Scope_self:
+		case lcf::rpg::Skill::Scope_self:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, enemy, *skill));
 			break;
-		case RPG::Skill::Scope_party:
+		case lcf::rpg::Skill::Scope_party:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill));
 			break;
 	}

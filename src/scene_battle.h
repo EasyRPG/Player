@@ -20,9 +20,9 @@
 
 // Headers
 #include <deque>
-#include <lcf/rpg_troopmember.h>
-#include <lcf/rpg_actor.h>
-#include <lcf/rpg_enemy.h>
+#include <lcf/rpg/troopmember.h>
+#include <lcf/rpg/actor.h>
+#include <lcf/rpg/enemy.h>
 
 #include "battle_animation.h"
 #include "drawable.h"
@@ -53,8 +53,8 @@ struct BattleArgs {
 	std::string background;
 	int troop_id = 0;
 	int terrain_id = 0;
-	RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
-	RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
+	lcf::rpg::System::BattleFormation formation = lcf::rpg::System::BattleFormation_terrain;
+	lcf::rpg::System::BattleCondition condition = lcf::rpg::System::BattleCondition_none;
 	bool first_strike = false;
 	bool allow_escape = true;
 };
@@ -137,7 +137,7 @@ protected:
 	virtual void ItemSelected();
 	virtual void SkillSelected();
 
-	virtual void AssignSkill(const RPG::Skill* skill, const RPG::Item* item);
+	virtual void AssignSkill(const lcf::rpg::Skill* skill, const lcf::rpg::Item* item);
 
 	/**
 	 * Executed when selection an action (normal, skill, item, ...) and
@@ -157,9 +157,9 @@ protected:
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
 	void PrepareBattleAction(Game_Battler* battler);
-	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
-	void CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action);
-	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);
+	void CreateEnemyAction(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
+	void CreateEnemyActionBasic(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
+	void CreateEnemyActionSkill(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
 
 	void RemoveActionsForNonExistantBattlers();
 	void RemoveCurrentAction();
@@ -175,7 +175,7 @@ protected:
 	int cycle;
 	int attack_state;
 	int message_timer;
-	const RPG::EnemyAction* enemy_action;
+	const lcf::rpg::EnemyAction* enemy_action;
 	std::deque<std::shared_ptr<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;

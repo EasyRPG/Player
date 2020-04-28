@@ -34,7 +34,7 @@
 
 static Window_Message* window = nullptr;
 
-RPG::SaveSystem& data = Main_Data::game_data.system;
+lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
 	ClearFace();

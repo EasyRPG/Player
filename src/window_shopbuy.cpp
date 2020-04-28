@@ -60,7 +60,7 @@ void Window_ShopBuy::DrawItem(int index) {
 	int item_id = data[index];
 
 	// (Shop) items are guaranteed to be valid
-	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	int price = 0;
 	bool enabled = false;
@@ -83,7 +83,7 @@ void Window_ShopBuy::DrawItem(int index) {
 void Window_ShopBuy::UpdateHelp() {
 	std::string help_text = "";
 	if (!data.empty()) {
-		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, data[index]);
+		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, data[index]);
 		if (item) {
 			help_text = item->description;
 		} else {
@@ -95,7 +95,7 @@ void Window_ShopBuy::UpdateHelp() {
 }
 
 bool Window_ShopBuy::CheckEnable(int item_id) {
-	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 	if (!item) {
 		return false;
 	}

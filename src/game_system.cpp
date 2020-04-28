@@ -39,7 +39,7 @@ namespace {
 	Color bg_color = Color{ 0, 0, 0, 255 };
 }
 
-static RPG::SaveSystem& data = Main_Data::game_data.system;
+static lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
 
 bool bgm_pending = false;
 
@@ -72,8 +72,8 @@ int Game_System::GetSaveCount() {
 	return data.save_count;
 }
 
-void Game_System::BgmPlay(RPG::Music const& bgm) {
-	RPG::Music previous_music = data.current_music;
+void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
+	lcf::rpg::Music previous_music = data.current_music;
 	data.current_music = bgm;
 
 	// Validate
@@ -134,7 +134,7 @@ void Game_System::BgmFade(int duration) {
 	data.music_stopping = true;
 }
 
-void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
+void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	static bool ineluki_warning_shown = false;
 
 	if (se.name.empty()) {
@@ -182,7 +182,7 @@ void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
 	request->Start();
 }
 
-void Game_System::SePlay(const RPG::Animation &animation) {
+void Game_System::SePlay(const lcf::rpg::Animation &animation) {
 	std::string path;
 	for (const auto& anim : animation.timings) {
 		if (!IsStopSoundFilename(anim.se.name, path)) {
@@ -218,8 +218,8 @@ void Game_System::ReloadSystemGraphic() {
 }
 
 void Game_System::SetSystemGraphic(const std::string& new_system_name,
-		RPG::System::Stretch message_stretch,
-		RPG::System::Font font) {
+		lcf::rpg::System::Stretch message_stretch,
+		lcf::rpg::System::Font font) {
 
 	bool changed = (GetSystemName() != new_system_name);
 
@@ -234,8 +234,8 @@ void Game_System::SetSystemGraphic(const std::string& new_system_name,
 
 void Game_System::ResetSystemGraphic() {
 	data.graphics_name = "";
-	data.message_stretch = (RPG::System::Stretch)0;
-	data.font_id = (RPG::System::Font)0;
+	data.message_stretch = (lcf::rpg::System::Stretch)0;
+	data.font_id = (lcf::rpg::System::Font)0;
 
 	ReloadSystemGraphic();
 }
@@ -244,7 +244,7 @@ const std::string& Game_System::GetSystem2Name() {
 	return lcf::Data::system.system2_name;
 }
 
-RPG::Music& Game_System::GetSystemBGM(int which) {
+lcf::rpg::Music& Game_System::GetSystemBGM(int which) {
 	switch (which) {
 		case BGM_Battle:		return data.battle_music;
 		case BGM_Victory:		return data.battle_end_music;
@@ -258,11 +258,11 @@ RPG::Music& Game_System::GetSystemBGM(int which) {
 	return data.battle_music; // keep the compiler happy
 }
 
-RPG::Music& Game_System::GetCurrentBGM() {
+lcf::rpg::Music& Game_System::GetCurrentBGM() {
 	return data.current_music;
 }
 
-void Game_System::SetSystemBGM(int which, const RPG::Music& bgm) {
+void Game_System::SetSystemBGM(int which, const lcf::rpg::Music& bgm) {
 	GetSystemBGM(which) = bgm;
 }
 
@@ -274,7 +274,7 @@ void Game_System::PlayMemorizedBGM() {
 	BgmPlay(data.stored_music);
 }
 
-RPG::Sound& Game_System::GetSystemSE(int which) {
+lcf::rpg::Sound& Game_System::GetSystemSE(int which) {
 	switch (which) {
 		case SFX_Cursor:		return data.cursor_se;
 		case SFX_Decision:		return data.decision_se;
@@ -292,7 +292,7 @@ RPG::Sound& Game_System::GetSystemSE(int which) {
 	return data.cursor_se; // keep the compiler happy
 }
 
-void Game_System::SetSystemSE(int which, const RPG::Sound& sfx) {
+void Game_System::SetSystemSE(int which, const lcf::rpg::Sound& sfx) {
 	GetSystemSE(which) = sfx;
 }
 
@@ -328,14 +328,14 @@ bool Game_System::GetAllowMenu() {
 	return data.menu_allowed;
 }
 
-RPG::System::Stretch Game_System::GetMessageStretch() {
-	return static_cast<RPG::System::Stretch>(!data.graphics_name.empty()
+lcf::rpg::System::Stretch Game_System::GetMessageStretch() {
+	return static_cast<lcf::rpg::System::Stretch>(!data.graphics_name.empty()
 		? data.message_stretch
 		: lcf::Data::system.message_stretch);
 }
 
-RPG::System::Font Game_System::GetFontId() {
-	return static_cast<RPG::System::Font>(!data.graphics_name.empty()
+lcf::rpg::System::Font Game_System::GetFontId() {
+	return static_cast<lcf::rpg::System::Font>(!data.graphics_name.empty()
 		? data.font_id
 		: lcf::Data::system.font_id);
 }
@@ -535,19 +535,19 @@ void Game_System::ToggleAtbMode() {
 	data.atb_mode = !data.atb_mode;
 }
 
-const RPG::Music& Game_System::GetBeforeBattleMusic() {
+const lcf::rpg::Music& Game_System::GetBeforeBattleMusic() {
 	return data.before_battle_music;
 }
 
-void Game_System::SetBeforeBattleMusic(RPG::Music music) {
+void Game_System::SetBeforeBattleMusic(lcf::rpg::Music music) {
 	data.before_battle_music = std::move(music);
 }
 
-const RPG::Music& Game_System::GetBeforeVehicleMusic() {
+const lcf::rpg::Music& Game_System::GetBeforeVehicleMusic() {
 	return data.before_vehicle_music;
 }
 
-void Game_System::SetBeforeVehicleMusic(RPG::Music music) {
+void Game_System::SetBeforeVehicleMusic(lcf::rpg::Music music) {
 	data.before_vehicle_music = std::move(music);
 }
 

@@ -48,21 +48,21 @@ void Scene_ActorTarget::Start() {
 	target_window->SetIndex(0);
 
 	if (use_item) {
-		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, id);
+		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, id);
 		if (!item) {
 			Output::Warning("Scene ActorTarget: Invalid item ID {}", id);
 			Scene::Pop();
 			return;
 		}
-		const RPG::Skill* skill = nullptr;
-		if (item->type == RPG::Item::Type_special) {
+		const lcf::rpg::Skill* skill = nullptr;
+		if (item->type == lcf::rpg::Item::Type_special) {
 			skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("Scene ActorTarget: Item {} has invalid skill ID {}", id, item->skill_id);
 				Scene::Pop();
 				return;
 			}
-			if (skill->scope == RPG::Skill::Scope_party) {
+			if (skill->scope == lcf::rpg::Skill::Scope_party) {
 				target_window->SetIndex(-100);
 			}
 		} else {
@@ -74,16 +74,16 @@ void Scene_ActorTarget::Start() {
 		help_window->SetText(item->name);
 		return;
 	} else {
-		const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
+		const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
 		if (!skill) {
 			Output::Warning("Scene ActorTarget: Invalid skill ID {}", id);
 			Scene::Pop();
 			return;
 		}
 
-		if (skill->scope == RPG::Skill::Scope_self) {
+		if (skill->scope == lcf::rpg::Skill::Scope_self) {
 			target_window->SetIndex(-actor_index);
-		} else if (skill->scope == RPG::Skill::Scope_party) {
+		} else if (skill->scope == lcf::rpg::Skill::Scope_party) {
 			target_window->SetIndex(-100);
 		}
 
@@ -119,13 +119,13 @@ void Scene_ActorTarget::UpdateItem() {
 			auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, id);
 			assert(item);
 
-			bool do_skill = (item->type == RPG::Item::Type_special)
+			bool do_skill = (item->type == lcf::rpg::Item::Type_special)
 				|| (item->use_skill && (
-							item->type == RPG::Item::Type_weapon
-							|| item->type == RPG::Item::Type_shield
-							|| item->type == RPG::Item::Type_armor
-							|| item->type == RPG::Item::Type_helmet
-							|| item->type == RPG::Item::Type_accessory
+							item->type == lcf::rpg::Item::Type_weapon
+							|| item->type == lcf::rpg::Item::Type_shield
+							|| item->type == lcf::rpg::Item::Type_armor
+							|| item->type == lcf::rpg::Item::Type_helmet
+							|| item->type == lcf::rpg::Item::Type_accessory
 							)
 				   );
 
@@ -158,8 +158,8 @@ void Scene_ActorTarget::UpdateSkill() {
 			return;
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
-			RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
-			RPG::Animation* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
+			lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
+			lcf::rpg::Animation* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
 			if (animation) {
 				Game_System::SePlay(*animation);
 			}

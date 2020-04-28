@@ -14,7 +14,7 @@ constexpr char escape = '\\';
 
 struct DataInit {
 	DataInit() {
-		Main_Data::game_data = RPG::Save();
+		Main_Data::game_data = lcf::rpg::Save();
 		auto& actors = Main_Data::game_data.actors;
 		for (auto id : {1,2,3,4}) {
 			Main_Data::game_data.actors.push_back({});
@@ -36,7 +36,7 @@ struct DataInit {
 		Main_Data::game_variables->SetWarning(0);
 	}
 	~DataInit() {
-		Main_Data::game_data = RPG::Save();
+		Main_Data::game_data = lcf::rpg::Save();
 		lcf::Data::actors.clear();
 		Main_Data::game_party.reset();
 		Main_Data::game_variables.reset();

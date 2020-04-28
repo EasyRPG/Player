@@ -19,7 +19,7 @@
 #define EP_GAME_ENEMYPARTY_H
 
 #include <vector>
-#include <lcf/rpg_troop.h>
+#include <lcf/rpg/troop.h>
 #include "game_enemy.h"
 #include "game_party_base.h"
 

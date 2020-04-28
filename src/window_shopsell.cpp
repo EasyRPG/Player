@@ -29,7 +29,7 @@ Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
 bool Window_ShopSell::CheckEnable(int item_id) {
 	// Items are guaranteed to be valid
 
-	const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	return item->price > 0;
 }

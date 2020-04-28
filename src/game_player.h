@@ -19,17 +19,19 @@
 #define EP_GAME_PLAYER_H
 
 // Headers
-#include <lcf/rpg_music.h>
-#include <lcf/rpg_savepartylocation.h>
+#include <lcf/rpg/music.h>
+#include <lcf/rpg/savepartylocation.h>
 #include "game_character.h"
 #include <lcf/flag_set.h>
 #include "teleport_target.h"
 #include <vector>
 
 class Game_Vehicle;
-namespace RPG {
+namespace lcf {
+namespace rpg {
 	class SaveTarget;
-}
+} // namespace rpg
+} // namespace lcf
 
 /**
  * Game Player class
@@ -49,7 +51,7 @@ public:
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
 	void OnMoveFailed(int x, int y) override;
-	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route) override;
+	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;
@@ -66,7 +68,7 @@ public:
 	 * @param tt teleport type
 	 */
 	void ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt);
-	void ReserveTeleport(const RPG::SaveTarget& target);
+	void ReserveTeleport(const lcf::rpg::SaveTarget& target);
 	void PerformTeleport();
 
 	void MoveTo(int x, int y) override;
@@ -109,10 +111,10 @@ public:
 	bool IsEncounterCalling() const;
 
 protected:
-	RPG::SavePartyLocation* data();
-	const RPG::SavePartyLocation* data() const;
+	lcf::rpg::SavePartyLocation* data();
+	const lcf::rpg::SavePartyLocation* data() const;
 private:
-	using TriggerSet = lcf::FlagSet<RPG::EventPage::Trigger>;
+	using TriggerSet = lcf::FlagSet<lcf::rpg::EventPage::Trigger>;
 
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
@@ -127,12 +129,12 @@ private:
 	TeleportTarget teleport_target;
 };
 
-inline RPG::SavePartyLocation* Game_Player::data() {
-	return static_cast<RPG::SavePartyLocation*>(Game_Character::data());
+inline lcf::rpg::SavePartyLocation* Game_Player::data() {
+	return static_cast<lcf::rpg::SavePartyLocation*>(Game_Character::data());
 }
 
-inline const RPG::SavePartyLocation* Game_Player::data() const {
-	return static_cast<const RPG::SavePartyLocation*>(Game_Character::data());
+inline const lcf::rpg::SavePartyLocation* Game_Player::data() const {
+	return static_cast<const lcf::rpg::SavePartyLocation*>(Game_Character::data());
 }
 
 inline bool Game_Player::IsPendingTeleport() const {

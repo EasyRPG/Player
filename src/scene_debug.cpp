@@ -417,7 +417,7 @@ int Scene_Debug::GetLastPage() {
 			num_elements = lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0;
 			break;
 		case eCallEvent:
-			num_elements = Data::commonevents.size();
+			num_elements = lcf::Data::commonevents.size();
 			break;
 		default: break;
 	}
@@ -542,10 +542,10 @@ void Scene_Debug::EnterGold() {
 void Scene_Debug::EnterMapSelectX() {
 	auto map_id = GetIndex();
 	auto iter = std::lower_bound(lcf::Data::treemap.maps.begin(), lcf::Data::treemap.maps.end(), map_id,
-			[](const RPG::MapInfo& l, int r) { return l.ID < r; });
+			[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
 	if (iter != lcf::Data::treemap.maps.end()
 			&& iter->ID == map_id
-			&& iter->type == RPG::TreeMap::MapType_map
+			&& iter->type == lcf::rpg::TreeMap::MapType_map
 	   ) {
 
 		prev.main_range_index = 7;

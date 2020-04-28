@@ -481,7 +481,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
 		src->ApplyConditions();
 
-		const RPG::State* pri_state = nullptr;
+		const lcf::rpg::State* pri_state = nullptr;
 		bool pri_was_healed = false;
 		for (size_t id = 1; id <= lcf::Data::states.size(); ++id) {
 			auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
@@ -1247,10 +1247,10 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	}
 
 	switch (active_actor->GetSignificantRestriction()) {
-		case RPG::State::Restriction_attack_ally:
+		case lcf::rpg::State::Restriction_attack_ally:
 			random_target = Main_Data::game_party->GetRandomActiveBattler();
 			break;
-		case RPG::State::Restriction_attack_enemy:
+		case lcf::rpg::State::Restriction_attack_enemy:
 			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 			break;
 		default:
@@ -1349,7 +1349,7 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 			continue;
 		}
 
-		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
+		const lcf::rpg::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
 		}
@@ -1507,7 +1507,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 	std::stringstream ss;
 
 	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
+		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 		// No Output::Warning needed here, reported later when the item is added
 		std::string item_name = "??? BAD ITEM ???";
 		if (item) {

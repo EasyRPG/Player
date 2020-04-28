@@ -144,8 +144,8 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	}
 	else {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
-		const std::vector<const RPG::BattleCommand*> bcmds = actor->GetBattleCommands();
-		for (const RPG::BattleCommand* command : bcmds) {
+		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
+		for (const lcf::rpg::BattleCommand* command : bcmds) {
 			commands.push_back(command->name);
 		}
 	}
@@ -154,18 +154,18 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	Refresh();
 }
 
-RPG::BattleCommand Window_BattleCommand::GetCommand() {
+lcf::rpg::BattleCommand Window_BattleCommand::GetCommand() {
 	if (actor_id > 0) {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
 		return *actor->GetBattleCommands()[index];
 	}
 
-	RPG::BattleCommand command;
+	lcf::rpg::BattleCommand command;
 	static const int types[] = {
-		RPG::BattleCommand::Type_attack,
-		RPG::BattleCommand::Type_defense,
-		RPG::BattleCommand::Type_item,
-		RPG::BattleCommand::Type_special
+		lcf::rpg::BattleCommand::Type_attack,
+		lcf::rpg::BattleCommand::Type_defense,
+		lcf::rpg::BattleCommand::Type_item,
+		lcf::rpg::BattleCommand::Type_special
 	};
 
 	command.ID = index + 1;
@@ -176,16 +176,16 @@ RPG::BattleCommand Window_BattleCommand::GetCommand() {
 
 int Window_BattleCommand::GetSkillSubset() {
 	if (actor_id == 0)
-		return RPG::Skill::Type_normal;
+		return lcf::rpg::Skill::Type_normal;
 
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
-	const std::vector<const RPG::BattleCommand*> bcmds = actor->GetBattleCommands();
+	const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 	int bcmd = bcmds[index]->ID;
 
 	int idx = 4;
 	for (int i = 0; i < bcmd - 1; i++) {
-		const RPG::BattleCommand& command = lcf::Data::battlecommands.commands[i];
-		if (command.type == RPG::BattleCommand::Type_subskill)
+		const lcf::rpg::BattleCommand& command = lcf::Data::battlecommands.commands[i];
+		if (command.type == lcf::rpg::BattleCommand::Type_subskill)
 			idx++;
 	}
 

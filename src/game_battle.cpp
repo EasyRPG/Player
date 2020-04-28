@@ -37,7 +37,7 @@
 #include "utils.h"
 
 namespace Game_Battle {
-	const RPG::Troop* troop;
+	const lcf::rpg::Troop* troop;
 
 	std::string background_name;
 
@@ -56,12 +56,12 @@ namespace Game_Battle {
 namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
-	RPG::System::BattleCondition battle_cond = RPG::System::BattleCondition_none;
+	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	int target_enemy_index;
 	bool need_refresh;
 	std::vector<bool> page_can_run;
 
-	std::function<bool(const RPG::TroopPage&)> last_event_filter;
+	std::function<bool(const lcf::rpg::TroopPage&)> last_event_filter;
 }
 
 void Game_Battle::Init(int troop_id) {
@@ -83,7 +83,7 @@ void Game_Battle::Init(int troop_id) {
 	page_can_run.resize(troop->pages.size());
 	std::fill(page_can_run.begin(), page_can_run.end(), false);
 
-	RefreshEvents([](const RPG::TroopPage&) {
+	RefreshEvents([](const lcf::rpg::TroopPage&) {
 		return false;
 	});
 
@@ -172,7 +172,7 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 }
 
 int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound, int cutoff) {
-	const RPG::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
+	const lcf::rpg::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation Many: Invalid animation ID {}", animation_id);
 		return 0;
@@ -191,8 +191,8 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 	if (battler == nullptr) {
 		std::fill(page_executed.begin(), page_executed.end(), false);
 	} else {
-		for (const RPG::TroopPage& page : troop->pages) {
-			const RPG::TroopPageCondition& condition = page.condition;
+		for (const lcf::rpg::TroopPage& page : troop->pages) {
+			const lcf::rpg::TroopPageCondition& condition = page.condition;
 
 			// Reset pages without actor/enemy condition each turn
 			if (!condition.flags.turn_actor &&
@@ -286,7 +286,7 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	}
 }
 
-bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
+bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition) {
 	if (!condition.flags.switch_a &&
 		!condition.flags.switch_b &&
 		!condition.flags.variable &&
@@ -385,7 +385,7 @@ bool Game_Battle::UpdateEvents() {
 
 	// No event can run anymore, cancel the interpreter calling until
 	// the battle system wants to run events again.
-	RefreshEvents([](const RPG::TroopPage&) {
+	RefreshEvents([](const lcf::rpg::TroopPage&) {
 		return false;
 	});
 
@@ -393,14 +393,14 @@ bool Game_Battle::UpdateEvents() {
 }
 
 void Game_Battle::RefreshEvents() {
-	RefreshEvents([](const RPG::TroopPage&) {
+	RefreshEvents([](const lcf::rpg::TroopPage&) {
 		return true;
 	});
 }
 
-void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate) {
+void Game_Battle::RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate) {
 	for (const auto& it : troop->pages) {
-		const RPG::TroopPage& page = it;
+		const lcf::rpg::TroopPage& page = it;
 		if (!page_executed[page.ID - 1] && AreConditionsMet(page.condition)) {
 			if (predicate(it)) {
 				page_can_run[it.ID - 1] = true;
@@ -426,11 +426,11 @@ int Game_Battle::GetTerrainId() {
 	return terrain_id;
 }
 
-void Game_Battle::SetBattleCondition(RPG::System::BattleCondition cond) {
+void Game_Battle::SetBattleCondition(lcf::rpg::System::BattleCondition cond) {
 	battle_cond = cond;
 }
 
-RPG::System::BattleCondition Game_Battle::GetBattleCondition() {
+lcf::rpg::System::BattleCondition Game_Battle::GetBattleCondition() {
 	return battle_cond;
 }
 

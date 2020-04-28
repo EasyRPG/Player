@@ -35,7 +35,7 @@ Window_Base::Window_Base(int x, int y, int width, int height, Drawable::Flags fl
 	SetY(y);
 	SetWidth(width);
 	SetHeight(height);
-	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
+	SetStretch(Game_System::GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
 	SetZ(Priority_Window);
 }
 
@@ -57,7 +57,7 @@ bool Window_Base::IsMovementActive() {
 void Window_Base::Update() {
 	Window::Update();
 	SetWindowskin(Cache::SystemOrBlack());
-	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
+	SetStretch(Game_System::GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
 	UpdateMovement();
 }
 
@@ -132,7 +132,7 @@ void Window_Base::DrawActorLevel(const Game_Actor& actor, int cx, int cy) const 
 
 void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) const {
 	// Unit has Normal state if no state is set
-	const RPG::State* state = actor.GetSignificantState();
+	const lcf::rpg::State* state = actor.GetSignificantState();
 	if (!state) {
 		contents->TextDraw(cx, cy, Font::ColorDefault, lcf::Data::terms.normal_status);
 	} else {
@@ -279,13 +279,13 @@ void Window_Base::DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int
 	contents->TextDraw(cx, cy, 1, name);
 }
 
-void Window_Base::DrawItemName(const RPG::Item& item, int cx, int cy, bool enabled) const {
+void Window_Base::DrawItemName(const lcf::rpg::Item& item, int cx, int cy, bool enabled) const {
 	int color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 
 	contents->TextDraw(cx, cy, color, item.name);
 }
 
-void Window_Base::DrawSkillName(const RPG::Skill& skill, int cx, int cy, bool enabled) const {
+void Window_Base::DrawSkillName(const lcf::rpg::Skill& skill, int cx, int cy, bool enabled) const {
 	int color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 
 	contents->TextDraw(cx, cy, color, skill.name);

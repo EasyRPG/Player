@@ -69,7 +69,7 @@ void Window_SaveFile::SetDisplayOverride(const std::string& name, int index) {
 	override_index = index;
 }
 
-void Window_SaveFile::SetParty(RPG::SaveTitle title) {
+void Window_SaveFile::SetParty(lcf::rpg::SaveTitle title) {
 	data = std::move(title);
 	has_party = true;
 }

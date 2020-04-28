@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include "game_character.h"
-#include <lcf/rpg_eventcommand.h>
+#include <lcf/rpg/eventcommand.h>
 #include "system.h"
 #include "game_interpreter.h"
 
@@ -40,19 +40,19 @@ public:
 
 	bool ExecuteCommand() override;
 private:
-	bool CommandCallCommonEvent(RPG::EventCommand const& com);
-	bool CommandForceFlee(RPG::EventCommand const& com);
-	bool CommandEnableCombo(RPG::EventCommand const& com);
-	bool CommandChangeMonsterHP(RPG::EventCommand const& com);
-	bool CommandChangeMonsterMP(RPG::EventCommand const& com);
-	bool CommandChangeMonsterCondition(RPG::EventCommand const& com);
-	bool CommandShowHiddenMonster(RPG::EventCommand const& com);
-	bool CommandChangeBattleBG(RPG::EventCommand const& com);
-	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
-	bool CommandTerminateBattle(RPG::EventCommand const& com);
-	bool CommandConditionalBranchBattle(RPG::EventCommand const& com);
-	bool CommandElseBranchBattle(RPG::EventCommand const& com);
-	bool CommandEndBranchBattle(RPG::EventCommand const& com);
+	bool CommandCallCommonEvent(lcf::rpg::EventCommand const& com);
+	bool CommandForceFlee(lcf::rpg::EventCommand const& com);
+	bool CommandEnableCombo(lcf::rpg::EventCommand const& com);
+	bool CommandChangeMonsterHP(lcf::rpg::EventCommand const& com);
+	bool CommandChangeMonsterMP(lcf::rpg::EventCommand const& com);
+	bool CommandChangeMonsterCondition(lcf::rpg::EventCommand const& com);
+	bool CommandShowHiddenMonster(lcf::rpg::EventCommand const& com);
+	bool CommandChangeBattleBG(lcf::rpg::EventCommand const& com);
+	bool CommandShowBattleAnimation(lcf::rpg::EventCommand const& com);
+	bool CommandTerminateBattle(lcf::rpg::EventCommand const& com);
+	bool CommandConditionalBranchBattle(lcf::rpg::EventCommand const& com);
+	bool CommandElseBranchBattle(lcf::rpg::EventCommand const& com);
+	bool CommandEndBranchBattle(lcf::rpg::EventCommand const& com);
 };
 
 #endif

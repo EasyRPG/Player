@@ -46,17 +46,17 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-static int CalcEquipScore(const RPG::Item* item) {
+static int CalcEquipScore(const lcf::rpg::Item* item) {
 	if (item == nullptr) {
 		return 0;
 	}
 	return item->atk_points1 + item->def_points1 + item->agi_points1 + item->spi_points1;
 }
 
-static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
+static int CmpEquip(const Game_Actor* actor, const lcf::rpg::Item* new_item) {
 	int new_score = CalcEquipScore(new_item);
 	switch (new_item->type) {
-	case RPG::Item::Type_weapon:
+	case lcf::rpg::Item::Type_weapon:
 	{
 		int score = CalcEquipScore(actor->GetWeapon());
 		if (actor->HasTwoWeapons()) {
@@ -65,13 +65,13 @@ static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
 		}
 		return new_score - score;
 	}
-	case RPG::Item::Type_helmet:
+	case lcf::rpg::Item::Type_helmet:
 		return new_score - CalcEquipScore(actor->GetHelmet());
-	case RPG::Item::Type_shield:
+	case lcf::rpg::Item::Type_shield:
 		return new_score - CalcEquipScore(actor->GetShield());
-	case RPG::Item::Type_armor:
+	case lcf::rpg::Item::Type_armor:
 		return new_score - CalcEquipScore(actor->GetArmor());
-	case RPG::Item::Type_accessory:
+	case lcf::rpg::Item::Type_accessory:
 		return new_score - CalcEquipScore(actor->GetAccessory());
 	default:
 		break;
@@ -79,12 +79,12 @@ static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
 	return 0;
 }
 
-static bool IsEquipment(const RPG::Item* item) {
-	return item->type == RPG::Item::Type_weapon
-		|| item->type == RPG::Item::Type_shield
-		|| item->type == RPG::Item::Type_helmet
-		|| item->type == RPG::Item::Type_armor
-		|| item->type == RPG::Item::Type_accessory;
+static bool IsEquipment(const lcf::rpg::Item* item) {
+	return item->type == lcf::rpg::Item::Type_weapon
+		|| item->type == lcf::rpg::Item::Type_shield
+		|| item->type == lcf::rpg::Item::Type_helmet
+		|| item->type == lcf::rpg::Item::Type_armor
+		|| item->type == lcf::rpg::Item::Type_accessory;
 }
 
 void Window_ShopParty::Refresh() {
@@ -122,7 +122,7 @@ void Window_ShopParty::Refresh() {
 			// check if item is equipped by each member
 			bool is_equipped = false;
 			for (int j = 1; j <= 5; ++j) {
-				const RPG::Item* item = actor->GetEquipment(j);
+				const lcf::rpg::Item* item = actor->GetEquipment(j);
 				if (item) {
 					is_equipped |= (item->ID == item_id);
 				}

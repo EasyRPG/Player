@@ -39,7 +39,7 @@ void Window_Skill::SetActor(int actor_id) {
 	Refresh();
 }
 
-const RPG::Skill* Window_Skill::GetSkill() const {
+const lcf::rpg::Skill* Window_Skill::GetSkill() const {
 	if (index < 0) {
 		return nullptr;
 	}
@@ -112,7 +112,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 			return true;
 		}
 
-		const RPG::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
+		const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
 		if (skill) {
 			return skill->type == subset;
 		}

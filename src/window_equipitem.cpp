@@ -46,23 +46,23 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 	bool result = false;
 
 	// Equipment and items are guaranteed to be valid
-	RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+	lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 	switch (equip_type) {
 	case Window_EquipItem::weapon:
-		result = item->type == RPG::Item::Type_weapon;
+		result = item->type == lcf::rpg::Item::Type_weapon;
 		break;
 	case Window_EquipItem::shield:
-		result = item->type == RPG::Item::Type_shield;
+		result = item->type == lcf::rpg::Item::Type_shield;
 		break;
 	case Window_EquipItem::armor:
-		result = item->type == RPG::Item::Type_armor;
+		result = item->type == lcf::rpg::Item::Type_armor;
 		break;
 	case Window_EquipItem::helmet:
-		result = item->type == RPG::Item::Type_helmet;
+		result = item->type == lcf::rpg::Item::Type_helmet;
 		break;
 	case Window_EquipItem::other:
-		result = item->type == RPG::Item::Type_accessory;
+		result = item->type == lcf::rpg::Item::Type_accessory;
 		break;
 	default:
 		return false;

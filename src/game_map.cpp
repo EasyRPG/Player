@@ -54,9 +54,9 @@ namespace {
 	constexpr int default_pan_y = 7 * SCREEN_TILE_SIZE;
 	constexpr int default_pan_speed = 16;
 
-	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
-	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
-	RPG::SavePanorama& panorama = Main_Data::game_data.panorama;
+	lcf::rpg::SaveMapInfo& map_info = Main_Data::game_data.map_info;
+	lcf::rpg::SavePartyLocation& location = Main_Data::game_data.party_location;
+	lcf::rpg::SavePanorama& panorama = Main_Data::game_data.panorama;
 
 	std::string chipset_name;
 	std::string battleback_name;
@@ -69,13 +69,13 @@ namespace {
 	std::vector<Game_Event> events;
 	std::vector<Game_CommonEvent> common_events;
 
-	std::unique_ptr<RPG::Map> map;
+	std::unique_ptr<lcf::rpg::Map> map;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-	RPG::Chipset* chipset;
+	lcf::rpg::Chipset* chipset;
 
 	int last_encounter_idx = 0;
 
@@ -107,7 +107,7 @@ void Game_Map::Init() {
 
 	common_events.clear();
 	common_events.reserve(lcf::Data::commonevents.size());
-	for (const RPG::CommonEvent& ev : lcf::Data::commonevents) {
+	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
 		common_events.emplace_back(ev.ID);
 	}
 
@@ -116,7 +116,7 @@ void Game_Map::Init() {
 	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.ship_location));
 	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.airship_location));
 
-	location.pan_state = RPG::SavePartyLocation::PanState_follow;
+	location.pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
 	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
@@ -161,7 +161,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	}
 
 	events.reserve(map->events.size());
-	for (const RPG::Event& ev : map->events) {
+	for (const lcf::rpg::Event& ev : map->events) {
 		events.emplace_back(location.map_id, ev);
 	}
 
@@ -178,9 +178,9 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	int can_escape = lcf::Data::treemap.maps[current_index].escape;
 	int can_teleport = lcf::Data::treemap.maps[current_index].teleport;
 
-	while (can_save == RPG::MapInfo::TriState_parent
-			|| can_escape == RPG::MapInfo::TriState_parent
-			|| can_teleport == RPG::MapInfo::TriState_parent)
+	while (can_save == lcf::rpg::MapInfo::TriState_parent
+			|| can_escape == lcf::rpg::MapInfo::TriState_parent
+			|| can_teleport == lcf::rpg::MapInfo::TriState_parent)
 	{
 		int parent_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 		if (parent_index == 0) {
@@ -196,19 +196,19 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 			break;
 		}
 		current_index = parent_index;
-		if (can_save == RPG::MapInfo::TriState_parent) {
+		if (can_save == lcf::rpg::MapInfo::TriState_parent) {
 			can_save = lcf::Data::treemap.maps[current_index].save;
 		}
-		if (can_escape == RPG::MapInfo::TriState_parent) {
+		if (can_escape == lcf::rpg::MapInfo::TriState_parent) {
 			can_escape = lcf::Data::treemap.maps[current_index].escape;
 		}
-		if (can_teleport == RPG::MapInfo::TriState_parent) {
+		if (can_teleport == lcf::rpg::MapInfo::TriState_parent) {
 			can_teleport = lcf::Data::treemap.maps[current_index].teleport;
 		}
 	}
-	Game_System::SetAllowSave(can_save != RPG::MapInfo::TriState_forbid);
-	Game_System::SetAllowEscape(can_escape != RPG::MapInfo::TriState_forbid);
-	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
+	Game_System::SetAllowSave(can_save != lcf::rpg::MapInfo::TriState_forbid);
+	Game_System::SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
+	Game_System::SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
 
 	if (interpreter) {
 		if (tt != TeleportTarget::eAsyncQuickTeleport) {
@@ -351,11 +351,11 @@ void Game_Map::PrepareSave() {
 		map_info.events.push_back(ev.GetSaveData());
 	}
 
-	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
+	std::vector<lcf::rpg::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
 	save_common_events.clear();
 	save_common_events.reserve(common_events.size());
 	for (Game_CommonEvent& ev : common_events) {
-		save_common_events.push_back(RPG::SaveCommonEvent());
+		save_common_events.push_back(lcf::rpg::SaveCommonEvent());
 		save_common_events.back().ID = ev.GetIndex();
 		save_common_events.back().parallel_event_execstate = ev.GetSaveData();
 	}
@@ -494,7 +494,7 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 		return true;
 	}
 
-	if (other.GetLayer() == RPG::EventPage::Layers_same && self_conflict) {
+	if (other.GetLayer() == lcf::rpg::EventPage::Layers_same && self_conflict) {
 		return true;
 	}
 
@@ -576,7 +576,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		// Check for self conflict.
 		// If this event has a tile graphic and the tile itself has passage blocked in the direction
 		// we want to move, flag it as "self conflicting" for use later.
-		if (self.GetLayer() == RPG::EventPage::Layers_below && self.GetTileId() != 0) {
+		if (self.GetLayer() == lcf::rpg::EventPage::Layers_below && self.GetTileId() != 0) {
 			int tile_id = self.GetTileId();
 			if ((passages_up[tile_id] & bit_from) == 0) {
 				self_conflict = true;
@@ -681,7 +681,7 @@ bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
 
 	for (auto& ev: GetEvents()) {
 		if (ev.IsInPosition(x, y)
-			&& ev.GetLayer() == RPG::EventPage::Layers_same
+			&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
 			&& ev.IsActive()
 			&& ev.GetActivePage() != nullptr) {
 			return false;
@@ -754,7 +754,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 		if (!ev.IsActive() || ev.GetActivePage() == nullptr || ev.GetThrough()) {
 			continue;
 		}
-		if (ev.IsInPosition(x, y) && ev.GetLayer() == RPG::EventPage::Layers_below) {
+		if (ev.IsInPosition(x, y) && ev.GetLayer() == lcf::rpg::EventPage::Layers_below) {
 			int tile_id = ev.GetTileId();
 			if (tile_id > 0) {
 				event_tile_id = tile_id;
@@ -799,7 +799,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 int Game_Map::GetBushDepth(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return 0;
 
-	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
+	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("GetBushDepth: Invalid terrain at ({}, {})", x, y);
 		return 0;
@@ -876,11 +876,11 @@ Game_Event* Game_Map::GetEventAt(int x, int y, bool require_active) {
 }
 
 bool Game_Map::LoopHorizontal() {
-	return map->scroll_type == RPG::Map::ScrollType_horizontal || map->scroll_type == RPG::Map::ScrollType_both;
+	return map->scroll_type == lcf::rpg::Map::ScrollType_horizontal || map->scroll_type == lcf::rpg::Map::ScrollType_both;
 }
 
 bool Game_Map::LoopVertical() {
-	return map->scroll_type == RPG::Map::ScrollType_vertical || map->scroll_type == RPG::Map::ScrollType_both;
+	return map->scroll_type == lcf::rpg::Map::ScrollType_vertical || map->scroll_type == lcf::rpg::Map::ScrollType_both;
 }
 
 int Game_Map::RoundX(int x) {
@@ -900,11 +900,11 @@ int Game_Map::RoundY(int y) {
 }
 
 int Game_Map::XwithDirection(int x, int direction) {
-	return RoundX(x + (direction == RPG::EventPage::Direction_right ? 1 : direction == RPG::EventPage::Direction_left ? -1 : 0));
+	return RoundX(x + (direction == lcf::rpg::EventPage::Direction_right ? 1 : direction == lcf::rpg::EventPage::Direction_left ? -1 : 0));
 }
 
 int Game_Map::YwithDirection(int y, int direction) {
-	return RoundY(y + (direction == RPG::EventPage::Direction_down ? 1 : direction == RPG::EventPage::Direction_up ? -1 : 0));
+	return RoundY(y + (direction == lcf::rpg::EventPage::Direction_down ? 1 : direction == lcf::rpg::EventPage::Direction_up ? -1 : 0));
 }
 
 int Game_Map::CheckEvent(int x, int y) {
@@ -1141,12 +1141,12 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	return true;
 }
 
-RPG::MapInfo const& Game_Map::GetMapInfo() {
+lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
 	auto idx = GetMapIndex(location.map_id);
 	return lcf::Data::treemap.maps[idx];
 }
 
-RPG::Map const& Game_Map::GetMap() {
+lcf::rpg::Map const& Game_Map::GetMap() {
 	return *map;
 }
 
@@ -1162,7 +1162,7 @@ int Game_Map::GetHeight() {
 	return map->height;
 }
 
-std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
+std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
 	return lcf::Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
 }
 
@@ -1196,7 +1196,7 @@ bool Game_Map::UpdateEncounterSteps() {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
-	const RPG::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
+	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
 		return false;
@@ -1262,7 +1262,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	int terrain_tag = GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
-		const RPG::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
+		const lcf::rpg::Troop* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
 		if (!troop) {
 			Output::Warning("GetEncountersAt: Invalid troop ID {} in encounter list", troop_id);
 			return false;
@@ -1278,21 +1278,21 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	std::vector<int> out;
 
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
-		RPG::MapInfo& map = lcf::Data::treemap.maps[i];
+		lcf::rpg::MapInfo& map = lcf::Data::treemap.maps[i];
 
 		if (map.ID == location.map_id) {
-			for (const RPG::Encounter& enc : map.encounters) {
+			for (const lcf::rpg::Encounter& enc : map.encounters) {
 				if (is_acceptable(enc.troop_id)) {
 					out.push_back(enc.troop_id);
 				}
 			}
-		} else if (map.parent_map == location.map_id && map.type == RPG::TreeMap::MapType_area) {
+		} else if (map.parent_map == location.map_id && map.type == lcf::rpg::TreeMap::MapType_area) {
 			// Area
 			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
 			Rect player_rect(x, y, 1, 1);
 
 			if (!player_rect.IsOutOfBounds(area_rect)) {
-				for (const RPG::Encounter& enc : map.encounters) {
+				for (const lcf::rpg::Encounter& enc : map.encounters) {
 					if (is_acceptable(enc.troop_id)) {
 						out.push_back(enc.troop_id);
 					}
@@ -1597,11 +1597,11 @@ int Game_Map::SubstituteUp(int old_id, int new_id) {
 }
 
 void Game_Map::LockPan() {
-	location.pan_state = RPG::SavePartyLocation::PanState_fixed;
+	location.pan_state = lcf::rpg::SavePartyLocation::PanState_fixed;
 }
 
 void Game_Map::UnlockPan() {
-	location.pan_state = RPG::SavePartyLocation::PanState_follow;
+	location.pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed) {
@@ -1675,7 +1675,7 @@ bool Game_Map::IsPanActive() {
 }
 
 bool Game_Map::IsPanLocked() {
-	return location.pan_state == RPG::SavePartyLocation::PanState_fixed;
+	return location.pan_state == lcf::rpg::SavePartyLocation::PanState_fixed;
 }
 
 int Game_Map::GetPanX() {

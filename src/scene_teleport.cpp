@@ -23,12 +23,12 @@
 #include "input.h"
 #include "transition.h"
 
-Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
+Scene_Teleport::Scene_Teleport(Game_Actor& actor, const lcf::rpg::Skill& skill)
 		: actor(&actor), skill(&skill) {
 	type = Scene::Teleport;
 }
 
-Scene_Teleport::Scene_Teleport(const RPG::Item& item, const RPG::Skill& skill)
+Scene_Teleport::Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill& skill)
 		: skill(&skill), item(&item) {
 	type = Scene::Teleport;
 	assert(item.skill_id == skill.ID && "Item doesn't invoke the skill");
@@ -52,7 +52,7 @@ void Scene_Teleport::Update() {
 
 		Game_System::SePlay(skill->sound_effect);
 
-		const RPG::SaveTarget& target = teleport_window->GetTarget();
+		const lcf::rpg::SaveTarget& target = teleport_window->GetTarget();
 
 		Main_Data::game_player->ReserveTeleport(target);
 

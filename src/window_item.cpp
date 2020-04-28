@@ -31,7 +31,7 @@ Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	column_max = 2;
 }
 
-const RPG::Item* Window_Item::GetItem() const {
+const lcf::rpg::Item* Window_Item::GetItem() const {
 	if (index < 0) {
 		return nullptr;
 	}
@@ -52,7 +52,7 @@ bool Window_Item::CheckEnable(int item_id) {
 	if (!item) {
 		return false;
 	}
-	if (item->type == RPG::Item::Type_medicine
+	if (item->type == lcf::rpg::Item::Type_medicine
 			&& (!Game_Battle::IsBattleRunning() || !item->occasion_field1)) {
 		return true;
 	}
@@ -75,7 +75,7 @@ void Window_Item::Refresh() {
 		// Include equipped accessories that invoke skills in sorted order.
 		if (actor) {
 			for (int i = 1; i <= 5; ++i) {
-				const RPG::Item* item = actor->GetEquipment(i);
+				const lcf::rpg::Item* item = actor->GetEquipment(i);
 				if (item && item->use_skill && item->skill_id > 0) {
 					auto iter = std::lower_bound(data.begin(), data.end(), item->ID);
 					if (iter == data.end() || *iter != item->ID) {
@@ -113,7 +113,7 @@ void Window_Item::DrawItem(int index) {
 		int number = Main_Data::game_party->GetItemCount(item_id);
 
 		// Items are guaranteed to be valid
-		const RPG::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 		if (actor) {
 			if (item->use_skill) {
 				number += actor->GetItemCount(item_id);

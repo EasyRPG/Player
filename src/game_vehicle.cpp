@@ -32,13 +32,13 @@ const char Game_Vehicle::TypeNames[4][8] {
 	"Airship"
 };
 
-Game_Vehicle::Game_Vehicle(RPG::SaveVehicleLocation* vdata)
+Game_Vehicle::Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata)
 	: Game_Character(Vehicle, vdata)
 {
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
-	SetLayer(RPG::EventPage::Layers_same);
+	SetLayer(lcf::rpg::EventPage::Layers_same);
 	LoadSystemSettings();
 }
 
@@ -67,7 +67,7 @@ void Game_Vehicle::LoadSystemSettings() {
 	}
 }
 
-const RPG::Music& Game_Vehicle::GetBGM() {
+const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 	switch (GetVehicleType()) {
 	case None:
 		assert(false);
@@ -80,7 +80,7 @@ const RPG::Music& Game_Vehicle::GetBGM() {
 		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
 	}
 
-	static RPG::Music empty;
+	static lcf::rpg::Music empty;
 	return empty;
 }
 
@@ -96,10 +96,10 @@ void Game_Vehicle::Refresh() {
 			break;
 		case Boat:
 		case Ship:
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_double);
 			break;
 	}
 }

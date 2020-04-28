@@ -19,27 +19,27 @@
 #define EP_GAME_TARGETS_H
 
 #include <vector>
-#include <lcf/rpg_savetarget.h>
+#include <lcf/rpg/savetarget.h>
 
 class Game_Targets {
 	public:
 		Game_Targets() = default;
 
-		void SetSaveData(std::vector<RPG::SaveTarget> save);
-		std::vector<RPG::SaveTarget> GetSaveData() const;
+		void SetSaveData(std::vector<lcf::rpg::SaveTarget> save);
+		std::vector<lcf::rpg::SaveTarget> GetSaveData() const;
 
 		void AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 		void RemoveTeleportTarget(int map_id);
 		bool HasTeleportTargets() const;
-		const RPG::SaveTarget* GetTeleportTarget(int map_id) const;
-		const std::vector<RPG::SaveTarget>& GetTeleportTargets() const;
+		const lcf::rpg::SaveTarget* GetTeleportTarget(int map_id) const;
+		const std::vector<lcf::rpg::SaveTarget>& GetTeleportTargets() const;
 
 		void SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 		bool HasEscapeTarget() const;
-		const RPG::SaveTarget& GetEscapeTarget() const;
+		const lcf::rpg::SaveTarget& GetEscapeTarget() const;
 	private:
-		RPG::SaveTarget escape;
-		std::vector<RPG::SaveTarget> teleports;
+		lcf::rpg::SaveTarget escape;
+		std::vector<lcf::rpg::SaveTarget> teleports;
 };
 
 
@@ -47,7 +47,7 @@ inline bool Game_Targets::HasTeleportTargets() const {
 	return !teleports.empty();
 }
 
-inline const std::vector<RPG::SaveTarget>& Game_Targets::GetTeleportTargets() const {
+inline const std::vector<lcf::rpg::SaveTarget>& Game_Targets::GetTeleportTargets() const {
 	return teleports;
 }
 
@@ -55,7 +55,7 @@ inline bool Game_Targets::HasEscapeTarget() const {
 	return escape.map_id != 0;
 }
 
-inline const RPG::SaveTarget& Game_Targets::GetEscapeTarget() const {
+inline const lcf::rpg::SaveTarget& Game_Targets::GetEscapeTarget() const {
 	return escape;
 }
 

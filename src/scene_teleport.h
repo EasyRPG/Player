@@ -32,8 +32,8 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill);
-	Scene_Teleport(const RPG::Item& item, const RPG::Skill& skill);
+	Scene_Teleport(Game_Actor& actor, const lcf::rpg::Skill& skill);
+	Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill& skill);
 
 	void Start() override;
 	void Update() override;
@@ -42,8 +42,8 @@ private:
 	std::unique_ptr<Window_Teleport> teleport_window;
 
 	Game_Actor* actor = nullptr;
-	const RPG::Skill* skill = nullptr;
-	const RPG::Item* item = nullptr;
+	const lcf::rpg::Skill* skill = nullptr;
+	const lcf::rpg::Item* item = nullptr;
 };
 
 #endif
