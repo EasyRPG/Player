@@ -38,7 +38,7 @@ FpsOverlay::FpsOverlay() :
 }
 
 void FpsOverlay::UpdateText() {
-	auto fps = Utils::RoundToInt(Game_Clock::GetFPS());
+	auto fps = Utils::RoundTo<int>(Game_Clock::GetFPS());
 	text = "FPS: " + std::to_string(fps);
 	fps_dirty = true;
 }

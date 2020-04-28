@@ -250,7 +250,7 @@ void Game_Battle::UpdateAtbGauges() {
 			if (use_2k3e_algo) {
 				const auto cur_atb = bat->GetAtbGauge();
 				const auto multiplier = std::max(1.0, static_cast<double>(275000 - cur_atb) / 55000.0);
-				increment = Utils::RoundToInt(multiplier * increment);
+				increment = Utils::RoundTo<int>(multiplier * increment);
 			}
 			bat->IncrementAtbGauge(increment);
 		}

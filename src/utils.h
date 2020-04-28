@@ -339,94 +339,9 @@ namespace Utils {
 	 *
 	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
 	 */
-	inline float Round(float v) {
-		return std::rint(v);
-	}
+	template <typename Dest, typename Src>
+	std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> RoundTo(Src v);
 
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline double Round(double v) {
-		return std::rint(v);
-	}
-
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToInt(double v) {
-		return std::lrint(v);
-	}
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToInt(float v) {
-		return std::lrint(v);
-	}
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToLong(double v) {
-		return std::lrint(v);
-	}
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToLong(float v) {
-		return std::lrint(v);
-	}
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToLongLong(double v) {
-		return std::llrint(v);
-	}
-
-	/**
-	 * RPG_RT / Delphi compatible rounding of floating point to integer.
-	 *
-	 * @param v the float value to convert
-	 * @return integral result
-	 *
-	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
-	 */
-	inline int RoundToLongLong(float v) {
-		return std::llrint(v);
-	}
 } // namespace Utils
 
 template <typename T>
@@ -459,6 +374,21 @@ inline void Utils::ForEachLine(const std::string& line, F&& f) {
 template <typename T>
 inline bool Utils::IsControlCharacter(T ch) {
 	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
+}
+
+
+template <typename Dest, typename Src>
+inline std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> Utils::RoundTo(Src v)
+{
+	if (std::is_integral<Dest>::value) {
+		if (sizeof(Dest) <= sizeof(long)) {
+			return std::lrint(v);
+		} else {
+			return std::llrint(v);
+		}
+	}
+
+	return std::rint(v);
 }
 
 #endif
