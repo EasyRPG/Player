@@ -400,6 +400,15 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	} else {
 		SetupSystem2Graphics();
 	}
+
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_party->GetActiveBattlers(battlers);
+	for (Game_Battler* battler : battlers) {
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
+		if (sprite) {
+			sprite->DetectStateChange();
+		}
+	}
 }
 
 void Scene_Battle_Rpg2k3::UpdateCursors() {
