@@ -217,7 +217,6 @@ bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
 		}
 
 		GetData().skills.push_back((int16_t)skill_id);
-		GetData().skills_size = GetData().skills.size();
 		std::sort(GetData().skills.begin(), GetData().skills.end());
 
 		if (pm) {
@@ -248,7 +247,6 @@ bool Game_Actor::UnlearnSkill(int skill_id) {
 	std::vector<int16_t>::iterator it = std::find(GetData().skills.begin(), GetData().skills.end(), skill_id);
 	if (it != GetData().skills.end()) {
 		GetData().skills.erase(it);
-		GetData().skills_size = GetData().skills.size();
 		return true;
 	}
 	return false;
@@ -256,7 +254,6 @@ bool Game_Actor::UnlearnSkill(int skill_id) {
 
 void Game_Actor::UnlearnAllSkills() {
 	GetData().skills.clear();
-	GetData().skills_size = 0;
 }
 
 void Game_Actor::SetFace(const std::string& file_name, int index) {
