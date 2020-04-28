@@ -34,7 +34,7 @@
 #include "game_targets.h"
 #include "game_screen.h"
 #include "game_pictures.h"
-#include <lcf/lsd_reader.h>
+#include <lcf/lsd/reader.h>
 #include "output.h"
 #include "player.h"
 #include "scene_save.h"

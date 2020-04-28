@@ -35,7 +35,7 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "scene_battle.h"
-#include <lcf/lmu_reader.h>
+#include <lcf/lmu/reader.h>
 #include <lcf/reader_lcf.h>
 #include "map_data.h"
 #include "main_data.h"

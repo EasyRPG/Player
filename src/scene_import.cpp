@@ -20,7 +20,7 @@
 #include "filefinder.h"
 #include "game_system.h"
 #include "input.h"
-#include <lcf/lsd_reader.h>
+#include <lcf/lsd/reader.h>
 #include "output.h"
 #include "player.h"
 #include "scene_file.h"

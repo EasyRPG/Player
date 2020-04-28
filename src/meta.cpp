@@ -24,8 +24,8 @@
 #include <zlib.h>
 #include <lcf/data.h>
 #include "filefinder.h"
-#include <lcf/lmt_reader.h>
-#include <lcf/lsd_reader.h>
+#include <lcf/lmt/reader.h>
+#include <lcf/lsd/reader.h>
 #include "main_data.h"
 #include "meta.h"
 #include "output.h"

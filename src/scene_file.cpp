@@ -25,7 +25,7 @@
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
-#include <lcf/lsd_reader.h>
+#include <lcf/lsd/reader.h>
 #include "player.h"
 #include "scene_file.h"
 #include "bitmap.h"

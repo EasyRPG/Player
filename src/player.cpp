@@ -61,9 +61,9 @@
 #include "graphics.h"
 #include <lcf/inireader.h>
 #include "input.h"
-#include <lcf/ldb_reader.h>
-#include <lcf/lmt_reader.h>
-#include <lcf/lsd_reader.h>
+#include <lcf/ldb/reader.h>
+#include <lcf/lmt/reader.h>
+#include <lcf/lsd/reader.h>
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
