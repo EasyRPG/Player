@@ -271,7 +271,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 
 		const lcf::rpg::MoveCommand& move_command = current_route.move_commands[current_index];
 
-		switch (move_command.command_id) {
+		switch (static_cast<lcf::rpg::MoveCommand::Code>(move_command.command_id)) {
 			case lcf::rpg::MoveCommand::Code::move_up:
 			case lcf::rpg::MoveCommand::Code::move_right:
 			case lcf::rpg::MoveCommand::Code::move_down:
@@ -545,7 +545,7 @@ void Game_Character::BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute
 	unsigned int i;
 	for (i = current_index; i < current_route.move_commands.size(); ++i) {
 		const lcf::rpg::MoveCommand& move_command = current_route.move_commands[i];
-		switch (move_command.command_id) {
+		switch (static_cast<lcf::rpg::MoveCommand::Code>(move_command.command_id)) {
 			case lcf::rpg::MoveCommand::Code::move_up:
 			case lcf::rpg::MoveCommand::Code::move_right:
 			case lcf::rpg::MoveCommand::Code::move_down:
@@ -606,7 +606,7 @@ void Game_Character::BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute
 				break;
 		}
 
-		if (move_command.command_id == lcf::rpg::MoveCommand::Code::end_jump) {
+		if (static_cast<lcf::rpg::MoveCommand::Code>(move_command.command_id) == lcf::rpg::MoveCommand::Code::end_jump) {
 			end_found = true;
 			break;
 		}

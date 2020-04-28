@@ -54,8 +54,6 @@
 #include "game_interpreter_map.h"
 #include <lcf/reader_lcf.h>
 
-using lcf::Cmd;
-
 enum EnemyEncounterSubcommand {
 	eOptionEnemyEncounterVictory = 0,
 	eOptionEnemyEncounterEscape = 1,
@@ -92,7 +90,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::RecallToLocation:
 			return CommandRecallToLocation(com);
 		case Cmd::EnemyEncounter:

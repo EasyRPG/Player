@@ -26,7 +26,6 @@
 #include "game_actor.h"
 #include <lcf/rpg/eventcommand.h>
 #include "system.h"
-#include <lcf/command_codes.h>
 #include <lcf/rpg/saveeventexecstate.h>
 #include <lcf/flag_set.h>
 #include "async_op.h"
@@ -47,6 +46,8 @@ namespace rpg {
 class Game_Interpreter
 {
 public:
+	using Cmd = lcf::rpg::EventCommand::Code;
+
 	static Game_Interpreter& GetForegroundInterpreter();
 
 	Game_Interpreter(bool _main_flag = false);
@@ -144,7 +145,7 @@ protected:
 	 * @param codes which codes to check.
 	 * @param indent the indentation level to check
 	 */
-	void SkipToNextConditional(std::initializer_list<int> codes, int indent);
+	void SkipToNextConditional(std::initializer_list<Cmd> codes, int indent);
 
 	/**
 	 * Sets up a wait (and closes the message box)
@@ -172,7 +173,7 @@ protected:
 	 */
 	bool CheckGameOver();
 
-	bool CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next);
+	bool CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<Cmd> next);
 
 	bool CommandShowMessage(lcf::rpg::EventCommand const& com);
 	bool CommandMessageOptions(lcf::rpg::EventCommand const& com);

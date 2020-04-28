@@ -54,8 +54,6 @@
 #include "transition.h"
 #include "baseui.h"
 
-using lcf::Cmd;
-
 enum BranchSubcommand {
 	eOptionBranchElse = 1
 };
@@ -451,7 +449,7 @@ bool Game_Interpreter::CheckGameOver() {
 	return false;
 }
 
-void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
+void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, int indent) {
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -465,7 +463,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, i
 		if (com.indent > indent) {
 			continue;
 		}
-		if (std::find(codes.begin(), codes.end(), com.code) != codes.end()) {
+		if (std::find(codes.begin(), codes.end(), static_cast<Cmd>(com.code)) != codes.end()) {
 			break;
 		}
 	}
@@ -526,7 +524,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::ShowMessage:
 			return CommandShowMessage(com);
 		case Cmd::MessageOptions:
@@ -748,19 +746,19 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 			continue;
 		}
 
-		if (com.code == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
+		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 
-		if (com.code == Cmd::ShowChoiceEnd) {
+		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceEnd) {
 			break;
 		}
 	}
 	return s_choices;
 }
 
-bool Game_Interpreter::CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next) {
+bool Game_Interpreter::CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<Cmd> next) {
 	const auto sub_idx = GetSubcommandIndex(com.indent);
 	if (sub_idx == option_sub_idx) {
 		// Executes this option, so clear the subidx to skip all other options.
@@ -788,7 +786,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	++index;
 
 	// Check for continued lines via ShowMessage_2
-	while (index < static_cast<int>(list.size()) && list[index].code == Cmd::ShowMessage_2) {
+	while (index < static_cast<int>(list.size()) && static_cast<Cmd>(list[index].code) == Cmd::ShowMessage_2) {
 		// Add second (another) line
 		pm.PushLine(list[index].string);
 		++index;
@@ -797,7 +795,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	// Handle Choices or number
 	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
-		if (list[index].code == Cmd::ShowChoice) {
+		if (static_cast<Cmd>(list[index].code) == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices(4);
 			// If choices fit on screen
 			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
@@ -805,7 +803,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 				SetupChoices(s_choices, com.indent, pm);
 				++index;
 			}
-		} else if (list[index].code == Cmd::InputNumber) {
+		} else if (static_cast<Cmd>(list[index].code) == Cmd::InputNumber) {
 			// If next event command is input number
 			// If input number fits on screen
 			if (pm.NumLines() < 4) {
@@ -3175,7 +3173,7 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
-		if (list[idx].code != Cmd::Label)
+		if (static_cast<Cmd>(list[idx].code) != Cmd::Label)
 			continue;
 		if (list[idx].parameters[0] != label_id)
 			continue;
@@ -3195,12 +3193,13 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	//FIXME: This emulates an RPG_RT bug where break loop ignores scopes and
 	//unconditionally jumps to the next EndLoop command.
-	auto pcode = list[index].code;
+	auto pcode = static_cast<Cmd>(list[index].code);
+
 	for (++index; index < (int)list.size(); ++index) {
 		if (pcode == Cmd::EndLoop) {
 			break;
 		}
-		pcode = list[index].code;
+		pcode = static_cast<Cmd>(list[index].code);
 	}
 
 	return true;
@@ -3218,7 +3217,7 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 			continue;
 		if (list[idx].indent < indent)
 			return false;
-		if (list[idx].code != Cmd::Loop)
+		if (static_cast<Cmd>(list[idx].code) != Cmd::Loop)
 			continue;
 		index = idx;
 		break;

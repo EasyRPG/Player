@@ -31,8 +31,6 @@
 #include "spriteset_battle.h"
 #include <cassert>
 
-using lcf::Cmd;
-
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
@@ -45,7 +43,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::CallCommonEvent:
 			return CommandCallCommonEvent(com);
 		case Cmd::ForceFlee:
