@@ -103,9 +103,9 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 
 	int w = 0;
 	int h = 0;
-	void* pixels;
+	void* pixels = nullptr;
 
-	char data[4];
+	uint8_t data[4] = {};
 	size_t bytes = fread(&data, 1, 4, stream);
 	fseek(stream, 0, SEEK_SET);
 
@@ -116,21 +116,19 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG(stream, (void*)nullptr, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image file %s", filename.c_str());
+		Output::Warning("Unsupported image file %s (Magic: %02X)", filename.c_str(), *reinterpret_cast<uint32_t*>(data));
 
 	fclose(stream);
 
 	if (!img_okay) {
 		free(pixels);
-
 		pixels = nullptr;
-
 		return;
 	}
 
-	Init(w, h, (void *) NULL);
+	Init(w, h, nullptr);
 
 	ConvertImage(w, h, pixels, transparent);
 
@@ -142,7 +140,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	pixman_format = find_format(format);
 
 	int w = 0, h = 0;
-	void* pixels;
+	void* pixels = nullptr;
 
 	bool img_okay = false;
 
@@ -151,15 +149,17 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG((FILE*)nullptr, (const void*) data, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image");
+		Output::Warning("Unsupported image (Magic: %02X)", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
 	if (!img_okay) {
+		free(pixels);
+		pixels = nullptr;
 		return;
 	}
 
-	Init(w, h, (void *) NULL);
+	Init(w, h, nullptr);
 
 	ConvertImage(w, h, pixels, transparent);
 
