@@ -70,7 +70,7 @@ OBJS = $(CPPFILES:.cpp=.o)
 # Compiler flags
 CFLAGS += -Wall -DNDEBUG -DUSE_SDL=$(SDL_TARGET) -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fno-rtti -fno-exceptions
-LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
+LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lfmt -lgcc -lm -lc -lpthread \
            -ldl `$(SDL_CONFIG) --libs` $(LIBSDLMIXER_LIBS) $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS) $(LIBMPG123_LIBS) $(LIBSNDFILE_LIBS)
 
 # Host compiler and extra flags

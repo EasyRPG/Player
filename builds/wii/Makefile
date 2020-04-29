@@ -54,7 +54,7 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections
 #---------------------------------------------------------------------------------
 
 LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz -lSDL \
-			-licuuc -licui18n -licudata \
+			-licuuc -licui18n -licudata -lfmt \
 			-lfreetype -lharfbuzz -lfreetype \
 			-lmpg123 -lsndfile -lvorbisidec -logg -lxmp-lite \
 			-lWildMidi -lspeexdsp -lopusfile -lopus \

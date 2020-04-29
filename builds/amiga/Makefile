@@ -48,6 +48,7 @@ WILDMIDI_CFLAGS = -DHAVE_WILDMIDI
 WILDMIDI_LIBS = -lWildMidi
 OGGVORBIS_CFLAGS = -DHAVE_OGGVORBIS
 OGGVORBIS_LIBS = -lvorbisfile -lvorbis -logg
+FMT_LIBS = -lfmt
 endif
 
 ICU_LIBS = -licuuc -licui18n -licudata
@@ -67,6 +68,7 @@ LIBS = $(LCF_LIBS) \
 	$(ICU_LIBS) \
 	$(SDL_LIBS) \
 	$(OGGVORBIS_LIBS) \
+	$(FMT_LIBS) \
 	$(MPG123_LIBS)
 
 CFLAGS  = -g -O2 -fno-math-errno
