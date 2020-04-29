@@ -2504,6 +2504,9 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
 		// both chunks here.
 		params.bottom_trans = com.parameters[14];
+	} else if (Player::IsRPG2k3() && !Player::IsRPG2k3E()) {
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
+		params.bottom_trans = params.top_trans;
 	}
 
 	if (param_size > 16) {
