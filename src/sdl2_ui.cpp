@@ -60,10 +60,6 @@ AudioInterface& Sdl2Ui::GetAudio() {
 }
 #endif
 
-#if !SDL_VERSION_ATLEAST(2, 0, 8)
-#error "SDL 2.0.8 or higher is required!"
-#endif
-
 static uint32_t GetDefaultFormat() {
 	return SDL_PIXELFORMAT_RGBA32;
 }
