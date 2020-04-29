@@ -104,6 +104,7 @@ protected:
 
 	void ProcessActions() override;
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
+	void FaceTarget(Game_Actor& source, const Game_Battler& target);
 	void ProcessInput() override;
 
 	void OptionSelected();

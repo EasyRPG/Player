@@ -231,7 +231,14 @@ void Scene_Battle_Rpg2k3::UpdateActorsDirection() {
 	}
 }
 
-
+void Scene_Battle_Rpg2k3::FaceTarget(Game_Actor& source, const Game_Battler& target) {
+	const auto sx = source.GetBattlePosition().x;
+	const auto tx = target.GetBattlePosition().x;
+	const bool flipped = source.IsDirectionFlipped();
+	if ((flipped && tx < sx) || (!flipped && tx > sx)) {
+		source.SetDirectionFlipped(1 - flipped);
+	}
+}
 
 void Scene_Battle_Rpg2k3::Update() {
 	// FIXME: RPG_RT sets initial directions on start, displays any
@@ -832,6 +839,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	bool is_target_party = false;
+
 	switch (battle_action_state) {
 	case BattleActionState_Execute:
 		if (battle_action_need_event_refresh) {
@@ -859,6 +868,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return false;
 		}
 
+		// FIXME: This gets cleared after calling TargetFirst() so we query it now.
+		// Refactor this to be less brittle.
+		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
+		is_target_party = action->IsTargetingParty();
+
 		action->TargetFirst();
 
 		if (combo_repeat == 1) {
@@ -879,6 +893,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				// Nothing left to target, abort
 				return true;
 			}
+		}
+
+		if (action->GetSource()->GetType() == Game_Battler::Type_Ally
+				&& !is_target_party
+				&& action->GetTarget()
+				&& action->GetTarget()->GetType() == Game_Battler::Type_Enemy)
+		{
+			auto* actor = static_cast<Game_Actor*>(action->GetSource());
+			FaceTarget(*actor, *action->GetTarget());
 		}
 
 		//Output::Debug("Action: {}", action->GetSource()->GetName());

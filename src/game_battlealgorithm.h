@@ -92,6 +92,9 @@ public:
 	 */
 	Game_Battler* GetTarget() const;
 
+	/** @return true if this algorithm targets a party */
+	bool IsTargetingParty() const;
+
 	/**
 	 * Allows changing of the target.
 	 * Purpose is to allow attacking someone else if the old target is
@@ -653,6 +656,10 @@ inline bool AlgorithmBase::HasStartMessage() const {
 
 inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
 	return states;
+}
+
+inline bool AlgorithmBase::IsTargetingParty() const {
+	return party_target != nullptr;
 }
 
 } //namespace Game_BattleAlgorithm
