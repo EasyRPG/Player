@@ -55,6 +55,23 @@
 using namespace std::chrono_literals;
 
 namespace {
+	enum class LogLevel {
+		Error,
+		Warning,
+		Info,
+		Debug
+	};
+	constexpr const char* const log_prefix[4] = {
+		"Error: ",
+		"Warning: ",
+		"Info: ",
+		"Debug: "
+	};
+
+	static const char* GetLogPrefix(LogLevel lvl) {
+		return log_prefix[static_cast<int>(lvl)];
+	}
+
 	std::ofstream LOG_FILE;
 	bool init = false;
 
@@ -95,7 +112,7 @@ namespace {
 	struct {
 		int repeat = 0;
 		std::string msg;
-		std::string type;
+		LogLevel lvl = {};
 	} last_message;
 
 #ifdef GEKKO
@@ -131,8 +148,9 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
-// Skip logging to file in the browser
+static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
+	const char* prefix = GetLogPrefix(lvl);
+	// Skip logging to file in the browser
 #ifndef EMSCRIPTEN
 	if (!Main_Data::GetSavePath().empty()) {
 		// Only write to file when project path is initialized
@@ -149,28 +167,28 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 			last_message.repeat++;
 		} else {
 			if (last_message.repeat > 0) {
-				output_time() << last_message.type << ": " << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
-				output_time() << type << ": " << msg << std::endl;
+				output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
+				output_time() << prefix << msg << std::endl;
 			} else {
-				output_time() << type << ": " << msg << std::endl;
+				output_time() << prefix << msg << std::endl;
 			}
 			last_message.repeat = 0;
 			last_message.msg = msg;
-			last_message.type = type;
+			last_message.lvl = lvl;
 		}
 	} else {
 		// buffer log messages until file system is ready
-		log_buffer.push_back(type + ": " + msg);
+		log_buffer.push_back(prefix + msg);
 	}
 #endif
 
 #ifdef __ANDROID__
-	__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
 #else
-	std::cerr << type << ": " << msg << std::endl;
+	std::cerr << prefix << msg << std::endl;
 #endif
 
-	if (type != "Debug" && type != "Error") {
+	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
 		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}
 }
@@ -270,7 +288,7 @@ void Output::ToggleLog() {
 }
 
 void Output::ErrorStr(std::string const& err) {
-	WriteLog("Error", err);
+	WriteLog(LogLevel::Error, err);
 	static bool recursive_call = false;
 	if (!recursive_call && DisplayUi) {
 		recursive_call = true;
@@ -297,15 +315,15 @@ void Output::ErrorStr(std::string const& err) {
 }
 
 void Output::WarningStr(std::string const& warn) {
-	WriteLog("Warning", warn, Color(255, 255, 0, 255));
+	WriteLog(LogLevel::Warning, warn, Color(255, 255, 0, 255));
 }
 
 void Output::InfoStr(std::string const& msg) {
-	WriteLog("Info", msg, Color(255, 255, 255, 255));
+	WriteLog(LogLevel::Info, msg, Color(255, 255, 255, 255));
 }
 
 void Output::DebugStr(std::string const& msg) {
-	WriteLog("Debug", msg, Color(128, 128, 128, 255));
+	WriteLog(LogLevel::Debug, msg, Color(128, 128, 128, 255));
 }
 
 #ifdef GEKKO
