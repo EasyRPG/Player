@@ -24,7 +24,7 @@ LOCAL_STATIC_LIBRARIES := \
 		xmp-lite mpg123 speexdsp sndfile \
 		freetype pixman-1 png opusfile opus \
 		lcf expat icui18n icuuc icudata \
-		cpufeatures
+		cpufeatures fmt
 
 LOCAL_LDLIBS := -lGLESv1_CM -llog -lz -latomic
 

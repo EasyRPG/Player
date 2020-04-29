@@ -64,7 +64,7 @@ namespace {
 		}
 		else {
 			static BitmapFontGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
-			Output::Debug("glyph not found: 0x%04x", code);
+			Output::Debug("glyph not found: {:#x}", uint32_t(code));
 			return &replacement_glyph;
 		}
 	}
@@ -260,11 +260,11 @@ Font::GlyphRet FTFont::Glyph(char32_t glyph) {
 	}
 
 	if (FT_Load_Char(face_.get(), glyph, FT_LOAD_NO_BITMAP) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character %d", glyph);
+		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
 	}
 
 	if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character %d", glyph);
+		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
 	}
 
 	FT_Bitmap const& ft_bitmap = face_->glyph->bitmap;

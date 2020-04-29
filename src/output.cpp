@@ -269,13 +269,6 @@ void Output::ToggleLog() {
 	show_log = !show_log;
 }
 
-void Output::Error(const char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	Output::ErrorStr(format_string(fmt, args));
-	va_end(args);
-}
-
 void Output::ErrorStr(std::string const& err) {
 	WriteLog("Error", err);
 	static bool recursive_call = false;
@@ -303,32 +296,12 @@ void Output::ErrorStr(std::string const& err) {
 	exit(EXIT_FAILURE);
 }
 
-void Output::Warning(const char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	Output::WarningStr(format_string(fmt, args));
-	va_end(args);
-}
 void Output::WarningStr(std::string const& warn) {
 	WriteLog("Warning", warn, Color(255, 255, 0, 255));
 }
 
-void Output::Post(const char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	Output::PostStr(format_string(fmt, args));
-	va_end(args);
-}
-
-void Output::PostStr(std::string const& msg) {
+void Output::InfoStr(std::string const& msg) {
 	WriteLog("Info", msg, Color(255, 255, 255, 255));
-}
-
-void Output::Debug(const char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	Output::DebugStr(format_string(fmt, args));
-	va_end(args);
 }
 
 void Output::DebugStr(std::string const& msg) {
