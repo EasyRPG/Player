@@ -66,7 +66,7 @@ SdlAudio::SdlAudio() :
 	GenericAudio()
 {
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-		Output::Warning("Couldn't init audio: %s", SDL_GetError());
+		Output::Warning("Couldn't init audio: {}", SDL_GetError());
 		return;
 	}
 
@@ -87,7 +87,7 @@ SdlAudio::SdlAudio() :
 #endif
 
 	if (!init_success) {
-		Output::Warning("Couldn't open audio: %s", SDL_GetError());
+		Output::Warning("Couldn't open audio: {}", SDL_GetError());
 		return;
 	}
 

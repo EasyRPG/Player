@@ -154,7 +154,7 @@ void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 		}
 	}
 
-	Output::Warning("Couldn't play %s SE. No free channel available", FileFinder::GetPathInsideGamePath(file).c_str());
+	Output::Warning("Couldn't play {} SE. No free channel available", FileFinder::GetPathInsideGamePath(file));
 }
 
 void GenericAudio::SE_Stop() {
@@ -179,7 +179,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("BGM file not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
+		Output::Warning("BGM file not readable: {}", FileFinder::GetPathInsideGamePath(file));
 		return false;
 	}
 
@@ -193,7 +193,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 
 		return true;
 	} else {
-		Output::Warning("Couldn't play BGM %s. Format not supported", FileFinder::GetPathInsideGamePath(file).c_str());
+		Output::Warning("Couldn't play BGM {}. Format not supported", FileFinder::GetPathInsideGamePath(file));
 		chan.decoder.reset();
 		fclose(filehandle);
 	}
@@ -214,7 +214,7 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int v
 		chan.paused = false; // Unpause channel -> Play it.
 		return true;
 	} else {
-		Output::Warning("Couldn't play SE %s. Format not supported", FileFinder::GetPathInsideGamePath(file).c_str());
+		Output::Warning("Couldn't play SE {}. Format not supported", FileFinder::GetPathInsideGamePath(file));
 	}
 
 	return false;
