@@ -88,25 +88,6 @@ namespace {
 
 	bool ignore_pause = false;
 
-	std::string format_string(char const* fmt, va_list args) {
-		char buf[4096];
-#if __cplusplus > 199711L || defined(_MSC_VER)
-		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
-#else
-#  warning Using (probably insecure) `vsprintf` function!
-		int const result = vsprintf(buf, fmt, args);
-		if (result > int(sizeof(buf))) {
-			assert(false);
-			exit(-1);
-		}
-#endif
-		if (result < 0) {
-			return std::string();
-		}
-
-		return std::string(buf, static_cast<unsigned int>(result) < sizeof(buf) ? result : sizeof(buf));
-	}
-
 	std::vector<std::string> log_buffer;
 	// pair of repeat count + message
 	struct {
