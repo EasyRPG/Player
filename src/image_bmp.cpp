@@ -115,7 +115,7 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	}
 
 	if (hdr.depth != 8 && hdr.depth != 4) {
-		Output::Warning("BMP image depth unsupported: %i bit.", hdr.depth);
+		Output::Warning("BMP image depth unsupported: {} bit.", hdr.depth);
 		return false;
 	}
 
