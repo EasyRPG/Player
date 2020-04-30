@@ -55,7 +55,7 @@ static int psp2_audio_thread(unsigned int, void*){
 		instance->UnlockMutex();
 
 		int res = sceAudioOutOutput(audio_chn, buffer.data());
-		if (res < 0) Output::Error("An error occurred in audio thread (0x%lX)", res);
+		if (res < 0) Output::Error("An error occurred in audio thread ({:#X})", res);
 	}
 }
 
@@ -72,7 +72,7 @@ Psp2Audio::Psp2Audio() :
 
 	int res = sceKernelStartThread(audio_thread, 0, 0);
 	if (res != 0) {
-		Output::Error("Failed to init audio thread (0x%x)", res);
+		Output::Error("Failed to init audio thread ({:#x})", res);
 		return;
 	}
 }

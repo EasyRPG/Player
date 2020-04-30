@@ -124,7 +124,7 @@ extern "C" void userAppExit() {
 static void initEgl() {
 	eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 	if (!eglDisplay) {
-		Output::Error("Could not connect to display! error: %d", eglGetError());
+		Output::Error("Could not connect to display! error: {}", eglGetError());
 		return;
 	}
 
@@ -133,7 +133,7 @@ static void initEgl() {
 	if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE) {
 		eglTerminate(eglDisplay);
 		eglDisplay = nullptr;
-		Output::Error("Could not set OpenGL API! error: %d", eglGetError());
+		Output::Error("Could not set OpenGL API! error: {}", eglGetError());
 		return;
 	}
 
@@ -151,7 +151,7 @@ static void initEgl() {
 	if (numConfigs == 0) {
 		eglTerminate(eglDisplay);
 		eglDisplay = nullptr;
-		Output::Error("No EGL config found! error: %d", eglGetError());
+		Output::Error("No EGL config found! error: {}", eglGetError());
 		return;
 	}
 
@@ -160,7 +160,7 @@ static void initEgl() {
 	if (!eglSurface) {
 		eglTerminate(eglDisplay);
 		eglDisplay = nullptr;
-		Output::Error("EGL Surface creation failed! error: %d", eglGetError());
+		Output::Error("EGL Surface creation failed! error: {}", eglGetError());
 		return;
 	}
 
@@ -177,7 +177,7 @@ static void initEgl() {
 		eglSurface = nullptr;
 		eglTerminate(eglDisplay);
 		eglDisplay = nullptr;
-		Output::Error("EGL Context creation failed! error: %d", eglGetError());
+		Output::Error("EGL Context creation failed! error: {}", eglGetError());
 		return;
 	}
 
@@ -206,7 +206,7 @@ static GLuint createAndCompileShader(GLenum type, const char* source) {
 
 	GLuint handle = glCreateShader(type);
 	if (!handle) {
-		Output::Error("%u: cannot create shader", type);
+		Output::Error("{}: cannot create shader", type);
 		return 0;
 	}
 	glShaderSource(handle, 1, &source, nullptr);
@@ -214,7 +214,7 @@ static GLuint createAndCompileShader(GLenum type, const char* source) {
 	glGetShaderiv(handle, GL_COMPILE_STATUS, &success);
 	if (success == GL_FALSE) {
 		glGetShaderInfoLog(handle, sizeof(msg), nullptr, msg);
-		Output::Error("%u: %s\n", type, msg);
+		Output::Error("{}: {}\n", type, msg);
 		glDeleteShader(handle);
 		return 0;
 	}
@@ -267,7 +267,7 @@ NxUi::NxUi(int width, int height)
 	if (success == GL_FALSE) {
 		char buf[512];
 		glGetProgramInfoLog(shaderProgramm, sizeof(buf), nullptr, buf);
-		Output::Warning("Shader link error: %s", buf);
+		Output::Warning("Shader link error: {}", buf);
 	}
 	glDeleteShader(vsh);
 	glDeleteShader(fsh);

@@ -92,7 +92,7 @@ static int renderThread(unsigned int args, void* arg){
 		vita2d_start_drawing();
    
 		if (set_shader){
-			Output::Info("Shader set to %s.",shader_names[in_use_shader]);
+			Output::Info("Shader set to {}.",shader_names[in_use_shader]);
 			set_shader = false;
 			vita2d_texture_set_program(shaders[in_use_shader]->vertexProgram, shaders[in_use_shader]->fragmentProgram);
 			vita2d_texture_set_wvp(shaders[in_use_shader]->wvpParam);
