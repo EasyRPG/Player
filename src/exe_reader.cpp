@@ -163,14 +163,14 @@ std::vector<uint8_t> EXEReader::GetExFont() {
 						}
 						uint32_t filebase = (GetU32(dataent) - resource_rva) + resource_ofs;
 						uint32_t filesize = GetU32(dataent + 0x04);
-						Output::Debug("EXEReader: EXFONT resource found (DE %x; %x; len %x)", dataent, filebase, filesize);
+						Output::Debug("EXEReader: EXFONT resource found (DE {:#x}; {:#x}; len {:#x})", dataent, filebase, filesize);
 						return exe_reader_perform_exfont_save(corefile, filebase, filesize);
 					}
 				}
 				resourcesNDEbase += 8;
 				resourcesNDEs--;
 			}
-			Output::Debug("EXEReader: EXFONT not found in dbase at %x", bitmapDBase);
+			Output::Debug("EXEReader: EXFONT not found in dbase at {:#x}", bitmapDBase);
 			return std::vector<uint8_t>();
 		}
 		resourcesIDEbase += 8;

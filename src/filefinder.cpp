@@ -198,7 +198,7 @@ namespace {
 
 				if (rtp_state.game_rtp.size() == 1) {
 					// From now on the RTP lookups should be perfect
-					Output::Debug("Game uses RTP \"%s\"", RTP::Names[(int) rtp_state.game_rtp[0]]);
+					Output::Debug("Game uses RTP \"{}\"", RTP::Names[(int) rtp_state.game_rtp[0]]);
 				}
 			}
 		}
@@ -257,7 +257,7 @@ namespace {
 		}
 
 		if (ret.empty()) {
-			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
+			Output::Debug("Cannot find: {}/{}", dir, name);
 		}
 
 		return ret;
@@ -341,7 +341,7 @@ std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepn
 				// Ignore, we are in root
 				--initial_deepness;
 			} else {
-				Output::Debug("Path traversal out of game directory: %s", path.c_str());
+				Output::Debug("Path traversal out of game directory: {}", path);
 			}
 		} else if (path_comp.empty() || path_comp == ".") {
 			// ignore
@@ -472,7 +472,7 @@ static void add_rtp_path(const std::string& p) {
 	using namespace FileFinder;
 	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if (tree) {
-		Output::Debug("Adding %s to RTP path", p.c_str());
+		Output::Debug("Adding {} to RTP path", p);
 		rtp_state.search_paths.push_back(tree);
 
 		auto hit_info = RTP::Detect(tree, Player::EngineVersion());
@@ -486,13 +486,13 @@ static void add_rtp_path(const std::string& p) {
 		for (const auto& hit : hit_info) {
 			float rate = (float)hit.hits / hit.max;
 			if (rate >= best) {
-				Output::Debug("RTP is \"%s\" (%d/%d)", hit.name.c_str(), hit.hits, hit.max);
+				Output::Debug("RTP is \"{}\" ({}/{})", hit.name, hit.hits, hit.max);
 				rtp_state.detected_rtp.emplace_back(hit);
 				best = rate;
 			}
 		}
 	} else {
-		Output::Debug("RTP path %s is invalid, not adding", p.c_str());
+		Output::Debug("RTP path {} is invalid, not adding", p);
 	}
 }
 
@@ -792,8 +792,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	Platform::Directory dir(path);
 	if (!dir) {
-		Output::Debug("Error opening dir %s: %s", path.c_str(),
-					  ::strerror(errno));
+		Output::Debug("Error opening dir {}: {}", path, ::strerror(errno));
 		return result;
 	}
 
@@ -842,7 +841,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		std::string name_norm = ReaderUtil::Normalize(name);
 		if (is_directory) {
 			if (result.directories.find(name_norm) != result.directories.end()) {
-				Output::Warning("This game provides the folder \"%s\" twice.", name.c_str());
+				Output::Warning("This game provides the folder \"{}\" twice.", name);
 				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
 			result.directories[name_norm] = name;
@@ -880,7 +879,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 			for (auto& i : mem) {
 				std::string file = mem[i.first];
 				if (Utils::EndsWith(Utils::LowerCase(file), ".mp3")) {
-					Output::Debug("MP3 file (%s) found", file.c_str());
+					Output::Debug("MP3 file ({}) found", file);
 					return true;
 				}
 			}
@@ -901,6 +900,6 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// Japanese or RPG2k3 games: newer engine
 	// non-Japanese RPG2k games: older engine
 	bool assume_newer = Player::IsCP932() || Player::IsRPG2k3();
-	Output::Debug("Assuming %s engine", assume_newer ? "newer" : "older");
+	Output::Debug("Assuming {} engine", assume_newer ? "newer" : "older");
 	return assume_newer;
 }
