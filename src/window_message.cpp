@@ -501,7 +501,7 @@ void Window_Message::UpdateMessage() {
 
 void Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool instant_speed, bool is_exfont) {
 #ifdef EP_DEBUG_MESSAGE
-	Output::Debug("Msg Draw Glyph %d %d", glyph, instant_speed);
+	Output::Debug("Msg Draw Glyph {:#x} {}", uint32_t(glyph), instant_speed);
 #endif
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
 
@@ -630,7 +630,7 @@ void Window_Message::SetWaitForPage() {
 void Window_Message::SetWait(int frames) {
 	assert(speed >= 1 && speed <= 20);
 #ifdef EP_DEBUG_MESSAGE
-	Output::Debug("Msg Wait %d", frames);
+	Output::Debug("Msg Wait {}", frames);
 #endif
 	wait_count = frames;
 }

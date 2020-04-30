@@ -310,14 +310,14 @@ bool FTFont::check_face() {
 			std::string const face_path = FileFinder::FindFont(name);
 			FT_Face face;
 			if (FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType face: %s(%s)",
-					name.c_str(), face_path.c_str());
+				Output::Error("Couldn't initialize FreeType face: {}({})",
+					name, face_path);
 				return false;
 			}
 
 			for (int i = 0; i < face_->num_fixed_sizes; i++) {
 				FT_Bitmap_Size* size = &face_->available_sizes[i];
-				Output::Debug("Font Size %d: %d %d %f %f %f", i,
+				Output::Debug("Font Size {}: {} {} {} {} {}", i,
 					size->width, size->height, size->size / 64.0,
 					size->x_ppem / 64.0, size->y_ppem / 64.0);
 			}
@@ -381,7 +381,7 @@ void Font::Dispose() {
 #ifdef HAVE_FREETYPE
 	for(face_cache_type::const_iterator i = face_cache.begin(); i != face_cache.end(); ++i) {
 		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached font face %s", i->first.c_str());
+		Output::Debug("possible leak in cached font face {}", i->first);
 	}
 	face_cache.clear();
 #endif
