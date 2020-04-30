@@ -110,8 +110,13 @@ namespace {
 			// Fix the path and continue searching.
 			size_t pos = canon.find_first_of("/");
 			if (pos == std::string::npos) {
-				corrected_dir = ".";
-				corrected_name = canon;
+				for (char const** c = exts; *c != NULL; ++c) {
+					std::string res = FindDefault(tree, canon + *c);
+					if (!res.empty()) {
+						return res;
+					}
+				}
+				return "";
 			} else {
 				corrected_dir = canon.substr(0, pos);
 				corrected_name = canon.substr(pos + 1);
