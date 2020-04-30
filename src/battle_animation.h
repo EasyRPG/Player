@@ -84,6 +84,7 @@ protected:
 
 	FileRequestBinding request_id;
 	bool only_sound = false;
+	bool invert = false;
 };
 
 // For playing animations on the map.
@@ -104,7 +105,7 @@ protected:
 // For playing animations against a (group of) battlers in battle.
 class BattleAnimationBattle : public BattleAnimation {
 public:
-	BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
+	BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1, bool set_invert = false);
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;

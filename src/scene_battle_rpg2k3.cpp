@@ -837,7 +837,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	if (play_reflect_anim) {
 		play_reflect_anim = false;
-		action->PlayAnimation();
+		if (Game_System::GetInvertAnimations()) {
+			invert_animation = false;
+			if (action->OriginalTargetsSet()) {
+				invert_animation = (action->GetOriginalTarget()->IsDirectionFlipped() ^ (action->GetOriginalTarget()->GetType() == Game_Battler::Type_Enemy));
+			}
+			action->PlayAnimation(false, invert_animation);
+		} else {
+			action->PlayAnimation(false, invert_animation);
+		}
 		return false;
 	}
 
@@ -924,11 +932,17 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
+		if (Game_System::GetInvertAnimations()) {
+			invert_animation = (action->GetSource()->IsDirectionFlipped() ^ (action->GetSource()->GetType() == Game_Battler::Type_Enemy));
+		} else {
+			invert_animation = false;
+		}
+
 		if (action->OriginalTargetsSet()) {
 			play_reflect_anim = true;
-			action->PlayAnimation(true);
+			action->PlayAnimation(true, invert_animation);
 		} else {
-			action->PlayAnimation();
+			action->PlayAnimation(false, invert_animation);
 		}
 
 		{

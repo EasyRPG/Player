@@ -242,9 +242,10 @@ public:
 	 * @param on_original_targets Renders the animation on the original
 	 *                            targets instead of the current
 	 *                            targets (required for reflect)
+	 * @param invert Flips the animation
 	 */
-	void PlayAnimation(bool on_original_targets = false);
-	void PlaySecondAnimation(bool on_original_targets = false);
+	void PlayAnimation(bool on_original_targets = false, bool invert = false);
+	void PlaySecondAnimation(bool on_original_targets = false, bool invert = false);
 
 	void PlaySoundAnimation(bool on_original_targets = false, int cutoff = -1);
 
@@ -426,6 +427,13 @@ public:
 	bool OriginalTargetsSet() const;
 
 	/**
+	 * Returns the current original target.
+	 *
+	 * @return current original target battler
+	 */
+	Game_Battler* GetOriginalTarget() const;
+
+	/**
 	 * @return the critical hit message
 	 */
 	std::string GetCriticalHitMessage() const;
@@ -500,6 +508,7 @@ protected:
 	std::vector<int> switch_off;
 
 	std::vector<Game_Battler*> original_targets;
+	mutable std::vector<Game_Battler*>::iterator current_original_target;
 };
 
 // Special algorithm for battlers which have no action. 

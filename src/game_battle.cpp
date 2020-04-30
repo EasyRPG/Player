@@ -170,14 +170,14 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
 
-int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound, int cutoff) {
+int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound, int cutoff, bool invert) {
 	const lcf::rpg::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation Many: Invalid animation ID {}", animation_id);
 		return 0;
 	}
 
-	animation.reset(new BattleAnimationBattle(*anim, std::move(targets), only_sound, cutoff));
+	animation.reset(new BattleAnimationBattle(*anim, std::move(targets), only_sound, cutoff, invert));
 	auto frames = animation->GetFrames();
 	return cutoff >= 0 ? std::min(frames, cutoff) : frames;
 }
