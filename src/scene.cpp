@@ -298,7 +298,7 @@ inline void Scene::DebugValidate(const char* caller) {
 		if (present[scene->type]) {
 			Output::Debug("Scene Stack after %s:", caller);
 			for (auto& s: instances) {
-				auto fmt =  (s == scene) ? "--> %s <--" : "  %s";
+				auto fmt =  (s == scene) ? "--> {} <--" : "  {}";
 				Output::Debug(fmt, scene_names[s->type]);
 			}
 			Output::Error("Multiple scenes of type=%s in the Scene instances stack!", scene_names[scene->type]);

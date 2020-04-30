@@ -248,10 +248,10 @@ namespace {
 					rtp_state.warning_broken_rtp_game_shown = true;
 					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
 				} else if (ret.empty() && !rtp_state.game_has_full_package_flag && !is_audio_asset) {
-					std::string msg = "Cannot find: %s/%s. " +
+					std::string msg = "Cannot find: {}/{}. " +
 						std::string(rtp_state.search_paths.empty() ?
-						"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
-					Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), Player::EngineVersion());
+						"Install RTP {} to resolve this warning." : "RTP {} was probably not installed correctly.");
+					Output::Warning(msg, dir, name, Player::EngineVersion());
 				}
 			}
 		}
