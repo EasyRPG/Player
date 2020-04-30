@@ -409,26 +409,28 @@ void Game_Event::UpdateSelfMovement() {
 }
 
 void Game_Event::MoveTypeRandom() {
-	int last_direction = GetDirection();
-	switch (Utils::GetRandomNumber(0, 5)) {
-	case 0:
-		SetStopCount(GetStopCount() - Utils::GetRandomNumber(0, GetStopCount()));
-		if (GetStopCount() < 0) {
-			SetStopCount(0);
-		}
-		return;
-	case 1:
-		MoveForward();
-		break;
-	default:
-		MoveRandom();
-	}
-	if (move_failed) {
-		SetDirection(last_direction);
-		if (!(IsDirectionFixed() || IsFacingLocked()))
-			SetSpriteDirection(last_direction);
+	auto st = GetMaxStopCountForStep(GetMoveFrequency());
+	st *= (Utils::GetRandomNumber(0, 3) + 3) / 5;
+	SetMaxStopCount(st);
+
+	int draw = Utils::GetRandomNumber(0, 9);
+
+	const auto opt = MoveOption::IgnoreIfCantMove;
+
+	if (draw < 3) {
+		auto dir = GetDirection();
+		Move(dir, opt);
+	} else if (draw < 5) {
+		auto dir = GetDirection90DegreeLeft(GetDirection());
+		Move(dir, opt);
+	} else if (draw < 7) {
+		auto dir = GetDirection90DegreeRight(GetDirection());
+		Move(dir, opt);
+	} else if (draw < 8) {
+		auto dir = GetDirection180Degree(GetDirection());
+		Move(dir, opt);
 	} else {
-		SetMaxStopCount(GetMaxStopCount() / 5 * Utils::GetRandomNumber(3, 6));
+		SetStopCount(Utils::GetRandomNumber(0, GetMaxStopCount()));
 	}
 }
 

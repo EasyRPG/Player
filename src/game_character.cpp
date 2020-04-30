@@ -474,15 +474,15 @@ void Game_Character::Turn(int dir) {
 }
 
 void Game_Character::Turn90DegreeLeft() {
-	Turn((GetSpriteDirection() + 3) % 4);
+	Turn(GetDirection90DegreeLeft(GetSpriteDirection()));
 }
 
 void Game_Character::Turn90DegreeRight() {
-	Turn((GetSpriteDirection() + 1) % 4);
+	Turn(GetDirection90DegreeRight(GetSpriteDirection()));
 }
 
 void Game_Character::Turn180Degree() {
-	Turn((GetSpriteDirection() + 2) % 4);
+	Turn(GetDirection180Degree(GetSpriteDirection()));
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
@@ -876,18 +876,15 @@ int Game_Character::ReverseDir(int dir) {
 }
 
 void Game_Character::SetMaxStopCountForStep() {
-	const auto freq = GetMoveFrequency();
-	SetMaxStopCount(freq >= 8 ? 0 : 1 << (9 - freq));
+	SetMaxStopCount(GetMaxStopCountForStep(GetMoveFrequency()));
 }
 
 void Game_Character::SetMaxStopCountForTurn() {
-	const auto freq = GetMoveFrequency();
-	SetMaxStopCount(freq >= 8 ? 0 : 1 << (8 - freq));
+	SetMaxStopCount(GetMaxStopCountForTurn(GetMoveFrequency()));
 }
 
 void Game_Character::SetMaxStopCountForWait() {
-	const auto freq = GetMoveFrequency();
-	SetMaxStopCount(20 + (freq >= 8 ? 0 : 1 << (8 - freq)));
+	SetMaxStopCount(GetMaxStopCountForWait(GetMoveFrequency()));
 }
 
 bool Game_Character::IsMoveRouteActive() const {
