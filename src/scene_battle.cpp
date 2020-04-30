@@ -81,12 +81,12 @@ void Scene_Battle::Start() {
 	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
 
 	if (!troop) {
-		Output::Warning("Invalid Monster Party ID %d", troop_id);
+		Output::Warning("Invalid Monster Party ID {}", troop_id);
 		EndBattle(BattleResult::Victory);
 		return;
 	}
 
-	Output::Debug("Starting battle %d (%s)", troop_id, troop->name.c_str());
+	Output::Debug("Starting battle {} ({})", troop_id, troop->name);
 
 	if (Game_Battle::battle_test.enabled) {
 		Main_Data::game_party->SetupBattleTestMembers();
@@ -280,7 +280,7 @@ void Scene_Battle::EnemySelected() {
 		{
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("EnemySelected: Item %d references invalid skill %d", item->ID, item->skill_id);
+				Output::Warning("EnemySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, item));
@@ -318,7 +318,7 @@ void Scene_Battle::AllySelected() {
 		{
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("AllySelected: Item %d references invalid skill %d", item->ID, item->skill_id);
+				Output::Warning("AllySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill, item));
@@ -376,7 +376,7 @@ void Scene_Battle::ItemSelected() {
 		case RPG::Item::Type_special: {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("ItemSelected: Item %d references invalid skill %d", item->ID, item->skill_id);
+				Output::Warning("ItemSelected: Item {} references invalid skill {}", item->ID, item->skill_id);
 				return;
 			}
 			AssignSkill(skill, item);
@@ -593,7 +593,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 	RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, action->skill_id);
 	if (!skill) {
-		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill %d", action->skill_id);
+		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill {}", action->skill_id);
 		return;
 	}
 
@@ -629,8 +629,8 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 	assert(for_battler->GetBattleAlgorithm() != nullptr);
 
 	if (for_battler->GetBattleAlgorithm() == nullptr) {
-		Output::Warning("ActionSelectedCallback: Invalid action for battler %d (%s)",
-				for_battler->GetId(), for_battler->GetName().c_str());
+		Output::Warning("ActionSelectedCallback: Invalid action for battler {} ({})",
+				for_battler->GetId(), for_battler->GetName());
 		Output::Warning("Please report a bug!");
 	}
 

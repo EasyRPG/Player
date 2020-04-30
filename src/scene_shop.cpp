@@ -43,7 +43,7 @@ void Scene_Shop::Start() {
 	for (auto it = goods.begin(); it != goods.end();) {
 		const auto* item = ReaderUtil::GetElement(Data::items, *it);
 		if (!item) {
-			Output::Warning("Removed invalid item %d from shop", *it);
+			Output::Warning("Removed invalid item {} from shop", *it);
 			it = goods.erase(it);
 		} else {
 			++it;

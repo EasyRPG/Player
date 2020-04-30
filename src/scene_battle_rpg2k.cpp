@@ -320,7 +320,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 			auto* alg = battler->GetBattleAlgorithm().get();
 			if (alg == nullptr) {
-				Output::Warning("ProcessActions: Invalid action for battler %d (%s)", battler->GetId(), battler->GetName().c_str());
+				Output::Warning("ProcessActions: Invalid action for battler {} ({})", battler->GetId(), battler->GetName());
 				Output::Warning("Please report a bug!");
 			}
 
@@ -1328,7 +1328,7 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 
 	for (const auto& battler : battle_actions) {
 		if (std::count(battle_actions.begin(), battle_actions.end(), battler) > 1) {
-			Output::Warning("CreateExecutionOrder: Battler %d (%s) has multiple battle actions", battler->GetId(), battler->GetName().c_str());
+			Output::Warning("CreateExecutionOrder: Battler {} ({}) has multiple battle actions", battler->GetId(), battler->GetName());
 			Output::Warning("Please report a bug!");
 			break;
 		}
@@ -1364,7 +1364,7 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 
 void Scene_Battle_Rpg2k::SetWait(int min_wait, int max_wait) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
-	Output::Debug("Wait(%d,%d)", min_wait, max_wait);
+	Output::Debug("Wait({},{})", min_wait, max_wait);
 #endif
 	battle_action_wait = max_wait;
 	battle_action_min_wait = max_wait - min_wait;

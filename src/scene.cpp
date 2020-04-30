@@ -248,7 +248,7 @@ void Scene::PopUntil(SceneType type) {
 		++count;
 	}
 
-	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
+	Output::Warning("The requested scene {} was not on the stack", scene_names[type]);
 	DEBUG_VALIDATE("PopUntil");
 }
 
@@ -296,17 +296,17 @@ inline void Scene::DebugValidate(const char* caller) {
 	std::bitset<SceneMax> present;
 	for (auto& scene: instances) {
 		if (present[scene->type]) {
-			Output::Debug("Scene Stack after %s:", caller);
+			Output::Debug("Scene Stack after {}:", caller);
 			for (auto& s: instances) {
 				auto fmt =  (s == scene) ? "--> {} <--" : "  {}";
 				Output::Debug(fmt, scene_names[s->type]);
 			}
-			Output::Error("Multiple scenes of type=%s in the Scene instances stack!", scene_names[scene->type]);
+			Output::Error("Multiple scenes of type={} in the Scene instances stack!", scene_names[scene->type]);
 		}
 		present[scene->type] = true;
 	}
 	if (instances[0]->type != Null) {
-		Output::Error("Scene.instances[0] is of type=%s in the Scene instances stack!", scene_names[instances[0]->type]);
+		Output::Error("Scene.instances[0] is of type={} in the Scene instances stack!", scene_names[instances[0]->type]);
 	}
 }
 

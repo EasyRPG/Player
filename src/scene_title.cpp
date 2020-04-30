@@ -216,15 +216,15 @@ void Scene_Title::PrepareBattleTest() {
 			args.terrain_id = Game_Battle::battle_test.terrain_id;
 		}
 
-		Output::Debug("BattleTest Mode 2k3 troop=(%d) background=(%s) formation=(%d) condition=(%d) terrain=(%d)",
+		Output::Debug("BattleTest Mode 2k3 troop=({}) background=({}) formation=({}) condition=({}) terrain=({})",
 				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
 	} else {
-		Output::Debug("BattleTest Mode 2k troop=(%d) background=(%s)", args.troop_id, args.background.c_str());
+		Output::Debug("BattleTest Mode 2k troop=({}) background=({})", args.troop_id, args.background);
 	}
 
 	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);
 	if (troop == nullptr) {
-		Output::Error("BattleTest: Invalid Monster Party ID %d", args.troop_id);
+		Output::Error("BattleTest: Invalid Monster Party ID {}", args.troop_id);
 	}
 
 	Scene::Push(Scene_Battle::Create(std::move(args)), true);

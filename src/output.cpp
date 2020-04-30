@@ -252,7 +252,7 @@ bool Output::TakeScreenshot(std::string const& file) {
 		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
-		Output::Debug("Saving Screenshot %s", file.c_str());
+		Output::Debug("Saving Screenshot {}", file);
 		return Output::TakeScreenshot(*ret);
 	}
 	return false;

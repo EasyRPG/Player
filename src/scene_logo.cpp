@@ -64,7 +64,7 @@ void Scene_Logo::Update() {
 		std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), FileFinder::FILES);
 
 		if (!tree) {
-			Output::Error("%s is not a valid path", Main_Data::GetProjectPath().c_str());
+			Output::Error("{} is not a valid path", Main_Data::GetProjectPath());
 		}
 
 		if (FileFinder::IsValidProject(*tree)) {
@@ -90,7 +90,7 @@ void Scene_Logo::Update() {
 				std::stringstream ss;
 				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
 
-				Output::Debug("Loading Save %s", ss.str().c_str());
+				Output::Debug("Loading Save {}", ss.str());
 
 				std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 				Player::LoadSavegame(save_name);
