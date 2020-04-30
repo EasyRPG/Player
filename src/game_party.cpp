@@ -151,8 +151,7 @@ void Game_Party::LoseGold(int n) {
 
 void Game_Party::AddItem(int item_id, int amount) {
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
-		Output::Debug("Can't add item to party. %04d is not a valid item ID.",
-						item_id);
+		Output::Debug("Can't add item to party. {} is not a valid item ID.", item_id);
 		return;
 	}
 
@@ -195,7 +194,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 
 	if (!item) {
-		Output::Warning("ConsumeItemUse: Invalid item ID %d.", item_id);
+		Output::Warning("ConsumeItemUse: Invalid item ID {}.", item_id);
 		return;
 	}
 
@@ -244,7 +243,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
+		Output::Warning("IsItemUsable: Invalid item ID {}", item_id);
 		return false;
 	}
 
@@ -301,7 +300,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 
 	auto* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("UseItem: Can't use item with invalid ID %d", item_id);
+		Output::Warning("UseItem: Can't use item with invalid ID {}", item_id);
 		return false;
 	}
 
@@ -319,7 +318,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	if (do_skill) {
 		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 		if (skill == nullptr) {
-			Output::Warning("UseItem: Can't use item %d skill with invalid ID %d", item->ID, item->skill_id);
+			Output::Warning("UseItem: Can't use item {} skill with invalid ID {}", item->ID, item->skill_id);
 			return false;
 		}
 	}
@@ -364,7 +363,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("IsSkillUsable: Can't use skill with invalid ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Can't use skill with invalid ID {}", skill_id);
 		return false;
 	}
 
@@ -648,14 +647,14 @@ void Game_Party::RemoveInvalidData() {
 		if (Game_Actors::ActorExists(*it)) {
 			data.party.push_back(*it);
 		} else {
-			Output::Warning("Removing invalid party member %d", *it);
+			Output::Warning("Removing invalid party member {}", *it);
 		}
 	}
 
 	// Remove non existing items
 	for (it = data.item_ids.begin(); it != data.item_ids.end(); ) {
 		if (!ReaderUtil::GetElement(Data::items, *it)) {
-			Output::Warning("Removing invalid item %d from party", *it);
+			Output::Warning("Removing invalid item {} from party", *it);
 			it = data.item_ids.erase(it);
 		} else {
 			++it;

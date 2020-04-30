@@ -45,7 +45,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, battle_troop_id);
 	if (!troop) {
 		// Shouldn't happen because Scene_Battle verifies this
-		Output::Warning("Invalid battle troop ID %d", battle_troop_id);
+		Output::Warning("Invalid battle troop ID {}", battle_troop_id);
 		return;
 	}
 

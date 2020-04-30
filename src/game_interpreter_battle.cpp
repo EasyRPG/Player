@@ -82,7 +82,7 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 
 	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 	if (!common_event) {
-		Output::Warning("CallCommonEvent: Can't call invalid common event %d", evt_id);
+		Output::Warning("CallCommonEvent: Can't call invalid common event {}", evt_id);
 		return true;
 	}
 
@@ -142,7 +142,7 @@ bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 
 	if (!actor) {
-		Output::Warning("EnableCombo: Invalid actor ID %d", actor_id);
+		Output::Warning("EnableCombo: Invalid actor ID {}", actor_id);
 		return true;
 	}
 
@@ -349,7 +349,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			Game_Actor* actor = Game_Actors::GetActor(com.parameters[1]);
 
 			if (!actor) {
-				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
+				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
 				// Use Else Branch
 				SetSubcommandIndex(com.indent, 1);
 				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
@@ -374,7 +374,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			Game_Actor *actor = Game_Actors::GetActor(com.parameters[1]);
 
 			if (!actor) {
-				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
+				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
 				// Use Else branch
 				SetSubcommandIndex(com.indent, 1);
 				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
