@@ -67,13 +67,13 @@ namespace {
 #ifdef EMSCRIPTEN
 	void download_success(unsigned, void* userData, const char*) {
 		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
-		//Output::Debug("DL Success: %s", req->GetPath().c_str());
+		//Output::Debug("DL Success: {}", req->GetPath());
 		req->DownloadDone(true);
 	}
 
 	void download_failure(unsigned, void* userData, int) {
 		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
-		Output::Debug("DL Failure: %s", req->GetPath().c_str());
+		Output::Debug("DL Failure: {}", req->GetPath());
 		req->DownloadDone(false);
 	}
 #endif
@@ -103,7 +103,7 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, cons
 		return request;
 	}
 
-	//Output::Debug("Waiting for %s", path.c_str());
+	//Output::Debug("Waiting for {}", path);
 
 	return RegisterRequest(std::move(path), folder_name, file_name);
 }
@@ -260,7 +260,7 @@ void FileRequestAsync::CallListeners(bool success) {
 		if (!listener.first.expired()) {
 			(listener.second)(&result);
 		} else {
-			Output::Debug("Request cancelled: %s", GetPath().c_str());
+			Output::Debug("Request cancelled: {}", GetPath());
 		}
 	}
 

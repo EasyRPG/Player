@@ -26,7 +26,7 @@ namespace State {
 bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_battle_states) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
-		Output::Warning("State::Add: Can't add state with invalid ID %d", state_id);
+		Output::Warning("State::Add: Can't add state with invalid ID {}", state_id);
 		return false;
 	}
 
@@ -64,7 +64,7 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
-		Output::Warning("State::Remove: Can't remove state with invalid ID %d", state_id);
+		Output::Warning("State::Remove: Can't remove state with invalid ID {}", state_id);
 		return false;
 	}
 
@@ -91,7 +91,7 @@ void RemoveAllBattle(StateVec& states) {
 		auto state_id = i + 1;
 		auto* state = ReaderUtil::GetElement(Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
 		if (state->type != RPG::State::Persistence_ends) {
@@ -126,7 +126,7 @@ RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {
 
 		auto* state = ReaderUtil::GetElement(Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::GetSignificantRestriction: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::GetSignificantRestriction: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
 
@@ -165,7 +165,7 @@ const RPG::State* GetSignificantState(const StateVec& states) {
 
 		auto* state = ReaderUtil::GetElement(Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::GetSignificantState: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::GetSignificantState: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
 
@@ -188,7 +188,7 @@ int GetStateRate(int state_id, int rate) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 
 	if (!state) {
-		Output::Warning("State::GetStateRate: Invalid state ID %d", state_id);
+		Output::Warning("State::GetStateRate: Invalid state ID {}", state_id);
 		return 0;
 	}
 

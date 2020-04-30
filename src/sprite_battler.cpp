@@ -138,13 +138,13 @@ void Sprite_Battler::Update() {
 
 			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
 			if (!anim) {
-				Output::Warning("Invalid battler animation ID %d", battler->GetBattleAnimationId());
+				Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
 				return;
 			}
 
 			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
 			if (!ext) {
-				Output::Warning("Animation %d: Invalid battler anim-extension state %d", anim->ID, anim_state);
+				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
 			}
 
@@ -207,13 +207,13 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 		if (battler->GetBattleAnimationId() > 0) {
 			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
 			if (!anim) {
-				Output::Warning("Invalid battler animation ID %d", battler->GetBattleAnimationId());
+				Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
 				return;
 			}
 
 			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
 			if (!ext) {
-				Output::Warning("Animation %d: Invalid battler anim-extension state %d", anim->ID, anim_state);
+				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
 			}
 
@@ -223,7 +223,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				SetBitmap(BitmapRef());
 				RPG::Animation* battle_anim = ReaderUtil::GetElement(Data::animations, ext->animation_id);
 				if (!battle_anim) {
-					Output::Warning("Invalid battle animation ID %d", ext->animation_id);
+					Output::Warning("Invalid battle animation ID {}", ext->animation_id);
 					animation.reset();
 				} else {
 					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));

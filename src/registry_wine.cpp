@@ -56,7 +56,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 	std::string formatted_val = "\"" + val + "\""  + "=";
 
 	if (prefix.empty() || !FileFinder::Exists(prefix)) {
-		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
+		Output::Debug("wine prefix not found: \"{}\"", prefix.c_str());
 		return std::string("");
 	}
 
