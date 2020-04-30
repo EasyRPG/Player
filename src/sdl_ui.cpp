@@ -81,7 +81,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
-	uint32_t flags = SDL_INIT_VIDEO|SDL_INIT_TIMER;
+	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
@@ -294,6 +294,7 @@ void SdlUi::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
+			SetIsFullscreen((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN);
 
 			mode_changing = false;
 	}
@@ -352,10 +353,6 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 
 	return true;
-}
-
-void SdlUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
 }
 
 void SdlUi::ToggleFullscreen() {
@@ -691,10 +688,6 @@ void SdlUi::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
-}
-
-bool SdlUi::IsFullscreen() {
-	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)

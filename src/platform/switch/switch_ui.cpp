@@ -222,8 +222,8 @@ static GLuint createAndCompileShader(GLenum type, const char* source) {
 	return handle;
 }
 
-NxUi::NxUi(int width, int height) :
-	BaseUi() {
+NxUi::NxUi(int width, int height)
+{
 #if 1
 	setenv("MESA_NO_ERROR", "1", 1);
 #else
@@ -236,6 +236,7 @@ NxUi::NxUi(int width, int height) :
 	setenv("NV50_PROG_DEBUG", "1", 1);
 	setenv("NV50_PROG_CHIPSET", "0x120", 1);
 #endif
+	SetIsFullscreen(true);
 
 	nwindowSetDimensions(nwindowGetDefault(), 1920, 1080);
 	initEgl();
@@ -323,28 +324,12 @@ NxUi::~NxUi() {
 	deinitEgl();
 }
 
-void NxUi::BeginDisplayModeChange() {
-	// no-op
-}
-
-void NxUi::EndDisplayModeChange() {
-	// no-op
-}
-
-void NxUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void NxUi::ToggleFullscreen() {
 	// no-op
 }
 
 void NxUi::ToggleZoom() {
 	// no-op
-}
-
-bool NxUi::IsFullscreen() {
-	return true;
 }
 
 void NxUi::ProcessEvents() {
@@ -437,14 +422,6 @@ void NxUi::UpdateDisplay() {
 
 	// display
 	eglSwapBuffers(eglDisplay, eglSurface);
-}
-
-void NxUi::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef NxUi::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
 void NxUi::SetTitle(const std::string& /* title */) {

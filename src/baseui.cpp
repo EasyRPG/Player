@@ -62,40 +62,8 @@ BaseUi::BaseUi()
 	keys.reset();
 }
 
-BaseUi::KeyStatus& BaseUi::GetKeyStates() {
-	return keys;
-}
-
-BitmapRef const& BaseUi::GetDisplaySurface() const {
-	return main_surface;
-}
-
-BitmapRef& BaseUi::GetDisplaySurface() {
-	return main_surface;
-}
-
 BitmapRef BaseUi::CaptureScreen() {
 	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
-long BaseUi::GetWidth() const {
-	return current_display_mode.width;
-}
-
-long BaseUi::GetHeight() const {
-	return current_display_mode.height;
-}
-
-bool BaseUi::GetMouseFocus() const {
-	return mouse_focus;
-}
-
-int BaseUi::GetMousePosX() const {
-	return mouse_x;
-}
-
-int BaseUi::GetMousePosY() const {
-	return mouse_y;
 }
 
 void BaseUi::CleanDisplay() {

@@ -121,9 +121,10 @@ static int renderThread(unsigned int args, void* arg){
 	
 }
 
-Psp2Ui::Psp2Ui(int width, int height) :
-	BaseUi() {
-	
+Psp2Ui::Psp2Ui(int width, int height)
+{
+	SetIsFullscreen(true);
+
 	frame = 0;
 	zoom_state = 0;
 	in_use_shader = 0;
@@ -194,28 +195,12 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::BeginDisplayModeChange() {
-	// no-op
-}
-
-void Psp2Ui::EndDisplayModeChange() {
-	// no-op
-}
-
-void Psp2Ui::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void Psp2Ui::ToggleFullscreen() {
 	// no-op
 }
 
 void Psp2Ui::ToggleZoom() {
 	// no-op
-}
-
-bool Psp2Ui::IsFullscreen() {
-	return true;
 }
 
 void Psp2Ui::ProcessEvents() {
@@ -277,14 +262,6 @@ void Psp2Ui::UpdateDisplay() {
 	sceKernelWaitSema(GPU_Mutex, 1, NULL);
 	memcpy(vita2d_texture_get_datap(next_texture), vita2d_texture_get_datap(main_texture), vita2d_texture_get_stride(main_texture)*240);
 	sceKernelSignalSema(GPU_Mutex, 1);
-}
-
-void Psp2Ui::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef Psp2Ui::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
 void Psp2Ui::SetTitle(const std::string& /* title */) {

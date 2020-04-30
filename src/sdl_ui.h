@@ -57,27 +57,18 @@ public:
 	 */
 	/** @{ */
 
-	void BeginDisplayModeChange() override;
-	void EndDisplayModeChange() override;
-	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-
 	void ProcessEvents() override;
-
-	bool IsFullscreen() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
 #endif
 
 	/** @} */
-
-	/** Get display surface. */
-	BitmapRef GetDisplaySurface();
 
 private:
 	/**
@@ -86,6 +77,9 @@ private:
 	 * @return whether the change was successful.
 	 */
 	bool RefreshDisplayMode();
+
+	void BeginDisplayModeChange();
+	void EndDisplayModeChange();
 
 	/**
 	 * Processes a SDL Event.

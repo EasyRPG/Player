@@ -3376,9 +3376,7 @@ bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
 }
 
 bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com */) {
-	DisplayUi->BeginDisplayModeChange();
 	DisplayUi->ToggleFullscreen();
-	DisplayUi->EndDisplayModeChange();
 	return true;
 }
 

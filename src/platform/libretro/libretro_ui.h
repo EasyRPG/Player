@@ -46,9 +46,6 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
-	void BeginDisplayModeChange() override;
-	void EndDisplayModeChange() override;
-	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;
@@ -56,8 +53,6 @@ public:
 	bool ShowCursor(bool flag) override;
 
 	void ProcessEvents() override;
-
-	bool IsFullscreen() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;

@@ -61,8 +61,9 @@ namespace {
 	u32* main_buffer;
 }
 
-CtrUi::CtrUi(int width, int height) :
-	BaseUi() {
+CtrUi::CtrUi(int width, int height)
+{
+	SetIsFullscreen(true);
 
 	fullscreen = false;
 	trigger_state = false;
@@ -146,28 +147,12 @@ CtrUi::~CtrUi() {
 	}
 }
 
-void CtrUi::BeginDisplayModeChange() {
-	// no-op
-}
-
-void CtrUi::EndDisplayModeChange() {
-	// no-op
-}
-
-void CtrUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
-}
-
 void CtrUi::ToggleFullscreen() {
 	// no-op
 }
 
 void CtrUi::ToggleZoom() {
 	// no-op
-}
-
-bool CtrUi::IsFullscreen() {
-	return true;
 }
 
 void CtrUi::ProcessEvents() {
@@ -339,14 +324,6 @@ void CtrUi::UpdateDisplay() {
 #endif
 
 	C3D_FrameEnd(0);
-}
-
-void CtrUi::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef CtrUi::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
 void CtrUi::SetTitle(const std::string& /* title */) {
