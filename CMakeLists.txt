@@ -365,6 +365,8 @@ add_library(${PROJECT_NAME}
 # These are actually unused when building in CMake
 #	src/sdl_ui.cpp
 #	src/sdl_ui.h
+#	src/platform/wii/wii_clock.cpp
+#	src/platform/wii/wii_clock.h
 #	src/platform/wii/wii_input_buttons.cpp
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
