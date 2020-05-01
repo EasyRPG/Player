@@ -13,8 +13,8 @@ CC      = $(PREFIX)-gcc -noixemul
 CXX     = $(PREFIX)-g++ -noixemul
 PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99 -D_NO_PPCINLINE -D__MORPHOS_SHAREDLIBS
 TOOLCHAIN_DIR := /gg/usr/local
-SDL_LIBS = -lSDL_mixer -lSDL
-SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/include/SDL -DUSE_SDL=1 -DHAVE_SDL_MIXER
+SDL_LIBS = -lSDL2_mixer -lSDL2
+SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/include/SDL2 -DUSE_SDL=2 -DHAVE_SDL_MIXER
 PIXMAN_CFLAGS = -I/gg/os-include/pixman-1
 #PIXMAN_LIBS = -lpixman
 PNG_LIBS =  -lpng_shared

@@ -317,9 +317,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 #else
 		uint32_t rendered_flag = 0;
 #endif
+
+#ifndef __MORPHOS__
 		if (Player::vsync) {
 			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
 		}
+#endif
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer) {
@@ -468,7 +471,6 @@ void Sdl2Ui::ToggleZoom() {
 #else
 		SDL_GetDisplayBounds(display_index, &max_mode);
 #endif
-
 		// reset zoom, if it does not fit
 		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
 			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
@@ -812,7 +814,7 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#ifdef __WINRT__
+#if defined(__WINRT__) || defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
 	SDL_SysWMinfo wminfo;
