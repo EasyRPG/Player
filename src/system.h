@@ -82,6 +82,7 @@
 #elif defined(__SWITCH__)
 #elif defined(__MORPHOS__) || defined(__amigaos4__)
 #  define SUPPORT_ZOOM
+#  define SUPPORT_MOUSE
 #  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_HAT
