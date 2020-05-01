@@ -19,15 +19,11 @@
 #define EP_STD_CLOCK_H
 
 #include <chrono>
-#include <type_traits>
 #include <thread>
 
 #if !defined(_3DS) && !defined(__SWITCH__) && !defined(PSP2)
 struct StdClock {
-	using clock = std::conditional_t<
-		std::chrono::high_resolution_clock::is_steady,
-		std::chrono::high_resolution_clock,
-		std::chrono::steady_clock>;
+	using clock = std::chrono::steady_clock;
 
 	using rep = clock::rep;
 	using period = clock::period;
@@ -56,12 +52,12 @@ inline void StdClock::SleepFor(std::chrono::duration<R,P> dt) {
 }
 
 constexpr const char* StdClock::Name() {
-	if (std::is_same<clock,std::chrono::high_resolution_clock>::value) {
-		return "StdHigRes";
-	} else if (std::is_same<clock,std::chrono::steady_clock>::value) {
+	if (std::is_same<clock,std::chrono::steady_clock>::value) {
 		return "StdSteady";
 	} else if (std::is_same<clock,std::chrono::system_clock>::value) {
 		return "StdSystem";
+	} else if (std::is_same<clock,std::chrono::high_resolution_clock>::value) {
+		return "StdHigRes";
 	}
 	return "Unknown";
 }
