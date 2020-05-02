@@ -15,53 +15,47 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_STD_CLOCK_H
-#define EP_STD_CLOCK_H
+#ifndef EP_PLATFORM_WII_CLOCK_H
+#define EP_PLATFORM_WII_CLOCK_H
 
+#ifdef GEKKO
+
+#include <ogc/lwp_watchdog.h>
+#include <cstdint>
 #include <chrono>
 #include <thread>
 
-#if !defined(_3DS) && !defined(__SWITCH__) && !defined(PSP2)
-struct StdClock {
-	using clock = std::chrono::steady_clock;
+struct WiiClock {
+	static constexpr int64_t ticks_per_sec = TB_TIMER_CLOCK * 1000;
 
-	using rep = clock::rep;
-	using period = clock::period;
-	using duration = clock::duration;
-	using time_point = clock::time_point;
+	using rep = uint64_t;
+	using period = std::ratio<1,ticks_per_sec>;
+	using duration = std::chrono::duration<rep,period>;
+	using time_point = std::chrono::time_point<WiiClock,duration>;
 
-	static constexpr bool is_steady = clock::is_steady;
+	static constexpr bool is_steady = true;
 
-	/** Get current time */
 	static time_point now();
 
-	/** Sleep for the specified duration */
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
 
 	static constexpr const char* Name();
 };
 
-inline StdClock::time_point StdClock::now() {
-	return clock::now();
+inline WiiClock::time_point WiiClock::now() {
+	auto ticks = gettime();
+	return time_point(duration(ticks));
 }
 
 template <typename R, typename P>
-inline void StdClock::SleepFor(std::chrono::duration<R,P> dt) {
+inline void WiiClock::SleepFor(std::chrono::duration<R,P> dt) {
 	std::this_thread::sleep_for(dt);
 }
 
-constexpr const char* StdClock::Name() {
-	if (std::is_same<clock,std::chrono::steady_clock>::value) {
-		return "StdSteady";
-	} else if (std::is_same<clock,std::chrono::system_clock>::value) {
-		return "StdSystem";
-	} else if (std::is_same<clock,std::chrono::high_resolution_clock>::value) {
-		return "StdHigRes";
-	}
-	return "Unknown";
+constexpr const char* WiiClock::Name() {
+	return "WiiClock";
 }
 
 #endif
 #endif
-
