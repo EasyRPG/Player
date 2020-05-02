@@ -152,24 +152,6 @@ namespace FileFinder {
 	std::string FindFont(const std::string& name);
 
 	/**
-	 * Opens a file specified by a UTF-8 string.
-	 *
-	 * @param name_utf8 filename in UTF-8.
-	 * @param mode ("r", "w", etc).
-	 * @return FILE*.
-	 */
-	/*FILE* fopenUTF8(const std::string& name_utf8, char const* mode);*/
-
-	/**
-	 * Creates stream from UTF-8 file name.
-	 *
-	 * @param name UTF-8 string file name.
-	 * @param m stream mode.
-	 * @return NULL if open failed.
-	 */
-	std::shared_ptr<std::iostream> openUTF8(const std::string& name, std::ios_base::openmode m);
-
-	/**
 	 * A input stream anotated with the size of the connected file
 	 */
 	class istream : public std::istream {
@@ -190,7 +172,7 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	std::shared_ptr<istream> openUTF8Input(const std::string& name, std::ios_base::openmode m);
+	std::shared_ptr<istream> OpenInputStream(const std::string& name, std::ios_base::openmode m);
 
 	/**
 	* Creates stream from UTF-8 file name.
@@ -199,7 +181,7 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	std::shared_ptr<std::ostream> openUTF8Output(const std::string& name, std::ios_base::openmode m);
+	std::shared_ptr<std::ostream> OpenOutputStream(const std::string& name, std::ios_base::openmode m);
 
 	struct Directory {
 		std::string base;

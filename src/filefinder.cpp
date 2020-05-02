@@ -646,29 +646,7 @@ void FileFinder::Quit() {
 	game_directory_tree.reset();
 }
 
-/*FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
-#ifdef _WIN32
-	return _wfopen(Utils::ToWideString(name_utf8).c_str(),
-				   Utils::ToWideString(mode).c_str());
-#else
-	return fopen(name_utf8.c_str(), mode);
-#endif
-}*/
-
-std::shared_ptr<std::iostream> FileFinder::openUTF8(const std::string& name,
-													  std::ios_base::openmode m)
-{
-	std::shared_ptr<std::fstream> ret(new std::fstream(
-#ifdef _MSC_VER
-		Utils::ToWideString(name).c_str(),
-#else
-		name.c_str(),
-#endif
-		m));
-	return (*ret)? ret : std::shared_ptr<std::fstream>();
-}
-
-std::shared_ptr<FileFinder::istream> FileFinder::openUTF8Input(const std::string& name,
+std::shared_ptr<FileFinder::istream> FileFinder::OpenInputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
 	std::streamsize size = FileFinder::GetFileSize(name);
@@ -685,7 +663,7 @@ std::shared_ptr<FileFinder::istream> FileFinder::openUTF8Input(const std::string
 	return (*ret) ? ret : std::shared_ptr<FileFinder::istream>();
 }
 
-std::shared_ptr<std::ostream> FileFinder::openUTF8Output(const std::string& name,
+std::shared_ptr<std::ostream> FileFinder::OpenOutputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
 	std::shared_ptr<std::ofstream> ret(new std::ofstream(

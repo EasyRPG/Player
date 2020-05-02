@@ -470,7 +470,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 	if (Utils::EndsWith(result->file, ".link")) {
 		// Handle Ineluki's MP3 patch
-		std::shared_ptr<std::istream> stream = FileFinder::openUTF8Input(path, std::ios_base::in);
+		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
 			Output::Warning("Ineluki link read error: {}", path);
 			return;

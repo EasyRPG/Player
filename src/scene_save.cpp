@@ -133,7 +133,7 @@ void Scene_Save::Action(int index) {
 			sme.map_id = 0;
 		}
 	}
-	auto save_stream = FileFinder::openUTF8Output(filename, std::ios::ios_base::out | std::ios::ios_base::binary);
+	auto save_stream = FileFinder::OpenOutputStream(filename, std::ios::ios_base::out | std::ios::ios_base::binary);
 	lcf::LSD_Reader::Save(*save_stream, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN

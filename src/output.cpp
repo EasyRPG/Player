@@ -77,7 +77,7 @@ namespace {
 
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE=FileFinder::openUTF8Output(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE=FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -205,30 +205,28 @@ static void HandleErrorOutput(const std::string& err) {
 }
 
 void Output::Quit() {
-	if (LOG_FILE.is_open()) {
-		LOG_FILE.close();
+	if (LOG_FILE) {
+		LOG_FILE.reset();
 	}
 
 	int log_size = 1024 * 100;
 
 	char* buf = new char[log_size];
 
-	std::ifstream in;
-	in.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str());
-	if (!in.bad()) {
-		in.seekg(0, std::ios_base::end);
-		if (in.tellg() > log_size) {
-			in.seekg(-log_size, std::ios_base::end);
+	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(),std::ios::ios_base::in);
+	if (in&&!in->bad()) {
+		in->seekg(0, std::ios_base::end);
+		if (in->tellg() > log_size) {
+			in->seekg(-log_size, std::ios_base::end);
 			// skip current incomplete line
 			in.getline(buf, 1024 * 100);
 			in.read(buf, 1024 * 100);
-			size_t read = in.gcount();
-			in.close();
+			size_t read = in->gcount();
+			in.reset();
 
-			std::ofstream out;
-			out.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str());
-			out.write(buf, read);
-			out.close();
+			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios::ios_base::out);
+			out->write(buf, read);
+			out.reset();
 		}
 	}
 
@@ -249,7 +247,7 @@ bool Output::TakeScreenshot() {
 
 bool Output::TakeScreenshot(std::string const& file) {
 	std::shared_ptr<std::ostream> ret =
-		FileFinder::openUTF8Output(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+		FileFinder::OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
 		Output::Debug("Saving Screenshot {}", file);
