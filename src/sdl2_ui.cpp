@@ -255,8 +255,8 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int display_height = current_display_mode.height;
 
 #ifdef SUPPORT_ZOOM
-		display_width *= current_display_mode.zoom;
-		display_height *= current_display_mode.zoom;
+	display_width *= current_display_mode.zoom;
+	display_height *= current_display_mode.zoom;
 #endif
 
 	if (!sdl_window) {
@@ -396,10 +396,10 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
-			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
-		else
-			current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
+	else
+		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	EndDisplayModeChange();
 }
 
@@ -413,23 +413,23 @@ void Sdl2Ui::ToggleZoom() {
 		SDL_RestoreWindow(sdl_window);
 	}
 
-		// get current window size, calculate next bigger zoom factor
-		int w, h;
-		SDL_GetWindowSize(sdl_window, &w, &h);
-		last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
-		current_display_mode.zoom = last_display_mode.zoom + 1;
+	// get current window size, calculate next bigger zoom factor
+	int w, h;
+	SDL_GetWindowSize(sdl_window, &w, &h);
+	last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
+	current_display_mode.zoom = last_display_mode.zoom + 1;
 
-		// get maximum usable window size
-		int display_index = SDL_GetWindowDisplayIndex(sdl_window);
-		SDL_Rect max_mode;
-		// this takes account of the menu bar and dock on macOS and task bar on windows
-		SDL_GetDisplayUsableBounds(display_index, &max_mode);
+	// get maximum usable window size
+	int display_index = SDL_GetWindowDisplayIndex(sdl_window);
+	SDL_Rect max_mode;
+	// this takes account of the menu bar and dock on macOS and task bar on windows
+	SDL_GetDisplayUsableBounds(display_index, &max_mode);
 
-		// reset zoom, if it does not fit
-		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
-			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
-			current_display_mode.zoom = 1;
-		}
+	// reset zoom, if it does not fit
+	if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
+		(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
+		current_display_mode.zoom = 1;
+	}
 	EndDisplayModeChange();
 #endif
 }
