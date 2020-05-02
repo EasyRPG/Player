@@ -32,7 +32,7 @@ WavDecoder::WavDecoder()
 WavDecoder::~WavDecoder() {
 }
 
-bool WavDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+bool WavDecoder::Open(Filesystem::InputStream stream) {
 	decoded_samples = 0;
 	this->stream = stream;
 	stream->seekg(16, std::ios::ios_base::beg);

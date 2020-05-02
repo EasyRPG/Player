@@ -15,19 +15,41 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_IMAGE_PNG_H
-#define EP_IMAGE_PNG_H
+#ifndef EP_FILESYSTEM_H
+#define EP_FILESYSTEM_H
 
-#include "system.h"
-#include "filesystem.h"
-
+// Headers
 #include <istream>
 #include <ostream>
+#include "system.h"
 
-namespace ImagePNG {
-	bool ReadPNG(const void* buffer, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadPNG(Filesystem::InputStream& is, bool transparent, int& width, int& height, void*& pixels);
-	bool WritePNG(Filesystem::OutputStream& os, uint32_t width, uint32_t height, uint32_t* data);
-}
+class Filesystem {
+public:
+	class vfs_istream;
+	class vfs_ostream;
+
+	using InputStreamRaw = vfs_istream;
+	using OutputStreamRaw = vfs_ostream;
+
+	using InputStream = std::shared_ptr<InputStreamRaw>;
+	using OutputStream = std::shared_ptr<OutputStreamRaw>;
+
+	class vfs_istream : public std::istream {
+	public:
+		explicit vfs_istream(std::streambuf* sb, std::streamsize size);
+		~vfs_istream() override;
+
+		std::streamsize get_size() const;
+
+	private:
+		std::streamsize size;
+	};
+
+	class vfs_ostream : public std::ostream {
+	public:
+		explicit vfs_ostream(std::streambuf *sb);
+		~vfs_ostream() override;
+	};
+};
 
 #endif

@@ -646,13 +646,13 @@ void FileFinder::Quit() {
 	game_directory_tree.reset();
 }
 
-std::shared_ptr<FileFinder::istream> FileFinder::OpenInputStream(const std::string& name,
+Filesystem::InputStream FileFinder::OpenInputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
 	std::streamsize size = FileFinder::GetFileSize(name);
-	std::filebuf *buf = new std::filebuf();
+	auto *buf = new std::filebuf();
 
-	std::shared_ptr<FileFinder::istream> ret(new FileFinder::istream(buf->open(
+	Filesystem::InputStream ret(new Filesystem::InputStreamRaw(buf->open(
 #ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
@@ -660,20 +660,23 @@ std::shared_ptr<FileFinder::istream> FileFinder::OpenInputStream(const std::stri
 #endif
 		m), size));
 
-	return (*ret) ? ret : std::shared_ptr<FileFinder::istream>();
+	return (*ret) ? ret : Filesystem::InputStream();
 }
 
-std::shared_ptr<std::ostream> FileFinder::OpenOutputStream(const std::string& name,
+Filesystem::OutputStream FileFinder::OpenOutputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
-	std::shared_ptr<std::ofstream> ret(new std::ofstream(
+	auto *buf = new std::filebuf();
+
+	Filesystem::OutputStream ret(new Filesystem::OutputStreamRaw(buf->open(
 #ifdef _MSC_VER
-		Utils::ToWideString(name).c_str(),
+			Utils::ToWideString(name).c_str(),
 #else
-		name.c_str(),
+			name.c_str(),
 #endif
-		m));
-	return (*ret) ? ret : std::shared_ptr<std::ofstream>();
+		m)));
+
+	return (*ret) ? ret : Filesystem::OutputStream();
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {

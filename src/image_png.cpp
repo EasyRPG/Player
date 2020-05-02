@@ -32,7 +32,7 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 static void read_data_istream(png_structp png_ptr, png_bytep data, png_size_t length) {
-	std::istream* bufp = (std::istream*)png_get_io_ptr(png_ptr);
+	auto* bufp = reinterpret_cast<Filesystem::InputStreamRaw*>(png_get_io_ptr(png_ptr));
 	if (bufp != NULL&&*bufp) {
 		bufp->read(reinterpret_cast<char*>(data), length);
 	}
@@ -58,9 +58,9 @@ bool ImagePNG::ReadPNG(const void* buffer, bool transparent,
 	return ReadPNGWithReadFunction((png_voidp)&buffer, read_data, transparent, width, height, pixels);
 }
 
-bool ImagePNG::ReadPNG(FileFinder::istream & stream, bool transparent,
+bool ImagePNG::ReadPNG(Filesystem::InputStream& stream, bool transparent,
 	int& width, int& height, void*& pixels) {
-	return ReadPNGWithReadFunction(&stream, read_data_istream, transparent, width, height, pixels);
+	return ReadPNGWithReadFunction(stream.get(), read_data_istream, transparent, width, height, pixels);
 }
 
 static bool ReadPNGWithReadFunction(png_voidp user_data, png_rw_ptr fn, bool transparent,
@@ -244,13 +244,13 @@ static void ReadRGBAData(
 }
 
 static void write_data(png_structp out_ptr, png_bytep data, png_size_t len) {
-	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->write(reinterpret_cast<char const*>(data), len);
+	reinterpret_cast<Filesystem::OutputStreamRaw*>(png_get_io_ptr(out_ptr))->write(reinterpret_cast<char const*>(data), len);
 }
 static void flush_stream(png_structp out_ptr) {
-	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->flush();
+	reinterpret_cast<Filesystem::OutputStreamRaw*>(png_get_io_ptr(out_ptr))->flush();
 }
 
-bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
+bool ImagePNG::WritePNG(Filesystem::OutputStream& os, uint32_t width, uint32_t height, uint32_t* data) {
 	png_structp write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!write) {
 		Output::Warning("Bitmap::WritePNG: error in png_create_write");
@@ -276,7 +276,7 @@ bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint3
 		return false;
 	}
 
-	png_set_write_fn(write, &os, &write_data, &flush_stream);
+	png_set_write_fn(write, os.get(), &write_data, &flush_stream);
 
 	png_set_IHDR(write, info, width, height, 8,
 				 PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,

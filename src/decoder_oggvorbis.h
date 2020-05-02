@@ -41,7 +41,7 @@ public:
 	~OggVorbisDecoder();
 
 	// Audio Decoder interface
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override;
+	bool Open(Filesystem::InputStream stream) override;
 
 	bool Seek(size_t offset, Origin origin) override;
 
@@ -59,7 +59,7 @@ private:
 	OggVorbis_File *ovf = NULL;
 #endif
 
-	std::shared_ptr<FileFinder::istream> stream;
+	Filesystem::InputStream stream;
 	bool finished = false;
 	int frequency = 44100;
 	int channels = 2;

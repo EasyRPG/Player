@@ -40,7 +40,7 @@ XMPDecoder::~XMPDecoder() {
 	}
 }
 
-bool XMPDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+bool XMPDecoder::Open(Filesystem::InputStream stream) {
 	finished = false;
 
 	if (!ctx)

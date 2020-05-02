@@ -33,6 +33,7 @@
 #include "text.h"
 #include "pixman_image_ptr.h"
 #include "opacity.h"
+#include "filesystem.h"
 
 struct Transform;
 
@@ -177,7 +178,7 @@ public:
 	 * @param os output stream that PNG will be output.
 	 * @return true if success, otherwise false.
 	 */
-	bool WritePNG(std::ostream& os) const;
+	bool WritePNG(Filesystem::OutputStream&) const;
 
 	/**
 	 * Gets the background color

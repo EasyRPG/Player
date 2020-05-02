@@ -36,7 +36,7 @@ public:
 	~XMPDecoder();
 
 	// Audio Decoder interface
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override;
+	bool Open(Filesystem::InputStream stream) override;
 
 	bool Seek(size_t offset, Origin origin) override;
 

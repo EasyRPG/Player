@@ -73,7 +73,7 @@ public:
 	 * 
 	 * @return Whether the operation was successful or not
 	 */
-	bool Open(std::shared_ptr<FileFinder::istream> file) override;
+	bool Open(Filesystem::InputStream file) override;
 
 	/**
 	 * Wraps the seek function of the contained decoder

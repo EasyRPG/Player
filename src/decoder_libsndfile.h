@@ -35,7 +35,7 @@ public:
 
 	~LibsndfileDecoder();
 
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override;
+	bool Open(Filesystem::InputStream stream) override;
 
 	bool Seek(size_t offset, Origin origin) override;
 
@@ -50,7 +50,7 @@ public:
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 	Format output_format;
-	std::shared_ptr<FileFinder::istream> stream;
+	Filesystem::InputStream stream;
 	bool finished;
 	int decoded_samples = 0;
 #ifdef HAVE_LIBSNDFILE

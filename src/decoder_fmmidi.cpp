@@ -52,7 +52,7 @@ int read_func(void* instance) {
 	return fmmidi->file_buffer[fmmidi->file_buffer_pos++];
 }
 
-bool FmMidiDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+bool FmMidiDecoder::Open(Filesystem::InputStream stream) {
 	seq->clear();
 	Output::Debug("MIDI Size: %d\n", stream->get_size());
 	file_buffer.resize(stream->get_size());

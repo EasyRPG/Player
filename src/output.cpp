@@ -72,7 +72,7 @@ namespace {
 		return log_prefix[static_cast<int>(lvl)];
 	}
 
-	std::shared_ptr<std::ostream> LOG_FILE;
+	Filesystem::OutputStream LOG_FILE;
 	bool init = false;
 
 	std::ostream& output_time() {
@@ -83,7 +83,7 @@ namespace {
 		std::time_t t = std::time(NULL);
 		char timestr[100];
 		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
-		return LOG_FILE << timestr;
+		return *LOG_FILE << timestr;
 	}
 
 	bool ignore_pause = false;
@@ -246,12 +246,11 @@ bool Output::TakeScreenshot() {
 }
 
 bool Output::TakeScreenshot(std::string const& file) {
-	std::shared_ptr<std::ostream> ret =
-		FileFinder::OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+	auto ret = FileFinder::OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
 		Output::Debug("Saving Screenshot {}", file);
-		return Output::TakeScreenshot(*ret);
+		return Output::TakeScreenshot(ret);
 	}
 	return false;
 }

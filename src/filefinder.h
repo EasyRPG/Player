@@ -20,6 +20,7 @@
 
 // Headers
 #include "system.h"
+#include "filesystem.h"
 
 #include <string>
 #include <cstdio>
@@ -27,7 +28,6 @@
 #include <istream>
 #include <unordered_map>
 #include <vector>
-#include <istream>
 
 /**
  * FileFinder contains helper methods for finding case
@@ -152,18 +152,13 @@ namespace FileFinder {
 	std::string FindFont(const std::string& name);
 
 	/**
-	 * A input stream anotated with the size of the connected file
-	 */
-	class istream : public std::istream {
-	public:
-		inline istream(std::streambuf * buf, std::streamsize size):
-			std::istream(buf),size(size),buffer(buf){}
-		~istream() { delete buffer; }
-		inline std::streamsize get_size() { return size; }
-	private:
-		std::streamsize size;
-		std::streambuf* buffer;
-	};
+	* Creates stream from UTF-8 file name.
+	*
+	* @param name UTF-8 string file name.
+	* @param m stream mode.
+	* @return NULL if open failed.
+	*/
+	Filesystem::InputStream OpenInputStream(const std::string& name, std::ios_base::openmode m);
 
 	/**
 	* Creates stream from UTF-8 file name.
@@ -172,16 +167,7 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	std::shared_ptr<istream> OpenInputStream(const std::string& name, std::ios_base::openmode m);
-
-	/**
-	* Creates stream from UTF-8 file name.
-	*
-	* @param name UTF-8 string file name.
-	* @param m stream mode.
-	* @return NULL if open failed.
-	*/
-	std::shared_ptr<std::ostream> OpenOutputStream(const std::string& name, std::ios_base::openmode m);
+	Filesystem::OutputStream OpenOutputStream(const std::string& name, std::ios_base::openmode m);
 
 	struct Directory {
 		std::string base;

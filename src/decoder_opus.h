@@ -33,7 +33,7 @@ public:
 	~OpusDecoder();
 
 	// Audio Decoder interface
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override;
+	bool Open(Filesystem::InputStream stream) override;
 
 	bool Seek(size_t offset, Origin origin) override;
 
@@ -50,7 +50,7 @@ private:
 #ifdef HAVE_OPUS
 	OggOpusFile* oof;
 #endif
-	std::shared_ptr<FileFinder::istream> stream;
+	Filesystem::InputStream stream;
 	bool finished = false;
 	int frequency = 48000;
 	int channels = 2;

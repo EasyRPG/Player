@@ -112,11 +112,11 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	bool img_okay = false;
 
 	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
-		img_okay = ImageXYZ::ReadXYZ(*stream, transparent, w, h, pixels);
+		img_okay = ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
 	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
-		img_okay = ImageBMP::ReadBMP(*stream, transparent, w, h, pixels);
+		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(*stream, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
 	else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
 
@@ -175,7 +175,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
-bool Bitmap::WritePNG(std::ostream& os) const {
+bool Bitmap::WritePNG(Filesystem::OutputStream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 

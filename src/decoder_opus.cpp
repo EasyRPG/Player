@@ -25,13 +25,13 @@
 #include "decoder_opus.h"
 
 static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
 	if (nbytes == 0) return 0;
 	return (int)(f->read(reinterpret_cast<char*>(ptr), nbytes).gcount());
 }
 
 static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
 	switch (whence) {
 		case SEEK_CUR:
@@ -51,7 +51,7 @@ static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
 }
 
 static opus_int64 vio_tell_func(void* stream) {
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
 	return f->tellg();
 }
 
@@ -72,7 +72,7 @@ OpusDecoder::~OpusDecoder() {
 	}
 }
 
-bool OpusDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+bool OpusDecoder::Open(Filesystem::InputStream stream) {
 	this->stream = stream;
 	finished = false;
 

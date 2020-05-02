@@ -50,9 +50,9 @@
 // Helper: Get the CRC32 of a given file as a hex string
 std::string crc32file(std::string file_name) {
 	if (!file_name.empty()) {
-		std::ifstream in(file_name.c_str(), std::ios::binary);
-		if (in.is_open()) {
-			std::string buffer((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+		auto in = FileFinder::OpenInputStream(file_name, std::ios::binary);
+		if (in) {
+			std::string buffer((std::istreambuf_iterator<char>(*in)), std::istreambuf_iterator<char>());
 			unsigned long crc = ::crc32(0, reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length());
 
 			std::stringstream res;

@@ -37,7 +37,7 @@ public:
 
 	bool WasInited() const override;
 
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override;
+	bool Open(Filesystem::InputStream stream) override;
 
 	bool Seek(size_t offset, Origin origin) override;
 
@@ -50,14 +50,14 @@ public:
 	int GetTicks() const override;
 
 
-	static bool IsMp3(std::shared_ptr<FileFinder::istream> stream);
+	static bool IsMp3(Filesystem::InputStream stream);
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 #ifdef HAVE_MPG123
 	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
 #endif
-	std::shared_ptr<FileFinder::istream> stream;
+	Filesystem::InputStream stream;
 	int err = 0;
 	bool finished = false;
 

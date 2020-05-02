@@ -35,7 +35,7 @@ public:
 	// 1. everywhere else uses "unsigned", which is equally as odd...
 	// 2. max offset value is this size
 
-	EXEReader(std::istream& core);
+	EXEReader(Filesystem::InputStream& core);
 	~EXEReader();
 
 	// Extracts an EXFONT resource with BMP header if present
@@ -55,7 +55,7 @@ private:
 	uint32_t resource_ofs;
 	uint32_t resource_rva;
 
-	std::istream& corefile;
+	Filesystem::InputStream& corefile;
 };
 
 #endif

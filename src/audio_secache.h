@@ -52,7 +52,7 @@ class AudioSeDecoder : public AudioDecoder {
 public:
 	AudioSeDecoder(AudioSeRef se);
 
-	bool Open(std::shared_ptr<FileFinder::istream> stream) override { return true; };
+	bool Open(Filesystem::InputStream stream) override { return true; };
 	bool IsFinished() const override;
 	void GetFormat(int& frequency, Format& format, int& channels) const override;
 	int GetPitch() const override;

@@ -26,12 +26,12 @@
 #include "output.h"
 
 static sf_count_t sf_vio_get_filelen_impl(void* userdata) {
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	return f->get_size();
 }
 
 static sf_count_t sf_vio_read_impl(void *ptr, sf_count_t count, void* userdata){
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
 }
 
@@ -41,7 +41,7 @@ static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, voi
 }
 
 static sf_count_t sf_vio_seek_impl(sf_count_t offset, int seek_type, void *userdata) {
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
 	switch (seek_type) {
 	case SEEK_CUR:
@@ -58,7 +58,7 @@ static sf_count_t sf_vio_seek_impl(sf_count_t offset, int seek_type, void *userd
 }
 
 static sf_count_t sf_vio_tell_impl(void* userdata){
-	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	return f->tellg();
 }
 
@@ -82,7 +82,7 @@ LibsndfileDecoder::~LibsndfileDecoder() {
 	}
 }
 
-bool LibsndfileDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+bool LibsndfileDecoder::Open(Filesystem::InputStream stream) {
 	this->stream=stream;
 	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,stream.get());
 	sf_command(soundfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
