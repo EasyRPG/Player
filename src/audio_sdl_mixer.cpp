@@ -326,7 +326,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		return;
 	}
 
-	filestream = FileFinder::OpenInputStream(file, std::ios::ios_base::in | std::ios::ios_base::binary);
+	filestream = FileFinder::OpenInputStream(file);
 	SDL_RWops *rw = create_StreamRWOps(filestream); //SDL_RWFromFile(file.c_str(), "rb");
 
 	bgm_stop = false;
@@ -349,7 +349,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 #if WANT_FMMIDI == 2
 		// Fallback to FMMIDI when SDL Midi failed
 		char magic[4] = { 0 };
-		auto filestream = FileFinder::OpenInputStream(file, std::ios::ios_base::in | std::ios::ios_base::binary);
+		auto filestream = FileFinder::OpenInputStream(file);
 		if (!filestream) {
 			Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 			return;

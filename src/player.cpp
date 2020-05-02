@@ -891,7 +891,7 @@ void Player::LoadDatabase() {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 
-		auto lmt_stream = FileFinder::OpenInputStream(lmt, std::ios::ios_base::in | std::ios::ios_base::binary);
+		auto lmt_stream = FileFinder::OpenInputStream(lmt);
 		if (!lcf::LMT_Reader::Load(*lmt_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
@@ -938,7 +938,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	auto save_stream = FileFinder::OpenInputStream(save_name, std::ios::ios_base::in | std::ios::ios_base::binary);
+	auto save_stream = FileFinder::OpenInputStream(save_name);
 	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(*save_stream, encoding);
 
 	if (!save.get()) {
@@ -1051,7 +1051,7 @@ std::string Player::GetEncoding() {
 		encoding = "";
 
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-		auto ldb_stream = FileFinder::OpenInputStream(ldb, std::ios::ios_base::in | std::ios::ios_base::binary);
+		auto ldb_stream = FileFinder::OpenInputStream(ldb);
 		std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(*ldb_stream);
 
 #ifndef EMSCRIPTEN

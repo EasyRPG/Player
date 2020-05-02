@@ -158,7 +158,8 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	Filesystem::InputStream OpenInputStream(const std::string& name, std::ios_base::openmode m);
+	Filesystem::InputStream OpenInputStream(const std::string& name,
+			std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary);
 
 	/**
 	* Creates stream from UTF-8 file name.
@@ -167,7 +168,8 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	Filesystem::OutputStream OpenOutputStream(const std::string& name, std::ios_base::openmode m);
+	Filesystem::OutputStream OpenOutputStream(const std::string& name,
+			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
 
 	struct Directory {
 		std::string base;
