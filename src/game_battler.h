@@ -694,8 +694,6 @@ public:
 	/** @return current flash color */
 	Color GetFlashColor() const;
 
-private:
-	bool CanActImpl(int max_arp) const;
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge = 0;
@@ -889,14 +887,6 @@ inline void Game_Battler::SetBattleOrderAgi(int val) {
 
 inline int Game_Battler::GetBattleOrderAgi() {
 	return battle_order;
-}
-
-inline bool Game_Battler::CanAct() const {
-	return CanActImpl(std::numeric_limits<int>::max());
-}
-
-inline bool Game_Battler::CanActOrRecoverable() const {
-	return CanActImpl(0);
 }
 
 #endif

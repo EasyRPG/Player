@@ -78,16 +78,27 @@ RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 	return State::GetSignificantRestriction(GetStates());
 }
 
-bool Game_Battler::CanActImpl(int max_arp) const {
+bool Game_Battler::CanAct() const {
 	const auto& states = GetStates();
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (states[i] > 0) {
 			const auto* state = ReaderUtil::GetElement(Data::states, i + 1);
-			if (state
-					&& state->restriction == RPG::State::Restriction_do_nothing
-					&& state->auto_release_prob <= max_arp
-					)
-			{
+			assert(state);
+			if (state->restriction == RPG::State::Restriction_do_nothing) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Game_Battler::CanActOrRecoverable() const {
+	const auto& states = GetStates();
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			const auto* state = ReaderUtil::GetElement(Data::states, i + 1);
+			assert(state);
+			if (state->restriction == RPG::State::Restriction_do_nothing && state->auto_release_prob == 0) {
 				return false;
 			}
 		}
