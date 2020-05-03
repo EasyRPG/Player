@@ -289,9 +289,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		uint32_t rendered_flag = 0;
 
+#ifndef __MORPHOS__
 		if (Player::vsync) {
 			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
 		}
+#endif
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer) {
@@ -763,7 +765,7 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#ifdef __WINRT__
+#if defined(__WINRT__) || defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
 	SDL_SysWMinfo wminfo;

@@ -12,54 +12,76 @@ PREFIX  = ppc-morphos
 CC      = $(PREFIX)-gcc -noixemul
 CXX     = $(PREFIX)-g++ -noixemul
 PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99 -D_NO_PPCINLINE -D__MORPHOS_SHAREDLIBS
-TOOLCHAIN_DIR := /gg/usr
-SDL_LIBS = -L$(TOOLCHAIN_DIR)/local/lib -lSDL_mixer -lSDL
-SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/local/include/SDL -I$(TOOLCHAIN_DIR)/local/include
-PIXMAN_LIBS = -lpixman
+TOOLCHAIN_DIR := /gg/usr/local
+SDL_LIBS = -lSDL2_mixer -lSDL2
+SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/include/SDL2 -DUSE_SDL=2 -DHAVE_SDL_MIXER
+PIXMAN_CFLAGS = -I/gg/os-include/pixman-1
+#PIXMAN_LIBS = -lpixman
 PNG_LIBS =  -lpng_shared
+MPG123_CFLAGS = -DHAVE_MPG123
 MPG123_LIBS = -lmpg123
+EXPAT_LIBS =
+FREETYPE_CFLAGS = -DHAVE_FREETYPE -I$(TOOLCHAIN_DIR)/include/freetype2
+FREETYPE_LIBS = -lfreetype
+WILDMIDI_CFLAGS = -DHAVE_WILDMIDI
+WILDMIDI_LIBS = -lWildMidi
+#OGGVORBIS_CFLAGS = -DHAVE_OGGVORBIS
+#OGGVORBIS_LIBS =
 endif
 ifeq ($(OSTYPE), AmigaOS)
 PREFIX  = ppc-amigaos
 CC      = $(PREFIX)-gcc
 CXX     = $(PREFIX)-g++
-PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99_STDINT_TR1 -D_GLIBCXX_USE_C99_STDIO
+PLATFORM_CXXFLAGS = -D_GLIBCXX_USE_C99_STDINT_TR1 -D_GLIBCXX_USE_C99_STDIO -Iamigaos4
 TOOLCHAIN_DIR := /usr/local/amiga/ppc-amigaos/SDK/local/newlib
 SDL_LIBS = -lSDL_mixer -lmikmod -lFLAC -lmodplug -lsmpeg -lSDL -athread=native
-SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/include/SDL
+SDL_CFLAGS = -I$(TOOLCHAIN_DIR)/include/SDL -DUSE_SDL=1 -DHAVE_SDL_MIXER
+PIXMAN_CFLAGS = -I$(TOOLCHAIN_DIR)/include/pixman-1
 PIXMAN_LIBS = -lpixman-1
 PNG_LIBS = -lpng -lz
+MPG123_CFLAGS = -DHAVE_MPG123
 MPG123_LIBS = -lmpg123
+EXPAT_LIBS = -lexpat
+FREETYPE_CFLAGS = -DHAVE_FREETYPE -I$(TOOLCHAIN_DIR)/include/freetype2
+FREETYPE_LIBS = -lfreetype
+WILDMIDI_CFLAGS = -DHAVE_WILDMIDI
+WILDMIDI_LIBS = -lWildMidi
+OGGVORBIS_CFLAGS = -DHAVE_OGGVORBIS
+OGGVORBIS_LIBS = -lvorbisfile -lvorbis -logg
 endif
 
 ICU_LIBS = -licuuc -licui18n -licudata
 
-LIBS = -llcf -lexpat \
-	$(PIXMAN_LIBS) $(PNG_LIBS) \
-	-lfreetype $(MPG123_LIBS) \
-	-lvorbisfile -lvorbis -logg -lWildMidi \
-	$(ICU_LIBS) \
-	$(SDL_LIBS)
-
 ifeq ($(strip $(LIBLCF_DIR)),)
 LIBLCF_DIR := $(TOOLCHAIN_DIR)
 endif
+LCF_CFLAGS = -I$(LIBLCF_DIR)/include/liblcf
+LCF_LIBS = -L$(LIBLCF_DIR)/lib -llcf
+
+LIBS = $(LCF_LIBS) \
+	$(EXPAT_LIBS) \
+	$(PIXMAN_LIBS) \
+	$(PNG_LIBS) \
+	$(FREETYPE_LIBS) \
+	$(WILDMIDI_LIBS) \
+	$(ICU_LIBS) \
+	$(SDL_LIBS) \
+	$(OGGVORBIS_LIBS) \
+	$(MPG123_LIBS)
 
 CFLAGS  = -g -O2 -fno-math-errno
 CXXFLAGS = $(CFLAGS) $(PLATFORM_CXXFLAGS) -std=gnu++14 -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
-CPPFLAGS = -DUSE_SDL -DHAVE_SDL_MIXER -DHAVE_FREETYPE -DSUPPORT_AUDIO \
-		-DHAVE_MPG123 -DHAVE_OGGVORBIS -DHAVE_WILDMIDI -DWANT_FASTWAV \
+CPPFLAGS =  -DSUPPORT_AUDIO -DWANT_FASTWAV -DWANT_FMMIDI=2 \
 		-I$(TOOLCHAIN_DIR)/include \
+		$(LCF_CFLAGS) \
 		$(SDL_CFLAGS) \
-		-I$(LIBLCF_DIR)/include/liblcf \
-		-I$(TOOLCHAIN_DIR)/include/pixman-1 \
-		-I$(TOOLCHAIN_DIR)/include/freetype2 \
-		-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-		-I$(TOOLCHAIN_DIR)/include/opus
+		$(PIXMAN_CFLAGS) \
+		$(FREETYPE_CFLAGS) \
+		$(MPG123_CFLAGS) \
+		$(OGGVORBIS_CFLAGS)
 
-LDFLAGS = -L$(TOOLCHAIN_DIR)/lib \
-		-L$(LIBLCF_DIR)/lib
+LDFLAGS = -L$(TOOLCHAIN_DIR)/lib
 
 all: $(TARGET).elf
 
