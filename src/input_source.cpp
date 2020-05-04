@@ -100,7 +100,7 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 
 void Input::Source::Record() {
 	if (record_log.is_open()) {
-		record_log << pressed_buttons << '\n';
+		record_log << GetPressedNonSystemButtons() << '\n';
 	}
 }
 
