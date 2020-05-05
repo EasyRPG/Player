@@ -147,12 +147,12 @@ void Player::Init(int argc, char *argv[]) {
 	if (!addtl_ver.empty())
 		header << " " << addtl_ver;
 	header << " started";
-	Output::Debug(header.str());
+	Output::Debug("{}", header.str());
 
 	unsigned int header_width = header.str().length();
 	header.str("");
 	header << std::setfill('=') << std::setw(header_width) << "=";
-	Output::Debug(header.str());
+	Output::Debug("{}", header.str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
