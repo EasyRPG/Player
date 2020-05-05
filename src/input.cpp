@@ -53,106 +53,6 @@ namespace Input {
 	bool wait_input = false;
 }
 
-namespace Input {
-
-static auto GetDomain(ButtonMapping bm) {
-	return bm.button;
-}
-
-static auto GetDomain(DirectionMapping dm) {
-	return dm.direction;
-}
-
-template <typename T>
-InputMappingArray<T>::InputMappingArray(std::initializer_list<T> ilist) : mappings{ilist}
-{
-	std::sort(mappings.begin(), mappings.end());
-}
-
-template <typename T>
-bool InputMappingArray<T>::Has(value_type im) const {
-	auto iter = std::lower_bound(mappings.begin(), mappings.end(), im);
-	return iter != mappings.end() && *iter == im;
-}
-
-template <typename T>
-bool InputMappingArray<T>::Add(value_type im) {
-	auto iter = std::lower_bound(mappings.begin(), mappings.end(), im);
-	if (iter != mappings.end() && *iter == im) {
-		return false;
-	}
-	mappings.insert(iter, im);
-	return true;
-}
-
-template <typename T>
-bool InputMappingArray<T>::Remove(value_type im) {
-	auto iter = std::lower_bound(mappings.begin(), mappings.end(), im);
-	if (iter != mappings.end() && *iter == im) {
-		mappings.erase(iter);
-		return true;
-	}
-	return false;
-}
-
-template <typename T>
-int InputMappingArray<T>::RemoveAll(domain_type domain) {
-	auto iter = std::lower_bound(mappings.begin(), mappings.end(), value_type{domain, range_type{}});
-	if (iter == mappings.end()) {
-		return 0;
-	}
-	auto end = std::find_if(iter, mappings.end(), [&domain](auto& im) { return GetDomain(im) != domain; });
-	auto ret = std::distance(iter, end);
-	mappings.erase(iter, end);
-	return ret;
-}
-
-template <typename T>
-void InputMappingArray<T>::ReplaceAll(domain_type domain, const std::vector<range_type>& range) {
-	const auto end = mappings.end();
-	auto iter = std::lower_bound(mappings.begin(), end, value_type{domain, range_type{}});
-
-	const auto position = std::distance(mappings.begin(), iter);
-
-	auto key_iter = range.begin();
-	const auto key_end = range.end();
-
-	while (iter != end && key_iter != key_end && GetDomain(*iter) == domain) {
-		// Replace existing mappings with new ones in-place
-		*iter = value_type{ domain, *key_iter };
-		++iter;
-		++key_iter;
-	}
-	if (key_iter != key_end) {
-		// We ran out of space and there are still more keys to add.
-		iter = mappings.insert(iter, std::distance(key_iter, key_end), {});
-		while (key_iter != key_end) {
-			*iter = value_type{ domain, *key_iter };
-			++iter;
-			++key_iter;
-		}
-	} else if (iter != end && GetDomain(*iter) == domain) {
-		// The new keyset was smaller, remove the old extra ones
-		auto button_end = std::find_if(iter, end, [&domain](auto& bm) { return GetDomain(bm) != domain; });
-		mappings.erase(iter, button_end);
-	} // else new keyset was the same size and the first loop replaced all the elements.
-
-	// Sort the new keyset
-	iter = mappings.begin() + position;
-	auto rend = iter + range.size();
-	std::sort(iter, rend);
-
-	// Rare case - if the user passed in duplicates we need to remove them.
-	iter = std::unique(iter, rend);
-	mappings.erase(iter, rend);
-}
-
-template class InputMappingArray<ButtonMapping>;
-template class InputMappingArray<DirectionMapping>;
-
-}
-
-
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
@@ -210,8 +110,8 @@ void Input::Update() {
 
 	// Get max pressed time for each directional button
 	for (auto& dm: directions) {
-		if (dirpress[dm.direction] < press_time[dm.button]) {
-			dirpress[dm.direction] = press_time[dm.button];
+		if (dirpress[dm.first] < press_time[dm.second]) {
+			dirpress[dm.first] = press_time[dm.second];
 		};
 	}
 

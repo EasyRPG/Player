@@ -27,6 +27,7 @@
 #include <ostream>
 
 #include "enum_tags.h"
+#include "flat_map.h"
 #include "keys.h"
 
 /**
@@ -200,150 +201,25 @@ namespace Input {
 			"NUM_DIRECTIONS");
 	};
 
-	/** A mapping for a single button to a key */
-	struct ButtonMapping {
-		using domain_type = InputButton;
-		using range_type = Keys::InputKey;
+	using ButtonMappingArray = FlatUniqueMultiMap<InputButton,Keys::InputKey>;
 
-		InputButton button = BUTTON_COUNT;
-		Keys::InputKey key = Keys::NONE;
-	};
-
-	inline bool operator==(ButtonMapping l, ButtonMapping r) {
-		return l.button == r.button && l.key == r.key;
-	}
-
-	inline bool operator!=(ButtonMapping l, ButtonMapping r) {
-		return !(l == r);
-	}
-
-	inline bool operator<(ButtonMapping l, ButtonMapping r) {
-		return l.button < r.button || (l.button == r.button && l.key < r.key);
-	}
-
-	inline bool operator>(ButtonMapping l, ButtonMapping r) {
-		return l.button > r.button || (l.button == r.button && l.key > r.key);
-	}
-
-	inline bool operator<=(ButtonMapping l, ButtonMapping r) {
-		return !(l > r);
-	}
-
-	inline bool operator>=(ButtonMapping l, ButtonMapping r) {
-		return !(l < r);
-	}
+	/** A mapping for a button to a input key */
+	using ButtonMapping = ButtonMappingArray::pair_type;
 
 	inline std::ostream& operator<<(std::ostream& os, ButtonMapping bm) {
-		os << "{ " << kButtonNames.tag(bm.button) << ", " << Keys::kNames.tag(bm.key) << " }";
+		os << "{ " << kButtonNames.tag(bm.first) << ", " << Keys::kNames.tag(bm.second) << " }";
 		return os;
 	}
+
+	using DirectionMappingArray = FlatUniqueMultiMap<Direction::InputDirection, InputButton>;
 
 	/** A mapping for a single direction to a button */
-	struct DirectionMapping {
-		using domain_type = Direction::InputDirection;
-		using range_type = InputButton;
+	using DirectionMapping = DirectionMappingArray::pair_type;
 
-		Direction::InputDirection direction = Direction::NONE;
-		InputButton button = BUTTON_COUNT;
-	};
-
-	inline bool operator==(DirectionMapping l, DirectionMapping r) {
-		return l.direction == r.direction && l.button == r.button;
-	}
-
-	inline bool operator!=(DirectionMapping l, DirectionMapping r) {
-		return !(l == r);
-	}
-
-	inline bool operator<(DirectionMapping l, DirectionMapping r) {
-		return l.direction < r.direction || (l.direction == r.direction && l.button < r.button);
-	}
-
-	inline bool operator>(DirectionMapping l, DirectionMapping r) {
-		return l.direction > r.direction || (l.direction == r.direction && l.button > r.button);
-	}
-
-	inline bool operator<=(DirectionMapping l, DirectionMapping r) {
-		return !(l > r);
-	}
-
-	inline bool operator>=(DirectionMapping l, DirectionMapping r) {
-		return !(l < r);
-	}
-
-	inline std::ostream& operator<<(std::ostream& os, DirectionMapping bm) {
-		os << "{ " << Direction::kNames.tag(bm.direction) << ", " << kButtonNames.tag(bm.button) << " }";
+	inline std::ostream& operator<<(std::ostream& os, DirectionMapping dm) {
+		os << "{ " << Direction::kNames.tag(dm.first) << ", " << kButtonNames.tag(dm.second) << " }";
 		return os;
 	}
-
-	/** Container which contains all button mappings. The mappings are stored in sorted order. */
-	template <typename T>
-	class InputMappingArray {
-		public:
-			using value_type = T;
-			using container_type = std::vector<value_type>;
-			using domain_type = typename value_type::domain_type;
-			using range_type = typename value_type::range_type;
-
-			using iterator = typename container_type::iterator;
-			using const_iterator = typename container_type::const_iterator;
-
-			InputMappingArray() = default;
-			InputMappingArray(std::initializer_list<T> ilist);
-
-			/**
-			 * Check whether the input mapping is in the array.
-			 * @param im the mapping to check.
-			 * @return true if im is in the set.
-			 */
-			bool Has(value_type im) const;
-
-			/**
-			 * Adds the input mapping if it doesn't exist.
-			 * @param im the mapping to add
-			 * @return true if was added.
-			 */
-			bool Add(value_type im);
-
-			/**
-			 * Removes the input mapping if it exists.
-			 * @param im the mapping to remove
-			 * @return true if im was removed.
-			 */
-			bool Remove(value_type im);
-
-			/**
-			 * Removes all mappings for the given domain type.
-			 * @param d the domain to remove
-			 * @return the number of mappings removed.
-			 */
-			int RemoveAll(domain_type d);
-
-			/**
-			 * Replace all mappings for the given domain type with range type objects.
-			 * @param d the domain to remove
-			 * @param r the range to replace with.
-			 */
-			void ReplaceAll(domain_type d, const std::vector<range_type>& r);
-
-			/** Iterator to beginning */
-			iterator begin() { return mappings.begin(); }
-			/** Iterator to end */
-			iterator end() { return mappings.end(); }
-
-			/** Iterator to beginning */
-			const_iterator begin() const { return mappings.begin(); }
-			/** Iterator to end */
-			const_iterator end() const { return mappings.end(); }
-
-			/** @return the number of button mappings */
-			size_t size() const { return mappings.size(); }
-		private:
-			container_type mappings;
-	};
-
-	using ButtonMappingArray = InputMappingArray<ButtonMapping>;
-	using DirectionMappingArray = InputMappingArray<DirectionMapping>;
 
 	/** Returns default button mappings */
 	ButtonMappingArray GetDefaultButtonMappings();
