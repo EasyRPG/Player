@@ -22,108 +22,112 @@
 #include "keys.h"
 #include "libretro.h"
 
-void Input::InitButtons() {
+Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Basically the desktop keyboard mapping but with some functionality
 	// disabled because it is provided by libretro or not usable on these
 	// keys due to global hotkey pollution
-	buttons.resize(BUTTON_COUNT);
-	buttons[UP].push_back(Keys::UP);
-	buttons[UP].push_back(Keys::KP8);
-	buttons[UP].push_back(Keys::W);
-	buttons[DOWN].push_back(Keys::DOWN);
-	buttons[DOWN].push_back(Keys::KP2);
-	buttons[DOWN].push_back(Keys::S);
-	buttons[LEFT].push_back(Keys::LEFT);
-	buttons[LEFT].push_back(Keys::KP4);
-	buttons[LEFT].push_back(Keys::A);
-	buttons[RIGHT].push_back(Keys::RIGHT);
-	buttons[RIGHT].push_back(Keys::KP6);
-	buttons[RIGHT].push_back(Keys::D);
-	buttons[DECISION].push_back(Keys::Z);
-	buttons[DECISION].push_back(Keys::Y);
-	buttons[DECISION].push_back(Keys::SPACE);
-	buttons[DECISION].push_back(Keys::RETURN);
-	buttons[DECISION].push_back(Keys::SELECT);
-	buttons[CANCEL].push_back(Keys::AC_BACK);
-	buttons[CANCEL].push_back(Keys::X);
-	buttons[CANCEL].push_back(Keys::C);
-	buttons[CANCEL].push_back(Keys::V);
-	buttons[CANCEL].push_back(Keys::B);
-	buttons[CANCEL].push_back(Keys::ESCAPE);
-	buttons[CANCEL].push_back(Keys::KP0);
-	buttons[SHIFT].push_back(Keys::LSHIFT);
-	buttons[SHIFT].push_back(Keys::RSHIFT);
-	buttons[N0].push_back(Keys::N0);
-	buttons[N1].push_back(Keys::N1);
-	buttons[N2].push_back(Keys::N2);
-	buttons[N3].push_back(Keys::N3);
-	buttons[N4].push_back(Keys::N4);
-	buttons[N5].push_back(Keys::N5);
-	buttons[N6].push_back(Keys::N6);
-	buttons[N7].push_back(Keys::N7);
-	buttons[N8].push_back(Keys::N8);
-	buttons[N9].push_back(Keys::N9);
-	buttons[PLUS].push_back(Keys::ADD);
-	buttons[MINUS].push_back(Keys::SUBTRACT);
-	buttons[MULTIPLY].push_back(Keys::MULTIPLY);
-	buttons[DIVIDE].push_back(Keys::DIVIDE);
-	buttons[PERIOD].push_back(Keys::PERIOD);
-	buttons[DEBUG_MENU].push_back(Keys::F10); // remapped
-	buttons[DEBUG_THROUGH].push_back(Keys::LCTRL);
-	buttons[DEBUG_THROUGH].push_back(Keys::RCTRL);
-	buttons[SHOW_LOG].push_back(Keys::F3);
-	buttons[PAGE_UP].push_back(Keys::PGUP);
-	buttons[PAGE_DOWN].push_back(Keys::PGDN);
+	return {
+		,{UP, Keys::UP}
+		,{UP, Keys::KP8}
+		,{UP, Keys::W}
+		,{DOWN, Keys::DOWN}
+		,{DOWN, Keys::KP2}
+		,{DOWN, Keys::S}
+		,{LEFT, Keys::LEFT}
+		,{LEFT, Keys::KP4}
+		,{LEFT, Keys::A}
+		,{RIGHT, Keys::RIGHT}
+		,{RIGHT, Keys::KP6}
+		,{RIGHT, Keys::D}
+		,{DECISION, Keys::Z}
+		,{DECISION, Keys::Y}
+		,{DECISION, Keys::SPACE}
+		,{DECISION, Keys::RETURN}
+		,{DECISION, Keys::SELECT}
+		,{CANCEL, Keys::AC_BACK}
+		,{CANCEL, Keys::X}
+		,{CANCEL, Keys::C}
+		,{CANCEL, Keys::V}
+		,{CANCEL, Keys::B}
+		,{CANCEL, Keys::ESCAPE}
+		,{CANCEL, Keys::KP0}
+		,{SHIFT, Keys::LSHIFT}
+		,{SHIFT, Keys::RSHIFT}
+		,{N0, Keys::N0}
+		,{N1, Keys::N1}
+		,{N2, Keys::N2}
+		,{N3, Keys::N3}
+		,{N4, Keys::N4}
+		,{N5, Keys::N5}
+		,{N6, Keys::N6}
+		,{N7, Keys::N7}
+		,{N8, Keys::N8}
+		,{N9, Keys::N9}
+		,{PLUS, Keys::ADD}
+		,{MINUS, Keys::SUBTRACT}
+		,{MULTIPLY, Keys::MULTIPLY}
+		,{DIVIDE, Keys::DIVIDE}
+		,{PERIOD, Keys::PERIOD}
+		,{DEBUG_MENU, Keys::F10} // remapped
+		,{DEBUG_THROUGH, Keys::LCTRL}
+		,{DEBUG_THROUGH, Keys::RCTRL}
+		,{SHOW_LOG, Keys::F3}
+		,{PAGE_UP, Keys::PGUP}
+		,{PAGE_DOWN, Keys::PGDN}
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	buttons[UP].push_back(Keys::JOY_0);
-	buttons[DOWN].push_back(Keys::JOY_1);
-	buttons[LEFT].push_back(Keys::JOY_2);
-	buttons[RIGHT].push_back(Keys::JOY_3);
-	buttons[DECISION].push_back(Keys::JOY_4);
-	buttons[DECISION].push_back(Keys::JOY_7);
-	buttons[CANCEL].push_back(Keys::JOY_5);
-	buttons[SHIFT].push_back(Keys::JOY_6);
-	buttons[RESET].push_back(Keys::JOY_8);
+		,{UP, Keys::JOY_0}
+		,{DOWN, Keys::JOY_1}
+		,{LEFT, Keys::JOY_2}
+		,{RIGHT, Keys::JOY_3}
+		,{DECISION, Keys::JOY_4}
+		,{DECISION, Keys::JOY_7}
+		,{CANCEL, Keys::JOY_5}
+		,{SHIFT, Keys::JOY_6}
+		,{RESET, Keys::JOY_8}
 
-	buttons[N0].push_back(Keys::JOY_10);
-	buttons[N1].push_back(Keys::JOY_11);
-	buttons[N2].push_back(Keys::JOY_12);
-	buttons[N3].push_back(Keys::JOY_13);
-	buttons[N4].push_back(Keys::JOY_14);
-	buttons[N5].push_back(Keys::JOY_15);
-	buttons[N6].push_back(Keys::JOY_16);
-	buttons[N7].push_back(Keys::JOY_17);
-	buttons[N8].push_back(Keys::JOY_18);
-	buttons[N9].push_back(Keys::JOY_19);
-	buttons[PLUS].push_back(Keys::JOY_20);
-	buttons[MINUS].push_back(Keys::JOY_21);
-	buttons[MULTIPLY].push_back(Keys::JOY_22);
-	buttons[DIVIDE].push_back(Keys::JOY_23);
-	buttons[PERIOD].push_back(Keys::JOY_24);
-	buttons[DEBUG_MENU].push_back(Keys::JOY_25);
-	buttons[DEBUG_THROUGH].push_back(Keys::JOY_26);
+		,{N0, Keys::JOY_10}
+		,{N1, Keys::JOY_11}
+		,{N2, Keys::JOY_12}
+		,{N3, Keys::JOY_13}
+		,{N4, Keys::JOY_14}
+		,{N5, Keys::JOY_15}
+		,{N6, Keys::JOY_16}
+		,{N7, Keys::JOY_17}
+		,{N8, Keys::JOY_18}
+		,{N9, Keys::JOY_19}
+		,{PLUS, Keys::JOY_20}
+		,{MINUS, Keys::JOY_21}
+		,{MULTIPLY, Keys::JOY_22}
+		,{DIVIDE, Keys::JOY_23}
+		,{PERIOD, Keys::JOY_24}
+		,{DEBUG_MENU, Keys::JOY_25}
+		,{DEBUG_THROUGH, Keys::JOY_26}
 #endif
 
 #if defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT)
-	buttons[DOWN].push_back(Keys::JOY_HAT_DOWN);
-	buttons[LEFT].push_back(Keys::JOY_HAT_LEFT);
-	buttons[RIGHT].push_back(Keys::JOY_HAT_RIGHT);
-	buttons[UP].push_back(Keys::JOY_HAT_UP);
+		,{DOWN, Keys::JOY_HAT_DOWN}
+		,{LEFT, Keys::JOY_HAT_LEFT}
+		,{RIGHT, Keys::JOY_HAT_RIGHT}
+		,{UP, Keys::JOY_HAT_UP}
 #endif
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
-	buttons[LEFT].push_back(Keys::JOY_AXIS_X_LEFT);
-	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
-	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);
-	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
+		,{LEFT, Keys::JOY_AXIS_X_LEFT}
+		,{RIGHT, Keys::JOY_AXIS_X_RIGHT}
+		,{DOWN, Keys::JOY_AXIS_Y_DOWN}
+		,{UP, Keys::JOY_AXIS_Y_UP}
 #endif
+	};
+}
 
-	dir_buttons.resize(10);
-	dir_buttons[2].push_back(DOWN);
-	dir_buttons[4].push_back(LEFT);
-	dir_buttons[6].push_back(RIGHT);
-	dir_buttons[8].push_back(UP);
+Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+	return {
+		{ Direction::DOWN, DOWN },
+		{ Direction::LEFT, LEFT },
+		{ Direction::RIGHT, RIGHT },
+		{ Direction::UP, UP },
+	};
 }
 
 #endif

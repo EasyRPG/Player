@@ -21,50 +21,53 @@
 #include "input_buttons.h"
 #include "keys.h"
 
-void Input::InitButtons() {
-	buttons.resize(BUTTON_COUNT);
-
+Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Remote
-	buttons[TOGGLE_FPS].push_back(Keys::JOY_0); // A
-	buttons[SHIFT].push_back(Keys::JOY_1); // B
-	buttons[CANCEL].push_back(Keys::JOY_2); // 1
-	buttons[DECISION].push_back(Keys::JOY_3); // 2
-	buttons[FAST_FORWARD].push_back(Keys::JOY_4); // -
-	buttons[PLUS].push_back(Keys::JOY_5); // +
-	buttons[CANCEL].push_back(Keys::JOY_6); // Home
+	return {
+		{TOGGLE_FPS, Keys::JOY_0} // A
+		,{SHIFT, Keys::JOY_1} // B
+		,{CANCEL, Keys::JOY_2} // 1
+		,{DECISION, Keys::JOY_3} // 2
+		,{FAST_FORWARD, Keys::JOY_4} // -
+		,{PLUS, Keys::JOY_5} // +
+		,{CANCEL, Keys::JOY_6} // Home
 
-	// Nunchuck
-	buttons[DECISION].push_back(Keys::JOY_7); // Z
-	buttons[CANCEL].push_back(Keys::JOY_8); // C
+		// Nunchuck
+		,{DECISION, Keys::JOY_7} // Z
+		,{CANCEL, Keys::JOY_8} // C
 
-	// Classic Controller
-	buttons[DECISION].push_back(Keys::JOY_9); // A
-	buttons[CANCEL].push_back(Keys::JOY_10); // B
-	buttons[SHIFT].push_back(Keys::JOY_11); // X
-	buttons[N1].push_back(Keys::JOY_12); // Y
-	buttons[N3].push_back(Keys::JOY_13); // L
-	buttons[N5].push_back(Keys::JOY_14); // R
-	buttons[N9].push_back(Keys::JOY_15); // Zl
-	buttons[TOGGLE_FPS].push_back(Keys::JOY_16); // Zr
-	buttons[FAST_FORWARD].push_back(Keys::JOY_17); // -
-	buttons[PLUS].push_back(Keys::JOY_18); // +
-	buttons[CANCEL].push_back(Keys::JOY_19); // Home
+		// Classic Controller
+		,{DECISION, Keys::JOY_9} // A
+		,{CANCEL, Keys::JOY_10} // B
+		,{SHIFT, Keys::JOY_11} // X
+		,{N1, Keys::JOY_12} // Y
+		,{N3, Keys::JOY_13} // L
+		,{N5, Keys::JOY_14} // R
+		,{N9, Keys::JOY_15} // Zl
+		,{TOGGLE_FPS, Keys::JOY_16} // Zr
+		,{FAST_FORWARD, Keys::JOY_17} // -
+		,{PLUS, Keys::JOY_18} // +
+		,{CANCEL, Keys::JOY_19} // Home
 
-	buttons[DOWN].push_back(Keys::JOY_HAT_DOWN);
-	buttons[LEFT].push_back(Keys::JOY_HAT_LEFT);
-	buttons[RIGHT].push_back(Keys::JOY_HAT_RIGHT);
-	buttons[UP].push_back(Keys::JOY_HAT_UP);
+		,{DOWN, Keys::JOY_HAT_DOWN}
+		,{LEFT, Keys::JOY_HAT_LEFT}
+		,{RIGHT, Keys::JOY_HAT_RIGHT}
+		,{UP, Keys::JOY_HAT_UP}
 
-	buttons[LEFT].push_back(Keys::JOY_AXIS_X_LEFT);
-	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
-	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);	
-	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
+		,{LEFT, Keys::JOY_AXIS_X_LEFT}
+		,{RIGHT, Keys::JOY_AXIS_X_RIGHT}
+		,{DOWN, Keys::JOY_AXIS_Y_DOWN}
+		,{UP, Keys::JOY_AXIS_Y_UP}
+	};
+}
 
-	dir_buttons.resize(10);
-	dir_buttons[2].push_back(DOWN);
-	dir_buttons[4].push_back(LEFT);
-	dir_buttons[6].push_back(RIGHT);
-	dir_buttons[8].push_back(UP);
+Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+	return {
+		{ Direction::DOWN, DOWN },
+		{ Direction::LEFT, LEFT },
+		{ Direction::RIGHT, RIGHT },
+		{ Direction::UP, UP },
+	};
 }
 
 #endif

@@ -80,6 +80,7 @@ add_library(${PROJECT_NAME}
 	src/filefinder.cpp
 	src/filefinder.h
 	src/flash.h
+	src/flat_map.h
 	src/font.cpp
 	src/font.h
 	src/fps_overlay.cpp

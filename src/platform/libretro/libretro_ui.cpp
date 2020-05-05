@@ -522,7 +522,11 @@ static void init_easy_rpg() {
 	LibretroUi::player_exit_called = false;
 
 	Player::Init(0, nullptr);
-	Input::Init("", "");
+
+	auto buttons = Input::GetDefaultButtonMappings();
+	auto directions = Input::GetDefaultDirectionMappings();
+
+	Input::Init(std::move(buttons), std::move(directions), "", "");
 }
 
 /* Library global initialization/deinitialization. */
