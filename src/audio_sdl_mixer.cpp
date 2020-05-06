@@ -44,53 +44,49 @@
 using namespace std::chrono_literals;
 
 namespace {
+	struct RefHolder {
+		Filesystem::InputStream stream;
+	};
 
-	static Sint64 SDLCALL vio_size(struct SDL_RWops * context) {
-		auto* stream = (*reinterpret_cast<Filesystem::InputStream*>(context->hidden.unknown.data1)).get();
+	Sint64 SDLCALL vio_size(struct SDL_RWops * context) {
+		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
 		return stream->get_size();
 	}
 
-	static Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
-		auto* stream = (*reinterpret_cast<Filesystem::InputStream*>(context->hidden.unknown.data1)).get();
-		switch (whence) {
-		case RW_SEEK_CUR:
-			stream->seekg(offset, std::ios::ios_base::cur);
-			break;
-		case RW_SEEK_SET:
-			stream->seekg(offset, std::ios::ios_base::beg);
-			break;
-		case RW_SEEK_END:
-			stream->seekg(offset, std::ios::ios_base::end);
-			break;
-		default:
-			return -1;
-		}
+	Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
+		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
+
+		stream->seekg(offset, Filesystem::CSeekdirToCppSeekdir(whence));
 
 		return stream->tellg();
 	}
 
-	static size_t SDLCALL vio_read(struct SDL_RWops * context, void *ptr, size_t size, size_t maxnum) {
-		auto* stream = (*reinterpret_cast<Filesystem::InputStream*>(context->hidden.unknown.data1)).get();
+	size_t SDLCALL vio_read(struct SDL_RWops * context, void *ptr, size_t size, size_t maxnum) {
+		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
+
 		if (size == 0) return 0;
-		return stream->read(reinterpret_cast<char*>(ptr), size*maxnum).gcount() / size;
+
+		return stream->read(reinterpret_cast<char*>(ptr), size * maxnum).gcount() / size;
 	}
 
-	static size_t SDLCALL vio_write(struct SDL_RWops * context, const void *ptr, size_t size, size_t num) {
-		// Not supported
+	size_t SDLCALL vio_write(struct SDL_RWops*, const void*, size_t, size_t) {
+		// Not needed
 		return 0;
 	}
 
-	static int SDLCALL vio_close(struct SDL_RWops * context) {
+	int SDLCALL vio_close(struct SDL_RWops * context) {
 		// If this is the last shared pointer, the stream get's closed now
-		delete reinterpret_cast<Filesystem::InputStream*>(context->hidden.unknown.data1);
-		context->hidden.unknown.data1 = NULL;
+		auto stream_ref = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1);
+		delete stream_ref;
+
+		context->hidden.unknown.data1 = nullptr;
 		return 0;
 	}
 
-	SDL_RWops * create_StreamRWOps(Filesystem::InputStream stream){
+	SDL_RWops* create_StreamRWOps(Filesystem::InputStream stream){
 		SDL_RWops * ret = SDL_AllocRW();
 		// create a new shared pointer to avoid deletion of the content when the scope of this function ends
-		ret->hidden.unknown.data1 = new Filesystem::InputStream(stream);
+		ret->hidden.unknown.data1 = new RefHolder { std::move(stream) };
 		ret->close = vio_close;
 		ret->read = vio_read;
 		ret->write = vio_write;
@@ -315,7 +311,7 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 }
 
 void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
-	auto filestream = FileFinder::OpenInputStream(file, std::ios::ios_base::in| std::ios::ios_base::binary);
+	auto filestream = FileFinder::OpenInputStream(file);
 	if (!filestream) {
 		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 		return;
@@ -327,15 +323,16 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	}
 
 	filestream = FileFinder::OpenInputStream(file);
-	SDL_RWops *rw = create_StreamRWOps(filestream); //SDL_RWFromFile(file.c_str(), "rb");
+	SDL_RWops* rw = create_StreamRWOps(filestream);
 
 	bgm_stop = false;
 	played_once = false;
 
+	// rw will be freed in Mix_FreeMusic
 #if SDL_MIXER_MAJOR_VERSION>1
-	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic); //rw will be freed on MIX_FreeMusic
+	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
 #else
-	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic); //rw will be freed on MIX_FreeMusic
+	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
 #endif
 
 #if SDL_MIXER_MAJOR_VERSION>1
@@ -667,7 +664,9 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (!snd_data.chunk) {
-		snd_data.chunk.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
+		SDL_RWops* rw = create_StreamRWOps(FileFinder::OpenInputStream(file));
+
+		snd_data.chunk.reset(Mix_LoadWAV_RW(rw, 1), &Mix_FreeChunk);
 		if (!snd_data.chunk) {
 			Output::Warning("Couldn't load {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 			return;
