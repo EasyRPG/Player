@@ -46,13 +46,6 @@ public:
 		F32
 	};
 
-	/** Seek origin for Seek command */
-	enum class Origin {
-		Begin = 0,
-		Current = 1,
-		End = 2
-	};
-
 	/**
 	 * Writes 'size' bytes in the specified buffer. The data matches the format
 	 * reported by GetFormat.
@@ -253,13 +246,13 @@ public:
 	/**
 	 * Seeks in the audio stream. The value of offset is implementation
 	 * defined but is guaranteed to match the result of Tell.
-	 * Only Rewinding is guaranteed to work.
+	 * Libraries must support at least seek from the start for Rewind().
 	 *
 	 * @param offset Offset to seek to
 	 * @param origin Position to seek from
 	 * @return Whether seek was successful
 	 */
-	virtual bool Seek(size_t offset, Origin origin);
+	virtual bool Seek(std::streamoff offset, std::ios_base::seekdir origin) = 0;
 
 	/**
 	 * Tells the current stream position. The value is implementation
@@ -267,7 +260,7 @@ public:
 	 *
 	 * @return Position in the stream
 	 */
-	virtual size_t Tell() const;
+	virtual std::streampos Tell() const;
 
 	/**
 	 * Returns a value suitable for the GetMidiTicks command.

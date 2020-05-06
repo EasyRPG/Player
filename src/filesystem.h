@@ -19,6 +19,7 @@
 #define EP_FILESYSTEM_H
 
 // Headers
+#include <cassert>
 #include <istream>
 #include <ostream>
 #include "system.h"
@@ -50,6 +51,38 @@ public:
 		explicit vfs_ostream(std::streambuf *sb);
 		~vfs_ostream() override;
 	};
+
+	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
+
+	static constexpr int CppSeekdirToCSeekdir(std::ios_base::seekdir origin);
 };
+
+constexpr std::ios_base::seekdir Filesystem::CSeekdirToCppSeekdir(int origin) {
+	switch (origin) {
+		case SEEK_SET:
+			return std::ios_base::beg;
+		case SEEK_CUR:
+			return std::ios_base::cur;
+		case SEEK_END:
+			return std::ios_base::end;
+		default:
+			assert(false);
+			return std::ios_base::beg;
+	}
+}
+
+constexpr int Filesystem::CppSeekdirToCSeekdir(std::ios_base::seekdir origin) {
+	switch (origin) {
+		case std::ios_base::beg:
+			return SEEK_SET;
+		case std::ios_base::cur:
+			return SEEK_CUR;
+		case std::ios_base::end:
+			return SEEK_END;
+		default:
+			assert(false);
+			return SEEK_SET;
+	}
+}
 
 #endif

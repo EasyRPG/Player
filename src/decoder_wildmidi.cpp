@@ -331,8 +331,8 @@ bool WildMidiDecoder::Open(Filesystem::InputStream stream) {
 	return true;
 }
 
-bool WildMidiDecoder::Seek(size_t offset, Origin origin) {
-	if (offset == 0 && origin == Origin::Begin) {
+bool WildMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		if (handle) {
 			unsigned long int pos = 0;
 			WildMidi_FastSeek(handle, &pos);

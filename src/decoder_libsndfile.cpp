@@ -43,17 +43,9 @@ static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, voi
 static sf_count_t sf_vio_seek_impl(sf_count_t offset, int seek_type, void *userdata) {
 	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
-	switch (seek_type) {
-	case SEEK_CUR:
-		f->seekg(offset, std::ios::ios_base::cur);
-		break;
-	case SEEK_SET:
-		f->seekg(offset, std::ios::ios_base::beg);
-		break;
-	case SEEK_END:
-		f->seekg(offset, std::ios::ios_base::end);
-		break;
-	}
+
+	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(seek_type));
+
 	return f->tellg();
 }
 
@@ -92,13 +84,13 @@ bool LibsndfileDecoder::Open(Filesystem::InputStream stream) {
 	return soundfile!=0;
 }
 
-bool LibsndfileDecoder::Seek(size_t offset, Origin /* origin */) {
+bool LibsndfileDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
 	if(soundfile == 0)
 		return false;
-	// FIXME: Proper sample count for seek
-	decoded_samples = 0;
-	return sf_seek(soundfile,offset,SEEK_SET)!=-1;
+
+// FIXME: Proper sample count for seek
+	decoded_samples = 0;	return sf_seek(soundfile, offset, Filesystem::CppSeekdirToCSeekdir(origin))!=-1;
 }
 
 bool LibsndfileDecoder::IsFinished() const {

@@ -46,7 +46,6 @@ bool XMPDecoder::Open(Filesystem::InputStream stream) {
 	if (!ctx)
 		return false;
 
-	Output::Debug("MOD Size: %d\n", stream->get_size());
 	file_buffer.resize(stream->get_size());
 	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
 		
@@ -73,11 +72,11 @@ bool XMPDecoder::Open(Filesystem::InputStream stream) {
 	return true;
 }
 
-bool XMPDecoder::Seek(size_t offset, Origin origin) {
+bool XMPDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (!ctx)
 		return false;
 
-	if (offset == 0 && origin == Origin::Begin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		xmp_restart_module(ctx);
 		finished = false;
 		return true;

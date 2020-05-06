@@ -36,19 +36,8 @@ static size_t vio_read_func(void *ptr, size_t size,size_t nmemb,void* userdata) 
 static int vio_seek_func(void* userdata, ogg_int64_t offset, int seek_type) {
 	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
-	switch (seek_type) {
-	case SEEK_CUR:
-		f->seekg(offset, std::ios::ios_base::cur);
-		break;
-	case SEEK_SET:
-		f->seekg(offset, std::ios::ios_base::beg);
-		break;
-	case SEEK_END:
-		f->seekg(offset, std::ios::ios_base::end);
-		break;
-	default:
-		return -1;
-	}
+
+	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(seek_type));
 
 	return f->tellg();
 }
@@ -107,8 +96,8 @@ bool OggVorbisDecoder::Open(Filesystem::InputStream stream) {
 	return true;
 }
 
-bool OggVorbisDecoder::Seek(size_t offset, Origin origin) {
-	if (offset == 0 && origin == Origin::Begin) {
+bool OggVorbisDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		if (ovf) {
 			ov_raw_seek(ovf, 0);
 		}

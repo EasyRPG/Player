@@ -33,19 +33,8 @@ static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
 static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
 	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
-	switch (whence) {
-		case SEEK_CUR:
-			f->seekg(offset, std::ios::ios_base::cur);
-			break;
-		case SEEK_SET:
-			f->seekg(offset, std::ios::ios_base::beg);
-			break;
-		case SEEK_END:
-			f->seekg(offset, std::ios::ios_base::end);
-			break;
-		default:
-			return -1;
-	}
+
+	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(whence));
 
 	return 0;
 }
@@ -89,8 +78,8 @@ bool OpusDecoder::Open(Filesystem::InputStream stream) {
 	return true;
 }
 
-bool OpusDecoder::Seek(size_t offset, Origin origin) {
-	if (offset == 0 && origin == Origin::Begin) {
+bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+	if (offset == 0 && origin == std::ios::beg) {
 		if (oof) {
 			op_raw_seek(oof, 0);
 		}

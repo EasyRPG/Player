@@ -39,7 +39,7 @@ public:
 
 	bool Open(Filesystem::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 
@@ -48,7 +48,6 @@ public:
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
 	int GetTicks() const override;
-
 
 	static bool IsMp3(Filesystem::InputStream stream);
 private:

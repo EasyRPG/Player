@@ -94,7 +94,7 @@ bool WavDecoder::Open(Filesystem::InputStream stream) {
 	return stream->good();
 }
 
-bool WavDecoder::Seek(size_t offset, Origin origin) {
+bool WavDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
 	if (!stream)
 		return false;
@@ -104,18 +104,8 @@ bool WavDecoder::Seek(size_t offset, Origin origin) {
 	// FIXME: Proper sample count for seek
 	decoded_samples = 0;
 
-	bool success = false;
-	switch (origin) {
-	case Origin::Begin:
-		success = stream->seekg(offset, std::ios::ios_base::beg).good();
-		break;
-	case Origin::Current:
-		success = stream->seekg(offset, std::ios::ios_base::cur).good();
-		break;
-	case Origin::End:
-		success = stream->seekg(offset, std::ios::ios_base::end).good();
-		break;
-	}
+	bool success = stream->seekg(offset, origin).good();
+
 	if (!success) { stream->clear(); }
 	cur_pos = stream->tellg();
 	return success;

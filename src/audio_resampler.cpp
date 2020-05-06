@@ -278,7 +278,7 @@ bool AudioResampler::Open(Filesystem::InputStream stream) {
 	return false;
 }
 
-bool AudioResampler::Seek(size_t offset, Origin origin) {
+bool AudioResampler::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (wrapped_decoder->Seek(offset, origin)) {
 		//reset conversion data
 		conversion_data.input_frames = 0;
@@ -295,7 +295,7 @@ bool AudioResampler::Seek(size_t offset, Origin origin) {
 
 }
 
-size_t AudioResampler::Tell() const {
+std::streampos AudioResampler::Tell() const {
 	return wrapped_decoder->Tell();
 }
 

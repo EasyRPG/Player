@@ -107,6 +107,7 @@ public:
 	bool Open(Filesystem::InputStream stream) override { return false; }
 	bool IsFinished() const override { return true; }
 	void GetFormat(int&, Format&, int&) const override {}
+	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
 private:
 	int FillBuffer(uint8_t*, int) override { return -1; };
 };
@@ -337,7 +338,7 @@ int AudioDecoder::GetVolume() const {
 }
 
 void AudioDecoder::Rewind() {
-	if (!Seek(0, Origin::Begin)) {
+	if (!Seek(0, std::ios_base::beg)) {
 		// The libs guarantee that Rewind works
 		assert(false && "Rewind");
 	}
@@ -379,11 +380,7 @@ bool AudioDecoder::SetPitch(int) {
 	return false;
 }
 
-bool AudioDecoder::Seek(size_t, Origin) {
-	return false;
-}
-
-size_t AudioDecoder::Tell() const {
+std::streampos AudioDecoder::Tell() const {
 	return -1;
 }
 

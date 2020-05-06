@@ -38,7 +38,7 @@ public:
 	// Audio Decoder interface
 	bool Open(Filesystem::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 

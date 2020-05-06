@@ -37,17 +37,8 @@ static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
 static off_t custom_seek(void* io, off_t offset, int seek_type) {
 	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(io);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
-	switch (seek_type) {
-	case SEEK_CUR:
-		f->seekg(offset, std::ios::ios_base::cur);
-		break;
-	case SEEK_SET:
-		f->seekg(offset, std::ios::ios_base::beg);
-		break;
-	case SEEK_END:
-		f->seekg(offset, std::ios::ios_base::end);
-		break;
-	}
+
+	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(seek_type));
 
 	return f->tellg();
 }
@@ -113,9 +104,9 @@ bool Mpg123Decoder::Open(Filesystem::InputStream stream) {
 	return true;
 }
 
-bool Mpg123Decoder::Seek(size_t offset, Origin origin) {
+bool Mpg123Decoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
-	mpg123_seek_frame(handle.get(), offset, (int)origin);
+	mpg123_seek_frame(handle.get(), offset, Filesystem::CppSeekdirToCSeekdir(origin));
 
 	return true;
 }
