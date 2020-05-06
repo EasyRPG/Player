@@ -43,8 +43,8 @@ static off_t custom_seek(void* io, off_t offset, int seek_type) {
 	return f->tellg();
 }
 
-static void custom_close(void* io) {
-	//do nothing
+static void custom_close(void*) {
+	// do nothing
 }
 
 static void noop_close(void*) {}
@@ -200,7 +200,6 @@ int Mpg123Decoder::GetTicks() const {
 	off_t pos = mpg123_tell(handle.get());
 	return pos / samplerate;
 }
-
 
 bool Mpg123Decoder::IsMp3(Filesystem::InputStream stream) {
 	Mpg123Decoder decoder;

@@ -26,7 +26,6 @@
 #include "decoder_oggvorbis.h"
 #include "filesystem.h"
 
-
 static size_t vio_read_func(void *ptr, size_t size,size_t nmemb,void* userdata) {
 	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
 	if (size == 0) return 0;

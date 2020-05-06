@@ -52,7 +52,7 @@ class AudioSeDecoder : public AudioDecoder {
 public:
 	AudioSeDecoder(AudioSeRef se);
 
-	bool Open(Filesystem::InputStream stream) override { return true; };
+	bool Open(Filesystem::InputStream) override { return true; };
 	bool IsFinished() const override;
 	void GetFormat(int& frequency, Format& format, int& channels) const override;
 	int GetPitch() const override;

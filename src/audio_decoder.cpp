@@ -104,7 +104,7 @@ public:
 		error_message = std::string("WMA audio files are not supported. Reinstall the\n") +
 			"game and don't convert them when asked by Windows!\n";
 	}
-	bool Open(Filesystem::InputStream stream) override { return false; }
+	bool Open(Filesystem::InputStream) override { return false; }
 	bool IsFinished() const override { return true; }
 	void GetFormat(int&, Format&, int&) const override {}
 	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }

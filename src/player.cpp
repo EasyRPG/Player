@@ -790,7 +790,7 @@ void Player::CreateGameObjects() {
 		// a ExFont can be manually bundled there)
 		std::string exep = FileFinder::FindDefault(EXE_NAME);
 		if (!exep.empty()) {
-			auto exesp = FileFinder::OpenInputStream(exep, std::ios::binary | std::ios::in);
+			auto exesp = FileFinder::OpenInputStream(exep);
 			if (exesp) {
 				Output::Debug("Loading ExFont from {}", exep);
 				EXEReader exe_reader = EXEReader(exesp);
@@ -804,7 +804,7 @@ void Player::CreateGameObjects() {
 	}
 #endif
 	if (!exfont_file.empty()) {
-		auto exfont_stream = FileFinder::OpenInputStream(exfont_file, std::ios::binary | std::ios::in);
+		auto exfont_stream = FileFinder::OpenInputStream(exfont_file);
 		if (exfont_stream) {
 			Output::Debug("Using custom ExFont: {}", exfont_file);
 			Cache::exfont_custom = Utils::ReadStream(*exfont_stream);
@@ -886,7 +886,7 @@ void Player::LoadDatabase() {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
 
-		auto ldb_stream = FileFinder::OpenInputStream(ldb, std::ios::ios_base::in| std::ios::ios_base::binary);
+		auto ldb_stream = FileFinder::OpenInputStream(ldb);
 		if (!lcf::LDB_Reader::Load(*ldb_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}

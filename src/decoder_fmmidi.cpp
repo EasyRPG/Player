@@ -54,7 +54,6 @@ int read_func(void* instance) {
 
 bool FmMidiDecoder::Open(Filesystem::InputStream stream) {
 	seq->clear();
-	Output::Debug("MIDI Size: %d\n", stream->get_size());
 	file_buffer.resize(stream->get_size());
 	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
 	size_t bytes_read = stream->gcount();

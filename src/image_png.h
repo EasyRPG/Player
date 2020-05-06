@@ -18,11 +18,7 @@
 #ifndef EP_IMAGE_PNG_H
 #define EP_IMAGE_PNG_H
 
-#include "system.h"
 #include "filesystem.h"
-
-#include <istream>
-#include <ostream>
 
 namespace ImagePNG {
 	bool ReadPNG(const void* buffer, bool transparent, int& width, int& height, void*& pixels);

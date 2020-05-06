@@ -120,7 +120,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
 
-	stream.reset(); //Deletes the stream and closes the file
+	stream.reset();
 
 	if (!img_okay) {
 		free(pixels);

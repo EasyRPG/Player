@@ -98,7 +98,7 @@ bool WavDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
 	if (!stream)
 		return false;
-	if (origin == Origin::Begin) {
+	if (origin == std::ios_base::beg) {
 		offset += audiobuf_offset;
 	}
 	// FIXME: Proper sample count for seek

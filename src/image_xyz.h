@@ -20,7 +20,6 @@
 
 #include <cstdio>
 #include "filesystem.h"
-#include "system.h"
 
 namespace ImageXYZ {
 	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
