@@ -71,9 +71,35 @@ std::string get_timidity_path_jni() {
 #endif
 
 static bool init = false;
-static void WildMidiDecoder_deinit(void) {
+static void WildMidiDecoder_deinit() {
 	WildMidi_Shutdown();
 }
+
+#if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
+static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
+	auto stream = FileFinder::OpenInputStream(filename);
+	if (!stream) {
+		return nullptr;
+	}
+
+	auto s = stream->get_size();
+	*size = s;
+
+	char* buffer = reinterpret_cast<char*>(malloc(s));
+	stream->read(buffer, s);
+
+	return buffer;
+}
+
+static void vio_free_file_func(void* buffer) {
+	free(buffer);
+}
+
+static struct _WM_VIO vio = {
+	vio_allocate_file_func,
+	vio_free_file_func
+};
+#endif
 
 WildMidiDecoder::WildMidiDecoder() {
 	music_type = "midi";
@@ -271,7 +297,12 @@ WildMidiDecoder::WildMidiDecoder() {
 	}
 	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
 
+#if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
+	init = (WildMidi_InitVIO(&vio, config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+#else
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+#endif
+
 	if (!init) {
 		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
 		return;
