@@ -23,120 +23,120 @@
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
-		{UP, Keys::UP}
-		,{UP, Keys::K}
-		,{UP, Keys::KP8}
-		,{UP, Keys::W}
-		,{DOWN, Keys::DOWN}
-		,{DOWN, Keys::J}
-		,{DOWN, Keys::KP2}
-		,{DOWN, Keys::S}
-		,{LEFT, Keys::LEFT}
-		,{LEFT, Keys::H}
-		,{LEFT, Keys::KP4}
-		,{LEFT, Keys::A}
-		,{RIGHT, Keys::RIGHT}
-		,{RIGHT, Keys::L}
-		,{RIGHT, Keys::KP6}
-		,{RIGHT, Keys::D}
-		,{DECISION, Keys::Z}
-		,{DECISION, Keys::Y}
-		,{DECISION, Keys::SPACE}
-		,{DECISION, Keys::RETURN}
-		,{DECISION, Keys::SELECT}
-		,{CANCEL, Keys::AC_BACK}
-		,{CANCEL, Keys::X}
-		,{CANCEL, Keys::C}
-		,{CANCEL, Keys::V}
-		,{CANCEL, Keys::B}
-		,{CANCEL, Keys::N}
-		,{CANCEL, Keys::ESCAPE}
-		,{CANCEL, Keys::KP0}
-		,{SHIFT, Keys::LSHIFT}
-		,{SHIFT, Keys::RSHIFT}
-		,{N0, Keys::N0}
-		,{N1, Keys::N1}
-		,{N2, Keys::N2}
-		,{N3, Keys::N3}
-		,{N4, Keys::N4}
-		,{N5, Keys::N5}
-		,{N6, Keys::N6}
-		,{N7, Keys::N7}
-		,{N8, Keys::N8}
-		,{N9, Keys::N9}
-		,{PLUS, Keys::ADD}
-		,{MINUS, Keys::SUBTRACT}
-		,{MULTIPLY, Keys::MULTIPLY}
-		,{DIVIDE, Keys::DIVIDE}
-		,{PERIOD, Keys::PERIOD}
-		,{DEBUG_MENU, Keys::F9}
-		,{DEBUG_THROUGH, Keys::LCTRL}
-		,{DEBUG_THROUGH, Keys::RCTRL}
-		,{DEBUG_SAVE, Keys::F11}
-		,{TAKE_SCREENSHOT, Keys::F10}
-		,{TOGGLE_FPS, Keys::F2}
-		,{SHOW_LOG, Keys::F3}
-		,{TOGGLE_FULLSCREEN, Keys::F4}
-		,{TOGGLE_ZOOM, Keys::F5}
-		,{PAGE_UP, Keys::PGUP}
-		,{PAGE_DOWN, Keys::PGDN}
-		,{RESET, Keys::F12}
-		,{FAST_FORWARD, Keys::F}
+		{UP, Keys::UP},
+		{UP, Keys::K},
+		{UP, Keys::KP8},
+		{UP, Keys::W},
+		{DOWN, Keys::DOWN},
+		{DOWN, Keys::J},
+		{DOWN, Keys::KP2},
+		{DOWN, Keys::S},
+		{LEFT, Keys::LEFT},
+		{LEFT, Keys::H},
+		{LEFT, Keys::KP4},
+		{LEFT, Keys::A},
+		{RIGHT, Keys::RIGHT},
+		{RIGHT, Keys::L},
+		{RIGHT, Keys::KP6},
+		{RIGHT, Keys::D},
+		{DECISION, Keys::Z},
+		{DECISION, Keys::Y},
+		{DECISION, Keys::SPACE},
+		{DECISION, Keys::RETURN},
+		{DECISION, Keys::SELECT},
+		{CANCEL, Keys::AC_BACK},
+		{CANCEL, Keys::X},
+		{CANCEL, Keys::C},
+		{CANCEL, Keys::V},
+		{CANCEL, Keys::B},
+		{CANCEL, Keys::N},
+		{CANCEL, Keys::ESCAPE},
+		{CANCEL, Keys::KP0},
+		{SHIFT, Keys::LSHIFT},
+		{SHIFT, Keys::RSHIFT},
+		{N0, Keys::N0},
+		{N1, Keys::N1},
+		{N2, Keys::N2},
+		{N3, Keys::N3},
+		{N4, Keys::N4},
+		{N5, Keys::N5},
+		{N6, Keys::N6},
+		{N7, Keys::N7},
+		{N8, Keys::N8},
+		{N9, Keys::N9},
+		{PLUS, Keys::ADD},
+		{MINUS, Keys::SUBTRACT},
+		{MULTIPLY, Keys::MULTIPLY},
+		{DIVIDE, Keys::DIVIDE},
+		{PERIOD, Keys::PERIOD},
+		{DEBUG_MENU, Keys::F9},
+		{DEBUG_THROUGH, Keys::LCTRL},
+		{DEBUG_THROUGH, Keys::RCTRL},
+		{DEBUG_SAVE, Keys::F11},
+		{TAKE_SCREENSHOT, Keys::F10},
+		{TOGGLE_FPS, Keys::F2},
+		{SHOW_LOG, Keys::F3},
+		{TOGGLE_FULLSCREEN, Keys::F4},
+		{TOGGLE_ZOOM, Keys::F5},
+		{PAGE_UP, Keys::PGUP},
+		{PAGE_DOWN, Keys::PGDN},
+		{RESET, Keys::F12},
+		{FAST_FORWARD, Keys::F},
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-		,{DECISION, Keys::MOUSE_LEFT}
-		,{CANCEL, Keys::MOUSE_RIGHT}
-		,{SHIFT, Keys::MOUSE_MIDDLE}
-		,{SCROLL_UP, Keys::MOUSE_SCROLLUP}
-		,{SCROLL_DOWN, Keys::MOUSE_SCROLLDOWN}
+		{DECISION, Keys::MOUSE_LEFT},
+		{CANCEL, Keys::MOUSE_RIGHT},
+		{SHIFT, Keys::MOUSE_MIDDLE},
+		{SCROLL_UP, Keys::MOUSE_SCROLLUP},
+		{SCROLL_DOWN, Keys::MOUSE_SCROLLDOWN},
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 		// FIXME: Random joystick keys mapping, better to read joystick configuration from .ini
-		,{UP, Keys::JOY_8}
-		,{DOWN, Keys::JOY_2}
-		,{LEFT, Keys::JOY_4}
-		,{RIGHT, Keys::JOY_6}
-		,{DECISION, Keys::JOY_1}
-		,{CANCEL, Keys::JOY_3}
-		,{SHIFT, Keys::JOY_5}
-		,{N0, Keys::JOY_10}
-		,{N1, Keys::JOY_11}
-		,{N2, Keys::JOY_12}
-		,{N3, Keys::JOY_13}
-		,{N4, Keys::JOY_14}
-		,{N5, Keys::JOY_15}
-		,{N6, Keys::JOY_16}
-		,{N7, Keys::JOY_17}
-		,{N8, Keys::JOY_18}
-		,{N9, Keys::JOY_19}
-		,{PLUS, Keys::JOY_20}
-		,{MINUS, Keys::JOY_21}
-		,{MULTIPLY, Keys::JOY_22}
-		,{DIVIDE, Keys::JOY_23}
-		,{PERIOD, Keys::JOY_24}
-		,{DEBUG_MENU, Keys::JOY_7}
-		,{DEBUG_THROUGH, Keys::JOY_9}
+		{UP, Keys::JOY_8},
+		{DOWN, Keys::JOY_2},
+		{LEFT, Keys::JOY_4},
+		{RIGHT, Keys::JOY_6},
+		{DECISION, Keys::JOY_1},
+		{CANCEL, Keys::JOY_3},
+		{SHIFT, Keys::JOY_5},
+		{N0, Keys::JOY_10},
+		{N1, Keys::JOY_11},
+		{N2, Keys::JOY_12},
+		{N3, Keys::JOY_13},
+		{N4, Keys::JOY_14},
+		{N5, Keys::JOY_15},
+		{N6, Keys::JOY_16},
+		{N7, Keys::JOY_17},
+		{N8, Keys::JOY_18},
+		{N9, Keys::JOY_19},
+		{PLUS, Keys::JOY_20},
+		{MINUS, Keys::JOY_21},
+		{MULTIPLY, Keys::JOY_22},
+		{DIVIDE, Keys::JOY_23},
+		{PERIOD, Keys::JOY_24},
+		{DEBUG_MENU, Keys::JOY_7},
+		{DEBUG_THROUGH, Keys::JOY_9},
 #endif
 
 #if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
-		,{DOWN, Keys::JOY_HAT_DOWN}
-		,{LEFT, Keys::JOY_HAT_LEFT}
-		,{RIGHT, Keys::JOY_HAT_RIGHT}
-		,{UP, Keys::JOY_HAT_UP}
+		{DOWN, Keys::JOY_HAT_DOWN},
+		{LEFT, Keys::JOY_HAT_LEFT},
+		{RIGHT, Keys::JOY_HAT_RIGHT},
+		{UP, Keys::JOY_HAT_UP},
 
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-		,{LEFT, Keys::JOY_AXIS_X_LEFT}
-		,{RIGHT, Keys::JOY_AXIS_X_RIGHT}
-		,{DOWN, Keys::JOY_AXIS_Y_DOWN}
-		,{UP, Keys::JOY_AXIS_Y_UP}
+		{LEFT, Keys::JOY_AXIS_X_LEFT},
+		{RIGHT, Keys::JOY_AXIS_X_RIGHT},
+		{DOWN, Keys::JOY_AXIS_Y_DOWN},
+		{UP, Keys::JOY_AXIS_Y_UP},
 #endif
 
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-		,{DECISION, Keys::ONE_FINGER}
-		,{CANCEL, Keys::TWO_FINGERS}
+		{DECISION, Keys::ONE_FINGER},
+		{CANCEL, Keys::TWO_FINGERS},
 #endif
 	};
 }

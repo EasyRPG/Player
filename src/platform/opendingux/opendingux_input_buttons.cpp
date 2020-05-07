@@ -23,19 +23,19 @@
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
-		{UP, Keys::UP}
-		,{DOWN, Keys::DOWN}
-		,{LEFT, Keys::LEFT}
-		,{RIGHT, Keys::RIGHT}
-		,{DECISION, Keys::RETURN} //START
-		,{DECISION, Keys::LCTRL} //A
-		,{CANCEL, Keys::ESCAPE} //SELECT
-		,{CANCEL, Keys::LALT} //B
-		,{N1, Keys::LSHIFT}//Y
-		,{N2, Keys::SPACE}//X
+		{UP, Keys::UP},
+		{DOWN, Keys::DOWN},
+		{LEFT, Keys::LEFT},
+		{RIGHT, Keys::RIGHT},
+		{DECISION, Keys::RETURN}, //START
+		{DECISION, Keys::LCTRL}, //A
+		{CANCEL, Keys::ESCAPE}, //SELECT
+		{CANCEL, Keys::LALT}, //B
+		{N1, Keys::LSHIFT},//Y
+		{N2, Keys::SPACE},//X
 
-		,{DEBUG_MENU, Keys::TAB}//L
-		,{DEBUG_THROUGH, Keys::BACKSPACE}//R
+		{DEBUG_MENU, Keys::TAB},//L
+		{DEBUG_THROUGH, Keys::BACKSPACE},//R
 	};
 }
 
