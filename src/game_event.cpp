@@ -34,29 +34,72 @@
 #include <cmath>
 #include <cassert>
 
-Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event) :
+Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 	Game_Character(Event, new lcf::rpg::SaveMapEvent()),
 	_data_copy(this->data()),
 	event(event)
 {
+	data()->ID = event->ID;
 	SetMapId(map_id);
-	SetMoveSpeed(3);
-	MoveTo(event.x, event.y);
 	Refresh();
 }
 
-Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& orig_data) :
-	//FIXME: This will leak if Game_Character() throws.
-	Game_Character(Event, new lcf::rpg::SaveMapEvent(orig_data)),
-	_data_copy(this->data()),
-	event(event)
+void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 {
 	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
+	auto map_id = GetMapId();
+	*_data_copy = std::move(save);
+
+	_data_copy->ID = event->ID;
 	SetMapId(map_id);
 
-	this->event.ID = data()->ID;
+	if (!data()->active || page == nullptr) {
+		return;
+	}
 
-	Refresh(true);
+	if (interpreter) {
+		interpreter->Clear();
+	}
+
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
+		auto& state = data()->parallel_event_execstate;
+		// RPG_RT Savegames have empty stacks for parallel events.
+		// We are LSD compatible but don't load these into interpreter.
+		bool has_state = (!state.stack.empty() && !state.stack.front().commands.empty());
+		// If the page changed before save but the event never updated,
+		// there will be not stack but we still need to create an interpreter
+		// for the event page commands.
+		if (has_state || !page->event_commands.empty()) {
+			if (!interpreter) {
+				interpreter.reset(new Game_Interpreter_Map());
+			}
+		}
+
+		if (has_state) {
+			interpreter->SetState(state);
+		}
+	}
+}
+
+lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
+	auto save = *data();
+
+	lcf::rpg::SaveEventExecState state;
+	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
+		if (interpreter) {
+			state = interpreter->GetState();
+		}
+
+		if (state.stack.empty() && page->event_commands.empty()) {
+			// RPG_RT always stores an empty stack frame for empty parallel events.
+			lcf::rpg::SaveEventExecFrame frame;
+			frame.event_id = GetId();
+			state.stack.push_back(std::move(frame));
+		}
+	}
+	save.parallel_event_execstate = std::move(state);
+
+	return save;
 }
 
 int Game_Event::GetOriginalMoveRouteIndex() const {
@@ -136,50 +179,14 @@ void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
 	}
 }
 
-void Game_Event::SetupFromSave(const lcf::rpg::EventPage* new_page) {
-	page = new_page;
-
-	if (page == nullptr) {
-		return;
-	}
-
-	original_move_frequency = page->move_frequency;
-
-	if (interpreter) {
-		interpreter->Clear();
-	}
-
-	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
-		auto& state = data()->parallel_event_execstate;
-		// RPG_RT Savegames have empty stacks for parallel events.
-		// We are LSD compatible but don't load these into interpreter.
-		bool has_state = (!state.stack.empty() && !state.stack.front().commands.empty());
-		// If the page changed before save but the event never updated,
-		// there will be not stack but we still need to create an interpreter
-		// for the event page commands.
-		if (has_state || !page->event_commands.empty()) {
-			if (!interpreter) {
-				interpreter.reset(new Game_Interpreter_Map());
-			}
-		}
-
-		if (has_state) {
-			interpreter->SetState(state);
-		}
-	}
-}
-
-void Game_Event::Refresh(bool from_save) {
+void Game_Event::Refresh() {
 	if (!data()->active) {
-		if (from_save) {
-			SetVisible(false);
-		}
+		SetVisible(false);
 		return;
 	}
 
-	lcf::rpg::EventPage* new_page = nullptr;
-	std::vector<lcf::rpg::EventPage>::reverse_iterator i;
-	for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
+	const lcf::rpg::EventPage* new_page = nullptr;
+	for (auto i = event->pages.crbegin(); i != event->pages.crend(); ++i) {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
 			new_page = &(*i);
@@ -193,12 +200,7 @@ void Game_Event::Refresh(bool from_save) {
 		SetVisible(false);
 	}
 
-	// Only update the page pointer when game is loaded,
-	// don't setup event, already done
-	if (from_save) {
-		SetupFromSave(new_page);
-	}
-	else if (new_page != this->page) {
+	if (new_page != this->page) {
 		ClearWaitingForegroundExecution();
 		Setup(new_page);
 	}
@@ -283,11 +285,11 @@ bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 }
 
 int Game_Event::GetId() const {
-	return event.ID;
+	return data()->ID;
 }
 
 StringView Game_Event::GetName() const {
-	return event.name;
+	return event->name;
 }
 
 bool Game_Event::IsWaitingForegroundExecution() const {
@@ -564,34 +566,14 @@ AsyncOp Game_Event::Update(bool resume_async) {
 }
 
 const lcf::rpg::EventPage* Game_Event::GetPage(int page) const {
-	if (page <= 0 || page - 1 >= static_cast<int>(event.pages.size())) {
+	if (page <= 0 || page - 1 >= static_cast<int>(event->pages.size())) {
 		return nullptr;
 	}
-	return &event.pages[page - 1];
+	return &event->pages[page - 1];
 }
 
 const lcf::rpg::EventPage *Game_Event::GetActivePage() const {
 	return page;
-}
-
-const lcf::rpg::SaveMapEvent& Game_Event::GetSaveData() {
-	lcf::rpg::SaveEventExecState state;
-	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
-		if (interpreter) {
-			state = interpreter->GetState();
-		}
-
-		if (state.stack.empty() && page->event_commands.empty()) {
-			// RPG_RT always stores an empty stack frame for empty parallel events.
-			lcf::rpg::SaveEventExecFrame frame;
-			frame.event_id = GetId();
-			state.stack.push_back(std::move(frame));
-		}
-	}
-	data()->parallel_event_execstate = std::move(state);
-	data()->ID = event.ID;
-
-	return *data();
 }
 
 bool Game_Event::IsMoveRouteActive() const {

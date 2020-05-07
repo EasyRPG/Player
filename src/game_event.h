@@ -35,13 +35,13 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Game_Event(int map_id, const lcf::rpg::Event& event);
+	Game_Event(int map_id, const lcf::rpg::Event* event);
 
-	/**
-	 * Constructor.
-	 * Create event from save data.
-	 */
-	Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& data);
+	/** Load from saved game */
+	void SetSaveData(lcf::rpg::SaveMapEvent save);
+
+	/** @return save game data */
+	lcf::rpg::SaveMapEvent GetSaveData() const;
 
 	/**
 	 * Implementation of abstract methods
@@ -54,10 +54,9 @@ public:
 	/**
 	 * Does refresh.
 	 */
-	void Refresh(bool from_save = false);
+	void Refresh();
 
 	void Setup(const lcf::rpg::EventPage* new_page);
-	void SetupFromSave(const lcf::rpg::EventPage* new_page);
 
 	/**
 	 * Gets event ID.
@@ -152,8 +151,6 @@ public:
 	/** @returns the number of pages this event has */
 	int GetNumPages() const;
 
-	const lcf::rpg::SaveMapEvent& GetSaveData();
-
 protected:
 	lcf::rpg::SaveMapEvent* data();
 	const lcf::rpg::SaveMapEvent* data() const;
@@ -202,12 +199,13 @@ private:
 	 */
 	void MoveTypeAwayFromPlayer();
 
+
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.
 	std::unique_ptr<lcf::rpg::SaveMapEvent> _data_copy;
 
-	lcf::rpg::Event event;
+	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
@@ -221,7 +219,7 @@ inline const lcf::rpg::SaveMapEvent* Game_Event::data() const {
 }
 
 inline int Game_Event::GetNumPages() const {
-	return event.pages.size();
+	return event->pages.size();
 }
 
 #endif

@@ -160,11 +160,6 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 		map_info.upper_tiles[i] = i;
 	}
 
-	events.reserve(map->events.size());
-	for (const lcf::rpg::Event& ev : map->events) {
-		events.emplace_back(location.map_id, ev);
-	}
-
 	// pan_state does not reset when you change maps.
 	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
@@ -224,25 +219,24 @@ void Game_Map::SetupFromSave() {
 	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
 
 	events.reserve(map->events.size());
-	for (size_t i = 0; i < map->events.size(); ++i) {
-		if (i < map_info.events.size()) {
-			events.emplace_back(location.map_id, map->events[i], map_info.events[i]);
-		}
-		else {
-			events.emplace_back(location.map_id, map->events[i]);
-		}
+	for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
+		auto& ev = events[i];
+		ev.SetSaveData(map_info.events[i]);
 
-		if (events.back().IsMoveRouteOverwritten())
+		if (ev.IsMoveRouteOverwritten()) {
 			pending.push_back(&events.back());
+		}
 	}
 
 	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
 		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
 	}
 
-	for (size_t i = 0; i < 3; i++)
-		if (vehicles[i]->IsMoveRouteOverwritten())
-			pending.push_back(vehicles[i].get());
+	for (auto& vehicle: vehicles) {
+		if (vehicle->IsMoveRouteOverwritten()) {
+			pending.push_back(vehicle.get());
+		}
+	}
 
 	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
@@ -315,8 +309,9 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		}
 	}
 
-	if (Main_Data::game_player->IsMoveRouteOverwritten())
+	if (Main_Data::game_player->IsMoveRouteOverwritten()) {
 		pending.push_back(Main_Data::game_player.get());
+	}
 
 	auto map_save_count = map->save_count;
 	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
@@ -339,6 +334,13 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	// events will properly resume upon loading.
 	location.map_save_count = map_save_count;
 	location.database_save_count = lcf::Data::system.save_count;
+
+	// Create the map events
+	events.reserve(map->events.size());
+	for (const lcf::rpg::Event& ev : map->events) {
+		events.emplace_back(location.map_id, &ev);
+	}
+
 }
 
 void Game_Map::PrepareSave() {
