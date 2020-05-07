@@ -32,9 +32,11 @@ const char Game_Vehicle::TypeNames[4][8] {
 	"Airship"
 };
 
-Game_Vehicle::Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata)
-	: Game_Character(Vehicle, vdata)
+Game_Vehicle::Game_Vehicle(Type type)
+	: Game_Character(Vehicle, new lcf::rpg::SaveVehicleLocation()),
+	_data_copy(this->data())
 {
+	data()->vehicle = static_cast<int>(type);
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
@@ -65,6 +67,17 @@ void Game_Vehicle::LoadSystemSettings() {
 			SetY(lcf::Data::treemap.start.airship_y);
 			break;
 	}
+}
+
+void Game_Vehicle::SetSaveData(lcf::rpg::SaveVehicleLocation save) {
+	auto type = data()->vehicle;
+	*data() = std::move(save);
+	// Old EasyRPG savegames pre 6.0 didn't write the vehicle chunk.
+	data()->vehicle = type;
+}
+
+lcf::rpg::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
+	return *data();
 }
 
 const lcf::rpg::Music& Game_Vehicle::GetBGM() {

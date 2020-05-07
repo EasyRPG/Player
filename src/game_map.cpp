@@ -72,7 +72,7 @@ namespace {
 	std::unique_ptr<lcf::rpg::Map> map;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
-	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
+	std::vector<Game_Vehicle> vehicles;
 	std::vector<Game_Character*> pending;
 
 	lcf::rpg::Chipset* chipset;
@@ -112,9 +112,9 @@ void Game_Map::Init() {
 	}
 
 	vehicles.clear();
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.boat_location));
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.ship_location));
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.airship_location));
+	vehicles.emplace_back(Game_Vehicle::Boat);
+	vehicles.emplace_back(Game_Vehicle::Ship);
+	vehicles.emplace_back(Game_Vehicle::Airship);
 
 	location.pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
 	location.pan_speed = default_pan_speed;
@@ -150,6 +150,10 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	panorama = {};
 
 	Parallax::ClearChangedBG();
+
+	for (auto& vehicle: vehicles) {
+		vehicle.Refresh();
+	}
 
 	SetChipset(map->chipset_id);
 
@@ -215,10 +219,10 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id, true);
 
-	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
+	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
+		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
+	}
 
-	events.reserve(map->events.size());
 	for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
 		auto& ev = events[i];
 		ev.SetSaveData(map_info.events[i]);
@@ -228,15 +232,18 @@ void Game_Map::SetupFromSave() {
 		}
 	}
 
-	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
-		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
-	}
+	GetVehicle(Game_Vehicle::Boat)->SetSaveData(Main_Data::game_data.boat_location);
+	GetVehicle(Game_Vehicle::Ship)->SetSaveData(Main_Data::game_data.ship_location);
+	GetVehicle(Game_Vehicle::Airship)->SetSaveData(Main_Data::game_data.airship_location);
 
 	for (auto& vehicle: vehicles) {
-		if (vehicle->IsMoveRouteOverwritten()) {
-			pending.push_back(vehicle.get());
+		if (vehicle.IsMoveRouteOverwritten()) {
+			pending.push_back(&vehicle);
 		}
 	}
+
+	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
+	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
 
 	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
@@ -303,12 +310,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	if (!is_load_savegame) {
-		for (auto& vehicle: vehicles) {
-			vehicle->Refresh();
-		}
-	}
-
 	if (Main_Data::game_player->IsMoveRouteOverwritten()) {
 		pending.push_back(Main_Data::game_player.get());
 	}
@@ -345,6 +346,10 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 void Game_Map::PrepareSave() {
 	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
+
+	Main_Data::game_data.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
+	Main_Data::game_data.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
+	Main_Data::game_data.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());
@@ -608,15 +613,15 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		}
 		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
 			auto& other = vehicles[vid - 1];
-			if (other->IsInCurrentMap()) {
-				if (MakeWayCollideEvent(x, y, self, *other, self_conflict)) {
+			if (other.IsInCurrentMap()) {
+				if (MakeWayCollideEvent(x, y, self, other, self_conflict)) {
 					return false;
 				}
 			}
 		}
 		auto& airship = vehicles[Game_Vehicle::Airship - 1];
-		if (airship->IsInCurrentMap() && self.GetType() != Game_Character::Player) {
-			if (MakeWayCollideEvent(x, y, self, *airship, self_conflict)) {
+		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
+			if (MakeWayCollideEvent(x, y, self, airship, self_conflict)) {
 				return false;
 			}
 		}
@@ -651,7 +656,7 @@ bool Game_Map::CanLandAirship(int x, int y) {
 	}
 	for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship }) {
 		auto& vehicle = vehicles[vid - 1];
-		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y)) {
+		if (vehicle.IsInCurrentMap() && vehicle.IsInPosition(x, y)) {
 			return false;
 		}
 	}
@@ -958,8 +963,8 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 		UpdatePan();
 
 		for (auto& vehicle: vehicles) {
-			if (vehicle->GetMapId() == location.map_id) {
-				vehicle->Update();
+			if (vehicle.GetMapId() == location.map_id) {
+				vehicle.Update();
 			}
 		}
 	}
@@ -996,8 +1001,8 @@ void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
 	if (!is_preupdate) {
 		Main_Data::game_player->SetProcessed(false);
 		for (auto& vehicle: vehicles) {
-			if (vehicle->IsInCurrentMap()) {
-				vehicle->SetProcessed(false);
+			if (vehicle.IsInCurrentMap()) {
+				vehicle.SetProcessed(false);
 			}
 		}
 	}
@@ -1540,7 +1545,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	if (which == Game_Vehicle::Boat ||
 		which == Game_Vehicle::Ship ||
 		which == Game_Vehicle::Airship) {
-		return vehicles[which - 1].get();
+		return &vehicles[which - 1];
 	}
 
 	return nullptr;

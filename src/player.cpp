@@ -921,13 +921,6 @@ static void FixSaveGames() {
 		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 	}
-
-	if (Main_Data::game_data.easyrpg_data.version <= 600) {
-		// Old savegames didn't write the vehicle chunk.
-		Main_Data::game_data.boat_location.vehicle = 1;
-		Main_Data::game_data.ship_location.vehicle = 2;
-		Main_Data::game_data.airship_location.vehicle = 3;
-	}
 }
 
 static void OnMapSaveFileReady(FileRequestResult*) {

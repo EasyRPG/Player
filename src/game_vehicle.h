@@ -38,7 +38,13 @@ public:
 
 	static const char TypeNames[4][8];
 
-	explicit Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata);
+	explicit Game_Vehicle(Type type);
+
+	/** Load from saved game */
+	void SetSaveData(lcf::rpg::SaveVehicleLocation save);
+
+	/** @return save game data */
+	lcf::rpg::SaveVehicleLocation GetSaveData() const;
 
 	/**
 	 * Implementation of abstract methods
@@ -90,7 +96,7 @@ protected:
 	lcf::rpg::SaveVehicleLocation* data();
 	const lcf::rpg::SaveVehicleLocation* data() const;
 
-	bool driving;
+	std::unique_ptr<lcf::rpg::SaveVehicleLocation> _data_copy;
 };
 
 inline lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() {
