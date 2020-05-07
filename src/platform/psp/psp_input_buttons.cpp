@@ -23,19 +23,19 @@
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
-		,{DECISION, Keys::JOY_1} // Circle
-		,{DECISION, Keys::JOY_2} // Cross
-		,{CANCEL, Keys::JOY_3} // Square
+		{DECISION, Keys::JOY_1}, // Circle
+		{DECISION, Keys::JOY_2}, // Cross
+		{CANCEL, Keys::JOY_3}, // Square
 
-		,{TOGGLE_FPS, Keys::JOY_0} // Triangle
+		{TOGGLE_FPS, Keys::JOY_0}, // Triangle
 
-		,{N1, Keys::JOY_4} // Left trigger
-		,{N2, Keys::JOY_5} // Right trigger
+		{N1, Keys::JOY_4}, // Left trigger
+		{N2, Keys::JOY_5}, // Right trigger
 
-		,{DOWN, Keys::JOY_6} // Down
-		,{LEFT, Keys::JOY_7} // Left
-		,{UP, Keys::JOY_8} // Up
-		,{RIGHT, Keys::JOY_9} // Right
+		{DOWN, Keys::JOY_6}, // Down
+		{LEFT, Keys::JOY_7}, // Left
+		{UP, Keys::JOY_8}, // Up
+		{RIGHT, Keys::JOY_9}, // Right
 	};
 }
 
