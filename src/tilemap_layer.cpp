@@ -25,7 +25,6 @@
 #include "bitmap.h"
 #include "compiler.h"
 #include "game_map.h"
-#include "main_data.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 
@@ -140,9 +139,7 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 };
 
 TilemapLayer::TilemapLayer(int ilayer) :
-	substitutions(ilayer >= 1
-			? Main_Data::game_data.map_info.upper_tiles
-			: Main_Data::game_data.map_info.lower_tiles),
+	substitutions(Game_Map::GetTilesLayer(ilayer)),
 	layer(ilayer),
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer

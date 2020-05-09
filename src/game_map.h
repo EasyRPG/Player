@@ -206,6 +206,13 @@ namespace Game_Map {
 	bool CanDisembarkShip(Game_Player& player, int x, int y);
 
 	/**
+	 * Return the tiles array for the given tiles layer.
+	 *
+	 * @param layer which layer to return
+	 */
+	const std::vector<uint8_t>& GetTilesLayer(int layer);
+
+	/**
 	 * Gets the bush depth at a certain tile.
 	 *
 	 * @param x tile x.

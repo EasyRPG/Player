@@ -242,7 +242,6 @@ void Game_Map::SetupFromSave() {
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
@@ -352,6 +351,10 @@ void Game_Map::PlayBgm() {
 			Game_System::SetBeforeVehicleMusic(music);
 		}
 	}
+}
+
+const std::vector<uint8_t>& Game_Map::GetTilesLayer(int layer) {
+	return layer >= 1 ? map_info.upper_tiles : map_info.lower_tiles;
 }
 
 void Game_Map::Refresh() {
