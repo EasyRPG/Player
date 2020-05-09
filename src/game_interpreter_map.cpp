@@ -516,34 +516,36 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 	int speed;
 	bool waiting_pan_screen = false;
 
+	auto& player = *Main_Data::game_player;
+
 	switch (com.parameters[0]) {
 	case 0: // Lock
-		Game_Map::LockPan();
+		player.LockPan();
 		break;
 	case 1: // Unlock
-		Game_Map::UnlockPan();
+		player.UnlockPan();
 		break;
 	case 2: // Pan
 		direction = com.parameters[1];
 		distance = com.parameters[2];
 		speed = com.parameters[3];
 		waiting_pan_screen = com.parameters[4] != 0;
-		Game_Map::StartPan(direction, distance, speed);
+		player.StartPan(direction, distance, speed);
 		break;
 	case 3: // Reset
 		speed = com.parameters[3];
 		waiting_pan_screen = com.parameters[4] != 0;
-		Game_Map::ResetPan(speed);
+		player.ResetPan(speed);
 		distance = std::max(
-				std::abs(Game_Map::GetPanX() - Game_Map::GetTargetPanX())
-				, std::abs(Game_Map::GetPanY() - Game_Map::GetTargetPanY()));
+				std::abs(player.GetPanX() - player.GetTargetPanX())
+				, std::abs(player.GetPanY() - player.GetTargetPanY()));
 		distance /= SCREEN_TILE_SIZE;
 		break;
 	}
 
 	if (waiting_pan_screen) {
 		// RPG_RT uses the max wait for all pending pan commands, not just the current one.
-		_state.wait_time = Game_Map::GetPanWait();
+		_state.wait_time = player.GetPanWait();
 	}
 
 	return true;

@@ -581,22 +581,6 @@ namespace Game_Map {
 	 */
 	bool IsPassableLowerTile(int bit, int tile_index);
 
-	enum PanDirection {
-		PanUp,
-		PanRight,
-		PanDown,
-		PanLeft
-	};
-
-	void LockPan();
-	void UnlockPan();
-	void StartPan(int direction, int distance, int speed);
-	void ResetPan(int speed);
-	void UpdatePan();
-
-	/** @return how many frames it'll take to finish the current pan */
-	int GetPanWait();
-
 	/**
 	 * Gets whether there are any starting non-parallel event or common event.
 	 * Used as a workaround for the Game Player.
@@ -609,13 +593,6 @@ namespace Game_Map {
 	void AddPendingMove(Game_Character* character);
 	void RemovePendingMove(Game_Character* character);
 	void RemoveAllPendingMoves();
-
-	bool IsPanActive();
-	bool IsPanLocked();
-	int GetPanX();
-	int GetPanY();
-	int GetTargetPanX();
-	int GetTargetPanY();
 
 	void UpdateProcessedFlags(bool is_preupdate);
 	bool UpdateCommonEvents(MapUpdateAsyncContext& actx);

@@ -98,6 +98,15 @@ void Game_Player::PerformTeleport() {
 
 	ResetAnimation();
 	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
+
+		// pan_state does not reset when you change maps.
+		data()->pan_speed = lcf::rpg::SavePartyLocation::kPanSpeedDefault;
+		data()->pan_finish_x = lcf::rpg::SavePartyLocation::kPanXDefault;
+		data()->pan_finish_y = lcf::rpg::SavePartyLocation::kPanYDefault;
+		data()->pan_current_x = lcf::rpg::SavePartyLocation::kPanXDefault;
+		data()->pan_current_y = lcf::rpg::SavePartyLocation::kPanYDefault;
+
+
 		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
 		Game_Map::PlayBgm();
 	}
@@ -134,7 +143,7 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 void Game_Player::UpdateScroll(int old_x, int old_y) {
-	if (Game_Map::IsPanLocked()) {
+	if (IsPanLocked()) {
 		return;
 	}
 
@@ -353,6 +362,7 @@ void Game_Player::Update() {
 	Game_Character::UpdateFlash();
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
+	UpdatePan();
 
 	UpdateVehicleActions();
 
@@ -714,5 +724,79 @@ bool Game_Player::UpdateEncounterSteps() {
 void Game_Player::SetEncounterSteps(int steps) {
 	last_encounter_idx = 0;
 	data()->encounter_steps = steps;
+}
+
+void Game_Player::LockPan() {
+	data()->pan_state = lcf::rpg::SavePartyLocation::PanState_fixed;
+}
+
+void Game_Player::UnlockPan() {
+	data()->pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
+}
+
+void Game_Player::StartPan(int direction, int distance, int speed) {
+	distance *= SCREEN_TILE_SIZE;
+
+	if (direction == PanUp) {
+		int new_pan = data()->pan_finish_y + distance;
+		data()->pan_finish_y = new_pan;
+	} else if (direction == PanRight) {
+		int new_pan = data()->pan_finish_x - distance;
+		data()->pan_finish_x = new_pan;
+	} else if (direction == PanDown) {
+		int new_pan = data()->pan_finish_y - distance;
+		data()->pan_finish_y = new_pan;
+	} else if (direction == PanLeft) {
+		int new_pan = data()->pan_finish_x + distance;
+		data()->pan_finish_x = new_pan;
+	}
+
+	data()->pan_speed = 2 << speed;
+}
+
+void Game_Player::ResetPan(int speed) {
+	data()->pan_finish_x = lcf::rpg::SavePartyLocation::kPanXDefault;
+	data()->pan_finish_y = lcf::rpg::SavePartyLocation::kPanYDefault;
+	data()->pan_speed = 2 << speed;
+}
+
+int Game_Player::GetPanWait() {
+	const auto distance = std::max(
+			std::abs(data()->pan_current_x - data()->pan_finish_x),
+			std::abs(data()->pan_current_y - data()->pan_finish_y));
+	const auto speed = data()->pan_speed;
+	assert(speed > 0);
+	return distance / speed + (distance % speed != 0);
+}
+
+void Game_Player::UpdatePan() {
+	if (!IsPanActive())
+		return;
+
+	const int step = data()->pan_speed;
+	const int pan_remain_x = data()->pan_current_x - data()->pan_finish_x;
+	const int pan_remain_y = data()->pan_current_y - data()->pan_finish_y;
+
+	int dx = std::min(step, std::abs(pan_remain_x));
+	dx = pan_remain_x >= 0 ? dx : -dx;
+	int dy = std::min(step, std::abs(pan_remain_y));
+	dy = pan_remain_y >= 0 ? dy : -dy;
+
+	int screen_x = Game_Map::GetPositionX();
+	int screen_y = Game_Map::GetPositionY();
+
+	Game_Map::AddScreenX(screen_x, dx);
+	Game_Map::AddScreenY(screen_y, dy);
+
+	// If we hit the edge of the map before pan finishes.
+	if (dx == 0 && dy == 0) {
+		return;
+	}
+
+	Game_Map::ScrollRight(dx);
+	Game_Map::ScrollDown(dy);
+
+	data()->pan_current_x -= dx;
+	data()->pan_current_y -= dy;
 }
 

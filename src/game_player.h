@@ -110,19 +110,33 @@ public:
 	int GetEncounterSteps() const;
 
 	/**
-	 * Updates encounter steps according to terrain.
-	 *
-	 * @return true if an encounter should trigger.
-	 */
-	bool UpdateEncounterSteps();
-
-	/**
 	 * Sets encounter_steps to steps.
 	 *
 	 * @param steps the steps value to set.
 	 */
 	void SetEncounterSteps(int steps);
 
+	enum PanDirection {
+		PanUp,
+		PanRight,
+		PanDown,
+		PanLeft
+	};
+
+	bool IsPanActive() const;
+	bool IsPanLocked() const;
+	int GetPanX() const;
+	int GetPanY() const;
+	int GetTargetPanX() const;
+	int GetTargetPanY() const;
+
+	void LockPan();
+	void UnlockPan();
+	void StartPan(int direction, int distance, int speed);
+	void ResetPan(int speed);
+
+	/** @return how many frames it'll take to finish the current pan */
+	int GetPanWait();
 protected:
 	lcf::rpg::SavePartyLocation* data();
 	const lcf::rpg::SavePartyLocation* data() const;
@@ -131,6 +145,7 @@ private:
 
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
+	bool UpdateEncounterSteps();
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key);
 	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key);
@@ -181,6 +196,30 @@ inline bool Game_Player::IsEncounterCalling() const {
 
 inline int Game_Player::GetEncounterSteps() const {
 	return data()->encounter_steps;
+}
+
+inline bool Game_Player::IsPanActive() const {
+	return GetPanX() != GetTargetPanX() || GetPanY() != GetTargetPanY();
+}
+
+inline bool Game_Player::IsPanLocked() const {
+	return data()->pan_state == lcf::rpg::SavePartyLocation::PanState_fixed;
+}
+
+inline int Game_Player::GetPanX() const {
+	return data()->pan_current_x;
+}
+
+inline int Game_Player::GetPanY() const {
+	return data()->pan_current_y;
+}
+
+inline int Game_Player::GetTargetPanX() const {
+	return data()->pan_finish_x;
+}
+
+inline int Game_Player::GetTargetPanY() const {
+	return data()->pan_finish_y;
 }
 
 #endif
