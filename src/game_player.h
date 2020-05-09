@@ -36,6 +36,12 @@ class Game_Player : public Game_Character {
 public:
 	Game_Player();
 
+	/** Load from saved game */
+	void SetSaveData(lcf::rpg::SavePartyLocation data);
+
+	/** @return save game data */
+	lcf::rpg::SavePartyLocation GetSaveData() const;
+
 	/**
 	 * Implementation of abstract methods
 	 */
@@ -137,6 +143,11 @@ public:
 
 	/** @return how many frames it'll take to finish the current pan */
 	int GetPanWait();
+
+	int GetMapSaveCount() const;
+	int GetDatabaseSaveCount() const;
+
+	void UpdateSaveCounts(int db_save_count, int map_save_count);
 protected:
 	lcf::rpg::SavePartyLocation* data();
 	const lcf::rpg::SavePartyLocation* data() const;
@@ -154,6 +165,7 @@ private:
 	void Unboard();
 	void UpdateVehicleActions();
 
+	std::unique_ptr<lcf::rpg::SavePartyLocation> _data_copy;
 	TeleportTarget teleport_target;
 	int last_encounter_idx = 0;
 };
@@ -220,6 +232,19 @@ inline int Game_Player::GetTargetPanX() const {
 
 inline int Game_Player::GetTargetPanY() const {
 	return data()->pan_finish_y;
+}
+
+inline int Game_Player::GetMapSaveCount() const {
+	return data()->map_save_count;
+}
+
+inline int Game_Player::GetDatabaseSaveCount() const {
+	return data()->database_save_count;
+}
+
+inline void Game_Player::UpdateSaveCounts(int db_save_count, int map_save_count) {
+	data()->database_save_count = db_save_count;
+	data()->map_save_count = map_save_count;
 }
 
 #endif

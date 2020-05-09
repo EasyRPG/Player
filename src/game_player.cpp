@@ -38,11 +38,21 @@
 #include <cmath>
 
 Game_Player::Game_Player():
-	Game_Character(Player, &Main_Data::game_data.party_location)
+	Game_Character(Player, new lcf::rpg::SavePartyLocation()),
+	_data_copy(this->data())
 {
 	SetDirection(lcf::rpg::EventPage::Direction_down);
 	SetMoveSpeed(4);
 	SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
+}
+
+void Game_Player::SetSaveData(lcf::rpg::SavePartyLocation save)
+{
+	*data() = std::move(save);
+}
+
+lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
+	return *data();
 }
 
 int Game_Player::GetScreenZ(bool apply_shift) const {
@@ -106,6 +116,7 @@ void Game_Player::PerformTeleport() {
 		data()->pan_current_x = lcf::rpg::SavePartyLocation::kPanXDefault;
 		data()->pan_current_y = lcf::rpg::SavePartyLocation::kPanYDefault;
 
+		data()->map_id = teleport_target.GetMapId();
 
 		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
 		Game_Map::PlayBgm();

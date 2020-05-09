@@ -51,7 +51,6 @@
 
 namespace {
 	lcf::rpg::SaveMapInfo& map_info = Main_Data::game_data.map_info;
-	lcf::rpg::SavePartyLocation& location = Main_Data::game_data.party_location;
 	lcf::rpg::SavePanorama& panorama = Main_Data::game_data.panorama;
 
 	std::string chipset_name;
@@ -95,7 +94,6 @@ void Game_Map::Init() {
 	map_info.position_y = 0;
 	SetNeedRefresh(true);
 
-	location.map_id = 0;
 	interpreter.reset(new Game_Interpreter_Map(true));
 	map_info.encounter_rate = 0;
 
@@ -151,7 +149,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	}
 
 	// Save allowed
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	int can_save = lcf::Data::treemap.maps[current_index].save;
 	int can_escape = lcf::Data::treemap.maps[current_index].escape;
 	int can_teleport = lcf::Data::treemap.maps[current_index].teleport;
@@ -196,7 +194,12 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 }
 
 void Game_Map::SetupFromSave() {
-	SetupCommon(location.map_id, true);
+	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
+	if (Main_Data::game_player->IsMoveRouteOverwritten()) {
+		pending.push_back(Main_Data::game_player.get());
+	}
+
+	SetupCommon(GetMapId(), true);
 
 	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
 		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
@@ -241,9 +244,6 @@ void Game_Map::SetupFromSave() {
 
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
-
-	location.map_id = _id;
-
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
 	std::string map_file = FileFinder::FindDefault(map_name);
@@ -270,7 +270,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 	SetNeedRefresh(true);
 
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 
 	std::stringstream ss;
 	for (int cur = current_index;
@@ -283,10 +283,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	if (Main_Data::game_player->IsMoveRouteOverwritten()) {
-		pending.push_back(Main_Data::game_player.get());
-	}
-
 	auto map_save_count = map->save_count;
 	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
 		map_save_count =  map->save_count_2k3e;
@@ -294,35 +290,34 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 	//When loading a save game and versions have changed, we need to reset the running events.
 	if (is_load_savegame) {
-		if (location.map_save_count != map_save_count) {
+		if (Main_Data::game_player->GetMapSaveCount() != map_save_count) {
 			Main_Data::game_data.common_events = {};
 			Main_Data::game_data.foreground_event_execstate = {};
 			Main_Data::game_data.map_info.events = {};
 			Main_Data::game_data.panorama = {};
-		} else if (location.database_save_count != lcf::Data::system.save_count) {
+		} else if (Main_Data::game_player->GetDatabaseSaveCount() != lcf::Data::system.save_count) {
 			Main_Data::game_data.common_events = {};
 		}
 	}
 
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
-	location.map_save_count = map_save_count;
-	location.database_save_count = lcf::Data::system.save_count;
+	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, map_save_count);
 
 	// Create the map events
 	events.reserve(map->events.size());
-	for (const lcf::rpg::Event& ev : map->events) {
-		events.emplace_back(location.map_id, &ev);
+	for (const auto& ev : map->events) {
+		events.emplace_back(GetMapId(), &ev);
 	}
-
 }
 
 void Game_Map::PrepareSave() {
 	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
 
-	Main_Data::game_data.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
-	Main_Data::game_data.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
 	Main_Data::game_data.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
+	Main_Data::game_data.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
+	Main_Data::game_data.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
+	Main_Data::game_data.party_location = Main_Data::game_player->GetSaveData();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());
@@ -341,7 +336,7 @@ void Game_Map::PrepareSave() {
 }
 
 void Game_Map::PlayBgm() {
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	while (lcf::Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
@@ -360,7 +355,7 @@ void Game_Map::PlayBgm() {
 }
 
 void Game_Map::Refresh() {
-	if (location.map_id > 0) {
+	if (GetMapId() > 0) {
 		for (Game_Event& ev : events) {
 			ev.Refresh();
 		}
@@ -935,7 +930,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 		Main_Data::game_player->Update();
 
 		for (auto& vehicle: vehicles) {
-			if (vehicle.GetMapId() == location.map_id) {
+			if (vehicle.GetMapId() == GetMapId()) {
 				vehicle.Update();
 			}
 		}
@@ -1120,7 +1115,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 }
 
 lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
-	auto idx = GetMapIndex(location.map_id);
+	auto idx = GetMapIndex(GetMapId());
 	return lcf::Data::treemap.maps[idx];
 }
 
@@ -1129,7 +1124,7 @@ lcf::rpg::Map const& Game_Map::GetMap() {
 }
 
 int Game_Map::GetMapId() {
-	return location.map_id;
+	return Main_Data::game_player->GetMapId();
 }
 
 int Game_Map::GetWidth() {
@@ -1141,7 +1136,7 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
-	return lcf::Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
+	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
 int Game_Map::GetEncounterRate() {
@@ -1174,13 +1169,13 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		lcf::rpg::MapInfo& map = lcf::Data::treemap.maps[i];
 
-		if (map.ID == location.map_id) {
-			for (const lcf::rpg::Encounter& enc : map.encounters) {
+		if (map.ID == GetMapId()) {
+			for (const auto& enc : map.encounters) {
 				if (is_acceptable(enc.troop_id)) {
 					out.push_back(enc.troop_id);
 				}
 			}
-		} else if (map.parent_map == location.map_id && map.type == lcf::rpg::TreeMap::MapType_area) {
+		} else if (map.parent_map == GetMapId() && map.type == lcf::rpg::TreeMap::MapType_area) {
 			// Area
 			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
 			Rect player_rect(x, y, 1, 1);
@@ -1252,7 +1247,7 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 
 	args.terrain_id = GetTerrainTag(x, y);
 
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	while (lcf::Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
