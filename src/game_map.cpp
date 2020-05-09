@@ -81,6 +81,10 @@ namespace {
 	int scrolled_down = 0;
 }
 
+namespace Game_Map {
+void SetupCommon();
+}
+
 void Game_Map::OnContinueFromBattle() {
 	Game_System::BgmPlay(Game_System::GetBeforeBattleMusic());
 }
@@ -121,13 +125,19 @@ void Game_Map::Quit() {
 	interpreter.reset();
 }
 
+int Game_Map::GetMapSaveCount() {
+	return (Player::IsRPG2k3() && map->save_count_2k3e > 0)
+		? map->save_count_2k3e
+		: map->save_count;
+}
+
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Dispose();
 	if (tt != TeleportTarget::eAsyncQuickTeleport) {
 		Main_Data::game_screen->OnMapChange();
 		Main_Data::game_pictures->OnMapChange();
 	}
-	SetupCommon(_id, false);
+	SetupCommon();
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
@@ -191,6 +201,10 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 			interpreter->OnMapChange();
 		}
 	}
+
+	// Update the save counts so that if the player saves the game
+	// events will properly resume upon loading.
+	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
 }
 
 void Game_Map::SetupFromSave() {
@@ -199,18 +213,25 @@ void Game_Map::SetupFromSave() {
 		pending.push_back(Main_Data::game_player.get());
 	}
 
-	SetupCommon(GetMapId(), true);
+	SetupCommon();
 
-	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
-		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
+	const bool is_db_save_compat = Main_Data::game_player->IsDatabaseCompatibleWithSave(lcf::Data::system.save_count);
+	const bool is_map_save_compat = Main_Data::game_player->IsMapCompatibleWithSave(GetMapSaveCount());
+
+	if (is_db_save_compat && is_map_save_compat) {
+		for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
+			common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
+		}
 	}
 
-	for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
-		auto& ev = events[i];
-		ev.SetSaveData(map_info.events[i]);
+	if (is_map_save_compat) {
+		for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
+			auto& ev = events[i];
+			ev.SetSaveData(map_info.events[i]);
 
-		if (ev.IsMoveRouteOverwritten()) {
-			pending.push_back(&events.back());
+			if (ev.IsMoveRouteOverwritten()) {
+				pending.push_back(&events.back());
+			}
 		}
 	}
 
@@ -224,12 +245,18 @@ void Game_Map::SetupFromSave() {
 		}
 	}
 
-	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
+	if (is_map_save_compat) {
+		// Make main interpreter "busy" if save contained events to prevent auto-events from starting
+		interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
+	}
 
 	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
+
+	if (!is_map_save_compat) {
+		panorama = {};
+	}
 
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
@@ -242,7 +269,7 @@ void Game_Map::SetupFromSave() {
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
+void Game_Map::SetupCommon() {
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
 	std::string map_file = FileFinder::FindDefault(map_name);
@@ -281,27 +308,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		ss << lcf::Data::treemap.maps[cur].name.c_str();
 	}
 	Output::Debug("Tree: {}", ss.str());
-
-	auto map_save_count = map->save_count;
-	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
-		map_save_count =  map->save_count_2k3e;
-	}
-
-	//When loading a save game and versions have changed, we need to reset the running events.
-	if (is_load_savegame) {
-		if (Main_Data::game_player->GetMapSaveCount() != map_save_count) {
-			Main_Data::game_data.common_events = {};
-			Main_Data::game_data.foreground_event_execstate = {};
-			Main_Data::game_data.map_info.events = {};
-			Main_Data::game_data.panorama = {};
-		} else if (Main_Data::game_player->GetDatabaseSaveCount() != lcf::Data::system.save_count) {
-			Main_Data::game_data.common_events = {};
-		}
-	}
-
-	// Update the save counts so that if the player saves the game
-	// events will properly resume upon loading.
-	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, map_save_count);
 
 	// Create the map events
 	events.reserve(map->events.size());

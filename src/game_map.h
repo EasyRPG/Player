@@ -97,13 +97,6 @@ namespace Game_Map {
 	void SetupFromSave();
 
 	/**
-	 * Shared code of the Setup methods.
-	 *
-	 * @param _id map ID.
-	 */
-	void SetupCommon(int _id, bool is_load_savegame);
-
-	/**
 	 * Copies event data into lcf::rpg::Save data.
 	 */
 	void PrepareSave();
@@ -595,6 +588,9 @@ namespace Game_Map {
 	 * @return whether any starting non-parallel (common) event is starting
 	 */
 	bool IsAnyEventStarting();
+
+	/** @return the number of times this map was saved in the editor */
+	int GetMapSaveCount();
 
 	bool IsAnyMovePending();
 	void AddPendingMove(Game_Character* character);
