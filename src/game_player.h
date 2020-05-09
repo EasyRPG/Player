@@ -106,6 +106,23 @@ public:
 	/** @return the encounter calling flag */
 	bool IsEncounterCalling() const;
 
+	/** @return number of encounter steps scaled by terrain encounter rate percentage. */
+	int GetEncounterSteps() const;
+
+	/**
+	 * Updates encounter steps according to terrain.
+	 *
+	 * @return true if an encounter should trigger.
+	 */
+	bool UpdateEncounterSteps();
+
+	/**
+	 * Sets encounter_steps to steps.
+	 *
+	 * @param steps the steps value to set.
+	 */
+	void SetEncounterSteps(int steps);
+
 protected:
 	lcf::rpg::SavePartyLocation* data();
 	const lcf::rpg::SavePartyLocation* data() const;
@@ -123,6 +140,7 @@ private:
 	void UpdateVehicleActions();
 
 	TeleportTarget teleport_target;
+	int last_encounter_idx = 0;
 };
 
 inline lcf::rpg::SavePartyLocation* Game_Player::data() {
@@ -159,6 +177,10 @@ inline void Game_Player::SetEncounterCalling(bool value) {
 
 inline bool Game_Player::IsEncounterCalling() const {
 	return data()->encounter_calling;
+}
+
+inline int Game_Player::GetEncounterSteps() const {
+	return data()->encounter_steps;
 }
 
 #endif

@@ -77,8 +77,6 @@ namespace {
 
 	lcf::rpg::Chipset* chipset;
 
-	int last_encounter_idx = 0;
-
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
@@ -144,7 +142,6 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	}
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
-	SetEncounterSteps(0);
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
 	panorama = {};
@@ -249,8 +246,6 @@ void Game_Map::SetupFromSave() {
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
 
-	SetEncounterSteps(location.encounter_steps);
-
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
 	// To solve this problem, we reuse the scrolling methods
@@ -262,10 +257,6 @@ void Game_Map::SetupFromSave() {
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-
-void Game_Map::SetupFromTeleportSelf() {
-	SetEncounterSteps(0);
-}
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
@@ -1178,90 +1169,6 @@ int Game_Map::GetEncounterRate() {
 
 void Game_Map::SetEncounterRate(int step) {
 	map_info.encounter_rate = step;
-}
-
-int Game_Map::GetEncounterSteps() {
-	return location.encounter_steps;
-}
-
-bool Game_Map::UpdateEncounterSteps() {
-	if (Player::debug_flag &&
-		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return false;
-	}
-
-	if(Main_Data::game_player->InAirship()) {
-		return false;
-	}
-
-	if (GetEncounterRate() <= 0) {
-		location.encounter_steps = 0;
-		return false;
-	}
-
-	int x = Main_Data::game_player->GetX();
-	int y = Main_Data::game_player->GetY();
-
-	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
-	if (!terrain) {
-		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
-		return false;
-	}
-
-	location.encounter_steps += terrain->encounter_rate;
-
-	struct Row {
-		int ratio;
-		float pmod;
-	};
-
-#if 1
-	static constexpr Row enc_table[] = {
-		{ 0, 0.0625},
-		{ 20, 0.125 },
-		{ 40, 0.25 },
-		{ 60, 0.5 },
-		{ 100, 2.0 },
-		{ 140, 4.0 },
-		{ 160, 8.0 },
-		{ 180, 16.0 },
-		{ INT_MAX, 16.0 }
-	};
-#else
-	//Old versions of RM2k used this table.
-	//Left here for posterity.
-	static constexpr Row enc_table[] = {
-		{ 0, 0.5 },
-		{ 20, 2.0 / 3.0 },
-		{ 50, 5.0 / 6.0 },
-		{ 100, 6.0 / 5.0 },
-		{ 200, 3.0 / 2.0 },
-		{ INT_MAX, 3.0 / 2.0 }
-	};
-#endif
-	const auto encounter_rate = GetEncounterRate();
-	const auto ratio = location.encounter_steps / encounter_rate;
-
-	auto& idx = last_encounter_idx;
-	while (ratio > enc_table[idx+1].ratio) {
-		++idx;
-	}
-	const auto& row = enc_table[idx];
-
-	const auto pmod = row.pmod;
-	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
-
-	if (Utils::PercentChance(p)) {
-		SetEncounterSteps(0);
-		return true;
-	}
-
-	return false;
-}
-
-void Game_Map::SetEncounterSteps(int steps) {
-	last_encounter_idx = 0;
-	location.encounter_steps = steps;
 }
 
 std::vector<int> Game_Map::GetEncountersAt(int x, int y) {

@@ -97,13 +97,6 @@ namespace Game_Map {
 	void SetupFromSave();
 
 	/**
-	 * Performs Setup on a map when teleport to self.
-	 *
-	 * @param map_id map ID.
-	 */
-	void SetupFromTeleportSelf();
-
-	/**
 	 * Shared code of the Setup methods.
 	 *
 	 * @param _id map ID.
@@ -313,25 +306,6 @@ namespace Game_Map {
 	 * @param step encounter steps.
 	 */
 	void SetEncounterRate(int step);
-
-	/**
-	 * Gets encounter steps.
-	 *
-	 * @return number of steps scaled by terrain encounter rate percentage.
-	 */
-	int GetEncounterSteps();
-
-	/**
-	 * Updates encounter steps according to terrain.
-	 *
-	 * @return true if an encounter should trigger.
-	 */
-	bool UpdateEncounterSteps();
-
-	/**
-	 * Sets encounter_steps to steps.
-	 */
-	void SetEncounterSteps(int steps);
 
 	/**
 	 * Gets possible encounters at a location.

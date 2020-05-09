@@ -94,12 +94,12 @@ void Game_Player::PerformTeleport() {
 	// Even when target is the same map
 	Refresh();
 
+	SetEncounterSteps(0);
+
 	ResetAnimation();
 	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
 		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
 		Game_Map::PlayBgm();
-	} else {
-		Game_Map::SetupFromTeleportSelf();
 	}
 
 	MoveTo(teleport_target.GetX(), teleport_target.GetY());
@@ -299,7 +299,7 @@ void Game_Player::UpdateSelfMovement() {
 			}
 			if (tried_move && !move_failed) {
 				Main_Data::game_party->IncSteps();
-				if (Game_Map::UpdateEncounterSteps()) {
+				if (UpdateEncounterSteps()) {
 					SetEncounterCalling(true);
 				}
 				if (Main_Data::game_party->ApplyStateDamage()) {
@@ -634,3 +634,85 @@ void Game_Player::UnboardingFinished() {
 int Game_Player::GetVehicleType() const {
 	return data()->vehicle;
 }
+
+bool Game_Player::UpdateEncounterSteps() {
+	if (Player::debug_flag &&
+		Input::IsPressed(Input::DEBUG_THROUGH)) {
+			return false;
+	}
+
+	if(Main_Data::game_player->InAirship()) {
+		return false;
+	}
+
+	const auto encounter_rate = Game_Map::GetEncounterRate();
+
+	if (encounter_rate <= 0) {
+		SetEncounterSteps(0);
+		return false;
+	}
+
+	int x = GetX();
+	int y = GetY();
+
+	const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Map::GetTerrainTag(x,y));
+	if (!terrain) {
+		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
+		return false;
+	}
+
+	data()->encounter_steps += terrain->encounter_rate;
+
+	struct Row {
+		int ratio;
+		float pmod;
+	};
+
+#if 1
+	static constexpr Row enc_table[] = {
+		{ 0, 0.0625},
+		{ 20, 0.125 },
+		{ 40, 0.25 },
+		{ 60, 0.5 },
+		{ 100, 2.0 },
+		{ 140, 4.0 },
+		{ 160, 8.0 },
+		{ 180, 16.0 },
+		{ INT_MAX, 16.0 }
+	};
+#else
+	//Old versions of RM2k used this table.
+	//Left here for posterity.
+	static constexpr Row enc_table[] = {
+		{ 0, 0.5 },
+		{ 20, 2.0 / 3.0 },
+		{ 50, 5.0 / 6.0 },
+		{ 100, 6.0 / 5.0 },
+		{ 200, 3.0 / 2.0 },
+		{ INT_MAX, 3.0 / 2.0 }
+	};
+#endif
+	const auto ratio = GetEncounterSteps() / encounter_rate;
+
+	auto& idx = last_encounter_idx;
+	while (ratio > enc_table[idx+1].ratio) {
+		++idx;
+	}
+	const auto& row = enc_table[idx];
+
+	const auto pmod = row.pmod;
+	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
+
+	if (Utils::PercentChance(p)) {
+		SetEncounterSteps(0);
+		return true;
+	}
+
+	return false;
+}
+
+void Game_Player::SetEncounterSteps(int steps) {
+	last_encounter_idx = 0;
+	data()->encounter_steps = steps;
+}
+
