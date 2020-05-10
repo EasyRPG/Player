@@ -100,7 +100,7 @@ void Game_Actor::Fixup() {
 bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("UseItem: Can't use invalid item %d", item_id);
+		Output::Warning("UseItem: Can't use invalid item {}", item_id);
 		return false;
 	}
 
@@ -127,7 +127,7 @@ bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 bool Game_Actor::IsItemUsable(int item_id) const {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
+		Output::Warning("IsItemUsable: Invalid item ID {}", item_id);
 		return false;
 	}
 
@@ -156,7 +156,7 @@ bool Game_Actor::IsSkillLearned(int skill_id) const {
 bool Game_Actor::IsSkillUsable(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("IsSkillUsable: Invalid skill ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Invalid skill ID {}", skill_id);
 		return false;
 	}
 
@@ -210,7 +210,7 @@ bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 		if (!skill) {
-			Output::Warning("Actor %d: Can't learn invalid skill %d", GetId(), skill_id);
+			Output::Warning("Actor {}: Can't learn invalid skill {}", GetId(), skill_id);
 			return false;
 		}
 
@@ -279,7 +279,7 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 
 	const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, new_item_id);
 	if (new_item_id != 0 && !new_item) {
-		Output::Warning("SetEquipment: Can't equip item with invalid ID %d", new_item_id);
+		Output::Warning("SetEquipment: Can't equip item with invalid ID {}", new_item_id);
 		new_item_id = 0;
 	}
 
@@ -616,7 +616,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	const int* shift = ReaderUtil::GetElement(attribute_shift, attribute_id);
 
 	if (!shift) {
-		Output::Warning("GetAttributeModifier: Invalid attribute ID %d", attribute_id);
+		Output::Warning("GetAttributeModifier: Invalid attribute ID {}", attribute_id);
 		return 0;
 	}
 
@@ -782,7 +782,7 @@ void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {
 bool Game_Actor::IsEquippable(int item_id) const {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("IsEquippable: Invalid item ID %d", item_id);
+		Output::Warning("IsEquippable: Invalid item ID {}", item_id);
 		return false;
 	}
 
@@ -893,7 +893,7 @@ int Game_Actor::GetBattleX() const {
 		}
 	}
 	else {
-		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_top_y, Data::terrains[0].grid_elongation, Data::terrains[0].grid_inclination, Data::terrains[0].grid_location);
+		//Output::Debug("{} {} {} {}", Data::terrains[0].grid_top_y, Data::terrains[0].grid_elongation, Data::terrains[0].grid_inclination, Data::terrains[0].grid_location);
 
 		position = GetActor().battle_x * SCREEN_TARGET_WIDTH / 320;
 	}
@@ -998,7 +998,7 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	if (add) {
 		const RPG::BattleCommand* cmd = ReaderUtil::GetElement(Data::battlecommands.commands, id);
 		if (!cmd) {
-			Output::Warning("ChangeBattleCommands: Can't add invalid battle command %d", id);
+			Output::Warning("ChangeBattleCommands: Can't add invalid battle command {}", id);
 			return;
 		}
 
@@ -1049,7 +1049,7 @@ const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() con
 
 		const RPG::BattleCommand* cmd = ReaderUtil::GetElement(Data::battlecommands.commands, command_index);
 		if (!cmd) {
-			Output::Warning("GetBattleCommands: Invalid battle command ID %d", command_index);
+			Output::Warning("GetBattleCommands: Invalid battle command ID {}", command_index);
 			continue;
 		}
 
@@ -1079,7 +1079,7 @@ void Game_Actor::ChangeClass(int new_class_id,
 {
 	const auto* cls = ReaderUtil::GetElement(Data::classes, new_class_id);
 	if (new_class_id != 0 && cls == nullptr) {
-		Output::Warning("Actor %d: Can't change to invalid class %d", GetId(), new_class_id);
+		Output::Warning("Actor {}: Can't change to invalid class {}", GetId(), new_class_id);
 		return;
 	}
 
@@ -1274,7 +1274,7 @@ int Game_Actor::GetBattleAnimationId() const {
 		} else {
 			const RPG::BattlerAnimation* anima = ReaderUtil::GetElement(Data::battleranimations, GetActor().battler_animation);
 			if (!anima) {
-				Output::Warning("Actor %d: Invalid battle animation ID %d", GetId(), GetActor().battler_animation);
+				Output::Warning("Actor {}: Invalid battle animation ID {}", GetId(), GetActor().battler_animation);
 				return 0;
 			}
 
@@ -1364,15 +1364,15 @@ void Game_Actor::RemoveInvalidData() {
 		RPG::Item* item = ReaderUtil::GetElement(Data::items, eq_id);
 
 		if (!item && eq_id != 0) {
-			Output::Debug("Actor %d: Removing invalid item %d from equipment slot %d",
+			Output::Debug("Actor {}: Removing invalid item {} from equipment slot {}",
 			GetId(), eq_id, eq_types[i]);
 			SetEquipment(i + 1, 0);
 		} else if (item && item->type != eq_types[i]) {
-			Output::Debug("Actor %d: Removing item %d (of type %d) from equipment slot %d (needs type %d)",
+			Output::Debug("Actor {}: Removing item {} (of type {}) from equipment slot {} (needs type {})",
 			GetId(), item->ID, item->type, i + 1, eq_types[i]);
 			SetEquipment(i + 1, 0);
 		} else if (item && !IsItemUsable(item->ID)) {
-			Output::Debug("Actor %d: Removing item %d from equipment slot %d (Not equippable by this actor)",
+			Output::Debug("Actor {}: Removing item {} from equipment slot {} (Not equippable by this actor)",
 			GetId(), item->ID, i + 1);
 			SetEquipment(i + 1, 0);
 		}
@@ -1382,7 +1382,7 @@ void Game_Actor::RemoveInvalidData() {
 	if (GetData().class_id > 0) {
 		const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, GetData().class_id);
 		if (!cls) {
-			Output::Warning("Actor %d: Removing invalid class %d", GetId(), GetData().class_id);
+			Output::Warning("Actor {}: Removing invalid class {}", GetId(), GetData().class_id);
 			ChangeClass(0, GetLevel(), eSkillNoChange, eParamNoChange, nullptr);
 		}
 	}
@@ -1391,14 +1391,14 @@ void Game_Actor::RemoveInvalidData() {
 	for (int16_t skill_id : GetSkills()) {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 		if (!skill) {
-			Output::Warning("Actor %d: Removing invalid skill %d", GetId(), skill_id);
+			Output::Warning("Actor {}: Removing invalid skill {}", GetId(), skill_id);
 			UnlearnSkill(skill_id);
 		}
 	}
 
 	// Remove invalid states
 	if (GetStates().size() > Data::states.size()) {
-		Output::Warning("Actor %d: State array contains invalid states (%d > %d)", GetId(), GetStates().size(), Data::states.size());
+		Output::Warning("Actor {}: State array contains invalid states ({} > {})", GetId(), GetStates().size(), Data::states.size());
 		GetStates().resize(Data::states.size());
 	}
 
@@ -1406,12 +1406,12 @@ void Game_Actor::RemoveInvalidData() {
 	// Special handling for the game COLORS: Lost Memories which uses level 0
 	// through database editing. Hopefully no game uses negative levels.
 	if (GetLevel() == 0) {
-		Output::Debug("Actor %d: Special handling for level 0", GetId());
+		Output::Debug("Actor {}: Special handling for level 0", GetId());
 	} else if (GetLevel() < 0) {
-		Output::Warning("Actor %d: Invalid level %d, changed to 1", GetId(), GetLevel());
+		Output::Warning("Actor {}: Invalid level {}, changed to 1", GetId(), GetLevel());
 		SetLevel(1);
 	} else if (GetLevel() > GetMaxLevel()) {
-		Output::Warning("Actor %d: Invalid level %d, changed to %d", GetId(), GetLevel(), GetMaxLevel());
+		Output::Warning("Actor {}: Invalid level {}, changed to {}", GetId(), GetLevel(), GetMaxLevel());
 		SetLevel(GetMaxLevel());
 	}
 }

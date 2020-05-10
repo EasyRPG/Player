@@ -37,7 +37,7 @@ std::unique_ptr<Input::Source> Input::Source::Create(
 		if (*log_src) {
 			return log_src;
 		}
-		Output::Warning("Failed to open file for input replaying: %s", path);
+		Output::Warning("Failed to open file for input replaying: {}", path);
 
 		buttons = std::move(log_src->GetButtonMappings());
 		directions = std::move(log_src->GetDirectionMappings());
@@ -91,7 +91,7 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 		record_log.open(path, std::ios::out|std::ios::trunc);
 
 		if (!record_log) {
-			Output::Warning("Failed to open file %s for input recording : %s", path, strerror(errno));
+			Output::Warning("Failed to open file {} for input recording : {}", path, strerror(errno));
 			return false;
 		}
 	}

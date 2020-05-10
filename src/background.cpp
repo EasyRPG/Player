@@ -47,7 +47,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
 
 	if (!terrain) {
-		Output::Warning("Background: Invalid terrain ID %d", terrain_id);
+		Output::Warning("Background: Invalid terrain ID {}", terrain_id);
 		return;
 	}
 

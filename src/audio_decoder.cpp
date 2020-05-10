@@ -143,7 +143,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 				return mididec;
 			} else {
 				wildmidi_works = false;
-				Output::Debug("WildMidi Failed: %s", mididec->GetError().c_str());
+				Output::Debug("WildMidi Failed: {}", mididec->GetError());
 			}
 		}
 #endif
@@ -156,7 +156,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 			}
 			return mididec;
 		} else {
-			Output::Debug("FmMidi Failed: %s", mididec->GetError().c_str());
+			Output::Debug("FmMidi Failed: {}", mididec->GetError());
 		}
 #endif
 		// No MIDI decoder available

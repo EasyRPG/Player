@@ -903,20 +903,20 @@ void Game_BattleAlgorithm::Normal::Init() {
 		if (weapon1) {
 			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon1->animation_id);
 				return;
 			}
 			if (weapon2) {
 				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
 				if (!animation2) {
-					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon2->animation_id);
 				}
 			}
 		} else {
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID {}", actor.unarmed_animation);
 			}
 		}
 	}
@@ -1152,7 +1152,7 @@ void Game_BattleAlgorithm::Skill::Init() {
 	if (skill.animation_id != 0) {
 		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
 		if (!animation) {
-			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+			Output::Warning("Algorithm Skill: Invalid skill animation ID {}", skill.animation_id);
 		}
 	}
 }

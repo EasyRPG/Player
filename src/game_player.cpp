@@ -86,7 +86,7 @@ void Game_Player::PerformTeleport() {
 	}
 
 	if (teleport_target.GetMapId() <= 0) {
-		Output::Error("Invalid Teleport map id! mapid=%d x=%d y=%d d=%d", teleport_target.GetMapId(),
+		Output::Error("Invalid Teleport map id! mapid={} x={} y={} d={}", teleport_target.GetMapId(),
 				teleport_target.GetX(), teleport_target.GetY(), teleport_target.GetDirection());
 	}
 
@@ -587,7 +587,7 @@ void Game_Player::BeginMove() {
 			}
 		}
 	} else {
-		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
+		Output::Warning("Player BeginMove: Invalid terrain ID {} at ({}, {})", terrain_id, GetX(), GetY());
 	}
 
 	if (red_flash) {

@@ -97,7 +97,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 
 	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
 	if (!stream) {
-		Output::Error("Couldn't open image file %s", filename.c_str());
+		Output::Error("Couldn't open image file {}", filename);
 		return;
 	}
 
@@ -118,7 +118,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		img_okay = ImagePNG::ReadPNG(stream, (void*)nullptr, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image file %s (Magic: %02X)", filename.c_str(), *reinterpret_cast<uint32_t*>(data));
+		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
 
 	fclose(stream);
 
@@ -151,7 +151,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		img_okay = ImagePNG::ReadPNG((FILE*)nullptr, (const void*) data, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image (Magic: %02X)", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
+		Output::Warning("Unsupported image (Magic: {:02X})", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
 	if (!img_okay) {
 		free(pixels);
@@ -412,7 +412,7 @@ pixman_format_code_t Bitmap::find_format(const DynamicFormat& format) {
 	if (iter == formats_map.end()) {
 		// To fix add a pair to initialize_formats that maps the outputted
 		// DynamicFormat to a pixman format
-		Output::Error("%s\nDynamicFormat(%d, %d, %d, %d, %d, %d, %d, %d, %d, %s)",
+		Output::Error("{}\nDynamicFormat({}, {}, {}, {}, {}, {}, {}, {}, {}, {})",
 		"Couldn't find Pixman format for",
 		format.bits,
 		format.r.bits, format.r.shift,
@@ -484,7 +484,7 @@ void Bitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 	bitmap.reset(pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch));
 
 	if (bitmap == NULL) {
-		Output::Error("Couldn't create %dx%d image.", width, height);
+		Output::Error("Couldn't create {}x{} image.", width, height);
 	}
 
 	if (format.bits == 8) {

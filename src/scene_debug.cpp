@@ -724,11 +724,11 @@ void Scene_Debug::DoCallEvent() {
 	if (Game_Battle::IsBattleRunning()) {
 		Game_Battle::GetInterpreter().Push(&ce);
 		Scene::PopUntil(Scene::Battle);
-		Output::Debug("Debug Scene Forced execution of common event %d on the battle foreground interpreter.", ce.GetIndex());
+		Output::Debug("Debug Scene Forced execution of common event {} on the battle foreground interpreter.", ce.GetIndex());
 	} else {
 		Game_Map::GetInterpreter().Push(&ce);
 		Scene::PopUntil(Scene::Map);
-		Output::Debug("Debug Scene Forced execution of common event %d on the map foreground interpreter.", ce.GetIndex());
+		Output::Debug("Debug Scene Forced execution of common event {} on the map foreground interpreter.", ce.GetIndex());
 	}
 }
 

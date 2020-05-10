@@ -188,11 +188,11 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 			break;
 		}
 		if (parent_index == current_index) {
-			Output::Warning("Map %d has parent pointing to itself!", current_index);
+			Output::Warning("Map {} has parent pointing to itself!", current_index);
 			break;
 		}
 		if (parent_index < 0) {
-			Output::Warning("Map %d has invalid parent id %d!", Data::treemap.maps[current_index].ID, Data::treemap.maps[current_index].parent_map);
+			Output::Warning("Map {} has invalid parent id {}!", Data::treemap.maps[current_index].ID, Data::treemap.maps[current_index].parent_map);
 			break;
 		}
 		current_index = parent_index;
@@ -281,7 +281,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		map_file = FileFinder::FindDefault(ss.str());
 
 		if (map_file.empty()) {
-			Output::Error("Loading of Map %s failed.\nThe map was not found.", ss.str().c_str());
+			Output::Error("Loading of Map {} failed.\nThe map was not found.", ss.str());
 		}
 
 		map = LMU_Reader::Load(map_file, Player::encoding);
@@ -289,7 +289,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		map = LMU_Reader::LoadXml(map_file);
 	}
 
-	Output::Debug("Loading Map %s", ss.str().c_str());
+	Output::Debug("Loading Map {}", ss.str());
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(LcfReader::GetError());
@@ -308,7 +308,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		}
 		ss << Data::treemap.maps[cur].name.c_str();
 	}
-	Output::Debug("Tree: %s", ss.str().c_str());
+	Output::Debug("Tree: {}", ss.str());
 
 	if (!is_load_savegame) {
 		for (auto& vehicle: vehicles) {
@@ -634,7 +634,7 @@ bool Game_Map::CanLandAirship(int x, int y) {
 
 	const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
-		Output::Warning("CanLandAirship: Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("CanLandAirship: Invalid terrain at ({}, {})", x, y);
 		return false;
 	}
 	if (!terrain->airship_land) {
@@ -731,7 +731,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 	if (vehicle_type != Game_Vehicle::None) {
 		const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 		if (!terrain) {
-			Output::Warning("IsPassableTile: Invalid terrain at (%d, %d)", x, y);
+			Output::Warning("IsPassableTile: Invalid terrain at ({}, {})", x, y);
 			return false;
 		}
 		if (vehicle_type == Game_Vehicle::Boat && !terrain->boat_pass) {
@@ -801,7 +801,7 @@ int Game_Map::GetBushDepth(int x, int y) {
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
-		Output::Warning("GetBushDepth: Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("GetBushDepth: Invalid terrain at ({}, {})", x, y);
 		return 0;
 	}
 	return terrain->bush_depth;
@@ -1174,7 +1174,7 @@ bool Game_Map::UpdateEncounterSteps() {
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
-		Output::Warning("UpdateEncounterSteps: Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
 		return false;
 	}
 
@@ -1240,7 +1240,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
 		const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
 		if (!troop) {
-			Output::Warning("GetEncountersAt: Invalid troop ID %d in encounter list", troop_id);
+			Output::Warning("GetEncountersAt: Invalid troop ID {} in encounter list", troop_id);
 			return false;
 		}
 
@@ -1488,7 +1488,7 @@ void Game_Map::SetChipset(int id) {
 
 	chipset = ReaderUtil::GetElement(Data::chipsets, map_info.chipset_id);
 	if (!chipset) {
-		Output::Warning("SetChipset: Invalid chipset ID %d", map_info.chipset_id);
+		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
 		chipset_name = chipset->chipset_name;
 		passages_down = chipset->passable_data_lower;

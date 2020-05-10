@@ -681,7 +681,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
-		//printf("Action: %s\n", action->GetSource()->GetName().c_str());
+		//Output::Debug("Action: {}", action->GetSource()->GetName());
 
 		action->Execute();
 

@@ -94,7 +94,7 @@ void Game_Interpreter::Push(
 	}
 
 	if ((int)_state.stack.size() > call_stack_limit) {
-		Output::Error("Call Event limit (%d) has been exceeded", call_stack_limit);
+		Output::Error("Call Event limit ({}) has been exceeded", call_stack_limit);
 	}
 
 	RPG::SaveEventExecFrame frame;
@@ -421,7 +421,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		auto* frame = GetFramePtr();
 		int event_id = frame ? frame->event_id : 0;
 		// Executed Events Count exceeded (10000)
-		Output::Debug("Event %d exceeded execution limit", event_id);
+		Output::Debug("Event {} exceeded execution limit", event_id);
 	}
 
 	if (Game_Map::GetNeedRefresh()) {
@@ -713,7 +713,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (!evnt) {
-			Output::Error("Call stack finished with invalid event id %d. This can be caused by a vehicle teleport?", event_id);
+			Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
 		} else if (main_flag) {
 			evnt->OnFinishForegroundEvent();
 		}
@@ -992,7 +992,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			actor = Game_Actors::GetActor(com.parameters[5]);
 
 			if (!actor) {
-				Output::Warning("ControlVariables: Invalid actor ID %d", com.parameters[5]);
+				Output::Warning("ControlVariables: Invalid actor ID {}", com.parameters[5]);
 				return true;
 			}
 
@@ -1351,7 +1351,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		actor = Game_Actors::GetActor(id);
 
 		if (!actor) {
-			Output::Warning("Invalid actor ID %d", id);
+			Output::Warning("Invalid actor ID {}", id);
 			return actors;
 		}
 
@@ -1361,7 +1361,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		// Var hero
 		actor = Game_Actors::GetActor(Main_Data::game_variables->Get(id));
 		if (!actor) {
-			Output::Warning("Invalid actor ID %d", Main_Data::game_variables->Get(id));
+			Output::Warning("Invalid actor ID {}", Main_Data::game_variables->Get(id));
 			return actors;
 		}
 
@@ -1385,7 +1385,7 @@ Game_Character* Game_Interpreter::GetCharacter(int event_id) const {
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
 	if (!ch) {
-		Output::Warning("Unknown event with id %d", event_id);
+		Output::Warning("Unknown event with id {}", event_id);
 	}
 	return ch;
 }
@@ -1479,7 +1479,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	actor = Game_Actors::GetActor(id);
 
 	if (!actor) {
-		Output::Warning("ChangePartyMember: Invalid actor ID %d", id);
+		Output::Warning("ChangePartyMember: Invalid actor ID {}", id);
 		return true;
 	}
 
@@ -1642,7 +1642,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 									  com.parameters[4]);
 			item = ReaderUtil::GetElement(Data::items, item_id);
 			if (!item) {
-				Output::Warning("ChangeEquipment: Invalid item ID %d", item_id);
+				Output::Warning("ChangeEquipment: Invalid item ID {}", item_id);
 				return true;
 			}
 
@@ -1884,7 +1884,7 @@ bool Game_Interpreter::CommandChangeHeroName(RPG::EventCommand const& com) { // 
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroName: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeHeroName: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1896,7 +1896,7 @@ bool Game_Interpreter::CommandChangeHeroTitle(RPG::EventCommand const& com) { //
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroTitle: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeHeroTitle: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1908,7 +1908,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& c
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeSpriteAssociation: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeSpriteAssociation: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1924,7 +1924,7 @@ bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { //
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("CommandChangeActorFace: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1937,7 +1937,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com)
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 	if (!vehicle) {
-		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID %d", vehicle_id);
+		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID {}", vehicle_id);
 		return true;
 	}
 
@@ -2011,7 +2011,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 			// 0 because we adjust all vehicle IDs by +1 to match the lcf values
 			Output::Debug("SetVehicleLocation: Party referenced");
 		} else {
-			Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);
+			Output::Warning("SetVehicleLocation: Invalid vehicle ID {}", vehicle_id);
 			return true;
 		}
 	}
@@ -2042,7 +2042,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 
 		auto event_id = GetOriginalEventId();
 		if (!main_flag && event_id != 0) {
-			Output::Error("VehicleTeleport not allowed from parallel map event! Id=%d", event_id);
+			Output::Error("VehicleTeleport not allowed from parallel map event! Id={}", event_id);
 		}
 
 		_async_op = AsyncOp::MakeQuickTeleport(map_id, x, y);
@@ -2394,7 +2394,7 @@ namespace PicPointerPatch {
 			}
 
 			if (new_id > 0) {
-				Output::Debug("PicPointer: ID %d replaced with ID %d", pic_id, new_id);
+				Output::Debug("PicPointer: ID {} replaced with ID {}", pic_id, new_id);
 				pic_id = new_id;
 			}
 		}
@@ -2403,19 +2403,19 @@ namespace PicPointerPatch {
 	static void AdjustParams(Game_Pictures::Params& params) {
 		if (params.magnify > 10000) {
 			int new_magnify = Main_Data::game_variables->Get(params.magnify - 10000);
-			Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+			Output::Debug("PicPointer: Zoom {} replaced with {}", params.magnify, new_magnify);
 			params.magnify = new_magnify;
 		}
 
 		if (params.top_trans > 10000) {
 			int new_top_trans = Main_Data::game_variables->Get(params.top_trans - 10000);
-			Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+			Output::Debug("PicPointer: Top transparency {} replaced with {}", params.top_trans, new_top_trans);
 			params.top_trans = new_top_trans;
 		}
 
 		if (params.bottom_trans > 10000) {
 			int new_bottom_trans = Main_Data::game_variables->Get(params.bottom_trans - 10000);
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+			Output::Debug("PicPointer: Bottom transparency {} replaced with {}", params.bottom_trans, new_bottom_trans);
 			params.bottom_trans = new_bottom_trans;
 		}
 	}
@@ -2441,7 +2441,7 @@ namespace PicPointerPatch {
 
 		if (!Player::IsRPG2k3E()) {
 			// Prevent debug messages because this function is used by ShowPicture of RPG2k3E
-			Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+			Output::Debug("PicPointer: File {} replaced with {}", str, new_pic_name);
 		}
 		return new_pic_name;
 	}
@@ -2467,7 +2467,7 @@ namespace PicPointerPatch {
 
 		if (params.duration > 10000) {
 			int new_duration = Main_Data::game_variables->Get(params.duration - 10000);
-			Output::Debug("PicPointer: Move duration %d replaced with %d", params.duration, new_duration);
+			Output::Debug("PicPointer: Move duration {} replaced with {}", params.duration, new_duration);
 			params.duration = new_duration;
 		}
 	}
@@ -2546,7 +2546,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 
 	if (pic_id <= 0) {
-		Output::Error("ShowPicture: Requested invalid picture id (%d)", pic_id);
+		Output::Error("ShowPicture: Requested invalid picture id ({})", pic_id);
 	}
 
 	// RPG_RT will crash if you ask for a picture id greater than the limit that
@@ -2609,7 +2609,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 	params.duration = std::max(0, std::min(params.duration, 10000));
 
 	if (pic_id <= 0) {
-		Output::Error("MovePicture: Requested invalid picture id (%d)", pic_id);
+		Output::Error("MovePicture: Requested invalid picture id ({})", pic_id);
 	}
 
 	Main_Data::game_pictures->Move(pic_id, params);
@@ -2642,7 +2642,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 
 		for (int i = pic_id; i <= max; ++i) {
 			if (i <= 0) {
-				Output::Error("ErasePicture: Requested invalid picture id (%d)", i);
+				Output::Error("ErasePicture: Requested invalid picture id ({})", i);
 			}
 
 			Main_Data::game_pictures->Erase(i);
@@ -2651,7 +2651,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 		PicPointerPatch::AdjustId(pic_id);
 
 		if (pic_id <= 0) {
-			Output::Error("ErasePicture: Requested invalid picture id (%d)", pic_id);
+			Output::Error("ErasePicture: Requested invalid picture id ({})", pic_id);
 		}
 
 		Main_Data::game_pictures->Erase(pic_id);
@@ -3036,7 +3036,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		actor = Game_Actors::GetActor(actor_id);
 
 		if (!actor) {
-			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
+			Output::Warning("ConditionalBranch: Invalid actor ID {}", actor_id);
 			// Use Else Branch
 			SetSubcommandIndex(com.indent, 1);
 			SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
@@ -3095,7 +3095,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 		if (!vehicle) {
-			Output::Warning("ConditionalBranch: Invalid vehicle ID %d", vehicle_id);
+			Output::Warning("ConditionalBranch: Invalid vehicle ID {}", vehicle_id);
 			return true;
 		}
 
@@ -3144,7 +3144,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		}
 		break;
 	default:
-		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
+		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
 
 
@@ -3269,7 +3269,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 		evt_id = com.parameters[1];
 		Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 		if (!common_event) {
-			Output::Warning("CallEvent: Can't call invalid common event %d", evt_id);
+			Output::Warning("CallEvent: Can't call invalid common event {}", evt_id);
 			return true;
 		}
 
@@ -3291,13 +3291,13 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	if (!event) {
-		Output::Warning("CallEvent: Can't call non-existant event %d", evt_id);
+		Output::Warning("CallEvent: Can't call non-existant event {}", evt_id);
 		return false;
 	}
 
 	const RPG::EventPage* page = event->GetPage(event_page);
 	if (!page) {
-		Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
+		Output::Warning("CallEvent: Can't call non-existant page {} of event {}", event_page, evt_id);
 		return false;
 	}
 
@@ -3331,7 +3331,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
 	if (!cls && class_id != 0) {
-		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
+		Output::Warning("ChangeClass: Can't change class. Class {} is invalid", class_id);
 		return true;
 	}
 

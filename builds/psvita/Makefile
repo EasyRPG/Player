@@ -9,7 +9,7 @@ CPPFILES := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 OBJS     := $(CPPFILES:.cpp=.o)
 
 LIBS = -llcf -lexpat -lvita2d \
-	-lpixman-1 -lpng16 -lz -licuuc -licui18n -licudata \
+	-lpixman-1 -lpng16 -lz -licuuc -licui18n -licudata -lfmt \
 	-lfreetype -lharfbuzz -lfreetype -lxmp-lite -lmpg123 -lsndfile \
 	-lvorbisfile -lvorbis -logg -lWildMidi -lspeexdsp -lopusfile -lopus \
 	-lpthread -lSceLibKernel_stub -lSceDisplay_stub -lSceGxm_stub \

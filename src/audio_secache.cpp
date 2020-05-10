@@ -53,7 +53,7 @@ namespace {
 			}
 
 #ifdef CACHE_DEBUG
-			Output::Debug("SE: Freeing memory of %s", it->first.c_str());
+			Output::Debug("SE: Freeing memory of {}", it->first);
 #endif
 
 			cache_size -= it->second->buffer.size();
@@ -62,7 +62,7 @@ namespace {
 		}
 
 #ifdef CACHE_DEBUG
-		Output::Debug("SE cache size: %f", cache_size / 1024.0 / 1024);
+		Output::Debug("SE cache size: {}", cache_size / 1024.0 / 1024);
 #endif
 	}
 }
@@ -163,7 +163,7 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 	cache_size += se->buffer.size();
 
 #ifdef CACHE_DEBUG
-	Output::Debug("SE cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+	Output::Debug("SE cache size (Add): {}", cache_size / 1024.0 / 1024.0);
 #endif
 
 	FreeCacheMemory();

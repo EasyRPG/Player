@@ -37,7 +37,7 @@ void Game_Actors::Fixup() {
 	if (Main_Data::game_data.actors.size() != data.size()) {
 		size_t save_actor_size = Main_Data::game_data.actors.size();
 
-		Output::Warning("Actor array size doesn't match Savegame actor array size (%d != %d)",
+		Output::Warning("Actor array size doesn't match Savegame actor array size ({} != {})",
 						data.size(), save_actor_size);
 
 		Main_Data::game_data.actors.resize(data.size());

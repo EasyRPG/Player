@@ -640,7 +640,7 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 	int res_x = com.parameters[3];
 	int res_y = com.parameters[4];
 
-	Output::Warning("Couldn't play movie: %s. Movie playback is not implemented (yet).", filename.c_str());
+	Output::Warning("Couldn't play movie: {}. Movie playback is not implemented (yet).", filename);
 
 	Main_Data::game_screen->PlayMovie(filename, pos_x, pos_y, res_x, res_y);
 

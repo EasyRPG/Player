@@ -44,7 +44,7 @@ namespace midisequencer{
             --*track_length;
             d = fgetc(fp);
             if(d == EOF){
-                Output::Warning("Midi sequencer: %s", errtext);
+                Output::Warning("Midi sequencer: {}", errtext);
             }
             ret <<= 7;
             ret |= (d & 0x7F);

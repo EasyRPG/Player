@@ -80,19 +80,19 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	if (bgm.volume < 0 || bgm.volume > 100) {
 		data.current_music.volume = 100;
 
-		Output::Debug("BGM %s has invalid volume %d", bgm.name.c_str(), bgm.volume);
+		Output::Debug("BGM {} has invalid volume {}", bgm.name, bgm.volume);
 	}
 
 	if (bgm.fadein < 0 || bgm.fadein > 10000) {
 		data.current_music.fadein = 0;
 
-		Output::Debug("BGM %s has invalid fadein %d", bgm.name.c_str(), bgm.fadein);
+		Output::Debug("BGM {} has invalid fadein {}", bgm.name, bgm.fadein);
 	}
 
 	if (bgm.tempo < 50 || bgm.tempo > 200) {
 		data.current_music.tempo = 100;
 
-		Output::Debug("BGM %s has invalid tempo %d", bgm.name.c_str(), bgm.tempo);
+		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
 
 	// (OFF) means play nothing
@@ -168,12 +168,12 @@ void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
 
 	// Validate
 	if (se.volume < 0 || se.volume > 100) {
-		Output::Debug("SE %s has invalid volume %d", se.name.c_str(), se.volume);
+		Output::Debug("SE {} has invalid volume {}", se.name, se.volume);
 		volume = 100;
 	}
 
 	if (se.tempo < 50 || se.tempo > 200) {
-		Output::Debug("SE %s has invalid tempo %d", se.name.c_str(), se.tempo);
+		Output::Debug("SE {} has invalid tempo {}", se.name, se.tempo);
 		tempo = 100;
 	}
 
@@ -372,7 +372,7 @@ Transition::Type Game_System::GetTransition(int which) {
 	constexpr int num_types = 21;
 
 	if (transition < 0 || transition >= num_types) {
-		Output::Warning("Invalid transition value %d", transition);
+		Output::Warning("Invalid transition value {}", transition);
 		transition = Utils::Clamp(transition, 0, num_types - 1);
 	}
 
@@ -464,7 +464,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		Audio().BGM_Stop();
 		return;
 	} else if (path.empty()) {
-		Output::Debug("Music not found: %s", result->file.c_str());
+		Output::Debug("Music not found: {}", result->file);
 		return;
 	}
 
@@ -472,7 +472,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		// Handle Ineluki's MP3 patch
 		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::in);
 		if (!stream) {
-			Output::Warning("Ineluki link read error: %s", path.c_str());
+			Output::Warning("Ineluki link read error: {}", path);
 			return;
 		}
 
@@ -480,7 +480,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		std::string line = Utils::ReadLine(*stream.get());
 		line = ReaderUtil::Recode(line, Player::encoding);
 
-		Output::Debug("Ineluki link file: %s -> %s", path.c_str(), line.c_str());
+		Output::Debug("Ineluki link file: {} -> {}", path, line);
 
 		#ifdef EMSCRIPTEN
 		Output::Warning("Ineluki MP3 patch unsupported in the web player");
@@ -490,7 +490,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 		std::string ineluki_path = FileFinder::FindDefault(line_canonical);
 		if (ineluki_path.empty()) {
-			Output::Debug("Music not found: %s", line_canonical.c_str());
+			Output::Debug("Music not found: {}", line_canonical);
 			return;
 		}
 
@@ -516,7 +516,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 		}
 		return;
 	} else if (path.empty()) {
-		Output::Debug("Sound not found: %s", result->file.c_str());
+		Output::Debug("Sound not found: {}", result->file);
 		return;
 	}
 

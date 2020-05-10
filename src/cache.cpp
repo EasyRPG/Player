@@ -108,8 +108,7 @@ namespace {
 			}
 
 #ifdef CACHE_DEBUG
-			Output::Debug("Freeing memory of %s/%s",
-						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str());
+			Output::Debug("Freeing memory of {}/{}", std::get<0>(i.first), std::get<1>(i.first));
 #endif
 
 			cache_size -= it->second.bitmap->GetSize();
@@ -118,7 +117,7 @@ namespace {
 		}
 
 #ifdef CACHE_DEBUG
-		Output::Debug("Bitmap cache size: %f", cache_size / 1024.0 / 1024);
+		Output::Debug("Bitmap cache size: {}", cache_size / 1024.0 / 1024);
 #endif
 	}
 
@@ -126,7 +125,7 @@ namespace {
 		if (bmp) {
 			cache_size += bmp->GetSize();
 #ifdef CACHE_DEBUG
-			Output::Debug("Bitmap cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+			Output::Debug("Bitmap cache size (Add): {}", cache_size / 1024.0 / 1024.0);
 #endif
 		}
 
@@ -147,11 +146,11 @@ namespace {
 			FreeBitmapMemory();
 
 			if (path.empty()) {
-				Output::Warning("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
+				Output::Warning("Image not found: {}/{}", folder_name, filename);
 			} else {
 				bmp = Bitmap::Create(path, transparent, flags);
 				if (!bmp) {
-					Output::Warning("Invalid image: %s/%s", folder_name.c_str(), filename.c_str());
+					Output::Warning("Invalid image: {}/{}", folder_name, filename);
 				}
 			}
 
@@ -312,8 +311,8 @@ namespace {
 			}
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {
-				Output::Debug("Image size out of bounds: %s/%s (%dx%d < %dx%d < %dx%d)",
-				              s.directory, f.c_str(), min_w, min_h, w, h, max_w, max_h);
+				Output::Debug("Image size out of bounds: {}/{} ({}x{} < {}x{} < {}x{})",
+				              s.directory, f, min_w, min_h, w, h, max_w, max_h);
 			}
 		}
 
@@ -513,7 +512,7 @@ void Cache::Clear() {
 		if (kv.second.expired()) {
 			continue;
 		}
-		Output::Debug("possible leak in cached tilemap %s/%d",
+		Output::Debug("possible leak in cached tilemap {}/{}",
 				NameFromTileHash(key), IdFromTileHash(key));
 	}
 

@@ -419,6 +419,7 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(WILDMIDI_CFLAGS) \
 	$(OGGVORBIS_CFLAGS) \
 	$(OPUS_CFLAGS) \
+	$(FMT_CFLAGS) \
 	$(SNDFILE_CFLAGS) \
 	$(XMP_CFLAGS) \
 	$(SPEEXDSP_CFLAGS)
@@ -438,6 +439,7 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(WILDMIDI_LIBS) \
 	$(OGGVORBIS_LIBS) \
 	$(OPUS_LIBS) \
+	$(FMT_LIBS) \
 	$(SNDFILE_LIBS) \
 	$(XMP_LIBS) \
 	$(SPEEXDSP_LIBS)

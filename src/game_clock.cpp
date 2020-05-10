@@ -62,7 +62,7 @@ void Game_Clock::logClockInfo() {
 	} else if (std::is_same<period,std::milli>::value) {
 		period_name = "ms";
 	}
-	Output::Debug("Clock: %s steady=%d period=%s (%" PRIdMAX " / %" PRIdMAX ")",
+	Output::Debug("Clock: {} steady={} period={} ({} / {})",
 			Name(),
 			is_steady,
 			period_name,

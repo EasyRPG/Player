@@ -111,11 +111,11 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 				current_fmt = fmt;
 				current_rank = rank;
 			}
-			Output::Debug("SDL2: Detected format (%d) %s : rank=(%d)",
+			Output::Debug("SDL2: Detected format ({}) {} : rank=({})",
 					i, SDL_GetPixelFormatName(fmt), rank);
 		} else {
 			if (print_all) {
-				Output::Debug("SDL2: Detected format (%d) %s : Not Supported",
+				Output::Debug("SDL2: Detected format ({}) {} : Not Supported",
 						i, SDL_GetPixelFormatName(fmt));
 			}
 		}
@@ -143,7 +143,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
 #endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
+		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
 	}
 
 	RequestVideoMode(width, height, fullscreen, zoom);
@@ -152,7 +152,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-		Output::Warning("Couldn't initialize joystick. %s", SDL_GetError());
+		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
 
 	SDL_JoystickEventState(1);
@@ -237,10 +237,10 @@ void Sdl2Ui::EndDisplayModeChange() {
 
 					// Try a rollback to last mode
 					if (!RefreshDisplayMode()) {
-						Output::Error("Couldn't rollback to last display mode.\n%s", SDL_GetError());
+						Output::Error("Couldn't rollback to last display mode.\n{}", SDL_GetError());
 					}
 				} else {
-					Output::Error("Couldn't set display mode.\n%s", SDL_GetError());
+					Output::Error("Couldn't set display mode.\n{}", SDL_GetError());
 				}
 			}
 
@@ -276,7 +276,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			SDL_WINDOW_RESIZABLE | flags);
 
 		if (!sdl_window) {
-			Output::Debug("SDL_CreateWindow failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateWindow failed : {}", SDL_GetError());
 			return false;
 		}
 
@@ -297,7 +297,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer) {
-			Output::Debug("SDL_CreateRenderer failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateRenderer failed : {}", SDL_GetError());
 			return false;
 		}
 
@@ -310,7 +310,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		SDL_RendererInfo rinfo = {};
 		if (SDL_GetRendererInfo(sdl_renderer, &rinfo) == 0) {
-			Output::Debug("SDL2: RendererInfo hw=%d sw=%d vsync=%d",
+			Output::Debug("SDL2: RendererInfo hw={} sw={} vsync={}",
 					!!(rinfo.flags & SDL_RENDERER_ACCELERATED),
 					!!(rinfo.flags & SDL_RENDERER_SOFTWARE),
 					!!(rinfo.flags & SDL_RENDERER_PRESENTVSYNC)
@@ -318,20 +318,20 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 			texture_format = SelectFormat(rinfo, false);
 		} else {
-			Output::Debug("SDL_GetRendererInfo failed : %s", SDL_GetError());
+			Output::Debug("SDL_GetRendererInfo failed : {}", SDL_GetError());
 		}
 
 		SetFrameRateSynchronized(rinfo.flags & SDL_RENDERER_PRESENTVSYNC);
 
 		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
 			texture_format = GetDefaultFormat();
-			Output::Debug("SDL2: None of the (%d) detected formats were supported! Falling back to %s. This will likely cause performance degredation.",
+			Output::Debug("SDL2: None of the ({}) detected formats were supported! Falling back to {}. This will likely cause performance degredation.",
 					rinfo.num_texture_formats, SDL_GetPixelFormatName(texture_format));
 			// Run again to print all the formats on this system.
 			SelectFormat(rinfo, true);
 		}
 
-		Output::Debug("SDL2: Selected Pixel Format %s", SDL_GetPixelFormatName(texture_format));
+		Output::Debug("SDL2: Selected Pixel Format {}", SDL_GetPixelFormatName(texture_format));
 
 		// Flush display
 		SDL_RenderClear(sdl_renderer);
@@ -346,7 +346,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
 		if (!sdl_texture) {
-			Output::Debug("SDL_CreateTexture failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
 
@@ -378,7 +378,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int a, w, h;
 
 	if (SDL_QueryTexture(sdl_texture, &sdl_pixel_fmt, &a, &w, &h) != 0) {
-		Output::Debug("SDL_QueryTexture failed : %s", SDL_GetError());
+		Output::Debug("SDL_QueryTexture failed : {}", SDL_GetError());
 		return false;
 	}
 

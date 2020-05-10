@@ -407,7 +407,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the B block combination
 	short b_subtile = (ID - block * 1000) / 50;
 	if (b_subtile >= TILE_SIZE) {
-		Output::Warning("Invalid AB autotile ID: %d (b_subtile = %d)",
+		Output::Warning("Invalid AB autotile ID: {} (b_subtile = {})",
 						ID, b_subtile);
 		return;
 	}
@@ -415,7 +415,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the A block combination
 	short a_subtile = ID - block * 1000 - b_subtile * 50;
 	if (a_subtile >= 47) {
-		Output::Warning("Invalid AB autotile ID: %d (a_subtile = %d)",
+		Output::Warning("Invalid AB autotile ID: {} (a_subtile = {})",
 						ID, a_subtile);
 		return;
 	}
@@ -503,7 +503,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	short subtile = ID - 4000 - block * 50;
 
 	if (block >= 12 || subtile >= 50 || block < 0 || subtile < 0) {
-		Output::Warning("Tilemap index out of range: %d %d", block, subtile);
+		Output::Warning("Tilemap index out of range: {} {}", block, subtile);
 		return;
 	}
 

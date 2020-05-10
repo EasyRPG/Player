@@ -50,7 +50,7 @@ void Scene_ActorTarget::Start() {
 	if (use_item) {
 		const RPG::Item* item = ReaderUtil::GetElement(Data::items, id);
 		if (!item) {
-			Output::Warning("Scene ActorTarget: Invalid item ID %d", id);
+			Output::Warning("Scene ActorTarget: Invalid item ID {}", id);
 			Scene::Pop();
 			return;
 		}
@@ -58,7 +58,7 @@ void Scene_ActorTarget::Start() {
 		if (item->type == RPG::Item::Type_special) {
 			skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("Scene ActorTarget: Item %d has invalid skill ID %d", id, item->skill_id);
+				Output::Warning("Scene ActorTarget: Item {} has invalid skill ID {}", id, item->skill_id);
 				Scene::Pop();
 				return;
 			}
@@ -76,7 +76,7 @@ void Scene_ActorTarget::Start() {
 	} else {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
 		if (!skill) {
-			Output::Warning("Scene ActorTarget: Invalid skill ID %d", id);
+			Output::Warning("Scene ActorTarget: Invalid skill ID {}", id);
 			Scene::Pop();
 			return;
 		}
@@ -164,7 +164,7 @@ void Scene_ActorTarget::UpdateSkill() {
 				Game_System::SePlay(*animation);
 			}
 			else {
-				Output::Warning("UpdateSkill: Skill %d references invalid animation %d", id, skill->animation_id);
+				Output::Warning("UpdateSkill: Skill {} references invalid animation {}", id, skill->animation_id);
 			}
 		}
 		else {

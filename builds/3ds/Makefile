@@ -76,10 +76,10 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -flto -Wl,-Map,$(notdir $*.map)
 
 LIBS	:= -lcitro2d -lcitro3d -lctru \
 		-llcf -lexpat -lpixman-1 -lpng -lz \
-		-licuuc -licui18n -licudata \
+		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype \
 		-lmpg123 -lsndfile -lvorbisidec -lopusfile -lopus \
-		-logg -lxmp-lite -lWildMidi -lspeexdsp -lm 
+		-logg -lxmp-lite -lWildMidi -lspeexdsp -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

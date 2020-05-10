@@ -270,7 +270,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		error_message = "WildMidi: Could not find configuration file.";
 		return;
 	}
-	Output::Debug("WildMidi: Using %s as configuration file...", config_file.c_str());
+	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
 
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
 	if (!init) {

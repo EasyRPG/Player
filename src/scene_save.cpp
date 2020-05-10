@@ -60,7 +60,7 @@ void Scene_Save::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
-	Output::Debug("Saving to %s", ss.str().c_str());
+	Output::Debug("Saving to {}", ss.str());
 
 	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;

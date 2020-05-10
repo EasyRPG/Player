@@ -69,7 +69,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("Couldn't play BGM %s: File not readable", file.c_str());
+		Output::Warning("Couldn't play BGM {}: File not readable", file);
 		return;
 	}
 
@@ -95,7 +95,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		bgm_buf[0].nsamples = nsamples;
 		bgm_buf[1].nsamples = nsamples;
 	} else {
-		Output::Warning("Couldn't play BGM %s: Format not supported", file.c_str());
+		Output::Warning("Couldn't play BGM {}: Format not supported", file);
 		fclose(filehandle);
 	}
 
@@ -187,13 +187,13 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (se_channel == -1) {
-		Output::Warning("Couldn't play SE %s: No free channel available", file.c_str());
+		Output::Warning("Couldn't play SE {}: No free channel available", file);
 		return;
 	}
 
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
 	if (!cache) {
-		Output::Warning("Couldn't play SE %s: Format not supported", file.c_str());
+		Output::Warning("Couldn't play SE {}: Format not supported", file);
 		return;
 	}
 
@@ -338,7 +338,7 @@ CtrAudio::CtrAudio() {
 		if ((R_SUMMARY(res) == RS_NOTFOUND) && (R_MODULE(res) == RM_DSP))
 			Output::Warning("This needs a dumped DSP firmware to work!");
 		else
-			Output::Warning("Error code: 0x%X", res);
+			Output::Warning("Error code: {:#X}", res);
 
 		return;
 	}

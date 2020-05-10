@@ -101,7 +101,7 @@ int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
 	const RPG::Attribute* attribute = ReaderUtil::GetElement(Data::attributes, attribute_id);
 
 	if (!attribute) {
-		Output::Warning("GetAttributeRate: Invalid attribute ID %d", attribute_id);
+		Output::Warning("GetAttributeRate: Invalid attribute ID {}", attribute_id);
 		return 0;
 	}
 
@@ -155,7 +155,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 
 	if (!skill) {
-		Output::Warning("IsSkillUsable: Invalid skill ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Invalid skill ID {}", skill_id);
 		return false;
 	}
 
@@ -211,7 +211,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("UseItem: Can't use item with invalid ID %d", item_id);
+		Output::Warning("UseItem: Can't use item with invalid ID {}", item_id);
 		return false;
 	}
 
@@ -270,7 +270,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 	if (do_skill) {
 		auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 		if (skill == nullptr) {
-			Output::Warning("UseItem: Can't use item %d skill with invalid ID %d", item->ID, item->skill_id);
+			Output::Warning("UseItem: Can't use item {} skill with invalid ID {}", item->ID, item->skill_id);
 			return false;
 		}
 		return UseSkill(item->skill_id, source);
@@ -282,7 +282,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("UseSkill: Can't use skill with invalid ID %d", skill_id);
+		Output::Warning("UseSkill: Can't use skill with invalid ID {}", skill_id);
 		return false;
 	}
 
@@ -365,7 +365,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 int Game_Battler::CalculateSkillCost(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("CalculateSkillCost: Invalid skill ID %d", skill_id);
+		Output::Warning("CalculateSkillCost: Invalid skill ID {}", skill_id);
 		return 0;
 	}
 
@@ -634,7 +634,7 @@ void Game_Battler::UpdateGauge(int multiplier) {
 	}
 	gauge += GetAgi() * multiplier;
 
-	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+	//Ouput::Debug("{}: {:.2f}", GetName(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
 }
 
 void Game_Battler::UpdateBattle() {

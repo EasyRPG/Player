@@ -62,14 +62,14 @@ namespace {
 			break;
 		default:
 			err = "unkown error";
-			Output::Debug("unkown error code %x", err_code);
+			Output::Debug("unkown error code {:#x}", err_code);
 			break;
 
 		case AL_NO_ERROR:
 			return true;
 		}
 
-		Output::Debug("AL error: %s", err);
+		Output::Debug("AL error: {}", err);
 		return false;
 	}
 
@@ -91,14 +91,14 @@ namespace {
 			break;
 		default:
 			err = "unkown error";
-			Output::Debug("unkown error code %x", err_code);
+			Output::Debug("unkown error code {:#x}", err_code);
 			break;
 
 		case ALC_NO_ERROR:
 			return true;
 		}
 
-		Output::Debug("ALC error: %s", err);
+		Output::Debug("ALC error: {}", err);
 		return false;
 	}
 
@@ -177,7 +177,7 @@ struct ALAudio::source {
 
 		synth.reset(new_fluid_synth(settings.get()), &delete_fluid_synth);
 		if (fluid_synth_sfload(synth.get(), getenv("DEFAULT_SOUNDFONT"), 1) == FLUID_FAILED)
-			Output::Error("Couldn't load soundfont\n%s.", getenv("DEFAULT_SOUNDFONT"));
+			Output::Error("Couldn't load soundfont\n{}.", getenv("DEFAULT_SOUNDFONT"));
 
 		double sample_rate = 0;
 		fluid_settings_getnum(settings.get(), "synth.sample-rate", &sample_rate);
@@ -361,13 +361,13 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 		if (is_end()) {
 			if (info_.seekable) {
 				if (sf_seek(file_.get(), 0, SEEK_SET) == -1) {
-					Output::Error("libsndfile seek error: %s", sf_strerror(file_.get()));
+					Output::Error("libsndfile seek error: {}", sf_strerror(file_.get()));
 					return 0;
 				}
 			} else {
 				file_.reset(sf_open(filename_.c_str(), SFM_READ, &info_), sf_close);
 				if (!file_) {
-					Output::Error("libsndfile open error: %s", sf_strerror(NULL));
+					Output::Error("libsndfile open error: {}", sf_strerror(NULL));
 					return 0;
 				}
 			}
@@ -403,9 +403,9 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 		src.init_midi();
 		source_.player.reset(new_fluid_player(source_.synth.get()), &delete_fluid_player);
 		if (fluid_player_add(source_.player.get(), filename.c_str()) == FLUID_FAILED)
-			Output::Warning("Couldn't load %s midi sound.", filename.c_str());
+			Output::Warning("Couldn't load {} midi sound.", filename);
 		if (fluid_player_play(source_.player.get()) == FLUID_FAILED)
-			Output::Warning("Couldn't play %s midi sound.", filename.c_str());
+			Output::Warning("Couldn't play {} midi sound.", filename);
 	}
 
 	bool is_end() const {
@@ -416,10 +416,10 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 		if (is_end()) {
 			source_.seq.reset(new_fluid_sequencer2(false), &delete_fluid_sequencer);
 			if (fluid_sequencer_register_fluidsynth(source_.seq.get(), source_.synth.get()) == FLUID_FAILED)
-				Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
+				Output::Error("Fluidsynth error: {}", fluid_synth_error(source_.synth.get()));
 
 			if (fluid_player_add(source_.player.get(), filename_.c_str()) == FLUID_FAILED)
-				Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
+				Output::Error("Fluidsynth error: {}", fluid_synth_error(source_.synth.get()));
 
 			loop_count_++;
 		}
@@ -427,7 +427,7 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 		data_.resize(2 * source_.sample_rate * SECOND_PER_BUFFER);
 		if (fluid_synth_write_s16(source_.synth.get(), data_.size() / 2, &data_.front(), 0, 2,
 		                          &data_.front(), 1, 2) == FLUID_FAILED) {
-			Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
+			Output::Error("Fluidsynth error: {}", fluid_synth_error(source_.synth.get()));
 		}
 		alBufferData(buf, AL_FORMAT_STEREO16, &data_.front(), sizeof(int16_t) * data_.size(),
 		             source_.sample_rate);
@@ -451,7 +451,7 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 	SET_CONTEXT(ctx_);
 
 	if (filename.empty()) {
-		Output::Error("Failed loading audio file: %s", filename.c_str());
+		Output::Error("Failed loading audio file: {}", filename);
 	}
 
 	std::shared_ptr<buffer_loader> snd = sndfile_loader::create(filename);

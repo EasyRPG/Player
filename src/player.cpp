@@ -147,12 +147,12 @@ void Player::Init(int argc, char *argv[]) {
 	if (!addtl_ver.empty())
 		header << " " << addtl_ver;
 	header << " started";
-	Output::Debug(header.str().c_str());
+	Output::Debug("{}", header.str());
 
 	unsigned int header_width = header.str().length();
 	header.str("");
 	header << std::setfill('=') << std::setw(header_width) << "=";
-	Output::Debug(header.str().c_str());
+	Output::Debug("{}", header.str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
@@ -457,7 +457,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		args.push_back(Utils::LowerCase(argv[i]));
 #endif
 	}
-	Output::Debug("CLI: %s", ss.str().c_str());
+	Output::Debug("CLI: {}", ss.str());
 
 	std::vector<std::string>::const_iterator it;
 
@@ -691,17 +691,17 @@ void Player::CreateGameObjects() {
 	GetEncoding();
 	escape_symbol = ReaderUtil::Recode("\\", encoding);
 	if (escape_symbol.empty()) {
-		Output::Error("Invalid encoding: %s.", encoding.c_str());
+		Output::Error("Invalid encoding: {}.", encoding);
 	}
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
 	std::string game_path = Main_Data::GetProjectPath();
 	std::string save_path = Main_Data::GetSavePath();
 	if (game_path == save_path) {
-		Output::Debug("Using %s as Game and Save directory", game_path.c_str());
+		Output::Debug("Using {} as Game and Save directory", game_path);
 	} else {
-		Output::Debug("Using %s as Game directory", game_path.c_str());
-		Output::Debug("Using %s as Save directory", save_path.c_str());
+		Output::Debug("Using {} as Game directory", game_path);
+		Output::Debug("Using {} as Save directory", save_path);
 	}
 
 	LoadDatabase();
@@ -723,7 +723,7 @@ void Player::CreateGameObjects() {
 
 	std::stringstream title;
 	if (!game_title.empty()) {
-		Output::Debug("Loading game %s", game_title.c_str());
+		Output::Debug("Loading game {}", game_title);
 		title << game_title << " - ";
 	} else {
 		Output::Debug("Could not read game title.");
@@ -774,7 +774,7 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
-	Output::Debug("Engine configured as: 2k=%d 2k3=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
+	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
@@ -790,24 +790,24 @@ void Player::CreateGameObjects() {
 		if (!exep.empty()) {
 			auto exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
 			if (exesp) {
-				Output::Debug("Loading ExFont from %s", exep.c_str());
+				Output::Debug("Loading ExFont from {}", exep);
 				EXEReader exe_reader = EXEReader(*exesp);
 				Cache::exfont_custom = exe_reader.GetExFont();
 			} else {
-				Output::Debug("ExFont loading failed: %s not readable", exep.c_str());
+				Output::Debug("ExFont loading failed: {} not readable", exep);
 			}
 		} else {
-			Output::Debug("ExFont loading failed: %s not found", EXE_NAME);
+			Output::Debug("ExFont loading failed: {} not found", EXE_NAME);
 		}
 	}
 #endif
 	if (!exfont_file.empty()) {
 		auto exfont_stream = FileFinder::openUTF8(exfont_file, std::ios::binary | std::ios::in);
 		if (exfont_stream) {
-			Output::Debug("Using custom ExFont: %s", exfont_file.c_str());
+			Output::Debug("Using custom ExFont: {}", exfont_file);
 			Cache::exfont_custom = Utils::ReadStream(*exfont_stream);
 		} else {
-			Output::Debug("Reading custom ExFont %s failed", exfont_file.c_str());
+			Output::Debug("Reading custom ExFont {} failed", exfont_file);
 		}
 	}
 
@@ -855,9 +855,9 @@ void Player::LoadDatabase() {
 		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
 		// Unlikely to happen because of the game browser only launches valid games
 
-		Output::Debug("%s is not a supported project", Main_Data::GetProjectPath().c_str());
+		Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
 
-		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
+		Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
 			"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
 			"This engine only supports RPG Maker 2000 and 2003\ngames.",
 			"RPG Maker XP, VX, VX Ace and MV are NOT supported.");
@@ -917,7 +917,7 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
+	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
 	Game_System::BgmStop();
 
 	// We erase the screen now before loading the saved game. This prevents an issue where
@@ -933,7 +933,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	std::unique_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
-		Output::Error("%s", LcfReader::GetError().c_str());
+		Output::Error("{}", LcfReader::GetError());
 	}
 
 	std::stringstream verstr;
@@ -952,11 +952,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 		}
 	}
 
-	Output::Debug("Savegame version %d (%s)", ver, verstr.str().c_str());
+	Output::Debug("Savegame version {} ({})", ver, verstr.str());
 
 	if (ver > PLAYER_SAVEGAME_VERSION) {
-		Output::Warning("This savegame was created with %s which is newer than the current version of EasyRPG Player (%s)",
-			verstr.str().c_str(), PLAYER_VERSION);
+		Output::Warning("This savegame was created with {} which is newer than the current version of EasyRPG Player ({})",
+			verstr.str(), PLAYER_VERSION);
 	}
 
 	Scene::PopUntil(Scene::Title);
@@ -1058,7 +1058,7 @@ std::string Player::GetEncoding() {
 			escape_symbol = ReaderUtil::Recode("\\", enc);
 			if (escape_symbol.empty()) {
 				// Bad encoding
-				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
+				Output::Debug("Bad encoding: {}. Trying next.", enc);
 				continue;
 			}
 			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
@@ -1071,7 +1071,7 @@ std::string Player::GetEncoding() {
 				encoding = enc;
 				break;
 			} else {
-				Output::Debug("Detected encoding: %s. Files not found. Trying next.", enc.c_str());
+				Output::Debug("Detected encoding: {}. Files not found. Trying next.", enc);
 			}
 		}
 #endif
@@ -1086,7 +1086,7 @@ std::string Player::GetEncoding() {
 		escape_char = 0;
 
 		if (!encoding.empty()) {
-			Output::Debug("Detected encoding: %s", encoding.c_str());
+			Output::Debug("Detected encoding: {}", encoding);
 		} else {
 			Output::Debug("Encoding not detected");
 			encoding = ReaderUtil::GetLocaleEncoding();

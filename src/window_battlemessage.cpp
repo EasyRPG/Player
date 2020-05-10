@@ -37,7 +37,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 
 void Window_BattleMessage::Push(const std::string& message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
-	Output::Debug("Battle2k Message Push \"%s\"", message.c_str());
+	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
 	Utils::ForEachLine(message, [this](const std::string& line)
 			{ PushLine(line); });
@@ -87,7 +87,7 @@ void Window_BattleMessage::Pop() {
 
 void Window_BattleMessage::PopUntil(int line_number) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
-	Output::Debug("Battle2k Message PopUntil %d", line_number);
+	Output::Debug("Battle2k Message PopUntil {}", line_number);
 #endif
 	while (static_cast<int>(lines.size()) > line_number) {
 		lines.pop_back();

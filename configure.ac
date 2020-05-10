@@ -95,6 +95,7 @@ AC_ARG_WITH([libspeexdsp],[AS_HELP_STRING([--without-libspeexdsp],
 AS_IF([test "x$with_libspeexdsp" != "xno"],[
 	PKG_CHECK_MODULES([SPEEXDSP],[speexdsp],[AC_DEFINE(HAVE_LIBSPEEXDSP,[1],[Disable resampling support provided by libspeexdsp])],[auto_speexdsp=0])
 ])
+PKG_CHECK_MODULES([FMT],[fmt >= 5.3])
 
 # bash completion
 AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
