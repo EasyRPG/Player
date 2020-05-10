@@ -118,7 +118,7 @@ void Game_Player::PerformTeleport() {
 
 		data()->map_id = teleport_target.GetMapId();
 
-		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
+		Game_Map::Setup(teleport_target.GetType());
 		Game_Map::PlayBgm();
 	}
 

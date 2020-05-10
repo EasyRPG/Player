@@ -84,12 +84,12 @@ namespace Game_Map {
 	void Dispose();
 
 	/**
-	 * Setups a map.
+	 * Setups a new map.
 	 *
-	 * @param map_id map ID.
+	 * @pre Main_Data::game_player->GetMapId() reflects the new map.
 	 * @param tt the type of teleport used to setup the map
 	 */
-	void Setup(int map_id, TeleportTarget::Type tt);
+	void Setup(TeleportTarget::Type tt);
 
 	/**
 	 * Setups a map from a savegame.

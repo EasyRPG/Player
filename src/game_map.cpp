@@ -83,6 +83,7 @@ namespace {
 
 namespace Game_Map {
 void SetupCommon();
+void ResetPendingMove();
 }
 
 void Game_Map::OnContinueFromBattle() {
@@ -131,7 +132,25 @@ int Game_Map::GetMapSaveCount() {
 		: map->save_count;
 }
 
-void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
+void Game_Map::ResetPendingMove() {
+	pending.clear();
+
+	auto add = [&](auto* ch) {
+		if (ch->IsMoveRouteOverwritten()) {
+			pending.push_back(ch);
+		}
+	};
+
+	for (auto& vh: vehicles) {
+		add(&vh);
+	}
+
+	for (auto& ev: events) {
+		add(&ev);
+	}
+}
+
+void Game_Map::Setup(TeleportTarget::Type tt) {
 	Dispose();
 	if (tt != TeleportTarget::eAsyncQuickTeleport) {
 		Main_Data::game_screen->OnMapChange();
@@ -205,13 +224,12 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
 	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
+
+	ResetPendingMove();
 }
 
 void Game_Map::SetupFromSave() {
 	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
-	if (Main_Data::game_player->IsMoveRouteOverwritten()) {
-		pending.push_back(Main_Data::game_player.get());
-	}
 
 	SetupCommon();
 
@@ -228,22 +246,12 @@ void Game_Map::SetupFromSave() {
 		for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
 			auto& ev = events[i];
 			ev.SetSaveData(map_info.events[i]);
-
-			if (ev.IsMoveRouteOverwritten()) {
-				pending.push_back(&events.back());
-			}
 		}
 	}
 
 	GetVehicle(Game_Vehicle::Boat)->SetSaveData(Main_Data::game_data.boat_location);
 	GetVehicle(Game_Vehicle::Ship)->SetSaveData(Main_Data::game_data.ship_location);
 	GetVehicle(Game_Vehicle::Airship)->SetSaveData(Main_Data::game_data.airship_location);
-
-	for (auto& vehicle: vehicles) {
-		if (vehicle.IsMoveRouteOverwritten()) {
-			pending.push_back(&vehicle);
-		}
-	}
 
 	if (is_map_save_compat) {
 		// Make main interpreter "busy" if save contained events to prevent auto-events from starting
@@ -267,6 +275,8 @@ void Game_Map::SetupFromSave() {
 	// the pan_x/y is always forced to 0.
 	// If the later async code will load panorama, set the flag to not clear the offsets.
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
+
+	ResetPendingMove();
 }
 
 void Game_Map::SetupCommon() {
