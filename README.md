@@ -21,7 +21,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image support.
-- fmtlib for interal logging
+- fmtlib for interal logging.
 
 ### extended / recommended
 
