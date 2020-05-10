@@ -523,12 +523,13 @@ public:
 	virtual bool MakeWay(int x, int y) const;
 
 	/**
-	 * Moves the character to a new tile.
+	 * Moves the character to a new location.
 	 *
+	 * @param map_id map id
 	 * @param x tile x.
 	 * @param y tile y.
 	 */
-	virtual void MoveTo(int x, int y);
+	virtual void MoveTo(int map_id, int x, int y);
 
 	/**
 	 * Updates character and movement.

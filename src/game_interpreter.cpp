@@ -2027,9 +2027,9 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 	if (Main_Data::game_player->GetVehicle() == vehicle) {
 		if (map_id == Game_Map::GetMapId()) {
 			if (vehicle) {
-				vehicle->SetPosition(map_id, x, y);
+				vehicle->MoveTo(map_id, x, y);
 			}
-			Main_Data::game_player->MoveTo(x, y);
+			Main_Data::game_player->MoveTo(map_id, x, y);
 			return true;
 		};
 
@@ -2040,7 +2040,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 		// battle animations.
 
 		if (vehicle) {
-			vehicle->SetPosition(map_id, x, y);
+			vehicle->MoveTo(map_id, x, y);
 		}
 
 		auto event_id = GetOriginalEventId();
@@ -2050,7 +2050,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 
 		_async_op = AsyncOp::MakeQuickTeleport(map_id, x, y);
 	} else if (vehicle) {
-		vehicle->SetPosition(map_id, x, y);
+		vehicle->MoveTo(map_id, x, y);
 	}
 
 	return true;
@@ -2060,9 +2060,9 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 	int event_id = com.parameters[0];
 	Game_Character *event = GetCharacter(event_id);
 	if (event != NULL) {
-		int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-		int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
-		event->MoveTo(x, y);
+		const auto x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+		const auto y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+		event->MoveTo(event->GetMapId(), x, y);
 
 		// RPG2k3 feature
 		int direction = com.parameters.size() > 4 ? com.parameters[4] - 1 : -1;
@@ -2084,14 +2084,16 @@ bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& 
 	Game_Character *event2 = GetCharacter(event2_id);
 
 	if (event1 != NULL && event2 != NULL) {
-		int x1 = event1->GetX();
-		int y1 = event1->GetY();
+		auto m1 = event1->GetMapId();
+		auto x1 = event1->GetX();
+		auto y1 = event1->GetY();
 
-		int x2 = event2->GetX();
-		int y2 = event2->GetY();
+		auto m2 = event2->GetMapId();
+		auto x2 = event2->GetX();
+		auto y2 = event2->GetY();
 
-		event1->MoveTo(x2, y2);
-		event2->MoveTo(x1, y1);
+		event1->MoveTo(m2, x2, y2);
+		event2->MoveTo(m1, x1, y1);
 	}
 
 	return true;

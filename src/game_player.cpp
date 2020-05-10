@@ -24,6 +24,7 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_screen.h"
+#include "game_pictures.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
@@ -100,14 +101,41 @@ void Game_Player::PerformTeleport() {
 				teleport_target.GetX(), teleport_target.GetY(), teleport_target.GetDirection());
 	}
 
-	// Reset sprite if it was changed by a move
-	// Even when target is the same map
-	Refresh();
+	const auto map_changed = (GetMapId() != teleport_target.GetMapId());
+	MoveTo(teleport_target.GetMapId(), teleport_target.GetX(), teleport_target.GetY());
 
+
+	// FIXME: Direction lock on hero?
+	if (teleport_target.GetDirection() >= 0) {
+		SetDirection(teleport_target.GetDirection());
+		if (!IsFacingLocked()) {
+			SetSpriteDirection(teleport_target.GetDirection());
+		}
+	}
+
+	if (teleport_target.GetType() != TeleportTarget::eAsyncQuickTeleport) {
+		Main_Data::game_screen->OnMapChange();
+		Main_Data::game_pictures->OnMapChange();
+		Game_Map::GetInterpreter().OnMapChange();
+	}
+
+	ResetTeleportTarget();
+}
+
+void Game_Player::MoveTo(int map_id, int x, int y) {
+	const auto map_changed = (GetMapId() != map_id);
+
+	Game_Character::MoveTo(map_id, x, y);
 	SetEncounterSteps(0);
+	SetMenuCalling(false);
 
-	ResetAnimation();
-	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
+	auto* vehicle = GetVehicle();
+	if (vehicle) {
+		vehicle->MoveTo(map_id, x, y);
+	}
+
+	if (map_changed) {
+		// FIXME: Assert map pre-loaded in cache.
 
 		// pan_state does not reset when you change maps.
 		data()->pan_speed = lcf::rpg::SavePartyLocation::kPanSpeedDefault;
@@ -116,26 +144,16 @@ void Game_Player::PerformTeleport() {
 		data()->pan_current_x = lcf::rpg::SavePartyLocation::kPanXDefault;
 		data()->pan_current_y = lcf::rpg::SavePartyLocation::kPanYDefault;
 
-		data()->map_id = teleport_target.GetMapId();
-
-		Game_Map::Setup(teleport_target.GetType());
+		Game_Map::Setup();
 		Game_Map::PlayBgm();
+	} else {
+		Game_Map::SetPositionX(GetSpriteX() - GetPanX());
+		Game_Map::SetPositionY(GetSpriteY() - GetPanY());
 	}
 
-	MoveTo(teleport_target.GetX(), teleport_target.GetY());
+	ResetAnimation();
 
-	if (teleport_target.GetDirection() >= 0) {
-		SetDirection(teleport_target.GetDirection());
-		if (!IsFacingLocked()) {
-			SetSpriteDirection(teleport_target.GetDirection());
-		}
-	}
-
-	if (InVehicle()) {
-		GetVehicle()->SyncWithPlayer();
-	}
-
-	ResetTeleportTarget();
+	Refresh();
 }
 
 bool Game_Player::MakeWay(int x, int y) const {
@@ -146,12 +164,6 @@ bool Game_Player::MakeWay(int x, int y) const {
 	return Game_Character::MakeWay(x, y);
 }
 
-void Game_Player::MoveTo(int x, int y) {
-	Game_Character::MoveTo(x, y);
-	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
-	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
-	SetMenuCalling(false);
-}
 
 void Game_Player::UpdateScroll(int old_x, int old_y) {
 	if (IsPanLocked()) {

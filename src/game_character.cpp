@@ -50,9 +50,11 @@ bool Game_Character::MakeWay(int x, int y) const {
 	return Game_Map::MakeWay(*this, x, y);
 }
 
-void Game_Character::MoveTo(int x, int y) {
-	SetX(Game_Map::RoundX(x));
-	SetY(Game_Map::RoundY(y));
+void Game_Character::MoveTo(int map_id, int x, int y) {
+	data()->map_id = map_id;
+	// RPG_RT does not round the position for this function.
+	SetX(x);
+	SetY(y);
 	SetRemainingStep(0);
 	// This Fixes an RPG_RT bug where the jumping flag doesn't get reset
 	// if you change maps during a jump

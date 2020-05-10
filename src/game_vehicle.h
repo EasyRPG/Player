@@ -59,7 +59,6 @@ public:
 	void LoadSystemSettings();
 	const lcf::rpg::Music& GetBGM();
 	void Refresh();
-	void SetPosition(int _map_id, int _x, int _y);
 	bool IsInCurrentMap() const;
 	bool IsInPosition(int x, int y) const override;
 	bool GetVisible() const override;

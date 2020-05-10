@@ -1008,15 +1008,12 @@ static void OnMapFileReady(FileRequestResult*) {
 		lcf::Data::treemap.start.party_y : Player::party_y_position;
 	if (Player::party_members.size() > 0) {
 		Main_Data::game_party->Clear();
-		std::vector<int>::iterator member;
-		for (member = Player::party_members.begin(); member != Player::party_members.end(); ++member) {
-			Main_Data::game_party->AddActor(*member);
+		for (auto& member: Player::party_members) {
+			Main_Data::game_party->AddActor(member);
 		}
 	}
 
-	Game_Map::Setup(TeleportTarget::eParallelTeleport);
-	Main_Data::game_player->MoveTo(x_pos, y_pos);
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->MoveTo(map_id, x_pos, y_pos);
 }
 
 void Player::SetupNewGame() {

@@ -101,7 +101,7 @@ void Game_Vehicle::Refresh() {
 	if (IsInUse()) {
 		SetMapId(Game_Map::GetMapId());
 	} else if (IsInCurrentMap()) {
-		MoveTo(GetX(), GetY());
+		MoveTo(GetMapId(), GetX(), GetY());
 	}
 
 	switch (GetVehicleType()) {
@@ -115,11 +115,6 @@ void Game_Vehicle::Refresh() {
 			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_double);
 			break;
 	}
-}
-
-void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
-	SetMapId(_map_id);
-	MoveTo(_x, _y);
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {

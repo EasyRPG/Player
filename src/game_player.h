@@ -73,7 +73,7 @@ public:
 	void ReserveTeleport(const lcf::rpg::SaveTarget& target);
 	void PerformTeleport();
 
-	void MoveTo(int x, int y) override;
+	void MoveTo(int map_id, int x, int y) override;
 
 	/** Update this for the current frame */
 	void Update();

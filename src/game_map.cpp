@@ -150,12 +150,8 @@ void Game_Map::ResetPendingMove() {
 	}
 }
 
-void Game_Map::Setup(TeleportTarget::Type tt) {
+void Game_Map::Setup() {
 	Dispose();
-	if (tt != TeleportTarget::eAsyncQuickTeleport) {
-		Main_Data::game_screen->OnMapChange();
-		Main_Data::game_pictures->OnMapChange();
-	}
 	SetupCommon();
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	reset_panorama_x_on_next_init = true;
@@ -214,12 +210,6 @@ void Game_Map::Setup(TeleportTarget::Type tt) {
 	Game_System::SetAllowSave(can_save != lcf::rpg::MapInfo::TriState_forbid);
 	Game_System::SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
-
-	if (interpreter) {
-		if (tt != TeleportTarget::eAsyncQuickTeleport) {
-			interpreter->OnMapChange();
-		}
-	}
 
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
@@ -281,6 +271,7 @@ void Game_Map::SetupFromSave() {
 
 void Game_Map::SetupCommon() {
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
+	// FIXME: Assert map was cached for async platforms
 	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
 	std::string map_file = FileFinder::FindDefault(map_name);
 	if (map_file.empty()) {
