@@ -2672,6 +2672,8 @@ bool Game_Interpreter::CommandSpriteTransparency(lcf::rpg::EventCommand const& c
 	bool visible = com.parameters[0] != 0;
 	Game_Character* player = Main_Data::game_player.get();
 	player->SetVisible(visible);
+	// RPG_RT does this here.
+	player->ResetThrough();
 
 	return true;
 }

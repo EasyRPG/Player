@@ -356,6 +356,9 @@ public:
 	 */
 	void SetThrough(bool through);
 
+	/** Resets the through flag to the route_through flag */
+	void ResetThrough();
+
 	/**
 	 * @return stop_count
 	 */
@@ -1067,6 +1070,10 @@ inline bool Game_Character::GetThrough() const {
 
 inline void Game_Character::SetThrough(bool through) {
 	data()->through = through;
+}
+
+inline void Game_Character::ResetThrough() {
+	data()->through = data()->route_through;
 }
 
 inline Game_Character::AnimType Game_Character::GetAnimationType() const {
