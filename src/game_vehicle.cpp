@@ -188,9 +188,10 @@ bool Game_Vehicle::CanLand() const {
 	return Game_Map::CanLandAirship(GetX(), GetY());
 }
 
-void Game_Vehicle::UpdateAnimationAirship() {
-	if (IsAboard()) {
-		const auto limit = 11;
+void Game_Vehicle::UpdateAnimation() {
+	if (!IsJumping() && (GetVehicleType() != Airship || IsFlying())) {
+		// RPG_RT Animates vehicles slower when moving
+		const auto limit = IsStopping() ? 11 : 16;
 
 		IncAnimCount();
 
@@ -199,16 +200,6 @@ void Game_Vehicle::UpdateAnimationAirship() {
 		}
 	} else {
 		ResetAnimation();
-	}
-}
-
-void Game_Vehicle::UpdateAnimationShip() {
-	const auto limit = 15;
-
-	IncAnimCount();
-
-	if (GetAnimCount() > limit) {
-		IncAnimFrame();
 	}
 }
 
@@ -239,12 +230,7 @@ void Game_Vehicle::Update() {
 	if (!IsAboard()) {
 		Game_Character::UpdateMovement();
 	}
-
-	if (GetVehicleType() == Airship) {
-		UpdateAnimationAirship();
-	} else {
-		UpdateAnimationShip();
-	}
+	UpdateAnimation();
 	Game_Character::UpdateFlash();
 }
 

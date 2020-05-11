@@ -74,8 +74,7 @@ public:
 	void AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
 	bool CanLand() const;
-	void UpdateAnimationShip();
-	void UpdateAnimationAirship();
+	void UpdateAnimation();
 
 	/**
 	 * Sets default sprite name. Usually the name of the graphic file.
