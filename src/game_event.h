@@ -27,10 +27,12 @@
 #include "game_interpreter_map.h"
 #include "async_op.h"
 
+using Game_EventBase = Game_CharacterDataStorage<lcf::rpg::SaveMapEvent>;
+
 /**
  * Game_Event class.
  */
-class Game_Event : public Game_Character {
+class Game_Event : public Game_EventBase {
 public:
 	/**
 	 * Constructor.
@@ -151,10 +153,6 @@ public:
 	/** @returns the number of pages this event has */
 	int GetNumPages() const;
 
-protected:
-	lcf::rpg::SaveMapEvent* data();
-	const lcf::rpg::SaveMapEvent* data() const;
-
 private:
 	void UpdateSelfMovement() override;
 	void CheckEventAutostart();
@@ -199,24 +197,10 @@ private:
 	 */
 	void MoveTypeAwayFromPlayer();
 
-
-	// Not a reference on purpose.
-	// Events change during map change and old are destroyed, breaking the
-	// reference.
-	std::unique_ptr<lcf::rpg::SaveMapEvent> _data_copy;
-
 	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
-
-inline lcf::rpg::SaveMapEvent* Game_Event::data() {
-	return static_cast<lcf::rpg::SaveMapEvent*>(Game_Character::data());
-}
-
-inline const lcf::rpg::SaveMapEvent* Game_Event::data() const {
-	return static_cast<const lcf::rpg::SaveMapEvent*>(Game_Character::data());
-}
 
 inline int Game_Event::GetNumPages() const {
 	return event->pages.size();

@@ -38,9 +38,7 @@
 #include <algorithm>
 #include <cmath>
 
-Game_Player::Game_Player():
-	Game_Character(Player, new lcf::rpg::SavePartyLocation()),
-	_data_copy(this->data())
+Game_Player::Game_Player(): Game_PlayerBase(Player)
 {
 	SetDirection(lcf::rpg::EventPage::Direction_down);
 	SetMoveSpeed(4);

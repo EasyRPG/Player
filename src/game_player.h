@@ -28,11 +28,12 @@
 #include <vector>
 
 class Game_Vehicle;
+using Game_PlayerBase = Game_CharacterDataStorage<lcf::rpg::SavePartyLocation>;
 
 /**
  * Game Player class
  */
-class Game_Player : public Game_Character {
+class Game_Player : public Game_PlayerBase {
 public:
 	Game_Player();
 
@@ -148,9 +149,6 @@ public:
 	int IsDatabaseCompatibleWithSave(int database_save_count) const;
 
 	void UpdateSaveCounts(int db_save_count, int map_save_count);
-protected:
-	lcf::rpg::SavePartyLocation* data();
-	const lcf::rpg::SavePartyLocation* data() const;
 private:
 	using TriggerSet = lcf::FlagSet<lcf::rpg::EventPage::Trigger>;
 
@@ -165,18 +163,9 @@ private:
 	void Unboard();
 	void UpdateVehicleActions();
 
-	std::unique_ptr<lcf::rpg::SavePartyLocation> _data_copy;
 	TeleportTarget teleport_target;
 	int last_encounter_idx = 0;
 };
-
-inline lcf::rpg::SavePartyLocation* Game_Player::data() {
-	return static_cast<lcf::rpg::SavePartyLocation*>(Game_Character::data());
-}
-
-inline const lcf::rpg::SavePartyLocation* Game_Player::data() const {
-	return static_cast<const lcf::rpg::SavePartyLocation*>(Game_Character::data());
-}
 
 inline bool Game_Player::IsPendingTeleport() const {
 	return teleport_target.IsActive();

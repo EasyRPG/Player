@@ -886,6 +886,27 @@ protected:
 	lcf::rpg::SaveMapEventBase* _data = nullptr;
 };
 
+template <typename T>
+class Game_CharacterDataStorage : public Game_Character
+{
+	public:
+		using Type = Game_Character::Type;
+		Game_CharacterDataStorage(Type typ);
+
+		Game_CharacterDataStorage(const Game_CharacterDataStorage&) = delete;
+		Game_CharacterDataStorage& operator=(const Game_CharacterDataStorage&) = delete;
+
+		Game_CharacterDataStorage(Game_CharacterDataStorage&&) noexcept;
+		Game_CharacterDataStorage& operator=(Game_CharacterDataStorage&&) noexcept;
+
+		~Game_CharacterDataStorage() = default;
+
+		T* data();
+		const T* data() const;
+	private:
+		T _data = {};
+};
+
 inline lcf::rpg::SaveMapEventBase* Game_Character::data() {
 	return _data;
 }
@@ -1063,7 +1084,6 @@ inline void Game_Character::SetThrough(bool through) {
 	data()->through = through;
 }
 
-
 inline Game_Character::AnimType Game_Character::GetAnimationType() const {
 	return AnimType(data()->animation_type);
 }
@@ -1223,6 +1243,41 @@ constexpr int Game_Character::GetMaxStopCountForTurn(int freq) {
 
 constexpr int Game_Character::GetMaxStopCountForWait(int freq) {
 	return 20 + GetMaxStopCountForTurn(freq);
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Type typ)
+	: Game_Character(typ, nullptr)
+{
+	Game_Character::_data = &this->_data;
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Game_CharacterDataStorage&& o) noexcept
+: Game_Character(std::move(o)), _data(std::move(o._data))
+{
+	Game_Character::_data = &this->_data;
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>& Game_CharacterDataStorage<T>::operator=(Game_CharacterDataStorage&& o) noexcept
+{
+	static_cast<Game_Character*>(this) = std::move(o);
+	if (this != &o) {
+		_data = std::move(o._data);
+		Game_Character::_data = &this->_data;
+	}
+	return *this;
+}
+
+template <typename T>
+inline T* Game_CharacterDataStorage<T>::data() {
+	return static_cast<T*>(Game_Character::data());
+}
+
+template <typename T>
+inline const T* Game_CharacterDataStorage<T>::data() const {
+	return static_cast<const T*>(Game_Character::data());
 }
 
 #endif

@@ -24,10 +24,12 @@
 #include <lcf/rpg/savevehiclelocation.h>
 #include "game_character.h"
 
+using Game_VehicleBase = Game_CharacterDataStorage<lcf::rpg::SaveVehicleLocation>;
+
 /**
  * Game_Vehicle class.
  */
-class Game_Vehicle : public Game_Character {
+class Game_Vehicle : public Game_VehicleBase {
 public:
 	enum Type {
 		None = 0,
@@ -90,21 +92,7 @@ public:
 
 	/** Gets the original sprite graphic index */
 	int GetOrigSpriteIndex() const;
-
-protected:
-	lcf::rpg::SaveVehicleLocation* data();
-	const lcf::rpg::SaveVehicleLocation* data() const;
-
-	std::unique_ptr<lcf::rpg::SaveVehicleLocation> _data_copy;
 };
-
-inline lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() {
-	return static_cast<lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
-}
-
-inline const lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() const {
-	return static_cast<const lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
-}
 
 inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int index) {
 	data()->orig_sprite_name = std::move(sprite_name);

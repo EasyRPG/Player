@@ -33,8 +33,7 @@ const char Game_Vehicle::TypeNames[4][8] {
 };
 
 Game_Vehicle::Game_Vehicle(Type type)
-	: Game_Character(Vehicle, new lcf::rpg::SaveVehicleLocation()),
-	_data_copy(this->data())
+	: Game_VehicleBase(Vehicle)
 {
 	data()->vehicle = static_cast<int>(type);
 	SetDirection(Left);

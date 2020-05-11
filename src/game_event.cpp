@@ -35,8 +35,7 @@
 #include <cassert>
 
 Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
-	Game_Character(Event, new lcf::rpg::SaveMapEvent()),
-	_data_copy(this->data()),
+	Game_EventBase(Event),
 	event(event)
 {
 	data()->ID = event->ID;
@@ -48,9 +47,9 @@ void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 {
 	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
 	auto map_id = GetMapId();
-	*_data_copy = std::move(save);
+	*data() = std::move(save);
 
-	_data_copy->ID = event->ID;
+	data()->ID = event->ID;
 	SetMapId(map_id);
 
 	if (!data()->active || page == nullptr) {
