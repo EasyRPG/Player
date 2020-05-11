@@ -95,6 +95,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
+	SetFacingLocked(false);
 	if (page->move_type == RPG::EventPage::MoveType_custom) {
 		SetMaxStopCountForTurn();
 	} else {
