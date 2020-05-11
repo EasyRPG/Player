@@ -58,9 +58,7 @@ public:
 	/** Update this for the current frame */
 	void Update();
 
-	void LoadSystemSettings();
 	const lcf::rpg::Music& GetBGM();
-	void Refresh();
 	bool IsInCurrentMap() const;
 	bool IsInPosition(int x, int y) const override;
 	bool GetVisible() const override;

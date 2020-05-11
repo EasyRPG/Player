@@ -40,10 +40,7 @@ Game_Vehicle::Game_Vehicle(Type type)
 	SetSpriteDirection(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
 	SetLayer(lcf::rpg::EventPage::Layers_same);
-	LoadSystemSettings();
-}
 
-void Game_Vehicle::LoadSystemSettings() {
 	switch (GetVehicleType()) {
 		case None:
 			break;
@@ -52,18 +49,21 @@ void Game_Vehicle::LoadSystemSettings() {
 			SetMapId(lcf::Data::treemap.start.boat_map_id);
 			SetX(lcf::Data::treemap.start.boat_x);
 			SetY(lcf::Data::treemap.start.boat_y);
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Ship:
 			SetSpriteGraphic(ToString(lcf::Data::system.ship_name), lcf::Data::system.ship_index);
 			SetMapId(lcf::Data::treemap.start.ship_map_id);
 			SetX(lcf::Data::treemap.start.ship_x);
 			SetY(lcf::Data::treemap.start.ship_y);
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
 			SetSpriteGraphic(ToString(lcf::Data::system.airship_name), lcf::Data::system.airship_index);
 			SetMapId(lcf::Data::treemap.start.airship_map_id);
 			SetX(lcf::Data::treemap.start.airship_x);
 			SetY(lcf::Data::treemap.start.airship_y);
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
 }
@@ -94,26 +94,6 @@ const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 
 	static lcf::rpg::Music empty;
 	return empty;
-}
-
-void Game_Vehicle::Refresh() {
-	if (IsInUse()) {
-		SetMapId(Game_Map::GetMapId());
-	} else if (IsInCurrentMap()) {
-		MoveTo(GetMapId(), GetX(), GetY());
-	}
-
-	switch (GetVehicleType()) {
-		case None:
-			break;
-		case Boat:
-		case Ship:
-			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_normal);
-			break;
-		case Airship:
-			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_double);
-			break;
-	}
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {

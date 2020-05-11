@@ -156,10 +156,6 @@ void Game_Map::Setup() {
 
 	Parallax::ClearChangedBG();
 
-	for (auto& vehicle: vehicles) {
-		vehicle.Refresh();
-	}
-
 	SetChipset(map->chipset_id);
 
 	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
