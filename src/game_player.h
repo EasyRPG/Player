@@ -151,7 +151,7 @@ public:
 private:
 	using TriggerSet = lcf::FlagSet<lcf::rpg::EventPage::Trigger>;
 
-	void UpdateScroll(int prev_x, int prev_y);
+	void UpdateScroll(int amount, bool was_jumping);
 	void UpdatePan();
 	bool UpdateEncounterSteps();
 	bool CheckActionEvent();

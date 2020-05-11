@@ -270,6 +270,14 @@ namespace Utils {
 	 */
 	void SeedRandomNumberGenerator(int32_t seed);
 
+	/** @return -1 if t < 0, 0 if t== 0, 1 if t > 0 */
+	template <typename T>
+		int Signum(const T& val);
+
+	/** @return 1 if t >= 0 or -1 if t < 0 */
+	template <typename T>
+		int Sign(const T& val);
+
 	/**
 	 * Reads a line from a stream and returns it.
 	 * Same as std::getline but handles linebreaks independent of the platform
@@ -417,7 +425,6 @@ inline bool Utils::IsControlCharacter(T ch) {
 	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
 }
 
-
 template <typename Dest, typename Src>
 inline std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> Utils::RoundTo(Src v)
 {
@@ -430,6 +437,16 @@ inline std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Des
 	}
 
 	return std::rint(v);
+}
+
+template <typename T>
+int Utils::Signum(const T& val) {
+	return (T(0) < val) - (val < T(0));
+}
+
+template <typename T>
+int Utils::Sign(const T& val) {
+	return val < T(0) ? -1 : 1;
 }
 
 #endif

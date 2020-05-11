@@ -31,6 +31,7 @@
 #include "util_macro.h"
 #include "game_switches.h"
 #include "output.h"
+#include "utils.h"
 #include "reader_util.h"
 #include "scope_guard.h"
 #include "scene_battle.h"
@@ -163,68 +164,43 @@ bool Game_Player::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 	return Game_Character::MakeWay(from_x, from_y, to_x, to_y);
 }
 
-
-void Game_Player::UpdateScroll(int old_x, int old_y) {
+void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 	if (IsPanLocked()) {
 		return;
 	}
 
-	int screen_x = Game_Map::GetPositionX();
-	int screen_y = Game_Map::GetPositionY();
+	auto dx = (GetX() * SCREEN_TILE_SIZE) - Game_Map::GetPositionX() - GetPanX();
+	auto dy = (GetY() * SCREEN_TILE_SIZE) - Game_Map::GetPositionY() - GetPanY();
 
-	int old_panx = old_x - screen_x;
-	int old_pany = old_y - screen_y;
+	const auto w = Game_Map::GetWidth() * SCREEN_TILE_SIZE;
+	const auto h = Game_Map::GetHeight() * SCREEN_TILE_SIZE;
 
-	int new_x = GetSpriteX();
-	int new_y = GetSpriteY();
+	dx = Utils::PositiveModulo(dx + w / 2, w) - w / 2;
+	dy = Utils::PositiveModulo(dy + h / 2, h) - h / 2;
 
-	int dx = new_x - old_x;
-	int dy = new_y - old_y;
+	const auto sx = Utils::Signum(dx);
+	const auto sy = Utils::Signum(dy);
 
-	int new_panx = new_x - screen_x;
-	int new_pany = new_y - screen_y;
+	if (was_jumping) {
+		const auto jdx = sx * std::abs(GetX() - GetBeginJumpX());
+		const auto jdy = sy * std::abs(GetY() - GetBeginJumpY());
 
-	// Detect whether we crossed map boundary.
-	// We need to scale down dx/dy to a single step
-	// to not message up further calculations.
-	// FIXME: This logic will break if something moves so fast
-	// as to cross half the map in 1 frame.
-	if (Game_Map::LoopHorizontal()) {
-		auto w = Game_Map::GetWidth() * SCREEN_TILE_SIZE;
-		if (std::abs(dx) > w / 2) {
-			dx = (w - std::abs(dx)) % w;
-			if (new_x > old_x) {
-				dx = -dx;
-			}
+		Game_Map::Scroll(amount * jdx, amount * jdy);
+
+		if (!IsJumping()) {
+			// FIXME: This is to fix rounding errors?
+			// FIXME: use Utils::RoundTo<T>
+			const auto x = SCREEN_TILE_SIZE * Utils::RoundTo<int>(Game_Map::GetPositionX() / static_cast<double>(SCREEN_TILE_SIZE));
+			const auto y = SCREEN_TILE_SIZE * Utils::RoundTo<int>(Game_Map::GetPositionY() / static_cast<double>(SCREEN_TILE_SIZE));
+
+			// FIXME: In Player this resets the panorama, not in RPG_RT
+			Game_Map::SetPositionX(x);
+			Game_Map::SetPositionY(y);
 		}
-	}
-	if (Game_Map::LoopVertical()) {
-		auto h = Game_Map::GetHeight() * SCREEN_TILE_SIZE;
-		if (std::abs(dy) > h / 2) {
-			dy = (h - std::abs(dy)) % h;
-			if (new_y > old_y) {
-				dy = -dy;
-			}
-		}
+		return;
 	}
 
-	int scroll_dx = 0;
-	int scroll_dy = 0;
-	if (Game_Map::LoopHorizontal() ||
-			std::abs(data()->pan_current_x - new_panx) >=
-			std::abs(data()->pan_current_x - old_panx)) {
-		scroll_dx = dx;
-	}
-
-	if (Game_Map::LoopVertical() ||
-			std::abs(data()->pan_current_y - new_pany) >=
-			std::abs(data()->pan_current_y - old_pany)) {
-		scroll_dy = dy;
-	}
-
-	if (scroll_dx || scroll_dy) {
-		Game_Map::Scroll(scroll_dx, scroll_dy);
-	}
+	Game_Map::Scroll(sx * amount, sy * amount);
 }
 
 void Game_Player::UpdateNextMovementAction() {
@@ -322,14 +298,11 @@ void Game_Player::UpdateNextMovementAction() {
 }
 
 void Game_Player::UpdateMovement(int amount) {
-	const auto old_sprite_x = GetSpriteX();
-	const auto old_sprite_y = GetSpriteY();
 	const bool was_jumping = IsJumping();
 
 	Game_Character::UpdateMovement(amount);
 
-	// FIXME: These need fixed
-	UpdateScroll(old_sprite_x, old_sprite_y);
+	UpdateScroll(amount, was_jumping);
 
 	if (!IsMoveRouteOverwritten() && IsStopping()) {
 		TriggerSet triggers = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
@@ -363,7 +336,6 @@ void Game_Player::Update() {
 		vehicle->SyncWithRider(this);
 	}
 
-	// FIXME: Check this
 	UpdatePan();
 
 	// ESC-Menu calling

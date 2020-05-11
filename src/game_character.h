@@ -196,11 +196,6 @@ public:
 	void SetMoveRoute(const lcf::rpg::MoveRoute& move_route);
 
 	/**
-	 * @return true if this character is currently following a move route.
-	 */
-	virtual bool IsMoveRouteActive() const;
-
-	/**
 	 * Returns current index of the route assigned via a MoveEvent.
 	 *
 	 * @return current move route index

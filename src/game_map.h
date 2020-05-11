@@ -496,8 +496,11 @@ namespace Game_Map {
 	bool LoopHorizontal();
 	bool LoopVertical();
 
-	int RoundX(int x);
-	int RoundY(int y);
+	int RoundX(int x, int units = 1);
+	int RoundY(int y, int units = 1);
+
+	int RoundDx(int x, int units = 1);
+	int RoundDy(int y, int units = 1);
 
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);

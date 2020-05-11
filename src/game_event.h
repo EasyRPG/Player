@@ -49,7 +49,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool IsMoveRouteActive() const override;
 	void Move(int dir) override;
 	void UpdateNextMovementAction() override;
 	/** @} */

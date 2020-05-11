@@ -628,6 +628,3 @@ const lcf::rpg::EventPage *Game_Event::GetActivePage() const {
 	return page;
 }
 
-bool Game_Event::IsMoveRouteActive() const {
-	return true;
-}

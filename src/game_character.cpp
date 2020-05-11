@@ -878,11 +878,6 @@ void Game_Character::SetMaxStopCountForWait() {
 	SetMaxStopCount(GetMaxStopCountForWait(GetMoveFrequency()));
 }
 
-bool Game_Character::IsMoveRouteActive() const {
-	return IsMoveRouteOverwritten();
-}
-
-
 int Game_Character::GetVehicleType() const {
 	return 0;
 }

@@ -203,6 +203,11 @@ void Game_Map::Setup() {
 	Game_System::SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
 
+	auto& player = *Main_Data::game_player;
+
+	SetPositionX(player.GetX() * SCREEN_TILE_SIZE - player.GetPanX());
+	SetPositionY(player.GetY() * SCREEN_TILE_SIZE - player.GetPanY());
+
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
 	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
@@ -400,7 +405,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
 	int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
-		screen_x = Utils::PositiveModulo(screen_x + inc, map_width);
+		screen_x = (screen_x + inc) % map_width;
 	} else {
 		ClampingAdd(0, map_width - SCREEN_WIDTH, screen_x, inc);
 	}
@@ -409,7 +414,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
-		screen_y = Utils::PositiveModulo(screen_y + inc, map_height);
+		screen_y = (screen_y + inc) % map_height;
 	} else {
 		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
 	}
@@ -831,19 +836,35 @@ bool Game_Map::LoopVertical() {
 	return map->scroll_type == lcf::rpg::Map::ScrollType_vertical || map->scroll_type == lcf::rpg::Map::ScrollType_both;
 }
 
-int Game_Map::RoundX(int x) {
+int Game_Map::RoundX(int x, int units) {
 	if (LoopHorizontal()) {
-		return Utils::PositiveModulo(x, GetWidth());
+		return Utils::PositiveModulo(x, GetWidth() * units);
 	} else {
 		return x;
 	}
 }
 
-int Game_Map::RoundY(int y) {
+int Game_Map::RoundY(int y, int units) {
 	if (LoopVertical()) {
-		return Utils::PositiveModulo(y, GetHeight());
+		return Utils::PositiveModulo(y, GetHeight() * units);
 	} else {
 		return y;
+	}
+}
+
+int Game_Map::RoundDx(int dx, int units) {
+	if (LoopHorizontal()) {
+		return Utils::PositiveModulo(std::abs(dx), GetWidth() * units) * Utils::Sign(dx);
+	} else {
+		return dx;
+	}
+}
+
+int Game_Map::RoundDy(int dy, int units) {
+	if (LoopVertical()) {
+		return Utils::PositiveModulo(std::abs(dy), GetHeight() * units) * Utils::Sign(dy);
+	} else {
+		return dy;
 	}
 }
 
