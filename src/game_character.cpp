@@ -724,35 +724,29 @@ int Game_Character::DistanceYfromPlayer() const {
 
 void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 									int frequency) {
-	const auto prev_max_sc = GetMaxStopCount();
-	if (IsMoveRouteActive()) {
-		CancelMoveRoute();
+	if (!IsMoveRouteOverwritten()) {
+		original_move_frequency = GetMoveFrequency();
+	} else {
+		Game_Map::RemovePendingMove(this);
 	}
 
 	SetPaused(false);
 	SetStopCount(0xFFFF);
 	SetMoveRouteIndex(0);
 	SetMoveRouteRepeated(false);
+	SetMoveFrequency(frequency);
+	SetMoveRouteOverwritten(true);
 	SetMoveRoute(new_route);
+	if (frequency != original_move_frequency) {
+		SetMaxStopCountForStep();
+	}
 
 	if (GetMoveRoute().move_commands.empty()) {
-		// Matches RPG_RT behavior
-		SetMaxStopCountForStep();
+		CancelMoveRoute();
 		return;
 	}
 
 	Game_Map::AddPendingMove(this);
-
-	original_move_frequency = GetMoveFrequency();
-
-	SetMoveRouteOverwritten(true);
-	SetMoveFrequency(frequency);
-
-	if (frequency != original_move_frequency) {
-		SetMaxStopCountForStep();
-	} else {
-		SetMaxStopCount(prev_max_sc);
-	}
 }
 
 void Game_Character::CancelMoveRoute() {
