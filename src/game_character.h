@@ -513,16 +513,6 @@ public:
 	bool IsStopping() const;
 
 	/**
-	 * Makes way for the character to move to (x,y). Returns
-	 * true if the move can be completed.
-	 *
-	 * @param x new x position.
-	 * @param y new y position.
-	 * @return whether the character can walk through.
-	 */
-	virtual bool MakeWay(int x, int y) const;
-
-	/**
 	 * Moves the character to a new location.
 	 *
 	 * @param map_id map id
@@ -560,6 +550,18 @@ public:
 	 * Move in the direction dir.
 	 */
 	virtual void Move(int dir, MoveOption option = MoveOption::Normal);
+
+	/**
+	 * Check if this can move to the given tile.
+	 *
+	 * @param from_x Moving from x position
+	 * @param from_y Moving from y position
+	 * @param to_x Moving from x position
+	 * @param to_y Moving from y position
+	 *
+	 * @return true if this can occupy (to_x, to_y) from (from_x, from_y)
+	 */
+	virtual bool MakeWay(int from_x, int from_y, int to_x, int to_y);
 
 	/**
 	 * Moves the character forward.

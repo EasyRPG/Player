@@ -49,7 +49,7 @@ public:
 	/** @{ */
 	int GetScreenZ(bool apply_shift = false) const override;
 	bool GetVisible() const override;
-	bool MakeWay(int x, int y) const override;
+	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
 	void OnMoveFailed(int x, int y) override;

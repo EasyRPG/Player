@@ -150,11 +150,15 @@ namespace Game_Map {
 	 * Returns true if move is possible.
 	 *
 	 * @param self Character to move.
-	 * @param x new tile x.
-	 * @param y new tile y.
+	 * @param from_x from tile x.
+	 * @param from_y from tile y.
+	 * @param to_x to new tile x.
+	 * @param to_y to new tile y.
 	 * @return whether is passable.
 	 */
-	bool MakeWay(const Game_Character& self, int x, int y);
+	bool MakeWay(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)

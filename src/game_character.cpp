@@ -46,10 +46,6 @@ Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
 }
 
-bool Game_Character::MakeWay(int x, int y) const {
-	return Game_Map::MakeWay(*this, x, y);
-}
-
 void Game_Character::MoveTo(int map_id, int x, int y) {
 	data()->map_id = map_id;
 	// RPG_RT does not round the position for this function.
@@ -417,6 +413,11 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 	} // while (true)
 }
 
+
+bool Game_Character::MakeWay(int from_x, int from_y, int to_x, int to_y) {
+	return Game_Map::MakeWay(*this, from_x, from_y, to_x, to_y);
+}
+
 void Game_Character::Move(int dir, MoveOption option) {
 	int dx = (dir == Right || dir == UpRight || dir == DownRight) - (dir == Left || dir == DownLeft || dir == UpLeft);
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
@@ -427,7 +428,19 @@ void Game_Character::Move(int dir, MoveOption option) {
 		return;
 	}
 
-	move_failed = !MakeWay(GetX() + dx, GetY() + dy);
+	bool move_failed = false;
+
+	auto makeX = [&]() { return MakeWay(GetX(), GetY(), GetX() + dx, GetY()); };
+	auto makeY = [&]() { return MakeWay(GetX(), GetY(), GetX(), GetY() + dy); };
+
+	if (dx && dy) {
+		// For diagonal movement, RPG_RT checks if we can reach the tile using (vert, horiz), and then (horiz, vert).
+		move_failed = (makeY() && makeX()) || (makeX() && makeY());
+	} else if (dx) {
+		move_failed = makeX();
+	} else if (dy) {
+		move_failed = makeY();
+	}
 
 	if (!move_failed || option == MoveOption::Normal) {
 		SetDirection(dir);
@@ -454,6 +467,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	SetX(new_x);
 	SetY(new_y);
 	SetRemainingStep(SCREEN_TILE_SIZE);
+	// FIXME: This happens elsewhere?
 	SetStopCount(0);
 }
 
@@ -620,7 +634,7 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 	int new_x = GetX() + jump_plus_x;
 	int new_y = GetY() + jump_plus_y;
 
-	if (!MakeWay(new_x, new_y)) {
+	if (!MakeWay(GetX(), GetY(), new_x, new_y)) {
 		move_failed = true;
 	}
 

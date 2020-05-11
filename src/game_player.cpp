@@ -154,12 +154,12 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 	Refresh();
 }
 
-bool Game_Player::MakeWay(int x, int y) const {
+bool Game_Player::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 	if (data()->aboard) {
-		return GetVehicle()->MakeWay(x, y);
+		return GetVehicle()->MakeWay(from_x, from_y, to_x, to_y);
 	}
 
-	return Game_Character::MakeWay(x, y);
+	return Game_Character::MakeWay(from_x, from_y, to_x, to_y);
 }
 
 
