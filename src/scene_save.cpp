@@ -118,6 +118,8 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	Game_System::SetSaveSlot(slot_id);
 
+	Main_Data::game_data.party_location = Main_Data::game_player->GetSaveData();
+
 	Game_Map::PrepareSave();
 
 	if (prepare_save) {

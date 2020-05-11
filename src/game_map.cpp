@@ -219,7 +219,6 @@ void Game_Map::Setup() {
 }
 
 void Game_Map::SetupFromSave() {
-	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
 
 	SetupCommon();
 
@@ -323,7 +322,6 @@ void Game_Map::PrepareSave() {
 	Main_Data::game_data.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
 	Main_Data::game_data.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
 	Main_Data::game_data.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
-	Main_Data::game_data.party_location = Main_Data::game_player->GetSaveData();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());

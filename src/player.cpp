@@ -987,7 +987,8 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_pictures->SetSaveData(std::move(Main_Data::game_data.pictures));
 	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
 
-	int map_id = save->party_location.map_id;
+	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
+	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(&OnMapSaveFileReady);
