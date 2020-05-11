@@ -292,13 +292,15 @@ void Game_Screen::UpdateSandstorm() {
 	}
 }
 
-void Game_Screen::UpdateScreenEffects() {
+void Game_Screen::OnMapScrolled(int dx, int dy) {
 	constexpr auto pan_limit_x = GetPanLimitX();
 	constexpr auto pan_limit_y = GetPanLimitY();
 
-	data.pan_x = (data.pan_x - Game_Map::GetScrolledRight() + pan_limit_x) % pan_limit_x;
-	data.pan_y = (data.pan_y - Game_Map::GetScrolledDown() + pan_limit_y) % pan_limit_y;
+	data.pan_x = (data.pan_x - dx + pan_limit_x) % pan_limit_x;
+	data.pan_y = (data.pan_y - dy + pan_limit_y) % pan_limit_y;
+}
 
+void Game_Screen::UpdateScreenEffects() {
 	if (data.tint_time_left > 0) {
 		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
 		data.tint_current_green = interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);

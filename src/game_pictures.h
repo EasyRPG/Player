@@ -83,6 +83,7 @@ public:
 
 	void OnMapChange();
 	void OnBattleEnd();
+	void OnMapScrolled(int dx, int dy);
 
 	struct Picture {
 		Picture(int id) { data.ID = id; }
@@ -106,6 +107,7 @@ public:
 		void Erase();
 
 		void OnPictureSpriteReady();
+		void OnMapScrolled(int dx, int dy);
 	};
 
 	Picture& GetPicture(int id);

@@ -114,18 +114,12 @@ namespace Game_Map {
 	void OnContinueFromBattle();
 
 	/**
-	 * Scrolls the map view right.
+	 * Scrolls the map view in the given directions.
 	 *
-	 * @param distance scroll amount in sixteenths of a pixel
+	 * @param dx amount to scroll along x-axis in 1/16th pixels
+	 * @param dy amount to scroll along x-axis in 1/16th pixels
 	 */
-	void ScrollRight(int distance);
-
-	/**
-	 * Scrolls the map view down.
-	 *
-	 * @param distance scroll amount in sixteenths of a pixel
-	 */
-	void ScrollDown(int distance);
+	void Scroll(int dx, int dy);
 
 	/**
 	 * Adds inc, a distance in sixteenths of a pixel, to screen_x, the
@@ -138,12 +132,6 @@ namespace Game_Map {
 
 	/** Same as AddScreenX, but for the Y-direction. */
 	void AddScreenY(int& screen_y, int& inc);
-
-	/** @return how many sixteenths we scrolled right during this frame */
-	int GetScrolledRight();
-
-	/** @return how many sixteenths we scrolled down during this frame */
-	int GetScrolledDown();
 
 	/**
 	 * Gets if a tile coordinate is valid.

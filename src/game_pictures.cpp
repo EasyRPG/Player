@@ -333,6 +333,31 @@ void Game_Pictures::OnPictureSpriteReady(int id) {
 	}
 }
 
+void Game_Pictures::Picture::OnMapScrolled(int dx16, int dy16) {
+	if (data.fixed_to_map && IsOnMap()) {
+		// Instead of modifying the Ox/Oy offset the real position is altered
+		// based on map scroll because of savegame compatibility with RPG_RT
+
+		auto dx = static_cast<double>(dx16) / TILE_SIZE;
+
+		data.finish_x = data.finish_x - dx;
+		data.current_x = data.current_x - dx;
+		data.start_x = data.start_x - dx;
+
+		auto dy = static_cast<double>(dy16) / TILE_SIZE;
+
+		data.finish_y = data.finish_y - dy;
+		data.current_y = data.current_y - dy;
+		data.start_y = data.start_y - dy;
+	}
+}
+
+void Game_Pictures::OnMapScrolled(int dx, int dy) {
+	for (auto& pic: pictures) {
+		pic.OnMapScrolled(dx, dy);
+	}
+}
+
 void Game_Pictures::Picture::Update(bool is_battle) {
 	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
 		return;
@@ -344,23 +369,6 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 
 	if (!needs_update) {
 		return;
-	}
-
-	if (data.fixed_to_map) {
-		// Instead of modifying the Ox/Oy offset the real position is altered
-		// based on map scroll because of savegame compatibility with RPG_RT
-
-		auto dx = static_cast<double>(Game_Map::GetScrolledRight()) / TILE_SIZE;
-
-		data.finish_x = data.finish_x - dx;
-		data.current_x = data.current_x - dx;
-		data.start_x = data.start_x - dx;
-
-		auto dy = static_cast<double>(Game_Map::GetScrolledDown()) / TILE_SIZE;
-
-		data.finish_y = data.finish_y - dy;
-		data.current_y = data.current_y - dy;
-		data.start_y = data.start_y - dy;
 	}
 
 	if (data.time_left > 0) {

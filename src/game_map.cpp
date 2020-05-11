@@ -75,10 +75,6 @@ namespace {
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
-
-	// How much we scrolled during this frame.
-	int scrolled_right = 0;
-	int scrolled_down = 0;
 }
 
 namespace Game_Map {
@@ -377,28 +373,23 @@ Game_Interpreter_Map& Game_Map::GetInterpreter() {
 	return *interpreter;
 }
 
-void Game_Map::ScrollRight(int distance) {
+void Game_Map::Scroll(int dx, int dy) {
 	int x = map_info.position_x;
-	AddScreenX(x, distance);
+	AddScreenX(x, dx);
 	map_info.position_x = x;
-	scrolled_right += distance;
-	if (distance == 0) {
-		return;
-	}
 
-	Game_Map::Parallax::ScrollRight(distance);
-}
-
-void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
-	AddScreenY(y, distance);
+	AddScreenY(y, dy);
 	map_info.position_y = y;
-	scrolled_down += distance;
-	if (distance == 0) {
+
+	if (dx == 0 && dy == 0) {
 		return;
 	}
 
-	Game_Map::Parallax::ScrollDown(distance);
+	Main_Data::game_screen->OnMapScrolled(dx, dy);
+	Main_Data::game_pictures->OnMapScrolled(dx, dy);
+	Game_Map::Parallax::ScrollRight(dx);
+	Game_Map::Parallax::ScrollDown(dy);
 }
 
 // Add inc to acc, clamping the result into the range [low, high].
@@ -426,14 +417,6 @@ void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	} else {
 		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
 	}
-}
-
-int Game_Map::GetScrolledRight() {
-	return scrolled_right;
-}
-
-int Game_Map::GetScrolledDown() {
-	return scrolled_down;
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -900,12 +883,6 @@ int Game_Map::CheckEvent(int x, int y) {
 }
 
 void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
-	scrolled_right = 0;
-	scrolled_down = 0;
-
-	// Reset the scrolled amount when we exit this function.
-	auto sg = lcf::makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
-
 	if (GetNeedRefresh()) {
 		Refresh();
 	}
@@ -1611,6 +1588,10 @@ void Game_Map::Parallax::ResetPositionY() {
 }
 
 void Game_Map::Parallax::ScrollRight(int distance) {
+	if (!distance) {
+		return;
+	}
+
 	Params params = GetParallaxParams();
 	if (params.name.empty()) {
 		return;
@@ -1634,6 +1615,10 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 }
 
 void Game_Map::Parallax::ScrollDown(int distance) {
+	if (!distance) {
+		return;
+	}
+
 	Params params = GetParallaxParams();
 	if (params.name.empty()) {
 		return;

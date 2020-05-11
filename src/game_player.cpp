@@ -209,16 +209,22 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 		}
 	}
 
+	int scroll_dx = 0;
+	int scroll_dy = 0;
 	if (Game_Map::LoopHorizontal() ||
 			std::abs(data()->pan_current_x - new_panx) >=
 			std::abs(data()->pan_current_x - old_panx)) {
-		Game_Map::ScrollRight(dx);
+		scroll_dx = dx;
 	}
 
 	if (Game_Map::LoopVertical() ||
 			std::abs(data()->pan_current_y - new_pany) >=
 			std::abs(data()->pan_current_y - old_pany)) {
-		Game_Map::ScrollDown(dy);
+		scroll_dy = dy;
+	}
+
+	if (scroll_dx || scroll_dy) {
+		Game_Map::Scroll(scroll_dx, scroll_dy);
 	}
 }
 
@@ -816,8 +822,7 @@ void Game_Player::UpdatePan() {
 		return;
 	}
 
-	Game_Map::ScrollRight(dx);
-	Game_Map::ScrollDown(dy);
+	Game_Map::Scroll(dx, dy);
 
 	data()->pan_current_x -= dx;
 	data()->pan_current_y -= dy;
