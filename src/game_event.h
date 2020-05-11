@@ -106,8 +106,14 @@ public:
 	 */
 	void OnFinishForegroundEvent();
 
-	/** Mark the event as waiting for execution */
-	bool SetAsWaitingForegroundExecution(bool face_hero, bool triggered_by_decision_key);
+	/**
+	 * Schedule the event for execution on the map's foreground interpreter.
+	 *
+	 * @param triggered_by_decision_key set whether this was triggered by decision key
+	 *
+	 * @return true if event was scheduled.
+	 */
+	bool ScheduleForegroundExecution(bool triggered_by_decision_key);
 
 	/** 
 	 * Update this for the current frame
@@ -153,8 +159,8 @@ public:
 	int GetNumPages() const;
 
 private:
-	void CheckEventAutostart();
-	void CheckEventCollision();
+	bool CheckEventAutostart();
+	bool CheckEventCollision();
 	void SetMaxStopCountForRandom();
 
 	/**

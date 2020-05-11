@@ -155,8 +155,8 @@ private:
 	void UpdatePan();
 	bool UpdateEncounterSteps();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key);
-	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key);
+	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key);
+	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();

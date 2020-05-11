@@ -330,18 +330,20 @@ lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
 }
 
 
-bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
-	// RGSS scripts consider list empty if size <= 1. Why?
-	if (GetList().empty() || !data()->active) {
+bool Game_Event::ScheduleForegroundExecution(bool by_decision_key) {
+	// RPG_RT always resets this everytime this function is called, whether successful or not
+	data()->triggered_by_decision_key = by_decision_key;
+
+	auto& list = GetList();
+	if (!IsActive() || IsWaitingForegroundExecution() || list.empty()) {
 		return false;
 	}
 
-	if (face_hero && !(IsFacingLocked() || IsSpinning())) {
+	if (!(IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirectionToHero());
 	}
 
 	data()->waiting_execution = true;
-	data()->triggered_by_decision_key = by_decision_key;
 	SetPaused(true);
 
 	return true;
@@ -360,23 +362,27 @@ void Game_Event::OnFinishForegroundEvent() {
 	SetPaused(false);
 }
 
-void Game_Event::CheckEventAutostart() {
+bool Game_Event::CheckEventAutostart() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start) {
-		SetAsWaitingForegroundExecution(false, false);
+		ScheduleForegroundExecution(false);
+		return true;
 	}
+	return false;
 }
 
-void Game_Event::CheckEventCollision() {
+bool Game_Event::CheckEventCollision() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_collision
 			&& GetLayer() != lcf::rpg::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning()
-			&& !Main_Data::game_player->InAirship()
-			&& Main_Data::game_player->IsInPosition(GetX(), GetY())) {
-		SetAsWaitingForegroundExecution(true, false);
+			&& Main_Data::game_player->GetX() == GetX()
+			&& Main_Data::game_player->GetY() == GetY())
+	{
+		ScheduleForegroundExecution(false);
 		SetStopCount(0);
-		return;
+		return true;
 	}
+	return false;
 }
 
 void Game_Event::Move(int dir) {
@@ -386,16 +392,16 @@ void Game_Event::Move(int dir) {
 		return;
 	}
 
-	// FIXME: For some reason RPG_RT checks x and y against map bounds for looping?
+	// FIXME: Why does RPG_RT round here?
+	const auto x = Game_Map::RoundX(GetX());
+	const auto y = Game_Map::RoundY(GetY());
 
-	if (Main_Data::game_player->InAirship()
-			|| GetLayer() != lcf::rpg::EventPage::Layers_same
-			|| GetTrigger() != lcf::rpg::EventPage::Trigger_collision) {
-		return;
-	}
-
-	if (Main_Data::game_player->IsInPosition(GetX(), GetY())) {
-		SetAsWaitingForegroundExecution(false, false);
+	if (Main_Data::game_player->GetX() == x
+			|| Main_Data::game_player->GetY() == y
+			|| GetLayer() == lcf::rpg::EventPage::Layers_same
+			|| GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
+	{
+		ScheduleForegroundExecution(false);
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);
