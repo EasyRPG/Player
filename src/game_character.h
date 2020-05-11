@@ -801,7 +801,7 @@ public:
 	 *
 	 * @return Whether direction is fixed
 	 */
-	bool IsDirectionFixed() const;
+	static bool IsDirectionFixedAnimationType(AnimType);
 
 	/**
 	 * Tests if the step animation is enabled.
@@ -906,6 +906,13 @@ class Game_CharacterDataStorage : public Game_Character
 	private:
 		T _data = {};
 };
+
+inline bool Game_Character::IsDirectionFixedAnimationType(AnimType at) {
+	return
+		at == lcf::rpg::EventPage::AnimType_fixed_continuous ||
+		at == lcf::rpg::EventPage::AnimType_fixed_graphic ||
+		at == lcf::rpg::EventPage::AnimType_fixed_non_continuous;
+}
 
 inline lcf::rpg::SaveMapEventBase* Game_Character::data() {
 	return _data;
@@ -1160,7 +1167,6 @@ inline bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-
 inline int Game_Character::GetBeginJumpX() const {
 	return data()->begin_jump_x;
 }
@@ -1279,5 +1285,6 @@ template <typename T>
 inline const T* Game_CharacterDataStorage<T>::data() const {
 	return static_cast<const T*>(Game_Character::data());
 }
+
 
 #endif

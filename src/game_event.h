@@ -54,11 +54,9 @@ public:
 	/** @} */
 
 	/**
-	 * Does refresh.
+	 * Re-checks active pages and sets up new page on change.
 	 */
-	void Refresh();
-
-	void Setup(const lcf::rpg::EventPage* new_page);
+	void RefreshPage();
 
 	/**
 	 * Gets event ID.
@@ -157,6 +155,7 @@ private:
 	void UpdateSelfMovement() override;
 	void CheckEventAutostart();
 	void CheckEventCollision();
+	void SetMaxStopCountForRandom();
 
 	/**
 	 * Moves on a random route.

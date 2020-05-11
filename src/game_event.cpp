@@ -40,7 +40,10 @@ Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 {
 	data()->ID = event->ID;
 	SetMapId(map_id);
-	Refresh();
+	SetX(event->x);
+	SetY(event->y);
+
+	RefreshPage();
 }
 
 void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
@@ -113,59 +116,104 @@ void Game_Event::ClearWaitingForegroundExecution() {
 	data()->waiting_execution = false;
 }
 
-void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
-	bool from_null = page == nullptr;
-
-	const lcf::rpg::EventPage* old_page = page;
-	page = new_page;
-
-	// If the new page is null and the interpreter is running, it should
-	// carry on executing its command list during this frame
-	if (interpreter && page) {
-		interpreter->Clear();
+static bool CompareMoveRouteCommandCodes(const lcf::rpg::MoveRoute& l, const lcf::rpg::MoveRoute& r) {
+	auto& lmc = l.move_commands;
+	auto& rmc = r.move_commands;
+	if (lmc.size() != rmc.size()) {
+		return false;
 	}
 
-	SetPaused(false);
+	for (size_t i = 0; i < lmc.size(); ++i) {
+		if (lmc[i].command_id != rmc[i].command_id) {
+			return false;
+		}
+	}
+	return true;
+}
 
-	if (page == nullptr) {
-		SetSpriteGraphic("", 0);
-		SetDirection(lcf::rpg::EventPage::Direction_down);
+void Game_Event::RefreshPage() {
+	const RPG::EventPage* new_page = nullptr;
+	for (auto i = event->pages.crbegin(); i != event->pages.crend(); ++i) {
+		// Loop in reverse order to see whether any page meets conditions...
+		if (AreConditionsMet(*i)) {
+			new_page = &(*i);
+			// Stop looking for more...
+			break;
+		}
+	}
+
+	SetVisible(new_page && data()->active);
+
+	if (!new_page) {
+		// FIXME: Test and verify these chunks change when no page active.
+		ClearWaitingForegroundExecution();
+		SetPaused(false);
+		SetThrough(true);
+		this->page = new_page;
+		// Note: Interpreter continue running this frame.
+		// FIXME: Verify these don't happen
+		// SetSpriteGraphic("", 0);
+		// SetDirection(lcf::rpg::EventPage::Direction_down);
 		return;
 	}
 
+	if (new_page == this->page) {
+		return;
+	}
+
+	ClearWaitingForegroundExecution();
+	SetPaused(false);
+	const auto* old_page = page;
+	page = new_page;
+
 	SetSpriteGraphic(ToString(page->character_name), page->character_index);
 
-	SetMoveSpeed(page->move_speed);
-	SetMoveFrequency(page->move_frequency);
-	SetFacingLocked(false);
-	if (page->move_type == lcf::rpg::EventPage::MoveType_custom) {
-		SetMaxStopCountForTurn();
-	} else {
-		SetMaxStopCountForStep();
+	if (IsStopping()
+			&& (!old_page
+				|| old_page->character_direction != new_page->character_direction
+				|| old_page->character_pattern != new_page->character_pattern))
+	{
+		SetSpriteDirection(page->character_direction);
+		SetDirection(page->character_direction);
 	}
+
+	// FIXME: When no page?
+	// FIXME: On new game no page?
 	original_move_frequency = page->move_frequency;
-	SetOriginalMoveRouteIndex(0);
+	SetTransparency(page->translucent ? 3 : 0);
+	SetMoveFrequency(page->move_frequency);
+	SetLayer(page->layer);
+	data()->overlap_forbidden = page->overlap_forbidden;
+	SetAnimationType(static_cast<RPG::EventPage::AnimType>(page->animation_type));
+	SetFacingLocked(IsDirectionFixedAnimationType(GetAnimationType()));
+	SetMoveSpeed(page->move_speed);
 
-	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
-	SetAnimationType(lcf::rpg::EventPage::AnimType(page->animation_type));
+	if (IsFacingLocked()) {
+		SetDirection(page->character_direction);
+	}
 
+	// FIXME: 2k3e Step frame fix?
 	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
 			|| GetAnimationType() == lcf::rpg::EventPage::AnimType_spin) {
 		SetAnimFrame(page->character_pattern);
 	}
 
-	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
-		SetSpriteDirection(page->character_direction);
-		SetDirection(page->character_direction);
+	if (page->move_type == RPG::EventPage::MoveType_random) {
+		SetMaxStopCountForRandom();
+	} else if (page->move_type == RPG::EventPage::MoveType_custom) {
+		SetMaxStopCountForTurn();
+	} else {
+		SetMaxStopCountForStep();
 	}
 
-	if (IsDirectionFixed()) {
-		SetSpriteDirection(page->character_direction);
+	// When the page is being changed, RPG_RT will not reset the original move route index
+	// if the move routes of the old page and the new page have the same size and all their command codes are the same.
+	// To clarify, other move route command parameters such as switch_id etc... are not considered in the comparison!
+	if (!old_page || !CompareMoveRouteCommandCodes(old_page->move_route, new_page->move_route)) {
+		SetOriginalMoveRouteIndex(0);
 	}
 
-	SetTransparency(page->translucent ? 3 : 0);
-	SetLayer(page->layer);
-	data()->overlap_forbidden = page->overlap_forbidden;
+	SetThrough(data()->route_through);
 
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {
@@ -176,32 +224,9 @@ void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
 			// This forces the interpreter to yield when it changes it's own page.
 		}
 	}
-}
 
-void Game_Event::Refresh() {
-	if (!data()->active) {
-		SetVisible(false);
-		return;
-	}
-
-	const lcf::rpg::EventPage* new_page = nullptr;
-	for (auto i = event->pages.crbegin(); i != event->pages.crend(); ++i) {
-		// Loop in reverse order to see whether any page meets conditions...
-		if (AreConditionsMet(*i)) {
-			new_page = &(*i);
-			SetVisible(true);
-			// Stop looking for more...
-			break;
-		}
-	}
-
-	if (!new_page) {
-		SetVisible(false);
-	}
-
-	if (new_page != this->page) {
-		ClearWaitingForegroundExecution();
-		Setup(new_page);
+	if (interpreter) {
+		interpreter->Clear();
 	}
 }
 
@@ -311,7 +336,7 @@ bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decisio
 		return false;
 	}
 
-	if (face_hero && !(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
+	if (face_hero && !(IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirectionToHero());
 	}
 
@@ -329,7 +354,7 @@ const std::vector<lcf::rpg::EventCommand>& Game_Event::GetList() const {
 }
 
 void Game_Event::OnFinishForegroundEvent() {
-	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
+	if (!(IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirection());
 	}
 	SetPaused(false);
@@ -410,11 +435,14 @@ void Game_Event::UpdateSelfMovement() {
 	}
 }
 
-void Game_Event::MoveTypeRandom() {
+void Game_Event::SetMaxStopCountForRandom() {
 	auto st = GetMaxStopCountForStep(GetMoveFrequency());
 	st *= (Utils::GetRandomNumber(0, 3) + 3) / 5;
 	SetMaxStopCount(st);
+}
 
+void Game_Event::MoveTypeRandom() {
+	SetMaxStopCountForRandom();
 	int draw = Utils::GetRandomNumber(0, 9);
 
 	const auto opt = MoveOption::IgnoreIfCantMove;

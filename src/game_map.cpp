@@ -361,7 +361,7 @@ const std::vector<uint8_t>& Game_Map::GetTilesLayer(int layer) {
 void Game_Map::Refresh() {
 	if (GetMapId() > 0) {
 		for (Game_Event& ev : events) {
-			ev.Refresh();
+			ev.RefreshPage();
 		}
 	}
 

@@ -2069,7 +2069,7 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 		// Only for the constant case, not for variables
 		if (com.parameters[1] == 0 && direction != -1) {
 			event->SetDirection(direction);
-			if (!(event->IsDirectionFixed() || event->IsFacingLocked()))
+			if (!event->IsFacingLocked())
 				event->SetSpriteDirection(direction);
 		}
 	}
