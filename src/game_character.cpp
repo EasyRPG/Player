@@ -454,8 +454,6 @@ void Game_Character::Move(int dir, MoveOption option) {
 	SetX(new_x);
 	SetY(new_y);
 	SetRemainingStep(SCREEN_TILE_SIZE);
-	BeginMove();
-
 	SetStopCount(0);
 }
 
@@ -495,10 +493,6 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	} else {
 		Turn90DegreeRight();
 	}
-}
-
-void Game_Character::BeginMove() {
-	// no-op
 }
 
 int Game_Character::GetDirectionToHero() {

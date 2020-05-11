@@ -559,7 +559,7 @@ public:
 	/**
 	 * Move in the direction dir.
 	 */
-	void Move(int dir, MoveOption option = MoveOption::Normal);
+	virtual void Move(int dir, MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Moves the character forward.
@@ -591,11 +591,6 @@ public:
 	 * by using a random number.
 	 */
 	void Turn90DegreeLeftOrRight();
-
-	/**
-	 * Signals a move begin.
-	 */
-	virtual void BeginMove();
 
 	/** @return the direction we would need to face the hero. */
 	int GetDirectionToHero();

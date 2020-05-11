@@ -604,22 +604,30 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
 }
 
-void Game_Player::BeginMove() {
+void Game_Player::Move(int dir, MoveOption option) {
+	if (!IsStopping()) {
+		return;
+	}
+
+	Game_Character::Move(dir, option);
+
+	if (IsStopping() || InAirship()) {
+		return;
+	}
+
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
 	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 	bool red_flash = false;
 
 	if (terrain) {
-		if (!InAirship()) {
-			if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
-				Game_System::SePlay(terrain->footstep);
-			}
-			if (terrain->damage > 0) {
-				for (auto hero : Main_Data::game_party->GetActors()) {
-					if (!hero->PreventsTerrainDamage()) {
-						red_flash = true;
-						hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
-					}
+		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
+			Game_System::SePlay(terrain->footstep);
+		}
+		if (terrain->damage > 0) {
+			for (auto hero : Main_Data::game_party->GetActors()) {
+				if (!hero->PreventsTerrainDamage()) {
+					red_flash = true;
+					hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
 				}
 			}
 		}
