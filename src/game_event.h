@@ -50,7 +50,7 @@ public:
 	 */
 	/** @{ */
 	bool IsMoveRouteActive() const override;
-	void OnMoveFailed(int x, int y) override;
+	void Move(int dir) override;
 	/** @} */
 
 	/**

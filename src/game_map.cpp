@@ -500,11 +500,6 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	// Moving to same tile (used for jumps) always succeeds
-	if (to_x == from_x && to_y == from_y) {
-		return true;
-	}
-
 	// Infer directions before we do any rounding.
 	const auto bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
 	const auto bit_to = GetPassableMask(to_x, to_y, from_x, from_y);

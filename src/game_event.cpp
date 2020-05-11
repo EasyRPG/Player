@@ -380,14 +380,22 @@ void Game_Event::CheckEventCollision() {
 	}
 }
 
-void Game_Event::OnMoveFailed(int x, int y) {
+void Game_Event::Move(int dir) {
+	Game_Character::Move(dir);
+
+	if (!IsStopping()) {
+		return;
+	}
+
+	// FIXME: For some reason RPG_RT checks x and y against map bounds for looping?
+
 	if (Main_Data::game_player->InAirship()
 			|| GetLayer() != lcf::rpg::EventPage::Layers_same
 			|| GetTrigger() != lcf::rpg::EventPage::Trigger_collision) {
 		return;
 	}
 
-	if (Main_Data::game_player->IsInPosition(x, y)) {
+	if (Main_Data::game_player->IsInPosition(GetX(), GetY())) {
 		SetAsWaitingForegroundExecution(false, false);
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
@@ -430,7 +438,7 @@ void Game_Event::UpdateSelfMovement() {
 		MoveTypeAwayFromPlayer();
 		break;
 	case lcf::rpg::EventPage::MoveType_custom:
-		UpdateMoveRoute(data()->original_move_route_index, page->move_route);
+		UpdateMoveRoute(data()->original_move_route_index, page->move_route, false);
 		break;
 	}
 }
@@ -442,30 +450,39 @@ void Game_Event::SetMaxStopCountForRandom() {
 }
 
 void Game_Event::MoveTypeRandom() {
-	SetMaxStopCountForRandom();
 	int draw = Utils::GetRandomNumber(0, 9);
 
-	const auto opt = MoveOption::IgnoreIfCantMove;
+	const auto prev_dir = GetDirection();
 
 	if (draw < 3) {
-		auto dir = GetDirection();
-		Move(dir, opt);
 	} else if (draw < 5) {
-		auto dir = GetDirection90DegreeLeft(GetDirection());
-		Move(dir, opt);
+		Turn90DegreeLeft();
 	} else if (draw < 7) {
-		auto dir = GetDirection90DegreeRight(GetDirection());
-		Move(dir, opt);
+		Turn90DegreeRight();
 	} else if (draw < 8) {
-		auto dir = GetDirection180Degree(GetDirection());
-		Move(dir, opt);
+		Turn180Degree();
 	} else {
 		SetStopCount(Utils::GetRandomNumber(0, GetMaxStopCount()));
+		return;
 	}
+
+	Move(GetDirection());
+
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetSpriteDirection(prev_dir);
+			}
+		}
+	}
+
+	SetMaxStopCountForRandom();
 }
 
 void Game_Event::MoveTypeCycle(int default_dir) {
-	SetMaxStopCountForStep();
 	if (GetStopCount() < GetMaxStopCount()) return;
 
 	const int reverse_dir = ReverseDir(default_dir);
@@ -474,18 +491,25 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 		move_dir = default_dir;
 	}
 
-	Move(move_dir, MoveOption::IgnoreIfCantMove);
+	const auto prev_dir = GetDirection();
+	Move(move_dir);
 
-	if (move_failed) {
-		if (GetStopCount() >= GetMaxStopCount() + 20) {
-			if (GetStopCount() >= GetMaxStopCount() + 60) {
-				Move(ReverseDir(move_dir));
-				SetStopCount(0);
-			} else {
-				Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
+	if (IsStopping() && GetStopCount() >= GetMaxStopCount() + 20) {
+		Move(reverse_dir);
+	}
+
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetSpriteDirection(prev_dir);
 			}
 		}
 	}
+
+	SetMaxStopCountForStep();
 }
 
 void Game_Event::MoveTypeCycleLeftRight() {
@@ -502,8 +526,11 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 
 	constexpr int offset = TILE_SIZE * 2;
 
+	// FIXME: Check virtual calls in dynrpg
 	const bool in_sight = (sx >= -offset && sx <= SCREEN_TARGET_WIDTH + offset
 			&& sy >= -offset && sy <= SCREEN_TARGET_HEIGHT + offset);
+
+	const auto prev_dir = GetDirection();
 
 	int dir = 0;
 	if (!in_sight) {
@@ -521,16 +548,17 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 		}
 	}
 
-	const bool stop_limit = (GetStopCount() >= 60);
+	Move(dir);
 
-	const auto move_opt = stop_limit
-		? MoveOption::Normal
-		: MoveOption::IgnoreIfCantMove;
-
-	Move(dir, move_opt);
-
-	if (move_failed && stop_limit) {
-		SetStopCount(0);
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetSpriteDirection(prev_dir);
+			}
+		}
 	}
 }
 

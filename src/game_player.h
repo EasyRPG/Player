@@ -52,9 +52,8 @@ public:
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
-	void OnMoveFailed(int x, int y) override;
-	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) override;
-	void Move(int dir, MoveOption option = MoveOption::Normal);
+	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite) override;
+	void Move(int dir);
 	/** @} */
 
 	bool IsPendingTeleport() const;

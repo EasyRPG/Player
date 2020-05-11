@@ -539,17 +539,9 @@ public:
 	void UpdateFlash();
 
 	/**
-	 * Walks around on a custom move route.
-	 */
-
-	void Turn(int dir);
-
-	enum class MoveOption { Normal, IgnoreIfCantMove };
-
-	/**
 	 * Move in the direction dir.
 	 */
-	virtual void Move(int dir, MoveOption option = MoveOption::Normal);
+	virtual void Move(int dir);
 
 	/**
 	 * Check if this can move to the given tile.
@@ -562,16 +554,6 @@ public:
 	 * @return true if this can occupy (to_x, to_y) from (from_x, from_y)
 	 */
 	virtual bool MakeWay(int from_x, int from_y, int to_x, int to_y);
-
-	/**
-	 * Moves the character forward.
-	 */
-	void MoveForward(MoveOption option = MoveOption::Normal);
-
-	/**
-	 * Does a random movement.
-	 */
-	void MoveRandom(MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Turns the character 90 Degree to the left.
@@ -624,7 +606,7 @@ public:
 	/**
 	 * Character looks in a random direction
 	 */
-	void FaceRandomDirection();
+	void TurnRandom();
 
 	/**
 	 * Character looks towards the hero.
@@ -646,6 +628,8 @@ public:
 	 *
 	 * @param current_index Index in the current route
 	 * @param current_route Current move route
+	 *
+	 * @return whether the jump was successful.
 	 */
 	void BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
@@ -854,15 +838,17 @@ public:
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
+	static constexpr int GetDxFromDirection(int dir);
+	static constexpr int GetDyFromDirection(int dir);
+
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	virtual void UpdateSelfMovement() {}
-	virtual void OnMoveFailed(int /*x*/, int /*y*/) {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
-	virtual void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
+	virtual void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite);
 	void IncAnimCount();
 	void IncAnimFrame();
 
@@ -870,16 +856,11 @@ protected:
 	const lcf::rpg::SaveMapEventBase* data() const;
 
 	int original_move_frequency = 2;
-	bool move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
-	bool any_move_successful;
 
-	int jump_plus_x;
-	int jump_plus_y;
+	bool visible = true;
 
-	bool visible;
-
-	Type _type;
+	Type _type = {};
 	lcf::rpg::SaveMapEventBase* _data = nullptr;
 };
 
@@ -1247,6 +1228,17 @@ constexpr int Game_Character::GetMaxStopCountForTurn(int freq) {
 constexpr int Game_Character::GetMaxStopCountForWait(int freq) {
 	return 20 + GetMaxStopCountForTurn(freq);
 }
+
+constexpr int Game_Character::GetDxFromDirection(int dir) {
+	return (dir == Game_Character::Right || dir == Game_Character::UpRight || dir == Game_Character::DownRight)
+		- (dir == Game_Character::Left || dir == Game_Character::DownLeft || dir == Game_Character::UpLeft);
+}
+
+constexpr int Game_Character::GetDyFromDirection(int dir) {
+	return (dir == Game_Character::Down || dir == Game_Character::DownRight || dir == Game_Character::DownLeft)
+		- (dir == Game_Character::Up || dir == Game_Character::UpRight || dir == Game_Character::UpLeft);
+}
+
 
 template <typename T>
 inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Type typ)

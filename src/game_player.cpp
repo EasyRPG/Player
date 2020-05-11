@@ -333,7 +333,7 @@ void Game_Player::UpdateSelfMovement() {
 					Move(Up);
 					break;
 			}
-			if (tried_move && !move_failed) {
+			if (tried_move && IsStopping()) {
 				Main_Data::game_party->IncSteps();
 				if (UpdateEncounterSteps()) {
 					SetEncounterCalling(true);
@@ -362,14 +362,6 @@ void Game_Player::UpdateSelfMovement() {
 			SetMenuCalling(true);
 		}
 	}
-}
-
-void Game_Player::OnMoveFailed(int x, int y) {
-	if (IsMoveRouteOverwritten()) {
-		return;
-	}
-
-	CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, x, y, true, false);
 }
 
 void Game_Player::Update() {
@@ -542,10 +534,10 @@ bool Game_Player::GetOnVehicle() {
 		if (!IsMoving() && !IsJumping()) {
 			if (!GetThrough()) {
 				SetThrough(true);
-				MoveForward();
+				Move(GetDirection());
 				SetThrough(false);
 			} else {
-				MoveForward();
+				Move(GetDirection());
 			}
 		}
 	} else {
@@ -584,12 +576,12 @@ bool Game_Player::GetOffVehicle() {
 	return true;
 }
 
-void Game_Player::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) {
+void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route, bool is_overwrite) {
 	auto* vehicle = GetVehicle();
 	if (vehicle && vehicle->IsAscendingOrDescending()) {
 		return;
 	}
-	Game_Character::UpdateMoveRoute(current_index, current_route);
+	Game_Character::UpdateMoveRoute(current_index, current_route, is_overwrite);
 }
 
 bool Game_Player::InVehicle() const {
@@ -604,14 +596,24 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
 }
 
-void Game_Player::Move(int dir, MoveOption option) {
+void Game_Player::Move(int dir) {
 	if (!IsStopping()) {
 		return;
 	}
 
-	Game_Character::Move(dir, option);
+	Game_Character::Move(dir);
 
-	if (IsStopping() || InAirship()) {
+	if (IsStopping()) {
+		// FIXME: Does this really happen? Not seen in code. Does this belong in makeway?
+		if (!IsMoveRouteOverwritten()) {
+			int nx = GetX() + GetDxFromDirection(dir);
+			int ny = GetY() + GetDyFromDirection(dir);
+			CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, nx, ny, true, false);
+		}
+		return;
+	}
+
+	if (InAirship()) {
 		return;
 	}
 
@@ -666,10 +668,10 @@ void Game_Player::UnboardingFinished() {
 		if (!IsMoving() && !IsJumping()) {
 			if (!GetThrough()) {
 				SetThrough(true);
-				MoveForward();
+				Move(GetDirection());
 				SetThrough(false);
 			} else {
-				MoveForward();
+				Move(GetDirection());
 			}
 		}
 	}
