@@ -132,12 +132,9 @@ void Game_Vehicle::GetOn() {
 void Game_Vehicle::GetOff() {
 	if (GetVehicleType() == Airship) {
 		data()->remaining_descent = SCREEN_TILE_SIZE;
+		SetSpriteDirection(Left);
 	} else {
 		Main_Data::game_player->UnboardingFinished();
-	}
-	// Get off airship can be trigger while airship is moving. Don't break the animation
-	// until its finished.
-	if (GetVehicleType() != Airship || (!IsMoving() && !IsJumping())) {
 		SetDirection(Left);
 		SetSpriteDirection(Left);
 	}
@@ -151,22 +148,24 @@ bool Game_Vehicle::IsAboard() const {
 	return IsInUse() && Main_Data::game_player->IsAboard();
 }
 
-void Game_Vehicle::SyncWithPlayer() {
-	SetX(Main_Data::game_player->GetX());
-	SetY(Main_Data::game_player->GetY());
-	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
+void Game_Vehicle::SyncWithRider(const Game_Character* rider) {
+	SetProcessed(true);
+	SetMapId(rider->GetMapId());
+	SetX(rider->GetX());
+	SetY(rider->GetY());
+	SetDirection(rider->GetDirection());
+	SetSpriteDirection(rider->GetSpriteDirection());
+	SetRemainingStep(rider->GetRemainingStep());
+
+	// FIXME: RPG_RT doesn't sync these..
+#if 0
 	SetJumping(Main_Data::game_player->IsJumping());
 	SetBeginJumpX(Main_Data::game_player->GetBeginJumpX());
 	SetBeginJumpY(Main_Data::game_player->GetBeginJumpY());
-	if (!IsAscendingOrDescending()) {
-		SetDirection(Main_Data::game_player->GetDirection());
-		SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
-	} else {
-		if (!IsMoving() && !IsJumping()) {
-			SetDirection(Left);
-			SetSpriteDirection(Left);
-		}
-	}
+#endif
+
+	UpdateAnimation();
+	CancelMoveRoute();
 }
 
 int Game_Vehicle::GetAltitude() const {
@@ -186,6 +185,10 @@ int Game_Vehicle::GetScreenY(bool apply_shift, bool apply_jump) const {
 
 bool Game_Vehicle::CanLand() const {
 	return Game_Map::CanLandAirship(GetX(), GetY());
+}
+
+void Game_Vehicle::UpdateNextMovementAction() {
+	UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
 }
 
 void Game_Vehicle::UpdateAnimation() {
@@ -222,16 +225,7 @@ void Game_Vehicle::AnimateAscentDescent() {
 }
 
 void Game_Vehicle::Update() {
-	if (IsProcessed()) {
-		return;
-	}
-	SetProcessed(true);
-
-	if (!IsAboard()) {
-		Game_Character::UpdateMovement();
-	}
-	UpdateAnimation();
-	Game_Character::UpdateFlash();
+	Game_Character::Update();
 }
 
 int Game_Vehicle::GetVehicleType() const {

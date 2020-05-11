@@ -51,6 +51,7 @@ public:
 	/** @{ */
 	bool IsMoveRouteActive() const override;
 	void Move(int dir) override;
+	void UpdateNextMovementAction() override;
 	/** @} */
 
 	/**
@@ -152,7 +153,6 @@ public:
 	int GetNumPages() const;
 
 private:
-	void UpdateSelfMovement() override;
 	void CheckEventAutostart();
 	void CheckEventCollision();
 	void SetMaxStopCountForRandom();

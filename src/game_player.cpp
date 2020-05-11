@@ -129,6 +129,7 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 
 	auto* vehicle = GetVehicle();
 	if (vehicle) {
+		// RPG_RT doesn't check the aboard flag for this one
 		vehicle->MoveTo(map_id, x, y);
 	}
 
@@ -226,126 +227,144 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	}
 }
 
-void Game_Player::UpdateVehicleActions() {
-	if (IsAboard()) {
-		auto* vehicle = GetVehicle();
-		if (vehicle) {
-			vehicle->SyncWithPlayer();
-			if (IsStopping()) {
-				vehicle->AnimateAscentDescent();
-			}
+void Game_Player::UpdateNextMovementAction() {
+	auto* vehicle = GetVehicle();
+
+	// RPG_RT doesn't check vehicle, but we have to as we don't have another way to fetch it.
+	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
+	if (vehicle && IsFlying()) {
+		auto was_ascending_or_descending = vehicle->IsAscendingOrDescending();
+		vehicle->AnimateAscentDescent();
+
+		if (was_ascending_or_descending) {
+			return;
 		}
 	}
+
+	UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
+
+	if (Game_Map::GetInterpreter().IsRunning()) {
+		SetMenuCalling(false);
+		return;
+	}
+	// FIXME: Message Visible? Or active?
+	if(IsPaused() || IsMoveRouteOverwritten() || Game_Message::IsMessageActive()) {
+		return;
+	}
+
+	if (IsEncounterCalling()) {
+		SetMenuCalling(false);
+
+		BattleArgs args;
+		if (Game_Map::PrepareEncounter(args)) {
+			Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
+		}
+		SetEncounterCalling(false);
+		// FIXME: collision checks still done this frame?
+		return;
+	}
+
+	if (IsMenuCalling()) {
+		SetMenuCalling(false);
+
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
+		return;
+	}
+
+	CheckEventTriggerHere({ RPG::EventPage::Trigger_collision }, true, false);
+
+	if (Game_Map::IsAnyEventStarting()) {
+		return;
+	}
+
+	int move_dir = -1;
+	switch (Input::dir4) {
+		case 2:
+			move_dir = Down;
+			break;
+		case 4:
+			move_dir = Left;
+			break;
+		case 6:
+			move_dir = Right;
+			break;
+		case 8:
+			move_dir = Up;
+			break;
+	}
+	if (move_dir >= 0) {
+		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->route_through);
+		Move(move_dir);
+		ResetThrough();
+		if (IsStopping()) {
+			int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+			CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, true, false);
+		}
+	}
+
+	if (IsStopping()) {
+		if (Input::IsTriggered(Input::DECISION)) {
+			if (!GetOnOffVehicle()) {
+				CheckActionEvent();
+			}
+		}
+	} else {
+		Main_Data::game_party->IncSteps();
+		if (Main_Data::game_party->ApplyStateDamage()) {
+			Main_Data::game_screen->FlashMapStepDamage();
+		}
+		if (UpdateEncounterSteps()) {
+			SetEncounterCalling(true);
+		}
+	}
+}
+
+void Game_Player::UpdateMovement(int amount) {
+	const auto old_sprite_x = GetSpriteX();
+	const auto old_sprite_y = GetSpriteY();
+	const bool was_jumping = IsJumping();
+
+	Game_Character::UpdateMovement(amount);
+
+	// FIXME: These need fixed
+	UpdateScroll(old_sprite_x, old_sprite_y);
+
+	if (!IsMoveRouteOverwritten() && IsStopping() && !InAirship()) {
+		TriggerSet triggers = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
+		CheckEventTriggerHere(triggers, true, false);
+	}
+}
+
+void Game_Player::Update() {
+	Game_Character::Update();
 
 	if (IsStopping()) {
 		if (data()->boarding) {
 			// Boarding completed
 			data()->aboard = true;
 			data()->boarding = false;
-			auto* vehicle = GetVehicle();
-			if (vehicle->IsMoveRouteOverwritten()) {
-				vehicle->CancelMoveRoute();
-			}
-			SetMoveSpeed(vehicle->GetMoveSpeed());
-			vehicle->SetDirection(GetDirection());
-			vehicle->SetSpriteDirection(Left);
 			// Note: RPG_RT ignores the lock_facing flag here!
 			SetSpriteDirection(Left);
-			vehicle->SetX(GetX());
-			vehicle->SetY(GetY());
-		}
 
+			auto* vehicle = GetVehicle();
+			SetMoveSpeed(vehicle->GetMoveSpeed());
+		}
 		if (data()->unboarding) {
 			// Unboarding completed
 			data()->unboarding = false;
 		}
 	}
-}
-
-void Game_Player::UpdateSelfMovement() {
-	bool did_call_encounter = false;
-	bool did_call_menu = false;
 
 	auto* vehicle = GetVehicle();
 
-	bool is_boarding = IsBoardingOrUnboarding()
-		|| (vehicle && vehicle->IsAscendingOrDescending());
-
-	if (!is_boarding
-			&& IsStopping()
-			&& !IsMoveRouteOverwritten()) {
-
-		if (IsEncounterCalling()) {
-			BattleArgs args;
-			if (Game_Map::PrepareEncounter(args)) {
-				Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
-			}
-			SetEncounterCalling(false);
-			did_call_encounter = true;
-		}
-
-		if (IsMenuCalling()) {
-			if (!did_call_encounter) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
-				did_call_menu = true;
-			}
-			SetMenuCalling(false);
-		}
+	if (IsAboard() && vehicle) {
+		vehicle->SyncWithRider(this);
 	}
 
-	if (!is_boarding
-			&& !Game_Map::GetInterpreter().IsRunning()
-			&& !Game_Message::IsMessageActive()
-			&& !IsMoveRouteOverwritten()
-			&& !IsPaused() // RPG_RT compatible logic, but impossible to set pause on player
-			&& !did_call_encounter
-			&& !did_call_menu
-			&& !Game_Map::IsAnyEventStarting())
-	{
-		if (IsStopping()) {
-			int dir = -1;
-			switch (Input::dir4) {
-				case 2:
-					dir = Down;
-					break;
-				case 4:
-					dir = Left;
-					Move(Left);
-					break;
-				case 6:
-					dir = Right;
-					Move(Right);
-					break;
-				case 8:
-					dir = Up;
-					Move(Up);
-					break;
-			}
-			if (dir >= 0) {
-				SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->route_through);
-				Move(dir);
-				ResetThrough();
-				if (IsStopping()) {
-					Main_Data::game_party->IncSteps();
-					if (UpdateEncounterSteps()) {
-						SetEncounterCalling(true);
-					}
-					if (Main_Data::game_party->ApplyStateDamage()) {
-						Main_Data::game_screen->FlashMapStepDamage();
-					}
-				}
-			}
-		}
-
-		if (IsStopping()) {
-			if (Input::IsTriggered(Input::DECISION)) {
-				if (!GetOnOffVehicle()) {
-					CheckActionEvent();
-				}
-			}
-		}
-	}
+	// FIXME: Check this
+	UpdatePan();
 
 	// ESC-Menu calling
 	if (Game_System::GetAllowMenu()
@@ -354,53 +373,6 @@ void Game_Player::UpdateSelfMovement() {
 	{
 		if (Input::IsTriggered(Input::CANCEL)) {
 			SetMenuCalling(true);
-		}
-	}
-}
-
-void Game_Player::Update() {
-	if (IsProcessed()) {
-		return;
-	}
-	SetProcessed(true);
-
-	const auto old_sprite_x = GetSpriteX();
-	const auto old_sprite_y = GetSpriteY();
-
-	auto was_moving = !IsStopping();
-	auto was_move_route_overriden = IsMoveRouteOverwritten();
-
-	Game_Character::UpdateMovement();
-	Game_Character::UpdateAnimation(was_moving);
-	Game_Character::UpdateFlash();
-
-	UpdateScroll(old_sprite_x, old_sprite_y);
-	UpdatePan();
-
-	UpdateVehicleActions();
-
-	if (!InAirship()
-			&& IsStopping()
-			&& !IsMoveRouteOverwritten()
-			) {
-		TriggerSet triggers;
-
-		if (!Game_Map::GetInterpreter().IsRunning()) {
-			triggers[RPG::EventPage::Trigger_collision] = true;
-		}
-
-		// When the last command of a move route is a move command, there is special
-		// logic to reset the move route index to 0. We leverage this here because
-		// we only do touch checks if the last move command was a move.
-		// Checking was_moving is not enough, because there could have been 0 frame
-		// commands after the move in the move route, in which case index would be > 0.
-		if (was_moving && (!was_move_route_overriden || GetMoveRouteIndex() == 0)) {
-			triggers[RPG::EventPage::Trigger_touched] = true;
-			triggers[RPG::EventPage::Trigger_collision] = true;
-		}
-
-		if (triggers.count() > 0 && CheckEventTriggerHere(triggers, true, false)) {
-			return;
 		}
 	}
 }
@@ -478,12 +450,17 @@ void Game_Player::Refresh() {
 
 	SetSpriteGraphic(ToString(actor->GetSpriteName()), actor->GetSpriteIndex());
 	SetTransparency(actor->GetSpriteTransparency());
-
-	if (data()->aboard)
-		GetVehicle()->SyncWithPlayer();
 }
 
 bool Game_Player::GetOnOffVehicle() {
+	// FIXME: Make a test case for this
+	if (GetDirection() >= UpRight) {
+		SetDirection(GetSpriteDirection());
+	}
+
+	const auto x = Game_Map::RoundX(GetX());
+	const auto y = Game_Map::RoundY(GetY());
+
 	if (IsBoardingOrUnboarding()) {
 		return false;
 	}
@@ -513,7 +490,7 @@ bool Game_Player::GetOnVehicle() {
 		return false;
 	}
 
-	if (type == Game_Vehicle::Airship && (IsMoving() || IsJumping())) {
+	if (type == Game_Vehicle::Airship && !IsStopping()) {
 		return false;
 	}
 
@@ -525,9 +502,10 @@ bool Game_Player::GetOnVehicle() {
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
 		data()->boarding = true;
-		if (!IsMoving() && !IsJumping()) {
+		if (IsStopping()) {
 			SetThrough(true);
 			Move(GetDirection());
+			// FIXME: RPG_RT resets through to route_through || not visible?
 			ResetThrough();
 		}
 	} else {
@@ -536,11 +514,8 @@ bool Game_Player::GetOnVehicle() {
 			vehicle->CancelMoveRoute();
 		}
 		SetMoveSpeed(vehicle->GetMoveSpeed());
-		SetDirection(RPG::EventPage::Direction_left);
 		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(RPG::EventPage::Direction_left);
-		vehicle->SetX(GetX());
-		vehicle->SetY(GetY());
 	}
 
 	Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
@@ -564,14 +539,6 @@ bool Game_Player::GetOffVehicle() {
 
 	vehicle->GetOff();
 	return true;
-}
-
-void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route, bool is_overwrite) {
-	auto* vehicle = GetVehicle();
-	if (vehicle && vehicle->IsAscendingOrDescending()) {
-		return;
-	}
-	Game_Character::UpdateMoveRoute(current_index, current_route, is_overwrite);
 }
 
 bool Game_Player::InVehicle() const {

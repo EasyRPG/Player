@@ -53,6 +53,8 @@ public:
 	 */
 	/** @{ */
 	int GetVehicleType() const override;
+	void UpdateNextMovementAction() override;
+	void UpdateAnimation() override;
 	/** @} */
 
 	/** Update this for the current frame */
@@ -70,11 +72,10 @@ public:
 	void GetOff();
 	bool IsInUse() const;
 	bool IsAboard() const;
-	void SyncWithPlayer();
+	void SyncWithRider(const Game_Character* rider);
 	void AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
 	bool CanLand() const;
-	void UpdateAnimation();
 
 	/**
 	 * Sets default sprite name. Usually the name of the graphic file.

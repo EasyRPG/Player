@@ -112,58 +112,57 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 	return z;
 }
 
-void Game_Character::UpdateMovement() {
-	if (IsMoveRouteOverwritten()) {
-		UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
+void Game_Character::Update() {
+	if (!IsActive() || IsProcessed()) {
+		return;
 	}
+	SetProcessed(true);
 
-	UpdateSelfMovement();
+	if (IsStopping()) {
+		this->UpdateNextMovementAction();
+	}
+	UpdateFlash();
 
-	bool moved = false;
-
-	if (IsJumping()) {
-		SetStopCount(0);
-		UpdateJump();
-		moved = true;
-	} else if (IsMoving()) {
-		SetStopCount(0);
-		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
-		moved = true;
-	} else {
+	if (IsStopping()) {
 		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
-					((Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
+				((Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
 			SetStopCount(GetStopCount() + 1);
 		}
+	} else if (IsJumping()) {
+		static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
+		auto amount = jump_speed[GetMoveSpeed() -1 ];
+		this->UpdateMovement(amount);
+	} else {
+		int amount = 1 << (1 + GetMoveSpeed());
+		this->UpdateMovement(amount);
 	}
 
-	// These actions happen after movement has finished but before stop count timer.
-	if (IsStopping() && IsMoveRouteActive() && IsMoveRouteOverwritten()) {
-		const auto& move_route = GetMoveRoute();
-		if (!move_route.move_commands.empty() && GetMoveRouteIndex() >= static_cast<int>(move_route.move_commands.size())) {
-			if (move_route.repeat) {
-				SetMoveRouteRepeated(true);
-				SetMoveRouteIndex(0);
-			} else if(moved) {
-				// If the last command of a move route is a move, and
-				// the move just completed, cancel immediately and
-				// don't wait for stop_count.
+	this->UpdateAnimation();
+}
+
+void Game_Character::UpdateMovement(int amount) {
+	SetRemainingStep(GetRemainingStep() - amount);
+	if (GetRemainingStep() <= 0) {
+		SetRemainingStep(0);
+		SetJumping(0);
+
+		// FIXME: Empty check?
+		auto& move_route = GetMoveRoute();
+		if (IsMoveRouteOverwritten() && GetMoveRouteIndex() >= static_cast<int>(move_route.move_commands.size())) {
+			SetMoveRouteRepeated(true);
+			SetMoveRouteIndex(0);
+			if (!move_route.repeat) {
+				// If the last command of a move route is or jump,
+				// RPG_RT cancels the entire move route immediately.
 				CancelMoveRoute();
-				SetMoveRouteIndex(0);
 			}
 		}
 	}
+
+	SetStopCount(0);
 }
 
-void Game_Character::UpdateAnimation(bool was_moving) {
-	if (IsAnimPaused()) {
-		ResetAnimation();
-		return;
-	}
-
-	if (!IsAnimated()) {
-		return;
-	}
-
+void Game_Character::UpdateAnimation() {
 	const auto step_idx = Utils::Clamp(GetMoveSpeed(), 1, 6) - 1;
 
 	constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
@@ -182,25 +181,28 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 		return;
 	}
 
-	if (IsJumping()) {
-		// Note: We start ticking animations right away on the last frame of the jump, not the frame after.
-		// Hence there is no "was_jumping" to pass in here.
+	if (IsAnimPaused() || IsJumping()) {
 		ResetAnimation();
+		return;
+	}
+
+	if (!IsAnimated()) {
 		return;
 	}
 
 	const auto stationary_limit = stationary_limits[step_idx];
 	const auto continuous_limit = continuous_limits[step_idx];
 
+	// FIXME: Verify this
 	if (IsContinuous()
-			|| was_moving
+			|| GetStopCount() == 0
 			|| data()->anim_frame == RPG::EventPage::Frame_left || data()->anim_frame == RPG::EventPage::Frame_right
 			|| GetAnimCount() < stationary_limit) {
 		IncAnimCount();
 	}
 
 	if (GetAnimCount() > continuous_limit
-			|| (was_moving && GetAnimCount() > stationary_limit)) {
+			|| (GetStopCount() == 0 && GetAnimCount() > stationary_limit)) {
 		IncAnimFrame();
 		return;
 	}

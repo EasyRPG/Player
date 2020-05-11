@@ -361,10 +361,8 @@ void Game_Event::OnFinishForegroundEvent() {
 }
 
 void Game_Event::CheckEventAutostart() {
-	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start
-			&& GetRemainingStep() == 0) {
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start) {
 		SetAsWaitingForegroundExecution(false, false);
-		return;
 	}
 }
 
@@ -376,6 +374,7 @@ void Game_Event::CheckEventCollision() {
 			&& !Main_Data::game_player->InAirship()
 			&& Main_Data::game_player->IsInPosition(GetX(), GetY())) {
 		SetAsWaitingForegroundExecution(true, false);
+		SetStopCount(0);
 		return;
 	}
 }
@@ -404,24 +403,33 @@ void Game_Event::Move(int dir) {
 	}
 }
 
-void Game_Event::UpdateSelfMovement() {
-	if (IsPaused())
-		return;
-	if (IsMoveRouteOverwritten()) {
+void Game_Event::UpdateNextMovementAction() {
+	if (!page) {
 		return;
 	}
-	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
-		return;
-	if (!IsStopping())
-		return;
-	if (page == nullptr) {
+
+	UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
+
+	CheckEventAutostart();
+
+	if (!IsStopping()) {
 		return;
 	}
-	if (IsStopCountActive()) {
+
+	CheckEventCollision();
+
+	if (!page
+			|| IsPaused()
+			|| IsMoveRouteOverwritten()
+			|| IsStopCountActive()
+			|| (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning()))
+	{
 		return;
 	}
 
 	switch (page->move_type) {
+	case lcf::rpg::EventPage::MoveType_stationary:
+		break;
 	case lcf::rpg::EventPage::MoveType_random:
 		MoveTypeRandom();
 		break;
@@ -598,25 +606,8 @@ AsyncOp Game_Event::Update(bool resume_async) {
 		}
 	}
 
-	if (IsProcessed()) {
-		return {};
-	}
-	SetProcessed(true);
+	Game_Character::Update();
 
-	CheckEventAutostart();
-
-	if (!IsMoveRouteOverwritten() || IsMoving()) {
-		CheckEventCollision();
-	}
-
-	auto was_moving = !IsStopping();
-	Game_Character::UpdateMovement();
-	Game_Character::UpdateAnimation(was_moving);
-	Game_Character::UpdateFlash();
-
-	if (IsStopping()) {
-		CheckEventCollision();
-	}
 	return {};
 }
 

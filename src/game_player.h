@@ -51,9 +51,9 @@ public:
 	bool GetVisible() const override;
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	int GetVehicleType() const override;
-	void UpdateSelfMovement() override;
-	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite) override;
-	void Move(int dir);
+	void UpdateNextMovementAction() override;
+	void UpdateMovement(int amount) override;
+	void Move(int dir) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;

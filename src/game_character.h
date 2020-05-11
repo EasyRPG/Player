@@ -525,23 +525,6 @@ public:
 	virtual void MoveTo(int map_id, int x, int y);
 
 	/**
-	 * Updates character and movement.
-	 */
-	void UpdateMovement();
-
-	/**
-	 * Updates character animation
-	 *
-	 * @param was_moving if the event moved or jumped this frame
-	 */
-	void UpdateAnimation(bool was_moving);
-
-	/**
-	 * Updates character flash
-	 */
-	void UpdateFlash();
-
-	/**
 	 * Move in the direction dir.
 	 */
 	virtual void Move(int dir);
@@ -846,14 +829,19 @@ public:
 
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
-	virtual void UpdateSelfMovement() {}
+	void Update();
+	virtual void UpdateAnimation();
+	virtual void UpdateNextMovementAction() = 0;
+	virtual void UpdateMovement(int amount);
+
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
-	virtual void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite);
+	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite);
 	void IncAnimCount();
 	void IncAnimFrame();
+	void UpdateFlash();
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;
