@@ -157,12 +157,7 @@ void Game_Vehicle::SyncWithRider(const Game_Character* rider) {
 	SetSpriteDirection(rider->GetSpriteDirection());
 	SetRemainingStep(rider->GetRemainingStep());
 
-	// FIXME: RPG_RT doesn't sync these..
-#if 0
-	SetJumping(Main_Data::game_player->IsJumping());
-	SetBeginJumpX(Main_Data::game_player->GetBeginJumpX());
-	SetBeginJumpY(Main_Data::game_player->GetBeginJumpY());
-#endif
+	// RPG_RT doesn't copy jumping chunks
 
 	UpdateAnimation();
 	CancelMoveRoute();

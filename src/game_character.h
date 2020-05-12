@@ -829,7 +829,6 @@ protected:
 	virtual void UpdateNextMovementAction() = 0;
 	virtual void UpdateMovement(int amount);
 
-	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();

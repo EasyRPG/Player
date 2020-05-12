@@ -144,7 +144,7 @@ void Game_Character::UpdateMovement(int amount) {
 	SetRemainingStep(GetRemainingStep() - amount);
 	if (GetRemainingStep() <= 0) {
 		SetRemainingStep(0);
-		SetJumping(0);
+		SetJumping(false);
 
 		// FIXME: Empty check?
 		auto& move_route = GetMoveRoute();
@@ -210,14 +210,6 @@ void Game_Character::UpdateAnimation() {
 
 void Game_Character::UpdateFlash() {
 	Flash::Update(data()->flash_current_level, data()->flash_time_left);
-}
-
-void Game_Character::UpdateJump() {
-	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
-	SetRemainingStep(GetRemainingStep() - min(jump_speed[GetMoveSpeed() - 1], GetRemainingStep()));
-	if (GetRemainingStep() <= 0) {
-		SetJumping(false);
-	}
 }
 
 void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route, bool is_overwrite) {
