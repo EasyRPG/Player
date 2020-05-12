@@ -453,7 +453,7 @@ void Game_Character::Move(int dir) {
 	int dx = GetDxFromDirection(dir);
 	int dy = GetDyFromDirection(dir);
 
-	bool move_failed = false;
+	bool move_success = false;
 
 	SetDirection(dir);
 	// RPG_RT only does the IsSpinning() check for Game_Event. We did it for all types here
@@ -471,14 +471,14 @@ void Game_Character::Move(int dir) {
 
 	if (dx && dy) {
 		// For diagonal movement, RPG_RT checks if we can reach the tile using (vert, horiz), and then (horiz, vert).
-		move_failed = (makeY() && makeX()) || (makeX() && makeY());
+		move_success = (makeY() && makeX()) || (makeX() && makeY());
 	} else if (dx) {
-		move_failed = makeX();
+		move_success = makeX();
 	} else if (dy) {
-		move_failed = makeY();
+		move_success = makeY();
 	}
 
-	if (move_failed) {
+	if (!move_success) {
 		return;
 	}
 
