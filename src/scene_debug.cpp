@@ -57,7 +57,8 @@ struct Scene_Debug::PrevIndex {
 	IndexSet item;
 	IndexSet troop;
 	IndexSet map;
-	IndexSet event;
+	IndexSet common_event;
+	IndexSet map_event;
 };
 
 Scene_Debug::PrevIndex Scene_Debug::prev = {};
@@ -150,11 +151,17 @@ void Scene_Debug::Update() {
 			case eFullHeal:
 				ReturnToMain(8);
 				break;
-			case eCallEvent:
-				CancelListOption(prev.event, 9);
+			case eCallCommonEvent:
+				CancelListOption(prev.common_event, 9);
 				break;
-			case eCallEventSelect:
-				CancelListOptionSelect(eCallEvent, prev.event);
+			case eCallCommonEventSelect:
+				CancelListOptionSelect(eCallCommonEvent, prev.common_event);
+				break;
+			case eCallMapEvent:
+				CancelListOption(prev.map_event, 10);
+				break;
+			case eCallMapEventSelect:
+				CancelListOptionSelect(eCallMapEvent, prev.map_event);
 				break;
 			}
 	} else if (Input::IsTriggered(Input::DECISION)) {
@@ -214,11 +221,17 @@ void Scene_Debug::Update() {
 			case eFullHeal:
 				DoFullHeal();
 				break;
-			case eCallEvent:
-				EnterFromListOption(eCallEventSelect, prev.event);
+			case eCallCommonEvent:
+				EnterFromListOption(eCallCommonEventSelect, prev.common_event);
 				break;
-			case eCallEventSelect:
-				DoCallEvent();
+			case eCallCommonEventSelect:
+				DoCallCommonEvent();
+				break;
+			case eCallMapEvent:
+				EnterFromListOption(eCallMapEventSelect, prev.map_event);
+				break;
+			case eCallMapEventSelect:
+				DoCallMapEvent();
 				break;
 		}
 		Game_Map::SetNeedRefresh(true);
@@ -267,16 +280,20 @@ void Scene_Debug::UpdateRangeListWindow() {
 				};
 
 				int i = 0;
-				addItem(i++, "Save", false);
-				addItem(i++, "Load", true);
-				addItem(i++, "Switches", true);
-				addItem(i++, "Variables", true);
-				addItem(i++, lcf::Data::terms.gold.c_str(), true);
-				addItem(i++, "Items", true);
-				addItem(i++, "Battle", false);
-				addItem(i++, "Map", false);
-				addItem(i++, "Full Heal", true);
-				addItem(i++, "Call Event", true);
+				if (range_page == 0) {
+					addItem(i++, "Save", false);
+					addItem(i++, "Load", true);
+					addItem(i++, "Switches", true);
+					addItem(i++, "Variables", true);
+					addItem(i++, lcf::Data::terms.gold.c_str(), true);
+					addItem(i++, "Items", true);
+					addItem(i++, "Battle", false);
+					addItem(i++, "Map", false);
+					addItem(i++, "Full Heal", true);
+					addItem(i++, "Call ComEvent", true);
+				} else {
+					addItem(i++, "Call MapEvent", false);
+				}
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -294,51 +311,48 @@ void Scene_Debug::UpdateRangeListWindow() {
 		case eBattleSelect:
 		case eMap:
 		case eMapSelect:
-		case eCallEvent:
-		case eCallEventSelect:
+		case eCallCommonEvent:
+		case eCallCommonEventSelect:
+		case eCallMapEvent:
+		case eCallMapEventSelect:
 			{
-				const char* prefix = "???";
+				const char* prefix = "??";
 				switch (mode) {
 					case eSwitch:
 					case eSwitchSelect:
-						prefix = "Sw[";
+						prefix = "Sw";
 						break;
 					case eVariable:
 					case eVariableSelect:
 					case eVariableValue:
-						prefix = "Vr[";
+						prefix = "Vr";
 						break;
 					case eItem:
 					case eItemSelect:
-						prefix = "It[";
+						prefix = "It";
 						break;
 					case eBattle:
 					case eBattleSelect:
-						prefix = "Tp[";
+						prefix = "Tp";
 						break;
 					case eMap:
 					case eMapSelect:
-						prefix = "Mp[";
+						prefix = "Mp";
 						break;
-					case eCallEvent:
-					case eCallEventSelect:
-						prefix = "Ce[";
+					case eCallCommonEvent:
+					case eCallCommonEventSelect:
+						prefix = "Ce";
+						break;
+					case eCallMapEvent:
+					case eCallMapEventSelect:
+						prefix = "Me";
 						break;
 					default:
 						break;
 				}
-				std::stringstream ss;
 				for (int i = 0; i < 10; i++){
-					ss.str("");
-					ss  << prefix
-						<< std::setfill('0')
-						<< std::setw(4)
-						<< (range_page * 100 + i * 10 + 1)
-						<< "-"
-						<< std::setw(4)
-						<< (range_page * 100 + i * 10 + 10) <<
-						"]";
-					range_window->SetItemText(i, ss.str());
+					const auto st = range_page * 100 + i * 10 + 1;
+					range_window->SetItemText(i, fmt::format("{}[{:04d}-{:04d}]", prefix, st, st + 9));
 				}
 			}
 			break;
@@ -401,6 +415,9 @@ int Scene_Debug::GetIndex() {
 int Scene_Debug::GetLastPage() {
 	size_t num_elements = 0;
 	switch (mode) {
+		case eMain:
+			// FIXME: Clean this up.
+			return 2;
 		case eSwitch:
 			num_elements = Main_Data::game_switches->GetSize();
 			break;
@@ -416,8 +433,11 @@ int Scene_Debug::GetLastPage() {
 		case eMap:
 			num_elements = lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0;
 			break;
-		case eCallEvent:
+		case eCallCommonEvent:
 			num_elements = lcf::Data::commonevents.size();
+			break;
+		case eCallMapEvent:
+			num_elements = Game_Map::GetHighestEventId();
 			break;
 		default: break;
 	}
@@ -449,7 +469,7 @@ void Scene_Debug::UseNumberWindow() {
 }
 
 void Scene_Debug::EnterFromMain() {
-	switch (range_window->GetIndex()) {
+	switch (range_window->GetIndex() + range_page * 10) {
 		case 0:
 			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
@@ -499,7 +519,12 @@ void Scene_Debug::EnterFromMain() {
 			break;
 		case 9:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eCallEvent, Window_VarList::eCommonEvent, prev.event);
+			SetupListOption(eCallCommonEvent, Window_VarList::eCommonEvent, prev.common_event);
+			break;
+		case 10:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetupListOption(eCallMapEvent, Window_VarList::eMapEvent, prev.map_event);
+			break;
 		default:
 			break;
 	}
@@ -626,8 +651,8 @@ void Scene_Debug::ReturnToMain(int from_idx) {
 	var_window->SetMode(Window_VarList::eNone);
 
 	mode = eMain;
-	range_index = from_idx;
-	range_page = 0;
+	range_index = from_idx % 10;
+	range_page = from_idx / 10;
 	range_window->SetIndex(range_index);
 	range_window->SetActive(true);
 	UpdateRangeListWindow();
@@ -717,7 +742,7 @@ void Scene_Debug::DoFullHeal() {
 	var_window->Refresh();
 }
 
-void Scene_Debug::DoCallEvent() {
+void Scene_Debug::DoCallCommonEvent() {
 	if (GetIndex() > static_cast<int>(lcf::Data::commonevents.size())) {
 		return;
 	}
@@ -733,6 +758,21 @@ void Scene_Debug::DoCallEvent() {
 		Scene::PopUntil(Scene::Map);
 		Output::Debug("Debug Scene Forced execution of common event {} on the map foreground interpreter.", ce.GetIndex());
 	}
+}
+
+void Scene_Debug::DoCallMapEvent() {
+	if (Game_Battle::IsBattleRunning()) {
+		return;
+	}
+
+	auto* me = Game_Map::GetEvent(GetIndex());
+	if (!me) {
+		return;
+	}
+
+	Game_Map::GetInterpreter().Push(me);
+	Scene::PopUntil(Scene::Map);
+	Output::Debug("Debug Scene Forced execution of map event {} on the map foreground interpreter.", me->GetId());
 }
 
 void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {

@@ -33,6 +33,7 @@ public:
 		eMap,
 		eHeal,
 		eCommonEvent,
+		eMapEvent,
 	};
 
 	/**

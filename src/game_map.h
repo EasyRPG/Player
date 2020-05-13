@@ -500,6 +500,9 @@ namespace Game_Map {
 	 */
 	std::vector<Game_Event>& GetEvents();
 
+	/** @return highest event id present on the map, or 0 if no events */
+	int GetHighestEventId();
+
 	/**
 	 * Gets pointer to event.
 	 *

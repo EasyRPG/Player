@@ -86,8 +86,10 @@ private:
 		eMapX,
 		eMapY,
 		eFullHeal,
-		eCallEvent,
-		eCallEventSelect
+		eCallCommonEvent,
+		eCallCommonEventSelect,
+		eCallMapEvent,
+		eCallMapEventSelect,
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
@@ -143,7 +145,8 @@ private:
 	void DoBattle();
 	void DoMap();
 	void DoFullHeal();
-	void DoCallEvent();
+	void DoCallCommonEvent();
+	void DoCallMapEvent();
 
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
