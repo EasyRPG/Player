@@ -203,6 +203,26 @@ void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 	Game_Map::Scroll(sx * amount, sy * amount);
 }
 
+bool Game_Player::UpdateAirship() {
+	auto* vehicle = GetVehicle();
+
+	// RPG_RT doesn't check vehicle, but we have to as we don't have another way to fetch it.
+	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
+	if (vehicle && IsFlying()) {
+		if (vehicle->AnimateAscentDescent()) {
+			data()->aboard = false;
+			SetSpriteDirection(Down);
+			data()->vehicle = 0;
+			SetMoveSpeed(data()->preboard_move_speed);
+
+			Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
+
+			return true;
+		}
+	}
+	return false;
+}
+
 void Game_Player::UpdateNextMovementAction() {
 	auto* vehicle = GetVehicle();
 
@@ -456,49 +476,42 @@ bool Game_Player::GetOnOffVehicle() {
 bool Game_Player::GetOnVehicle() {
 	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-	Game_Vehicle::Type type;
 
-	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(GetX(), GetY()))
-		type = Game_Vehicle::Airship;
-	else if (Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
-		type = Game_Vehicle::Ship;
-	else if (Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y))
-		type = Game_Vehicle::Boat;
-	else
-		return false;
+	const auto* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
 
-	auto* vehicle = Game_Map::GetVehicle(type);
-
-	if (vehicle->IsAscendingOrDescending()) {
-		return false;
-	}
-
-	if (type == Game_Vehicle::Airship && !IsStopping()) {
-		return false;
-	}
-
-	if (type != Game_Vehicle::Airship && !Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
-		return false;
-	}
-
-	data()->vehicle = type;
-	data()->preboard_move_speed = GetMoveSpeed();
-	if (type != Game_Vehicle::Airship) {
-		data()->boarding = true;
-		if (IsStopping()) {
-			SetThrough(true);
-			Move(GetDirection());
-			// FIXME: RPG_RT resets through to route_through || not visible?
-			ResetThrough();
+	if (airship->IsInPosition(GetX(), GetY()) && IsStopping() && airship->IsStopping()) {
+		if (airship->IsAscendingOrDescending()) {
+			return false;
 		}
-	} else {
+
+		data()->vehicle = Game_Vehicle::Airship;
+		data()->preboard_move_speed = GetMoveSpeed();
 		data()->aboard = true;
-		if (vehicle->IsMoveRouteOverwritten()) {
-			vehicle->CancelMoveRoute();
-		}
-		SetMoveSpeed(vehicle->GetMoveSpeed());
+		SetMoveSpeed(airship->GetMoveSpeed());
 		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(RPG::EventPage::Direction_left);
+	} else {
+		auto type = Game_Vehicle::Ship;
+		if (!Game_Map::GetVehicle(type)->IsInPosition(front_x, front_y)) {
+			type = Game_Vehicle::Boat;
+			if (!Game_Map::GetVehicle(type)->IsInPosition(front_x, front_y)) {
+				return false;
+			}
+		}
+
+		if (!Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
+			return false;
+		}
+
+		// FIXME: RPG_RT still executes move event if triggered mid-move?
+		SetThrough(true);
+		Move(GetDirection());
+		// FIXME: RPG_RT resets through to route_through || not visible?
+		ResetThrough();
+
+		data()->vehicle = type;
+		data()->preboard_move_speed = GetMoveSpeed();
+		data()->boarding = true;
 	}
 
 	Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
@@ -507,17 +520,35 @@ bool Game_Player::GetOnVehicle() {
 }
 
 bool Game_Player::GetOffVehicle() {
-	if (!InAirship()) {
-		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+	auto* vehicle = GetVehicle();
+	if (!vehicle) {
+		return false;
+	}
+
+	if (InAirship()) {
+		if (vehicle->IsAscendingOrDescending()) {
+			return false;
+		}
+
+		SetSpriteDirection(Left);
+	} else {
+		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
 		if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
 			return false;
 		}
-	}
-	auto* vehicle = GetVehicle();
 
-	if (vehicle->IsAscendingOrDescending()) {
-		return false;
+		data()->aboard = false;
+		SetMoveSpeed(data()->preboard_move_speed);
+		data()->unboarding = true;
+
+		SetThrough(true);
+		Move(GetDirection());
+		ResetThrough();
+
+		data()->vehicle = 0;
+		Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
 	}
 
 	vehicle->GetOff();
@@ -582,36 +613,12 @@ void Game_Player::Move(int dir) {
 	}
 }
 
-void Game_Player::Unboard() {
-	data()->aboard = false;
-	SetMoveSpeed(data()->preboard_move_speed);
-
-	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
-}
-
 bool Game_Player::IsAboard() const {
 	return data()->aboard;
 }
 
 bool Game_Player::IsBoardingOrUnboarding() const {
 	return data()->boarding || data()->unboarding;
-}
-
-void Game_Player::UnboardingFinished() {
-	Unboard();
-	if (InAirship()) {
-		SetDirection(RPG::EventPage::Direction_down);
-		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(RPG::EventPage::Direction_down);
-	} else {
-		data()->unboarding = true;
-		if (!IsMoving() && !IsJumping()) {
-			SetThrough(true);
-			Move(GetDirection());
-			ResetThrough();
-		}
-	}
-	data()->vehicle = Game_Vehicle::None;
 }
 
 int Game_Player::GetVehicleType() const {

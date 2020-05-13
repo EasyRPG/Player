@@ -132,9 +132,7 @@ void Game_Vehicle::GetOn() {
 void Game_Vehicle::GetOff() {
 	if (GetVehicleType() == Airship) {
 		data()->remaining_descent = SCREEN_TILE_SIZE;
-		SetSpriteDirection(Left);
 	} else {
-		Main_Data::game_player->UnboardingFinished();
 		SetDirection(Left);
 		SetSpriteDirection(Left);
 	}
@@ -201,22 +199,27 @@ void Game_Vehicle::UpdateAnimation() {
 	}
 }
 
-void Game_Vehicle::AnimateAscentDescent() {
+bool Game_Vehicle::AnimateAscentDescent() {
 	if (IsAscending()) {
 		data()->remaining_ascent = data()->remaining_ascent - 8;
+		return true;
 	} else if (IsDescending()) {
 		data()->remaining_descent = data()->remaining_descent - 8;
 		if (!IsDescending()) {
 			if (CanLand()) {
-				Main_Data::game_player->UnboardingFinished();
 				SetFlying(false);
 				Main_Data::game_player->SetFlying(false);
+
+				SetDirection(Left);
+				SetSpriteDirection(Left);
 			} else {
 				// Can't land here, ascend again
 				data()->remaining_ascent = SCREEN_TILE_SIZE;
 			}
 		}
+		return true;
 	}
+	return false;
 }
 
 void Game_Vehicle::Update() {

@@ -88,11 +88,6 @@ public:
 	Game_Vehicle* GetVehicle() const;
 
 	/**
-	 * Callback function invoked by the Vehicle to notify that the unboarding has finished
-	 */
-	void UnboardingFinished();
-
-	/**
 	 * Set the menu callling flag
 	 *
 	 * @param value the value of the flag to set
@@ -159,7 +154,7 @@ private:
 	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
-	void Unboard();
+	bool UpdateAirship();
 	void UpdateVehicleActions();
 
 	TeleportTarget teleport_target;
