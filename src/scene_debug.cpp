@@ -16,8 +16,10 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <vector>
 #include <sstream>
+#include <cmath>
 #include <iomanip>
 #include "baseui.h"
 #include "cache.h"
@@ -403,8 +405,14 @@ void Scene_Debug::Update() {
 				}
 				break;
 			case eCallMapEvent:
-				if (sz > 2) {
+				if (sz > 3) {
 					DoCallMapEvent();
+				} else if (sz > 2) {
+					auto* event = Game_Map::GetEvent(GetFrame().value);
+					if (event) {
+						const auto num_digits = std::log10(event->GetNumPages()) + 1;
+						PushUiNumberInput(1, num_digits, false);
+					}
 				} else if (sz > 1) {
 					PushUiVarList();
 				} else {
@@ -511,7 +519,21 @@ void Scene_Debug::UpdateRangeListWindow() {
 			fillRange("Ce");
 			break;
 		case eCallMapEvent:
-			fillRange("Me");
+			if (GetStackSize() > 3) {
+				auto* event = Game_Map::GetEvent(GetFrame(1).value);
+				if (event) {
+					addItem(fmt::format("{:04d}: {}", event->GetId(), event->GetName()));
+					addItem(fmt::format("NumPages: {}", event->GetNumPages()));
+					const auto* page = event->GetActivePage();
+					const auto page_id = page ? page->ID : 0;
+					addItem(fmt::format("ActvPage: {}", page_id));
+					addItem(fmt::format("Enabled: {}", event->IsActive() ? 'Y' : 'N'));
+					addItem(fmt::format("X: {}", event->GetX()));
+					addItem(fmt::format("Y: {}", event->GetY()));
+				}
+			} else {
+				fillRange("Me");
+			}
 			break;
 		case eGold:
 			addItem(lcf::Data::terms.gold);
@@ -720,15 +742,22 @@ void Scene_Debug::DoCallMapEvent() {
 		return;
 	}
 
-	const auto meid = GetFrame(0).value;
-	auto* me = Game_Map::GetEvent(meid);
+	const auto me_id = GetFrame(1).value;
+	const auto page_id = GetFrame(0).value;
+
+	auto* me = Game_Map::GetEvent(me_id);
 	if (!me) {
 		return;
 	}
 
-	Game_Map::GetInterpreter().Push(me);
+	auto* page = me->GetPage(page_id);
+	if (!page) {
+		return;
+	}
+
+	Game_Map::GetInterpreter().Push(me, page, false);
 	Scene::PopUntil(Scene::Map);
-	Output::Debug("Debug Scene Forced execution of map event {} on the map foreground interpreter.", me->GetId());
+	Output::Debug("Debug Scene Forced execution of map event {} page {} on the map foreground interpreter.", me->GetId(), page->ID);
 }
 
 void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {

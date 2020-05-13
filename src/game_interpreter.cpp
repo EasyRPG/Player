@@ -434,6 +434,10 @@ void Game_Interpreter::Push(Game_Event* ev) {
 	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
 }
 
+void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key) {
+	Push(page->event_commands, ev->GetId(), triggered_by_decision_key);
+}
+
 void Game_Interpreter::Push(Game_CommonEvent* ev) {
 	Push(ev->GetList(), 0, false);
 }

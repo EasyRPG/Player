@@ -149,6 +149,9 @@ public:
 	 */
 	const lcf::rpg::EventPage* GetActivePage() const;
 
+	/** @returns the number of pages this event has */
+	int GetNumPages() const;
+
 	const lcf::rpg::SaveMapEvent& GetSaveData();
 
 protected:
@@ -215,6 +218,10 @@ inline lcf::rpg::SaveMapEvent* Game_Event::data() {
 
 inline const lcf::rpg::SaveMapEvent* Game_Event::data() const {
 	return static_cast<const lcf::rpg::SaveMapEvent*>(Game_Character::data());
+}
+
+inline int Game_Event::GetNumPages() const {
+	return event.pages.size();
 }
 
 #endif
