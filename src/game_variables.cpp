@@ -16,10 +16,12 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include "game_variables.h"
 #include "output.h"
 #include <lcf/reader_util.h>
 #include "utils.h"
+#include <cmath>
 
 constexpr int Game_Variables::max_warnings;
 constexpr Game_Variables::Var_t Game_Variables::min_2k;
@@ -267,3 +269,7 @@ std::string Game_Variables::GetName(int _id) const {
 	}
 }
 
+const int Game_Variables::GetMaxDigits() const {
+	auto val = std::max(std::abs(_max), std::abs(_min));
+	return std::log10(val) + 1;
+}

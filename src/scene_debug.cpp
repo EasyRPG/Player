@@ -43,26 +43,15 @@
 #include "output.h"
 #include "transition.h"
 
-struct Scene_Debug::IndexSet {
+namespace {
+struct IndexSet {
 	int range_index = 0;
 	int range_page = 0;
 	int range_page_index = 0;
 };
 
-struct Scene_Debug::PrevIndex {
-	int main_range_index = 0;
-
-	IndexSet sw;
-	IndexSet var;
-	IndexSet item;
-	IndexSet troop;
-	IndexSet map;
-	IndexSet fullheal;
-	IndexSet common_event;
-	IndexSet map_event;
-};
-
-Scene_Debug::PrevIndex Scene_Debug::prev = {};
+std::array<IndexSet,Scene_Debug::eLastMainMenuOption> prev = {};
+}
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -77,11 +66,201 @@ void Scene_Debug::Start() {
 	CreateVarListWindow();
 	CreateNumberInputWindow();
 
-	range_index = prev.main_range_index;
+	range_index = prev[eMain].range_index;
 	range_window->SetIndex(range_index);
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
+	var_window->Refresh();
+}
+
+Scene_Debug::StackFrame& Scene_Debug::GetFrame(int n) {
+	auto i = stack_index - n;
+	assert(i >= 0 && i < static_cast<int>(stack.size()));
+	return stack[i];
+}
+
+const Scene_Debug::StackFrame& Scene_Debug::GetFrame(int n) const {
+	auto i = stack_index - n;
+	assert(i >= 0 && i < static_cast<int>(stack.size()));
+	return stack[i];
+}
+
+int Scene_Debug::GetStackSize() const {
+	return stack_index + 1;
+}
+
+Window_VarList::Mode Scene_Debug::GetWindowMode() const {
+	switch (mode) {
+		case eSwitch:
+			return Window_VarList::eSwitch;
+		case eVariable:
+			return Window_VarList::eVariable;
+		case eItem:
+			return Window_VarList::eItem;
+		case eBattle:
+			return Window_VarList::eTroop;
+		case eMap:
+			return Window_VarList::eMap;
+		case eFullHeal:
+			return Window_VarList::eHeal;
+		case eCallCommonEvent:
+			return Window_VarList::eCommonEvent;
+		case eCallMapEvent:
+			return Window_VarList::eMapEvent;
+		default:
+			return Window_VarList::eNone;
+	}
+}
+
+void Scene_Debug::UpdateFrameValueFromUi() {
+	auto& frame = GetFrame();
+	switch (frame.uimode) {
+		case eUiMain:
+			frame.value = GetIndex();
+			break;
+		case eUiRangeList:
+			frame.value = GetIndex();
+			break;
+		case eUiVarList:
+			frame.value = GetIndex();
+			break;
+		case eUiNumberInput:
+			frame.value = numberinput_window->GetNumber();
+			break;
+	}
+}
+
+void Scene_Debug::Push(UiMode ui) {
+	++stack_index;
+	assert(stack_index < static_cast<int>(stack.size()));
+	stack[stack_index] = { ui, 0 };
+
+	range_window->SetActive(false);
+	var_window->SetActive(false);
+	numberinput_window->SetActive(false);
+	numberinput_window->SetVisible(false);
+}
+
+void Scene_Debug::SetupUiRangeList() {
+	auto& idx = prev[mode];
+	auto vmode = GetWindowMode();
+
+	range_index = idx.range_index;
+	range_page = idx.range_page;
+
+	var_window->SetMode(vmode);
+	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+
+	range_window->SetIndex(range_index);
+}
+
+void Scene_Debug::PushUiRangeList() {
+	Push(eUiRangeList);
+
+	SetupUiRangeList();
+
+	range_window->SetActive(true);
+
+	UpdateRangeListWindow();
+	var_window->Refresh();
+
+}
+
+void Scene_Debug::PushUiVarList() {
+	const bool was_range_list = (GetFrame().uimode == eUiRangeList);
+
+	Push(eUiVarList);
+
+	auto& idx = prev[mode];
+
+	if (!was_range_list) {
+		SetupUiRangeList();
+	}
+
+	var_window->SetActive(true);
+	var_window->SetIndex(idx.range_page_index);
+
+	UpdateRangeListWindow();
+	var_window->Refresh();
+
+}
+
+void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operator) {
+	Push(eUiNumberInput);
+
+	numberinput_window->SetNumber(init_value);
+	numberinput_window->SetShowOperator(show_operator);
+	numberinput_window->SetVisible(true);
+	numberinput_window->SetActive(true);
+	numberinput_window->SetMaxDigits(digits);
+	numberinput_window->Refresh();
+
+	var_window->Refresh();
+	UpdateRangeListWindow();
+}
+
+void Scene_Debug::Pop() {
+	auto pui = GetFrame().uimode;
+	auto& idx = prev[mode];
+
+	switch (pui) {
+		case eUiMain:
+			idx.range_index = range_index;
+			idx.range_page = range_page;
+			break;
+		case eUiRangeList:
+			idx.range_index = range_index;
+			idx.range_page = range_page;
+			break;
+		case eUiVarList:
+			idx.range_page_index = var_window->GetIndex();
+			break;
+		case eUiNumberInput:
+			break;
+	}
+
+	range_window->SetActive(false);
+	var_window->SetActive(false);
+	numberinput_window->SetActive(false);
+	numberinput_window->SetVisible(false);
+
+	if (stack_index == 0) {
+		Scene::Pop();
+		return;
+	}
+
+	--stack_index;
+
+	auto nui = GetFrame().uimode;
+	switch (nui) {
+		case eUiMain:
+			var_window->SetMode(Window_VarList::eNone);
+			range_index = (static_cast<int>(mode) - 1) % 10;
+			range_page = (static_cast<int>(mode) - 1) / 10;
+			range_window->SetActive(true);
+			range_window->SetIndex(range_index);
+			break;
+		case eUiRangeList:
+			range_window->SetActive(true);
+			range_window->SetIndex(((GetFrame().value - 1) % 100) / 10);
+			break;
+		case eUiVarList:
+			var_window->SetActive(true);
+			var_window->SetIndex((GetFrame().value - 1) % 10);
+			break;
+		case eUiNumberInput:
+			numberinput_window->SetNumber(GetFrame().value);
+			numberinput_window->SetActive(true);
+			numberinput_window->SetVisible(true);
+			break;
+	}
+
+	if (stack_index == 0) {
+		mode = eMain;
+	}
+
+	UpdateRangeListWindow();
 	var_window->Refresh();
 }
 
@@ -98,146 +277,139 @@ void Scene_Debug::Update() {
 		numberinput_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
+		UpdateFrameValueFromUi();
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		switch (mode) {
-			case eMain:
-				prev.main_range_index = range_index;
-				Scene::Pop();
-				break;
-			case eSwitch:
-				CancelListOption(prev.sw, eSwitch);
-				break;
-			case eSwitchSelect:
-				CancelListOptionSelect(eSwitch, prev.sw);
-				break;
-			case eVariable:
-				CancelListOption(prev.var, eVariable);
-				break;
-			case eVariableSelect:
-				CancelListOptionSelect(eVariable, prev.var);
-				break;
-			case eVariableValue:
-				CancelListOptionValue(eVariableSelect);
-				break;
-			case eGold:
-				ReturnToMain(eGold);
-				break;
-			case eItem:
-				CancelListOption(prev.item, eItem);
-				break;
-			case eItemSelect:
-				CancelListOptionSelect(eItem, prev.item);
-				break;
-			case eItemValue:
-				CancelListOptionValue(eItemSelect);
-				break;
-			case eBattle:
-				CancelListOption(prev.troop, eBattle);
-				break;
-			case eBattleSelect:
-				CancelListOptionSelect(eBattle, prev.troop);
-				break;
-			case eMap:
-				CancelListOption(prev.map, eMap);
-				break;
-			case eMapSelect:
-				CancelListOptionSelect(eMap, prev.map);
-				break;
-			case eMapX:
-				CancelListOptionValue(eMapSelect);
-				break;
-			case eMapY:
-				CancelMapSelectY();
-				break;
-			case eFullHeal:
-				CancelListOptionSelect(eFullHeal, prev.fullheal);
-				CancelListOption(prev.fullheal, eFullHeal);
-				break;
-			case eCallCommonEvent:
-				CancelListOption(prev.common_event, eCallCommonEvent);
-				break;
-			case eCallCommonEventSelect:
-				CancelListOptionSelect(eCallCommonEvent, prev.common_event);
-				break;
-			case eCallMapEvent:
-				CancelListOption(prev.map_event, eCallMapEvent);
-				break;
-			case eCallMapEventSelect:
-				CancelListOptionSelect(eCallMapEvent, prev.map_event);
-				break;
-			case eLastMainMenuOption:
-				break;
-			}
+		Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
+		UpdateFrameValueFromUi();
+		if (mode == eMain) {
+			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
+			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
+				switch (next_mode) {
+					case eSave:
+					case eBattle:
+					case eMap:
+					case eCallMapEvent:
+						if (Game_Battle::IsBattleRunning()) {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+							break;
+						}
+					default:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						mode = next_mode;
+				}
+			}
+		}
+
+		const auto sz = GetStackSize();
 		switch (mode) {
 			case eMain:
-				EnterFromMain();
+			case eLastMainMenuOption:
+				break;
+			case eSave:
+				Scene::PopUntil(Scene::Map);
+				Scene::Push(std::make_shared<Scene_Save>());
+				break;
+			case eLoad:
+				Scene::Push(std::make_shared<Scene_Load>());
 				break;
 			case eSwitch:
-				EnterFromListOption(eSwitchSelect, prev.sw);
-				break;
-			case eSwitchSelect:
-				DoSwitch();
+				if (sz > 2) {
+					DoSwitch();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else if (sz > 0) {
+					PushUiRangeList();
+				}
 				break;
 			case eVariable:
-				EnterFromListOption(eVariableSelect, prev.var);
-				break;
-			case eVariableSelect:
-				if (Main_Data::game_variables->IsValid(GetIndex())) {
-					EnterFromListOptionToValue(eVariableValue, Main_Data::game_variables->Get(GetIndex()), 7, true);
+				if (sz > 3) {
+					DoVariable();
+				} else if (sz > 2) {
+					if (Main_Data::game_variables->IsValid(GetIndex())) {
+						PushUiNumberInput(Main_Data::game_variables->Get(GetIndex()), Main_Data::game_variables->GetMaxDigits(), true);
+					}
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
 				}
-				break;
-			case eVariableValue:
-				DoVariable();
 				break;
 			case eGold:
-				DoGold();
-				break;
-			case eItem:
-				EnterFromListOption(eItemSelect, prev.item);
-				break;
-			case eItemSelect:
-				if (GetIndex() <= static_cast<int>(lcf::Data::items.size())) {
-					EnterFromListOptionToValue(eItemValue, Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
+				if (sz > 1) {
+					DoGold();
+				} else {
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					PushUiNumberInput(Main_Data::game_party->GetGold(), 7, false);
+					range_index = 0;
+					range_window->SetIndex(range_index);
 				}
 				break;
-			case eItemValue:
-				DoItem();
+			case eItem:
+				if (sz > 3) {
+					DoItem();
+				} else if (sz > 2) {
+					if (GetIndex() <= static_cast<int>(lcf::Data::items.size())) {
+						PushUiNumberInput(Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
+					}
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
 				break;
 			case eBattle:
-				EnterFromListOption(eBattleSelect, prev.troop);
+				if (sz > 2) {
+					DoBattle();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
 				break;
 			case eMap:
-				EnterFromListOption(eMapSelect, prev.map);
-				break;
-			case eBattleSelect:
-				DoBattle();
-				break;
-			case eMapSelect:
-				EnterMapSelectX();
-				break;
-			case eMapX:
-				EnterMapSelectY();
-				break;
-			case eMapY:
-				DoMap();
-				break;
+				if (sz > 4) {
+					DoMap();
+				} else if (sz > 3) {
+					// FIXME: Remember previous y
+					PushUiNumberInput(GetFrame(-1).value, 4, false);
+				} else if (sz > 2) {
+					const auto map_id = GetFrame().value;
+					if (IsValidMapId(map_id)) {
+						// Reset x and y values
+						GetFrame(-1).value = 0;
+						GetFrame(-2).value = 0;
+						PushUiNumberInput(GetFrame(-1).value, 4, false);
+					}
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
 			case eFullHeal:
-				DoFullHeal();
+				if (sz > 1) {
+					DoFullHeal();
+				} else {
+					PushUiVarList();
+				}
 				break;
 			case eCallCommonEvent:
-				EnterFromListOption(eCallCommonEventSelect, prev.common_event);
-				break;
-			case eCallCommonEventSelect:
-				DoCallCommonEvent();
+				if (sz > 2) {
+					DoCallCommonEvent();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
 				break;
 			case eCallMapEvent:
-				EnterFromListOption(eCallMapEventSelect, prev.map_event);
-				break;
-			case eCallMapEventSelect:
-				DoCallMapEvent();
-				break;
-			case eLastMainMenuOption:
+				if (sz > 2) {
+					DoCallMapEvent();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
 				break;
 		}
 		Game_Map::SetNeedRefresh(true);
@@ -275,121 +447,87 @@ void Scene_Debug::CreateRangeWindow() {
 }
 
 void Scene_Debug::UpdateRangeListWindow() {
+	int idx = 0;
+
+	auto addItem = [&](const auto& name, bool battle_ok = true) {
+		range_window->SetItemText(idx, name);
+		if (!battle_ok && Game_Battle::IsBattleRunning()) {
+			range_window->DisableItem(idx);
+		}
+		++idx;
+	};
+
+	auto fillRange = [&](const auto& prefix) {
+		for (int i = 0; i < 10; i++){
+			const auto st = range_page * 100 + i * 10 + 1;
+			addItem(fmt::format("{}[{:04d}-{:04d}]", prefix, st, st + 9));
+		}
+	};
+
 	switch (mode) {
 		case eMain:
-			{
-				auto addItem = [&](int idx, const char* name, bool battle_ok) {
-					range_window->SetItemText(idx, name);
-					if (!battle_ok && Game_Battle::IsBattleRunning()) {
-						range_window->DisableItem(idx);
-					}
-				};
-
-				int i = 0;
-				if (range_page == 0) {
-					addItem(i++, "Save", false);
-					addItem(i++, "Load", true);
-					addItem(i++, "Switches", true);
-					addItem(i++, "Variables", true);
-					addItem(i++, lcf::Data::terms.gold.c_str(), true);
-					addItem(i++, "Items", true);
-					addItem(i++, "Battle", false);
-					addItem(i++, "Map", false);
-					addItem(i++, "Full Heal", true);
-					addItem(i++, "Call ComEvent", true);
-				} else {
-					addItem(i++, "Call MapEvent", false);
-				}
-				while (i < 10) {
-					addItem(i++, "", true);
-				}
-				return;
+			if (range_page == 0) {
+				addItem("Save", false);
+				addItem("Load", true);
+				addItem("Switches", true);
+				addItem("Variables", true);
+				addItem(lcf::Data::terms.gold, true);
+				addItem("Items", true);
+				addItem("Battle", false);
+				addItem("Map", false);
+				addItem("Full Heal", true);
+				addItem("Call ComEvent", true);
+			} else {
+				addItem("Call MapEvent", false);
 			}
 			break;
 		case eSwitch:
-		case eSwitchSelect:
+			fillRange("Sw");
+			break;
 		case eVariable:
-		case eVariableSelect:
-		case eVariableValue:
+			fillRange("Vr");
+			break;
 		case eItem:
-		case eItemSelect:
+			fillRange("It");
+			break;
 		case eBattle:
-		case eBattleSelect:
+			fillRange("Bt");
+			break;
 		case eMap:
-		case eMapSelect:
-		case eCallCommonEvent:
-		case eCallCommonEventSelect:
-		case eCallMapEvent:
-		case eCallMapEventSelect:
-			{
-				const char* prefix = "??";
-				switch (mode) {
-					case eSwitch:
-					case eSwitchSelect:
-						prefix = "Sw";
-						break;
-					case eVariable:
-					case eVariableSelect:
-					case eVariableValue:
-						prefix = "Vr";
-						break;
-					case eItem:
-					case eItemSelect:
-						prefix = "It";
-						break;
-					case eBattle:
-					case eBattleSelect:
-						prefix = "Tp";
-						break;
-					case eMap:
-					case eMapSelect:
-						prefix = "Mp";
-						break;
-					case eCallCommonEvent:
-					case eCallCommonEventSelect:
-						prefix = "Ce";
-						break;
-					case eCallMapEvent:
-					case eCallMapEventSelect:
-						prefix = "Me";
-						break;
-					default:
-						break;
+			if (GetStackSize() > 3) {
+				if (GetStackSize() > 4) {
+					addItem("Map: " + std::to_string(GetFrame(2).value));
+					addItem("X: " + std::to_string(GetFrame(1).value));
+					addItem("Y: ");
+				} else {
+					addItem("Map: " + std::to_string(GetFrame(1).value));
+					addItem("X: ");
 				}
-				for (int i = 0; i < 10; i++){
-					const auto st = range_page * 100 + i * 10 + 1;
-					range_window->SetItemText(i, fmt::format("{}[{:04d}-{:04d}]", prefix, st, st + 9));
-				}
+			} else {
+				fillRange("Mp");
 			}
+			break;
+		case eCallCommonEvent:
+			fillRange("Ce");
+			break;
+		case eCallMapEvent:
+			fillRange("Me");
 			break;
 		case eGold:
-			range_window->SetItemText(0, lcf::Data::terms.gold);
+			addItem(lcf::Data::terms.gold);
 			for (int i = 1; i < 10; i++){
-				range_window->SetItemText(i, "");
-			}
-			break;
-		case eMapX:
-		case eMapY:
-			range_window->SetItemText(0, std::string("Map: ") + std::to_string(pending_map_id));
-			if (mode == eMapX) {
-				range_window->SetItemText(1, "X: ");
-				range_window->SetItemText(2, "");
-			} else {
-				range_window->SetItemText(1, "X: " + std::to_string(pending_map_x));
-				range_window->SetItemText(2, "Y: ");
-			}
-			for (int i = 3; i < 10; i++){
 				range_window->SetItemText(i, "");
 			}
 			break;
 		case eFullHeal:
-			range_window->SetItemText(0, "Full Heal");
-			for (int i = 1; i < 10; i++){
-				range_window->SetItemText(i, "");
-			}
+			addItem("Full Heal");
 			break;
 		default:
 			break;
+	}
+
+	while (idx < 10) {
+		addItem("", true);
 	}
 }
 
@@ -459,207 +597,18 @@ int Scene_Debug::GetLastPage() {
 	return 0;
 }
 
-void Scene_Debug::SetupListOption(Mode m, Window_VarList::Mode winmode, const IndexSet& idx) {
-	mode = m;
-	range_index = idx.range_index;
-	range_page = idx.range_page;
-	var_window->SetMode(winmode);
-	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-	range_window->SetIndex(range_index);
-	UpdateRangeListWindow();
-	var_window->Refresh();
-}
-
-void Scene_Debug::UseRangeWindow() {
-}
-
-void Scene_Debug::UseVarWindow() {
-}
-
-void Scene_Debug::UseNumberWindow() {
-}
-
-void Scene_Debug::EnterFromMain() {
-	switch (range_window->GetIndex() + range_page * 10 + 1) {
-		case eSave:
-			if (Game_Battle::IsBattleRunning()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-			} else {
-				Scene::PopUntil(Scene::Map);
-				Scene::Push(std::make_shared<Scene_Save>());
-			}
-			break;
-		case eLoad:
-			Scene::Push(std::make_shared<Scene_Load>());
-			break;
-		case eSwitch:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eSwitch, Window_VarList::eSwitch, prev.sw);
-			break;
-		case eVariable:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eVariable, Window_VarList::eVariable, prev.var);
-			break;
-		case eGold:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			EnterGold();
-			break;
-		case eItem:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eItem, Window_VarList::eItem, prev.item);
-			break;
-		case eBattle:
-			if (Game_Battle::IsBattleRunning()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				SetupListOption(eBattle, Window_VarList::eTroop, prev.troop);
-			}
-			break;
-		case eMap:
-			if (Game_Battle::IsBattleRunning()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				SetupListOption(eMap, Window_VarList::eMap, prev.map);
-			}
-			break;
-		case eFullHeal:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eFullHeal, Window_VarList::eHeal, prev.fullheal);
-			EnterFromListOption(eFullHeal, prev.fullheal);
-			break;
-		case eCallCommonEvent:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eCallCommonEvent, Window_VarList::eCommonEvent, prev.common_event);
-			break;
-		case eCallMapEvent:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			SetupListOption(eCallMapEvent, Window_VarList::eMapEvent, prev.map_event);
-			break;
-		default:
-			break;
-	}
-}
-
-void Scene_Debug::EnterFromListOption(Mode m, const IndexSet& idx) {
-	range_window->SetActive(false);
-	var_window->SetActive(true);
-	mode = m;
-	var_window->SetIndex(idx.range_page_index);
-	var_window->Refresh();
-}
-
-void Scene_Debug::EnterFromListOptionToValue(Mode m, int init_value, int digits, bool show_operator) {
-	mode = m;
-	var_window->SetActive(false);
-	var_window->Refresh();
-	numberinput_window->SetNumber(init_value);
-	numberinput_window->SetShowOperator(show_operator);
-	numberinput_window->SetVisible(true);
-	numberinput_window->SetActive(true);
-	numberinput_window->SetMaxDigits(digits);
-	numberinput_window->Refresh();
-}
-
-void Scene_Debug::EnterGold() {
-	mode = eGold;
-	range_window->SetActive(false);
-	range_index = 0;
-	range_window->SetIndex(range_index);
-	numberinput_window->SetNumber(Main_Data::game_party->GetGold());
-	numberinput_window->SetShowOperator(false);
-	numberinput_window->SetVisible(true);
-	numberinput_window->SetActive(true);
-	numberinput_window->SetMaxDigits(6);
-	numberinput_window->Refresh();
-	UpdateRangeListWindow();
-}
-
-void Scene_Debug::EnterMapSelectX() {
-	auto map_id = GetIndex();
+bool Scene_Debug::IsValidMapId(int map_id) const {
 	auto iter = std::lower_bound(lcf::Data::treemap.maps.begin(), lcf::Data::treemap.maps.end(), map_id,
 			[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
-	if (iter != lcf::Data::treemap.maps.end()
+	return (iter != lcf::Data::treemap.maps.end()
 			&& iter->ID == map_id
-			&& iter->type == lcf::rpg::TreeMap::MapType_map
-	   ) {
-
-		prev.main_range_index = 7;
-		prev.map.range_index = range_index;
-		prev.map.range_page = range_page;
-		prev.map.range_page_index = var_window->GetIndex();
-
-		var_window->SetActive(false);
-		pending_map_id = map_id;
-		pending_map_x = 0;
-		pending_map_y = 0;
-		numberinput_window->SetNumber(pending_map_x);
-		numberinput_window->SetShowOperator(false);
-		numberinput_window->SetVisible(true);
-		numberinput_window->SetActive(true);
-		numberinput_window->SetMaxDigits(4);
-		numberinput_window->Refresh();
-		mode = eMapX;
-		UpdateRangeListWindow();
-	}
+			&& iter->type == lcf::rpg::TreeMap::MapType_map);
 }
-
-void Scene_Debug::EnterMapSelectY() {
-	pending_map_x = numberinput_window->GetNumber();
-	numberinput_window->SetNumber(pending_map_y);
-	mode = eMapY;
-	UpdateRangeListWindow();
-}
-
-void Scene_Debug::CancelListOption(IndexSet& idx, int from_idx) {
-	idx.range_index = range_index;
-	idx.range_page = range_page;
-
-	ReturnToMain(from_idx);
-}
-
-void Scene_Debug::CancelListOptionSelect(Mode m, IndexSet& idx) {
-	mode = m;
-	idx.range_page_index = var_window->GetIndex();
-	var_window->SetActive(false);
-	range_window->SetActive(true);
-	var_window->Refresh();
-}
-
-void Scene_Debug::CancelListOptionValue(Mode m) {
-	mode = m;
-	numberinput_window->SetActive(false);
-	numberinput_window->SetVisible(false);
-	var_window->SetActive(true);
-	var_window->Refresh();
-}
-
-void Scene_Debug::CancelMapSelectY() {
-	numberinput_window->SetNumber(pending_map_x);
-	mode = eMapX;
-	UpdateRangeListWindow();
-}
-
-void Scene_Debug::ReturnToMain(int from_idx) {
-	numberinput_window->SetActive(false);
-	numberinput_window->SetVisible(false);
-	var_window->SetActive(false);
-	//var_window->SetVisible(false);
-	var_window->SetMode(Window_VarList::eNone);
-
-	mode = eMain;
-	range_index = (from_idx - 1) % 10;
-	range_page = (from_idx - 1) / 10;
-	range_window->SetIndex(range_index);
-	range_window->SetActive(true);
-	UpdateRangeListWindow();
-}
-
 
 void Scene_Debug::DoSwitch() {
-	if (Main_Data::game_switches->IsValid(GetIndex())) {
-		Main_Data::game_switches->Flip(GetIndex());
+	const auto sw_id = GetFrame().value;
+	if (Main_Data::game_switches->IsValid(sw_id)) {
+		Main_Data::game_switches->Flip(sw_id);
 		Game_Map::SetNeedRefresh(true);
 
 		var_window->Refresh();
@@ -667,64 +616,70 @@ void Scene_Debug::DoSwitch() {
 }
 
 void Scene_Debug::DoVariable() {
-	Main_Data::game_variables->Set(GetIndex(), numberinput_window->GetNumber());
+	const auto var_id = GetFrame(1).value;
+	const auto value = GetFrame(0).value;
+	Main_Data::game_variables->Set(var_id, value);
 	Game_Map::SetNeedRefresh(true);
 
-	var_window->Refresh();
-
-	CancelListOptionValue(eVariableSelect);
+	Pop();
 }
 
 void Scene_Debug::DoGold() {
-	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
+	const auto delta = GetFrame().value - Main_Data::game_party->GetGold();
 	Main_Data::game_party->GainGold(delta);
 
-	ReturnToMain(eGold);
+	Pop();
 }
 
 void Scene_Debug::DoItem() {
-	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
-	Main_Data::game_party->AddItem(GetIndex(), delta);
+	const auto item_id = GetFrame(1).value;
+	auto delta = GetFrame().value - Main_Data::game_party->GetItemCount(item_id);
+
+	Main_Data::game_party->AddItem(item_id, delta);
 
 	Game_Map::SetNeedRefresh(true);
 
-	var_window->Refresh();
-
-	CancelListOptionValue(eItemSelect);
+	Pop();
 }
 
 void Scene_Debug::DoBattle() {
-	if (GetIndex() <= static_cast<int>(lcf::Data::troops.size())) {
-		Scene::PopUntil(Scene::Map);
-		if (Scene::instance) {
-			prev.main_range_index = 6;
-			prev.troop.range_index = range_index;
-			prev.troop.range_page = range_page;
-			prev.troop.range_page_index = var_window->GetIndex();
-
-			BattleArgs args;
-			args.troop_id = GetIndex();
-			args.first_strike = false;
-			args.allow_escape = true;
-
-			Game_Map::SetupBattle(args);
-
-			Scene::Push(Scene_Battle::Create(std::move(args)));
-		}
+	auto troop_id = GetFrame(0).value;
+	if (troop_id > static_cast<int>(lcf::Data::troops.size())) {
+		return;
 	}
+
+	Scene::PopUntil(Scene::Map);
+	if (!Scene::instance) {
+		return;
+	}
+
+	BattleArgs args;
+	args.troop_id = GetIndex();
+	args.first_strike = false;
+	args.allow_escape = true;
+
+	Output::Debug("Debug Scene starting battle {}.", troop_id);
+
+	Game_Map::SetupBattle(args);
+
+	Scene::Push(Scene_Battle::Create(std::move(args)));
 }
 
 void Scene_Debug::DoMap() {
-	int pending_map_y = numberinput_window->GetNumber();
+	auto y = GetFrame(0).value;
+	auto x = GetFrame(1).value;
+	auto map_id = GetFrame(2).value;
+
 	Scene::PopUntil(Scene::Map);
 	if (Scene::instance) {
-		Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1, TeleportTarget::eSkillTeleport);
+		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eSkillTeleport);
 	}
 }
 
 void Scene_Debug::DoFullHeal() {
+	const auto id = GetFrame(0).value;
+
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
-	int id = GetIndex();
 	auto actors = Main_Data::game_party->GetActors();
 	if (id <= 1) {
 		for (auto& actor: actors) {
@@ -741,11 +696,13 @@ void Scene_Debug::DoFullHeal() {
 }
 
 void Scene_Debug::DoCallCommonEvent() {
-	if (GetIndex() > static_cast<int>(lcf::Data::commonevents.size())) {
+	const auto ceid = GetFrame(0).value;
+
+	if (ceid > static_cast<int>(lcf::Data::commonevents.size())) {
 		return;
 	}
 
-	auto& ce = Game_Map::GetCommonEvents()[GetIndex() - 1];
+	auto& ce = Game_Map::GetCommonEvents()[ceid - 1];
 
 	if (Game_Battle::IsBattleRunning()) {
 		Game_Battle::GetInterpreter().Push(&ce);
@@ -763,7 +720,8 @@ void Scene_Debug::DoCallMapEvent() {
 		return;
 	}
 
-	auto* me = Game_Map::GetEvent(GetIndex());
+	const auto meid = GetFrame(0).value;
+	auto* me = Game_Map::GetEvent(meid);
 	if (!me) {
 		return;
 	}
