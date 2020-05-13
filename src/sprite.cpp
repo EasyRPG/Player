@@ -42,21 +42,22 @@ void Sprite::BlitScreen(Bitmap& dst) {
 		return;
 
 	BitmapRef draw_bitmap = Refresh(src_rect_effect);
+	if (!draw_bitmap) {
+		return;
+	}
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	if (draw_bitmap) {
-		Rect rect = src_rect_effect.GetSubRect(src_rect);
-		if (draw_bitmap == bitmap_effects) {
-			// When a "sprite rect" (src_rect_effect) is used bitmap_effects
-			// only has the size of this subrect instead of the whole bitmap
-			rect.x %= bitmap_effects->GetWidth();
-			rect.y %= bitmap_effects->GetHeight();
-		}
-
-		BlitScreenIntern(dst, *draw_bitmap, rect);
+	Rect rect = src_rect_effect.GetSubRect(src_rect);
+	if (draw_bitmap == bitmap_effects) {
+		// When a "sprite rect" (src_rect_effect) is used bitmap_effects
+		// only has the size of this subrect instead of the whole bitmap
+		rect.x %= bitmap_effects->GetWidth();
+		rect.y %= bitmap_effects->GetHeight();
 	}
+
+	BlitScreenIntern(dst, *draw_bitmap, rect);
 }
 
 void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap, Rect const& src_rect) const
