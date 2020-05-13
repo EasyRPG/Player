@@ -57,6 +57,7 @@ struct Scene_Debug::PrevIndex {
 	IndexSet item;
 	IndexSet troop;
 	IndexSet map;
+	IndexSet fullheal;
 	IndexSet common_event;
 	IndexSet map_event;
 };
@@ -104,13 +105,13 @@ void Scene_Debug::Update() {
 				Scene::Pop();
 				break;
 			case eSwitch:
-				CancelListOption(prev.sw, 2);
+				CancelListOption(prev.sw, eSwitch);
 				break;
 			case eSwitchSelect:
 				CancelListOptionSelect(eSwitch, prev.sw);
 				break;
 			case eVariable:
-				CancelListOption(prev.var, 3);
+				CancelListOption(prev.var, eVariable);
 				break;
 			case eVariableSelect:
 				CancelListOptionSelect(eVariable, prev.var);
@@ -119,10 +120,10 @@ void Scene_Debug::Update() {
 				CancelListOptionValue(eVariableSelect);
 				break;
 			case eGold:
-				ReturnToMain(4);
+				ReturnToMain(eGold);
 				break;
 			case eItem:
-				CancelListOption(prev.item, 5);
+				CancelListOption(prev.item, eItem);
 				break;
 			case eItemSelect:
 				CancelListOptionSelect(eItem, prev.item);
@@ -131,13 +132,13 @@ void Scene_Debug::Update() {
 				CancelListOptionValue(eItemSelect);
 				break;
 			case eBattle:
-				CancelListOption(prev.troop, 6);
+				CancelListOption(prev.troop, eBattle);
 				break;
 			case eBattleSelect:
 				CancelListOptionSelect(eBattle, prev.troop);
 				break;
 			case eMap:
-				CancelListOption(prev.map, 7);
+				CancelListOption(prev.map, eMap);
 				break;
 			case eMapSelect:
 				CancelListOptionSelect(eMap, prev.map);
@@ -149,19 +150,22 @@ void Scene_Debug::Update() {
 				CancelMapSelectY();
 				break;
 			case eFullHeal:
-				ReturnToMain(8);
+				CancelListOptionSelect(eFullHeal, prev.fullheal);
+				CancelListOption(prev.fullheal, eFullHeal);
 				break;
 			case eCallCommonEvent:
-				CancelListOption(prev.common_event, 9);
+				CancelListOption(prev.common_event, eCallCommonEvent);
 				break;
 			case eCallCommonEventSelect:
 				CancelListOptionSelect(eCallCommonEvent, prev.common_event);
 				break;
 			case eCallMapEvent:
-				CancelListOption(prev.map_event, 10);
+				CancelListOption(prev.map_event, eCallMapEvent);
 				break;
 			case eCallMapEventSelect:
 				CancelListOptionSelect(eCallMapEvent, prev.map_event);
+				break;
+			case eLastMainMenuOption:
 				break;
 			}
 	} else if (Input::IsTriggered(Input::DECISION)) {
@@ -232,6 +236,8 @@ void Scene_Debug::Update() {
 				break;
 			case eCallMapEventSelect:
 				DoCallMapEvent();
+				break;
+			case eLastMainMenuOption:
 				break;
 		}
 		Game_Map::SetNeedRefresh(true);
@@ -411,13 +417,15 @@ int Scene_Debug::GetIndex() {
 	return (range_page * 100 + range_index * 10 + var_window->GetIndex() + 1);
 }
 
+int Scene_Debug::GetNumMainMenuItems() const {
+	return static_cast<int>(eLastMainMenuOption) - 1;
+}
 
 int Scene_Debug::GetLastPage() {
 	size_t num_elements = 0;
 	switch (mode) {
 		case eMain:
-			// FIXME: Clean this up.
-			return 2;
+			return GetNumMainMenuItems() / 10;
 		case eSwitch:
 			num_elements = Main_Data::game_switches->GetSize();
 			break;
@@ -432,6 +440,9 @@ int Scene_Debug::GetLastPage() {
 			break;
 		case eMap:
 			num_elements = lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0;
+			break;
+		case eFullHeal:
+			num_elements = Main_Data::game_party->GetBattlerCount() + 1;
 			break;
 		case eCallCommonEvent:
 			num_elements = lcf::Data::commonevents.size();
@@ -469,8 +480,8 @@ void Scene_Debug::UseNumberWindow() {
 }
 
 void Scene_Debug::EnterFromMain() {
-	switch (range_window->GetIndex() + range_page * 10) {
-		case 0:
+	switch (range_window->GetIndex() + range_page * 10 + 1) {
+		case eSave:
 			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
@@ -478,26 +489,26 @@ void Scene_Debug::EnterFromMain() {
 				Scene::Push(std::make_shared<Scene_Save>());
 			}
 			break;
-		case 1:
+		case eLoad:
 			Scene::Push(std::make_shared<Scene_Load>());
 			break;
-		case 2:
+		case eSwitch:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetupListOption(eSwitch, Window_VarList::eSwitch, prev.sw);
 			break;
-		case 3:
+		case eVariable:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetupListOption(eVariable, Window_VarList::eVariable, prev.var);
 			break;
-		case 4:
+		case eGold:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			EnterGold();
 			break;
-		case 5:
+		case eItem:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetupListOption(eItem, Window_VarList::eItem, prev.item);
 			break;
-		case 6:
+		case eBattle:
 			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
@@ -505,7 +516,7 @@ void Scene_Debug::EnterFromMain() {
 				SetupListOption(eBattle, Window_VarList::eTroop, prev.troop);
 			}
 			break;
-		case 7:
+		case eMap:
 			if (Game_Battle::IsBattleRunning()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
@@ -513,15 +524,16 @@ void Scene_Debug::EnterFromMain() {
 				SetupListOption(eMap, Window_VarList::eMap, prev.map);
 			}
 			break;
-		case 8:
+		case eFullHeal:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			EnterFullHeal();
+			SetupListOption(eFullHeal, Window_VarList::eHeal, prev.fullheal);
+			EnterFromListOption(eFullHeal, prev.fullheal);
 			break;
-		case 9:
+		case eCallCommonEvent:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetupListOption(eCallCommonEvent, Window_VarList::eCommonEvent, prev.common_event);
 			break;
-		case 10:
+		case eCallMapEvent:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetupListOption(eCallMapEvent, Window_VarList::eMapEvent, prev.map_event);
 			break;
@@ -600,20 +612,6 @@ void Scene_Debug::EnterMapSelectY() {
 	UpdateRangeListWindow();
 }
 
-void Scene_Debug::EnterFullHeal() {
-	mode = eFullHeal;
-	var_window->SetMode(Window_VarList::eHeal);
-	var_window->UpdateList(1);
-	UpdateRangeListWindow();
-	var_window->Refresh();
-	var_window->SetActive(true);
-	range_window->SetActive(false);
-	range_index = 0;
-	range_window->SetIndex(range_index);
-	range_page = 0;
-	var_window->SetIndex(0);
-}
-
 void Scene_Debug::CancelListOption(IndexSet& idx, int from_idx) {
 	idx.range_index = range_index;
 	idx.range_page = range_page;
@@ -651,8 +649,8 @@ void Scene_Debug::ReturnToMain(int from_idx) {
 	var_window->SetMode(Window_VarList::eNone);
 
 	mode = eMain;
-	range_index = from_idx % 10;
-	range_page = from_idx / 10;
+	range_index = (from_idx - 1) % 10;
+	range_page = (from_idx - 1) / 10;
 	range_window->SetIndex(range_index);
 	range_window->SetActive(true);
 	UpdateRangeListWindow();
@@ -681,7 +679,7 @@ void Scene_Debug::DoGold() {
 	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
 	Main_Data::game_party->GainGold(delta);
 
-	ReturnToMain(4);
+	ReturnToMain(eGold);
 }
 
 void Scene_Debug::DoItem() {

@@ -70,25 +70,29 @@ public:
 private:
 	enum Mode {
 		eMain,
+		eSave,
+		eLoad,
 		eSwitch,
-		eSwitchSelect,
 		eVariable,
-		eVariableSelect,
-		eVariableValue,
 		eGold,
 		eItem,
+		eBattle,
+		eMap,
+		eFullHeal,
+		eCallCommonEvent,
+		eCallMapEvent,
+		eLastMainMenuOption,
+
+		eSwitchSelect,
+		eVariableSelect,
+		eVariableValue,
 		eItemSelect,
 		eItemValue,
-		eBattle,
 		eBattleSelect,
-		eMap,
 		eMapSelect,
 		eMapX,
 		eMapY,
-		eFullHeal,
-		eCallCommonEvent,
 		eCallCommonEventSelect,
-		eCallMapEvent,
 		eCallMapEventSelect,
 	};
 	/** Current variables being displayed (Switches or Integers). */
@@ -128,7 +132,6 @@ private:
 	void EnterGold();
 	void EnterMapSelectX();
 	void EnterMapSelectY();
-	void EnterFullHeal();
 
 	void CancelListOption(IndexSet& idx, int from_idx);
 	void CancelListOptionSelect(Mode m, IndexSet& idx);
@@ -137,6 +140,7 @@ private:
 	void CancelMapSelectY();
 
 	void ReturnToMain(int from_idx);
+	int GetNumMainMenuItems() const;
 
 	void DoSwitch();
 	void DoVariable();
