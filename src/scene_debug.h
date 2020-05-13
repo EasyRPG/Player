@@ -80,6 +80,7 @@ public:
 		eFullHeal,
 		eCallCommonEvent,
 		eCallMapEvent,
+		eCallBattleEvent,
 		eLastMainMenuOption,
 	};
 
@@ -120,6 +121,7 @@ private:
 	void DoFullHeal();
 	void DoCallCommonEvent();
 	void DoCallMapEvent();
+	void DoCallBattleEvent();
 
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;

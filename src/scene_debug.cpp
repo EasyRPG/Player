@@ -68,11 +68,12 @@ void Scene_Debug::Start() {
 	CreateVarListWindow();
 	CreateNumberInputWindow();
 
-	range_index = prev[eMain].range_index;
-	range_window->SetIndex(range_index);
+	SetupUiRangeList();
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
+
+	UpdateRangeListWindow();
 	var_window->Refresh();
 }
 
@@ -287,18 +288,16 @@ void Scene_Debug::Update() {
 		if (mode == eMain) {
 			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
 			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
-				switch (next_mode) {
-					case eSave:
-					case eBattle:
-					case eMap:
-					case eCallMapEvent:
-						if (Game_Battle::IsBattleRunning()) {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-							break;
-						}
-					default:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						mode = next_mode;
+				const auto is_battle = Game_Battle::IsBattleRunning();
+				if (
+						(is_battle && (next_mode == eSave || next_mode == eBattle || next_mode == eMap || next_mode == eCallMapEvent))
+						|| (!is_battle && (next_mode == eCallBattleEvent))
+				   )
+				{
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				} else {
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					mode = next_mode;
 				}
 			}
 		}
@@ -341,7 +340,6 @@ void Scene_Debug::Update() {
 				if (sz > 1) {
 					DoGold();
 				} else {
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 					PushUiNumberInput(Main_Data::game_party->GetGold(), 7, false);
 					range_index = 0;
 					range_window->SetIndex(range_index);
@@ -419,6 +417,16 @@ void Scene_Debug::Update() {
 					PushUiRangeList();
 				}
 				break;
+			case eCallBattleEvent:
+				if (sz > 1) {
+					DoCallBattleEvent();
+				} else {
+					auto* troop = Game_Battle::GetActiveTroop();
+					if (troop) {
+						const auto num_digits = std::log10(troop->pages.size()) + 1;
+						PushUiNumberInput(0, num_digits, false);
+					}
+				}
 		}
 		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
@@ -451,15 +459,15 @@ void Scene_Debug::CreateRangeWindow() {
 
 	range_window->SetHeight(176);
 	range_window->SetY(32);
-	UpdateRangeListWindow();
 }
 
 void Scene_Debug::UpdateRangeListWindow() {
 	int idx = 0;
+	const bool is_battle = Game_Battle::IsBattleRunning();
 
-	auto addItem = [&](const auto& name, bool battle_ok = true) {
+	auto addItem = [&](const auto& name, bool enabled = true) {
 		range_window->SetItemText(idx, name);
-		if (!battle_ok && Game_Battle::IsBattleRunning()) {
+		if (!enabled) {
 			range_window->DisableItem(idx);
 		}
 		++idx;
@@ -475,18 +483,19 @@ void Scene_Debug::UpdateRangeListWindow() {
 	switch (mode) {
 		case eMain:
 			if (range_page == 0) {
-				addItem("Save", false);
-				addItem("Load", true);
-				addItem("Switches", true);
-				addItem("Variables", true);
-				addItem(lcf::Data::terms.gold, true);
-				addItem("Items", true);
-				addItem("Battle", false);
-				addItem("Map", false);
-				addItem("Full Heal", true);
-				addItem("Call ComEvent", true);
+				addItem("Save", !is_battle);
+				addItem("Load");
+				addItem("Switches");
+				addItem("Variables");
+				addItem(lcf::Data::terms.gold.c_str());
+				addItem("Items");
+				addItem("Battle", !is_battle);
+				addItem("Goto Map", !is_battle);
+				addItem("Full Heal");
+				addItem("Call ComEvent");
 			} else {
-				addItem("Call MapEvent", false);
+				addItem("Call MapEvent", !is_battle);
+				addItem("Call BtlEvent", is_battle);
 			}
 			break;
 		case eSwitch:
@@ -543,6 +552,17 @@ void Scene_Debug::UpdateRangeListWindow() {
 			break;
 		case eFullHeal:
 			addItem("Full Heal");
+			break;
+		case eCallBattleEvent:
+			if (is_battle) {
+				auto* troop = Game_Battle::GetActiveTroop();
+				if (troop) {
+					addItem(troop->name);
+					addItem(fmt::format("TroopId: {}", troop->ID));
+					addItem(fmt::format("NumEnemies: {}", troop->members.size()));
+					addItem(fmt::format("NumPages: {}", troop->pages.size()));
+				}
+			}
 			break;
 		default:
 			break;
@@ -610,7 +630,8 @@ int Scene_Debug::GetLastPage() {
 		case eCallMapEvent:
 			num_elements = Game_Map::GetHighestEventId();
 			break;
-		default: break;
+		default:
+			break;
 	}
 
 	if (num_elements > 0) {
@@ -758,6 +779,29 @@ void Scene_Debug::DoCallMapEvent() {
 	Game_Map::GetInterpreter().Push(me, page, false);
 	Scene::PopUntil(Scene::Map);
 	Output::Debug("Debug Scene Forced execution of map event {} page {} on the map foreground interpreter.", me->GetId(), page->ID);
+}
+
+void Scene_Debug::DoCallBattleEvent() {
+	if (!Game_Battle::IsBattleRunning()) {
+		return;
+	}
+
+	auto* troop = Game_Battle::GetActiveTroop();
+	if (!troop) {
+		return;
+	}
+
+	const auto page_idx = GetFrame(0).value - 1;
+
+	if (page_idx < 0 || page_idx >= static_cast<int>(troop->pages.size())) {
+		return;
+	}
+
+	auto& page = troop->pages[page_idx];
+
+	Game_Battle::GetInterpreter().Push(page.event_commands, 0, false);
+	Scene::PopUntil(Scene::Battle);
+	Output::Debug("Debug Scene Forced execution of battle troop {} event page {} on the map foreground interpreter.", troop->ID, page.ID);
 }
 
 void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {
