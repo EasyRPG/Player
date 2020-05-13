@@ -67,15 +67,16 @@ public:
 		BattleActionState_Finished
 	};
 
-
-
 public:
 	explicit Scene_Battle_Rpg2k3(const BattleArgs& args);
 	~Scene_Battle_Rpg2k3() override;
 
+	void Start() override;
 	void Update() override;
 
 protected:
+	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
+	void InitAtbGauges();
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
@@ -136,6 +137,7 @@ protected:
 
 	FileRequestBinding request_id;
 	bool battle_action_pending = false;
+	bool first_strike = false;
 };
 
 #endif

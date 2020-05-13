@@ -34,6 +34,7 @@
 #include "reader_util.h"
 #include "spriteset_battle.h"
 #include "output.h"
+#include "utils.h"
 
 namespace Game_Battle {
 	const RPG::Troop* troop;
@@ -154,26 +155,16 @@ bool Game_Battle::CheckWin() {
 }
 
 bool Game_Battle::CheckLose() {
-	if (!Main_Data::game_party->IsAnyActive())
-		return true;
-
-	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability, it's game over
+	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability (including death), it's game over
 	// Physical recovery doesn't matter in this case
-	int character_number = 0;
-	std::vector<Game_Battler*> actors;
 
-	Main_Data::game_party->GetActiveBattlers(actors);
-	for (auto actor : actors) {
-		for (auto id_state : actor->GetInflictedStates()) {
-			RPG::State *state = ReaderUtil::GetElement(Data::states, id_state);
-			if (state->restriction == RPG::State::Restriction_do_nothing && state->auto_release_prob == 0) {
-				++character_number;
-				break;
-			}
+	for (auto& actor : Main_Data::game_party->GetActors()) {
+		if (!actor->IsHidden() && actor->CanActOrRecoverable()) {
+			return false;
 		}
 	}
 
-	return character_number == static_cast<int>(actors.size());
+	return true;
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
@@ -232,25 +223,36 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 	Main_Data::game_party->IncTurns();
 }
 
-void Game_Battle::UpdateGauges() {
+void Game_Battle::UpdateAtbGauges() {
 	std::vector<Game_Battler*> battlers;
-	Main_Data::game_enemyparty->GetActiveBattlers(battlers);
-	Main_Data::game_party->GetActiveBattlers(battlers);
+	Main_Data::game_enemyparty->GetBattlers(battlers);
+	Main_Data::game_party->GetBattlers(battlers);
 
-	int max_agi = 1;
+	const auto use_2k3e_algo = Player::IsRPG2k3E();
 
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-		it != battlers.end(); ++it) {
-		max_agi = std::max(max_agi, (*it)->GetAgi());
+	int sum_agi = 0;
+	for (auto* bat: battlers) {
+		// RPG_RT uses dead and state restricted battlers to contribute to the sum.
+		if (!bat->IsHidden()) {
+			sum_agi += bat->GetAgi();
+		}
 	}
+	sum_agi *= 100;
 
-	// Only affects how fast the gauges move, can be safely clamped
-	max_agi = Utils::Clamp(max_agi, 1, 1000);
+	const int max_atb = Game_Battler::GetMaxAtbGauge();
 
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-		it != battlers.end(); ++it) {
-		if (!(*it)->GetBattleAlgorithm() && (*it)->CanAct()) {
-			(*it)->UpdateGauge(1000 / max_agi);
+	for (auto* bat: battlers) {
+		// RPG_RT always updates atb for non-hidden enemies, even if they can't act.
+		if (bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
+		{
+			const auto agi = bat->GetAgi();
+			auto increment = max_atb / (sum_agi / (agi + 1));
+			if (use_2k3e_algo) {
+				const auto cur_atb = bat->GetAtbGauge();
+				const auto multiplier = std::max(1.0, static_cast<double>(275000 - cur_atb) / 55000.0);
+				increment = Utils::RoundTo<int>(multiplier * increment);
+			}
+			bat->IncrementAtbGauge(increment);
 		}
 	}
 }

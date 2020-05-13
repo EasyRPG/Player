@@ -38,11 +38,50 @@
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
 	battle_action_wait(30),
-	battle_action_state(BattleActionState_Execute)
+	battle_action_state(BattleActionState_Execute),
+	first_strike(args.first_strike)
 {
 }
 
+void Scene_Battle_Rpg2k3::Start() {
+	Scene_Battle::Start();
+	InitAtbGauges();
+}
+
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
+}
+
+void Scene_Battle_Rpg2k3::InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb) {
+	if (battler.IsHidden() || !battler.CanActOrRecoverable()) {
+		return;
+	}
+
+	switch(Game_Battle::GetBattleCondition()) {
+		case RPG::System::BattleCondition_initiative:
+		case RPG::System::BattleCondition_surround:
+			battler.SetAtbGauge(preempt_atb);
+			break;
+		case RPG::System::BattleCondition_back:
+		case RPG::System::BattleCondition_pincers:
+			battler.SetAtbGauge(ambush_atb);
+			break;
+		case RPG::System::BattleCondition_none:
+			if (first_strike || battler.HasPreemptiveAttack()) {
+				battler.SetAtbGauge(preempt_atb);
+			} else {
+				battler.SetAtbGauge(Game_Battler::GetMaxAtbGauge() / 2);
+			}
+			break;
+	}
+}
+
+void Scene_Battle_Rpg2k3::InitAtbGauges() {
+	for (auto& enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		InitAtbGauge(*enemy, 0, Game_Battler::GetMaxAtbGauge());
+	}
+	for (auto& actor: Main_Data::game_party->GetActors()) {
+		InitAtbGauge(*actor, Game_Battler::GetMaxAtbGauge(), 0);
+	}
 }
 
 void Scene_Battle_Rpg2k3::Update() {
@@ -51,7 +90,7 @@ void Scene_Battle_Rpg2k3::Update() {
 		case State_AutoBattle: {
 			if (!IsWindowMoving()) {
 				if (battle_actions.empty()) {
-					Game_Battle::UpdateGauges();
+					Game_Battle::UpdateAtbGauges();
 				}
 
 				int old_state = state;
@@ -62,10 +101,9 @@ void Scene_Battle_Rpg2k3::Update() {
 					std::vector<Game_Battler*> enemies;
 					Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-					for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-						it != enemies.end(); ++it) {
-						if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-							Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
+					for (auto* battler: enemies) {
+						if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm()) {
+							auto* enemy = static_cast<Game_Enemy*>(battler);
 							const RPG::EnemyAction* action = enemy->ChooseRandomAction();
 							if (action) {
 								CreateEnemyAction(enemy, action);
@@ -1026,7 +1064,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 
 	//FIXME: Handle first strike etc.. here.
 	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor, false);
-	active_actor->SetGauge(0);
+	active_actor->SetAtbGauge(0);
 
 	bool escape_success = escape_alg.Execute();
 	escape_alg.Apply();
@@ -1156,16 +1194,14 @@ bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 }
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
-	std::vector<Game_Battler*> battler;
-	Main_Data::game_party->GetBattlers(battler);
+	std::vector<Game_Battler*> actors;
+	Main_Data::game_party->GetBattlers(actors);
 
 	int i = 0;
-	for (std::vector<Game_Battler*>::iterator it = battler.begin();
-		it != battler.end(); ++it) {
-
-		if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm() && battle_actions.empty()) {
+	for (auto* battler: actors) {
+		if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm() && battle_actions.empty()) {
 			actor_index = i;
-			active_actor = static_cast<Game_Actor*>(*it);
+			active_actor = static_cast<Game_Actor*>(battler);
 
 			// Handle automatic attack
 			Game_Battler* random_target = nullptr;
@@ -1191,7 +1227,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				// ToDo: Auto battle logic is dumb
 				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
 				battle_actions.push_back(active_actor);
-				active_actor->SetGauge(0);
+				active_actor->SetAtbGauge(0);
 
 				return;
 			}
@@ -1203,7 +1239,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				// Skip actors with only row command
 				// FIXME: Actually support row command ;)
 				NextTurn(active_actor);
-				active_actor->SetGauge(0);
+				active_actor->SetAtbGauge(0);
 				return;
 			}
 
@@ -1219,7 +1255,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 }
 
 void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
-	for_battler->SetGauge(0);
+	for_battler->SetAtbGauge(0);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
 		const RPG::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[command_window->GetIndex()];

@@ -344,7 +344,7 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
 	const int bx = shake_x - (fog_bg_frames / 4) % sr.width;
 	// Front layer moves vertically up and down using this algorithm. And it uses the background frame counter!
 	// Confirmed to be matching RPG_RT
-	const int fy = shake_y - std::lrint(std::sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2)) - (sr.height / 4);
+	const int fy = shake_y - Utils::RoundTo<int>(std::sin(fog_bg_frames * M_PI / 4096.0) * (sr.height / 2)) - (sr.height / 4);
 	// Back layer never moves vertically
 	const int by = shake_y;
 

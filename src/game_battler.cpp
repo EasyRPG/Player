@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <limits>
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
@@ -78,12 +79,28 @@ RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 }
 
 bool Game_Battler::CanAct() const {
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (int i = 0; i < (int)states.size(); i++) {
-		// States are guaranteed to be valid
-		const RPG::State* state = ReaderUtil::GetElement(Data::states, states[i]);
-		if (state->restriction == RPG::State::Restriction_do_nothing) {
-			return false;
+	const auto& states = GetStates();
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			const auto* state = ReaderUtil::GetElement(Data::states, i + 1);
+			assert(state);
+			if (state->restriction == RPG::State::Restriction_do_nothing) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Game_Battler::CanActOrRecoverable() const {
+	const auto& states = GetStates();
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			const auto* state = ReaderUtil::GetElement(Data::states, i + 1);
+			assert(state);
+			if (state->restriction == RPG::State::Restriction_do_nothing && state->auto_release_prob == 0) {
+				return false;
+			}
 		}
 	}
 	return true;
@@ -382,7 +399,7 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	}
 
 	if (state_id == RPG::State::kDeathID) {
-		SetGauge(0);
+		SetAtbGauge(0);
 		SetHp(0);
 		SetAtkModifier(0);
 		SetDefModifier(0);
@@ -615,28 +632,6 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
-void Game_Battler::SetGauge(int new_gauge) {
-	new_gauge = min(max(new_gauge, 0), 100);
-
-	gauge = new_gauge * (GetMaxGauge() / 100);
-}
-
-void Game_Battler::UpdateGauge(int multiplier) {
-	if (!Exists()) {
-		if (IsDead()) {
-			SetGauge(0);
-		}
-		return;
-	}
-
-	if (gauge > GetMaxGauge()) {
-		return;
-	}
-	gauge += GetAgi() * multiplier;
-
-	//Ouput::Debug("{}: {:.2f}", GetName(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
-}
-
 void Game_Battler::UpdateBattle() {
 	Shake::Update(shake.position, shake.time_left, shake.strength, shake.speed, false);
 	Flash::Update(flash.current_level, flash.time_left);
@@ -674,10 +669,8 @@ bool Game_Battler::HasReflectState() const {
 }
 
 void Game_Battler::ResetBattle() {
-	gauge = GetMaxGauge();
-	if (!HasPreemptiveAttack()) {
-		gauge /= 2;
-	}
+	// Note: ATB gauge is not reset here. This is on purpose because RPG_RT will freeze
+	// the gauge and carry it between battles if !CanActOrRecoverable().
 	SetCharged(false);
 	SetIsDefending(false);
 	SetHidden(false);

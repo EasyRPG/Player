@@ -105,7 +105,7 @@ namespace Game_Battle {
 	/**
 	 * Updates the gauge of all battlers based on the highest agi of all.
 	 */
-	void UpdateGauges();
+	void UpdateAtbGauges();
 
 	void ChangeBackground(const std::string& name);
 

@@ -331,6 +331,17 @@ namespace Utils {
 	template <typename T>
 	bool IsControlCharacter(T ch);
 
+	/**
+	 * RPG_RT / Delphi compatible rounding of floating point.
+	 *
+	 * @param v the float value to convert
+	 * @return integral result
+	 *
+	 * @sa http://www.delphibasics.co.uk/RTL.asp?Name=Round
+	 */
+	template <typename Dest, typename Src>
+	std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> RoundTo(Src v);
+
 } // namespace Utils
 
 template <typename T>
@@ -363,6 +374,21 @@ inline void Utils::ForEachLine(const std::string& line, F&& f) {
 template <typename T>
 inline bool Utils::IsControlCharacter(T ch) {
 	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
+}
+
+
+template <typename Dest, typename Src>
+inline std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> Utils::RoundTo(Src v)
+{
+	if (std::is_integral<Dest>::value) {
+		if (sizeof(Dest) <= sizeof(long)) {
+			return std::lrint(v);
+		} else {
+			return std::llrint(v);
+		}
+	}
+
+	return std::rint(v);
 }
 
 #endif
