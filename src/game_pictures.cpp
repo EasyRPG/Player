@@ -44,6 +44,22 @@ static bool IsEmpty(const RPG::SavePicture& data) {
 	return IsEmpty(data, data.frames);
 }
 
+template <bool do_effect>
+void SyncCurrentToFinish(RPG::SavePicture& data) {
+	data.current_x = data.finish_x;
+	data.current_y = data.finish_y;
+	data.current_red = data.finish_red;
+	data.current_green = data.finish_green;
+	data.current_blue = data.finish_blue;
+	data.current_sat = data.finish_sat;
+	data.current_magnify = data.finish_magnify;
+	data.current_top_trans = data.finish_top_trans;
+	data.current_bot_trans = data.finish_bot_trans;
+	if (do_effect) {
+		data.current_effect_power = data.finish_effect_power;
+	}
+}
+
 Game_Pictures::Picture::Picture(RPG::SavePicture save)
 	: data(std::move(save))
 {
@@ -260,7 +276,7 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 		data.finish_effect_power = params.effect_power;
 	}
 
-	SyncCurrentToFinish();
+	SyncCurrentToFinish<true>(data);
 	data.start_x = data.current_x;
 	data.start_y = data.current_y;
 	data.current_rotation = 0.0;
@@ -429,14 +445,17 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		data.start_y = data.start_y - dy;
 	}
 
-	if (data.time_left == 0) {
-		SyncCurrentToFinish();
-	} else {
-		auto interpolate = [=](double current, double finish) {
-			double d = data.time_left;
-			return (current * (d - 1) + finish) / d;
-		};
+	if (data.time_left > 0) {
+		--data.time_left;
+	}
 
+	auto interpolate = [dt=static_cast<double>(data.time_left + 1)](double current, double finish) {
+		return (finish - current) / dt + current;
+	};
+
+	if (data.time_left <= 0) {
+		SyncCurrentToFinish<false>(data);
+	} else {
 		data.current_x = interpolate(data.current_x, data.finish_x);
 		data.current_y = interpolate(data.current_y, data.finish_y);
 		data.current_red = interpolate(data.current_red, data.finish_red);
@@ -446,40 +465,36 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		data.current_magnify = interpolate(data.current_magnify, data.finish_magnify);
 		data.current_top_trans = interpolate(data.current_top_trans, data.finish_top_trans);
 		data.current_bot_trans = interpolate(data.current_bot_trans, data.finish_bot_trans);
-		if (data.effect_mode != RPG::SavePicture::Effect_none) {
-			data.current_effect_power = interpolate(data.current_effect_power, data.finish_effect_power);
-		}
-
-		data.time_left = data.time_left - 1;
 	}
 
-	// Update rotation
 	// When a move picture disables rotation effect, we continue rotating
 	// until one full revolution is done. There is a bug in RPG_RT where this
 	// only happens when the current rotation and power is positive. We emulate this for now.
-	if (data.effect_mode == RPG::SavePicture::Effect_rotation ||
-			(data.effect_mode == RPG::SavePicture::Effect_none
-			 && data.current_rotation > 0
-			 && data.current_effect_power > 0)
-			)
-	{
+	if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_effect_power > 0) {
+		// RPG_RT calculates this and compares it against remaining time.
+		const auto et = 256 / static_cast<int>(data.current_effect_power);
 
-		// RPG_RT always scales the rotation down to [0, 256] when this case is triggered.
-		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
-			data.current_rotation = std::remainder(data.current_rotation, 256.0);
+		if (et < data.time_left || data.current_rotation > 0.0) {
+			data.current_rotation = std::fmod(data.current_rotation, 256.0);
+			data.current_rotation += data.current_effect_power;
+			if (et >= data.time_left && data.current_rotation >= 256.0) {
+				data.current_rotation = 0;
+			}
 		}
+	}
 
-		data.current_rotation = data.current_rotation + data.current_effect_power;
+	if (data.effect_mode != RPG::SavePicture::Effect_none) {
+		data.current_effect_power = interpolate(data.current_effect_power, data.finish_effect_power);
+	}
 
-		// Rotation finally ends after full revolution.
-		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
-			data.current_rotation = 0;
-		}
+	// Update rotation
+	if (data.effect_mode == RPG::SavePicture::Effect_rotation) {
+		data.current_rotation += data.current_effect_power;
 	}
 
 	// Update waver phase
 	if (data.effect_mode == RPG::SavePicture::Effect_wave) {
-		data.current_waver = data.current_waver + 8;
+		data.current_waver += 8;
 	}
 
 	// RPG Maker 2k3 1.12: Animated spritesheets
@@ -520,18 +535,6 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 	data.finish_sat = params.saturation;
 }
 
-void Game_Pictures::Picture::SyncCurrentToFinish() {
-	data.current_x = data.finish_x;
-	data.current_y = data.finish_y;
-	data.current_red = data.finish_red;
-	data.current_green = data.finish_green;
-	data.current_blue = data.finish_blue;
-	data.current_sat = data.finish_sat;
-	data.current_magnify = data.finish_magnify;
-	data.current_top_trans = data.finish_top_trans;
-	data.current_bot_trans = data.finish_bot_trans;
-	data.current_effect_power = data.finish_effect_power;
-}
 
 inline int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
