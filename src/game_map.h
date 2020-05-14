@@ -46,6 +46,7 @@ class MapUpdateAsyncContext {
 		static MapUpdateAsyncContext FromCommonEvent(int ce, AsyncOp aop);
 		static MapUpdateAsyncContext FromMapEvent(int ce, AsyncOp aop);
 		static MapUpdateAsyncContext FromForegroundEvent(AsyncOp aop);
+		static MapUpdateAsyncContext FromMessage(AsyncOp aop);
 
 		AsyncOp GetAsyncOp() const;
 
@@ -55,12 +56,14 @@ class MapUpdateAsyncContext {
 		bool IsForegroundEvent() const;
 		bool IsParallelCommonEvent() const;
 		bool IsParallelMapEvent() const;
+		bool IsMessage() const;
 		bool IsActive() const;
 	private:
+		AsyncOp async_op = {};
 		int common_event = 0;
 		int map_event = 0;
-		AsyncOp async_op = {};
-		bool foreground_event = 0;
+		bool foreground_event = false;
+		bool message = false;
 };
 
 /**
@@ -640,6 +643,7 @@ namespace Game_Map {
 	void UpdateProcessedFlags(bool is_preupdate);
 	bool UpdateCommonEvents(MapUpdateAsyncContext& actx);
 	bool UpdateMapEvents(MapUpdateAsyncContext& actx);
+	bool UpdateMessage(MapUpdateAsyncContext& actx);
 	bool UpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
 	FileRequestAsync* RequestMap(int map_id);
@@ -740,6 +744,15 @@ inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent(AsyncOp 
 	return actx;
 }
 
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromMessage(AsyncOp aop) {
+	MapUpdateAsyncContext actx;
+	if (aop.IsActive()) {
+		actx.async_op = aop;
+		actx.message = true;
+	}
+	return actx;
+}
+
 inline int MapUpdateAsyncContext::GetParallelCommonEvent() const {
 	return common_event;
 }
@@ -760,6 +773,9 @@ inline bool MapUpdateAsyncContext::IsParallelMapEvent() const {
 	return map_event > 0;
 }
 
+inline bool MapUpdateAsyncContext::IsMessage() const {
+	return message;
+}
 
 inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();

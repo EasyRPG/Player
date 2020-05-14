@@ -961,8 +961,16 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 				vehicle->Update();
 			}
 		}
+	}
 
-		Game_Message::Update();
+	if (!actx.IsActive() || actx.IsMessage()) {
+		if (!UpdateMessage(actx)) {
+			// Suspend due to message async op ...
+			return;
+		}
+	}
+
+	if (!actx.IsActive()) {
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
 		Main_Data::game_pictures->Update(false);
@@ -1041,6 +1049,22 @@ bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
 		if (aop.IsActive()) {
 			// Suspend due to this event ..
 			actx = MapUpdateAsyncContext::FromMapEvent(ev.GetId(), aop);
+			return false;
+		}
+	}
+
+	actx = {};
+	return true;
+}
+
+bool Game_Map::UpdateMessage(MapUpdateAsyncContext& actx) {
+	// Message system does not support suspend and resume internally. So if the last frame the message
+	// produced an async event, the message loop finished completely. Therefore this frame we should
+	// resume *after* the message and not run it again.
+	if (!actx.IsActive()) {
+		auto aop = Game_Message::Update();
+		if (aop.IsActive()) {
+			actx = MapUpdateAsyncContext::FromMessage(aop);
 			return false;
 		}
 	}

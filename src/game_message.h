@@ -25,6 +25,7 @@
 #include "pending_message.h"
 
 class Window_Message;
+class AsyncOp;
 
 namespace Game_Message {
 
@@ -37,7 +38,7 @@ namespace Game_Message {
 
 	Window_Message* GetWindow();
 
-	void Update();
+	AsyncOp Update();
 
 	/** Reset the face graphic. */
 	void ClearFace();

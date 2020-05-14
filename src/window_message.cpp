@@ -272,6 +272,7 @@ void Window_Message::ResetWindow() {
 void Window_Message::Update() {
 	bool update_message_processing = false;
 	allow_next_message = false;
+	aop = {};
 
 	if (pending_message.ShowGoldWindow()) {
 		ShowGoldWindow();
@@ -589,7 +590,7 @@ void Window_Message::InputChoice() {
 		if (choice_result >= 0) {
 			auto& continuation = pending_message.GetChoiceContinuation();
 			if (continuation) {
-				continuation(choice_result);
+				aop = continuation(choice_result);
 			}
 		}
 		TerminateMessage();

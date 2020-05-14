@@ -83,7 +83,7 @@ private:
 	bool CommandToggleAtbMode(RPG::EventCommand const& com);
 	bool CommandOpenVideoOptions(RPG::EventCommand const& com);
 
-	void ContinuationShowInnStart(int indent, int choice_result, int price);
+	AsyncOp ContinuationShowInnStart(int indent, int choice_result, int price);
 
 	static std::vector<Game_Character*> pending;
 };

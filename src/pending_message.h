@@ -21,10 +21,11 @@
 #include <vector>
 #include <bitset>
 #include <functional>
+#include "async_op.h"
 
 class PendingMessage {
 	public:
-		using ChoiceContinuation = std::function<void(int)>;
+		using ChoiceContinuation = std::function<AsyncOp(int)>;
 
 		int PushLine(std::string msg);
 		int PushChoice(std::string msg, bool enabled = true);
