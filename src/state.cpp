@@ -86,7 +86,7 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 	return true;
 }
 
-void RemoveAllBattle(StateVec& states) {
+void RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
 		auto* state = ReaderUtil::GetElement(Data::states, state_id);
@@ -94,12 +94,12 @@ void RemoveAllBattle(StateVec& states) {
 			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
-		if (state->type != RPG::State::Persistence_ends) {
-			continue;
+		if (state->type == RPG::State::Persistence_persists) {
+			if (state->auto_release_prob == 0 || ps.Has(state_id)) {
+				continue;
+			}
 		}
-		if (state->auto_release_prob > 0) {
-			Remove(state_id, states, {});
-		}
+		Remove(state_id, states, {});
 	}
 }
 
