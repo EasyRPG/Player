@@ -357,7 +357,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 		}
 
 		// Skip prompt.
-		ContinuationShowInnStart(com.indent, 0, inn_price);
+		_async_op = ContinuationShowInnStart(com.indent, 0, inn_price);
 		return true;
 	}
 
@@ -447,7 +447,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	int indent = com.indent;
 	pm.SetChoiceContinuation([this, indent, inn_price](int choice_result) {
-			ContinuationShowInnStart(indent, choice_result, inn_price);
+			return ContinuationShowInnStart(indent, choice_result, inn_price);
 			});
 
 	// save game compatibility with RPG_RT
@@ -459,7 +459,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result, int price) {
+AsyncOp Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result, int price) {
 	bool inn_stay = (choice_result == 0);
 
 	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
@@ -467,8 +467,9 @@ void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_resul
 	if (inn_stay) {
 		Main_Data::game_party->GainGold(-price);
 
-		_async_op = AsyncOp::MakeCallInn();
+		return AsyncOp::MakeCallInn();
 	}
+	return {};
 }
 
 bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730

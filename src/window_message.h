@@ -24,6 +24,7 @@
 #include "window_numberinput.h"
 #include "window_selectable.h"
 #include "pending_message.h"
+#include "async_op.h"
 
 /**
  * Window Message Class.
@@ -125,7 +126,12 @@ public:
 	/** @return true if we can push a new message this frame */
 	bool GetAllowNextMessage() const;
 
+	/** @return the last async operation */
+	AsyncOp GetAsyncOp() const;
+
 protected:
+	/** Async operation */
+	AsyncOp aop;
 	/** X-position of next char. */
 	int contents_x = 0;
 	/** Y-position of next char. */
@@ -176,6 +182,10 @@ inline const PendingMessage& Window_Message::GetPendingMessage() const {
 
 inline bool Window_Message::GetAllowNextMessage() const {
 	return allow_next_message;
+}
+
+inline AsyncOp Window_Message::GetAsyncOp() const {
+	return aop;
 }
 
 #endif
