@@ -246,7 +246,7 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiRangeList:
 			range_window->SetActive(true);
-			range_window->SetIndex(((GetFrame().value - 1) % 100) / 10);
+			range_window->SetIndex((GetFrame().value % 100) / 10);
 			break;
 		case eUiVarList:
 			var_window->SetActive(true);
@@ -408,7 +408,7 @@ void Scene_Debug::Update() {
 				} else if (sz > 2) {
 					auto* event = Game_Map::GetEvent(GetFrame().value);
 					if (event) {
-						const auto num_digits = std::log10(event->GetNumPages()) + 1;
+						const auto num_digits = static_cast<int>(std::log10(event->GetNumPages()) + 1);
 						PushUiNumberInput(1, num_digits, false);
 					}
 				} else if (sz > 1) {
@@ -423,7 +423,7 @@ void Scene_Debug::Update() {
 				} else {
 					auto* troop = Game_Battle::GetActiveTroop();
 					if (troop) {
-						const auto num_digits = std::log10(troop->pages.size()) + 1;
+						const auto num_digits = static_cast<int>(std::log10(troop->pages.size()) + 1);
 						PushUiNumberInput(0, num_digits, false);
 					}
 				}
@@ -635,7 +635,7 @@ int Scene_Debug::GetLastPage() {
 	}
 
 	if (num_elements > 0) {
-		return (num_elements - 1) / 100;
+		return (static_cast<int>(num_elements) - 1) / 100;
 	}
 	return 0;
 }
