@@ -471,7 +471,7 @@ int Game_Battler::ApplyConditions() {
 }
 
 void Game_Battler::RemoveBattleStates() {
-	State::RemoveAllBattle(GetStates());
+	State::RemoveAllBattle(GetStates(), GetPermanentStates());
 }
 
 void Game_Battler::RemoveAllStates() {
