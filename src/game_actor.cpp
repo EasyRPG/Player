@@ -95,6 +95,8 @@ void Game_Actor::Fixup() {
 	RemoveInvalidData();
 
 	ResetEquipmentStates(false);
+
+	MakeExpList();
 }
 
 bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
