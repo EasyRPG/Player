@@ -155,22 +155,6 @@ void Window_VarList::SetMode(Mode mode) {
 	Refresh();
 }
 
-void Window_VarList::SetActive(bool nactive) {
-	Window::SetActive(nactive);
-	if (nactive)
-		index = hidden_index;
-	else {
-		hidden_index = index;
-		index = -1;
-	}
-	Refresh();
-}
-
-int Window_VarList::GetIndex() {
-	return GetActive() ? index : hidden_index;
-}
-
-
 bool Window_VarList::DataIsValid(int range_index) {
 	switch (mode) {
 		case eSwitch:

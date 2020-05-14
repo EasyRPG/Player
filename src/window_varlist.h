@@ -64,18 +64,6 @@ public:
 	void SetMode(Mode mode);
 
 	/**
-	 * Overwrite SetActive to hide/show selection rect when window is disabled.
-	 *
-	 * @param nactive indicating if window will be enabled or disabled.
-	 */
-	void SetActive(bool nactive);
-
-	/**
-	 * Overwrite GetIndex to return the hidden index when the window is disabled.
-	 */
-	int GetIndex();
-
-	/**
 	 * Returns the current mode.
 	 */
 	Mode GetMode() const;
@@ -91,7 +79,6 @@ private:
 
 	Mode mode = eNone;
 	int first_var = 0;
-	int hidden_index = 0;
 
 	bool DataIsValid(int range_index);
 

@@ -118,15 +118,20 @@ Window_VarList::Mode Scene_Debug::GetWindowMode() const {
 
 void Scene_Debug::UpdateFrameValueFromUi() {
 	auto& frame = GetFrame();
+	auto& idx = prev[mode];
 	switch (frame.uimode) {
 		case eUiMain:
-			frame.value = GetIndex();
+			idx.range_index = range_index;
+			idx.range_page = range_page;
 			break;
 		case eUiRangeList:
-			frame.value = GetIndex();
+			idx.range_index = range_index;
+			idx.range_page = range_page;
+			frame.value = range_page * 100 + range_index * 10;
 			break;
 		case eUiVarList:
-			frame.value = GetIndex();
+			idx.range_page_index = var_window->GetIndex();
+			frame.value = range_page * 100 + range_index * 10 + var_window->GetIndex() + 1;
 			break;
 		case eUiNumberInput:
 			frame.value = numberinput_window->GetNumber();
@@ -207,20 +212,8 @@ void Scene_Debug::Pop() {
 	auto pui = GetFrame().uimode;
 	auto& idx = prev[mode];
 
-	switch (pui) {
-		case eUiMain:
-			idx.range_index = range_index;
-			idx.range_page = range_page;
-			break;
-		case eUiRangeList:
-			idx.range_index = range_index;
-			idx.range_page = range_page;
-			break;
-		case eUiVarList:
-			idx.range_page_index = var_window->GetIndex();
-			break;
-		case eUiNumberInput:
-			break;
+	if (pui == eUiVarList) {
+		var_window->SetIndex(-1);
 	}
 
 	range_window->SetActive(false);
@@ -246,7 +239,9 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiRangeList:
 			range_window->SetActive(true);
-			range_window->SetIndex((GetFrame().value % 100) / 10);
+			range_index = (GetFrame().value % 100) / 10;
+			range_page = GetFrame().value / 100;
+			range_window->SetIndex(range_index);
 			break;
 		case eUiVarList:
 			var_window->SetActive(true);
@@ -303,6 +298,7 @@ void Scene_Debug::Update() {
 		}
 
 		const auto sz = GetStackSize();
+		const auto& frame = GetFrame();
 		switch (mode) {
 			case eMain:
 			case eLastMainMenuOption:
@@ -313,6 +309,7 @@ void Scene_Debug::Update() {
 				break;
 			case eLoad:
 				Scene::Push(std::make_shared<Scene_Load>());
+				mode = eMain;
 				break;
 			case eSwitch:
 				if (sz > 2) {
@@ -327,8 +324,8 @@ void Scene_Debug::Update() {
 				if (sz > 3) {
 					DoVariable();
 				} else if (sz > 2) {
-					if (Main_Data::game_variables->IsValid(GetIndex())) {
-						PushUiNumberInput(Main_Data::game_variables->Get(GetIndex()), Main_Data::game_variables->GetMaxDigits(), true);
+					if (Main_Data::game_variables->IsValid(frame.value)) {
+						PushUiNumberInput(Main_Data::game_variables->Get(frame.value), Main_Data::game_variables->GetMaxDigits(), true);
 					}
 				} else if (sz > 1) {
 					PushUiVarList();
@@ -349,8 +346,8 @@ void Scene_Debug::Update() {
 				if (sz > 3) {
 					DoItem();
 				} else if (sz > 2) {
-					if (GetIndex() <= static_cast<int>(lcf::Data::items.size())) {
-						PushUiNumberInput(Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
+					if (frame.value <= static_cast<int>(lcf::Data::items.size())) {
+						PushUiNumberInput(Main_Data::game_party->GetItemCount(frame.value), 2, false);
 					}
 				} else if (sz > 1) {
 					PushUiVarList();
@@ -581,6 +578,7 @@ void Scene_Debug::CreateVarListWindow() {
 	var_window->SetX(range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->SetVisible(false);
+	var_window->SetIndex(-1);
 
 	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
 }
@@ -591,10 +589,6 @@ void Scene_Debug::CreateNumberInputWindow() {
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);
-}
-
-int Scene_Debug::GetIndex() {
-	return (range_page * 100 + range_index * 10 + var_window->GetIndex() + 1);
 }
 
 int Scene_Debug::GetNumMainMenuItems() const {
@@ -697,7 +691,7 @@ void Scene_Debug::DoBattle() {
 	}
 
 	BattleArgs args;
-	args.troop_id = GetIndex();
+	args.troop_id = troop_id;
 	args.first_strike = false;
 	args.allow_escape = true;
 

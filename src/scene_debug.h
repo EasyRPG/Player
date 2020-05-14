@@ -48,21 +48,6 @@ public:
 	void UpdateRangeListWindow();
 
 	/**
-	 * Updates the var list window.
-	 */
-	void UpdateVarListWindow();
-
-	/**
-	 * Updates the item window.
-	 */
-	void UpdateItemSelection();
-
-	/**
-	 * Gets an int with the current switch/variable selected.
-	 */
-	int GetIndex();
-
-	/**
 	 * Resets the remembered indices
 	 */
 	static void ResetPrevIndices();
