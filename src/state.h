@@ -72,8 +72,9 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps);
  * Removes all states which end after battle.
  *
  * @param vector of states
+ * @param ps permanent states that can never be removed
  */
-void RemoveAllBattle(StateVec& states);
+void RemoveAllBattle(StateVec& states, const PermanentStates& ps);
 
 /**
  * Removes all states.
