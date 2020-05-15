@@ -106,14 +106,11 @@ void Graphics::Draw(Bitmap& dst) {
 
 	int min_z = std::numeric_limits<int>::min();
 	int max_z = std::numeric_limits<int>::max();
-	if (transition.IsActive() || transition.IsErased()) {
+	if (transition.IsActive()) {
 		min_z = transition.GetZ();
-	}
-
-	if (transition.IsErased()) {
+	} else if (transition.IsErased()) {
+		min_z = transition.GetZ() + 1;
 		dst.Clear();
-		LocalDraw(dst, min_z, max_z);
-		return;
 	}
 	LocalDraw(dst, min_z, max_z);
 }
