@@ -75,6 +75,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void UpdateGraphics() override;
 
 	void Continue(SceneType prev_scene) override;
 	void TransitionIn(SceneType prev_scene) override;

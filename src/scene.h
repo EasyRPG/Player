@@ -153,6 +153,11 @@ public:
 	virtual void Update();
 
 	/**
+	 * Update graphics in scene stack
+	 */
+	virtual void UpdateGraphics() {}
+
+	/**
 	 * Pushes a new scene on the scene execution stack.
 	 *
 	 * @param new_scene new scene.

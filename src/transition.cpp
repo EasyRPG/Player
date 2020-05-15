@@ -389,12 +389,15 @@ void Transition::Update() {
 		return;
 	}
 
-
 	// FIXME: Break this dependency on DisplayUI
 	if (transition_type != TransitionNone && !screen2) {
 		// Wait for all graphics to load before drawing screens.
 		if (FromErase() && AsyncHandler::IsGraphicFilePending()) {
 			return;
+		}
+
+		if (scene) {
+			scene->UpdateGraphics();
 		}
 
 		if (!screen1) {
