@@ -18,12 +18,12 @@
 #ifndef EP_IMAGE_PNG_H
 #define EP_IMAGE_PNG_H
 
-#include "filesystem.h"
+#include "filesystem_stream.h"
 
 namespace ImagePNG {
 	bool ReadPNG(const void* buffer, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadPNG(Filesystem::InputStream& is, bool transparent, int& width, int& height, void*& pixels);
-	bool WritePNG(Filesystem::OutputStream& os, uint32_t width, uint32_t height, uint32_t* data);
+	bool ReadPNG(Filesystem_Stream::InputStream& is, bool transparent, int& width, int& height, void*& pixels);
+	bool WritePNG(Filesystem_Stream::OutputStream& os, uint32_t width, uint32_t height, uint32_t* data);
 }
 
 #endif

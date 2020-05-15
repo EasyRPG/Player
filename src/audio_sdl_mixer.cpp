@@ -44,25 +44,21 @@
 using namespace std::chrono_literals;
 
 namespace {
-	struct RefHolder {
-		Filesystem::InputStream stream;
-	};
-
 	Sint64 SDLCALL vio_size(struct SDL_RWops * context) {
-		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
-		return stream->get_size();
+		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
+		return stream->GetSize();
 	}
 
 	Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
-		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
+		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
 
-		stream->seekg(offset, Filesystem::CSeekdirToCppSeekdir(whence));
+		stream->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(whence));
 
 		return stream->tellg();
 	}
 
 	size_t SDLCALL vio_read(struct SDL_RWops * context, void *ptr, size_t size, size_t maxnum) {
-		auto stream = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1)->stream;
+		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
 
 		if (size == 0) return 0;
 
@@ -76,17 +72,16 @@ namespace {
 
 	int SDLCALL vio_close(struct SDL_RWops * context) {
 		// If this is the last shared pointer, the stream get's closed now
-		auto stream_ref = reinterpret_cast<RefHolder*>(context->hidden.unknown.data1);
+		auto stream_ref = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
 		delete stream_ref;
 
 		context->hidden.unknown.data1 = nullptr;
 		return 0;
 	}
 
-	SDL_RWops* create_StreamRWOps(Filesystem::InputStream stream){
+	SDL_RWops* create_StreamRWOps(Filesystem_Stream::InputStream stream){
 		SDL_RWops * ret = SDL_AllocRW();
-		// create a new shared pointer to avoid deletion of the content when the scope of this function ends
-		ret->hidden.unknown.data1 = new RefHolder { std::move(stream) };
+		ret->hidden.unknown.data1 = new Filesystem_Stream::InputStream { std::move(stream) };
 		ret->close = vio_close;
 		ret->read = vio_read;
 		ret->write = vio_write;
@@ -318,12 +313,12 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	}
 	audio_decoder = AudioDecoder::Create(filestream, file);
 	if (audio_decoder) {
-		SetupAudioDecoder(filestream, file, volume, pitch, fadein);
+		SetupAudioDecoder(std::move(filestream), file, volume, pitch, fadein);
 		return;
 	}
 
 	filestream = FileFinder::OpenInputStream(file);
-	SDL_RWops* rw = create_StreamRWOps(filestream);
+	SDL_RWops* rw = create_StreamRWOps(std::move(filestream));
 
 	bgm_stop = false;
 	played_once = false;
@@ -351,12 +346,12 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 			Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 			return;
 		}
-		filestream->read(magic, sizeof(magic));
-		filestream->seekg(0, std::ios::ios_base::beg);
+		filestream.read(magic, sizeof(magic));
+		filestream.seekg(0, std::ios::ios_base::beg);
 		if (!strncmp(magic, "MThd", 4)) {
 			Output::Debug("FmMidi fallback: {}", file);
 			audio_decoder.reset(new FmMidiDecoder());
-			SetupAudioDecoder(filestream, file, volume, pitch, fadein);
+			SetupAudioDecoder(std::move(filestream), file, volume, pitch, fadein);
 			return;
 		}
 #endif
@@ -400,8 +395,8 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
-void SdlMixerAudio::SetupAudioDecoder(Filesystem::InputStream stream, const std::string& file, int volume, int pitch, int fadein) {
-	if (!audio_decoder->Open(stream)) {
+void SdlMixerAudio::SetupAudioDecoder(Filesystem_Stream::InputStream stream, const std::string& file, int volume, int pitch, int fadein) {
+	if (!audio_decoder->Open(std::move(stream))) {
 		Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), audio_decoder->GetError());
 		audio_decoder.reset();
 		return;

@@ -73,7 +73,7 @@ public:
 	 * 
 	 * @return Whether the operation was successful or not
 	 */
-	bool Open(Filesystem::InputStream file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
 	/**
 	 * Wraps the seek function of the contained decoder

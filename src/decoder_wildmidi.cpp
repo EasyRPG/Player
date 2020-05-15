@@ -77,16 +77,16 @@ static void WildMidiDecoder_deinit() {
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
-	auto stream = FileFinder::OpenInputStream(filename);
+	auto&& stream = FileFinder::OpenInputStream(filename);
 	if (!stream) {
 		return nullptr;
 	}
 
-	auto s = stream->get_size();
+	auto s = stream.GetSize();
 	*size = s;
 
 	char* buffer = reinterpret_cast<char*>(malloc(s));
-	stream->read(buffer, s);
+	stream.read(buffer, s);
 
 	return buffer;
 }
@@ -326,7 +326,7 @@ bool WildMidiDecoder::WasInited() const {
 	return init;
 }
 
-bool WildMidiDecoder::Open(Filesystem::InputStream stream) {
+bool WildMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	if (!init)
 		return false;
 
@@ -336,7 +336,7 @@ bool WildMidiDecoder::Open(Filesystem::InputStream stream) {
 		Output::Debug("WildMidi: Previous handle was not closed.");
 	}
 
-	file_buffer = Utils::ReadStream(*stream);
+	file_buffer = Utils::ReadStream(stream);
 
 	handle = WildMidi_OpenBuffer(file_buffer.data(), file_buffer.size());
 	if (!handle) {

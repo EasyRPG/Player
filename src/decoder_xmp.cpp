@@ -40,16 +40,16 @@ XMPDecoder::~XMPDecoder() {
 	}
 }
 
-bool XMPDecoder::Open(Filesystem::InputStream stream) {
+bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 	finished = false;
 
 	if (!ctx)
 		return false;
 
-	file_buffer.resize(stream->get_size());
-	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
+	file_buffer.resize(stream.GetSize());
+	stream.read(reinterpret_cast<char*>(file_buffer.data()), stream.GetSize());
 		
-	int res =  xmp_load_module_from_memory(ctx, file_buffer.data(), stream->get_size());
+	int res = xmp_load_module_from_memory(ctx, file_buffer.data(), stream.GetSize());
 	if (res != 0) {
 		error_message = "XMP: Error loading file";
 		return false;

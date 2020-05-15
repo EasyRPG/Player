@@ -184,7 +184,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 	}
 
 	chan.decoder = AudioDecoder::Create(filestream, file);
-	if (chan.decoder && chan.decoder->Open(filestream)) {
+	if (chan.decoder && chan.decoder->Open(std::move(filestream))) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
 		chan.decoder->SetFade(0, volume, fadein);

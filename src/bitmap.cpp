@@ -106,8 +106,8 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	void* pixels = nullptr;
 
 	uint8_t data[4] = {};
-	size_t bytes = stream->read(reinterpret_cast<char*>(data),  4).gcount();
-	stream->seekg(0, std::ios::ios_base::beg);
+	size_t bytes = stream.read(reinterpret_cast<char*>(data),  4).gcount();
+	stream.seekg(0, std::ios::ios_base::beg);
 
 	bool img_okay = false;
 
@@ -119,8 +119,6 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
 	else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
-
-	stream.reset();
 
 	if (!img_okay) {
 		free(pixels);
@@ -175,7 +173,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
-bool Bitmap::WritePNG(Filesystem::OutputStream& os) const {
+bool Bitmap::WritePNG(Filesystem_Stream::OutputStream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 

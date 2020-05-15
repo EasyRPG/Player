@@ -477,7 +477,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		}
 
 		// The first line contains the path to the actual audio file to play
-		std::string line = Utils::ReadLine(*stream.get());
+		std::string line = Utils::ReadLine(stream);
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
 		Output::Debug("Ineluki link file: {} -> {}", path, line);

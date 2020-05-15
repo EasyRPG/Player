@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "filesystem.h"
+#include "filesystem_stream.h"
 
 /**
  * The AudioDecoder class provides an abstraction over the decoding of
@@ -80,7 +80,7 @@ public:
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(Filesystem::InputStream stream, const std::string& filename, bool resample = true);
+	static std::unique_ptr<AudioDecoder> Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample = true);
 
 	/**
 	 * Updates the volume for the fade in/out effect.
@@ -191,7 +191,7 @@ public:
 	 *
 	 * @return true if inititalizing was succesful, false otherwise
 	 */
-	virtual bool Open(Filesystem::InputStream stream) = 0;
+	virtual bool Open(Filesystem_Stream::InputStream stream) = 0;
 
 	/**
 	 * Determines whether the stream is finished.

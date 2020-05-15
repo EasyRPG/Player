@@ -88,7 +88,7 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 		se->audio_decoder = AudioDecoder::Create(f, filename, false);
 
 		if (se->audio_decoder) {
-			if (!se->audio_decoder->Open(f)) {
+			if (!se->audio_decoder->Open(std::move(f))) {
 				se->audio_decoder.reset();
 			}
 		}
@@ -143,7 +143,8 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 #ifdef USE_AUDIO_RESAMPLER
 		dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
 #endif
-		dec->Open(nullptr);
+		Filesystem_Stream::InputStream is;
+		dec->Open(std::move(is));
 		return dec;
 	}
 
@@ -172,7 +173,8 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 #ifdef USE_AUDIO_RESAMPLER
 	dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
 #endif
-	dec->Open(nullptr);
+	Filesystem_Stream::InputStream is;
+	dec->Open(std::move(is));
 	return dec;
 }
 

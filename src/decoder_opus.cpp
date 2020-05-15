@@ -25,22 +25,22 @@
 #include "decoder_opus.h"
 
 static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
 	if (nbytes == 0) return 0;
 	return (int)(f->read(reinterpret_cast<char*>(ptr), nbytes).gcount());
 }
 
 static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
 
-	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(whence));
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(whence));
 
 	return 0;
 }
 
 static opus_int64 vio_tell_func(void* stream) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(stream);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
 	return f->tellg();
 }
 
@@ -61,16 +61,15 @@ OpusDecoder::~OpusDecoder() {
 	}
 }
 
-bool OpusDecoder::Open(Filesystem::InputStream stream) {
-	this->stream = stream;
+bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
+	this->stream = std::move(stream);
 	finished = false;
 
 	int res;
 
-	oof = op_open_callbacks(stream.get(), &vio, nullptr, 0, &res);
+	oof = op_open_callbacks(&this->stream, &vio, nullptr, 0, &res);
 	if (res != 0) {
 		error_message = "Opus: Error reading file";
-		this->stream.reset();
 		op_free(oof);
 		return false;
 	}

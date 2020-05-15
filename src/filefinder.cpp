@@ -646,37 +646,37 @@ void FileFinder::Quit() {
 	game_directory_tree.reset();
 }
 
-Filesystem::InputStream FileFinder::OpenInputStream(const std::string& name,
+Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
 	std::streamsize size = FileFinder::GetFileSize(name);
 	auto *buf = new std::filebuf();
 
-	Filesystem::InputStream ret(new Filesystem::InputStreamRaw(buf->open(
+	Filesystem_Stream::InputStream is(buf->open(
 #ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
 		name.c_str(),
 #endif
-		m), size));
+		m), size);
 
-	return (*ret) ? ret : Filesystem::InputStream();
+	return std::move(is);
 }
 
-Filesystem::OutputStream FileFinder::OpenOutputStream(const std::string& name,
+Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
 	auto *buf = new std::filebuf();
 
-	Filesystem::OutputStream ret(new Filesystem::OutputStreamRaw(buf->open(
+	Filesystem_Stream::OutputStream os(buf->open(
 #ifdef _MSC_VER
 			Utils::ToWideString(name).c_str(),
 #else
 			name.c_str(),
 #endif
-		m)));
+		m));
 
-	return (*ret) ? ret : Filesystem::OutputStream();
+	return std::move(os);
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {

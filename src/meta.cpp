@@ -52,7 +52,7 @@ std::string crc32file(std::string file_name) {
 	if (!file_name.empty()) {
 		auto in = FileFinder::OpenInputStream(file_name, std::ios::binary);
 		if (in) {
-			std::string buffer((std::istreambuf_iterator<char>(*in)), std::istreambuf_iterator<char>());
+			std::string buffer((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 			unsigned long crc = ::crc32(0, reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length());
 
 			std::stringstream res;

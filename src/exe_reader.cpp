@@ -25,7 +25,7 @@
 #include <iostream>
 #include <fstream>
 
-EXEReader::EXEReader(Filesystem::InputStream& core) : corefile(core) {
+EXEReader::EXEReader(Filesystem_Stream::InputStream& core) : corefile(core) {
 	// The Incredibly Dumb Resource Grabber (tm)
 	// The idea is that this code will eventually be moved to happen earlier or broken down as-needed.
 	// Since EXFONT is the only thing that matters right now, it's the only thing handled.
@@ -71,18 +71,18 @@ static uint32_t djb2_hash(char* str, size_t length) {
 	return hash;
 }
 
-static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem::InputStream& corefile, uint32_t position, uint32_t len) {
+static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem_Stream::InputStream& corefile, uint32_t position, uint32_t len) {
 	std::vector<uint8_t> exfont;
 	constexpr int header_size = 14;
 	exfont.resize(len + header_size);
 
-	corefile->seekg(position, std::ios_base::beg);
+	corefile.seekg(position, std::ios_base::beg);
 
 	// Solely for calculating position of actual data
-	uint32_t hdrL = corefile->get();
-	hdrL |= ((uint32_t) corefile->get()) << 8;
-	hdrL |= ((uint32_t) corefile->get()) << 16;
-	hdrL |= ((uint32_t) corefile->get()) << 24;
+	uint32_t hdrL = corefile.get();
+	hdrL |= ((uint32_t) corefile.get()) << 8;
+	hdrL |= ((uint32_t) corefile.get()) << 16;
+	hdrL |= ((uint32_t) corefile.get()) << 24;
 	// As it turns out, EXFONTs appear to operate on all the same restrictions as an ordinary BMP.
 	// Given this particular resource is loaded by the RPG Maker half of the engine, this makes the usual amount of sense.
 	// This means 256 palette entries. Without fail. Even though only two are used, the first and last.
@@ -112,9 +112,9 @@ static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem::InputStre
 	exfont[pos++] = (hdrL >> 16) & 0xFF;
 	exfont[pos++] = (hdrL >> 24) & 0xFF;
 
-	corefile->seekg(position, std::ios_base::beg);
+	corefile.seekg(position, std::ios_base::beg);
 	while (len > 0) {
-		int v = corefile->get();
+		int v = corefile.get();
 		if (v == -1)
 			break;
 		exfont[pos++] = v;
@@ -181,8 +181,8 @@ std::vector<uint8_t> EXEReader::GetExFont() {
 }
 
 uint8_t EXEReader::GetU8(uint32_t i) {
-	corefile->seekg(i, std::ios_base::beg);
-	int ch = corefile->get();
+	corefile.seekg(i, std::ios_base::beg);
+	int ch = corefile.get();
 	if (ch == -1)
 		ch = 0;
 	return (uint8_t) ch;

@@ -74,7 +74,7 @@ Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, Di
 {}
 
 void Input::LogSource::Update() {
-	*log_file >> pressed_buttons;
+	log_file >> pressed_buttons;
 
 	if (!log_file) {
 		Player::exit_flag = true;
@@ -88,7 +88,7 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 	if (!record_to_path.empty()) {
 		auto path = record_to_path.c_str();
 
-		record_log = FileFinder::OpenOutputStream(path, std::ios::out | std::ios::trunc);
+		record_log = std::make_unique<Filesystem_Stream::OutputStream>(FileFinder::OpenOutputStream(path, std::ios::out | std::ios::trunc));
 
 		if (!record_log) {
 			Output::Warning("Failed to open file {} for input recording : {}", path, strerror(errno));

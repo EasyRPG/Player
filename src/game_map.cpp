@@ -285,10 +285,10 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		}
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
-		map = lcf::LMU_Reader::Load(*map_stream, Player::encoding);
+		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
 	} else {
 		auto map_stream = FileFinder::OpenInputStream(map_file);
-		map = lcf::LMU_Reader::LoadXml(*map_stream);
+		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 	Output::Debug("Loading Map {}", ss.str());
 

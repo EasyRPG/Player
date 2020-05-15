@@ -134,7 +134,7 @@ void Scene_Save::Action(int index) {
 		}
 	}
 	auto save_stream = FileFinder::OpenOutputStream(filename);
-	lcf::LSD_Reader::Save(*save_stream, data_copy, Player::encoding);
+	lcf::LSD_Reader::Save(save_stream, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system

@@ -15,25 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "filesystem.h"
+#include "filesystem_stream.h"
 
-Filesystem::vfs_istream::vfs_istream(std::streambuf *sb, std::streamsize size) :
-	size(size), std::istream(sb) {
-	// no-op
-}
-
-Filesystem::vfs_istream::~vfs_istream() {
-	delete rdbuf();
-}
-
-std::streamsize Filesystem::vfs_istream::get_size() const {
-	return size;
-}
-
-Filesystem::vfs_ostream::vfs_ostream(std::streambuf *sb) :
-	std::ostream(sb) {
-}
-
-Filesystem::vfs_ostream::~vfs_ostream() {
-	delete rdbuf();
-}
+// empty for now
+// impl in further PR

@@ -24,25 +24,25 @@
 #include "audio_decoder.h"
 #include "output.h"
 #include "decoder_oggvorbis.h"
-#include "filesystem.h"
+#include "filesystem_stream.h"
 
 static size_t vio_read_func(void *ptr, size_t size,size_t nmemb,void* userdata) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	if (size == 0) return 0;
 	return f->read(reinterpret_cast<char*>(ptr), size*nmemb).gcount()/size;
 }
 
 static int vio_seek_func(void* userdata, ogg_int64_t offset, int seek_type) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
 
-	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(seek_type));
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(seek_type));
 
 	return f->tellg();
 }
 
 static long vio_tell_func(void* userdata) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(userdata);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	return f->tellg();
 }
 
@@ -64,20 +64,19 @@ OggVorbisDecoder::~OggVorbisDecoder() {
 	}
 }
 
-bool OggVorbisDecoder::Open(Filesystem::InputStream stream) {
+bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 	finished = false;
-	this->stream = stream;
+	this->stream = std::move(stream);
 	if (ovf) {
 		ov_clear(ovf);
 		delete ovf;
 	}
 	ovf = new OggVorbis_File;
 
-	int res = ov_open_callbacks(stream.get(), ovf, NULL, 0,vio);
+	int res = ov_open_callbacks(&this->stream, ovf, NULL, 0,vio);
 	if (res < 0) {
 		error_message = "OggVorbis: Error reading file";
 		delete ovf;
-		this->stream.reset();
 		return false;
 	}
 

@@ -20,7 +20,7 @@
 
 // Headers
 #include "system.h"
-#include "filesystem.h"
+#include "filesystem_stream.h"
 
 #include <string>
 #include <cstdio>
@@ -158,7 +158,7 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	Filesystem::InputStream OpenInputStream(const std::string& name,
+	Filesystem_Stream::InputStream OpenInputStream(const std::string& name,
 			std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary);
 
 	/**
@@ -168,7 +168,7 @@ namespace FileFinder {
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	Filesystem::OutputStream OpenOutputStream(const std::string& name,
+	Filesystem_Stream::OutputStream OpenOutputStream(const std::string& name,
 			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
 
 	struct Directory {

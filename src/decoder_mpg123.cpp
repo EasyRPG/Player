@@ -30,15 +30,15 @@ static void Mpg123Decoder_deinit(void) {
 }
 
 static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(io);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(io);
 	return f->read(reinterpret_cast<char*>(buffer), nbyte).gcount();
 }
 
 static off_t custom_seek(void* io, off_t offset, int seek_type) {
-	auto* f = reinterpret_cast<Filesystem::InputStreamRaw*>(io);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(io);
 	if (f->eof()) f->clear(); //emulate behaviour of fseek
 
-	f->seekg(offset, Filesystem::CSeekdirToCppSeekdir(seek_type));
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(seek_type));
 
 	return f->tellg();
 }
@@ -46,8 +46,6 @@ static off_t custom_seek(void* io, off_t offset, int seek_type) {
 static void custom_close(void*) {
 	// do nothing
 }
-
-static void noop_close(void*) {}
 
 Mpg123Decoder::Mpg123Decoder() :
 	handle(nullptr, mpg123_delete)
@@ -83,19 +81,19 @@ bool Mpg123Decoder::WasInited() const {
 	return init;
 }
 
-bool Mpg123Decoder::Open(Filesystem::InputStream stream) {
+bool Mpg123Decoder::Open(Filesystem_Stream::InputStream stream) {
 	if (!init) {
 		return false;
 	}
 	
 	finished = false;
 
-	err = mpg123_open_handle(handle.get(), stream.get());
+	this->stream = std::move(stream);
+	err = mpg123_open_handle(handle.get(), &this->stream);
 	if (err != MPG123_OK) {
 		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
 		return false;
 	}
-	this->stream = stream;
 	// Samplerate cached, regularly needed for Ticks function
 	int ch;
 	int fmt;
@@ -106,7 +104,7 @@ bool Mpg123Decoder::Open(Filesystem::InputStream stream) {
 
 bool Mpg123Decoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
-	mpg123_seek_frame(handle.get(), offset, Filesystem::CppSeekdirToCSeekdir(origin));
+	mpg123_seek_frame(handle.get(), offset, Filesystem_Stream::CppSeekdirToCSeekdir(origin));
 
 	return true;
 }
@@ -201,15 +199,15 @@ int Mpg123Decoder::GetTicks() const {
 	return pos / samplerate;
 }
 
-bool Mpg123Decoder::IsMp3(Filesystem::InputStream stream) {
+bool Mpg123Decoder::IsMp3(Filesystem_Stream::InputStream& stream) {
 	Mpg123Decoder decoder;
 	// Prevent stream handle destruction
-	mpg123_replace_reader_handle(decoder.handle.get(), custom_read, custom_seek, noop_close);
+	mpg123_replace_reader_handle(decoder.handle.get(), custom_read, custom_seek, custom_close);
 	// Prevent skipping of too many garbage, breaks heuristic
 	mpg123_param(decoder.handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
-	if (!decoder.Open(stream)) {
+	/*FIXME ownership if (!decoder.Open(std::make_unique<decltype(stream)>(std::move(stream)))) {
 		return false;
-	}
+	}*/
 
 	unsigned char buffer[1024];
 	int err = 0;

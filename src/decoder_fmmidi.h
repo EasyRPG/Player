@@ -35,7 +35,7 @@ public:
 	~FmMidiDecoder();
 
 	// Audio Decoder interface
-	bool Open(Filesystem::InputStream stream) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
 	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 

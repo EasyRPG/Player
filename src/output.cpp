@@ -72,18 +72,18 @@ namespace {
 		return log_prefix[static_cast<int>(lvl)];
 	}
 
-	Filesystem::OutputStream LOG_FILE;
+	Filesystem_Stream::OutputStream LOG_FILE;
 	bool init = false;
 
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE=FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
 		char timestr[100];
 		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
-		return *LOG_FILE << timestr;
+		return LOG_FILE << timestr;
 	}
 
 	bool ignore_pause = false;
@@ -206,7 +206,7 @@ static void HandleErrorOutput(const std::string& err) {
 
 void Output::Quit() {
 	if (LOG_FILE) {
-		LOG_FILE.reset();
+		LOG_FILE.clear();
 	}
 
 	int log_size = 1024 * 100;
@@ -214,19 +214,17 @@ void Output::Quit() {
 	char* buf = new char[log_size];
 
 	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(),std::ios::ios_base::in);
-	if (in&&!in->bad()) {
-		in->seekg(0, std::ios_base::end);
-		if (in->tellg() > log_size) {
-			in->seekg(-log_size, std::ios_base::end);
+	if (in&&!in.bad()) {
+		in.seekg(0, std::ios_base::end);
+		if (in.tellg() > log_size) {
+			in.seekg(-log_size, std::ios_base::end);
 			// skip current incomplete line
 			in.getline(buf, 1024 * 100);
 			in.read(buf, 1024 * 100);
-			size_t read = in->gcount();
-			in.reset();
+			size_t read = in.gcount();
 
 			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios::ios_base::out);
-			out->write(buf, read);
-			out.reset();
+			out.write(buf, read);
 		}
 	}
 
@@ -255,7 +253,7 @@ bool Output::TakeScreenshot(std::string const& file) {
 	return false;
 }
 
-bool Output::TakeScreenshot(std::ostream& os) {
+bool Output::TakeScreenshot(Filesystem_Stream::OutputStream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 

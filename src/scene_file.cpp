@@ -74,7 +74,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	if (!file.empty()) {
 		// File found
 		auto save_stream = FileFinder::OpenInputStream(file);
-		std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(*save_stream, Player::encoding);
+		std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(save_stream, Player::encoding);
 
 		if (savegame) {
 			PopulatePartyFaces(win, id, *savegame);

@@ -76,6 +76,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/filefinder.h \
 	src/filesystem.cpp \
 	src/filesystem.h \
+	src/filesystem_stream.h \
 	src/flash.h \
 	src/flat_map.h \
 	src/font.cpp \

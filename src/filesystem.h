@@ -18,71 +18,12 @@
 #ifndef EP_FILESYSTEM_H
 #define EP_FILESYSTEM_H
 
-// Headers
-#include <cassert>
-#include <istream>
-#include <ostream>
-#include "system.h"
+#include "filesystem_stream.h"
 
 class Filesystem {
 public:
-	class vfs_istream;
-	class vfs_ostream;
-
-	using InputStreamRaw = vfs_istream;
-	using OutputStreamRaw = vfs_ostream;
-
-	using InputStream = std::shared_ptr<InputStreamRaw>;
-	using OutputStream = std::shared_ptr<OutputStreamRaw>;
-
-	class vfs_istream : public std::istream {
-	public:
-		explicit vfs_istream(std::streambuf* sb, std::streamsize size);
-		~vfs_istream() override;
-
-		std::streamsize get_size() const;
-
-	private:
-		std::streamsize size;
-	};
-
-	class vfs_ostream : public std::ostream {
-	public:
-		explicit vfs_ostream(std::streambuf *sb);
-		~vfs_ostream() override;
-	};
-
-	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
-
-	static constexpr int CppSeekdirToCSeekdir(std::ios_base::seekdir origin);
+	// empty for now
+	// impl in further PR
 };
-
-constexpr std::ios_base::seekdir Filesystem::CSeekdirToCppSeekdir(int origin) {
-	switch (origin) {
-		case SEEK_SET:
-			return std::ios_base::beg;
-		case SEEK_CUR:
-			return std::ios_base::cur;
-		case SEEK_END:
-			return std::ios_base::end;
-		default:
-			assert(false);
-			return std::ios_base::beg;
-	}
-}
-
-constexpr int Filesystem::CppSeekdirToCSeekdir(std::ios_base::seekdir origin) {
-	switch (origin) {
-		case std::ios_base::beg:
-			return SEEK_SET;
-		case std::ios_base::cur:
-			return SEEK_CUR;
-		case std::ios_base::end:
-			return SEEK_END;
-		default:
-			assert(false);
-			return SEEK_SET;
-	}
-}
 
 #endif

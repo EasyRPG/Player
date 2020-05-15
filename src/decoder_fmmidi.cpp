@@ -52,11 +52,11 @@ int read_func(void* instance) {
 	return fmmidi->file_buffer[fmmidi->file_buffer_pos++];
 }
 
-bool FmMidiDecoder::Open(Filesystem::InputStream stream) {
+bool FmMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	seq->clear();
-	file_buffer.resize(stream->get_size());
-	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
-	size_t bytes_read = stream->gcount();
+	file_buffer.resize(stream.GetSize());
+	stream.read(reinterpret_cast<char*>(file_buffer.data()), stream.GetSize());
+	size_t bytes_read = stream.gcount();
 
 	if ((bytes_read != file_buffer.size()) || (!seq->load(this, read_func))) {
 		error_message = "FM Midi: Error reading file";

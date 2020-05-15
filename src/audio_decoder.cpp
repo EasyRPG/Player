@@ -104,7 +104,7 @@ public:
 		error_message = std::string("WMA audio files are not supported. Reinstall the\n") +
 			"game and don't convert them when asked by Windows!\n";
 	}
-	bool Open(Filesystem::InputStream) override { return false; }
+	bool Open(Filesystem_Stream::InputStream) override { return false; }
 	bool IsFinished() const override { return true; }
 	void GetFormat(int&, Format&, int&) const override {}
 	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
@@ -113,12 +113,13 @@ private:
 };
 const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream stream, const std::string& filename, bool resample) {
+std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample) {
 	char magic[4] = { 0 };
-	if (stream->read(magic, sizeof(magic)).gcount() == 0) {
+	stream.ReadIntoObj(magic);
+	if (!stream.ReadIntoObj(magic)) {
 		return nullptr;
 	}
-	stream->seekg(0, std::ios::ios_base::beg);
+	stream.seekg(0, std::ios::ios_base::beg);
 
 #if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
 	/* WildMidi and XMP are the only audio decoders that need the filename passed
@@ -167,11 +168,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream strea
 	// Try to use internal OGG decoder
 	if (!strncmp(magic, "OggS", 4)) { // OGG
 #ifdef HAVE_OPUS
-		stream->seekg(28, std::ios::ios_base::beg);
-		if (stream->read(magic, sizeof(magic)).gcount() == 0) {
+		stream.seekg(28, std::ios::ios_base::beg);
+		if (stream.read(magic, sizeof(magic)).gcount() == 0) {
 			return nullptr;
 		}
-		stream->seekg(0, std::ios::ios_base::beg);
+		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "Opus", 4)) {
 			if (resample) {
@@ -183,11 +184,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream strea
 #endif
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
-		stream->seekg(29, std::ios::ios_base::beg);
-		if (stream->read(magic, sizeof(magic)).gcount() == 0) {
+		stream.seekg(29, std::ios::ios_base::beg);
+		if (stream.read(magic, sizeof(magic)).gcount() == 0) {
 			return nullptr;
 		}
-		stream->seekg(0, std::ios::ios_base::beg);
+		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "vorb", 4)) {
 			if (resample) {
@@ -202,12 +203,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream strea
 #ifdef WANT_FASTWAV
 	// Try to use a basic decoder for faster wav decoding if not ADPCM
 	if (!strncmp(magic, "RIFF", 4)) {
-		stream->seekg(20, std::ios::ios_base::beg);
+		stream.seekg(20, std::ios::ios_base::beg);
 		uint16_t raw_enc;
-		stream->read(reinterpret_cast<char*>(&raw_enc), 2);
+		stream.read(reinterpret_cast<char*>(&raw_enc), 2);
 
 		Utils::SwapByteOrder(raw_enc);
-		stream->seekg(0, std::ios::ios_base::beg);
+		stream.seekg(0, std::ios::ios_base::beg);
 		if (raw_enc == 0x01) { // Codec is normal PCM
 			if (resample) {
 				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new WavDecoder())));
@@ -273,8 +274,8 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream strea
 
 		// Parsing MP3s seems to be the only reliable way to detect them
 		if (Mpg123Decoder::IsMp3(stream)) {
-			stream->clear();
-			stream->seekg(0, std::ios::ios_base::beg);
+			stream.clear();
+			stream.seekg(0, std::ios::ios_base::beg);
 			if (resample) {
 				mp3dec = new AudioResampler(std::unique_ptr<AudioDecoder>(new Mpg123Decoder()));
 			} else {
@@ -292,8 +293,8 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem::InputStream strea
 	}
 #endif
 
-	stream->clear();
-	stream->seekg(0, std::ios::ios_base::beg);
+	stream.clear();
+	stream.seekg(0, std::ios::ios_base::beg);
 	return nullptr;
 }
 
