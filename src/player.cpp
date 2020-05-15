@@ -345,14 +345,14 @@ void Player::Update(bool update_scene) {
 	}
 
 	auto& transition = Transition::instance();
-	auto was_transition_pending = transition.IsActive();
 
-	transition.Update();
-
-	// If we aren't waiting on a transition, but we are waiting for scene delay.
-	if (!was_transition_pending) {
+	if (transition.IsActive()) {
+		transition.Update();
+	} else {
+		// If we aren't waiting on a transition, but we are waiting for scene delay.
 		Scene::instance->UpdateDelayFrames();
 	}
+
 	if (update_scene) {
 		Scene::instance->Update();
 		// Async file loading or transition. Don't increment the frame

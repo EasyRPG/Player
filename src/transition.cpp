@@ -23,6 +23,7 @@
 #include <cmath>
 
 #include "transition.h"
+#include "async_handler.h"
 #include "bitmap.h"
 #include "game_player.h"
 #include "graphics.h"
@@ -66,7 +67,7 @@ void Transition::PrependFlashes(int r, int g, int b, int p, int duration, int it
 	flash_iterations = std::max(1, iterations);
 }
 
-void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) {
+void Transition::Init(Type type, Scene *linked_scene, int duration, bool next_erase) {
 	// Triggering multiple transitions on a single frame is a bug.
 	assert(!IsActive());
 
@@ -82,29 +83,22 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 	flash_iterations = 0;
 	flash_duration = 0;
 	total_frames = 0;
+	from_erase = to_erase;
+
+	SetVisible(false);
 
 	// Erase transitions are skipped entirely if screen already erased.
-	if (type != TransitionNone && screen_erased && erase) {
+	if (type != TransitionNone && from_erase && next_erase) {
 		transition_type = TransitionNone;
 		return;
 	}
 
-	// FIXME: Break this dependency on DisplayUI
-	if (screen_erased) {
-		screen1 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-	} else {
-		if (erase) {
-			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
-			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
-		} else {
-			screen1 = DisplayUi->CaptureScreen();
-		}
-	}
-	if (erase) {
-		screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-	} else {
-		screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
-		Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+	screen1.reset();
+	screen2.reset();
+
+	// Show Screen, the current frame is captured immediately
+	if (!next_erase) {
+		screen1 = DisplayUi->CaptureScreen();
 	}
 
 	// Total frames and erased have to be set *after* the above drawing code.
@@ -117,7 +111,7 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool erase) 
 		return;
 	}
 
-	screen_erased = erase;
+	to_erase = next_erase;
 
 	SetAttributesTransitions();
 }
@@ -391,23 +385,50 @@ void Transition::Draw(Bitmap& dst) {
 }
 
 void Transition::Update() {
-	if (IsActive()) {
-		if (flash_iterations > 0) {
+	if (!IsActive()) {
+		return;
+	}
+
+
+	// FIXME: Break this dependency on DisplayUI
+	if (transition_type != TransitionNone && !screen2) {
+		// Wait for all graphics to load before drawing screens.
+		if (FromErase() && AsyncHandler::IsGraphicFilePending()) {
+			return;
+		}
+
+		if (!screen1) {
+			// erase -> erase is ingored
+			// any -> erase - screen1 was drawn in init.
+			assert(ToErase() && !FromErase());
+			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
+			Graphics::LocalDraw(*screen1, std::numeric_limits<int>::min(), GetZ() - 1);
+		}
+		if (ToErase()) {
+			screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+		} else {
+			screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
+			Graphics::LocalDraw(*screen2, std::numeric_limits<int>::min(), GetZ() - 1);
+		}
+	}
+
+	SetVisible(true);
+
+	if (flash_iterations > 0) {
+		if (flash.time_left > 0) {
+			Flash::Update(flash.current_level, flash.time_left);
 			if (flash.time_left > 0) {
-				Flash::Update(flash.current_level, flash.time_left);
-				if (flash.time_left > 0) {
-					return;
-				}
-				--flash_iterations;
-			}
-			if (flash_iterations > 0) {
-				flash.current_level = flash_power;
-				flash.time_left = flash_duration;
 				return;
 			}
+			--flash_iterations;
 		}
-		//Update current_frame:
-		current_frame++;
+		if (flash_iterations > 0) {
+			flash.current_level = flash_power;
+			flash.time_left = flash_duration;
+			return;
+		}
 	}
+	//Update current_frame:
+	current_frame++;
 }
 
