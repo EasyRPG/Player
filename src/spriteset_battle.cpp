@@ -108,3 +108,9 @@ Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
 	}
 	return NULL;
 }
+
+void Spriteset_Battle::ResetAllBattlerZ() {
+	for (auto& sprite: sprites) {
+		sprite->ResetZ();
+	}
+}

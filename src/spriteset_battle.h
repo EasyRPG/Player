@@ -36,6 +36,8 @@ public:
 	void Update();
 	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
+	void ResetAllBattlerZ();
+
 protected:
 	std::unique_ptr<Background> background;
 	std::vector<std::shared_ptr<Sprite_Battler>> sprites;

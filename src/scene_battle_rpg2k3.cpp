@@ -49,6 +49,9 @@ void Scene_Battle_Rpg2k3::Start() {
 	InitActors();
 	InitAtbGauges();
 
+	// Changed enemy place means we need to recompute Z order
+	Game_Battle::GetSpriteset().ResetAllBattlerZ();
+
 	// Needed so transition in reflects updated battler positions
 	Game_Battle::UpdateGraphics();
 }

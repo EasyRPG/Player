@@ -100,13 +100,17 @@ public:
 	 */
 	void SetForcedAlive(bool value);
 
+	/**
+	 * Recompute the Z value for the sprite from it's Y coordinate.
+	 */
+	void ResetZ();
+
 protected:
 	void CreateSprite();
 	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
 	int GetMaxOpacity() const;
-	void ResetZ();
 
 	std::string sprite_name;
 	int hue = 0;
