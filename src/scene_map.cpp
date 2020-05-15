@@ -426,14 +426,13 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 	if (aop.GetType() == AsyncOp::eCallInn) {
 		activate_inn = true;
+		inn_started = false;
 		music_before_inn = Game_System::GetCurrentBGM();
 		map_async_continuation = std::forward<F>(f);
 
 		Game_System::BgmFade(800);
 
-		transition.InitErase(Transition::TransitionFadeOut, Scene::instance.get());
-
-		AsyncNext([=]() { StartInn(); });
+		UpdateInn();
 		return;
 	}
 
@@ -480,12 +479,29 @@ void Scene_Map::FinishInn() {
 	}
 
 	activate_inn = false;
+	inn_started = false;
 	AsyncNext(std::move(map_async_continuation));
 }
 
 void Scene_Map::UpdateInn() {
-	if (!Audio().BGM_IsPlaying() || Audio().BGM_PlayedOnce()) {
-		Game_System::BgmStop();
-		FinishInn();
+	// Allow message box to render during inn sequence.
+	if (Game_Message::IsMessageVisible()) {
+		Game_Message::Update();
+		return;
 	}
+
+	if (!inn_started) {
+		Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get());
+		inn_started = true;
+
+		AsyncNext([=]() { StartInn(); });
+		return;
+	}
+
+	if (Audio().BGM_IsPlaying() && !Audio().BGM_PlayedOnce()) {
+		return;
+	}
+
+	Game_System::BgmStop();
+	FinishInn();
 }
