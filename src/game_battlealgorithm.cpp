@@ -67,7 +67,7 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 	}
 
 	// AGI adjustment.
-	to_hit = 100 - (100 - to_hit) * (1.5f * (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f));
+	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f) / 2.0f) ;
 
 	// If target has physical dodge evasion:
 	if (target->GetType() == Game_Battler::Type_Ally

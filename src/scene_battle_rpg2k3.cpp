@@ -779,6 +779,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			if (target) {
 				if (action->IsSuccess()) {
+					if (action->IsCriticalHit()) {
+						Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
+					}
 					if (action->GetAffectedHp() != -1) {
 						DrawFloatText(
 							target->GetBattleX(),
