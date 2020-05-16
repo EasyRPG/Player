@@ -28,9 +28,7 @@
 #include "main_data.h"
 #include "scene.h"
 #include "drawable_mgr.h"
-
-// Applied to ensure that all pictures are above "normal" objects on this layer
-constexpr int z_mask = (1 << 16);
+#include "sprite_picture.h"
 
 static bool IsEmpty(const lcf::rpg::SavePicture& data, int frames) {
 	lcf::rpg::SavePicture empty;
@@ -150,98 +148,6 @@ Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 Game_Pictures::Picture* Game_Pictures::GetPicturePtr(int id) {
 	return id <= static_cast<int>(pictures.size())
 		? &pictures[id - 1] : nullptr;
-}
-
-void Game_Pictures::Picture::UpdateGraphics(bool is_battle) {
-	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
-		return;
-	}
-
-	// RPG Maker 2k3 1.12: Spritesheets
-	if (Player::IsRPG2k3E()
-			&& NumSpriteSheetFrames() > 1
-			&& (data.spritesheet_frame != last_spritesheet_frame))
-	{
-		last_spritesheet_frame = data.spritesheet_frame;
-
-		const int sw = sprite->GetBitmap()->GetWidth() / data.spritesheet_cols;
-		const int sh = sprite->GetBitmap()->GetHeight() / data.spritesheet_rows;
-		const int sx = sw * ((last_spritesheet_frame) % data.spritesheet_cols);
-		const int sy = sh * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
-
-		sprite->SetSrcRect(Rect{ sx, sy, sw, sh });
-	}
-
-	int x = data.current_x;
-	int y = data.current_y;
-	if (data.flags.affected_by_shake) {
-		x -= Main_Data::game_screen->GetShakeOffsetX();
-		y -= Main_Data::game_screen->GetShakeOffsetY();
-	}
-
-	sprite->SetX(x);
-	sprite->SetY(y);
-	if (Player::IsMajorUpdatedVersion()) {
-		// Battle Animations are above pictures
-		int priority = 0;
-		if (is_battle) {
-			priority = Drawable::GetPriorityForBattleLayer(data.battle_layer);
-		} else {
-			priority = Drawable::GetPriorityForMapLayer(data.map_layer);
-		}
-		if (priority > 0) {
-			sprite->SetZ(priority + z_mask + data.ID);
-		}
-	} else {
-		// Battle Animations are below pictures
-		sprite->SetZ(Priority_PictureOld + data.ID);
-	}
-	sprite->SetVisible(is_battle ? IsOnBattle() : IsOnMap());
-	sprite->SetZoomX(data.current_magnify / 100.0);
-	sprite->SetZoomY(data.current_magnify / 100.0);
-
-	auto sr = sprite->GetSrcRect();
-	sprite->SetOx(sr.width / 2);
-	sprite->SetOy(sr.height / 2);
-
-	sprite->SetAngle(data.effect_mode != lcf::rpg::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
-	sprite->SetWaverDepth(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
-
-	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.
-	const bool use_bottom_trans = (Player::IsRPG2k3() && !Player::IsRPG2k3E());
-	const auto top_trans = data.current_top_trans;
-	const auto bottom_trans = use_bottom_trans ? data.current_bot_trans : top_trans;
-
-	sprite->SetOpacity(
-		(int)(255 * (100 - top_trans) / 100),
-		(int)(255 * (100 - bottom_trans) / 100));
-
-	if (bottom_trans != top_trans) {
-		sprite->SetBushDepth(sprite->GetHeight() / 2);
-	} else {
-		sprite->SetBushDepth(0);
-	}
-
-	auto tone = Tone((int) (data.current_red * 128 / 100),
-			(int) (data.current_green * 128 / 100),
-			(int) (data.current_blue * 128 / 100),
-			(int) (data.current_sat * 128 / 100));
-	if (data.flags.affected_by_tint) {
-		auto screen_tone = Main_Data::game_screen->GetTone();
-		tone = Blend(tone, screen_tone);
-	}
-	sprite->SetTone(tone);
-
-	if (data.flags.affected_by_flash) {
-		sprite->SetFlashEffect(Main_Data::game_screen->GetFlashColor());
-	}
-}
-
-void Game_Pictures::UpdateGraphics(bool is_battle) {
-	for (auto& pic: pictures) {
-		pic.UpdateGraphics(is_battle);
-	}
 }
 
 void Game_Pictures::OnMapChange() {
@@ -403,7 +309,7 @@ void Game_Pictures::Picture::OnPictureSpriteReady() {
 	auto bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
-		sprite.reset(new Sprite(Drawable::Flags::Shared));
+		sprite = std::make_unique<Sprite_Picture>(data.ID, Drawable::Flags::Shared);
 	}
 	sprite->SetBitmap(bitmap);
 }
