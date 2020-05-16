@@ -39,8 +39,11 @@ public:
 	void OnPictureShow();
 
 private:
-	int pic_id = 0;
 	int last_spritesheet_frame = -1;
+	const int pic_id = 0;
+	const bool feature_spritesheet = false;
+	const bool feature_priority_layers = false;
+	const bool feature_bottom_trans = false;
 };
 
 inline void Sprite_Picture::OnPictureShow() {

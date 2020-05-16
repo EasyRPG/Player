@@ -30,8 +30,13 @@
 constexpr int z_mask = (1 << 16);
 
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
-	: Sprite(flags), pic_id(pic_id)
+	: Sprite(flags),
+	pic_id(pic_id),
+	feature_spritesheet(Player::IsRPG2k3E()),
+	feature_priority_layers(Player::IsMajorUpdatedVersion()),
+	feature_bottom_trans(Player::IsRPG2k3() && !Player::IsRPG2k3E())
 {
+
 }
 
 void Sprite_Picture::Draw(Bitmap& dst) {
@@ -51,7 +56,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
-	if (Player::IsRPG2k3E()
+	if (feature_spritesheet
 			&& pic.NumSpriteSheetFrames() > 1
 			&& last_spritesheet_frame != data.spritesheet_frame)
 	{
@@ -74,7 +79,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	SetX(x);
 	SetY(y);
-	if (Player::IsMajorUpdatedVersion()) {
+	if (feature_priority_layers) {
 		// Battle Animations are above pictures
 		int priority = 0;
 		if (is_battle) {
@@ -101,9 +106,8 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	SetWaverDepth(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 
 	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.
-	const bool use_bottom_trans = (Player::IsRPG2k3() && !Player::IsRPG2k3E());
 	const auto top_trans = data.current_top_trans;
-	const auto bottom_trans = use_bottom_trans ? data.current_bot_trans : top_trans;
+	const auto bottom_trans = feature_bottom_trans ? data.current_bot_trans : top_trans;
 
 	SetOpacity(
 		(int)(255 * (100 - top_trans) / 100),
