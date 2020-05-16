@@ -135,7 +135,6 @@ private:
 	bool flipy_effect = false;
 	bool current_flip_x = false;
 	bool current_flip_y = false;
-	bool needs_refresh = true;
 	bool bitmap_changed = true;
 
 	void BlitScreen(Bitmap& dst);
@@ -256,12 +255,44 @@ inline Tone Sprite::GetTone() const {
 	return tone_effect;
 }
 
+inline void Sprite::SetTone(Tone tone) {
+	tone_effect = tone;
+}
+
 inline int Sprite::GetWaverDepth() const {
 	return waver_effect_depth;
 }
 
 inline double Sprite::GetWaverPhase() const {
 	return waver_effect_phase;
+}
+
+inline void Sprite::SetWaverDepth(int depth) {
+	waver_effect_depth = depth;
+}
+
+inline void Sprite::SetWaverPhase(double phase) {
+	waver_effect_phase = phase;
+}
+
+inline void Sprite::SetSpriteRect(Rect const& nsprite_rect) {
+	src_rect_effect = nsprite_rect;
+}
+
+inline void Sprite::SetFlipX(bool flipx) {
+	flipx_effect = flipx;
+}
+
+inline void Sprite::SetFlipY(bool flipy) {
+	flipy_effect = flipy;
+}
+
+inline void Sprite::SetBushDepth(int bush_depth) {
+	bush_effect = bush_depth;
+}
+
+inline void Sprite::SetFlashEffect(const Color &color) {
+	flash_effect = color;
 }
 
 #endif
