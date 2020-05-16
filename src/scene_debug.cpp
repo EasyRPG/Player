@@ -416,6 +416,9 @@ int Scene_Debug::GetLastPage() {
 		case eMap:
 			num_elements = Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0;
 			break;
+		case eCallEvent:
+			num_elements = Data::commonevents.size();
+			break;
 		default: break;
 	}
 
@@ -531,7 +534,7 @@ void Scene_Debug::EnterGold() {
 	numberinput_window->SetShowOperator(false);
 	numberinput_window->SetVisible(true);
 	numberinput_window->SetActive(true);
-	numberinput_window->SetMaxDigits(7);
+	numberinput_window->SetMaxDigits(6);
 	numberinput_window->Refresh();
 	UpdateRangeListWindow();
 }
@@ -573,7 +576,6 @@ void Scene_Debug::EnterMapSelectY() {
 }
 
 void Scene_Debug::EnterFullHeal() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	mode = eFullHeal;
 	var_window->SetMode(Window_VarList::eHeal);
 	var_window->UpdateList(1);
@@ -584,6 +586,7 @@ void Scene_Debug::EnterFullHeal() {
 	range_index = 0;
 	range_window->SetIndex(range_index);
 	range_page = 0;
+	var_window->SetIndex(0);
 }
 
 void Scene_Debug::CancelListOption(IndexSet& idx, int from_idx) {
