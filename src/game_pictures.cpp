@@ -204,6 +204,10 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 
+	if (sprite) {
+		sprite->SetVisible(false);
+	}
+
 	const auto num_frames = NumSpriteSheetFrames();
 
 	// If an invalid frame is specified and no animation, skip loading picture data.
@@ -278,7 +282,9 @@ void Game_Pictures::Move(int id, const MoveParams& params) {
 void Game_Pictures::Picture::Erase() {
 	request_id = {};
 	data.name.clear();
-	sprite.reset();
+	if (sprite) {
+		sprite->SetVisible(false);
+	}
 }
 
 void Game_Pictures::Erase(int id) {
@@ -307,16 +313,18 @@ void Game_Pictures::RequestPictureSprite(Picture& pic) {
 void Game_Pictures::Picture::OnPictureSpriteReady() {
 	auto bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
-	if (!sprite) {
-		sprite = std::make_unique<Sprite_Picture>(data.ID, Drawable::Flags::Shared);
-	}
 	sprite->SetBitmap(bitmap);
 	sprite->OnPictureShow();
+	sprite->SetVisible(true);
 }
 
 void Game_Pictures::OnPictureSpriteReady(int id) {
 	auto* pic = GetPicturePtr(id);
 	if (EP_LIKELY(pic)) {
+		if (!pic->sprite) {
+			sprites.emplace_back(pic->data.ID, Drawable::Flags::Shared);
+			pic->sprite = &sprites.back();
+		}
 		pic->OnPictureSpriteReady();
 	}
 }

@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include <deque>
 #include "async_handler.h"
 #include <lcf/rpg/savepicture.h>
 #include "sprite_picture.h"
@@ -87,8 +88,8 @@ public:
 		Picture(int id) { data.ID = id; }
 		Picture(lcf::rpg::SavePicture data);
 
+		Sprite_Picture* sprite = nullptr;
 		lcf::rpg::SavePicture data;
-		std::unique_ptr<Sprite_Picture> sprite;
 		FileRequestBinding request_id;
 		bool needs_update = false;
 
@@ -115,6 +116,7 @@ private:
 	void OnPictureSpriteReady(int id);
 
 	std::vector<Picture> pictures;
+	std::deque<Sprite_Picture> sprites;
 	int frame_counter = 0;
 };
 
