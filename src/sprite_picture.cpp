@@ -36,8 +36,32 @@ Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	feature_priority_layers(Player::IsMajorUpdatedVersion()),
 	feature_bottom_trans(Player::IsRPG2k3() && !Player::IsRPG2k3E())
 {
-
+	// Initialize Z value for legacy pictures. Will be overriden in OnPictureShow if
+	// priority layers feature is enabled.
+	// Battle Animations are below pictures
+	SetZ(Priority_PictureOld + pic_id);
 }
+
+void Sprite_Picture::OnPictureShow() {
+	last_spritesheet_frame = -1;
+
+	const bool is_battle = Game_Battle::IsBattleRunning();
+	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+
+	if (feature_priority_layers) {
+		// Battle Animations are above pictures
+		int priority = 0;
+		if (is_battle) {
+			priority = Drawable::GetPriorityForBattleLayer(pic.data.battle_layer);
+		} else {
+			priority = Drawable::GetPriorityForMapLayer(pic.data.map_layer);
+		}
+		if (priority > 0) {
+			SetZ(priority + z_mask + pic_id);
+		}
+	}
+}
+
 
 void Sprite_Picture::Draw(Bitmap& dst) {
 	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
@@ -79,21 +103,6 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	SetX(x);
 	SetY(y);
-	if (feature_priority_layers) {
-		// Battle Animations are above pictures
-		int priority = 0;
-		if (is_battle) {
-			priority = Drawable::GetPriorityForBattleLayer(data.battle_layer);
-		} else {
-			priority = Drawable::GetPriorityForMapLayer(data.map_layer);
-		}
-		if (priority > 0) {
-			SetZ(priority + z_mask + data.ID);
-		}
-	} else {
-		// Battle Animations are below pictures
-		SetZ(Priority_PictureOld + data.ID);
-	}
 	SetZoomX(data.current_magnify / 100.0);
 	SetZoomY(data.current_magnify / 100.0);
 

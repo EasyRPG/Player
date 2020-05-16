@@ -46,8 +46,4 @@ private:
 	const bool feature_bottom_trans = false;
 };
 
-inline void Sprite_Picture::OnPictureShow() {
-	last_spritesheet_frame = -1;
-}
-
 #endif
