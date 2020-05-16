@@ -51,8 +51,12 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
-	if (Player::IsRPG2k3E() && pic.NumSpriteSheetFrames() > 1)
+	if (Player::IsRPG2k3E()
+			&& pic.NumSpriteSheetFrames() > 1
+			&& last_spritesheet_frame != data.spritesheet_frame)
 	{
+		last_spritesheet_frame = data.spritesheet_frame;
+
 		const int sw = bitmap->GetWidth() / data.spritesheet_cols;
 		const int sh = bitmap->GetHeight() / data.spritesheet_rows;
 		const int sx = sw * ((data.spritesheet_frame) % data.spritesheet_cols);

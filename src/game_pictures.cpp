@@ -311,6 +311,7 @@ void Game_Pictures::Picture::OnPictureSpriteReady() {
 		sprite = std::make_unique<Sprite_Picture>(data.ID, Drawable::Flags::Shared);
 	}
 	sprite->SetBitmap(bitmap);
+	sprite->OnPictureShow();
 }
 
 void Game_Pictures::OnPictureSpriteReady(int id) {

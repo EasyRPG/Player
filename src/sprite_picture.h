@@ -36,8 +36,15 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
+	void OnPictureShow();
+
 private:
 	int pic_id = 0;
+	int last_spritesheet_frame = -1;
 };
+
+inline void Sprite_Picture::OnPictureShow() {
+	last_spritesheet_frame = -1;
+}
 
 #endif
