@@ -203,7 +203,6 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_tint = (params.flags & 16) == 16;
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
-	last_spritesheet_frame = -1;
 
 	const auto num_frames = NumSpriteSheetFrames();
 

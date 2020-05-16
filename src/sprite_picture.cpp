@@ -35,7 +35,7 @@ Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 }
 
 void Sprite_Picture::Draw(Bitmap& dst) {
-	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
 	const auto& data = pic.data;
 
 	auto& bitmap = GetBitmap();
@@ -46,17 +46,17 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	const bool is_battle = Game_Battle::IsBattleRunning();
 
-	// RPG Maker 2k3 1.12: Spritesheets
-	if (Player::IsRPG2k3E()
-			&& pic.NumSpriteSheetFrames() > 1
-			&& (data.spritesheet_frame != pic.last_spritesheet_frame))
-	{
-		pic.last_spritesheet_frame = data.spritesheet_frame;
+	if (is_battle ? !pic.IsOnBattle() : !pic.IsOnMap()) {
+		return;
+	}
 
+	// RPG Maker 2k3 1.12: Spritesheets
+	if (Player::IsRPG2k3E() && pic.NumSpriteSheetFrames() > 1)
+	{
 		const int sw = bitmap->GetWidth() / data.spritesheet_cols;
 		const int sh = bitmap->GetHeight() / data.spritesheet_rows;
-		const int sx = sw * ((pic.last_spritesheet_frame) % data.spritesheet_cols);
-		const int sy = sh * ((pic.last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
+		const int sx = sw * ((data.spritesheet_frame) % data.spritesheet_cols);
+		const int sy = sh * ((data.spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 
 		SetSrcRect(Rect{ sx, sy, sw, sh });
 	}
@@ -85,7 +85,6 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		// Battle Animations are below pictures
 		SetZ(Priority_PictureOld + data.ID);
 	}
-	SetVisible(is_battle ? pic.IsOnBattle() : pic.IsOnMap());
 	SetZoomX(data.current_magnify / 100.0);
 	SetZoomY(data.current_magnify / 100.0);
 

@@ -90,7 +90,6 @@ public:
 		lcf::rpg::SavePicture data;
 		std::unique_ptr<Sprite_Picture> sprite;
 		FileRequestBinding request_id;
-		int last_spritesheet_frame = 0;
 		bool needs_update = false;
 
 		void Update(bool is_battle);
