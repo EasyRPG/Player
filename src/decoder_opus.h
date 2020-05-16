@@ -48,7 +48,7 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 #ifdef HAVE_OPUS
-	OggOpusFile* oof;
+	OggOpusFile* oof = nullptr;
 #endif
 	Filesystem_Stream::InputStream stream;
 	bool finished = false;

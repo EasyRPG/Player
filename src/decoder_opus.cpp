@@ -32,7 +32,7 @@ static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
 
 static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
-	if (f->eof()) f->clear(); //emulate behaviour of fseek
+	if (f->eof()) f->clear(); // emulate behaviour of fseek
 
 	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(whence));
 
@@ -41,7 +41,7 @@ static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
 
 static opus_int64 vio_tell_func(void* stream) {
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
-	return f->tellg();
+	return static_cast<opus_int64>(f->tellg());
 }
 
 static OpusFileCallbacks vio = {

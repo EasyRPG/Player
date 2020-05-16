@@ -213,8 +213,8 @@ void Output::Quit() {
 
 	char* buf = new char[log_size];
 
-	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(),std::ios::ios_base::in);
-	if (in&&!in.bad()) {
+	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios::ios_base::in);
+	if (in) {
 		in.seekg(0, std::ios_base::end);
 		if (in.tellg() > log_size) {
 			in.seekg(-log_size, std::ios_base::end);
@@ -223,7 +223,7 @@ void Output::Quit() {
 			in.read(buf, 1024 * 100);
 			size_t read = in.gcount();
 
-			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios::ios_base::out);
+			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios::ios_base::out);
 			out.write(buf, read);
 		}
 	}

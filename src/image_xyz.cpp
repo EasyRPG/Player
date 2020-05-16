@@ -75,7 +75,7 @@ bool ImageXYZ::ReadXYZ(Filesystem_Stream::InputStream& stream, bool transparent,
 					   int& width, int& height, void*& pixels) {
 	long size = stream.GetSize();
 	std::vector<uint8_t> buffer(size);
-	long size_read = stream.read(reinterpret_cast<char*>(&buffer.front()), size).gcount();
+	long size_read = stream.read(reinterpret_cast<char*>(buffer.data()), size).gcount();
 	if (size_read != size) {
 		Output::Warning("Error reading XYZ file.");
 		return false;

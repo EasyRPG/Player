@@ -21,6 +21,7 @@
 
 // Headers
 #include <cassert>
+#include <lcf/scope_guard.h>
 #include "decoder_mpg123.h"
 #include "output.h"
 
@@ -201,13 +202,19 @@ int Mpg123Decoder::GetTicks() const {
 
 bool Mpg123Decoder::IsMp3(Filesystem_Stream::InputStream& stream) {
 	Mpg123Decoder decoder;
+
+	auto rescue_stream = lcf::makeScopeGuard([&]() {
+		// Prevent closing of the stream, is used afterwards
+		stream = std::move(decoder.stream);
+	});
+
 	// Prevent stream handle destruction
 	mpg123_replace_reader_handle(decoder.handle.get(), custom_read, custom_seek, custom_close);
 	// Prevent skipping of too many garbage, breaks heuristic
 	mpg123_param(decoder.handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
-	/*FIXME ownership if (!decoder.Open(std::make_unique<decltype(stream)>(std::move(stream)))) {
+	if (!decoder.Open(std::move(stream))) {
 		return false;
-	}*/
+	}
 
 	unsigned char buffer[1024];
 	int err = 0;

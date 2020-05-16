@@ -115,11 +115,10 @@ const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
 std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample) {
 	char magic[4] = { 0 };
-	stream.ReadIntoObj(magic);
 	if (!stream.ReadIntoObj(magic)) {
 		return nullptr;
 	}
-	stream.seekg(0, std::ios::ios_base::beg);
+	stream.seekg(0, std::ios::beg);
 
 #if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
 	/* WildMidi and XMP are the only audio decoders that need the filename passed
@@ -275,7 +274,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 		// Parsing MP3s seems to be the only reliable way to detect them
 		if (Mpg123Decoder::IsMp3(stream)) {
 			stream.clear();
-			stream.seekg(0, std::ios::ios_base::beg);
+			stream.seekg(0, std::ios_base::beg);
 			if (resample) {
 				mp3dec = new AudioResampler(std::unique_ptr<AudioDecoder>(new Mpg123Decoder()));
 			} else {

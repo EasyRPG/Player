@@ -33,7 +33,7 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 
 static void read_data_istream(png_structp png_ptr, png_bytep data, png_size_t length) {
 	auto* bufp = reinterpret_cast<Filesystem_Stream::InputStream*>(png_get_io_ptr(png_ptr));
-	if (bufp != NULL&&*bufp) {
+	if (bufp != nullptr && *bufp) {
 		bufp->read(reinterpret_cast<char*>(data), length);
 	}
 }
