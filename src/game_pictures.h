@@ -103,7 +103,6 @@ private:
 		int NumSpriteSheetFrames() const;
 
 		void SetNonEffectParams(const Params& params, bool set_positions);
-		void SyncCurrentToFinish();
 
 		bool Show(const ShowParams& params);
 		void Move(const MoveParams& params);
