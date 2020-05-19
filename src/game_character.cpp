@@ -448,15 +448,7 @@ void Game_Character::Move(int dir) {
 	bool move_success = false;
 
 	SetDirection(dir);
-	// RPG_RT only does the IsSpinning() check for Game_Event. We did it for all types here
-	// in order to avoid a virtual call and because normally with RPG_RT, spinning
-	// player or vehicle is impossible.
-	if (!(IsFacingLocked() || IsSpinning())) {
-		if (dir > 3) // Diagonal
-			SetSpriteDirection(GetSpriteDirection() % 2 ? -dx + 2 : dy + 1);
-		else
-			SetSpriteDirection(dir);
-	}
+	UpdateFacing();
 
 	auto makeX = [&]() { return MakeWay(GetX(), GetY(), GetX() + dx, GetY()); };
 	auto makeY = [&]() { return MakeWay(GetX(), GetY(), GetX(), GetY() + dy); };
@@ -877,5 +869,28 @@ int Game_Character::GetVehicleType() const {
 void Game_Character::SetActive(bool active) {
 	data()->active = active;
 	SetVisible(active);
+}
+
+void Game_Character::UpdateFacing() {
+	// RPG_RT only does the IsSpinning() check for Game_Event. We did it for all types here
+	// in order to avoid a virtual call and because normally with RPG_RT, spinning
+	// player or vehicle is impossible.
+	if (IsFacingLocked() || IsSpinning()) {
+		return;
+	}
+	const auto dir = GetDirection();
+	const auto facing = GetSpriteDirection();
+	if (dir >= 4) /* is diagonal */ {
+		// [UR, DR, DL, UL] -> [U, D, D, U]
+		const auto f1 = (dir + (dir >= 6)) % 2;
+		// [UR, DR, DL, UL] -> [R, R, L, L]
+		const auto f2 = (dir / 2) - (dir < 6);
+		if (facing != f1 && facing != f2) {
+			// Reverse the direction.
+			SetSpriteDirection((facing + 2) % 4);
+		}
+	} else {
+		SetSpriteDirection(dir);
+	}
 }
 

@@ -104,12 +104,9 @@ void Game_Player::PerformTeleport() {
 	MoveTo(teleport_target.GetMapId(), teleport_target.GetX(), teleport_target.GetY());
 
 
-	// FIXME: Direction lock on hero?
 	if (teleport_target.GetDirection() >= 0) {
 		SetDirection(teleport_target.GetDirection());
-		if (!IsFacingLocked()) {
-			SetSpriteDirection(teleport_target.GetDirection());
-		}
+		UpdateFacing();
 	}
 
 	if (teleport_target.GetType() != TeleportTarget::eAsyncQuickTeleport) {
@@ -489,7 +486,7 @@ bool Game_Player::GetOnVehicle() {
 		data()->aboard = true;
 		SetMoveSpeed(airship->GetMoveSpeed());
 		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(RPG::EventPage::Direction_left);
+		SetSpriteDirection(Left);
 	} else {
 		auto type = Game_Vehicle::Ship;
 		if (!Game_Map::GetVehicle(type)->IsInPosition(front_x, front_y)) {

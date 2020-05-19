@@ -356,9 +356,7 @@ const std::vector<lcf::rpg::EventCommand>& Game_Event::GetList() const {
 }
 
 void Game_Event::OnFinishForegroundEvent() {
-	if (!(IsFacingLocked() || IsSpinning())) {
-		SetSpriteDirection(GetDirection());
-	}
+	UpdateFacing();
 	SetPaused(false);
 }
 

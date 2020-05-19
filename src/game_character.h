@@ -292,6 +292,11 @@ public:
 	void SetAnimPaused(bool value);
 
 	/**
+	 * Updates the sprite facing direction based on current direction
+	 */
+	void UpdateFacing();
+
+	/**
 	 * Begins a flash.
 	 *
 	 * @param r red color
