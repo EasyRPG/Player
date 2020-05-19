@@ -450,6 +450,6 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 }
 
 
-inline int Game_Pictures::Picture::NumSpriteSheetFrames() const {
+int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
 }
