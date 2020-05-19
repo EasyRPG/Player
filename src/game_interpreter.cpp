@@ -1919,7 +1919,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 	return true;
 }
 

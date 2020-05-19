@@ -49,6 +49,10 @@ Game_Player::Game_Player(): Game_PlayerBase(Player)
 void Game_Player::SetSaveData(lcf::rpg::SavePartyLocation save)
 {
 	*data() = std::move(save);
+
+	// RPG_RT will always reset the hero graphic on loading a save, even if
+	// a move route changed the graphic.
+	ResetGraphic();
 }
 
 lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
@@ -150,7 +154,7 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 
 	ResetAnimation();
 
-	Refresh();
+	ResetGraphic();
 }
 
 bool Game_Player::MakeWay(int from_x, int from_y, int to_x, int to_y) {
@@ -439,7 +443,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 	return result;
 }
 
-void Game_Player::Refresh() {
+void Game_Player::ResetGraphic() {
 
 	auto* actor = Main_Data::game_party->GetActor(0);
 	if (actor == nullptr) {

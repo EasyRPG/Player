@@ -120,7 +120,7 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetSp(actor->GetMaxSp());
 	}
 
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::GetItems(std::vector<int>& item_list) {
@@ -446,14 +446,14 @@ void Game_Party::AddActor(int actor_id) {
 	if (data.party.size() >= 4)
 		return;
 	data.party.push_back((int16_t)actor_id);
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::RemoveActor(int actor_id) {
 	if (!IsActorInParty(actor_id))
 		return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::Clear() {

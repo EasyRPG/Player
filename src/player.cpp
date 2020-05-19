@@ -926,8 +926,6 @@ static void FixSaveGames() {
 static void OnMapSaveFileReady(FileRequestResult*) {
 	Game_Map::SetupFromSave();
 	FixSaveGames();
-
-	Main_Data::game_player->Refresh();
 }
 
 void Player::LoadSavegame(const std::string& save_name) {

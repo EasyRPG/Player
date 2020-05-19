@@ -78,7 +78,8 @@ public:
 	/** Update this for the current frame */
 	void Update();
 
-	void Refresh();
+	/** Resets graphic based on current party */
+	void ResetGraphic();
 
 	bool GetOnOffVehicle();
 	bool InVehicle() const;
