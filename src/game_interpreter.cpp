@@ -854,6 +854,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int
 
 	pm.SetChoiceContinuation([this, indent](int choice_result) {
 		SetSubcommandIndex(indent, choice_result);
+		return AsyncOp();
 	});
 
 	// save game compatibility with RPG_RT

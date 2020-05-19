@@ -214,10 +214,12 @@ bool Game_Message::CanShowMessage(bool foreground) {
 	return true;
 }
 
-void Game_Message::Update() {
+AsyncOp Game_Message::Update() {
 	if (window) {
 		window->Update();
+		return window->GetAsyncOp();
 	}
+	return {};
 }
 
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
