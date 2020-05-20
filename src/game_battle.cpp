@@ -136,7 +136,6 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
-	Main_Data::game_screen->UpdateGraphics();
 
 	if (need_refresh) {
 		need_refresh = false;

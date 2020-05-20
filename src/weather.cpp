@@ -41,6 +41,8 @@ void Weather::Update() {
 }
 
 void Weather::Draw(Bitmap& dst) {
+	SetTone(Main_Data::game_screen->GetTone());
+
 	switch (Main_Data::game_screen->GetWeatherType()) {
 		case Game_Screen::Weather_None:
 			break;
