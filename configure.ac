@@ -101,7 +101,7 @@ AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:
 	[Install the parameter auto-completion script for bash in DIR. @<:@default=auto@:>@])],
 	[],[with_bash_completion_dir=yes])
 AS_IF([test "x$with_bash_completion_dir" = "xyes"],[
-	BASHCOMPLETION_DIR="`$PKG_CONFIG --silence-errors --define-variable=prefix="\${prefix}" --variable=completionsdir bash-completion`"
+	BASHCOMPLETION_DIR="`$PKG_CONFIG --silence-errors --define-variable=prefix="\${prefix}" --define-variable=datadir="\${datadir}" --variable=completionsdir bash-completion`"
 ],[
 	BASHCOMPLETION_DIR=$with_bash_completion_dir
 ])
