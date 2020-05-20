@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 
-EXTRA_DIST = AUTHORS.md README.md builds resources CMakeLists.txt
+EXTRA_DIST = AUTHORS.md CMakeLists.txt README.md builds resources
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
@@ -465,6 +465,10 @@ endif
 
 # doxygen
 @DX_RULES@
+
+# tests
+EXTRA_DIST += tests/game tests/notagame tests/platform/folder \
+	tests/platform/1kb tests/platform/empty
 
 check_PROGRAMS = test_runner
 test_runner_SOURCES = \
