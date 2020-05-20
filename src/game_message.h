@@ -201,9 +201,7 @@ namespace Game_Message {
 
 	/** @return true if there is message text pending */
 	bool IsMessagePending();
-	/** @return true if the message window is visible */
-	bool IsMessageVisible();
-	/** @return true if IsMessagePending() || IsMessageVisible() */
+	/** @return true if message window is running */
 	bool IsMessageActive();
 
 	// EasyRPG extension allowing more recursive variables \v[\v[...]]
