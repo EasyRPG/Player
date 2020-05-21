@@ -84,7 +84,6 @@ private:
 	void UpdateInn();
 	void FinishInn();
 
-	template <typename F> void AsyncNext(F&& f);
 	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);
 
 	void UpdateGraphics() override;

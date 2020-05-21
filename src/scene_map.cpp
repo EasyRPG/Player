@@ -386,15 +386,6 @@ void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 }
 
 template <typename F>
-void Scene_Map::AsyncNext(F&& f) {
-	if (IsAsyncPending()) {
-		async_continuation = std::forward<F>(f);
-	} else {
-		f();
-	}
-}
-
-template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (CheckSceneExit(aop)) {
 		return;

@@ -271,6 +271,12 @@ protected:
 	 */
 	void SetUseSharedDrawables(bool value);
 
+	/**
+	 * If no async operation is pending, call f() now. Otherwise
+	 * defer f until async operations are done.
+	 */
+	template <typename F> void AsyncNext(F&& f);
+
 private:
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;
@@ -335,6 +341,15 @@ inline DrawableList& Scene::GetDrawableList() {
 
 inline void Scene::SetUseSharedDrawables(bool value) {
 	uses_shared_drawables = value;
+}
+
+template <typename F>
+inline void Scene::AsyncNext(F&& f) {
+	if (IsAsyncPending()) {
+		async_continuation = std::forward<F>(f);
+	} else {
+		f();
+	}
 }
 
 #endif
