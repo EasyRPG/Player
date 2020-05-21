@@ -123,8 +123,6 @@ void Scene::MainFunction() {
 			if (!Transition::instance().IsActive()) {
 				TransitionIn(prev_scene_type);
 			}
-			Resume(prev_scene_type);
-
 
 			init = true;
 			return;
@@ -155,9 +153,6 @@ void Scene::Start() {
 }
 
 void Scene::Continue(SceneType /* prev_scene */) {
-}
-
-void Scene::Resume(SceneType /* prev_scene */) {
 }
 
 void Scene::Suspend(SceneType /* next_scene */) {
