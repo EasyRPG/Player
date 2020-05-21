@@ -278,6 +278,8 @@ protected:
 	template <typename F> void AsyncNext(F&& f);
 
 private:
+	void ScheduleTransitionIn(Scene::SceneType prev_scene_type);
+
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;
 
