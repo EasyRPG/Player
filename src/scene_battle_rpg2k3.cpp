@@ -45,15 +45,18 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
 	InitBattleCondition(Game_Battle::GetBattleCondition());
+
+	// We need to wait for actor and enemy graphics to load before we can finish initializing the battle.
+	AsyncNext([this]() { Start2(); });
+}
+
+void Scene_Battle_Rpg2k3::Start2() {
 	InitEnemies();
 	InitActors();
 	InitAtbGauges();
 
 	// Changed enemy place means we need to recompute Z order
 	Game_Battle::GetSpriteset().ResetAllBattlerZ();
-
-	// Needed so transition in reflects updated battler positions
-	Game_Battle::UpdateGraphics();
 }
 
 void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {

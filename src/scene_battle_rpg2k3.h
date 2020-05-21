@@ -75,6 +75,7 @@ public:
 	void Update() override;
 
 protected:
+	void Start2();
 	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
 	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
 	void InitEnemies();
