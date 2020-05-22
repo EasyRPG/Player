@@ -70,10 +70,10 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.6.2.tar.xz # unpack the tarball
-    cd easyrpg-player-0.6.2            # enter in the package directory
-    ./configure                        # find libraries, set options
-    make                               # compile the executable
+    tar xf easyrpg-player-0.6.2.1.tar.xz # unpack the tarball
+    cd easyrpg-player-0.6.2.1            # enter in the package directory
+    ./configure                          # find libraries, set options
+    make                                 # compile the executable
 
 Additional building requirements when using the source tree (git):
 
@@ -99,8 +99,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.6.2.tar.xz    # unpack the tarball
-    cd easyrpg-player-0.6.2               # enter in the package directory
+    tar xf easyrpg-player-0.6.2.1.tar.xz  # unpack the tarball
+    cd easyrpg-player-0.6.2.1             # enter in the package directory
     cmake . -DCMAKE_BUILD_TYPE=Release    # configure project
     cmake --build .                       # compile the executable
     sudo cmake --build . --target install # install system-wide
