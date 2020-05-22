@@ -102,7 +102,7 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool next_er
 	}
 
 	// Total frames and erased have to be set *after* the above drawing code.
-	// Otherwise IsActive() / IsErased() will mess up drawing.
+	// Otherwise IsActive() / IsErasedNotActive() will mess up drawing.
 	total_frames = duration;
 
 	// TransitionNone is neither a Show or Erase, it just waits and does nothing.

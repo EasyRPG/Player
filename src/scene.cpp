@@ -78,7 +78,7 @@ Scene::Scene() {
 }
 
 void Scene::ScheduleTransitionIn(Scene::SceneType prev_scene_type) {
-	if (!Transition::instance().IsErased()) {
+	if (!Transition::instance().IsErasedNotActive()) {
 		// Scene could have manually triggered transition earlier
 		return;
 	}
@@ -88,7 +88,7 @@ void Scene::ScheduleTransitionIn(Scene::SceneType prev_scene_type) {
 	if (async_continuation) {
 		AsyncNext([this,fn=std::move(async_continuation),prev_scene_type]() {
 					fn();
-					if (Transition::instance().IsErased()) {
+					if (Transition::instance().IsErasedNotActive()) {
 						TransitionIn(prev_scene_type);
 					}
 				});

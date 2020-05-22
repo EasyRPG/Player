@@ -110,7 +110,7 @@ public:
 	void Update();
 
 	bool IsActive() const;
-	bool IsErased() const;
+	bool IsErasedNotActive() const;
 
 	bool FromErase() const;
 	bool ToErase() const;
@@ -169,7 +169,7 @@ inline bool Transition::IsActive() const {
 	return current_frame < total_frames || flash_iterations != 0;
 }
 
-inline bool Transition::IsErased() const {
+inline bool Transition::IsErasedNotActive() const {
 	return ToErase() && !IsActive();
 }
 

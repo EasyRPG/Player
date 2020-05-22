@@ -151,7 +151,7 @@ void FileRequestAsync::SetGraphicFile(bool graphic) {
 	// We need this flag in order to prevent show screen transitions
 	// from starting util all graphical assets are loaded.
 	// Also, the screen is erased, so you can't see any delays :)
-	if (Transition::instance().IsErased()) {
+	if (Transition::instance().IsErasedNotActive()) {
 		SetImportantFile(true);
 	}
 }

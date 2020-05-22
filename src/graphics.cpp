@@ -108,7 +108,7 @@ void Graphics::Draw(Bitmap& dst) {
 	int max_z = std::numeric_limits<int>::max();
 	if (transition.IsActive()) {
 		min_z = transition.GetZ();
-	} else if (transition.IsErased()) {
+	} else if (transition.IsErasedNotActive()) {
 		min_z = transition.GetZ() + 1;
 		dst.Clear();
 	}
