@@ -615,9 +615,8 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Enemy& enemy) {
 		}
 	}
 
-	// RPG_RT has a bug where the pincer table is only used for enemies on terrain battles but not on
-	// non terrain battles. We don't emulate this because it looks better when the surrounding party is lined up evenly.
-	const int table_y_idx = (cond == lcf::rpg::System::BattleCondition_pincers) ? 2 : 1;
+	// RPG_RT has a bug where the pincer table is only used for enemies on terrain battles but not on non terrain battles.
+	const int table_y_idx = (cond == lcf::rpg::System::BattleCondition_pincers && terrain_id >= 1) ? 2 : 1;
 	const auto grid = CalculateBaseGridPosition(idx, party_size, 0, table_y_idx, form, terrain_id);
 	const auto ti = grid_tables[3][party_size - 1][idx];
 

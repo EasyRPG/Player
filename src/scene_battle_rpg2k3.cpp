@@ -89,15 +89,15 @@ void Scene_Battle_Rpg2k3::InitEnemies() {
 		enemy.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(enemy));
 
 		switch(cond) {
-			case RPG::System::BattleCondition_none:
+			case lcf::rpg::System::BattleCondition_none:
 				enemy.SetDirectionFlipped(false);
 				break;
-			case RPG::System::BattleCondition_initiative:
-			case RPG::System::BattleCondition_back:
-			case RPG::System::BattleCondition_surround:
+			case lcf::rpg::System::BattleCondition_initiative:
+			case lcf::rpg::System::BattleCondition_back:
+			case lcf::rpg::System::BattleCondition_surround:
 				enemy.SetDirectionFlipped(true);
 				break;
-			case RPG::System::BattleCondition_pincers:
+			case lcf::rpg::System::BattleCondition_pincers:
 				enemy.SetDirectionFlipped(!(idx & 1));
 				break;
 		}
@@ -134,7 +134,7 @@ void Scene_Battle_Rpg2k3::InitActors() {
 
 		actor.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(actor));
 
-		if (cond == RPG::System::BattleCondition_surround) {
+		if (cond == lcf::rpg::System::BattleCondition_surround) {
 			actor.SetDirectionFlipped(idx & 1);
 		} else {
 			actor.SetDirectionFlipped(false);
@@ -197,15 +197,15 @@ void Scene_Battle_Rpg2k3::UpdateEnemiesDirection() {
 		const auto idx = enemy.IsHidden() ? real_idx : visible_idx;
 
 		switch(Game_Battle::GetBattleCondition()) {
-			case RPG::System::BattleCondition_none:
-			case RPG::System::BattleCondition_initiative:
+			case lcf::rpg::System::BattleCondition_none:
+			case lcf::rpg::System::BattleCondition_initiative:
 				enemy.SetDirectionFlipped(CheckFlip(actors, enemy, false, std::greater_equal<>()));
 				break;
-			case RPG::System::BattleCondition_back:
+			case lcf::rpg::System::BattleCondition_back:
 				enemy.SetDirectionFlipped(CheckFlip(actors, enemy, true, std::less_equal<>()));
 				break;
-			case RPG::System::BattleCondition_surround:
-			case RPG::System::BattleCondition_pincers:
+			case lcf::rpg::System::BattleCondition_surround:
+			case lcf::rpg::System::BattleCondition_pincers:
 				enemy.SetDirectionFlipped(!(idx & 1));
 				break;
 		}
@@ -222,15 +222,15 @@ void Scene_Battle_Rpg2k3::UpdateActorsDirection() {
 		auto& actor = *actors[idx];
 
 		switch(Game_Battle::GetBattleCondition()) {
-			case RPG::System::BattleCondition_none:
-			case RPG::System::BattleCondition_initiative:
+			case lcf::rpg::System::BattleCondition_none:
+			case lcf::rpg::System::BattleCondition_initiative:
 				actor.SetDirectionFlipped(CheckFlip(enemies, actor, false, std::less_equal<>()));
 				break;
-			case RPG::System::BattleCondition_back:
+			case lcf::rpg::System::BattleCondition_back:
 				actor.SetDirectionFlipped(CheckFlip(enemies, actor, true, std::greater_equal<>()));
 				break;
-			case RPG::System::BattleCondition_surround:
-			case RPG::System::BattleCondition_pincers:
+			case lcf::rpg::System::BattleCondition_surround:
+			case lcf::rpg::System::BattleCondition_pincers:
 				actor.SetDirectionFlipped(idx & 1);
 				break;
 		}
