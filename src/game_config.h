@@ -21,6 +21,8 @@
 #include "config_param.h"
 #include "options.h"
 
+class CmdlineParser;
+
 struct Game_ConfigVideo {
 	BoolConfigParam vsync{ true };
 	BoolConfigParam fullscreen{ true };
@@ -53,12 +55,10 @@ struct Game_Config {
 	 * Create an application config. This first determines the config file path if any,
 	 * loads the config file, then loads command line arguments.
 	 */
-	static Game_Config Create(int* argc, char** argv);
+	static Game_Config Create(CmdlineParser& cp);
 
-	/**
-	 * Return config file path from command line args if found/
-	 */
-	static std::string GetConfigPath(int* argc, char** argv);
+	/** Return config file path from command line args if found */
+	static std::string GetConfigPath(CmdlineParser& cp);
 
 	/**
 	 * Returns the default config path for your system.
@@ -76,11 +76,10 @@ struct Game_Config {
 	/**
 	 * Load configuration values from a command line arguments.
 	 *
-	 * @param argc application argc
-	 * @param argv application argv
+	 * @param cp the command line parser to use.
 	 * @post values of this are updated with values found in command line args.
 	 */
-	void loadFromArgs(int* argc, char** argv);
+	void loadFromArgs(CmdlineParser& cp);
 
 	/**
 	 * Writes our configuration to the given config file

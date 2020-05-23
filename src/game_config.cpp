@@ -5,17 +5,19 @@
 #include <cstring>
 #include <fstream>
 
-Game_Config Game_Config::Create(int* argc, char** argv) {
+Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 	auto default_path = GetDefaultConfigPath();
-	auto arg_path = GetConfigPath(argc, argv);
+	cp.Rewind();
+	auto arg_path = GetConfigPath(cp);
 	const auto& path = (arg_path.empty()) ? default_path : arg_path;
 
 	if (!path.empty()) {
 		cfg.loadFromConfig(path);
 	}
 
-	cfg.loadFromArgs(argc, argv);
+	cp.Rewind();
+	cfg.loadFromArgs(cp);
 
 	return cfg;
 }
@@ -27,73 +29,82 @@ std::string Game_Config::GetDefaultConfigPath() {
 	return "";
 }
 
-std::string Game_Config::GetConfigPath(int* argc, char** argv) {
-	CmdlineParser cp(argc, argv);
-
+std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 	std::string path;
 
-	while (cp.Next()) {
-		if (auto* val = cp.CheckValue("--config", 'c')) {
-			path = val;
+	while (!cp.Done()) {
+		CmdlineArg arg;
+		if (cp.ParseNext(arg, 1, "--config", 'c')) {
+			if (arg.NumValues() > 0) {
+				path = arg.Value(0);
+			}
 			continue;
 		}
+
+		cp.SkipNext();
 	}
 
 	return path;
 }
 
-void Game_Config::loadFromArgs(int* argc, char** argv) {
-	CmdlineParser cp(argc, argv);
-
-	while (cp.Next()) {
-		if (cp.Check("--vsync")) {
+void Game_Config::loadFromArgs(CmdlineParser& cp) {
+	while (!cp.Done()) {
+		CmdlineArg arg;
+		long li_value = 0;
+		if (cp.ParseNext(arg, 0, "--vsync")) {
 			video.vsync.Set(true);
 			continue;
 		}
-		if (cp.Check("--no-vsync")) {
+		if (cp.ParseNext(arg, 0, "--no-vsync")) {
 			video.vsync.Set(false);
 			continue;
 		}
-		if (auto* val = cp.CheckValue("--fps-limit")) {
-			video.fps_limit.Set(atoi(val));
+		if (cp.ParseNext(arg, 1, "--fps-limit")) {
+			if (arg.ParseValue(0, li_value)) {
+				video.fps_limit.Set(li_value);
+			}
 			continue;
 		}
-		if (cp.Check("--no-fps-limit")) {
+		if (cp.ParseNext(arg, 0, "--no-fps-limit")) {
 			video.fps_limit.Set(0);
 			continue;
 		}
-		if (cp.Check("--show-fps")) {
+		if (cp.ParseNext(arg, 0, "--show-fps")) {
 			video.show_fps.Set(true);
 			continue;
 		}
-		if (cp.Check("--no-show-fps")) {
+		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
 			video.show_fps.Set(false);
 			continue;
 		}
-		if (cp.Check("--fps-render-window")) {
+		if (cp.ParseNext(arg, 0, "--fps-render-window")) {
 			video.fps_render_window.Set(true);
 			continue;
 		}
-		if (cp.Check("--no-fps-render-window")) {
+		if (cp.ParseNext(arg, 0, "--no-fps-render-window")) {
 			video.fps_render_window.Set(false);
 			continue;
 		}
-		if (cp.Check("--no-show-fps")) {
+		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
 			video.show_fps.Set(false);
 			continue;
 		}
-		if (cp.Check("--window")) {
+		if (cp.ParseNext(arg, 0, "--window")) {
 			video.fullscreen.Set(false);
 			continue;
 		}
-		if (cp.Check("--fullscreen")) {
+		if (cp.ParseNext(arg, 0, "--fullscreen")) {
 			video.fullscreen.Set(true);
 			continue;
 		}
-		if (auto* val = cp.CheckValue("--window-zoom")) {
-			video.window_zoom.Set(atoi(val));
+		if (cp.ParseNext(arg, 1, "--window-zoom")) {
+			if (arg.ParseValue(0, li_value)) {
+				video.window_zoom.Set(li_value);
+			}
 			continue;
 		}
+
+		cp.SkipNext();
 	}
 }
 

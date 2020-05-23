@@ -16,63 +16,106 @@
  */
 
 #include "cmdline_parser.h"
+#include "utils.h"
+#include "output.h"
 #include <cstring>
 
 #include <iostream>
+#include <sstream>
 
-CmdlineParser::CmdlineParser(int* argc, char** argv) : _argc(argc), _argv(argv) {}
-
-bool CmdlineParser::Next() {
-	if (_idx < Limit()) {
-		++_idx;
+bool CmdlineArg::ParseValue(int i, long& value) const {
+	if (i >= NumValues()) {
+		return false;
 	}
+	auto& s = Value(i);
 
-	if (_idx < Limit()) {
-		if (_consume > 0) {
-			_argv[_idx] = _argv[_idx + _consume];
-		}
-		return true;
+	auto* p = s.c_str();
+	auto* e = p + s.size();
+	long v = strtol(p, const_cast<char**>(&e), 10);
+	if (p == e) {
+		return false;
 	}
-	*_argc = Limit();
-	_consume = 0;
-	return false;
+	value = v;
+	return true;
 }
 
-bool CmdlineParser::DoCheck(const char* longval, char shortval) {
-	const char* arg = _argv[_idx];
-	if (!std::strcmp(arg, longval)
+CmdlineParser::CmdlineParser(int argc, char** argv)
+{
+	args.reserve(argc - 1);
+	for (int i = 1; i < argc; ++i) {
+		args.push_back(argv[i]);
+	}
+}
+
+CmdlineParser::CmdlineParser(int argc, wchar_t** argv)
+{
+	args.reserve(argc - 1);
+	for (int i = 1; i < argc; ++i) {
+		args.push_back(Utils::FromWideString(argv[i]));
+	}
+}
+
+template <typename F>
+bool CmdlineParser::DoParseNext(CmdlineArg& arg, int max_values, F&& is_longval, char shortval) {
+	const auto nargs = static_cast<int>(args.size());
+
+	if (index >= nargs) {
+		return false;
+	}
+
+	if (!(is_longval(args[index])
 			|| (shortval
-				&& arg[0] == '-'
-				&& arg[1] == shortval
-				&& arg[2] == '\0'))
+				&& args[index][0] == '-'
+				&& args[index][1] == shortval
+				&& args[index][2] == '\0')))
 	{
-		return true;
+		return false;
 	}
-	return false;
+
+	auto* ptr = args.data() + index;
+	++index;
+
+	int nv = 0;
+	while (nv < max_values) {
+		if (index >= nargs) {
+			break;
+		}
+
+		auto& next = args[index];
+		if (!next.empty() && next.front() == '-') {
+			break;
+		}
+
+		++nv;
+		++index;
+	}
+
+	arg = CmdlineArg(ptr, nv);
+
+	return true;
 }
 
-bool CmdlineParser::Check(const char* longval, char shortval) {
-	auto rc = DoCheck(longval, shortval);
-	if (rc) {
-		--_idx;
-		++_consume;
-	}
-	return rc;
+bool CmdlineParser::ParseNext(CmdlineArg& arg, int max_values, const char* longval, char shortval) {
+	return DoParseNext(arg, max_values,
+			[=](auto& s) { return Utils::StrICmp(longval, s.c_str()) == 0; },
+			shortval);
 }
 
-const char* CmdlineParser::CheckValue(const char* longval, char shortval) {
-	auto rc = DoCheck(longval, shortval);
-	if (!rc || (_idx + 1) >= Limit()) {
-		return nullptr;
-	}
-	--_idx;
-	++_consume;
-	Next();
+bool CmdlineParser::ParseNext(CmdlineArg& arg, int max_values, std::initializer_list<const char*> longvals, char shortval) {
+	return DoParseNext(arg, max_values,
+			[=](auto& s) {
+				for (auto& lv: longvals) {
+					if (Utils::StrICmp(lv, s.c_str()) == 0) {
+						return true;
+					}
+				}
+				return false;
+			},
+			shortval);
+}
 
-	auto* value = _argv[_idx];
-	--_idx;
-	++_consume;
-
-	return value;
+void CmdlineParser::SkipNext() {
+	assert(index < static_cast<int>(args.size()));
+	++index;
 }
 

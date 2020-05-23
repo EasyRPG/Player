@@ -44,6 +44,7 @@
 #include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
+#include "cmdline_parser.h"
 #include "filefinder.h"
 #include "game_actors.h"
 #include "game_battle.h"
@@ -396,21 +397,11 @@ void Player::Exit() {
 #endif
 }
 
-static bool parseInt(const std::string& s, long& value) {
-	auto* p = s.c_str();
-	auto* e = p + s.size();
-	long v = strtol(p, const_cast<char**>(&e), 10);
-	if (p == e) {
-		return false;
-	}
-	value = v;
-	return true;
-}
-
 Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 #ifdef _3DS
 	is_3dsx = argc > 0;
 #endif
+
 #if defined(_WIN32) && !defined(__WINRT__)
 	int argc_w;
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
@@ -438,111 +429,95 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 	}
 	Output::Debug("CLI: {}", ss.str());
 
-	auto cfg = Game_Config::Create(&argc, argv);
-
-	std::vector<std::string> args;
-	for (int i = 1; i < argc; ++i) {
 #if defined(_WIN32) && !defined(__WINRT__)
-		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
+	CmdlineParser cp(argc, argv_w);
 #else
-		args.push_back(Utils::LowerCase(argv[i]));
+	CmdlineParser cp(argc, argv);
 #endif
-	}
 
-	std::vector<std::string>::const_iterator it;
+	auto cfg = Game_Config::Create(cp);
 
-	for (it = args.begin(); it != args.end(); ++it) {
-		if (*it == "window") {
+	cp.Rewind();
+	while (!cp.Done()) {
+		CmdlineArg arg;
+		long li_value = 0;
+		if (cp.ParseNext(arg, 0, "window")) {
+			// Legacy RPG_RT argument - window
 			cfg.video.fullscreen.Set(false);
+			continue;
 		}
-		else if (*it == "--enable-mouse") {
+		if (cp.ParseNext(arg, 0, "--enable-mouse")) {
 			mouse_flag = true;
+			continue;
 		}
-		else if (*it == "--enable-touch") {
+		if (cp.ParseNext(arg, 0, "--enable-touch")) {
 			touch_flag = true;
+			continue;
 		}
-		else if (*it == "testplay" || *it == "--test-play") {
+		if (cp.ParseNext(arg, 0, {"testplay", "--test-play"})) {
+			// Legacy RPG_RT argument - testplay
 			debug_flag = true;
+			continue;
 		}
-		else if (*it == "hidetitle" || *it == "--hide-title") {
+		if (cp.ParseNext(arg, 0, {"hidetitle", "--hide-title"})) {
+			// Legacy RPG_RT argument - hidetitle
 			hide_title_flag = true;
+			continue;
 		}
-		else if (*it == "battletest") {
-			++it;
-			if (it == args.end()) {
-				continue;
-			}
+		if(cp.ParseNext(arg, 4, {"battletest", "--battle-test"})) {
+			// Legacy RPG_RT argument - battletest
 			Game_Battle::battle_test.enabled = true;
-			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
+			Game_Battle::battle_test.troop_id = 0;
 
-			if (Game_Battle::battle_test.troop_id == 0) {
-				--it;
-				Game_Battle::battle_test.troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+			if (arg.NumValues() > 0) {
+				if (arg.ParseValue(0, li_value)) {
+					Game_Battle::battle_test.troop_id = li_value;
+				}
+			}
+
+			if (arg.NumValues() >= 4) {
 				// 2k3 passes formation, condition and terrain_id as args 5-7
-				if (argc > 7) {
-					Game_Battle::battle_test.formation = (lcf::rpg::System::BattleFormation)atoi(argv[5]);
-					Game_Battle::battle_test.condition = (lcf::rpg::System::BattleCondition)atoi(argv[6]);
-					Game_Battle::battle_test.terrain_id = (lcf::rpg::System::BattleFormation)atoi(argv[7]);
+				if (arg.ParseValue(1, li_value)) {
+					Game_Battle::battle_test.formation = static_cast<RPG::System::BattleFormation>(li_value);
+				}
+				if (arg.ParseValue(2, li_value)) {
+					Game_Battle::battle_test.condition = static_cast<RPG::System::BattleCondition>(li_value);
+				}
+				if (arg.ParseValue(3, li_value)) {
+					Game_Battle::battle_test.terrain_id = static_cast<RPG::System::BattleFormation>(li_value);
 				}
 			}
+			continue;
 		}
-		else if (*it == "--battle-test") {
-			++it;
-			if (it == args.end()) {
-				continue;
-			}
-			Game_Battle::battle_test.enabled = true;
-			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
-
-			++it;
-			// If the next 3 parameters are numbers, assume they're 2k3 formation, condition, and terrain
-			long fct[3] = { 0, 0, 1 };
-			for (int i = 0; i < 3; ++i) {
-				if (it == args.end() || !parseInt(*it, fct[i])) {
-					break;
-				}
-				++it;
-			}
-
-			Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(fct[0]);
-			Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(fct[1]);
-			Game_Battle::battle_test.terrain_id = fct[2];
-
-			--it;
-		}
-		else if (*it == "--project-path") {
-			++it;
-			if (it == args.end()) {
-				continue;
-			}
+		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
+			if (arg.NumValues() > 0) {
 #ifdef _WIN32
-			Main_Data::SetProjectPath(*it);
-			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::GetProjectPath()).c_str());
-			if (cur_dir) {
-				Main_Data::SetProjectPath(".");
-			}
+				Main_Data::SetProjectPath(arg.Value(0));
+				BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::GetProjectPath()).c_str());
+				if (cur_dir) {
+					Main_Data::SetProjectPath(".");
+				}
 #else
-			// case sensitive
-			Main_Data::SetProjectPath(argv[it - args.begin() + 1]);
+				Main_Data::SetProjectPath(arg.Value(0));
 #endif
-		}
-		else if (*it == "--save-path") {
-			++it;
-			if (it == args.end()) {
-				continue;
 			}
-			// case sensitive
-			Main_Data::SetSavePath(argv[it - args.begin() + 1]);
+			continue;
 		}
-		else if (*it == "--new-game") {
+		if (cp.ParseNext(arg, 1, "--save-path")) {
+			if (arg.NumValues() > 0) {
+				Main_Data::SetSavePath(arg.Value(0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--new-game")) {
 			new_game_flag = true;
+			continue;
 		}
-		else if (*it == "--load-game-id") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--load-game-id")) {
+			if (arg.ParseValue(0, li_value)) {
+				load_game_id = li_value;
 			}
-			load_game_id = atoi((*it).c_str());
+			continue;
 		}
 		/*else if (*it == "--load-game") {
 			// load game by filename
@@ -556,108 +531,110 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--start-map") {
 			// overwrite start map by filename
 		}*/
-		else if (*it == "--seed") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--seed")) {
+			if (arg.ParseValue(0, li_value)) {
+				Utils::SeedRandomNumberGenerator(li_value);
 			}
-			Utils::SeedRandomNumberGenerator(atoi((*it).c_str()));
+			continue;
 		}
-		else if (*it == "--start-map-id") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--start-map-id")) {
+			if (arg.ParseValue(0, li_value)) {
+				start_map_id = li_value;
 			}
-			start_map_id = atoi((*it).c_str());
+			continue;
 		}
-		else if (*it == "--start-position") {
-			++it;
-			if (it == args.end() || it == args.end()-1) {
-				continue;
+		if (cp.ParseNext(arg, 2, "--start-position")) {
+			if (arg.ParseValue(0, li_value)) {
+				party_x_position = li_value;
 			}
-			party_x_position = atoi((*it).c_str());
-			++it;
-			party_y_position = atoi((*it).c_str());
+			if (arg.ParseValue(1, li_value)) {
+				party_y_position = li_value;
+			}
+			continue;
 		}
-		else if (*it == "--start-party") {
-			while (++it != args.end() && isdigit((*it)[0])) {
-				party_members.push_back(atoi((*it).c_str()));
+		if (cp.ParseNext(arg, 4, "--start-party")) {
+			for (int i = 0; i < arg.NumValues(); ++i) {
+				if (arg.ParseValue(i, li_value)) {
+					party_members.push_back(li_value);
+				}
 			}
-			--it;
+			continue;
 		}
-		else if (*it == "--engine") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--engine")) {
+			if (arg.NumValues() > 0) {
+				const auto& v = arg.Value(0);
+				if (v == "rpg2k" || v == "2000") {
+					engine = EngineRpg2k;
+				}
+				else if (v == "rpg2kv150" || v == "2000v150") {
+					engine = EngineRpg2k | EngineMajorUpdated;
+				}
+				else if (v == "rpg2ke" || v == "2000e") {
+					engine = EngineRpg2k | EngineMajorUpdated | EngineEnglish;
+				}
+				else if (v == "rpg2k3" || v == "2003") {
+					engine = EngineRpg2k3;
+				}
+				else if (v == "rpg2k3v105" || v == "2003v105") {
+					engine = EngineRpg2k3 | EngineMajorUpdated;
+				}
+				else if (v == "rpg2k3e") {
+					engine = EngineRpg2k3 | EngineMajorUpdated | EngineEnglish;
+				}
 			}
-			if (*it == "rpg2k" || *it == "2000") {
-				engine = EngineRpg2k;
-			}
-			else if (*it == "rpg2kv150" || *it == "2000v150") {
-				engine = EngineRpg2k | EngineMajorUpdated;
-			}
-			else if (*it == "rpg2ke" || *it == "2000e") {
-				engine = EngineRpg2k | EngineMajorUpdated | EngineEnglish;
-			}
-			else if (*it == "rpg2k3" || *it == "2003") {
-				engine = EngineRpg2k3;
-			}
-			else if (*it == "rpg2k3v105" || *it == "2003v105") {
-				engine = EngineRpg2k3 | EngineMajorUpdated;
-			}
-			else if (*it == "rpg2k3e") {
-				engine = EngineRpg2k3 | EngineMajorUpdated | EngineEnglish;
-			}
+			continue;
 		}
-		else if (*it == "--record-input") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--record-input")) {
+			if (arg.NumValues() > 0) {
+				record_input_path = arg.Value(0);
 			}
-			record_input_path = *it;
+			continue;
 		}
-		else if (*it == "--replay-input") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--replay-input")) {
+			if (arg.NumValues() > 0) {
+				replay_input_path = arg.Value(0);
 			}
-			replay_input_path = *it;
+			continue;
 		}
-		else if (*it == "--encoding") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--encoding")) {
+			if (arg.NumValues() > 0) {
+				forced_encoding = arg.Value(0);
 			}
-			forced_encoding = *it;
+			continue;
 		}
-		else if (*it == "--disable-audio") {
+		if (cp.ParseNext(arg, 0, "--disable-audio")) {
 			no_audio_flag = true;
+			continue;
 		}
-		else if (*it == "--disable-rtp") {
+		if (cp.ParseNext(arg, 0, "--disable-rtp")) {
 			no_rtp_flag = true;
+			continue;
 		}
-		else if (*it == "--version" || *it == "-v") {
+		if (cp.ParseNext(arg, 0, "--version", 'v')) {
 			PrintVersion();
 			exit(0);
+			break;
 		}
-		else if (*it == "--help" || *it == "-h" || *it == "/?") {
+		if (cp.ParseNext(arg, 0, {"--help", "/?"}, 'h')) {
 			PrintUsage();
 			exit(0);
+			break;
 		}
 #ifdef EMSCRIPTEN
-		else if (*it == "--game") {
-			++it;
-			if (it == args.end()) {
-				continue;
+		if (cp.ParseNext(arg, 1, "--game")) {
+			if (arg.NumValues() > 0) {
+				emscripten_game_name = arg.Value(0);
 			}
-			emscripten_game_name = *it;
+			continue;
 		}
 #endif
+		cp.SkipNext();
 	}
 
 #if defined(_WIN32) && !defined(__WINRT__)
 	LocalFree(argv_w);
 #endif
+
 	return cfg;
 }
 
