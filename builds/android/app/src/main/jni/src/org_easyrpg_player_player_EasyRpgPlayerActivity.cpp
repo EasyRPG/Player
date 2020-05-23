@@ -24,6 +24,7 @@
 
 #include "org_easyrpg_player_player_EasyRpgPlayerActivity.h"
 #include "player.h"
+#include "baseui.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,7 +33,9 @@ extern "C" {
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps
   (JNIEnv *, jclass)
 {
-	Player::fps_flag = !Player::fps_flag;
+	if (DisplayUi) {
+		DisplayUi->ToggleShowFps();
+	}
 }
 
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame
