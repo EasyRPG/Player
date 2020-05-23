@@ -258,6 +258,9 @@ public:
 	 */
 	void TransferDrawablesFrom(Scene& prev_scene);
 
+	/** @return true if this scene uses shared drawables */
+	bool UsesSharedDrawables() const;
+
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;
@@ -352,6 +355,10 @@ inline void Scene::AsyncNext(F&& f) {
 	} else {
 		f();
 	}
+}
+
+inline bool Scene::UsesSharedDrawables() const {
+	return uses_shared_drawables;
 }
 
 #endif
