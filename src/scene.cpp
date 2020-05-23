@@ -88,9 +88,7 @@ void Scene::ScheduleTransitionIn(Scene::SceneType prev_scene_type) {
 	if (async_continuation) {
 		AsyncNext([this,fn=std::move(async_continuation),prev_scene_type]() {
 					fn();
-					if (Transition::instance().IsErasedNotActive()) {
-						TransitionIn(prev_scene_type);
-					}
+					ScheduleTransitionIn(prev_scene_type);
 				});
 	} else {
 		AsyncNext([this,prev_scene_type]() { TransitionIn(prev_scene_type); });
