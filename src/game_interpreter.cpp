@@ -957,15 +957,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 1:
 			// Var A ops B
-			if (com.parameters[0] != 1) {
-				value = Main_Data::game_variables->Get(com.parameters[5]);
-			}
+			value = Main_Data::game_variables->Get(com.parameters[5]);
 			break;
 		case 2:
 			// Number of var A ops B
-			if (com.parameters[0] != 1) {
-				value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
-			}
+			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
 			break;
 		case 3:
 			// Random between range
