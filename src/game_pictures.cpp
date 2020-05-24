@@ -95,7 +95,7 @@ std::vector<RPG::SavePicture> Game_Pictures::GetSaveData() const {
 	// more pictures than that.
 	while (data_size > static_cast<int>(save.size())) {
 		RPG::SavePicture data;
-		data.ID = static_cast<int>(save.size());
+		data.ID = static_cast<int>(save.size()) + 1;
 		if (Player::IsRPG2k3E()) {
 			data.frames = frame_counter;
 		}
