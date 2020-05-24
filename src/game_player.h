@@ -48,7 +48,7 @@ public:
 	 */
 	/** @{ */
 	int GetScreenZ(bool apply_shift = false) const override;
-	bool GetVisible() const override;
+	bool IsVisible() const override;
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	int GetVehicleType() const override;
 	void UpdateNextMovementAction() override;
@@ -230,5 +230,10 @@ inline void Game_Player::UpdateSaveCounts(int db_save_count, int map_save_count)
 	data()->database_save_count = db_save_count;
 	data()->map_save_count = map_save_count;
 }
+
+inline bool Game_Player::IsVisible() const {
+	return !IsAboard() && Game_Character::IsVisible();
+}
+
 
 #endif

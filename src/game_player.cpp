@@ -65,10 +65,6 @@ int Game_Player::GetScreenZ(bool apply_shift) const {
 	return Game_Character::GetScreenZ(apply_shift) + 1;
 }
 
-bool Game_Player::GetVisible() const {
-	return visible && !data()->aboard;
-}
-
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt) {
 	teleport_target = TeleportTarget(map_id, x, y, direction, tt);
 

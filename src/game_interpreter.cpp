@@ -2668,9 +2668,9 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 }
 
 bool Game_Interpreter::CommandSpriteTransparency(lcf::rpg::EventCommand const& com) { // code 11310
-	bool visible = com.parameters[0] != 0;
+	bool hidden = (com.parameters[0] == 0);
 	Game_Character* player = Main_Data::game_player.get();
-	player->SetVisible(visible);
+	player->SetSpriteHidden(hidden);
 	// RPG_RT does this here.
 	player->ResetThrough();
 

@@ -785,10 +785,6 @@ int Game_Character::GetOpacity() const {
 	return (8 - GetTransparency()) * 32 - 1;
 }
 
-bool Game_Character::GetVisible() const {
-	return visible;
-}
-
 bool Game_Character::IsAnimated() const {
 	auto at = GetAnimationType();
 	return !IsAnimPaused()
@@ -864,11 +860,6 @@ void Game_Character::SetMaxStopCountForWait() {
 
 int Game_Character::GetVehicleType() const {
 	return 0;
-}
-
-void Game_Character::SetActive(bool active) {
-	data()->active = active;
-	SetVisible(active);
 }
 
 void Game_Character::UpdateFacing() {

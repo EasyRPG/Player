@@ -49,21 +49,21 @@ Game_Vehicle::Game_Vehicle(Type type)
 			SetMapId(lcf::Data::treemap.start.boat_map_id);
 			SetX(lcf::Data::treemap.start.boat_x);
 			SetY(lcf::Data::treemap.start.boat_y);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_normal);
 			break;
 		case Ship:
 			SetSpriteGraphic(ToString(lcf::Data::system.ship_name), lcf::Data::system.ship_index);
 			SetMapId(lcf::Data::treemap.start.ship_map_id);
 			SetX(lcf::Data::treemap.start.ship_x);
 			SetY(lcf::Data::treemap.start.ship_y);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
 			SetSpriteGraphic(ToString(lcf::Data::system.airship_name), lcf::Data::system.airship_index);
 			SetMapId(lcf::Data::treemap.start.airship_map_id);
 			SetX(lcf::Data::treemap.start.airship_x);
 			SetY(lcf::Data::treemap.start.airship_y);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_double);
 			break;
 	}
 }
@@ -75,8 +75,8 @@ void Game_Vehicle::SetSaveData(lcf::rpg::SaveVehicleLocation save) {
 	data()->vehicle = type;
 }
 
-lcf::rpg::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
-	return *data();
+bool Game_Vehicle::IsInCurrentMap() const {
+	return GetMapId() == Game_Map::GetMapId();
 }
 
 const lcf::rpg::Music& Game_Vehicle::GetBGM() {
@@ -94,30 +94,6 @@ const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 
 	static lcf::rpg::Music empty;
 	return empty;
-}
-
-bool Game_Vehicle::IsInCurrentMap() const {
-	return GetMapId() == Game_Map::GetMapId();
-}
-
-bool Game_Vehicle::IsInPosition(int x, int y) const {
-	return IsInCurrentMap() && Game_Character::IsInPosition(x, y);
-}
-
-bool Game_Vehicle::IsAscending() const {
-	return data()->remaining_ascent > 0;
-}
-
-bool Game_Vehicle::IsDescending() const {
-	return data()->remaining_descent > 0;
-}
-
-bool Game_Vehicle::IsAscendingOrDescending() const {
-	return IsAscending() || IsDescending();
-}
-
-bool Game_Vehicle::GetVisible() const {
-	return IsInCurrentMap() && Game_Character::GetVisible();
 }
 
 void Game_Vehicle::GetOn() {

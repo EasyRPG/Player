@@ -51,6 +51,7 @@ public:
 	/** @{ */
 	void Move(int dir) override;
 	void UpdateNextMovementAction() override;
+	bool IsVisible() const override;
 	/** @} */
 
 	/**
@@ -208,6 +209,10 @@ private:
 
 inline int Game_Event::GetNumPages() const {
 	return event->pages.size();
+}
+
+inline bool Game_Event::IsVisible() const {
+	return GetActivePage() != nullptr && Game_Character::IsVisible();
 }
 
 #endif

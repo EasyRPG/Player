@@ -142,8 +142,6 @@ void Game_Event::RefreshPage() {
 		}
 	}
 
-	SetVisible(new_page && data()->active);
-
 	if (!new_page) {
 		// FIXME: Test and verify these chunks change when no page active.
 		ClearWaitingForegroundExecution();

@@ -63,7 +63,7 @@ public:
 	const lcf::rpg::Music& GetBGM();
 	bool IsInCurrentMap() const;
 	bool IsInPosition(int x, int y) const override;
-	bool GetVisible() const override;
+	bool IsVisible() const override;
 	bool IsAscending() const;
 	bool IsDescending() const;
 	bool IsAscendingOrDescending() const;
@@ -95,6 +95,30 @@ public:
 inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int index) {
 	data()->orig_sprite_name = std::move(sprite_name);
 	data()->orig_sprite_id = index;
+}
+
+inline RPG::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
+	return *data();
+}
+
+inline bool Game_Vehicle::IsInPosition(int x, int y) const {
+	return IsInCurrentMap() && Game_Character::IsInPosition(x, y);
+}
+
+inline bool Game_Vehicle::IsAscending() const {
+	return data()->remaining_ascent > 0;
+}
+
+inline bool Game_Vehicle::IsDescending() const {
+	return data()->remaining_descent > 0;
+}
+
+inline bool Game_Vehicle::IsAscendingOrDescending() const {
+	return IsAscending() || IsDescending();
+}
+
+inline bool Game_Vehicle::IsVisible() const {
+	return IsInCurrentMap() && Game_Character::IsVisible();
 }
 
 #endif

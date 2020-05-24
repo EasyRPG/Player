@@ -735,7 +735,7 @@ public:
 	int GetOpacity() const;
 
 	/**
-	 * @return transparency (0 = Invisible, 255 = opaque)
+	 * @return RPG_RT transparency
 	 */
 	int GetTransparency() const;
 
@@ -751,7 +751,7 @@ public:
 	 *
 	 * @return if visible, when true Opaque value is used
 	 */
-	virtual bool GetVisible() const;
+	virtual bool IsVisible() const;
 
 	/**
 	 * Makes character visible/not visible.
@@ -759,9 +759,12 @@ public:
 	 * Needed for the "SetHeroTransparency" command because this can't be
 	 * altered via the "Increase Transparency" move command.
 	 *
-	 * @param visible true: visible, false: invisible
+	 * @param hidden true: invisible, false: visible
 	 */
-	void SetVisible(bool visible);
+	void SetSpriteHidden(bool hidden);
+
+	/** @return true if sprite is hidden */
+	bool IsSpriteHidden() const;
 
 	/**
 	 * Tests if animation type is any fixed state.
@@ -847,8 +850,6 @@ protected:
 
 	int original_move_frequency = 2;
 	// contains if any movement (<= step_forward) of a forced move route was successful
-
-	bool visible = true;
 
 	Type _type = {};
 	lcf::rpg::SaveMapEventBase* _data = nullptr;
@@ -1191,12 +1192,20 @@ inline bool Game_Character::IsActive() const {
 	return data()->active;
 }
 
+inline void Game_Character::SetActive(bool active) {
+	data()->active = active;
+}
+
 inline bool Game_Character::HasTileSprite() const {
 	return GetSpriteName().empty();
 }
 
-inline void Game_Character::SetVisible(bool visible) {
-	this->visible = visible;
+inline void Game_Character::SetSpriteHidden(bool hidden) {
+	data()->sprite_transparent = hidden;
+}
+
+inline bool Game_Character::IsSpriteHidden() const {
+	return data()->sprite_transparent;
 }
 
 constexpr int Game_Character::GetDirection90DegreeLeft(int dir) {
@@ -1233,6 +1242,9 @@ constexpr int Game_Character::GetDyFromDirection(int dir) {
 		- (dir == Game_Character::Up || dir == Game_Character::UpRight || dir == Game_Character::UpLeft);
 }
 
+inline bool Game_Character::IsVisible() const {
+	return IsActive() && !IsSpriteHidden() && GetOpacity() > 0;
+}
 
 template <typename T>
 inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Type typ)
@@ -1268,6 +1280,7 @@ template <typename T>
 inline const T* Game_CharacterDataStorage<T>::data() const {
 	return static_cast<const T*>(Game_Character::data());
 }
+
 
 
 #endif
