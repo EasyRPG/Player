@@ -140,8 +140,8 @@ public:
 	/** @return how many frames it'll take to finish the current pan */
 	int GetPanWait();
 
-	int IsMapCompatibleWithSave(int map_save_count) const;
-	int IsDatabaseCompatibleWithSave(int database_save_count) const;
+	bool IsMapCompatibleWithSave(int map_save_count) const;
+	bool IsDatabaseCompatibleWithSave(int database_save_count) const;
 
 	void UpdateSaveCounts(int db_save_count, int map_save_count);
 private:
@@ -218,11 +218,11 @@ inline int Game_Player::GetTargetPanY() const {
 	return data()->pan_finish_y;
 }
 
-inline int Game_Player::IsMapCompatibleWithSave(int map_save_count) const {
+inline bool Game_Player::IsMapCompatibleWithSave(int map_save_count) const {
 	return data()->map_save_count == map_save_count;
 }
 
-inline int Game_Player::IsDatabaseCompatibleWithSave(int database_save_count) const {
+inline bool Game_Player::IsDatabaseCompatibleWithSave(int database_save_count) const {
 	return data()->database_save_count == database_save_count;
 }
 

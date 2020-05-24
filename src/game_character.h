@@ -771,7 +771,7 @@ public:
 	 *
 	 * @return Whether direction is fixed
 	 */
-	static bool IsDirectionFixedAnimationType(AnimType);
+	static constexpr bool IsDirectionFixedAnimationType(AnimType);
 
 	/**
 	 * Tests if the step animation is enabled.
@@ -876,7 +876,7 @@ class Game_CharacterDataStorage : public Game_Character
 		T _data = {};
 };
 
-inline bool Game_Character::IsDirectionFixedAnimationType(AnimType at) {
+constexpr bool Game_Character::IsDirectionFixedAnimationType(AnimType at) {
 	return
 		at == lcf::rpg::EventPage::AnimType_fixed_continuous ||
 		at == lcf::rpg::EventPage::AnimType_fixed_graphic ||
@@ -1169,6 +1169,7 @@ inline int Game_Character::GetTransparency() const {
 }
 
 inline void Game_Character::SetTransparency(int value) {
+	// FIXME: Move this clamp out of here.
 	data()->transparency = Utils::Clamp(value, 0, 7);
 }
 
@@ -1198,6 +1199,10 @@ inline void Game_Character::SetActive(bool active) {
 
 inline bool Game_Character::HasTileSprite() const {
 	return GetSpriteName().empty();
+}
+
+inline int Game_Character::GetTileId() const {
+	return HasTileSprite() ? GetSpriteIndex() : 0;
 }
 
 inline void Game_Character::SetSpriteHidden(bool hidden) {
@@ -1280,7 +1285,5 @@ template <typename T>
 inline const T* Game_CharacterDataStorage<T>::data() const {
 	return static_cast<const T*>(Game_Character::data());
 }
-
-
 
 #endif

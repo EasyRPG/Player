@@ -741,10 +741,6 @@ void Game_Character::CancelMoveRoute() {
 	SetMaxStopCountForStep();
 }
 
-int Game_Character::GetTileId() const {
-	return GetSpriteName().empty() ? GetSpriteIndex() : 0;
-}
-
 int Game_Character::GetSpriteX() const {
 	int x = GetX() * SCREEN_TILE_SIZE;
 
@@ -782,7 +778,7 @@ bool Game_Character::IsInPosition(int x, int y) const {
 }
 
 int Game_Character::GetOpacity() const {
-	return (8 - GetTransparency()) * 32 - 1;
+	return Utils::Clamp((8 - GetTransparency()) * 32 - 1, 0, 255);
 }
 
 bool Game_Character::IsAnimated() const {
