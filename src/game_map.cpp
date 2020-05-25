@@ -50,8 +50,8 @@
 #include "scene_gameover.h"
 
 namespace {
-	lcf::rpg::SaveMapInfo& map_info = Main_Data::game_data.map_info;
-	lcf::rpg::SavePanorama& panorama = Main_Data::game_data.panorama;
+	lcf::rpg::SaveMapInfo map_info;
+	lcf::rpg::SavePanorama panorama;
 
 	std::string chipset_name;
 	std::string battleback_name;
@@ -91,12 +91,12 @@ static Game_Map::Parallax::Params GetParallaxParams();
 void Game_Map::Init() {
 	Dispose();
 
-	map_info.position_x = 0;
-	map_info.position_y = 0;
+	map_info = {};
+	map_info.Setup();
+	panorama = {};
 	SetNeedRefresh(true);
 
 	interpreter.reset(new Game_Interpreter_Map(true));
-	map_info.encounter_rate = 0;
 
 	common_events.clear();
 	common_events.reserve(lcf::Data::commonevents.size());
@@ -114,6 +114,9 @@ void Game_Map::Dispose() {
 	events.clear();
 	pending.clear();
 	map.reset();
+	map_info = {};
+	map_info.Setup();
+	panorama = {};
 }
 
 void Game_Map::Quit() {
@@ -149,10 +152,8 @@ void Game_Map::ResetPendingMove() {
 void Game_Map::Setup() {
 	Dispose();
 	SetupCommon();
-	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
-	panorama = {};
 
 	Parallax::ClearChangedBG();
 
@@ -215,7 +216,17 @@ void Game_Map::Setup() {
 	ResetPendingMove();
 }
 
-void Game_Map::SetupFromSave() {
+void Game_Map::SetupFromSave(
+		RPG::SaveMapInfo save_map,
+		RPG::SaveVehicleLocation save_boat,
+		RPG::SaveVehicleLocation save_ship,
+		RPG::SaveVehicleLocation save_airship,
+		RPG::SaveEventExecState save_fg_exec,
+		RPG::SavePanorama save_pan,
+		std::vector<RPG::SaveCommonEvent> save_ce) {
+
+	map_info = std::move(save_map);
+	panorama = std::move(save_pan);
 
 	SetupCommon();
 
@@ -223,8 +234,8 @@ void Game_Map::SetupFromSave() {
 	const bool is_map_save_compat = Main_Data::game_player->IsMapCompatibleWithSave(GetMapSaveCount());
 
 	if (is_db_save_compat && is_map_save_compat) {
-		for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
-			common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
+		for (size_t i = 0; i < std::min(save_ce.size(), common_events.size()); ++i) {
+			common_events[i].SetSaveData(save_ce[i].parallel_event_execstate);
 		}
 	}
 
@@ -234,14 +245,15 @@ void Game_Map::SetupFromSave() {
 			ev.SetSaveData(map_info.events[i]);
 		}
 	}
+	map_info.events.clear();
 
-	GetVehicle(Game_Vehicle::Boat)->SetSaveData(Main_Data::game_data.boat_location);
-	GetVehicle(Game_Vehicle::Ship)->SetSaveData(Main_Data::game_data.ship_location);
-	GetVehicle(Game_Vehicle::Airship)->SetSaveData(Main_Data::game_data.airship_location);
+	GetVehicle(Game_Vehicle::Boat)->SetSaveData(std::move(save_boat));
+	GetVehicle(Game_Vehicle::Ship)->SetSaveData(std::move(save_ship));
+	GetVehicle(Game_Vehicle::Airship)->SetSaveData(std::move(save_airship));
 
 	if (is_map_save_compat) {
 		// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-		interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
+		interpreter->SetState(std::move(save_fg_exec));
 	}
 
 	map_info.Fixup(GetMap());
@@ -306,6 +318,9 @@ void Game_Map::SetupCommon() {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
+	map_info.Fixup(GetMap());
+	map_info.Fixup(GetMapInfo());
+
 	// Create the map events
 	events.reserve(map->events.size());
 	for (const auto& ev : map->events) {
@@ -313,26 +328,28 @@ void Game_Map::SetupCommon() {
 	}
 }
 
-void Game_Map::PrepareSave() {
-	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
+void Game_Map::PrepareSave(RPG::Save& save) {
+	save.foreground_event_execstate = interpreter->GetState();
 
-	Main_Data::game_data.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
-	Main_Data::game_data.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
-	Main_Data::game_data.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
+	save.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
+	save.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
+	save.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
 
-	map_info.events.clear();
-	map_info.events.reserve(events.size());
+	save.map_info = map_info;
+	save.map_info.events.clear();
+	save.map_info.events.reserve(events.size());
 	for (Game_Event& ev : events) {
-		map_info.events.push_back(ev.GetSaveData());
+		save.map_info.events.push_back(ev.GetSaveData());
 	}
 
-	std::vector<lcf::rpg::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
-	save_common_events.clear();
-	save_common_events.reserve(common_events.size());
+	save.panorama = panorama;
+
+	save.common_events.clear();
+	save.common_events.reserve(common_events.size());
 	for (Game_CommonEvent& ev : common_events) {
-		save_common_events.push_back(lcf::rpg::SaveCommonEvent());
-		save_common_events.back().ID = ev.GetIndex();
-		save_common_events.back().parallel_event_execstate = ev.GetSaveData();
+		save.common_events.push_back(lcf::rpg::SaveCommonEvent());
+		save.common_events.back().ID = ev.GetIndex();
+		save.common_events.back().parallel_event_execstate = ev.GetSaveData();
 	}
 }
 

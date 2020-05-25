@@ -924,7 +924,14 @@ static void FixSaveGames() {
 }
 
 static void OnMapSaveFileReady(FileRequestResult*) {
-	Game_Map::SetupFromSave();
+	auto& save = Main_Data::game_data;
+	Game_Map::SetupFromSave(save.map_info,
+			save.boat_location,
+			save.ship_location,
+			save.airship_location,
+			save.foreground_event_execstate,
+			save.panorama,
+			save.common_events);
 	FixSaveGames();
 }
 

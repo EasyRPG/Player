@@ -31,6 +31,15 @@
 #include <lcf/rpg/mapinfo.h>
 #include "async_op.h"
 
+namespace RPG {
+class SaveMapInfo;
+class SavePanorama;
+class SaveCommonEvent;
+class SaveVehiceLocation;
+class SaveEventExecState;
+class Save;
+}
+
 class FileRequestAsync;
 struct BattleArgs;
 
@@ -92,13 +101,29 @@ namespace Game_Map {
 
 	/**
 	 * Setups a map from a savegame.
+	 * 
+	 * @param save_map - The map state
+	 * @param save_boat - The boat state
+	 * @param save_ship - The ship state
+	 * @param save_airship - The airship state
+	 * @param save_fg_exec - The foreground interpreter state
+	 * @param save_pan - The panorama state
+	 * @param save_ce - The common event state
 	 */
-	void SetupFromSave();
+	void SetupFromSave(RPG::SaveMapInfo save_map,
+			RPG::SaveVehicleLocation save_boat,
+			RPG::SaveVehicleLocation save_ship,
+			RPG::SaveVehicleLocation save_airship,
+			RPG::SaveEventExecState save_fg_exec,
+			RPG::SavePanorama save_pan,
+			std::vector<RPG::SaveCommonEvent> save_ce);
 
 	/**
 	 * Copies event data into lcf::rpg::Save data.
+	 *
+	 * @param save - save data to populate.
 	 */
-	void PrepareSave();
+	void PrepareSave(lcf::rpg::Save& save);
 
 	/**
 	 * Runs map.
