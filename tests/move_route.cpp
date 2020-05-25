@@ -13,15 +13,31 @@ TEST_SUITE_BEGIN("MoveRoute");
 namespace {
 struct MapGuard {
 	MapGuard() {
+		Data::treemap = {};
+		Data::treemap.maps.push_back(RPG::MapInfo());
+		Data::treemap.maps.back().type = RPG::TreeMap::MapType_root;
+		Data::treemap.maps.push_back(RPG::MapInfo());
+		Data::treemap.maps.back().ID = 1;
+		Data::treemap.maps.back().type = RPG::TreeMap::MapType_map;
+
+		Data::chipsets.push_back({});
+
 		Game_Map::Init();
 		Main_Data::game_switches = std::make_unique<Game_Switches>();
 		Main_Data::game_player = std::make_unique<Game_Player>();
+		Main_Data::game_player->SetMapId(1);
+
+		auto map = std::make_unique<RPG::Map>();
+
+		Game_Map::Setup(std::move(map));
 	}
 
 	~MapGuard() {
 		Main_Data::game_switches = {};
 		Main_Data::game_player = {};
 		Game_Map::Quit();
+		Data::treemap = {};
+		Data::chipsets = {};
 	}
 };
 
@@ -119,11 +135,25 @@ TEST_CASE("CommandMove") {
 	// FIXME: Requires mocked out map.
 }
 
-static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, int face) {
+static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
+	Main_Data::game_player->SetX(px);
+	Main_Data::game_player->SetY(py);
+
 	auto ch = MakeCharacter();
+	ch.SetX(x);
+	ch.SetY(y);
 	ch.SetDirection(orig_dir);
 	ch.SetSpriteDirection(orig_dir);
 	auto mr = MakeRoute({{ code }});
+
+	CAPTURE(code);
+	CAPTURE(orig_dir);
+	CAPTURE(dir);
+	CAPTURE(face);
+	CAPTURE(x);
+	CAPTURE(y);
+	CAPTURE(px);
+	CAPTURE(py);
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRouteDir(ch, orig_dir, orig_dir, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -159,10 +189,42 @@ TEST_CASE("CommandTurn") {
 	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Right, Up, Up);
 	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Up, Left, Left);
 	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Left, Down, Down);
+}
 
-	// FIXME: Face random?
-	// FIXME: Face hero?
-	// FIXME: Face away hero?
+TEST_CASE("CommandTurnRandom") {
+	const MapGuard mg;
+
+	for (int i = 0; i < 10; ++i) {
+		auto ch = MakeCharacter();
+		auto mr = MakeRoute({{ RPG::MoveCommand::Code::face_random_direction }});
+
+		ch.ForceMoveRoute(mr, 3);
+		testMoveRouteDir(ch, Down, Down, false, 3, 0xFFFF, 64, 0, true, false, mr);
+
+		ForceUpdate(ch);
+		testMoveRoute(ch, false, 3, 1, 32, 1, true, false, mr);
+
+		REQUIRE_GE(ch.GetDirection(), Up);
+		REQUIRE_LE(ch.GetDirection(), Left);
+	}
+}
+
+TEST_CASE("CommandTurnHero") {
+	const MapGuard mg;
+
+	int ch_x = 8;
+	int ch_y = 8;
+	for (int dx = -2; dx <= 2; ++dx) {
+		for (int dy = -2; dy <= 2; ++dy) {
+			auto dir = Down;
+			if (std::abs(dx) > std::abs(dy)) {
+				dir = (dx > 0 ? Right : Left);
+			} else {
+				dir = (dy >= 0 ? Down : Up);
+			}
+			testTurn(RPG::MoveCommand::Code::face_hero, Left, dir, dir, ch_x, ch_y, ch_x + dx, ch_y + dy);
+		}
+	}
 }
 
 TEST_CASE("CommandWait") {
