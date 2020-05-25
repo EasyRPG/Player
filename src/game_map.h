@@ -93,15 +93,24 @@ namespace Game_Map {
 	void Dispose();
 
 	/**
+	 * Loads the map from disk
+	 *
+	 * @param map_id the id of the map to load
+	 * @return the map, or nullptr if it couldn't be loaded
+	 */
+	std::unique_ptr<RPG::Map> loadMapFile(int map_id);
+
+	/**
 	 * Setups a new map.
 	 *
 	 * @pre Main_Data::game_player->GetMapId() reflects the new map.
 	 */
-	void Setup();
+	void Setup(std::unique_ptr<RPG::Map> map);
 
 	/**
 	 * Setups a map from a savegame.
 	 * 
+	 * @param map - The map data
 	 * @param save_map - The map state
 	 * @param save_boat - The boat state
 	 * @param save_ship - The ship state
@@ -110,7 +119,9 @@ namespace Game_Map {
 	 * @param save_pan - The panorama state
 	 * @param save_ce - The common event state
 	 */
-	void SetupFromSave(RPG::SaveMapInfo save_map,
+	void SetupFromSave(
+			std::unique_ptr<RPG::Map> map,
+			RPG::SaveMapInfo save_map,
 			RPG::SaveVehicleLocation save_boat,
 			RPG::SaveVehicleLocation save_ship,
 			RPG::SaveVehicleLocation save_airship,

@@ -925,7 +925,10 @@ static void FixSaveGames() {
 
 static void OnMapSaveFileReady(FileRequestResult*) {
 	auto& save = Main_Data::game_data;
-	Game_Map::SetupFromSave(save.map_info,
+	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
+	Game_Map::SetupFromSave(
+			std::move(map),
+			save.map_info,
 			save.boat_location,
 			save.ship_location,
 			save.airship_location,

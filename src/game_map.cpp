@@ -149,8 +149,11 @@ void Game_Map::ResetPendingMove() {
 	}
 }
 
-void Game_Map::Setup() {
+void Game_Map::Setup(std::unique_ptr<RPG::Map> map_in) {
 	Dispose();
+
+	map = std::move(map_in);
+
 	SetupCommon();
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
@@ -217,6 +220,7 @@ void Game_Map::Setup() {
 }
 
 void Game_Map::SetupFromSave(
+		std::unique_ptr<RPG::Map> map_in,
 		RPG::SaveMapInfo save_map,
 		RPG::SaveVehicleLocation save_boat,
 		RPG::SaveVehicleLocation save_ship,
@@ -225,6 +229,7 @@ void Game_Map::SetupFromSave(
 		RPG::SavePanorama save_pan,
 		std::vector<RPG::SaveCommonEvent> save_ce) {
 
+	map = std::move(map_in);
 	map_info = std::move(save_map);
 	panorama = std::move(save_pan);
 
@@ -277,7 +282,9 @@ void Game_Map::SetupFromSave(
 	ResetPendingMove();
 }
 
-void Game_Map::SetupCommon() {
+std::unique_ptr<RPG::Map> Game_Map::loadMapFile(int map_id) {
+	std::unique_ptr<RPG::Map> map;
+
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	// FIXME: Assert map was cached for async platforms
 	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
@@ -288,6 +295,7 @@ void Game_Map::SetupCommon() {
 
 		if (map_file.empty()) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
+			return nullptr;
 		}
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
@@ -297,17 +305,21 @@ void Game_Map::SetupCommon() {
 		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 
-	Output::Debug("Loading Map {}", map_name);
+	Output::Debug("Loaded Map {}", map_name);
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());
 	}
 
+	return map;
+}
+
+void Game_Map::SetupCommon() {
 	SetNeedRefresh(true);
 
 	int current_index = GetMapIndex(GetMapId());
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	for (int cur = current_index;
 		GetMapIndex(lcf::Data::treemap.maps[cur].parent_map) != cur;
 		cur = GetMapIndex(lcf::Data::treemap.maps[cur].parent_map)) {

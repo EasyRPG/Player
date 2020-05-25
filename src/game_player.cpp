@@ -141,7 +141,9 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 		data()->pan_current_x = lcf::rpg::SavePartyLocation::kPanXDefault;
 		data()->pan_current_y = lcf::rpg::SavePartyLocation::kPanYDefault;
 
-		Game_Map::Setup();
+		auto map = Game_Map::loadMapFile(GetMapId());
+
+		Game_Map::Setup(std::move(map));
 		Game_Map::PlayBgm();
 	} else {
 		Game_Map::SetPositionX(GetSpriteX() - GetPanX());
