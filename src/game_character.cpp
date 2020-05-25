@@ -362,10 +362,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 					SetFacingLocked(true);
 					break;
 				case RPG::MoveCommand::Code::unlock_facing:
-					// FIXME: Verify this behavior
-					if (!IsDirectionFixedAnimationType(GetAnimationType())) {
-						SetFacingLocked(false);
-					}
+					SetFacingLocked(false);
 					break;
 				case RPG::MoveCommand::Code::increase_movement_speed:
 					SetMoveSpeed(min(GetMoveSpeed() + 1, 6));

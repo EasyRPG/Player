@@ -940,7 +940,7 @@ inline bool Game_Character::IsFacingLocked() const {
 }
 
 inline void Game_Character::SetFacingLocked(bool locked) {
-	data()->lock_facing = locked;
+	data()->lock_facing = locked || IsDirectionFixedAnimationType(GetAnimationType());
 }
 
 inline int Game_Character::GetLayer() const {
@@ -1070,6 +1070,7 @@ inline Game_Character::AnimType Game_Character::GetAnimationType() const {
 
 inline void Game_Character::SetAnimationType(Game_Character::AnimType anim_type) {
 	data()->animation_type = int(anim_type);
+	SetFacingLocked(IsDirectionFixedAnimationType(anim_type));
 }
 
 inline int Game_Character::GetStopCount() const {

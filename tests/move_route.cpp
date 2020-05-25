@@ -196,7 +196,7 @@ void testLockFacing(RPG::EventPage::AnimType at) {
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
-	REQUIRE(!ch.IsFacingLocked());
+	REQUIRE_EQ(ch.IsFacingLocked(), Game_Character::IsDirectionFixedAnimationType(at));
 
 	ForceUpdate(ch);
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);

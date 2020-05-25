@@ -600,4 +600,27 @@ TEST_CASE("VisibleEvent") {
 
 }
 
+TEST_CASE("LockFacingVsAnimType") {
+	for (int i = 0; i <= static_cast<int>(RPG::EventPage::AnimType_step_frame_fix); ++i) {
+		auto at = static_cast<RPG::EventPage::AnimType>(i);
+
+		Game_Player ch;
+		ch.SetAnimationType(at);
+
+		if (Game_Character::IsDirectionFixedAnimationType(at)) {
+			REQUIRE(ch.IsFacingLocked());
+			ch.SetFacingLocked(false);
+			REQUIRE(ch.IsFacingLocked());
+			ch.SetFacingLocked(true);
+			REQUIRE(ch.IsFacingLocked());
+		} else {
+			REQUIRE(!ch.IsFacingLocked());
+			ch.SetFacingLocked(true);
+			REQUIRE(ch.IsFacingLocked());
+			ch.SetFacingLocked(false);
+			REQUIRE(!ch.IsFacingLocked());
+		}
+	}
+}
+
 TEST_SUITE_END();

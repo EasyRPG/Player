@@ -183,7 +183,6 @@ void Game_Event::RefreshPage() {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 	SetAnimationType(static_cast<RPG::EventPage::AnimType>(page->animation_type));
-	SetFacingLocked(IsDirectionFixedAnimationType(GetAnimationType()));
 	SetMoveSpeed(page->move_speed);
 
 	if (IsFacingLocked()) {
