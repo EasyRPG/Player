@@ -20,11 +20,11 @@
 
 // Headers
 #include <string>
-#include "rpg_animation.h"
-#include "rpg_music.h"
-#include "rpg_sound.h"
-#include "rpg_system.h"
-#include "rpg_savesystem.h"
+#include <lcf/rpg/animation.h>
+#include <lcf/rpg/music.h>
+#include <lcf/rpg/sound.h>
+#include <lcf/rpg/system.h>
+#include <lcf/rpg/savesystem.h>
 #include "color.h"
 #include "transition.h"
 
@@ -73,7 +73,7 @@ namespace Game_System {
 		Transition_Count
 	};
 
-	using AtbMode = RPG::SaveSystem::AtbMode;
+	using AtbMode = lcf::rpg::SaveSystem::AtbMode;
 
 	class Target {
 	public:
@@ -105,7 +105,7 @@ namespace Game_System {
 	 *
 	 * @param bgm music data.
 	 */
-	void BgmPlay(RPG::Music const& bgm);
+	void BgmPlay(lcf::rpg::Music const& bgm);
 
 	/**
 	 * Stops playing music.
@@ -125,23 +125,23 @@ namespace Game_System {
 	 * @param se sound data.
 	 * @param stop_sounds If true stops all SEs when playing (OFF)/(...). Only used by the interpreter.
 	 */
-	void SePlay(const RPG::Sound& se, bool stop_sounds = false);
+	void SePlay(const lcf::rpg::Sound& se, bool stop_sounds = false);
 
 	/**
 	 * Plays the first valid sound in the animation.
 	 *
 	 * @param animation animation data.
 	 */
-	void SePlay(const RPG::Animation& animation);
+	void SePlay(const lcf::rpg::Animation& animation);
 
 	/** @return system graphic filename.  */
 	const std::string& GetSystemName();
 
 	/** @return message stretch style */
-	RPG::System::Stretch GetMessageStretch();
+	lcf::rpg::System::Stretch GetMessageStretch();
 
 	/** @return system font */
-	RPG::System::Font GetFontId();
+	lcf::rpg::System::Font GetFontId();
 
 	/**
 	 * Sets the system graphic.
@@ -151,8 +151,8 @@ namespace Game_System {
 	 * @param font_id The system font to use.
 	 */
 	void SetSystemGraphic(const std::string& system_name,
-			RPG::System::Stretch stretch,
-			RPG::System::Font font);
+			lcf::rpg::System::Stretch stretch,
+			lcf::rpg::System::Font font);
 
 	/** Resets the system graphic to the default value. */
 	void ResetSystemGraphic();
@@ -172,7 +172,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @return the music.
 	 */
-	RPG::Music& GetSystemBGM(int which);
+	lcf::rpg::Music& GetSystemBGM(int which);
 
 	/**
 	 * Sets the system music.
@@ -180,7 +180,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @param bgm the music.
 	 */
-	void SetSystemBGM(int which, RPG::Music const& bgm);
+	void SetSystemBGM(int which, lcf::rpg::Music const& bgm);
 
 	/**
 	 * Gets the system sound effects.
@@ -188,7 +188,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @return the sound.
 	 */
-	RPG::Sound& GetSystemSE(int which);
+	lcf::rpg::Sound& GetSystemSE(int which);
 
 	/**
 	 * Sets a system sound effect.
@@ -196,7 +196,7 @@ namespace Game_System {
 	 * @param which which "context" to set the effect for.
 	 * @param sfx the sound effect.
 	 */
-	void SetSystemSE(int which, RPG::Sound const& sfx);
+	void SetSystemSE(int which, lcf::rpg::Sound const& sfx);
 
 	/**
 	 * Gets the system transitions.
@@ -267,7 +267,7 @@ namespace Game_System {
 
 	int GetSaveCount();
 
-	RPG::Music& GetCurrentBGM();
+	lcf::rpg::Music& GetCurrentBGM();
 	void MemorizeBGM();
 	void PlayMemorizedBGM();
 
@@ -307,24 +307,24 @@ namespace Game_System {
 	void ToggleAtbMode();
 
 	/** @return Music playing before battle started */
-	const RPG::Music& GetBeforeBattleMusic();
+	const lcf::rpg::Music& GetBeforeBattleMusic();
 
 	/**
 	 * Set before battle music
 	 * 
 	 * @param music music to set
 	 */
-	void SetBeforeBattleMusic(RPG::Music music);
+	void SetBeforeBattleMusic(lcf::rpg::Music music);
 
 	/** @return Music playing before boarded vehicle */
-	const RPG::Music& GetBeforeVehicleMusic();
+	const lcf::rpg::Music& GetBeforeVehicleMusic();
 
 	/**
 	 * Set before vehicle music
 	 * 
 	 * @param name name of music to set
 	 */
-	void SetBeforeVehicleMusic(RPG::Music music);
+	void SetBeforeVehicleMusic(lcf::rpg::Music music);
 
 	/** @return save slot used for last save game */
 	int GetSaveSlot();

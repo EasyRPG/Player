@@ -39,7 +39,7 @@
 #include "bitmap.h"
 #include "game_party.h"
 #include "game_player.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
 #include "transition.h"
 
@@ -186,7 +186,7 @@ void Scene_Debug::Update() {
 				EnterFromListOption(eItemSelect, prev.item);
 				break;
 			case eItemSelect:
-				if (GetIndex() <= static_cast<int>(Data::items.size())) {
+				if (GetIndex() <= static_cast<int>(lcf::Data::items.size())) {
 					EnterFromListOptionToValue(eItemValue, Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
 				}
 				break;
@@ -271,7 +271,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Load", true);
 				addItem(i++, "Switches", true);
 				addItem(i++, "Variables", true);
-				addItem(i++, Data::terms.gold.c_str(), true);
+				addItem(i++, lcf::Data::terms.gold.c_str(), true);
 				addItem(i++, "Items", true);
 				addItem(i++, "Battle", false);
 				addItem(i++, "Map", false);
@@ -343,7 +343,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 			}
 			break;
 		case eGold:
-			range_window->SetItemText(0, Data::terms.gold);
+			range_window->SetItemText(0, lcf::Data::terms.gold);
 			for (int i = 1; i < 10; i++){
 				range_window->SetItemText(i, "");
 			}
@@ -408,16 +408,16 @@ int Scene_Debug::GetLastPage() {
 			num_elements = Main_Data::game_variables->GetSize();
 			break;
 		case eItem:
-			num_elements = Data::items.size();
+			num_elements = lcf::Data::items.size();
 			break;
 		case eBattle:
-			num_elements = Data::troops.size();
+			num_elements = lcf::Data::troops.size();
 			break;
 		case eMap:
-			num_elements = Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0;
+			num_elements = lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0;
 			break;
 		case eCallEvent:
-			num_elements = Data::commonevents.size();
+			num_elements = lcf::Data::commonevents.size();
 			break;
 		default: break;
 	}
@@ -541,11 +541,11 @@ void Scene_Debug::EnterGold() {
 
 void Scene_Debug::EnterMapSelectX() {
 	auto map_id = GetIndex();
-	auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), map_id,
-			[](const RPG::MapInfo& l, int r) { return l.ID < r; });
-	if (iter != Data::treemap.maps.end()
+	auto iter = std::lower_bound(lcf::Data::treemap.maps.begin(), lcf::Data::treemap.maps.end(), map_id,
+			[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
+	if (iter != lcf::Data::treemap.maps.end()
 			&& iter->ID == map_id
-			&& iter->type == RPG::TreeMap::MapType_map
+			&& iter->type == lcf::rpg::TreeMap::MapType_map
 	   ) {
 
 		prev.main_range_index = 7;
@@ -671,7 +671,7 @@ void Scene_Debug::DoItem() {
 }
 
 void Scene_Debug::DoBattle() {
-	if (GetIndex() <= static_cast<int>(Data::troops.size())) {
+	if (GetIndex() <= static_cast<int>(lcf::Data::troops.size())) {
 		Scene::PopUntil(Scene::Map);
 		if (Scene::instance) {
 			prev.main_range_index = 6;
@@ -718,7 +718,7 @@ void Scene_Debug::DoFullHeal() {
 }
 
 void Scene_Debug::DoCallEvent() {
-	if (GetIndex() > static_cast<int>(Data::commonevents.size())) {
+	if (GetIndex() > static_cast<int>(lcf::Data::commonevents.size())) {
 		return;
 	}
 

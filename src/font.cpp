@@ -31,7 +31,7 @@
 #	include FT_MODULE_H
 #endif
 
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "bitmapfont.h"
 
 #include "filefinder.h"
@@ -356,7 +356,7 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
-	return Default(Game_System::GetFontId() == RPG::System::Font_mincho);
+	return Default(Game_System::GetFontId() == lcf::rpg::System::Font_mincho);
 }
 
 FontRef Font::Default(bool const m) {

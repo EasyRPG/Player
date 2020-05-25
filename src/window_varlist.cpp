@@ -22,9 +22,9 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "bitmap.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "game_party.h"
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
@@ -94,9 +94,9 @@ void Window_VarList::UpdateList(int first_value){
 	first_var = first_value;
 	int map_idx = 0;
 	if (mode == eMap) {
-		auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), first_value,
-				[](const RPG::MapInfo& l, int r) { return l.ID < r; });
-		map_idx = iter - Data::treemap.maps.begin();
+		auto iter = std::lower_bound(lcf::Data::treemap.maps.begin(), lcf::Data::treemap.maps.end(), first_value,
+				[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
+		map_idx = iter - lcf::Data::treemap.maps.begin();
 	}
 	for (int i = 0; i < 10; i++){
 		if (!DataIsValid(first_var+i)) {
@@ -112,14 +112,14 @@ void Window_VarList::UpdateList(int first_value){
 				ss << Main_Data::game_variables->GetName(first_value + i);
 				break;
 			case eItem:
-				ss << ReaderUtil::GetElement(Data::items, first_value+i)->name;
+				ss << lcf::ReaderUtil::GetElement(lcf::Data::items, first_value+i)->name;
 				break;
 			case eTroop:
-				ss << ReaderUtil::GetElement(Data::troops, first_value+i)->name;
+				ss << lcf::ReaderUtil::GetElement(lcf::Data::troops, first_value+i)->name;
 				break;
 			case eMap:
-				if (map_idx < static_cast<int>(Data::treemap.maps.size())) {
-					auto& map = Data::treemap.maps[map_idx];
+				if (map_idx < static_cast<int>(lcf::Data::treemap.maps.size())) {
+					auto& map = lcf::Data::treemap.maps[map_idx];
 					if (map.ID == first_value + i) {
 						ss << map.name;
 						++map_idx;
@@ -135,7 +135,7 @@ void Window_VarList::UpdateList(int first_value){
 				}
 				break;
 			case eCommonEvent:
-				ss << ReaderUtil::GetElement(Data::commonevents, first_value+i)->name;
+				ss << lcf::ReaderUtil::GetElement(lcf::Data::commonevents, first_value+i)->name;
 				break;
 			default:
 				break;
@@ -173,15 +173,15 @@ bool Window_VarList::DataIsValid(int range_index) {
 		case eVariable:
 			return Main_Data::game_variables->IsValid(range_index);
 		case eItem:
-			return range_index > 0 && range_index <= static_cast<int>(Data::items.size());
+			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::items.size());
 		case eTroop:
-			return range_index > 0 && range_index <= static_cast<int>(Data::troops.size());
+			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::troops.size());
 		case eMap:
-			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
+			return range_index > 0 && range_index <= (lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0);
 		case eHeal:
 			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size()) + 1;
 		case eCommonEvent:
-			return range_index > 0 && range_index <= static_cast<int>(Data::commonevents.size());
+			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::commonevents.size());
 		default:
 			break;
 	}

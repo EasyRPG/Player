@@ -54,7 +54,7 @@ std::string project_path;
 std::string save_path;
 
 namespace Main_Data {
-	// Dynamic Game Data
+	// Dynamic Game lcf::Data
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
@@ -65,7 +65,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Targets> game_targets;
 	std::unique_ptr<Game_Quit> game_quit;
 
-	RPG::Save game_data;
+	lcf::rpg::Save game_data;
 }
 
 void Main_Data::Init() {
@@ -170,7 +170,7 @@ void Main_Data::Cleanup() {
 	game_targets.reset();
 	game_quit.reset();
 
-	game_data = RPG::Save();
+	game_data = lcf::rpg::Save();
 }
 
 const std::string& Main_Data::GetProjectPath() {

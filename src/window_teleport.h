@@ -39,7 +39,7 @@ public:
 	 *
 	 * @return currently selected target.
 	 */
-	const RPG::SaveTarget& GetTarget() const;
+	const lcf::rpg::SaveTarget& GetTarget() const;
 
 	/**
 	 * Refreshes the list.

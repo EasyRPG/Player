@@ -28,7 +28,7 @@
 #include "transition.h"
 #include "main_data.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_save.h"
 #include "scene_map.h"
 
@@ -39,7 +39,7 @@ namespace {
 	Color bg_color = Color{ 0, 0, 0, 255 };
 }
 
-static RPG::SaveSystem& data = Main_Data::game_data.system;
+static lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
 
 bool bgm_pending = false;
 
@@ -72,8 +72,8 @@ int Game_System::GetSaveCount() {
 	return data.save_count;
 }
 
-void Game_System::BgmPlay(RPG::Music const& bgm) {
-	RPG::Music previous_music = data.current_music;
+void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
+	lcf::rpg::Music previous_music = data.current_music;
 	data.current_music = bgm;
 
 	// Validate
@@ -134,7 +134,7 @@ void Game_System::BgmFade(int duration) {
 	data.music_stopping = true;
 }
 
-void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
+void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	static bool ineluki_warning_shown = false;
 
 	if (se.name.empty()) {
@@ -182,7 +182,7 @@ void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
 	request->Start();
 }
 
-void Game_System::SePlay(const RPG::Animation &animation) {
+void Game_System::SePlay(const lcf::rpg::Animation &animation) {
 	std::string path;
 	for (const auto& anim : animation.timings) {
 		if (!IsStopSoundFilename(anim.se.name, path)) {
@@ -194,7 +194,7 @@ void Game_System::SePlay(const RPG::Animation &animation) {
 
 const std::string& Game_System::GetSystemName() {
 	return !data.graphics_name.empty() ?
-		data.graphics_name : Data::system.system_name;
+		data.graphics_name : lcf::Data::system.system_name;
 }
 
 static void OnChangeSystemGraphicReady(FileRequestResult* result) {
@@ -218,8 +218,8 @@ void Game_System::ReloadSystemGraphic() {
 }
 
 void Game_System::SetSystemGraphic(const std::string& new_system_name,
-		RPG::System::Stretch message_stretch,
-		RPG::System::Font font) {
+		lcf::rpg::System::Stretch message_stretch,
+		lcf::rpg::System::Font font) {
 
 	bool changed = (GetSystemName() != new_system_name);
 
@@ -234,17 +234,17 @@ void Game_System::SetSystemGraphic(const std::string& new_system_name,
 
 void Game_System::ResetSystemGraphic() {
 	data.graphics_name = "";
-	data.message_stretch = (RPG::System::Stretch)0;
-	data.font_id = (RPG::System::Font)0;
+	data.message_stretch = (lcf::rpg::System::Stretch)0;
+	data.font_id = (lcf::rpg::System::Font)0;
 
 	ReloadSystemGraphic();
 }
 
 const std::string& Game_System::GetSystem2Name() {
-	return Data::system.system2_name;
+	return lcf::Data::system.system2_name;
 }
 
-RPG::Music& Game_System::GetSystemBGM(int which) {
+lcf::rpg::Music& Game_System::GetSystemBGM(int which) {
 	switch (which) {
 		case BGM_Battle:		return data.battle_music;
 		case BGM_Victory:		return data.battle_end_music;
@@ -258,11 +258,11 @@ RPG::Music& Game_System::GetSystemBGM(int which) {
 	return data.battle_music; // keep the compiler happy
 }
 
-RPG::Music& Game_System::GetCurrentBGM() {
+lcf::rpg::Music& Game_System::GetCurrentBGM() {
 	return data.current_music;
 }
 
-void Game_System::SetSystemBGM(int which, const RPG::Music& bgm) {
+void Game_System::SetSystemBGM(int which, const lcf::rpg::Music& bgm) {
 	GetSystemBGM(which) = bgm;
 }
 
@@ -274,7 +274,7 @@ void Game_System::PlayMemorizedBGM() {
 	BgmPlay(data.stored_music);
 }
 
-RPG::Sound& Game_System::GetSystemSE(int which) {
+lcf::rpg::Sound& Game_System::GetSystemSE(int which) {
 	switch (which) {
 		case SFX_Cursor:		return data.cursor_se;
 		case SFX_Decision:		return data.decision_se;
@@ -292,7 +292,7 @@ RPG::Sound& Game_System::GetSystemSE(int which) {
 	return data.cursor_se; // keep the compiler happy
 }
 
-void Game_System::SetSystemSE(int which, const RPG::Sound& sfx) {
+void Game_System::SetSystemSE(int which, const lcf::rpg::Sound& sfx) {
 	GetSystemSE(which) = sfx;
 }
 
@@ -328,16 +328,16 @@ bool Game_System::GetAllowMenu() {
 	return data.menu_allowed;
 }
 
-RPG::System::Stretch Game_System::GetMessageStretch() {
-	return static_cast<RPG::System::Stretch>(!data.graphics_name.empty()
+lcf::rpg::System::Stretch Game_System::GetMessageStretch() {
+	return static_cast<lcf::rpg::System::Stretch>(!data.graphics_name.empty()
 		? data.message_stretch
-		: Data::system.message_stretch);
+		: lcf::Data::system.message_stretch);
 }
 
-RPG::System::Font Game_System::GetFontId() {
-	return static_cast<RPG::System::Font>(!data.graphics_name.empty()
+lcf::rpg::System::Font Game_System::GetFontId() {
+	return static_cast<lcf::rpg::System::Font>(!data.graphics_name.empty()
 		? data.font_id
-		: Data::system.font_id);
+		: lcf::Data::system.font_id);
 }
 
 Transition::Type Game_System::GetTransition(int which) {
@@ -349,22 +349,22 @@ Transition::Type Game_System::GetTransition(int which) {
 
 	switch (which) {
 		case Transition_TeleportErase:
-			transition = get(data.transition_out, Data::system.transition_out);
+			transition = get(data.transition_out, lcf::Data::system.transition_out);
 			break;
 		case Transition_TeleportShow:
-			transition = get(data.transition_in, Data::system.transition_in);
+			transition = get(data.transition_in, lcf::Data::system.transition_in);
 			break;
 		case Transition_BeginBattleErase:
-			transition = get(data.battle_start_fadeout, Data::system.battle_start_fadeout);
+			transition = get(data.battle_start_fadeout, lcf::Data::system.battle_start_fadeout);
 			break;
 		case Transition_BeginBattleShow:
-			transition = get(data.battle_start_fadein, Data::system.battle_start_fadein);
+			transition = get(data.battle_start_fadein, lcf::Data::system.battle_start_fadein);
 			break;
 		case Transition_EndBattleErase:
-			transition = get(data.battle_end_fadeout, Data::system.battle_end_fadeout);
+			transition = get(data.battle_end_fadeout, lcf::Data::system.battle_end_fadeout);
 			break;
 		case Transition_EndBattleShow:
-			transition = get(data.battle_end_fadein, Data::system.battle_end_fadein);
+			transition = get(data.battle_end_fadein, lcf::Data::system.battle_end_fadein);
 			break;
 		default: assert(false && "Bad transition");
 	}
@@ -434,22 +434,22 @@ void Game_System::SetTransition(int which, int transition) {
 	};
 	switch (which) {
 		case Transition_TeleportErase:
-			data.transition_out = set(transition, Data::system.transition_out);
+			data.transition_out = set(transition, lcf::Data::system.transition_out);
 			break;
 		case Transition_TeleportShow:
-			data.transition_in = set(transition, Data::system.transition_in);
+			data.transition_in = set(transition, lcf::Data::system.transition_in);
 			break;
 		case Transition_BeginBattleErase:
-			data.battle_start_fadeout = set(transition, Data::system.battle_start_fadeout);
+			data.battle_start_fadeout = set(transition, lcf::Data::system.battle_start_fadeout);
 			break;
 		case Transition_BeginBattleShow:
-			data.battle_start_fadein = set(transition, Data::system.battle_start_fadein);
+			data.battle_start_fadein = set(transition, lcf::Data::system.battle_start_fadein);
 			break;
 		case Transition_EndBattleErase:
-			data.battle_end_fadeout = set(transition, Data::system.battle_end_fadeout);
+			data.battle_end_fadeout = set(transition, lcf::Data::system.battle_end_fadeout);
 			break;
 		case Transition_EndBattleShow:
-			data.battle_end_fadein = set(transition, Data::system.battle_end_fadein);
+			data.battle_end_fadein = set(transition, lcf::Data::system.battle_end_fadein);
 			break;
 		default: assert(false && "Bad transition");
 	}
@@ -478,7 +478,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 		// The first line contains the path to the actual audio file to play
 		std::string line = Utils::ReadLine(*stream.get());
-		line = ReaderUtil::Recode(line, Player::encoding);
+		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
 		Output::Debug("Ineluki link file: {} -> {}", path, line);
 
@@ -535,19 +535,19 @@ void Game_System::ToggleAtbMode() {
 	data.atb_mode = !data.atb_mode;
 }
 
-const RPG::Music& Game_System::GetBeforeBattleMusic() {
+const lcf::rpg::Music& Game_System::GetBeforeBattleMusic() {
 	return data.before_battle_music;
 }
 
-void Game_System::SetBeforeBattleMusic(RPG::Music music) {
+void Game_System::SetBeforeBattleMusic(lcf::rpg::Music music) {
 	data.before_battle_music = std::move(music);
 }
 
-const RPG::Music& Game_System::GetBeforeVehicleMusic() {
+const lcf::rpg::Music& Game_System::GetBeforeVehicleMusic() {
 	return data.before_vehicle_music;
 }
 
-void Game_System::SetBeforeVehicleMusic(RPG::Music music) {
+void Game_System::SetBeforeVehicleMusic(lcf::rpg::Music music) {
 	data.before_vehicle_music = std::move(music);
 }
 

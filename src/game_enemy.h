@@ -20,7 +20,7 @@
 
 // Headers
 #include "game_battler.h"
-#include "rpg_enemy.h"
+#include <lcf/rpg/enemy.h>
 
 /**
  * Represents a single enemy in the battle scene
@@ -186,8 +186,8 @@ public:
 
 	BattlerType GetType() const override;
 
-	bool IsActionValid(const RPG::EnemyAction& action);
-	const RPG::EnemyAction* ChooseRandomAction();
+	bool IsActionValid(const lcf::rpg::EnemyAction& action);
+	const lcf::rpg::EnemyAction* ChooseRandomAction();
 	bool IsInParty() const override;
 
 protected:
@@ -205,10 +205,10 @@ protected:
 	int flying_offset;
 	std::vector<int16_t> states;
 
-	RPG::Enemy* enemy;
+	lcf::rpg::Enemy* enemy;
 
 	// normal attack instance for use after charge
-	RPG::EnemyAction normal_atk;
+	lcf::rpg::EnemyAction normal_atk;
 };
 
 inline Game_Battler::BattlerType Game_Enemy::GetType() const {

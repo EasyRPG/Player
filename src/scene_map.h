@@ -96,7 +96,7 @@ private:
 	bool screen_erased_by_event = false;
 
 	AsyncContinuation map_async_continuation = {};
-	RPG::Music music_before_inn = {};
+	lcf::rpg::Music music_before_inn = {};
 	bool activate_inn = false;
 	bool inn_started = false;
 };

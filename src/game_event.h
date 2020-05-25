@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 #include "game_character.h"
-#include "rpg_event.h"
-#include "rpg_savemapevent.h"
+#include <lcf/rpg/event.h>
+#include <lcf/rpg/savemapevent.h>
 #include "game_interpreter_map.h"
 #include "async_op.h"
 
@@ -35,13 +35,13 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Game_Event(int map_id, const RPG::Event& event);
+	Game_Event(int map_id, const lcf::rpg::Event& event);
 
 	/**
 	 * Constructor.
 	 * Create event from save data.
 	 */
-	Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data);
+	Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& data);
 
 	/**
 	 * Implementation of abstract methods
@@ -56,8 +56,8 @@ public:
 	 */
 	void Refresh(bool from_save = false);
 
-	void Setup(const RPG::EventPage* new_page);
-	void SetupFromSave(const RPG::EventPage* new_page);
+	void Setup(const lcf::rpg::EventPage* new_page);
+	void SetupFromSave(const lcf::rpg::EventPage* new_page);
 
 	/**
 	 * Gets event ID.
@@ -92,14 +92,14 @@ public:
 	 *
 	 * @return trigger condition.
 	 */
-	RPG::EventPage::Trigger GetTrigger() const;
+	lcf::rpg::EventPage::Trigger GetTrigger() const;
 
 	/**
 	 * Gets event commands list.
 	 *
 	 * @return event commands list.
 	 */
-	const std::vector<RPG::EventCommand>& GetList() const;
+	const std::vector<lcf::rpg::EventCommand>& GetList() const;
 
 	/**
 	 * Event returns to its original direction before talking to the hero.
@@ -117,7 +117,7 @@ public:
 	 */
 	AsyncOp Update(bool resume_async);
 
-	bool AreConditionsMet(const RPG::EventPage& page);
+	bool AreConditionsMet(const lcf::rpg::EventPage& page);
 
 	/**
 	 * Returns current index of a "Movement Type Custom" move route.
@@ -140,20 +140,20 @@ public:
 	 *
 	 * @return page or nullptr
 	 */
-	const RPG::EventPage* GetPage(int page) const;
+	const lcf::rpg::EventPage* GetPage(int page) const;
 
 	/**
 	 * Returns the active event page or nullptr if no page is active.
 	 *
 	 * @return active page or nullptr
 	 */
-	const RPG::EventPage* GetActivePage() const;
+	const lcf::rpg::EventPage* GetActivePage() const;
 
-	const RPG::SaveMapEvent& GetSaveData();
+	const lcf::rpg::SaveMapEvent& GetSaveData();
 
 protected:
-	RPG::SaveMapEvent* data();
-	const RPG::SaveMapEvent* data() const;
+	lcf::rpg::SaveMapEvent* data();
+	const lcf::rpg::SaveMapEvent* data() const;
 
 private:
 	void UpdateSelfMovement() override;
@@ -202,19 +202,19 @@ private:
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.
-	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
+	std::unique_ptr<lcf::rpg::SaveMapEvent> _data_copy;
 
-	RPG::Event event;
-	const RPG::EventPage* page = nullptr;
+	lcf::rpg::Event event;
+	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
 
-inline RPG::SaveMapEvent* Game_Event::data() {
-	return static_cast<RPG::SaveMapEvent*>(Game_Character::data());
+inline lcf::rpg::SaveMapEvent* Game_Event::data() {
+	return static_cast<lcf::rpg::SaveMapEvent*>(Game_Character::data());
 }
 
-inline const RPG::SaveMapEvent* Game_Event::data() const {
-	return static_cast<const RPG::SaveMapEvent*>(Game_Character::data());
+inline const lcf::rpg::SaveMapEvent* Game_Event::data() const {
+	return static_cast<const lcf::rpg::SaveMapEvent*>(Game_Character::data());
 }
 
 #endif

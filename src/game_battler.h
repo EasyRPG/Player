@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
-#include "rpg_state.h"
+#include <lcf/rpg/state.h>
 #include "system.h"
 #include "state.h"
 #include "color.h"
@@ -101,7 +101,7 @@ public:
 	 *
 	 * @return First non-normal restriction or normal if not restricted
 	 */
-	RPG::State::Restriction GetSignificantRestriction() const;
+	lcf::rpg::State::Restriction GetSignificantRestriction() const;
 
 	/**
 	 * Gets the Battler ID.
@@ -131,7 +131,7 @@ public:
 	 * @return the highest priority state affecting the battler.
 	 *         Returns nullptr if no states.
 	 */
-	const RPG::State* GetSignificantState() const;
+	const lcf::rpg::State* GetSignificantState() const;
 
 	/**
 	 * Gets the state probability by rate (A-E).
@@ -744,7 +744,7 @@ inline void Game_Battler::Kill() {
 }
 
 inline bool Game_Battler::IsDead() const {
-	return HasState(RPG::State::kDeathID);
+	return HasState(lcf::rpg::State::kDeathID);
 }
 
 inline bool Game_Battler::Exists() const {

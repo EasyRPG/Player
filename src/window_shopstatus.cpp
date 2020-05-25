@@ -42,8 +42,8 @@ void Window_ShopStatus::Refresh() {
 		equipped = Main_Data::game_party->GetEquippedItemCount(item_id);
 	}
 
-	contents->TextDraw(0, 2, 1, Data::terms.possessed_items);
-	contents->TextDraw(0, 18, 1, Data::terms.equipped_items);
+	contents->TextDraw(0, 2, 1, lcf::Data::terms.possessed_items);
+	contents->TextDraw(0, 18, 1, lcf::Data::terms.equipped_items);
 
 	contents->TextDraw(120, 2, Font::ColorDefault, std::to_string(number), Text::AlignRight);
 

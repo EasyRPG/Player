@@ -30,7 +30,7 @@ Window_Teleport::Window_Teleport(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-const RPG::SaveTarget& Window_Teleport::GetTarget() const {
+const lcf::rpg::SaveTarget& Window_Teleport::GetTarget() const {
 	const auto& targets = Main_Data::game_targets->GetTeleportTargets();
 
 	return targets[GetIndex()];

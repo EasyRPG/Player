@@ -22,7 +22,7 @@
 #include "game_actor.h"
 #include "window_shopparty.h"
 #include "output.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "sprite_character.h"
 
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
@@ -46,17 +46,17 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-static int CalcEquipScore(const RPG::Item* item) {
+static int CalcEquipScore(const lcf::rpg::Item* item) {
 	if (item == nullptr) {
 		return 0;
 	}
 	return item->atk_points1 + item->def_points1 + item->agi_points1 + item->spi_points1;
 }
 
-static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
+static int CmpEquip(const Game_Actor* actor, const lcf::rpg::Item* new_item) {
 	int new_score = CalcEquipScore(new_item);
 	switch (new_item->type) {
-	case RPG::Item::Type_weapon:
+	case lcf::rpg::Item::Type_weapon:
 	{
 		int score = CalcEquipScore(actor->GetWeapon());
 		if (actor->HasTwoWeapons()) {
@@ -65,13 +65,13 @@ static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
 		}
 		return new_score - score;
 	}
-	case RPG::Item::Type_helmet:
+	case lcf::rpg::Item::Type_helmet:
 		return new_score - CalcEquipScore(actor->GetHelmet());
-	case RPG::Item::Type_shield:
+	case lcf::rpg::Item::Type_shield:
 		return new_score - CalcEquipScore(actor->GetShield());
-	case RPG::Item::Type_armor:
+	case lcf::rpg::Item::Type_armor:
 		return new_score - CalcEquipScore(actor->GetArmor());
-	case RPG::Item::Type_accessory:
+	case lcf::rpg::Item::Type_accessory:
 		return new_score - CalcEquipScore(actor->GetAccessory());
 	default:
 		break;
@@ -79,12 +79,12 @@ static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
 	return 0;
 }
 
-static bool IsEquipment(const RPG::Item* item) {
-	return item->type == RPG::Item::Type_weapon
-		|| item->type == RPG::Item::Type_shield
-		|| item->type == RPG::Item::Type_helmet
-		|| item->type == RPG::Item::Type_armor
-		|| item->type == RPG::Item::Type_accessory;
+static bool IsEquipment(const lcf::rpg::Item* item) {
+	return item->type == lcf::rpg::Item::Type_weapon
+		|| item->type == lcf::rpg::Item::Type_shield
+		|| item->type == lcf::rpg::Item::Type_helmet
+		|| item->type == lcf::rpg::Item::Type_armor
+		|| item->type == lcf::rpg::Item::Type_accessory;
 }
 
 void Window_ShopParty::Refresh() {
@@ -92,7 +92,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::SystemOrBlack();
 
-	if (item_id < 0 || item_id > static_cast<int>(Data::items.size()))
+	if (item_id < 0 || item_id > static_cast<int>(lcf::Data::items.size()))
 		return;
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
@@ -110,7 +110,7 @@ void Window_ShopParty::Refresh() {
 			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
 		}
 
-		const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
+		const auto* new_item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 		if (new_item == nullptr) {
 			// Can be null for an empty shop, in which case there is only 1 item 0.
 			return;
@@ -122,7 +122,7 @@ void Window_ShopParty::Refresh() {
 			// check if item is equipped by each member
 			bool is_equipped = false;
 			for (int j = 1; j <= 5; ++j) {
-				const RPG::Item* item = actor->GetEquipment(j);
+				const lcf::rpg::Item* item = actor->GetEquipment(j);
 				if (item) {
 					is_equipped |= (item->ID == item_id);
 				}

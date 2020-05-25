@@ -24,7 +24,7 @@
 #include "game_system.h"
 #include "game_targets.h"
 #include "input.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_actortarget.h"
 #include "scene_map.h"
 #include "scene_teleport.h"
@@ -61,32 +61,32 @@ void Scene_Item::Update() {
 
 		if (item_id > 0 && item_window->CheckEnable(item_id)) {
 			// The party only has valid items
-			const RPG::Item& item = *item_window->GetItem();
+			const lcf::rpg::Item& item = *item_window->GetItem();
 
-			if (item.type == RPG::Item::Type_switch) {
+			if (item.type == lcf::rpg::Item::Type_switch) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Main_Data::game_party->ConsumeItemUse(item_id);
 				Main_Data::game_switches->Set(item.switch_id, true);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
-			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
-				const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item.skill_id);
+			} else if (item.type == lcf::rpg::Item::Type_special && item.skill_id > 0) {
+				const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item.skill_id);
 				if (!skill) {
 					Output::Warning("Scene Item: Item references invalid skill ID {}", item.skill_id);
 					return;
 				}
 
-				if (skill->type == RPG::Skill::Type_teleport) {
+				if (skill->type == lcf::rpg::Skill::Type_teleport) {
 					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 					Scene::Push(std::make_shared<Scene_Teleport>(item, *skill));
-				} else if (skill->type == RPG::Skill::Type_escape) {
+				} else if (skill->type == lcf::rpg::Skill::Type_escape) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
 					Game_System::SePlay(skill->sound_effect);
 
 					Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
 
 					Scene::PopUntil(Scene::Map);
-				} else if (skill->type == RPG::Skill::Type_switch) {
+				} else if (skill->type == lcf::rpg::Skill::Type_switch) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
 					Game_System::SePlay(skill->sound_effect);
 					Main_Data::game_switches->Set(skill->switch_id, true);
@@ -110,12 +110,12 @@ void Scene_Item::Update() {
 
 void Scene_Item::TransitionOut(Scene::SceneType next_scene) {
 	const auto* item = item_window->GetItem();
-	const RPG::Skill* skill = nullptr;
-	if (item && item->type == RPG::Item::Type_special && item->skill_id > 0) {
-		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+	const lcf::rpg::Skill* skill = nullptr;
+	if (item && item->type == lcf::rpg::Item::Type_special && item->skill_id > 0) {
+		skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 	}
 
-	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {
+	if (next_scene == Map && skill && skill->type == lcf::rpg::Skill::Type_escape) {
 		Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	} else {
 		Scene::TransitionOut(next_scene);

@@ -37,10 +37,10 @@ public:
 	void SetupNewGame();
 
 	/** Initialize from save game */
-	void SetupFromSave(RPG::SaveInventory save);
+	void SetupFromSave(lcf::rpg::SaveInventory save);
 
 	/** @return save game data */
-	const RPG::SaveInventory& GetSaveData() const;
+	const lcf::rpg::SaveInventory& GetSaveData() const;
 
 	Game_Actor& operator[] (const int index) override;
 
@@ -380,7 +380,7 @@ public:
 	 *
 	 * @return The first Highest leveled actor who can act.
 	 */
-	Game_Actor* GetHighestLeveledActorWhoCanUse(const RPG::Item*) const;
+	Game_Actor* GetHighestLeveledActorWhoCanUse(const lcf::rpg::Item*) const;
 
 	/**
 	 * If a battle is running, returns the current battle turn for the party.
@@ -399,12 +399,12 @@ public:
 private:
 	std::pair<int,bool> GetItemIndex(int item_id) const;
 
-	RPG::SaveInventory data;
+	lcf::rpg::SaveInventory data;
 };
 
 // ------ INLINES --------
 
-inline const RPG::SaveInventory& Game_Party::GetSaveData() const {
+inline const lcf::rpg::SaveInventory& Game_Party::GetSaveData() const {
 	return data;
 }
 

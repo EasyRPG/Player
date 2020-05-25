@@ -19,7 +19,7 @@
 #define EP_GAME_VARIABLES_H
 
 // Headers
-#include "data.h"
+#include <lcf/data.h>
 #include "compiler.h"
 #include <string>
 
@@ -117,7 +117,7 @@ inline const Game_Variables::Variables_t& Game_Variables::GetData() const {
 }
 
 inline int Game_Variables::GetSize() const {
-	return static_cast<int>(Data::variables.size());
+	return static_cast<int>(lcf::Data::variables.size());
 }
 
 inline bool Game_Variables::IsValid(int variable_id) const {
@@ -125,7 +125,7 @@ inline bool Game_Variables::IsValid(int variable_id) const {
 }
 
 inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > static_cast<int>(Data::variables.size())) && _warnings > 0;
+	return (first_id <= 0 || last_id > static_cast<int>(lcf::Data::variables.size())) && _warnings > 0;
 }
 
 inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {

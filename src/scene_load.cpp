@@ -25,7 +25,7 @@
 #include "scene_map.h"
 
 Scene_Load::Scene_Load() :
-	Scene_File(Data::terms.load_game_message) {
+	Scene_File(lcf::Data::terms.load_game_message) {
 	Scene::type = Scene::Load;
 }
 

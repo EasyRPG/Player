@@ -46,7 +46,7 @@
 #include "registry.h"
 #include "rtp.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "platform.h"
 
 #ifdef USE_LIBRETRO
@@ -98,9 +98,9 @@ namespace {
 			return em_file;
 #endif
 
-		std::string corrected_dir = ReaderUtil::Normalize(dir);
+		std::string corrected_dir = lcf::ReaderUtil::Normalize(dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = ReaderUtil::Normalize(name);
+		std::string corrected_name = lcf::ReaderUtil::Normalize(name);
 
 		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);
@@ -238,9 +238,9 @@ namespace {
 		// True RTP if enabled and available
 		if (!rtp_state.disable_rtp) {
 			bool is_rtp_asset;
-			ret = rtp_lookup(ReaderUtil::Normalize(dir), ReaderUtil::Normalize(name), exts, is_rtp_asset);
+			ret = rtp_lookup(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
 
-			std::string lcase = ReaderUtil::Normalize(dir);
+			std::string lcase = lcf::ReaderUtil::Normalize(dir);
 			bool is_audio_asset = lcase == "music" || lcase == "sound";
 
 			if (is_rtp_asset) {
@@ -710,7 +710,7 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 
 	string_map const& files = p.files;
 
-	string_map::const_iterator const it = files.find(ReaderUtil::Normalize(name));
+	string_map::const_iterator const it = files.find(lcf::ReaderUtil::Normalize(name));
 
 	return(it != files.end()) ? MakePath(p.directory_path, it->second) : "";
 }
@@ -835,10 +835,10 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 				continue;
 			}
 
-			result.files[ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
+			result.files[lcf::ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
 			continue;
 		}
-		std::string name_norm = ReaderUtil::Normalize(name);
+		std::string name_norm = lcf::ReaderUtil::Normalize(name);
 		if (is_directory) {
 			if (result.directories.find(name_norm) != result.directories.end()) {
 				Output::Warning("This game provides the folder \"{}\" twice.", name);

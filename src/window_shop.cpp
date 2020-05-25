@@ -33,43 +33,43 @@ Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight)
 
 	switch (shop_type) {
 		case 0:
-			greeting = Data::terms.shop_greeting1;
-			regreeting = Data::terms.shop_regreeting1;
-			buy_msg = Data::terms.shop_buy1;
-			sell_msg = Data::terms.shop_sell1;
-			leave_msg = Data::terms.shop_leave1;
-			buy_select = Data::terms.shop_buy_select1;
-			buy_number = Data::terms.shop_buy_number1;
-			purchased = Data::terms.shop_purchased1;
-			sell_select = Data::terms.shop_sell_select1;
-			sell_number = Data::terms.shop_sell_number1;
-			sold_msg = Data::terms.shop_sold1;
+			greeting = lcf::Data::terms.shop_greeting1;
+			regreeting = lcf::Data::terms.shop_regreeting1;
+			buy_msg = lcf::Data::terms.shop_buy1;
+			sell_msg = lcf::Data::terms.shop_sell1;
+			leave_msg = lcf::Data::terms.shop_leave1;
+			buy_select = lcf::Data::terms.shop_buy_select1;
+			buy_number = lcf::Data::terms.shop_buy_number1;
+			purchased = lcf::Data::terms.shop_purchased1;
+			sell_select = lcf::Data::terms.shop_sell_select1;
+			sell_number = lcf::Data::terms.shop_sell_number1;
+			sold_msg = lcf::Data::terms.shop_sold1;
 			break;
 		case 1:
-			greeting = Data::terms.shop_greeting2;
-			regreeting = Data::terms.shop_regreeting2;
-			buy_msg = Data::terms.shop_buy2;
-			sell_msg = Data::terms.shop_sell2;
-			leave_msg = Data::terms.shop_leave2;
-			buy_select = Data::terms.shop_buy_select2;
-			buy_number = Data::terms.shop_buy_number2;
-			purchased = Data::terms.shop_purchased2;
-			sell_select = Data::terms.shop_sell_select2;
-			sell_number = Data::terms.shop_sell_number2;
-			sold_msg = Data::terms.shop_sold2;
+			greeting = lcf::Data::terms.shop_greeting2;
+			regreeting = lcf::Data::terms.shop_regreeting2;
+			buy_msg = lcf::Data::terms.shop_buy2;
+			sell_msg = lcf::Data::terms.shop_sell2;
+			leave_msg = lcf::Data::terms.shop_leave2;
+			buy_select = lcf::Data::terms.shop_buy_select2;
+			buy_number = lcf::Data::terms.shop_buy_number2;
+			purchased = lcf::Data::terms.shop_purchased2;
+			sell_select = lcf::Data::terms.shop_sell_select2;
+			sell_number = lcf::Data::terms.shop_sell_number2;
+			sold_msg = lcf::Data::terms.shop_sold2;
 			break;
 		case 2:
-			greeting = Data::terms.shop_greeting3;
-			regreeting = Data::terms.shop_regreeting3;
-			buy_msg = Data::terms.shop_buy3;
-			sell_msg = Data::terms.shop_sell3;
-			leave_msg = Data::terms.shop_leave3;
-			buy_select = Data::terms.shop_buy_select3;
-			buy_number = Data::terms.shop_buy_number3;
-			purchased = Data::terms.shop_purchased3;
-			sell_select = Data::terms.shop_sell_select3;
-			sell_number = Data::terms.shop_sell_number3;
-			sold_msg = Data::terms.shop_sold3;
+			greeting = lcf::Data::terms.shop_greeting3;
+			regreeting = lcf::Data::terms.shop_regreeting3;
+			buy_msg = lcf::Data::terms.shop_buy3;
+			sell_msg = lcf::Data::terms.shop_sell3;
+			leave_msg = lcf::Data::terms.shop_leave3;
+			buy_select = lcf::Data::terms.shop_buy_select3;
+			buy_number = lcf::Data::terms.shop_buy_number3;
+			purchased = lcf::Data::terms.shop_purchased3;
+			sell_select = lcf::Data::terms.shop_sell_select3;
+			sell_number = lcf::Data::terms.shop_sell_number3;
+			sold_msg = lcf::Data::terms.shop_sold3;
 			break;
 	}
 

@@ -24,7 +24,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "player.h"
 #include "game_map.h"
@@ -43,7 +43,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::CallCommonEvent:
 			return CommandCallCommonEvent(com);
 		case Cmd::ForceFlee:
@@ -77,10 +77,10 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 
 // Commands
 
-bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand const& com) {
 	int evt_id = com.parameters[0];
 
-	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+	Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 	if (!common_event) {
 		Output::Warning("CallCommonEvent: Can't call invalid common event {}", evt_id);
 		return true;
@@ -91,19 +91,19 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com) {
 	bool check = com.parameters[2] == 0;
 	bool result = false;
 
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_pincers) {
+		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_pincers) {
 			_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Escape));
 			result = true;
 		}
 	    break;
 	case 1:
-		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_surround) {
+		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
 			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
 				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
 				enemy.Kill();
@@ -113,7 +113,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 		}
 	    break;
 	case 2:
-		if (!check || Game_Battle::GetBattleCondition() != RPG::System::BattleCondition_surround) {
+		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
 			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
 			enemy.Kill();
 			Game_Battle::SetNeedRefresh(true);
@@ -129,7 +129,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandEnableCombo(lcf::rpg::EventCommand const& com) {
 	int actor_id = com.parameters[0];
 
 	if (!Main_Data::game_party->IsActorInParty(actor_id)) {
@@ -151,7 +151,7 @@ bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand const& com) {
 	int id = com.parameters[0];
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
 	bool lose = com.parameters[1] > 0;
@@ -186,7 +186,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandChangeMonsterMP(lcf::rpg::EventCommand const& com) {
 	int id = com.parameters[0];
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
 	bool lose = com.parameters[1] > 0;
@@ -212,18 +212,18 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& co
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandChangeMonsterCondition(lcf::rpg::EventCommand const& com) {
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove) {
 		enemy.RemoveState(state_id, false);
-		if (state_id == RPG::State::kDeathID) {
+		if (state_id == lcf::rpg::State::kDeathID) {
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
 			Game_Battle::SetNeedRefresh(true);
 		}
 	} else {
-		if (state_id == RPG::State::kDeathID) {
+		if (state_id == lcf::rpg::State::kDeathID) {
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
 			Game_Battle::SetNeedRefresh(true);
 		}
@@ -232,18 +232,18 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandShowHiddenMonster(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandShowHiddenMonster(lcf::rpg::EventCommand const& com) {
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
 	enemy.SetHidden(false);
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandChangeBattleBG(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandChangeBattleBG(lcf::rpg::EventCommand const& com) {
 	Game_Battle::ChangeBackground(com.string);
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandShowBattleAnimation(lcf::rpg::EventCommand const& com) {
 	int animation_id = com.parameters[0];
 	int target = com.parameters[1];
 	bool waiting_battle_anim = com.parameters[2] != 0;
@@ -294,13 +294,13 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Battle::CommandTerminateBattle(lcf::rpg::EventCommand const& /* com */) {
 	_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Abort));
 	return false;
 }
 
 // Conditional branch.
-bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;
 
@@ -396,11 +396,11 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandElseBranchBattle(RPG::EventCommand const& com) { //code 23310
+bool Game_Interpreter_Battle::CommandElseBranchBattle(lcf::rpg::EventCommand const& com) { //code 23310
 	return CommandOptionGeneric(com, eOptionBranchBattleElse, {Cmd::EndBranch_B});
 }
 
-bool Game_Interpreter_Battle::CommandEndBranchBattle(RPG::EventCommand const& /* com */) { //code 23311
+bool Game_Interpreter_Battle::CommandEndBranchBattle(lcf::rpg::EventCommand const& /* com */) { //code 23311
 	return true;
 }
 

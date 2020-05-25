@@ -60,8 +60,8 @@ void Scene_End::Update() {
 void Scene_End::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(Data::terms.yes);
-	options.push_back(Data::terms.no);
+	options.push_back(lcf::Data::terms.yes);
+	options.push_back(lcf::Data::terms.no);
 
 	command_window.reset(new Window_Command(options));
 	command_window->SetX((SCREEN_TARGET_WIDTH/2) - command_window->GetWidth() / 2);
@@ -70,11 +70,11 @@ void Scene_End::CreateCommandWindow() {
 }
 
 void Scene_End::CreateHelpWindow() {
-	int text_size = Font::Default()->GetSize(Data::terms.exit_game_message).width;
+	int text_size = Font::Default()->GetSize(lcf::Data::terms.exit_game_message).width;
 
 	help_window.reset(new Window_Help((SCREEN_TARGET_WIDTH/2) - (text_size + 16)/ 2,
 									  72, text_size + 16, 32));
-	help_window->SetText(Data::terms.exit_game_message);
+	help_window->SetText(lcf::Data::terms.exit_game_message);
 
 	command_window->SetHelpWindow(help_window.get());
 }

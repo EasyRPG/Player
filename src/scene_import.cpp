@@ -20,7 +20,7 @@
 #include "filefinder.h"
 #include "game_system.h"
 #include "input.h"
-#include "lsd_reader.h"
+#include <lcf/lsd/reader.h>
 #include "output.h"
 #include "player.h"
 #include "scene_file.h"
@@ -36,8 +36,8 @@ void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	if (id < static_cast<int>(files.size())) {
 		win.SetDisplayOverride(files[id].short_path, files[id].file_id);
 
-		std::unique_ptr<RPG::Save> savegame =
-			LSD_Reader::Load(files[id].full_path, Player::encoding);
+		std::unique_ptr<lcf::rpg::Save> savegame =
+			lcf::LSD_Reader::Load(files[id].full_path, Player::encoding);
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);
@@ -46,7 +46,7 @@ void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 			win.SetCorrupted(true);
 		}
 	} else {
-		win.SetDisplayOverride("No Data", 0);
+		win.SetDisplayOverride("No lcf::Data", 0);
 	}
 }
 

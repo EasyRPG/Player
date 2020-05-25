@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 #include "game_character.h"
-#include "rpg_eventcommand.h"
-#include "rpg_saveeventexecstate.h"
+#include <lcf/rpg/eventcommand.h>
+#include <lcf/rpg/saveeventexecstate.h>
 #include "system.h"
 #include "game_interpreter.h"
 
@@ -44,7 +44,7 @@ public:
 	 * @param save event to load.
 	 *
 	 */
-	void SetState(const RPG::SaveEventExecState& save);
+	void SetState(const lcf::rpg::SaveEventExecState& save);
 
 	/**
 	 * Called when we change maps.
@@ -54,34 +54,34 @@ public:
 	bool ExecuteCommand() override;
 
 private:
-	bool CommandRecallToLocation(RPG::EventCommand const& com);
-	bool CommandEnemyEncounter(RPG::EventCommand const& com);
-	bool CommandVictoryHandler(RPG::EventCommand const& com);
-	bool CommandEscapeHandler(RPG::EventCommand const& com);
-	bool CommandDefeatHandler(RPG::EventCommand const& com);
-	bool CommandEndBattle(RPG::EventCommand const& com);
-	bool CommandOpenShop(RPG::EventCommand const& com);
-	bool CommandTransaction(RPG::EventCommand const& com);
-	bool CommandNoTransaction(RPG::EventCommand const& com);
-	bool CommandEndShop(RPG::EventCommand const& com);
-	bool CommandShowInn(RPG::EventCommand const& com);
-	bool CommandStay(RPG::EventCommand const& com);
-	bool CommandNoStay(RPG::EventCommand const& com);
-	bool CommandEndInn(RPG::EventCommand const& com);
-	bool CommandEnterHeroName(RPG::EventCommand const& com);
-	bool CommandTeleport(RPG::EventCommand const& com);
-	bool CommandEnterExitVehicle(RPG::EventCommand const& com);
-	bool CommandPanScreen(RPG::EventCommand const& com);
-	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
-	bool CommandFlashSprite(RPG::EventCommand const& com);
-	bool CommandProceedWithMovement(RPG::EventCommand const& com);
-	bool CommandHaltAllMovement(RPG::EventCommand const& com);
-	bool CommandPlayMovie(RPG::EventCommand const& com);
-	bool CommandOpenSaveMenu(RPG::EventCommand const& com);
-	bool CommandOpenMainMenu(RPG::EventCommand const& com);
-	bool CommandOpenLoadMenu(RPG::EventCommand const& com);
-	bool CommandToggleAtbMode(RPG::EventCommand const& com);
-	bool CommandOpenVideoOptions(RPG::EventCommand const& com);
+	bool CommandRecallToLocation(lcf::rpg::EventCommand const& com);
+	bool CommandEnemyEncounter(lcf::rpg::EventCommand const& com);
+	bool CommandVictoryHandler(lcf::rpg::EventCommand const& com);
+	bool CommandEscapeHandler(lcf::rpg::EventCommand const& com);
+	bool CommandDefeatHandler(lcf::rpg::EventCommand const& com);
+	bool CommandEndBattle(lcf::rpg::EventCommand const& com);
+	bool CommandOpenShop(lcf::rpg::EventCommand const& com);
+	bool CommandTransaction(lcf::rpg::EventCommand const& com);
+	bool CommandNoTransaction(lcf::rpg::EventCommand const& com);
+	bool CommandEndShop(lcf::rpg::EventCommand const& com);
+	bool CommandShowInn(lcf::rpg::EventCommand const& com);
+	bool CommandStay(lcf::rpg::EventCommand const& com);
+	bool CommandNoStay(lcf::rpg::EventCommand const& com);
+	bool CommandEndInn(lcf::rpg::EventCommand const& com);
+	bool CommandEnterHeroName(lcf::rpg::EventCommand const& com);
+	bool CommandTeleport(lcf::rpg::EventCommand const& com);
+	bool CommandEnterExitVehicle(lcf::rpg::EventCommand const& com);
+	bool CommandPanScreen(lcf::rpg::EventCommand const& com);
+	bool CommandShowBattleAnimation(lcf::rpg::EventCommand const& com);
+	bool CommandFlashSprite(lcf::rpg::EventCommand const& com);
+	bool CommandProceedWithMovement(lcf::rpg::EventCommand const& com);
+	bool CommandHaltAllMovement(lcf::rpg::EventCommand const& com);
+	bool CommandPlayMovie(lcf::rpg::EventCommand const& com);
+	bool CommandOpenSaveMenu(lcf::rpg::EventCommand const& com);
+	bool CommandOpenMainMenu(lcf::rpg::EventCommand const& com);
+	bool CommandOpenLoadMenu(lcf::rpg::EventCommand const& com);
+	bool CommandToggleAtbMode(lcf::rpg::EventCommand const& com);
+	bool CommandOpenVideoOptions(lcf::rpg::EventCommand const& com);
 
 	AsyncOp ContinuationShowInnStart(int indent, int choice_result, int price);
 

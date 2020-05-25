@@ -21,7 +21,7 @@
 // Headers
 #include <vector>
 #include "filefinder.h"
-#include "rpg_save.h"
+#include <lcf/rpg/save.h>
 #include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"
@@ -53,8 +53,8 @@ public:
 protected:
 	virtual void CreateHelpWindow();
 	virtual void PopulateSaveWindow(Window_SaveFile& win, int id);
-	virtual void PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& savegame);
-	virtual void UpdateLatestTimestamp(int id, RPG::Save& savegame);
+	virtual void PopulatePartyFaces(Window_SaveFile& win, int id, lcf::rpg::Save& savegame);
+	virtual void UpdateLatestTimestamp(int id, lcf::rpg::Save& savegame);
 	static std::unique_ptr<Sprite> MakeBorderSprite(int y);
 
 	void Refresh();

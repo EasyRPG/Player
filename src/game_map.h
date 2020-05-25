@@ -26,9 +26,9 @@
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "game_player.h"
-#include "rpg_encounter.h"
-#include "rpg_map.h"
-#include "rpg_mapinfo.h"
+#include <lcf/rpg/encounter.h>
+#include <lcf/rpg/map.h>
+#include <lcf/rpg/mapinfo.h>
 #include "async_op.h"
 
 class FileRequestAsync;
@@ -111,7 +111,7 @@ namespace Game_Map {
 	void SetupCommon(int _id, bool is_load_savegame);
 
 	/**
-	 * Copies event data into RPG::Save data.
+	 * Copies event data into lcf::rpg::Save data.
 	 */
 	void PrepareSave();
 
@@ -263,14 +263,14 @@ namespace Game_Map {
 	 *
 	 * @return current map_info.
 	 */
-	RPG::MapInfo const& GetMapInfo();
+	lcf::rpg::MapInfo const& GetMapInfo();
 
 	/**
 	 * Gets current map.
 	 *
 	 * @return current map.
 	 */
-	RPG::Map const& GetMap();
+	lcf::rpg::Map const& GetMap();
 
 	/**
 	 * Gets current map ID.
@@ -298,7 +298,7 @@ namespace Game_Map {
 	 *
 	 * @return battle encounters list.
 	 */
-	std::vector<RPG::Encounter>& GetEncounterList();
+	std::vector<lcf::rpg::Encounter>& GetEncounterList();
 
 	/**
 	 * Gets battle encounter rate.

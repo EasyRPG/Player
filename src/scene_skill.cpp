@@ -54,25 +54,25 @@ void Scene_Skill::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		const RPG::Skill* skill = skill_window->GetSkill();
+		const lcf::rpg::Skill* skill = skill_window->GetSkill();
 		int skill_id = skill ? skill->ID : 0;
 
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
 		if (skill && skill_window->CheckEnable(skill_id)) {
-			if (skill->type == RPG::Skill::Type_switch) {
+			if (skill->type == lcf::rpg::Skill::Type_switch) {
 				Game_System::SePlay(skill->sound_effect);
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
-			} else if (skill->type == RPG::Skill::Type_normal || skill->type >= RPG::Skill::Type_subskill) {
+			} else if (skill->type == lcf::rpg::Skill::Type_normal || skill->type >= lcf::rpg::Skill::Type_subskill) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
 				skill_index = skill_window->GetIndex();
-			} else if (skill->type == RPG::Skill::Type_teleport) {
+			} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
-			} else if (skill->type == RPG::Skill::Type_escape) {
+			} else if (skill->type == lcf::rpg::Skill::Type_escape) {
 				Game_System::SePlay(skill->sound_effect);
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
@@ -87,7 +87,7 @@ void Scene_Skill::Update() {
 
 void Scene_Skill::TransitionOut(SceneType next_scene) {
 	const auto* skill = skill_window->GetSkill();
-	if (next_scene == Map && skill && skill->type == RPG::Skill::Type_escape) {
+	if (next_scene == Map && skill && skill->type == lcf::rpg::Skill::Type_escape) {
 		Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	} else {
 		Scene::TransitionOut(next_scene);

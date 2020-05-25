@@ -26,15 +26,15 @@
 #include "font.h"
 #include "player.h"
 #include "game_variables.h"
-#include "data.h"
-#include "reader_util.h"
+#include <lcf/data.h>
+#include <lcf/reader_util.h>
 #include "output.h"
 
 #include <cctype>
 
 static Window_Message* window = nullptr;
 
-RPG::SaveSystem& data = Main_Data::game_data.system;
+lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
 	ClearFace();

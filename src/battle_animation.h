@@ -22,7 +22,7 @@
 #include "game_battler.h"
 #include "game_character.h"
 #include "system.h"
-#include "rpg_animation.h"
+#include <lcf/rpg/animation.h>
 #include "drawable.h"
 #include "sprite_battler.h"
 
@@ -63,20 +63,20 @@ public:
 	bool IsOnlySound() const;
 
 protected:
-	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
+	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
 	virtual void FlashTargets(int r, int g, int b, int p) = 0;
 	virtual void ShakeTargets(int str, int spd, int time) = 0;
 	void DrawAt(Bitmap& dst, int x, int y);
-	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
-	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
+	void ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing);
+	void ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
 	void UpdateScreenFlash();
 	void UpdateTargetFlash();
 	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
-	const RPG::Animation& animation;
+	const lcf::rpg::Animation& animation;
 	int frame = 0;
 	int num_frames = 0;
 	int screen_flash_timing = -1;
@@ -89,7 +89,7 @@ protected:
 // For playing animations on the map.
 class BattleAnimationMap : public BattleAnimation {
 public:
-	BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global);
+	BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global);
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
@@ -104,7 +104,7 @@ protected:
 // For playing animations against a (group of) battlers in battle.
 class BattleAnimationBattle : public BattleAnimation {
 public:
-	BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
+	BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;

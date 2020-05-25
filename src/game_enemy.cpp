@@ -17,13 +17,13 @@
 
 // Headers
 #include <algorithm>
-#include "data.h"
-#include "rpg_enemy.h"
+#include <lcf/data.h>
+#include <lcf/rpg/enemy.h>
 #include "game_battle.h"
 #include "game_enemy.h"
 #include "game_party.h"
 #include "game_switches.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "utils.h"
 #include "player.h"
@@ -106,7 +106,7 @@ int Game_Enemy::GetBattleY() const {
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
 
-	enemy = ReaderUtil::GetElement(Data::enemies, enemy_id);
+	enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy_id);
 
 	if (!enemy) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.
@@ -115,7 +115,7 @@ void Game_Enemy::Transform(int new_enemy_id) {
 		Output::Warning("Invalid enemy ID {}", new_enemy_id);
 		enemy_id = 1;
 		// This generates an invisible monster with 0 HP and a minor memory leak
-		enemy = new RPG::Enemy();
+		enemy = new lcf::rpg::Enemy();
 	}
 }
 
@@ -152,7 +152,7 @@ void Game_Enemy::UpdateBattle() {
 	Game_Battler::UpdateBattle();
 }
 
-bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
+bool Game_Enemy::IsActionValid(const lcf::rpg::EnemyAction& action) {
 	if (action.kind == action.Kind_skill) {
 		if (!IsSkillUsable(action.skill_id)) {
 			return false;
@@ -160,38 +160,38 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	}
 
 	switch (action.condition_type) {
-	case RPG::EnemyAction::ConditionType_always:
+	case lcf::rpg::EnemyAction::ConditionType_always:
 		return true;
-	case RPG::EnemyAction::ConditionType_switch:
+	case lcf::rpg::EnemyAction::ConditionType_switch:
 		return Main_Data::game_switches->Get(action.switch_id);
-	case RPG::EnemyAction::ConditionType_turn:
+	case lcf::rpg::EnemyAction::ConditionType_turn:
 		{
 			int turns = Game_Battle::GetTurn();
 			return Game_Battle::CheckTurns(turns, action.condition_param2, action.condition_param1);
 		}
-	case RPG::EnemyAction::ConditionType_actors:
+	case lcf::rpg::EnemyAction::ConditionType_actors:
 		{
 			std::vector<Game_Battler*> battlers;
 			GetParty().GetActiveBattlers(battlers);
 			int count = (int)battlers.size();
 			return count >= action.condition_param1 && count <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_hp:
+	case lcf::rpg::EnemyAction::ConditionType_hp:
 		{
 			int hp_percent = GetHp() * 100 / GetMaxHp();
 			return hp_percent >= action.condition_param1 && hp_percent <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_sp:
+	case lcf::rpg::EnemyAction::ConditionType_sp:
 		{
 			int sp_percent = GetSp() * 100 / GetMaxSp();
 			return sp_percent >= action.condition_param1 && sp_percent <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_party_lvl:
+	case lcf::rpg::EnemyAction::ConditionType_party_lvl:
 		{
 			int party_lvl = Main_Data::game_party->GetAverageLevel();
 			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_party_fatigue:
+	case lcf::rpg::EnemyAction::ConditionType_party_fatigue:
 		{
 			int party_exh = Main_Data::game_party->GetFatigue();
 			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
@@ -201,16 +201,16 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	}
 }
 
-const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
+const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	if (IsCharged()) {
 		return &normal_atk;
 	}
 
-	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
+	const std::vector<lcf::rpg::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
 	int32_t highest_rating = 0;
 	for (int i = 0; i < (int) actions.size(); ++i) {
-		const RPG::EnemyAction& action = actions[i];
+		const lcf::rpg::EnemyAction& action = actions[i];
 		if (IsActionValid(action)) {
 			valid.push_back(i);
 			highest_rating = std::max(highest_rating, action.rating);
@@ -233,7 +233,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	int which = Utils::GetRandomNumber(0, total - 1);
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
-		const RPG::EnemyAction& action = actions[*it];
+		const lcf::rpg::EnemyAction& action = actions[*it];
 		if (which >= action.rating) {
 			which -= action.rating;
 			continue;

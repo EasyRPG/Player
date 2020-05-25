@@ -16,7 +16,7 @@
  */
 
 #include "drawable.h"
-#include "rpg_savepicture.h"
+#include <lcf/rpg/savepicture.h>
 #include "drawable_mgr.h"
 
 Drawable::~Drawable() {
@@ -30,25 +30,25 @@ void Drawable::SetZ(int nz) {
 
 int Drawable::GetPriorityForMapLayer(int which) {
 	switch (which) {
-		case RPG::SavePicture::MapLayer_parallax:
+		case lcf::rpg::SavePicture::MapLayer_parallax:
 			return Priority_Background;
-		case RPG::SavePicture::MapLayer_tilemap_below:
+		case lcf::rpg::SavePicture::MapLayer_tilemap_below:
 			return Priority_TilesetBelow;
-		case RPG::SavePicture::MapLayer_events_below:
+		case lcf::rpg::SavePicture::MapLayer_events_below:
 			return Priority_EventsBelow;
-		case RPG::SavePicture::MapLayer_events_same_as_player:
+		case lcf::rpg::SavePicture::MapLayer_events_same_as_player:
 			return Priority_Player;
-		case RPG::SavePicture::MapLayer_tilemap_above:
+		case lcf::rpg::SavePicture::MapLayer_tilemap_above:
 			return Priority_TilesetAbove;
-		case RPG::SavePicture::MapLayer_events_above:
+		case lcf::rpg::SavePicture::MapLayer_events_above:
 			return Priority_EventsFlying;
-		case RPG::SavePicture::MapLayer_weather:
+		case lcf::rpg::SavePicture::MapLayer_weather:
 			return Priority_PictureNew;
-		case RPG::SavePicture::MapLayer_animations:
+		case lcf::rpg::SavePicture::MapLayer_animations:
 			return Priority_BattleAnimation;
-		case RPG::SavePicture::MapLayer_windows:
+		case lcf::rpg::SavePicture::MapLayer_windows:
 			return Priority_Window;
-		case RPG::SavePicture::MapLayer_timers:
+		case lcf::rpg::SavePicture::MapLayer_timers:
 			return Priority_Timer;
 		default:
 			return 0;
@@ -57,15 +57,15 @@ int Drawable::GetPriorityForMapLayer(int which) {
 
 int Drawable::GetPriorityForBattleLayer(int which) {
 	switch (which) {
-		case RPG::SavePicture::BattleLayer_background:
+		case lcf::rpg::SavePicture::BattleLayer_background:
 			return Priority_Background;
-		case RPG::SavePicture::BattleLayer_battlers_and_animations:
+		case lcf::rpg::SavePicture::BattleLayer_battlers_and_animations:
 			return Priority_Battler;
-		case RPG::SavePicture::BattleLayer_weather:
+		case lcf::rpg::SavePicture::BattleLayer_weather:
 			return Priority_PictureNew;
-		case RPG::SavePicture::BattleLayer_windows_and_status:
+		case lcf::rpg::SavePicture::BattleLayer_windows_and_status:
 			return Priority_Window;
-		case RPG::SavePicture::BattleLayer_timers:
+		case lcf::rpg::SavePicture::BattleLayer_timers:
 			return Priority_Timer;
 		default:
 			return 0;

@@ -26,7 +26,7 @@
 #include <algorithm>
 #include <ostream>
 
-#include "enum_tags.h"
+#include <lcf/enum_tags.h>
 #include "flat_map.h"
 #include "keys.h"
 
@@ -75,7 +75,7 @@ namespace Input {
 		BUTTON_COUNT
 	};
 
-	constexpr auto kButtonNames = makeEnumTags<InputButton>(
+	constexpr auto kButtonNames = lcf::makeEnumTags<InputButton>(
 		"UP",
 		"DOWN",
 		"LEFT",
@@ -114,7 +114,7 @@ namespace Input {
 		"TOGGLE_ZOOM",
 		"BUTTON_COUNT");
 
-	constexpr auto kButtonHelp = makeEnumTags<InputButton>(
+	constexpr auto kButtonHelp = lcf::makeEnumTags<InputButton>(
 		"Up Direction",
 		"Down Direction",
 		"Left Direction",
@@ -187,7 +187,7 @@ namespace Input {
 			NUM_DIRECTIONS = 10,
 		};
 
-		static constexpr auto kNames = makeEnumTags<InputDirection>(
+		static constexpr auto kNames = lcf::makeEnumTags<InputDirection>(
 			"NONE",
 			"DOWNLEFT",
 			"DOWN",

@@ -2,7 +2,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "options.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_variables.h"
 #include "main_data.h"
 #include <iostream>
@@ -14,7 +14,7 @@ constexpr char escape = '\\';
 
 struct DataInit {
 	DataInit() {
-		Main_Data::game_data = RPG::Save();
+		Main_Data::game_data = lcf::rpg::Save();
 		auto& actors = Main_Data::game_data.actors;
 		for (auto id : {1,2,3,4}) {
 			Main_Data::game_data.actors.push_back({});
@@ -23,9 +23,9 @@ struct DataInit {
 		}
 
 		for (const auto& actor : actors) {
-			Data::actors.push_back({});
-			Data::actors.back().ID = actor.ID;
-			Data::actors.back().Setup();
+			lcf::Data::actors.push_back({});
+			lcf::Data::actors.back().ID = actor.ID;
+			lcf::Data::actors.back().Setup();
 		}
 		Main_Data::game_data.inventory.party.push_back(3);
 
@@ -36,8 +36,8 @@ struct DataInit {
 		Main_Data::game_variables->SetWarning(0);
 	}
 	~DataInit() {
-		Main_Data::game_data = RPG::Save();
-		Data::actors.clear();
+		Main_Data::game_data = lcf::rpg::Save();
+		lcf::Data::actors.clear();
 		Main_Data::game_party.reset();
 		Main_Data::game_variables.reset();
 	}

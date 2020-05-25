@@ -92,11 +92,11 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	// 2k3 transparent message boxes
 	bool msg_transparent = Player::IsRPG2k3()
 		// if the flag is set ..
-		&& (Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent)
+		&& (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent)
 		// if we're not in battle, or if we are in battle but not using mode A
-		&& (!Game_Battle::IsBattleRunning() || Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional)
+		&& (!Game_Battle::IsBattleRunning() || lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional)
 		// RPG_RT < 1.11 bug, map messages were not transparent if the battle type was mode A.
-		&& (Player::IsRPG2k3E() || Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional);
+		&& (Player::IsRPG2k3E() || lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional);
 	if (msg_transparent) {
 		SetBackOpacity(128);
 	}

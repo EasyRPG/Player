@@ -19,17 +19,20 @@
 #define EP_GAME_BATTLE_H
 
 #include <functional>
-#include "rpg_system.h"
-#include "rpg_troop.h"
+#include <lcf/rpg/system.h>
+#include <lcf/rpg/troop.h>
 #include "teleport_target.h"
 #include "utils.h"
 
 class Game_Battler;
 class Game_Interpreter;
 class Spriteset_Battle;
-namespace RPG {
+
+namespace lcf {
+namespace rpg {
 	class EventPage;
-}
+} // namespace rpg
+} // namespace lcf
 
 enum class BattleResult {
 	Victory,
@@ -118,7 +121,7 @@ namespace Game_Battle {
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
 
-	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
+	bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
 
 	/**
 	 * Runs the current interpreter or starts a new one when pages are pending
@@ -137,7 +140,7 @@ namespace Game_Battle {
 	 *
 	 * @param predicate Predicate to fulfill
 	 */
-	void RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate);
+	void RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate);
 
 	/**
 	 * Gets the game interpreter.
@@ -149,8 +152,8 @@ namespace Game_Battle {
 	void SetTerrainId(int id);
 	int GetTerrainId();
 
-	void SetBattleCondition(RPG::System::BattleCondition cond);
-	RPG::System::BattleCondition GetBattleCondition();
+	void SetBattleCondition(lcf::rpg::System::BattleCondition cond);
+	lcf::rpg::System::BattleCondition GetBattleCondition();
 
 	/**
 	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
@@ -189,8 +192,8 @@ namespace Game_Battle {
 		int troop_id = 0;
 		std::string background;
 		int terrain_id = 0;
-		RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
-		RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
+		lcf::rpg::System::BattleFormation formation = lcf::rpg::System::BattleFormation_terrain;
+		lcf::rpg::System::BattleCondition condition = lcf::rpg::System::BattleCondition_none;
 	};
 
 	extern struct BattleTest battle_test;

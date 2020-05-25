@@ -17,13 +17,13 @@
 
 // Headers
 #include <string>
-#include "data.h"
-#include "rpg_terrain.h"
+#include <lcf/data.h>
+#include <lcf/rpg/terrain.h>
 #include "cache.h"
 #include "background.h"
 #include "bitmap.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "drawable_mgr.h"
 #include "game_screen.h"
@@ -44,7 +44,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 {
 	DrawableMgr::Register(this);
 
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 
 	if (!terrain) {
 		Output::Warning("Background: Invalid terrain ID {}", terrain_id);
@@ -52,7 +52,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 	}
 
 	// Either background or frame
-	if (terrain->background_type == RPG::Terrain::BGAssociation_background && !terrain->background_name.empty()) {
+	if (terrain->background_type == lcf::rpg::Terrain::BGAssociation_background && !terrain->background_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain->background_name);
 		request->SetGraphicFile(true);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);

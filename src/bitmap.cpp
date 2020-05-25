@@ -29,7 +29,7 @@
 #include "bitmap.h"
 #include "filefinder.h"
 #include "options.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
 #include "image_xyz.h"
 #include "image_bmp.h"

@@ -19,7 +19,7 @@
 #define EP_STATE_H
 #include <vector>
 #include <cstdint>
-#include "rpg_state.h"
+#include <lcf/rpg/state.h>
 
 /** A vector of state conditions.
  * The index is the state_id - 1, and the value is the number of
@@ -90,7 +90,7 @@ void RemoveAll(StateVec& states, const PermanentStates& ps);
  *
  * @return Highest priority non-normal restriction or normal if not restricted
  */
-RPG::State::Restriction GetSignificantRestriction(const StateVec& states);
+lcf::rpg::State::Restriction GetSignificantRestriction(const StateVec& states);
 
 /**
  * Gets current battler state with highest priority.
@@ -98,7 +98,7 @@ RPG::State::Restriction GetSignificantRestriction(const StateVec& states);
  * @return the highest priority state affecting the battler.
  *         Returns nullptr if no states.
  */
-const RPG::State* GetSignificantState(const StateVec& states);
+const lcf::rpg::State* GetSignificantState(const StateVec& states);
 
 /**
  * Gets the state probability by rate (A-E).

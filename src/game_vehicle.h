@@ -20,8 +20,8 @@
 
 // Headers
 #include <string>
-#include "rpg_music.h"
-#include "rpg_savevehiclelocation.h"
+#include <lcf/rpg/music.h>
+#include <lcf/rpg/savevehiclelocation.h>
 #include "game_character.h"
 
 /**
@@ -38,7 +38,7 @@ public:
 
 	static const char TypeNames[4][8];
 
-	explicit Game_Vehicle(RPG::SaveVehicleLocation* vdata);
+	explicit Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata);
 
 	/**
 	 * Implementation of abstract methods
@@ -51,7 +51,7 @@ public:
 	void Update();
 
 	void LoadSystemSettings();
-	const RPG::Music& GetBGM();
+	const lcf::rpg::Music& GetBGM();
 	void Refresh();
 	void SetPosition(int _map_id, int _x, int _y);
 	bool IsInCurrentMap() const;
@@ -87,18 +87,18 @@ public:
 	int GetOrigSpriteIndex() const;
 
 protected:
-	RPG::SaveVehicleLocation* data();
-	const RPG::SaveVehicleLocation* data() const;
+	lcf::rpg::SaveVehicleLocation* data();
+	const lcf::rpg::SaveVehicleLocation* data() const;
 
 	bool driving;
 };
 
-inline RPG::SaveVehicleLocation* Game_Vehicle::data() {
-	return static_cast<RPG::SaveVehicleLocation*>(Game_Character::data());
+inline lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() {
+	return static_cast<lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
 }
 
-inline const RPG::SaveVehicleLocation* Game_Vehicle::data() const {
-	return static_cast<const RPG::SaveVehicleLocation*>(Game_Character::data());
+inline const lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() const {
+	return static_cast<const lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
 }
 
 inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int index) {

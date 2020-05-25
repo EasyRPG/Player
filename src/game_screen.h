@@ -26,7 +26,7 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
-#include "rpg_savescreen.h"
+#include <lcf/rpg/savescreen.h>
 
 class Game_Battler;
 class Screen;
@@ -40,8 +40,8 @@ public:
 
 	void InitGraphics();
 
-	void SetSaveData(RPG::SaveScreen screen);
-	const RPG::SaveScreen& GetSaveData() const;
+	void SetSaveData(lcf::rpg::SaveScreen screen);
+	const lcf::rpg::SaveScreen& GetSaveData() const;
 
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int frames);
@@ -167,7 +167,7 @@ private:
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;
 
-	RPG::SaveScreen data;
+	lcf::rpg::SaveScreen data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
 
@@ -249,7 +249,7 @@ inline bool Game_Screen::IsBattleAnimationWaiting() {
 	return (bool)animation;
 }
 
-inline const RPG::SaveScreen& Game_Screen::GetSaveData() const {
+inline const lcf::rpg::SaveScreen& Game_Screen::GetSaveData() const {
 	return data;
 }
 

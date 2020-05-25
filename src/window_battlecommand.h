@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 #include "window_base.h"
-#include "rpg_battlecommand.h"
+#include <lcf/rpg/battlecommand.h>
 #include "font.h"
 
 /**
@@ -59,7 +59,7 @@ public:
 	void SetIndex(int index);
 	void SetActive(bool active);
 	void UpdateCursorRect();
-	RPG::BattleCommand GetCommand();
+	lcf::rpg::BattleCommand GetCommand();
 	int GetSkillSubset();
 
 protected:

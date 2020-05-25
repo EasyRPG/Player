@@ -20,7 +20,7 @@
 #include "window_name.h"
 #include "bitmap.h"
 #include "font.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "game_system.h"
 
 Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :

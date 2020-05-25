@@ -52,7 +52,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_interpreter_map.h"
-#include "reader_lcf.h"
+#include <lcf/reader_lcf.h>
 
 enum EnemyEncounterSubcommand {
 	eOptionEnemyEncounterVictory = 0,
@@ -70,7 +70,7 @@ enum InnSubcommand {
 	eOptionInnNoStay = 1,
 };
 
-void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
+void Game_Interpreter_Map::SetState(const lcf::rpg::SaveEventExecState& save) {
 	Clear();
 	_state = save;
 	_keyinput.fromSave(save);
@@ -90,7 +90,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::RecallToLocation:
 			return CommandRecallToLocation(com);
 		case Cmd::EnemyEncounter:
@@ -155,7 +155,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 /**
  * Commands
  */
-bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
+bool Game_Interpreter_Map::CommandRecallToLocation(lcf::rpg::EventCommand const& com) { // Code 10830
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -182,7 +182,7 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
+bool Game_Interpreter_Map::CommandEnemyEncounter(lcf::rpg::EventCommand const& com) { // code 10710
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -202,7 +202,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		args.background = com.string;
 
 		if (Player::IsRPG2k3()) {
-			args.formation = static_cast<RPG::System::BattleFormation>(com.parameters[7]);
+			args.formation = static_cast<lcf::rpg::System::BattleFormation>(com.parameters[7]);
 		}
 		break;
 	case 2:
@@ -222,7 +222,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	args.first_strike = com.parameters[5] != 0;
 
 	if (Player::IsRPG2k3()) {
-		args.condition = static_cast<RPG::System::BattleCondition>(com.parameters[6]);
+		args.condition = static_cast<lcf::rpg::System::BattleCondition>(com.parameters[6]);
 	}
 
 	auto indent = com.indent;
@@ -263,23 +263,23 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandVictoryHandler(RPG::EventCommand const& com) { // code 20710
+bool Game_Interpreter_Map::CommandVictoryHandler(lcf::rpg::EventCommand const& com) { // code 20710
 	return CommandOptionGeneric(com, eOptionEnemyEncounterVictory, {Cmd::EscapeHandler, Cmd::DefeatHandler, Cmd::EndBattle});
 }
 
-bool Game_Interpreter_Map::CommandEscapeHandler(RPG::EventCommand const& com) { // code 20711
+bool Game_Interpreter_Map::CommandEscapeHandler(lcf::rpg::EventCommand const& com) { // code 20711
 	return CommandOptionGeneric(com, eOptionEnemyEncounterEscape, {Cmd::DefeatHandler, Cmd::EndBattle});
 }
 
-bool Game_Interpreter_Map::CommandDefeatHandler(RPG::EventCommand const& com) { // code 20712
+bool Game_Interpreter_Map::CommandDefeatHandler(lcf::rpg::EventCommand const& com) { // code 20712
 	return CommandOptionGeneric(com, eOptionEnemyEncounterDefeat, {Cmd::EndBattle});
 }
 
-bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& /* com */) { // code 20713
+bool Game_Interpreter_Map::CommandEndBattle(lcf::rpg::EventCommand const& /* com */) { // code 20713
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
+bool Game_Interpreter_Map::CommandOpenShop(lcf::rpg::EventCommand const& com) { // code 10720
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -333,19 +333,19 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
+bool Game_Interpreter_Map::CommandTransaction(lcf::rpg::EventCommand const& com) { // code 20720
 	return CommandOptionGeneric(com, eOptionShopTransaction, {Cmd::NoTransaction, Cmd::EndShop});
 }
 
-bool Game_Interpreter_Map::CommandNoTransaction(RPG::EventCommand const& com) { // code 20721
+bool Game_Interpreter_Map::CommandNoTransaction(lcf::rpg::EventCommand const& com) { // code 20721
 	return CommandOptionGeneric(com, eOptionShopNoTransaction, {Cmd::EndShop});
 }
 
-bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& /* com */) { // code 20722
+bool Game_Interpreter_Map::CommandEndShop(lcf::rpg::EventCommand const& /* com */) { // code 20722
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // code 10730
+bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { // code 10730
 	int inn_type = com.parameters[0];
 	auto inn_price = com.parameters[1];
 	// Not used, but left here for documentation purposes
@@ -376,25 +376,25 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_a_greeting_1,
+						lcf::Data::terms.inn_a_greeting_1,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_a_greeting_3,
+						lcf::Data::terms.inn_a_greeting_3,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 			}
 			else {
-				out << Data::terms.inn_a_greeting_1
-					<< " " << inn_price << Data::terms.gold
-					<< " " << Data::terms.inn_a_greeting_2;
+				out << lcf::Data::terms.inn_a_greeting_1
+					<< " " << inn_price << lcf::Data::terms.gold
+					<< " " << lcf::Data::terms.inn_a_greeting_2;
 				pm.PushLine(out.str());
-				pm.PushLine(Data::terms.inn_a_greeting_3);
+				pm.PushLine(lcf::Data::terms.inn_a_greeting_3);
 			}
 			break;
 		case 1:
@@ -402,25 +402,25 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << inn_price;
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_b_greeting_1,
+						lcf::Data::terms.inn_b_greeting_1,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 				pm.PushLine(
 					Utils::ReplacePlaceholders(
-						Data::terms.inn_b_greeting_3,
+						lcf::Data::terms.inn_b_greeting_3,
 						{'V', 'U'},
-						{out.str(), Data::terms.gold}
+						{out.str(), lcf::Data::terms.gold}
 					)
 				);
 			}
 			else {
-				out << Data::terms.inn_b_greeting_1
-					<< " " << inn_price << Data::terms.gold
-					<< " " << Data::terms.inn_b_greeting_2;
+				out << lcf::Data::terms.inn_b_greeting_1
+					<< " " << inn_price << lcf::Data::terms.gold
+					<< " " << lcf::Data::terms.inn_b_greeting_2;
 				pm.PushLine(out.str());
-				pm.PushLine(Data::terms.inn_b_greeting_3);
+				pm.PushLine(lcf::Data::terms.inn_b_greeting_3);
 			}
 			break;
 		default:
@@ -432,12 +432,12 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	switch (inn_type) {
 		case 0:
-			pm.PushChoice(Data::terms.inn_a_accept, can_afford);
-			pm.PushChoice(Data::terms.inn_a_cancel);
+			pm.PushChoice(lcf::Data::terms.inn_a_accept, can_afford);
+			pm.PushChoice(lcf::Data::terms.inn_a_cancel);
 			break;
 		case 1:
-			pm.PushChoice(Data::terms.inn_b_accept, can_afford);
-			pm.PushChoice(Data::terms.inn_b_cancel);
+			pm.PushChoice(lcf::Data::terms.inn_b_accept, can_afford);
+			pm.PushChoice(lcf::Data::terms.inn_b_cancel);
 			break;
 		default:
 			return false;
@@ -472,19 +472,19 @@ AsyncOp Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_re
 	return {};
 }
 
-bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730
+bool Game_Interpreter_Map::CommandStay(lcf::rpg::EventCommand const& com) { // code 20730
 	return CommandOptionGeneric(com, eOptionInnStay, {Cmd::NoStay, Cmd::EndInn});
 }
 
-bool Game_Interpreter_Map::CommandNoStay(RPG::EventCommand const& com) { // code 20731
+bool Game_Interpreter_Map::CommandNoStay(lcf::rpg::EventCommand const& com) { // code 20731
 	return CommandOptionGeneric(com, eOptionInnNoStay, {Cmd::EndInn});
 }
 
-bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& /* com */) { // code 20732
+bool Game_Interpreter_Map::CommandEndInn(lcf::rpg::EventCommand const& /* com */) { // code 20732
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740
+bool Game_Interpreter_Map::CommandEnterHeroName(lcf::rpg::EventCommand const& com) { // code 10740
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -503,7 +503,7 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
+bool Game_Interpreter_Map::CommandTeleport(lcf::rpg::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
 	if (Game_Message::IsMessageActive()) {
 		return false;
@@ -531,13 +531,13 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandEnterExitVehicle(RPG::EventCommand const& /* com */) { // code 10840
+bool Game_Interpreter_Map::CommandEnterExitVehicle(lcf::rpg::EventCommand const& /* com */) { // code 10840
 	Main_Data::game_player->GetOnOffVehicle();
 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // code 11060
+bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) { // code 11060
 	int direction;
 	int distance;
 	int speed;
@@ -576,7 +576,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
+bool Game_Interpreter_Map::CommandShowBattleAnimation(lcf::rpg::EventCommand const& com) { // code 11210
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
 	bool waiting_battle_anim = com.parameters[2] > 0;
@@ -598,7 +598,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { // code 11320
+bool Game_Interpreter_Map::CommandFlashSprite(lcf::rpg::EventCommand const& com) { // code 11320
 	int event_id = com.parameters[0];
 	int r = com.parameters[1];
 	int g = com.parameters[2];
@@ -620,17 +620,17 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code 11340
+bool Game_Interpreter_Map::CommandProceedWithMovement(lcf::rpg::EventCommand const& /* com */) { // code 11340
 	_state.wait_movement = true;
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
+bool Game_Interpreter_Map::CommandHaltAllMovement(lcf::rpg::EventCommand const& /* com */) { // code 11350
 	Game_Map::RemoveAllPendingMoves();
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // code 11560
+bool Game_Interpreter_Map::CommandPlayMovie(lcf::rpg::EventCommand const& com) { // code 11560
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -648,7 +648,7 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
+bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& /* com */) { // code 11910
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -661,7 +661,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
+bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& /* com */) { // code 11950
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -674,7 +674,7 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* com */) {
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -687,12 +687,12 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /* com */) {
 	Game_System::ToggleAtbMode();
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandOpenVideoOptions(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* com */) {
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}

@@ -23,7 +23,7 @@
 #include "window_shopnumber.h"
 #include "bitmap.h"
 #include "font.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -45,7 +45,7 @@ void Window_ShopNumber::Refresh() {
 
 	int y = 34;
 	// (Shop) items are guaranteed to be valid
-	DrawItemName(*ReaderUtil::GetElement(Data::items, item_id), 0, y);
+	DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, item_id), 0, y);
 
 	std::stringstream ss;
 	ss << number;

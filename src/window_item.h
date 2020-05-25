@@ -39,7 +39,7 @@ public:
 	 *
 	 * @return current selected item.
 	 */
-	const RPG::Item* GetItem() const;
+	const lcf::rpg::Item* GetItem() const;
 
 	/**
 	 * Checks if the item should be in the list.

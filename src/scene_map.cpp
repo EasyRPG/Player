@@ -29,7 +29,7 @@
 #include "game_system.h"
 #include "game_screen.h"
 #include "game_pictures.h"
-#include "rpg_system.h"
+#include <lcf/rpg/system.h>
 #include "player.h"
 #include "transition.h"
 #include "audio.h"
@@ -453,7 +453,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 }
 
 void Scene_Map::StartInn() {
-	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
+	const lcf::rpg::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 	if (Game_System::IsStopMusicFilename(bgm_inn.name)) {
 		FinishInn();
 		return;
