@@ -866,7 +866,7 @@ void Game_Character::UpdateFacing() {
 	const auto facing = GetSpriteDirection();
 	if (dir >= 4) /* is diagonal */ {
 		// [UR, DR, DL, UL] -> [U, D, D, U]
-		const auto f1 = (dir + (dir >= 6)) % 2;
+		const auto f1 = ((dir + (dir >= 6)) % 2) * 2;
 		// [UR, DR, DL, UL] -> [R, R, L, L]
 		const auto f2 = (dir / 2) - (dir < 6);
 		if (facing != f1 && facing != f2) {

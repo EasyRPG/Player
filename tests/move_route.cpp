@@ -10,6 +10,8 @@
 
 TEST_SUITE_BEGIN("MoveRoute");
 
+// FIXME: Test clear pause
+
 namespace {
 struct MapGuard {
 	MapGuard() {
@@ -45,9 +47,13 @@ constexpr auto Up = Game_Character::Up;
 constexpr auto Right = Game_Character::Right;
 constexpr auto Down = Game_Character::Down;
 constexpr auto Left = Game_Character::Left;
+constexpr auto UpRight = Game_Character::UpRight;
+constexpr auto DownRight = Game_Character::DownRight;
+constexpr auto DownLeft = Game_Character::DownLeft;
+constexpr auto UpLeft = Game_Character::UpLeft;
 }
 
-static Game_Vehicle MakeCharacter() {
+static auto MakeCharacter() {
 	auto ch = Game_Vehicle(Game_Vehicle::Boat);
 	ch.SetDirection(Game_Character::Down);
 	ch.SetSpriteDirection(Game_Character::Down);
@@ -75,6 +81,16 @@ static void testMoveRoute(
 		int move_route_idx, bool overwritten, bool done,
 		const RPG::MoveRoute& mr)
 {
+	CAPTURE(paused);
+	CAPTURE(move_frequency);
+	CAPTURE(stop_count);
+	CAPTURE(max_stop_count);
+	CAPTURE(move_route_idx);
+	CAPTURE(overwritten);
+	CAPTURE(done);
+	// FIXME: Add printing to liblcf
+	// CAPTURE(mr);
+
 	REQUIRE_EQ(ch.IsPaused(), paused);
 	REQUIRE_EQ(ch.GetMoveFrequency(), move_frequency);
 	REQUIRE_EQ(ch.GetStopCount(), stop_count);
@@ -87,12 +103,37 @@ static void testMoveRoute(
 
 template <typename... Args>
 static void testMoveRouteDir(const Game_Character& ch,
-		int dir, int facing,
+		int dir, int face,
 		Args&&... args) {
 
+	CAPTURE(dir);
+	CAPTURE(face);
+
 	REQUIRE_EQ(ch.GetDirection(), dir);
-	REQUIRE_EQ(ch.GetSpriteDirection(), facing);
+	REQUIRE_EQ(ch.GetSpriteDirection(), face);
 	testMoveRoute(ch, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+static void testMoveRouteMove(const Game_Character& ch,
+		int x, int y, int remaining_step,
+		Args&&... args) {
+
+	CAPTURE(x);
+	CAPTURE(y);
+	CAPTURE(remaining_step);
+
+	REQUIRE_EQ(ch.GetX(), x);
+	REQUIRE_EQ(ch.GetY(), y);
+	REQUIRE_GE(ch.GetRemainingStep(), 0);
+	REQUIRE_EQ(ch.GetRemainingStep(), remaining_step);
+	REQUIRE(!ch.IsJumping());
+	if (remaining_step > 0) {
+		REQUIRE(ch.IsMoving());
+	} else {
+		REQUIRE(ch.IsStopping());
+	}
+	testMoveRouteDir(ch, std::forward<Args>(args)...);
 }
 
 TEST_CASE("DefaultMoveRoute") {
@@ -112,6 +153,7 @@ TEST_CASE("ForceMoveRouteSameFreq") {
 	mr.move_commands.push_back({});
 
 	ch.ForceMoveRoute(mr, 2);
+	// Note: Same freq means don't reset max stop count
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
 
 	ch.CancelMoveRoute();
@@ -131,8 +173,101 @@ TEST_CASE("ForceMoveRouteDiffFreq") {
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, mr);
 }
 
+static void testMove(RPG::MoveCommand::Code::Index code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
+	Main_Data::game_player->SetX(px);
+	Main_Data::game_player->SetY(py);
+
+	auto ch = MakeCharacter();
+	ch.SetX(x);
+	ch.SetY(y);
+	ch.SetDirection(dir);
+	ch.SetSpriteDirection(face);
+	// FIXME: Bypass makeway for now, it crashes.
+	ch.SetThrough(true);
+
+	auto mr = MakeRoute({{ code }});
+
+	CAPTURE(code);
+	CAPTURE(x);
+	CAPTURE(y);
+	CAPTURE(dir);
+	CAPTURE(face);
+	CAPTURE(tx);
+	CAPTURE(ty);
+	CAPTURE(tdir);
+	CAPTURE(tface);
+	CAPTURE(px);
+	CAPTURE(py);
+
+	ch.ForceMoveRoute(mr, 3);
+	testMoveRouteMove(ch, x, y, 0, dir, face, false, 3, 0xFFFF, 64, 0, true, false, mr);
+
+	for(int i = 224; i > 0; i -= 32) {
+		ForceUpdate(ch);
+		testMoveRouteMove(ch, tx, ty, i, tdir, tface, false, 3, 0, 64, 1, true, false, mr);
+	}
+
+	ForceUpdate(ch);
+	testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 2, 0, 128, 0, false, false, mr);
+}
+
 TEST_CASE("CommandMove") {
-	// FIXME: Requires mocked out map.
+	const MapGuard mg;
+
+	testMove(RPG::MoveCommand::Code::move_up, 8, 8, Down, Down, 8, 7, Up, Up);
+	testMove(RPG::MoveCommand::Code::move_right, 8, 8, Down, Down, 9, 8, Right, Right);
+	testMove(RPG::MoveCommand::Code::move_down, 8, 8, Down, Down, 8, 9, Down, Down);
+	testMove(RPG::MoveCommand::Code::move_left, 8, 8, Down, Down, 7, 8, Left, Left);
+}
+
+TEST_CASE("CommandMoveDiagonal") {
+	const MapGuard mg;
+
+	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Up, Up, 9, 7, UpRight, Up);
+	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Right, Right, 9, 7, UpRight, Right);
+	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Down, Down, 9, 7, UpRight, Up);
+	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Left, Left, 9, 7, UpRight, Right);
+
+	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Up, Up, 9, 9, DownRight, Down);
+	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Right, Right, 9, 9, DownRight, Right);
+	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Down, Down, 9, 9, DownRight, Down);
+	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Left, Left, 9, 9, DownRight, Right);
+
+	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 7, 9, DownLeft, Down);
+	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 7, 9, DownLeft, Left);
+	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 7, 9, DownLeft, Down);
+	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 7, 9, DownLeft, Left);
+
+	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 7, 7, UpLeft, Up);
+	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 7, 7, UpLeft, Left);
+	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 7, 7, UpLeft, Up);
+	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 7, 7, UpLeft, Left);
+}
+
+TEST_CASE("CommandMoveForward") {
+	const MapGuard mg;
+
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Up, Up, 8, 7, Up, Up);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Right, Right, 9, 8, Right, Right);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 9, Down, Down);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Left, Left, 7, 8, Left, Left);
+
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 9, 7, UpRight, Up);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 9, 7, UpRight, Right);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 9, 9, DownRight, Down);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 9, 9, DownRight, Right);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 7, 7, UpLeft, Up);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 7, 7, UpLeft, Left);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 7, 9, DownLeft, Down);
+	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 7, 9, DownLeft, Left);
+}
+
+TEST_CASE("CommandMoveRandom") {
+	// FIXME: TBD
+}
+
+TEST_CASE("CommandMoveHero") {
+	// FIXME: TBD
 }
 
 static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
