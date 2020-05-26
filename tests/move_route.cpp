@@ -88,8 +88,7 @@ static void testMoveRoute(
 	CAPTURE(move_route_idx);
 	CAPTURE(overwritten);
 	CAPTURE(done);
-	// FIXME: Add printing to liblcf
-	// CAPTURE(mr);
+	CAPTURE(mr);
 
 	REQUIRE_EQ(ch.IsPaused(), paused);
 	REQUIRE_EQ(ch.GetMoveFrequency(), move_frequency);
@@ -266,9 +265,6 @@ TEST_CASE("CommandMoveRandom") {
 	// FIXME: TBD
 }
 
-TEST_CASE("CommandMoveHero") {
-	// FIXME: TBD
-}
 
 static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
@@ -344,20 +340,33 @@ TEST_CASE("CommandTurnRandom") {
 	}
 }
 
-TEST_CASE("CommandTurnHero") {
+TEST_CASE("CommandMoveTurnHero") {
 	const MapGuard mg;
 
-	int ch_x = 8;
-	int ch_y = 8;
+	int x = 8;
+	int y = 8;
 	for (int dx = -2; dx <= 2; ++dx) {
 		for (int dy = -2; dy <= 2; ++dy) {
+			auto step_x = 0;
+			auto step_y = 0;
 			auto dir = Down;
+
 			if (std::abs(dx) > std::abs(dy)) {
 				dir = (dx > 0 ? Right : Left);
+				step_x = (dx > 0 ? 1 : -1);
 			} else {
 				dir = (dy >= 0 ? Down : Up);
+				step_y = (dy >= 0 ? 1 : -1);
 			}
-			testTurn(lcf::rpg::MoveCommand::Code::face_hero, Left, dir, dir, ch_x, ch_y, ch_x + dx, ch_y + dy);
+			auto rdir = Game_Character::GetDirection180Degree(dir);
+
+			auto px = x + dx;
+			auto py = y + dy;
+
+			testTurn(lcf::rpg::MoveCommand::Code::face_hero, Left, dir, dir, x, y, px, py);
+			testTurn(lcf::rpg::MoveCommand::Code::face_away_from_hero, Left, rdir, rdir, x, y, px, py);
+			testMove(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x + step_x, y + step_y, dir, dir, px, py);
+			testMove(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x - step_x, y - step_y, rdir, rdir, px, py);
 		}
 	}
 }
