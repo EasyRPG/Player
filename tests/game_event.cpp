@@ -9,7 +9,7 @@ TEST_SUITE_BEGIN("Game_Event");
 
 TEST_CASE("IdName") {
 	{
-		RPG::Event event;
+		lcf::rpg::Event event;
 		Game_Event ch(0, &event);
 
 		REQUIRE_EQ(ch.GetId(), event.ID);
@@ -17,7 +17,7 @@ TEST_CASE("IdName") {
 	}
 
 	{
-		RPG::Event event;
+		lcf::rpg::Event event;
 		event.ID = 5;
 		event.name = "X";
 

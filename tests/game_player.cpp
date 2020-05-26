@@ -48,10 +48,10 @@ TEST_CASE("SaveCounts") {
 static void testPan(Game_Player& ch, bool active, bool locked, int dx, int dy, int dtx, int dty, int w) {
 	REQUIRE_EQ(ch.IsPanActive(), active);
 	REQUIRE_EQ(ch.IsPanLocked(), locked);
-	REQUIRE_EQ(ch.GetPanX(), RPG::SavePartyLocation::kPanXDefault + dx * SCREEN_TILE_SIZE);
-	REQUIRE_EQ(ch.GetPanY(), RPG::SavePartyLocation::kPanYDefault + dy * SCREEN_TILE_SIZE);
-	REQUIRE_EQ(ch.GetTargetPanX(), RPG::SavePartyLocation::kPanXDefault + dtx * SCREEN_TILE_SIZE);
-	REQUIRE_EQ(ch.GetTargetPanY(), RPG::SavePartyLocation::kPanYDefault + dty * SCREEN_TILE_SIZE);
+	REQUIRE_EQ(ch.GetPanX(), lcf::rpg::SavePartyLocation::kPanXDefault + dx * SCREEN_TILE_SIZE);
+	REQUIRE_EQ(ch.GetPanY(), lcf::rpg::SavePartyLocation::kPanYDefault + dy * SCREEN_TILE_SIZE);
+	REQUIRE_EQ(ch.GetTargetPanX(), lcf::rpg::SavePartyLocation::kPanXDefault + dtx * SCREEN_TILE_SIZE);
+	REQUIRE_EQ(ch.GetTargetPanY(), lcf::rpg::SavePartyLocation::kPanYDefault + dty * SCREEN_TILE_SIZE);
 	REQUIRE_EQ(ch.GetPanWait(), w);
 }
 

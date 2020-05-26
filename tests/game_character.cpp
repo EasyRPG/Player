@@ -69,13 +69,13 @@ static_assert(Game_Character::GetDyFromDirection(Game_Character::DownRight) == 1
 static_assert(Game_Character::GetDyFromDirection(Game_Character::DownLeft) == 1, "DyBroken");
 static_assert(Game_Character::GetDyFromDirection(Game_Character::UpLeft) == -1, "DyBroken");
 
-static_assert(!Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_non_continuous), "DirFixedBroken");
-static_assert(!Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_continuous), "DirFixedBroken");
-static_assert(Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_fixed_non_continuous), "DirFixedBroken");
-static_assert(Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_fixed_continuous), "DirFixedBroken");
-static_assert(Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_fixed_graphic), "DirFixedBroken");
-static_assert(!Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_spin), "DirFixedBroken");
-static_assert(!Game_Character::IsDirectionFixedAnimationType(RPG::EventPage::AnimType_step_frame_fix), "DirFixedBroken");
+static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_non_continuous), "DirFixedBroken");
+static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_continuous), "DirFixedBroken");
+static_assert(Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_fixed_non_continuous), "DirFixedBroken");
+static_assert(Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_fixed_continuous), "DirFixedBroken");
+static_assert(Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_fixed_graphic), "DirFixedBroken");
+static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_spin), "DirFixedBroken");
+static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage::AnimType_step_frame_fix), "DirFixedBroken");
 
 #if 0
 
@@ -176,7 +176,7 @@ static void testInitVehicle(Game_Vehicle::Type vt) {
 	REQUIRE_EQ(ch.GetOrigSpriteName(), "");
 	REQUIRE_EQ(ch.GetOrigSpriteIndex(), 0);
 
-	REQUIRE_EQ(ch.GetMoveRoute(), RPG::MoveRoute());
+	REQUIRE_EQ(ch.GetMoveRoute(), lcf::rpg::MoveRoute());
 }
 
 TEST_CASE("InitVehicle") {
@@ -211,10 +211,10 @@ TEST_CASE("InitPlayer") {
 
 	REQUIRE(!ch.IsPanActive());
 	REQUIRE(!ch.IsPanLocked());
-	REQUIRE_EQ(ch.GetPanX(), RPG::SavePartyLocation::kPanXDefault);
-	REQUIRE_EQ(ch.GetPanY(), RPG::SavePartyLocation::kPanYDefault);
-	REQUIRE_EQ(ch.GetTargetPanX(), RPG::SavePartyLocation::kPanXDefault);
-	REQUIRE_EQ(ch.GetTargetPanY(), RPG::SavePartyLocation::kPanYDefault);
+	REQUIRE_EQ(ch.GetPanX(), lcf::rpg::SavePartyLocation::kPanXDefault);
+	REQUIRE_EQ(ch.GetPanY(), lcf::rpg::SavePartyLocation::kPanYDefault);
+	REQUIRE_EQ(ch.GetTargetPanX(), lcf::rpg::SavePartyLocation::kPanXDefault);
+	REQUIRE_EQ(ch.GetTargetPanY(), lcf::rpg::SavePartyLocation::kPanYDefault);
 	REQUIRE_EQ(ch.GetPanWait(), 0);
 
 	REQUIRE(ch.IsMapCompatibleWithSave(0));
@@ -222,7 +222,7 @@ TEST_CASE("InitPlayer") {
 }
 
 TEST_CASE("InitEventNoPage") {
-	RPG::Event event;
+	lcf::rpg::Event event;
 	Game_Event ch(0, &event);
 
 	testInit(ch);
@@ -247,7 +247,7 @@ TEST_CASE("InitEventNoPage") {
 }
 
 TEST_CASE("InitEventDefaultPage") {
-	RPG::Event event;
+	lcf::rpg::Event event;
 	event.pages.push_back({});
 	Game_Event ch(0, &event);
 
@@ -332,8 +332,8 @@ static void testBasicSet(Game_Character& ch) {
 
 	//FIXME: Test ResetThrough
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_step_frame_fix);
-	REQUIRE_EQ(ch.GetAnimationType(), RPG::EventPage::AnimType_step_frame_fix);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_step_frame_fix);
+	REQUIRE_EQ(ch.GetAnimationType(), lcf::rpg::EventPage::AnimType_step_frame_fix);
 
 	ch.SetStopCount(78);
 	REQUIRE_EQ(ch.GetStopCount(), 78);
@@ -422,7 +422,7 @@ TEST_CASE("BasicSetPlayer") {
 }
 
 TEST_CASE("BasicSetEvent") {
-	RPG::Event event;
+	lcf::rpg::Event event;
 	Game_Event ch(0, &event);
 
 	testBasicSet(ch);
@@ -516,45 +516,45 @@ TEST_CASE("Animated") {
 
 	REQUIRE(!ch.IsAnimPaused());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_non_continuous);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_continuous);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_continuous);
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_fixed_non_continuous);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_non_continuous);
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_fixed_continuous);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_continuous);
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_fixed_graphic);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_graphic);
 	REQUIRE(!ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_spin);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_spin);
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
 	REQUIRE(ch.IsSpinning());
 
-	ch.SetAnimationType(RPG::EventPage::AnimType_step_frame_fix);
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_step_frame_fix);
 	REQUIRE(!ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
 	REQUIRE(!ch.IsSpinning());
 
 	ch.SetAnimPaused(true);
 	REQUIRE(ch.IsAnimPaused());
-	for (int i = 0; i <= static_cast<int>(RPG::EventPage::AnimType_step_frame_fix); ++i) {
-		ch.SetAnimationType(static_cast<RPG::EventPage::AnimType>(i));
+	for (int i = 0; i <= static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++i) {
+		ch.SetAnimationType(static_cast<lcf::rpg::EventPage::AnimType>(i));
 		REQUIRE(!ch.IsAnimated());
 	}
 }
@@ -592,7 +592,7 @@ TEST_CASE("VisibleVehicle") {
 }
 
 TEST_CASE("VisibleEvent") {
-	RPG::Event event;
+	lcf::rpg::Event event;
 	Game_Event ch(0, &event);
 
 	// FIXME: Test pages
@@ -601,8 +601,8 @@ TEST_CASE("VisibleEvent") {
 }
 
 TEST_CASE("LockFacingVsAnimType") {
-	for (int i = 0; i <= static_cast<int>(RPG::EventPage::AnimType_step_frame_fix); ++i) {
-		auto at = static_cast<RPG::EventPage::AnimType>(i);
+	for (int i = 0; i <= static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++i) {
+		auto at = static_cast<lcf::rpg::EventPage::AnimType>(i);
 
 		Game_Player ch;
 		ch.SetAnimationType(at);

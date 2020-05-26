@@ -97,7 +97,7 @@ inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int inde
 	data()->orig_sprite_id = index;
 }
 
-inline RPG::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
+inline lcf::rpg::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
 	return *data();
 }
 

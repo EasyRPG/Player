@@ -132,7 +132,7 @@ static bool CompareMoveRouteCommandCodes(const lcf::rpg::MoveRoute& l, const lcf
 }
 
 void Game_Event::RefreshPage() {
-	const RPG::EventPage* new_page = nullptr;
+	const lcf::rpg::EventPage* new_page = nullptr;
 	for (auto i = event->pages.crbegin(); i != event->pages.crend(); ++i) {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
@@ -182,7 +182,7 @@ void Game_Event::RefreshPage() {
 	SetMoveFrequency(page->move_frequency);
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
-	SetAnimationType(static_cast<RPG::EventPage::AnimType>(page->animation_type));
+	SetAnimationType(static_cast<lcf::rpg::EventPage::AnimType>(page->animation_type));
 	SetMoveSpeed(page->move_speed);
 
 	if (IsFacingLocked()) {
@@ -195,9 +195,9 @@ void Game_Event::RefreshPage() {
 		SetAnimFrame(page->character_pattern);
 	}
 
-	if (page->move_type == RPG::EventPage::MoveType_random) {
+	if (page->move_type == lcf::rpg::EventPage::MoveType_random) {
 		SetMaxStopCountForRandom();
-	} else if (page->move_type == RPG::EventPage::MoveType_custom) {
+	} else if (page->move_type == lcf::rpg::EventPage::MoveType_custom) {
 		SetMaxStopCountForTurn();
 	} else {
 		SetMaxStopCountForStep();

@@ -19,13 +19,13 @@
 #define EP_GAME_PLAYER_H
 
 // Headers
+#include "game_character.h"
+#include "teleport_target.h"
+#include <vector>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/music.h>
 #include <lcf/rpg/savepartylocation.h>
-#include "game_character.h"
 #include <lcf/flag_set.h>
-#include "teleport_target.h"
-#include <vector>
 
 class Game_Vehicle;
 using Game_PlayerBase = Game_CharacterDataStorage<lcf::rpg::SavePartyLocation>;

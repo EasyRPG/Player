@@ -149,7 +149,7 @@ void Game_Map::ResetPendingMove() {
 	}
 }
 
-void Game_Map::Setup(std::unique_ptr<RPG::Map> map_in) {
+void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Dispose();
 
 	map = std::move(map_in);
@@ -220,14 +220,14 @@ void Game_Map::Setup(std::unique_ptr<RPG::Map> map_in) {
 }
 
 void Game_Map::SetupFromSave(
-		std::unique_ptr<RPG::Map> map_in,
-		RPG::SaveMapInfo save_map,
-		RPG::SaveVehicleLocation save_boat,
-		RPG::SaveVehicleLocation save_ship,
-		RPG::SaveVehicleLocation save_airship,
-		RPG::SaveEventExecState save_fg_exec,
-		RPG::SavePanorama save_pan,
-		std::vector<RPG::SaveCommonEvent> save_ce) {
+		std::unique_ptr<lcf::rpg::Map> map_in,
+		lcf::rpg::SaveMapInfo save_map,
+		lcf::rpg::SaveVehicleLocation save_boat,
+		lcf::rpg::SaveVehicleLocation save_ship,
+		lcf::rpg::SaveVehicleLocation save_airship,
+		lcf::rpg::SaveEventExecState save_fg_exec,
+		lcf::rpg::SavePanorama save_pan,
+		std::vector<lcf::rpg::SaveCommonEvent> save_ce) {
 
 	map = std::move(map_in);
 	map_info = std::move(save_map);
@@ -282,8 +282,8 @@ void Game_Map::SetupFromSave(
 	ResetPendingMove();
 }
 
-std::unique_ptr<RPG::Map> Game_Map::loadMapFile(int map_id) {
-	std::unique_ptr<RPG::Map> map;
+std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
+	std::unique_ptr<lcf::rpg::Map> map;
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	// FIXME: Assert map was cached for async platforms
@@ -340,7 +340,7 @@ void Game_Map::SetupCommon() {
 	}
 }
 
-void Game_Map::PrepareSave(RPG::Save& save) {
+void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 	save.foreground_event_execstate = interpreter->GetState();
 
 	save.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();

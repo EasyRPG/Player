@@ -32,7 +32,7 @@
 #include <cmath>
 #include <cassert>
 
-Game_Character::Game_Character(Type type, RPG::SaveMapEventBase* d) :
+Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 	_type(type), _data(d)
 {
 }
@@ -98,11 +98,11 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 
 	if (IsFlying()) {
 		z = Priority_EventsFlying;
-	} else if (GetLayer() == RPG::EventPage::Layers_same) {
+	} else if (GetLayer() == lcf::rpg::EventPage::Layers_same) {
 		z = Priority_Player;
-	} else if (GetLayer() == RPG::EventPage::Layers_below) {
+	} else if (GetLayer() == lcf::rpg::EventPage::Layers_below) {
 		z = Priority_EventsBelow;
-	} else if (GetLayer() == RPG::EventPage::Layers_above) {
+	} else if (GetLayer() == lcf::rpg::EventPage::Layers_above) {
 		z = Priority_EventsAbove;
 	}
 
@@ -196,7 +196,7 @@ void Game_Character::UpdateAnimation() {
 	// FIXME: Verify this
 	if (IsContinuous()
 			|| GetStopCount() == 0
-			|| data()->anim_frame == RPG::EventPage::Frame_left || data()->anim_frame == RPG::EventPage::Frame_right
+			|| data()->anim_frame == lcf::rpg::EventPage::Frame_left || data()->anim_frame == lcf::rpg::EventPage::Frame_right
 			|| GetAnimCount() < stationary_limit) {
 		IncAnimCount();
 	}
@@ -212,7 +212,7 @@ void Game_Character::UpdateFlash() {
 	Flash::Update(data()->flash_current_level, data()->flash_time_left);
 }
 
-void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route, bool is_overwrite) {
+void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite) {
 	if (current_route.move_commands.empty()) {
 		return;
 	}
@@ -245,34 +245,34 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 			}
 		}
 
-		const RPG::MoveCommand& move_command = current_route.move_commands[current_index];
+		const lcf::rpg::MoveCommand& move_command = current_route.move_commands[current_index];
 		const auto prev_direction = GetDirection();
 		const auto prev_facing = GetSpriteDirection();
 		const auto saved_index = current_index;
-		const auto cmd = move_command.command_id;
+		const auto cmd = static_cast<lcf::rpg::MoveCommand::Code>(move_command.command_id);
 
-		if (cmd >= RPG::MoveCommand::Code::move_up && cmd <= RPG::MoveCommand::Code::move_forward) {
-			switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::move_up:
-				case RPG::MoveCommand::Code::move_right:
-				case RPG::MoveCommand::Code::move_down:
-				case RPG::MoveCommand::Code::move_left:
-				case RPG::MoveCommand::Code::move_upright:
-				case RPG::MoveCommand::Code::move_downright:
-				case RPG::MoveCommand::Code::move_downleft:
-				case RPG::MoveCommand::Code::move_upleft:
-					SetDirection(move_command.command_id);
+		if (cmd >= lcf::rpg::MoveCommand::Code::move_up && cmd <= lcf::rpg::MoveCommand::Code::move_forward) {
+			switch (cmd) {
+				case lcf::rpg::MoveCommand::Code::move_up:
+				case lcf::rpg::MoveCommand::Code::move_right:
+				case lcf::rpg::MoveCommand::Code::move_down:
+				case lcf::rpg::MoveCommand::Code::move_left:
+				case lcf::rpg::MoveCommand::Code::move_upright:
+				case lcf::rpg::MoveCommand::Code::move_downright:
+				case lcf::rpg::MoveCommand::Code::move_downleft:
+				case lcf::rpg::MoveCommand::Code::move_upleft:
+					SetDirection(static_cast<Game_Character::Direction>(cmd));
 					break;
-				case RPG::MoveCommand::Code::move_random:
+				case lcf::rpg::MoveCommand::Code::move_random:
 					TurnRandom();
 					break;
-				case RPG::MoveCommand::Code::move_towards_hero:
+				case lcf::rpg::MoveCommand::Code::move_towards_hero:
 					TurnTowardHero();
 					break;
-				case RPG::MoveCommand::Code::move_away_from_hero:
+				case lcf::rpg::MoveCommand::Code::move_away_from_hero:
 					TurnAwayFromHero();
 					break;
-				case RPG::MoveCommand::Code::move_forward:
+				case lcf::rpg::MoveCommand::Code::move_forward:
 					break;
 				default:
 					break;
@@ -289,45 +289,45 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 				}
 			}
 			// FIXME: Necessary?
-			if (cmd == RPG::MoveCommand::Code::move_forward) {
+			if (cmd == lcf::rpg::MoveCommand::Code::move_forward) {
 				SetSpriteDirection(prev_facing);
 			}
 
 			// FIXME: Review how stop counts are handled
 			SetMaxStopCountForStep();
-		} else if (cmd >= RPG::MoveCommand::Code::face_up && cmd <= RPG::MoveCommand::Code::face_away_from_hero) {
-			switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::face_up:
+		} else if (cmd >= lcf::rpg::MoveCommand::Code::face_up && cmd <= lcf::rpg::MoveCommand::Code::face_away_from_hero) {
+			switch (cmd) {
+				case lcf::rpg::MoveCommand::Code::face_up:
 					SetDirection(Up);
 					break;
-				case RPG::MoveCommand::Code::face_right:
+				case lcf::rpg::MoveCommand::Code::face_right:
 					SetDirection(Right);
 					break;
-				case RPG::MoveCommand::Code::face_down:
+				case lcf::rpg::MoveCommand::Code::face_down:
 					SetDirection(Down);
 					break;
-				case RPG::MoveCommand::Code::face_left:
+				case lcf::rpg::MoveCommand::Code::face_left:
 					SetDirection(Left);
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_right:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_right:
 					Turn90DegreeRight();
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_left:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_left:
 					Turn90DegreeLeft();
 					break;
-				case RPG::MoveCommand::Code::turn_180_degree:
+				case lcf::rpg::MoveCommand::Code::turn_180_degree:
 					Turn180Degree();
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_random:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_random:
 					Turn90DegreeLeftOrRight();
 					break;
-				case RPG::MoveCommand::Code::face_random_direction:
+				case lcf::rpg::MoveCommand::Code::face_random_direction:
 					TurnRandom();
 					break;
-				case RPG::MoveCommand::Code::face_hero:
+				case lcf::rpg::MoveCommand::Code::face_hero:
 					TurnTowardHero();
 					break;
-				case RPG::MoveCommand::Code::face_away_from_hero:
+				case lcf::rpg::MoveCommand::Code::face_away_from_hero:
 					TurnAwayFromHero();
 					break;
 				default:
@@ -337,12 +337,12 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 			SetMaxStopCountForTurn();
 			SetStopCount(0);
 		} else {
-			switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::wait:
+			switch (cmd) {
+				case lcf::rpg::MoveCommand::Code::wait:
 					SetMaxStopCountForWait();
 					SetStopCount(0);
 					break;
-				case RPG::MoveCommand::Code::begin_jump:
+				case lcf::rpg::MoveCommand::Code::begin_jump:
 					BeginJump(current_index, current_route);
 					if (IsStopping()) {
 						// Jump failed
@@ -355,43 +355,43 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 						}
 					}
 					break;
-				case RPG::MoveCommand::Code::end_jump:
+				case lcf::rpg::MoveCommand::Code::end_jump:
 					// EndJump();
 					break;
-				case RPG::MoveCommand::Code::lock_facing:
+				case lcf::rpg::MoveCommand::Code::lock_facing:
 					SetFacingLocked(true);
 					break;
-				case RPG::MoveCommand::Code::unlock_facing:
+				case lcf::rpg::MoveCommand::Code::unlock_facing:
 					SetFacingLocked(false);
 					break;
-				case RPG::MoveCommand::Code::increase_movement_speed:
+				case lcf::rpg::MoveCommand::Code::increase_movement_speed:
 					SetMoveSpeed(min(GetMoveSpeed() + 1, 6));
 					break;
-				case RPG::MoveCommand::Code::decrease_movement_speed:
+				case lcf::rpg::MoveCommand::Code::decrease_movement_speed:
 					SetMoveSpeed(max(GetMoveSpeed() - 1, 1));
 					break;
-				case RPG::MoveCommand::Code::increase_movement_frequence:
+				case lcf::rpg::MoveCommand::Code::increase_movement_frequence:
 					SetMoveFrequency(min(GetMoveFrequency() + 1, 8));
 					break;
-				case RPG::MoveCommand::Code::decrease_movement_frequence:
+				case lcf::rpg::MoveCommand::Code::decrease_movement_frequence:
 					SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
 					break;
-				case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
+				case lcf::rpg::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 					Main_Data::game_switches->Set(move_command.parameter_a, true);
 					Game_Map::SetNeedRefresh(true);
 					Game_Map::Refresh();
 					break;
-				case RPG::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
+				case lcf::rpg::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
 					Main_Data::game_switches->Set(move_command.parameter_a, false);
 					Game_Map::SetNeedRefresh(true);
 					Game_Map::Refresh();
 					break;
-				case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
+				case lcf::rpg::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
 					SetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
 					break;
-				case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
+				case lcf::rpg::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 					if (move_command.parameter_string != "(OFF)" && move_command.parameter_string != "(Brak)") {
-						RPG::Sound sound;
+						lcf::rpg::Sound sound;
 						sound.name = move_command.parameter_string;
 						sound.volume = move_command.parameter_a;
 						sound.tempo = move_command.parameter_b;
@@ -400,25 +400,27 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 						Game_System::SePlay(sound);
 					}
 					break;
-				case RPG::MoveCommand::Code::walk_everywhere_on:
+				case lcf::rpg::MoveCommand::Code::walk_everywhere_on:
 					SetThrough(true);
 					data()->route_through = true;
 					break;
-				case RPG::MoveCommand::Code::walk_everywhere_off:
+				case lcf::rpg::MoveCommand::Code::walk_everywhere_off:
 					SetThrough(false);
 					data()->route_through = false;
 					break;
-				case RPG::MoveCommand::Code::stop_animation:
+				case lcf::rpg::MoveCommand::Code::stop_animation:
 					SetAnimPaused(true);
 					break;
-				case RPG::MoveCommand::Code::start_animation:
+				case lcf::rpg::MoveCommand::Code::start_animation:
 					SetAnimPaused(false);
 					break;
-				case RPG::MoveCommand::Code::increase_transp:
+				case lcf::rpg::MoveCommand::Code::increase_transp:
 					SetTransparency(GetTransparency() + 1);
 					break;
-				case RPG::MoveCommand::Code::decrease_transp:
+				case lcf::rpg::MoveCommand::Code::decrease_transp:
 					SetTransparency(GetTransparency() - 1);
+					break;
+				default:
 					break;
 			}
 		}
@@ -532,36 +534,36 @@ void Game_Character::Wait() {
 	SetMaxStopCountForWait();
 }
 
-void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& current_route) {
+void Game_Character::BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) {
 	int jdx = 0;
 	int jdy = 0;
 
 	bool end_found = false;
 	for (++current_index; current_index < current_route.move_commands.size(); ++current_index) {
-		const RPG::MoveCommand& move_command = current_route.move_commands[current_index];
-		const auto cmd = move_command.command_id;
-		if (cmd >= RPG::MoveCommand::Code::move_up && cmd <= RPG::MoveCommand::Code::move_forward) {
-			switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::move_up:
-				case RPG::MoveCommand::Code::move_right:
-				case RPG::MoveCommand::Code::move_down:
-				case RPG::MoveCommand::Code::move_left:
-				case RPG::MoveCommand::Code::move_upright:
-				case RPG::MoveCommand::Code::move_downright:
-				case RPG::MoveCommand::Code::move_downleft:
-				case RPG::MoveCommand::Code::move_upleft:
+		const lcf::rpg::MoveCommand& move_command = current_route.move_commands[current_index];
+		const auto cmd = static_cast<lcf::rpg::MoveCommand::Code>(move_command.command_id);
+		if (cmd >= lcf::rpg::MoveCommand::Code::move_up && cmd <= lcf::rpg::MoveCommand::Code::move_forward) {
+			switch (cmd) {
+				case lcf::rpg::MoveCommand::Code::move_up:
+				case lcf::rpg::MoveCommand::Code::move_right:
+				case lcf::rpg::MoveCommand::Code::move_down:
+				case lcf::rpg::MoveCommand::Code::move_left:
+				case lcf::rpg::MoveCommand::Code::move_upright:
+				case lcf::rpg::MoveCommand::Code::move_downright:
+				case lcf::rpg::MoveCommand::Code::move_downleft:
+				case lcf::rpg::MoveCommand::Code::move_upleft:
 					SetDirection(move_command.command_id);
 					break;
-				case RPG::MoveCommand::Code::move_random:
+				case lcf::rpg::MoveCommand::Code::move_random:
 					TurnRandom();
 					break;
-				case RPG::MoveCommand::Code::move_towards_hero:
+				case lcf::rpg::MoveCommand::Code::move_towards_hero:
 					TurnTowardHero();
 					break;
-				case RPG::MoveCommand::Code::move_away_from_hero:
+				case lcf::rpg::MoveCommand::Code::move_away_from_hero:
 					TurnAwayFromHero();
 					break;
-				case RPG::MoveCommand::Code::move_forward:
+				case lcf::rpg::MoveCommand::Code::move_forward:
 					break;
 				default:
 					break;
@@ -570,39 +572,39 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 			jdy += GetDyFromDirection(GetDirection());
 		}
 
-		if (cmd >= RPG::MoveCommand::Code::face_up && cmd <= RPG::MoveCommand::Code::face_away_from_hero) {
-			switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::face_up:
+		if (cmd >= lcf::rpg::MoveCommand::Code::face_up && cmd <= lcf::rpg::MoveCommand::Code::face_away_from_hero) {
+			switch (cmd) {
+				case lcf::rpg::MoveCommand::Code::face_up:
 					SetDirection(Up);
 					break;
-				case RPG::MoveCommand::Code::face_right:
+				case lcf::rpg::MoveCommand::Code::face_right:
 					SetDirection(Right);
 					break;
-				case RPG::MoveCommand::Code::face_down:
+				case lcf::rpg::MoveCommand::Code::face_down:
 					SetDirection(Down);
 					break;
-				case RPG::MoveCommand::Code::face_left:
+				case lcf::rpg::MoveCommand::Code::face_left:
 					SetDirection(Left);
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_right:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_right:
 					Turn90DegreeRight();
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_left:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_left:
 					Turn90DegreeLeft();
 					break;
-				case RPG::MoveCommand::Code::turn_180_degree:
+				case lcf::rpg::MoveCommand::Code::turn_180_degree:
 					Turn180Degree();
 					break;
-				case RPG::MoveCommand::Code::turn_90_degree_random:
+				case lcf::rpg::MoveCommand::Code::turn_90_degree_random:
 					Turn90DegreeLeftOrRight();
 					break;
-				case RPG::MoveCommand::Code::face_random_direction:
+				case lcf::rpg::MoveCommand::Code::face_random_direction:
 					TurnRandom();
 					break;
-				case RPG::MoveCommand::Code::face_hero:
+				case lcf::rpg::MoveCommand::Code::face_hero:
 					TurnTowardHero();
 					break;
-				case RPG::MoveCommand::Code::face_away_from_hero:
+				case lcf::rpg::MoveCommand::Code::face_away_from_hero:
 					TurnAwayFromHero();
 					break;
 				default:
@@ -610,7 +612,7 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 			}
 		}
 
-		if (move_command.command_id == RPG::MoveCommand::Code::end_jump) {
+		if (cmd == lcf::rpg::MoveCommand::Code::end_jump) {
 			end_found = true;
 			// Note: outer function increment will cause the end jump to past after the return.
 			break;
@@ -703,7 +705,7 @@ int Game_Character::DistanceYfromPlayer() const {
 	return sy;
 }
 
-void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
+void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 									int frequency) {
 	if (!IsMoveRouteOverwritten()) {
 		original_move_frequency = GetMoveFrequency();
@@ -781,23 +783,23 @@ int Game_Character::GetOpacity() const {
 bool Game_Character::IsAnimated() const {
 	auto at = GetAnimationType();
 	return !IsAnimPaused()
-		&& at != RPG::EventPage::AnimType_fixed_graphic
-		&& at != RPG::EventPage::AnimType_step_frame_fix;
+		&& at != lcf::rpg::EventPage::AnimType_fixed_graphic
+		&& at != lcf::rpg::EventPage::AnimType_step_frame_fix;
 }
 
 bool Game_Character::IsContinuous() const {
 	auto at = GetAnimationType();
 	return
-		at == RPG::EventPage::AnimType_continuous ||
-		at == RPG::EventPage::AnimType_fixed_continuous;
+		at == lcf::rpg::EventPage::AnimType_continuous ||
+		at == lcf::rpg::EventPage::AnimType_fixed_continuous;
 }
 
 bool Game_Character::IsSpinning() const {
-	return GetAnimationType() == RPG::EventPage::AnimType_spin;
+	return GetAnimationType() == lcf::rpg::EventPage::AnimType_spin;
 }
 
 int Game_Character::GetBushDepth() const {
-	if ((GetLayer() != RPG::EventPage::Layers_same) || IsJumping() || IsFlying()) {
+	if ((GetLayer() != lcf::rpg::EventPage::Layers_same) || IsJumping() || IsFlying()) {
 		return 0;
 	}
 

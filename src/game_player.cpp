@@ -32,8 +32,8 @@
 #include "game_switches.h"
 #include "output.h"
 #include "utils.h"
-#include "reader_util.h"
-#include "scope_guard.h"
+#include <lcf/reader_util.h>
+#include <lcf/scope_guard.h>
 #include "scene_battle.h"
 #include "scene_menu.h"
 #include <algorithm>
@@ -41,9 +41,9 @@
 
 Game_Player::Game_Player(): Game_PlayerBase(Player)
 {
-	SetDirection(RPG::EventPage::Direction_down);
+	SetDirection(lcf::rpg::EventPage::Direction_down);
 	SetMoveSpeed(4);
-	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
+	SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
 }
 
 void Game_Player::SetSaveData(lcf::rpg::SavePartyLocation save)
@@ -73,10 +73,10 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, Telep
 	request->Start();
 }
 
-void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
+void Game_Player::ReserveTeleport(const lcf::rpg::SaveTarget& target) {
 	int map_id = target.map_id;
 
-	if (Game_Map::GetMapType(target.map_id) == RPG::TreeMap::MapType_area) {
+	if (Game_Map::GetMapType(target.map_id) == lcf::rpg::TreeMap::MapType_area) {
 		// Area: Obtain the map the area belongs to
 		map_id = Game_Map::GetParentId(target.map_id);
 	}
@@ -267,7 +267,7 @@ void Game_Player::UpdateNextMovementAction() {
 		return;
 	}
 
-	CheckEventTriggerHere({ RPG::EventPage::Trigger_collision }, false);
+	CheckEventTriggerHere({ lcf::rpg::EventPage::Trigger_collision }, false);
 
 	if (Game_Map::IsAnyEventStarting()) {
 		return;
@@ -295,7 +295,7 @@ void Game_Player::UpdateNextMovementAction() {
 		if (IsStopping()) {
 			int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-			CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, false);
+			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
 		}
 	}
 
@@ -324,7 +324,7 @@ void Game_Player::UpdateMovement(int amount) {
 	UpdateScroll(amount, was_jumping);
 
 	if (!IsMoveRouteOverwritten() && IsStopping()) {
-		TriggerSet triggers = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
+		TriggerSet triggers = { lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision };
 		CheckEventTriggerHere(triggers, false);
 	}
 }
@@ -377,11 +377,11 @@ bool Game_Player::CheckActionEvent() {
 	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	result |= CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, true);
-	result |= CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true);
+	result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, true);
+	result |= CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true);
 
 	// Counter tile loop stops only if you talk to an action event.
-	bool got_action = CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true);
+	bool got_action = CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
 	// RPG_RT allows maximum of 3 counter tiles
 	for (int i = 0; !got_action && i < 3; ++i) {
 		if (!Game_Map::IsCounter(front_x, front_y)) {
@@ -391,7 +391,7 @@ bool Game_Player::CheckActionEvent() {
 		front_x = Game_Map::XwithDirection(front_x, GetDirection());
 		front_y = Game_Map::YwithDirection(front_y, GetDirection());
 
-		got_action |= CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true);
+		got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
 	}
 	return result || got_action;
 }
@@ -408,7 +408,7 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 		if (ev.IsActive()
 				&& ev.GetX() == GetX()
 				&& ev.GetY() == GetY()
-				&& ev.GetLayer() != RPG::EventPage::Layers_same
+				&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
@@ -430,7 +430,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 		if (ev.IsActive()
 				&& ev.GetX() == x
 				&& ev.GetY() == y
-				&& ev.GetLayer() == RPG::EventPage::Layers_same
+				&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
@@ -578,7 +578,7 @@ void Game_Player::Move(int dir) {
 		if (!IsMoveRouteOverwritten()) {
 			int nx = GetX() + GetDxFromDirection(dir);
 			int ny = GetY() + GetDyFromDirection(dir);
-			CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, nx, ny, false);
+			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, nx, ny, false);
 		}
 		return;
 	}
@@ -588,7 +588,7 @@ void Game_Player::Move(int dir) {
 	}
 
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 	bool red_flash = false;
 
 	if (terrain) {

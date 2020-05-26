@@ -15,21 +15,21 @@ TEST_SUITE_BEGIN("MoveRoute");
 namespace {
 struct MapGuard {
 	MapGuard() {
-		Data::treemap = {};
-		Data::treemap.maps.push_back(RPG::MapInfo());
-		Data::treemap.maps.back().type = RPG::TreeMap::MapType_root;
-		Data::treemap.maps.push_back(RPG::MapInfo());
-		Data::treemap.maps.back().ID = 1;
-		Data::treemap.maps.back().type = RPG::TreeMap::MapType_map;
+		lcf::Data::treemap = {};
+		lcf::Data::treemap.maps.push_back(lcf::rpg::MapInfo());
+		lcf::Data::treemap.maps.back().type = lcf::rpg::TreeMap::MapType_root;
+		lcf::Data::treemap.maps.push_back(lcf::rpg::MapInfo());
+		lcf::Data::treemap.maps.back().ID = 1;
+		lcf::Data::treemap.maps.back().type = lcf::rpg::TreeMap::MapType_map;
 
-		Data::chipsets.push_back({});
+		lcf::Data::chipsets.push_back({});
 
 		Game_Map::Init();
 		Main_Data::game_switches = std::make_unique<Game_Switches>();
 		Main_Data::game_player = std::make_unique<Game_Player>();
 		Main_Data::game_player->SetMapId(1);
 
-		auto map = std::make_unique<RPG::Map>();
+		auto map = std::make_unique<lcf::rpg::Map>();
 
 		Game_Map::Setup(std::move(map));
 	}
@@ -38,8 +38,8 @@ struct MapGuard {
 		Main_Data::game_switches = {};
 		Main_Data::game_player = {};
 		Game_Map::Quit();
-		Data::treemap = {};
-		Data::chipsets = {};
+		lcf::Data::treemap = {};
+		lcf::Data::chipsets = {};
 	}
 };
 
@@ -66,8 +66,8 @@ static void ForceUpdate(T& ch) {
 	ch.Update();
 }
 
-RPG::MoveRoute MakeRoute(std::initializer_list<RPG::MoveCommand> cmds, bool repeat = false, bool skip = false) {
-	RPG::MoveRoute mr;
+lcf::rpg::MoveRoute MakeRoute(std::initializer_list<lcf::rpg::MoveCommand> cmds, bool repeat = false, bool skip = false) {
+	lcf::rpg::MoveRoute mr;
 	mr.move_commands = cmds;
 	mr.repeat = repeat;
 	mr.skippable = skip;
@@ -79,7 +79,7 @@ static void testMoveRoute(
 		bool paused, int move_frequency,
 		int stop_count, int max_stop_count,
 		int move_route_idx, bool overwritten, bool done,
-		const RPG::MoveRoute& mr)
+		const lcf::rpg::MoveRoute& mr)
 {
 	CAPTURE(paused);
 	CAPTURE(move_frequency);
@@ -138,18 +138,18 @@ static void testMoveRouteMove(const Game_Character& ch,
 
 TEST_CASE("DefaultMoveRoute") {
 	auto ch = MakeCharacter();
-	testMoveRoute(ch, false, 2, 0, 0, 0, false, false, RPG::MoveRoute());
+	testMoveRoute(ch, false, 2, 0, 0, 0, false, false, lcf::rpg::MoveRoute());
 }
 
 TEST_CASE("ForceMoveRouteEmpty") {
 	auto ch = MakeCharacter();
-	ch.ForceMoveRoute(RPG::MoveRoute(), 2);
-	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, RPG::MoveRoute());
+	ch.ForceMoveRoute(lcf::rpg::MoveRoute(), 2);
+	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, lcf::rpg::MoveRoute());
 }
 
 TEST_CASE("ForceMoveRouteSameFreq") {
 	auto ch = MakeCharacter();
-	RPG::MoveRoute mr;
+	lcf::rpg::MoveRoute mr;
 	mr.move_commands.push_back({});
 
 	ch.ForceMoveRoute(mr, 2);
@@ -162,7 +162,7 @@ TEST_CASE("ForceMoveRouteSameFreq") {
 
 TEST_CASE("ForceMoveRouteDiffFreq") {
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({RPG::MoveCommand{}});
+	auto mr = MakeRoute({{}});
 	mr.move_commands.push_back({});
 
 	ch.ForceMoveRoute(mr, 3);
@@ -173,7 +173,7 @@ TEST_CASE("ForceMoveRouteDiffFreq") {
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, mr);
 }
 
-static void testMove(RPG::MoveCommand::Code::Index code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
+static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
 
@@ -185,7 +185,7 @@ static void testMove(RPG::MoveCommand::Code::Index code, int x, int y, int dir, 
 	// FIXME: Bypass makeway for now, it crashes.
 	ch.SetThrough(true);
 
-	auto mr = MakeRoute({{ code }});
+	auto mr = MakeRoute({{ static_cast<int>(code) }});
 
 	CAPTURE(code);
 	CAPTURE(x);
@@ -214,52 +214,52 @@ static void testMove(RPG::MoveCommand::Code::Index code, int x, int y, int dir, 
 TEST_CASE("CommandMove") {
 	const MapGuard mg;
 
-	testMove(RPG::MoveCommand::Code::move_up, 8, 8, Down, Down, 8, 7, Up, Up);
-	testMove(RPG::MoveCommand::Code::move_right, 8, 8, Down, Down, 9, 8, Right, Right);
-	testMove(RPG::MoveCommand::Code::move_down, 8, 8, Down, Down, 8, 9, Down, Down);
-	testMove(RPG::MoveCommand::Code::move_left, 8, 8, Down, Down, 7, 8, Left, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, 8, 7, Up, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, 9, 8, Right, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, 8, 9, Down, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, 7, 8, Left, Left);
 }
 
 TEST_CASE("CommandMoveDiagonal") {
 	const MapGuard mg;
 
-	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Up, Up, 9, 7, UpRight, Up);
-	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Right, Right, 9, 7, UpRight, Right);
-	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Down, Down, 9, 7, UpRight, Up);
-	testMove(RPG::MoveCommand::Code::move_upright, 8, 8, Left, Left, 9, 7, UpRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, 9, 7, UpRight, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, 9, 7, UpRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, 9, 7, UpRight, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, 9, 7, UpRight, Right);
 
-	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Up, Up, 9, 9, DownRight, Down);
-	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Right, Right, 9, 9, DownRight, Right);
-	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Down, Down, 9, 9, DownRight, Down);
-	testMove(RPG::MoveCommand::Code::move_downright, 8, 8, Left, Left, 9, 9, DownRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, 9, 9, DownRight, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, 9, 9, DownRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, 9, 9, DownRight, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, 9, 9, DownRight, Right);
 
-	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 7, 9, DownLeft, Down);
-	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 7, 9, DownLeft, Left);
-	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 7, 9, DownLeft, Down);
-	testMove(RPG::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 7, 9, DownLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 7, 9, DownLeft, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 7, 9, DownLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 7, 9, DownLeft, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 7, 9, DownLeft, Left);
 
-	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 7, 7, UpLeft, Up);
-	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 7, 7, UpLeft, Left);
-	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 7, 7, UpLeft, Up);
-	testMove(RPG::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 7, 7, UpLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 7, 7, UpLeft, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 7, 7, UpLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 7, 7, UpLeft, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 7, 7, UpLeft, Left);
 }
 
 TEST_CASE("CommandMoveForward") {
 	const MapGuard mg;
 
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Up, Up, 8, 7, Up, Up);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Right, Right, 9, 8, Right, Right);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 9, Down, Down);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, Left, Left, 7, 8, Left, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up, 8, 7, Up, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right, 9, 8, Right, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 9, Down, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, 7, 8, Left, Left);
 
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 9, 7, UpRight, Up);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 9, 7, UpRight, Right);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 9, 9, DownRight, Down);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 9, 9, DownRight, Right);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 7, 7, UpLeft, Up);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 7, 7, UpLeft, Left);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 7, 9, DownLeft, Down);
-	testMove(RPG::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 7, 9, DownLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 9, 7, UpRight, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 9, 7, UpRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 9, 9, DownRight, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 9, 9, DownRight, Right);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 7, 7, UpLeft, Up);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 7, 7, UpLeft, Left);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 7, 9, DownLeft, Down);
+	testMove(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 7, 9, DownLeft, Left);
 }
 
 TEST_CASE("CommandMoveRandom") {
@@ -270,7 +270,7 @@ TEST_CASE("CommandMoveHero") {
 	// FIXME: TBD
 }
 
-static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
+static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, int face, int x = 0, int y = 0, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
 
@@ -279,7 +279,7 @@ static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, 
 	ch.SetY(y);
 	ch.SetDirection(orig_dir);
 	ch.SetSpriteDirection(orig_dir);
-	auto mr = MakeRoute({{ code }});
+	auto mr = MakeRoute({{ static_cast<int>(code) }});
 
 	CAPTURE(code);
 	CAPTURE(orig_dir);
@@ -305,25 +305,25 @@ static void testTurn(RPG::MoveCommand::Code::Index code, int orig_dir, int dir, 
 TEST_CASE("CommandTurn") {
 	const MapGuard mg;
 
-	testTurn(RPG::MoveCommand::Code::face_up, Down, Up, Up);
-	testTurn(RPG::MoveCommand::Code::face_left, Down, Left, Left);
-	testTurn(RPG::MoveCommand::Code::face_right, Down, Right, Right);
-	testTurn(RPG::MoveCommand::Code::face_down, Down, Down, Down);
+	testTurn(lcf::rpg::MoveCommand::Code::face_up, Down, Up, Up);
+	testTurn(lcf::rpg::MoveCommand::Code::face_left, Down, Left, Left);
+	testTurn(lcf::rpg::MoveCommand::Code::face_right, Down, Right, Right);
+	testTurn(lcf::rpg::MoveCommand::Code::face_down, Down, Down, Down);
 
-	testTurn(RPG::MoveCommand::Code::turn_180_degree, Down, Up, Up);
-	testTurn(RPG::MoveCommand::Code::turn_180_degree, Up, Down, Down);
-	testTurn(RPG::MoveCommand::Code::turn_180_degree, Left, Right, Right);
-	testTurn(RPG::MoveCommand::Code::turn_180_degree, Right, Left, Left);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_180_degree, Down, Up, Up);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_180_degree, Up, Down, Down);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_180_degree, Left, Right, Right);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_180_degree, Right, Left, Left);
 
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_right, Down, Left, Left);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_right, Left, Up, Up);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_right, Up, Right, Right);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_right, Right, Down, Down);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_right, Down, Left, Left);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_right, Left, Up, Up);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_right, Up, Right, Right);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_right, Right, Down, Down);
 
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Down, Right, Right);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Right, Up, Up);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Up, Left, Left);
-	testTurn(RPG::MoveCommand::Code::turn_90_degree_left, Left, Down, Down);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_left, Down, Right, Right);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_left, Right, Up, Up);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_left, Up, Left, Left);
+	testTurn(lcf::rpg::MoveCommand::Code::turn_90_degree_left, Left, Down, Down);
 }
 
 TEST_CASE("CommandTurnRandom") {
@@ -331,7 +331,7 @@ TEST_CASE("CommandTurnRandom") {
 
 	for (int i = 0; i < 10; ++i) {
 		auto ch = MakeCharacter();
-		auto mr = MakeRoute({{ RPG::MoveCommand::Code::face_random_direction }});
+		auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::face_random_direction) }});
 
 		ch.ForceMoveRoute(mr, 3);
 		testMoveRouteDir(ch, Down, Down, false, 3, 0xFFFF, 64, 0, true, false, mr);
@@ -357,7 +357,7 @@ TEST_CASE("CommandTurnHero") {
 			} else {
 				dir = (dy >= 0 ? Down : Up);
 			}
-			testTurn(RPG::MoveCommand::Code::face_hero, Left, dir, dir, ch_x, ch_y, ch_x + dx, ch_y + dy);
+			testTurn(lcf::rpg::MoveCommand::Code::face_hero, Left, dir, dir, ch_x, ch_y, ch_x + dx, ch_y + dy);
 		}
 	}
 }
@@ -366,7 +366,7 @@ TEST_CASE("CommandWait") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::wait }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::wait) }});
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRouteDir(ch, Down, Down, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -384,12 +384,12 @@ TEST_CASE("CommandJump") {
 	// FIXME: Requires mocked out map.
 }
 
-void testLockFacing(RPG::EventPage::AnimType at) {
+void testLockFacing(lcf::rpg::EventPage::AnimType at) {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
 	ch.SetAnimationType(at);
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::lock_facing }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::lock_facing) }});
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -399,7 +399,7 @@ void testLockFacing(RPG::EventPage::AnimType at) {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	REQUIRE(ch.IsFacingLocked());
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::unlock_facing }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::unlock_facing) }});
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.IsFacingLocked());
@@ -410,8 +410,8 @@ void testLockFacing(RPG::EventPage::AnimType at) {
 }
 
 TEST_CASE("CommandLockFacing") {
-	for (int i = 0; i <= static_cast<int>(RPG::EventPage::AnimType_step_frame_fix); ++i) {
-		testLockFacing(static_cast<RPG::EventPage::AnimType>(i));
+	for (int i = 0; i <= static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++i) {
+		testLockFacing(static_cast<lcf::rpg::EventPage::AnimType>(i));
 	}
 }
 
@@ -419,7 +419,7 @@ TEST_CASE("CommandSpeedChange") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::increase_movement_speed }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_speed) }});
 	const int n = 10;
 
 	ch.SetMoveSpeed(1);
@@ -436,7 +436,7 @@ TEST_CASE("CommandSpeedChange") {
 		prev= ch.GetMoveSpeed();
 	}
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::decrease_movement_speed }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_speed) }});
 	for (int i = 0; i < 10; ++i) {
 		ch.ForceMoveRoute(mr, 2);
 		testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
@@ -454,7 +454,7 @@ TEST_CASE("CommandFreqChange") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::increase_movement_frequence }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_frequence) }});
 	const int n = 10;
 
 	for (int i = 1; i < 10; ++i) {
@@ -472,7 +472,7 @@ TEST_CASE("CommandFreqChange") {
 
 	}
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::decrease_movement_frequence }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_frequence) }});
 
 	for (int i = 1; i < 10; ++i) {
 		const int freq = Utils::Clamp(i, 1, 8);
@@ -492,7 +492,7 @@ TEST_CASE("CommandTranspChange") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::increase_transp }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_transp) }});
 	const int n = 10;
 
 	ch.SetTransparency(0);
@@ -509,7 +509,7 @@ TEST_CASE("CommandTranspChange") {
 		prev = ch.GetTransparency();
 	}
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::decrease_transp }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_transp) }});
 	for (int i = 0; i < 10; ++i) {
 		ch.ForceMoveRoute(mr, 2);
 		testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
@@ -527,7 +527,7 @@ TEST_CASE("CommandThrough") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::walk_everywhere_on }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on) }});
 
 	auto testoff = [&]() {
 		REQUIRE(!ch.GetThrough());
@@ -553,7 +553,7 @@ TEST_CASE("CommandThrough") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	teston();
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::walk_everywhere_off }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off) }});
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	teston();
@@ -564,7 +564,7 @@ TEST_CASE("CommandThrough") {
 
 	ch.SetThrough(true);
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::walk_everywhere_off }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off) }});
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.GetThrough());
@@ -574,7 +574,7 @@ TEST_CASE("CommandThrough") {
 	testoff();
 
 	ch.SetThrough(true);
-	mr = MakeRoute({{ RPG::MoveCommand::Code::walk_everywhere_on }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on) }});
 	ch.ForceMoveRoute(mr, 2);
 	REQUIRE(ch.GetThrough());
 
@@ -587,7 +587,7 @@ TEST_CASE("CommandStopAnimation") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::stop_animation }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::stop_animation) }});
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -597,7 +597,7 @@ TEST_CASE("CommandStopAnimation") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	REQUIRE(ch.IsAnimPaused());
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::start_animation }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::start_animation) }});
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.IsAnimPaused());
@@ -611,7 +611,7 @@ TEST_CASE("CommandSwitchToggle") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::switch_on, "", 3 }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::switch_on), "", 3 }});
 
 	REQUIRE_NE(Main_Data::game_switches, nullptr);
 
@@ -623,7 +623,7 @@ TEST_CASE("CommandSwitchToggle") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	REQUIRE(Main_Data::game_switches->Get(3));
 
-	mr = MakeRoute({{ RPG::MoveCommand::Code::switch_off, "", 3 }});
+	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::switch_off), "", 3 }});
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(Main_Data::game_switches->Get(3));
@@ -637,7 +637,7 @@ TEST_CASE("CommandChangeGraphic") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::change_graphic, "x", 3 }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::change_graphic), "x", 3 }});
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -654,7 +654,7 @@ TEST_CASE("CommandPlaySound") {
 	const MapGuard mg;
 
 	auto ch = MakeCharacter();
-	auto mr = MakeRoute({{ RPG::MoveCommand::Code::play_sound_effect, "", 100, 100, 100 }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::play_sound_effect), "", 100, 100, 100 }});
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);

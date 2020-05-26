@@ -31,14 +31,16 @@
 #include <lcf/rpg/mapinfo.h>
 #include "async_op.h"
 
-namespace RPG {
+namespace lcf {
+namespace rpg {
 class SaveMapInfo;
 class SavePanorama;
 class SaveCommonEvent;
 class SaveVehiceLocation;
 class SaveEventExecState;
 class Save;
-}
+} // namespace rpg
+} // namespace lcf
 
 class FileRequestAsync;
 struct BattleArgs;
@@ -98,14 +100,14 @@ namespace Game_Map {
 	 * @param map_id the id of the map to load
 	 * @return the map, or nullptr if it couldn't be loaded
 	 */
-	std::unique_ptr<RPG::Map> loadMapFile(int map_id);
+	std::unique_ptr<lcf::rpg::Map> loadMapFile(int map_id);
 
 	/**
 	 * Setups a new map.
 	 *
 	 * @pre Main_Data::game_player->GetMapId() reflects the new map.
 	 */
-	void Setup(std::unique_ptr<RPG::Map> map);
+	void Setup(std::unique_ptr<lcf::rpg::Map> map);
 
 	/**
 	 * Setups a map from a savegame.
@@ -120,14 +122,14 @@ namespace Game_Map {
 	 * @param save_ce - The common event state
 	 */
 	void SetupFromSave(
-			std::unique_ptr<RPG::Map> map,
-			RPG::SaveMapInfo save_map,
-			RPG::SaveVehicleLocation save_boat,
-			RPG::SaveVehicleLocation save_ship,
-			RPG::SaveVehicleLocation save_airship,
-			RPG::SaveEventExecState save_fg_exec,
-			RPG::SavePanorama save_pan,
-			std::vector<RPG::SaveCommonEvent> save_ce);
+			std::unique_ptr<lcf::rpg::Map> map,
+			lcf::rpg::SaveMapInfo save_map,
+			lcf::rpg::SaveVehicleLocation save_boat,
+			lcf::rpg::SaveVehicleLocation save_ship,
+			lcf::rpg::SaveVehicleLocation save_airship,
+			lcf::rpg::SaveEventExecState save_fg_exec,
+			lcf::rpg::SavePanorama save_pan,
+			std::vector<lcf::rpg::SaveCommonEvent> save_ce);
 
 	/**
 	 * Copies event data into lcf::rpg::Save data.
