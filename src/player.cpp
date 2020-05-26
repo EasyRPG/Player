@@ -478,13 +478,13 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 			if (arg.NumValues() >= 4) {
 				// 2k3 passes formation, condition and terrain_id as args 5-7
 				if (arg.ParseValue(1, li_value)) {
-					Game_Battle::battle_test.formation = static_cast<RPG::System::BattleFormation>(li_value);
+					Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(li_value);
 				}
 				if (arg.ParseValue(2, li_value)) {
-					Game_Battle::battle_test.condition = static_cast<RPG::System::BattleCondition>(li_value);
+					Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(li_value);
 				}
 				if (arg.ParseValue(3, li_value)) {
-					Game_Battle::battle_test.terrain_id = static_cast<RPG::System::BattleFormation>(li_value);
+					Game_Battle::battle_test.terrain_id = static_cast<lcf::rpg::System::BattleFormation>(li_value);
 				}
 			}
 			continue;

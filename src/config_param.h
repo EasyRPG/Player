@@ -24,7 +24,7 @@
 #include <vector>
 #include <algorithm>
 #include <type_traits>
-#include "flag_set.h"
+#include <lcf/flag_set.h>
 
 /** A configuration parameter with no restrictions */
 template <typename T>
@@ -315,7 +315,7 @@ public:
 		return _valid.count() <= 1;
 	}
 
-    void ReplaceValidSet(FlagSet<E> valid) {
+    void ReplaceValidSet(lcf::FlagSet<E> valid) {
 		_valid = std::move(valid);
 		if (Enabled() && !IsValid(_value)) {
 			_value = GetFirstValid();
@@ -344,7 +344,7 @@ public:
 	}
 private:
     E _value = {};
-	FlagSet<E> _valid = ~FlagSet<E>();
+	lcf::FlagSet<E> _valid = ~lcf::FlagSet<E>();
 
 	E GetFirstValid() const {
 		for (size_t i = 0; i < _valid.size(); ++i) {

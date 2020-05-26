@@ -1,7 +1,7 @@
 #include "game_config.h"
 #include "cmdline_parser.h"
-#include "inireader.h"
 #include "output.h"
+#include <lcf/inireader.h>
 #include <cstring>
 #include <fstream>
 
@@ -111,7 +111,7 @@ void Game_Config::loadFromArgs(CmdlineParser& cp) {
 void Game_Config::loadFromConfig(const std::string& path) {
 	this->config_path = path;
 
-	INIReader ini(path);
+	lcf::INIReader ini(path);
 
 	if (ini.ParseError()) {
 		Output::Debug("Failed to parse ini config file {}", path);
