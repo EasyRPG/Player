@@ -114,6 +114,7 @@ static void testMoveRoute(
 	REQUIRE_EQ(ch.IsMoveRouteOverwritten(), overwritten);
 	REQUIRE_EQ(ch.IsMoveRouteRepeated(), done);
 	REQUIRE_EQ(ch.GetMoveRoute(), mr);
+	REQUIRE_EQ(ch.IsStopCountActive(), stop_count < max_stop_count);
 }
 
 template <typename... Args>
@@ -221,7 +222,7 @@ TEST_CASE("ForceMoveRouteDiffFreq") {
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, mr);
 }
 
-template <bool success>
+template <bool success, bool repeat, bool skip>
 static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
@@ -233,7 +234,7 @@ static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetSpriteDirection(face);
 	ch.SetAllowMovement(success);
 
-	auto mr = MakeRoute({{ static_cast<int>(code) }});
+	auto mr = MakeRoute({{ static_cast<int>(code) }}, repeat, skip);
 
 	CAPTURE(code);
 	CAPTURE(x);
@@ -247,34 +248,80 @@ static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	CAPTURE(px);
 	CAPTURE(py);
 	CAPTURE(success);
+	CAPTURE(repeat);
+	CAPTURE(skip);
+
+	auto dx = tx - x;
+	auto dy = ty - y;
 
 	ch.ForceMoveRoute(mr, 3);
 	testMoveRouteMove(ch, x, y, 0, dir, face, false, 3, 0xFFFF, 64, 0, true, false, mr);
 
 	if (success) {
-		for(int i = 224; i > 0; i -= 32) {
-			ForceUpdate(ch);
-			testMoveRouteMove(ch, tx, ty, i, tdir, tface, false, 3, 0, 64, 1, true, false, mr);
-		}
+		bool repeated = false;
+		for(int n = (repeat ? 3 : 1); n > 0; --n) {
+			CAPTURE(n);
+			for(int i = 224; i > 0; i -= 32) {
+				ForceUpdate(ch);
+				testMoveRouteMove(ch, tx, ty, i, tdir, tface, false, 3, 0, 64, 1, true, repeated, mr);
+			}
 
-		ForceUpdate(ch);
-		testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 2, 0, 128, 0, false, false, mr);
-		return;
+			if (!repeat) {
+				ForceUpdate(ch);
+				testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 2, 0, 128, 0, false, false, mr);
+				break;
+			}
+
+			repeated = true;
+			for (int i = 0; i <= 64; ++i) {
+				ForceUpdate(ch);
+				testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 3, i, 64, 0, true, repeated, mr);
+			}
+
+			tx += dx;
+			ty += dy;
+		}
 	} else {
 		ForceUpdate(ch);
-		testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 3, 0xFFFF + 1, 64, 0, true, false, mr);
+		if (skip) {
+			if (repeat) {
+				for (int i = 1; i <= 3; ++i) {
+					testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 3, 0xFFFF + i, 64, 0, true, true, mr);
+					ForceUpdate(ch);
+				}
+			} else {
+				testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
+			}
+		} else {
+			testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 3, 0xFFFF + 1, 64, 0, true, false, mr);
+		}
 	}
 }
 
 template <typename... Args>
-static void testMoveSuccess(Args&&... args) {
-	testMove<true>(std::forward<Args>(args)...);
+static void testMoveSuccess(const Args&... args) {
+	testMove<true, false, false>(args...);
+	testMove<true, false, true>(args...);
+	testMove<true, true, false>(args...);
+	testMove<true, true, true>(args...);
 }
 
 template <typename... Args>
-static void testMoveFail(Args&&... args) {
-	testMove<false>(std::forward<Args>(args)...);
+static void testMoveSuccessNoRepeat(const Args&... args) {
+	testMove<true, false, false>(args...);
+	testMove<true, false, true>(args...);
 }
+
+static void testMoveFail(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tdir, int tface, int px = 0, int py = 0) {
+	testMove<false, false, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+	testMove<false, true, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+}
+
+static void testMoveSkip(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int px = 0, int py = 0) {
+	testMove<false, false, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+	testMove<false, true, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+}
+
 
 TEST_CASE("CommandMove") {
 	const MapGuard mg;
@@ -288,10 +335,19 @@ TEST_CASE("CommandMove") {
 TEST_CASE("CommandMoveFail") {
 	const MapGuard mg;
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, 8, 8, Up, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, 8, 8, Right, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, 8, 8, Down, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, 8, 8, Left, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, Up, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, Right, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, Down, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, Left, Left);
+}
+
+TEST_CASE("CommandMoveSkip") {
+	const MapGuard mg;
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down);
 }
 
 TEST_CASE("CommandMoveDiagonal") {
@@ -321,25 +377,49 @@ TEST_CASE("CommandMoveDiagonal") {
 TEST_CASE("CommandMoveDiagonalFail") {
 	const MapGuard mg;
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, 8, 8, UpRight, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, 8, 8, UpRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, 8, 8, UpRight, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, 8, 8, UpRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, UpRight, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, UpRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, UpRight, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, UpRight, Right);
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, 8, 8, DownRight, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, 8, 8, DownRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, 8, 8, DownRight, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, 8, 8, DownRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, DownRight, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, DownRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, DownRight, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, DownRight, Right);
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 8, 8, DownLeft, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 8, 8, DownLeft, Left);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 8, 8, DownLeft, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 8, 8, DownLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, DownLeft, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, DownLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, DownLeft, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, DownLeft, Left);
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 8, 8, UpLeft, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 8, 8, UpLeft, Left);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 8, 8, UpLeft, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 8, 8, UpLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, UpLeft, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, UpLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, UpLeft, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, UpLeft, Left);
+}
+
+TEST_CASE("CommandMoveDiagonalSkip") {
+	const MapGuard mg;
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left);
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left);
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left);
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left);
 }
 
 TEST_CASE("CommandMoveForward") {
@@ -363,19 +443,37 @@ TEST_CASE("CommandMoveForward") {
 TEST_CASE("CommandMoveForwardFail") {
 	const MapGuard mg;
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up, 8, 8, Up, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right, 8, 8, Right, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 8, Down, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, 8, 8, Left, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up, Up, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right, Right, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, Down, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, Left, Left);
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 8, 8, UpRight, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 8, 8, UpRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 8, 8, DownRight, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 8, 8, DownRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 8, 8, UpLeft, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 8, 8, UpLeft, Left);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 8, 8, DownLeft, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 8, 8, DownLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, UpRight, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, UpRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, DownRight, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, DownRight, Right);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, UpLeft, Up);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, UpLeft, Left);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, DownLeft, Down);
+	testMoveFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, DownLeft, Left);
+}
+
+TEST_CASE("CommandMoveForwardSkip") {
+	const MapGuard mg;
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left);
+
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down);
+	testMoveSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left);
 }
 
 TEST_CASE("CommandMoveRandom") {
@@ -476,7 +574,7 @@ TEST_CASE("CommandWait") {
 	testMoveRouteDir(ch, Down, Down, false, 2, 85, 128, 1, false, false, mr);
 }
 
-template <bool success>
+template <bool success, bool repeat, bool skip>
 static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
@@ -488,12 +586,12 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetSpriteDirection(face);
 	ch.SetAllowMovement(success);
 
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::begin_jump) }});
+	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::begin_jump) }}, repeat, skip);
 	if (code != lcf::rpg::MoveCommand::Code::end_jump) {
 		mr.move_commands.push_back({  static_cast<int>(code) });
 	}
 	mr.move_commands.push_back({ static_cast<int>(lcf::rpg::MoveCommand::Code::end_jump) });
-	auto n = static_cast<int>(mr.move_commands.size());
+	auto num_cmds = static_cast<int>(mr.move_commands.size());
 
 	CAPTURE(code);
 	CAPTURE(x);
@@ -507,33 +605,80 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	CAPTURE(px);
 	CAPTURE(py);
 	CAPTURE(success);
+	CAPTURE(repeat);
+	CAPTURE(skip);
+
+	auto dx = tx - x;
+	auto dy = ty - y;
 
 	ch.ForceMoveRoute(mr, 3);
 	testMoveRouteJump(ch, x, y, 0, false, 0, 0, dir, face, false, 3, 0xFFFF, 64, 0, true, false, mr);
 
 	if (success) {
-		for(int i = 232; i > 0; i -= 24) {
-			ForceUpdate(ch);
-			testMoveRouteJump(ch, tx, ty, i, true, x, y, tdir, tface, false, 3, 0, 64, n, true, false, mr);
-		}
+		bool repeated = false;
+		for(int n = (repeat ? 3 : 1); n > 0; --n) {
+			CAPTURE(n);
+			for(int i = 232; i > 0; i -= 24) {
+				ForceUpdate(ch);
+				testMoveRouteJump(ch, tx, ty, i, true, x, y, tdir, tface, false, 3, 0, 64, num_cmds, true, repeated, mr);
+			}
 
-		ForceUpdate(ch);
-		testMoveRouteJump(ch, tx, ty, 0, false, x, y, tdir, tface, false, 2, 0, 128, 0, false, false, mr);
-		return;
+			if (!repeat) {
+				ForceUpdate(ch);
+				testMoveRouteJump(ch, tx, ty, 0, false, x, y, tdir, tface, false, 2, 0, 128, 0, false, false, mr);
+				break;
+			}
+
+			repeated = true;
+			for (int i = 0; i <= 64; ++i) {
+				ForceUpdate(ch);
+				testMoveRouteMove(ch, tx, ty, 0, tdir, tface, false, 3, i, 64, 0, true, repeated, mr);
+			}
+
+			x = tx;
+			y = ty;
+			tx += dx;
+			ty += dy;
+		}
 	} else {
 		ForceUpdate(ch);
-		testMoveRouteJump(ch, tx, ty, 0, false, 0, 0, tdir, tface, false, 3, 0xFFFF + 1, 64, 0, true, false, mr);
+		if (skip) {
+			if (repeat) {
+				for (int i = 1; i <= 3; ++i) {
+					testMoveRouteJump(ch, tx, ty, 0, false, 0, 0, tdir, tface, false, 3, 0xFFFF + i, 64, 0, true, true, mr);
+					ForceUpdate(ch);
+				}
+			} else {
+				testMoveRouteJump(ch, tx, ty, 0, false, 0, 0, tdir, tface, false, 2, 0xFFFF + 1, 128, num_cmds, false, false, mr);
+			}
+		} else {
+			testMoveRouteJump(ch, tx, ty, 0, false, 0, 0, tdir, tface, false, 3, 0xFFFF + 1, 64, 0, true, false, mr);
+		}
 	}
 }
 
 template <typename... Args>
-static void testJumpSuccess(Args&&... args) {
-	testJump<true>(std::forward<Args>(args)...);
+static void testJumpSuccess(const Args&... args) {
+	testJump<true, false, false>(args...);
+	testJump<true, false, true>(args...);
+	testJump<true, true, false>(args...);
+	testJump<true, true, true>(args...);
 }
 
 template <typename... Args>
-static void testJumpFail(Args&&... args) {
-	testJump<false>(std::forward<Args>(args)...);
+static void testJumpSuccessNoRepeat(const Args&... args) {
+	testJump<true, false, false>(args...);
+	testJump<true, false, true>(args...);
+}
+
+static void testJumpFail(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tdir, int tface, int px = 0, int py = 0) {
+	testJump<false, false, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+	testJump<false, true, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+}
+
+static void testJumpSkip(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int px = 0, int py = 0) {
+	testJump<false, false, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+	testJump<false, true, true>(code, x, y, dir, face, x, y, dir, face, px, py);
 }
 
 TEST_CASE("CommandJumpInPlace") {
@@ -560,10 +705,19 @@ TEST_CASE("CommandJump") {
 TEST_CASE("CommandJumpFail") {
 	const MapGuard mg;
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, 8, 8, Right, Right);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, 8, 8, Left, Left);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, Right, Right);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, Left, Left);
+}
+
+TEST_CASE("CommandJumpSkip") {
+	const MapGuard mg;
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down);
 }
 
 TEST_CASE("CommandJumpDiagonal") {
@@ -593,25 +747,49 @@ TEST_CASE("CommandJumpDiagonal") {
 TEST_CASE("CommandJumpDiagonalFail") {
 	const MapGuard mg;
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, 8, 8, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, Up, Up);
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, 8, 8, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, Down, Down);
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 8, 8, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, Down, Down);
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 8, 8, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, Up, Up);
+}
+
+TEST_CASE("CommandJumpDiagonalSkip") {
+	const MapGuard mg;
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left);
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left);
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left);
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left);
 }
 
 TEST_CASE("CommandJumpForward") {
@@ -622,32 +800,51 @@ TEST_CASE("CommandJumpForward") {
 	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 9, Down, Down);
 	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, 7, 8, Left, Left);
 
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 9, 7, Up, Up);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 9, 7, Up, Up);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 9, 9, Down, Down);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 9, 9, Down, Down);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 7, 7, Up, Up);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 7, 7, Up, Up);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 7, 9, Down, Down);
-	testJumpSuccess(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 7, 9, Down, Down);
+	// FIXME: For repeat, these will move diag and then up or down afterwards.
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 9, 7, Up, Up);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 9, 7, Up, Up);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 9, 9, Down, Down);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 9, 9, Down, Down);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 7, 7, Up, Up);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 7, 7, Up, Up);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 7, 9, Down, Down);
+	testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 7, 9, Down, Down);
 }
 
 TEST_CASE("CommandJumpForwardFail") {
 	const MapGuard mg;
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right, 8, 8, Right, Right);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, 8, 8, Left, Left);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right, Right, Right);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left, Left, Left);
 
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, 8, 8, Up, Up);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, 8, 8, Down, Down);
-	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, 8, 8, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left, Up, Up);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down, Down, Down);
+	testJumpFail(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left, Down, Down);
+}
+
+TEST_CASE("CommandJumpForwardSkip") {
+	const MapGuard mg;
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Up, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Right, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Down, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, Left, Left);
+
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpRight, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownRight, Right);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Up);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, UpLeft, Left);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Down);
+	testJumpSkip(lcf::rpg::MoveCommand::Code::move_forward, 8, 8, DownLeft, Left);
 }
 
 TEST_CASE("CommandJumpRandom") {
@@ -680,15 +877,23 @@ TEST_CASE("CommandMoveTurnJumpHero") {
 			testTurn(lcf::rpg::MoveCommand::Code::face_hero, Left, dir, dir, x, y, px, py);
 			testTurn(lcf::rpg::MoveCommand::Code::face_away_from_hero, Left, rdir, rdir, x, y, px, py);
 
-			testMoveSuccess(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x + step_x, y + step_y, dir, dir, px, py);
-			testMoveSuccess(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x - step_x, y - step_y, rdir, rdir, px, py);
-			testMoveFail(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x, y, dir, dir, px, py);
-			testMoveFail(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x, y, rdir, rdir, px, py);
+			testMoveSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x + step_x, y + step_y, dir, dir, px, py);
+			testMoveSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x - step_x, y - step_y, rdir, rdir, px, py);
 
-			testJumpSuccess(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x + step_x, y + step_y, dir, dir, px, py);
-			testJumpSuccess(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x - step_x, y - step_y, rdir, rdir, px, py);
-			testJumpFail(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x, y, dir, dir, px, py);
-			testJumpFail(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x, y, rdir, rdir, px, py);
+			testMoveFail(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, dir, dir, px, py);
+			testMoveFail(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, rdir, rdir, px, py);
+
+			testMoveSkip(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, px, py);
+			testMoveSkip(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, px, py);
+
+			testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, x + step_x, y + step_y, dir, dir, px, py);
+			testJumpSuccessNoRepeat(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, x - step_x, y - step_y, rdir, rdir, px, py);
+
+			testJumpFail(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, dir, dir, px, py);
+			testJumpFail(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, rdir, rdir, px, py);
+
+			testJumpSkip(lcf::rpg::MoveCommand::Code::move_towards_hero, x, y, Left, Left, px, py);
+			testJumpSkip(lcf::rpg::MoveCommand::Code::move_away_from_hero, x, y, Left, Left, px, py);
 		}
 	}
 }
