@@ -10,8 +10,6 @@
 
 TEST_SUITE_BEGIN("MoveRoute");
 
-// FIXME: Test clear pause
-
 namespace {
 
 class MoveRouteCharacter : public Game_Vehicle {
@@ -1177,6 +1175,18 @@ TEST_CASE("CommandPlaySound") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 
 	// FIXME: Check mocked audio subsystem?
+}
+
+TEST_CASE("ClearPause") {
+	auto ch = MakeCharacter();
+
+	ch.SetPaused(true);
+	REQUIRE(ch.IsPaused());
+
+	auto mr = MakeRoute({{}});
+	ch.ForceMoveRoute(mr, 3);
+
+	REQUIRE(!ch.IsPaused());
 }
 
 TEST_SUITE_END();
