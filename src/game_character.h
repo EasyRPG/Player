@@ -394,6 +394,10 @@ public:
 	 */
 	static constexpr int GetMaxStopCountForWait(int freq);
 
+	static constexpr int GetStationaryAnimFrames(int speed);
+	static constexpr int GetContinuousAnimFrames(int speed);
+	static constexpr int GetSpinAnimFrames(int speed);
+
 	/**
 	 * Sets the max_stop_count
 	 *
@@ -1248,6 +1252,21 @@ constexpr int Game_Character::GetDxFromDirection(int dir) {
 constexpr int Game_Character::GetDyFromDirection(int dir) {
 	return (dir == Game_Character::Down || dir == Game_Character::DownRight || dir == Game_Character::DownLeft)
 		- (dir == Game_Character::Up || dir == Game_Character::UpRight || dir == Game_Character::UpLeft);
+}
+
+constexpr int Game_Character::GetStationaryAnimFrames(int speed) {
+	constexpr int limits[] = { 12, 10, 8, 6, 5, 4 };
+	return limits[speed - 1];
+}
+
+constexpr int Game_Character::GetContinuousAnimFrames(int speed) {
+	constexpr int limits[] = { 16, 12, 10, 8, 7, 6 };
+	return limits[speed - 1];
+}
+
+constexpr int Game_Character::GetSpinAnimFrames(int speed) {
+	constexpr int limits[] = { 24, 15, 12, 8, 6, 4 };
+	return limits[speed - 1];
 }
 
 inline bool Game_Character::IsVisible() const {

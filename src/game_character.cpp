@@ -163,18 +163,18 @@ void Game_Character::UpdateMovement(int amount) {
 }
 
 void Game_Character::UpdateAnimation() {
-	const auto step_idx = Utils::Clamp(GetMoveSpeed(), 1, 6) - 1;
+	const auto speed = Utils::Clamp(GetMoveSpeed(), 1, 6);
 
 	constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
 	constexpr int stationary_limits[] = { 11, 9, 7, 5, 4, 3 };
 	constexpr int continuous_limits[] = { 15, 11, 9, 7, 6, 5 };
 
 	if (IsSpinning()) {
-		const auto limit = spin_limits[step_idx];
+		const auto limit = GetSpinAnimFrames(speed);
 
 		IncAnimCount();
 
-		if (GetAnimCount() > limit) {
+		if (GetAnimCount() >= limit) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 			SetAnimCount(0);
 		}
@@ -190,19 +190,19 @@ void Game_Character::UpdateAnimation() {
 		return;
 	}
 
-	const auto stationary_limit = stationary_limits[step_idx];
-	const auto continuous_limit = continuous_limits[step_idx];
+	const auto stationary_limit = GetStationaryAnimFrames(speed);
+	const auto continuous_limit = GetContinuousAnimFrames(speed);
 
 	// FIXME: Verify this
 	if (IsContinuous()
 			|| GetStopCount() == 0
 			|| data()->anim_frame == lcf::rpg::EventPage::Frame_left || data()->anim_frame == lcf::rpg::EventPage::Frame_right
-			|| GetAnimCount() < stationary_limit) {
+			|| GetAnimCount() < stationary_limit - 1) {
 		IncAnimCount();
 	}
 
-	if (GetAnimCount() > continuous_limit
-			|| (GetStopCount() == 0 && GetAnimCount() > stationary_limit)) {
+	if (GetAnimCount() >= continuous_limit
+			|| (GetStopCount() == 0 && GetAnimCount() >= stationary_limit)) {
 		IncAnimFrame();
 		return;
 	}
