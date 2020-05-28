@@ -55,18 +55,13 @@
 using namespace std::chrono_literals;
 
 namespace {
-	enum class LogLevel {
-		Error,
-		Warning,
-		Info,
-		Debug
-	};
 	constexpr const char* const log_prefix[4] = {
 		"Error: ",
 		"Warning: ",
 		"Info: ",
 		"Debug: "
 	};
+	LogLevel log_level = LogLevel::Debug;
 
 	static const char* GetLogPrefix(LogLevel lvl) {
 		return log_prefix[static_cast<int>(lvl)];
@@ -123,6 +118,14 @@ namespace {
 	};
 #endif
 
+}
+
+LogLevel Output::GetLogLevel() {
+	return log_level;
+}
+
+void Output::SetLogLevel(LogLevel ll) {
+	log_level = ll;
 }
 
 void Output::IgnorePause(bool const val) {
@@ -291,14 +294,23 @@ void Output::ErrorStr(std::string const& err) {
 }
 
 void Output::WarningStr(std::string const& warn) {
+	if (log_level < LogLevel::Warning) {
+		return;
+	}
 	WriteLog(LogLevel::Warning, warn, Color(255, 255, 0, 255));
 }
 
 void Output::InfoStr(std::string const& msg) {
+	if (log_level < LogLevel::Info) {
+		return;
+	}
 	WriteLog(LogLevel::Info, msg, Color(255, 255, 255, 255));
 }
 
 void Output::DebugStr(std::string const& msg) {
+	if (log_level < LogLevel::Debug) {
+		return;
+	}
 	WriteLog(LogLevel::Debug, msg, Color(128, 128, 128, 255));
 }
 
