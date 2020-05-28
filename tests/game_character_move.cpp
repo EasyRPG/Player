@@ -81,7 +81,8 @@ static void testMove(int move_dir, int x, int y, int dir, int face,
 	ch.SetMoveFrequency(freq);
 	ch.SetAllowMovement(success);
 
-	ch.Move(move_dir);
+	REQUIRE_EQ(ch.Move(move_dir), success);
+
 	if (!success) {
 		testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, 0);
 		return;
@@ -231,5 +232,34 @@ TEST_CASE("Jump") {
 		}
 	}
 }
+
+static void testStop(bool success, bool jump) {
+	const MapGuard mg;
+
+	auto ch = MakeCharacter();
+	ch.SetX(8);
+	ch.SetY(8);
+	ch.SetStopCount(99);
+	ch.SetMaxStopCount(200);
+	ch.SetAllowMovement(success);
+
+	if (jump) {
+		REQUIRE_EQ(ch.Jump(9, 9), success);
+	} else {
+		REQUIRE_EQ(ch.Move(Up), success);
+	}
+
+	if (success) {
+		REQUIRE_EQ(ch.GetStopCount(), 0);
+	} else {
+		REQUIRE_EQ(ch.GetStopCount(), 99);
+	}
+	REQUIRE_EQ(ch.GetMaxStopCount(), 200);
+}
+
+TEST_CASE("StopCountMove") { testStop(true, false); }
+TEST_CASE("StopCountMoveFail") { testStop(false, false); }
+TEST_CASE("StopCountJump") { testStop(true, true); }
+TEST_CASE("StopCountJumpFail") { testStop(false, true); }
 
 TEST_SUITE_END();
