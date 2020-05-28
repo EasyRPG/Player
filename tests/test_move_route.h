@@ -12,6 +12,9 @@
 
 namespace {
 
+using AnimType = lcf::rpg::EventPage::AnimType;
+using MoveType = lcf::rpg::EventPage::MoveType;
+
 class MoveRouteCharacter : public Game_Vehicle {
 	public:
 		MoveRouteCharacter() : Game_Vehicle(Game_Vehicle::Boat) {
@@ -32,12 +35,13 @@ class MoveRouteCharacter : public Game_Vehicle {
 
 struct MapGuard {
 	MapGuard() {
-		lcf::Data::treemap = {};
-		lcf::Data::treemap.maps.push_back(lcf::rpg::MapInfo());
-		lcf::Data::treemap.maps.back().type = lcf::rpg::TreeMap::MapType_root;
-		lcf::Data::treemap.maps.push_back(lcf::rpg::MapInfo());
-		lcf::Data::treemap.maps.back().ID = 1;
-		lcf::Data::treemap.maps.back().type = lcf::rpg::TreeMap::MapType_map;
+		auto& treemap = lcf::Data::treemap;
+		treemap = {};
+		treemap.maps.push_back(lcf::rpg::MapInfo());
+		treemap.maps.back().type = lcf::rpg::TreeMap::MapType_root;
+		treemap.maps.push_back(lcf::rpg::MapInfo());
+		treemap.maps.back().ID = 1;
+		treemap.maps.back().type = lcf::rpg::TreeMap::MapType_map;
 
 		lcf::Data::chipsets.push_back({});
 
@@ -47,6 +51,12 @@ struct MapGuard {
 		Main_Data::game_player->SetMapId(1);
 
 		auto map = std::make_unique<lcf::rpg::Map>();
+		map->events.push_back({});
+		map->events.back().ID = 1;
+		map->events.back().pages.push_back({});
+		map->events.back().pages.back().ID = 1;
+		map->events.back().pages.back().move_type = lcf::rpg::EventPage::MoveType_stationary;
+		map->events.back().pages.back().character_pattern = 1;
 
 		Game_Map::Setup(std::move(map));
 	}
@@ -78,6 +88,11 @@ template <typename T>
 static void ForceUpdate(T& ch) {
 	ch.SetProcessed(false);
 	ch.Update();
+}
+
+static void ForceUpdate(Game_Event& ch) {
+	ch.SetProcessed(false);
+	ch.Update(false);
 }
 
 #endif
