@@ -163,11 +163,11 @@ void Game_Vehicle::UpdateNextMovementAction() {
 void Game_Vehicle::UpdateAnimation() {
 	if (!IsJumping() && (GetVehicleType() != Airship || IsFlying())) {
 		// RPG_RT Animates vehicles slower when moving
-		const auto limit = IsStopping() ? 11 : 16;
+		const auto limit = GetStopCount() ? 16 : 12;
 
 		IncAnimCount();
 
-		if (GetAnimCount() > limit) {
+		if (GetAnimCount() >= limit) {
 			IncAnimFrame();
 		}
 	} else {

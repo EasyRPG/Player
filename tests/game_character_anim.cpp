@@ -77,7 +77,8 @@ static void testAnimSpin(Game_Event& ch, bool move = false, bool jump = false) {
 	}
 }
 
-static void testAnimFixed(Game_Event& ch) {
+template <typename T>
+static void testAnimFixed(T& ch) {
 	// Fixed animation scenarios never change
 	for (int i = 0; i < 8; ++i) {
 		testChar(ch, 0, 1);
@@ -85,7 +86,8 @@ static void testAnimFixed(Game_Event& ch) {
 	}
 }
 
-static void testAnimJump(Game_Event& ch) {
+template <typename T>
+static void testAnimJump(T& ch) {
 	testChar(ch, 0, 1);
 	ForceUpdate(ch);
 
@@ -336,6 +338,89 @@ TEST_CASE("SpinFacingLocked") {
 
 	// Continues spinning even with facing locked flag set
 	testAnimSpin(ch, false, false);
+}
+
+static void testBoat(Game_Vehicle::Type vt, AnimType at, int speed, bool move, bool jump, bool flying) {
+	const MapGuard mg;
+
+	auto ch = MoveRouteVehicle(vt);
+	if (flying) {
+		ch.SetFlying(flying);
+	}
+
+	auto limit = move ? 12 : 16;
+
+	CAPTURE(vt);
+	CAPTURE(at);
+	CAPTURE(speed);
+
+	if (vt == Game_Vehicle::Airship && !ch.IsFlying()) {
+		testAnimFixed(ch);
+		return;
+	}
+
+	if (jump) {
+		testAnimJump(ch);
+		return;
+	}
+
+	for (int i = 0; i < 255; ++i) {
+		if (move) {
+			// HACK To make stop count increment to 0 each frame to emulate movement
+			// FIXME: Verify this matches movement
+			ch.SetStopCount(-1);
+		}
+
+		auto count = i % limit;
+		auto frame = ((i / limit) + 1)  % 4;
+		testChar(ch, count, frame);
+		ForceUpdate(ch);
+	}
+}
+
+TEST_CASE("BoatShipStanding") {
+	for (int speed = 1; speed <= 6; ++speed) {
+		for (int ati = 0; ati < static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++ati) {
+			auto at = static_cast<lcf::rpg::EventPage::AnimType>(ati);
+			testBoat(Game_Vehicle::Boat, at, speed, false, false, false);
+			testBoat(Game_Vehicle::Ship, at, speed, false, false, false);
+			testBoat(Game_Vehicle::Airship, at, speed, false, false, false);
+
+			testBoat(Game_Vehicle::Boat, at, speed, false, false, true);
+			testBoat(Game_Vehicle::Ship, at, speed, false, false, true);
+			testBoat(Game_Vehicle::Airship, at, speed, false, false, true);
+		}
+	}
+}
+
+TEST_CASE("BoatShipMove") {
+	for (int speed = 1; speed <= 6; ++speed) {
+		for (int ati = 0; ati < static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++ati) {
+			auto at = static_cast<lcf::rpg::EventPage::AnimType>(ati);
+			testBoat(Game_Vehicle::Boat, at, speed, true, false, false);
+			testBoat(Game_Vehicle::Ship, at, speed, true, false, false);
+			testBoat(Game_Vehicle::Airship, at, speed, true, false, false);
+
+			testBoat(Game_Vehicle::Boat, at, speed, true, false, true);
+			testBoat(Game_Vehicle::Ship, at, speed, true, false, true);
+			testBoat(Game_Vehicle::Airship, at, speed, true, false, true);
+		}
+	}
+}
+
+TEST_CASE("BoatShipJump") {
+	for (int speed = 1; speed <= 6; ++speed) {
+		for (int ati = 0; ati < static_cast<int>(lcf::rpg::EventPage::AnimType_step_frame_fix); ++ati) {
+			auto at = static_cast<lcf::rpg::EventPage::AnimType>(ati);
+			testBoat(Game_Vehicle::Boat, at, speed, false, true, false);
+			testBoat(Game_Vehicle::Ship, at, speed, false, true, false);
+			testBoat(Game_Vehicle::Airship, at, speed, false, true, false);
+
+			testBoat(Game_Vehicle::Boat, at, speed, false, true, true);
+			testBoat(Game_Vehicle::Ship, at, speed, false, true, true);
+			testBoat(Game_Vehicle::Airship, at, speed, false, true, true);
+		}
+	}
 }
 
 TEST_SUITE_END();

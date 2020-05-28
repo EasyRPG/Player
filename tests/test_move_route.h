@@ -7,6 +7,7 @@
 #include "game_player.h"
 #include "main_data.h"
 #include "game_switches.h"
+#include "output.h"
 #include <lcf/data.h>
 #include <lcf/rpg/moveroute.h>
 
@@ -17,9 +18,11 @@ using MoveType = lcf::rpg::EventPage::MoveType;
 
 class MoveRouteVehicle : public Game_Vehicle {
 	public:
-		MoveRouteVehicle() : Game_Vehicle(Game_Vehicle::Boat) {
+		MoveRouteVehicle(Game_Vehicle::Type vt = Game_Vehicle::Boat) : Game_Vehicle(vt) {
 			SetDirection(Game_Character::Down);
 			SetSpriteDirection(Game_Character::Down);
+			SetX(8);
+			SetY(8);
 		}
 
 		bool MakeWay(int, int, int, int) override {
@@ -53,6 +56,7 @@ class MoveRouteEvent : public Game_Event {
 
 struct MapGuard {
 	MapGuard() {
+		Output::SetLogLevel(LogLevel::Error);
 		auto& treemap = lcf::Data::treemap;
 		treemap = {};
 		treemap.maps.push_back(lcf::rpg::MapInfo());
@@ -77,6 +81,7 @@ struct MapGuard {
 		map->events.back().pages.back().character_pattern = 1;
 
 		Game_Map::Setup(std::move(map));
+		Output::SetLogLevel(LogLevel::Debug);
 	}
 
 	~MapGuard() {
