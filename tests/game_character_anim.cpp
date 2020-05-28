@@ -11,10 +11,6 @@
 
 TEST_SUITE_BEGIN("Game_Character_Anim");
 
-constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
-constexpr int stationary_limits[] = { 11, 9, 7, 5, 4, 3 };
-constexpr int continuous_limits[] = { 15, 11, 9, 7, 6, 5 };
-
 static void testChar( const Game_Character& ch, int anim_count, int anim_frame)
 {
 	CAPTURE(anim_count);
@@ -34,18 +30,18 @@ static auto MakeEvent(AnimType at, int speed) {
 }
 
 static void testAnimLimit(Game_Event& ch) {
-	const auto limit = stationary_limits[ch.GetMoveSpeed() - 1];
+	const auto limit = Game_Character::GetStationaryAnimFrames(ch.GetMoveSpeed());
 
 	// For events not moving, anim count ticks up to the limit and then freezes until
 	// the character moves.
 	for (int i = 0; i < 255; ++i) {
-		testChar(ch, std::min(i, limit), 1);
+		testChar(ch, std::min(i, limit - 1), 1);
 		ForceUpdate(ch);
 	}
 }
 
 static void testAnimContinuous(Game_Event& ch) {
-	const auto limit = continuous_limits[ch.GetMoveSpeed() - 1] + 1;
+	const auto limit = Game_Character::GetContinuousAnimFrames(ch.GetMoveSpeed());
 
 	// Continuous always animates
 	for (int i = 0; i < 255; ++i) {
@@ -57,7 +53,7 @@ static void testAnimContinuous(Game_Event& ch) {
 }
 
 static void testAnimSpin(Game_Event& ch, bool move = false, bool jump = false) {
-	const auto limit = spin_limits[ch.GetMoveSpeed() - 1] + 1;
+	const auto limit = Game_Character::GetSpinAnimFrames(ch.GetMoveSpeed());
 
 	// Spin always animates, even while moving or jumping
 	for (int i = 0; i < 255; ++i) {
@@ -164,7 +160,7 @@ static void testMoving(AnimType at, int speed) {
 
 	auto ch = MakeEvent(at, speed);
 
-	const auto limit = stationary_limits[ch.GetMoveSpeed() - 1] + 1;
+	const auto limit = Game_Character::GetStationaryAnimFrames(ch.GetMoveSpeed());
 
 	CAPTURE(at);
 	CAPTURE(speed);
@@ -197,8 +193,8 @@ static void testCenterStep(AnimType at, int speed, int frame) {
 
 	auto ch = MakeEvent(at, speed);
 
-	const auto slimit = stationary_limits[ch.GetMoveSpeed() - 1] + 1;
-	const auto climit = continuous_limits[ch.GetMoveSpeed() - 1] + 1;
+	const auto slimit = Game_Character::GetStationaryAnimFrames(ch.GetMoveSpeed());
+	const auto climit = Game_Character::GetContinuousAnimFrames(ch.GetMoveSpeed());
 
 	CAPTURE(at);
 	CAPTURE(speed);
