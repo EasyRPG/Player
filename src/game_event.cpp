@@ -380,11 +380,11 @@ bool Game_Event::CheckEventCollision() {
 	return false;
 }
 
-void Game_Event::Move(int dir) {
-	Game_Character::Move(dir);
+bool Game_Event::Move(int dir) {
+	auto rc = Game_Character::Move(dir);
 
-	if (!IsStopping()) {
-		return;
+	if (rc) {
+		return rc;
 	}
 
 	// FIXME: Why does RPG_RT round here?
@@ -400,8 +400,9 @@ void Game_Event::Move(int dir) {
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);
-		return;
 	}
+
+	return false;
 }
 
 void Game_Event::UpdateNextMovementAction() {
@@ -569,6 +570,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 			}
 		}
 	}
+
+	SetMaxStopCountForStep();
 }
 
 void Game_Event::MoveTypeTowardsPlayer() {

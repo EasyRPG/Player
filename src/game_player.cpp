@@ -504,7 +504,10 @@ bool Game_Player::GetOnVehicle() {
 
 		// FIXME: RPG_RT still executes move event if triggered mid-move?
 		SetThrough(true);
-		Move(GetDirection());
+		if (IsStopping()) {
+			// FIXME: Do we set stop count or max stop count?
+			Move(GetDirection());
+		}
 		// FIXME: RPG_RT resets through to route_through || not visible?
 		ResetThrough();
 
@@ -543,7 +546,10 @@ bool Game_Player::GetOffVehicle() {
 		data()->unboarding = true;
 
 		SetThrough(true);
-		Move(GetDirection());
+		if (IsStopping()) {
+			// FIXME: Do we set stop count or max stop count?
+			Move(GetDirection());
+		}
 		ResetThrough();
 
 		data()->vehicle = 0;
@@ -566,25 +572,21 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
 }
 
-void Game_Player::Move(int dir) {
-	if (!IsStopping()) {
-		return;
-	}
+bool Game_Player::Move(int dir) {
+	auto rc = Game_Character::Move(dir);
 
-	Game_Character::Move(dir);
-
-	if (IsStopping()) {
+	if (!rc) {
 		// FIXME: Does this really happen? Not seen in code. Does this belong in makeway?
 		if (!IsMoveRouteOverwritten()) {
 			int nx = GetX() + GetDxFromDirection(dir);
 			int ny = GetY() + GetDyFromDirection(dir);
 			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, nx, ny, false);
 		}
-		return;
+		return rc;
 	}
 
 	if (InAirship()) {
-		return;
+		return rc;
 	}
 
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
@@ -610,6 +612,8 @@ void Game_Player::Move(int dir) {
 	if (red_flash) {
 		Main_Data::game_screen->FlashMapStepDamage();
 	}
+
+	return rc;
 }
 
 bool Game_Player::IsAboard() const {

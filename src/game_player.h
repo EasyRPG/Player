@@ -53,7 +53,7 @@ public:
 	int GetVehicleType() const override;
 	void UpdateNextMovementAction() override;
 	void UpdateMovement(int amount) override;
-	void Move(int dir) override;
+	bool Move(int dir) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;

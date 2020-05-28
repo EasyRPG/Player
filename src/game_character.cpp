@@ -439,7 +439,9 @@ bool Game_Character::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 	return Game_Map::MakeWay(*this, from_x, from_y, to_x, to_y);
 }
 
-void Game_Character::Move(int dir) {
+bool Game_Character::Move(int dir) {
+	assert(IsStopping());
+
 	int dx = GetDxFromDirection(dir);
 	int dy = GetDyFromDirection(dir);
 
@@ -461,7 +463,7 @@ void Game_Character::Move(int dir) {
 	}
 
 	if (!move_success) {
-		return;
+		return false;
 	}
 
 	const auto new_x = Game_Map::RoundX(GetX() + dx);
@@ -471,7 +473,10 @@ void Game_Character::Move(int dir) {
 	SetY(new_y);
 	SetRemainingStep(SCREEN_TILE_SIZE);
 	// FIXME: This happens elsewhere?
+	// FIXME: Does it always go to 0, even when move fails?
 	SetStopCount(0);
+
+	return true;
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -627,6 +632,8 @@ void Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 }
 
 bool Game_Character::Jump(int x, int y) {
+	assert(IsStopping());
+
 	auto begin_x = GetX();
 	auto begin_y = GetY();
 	const auto dx = x - begin_x;

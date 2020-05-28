@@ -528,8 +528,11 @@ public:
 	 * Move in the direction dir.
 	 *
 	 * @param dir the direction to move to.
+	 *
+	 * @return Whether move was successful.
+	 * @post If successful, IsStopping() == false.
 	 */
-	virtual void Move(int dir);
+	virtual bool Move(int dir);
 
 	/**
 	 * Jump to (x, y)
@@ -537,7 +540,8 @@ public:
 	 * @param x the x position to jump to.
 	 * @param y the y position to jump to.
 	 *
-	 * @return Whether jump was successful
+	 * @return Whether jump was successful.
+	 * @post If successful, IsStopping() == false.
 	 */
 	bool Jump(int x, int y);
 

@@ -49,7 +49,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	void Move(int dir) override;
+	bool Move(int dir) override;
 	void UpdateNextMovementAction() override;
 	bool IsVisible() const override;
 	/** @} */
