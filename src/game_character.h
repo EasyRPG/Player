@@ -526,8 +526,20 @@ public:
 
 	/**
 	 * Move in the direction dir.
+	 *
+	 * @param dir the direction to move to.
 	 */
 	virtual void Move(int dir);
+
+	/**
+	 * Jump to (x, y)
+	 *
+	 * @param x the x position to jump to.
+	 * @param y the y position to jump to.
+	 *
+	 * @return Whether jump was successful
+	 */
+	bool Jump(int x, int y);
 
 	/**
 	 * Check if this can move to the given tile.
@@ -608,21 +620,6 @@ public:
 	 * Character waits for 20 frames more.
 	 */
 	void Wait();
-
-	/**
-	 * Jump action begins. Ends the movement when EndJump is missing.
-	 *
-	 * @param current_index Index in the current route
-	 * @param current_route Current move route
-	 *
-	 * @return whether the jump was successful.
-	 */
-	void BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
-
-	/**
-	 * Jump action ends.
-	 */
-	void EndJump();
 
 	/**
 	 * Forces a new, temporary, move route.
@@ -844,6 +841,7 @@ protected:
 	void IncAnimCount();
 	void IncAnimFrame();
 	void UpdateFlash();
+	void BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;

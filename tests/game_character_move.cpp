@@ -103,8 +103,8 @@ static void testMove(int move_dir, int x, int y, int dir, int face,
 TEST_CASE("Move") {
 	const MapGuard mg;
 
-	for (int freq = 1; freq <= 16; ++freq) {
-		for (int speed = 1; speed <= 16; ++speed) {
+	for (int freq = 1; freq <= 8; ++freq) {
+		for (int speed = 1; speed <= 6; ++speed) {
 			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Up, freq, speed);
 			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Right, freq, speed);
 			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed);
@@ -116,8 +116,8 @@ TEST_CASE("Move") {
 TEST_CASE("MoveFail") {
 	const MapGuard mg;
 
-	for (int freq = 1; freq <= 16; ++freq) {
-		for (int speed = 1; speed <= 16; ++speed) {
+	for (int freq = 1; freq <= 8; ++freq) {
+		for (int speed = 1; speed <= 6; ++speed) {
 			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Up, freq, speed);
 			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Right, freq, speed);
 			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed);
@@ -129,8 +129,8 @@ TEST_CASE("MoveFail") {
 TEST_CASE("MoveDiagonal") {
 	const MapGuard mg;
 
-	for (int freq = 1; freq <= 16; ++freq) {
-		for (int speed = 1; speed <= 16; ++speed) {
+	for (int freq = 1; freq <= 8; ++freq) {
+		for (int speed = 1; speed <= 6; ++speed) {
 			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed);
 			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed);
 			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Up, freq, speed);
@@ -154,63 +154,82 @@ TEST_CASE("MoveDiagonal") {
 	}
 }
 
-#if 0
-TEST_CASE("CommandMoveFail") {
-	const MapGuard mg;
+static void testJump(bool success, int x, int y, int dir, int face,
+		int tx, int ty, int freq, int speed) {
 
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_up, 8, 8, Down, Down, Up, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_right, 8, 8, Down, Down, Right, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_down, 8, 8, Down, Down, Down, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_left, 8, 8, Down, Down, Left, Left);
+	auto ch = MakeCharacter();
+	ch.SetX(x);
+	ch.SetY(y);
+	ch.SetDirection(dir);
+	ch.SetSpriteDirection(face);
+	ch.SetAllowMovement(success);
+	ch.SetMoveSpeed(speed);
+	ch.SetMoveFrequency(freq);
+	ch.SetAllowMovement(success);
+
+	CAPTURE(success);
+	CAPTURE(speed);
+	CAPTURE(freq);
+
+	auto dx = tx - x;
+	auto dy = ty - y;
+
+	// Expected direction after the jump finishes.
+	auto tdir = Down;
+	if (std::abs(dy) >= std::abs(dx)) {
+		tdir = dy >= 0 ? Down : Up;
+	} else {
+		tdir = dx >= 0 ? Right : Left;
+	}
+	auto tface = tdir;
+
+	// Jump in place always succeeds
+	if (x == tx && y == ty) {
+		success = true;
+	}
+
+	INFO("BEFORE JUMP");
+
+	REQUIRE_EQ(ch.Jump(tx, ty), success);
+
+	if (!success) {
+		INFO("FAIL JUMP");
+		testChar(ch, x, y, tdir, tface, 0, false, 0, 0, freq, speed, 0, 0);
+		return;
+	}
+
+	testChar(ch, tx, ty, tdir, tface, 256, true, x, y, freq, speed, 0, 0);
+
+	// FIXME: Verify all speeds
+	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
+	const auto dt = jump_speed[speed - 1];
+
+	INFO("ANIMATE JUMP");
+
+	for(int i = 256 - dt; i > 0; i -= dt) {
+		ForceUpdate(ch);
+		testChar(ch, tx, ty, tdir, tface, i, true, x, y, freq, speed, 0, 0);
+	}
+
+	INFO("AFTER JUMP");
+
+	ForceUpdate(ch);
+	testChar(ch, tx, ty, tdir, tface, 0, false, x, y, freq, speed, 0, 0);
 }
 
-TEST_CASE("CommandMoveDiagonal") {
+TEST_CASE("Jump") {
 	const MapGuard mg;
 
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, 9, 7, UpRight, Up);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, 9, 7, UpRight, Right);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, 9, 7, UpRight, Up);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, 9, 7, UpRight, Right);
-
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, 9, 9, DownRight, Down);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, 9, 9, DownRight, Right);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, 9, 9, DownRight, Down);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, 9, 9, DownRight, Right);
-
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, 7, 9, DownLeft, Down);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, 7, 9, DownLeft, Left);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, 7, 9, DownLeft, Down);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, 7, 9, DownLeft, Left);
-
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, 7, 7, UpLeft, Up);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, 7, 7, UpLeft, Left);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, 7, 7, UpLeft, Up);
-	testMoveSuccess(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, 7, 7, UpLeft, Left);
+	for (int freq = 1; freq <= 8; ++freq) {
+		for (int speed = 1; speed <= 6; ++speed) {
+			for (int dx = -2; dx <= 2; ++dx) {
+				for (int dy = -2; dy <= 2; ++dy) {
+					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed);
+					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed);
+				}
+			}
+		}
+	}
 }
-
-TEST_CASE("CommandMoveDiagonalFail") {
-	const MapGuard mg;
-
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Up, Up, UpRight, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Right, Right, UpRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Down, Down, UpRight, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upright, 8, 8, Left, Left, UpRight, Right);
-
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Up, Up, DownRight, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Right, Right, DownRight, Right);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Down, Down, DownRight, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downright, 8, 8, Left, Left, DownRight, Right);
-
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Up, Up, DownLeft, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Right, Right, DownLeft, Left);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Down, Down, DownLeft, Down);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_downleft, 8, 8, Left, Left, DownLeft, Left);
-
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Up, Up, UpLeft, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Right, Right, UpLeft, Left);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Down, Down, UpLeft, Up);
-	testMoveFail(lcf::rpg::MoveCommand::Code::move_upleft, 8, 8, Left, Left, UpLeft, Left);
-}
-#endif
 
 TEST_SUITE_END();

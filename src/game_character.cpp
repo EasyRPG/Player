@@ -343,7 +343,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					SetStopCount(0);
 					break;
 				case lcf::rpg::MoveCommand::Code::begin_jump:
-					BeginJump(current_index, current_route);
+					BeginMoveRouteJump(current_index, current_route);
 					if (IsStopping()) {
 						// Jump failed
 						if (current_route.skippable) {
@@ -356,7 +356,6 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					}
 					break;
 				case lcf::rpg::MoveCommand::Code::end_jump:
-					// EndJump();
 					break;
 				case lcf::rpg::MoveCommand::Code::lock_facing:
 					SetFacingLocked(true);
@@ -534,7 +533,7 @@ void Game_Character::Wait() {
 	SetMaxStopCountForWait();
 }
 
-void Game_Character::BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) {
+void Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route) {
 	int jdx = 0;
 	int jdy = 0;
 
@@ -622,61 +621,66 @@ void Game_Character::BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute
 	int new_x = GetX() + jdx;
 	int new_y = GetY() + jdy;
 
+	if (Jump(new_x, new_y)) {
+		SetMaxStopCountForStep();
+	}
+}
+
+bool Game_Character::Jump(int x, int y) {
+	auto begin_x = GetX();
+	auto begin_y = GetY();
+	const auto dx = x - begin_x;
+	const auto dy = y - begin_y;
+
 	// FIXME: Test all these
-	if (std::abs(jdy) >= std::abs(jdx)) {
-		SetDirection(jdy >= 0 ? Down : Up);
+	if (std::abs(dy) >= std::abs(dx)) {
+		SetDirection(dy >= 0 ? Down : Up);
 	} else {
-		SetDirection(jdx >= 0 ? Right : Left);
+		SetDirection(dx >= 0 ? Right : Left);
 	}
 
 	SetJumping(true);
 
-	if (jdx != 0 || jdy != 0) {
+	if (dx != 0 || dy != 0) {
 		if (!IsFacingLocked()) {
 			SetSpriteDirection(GetDirection());
 		}
 
 		// FIXME: Remove dependency on jump from within Game_Map::MakeWay
-		if (!MakeWay(GetX(), GetY(), new_x, new_y)) {
+		if (!MakeWay(begin_x, begin_y, x, y)) {
 			SetJumping(false);
-			return;
+			return false;
 		}
 	}
 
-	int begin_x = GetX();
-	int begin_y = GetY();
 
 	// Adjust positions for looping maps. jump begin positions
 	// get set off the edge of the map to preserve direction.
 	if (Game_Map::LoopHorizontal()
-			&& (new_x < 0 || new_x >= Game_Map::GetWidth()))
+			&& (x < 0 || x >= Game_Map::GetWidth()))
 	{
-		auto old_x = new_x;
-		new_x = Game_Map::RoundX(new_x);
-		begin_x += new_x - old_x;
+		const auto old_x = x;
+		x = Game_Map::RoundX(x);
+		begin_x += x - old_x;
 	}
 
 	if (Game_Map::LoopVertical()
-			&& (new_y < 0 || new_y >= Game_Map::GetHeight()))
+			&& (y < 0 || y >= Game_Map::GetHeight()))
 	{
-		auto old_y = new_y;
-		new_y = Game_Map::RoundY(new_y);
-		begin_y += new_y - old_y;
+		auto old_y = y;
+		y = Game_Map::RoundY(y);
+		begin_y += y - old_y;
 	}
 
 	SetBeginJumpX(begin_x);
 	SetBeginJumpY(begin_y);
-	SetX(new_x);
-	SetY(new_y);
+	SetX(x);
+	SetY(y);
 	SetJumping(true);
 	SetRemainingStep(SCREEN_TILE_SIZE);
-
 	SetStopCount(0);
-	SetMaxStopCountForStep();
-}
 
-void Game_Character::EndJump() {
-	// no-op
+	return true;
 }
 
 int Game_Character::DistanceXfromPlayer() const {
