@@ -15,9 +15,27 @@ namespace {
 using AnimType = lcf::rpg::EventPage::AnimType;
 using MoveType = lcf::rpg::EventPage::MoveType;
 
-class MoveRouteCharacter : public Game_Vehicle {
+class MoveRouteVehicle : public Game_Vehicle {
 	public:
-		MoveRouteCharacter() : Game_Vehicle(Game_Vehicle::Boat) {
+		MoveRouteVehicle() : Game_Vehicle(Game_Vehicle::Boat) {
+			SetDirection(Game_Character::Down);
+			SetSpriteDirection(Game_Character::Down);
+		}
+
+		bool MakeWay(int, int, int, int) override {
+			return allow_movement;
+		}
+
+		void SetAllowMovement(bool allow) {
+			allow_movement = allow;
+		}
+	private:
+		bool allow_movement = true;
+};
+
+class MoveRouteEvent : public Game_Event {
+	public:
+		MoveRouteEvent() : Game_Event(1, &Game_Map::GetMap().events[0]) {
 			SetDirection(Game_Character::Down);
 			SetSpriteDirection(Game_Character::Down);
 		}
@@ -80,12 +98,12 @@ constexpr auto DownLeft = Game_Character::DownLeft;
 constexpr auto UpLeft = Game_Character::UpLeft;
 }
 
-static auto MakeCharacter() {
-	return MoveRouteCharacter();
+static void ForceUpdate(Game_Vehicle& ch) {
+	ch.SetProcessed(false);
+	ch.Update();
 }
 
-template <typename T>
-static void ForceUpdate(T& ch) {
+static void ForceUpdate(Game_Player& ch) {
 	ch.SetProcessed(false);
 	ch.Update();
 }

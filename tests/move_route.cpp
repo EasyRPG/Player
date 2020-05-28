@@ -116,18 +116,18 @@ static void testMoveRouteJump(const Game_Character& ch,
 }
 
 TEST_CASE("DefaultMoveRoute") {
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	testMoveRoute(ch, false, 2, 0, 0, 0, false, false, lcf::rpg::MoveRoute());
 }
 
 TEST_CASE("ForceMoveRouteEmpty") {
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.ForceMoveRoute(lcf::rpg::MoveRoute(), 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, lcf::rpg::MoveRoute());
 }
 
 TEST_CASE("ForceMoveRouteSameFreq") {
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	lcf::rpg::MoveRoute mr;
 	mr.move_commands.push_back({});
 
@@ -140,7 +140,7 @@ TEST_CASE("ForceMoveRouteSameFreq") {
 }
 
 TEST_CASE("ForceMoveRouteDiffFreq") {
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{}});
 	mr.move_commands.push_back({});
 
@@ -157,7 +157,7 @@ static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
@@ -415,7 +415,7 @@ static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, in
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(orig_dir);
@@ -471,7 +471,7 @@ TEST_CASE("CommandTurnRandom") {
 	const MapGuard mg;
 
 	for (int i = 0; i < 10; ++i) {
-		auto ch = MakeCharacter();
+		auto ch = MoveRouteVehicle();
 		auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::face_random_direction) }});
 
 		ch.ForceMoveRoute(mr, 3);
@@ -489,7 +489,7 @@ TEST_CASE("CommandTurnRandom") {
 TEST_CASE("CommandWait") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::wait) }});
 
 	ch.ForceMoveRoute(mr, 2);
@@ -509,7 +509,7 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
@@ -831,7 +831,7 @@ TEST_CASE("CommandMoveTurnJumpHero") {
 void testLockFacing(lcf::rpg::EventPage::AnimType at) {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetAnimationType(at);
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::lock_facing) }});
 
@@ -862,7 +862,7 @@ TEST_CASE("CommandLockFacing") {
 TEST_CASE("CommandSpeedChange") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_speed) }});
 	const int n = 10;
 
@@ -897,7 +897,7 @@ TEST_CASE("CommandSpeedChange") {
 TEST_CASE("CommandFreqChange") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_frequence) }});
 	const int n = 10;
 
@@ -935,7 +935,7 @@ TEST_CASE("CommandFreqChange") {
 TEST_CASE("CommandTranspChange") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_transp) }});
 	const int n = 10;
 
@@ -970,7 +970,7 @@ TEST_CASE("CommandTranspChange") {
 TEST_CASE("CommandThrough") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on) }});
 
 	auto testoff = [&]() {
@@ -1030,7 +1030,7 @@ TEST_CASE("CommandThrough") {
 TEST_CASE("CommandStopAnimation") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::stop_animation) }});
 
 	ch.ForceMoveRoute(mr, 2);
@@ -1054,7 +1054,7 @@ TEST_CASE("CommandStopAnimation") {
 TEST_CASE("CommandSwitchToggle") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::switch_on), "", 3 }});
 
 	REQUIRE_NE(Main_Data::game_switches, nullptr);
@@ -1080,7 +1080,7 @@ TEST_CASE("CommandSwitchToggle") {
 TEST_CASE("CommandChangeGraphic") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::change_graphic), "x", 3 }});
 
 	ch.ForceMoveRoute(mr, 2);
@@ -1097,7 +1097,7 @@ TEST_CASE("CommandChangeGraphic") {
 TEST_CASE("CommandPlaySound") {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::play_sound_effect), "", 100, 100, 100 }});
 
 	ch.ForceMoveRoute(mr, 2);
@@ -1110,7 +1110,7 @@ TEST_CASE("CommandPlaySound") {
 }
 
 TEST_CASE("ClearPause") {
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 
 	ch.SetPaused(true);
 	REQUIRE(ch.IsPaused());

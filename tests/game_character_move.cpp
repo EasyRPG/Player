@@ -69,9 +69,9 @@ static void testChar(
 template <bool success>
 static void testMove(int move_dir, int x, int y, int dir, int face,
 		int tx, int ty, int tdir, int tface,
-		int freq, int speed) {
+		int freq, int speed, bool facing_locked) {
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
@@ -80,6 +80,9 @@ static void testMove(int move_dir, int x, int y, int dir, int face,
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
 	ch.SetAllowMovement(success);
+	if (facing_locked) {
+		ch.SetFacingLocked(facing_locked);
+	}
 
 	REQUIRE_EQ(ch.Move(move_dir), success);
 
@@ -106,10 +109,15 @@ TEST_CASE("Move") {
 
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Up, freq, speed);
-			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Right, freq, speed);
-			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed);
-			testMove<true>(Left, 8, 8, Down, Down, 7, 8, Left, Left, freq, speed);
+			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Up, freq, speed, false);
+			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Right, freq, speed, false);
+			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed, false);
+			testMove<true>(Left, 8, 8, Down, Down, 7, 8, Left, Left, freq, speed, false);
+
+			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Down, freq, speed, true);
+			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Down, freq, speed, true);
+			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed, true);
+			testMove<true>(Left, 8, 8, Down, Down, 7, 8, Left, Down, freq, speed, true);
 		}
 	}
 }
@@ -119,10 +127,15 @@ TEST_CASE("MoveFail") {
 
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Up, freq, speed);
-			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Right, freq, speed);
-			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed);
-			testMove<false>(Left, 8, 8, Down, Down, 8, 8, Left, Left, freq, speed);
+			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Up, freq, speed, false);
+			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Right, freq, speed, false);
+			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed, false);
+			testMove<false>(Left, 8, 8, Down, Down, 8, 8, Left, Left, freq, speed, false);
+
+			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Down, freq, speed, true);
+			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Down, freq, speed, true);
+			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed, true);
+			testMove<false>(Left, 8, 8, Down, Down, 8, 8, Left, Down, freq, speed, true);
 		}
 	}
 }
@@ -132,33 +145,53 @@ TEST_CASE("MoveDiagonal") {
 
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed);
-			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed);
-			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Up, freq, speed);
-			testMove<true>(UpRight, 8, 8, Left, Left, 9, 7, UpRight, Right, freq, speed);
+			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed, false);
+			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed, false);
+			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Up, freq, speed, false);
+			testMove<true>(UpRight, 8, 8, Left, Left, 9, 7, UpRight, Right, freq, speed, false);
 
-			testMove<true>(DownRight, 8, 8, Up, Up, 9, 9, DownRight, Down, freq, speed);
-			testMove<true>(DownRight, 8, 8, Right, Right, 9, 9, DownRight, Right, freq, speed);
-			testMove<true>(DownRight, 8, 8, Down, Down, 9, 9, DownRight, Down, freq, speed);
-			testMove<true>(DownRight, 8, 8, Left, Left, 9, 9, DownRight, Right, freq, speed);
+			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed, true);
+			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed, true);
+			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Down, freq, speed, true);
+			testMove<true>(UpRight, 8, 8, Left, Left, 9, 7, UpRight, Left, freq, speed, true);
 
-			testMove<true>(UpLeft, 8, 8, Up, Up, 7, 7, UpLeft, Up, freq, speed);
-			testMove<true>(UpLeft, 8, 8, Right, Right, 7, 7, UpLeft, Left, freq, speed);
-			testMove<true>(UpLeft, 8, 8, Down, Down, 7, 7, UpLeft, Up, freq, speed);
-			testMove<true>(UpLeft, 8, 8, Left, Left, 7, 7, UpLeft, Left, freq, speed);
+			testMove<true>(DownRight, 8, 8, Up, Up, 9, 9, DownRight, Down, freq, speed, false);
+			testMove<true>(DownRight, 8, 8, Right, Right, 9, 9, DownRight, Right, freq, speed, false);
+			testMove<true>(DownRight, 8, 8, Down, Down, 9, 9, DownRight, Down, freq, speed, false);
+			testMove<true>(DownRight, 8, 8, Left, Left, 9, 9, DownRight, Right, freq, speed, false);
 
-			testMove<true>(DownLeft, 8, 8, Up, Up, 7, 9, DownLeft, Down, freq, speed);
-			testMove<true>(DownLeft, 8, 8, Right, Right, 7, 9, DownLeft, Left, freq, speed);
-			testMove<true>(DownLeft, 8, 8, Down, Down, 7, 9, DownLeft, Down, freq, speed);
-			testMove<true>(DownLeft, 8, 8, Left, Left, 7, 9, DownLeft, Left, freq, speed);
+			testMove<true>(DownRight, 8, 8, Up, Up, 9, 9, DownRight, Up, freq, speed, true);
+			testMove<true>(DownRight, 8, 8, Right, Right, 9, 9, DownRight, Right, freq, speed, true);
+			testMove<true>(DownRight, 8, 8, Down, Down, 9, 9, DownRight, Down, freq, speed, true);
+			testMove<true>(DownRight, 8, 8, Left, Left, 9, 9, DownRight, Left, freq, speed, true);
+
+			testMove<true>(UpLeft, 8, 8, Up, Up, 7, 7, UpLeft, Up, freq, speed, false);
+			testMove<true>(UpLeft, 8, 8, Right, Right, 7, 7, UpLeft, Left, freq, speed, false);
+			testMove<true>(UpLeft, 8, 8, Down, Down, 7, 7, UpLeft, Up, freq, speed, false);
+			testMove<true>(UpLeft, 8, 8, Left, Left, 7, 7, UpLeft, Left, freq, speed, false);
+
+			testMove<true>(UpLeft, 8, 8, Up, Up, 7, 7, UpLeft, Up, freq, speed, true);
+			testMove<true>(UpLeft, 8, 8, Right, Right, 7, 7, UpLeft, Right, freq, speed, true);
+			testMove<true>(UpLeft, 8, 8, Down, Down, 7, 7, UpLeft, Down, freq, speed, true);
+			testMove<true>(UpLeft, 8, 8, Left, Left, 7, 7, UpLeft, Left, freq, speed, true);
+
+			testMove<true>(DownLeft, 8, 8, Up, Up, 7, 9, DownLeft, Down, freq, speed, false);
+			testMove<true>(DownLeft, 8, 8, Right, Right, 7, 9, DownLeft, Left, freq, speed, false);
+			testMove<true>(DownLeft, 8, 8, Down, Down, 7, 9, DownLeft, Down, freq, speed, false);
+			testMove<true>(DownLeft, 8, 8, Left, Left, 7, 9, DownLeft, Left, freq, speed, false);
+
+			testMove<true>(DownLeft, 8, 8, Up, Up, 7, 9, DownLeft, Up, freq, speed, true);
+			testMove<true>(DownLeft, 8, 8, Right, Right, 7, 9, DownLeft, Right, freq, speed, true);
+			testMove<true>(DownLeft, 8, 8, Down, Down, 7, 9, DownLeft, Down, freq, speed, true);
+			testMove<true>(DownLeft, 8, 8, Left, Left, 7, 9, DownLeft, Left, freq, speed, true);
 		}
 	}
 }
 
 static void testJump(bool success, int x, int y, int dir, int face,
-		int tx, int ty, int freq, int speed) {
+		int tx, int ty, int freq, int speed, bool facing_locked) {
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
@@ -167,6 +200,9 @@ static void testJump(bool success, int x, int y, int dir, int face,
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
 	ch.SetAllowMovement(success);
+	if (facing_locked) {
+		ch.SetFacingLocked(true);
+	}
 
 	CAPTURE(success);
 	CAPTURE(speed);
@@ -182,7 +218,7 @@ static void testJump(bool success, int x, int y, int dir, int face,
 	} else {
 		tdir = dx >= 0 ? Right : Left;
 	}
-	auto tface = tdir;
+	auto tface = facing_locked ? face : tdir;
 
 	// Jump in place always succeeds
 	if (x == tx && y == ty) {
@@ -225,8 +261,13 @@ TEST_CASE("Jump") {
 		for (int speed = 1; speed <= 6; ++speed) {
 			for (int dx = -2; dx <= 2; ++dx) {
 				for (int dy = -2; dy <= 2; ++dy) {
-					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed);
-					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed);
+					// Normal jump
+					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, false);
+					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, false);
+
+					// Facing locked jump
+					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, true);
+					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, true);
 				}
 			}
 		}
@@ -236,7 +277,7 @@ TEST_CASE("Jump") {
 static void testStop(bool success, bool jump) {
 	const MapGuard mg;
 
-	auto ch = MakeCharacter();
+	auto ch = MoveRouteVehicle();
 	ch.SetX(8);
 	ch.SetY(8);
 	ch.SetStopCount(99);

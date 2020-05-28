@@ -25,7 +25,7 @@ static void testChar( const Game_Character& ch, int anim_count, int anim_frame)
 }
 
 static auto MakeEvent(AnimType at, int speed) {
-	Game_Event ch(1, &Game_Map::GetMap().events[0]);
+	auto ch = MoveRouteEvent();
 	ch.SetAnimationType(at);
 	ch.SetMoveSpeed(speed);
 	ch.SetX(8);
@@ -36,6 +36,8 @@ static auto MakeEvent(AnimType at, int speed) {
 static void testAnimLimit(Game_Event& ch) {
 	const auto limit = stationary_limits[ch.GetMoveSpeed() - 1];
 
+	// For events not moving, anim count ticks up to the limit and then freezes until
+	// the character moves.
 	for (int i = 0; i < 255; ++i) {
 		testChar(ch, std::min(i, limit), 1);
 		ForceUpdate(ch);
@@ -45,6 +47,7 @@ static void testAnimLimit(Game_Event& ch) {
 static void testAnimContinuous(Game_Event& ch) {
 	const auto limit = continuous_limits[ch.GetMoveSpeed() - 1] + 1;
 
+	// Continuous always animates
 	for (int i = 0; i < 255; ++i) {
 		auto count = i % limit;
 		auto frame = ((i / limit) + 1)  % 4;
@@ -53,10 +56,18 @@ static void testAnimContinuous(Game_Event& ch) {
 	}
 }
 
-static void testAnimSpin(Game_Event& ch) {
+static void testAnimSpin(Game_Event& ch, bool move = false, bool jump = false) {
 	const auto limit = spin_limits[ch.GetMoveSpeed() - 1] + 1;
 
+	// Spin always animates, even while moving or jumping
 	for (int i = 0; i < 255; ++i) {
+		if (move && ch.IsStopping()) {
+			ch.SetX(8);
+			ch.Move(Right);
+		}
+		if (jump && ch.IsStopping()) {
+			ch.Jump(ch.GetX(), ch.GetY());
+		}
 		auto count = i % limit;
 		auto frame = 1;
 		auto dir = ((i / limit) + 2) % 4;
@@ -67,6 +78,7 @@ static void testAnimSpin(Game_Event& ch) {
 }
 
 static void testAnimFixed(Game_Event& ch) {
+	// Fixed animation scenarios never change
 	for (int i = 0; i < 8; ++i) {
 		testChar(ch, 0, 1);
 		ForceUpdate(ch);
@@ -79,8 +91,10 @@ static void testAnimJump(Game_Event& ch) {
 
 	for (int i = 0; i < 255; ++i) {
 		if (ch.IsJumping()) {
+			// Animation gets reset every frame of an active jump
 			testChar(ch, 0, 1);
 		} else {
+			// Animation ticks up normally on the frame when the jump finishes and the flag is cleared.
 			testChar(ch, ch.IsAnimated(), 1);
 		}
 		if (ch.IsStopping()) {
@@ -98,8 +112,9 @@ static void testStanding(AnimType at, int speed) {
 	CAPTURE(at);
 	CAPTURE(speed);
 
+	// Baseline behavior when event is not moving
 	if (ch.IsSpinning()) {
-		testAnimSpin(ch);
+		testAnimSpin(ch, false, false);
 	} else if (ch.IsContinuous()) {
 		testAnimContinuous(ch);
 	} else if (ch.IsAnimated()) {
@@ -116,8 +131,10 @@ static void testPaused(AnimType at, int speed) {
 	ch.SetAnimPaused(true);
 	REQUIRE(!ch.IsAnimated());
 
+	// When event has paused flag
 	if (at == lcf::rpg::EventPage::AnimType_spin) {
-		testAnimSpin(ch);
+		// Continues spinning even when paused flag is set
+		testAnimSpin(ch, false, false);
 	} else {
 		testAnimFixed(ch);
 	}
@@ -131,8 +148,10 @@ static void testJumping(AnimType at, int speed) {
 	CAPTURE(at);
 	CAPTURE(speed);
 
+	// When event is jumping
 	if (at == lcf::rpg::EventPage::AnimType_spin) {
-		testAnimSpin(ch);
+		// Continues spinning even when jumping
+		testAnimSpin(ch, false, true);
 	} else {
 		testAnimJump(ch);
 	}
@@ -148,13 +167,15 @@ static void testMoving(AnimType at, int speed) {
 	CAPTURE(at);
 	CAPTURE(speed);
 
+	// When event is moving
 	if (at == lcf::rpg::EventPage::AnimType_spin) {
-		testAnimSpin(ch);
+		// Continues spinning even when moving
+		testAnimSpin(ch, true, false);
 		return;
 	}
 
 	for (int i = 0; i < 255; ++i) {
-		// HACK To make stop count 0 each time to emulate movement
+		// HACK To make stop count increment to 0 each frame to emulate movement
 		// FIXME: Verify this matches movement
 		ch.SetStopCount(-1);
 
@@ -182,10 +203,12 @@ static void testCenterStep(AnimType at, int speed, int frame) {
 	CAPTURE(frame);
 
 	if (at == lcf::rpg::EventPage::AnimType_spin) {
+		// Spins regardless of frame
 		testAnimSpin(ch);
 		return;
 	}
 
+	// When event has left or right step, they will always animate back to center step regardless of movement or not
 	if (frame == lcf::rpg::EventPage::Frame_left || frame == lcf::rpg::EventPage::Frame_right) {
 		for (int i = 0; i < climit; ++i) {
 			testChar(ch, ch.IsAnimated() ? i : 0, frame);
@@ -210,6 +233,54 @@ static void testCenterStep(AnimType at, int speed, int frame) {
 	} else {
 		testChar(ch, 0, frame);
 	}
+}
+
+TEST_CASE("Flags") {
+	const MapGuard mg;
+
+	auto ch = MakeEvent(lcf::rpg::EventPage::AnimType_non_continuous, 4);
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
+
+	REQUIRE(ch.IsAnimated());
+	REQUIRE(!ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_continuous);
+
+	REQUIRE(ch.IsAnimated());
+	REQUIRE(ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_non_continuous);
+
+	REQUIRE(ch.IsAnimated());
+	REQUIRE(!ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_continuous);
+
+	REQUIRE(ch.IsAnimated());
+	REQUIRE(ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_fixed_graphic);
+
+	REQUIRE(!ch.IsAnimated());
+	REQUIRE(!ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_spin);
+
+	REQUIRE(ch.IsAnimated());
+	REQUIRE(!ch.IsContinuous());
+	REQUIRE(ch.IsSpinning());
+
+	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_step_frame_fix);
+
+	REQUIRE(!ch.IsAnimated());
+	REQUIRE(!ch.IsContinuous());
+	REQUIRE(!ch.IsSpinning());
 }
 
 TEST_CASE("Standing") {
@@ -255,6 +326,16 @@ TEST_CASE("ResetStep") {
 			testCenterStep(at, speed, lcf::rpg::EventPage::Frame_middle);
 		}
 	}
+}
+
+TEST_CASE("SpinFacingLocked") {
+	const MapGuard mg;
+
+	auto ch = MakeEvent(lcf::rpg::EventPage::AnimType_spin, 4);
+	ch.SetFacingLocked(true);
+
+	// Continues spinning even with facing locked flag set
+	testAnimSpin(ch, false, false);
 }
 
 TEST_SUITE_END();
