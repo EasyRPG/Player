@@ -394,8 +394,22 @@ public:
 	 */
 	static constexpr int GetMaxStopCountForWait(int freq);
 
+	/**
+	 * @return the number of frames for animating steps while not moving
+	 * @param speed the movement speed.
+	 */
 	static constexpr int GetStationaryAnimFrames(int speed);
+
+	/**
+	 * @return the number of frames for animating steps while moving or continuous.
+	 * @param speed the movement speed.
+	 */
 	static constexpr int GetContinuousAnimFrames(int speed);
+
+	/**
+	 * @return the number of frames for animating steps while spinning.
+	 * @param speed the movement speed.
+	 */
 	static constexpr int GetSpinAnimFrames(int speed);
 
 	/**
@@ -1265,7 +1279,7 @@ constexpr int Game_Character::GetContinuousAnimFrames(int speed) {
 }
 
 constexpr int Game_Character::GetSpinAnimFrames(int speed) {
-	constexpr int limits[] = { 24, 15, 12, 8, 6, 4 };
+	constexpr int limits[] = { 24, 16, 12, 8, 6, 4 };
 	return limits[speed - 1];
 }
 

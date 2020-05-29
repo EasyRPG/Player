@@ -9,6 +9,27 @@
 
 #include "test_move_route.h"
 
+static_assert(Game_Character::GetStationaryAnimFrames(1) == 12, "AnimFrames broken");
+static_assert(Game_Character::GetStationaryAnimFrames(2) == 10, "AnimFrames broken");
+static_assert(Game_Character::GetStationaryAnimFrames(3) == 8, "AnimFrames broken");
+static_assert(Game_Character::GetStationaryAnimFrames(4) == 6, "AnimFrames broken");
+static_assert(Game_Character::GetStationaryAnimFrames(5) == 5, "AnimFrames broken");
+static_assert(Game_Character::GetStationaryAnimFrames(6) == 4, "AnimFrames broken");
+
+static_assert(Game_Character::GetContinuousAnimFrames(1) == 16, "AnimFrames broken");
+static_assert(Game_Character::GetContinuousAnimFrames(2) == 12, "AnimFrames broken");
+static_assert(Game_Character::GetContinuousAnimFrames(3) == 10, "AnimFrames broken");
+static_assert(Game_Character::GetContinuousAnimFrames(4) == 8, "AnimFrames broken");
+static_assert(Game_Character::GetContinuousAnimFrames(5) == 7, "AnimFrames broken");
+static_assert(Game_Character::GetContinuousAnimFrames(6) == 6, "AnimFrames broken");
+
+static_assert(Game_Character::GetSpinAnimFrames(1) == 24, "AnimFrames broken");
+static_assert(Game_Character::GetSpinAnimFrames(2) == 16, "AnimFrames broken");
+static_assert(Game_Character::GetSpinAnimFrames(3) == 12, "AnimFrames broken");
+static_assert(Game_Character::GetSpinAnimFrames(4) == 8, "AnimFrames broken");
+static_assert(Game_Character::GetSpinAnimFrames(5) == 6, "AnimFrames broken");
+static_assert(Game_Character::GetSpinAnimFrames(6) == 4, "AnimFrames broken");
+
 TEST_SUITE_BEGIN("Game_Character_Anim");
 
 static void testChar( const Game_Character& ch, int anim_count, int anim_frame)
