@@ -7,10 +7,12 @@
 #include "game_player.h"
 #include "game_party.h"
 #include "main_data.h"
+#include "map_data.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_screen.h"
 #include "game_pictures.h"
+#include "input.h"
 #include "output.h"
 #include <lcf/data.h>
 #include <lcf/rpg/moveroute.h>
@@ -62,6 +64,7 @@ struct MapGuard {
 	MapGuard(int w = 20, int h = 15) {
 		Output::SetLogLevel(LogLevel::Error);
 
+		Input::ResetKeys();
 		Main_Data::game_party = std::make_unique<Game_Party>();
 
 		auto& treemap = lcf::Data::treemap;
@@ -73,6 +76,7 @@ struct MapGuard {
 		treemap.maps.back().type = lcf::rpg::TreeMap::MapType_map;
 
 		lcf::Data::chipsets.push_back({});
+		lcf::Data::terrains.push_back({});
 
 		Game_Map::Init();
 		Main_Data::game_switches = std::make_unique<Game_Switches>();
@@ -89,8 +93,11 @@ struct MapGuard {
 		map->events.back().pages.back().ID = 1;
 		map->events.back().pages.back().move_type = lcf::rpg::EventPage::MoveType_stationary;
 		map->events.back().pages.back().character_pattern = 1;
+		// FIXME: Add a SetSize(w, h) method?
 		map->width = w;
 		map->height = h;
+		map->upper_layer.resize(w * h, BLOCK_F);
+		map->lower_layer.resize(w * h, 0);
 
 		Game_Map::Setup(std::move(map));
 		Output::SetLogLevel(LogLevel::Debug);
@@ -105,8 +112,10 @@ struct MapGuard {
 		Game_Map::Quit();
 		lcf::Data::treemap = {};
 		lcf::Data::chipsets = {};
+		lcf::Data::terrains = {};
 
 		Main_Data::game_party.reset();
+		Input::ResetKeys();
 	}
 };
 

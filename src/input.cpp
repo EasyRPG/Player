@@ -187,7 +187,9 @@ void Input::ResetKeys() {
 	// TODO: we want Input to be agnostic to where the button
 	// presses are coming from, and if there's a UI at all.
 	// Move this into the callers?
-	DisplayUi->GetKeyStates().reset();
+	if (DisplayUi) {
+		DisplayUi->GetKeyStates().reset();
+	}
 }
 
 void Input::ResetTriggerKeys() {
