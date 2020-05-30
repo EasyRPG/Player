@@ -8,6 +8,9 @@
 #include "game_party.h"
 #include "main_data.h"
 #include "game_switches.h"
+#include "game_variables.h"
+#include "game_screen.h"
+#include "game_pictures.h"
 #include "output.h"
 #include <lcf/data.h>
 #include <lcf/rpg/moveroute.h>
@@ -56,7 +59,7 @@ class MoveRouteEvent : public Game_Event {
 };
 
 struct MapGuard {
-	MapGuard() {
+	MapGuard(int w = 20, int h = 15) {
 		Output::SetLogLevel(LogLevel::Error);
 
 		Main_Data::game_party = std::make_unique<Game_Party>();
@@ -73,6 +76,9 @@ struct MapGuard {
 
 		Game_Map::Init();
 		Main_Data::game_switches = std::make_unique<Game_Switches>();
+		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
+		Main_Data::game_pictures = std::make_unique<Game_Pictures>();
+		Main_Data::game_screen = std::make_unique<Game_Screen>();
 		Main_Data::game_player = std::make_unique<Game_Player>();
 		Main_Data::game_player->SetMapId(1);
 
@@ -83,6 +89,8 @@ struct MapGuard {
 		map->events.back().pages.back().ID = 1;
 		map->events.back().pages.back().move_type = lcf::rpg::EventPage::MoveType_stationary;
 		map->events.back().pages.back().character_pattern = 1;
+		map->width = w;
+		map->height = h;
 
 		Game_Map::Setup(std::move(map));
 		Output::SetLogLevel(LogLevel::Debug);
@@ -90,7 +98,10 @@ struct MapGuard {
 
 	~MapGuard() {
 		Main_Data::game_switches = {};
+		Main_Data::game_variables = {};
 		Main_Data::game_player = {};
+		Main_Data::game_screen = {};
+		Main_Data::game_pictures = {};
 		Game_Map::Quit();
 		lcf::Data::treemap = {};
 		lcf::Data::chipsets = {};
