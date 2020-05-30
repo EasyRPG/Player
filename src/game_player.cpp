@@ -141,16 +141,20 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 		data()->pan_current_x = lcf::rpg::SavePartyLocation::kPanXDefault;
 		data()->pan_current_y = lcf::rpg::SavePartyLocation::kPanYDefault;
 
+		ResetAnimation();
+
 		auto map = Game_Map::loadMapFile(GetMapId());
 
 		Game_Map::Setup(std::move(map));
 		Game_Map::PlayBgm();
+
+		// This Fixes an RPG_RT bug where the jumping flag doesn't get reset
+		// if you change maps during a jump
+		SetJumping(false);
 	} else {
 		Game_Map::SetPositionX(GetSpriteX() - GetPanX());
 		Game_Map::SetPositionY(GetSpriteY() - GetPanY());
 	}
-
-	ResetAnimation();
 
 	ResetGraphic();
 }

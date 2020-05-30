@@ -5,6 +5,7 @@
 #include "game_vehicle.h"
 #include "game_event.h"
 #include "game_player.h"
+#include "game_party.h"
 #include "main_data.h"
 #include "game_switches.h"
 #include "output.h"
@@ -57,6 +58,9 @@ class MoveRouteEvent : public Game_Event {
 struct MapGuard {
 	MapGuard() {
 		Output::SetLogLevel(LogLevel::Error);
+
+		Main_Data::game_party = std::make_unique<Game_Party>();
+
 		auto& treemap = lcf::Data::treemap;
 		treemap = {};
 		treemap.maps.push_back(lcf::rpg::MapInfo());
@@ -90,6 +94,8 @@ struct MapGuard {
 		Game_Map::Quit();
 		lcf::Data::treemap = {};
 		lcf::Data::chipsets = {};
+
+		Main_Data::game_party.reset();
 	}
 };
 
