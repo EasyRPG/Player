@@ -21,8 +21,7 @@
 // Headers
 #include <string>
 #include <iosfwd>
-#include <fmt/format.h>
-#include <fmt/ostream.h>
+#include <fmt/core.h>
 
 /**
  * Output Namespace.
