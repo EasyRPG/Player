@@ -13,11 +13,11 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	const auto& path = (arg_path.empty()) ? default_path : arg_path;
 
 	if (!path.empty()) {
-		cfg.loadFromConfig(path);
+		cfg.LoadFromConfig(path);
 	}
 
 	cp.Rewind();
-	cfg.loadFromArgs(cp);
+	cfg.LoadFromArgs(cp);
 
 	return cfg;
 }
@@ -47,7 +47,7 @@ std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 	return path;
 }
 
-void Game_Config::loadFromArgs(CmdlineParser& cp) {
+void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 	while (!cp.Done()) {
 		CmdlineArg arg;
 		long li_value = 0;
@@ -108,7 +108,7 @@ void Game_Config::loadFromArgs(CmdlineParser& cp) {
 	}
 }
 
-void Game_Config::loadFromConfig(const std::string& path) {
+void Game_Config::LoadFromConfig(const std::string& path) {
 	this->config_path = path;
 
 	lcf::INIReader ini(path);

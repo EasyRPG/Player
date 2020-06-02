@@ -71,7 +71,7 @@ struct Game_Config {
 	 * @param path the path to config file.
 	 * @post values of this are updated with values found in config file.
 	 */
-	void loadFromConfig(const std::string& path);
+	void LoadFromConfig(const std::string& path);
 
 	/**
 	 * Load configuration values from a command line arguments.
@@ -79,7 +79,7 @@ struct Game_Config {
 	 * @param cp the command line parser to use.
 	 * @post values of this are updated with values found in command line args.
 	 */
-	void loadFromArgs(CmdlineParser& cp);
+	void LoadFromArgs(CmdlineParser& cp);
 
 	/**
 	 * Writes our configuration to the given config file

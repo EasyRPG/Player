@@ -32,19 +32,19 @@ class ConfigParam {
 public:
 	using value_type = T;
 
-    explicit ConfigParam(T value = {}) : _value(std::move(value)) {}
+	explicit ConfigParam(T value = {}) : _value(std::move(value)) {}
 
-    const T& Get() const { return _value; }
+	const T& Get() const { return _value; }
 
-    bool Set(T value) {
-        if (IsValid(value)) {
-            _value = std::move(value);
-            return true;
-        }
-        return false;
-    }
+	bool Set(T value) {
+		if (IsValid(value)) {
+			_value = std::move(value);
+			return true;
+		}
+		return false;
+	}
 
-    bool IsValid(const T& value) const {
+	bool IsValid(const T& value) const {
 		return true;
 	}
 
@@ -57,7 +57,7 @@ public:
 	}
 
 private:
-    T _value = {};
+	T _value = {};
 };
 
 using StringConfigParam = ConfigParam<std::string>;
@@ -69,11 +69,11 @@ public:
 	using value_type = T;
 
 	/** Construct with name and initial value */
-    constexpr explicit RangeConfigParam(T value = {})
+	constexpr explicit RangeConfigParam(T value = {})
 		: _value(value) {}
 
 	/** Construct with name and initial value, min, and max */
-    constexpr RangeConfigParam(T value, T minval, T maxval)
+	constexpr RangeConfigParam(T value, T minval, T maxval)
 		: _value(value) { SetRange(minval, maxval); }
 
 	/**
@@ -82,25 +82,25 @@ public:
 	 * @param value the new value to set
 	 * @return true if value was set, false otherwise
 	 */
-    constexpr bool Set(T value) {
-        if (IsValid(value)) {
-            _value = std::move(value);
-            return true;
-        }
-        return false;
-    }
+	constexpr bool Set(T value) {
+		if (IsValid(value)) {
+			_value = std::move(value);
+			return true;
+		}
+		return false;
+	}
 
 	/** @return if Enabled(), return the current value. Otherwise the result is undefined. */
-    constexpr T Get() const { return _value;  }
+	constexpr T Get() const { return _value;  }
 
 	/**
 	 * Check if a value is valid
 	 * @param value the value to check
 	 * @return true if this value can be set
 	 */
-    constexpr bool IsValid(T value) const {
-        return value >= _min && value <= _max;
-    }
+	constexpr bool IsValid(T value) const {
+		return value >= _min && value <= _max;
+	}
 
 	/** @return true if this parameter can take a value, or false if disabled */
 	constexpr bool Enabled() const {
@@ -118,7 +118,7 @@ public:
 	 * @post If the current value is < minval, it will be set equal to minval
 	 * @post If the current maximum < minval, this parameter is disabled.
 	 */
-    constexpr void SetMin(T minval) { SetRange(minval, _max); }
+	constexpr void SetMin(T minval) { SetRange(minval, _max); }
 
 	/** 
 	 * Set maximum allowed value.
@@ -126,7 +126,7 @@ public:
 	 * @post If the current value is > maxval, it will be set equal to maxval
 	 * @post If the current minimum > maxval, this parameter is disabled.
 	 */
-    constexpr void SetMax(T maxval) { SetRange(_min, maxval); }
+	constexpr void SetMax(T maxval) { SetRange(_min, maxval); }
 
 	/** 
 	 * Set allowed range of values.
@@ -135,12 +135,12 @@ public:
 	 * @post If the current value is outside the range, it will be clamped.
 	 * @post If the minval > maxval, this parameter is disabled.
 	 */
-    constexpr void SetRange(T minval, T maxval) {
-        _min = minval;
-        _max = maxval;
-        _value = (_value < _min) ? _min : _value;
-        _value = (_value > _max) ? _max : _value;
-    }
+	constexpr void SetRange(T minval, T maxval) {
+		_min = minval;
+		_max = maxval;
+		_value = (_value < _min) ? _min : _value;
+		_value = (_value > _max) ? _max : _value;
+	}
 
 	/** Disable this parameter, not allowing it to take on any valid values */
 	constexpr void Disable() {
@@ -158,9 +158,9 @@ public:
 	}
 private:
 	// FIXME: Storage can be optimized to 1 byte for bool case.
-    T _value = {};
-    T _min = std::numeric_limits<T>::min();
-    T _max = std::numeric_limits<T>::max();
+	T _value = {};
+	T _min = std::numeric_limits<T>::min();
+	T _max = std::numeric_limits<T>::max();
 };
 
 using IntConfigParam = RangeConfigParam<int>;
@@ -175,19 +175,19 @@ class BoolConfigParam {
 public:
 	using value_type = bool;
 
-    explicit constexpr BoolConfigParam(bool value = false) : _value(value) {}
+	explicit constexpr BoolConfigParam(bool value = false) : _value(value) {}
 
-    constexpr bool Get() const { return _value & 1; }
+	constexpr bool Get() const { return _value & 1; }
 
-    constexpr bool Set(bool value) {
-        if (IsValid(value)) {
+	constexpr bool Set(bool value) {
+		if (IsValid(value)) {
 			_value = value + (_value & 0b110);
-            return true;
-        }
-        return false;
-    }
+			return true;
+		}
+		return false;
+	}
 
-    constexpr bool IsValid(bool value) const {
+	constexpr bool IsValid(bool value) const {
 		return !(_value & (1 << (1 + value)));
 	}
 
@@ -218,22 +218,22 @@ class SetConfigParam {
 public:
 	using value_type = T;
 
-    explicit SetConfigParam(T value = {}) : _value{ value }, _valid{ {value} } {}
-    SetConfigParam(T value, std::initializer_list<T> valid) : _value{ value }, _valid{ valid } { AddToValidSet(_value); }
+	explicit SetConfigParam(T value = {}) : _value{ value }, _valid{ {value} } {}
+	SetConfigParam(T value, std::initializer_list<T> valid) : _value{ value }, _valid{ valid } { AddToValidSet(_value); }
 
-    bool Set(T value) {
-        if (IsValid(value)) {
-            _value = value;
-            return true;
-        }
-        return false;
-    }
+	bool Set(T value) {
+		if (IsValid(value)) {
+			_value = value;
+			return true;
+		}
+		return false;
+	}
 
-    const T& Get() const {
+	const T& Get() const {
 		return _value;
 	}
 
-    bool IsValid(const T& value) const {
+	bool IsValid(const T& value) const {
 		auto iter = std::find(_valid.begin(), _valid.end(), value);
 		return iter != _valid.end();
 	}
@@ -246,7 +246,7 @@ public:
 		return _valid.size() <= 1;
 	}
 
-    void ReplaceValidSet(std::vector<T> v) {
+	void ReplaceValidSet(std::vector<T> v) {
 		_valid = std::move(v);
 		if (!_valid.empty() && !IsValid(_value)) {
 			_value = _valid.front();
@@ -279,8 +279,8 @@ public:
 		_valid = { _value };
 	}
 private:
-    T _value = {};
-    std::vector<T> _valid = {};
+	T _value = {};
+	std::vector<T> _valid = {};
 };
 
 template <typename E>
@@ -288,22 +288,22 @@ class EnumConfigParam {
 public:
 	using value_type = E;
 
-    explicit EnumConfigParam(E value = {}) : _value{ value } {}
-    EnumConfigParam(E value, std::initializer_list<E> valid) : _value{ value }, _valid{ valid } { _valid[_value] = true; }
+	explicit EnumConfigParam(E value = {}) : _value{ value } {}
+	EnumConfigParam(E value, std::initializer_list<E> valid) : _value{ value }, _valid{ valid } { _valid[_value] = true; }
 
-    bool Set(E value) {
-        if (IsValid(value)) {
-            _value = value;
-            return true;
-        }
-        return false;
-    }
+	bool Set(E value) {
+		if (IsValid(value)) {
+			_value = value;
+			return true;
+		}
+		return false;
+	}
 
-    const E& Get() const {
+	const E& Get() const {
 		return _value;
 	}
 
-    bool IsValid(const E& value) const {
+	bool IsValid(const E& value) const {
 		return _valid[value];
 	}
 
@@ -315,7 +315,7 @@ public:
 		return _valid.count() <= 1;
 	}
 
-    void ReplaceValidSet(lcf::FlagSet<E> valid) {
+	void ReplaceValidSet(lcf::FlagSet<E> valid) {
 		_valid = std::move(valid);
 		if (Enabled() && !IsValid(_value)) {
 			_value = GetFirstValid();
@@ -343,7 +343,7 @@ public:
 		_valid[value] = true;
 	}
 private:
-    E _value = {};
+	E _value = {};
 	lcf::FlagSet<E> _valid = ~lcf::FlagSet<E>();
 
 	E GetFirstValid() const {
@@ -360,18 +360,18 @@ private:
 // Type trait which detects whether CP meets the ConfigParam concept
 template <typename CP>
 struct IsConfigParamT {
-	private:
-		static std::false_type test(...);
-		template <typename U,
-				 typename T = typename U::value_type,
-				 typename = decltype(std::declval<U>().Get()),
-				 typename = decltype(std::declval<U>().Set(std::declval<T>())),
-				 typename = decltype(std::declval<U>().IsValid(std::declval<T>())),
-				 typename = decltype(std::declval<U>().Enabled()),
-				 typename = decltype(std::declval<U>().Locked())
-					 > static std::true_type test(U&&);
-	public:
-		static constexpr auto value = decltype(test(std::declval<CP>()))::value;
+private:
+	static std::false_type test(...);
+	template <typename U,
+			 typename T = typename U::value_type,
+			 typename = decltype(std::declval<U>().Get()),
+			 typename = decltype(std::declval<U>().Set(std::declval<T>())),
+			 typename = decltype(std::declval<U>().IsValid(std::declval<T>())),
+			 typename = decltype(std::declval<U>().Enabled()),
+			 typename = decltype(std::declval<U>().Locked())
+				 > static std::true_type test(U&&);
+public:
+	static constexpr auto value = decltype(test(std::declval<CP>()))::value;
 };
 
 #endif
