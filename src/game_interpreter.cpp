@@ -957,15 +957,11 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		case 1:
 			// Var A ops B
-			if (com.parameters[0] != 1) {
-				value = Main_Data::game_variables->Get(com.parameters[5]);
-			}
+			value = Main_Data::game_variables->Get(com.parameters[5]);
 			break;
 		case 2:
 			// Number of var A ops B
-			if (com.parameters[0] != 1) {
-				value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
-			}
+			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
 			break;
 		case 3:
 			// Random between range
@@ -2519,18 +2515,21 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		}
 		params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 		params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
-		params.spritesheet_cols = com.parameters[22];
-		params.spritesheet_rows = com.parameters[23];
+		if (com.parameters[22] > 0) {
+			// If spritesheet is enabled
+			params.spritesheet_cols = com.parameters[22];
+			params.spritesheet_rows = com.parameters[23];
 
-		// Animate and index selection are exclusive
-		if (com.parameters[24] == 2) {
-			params.spritesheet_speed = com.parameters[25];
-		} else {
-			// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
-			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
+			// Animate and index selection are exclusive
+			if (com.parameters[24] == 2) {
+				params.spritesheet_speed = com.parameters[25];
+				params.spritesheet_play_once = com.parameters[26];
+			} else {
+				// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
+				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
+			}
 		}
 
-		params.spritesheet_play_once = com.parameters[26];
 		params.map_layer = com.parameters[27];
 		params.battle_layer = com.parameters[28];
 		params.flags = com.parameters[29];
