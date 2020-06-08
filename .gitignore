@@ -1,6 +1,6 @@
 /bin/
-Makefile
-easyrpg-player
+/Makefile
+/easyrpg-player
 *.a
 *.elf
 *.o
@@ -90,7 +90,6 @@ __MACOSX
 
 # legacy
 /lib/liblcf/
-liblcf.pc
 .buildconfig
 
 # Android

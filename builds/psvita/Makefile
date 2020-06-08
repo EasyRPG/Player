@@ -36,7 +36,7 @@ CPPFLAGS = -DPSP2 -DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 		-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
 		-I../../src \
 		-I$(TOOLCHAIN_DIR)/include \
-		-I$(LIBLCF_DIR)/include/liblcf \
+		-I$(LIBLCF_DIR)/include \
 		-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 		-I$(TOOLCHAIN_DIR)/include/freetype2 \
 		-I$(TOOLCHAIN_DIR)/include/libxmp-lite \

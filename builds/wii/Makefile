@@ -113,8 +113,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					-I$(TOOLCHAIN_DIR)/include/freetype2 \
 					-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 					-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-					-I$(TOOLCHAIN_DIR)/include/opus \
-					-I$(LIBLCF_DIR)/include/liblcf
+					-I$(TOOLCHAIN_DIR)/include/opus
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

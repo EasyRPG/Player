@@ -65,8 +65,6 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 			-DHAVE_LIBSAMPLERATE -DWANT_FMMIDI -DWANT_FASTWAV \
-			-I$(TOOLCHAIN_DIR)/include \
-			-I$(LIBLCF_DIR)/include/liblcf \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 			-I$(TOOLCHAIN_DIR)/include/opus \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \

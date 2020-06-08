@@ -57,7 +57,7 @@ ICU_LIBS = -licuuc -licui18n -licudata
 ifeq ($(strip $(LIBLCF_DIR)),)
 LIBLCF_DIR := $(TOOLCHAIN_DIR)
 endif
-LCF_CFLAGS = -I$(LIBLCF_DIR)/include/liblcf
+LCF_CFLAGS = -I$(LIBLCF_DIR)/include
 LCF_LIBS = -L$(LIBLCF_DIR)/lib -llcf
 
 LIBS = $(LCF_LIBS) \

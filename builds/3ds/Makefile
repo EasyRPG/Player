@@ -146,8 +146,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 			-I$(TOOLCHAIN_DIR)/include/freetype2 \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-			-I$(TOOLCHAIN_DIR)/include/opus \
-			-I$(LIBLCF_DIR)/include/liblcf
+			-I$(TOOLCHAIN_DIR)/include/opus
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
