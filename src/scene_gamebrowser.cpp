@@ -39,6 +39,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 }
 
 void Scene_GameBrowser::Start() {
+	initial_debug_flag = Player::debug_flag;
 	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
@@ -62,6 +63,8 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 
 	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 	Game_System::BgmStop();
+
+	Player::debug_flag = initial_debug_flag;
 }
 
 void Scene_GameBrowser::Update() {
@@ -159,6 +162,10 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 		old_gamelist_index = gamelist_window->GetIndex();
 		gamelist_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
+		load_window->SetVisible(true);
+		game_loading = true;
+	} else if (Input::IsTriggered(Input::DEBUG_MENU) || Input::IsTriggered(Input::SHIFT)) {
+		Player::debug_flag = true;
 		load_window->SetVisible(true);
 		game_loading = true;
 	}
