@@ -268,6 +268,14 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
 		#endif
 
+		#if defined(__APPLE__) && TARGET_OS_OSX
+		// Use OpenGL on Mac only -- to work around an SDL Metal deficiency
+		// where it will always use discrete GPU.
+		// See SDL source code:
+		// http://hg.libsdl.org/SDL/file/aa9d7c43a982/src/render/metal/SDL_render_metal.m#l1613
+		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+		#endif
+
 		// Create our window
 		sdl_window = SDL_CreateWindow(GAME_TITLE,
 			SDL_WINDOWPOS_CENTERED,

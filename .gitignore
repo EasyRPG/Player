@@ -1,6 +1,7 @@
 /bin/
 /Makefile
 /easyrpg-player
+/Player.app
 *.a
 *.elf
 *.o
