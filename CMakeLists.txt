@@ -54,6 +54,8 @@ add_library(${PROJECT_NAME}
 	src/color.h
 	src/compiler.h
 	src/config_param.h
+	src/decoder_fluidsynth.cpp
+	src/decoder_fluidsynth.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h
 	src/decoder_mpg123.cpp
@@ -626,6 +628,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" O
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
@@ -696,6 +699,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 		CONDITION PLAYER_WITH_WILDMIDI
 		DEFINITION HAVE_WILDMIDI
 		TARGET WildMidi::WildMidi)
+
+	# fluidsynth
+	player_find_package(NAME FluidSynth
+		CONDITION PLAYER_WITH_FLUIDSYNTH
+		DEFINITION HAVE_FLUIDSYNTH
+		TARGET fluidsynth::fluidsynth)
 
 	# xmp (lite)
 	player_find_package(NAME XMP

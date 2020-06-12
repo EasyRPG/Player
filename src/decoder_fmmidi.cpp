@@ -42,7 +42,7 @@ FmMidiDecoder::FmMidiDecoder() {
 FmMidiDecoder::~FmMidiDecoder() {
 }
 
-int read_func(void* instance) {
+static int read_func(void* instance) {
 	FmMidiDecoder* fmmidi = reinterpret_cast<FmMidiDecoder*>(instance);
 
 	if (fmmidi->file_buffer_pos >= fmmidi->file_buffer.size()) {
