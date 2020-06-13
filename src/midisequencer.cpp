@@ -260,7 +260,7 @@ namespace midisequencer{
         unsigned num_tracks = (t0 << 8) | t1;
         int d0 = fgetc(fp);
         int d1 = fgetc(fp);
-        unsigned division = (d0 << 8) | d1;
+        division = (d0 << 8) | d1;
         for(unsigned track = 0; track < num_tracks; ++track){
             if(fgetc(fp) != 0x4D || fgetc(fp) != 0x54 || fgetc(fp) != 0x72 || fgetc(fp) != 0x6B){
                 Output::Warning("Midi sequencer: invalid track header");
@@ -439,6 +439,10 @@ namespace midisequencer{
             }
         }
     }
+
+	uint32_t sequencer::get_division() const {
+		return division;
+	}
 }
 
 #endif
