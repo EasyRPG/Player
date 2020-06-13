@@ -60,6 +60,7 @@ namespace midisequencer{
     sequencer::sequencer():
         position(messages.begin())
     {
+        loop_position = position;
     }
     void sequencer::clear()
     {
@@ -70,6 +71,11 @@ namespace midisequencer{
     void sequencer::rewind()
     {
         position = messages.begin();
+    }
+    float sequencer::rewind_to_loop()
+    {
+        position = loop_position;
+        return loop_position->time;
     }
     bool sequencer::load(void* fp, int(*fgetc)(void*))
     {
@@ -362,7 +368,7 @@ namespace midisequencer{
                                 int subframe = static_cast<unsigned char>(s[5]);
                                 double fps;
                                 switch(hour >> 5){
-				default: // line added by nextvolume (2015-02-25)
+                                default: // line added by nextvolume (2015-02-25)
                                 case 0:
                                     fps = 24;
                                     break;
@@ -434,6 +440,15 @@ namespace midisequencer{
                               | static_cast<unsigned char>(s[3]);
                         base = org_time;
                         time_offset = i->time;
+                    }
+                }
+                // If the message matches the de facto standard MIDI loop instruction:
+                // Which is a Control Change on Channel 1 with Value 111
+                if ((i->message & 0xFFFF) == 0x6FB0) {
+                    // Loop backwards through the messages to find the first message with the same
+                    // timestamp as the loop message
+                    for (std::vector<midi_message>::iterator j = i; j != messages.begin() && j->time >= i->time; j--) {
+                        loop_position = j;
                     }
                 }
             }

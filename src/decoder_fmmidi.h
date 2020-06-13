@@ -65,6 +65,12 @@ private:
 	float mtime_last_tempo_change = 0.0f;
 	int ticks_last_tempo_change = 0;
 
+	// Save mtime_last_tempo_change, ticks_last_tempo_change, and tempo
+	// state at loopstart
+	int ticks_ltc_loopstart = 0;
+	float mtime_ltc_loopstart = 0.0f;
+	uint32_t tempo_loopstart = 500000;
+
 	// midisequencer::output interface
 	int synthesize(int_least16_t* output, std::size_t samples, float rate);
 	void midi_message(int, uint_least32_t message) override;

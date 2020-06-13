@@ -73,10 +73,15 @@ bool FmMidiDecoder::Open(FILE* file) {
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 	if (offset == 0 && origin == Origin::Begin) {
-		mtime = 0.0f;
-		mtime_last_tempo_change = 0.0f;
-		ticks_last_tempo_change = 0;
-		seq->rewind();
+		mtime = seq->rewind_to_loop();
+		mtime_last_tempo_change = mtime_ltc_loopstart;
+		ticks_last_tempo_change = ticks_ltc_loopstart;
+		if (mtime > 0.0f) {
+			// Bit of a hack, prevent stuck notes
+			// TODO: verify with a MIDI event stream inspector whether RPG_RT does this?
+			synth->all_note_off();
+			tempo = tempo_loopstart;
+		}
 		begin = true;
 
 		return true;
@@ -140,6 +145,13 @@ int FmMidiDecoder::synthesize(int_least16_t * output, std::size_t samples, float
 }
 
 void FmMidiDecoder::midi_message(int, uint_least32_t message) {
+	// If message is a B06F loopstart control change...
+	if ((message & 0xFFFF) == 0x6FB0) {
+		// Save the state of these fields to restore them when looping
+		tempo_loopstart = tempo;
+		mtime_ltc_loopstart = mtime_last_tempo_change;
+		ticks_ltc_loopstart = ticks_last_tempo_change;
+	}
 	synth->midi_event(message);
 }
 
