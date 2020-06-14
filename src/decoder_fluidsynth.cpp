@@ -21,7 +21,55 @@
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 
 #include <cassert>
+#include "filefinder.h"
 #include "output.h"
+
+#ifdef HAVE_FLUIDSYNTH
+static void* vio_open(const char* filename) {
+#else
+static void* vio_open(fluid_fileapi_t*, const char* filename) {
+#endif
+	auto is = FileFinder::OpenInputStream(filename);
+	return new Filesystem_Stream::InputStream { std::move(is) };
+}
+
+static int vio_read(void *ptr, int count, void* userdata) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
+}
+
+static int vio_seek(void* userdata, long offset, int origin) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	if (f->eof()) f->clear(); // emulate behaviour of fseek
+
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(origin));
+
+	return f->tellg();
+}
+
+static long vio_tell(void* userdata) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	return f->tellg();
+}
+
+static int vio_close(void* userdata) {
+	auto stream_ref = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	delete stream_ref;
+
+	return 0;
+}
+
+#ifdef HAVE_FLUIDLITE
+static fluid_fileapi_t fluidlite_vio = {
+	nullptr,
+	nullptr,
+	vio_open,
+	vio_read,
+	vio_seek,
+	vio_close,
+	vio_tell
+};
+#endif
 
 struct FluidSettingsDeleter {
 	void operator()(fluid_settings_t* s) const {
@@ -38,11 +86,18 @@ struct FluidSynthDeleter {
 namespace {
 	std::unique_ptr<fluid_settings_t, FluidSettingsDeleter> global_settings;
 	std::unique_ptr<fluid_synth_t, FluidSynthDeleter> global_synth;
+#ifdef HAVE_FLUIDSYNTH
+	fluid_sfloader_t* global_loader; // owned by global_settings
+#endif
 	int instances = 0;
 }
 
 static fluid_synth_t* create_synth(std::string& error_message) {
 	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
+
+#ifdef HAVE_FLUIDSYNTH
+	fluid_synth_add_sfloader(syn, global_loader);
+#endif
 
 	if (fluid_synth_sfload(syn, "easyrpg.soundfont", 1) == FLUID_FAILED) {
 		error_message = "Could not load soundfont.";
@@ -90,6 +145,10 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		return init;
 	once = true;
 
+#ifdef HAVE_FLUIDLITE
+	fluid_set_default_fileapi(&fluidlite_vio);
+#endif
+
 	if (!global_settings) {
 		global_settings.reset(new_fluid_settings());
 		fluid_settings_setstr(global_settings.get(), "player.timing-source", "sample");
@@ -98,6 +157,13 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		fluid_settings_setnum(global_settings.get(), "synth.gain", 0.6);
 		fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
 		fluid_settings_setint(global_settings.get(), "synth.polyphony", 32);
+
+#ifdef HAVE_FLUIDSYNTH
+		// owned by fluid_settings
+		global_loader = new_fluid_defsfloader(global_settings.get());
+		fluid_sfloader_set_callbacks(global_loader,
+				vio_open, vio_read, vio_seek, vio_tell, vio_close);
+#endif
 	}
 
 	if (!global_synth) {
