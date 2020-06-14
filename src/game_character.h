@@ -383,13 +383,13 @@ public:
 	 * @return turning max_stop_count for the given frequency
 	 * @param freq input movement frequency
 	 */
-	constexpr int GetMaxStopCountForTurn(int freq);
+	static constexpr int GetMaxStopCountForTurn(int freq);
 
 	/**
 	 * @return waiting max_stop_count for the given frequency
 	 * @param freq input movement frequency
 	 */
-	constexpr int GetMaxStopCountForWait(int freq);
+	static constexpr int GetMaxStopCountForWait(int freq);
 
 	/**
 	 * Sets the max_stop_count
