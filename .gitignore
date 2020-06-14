@@ -23,6 +23,7 @@ libtool
 /builds/autoconf/aux/
 /builds/autoconf/m4/*.m4
 !/builds/autoconf/m4/ax_*.m4
+!/builds/autoconf/m4/with_pkg.m4
 stamp-h1
 .dirstamp
 *.la

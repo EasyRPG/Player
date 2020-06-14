@@ -34,19 +34,26 @@ AS_IF([test "x$want_fmmidi" != "x"],
 AM_CONDITIONAL([WANT_FMMIDI],[test "x$want_fmmidi" != "x"])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([LCF],[liblcf])
-PKG_CHECK_MODULES([PIXMAN],[pixman-1])
-AC_ARG_WITH([freetype], AS_HELP_STRING([--without-freetype], [Disable FreeType font rendering @<:@default=auto@:>@]))
-AS_IF([test "x$with_freetype" != "xno"], [
-	PKG_CHECK_MODULES([FREETYPE],[freetype2],[AC_DEFINE(HAVE_FREETYPE,[1],[Enable FreeType font rendering])],[auto_freetype=0])
-	AC_ARG_WITH([harfbuzz], AS_HELP_STRING([--without-harfbuzz], [Disable HarfBuzz text shaping @<:@default=auto@:>@]))
-	AS_IF([test "x$with_harfbuzz" != "xno"], [
-		PKG_CHECK_MODULES([HARFBUZZ],[harfbuzz],[AC_DEFINE(HAVE_HARFBUZZ,[1],[Enable HarfBuzz text shaping])],[auto_harfbuzz=0])
+AC_DEFUN([EP_PKG_CHECK],[ dnl VARIABLE-PREFIX, MODULES, [DESCRIPTION], [DEFAULT=auto]
+	PKG_WITH_MODULES([$1],[$2],,,[$3],[$4])
+	AS_IF([test "$AS_TR_SH([with_]m4_tolower([$1]))" = "yes"],[
+		AC_DEFINE([HAVE_][$1], [1], [$3])
 	])
 ])
+
+PKG_CHECK_MODULES([LCF],[liblcf])
+PKG_CHECK_MODULES([PIXMAN],[pixman-1])
+PKG_CHECK_MODULES([ZLIB],[zlib])
+PKG_CHECK_MODULES([PNG],[libpng])
+PKG_CHECK_MODULES([FMT],[fmt >= 5.3])
 PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[AC_DEFINE(USE_SDL,[2],[Enable SDL2])],[
 	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
 ])
+EP_PKG_CHECK([FREETYPE],[freetype2],[Custom Font rendering.])
+AS_IF([test "$with_freetype" = "yes"],[
+	EP_PKG_CHECK([HARFBUZZ],[harfbuzz],[Custom Font text shaping.])
+])
+
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
 AS_IF([test "x$with_audio" != "xno"],[
 	AC_DEFINE(SUPPORT_AUDIO,[1],[Enable Audio Support])
@@ -57,45 +64,19 @@ AS_IF([test "x$with_audio" != "xno"],[
 			PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])],[auto_sdlmixer=0])
 		])
 	])
+	EP_PKG_CHECK([LIBMPG123],[libmpg123],[Improved MP3 support. Using SDL_mixer (<2.0.4) instead may result in noise or crashes for some MP3s.])
+	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support. Alternative to internal fmmidi.])
+	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
+	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
+	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support.])
+	EP_PKG_CHECK([LIBXMP],[libxmp],[Tracker module support.])
+	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support. Using SDL_mixer instead may result in noise.])
+
+	# FIXME: These prefixed with `LIB` must be propagated to other Makefiles and sources
+	AS_IF([test "$with_libmpg123" = "yes"],[AC_DEFINE(HAVE_MPG123,[1],[Improved MP3 support. Using SDL_mixer (<2.0.4) instead may result in noise or crashes for some MP3s.])])
+	AS_IF([test "$with_libwildmidi" = "yes"],[AC_DEFINE(HAVE_WILDMIDI,[1],[Midi support. Alternative to internal fmmidi.])])
+	AS_IF([test "$with_libxmp" = "yes"],[AC_DEFINE(HAVE_XMP,[1],[Tracker module support.])])
 ])
-PKG_CHECK_MODULES([PNG],[libpng])
-PKG_CHECK_MODULES([ZLIB],[zlib])
-AC_ARG_WITH([libmpg123],[AS_HELP_STRING([--without-libmpg123],
-	[Disable improved MP3 support provided by libmpg123. Uses SDL_mixer instead which results in noise or crashes for some MP3s. @<:@default=auto@:>@])])
-AS_IF([test "x$with_libmpg123" != "xno"],[
-	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Enable improved MP3 support provided by libmpg123])],[auto_mpg123=0])
-])
-AC_ARG_WITH([libwildmidi],[AS_HELP_STRING([--without-libwildmidi],
-	[Disable Midi support provided by libwildmidi. @<:@default=auto@:>@])])
-AS_IF([test "x$with_libwildmidi" != "xno"],[
-	PKG_CHECK_MODULES([WILDMIDI],[wildmidi],[AC_DEFINE(HAVE_WILDMIDI,[1],[Enable Midi support provided by libwildmidi])],[auto_wildmidi=0])
-])
-AC_ARG_WITH([oggvorbis],[AS_HELP_STRING([--without-oggvorbis],
-	[Disable Ogg Vorbis support @<:@default=auto@:>@])])
-AS_IF([test "x$with_oggvorbis" != "xno"],[
-	PKG_CHECK_MODULES([OGGVORBIS],[vorbisfile],[AC_DEFINE(HAVE_OGGVORBIS,[1],[Enable Ogg Vorbis support])],[auto_oggvorbis=0])
-])
-AC_ARG_WITH([opus],[AS_HELP_STRING([--without-opus],
-	[Disable Opus support @<:@default=auto@:>@])])
-AS_IF([test "x$with_opus" != "xno"],[
-	PKG_CHECK_MODULES([OPUS],[opusfile],[AC_DEFINE(HAVE_OPUS,[1],[Enable Opus support])],[auto_opus=0])
-])
-AC_ARG_WITH([libsndfile],[AS_HELP_STRING([--without-libsndfile],
-	[Disable improved WAV support provided by libsndfile.  @<:@default=auto@:>@])])
-AS_IF([test "x$with_libsndfile" != "xno"],[
-	PKG_CHECK_MODULES([SNDFILE],[sndfile],[AC_DEFINE(HAVE_LIBSNDFILE,[1],[Disable improved WAV support provided by libsndfile])],[auto_sndfile=0])
-])
-AC_ARG_WITH([libxmp],[AS_HELP_STRING([--without-libxmp],
-	[Disable tracker module support provided by libxmp. @<:@default=auto@:>@])])
-AS_IF([test "x$with_libxmp" != "xno"],[
-	PKG_CHECK_MODULES([XMP],[libxmp],[AC_DEFINE(HAVE_XMP,[1],[Enable tracker module support provided by libxmp])],[auto_xmp=0])
-])
-AC_ARG_WITH([libspeexdsp],[AS_HELP_STRING([--without-libspeexdsp],
-	[Disable resampling support provided by libspeexdsp. Uses SDL_mixer instead which results in noise. @<:@default=auto@:>@])])
-AS_IF([test "x$with_libspeexdsp" != "xno"],[
-	PKG_CHECK_MODULES([SPEEXDSP],[speexdsp],[AC_DEFINE(HAVE_LIBSPEEXDSP,[1],[Disable resampling support provided by libspeexdsp])],[auto_speexdsp=0])
-])
-PKG_CHECK_MODULES([FMT],[fmt >= 5.3])
 
 # bash completion
 AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
@@ -154,3 +135,62 @@ AC_CONFIG_FILES([Makefile
                  resources/Doxyfile])
 
 AC_OUTPUT
+
+if test "yes" != "$silent"; then
+	echo "==============================================================================="
+
+	echo "EasyRPG Player $VERSION configuration summary:"
+	echo ""
+
+	echo "Paths:"
+	echo "  prefix: $prefix"
+	echo "  bash completion: $BASHCOMPLETION_DIR"
+	test -n "$EM_GAME_URL" && echo "Emscripten Game URL: $EM_GAME_URL"
+
+	# FIXME SDL version
+	echo "Backend: SDL"
+
+	echo "Optional features:"
+	echo "  -custom Font rendering (freetype2):   $with_freetype"
+	test "$with_freetype" = "yes" && \
+		echo "  -custom Font text shaping (harfbuzz): $with_harfbuzz"
+
+	if test "$with_audio" = "no"; then
+		echo "Audio support:               no"
+	else
+		echo "Audio support:"
+		test -n "$SDLMIXER_LIBS" && \
+			echo "  -SDL_mixer:                yes"
+		echo -n "  -FMMidi:                   "
+		case "$want_fmmidi" in
+			1) echo "yes" ;;
+			2) echo "as fallback" ;;
+			*) echo "no" ;;
+		esac
+		echo "  -improved MP3 (libmpg123): $with_libmpg123"
+		test -z "$LIBMPG123_LIBS" -a -n "$SDLMIXER_LIBS" && \
+			echo "    Using SDL_mixer instead, this may result in noise or crashes for some MP3s."
+		echo "  -midi (libwildmidi):       $with_libwildmidi"
+		echo "  -ogg Vorbis (vorbisfile):  $with_oggvorbis"
+		echo "  -opus (opusfile):          $with_opus"
+		echo "  -improved WAV (sndfile):   $with_libsndfile"
+		echo "  -tracker module (libxmp):  $with_libxmp"
+		echo "  -resampling (speexdsp):    $with_libspeexdsp"
+		test -z "$LIBSPEEXDSP_LIBS" -a -n "$SDLMIXER_LIBS" && \
+			echo "    Using SDL_mixer instead, this may result in noise."
+	fi
+
+	echo "Documentation:"
+	echo -n "  manual page: "
+	if test "$A2X" = "no" -a -f "${srcdir}/resources/easyrpg-player.6"; then
+		echo "shipped"
+	elif test "x$A2X" != "xno"; then
+		echo "generated"
+	else
+		echo "not available"
+	fi
+	echo -n "  doxygen:     "
+	test "$DX_FLAG_doc" = 1 && echo "yes" || echo "no"
+
+	echo "==============================================================================="
+fi

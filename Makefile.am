@@ -415,14 +415,14 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
-	$(MPG123_CFLAGS) \
-	$(WILDMIDI_CFLAGS) \
+	$(LIBMPG123_CFLAGS) \
+	$(LIBWILDMIDI_CFLAGS) \
 	$(OGGVORBIS_CFLAGS) \
 	$(OPUS_CFLAGS) \
 	$(FMT_CFLAGS) \
-	$(SNDFILE_CFLAGS) \
-	$(XMP_CFLAGS) \
-	$(SPEEXDSP_CFLAGS)
+	$(LIBSNDFILE_CFLAGS) \
+	$(LIBXMP_CFLAGS) \
+	$(LIBSPEEXDSP_CFLAGS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
@@ -435,14 +435,14 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
-	$(MPG123_LIBS) \
-	$(WILDMIDI_LIBS) \
+	$(LIBMPG123_LIBS) \
+	$(LIBWILDMIDI_LIBS) \
 	$(OGGVORBIS_LIBS) \
 	$(OPUS_LIBS) \
 	$(FMT_LIBS) \
-	$(SNDFILE_LIBS) \
-	$(XMP_LIBS) \
-	$(SPEEXDSP_LIBS)
+	$(LIBSNDFILE_LIBS) \
+	$(LIBXMP_LIBS) \
+	$(LIBSPEEXDSP_LIBS)
 
 # manual page
 if HAVE_A2X
