@@ -21,13 +21,20 @@
 // Headers
 #include <string>
 #include <memory>
+
+#include "audio_midi.h"
+#include "system.h"
+
+#if defined(HAVE_FLUIDSYNTH) && defined(HAVE_FLUIDLITE)
+#error "Only HAVE_FLUIDSYNTH or HAVE_FLUIDLITE may be defined!"
+#endif
+
 #if defined(HAVE_FLUIDSYNTH)
 #include <fluidsynth.h>
 #elif defined(HAVE_FLUIDLITE)
 #include <fluidlite.h>
 #define FLUID_FAILED (-1)
 #endif
-#include "audio_midi.h"
 
 /**
  * Audio decoder for MIDI powered by FluidSynth
@@ -35,14 +42,15 @@
 class FluidSynthDecoder : public MidiDecoder {
 public:
 	FluidSynthDecoder();
-
-	~FluidSynthDecoder();
+	~FluidSynthDecoder() override;
 
 	static bool Initialize(std::string& error_message);
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	void OnMidiMessage(uint32_t message) override;
+
+	void OnMidiReset() override;
 
 	std::string GetName() override {
 #if defined(HAVE_FLUIDSYNTH)
@@ -52,9 +60,9 @@ public:
 #endif
 	};
 
+private:
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-	static fluid_settings_t* settings;
-	fluid_synth_t* synth;
+	fluid_synth_t* instance_synth;
 #endif
 };
 

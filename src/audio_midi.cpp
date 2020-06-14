@@ -30,7 +30,7 @@
 
 
 static struct {
-	bool fluidsynth = false;
+	bool fluidsynth = true;
 	bool wildmidi = true;
 } works;
 

@@ -18,34 +18,67 @@
 #include "system.h"
 #include "decoder_fluidsynth.h"
 
-#if defined(HAVE_FLUIDSYNTH) && defined(HAVE_FLUIDLITE)
-#error "Only HAVE_FLUIDSYNTH or HAVE_FLUIDLITE may be defined!"
-#endif
-
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 
-// Headers
 #include <cassert>
-#include "audio_decoder.h"
 #include "output.h"
 
-fluid_settings_t* FluidSynthDecoder::settings;
+struct FluidSettingsDeleter {
+	void operator()(fluid_settings_t* s) const {
+		delete_fluid_settings(s);
+	}
+};
 
-FluidSynthDecoder::FluidSynthDecoder() {
-	synth = new_fluid_synth(settings);
+struct FluidSynthDeleter {
+	void operator()(fluid_synth_t* s) const {
+		delete_fluid_synth(s);
+	}
+};
 
-	// FIXME: Must be in Initialize but belongs to synth
-	if (fluid_synth_sfload(synth, "easyrpg.soundfont", 1) == FLUID_FAILED) {
-		//error_message = "Could not load soundfont.";
-		return;
+namespace {
+	std::unique_ptr<fluid_settings_t, FluidSettingsDeleter> global_settings;
+	std::unique_ptr<fluid_synth_t, FluidSynthDeleter> global_synth;
+	int instances = 0;
+}
+
+static fluid_synth_t* create_synth(std::string& error_message) {
+	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
+
+	if (fluid_synth_sfload(syn, "easyrpg.soundfont", 1) == FLUID_FAILED) {
+		error_message = "Could not load soundfont.";
+		return nullptr;
 	}
 
-	fluid_synth_set_interp_method(synth, -1, 7);
+	fluid_synth_set_interp_method(syn, -1, 7);
+
+	return syn;
+}
+
+FluidSynthDecoder::FluidSynthDecoder() {
+	++instances;
+
+	// Optimisation: Only create the soundfont once and share the synth
+	// Sharing is only not possible when a Midi is played as a SE (unlikely)
+	if (instances > 1) {
+		std::string error_message;
+		instance_synth = create_synth(error_message);
+		if (!instance_synth) {
+			// unlikely, the SF was already allocated once
+			Output::Debug("FluidSynth failed: {}", error_message);
+		}
+	} else {
+		instance_synth = global_synth.get();
+		fluid_synth_program_reset(global_synth.get());
+	}
 }
 
 FluidSynthDecoder::~FluidSynthDecoder() {
-	if (synth)
-		delete_fluid_synth(synth);
+	--instances;
+	assert(instances >= 0);
+
+	if (instance_synth != global_synth.get()) {
+		delete_fluid_synth(instance_synth);
+	}
 }
 
 bool FluidSynthDecoder::Initialize(std::string& error_message) {
@@ -57,14 +90,21 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		return init;
 	once = true;
 
-	if (!settings) {
-		settings = new_fluid_settings();
-		fluid_settings_setstr(settings, "player.timing-source", "sample");
-		fluid_settings_setint(settings, "synth.lock-memory", 0);
+	if (!global_settings) {
+		global_settings.reset(new_fluid_settings());
+		fluid_settings_setstr(global_settings.get(), "player.timing-source", "sample");
+		fluid_settings_setint(global_settings.get(), "synth.lock-memory", 0);
 
-		fluid_settings_setnum(settings, "synth.gain", 0.6);
-		fluid_settings_setnum(settings, "synth.sample-rate", EP_MIDI_FREQ);
-		fluid_settings_setint(settings, "synth.polyphony", 32);
+		fluid_settings_setnum(global_settings.get(), "synth.gain", 0.6);
+		fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
+		fluid_settings_setint(global_settings.get(), "synth.polyphony", 32);
+	}
+
+	if (!global_synth) {
+		global_synth.reset(create_synth(error_message));
+		if (!global_synth) {
+			return false;
+		}
 	}
 
 	init = true;
@@ -73,7 +113,11 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 }
 
 int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
-	if (fluid_synth_write_s16(synth, length / 4, buffer, 0, 2, buffer, 1, 2) == FLUID_FAILED) {
+	if (!instance_synth) {
+		return -1;
+	}
+
+	if (fluid_synth_write_s16(instance_synth, length / 4, buffer, 0, 2, buffer, 1, 2) == FLUID_FAILED) {
 		return -1;
 	}
 
@@ -81,6 +125,10 @@ int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
 }
 
 void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
+	if (!instance_synth) {
+		return;
+	}
+
 	int event = message & 0xFF;
 	int channel = event & 0x0F;
 	int param1 = (message >> 8) & 0x7F;
@@ -88,32 +136,40 @@ void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
 
 	switch (event & 0xF0){
 		case 0x80:
-			fluid_synth_noteoff(synth, channel, param1);
+			fluid_synth_noteoff(instance_synth, channel, param1);
 			break;
 		case 0x90:
-			fluid_synth_noteon(synth, channel, param1, param2);
+			fluid_synth_noteon(instance_synth, channel, param1, param2);
 			break;
 		case 0xA0:
-			fluid_synth_key_pressure(synth, event, param1, param2);
+			fluid_synth_key_pressure(instance_synth, event, param1, param2);
 			break;
 		case 0xB0:
-			fluid_synth_cc(synth, channel, param1, param2);
+			fluid_synth_cc(instance_synth, channel, param1, param2);
 			break;
 		case 0xC0:
-			fluid_synth_program_change(synth, channel, param1);
+			fluid_synth_program_change(instance_synth, channel, param1);
 			break;
 		case 0xD0:
-			fluid_synth_channel_pressure(synth, channel, param1);
+			fluid_synth_channel_pressure(instance_synth, channel, param1);
 			break;
 		case 0xE0:
-			fluid_synth_pitch_bend(synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
+			fluid_synth_pitch_bend(instance_synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
 			break;
 		case 0xFF:
-			fluid_synth_program_reset(synth);
+			fluid_synth_program_reset(instance_synth);
 			break;
 		default:
 			break;
 	}
+}
+
+void FluidSynthDecoder::OnMidiReset() {
+	if (!instance_synth) {
+		return;
+	}
+
+	fluid_synth_program_reset(instance_synth);
 }
 
 #endif
