@@ -18,7 +18,11 @@
 #include "system.h"
 #include "decoder_fluidsynth.h"
 
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) && defined(HAVE_FLUIDLITE)
+#error "Only HAVE_FLUIDSYNTH or HAVE_FLUIDLITE may be defined!"
+#endif
+
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 
 // Headers
 #include <cassert>

@@ -48,6 +48,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/cmdline_parser.h \
 	src/color.h \
 	src/compiler.h \
+	src/decoder_fluidsynth.cpp \
+	src/decoder_fluidsynth.h \
 	src/decoder_fmmidi.cpp \
 	src/decoder_fmmidi.h \
 	src/decoder_libsndfile.cpp \
@@ -174,6 +176,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/message_overlay.h \
 	src/meta.cpp \
 	src/meta.h \
+	src/midisequencer.cpp \
+	src/midisequencer.h \
 	src/opacity.h \
 	src/options.h \
 	src/output.cpp \
@@ -379,8 +383,6 @@ libeasyrpg_player_a_SOURCES = \
 if WANT_FMMIDI
 libeasyrpg_player_a_SOURCES += \
 	src/midiprogram.h \
-	src/midisequencer.cpp \
-	src/midisequencer.h \
 	src/midisynth.cpp \
 	src/midisynth.h
 endif

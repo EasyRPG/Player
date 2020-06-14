@@ -30,7 +30,7 @@ pkg_check_modules(PC_FLUIDSYNTH QUIET fluidsynth)
 
 # Look for the header file.
 find_path(FLUIDSYNTH_INCLUDE_DIR
-	NAMES fluidlite.h
+	NAMES fluidsynth.h
 	PATH_SUFFIXES libfluidsynth fluidsynth
 	HINTS ${PC_FLUIDSYNTH_INCLUDE_DIRS})
 
@@ -38,7 +38,7 @@ find_path(FLUIDSYNTH_INCLUDE_DIR
 # Allow FLUIDSYNTH_LIBRARY to be set manually, as the location of the FluidSynth library
 if(NOT FLUIDSYNTH_LIBRARY)
 	find_library(FLUIDSYNTH_LIBRARY
-		NAMES libfluidlite fluidlite
+		NAMES libfluidsynth fluidsynth
 		HINTS ${PC_FLUIDSYNTH_LIBRARY_DIRS})
 endif()
 

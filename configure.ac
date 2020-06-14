@@ -76,7 +76,11 @@ AS_IF([test "x$with_audio" != "xno"],[
 		])
 	])
 	EP_PKG_CHECK([LIBMPG123],[libmpg123],[Improved MP3 support. Using SDL_mixer (<2.0.4) instead may result in noise or crashes for some MP3s.])
-	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support. Alternative to internal fmmidi.])
+	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support (GUS patches). Alternative to internal fmmidi.])
+	EP_PKG_CHECK([FLUIDSYNTH],[fluidsynth],[Midi support (Soundfonts). Alternative to internal fmmidi.])
+    AS_IF([test "$with_fluidsynth" != "yes"],[
+        EP_PKG_CHECK([FLUIDLITE],[fluidlite],[Midi support (Soundfonts). Liteweight version of FluidSynth. Alternative to internal fmmidi.])
+    ], [AC_SUBST([with_fluidlite], "no"]))
 	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
 	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support.])
@@ -197,6 +201,8 @@ if test "yes" != "$silent"; then
 		test -z "$LIBMPG123_LIBS" -a -n "$SDLMIXER_LIBS" && \
 			echo "    Using SDL_mixer instead, this may result in noise or crashes for some MP3s."
 		echo "  -midi (libwildmidi):       $with_libwildmidi"
+		echo "  -midi (FluidSynth):        $with_fluidsynth"
+		echo "  -midi (FluidLite):         $with_fluidlite"
 		echo "  -ogg Vorbis (vorbisfile):  $with_oggvorbis"
 		echo "  -opus (opusfile):          $with_opus"
 		echo "  -improved WAV (sndfile):   $with_libsndfile"

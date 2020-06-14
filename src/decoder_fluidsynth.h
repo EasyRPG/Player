@@ -21,8 +21,11 @@
 // Headers
 #include <string>
 #include <memory>
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH)
 #include <fluidsynth.h>
+#elif defined(HAVE_FLUIDLITE)
+#include <fluidlite.h>
+#define FLUID_FAILED (-1)
 #endif
 #include "audio_midi.h"
 
@@ -42,10 +45,14 @@ public:
 	void OnMidiMessage(uint32_t message) override;
 
 	std::string GetName() override {
+#if defined(HAVE_FLUIDSYNTH)
 		return "FluidSynth";
+#else
+		return "FluidLite";
+#endif
 	};
 
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 	static fluid_settings_t* settings;
 	fluid_synth_t* synth;
 #endif

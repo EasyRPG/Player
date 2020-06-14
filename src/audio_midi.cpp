@@ -38,7 +38,7 @@ std::unique_ptr<AudioDecoder> AudioMidi::Create(Filesystem_Stream::InputStream &
 	std::unique_ptr<AudioDecoder> mididec;
 	std::string error_message;
 
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 	if (works.fluidsynth && FluidSynthDecoder::Initialize(error_message)) {
 		mididec = std::make_unique<GenericMidiDecoder>(new FluidSynthDecoder());
 	} else if (!mididec && works.fluidsynth) {
