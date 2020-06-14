@@ -207,6 +207,9 @@ namespace Game_Battle {
 	/** @return death teleport handler if one is installed, otherwise an inactive target */
 	TeleportTarget GetDeathHandlerTeleport();
 
+	/** @return the active troop for the currently running battle */
+	const lcf::rpg::Troop* GetActiveTroop();
+
 	/** Don't reference this, use IsBattleRunning()! */
 	extern bool battle_running;
 }

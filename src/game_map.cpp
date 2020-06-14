@@ -1459,6 +1459,14 @@ std::vector<Game_Event>& Game_Map::GetEvents() {
 	return events;
 }
 
+int Game_Map::GetHighestEventId() {
+	int id = 0;
+	for (auto& ev: events) {
+		id = std::max(id, ev.GetId());
+	}
+	return id;
+}
+
 Game_Event* Game_Map::GetEvent(int event_id) {
 	auto it = std::find_if(events.begin(), events.end(),
 			[&event_id](Game_Event& ev) {return ev.GetId() == event_id;});

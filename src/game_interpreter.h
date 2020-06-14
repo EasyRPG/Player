@@ -72,6 +72,7 @@ public:
 			bool started_by_decision_key = false
 	);
 	void Push(Game_Event* ev);
+	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();

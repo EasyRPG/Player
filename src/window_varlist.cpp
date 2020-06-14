@@ -26,6 +26,7 @@
 #include "output.h"
 #include <lcf/reader_util.h>
 #include "game_party.h"
+#include "game_map.h"
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
 Window_Command(commands, 224, 10) {
@@ -79,6 +80,7 @@ void Window_VarList::DrawItemValue(int index){
 		case eMap:
 		case eHeal:
 		case eCommonEvent:
+		case eMapEvent:
 			{
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
@@ -137,6 +139,9 @@ void Window_VarList::UpdateList(int first_value){
 			case eCommonEvent:
 				ss << lcf::ReaderUtil::GetElement(lcf::Data::commonevents, first_value+i)->name;
 				break;
+			case eMapEvent:
+				ss << Game_Map::GetEvent(first_value+i)->GetName();
+				break;
 			default:
 				break;
 		}
@@ -149,22 +154,6 @@ void Window_VarList::SetMode(Mode mode) {
 	SetVisible((mode != eNone));
 	Refresh();
 }
-
-void Window_VarList::SetActive(bool nactive) {
-	Window::SetActive(nactive);
-	if (nactive)
-		index = hidden_index;
-	else {
-		hidden_index = index;
-		index = -1;
-	}
-	Refresh();
-}
-
-int Window_VarList::GetIndex() {
-	return GetActive() ? index : hidden_index;
-}
-
 
 bool Window_VarList::DataIsValid(int range_index) {
 	switch (mode) {
@@ -182,6 +171,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size()) + 1;
 		case eCommonEvent:
 			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::commonevents.size());
+		case eMapEvent:
+			return Game_Map::GetEvent(range_index) != nullptr;
 		default:
 			break;
 	}

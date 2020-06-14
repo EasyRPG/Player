@@ -37,7 +37,7 @@
 #include "utils.h"
 
 namespace Game_Battle {
-	const lcf::rpg::Troop* troop;
+	const lcf::rpg::Troop* troop = nullptr;
 
 	std::string background_name;
 
@@ -467,4 +467,8 @@ TeleportTarget Game_Battle::GetDeathHandlerTeleport() {
 		return TeleportTarget(db.death_teleport_id, db.death_teleport_x, db.death_teleport_y, db.death_teleport_face -1, TeleportTarget::eParallelTeleport);
 	}
 	return {};
+}
+
+const lcf::rpg::Troop* Game_Battle::GetActiveTroop() {
+	return IsBattleRunning() ? troop : nullptr;
 }
