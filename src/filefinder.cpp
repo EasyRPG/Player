@@ -649,7 +649,6 @@ void FileFinder::Quit() {
 Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& name,
 	std::ios_base::openmode m)
 {
-	std::streamsize size = FileFinder::GetFileSize(name);
 	auto *buf = new std::filebuf();
 
 	Filesystem_Stream::InputStream is(buf->open(
@@ -658,7 +657,7 @@ Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& na
 #else
 		name.c_str(),
 #endif
-		m), size);
+		m));
 
 	return std::move(is);
 }

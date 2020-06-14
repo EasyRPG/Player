@@ -46,10 +46,9 @@ bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 	if (!ctx)
 		return false;
 
-	file_buffer.resize(stream.GetSize());
-	stream.read(reinterpret_cast<char*>(file_buffer.data()), stream.GetSize());
-		
-	int res = xmp_load_module_from_memory(ctx, file_buffer.data(), stream.GetSize());
+	file_buffer = Utils::ReadStream(stream);
+
+	int res = xmp_load_module_from_memory(ctx, file_buffer.data(), file_buffer.size());
 	if (res != 0) {
 		error_message = "XMP: Error loading file";
 		return false;

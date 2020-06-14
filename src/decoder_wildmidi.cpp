@@ -77,16 +77,17 @@ static void WildMidiDecoder_deinit() {
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
-	auto&& stream = FileFinder::OpenInputStream(filename);
+	auto stream = FileFinder::OpenInputStream(filename);
 	if (!stream) {
 		return nullptr;
 	}
 
-	auto s = stream.GetSize();
-	*size = s;
+	auto buf = Utils::ReadStream(stream);
 
-	char* buffer = reinterpret_cast<char*>(malloc(s));
-	stream.read(buffer, s);
+	*size = static_cast<uint32_t>(buf.size());
+
+	char* buffer = reinterpret_cast<char*>(malloc(*size));
+	memcpy(buffer, buf.data(), buf.size());
 
 	return buffer;
 }

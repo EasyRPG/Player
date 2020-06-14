@@ -28,7 +28,7 @@ namespace Filesystem_Stream {
 	class InputStream final : public std::istream {
 	public:
 		explicit InputStream(): std::istream(nullptr) {}
-		explicit InputStream(std::streambuf* sb, std::streamsize size) : std::istream(sb), size(size) {}
+		explicit InputStream(std::streambuf* sb) : std::istream(sb) {}
 		~InputStream() override {
 			delete rdbuf();
 		}
@@ -37,20 +37,14 @@ namespace Filesystem_Stream {
 		InputStream(InputStream&& is) : std::istream(std::move(is)) {
 			set_rdbuf(is.rdbuf());
 			is.set_rdbuf(nullptr);
-			size = is.size;
-			is.size = 0;
 		}
 		InputStream& operator=(InputStream&& is) {
 			if (this == &is) return is;
 			std::istream::operator=(std::move(is));
 			set_rdbuf(is.rdbuf());
 			is.set_rdbuf(nullptr);
-			size = is.size;
-			is.size = 0;
 			return is;
 		}
-
-		std::streamsize GetSize() const;
 
 		template <typename T>
 		bool ReadIntoObj(T& obj);
@@ -58,8 +52,6 @@ namespace Filesystem_Stream {
 	private:
 		template <typename T>
 		bool Read0(T& obj);
-
-		std::streamsize size = 0;
 	};
 
 	class OutputStream final : public std::ostream {
@@ -88,10 +80,6 @@ namespace Filesystem_Stream {
 
 	static constexpr int CppSeekdirToCSeekdir(std::ios_base::seekdir origin);
 };
-
-inline std::streamsize Filesystem_Stream::InputStream::GetSize() const {
-	return size;
-}
 
 template<typename T>
 inline bool Filesystem_Stream::InputStream::Read0(T& obj) {

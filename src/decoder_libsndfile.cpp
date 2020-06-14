@@ -25,9 +25,9 @@
 #include "decoder_libsndfile.h"
 #include "output.h"
 
-static sf_count_t sf_vio_get_filelen_impl(void* userdata) {
-	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
-	return f->GetSize();
+static sf_count_t sf_vio_get_filelen_impl(void*) {
+	// Unknown. SF_COUNT_MAX is the size used by libsndfile for pipes.
+	return SF_COUNT_MAX;
 }
 
 static sf_count_t sf_vio_read_impl(void *ptr, sf_count_t count, void* userdata){
@@ -89,8 +89,9 @@ bool LibsndfileDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origi
 	if(soundfile == 0)
 		return false;
 
-// FIXME: Proper sample count for seek
-	decoded_samples = 0;	return sf_seek(soundfile, offset, Filesystem_Stream::CppSeekdirToCSeekdir(origin))!=-1;
+	// FIXME: Proper sample count for seek
+	decoded_samples = 0;
+	return sf_seek(soundfile, offset, Filesystem_Stream::CppSeekdirToCSeekdir(origin))!=-1;
 }
 
 bool LibsndfileDecoder::IsFinished() const {

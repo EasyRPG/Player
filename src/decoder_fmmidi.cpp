@@ -54,11 +54,9 @@ int read_func(void* instance) {
 
 bool FmMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	seq->clear();
-	file_buffer.resize(stream.GetSize());
-	stream.read(reinterpret_cast<char*>(file_buffer.data()), stream.GetSize());
-	size_t bytes_read = stream.gcount();
+	file_buffer = Utils::ReadStream(stream);
 
-	if ((bytes_read != file_buffer.size()) || (!seq->load(this, read_func))) {
+	if (!seq->load(this, read_func)) {
 		error_message = "FM Midi: Error reading file";
 		return false;
 	}
@@ -69,10 +67,10 @@ bool FmMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	return true;
 }
 
-bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
+bool FmMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	assert(!tempo.empty());
 
-	if (offset == 0 && origin == Origin::Begin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		mtime = seq->rewind_to_loop();
 
 		if (mtime > 0.0f) {

@@ -73,12 +73,6 @@ bool ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
 
 bool ImageXYZ::ReadXYZ(Filesystem_Stream::InputStream& stream, bool transparent,
 					   int& width, int& height, void*& pixels) {
-	long size = stream.GetSize();
-	std::vector<uint8_t> buffer(size);
-	long size_read = stream.read(reinterpret_cast<char*>(buffer.data()), size).gcount();
-	if (size_read != size) {
-		Output::Warning("Error reading XYZ file.");
-		return false;
-	}
-	return ReadXYZ(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
+	std::vector<uint8_t> buffer = Utils::ReadStream(stream);
+	return ReadXYZ(&buffer.front(), (unsigned) buffer.size(), transparent, width, height, pixels);
 }

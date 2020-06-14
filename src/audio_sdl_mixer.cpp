@@ -44,9 +44,9 @@
 using namespace std::chrono_literals;
 
 namespace {
-	Sint64 SDLCALL vio_size(struct SDL_RWops * context) {
-		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
-		return stream->GetSize();
+	Sint64 SDLCALL vio_size(struct SDL_RWops *) {
+		// Unknown. SDL accepts -1 for "unknown size"
+		return -1;
 	}
 
 	Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
