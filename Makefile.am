@@ -18,6 +18,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
+	src/audio_midi.cpp \
+	src/audio_midi.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
@@ -50,6 +52,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/decoder_fmmidi.h \
 	src/decoder_libsndfile.cpp \
 	src/decoder_libsndfile.h \
+	src/decoder_midigeneric.cpp \
+	src/decoder_midigeneric.h \
 	src/decoder_mpg123.cpp \
 	src/decoder_mpg123.h \
 	src/decoder_oggvorbis.cpp \

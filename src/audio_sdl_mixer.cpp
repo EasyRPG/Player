@@ -36,6 +36,7 @@
 #endif
 
 #if WANT_FMMIDI == 2
+#  include "decoder_midigeneric.h"
 #  include "decoder_fmmidi.h"
 #endif
 
@@ -350,7 +351,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		filestream.seekg(0, std::ios::ios_base::beg);
 		if (!strncmp(magic, "MThd", 4)) {
 			Output::Debug("FmMidi fallback: {}", file);
-			audio_decoder.reset(new FmMidiDecoder());
+			audio_decoder.reset(new GenericMidiDecoder(new FmMidiDecoder()));
 			SetupAudioDecoder(std::move(filestream), file, volume, pitch, fadein);
 			return;
 		}

@@ -21,73 +21,31 @@
 // Headers
 #include <string>
 #include <memory>
-#include "audio_decoder.h"
+#include "audio_midi.h"
 #include "midisequencer.h"
 #include "midisynth.h"
 
 /**
  * Audio decoder for MIDI powered by FM MIDI
  */
-class FmMidiDecoder : public AudioDecoder, midisequencer::output {
+class FmMidiDecoder : public MidiDecoder {
 public:
 	FmMidiDecoder();
 
-	~FmMidiDecoder();
-
-	// Audio Decoder interface
-	bool Open(Filesystem_Stream::InputStream stream) override;
-
-	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
-
-	bool IsFinished() const override;
-
-	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
-
-	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
-
-	bool SetPitch(int pitch) override;
-
-	int GetTicks() const override;
-
-	std::vector<uint8_t> file_buffer;
-	size_t file_buffer_pos = 0;
-private:
-	static constexpr int midi_default_tempo = 500000;
-
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	float mtime = 0.0f;
-	float pitch = 1.0f;
-	int frequency = 44100;
-	bool begin = true;
+	void OnMidiMessage(uint32_t message) override;
+	void OnSysExMessage(const void* data, size_t size) override;
+	void OnMidiReset() override;
 
-	struct MidiTempoData {
-		MidiTempoData(const FmMidiDecoder* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);
-
-		uint32_t tempo = midi_default_tempo;
-		float ticks_per_sec = 0.0f;
-		float mtime = 0.0f;
-		int ticks = 0;
-
-		int GetTicks(float cur_mtime) const;
-	};
-
-	// Contains one entry per tempo change (latest on top)
-	// When looping all entries after the loop point are dropped
-	std::vector<MidiTempoData> tempo;
-
-	// midisequencer::output interface
-	int synthesize(int_least16_t* output, std::size_t samples, float rate);
-	void midi_message(int, uint_least32_t message) override;
-	void sysex_message(int, const void* data, std::size_t size) override;
-	void meta_event(int, const void*, std::size_t) override;
-	void reset() override;
-
-	std::unique_ptr<midisequencer::sequencer> seq;
 	std::unique_ptr<midisynth::synthesizer> synth;
 	std::unique_ptr<midisynth::fm_note_factory> note_factory;
 	midisynth::DRUMPARAMETER p;
 	void load_programs();
+
+	std::string GetName() override {
+		return "FmMidi";
+	};
 };
 
 #endif

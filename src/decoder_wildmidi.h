@@ -24,35 +24,29 @@
 #ifdef HAVE_WILDMIDI
 #include <wildmidi_lib.h>
 #endif
-#include "audio_decoder.h"
+#include "audio_midi.h"
 
 /**
  * Audio decoder for MIDI powered by WildMidi
  */
-class WildMidiDecoder : public AudioDecoder {
+class WildMidiDecoder : public MidiDecoder {
 public:
-	WildMidiDecoder();
-
 	~WildMidiDecoder();
 
-	bool WasInited() const override;
+	static bool Initialize(std::string& error_message);
 
 	// Audio Decoder interface
-	bool Open(Filesystem_Stream::InputStream stream) override;
+	bool Open(std::vector<uint8_t>& data) override;
 
 	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
-	int GetTicks() const override;
+	std::string GetName() override {
+		return "WildMidi";
+	};
 
-	bool IsFinished() const override;
-
-	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
-
-	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
-private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	uint32_t division = 96;
+private:
 #ifdef HAVE_WILDMIDI
 	midi* handle = nullptr;
 #endif

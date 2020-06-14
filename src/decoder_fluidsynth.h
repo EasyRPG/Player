@@ -24,57 +24,31 @@
 #ifdef HAVE_FLUIDSYNTH
 #include <fluidsynth.h>
 #endif
-#include "audio_decoder.h"
-#include "midisequencer.h"
+#include "audio_midi.h"
 
 /**
  * Audio decoder for MIDI powered by FluidSynth
  */
-class FluidSynthDecoder : public AudioDecoder, midisequencer::output {
+class FluidSynthDecoder : public MidiDecoder {
 public:
 	FluidSynthDecoder();
 
 	~FluidSynthDecoder();
 
-	bool WasInited() const override;
+	static bool Initialize(std::string& error_message);
 
-	// Audio Decoder interface
-	bool Open(Filesystem_Stream::InputStream stream) override;
-
-	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
-
-	bool IsFinished() const override;
-
-	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
-
-	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
-
-	int GetTicks() const override;
-
-	std::vector<uint8_t> file_buffer;
-	size_t file_buffer_pos = 0;
-private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	// midisequencer::output interface
-	void midi_message(int, uint_least32_t message) override;
-	void sysex_message(int, const void* data, std::size_t size) override;
-	void meta_event(int, const void*, std::size_t) override;
-	void reset() override;
+	void OnMidiMessage(uint32_t message) override;
+
+	std::string GetName() override {
+		return "FluidSynth";
+	};
 
 #ifdef HAVE_FLUIDSYNTH
-	fluid_settings_t *settings = NULL;
-	fluid_synth_t *synth = NULL;
+	static fluid_settings_t* settings;
+	fluid_synth_t* synth;
 #endif
-
-	std::unique_ptr<midisequencer::sequencer> seq;
-
-	int frequency = 44100;
-	bool init = false;
-
-	float mtime = 0.0f;
-	bool begin = true;
-
 };
 
 #endif

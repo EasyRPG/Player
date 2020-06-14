@@ -33,12 +33,6 @@
 #include "platform/libretro/libretro_ui.h"
 #endif
 
-#if defined(GEKKO) || defined(_3DS)
-#  define WILDMIDI_FREQ 22050
-#else
-#  define WILDMIDI_FREQ 44100
-#endif
-
 #if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include "SDL_system.h"
@@ -70,7 +64,6 @@ std::string get_timidity_path_jni() {
 }
 #endif
 
-static bool init = false;
 static void WildMidiDecoder_deinit() {
 	WildMidi_Shutdown();
 }
@@ -102,14 +95,22 @@ static struct _WM_VIO vio = {
 };
 #endif
 
-WildMidiDecoder::WildMidiDecoder() {
-	music_type = "midi";
-	std::string config_file = "";
+WildMidiDecoder::~WildMidiDecoder() {
+	if (handle)
+		WildMidi_Close(handle);
+}
+
+bool WildMidiDecoder::Initialize(std::string& error_message) {
+	std::string config_file;
 	bool found = false;
 
+	static bool init = false;
+	static bool once = false;
+
 	// only initialize once
-	if (init)
-		return;
+	if (once)
+		return init;
+	once = true;
 
 	/* find the configuration file in different paths on different platforms
 	 * FIXME: move this logic into some configuration class
@@ -265,10 +266,10 @@ WildMidiDecoder::WildMidiDecoder() {
 	if (!found) {
 		// Folders used in timidity code
 		const std::vector<std::string> folders = {
-			"/etc/timidity",
-			"/usr/share/timidity",
-			"/usr/local/share/timidity",
-			"/usr/local/lib/timidity"
+				"/etc/timidity",
+				"/usr/share/timidity",
+				"/usr/local/share/timidity",
+				"/usr/local/lib/timidity"
 		};
 
 		for (const std::string& s : folders) {
@@ -294,19 +295,19 @@ WildMidiDecoder::WildMidiDecoder() {
 	// bail, if nothing found
 	if (!found) {
 		error_message = "WildMidi: Could not find configuration file.";
-		return;
+		return false;
 	}
 	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
-	init = (WildMidi_InitVIO(&vio, config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+	init = (WildMidi_InitVIO(&vio, config_file.c_str(), EP_MIDI_FREQ, WILDMIDI_OPTS) == 0);
 #else
-	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+	init = (WildMidi_Init(config_file.c_str(), EP_MIDI_FREQ, WILDMIDI_OPTS) == 0);
 #endif
 
 	if (!init) {
 		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
-		return;
+		return false;
 	}
 
 #if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
@@ -316,55 +317,26 @@ WildMidiDecoder::WildMidiDecoder() {
 
 	// setup deinitialization
 	atexit(WildMidiDecoder_deinit);
+
+	return true;
 }
 
-WildMidiDecoder::~WildMidiDecoder() {
-	if (handle)
-		WildMidi_Close(handle);
-}
-
-bool WildMidiDecoder::WasInited() const {
-	return init;
-}
-
-bool WildMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
-	if (!init)
-		return false;
-
+bool WildMidiDecoder::Open(std::vector<uint8_t>& data) {
 	// this should not happen
 	if (handle) {
 		WildMidi_Close(handle);
 		Output::Debug("WildMidi: Previous handle was not closed.");
 	}
 
-	file_buffer = Utils::ReadStream(stream);
+	handle = WildMidi_OpenBuffer(data.data(), data.size());
 
-	handle = WildMidi_OpenBuffer(file_buffer.data(), file_buffer.size());
-	if (!handle) {
-		error_message = "WildMidi: Error reading file";
-		return false;
-	}
-
-	// Ugly: Parse Midi header to get Division
-	// WildMidi has no Api to get Division and Tempo
-	// This allows a better approximation of the Midi ticks but it is still
-	// way off because the tempo information is missing
-	division = file_buffer[12] << 8u;
-	division |= file_buffer[13];
-
-	// Wildmidi will reject such files, but just in case if they ever support it
-	if (division & 0x8000u) {
-		Output::Debug("WildMidi: Unsupported: Division in fps");
-		division = 96;
-	}
-
-	return true;
+	return handle != nullptr;
 }
 
 bool WildMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
-	if (offset == 0 && origin == std::ios_base::beg) {
+	if (origin == std::ios_base::beg) {
 		if (handle) {
-			unsigned long int pos = 0;
+			unsigned long int pos = offset;
 			WildMidi_FastSeek(handle, &pos);
 		}
 		return true;
@@ -373,50 +345,11 @@ bool WildMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin)
 	return false;
 }
 
-bool WildMidiDecoder::IsFinished() const {
-	if (!handle)
-		return false;
-
-	struct _WM_Info* midi_info = WildMidi_GetInfo(handle);
-
-	return midi_info->current_sample >= midi_info->approx_total_samples;
-}
-
-void WildMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& channels) const {
-	freq = WILDMIDI_FREQ;
-	format = Format::S16;
-	channels = 2;
-}
-
-bool WildMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, int channels) {
-	if (freq != WILDMIDI_FREQ || channels != 2 || format != Format::S16)
-		return false;
-
-	return true;
-}
-
 int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!handle)
 		return -1;
 
 	return WildMidi_GetOutput(handle, reinterpret_cast<int8_t*>(buffer), length);
-}
-
-int WildMidiDecoder::GetTicks() const {
-	if (!handle) {
-		return 0;
-	}
-
-	struct _WM_Info* info = WildMidi_GetInfo(handle);
-	float secs = (float)info->current_sample / WILDMIDI_FREQ;
-
-	// FIXME: tempo is an assumption, the library must internally process
-	// the tempo because it can dynamically change.
-	const int tempo = 500000;
-
-	int ticks = static_cast<int>(secs / (tempo / 1000000.0 / division));
-
-	return ticks;
 }
 
 #endif
