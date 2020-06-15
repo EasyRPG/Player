@@ -73,7 +73,14 @@ namespace midisequencer{
     float sequencer::rewind_to_loop()
     {
         position = loop_position;
+        if (position != messages.begin()) {
+            position--;
+        }
         return loop_position->time;
+    }
+    bool sequencer::is_at_end()
+    {
+        return position == messages.end();
     }
     bool sequencer::load(void* fp, int(*fgetc)(void*))
     {
@@ -98,6 +105,13 @@ namespace midisequencer{
     static int fpfgetc(void* fp)
     {
         return getc(static_cast<std::FILE*>(fp));
+    }
+    static bool is_loop_start(uint_least32_t msg) {
+        // If the message matches the de facto standard MIDI loop instruction:
+        // Which is a Control Change on any channel with Value 111
+        uint8_t event_type = (msg & 0x0000F0) >> 4;
+        uint8_t value1 = (msg & 0x00FF00) >> 8;
+        return event_type == 0b1011 && value1 == 111;
     }
     bool sequencer::load(std::FILE* fp)
     {
@@ -244,6 +258,33 @@ namespace midisequencer{
                     break;
             }
         }
+    }
+
+    float sequencer::get_start_skipping_silence() {
+        for (auto i = messages.begin(); i != messages.end(); ++i) {
+            // If we find Loop Start before the first NoteOn, just start there
+            if (is_loop_start(i->message)) {
+                float time = i->time;
+                // RPG_RT always rewinds "a little"
+                // This amount is based on the tempo, and this 2100000 divisor
+                // I determined experimentally.
+                time = std::max(0.0f, time - (i->tempo / 2100000.0f));
+                return time;
+            } else if ((i->message & 0xFF) == 0xF0) {
+                // SysEx message. RPG_RT doesn't skip silence if there's a SysEx
+                // message in the beginning, so neither should we...
+                return 0.0f;
+            } else if ((i->message & 0xF0) == 0x90) {
+                // NoteOn -- found the first note!
+                float time = i->time;
+                // RPG_RT always rewinds "a little"
+                // This amount is based on the tempo, and this 2100000 divisor
+                // I determined experimentally.
+                time = std::max(0.0f, time - (i->tempo / 2100000.0f));
+                return time;
+            }
+        }
+        return 0.0f;
     }
 
     void sequencer::load_smf(void* fp, int(*fgetc)(void*))
@@ -422,6 +463,7 @@ namespace midisequencer{
             }
         }
         std::stable_sort(messages.begin(), messages.end());
+        loop_position = messages.begin();
         if(!(division & 0x8000)){
             uint_least32_t tempo = 500000;
             double time_offset = 0;
@@ -441,9 +483,8 @@ namespace midisequencer{
                         time_offset = i->time;
                     }
                 }
-                // If the message matches the de facto standard MIDI loop instruction:
-                // Which is a Control Change on Channel 1 with Value 111
-                if ((i->message & 0xFFFF) == 0x6FB0) {
+                i->tempo = tempo;
+                if (is_loop_start(i->message)) {
                     // Loop backwards through the messages to find the first message with the same
                     // timestamp as the loop message
                     for (std::vector<midi_message>::iterator j = i; j != messages.begin() && j->time >= i->time; j--) {

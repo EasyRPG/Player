@@ -40,6 +40,10 @@ add_library(${PROJECT_NAME} STATIC
 	src/audio.h
 	src/audio_midi.cpp
 	src/audio_midi.h
+	src/audio_midiout.cpp
+	src/audio_midiout.h
+	src/audio_midiout_device.cpp
+	src/audio_midiout_device.h
 	src/audio_resampler.cpp
 	src/audio_resampler.h
 	src/audio_sdl.cpp
@@ -533,13 +537,17 @@ if(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/registry.cpp
 		src/platform/windows/utils.cpp
-		src/platform/windows/utils.h)
+		src/platform/windows/utils.h
+		src/platform/windows/midiout_device_win32.cpp
+		src/platform/windows/midiout_device_win32.h)
 endif()
 
 if(APPLE)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/utils.mm
-		src/platform/macos/utils.h)
+		src/platform/macos/utils.h
+		src/platform/macos/midiout_device_coreaudio.cpp
+		src/platform/macos/midiout_device_coreaudio.h)
 
 	find_library(MACOSFOUNDATION Foundation)
 	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION})

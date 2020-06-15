@@ -15,26 +15,36 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_AUDIO_SDL_H
-#define EP_AUDIO_SDL_H
+#ifndef EP_MIDIOUT_WIN32_H
+#define EP_MIDIOUT_WIN32_H
 
-#include <SDL_mutex.h>
-#include "audio_generic.h"
+#ifdef _WIN32
 
-class SdlAudio : public GenericAudio {
+ // Headers
+#include <string>
+#include <windows.h>
+#include <mmsystem.h>
+#include "audio_midiout_device.h"
+
+/**
+ * Plays MIDI through the Windows API
+ */
+class Win32MidiOutDevice : public MidiOutDevice {
 public:
-	SdlAudio();
-	~SdlAudio();
+	Win32MidiOutDevice();
+	~Win32MidiOutDevice();
 
-	void LockMutex() const override;
-	void UnlockMutex() const override;
-	void LockMidiOutMutex() const override;
-	void UnlockMidiOutMutex() const override;
+	void SendMidiMessage(uint32_t message) override;
+	void SendSysExMessage(const void* data, size_t size) override;
+	void SendMidiReset() override;
 
-	bool midiout_thread_exit = false;
+	bool IsOK() override {
+		return midi_out != NULL;
+	}
+
 private:
-	SDL_Thread *midiout_thread = nullptr;
-	SDL_mutex *midiout_mutex;
-}; // class SdlAudio
+	HMIDIOUT midi_out;
+};
+#endif
 
 #endif

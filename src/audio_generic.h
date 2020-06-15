@@ -21,6 +21,7 @@
 #include "audio.h"
 #include "audio_decoder.h"
 #include "audio_secache.h"
+#include "audio_midiout.h"
 
 /**
  * A software implementation for handling EasyRPG Audio utilizing the
@@ -54,17 +55,21 @@ public:
 	void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) override;
 	void SE_Stop() override;
 	virtual void Update() override;
+	virtual void UpdateMidiOut(long long delta);
 
 	void SetFormat(int frequency, AudioDecoder::Format format, int channels);
 
 	virtual void LockMutex() const = 0;
 	virtual void UnlockMutex() const = 0;
+	virtual void LockMidiOutMutex() const = 0;
+	virtual void UnlockMidiOutMutex() const = 0;
 
 	void Decode(uint8_t* output_buffer, int buffer_length);
 
 private:
 	struct BgmChannel {
 		std::unique_ptr<AudioDecoder> decoder;
+		std::unique_ptr<MidiOut> midiout;
 		bool paused;
 		bool stopped;
 	};

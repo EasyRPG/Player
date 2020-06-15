@@ -94,4 +94,12 @@ void Psp2Audio::UnlockMutex() const {
 	sceKernelUnlockMutex(audio_mutex, 1);
 }
 
+void Psp2Audio::LockMidiOutMutex() const {
+	// No-op: PS Vita doesn't support MidiOut
+}
+
+void Psp2Audio::UnlockMidiOutMutex() const {
+	// No-op: PS Via doesn't support MidiOut
+}
+
 #endif

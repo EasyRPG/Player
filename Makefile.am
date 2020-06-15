@@ -26,6 +26,10 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_generic.h \
 	src/audio_midi.cpp \
 	src/audio_midi.h \
+	src/audio_midiout.cpp \
+	src/audio_midiout.h \
+	src/audio_midiout_device.cpp \
+	src/audio_midiout_device.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \

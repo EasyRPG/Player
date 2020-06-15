@@ -115,4 +115,12 @@ void NxAudio::UnlockMutex() const {
 	mutexUnlock((Mutex*)&audio_mutex);
 }
 
+void NxAudio::LockMidiOutMutex() const {
+	// No-op: Switch doesn't use MidiOut.
+}
+
+void NxAudio::UnlockMidiOutMutex() const {
+	// No-op: Switch doesn't use MidiOut.
+}
+
 #endif

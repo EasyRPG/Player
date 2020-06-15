@@ -44,6 +44,7 @@ namespace midisequencer{
         uint_least32_t message;
         int port;
         int track;
+        uint_least32_t tempo;
     };
 
     class uncopyable{
@@ -70,6 +71,7 @@ namespace midisequencer{
         void clear();
         void rewind();
         float rewind_to_loop();
+        bool is_at_end();
         bool load(void* fp, int(*fgetc)(void*));
         bool load(std::FILE* fp);
         int get_num_ports()const;
@@ -80,6 +82,7 @@ namespace midisequencer{
         uint32_t get_division()const;
         void play(float time, output* out);
         void set_time(float time, output* out);
+        float get_start_skipping_silence();
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;
