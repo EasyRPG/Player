@@ -446,6 +446,12 @@ if(WIN32)
 		src/platform/windows/utils.h)
 endif()
 
+if(APPLE)
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/macos/utils.mm
+		src/platform/macos/utils.h)
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
@@ -458,6 +464,14 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WORDS_BIGENDIAN=1)
 	endif()
 endif()
+
+# App Icon (for macOS)
+set(${PROJECT_NAME}_BUNDLE_ICON "resources/osx/Player.icns")
+
+# Do not code sign on Macs
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
+set(CMAKE_XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.easyrpg.player")
 
 # liblcf
 option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development" OFF)
@@ -688,30 +702,41 @@ endif()
 
 # Executable
 if (${PLAYER_BUILD_EXECUTABLE})
-	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
-	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
-
+	if(APPLE)
+		set(EXE_NAME Player.app)
+		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+		add_executable(${EXE_NAME} MACOSX_BUNDLE "src/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
+		set_target_properties(${EXE_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "resources/osx/Info.plist")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
+	else()
+		set(EXE_NAME ${PROJECT_NAME}_exe)
+		add_executable(${EXE_NAME} WIN32 "src/main.cpp")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
+	endif()
+	
 	if(WIN32)
 		# Open console for Debug builds
 		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-			set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
+			set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 		endif()
 
 		# Add resources
-		target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
+		target_sources(${EXE_NAME} PRIVATE "resources/player.rc")
 
 		# Change executable name
-		set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
 	endif()
 
-	target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
+	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
-	# installation
-	include(GNUInstallDirs)
-	install(TARGETS ${PROJECT_NAME}_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	# installation - don't use install on macs
+	if(NOT APPLE)
+		include(GNUInstallDirs)
+		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-	if(MSVC)
-		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+		if(MSVC)
+			install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+		endif()
 	endif()
 endif()
 

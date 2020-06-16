@@ -34,6 +34,7 @@ stamp-h1
 
 # cmake
 CMakeFiles/
+CMakeScripts/
 CMakeCache.txt
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
@@ -88,6 +89,15 @@ easyrpg-player-*.tar.*
 # osx
 __MACOSX
 .DS_Store
+
+# Xcode
+/*.xcodeproj
+/*.xcworkspace
+/Debug/
+/Release/
+/MinSizeRel/
+/RelWithDebInfo/
+/*.build/
 
 # legacy
 /lib/liblcf/
