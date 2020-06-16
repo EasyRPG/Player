@@ -370,6 +370,12 @@ libeasyrpg_player_a_SOURCES += \
 	src/midisynth.h
 endif
 
+if MACOS
+libeasyrpg_player_a_SOURCES += \
+	src/platform/macos/utils.h \
+	src/platform/macos/utils.mm
+endif
+
 # These are only taken in by the legacy homebrew Makefiles
 EXTRA_DIST += \
 	src/platform/3ds/3ds_clock.cpp \
@@ -422,6 +428,8 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(XMP_CFLAGS) \
 	$(SPEEXDSP_CFLAGS)
 
+libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 easyrpg_player_LDADD = libeasyrpg-player.a \
@@ -440,6 +448,10 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(SNDFILE_LIBS) \
 	$(XMP_LIBS) \
 	$(SPEEXDSP_LIBS)
+
+if MACOS
+easyrpg_player_LDFLAGS = -framework Foundation
+endif
 
 # manual page
 if HAVE_A2X

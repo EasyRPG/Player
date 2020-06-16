@@ -4,7 +4,7 @@
 <dict>
 
     <key>CFBundleExecutable</key>
-    <string>Player</string>
+    <string>EasyRPG Player</string>
 
     <key>CFBundleGetInfoString</key>
     <string>https://easyrpg.org</string>
