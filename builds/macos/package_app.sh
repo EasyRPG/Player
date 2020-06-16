@@ -11,7 +11,7 @@ mkdir -p "$BUNDLE_NAME/Contents/MacOS"
 mkdir -p "$BUNDLE_NAME/Contents/Resources"
 cp "$BASE_DIR/resources/osx/Info.plist" "$BUNDLE_NAME/Contents"
 cp "$BASE_DIR/resources/osx/Player.icns" "$BUNDLE_NAME/Contents/Resources"
-cp "$EASYRPG_BINARY" "$BUNDLE_NAME/Contents/MacOS/Player"
+cp "$EASYRPG_BINARY" "$BUNDLE_NAME/Contents/MacOS/EasyRPG Player"
 
 # TODO: codesign
 

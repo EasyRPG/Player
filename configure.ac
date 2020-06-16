@@ -93,6 +93,25 @@ AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
 AC_SUBST([BASHCOMPLETION_DIR])
 AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
 
+# Expose OS type to automake
+AC_CANONICAL_HOST
+
+EP_BUILD_MAC=NO
+
+# Detect the target system
+case "${host_os}" in
+    darwin*)
+        EP_BUILD_MAC=YES
+        ;;
+esac
+
+AS_IF([test "$EP_BUILD_MAC" = "YES"],[
+	AC_PROG_OBJCXX
+])
+
+# Pass the conditionals to automake
+AM_CONDITIONAL([MACOS], [test "$EP_BUILD_MAC" = "YES"])
+
 # C++14 is mandatory
 AX_CXX_COMPILE_STDCXX(14, noext)
 
