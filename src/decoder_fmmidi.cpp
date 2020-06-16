@@ -66,12 +66,16 @@ bool FmMidiDecoder::Open(FILE* file) {
 	}
 	seq->rewind();
 
+	ticks_per_sec = (float)seq->get_division() / tempo * 1000000;
+
 	return true;
 }
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 	if (offset == 0 && origin == Origin::Begin) {
 		mtime = 0.0f;
+		mtime_last_tempo_change = 0.0f;
+		ticks_last_tempo_change = 0;
 		seq->rewind();
 		begin = true;
 
@@ -108,7 +112,8 @@ bool FmMidiDecoder::SetPitch(int pitch) {
 }
 
 int FmMidiDecoder::GetTicks() const {
-	return 0;
+	float delta = mtime - mtime_last_tempo_change;
+	return ticks_last_tempo_change + static_cast<int>(ticks_per_sec * delta);
 }
 
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
@@ -142,8 +147,17 @@ void FmMidiDecoder::sysex_message(int, const void * data, std::size_t size) {
 	synth->sysex_message(data, size);
 }
 
-void FmMidiDecoder::meta_event(int, const void *, std::size_t) {
-	// no-op
+void FmMidiDecoder::meta_event(int event, const void * data, std::size_t size) {
+	const auto* d = reinterpret_cast<const uint8_t*>(data);
+
+	if (size == 3 && event == 0x51) {
+		tempo = (static_cast<uint_least32_t>(static_cast<unsigned char>(d[0])) << 16)
+				| (static_cast<unsigned char>(d[1]) << 8)
+				| static_cast<unsigned char>(d[2]);
+		ticks_per_sec = (float)seq->get_division() / tempo * 1000000;
+		ticks_last_tempo_change = GetTicks();
+		mtime_last_tempo_change = mtime;
+	}
 }
 
 void FmMidiDecoder::reset() {

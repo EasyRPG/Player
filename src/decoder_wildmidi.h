@@ -42,6 +42,8 @@ public:
 
 	bool Seek(size_t offset, Origin origin) override;
 
+	int GetTicks() const override;
+
 	bool IsFinished() const override;
 
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
@@ -51,6 +53,7 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	std::string filename;
+	uint32_t division = 96;
 #ifdef HAVE_WILDMIDI
 	midi* handle = NULL;
 #endif

@@ -76,12 +76,14 @@ namespace midisequencer{
         std::string get_title()const;
         std::string get_copyright()const;
         std::string get_song()const;
+        uint32_t get_division()const;
         void play(float time, output* out);
         void set_time(float time, output* out);
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;
         std::vector<std::string> long_messages;
+        uint32_t division = 0;
         void load_smf(void* fp, int(*fgetc)(void*));
     };
 }

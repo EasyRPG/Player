@@ -59,6 +59,11 @@ private:
 	float pitch = 1.0f;
 	int frequency = 44100;
 	bool begin = true;
+	uint32_t tempo = 500000;
+
+	float ticks_per_sec = 0.0f;
+	float mtime_last_tempo_change = 0.0f;
+	int ticks_last_tempo_change = 0;
 
 	// midisequencer::output interface
 	int synthesize(int_least16_t* output, std::size_t samples, float rate);

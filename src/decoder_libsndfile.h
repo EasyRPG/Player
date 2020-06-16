@@ -45,11 +45,14 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
+	int GetTicks() const override;
+
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 	Format output_format;
 	FILE * file_;
 	bool finished;
+	int decoded_samples = 0;
 #ifdef HAVE_LIBSNDFILE
 	SNDFILE *soundfile;
 	SF_INFO soundinfo;
