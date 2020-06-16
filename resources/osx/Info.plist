@@ -33,5 +33,11 @@
     <key>CFBundleShortVersionString</key>
     <string>0.6.2</string>
 
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+
+    <key>NSHighResolutionCapable</key>
+    <true/>
+
 </dict>
 </plist>
