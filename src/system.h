@@ -127,3 +127,7 @@
 #endif
 
 #endif
+
+#if defined(__APPLE__) && defined(__MACH__)
+#include <TargetConditionals.h>
+#endif

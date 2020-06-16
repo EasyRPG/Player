@@ -773,7 +773,7 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#if defined(__WINRT__) || defined(__MORPHOS__)
+#if defined(__WINRT__) || defined(__MORPHOS__) || TARGET_OS_OSX
 	// do nothing
 #elif defined(_WIN32)
 	SDL_SysWMinfo wminfo;
