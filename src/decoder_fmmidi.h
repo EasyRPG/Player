@@ -52,6 +52,8 @@ public:
 	std::vector<uint8_t> file_buffer;
 	size_t file_buffer_pos = 0;
 private:
+	static constexpr int midi_default_tempo = 500000;
+
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	FILE* file;
@@ -59,11 +61,21 @@ private:
 	float pitch = 1.0f;
 	int frequency = 44100;
 	bool begin = true;
-	uint32_t tempo = 500000;
 
-	float ticks_per_sec = 0.0f;
-	float mtime_last_tempo_change = 0.0f;
-	int ticks_last_tempo_change = 0;
+	struct MidiTempoData {
+		MidiTempoData(const FmMidiDecoder* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);
+
+		uint32_t tempo = midi_default_tempo;
+		float ticks_per_sec = 0.0f;
+		float mtime = 0.0f;
+		int ticks = 0;
+
+		int GetTicks(float cur_mtime) const;
+	};
+
+	// Contains one entry per tempo change (latest on top)
+	// When looping all entries after the loop point are dropped
+	std::vector<MidiTempoData> tempo;
 
 	// midisequencer::output interface
 	int synthesize(int_least16_t* output, std::size_t samples, float rate);

@@ -68,7 +68,8 @@ namespace midisequencer{
     public:
         sequencer();
         void clear();
-	void rewind();
+        void rewind();
+        float rewind_to_loop();
         bool load(void* fp, int(*fgetc)(void*));
         bool load(std::FILE* fp);
         int get_num_ports()const;
@@ -82,6 +83,7 @@ namespace midisequencer{
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;
+        std::vector<midi_message>::iterator loop_position;
         std::vector<std::string> long_messages;
         uint32_t division = 0;
         void load_smf(void* fp, int(*fgetc)(void*));

@@ -20,11 +20,14 @@
 #ifdef WANT_FMMIDI
 
 // Headers
+#include <algorithm>
 #include <cstdio>
 #include <cassert>
 #include "audio_decoder.h"
 #include "output.h"
 #include "decoder_fmmidi.h"
+
+constexpr int FmMidiDecoder::midi_default_tempo;
 
 FmMidiDecoder::FmMidiDecoder() {
 	note_factory.reset(new midisynth::fm_note_factory());
@@ -66,17 +69,33 @@ bool FmMidiDecoder::Open(FILE* file) {
 	}
 	seq->rewind();
 
-	ticks_per_sec = (float)seq->get_division() / tempo * 1000000;
+	tempo.emplace_back(this, midi_default_tempo);
 
 	return true;
 }
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
+	assert(!tempo.empty());
+
 	if (offset == 0 && origin == Origin::Begin) {
-		mtime = 0.0f;
-		mtime_last_tempo_change = 0.0f;
-		ticks_last_tempo_change = 0;
-		seq->rewind();
+		mtime = seq->rewind_to_loop();
+
+		if (mtime > 0.0f) {
+			// Throw away all tempo data after the loop point
+			auto rit = std::find_if(tempo.rbegin(), tempo.rend(), [&](auto& t) { return t.mtime <= mtime; });
+			auto it = rit.base();
+			if (it != tempo.end()) {
+				tempo.erase(it, tempo.end());
+			}
+
+			// Bit of a hack, prevent stuck notes
+			// TODO: verify with a MIDI event stream inspector whether RPG_RT does this?
+			synth->all_note_off();
+		} else {
+			tempo.clear();
+			tempo.emplace_back(this, midi_default_tempo);
+		}
+
 		begin = true;
 
 		return true;
@@ -112,8 +131,9 @@ bool FmMidiDecoder::SetPitch(int pitch) {
 }
 
 int FmMidiDecoder::GetTicks() const {
-	float delta = mtime - mtime_last_tempo_change;
-	return ticks_last_tempo_change + static_cast<int>(ticks_per_sec * delta);
+	assert(!tempo.empty());
+
+	return tempo.back().GetTicks(mtime);
 }
 
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
@@ -148,15 +168,15 @@ void FmMidiDecoder::sysex_message(int, const void * data, std::size_t size) {
 }
 
 void FmMidiDecoder::meta_event(int event, const void * data, std::size_t size) {
+	assert(!tempo.empty());
+
 	const auto* d = reinterpret_cast<const uint8_t*>(data);
 
 	if (size == 3 && event == 0x51) {
-		tempo = (static_cast<uint_least32_t>(static_cast<unsigned char>(d[0])) << 16)
+		uint32_t new_tempo = (static_cast<uint32_t>(static_cast<unsigned char>(d[0])) << 16)
 				| (static_cast<unsigned char>(d[1]) << 8)
 				| static_cast<unsigned char>(d[2]);
-		ticks_per_sec = (float)seq->get_division() / tempo * 1000000;
-		ticks_last_tempo_change = GetTicks();
-		mtime_last_tempo_change = mtime;
+		tempo.emplace_back(this, new_tempo, &tempo.back());
 	}
 }
 
@@ -167,6 +187,21 @@ void FmMidiDecoder::reset() {
 void FmMidiDecoder::load_programs() {
 	// beautiful
 	#include "midiprogram.h"
+}
+
+FmMidiDecoder::MidiTempoData::MidiTempoData(const FmMidiDecoder* midi, uint32_t cur_tempo, const MidiTempoData* prev)
+	: tempo(cur_tempo) {
+	ticks_per_sec = (float)midi->seq->get_division() / tempo * 1000000;
+	mtime = midi->mtime;
+	if (prev) {
+		float delta = mtime - prev->mtime;
+		ticks = prev->ticks + static_cast<int>(ticks_per_sec * delta);
+	}
+}
+
+int FmMidiDecoder::MidiTempoData::GetTicks(float mtime_cur) const {
+	float delta = mtime_cur - mtime;
+	return ticks + static_cast<int>(ticks_per_sec * delta);
 }
 
 #endif
