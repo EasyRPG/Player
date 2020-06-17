@@ -24,12 +24,21 @@
 #include <string>
 #include "platform/macos/utils.h"
 
+bool MacOSUtils::IsAppBundle() {
+    bool is_bundle = false;
+    @autoreleasepool {
+        NSBundle *main = [NSBundle mainBundle];
+        is_bundle = [main objectForInfoDictionaryKey: (id)kCFBundleIdentifierKey] != nil;
+    }
+    return is_bundle;
+}
+
 std::string MacOSUtils::GetBundleDir() {
     std::string path;
     @autoreleasepool {
         NSBundle *mainBundle = [NSBundle mainBundle];
         NSURL *bundleURL = [mainBundle bundleURL];
-        if ([[bundleURL pathExtension] isEqualToString: @"app"]) {
+        if (IsAppBundle()) {
             bundleURL = [bundleURL URLByDeletingLastPathComponent];
         }
         const char* fsPath = [bundleURL fileSystemRepresentation];
