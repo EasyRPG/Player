@@ -37,7 +37,7 @@
 #endif
 
 /**
- * Audio decoder for MIDI powered by FluidSynth
+ * Audio decoder for MIDI powered by FluidSynth or FluidLite
  */
 class FluidSynthDecoder : public MidiDecoder {
 public:

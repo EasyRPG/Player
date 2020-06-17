@@ -23,29 +23,85 @@
 #include "audio_midi.h"
 #include "midisequencer.h"
 
-#if defined(GEKKO) || defined(_3DS)
-#  define EP_MIDI_FREQ 22050
-#else
-#  define EP_MIDI_FREQ 44100
-#endif
-
+/**
+ * GenericMidiDecoder wraps a MidiDecoder and uses a FmMidi Sequencer for
+ * timing and message processing.
+ */
 class GenericMidiDecoder : public AudioDecoder, midisequencer::output {
 public:
-	GenericMidiDecoder(MidiDecoder* midi_dec);
+	/**
+	 * @param midi_dec MidiDecoder to wrap
+	 */
+	explicit GenericMidiDecoder(MidiDecoder* midi_dec);
 
-	// Audio Decoder interface
+	/**
+	 * Assigns a stream to the midi decoder.
+	 * Open should be only called once per audio decoder instance.
+	 *
+	 * @return true if initializing was successful, false otherwise
+	 */
 	bool Open(Filesystem_Stream::InputStream stream) override;
 
+	/**
+	 * Seeks in the midi stream. The value of offset is in Midi ticks.
+	 *
+	 * @param offset Offset to seek to
+	 * @param origin Position to seek from
+	 * @return Whether seek was successful
+	 */
 	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
+	/**
+	 * @return Position in the stream in midi ticks.
+	 */
+	std::streampos Tell() const override;
+
+	/**
+	 * Determines whether the stream is finished.
+	 *
+	 * @return true stream ended
+	 */
 	bool IsFinished() const override;
 
+	/**
+	 * Retrieves the format of the Midi decoder.
+	 * It is guaranteed that these settings will stay constant the whole time.
+	 *
+	 * @param frequency Filled with the audio frequency
+	 * @param format Filled with the audio format
+	 * @param channels Filled with the amount of channels
+	 */
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
+	/**
+	 * Requests a preferred format from the audio decoder. Not all decoders
+	 * support everything and it's recommended to use the audio hardware
+	 * for audio processing.
+	 * When false is returned use GetFormat to get the real format of the
+	 * output data.
+	 *
+	 * @param frequency Audio frequency
+	 * @param format Audio format
+	 * @param channels Number of channels
+	 * @return true when all settings were set, otherwise false (use GetFormat)
+	 */
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
+	/**
+	 * Sets the pitch multiplier.
+	 * 100 = normal speed
+	 * 200 = double speed and so on
+	 * Not all audio decoders support this. Using the audio hardware is
+	 * recommended.
+	 *
+	 * @param pitch Pitch multiplier to use
+	 * @return true if pitch was set, false otherwise
+	 */
 	bool SetPitch(int pitch) override;
 
+	/**
+	 * @return Position in the stream in midi ticks.
+	 */
 	int GetTicks() const override;
 
 	std::vector<uint8_t> file_buffer;

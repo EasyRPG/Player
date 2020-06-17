@@ -96,6 +96,10 @@ bool GenericMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir orig
 	return false;
 }
 
+std::streampos GenericMidiDecoder::Tell() const {
+	return GetTicks();
+}
+
 bool GenericMidiDecoder::IsFinished() const {
 	return mtime >= seq->get_total_time();
 }

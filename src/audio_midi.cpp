@@ -28,13 +28,26 @@
 #include "decoder_midigeneric.h"
 #include "decoder_wildmidi.h"
 
+void MidiDecoder::GetFormat(int &freq, AudioDecoder::Format &format, int &channels) const {
+	freq = frequency;
+	format = AudioDecoder::Format::S16;
+	channels = 2;
+}
+
+bool MidiDecoder::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
+	if (frequency != EP_MIDI_FREQ || channels != 2 || format != AudioDecoder::Format::S16)
+		return false;
+
+	return true;
+}
+
 
 static struct {
 	bool fluidsynth = true;
 	bool wildmidi = true;
 } works;
 
-std::unique_ptr<AudioDecoder> AudioMidi::Create(Filesystem_Stream::InputStream &stream, bool resample) {
+std::unique_ptr<AudioDecoder> MidiDecoder::Create(Filesystem_Stream::InputStream &stream, bool resample) {
 	std::unique_ptr<AudioDecoder> mididec;
 	std::string error_message;
 
