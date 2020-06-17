@@ -20,6 +20,7 @@ AC_PROG_CXXCPP
 AM_PROG_AR
 AC_PROG_RANLIB
 PKG_PROG_PKG_CONFIG
+AC_PROG_OBJCXX
 
 # Options
 AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
@@ -104,10 +105,6 @@ case "${host_os}" in
         EP_BUILD_MAC=YES
         ;;
 esac
-
-AS_IF([test "$EP_BUILD_MAC" = "YES"],[
-	AC_PROG_OBJCXX
-])
 
 # Pass the conditionals to automake
 AM_CONDITIONAL([MACOS], [test "$EP_BUILD_MAC" = "YES"])
