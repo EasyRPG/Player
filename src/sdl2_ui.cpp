@@ -801,11 +801,11 @@ void Sdl2Ui::SetAppIcon() {
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
-    #if defined(__APPLE__) && TARGET_OS_OSX
-        if (MacOSUtils::IsAppBundle()) {
-            return;
-        }
-    #endif
+	#if defined(__APPLE__) && TARGET_OS_OSX
+		if (MacOSUtils::IsAppBundle()) {
+			return;
+		}
+	#endif
 	/* SDL handles transfering the application icon to new or recreated windows,
 	   if initially set through it (see below). So no need to set again for all
 	   platforms relying on it. Platforms defined above need special treatment.

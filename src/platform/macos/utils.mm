@@ -25,26 +25,26 @@
 #include "platform/macos/utils.h"
 
 bool MacOSUtils::IsAppBundle() {
-    bool is_bundle = false;
-    @autoreleasepool {
-        NSBundle *main = [NSBundle mainBundle];
-        is_bundle = [main objectForInfoDictionaryKey: (id)kCFBundleIdentifierKey] != nil;
-    }
-    return is_bundle;
+	bool is_bundle = false;
+	@autoreleasepool {
+		NSBundle *main = [NSBundle mainBundle];
+		is_bundle = [main objectForInfoDictionaryKey: (id)kCFBundleIdentifierKey] != nil;
+	}
+	return is_bundle;
 }
 
 std::string MacOSUtils::GetBundleDir() {
-    std::string path;
-    @autoreleasepool {
-        NSBundle *mainBundle = [NSBundle mainBundle];
-        NSURL *bundleURL = [mainBundle bundleURL];
-        if (IsAppBundle()) {
-            bundleURL = [bundleURL URLByDeletingLastPathComponent];
-        }
-        const char* fsPath = [bundleURL fileSystemRepresentation];
-        path.assign(fsPath);
-    }
-    return path;
+	std::string path;
+	@autoreleasepool {
+		NSBundle *mainBundle = [NSBundle mainBundle];
+		NSURL *bundleURL = [mainBundle bundleURL];
+		if (IsAppBundle()) {
+			bundleURL = [bundleURL URLByDeletingLastPathComponent];
+		}
+		const char* fsPath = [bundleURL fileSystemRepresentation];
+		path.assign(fsPath);
+	}
+	return path;
 }
 
 #endif

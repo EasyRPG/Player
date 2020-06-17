@@ -19,14 +19,14 @@
 #define EP_PLATFORM_MACOS_UTILS_H
 
 namespace MacOSUtils {
-    /**
-     * Determine if the app is being run inside a .app bundle.
-     * @returns true if running in a bundle
-     */
-    bool IsAppBundle();
-    /**
-     * Gets the path to the Player.app bundle.
-     */
-    std::string GetBundleDir();
+	/**
+	 * Determine if the app is being run inside a .app bundle.
+	 * @returns true if running in a bundle
+	 */
+	bool IsAppBundle();
+	/**
+	 * Gets the path to the Player.app bundle.
+	 */
+	std::string GetBundleDir();
 }
 #endif
