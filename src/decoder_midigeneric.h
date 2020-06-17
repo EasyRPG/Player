@@ -116,6 +116,7 @@ private:
 	float mtime = 0.0f;
 	float pitch = 1.0f;
 	int frequency = 44100;
+	bool loops_to_end = false;
 
 	struct MidiTempoData {
 		MidiTempoData(const GenericMidiDecoder* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);

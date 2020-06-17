@@ -68,6 +68,10 @@ bool GenericMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir orig
 	if (offset == 0 && origin == std::ios_base::beg) {
 		mtime = seq->rewind_to_loop();
 
+		// When the loop points to the end of the track keep it alive to match
+		// RPG_RT behaviour.
+		loops_to_end = mtime >= seq->get_total_time();
+
 		if (mtime > 0.0f) {
 			// Throw away all tempo data after the loop point
 			auto rit = std::find_if(tempo.rbegin(), tempo.rend(), [&](auto& t) { return t.mtime <= mtime; });
@@ -101,6 +105,10 @@ std::streampos GenericMidiDecoder::Tell() const {
 }
 
 bool GenericMidiDecoder::IsFinished() const {
+	if (loops_to_end) {
+		return false;
+	}
+
 	return mtime >= seq->get_total_time();
 }
 
@@ -130,7 +138,12 @@ int GenericMidiDecoder::GetTicks() const {
 	return tempo.back().GetTicks(mtime);
 }
 
-int GenericMidiDecoder::FillBuffer(uint8_t *buffer, int length) {
+int GenericMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
+	if (loops_to_end) {
+		memset(buffer, '\0', length);
+		return length;
+	}
+
 	size_t samples = (size_t)length / sizeof(int_least16_t) / 2;
 
 	float delta = (float)samples / (frequency * pitch);
