@@ -733,14 +733,15 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
-	# installation - don't use install on macs
-	if(NOT APPLE)
-		include(GNUInstallDirs)
+	include(GNUInstallDirs)
+	if(APPLE)
+		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION BUNDLE DESTINATION "${CMAKE_BINARY_DIR}/Package")
+	else()
 		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
 
-		if(MSVC)
-			install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
-		endif()
+	if(MSVC)
+		install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
 	endif()
 endif()
 
