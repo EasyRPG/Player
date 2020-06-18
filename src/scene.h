@@ -96,16 +96,6 @@ public:
 	virtual void Continue(SceneType prev_scene);
 
 	/**
-	 * Resume processing.
-	 * This function is executed after the fade in,
-	 * either when starting the scene or when returning
-	 * from a nested scene
-	 *
-	 * @param prev_scene The previous scene
-	 */
-	virtual void Resume(SceneType prev_scene);
-
-	/**
 	 * Suspend processing.
 	 * This function is executed before the fade out for
 	 * the scene change, either when terminating the scene
@@ -151,6 +141,11 @@ public:
 	 * The scene should redraw all elements.
 	 */
 	virtual void Update();
+
+	/**
+	 * Update graphics in scene stack
+	 */
+	virtual void UpdateGraphics() {}
 
 	/**
 	 * Pushes a new scene on the scene execution stack.
@@ -276,7 +271,15 @@ protected:
 	 */
 	void SetUseSharedDrawables(bool value);
 
+	/**
+	 * If no async operation is pending, call f() now. Otherwise
+	 * defer f until async operations are done.
+	 */
+	template <typename F> void AsyncNext(F&& f);
+
 private:
+	void ScheduleTransitionIn(Scene::SceneType prev_scene_type);
+
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;
 
@@ -340,6 +343,15 @@ inline DrawableList& Scene::GetDrawableList() {
 
 inline void Scene::SetUseSharedDrawables(bool value) {
 	uses_shared_drawables = value;
+}
+
+template <typename F>
+inline void Scene::AsyncNext(F&& f) {
+	if (IsAsyncPending()) {
+		async_continuation = std::forward<F>(f);
+	} else {
+		f();
+	}
 }
 
 #endif

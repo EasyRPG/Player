@@ -77,6 +77,24 @@ Scene::Scene() {
 	type = Scene::Null;
 }
 
+void Scene::ScheduleTransitionIn(Scene::SceneType prev_scene_type) {
+	if (!Transition::instance().IsErasedNotActive()) {
+		// Scene could have manually triggered transition earlier
+		return;
+	}
+
+	// If Start() or Continue() produced an async operation, defer TransitionIn() call until
+	// after async completes
+	if (async_continuation) {
+		AsyncNext([this,fn=std::move(async_continuation),prev_scene_type]() {
+					fn();
+					ScheduleTransitionIn(prev_scene_type);
+				});
+	} else {
+		AsyncNext([this,prev_scene_type]() { TransitionIn(prev_scene_type); });
+	}
+}
+
 void Scene::MainFunction() {
 	static bool init = false;
 
@@ -119,12 +137,7 @@ void Scene::MainFunction() {
 
 			push_pop_operation = 0;
 
-			// Scene could have manually triggered transition earlier
-			if (!Transition::instance().IsActive()) {
-				TransitionIn(prev_scene_type);
-			}
-			Resume(prev_scene_type);
-
+			ScheduleTransitionIn(prev_scene_type);
 
 			init = true;
 			return;
@@ -155,9 +168,6 @@ void Scene::Start() {
 }
 
 void Scene::Continue(SceneType /* prev_scene */) {
-}
-
-void Scene::Resume(SceneType /* prev_scene */) {
 }
 
 void Scene::Suspend(SceneType /* next_scene */) {

@@ -84,10 +84,9 @@ private:
 	void UpdateInn();
 	void FinishInn();
 
-	template <typename F> void AsyncNext(F&& f);
 	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);
 
-	void UpdateGraphics();
+	void UpdateGraphics() override;
 
 	std::unique_ptr<Window_Message> message_window;
 

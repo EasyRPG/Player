@@ -110,7 +110,7 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	// We do the start game fade in transition here instead of TransitionIn callback,
 	// in order to make async logic work properly.
 	auto& transition = Transition::instance();
-	if (transition.IsErased()) {
+	if (transition.IsErasedNotActive()) {
 		transition.InitShow(Transition::TransitionFadeIn, this);
 	}
 
@@ -187,7 +187,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 	}
 
 	if (next_scene == Scene::Battle) {
-		if (!transition.IsErased()) {
+		if (!transition.IsErasedNotActive()) {
 			auto tt = Game_System::GetTransition(Game_System::Transition_BeginBattleErase);
 			if (tt == Transition::TransitionNone) {
 				// If transition type is none, RPG_RT flashes and then waits 40 frames before starting the battle.
@@ -303,7 +303,7 @@ void Scene_Map::UpdateSceneCalling() {
 void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	auto& transition = Transition::instance();
 
-	if (!transition.IsErased() && tp.erase_screen) {
+	if (!transition.IsErasedNotActive() && tp.erase_screen) {
 		transition.InitErase(Game_System::GetTransition(Game_System::Transition_TeleportErase), this);
 	}
 
@@ -341,7 +341,7 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	auto& transition = Transition::instance();
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (tp.use_default_transition_in && transition.IsErased()) {
+	if (tp.use_default_transition_in && transition.IsErasedNotActive()) {
 		transition.InitShow(Transition::TransitionFadeIn, this);
 	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
 		transition.InitShow(Game_System::GetTransition(Game_System::Transition_TeleportShow), this);
@@ -383,15 +383,6 @@ void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 	spriteset.reset(new Spriteset_Map());
 
 	AsyncNext(std::move(map_async_continuation));
-}
-
-template <typename F>
-void Scene_Map::AsyncNext(F&& f) {
-	if (IsAsyncPending()) {
-		async_continuation = std::forward<F>(f);
-	} else {
-		f();
-	}
 }
 
 template <typename F>

@@ -222,7 +222,7 @@ void Scene_Battle::Update() {
 	bool events_running = interp.IsRunning();
 	interp.Update();
 
-	Game_Battle::UpdateGraphics();
+	UpdateGraphics();
 	if (events_running && !interp.IsRunning()) {
 		// If an event that changed status finishes without displaying a message window,
 		// we need this so it can update automatically the status_window
@@ -240,6 +240,10 @@ void Scene_Battle::Update() {
 			return;
 		}
 	}
+}
+
+void Scene_Battle::UpdateGraphics() {
+	Game_Battle::UpdateGraphics();
 }
 
 bool Scene_Battle::IsWindowMoving() {
