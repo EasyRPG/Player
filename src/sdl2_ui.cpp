@@ -833,6 +833,9 @@ void Sdl2Ui::SetAppIcon() {
 #else
 	#if defined(__APPLE__) && TARGET_OS_OSX
 		if (MacOSUtils::IsAppBundle()) {
+			// Do nothing if running as a .app. In this case macOS uses the
+			// icon packaged with the .app's resources, which is a much higher
+			// resolution version than the one that would be set below.
 			return;
 		}
 	#endif
