@@ -65,9 +65,8 @@ CtrUi::CtrUi(int width, int height)
 {
 	SetIsFullscreen(true);
 
-	touchscreen_on = false;
-	touchscreen_state = false;
-	
+	touchscreen = false;
+
 	fullscreen = false;
 	trigger_state = false;
 
@@ -87,7 +86,7 @@ CtrUi::CtrUi(int width, int height)
 	C2D_Prepare();
 	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-	
+
 
 #ifndef NDEBUG
 	consoleInit(GFX_BOTTOM, nullptr);
@@ -185,17 +184,10 @@ void CtrUi::ProcessEvents() {
 			C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
 		}
 	}
-	
-	// Touchscreen toggle - carbon copy of fullscreen block :^)
-	bool old_touchscreen_state = touchscreen_state;
-	touchscreen_state = (input & KEY_Y);
-	if ((touchscreen_state != old_touchscreen_state) && touchscreen_state) {
-		touchscreen_on = !touchscreen_on;
-		if (touchscreen_on) {
-			GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM );
-		} else {
-			GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM );
-		}
+
+	// Touchscreen pad toggle
+	if (!touchscreen && (input & KEY_TOUCH)) {
+		touchscreen = true;
 	}
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
@@ -210,9 +202,8 @@ void CtrUi::ProcessEvents() {
 #endif
 
 #ifdef NDEBUG
-	// Touchscreen support
-	if (touchscreen_on == true){
-		
+	if (touchscreen) {
+
 		u32 keys_tbl[16] = {
 			Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
 			Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
@@ -296,10 +287,12 @@ void CtrUi::UpdateDisplay() {
 
 #if NDEBUG
 	// bottom screen
-	C2D_SceneBegin(bottom_screen);
-	
-	if (touchscreen_on == true){
-		
+	gspLcdInit();
+
+	if (touchscreen) {
+		GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+		C2D_SceneBegin(bottom_screen);
+
 		// More low hanging fruit optimisation:
 		// Only refresh the bottom when a touch happens and one frame after
 		static bool once = false;
@@ -347,10 +340,11 @@ void CtrUi::UpdateDisplay() {
 			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
 		}
 	}else{
-		GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM );
+		GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
 	}
 #endif
 
+	gspLcdExit();
 	C3D_FrameEnd(0);
 }
 
