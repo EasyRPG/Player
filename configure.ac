@@ -20,6 +20,7 @@ AC_PROG_CXXCPP
 AM_PROG_AR
 AC_PROG_RANLIB
 PKG_PROG_PKG_CONFIG
+AC_PROG_OBJCXX
 
 # Options
 AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
@@ -92,6 +93,21 @@ AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
 ])
 AC_SUBST([BASHCOMPLETION_DIR])
 AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
+
+# Expose OS type to automake
+AC_CANONICAL_HOST
+
+EP_BUILD_MAC=NO
+
+# Detect the target system
+case "${host_os}" in
+    darwin*)
+        EP_BUILD_MAC=YES
+        ;;
+esac
+
+# Pass the conditionals to automake
+AM_CONDITIONAL([MACOS], [test "$EP_BUILD_MAC" = "YES"])
 
 # C++14 is mandatory
 AX_CXX_COMPILE_STDCXX(14, noext)

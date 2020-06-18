@@ -55,6 +55,11 @@
 #    include "audio_sdl.h"
 #  endif
 
+#if defined(__APPLE__) && TARGET_OS_OSX
+#  include "platform/macos/utils.h"
+#endif
+
+
 AudioInterface& Sdl2Ui::GetAudio() {
 	return *audio_;
 }
@@ -796,6 +801,14 @@ void Sdl2Ui::SetAppIcon() {
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
+	#if defined(__APPLE__) && TARGET_OS_OSX
+		if (MacOSUtils::IsAppBundle()) {
+			// Do nothing if running as a .app. In this case macOS uses the
+			// icon packaged with the .app's resources, which is a much higher
+			// resolution version than the one that would be set below.
+			return;
+		}
+	#endif
 	/* SDL handles transfering the application icon to new or recreated windows,
 	   if initially set through it (see below). So no need to set again for all
 	   platforms relying on it. Platforms defined above need special treatment.
