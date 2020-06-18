@@ -53,24 +53,6 @@ public:
 	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
 
 	/**
-	 * Begins a display mode change.
-	 */
-	virtual void BeginDisplayModeChange() = 0;
-
-	/**
-	 * Ends a display mode change.
-	 */
-	virtual void EndDisplayModeChange() = 0;
-
-	/**
-	 * Resizes display.
-	 *
-	 * @param width display client width.
-	 * @param height display client height.
-	 */
-	virtual void Resize(long width, long height) = 0;
-
-	/**
 	 * Toggles fullscreen.
 	 */
 	virtual void ToggleFullscreen() = 0;
@@ -122,7 +104,7 @@ public:
 	 *
 	 * @return whether fullscreen mode is active.
 	 */
-	virtual bool IsFullscreen() = 0;
+	bool IsFullscreen() const;
 
 #ifdef SUPPORT_AUDIO
 	/**
@@ -190,6 +172,7 @@ protected:
 	BaseUi();
 
 	void SetFrameRateSynchronized(bool value);
+	void SetIsFullscreen(bool value);
 
 	/**
 	 * Display mode data struct.
@@ -228,6 +211,9 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
+
+	/** Whether UI is currently fullscreen */
+	bool is_fullscreen = false;
 };
 
 /** Global DisplayUi variable. */
@@ -239,6 +225,46 @@ inline bool BaseUi::IsFrameRateSynchronized() const {
 
 inline void BaseUi::SetFrameRateSynchronized(bool value) {
 	external_frame_rate = value;
+}
+
+inline bool BaseUi::IsFullscreen() const {
+	return is_fullscreen;
+}
+
+inline void BaseUi::SetIsFullscreen(bool fs) {
+	is_fullscreen = fs;
+}
+
+inline BaseUi::KeyStatus& BaseUi::GetKeyStates() {
+	return keys;
+}
+
+inline BitmapRef const& BaseUi::GetDisplaySurface() const {
+	return main_surface;
+}
+
+inline BitmapRef& BaseUi::GetDisplaySurface() {
+	return main_surface;
+}
+
+inline long BaseUi::GetWidth() const {
+	return current_display_mode.width;
+}
+
+inline long BaseUi::GetHeight() const {
+	return current_display_mode.height;
+}
+
+inline bool BaseUi::GetMouseFocus() const {
+	return mouse_focus;
+}
+
+inline int BaseUi::GetMousePosX() const {
+	return mouse_x;
+}
+
+inline int BaseUi::GetMousePosY() const {
+	return mouse_y;
 }
 
 #endif

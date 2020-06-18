@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(EasyRPG_Player VERSION 0.6.1 LANGUAGES CXX)
+project(EasyRPG_Player VERSION 0.6.2 LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -14,15 +14,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Source Files
 add_library(${PROJECT_NAME}
-	src/3ds_clock.cpp
-	src/3ds_clock.h
-	src/3ds_ui.cpp
-	src/3ds_ui.h
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
-	src/audio_3ds.cpp
-	src/audio_3ds.h
 	src/audio_al.cpp
 	src/audio_al.h
 	src/audio.cpp
@@ -31,8 +25,6 @@ add_library(${PROJECT_NAME}
 	src/audio_generic.cpp
 	src/audio_generic.h
 	src/audio.h
-	src/audio_psp2.cpp
-	src/audio_psp2.h
 	src/audio_resampler.cpp
 	src/audio_resampler.h
 	src/audio_sdl.cpp
@@ -41,8 +33,6 @@ add_library(${PROJECT_NAME}
 	src/audio_sdl_mixer.h
 	src/audio_secache.cpp
 	src/audio_secache.h
-	src/audio_switch.cpp
-	src/audio_switch.h
 	src/background.cpp
 	src/background.h
 	src/baseui.cpp
@@ -90,6 +80,7 @@ add_library(${PROJECT_NAME}
 	src/filefinder.cpp
 	src/filefinder.h
 	src/flash.h
+	src/flat_map.h
 	src/font.cpp
 	src/font.h
 	src/fps_overlay.cpp
@@ -162,10 +153,7 @@ add_library(${PROJECT_NAME}
 	src/image_xyz.cpp
 	src/image_xyz.h
 	src/input_buttons_desktop.cpp
-	src/input_buttons_gekko.cpp
 	src/input_buttons.h
-	src/input_buttons_opendingux.cpp
-	src/input_buttons_psp.cpp
 	src/input.cpp
 	src/input.h
 	src/input_source.cpp
@@ -198,13 +186,8 @@ add_library(${PROJECT_NAME}
 	src/platform_clock.h
 	src/player.cpp
 	src/player.h
-	src/psp2_clock.cpp
-	src/psp2_clock.h
-	src/psp2_ui.cpp
-	src/psp2_ui.h
 	src/rect.cpp
 	src/rect.h
-	src/registry.cpp
 	src/registry.h
 	src/registry_wine.cpp
 	src/rtp.cpp
@@ -282,10 +265,6 @@ add_library(${PROJECT_NAME}
 	src/state.cpp
 	src/state.h
 	src/std_clock.h
-	src/switch_clock.cpp
-	src/switch_clock.h
-	src/switch_ui.cpp
-	src/switch_ui.h
 	src/system.h
 	src/teleport_target.h
 	src/text.cpp
@@ -301,8 +280,6 @@ add_library(${PROJECT_NAME}
 	src/util_macro.h
 	src/utils.cpp
 	src/utils.h
-	src/util_win.cpp
-	src/util_win.h
 	src/version.h
 	src/weather.cpp
 	src/weather.h
@@ -386,10 +363,24 @@ add_library(${PROJECT_NAME}
 	src/window_varlist.h
 )
 
+# These are actually unused when building in CMake
+#	src/sdl_ui.cpp
+#	src/sdl_ui.h
+#	src/platform/wii/wii_clock.cpp
+#	src/platform/wii/wii_clock.h
+#	src/platform/wii/wii_input_buttons.cpp
+#	src/platform/opendingux/opendingux_input_buttons.cpp
+#	src/platform/psp/psp_input_buttons.cpp
+
 include(CMakeDependentOption)
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+# Optimize floating point math functions into intrinsics and don't check or set errno (i.e. sqrt(-1))
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
+endif()
 
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
@@ -398,21 +389,19 @@ set(PLAYER_BUILD_EXECUTABLE ON)
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/sdl_ui.cpp
-		src/sdl_ui.h
 		src/sdl2_ui.cpp
 		src/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
-	find_package(SDL2 REQUIRED)
+	find_package(SDL2 2.0.5 REQUIRED)
 	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/audio_libretro.cpp
-		src/audio_libretro.h
-		src/input_buttons_libretro.cpp
-		src/libretro_ui.cpp
-		src/libretro_ui.h)
+		src/platform/libretro/libretro_audio.cpp
+		src/platform/libretro/libretro_audio.h
+		src/platform/libretro/libretro_input_buttons.cpp
+		src/platform/libretro/libretro_ui.cpp
+		src/platform/libretro/libretro_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
@@ -420,8 +409,48 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/3ds/3ds_audio.cpp
+		src/platform/3ds/3ds_audio.h
+		src/platform/3ds/3ds_clock.cpp
+		src/platform/3ds/3ds_clock.h
+		src/platform/3ds/3ds_ui.cpp
+		src/platform/3ds/3ds_ui.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC _3DS)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/psvita/psp2_audio.cpp
+		src/platform/psvita/psp2_audio.h
+		src/platform/psvita/psp2_clock.cpp
+		src/platform/psvita/psp2_clock.h
+		src/platform/psvita/psp2_ui.cpp
+		src/platform/psvita/psp2_ui.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PSP2)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/switch/switch_audio.cpp
+		src/platform/switch/switch_audio.h
+		src/platform/switch/switch_clock.cpp
+		src/platform/switch/switch_clock.h
+		src/platform/switch/switch_ui.cpp
+		src/platform/switch/switch_ui.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC __SWITCH__)
 else()
 	message(FATAL_ERROR "Invalid target platform")
+endif()
+
+if(WIN32)
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/registry.cpp
+		src/platform/windows/utils.cpp
+		src/platform/windows/utils.h)
+endif()
+
+if(APPLE)
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/macos/utils.mm
+		src/platform/macos/utils.h)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -436,6 +465,14 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WORDS_BIGENDIAN=1)
 	endif()
 endif()
+
+# App Icon (for macOS)
+set(${PROJECT_NAME}_BUNDLE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/osx/Player.icns")
+
+# Do not code sign on Macs
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
+set(CMAKE_XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.easyrpg.player")
 
 # liblcf
 option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development" OFF)
@@ -467,6 +504,9 @@ target_link_libraries(${PROJECT_NAME} PNG::PNG)
 
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
+
+find_package(fmt 5.3 REQUIRED)
+target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -666,30 +706,42 @@ endif()
 
 # Executable
 if (${PLAYER_BUILD_EXECUTABLE})
-	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
-	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
-
+	if(APPLE)
+		set(EXE_NAME "EasyRPG-Player.app")
+		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+		add_executable("${EXE_NAME}" MACOSX_BUNDLE "src/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
+		set_target_properties("${EXE_NAME}" PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/resources/osx/Info.plist")
+		set_target_properties("${EXE_NAME}" PROPERTIES OUTPUT_NAME "EasyRPG Player")
+	else()
+		set(EXE_NAME ${PROJECT_NAME}_exe)
+		add_executable(${EXE_NAME} WIN32 "src/main.cpp")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
+	endif()
+	
 	if(WIN32)
 		# Open console for Debug builds
 		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-			set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
+			set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 		endif()
 
 		# Add resources
-		target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
+		target_sources(${EXE_NAME} PRIVATE "resources/player.rc")
 
 		# Change executable name
-		set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
 	endif()
 
-	target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
+	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
-	# installation
 	include(GNUInstallDirs)
-	install(TARGETS ${PROJECT_NAME}_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	if(APPLE)
+		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION BUNDLE DESTINATION "${CMAKE_BINARY_DIR}/Package")
+	else()
+		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
 
 	if(MSVC)
-		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+		install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
 	endif()
 endif()
 

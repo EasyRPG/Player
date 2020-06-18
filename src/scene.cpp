@@ -77,6 +77,24 @@ Scene::Scene() {
 	type = Scene::Null;
 }
 
+void Scene::ScheduleTransitionIn(Scene::SceneType prev_scene_type) {
+	if (!Transition::instance().IsErasedNotActive()) {
+		// Scene could have manually triggered transition earlier
+		return;
+	}
+
+	// If Start() or Continue() produced an async operation, defer TransitionIn() call until
+	// after async completes
+	if (async_continuation) {
+		AsyncNext([this,fn=std::move(async_continuation),prev_scene_type]() {
+					fn();
+					ScheduleTransitionIn(prev_scene_type);
+				});
+	} else {
+		AsyncNext([this,prev_scene_type]() { TransitionIn(prev_scene_type); });
+	}
+}
+
 void Scene::MainFunction() {
 	static bool init = false;
 
@@ -119,9 +137,7 @@ void Scene::MainFunction() {
 
 			push_pop_operation = 0;
 
-			TransitionIn(prev_scene_type);
-			Resume(prev_scene_type);
-
+			ScheduleTransitionIn(prev_scene_type);
 
 			init = true;
 			return;
@@ -139,7 +155,10 @@ void Scene::MainFunction() {
 
 		auto next_scene = instance ? instance->type : Null;
 		Suspend(next_scene);
-		TransitionOut(next_scene);
+		// Scene could have manually triggered transition earlier
+		if (!Transition::instance().IsActive()) {
+			TransitionOut(next_scene);
+		}
 
 		init = false;
 	}
@@ -149,9 +168,6 @@ void Scene::Start() {
 }
 
 void Scene::Continue(SceneType /* prev_scene */) {
-}
-
-void Scene::Resume(SceneType /* prev_scene */) {
 }
 
 void Scene::Suspend(SceneType /* next_scene */) {
@@ -242,7 +258,7 @@ void Scene::PopUntil(SceneType type) {
 		++count;
 	}
 
-	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
+	Output::Warning("The requested scene {} was not on the stack", scene_names[type]);
 	DEBUG_VALIDATE("PopUntil");
 }
 
@@ -290,17 +306,17 @@ inline void Scene::DebugValidate(const char* caller) {
 	std::bitset<SceneMax> present;
 	for (auto& scene: instances) {
 		if (present[scene->type]) {
-			Output::Debug("Scene Stack after %s:", caller);
+			Output::Debug("Scene Stack after {}:", caller);
 			for (auto& s: instances) {
-				auto fmt =  (s == scene) ? "--> %s <--" : "  %s";
+				auto fmt =  (s == scene) ? "--> {} <--" : "  {}";
 				Output::Debug(fmt, scene_names[s->type]);
 			}
-			Output::Error("Multiple scenes of type=%s in the Scene instances stack!", scene_names[scene->type]);
+			Output::Error("Multiple scenes of type={} in the Scene instances stack!", scene_names[scene->type]);
 		}
 		present[scene->type] = true;
 	}
 	if (instances[0]->type != Null) {
-		Output::Error("Scene.instances[0] is of type=%s in the Scene instances stack!", scene_names[instances[0]->type]);
+		Output::Error("Scene.instances[0] is of type={} in the Scene instances stack!", scene_names[instances[0]->type]);
 	}
 }
 

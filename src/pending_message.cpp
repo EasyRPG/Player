@@ -2,7 +2,7 @@
 #include "game_variables.h"
 #include "game_actors.h"
 #include "game_message.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
 #include "utils.h"
 #include "player.h"
@@ -110,7 +110,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 
 			const auto* actor = Game_Actors::GetActor(value);
 			if (!actor) {
-				Output::Warning("Invalid Actor Id %d in message text", value);
+				Output::Warning("Invalid Actor Id {} in message text", value);
 			} else{
 				output.append(actor->GetName());
 			}

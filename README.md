@@ -21,6 +21,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image support.
+- fmtlib for interal logging.
 
 ### extended / recommended
 
@@ -70,8 +71,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.6.1.tar.xz # unpack the tarball
-    cd easyrpg-player-0.6.1            # enter in the package directory
+    tar xf easyrpg-player-0.6.2.tar.xz # unpack the tarball
+    cd easyrpg-player-0.6.2            # enter in the package directory
     ./configure                        # find libraries, set options
     make                               # compile the executable
 
@@ -99,8 +100,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.6.1.tar.xz    # unpack the tarball
-    cd easyrpg-player-0.6.1               # enter in the package directory
+    tar xf easyrpg-player-0.6.2.tar.xz    # unpack the tarball
+    cd easyrpg-player-0.6.2               # enter in the package directory
     cmake . -DCMAKE_BUILD_TYPE=Release    # configure project
     cmake --build .                       # compile the executable
     sudo cmake --build . --target install # install system-wide

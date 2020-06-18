@@ -42,7 +42,7 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES		:=	../../src
+SOURCES		:=	../../src ../../src/platform/3ds
 DATA		:=	data
 INCLUDES	:=	../../src
 GRAPHICS	:=	gfx
@@ -59,7 +59,7 @@ APP_AUTHOR	:=	EasyRPG Team & Rinnegatamante
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
-CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
+CFLAGS	:=	-g0 -Wall -O2 -mword-relocations -fno-math-errno \
 			-fomit-frame-pointer -flto -ffunction-sections \
 			$(ARCH)
 
@@ -76,10 +76,10 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -flto -Wl,-Map,$(notdir $*.map)
 
 LIBS	:= -lcitro2d -lcitro3d -lctru \
 		-llcf -lexpat -lpixman-1 -lpng -lz \
-		-licuuc -licui18n -licudata \
+		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype \
 		-lmpg123 -lsndfile -lvorbisidec -lopusfile -lopus \
-		-logg -lxmp-lite -lWildMidi -lspeexdsp -lm 
+		-logg -lxmp-lite -lWildMidi -lspeexdsp -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -146,8 +146,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 			-I$(TOOLCHAIN_DIR)/include/freetype2 \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-			-I$(TOOLCHAIN_DIR)/include/opus \
-			-I$(LIBLCF_DIR)/include/liblcf
+			-I$(TOOLCHAIN_DIR)/include/opus
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 

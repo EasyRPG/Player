@@ -1,6 +1,7 @@
 /bin/
-Makefile
-easyrpg-player
+/Makefile
+/easyrpg-player
+/Player.app
 *.a
 *.elf
 *.o
@@ -23,6 +24,7 @@ libtool
 /builds/autoconf/aux/
 /builds/autoconf/m4/*.m4
 !/builds/autoconf/m4/ax_*.m4
+!/builds/autoconf/m4/with_pkg.m4
 stamp-h1
 .dirstamp
 *.la
@@ -33,6 +35,7 @@ stamp-h1
 
 # cmake
 CMakeFiles/
+CMakeScripts/
 CMakeCache.txt
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
@@ -88,9 +91,17 @@ easyrpg-player-*.tar.*
 __MACOSX
 .DS_Store
 
+# Xcode
+/*.xcodeproj
+/*.xcworkspace
+/Debug/
+/Release/
+/MinSizeRel/
+/RelWithDebInfo/
+/*.build/
+
 # legacy
 /lib/liblcf/
-liblcf.pc
 .buildconfig
 
 # Android

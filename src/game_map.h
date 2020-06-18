@@ -26,13 +26,13 @@
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "game_player.h"
-#include "rpg_encounter.h"
-#include "rpg_map.h"
-#include "rpg_mapinfo.h"
+#include <lcf/rpg/encounter.h>
+#include <lcf/rpg/map.h>
+#include <lcf/rpg/mapinfo.h>
 #include "async_op.h"
 
 class FileRequestAsync;
-class BattleArgs;
+struct BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
@@ -46,6 +46,7 @@ class MapUpdateAsyncContext {
 		static MapUpdateAsyncContext FromCommonEvent(int ce, AsyncOp aop);
 		static MapUpdateAsyncContext FromMapEvent(int ce, AsyncOp aop);
 		static MapUpdateAsyncContext FromForegroundEvent(AsyncOp aop);
+		static MapUpdateAsyncContext FromMessage(AsyncOp aop);
 
 		AsyncOp GetAsyncOp() const;
 
@@ -55,12 +56,14 @@ class MapUpdateAsyncContext {
 		bool IsForegroundEvent() const;
 		bool IsParallelCommonEvent() const;
 		bool IsParallelMapEvent() const;
+		bool IsMessage() const;
 		bool IsActive() const;
 	private:
+		AsyncOp async_op = {};
 		int common_event = 0;
 		int map_event = 0;
-		AsyncOp async_op = {};
-		bool foreground_event = 0;
+		bool foreground_event = false;
+		bool message = false;
 };
 
 /**
@@ -108,7 +111,7 @@ namespace Game_Map {
 	void SetupCommon(int _id, bool is_load_savegame);
 
 	/**
-	 * Copies event data into RPG::Save data.
+	 * Copies event data into lcf::rpg::Save data.
 	 */
 	void PrepareSave();
 
@@ -260,14 +263,14 @@ namespace Game_Map {
 	 *
 	 * @return current map_info.
 	 */
-	RPG::MapInfo const& GetMapInfo();
+	lcf::rpg::MapInfo const& GetMapInfo();
 
 	/**
 	 * Gets current map.
 	 *
 	 * @return current map.
 	 */
-	RPG::Map const& GetMap();
+	lcf::rpg::Map const& GetMap();
 
 	/**
 	 * Gets current map ID.
@@ -295,7 +298,7 @@ namespace Game_Map {
 	 *
 	 * @return battle encounters list.
 	 */
-	std::vector<RPG::Encounter>& GetEncounterList();
+	std::vector<lcf::rpg::Encounter>& GetEncounterList();
 
 	/**
 	 * Gets battle encounter rate.
@@ -497,6 +500,9 @@ namespace Game_Map {
 	 */
 	std::vector<Game_Event>& GetEvents();
 
+	/** @return highest event id present on the map, or 0 if no events */
+	int GetHighestEventId();
+
 	/**
 	 * Gets pointer to event.
 	 *
@@ -640,6 +646,7 @@ namespace Game_Map {
 	void UpdateProcessedFlags(bool is_preupdate);
 	bool UpdateCommonEvents(MapUpdateAsyncContext& actx);
 	bool UpdateMapEvents(MapUpdateAsyncContext& actx);
+	bool UpdateMessage(MapUpdateAsyncContext& actx);
 	bool UpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
 	FileRequestAsync* RequestMap(int map_id);
@@ -740,6 +747,15 @@ inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent(AsyncOp 
 	return actx;
 }
 
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromMessage(AsyncOp aop) {
+	MapUpdateAsyncContext actx;
+	if (aop.IsActive()) {
+		actx.async_op = aop;
+		actx.message = true;
+	}
+	return actx;
+}
+
 inline int MapUpdateAsyncContext::GetParallelCommonEvent() const {
 	return common_event;
 }
@@ -760,6 +776,9 @@ inline bool MapUpdateAsyncContext::IsParallelMapEvent() const {
 	return map_event > 0;
 }
 
+inline bool MapUpdateAsyncContext::IsMessage() const {
+	return message;
+}
 
 inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();

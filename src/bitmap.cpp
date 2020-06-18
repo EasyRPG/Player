@@ -29,7 +29,7 @@
 #include "bitmap.h"
 #include "filefinder.h"
 #include "options.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "output.h"
 #include "image_xyz.h"
 #include "image_bmp.h"
@@ -97,15 +97,15 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 
 	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
 	if (!stream) {
-		Output::Error("Couldn't open image file %s", filename.c_str());
+		Output::Error("Couldn't open image file {}", filename);
 		return;
 	}
 
 	int w = 0;
 	int h = 0;
-	void* pixels;
+	void* pixels = nullptr;
 
-	char data[4];
+	uint8_t data[4] = {};
 	size_t bytes = fread(&data, 1, 4, stream);
 	fseek(stream, 0, SEEK_SET);
 
@@ -116,21 +116,19 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG(stream, (void*)nullptr, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image file %s", filename.c_str());
+		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
 
 	fclose(stream);
 
 	if (!img_okay) {
 		free(pixels);
-
 		pixels = nullptr;
-
 		return;
 	}
 
-	Init(w, h, (void *) NULL);
+	Init(w, h, nullptr);
 
 	ConvertImage(w, h, pixels, transparent);
 
@@ -142,7 +140,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	pixman_format = find_format(format);
 
 	int w = 0, h = 0;
-	void* pixels;
+	void* pixels = nullptr;
 
 	bool img_okay = false;
 
@@ -151,15 +149,17 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG((FILE*)nullptr, (const void*) data, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image");
+		Output::Warning("Unsupported image (Magic: {:02X})", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
 	if (!img_okay) {
+		free(pixels);
+		pixels = nullptr;
 		return;
 	}
 
-	Init(w, h, (void *) NULL);
+	Init(w, h, nullptr);
 
 	ConvertImage(w, h, pixels, transparent);
 
@@ -412,7 +412,7 @@ pixman_format_code_t Bitmap::find_format(const DynamicFormat& format) {
 	if (iter == formats_map.end()) {
 		// To fix add a pair to initialize_formats that maps the outputted
 		// DynamicFormat to a pixman format
-		Output::Error("%s\nDynamicFormat(%d, %d, %d, %d, %d, %d, %d, %d, %d, %s)",
+		Output::Error("{}\nDynamicFormat({}, {}, {}, {}, {}, {}, {}, {}, {}, {})",
 		"Couldn't find Pixman format for",
 		format.bits,
 		format.r.bits, format.r.shift,
@@ -484,7 +484,7 @@ void Bitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 	bitmap.reset(pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch));
 
 	if (bitmap == NULL) {
-		Output::Error("Couldn't create %dx%d image.", width, height);
+		Output::Error("Couldn't create {}x{} image.", width, height);
 	}
 
 	if (format.bits == 8) {
@@ -972,7 +972,7 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 
 	Blit(x, y, src, rect, opacity);
 
-	if (!has_xform) {
+	if (has_xform) {
 		pixman_image_set_transform(src.bitmap.get(), nullptr);
 	}
 }

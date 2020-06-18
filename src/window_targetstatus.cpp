@@ -21,7 +21,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), id(-1), use_item(false) {
@@ -37,9 +37,9 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	if (use_item) {
-		contents->TextDraw(0, 0, 1, Data::terms.possessed_items);
+		contents->TextDraw(0, 0, 1, lcf::Data::terms.possessed_items);
 	} else {
-		contents->TextDraw(0, 0, 1, Data::terms.sp_cost);
+		contents->TextDraw(0, 0, 1, lcf::Data::terms.sp_cost);
 	}
 
 	// Scene_ActorTarget validates items and skills

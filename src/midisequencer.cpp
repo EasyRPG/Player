@@ -44,7 +44,7 @@ namespace midisequencer{
             --*track_length;
             d = fgetc(fp);
             if(d == EOF){
-                Output::Warning("Midi sequencer: %s", errtext);
+                Output::Warning("Midi sequencer: {}", errtext);
             }
             ret <<= 7;
             ret |= (d & 0x7F);
@@ -60,6 +60,7 @@ namespace midisequencer{
     sequencer::sequencer():
         position(messages.begin())
     {
+        loop_position = position;
     }
     void sequencer::clear()
     {
@@ -70,6 +71,11 @@ namespace midisequencer{
     void sequencer::rewind()
     {
         position = messages.begin();
+    }
+    float sequencer::rewind_to_loop()
+    {
+        position = loop_position;
+        return loop_position->time;
     }
     bool sequencer::load(void* fp, int(*fgetc)(void*))
     {
@@ -260,7 +266,7 @@ namespace midisequencer{
         unsigned num_tracks = (t0 << 8) | t1;
         int d0 = fgetc(fp);
         int d1 = fgetc(fp);
-        unsigned division = (d0 << 8) | d1;
+        division = (d0 << 8) | d1;
         for(unsigned track = 0; track < num_tracks; ++track){
             if(fgetc(fp) != 0x4D || fgetc(fp) != 0x54 || fgetc(fp) != 0x72 || fgetc(fp) != 0x6B){
                 Output::Warning("Midi sequencer: invalid track header");
@@ -362,7 +368,7 @@ namespace midisequencer{
                                 int subframe = static_cast<unsigned char>(s[5]);
                                 double fps;
                                 switch(hour >> 5){
-				default: // line added by nextvolume (2015-02-25)
+                                default: // line added by nextvolume (2015-02-25)
                                 case 0:
                                     fps = 24;
                                     break;
@@ -436,9 +442,22 @@ namespace midisequencer{
                         time_offset = i->time;
                     }
                 }
+                // If the message matches the de facto standard MIDI loop instruction:
+                // Which is a Control Change on Channel 1 with Value 111
+                if ((i->message & 0xFFFF) == 0x6FB0) {
+                    // Loop backwards through the messages to find the first message with the same
+                    // timestamp as the loop message
+                    for (std::vector<midi_message>::iterator j = i; j != messages.begin() && j->time >= i->time; j--) {
+                        loop_position = j;
+                    }
+                }
             }
         }
     }
+
+	uint32_t sequencer::get_division() const {
+		return division;
+	}
 }
 
 #endif

@@ -29,7 +29,7 @@ static auto FindTarget(T&& targets, int map_id) {
 void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
 	auto iter = FindTarget(teleports, map_id);
 	if (iter == teleports.end() || iter->map_id != map_id) {
-		RPG::SaveTarget tgt;
+		lcf::rpg::SaveTarget tgt;
 		// RPG_RT duplicates the map_id into the save object's id.
 		tgt.ID = map_id;
 		iter = teleports.insert(iter, std::move(tgt));
@@ -49,7 +49,7 @@ void Game_Targets::RemoveTeleportTarget(int map_id) {
 	}
 }
 
-const RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) const {
+const lcf::rpg::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) const {
 	auto iter = FindTarget(teleports, map_id);
 	return (iter != teleports.end() && iter->map_id == map_id) ? &*iter : nullptr;
 }
@@ -62,7 +62,7 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int
 	escape.switch_id = switch_id;
 }
 
-void Game_Targets::SetSaveData(std::vector<RPG::SaveTarget> save) {
+void Game_Targets::SetSaveData(std::vector<lcf::rpg::SaveTarget> save) {
 	for (auto& data: save) {
 		if (data.ID == 0) {
 			escape = std::move(data);
@@ -74,8 +74,8 @@ void Game_Targets::SetSaveData(std::vector<RPG::SaveTarget> save) {
 	}
 }
 
-std::vector<RPG::SaveTarget> Game_Targets::GetSaveData() const {
-	std::vector<RPG::SaveTarget> save;
+std::vector<lcf::rpg::SaveTarget> Game_Targets::GetSaveData() const {
+	std::vector<lcf::rpg::SaveTarget> save;
 	save.push_back(escape);
 	save.insert(save.end(), teleports.begin(), teleports.end());
 	return save;

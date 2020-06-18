@@ -31,7 +31,7 @@
 #	include FT_MODULE_H
 #endif
 
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "bitmapfont.h"
 
 #include "filefinder.h"
@@ -64,7 +64,7 @@ namespace {
 		}
 		else {
 			static BitmapFontGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
-			Output::Debug("glyph not found: 0x%04x", code);
+			Output::Debug("glyph not found: {:#x}", uint32_t(code));
 			return &replacement_glyph;
 		}
 	}
@@ -260,11 +260,11 @@ Font::GlyphRet FTFont::Glyph(char32_t glyph) {
 	}
 
 	if (FT_Load_Char(face_.get(), glyph, FT_LOAD_NO_BITMAP) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character %d", glyph);
+		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
 	}
 
 	if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character %d", glyph);
+		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
 	}
 
 	FT_Bitmap const& ft_bitmap = face_->glyph->bitmap;
@@ -310,14 +310,14 @@ bool FTFont::check_face() {
 			std::string const face_path = FileFinder::FindFont(name);
 			FT_Face face;
 			if (FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType face: %s(%s)",
-					name.c_str(), face_path.c_str());
+				Output::Error("Couldn't initialize FreeType face: {}({})",
+					name, face_path);
 				return false;
 			}
 
 			for (int i = 0; i < face_->num_fixed_sizes; i++) {
 				FT_Bitmap_Size* size = &face_->available_sizes[i];
-				Output::Debug("Font Size %d: %d %d %f %f %f", i,
+				Output::Debug("Font Size {}: {} {} {} {} {}", i,
 					size->width, size->height, size->size / 64.0,
 					size->x_ppem / 64.0, size->y_ppem / 64.0);
 			}
@@ -356,7 +356,7 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
-	return Default(Game_System::GetFontId() == RPG::System::Font_mincho);
+	return Default(Game_System::GetFontId() == lcf::rpg::System::Font_mincho);
 }
 
 FontRef Font::Default(bool const m) {
@@ -381,7 +381,7 @@ void Font::Dispose() {
 #ifdef HAVE_FREETYPE
 	for(face_cache_type::const_iterator i = face_cache.begin(); i != face_cache.end(); ++i) {
 		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached font face %s", i->first.c_str());
+		Output::Debug("possible leak in cached font face {}", i->first);
 	}
 	face_cache.clear();
 #endif

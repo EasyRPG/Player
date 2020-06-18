@@ -27,7 +27,7 @@ namespace {
 }
 
 void Game_Actors::Init() {
-	data.resize(Data::actors.size());
+	data.resize(lcf::Data::actors.size());
 	for (size_t i = 1; i <= data.size(); i++)
 		GetActor(i)->Init();
 }
@@ -37,7 +37,7 @@ void Game_Actors::Fixup() {
 	if (Main_Data::game_data.actors.size() != data.size()) {
 		size_t save_actor_size = Main_Data::game_data.actors.size();
 
-		Output::Warning("Actor array size doesn't match Savegame actor array size (%d != %d)",
+		Output::Warning("Actor array size doesn't match Savegame actor array size ({} != {})",
 						data.size(), save_actor_size);
 
 		Main_Data::game_data.actors.resize(data.size());
@@ -70,4 +70,11 @@ Game_Actor* Game_Actors::GetActor(int actor_id) {
 
 bool Game_Actors::ActorExists(int actor_id) {
 	return actor_id > 0 && (size_t)actor_id <= data.size();
+}
+
+void Game_Actors::ResetBattle() {
+	for (size_t i = 1; i <= data.size(); ++i) {
+		GetActor(i)->ResetBattle();
+	}
+
 }

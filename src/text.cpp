@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "data.h"
+#include <lcf/data.h>
 #include "cache.h"
 #include "output.h"
 #include "utils.h"

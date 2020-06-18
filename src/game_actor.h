@@ -22,26 +22,28 @@
 #include <string>
 #include <vector>
 #include <cstdint>
-#include "rpg_saveactor.h"
-#include "rpg_learning.h"
+#include <lcf/rpg/saveactor.h>
+#include <lcf/rpg/learning.h>
 #include "game_battler.h"
 
-namespace RPG {
+namespace lcf {
+namespace rpg {
 	class Actor;
 	class Skill;
 	class BattleCommand;
 	class Item;
 	class Class;
-}
+} // namespace rpg
+} // namespace lcf
 
 class PendingMessage;
 
 /**
  * Game_Actor class.
  */
-class Game_Actor : public Game_Battler {
+class Game_Actor final : public Game_Battler {
 public:
-	using RowType = RPG::SaveActor::RowType;
+	using RowType = lcf::rpg::SaveActor::RowType;
 	/**
 	 * Constructor.
 	 *
@@ -319,34 +321,34 @@ public:
 	int GetAccessoryId() const;
 
 	/**
-	 * @return actor's weapon if equipped and type == RPG::Item::Type_weapon
+	 * @return actor's weapon if equipped and type == lcf::rpg::Item::Type_weapon
 	 */
-	const RPG::Item* GetWeapon() const;
+	const lcf::rpg::Item* GetWeapon() const;
 
 	/**
-	 * @return actor's 2nd weapon if equipped and type == RPG::Item::Type_weapon
+	 * @return actor's 2nd weapon if equipped and type == lcf::rpg::Item::Type_weapon
 	 */
-	const RPG::Item* Get2ndWeapon() const;
+	const lcf::rpg::Item* Get2ndWeapon() const;
 
 	/**
-	 * @return actor's shield if equipped and type == RPG::Item::Type_shield
+	 * @return actor's shield if equipped and type == lcf::rpg::Item::Type_shield
 	 */
-	const RPG::Item* GetShield() const;
+	const lcf::rpg::Item* GetShield() const;
 
 	/**
-	 * @return actor's armor if equipped and type == RPG::Item::Type_armor
+	 * @return actor's armor if equipped and type == lcf::rpg::Item::Type_armor
 	 */
-	const RPG::Item* GetArmor() const;
+	const lcf::rpg::Item* GetArmor() const;
 
 	/**
-	 * @return actor's helmet if equipped and type == RPG::Item::Type_helmet
+	 * @return actor's helmet if equipped and type == lcf::rpg::Item::Type_helmet
 	 */
-	const RPG::Item* GetHelmet() const;
+	const lcf::rpg::Item* GetHelmet() const;
 
 	/**
-	 * @return actor's accessory if equipped and type == RPG::Item::Type_accessory
+	 * @return actor's accessory if equipped and type == lcf::rpg::Item::Type_accessory
 	 */
-	const RPG::Item* GetAccessory() const;
+	const lcf::rpg::Item* GetAccessory() const;
 
 	/**
 	 * Gets actor current level.
@@ -441,7 +443,7 @@ public:
 	 * @param equip_type type of equipment.
 	 * @return item if equipped or nullptr if no equipment.
 	 */
-	const RPG::Item* GetEquipment(int equip_type) const;
+	const lcf::rpg::Item* GetEquipment(int equip_type) const;
 
 	/**
 	 * Sets the equipment based on the type.
@@ -504,7 +506,7 @@ public:
 
 	 * @return random skill
 	 */
-	const RPG::Skill* GetRandomSkill() const;
+	const lcf::rpg::Skill* GetRandomSkill() const;
 
 	/**
 	 * Gets actor states list.
@@ -729,7 +731,7 @@ public:
 	 *
 	 * @return Rpg2k3 hero class.
 	 */
-	const RPG::Class* GetClass() const;
+	const lcf::rpg::Class* GetClass() const;
 
 	/** Describes how skills change when we change class */
 	enum ClassChangeSkillMode {
@@ -781,7 +783,7 @@ public:
 	 *
 	 * @return all Rpg2k3 battle commands.
 	 */
-	const std::vector<const RPG::BattleCommand*> GetBattleCommands() const;
+	const std::vector<const lcf::rpg::BattleCommand*> GetBattleCommands() const;
 
 	/**
 	 * Gets battle row for Rpg2k3 battles.
@@ -849,7 +851,7 @@ public:
 	float GetCriticalHitChance() const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
-	std::string GetLearningMessage(const RPG::Skill& skill) const;
+	std::string GetLearningMessage(const lcf::rpg::Skill& skill) const;
 
 	BattlerType GetType() const override;
 
@@ -865,19 +867,21 @@ public:
 	 */
 	void ResetEquipmentStates(bool allow_battle_states);
 
+	bool IsInParty() const override;
+
 private:
-	void AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states);
+	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 
 	/**
 	 * @return Reference to the Actor data of the LDB
 	 */
-	const RPG::Actor& GetActor() const;
+	const lcf::rpg::Actor& GetActor() const;
 
 	// same reason as for Game_Picture, see comment
 	/**
 	 * @return Reference to the SaveActor data
 	 */
-	RPG::SaveActor& GetData() const;
+	lcf::rpg::SaveActor& GetData() const;
 
 	/**
 	 * Removes invalid data from the actor.
@@ -888,8 +892,21 @@ private:
 	std::vector<int> exp_list;
 };
 
+inline Game_Battler::BattlerType Game_Actor::GetType() const {
+	return Game_Battler::Type_Ally;
+}
+
+inline void Game_Actor::SetName(const std::string &new_name) {
+	GetData().name = new_name;
+}
+
+
 inline const std::string& Game_Actor::GetName() const {
 	return GetData().name;
+}
+
+inline void Game_Actor::SetTitle(const std::string &new_title) {
+	GetData().title = new_title;
 }
 
 inline const std::string& Game_Actor::GetTitle() const {
@@ -923,5 +940,47 @@ inline int Game_Actor::GetLevel() const {
 inline int Game_Actor::GetExp() const {
 	return GetData().exp;
 }
+
+inline int Game_Actor::GetHp() const {
+	return GetData().current_hp;
+}
+
+inline int Game_Actor::GetSp() const {
+	return GetData().current_sp;
+}
+
+inline bool Game_Actor::HasTwoWeapons() const {
+	return GetData().two_weapon;
+}
+
+inline bool Game_Actor::GetAutoBattle() const {
+	return GetData().auto_battle;
+}
+
+inline bool Game_Actor::HasStrongDefense() const {
+	return GetData().super_guard;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetSkills() const {
+	return GetData().skills;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetStates() const {
+	return GetData().status;
+}
+
+inline std::vector<int16_t>& Game_Actor::GetStates() {
+	return GetData().status;
+}
+
+inline const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
+	return GetData().equipped;
+}
+
+inline int Game_Actor::GetId() const {
+	return actor_id;
+}
+
+
 
 #endif

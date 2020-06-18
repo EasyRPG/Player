@@ -36,6 +36,7 @@ WavDecoder::~WavDecoder() {
 }
 
 bool WavDecoder::Open(FILE* file) {
+	decoded_samples = 0;
 	file_=file;
 	fseek(file_, 16, SEEK_SET);
 	fread(&chunk_size, 1, 4, file_);
@@ -105,6 +106,8 @@ bool WavDecoder::Seek(size_t offset, Origin origin) {
 	if (origin != Origin::End) {
 		offset += audiobuf_offset;
 	}
+	// FIXME: Proper sample count for seek
+	decoded_samples = 0;
 
 	bool success = fseek(file_,offset,(int)origin) == 0;
 	cur_pos = ftell(file_);
@@ -148,24 +151,32 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 
 	int decoded = fread(buffer, 1, real_length, file_);
 
-	if (Utils::IsBigEndian()) {
-		if (output_format == AudioDecoder::Format::S16) {
-			uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
+	if (output_format == AudioDecoder::Format::S16) {
+		if (Utils::IsBigEndian()) {
+			uint16_t *buffer_16 = reinterpret_cast<uint16_t *>(buffer);
 			for (int i = 0; i < decoded / 2; ++i) {
 				Utils::SwapByteOrder(buffer_16[i]);
 			}
-		} else if (output_format == AudioDecoder::Format::S32) {
-			uint32_t* buffer_32 = reinterpret_cast<uint32_t*>(buffer);
+		}
+		decoded_samples += (decoded / 2);
+	} else if (output_format == AudioDecoder::Format::S32) {
+		if (Utils::IsBigEndian()) {
+			uint32_t *buffer_32 = reinterpret_cast<uint32_t *>(buffer);
 			for (int i = 0; i < decoded / 4; ++i) {
 				Utils::SwapByteOrder(buffer_32[i]);
 			}
 		}
+		decoded_samples += (decoded / 4);
 	}
 
 	if (decoded < length)
 		finished = true;
-	
+
 	return decoded;
+}
+
+int WavDecoder::GetTicks() const {
+	return decoded_samples / (samplerate * nchannels);
 }
 
 #endif

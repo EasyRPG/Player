@@ -8,7 +8,7 @@ constexpr int minval = Game_Variables::min_2k3;
 constexpr int maxval = Game_Variables::max_2k3;
 
 static Game_Variables make() {
-	Data::variables.resize(max_vars);
+	lcf::Data::variables.resize(max_vars);
 	Game_Variables v(minval, maxval);
 	v.SetWarning(0);
 	return v;
@@ -175,5 +175,110 @@ TEST_CASE("Mod") {
 	REQUIRE_EQ(s.Get(1), 0);
 	REQUIRE_EQ(s.Get(2), 0);
 }
+
+TEST_CASE("RangeVariable") {
+	constexpr int n = max_vars * 2;
+	auto s = make();
+	for (int i = 0; i < n; ++i) {
+		REQUIRE_EQ(s.Get(i), 0);
+	}
+
+	s.SetRange(2, 5, 0);
+	s.Set(2, 1);
+
+	REQUIRE_EQ(s.Get(1), 0);
+	REQUIRE_EQ(s.Get(2), 1);
+	REQUIRE_EQ(s.Get(3), 0);
+	REQUIRE_EQ(s.Get(4), 0);
+	REQUIRE_EQ(s.Get(5), 0);
+	REQUIRE_EQ(s.Get(6), 0);
+
+	s.AddRangeVariable(3, 5, 2);
+
+	REQUIRE_EQ(s.Get(1), 0);
+	REQUIRE_EQ(s.Get(2), 1);
+	REQUIRE_EQ(s.Get(3), 1);
+	REQUIRE_EQ(s.Get(4), 1);
+	REQUIRE_EQ(s.Get(5), 1);
+	REQUIRE_EQ(s.Get(6), 0);
+
+	s.AddRangeVariable(2, 4, 2);
+
+	REQUIRE_EQ(s.Get(1), 0);
+	REQUIRE_EQ(s.Get(2), 2);
+	REQUIRE_EQ(s.Get(3), 3);
+	REQUIRE_EQ(s.Get(4), 3);
+	REQUIRE_EQ(s.Get(5), 1);
+	REQUIRE_EQ(s.Get(6), 0);
+
+	s.SetRange(2, 5, 0);
+	s.Set(3, 1);
+	s.AddRangeVariable(2, 5, 3);
+
+	REQUIRE_EQ(s.Get(1), 0);
+	REQUIRE_EQ(s.Get(2), 1);
+	REQUIRE_EQ(s.Get(3), 2);
+	REQUIRE_EQ(s.Get(4), 2);
+	REQUIRE_EQ(s.Get(5), 2);
+	REQUIRE_EQ(s.Get(6), 0);
+
+	s.SetRange(2, 5, 0);
+	s.Set(5, 1);
+	s.AddRangeVariable(2, 5, 5);
+
+	REQUIRE_EQ(s.Get(1), 0);
+	REQUIRE_EQ(s.Get(2), 1);
+	REQUIRE_EQ(s.Get(3), 1);
+	REQUIRE_EQ(s.Get(4), 1);
+	REQUIRE_EQ(s.Get(5), 2);
+	REQUIRE_EQ(s.Get(6), 0);
+}
+
+
+TEST_CASE("RangeVariableIndirect") {
+	constexpr int n = max_vars * 2;
+	auto s = make();
+	for (int i = 0; i < n; ++i) {
+		REQUIRE_EQ(s.Get(i), 0);
+	}
+
+	s.Set(4, 10);
+	s.Set(2, 4);
+	s.Set(10, 42);
+
+	s.SetRangeVariableIndirect(1, 5, 2);
+
+	REQUIRE_EQ(s.Get(1), 10);
+	REQUIRE_EQ(s.Get(2), 10);
+	REQUIRE_EQ(s.Get(3), 42);
+	REQUIRE_EQ(s.Get(4), 42);
+	REQUIRE_EQ(s.Get(5), 42);
+	REQUIRE_EQ(s.Get(6), 0);
+}
+
+TEST_CASE("RangeRandom") {
+	constexpr int n = max_vars * 2;
+	auto s = make();
+	for (int i = 0; i < n; ++i) {
+		REQUIRE_EQ(s.Get(i), 0);
+	}
+
+	s.SetRangeRandom(1,100,-999,999);
+
+	int first_val = s.Get(1);
+	int first_diff = 0;
+	for (int i = 1; i <= 100; ++i) {
+		if (s.Get(i) != first_val && !first_diff) {
+			first_diff = i;
+		}
+		REQUIRE_GE(s.Get(i), -999);
+		REQUIRE_LE(s.Get(i), 999);
+	}
+
+	// Verifies the RNG was called for each value.
+	REQUIRE_NE(first_diff, 0);
+}
+
+
 
 TEST_SUITE_END();

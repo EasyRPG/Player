@@ -22,21 +22,17 @@
 #include <string>
 #include "color.h"
 #include "flash.h"
-#include "rpg_moveroute.h"
-#include "rpg_eventpage.h"
-#include "rpg_savemapeventbase.h"
+#include <lcf/rpg/moveroute.h>
+#include <lcf/rpg/eventpage.h>
+#include <lcf/rpg/savemapeventbase.h>
 #include "utils.h"
-
-#ifdef __MORPHOS__
-#undef Wait
-#endif
 
 /**
  * Game_Character class.
  */
 class Game_Character {
 public:
-	using AnimType = RPG::EventPage::AnimType;
+	using AnimType = lcf::rpg::EventPage::AnimType;
 
 	enum Type {
 		Event,
@@ -190,14 +186,14 @@ public:
 	 *
 	 * @return custom move route
 	 */
-	const RPG::MoveRoute& GetMoveRoute() const;
+	const lcf::rpg::MoveRoute& GetMoveRoute() const;
 
 	/**
 	 * Sets a new custom move route. Used to assign a new MoveEvent.
 	 *
 	 * @param move_route new custom move route
 	 */
-	void SetMoveRoute(const RPG::MoveRoute& move_route);
+	void SetMoveRoute(const lcf::rpg::MoveRoute& move_route);
 
 	/**
 	 * @return true if this character is currently following a move route.
@@ -376,6 +372,24 @@ public:
 	 * @return max_stop_count
 	 */
 	int GetMaxStopCount() const;
+
+	/**
+	 * @return stepping max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	static constexpr int GetMaxStopCountForStep(int freq);
+
+	/**
+	 * @return turning max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	static constexpr int GetMaxStopCountForTurn(int freq);
+
+	/**
+	 * @return waiting max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	static constexpr int GetMaxStopCountForWait(int freq);
 
 	/**
 	 * Sets the max_stop_count
@@ -588,6 +602,26 @@ public:
 	/** @return the direction we would need to face away from hero. */
 	int GetDirectionAwayHero();
 
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 90 degrees to the left of dir
+	 */
+	static constexpr int GetDirection90DegreeLeft(int dir);
+
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 90 degrees to the right of dir
+	 */
+	static constexpr int GetDirection90DegreeRight(int dir);
+
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 180 degrees to the of dir
+	 */
+	static constexpr int GetDirection180Degree(int dir);
 
 	/**
 	 * Character looks in a random direction
@@ -615,7 +649,7 @@ public:
 	 * @param current_index Index in the current route
 	 * @param current_route Current move route
 	 */
-	void BeginJump(int32_t& current_index, const RPG::MoveRoute& current_route);
+	void BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
 	/**
 	 * Jump action ends.
@@ -628,7 +662,7 @@ public:
 	 * @param new_route new move route.
 	 * @param frequency frequency.
 	 */
-	void ForceMoveRoute(const RPG::MoveRoute& new_route, int frequency);
+	void ForceMoveRoute(const lcf::rpg::MoveRoute& new_route, int frequency);
 
 	/**
 	 * Cancels a previous forced move route.
@@ -823,19 +857,19 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
-	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
+	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	virtual void UpdateSelfMovement() {}
 	virtual void OnMoveFailed(int /*x*/, int /*y*/) {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
-	virtual void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
+	virtual void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 	void IncAnimCount();
 	void IncAnimFrame();
 
-	RPG::SaveMapEventBase* data();
-	const RPG::SaveMapEventBase* data() const;
+	lcf::rpg::SaveMapEventBase* data();
+	const lcf::rpg::SaveMapEventBase* data() const;
 
 	int original_move_frequency = 2;
 	bool move_failed;
@@ -848,14 +882,14 @@ protected:
 	bool visible;
 
 	Type _type;
-	RPG::SaveMapEventBase* _data = nullptr;
+	lcf::rpg::SaveMapEventBase* _data = nullptr;
 };
 
-inline RPG::SaveMapEventBase* Game_Character::data() {
+inline lcf::rpg::SaveMapEventBase* Game_Character::data() {
 	return _data;
 }
 
-inline const RPG::SaveMapEventBase* Game_Character::data() const {
+inline const lcf::rpg::SaveMapEventBase* Game_Character::data() const {
 	return _data;
 }
 
@@ -939,11 +973,11 @@ inline void Game_Character::SetMoveFrequency(int frequency) {
 	data()->move_frequency = frequency;
 }
 
-inline const RPG::MoveRoute& Game_Character::GetMoveRoute() const {
+inline const lcf::rpg::MoveRoute& Game_Character::GetMoveRoute() const {
 	return data()->move_route;
 }
 
-inline void Game_Character::SetMoveRoute(const RPG::MoveRoute& move_route) {
+inline void Game_Character::SetMoveRoute(const lcf::rpg::MoveRoute& move_route) {
 	data()->move_route = move_route;
 }
 
@@ -1076,8 +1110,8 @@ inline void Game_Character::IncAnimFrame() {
 
 inline void Game_Character::ResetAnimation() {
 	SetAnimCount(0);
-	if (GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic) {
-		SetAnimFrame(RPG::EventPage::Frame_middle);
+	if (GetAnimationType() != lcf::rpg::EventPage::AnimType_fixed_graphic) {
+		SetAnimFrame(lcf::rpg::EventPage::Frame_middle);
 	}
 }
 
@@ -1164,6 +1198,30 @@ inline bool Game_Character::HasTileSprite() const {
 
 inline void Game_Character::SetVisible(bool visible) {
 	this->visible = visible;
+}
+
+constexpr int Game_Character::GetDirection90DegreeLeft(int dir) {
+	return (dir + 3) % 4;
+}
+
+constexpr int Game_Character::GetDirection90DegreeRight(int dir) {
+	return (dir + 1) % 4;
+}
+
+constexpr int Game_Character::GetDirection180Degree(int dir) {
+	return (dir + 2) % 4;
+}
+
+constexpr int Game_Character::GetMaxStopCountForStep(int freq) {
+	return freq >= 8 ? 0 : 1 << (9 - freq);
+}
+
+constexpr int Game_Character::GetMaxStopCountForTurn(int freq) {
+	return freq >= 8 ? 0 : 1 << (8 - freq);
+}
+
+constexpr int Game_Character::GetMaxStopCountForWait(int freq) {
+	return 20 + GetMaxStopCountForTurn(freq);
 }
 
 #endif

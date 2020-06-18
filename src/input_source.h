@@ -21,6 +21,7 @@
 #include <bitset>
 #include <fstream>
 #include <memory>
+#include <fstream>
 #include "input_buttons.h"
 
 namespace Input {
@@ -29,7 +30,14 @@ namespace Input {
 	 */
 	class Source {
 	public:
-		Source() = default;
+
+		static std::unique_ptr<Source> Create(
+				ButtonMappingArray buttons,
+				DirectionMappingArray directions,
+				const std::string& replay_from_path);
+
+		Source(ButtonMappingArray buttons, DirectionMappingArray directions)
+			: button_mappings(std::move(buttons)), direction_mappings(std::move(directions)) {}
 
 		virtual ~Source() = default;
 
@@ -52,8 +60,21 @@ namespace Input {
 			return pressed;
 		}
 
+		ButtonMappingArray& GetButtonMappings() { return button_mappings; }
+		const ButtonMappingArray& GetButtonMappings() const { return button_mappings; }
+
+		DirectionMappingArray& GetDirectionMappings() { return direction_mappings; }
+		const DirectionMappingArray& GetDirectionMappings() const { return direction_mappings; }
+
+		bool InitRecording(const std::string& record_to_path);
+
 	protected:
+		void Record();
+
 		std::bitset<BUTTON_COUNT> pressed_buttons;
+		ButtonMappingArray button_mappings;
+		DirectionMappingArray direction_mappings;
+		std::ofstream record_log;
 	};
 
 	/**
@@ -62,13 +83,11 @@ namespace Input {
 	 */
 	class UiSource : public Source {
 	public:
-		UiSource() = default;
-		~UiSource() override = default;
+		using Source::Source;
 
 		void Update() override;
 		void UpdateSystem() override;
 
-		// NOTE: buttons/dir_buttons/InitButtons could be moved here
 	private:
 		void DoUpdate(bool system_only);
 	};
@@ -78,8 +97,7 @@ namespace Input {
 	 */
 	class LogSource : public Source {
 	public:
-		LogSource(const char* log_path);
-		~LogSource() override = default;
+		LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions);
 
 		void Update() override;
 		void UpdateSystem() override;

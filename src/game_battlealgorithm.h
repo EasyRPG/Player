@@ -20,17 +20,19 @@
 
 #include <string>
 #include <vector>
-#include "rpg_state.h"
+#include <lcf/rpg/state.h>
 
 class Game_Battler;
 class Game_Party_Base;
-namespace RPG {
+namespace lcf {
+namespace rpg {
 	class Animation;
 	class Item;
 	class State;
 	class Skill;
 	class Sound;
-}
+} // namespace rpg
+} // namespace lcf
 
 /**
  * Contains algorithms to handle the different battle attacks, skills and items.
@@ -217,8 +219,8 @@ public:
 	 *
 	 * @return Battle Animation or NULL if no animation is assigned
 	 */
-	const RPG::Animation* GetAnimation() const;
-	const RPG::Animation* GetSecondAnimation() const;
+	const lcf::rpg::Animation* GetAnimation() const;
+	const lcf::rpg::Animation* GetSecondAnimation() const;
 
 	/**
 	 * Checks if the animation has already played once
@@ -339,28 +341,28 @@ public:
 	 *
 	 * @return start se
 	 */
-	virtual const RPG::Sound* GetStartSe() const;
+	virtual const lcf::rpg::Sound* GetStartSe() const;
 
 	/**
 	 * Gets the sound effect that is played then the action fails. 
 	 *
 	 * @return result se
 	 */
-	virtual const RPG::Sound* GetFailureSe() const;
+	virtual const lcf::rpg::Sound* GetFailureSe() const;
 
 	/**
 	 * Gets the sound effect that is played then the action took place.
 	 *
 	 * @return result se
 	 */
-	virtual const RPG::Sound* GetResultSe() const;
+	virtual const lcf::rpg::Sound* GetResultSe() const;
 
 	/**
 	 * Gets the sound effect that is played when the target died.
 	 *
 	 * @return death se
 	 */
-	virtual const RPG::Sound* GetDeathSe() const;
+	virtual const lcf::rpg::Sound* GetDeathSe() const;
 
 	/**
 	 * Returns the message used when the action fails.
@@ -407,7 +409,7 @@ public:
 	 * @return The significant restriction of the source when this
 	 *      algorithm was created.
 	 */
-	RPG::State::Restriction GetSourceRestrictionWhenStarted() const;
+	lcf::rpg::State::Restriction GetSourceRestrictionWhenStarted() const;
 
 	/**
 	 * Set number of times to repeat the same action on a target
@@ -449,9 +451,10 @@ protected:
 	bool TargetNextInternal() const;
 
 	Type type = Type::Null;
-	Game_Battler* source;
+	Game_Battler* source = nullptr;
 	std::vector<Game_Battler*> targets;
 	mutable std::vector<Game_Battler*>::iterator current_target;
+	Game_Party_Base* party_target = nullptr;
 
 	bool no_target;
 
@@ -471,13 +474,14 @@ protected:
 	bool critical_hit;
 	bool absorb;
 	bool revived = false;
+	bool physical_charged = false;
 	mutable int reflect;
-	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
+	lcf::rpg::State::Restriction source_restriction = lcf::rpg::State::Restriction_normal;
 	int cur_repeat = 0;
 	int repeat = 1;
 
-	RPG::Animation* animation = nullptr;
-	RPG::Animation* animation2 = nullptr;
+	lcf::rpg::Animation* animation = nullptr;
+	lcf::rpg::Animation* animation2 = nullptr;
 	bool has_animation_played = false;
 	bool has_animation2_played = false;
 
@@ -510,7 +514,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
-	const RPG::Sound* GetStartSe() const override;
+	const lcf::rpg::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
 private:
 	void Init();
@@ -518,9 +522,9 @@ private:
 
 class Skill : public AlgorithmBase {
 public:
-	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
-	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
-	Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item = NULL);
+	Skill(Game_Battler* source, Game_Battler* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
+	Skill(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
+	Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
@@ -530,9 +534,9 @@ public:
 	bool HasSecondStartMessage() const override;
 	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
-	const RPG::Sound* GetStartSe() const override;
-	const RPG::Sound* GetFailureSe() const override;
-	const RPG::Sound* GetResultSe() const override;
+	const lcf::rpg::Sound* GetStartSe() const override;
+	const lcf::rpg::Sound* GetFailureSe() const override;
+	const lcf::rpg::Sound* GetResultSe() const override;
 	std::string GetFailureMessage() const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
@@ -540,15 +544,15 @@ public:
 
 private:
 	void Init();
-	const RPG::Skill& skill;
-	const RPG::Item* item;
+	const lcf::rpg::Skill& skill;
+	const lcf::rpg::Item* item;
 };
 
 class Item : public AlgorithmBase {
 public:
-	Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item);
-	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
-	Item(Game_Battler* source, const RPG::Item& item);
+	Item(Game_Battler* source, Game_Battler* target, const lcf::rpg::Item& item);
+	Item(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Item& item);
+	Item(Game_Battler* source, const lcf::rpg::Item& item);
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
@@ -556,11 +560,11 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
-	const RPG::Sound* GetStartSe() const override;
+	const lcf::rpg::Sound* GetStartSe() const override;
 	bool ActionIsPossible() const override;
 
 private:
-	const RPG::Item& item;
+	const lcf::rpg::Item& item;
 };
 
 class Defend : public AlgorithmBase {
@@ -596,7 +600,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
-	const RPG::Sound* GetStartSe() const override;
+	const lcf::rpg::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
 	void Apply() override;
@@ -608,7 +612,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
-	const RPG::Sound* GetStartSe() const override;
+	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
 private:

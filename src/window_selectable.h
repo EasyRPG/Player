@@ -66,10 +66,13 @@ public:
 	virtual void UpdateHelp();
 
 protected:
-	int item_max;
-	int column_max;
-	int index;
-	Window_Help* help_window;
+	void UpdateArrows();
+
+	Window_Help* help_window = nullptr;
+	int item_max = 1;
+	int column_max = 1;
+	int index = -1;
+	int arrow_frame = 0;
 };
 
 #endif

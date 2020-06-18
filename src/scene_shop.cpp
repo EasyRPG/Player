@@ -19,7 +19,7 @@
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_shop.h"
 #include "output.h"
 
@@ -41,9 +41,9 @@ Scene_Shop::Scene_Shop(
 void Scene_Shop::Start() {
 	// Sanitize shop items
 	for (auto it = goods.begin(); it != goods.end();) {
-		const auto* item = ReaderUtil::GetElement(Data::items, *it);
+		const auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 		if (!item) {
-			Output::Warning("Removed invalid item %d from shop", *it);
+			Output::Warning("Removed invalid item {} from shop", *it);
 			it = goods.erase(it);
 		} else {
 			++it;
@@ -251,7 +251,7 @@ void Scene_Shop::UpdateBuySelection() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 			// Items are guaranteed to be valid
-			const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
 			int max;
 			if (item->price == 0) {
@@ -278,7 +278,7 @@ void Scene_Shop::UpdateSellSelection() {
 			Scene::Pop();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		const RPG::Item* item = sell_window->GetItem();
+		const lcf::rpg::Item* item = sell_window->GetItem();
 		int item_id = (item != nullptr) ? item->ID : 0;
 		status_window->SetItemId(item_id);
 		party_window->SetItemId(item_id);

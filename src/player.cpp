@@ -26,7 +26,7 @@
 #include <thread>
 
 #ifdef _WIN32
-#  include "util_win.h"
+#  include "platform/windows/utils.h"
 #  include <Windows.h>
 #  include <Shellapi.h>
 #elif defined(GEKKO)
@@ -59,16 +59,16 @@
 #include "game_variables.h"
 #include "game_targets.h"
 #include "graphics.h"
-#include "inireader.h"
+#include <lcf/inireader.h>
 #include "input.h"
-#include "ldb_reader.h"
-#include "lmt_reader.h"
-#include "lsd_reader.h"
+#include <lcf/ldb/reader.h>
+#include <lcf/lmt/reader.h>
+#include <lcf/lsd/reader.h>
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
-#include "reader_lcf.h"
-#include "reader_util.h"
+#include <lcf/reader_lcf.h>
+#include <lcf/reader_util.h>
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "scene_map.h"
@@ -78,7 +78,7 @@
 #include "scene_title.h"
 #include "instrumentation.h"
 #include "transition.h"
-#include "scope_guard.h"
+#include <lcf/scope_guard.h>
 #include "baseui.h"
 #include "game_clock.h"
 
@@ -147,12 +147,12 @@ void Player::Init(int argc, char *argv[]) {
 	if (!addtl_ver.empty())
 		header << " " << addtl_ver;
 	header << " started";
-	Output::Debug(header.str().c_str());
+	Output::Debug("{}", header.str());
 
 	unsigned int header_width = header.str().length();
 	header.str("");
 	header << std::setfill('=') << std::setw(header_width) << "=";
-	Output::Debug(header.str().c_str());
+	Output::Debug("{}", header.str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
@@ -200,7 +200,10 @@ void Player::Init(int argc, char *argv[]) {
 			 RUN_ZOOM);
 	}
 
-	Input::Init(replay_input_path, record_input_path);
+	auto buttons = Input::GetDefaultButtonMappings();
+	auto directions = Input::GetDefaultDirectionMappings();
+
+	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
 }
 
 void Player::Run() {
@@ -300,7 +303,7 @@ void Player::UpdateInput() {
 	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
-		speed = Input::IsSystemPressed(Input::PLUS) ? 10 : speed_modifier;
+		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 
@@ -342,14 +345,14 @@ void Player::Update(bool update_scene) {
 	}
 
 	auto& transition = Transition::instance();
-	auto was_transition_pending = transition.IsActive();
 
-	transition.Update();
-
-	// If we aren't waiting on a transition, but we are waiting for scene delay.
-	if (!was_transition_pending) {
+	if (transition.IsActive()) {
+		transition.Update();
+	} else {
+		// If we aren't waiting on a transition, but we are waiting for scene delay.
 		Scene::instance->UpdateDelayFrames();
 	}
+
 	if (update_scene) {
 		Scene::instance->Update();
 		// Async file loading or transition. Don't increment the frame
@@ -454,7 +457,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		args.push_back(Utils::LowerCase(argv[i]));
 #endif
 	}
-	Output::Debug("CLI: %s", ss.str().c_str());
+	Output::Debug("CLI: {}", ss.str());
 
 	std::vector<std::string>::const_iterator it;
 
@@ -504,9 +507,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				Game_Battle::battle_test.troop_id = (argc > 4) ? atoi(argv[4]) : 0;
 				// 2k3 passes formation, condition and terrain_id as args 5-7
 				if (argc > 7) {
-					Game_Battle::battle_test.formation = (RPG::System::BattleFormation)atoi(argv[5]);
-					Game_Battle::battle_test.condition = (RPG::System::BattleCondition)atoi(argv[6]);
-					Game_Battle::battle_test.terrain_id = (RPG::System::BattleFormation)atoi(argv[7]);
+					Game_Battle::battle_test.formation = (lcf::rpg::System::BattleFormation)atoi(argv[5]);
+					Game_Battle::battle_test.condition = (lcf::rpg::System::BattleCondition)atoi(argv[6]);
+					Game_Battle::battle_test.terrain_id = (lcf::rpg::System::BattleFormation)atoi(argv[7]);
 				}
 			}
 		}
@@ -528,8 +531,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				++it;
 			}
 
-			Game_Battle::battle_test.formation = static_cast<RPG::System::BattleFormation>(fct[0]);
-			Game_Battle::battle_test.condition = static_cast<RPG::System::BattleCondition>(fct[1]);
+			Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(fct[0]);
+			Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(fct[1]);
 			Game_Battle::battle_test.terrain_id = fct[2];
 
 			--it;
@@ -686,19 +689,19 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 
 void Player::CreateGameObjects() {
 	GetEncoding();
-	escape_symbol = ReaderUtil::Recode("\\", encoding);
+	escape_symbol = lcf::ReaderUtil::Recode("\\", encoding);
 	if (escape_symbol.empty()) {
-		Output::Error("Invalid encoding: %s.", encoding.c_str());
+		Output::Error("Invalid encoding: {}.", encoding);
 	}
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
 	std::string game_path = Main_Data::GetProjectPath();
 	std::string save_path = Main_Data::GetSavePath();
 	if (game_path == save_path) {
-		Output::Debug("Using %s as Game and Save directory", game_path.c_str());
+		Output::Debug("Using {} as Game and Save directory", game_path);
 	} else {
-		Output::Debug("Using %s as Game directory", game_path.c_str());
-		Output::Debug("Using %s as Save directory", save_path.c_str());
+		Output::Debug("Using {} as Game directory", game_path);
+		Output::Debug("Using {} as Save directory", save_path);
 	}
 
 	LoadDatabase();
@@ -711,16 +714,16 @@ void Player::CreateGameObjects() {
 	bool no_rtp_warning_flag = false;
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
-	INIReader ini(ini_file);
+	lcf::INIReader ini(ini_file);
 	if (ini.ParseError() != -1) {
 		std::string title = ini.GetString("RPG_RT", "GameTitle", "");
-		game_title = ReaderUtil::Recode(title, encoding);
+		game_title = lcf::ReaderUtil::Recode(title, encoding);
 		no_rtp_warning_flag = ini.GetBoolean("RPG_RT", "FullPackageFlag", false);
 	}
 
 	std::stringstream title;
 	if (!game_title.empty()) {
-		Output::Debug("Loading game %s", game_title.c_str());
+		Output::Debug("Loading game {}", game_title);
 		title << game_title << " - ";
 	} else {
 		Output::Debug("Could not read game title.");
@@ -733,18 +736,18 @@ void Player::CreateGameObjects() {
 	}
 
 	if (engine == EngineNone) {
-		if (Data::system.ldb_id == 2003) {
+		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
 				// Heuristic: Detect if game was converted from 2000 to 2003 and
 				// no typical 2003 feature was used at all (breaks .flow e.g.)
-				if (Data::classes.size() == 1 &&
-					Data::classes[0].name.empty() &&
-					Data::system.menu_commands.empty() &&
-					Data::system.system2_name.empty() &&
-					Data::battleranimations.size() == 1 &&
-					Data::battleranimations[0].name.empty()) {
+				if (lcf::Data::classes.size() == 1 &&
+					lcf::Data::classes[0].name.empty() &&
+					lcf::Data::system.menu_commands.empty() &&
+					lcf::Data::system.system2_name.empty() &&
+					lcf::Data::battleranimations.size() == 1 &&
+					lcf::Data::battleranimations[0].name.empty()) {
 					engine = EngineRpg2k;
 					Output::Debug("Using RPG2k Interpreter (heuristic)");
 				} else {
@@ -757,7 +760,7 @@ void Player::CreateGameObjects() {
 		} else {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
-			if (Data::data.version >= 1) {
+			if (lcf::Data::data.version >= 1) {
 				engine |= EngineEnglish | EngineMajorUpdated;
 				Output::Debug("RM2k >= v.1.61 (English release) detected");
 			}
@@ -771,7 +774,7 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
-	Output::Debug("Engine configured as: 2k=%d 2k3=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
+	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
@@ -787,24 +790,24 @@ void Player::CreateGameObjects() {
 		if (!exep.empty()) {
 			auto exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
 			if (exesp) {
-				Output::Debug("Loading ExFont from %s", exep.c_str());
+				Output::Debug("Loading ExFont from {}", exep);
 				EXEReader exe_reader = EXEReader(*exesp);
 				Cache::exfont_custom = exe_reader.GetExFont();
 			} else {
-				Output::Debug("ExFont loading failed: %s not readable", exep.c_str());
+				Output::Debug("ExFont loading failed: {} not readable", exep);
 			}
 		} else {
-			Output::Debug("ExFont loading failed: %s not found", EXE_NAME);
+			Output::Debug("ExFont loading failed: {} not found", EXE_NAME);
 		}
 	}
 #endif
 	if (!exfont_file.empty()) {
 		auto exfont_stream = FileFinder::openUTF8(exfont_file, std::ios::binary | std::ios::in);
 		if (exfont_stream) {
-			Output::Debug("Using custom ExFont: %s", exfont_file.c_str());
+			Output::Debug("Using custom ExFont: {}", exfont_file);
 			Cache::exfont_custom = Utils::ReadStream(*exfont_stream);
 		} else {
-			Output::Debug("Reading custom ExFont %s failed", exfont_file.c_str());
+			Output::Debug("Reading custom ExFont {} failed", exfont_file);
 		}
 	}
 
@@ -845,16 +848,16 @@ void Player::ResetGameObjects() {
 }
 
 void Player::LoadDatabase() {
-	// Load Database
-	Data::Clear();
+	// Load lcf::Database
+	lcf::Data::Clear();
 
 	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
 		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
 		// Unlikely to happen because of the game browser only launches valid games
 
-		Output::Debug("%s is not a supported project", Main_Data::GetProjectPath().c_str());
+		Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
 
-		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
+		Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
 			"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
 			"This engine only supports RPG Maker 2000 and 2003\ngames.",
 			"RPG Maker XP, VX, VX Ace and MV are NOT supported.");
@@ -867,22 +870,22 @@ void Player::LoadDatabase() {
 	bool easyrpg_project = !edb.empty() && !emt.empty();
 
 	if (easyrpg_project) {
-		if (!LDB_Reader::LoadXml(edb)) {
-			Output::ErrorStr(LcfReader::GetError());
+		if (!lcf::LDB_Reader::LoadXml(edb)) {
+			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
-		if (!LMT_Reader::LoadXml(emt)) {
-			Output::ErrorStr(LcfReader::GetError());
+		if (!lcf::LMT_Reader::LoadXml(emt)) {
+			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 	}
 	else {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
 
-		if (!LDB_Reader::Load(ldb, encoding)) {
-			Output::ErrorStr(LcfReader::GetError());
+		if (!lcf::LDB_Reader::Load(ldb, encoding)) {
+			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
-		if (!LMT_Reader::Load(lmt, encoding)) {
-			Output::ErrorStr(LcfReader::GetError());
+		if (!lcf::LMT_Reader::Load(lmt, encoding)) {
+			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 	}
 }
@@ -914,18 +917,23 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
+	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
 	Game_System::BgmStop();
+
+	// We erase the screen now before loading the saved game. This prevents an issue where
+	// if the save game has a different system graphic, the load screen would change before
+	// transitioning out.
+	Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get(), 6);
 
 	auto title_scene = Scene::Find(Scene::Title);
 	if (title_scene) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	std::unique_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
+	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
-		Output::Error("%s", LcfReader::GetError().c_str());
+		Output::Error("{}", lcf::LcfReader::GetError());
 	}
 
 	std::stringstream verstr;
@@ -944,11 +952,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 		}
 	}
 
-	Output::Debug("Savegame version %d (%s)", ver, verstr.str().c_str());
+	Output::Debug("Savegame version {} ({})", ver, verstr.str());
 
 	if (ver > PLAYER_SAVEGAME_VERSION) {
-		Output::Warning("This savegame was created with %s which is newer than the current version of EasyRPG Player (%s)",
-			verstr.str().c_str(), PLAYER_VERSION);
+		Output::Warning("This savegame was created with {} which is newer than the current version of EasyRPG Player ({})",
+			verstr.str(), PLAYER_VERSION);
 	}
 
 	Scene::PopUntil(Scene::Title);
@@ -979,11 +987,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 static void OnMapFileReady(FileRequestResult*) {
 	int map_id = Player::start_map_id == -1 ?
-		Data::treemap.start.party_map_id : Player::start_map_id;
+		lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 	int x_pos = Player::party_x_position == -1 ?
-		Data::treemap.start.party_x : Player::party_x_position;
+		lcf::Data::treemap.start.party_x : Player::party_x_position;
 	int y_pos = Player::party_y_position == -1 ?
-		Data::treemap.start.party_y : Player::party_y_position;
+		lcf::Data::treemap.start.party_y : Player::party_y_position;
 	if (Player::party_members.size() > 0) {
 		Main_Data::game_party->Clear();
 		std::vector<int>::iterator member;
@@ -1012,7 +1020,7 @@ void Player::SetupNewGame() {
 
 void Player::SetupPlayerSpawn() {
 	int map_id = Player::start_map_id == -1 ?
-		Data::treemap.start.party_map_id : Player::start_map_id;
+		lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 
 	FileRequestAsync* request = Game_Map::RequestMap(map_id);
 	map_request_id = request->Bind(&OnMapFileReady);
@@ -1026,7 +1034,7 @@ std::string Player::GetEncoding() {
 	// command line > ini > detection > current locale
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
-		encoding = ReaderUtil::GetEncoding(ini);
+		encoding = lcf::ReaderUtil::GetEncoding(ini);
 	}
 
 	if (encoding.empty() || encoding == "auto") {
@@ -1039,7 +1047,7 @@ std::string Player::GetEncoding() {
 		// Stream required due to a liblcf api change:
 		// When a string is passed the encoding of the string is detected
 		if (is) {
-			encodings = ReaderUtil::DetectEncodings(is);
+			encodings = lcf::ReaderUtil::DetectEncodings(is);
 		}
 
 #ifndef EMSCRIPTEN
@@ -1047,23 +1055,23 @@ std::string Player::GetEncoding() {
 			// Heuristic: Check if encoded title and system name matches the one on the filesystem
 			// When yes is a good encoding. Otherwise try the next ones.
 
-			escape_symbol = ReaderUtil::Recode("\\", enc);
+			escape_symbol = lcf::ReaderUtil::Recode("\\", enc);
 			if (escape_symbol.empty()) {
 				// Bad encoding
-				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
+				Output::Debug("Bad encoding: {}. Trying next.", enc);
 				continue;
 			}
 			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
-			if ((Data::system.title_name.empty() ||
-					!FileFinder::FindImage("Title", ReaderUtil::Recode(Data::system.title_name, enc)).empty()) &&
-				(Data::system.system_name.empty() ||
-					!FileFinder::FindImage("System", ReaderUtil::Recode(Data::system.system_name, enc)).empty())) {
+			if ((lcf::Data::system.title_name.empty() ||
+					!FileFinder::FindImage("Title", lcf::ReaderUtil::Recode(lcf::Data::system.title_name, enc)).empty()) &&
+				(lcf::Data::system.system_name.empty() ||
+					!FileFinder::FindImage("System", lcf::ReaderUtil::Recode(lcf::Data::system.system_name, enc)).empty())) {
 				// Looks like a good encoding
 				encoding = enc;
 				break;
 			} else {
-				Output::Debug("Detected encoding: %s. Files not found. Trying next.", enc.c_str());
+				Output::Debug("Detected encoding: {}. Files not found. Trying next.", enc);
 			}
 		}
 #endif
@@ -1078,10 +1086,10 @@ std::string Player::GetEncoding() {
 		escape_char = 0;
 
 		if (!encoding.empty()) {
-			Output::Debug("Detected encoding: %s", encoding.c_str());
+			Output::Debug("Detected encoding: {}", encoding);
 		} else {
 			Output::Debug("Encoding not detected");
-			encoding = ReaderUtil::GetLocaleEncoding();
+			encoding = lcf::ReaderUtil::GetLocaleEncoding();
 		}
 	}
 

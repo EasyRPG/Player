@@ -38,7 +38,7 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 
 	index = -1;
 
-	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 		// Simulate a borderless window
 		// Doing it this way for gauge style makes the implementation on
 		// scene-side easier
@@ -73,7 +73,7 @@ void Window_BattleStatus::Refresh() {
 			actor = &(*Main_Data::game_party)[i];
 		}
 
-		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+		if (!enemy && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 		}
 		else {
@@ -81,7 +81,7 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			DrawActorState(*actor, 84, y);
-			if (Player::IsRPG2k3() && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
 				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
 				int digits = Player::IsRPG2k() ? 3 : 4;
@@ -96,7 +96,7 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
-		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 			contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 		}
 
@@ -110,38 +110,50 @@ void Window_BattleStatus::RefreshGauge() {
 				actor = &(*Main_Data::game_party)[i];
 			}
 
-			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+			if (!enemy && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 				BitmapRef system2 = Cache::System2();
 				if (system2) {
-					// Clear number drawing area
-					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
-					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
+					// Clear number and gauge drawing area
+					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 48));
 
 					// Number clearing removed part of the face, but both, clear and redraw
 					// are needed because some games don't have face graphics that are huge enough
 					// to clear the number area (e.g. Ara Fell)
 					DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 
-					// Background
-					contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::Opaque());
+					int x = 32 + i * 80;
+					int y = 24;
+
+					// Left Gauge
+					contents->Blit(x, y, *system2, Rect(0, 32, 16, 48), Opacity::Opaque());
+					x += 16;
+
+					// Center
+					const auto fill_x = x;
+					contents->StretchBlit(Rect(x, y, 25, 48), *system2, Rect(16, 32, 16, 48), Opacity::Opaque());
+					x += 25;
+
+					// Right
+					contents->Blit(x, y, *system2, Rect(32, 32, 16, 48), Opacity::Opaque());
 
 					// HP
-					DrawGaugeSystem2(48 + i * 80, 24, actor->GetHp(), actor->GetMaxHp(), 0);
+					DrawGaugeSystem2(fill_x, y, actor->GetHp(), actor->GetMaxHp(), 0);
 					// SP
-					DrawGaugeSystem2(48 + i * 80, 24 + 16, actor->GetSp(), actor->GetMaxSp(), 1);
+					DrawGaugeSystem2(fill_x, y + 16, actor->GetSp(), actor->GetMaxSp(), 1);
 					// Gauge
-					DrawGaugeSystem2(48 + i * 80, 24 + 16 * 2, actor->GetGauge() * actor->GetMaxGauge() / 100, actor->GetMaxGauge(), 2);
+					DrawGaugeSystem2(fill_x, y + 16 * 2, actor->GetAtbGauge(), actor->GetMaxAtbGauge(), 2);
 
 					// Numbers
-					DrawNumberSystem2(40 + 80 * i, 24, actor->GetHp());
-					DrawNumberSystem2(40 + 80 * i, 24 + 12 + 4, actor->GetSp());
+					x = 40 + 80 * i;
+					DrawNumberSystem2(x, y, actor->GetHp());
+					DrawNumberSystem2(x, y + 12 + 4, actor->GetSp());
 				}
 			}
 			else {
 				int y = 2 + i * 16;
 
 				DrawGauge(*actor, 198 - 10, y - 2);
-				if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 					DrawActorSp(*actor, 198, y, 3, false);
 				}
 			}
@@ -204,7 +216,7 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 	index = -1;
 	for (int i = 0; i < item_max; i++) {
 		int new_index = (old_index + i) % item_max;
-		if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
+		if ((*Main_Data::game_party)[new_index].IsAtbGaugeFull()) {
 			index = new_index;
 			return index;
 		}
@@ -265,7 +277,7 @@ void Window_BattleStatus::Update() {
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
-	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
 		SetCursorRect(Rect());
 		return;
 	}
@@ -285,7 +297,7 @@ bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
 		case ChoiceMode_Dead:
 			return battler.IsDead();
 		case ChoiceMode_Ready:
-			return battler.IsGaugeFull();
+			return battler.IsAtbGaugeFull();
 		case ChoiceMode_None:
 			return false;
 		default:

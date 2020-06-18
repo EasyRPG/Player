@@ -34,8 +34,8 @@
 #include <cmath>
 #include <cassert>
 
-Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	Game_Character(Event, new RPG::SaveMapEvent()),
+Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event) :
+	Game_Character(Event, new lcf::rpg::SaveMapEvent()),
 	_data_copy(this->data()),
 	event(event)
 {
@@ -45,9 +45,9 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& orig_data) :
 	//FIXME: This will leak if Game_Character() throws.
-	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
+	Game_Character(Event, new lcf::rpg::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
 	event(event)
 {
@@ -71,10 +71,10 @@ void Game_Event::ClearWaitingForegroundExecution() {
 	data()->waiting_execution = false;
 }
 
-void Game_Event::Setup(const RPG::EventPage* new_page) {
+void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
 	bool from_null = page == nullptr;
 
-	const RPG::EventPage* old_page = page;
+	const lcf::rpg::EventPage* old_page = page;
 	page = new_page;
 
 	// If the new page is null and the interpreter is running, it should
@@ -87,7 +87,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	if (page == nullptr) {
 		SetSpriteGraphic("", 0);
-		SetDirection(RPG::EventPage::Direction_down);
+		SetDirection(lcf::rpg::EventPage::Direction_down);
 		return;
 	}
 
@@ -95,7 +95,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	if (page->move_type == RPG::EventPage::MoveType_custom) {
+	SetFacingLocked(false);
+	if (page->move_type == lcf::rpg::EventPage::MoveType_custom) {
 		SetMaxStopCountForTurn();
 	} else {
 		SetMaxStopCountForStep();
@@ -104,10 +105,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetOriginalMoveRouteIndex(0);
 
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
-	SetAnimationType(RPG::EventPage::AnimType(page->animation_type));
+	SetAnimationType(lcf::rpg::EventPage::AnimType(page->animation_type));
 
-	if (GetAnimationType() == RPG::EventPage::AnimType_fixed_graphic
-			|| GetAnimationType() == RPG::EventPage::AnimType_spin) {
+	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
+			|| GetAnimationType() == lcf::rpg::EventPage::AnimType_spin) {
 		SetAnimFrame(page->character_pattern);
 	}
 
@@ -124,7 +125,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {
 			if (!interpreter) {
 				interpreter.reset(new Game_Interpreter_Map());
@@ -135,7 +136,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	}
 }
 
-void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
+void Game_Event::SetupFromSave(const lcf::rpg::EventPage* new_page) {
 	page = new_page;
 
 	if (page == nullptr) {
@@ -148,7 +149,7 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 		interpreter->Clear();
 	}
 
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
 		auto& state = data()->parallel_event_execstate;
 		// RPG_RT Savegames have empty stacks for parallel events.
 		// We are LSD compatible but don't load these into interpreter.
@@ -176,8 +177,8 @@ void Game_Event::Refresh(bool from_save) {
 		return;
 	}
 
-	RPG::EventPage* new_page = nullptr;
-	std::vector<RPG::EventPage>::reverse_iterator i;
+	lcf::rpg::EventPage* new_page = nullptr;
+	std::vector<lcf::rpg::EventPage>::reverse_iterator i;
 	for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
@@ -203,7 +204,7 @@ void Game_Event::Refresh(bool from_save) {
 	}
 }
 
-bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
+bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 	// First switch (A)
 	if (page.condition.flags.switch_a && !Main_Data::game_switches->Get(page.condition.switch_a_id)) {
 		return false;
@@ -297,9 +298,9 @@ bool Game_Event::WasStartedByDecisionKey() const {
 	return data()->triggered_by_decision_key;
 }
 
-RPG::EventPage::Trigger Game_Event::GetTrigger() const {
+lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
 	int trigger = page ? page->trigger : -1;
-	return static_cast<RPG::EventPage::Trigger>(trigger);
+	return static_cast<lcf::rpg::EventPage::Trigger>(trigger);
 }
 
 
@@ -320,9 +321,9 @@ bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decisio
 	return true;
 }
 
-static std::vector<RPG::EventCommand> _empty_list = {};
+static std::vector<lcf::rpg::EventCommand> _empty_list = {};
 
-const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
+const std::vector<lcf::rpg::EventCommand>& Game_Event::GetList() const {
 	return page ? page->event_commands : _empty_list;
 }
 
@@ -334,7 +335,7 @@ void Game_Event::OnFinishForegroundEvent() {
 }
 
 void Game_Event::CheckEventAutostart() {
-	if (GetTrigger() == RPG::EventPage::Trigger_auto_start
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start
 			&& GetRemainingStep() == 0) {
 		SetAsWaitingForegroundExecution(false, false);
 		return;
@@ -342,8 +343,8 @@ void Game_Event::CheckEventAutostart() {
 }
 
 void Game_Event::CheckEventCollision() {
-	if (GetTrigger() == RPG::EventPage::Trigger_collision
-			&& GetLayer() != RPG::EventPage::Layers_same
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_collision
+			&& GetLayer() != lcf::rpg::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning()
 			&& !Main_Data::game_player->InAirship()
@@ -355,8 +356,8 @@ void Game_Event::CheckEventCollision() {
 
 void Game_Event::OnMoveFailed(int x, int y) {
 	if (Main_Data::game_player->InAirship()
-			|| GetLayer() != RPG::EventPage::Layers_same
-			|| GetTrigger() != RPG::EventPage::Trigger_collision) {
+			|| GetLayer() != lcf::rpg::EventPage::Layers_same
+			|| GetTrigger() != lcf::rpg::EventPage::Trigger_collision) {
 		return;
 	}
 
@@ -387,48 +388,50 @@ void Game_Event::UpdateSelfMovement() {
 	}
 
 	switch (page->move_type) {
-	case RPG::EventPage::MoveType_random:
+	case lcf::rpg::EventPage::MoveType_random:
 		MoveTypeRandom();
 		break;
-	case RPG::EventPage::MoveType_vertical:
+	case lcf::rpg::EventPage::MoveType_vertical:
 		MoveTypeCycleUpDown();
 		break;
-	case RPG::EventPage::MoveType_horizontal:
+	case lcf::rpg::EventPage::MoveType_horizontal:
 		MoveTypeCycleLeftRight();
 		break;
-	case RPG::EventPage::MoveType_toward:
+	case lcf::rpg::EventPage::MoveType_toward:
 		MoveTypeTowardsPlayer();
 		break;
-	case RPG::EventPage::MoveType_away:
+	case lcf::rpg::EventPage::MoveType_away:
 		MoveTypeAwayFromPlayer();
 		break;
-	case RPG::EventPage::MoveType_custom:
+	case lcf::rpg::EventPage::MoveType_custom:
 		UpdateMoveRoute(data()->original_move_route_index, page->move_route);
 		break;
 	}
 }
 
 void Game_Event::MoveTypeRandom() {
-	int last_direction = GetDirection();
-	switch (Utils::GetRandomNumber(0, 5)) {
-	case 0:
-		SetStopCount(GetStopCount() - Utils::GetRandomNumber(0, GetStopCount()));
-		if (GetStopCount() < 0) {
-			SetStopCount(0);
-		}
-		return;
-	case 1:
-		MoveForward();
-		break;
-	default:
-		MoveRandom();
-	}
-	if (move_failed) {
-		SetDirection(last_direction);
-		if (!(IsDirectionFixed() || IsFacingLocked()))
-			SetSpriteDirection(last_direction);
+	auto st = GetMaxStopCountForStep(GetMoveFrequency());
+	st *= (Utils::GetRandomNumber(0, 3) + 3) / 5;
+	SetMaxStopCount(st);
+
+	int draw = Utils::GetRandomNumber(0, 9);
+
+	const auto opt = MoveOption::IgnoreIfCantMove;
+
+	if (draw < 3) {
+		auto dir = GetDirection();
+		Move(dir, opt);
+	} else if (draw < 5) {
+		auto dir = GetDirection90DegreeLeft(GetDirection());
+		Move(dir, opt);
+	} else if (draw < 7) {
+		auto dir = GetDirection90DegreeRight(GetDirection());
+		Move(dir, opt);
+	} else if (draw < 8) {
+		auto dir = GetDirection180Degree(GetDirection());
+		Move(dir, opt);
 	} else {
-		SetMaxStopCount(GetMaxStopCount() / 5 * Utils::GetRandomNumber(3, 6));
+		SetStopCount(Utils::GetRandomNumber(0, GetMaxStopCount()));
 	}
 }
 
@@ -520,7 +523,7 @@ AsyncOp Game_Event::Update(bool resume_async) {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if ((resume_async || GetTrigger() == RPG::EventPage::Trigger_parallel) && interpreter) {
+	if ((resume_async || GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) && interpreter) {
 		if (!interpreter->IsRunning() && page && !page->event_commands.empty()) {
 			interpreter->Push(this);
 		}
@@ -560,27 +563,27 @@ AsyncOp Game_Event::Update(bool resume_async) {
 	return {};
 }
 
-const RPG::EventPage* Game_Event::GetPage(int page) const {
+const lcf::rpg::EventPage* Game_Event::GetPage(int page) const {
 	if (page <= 0 || page - 1 >= static_cast<int>(event.pages.size())) {
 		return nullptr;
 	}
 	return &event.pages[page - 1];
 }
 
-const RPG::EventPage *Game_Event::GetActivePage() const {
+const lcf::rpg::EventPage *Game_Event::GetActivePage() const {
 	return page;
 }
 
-const RPG::SaveMapEvent& Game_Event::GetSaveData() {
-	RPG::SaveEventExecState state;
-	if (page && page->trigger == RPG::EventPage::Trigger_parallel) {
+const lcf::rpg::SaveMapEvent& Game_Event::GetSaveData() {
+	lcf::rpg::SaveEventExecState state;
+	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
 		if (interpreter) {
 			state = interpreter->GetState();
 		}
 
 		if (state.stack.empty() && page->event_commands.empty()) {
 			// RPG_RT always stores an empty stack frame for empty parallel events.
-			RPG::SaveEventExecFrame frame;
+			lcf::rpg::SaveEventExecFrame frame;
 			frame.event_id = GetId();
 			state.stack.push_back(std::move(frame));
 		}

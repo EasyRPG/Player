@@ -16,24 +16,48 @@
  */
 
 #include <algorithm>
+#include <cstring>
+#include <cerrno>
 
 #include "baseui.h"
 #include "input_source.h"
 #include "player.h"
+#include "output.h"
+
+std::unique_ptr<Input::Source> Input::Source::Create(
+		Input::ButtonMappingArray buttons,
+		Input::DirectionMappingArray directions,
+		const std::string& replay_from_path)
+{
+	if (!replay_from_path.empty()) {
+		auto path = replay_from_path.c_str();
+
+		auto log_src = std::make_unique<Input::LogSource>(path, std::move(buttons), std::move(directions));
+
+		if (*log_src) {
+			return log_src;
+		}
+		Output::Warning("Failed to open file for input replaying: {}", path);
+
+		buttons = std::move(log_src->GetButtonMappings());
+		directions = std::move(log_src->GetDirectionMappings());
+	}
+
+	return std::make_unique<Input::UiSource>(std::move(buttons), std::move(directions));
+}
 
 void Input::UiSource::DoUpdate(bool system_only) {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
-	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
-		if (system_only && !Input::IsSystemButton(static_cast<InputButton>(i))) {
-			continue;
+	pressed_buttons = {};
+
+	for (auto& bm: button_mappings) {
+		if (!system_only || Input::IsSystemButton(bm.first)) {
+			pressed_buttons[bm.first] = pressed_buttons[bm.first] | keystates[bm.second];
 		}
-		bool pressed = std::any_of(
-			buttons[i].cbegin(), buttons[i].cend(),
-			[&](int key) { return keystates[key]; }
-		);
-		pressed_buttons[i] = pressed;
 	}
+
+	Record();
 }
 
 void Input::UiSource::Update() {
@@ -44,7 +68,8 @@ void Input::UiSource::UpdateSystem() {
 	DoUpdate(true);
 }
 
-Input::LogSource::LogSource(const char* log_path) :
+Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
+	: Source(std::move(buttons), std::move(directions)),
 	log_file(log_path, std::ios::in)
 {}
 
@@ -53,6 +78,29 @@ void Input::LogSource::Update() {
 
 	if (!log_file) {
 		Player::exit_flag = true;
+	}
+
+	Record();
+}
+
+
+bool Input::Source::InitRecording(const std::string& record_to_path) {
+	if (!record_to_path.empty()) {
+		auto path = record_to_path.c_str();
+
+		record_log.open(path, std::ios::out|std::ios::trunc);
+
+		if (!record_log) {
+			Output::Warning("Failed to open file {} for input recording : {}", path, strerror(errno));
+			return false;
+		}
+	}
+	return true;
+}
+
+void Input::Source::Record() {
+	if (record_log.is_open()) {
+		record_log << GetPressedNonSystemButtons() << '\n';
 	}
 }
 

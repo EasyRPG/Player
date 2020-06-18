@@ -41,7 +41,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES		:=	../../src
+SOURCES		:=	../../src ../../src/platform/switch
 DATA		:=	data
 INCLUDES	:=	../../src
 EXEFS_SRC	:=	exefs_src
@@ -49,7 +49,7 @@ EXEFS_SRC	:=	exefs_src
 
 APP_TITLE	:= EasyRPG Player
 APP_AUTHOR	:= EasyRPG Team & Rinnegatamante
-APP_VERSION	:= 0.6.1
+APP_VERSION	:= 0.6.2
 ICON		:= icon.jpg
 
 #---------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
+CFLAGS	:=	-g -Wall -O2 -ffunction-sections -fno-math-errno \
 			$(ARCH) $(DEFINES)
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
@@ -65,8 +65,6 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 			-DHAVE_LIBSAMPLERATE -DWANT_FMMIDI -DWANT_FASTWAV \
-			-I$(TOOLCHAIN_DIR)/include \
-			-I$(LIBLCF_DIR)/include/liblcf \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 			-I$(TOOLCHAIN_DIR)/include/opus \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
@@ -78,7 +76,7 @@ ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
-		-licuuc -licui18n -licudata \
+		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
 		-lsndfile -lvorbisidec -logg -lxmp-lite \
 		-lWildMidi -lsamplerate -lopusfile -lopus \

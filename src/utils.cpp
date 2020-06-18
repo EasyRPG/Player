@@ -549,7 +549,7 @@ bool Utils::PercentChance(int rate) {
 
 void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
-	Output::Debug("Seeded the RNG with %" PRId32 ".", seed);
+	Output::Debug("Seeded the RNG with {}.", seed);
 }
 
 // via https://stackoverflow.com/questions/6089231/

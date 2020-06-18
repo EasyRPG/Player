@@ -17,13 +17,13 @@
 
 // Headers
 #include <algorithm>
-#include "data.h"
-#include "rpg_enemy.h"
+#include <lcf/data.h>
+#include <lcf/rpg/enemy.h>
 #include "game_battle.h"
 #include "game_enemy.h"
 #include "game_party.h"
 #include "game_switches.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "output.h"
 #include "utils.h"
 #include "player.h"
@@ -43,7 +43,7 @@ void Game_Enemy::Setup(int enemy_id) {
 	sp = GetMaxSp();
 	x = 0;
 	y = 0;
-	hidden = false;
+	SetHidden(false);
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
 	flying_offset = 0;
 }
@@ -58,22 +58,6 @@ int Game_Enemy::MaxStatBattleValue() const {
 
 int Game_Enemy::MaxStatBaseValue() const {
 	return 999;
-}
-
-const std::vector<int16_t>& Game_Enemy::GetStates() const {
-	return states;
-}
-
-std::vector<int16_t>& Game_Enemy::GetStates() {
-	return states;
-}
-
-const std::string& Game_Enemy::GetName() const {
-	return enemy->name;
-}
-
-const std::string& Game_Enemy::GetSpriteName() const {
-	return enemy->battler_name;
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {
@@ -103,42 +87,6 @@ int Game_Enemy::GetAttributeModifier(int attribute_id) const {
 	return GetAttributeRate(attribute_id, rate);
 }
 
-int Game_Enemy::GetId() const {
-	return enemy_id;
-}
-
-int Game_Enemy::GetBaseMaxHp() const {
-	return enemy->max_hp;
-}
-
-int Game_Enemy::GetBaseMaxSp() const {
-	return enemy->max_sp;
-}
-
-int Game_Enemy::GetBaseAtk() const {
-	return enemy->attack;
-}
-
-int Game_Enemy::GetBaseDef() const {
-	return enemy->defense;
-}
-
-int Game_Enemy::GetBaseSpi() const {
-	return enemy->spirit;
-}
-
-int Game_Enemy::GetBaseAgi() const {
-	return enemy->agility;
-}
-
-int Game_Enemy::GetHp() const {
-	return hp;
-}
-
-int Game_Enemy::GetSp() const {
-	return sp;
-}
-
 void Game_Enemy::SetHp(int _hp) {
 	hp = std::min(std::max(_hp, 0), GetMaxHp());
 }
@@ -155,44 +103,20 @@ int Game_Enemy::GetBattleY() const {
 	return (y*SCREEN_TARGET_HEIGHT/240);
 }
 
-void Game_Enemy::SetBattleX(int new_x) {
-	x = new_x;
-}
-
-void Game_Enemy::SetBattleY(int new_y) {
-	y = new_y;
-}
-
-int Game_Enemy::GetHue() const {
-	return enemy->battler_hue;
-}
-
-void Game_Enemy::SetHidden(bool _hidden) {
-	hidden = _hidden;
-}
-
-bool Game_Enemy::IsHidden() const {
-	return hidden;
-}
-
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
 
-	enemy = ReaderUtil::GetElement(Data::enemies, enemy_id);
+	enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy_id);
 
 	if (!enemy) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.
 		// This case will fail in RPG Maker and the game will exit with an error message.
 		// Create a warning instead and continue the battle.
-		Output::Warning("Invalid enemy ID %d", new_enemy_id);
+		Output::Warning("Invalid enemy ID {}", new_enemy_id);
 		enemy_id = 1;
 		// This generates an invisible monster with 0 HP and a minor memory leak
-		enemy = new RPG::Enemy();
+		enemy = new lcf::rpg::Enemy();
 	}
-}
-
-int Game_Enemy::GetBattleAnimationId() const {
-	return 0;
 }
 
 int Game_Enemy::GetHitChance() const {
@@ -203,25 +127,6 @@ float Game_Enemy::GetCriticalHitChance() const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
-Game_Battler::BattlerType Game_Enemy::GetType() const {
-	return Game_Battler::Type_Enemy;
-}
-
-int Game_Enemy::GetExp() const {
-	return enemy->exp;
-}
-
-int Game_Enemy::GetMoney() const {
-	return enemy->gold;
-}
-
-int Game_Enemy::GetDropId() const {
-	return enemy->drop_id;
-}
-
-int Game_Enemy::GetDropProbability() const {
-	return enemy->drop_prob;
-}
 
 int Game_Enemy::GetFlyingOffset() const {
 	// 2k does not support flying, albeit mentioned in the help file
@@ -247,7 +152,7 @@ void Game_Enemy::UpdateBattle() {
 	Game_Battler::UpdateBattle();
 }
 
-bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
+bool Game_Enemy::IsActionValid(const lcf::rpg::EnemyAction& action) {
 	if (action.kind == action.Kind_skill) {
 		if (!IsSkillUsable(action.skill_id)) {
 			return false;
@@ -255,38 +160,38 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	}
 
 	switch (action.condition_type) {
-	case RPG::EnemyAction::ConditionType_always:
+	case lcf::rpg::EnemyAction::ConditionType_always:
 		return true;
-	case RPG::EnemyAction::ConditionType_switch:
+	case lcf::rpg::EnemyAction::ConditionType_switch:
 		return Main_Data::game_switches->Get(action.switch_id);
-	case RPG::EnemyAction::ConditionType_turn:
+	case lcf::rpg::EnemyAction::ConditionType_turn:
 		{
 			int turns = Game_Battle::GetTurn();
 			return Game_Battle::CheckTurns(turns, action.condition_param2, action.condition_param1);
 		}
-	case RPG::EnemyAction::ConditionType_actors:
+	case lcf::rpg::EnemyAction::ConditionType_actors:
 		{
 			std::vector<Game_Battler*> battlers;
 			GetParty().GetActiveBattlers(battlers);
 			int count = (int)battlers.size();
 			return count >= action.condition_param1 && count <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_hp:
+	case lcf::rpg::EnemyAction::ConditionType_hp:
 		{
 			int hp_percent = GetHp() * 100 / GetMaxHp();
 			return hp_percent >= action.condition_param1 && hp_percent <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_sp:
+	case lcf::rpg::EnemyAction::ConditionType_sp:
 		{
 			int sp_percent = GetSp() * 100 / GetMaxSp();
 			return sp_percent >= action.condition_param1 && sp_percent <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_party_lvl:
+	case lcf::rpg::EnemyAction::ConditionType_party_lvl:
 		{
 			int party_lvl = Main_Data::game_party->GetAverageLevel();
 			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
 		}
-	case RPG::EnemyAction::ConditionType_party_fatigue:
+	case lcf::rpg::EnemyAction::ConditionType_party_fatigue:
 		{
 			int party_exh = Main_Data::game_party->GetFatigue();
 			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
@@ -296,16 +201,16 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	}
 }
 
-const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
+const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	if (IsCharged()) {
 		return &normal_atk;
 	}
 
-	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
+	const std::vector<lcf::rpg::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
 	int32_t highest_rating = 0;
 	for (int i = 0; i < (int) actions.size(); ++i) {
-		const RPG::EnemyAction& action = actions[i];
+		const lcf::rpg::EnemyAction& action = actions[i];
 		if (IsActionValid(action)) {
 			valid.push_back(i);
 			highest_rating = std::max(highest_rating, action.rating);
@@ -328,7 +233,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	int which = Utils::GetRandomNumber(0, total - 1);
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
-		const RPG::EnemyAction& action = actions[*it];
+		const lcf::rpg::EnemyAction& action = actions[*it];
 		if (which >= action.rating) {
 			which -= action.rating;
 			continue;
@@ -340,6 +245,3 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	return nullptr;
 }
 
-bool Game_Enemy::IsTransparent() const {
-	return enemy->transparent;
-}

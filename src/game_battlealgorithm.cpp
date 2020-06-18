@@ -33,11 +33,11 @@
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
-#include "reader_util.h"
-#include "rpg_animation.h"
-#include "rpg_state.h"
-#include "rpg_skill.h"
-#include "rpg_item.h"
+#include <lcf/reader_util.h>
+#include <lcf/rpg/animation.h>
+#include <lcf/rpg/state.h>
+#include <lcf/rpg/skill.h>
+#include <lcf/rpg/item.h>
 #include "sprite_battler.h"
 #include "utils.h"
 #include "state.h"
@@ -53,7 +53,7 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 	}
 
 	// If target has Restriction "do_nothing", the attack always hits
-	if (target->GetSignificantRestriction() == RPG::State::Restriction_do_nothing) {
+	if (target->GetSignificantRestriction() == lcf::rpg::State::Restriction_do_nothing) {
 		return 100;
 	}
 
@@ -67,7 +67,7 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 	}
 
 	// AGI adjustment.
-	to_hit = 100 - (100 - to_hit) * (1.5f * (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f));
+	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f) / 2.0f) ;
 
 	// If target has physical dodge evasion:
 	if (target->GetType() == Game_Battler::Type_Ally
@@ -89,7 +89,7 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 			continue;
 		}
 
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
 			continue;
 		}
@@ -111,30 +111,42 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
 	type(ty), source(source), no_target(true), first_attack(true),
-	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
 	type(ty), source(source), no_target(false), first_attack(true),
-	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
+
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
 	type(ty), source(source), no_target(false), first_attack(true),
-	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
 
-	target->GetBattlers(targets);
-	current_target = targets.begin();
+	source->SetIsDefending(false);
+	physical_charged = source->IsCharged();
+	source->SetCharged(false);
+
+	current_target = targets.end();
+	party_target = target;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
@@ -210,11 +222,11 @@ bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
 	return true;
 }
 
-const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
+const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
 	return animation;
 }
 
-const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
+const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
 	return animation2;
 }
 
@@ -345,7 +357,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	}
 
 	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, 1);
+	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, 1);
 	const std::string& message = is_ally ? state->message_actor
 										: state->message_enemy;
 
@@ -361,7 +373,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	}
 }
 
-RPG::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
+lcf::rpg::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
 	return source_restriction;
 }
 
@@ -381,7 +393,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const s
 std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int value, const std::string& points) const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.hp_recovery,
+			lcf::Data::terms.hp_recovery,
 			{'S', 'V', 'U'},
 			{GetTarget()->GetName(), std::to_string(value), points}
 		);
@@ -400,7 +412,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int val
 			particle = particle2 = " ";
 		}
 		ss << particle << points << particle2;
-		ss << value << space << Data::terms.hp_recovery;
+		ss << value << space << lcf::Data::terms.hp_recovery;
 		return ss.str();
 	}
 }
@@ -409,8 +421,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	const std::string& message = target_is_ally ?
-		Data::terms.actor_undamaged :
-		Data::terms.enemy_undamaged;
+		lcf::Data::terms.actor_undamaged :
+		lcf::Data::terms.enemy_undamaged;
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -428,8 +440,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	const std::string& message = target_is_ally ?
-		Data::terms.actor_critical :
-		Data::terms.enemy_critical;
+		lcf::Data::terms.actor_critical :
+		lcf::Data::terms.enemy_critical;
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -447,8 +459,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	const std::string& message = target_is_ally ?
-		Data::terms.actor_hp_absorbed :
-		Data::terms.enemy_hp_absorbed;
+		lcf::Data::terms.actor_hp_absorbed :
+		lcf::Data::terms.enemy_hp_absorbed;
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -481,15 +493,15 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	const std::string& message = target_is_ally ?
-		Data::terms.actor_damaged :
-		Data::terms.enemy_damaged;
+		lcf::Data::terms.actor_damaged :
+		lcf::Data::terms.enemy_damaged;
 	int value = GetAffectedHp();
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			message,
 			{'S', 'V', 'U'},
-			{GetTarget()->GetName(), std::to_string(value), Data::terms.health_points}
+			{GetTarget()->GetName(), std::to_string(value), lcf::Data::terms.health_points}
 		);
 	}
 	else {
@@ -510,8 +522,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const {
 	const std::string& message = is_positive ?
-		Data::terms.parameter_increase :
-		Data::terms.parameter_decrease;
+		lcf::Data::terms.parameter_increase :
+		lcf::Data::terms.parameter_decrease;
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -555,8 +567,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::stri
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const std::string& attribute) const {
 	const std::string& message = IsPositive() ?
-		Data::terms.resistance_increase :
-		Data::terms.resistance_decrease;
+		lcf::Data::terms.resistance_increase :
+		lcf::Data::terms.resistance_decrease;
 	std::stringstream ss;
 
 	if (Player::IsRPG2kE()) {
@@ -586,7 +598,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetFailureMessage() const {
-	return GetAttackFailureMessage(Data::terms.dodge);
+	return GetAttackFailureMessage(lcf::Data::terms.dodge);
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
@@ -747,6 +759,11 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+	if (party_target) {
+		party_target->GetBattlers(targets);
+		party_target = nullptr;
+	}
+
 	current_target = targets.begin();
 	cur_repeat = 0;
 
@@ -799,15 +816,15 @@ void Game_BattleAlgorithm::AlgorithmBase::SetSwitchDisable(int switch_id) {
 	switch_off.push_back(switch_id);
 }
 
-const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 	return NULL;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const {
 	return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 }
 
-const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 	if (!success) {
 		return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 	}
@@ -825,7 +842,7 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 	return NULL;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 	return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
 		NULL : &Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
 }
@@ -884,28 +901,28 @@ void Game_BattleAlgorithm::Normal::Init() {
 		}
 
 		if (weapon1) {
-			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
+			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapon1->animation_id);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon1->animation_id);
 				return;
 			}
 			if (weapon2) {
-				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+				animation2 = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapon2->animation_id);
 				if (!animation2) {
-					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon2->animation_id);
 				}
 			}
 		} else {
-			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
-			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
+			const lcf::rpg::Actor& actor = *lcf::ReaderUtil::GetElement(lcf::Data::actors, ally->GetId());
+			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, actor.unarmed_animation);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID {}", actor.unarmed_animation);
 			}
 		}
 	}
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		if (Player::IsRPG2k3() && !Data::animations.empty()) {
-			animation = ReaderUtil::GetElement(Data::animations, 1);
+		if (Player::IsRPG2k3() && !lcf::Data::animations.empty()) {
+			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, 1);
 		}
 	}
 }
@@ -969,7 +986,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		effect *= multiplier;
 		if (critical_hit) {
 			effect *= 3;
-		} else if(source->IsCharged()) {
+		} else if(physical_charged) {
 			effect *= 2;
 		}
 		if (GetTarget()->IsDefending()) {
@@ -980,8 +997,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 		}
 
-		auto var = Utils::GetRandomNumber(-20, 20);
-		effect += (effect * var) / 100;
+		if (effect > 0) {
+			effect = Game_Battle::VarianceAdjustEffect(effect, 4);
+		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1015,7 +1033,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					state_limit = std::max(state_limit, (int)weapon2->state_set.size());
 				}
 
-				auto addStates = [&](const RPG::Item* weapon, int state_id) {
+				auto addStates = [&](const lcf::rpg::Item* weapon, int state_id) {
 					if (weapon == nullptr
 							|| state_id > (int)weapon->state_set.size()
 							|| !weapon->state_set[state_id - 1]
@@ -1045,12 +1063,12 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					return false;
 				};
 
-				if (addStates(weapon1, RPG::State::kDeathID)
-						|| addStates(weapon2, RPG::State::kDeathID)) {
+				if (addStates(weapon1, lcf::rpg::State::kDeathID)
+						|| addStates(weapon2, lcf::rpg::State::kDeathID)) {
 					// If death is inflicted, we're done adding states.
 					lethal = true;
 				} else {
-					for (int state_id = RPG::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
+					for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
 						addStates(weapon1, state_id);
 						addStates(weapon2, state_id);
 					}
@@ -1070,7 +1088,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
-	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
 	}
@@ -1080,13 +1097,13 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
 		if (Player::IsRPG2kE()) {
 			return Utils::ReplacePlaceholders(
-				Data::terms.attacking,
+				lcf::Data::terms.attacking,
 				{'S'},
 				{source->GetName()}
 			);
 		}
 		else {
-			return source->GetName() + Data::terms.attacking;
+			return source->GetName() + lcf::Data::terms.attacking;
 		}
 	}
 	else {
@@ -1100,7 +1117,7 @@ int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_RightHand;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
 	}
@@ -1113,19 +1130,19 @@ int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
 	return 100;
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
 	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
 {
 	Init();
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item) :
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
 	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
 {
 	Init();
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item) :
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
 	AlgorithmBase(Type::Skill, source), skill(skill), item(item)
 {
 	Init();
@@ -1134,9 +1151,9 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill
 void Game_BattleAlgorithm::Skill::Init() {
 	animation = nullptr;
 	if (skill.animation_id != 0) {
-		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
+		animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill.animation_id);
 		if (!animation) {
-			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+			Output::Warning("Algorithm Skill: Invalid skill animation ID {}", skill.animation_id);
 		}
 	}
 }
@@ -1150,17 +1167,18 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 		return false;
 	}
 
-	if (skill.scope == RPG::Skill::Scope_ally ||
-		skill.scope == RPG::Skill::Scope_party) {
+	if (skill.scope == lcf::rpg::Skill::Scope_ally ||
+		skill.scope == lcf::rpg::Skill::Scope_party) {
 		if (GetTarget()->IsDead()) {
 			// Cures death
+			// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
 			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
 
 		return true;
 	}
 
-	return (!GetTarget()->IsDead());
+	return GetTarget()->Exists();
 }
 
 
@@ -1177,17 +1195,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	auto* target = GetTarget();
 
 	this->healing =
-		skill.scope == RPG::Skill::Scope_ally ||
-		skill.scope == RPG::Skill::Scope_party ||
-		skill.scope == RPG::Skill::Scope_self;
+		skill.scope == lcf::rpg::Skill::Scope_ally ||
+		skill.scope == lcf::rpg::Skill::Scope_party ||
+		skill.scope == lcf::rpg::Skill::Scope_self;
 
 	this->revived = this->healing
 		&& !skill.state_effects.empty()
-		&& skill.state_effects[RPG::State::kDeathID - 1]
+		&& skill.state_effects[lcf::rpg::State::kDeathID - 1]
 		&& GetTarget()->IsDead();
 
-	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_subskill) {
+	if (skill.type == lcf::rpg::Skill::Type_normal ||
+		skill.type >= lcf::rpg::Skill::Type_subskill) {
 
 		int to_hit = skill.hit;
 
@@ -1203,7 +1221,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1244,7 +1262,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1324,7 +1342,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				if (State::Add(state_id, target_states, target_perm_states, true)) {
 					this->success = true;
 					states.push_back({state_id, StateEffect::Inflicted});
-					if (state_id == RPG::State::kDeathID) {
+					if (state_id == lcf::rpg::State::kDeathID) {
 						lethal = true;
 						break;
 					}
@@ -1345,7 +1363,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 	}
-	else if (skill.type == RPG::Skill::Type_switch) {
+	else if (skill.type == lcf::rpg::Skill::Type_switch) {
 		switch_id = skill.switch_id;
 		this->success = true;
 	}
@@ -1436,8 +1454,8 @@ int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_SkillUse;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
-	if (skill.type == RPG::Skill::Type_switch) {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
+	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		return &skill.sound_effect;
 	}
 	else {
@@ -1445,26 +1463,26 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	}
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
 	return skill.failure_message != 3
 		? nullptr
 		: AlgorithmBase::GetResultSe();
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
 	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
 }
 
 std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 	switch (skill.failure_message) {
 		case 0:
-			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a);
+			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_a);
 		case 1:
-			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_b);
+			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_b);
 		case 2:
-			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_c);
+			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_c);
 		case 3:
-			return AlgorithmBase::GetAttackFailureMessage(Data::terms.dodge);
+			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.dodge);
 		default:
 			break;
 	}
@@ -1525,17 +1543,17 @@ bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
 }
 
-Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const lcf::rpg::Item& item) :
 	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
 }
 
-Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item) :
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Item& item) :
 	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
 }
 
-Game_BattleAlgorithm::Item::Item(Game_Battler* source, const RPG::Item& item) :
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, const lcf::rpg::Item& item) :
 AlgorithmBase(Type::Item, source), item(item) {
 	// no-op
 }
@@ -1548,7 +1566,7 @@ bool Game_BattleAlgorithm::Item::IsTargetValid() const {
 	if (current_target == targets.end()) {
 		return false;
 	}
-	return item.type == RPG::Item::Type_medicine;
+	return item.type == lcf::rpg::Item::Type_medicine;
 }
 
 bool Game_BattleAlgorithm::Item::Execute() {
@@ -1560,19 +1578,19 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 	// All other items are handled as skills because they invoke skills
 	switch (item.type) {
-		case RPG::Item::Type_medicine:
-		case RPG::Item::Type_switch:
+		case lcf::rpg::Item::Type_medicine:
+		case lcf::rpg::Item::Type_switch:
 			break;
 		default:
 			assert("Unsupported battle item type");
 			return false;
 	}
 
-	if (item.type == RPG::Item::Type_medicine) {
+	if (item.type == lcf::rpg::Item::Type_medicine) {
 		this->healing = true;
 
 		this->revived = !item.state_set.empty()
-			&& item.state_set[RPG::State::kDeathID - 1]
+			&& item.state_set[lcf::rpg::State::kDeathID - 1]
 			&& GetTarget()->IsDead();
 
 		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
@@ -1615,7 +1633,7 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 		this->success = this->hp > -1 || this->sp > -1 || !states.empty();
 	}
-	else if (item.type == RPG::Item::Type_switch) {
+	else if (item.type == lcf::rpg::Item::Type_switch) {
 		switch_id = item.switch_id;
 		this->success = true;
 	}
@@ -1634,7 +1652,7 @@ void Game_BattleAlgorithm::Item::Apply() {
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.use_item,
+			lcf::Data::terms.use_item,
 			{'S', 'O'},
 			{source->GetName(), item.name}
 		);
@@ -1645,7 +1663,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 			particle = "は";
 		else
 			particle = " ";
-		return source->GetName() + particle + item.name + Data::terms.use_item;
+		return source->GetName() + particle + item.name + lcf::Data::terms.use_item;
 	}
 	else {
 		return item.name;
@@ -1656,8 +1674,8 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Item;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
-	if (item.type == RPG::Item::Type_medicine || item.type == RPG::Item::Type_switch) {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
+	if (item.type == lcf::rpg::Item::Type_medicine || item.type == lcf::rpg::Item::Type_switch) {
 		return &Game_System::GetSystemSE(Game_System::SFX_UseItem);
 	}
 	else {
@@ -1677,13 +1695,13 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.defending,
+			lcf::Data::terms.defending,
 			{'S'},
 			{source->GetName()}
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.defending;
+		return source->GetName() + lcf::Data::terms.defending;
 	}
 	else {
 		return "";
@@ -1711,13 +1729,13 @@ AlgorithmBase(Type::Observe, source) {
 std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.observing,
+			lcf::Data::terms.observing,
 			{'S'},
 			{source->GetName()}
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.observing;
+		return source->GetName() + lcf::Data::terms.observing;
 	}
 	else {
 		return "";
@@ -1738,13 +1756,13 @@ AlgorithmBase(Type::Charge, source) {
 std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.focus,
+			lcf::Data::terms.focus,
 			{'S'},
 			{source->GetName()}
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.focus;
+		return source->GetName() + lcf::Data::terms.focus;
 	}
 	else {
 		return "";
@@ -1769,13 +1787,13 @@ AlgorithmBase(Type::SelfDestruct, source, target) {
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.autodestruction,
+			lcf::Data::terms.autodestruction,
 			{'S'},
 			{source->GetName()}
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.autodestruction;
+		return source->GetName() + lcf::Data::terms.autodestruction;
 	}
 	else {
 		return "";
@@ -1786,7 +1804,7 @@ int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_SelfDestruct;
 }
 
-const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 	return &Game_System::GetSystemSE(Game_System::SFX_EnemyKill);
 }
 
@@ -1802,14 +1820,9 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
 	int effect = source->GetAtk() - GetTarget()->GetDef() / 2;
-
-	if (effect < 0)
-		effect = 0;
-
-	// up to 20% stronger/weaker
-	int act_perc = Utils::GetRandomNumber(-20, 20);
-	int change = (int)(std::ceil(effect * act_perc / 100.0));
-	effect += change;
+	if (effect > 0) {
+		effect = Game_Battle::VarianceAdjustEffect(effect, 4);
+	}
 
 	effect /= GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1;
 
@@ -1853,14 +1866,14 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 	// Only monsters can escape during a battle phase
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.enemy_escape,
+			lcf::Data::terms.enemy_escape,
 			{'S'},
 			{source->GetName()}
 		);
 	}
 	else if (Player::IsRPG2k()) {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return source->GetName() + Data::terms.enemy_escape;
+			return source->GetName() + lcf::Data::terms.enemy_escape;
 		}
 	}
 
@@ -1876,7 +1889,7 @@ int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
 	}
 }
 
-const RPG::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
+const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		return AlgorithmBase::GetStartSe();
 	}
@@ -1928,13 +1941,13 @@ AlgorithmBase(Type::Transform, source), new_monster_id(new_monster_id) {
 std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.enemy_transform,
+			lcf::Data::terms.enemy_transform,
 			{'S', 'O'},
-			{source->GetName(), ReaderUtil::GetElement(Data::enemies, new_monster_id)->name} // Sanity check in Game_Enemy
+			{source->GetName(), lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id)->name} // Sanity check in Game_Enemy
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.enemy_transform;
+		return source->GetName() + lcf::Data::terms.enemy_transform;
 	}
 	else {
 		return "";

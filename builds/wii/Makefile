@@ -28,7 +28,7 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	boot
 BUILD		:=	obj
 TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
-SOURCES		:=	src
+SOURCES		:=	src src/platform/wii
 DATA		:=	data
 INCLUDES	:=	src
 
@@ -36,7 +36,7 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		= 	-g -O2 -Wall -Wextra \
+CFLAGS		= 	-g -O2 -Wall -Wextra -fno-math-errno \
 				-fomit-frame-pointer -fdata-sections -ffunction-sections \
 				-DUSE_SDL=1 -DNDEBUG \
 				-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
@@ -54,7 +54,7 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections
 #---------------------------------------------------------------------------------
 
 LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz -lSDL \
-			-licuuc -licui18n -licudata \
+			-licuuc -licui18n -licudata -lfmt \
 			-lfreetype -lharfbuzz -lfreetype \
 			-lmpg123 -lsndfile -lvorbisidec -logg -lxmp-lite \
 			-lWildMidi -lspeexdsp -lopusfile -lopus \
@@ -113,8 +113,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					-I$(TOOLCHAIN_DIR)/include/freetype2 \
 					-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 					-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-					-I$(TOOLCHAIN_DIR)/include/opus \
-					-I$(LIBLCF_DIR)/include/liblcf
+					-I$(TOOLCHAIN_DIR)/include/opus
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

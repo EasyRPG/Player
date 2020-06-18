@@ -32,7 +32,7 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #elif defined(_WIN32)
-#  include "util_win.h"
+#  include "platform/windows/utils.h"
 #endif
 
 #if WANT_FMMIDI == 2
@@ -76,7 +76,7 @@ namespace {
 
 		out_len = audio->GetDecoder()->Decode(buffer.data(), out_len);
 		if (out_len == -1) {
-			Output::Warning("Couldn't decode BGM. %s", audio->GetDecoder()->GetError().c_str());
+			Output::Warning("Couldn't decode BGM. {}", audio->GetDecoder()->GetError());
 			Mix_HookMusic(nullptr, nullptr);
 			return;
 		}
@@ -161,7 +161,7 @@ SdlMixerAudio::SdlMixerAudio() :
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-			Output::Warning("Couldn't initialize audio.\n%s", SDL_GetError());
+			Output::Warning("Couldn't initialize audio.\n{}", SDL_GetError());
 			return;
 		}
 	}
@@ -191,7 +191,7 @@ SdlMixerAudio::SdlMixerAudio() :
 #endif
 
 	if (!init_success) {
-		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
+		Output::Error("Couldn't initialize audio mixer.\n{}", Mix_GetError());
 	}
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
@@ -219,12 +219,12 @@ SdlMixerAudio::SdlMixerAudio() :
 #endif
 			default: audio_format_str = "Unknown"; break;
 		}
-		Output::Debug("Opened audio at %d Hz (%s), format: %s",
+		Output::Debug("Opened audio at {} Hz ({}), format: {}",
 			audio_rate,
 			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
 			audio_format_str);
 	} else {
-		Output::Debug("Mix_QuerySpec error: %s", Mix_GetError());
+		Output::Debug("Mix_QuerySpec error: {}", Mix_GetError());
 	}
 }
 
@@ -261,7 +261,7 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("Music not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
+		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 		return;
 	}
 	audio_decoder = AudioDecoder::Create(filehandle, file);
@@ -295,14 +295,14 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		char magic[4] = { 0 };
 		filehandle = FileFinder::fopenUTF8(file, "rb");
 		if (!filehandle) {
-			Output::Warning("Music not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
+			Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 			return;
 		}
 		if (fread(magic, 4, 1, filehandle) != 1)
 			return;
 		fseek(filehandle, 0, SEEK_SET);
 		if (!strncmp(magic, "MThd", 4)) {
-			Output::Debug("FmMidi fallback: %s", file.c_str());
+			Output::Debug("FmMidi fallback: {}", file);
 			audio_decoder.reset(new FmMidiDecoder());
 			SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
 			return;
@@ -317,7 +317,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 			return;
 		}
 #endif
-		Output::Warning("Couldn't load %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+		Output::Warning("Couldn't load {} BGM. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 		return;
 	}
 
@@ -341,7 +341,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
 		== -1) {
-			Output::Warning("Couldn't play %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+			Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 			return;
 	}
 
@@ -350,7 +350,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 
 void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
 	if (!audio_decoder->Open(handle)) {
-		Output::Warning("Couldn't play %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), audio_decoder->GetError().c_str());
+		Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), audio_decoder->GetError());
 		audio_decoder.reset();
 		return;
 	}
@@ -374,7 +374,7 @@ void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int
 	Uint16 sdl_format;
 	int audio_channels;
 	if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-		Output::Warning("Couldn't query mixer spec. %s", Mix_GetError());
+		Output::Warning("Couldn't query mixer spec. {}", Mix_GetError());
 		return;
 	}
 	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
@@ -536,14 +536,14 @@ void SdlMixerAudio::BGM_Fade(int fade) {
 void SdlMixerAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	bgs.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
-		Output::Warning("Couldn't load %s BGS. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+		Output::Warning("Couldn't load {} BGS. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 		return;
 	}
 
 	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 	int channel = Mix_FadeInChannel(BGS_CHANNEL_NUM, bgs.get(), 0, fadein);
 	if (channel != 0) {
-		Output::Warning("Couldn't play %s BGS. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+		Output::Warning("Couldn't play {} BGS. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 		return;
 	}
 	bgs_playing = true;
@@ -591,7 +591,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		Uint16 sdl_format;
 		int audio_channels;
 		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-			Output::Warning("Couldn't query mixer spec. %s", Mix_GetError());
+			Output::Warning("Couldn't query mixer spec. {}", Mix_GetError());
 			return;
 		}
 		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
@@ -606,7 +606,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 			snd_data.chunk.reset(Mix_QuickLoad_RAW(snd_data.buffer.data(), snd_data.buffer.size()), &Mix_FreeChunk);
 
 			if (!snd_data.chunk) {
-				Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+				Output::Warning("Couldn't load {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 			}
 		}
 	}
@@ -614,7 +614,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	if (!snd_data.chunk) {
 		snd_data.chunk.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 		if (!snd_data.chunk) {
-			Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+			Output::Warning("Couldn't load {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 			return;
 		}
 	}
@@ -622,10 +622,10 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	int channel = Mix_PlayChannel(-1, snd_data.chunk.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Warning("Couldn't play %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
+		Output::Warning("Couldn't play {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 		return;
 	}
-	sounds[channel] = snd_data;
+	sounds[channel] = std::move(snd_data);
 }
 
 void SdlMixerAudio::SE_Stop() {

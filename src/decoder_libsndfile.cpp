@@ -81,6 +81,7 @@ bool LibsndfileDecoder::Open(FILE* file) {
 	sf_command(soundfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
 	output_format=Format::S16;
 	finished=false;
+	decoded_samples = 0;
 	return soundfile!=0;
 }
 
@@ -88,6 +89,8 @@ bool LibsndfileDecoder::Seek(size_t offset, Origin /* origin */) {
 	finished = false;
 	if(soundfile == 0)
 		return false;
+	// FIXME: Proper sample count for seek
+	decoded_samples = 0;
 	return sf_seek(soundfile,offset,SEEK_SET)!=-1;
 }
 
@@ -129,7 +132,8 @@ int LibsndfileDecoder::FillBuffer(uint8_t* buffer, int length) {
 				decoded=sf_read_float(soundfile,(float*)buffer,length/sizeof(float));
 				if(!decoded)
 					finished=true;
-				decoded*=sizeof(float);
+				decoded_samples += decoded;
+				decoded *= sizeof(float);
 			}
 			break;
 		case Format::S16:
@@ -137,7 +141,8 @@ int LibsndfileDecoder::FillBuffer(uint8_t* buffer, int length) {
 				decoded=sf_read_short(soundfile,(int16_t*)buffer,length/sizeof(int16_t));
 				if(!decoded)
 					finished=true;
-				decoded*=sizeof(int16_t);
+				decoded_samples += decoded;
+				decoded *= sizeof(int16_t);
 			}
 			break;
 		case Format::S32:
@@ -149,6 +154,7 @@ int LibsndfileDecoder::FillBuffer(uint8_t* buffer, int length) {
 				if(!decoded)
 					finished=true;
 
+				decoded_samples += decoded;
 				decoded *= sizeof(int);
 			}
 			break;
@@ -156,7 +162,16 @@ int LibsndfileDecoder::FillBuffer(uint8_t* buffer, int length) {
 			decoded=-1;
 			break;
 	}
+
 	return decoded;
+}
+
+int LibsndfileDecoder::GetTicks() const {
+	if (soundfile == 0) {
+		return 0;
+	}
+
+	return decoded_samples / (soundinfo.samplerate * soundinfo.channels);
 }
 
 #endif

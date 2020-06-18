@@ -21,18 +21,21 @@
 #include <chrono>
 #include <type_traits>
 #include <thread>
-#include "3ds_clock.h"
-#include "switch_clock.h"
-#include "psp2_clock.h"
-#include "std_clock.h"
 
 #if defined(_3DS)
+#include "platform/3ds/3ds_clock.h"
 using Platform_Clock = CtrClock;
+#elif defined(GEKKO)
+#include "platform/wii/wii_clock.h"
+using Platform_Clock = WiiClock;
 #elif defined(__SWITCH__)
+#include "platform/switch/switch_clock.h"
 using Platform_Clock = NxClock;
 #elif defined(PSP2)
+#include "platform/psvita/psp2_clock.h"
 using Platform_Clock = Psp2Clock;
 #else
+#include "std_clock.h"
 using Platform_Clock = StdClock;
 #endif
 

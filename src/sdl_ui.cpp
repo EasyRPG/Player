@@ -81,7 +81,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
-	uint32_t flags = SDL_INIT_VIDEO|SDL_INIT_TIMER;
+	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
@@ -95,7 +95,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 #endif
 
 	if (SDL_Init(flags) < 0) {
-		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
+		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
 	}
 
 	sdl_surface = NULL;
@@ -118,7 +118,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-		Output::Warning("Couldn't initialize joystick. %s", SDL_GetError());
+		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
 
 	SDL_JoystickEventState(1);
@@ -286,14 +286,15 @@ void SdlUi::EndDisplayModeChange() {
 
 					// Try a rollback to last mode
 					if (!RefreshDisplayMode()) {
-						Output::Error("Couldn't rollback to last display mode.\n%s", SDL_GetError());
+						Output::Error("Couldn't rollback to last display mode.\n{}", SDL_GetError());
 					}
 				} else {
-					Output::Error("Couldn't set display mode.\n%s", SDL_GetError());
+					Output::Error("Couldn't set display mode.\n{}", SDL_GetError());
 				}
 			}
 
 			current_display_mode.effective = true;
+			SetIsFullscreen((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN);
 
 			mode_changing = false;
 	}
@@ -352,10 +353,6 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 
 	return true;
-}
-
-void SdlUi::Resize(long /*width*/, long /*height*/) {
-	// no-op
 }
 
 void SdlUi::ToggleFullscreen() {
@@ -691,10 +688,6 @@ void SdlUi::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
-}
-
-bool SdlUi::IsFullscreen() {
-	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)

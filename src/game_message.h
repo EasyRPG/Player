@@ -25,6 +25,7 @@
 #include "pending_message.h"
 
 class Window_Message;
+class AsyncOp;
 
 namespace Game_Message {
 
@@ -37,7 +38,7 @@ namespace Game_Message {
 
 	Window_Message* GetWindow();
 
-	void Update();
+	AsyncOp Update();
 
 	/** Reset the face graphic. */
 	void ClearFace();
@@ -200,9 +201,7 @@ namespace Game_Message {
 
 	/** @return true if there is message text pending */
 	bool IsMessagePending();
-	/** @return true if the message window is visible */
-	bool IsMessageVisible();
-	/** @return true if IsMessagePending() || IsMessageVisible() */
+	/** @return true if message window is running */
 	bool IsMessageActive();
 
 	// EasyRPG extension allowing more recursive variables \v[\v[...]]

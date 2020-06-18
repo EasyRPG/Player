@@ -19,7 +19,7 @@
 #define EP_GAME_VARIABLES_H
 
 // Headers
-#include "data.h"
+#include <lcf/data.h>
 #include "compiler.h"
 #include <string>
 
@@ -58,6 +58,27 @@ public:
 	void DivRange(int first_id, int last_id, Var_t value);
 	void ModRange(int first_id, int last_id, Var_t value);
 
+	void SetRangeVariable(int first_id, int last_id, int var_id);
+	void AddRangeVariable(int first_id, int last_id, int var_id);
+	void SubRangeVariable(int first_id, int last_id, int var_id);
+	void MultRangeVariable(int first_id, int last_id, int var_id);
+	void DivRangeVariable(int first_id, int last_id, int var_id);
+	void ModRangeVariable(int first_id, int last_id, int var_id);
+
+	void SetRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void AddRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void SubRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void MultRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void DivRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void ModRangeVariableIndirect(int first_id, int last_id, int var_id);
+
+	void SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+
 	std::string GetName(int _id) const;
 
 	int GetSize() const;
@@ -65,13 +86,22 @@ public:
 	bool IsValid(int variable_id) const;
 
 	void SetWarning(int w);
+
+	const Var_t GetMaxValue() const;
+	const Var_t GetMinValue() const;
+
+	const int GetMaxDigits() const;
 private:
 	bool ShouldWarn(int first_id, int last_id) const;
 	void WarnGet(int variable_id) const;
 	template <typename F>
 		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
+	template <typename... Args>
+		void PrepareRange(const int first_id, const int last_id, const char* warn, Args... args);
+	template <typename V, typename F>
+		void WriteRange(const int first_id, const int last_id, V&& value, F&& op);
 	template <typename F>
-		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
+		void WriteRangeVariable(const int first_id, const int last_id, int var_id, F&& op);
 private:
 	Variables_t _variables;
 	Var_t _min = 0;
@@ -92,7 +122,7 @@ inline const Game_Variables::Variables_t& Game_Variables::GetData() const {
 }
 
 inline int Game_Variables::GetSize() const {
-	return static_cast<int>(Data::variables.size());
+	return static_cast<int>(lcf::Data::variables.size());
 }
 
 inline bool Game_Variables::IsValid(int variable_id) const {
@@ -100,7 +130,7 @@ inline bool Game_Variables::IsValid(int variable_id) const {
 }
 
 inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > static_cast<int>(Data::variables.size())) && _warnings > 0;
+	return (first_id <= 0 || last_id > static_cast<int>(lcf::Data::variables.size())) && _warnings > 0;
 }
 
 inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
@@ -115,6 +145,14 @@ inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
 
 inline void Game_Variables::SetWarning(int w) {
 	_warnings = w;
+}
+
+inline const Game_Variables::Var_t Game_Variables::GetMaxValue() const {
+	return _max;
+}
+
+inline const Game_Variables::Var_t Game_Variables::GetMinValue() const {
+	return _min;
 }
 
 #endif

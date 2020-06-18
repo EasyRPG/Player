@@ -42,6 +42,8 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
+	int GetTicks() const override;
+
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 	Format output_format;
@@ -52,6 +54,7 @@ private:
 	uint32_t audiobuf_offset;
 	uint32_t chunk_size;
 	uint32_t cur_pos;
+	int decoded_samples = 0;
 };
 
 #endif

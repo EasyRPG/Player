@@ -19,7 +19,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "bitmap.h"
-#include "data.h"
+#include <lcf/data.h>
 #include "player.h"
 #include "game_battle.h"
 #include "game_battler.h"
@@ -30,7 +30,7 @@
 #include "output.h"
 #include "utils.h"
 #include "options.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene.h"
 #include "weather.h"
 #include "flash.h"
@@ -43,7 +43,7 @@ Game_Screen::Game_Screen()
 Game_Screen::~Game_Screen() {
 }
 
-void Game_Screen::SetSaveData(RPG::SaveScreen screen)
+void Game_Screen::SetSaveData(lcf::rpg::SaveScreen screen)
 {
 	data = std::move(screen);
 }
@@ -188,124 +188,106 @@ void Game_Screen::StopWeather() {
 }
 
 void Game_Screen::OnWeatherChanged() {
-	particles.clear();
+	int num_particles = Weather::GetMaxNumParticles(data.weather);
 
-	switch (data.weather) {
-		case Weather_Rain:
-			InitRainSnow(80);
-			break;
-		case Weather_Snow:
-			InitRainSnow(255);
-			break;
-		case Weather_Fog:
-			break;
-		case Weather_Sandstorm:
-			InitSand();
-			break;
-	}
+	InitParticles(num_particles);
 
 	if (weather) {
 		weather->OnWeatherChanged();
 	}
 }
 
-void Game_Screen::InitRainSnow(int lifetime) {
-	const auto num_particles = std::min(1 << (data.weather_strength + 4), 128);
-	auto rect = GetScreenEffectsRect();
+void Game_Screen::InitParticles(int num_particles) {
+	// RPG_RT initializes all particles on new game / load game.
+	// We do it lazily instead. That way for games which don't use
+	// weather effects, we never consume memory for those effects.
+	auto sz = static_cast<int>(particles.size());
+
+	if (num_particles <= sz) {
+		return;
+	}
 
 	particles.resize(num_particles);
-	for (auto& p: particles) {
-		p.x = Utils::GetRandomNumber(0, rect.width);
-		p.y = Utils::GetRandomNumber(0, rect.height);
-		p.life = Utils::GetRandomNumber(0, lifetime);
+
+	for (int i = sz; i < num_particles; ++i) {
+		auto& p = particles[i];
+		// RPG_RT always initializes all particles to these values on startup.
+		// This can cause minor visual glitches for the first few frames the
+		// first time you start the sandstorm effect. We're bug compatible with RPG_RT.
+		p.t = Utils::GetRandomNumber(0, 39);
+		p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+		p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 	}
 }
 
 void Game_Screen::UpdateRain() {
-	auto rect = GetScreenEffectsRect();
-
 	for (auto& p: particles) {
-		if (p.life > 0) {
+		if (p.t > 0) {
+			--p.t;
 			p.y += 4;
 			p.x -= 1;
-			p.life -= 8;
-		} else {
-			p.x = Utils::GetRandomNumber(0, rect.width);
-			p.y = Utils::GetRandomNumber(0, rect.height);
-			p.life = 80;
+		} else if (Utils::PercentChance(10)) {
+			p.t = 12;
+			p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+			p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 		}
 	}
 }
 
 void Game_Screen::UpdateSnow() {
-	auto rect = GetScreenEffectsRect();
-
 	for (auto& p: particles) {
-		if (p.life > 0) {
-			p.y += Utils::GetRandomNumber(2, 3);
+		if (p.t > 0) {
+			--p.t;
 			p.x -= Utils::GetRandomNumber(0, 1);
-			p.life -= 8;
-		} else {
-			p.x = Utils::GetRandomNumber(0, rect.width);
-			p.y = Utils::GetRandomNumber(0, rect.height);
-			p.life = 255;
+			p.y += Utils::GetRandomNumber(2, 3);
+		} else if (Utils::PercentChance(5)) {
+			p.t = 30;
+			p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+			p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 		}
 	}
 }
 
-static constexpr int sand_acceleration = 8;
-static constexpr int sand_min_alpha = 232;
-static constexpr int sand_max_alpha = 255;
-
-void Game_Screen::InitSand() {
-	const auto num_particles = 32;
-	particles.resize(num_particles);
-
-	const int w = SCREEN_TARGET_WIDTH * 16;
-	for (auto& p: particles) {
-		auto angle = Utils::GetRandomNumber(0, 360);
-		if (angle <= 180) {
-			p.angle = angle * M_PI / 180.0;
-
-			auto n = Utils::GetRandomNumber(0, 64);
-			p.speed = n * sand_acceleration;
-			auto dist = (n + 1) * n * sand_acceleration / 2;
-
-			p.x = std::round(std::cos(p.angle) * dist) + w / 2;
-			p.y = std::round(std::sin(p.angle) * dist);
-			p.life = Utils::GetRandomNumber(sand_min_alpha, sand_max_alpha);
-		}
-	}
+void Game_Screen::UpdateFog() {
+	++particles[0].x;
+	++particles[1].x;
 }
 
+void Game_Screen::UpdateSandstorm() {
+	// RPG_RT takes random numbers in the inclusive range [1, 127] and has a function
+	// which takes [0, 255) -> [0, 2 * M_PI) and computes sin or cos. This epsilson
+	// accounts for the range starting at 1 (not 0) and ending at 127 (not 128).
 
+	constexpr auto epsilon = 1.0f / 128.0f;
+	auto& rng = Utils::GetRNG();
+	auto dist = std::uniform_real_distribution<float>(epsilon, M_PI - epsilon);
 
-void Game_Screen::UpdateSand() {
-	const int w = SCREEN_TARGET_WIDTH * 16;
-	const int h = SCREEN_TARGET_HEIGHT * 16;
+	UpdateFog();
 
-	for (auto& p: particles) {
-		if (p.life > 0) {
-			if (p.speed > 0) {
-				p.x += std::round(std::cos(p.angle) * p.speed);
-				p.y += std::round(std::sin(p.angle) * p.speed);
-			}
-			p.speed += sand_acceleration;
+	for (size_t i = 2; i < particles.size(); ++i) {
+		auto& p = particles[i];
+		if (p.t > 0) {
+			--p.t;
+			p.alpha += 2;
+			p.x += static_cast<int>(p.vx);
+			p.y += static_cast<int>(p.vy);
+			p.vx += p.ax;
+			p.vy += p.ay;
+		} else if (Utils::PercentChance(10)) {
+			p.t = 80;
 
-			if (p.x >= w || p.x < 0 || p.y >= h) {
-				p.life = 0;
-			}
-		} else {
-			auto angle = Utils::GetRandomNumber(0, 360);
-			if (angle <= 180) {
-				p.angle = angle * M_PI / 180.0;
-				p.speed = Utils::GetRandomNumber(-sand_acceleration, 64);
+			auto c = std::cos(dist(rng));
+			auto s = std::sin(dist(rng));
+			auto d = Utils::GetRandomNumber(16, 95);
 
-				auto dist = Utils::GetRandomNumber(0 * 16, 32 * 16);
-				p.x = std::round(std::cos(p.angle) * dist) + w / 2;
-				p.y = std::round(std::sin(p.angle) * dist);
-				p.life = Utils::GetRandomNumber(sand_min_alpha, sand_min_alpha);
-			}
+			p.x = static_cast<int>(d * c * 2.0f) * SCREEN_TARGET_WIDTH / 320 + SCREEN_TARGET_WIDTH / 2;
+			p.y = static_cast<int>(d * s) * SCREEN_TARGET_HEIGHT / 240;
+
+			p.alpha = 180;
+			p.vx = 0.0;
+			p.vy = 0.0;
+			p.ax = c * 2.0f * SCREEN_TARGET_WIDTH / 320;
+			p.ay = s * 2.0f * SCREEN_TARGET_HEIGHT / 240;
 		}
 	}
 }
@@ -355,9 +337,10 @@ void Game_Screen::UpdateWeather() {
 			UpdateSnow();
 			break;
 		case Weather_Fog:
+			UpdateFog();
 			break;
 		case Weather_Sandstorm:
-			UpdateSand();
+			UpdateSandstorm();
 			break;
 	}
 }
@@ -370,9 +353,16 @@ void Game_Screen::Update() {
 }
 
 int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	const lcf::rpg::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 	if (!anim) {
-		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
+		Output::Warning("ShowBattleAnimation: Invalid battle animation ID {}", animation_id);
+		return 0;
+	}
+
+	auto* chara = Game_Character::GetCharacter(target_id, target_id);
+	if (!chara) {
+		Output::Warning("ShowBattleAnimation: Invalid target event ID {}", target_id);
+		CancelBattleAnimation();
 		return 0;
 	}
 
@@ -382,11 +372,7 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 	data.battleanim_active = true;
 	data.battleanim_frame = start_frame;
 
-	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
-
-	if (chara) {
-		animation.reset(new BattleAnimationMap(*anim, *chara, global));
-	}
+	animation.reset(new BattleAnimationMap(*anim, *chara, global));
 
 	if (start_frame) {
 		animation->SetFrame(start_frame);

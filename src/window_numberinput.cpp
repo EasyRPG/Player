@@ -26,6 +26,7 @@
 #include "player.h"
 
 #include <cstdio>
+#include <fmt/format.h>
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
@@ -49,16 +50,9 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 void Window_NumberInput::Refresh() {
 	contents->Clear();
 
-	char s[9];
-	// Copies digits_max numbers from number-string to s
-	std::string format_string = "";
-	if (show_operator) {
-		format_string += plus ? "+" : "-";
-	}
-
-	format_string += "%0*d";
-
-	snprintf(s, 9, format_string.c_str(), digits_max, number);
+	auto s = fmt::format("{0}{1:0{2}d}",
+			show_operator ? (plus ? "+" : "-") : "",
+			number, digits_max);
 
 	for (int i = 0; i < digits_max + (int)show_operator; ++i) {
 		char c[2] = {s[i], '\0'};

@@ -48,7 +48,7 @@
 #include "output.h"
 #include "player.h"
 #include "util_macro.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
@@ -85,7 +85,7 @@ bool Game_Interpreter::IsRunning() const {
 
 // Setup.
 void Game_Interpreter::Push(
-	const std::vector<RPG::EventCommand>& _list,
+	const std::vector<lcf::rpg::EventCommand>& _list,
 	int event_id,
 	bool started_by_decision_key
 ) {
@@ -94,10 +94,10 @@ void Game_Interpreter::Push(
 	}
 
 	if ((int)_state.stack.size() > call_stack_limit) {
-		Output::Error("Call Event limit (%d) has been exceeded", call_stack_limit);
+		Output::Error("Call Event limit ({}) has been exceeded", call_stack_limit);
 	}
 
-	RPG::SaveEventExecFrame frame;
+	lcf::rpg::SaveEventExecFrame frame;
 	frame.ID = _state.stack.size() + 1;
 	frame.commands = _list;
 	frame.current_command = 0;
@@ -114,7 +114,7 @@ void Game_Interpreter::Push(
 }
 
 
-void Game_Interpreter::KeyInputState::fromSave(const RPG::SaveEventExecState& save) {
+void Game_Interpreter::KeyInputState::fromSave(const lcf::rpg::SaveEventExecState& save) {
 	*this = {};
 
 	wait = save.keyinput_wait;
@@ -158,7 +158,7 @@ void Game_Interpreter::KeyInputState::fromSave(const RPG::SaveEventExecState& sa
 	wait_frames = 0;
 }
 
-void Game_Interpreter::KeyInputState::toSave(RPG::SaveEventExecState& save) const {
+void Game_Interpreter::KeyInputState::toSave(lcf::rpg::SaveEventExecState& save) const {
 	save.keyinput_wait = 0;
 	save.keyinput_variable = 0;
 	save.keyinput_all_directions = 0;
@@ -219,7 +219,7 @@ void Game_Interpreter::KeyInputState::toSave(RPG::SaveEventExecState& save) cons
 }
 
 
-RPG::SaveEventExecState Game_Interpreter::GetState() const {
+lcf::rpg::SaveEventExecState Game_Interpreter::GetState() const {
 	auto save = _state;
 	_keyinput.toSave(save);
 	return save;
@@ -321,7 +321,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::IsMessagePending())
 				break;
 		} else {
-			if ((Game_Message::IsMessageActive()) && _state.show_message) {
+			if (Game_Message::IsMessageActive() && _state.show_message) {
 				break;
 			}
 		}
@@ -421,7 +421,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		auto* frame = GetFramePtr();
 		int event_id = frame ? frame->event_id : 0;
 		// Executed Events Count exceeded (10000)
-		Output::Debug("Event %d exceeded execution limit", event_id);
+		Output::Debug("Event {} exceeded execution limit", event_id);
 	}
 
 	if (Game_Map::GetNeedRefresh()) {
@@ -432,6 +432,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 // Setup Starting Event
 void Game_Interpreter::Push(Game_Event* ev) {
 	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
+}
+
+void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key) {
+	Push(page->event_commands, ev->GetId(), triggered_by_decision_key);
 }
 
 void Game_Interpreter::Push(Game_CommonEvent* ev) {
@@ -449,7 +453,7 @@ bool Game_Interpreter::CheckGameOver() {
 	return false;
 }
 
-void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
+void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, int indent) {
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -463,7 +467,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, i
 		if (com.indent > indent) {
 			continue;
 		}
-		if (std::find(codes.begin(), codes.end(), com.code) != codes.end()) {
+		if (std::find(codes.begin(), codes.end(), static_cast<Cmd>(com.code)) != codes.end()) {
 			break;
 		}
 	}
@@ -490,13 +494,13 @@ const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char)*it++;
 
-	std::string result = ReaderUtil::Recode(out.str(), Player::encoding);
+	std::string result = lcf::ReaderUtil::Recode(out.str(), Player::encoding);
 
 	return result;
 }
 
-RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterator& it) {
-	RPG::MoveCommand cmd;
+lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterator& it) {
+	lcf::rpg::MoveCommand cmd;
 	cmd.command_id = *it++;
 
 	switch (cmd.command_id) {
@@ -524,7 +528,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
 
-	switch (com.code) {
+	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::ShowMessage:
 			return CommandShowMessage(com);
 		case Cmd::MessageOptions:
@@ -713,7 +717,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (!evnt) {
-			Output::Error("Call stack finished with invalid event id %d. This can be caused by a vehicle teleport?", event_id);
+			Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
 		} else if (main_flag) {
 			evnt->OnFinishForegroundEvent();
 		}
@@ -746,19 +750,19 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 			continue;
 		}
 
-		if (com.code == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
+		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 
-		if (com.code == Cmd::ShowChoiceEnd) {
+		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceEnd) {
 			break;
 		}
 	}
 	return s_choices;
 }
 
-bool Game_Interpreter::CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next) {
+bool Game_Interpreter::CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<Cmd> next) {
 	const auto sub_idx = GetSubcommandIndex(com.indent);
 	if (sub_idx == option_sub_idx) {
 		// Executes this option, so clear the subidx to skip all other options.
@@ -769,7 +773,7 @@ bool Game_Interpreter::CommandOptionGeneric(RPG::EventCommand const& com, int op
 	return true;
 }
 
-bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
+bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { // code 10110
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -786,7 +790,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	++index;
 
 	// Check for continued lines via ShowMessage_2
-	while (index < static_cast<int>(list.size()) && list[index].code == Cmd::ShowMessage_2) {
+	while (index < static_cast<int>(list.size()) && static_cast<Cmd>(list[index].code) == Cmd::ShowMessage_2) {
 		// Add second (another) line
 		pm.PushLine(list[index].string);
 		++index;
@@ -795,7 +799,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	// Handle Choices or number
 	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
-		if (list[index].code == Cmd::ShowChoice) {
+		if (static_cast<Cmd>(list[index].code) == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices(4);
 			// If choices fit on screen
 			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
@@ -803,7 +807,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 				SetupChoices(s_choices, com.indent, pm);
 				++index;
 			}
-		} else if (list[index].code == Cmd::InputNumber) {
+		} else if (static_cast<Cmd>(list[index].code) == Cmd::InputNumber) {
 			// If next event command is input number
 			// If input number fits on screen
 			if (pm.NumLines() < 4) {
@@ -821,7 +825,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
+bool Game_Interpreter::CommandMessageOptions(lcf::rpg::EventCommand const& com) { //code 10120
 	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
@@ -833,7 +837,7 @@ bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //c
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
+bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& com) { // Code 10130
 	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
@@ -854,13 +858,14 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int
 
 	pm.SetChoiceContinuation([this, indent](int choice_result) {
 		SetSubcommandIndex(indent, choice_result);
+		return AsyncOp();
 	});
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(indent);
 }
 
-bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
+bool Game_Interpreter::CommandShowChoices(lcf::rpg::EventCommand const& com) { // code 10140
 	auto& index = GetFrame().current_command;
 
 	if (!Game_Message::CanShowMessage(main_flag)) {
@@ -882,17 +887,17 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 }
 
 
-bool Game_Interpreter::CommandShowChoiceOption(RPG::EventCommand const& com) { //code 20140
+bool Game_Interpreter::CommandShowChoiceOption(lcf::rpg::EventCommand const& com) { //code 20140
 	const auto opt_sub_idx = com.parameters[0];
 	return CommandOptionGeneric(com, opt_sub_idx, {Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd});
 }
 
-bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& /* com */) { //code 20141
+bool Game_Interpreter::CommandShowChoiceEnd(lcf::rpg::EventCommand const& /* com */) { //code 20141
 	return true;
 }
 
 
-bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
+bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { // code 10150
 	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
@@ -911,7 +916,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // code 10210
+bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com) { // code 10210
 	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
 		// Param0: 0: Single, 1: Range, 2: Indirect
 		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
@@ -940,10 +945,14 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
+bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com) { // code 10220
 	int value = 0;
-	Game_Actor* actor;
-	Game_Character* character;
+	// If max is < value, it was never set. If they are equal, we don't need to call the RNG.
+	// If max > value, we have random number range to compute.
+	int max_random_value = INT_MIN;
+
+	Game_Actor* actor = nullptr;
+	Game_Character* character = nullptr;
 
 	switch (com.parameters[4]) {
 		case 0:
@@ -960,10 +969,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 3:
 			// Random between range
-			int a, b;
-			a = max(com.parameters[5], com.parameters[6]);
-			b = min(com.parameters[5], com.parameters[6]);
-			value = Utils::GetRandomNumber(b, a);
+			if (com.parameters[0] != 1) {
+				int rmax = max(com.parameters[5], com.parameters[6]);
+				int rmin = min(com.parameters[5], com.parameters[6]);
+				value = Utils::GetRandomNumber(rmin, rmax);
+			}
 			break;
 		case 4:
 			// Items
@@ -983,7 +993,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			actor = Game_Actors::GetActor(com.parameters[5]);
 
 			if (!actor) {
-				Output::Warning("ControlVariables: Invalid actor ID %d", com.parameters[5]);
+				Output::Warning("ControlVariables: Invalid actor ID {}", com.parameters[5]);
 				return true;
 			}
 
@@ -1054,10 +1064,20 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			// Characters
 			character = GetCharacter(com.parameters[5]);
 			if (character != NULL) {
+				int event_id = com.parameters[5];
 				switch (com.parameters[6]) {
 					case 0:
 						// Map ID
-						value = character->GetMapId();
+						if (!Player::IsRPG2k()
+								|| event_id == Game_Character::CharPlayer
+								|| event_id == Game_Character::CharBoat
+								|| event_id == Game_Character::CharShip
+								|| event_id == Game_Character::CharAirship) {
+							value = character->GetMapId();
+						} else {
+							// This is an RPG_RT bug for 2k only. Requesting the map id of an event always returns 0.
+							value = 0;
+						}
 						break;
 					case 1:
 						// X Coordinate
@@ -1180,6 +1200,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
 		if (start == end) {
+			// Single variable case - if this is random value, we already called the RNG earlier.
 			switch (com.parameters[3]) {
 				case 0:
 					Main_Data::game_variables->Set(start, value);
@@ -1200,7 +1221,78 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					Main_Data::game_variables->Mod(start, value);
 					break;
 			}
+		} else if (com.parameters[4] == 1) {
+			// Multiple variables - Direct variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariable(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariable(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariable(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariable(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariable(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariable(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 2) {
+			// Multiple variables - Indirect variable lookup
+			int var_id = com.parameters[5];
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeVariableIndirect(start, end, var_id);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeVariableIndirect(start, end, var_id);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeVariableIndirect(start, end, var_id);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeVariableIndirect(start, end, var_id);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeVariableIndirect(start, end, var_id);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeVariableIndirect(start, end, var_id);
+					break;
+			}
+		} else if (com.parameters[4] == 3) {
+			// Multiple variables - random
+			int rmax = max(com.parameters[5], com.parameters[6]);
+			int rmin = min(com.parameters[5], com.parameters[6]);
+			switch (com.parameters[3]) {
+				case 0:
+					Main_Data::game_variables->SetRangeRandom(start, end, rmin, rmax);
+					break;
+				case 1:
+					Main_Data::game_variables->AddRangeRandom(start, end, rmin, rmax);
+					break;
+				case 2:
+					Main_Data::game_variables->SubRangeRandom(start, end, rmin, rmax);
+					break;
+				case 3:
+					Main_Data::game_variables->MultRangeRandom(start, end, rmin, rmax);
+					break;
+				case 4:
+					Main_Data::game_variables->DivRangeRandom(start, end, rmin, rmax);
+					break;
+				case 5:
+					Main_Data::game_variables->ModRangeRandom(start, end, rmin, rmax);
+					break;
+			}
 		} else {
+			// Multiple variables - constant
 			switch (com.parameters[3]) {
 				case 0:
 					Main_Data::game_variables->SetRange(start, end, value);
@@ -1260,7 +1352,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		actor = Game_Actors::GetActor(id);
 
 		if (!actor) {
-			Output::Warning("Invalid actor ID %d", id);
+			Output::Warning("Invalid actor ID {}", id);
 			return actors;
 		}
 
@@ -1270,7 +1362,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		// Var hero
 		actor = Game_Actors::GetActor(Main_Data::game_variables->Get(id));
 		if (!actor) {
-			Output::Warning("Invalid actor ID %d", Main_Data::game_variables->Get(id));
+			Output::Warning("Invalid actor ID {}", Main_Data::game_variables->Get(id));
 			return actors;
 		}
 
@@ -1294,12 +1386,12 @@ Game_Character* Game_Interpreter::GetCharacter(int event_id) const {
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
 	if (!ch) {
-		Output::Warning("Unknown event with id %d", event_id);
+		Output::Warning("Unknown event with id {}", event_id);
 	}
 	return ch;
 }
 
-bool Game_Interpreter::CommandTimerOperation(RPG::EventCommand const& com) { // code 10230
+bool Game_Interpreter::CommandTimerOperation(lcf::rpg::EventCommand const& com) { // code 10230
 	int timer_id = (com.parameters.size() <= 5) ? 0 : com.parameters[5];
 	int seconds;
 	bool visible, battle;
@@ -1324,7 +1416,7 @@ bool Game_Interpreter::CommandTimerOperation(RPG::EventCommand const& com) { // 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code 10310
+bool Game_Interpreter::CommandChangeGold(lcf::rpg::EventCommand const& com) { // Code 10310
 	int value;
 	value = OperateValue(
 		com.parameters[0],
@@ -1338,7 +1430,7 @@ bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Code 10320
+bool Game_Interpreter::CommandChangeItems(lcf::rpg::EventCommand const& com) { // Code 10320
 	int value;
 	value = OperateValue(
 		com.parameters[0],
@@ -1375,7 +1467,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 	return true;
 }
 
-bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { // Code 10330
+bool Game_Interpreter::CommandChangePartyMember(lcf::rpg::EventCommand const& com) { // Code 10330
 	Game_Actor* actor;
 	int id;
 
@@ -1388,7 +1480,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	actor = Game_Actors::GetActor(id);
 
 	if (!actor) {
-		Output::Warning("ChangePartyMember: Invalid actor ID %d", id);
+		Output::Warning("ChangePartyMember: Invalid actor ID {}", id);
 		return true;
 	}
 
@@ -1415,7 +1507,7 @@ void Game_Interpreter::ForegroundTextPush(PendingMessage pm) {
 	Game_Message::SetPendingMessage(std::move(pm));
 }
 
-bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
+bool Game_Interpreter::CommandChangeExp(lcf::rpg::EventCommand const& com) { // Code 10410
 	bool show_msg = com.parameters[5];
 
 	if (show_msg && !Game_Message::CanShowMessage(true)) {
@@ -1444,7 +1536,7 @@ bool Game_Interpreter::CommandChangeExp(RPG::EventCommand const& com) { // Code 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
+bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { // Code 10420
 	bool show_msg = com.parameters[5];
 
 	if (show_msg && !Game_Message::CanShowMessage(true)) {
@@ -1485,7 +1577,7 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 	}
 }
 
-bool Game_Interpreter::CommandChangeParameters(RPG::EventCommand const& com) { // Code 10430
+bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[4],
@@ -1525,7 +1617,7 @@ bool Game_Interpreter::CommandChangeParameters(RPG::EventCommand const& com) { /
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Code 10440
+bool Game_Interpreter::CommandChangeSkills(lcf::rpg::EventCommand const& com) { // Code 10440
 	bool remove = com.parameters[2] != 0;
 	int skill_id = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
@@ -1540,27 +1632,27 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
+bool Game_Interpreter::CommandChangeEquipment(lcf::rpg::EventCommand const& com) { // Code 10450
 	int item_id;
 	int slot;
-	const RPG::Item* item;
+	const lcf::rpg::Item* item;
 
 	switch (com.parameters[2]) {
 		case 0:
 			item_id = ValueOrVariable(com.parameters[3],
 									  com.parameters[4]);
-			item = ReaderUtil::GetElement(Data::items, item_id);
+			item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 			if (!item) {
-				Output::Warning("ChangeEquipment: Invalid item ID %d", item_id);
+				Output::Warning("ChangeEquipment: Invalid item ID {}", item_id);
 				return true;
 			}
 
 			switch (item->type) {
-				case RPG::Item::Type_weapon:
-				case RPG::Item::Type_shield:
-				case RPG::Item::Type_armor:
-				case RPG::Item::Type_helmet:
-				case RPG::Item::Type_accessory:
+				case lcf::rpg::Item::Type_weapon:
+				case lcf::rpg::Item::Type_shield:
+				case lcf::rpg::Item::Type_armor:
+				case lcf::rpg::Item::Type_helmet:
+				case lcf::rpg::Item::Type_accessory:
 					slot = item->type;
 					break;
 				default:
@@ -1581,7 +1673,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 		}
 	} else {
 		for (const auto &actor : GetActors(com.parameters[0], com.parameters[1])) {
-			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_shield && item_id != 0) {
+			if (actor->HasTwoWeapons() && slot == lcf::rpg::Item::Type_shield && item_id != 0) {
 				continue;
 			}
 
@@ -1589,10 +1681,10 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				Main_Data::game_party->AddItem(item_id, 1);
 			}
 
-			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon && item_id != 0) {
-				RPG::Item* new_equipment = ReaderUtil::GetElement(Data::items, item_id);
-				RPG::Item* equipment1 = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
-				RPG::Item* equipment2 = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
+			if (actor->HasTwoWeapons() && slot == lcf::rpg::Item::Type_weapon && item_id != 0) {
+				lcf::rpg::Item* new_equipment = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+				lcf::rpg::Item* equipment1 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetWeaponId());
+				lcf::rpg::Item* equipment2 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetShieldId());
 
 				if (equipment1 && !equipment2 && !equipment1->two_handed && !new_equipment->two_handed) {
 					// Assign to 2nd weapon slot when empty
@@ -1609,7 +1701,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 10460
+bool Game_Interpreter::CommandChangeHP(lcf::rpg::EventCommand const& com) { // Code 10460
 	bool remove = com.parameters[2] != 0;
 	int amount = ValueOrVariable(com.parameters[3],
 								 com.parameters[4]);
@@ -1636,7 +1728,7 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 10470
+bool Game_Interpreter::CommandChangeSP(lcf::rpg::EventCommand const& com) { // Code 10470
 	bool remove = com.parameters[2] != 0;
 	int amount = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
@@ -1654,7 +1746,7 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { // Code 10480
+bool Game_Interpreter::CommandChangeCondition(lcf::rpg::EventCommand const& com) { // Code 10480
 	bool remove = com.parameters[2] != 0;
 	int state_id = com.parameters[3];
 
@@ -1675,7 +1767,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
+bool Game_Interpreter::CommandFullHeal(lcf::rpg::EventCommand const& com) { // Code 10490
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->FullHeal();
 	}
@@ -1686,22 +1778,18 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 	return true;
 }
 
-bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { // code 10500
+bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com) { // code 10500
 	int atk = com.parameters[2];
 	int def = com.parameters[3];
 	int spi = com.parameters[4];
 	int var = com.parameters[5];
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		actor->ResetBattle();
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
 		result -= (actor->GetSpi() * spi) / 800;
-		if (var != 0) {
-			int rperc = var * 5;
-			int rval = Utils::GetRandomNumber(-rperc, rperc - 1);
-			result += result * rval / 100;
-		}
+		result = std::max(result, 0);
+		result = Game_Battle::VarianceAdjustEffect(result, var);
 
 		result = std::max(0, result);
 		actor->ChangeHp(-result);
@@ -1716,7 +1804,7 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
+bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 11410
 	auto& index = GetFrame().current_command;
 
 	// Wait a given time
@@ -1738,8 +1826,8 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 	return false;
 }
 
-bool Game_Interpreter::CommandPlayBGM(RPG::EventCommand const& com) { // code 11510
-	RPG::Music music;
+bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
+	lcf::rpg::Music music;
 	music.name = com.string;
 	music.fadein = com.parameters[0];
 	music.volume = com.parameters[1];
@@ -1749,14 +1837,14 @@ bool Game_Interpreter::CommandPlayBGM(RPG::EventCommand const& com) { // code 11
 	return true;
 }
 
-bool Game_Interpreter::CommandFadeOutBGM(RPG::EventCommand const& com) { // code 11520
+bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { // code 11520
 	int fadeout = com.parameters[0];
 	Game_System::BgmFade(fadeout);
 	return true;
 }
 
-bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 11550
-	RPG::Sound sound;
+bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
+	lcf::rpg::Sound sound;
 	sound.name = com.string;
 	sound.volume = com.parameters[0];
 	sound.tempo = com.parameters[1];
@@ -1765,7 +1853,7 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 	return true;
 }
 
-bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com */) { // code 12310
+bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /* com */) { // code 12310
 	EndEventProcessing();
 	return true;
 }
@@ -1778,7 +1866,7 @@ void Game_Interpreter::EndEventProcessing() {
 	index = static_cast<int>(list.size());
 }
 
-bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
+bool Game_Interpreter::CommandGameOver(lcf::rpg::EventCommand const& /* com */) { // code 12420
 	auto& index = GetFrame().current_command;
 
 	if (Game_Message::IsMessageActive()) {
@@ -1790,11 +1878,11 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 	return false;
 }
 
-bool Game_Interpreter::CommandChangeHeroName(RPG::EventCommand const& com) { // code 10610
+bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) { // code 10610
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroName: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeHeroName: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1802,11 +1890,11 @@ bool Game_Interpreter::CommandChangeHeroName(RPG::EventCommand const& com) { // 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeHeroTitle(RPG::EventCommand const& com) { // code 10620
+bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com) { // code 10620
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroTitle: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeHeroTitle: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1814,11 +1902,11 @@ bool Game_Interpreter::CommandChangeHeroTitle(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& com) { // code 10630
+bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand const& com) { // code 10630
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("ChangeSpriteAssociation: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("ChangeSpriteAssociation: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1830,11 +1918,11 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& c
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { // code 10640
+bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com) { // code 10640
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 
 	if (!actor) {
-		Output::Warning("CommandChangeActorFace: Invalid actor ID %d", com.parameters[0]);
+		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", com.parameters[0]);
 		return true;
 	}
 
@@ -1842,12 +1930,12 @@ bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
+bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const& com) { // code 10650
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 	if (!vehicle) {
-		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID %d", vehicle_id);
+		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID {}", vehicle_id);
 		return true;
 	}
 
@@ -1860,8 +1948,8 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com)
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSystemBGM(RPG::EventCommand const& com) { //code 10660
-	RPG::Music music;
+bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com) { //code 10660
+	lcf::rpg::Music music;
 	int context = com.parameters[0];
 	music.name = com.string;
 	music.fadein = com.parameters[1];
@@ -1872,8 +1960,8 @@ bool Game_Interpreter::CommandChangeSystemBGM(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSystemSFX(RPG::EventCommand const& com) { //code 10670
-	RPG::Sound sound;
+bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com) { //code 10670
+	lcf::rpg::Sound sound;
 	int context = com.parameters[0];
 	sound.name = com.string;
 	sound.volume = com.parameters[1];
@@ -1883,20 +1971,20 @@ bool Game_Interpreter::CommandChangeSystemSFX(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
+bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
 	Game_System::SetSystemGraphic(com.string,
-			(RPG::System::Stretch)com.parameters[0],
-			(RPG::System::Font)com.parameters[1]);
+			(lcf::rpg::System::Stretch)com.parameters[0],
+			(lcf::rpg::System::Font)com.parameters[1]);
 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeScreenTransitions(RPG::EventCommand const& com) { // code 10690
+bool Game_Interpreter::CommandChangeScreenTransitions(lcf::rpg::EventCommand const& com) { // code 10690
 	Game_System::SetTransition(com.parameters[0], com.parameters[1]);
 	return true;
 }
 
-bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { // code 10820
+bool Game_Interpreter::CommandMemorizeLocation(lcf::rpg::EventCommand const& com) { // code 10820
 	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
@@ -1908,7 +1996,7 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 	return true;
 }
 
-bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
+bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& com) { // code 10850
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
@@ -1921,7 +2009,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 			// 0 because we adjust all vehicle IDs by +1 to match the lcf values
 			Output::Debug("SetVehicleLocation: Party referenced");
 		} else {
-			Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);
+			Output::Warning("SetVehicleLocation: Invalid vehicle ID {}", vehicle_id);
 			return true;
 		}
 	}
@@ -1952,7 +2040,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 
 		auto event_id = GetOriginalEventId();
 		if (!main_flag && event_id != 0) {
-			Output::Error("VehicleTeleport not allowed from parallel map event! Id=%d", event_id);
+			Output::Error("VehicleTeleport not allowed from parallel map event! Id={}", event_id);
 		}
 
 		_async_op = AsyncOp::MakeQuickTeleport(map_id, x, y);
@@ -1963,7 +2051,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEventLocation(RPG::EventCommand const& com) { // Code 10860
+bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
 	Game_Character *event = GetCharacter(event_id);
 	if (event != NULL) {
@@ -1983,7 +2071,7 @@ bool Game_Interpreter::CommandChangeEventLocation(RPG::EventCommand const& com) 
 	return true;
 }
 
-bool Game_Interpreter::CommandTradeEventLocations(RPG::EventCommand const& com) { // Code 10870
+bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& com) { // Code 10870
 	int event1_id = com.parameters[0];
 	int event2_id = com.parameters[1];
 
@@ -2004,7 +2092,7 @@ bool Game_Interpreter::CommandTradeEventLocations(RPG::EventCommand const& com) 
 	return true;
 }
 
-bool Game_Interpreter::CommandStoreTerrainID(RPG::EventCommand const& com) { // code 10820
+bool Game_Interpreter::CommandStoreTerrainID(lcf::rpg::EventCommand const& com) { // code 10820
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
@@ -2013,7 +2101,7 @@ bool Game_Interpreter::CommandStoreTerrainID(RPG::EventCommand const& com) { // 
 	return true;
 }
 
-bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // code 10920
+bool Game_Interpreter::CommandStoreEventID(lcf::rpg::EventCommand const& com) { // code 10920
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
@@ -2023,7 +2111,7 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 	return true;
 }
 
-bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
+bool Game_Interpreter::CommandEraseScreen(lcf::rpg::EventCommand const& com) { // code 11010
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -2116,7 +2204,7 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
+bool Game_Interpreter::CommandShowScreen(lcf::rpg::EventCommand const& com) { // code 11020
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -2202,7 +2290,7 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 	return true;
 }
 
-bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code 11030
+bool Game_Interpreter::CommandTintScreen(lcf::rpg::EventCommand const& com) { // code 11030
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int r = com.parameters[0];
 	int g = com.parameters[1];
@@ -2219,7 +2307,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 	return true;
 }
 
-bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // code 11040
+bool Game_Interpreter::CommandFlashScreen(lcf::rpg::EventCommand const& com) { // code 11040
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int r = com.parameters[0];
 	int g = com.parameters[1];
@@ -2251,7 +2339,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // code 11050
+bool Game_Interpreter::CommandShakeScreen(lcf::rpg::EventCommand const& com) { // code 11050
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int strength = com.parameters[0];
 	int speed = com.parameters[1];
@@ -2279,7 +2367,7 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
+bool Game_Interpreter::CommandWeatherEffects(lcf::rpg::EventCommand const& com) { // code 11070
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int str = com.parameters[1];
@@ -2304,7 +2392,7 @@ namespace PicPointerPatch {
 			}
 
 			if (new_id > 0) {
-				Output::Debug("PicPointer: ID %d replaced with ID %d", pic_id, new_id);
+				Output::Debug("PicPointer: ID {} replaced with ID {}", pic_id, new_id);
 				pic_id = new_id;
 			}
 		}
@@ -2313,19 +2401,19 @@ namespace PicPointerPatch {
 	static void AdjustParams(Game_Pictures::Params& params) {
 		if (params.magnify > 10000) {
 			int new_magnify = Main_Data::game_variables->Get(params.magnify - 10000);
-			Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+			Output::Debug("PicPointer: Zoom {} replaced with {}", params.magnify, new_magnify);
 			params.magnify = new_magnify;
 		}
 
 		if (params.top_trans > 10000) {
 			int new_top_trans = Main_Data::game_variables->Get(params.top_trans - 10000);
-			Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+			Output::Debug("PicPointer: Top transparency {} replaced with {}", params.top_trans, new_top_trans);
 			params.top_trans = new_top_trans;
 		}
 
 		if (params.bottom_trans > 10000) {
 			int new_bottom_trans = Main_Data::game_variables->Get(params.bottom_trans - 10000);
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+			Output::Debug("PicPointer: Bottom transparency {} replaced with {}", params.bottom_trans, new_bottom_trans);
 			params.bottom_trans = new_bottom_trans;
 		}
 	}
@@ -2351,7 +2439,7 @@ namespace PicPointerPatch {
 
 		if (!Player::IsRPG2k3E()) {
 			// Prevent debug messages because this function is used by ShowPicture of RPG2k3E
-			Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+			Output::Debug("PicPointer: File {} replaced with {}", str, new_pic_name);
 		}
 		return new_pic_name;
 	}
@@ -2377,14 +2465,14 @@ namespace PicPointerPatch {
 
 		if (params.duration > 10000) {
 			int new_duration = Main_Data::game_variables->Get(params.duration - 10000);
-			Output::Debug("PicPointer: Move duration %d replaced with %d", params.duration, new_duration);
+			Output::Debug("PicPointer: Move duration {} replaced with {}", params.duration, new_duration);
 			params.duration = new_duration;
 		}
 	}
 
 }
 
-bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
+bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { // code 11110
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2414,6 +2502,9 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
 		// both chunks here.
 		params.bottom_trans = com.parameters[14];
+	} else if (Player::IsRPG2k3() && !Player::IsRPG2k3E()) {
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
+		params.bottom_trans = params.top_trans;
 	}
 
 	if (param_size > 16) {
@@ -2428,18 +2519,21 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		}
 		params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 		params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
-		params.spritesheet_cols = com.parameters[22];
-		params.spritesheet_rows = com.parameters[23];
+		if (com.parameters[22] > 0) {
+			// If spritesheet is enabled
+			params.spritesheet_cols = com.parameters[22];
+			params.spritesheet_rows = com.parameters[23];
 
-		// Animate and index selection are exclusive
-		if (com.parameters[24] == 2) {
-			params.spritesheet_speed = com.parameters[25];
-		} else {
-			// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
-			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
+			// Animate and index selection are exclusive
+			if (com.parameters[24] == 2) {
+				params.spritesheet_speed = com.parameters[25];
+				params.spritesheet_play_once = com.parameters[26];
+			} else {
+				// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
+				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
+			}
 		}
 
-		params.spritesheet_play_once = com.parameters[26];
 		params.map_layer = com.parameters[27];
 		params.battle_layer = com.parameters[28];
 		params.flags = com.parameters[29];
@@ -2453,7 +2547,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 
 	if (pic_id <= 0) {
-		Output::Error("ShowPicture: Requested invalid picture id (%d)", pic_id);
+		Output::Error("ShowPicture: Requested invalid picture id ({})", pic_id);
 	}
 
 	// RPG_RT will crash if you ask for a picture id greater than the limit that
@@ -2464,7 +2558,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
+bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { // code 11120
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2516,7 +2610,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 	params.duration = std::max(0, std::min(params.duration, 10000));
 
 	if (pic_id <= 0) {
-		Output::Error("MovePicture: Requested invalid picture id (%d)", pic_id);
+		Output::Error("MovePicture: Requested invalid picture id ({})", pic_id);
 	}
 
 	Main_Data::game_pictures->Move(pic_id, params);
@@ -2527,7 +2621,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
+bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { // code 11130
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2549,7 +2643,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 
 		for (int i = pic_id; i <= max; ++i) {
 			if (i <= 0) {
-				Output::Error("ErasePicture: Requested invalid picture id (%d)", i);
+				Output::Error("ErasePicture: Requested invalid picture id ({})", i);
 			}
 
 			Main_Data::game_pictures->Erase(i);
@@ -2558,7 +2652,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 		PicPointerPatch::AdjustId(pic_id);
 
 		if (pic_id <= 0) {
-			Output::Error("ErasePicture: Requested invalid picture id (%d)", pic_id);
+			Output::Error("ErasePicture: Requested invalid picture id ({})", pic_id);
 		}
 
 		Main_Data::game_pictures->Erase(pic_id);
@@ -2567,7 +2661,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 	return true;
 }
 
-bool Game_Interpreter::CommandSpriteTransparency(RPG::EventCommand const& com) { // code 11310
+bool Game_Interpreter::CommandSpriteTransparency(lcf::rpg::EventCommand const& com) { // code 11310
 	bool visible = com.parameters[0] != 0;
 	Game_Character* player = Main_Data::game_player.get();
 	player->SetVisible(visible);
@@ -2575,7 +2669,7 @@ bool Game_Interpreter::CommandSpriteTransparency(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter::CommandMoveEvent(RPG::EventCommand const& com) { // code 11330
+bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // code 11330
 	int event_id = com.parameters[0];
 	Game_Character* event = GetCharacter(event_id);
 	if (event != NULL) {
@@ -2584,7 +2678,7 @@ bool Game_Interpreter::CommandMoveEvent(RPG::EventCommand const& com) { // code 
 			if (static_cast<Game_Vehicle*>(event)->IsInUse())
 				event = Main_Data::game_player.get();
 
-		RPG::MoveRoute route;
+		lcf::rpg::MoveRoute route;
 		int move_freq = com.parameters[1];
 
 		if (move_freq <= 0 || move_freq > 8) {
@@ -2604,12 +2698,12 @@ bool Game_Interpreter::CommandMoveEvent(RPG::EventCommand const& com) { // code 
 	return true;
 }
 
-bool Game_Interpreter::CommandMemorizeBGM(RPG::EventCommand const& /* com */) { // code 11530
+bool Game_Interpreter::CommandMemorizeBGM(lcf::rpg::EventCommand const& /* com */) { // code 11530
 	Game_System::MemorizeBGM();
 	return true;
 }
 
-bool Game_Interpreter::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com */) { // code 11540
+bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* com */) { // code 11540
 	Game_System::PlayMemorizedBGM();
 	return true;
 }
@@ -2661,7 +2755,7 @@ int Game_Interpreter::KeyInputState::CheckInput() const {
 	return 0;
 }
 
-bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
+bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { // code 11610
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
 
@@ -2684,32 +2778,55 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	const size_t param_size = com.parameters.size();
 
-	if (param_size < 6) {
-		// For Rpg2k <1.50
-		if (com.parameters[2] != 0) {
-			_keyinput.keys[Keys::eDown] = true;
-			_keyinput.keys[Keys::eLeft] = true;
-			_keyinput.keys[Keys::eRight] = true;
-			_keyinput.keys[Keys::eUp] = true;
+	// All engines support older versions of the command depending on the
+	// length of the parameter list
+	if (Player::IsRPG2k()) {
+		if (param_size < 6 || Player::IsRPG2kLegacy()) {
+			// For Rpg2k <1.50
+			if (com.parameters[2] != 0) {
+				_keyinput.keys[Keys::eDown] = true;
+				_keyinput.keys[Keys::eLeft] = true;
+				_keyinput.keys[Keys::eRight] = true;
+				_keyinput.keys[Keys::eUp] = true;
+			}
+		} else {
+			// For Rpg2k >=1.50
+			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
+			_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
+			_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
+			_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
+			_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 		}
-	} else if (param_size < 11) {
-		// For Rpg2k >=1.50
-		_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-		_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
-		_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
-		_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
-		_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 	} else {
-		// For Rpg2k3
-		_keyinput.keys[Keys::eNumbers] = com.parameters[5] != 0;
-		_keyinput.keys[Keys::eOperators] = com.parameters[6] != 0;
-		_keyinput.time_variable = com.parameters[7];
-		_keyinput.timed = com.parameters[8] != 0;
-		_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
-		_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
-		_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
-		_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
-		_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
+		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
+			if (param_size < 10 && com.parameters[2] != 0) {
+				// For RPG2k3 <1.05 (later versions got individual key checks)
+				_keyinput.keys[Keys::eDown] = true;
+				_keyinput.keys[Keys::eLeft] = true;
+				_keyinput.keys[Keys::eRight] = true;
+				_keyinput.keys[Keys::eUp] = true;
+			}
+			_keyinput.keys[Keys::eNumbers] = param_size > 5 ? com.parameters[5] != 0 : false;
+			_keyinput.keys[Keys::eOperators] = param_size > 6 ? com.parameters[6] != 0 : false;
+			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : false;
+			_keyinput.timed = param_size > 8 ? com.parameters[8] != 0 : false;
+			if (param_size > 10 && Player::IsMajorUpdatedVersion()) {
+				// For Rpg2k3 >=1.05
+				_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
+				_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
+				_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
+				_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
+				_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
+			}
+		} else {
+			// Since RPG2k3 1.05
+			// Support for RPG2k >=1.50 games imported into RPG2k3
+			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
+			_keyinput.keys[Keys::eDown] = com.parameters[6] != 0;
+			_keyinput.keys[Keys::eLeft] = com.parameters[7] != 0;
+			_keyinput.keys[Keys::eRight] = com.parameters[8] != 0;
+			_keyinput.keys[Keys::eUp] = com.parameters[9] != 0;
+		}
 	}
 
 	if (_keyinput.wait) {
@@ -2727,7 +2844,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeMapTileset(RPG::EventCommand const& com) { // code 11710
+bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com) { // code 11710
 	int chipset_id = com.parameters[0];
 
 	if (chipset_id == Game_Map::GetChipset()) {
@@ -2746,7 +2863,7 @@ bool Game_Interpreter::CommandChangeMapTileset(RPG::EventCommand const& com) { /
 	return true;
 }
 
-bool Game_Interpreter::CommandChangePBG(RPG::EventCommand const& com) { // code 11720
+bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
 	params.name = com.string;
 	params.scroll_horz = com.parameters[0] != 0;
@@ -2761,7 +2878,7 @@ bool Game_Interpreter::CommandChangePBG(RPG::EventCommand const& com) { // code 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEncounterRate(RPG::EventCommand const& com) { // code 11740
+bool Game_Interpreter::CommandChangeEncounterRate(lcf::rpg::EventCommand const& com) { // code 11740
 	int steps = com.parameters[0];
 
 	Game_Map::SetEncounterRate(steps);
@@ -2769,7 +2886,7 @@ bool Game_Interpreter::CommandChangeEncounterRate(RPG::EventCommand const& com) 
 	return true;
 }
 
-bool Game_Interpreter::CommandTileSubstitution(RPG::EventCommand const& com) { // code 11750
+bool Game_Interpreter::CommandTileSubstitution(lcf::rpg::EventCommand const& com) { // code 11750
 	bool upper = com.parameters[0] != 0;
 	int old_id = com.parameters[1];
 	int new_id = com.parameters[2];
@@ -2785,7 +2902,7 @@ bool Game_Interpreter::CommandTileSubstitution(RPG::EventCommand const& com) { /
 	return true;
 }
 
-bool Game_Interpreter::CommandTeleportTargets(RPG::EventCommand const& com) { // code 11810
+bool Game_Interpreter::CommandTeleportTargets(lcf::rpg::EventCommand const& com) { // code 11810
 	int map_id = com.parameters[1];
 
 	if (com.parameters[0] != 0) {
@@ -2801,12 +2918,12 @@ bool Game_Interpreter::CommandTeleportTargets(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeTeleportAccess(RPG::EventCommand const& com) { // code 11820
+bool Game_Interpreter::CommandChangeTeleportAccess(lcf::rpg::EventCommand const& com) { // code 11820
 	Game_System::SetAllowTeleport(com.parameters[0] != 0);
 	return true;
 }
 
-bool Game_Interpreter::CommandEscapeTarget(RPG::EventCommand const& com) { // code 11830
+bool Game_Interpreter::CommandEscapeTarget(lcf::rpg::EventCommand const& com) { // code 11830
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
@@ -2816,22 +2933,22 @@ bool Game_Interpreter::CommandEscapeTarget(RPG::EventCommand const& com) { // co
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEscapeAccess(RPG::EventCommand const& com) { // code 11840
+bool Game_Interpreter::CommandChangeEscapeAccess(lcf::rpg::EventCommand const& com) { // code 11840
 	Game_System::SetAllowEscape(com.parameters[0] != 0);
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSaveAccess(RPG::EventCommand const& com) { // code 11930
+bool Game_Interpreter::CommandChangeSaveAccess(lcf::rpg::EventCommand const& com) { // code 11930
 	Game_System::SetAllowSave(com.parameters[0] != 0);
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeMainMenuAccess(RPG::EventCommand const& com) { // code 11960
+bool Game_Interpreter::CommandChangeMainMenuAccess(lcf::rpg::EventCommand const& com) { // code 11960
 	Game_System::SetAllowMenu(com.parameters[0] != 0);
 	return true;
 }
 
-bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { // Code 12010
+bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& com) { // Code 12010
 	const auto& frame = GetFrame();
 
 	bool result = false;
@@ -2920,7 +3037,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		actor = Game_Actors::GetActor(actor_id);
 
 		if (!actor) {
-			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
+			Output::Warning("ConditionalBranch: Invalid actor ID {}", actor_id);
 			// Use Else Branch
 			SetSubcommandIndex(com.indent, 1);
 			SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
@@ -2979,7 +3096,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 		if (!vehicle) {
-			Output::Warning("ConditionalBranch: Invalid vehicle ID %d", vehicle_id);
+			Output::Warning("ConditionalBranch: Invalid vehicle ID {}", vehicle_id);
 			return true;
 		}
 
@@ -3019,7 +3136,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 			break;
 		case 2:
 			// Is ATB wait on?
-			result = Game_System::GetAtbMode() == RPG::SaveSystem::AtbMode_atb_wait;
+			result = Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait;
 			break;
 		case 3:
 			// Is Fullscreen active?
@@ -3028,7 +3145,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		}
 		break;
 	default:
-		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
+		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
 
 
@@ -3043,15 +3160,15 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 }
 
 
-bool Game_Interpreter::CommandElseBranch(RPG::EventCommand const& com) { //code 22010
+bool Game_Interpreter::CommandElseBranch(lcf::rpg::EventCommand const& com) { //code 22010
 	return CommandOptionGeneric(com, eOptionBranchElse, {Cmd::EndBranch});
 }
 
-bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& /* com */) { //code 22011
+bool Game_Interpreter::CommandEndBranch(lcf::rpg::EventCommand const& /* com */) { //code 22011
 	return true;
 }
 
-bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
+bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { // code 12120
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -3059,7 +3176,7 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
-		if (list[idx].code != Cmd::Label)
+		if (static_cast<Cmd>(list[idx].code) != Cmd::Label)
 			continue;
 		if (list[idx].parameters[0] != label_id)
 			continue;
@@ -3070,7 +3187,7 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& /* com */) { // code 12220
+bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */) { // code 12220
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -3079,18 +3196,19 @@ bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& /* com */) { //
 
 	//FIXME: This emulates an RPG_RT bug where break loop ignores scopes and
 	//unconditionally jumps to the next EndLoop command.
-	auto pcode = list[index].code;
+	auto pcode = static_cast<Cmd>(list[index].code);
+
 	for (++index; index < (int)list.size(); ++index) {
 		if (pcode == Cmd::EndLoop) {
 			break;
 		}
-		pcode = list[index].code;
+		pcode = static_cast<Cmd>(list[index].code);
 	}
 
 	return true;
 }
 
-bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
+bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // code 22210
 	auto& frame = GetFrame();
 	const auto& list = frame.commands;
 	auto& index = frame.current_command;
@@ -3102,7 +3220,7 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 			continue;
 		if (list[idx].indent < indent)
 			return false;
-		if (list[idx].code != Cmd::Loop)
+		if (static_cast<Cmd>(list[idx].code) != Cmd::Loop)
 			continue;
 		index = idx;
 		break;
@@ -3116,7 +3234,7 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 	return true;
 }
 
-bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { // code 12320
+bool Game_Interpreter::CommandEraseEvent(lcf::rpg::EventCommand const& /* com */) { // code 12320
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -3144,16 +3262,16 @@ bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { /
 	return true;
 }
 
-bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 12330
+bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // code 12330
 	int evt_id;
 	int event_page;
 
 	switch (com.parameters[0]) {
 	case 0: { // Common Event
 		evt_id = com.parameters[1];
-		Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+		Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 		if (!common_event) {
-			Output::Warning("CallEvent: Can't call invalid common event %d", evt_id);
+			Output::Warning("CallEvent: Can't call invalid common event {}", evt_id);
 			return true;
 		}
 
@@ -3175,13 +3293,13 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	if (!event) {
-		Output::Warning("CallEvent: Can't call non-existant event %d", evt_id);
+		Output::Warning("CallEvent: Can't call non-existant event {}", evt_id);
 		return false;
 	}
 
-	const RPG::EventPage* page = event->GetPage(event_page);
+	const lcf::rpg::EventPage* page = event->GetPage(event_page);
 	if (!page) {
-		Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
+		Output::Warning("CallEvent: Can't call non-existant page {} of event {}", event_page, evt_id);
 		return false;
 	}
 
@@ -3190,7 +3308,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	return true;
 }
 
-bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
+bool Game_Interpreter::CommandReturnToTitleScreen(lcf::rpg::EventCommand const& /* com */) { // code 12510
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -3199,7 +3317,7 @@ bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* co
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // code 1008
+bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { // code 1008
 	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
@@ -3213,9 +3331,9 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	PendingMessage pm;
 	pm.SetEnableFace(false);
 
-	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
+	const lcf::rpg::Class* cls = lcf::ReaderUtil::GetElement(lcf::Data::classes, class_id);
 	if (!cls && class_id != 0) {
-		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
+		Output::Warning("ChangeClass: Can't change class. Class {} is invalid", class_id);
 		return true;
 	}
 
@@ -3239,7 +3357,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com) { // code 1009
+bool Game_Interpreter::CommandChangeBattleCommands(lcf::rpg::EventCommand const& com) { // code 1009
 	int cmd_id = com.parameters[2];
 	bool add = com.parameters[3] != 0;
 
@@ -3250,7 +3368,7 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 	return true;
 }
 
-bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter::CommandExitGame(lcf::rpg::EventCommand const& /* com */) {
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -3259,10 +3377,8 @@ bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
 	return true;
 }
 
-bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com */) {
-	DisplayUi->BeginDisplayModeChange();
+bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* com */) {
 	DisplayUi->ToggleFullscreen();
-	DisplayUi->EndDisplayModeChange();
 	return true;
 }
 

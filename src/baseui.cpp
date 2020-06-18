@@ -24,13 +24,13 @@
 #elif USE_SDL==1
 #  include "sdl_ui.h"
 #elif USE_LIBRETRO
-#  include "libretro_ui.h"
+#  include "platform/libretro/libretro_ui.h"
 #elif defined(_3DS)
-#  include "3ds_ui.h"
+#  include "platform/3ds/3ds_ui.h"
 #elif defined(PSP2)
-#  include "psp2_ui.h"
+#  include "platform/psvita/psp2_ui.h"
 #elif defined(__SWITCH__)
-#  include "switch_ui.h"
+#  include "platform/switch/switch_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;
@@ -62,40 +62,8 @@ BaseUi::BaseUi()
 	keys.reset();
 }
 
-BaseUi::KeyStatus& BaseUi::GetKeyStates() {
-	return keys;
-}
-
-BitmapRef const& BaseUi::GetDisplaySurface() const {
-	return main_surface;
-}
-
-BitmapRef& BaseUi::GetDisplaySurface() {
-	return main_surface;
-}
-
 BitmapRef BaseUi::CaptureScreen() {
 	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
-long BaseUi::GetWidth() const {
-	return current_display_mode.width;
-}
-
-long BaseUi::GetHeight() const {
-	return current_display_mode.height;
-}
-
-bool BaseUi::GetMouseFocus() const {
-	return mouse_focus;
-}
-
-int BaseUi::GetMousePosX() const {
-	return mouse_x;
-}
-
-int BaseUi::GetMousePosY() const {
-	return mouse_y;
 }
 
 void BaseUi::CleanDisplay() {

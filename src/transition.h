@@ -109,8 +109,11 @@ public:
 	void Draw(Bitmap& dst) override;
 	void Update();
 
-	bool IsActive();
-	bool IsErased();
+	bool IsActive() const;
+	bool IsErasedNotActive() const;
+
+	bool FromErase() const;
+	bool ToErase() const;
 
 private:
 	Transition();
@@ -126,7 +129,8 @@ private:
 	Scene *scene = nullptr;
 	int current_frame = 0;
 	int total_frames = 0;
-	bool screen_erased = false;
+	bool from_erase = false;
+	bool to_erase = false;
 
 	struct FlashData {
 		int32_t red = 0;
@@ -161,12 +165,20 @@ inline void Transition::InitErase(Type type, Scene *linked_scene, int duration) 
 	Init(type, linked_scene, duration, true);
 }
 
-inline bool Transition::IsActive() {
+inline bool Transition::IsActive() const {
 	return current_frame < total_frames || flash_iterations != 0;
 }
 
-inline bool Transition::IsErased() {
-	return screen_erased && !IsActive();
+inline bool Transition::IsErasedNotActive() const {
+	return ToErase() && !IsActive();
+}
+
+inline bool Transition::FromErase() const {
+	return from_erase;
+}
+
+inline bool Transition::ToErase() const {
+	return to_erase;
 }
 
 #endif

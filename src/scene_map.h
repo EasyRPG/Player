@@ -84,10 +84,9 @@ private:
 	void UpdateInn();
 	void FinishInn();
 
-	template <typename F> void AsyncNext(F&& f);
 	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);
 
-	void UpdateGraphics();
+	void UpdateGraphics() override;
 
 	std::unique_ptr<Window_Message> message_window;
 
@@ -96,8 +95,9 @@ private:
 	bool screen_erased_by_event = false;
 
 	AsyncContinuation map_async_continuation = {};
-	RPG::Music music_before_inn = {};
+	lcf::rpg::Music music_before_inn = {};
 	bool activate_inn = false;
+	bool inn_started = false;
 };
 
 #endif

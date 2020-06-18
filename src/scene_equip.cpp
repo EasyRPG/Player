@@ -23,9 +23,9 @@
 #include "game_screen.h"
 #include "input.h"
 #include "player.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "scene_menu.h"
-#include "rpg_item.h"
+#include <lcf/rpg/item.h>
 
 Scene_Equip::Scene_Equip(Game_Actor& actor, int equip_index) :
 	actor(actor),
@@ -86,7 +86,7 @@ void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
-		const RPG::Item* current_item = item_window->GetItem();
+		const lcf::rpg::Item* current_item = item_window->GetItem();
 
 		const auto eidx = equip_window->GetIndex();
 
@@ -95,7 +95,7 @@ void Scene_Equip::UpdateStatusWindow() {
 		auto spi = actor.GetSpi();
 		auto agi = actor.GetAgi();
 
-		auto add_item = [&](const RPG::Item* item, int mod = 1) {
+		auto add_item = [&](const lcf::rpg::Item* item, int mod = 1) {
 			if (item) {
 				atk += item->atk_points1 * mod;
 				def += item->def_points1 * mod;
@@ -106,7 +106,7 @@ void Scene_Equip::UpdateStatusWindow() {
 
 		auto* old_item = actor.GetEquipment(eidx + 1);
 		// If its a weapon or shield, get the other hand
-		const RPG::Item* other_old_item = nullptr;
+		const lcf::rpg::Item* other_old_item = nullptr;
 		if (eidx == 0) {
 			other_old_item = actor.GetEquipment(eidx + 2);
 		} else if (eidx == 1) {
@@ -181,7 +181,7 @@ void Scene_Equip::UpdateItemSelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-		const RPG::Item* current_item = item_window->GetItem();
+		const lcf::rpg::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
 		actor.ChangeEquipment(

@@ -31,6 +31,7 @@
 #include "game_quit.h"
 #include "font.h"
 #include "player.h"
+#include "system.h"
 
 #ifndef _WIN32
 #  include <unistd.h>
@@ -45,8 +46,9 @@
 #elif defined(PSP2)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
-#elif defined(USE_SDL) && defined(__APPLE__) && defined(__MACH__)
-#  include <SDL.h>
+#elif defined(__APPLE__) && TARGET_OS_OSX
+#  include <sys/syslimits.h>
+#  include "platform/macos/utils.h"
 #endif
 
 // Global variables.
@@ -54,7 +56,7 @@ std::string project_path;
 std::string save_path;
 
 namespace Main_Data {
-	// Dynamic Game Data
+	// Dynamic Game lcf::Data
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
@@ -65,7 +67,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Targets> game_targets;
 	std::unique_ptr<Game_Quit> game_quit;
 
-	RPG::Save game_data;
+	lcf::rpg::Save game_data;
 }
 
 void Main_Data::Init() {
@@ -136,26 +138,22 @@ void Main_Data::Init() {
 				// No RomFS -> load games from hardcoded path
 				project_path = "sdmc:/3ds/easyrpg-player";
 			}
-#elif defined(USE_SDL) && defined(__APPLE__) && defined(__MACH__)
-#  if SDL_MAJOR_VERSION>1
+#elif defined(__APPLE__) && TARGET_OS_OSX
 			// Apple Finder does not set the working directory
 			// It points to HOME instead. When it is HOME change it to
 			// the application directory instead
-			char* home = getenv("HOME");
-			char current_dir[255] = { 0 };
-			getcwd(current_dir, sizeof(current_dir));
-			if (!strcmp(current_dir, home)) {
-				// FIXME: Uses SDL API
-				char* data_dir = SDL_GetBasePath();
-				project_path = data_dir;
 
-				free(data_dir);
+			char* home = getenv("HOME");
+			char current_dir[PATH_MAX] = { 0 };
+			getcwd(current_dir, sizeof(current_dir));
+			if (strcmp(current_dir, "/") == 0 || strcmp(current_dir, home) == 0) {
+				project_path = MacOSUtils::GetBundleDir();
 			}
-#  endif
 #endif
 		}
 	}
 }
+
 
 void Main_Data::Cleanup() {
 	Game_Map::Quit();
@@ -170,7 +168,7 @@ void Main_Data::Cleanup() {
 	game_targets.reset();
 	game_quit.reset();
 
-	game_data = RPG::Save();
+	game_data = lcf::rpg::Save();
 }
 
 const std::string& Main_Data::GetProjectPath() {

@@ -1,33 +1,23 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 
-EXTRA_DIST = AUTHORS.md README.md builds resources CMakeLists.txt
+EXTRA_DIST = AUTHORS.md CMakeLists.txt README.md builds resources
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
 
 noinst_LIBRARIES = libeasyrpg-player.a
 libeasyrpg_player_a_SOURCES = \
-	src/3ds_clock.cpp \
-	src/3ds_clock.h \
-	src/3ds_ui.cpp \
-	src/3ds_ui.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
 	src/async_op.h \
 	src/audio.cpp \
 	src/audio.h \
-	src/audio_3ds.cpp \
-	src/audio_3ds.h \
 	src/audio_al.cpp \
 	src/audio_al.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
-	src/audio_libretro.cpp \
-	src/audio_libretro.h \
-	src/audio_psp2.cpp \
-	src/audio_psp2.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
@@ -36,8 +26,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
-	src/audio_switch.cpp \
-	src/audio_switch.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
@@ -87,6 +75,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/filefinder.cpp \
 	src/filefinder.h \
 	src/flash.h \
+	src/flat_map.h \
 	src/font.cpp \
 	src/font.h \
 	src/fps_overlay.cpp \
@@ -160,17 +149,11 @@ libeasyrpg_player_a_SOURCES = \
 	src/input.h \
 	src/input_buttons.h \
 	src/input_buttons_desktop.cpp \
-	src/input_buttons_gekko.cpp \
-	src/input_buttons_libretro.cpp \
-	src/input_buttons_opendingux.cpp \
-	src/input_buttons_psp.cpp \
 	src/input_source.cpp \
 	src/input_source.h \
 	src/instrumentation.cpp \
 	src/instrumentation.h \
 	src/keys.h \
-	src/libretro_ui.cpp \
-	src/libretro_ui.h \
 	src/logo.h \
 	src/main_data.cpp \
 	src/main_data.h \
@@ -196,10 +179,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/platform_clock.h \
 	src/player.cpp \
 	src/player.h \
-	src/psp2_clock.cpp \
-	src/psp2_clock.h \
-	src/psp2_ui.cpp \
-	src/psp2_ui.h \
 	src/game_quit.cpp \
 	src/game_quit.h \
 	src/rect.cpp \
@@ -286,10 +265,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/state.cpp \
 	src/state.h \
 	src/std_clock.h \
-	src/switch_clock.cpp \
-	src/switch_clock.h \
-	src/switch_ui.cpp \
-	src/switch_ui.h \
 	src/system.h \
 	src/teleport_target.h \
 	src/text.cpp \
@@ -305,8 +280,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/util_macro.h \
 	src/utils.cpp \
 	src/utils.h \
-	src/util_win.cpp \
-	src/util_win.h \
 	src/version.h \
 	src/weather.cpp \
 	src/weather.h \
@@ -398,7 +371,47 @@ libeasyrpg_player_a_SOURCES += \
 	src/midisynth.h
 endif
 
+if MACOS
+libeasyrpg_player_a_SOURCES += \
+	src/platform/macos/utils.h \
+	src/platform/macos/utils.mm
+endif
+
+# These are only taken in by the legacy homebrew Makefiles
+EXTRA_DIST += \
+	src/platform/3ds/3ds_clock.cpp \
+	src/platform/3ds/3ds_clock.h \
+	src/platform/3ds/3ds_ui.cpp \
+	src/platform/3ds/3ds_ui.h \
+	src/platform/3ds/3ds_audio.cpp \
+	src/platform/3ds/3ds_audio.h \
+	src/platform/libretro/libretro_audio.cpp \
+	src/platform/libretro/libretro_audio.h \
+	src/platform/libretro/libretro_input_buttons.cpp \
+	src/platform/libretro/libretro_ui.cpp \
+	src/platform/libretro/libretro_ui.h \
+	src/platform/psvita/psp2_clock.cpp \
+	src/platform/psvita/psp2_clock.h \
+	src/platform/psvita/psp2_ui.cpp \
+	src/platform/psvita/psp2_ui.h \
+	src/platform/psvita/psp2_audio.cpp \
+	src/platform/psvita/psp2_audio.h \
+	src/platform/switch/switch_clock.cpp \
+	src/platform/switch/switch_clock.h \
+	src/platform/switch/switch_ui.cpp \
+	src/platform/switch/switch_ui.h \
+	src/platform/switch/switch_audio.cpp \
+	src/platform/switch/switch_audio.h \
+	src/platform/wii/wii_clock.h \
+	src/platform/wii/wii_clock.cpp \
+	src/platform/wii/wii_input_buttons.cpp \
+	src/platform/opendingux/opendingux_input_buttons.cpp \
+	src/platform/psp/psp_input_buttons.cpp \
+	src/platform/windows/utils.cpp \
+	src/platform/windows/utils.h
+
 libeasyrpg_player_a_CXXFLAGS = \
+	-fno-math-errno \
 	-I$(srcdir)/src \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
@@ -408,13 +421,16 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
-	$(MPG123_CFLAGS) \
-	$(WILDMIDI_CFLAGS) \
+	$(LIBMPG123_CFLAGS) \
+	$(LIBWILDMIDI_CFLAGS) \
 	$(OGGVORBIS_CFLAGS) \
 	$(OPUS_CFLAGS) \
-	$(SNDFILE_CFLAGS) \
-	$(XMP_CFLAGS) \
-	$(SPEEXDSP_CFLAGS)
+	$(FMT_CFLAGS) \
+	$(LIBSNDFILE_CFLAGS) \
+	$(LIBXMP_CFLAGS) \
+	$(LIBSPEEXDSP_CFLAGS)
+
+libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
@@ -427,13 +443,18 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
-	$(MPG123_LIBS) \
-	$(WILDMIDI_LIBS) \
+	$(LIBMPG123_LIBS) \
+	$(LIBWILDMIDI_LIBS) \
 	$(OGGVORBIS_LIBS) \
 	$(OPUS_LIBS) \
-	$(SNDFILE_LIBS) \
-	$(XMP_LIBS) \
-	$(SPEEXDSP_LIBS)
+	$(FMT_LIBS) \
+	$(LIBSNDFILE_LIBS) \
+	$(LIBXMP_LIBS) \
+	$(LIBSPEEXDSP_LIBS)
+
+if MACOS
+easyrpg_player_LDFLAGS = -framework Foundation
+endif
 
 # manual page
 if HAVE_A2X
@@ -456,6 +477,10 @@ endif
 
 # doxygen
 @DX_RULES@
+
+# tests
+EXTRA_DIST += tests/game tests/notagame tests/platform/folder \
+	tests/platform/1kb tests/platform/empty
 
 check_PROGRAMS = test_runner
 test_runner_SOURCES = \

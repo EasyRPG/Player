@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 #include "game_interpreter_map.h"
-#include "rpg_commonevent.h"
-#include "rpg_saveeventexecstate.h"
+#include <lcf/rpg/commonevent.h>
+#include <lcf/rpg/saveeventexecstate.h>
 #include "async_op.h"
 
 /**
@@ -43,7 +43,7 @@ public:
 	 *
 	 * @param data savegame data.
 	 */
-	void SetSaveData(const RPG::SaveEventExecState& data);
+	void SetSaveData(const lcf::rpg::SaveEventExecState& data);
 
 	/**
 	 * Updates common event parallel interpreter.
@@ -93,9 +93,9 @@ public:
 	 *
 	 * @return event commands list.
 	 */
-	std::vector<RPG::EventCommand>& GetList();
+	std::vector<lcf::rpg::EventCommand>& GetList();
 
-	RPG::SaveEventExecState GetSaveData();
+	lcf::rpg::SaveEventExecState GetSaveData();
 
 	/** @return true if waiting for foreground execution */
 	bool IsWaitingForegroundExecution() const;

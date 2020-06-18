@@ -37,10 +37,6 @@
 #   include <SDL_system.h>
 #endif
 
-#ifdef __MORPHOS__
-#undef bind
-#endif
-
 #include "system.h"
 #include "options.h"
 #include "utils.h"
@@ -50,11 +46,11 @@
 #include "registry.h"
 #include "rtp.h"
 #include "main_data.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 #include "platform.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro_ui.h"
+#include "platform/libretro/libretro_ui.h"
 #endif
 
 // MinGW shlobj.h does not define this
@@ -102,9 +98,9 @@ namespace {
 			return em_file;
 #endif
 
-		std::string corrected_dir = ReaderUtil::Normalize(dir);
+		std::string corrected_dir = lcf::ReaderUtil::Normalize(dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = ReaderUtil::Normalize(name);
+		std::string corrected_name = lcf::ReaderUtil::Normalize(name);
 
 		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);
@@ -114,8 +110,13 @@ namespace {
 			// Fix the path and continue searching.
 			size_t pos = canon.find_first_of("/");
 			if (pos == std::string::npos) {
-				corrected_dir = ".";
-				corrected_name = canon;
+				for (char const** c = exts; *c != NULL; ++c) {
+					std::string res = FindDefault(tree, canon + *c);
+					if (!res.empty()) {
+						return res;
+					}
+				}
+				return "";
 			} else {
 				corrected_dir = canon.substr(0, pos);
 				corrected_name = canon.substr(pos + 1);
@@ -197,7 +198,7 @@ namespace {
 
 				if (rtp_state.game_rtp.size() == 1) {
 					// From now on the RTP lookups should be perfect
-					Output::Debug("Game uses RTP \"%s\"", RTP::Names[(int) rtp_state.game_rtp[0]]);
+					Output::Debug("Game uses RTP \"{}\"", RTP::Names[(int) rtp_state.game_rtp[0]]);
 				}
 			}
 		}
@@ -237,9 +238,9 @@ namespace {
 		// True RTP if enabled and available
 		if (!rtp_state.disable_rtp) {
 			bool is_rtp_asset;
-			ret = rtp_lookup(ReaderUtil::Normalize(dir), ReaderUtil::Normalize(name), exts, is_rtp_asset);
+			ret = rtp_lookup(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
 
-			std::string lcase = ReaderUtil::Normalize(dir);
+			std::string lcase = lcf::ReaderUtil::Normalize(dir);
 			bool is_audio_asset = lcase == "music" || lcase == "sound";
 
 			if (is_rtp_asset) {
@@ -247,16 +248,16 @@ namespace {
 					rtp_state.warning_broken_rtp_game_shown = true;
 					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
 				} else if (ret.empty() && !rtp_state.game_has_full_package_flag && !is_audio_asset) {
-					std::string msg = "Cannot find: %s/%s. " +
+					std::string msg = "Cannot find: {}/{}. " +
 						std::string(rtp_state.search_paths.empty() ?
-						"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
-					Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), Player::EngineVersion());
+						"Install RTP {} to resolve this warning." : "RTP {} was probably not installed correctly.");
+					Output::Warning(msg, dir, name, Player::EngineVersion());
 				}
 			}
 		}
 
 		if (ret.empty()) {
-			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
+			Output::Debug("Cannot find: {}/{}", dir, name);
 		}
 
 		return ret;
@@ -340,7 +341,7 @@ std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepn
 				// Ignore, we are in root
 				--initial_deepness;
 			} else {
-				Output::Debug("Path traversal out of game directory: %s", path.c_str());
+				Output::Debug("Path traversal out of game directory: {}", path);
 			}
 		} else if (path_comp.empty() || path_comp == ".") {
 			// ignore
@@ -471,7 +472,7 @@ static void add_rtp_path(const std::string& p) {
 	using namespace FileFinder;
 	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if (tree) {
-		Output::Debug("Adding %s to RTP path", p.c_str());
+		Output::Debug("Adding {} to RTP path", p);
 		rtp_state.search_paths.push_back(tree);
 
 		auto hit_info = RTP::Detect(tree, Player::EngineVersion());
@@ -485,13 +486,13 @@ static void add_rtp_path(const std::string& p) {
 		for (const auto& hit : hit_info) {
 			float rate = (float)hit.hits / hit.max;
 			if (rate >= best) {
-				Output::Debug("RTP is \"%s\" (%d/%d)", hit.name.c_str(), hit.hits, hit.max);
+				Output::Debug("RTP is \"{}\" ({}/{})", hit.name, hit.hits, hit.max);
 				rtp_state.detected_rtp.emplace_back(hit);
 				best = rate;
 			}
 		}
 	} else {
-		Output::Debug("RTP path %s is invalid, not adding", p.c_str());
+		Output::Debug("RTP path {} is invalid, not adding", p);
 	}
 }
 
@@ -709,7 +710,7 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 
 	string_map const& files = p.files;
 
-	string_map::const_iterator const it = files.find(ReaderUtil::Normalize(name));
+	string_map::const_iterator const it = files.find(lcf::ReaderUtil::Normalize(name));
 
 	return(it != files.end()) ? MakePath(p.directory_path, it->second) : "";
 }
@@ -791,8 +792,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	Platform::Directory dir(path);
 	if (!dir) {
-		Output::Debug("Error opening dir %s: %s", path.c_str(),
-					  ::strerror(errno));
+		Output::Debug("Error opening dir {}: {}", path, ::strerror(errno));
 		return result;
 	}
 
@@ -835,13 +835,13 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 				continue;
 			}
 
-			result.files[ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
+			result.files[lcf::ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
 			continue;
 		}
-		std::string name_norm = ReaderUtil::Normalize(name);
+		std::string name_norm = lcf::ReaderUtil::Normalize(name);
 		if (is_directory) {
 			if (result.directories.find(name_norm) != result.directories.end()) {
-				Output::Warning("This game provides the folder \"%s\" twice.", name.c_str());
+				Output::Warning("This game provides the folder \"{}\" twice.", name);
 				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
 			result.directories[name_norm] = name;
@@ -879,7 +879,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 			for (auto& i : mem) {
 				std::string file = mem[i.first];
 				if (Utils::EndsWith(Utils::LowerCase(file), ".mp3")) {
-					Output::Debug("MP3 file (%s) found", file.c_str());
+					Output::Debug("MP3 file ({}) found", file);
 					return true;
 				}
 			}
@@ -900,6 +900,6 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// Japanese or RPG2k3 games: newer engine
 	// non-Japanese RPG2k games: older engine
 	bool assume_newer = Player::IsCP932() || Player::IsRPG2k3();
-	Output::Debug("Assuming %s engine", assume_newer ? "newer" : "older");
+	Output::Debug("Assuming {} engine", assume_newer ? "newer" : "older");
 	return assume_newer;
 }

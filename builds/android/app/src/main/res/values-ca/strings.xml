@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Detectar la regió (recomanat)</string>
+  <string name="west_europe">Europeu occidental</string>
+  <string name="east_europe">Europeu central/del est</string>
+  <string name="cyrillic">Ciríl·lic</string>
+  <string name="japan">Japonès</string>
+  <string name="korean">Coreà</string>
+  <string name="chinese_simple">Xinès (simplificat)</string>
+  <string name="chinese_traditional">Xinès (tradicional)</string>
+  <string name="greek">Grec</string>
+  <string name="turkish">Turc</string>
+  <string name="hebrew">Hebreu</string>
+  <string name="arabic">Àrab</string>
+  <string name="baltic">Bàltic</string>
+  <string name="thai">Tailandès</string>
+  <string name="vietnamese">Vietnamita</string>
+  <string name="ok">D\'acord</string>
+  <string name="cancel">Cancel·la</string>
+  <string name="do_want_quit">Realment vols sortir?</string>
+  <string name="yes">Sí</string>
+  <string name="no">No</string>
+  <string name="creating_dir_failed">Ha fallat la creació del directori $PATH</string>
+  <string name="path_not_readable">No es pot llegir $PATH</string>
+  <string name="no_games_found_and_explanation">No s\'han trobat jocs de RPG Maker 2000/2003.
+Pots afegir directoris addicionals a la configuració.</string>
+  <string name="no_external_storage">No s\'ha trobat emmagatzematge extern (per exemple targeta SD)</string>
+  <string name="not_valid_game">$PATH no és un joc vàlid</string>
+  <string name="select_game_region">Selecciona la regió del joc</string>
+  <string name="change_the_layout">Canvia la distribució</string>
+  <string name="choose_layout">Selecciona una disposició</string>
+  <string name="unknown_region">Regió desconeguda</string>
+  <string name="region_modification_failed">Ha fallat al canviar de regió</string>
+  <string name="refresh">Refresca</string>
+  <string name="change_default_mapping">Canvia la disposició dels botons predeterminada</string>
+  <string name="how_to_use_easy_rpg">Com fer servir l\'EasyRPG Player</string>
+  <string name="how_to_use_easy_rpg_explanation">Instruccions d’instal·lació:\n\nDe manera predeterminada, els jocs es cerquen a /easyrpg/games. Pots afegir directoris addicionals de jocs a la configuració.\n\nOpcional: posa el RTP a /easyrpg/rtp/2000 per al RTP del RPG Maker 2000 i /easyrpg/rtp/2003 per al RTP del RPG Maker 2003.\n\nPer a poder detectar els jocs correctament, s\'han de posar en un subdirectori de /easyrpg/games (de manera predeterminada), per exemple: \n\n\t/easyrpg/games/ElMeuJoc/Data/ RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc/RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc.zip és INCORRECTE. Els formats ZIP i EXE no són compatibles.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Commutar FPS</string>
+  <string name="toggle_ui">Commutar botons virtuals</string>
+  <string name="end_game">Finalitza la partida</string>
+  <string name="report_bug">Informa d\'un error</string>
+  <string name="report_bug_msg">Aquesta funció obrirà el teu programa de correu electrònic (per exemple, GMail) per a enviar-nos l\'informe d\'error.\n\nSi no vols enviar un missatge de correu electrònic o no tens un programari de correu electrònic configurat, pots obrir un informe de error a https://github.com/EasyRPG/Player/issues com una alternativa.</string>
+  <string name="report_bug_mail">Gràcies per recolzar EasyRPG Player\n
+S\'han inclòs un fitxer de registre i les partides desades a aquest correu electrònic.\n
+No eliminis el fitxer de registre. Necessitem una partida desada que estigui a prop del lloc on es troba l\'error.\n
+Si us plau, explica\'ns en detall què ha anat malament.\n\n</string>
+  <!--Settings Activities-->
+  <string name="video">Vídeo</string>
+  <string name="audio">Àudio</string>
+  <string name="input">Entrada</string>
+  <string name="game_folders">Carpetes dels jocs</string>
+  <string name="settings">Configuració</string>
+  <string name="add_game_folder">Afegir una carpeta de jocs</string>
+  <string name="enable_vibration">Activar vibracions</string>
+  <string name="vibrate_when_sliding_direction">Vibrar al moure cap a una altra direcció</string>
+  <string name="enable_audio">Activar àudio</string>
+  <string name="input_layout_transparency">Transparència de la disposició de botons:</string>
+  <string name="ignore_size_settings">Personalizar mida dels botons:</string>
+  <string name="no_read_access_on_dir">No hi ha accés de lectura a %1$s</string>
+  <string name="quick_access">Accés ràpid</string>
+  <string name="force_landscape_mode">Força orientació paisatge</string>
+  <string name="fast_forward">Mode del botó d\'avanç ràpid:</string>
+  <string-array name="fast_forward_mode">
+    <item>mantenir premut</item>
+    <item>fer un toc a</item>
+  </string-array>
+  <string name="fast_forward_factor">Multiplicador de velocitat:</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">Gestionar disposicions dels botons:</string>
+  <string name="add_an_input_layout">Afegir una disposició de botons</string>
+  <string name="set_as_default">Definir com a predeterminat</string>
+  <string name="edit_name">Edita el nom</string>
+  <string name="edit_layout">Edita la distribució</string>
+  <string name="delete">Eliminar</string>
+  <string name="default_layout">Valor predeterminat</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">Afegir un botó</string>
+  <string name="reset_button_mapping">Reinicia assignació de botons</string>
+  <string name="exit_without_saving">Surt sense desar</string>
+  <string name="save_and_quit">Desa i surt</string>
+  <string name="key_enter">Tecla de retorn (Z)</string>
+  <string name="key_cancel">Cancel·la (Esc i X)</string>
+  <string name="key_shift">Tecla de majúscules (shift)</string>
+  <string name="key_fast_forward">Avanç ràpid</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Obre safata de navegació</string>
+  <string name="navigation_drawer_close">Tanca safata de navegació</string>
+  <string name="menu">Obre menú de l\'Android</string>
+</resources>

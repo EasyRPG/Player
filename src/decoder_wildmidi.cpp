@@ -30,7 +30,7 @@
 #include "decoder_wildmidi.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro_ui.h"
+#include "platform/libretro/libretro_ui.h"
 #endif
 
 #if defined(GEKKO) || defined(_3DS)
@@ -270,7 +270,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		error_message = "WildMidi: Could not find configuration file.";
 		return;
 	}
-	Output::Debug("WildMidi: Using %s as configuration file...", config_file.c_str());
+	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
 
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
 	if (!init) {
@@ -310,6 +310,22 @@ bool WildMidiDecoder::Open(FILE* file) {
 	if (!handle) {
 		error_message = "WildMidi: Error reading file";
 		return false;
+	}
+
+	// Ugly: Parse Midi header to get Division
+	// WildMidi has no Api to get Division and Tempo
+	// This allows a better approximation of the Midi ticks but it is still
+	// way off because the tempo information is missing
+	uint8_t midi_header[14];
+	fread(midi_header, 1, 14, file);
+
+	division = midi_header[12] << 8u;
+	division |= midi_header[13];
+
+	// Wildmidi will reject such files, but just in case if they ever support it
+	if (division & 0x8000u) {
+		Output::Debug("WildMidi: Unsupported: Division in fps");
+		division = 96;
 	}
 
 	fclose(file);
@@ -355,6 +371,23 @@ int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 		return -1;
 
 	return WildMidi_GetOutput(handle, reinterpret_cast<int8_t*>(buffer), length);
+}
+
+int WildMidiDecoder::GetTicks() const {
+	if (!handle) {
+		return 0;
+	}
+
+	struct _WM_Info* info = WildMidi_GetInfo(handle);
+	float secs = (float)info->current_sample / WILDMIDI_FREQ;
+
+	// FIXME: tempo is an assumption, the library must internally process
+	// the tempo because it can dynamically change.
+	const int tempo = 500000;
+
+	int ticks = static_cast<int>(secs / (tempo / 1000000.0 / division));
+
+	return ticks;
 }
 
 #endif

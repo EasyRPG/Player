@@ -1,12 +1,13 @@
 #include <benchmark/benchmark.h>
 #include "game_variables.h"
+#include <lcf/data.h>
 
 constexpr int max_vars = 1024; // Keep this a power of 2 so no expensive modulus instructions
 
 static Game_Variables make(int size = max_vars) {
-	Data::variables.resize(size);
+	lcf::Data::variables.resize(size);
 	Game_Variables variables(Game_Variables::min_2k3, Game_Variables::max_2k3);
-	variables.Set(size, 0);
+	variables.SetRange(1, size, 1);
 	return variables;
 }
 
@@ -15,7 +16,7 @@ static void BM_VariableOp(benchmark::State& state, F&& op) {
 	auto v = make();
 	int i = 0;
 	for (auto _: state) {
-		op(v, i + 1, i);
+		op(v, i + 1, i + 1);
 		i = (i + 1) % max_vars;
 	}
 }
@@ -104,5 +105,23 @@ static void BM_VariableModRange(benchmark::State& state) {
 }
 
 BENCHMARK(BM_VariableModRange);
+
+static void BM_VariableSetRangeVariable(benchmark::State& state) {
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.SetRangeVariable(1, max_vars, val); });
+}
+
+BENCHMARK(BM_VariableSetRangeVariable);
+
+static void BM_VariableSetRangeVariableIndirect(benchmark::State& state) {
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.SetRangeVariableIndirect(1, max_vars, val); });
+}
+
+BENCHMARK(BM_VariableSetRangeVariableIndirect);
+
+static void BM_VariableSetRangeRandom(benchmark::State& state) {
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.SetRangeRandom(1, max_vars, -100, 100); });
+}
+
+BENCHMARK(BM_VariableSetRangeRandom);
 
 BENCHMARK_MAIN();

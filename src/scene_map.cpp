@@ -29,7 +29,7 @@
 #include "game_system.h"
 #include "game_screen.h"
 #include "game_pictures.h"
-#include "rpg_system.h"
+#include <lcf/rpg/system.h>
 #include "player.h"
 #include "transition.h"
 #include "audio.h"
@@ -110,7 +110,7 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	// We do the start game fade in transition here instead of TransitionIn callback,
 	// in order to make async logic work properly.
 	auto& transition = Transition::instance();
-	if (transition.IsErased()) {
+	if (transition.IsErasedNotActive()) {
 		transition.InitShow(Transition::TransitionFadeIn, this);
 	}
 
@@ -187,7 +187,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 	}
 
 	if (next_scene == Scene::Battle) {
-		if (!transition.IsErased()) {
+		if (!transition.IsErasedNotActive()) {
 			auto tt = Game_System::GetTransition(Game_System::Transition_BeginBattleErase);
 			if (tt == Transition::TransitionNone) {
 				// If transition type is none, RPG_RT flashes and then waits 40 frames before starting the battle.
@@ -303,7 +303,7 @@ void Scene_Map::UpdateSceneCalling() {
 void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	auto& transition = Transition::instance();
 
-	if (!transition.IsErased() && tp.erase_screen) {
+	if (!transition.IsErasedNotActive() && tp.erase_screen) {
 		transition.InitErase(Game_System::GetTransition(Game_System::Transition_TeleportErase), this);
 	}
 
@@ -341,7 +341,7 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	auto& transition = Transition::instance();
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (tp.use_default_transition_in && transition.IsErased()) {
+	if (tp.use_default_transition_in && transition.IsErasedNotActive()) {
 		transition.InitShow(Transition::TransitionFadeIn, this);
 	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
 		transition.InitShow(Game_System::GetTransition(Game_System::Transition_TeleportShow), this);
@@ -386,15 +386,6 @@ void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 }
 
 template <typename F>
-void Scene_Map::AsyncNext(F&& f) {
-	if (IsAsyncPending()) {
-		async_continuation = std::forward<F>(f);
-	} else {
-		f();
-	}
-}
-
-template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (CheckSceneExit(aop)) {
 		return;
@@ -426,14 +417,13 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 	if (aop.GetType() == AsyncOp::eCallInn) {
 		activate_inn = true;
+		inn_started = false;
 		music_before_inn = Game_System::GetCurrentBGM();
 		map_async_continuation = std::forward<F>(f);
 
 		Game_System::BgmFade(800);
 
-		transition.InitErase(Transition::TransitionFadeOut, Scene::instance.get());
-
-		AsyncNext([=]() { StartInn(); });
+		UpdateInn();
 		return;
 	}
 
@@ -454,7 +444,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 }
 
 void Scene_Map::StartInn() {
-	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
+	const lcf::rpg::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 	if (Game_System::IsStopMusicFilename(bgm_inn.name)) {
 		FinishInn();
 		return;
@@ -480,12 +470,29 @@ void Scene_Map::FinishInn() {
 	}
 
 	activate_inn = false;
+	inn_started = false;
 	AsyncNext(std::move(map_async_continuation));
 }
 
 void Scene_Map::UpdateInn() {
-	if (!Audio().BGM_IsPlaying() || Audio().BGM_PlayedOnce()) {
-		Game_System::BgmStop();
-		FinishInn();
+	// Allow message box to render during inn sequence.
+	if (Game_Message::IsMessageActive()) {
+		Game_Message::Update();
+		return;
 	}
+
+	if (!inn_started) {
+		Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get());
+		inn_started = true;
+
+		AsyncNext([=]() { StartInn(); });
+		return;
+	}
+
+	if (Audio().BGM_IsPlaying() && !Audio().BGM_PlayedOnce()) {
+		return;
+	}
+
+	Game_System::BgmStop();
+	FinishInn();
 }

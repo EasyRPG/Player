@@ -61,7 +61,7 @@ void Sprite_Character::Update() {
 	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
 		auto frame = character->GetAnimFrame();
-		if (frame >= RPG::EventPage::Frame_middle2) frame = RPG::EventPage::Frame_middle;
+		if (frame >= lcf::rpg::EventPage::Frame_middle2) frame = lcf::rpg::EventPage::Frame_middle;
 		SetSrcRect({frame * chara_width, row * chara_height, chara_width, chara_height});
 	}
 

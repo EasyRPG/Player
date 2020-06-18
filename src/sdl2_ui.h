@@ -60,27 +60,18 @@ public:
 	 */
 	/** @{ */
 
-	void BeginDisplayModeChange() override;
-	void EndDisplayModeChange() override;
-	void Resize(long width, long height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-
 	void ProcessEvents() override;
-
-	bool IsFullscreen() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
 #endif
 
 	/** @} */
-
-	/** Get display surface. */
-	BitmapRef GetDisplaySurface();
 
 private:
 	/**
@@ -89,6 +80,9 @@ private:
 	 * @return whether the change was successful.
 	 */
 	bool RefreshDisplayMode();
+
+	void BeginDisplayModeChange();
+	void EndDisplayModeChange();
 
 	/**
 	 * Processes a SDL Event.
@@ -120,21 +114,15 @@ private:
 	 */
 	void ResetKeys();
 
-	bool zoom_available;
-	bool toggle_fs_available;
-
-	bool RequestVideoMode(int width, int height, int zoom);
+	void RequestVideoMode(int width, int height, bool fullscreen, int zoom);
 
 	/** Last display mode. */
 	DisplayMode last_display_mode;
 
-	/** Mode is being changing flag */
-	bool mode_changing;
-
 	/** Main SDL window. */
-	SDL_Texture* sdl_texture;
-	SDL_Window* sdl_window;
-	SDL_Renderer* sdl_renderer;
+	SDL_Texture* sdl_texture = nullptr;
+	SDL_Window* sdl_window = nullptr;
+	SDL_Renderer* sdl_renderer = nullptr;
 
 	std::unique_ptr<AudioInterface> audio_;
 };

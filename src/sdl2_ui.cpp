@@ -41,6 +41,7 @@
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
+#include "lcf/scope_guard.h"
 
 #include "audio.h"
 
@@ -53,6 +54,11 @@
 #  else
 #    include "audio_sdl.h"
 #  endif
+
+#if defined(__APPLE__) && TARGET_OS_OSX
+#  include "platform/macos/utils.h"
+#endif
+
 
 AudioInterface& Sdl2Ui::GetAudio() {
 	return *audio_;
@@ -110,11 +116,11 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 				current_fmt = fmt;
 				current_rank = rank;
 			}
-			Output::Debug("SDL2: Detected format (%d) %s : rank=(%d)",
+			Output::Debug("SDL2: Detected format ({}) {} : rank=({})",
 					i, SDL_GetPixelFormatName(fmt), rank);
 		} else {
 			if (print_all) {
-				Output::Debug("SDL2: Detected format (%d) %s : Not Supported",
+				Output::Debug("SDL2: Detected format ({}) {} : Not Supported",
 						i, SDL_GetPixelFormatName(fmt));
 			}
 		}
@@ -125,25 +131,15 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 static int FilterUntilFocus(const SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-	static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
+static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
+static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
-	BaseUi(),
-	zoom_available(false),
-	toggle_fs_available(false),
-	mode_changing(false) {
-
-	uint32_t flags = SDL_INIT_VIDEO;
-
-#ifndef EMSCRIPTEN
-	flags |= SDL_INIT_TIMER;
-#endif
-
+Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom)
+{
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
 #ifdef __LINUX__
@@ -151,28 +147,17 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
 #endif
 
-	if (SDL_Init(flags) < 0) {
-		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
 	}
 
-	sdl_window = NULL;
-
-	BeginDisplayModeChange();
-		if (!RequestVideoMode(width, height, zoom)) {
-			Output::Error("No suitable video resolution found. Aborting.");
-		}
-	EndDisplayModeChange();
-
-	// Work around some SDL bugs, window properties are incorrect when started
-	// as full screen, e.g. height lacks title bar size, icon is not added, etc.
-	if (fullscreen)
-		ToggleFullscreen();
+	RequestVideoMode(width, height, fullscreen, zoom);
 
 	SetTitle(GAME_TITLE);
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-		Output::Warning("Couldn't initialize joystick. %s", SDL_GetError());
+		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
 
 	SDL_JoystickEventState(1);
@@ -208,40 +193,47 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 }
 
 Sdl2Ui::~Sdl2Ui() {
+	if (sdl_texture) {
+		SDL_DestroyTexture(sdl_texture);
+	}
+	if (sdl_renderer) {
+		SDL_DestroyRenderer(sdl_renderer);
+	}
+	if (sdl_window) {
+		SDL_DestroyWindow(sdl_window);
+	}
 	SDL_Quit();
 }
 
-bool Sdl2Ui::RequestVideoMode(int width, int height, int zoom) {
+void Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen, int zoom) {
+	BeginDisplayModeChange();
+
 	// SDL2 documentation says that resolution dependent code should not be used
 	// anymore. The library takes care of it now.
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
-	toggle_fs_available = true;
-
 	current_display_mode.zoom = zoom;
-#ifdef SUPPORT_ZOOM
-	zoom_available = true;
-#else
-	zoom_available = false;
-#endif
 
-	return true;
+	EndDisplayModeChange();
+
+	// Work around some SDL bugs, window properties are incorrect when started
+	// as full screen, e.g. height lacks title bar size, icon is not added, etc.
+	if (fullscreen)
+		ToggleFullscreen();
 }
 
 void Sdl2Ui::BeginDisplayModeChange() {
 	last_display_mode = current_display_mode;
 	current_display_mode.effective = false;
-	mode_changing = true;
 }
 
 void Sdl2Ui::EndDisplayModeChange() {
 	// Check if the new display mode is different from last one
-	if (mode_changing && (
-		current_display_mode.flags != last_display_mode.flags ||
+	if (current_display_mode.flags != last_display_mode.flags ||
 		current_display_mode.zoom != last_display_mode.zoom ||
 		current_display_mode.width != last_display_mode.width ||
-		current_display_mode.height != last_display_mode.height)) {
+		current_display_mode.height != last_display_mode.height) {
 
 			if (!RefreshDisplayMode()) {
 				// Mode change failed, check if last one was effective
@@ -250,16 +242,15 @@ void Sdl2Ui::EndDisplayModeChange() {
 
 					// Try a rollback to last mode
 					if (!RefreshDisplayMode()) {
-						Output::Error("Couldn't rollback to last display mode.\n%s", SDL_GetError());
+						Output::Error("Couldn't rollback to last display mode.\n{}", SDL_GetError());
 					}
 				} else {
-					Output::Error("Couldn't set display mode.\n%s", SDL_GetError());
+					Output::Error("Couldn't set display mode.\n{}", SDL_GetError());
 				}
 			}
 
 			current_display_mode.effective = true;
-
-			mode_changing = false;
+			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 }
 
@@ -268,10 +259,10 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
-	if (zoom_available) {
-		display_width *= current_display_mode.zoom;
-		display_height *= current_display_mode.zoom;
-	}
+#ifdef SUPPORT_ZOOM
+	display_width *= current_display_mode.zoom;
+	display_height *= current_display_mode.zoom;
+#endif
 
 	if (!sdl_window) {
 		#ifdef __ANDROID__
@@ -282,6 +273,14 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
 		#endif
 
+		#if defined(__APPLE__) && TARGET_OS_OSX
+		// Use OpenGL on Mac only -- to work around an SDL Metal deficiency
+		// where it will always use discrete GPU.
+		// See SDL source code:
+		// http://hg.libsdl.org/SDL/file/aa9d7c43a982/src/render/metal/SDL_render_metal.m#l1613
+		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+		#endif
+
 		// Create our window
 		sdl_window = SDL_CreateWindow(GAME_TITLE,
 			SDL_WINDOWPOS_CENTERED,
@@ -290,33 +289,41 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			SDL_WINDOW_RESIZABLE | flags);
 
 		if (!sdl_window) {
-			Output::Debug("SDL_CreateWindow failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateWindow failed : {}", SDL_GetError());
 			return false;
 		}
+
+		auto window_sg = lcf::makeScopeGuard([&]() {
+				SDL_DestroyWindow(sdl_window);
+				sdl_window = nullptr;
+				});
 
 		SetAppIcon();
 
-		// OS X needs the rendered to be vsync
-#if defined(__APPLE__) && defined(__MACH__)
-		uint32_t rendered_flag = SDL_RENDERER_PRESENTVSYNC;
-#else
 		uint32_t rendered_flag = 0;
-#endif
+
+#ifndef __MORPHOS__
 		if (Player::vsync) {
 			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
 		}
+#endif
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer) {
-			Output::Debug("SDL_CreateRenderer failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateRenderer failed : {}", SDL_GetError());
 			return false;
 		}
+
+		auto renderer_sg = lcf::makeScopeGuard([&]() {
+				SDL_DestroyRenderer(sdl_renderer);
+				sdl_renderer = nullptr;
+				});
 
 		uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
 		SDL_RendererInfo rinfo = {};
 		if (SDL_GetRendererInfo(sdl_renderer, &rinfo) == 0) {
-			Output::Debug("SDL2: RendererInfo hw=%d sw=%d vsync=%d",
+			Output::Debug("SDL2: RendererInfo hw={} sw={} vsync={}",
 					!!(rinfo.flags & SDL_RENDERER_ACCELERATED),
 					!!(rinfo.flags & SDL_RENDERER_SOFTWARE),
 					!!(rinfo.flags & SDL_RENDERER_PRESENTVSYNC)
@@ -324,20 +331,20 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 			texture_format = SelectFormat(rinfo, false);
 		} else {
-			Output::Debug("SDL_GetRendererInfo failed : %s", SDL_GetError());
+			Output::Debug("SDL_GetRendererInfo failed : {}", SDL_GetError());
 		}
 
 		SetFrameRateSynchronized(rinfo.flags & SDL_RENDERER_PRESENTVSYNC);
 
 		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
 			texture_format = GetDefaultFormat();
-			Output::Debug("SDL2: None of the (%d) detected formats were supported! Falling back to %s. This will likely cause performance degredation.",
+			Output::Debug("SDL2: None of the ({}) detected formats were supported! Falling back to {}. This will likely cause performance degredation.",
 					rinfo.num_texture_formats, SDL_GetPixelFormatName(texture_format));
 			// Run again to print all the formats on this system.
 			SelectFormat(rinfo, true);
 		}
 
-		Output::Debug("SDL2: Selected Pixel Format %s", SDL_GetPixelFormatName(texture_format));
+		Output::Debug("SDL2: Selected Pixel Format {}", SDL_GetPixelFormatName(texture_format));
 
 		// Flush display
 		SDL_RenderClear(sdl_renderer);
@@ -352,9 +359,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
 		if (!sdl_texture) {
-			Output::Debug("SDL_CreateTexture failed : %s", SDL_GetError());
+			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
+
+		renderer_sg.Dismiss();
+		window_sg.Dismiss();
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
 #ifndef EMSCRIPTEN
@@ -381,7 +391,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int a, w, h;
 
 	if (SDL_QueryTexture(sdl_texture, &sdl_pixel_fmt, &a, &w, &h) != 0) {
-		Output::Debug("SDL_QueryTexture failed : %s", SDL_GetError());
+		Output::Debug("SDL_QueryTexture failed : {}", SDL_GetError());
 		return false;
 	}
 
@@ -397,30 +407,17 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	return true;
 }
 
-#ifdef SUPPORT_FULL_SCALING
-void Sdl2Ui::Resize(long width, long height) {
-	if (mode_changing) {
-		current_display_mode.width = width;
-		current_display_mode.height = height;
-	}
-}
-#else
-void Sdl2Ui::Resize(long /*width*/, long /*height*/) {
-}
-#endif
-
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-	if (toggle_fs_available && mode_changing) {
-		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
-			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
-		else
-			current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-	}
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
+	else
+		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	EndDisplayModeChange();
 }
 
 void Sdl2Ui::ToggleZoom() {
+#ifdef SUPPORT_ZOOM
 	BeginDisplayModeChange();
 	// Work around a SDL bug which doesn't demaximize the window when the size
 	// is changed
@@ -429,30 +426,25 @@ void Sdl2Ui::ToggleZoom() {
 		SDL_RestoreWindow(sdl_window);
 	}
 
-	if (zoom_available && mode_changing) {
-		// get current window size, calculate next bigger zoom factor
-		int w, h;
-		SDL_GetWindowSize(sdl_window, &w, &h);
-		last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
-		current_display_mode.zoom = last_display_mode.zoom + 1;
+	// get current window size, calculate next bigger zoom factor
+	int w, h;
+	SDL_GetWindowSize(sdl_window, &w, &h);
+	last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
+	current_display_mode.zoom = last_display_mode.zoom + 1;
 
-		// get maximum usable window size
-		int display_index = SDL_GetWindowDisplayIndex(sdl_window);
-		SDL_Rect max_mode;
-#if SDL_VERSION_ATLEAST(2, 0, 5)
-		// this takes account of the menu bar and dock on macOS and task bar on windows
-		SDL_GetDisplayUsableBounds(display_index, &max_mode);
-#else
-		SDL_GetDisplayBounds(display_index, &max_mode);
-#endif
+	// get maximum usable window size
+	int display_index = SDL_GetWindowDisplayIndex(sdl_window);
+	SDL_Rect max_mode;
+	// this takes account of the menu bar and dock on macOS and task bar on windows
+	SDL_GetDisplayUsableBounds(display_index, &max_mode);
 
-		// reset zoom, if it does not fit
-		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
-			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
-			current_display_mode.zoom = 1;
-		}
+	// reset zoom, if it does not fit
+	if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
+		(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
+		current_display_mode.zoom = 1;
 	}
 	EndDisplayModeChange();
+#endif
 }
 
 void Sdl2Ui::ProcessEvents() {
@@ -643,12 +635,9 @@ void Sdl2Ui::ProcessMouseWheelEvent(SDL_Event& evnt) {
 
 	int amount = evnt.wheel.y;
 
-	// FIXME: Debian ships older SDL2
-#if SDL_VERSION_ATLEAST(2, 0, 4)
 	// translate direction
 	if (evnt.wheel.direction == SDL_MOUSEWHEEL_FLIPPED)
 		amount *= -1;
-#endif
 
 	keys[Input::Keys::MOUSE_SCROLLUP] = amount > 0;
 	keys[Input::Keys::MOUSE_SCROLLDOWN] = amount < 0;
@@ -789,7 +778,7 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#ifdef __WINRT__
+#if defined(__WINRT__) || defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
 	SDL_SysWMinfo wminfo;
@@ -812,6 +801,14 @@ void Sdl2Ui::SetAppIcon() {
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
+	#if defined(__APPLE__) && TARGET_OS_OSX
+		if (MacOSUtils::IsAppBundle()) {
+			// Do nothing if running as a .app. In this case macOS uses the
+			// icon packaged with the .app's resources, which is a much higher
+			// resolution version than the one that would be set below.
+			return;
+		}
+	#endif
 	/* SDL handles transfering the application icon to new or recreated windows,
 	   if initially set through it (see below). So no need to set again for all
 	   platforms relying on it. Platforms defined above need special treatment.
@@ -848,10 +845,6 @@ void Sdl2Ui::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
-}
-
-bool Sdl2Ui::IsFullscreen() {
-	return (current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)

@@ -57,7 +57,7 @@
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
 
-/** Database filename. */
+/** lcf::Database filename. */
 #define DATABASE_NAME "RPG_RT.ldb"
 #define DATABASE_NAME_EASYRPG "EASY_RT.edb"
 

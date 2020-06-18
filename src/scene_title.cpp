@@ -37,7 +37,7 @@
 #include "scene_load.h"
 #include "window_command.h"
 #include "baseui.h"
-#include "reader_util.h"
+#include <lcf/reader_util.h>
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -78,7 +78,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 }
 
 void Scene_Title::TransitionIn(SceneType prev_scene) {
-	if (Game_Battle::battle_test.enabled || !Data::system.show_title || Player::new_game_flag)
+	if (Game_Battle::battle_test.enabled || !lcf::Data::system.show_title || Player::new_game_flag)
 		return;
 
 	if (prev_scene == Scene::Load || Player::hide_title_flag) {
@@ -101,7 +101,7 @@ void Scene_Title::Update() {
 		return;
 	}
 
-	if (!Data::system.show_title || Player::new_game_flag) {
+	if (!lcf::Data::system.show_title || Player::new_game_flag) {
 		Player::SetupNewGame();
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
@@ -127,9 +127,9 @@ void Scene_Title::Update() {
 
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	if (!Data::system.title_name.empty()) {
+	if (!lcf::Data::system.title_name.empty()) {
 		title.reset(new Sprite());
-		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Title", lcf::Data::system.title_name);
 		request->SetGraphicFile(true);
 		request_id = request->Bind(&Scene_Title::OnTitleSpriteReady, this);
 		request->Start();
@@ -142,8 +142,8 @@ void Scene_Title::CreateTitleGraphic() {
 void Scene_Title::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(Data::terms.new_game);
-	options.push_back(Data::terms.load_game);
+	options.push_back(lcf::Data::terms.new_game);
+	options.push_back(lcf::Data::terms.load_game);
 
 	// Set "Import" based on metadata
 	if (Player::meta->IsImportEnabled()) {
@@ -152,7 +152,7 @@ void Scene_Title::CreateCommandWindow() {
 		exit_index = 3;
 	}
 
-	options.push_back(Data::terms.exit_game);
+	options.push_back(lcf::Data::terms.exit_game);
 
 	command_window.reset(new Window_Command(options));
 	if (!Player::hide_title_flag) {
@@ -175,7 +175,7 @@ void Scene_Title::CreateCommandWindow() {
 		command_window->SetOpenAnimation(8);
 	}
 
-	if (Player::IsRPG2k3E() && Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
+	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		command_window->SetBackOpacity(128);
 	}
 
@@ -186,18 +186,18 @@ void Scene_Title::PlayTitleMusic() {
 	// Workaround Android problem: BGM doesn't start when game is started again
 	Game_System::BgmStop();
 	// Play BGM
-	Game_System::BgmPlay(Data::system.title_music);
+	Game_System::BgmPlay(lcf::Data::system.title_music);
 }
 
 bool Scene_Title::CheckEnableTitleGraphicAndMusic() {
-	return Data::system.show_title &&
+	return lcf::Data::system.show_title &&
 		!Player::new_game_flag &&
 		!Game_Battle::battle_test.enabled &&
 		!Player::hide_title_flag;
 }
 
 bool Scene_Title::CheckValidPlayerLocation() {
-	return (Data::treemap.start.party_map_id > 0);
+	return (lcf::Data::treemap.start.party_map_id > 0);
 }
 
 void Scene_Title::PrepareBattleTest() {
@@ -205,26 +205,26 @@ void Scene_Title::PrepareBattleTest() {
 	args.troop_id = Game_Battle::battle_test.troop_id;
 	args.first_strike = false;
 	args.allow_escape = true;
-	args.background = Data::system.battletest_background;
+	args.background = lcf::Data::system.battletest_background;
 	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
 
 	if (Player::IsRPG2k3()) {
 		args.formation = Game_Battle::battle_test.formation;
 		args.condition = Game_Battle::battle_test.condition;
 
-		if (args.formation == RPG::System::BattleFormation_terrain) {
+		if (args.formation == lcf::rpg::System::BattleFormation_terrain) {
 			args.terrain_id = Game_Battle::battle_test.terrain_id;
 		}
 
-		Output::Debug("BattleTest Mode 2k3 troop=(%d) background=(%s) formation=(%d) condition=(%d) terrain=(%d)",
+		Output::Debug("BattleTest Mode 2k3 troop=({}) background=({}) formation=({}) condition=({}) terrain=({})",
 				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
 	} else {
-		Output::Debug("BattleTest Mode 2k troop=(%d) background=(%s)", args.troop_id, args.background.c_str());
+		Output::Debug("BattleTest Mode 2k troop=({}) background=({})", args.troop_id, args.background);
 	}
 
-	auto* troop = ReaderUtil::GetElement(Data::troops, args.troop_id);
+	auto* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, args.troop_id);
 	if (troop == nullptr) {
-		Output::Error("BattleTest: Invalid Monster Party ID %d", args.troop_id);
+		Output::Error("BattleTest: Invalid Monster Party ID {}", args.troop_id);
 	}
 
 	Scene::Push(Scene_Battle::Create(std::move(args)), true);

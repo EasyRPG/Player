@@ -90,22 +90,22 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 
 	switch (type) {
 	case 0:
-		name = Data::terms.attack;
+		name = lcf::Data::terms.attack;
 		value = Game_Actors::GetActor(actor_id)->GetAtk();
 		new_value = atk;
 		break;
 	case 1:
-		name = Data::terms.defense;
+		name = lcf::Data::terms.defense;
 		value = Game_Actors::GetActor(actor_id)->GetDef();
 		new_value = def;
 		break;
 	case 2:
-		name = Data::terms.spirit;
+		name = lcf::Data::terms.spirit;
 		value = Game_Actors::GetActor(actor_id)->GetSpi();
 		new_value = spi;
 		break;
 	case 3:
-		name = Data::terms.agility;
+		name = lcf::Data::terms.agility;
 		value = Game_Actors::GetActor(actor_id)->GetAgi();
 		new_value = agi;
 		break;

@@ -21,10 +21,7 @@
 // Headers
 #include <string>
 #include <iosfwd>
-
-#ifdef __MORPHOS__
-#undef Debug
-#endif
+#include <fmt/core.h>
 
 /**
  * Output Namespace.
@@ -71,32 +68,29 @@ namespace Output {
 	void IgnorePause(bool val);
 
 	/**
-	 * Displays a string with formatted string.
+	 * Displays an info string with formatted string.
 	 *
-	 * @param fmt formatted string to display.
+	 * @param fmtstr the format string
+	 * @param args formatting arguments
 	 */
-	void Post(char* fmt, ...);
+	template <typename FmtStr, typename... Args>
+	void Info(FmtStr&& fmtstr, Args&&... args);
 
 	/**
-	 * Displays a string with formatted string.
-	 *
-	 * @param fmt formatted string to display.
-	 */
-	void Post(const char* fmt, ...);
-
-	/**
-	 * Displays a string msg.
+	 * Displays an info string msg.
 	 *
 	 * @param msg string to display.
 	 */
-	void PostStr(std::string const& msg);
+	void InfoStr(std::string const& msg);
 
 	/**
 	 * Display a warning with formatted string.
 	 *
-	 * @param fmt formatted warning to display.
+	 * @param fmtstr the format string
+	 * @param args formatting arguments
 	 */
-	void Warning(const char* fmt, ...);
+	template <typename FmtStr, typename... Args>
+	void Warning(FmtStr&& fmtstr, Args&&... args);
 
 	/**
 	 * Display a warning.
@@ -109,9 +103,11 @@ namespace Output {
 	 * Raises an error message with formatted string and
 	 * closes the player afterwards.
 	 *
-	 * @param fmt formatted error to display.
+	 * @param fmtstr the format string
+	 * @param args formatting arguments
 	 */
-	[[noreturn]] void Error(const char* fmt, ...);
+	template <typename FmtStr, typename... Args>
+	[[noreturn]] void Error(FmtStr&& fmtstr, Args&&... args);
 
 	/**
 	 * Display an error message and closes the player
@@ -124,9 +120,11 @@ namespace Output {
 	/**
 	 * Prints a debug message to the console.
 	 *
-	 * @param fmt formatted debug text to display.
+	 * @param fmtstr the format string
+	 * @param args formatting arguments
 	 */
-	void Debug(const char* fmt, ...);
+	template <typename FmtStr, typename... Args>
+	void Debug(FmtStr&& fmtstr, Args&&... args);
 
 	/**
 	 * Prints a debug message to the console.
@@ -142,6 +140,26 @@ namespace Output {
 	 */
 	void WiiSetConsole();
 #endif
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Info(FmtStr&& fmtstr, Args&&... args) {
+	InfoStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Error(FmtStr&& fmtstr, Args&&... args) {
+	ErrorStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Warning(FmtStr&& fmtstr, Args&&... args) {
+	WarningStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Debug(FmtStr&& fmtstr, Args&&... args) {
+	DebugStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
 }
 
 #endif

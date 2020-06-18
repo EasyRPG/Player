@@ -17,7 +17,7 @@
 
 // Headers
 #include <cassert>
-#include "data.h"
+#include <lcf/data.h>
 #include "main_data.h"
 #include "game_system.h"
 #include "game_map.h"
@@ -32,13 +32,13 @@ const char Game_Vehicle::TypeNames[4][8] {
 	"Airship"
 };
 
-Game_Vehicle::Game_Vehicle(RPG::SaveVehicleLocation* vdata)
+Game_Vehicle::Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata)
 	: Game_Character(Vehicle, vdata)
 {
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
-	SetLayer(RPG::EventPage::Layers_same);
+	SetLayer(lcf::rpg::EventPage::Layers_same);
 	LoadSystemSettings();
 }
 
@@ -47,27 +47,27 @@ void Game_Vehicle::LoadSystemSettings() {
 		case None:
 			break;
 		case Boat:
-			SetSpriteGraphic(Data::system.boat_name, Data::system.boat_index);
-			SetMapId(Data::treemap.start.boat_map_id);
-			SetX(Data::treemap.start.boat_x);
-			SetY(Data::treemap.start.boat_y);
+			SetSpriteGraphic(lcf::Data::system.boat_name, lcf::Data::system.boat_index);
+			SetMapId(lcf::Data::treemap.start.boat_map_id);
+			SetX(lcf::Data::treemap.start.boat_x);
+			SetY(lcf::Data::treemap.start.boat_y);
 			break;
 		case Ship:
-			SetSpriteGraphic(Data::system.ship_name, Data::system.ship_index);
-			SetMapId(Data::treemap.start.ship_map_id);
-			SetX(Data::treemap.start.ship_x);
-			SetY(Data::treemap.start.ship_y);
+			SetSpriteGraphic(lcf::Data::system.ship_name, lcf::Data::system.ship_index);
+			SetMapId(lcf::Data::treemap.start.ship_map_id);
+			SetX(lcf::Data::treemap.start.ship_x);
+			SetY(lcf::Data::treemap.start.ship_y);
 			break;
 		case Airship:
-			SetSpriteGraphic(Data::system.airship_name, Data::system.airship_index);
-			SetMapId(Data::treemap.start.airship_map_id);
-			SetX(Data::treemap.start.airship_x);
-			SetY(Data::treemap.start.airship_y);
+			SetSpriteGraphic(lcf::Data::system.airship_name, lcf::Data::system.airship_index);
+			SetMapId(lcf::Data::treemap.start.airship_map_id);
+			SetX(lcf::Data::treemap.start.airship_x);
+			SetY(lcf::Data::treemap.start.airship_y);
 			break;
 	}
 }
 
-const RPG::Music& Game_Vehicle::GetBGM() {
+const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 	switch (GetVehicleType()) {
 	case None:
 		assert(false);
@@ -80,7 +80,7 @@ const RPG::Music& Game_Vehicle::GetBGM() {
 		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
 	}
 
-	static RPG::Music empty;
+	static lcf::rpg::Music empty;
 	return empty;
 }
 
@@ -96,10 +96,10 @@ void Game_Vehicle::Refresh() {
 			break;
 		case Boat:
 		case Ship:
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
+			SetMoveSpeed(lcf::rpg::EventPage::MoveSpeed_double);
 			break;
 	}
 }
@@ -271,11 +271,11 @@ const std::string& Game_Vehicle::GetOrigSpriteName() const {
 	}
 	switch (GetVehicleType()) {
 		case Boat:
-			return Data::system.boat_name;
+			return lcf::Data::system.boat_name;
 		case Ship:
-			return Data::system.ship_name;
+			return lcf::Data::system.ship_name;
 		case Airship:
-			return Data::system.airship_name;
+			return lcf::Data::system.airship_name;
 		default:
 			break;
 	}
@@ -289,11 +289,11 @@ int Game_Vehicle::GetOrigSpriteIndex() const {
 	}
 	switch (GetVehicleType()) {
 		case Boat:
-			return Data::system.boat_index;
+			return lcf::Data::system.boat_index;
 		case Ship:
-			return Data::system.ship_index;
+			return lcf::Data::system.ship_index;
 		case Airship:
-			return Data::system.airship_index;
+			return lcf::Data::system.airship_index;
 		default:
 			break;
 	}

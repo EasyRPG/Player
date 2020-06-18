@@ -17,6 +17,8 @@
 
 // Headers
 #include "game_message.h"
+#include "game_actor.h"
+#include "game_party.h"
 #include "game_player.h"
 #include "game_battle.h"
 #include "main_data.h"
@@ -24,15 +26,15 @@
 #include "font.h"
 #include "player.h"
 #include "game_variables.h"
-#include "data.h"
-#include "reader_util.h"
+#include <lcf/data.h>
+#include <lcf/reader_util.h>
 #include "output.h"
 
 #include <cctype>
 
 static Window_Message* window = nullptr;
 
-RPG::SaveSystem& data = Main_Data::game_data.system;
+lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
 	ClearFace();
@@ -196,26 +198,12 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 	return line_count;
 }
 
-bool Game_Message::CanShowMessage(bool foreground) {
-	// If there's a text already, return immediately
-	if (IsMessagePending())
-		return false;
-
-	// Forground interpreters: If the message box already started animating we wait for it to finish.
-	if (foreground && IsMessageVisible() && !window->GetAllowNextMessage())
-		return false;
-
-	// Parallel interpreters must wait until the message window is closed
-	if (!foreground && IsMessageVisible())
-		return false;
-
-	return true;
-}
-
-void Game_Message::Update() {
+AsyncOp Game_Message::Update() {
 	if (window) {
 		window->Update();
+		return window->GetAsyncOp();
 	}
+	return {};
 }
 
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
@@ -225,16 +213,17 @@ void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 }
 
 bool Game_Message::IsMessagePending() {
-	return window ? window->GetPendingMessage().IsActive() : false;
-}
-
-bool Game_Message::IsMessageVisible() {
-	return window ? window->IsVisible() : false;
+	return window ? window->IsMessagePending() : false;
 }
 
 bool Game_Message::IsMessageActive() {
-	return IsMessagePending() || IsMessageVisible();
+	return window ? !window->GetAllowNextMessage(false) : false;
 }
+
+bool Game_Message::CanShowMessage(bool foreground) {
+	return window ? window->GetAllowNextMessage(foreground) : false;
+}
+
 
 static Game_Message::ParseParamResult ParseParamImpl(
 		const char upper,
@@ -324,10 +313,12 @@ static Game_Message::ParseParamResult ParseParamImpl(
 		++iter;
 	}
 
-	// RPG_RT will replace varible substitutions that result in 0
-	// with 1 to avoid invalid actor crash.
+	// Actor 0 references the first party member
 	if (upper == 'N' && value == 0 && got_valid_number) {
-		value = 1;
+		auto* party = Main_Data::game_party.get();
+		if (party->GetBattlerCount() > 0) {
+			value = (*party)[0].GetId();
+		}
 	}
 
 	return { iter, value };

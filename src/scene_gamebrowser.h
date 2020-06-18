@@ -85,6 +85,9 @@ private:
 	bool game_loading = false;
 
 	int old_gamelist_index = 0;
+
+	/** What the state of the Player::debug_flag was at launch time */
+	bool initial_debug_flag = false;
 };
 
 #endif

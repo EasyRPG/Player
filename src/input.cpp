@@ -30,79 +30,45 @@
 #include <cassert>
 
 namespace Input {
+	/**
+	 * Start repeat time (in frames) a key has
+	 * to be maintained pressed before being
+	 * repeated for fist time.
+	 */
+	constexpr int start_repeat_time = 20;
+
+	/**
+	 * Repeat time (in frames) a key has to be
+	 * maintained pressed after the start repeat time
+	 * has passed for being repeated again.
+	 */
+	constexpr int repeat_time = 5;
+
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
 	int dir4;
 	int dir8;
-	int start_repeat_time;
-	int repeat_time;
-	std::vector<std::vector<int> > buttons;
-	std::vector<std::vector<int> > dir_buttons;
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
 }
 
-namespace {
-	bool recording_input;
-	std::ofstream record_log;
-}
-
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
-static bool InitRecording(const std::string& record_to_path) {
-	if (!record_to_path.empty()) {
-		auto path = record_to_path.c_str();
-
-		record_log.open(path, std::ios::out|std::ios::trunc);
-
-		if (!record_log) {
-			Output::Warning("Failed to open file for input recording: %s", path);
-			return false;
-		}
-	}
-	return true;
-}
-
-static std::unique_ptr<Input::Source> InitSource(const std::string& replay_from_path) {
-	std::unique_ptr<Input::Source> src;
-
-	if (!replay_from_path.empty()) {
-		auto path = replay_from_path.c_str();
-
-		std::unique_ptr<Input::LogSource> log_src(new Input::LogSource(path));
-
-		if (!*log_src) {
-			Output::Warning("Failed to open file for input replaying: %s", path);
-		} else {
-			src = std::move(log_src);
-		}
-	}
-
-	if (!src) {
-		src.reset(new Input::UiSource);
-	}
-
-	return src;
-}
-
 void Input::Init(
+	ButtonMappingArray buttons,
+	DirectionMappingArray directions,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
-	InitButtons();
-
 	std::fill(press_time.begin(), press_time.end(), 0);
 	triggered.reset();
 	repeated.reset();
 	released.reset();
 
-	start_repeat_time = 20;
-	repeat_time = 5;
-
-	source = InitSource(replay_from_path);
-	recording_input = InitRecording(record_to_path);
+	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
+	source->InitRecording(record_to_path);
 }
 
 static void UpdateButton(int i, bool pressed) {
@@ -131,39 +97,35 @@ void Input::Update() {
 	source->Update();
 	auto& pressed_buttons = source->GetPressedButtons();
 
-	if (recording_input) {
-		record_log << source->GetPressedNonSystemButtons() << '\n';
-	}
-
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
 		bool pressed = pressed_buttons[i];
 		UpdateButton(i, pressed);
 	}
 
+	auto& directions = source->GetDirectionMappings();
+
 	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
-	int dirpress[10];
+	int dirpress[Direction::NUM_DIRECTIONS] = {};
 
 	// Get max pressed time for each directional button
-	for (unsigned i = 1; i < 10; i++) {
-		dirpress[i] = 0;
-		for (unsigned e = 0; e < dir_buttons[i].size(); e++) {
-			if (dirpress[i] < press_time[dir_buttons[i][e]])
-				dirpress[i] = press_time[dir_buttons[i][e]];
-		}
+	for (auto& dm: directions) {
+		if (dirpress[dm.first] < press_time[dm.second]) {
+			dirpress[dm.first] = press_time[dm.second];
+		};
 	}
 
 	// Calculate diagonal directions pressed time by dir4 combinations
-	dirpress[1] += (dirpress[2] > 0 && dirpress[4] > 0) ? dirpress[2] + dirpress[4] : 0;
-	dirpress[3] += (dirpress[2] > 0 && dirpress[6] > 0) ? dirpress[2] + dirpress[6] : 0;
-	dirpress[7] += (dirpress[8] > 0 && dirpress[4] > 0) ? dirpress[8] + dirpress[4] : 0;
-	dirpress[9] += (dirpress[8] > 0 && dirpress[6] > 0) ? dirpress[8] + dirpress[6] : 0;
+	dirpress[Direction::DOWNLEFT] += (dirpress[Direction::DOWN] > 0 && dirpress[Direction::LEFT] > 0) ? dirpress[Direction::DOWN] + dirpress[Direction::LEFT] : 0;
+	dirpress[Direction::DOWNRIGHT] += (dirpress[Direction::DOWN] > 0 && dirpress[Direction::RIGHT] > 0) ? dirpress[Direction::DOWN] + dirpress[Direction::RIGHT] : 0;
+	dirpress[Direction::UPLEFT] += (dirpress[Direction::UP] > 0 && dirpress[Direction::LEFT] > 0) ? dirpress[Direction::UP] + dirpress[Direction::LEFT] : 0;
+	dirpress[Direction::UPRIGHT] += (dirpress[Direction::UP] > 0 && dirpress[Direction::RIGHT] > 0) ? dirpress[Direction::UP] + dirpress[Direction::RIGHT] : 0;
 
-	dir4 = 0;
-	dir8 = 0;
+	dir4 = Direction::NONE;
+	dir8 = Direction::NONE;
 
 	// Check if no opposed keys are being pressed at the same time
-	if (!(dirpress[2] > 0 && dirpress[8] > 0) && !(dirpress[4] > 0 && dirpress[6] > 0)) {
+	if (!(dirpress[Direction::DOWN] > 0 && dirpress[Direction::UP] > 0) && !(dirpress[Direction::LEFT] > 0 && dirpress[Direction::RIGHT] > 0)) {
 
 		// Get dir4 by the with lowest press time (besides 0 frames)
 		int min_press_time = 0;
@@ -180,10 +142,10 @@ void Input::Update() {
 		dir8 = dir4;
 
 		// Check diagonal directions (There is a priority order)
-		if		(dirpress[9] > 0)	dir8 = 9;
-		else if (dirpress[7] > 0)	dir8 = 7;
-		else if (dirpress[3] > 0)	dir8 = 3;
-		else if (dirpress[1] > 0)	dir8 = 1;
+		if		(dirpress[Direction::UPRIGHT] > 0)	dir8 = Direction::UPRIGHT;
+		else if (dirpress[Direction::UPLEFT] > 0)	dir8 = Direction::UPLEFT;
+		else if (dirpress[Direction::DOWNRIGHT] > 0)	dir8 = Direction::DOWNRIGHT;
+		else if (dirpress[Direction::DOWNLEFT] > 0)	dir8 = Direction::DOWNLEFT;
 	}
 }
 
@@ -209,8 +171,8 @@ void Input::ResetKeys() {
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		press_time[i] = 0;
 	}
-	dir4 = 0;
-	dir8 = 0;
+	dir4 = Direction::NONE;
+	dir8 = Direction::NONE;
 
 	// TODO: we want Input to be agnostic to where the button
 	// presses are coming from, and if there's a UI at all.

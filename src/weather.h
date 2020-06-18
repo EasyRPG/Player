@@ -40,6 +40,8 @@ public:
 
 	void OnWeatherChanged();
 
+	static int GetMaxNumParticles(int weather_type);
+
 private:
 	void DrawRain(Bitmap& dst);
 	void DrawSnow(Bitmap& dst);
@@ -49,7 +51,8 @@ private:
 	void CreateSnowParticle();
 	void CreateSandParticle();
 	void CreateFogOverlay();
-	void DrawParticles(Bitmap& dst, const Bitmap& particle, Rect rect);
+
+	void DrawParticles(Bitmap& dst, const Bitmap& particle, Rect rect, int abase, int tmax);
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay);
 	void DrawSandParticles(Bitmap& dst, const Bitmap& particle);
 	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, Rect rect);
@@ -65,6 +68,7 @@ private:
 	BitmapRef weather_surface;
 
 	Tone tone_effect;
+
 	bool tone_dirty = true;
 };
 

@@ -26,7 +26,7 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
-#include "rpg_savescreen.h"
+#include <lcf/rpg/savescreen.h>
 
 class Game_Battler;
 class Screen;
@@ -40,8 +40,8 @@ public:
 
 	void InitGraphics();
 
-	void SetSaveData(RPG::SaveScreen screen);
-	const RPG::SaveScreen& GetSaveData() const;
+	void SetSaveData(lcf::rpg::SaveScreen screen);
+	const lcf::rpg::SaveScreen& GetSaveData() const;
 
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int frames);
@@ -87,11 +87,16 @@ public:
 	int GetWeatherStrength();
 
 	struct Particle {
+		int16_t t = 0;
 		int16_t x = 0;
 		int16_t y = 0;
-		int16_t life = 0;
-		int16_t speed = 0;
-		float angle = 0.0f;
+		// These are only used for sandstorm particles.
+		// RPG_RT uses double. We use float to save space.
+		int16_t alpha = 0;
+		float vx = 0.0;
+		float vy = 0.0;
+		float ax = 0.0;
+		float ay = 0.0;
 	};
 
 	const std::vector<Particle>& GetParticles();
@@ -162,7 +167,7 @@ private:
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;
 
-	RPG::SaveScreen data;
+	lcf::rpg::SaveScreen data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
 
@@ -178,14 +183,15 @@ protected:
 	void StopWeather();
 	void UpdateRain();
 	void UpdateSnow();
-	void UpdateSand();
+	void UpdateFog();
+	void UpdateSandstorm();
 	void UpdateScreenEffects();
 	void UpdateMovie();
 	void UpdateWeather();
 	void UpdateFog(int dx, int dy);
 	void OnWeatherChanged();
-	void InitRainSnow(int lifetime);
-	void InitSand();
+
+	void InitParticles(int n);
 };
 
 inline int Game_Screen::GetPanX() const {
@@ -243,7 +249,7 @@ inline bool Game_Screen::IsBattleAnimationWaiting() {
 	return (bool)animation;
 }
 
-inline const RPG::SaveScreen& Game_Screen::GetSaveData() const {
+inline const lcf::rpg::SaveScreen& Game_Screen::GetSaveData() const {
 	return data;
 }
 

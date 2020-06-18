@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include "async_handler.h"
-#include "rpg_save.h"
+#include <lcf/rpg/save.h>
 #include "sprite.h"
 
 class Sprite;
@@ -34,8 +34,8 @@ class Game_Pictures {
 public:
 	Game_Pictures() = default;
 
-	void SetSaveData(std::vector<RPG::SavePicture> save);
-	std::vector<RPG::SavePicture> GetSaveData() const;
+	void SetSaveData(std::vector<lcf::rpg::SavePicture> save);
+	std::vector<lcf::rpg::SavePicture> GetSaveData() const;
 
 	void InitGraphics();
 
@@ -87,9 +87,9 @@ public:
 private:
 	struct Picture {
 		Picture(int id) { data.ID = id; }
-		Picture(RPG::SavePicture data);
+		Picture(lcf::rpg::SavePicture data);
 
-		RPG::SavePicture data;
+		lcf::rpg::SavePicture data;
 		std::unique_ptr<Sprite> sprite;
 		FileRequestBinding request_id;
 		int last_spritesheet_frame = 0;
@@ -103,7 +103,6 @@ private:
 		int NumSpriteSheetFrames() const;
 
 		void SetNonEffectParams(const Params& params, bool set_positions);
-		void SyncCurrentToFinish();
 
 		bool Show(const ShowParams& params);
 		void Move(const MoveParams& params);

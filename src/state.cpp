@@ -16,29 +16,29 @@
  */
 
 #include "state.h"
-#include "reader_util.h"
-#include "data.h"
+#include <lcf/reader_util.h>
+#include <lcf/data.h>
 #include "output.h"
 #include <cassert>
 
 namespace State {
 
 bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_battle_states) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 	if (!state) {
-		Output::Warning("State::Add: Can't add state with invalid ID %d", state_id);
+		Output::Warning("State::Add: Can't add state with invalid ID {}", state_id);
 		return false;
 	}
 
-	if (Has(RPG::State::kDeathID, states)) {
+	if (Has(lcf::rpg::State::kDeathID, states)) {
 		return false;
 	}
 
-	if (!allow_battle_states && state->type == RPG::State::Persistence_ends) {
+	if (!allow_battle_states && state->type == lcf::rpg::State::Persistence_ends) {
 		return false;
 	}
 
-	if (state_id == RPG::State::kDeathID) {
+	if (state_id == lcf::rpg::State::kDeathID) {
 		RemoveAll(states, ps);
 	}
 
@@ -50,10 +50,10 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 
 	// Clear states that are more than 10 priority points below the
 	// significant state
-	const RPG::State* sig_state = GetSignificantState(states);
+	const lcf::rpg::State* sig_state = GetSignificantState(states);
 
 	for (int i = 0; i < (int)states.size(); ++i) {
-		if (Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
+		if (lcf::Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
 			states[i] = 0;
 		}
 	}
@@ -62,9 +62,9 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 }
 
 bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 	if (!state) {
-		Output::Warning("State::Remove: Can't remove state with invalid ID %d", state_id);
+		Output::Warning("State::Remove: Can't remove state with invalid ID {}", state_id);
 		return false;
 	}
 
@@ -86,20 +86,20 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 	return true;
 }
 
-void RemoveAllBattle(StateVec& states) {
+void RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::RemoveAllBattle: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
-		if (state->type != RPG::State::Persistence_ends) {
-			continue;
+		if (state->type == lcf::rpg::State::Persistence_persists) {
+			if (state->auto_release_prob == 0 || ps.Has(state_id)) {
+				continue;
+			}
 		}
-		if (state->auto_release_prob > 0) {
-			Remove(state_id, states, {});
-		}
+		Remove(state_id, states, {});
 	}
 }
 
@@ -112,10 +112,10 @@ void RemoveAll(StateVec& states, const PermanentStates& ps) {
 	}
 }
 
-RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {
+lcf::rpg::State::Restriction GetSignificantRestriction(const StateVec& states) {
 	// Priority is nomove > attack enemy > attack ally > normal
 
-	RPG::State::Restriction sig_res = RPG::State::Restriction_normal;
+	lcf::rpg::State::Restriction sig_res = lcf::rpg::State::Restriction_normal;
 
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
@@ -124,26 +124,26 @@ RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {
 			continue;
 		}
 
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::GetSignificantRestriction: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::GetSignificantRestriction: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
 
 		switch (state->restriction) {
-			case RPG::State::Restriction_normal:
+			case lcf::rpg::State::Restriction_normal:
 				break;
-			case RPG::State::Restriction_do_nothing:
-				return RPG::State::Restriction_do_nothing;
-			case RPG::State::Restriction::Restriction_attack_enemy:
-				if (sig_res == RPG::State::Restriction::Restriction_attack_ally
-						|| sig_res == RPG::State::Restriction_normal) {
-					sig_res = RPG::State::Restriction_attack_enemy;
+			case lcf::rpg::State::Restriction_do_nothing:
+				return lcf::rpg::State::Restriction_do_nothing;
+			case lcf::rpg::State::Restriction::Restriction_attack_enemy:
+				if (sig_res == lcf::rpg::State::Restriction::Restriction_attack_ally
+						|| sig_res == lcf::rpg::State::Restriction_normal) {
+					sig_res = lcf::rpg::State::Restriction_attack_enemy;
 				}
 				break;
-			case RPG::State::Restriction::Restriction_attack_ally:
-				if (sig_res == RPG::State::Restriction_normal) {
-					sig_res = RPG::State::Restriction_attack_ally;
+			case lcf::rpg::State::Restriction::Restriction_attack_ally:
+				if (sig_res == lcf::rpg::State::Restriction_normal) {
+					sig_res = lcf::rpg::State::Restriction_attack_ally;
 				}
 				break;
 		}
@@ -152,9 +152,9 @@ RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {
 	return sig_res;
 
 }
-const RPG::State* GetSignificantState(const StateVec& states) {
+const lcf::rpg::State* GetSignificantState(const StateVec& states) {
 	int priority = 0;
-	const RPG::State* sig_state = NULL;
+	const lcf::rpg::State* sig_state = NULL;
 
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
@@ -163,14 +163,14 @@ const RPG::State* GetSignificantState(const StateVec& states) {
 			continue;
 		}
 
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state == nullptr) {
-			Output::Warning("State::GetSignificantState: Can't remove state with invalid ID %d", state_id);
+			Output::Warning("State::GetSignificantState: Can't remove state with invalid ID {}", state_id);
 			continue;
 		}
 
 		// Death has highest priority
-		if (state->ID == RPG::State::kDeathID) {
+		if (state->ID == lcf::rpg::State::kDeathID) {
 			return state;
 		}
 
@@ -185,10 +185,10 @@ const RPG::State* GetSignificantState(const StateVec& states) {
 }
 
 int GetStateRate(int state_id, int rate) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 
 	if (!state) {
-		Output::Warning("State::GetStateRate: Invalid state ID %d", state_id);
+		Output::Warning("State::GetStateRate: Invalid state ID {}", state_id);
 		return 0;
 	}
 

@@ -24,20 +24,21 @@
 #include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
-#include "rpg_eventcommand.h"
+#include <lcf/rpg/eventcommand.h>
 #include "system.h"
-#include "command_codes.h"
-#include "rpg_saveeventexecstate.h"
-#include "flag_set.h"
+#include <lcf/rpg/saveeventexecstate.h>
+#include <lcf/flag_set.h>
 #include "async_op.h"
 
 class Game_Event;
 class Game_CommonEvent;
 class PendingMessage;
 
-namespace RPG {
+namespace lcf {
+namespace rpg {
 	class EventPage;
-}
+} // namespace rpg
+} // namespace lcf
 
 /**
  * Game_Interpreter class
@@ -45,6 +46,8 @@ namespace RPG {
 class Game_Interpreter
 {
 public:
+	using Cmd = lcf::rpg::EventCommand::Code;
+
 	static Game_Interpreter& GetForegroundInterpreter();
 
 	Game_Interpreter(bool _main_flag = false);
@@ -64,11 +67,12 @@ public:
 	void Update(bool reset_loop_count=true);
 
 	void Push(
-			const std::vector<RPG::EventCommand>& _list,
+			const std::vector<lcf::rpg::EventCommand>& _list,
 			int _event_id,
 			bool started_by_decision_key = false
 	);
 	void Push(Game_Event* ev);
+	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
@@ -82,7 +86,7 @@ public:
 	 *
 	 * @return interpreter commands stored in SaveEventCommands
 	 */
-	RPG::SaveEventExecState GetState() const;
+	lcf::rpg::SaveEventExecState GetState() const;
 
 	/** @return the event_id of the current frame */
 	int GetCurrentEventId() const;
@@ -104,10 +108,10 @@ protected:
 	static constexpr int call_stack_limit = 1000;
 	static constexpr int subcommand_sentinel = 255;
 
-	const RPG::SaveEventExecFrame& GetFrame() const;
-	RPG::SaveEventExecFrame& GetFrame();
-	const RPG::SaveEventExecFrame* GetFramePtr() const;
-	RPG::SaveEventExecFrame* GetFramePtr();
+	const lcf::rpg::SaveEventExecFrame& GetFrame() const;
+	lcf::rpg::SaveEventExecFrame& GetFrame();
+	const lcf::rpg::SaveEventExecFrame* GetFramePtr() const;
+	lcf::rpg::SaveEventExecFrame* GetFramePtr();
 
 	bool main_flag;
 
@@ -142,7 +146,7 @@ protected:
 	 * @param codes which codes to check.
 	 * @param indent the indentation level to check
 	 */
-	void SkipToNextConditional(std::initializer_list<int> codes, int indent);
+	void SkipToNextConditional(std::initializer_list<Cmd> codes, int indent);
 
 	/**
 	 * Sets up a wait (and closes the message box)
@@ -170,93 +174,93 @@ protected:
 	 */
 	bool CheckGameOver();
 
-	bool CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next);
+	bool CommandOptionGeneric(lcf::rpg::EventCommand const& com, int option_sub_idx, std::initializer_list<Cmd> next);
 
-	bool CommandShowMessage(RPG::EventCommand const& com);
-	bool CommandMessageOptions(RPG::EventCommand const& com);
-	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
-	bool CommandShowChoices(RPG::EventCommand const& com);
-	bool CommandShowChoiceOption(RPG::EventCommand const& com);
-	bool CommandShowChoiceEnd(RPG::EventCommand const& com);
-	bool CommandInputNumber(RPG::EventCommand const& com);
-	bool CommandControlSwitches(RPG::EventCommand const& com);
-	bool CommandControlVariables(RPG::EventCommand const& com);
-	bool CommandTimerOperation(RPG::EventCommand const& com);
-	bool CommandChangeGold(RPG::EventCommand const& com);
-	bool CommandChangeItems(RPG::EventCommand const& com);
-	bool CommandChangePartyMember(RPG::EventCommand const& com);
-	bool CommandChangeExp(RPG::EventCommand const& com);
-	bool CommandChangeLevel(RPG::EventCommand const& com);
-	bool CommandChangeParameters(RPG::EventCommand const& com);
-	bool CommandChangeSkills(RPG::EventCommand const& com);
-	bool CommandChangeEquipment(RPG::EventCommand const& com);
-	bool CommandChangeHP(RPG::EventCommand const& com);
-	bool CommandChangeSP(RPG::EventCommand const& com);
-	bool CommandChangeCondition(RPG::EventCommand const& com);
-	bool CommandFullHeal(RPG::EventCommand const& com);
-	bool CommandSimulatedAttack(RPG::EventCommand const& com);
-	bool CommandWait(RPG::EventCommand const& com);
-	bool CommandPlayBGM(RPG::EventCommand const& com);
-	bool CommandFadeOutBGM(RPG::EventCommand const& com);
-	bool CommandPlaySound(RPG::EventCommand const& com);
-	bool CommandEndEventProcessing(RPG::EventCommand const& com);
-	bool CommandGameOver(RPG::EventCommand const& com);
-	bool CommandChangeHeroName(RPG::EventCommand const& com);
-	bool CommandChangeHeroTitle(RPG::EventCommand const& com);
-	bool CommandChangeSpriteAssociation(RPG::EventCommand const& com);
-	bool CommandChangeActorFace(RPG::EventCommand const& com);
-	bool CommandChangeVehicleGraphic(RPG::EventCommand const& com);
-	bool CommandChangeSystemBGM(RPG::EventCommand const& com);
-	bool CommandChangeSystemSFX(RPG::EventCommand const& com);
-	bool CommandChangeSystemGraphics(RPG::EventCommand const& com);
-	bool CommandChangeScreenTransitions(RPG::EventCommand const& com);
-	bool CommandMemorizeLocation(RPG::EventCommand const& com);
-	bool CommandSetVehicleLocation(RPG::EventCommand const& com);
-	bool CommandChangeEventLocation(RPG::EventCommand const& com);
-	bool CommandTradeEventLocations(RPG::EventCommand const& com);
-	bool CommandStoreTerrainID(RPG::EventCommand const& com);
-	bool CommandStoreEventID(RPG::EventCommand const& com);
-	bool CommandEraseScreen(RPG::EventCommand const& com);
-	bool CommandShowScreen(RPG::EventCommand const& com);
-	bool CommandTintScreen(RPG::EventCommand const& com);
-	bool CommandFlashScreen(RPG::EventCommand const& com);
-	bool CommandShakeScreen(RPG::EventCommand const& com);
-	bool CommandWeatherEffects(RPG::EventCommand const& com);
-	bool CommandShowPicture(RPG::EventCommand const& com);
-	bool CommandMovePicture(RPG::EventCommand const& com);
-	bool CommandErasePicture(RPG::EventCommand const& com);
-	bool CommandSpriteTransparency(RPG::EventCommand const& com);
-	bool CommandMoveEvent(RPG::EventCommand const& com);
-	bool CommandMemorizeBGM(RPG::EventCommand const& com);
-	bool CommandPlayMemorizedBGM(RPG::EventCommand const& com);
-	bool CommandKeyInputProc(RPG::EventCommand const& com);
-	bool CommandChangeMapTileset(RPG::EventCommand const& com);
-	bool CommandChangePBG(RPG::EventCommand const& com);
-	bool CommandChangeEncounterRate(RPG::EventCommand const& com);
-	bool CommandTileSubstitution(RPG::EventCommand const& com);
-	bool CommandTeleportTargets(RPG::EventCommand const& com);
-	bool CommandChangeTeleportAccess(RPG::EventCommand const& com);
-	bool CommandEscapeTarget(RPG::EventCommand const& com);
-	bool CommandChangeEscapeAccess(RPG::EventCommand const& com);
-	bool CommandChangeSaveAccess(RPG::EventCommand const& com);
-	bool CommandChangeMainMenuAccess(RPG::EventCommand const& com);
-	bool CommandConditionalBranch(RPG::EventCommand const& com);
-	bool CommandElseBranch(RPG::EventCommand const& com);
-	bool CommandEndBranch(RPG::EventCommand const& com);
-	bool CommandJumpToLabel(RPG::EventCommand const& com);
-	bool CommandBreakLoop(RPG::EventCommand const& com);
-	bool CommandEndLoop(RPG::EventCommand const& com);
-	bool CommandEraseEvent(RPG::EventCommand const& com);
-	bool CommandCallEvent(RPG::EventCommand const& com);
-	bool CommandReturnToTitleScreen(RPG::EventCommand const& com);
-	bool CommandChangeClass(RPG::EventCommand const& com);
-	bool CommandChangeBattleCommands(RPG::EventCommand const& com);
-	bool CommandExitGame(RPG::EventCommand const& com);
-	bool CommandToggleFullscreen(RPG::EventCommand const& com);
+	bool CommandShowMessage(lcf::rpg::EventCommand const& com);
+	bool CommandMessageOptions(lcf::rpg::EventCommand const& com);
+	bool CommandChangeFaceGraphic(lcf::rpg::EventCommand const& com);
+	bool CommandShowChoices(lcf::rpg::EventCommand const& com);
+	bool CommandShowChoiceOption(lcf::rpg::EventCommand const& com);
+	bool CommandShowChoiceEnd(lcf::rpg::EventCommand const& com);
+	bool CommandInputNumber(lcf::rpg::EventCommand const& com);
+	bool CommandControlSwitches(lcf::rpg::EventCommand const& com);
+	bool CommandControlVariables(lcf::rpg::EventCommand const& com);
+	bool CommandTimerOperation(lcf::rpg::EventCommand const& com);
+	bool CommandChangeGold(lcf::rpg::EventCommand const& com);
+	bool CommandChangeItems(lcf::rpg::EventCommand const& com);
+	bool CommandChangePartyMember(lcf::rpg::EventCommand const& com);
+	bool CommandChangeExp(lcf::rpg::EventCommand const& com);
+	bool CommandChangeLevel(lcf::rpg::EventCommand const& com);
+	bool CommandChangeParameters(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSkills(lcf::rpg::EventCommand const& com);
+	bool CommandChangeEquipment(lcf::rpg::EventCommand const& com);
+	bool CommandChangeHP(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSP(lcf::rpg::EventCommand const& com);
+	bool CommandChangeCondition(lcf::rpg::EventCommand const& com);
+	bool CommandFullHeal(lcf::rpg::EventCommand const& com);
+	bool CommandSimulatedAttack(lcf::rpg::EventCommand const& com);
+	bool CommandWait(lcf::rpg::EventCommand const& com);
+	bool CommandPlayBGM(lcf::rpg::EventCommand const& com);
+	bool CommandFadeOutBGM(lcf::rpg::EventCommand const& com);
+	bool CommandPlaySound(lcf::rpg::EventCommand const& com);
+	bool CommandEndEventProcessing(lcf::rpg::EventCommand const& com);
+	bool CommandGameOver(lcf::rpg::EventCommand const& com);
+	bool CommandChangeHeroName(lcf::rpg::EventCommand const& com);
+	bool CommandChangeHeroTitle(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSpriteAssociation(lcf::rpg::EventCommand const& com);
+	bool CommandChangeActorFace(lcf::rpg::EventCommand const& com);
+	bool CommandChangeVehicleGraphic(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSystemBGM(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSystemSFX(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com);
+	bool CommandChangeScreenTransitions(lcf::rpg::EventCommand const& com);
+	bool CommandMemorizeLocation(lcf::rpg::EventCommand const& com);
+	bool CommandSetVehicleLocation(lcf::rpg::EventCommand const& com);
+	bool CommandChangeEventLocation(lcf::rpg::EventCommand const& com);
+	bool CommandTradeEventLocations(lcf::rpg::EventCommand const& com);
+	bool CommandStoreTerrainID(lcf::rpg::EventCommand const& com);
+	bool CommandStoreEventID(lcf::rpg::EventCommand const& com);
+	bool CommandEraseScreen(lcf::rpg::EventCommand const& com);
+	bool CommandShowScreen(lcf::rpg::EventCommand const& com);
+	bool CommandTintScreen(lcf::rpg::EventCommand const& com);
+	bool CommandFlashScreen(lcf::rpg::EventCommand const& com);
+	bool CommandShakeScreen(lcf::rpg::EventCommand const& com);
+	bool CommandWeatherEffects(lcf::rpg::EventCommand const& com);
+	bool CommandShowPicture(lcf::rpg::EventCommand const& com);
+	bool CommandMovePicture(lcf::rpg::EventCommand const& com);
+	bool CommandErasePicture(lcf::rpg::EventCommand const& com);
+	bool CommandSpriteTransparency(lcf::rpg::EventCommand const& com);
+	bool CommandMoveEvent(lcf::rpg::EventCommand const& com);
+	bool CommandMemorizeBGM(lcf::rpg::EventCommand const& com);
+	bool CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& com);
+	bool CommandKeyInputProc(lcf::rpg::EventCommand const& com);
+	bool CommandChangeMapTileset(lcf::rpg::EventCommand const& com);
+	bool CommandChangePBG(lcf::rpg::EventCommand const& com);
+	bool CommandChangeEncounterRate(lcf::rpg::EventCommand const& com);
+	bool CommandTileSubstitution(lcf::rpg::EventCommand const& com);
+	bool CommandTeleportTargets(lcf::rpg::EventCommand const& com);
+	bool CommandChangeTeleportAccess(lcf::rpg::EventCommand const& com);
+	bool CommandEscapeTarget(lcf::rpg::EventCommand const& com);
+	bool CommandChangeEscapeAccess(lcf::rpg::EventCommand const& com);
+	bool CommandChangeSaveAccess(lcf::rpg::EventCommand const& com);
+	bool CommandChangeMainMenuAccess(lcf::rpg::EventCommand const& com);
+	bool CommandConditionalBranch(lcf::rpg::EventCommand const& com);
+	bool CommandElseBranch(lcf::rpg::EventCommand const& com);
+	bool CommandEndBranch(lcf::rpg::EventCommand const& com);
+	bool CommandJumpToLabel(lcf::rpg::EventCommand const& com);
+	bool CommandBreakLoop(lcf::rpg::EventCommand const& com);
+	bool CommandEndLoop(lcf::rpg::EventCommand const& com);
+	bool CommandEraseEvent(lcf::rpg::EventCommand const& com);
+	bool CommandCallEvent(lcf::rpg::EventCommand const& com);
+	bool CommandReturnToTitleScreen(lcf::rpg::EventCommand const& com);
+	bool CommandChangeClass(lcf::rpg::EventCommand const& com);
+	bool CommandChangeBattleCommands(lcf::rpg::EventCommand const& com);
+	bool CommandExitGame(lcf::rpg::EventCommand const& com);
+	bool CommandToggleFullscreen(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
-	RPG::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
+	lcf::rpg::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
 
 	void SetSubcommandIndex(int indent, int idx);
 	uint8_t& ReserveSubcommandIndex(int indent);
@@ -279,7 +283,7 @@ protected:
 	};
 
 	struct KeyInputState {
-		FlagSet<Keys> keys = {};
+		lcf::FlagSet<Keys> keys = {};
 		int variable = 0;
 		int time_variable = 0;
 		int wait_frames = 0;
@@ -287,30 +291,30 @@ protected:
 		bool timed = false;
 
 		int CheckInput() const;
-		void fromSave(const RPG::SaveEventExecState& save);
-		void toSave(RPG::SaveEventExecState& save) const;
+		void fromSave(const lcf::rpg::SaveEventExecState& save);
+		void toSave(lcf::rpg::SaveEventExecState& save) const;
 	};
 
-	RPG::SaveEventExecState _state;
+	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 };
 
-inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {
+inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
 }
 
-inline RPG::SaveEventExecFrame* Game_Interpreter::GetFramePtr() {
+inline lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
 }
 
-inline const RPG::SaveEventExecFrame& Game_Interpreter::GetFrame() const {
+inline const lcf::rpg::SaveEventExecFrame& Game_Interpreter::GetFrame() const {
 	auto* frame = GetFramePtr();
 	assert(frame);
 	return *frame;
 }
 
-inline RPG::SaveEventExecFrame& Game_Interpreter::GetFrame() {
+inline lcf::rpg::SaveEventExecFrame& Game_Interpreter::GetFrame() {
 	auto* frame = GetFramePtr();
 	assert(frame);
 	return *frame;

@@ -45,7 +45,7 @@ public:
 	 *
 	 * @return current selected skill.
 	 */
-	const RPG::Skill* GetSkill() const;
+	const lcf::rpg::Skill* GetSkill() const;
 
 	/**
 	 * Refreshes the skill list.

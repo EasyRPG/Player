@@ -21,7 +21,7 @@
 // Headers
 #include <vector>
 #include "game_actor.h"
-#include "rpg_saveactor.h"
+#include <lcf/rpg/saveactor.h>
 
 /**
  * Game_Actors namespace.
@@ -58,6 +58,11 @@ namespace Game_Actors {
 	 * @return whether the actor exists.
 	 */
 	bool ActorExists(int actor_id);
+
+	/**
+	 * Resets battle modifiers of all actors.
+	 */
+	void ResetBattle();
 }
 
 #endif

@@ -59,7 +59,7 @@ public:
 	 *
 	 * @param title the savegame party data to set.
 	 */
-	void SetParty(RPG::SaveTitle title);
+	void SetParty(lcf::rpg::SaveTitle title);
 
 	/**
 	 * Gets if the slot holds a valid save.
@@ -90,7 +90,7 @@ protected:
 	int index = 0;
 	std::string override_name;
 	int override_index = 0;
-	RPG::SaveTitle data;
+	lcf::rpg::SaveTitle data;
 	bool corrupted = false;
 	bool has_save = false;
 	bool has_party = false;

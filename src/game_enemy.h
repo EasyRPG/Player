@@ -20,12 +20,12 @@
 
 // Headers
 #include "game_battler.h"
-#include "rpg_enemy.h"
+#include <lcf/rpg/enemy.h>
 
 /**
  * Represents a single enemy in the battle scene
  */
-class Game_Enemy : public Game_Battler
+class Game_Enemy final : public Game_Battler
 {
 public:
 	Game_Enemy(int enemy_id);
@@ -153,8 +153,6 @@ public:
 	int GetSp() const override;
 	void SetSp(int _sp) override;
 
-	void SetHidden(bool _hidden);
-	bool IsHidden() const override;
 	void Transform(int new_enemy_id);
 
 	int GetHitChance() const override;
@@ -188,8 +186,9 @@ public:
 
 	BattlerType GetType() const override;
 
-	bool IsActionValid(const RPG::EnemyAction& action);
-	const RPG::EnemyAction* ChooseRandomAction();
+	bool IsActionValid(const lcf::rpg::EnemyAction& action);
+	const lcf::rpg::EnemyAction* ChooseRandomAction();
+	bool IsInParty() const override;
 
 protected:
 	void Setup(int enemy_id);
@@ -206,10 +205,107 @@ protected:
 	int flying_offset;
 	std::vector<int16_t> states;
 
-	RPG::Enemy* enemy;
+	lcf::rpg::Enemy* enemy;
 
 	// normal attack instance for use after charge
-	RPG::EnemyAction normal_atk;
+	lcf::rpg::EnemyAction normal_atk;
 };
+
+inline Game_Battler::BattlerType Game_Enemy::GetType() const {
+	return Game_Battler::Type_Enemy;
+}
+
+inline int Game_Enemy::GetExp() const {
+	return enemy->exp;
+}
+
+inline int Game_Enemy::GetMoney() const {
+	return enemy->gold;
+}
+
+inline int Game_Enemy::GetDropId() const {
+	return enemy->drop_id;
+}
+
+inline int Game_Enemy::GetDropProbability() const {
+	return enemy->drop_prob;
+}
+
+inline bool Game_Enemy::IsTransparent() const {
+	return enemy->transparent;
+}
+
+inline int Game_Enemy::GetBattleAnimationId() const {
+	return 0;
+}
+
+inline void Game_Enemy::SetBattleX(int new_x) {
+	x = new_x;
+}
+
+inline void Game_Enemy::SetBattleY(int new_y) {
+	y = new_y;
+}
+
+inline int Game_Enemy::GetHue() const {
+	return enemy->battler_hue;
+}
+
+inline int Game_Enemy::GetId() const {
+	return enemy_id;
+}
+
+inline int Game_Enemy::GetBaseMaxHp() const {
+	return enemy->max_hp;
+}
+
+inline int Game_Enemy::GetBaseMaxSp() const {
+	return enemy->max_sp;
+}
+
+inline int Game_Enemy::GetBaseAtk() const {
+	return enemy->attack;
+}
+
+inline int Game_Enemy::GetBaseDef() const {
+	return enemy->defense;
+}
+
+inline int Game_Enemy::GetBaseSpi() const {
+	return enemy->spirit;
+}
+
+inline int Game_Enemy::GetBaseAgi() const {
+	return enemy->agility;
+}
+
+inline int Game_Enemy::GetHp() const {
+	return hp;
+}
+
+inline int Game_Enemy::GetSp() const {
+	return sp;
+}
+
+inline const std::vector<int16_t>& Game_Enemy::GetStates() const {
+	return states;
+}
+
+inline std::vector<int16_t>& Game_Enemy::GetStates() {
+	return states;
+}
+
+inline const std::string& Game_Enemy::GetName() const {
+	return enemy->name;
+}
+
+inline const std::string& Game_Enemy::GetSpriteName() const {
+	return enemy->battler_name;
+}
+
+inline bool Game_Enemy::IsInParty() const {
+	// Enemies can never be removed from enemy party
+	return true;
+}
 
 #endif

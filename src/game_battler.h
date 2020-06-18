@@ -21,11 +21,12 @@
 // Headers
 #include <string>
 #include <vector>
-#include "rpg_state.h"
+#include <lcf/rpg/state.h>
 #include "system.h"
 #include "state.h"
 #include "color.h"
 #include "flash.h"
+#include "utils.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -100,7 +101,7 @@ public:
 	 *
 	 * @return First non-normal restriction or normal if not restricted
 	 */
-	RPG::State::Restriction GetSignificantRestriction() const;
+	lcf::rpg::State::Restriction GetSignificantRestriction() const;
 
 	/**
 	 * Gets the Battler ID.
@@ -117,12 +118,20 @@ public:
 	bool CanAct() const;
 
 	/**
+	 * Tests if the battler has a "No Action" condition which does not auto recover.
+	 * If all actors have these conditions, the battle is lost.
+	 *
+	 * @return true if actor can act or if they cannot act but the state is auto recoverable
+	 */
+	bool CanActOrRecoverable() const;
+
+	/**
 	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
 	 *         Returns nullptr if no states.
 	 */
-	const RPG::State* GetSignificantState() const;
+	const lcf::rpg::State* GetSignificantState() const;
 
 	/**
 	 * Gets the state probability by rate (A-E).
@@ -344,8 +353,12 @@ public:
 	 */
 	virtual int GetBaseAgi() const = 0;
 
-	virtual bool IsHidden() const;
+	void SetHidden(bool hidden);
+	bool IsHidden() const;
 	virtual bool IsImmortal() const;
+
+	/** @return true if this battler is in it's party */
+	virtual bool IsInParty() const = 0;
 
 	virtual bool Exists() const;
 	bool IsDead() const;
@@ -554,35 +567,35 @@ public:
 	Game_Party_Base& GetParty() const;
 
 	/**
-	 * Gets the maximal gauge value.
+	 * Gets the maximal atb gauge value.
+	 * When GetAtbGauge() >= this, the battler can act.
+	 * Used by RPG2k3 battle system.
  	 */
-	int GetMaxGauge() const;
+	static constexpr int GetMaxAtbGauge();
 
 	/**
-	 * Gets the current state of the battle gauge in percent.
+	 * Gets the current value of the atb gauge.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @return gauge in percent
+	 * @return atb gauge value
 	 */
-	int GetGauge() const;
+	int GetAtbGauge() const;
 
 	/**
-	 * Sets the gauge to a new percentage in range 0-100
+	 * Sets the gauge to the specified value.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @param new_gauge new gauge value in percent
+	 * @param value the new value to set
 	 */
-	void SetGauge(int new_gauge);
+	void SetAtbGauge(int value);
 
 	/**
-	 * Increments the gauge by current agi.
-	 * The size of the step is altered by the multiplier (usually based on
-	 * the highest agi of all battlers)
+	 * Increments the gauge by specified amount.
 	 * Used by RPG2k3 battle system.
 	 *
-	 * @param multiplier gauge increment factor
+	 * @param value the value to add
 	 */
-	void UpdateGauge(int multiplier);
+	void IncrementAtbGauge(int value);
 
 	/**
 	 * Tests if the battler is ready for an action.
@@ -590,7 +603,7 @@ public:
 	 *
 	 * @return If gauge is full
 	 */
-	bool IsGaugeFull() const;
+	bool IsAtbGaugeFull() const;
 
 	/**
 	 * @return Offset of flying enemies
@@ -683,13 +696,11 @@ public:
 
 protected:
 	/** Gauge for RPG2k3 Battle */
-	int gauge;
+	int gauge = 0;
 
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
 
-	bool defending = false;
-	bool charged;
 	int atk_modifier;
 	int def_modifier;
 	int spi_modifier;
@@ -698,6 +709,9 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+	bool defending = false;
+	bool charged = false;
+	bool hidden = false;
 
 	std::vector<int> attribute_shift;
 
@@ -723,6 +737,156 @@ protected:
 
 inline Color Game_Battler::GetFlashColor() const {
 	return Flash::MakeColor(flash.red, flash.green, flash.blue, flash.current_level);
+}
+
+inline void Game_Battler::Kill() {
+	ChangeHp(-GetHp());
+}
+
+inline bool Game_Battler::IsDead() const {
+	return HasState(lcf::rpg::State::kDeathID);
+}
+
+inline bool Game_Battler::Exists() const {
+	return !IsHidden() && !IsDead() && IsInParty();
+}
+
+inline void Game_Battler::SetAtkModifier(int modifier) {
+	atk_modifier = modifier;
+}
+
+inline void Game_Battler::SetDefModifier(int modifier) {
+	def_modifier = modifier;
+}
+
+inline void Game_Battler::SetSpiModifier(int modifier) {
+	spi_modifier = modifier;
+}
+
+inline void Game_Battler::SetAgiModifier(int modifier) {
+	agi_modifier = modifier;
+}
+
+inline void Game_Battler::ChangeAtkModifier(int modifier) {
+	SetAtkModifier(atk_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeDefModifier(int modifier) {
+	SetDefModifier(def_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeSpiModifier(int modifier) {
+	SetSpiModifier(spi_modifier + modifier);
+}
+
+inline void Game_Battler::ChangeAgiModifier(int modifier) {
+	SetAgiModifier(agi_modifier + modifier);
+}
+
+inline bool Game_Battler::IsCharged() const {
+	return charged;
+}
+
+inline void Game_Battler::SetCharged(bool charge) {
+	charged = charge;
+}
+
+inline bool Game_Battler::IsDefending() const {
+	return defending;
+}
+
+inline void Game_Battler::SetIsDefending(bool val) {
+	defending = val;
+}
+
+inline bool Game_Battler::HasStrongDefense() const {
+	return false;
+}
+
+inline bool Game_Battler::HasPreemptiveAttack() const {
+	return false;
+}
+
+inline void Game_Battler::SetHidden(bool _hidden) {
+	hidden = _hidden;
+}
+
+inline bool Game_Battler::IsHidden() const {
+	return hidden;
+}
+
+inline bool Game_Battler::IsImmortal() const {
+	return false;
+}
+
+inline int Game_Battler::GetHue() const {
+	return 0;
+}
+
+constexpr int Game_Battler::GetMaxAtbGauge() {
+	return 300000;
+}
+
+inline void Game_Battler::SetAtbGauge(int value) {
+	gauge = Utils::Clamp(value, 0, GetMaxAtbGauge());
+}
+
+inline int Game_Battler::GetAtbGauge() const {
+	return gauge;
+}
+
+inline void Game_Battler::IncrementAtbGauge(int amount) {
+	SetAtbGauge(GetAtbGauge() + amount);
+}
+
+inline bool Game_Battler::IsAtbGaugeFull() const {
+	return gauge >= GetMaxAtbGauge();
+}
+
+inline int Game_Battler::GetFlyingOffset() const {
+	return 0;
+}
+
+inline const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
+	return battle_algorithm;
+}
+
+inline void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
+	this->battle_algorithm = battle_algorithm;
+}
+
+inline void Game_Battler::NextBattleTurn() {
+	++battle_turn;
+}
+
+inline int Game_Battler::GetBattleTurn() const {
+	return battle_turn;
+}
+
+inline void Game_Battler::SetLastBattleAction(int battle_action) {
+	last_battle_action = battle_action;
+}
+
+inline int Game_Battler::GetLastBattleAction() const {
+	return last_battle_action;
+}
+
+inline void Game_Battler::SetBattleCombo(int command_id, int times) {
+	battle_combo_command_id = command_id;
+	battle_combo_times = times;
+}
+
+inline void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
+	command_id = battle_combo_command_id;
+	times = battle_combo_times;
+}
+
+inline void Game_Battler::SetBattleOrderAgi(int val) {
+	battle_order = val;
+}
+
+inline int Game_Battler::GetBattleOrderAgi() {
+	return battle_order;
 }
 
 #endif

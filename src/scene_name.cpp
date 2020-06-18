@@ -31,7 +31,7 @@ Scene_Name::Scene_Name(int actor_id, int charset, bool use_default_name)
 
 	auto *actor = Game_Actors::GetActor(actor_id);
 	if (!actor) {
-		Output::Error("EnterHeroName: Invalid actor ID %d", actor_id);
+		Output::Error("EnterHeroName: Invalid actor ID {}", actor_id);
 	}
 }
 
@@ -116,9 +116,9 @@ void Scene_Name::Update() {
 					name_window->Refresh();
 				} else {
 					actor->SetName(name_window->Get());
+					Scene::Pop();
 				}
 			}
-			Scene::Pop();
 		} else if (s == Window_Keyboard::NEXT_PAGE) {
 			++layout_index;
 			if (layout_index >= static_cast<int>(layouts.size())) {
