@@ -80,6 +80,11 @@ CtrUi::CtrUi(int width, int height)
 		osSetSpeedupEnable(true);
 	}
 
+	// Turn off bottom screen initially
+	gspLcdInit();
+	GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+	gspLcdExit();
+
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
@@ -185,11 +190,6 @@ void CtrUi::ProcessEvents() {
 		}
 	}
 
-	// Touchscreen pad toggle
-	if (!touchscreen && (input & KEY_TOUCH)) {
-		touchscreen = true;
-	}
-
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	// CirclePad support
 	circlePosition circlepad;
@@ -202,33 +202,37 @@ void CtrUi::ProcessEvents() {
 #endif
 
 #ifdef NDEBUG
-	if (touchscreen) {
+	u32 keys_tbl[16] = {
+		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
+		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
+		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
+		Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
+	};
 
-		u32 keys_tbl[16] = {
-			Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
-			Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
-			Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
-			Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
-		};
+	if (touch_state == 1) {
+		// Touch finished, do final redraw in UpdateDisplay
+		touch_state = 2;
+	}
 
-		if (touch_state == 1) {
-			// Touch finished, do final redraw in UpdateDisplay
-			touch_state = 2;
-		}
+	for (int i = 0; i < 16; i++)
+		keys[keys_tbl[i]] = false;
 
-		for (int i = 0; i < 16; i++)
-			keys[keys_tbl[i]] = false;
+	if (input & KEY_TOUCH) {
+		touch_state = 1;
+		touchPosition pos;
+		hidTouchRead(&pos);
+		u8 col = pos.px / button_width;
+		u8 row = pos.py / button_height;
+		touch_x = pos.px;
+		touch_y = pos.py;
 
-		if (input & KEY_TOUCH) {
-			touch_state = 1;
-			touchPosition pos;
-			hidTouchRead(&pos);
-			u8 col = pos.px / button_width;
-			u8 row = pos.py / button_height;
-			touch_x = pos.px;
-			touch_y = pos.py;
+		keys[keys_tbl[col + (row * 4)]] = true;
 
-			keys[keys_tbl[col + (row * 4)]] = true;
+		if (!touchscreen) {
+			touchscreen = true;
+			gspLcdInit();
+			GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+			gspLcdExit();
 		}
 	}
 #endif
@@ -287,10 +291,6 @@ void CtrUi::UpdateDisplay() {
 
 #if NDEBUG
 	// bottom screen
-	gspLcdInit();
-
-	if (touchscreen) {
-		GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
 		C2D_SceneBegin(bottom_screen);
 
 		// More low hanging fruit optimisation:
@@ -323,14 +323,7 @@ void CtrUi::UpdateDisplay() {
 			u8 row = touch_y / button_height;
 			u8 pos_x = col * button_width;
 			u8 pos_y = row * button_height;
-
-			// "0" is handled specially
 			u8 draw_width = button_width;
-			if (col < 2 && row == 3) {
-				draw_width *= 2;
-			if (col == 1)
-				pos_x = 0;
-			}
 
 			// darkened button with outline
 			C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
@@ -338,13 +331,9 @@ void CtrUi::UpdateDisplay() {
 			C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, draw_width, 2, white); // bottom
 			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, draw_width, 2, gray); // top
 			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
-		}
-	}else{
-		GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
 	}
 #endif
 
-	gspLcdExit();
 	C3D_FrameEnd(0);
 }
 
