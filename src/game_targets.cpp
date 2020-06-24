@@ -22,13 +22,13 @@
 template <typename T>
 static auto FindTarget(T&& targets, int map_id) {
 	return std::find_if(targets.begin(), targets.end(),
-			[map_id](auto& tgt) { return tgt.map_id < map_id; }
+			[map_id](auto& tgt) { return tgt.map_id == map_id; }
 			);
 }
 
 void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
 	auto iter = FindTarget(teleports, map_id);
-	if (iter == teleports.end() || iter->map_id != map_id) {
+	if (iter == teleports.end()) {
 		lcf::rpg::SaveTarget tgt;
 		// RPG_RT duplicates the map_id into the save object's id.
 		tgt.ID = map_id;
@@ -44,14 +44,14 @@ void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, i
 
 void Game_Targets::RemoveTeleportTarget(int map_id) {
 	auto iter = FindTarget(teleports, map_id);
-	if (iter != teleports.end() && iter->map_id == map_id) {
+	if (iter != teleports.end()) {
 		teleports.erase(iter);
 	}
 }
 
 const lcf::rpg::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) const {
 	auto iter = FindTarget(teleports, map_id);
-	return (iter != teleports.end() && iter->map_id == map_id) ? &*iter : nullptr;
+	return (iter != teleports.end()) ? &*iter : nullptr;
 }
 
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
