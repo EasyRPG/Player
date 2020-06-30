@@ -11,6 +11,7 @@ import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameScanner {
@@ -92,6 +93,9 @@ public class GameScanner {
             scanFolder(list, first_directory ? 2 : 1);
             first_directory = false;
         }
+
+        // Sort the games list
+        Collections.sort(gameList);
 
         // If the scan bring nothing in this folder : we notifiate the errorList
         if (gameList.size() == 0) {

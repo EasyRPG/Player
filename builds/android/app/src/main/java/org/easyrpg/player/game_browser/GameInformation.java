@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 
-public class GameInformation {
+public class GameInformation implements Comparable<GameInformation> {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";
 	public static final String TAG_ENCODING = "encoding";
 	public static final String preferenceFileName = "easyrpg-pref.txt";
@@ -105,6 +105,11 @@ public class GameInformation {
 					"Error while writing preference project file : " + e.getLocalizedMessage());
 		}
 
+	}
+
+	@Override
+	public int compareTo(GameInformation gameInformation) {
+		return this.title.compareTo(gameInformation.title);
 	}
 
 	public int getId_input_layout() {
