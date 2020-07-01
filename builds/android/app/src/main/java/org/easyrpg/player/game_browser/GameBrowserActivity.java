@@ -183,21 +183,21 @@ public class GameBrowserActivity extends AppCompatActivity
     }
 
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private List<GameInformation> movieList;
+        private List<GameInformation> gameList;
         private Activity activity;
         private int nbOfGamesPerLine;
 
         IniEncodingReader iniReader;
 
-        public MyAdapter(Activity activity, List<GameInformation> movieList, int nbOfGamesPerLine) {
-            this.movieList = movieList;
+        public MyAdapter(Activity activity, List<GameInformation> gameList, int nbOfGamesPerLine) {
+            this.gameList = gameList;
             this.activity = activity;
             this.nbOfGamesPerLine = nbOfGamesPerLine;
         }
 
         @Override
         public int getItemCount() {
-            return movieList.size();
+            return gameList.size();
         }
 
         // Create new views (invoked by the layout manager)
@@ -208,9 +208,9 @@ public class GameBrowserActivity extends AppCompatActivity
             // On inflate la vue et on la remplie
             View v;
             if (this.nbOfGamesPerLine <= 1) {
-                v = inflater.inflate(R.layout.browser_game_card_vertical, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card_portrait, parent, false);
             } else {
-                v = inflater.inflate(R.layout.browser_game_card, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card_landscape, parent, false);
             }
             return new ViewHolder(v);
         }
@@ -218,21 +218,19 @@ public class GameBrowserActivity extends AppCompatActivity
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final GameInformation movie = movieList.get(position);
+            final GameInformation game = gameList.get(position);
 
             // NB : Un film a forcement un titre, une annee et un poster
             // Titre
-            holder.title.setText(movie.getTitle());
+            holder.title.setText(game.getTitle());
 
-            // Poster
-            // TODO : Do a caching system for not load
-            holder.screen.setImageBitmap(GameScanner.getGameTitleScreen(movie));
-
-            // Define the click action
-            holder.screen.setOnClickListener(new View.OnClickListener() {
+            // TitleScreen Image
+            // TODO : Implement a caching system for not load
+            holder.titleScreen.setImageBitmap(GameScanner.getGameTitleScreen(game));
+            holder.titleScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GameInformation pi = movieList.get(position);
+                    GameInformation pi = gameList.get(position);
 
                     if (!pi.read_project_preferences_encoding()) {
                         File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
@@ -253,6 +251,7 @@ public class GameBrowserActivity extends AppCompatActivity
                 }
             });
 
+            // Settings Button
             holder.settingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -266,10 +265,10 @@ public class GameBrowserActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialog, int which) {
                                     switch (which) {
                                         case 0:
-                                            chooseRegion(activity, movieList.get(position));
+                                            chooseRegion(activity, gameList.get(position));
                                             break;
                                         case 1:
-                                            chooseLayout(activity, movieList.get(position));
+                                            chooseLayout(activity, gameList.get(position));
                                             break;
                                         default:
                                             break;
@@ -279,6 +278,25 @@ public class GameBrowserActivity extends AppCompatActivity
                     builder.show();
                 }
             });
+
+            // FavoriteButton
+            updateFavoriteButton(holder, game);
+            holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    game.setFavorite(!game.isFavorite());
+                    updateFavoriteButton(holder, game);
+                    ((GameBrowserActivity)activity).displayGameList(activity);
+                }
+            });
+        }
+
+        public void updateFavoriteButton(ViewHolder holder, GameInformation game){
+            if (game.isFavorite()) {
+                holder.favoriteButton.setImageResource(R.drawable.ic_action_favorite_on);
+            } else {
+                holder.favoriteButton.setImageResource(R.drawable.ic_action_favorite_off);
+            }
         }
 
         public void chooseLayout(final Context context, final GameInformation pi) {
@@ -432,14 +450,15 @@ public class GameBrowserActivity extends AppCompatActivity
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public TextView title;
-            public ImageView screen;
-            public ImageButton settingsButton;
+            public ImageView titleScreen;
+            public ImageButton settingsButton, favoriteButton;
 
             public ViewHolder(View v) {
                 super(v);
                 this.title = (TextView) v.findViewById(R.id.title);
-                this.screen = (ImageView) v.findViewById(R.id.screen);
+                this.titleScreen = (ImageView) v.findViewById(R.id.screen);
                 this.settingsButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_option_button);
+                this.favoriteButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_favorite_button);
             }
         }
     }

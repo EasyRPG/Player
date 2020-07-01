@@ -23,7 +23,8 @@ public class GameInformation implements Comparable<GameInformation> {
 	public GameInformation(String gameFolderPath) {
 		this.gameFolderPath = gameFolderPath;
 		File f = new File(gameFolderPath);
-		
+
+		// SavePath
 		if (GameBrowserHelper.canWrite(f)) {
 			this.savePath = gameFolderPath;
 		} else {
@@ -105,6 +106,18 @@ public class GameInformation implements Comparable<GameInformation> {
 					"Error while writing preference project file : " + e.getLocalizedMessage());
 		}
 
+	}
+
+	public boolean isFavorite() {
+		return SettingsManager.getFavoriteGamesList().contains(this.gameFolderPath);
+	}
+
+	public void setFavorite(boolean favorite) {
+		if(favorite){
+			SettingsManager.addFavoriteGame(this.gameFolderPath);
+		} else {
+			SettingsManager.removeAFavoriteGame(this.gameFolderPath);
+		}
 	}
 
 	@Override
