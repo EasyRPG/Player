@@ -95,19 +95,7 @@ public class GameScanner {
         }
 
         // Sort the games list : alphabetically ordered, favorite in first
-        List<GameInformation> favoriteGameList = new ArrayList<GameInformation>();
-        List<GameInformation> noFavoriteGameList = new ArrayList<GameInformation>();
-        for(GameInformation game : gameList) {
-            if(game.isFavorite()) {
-                favoriteGameList.add(game);
-            } else {
-                noFavoriteGameList.add(game);
-            }
-        }
-        Collections.sort(favoriteGameList);
-        Collections.sort(noFavoriteGameList);
-        favoriteGameList.addAll(noFavoriteGameList);
-        gameList = favoriteGameList;
+        Collections.sort(gameList);
 
         // If the scan bring nothing in this folder : we notifiate the errorList
         if (gameList.size() == 0) {
