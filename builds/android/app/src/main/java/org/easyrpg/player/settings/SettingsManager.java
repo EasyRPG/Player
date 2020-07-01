@@ -16,6 +16,7 @@ import java.util.List;
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
+import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
 import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
@@ -40,6 +41,7 @@ public class SettingsManager {
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static String easyRPGFolder;
     private static List<String> gamesFolderList = new ArrayList<>();
+    private static List<String> favoriteGamesList = new ArrayList<>();
 
     private SettingsManager() {
     }
@@ -80,10 +82,26 @@ public class SettingsManager {
                 }
             }
         }
+
+        // Fetch the favorite game list :
+        favoriteGamesList = new ArrayList<>();
+        String favoriteGamesListString = sharedPref.getString(FAVORITE_GAMES.toString(), "");
+        if (!favoriteGamesListString.isEmpty()) {
+            for (String folder : favoriteGamesListString.split("\\*")) {
+                if (!favoriteGamesList.contains(folder)) {
+                    favoriteGamesList.add(folder);
+                }
+                // TODO : Remove folder that doesn't exist
+            }
+        }
     }
 
     public static List<String> getGamesFolderList() {
         return gamesFolderList;
+    }
+
+    public static List<String> getFavoriteGamesList() {
+        return favoriteGamesList;
     }
 
     public static void addGameDirectory(String pathToAdd) {
@@ -125,6 +143,43 @@ public class SettingsManager {
             sb.append(folder).append('*');
         }
         editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), sb.toString());
+        editor.commit();
+    }
+
+    public static void addFavoriteGame(String pathToAdd) {
+        pathToAdd = pathToAdd.trim();
+
+        // 1) The game folder must not be already in the list
+        if (favoriteGamesList.contains(pathToAdd)) {
+            return;
+        }
+
+        // 2) Verify read permission
+        File f = new File(pathToAdd);
+        if (!f.canRead()) {
+            Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", pathToAdd), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Update user's preferences
+        favoriteGamesList.add(pathToAdd);
+
+        setFavoriteGamesList(favoriteGamesList);
+    }
+
+    public static void removeAFavoriteGame(String path) {
+        favoriteGamesList.remove(path);
+        setFavoriteGamesList(favoriteGamesList);
+    }
+
+    private static void setFavoriteGamesList(List<String> folderList) {
+        favoriteGamesList = folderList;
+
+        StringBuilder sb = new StringBuilder();
+        for (String folder : favoriteGamesList) {
+            sb.append(folder).append('*');
+        }
+        editor.putString(FAVORITE_GAMES.toString(), sb.toString());
         editor.commit();
     }
 
