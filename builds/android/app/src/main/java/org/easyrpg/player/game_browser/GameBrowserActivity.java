@@ -39,7 +39,7 @@ public class GameBrowserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static Boolean libraryLoaded = false;
 
-    private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
+    private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 290;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
