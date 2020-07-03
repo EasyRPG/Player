@@ -1,7 +1,7 @@
 package org.easyrpg.player.settings;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import org.easyrpg.player.DirectoryChooser;
 import org.easyrpg.player.R;
-import org.easyrpg.player.settings.SettingsManager;
 
 public class SettingsGamesFoldersActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout gamesFoldersListLayout;
