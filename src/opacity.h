@@ -101,13 +101,17 @@ class TileOpacity {
 inline TileOpacity::TileOpacity(int w, int h)
 	: _p(new uint8_t[w * h]), _w(w), _h(h)
 {
-	assert(_w > 0);
-	assert(_h > 0);
+	assert(_w >= 0);
+	assert(_h >= 0);
 }
 
 inline ImageOpacity TileOpacity::Get(int x, int y) const {
-	assert(x >= 0 && x < _w);
-	assert(y >= 0 && y < _h);
+	assert(x >= 0);
+	assert(y >= 0);
+
+	if (x >= _w || y >= _h) {
+		return ImageOpacity::Partial;
+	}
 
 	return static_cast<ImageOpacity>(_p[x + y * _w]);
 }
