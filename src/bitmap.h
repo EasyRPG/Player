@@ -573,7 +573,7 @@ inline ImageOpacity Bitmap::GetImageOpacity() const {
 }
 
 inline ImageOpacity Bitmap::GetTileOpacity(int x, int y) const {
-	return !tile_opacity.Empty() ? tile_opacity.Get(x, y) : ImageOpacity::Partial;
+	return tile_opacity.Get(x, y);
 }
 
 inline Color Bitmap::GetBackgroundColor() const {

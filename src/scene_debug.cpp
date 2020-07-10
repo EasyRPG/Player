@@ -383,6 +383,7 @@ void Scene_Debug::Update() {
 				} else {
 					PushUiRangeList();
 				}
+				break;
 			case eFullHeal:
 				if (sz > 1) {
 					DoFullHeal();
@@ -424,6 +425,7 @@ void Scene_Debug::Update() {
 						PushUiNumberInput(0, num_digits, false);
 					}
 				}
+				break;
 		}
 		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
