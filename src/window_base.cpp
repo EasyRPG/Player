@@ -326,9 +326,9 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
 
 	const auto atb = actor.GetAtbGauge();
-	if (atb > 0) {
+	const auto gauge_w = 25 * atb / actor.GetMaxAtbGauge();
+	if (gauge_w > 0) {
 		// Full or not full bar
-		int gauge_w = 25 * atb / actor.GetMaxAtbGauge();
 		Rect gauge_bar(full ? 64 : 48, gauge_y, 16, 16);
 		Rect bar_rect(cx + 16, cy, gauge_w, 16);
 		contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
