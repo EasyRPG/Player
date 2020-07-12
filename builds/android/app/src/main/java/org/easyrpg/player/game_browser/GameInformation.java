@@ -17,13 +17,14 @@ public class GameInformation implements Comparable<GameInformation> {
 	public static final String preferenceFileName = "easyrpg-pref.txt";
 	private int id_input_layout = -1;
 	private String encoding = "";
-
 	private String title, gameFolderPath, savePath;
+	private boolean isFavorite;
 
 	public GameInformation(String gameFolderPath) {
 		this.gameFolderPath = gameFolderPath;
 		File f = new File(gameFolderPath);
-		
+
+		// SavePath
 		if (GameBrowserHelper.canWrite(f)) {
 			this.savePath = gameFolderPath;
 		} else {
@@ -33,6 +34,9 @@ public class GameInformation implements Comparable<GameInformation> {
 			savePath = SettingsManager.getEasyRPGFolder() + "/Save/" + savename;
 			new File(savePath).mkdirs();
 		}
+
+		// isFavorite
+		this.isFavorite = isFavoriteFromSettings();
 	}
 	
 	public GameInformation(String title, String gameFolderPath) {
@@ -107,8 +111,31 @@ public class GameInformation implements Comparable<GameInformation> {
 
 	}
 
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+
+	public void setFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
+		if(isFavorite){
+			SettingsManager.addFavoriteGame(this.gameFolderPath);
+		} else {
+			SettingsManager.removeAFavoriteGame(this.gameFolderPath);
+		}
+	}
+
+	private boolean isFavoriteFromSettings() {
+		return SettingsManager.getFavoriteGamesList().contains(this.gameFolderPath);
+	}
+
 	@Override
 	public int compareTo(GameInformation gameInformation) {
+		if (this.isFavorite() && !gameInformation.isFavorite()) {
+			return -1;
+		}
+		if (!this.isFavorite() && gameInformation.isFavorite()) {
+			return 1;
+		}
 		return this.title.compareTo(gameInformation.title);
 	}
 

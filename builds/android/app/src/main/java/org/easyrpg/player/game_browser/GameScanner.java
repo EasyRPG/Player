@@ -94,7 +94,7 @@ public class GameScanner {
             first_directory = false;
         }
 
-        // Sort the games list
+        // Sort the games list : alphabetically ordered, favorite in first
         Collections.sort(gameList);
 
         // If the scan bring nothing in this folder : we notifiate the errorList
