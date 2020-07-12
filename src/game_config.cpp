@@ -85,10 +85,6 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			video.fps_render_window.Set(false);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
-			video.show_fps.Set(false);
-			continue;
-		}
 		if (cp.ParseNext(arg, 0, "--window")) {
 			video.fullscreen.Set(false);
 			continue;
@@ -158,7 +154,7 @@ void Game_Config::WriteToConfig(const std::string& path) const {
 		of << "show-fps=" << int(video.show_fps.Get()) << "\n";
 	}
 	if (video.fps_render_window.Enabled()) {
-		of << "show-fps=" << int(video.fps_render_window.Get()) << "\n";
+		of << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
 	}
 	if (video.fps_limit.Enabled()) {
 		of << "fps-limit=" << video.fps_limit.Get() << "\n";
