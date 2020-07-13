@@ -478,6 +478,9 @@ if(APPLE)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/utils.mm
 		src/platform/macos/utils.h)
+
+	find_library(MACOSFOUNDATION Foundation)
+	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION})
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
