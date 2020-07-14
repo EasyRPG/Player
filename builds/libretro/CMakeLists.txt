@@ -16,7 +16,8 @@ add_library(retro_common STATIC
 target_include_directories(retro_common PUBLIC
 	libretro-common/include)
 
-# FIXME: Likely won't work on all platforms
-target_link_libraries(retro_common "pthread")
+if(NOT MSVC)
+	target_link_libraries(retro_common "pthread")
+endif()
 
 mark_as_advanced(RETRO_COMMON_DIR RETRO_COMMON_DIR_LEN)
