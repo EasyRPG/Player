@@ -23,8 +23,11 @@
 #include <lcf/rpg/troop.h>
 #include "teleport_target.h"
 #include "utils.h"
+#include "point.h"
 
 class Game_Battler;
+class Game_Enemy;
+class Game_Actor;
 class Game_Interpreter;
 class Spriteset_Battle;
 
@@ -154,6 +157,42 @@ namespace Game_Battle {
 
 	void SetBattleCondition(lcf::rpg::System::BattleCondition cond);
 	lcf::rpg::System::BattleCondition GetBattleCondition();
+
+	void SetBattleFormation(lcf::rpg::System::BattleFormation form);
+	lcf::rpg::System::BattleFormation GetBattleFormation();
+
+	/**
+	 * Calculates the base grid position from the parameters used for both actors and enemies.
+	 *
+	 * @param party_idx the index of the party member
+	 * @param party_size the size of the party
+	 * @param table_x Which grid table to use for X position
+	 * @param table_y which grid table to use for Y position
+	 * @param cond the battle condition
+	 * @param form the battle formation
+	 * @param terrain_id the battle terrain id
+	 */
+	Point CalculateBaseGridPosition(
+			int party_idx,
+			int party_size,
+			int x_table,
+			int y_table,
+			lcf::rpg::System::BattleFormation form,
+			int terrain_id);
+
+	/**
+	 * Calculate the battler position that would be used for the enemy
+	 *
+	 * @param enemy the enemy to calculate.
+	 */
+	Point Calculate2k3BattlePosition(const Game_Enemy& enemy);
+
+	/**
+	 * Calculate the battler position that would be used for the enemy
+	 *
+	 * @param enemy the enemy to calculate.
+	 */
+	Point Calculate2k3BattlePosition(const Game_Actor& actor);
 
 	/**
 	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"

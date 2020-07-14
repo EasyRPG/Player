@@ -53,10 +53,11 @@ int Game_Actor::MaxStatBaseValue() const {
 }
 
 Game_Actor::Game_Actor(int actor_id) :
-	Game_Battler(),
 	actor_id(actor_id) {
 	GetData().Setup(actor_id);
 	Setup();
+
+	SetBattlePosition(GetOriginalPosition());
 }
 
 void Game_Actor::Setup() {
@@ -817,158 +818,9 @@ const lcf::rpg::Skill* Game_Actor::GetRandomSkill() const {
 	return lcf::ReaderUtil::GetElement(lcf::Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
 }
 
-int Game_Actor::GetBattleX() const {
-	float position = 0.0;
-
-	if (GetActor().battle_x == 0 ||
-		lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
-		int party_size = Main_Data::game_party->GetBattlerCount();
-
-		float left = GetBattleRow() == RowType::RowType_back ? 25.0 : 50.0;
-		float right = left;
-
-		const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Battle::GetTerrainId());
-		if (terrain) {
-			// No warning, already reported on battle start
-			right = left + terrain->grid_inclination / 1103;
-		}
-
-		switch (party_size) {
-		case 1:
-			position = left + ((right - left) / 2);
-			break;
-		case 2:
-			switch (party_pos) {
-			case 0:
-				position = right;
-				break;
-			case 1:
-				position = left;
-				break;
-			}
-			break;
-		case 3:
-			switch (party_pos) {
-			case 0:
-				position = right;
-				break;
-			case 1:
-				position = left + ((right - left) / 2);
-				break;
-			case 2:
-				position = left;
-				break;
-			}
-			break;
-		case 4:
-			switch (party_pos) {
-			case 0:
-				position = right;
-				break;
-			case 1:
-				position = left + ((right - left) * 2.0/3);
-				break;
-			case 2:
-				position = left + ((right - left) * 1.0/3);
-				break;
-			case 3:
-				position = left;
-				break;
-			}
-			break;
-		}
-
-		switch (Game_Battle::GetBattleCondition()) {
-			case lcf::rpg::System::BattleCondition_none:
-			case lcf::rpg::System::BattleCondition_initiative:
-				return SCREEN_TARGET_WIDTH - position;
-			case lcf::rpg::System::BattleCondition_back:
-				return position;
-			case lcf::rpg::System::BattleCondition_surround:
-			case lcf::rpg::System::BattleCondition_pincers:
-				// ToDo: Correct position
-				return SCREEN_TARGET_WIDTH - position;
-		}
-	}
-	else {
-		// Output::Debug("{} {} {} {}", lcf::Data::terrains[0].grid_top_y, lcf::Data::terrains[0].grid_elongation, lcf::Data::terrains[0].grid_inclination, lcf::Data::terrains[0].grid_location);
-
-		position = GetActor().battle_x * SCREEN_TARGET_WIDTH / 320;
-	}
-
-	return position;
-}
-
-int Game_Actor::GetBattleY() const {
-	float position = 0.0;
-
-	if (GetActor().battle_y == 0 ||
-		lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
-		int party_size = Main_Data::game_party->GetBattlerCount();
-
-		float top = 0.0f;
-		float bottom = 0.0f;
-		const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Battle::GetTerrainId());
-		if (terrain) {
-			// No warning, already reported on battle start
-			top = terrain->grid_top_y;
-			bottom = top + terrain->grid_elongation / 13;
-		}
-
-		switch (party_size) {
-		case 1:
-			position = top + ((bottom - top) / 2);
-			break;
-		case 2:
-			switch (party_pos) {
-			case 0:
-				position = top;
-				break;
-			case 1:
-				position = bottom;
-				break;
-			}
-			break;
-		case 3:
-			switch (party_pos) {
-			case 0:
-				position = top;
-				break;
-			case 1:
-				position = top + ((bottom - top) / 2);
-				break;
-			case 2:
-				position = bottom;
-				break;
-			}
-			break;
-		case 4:
-			switch (party_pos) {
-			case 0:
-				position = top;
-				break;
-			case 1:
-				position = top + ((bottom - top) * 1.0 / 3);
-				break;
-			case 2:
-				position = top + ((bottom - top) * 2.0 / 3);
-				break;
-			case 3:
-				position = bottom;
-				break;
-			}
-			break;
-		}
-
-		position -= 24;
-	}
-	else {
-		position = GetActor().battle_y * SCREEN_TARGET_HEIGHT / 240;
-	}
-
-	return (int)position;
+Point Game_Actor::GetOriginalPosition() const {
+	auto& actor = GetActor();
+	return { actor.battle_x, actor.battle_y };
 }
 
 const std::string& Game_Actor::GetSkillName() const {

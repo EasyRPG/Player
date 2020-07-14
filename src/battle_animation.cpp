@@ -287,15 +287,13 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 		return;
 	}
 
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-	     it != battlers.end(); ++it) {
-		const Game_Battler& battler = **it;
-		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(&battler);
+	for (auto* battler: battlers) {
+		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
 		int offset = 0;
 		if (sprite && sprite->GetBitmap()) {
 			offset = CalculateOffset(animation.position, sprite->GetHeight());
 		}
-		DrawAt(dst, battler.GetBattleX(), battler.GetBattleY() + offset);
+		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y + offset);
 	}
 }
 void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {

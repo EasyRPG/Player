@@ -61,6 +61,7 @@ Scene_Battle::Scene_Battle(const BattleArgs& args)
 	Game_Battle::SetTerrainId(args.terrain_id);
 	Game_Battle::ChangeBackground(args.background);
 	Game_Battle::SetBattleCondition(args.condition);
+	Game_Battle::SetBattleFormation(args.formation);
 }
 
 Scene_Battle::~Scene_Battle() {
@@ -91,8 +92,6 @@ void Scene_Battle::Start() {
 	if (Game_Battle::battle_test.enabled) {
 		Main_Data::game_party->SetupBattleTestMembers();
 	}
-	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-	Main_Data::game_enemyparty->Setup(troop_id);
 
 	Game_Battle::Init(troop_id);
 

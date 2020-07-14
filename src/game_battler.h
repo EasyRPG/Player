@@ -21,12 +21,14 @@
 // Headers
 #include <string>
 #include <vector>
+#include <limits>
 #include <lcf/rpg/state.h>
 #include "system.h"
 #include "state.h"
 #include "color.h"
 #include "flash.h"
 #include "utils.h"
+#include "point.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -353,6 +355,16 @@ public:
 	 */
 	virtual int GetBaseAgi() const = 0;
 
+	/** @return whether the battler is facing the opposite it's normal direction */
+	bool IsDirectionFlipped() const;
+
+	/**
+	 * Set whether the battler is facing the opposite it's normal direction
+	 *
+	 * @param flip to flip or not
+	 */
+	void SetDirectionFlipped(bool flip);
+
 	void SetHidden(bool hidden);
 	bool IsHidden() const;
 	virtual bool IsImmortal() const;
@@ -480,31 +492,23 @@ public:
 	 */
 	bool HasReflectState() const;
 
-	/**
-	 * Gets X position against the battle background.
-	 *
-	 * @return X position in battle scene
-	 */
-	virtual int GetBattleX() const = 0;
+	/* @return current (x,y) position in the battle scene */
+	Point GetBattlePosition() const;
 
 	/**
-	 * Gets Y position against the battle background.
+	 *  Set (x,y) position in the battle scene.
 	 *
-	 * @return Y position in battle scene
+	 *  @param pos new position to set
 	 */
-	virtual int GetBattleY() const = 0;
+	void SetBattlePosition(Point pos);
 
-	/**
-	 * Gets X position on the screen.
-	 *
-	 * This is equal to GetBattleX, plus a displacement for
-	 * any screen shaking.
-	 */
+	/** @return original (x,y) position from the database */
+	virtual Point GetOriginalPosition() const  = 0;
+
+	/** @return Adjusted X position on the screen.  */
 	int GetDisplayX() const;
 
-	/**
-	 * Gets Y position on the screen.
-	 */
+	/** @return Adjusted Y position on the screen.  */
 	int GetDisplayY() const;
 
 	virtual int GetHue() const;
@@ -709,9 +713,11 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+	Point position;
 	bool defending = false;
 	bool charged = false;
 	bool hidden = false;
+	bool direction_flipped = false;
 
 	std::vector<int> attribute_shift;
 
@@ -887,6 +893,22 @@ inline void Game_Battler::SetBattleOrderAgi(int val) {
 
 inline int Game_Battler::GetBattleOrderAgi() {
 	return battle_order;
+}
+
+inline Point Game_Battler::GetBattlePosition() const {
+	return position;
+}
+
+inline void Game_Battler::SetBattlePosition(Point pos) {
+	position = pos;
+}
+
+inline bool Game_Battler::IsDirectionFlipped() const {
+	return direction_flipped;
+}
+
+inline void Game_Battler::SetDirectionFlipped(bool flip) {
+	direction_flipped = flip;
 }
 
 #endif

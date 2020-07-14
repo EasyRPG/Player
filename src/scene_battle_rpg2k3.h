@@ -75,8 +75,16 @@ public:
 	void Update() override;
 
 protected:
+	void Start2();
 	void InitAtbGauge(Game_Battler& battler, int preempt_atb, int ambush_atb);
+	void InitBattleCondition(lcf::rpg::System::BattleCondition condition);
+	void InitEnemies();
+	void InitActors();
 	void InitAtbGauges();
+
+	void UpdateEnemiesDirection();
+	void UpdateActorsDirection();
+
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
@@ -97,6 +105,7 @@ protected:
 
 	void ProcessActions() override;
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
+	void FaceTarget(Game_Actor& source, const Game_Battler& target);
 	void ProcessInput() override;
 
 	void OptionSelected();
@@ -121,9 +130,8 @@ protected:
 	};
 
 	std::vector<FloatText> floating_texts;
-
-	int battle_action_wait;
-	int battle_action_state;
+	int battle_action_wait = 30;
+	int battle_action_state = BattleActionState_Execute;
 	bool battle_action_need_event_refresh = true;
 	int combo_repeat = 1;
 	bool play_reflected_anim = false;
@@ -138,6 +146,7 @@ protected:
 	FileRequestBinding request_id;
 	bool battle_action_pending = false;
 	bool first_strike = false;
+	bool initial_directions_updated = false;
 };
 
 #endif

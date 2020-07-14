@@ -616,12 +616,12 @@ int Game_Battler::GetAgi() const {
 
 int Game_Battler::GetDisplayX() const {
 	int shake_pos = Main_Data::game_screen->GetShakeOffsetX() + shake.position;
-	return GetBattleX() + shake_pos;
+	return (GetBattlePosition().x + shake_pos) * SCREEN_TARGET_WIDTH / 320;
 }
 
 int Game_Battler::GetDisplayY() const {
 	int shake_pos = Main_Data::game_screen->GetShakeOffsetY();
-	return GetBattleY() + GetFlyingOffset() + shake_pos;
+	return (GetBattlePosition().y + GetFlyingOffset() + shake_pos) * SCREEN_TARGET_HEIGHT / 240;
 }
 
 Game_Party_Base& Game_Battler::GetParty() const {
@@ -674,6 +674,7 @@ void Game_Battler::ResetBattle() {
 	SetCharged(false);
 	SetIsDefending(false);
 	SetHidden(false);
+	SetDirectionFlipped(false);
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;

@@ -184,6 +184,12 @@ void Sprite_Battler::Update() {
 	if (animation) {
 		animation->SetVisible(IsVisible());
 	}
+
+	const bool flip = battler->IsDirectionFlipped();
+	SetFlipX(flip);
+	if (animation) {
+		SetFlipX(flip);
+	}
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
@@ -276,7 +282,7 @@ void Sprite_Battler::ResetZ() {
 
 	constexpr int id_limit = 128;
 
-	int y = battler->GetBattleY();
+	int y = battler->GetBattlePosition().y;
 	if (battler->GetType() == Game_Battler::Type_Enemy && graphic) {
 		y += graphic->GetHeight() / 2;
 	}

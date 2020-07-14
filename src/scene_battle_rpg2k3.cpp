@@ -34,18 +34,112 @@
 #include "scene_gameover.h"
 #include "utils.h"
 #include "font.h"
+#include "output.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
-	battle_action_wait(30),
-	battle_action_state(BattleActionState_Execute),
 	first_strike(args.first_strike)
 {
 }
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
+	InitBattleCondition(Game_Battle::GetBattleCondition());
+
+	// We need to wait for actor and enemy graphics to load before we can finish initializing the battle.
+	AsyncNext([this]() { Start2(); });
+}
+
+void Scene_Battle_Rpg2k3::Start2() {
+	InitEnemies();
+	InitActors();
 	InitAtbGauges();
+
+	// Changed enemy place means we need to recompute Z order
+	Game_Battle::GetSpriteset().ResetAllBattlerZ();
+}
+
+void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {
+	if (condition == lcf::rpg::System::BattleCondition_pincers
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
+				|| Main_Data::game_enemyparty->GetVisibleBattlerCount() <= 1))
+	{
+		condition = lcf::rpg::System::BattleCondition_back;
+	}
+
+	if (condition == lcf::rpg::System::BattleCondition_surround
+			&& (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual
+				|| Main_Data::game_party->GetVisibleBattlerCount() <= 1))
+	{
+		condition = lcf::rpg::System::BattleCondition_initiative;
+	}
+
+	Game_Battle::SetBattleCondition(condition);
+}
+
+void Scene_Battle_Rpg2k3::InitEnemies() {
+	const auto& enemies = Main_Data::game_enemyparty->GetEnemies();
+	const auto cond = Game_Battle::GetBattleCondition();
+
+	// PLACEMENT AND DIRECTION
+	for (int real_idx = 0, visible_idx = 0; real_idx < static_cast<int>(enemies.size()); ++real_idx) {
+		auto& enemy = *enemies[real_idx];
+		const auto idx = enemy.IsHidden() ? real_idx : visible_idx;
+
+		enemy.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(enemy));
+
+		switch(cond) {
+			case lcf::rpg::System::BattleCondition_none:
+				enemy.SetDirectionFlipped(false);
+				break;
+			case lcf::rpg::System::BattleCondition_initiative:
+			case lcf::rpg::System::BattleCondition_back:
+			case lcf::rpg::System::BattleCondition_surround:
+				enemy.SetDirectionFlipped(true);
+				break;
+			case lcf::rpg::System::BattleCondition_pincers:
+				enemy.SetDirectionFlipped(!(idx & 1));
+				break;
+		}
+
+		visible_idx += !enemy.IsHidden();
+	}
+}
+
+void Scene_Battle_Rpg2k3::InitActors() {
+	const auto& actors = Main_Data::game_party->GetActors();
+	const auto cond = Game_Battle::GetBattleCondition();
+
+	// ROW ADJUSTMENT
+	// If all actors in the front row have battle loss conditions,
+	// all back row actors forced to the front row.
+	// FIXME: Does this happen mid battle too?
+	bool force_front_row = true;
+	for (auto& actor: actors) {
+		if (actor->GetBattleRow() == Game_Actor::RowType::RowType_front
+				&& !actor->IsHidden()
+				&& actor->CanActOrRecoverable()) {
+			force_front_row = false;
+		}
+	}
+	if (force_front_row) {
+		for (auto& actor: actors) {
+			actor->SetBattleRow(Game_Actor::RowType::RowType_front);
+		}
+	}
+
+	// PLACEMENT AND DIRECTION
+	for (int idx = 0; idx < static_cast<int>(actors.size()); ++idx) {
+		auto& actor = *actors[idx];
+
+		actor.SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(actor));
+
+		if (cond == lcf::rpg::System::BattleCondition_surround) {
+			actor.SetDirectionFlipped(idx & 1);
+		} else {
+			actor.SetDirectionFlipped(false);
+		}
+	}
 }
 
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
@@ -84,11 +178,92 @@ void Scene_Battle_Rpg2k3::InitAtbGauges() {
 	}
 }
 
+template <typename O, typename M, typename C>
+static bool CheckFlip(const O& others, const M& me, bool prefer_flipped, C&& cmp) {
+	for (auto& other: others) {
+			if (!other->IsHidden() && cmp(other->GetBattlePosition().x, me.GetBattlePosition().x)) {
+				return prefer_flipped;
+			}
+		}
+		return !prefer_flipped;
+	}
+
+void Scene_Battle_Rpg2k3::UpdateEnemiesDirection() {
+	const auto& enemies = Main_Data::game_enemyparty->GetEnemies();
+	const auto& actors = Main_Data::game_party->GetActors();
+
+	for (int real_idx = 0, visible_idx = 0; real_idx < static_cast<int>(enemies.size()); ++real_idx) {
+		auto& enemy = *enemies[real_idx];
+		const auto idx = enemy.IsHidden() ? real_idx : visible_idx;
+
+		switch(Game_Battle::GetBattleCondition()) {
+			case lcf::rpg::System::BattleCondition_none:
+			case lcf::rpg::System::BattleCondition_initiative:
+				enemy.SetDirectionFlipped(CheckFlip(actors, enemy, false, std::greater_equal<>()));
+				break;
+			case lcf::rpg::System::BattleCondition_back:
+				enemy.SetDirectionFlipped(CheckFlip(actors, enemy, true, std::less_equal<>()));
+				break;
+			case lcf::rpg::System::BattleCondition_surround:
+			case lcf::rpg::System::BattleCondition_pincers:
+				enemy.SetDirectionFlipped(!(idx & 1));
+				break;
+		}
+
+		visible_idx += !enemy.IsHidden();
+	}
+}
+
+void Scene_Battle_Rpg2k3::UpdateActorsDirection() {
+	const auto& actors = Main_Data::game_party->GetActors();
+	const auto& enemies = Main_Data::game_enemyparty->GetEnemies();
+
+	for (int idx = 0; idx < static_cast<int>(actors.size()); ++idx) {
+		auto& actor = *actors[idx];
+
+		switch(Game_Battle::GetBattleCondition()) {
+			case lcf::rpg::System::BattleCondition_none:
+			case lcf::rpg::System::BattleCondition_initiative:
+				actor.SetDirectionFlipped(CheckFlip(enemies, actor, false, std::less_equal<>()));
+				break;
+			case lcf::rpg::System::BattleCondition_back:
+				actor.SetDirectionFlipped(CheckFlip(enemies, actor, true, std::greater_equal<>()));
+				break;
+			case lcf::rpg::System::BattleCondition_surround:
+			case lcf::rpg::System::BattleCondition_pincers:
+				actor.SetDirectionFlipped(idx & 1);
+				break;
+		}
+	}
+}
+
+void Scene_Battle_Rpg2k3::FaceTarget(Game_Actor& source, const Game_Battler& target) {
+	const auto sx = source.GetBattlePosition().x;
+	const auto tx = target.GetBattlePosition().x;
+	const bool flipped = source.IsDirectionFlipped();
+	if ((flipped && tx < sx) || (!flipped && tx > sx)) {
+		source.SetDirectionFlipped(1 - flipped);
+	}
+}
+
 void Scene_Battle_Rpg2k3::Update() {
+	// FIXME: RPG_RT sets initial directions on start, displays any
+	// battle start messages, and then monsters may turn to face the party
+	// and the party turns to face the monsters.
+	// This only happens once on battle start. Until we refactor 2k3 state machine,
+	// we emulate the behavior with this bool.
+	// Monster directions never change during battle, but actors can.
+	if (!initial_directions_updated) {
+		UpdateEnemiesDirection();
+		UpdateActorsDirection();
+		initial_directions_updated = true;
+	}
+
 	switch (state) {
 		case State_SelectActor:
 		case State_AutoBattle: {
 			if (!IsWindowMoving()) {
+
 				if (battle_actions.empty()) {
 					Game_Battle::UpdateAtbGauges();
 				}
@@ -234,8 +409,8 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			Main_Data::game_party->GetBattlers(actors);
 			Game_Battler* actor = actors[ally_index];
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
-			ally_cursor->SetX(actor->GetBattleX());
-			ally_cursor->SetY(actor->GetBattleY() - sprite->GetHeight() / 2);
+			ally_cursor->SetX(actor->GetBattlePosition().x);
+			ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
@@ -251,8 +426,8 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			Main_Data::game_enemyparty->GetActiveBattlers(actors);
 			const Game_Battler* actor = actors[enemy_index];
 			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
-			enemy_cursor->SetX(actor->GetBattleX() + sprite->GetWidth() / 2 + 2);
-			enemy_cursor->SetY(actor->GetBattleY() - enemy_cursor->GetHeight() / 2);
+			enemy_cursor->SetX(actor->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
+			enemy_cursor->SetY(actor->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
@@ -670,6 +845,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	bool is_target_party = false;
+
 	switch (battle_action_state) {
 	case BattleActionState_Execute:
 		if (battle_action_need_event_refresh) {
@@ -697,6 +874,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return false;
 		}
 
+		// FIXME: This gets cleared after calling TargetFirst() so we query it now.
+		// Refactor this to be less brittle.
+		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
+		is_target_party = action->IsTargetingParty();
+
 		action->TargetFirst();
 
 		if (combo_repeat == 1) {
@@ -717,6 +899,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				// Nothing left to target, abort
 				return true;
 			}
+		}
+
+		if (action->GetSource()->GetType() == Game_Battler::Type_Ally
+				&& !is_target_party
+				&& action->GetTarget()
+				&& action->GetTarget()->GetType() == Game_Battler::Type_Enemy)
+		{
+			auto* actor = static_cast<Game_Actor*>(action->GetSource());
+			FaceTarget(*actor, *action->GetTarget());
 		}
 
 		//Output::Debug("Action: {}", action->GetSource()->GetName());
@@ -743,8 +934,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					int damageTaken = b->ApplyConditions();
 					if (damageTaken != 0) {
 						DrawFloatText(
-								b->GetBattleX(),
-								b->GetBattleY(),
+								b->GetBattlePosition().x,
+								b->GetBattlePosition().y,
 								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
 								std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
 					}
@@ -784,15 +975,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					}
 					if (action->GetAffectedHp() != -1) {
 						DrawFloatText(
-							target->GetBattleX(),
-							target->GetBattleY(),
+							target->GetBattlePosition().x,
+							target->GetBattlePosition().y,
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							std::to_string(action->GetAffectedHp()));
 					}
 				} else {
 					DrawFloatText(
-						target->GetBattleX(),
-						target->GetBattleY(),
+						target->GetBattlePosition().x,
+						target->GetBattlePosition().y,
 						0,
 						lcf::Data::terms.miss);
 				}

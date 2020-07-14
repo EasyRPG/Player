@@ -57,6 +57,7 @@ namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
+	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
 	int target_enemy_index;
 	bool need_refresh;
 	std::vector<bool> page_can_run;
@@ -65,6 +66,7 @@ namespace {
 }
 
 void Game_Battle::Init(int troop_id) {
+	Main_Data::game_enemyparty->ResetBattle(troop_id);
 	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
@@ -119,6 +121,7 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Game_Actors::ResetBattle();
+	Main_Data::game_enemyparty->ResetBattle(0);
 	Main_Data::game_pictures->OnBattleEnd();
 }
 
@@ -434,6 +437,14 @@ lcf::rpg::System::BattleCondition Game_Battle::GetBattleCondition() {
 	return battle_cond;
 }
 
+void Game_Battle::SetBattleFormation(lcf::rpg::System::BattleFormation form) {
+	battle_form = form;
+}
+
+lcf::rpg::System::BattleFormation Game_Battle::GetBattleFormation() {
+	return battle_form;
+}
+
 void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
 	target_enemy_index = target_enemy;
 }
@@ -471,4 +482,243 @@ TeleportTarget Game_Battle::GetDeathHandlerTeleport() {
 
 const lcf::rpg::Troop* Game_Battle::GetActiveTroop() {
 	return IsBattleRunning() ? troop : nullptr;
+}
+
+static constexpr double grid_tables[4][8][8] = {
+{
+// In DynRPG 0x4CC16C
+	{ 0.5, },
+	{ 0.0, 1.0, },
+	{ 0.0, 0.5, 1.0, },
+	{ 0.0, 0.33, 0.66, 1.0, },
+	{ 0.0, 0.25, 0.5, 0.75, 1.0, },
+	{ 0.0, 0.0, 0.5, 0.5, 1.0, 1.0, },
+	{ 0.0, 0.25, 0.33, 0.5, 0.66, 0.75, 1.0, },
+	{ 0.0, 0.0, 0.33, 0.33, 0.66, 0.66, 1.0, 1.0, },
+}, {
+// In DynRPG 0x4CC36C
+	{ 0.5, },
+	{ 0.0, 1.0, },
+	{ 0.0, 1.0, 0.5, },
+	{ 0.0, 0.75, 0.25, 1.0, },
+	{ 0.0, 0.5, 1.0, 0.25, 0.75, },
+	{ 0.0, 0.4, 0.8, 0.2, 0.6, 1.0, },
+	{ 0.0, 0.33, 0.66, 1.0, 0.25, 0.5, 1.0, },
+	{ 0.0, 0.28, 0.56, 0.84, 0.14, 0.42, 0.7, 0.98, }
+}, {
+// In DynRPG 0x4CC35C
+	{ 0.5, },
+	{ 0.5, 0.5, },
+	{ 0.0, 0.5, 1.0, },
+	{ 0.0, 0.0, 1.0, 1.0, },
+	{ 0.0, 0.33, 0.5, 0.66, 1.0, },
+	{ 0.0, 0.0, 0.5, 0.5, 1.0, 1.0, },
+	{ 0.0, 0.25, 0.33, 0.5, 0.66, 0.75, 1.0,},
+	{ 0.0, 0.0, 0.33, 0.33, 0.66, 0.66, 1.0, 1.0, }
+}, {
+// In DynRPG 0x4CC76C
+	{ },
+	{ 24, },
+	{ 48, 48, },
+	{ 48, 48, },
+	{ 56, 56, 56, 8, 8, },
+	{ 56, 56, 56, 8, 8, },
+	{ 64, 64, 64, 64, 16, 16, 16, },
+	{ 64, 64, 64, 64, 16, 16, 16, 16 },
+}};
+
+
+Point Game_Battle::CalculateBaseGridPosition(
+		int party_idx,
+		int party_size,
+		int table_x,
+		int table_y,
+		lcf::rpg::System::BattleFormation form,
+		int terrain_id)
+{
+	Point pos;
+
+	assert(party_idx >= 0);
+	assert(party_idx < party_size);
+	assert(party_size <= 8);
+
+	int grid_top_y = 112;
+	double grid_elongation = 392;
+	double grid_inclination = 16000;
+	if (terrain_id > 0) {
+		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Battle::GetTerrainId());
+		if (terrain) {
+			grid_top_y = terrain->grid_top_y;
+			grid_elongation = static_cast<double>(terrain->grid_elongation);
+			grid_inclination = static_cast<double>(terrain->grid_inclination);
+		}
+	} else if (form == lcf::rpg::System::BattleFormation_tight) {
+		grid_top_y = 132;
+		grid_elongation = 196;
+		grid_inclination = 24000;
+	}
+
+	const auto tdx = grid_tables[table_x][party_size - 1][party_idx];
+	const auto tdy = grid_tables[table_y][party_size - 1][party_idx];
+
+	pos.x = static_cast<int>((1.0 - tdx) * (grid_inclination / 1000.0));
+	pos.y = grid_top_y + static_cast<int>(std::sin(grid_elongation / 1000.0) * 120.0 * tdy);
+
+	return pos;
+}
+
+
+Point Game_Battle::Calculate2k3BattlePosition(const Game_Enemy& enemy) {
+	assert(troop);
+
+	const auto terrain_id = Game_Battle::GetTerrainId();
+	const auto cond = Game_Battle::GetBattleCondition();
+	const auto form = Game_Battle::GetBattleFormation();
+	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&enemy);
+
+	int half_height = 0;
+	int half_width = 0;
+	if (sprite) {
+		half_height = sprite->GetHeight() / 2;
+		half_width = sprite->GetWidth() / 2;
+	}
+
+	// Manual position case
+	if (!troop->auto_alignment
+			&& cond != lcf::rpg::System::BattleCondition_pincers
+			&& cond != lcf::rpg::System::BattleCondition_surround) {
+		auto position = enemy.GetOriginalPosition();
+		if (cond == lcf::rpg::System::BattleCondition_back) {
+			position.x = 320 - position.x;
+		}
+
+		// RPG_RT only clamps Y position for enemies
+		position.y = Utils::Clamp(position.y, half_height, 240 - half_height);
+		return position;
+	}
+
+	// Auto position case
+
+	int party_size = 0;
+	int idx = 0;
+	bool found_myself = false;
+	// Position is computed based on this monster's index relative to party size
+	// If monster is hidden -> use real party idx / real party size
+	// If monster is visible -> use visible party idx / visible party size
+	for (auto& e: Main_Data::game_enemyparty->GetEnemies()) {
+		if (e.get() == &enemy) {
+			found_myself = true;
+		}
+		if (enemy.IsHidden() || !e->IsHidden()) {
+			party_size += 1;
+			idx += !(found_myself);
+		}
+	}
+
+	// RPG_RT has a bug where the pincer table is only used for enemies on terrain battles but not on non terrain battles.
+	const int table_y_idx = (cond == lcf::rpg::System::BattleCondition_pincers && terrain_id >= 1) ? 2 : 1;
+	const auto grid = CalculateBaseGridPosition(idx, party_size, 0, table_y_idx, form, terrain_id);
+	const auto ti = grid_tables[3][party_size - 1][idx];
+
+	Point position;
+
+	const bool is_odd = (idx & 1);
+
+	switch (cond) {
+		case lcf::rpg::System::BattleCondition_none:
+		case lcf::rpg::System::BattleCondition_initiative:
+			position.x = grid.x + ti + half_width;
+			break;
+		case lcf::rpg::System::BattleCondition_back:
+			position.x = 320 - (grid.x + ti + half_width);
+			break;
+		case lcf::rpg::System::BattleCondition_surround:
+			position.x = 160 + (is_odd ? 16 : -16);
+			break;
+		case lcf::rpg::System::BattleCondition_pincers:
+			position.x = grid.x + half_width + 16;
+			if (!is_odd) {
+				position.x = 320 - position.x;
+			}
+			break;
+	}
+
+	position.y = grid.y - half_height;
+
+	// RPG_RT only clamps Y position for enemies
+	position.y = Utils::Clamp(position.y, half_height, 240 - half_height);
+
+	return position;
+}
+
+Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
+	assert(troop);
+
+	const auto terrain_id = Game_Battle::GetTerrainId();
+	const auto cond = Game_Battle::GetBattleCondition();
+	const auto form = Game_Battle::GetBattleFormation();
+	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&actor);
+
+	int half_height = 0;
+	int half_width = 0;
+	if (sprite) {
+		half_height = sprite->GetHeight() / 2;
+		half_width = sprite->GetWidth() / 2;
+	}
+
+	int row_x_offset = 0;
+	if (actor.GetBattleRow() == Game_Actor::RowType::RowType_front) {
+		row_x_offset = half_width;
+	}
+
+	// Manual position case
+	if (lcf::Data::battlecommands.placement == lcf::rpg::BattleCommands::Placement_manual) {
+		auto position = actor.GetOriginalPosition();
+
+		if (cond == lcf::rpg::System::BattleCondition_back) {
+			position.x = 320 - (position.x + row_x_offset);
+		} else {
+			position.x = position.x - row_x_offset;
+		}
+
+		// RPG_RT doesn't clamp Y for actors
+		position.x = Utils::Clamp(position.x, half_width, 320 - half_width);
+		return position;
+	}
+
+	const auto idx = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
+	const auto party_size = Main_Data::game_party->GetBattlerCount();
+
+	const int table_y_idx = (cond == lcf::rpg::System::BattleCondition_surround) ? 2 : 0;
+	const auto grid = CalculateBaseGridPosition(idx, party_size, 0, table_y_idx, form, terrain_id);
+
+	Point position;
+
+	const bool is_odd = (idx & 1);
+
+	switch (cond) {
+		case lcf::rpg::System::BattleCondition_none:
+		case lcf::rpg::System::BattleCondition_initiative:
+			position.x = 320 - (grid.x + half_width + row_x_offset);
+			break;
+		case lcf::rpg::System::BattleCondition_back:
+			position.x = grid.x + 2 * half_width - row_x_offset;
+			break;
+		case lcf::rpg::System::BattleCondition_surround:
+			position.x = grid.x + half_width + row_x_offset;
+			if (!is_odd) {
+				position.x = 320 - position.x;
+			}
+			break;
+		case lcf::rpg::System::BattleCondition_pincers:
+			position.x = 160 + (half_width / 2) - row_x_offset;
+			break;
+	}
+
+	position.y = grid.y - half_height;
+
+	// RPG_RT doesn't clamp Y for actors
+	position.x = Utils::Clamp(position.x, half_width, 320 - half_width);
+
+	return position;
 }

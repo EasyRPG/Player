@@ -59,6 +59,8 @@ public:
 
 	virtual PermanentStates GetPermanentStates() const override;
 
+	Point GetOriginalPosition() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.
@@ -673,20 +675,6 @@ public:
 	 * @return true if actor does two weapons.
 	 */
 	bool GetAutoBattle() const;
-
-	/**
-	 * Gets X position on battlefield
-	 *
-	 * @return X position in battle scene
-	 */
-	int GetBattleX() const override;
-
-	/**
-	 * Gets Y position on battlefield
-	 *
-	 * @return Y position in battle scene
-	 */
-	int GetBattleY() const override;
 
 	/**
 	 * Gets name of skill menu item

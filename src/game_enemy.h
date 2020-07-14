@@ -21,6 +21,8 @@
 // Headers
 #include "game_battler.h"
 #include <lcf/rpg/enemy.h>
+#include <lcf/rpg/enemyaction.h>
+#include <lcf/rpg/troopmember.h>
 
 /**
  * Represents a single enemy in the battle scene
@@ -28,7 +30,7 @@
 class Game_Enemy final : public Game_Battler
 {
 public:
-	Game_Enemy(int enemy_id);
+	explicit Game_Enemy(const lcf::rpg::TroopMember& tm);
 
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
@@ -38,6 +40,8 @@ public:
 	int MaxStatBattleValue() const override;
 
 	int MaxStatBaseValue() const override;
+
+	Point GetOriginalPosition() const override;
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
@@ -118,33 +122,6 @@ public:
 	 */
 	int GetBaseAgi() const override;
 
-	/**
-	 * Gets enemy X position
-	 *
-	 * @return enemy X position
-	 */
-	int GetBattleX() const override;
-	/**
-	 * Gets enemy Y position
-	 *
-	 * @return enemy Y position
-	 */
-	int GetBattleY() const override;
-
-	/**
-	 * Sets enemy X position
-	 * 
-	 * @param new_x New X position
-	 */
-	void SetBattleX(int new_x);
-
-	/**
-	 * Sets enemy Y position
-	 * 
-	 * @param new_y New Y position
-	 */
-	void SetBattleY(int new_y);
-
 	int GetHue() const override;
 
 	int GetHp() const override;
@@ -191,24 +168,13 @@ public:
 	bool IsInParty() const override;
 
 protected:
-	void Setup(int enemy_id);
-
-	int x;
-	int y;
-
-	int enemy_id;
-	// hidden at battle begin
-	bool hidden;
-	int hp;
-	int sp;
-	int cycle;
-	int flying_offset;
+	const lcf::rpg::Enemy* enemy = nullptr;
+	const lcf::rpg::TroopMember* troop_member = nullptr;
 	std::vector<int16_t> states;
-
-	lcf::rpg::Enemy* enemy;
-
-	// normal attack instance for use after charge
-	lcf::rpg::EnemyAction normal_atk;
+	int hp = 0;
+	int sp = 0;
+	int cycle = 0;
+	int flying_offset = 0;
 };
 
 inline Game_Battler::BattlerType Game_Enemy::GetType() const {
@@ -239,20 +205,12 @@ inline int Game_Enemy::GetBattleAnimationId() const {
 	return 0;
 }
 
-inline void Game_Enemy::SetBattleX(int new_x) {
-	x = new_x;
-}
-
-inline void Game_Enemy::SetBattleY(int new_y) {
-	y = new_y;
-}
-
 inline int Game_Enemy::GetHue() const {
 	return enemy->battler_hue;
 }
 
 inline int Game_Enemy::GetId() const {
-	return enemy_id;
+	return enemy->ID;
 }
 
 inline int Game_Enemy::GetBaseMaxHp() const {
