@@ -506,7 +506,7 @@ target_link_libraries(${PROJECT_NAME} PNG::PNG)
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
-find_package(fmt 5.3 REQUIRED)
+find_package(fmt REQUIRED)
 target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 # Always enable Wine registry support on non-Windows

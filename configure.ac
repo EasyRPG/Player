@@ -46,7 +46,17 @@ PKG_CHECK_MODULES([LCF],[liblcf])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])
 PKG_CHECK_MODULES([ZLIB],[zlib])
 PKG_CHECK_MODULES([PNG],[libpng])
-PKG_CHECK_MODULES([FMT],[fmt >= 5.3])
+PKG_CHECK_MODULES([FMT],[fmt],,[
+	AC_CHECK_HEADER([fmt/core.h],[fmtlib_header=1],,[ ])
+	AC_MSG_CHECKING([for FMT (legacy)])
+	saved_ldflags="${LDFLAGS}"
+	LDFLAGS="${LDFLAGS} -lfmt"
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <fmt/core.h>],[fmt::format("")])],[FMT_LIBS="-lfmt"])
+	LDFLAGS="${saved_ldflags}"
+	AS_IF([test -z "$FMT_LIBS" -o -z "$fmtlib_header"],[AC_MSG_RESULT([no])
+		AC_MSG_ERROR([Could not find libfmt! Consider installing version 5.3 or newer.])
+	],[AC_MSG_RESULT([yes])])
+])
 PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[AC_DEFINE(USE_SDL,[2],[Enable SDL2])],[
 	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
 ])
