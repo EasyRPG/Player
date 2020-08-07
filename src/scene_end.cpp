@@ -74,7 +74,7 @@ void Scene_End::CreateHelpWindow() {
 
 	help_window.reset(new Window_Help((SCREEN_TARGET_WIDTH/2) - (text_size + 16)/ 2,
 									  72, text_size + 16, 32));
-	help_window->SetText(ToString(lcf::Data::terms.exit_game_message));
+	help_window->SetText(ToString(lcf::Data::terms.exit_game_message), Font::ColorDefault, Text::AlignLeft, false);
 
 	command_window->SetHelpWindow(help_window.get());
 }

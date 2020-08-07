@@ -29,7 +29,7 @@ Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flag
 	contents->Clear();
 }
 
-void Window_Help::SetText(std::string text, int color, Text::Alignment align) {
+void Window_Help::SetText(std::string text, int color, Text::Alignment align, bool halfwidthspace) {
 	if (this->text != text || this->color != color || this->align != align) {
 		contents->Clear();
 
@@ -43,7 +43,11 @@ void Window_Help::SetText(std::string text, int color, Text::Alignment align) {
 			x += Font::Default()->GetSize(segment).width;
 
 			if (nextpos != decltype(text)::npos) {
-				x += Font::Default()->GetSize(" ").width / 2;
+				if (halfwidthspace) {
+					x += Font::Default()->GetSize(" ").width / 2;
+				} else {
+					x += Font::Default()->GetSize(" ").width;
+				}
 				pos = nextpos + 1;
 			}
 		}

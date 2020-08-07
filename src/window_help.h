@@ -40,8 +40,9 @@ public:
 	 *
 	 * @param text text to show.
 	 * @param align text alignment.
+	 * @param halfwidthspace if half width spaces should be used.
 	 */
-	void SetText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft);
+	void SetText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft, bool halfwidthspace = true);
 
 	/**
 	 * Clears the window
