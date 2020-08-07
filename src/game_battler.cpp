@@ -455,7 +455,7 @@ int Game_Battler::ApplyConditions() {
 			}
 		}
 		else if(state.hp_change_type == state.ChangeType_gain) {
-			src_hp = std::min(source_hp, hp);
+			src_hp = hp;
 			if(src_hp < 0) {
 				src_hp = 0;
 			}
@@ -471,8 +471,8 @@ int Game_Battler::ApplyConditions() {
 
 		}
 		else if (state.sp_change_type == state.ChangeType_gain) {
-			src_sp = std::min(source_sp, sp);
-			if(src_sp < 0 ) {
+			src_sp = sp;
+			if(src_sp < 0) {
 				src_sp = 0;
 			}
 		}
