@@ -36,6 +36,8 @@ void Window_ActorSp::SetBattler(const Game_Battler& battler) {
 		color = Font::ColorCritical;
 	}
 
+	contents->Clear();
+
 	// Draw current Sp
 	contents->TextDraw(cx + 3 * 6, 2, color, std::to_string(battler.GetSp()), Text::AlignRight);
 
