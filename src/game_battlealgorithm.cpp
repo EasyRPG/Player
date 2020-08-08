@@ -667,7 +667,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
 		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
-		if (IsAbsorb()) {
+		if (IsAbsorb() && Player::IsRPG2k3()) {
 			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAtkModifier(atk);
 		}
@@ -676,7 +676,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
 		target->ChangeDefModifier(IsPositive() ? def : -def);
-		if (IsAbsorb()) {
+		if (IsAbsorb() && Player::IsRPG2k3()) {
 			def = std::max<int>(0, std::min<int>(def, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeDefModifier(def);
 		}
@@ -685,7 +685,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
 		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
-		if (IsAbsorb()) {
+		if (IsAbsorb() && Player::IsRPG2k3()) {
 			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeSpiModifier(spi);
 		}
@@ -694,7 +694,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
 		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
-		if (IsAbsorb()) {
+		if (IsAbsorb() && Player::IsRPG2k3()) {
 			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAgiModifier(agi);
 		}
