@@ -1004,7 +1004,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 		}
 
-		if (effect > 0) {
+		if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) {
 			effect = Game_Battle::VarianceAdjustEffect(effect, 4);
 		}
 
@@ -1228,7 +1228,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
+			if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1274,7 +1274,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
+			if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1835,7 +1835,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
 	int effect = source->GetAtk() - GetTarget()->GetDef() / 2;
-	if (effect > 0) {
+	if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) {
 		effect = Game_Battle::VarianceAdjustEffect(effect, 4);
 	}
 
