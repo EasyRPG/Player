@@ -326,7 +326,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 		effect *= mul;
 
-		effect += (effect * Utils::GetRandomNumber(-skill->variance * 10, skill->variance * 10) / 100);
+		if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill->variance);
 
 		if (effect < 0)
 			effect = 0;
