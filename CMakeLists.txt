@@ -752,13 +752,14 @@ set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
 	add_custom_command(OUTPUT resources/${MAN_NAME}
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMAND ${A2X_EXECUTABLE} -a player_version="${PROJECT_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
 		DEPENDS resources/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
 	if(UNIX)
 		add_custom_target(man ALL DEPENDS resources/${MAN_NAME})
-		install(FILES resources/${MAN_NAME} DESTINATION ${CMAKE_INSTALL_MANDIR}/man6)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/${MAN_NAME} DESTINATION ${CMAKE_INSTALL_MANDIR}/man6)
 	else()
 		add_custom_target(man DEPENDS resources/${MAN_NAME})
 	endif()
