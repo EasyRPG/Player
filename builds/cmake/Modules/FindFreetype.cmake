@@ -174,10 +174,12 @@ if(Freetype_FOUND)
       INTERFACE_INCLUDE_DIRECTORIES "${FREETYPE_INCLUDE_DIRS}")
 
     # Handle circular dependency on harfbuzz
-    find_package(Harfbuzz QUIET)
-    if(HARFBUZZ_FOUND)
-      set_target_properties(Freetype::Freetype PROPERTIES
-        INTERFACE_LINK_LIBRARIES Harfbuzz::Harfbuzz)
+    if(NOT TARGET Harfbuzz::Harfbuzz)
+      find_package(Harfbuzz QUIET)
+      if(HARFBUZZ_FOUND)
+        set_target_properties(Freetype::Freetype PROPERTIES
+          INTERFACE_LINK_LIBRARIES Harfbuzz::Harfbuzz)
+      endif()
     endif()
 
     if(FREETYPE_LIBRARY_RELEASE)

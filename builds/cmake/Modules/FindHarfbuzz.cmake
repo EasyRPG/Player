@@ -55,7 +55,11 @@ if(HARFBUZZ_FOUND)
 
 	if(NOT TARGET Harfbuzz::Harfbuzz)
 		add_library(Harfbuzz::Harfbuzz UNKNOWN IMPORTED)
-		find_library(Freetype REQUIRED)
+
+		if(NOT TARGET Freetype::Freetype)
+			find_library(Freetype REQUIRED)
+		endif()
+
 		set_target_properties(Harfbuzz::Harfbuzz PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${HARFBUZZ_INCLUDE_DIRS}"
 			INTERFACE_LINK_LIBRARIES Freetype::Freetype
