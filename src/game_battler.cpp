@@ -305,6 +305,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 
 	bool cure_hp_percentage = false;
 	bool was_used = false;
+	int revived = 0;
 
 	if (skill->type == lcf::rpg::Skill::Type_normal || skill->type >= lcf::rpg::Skill::Type_subskill) {
 		// Only takes care of healing skills outside of battle,
@@ -341,11 +342,15 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 					AddState(lcf::Data::states[i].ID, false);
 				}
 				else {
+					if (i == 0 && IsDead()) {
+						revived = 1;
+					}
+
 					was_used |= HasState(lcf::Data::states[i].ID);
 					RemoveState(lcf::Data::states[i].ID, false);
 
 					// If Death is cured and HP is not selected, we set a bool so it later heals HP percentage
-					if (i == 0 && !skill->affect_hp) {
+					if (i == 0 && !skill->affect_hp && revived) {
 						cure_hp_percentage = true;
 					}
 				}
@@ -355,11 +360,11 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		// Skills only increase hp and sp outside of battle
 		if (effect > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
 			was_used = true;
-			ChangeHp(effect);
+			ChangeHp(effect - revived);
 		}
 		else if (effect > 0 && cure_hp_percentage) {
 			was_used = true;
-			ChangeHp(GetMaxHp() * effect / 100);
+			ChangeHp(GetMaxHp() * effect / 100 - revived);
 		}
 
 		if (effect > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
