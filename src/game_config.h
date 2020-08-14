@@ -23,6 +23,11 @@
 
 class CmdlineParser;
 
+enum class ScalingMode {
+	Fractional,
+	Integer
+};
+
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "" };
 	StringConfigParam enemyai_algo{ "" };
@@ -35,6 +40,7 @@ struct Game_ConfigVideo {
 	BoolConfigParam fps_render_window{ false };
 	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
 	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
+	EnumConfigParam<ScalingMode> scaling_mode{ ScalingMode::Fractional };
 };
 
 struct Game_ConfigAudio {

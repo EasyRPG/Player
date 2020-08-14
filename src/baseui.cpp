@@ -61,6 +61,7 @@ BaseUi::BaseUi(const Game_ConfigVideo& cfg)
 	fps_render_window = cfg.fps_render_window.Get();
 	fps_limit = cfg.fps_limit.Get();
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
+	scaling_mode = cfg.scaling_mode.Get();
 }
 
 BitmapRef BaseUi::CaptureScreen() {

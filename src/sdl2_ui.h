@@ -90,7 +90,7 @@ private:
 
 	void ProcessEvent(SDL_Event &sdl_event);
 
-	void ProcessActiveEvent(SDL_Event &evnt);
+	void ProcessWindowEvent(SDL_Event &evnt);
 	void ProcessKeyDownEvent(SDL_Event &evnt);
 	void ProcessKeyUpEvent(SDL_Event &evnt);
 	void ProcessMouseMotionEvent(SDL_Event &evnt);
@@ -124,6 +124,14 @@ private:
 	SDL_Texture* sdl_texture = nullptr;
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
+
+	struct {
+		int width = 0;
+		int height = 0;
+		bool size_changed = true;
+	} window = {};
+
+	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
 	std::unique_ptr<AudioInterface> audio_;
 };

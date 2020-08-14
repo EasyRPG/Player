@@ -286,10 +286,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
+		SDL_GetWindowSize(sdl_window, &window.width, &window.height);
+		window.size_changed = true;
+
 		auto window_sg = lcf::makeScopeGuard([&]() {
 				SDL_DestroyWindow(sdl_window);
 				sdl_window = nullptr;
-				});
+		});
 
 		SetAppIcon();
 
@@ -311,8 +314,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 				SDL_DestroyRenderer(sdl_renderer);
 				sdl_renderer = nullptr;
 				});
-
-		uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
 		SDL_RendererInfo rinfo = {};
 		if (SDL_GetRendererInfo(sdl_renderer, &rinfo) == 0) {
@@ -342,9 +343,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		// Flush display
 		SDL_RenderClear(sdl_renderer);
 		SDL_RenderPresent(sdl_renderer);
-
-		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
-
 
 		sdl_texture = SDL_CreateTexture(sdl_renderer,
 			texture_format,
@@ -462,9 +460,59 @@ void Sdl2Ui::ProcessEvents() {
 
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
-	SDL_UpdateTexture(sdl_texture, NULL, main_surface->pixels(), main_surface->pitch());
+	SDL_UpdateTexture(sdl_texture, nullptr, main_surface->pixels(), main_surface->pitch());
+
+	if (window.size_changed) {
+		// Based on SDL2 function UpdateLogicalSize
+		window.size_changed = false;
+
+		SDL_Rect viewport;
+		float scale;
+		float width_float = static_cast<float>(window.width);
+		float height_float = static_cast<float>(window.height);
+
+		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
+		float real_aspect = width_float / height_float;
+
+		if (scaling_mode == ScalingMode::Integer) {
+			// Integer division on purpose
+			if (want_aspect > real_aspect) {
+				scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
+			} else {
+				scale = static_cast<float>(window.height / SCREEN_TARGET_HEIGHT);
+			}
+
+			viewport.w = (int)SDL_ceil(SCREEN_TARGET_WIDTH * scale);
+			viewport.x = (window.width - viewport.w) / 2;
+			viewport.h = (int)SDL_ceil(SCREEN_TARGET_HEIGHT * scale);
+			viewport.y = (window.height - viewport.h) / 2;
+
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
+			// The aspect ratios are the same, just scale appropriately
+			scale = width_float / SCREEN_TARGET_WIDTH;
+			SDL_RenderSetViewport(sdl_renderer, nullptr);
+		} else if (want_aspect > real_aspect) {
+			// Letterboxing (black bars top and bottom)
+			scale = width_float / SCREEN_TARGET_WIDTH;
+			viewport.x = 0;
+			viewport.w = window.width;
+			viewport.h = (int)SDL_ceil(SCREEN_TARGET_HEIGHT * scale);
+			viewport.y = (window.height - viewport.h) / 2;
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		} else {
+			// black bars left and right
+			scale = height_float / SCREEN_TARGET_HEIGHT;
+			viewport.y = 0;
+			viewport.h = window.height;
+			viewport.w = (int)SDL_ceil(SCREEN_TARGET_WIDTH * scale);
+			viewport.x = (window.width - viewport.w) / 2;
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		}
+	}
+
 	SDL_RenderClear(sdl_renderer);
-	SDL_RenderCopy(sdl_renderer, sdl_texture, NULL, NULL);
+	SDL_RenderCopy(sdl_renderer, sdl_texture, nullptr, nullptr);
 	SDL_RenderPresent(sdl_renderer);
 }
 
@@ -487,7 +535,7 @@ bool Sdl2Ui::ShowCursor(bool flag) {
 void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
 		case SDL_WINDOWEVENT:
-			ProcessActiveEvent(evnt);
+			ProcessWindowEvent(evnt);
 			return;
 
 		case SDL_QUIT:
@@ -544,7 +592,7 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 	}
 }
 
-void Sdl2Ui::ProcessActiveEvent(SDL_Event &evnt) {
+void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 	int state = evnt.window.event;
 #if PAUSE_GAME_WHEN_FOCUS_LOST
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
@@ -580,6 +628,11 @@ void Sdl2Ui::ProcessActiveEvent(SDL_Event &evnt) {
 		mouse_focus = false;
 	}
 #endif
+	if (state == SDL_WINDOWEVENT_SIZE_CHANGED || state == SDL_WINDOWEVENT_RESIZED) {
+		window.width = evnt.window.data1;
+		window.height = evnt.window.data2;
+		window.size_changed = true;
+	}
 }
 
 void Sdl2Ui::ProcessKeyDownEvent(SDL_Event &evnt) {
