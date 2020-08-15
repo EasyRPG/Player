@@ -38,7 +38,6 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 }
 
 Game_Character::~Game_Character() {
-	Game_Map::RemovePendingMove(this);
 }
 
 void Game_Character::MoveTo(int map_id, int x, int y) {
@@ -717,8 +716,6 @@ void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 									int frequency) {
 	if (!IsMoveRouteOverwritten()) {
 		original_move_frequency = GetMoveFrequency();
-	} else {
-		Game_Map::RemovePendingMove(this);
 	}
 
 	SetPaused(false);
@@ -736,12 +733,9 @@ void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 		CancelMoveRoute();
 		return;
 	}
-
-	Game_Map::AddPendingMove(this);
 }
 
 void Game_Character::CancelMoveRoute() {
-	Game_Map::RemovePendingMove(this);
 	SetMoveRouteOverwritten(false);
 	SetMoveRouteRepeated(false);
 	SetMoveFrequency(original_move_frequency);

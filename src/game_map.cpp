@@ -68,7 +68,6 @@ namespace {
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	std::vector<Game_Vehicle> vehicles;
-	std::vector<Game_Character*> pending;
 
 	lcf::rpg::Chipset* chipset;
 
@@ -79,7 +78,6 @@ namespace {
 
 namespace Game_Map {
 void SetupCommon();
-void ResetPendingMove();
 }
 
 void Game_Map::OnContinueFromBattle() {
@@ -112,7 +110,6 @@ void Game_Map::Init() {
 
 void Game_Map::Dispose() {
 	events.clear();
-	pending.clear();
 	map.reset();
 	map_info = {};
 	map_info.Setup();
@@ -129,24 +126,6 @@ int Game_Map::GetMapSaveCount() {
 	return (Player::IsRPG2k3() && map->save_count_2k3e > 0)
 		? map->save_count_2k3e
 		: map->save_count;
-}
-
-void Game_Map::ResetPendingMove() {
-	pending.clear();
-
-	auto add = [&](auto* ch) {
-		if (ch->IsMoveRouteOverwritten()) {
-			pending.push_back(ch);
-		}
-	};
-
-	for (auto& vh: vehicles) {
-		add(&vh);
-	}
-
-	for (auto& ev: events) {
-		add(&ev);
-	}
 }
 
 void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
@@ -215,8 +194,6 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
 	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
-
-	ResetPendingMove();
 }
 
 void Game_Map::SetupFromSave(
@@ -278,8 +255,6 @@ void Game_Map::SetupFromSave(
 	// the pan_x/y is always forced to 0.
 	// If the later async code will load panorama, set the flag to not clear the offsets.
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
-
-	ResetPendingMove();
 }
 
 std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
@@ -1465,8 +1440,20 @@ bool Game_Map::IsAnyEventStarting() {
 }
 
 bool Game_Map::IsAnyMovePending() {
-	for (auto& ev: pending) {
-		if (ev->GetMapId() == GetMapId() && !ev->IsMoveRouteRepeated()) {
+	auto check = [](auto& ev) {
+		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteRepeated();
+	};
+	const auto map_id = GetMapId();
+	if (check(*Main_Data::game_player)) {
+		return true;
+	}
+	for (auto& vh: vehicles) {
+		if (vh.GetMapId() == map_id && check(vh)) {
+			return true;
+		}
+	}
+	for (auto& ev: events) {
+		if (check(ev)) {
 			return true;
 		}
 	}
@@ -1474,21 +1461,16 @@ bool Game_Map::IsAnyMovePending() {
 	return false;
 }
 
-void Game_Map::AddPendingMove(Game_Character* character) {
-	pending.push_back(character);
-}
-
-void Game_Map::RemovePendingMove(Game_Character* character) {
-	if (pending.empty()) {
-		return;
-	}
-
-	pending.erase(std::remove(pending.begin(), pending.end(), character), pending.end());
-}
-
 void Game_Map::RemoveAllPendingMoves() {
-	while (!pending.empty()) {
-		pending.back()->CancelMoveRoute();
+	const auto map_id = GetMapId();
+	Main_Data::game_player->CancelMoveRoute();
+	for (auto& vh: vehicles) {
+		if (vh.GetMapId() == map_id) {
+			vh.CancelMoveRoute();
+		}
+	}
+	for (auto& ev: events) {
+		ev.CancelMoveRoute();
 	}
 }
 

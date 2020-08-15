@@ -624,9 +624,10 @@ namespace Game_Map {
 	/** @return the number of times this map was saved in the editor */
 	int GetMapSaveCount();
 
+	/** @return true if any event on this map has an active move route */
 	bool IsAnyMovePending();
-	void AddPendingMove(Game_Character* character);
-	void RemovePendingMove(Game_Character* character);
+
+	/** Cancel active move routes for all events on this map */
 	void RemoveAllPendingMoves();
 
 	void UpdateProcessedFlags(bool is_preupdate);
