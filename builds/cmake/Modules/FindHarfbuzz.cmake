@@ -57,7 +57,7 @@ if(HARFBUZZ_FOUND)
 		add_library(Harfbuzz::Harfbuzz UNKNOWN IMPORTED)
 
 		if(NOT TARGET Freetype::Freetype)
-			find_library(Freetype REQUIRED)
+			find_package(Freetype REQUIRED)
 		endif()
 
 		set_target_properties(Harfbuzz::Harfbuzz PROPERTIES
