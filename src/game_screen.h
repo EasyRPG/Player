@@ -52,7 +52,7 @@ public:
 	void ShakeBegin(int power, int speed);
 	void ShakeEnd();
 	void SetWeatherEffect(int type, int strength);
-	void PlayMovie(const std::string& filename,
+	void PlayMovie(std::string filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void Update();
 

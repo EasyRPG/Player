@@ -199,7 +199,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(lcf::rpg::EventCommand const& c
 		Game_Map::SetupBattle(args);
 		break;
 	case 1:
-		args.background = com.string;
+		args.background = ToString(com.string);
 
 		if (Player::IsRPG2k3()) {
 			args.formation = static_cast<lcf::rpg::System::BattleFormation>(com.parameters[7]);
@@ -608,7 +608,7 @@ bool Game_Interpreter_Map::CommandPlayMovie(lcf::rpg::EventCommand const& com) {
 		return false;
 	}
 
-	const std::string& filename = com.string;
+	auto filename = ToString(com.string);
 	int pos_x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int pos_y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int res_x = com.parameters[3];
