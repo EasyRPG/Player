@@ -157,7 +157,7 @@ int Game_Message::GetRealPosition() {
 	}
 }
 
-int Game_Message::WordWrap(const std::string& line, const int limit, const std::function<void(const std::string &line)> callback) {
+int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallback& callback) {
 	int start = 0;
 	int line_count = 0;
 	FontRef font = Font::Default();
@@ -165,7 +165,7 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 	do {
 		int next = start;
 		do {
-			auto found = line.find(" ", next);
+			auto found = line.find(' ', next);
 			if (found == std::string::npos) {
 				found = line.size();
 			}

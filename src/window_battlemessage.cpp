@@ -39,23 +39,22 @@ void Window_BattleMessage::Push(const std::string& message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
 	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
-	// FIXME: STRING_VIEW Remove this string conversion
 	Utils::ForEachLine(message, [this](StringView line)
-			{ PushLine(std::string(line)); });
+			{ PushLine(line); });
 }
 
-void Window_BattleMessage::PushLine(const std::string& line) {
+void Window_BattleMessage::PushLine(StringView line) {
 	if (Player::IsRPG2kE()) {
 		Game_Message::WordWrap(
 				line,
 				GetWidth() - 20,
-				[this](const std::string& wrap_line) {
-					lines.push_back(wrap_line);
+				[this](StringView wrap_line) {
+					lines.push_back(std::string(wrap_line));
 				}
 				);
 	}
 	else {
-		lines.push_back(line);
+		lines.push_back(std::string(line));
 	}
 
 	needs_refresh = true;

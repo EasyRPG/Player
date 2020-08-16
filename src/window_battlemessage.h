@@ -95,7 +95,7 @@ public:
 	static const int linesPerPage = 4;
 
 protected:
-	void PushLine(const std::string& line);
+	void PushLine(StringView line);
 private:
 	std::vector<std::string> lines;
 

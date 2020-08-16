@@ -22,6 +22,7 @@
 #include <bitset>
 #include <string>
 #include <functional>
+#include "string_view.h"
 #include "pending_message.h"
 
 class Window_Message;
@@ -171,6 +172,9 @@ namespace Game_Message {
 
 	void SetPendingMessage(PendingMessage&& pm);
 
+	/** Callback type for WordWrap function */
+	using WordWrapCallback = const std::function<void(StringView line)>;
+
 	/**
 	 * Breaks the line into lines, each of which is equal
 	 * or less than a specified limit in pixels in the
@@ -189,7 +193,7 @@ namespace Game_Message {
 	 * @param[in] limit maximum size of each line after word-breaking.
 	 * @param callback a function to be called for each word-wrapped line
 	 */
-	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
+	int WordWrap(StringView line, int limit, const WordWrapCallback& callback);
 
 	/**
 	 * Return if it's legal to show a new message box.
