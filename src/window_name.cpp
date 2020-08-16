@@ -38,17 +38,19 @@ void Window_Name::Refresh() {
 	contents->TextDraw(2, 2, Font::ColorDefault, name);
 }
 
-void Window_Name::Set(const std::string& text) {
-	name = text;
+void Window_Name::Set(std::string text) {
+	name = std::move(text);
 	Refresh();
 }
 
-void Window_Name::Append(const std::string& text) {
-	if(Font::Default()->GetSize(name + text).width <= (12 * 6)) {
-		name += text;
+void Window_Name::Append(StringView text) {
+	// Avoid string copies by reusing the buffer in name
+	name.append(text.begin(), text.end());
+	if(Font::Default()->GetSize(name).width <= (12 * 6)) {
 		Refresh();
 	} else {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		name.resize(name.size() - text.size());
 	}
 }
 
@@ -58,16 +60,13 @@ void Window_Name::Update() {
 }
 
 void Window_Name::Erase() {
-	if (name.size() < 1)
+	if (name.empty())
 		return;
 
-	std::u32string u32name = Utils::DecodeUTF32(name);
+	auto u32name = Utils::DecodeUTF32(name);
 	u32name.pop_back();
 	name = Utils::EncodeUTF(u32name);
 
 	Refresh();
 }
 
-const std::string& Window_Name::Get() {
-	return name;
-}

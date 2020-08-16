@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include "window_base.h"
+#include "string_view.h"
 
 /**
  * Window Name Class.
@@ -37,15 +38,19 @@ public:
 	 */
 	void Refresh();
 
-	void Set(const std::string& text);
-	void Append(const std::string& text);
+	void Set(std::string text);
+	void Append(StringView text);
 	void Erase();
-	const std::string& Get();
+	const std::string& Get() const;
 
 	void Update() override;
 
 protected:
 	std::string name;
 };
+
+inline const std::string& Window_Name::Get() const {
+	return name;
+}
 
 #endif
