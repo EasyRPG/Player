@@ -672,7 +672,7 @@ public:
 	 *
 	 * @return name of skill menu item
 	 */
-	const std::string& GetSkillName() const;
+	StringView GetSkillName() const;
 
 	/**
 	 * Sets new actor name.

@@ -823,9 +823,9 @@ Point Game_Actor::GetOriginalPosition() const {
 	return { actor.battle_x, actor.battle_y };
 }
 
-const std::string& Game_Actor::GetSkillName() const {
+StringView Game_Actor::GetSkillName() const {
 	auto& a = GetActor();
-	return a.rename_skill ? a.skill_name : lcf::Data::terms.command_skill;
+	return a.rename_skill ? StringView(a.skill_name) : StringView(lcf::Data::terms.command_skill);
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
