@@ -39,21 +39,21 @@
 using namespace std::chrono_literals;
 
 namespace {
-	std::string MakeHashKey(const std::string& folder_name, const std::string& filename, bool transparent) {
-		return folder_name + ":" + filename + ":" + (transparent ? "T" : " ");
+	std::string MakeHashKey(StringView folder_name, StringView filename, bool transparent) {
+		return std::string(folder_name) + ":" + std::string(filename) + ":" + (transparent ? "T" : " ");
 	}
 
-	std::string MakeTileHashKey(const std::string& chipset_name, int id) {
+	std::string MakeTileHashKey(StringView chipset_name, int id) {
 		std::string key;
 		key.reserve(chipset_name.size() + sizeof(int) + 2);
 		key.append(reinterpret_cast<char*>(&id), sizeof(id));
 		key.append(1, ':');
-		key.append(chipset_name);
+		key.append(chipset_name.begin(), chipset_name.end());
 
 		return key;
 	}
 
-	int IdFromTileHash(const std::string& key) {
+	int IdFromTileHash(StringView key) {
 		int id = 0;
 		if (key.size() > sizeof(id)) {
 			std::memcpy(&id, key.data(), sizeof(id));
@@ -61,7 +61,7 @@ namespace {
 		return id;
 	}
 
-	const char* NameFromTileHash(const std::string& key) {
+	const char* NameFromTileHash(StringView key) {
 		int offset = sizeof(int) + 1;
 		if (static_cast<int>(key.size()) < offset) {
 			return "";
@@ -132,14 +132,15 @@ namespace {
 		return (cache[key] = {bmp, Game_Clock::GetFrameTime()}).bitmap;
 	}
 
-	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
+	BitmapRef LoadBitmap(StringView folder_name, StringView filename,
 						 bool transparent, const uint32_t flags) {
 		const auto key = MakeHashKey(folder_name, filename, transparent);
 
 		auto it = cache.find(key);
 
 		if (it == cache.end()) {
-			const std::string path = FileFinder::FindImage(folder_name, filename);
+			// FIXME: STRING_VIEW string copies here
+			const std::string path = FileFinder::FindImage(std::string(folder_name), std::string(filename));
 
 			BitmapRef bmp = BitmapRef();
 
@@ -249,7 +250,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename, bool transparent) {
+	BitmapRef LoadDummyBitmap(StringView folder_name, StringView filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
@@ -271,7 +272,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(const std::string& f, bool transparent) {
+	BitmapRef LoadBitmap(StringView f, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
@@ -320,7 +321,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(const std::string& f) {
+	BitmapRef LoadBitmap(StringView f) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
@@ -331,67 +332,67 @@ namespace {
 
 std::vector<uint8_t> Cache::exfont_custom;
 
-BitmapRef Cache::Backdrop(const std::string& file) {
+BitmapRef Cache::Backdrop(StringView file) {
 	return LoadBitmap<Material::Backdrop>(file);
 }
 
-BitmapRef Cache::Battle(const std::string& file) {
+BitmapRef Cache::Battle(StringView file) {
 	return LoadBitmap<Material::Battle>(file);
 }
 
-BitmapRef Cache::Battle2(const std::string& file) {
+BitmapRef Cache::Battle2(StringView file) {
 	return LoadBitmap<Material::Battle2>(file);
 }
 
-BitmapRef Cache::Battlecharset(const std::string& file) {
+BitmapRef Cache::Battlecharset(StringView file) {
 	return LoadBitmap<Material::Battlecharset>(file);
 }
 
-BitmapRef Cache::Battleweapon(const std::string& file) {
+BitmapRef Cache::Battleweapon(StringView file) {
 	return LoadBitmap<Material::Battleweapon>(file);
 }
 
-BitmapRef Cache::Charset(const std::string& file) {
+BitmapRef Cache::Charset(StringView file) {
 	return LoadBitmap<Material::Charset>(file);
 }
 
-BitmapRef Cache::Chipset(const std::string& file) {
+BitmapRef Cache::Chipset(StringView file) {
 	return LoadBitmap<Material::Chipset>(file);
 }
 
-BitmapRef Cache::Faceset(const std::string& file) {
+BitmapRef Cache::Faceset(StringView file) {
 	return LoadBitmap<Material::Faceset>(file);
 }
 
-BitmapRef Cache::Frame(const std::string& file, bool transparent) {
+BitmapRef Cache::Frame(StringView file, bool transparent) {
 	return LoadBitmap<Material::Frame>(file, transparent);
 }
 
-BitmapRef Cache::Gameover(const std::string& file) {
+BitmapRef Cache::Gameover(StringView file) {
 	return LoadBitmap<Material::Gameover>(file);
 }
 
-BitmapRef Cache::Monster(const std::string& file) {
+BitmapRef Cache::Monster(StringView file) {
 	return LoadBitmap<Material::Monster>(file);
 }
 
-BitmapRef Cache::Panorama(const std::string& file) {
+BitmapRef Cache::Panorama(StringView file) {
 	return LoadBitmap<Material::Panorama>(file);
 }
 
-BitmapRef Cache::Picture(const std::string& file, bool transparent) {
+BitmapRef Cache::Picture(StringView file, bool transparent) {
 	return LoadBitmap<Material::Picture>(file, transparent);
 }
 
-BitmapRef Cache::System2(const std::string& file) {
+BitmapRef Cache::System2(StringView file) {
 	return LoadBitmap<Material::System2>(file);
 }
 
-BitmapRef Cache::Title(const std::string& file) {
+BitmapRef Cache::Title(StringView file) {
 	return LoadBitmap<Material::Title>(file);
 }
 
-BitmapRef Cache::System(const std::string& file) {
+BitmapRef Cache::System(StringView file) {
 	return LoadBitmap<Material::System>(file);
 }
 
@@ -419,7 +420,7 @@ BitmapRef Cache::Exfont() {
 	}
 }
 
-BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
+BitmapRef Cache::Tile(StringView filename, int tile_id) {
 	const auto key = MakeTileHashKey(filename, tile_id);
 	auto it = cache_tiles.find(key);
 
@@ -519,12 +520,12 @@ void Cache::Clear() {
 	cache_tiles.clear();
 }
 
-void Cache::SetSystemName(std::string const& filename) {
-	system_name = filename;
+void Cache::SetSystemName(std::string filename) {
+	system_name = std::move(filename);
 }
 
-void Cache::SetSystem2Name(std::string const& filename) {
-	system2_name = filename;
+void Cache::SetSystem2Name(std::string filename) {
+	system2_name = std::move(filename);
 }
 
 BitmapRef Cache::System() {
