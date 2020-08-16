@@ -101,7 +101,7 @@ namespace {
 
 		BitmapFont(const std::string& name, function_type func);
 
-		Rect GetSize(std::string const& txt) const override;
+		Rect GetSize(StringView txt) const override;
 		Rect GetSize(char32_t ch) const override;
 
 		GlyphRet Glyph(char32_t code) override;
@@ -130,7 +130,7 @@ namespace {
 	struct FTFont : public Font  {
 		FTFont(const std::string& name, int size, bool bold, bool italic);
 
-		Rect GetSize(std::string const& txt) const override;
+		Rect GetSize(StringView txt) const override;
 		Rect GetSize(char32_t ch) const override;
 
 		GlyphRet Glyph(char32_t code) override;
@@ -165,7 +165,7 @@ namespace {
 		public:
 			enum { HEIGHT = 12, WIDTH = 12 };
 			ExFont();
-			Rect GetSize(std::string const& txt) const override;
+			Rect GetSize(StringView txt) const override;
 			Rect GetSize(char32_t ch) const override;
 			GlyphRet Glyph(char32_t code) override;
 		private:
@@ -186,7 +186,7 @@ Rect BitmapFont::GetSize(char32_t ch) const {
 	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
 }
 
-Rect BitmapFont::GetSize(std::string const& txt) const {
+Rect BitmapFont::GetSize(StringView txt) const {
 	size_t units = 0;
 	const auto* iter = txt.data();
 	const auto* end = txt.data() + txt.size();
@@ -228,7 +228,7 @@ std::weak_ptr<std::remove_pointer<FT_Library>::type> FTFont::library_checker_;
 FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
 	: Font(name, size, bold, italic), current_size_(0) {}
 
-Rect FTFont::GetSize(std::string const& txt) const {
+Rect FTFont::GetSize(StringView txt) const {
 	int const s = Font::Default()->GetSize(txt).width;
 
 	if (s == -1) {
@@ -443,7 +443,7 @@ Font::GlyphRet ExFont::Glyph(char32_t code) {
 	return { bm, Rect(0, 0, WIDTH, HEIGHT) };
 }
 
-Rect ExFont::GetSize(std::string const&) const {
+Rect ExFont::GetSize(StringView) const {
 	return Rect(0, 0, 12, 12);
 }
 

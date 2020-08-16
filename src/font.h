@@ -22,6 +22,7 @@
 #include "system.h"
 #include "memory_management.h"
 #include "rect.h"
+#include "string_view.h"
 #include <string>
 
 class Color;
@@ -40,7 +41,7 @@ class Font {
 	 * @param txt the string to measure
 	 * @return Rect describing the rendered string boundary
 	 */
-	virtual Rect GetSize(std::string const& txt) const = 0;
+	virtual Rect GetSize(StringView txt) const = 0;
 	/**
 	 * Returns the size of the rendered utf32 character, not including shadows.
 	 *
