@@ -36,14 +36,7 @@ FmMidiDecoder::FmMidiDecoder() {
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	size_t samples = (size_t)length / sizeof(int_least16_t) / 2;
 
-	// FIXME: FM Midi somehow returns immediately at the beginning when mtime is too small
-	// This increments mtime until FM Midi is happy
-	//int notes = 0;
-	//do {
-	int notes = synth->synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, static_cast<float>(frequency));
-	//} while (begin && notes == 0 && !IsFinished());
-
-	//begin = false;
+	synth->synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, static_cast<float>(frequency));
 
 	return length;
 }
