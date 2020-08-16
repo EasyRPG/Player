@@ -263,6 +263,8 @@ add_library(${PROJECT_NAME}
 	src/sprite_battler.h
 	src/sprite_character.cpp
 	src/sprite_character.h
+	src/sprite_picture.h
+	src/sprite_picture.cpp
 	src/sprite.cpp
 	src/sprite.h
 	src/spriteset_battle.cpp

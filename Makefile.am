@@ -264,6 +264,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/sprite_battler.h \
 	src/sprite_character.cpp \
 	src/sprite_character.h \
+	src/sprite_picture.cpp \
+	src/sprite_picture.h \
 	src/sprite_timer.cpp \
 	src/sprite_timer.h \
 	src/spriteset_battle.cpp \

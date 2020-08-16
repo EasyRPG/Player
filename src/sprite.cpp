@@ -47,7 +47,6 @@ void Sprite::BlitScreen(Bitmap& dst) {
 	}
 
 	bitmap_changed = false;
-	needs_refresh = false;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
 	if (draw_bitmap == bitmap_effects) {
@@ -114,13 +113,6 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 	}
 }
 
-void Sprite::SetFlashEffect(const Color &color) {
-	if (flash_effect != color) {
-		flash_effect = color;
-		needs_refresh = true;
-	}
-}
-
 void Sprite::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
 	if (!bitmap) {
@@ -131,69 +123,17 @@ void Sprite::SetBitmap(BitmapRef const& nbitmap) {
 
 	src_rect_effect = src_rect;
 
-	needs_refresh = true;
 	bitmap_changed = true;
-}
-
-void Sprite::SetSpriteRect(Rect const& nsprite_rect) {
-	if (src_rect_effect != nsprite_rect) {
-		src_rect_effect = nsprite_rect;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetFlipX(bool flipx) {
-	if (flipx_effect != flipx) {
-		flipx_effect = flipx;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetFlipY(bool flipy) {
-	if (flipy_effect != flipy) {
-		flipy_effect = flipy;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetBushDepth(int bush_depth) {
-	if (bush_effect != bush_depth) {
-		bush_effect = bush_depth;
-		needs_refresh = true;
-	}
 }
 
 void Sprite::SetOpacity(int opacity_top, int opacity_bottom) {
 	if (opacity_top_effect != opacity_top) {
 		opacity_top_effect = opacity_top;
-		needs_refresh = true;
 	}
 	if (opacity_bottom == -1)
 		opacity_bottom = (opacity_top + 1) / 2;
 	if (opacity_bottom_effect != opacity_bottom) {
 		opacity_bottom_effect = opacity_bottom;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetTone(Tone tone) {
-	if (tone_effect != tone) {
-		tone_effect = tone;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetWaverDepth(int depth) {
-	if (waver_effect_depth != depth) {
-		waver_effect_depth = depth;
-		needs_refresh = true;
-	}
-}
-
-void Sprite::SetWaverPhase(double phase) {
-	if (waver_effect_phase != phase) {
-		waver_effect_phase = phase;
-		needs_refresh = true;
 	}
 }
 

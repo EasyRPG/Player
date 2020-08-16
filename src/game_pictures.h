@@ -20,11 +20,12 @@
 
 // Headers
 #include <string>
+#include <deque>
 #include "async_handler.h"
-#include <lcf/rpg/save.h>
-#include "sprite.h"
+#include <lcf/rpg/savepicture.h>
+#include "sprite_picture.h"
 
-class Sprite;
+class Sprite_Picture;
 class Scene;
 
 /**
@@ -79,24 +80,20 @@ public:
 	void Erase(int id);
 
 	void Update(bool is_battle);
-	void UpdateGraphics(bool is_battle);
 
 	void OnMapChange();
 	void OnBattleEnd();
 
-private:
 	struct Picture {
 		Picture(int id) { data.ID = id; }
 		Picture(lcf::rpg::SavePicture data);
 
+		Sprite_Picture* sprite = nullptr;
 		lcf::rpg::SavePicture data;
-		std::unique_ptr<Sprite> sprite;
 		FileRequestBinding request_id;
-		int last_spritesheet_frame = 0;
 		bool needs_update = false;
 
 		void Update(bool is_battle);
-		void UpdateGraphics(bool is_battle);
 
 		bool IsOnMap() const;
 		bool IsOnBattle() const;
@@ -113,10 +110,13 @@ private:
 
 	Picture& GetPicture(int id);
 	Picture* GetPicturePtr(int id);
+
+private:
 	void RequestPictureSprite(Picture& pic);
 	void OnPictureSpriteReady(int id);
 
 	std::vector<Picture> pictures;
+	std::deque<Sprite_Picture> sprites;
 	int frame_counter = 0;
 };
 

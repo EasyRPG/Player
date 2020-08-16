@@ -403,6 +403,3 @@ void Game_Screen::CancelBattleAnimation() {
 	animation.reset();
 }
 
-void Game_Screen::UpdateGraphics() {
-	weather->SetTone(GetTone());
-}

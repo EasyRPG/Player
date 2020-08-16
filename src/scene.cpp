@@ -338,5 +338,19 @@ bool Scene::ReturnToTitleScene() {
 void Scene::TransferDrawablesFrom(Scene& prev_scene) {
 	drawable_list.TakeFrom(prev_scene.GetDrawableList(),
 			[this](auto* draw) { return draw->IsGlobal() || (uses_shared_drawables && draw->IsShared()); });
+
+	if (!UsesSharedDrawables() || prev_scene.UsesSharedDrawables()) {
+		// Either we don't take shared, or we do and we got them from the previous scene.
+		return;
+	}
+	// Previous scene did not use shared, that means the shared drawables are on the scene stack somewhere.
+	// This can happen for example when you do Map -> Debug -> Battle.
+	for (auto iter = instances.rbegin() + 1; iter != instances.rend(); ++iter) {
+		auto& scene = *iter;
+		if (scene->UsesSharedDrawables()) {
+			drawable_list.TakeFrom(scene->GetDrawableList(), [this](auto* draw) { return draw->IsShared(); });
+			break;
+		}
+	}
 }
 
