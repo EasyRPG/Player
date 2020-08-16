@@ -142,8 +142,8 @@ void Scene_Title::CreateTitleGraphic() {
 void Scene_Title::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(lcf::Data::terms.new_game);
-	options.push_back(lcf::Data::terms.load_game);
+	options.push_back(ToString(lcf::Data::terms.new_game));
+	options.push_back(ToString(lcf::Data::terms.load_game));
 
 	// Set "Import" based on metadata
 	if (Player::meta->IsImportEnabled()) {
@@ -152,7 +152,7 @@ void Scene_Title::CreateCommandWindow() {
 		exit_index = 3;
 	}
 
-	options.push_back(lcf::Data::terms.exit_game);
+	options.push_back(ToString(lcf::Data::terms.exit_game));
 
 	command_window.reset(new Window_Command(options));
 	if (!Player::hide_title_flag) {

@@ -458,7 +458,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text) {
 	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
@@ -1286,7 +1286,7 @@ void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
 	}
 
 	SetState(State_SelectActor);
-	ShowNotification(lcf::Data::terms.escape_failure);
+	ShowNotification(ToString(lcf::Data::terms.escape_failure));
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
@@ -1310,7 +1310,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 		pm.PushPageEnd();
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
@@ -1377,7 +1377,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
-		pm.PushLine(lcf::Data::terms.defeat);
+		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 		Game_Message::SetPendingMessage(std::move(pm));
@@ -1475,12 +1475,12 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	first_strike = false;
 }
 
-void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {
+void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 	if (text.empty()) {
 		return;
 	}
 	help_window->SetVisible(true);
 	message_timer = 60;
-	help_window->SetText(text);
+	help_window->SetText(std::move(text));
 }
 

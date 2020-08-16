@@ -214,7 +214,7 @@ void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, int dig
 }
 
 void Window_Base::DrawActorParameter(const Game_Battler& actor, int cx, int cy, int type) const {
-	std::string name;
+	StringView name;
 	int value;
 
 	switch (type) {
@@ -242,13 +242,11 @@ void Window_Base::DrawActorParameter(const Game_Battler& actor, int cx, int cy, 
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
-	std::stringstream ss;
-	ss << value;
-	contents->TextDraw(cx + 78, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 78, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 }
 
 void Window_Base::DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int type) const {
-	std::string name;
+	StringView name;
 
 	switch (type) {
 	case 0:

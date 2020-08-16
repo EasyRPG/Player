@@ -38,7 +38,7 @@ void Window_ParamStatus::Refresh() {
 
 	auto* actor = Game_Actors::GetActor(actor_id);
 
-	auto draw = [this](int y, const std::string& name, int value) {
+	auto draw = [this](int y, StringView name, int value) {
 		// Draw Term
 		contents->TextDraw(0, y, 1, name);
 

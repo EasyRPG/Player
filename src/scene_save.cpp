@@ -43,7 +43,7 @@
 #include "version.h"
 
 Scene_Save::Scene_Save() :
-	Scene_File(lcf::Data::terms.save_game_message) {
+	Scene_File(ToString(lcf::Data::terms.save_game_message)) {
 	Scene::type = Scene::Save;
 }
 

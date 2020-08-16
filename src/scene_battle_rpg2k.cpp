@@ -88,10 +88,10 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
-	commands.push_back(lcf::Data::terms.command_attack);
-	commands.push_back(lcf::Data::terms.command_skill);
-	commands.push_back(lcf::Data::terms.command_defend);
-	commands.push_back(lcf::Data::terms.command_item);
+	commands.push_back(ToString(lcf::Data::terms.command_attack));
+	commands.push_back(ToString(lcf::Data::terms.command_skill));
+	commands.push_back(ToString(lcf::Data::terms.command_defend));
+	commands.push_back(ToString(lcf::Data::terms.command_item));
 
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
@@ -1533,7 +1533,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
-		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 
 		std::stringstream ss;
 		if (exp > 0) {
@@ -1582,7 +1582,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
 
-		pm.PushLine(lcf::Data::terms.defeat);
+		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 

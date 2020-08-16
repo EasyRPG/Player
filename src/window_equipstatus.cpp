@@ -84,7 +84,7 @@ int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
 }
 
 void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
-	std::string name;
+	StringView name;
 	int value;
 	int new_value;
 

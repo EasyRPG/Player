@@ -137,10 +137,10 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	commands.clear();
 
 	if (actor_id == 0) {
-		commands.push_back(!lcf::Data::terms.command_attack.empty() ? lcf::Data::terms.command_attack : "Attack");
-		commands.push_back(!lcf::Data::terms.command_defend.empty() ? lcf::Data::terms.command_defend : "Defend");
-		commands.push_back(!lcf::Data::terms.command_item.empty() ? lcf::Data::terms.command_item : "Item");
-		commands.push_back(!lcf::Data::terms.command_skill.empty() ? lcf::Data::terms.command_skill : "Skill");
+		commands.push_back(!lcf::Data::terms.command_attack.empty() ? ToString(lcf::Data::terms.command_attack) : "Attack");
+		commands.push_back(!lcf::Data::terms.command_defend.empty() ? ToString(lcf::Data::terms.command_defend) : "Defend");
+		commands.push_back(!lcf::Data::terms.command_item.empty() ? ToString(lcf::Data::terms.command_item) : "Item");
+		commands.push_back(!lcf::Data::terms.command_skill.empty() ? ToString(lcf::Data::terms.command_skill) : "Skill");
 	}
 	else {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);

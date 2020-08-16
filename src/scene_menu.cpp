@@ -96,34 +96,34 @@ void Scene_Menu::CreateCommandWindow() {
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
 		switch(*it) {
 		case Item:
-			options.push_back(lcf::Data::terms.command_item);
+			options.push_back(ToString(lcf::Data::terms.command_item));
 			break;
 		case Skill:
-			options.push_back(lcf::Data::terms.command_skill);
+			options.push_back(ToString(lcf::Data::terms.command_skill));
 			break;
 		case Equipment:
-			options.push_back(lcf::Data::terms.menu_equipment);
+			options.push_back(ToString(lcf::Data::terms.menu_equipment));
 			break;
 		case Save:
-			options.push_back(lcf::Data::terms.menu_save);
+			options.push_back(ToString(lcf::Data::terms.menu_save));
 			break;
 		case Status:
-			options.push_back(lcf::Data::terms.status);
+			options.push_back(ToString(lcf::Data::terms.status));
 			break;
 		case Row:
-			options.push_back(lcf::Data::terms.row);
+			options.push_back(ToString(lcf::Data::terms.row));
 			break;
 		case Order:
-			options.push_back(lcf::Data::terms.order);
+			options.push_back(ToString(lcf::Data::terms.order));
 			break;
 		case Wait:
-			options.push_back(Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
+			options.push_back(ToString(Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off));
 			break;
 		case Debug:
 			options.push_back("Debug");
 			break;
 		default:
-			options.push_back(lcf::Data::terms.menu_quit);
+			options.push_back(ToString(lcf::Data::terms.menu_quit));
 			break;
 		}
 	}

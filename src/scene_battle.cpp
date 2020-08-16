@@ -160,9 +160,9 @@ void Scene_Battle::DrawBackground(Bitmap& dst) {
 
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
-	commands.push_back(lcf::Data::terms.battle_fight);
-	commands.push_back(lcf::Data::terms.battle_auto);
-	commands.push_back(lcf::Data::terms.battle_escape);
+	commands.push_back(ToString(lcf::Data::terms.battle_fight));
+	commands.push_back(ToString(lcf::Data::terms.battle_auto));
+	commands.push_back(ToString(lcf::Data::terms.battle_escape));
 	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
