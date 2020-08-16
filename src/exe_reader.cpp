@@ -25,7 +25,7 @@
 #include <iostream>
 #include <fstream>
 
-EXEReader::EXEReader(std::istream& core) : corefile(core) {
+EXEReader::EXEReader(Filesystem_Stream::InputStream& core) : corefile(core) {
 	// The Incredibly Dumb Resource Grabber (tm)
 	// The idea is that this code will eventually be moved to happen earlier or broken down as-needed.
 	// Since EXFONT is the only thing that matters right now, it's the only thing handled.
@@ -71,7 +71,7 @@ static uint32_t djb2_hash(char* str, size_t length) {
 	return hash;
 }
 
-static std::vector<uint8_t> exe_reader_perform_exfont_save(std::istream& corefile, uint32_t position, uint32_t len) {
+static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem_Stream::InputStream& corefile, uint32_t position, uint32_t len) {
 	std::vector<uint8_t> exfont;
 	constexpr int header_size = 14;
 	exfont.resize(len + header_size);

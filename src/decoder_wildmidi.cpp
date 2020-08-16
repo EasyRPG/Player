@@ -71,13 +71,39 @@ std::string get_timidity_path_jni() {
 #endif
 
 static bool init = false;
-static void WildMidiDecoder_deinit(void) {
+static void WildMidiDecoder_deinit() {
 	WildMidi_Shutdown();
 }
 
-WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
+#if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
+static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
+	auto stream = FileFinder::OpenInputStream(filename);
+	if (!stream) {
+		return nullptr;
+	}
+
+	auto buf = Utils::ReadStream(stream);
+
+	*size = static_cast<uint32_t>(buf.size());
+
+	char* buffer = reinterpret_cast<char*>(malloc(*size));
+	memcpy(buffer, buf.data(), buf.size());
+
+	return buffer;
+}
+
+static void vio_free_file_func(void* buffer) {
+	free(buffer);
+}
+
+static struct _WM_VIO vio = {
+	vio_allocate_file_func,
+	vio_free_file_func
+};
+#endif
+
+WildMidiDecoder::WildMidiDecoder() {
 	music_type = "midi";
-	filename = file_name;
 	std::string config_file = "";
 	bool found = false;
 
@@ -272,7 +298,12 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	}
 	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
 
+#if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
+	init = (WildMidi_InitVIO(&vio, config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+#else
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+#endif
+
 	if (!init) {
 		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
 		return;
@@ -296,7 +327,7 @@ bool WildMidiDecoder::WasInited() const {
 	return init;
 }
 
-bool WildMidiDecoder::Open(FILE* file) {
+bool WildMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	if (!init)
 		return false;
 
@@ -306,7 +337,9 @@ bool WildMidiDecoder::Open(FILE* file) {
 		Output::Debug("WildMidi: Previous handle was not closed.");
 	}
 
-	handle = WildMidi_Open(filename.c_str());
+	file_buffer = Utils::ReadStream(stream);
+
+	handle = WildMidi_OpenBuffer(file_buffer.data(), file_buffer.size());
 	if (!handle) {
 		error_message = "WildMidi: Error reading file";
 		return false;
@@ -316,11 +349,8 @@ bool WildMidiDecoder::Open(FILE* file) {
 	// WildMidi has no Api to get Division and Tempo
 	// This allows a better approximation of the Midi ticks but it is still
 	// way off because the tempo information is missing
-	uint8_t midi_header[14];
-	fread(midi_header, 1, 14, file);
-
-	division = midi_header[12] << 8u;
-	division |= midi_header[13];
+	division = file_buffer[12] << 8u;
+	division |= file_buffer[13];
 
 	// Wildmidi will reject such files, but just in case if they ever support it
 	if (division & 0x8000u) {
@@ -328,12 +358,11 @@ bool WildMidiDecoder::Open(FILE* file) {
 		division = 96;
 	}
 
-	fclose(file);
 	return true;
 }
 
-bool WildMidiDecoder::Seek(size_t offset, Origin origin) {
-	if (offset == 0 && origin == Origin::Begin) {
+bool WildMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		if (handle) {
 			unsigned long int pos = 0;
 			WildMidi_FastSeek(handle, &pos);

@@ -470,14 +470,14 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 	if (Utils::EndsWith(result->file, ".link")) {
 		// Handle Ineluki's MP3 patch
-		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::in);
+		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
 			Output::Warning("Ineluki link read error: {}", path);
 			return;
 		}
 
 		// The first line contains the path to the actual audio file to play
-		std::string line = Utils::ReadLine(*stream.get());
+		std::string line = Utils::ReadLine(stream);
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
 		Output::Debug("Ineluki link file: {} -> {}", path, line);

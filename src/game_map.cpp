@@ -284,11 +284,12 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", ss.str());
 		}
 
-		map = lcf::LMU_Reader::Load(map_file, Player::encoding);
+		auto map_stream = FileFinder::OpenInputStream(map_file);
+		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
 	} else {
-		map = lcf::LMU_Reader::LoadXml(map_file);
+		auto map_stream = FileFinder::OpenInputStream(map_file);
+		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
-
 	Output::Debug("Loading Map {}", ss.str());
 
 	if (map.get() == NULL) {

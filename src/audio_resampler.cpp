@@ -237,8 +237,8 @@ bool AudioResampler::WasInited() const {
 	return wrapped_decoder->WasInited();
 }
 
-bool AudioResampler::Open(FILE* file) {
-	if (wrapped_decoder->Open(file)) {
+bool AudioResampler::Open(Filesystem_Stream::InputStream stream) {
+	if (wrapped_decoder->Open(std::move(stream))) {
 		wrapped_decoder->GetFormat(input_rate, input_format, nr_of_channels);
 
 		//determine if the input format is supported by the resampler
@@ -278,7 +278,7 @@ bool AudioResampler::Open(FILE* file) {
 	return false;
 }
 
-bool AudioResampler::Seek(size_t offset, Origin origin) {
+bool AudioResampler::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (wrapped_decoder->Seek(offset, origin)) {
 		//reset conversion data
 		conversion_data.input_frames = 0;
@@ -295,7 +295,7 @@ bool AudioResampler::Seek(size_t offset, Origin origin) {
 
 }
 
-size_t AudioResampler::Tell() const {
+std::streampos AudioResampler::Tell() const {
 	return wrapped_decoder->Tell();
 }
 

@@ -20,10 +20,12 @@
 
 // Headers
 #include "system.h"
+#include "filesystem_stream.h"
 
 #include <string>
 #include <cstdio>
 #include <ios>
+#include <istream>
 #include <unordered_map>
 #include <vector>
 
@@ -150,22 +152,24 @@ namespace FileFinder {
 	std::string FindFont(const std::string& name);
 
 	/**
-	 * Opens a file specified by a UTF-8 string.
-	 *
-	 * @param name_utf8 filename in UTF-8.
-	 * @param mode ("r", "w", etc).
-	 * @return FILE*.
-	 */
-	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
+	* Creates stream from UTF-8 file name.
+	*
+	* @param name UTF-8 string file name.
+	* @param m stream mode.
+	* @return NULL if open failed.
+	*/
+	Filesystem_Stream::InputStream OpenInputStream(const std::string& name,
+			std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary);
 
 	/**
-	 * Creates stream from UTF-8 file name.
-	 *
-	 * @param name UTF-8 string file name.
-	 * @param m stream mode.
-	 * @return NULL if open failed.
-	 */
-	std::shared_ptr<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
+	* Creates stream from UTF-8 file name.
+	*
+	* @param name UTF-8 string file name.
+	* @param m stream mode.
+	* @return NULL if open failed.
+	*/
+	Filesystem_Stream::OutputStream OpenOutputStream(const std::string& name,
+			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
 
 	struct Directory {
 		std::string base;

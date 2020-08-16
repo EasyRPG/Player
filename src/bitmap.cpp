@@ -95,7 +95,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
+	auto stream = FileFinder::OpenInputStream(filename, std::ios::ios_base::binary | std::ios::ios_base::in);
 	if (!stream) {
 		Output::Error("Couldn't open image file {}", filename);
 		return;
@@ -106,8 +106,8 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	void* pixels = nullptr;
 
 	uint8_t data[4] = {};
-	size_t bytes = fread(&data, 1, 4, stream);
-	fseek(stream, 0, SEEK_SET);
+	size_t bytes = stream.read(reinterpret_cast<char*>(data),  4).gcount();
+	stream.seekg(0, std::ios::ios_base::beg);
 
 	bool img_okay = false;
 
@@ -116,11 +116,9 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(stream, (void*)nullptr, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
 	else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
-
-	fclose(stream);
 
 	if (!img_okay) {
 		free(pixels);
@@ -149,7 +147,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG((FILE*)nullptr, (const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG((const void*) data, transparent, w, h, pixels);
 	else
 		Output::Warning("Unsupported image (Magic: {:02X})", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
@@ -175,7 +173,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
-bool Bitmap::WritePNG(std::ostream& os) const {
+bool Bitmap::WritePNG(Filesystem_Stream::OutputStream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 

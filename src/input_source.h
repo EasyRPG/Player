@@ -21,7 +21,7 @@
 #include <bitset>
 #include <fstream>
 #include <memory>
-#include <fstream>
+#include "filesystem_stream.h"
 #include "input_buttons.h"
 
 namespace Input {
@@ -74,7 +74,7 @@ namespace Input {
 		std::bitset<BUTTON_COUNT> pressed_buttons;
 		ButtonMappingArray button_mappings;
 		DirectionMappingArray direction_mappings;
-		std::ofstream record_log;
+		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
 	};
 
 	/**
@@ -104,7 +104,7 @@ namespace Input {
 
 		operator bool() const { return bool(log_file); }
 	private:
-		std::ifstream log_file;
+		Filesystem_Stream::InputStream log_file;
 	};
 
 	extern std::unique_ptr<Source> source;

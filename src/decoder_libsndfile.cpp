@@ -25,17 +25,14 @@
 #include "decoder_libsndfile.h"
 #include "output.h"
 
-static sf_count_t sf_vio_get_filelen_impl(void* userdata) {
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	int fd=fileno(f); //Posix complient - should work on windows as well
-	struct stat stat_buf;
-	int rc = fstat(fd, &stat_buf);
-	return rc == 0 ? stat_buf.st_size : 0;
+static sf_count_t sf_vio_get_filelen_impl(void*) {
+	// Unknown. SF_COUNT_MAX is the size used by libsndfile for pipes.
+	return SF_COUNT_MAX;
 }
 
 static sf_count_t sf_vio_read_impl(void *ptr, sf_count_t count, void* userdata){
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	return fread(ptr, 1, count, f);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
 }
 
 static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, void* /* user_data */){
@@ -44,14 +41,17 @@ static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, voi
 }
 
 static sf_count_t sf_vio_seek_impl(sf_count_t offset, int seek_type, void *userdata) {
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	fseek(f, offset, seek_type);
-	return ftell(f);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	if (f->eof()) f->clear(); //emulate behaviour of fseek
+
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(seek_type));
+
+	return f->tellg();
 }
 
 static sf_count_t sf_vio_tell_impl(void* userdata){
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	return ftell(f);
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	return f->tellg();
 }
 
 static SF_VIRTUAL_IO vio = {
@@ -71,13 +71,12 @@ LibsndfileDecoder::LibsndfileDecoder()
 LibsndfileDecoder::~LibsndfileDecoder() {
 	if(soundfile != 0){
 		sf_close(soundfile);
-		fclose(file_);
 	}
 }
 
-bool LibsndfileDecoder::Open(FILE* file) {
-	file_=file;
-	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,file);
+bool LibsndfileDecoder::Open(Filesystem_Stream::InputStream stream) {
+	this->stream = std::move(stream);
+	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,&this->stream);
 	sf_command(soundfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
 	output_format=Format::S16;
 	finished=false;
@@ -85,13 +84,14 @@ bool LibsndfileDecoder::Open(FILE* file) {
 	return soundfile!=0;
 }
 
-bool LibsndfileDecoder::Seek(size_t offset, Origin /* origin */) {
+bool LibsndfileDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	finished = false;
 	if(soundfile == 0)
 		return false;
+
 	// FIXME: Proper sample count for seek
 	decoded_samples = 0;
-	return sf_seek(soundfile,offset,SEEK_SET)!=-1;
+	return sf_seek(soundfile, offset, Filesystem_Stream::CppSeekdirToCSeekdir(origin))!=-1;
 }
 
 bool LibsndfileDecoder::IsFinished() const {

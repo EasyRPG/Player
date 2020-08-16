@@ -52,10 +52,11 @@ class AudioSeDecoder : public AudioDecoder {
 public:
 	AudioSeDecoder(AudioSeRef se);
 
-	bool Open(FILE*) override { return true; };
+	bool Open(Filesystem_Stream::InputStream) override { return true; };
 	bool IsFinished() const override;
 	void GetFormat(int& frequency, Format& format, int& channels) const override;
 	int GetPitch() const override;
+	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
 
 private:
 	int FillBuffer(uint8_t* buffer, int size) override;

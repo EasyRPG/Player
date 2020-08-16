@@ -19,7 +19,6 @@
 #include <cassert>
 #include <cstring>
 #include "audio_decoder.h"
-#include "filefinder.h"
 #include "output.h"
 #include "system.h"
 #include "utils.h"
@@ -105,19 +104,21 @@ public:
 		error_message = std::string("WMA audio files are not supported. Reinstall the\n") +
 			"game and don't convert them when asked by Windows!\n";
 	}
-	bool Open(FILE*) override { return false; }
+	bool Open(Filesystem_Stream::InputStream) override { return false; }
 	bool IsFinished() const override { return true; }
 	void GetFormat(int&, Format&, int&) const override {}
+	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
 private:
 	int FillBuffer(uint8_t*, int) override { return -1; };
 };
 const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string& filename, bool resample) {
+std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample) {
 	char magic[4] = { 0 };
-	if (fread(magic, 4, 1, file) != 1)
+	if (!stream.ReadIntoObj(magic)) {
 		return nullptr;
-	fseek(file, 0, SEEK_SET);
+	}
+	stream.seekg(0, std::ios::beg);
 
 #if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
 	/* WildMidi and XMP are the only audio decoders that need the filename passed
@@ -135,7 +136,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #ifdef HAVE_WILDMIDI
 		static bool wildmidi_works = true;
 		if (wildmidi_works) {
-			auto mididec = std::unique_ptr<AudioDecoder>(new WildMidiDecoder(filename));
+			auto mididec = std::unique_ptr<AudioDecoder>(new WildMidiDecoder());
 			if (mididec->WasInited()) {
 				if (resample) {
 					mididec = std::unique_ptr<AudioResampler>(new AudioResampler(std::move(mididec)));
@@ -166,10 +167,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	// Try to use internal OGG decoder
 	if (!strncmp(magic, "OggS", 4)) { // OGG
 #ifdef HAVE_OPUS
-		fseek(file, 28, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 1)
+		stream.seekg(28, std::ios::ios_base::beg);
+		if (stream.read(magic, sizeof(magic)).gcount() == 0) {
 			return nullptr;
-		fseek(file, 0, SEEK_SET);
+		}
+		stream.seekg(0, std::ios::ios_base::beg);
+
 		if (!strncmp(magic, "Opus", 4)) {
 			if (resample) {
 				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new OpusDecoder())));
@@ -180,10 +183,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #endif
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
-		fseek(file, 29, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 1)
+		stream.seekg(29, std::ios::ios_base::beg);
+		if (stream.read(magic, sizeof(magic)).gcount() == 0) {
 			return nullptr;
-		fseek(file, 0, SEEK_SET);
+		}
+		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "vorb", 4)) {
 			if (resample) {
@@ -198,12 +202,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #ifdef WANT_FASTWAV
 	// Try to use a basic decoder for faster wav decoding if not ADPCM
 	if (!strncmp(magic, "RIFF", 4)) {
-		fseek(file, 20, SEEK_SET);
+		stream.seekg(20, std::ios::ios_base::beg);
 		uint16_t raw_enc;
-		if (fread(&raw_enc, 2, 1, file) != 1)
-			return nullptr;
+		stream.read(reinterpret_cast<char*>(&raw_enc), 2);
+
 		Utils::SwapByteOrder(raw_enc);
-		fseek(file, 0, SEEK_SET);
+		stream.seekg(0, std::ios::ios_base::beg);
 		if (raw_enc == 0x01) { // Codec is normal PCM
 			if (resample) {
 				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new WavDecoder())));
@@ -268,8 +272,9 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		}
 
 		// Parsing MP3s seems to be the only reliable way to detect them
-		if (Mpg123Decoder::IsMp3(file)) {
-			fseek(file, 0, SEEK_SET);
+		if (Mpg123Decoder::IsMp3(stream)) {
+			stream.clear();
+			stream.seekg(0, std::ios_base::beg);
 			if (resample) {
 				mp3dec = new AudioResampler(std::unique_ptr<AudioDecoder>(new Mpg123Decoder()));
 			} else {
@@ -287,7 +292,8 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	}
 #endif
 
-	fseek(file, 0, SEEK_SET);
+	stream.clear();
+	stream.seekg(0, std::ios::ios_base::beg);
 	return nullptr;
 }
 
@@ -332,7 +338,7 @@ int AudioDecoder::GetVolume() const {
 }
 
 void AudioDecoder::Rewind() {
-	if (!Seek(0, Origin::Begin)) {
+	if (!Seek(0, std::ios_base::beg)) {
 		// The libs guarantee that Rewind works
 		assert(false && "Rewind");
 	}
@@ -374,11 +380,7 @@ bool AudioDecoder::SetPitch(int) {
 	return false;
 }
 
-bool AudioDecoder::Seek(size_t, Origin) {
-	return false;
-}
-
-size_t AudioDecoder::Tell() const {
+std::streampos AudioDecoder::Tell() const {
 	return -1;
 }
 

@@ -31,16 +31,16 @@
  */
 class WildMidiDecoder : public AudioDecoder {
 public:
-	WildMidiDecoder(const std::string file_name);
+	WildMidiDecoder();
 
 	~WildMidiDecoder();
 
 	bool WasInited() const override;
 
 	// Audio Decoder interface
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	int GetTicks() const override;
 
@@ -52,11 +52,12 @@ public:
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	std::string filename;
 	uint32_t division = 96;
 #ifdef HAVE_WILDMIDI
-	midi* handle = NULL;
+	midi* handle = nullptr;
 #endif
+
+	std::vector<uint8_t> file_buffer;
 };
 
 #endif

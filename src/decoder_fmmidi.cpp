@@ -40,7 +40,6 @@ FmMidiDecoder::FmMidiDecoder() {
 }
 
 FmMidiDecoder::~FmMidiDecoder() {
-	fclose(file);
 }
 
 int read_func(void* instance) {
@@ -53,17 +52,11 @@ int read_func(void* instance) {
 	return fmmidi->file_buffer[fmmidi->file_buffer_pos++];
 }
 
-bool FmMidiDecoder::Open(FILE* file) {
-	this->file = file;
-
+bool FmMidiDecoder::Open(Filesystem_Stream::InputStream stream) {
 	seq->clear();
-	off_t old_pos = ftell(file);
-	fseek(file, 0, SEEK_END);
-	file_buffer.resize(ftell(file) - old_pos);
-	fseek(file, old_pos, SEEK_SET);
-	size_t bytes_read = fread(file_buffer.data(), 1, file_buffer.size(), file);
+	file_buffer = Utils::ReadStream(stream);
 
-	if ((bytes_read != file_buffer.size()) || (!seq->load(this, read_func))) {
+	if (!seq->load(this, read_func)) {
 		error_message = "FM Midi: Error reading file";
 		return false;
 	}
@@ -74,10 +67,10 @@ bool FmMidiDecoder::Open(FILE* file) {
 	return true;
 }
 
-bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
+bool FmMidiDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	assert(!tempo.empty());
 
-	if (offset == 0 && origin == Origin::Begin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		mtime = seq->rewind_to_loop();
 
 		if (mtime > 0.0f) {

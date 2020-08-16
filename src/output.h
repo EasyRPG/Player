@@ -23,6 +23,8 @@
 #include <iosfwd>
 #include <fmt/core.h>
 
+#include "filesystem_stream.h"
+
 /**
  * Output Namespace.
  */
@@ -53,7 +55,7 @@ namespace Output {
 	 * @param os output stream that PNG will be stored.
 	 * @return true if success, otherwise false.
 	 */
-	bool TakeScreenshot(std::ostream& os);
+	bool TakeScreenshot(Filesystem_Stream::OutputStream& os);
 
 	/**
 	 * Shows/Hides the output log overlay.

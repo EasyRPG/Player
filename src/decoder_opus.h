@@ -33,9 +33,9 @@ public:
 	~OpusDecoder();
 
 	// Audio Decoder interface
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 
@@ -48,8 +48,9 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 #ifdef HAVE_OPUS
-	OggOpusFile* oof;
+	OggOpusFile* oof = nullptr;
 #endif
+	Filesystem_Stream::InputStream stream;
 	bool finished = false;
 	int frequency = 48000;
 	int channels = 2;

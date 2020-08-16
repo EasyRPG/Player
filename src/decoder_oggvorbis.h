@@ -41,9 +41,9 @@ public:
 	~OggVorbisDecoder();
 
 	// Audio Decoder interface
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 
@@ -58,6 +58,8 @@ private:
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
 	OggVorbis_File *ovf = NULL;
 #endif
+
+	Filesystem_Stream::InputStream stream;
 	bool finished = false;
 	int frequency = 44100;
 	int channels = 2;

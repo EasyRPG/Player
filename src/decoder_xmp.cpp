@@ -40,16 +40,17 @@ XMPDecoder::~XMPDecoder() {
 	}
 }
 
-bool XMPDecoder::Open(FILE* file) {
+bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 	finished = false;
 
 	if (!ctx)
 		return false;
 
-	int res =  xmp_load_module_from_file(ctx, file, 0);
+	file_buffer = Utils::ReadStream(stream);
+
+	int res = xmp_load_module_from_memory(ctx, file_buffer.data(), file_buffer.size());
 	if (res != 0) {
 		error_message = "XMP: Error loading file";
-		fclose(file);
 		return false;
 	}
 
@@ -70,11 +71,11 @@ bool XMPDecoder::Open(FILE* file) {
 	return true;
 }
 
-bool XMPDecoder::Seek(size_t offset, Origin origin) {
+bool XMPDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (!ctx)
 		return false;
 
-	if (offset == 0 && origin == Origin::Begin) {
+	if (offset == 0 && origin == std::ios_base::beg) {
 		xmp_restart_module(ctx);
 		finished = false;
 		return true;

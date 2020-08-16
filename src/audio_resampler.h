@@ -73,7 +73,7 @@ public:
 	 * 
 	 * @return Whether the operation was successful or not
 	 */
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
 	/**
 	 * Wraps the seek function of the contained decoder
@@ -85,14 +85,14 @@ public:
 	 *
 	 * @return Whether seek was successful
 	 */
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	/**
 	 * Wraps the tell function of the contained decoder
 	 *
 	 * @return Position in the stream
 	 */
-	size_t Tell() const override;
+	std::streampos Tell() const override;
 
 	/**
 	 * Wraps the GetTicks Function of the contained decoder

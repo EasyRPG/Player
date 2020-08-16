@@ -70,7 +70,7 @@ void Input::UiSource::UpdateSystem() {
 
 Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
 	: Source(std::move(buttons), std::move(directions)),
-	log_file(log_path, std::ios::in)
+	log_file(FileFinder::OpenInputStream(log_path, std::ios::in))
 {}
 
 void Input::LogSource::Update() {
@@ -88,7 +88,7 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 	if (!record_to_path.empty()) {
 		auto path = record_to_path.c_str();
 
-		record_log.open(path, std::ios::out|std::ios::trunc);
+		record_log = std::make_unique<Filesystem_Stream::OutputStream>(FileFinder::OpenOutputStream(path, std::ios::out | std::ios::trunc));
 
 		if (!record_log) {
 			Output::Warning("Failed to open file {} for input recording : {}", path, strerror(errno));
@@ -99,8 +99,8 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 }
 
 void Input::Source::Record() {
-	if (record_log.is_open()) {
-		record_log << GetPressedNonSystemButtons() << '\n';
+	if (record_log) {
+		*record_log << GetPressedNonSystemButtons() << '\n';
 	}
 }
 

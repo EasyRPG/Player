@@ -32,9 +32,9 @@ public:
 
 	~WavDecoder();
 
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 
@@ -47,7 +47,7 @@ public:
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 	Format output_format;
-	FILE * file_;
+	Filesystem_Stream::InputStream stream;
 	bool finished;
 	uint32_t samplerate;
 	uint16_t nchannels;

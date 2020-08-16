@@ -35,9 +35,9 @@ public:
 	~FmMidiDecoder();
 
 	// Audio Decoder interface
-	bool Open(FILE* file) override;
+	bool Open(Filesystem_Stream::InputStream stream) override;
 
-	bool Seek(size_t offset, Origin origin) override;
+	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	bool IsFinished() const override;
 
@@ -56,7 +56,6 @@ private:
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	FILE* file;
 	float mtime = 0.0f;
 	float pitch = 1.0f;
 	int frequency = 44100;

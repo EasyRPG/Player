@@ -24,25 +24,32 @@
 #include "audio_decoder.h"
 #include "decoder_opus.h"
 
-static int custom_read(void* stream, unsigned char* ptr, int nbytes) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fread(ptr, 1, nbytes, f);
+static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
+	if (nbytes == 0) return 0;
+	return (int)(f->read(reinterpret_cast<char*>(ptr), nbytes).gcount());
 }
 
-static int custom_seek(void* stream, opus_int64 offset, int whence) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fseek(f, offset, whence);
+static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
+	if (f->eof()) f->clear(); // emulate behaviour of fseek
+
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(whence));
+
+	return 0;
 }
 
-static opus_int64 custom_tell(void* stream) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return ftell(f);
+static opus_int64 vio_tell_func(void* stream) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(stream);
+	return static_cast<opus_int64>(f->tellg());
 }
 
-static int custom_close(void* stream) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fclose(f);
-}
+static OpusFileCallbacks vio = {
+		vio_read_func,
+		vio_seek_func,
+		vio_tell_func,
+		nullptr // close not supported by istream interface
+};
 
 OpusDecoder::OpusDecoder() {
 	music_type = "opus";
@@ -54,25 +61,24 @@ OpusDecoder::~OpusDecoder() {
 	}
 }
 
-bool OpusDecoder::Open(FILE* file) {
+bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
+	this->stream = std::move(stream);
 	finished = false;
 
 	int res;
-	OpusFileCallbacks callbacks = {custom_read, custom_seek, custom_tell, custom_close};
 
-	oof = op_open_callbacks(file, &callbacks, nullptr, 0, &res);
+	oof = op_open_callbacks(&this->stream, &vio, nullptr, 0, &res);
 	if (res != 0) {
 		error_message = "Opus: Error reading file";
 		op_free(oof);
-		fclose(file);
 		return false;
 	}
 
 	return true;
 }
 
-bool OpusDecoder::Seek(size_t offset, Origin origin) {
-	if (offset == 0 && origin == Origin::Begin) {
+bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+	if (offset == 0 && origin == std::ios::beg) {
 		if (oof) {
 			op_raw_seek(oof, 0);
 		}

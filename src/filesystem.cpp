@@ -15,15 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_IMAGE_XYZ_H
-#define EP_IMAGE_XYZ_H
-
-#include <cstdio>
 #include "filesystem_stream.h"
 
-namespace ImageXYZ {
-	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadXYZ(Filesystem_Stream::InputStream& stream, bool transparent, int& width, int& height, void*& pixels);
-}
-
-#endif
+// empty for now
+// impl in further PR
