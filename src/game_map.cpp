@@ -1523,7 +1523,7 @@ void Game_Map::SetChipset(int id) {
 	if (!chipset) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
-		chipset_name = chipset->chipset_name;
+		chipset_name = ToString(chipset->chipset_name);
 		passages_down = chipset->passable_data_lower;
 		passages_up = chipset->passable_data_upper;
 		animation_type = chipset->animation_type;
