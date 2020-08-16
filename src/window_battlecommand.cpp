@@ -146,32 +146,12 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
 		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 		for (const lcf::rpg::BattleCommand* command : bcmds) {
-			commands.push_back(command->name);
+			commands.push_back(ToString(command->name));
 		}
 	}
 
 	disabled.resize(commands.size());
 	Refresh();
-}
-
-lcf::rpg::BattleCommand Window_BattleCommand::GetCommand() {
-	if (actor_id > 0) {
-		Game_Actor* actor = Game_Actors::GetActor(actor_id);
-		return *actor->GetBattleCommands()[index];
-	}
-
-	lcf::rpg::BattleCommand command;
-	static const int types[] = {
-		lcf::rpg::BattleCommand::Type_attack,
-		lcf::rpg::BattleCommand::Type_defense,
-		lcf::rpg::BattleCommand::Type_item,
-		lcf::rpg::BattleCommand::Type_special
-	};
-
-	command.ID = index + 1;
-	command.name = commands[index];
-	command.type = types[index];
-	return command;
 }
 
 int Window_BattleCommand::GetSkillSubset() {

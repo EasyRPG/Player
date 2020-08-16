@@ -223,7 +223,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				return;
 			}
 
-			sprite_file = ext->battler_name;
+			StringView sprite_file = ext->battler_name;
 
 			if (ext->animation_type == lcf::rpg::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());

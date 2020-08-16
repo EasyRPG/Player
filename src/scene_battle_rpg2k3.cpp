@@ -519,7 +519,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 		int i = 0;
 		for (const lcf::rpg::BattleCommand* command : bcmds) {
-			commands.push_back(command->name);
+			commands.push_back(ToString(command->name));
 
 			if (!IsEscapeAllowedFromActorCommand() && command->type == lcf::rpg::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);

@@ -1041,9 +1041,9 @@ void Game_Actor::ChangeClass(int new_class_id,
 	}
 }
 
-std::string Game_Actor::GetClassName() const {
+StringView Game_Actor::GetClassName() const {
     if (!GetClass()) {
-        return "";
+        return {};
     }
     return GetClass()->name;
 }
