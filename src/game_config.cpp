@@ -1,9 +1,26 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "game_config.h"
 #include "cmdline_parser.h"
+#include "filefinder.h"
 #include "output.h"
 #include <lcf/inireader.h>
 #include <cstring>
-#include <fstream>
 
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
@@ -107,7 +124,8 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 void Game_Config::LoadFromConfig(const std::string& path) {
 	this->config_path = path;
 
-	lcf::INIReader ini(path);
+	auto is = FileFinder::OpenInputStream(path);
+	lcf::INIReader ini(is);
 
 	if (ini.ParseError()) {
 		Output::Debug("Failed to parse ini config file {}", path);
@@ -135,11 +153,10 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 }
 
 void Game_Config::WriteToConfig(const std::string& path) const {
-	std::ofstream of;
-	of.open(path);
+	auto of = FileFinder::OpenOutputStream(path);
 
-	if (!of.is_open()) {
-		Output::Debug("Failed to open {} for writing : {}", path, strerror(errno));
+	if (!of) {
+		Output::Debug("Failed to open {} for writing: {}", path, strerror(errno));
 		return;
 	}
 
