@@ -276,6 +276,7 @@ add_library(${PROJECT_NAME}
 	src/state.cpp
 	src/state.h
 	src/std_clock.h
+	src/string_view.h
 	src/system.h
 	src/teleport_target.h
 	src/text.cpp
