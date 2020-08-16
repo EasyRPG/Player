@@ -40,7 +40,7 @@ public:
 	 *
 	 * @param message The text to be displayed.
 	 */
-	void Push(const std::string& message);
+	void Push(StringView message);
 
 	/**
 	 * Pushes a message, either prepending the subject to it,
@@ -50,7 +50,7 @@ public:
 	 * @param message Message to be displayed.
 	 * @param subject Subject that will be displayed in the message.
 	 */
-	void PushWithSubject(const std::string& message, const std::string& subject);
+	void PushWithSubject(StringView message, StringView subject);
 
 	void Pop();
 

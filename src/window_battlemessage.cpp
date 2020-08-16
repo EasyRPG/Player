@@ -35,7 +35,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	SetZ(Priority_Window + 50);
 }
 
-void Window_BattleMessage::Push(const std::string& message) {
+void Window_BattleMessage::Push(StringView message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
 	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
@@ -60,7 +60,7 @@ void Window_BattleMessage::PushLine(StringView line) {
 	needs_refresh = true;
 }
 
-void Window_BattleMessage::PushWithSubject(const std::string& message, const std::string& subject) {
+void Window_BattleMessage::PushWithSubject(StringView message, StringView subject) {
 	if (Player::IsRPG2kE()) {
 		Push(Utils::ReplacePlaceholders(
 			message,
@@ -69,7 +69,7 @@ void Window_BattleMessage::PushWithSubject(const std::string& message, const std
 		));
 	}
 	else {
-		Push(subject + message);
+		Push(std::string(subject) + std::string(message));
 	}
 	needs_refresh = true;
 }
