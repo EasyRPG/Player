@@ -22,6 +22,7 @@
 #include <vector>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/state.h>
+#include "string_view.h"
 
 class Game_Battler;
 class Game_Party_Base;
@@ -423,19 +424,19 @@ public:
 	std::string GetCriticalHitMessage() const;
 
 	std::string GetUndamagedMessage() const;
-	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
+	std::string GetHpSpAbsorbedMessage(int value, StringView points) const;
 	std::string GetDamagedMessage() const;
-	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
-	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
-	std::string GetStateMessage(const std::string& message) const;
-	std::string GetAttributeShiftMessage(const std::string& attribute) const;
+	std::string GetHpSpRecoveredMessage(int value, StringView points) const;
+	std::string GetParameterChangeMessage(bool is_positive, int value, StringView points) const;
+	std::string GetStateMessage(StringView message) const;
+	std::string GetAttributeShiftMessage(StringView attribute) const;
 
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetAttackFailureMessage(const std::string& points) const;
+	std::string GetAttackFailureMessage(StringView points) const;
 
 	void ApplyActionSwitches();
 

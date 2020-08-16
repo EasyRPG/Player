@@ -19,6 +19,7 @@
 #define EP_STRING_VIEW_H
 
 #include <lcf/string_view.h>
+#include <lcf/dbstring.h>
 #include <fmt/core.h>
 
 using StringView = lcf::StringView;

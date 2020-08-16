@@ -440,7 +440,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				for (auto state_id : states) {
 					// States are sanitized in Game_Battler
 					const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
-					std::string name = state->name;
+					auto name = ToString(state->name);
 					int color = state->color;
 					FontRef font = Font::Default();
 					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);

@@ -495,7 +495,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 		}
 
 		if (pri_state != nullptr) {
-			const auto& msg = pri_was_healed
+			StringView msg = pri_was_healed
 				? pri_state->message_recovery
 				: pri_state->message_affected;
 
@@ -504,7 +504,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 			// If state is inflicted, only prints if msg not empty.
 			if (pri_was_healed || !msg.empty()) {
 				show_message = true;
-				pending_message = msg;
+				pending_message = ToString(msg);
 			}
 		}
 
