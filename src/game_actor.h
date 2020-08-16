@@ -26,6 +26,7 @@
 #include <lcf/rpg/saveactor.h>
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
+#include "string_view.h"
 
 class PendingMessage;
 
@@ -236,14 +237,14 @@ public:
 	 *
 	 * @return name.
 	 */
-	const std::string& GetName() const override;
+	StringView GetName() const override;
 
 	/**
 	 * Gets actor character sprite filename.
 	 *
 	 * @return character sprite filename.
 	 */
-	const std::string& GetSpriteName() const override;
+	StringView GetSpriteName() const override;
 
 	/**
 	 * Gets actor character sprite index.
@@ -880,7 +881,7 @@ inline void Game_Actor::SetName(const std::string &new_name) {
 }
 
 
-inline const std::string& Game_Actor::GetName() const {
+inline StringView Game_Actor::GetName() const {
 	return GetData().name;
 }
 
@@ -892,7 +893,7 @@ inline const std::string& Game_Actor::GetTitle() const {
 	return GetData().title;
 }
 
-inline const std::string& Game_Actor::GetSpriteName() const {
+inline StringView Game_Actor::GetSpriteName() const {
 	return GetData().sprite_name;
 }
 

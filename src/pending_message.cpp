@@ -112,7 +112,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			if (!actor) {
 				Output::Warning("Invalid Actor Id {} in message text", value);
 			} else{
-				output.append(actor->GetName());
+				output.append(ToString(actor->GetName()));
 			}
 
 			start_copy = iter;

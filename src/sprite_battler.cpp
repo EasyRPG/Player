@@ -298,7 +298,7 @@ void Sprite_Battler::ResetZ() {
 }
 
 void Sprite_Battler::CreateSprite() {
-	sprite_name = battler->GetSpriteName();
+	sprite_name = ToString(battler->GetSpriteName());
 	hue = battler->GetHue();
 
 	SetX(battler->GetDisplayX());

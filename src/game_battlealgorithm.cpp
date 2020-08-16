@@ -369,7 +369,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 		);
 	}
 	else {
-		return GetTarget()->GetName() + message;
+		return ToString(GetTarget()->GetName()) + message;
 	}
 }
 
@@ -386,7 +386,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const s
 		);
 	}
 	else {
-		return GetTarget()->GetName() + message;
+		return ToString(GetTarget()->GetName()) + message;
 	}
 }
 
@@ -432,7 +432,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
 		);
 	}
 	else {
-		return GetTarget()->GetName() + message;
+		return ToString(GetTarget()->GetName()) + message;
 	}
 }
 
@@ -561,7 +561,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::stri
 		);
 	}
 	else {
-		return GetTarget()->GetName() + message;
+		return ToString(GetTarget()->GetName()) + message;
 	}
 }
 
@@ -1110,7 +1110,7 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 			);
 		}
 		else {
-			return source->GetName() + lcf::Data::terms.attacking;
+			return ToString(source->GetName()) + lcf::Data::terms.attacking;
 		}
 	}
 	else {
@@ -1418,7 +1418,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 			);
 		}
 		else {
-			return source->GetName() + skill.using_message1;
+			return ToString(source->GetName()) + skill.using_message1;
 		}
 	}
 	else {
@@ -1678,7 +1678,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 			particle = "は";
 		else
 			particle = " ";
-		return source->GetName() + particle + item.name + lcf::Data::terms.use_item;
+		return ToString(source->GetName()) + particle + item.name + lcf::Data::terms.use_item;
 	}
 	else {
 		return item.name;
@@ -1716,7 +1716,7 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + lcf::Data::terms.defending;
+		return ToString(source->GetName()) + lcf::Data::terms.defending;
 	}
 	else {
 		return "";
@@ -1750,7 +1750,7 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + lcf::Data::terms.observing;
+		return ToString(source->GetName()) + lcf::Data::terms.observing;
 	}
 	else {
 		return "";
@@ -1777,7 +1777,7 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + lcf::Data::terms.focus;
+		return ToString(source->GetName()) + lcf::Data::terms.focus;
 	}
 	else {
 		return "";
@@ -1808,7 +1808,7 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + lcf::Data::terms.autodestruction;
+		return ToString(source->GetName()) + lcf::Data::terms.autodestruction;
 	}
 	else {
 		return "";
@@ -1888,7 +1888,7 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 	}
 	else if (Player::IsRPG2k()) {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return source->GetName() + lcf::Data::terms.enemy_escape;
+			return ToString(source->GetName()) + lcf::Data::terms.enemy_escape;
 		}
 	}
 
@@ -1940,7 +1940,7 @@ std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
 		);
 	}
 	else if (Player::IsRPG2k()) {
-		return source->GetName() + lcf::Data::terms.enemy_transform;
+		return ToString(source->GetName()) + lcf::Data::terms.enemy_transform;
 	}
 	else {
 		return "";

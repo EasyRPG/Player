@@ -453,7 +453,7 @@ void Game_Player::Refresh() {
 		return;
 	}
 
-	SetSpriteGraphic(actor->GetSpriteName(), actor->GetSpriteIndex());
+	SetSpriteGraphic(ToString(actor->GetSpriteName()), actor->GetSpriteIndex());
 	SetTransparency(actor->GetSpriteTransparency());
 
 	if (data()->aboard)

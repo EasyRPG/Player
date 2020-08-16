@@ -110,7 +110,7 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 		title.face1_name = actor->GetFaceName();
 		title.hero_hp = actor->GetHp();
 		title.hero_level = actor->GetLevel();
-		title.hero_name = actor->GetName();
+		title.hero_name = ToString(actor->GetName());
 	}
 
 	Main_Data::game_data.title = title;

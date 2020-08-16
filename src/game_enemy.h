@@ -71,14 +71,14 @@ public:
 	 *
 	 * @return Character name
 	 */
-	const std::string& GetName() const override;
+	StringView GetName() const override;
 
 	/**
 	 * Gets the filename of the enemy sprite
 	 *
 	 * @return Filename of enemy sprite
 	 */
-	const std::string& GetSpriteName() const override;
+	StringView GetSpriteName() const override;
 
 	/**
 	 * Gets the maximum HP for the current level.
@@ -253,11 +253,11 @@ inline std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
 }
 
-inline const std::string& Game_Enemy::GetName() const {
+inline StringView Game_Enemy::GetName() const {
 	return enemy->name;
 }
 
-inline const std::string& Game_Enemy::GetSpriteName() const {
+inline StringView Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
 }
 

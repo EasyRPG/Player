@@ -103,10 +103,9 @@ void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_right;
 	std::vector<std::string> options_confirm;
 
-	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
-		it != actors.end(); ++it) {
-		options_left.push_back((*it)->GetName());
+	const auto actors = Main_Data::game_party->GetActors();
+	for (auto& actor: actors) {
+		options_left.push_back(ToString(actor->GetName()));
 		options_right.push_back("");
 	}
 

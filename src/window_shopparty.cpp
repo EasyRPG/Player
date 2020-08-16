@@ -36,7 +36,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
-		const std::string& sprite_name = actors[i]->GetSpriteName();
+		const auto& sprite_name = actors[i]->GetSpriteName();
 		FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", sprite_name);
 		request->SetGraphicFile(true);
 		request_ids.push_back(request->Bind(&Window_ShopParty::OnCharsetSpriteReady, this, (int)i));
@@ -160,7 +160,7 @@ void Window_ShopParty::Update() {
 
 void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int party_index) {
 	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
-	const std::string& sprite_name = actor->GetSpriteName();
+	StringView sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();
 	BitmapRef bm = Cache::Charset(sprite_name);
 	auto rect = Sprite_Character::GetCharacterRect(sprite_name, sprite_id, bm->GetRect());

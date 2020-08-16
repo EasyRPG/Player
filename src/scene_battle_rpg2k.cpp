@@ -75,9 +75,8 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-		it != enemies.end(); ++it) {
-		commands.push_back((*it)->GetName());
+	for (auto& enemy: enemies) {
+		commands.push_back(ToString(enemy->GetName()));
 	}
 
 	target_window.reset(new Window_Command(commands, 136, 4));
