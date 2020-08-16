@@ -1418,11 +1418,11 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 			);
 		}
 		else {
-			return ToString(source->GetName()) + skill.using_message1;
+			return ToString(source->GetName()) + ToString(skill.using_message1);
 		}
 	}
 	else {
-		return skill.name;
+		return ToString(skill.name);
 	}
 }
 
@@ -1444,7 +1444,7 @@ std::string Game_BattleAlgorithm::Skill::GetSecondStartMessage() const {
 			);
 		}
 		else {
-			return skill.using_message2;
+			return ToString(skill.using_message2);
 		}
 	}
 	else {

@@ -747,7 +747,7 @@ std::string Game_Actor::GetLearningMessage(const lcf::rpg::Skill& skill) const {
 		);
 	}
 
-	return skill.name + (Player::IsRPG2k3E() ? " " : "") + lcf::Data::terms.skill_learned;
+	return ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "") + lcf::Data::terms.skill_learned;
 }
 
 void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {

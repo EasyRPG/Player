@@ -88,7 +88,7 @@ void Scene_ActorTarget::Start() {
 		}
 
 		status_window->SetData(id, false, actor_index);
-		help_window->SetText(skill->name);
+		help_window->SetText(ToString(skill->name));
 	}
 }
 
