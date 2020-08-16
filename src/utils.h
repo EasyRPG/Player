@@ -24,6 +24,7 @@
 #include <vector>
 #include <random>
 #include "system.h"
+#include "string_view.h"
 
 namespace Utils {
 	/**
@@ -326,7 +327,7 @@ namespace Utils {
 	 * should match types in number of elements and order.
 	 * @return A new string with placeholders replaced.
 	 */
-	std::string ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values);
+	std::string ReplacePlaceholders(StringView text_template, const std::vector<char>& types, const std::vector<StringView>& values);
 
 	/**
 	 * @return value clamped between min and max

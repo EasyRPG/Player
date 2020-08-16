@@ -630,8 +630,8 @@ std::vector<uint8_t> Utils::ReadStream(std::istream& stream) {
 	return outbuf;
 }
 
-std::string Utils::ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
-	std::string str = text_template;
+std::string Utils::ReplacePlaceholders(StringView text_template, const std::vector<char>& types, const std::vector<StringView>& values) {
+	auto str = std::string(text_template);
 	size_t index = str.find("%");
 	while (index != std::string::npos) {
 		if (index + 1 < str.length()) {
@@ -642,7 +642,7 @@ std::string Utils::ReplacePlaceholders(const std::string& text_template, std::ve
 					t_it != types.end() && v_it != values.end();
 					++t_it, ++v_it) {
 					if (std::toupper(type) == *t_it) {
-						str.replace(index, 2, *v_it);
+						str.replace(index, 2, v_it->data(), v_it->size());
 						index += (*v_it).length() - 2;
 						break;
 					}
