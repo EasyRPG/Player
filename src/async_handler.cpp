@@ -94,7 +94,7 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #endif
 }
 
-FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
+FileRequestAsync* AsyncHandler::RequestFile(StringView folder_name, StringView file_name) {
 	auto path = FileFinder::MakePath(folder_name, file_name);
 
 	auto* request = GetRequest(path);
@@ -105,10 +105,10 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, cons
 
 	//Output::Debug("Waiting for {}", path);
 
-	return RegisterRequest(std::move(path), folder_name, file_name);
+	return RegisterRequest(std::move(path), std::string(folder_name), std::string(file_name));
 }
 
-FileRequestAsync* AsyncHandler::RequestFile(const std::string& file_name) {
+FileRequestAsync* AsyncHandler::RequestFile(StringView file_name) {
 	return RequestFile(".", file_name);
 }
 

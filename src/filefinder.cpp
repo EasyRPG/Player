@@ -319,8 +319,8 @@ std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const
 	return tree;
 }
 
-std::string FileFinder::MakePath(const std::string& dir, const std::string& name) {
-	std::string str = dir.empty()? name : dir + "/" + name;
+std::string FileFinder::MakePath(StringView dir, StringView name) {
+	std::string str = dir.empty()? std::string(name) : std::string(dir) + "/" + std::string(name);
 #ifdef _WIN32
 	std::replace(str.begin(), str.end(), '/', '\\');
 #else
