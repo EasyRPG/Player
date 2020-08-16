@@ -76,7 +76,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::u16string DecodeUTF16(const std::string& str);
+	std::u16string DecodeUTF16(StringView str);
 
 	/**
 	 * Converts UTF-8 to UTF-32.
@@ -84,7 +84,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::u32string DecodeUTF32(const std::string& str);
+	std::u32string DecodeUTF32(StringView str);
 
 	/**
 	 * Converts UTF-16 to UTF-8.
@@ -124,7 +124,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::wstring ToWideString(const std::string& str);
+	std::wstring ToWideString(StringView str);
 
 	/**
 	 * Converts std::wstring to UTF-8 string.

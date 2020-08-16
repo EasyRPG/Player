@@ -87,7 +87,7 @@ int Utils::StrICmp(const char* l, const char* r) {
 	return *l - *r;
 }
 
-std::u16string Utils::DecodeUTF16(const std::string& str) {
+std::u16string Utils::DecodeUTF16(StringView str) {
 	std::u16string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint8_t c1 = *it;
@@ -162,7 +162,7 @@ std::u16string Utils::DecodeUTF16(const std::string& str) {
 	return result;
 }
 
-std::u32string Utils::DecodeUTF32(const std::string& str) {
+std::u32string Utils::DecodeUTF32(StringView str) {
 	std::u32string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint8_t c1 = *it;
@@ -420,22 +420,22 @@ Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escap
 
 #if !defined(__amigaos4__) && !defined(__AROS__)
 template<size_t WideSize>
-static std::wstring ToWideStringImpl(const std::string&);
+static std::wstring ToWideStringImpl(StringView);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
 template<> // utf32
-std::wstring ToWideStringImpl<4>(const std::string& str) {
-	std::u32string const tmp = Utils::DecodeUTF32(str);
+std::wstring ToWideStringImpl<4>(StringView str) {
+	const auto tmp = Utils::DecodeUTF32(str);
 	return std::wstring(tmp.begin(), tmp.end());
 }
 #else
 template<> // utf16
-std::wstring ToWideStringImpl<2>(const std::string& str) {
-	std::u16string const tmp = Utils::DecodeUTF16(str);
+std::wstring ToWideStringImpl<2>(StringView str) {
+	const auto tmp = Utils::DecodeUTF16(str);
 	return std::wstring(tmp.begin(), tmp.end());
 }
 #endif
 
-std::wstring Utils::ToWideString(const std::string& str) {
+std::wstring Utils::ToWideString(StringView str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
 }
 
