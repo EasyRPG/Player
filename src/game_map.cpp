@@ -1488,14 +1488,14 @@ int Game_Map::GetMapIndex(int id) {
 	return -1;
 }
 
-std::string Game_Map::GetMapName(int id) {
+StringView Game_Map::GetMapName(int id) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		if (lcf::Data::treemap.maps[i].ID == id) {
 			return lcf::Data::treemap.maps[i].name;
 		}
 	}
 	// nothing found
-	return "";
+	return {};
 }
 
 int Game_Map::GetMapType(int map_id) {
