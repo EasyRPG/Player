@@ -263,7 +263,7 @@ public:
 	 *
 	 * @return face graphic filename.
 	 */
-	const std::string& GetFaceName() const;
+	StringView GetFaceName() const;
 
 	/**
 	 * Gets actor face graphic index.
@@ -905,7 +905,7 @@ inline int Game_Actor::GetSpriteTransparency() const {
 	return GetData().transparency;
 }
 
-inline const std::string& Game_Actor::GetFaceName() const {
+inline StringView Game_Actor::GetFaceName() const {
 	return GetData().face_name;
 }
 

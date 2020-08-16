@@ -95,7 +95,7 @@ void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx,
 
 // All these functions assume that the input is valid
 
-void Window_Base::DrawFace(const std::string& face_name, int face_index, int cx, int cy, bool flip) {
+void Window_Base::DrawFace(StringView face_name, int face_index, int cx, int cy, bool flip) {
 	if (face_name.empty()) { return; }
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
@@ -125,9 +125,7 @@ void Window_Base::DrawActorLevel(const Game_Actor& actor, int cx, int cy) const 
 	contents->TextDraw(cx, cy, 1, lcf::Data::terms.lvl_short);
 
 	// Draw Level of the Actor
-	std::stringstream ss;
-	ss << actor.GetLevel();
-	contents->TextDraw(cx + 24, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 24, cy, Font::ColorDefault, std::to_string(actor.GetLevel()), Text::AlignRight);
 }
 
 void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) const {
