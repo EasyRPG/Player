@@ -39,8 +39,9 @@ void Window_BattleMessage::Push(const std::string& message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
 	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
-	Utils::ForEachLine(message, [this](const std::string& line)
-			{ PushLine(line); });
+	// FIXME: STRING_VIEW Remove this string conversion
+	Utils::ForEachLine(message, [this](StringView line)
+			{ PushLine(std::string(line)); });
 }
 
 void Window_BattleMessage::PushLine(const std::string& line) {

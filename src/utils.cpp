@@ -591,7 +591,7 @@ std::string Utils::ReadLine(std::istream &is) {
 	}
 }
 
-std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::function<bool(char32_t)> predicate) {
+std::vector<std::string> Utils::Tokenize(StringView str_to_tokenize, const std::function<bool(char32_t)> predicate) {
 	std::u32string text = DecodeUTF32(str_to_tokenize);
 	std::vector<std::string> tokens;
 	std::u32string cur_token;

@@ -287,7 +287,7 @@ namespace Utils {
 	 * @param predicate Predicate function, must return true when the character is used for splitting.
 	 * @return vector containing the elements between the tokens
 	 */
-	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);
+	std::vector<std::string> Tokenize(StringView str_to_tokenize, const std::function<bool(char32_t)> predicate);
 
 	/*
 	 * Searches for newlines and calls f(const std::string&) for each line.
@@ -296,7 +296,7 @@ namespace Utils {
 	 * @param f function of type void(const std::string&)
 	 */
 	template <typename F>
-	void ForEachLine(const std::string& line, F&& f);
+	void ForEachLine(StringView line, F&& f);
 
 
 	/**
@@ -395,11 +395,11 @@ inline bool Utils::PercentChance(long rate) {
 }
 
 template <typename F>
-inline void Utils::ForEachLine(const std::string& line, F&& f) {
+inline void Utils::ForEachLine(StringView line, F&& f) {
 	size_t next = 0;
 	do {
 		auto idx = line.find('\n', next);
-		if (idx == std::string::npos) {
+		if (idx == decltype(line)::npos) {
 			if (next == 0) {
 				// Optimize the common case
 				f(line);
