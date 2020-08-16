@@ -45,10 +45,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param fullscreen start in fullscreen flag.
-	 * @param zoom initial magnification factor.
+	 * @param cfg video config options
 	 */
-	Sdl2Ui(long width, long height, bool fullscreen, int zoom);
+	Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Destructor.
@@ -114,7 +113,7 @@ private:
 	 */
 	void ResetKeys();
 
-	void RequestVideoMode(int width, int height, bool fullscreen, int zoom);
+	void RequestVideoMode(int width, int height, int zoom, bool fullscreen, bool vsync);
 
 	/** Last display mode. */
 	DisplayMode last_display_mode;

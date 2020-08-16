@@ -51,6 +51,16 @@ namespace Utils {
 	std::string UpperCase(const std::string& str);
 
 	/**
+	 * Case insensitive (ascii only) lexicographical compare of 2 strings.
+	 *
+	 * @param l left string
+	 * @param r right string
+	 *
+	 * @return < 0 if l is before r, 0 if equal, > 0 l is after r
+	 */
+	int StrICmp(const char* l, const char* r);
+
+	/**
 	 * Tests if a string starts with a substring.
 	 *
 	 * @param str String to search in

@@ -121,7 +121,7 @@ static int renderThread(unsigned int args, void* arg){
 	
 }
 
-Psp2Ui::Psp2Ui(int width, int height)
+Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 

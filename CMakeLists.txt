@@ -49,8 +49,11 @@ add_library(${PROJECT_NAME}
 	src/bitmap_hslrgb.h
 	src/cache.cpp
 	src/cache.h
+	src/cmdline_parser.cpp
+	src/cmdline_parser.h
 	src/color.h
 	src/compiler.h
+	src/config_param.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h
 	src/decoder_mpg123.cpp
@@ -106,6 +109,8 @@ add_library(${PROJECT_NAME}
 	src/game_clock.h
 	src/game_commonevent.cpp
 	src/game_commonevent.h
+	src/game_config.h
+	src/game_config.cpp
 	src/game_enemy.cpp
 	src/game_enemy.h
 	src/game_enemyparty.cpp

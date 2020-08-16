@@ -42,6 +42,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/bitmap_hslrgb.h \
 	src/cache.cpp \
 	src/cache.h \
+	src/cmdline_parser.cpp \
+	src/cmdline_parser.h \
 	src/color.h \
 	src/compiler.h \
 	src/decoder_fmmidi.cpp \
@@ -101,6 +103,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_clock.h \
 	src/game_commonevent.cpp \
 	src/game_commonevent.h \
+	src/game_config.h \
+	src/game_config.cpp \
 	src/game_enemy.cpp \
 	src/game_enemy.h \
 	src/game_enemyparty.cpp \
@@ -491,6 +495,7 @@ test_runner_SOURCES = \
 	tests/doctest.h \
 	tests/test_main.cpp \
 	tests/bitmapfont.cpp \
+	tests/config_param.cpp \
 	tests/directorytree.cpp \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \

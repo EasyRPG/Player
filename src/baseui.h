@@ -27,6 +27,8 @@
 #include "font.h"
 #include "rect.h"
 #include "keys.h"
+#include "game_config.h"
+#include "game_clock.h"
 
 #ifdef SUPPORT_AUDIO
 	struct AudioInterface;
@@ -47,10 +49,9 @@ public:
 	 *
 	 * @param width display client width.
 	 * @param height display client height.
-	 * @param fullscreen start in fullscreen flag.
-	 * @param zoom initial magnification factor.
+	 * @param cfg video config options
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Toggles fullscreen.
@@ -165,11 +166,26 @@ public:
 	/** @return true if the display manages the framerate */
 	bool IsFrameRateSynchronized() const;
 
+	/** @return true if we should render the fps counter to the screen */
+	bool RenderFps() const;
+
+	/** @return true if we should render the fps counter to the title bar */
+	bool ShowFpsOnTitle() const;
+
+	/** Toggle whether we should show fps */
+	void ToggleShowFps();
+
+	/**
+	 * @return the minimum amount of time each physical frame should take.
+	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
+	 */
+	Game_Clock::duration GetFrameLimit() const;
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
 	 */
-	BaseUi();
+	explicit BaseUi(const Game_ConfigVideo& cfg);
 
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);
@@ -178,12 +194,13 @@ protected:
 	 * Display mode data struct.
 	 */
 	struct DisplayMode {
-		bool effective = false;
 		int zoom = 0;
 		int width = 0;
 		int height = 0;
-		uint8_t bpp = 0;
 		uint32_t flags = 0;
+		uint8_t bpp = 0;
+		bool effective = false;
+		bool vsync = false;
 	};
 
 	/** Current display mode. */
@@ -206,6 +223,12 @@ protected:
 	/** Mouse hovering the window flag. */
 	bool mouse_focus = false;
 
+	/** The frames per second limit */
+	int fps_limit = Game_Clock::GetTargetGameFps();
+
+	/** The amount of time each frame should take, based on fps limit */
+	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
+
 	/** Cursor visibility flag. */
 	bool cursor_visible = false;
 
@@ -214,6 +237,12 @@ protected:
 
 	/** Whether UI is currently fullscreen */
 	bool is_fullscreen = false;
+
+	/** Whether we will show fps counter the screen */
+	bool show_fps = false;
+
+	/** If we will render fps on the screen even in windowed mode */
+	bool fps_render_window = false;
 };
 
 /** Global DisplayUi variable. */
@@ -265,6 +294,22 @@ inline int BaseUi::GetMousePosX() const {
 
 inline int BaseUi::GetMousePosY() const {
 	return mouse_y;
+}
+
+inline bool BaseUi::RenderFps() const {
+	return show_fps && (IsFullscreen() || fps_render_window);
+}
+
+inline bool BaseUi::ShowFpsOnTitle() const {
+	return show_fps;
+}
+
+inline void BaseUi::ToggleShowFps() {
+	show_fps = !show_fps;
+}
+
+inline Game_Clock::duration BaseUi::GetFrameLimit() const {
+	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
 }
 
 #endif

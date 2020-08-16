@@ -222,7 +222,7 @@ static GLuint createAndCompileShader(GLenum type, const char* source) {
 	return handle;
 }
 
-NxUi::NxUi(int width, int height)
+NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 #if 1
 	setenv("MESA_NO_ERROR", "1", 1);

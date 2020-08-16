@@ -32,6 +32,23 @@ namespace {
 
 	/** Gets a random number uniformly distributed in [0, U32_MAX] */
 	uint32_t GetRandomU32() { return rng(); }
+
+	char Lower(char c) {
+		if (c >= 'A' && c <= 'Z') {
+			return c + 'a' - 'A';
+		} else {
+			return c;
+		}
+	}
+
+	char Upper(char c) {
+		if (c >= 'a' && c <= 'z') {
+			return c + 'A' - 'a';
+		} else {
+			return c;
+		}
+	};
+
 }
 
 std::string Utils::LowerCase(const std::string& str) {
@@ -41,30 +58,28 @@ std::string Utils::LowerCase(const std::string& str) {
 }
 
 std::string& Utils::LowerCaseInPlace(std::string& str) {
-	auto lower = [](char& c) -> char {
-		if (c >= 'A' && c <= 'Z') {
-			return c + 'a' - 'A';
-		} else {
-			return c;
-		}
-	};
-
-	std::transform(str.begin(), str.end(), str.begin(), lower);
+	std::transform(str.begin(), str.end(), str.begin(), Lower);
 	return str;
 }
 
 std::string Utils::UpperCase(const std::string& str) {
-	auto upper = [](char& c) -> char {
-		if (c >= 'a' && c <= 'z') {
-			return c + 'A' - 'a';
-		} else {
-			return c;
-		}
-	};
-
 	std::string result = str;
-	std::transform(result.begin(), result.end(), result.begin(), upper);
+	std::transform(result.begin(), result.end(), result.begin(), Upper);
 	return result;
+}
+
+int Utils::StrICmp(const char* l, const char* r) {
+	assert(l != nullptr);
+	assert(r != nullptr);
+	while (*l != '\0' && *r != '\0') {
+		auto d = Lower(*l) - Lower(*r);
+		if (d != 0) {
+			return d;
+		}
+		++l;
+		++r;
+	}
+	return *l - *r;
 }
 
 bool Utils::StartsWith(const std::string& str, const std::string& start) {

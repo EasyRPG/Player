@@ -21,6 +21,7 @@
 // Headers
 #include "meta.h"
 #include "game_clock.h"
+#include "game_config.h"
 #include <vector>
 #include <memory>
 
@@ -105,7 +106,7 @@ namespace Player {
 	/**
 	 * Parses the command line arguments.
 	 */
-	void ParseCommandLine(int argc, char *argv[]);
+	Game_Config ParseCommandLine(int argc, char *argv[]);
 
 	/**
 	 * Initializes all game objects
@@ -249,15 +250,6 @@ namespace Player {
 	/** Hide Title flag, if true title scene will run without image and music. */
 	extern bool hide_title_flag;
 
-	/** Window flag, if true will run in window mode instead of full screen. */
-	extern bool window_flag;
-
-	/** FPS flag, if true will display frames per second counter. */
-	extern bool fps_flag;
-
-	/** FPS render window flag, if true will draw the FPS on the screen even in windowed mode. */
-	extern bool fps_render_window;
-
 	/** Mouse flag, if true enables mouse click and scroll wheel */
 	extern bool mouse_flag;
 
@@ -328,12 +320,6 @@ namespace Player {
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif
-
-	/**
-	 * Vsync mode was requested. This does not mean it's actually being used.
-	 * One must ask the DisplayUi if it's configured for vsync.
-	 */
-	extern bool vsync;
 }
 
 inline bool Player::IsRPG2k() {

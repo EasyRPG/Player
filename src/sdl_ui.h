@@ -43,9 +43,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param fullscreen start in fullscreen flag.
+	 * @param cfg video config options
 	 */
-	SdlUi(long width, long height, bool fullscreen);
+	SdlUi(long width, long height, const Game_ConfigVideo& cfg);
 
 	/**
 	 * Destructor.
@@ -113,8 +113,8 @@ private:
 	 */
 	void ResetKeys();
 
-	bool zoom_available;
-	bool toggle_fs_available;
+	bool zoom_available = false;
+	bool toggle_fs_available = false;
 
 	bool RequestVideoMode(int width, int height, bool fullscreen);
 
@@ -122,7 +122,7 @@ private:
 	DisplayMode last_display_mode;
 
 	/** Mode is being changing flag */
-	bool mode_changing;
+	bool mode_changing = false;
 
 	/** Main SDL window. */
 	SDL_Surface* sdl_surface;
