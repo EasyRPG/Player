@@ -51,8 +51,8 @@ namespace {
 
 }
 
-std::string Utils::LowerCase(const std::string& str) {
-	std::string result = str;
+std::string Utils::LowerCase(StringView str) {
+	auto result = std::string(str);
 	LowerCaseInPlace(result);
 	return result;
 }
@@ -62,10 +62,15 @@ std::string& Utils::LowerCaseInPlace(std::string& str) {
 	return str;
 }
 
-std::string Utils::UpperCase(const std::string& str) {
-	std::string result = str;
-	std::transform(result.begin(), result.end(), result.begin(), Upper);
+std::string Utils::UpperCase(StringView str) {
+	auto result = std::string(str);
+	UpperCaseInPlace(result);
 	return result;
+}
+
+std::string& Utils::UpperCaseInPlace(std::string& str) {
+	std::transform(str.begin(), str.end(), str.begin(), Upper);
+	return str;
 }
 
 int Utils::StrICmp(const char* l, const char* r) {

@@ -34,7 +34,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string LowerCase(const std::string& str);
+	std::string LowerCase(StringView str);
 
 	/**
 	 * Converts a string to lower case in-place (ASCII only, faster)
@@ -50,7 +50,15 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string UpperCase(const std::string& str);
+	std::string UpperCase(StringView str);
+
+	/**
+	 * Converts a string to upper case in-place. (ASCII only, faster)
+	 *
+	 * @param str string to convert.
+	 * @return the converted string.
+	 */
+	std::string& UpperCaseInPlace(std::string& str);
 
 	/**
 	 * Case insensitive (ascii only) lexicographical compare of 2 strings.
