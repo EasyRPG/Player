@@ -87,12 +87,12 @@ void Game_Switches::FlipRange(int first_id, int last_id) {
 	}
 }
 
-std::string Game_Switches::GetName(int _id) const {
+StringView Game_Switches::GetName(int _id) const {
 	const auto* sw = lcf::ReaderUtil::GetElement(lcf::Data::switches, _id);
 
 	if (!sw) {
 		// No warning, is valid because the switch array resizes dynamic during runtime
-		return "";
+		return {};
 	} else {
 		return sw->name;
 	}

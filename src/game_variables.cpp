@@ -258,12 +258,12 @@ void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var
 	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarMod);
 }
 
-std::string Game_Variables::GetName(int _id) const {
+StringView Game_Variables::GetName(int _id) const {
 	const auto* var = lcf::ReaderUtil::GetElement(lcf::Data::variables, _id);
 
 	if (!var) {
 		// No warning, is valid because the variable array resizes dynamic during runtime
-		return "";
+		return {};
 	} else {
 		return var->name;
 	}

@@ -21,6 +21,7 @@
 // Headers
 #include <lcf/data.h>
 #include "compiler.h"
+#include "string_view.h"
 #include <string>
 
 /**
@@ -79,7 +80,7 @@ public:
 	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 
-	std::string GetName(int _id) const;
+	StringView GetName(int _id) const;
 
 	int GetSize() const;
 
