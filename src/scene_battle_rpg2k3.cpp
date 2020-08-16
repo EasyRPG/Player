@@ -1330,10 +1330,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 			// No Output::Warning needed here, reported later when the item is added
-			std::string item_name = "??? BAD ITEM ???";
-			if (item) {
-				item_name = item->name;
-			}
+			StringView item_name = item ? item->name : "??? BAD ITEM ???";
 
 			ss.str("");
 			ss << item_name << space << lcf::Data::terms.item_recieved;

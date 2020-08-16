@@ -71,7 +71,7 @@ void Scene_ActorTarget::Start() {
 			}
 		}
 		status_window->SetData(id, true, 0);
-		help_window->SetText(item->name);
+		help_window->SetText(ToString(item->name));
 		return;
 	} else {
 		const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);

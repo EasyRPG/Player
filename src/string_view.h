@@ -34,5 +34,4 @@ inline fmt::basic_string_view<C> to_string_view(basic_string_view<C,T> s) {
 }
 } }
 
-
 #endif

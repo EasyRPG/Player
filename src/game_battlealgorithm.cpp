@@ -1678,10 +1678,10 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 			particle = "は";
 		else
 			particle = " ";
-		return ToString(source->GetName()) + particle + item.name + lcf::Data::terms.use_item;
+		return ToString(source->GetName()) + particle + ToString(item.name) + lcf::Data::terms.use_item;
 	}
 	else {
-		return item.name;
+		return ToString(item.name);
 	}
 }
 

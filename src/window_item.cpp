@@ -132,8 +132,7 @@ void Window_Item::DrawItem(int index) {
 }
 
 void Window_Item::UpdateHelp() {
-	help_window->SetText(GetItem() == NULL ? "" :
-		GetItem()->description);
+	help_window->SetText(GetItem() == nullptr ? "" : ToString(GetItem()->description));
 }
 
 void Window_Item::SetActor(Game_Actor * actor) {

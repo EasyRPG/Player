@@ -61,5 +61,5 @@ void Window_Equip::Refresh() {
 
 void Window_Equip::UpdateHelp() {
 	help_window->SetText(GetItemId() == 0 ? "" :
-		lcf::ReaderUtil::GetElement(lcf::Data::items, GetItemId())->description);
+		ToString(lcf::ReaderUtil::GetElement(lcf::Data::items, GetItemId())->description));
 }
