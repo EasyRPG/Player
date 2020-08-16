@@ -27,6 +27,7 @@
 #include <lcf/rpg/savesystem.h>
 #include "color.h"
 #include "transition.h"
+#include "string_view.h"
 
 struct FileRequestResult;
 
@@ -135,7 +136,7 @@ namespace Game_System {
 	void SePlay(const lcf::rpg::Animation& animation);
 
 	/** @return system graphic filename.  */
-	const std::string& GetSystemName();
+	StringView GetSystemName();
 
 	/** @return message stretch style */
 	lcf::rpg::System::Stretch GetMessageStretch();
@@ -158,7 +159,7 @@ namespace Game_System {
 	void ResetSystemGraphic();
 
 	/** @return the system2 graphic name */
-	const std::string& GetSystem2Name();
+	StringView GetSystem2Name();
 
 	/** @return true if the game has a configured system graphic */
 	bool HasSystemGraphic();

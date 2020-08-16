@@ -192,9 +192,9 @@ void Game_System::SePlay(const lcf::rpg::Animation &animation) {
 	}
 }
 
-const std::string& Game_System::GetSystemName() {
+StringView Game_System::GetSystemName() {
 	return !data.graphics_name.empty() ?
-		data.graphics_name : lcf::Data::system.system_name;
+		StringView(data.graphics_name) : StringView(lcf::Data::system.system_name);
 }
 
 static void OnChangeSystemGraphicReady(FileRequestResult* result) {
@@ -240,7 +240,7 @@ void Game_System::ResetSystemGraphic() {
 	ReloadSystemGraphic();
 }
 
-const std::string& Game_System::GetSystem2Name() {
+StringView Game_System::GetSystem2Name() {
 	return lcf::Data::system.system2_name;
 }
 
