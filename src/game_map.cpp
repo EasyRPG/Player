@@ -1364,7 +1364,7 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
 	if (lcf::Data::treemap.maps[current_index].background_type == 2) {
-		args.background = lcf::Data::treemap.maps[current_index].background_name;
+		args.background = ToString(lcf::Data::treemap.maps[current_index].background_name);
 	}
 }
 
