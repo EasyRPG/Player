@@ -365,12 +365,12 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 				Game_Map::Refresh();
 				break;
 			case lcf::rpg::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
-				SetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
+				SetSpriteGraphic(ToString(move_command.parameter_string), move_command.parameter_a);
 				break;
 			case lcf::rpg::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)" && move_command.parameter_string != "(Brak)") {
 					lcf::rpg::Sound sound;
-					sound.name = move_command.parameter_string;
+					sound.name = ToString(move_command.parameter_string);
 					sound.volume = move_command.parameter_a;
 					sound.tempo = move_command.parameter_b;
 					sound.balance = move_command.parameter_c;

@@ -517,11 +517,11 @@ lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_i
 		cmd.parameter_a = DecodeInt(it);
 		break;
 	case 34:	// Change Graphic
-		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_string = lcf::DBString(DecodeString(it));
 		cmd.parameter_a = DecodeInt(it);
 		break;
 	case 35:	// Play Sound Effect
-		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_string = lcf::DBString(DecodeString(it));
 		cmd.parameter_a = DecodeInt(it);
 		cmd.parameter_b = DecodeInt(it);
 		cmd.parameter_c = DecodeInt(it);
