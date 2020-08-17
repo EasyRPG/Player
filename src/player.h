@@ -43,6 +43,15 @@ namespace Player {
 		EngineEnglish = 8
 	};
 
+	/** Bitmask for activated patches */
+	enum PatchType {
+		PatchNone = 0,
+		/** DynRPG */
+		PatchDynRpg = 1,
+		/** ManiacPatch */
+		PatchManiac = 2
+	};
+
 	/**
 	 * Initializes EasyRPG Player.
 	 */
@@ -224,6 +233,16 @@ namespace Player {
 	bool IsCP1251();
 
 	/**
+	 * @return True when the DynRPG patch is active
+	 */
+	bool IsPatchDynRpg();
+
+	/**
+	 * @return True when the Maniac Patch is active
+	 */
+	bool IsPatchManiac();
+
+	/**
 	 * @return Running engine version. 2000 for RPG2k and 2003 for RPG2k3
 	 */
 	int EngineVersion();
@@ -301,6 +320,9 @@ namespace Player {
 	/** Game title. */
 	extern std::string game_title;
 
+	/** Currently enabled engine patches */
+	extern int patch;
+
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
 
@@ -364,6 +386,14 @@ inline bool Player::IsRPG2kE() {
 
 inline bool Player::IsRPG2k3E() {
 	return (IsRPG2k3() && IsEnglish());
+}
+
+inline bool Player::IsPatchDynRpg() {
+	return (patch & PatchDynRpg) == PatchDynRpg;
+}
+
+inline bool Player::IsPatchManiac() {
+	return (patch & PatchManiac) == PatchManiac;
 }
 
 #endif
