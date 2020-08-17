@@ -110,6 +110,7 @@ namespace Player {
 	uint32_t escape_char;
 	int engine;
 	std::string game_title;
+	int patch;
 	std::shared_ptr<Meta> meta;
 	int frames;
 	std::string replay_input_path;
@@ -428,6 +429,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	window_flag = false;
 #endif
 	fps_flag = false;
+	patch = PatchNone;
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
@@ -774,6 +776,18 @@ void Player::CreateGameObjects() {
 	Output::Debug("Engine configured as: 2k=%d 2k3=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
+
+	if (!FileFinder::FindDefault("dynloader.dll").empty()) {
+		patch |= PatchDynRpg;
+		Output::Warning("This game uses DynRPG and will not run properly.");
+	}
+
+	if (!FileFinder::FindDefault("accord.dll").empty()) {
+		patch |= PatchManiac;
+		Output::Warning("This game uses the Maniac Patch and will not run properly.");
+	}
+
+	Output::Debug("Patch configuration: dynrpg=%d maniac=%d", Player::IsPatchDynRpg(), Player::IsPatchManiac());
 
 	// ExFont parsing
 	Cache::exfont_custom.clear();
