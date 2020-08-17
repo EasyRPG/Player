@@ -649,9 +649,11 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
 
 	int half_height = 0;
 	int half_width = 0;
+	bool animation_as_sprite = false;
 	if (sprite) {
 		half_height = sprite->GetHeight() / 2;
 		half_width = sprite->GetWidth() / 2;
+		animation_as_sprite = sprite->IsUsingAnimationAsSprite();
 	}
 
 	int row_x_offset = 0;
@@ -706,7 +708,8 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
 	position.y = grid.y - half_height;
 
 	// RPG_RT doesn't clamp Y for actors
-	position.x = Utils::Clamp(position.x, half_width, 320 - half_width);
+	// Clamping is only used if not battle animations are used as sprites
+	if (!animation_as_sprite) position.x = Utils::Clamp(position.x, half_width, 320 - half_width);
 
 	return position;
 }

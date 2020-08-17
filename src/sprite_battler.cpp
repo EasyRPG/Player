@@ -265,16 +265,20 @@ bool Sprite_Battler::IsIdling() {
 
 int Sprite_Battler::GetWidth() const {
 	if (animation) {
-		return animation->GetWidth();
+		return animation->GetAnimationCellWidth() / 2;
 	}
 	return Sprite::GetWidth();
 }
 
 int Sprite_Battler::GetHeight() const {
 	if (animation) {
-		return animation->GetHeight();
+		return animation->GetAnimationCellHeight() / 2;
 	}
 	return Sprite::GetHeight();
+}
+
+bool Sprite_Battler::IsUsingAnimationAsSprite() {
+	return animation != nullptr;
 }
 
 void Sprite_Battler::ResetZ() {

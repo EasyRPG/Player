@@ -62,6 +62,16 @@ public:
 	/** @return true if the animation only plays audio and doesn't display **/
 	bool IsOnlySound() const;
 
+	/**
+	 * @return the animation cell width
+	 */
+	int GetAnimationCellWidth() const;
+
+	/**
+	 * @return the animation cell height
+	 */
+	int GetAnimationCellHeight() const;
+
 protected:
 	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
@@ -137,6 +147,12 @@ inline bool BattleAnimation::IsOnlySound() const {
 	return only_sound;
 }
 
+inline int BattleAnimation::GetAnimationCellWidth() const {
+	return 96;
+}
 
+inline int BattleAnimation::GetAnimationCellHeight() const {
+	return 96;
+}
 
 #endif
