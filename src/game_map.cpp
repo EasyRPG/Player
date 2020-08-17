@@ -1735,7 +1735,7 @@ static Game_Map::Parallax::Params GetParallaxParams() {
 		params.scroll_vert_auto = map_info.parallax_vert_auto;
 		params.scroll_vert_speed = map_info.parallax_vert_speed;
 	} else if (map->parallax_flag) {
-		params.name = map->parallax_name;
+		params.name = ToString(map->parallax_name);
 		params.scroll_horz = map->parallax_loop_x;
 		params.scroll_horz_auto = map->parallax_auto_loop_x;
 		params.scroll_horz_speed = map->parallax_sx;
