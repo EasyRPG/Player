@@ -72,9 +72,11 @@ typedef bool(*dynfunc)(const dyn_arg_list&);
  */
 namespace DynRpg {
 	void RegisterFunction(const std::string& name, dynfunc function);
+	bool HasFunction(const std::string& name);
 	float GetFloat(const std::string& str, bool* valid = nullptr);
 	std::string ParseVarArg(const dyn_arg_list &args, int index);
 	bool Invoke(const std::string& command);
+	bool Invoke(const std::string& func, const dyn_arg_list& args);
 	void Update();
 	void Reset();
 	void Load(int slot);
@@ -83,16 +85,17 @@ namespace DynRpg {
 
 class DynRpgPlugin {
 public:
-	virtual ~DynRpgPlugin() {}
+	explicit DynRpgPlugin(std::string identifier) : identifier(std::move(identifier)) {}
+	DynRpgPlugin() = delete;
 
-	virtual std::string GetIdentifier() = 0;
+	std::string GetIdentifier() const { return identifier; }
 	virtual void RegisterFunctions() {}
 	virtual void Update() {}
 	virtual void Load(std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }
 
-protected:
-	DynRpgPlugin() {}
+private:
+	std::string identifier;
 };
 
 #endif

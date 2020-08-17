@@ -24,6 +24,8 @@
 #include "output.h"
 #include "player.h"
 
+#include "dynrpg_easyrpg.h"
+
 #include <cstring>
 #include <fstream>
 #include <map>
@@ -44,65 +46,16 @@ namespace {
 	// Registered DynRpg Plugins
 	std::vector<std::unique_ptr<DynRpgPlugin>> plugins;
 
-	// DynRpg Functions
-
-	bool Oput(const dyn_arg_list& args) {
-		DYNRPG_FUNCTION("output")
-
-		DYNRPG_CHECK_ARG_LENGTH(2);
-
-		DYNRPG_GET_STR_ARG(0, mode);
-		DYNRPG_GET_VAR_ARG(1, msg);
-
-		if (mode == "Debug") {
-			Output::DebugStr(msg);
-		} else if (mode == "Info") {
-			Output::InfoStr(msg);
-		} else if (mode == "Warning") {
-			Output::WarningStr(msg);
-		} else if (mode == "Error") {
-			Output::ErrorStr(msg);
-		}
-
-		return true;
-	}
-
-	bool Call(const dyn_arg_list& args);
-
-	// Function table
-	dyn_rpg_func dyn_rpg_functions = {
-			{"easyrpg_output", Oput},
-			{"call", Call}
-	};
-
-	bool Call(const dyn_arg_list& args) {
-		DYNRPG_FUNCTION("call")
-
-		DYNRPG_CHECK_ARG_LENGTH(1)
-
-		DYNRPG_GET_STR_ARG(0, token)
-
-		if (token.empty()) {
-			// empty function name
-			Output::Warning("call: Empty RPGSS function name");
-
-			return true;
-		}
-
-		if (dyn_rpg_functions.find(token) == dyn_rpg_functions.end()) {
-			// Not a supported function
-			Output::Warning("Unsupported RPGSS function: {}", token);
-			return true;
-		}
-
-		dyn_arg_list new_args(args.begin() + 1, args.end());
-
-		return dyn_rpg_functions[token](new_args);
-	}
+	// DynRpg Function table
+	dyn_rpg_func dyn_rpg_functions;
 }
 
 void DynRpg::RegisterFunction(const std::string& name, dynfunc func) {
 	dyn_rpg_functions[name] = func;
+}
+
+bool DynRpg::HasFunction(const std::string& name) {
+	return dyn_rpg_functions.find(name) != dyn_rpg_functions.end();
 }
 
 float DynRpg::GetFloat(const std::string& str, bool* valid) {
@@ -256,7 +209,7 @@ static bool ValidFunction(const std::string& token) {
 		return false;
 	}
 
-	if (dyn_rpg_functions.find(token) == dyn_rpg_functions.end()) {
+	if (!DynRpg::HasFunction(token)) {
 		// Not a supported function
 		Output::Warning("Unsupported DynRPG function: {}", token);
 		return false;
@@ -266,9 +219,13 @@ static bool ValidFunction(const std::string& token) {
 }
 
 void create_all_plugins() {
+	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
+
 	for (auto& plugin : plugins) {
 		plugin->RegisterFunctions();
 	}
+
+	init = true;
 }
 
 bool DynRpg::Invoke(const std::string& command) {
@@ -290,7 +247,6 @@ bool DynRpg::Invoke(const std::string& command) {
 	}
 
 	if (!init) {
-		init = true;
 		create_all_plugins();
 	}
 
@@ -454,6 +410,16 @@ bool DynRpg::Invoke(const std::string& command) {
 	return true;
 }
 
+bool DynRpg::Invoke(const std::string& func, const dyn_arg_list& args) {
+	if (!DynRpg::HasFunction(func)) {
+		// Not a supported function
+		Output::Warning("Unsupported DynRPG function: {}", func);
+		return true;
+	}
+
+	return dyn_rpg_functions[func](args);
+}
+
 std::string get_filename(int slot) {
 	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
@@ -474,7 +440,6 @@ void DynRpg::Load(int slot) {
 	}
 
 	if (!init) {
-		init = true;
 		create_all_plugins();
 	}
 
@@ -547,6 +512,10 @@ void DynRpg::Save(int slot) {
 		return;
 	}
 
+	if (!init) {
+		create_all_plugins();
+	}
+
 	std::string filename = get_filename(slot);
 
 	auto out = FileFinder::OpenOutputStream(filename);
@@ -568,7 +537,6 @@ void DynRpg::Save(int slot) {
 		out.write(plugin->GetIdentifier().c_str(), len);
 
 		std::vector<uint8_t> data = plugin->Save();
-
 		len = data.size();
 		Utils::SwapByteOrder(len);
 
