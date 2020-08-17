@@ -203,14 +203,14 @@ bool Sprite_Actor::IsIdling() {
 
 int Sprite_Actor::GetWidth() const {
 	if (animation) {
-		return animation->GetWidth();
+		return animation->GetAnimationCellWidth() / 2;
 	}
 	return Sprite::GetWidth();
 }
 
 int Sprite_Actor::GetHeight() const {
 	if (animation) {
-		return animation->GetHeight();
+		return animation->GetAnimationCellHeight() / 2;
 	}
 	return Sprite::GetHeight();
 }
