@@ -159,6 +159,14 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		fluid_settings_setint(global_settings.get(), "synth.polyphony", 32);
 
 #ifdef HAVE_FLUIDSYNTH
+		fluid_settings_setint(global_settings.get(), "synth.reverb.active", 0);
+		fluid_settings_setint(global_settings.get(), "synth.chorus.active", 0);
+#else
+		fluid_settings_setstr(global_settings.get(), "synth.reverb.active", "no");
+		fluid_settings_setstr(global_settings.get(), "synth.chorus.active", "no");
+#endif
+
+#ifdef HAVE_FLUIDSYNTH
 		// owned by fluid_settings
 		global_loader = new_fluid_defsfloader(global_settings.get());
 		fluid_sfloader_set_callbacks(global_loader,
