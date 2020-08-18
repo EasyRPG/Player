@@ -29,7 +29,7 @@
 #define PLAYER_MAJOR 0
 #define PLAYER_MINOR 6
 #define PLAYER_PATCH 2
-#define PLAYER_TWEAK 1
+#define PLAYER_TWEAK 2
 #define PLAYER_ADDTL ""
 
 #if PLAYER_TWEAK > 0
@@ -42,6 +42,6 @@
  * Version written to the easyrpg_data.version field in savegames.
  * Increment the last digit (0) only when having a good reason.
  */
-#define PLAYER_SAVEGAME_VERSION (PLAYER_MAJOR * 1000 + PLAYER_MINOR * 100 + PLAYER_PATCH * 10 + 1)
+#define PLAYER_SAVEGAME_VERSION (PLAYER_MAJOR * 1000 + PLAYER_MINOR * 100 + PLAYER_PATCH * 10 + PLAYER_TWEAK)
 
 #endif /* EP_VERSION_H */
