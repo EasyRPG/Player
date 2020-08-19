@@ -84,6 +84,7 @@
 #include <lcf/scope_guard.h>
 #include "baseui.h"
 #include "game_clock.h"
+#include "db.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -874,6 +875,7 @@ void Player::GuessNonStandardExtensions() {
 void Player::LoadDatabase() {
 	// Load lcf::Database
 	lcf::Data::Clear();
+	db::Clear();
 
 	if (is_easyrpg_project) {
 		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
@@ -907,6 +909,7 @@ void Player::LoadDatabase() {
 			FileExtGuesser::GuessAndAddLmuExtension(*FileFinder::GetDirectoryTree(), *meta, fileext_map);
 		}
 	}
+	db::LoadGame(&lcf::Data::data, &lcf::Data::treemap);
 }
 
 static void FixSaveGames() {
