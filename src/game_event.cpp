@@ -55,6 +55,20 @@ void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 	data()->ID = event->ID;
 	SetMapId(map_id);
 
+	// Sanity checks on bad save data
+	auto checkMoveRoute = [&](const auto& mr, auto& idx, const auto& name) {
+		const auto n = static_cast<int>(mr.move_commands.size());
+		if (idx < 0 || idx > n) {
+			idx = n;
+			Output::Warning("Event {}: Save Data invalid {}={}. Fixing ...", data()->ID, name, idx);
+		}
+	};
+
+	checkMoveRoute(data()->move_route, data()->move_route_index, "move_route_index");
+	if (page != nullptr) {
+		checkMoveRoute(page->move_route, data()->original_move_route_index, "original_move_route_index");
+	}
+
 	if (!data()->active || page == nullptr) {
 		return;
 	}

@@ -216,6 +216,9 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 	if (is_overwrite && !IsMoveRouteOverwritten()) {
 		return;
 	}
+	const auto num_commands = static_cast<int>(current_route.move_commands.size());
+	assert(current_index >= 0);
+	assert(current_index <= num_commands);
 
 	const int start_index = current_index;
 
