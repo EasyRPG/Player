@@ -376,13 +376,25 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					break;
 				case lcf::rpg::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 					Main_Data::game_switches->Set(move_command.parameter_a, true);
+					++current_index; // In case the current_index is already 0 ...
 					Game_Map::SetNeedRefresh(true);
 					Game_Map::Refresh();
+					// Page refresh may have reset the move route.
+					if (current_index == 0) {
+						return;
+					}
+					--current_index;
 					break;
 				case lcf::rpg::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
 					Main_Data::game_switches->Set(move_command.parameter_a, false);
+					++current_index; // In case the current_index is already 0 ...
 					Game_Map::SetNeedRefresh(true);
 					Game_Map::Refresh();
+					// Page refresh may have reset the move route.
+					if (current_index == 0) {
+						return;
+					}
+					--current_index;
 					break;
 				case lcf::rpg::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
 					SetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
