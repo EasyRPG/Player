@@ -54,7 +54,7 @@ bool Game_Ineluki::Execute(const std::string& ini_file) {
 	}
 
 	for (const auto& cmd : functions[ini_file]) {
-		Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
+		//Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
 
 		if (cmd.name == "writetolog") {
 			Output::InfoStr(cmd.arg);
@@ -102,8 +102,12 @@ bool Game_Ineluki::Execute(const std::string& ini_file) {
 		} else if (cmd.name == "enablemousesupport") {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
-			// automatic
+			// TODO: automatic (append mouse pos every 500ms) not implemented
 		} else if (cmd.name == "getmouseposition") {
+			if (!mouse_support) {
+				return true;
+			}
+
 			int mouse_x;
 			int mouse_y;
 
@@ -135,10 +139,11 @@ bool Game_Ineluki::ExecuteAutorunScript() {
 		return false;
 	}
 
+	Output::Debug("Ineluki: Processing autostart script");
+
 	std::string line = Utils::ReadLine(is);
 	while (!is.eof()) {
 		if (!line.empty()) {
-			Output::Debug("Ineluki: Autostart {}", line);
 			Execute(FileFinder::FindDefault(line));
 		}
 		line = Utils::ReadLine(is);
@@ -153,6 +158,8 @@ bool Game_Ineluki::Parse(const std::string& ini_file) {
 	if (ini.ParseError() == -1) {
 		return false;
 	}
+
+	Output::Debug("Ineluki: Parsing script {}", FileFinder::GetPathInsideGamePath(ini_file));
 
 	command_list commands;
 	std::string section = "execute";
@@ -224,16 +231,20 @@ int Game_Ineluki::GetMidiTicks() {
 }
 
 void Game_Ineluki::Update() {
+	if (!key_support) {
+		return;
+	}
+
 	for (const auto& key : keylist_down) {
 		if (Input::IsRawKeyTriggered(key.key)) {
-			Output::Debug("Key Down: {}", key.key, key.value);
+			//Output::Debug("Key Down: {}", key.key, key.value);
 			output_list.push_back(key.value);
 		}
 	}
 
 	for (const auto& key : keylist_up) {
 		if (Input::IsRawKeyReleased(key.key)) {
-			Output::Debug("Key Up: {}", key.key, key.value);
+			//Output::Debug("Key Up: {}", key.key, key.value);
 			output_list.push_back(key.value);
 		}
 	}
