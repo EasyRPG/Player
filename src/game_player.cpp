@@ -627,10 +627,6 @@ bool Game_Player::IsBoardingOrUnboarding() const {
 	return data()->boarding || data()->unboarding;
 }
 
-int Game_Player::GetVehicleType() const {
-	return data()->vehicle;
-}
-
 bool Game_Player::UpdateEncounterSteps() {
 	if (Player::debug_flag &&
 		Input::IsPressed(Input::DEBUG_THROUGH)) {

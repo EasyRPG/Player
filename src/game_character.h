@@ -290,9 +290,6 @@ public:
 	 */
 	bool IsAnimPaused() const;
 
-	/** @return the type of vehicle this event itself is, or is boarded */
-	virtual int GetVehicleType() const;
-
 	/**
 	 * Sets whether animation is paused.
 	 *

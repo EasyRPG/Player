@@ -231,7 +231,6 @@ TEST_CASE("InitEventNoPage") {
 	REQUIRE_EQ(ch.GetSpriteDirection(), 2);
 	REQUIRE_EQ(ch.GetMoveSpeed(), 4);
 	REQUIRE(ch.GetThrough());
-	REQUIRE_EQ(ch.GetVehicleType(), Game_Vehicle::None);
 	REQUIRE_EQ(ch.GetLayer(), 1);
 	REQUIRE_EQ(ch.GetMoveFrequency(), 2);
 
@@ -257,7 +256,6 @@ TEST_CASE("InitEventDefaultPage") {
 	REQUIRE_EQ(ch.GetSpriteDirection(), 2);
 	REQUIRE_EQ(ch.GetMoveSpeed(), 3);
 	REQUIRE(!ch.GetThrough());
-	REQUIRE_EQ(ch.GetVehicleType(), Game_Vehicle::None);
 	REQUIRE_EQ(ch.GetLayer(), 0);
 	REQUIRE_EQ(ch.GetMoveFrequency(), 3);
 

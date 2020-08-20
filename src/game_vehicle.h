@@ -52,7 +52,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetVehicleType() const override;
 	void UpdateNextMovementAction() override;
 	void UpdateAnimation() override;
 	/** @} */
@@ -61,6 +60,7 @@ public:
 	void Update();
 
 	const lcf::rpg::Music& GetBGM();
+	int GetVehicleType() const;
 	bool IsInCurrentMap() const;
 	bool IsInPosition(int x, int y) const override;
 	bool IsVisible() const override;
@@ -126,5 +126,10 @@ inline void Game_Vehicle::SetDefaultDirection() {
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 }
+
+inline int Game_Vehicle::GetVehicleType() const {
+	return data()->vehicle;
+}
+
 
 #endif

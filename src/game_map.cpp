@@ -504,6 +504,13 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 	return WouldCollide(self, other, self_conflict);
 }
 
+static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
+	if (ch && ch->GetType() == Game_Character::Vehicle) {
+		return static_cast<Game_Vehicle::Type>(static_cast<const Game_Vehicle*>(ch)->GetVehicleType());
+	}
+	return Game_Vehicle::None;
+}
+
 bool Game_Map::MakeWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y
@@ -526,7 +533,7 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		return true;
 	}
 
-	const auto vehicle_type = static_cast<Game_Vehicle::Type>(self.GetVehicleType());
+	const auto vehicle_type = GetCollisionVehicleType(&self);
 
 	bool self_conflict = false;
 	if (!self.IsJumping()) {
@@ -682,8 +689,7 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y) {
 	if (!IsValid(x, y)) return false;
 
-	auto vehicle_type = (self != nullptr)
-		? self->GetVehicleType() : Game_Vehicle::None;
+	const auto vehicle_type = GetCollisionVehicleType(self);
 
 	if (vehicle_type != Game_Vehicle::None) {
 		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));

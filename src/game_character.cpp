@@ -869,10 +869,6 @@ void Game_Character::SetMaxStopCountForWait() {
 	SetMaxStopCount(GetMaxStopCountForWait(GetMoveFrequency()));
 }
 
-int Game_Character::GetVehicleType() const {
-	return 0;
-}
-
 void Game_Character::UpdateFacing() {
 	// RPG_RT only does the IsSpinning() check for Game_Event. We did it for all types here
 	// in order to avoid a virtual call and because normally with RPG_RT, spinning

@@ -194,10 +194,6 @@ void Game_Vehicle::Update() {
 	Game_Character::Update();
 }
 
-int Game_Vehicle::GetVehicleType() const {
-	return data()->vehicle;
-}
-
 StringView Game_Vehicle::GetOrigSpriteName() const {
 	if (!data()->orig_sprite_name.empty()) {
 		return data()->orig_sprite_name;

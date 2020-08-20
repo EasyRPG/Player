@@ -50,7 +50,6 @@ public:
 	int GetScreenZ(bool apply_shift = false) const override;
 	bool IsVisible() const override;
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
-	int GetVehicleType() const override;
 	void UpdateNextMovementAction() override;
 	void UpdateMovement(int amount) override;
 	void MoveRouteSetSpriteGraphic(std::string sprite_name, int index) override;
@@ -87,6 +86,7 @@ public:
 	bool InAirship() const;
 	bool IsAboard() const;
 	bool IsBoardingOrUnboarding() const;
+	int GetVehicleType() const;
 	Game_Vehicle* GetVehicle() const;
 
 	/**
@@ -234,6 +234,10 @@ inline void Game_Player::UpdateSaveCounts(int db_save_count, int map_save_count)
 
 inline bool Game_Player::IsVisible() const {
 	return !IsAboard() && Game_Character::IsVisible();
+}
+
+inline int Game_Player::GetVehicleType() const {
+	return data()->vehicle;
 }
 
 
