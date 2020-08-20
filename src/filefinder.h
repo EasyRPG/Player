@@ -302,6 +302,9 @@ namespace FileFinder {
 	 */
 	bool HasSavegame();
 
+	/** @returns Amount of savegames in the save directory */
+	int GetSavegames();
+
 	/**
 	 * Get the size of a file
 	 *

@@ -755,6 +755,12 @@ bool FileFinder::IsRPG2kProjectWithRenames(DirectoryTree const& dir) {
 }
 
 bool FileFinder::HasSavegame() {
+	return GetSavegames() > 0;
+}
+
+int FileFinder::GetSavegames() {
+	int count = 0;
+
 	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {
@@ -763,10 +769,10 @@ bool FileFinder::HasSavegame() {
 		std::string filename = FileFinder::FindDefault(*tree, ss.str());
 
 		if (!filename.empty()) {
-			return true;
+			++count;
 		}
 	}
-	return false;
+	return count;
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {

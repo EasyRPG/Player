@@ -37,8 +37,7 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 		// Support for the script written by SaveCount.dat
 		// It counts the amount of savegames and outputs the result
 		output_mode = OutputMode::Output;
-		// TODO
-		output_list.push_back(1);
+		output_list.push_back(FileFinder::GetSavegames());
 		return true;
 	}
 
