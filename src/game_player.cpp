@@ -221,12 +221,15 @@ bool Game_Player::UpdateAirship() {
 	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
 	if (vehicle && IsFlying()) {
 		if (vehicle->AnimateAscentDescent()) {
-			data()->aboard = false;
-			SetSpriteDirection(Down);
-			data()->vehicle = 0;
-			SetMoveSpeed(data()->preboard_move_speed);
+			if (!IsFlying()) {
+				// If we landed, them disembark
+				data()->aboard = false;
+				SetSpriteDirection(Down);
+				data()->vehicle = 0;
+				SetMoveSpeed(data()->preboard_move_speed);
 
-			Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
+				Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+			}
 
 			return true;
 		}
@@ -235,17 +238,8 @@ bool Game_Player::UpdateAirship() {
 }
 
 void Game_Player::UpdateNextMovementAction() {
-	auto* vehicle = GetVehicle();
-
-	// RPG_RT doesn't check vehicle, but we have to as we don't have another way to fetch it.
-	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
-	if (vehicle && IsFlying()) {
-		auto was_ascending_or_descending = vehicle->IsAscendingOrDescending();
-		vehicle->AnimateAscentDescent();
-
-		if (was_ascending_or_descending) {
-			return;
-		}
+	if (UpdateAirship()) {
+		return;
 	}
 
 	UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
