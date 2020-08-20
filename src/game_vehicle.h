@@ -68,14 +68,15 @@ public:
 	bool IsDescending() const;
 	bool IsAscendingOrDescending() const;
 	int GetAltitude() const;
-	void GetOn();
-	void GetOff();
 	bool IsInUse() const;
 	bool IsAboard() const;
 	void SyncWithRider(const Game_Character* rider);
 	bool AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
 	bool CanLand() const;
+	void StartAscent();
+	void StartDescent();
+	void SetDefaultDirection();
 
 	/**
 	 * Sets default sprite name. Usually the name of the graphic file.
@@ -119,6 +120,11 @@ inline bool Game_Vehicle::IsAscendingOrDescending() const {
 
 inline bool Game_Vehicle::IsVisible() const {
 	return IsInCurrentMap() && Game_Character::IsVisible();
+}
+
+inline void Game_Vehicle::SetDefaultDirection() {
+	SetDirection(Left);
+	SetSpriteDirection(Left);
 }
 
 #endif

@@ -850,6 +850,8 @@ public:
 		UpLeft
 	};
 
+	static bool IsDirectionDiagonal(int d);
+
 	/** Reverses a direction, ex: ReverseDir(Up) == Down. */
 	static int ReverseDir(int dir);
 
@@ -1333,6 +1335,10 @@ inline T* Game_CharacterDataStorage<T>::data() {
 template <typename T>
 inline const T* Game_CharacterDataStorage<T>::data() const {
 	return static_cast<const T*>(Game_Character::data());
+}
+
+inline bool Game_Character::IsDirectionDiagonal(int d) {
+	return d >= UpRight;
 }
 
 #endif

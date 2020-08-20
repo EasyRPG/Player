@@ -160,7 +160,7 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 }
 
 bool Game_Player::MakeWay(int from_x, int from_y, int to_x, int to_y) {
-	if (data()->aboard) {
+	if (IsAboard()) {
 		return GetVehicle()->MakeWay(from_x, from_y, to_x, to_y);
 	}
 
@@ -221,8 +221,9 @@ bool Game_Player::UpdateAirship() {
 	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
 	if (vehicle && IsFlying()) {
 		if (vehicle->AnimateAscentDescent()) {
-			if (!IsFlying()) {
+			if (!vehicle->IsFlying()) {
 				// If we landed, them disembark
+				Main_Data::game_player->SetFlying(vehicle->IsFlying());
 				data()->aboard = false;
 				SetSpriteDirection(Down);
 				data()->vehicle = 0;
@@ -459,45 +460,40 @@ void Game_Player::ResetGraphic() {
 }
 
 bool Game_Player::GetOnOffVehicle() {
-	// FIXME: Make a test case for this
-	if (GetDirection() >= UpRight) {
+	if (IsDirectionDiagonal(GetDirection())) {
 		SetDirection(GetSpriteDirection());
 	}
 
-	const auto x = Game_Map::RoundX(GetX());
-	const auto y = Game_Map::RoundY(GetY());
-
-	if (IsBoardingOrUnboarding()) {
-		return false;
-	}
-
-	if (InVehicle())
-		return GetOffVehicle();
-	return GetOnVehicle();
+	return IsAboard()
+		? GetOffVehicle()
+		: GetOnVehicle();
 }
 
 bool Game_Player::GetOnVehicle() {
-	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+	assert(!IsDirectionDiagonal(GetDirection()));
+	assert(!IsAboard());
 
-	const auto* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
+	auto* vehicle = Game_Map::GetVehicle(Game_Vehicle::Airship);
 
-	if (airship->IsInPosition(GetX(), GetY()) && IsStopping() && airship->IsStopping()) {
-		if (airship->IsAscendingOrDescending()) {
-			return false;
-		}
-
+	if (vehicle->IsInPosition(GetX(), GetY()) && IsStopping() && vehicle->IsStopping()) {
 		data()->vehicle = Game_Vehicle::Airship;
-		data()->preboard_move_speed = GetMoveSpeed();
 		data()->aboard = true;
-		SetMoveSpeed(airship->GetMoveSpeed());
+
 		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(Left);
+
+		data()->preboard_move_speed = GetMoveSpeed();
+		SetMoveSpeed(vehicle->GetMoveSpeed());
+		vehicle->StartAscent();
+		Main_Data::game_player->SetFlying(vehicle->IsFlying());
 	} else {
-		auto type = Game_Vehicle::Ship;
-		if (!Game_Map::GetVehicle(type)->IsInPosition(front_x, front_y)) {
-			type = Game_Vehicle::Boat;
-			if (!Game_Map::GetVehicle(type)->IsInPosition(front_x, front_y)) {
+		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+		vehicle = Game_Map::GetVehicle(Game_Vehicle::Ship);
+		if (!vehicle->IsInPosition(front_x, front_y)) {
+			vehicle = Game_Map::GetVehicle(Game_Vehicle::Boat);
+			if (!vehicle->IsInPosition(front_x, front_y)) {
 				return false;
 			}
 		}
@@ -506,26 +502,25 @@ bool Game_Player::GetOnVehicle() {
 			return false;
 		}
 
-		// FIXME: RPG_RT still executes move event if triggered mid-move?
 		SetThrough(true);
-		if (IsStopping()) {
-			// FIXME: Do we set stop count or max stop count?
-			Move(GetDirection());
-		}
+		Move(GetDirection());
 		// FIXME: RPG_RT resets through to route_through || not visible?
 		ResetThrough();
 
-		data()->vehicle = type;
+		data()->vehicle = vehicle->GetVehicleType();
 		data()->preboard_move_speed = GetMoveSpeed();
 		data()->boarding = true;
 	}
 
 	Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
-	GetVehicle()->GetOn();
+	Game_System::BgmPlay(vehicle->GetBGM());
 	return true;
 }
 
 bool Game_Player::GetOffVehicle() {
+	assert(!IsDirectionDiagonal(GetDirection()));
+	assert(IsAboard());
+
 	auto* vehicle = GetVehicle();
 	if (!vehicle) {
 		return false;
@@ -536,31 +531,31 @@ bool Game_Player::GetOffVehicle() {
 			return false;
 		}
 
+		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(Left);
-	} else {
-		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-
-		if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
-			return false;
-		}
-
-		data()->aboard = false;
-		SetMoveSpeed(data()->preboard_move_speed);
-		data()->unboarding = true;
-
-		SetThrough(true);
-		if (IsStopping()) {
-			// FIXME: Do we set stop count or max stop count?
-			Move(GetDirection());
-		}
-		ResetThrough();
-
-		data()->vehicle = 0;
-		Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+		vehicle->StartDescent();
+		return true;
 	}
 
-	vehicle->GetOff();
+	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+	if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
+		return false;
+	}
+
+	vehicle->SetDefaultDirection();
+	data()->aboard = false;
+	SetMoveSpeed(data()->preboard_move_speed);
+	data()->unboarding = true;
+
+	SetThrough(true);
+	Move(GetDirection());
+	ResetThrough();
+
+	data()->vehicle = 0;
+	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+
 	return true;
 }
 
@@ -577,6 +572,10 @@ Game_Vehicle* Game_Player::GetVehicle() const {
 }
 
 bool Game_Player::Move(int dir) {
+	if (!IsStopping()) {
+		return true;
+	}
+
 	auto rc = Game_Character::Move(dir);
 
 	if (!rc) {

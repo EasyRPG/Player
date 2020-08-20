@@ -447,7 +447,9 @@ bool Game_Character::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 }
 
 bool Game_Character::Move(int dir) {
-	assert(IsStopping());
+	if (!IsStopping()) {
+		return true;
+	}
 
 	bool move_success = false;
 

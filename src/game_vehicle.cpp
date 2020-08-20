@@ -96,21 +96,17 @@ const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 	return empty;
 }
 
-void Game_Vehicle::GetOn() {
-	if (GetVehicleType() == Airship) {
-		data()->remaining_ascent = SCREEN_TILE_SIZE;
-		SetFlying(true);
-		Main_Data::game_player->SetFlying(true);
+void Game_Vehicle::StartDescent() {
+	if (IsFlying()) {
+		SetSpriteDirection(Left);
+		data()->remaining_descent = SCREEN_TILE_SIZE;
 	}
-	Game_System::BgmPlay(GetBGM());
 }
 
-void Game_Vehicle::GetOff() {
-	if (GetVehicleType() == Airship) {
-		data()->remaining_descent = SCREEN_TILE_SIZE;
-	} else {
-		SetDirection(Left);
-		SetSpriteDirection(Left);
+void Game_Vehicle::StartAscent() {
+	if (!IsFlying()) {
+		data()->remaining_ascent = SCREEN_TILE_SIZE;
+		SetFlying(true);
 	}
 }
 
@@ -182,15 +178,11 @@ bool Game_Vehicle::AnimateAscentDescent() {
 	} else if (IsDescending()) {
 		data()->remaining_descent = data()->remaining_descent - 8;
 		if (!IsDescending()) {
+			SetFlying(false);
 			if (CanLand()) {
-				SetFlying(false);
-				Main_Data::game_player->SetFlying(false);
-
-				SetDirection(Left);
-				SetSpriteDirection(Left);
+				SetDefaultDirection();
 			} else {
-				// Can't land here, ascend again
-				data()->remaining_ascent = SCREEN_TILE_SIZE;
+				StartAscent();
 			}
 		}
 		return true;
