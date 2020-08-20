@@ -261,13 +261,13 @@ void Game_Player::UpdateNextMovementAction() {
 			Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
 		}
 		SetEncounterCalling(false);
-		// FIXME: collision checks still done this frame?
 		return;
 	}
 
 	if (IsMenuCalling()) {
 		SetMenuCalling(false);
 
+		ResetAnimation();
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 		return;
