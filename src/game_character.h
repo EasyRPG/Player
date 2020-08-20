@@ -863,7 +863,7 @@ protected:
 	void IncAnimCount();
 	void IncAnimFrame();
 	void UpdateFlash();
-	void BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
+	bool BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;

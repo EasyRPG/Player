@@ -504,7 +504,7 @@ TEST_CASE("CommandWait") {
 	testMoveRouteDir(ch, Down, Down, false, 2, 85, 128, 1, false, false, mr);
 }
 
-template <bool success, bool repeat, bool skip>
+template <bool success, bool repeat, bool skip, bool end>
 static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
 	Main_Data::game_player->SetY(py);
@@ -520,7 +520,9 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	if (code != lcf::rpg::MoveCommand::Code::end_jump) {
 		mr.move_commands.push_back({  static_cast<int>(code) });
 	}
-	mr.move_commands.push_back({ static_cast<int>(lcf::rpg::MoveCommand::Code::end_jump) });
+	if (end) {
+		mr.move_commands.push_back({ static_cast<int>(lcf::rpg::MoveCommand::Code::end_jump) });
+	}
 	auto num_cmds = static_cast<int>(mr.move_commands.size());
 
 	CAPTURE(code);
@@ -543,6 +545,17 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 
 	ch.ForceMoveRoute(mr, 3);
 	testMoveRouteJump(ch, x, y, 0, false, 0, 0, dir, face, false, 3, 0xFFFF, 64, 0, true, false, mr);
+
+	if (!end) {
+		ForceUpdate(ch);
+		if (repeat) {
+			testMoveRouteJump(ch, x, y, 0, false, 0, 0, dir, face, false, 3, 0xFFFF + 1, 64, 0, true, true, mr);
+		} else {
+			testMoveRouteJump(ch, x, y, 0, false, 0, 0, dir, face, false, 2, 0xFFFF + 1, 128, num_cmds, false, false, mr);
+		}
+
+		return;
+	}
 
 	if (success) {
 		bool repeated = false;
@@ -589,26 +602,31 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 
 template <typename... Args>
 static void testJumpSuccess(const Args&... args) {
-	testJump<true, false, false>(args...);
-	testJump<true, false, true>(args...);
-	testJump<true, true, false>(args...);
-	testJump<true, true, true>(args...);
+	testJump<true, false, false, true>(args...);
+	testJump<true, false, true, true>(args...);
+	testJump<true, true, false, true>(args...);
+	testJump<true, true, true, true>(args...);
 }
 
 template <typename... Args>
 static void testJumpSuccessNoRepeat(const Args&... args) {
-	testJump<true, false, false>(args...);
-	testJump<true, false, true>(args...);
+	testJump<true, false, false, true>(args...);
+	testJump<true, false, true, true>(args...);
 }
 
 static void testJumpFail(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tdir, int tface, int px = 0, int py = 0) {
-	testJump<false, false, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
-	testJump<false, true, false>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+	testJump<false, false, false, true>(code, x, y, dir, face, x, y, tdir, tface, px, py);
+	testJump<false, true, false, true>(code, x, y, dir, face, x, y, tdir, tface, px, py);
 }
 
 static void testJumpSkip(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int px = 0, int py = 0) {
-	testJump<false, false, true>(code, x, y, dir, face, x, y, dir, face, px, py);
-	testJump<false, true, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+	testJump<false, false, true, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+	testJump<false, true, true, true>(code, x, y, dir, face, x, y, dir, face, px, py);
+}
+
+static void testJumpNoEnd(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int px = 0, int py = 0) {
+	testJump<false, false, true, false>(code, x, y, dir, face, x, y, dir, face, px, py);
+	testJump<false, true, true, false>(code, x, y, dir, face, x, y, dir, face, px, py);
 }
 
 TEST_CASE("CommandJumpInPlace") {
@@ -780,6 +798,14 @@ TEST_CASE("CommandJumpForwardSkip") {
 TEST_CASE("CommandJumpRandom") {
 	// FIXME: TBD
 }
+
+TEST_CASE("CommandJumpNoEnd") {
+	const MapGuard mg;
+
+	// This makes a move route with just "Jump"
+	testJumpNoEnd(lcf::rpg::MoveCommand::Code::end_jump, 8, 8, Down, Down);
+}
+
 
 TEST_CASE("CommandMoveTurnJumpHero") {
 	const MapGuard mg;
