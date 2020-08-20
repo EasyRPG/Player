@@ -479,9 +479,6 @@ bool Game_Character::Move(int dir) {
 	SetX(new_x);
 	SetY(new_y);
 	SetRemainingStep(SCREEN_TILE_SIZE);
-	// FIXME: This happens elsewhere?
-	// FIXME: Does it always go to 0, even when move fails?
-	SetStopCount(0);
 
 	return true;
 }
@@ -651,7 +648,6 @@ bool Game_Character::Jump(int x, int y) {
 	const auto dx = x - begin_x;
 	const auto dy = y - begin_y;
 
-	// FIXME: Test all these
 	if (std::abs(dy) >= std::abs(dx)) {
 		SetDirection(dy >= 0 ? Down : Up);
 	} else {
@@ -671,7 +667,6 @@ bool Game_Character::Jump(int x, int y) {
 			return false;
 		}
 	}
-
 
 	// Adjust positions for looping maps. jump begin positions
 	// get set off the edge of the map to preserve direction.
@@ -697,7 +692,6 @@ bool Game_Character::Jump(int x, int y) {
 	SetY(y);
 	SetJumping(true);
 	SetRemainingStep(SCREEN_TILE_SIZE);
-	SetStopCount(0);
 
 	return true;
 }

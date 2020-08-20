@@ -290,11 +290,7 @@ static void testStop(bool success, bool jump) {
 		REQUIRE_EQ(ch.Move(Up), success);
 	}
 
-	if (success) {
-		REQUIRE_EQ(ch.GetStopCount(), 0);
-	} else {
-		REQUIRE_EQ(ch.GetStopCount(), 99);
-	}
+	REQUIRE_EQ(ch.GetStopCount(), 99);
 	REQUIRE_EQ(ch.GetMaxStopCount(), 200);
 }
 
