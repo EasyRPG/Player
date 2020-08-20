@@ -219,7 +219,7 @@ bool Game_Player::UpdateAirship() {
 
 	// RPG_RT doesn't check vehicle, but we have to as we don't have another way to fetch it.
 	// Also in vanilla RPG_RT it's impossible for the hero to fly without the airship.
-	if (vehicle && IsFlying()) {
+	if (vehicle && vehicle->IsFlying()) {
 		if (vehicle->AnimateAscentDescent()) {
 			if (!vehicle->IsFlying()) {
 				// If we landed, them disembark
@@ -249,7 +249,7 @@ void Game_Player::UpdateNextMovementAction() {
 		SetMenuCalling(false);
 		return;
 	}
-	// FIXME: Message Visible? Or active?
+
 	if(IsPaused() || IsMoveRouteOverwritten() || Game_Message::IsMessageActive()) {
 		return;
 	}
@@ -312,15 +312,14 @@ void Game_Player::UpdateNextMovementAction() {
 				CheckActionEvent();
 			}
 		}
-	} else {
-		Main_Data::game_party->IncSteps();
-		if (Main_Data::game_party->ApplyStateDamage()) {
-			Main_Data::game_screen->FlashMapStepDamage();
-		}
-		if (UpdateEncounterSteps()) {
-			SetEncounterCalling(true);
-		}
+		return;
 	}
+
+	Main_Data::game_party->IncSteps();
+	if (Main_Data::game_party->ApplyStateDamage()) {
+		Main_Data::game_screen->FlashMapStepDamage();
+	}
+	UpdateEncounterSteps();
 }
 
 void Game_Player::UpdateMovement(int amount) {
@@ -627,21 +626,20 @@ bool Game_Player::IsBoardingOrUnboarding() const {
 	return data()->boarding || data()->unboarding;
 }
 
-bool Game_Player::UpdateEncounterSteps() {
-	if (Player::debug_flag &&
-		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return false;
+void Game_Player::UpdateEncounterSteps() {
+	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) {
+		return;
 	}
 
-	if(Main_Data::game_player->InAirship()) {
-		return false;
+	if(IsFlying()) {
+		return;
 	}
 
 	const auto encounter_rate = Game_Map::GetEncounterRate();
 
 	if (encounter_rate <= 0) {
 		SetEncounterSteps(0);
-		return false;
+		return;
 	}
 
 	int x = GetX();
@@ -650,7 +648,7 @@ bool Game_Player::UpdateEncounterSteps() {
 	const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, Game_Map::GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
-		return false;
+		return;
 	}
 
 	data()->encounter_steps += terrain->encounter_rate;
@@ -695,12 +693,12 @@ bool Game_Player::UpdateEncounterSteps() {
 	const auto pmod = row.pmod;
 	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
 
-	if (Utils::PercentChance(p)) {
-		SetEncounterSteps(0);
-		return true;
+	if (!Utils::PercentChance(p)) {
+		return;
 	}
 
-	return false;
+	SetEncounterSteps(0);
+	SetEncounterCalling(true);
 }
 
 void Game_Player::SetEncounterSteps(int steps) {

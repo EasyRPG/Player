@@ -150,7 +150,7 @@ private:
 
 	void UpdateScroll(int amount, bool was_jumping);
 	void UpdatePan();
-	bool UpdateEncounterSteps();
+	void UpdateEncounterSteps();
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key);
 	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key);

@@ -643,7 +643,9 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 }
 
 bool Game_Character::Jump(int x, int y) {
-	assert(IsStopping());
+	if (!IsStopping()) {
+		return true;
+	}
 
 	auto begin_x = GetX();
 	auto begin_y = GetY();

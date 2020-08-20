@@ -553,7 +553,7 @@ public:
 	 *
 	 * @param dir the direction to move to.
 	 *
-	 * @return Whether move was successful.
+	 * @return Whether move was successful or a move or jump is already in progress.
 	 * @post If successful, IsStopping() == false.
 	 */
 	virtual bool Move(int dir);
@@ -564,7 +564,7 @@ public:
 	 * @param x the x position to jump to.
 	 * @param y the y position to jump to.
 	 *
-	 * @return Whether jump was successful.
+	 * @return Whether jump was successful or a move or jump is already in progress.
 	 * @post If successful, IsStopping() == false.
 	 */
 	bool Jump(int x, int y);
