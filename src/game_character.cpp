@@ -746,10 +746,12 @@ void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 }
 
 void Game_Character::CancelMoveRoute() {
+	if (IsMoveRouteOverwritten()) {
+		SetMoveFrequency(original_move_frequency);
+		SetMaxStopCountForStep();
+	}
 	SetMoveRouteOverwritten(false);
 	SetMoveRouteRepeated(false);
-	SetMoveFrequency(original_move_frequency);
-	SetMaxStopCountForStep();
 }
 
 int Game_Character::GetSpriteX() const {
