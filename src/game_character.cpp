@@ -142,7 +142,6 @@ void Game_Character::UpdateMovement(int amount) {
 		SetRemainingStep(0);
 		SetJumping(false);
 
-		// FIXME: Empty check?
 		auto& move_route = GetMoveRoute();
 		if (IsMoveRouteOverwritten() && GetMoveRouteIndex() >= static_cast<int>(move_route.move_commands.size())) {
 			SetMoveRouteRepeated(true);
@@ -189,7 +188,6 @@ void Game_Character::UpdateAnimation() {
 	const auto stationary_limit = GetStationaryAnimFrames(speed);
 	const auto continuous_limit = GetContinuousAnimFrames(speed);
 
-	// FIXME: Verify this
 	if (IsContinuous()
 			|| GetStopCount() == 0
 			|| data()->anim_frame == lcf::rpg::EventPage::Frame_left || data()->anim_frame == lcf::rpg::EventPage::Frame_right
@@ -665,7 +663,8 @@ bool Game_Character::Jump(int x, int y) {
 			SetSpriteDirection(GetDirection());
 		}
 
-		// FIXME: Remove dependency on jump from within Game_Map::MakeWay
+		// FIXME: Remove dependency on jump from within Game_Map::MakeWay?
+		// RPG_RT passes INT_MAX into from_x to tell it to skip self tile checks, which is hacky..
 		if (!MakeWay(begin_x, begin_y, x, y)) {
 			SetJumping(false);
 			return false;

@@ -575,24 +575,17 @@ bool Game_Player::Move(int dir) {
 		return true;
 	}
 
-	auto rc = Game_Character::Move(dir);
-
-	if (!rc) {
-		// FIXME: Does this really happen? Not seen in code. Does this belong in makeway?
-		if (!IsMoveRouteOverwritten()) {
-			int nx = GetX() + GetDxFromDirection(dir);
-			int ny = GetY() + GetDyFromDirection(dir);
-			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, nx, ny, false);
-		}
-		return rc;
+	Game_Character::Move(dir);
+	if (IsStopping()) {
+		return false;
 	}
 
 	if (InAirship()) {
-		return rc;
+		return true;
 	}
 
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
-	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
+	const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, terrain_id);
 	bool red_flash = false;
 
 	if (terrain) {
@@ -615,7 +608,7 @@ bool Game_Player::Move(int dir) {
 		Main_Data::game_screen->FlashMapStepDamage();
 	}
 
-	return rc;
+	return true;
 }
 
 bool Game_Player::IsAboard() const {
