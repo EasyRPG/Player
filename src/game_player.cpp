@@ -167,6 +167,15 @@ bool Game_Player::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 	return Game_Character::MakeWay(from_x, from_y, to_x, to_y);
 }
 
+void Game_Player::MoveRouteSetSpriteGraphic(std::string sprite_name, int index) {
+	auto* vh = GetVehicle();
+	if (vh) {
+		vh->MoveRouteSetSpriteGraphic(std::move(sprite_name), index);
+	} else {
+		Game_Character::MoveRouteSetSpriteGraphic(std::move(sprite_name), index);
+	}
+}
+
 void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 	if (IsPanLocked()) {
 		return;

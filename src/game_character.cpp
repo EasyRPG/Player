@@ -396,7 +396,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					--current_index;
 					break;
 				case Code::change_graphic: // String: File, Parameter A: index
-					SetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
+					MoveRouteSetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
 					break;
 				case Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 					if (move_command.parameter_string != "(OFF)" && move_command.parameter_string != "(Brak)") {

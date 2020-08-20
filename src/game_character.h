@@ -256,6 +256,15 @@ public:
 	void SetSpriteGraphic(std::string sprite_name, int index);
 
 	/**
+	 * Sets sprite name from a move route command. Usually the name of the graphic file.
+	 * This can be overridden to change behavior by child classes.
+	 *
+	 * @param sprite_name new sprite name
+	 * @param index the index of the new sprite.
+	 */
+	virtual void MoveRouteSetSpriteGraphic(std::string sprite_name, int index);
+
+	/**
 	 * Gets sprite index of character.
 	 *
 	 * @return sprite index
@@ -1030,6 +1039,10 @@ inline const std::string& Game_Character::GetSpriteName() const {
 inline void Game_Character::SetSpriteGraphic(std::string sprite_name, int index) {
 	data()->sprite_name = std::move(sprite_name);
 	data()->sprite_id = index;
+}
+
+inline void Game_Character::MoveRouteSetSpriteGraphic(std::string sprite_name, int index) {
+	SetSpriteGraphic(std::move(sprite_name), index);
 }
 
 inline int Game_Character::GetSpriteIndex() const {

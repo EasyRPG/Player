@@ -53,6 +53,7 @@ public:
 	int GetVehicleType() const override;
 	void UpdateNextMovementAction() override;
 	void UpdateMovement(int amount) override;
+	void MoveRouteSetSpriteGraphic(std::string sprite_name, int index) override;
 	bool Move(int dir) override;
 	/** @} */
 
