@@ -625,8 +625,7 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
-	mouse_x = evnt.motion.x;
-	mouse_y = evnt.motion.y;
+	mouse_pos = {evnt.motion.x, evnt.motion.y};
 #else
 	/* unused */
 	(void) evnt;

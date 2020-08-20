@@ -59,8 +59,7 @@ void Input::UiSource::DoUpdate(bool system_only) {
 
 	Record();
 
-	mouse_x = DisplayUi->GetMousePosX();
-	mouse_y = DisplayUi->GetMousePosY();
+	mouse_pos = DisplayUi->GetMousePosition();
 }
 
 void Input::UiSource::Update() {

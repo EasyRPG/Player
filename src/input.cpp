@@ -311,6 +311,6 @@ bool Input::IsRawKeyReleased(Input::Keys::InputKey key) {
 	return raw_released[key];
 }
 
-void Input::GetMousePosition(int& x, int& y) {
-	source->GetMousePosition(x, y);
+Point Input::GetMousePosition() {
+	return source->GetMousePosition();
 }

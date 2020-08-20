@@ -73,10 +73,7 @@ namespace Input {
 
 		bool InitRecording(const std::string& record_to_path);
 
-		void GetMousePosition(int& x, int& y) const {
-			x = mouse_x;
-			y = mouse_y;
-		}
+		Point GetMousePosition() const { return mouse_pos; }
 
 	protected:
 		void Record();
@@ -87,8 +84,7 @@ namespace Input {
 		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
 
 		std::bitset<Input::Keys::KEYS_COUNT> keystates;
-		int mouse_x = 0;
-		int mouse_y = 0;
+		Point mouse_pos;
 	};
 
 	/**

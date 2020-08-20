@@ -25,6 +25,7 @@
 #include "system.h"
 #include "color.h"
 #include "font.h"
+#include "point.h"
 #include "rect.h"
 #include "keys.h"
 #include "game_config.h"
@@ -138,18 +139,9 @@ public:
 	bool GetMouseFocus() const;
 
 	/**
-	 * Gets mouse x coordinate.
-	 *
-	 * @return mouse x coordinate.
+	 * @return mouse position.
 	 */
-	int GetMousePosX() const;
-
-	/**
-	 * Gets mouse y coordinate.
-	 *
-	 * @return mouse y coordinate.
-	 */
-	int GetMousePosY() const;
+	Point GetMousePosition() const;
 
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();
@@ -211,11 +203,8 @@ protected:
 	/** Surface used for zoom. */
 	BitmapRef main_surface;
 
-	/** Mouse x coordinate on screen relative to the window. */
-	int mouse_x = 0;
-
-	/** Mouse y coordinate on screen relative to the window. */
-	int mouse_y = 0;
+	/** Mouse position on screen relative to the window. */
+	Point mouse_pos;
 
 	/** Color for display background. */
 	Color back_color = Color{ 0, 0, 0, 255 };
@@ -288,12 +277,8 @@ inline bool BaseUi::GetMouseFocus() const {
 	return mouse_focus;
 }
 
-inline int BaseUi::GetMousePosX() const {
-	return mouse_x;
-}
-
-inline int BaseUi::GetMousePosY() const {
-	return mouse_y;
+inline Point BaseUi::GetMousePosition() const {
+	return mouse_pos;
 }
 
 inline bool BaseUi::RenderFps() const {

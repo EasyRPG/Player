@@ -21,6 +21,7 @@
 // Headers
 #include <vector>
 #include <bitset>
+#include "point.h"
 #include "system.h"
 #include "input_buttons.h"
 #include "input_source.h"
@@ -226,12 +227,9 @@ namespace Input {
 	bool IsRawKeyReleased(Input::Keys::InputKey key);
 
 	/**
-	 * Obtains the position of the mouse cursor relative to the screen
-	 *
-	 * @param x Cursor x position
-	 * @param y Cursor y position
+	 * @return Position of the mouse cursor relative to the screen
 	 */
-	void GetMousePosition(int& x, int& y);
+	Point GetMousePosition();
 
 	/** Buttons press time (in frames). */
 	extern std::array<int, BUTTON_COUNT> press_time;
