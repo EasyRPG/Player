@@ -73,7 +73,8 @@ void BattleAnimation::Update() {
 	UpdateScreenFlash();
 	UpdateTargetFlash();
 
-	SetFlashEffect(Main_Data::game_screen->GetFlashColor());
+	Color screenflash = Main_Data::game_screen->GetFlashColor();
+	if (screenflash.red > 0 || screenflash.green > 0 || screenflash.blue > 0 || screenflash.alpha > 0) SetFlashEffect(Main_Data::game_screen->GetFlashColor());
 
 	frame++;
 }
@@ -209,7 +210,7 @@ void BattleAnimation::UpdateScreenFlash() {
 void BattleAnimation::UpdateTargetFlash() {
 	int r, g, b, p;
 	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
-	FlashTargets(r, g, b, p);
+	if (r > 0 || g > 0 || b > 0 || p > 0) FlashTargets(r, g, b, p);
 }
 
 // For handling the vertical position.

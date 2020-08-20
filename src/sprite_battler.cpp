@@ -112,6 +112,7 @@ void Sprite_Battler::Update() {
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				// Is a battle animation
+				animation->SetFlashEffect(battler->GetFlashColor());
 				animation->Update();
 
 				if (animation->IsDone()) {
