@@ -26,6 +26,8 @@
 
 #include <lcf/inireader.h>
 
+constexpr std::array<Game_Ineluki::Mapping, 50> Game_Ineluki::key_to_ineluki;
+
 Game_Ineluki::Game_Ineluki() {
 
 }
@@ -47,7 +49,7 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	}
 
 	for (const auto& cmd : functions[se.name]) {
-		Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
+		//Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
 
 		if (cmd.name == "writetolog") {
 			Output::InfoStr(cmd.arg);
@@ -77,9 +79,19 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 		} else if (cmd.name == "enablekeysupport") {
 			key_support = Utils::LowerCase(cmd.arg) == "true";
 		} else if (cmd.name == "registerkeydownevent") {
-			// TODO
+			for (auto& i : key_to_ineluki) {
+				if (!strcmp(cmd.arg.c_str(), i.name)) {
+					keylist_down.push_back({i.key, atoi(cmd.arg2.c_str())});
+					break;
+				}
+			}
 		} else if (cmd.name == "registerkeyupevent") {
-			// TODO
+			for (auto& i : key_to_ineluki) {
+				if (!strcmp(cmd.arg.c_str(), i.name)) {
+					keylist_up.push_back({i.key, atoi(cmd.arg2.c_str())});
+					break;
+				}
+			}
 		} else if (cmd.name == "enablemousesupport") {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
@@ -90,8 +102,8 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 
 			Input::GetMousePosition(mouse_x, mouse_y);
 
-			bool left = Input::IsKeyPressed(Input::Keys::MOUSE_LEFT);
-			bool right = Input::IsKeyPressed(Input::Keys::MOUSE_RIGHT);
+			bool left = Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT);
+			bool right = Input::IsRawKeyPressed(Input::Keys::MOUSE_RIGHT);
 
 			int key = left && right ? 3 : right ? 2 : left ? 1 : 0;
 
@@ -101,6 +113,8 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 			output_list.push_back(mouse_id_prefix);
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
+		} else if (cmd.name == "registercheatevent") {
+			// TODO
 		}
 	}
 
@@ -153,6 +167,9 @@ bool Game_Ineluki::Parse(const lcf::rpg::Sound& se) {
 			// no args
 		} else if (cmd.name == "setdebuglevel") {
 			cmd.arg = ini.Get(section, "level", std::string());
+		} else if (cmd.name == "registercheatevent") {
+			cmd.arg = ini.Get(section, "cheat", std::string());
+			cmd.arg2 = ini.Get(section, "value", std::string());
 		} else {
 			valid = false;
 		}
@@ -173,7 +190,7 @@ int Game_Ineluki::GetMidiTicks() {
 	if (output_mode == OutputMode::Original) {
 		return Audio().BGM_GetTicks();
 	} else {
-		int val = 0;
+		int val = -1;
 		if (!output_list.empty()) {
 			val = output_list.back();
 			output_list.pop_back();
@@ -183,7 +200,17 @@ int Game_Ineluki::GetMidiTicks() {
 }
 
 void Game_Ineluki::Update() {
-	if (mouse_support) {
+	for (const auto& key : keylist_down) {
+		if (Input::IsRawKeyTriggered(key.key)) {
+			Output::Debug("Key Down: {}", key.key, key.value);
+			output_list.push_back(key.value);
+		}
+	}
 
+	for (const auto& key : keylist_up) {
+		if (Input::IsRawKeyReleased(key.key)) {
+			Output::Debug("Key Up: {}", key.key, key.value);
+			output_list.push_back(key.value);
+		}
 	}
 }

@@ -61,11 +61,76 @@ private:
 
 	OutputMode output_mode = OutputMode::Original;
 	std::vector<int> output_list;
-	std::vector<Input::Keys::InputKey> keylist;
+
+	struct KeyList {
+		Input::Keys::InputKey key;
+		int value;
+	};
+
+	std::vector<KeyList> keylist_down;
+	std::vector<KeyList> keylist_up;
 
 	bool key_support = false;
 	bool mouse_support = false;
 	int mouse_id_prefix = 0;
+
+	struct Mapping {
+		Input::Keys::InputKey key;
+		const char* name;
+	};
+
+	static constexpr std::array<Mapping, 50> key_to_ineluki = {{
+		{Input::Keys::LEFT, "(links)"},
+		{Input::Keys::RIGHT, "(rechts)"},
+		{Input::Keys::UP, "(oben)"},
+		{Input::Keys::DOWN, "(unten)"},
+		{Input::Keys::A, "a"},
+		{Input::Keys::B, "b"},
+		{Input::Keys::C, "c"},
+		{Input::Keys::D, "d"},
+		{Input::Keys::E, "e"},
+		{Input::Keys::F, "f"},
+		{Input::Keys::G, "g"},
+		{Input::Keys::H, "h"},
+		{Input::Keys::I, "i"},
+		{Input::Keys::J, "j"},
+		{Input::Keys::K, "k"},
+		{Input::Keys::L, "l"},
+		{Input::Keys::M, "m"},
+		{Input::Keys::N, "n"},
+		{Input::Keys::O, "o"},
+		{Input::Keys::P, "p"},
+		{Input::Keys::Q, "q"},
+		{Input::Keys::R, "r"},
+		{Input::Keys::S, "s"},
+		{Input::Keys::T, "t"},
+		{Input::Keys::U, "u"},
+		{Input::Keys::V, "v"},
+		{Input::Keys::W, "w"},
+		{Input::Keys::X, "x"},
+		{Input::Keys::Y, "y"},
+		{Input::Keys::Z, "z"},
+		{Input::Keys::N0, "0"},
+		{Input::Keys::N1, "1"},
+		{Input::Keys::N2, "2"},
+		{Input::Keys::N3, "3"},
+		{Input::Keys::N4, "4"},
+		{Input::Keys::N5, "5"},
+		{Input::Keys::N6, "6"},
+		{Input::Keys::N7, "7"},
+		{Input::Keys::N8, "8"},
+		{Input::Keys::N9, "9"},
+		{Input::Keys::PERIOD, "."},
+		{Input::Keys::TAB, "(tab)"},
+		{Input::Keys::DEL, "(entf)"},
+		{Input::Keys::ENDS, "(ende)"},
+		{Input::Keys::PGDN, "(bildrunter)"},
+		{Input::Keys::PGUP, "(bildhoch)"},
+		{Input::Keys::HOME, "(pos1)"},
+		{Input::Keys::INSERT, "(einfg)"},
+		{Input::Keys::ESCAPE, "(esc)"},
+		{Input::Keys::RETURN, "(enter)"}
+	}};
 };
 
 #endif
