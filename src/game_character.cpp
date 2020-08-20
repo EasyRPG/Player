@@ -449,32 +449,32 @@ bool Game_Character::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 bool Game_Character::Move(int dir) {
 	assert(IsStopping());
 
-	int dx = GetDxFromDirection(dir);
-	int dy = GetDyFromDirection(dir);
-
 	bool move_success = false;
 
 	SetDirection(dir);
 	UpdateFacing();
 
-	auto makeX = [&]() { return MakeWay(GetX(), GetY(), GetX() + dx, GetY()); };
-	auto makeY = [&]() { return MakeWay(GetX(), GetY(), GetX(), GetY() + dy); };
+	const auto x = GetX();
+	const auto y = GetY();
+	const auto dx = GetDxFromDirection(dir);
+	const auto dy = GetDyFromDirection(dir);
 
 	if (dx && dy) {
-		// For diagonal movement, RPG_RT checks if we can reach the tile using (vert, horiz), and then (horiz, vert).
-		move_success = (makeY() && makeX()) || (makeX() && makeY());
+		// For diagonal movement, RPG_RT trys vert -> horiz and if that fails, then horiz -> vert.
+		move_success = (MakeWay(x, y, x, y + dy) && MakeWay(x, y + dy, x + dx, y + dy))
+					|| (MakeWay(x, y, x + dx, y) && MakeWay(x + dx, y, x + dx, y + dy));
 	} else if (dx) {
-		move_success = makeX();
+		move_success = MakeWay(x, y, x + dx, y);
 	} else if (dy) {
-		move_success = makeY();
+		move_success = MakeWay(x, y, x, y + dy);
 	}
 
 	if (!move_success) {
 		return false;
 	}
 
-	const auto new_x = Game_Map::RoundX(GetX() + dx);
-	const auto new_y = Game_Map::RoundY(GetY() + dy);
+	const auto new_x = Game_Map::RoundX(x + dx);
+	const auto new_y = Game_Map::RoundY(y + dy);
 
 	SetX(new_x);
 	SetY(new_y);
