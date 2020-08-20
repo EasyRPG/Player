@@ -424,7 +424,6 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			SetMenuCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key);
 		}
 	}
@@ -446,7 +445,6 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			SetMenuCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key);
 		}
 	}
