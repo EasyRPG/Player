@@ -32,16 +32,17 @@
  */
 class Game_Ineluki {
 public:
-	Game_Ineluki();
-
 	bool Execute(const lcf::rpg::Sound& se);
+	bool Execute(const std::string& ini_file);
+
+	bool ExecuteAutorunScript();
 
 	int GetMidiTicks();
 
 	void Update();
 
 private:
-	bool Parse(const lcf::rpg::Sound& se);
+	bool Parse(const std::string& ini_file);
 
 	struct InelukiCommand {
 		std::string name;
@@ -79,11 +80,11 @@ private:
 		const char* name;
 	};
 
-	static constexpr std::array<Mapping, 50> key_to_ineluki = {{
+	static constexpr std::array<Mapping, 61> key_to_ineluki = {{
 		{Input::Keys::LEFT, "(links)"},
 		{Input::Keys::RIGHT, "(rechts)"},
 		{Input::Keys::UP, "(oben)"},
-		{Input::Keys::DOWN, "(unten)"},
+		{Input::Keys::DOWN, "(runter)"},
 		{Input::Keys::A, "a"},
 		{Input::Keys::B, "b"},
 		{Input::Keys::C, "c"},
@@ -129,7 +130,19 @@ private:
 		{Input::Keys::HOME, "(pos1)"},
 		{Input::Keys::INSERT, "(einfg)"},
 		{Input::Keys::ESCAPE, "(esc)"},
-		{Input::Keys::RETURN, "(enter)"}
+		{Input::Keys::RETURN, "(enter)"},
+		{Input::Keys::SPACE, "(space)"},
+		{Input::Keys::BACKSPACE, "(backspace)"},
+		{Input::Keys::CTRL, "(strg)"},
+		{Input::Keys::ALT, "(alt)"},
+		{Input::Keys::CAPS_LOCK, "(capslock)"},
+		{Input::Keys::NUM_LOCK, "(numlock)"},
+		{Input::Keys::SCROLL_LOCK, "(scrolllock)"},
+		// FIXME: Why runter (down) and hoch (up)?
+		{Input::Keys::LSHIFT, "(lshift runter)"},
+		{Input::Keys::RSHIFT, "(rshift runter)"},
+		{Input::Keys::LSHIFT, "(lshift hoch)"},
+		{Input::Keys::RSHIFT, "(rshift hoch)"},
 	}};
 };
 

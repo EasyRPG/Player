@@ -808,6 +808,8 @@ void Player::CreateGameObjects() {
 	}
 
 	ResetGameObjects();
+
+	Main_Data::game_ineluki->ExecuteAutorunScript();
 }
 
 void Player::ResetGameObjects() {
@@ -835,7 +837,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
-	Main_Data::game_ineluki.reset(new Game_Ineluki());
+	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
 
 	DynRpg::Reset();
 

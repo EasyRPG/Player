@@ -26,11 +26,7 @@
 
 #include <lcf/inireader.h>
 
-constexpr std::array<Game_Ineluki::Mapping, 50> Game_Ineluki::key_to_ineluki;
-
-Game_Ineluki::Game_Ineluki() {
-
-}
+constexpr std::array<Game_Ineluki::Mapping, 61> Game_Ineluki::key_to_ineluki;
 
 bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	if (Utils::LowerCase(se.name) == "saves.script") {
@@ -41,14 +37,24 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 		return true;
 	}
 
-	if (functions.find(se.name) == functions.end()) {
-		if (!Parse(se)) {
+	std::string ini_file = FileFinder::FindSound(se.name);
+	if (!ini_file.empty()) {
+		return Execute(ini_file);
+	} else {
+		Output::Debug("Ineluki: Script {} not found", se.name);
+	}
+	return false;
+}
+
+bool Game_Ineluki::Execute(const std::string& ini_file) {
+	if (functions.find(ini_file) == functions.end()) {
+		if (!Parse(ini_file)) {
 			return false;
 		}
 	}
 
-	for (const auto& cmd : functions[se.name]) {
-		//Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
+	for (const auto& cmd : functions[ini_file]) {
+		Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
 
 		if (cmd.name == "writetolog") {
 			Output::InfoStr(cmd.arg);
@@ -78,13 +84,15 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 		} else if (cmd.name == "enablekeysupport") {
 			key_support = Utils::LowerCase(cmd.arg) == "true";
 		} else if (cmd.name == "registerkeydownevent") {
+			std::string arg_lower = Utils::LowerCase(cmd.arg);
 			for (auto& i : key_to_ineluki) {
-				if (!strcmp(cmd.arg.c_str(), i.name)) {
+				if (!strcmp(arg_lower.c_str(), i.name)) {
 					keylist_down.push_back({i.key, atoi(cmd.arg2.c_str())});
 					break;
 				}
 			}
 		} else if (cmd.name == "registerkeyupevent") {
+			std::string arg_lower = Utils::LowerCase(cmd.arg);
 			for (auto& i : key_to_ineluki) {
 				if (!strcmp(cmd.arg.c_str(), i.name)) {
 					keylist_up.push_back({i.key, atoi(cmd.arg2.c_str())});
@@ -120,9 +128,26 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	return true;
 }
 
-bool Game_Ineluki::Parse(const lcf::rpg::Sound& se) {
-	std::string ini_file = FileFinder::FindSound(se.name);
+bool Game_Ineluki::ExecuteAutorunScript() {
+	auto is = FileFinder::OpenInputStream(FileFinder::FindDefault("autorun.script"));
 
+	if (!is) {
+		return false;
+	}
+
+	std::string line = Utils::ReadLine(is);
+	while (!is.eof()) {
+		if (!line.empty()) {
+			Output::Debug("Ineluki: Autostart {}", line);
+			Execute(FileFinder::FindDefault(line));
+		}
+		line = Utils::ReadLine(is);
+	}
+
+	return true;
+}
+
+bool Game_Ineluki::Parse(const std::string& ini_file) {
 	auto is = FileFinder::OpenInputStream(ini_file);
 	lcf::INIReader ini(is);
 	if (ini.ParseError() == -1) {
@@ -180,7 +205,7 @@ bool Game_Ineluki::Parse(const lcf::rpg::Sound& se) {
 		section = ini.Get(section, "next", std::string());
 	} while (!section.empty());
 
-	functions[se.name] = commands;
+	functions[ini_file] = commands;
 
 	return true;
 }
