@@ -428,8 +428,11 @@ namespace Game_Map {
 	/**
 	 * Sets the offset of the screen from the left edge
 	 * of the map, as given by GetPositionX.
+	 *
+	 * @param new_position_x new position x.
+	 * @param reset_panorama whether to reset panorama
 	 */
-	void SetPositionX(int new_position_x);
+	void SetPositionX(int new_position_x, bool reset_panorama = true);
 
 	/**
 	 * Gets display y.
@@ -446,8 +449,9 @@ namespace Game_Map {
 	 * of the map.
 	 *
 	 * @param new_position_y new position y.
+	 * @param reset_panorama whether to reset panorama
 	 */
-	void SetPositionY(int new_position_y);
+	void SetPositionY(int new_position_y, bool reset_panorama = true);
 
 	/**
 	 * @return need refresh flag.

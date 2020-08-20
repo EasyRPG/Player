@@ -200,14 +200,13 @@ void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 		Game_Map::Scroll(amount * jdx, amount * jdy);
 
 		if (!IsJumping()) {
-			// FIXME: This is to fix rounding errors?
-			// FIXME: use Utils::RoundTo<T>
+			// RPG does this to fix rounding errors?
 			const auto x = SCREEN_TILE_SIZE * Utils::RoundTo<int>(Game_Map::GetPositionX() / static_cast<double>(SCREEN_TILE_SIZE));
 			const auto y = SCREEN_TILE_SIZE * Utils::RoundTo<int>(Game_Map::GetPositionY() / static_cast<double>(SCREEN_TILE_SIZE));
 
-			// FIXME: In Player this resets the panorama, not in RPG_RT
-			Game_Map::SetPositionX(x);
-			Game_Map::SetPositionY(y);
+			// RPG_RT does adjust map position, but not panorama!
+			Game_Map::SetPositionX(x, false);
+			Game_Map::SetPositionY(y, false);
 		}
 		return;
 	}

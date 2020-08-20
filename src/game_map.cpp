@@ -1283,7 +1283,7 @@ int Game_Map::GetDisplayX() {
 	return map_info.position_x + Main_Data::game_screen->GetShakeOffsetX() * 16;
 }
 
-void Game_Map::SetPositionX(int x) {
+void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
@@ -1291,7 +1291,9 @@ void Game_Map::SetPositionX(int x) {
 		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
 	map_info.position_x = x;
-	Parallax::ResetPositionX();
+	if (reset_panorama) {
+		Parallax::ResetPositionX();
+	}
 }
 
 int Game_Map::GetPositionY() {
@@ -1302,7 +1304,7 @@ int Game_Map::GetDisplayY() {
 	return map_info.position_y + Main_Data::game_screen->GetShakeOffsetY() * 16;
 }
 
-void Game_Map::SetPositionY(int y) {
+void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	const int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
@@ -1310,7 +1312,9 @@ void Game_Map::SetPositionY(int y) {
 		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
 	map_info.position_y = y;
-	Parallax::ResetPositionY();
+	if (reset_panorama) {
+		Parallax::ResetPositionY();
+	}
 }
 
 bool Game_Map::GetNeedRefresh() {
