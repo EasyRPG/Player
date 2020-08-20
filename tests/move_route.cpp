@@ -152,6 +152,30 @@ TEST_CASE("ForceMoveRouteDiffFreq") {
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, false, false, mr);
 }
 
+static void testInvalidCmd(bool repeat, bool skip) {
+	auto ch = MoveRouteVehicle();
+	auto mr = MakeRoute({{ -1 }}, repeat, skip);
+
+	ch.ForceMoveRoute(mr, 3);
+	testMoveRoute(ch, false, 3, 0xFFFF, 64, 0, true, false, mr);
+
+	ForceUpdate(ch);
+	if (repeat) {
+		testMoveRoute(ch, false, 3, 0xFFFF + 1, 64, 0, true, true, mr);
+	} else {
+		testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
+	}
+}
+
+TEST_CASE("TestMoveRouteInvalidCmd") {
+	const MapGuard mg;
+
+	testInvalidCmd(false, false);
+	testInvalidCmd(false, true);
+	testInvalidCmd(true, false);
+	testInvalidCmd(true, true);
+}
+
 template <bool success, bool repeat, bool skip>
 static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, int face, int tx, int ty, int tdir, int tface, int px = 0, int py = 0) {
 	Main_Data::game_player->SetX(px);
