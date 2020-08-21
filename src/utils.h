@@ -353,6 +353,45 @@ namespace Utils {
 	template <typename Dest, typename Src>
 	std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> RoundTo(Src v);
 
+	namespace detail {
+	template <typename D, typename...> struct MakeArrayReturnHelper { using type = D; };
+	template <typename... Types> struct MakeArrayReturnHelper<void, Types...> : std::common_type<Types...> {};
+	template <typename D, typename... Types> using MakeArrayReturn = std::array<typename MakeArrayReturnHelper<D,Types...>::type, sizeof...(Types)>;
+	template <typename D, typename... Types> using MakeVectorReturn = std::vector<typename MakeArrayReturnHelper<D,Types...>::type>;
+	} // namespace detail
+
+	/**
+	 * Create a std::array from the given parameters, automatically deducing the type and size.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr detail::MakeArrayReturn<D,Types...> MakeArray(Types&& ... t) {
+		return { std::forward<Types>(t)... };
+	}
+
+	/**
+	 * Create a std::array<StringView,N> from the given parameters, automatically deducing the size.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr auto MakeSvArray(Types&& ... t) {
+		return MakeArray<StringView>(std::forward<Types>(t)...);
+	}
+
+	/**
+	 * Create a std::vector from the given parameters, automatically deducing the type.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr detail::MakeVectorReturn<D,Types...> MakeVector(Types&& ... t) {
+		return { std::forward<Types>(t)... };
+	}
+
+	/**
+	 * Create a std::vector<StringView> from the given parameters.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr auto MakeSvVector(Types&& ... t) {
+		return MakeVector<StringView>(std::forward<Types>(t)...);
+	}
+
 } // namespace Utils
 
 template <typename T>
