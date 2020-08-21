@@ -157,15 +157,10 @@ void Game_Event::RefreshPage() {
 	}
 
 	if (!new_page) {
-		// FIXME: Test and verify these chunks change when no page active.
 		ClearWaitingForegroundExecution();
 		SetPaused(false);
 		SetThrough(true);
 		this->page = new_page;
-		// Note: Interpreter continue running this frame.
-		// FIXME: Verify these don't happen
-		// SetSpriteGraphic("", 0);
-		// SetDirection(lcf::rpg::EventPage::Direction_down);
 		return;
 	}
 
@@ -189,8 +184,7 @@ void Game_Event::RefreshPage() {
 		SetDirection(page->character_direction);
 	}
 
-	// FIXME: When no page?
-	// FIXME: On new game no page?
+	// FIXME: RPG_RT doesn't set this value.
 	original_move_frequency = page->move_frequency;
 	SetTransparency(page->translucent ? 3 : 0);
 	SetMoveFrequency(page->move_frequency);
@@ -224,7 +218,7 @@ void Game_Event::RefreshPage() {
 		SetOriginalMoveRouteIndex(0);
 	}
 
-	SetThrough(data()->route_through);
+	ResetThrough();
 
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {

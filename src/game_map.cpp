@@ -450,14 +450,6 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 		return false;
 	}
 
-	if (self.GetType() == Game_Character::Event && static_cast<const Game_Event&>(self).GetActivePage() == nullptr) {
-		return false;
-	}
-
-	if (other.GetType() == Game_Character::Event && static_cast<const Game_Event&>(other).GetActivePage() == nullptr) {
-		return false;
-	}
-
 	if (self.GetType() == Game_Character::Event
 			&& other.GetType() == Game_Character::Event
 			&& (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
