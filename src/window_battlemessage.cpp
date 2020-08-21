@@ -64,8 +64,8 @@ void Window_BattleMessage::PushWithSubject(const std::string& message, const std
 	if (Player::IsRPG2kE()) {
 		Push(Utils::ReplacePlaceholders(
 			message,
-			{'S'},
-			{subject}
+			Utils::MakeArray('S'),
+			Utils::MakeSvArray(subject)
 		));
 	}
 	else {

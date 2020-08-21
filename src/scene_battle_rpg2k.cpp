@@ -1466,8 +1466,8 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.exp_received,
-				{'V', 'U'},
-				{std::to_string(exp), lcf::Data::terms.exp_short}
+				Utils::MakeArray('V', 'U'),
+				Utils::MakeSvArray(std::to_string(exp), lcf::Data::terms.exp_short)
 			) + Player::escape_symbol + "."
 		);
 	}
@@ -1484,8 +1484,8 @@ void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) 
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.gold_recieved_a,
-				{'V', 'U'},
-				{std::to_string(money), lcf::Data::terms.gold}
+				Utils::MakeArray('V', 'U'),
+				Utils::MakeSvArray(std::to_string(money), lcf::Data::terms.gold)
 			) + Player::escape_symbol + "."
 		);
 	}
@@ -1511,8 +1511,8 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 			pm.PushLine(
 				Utils::ReplacePlaceholders(
 					lcf::Data::terms.item_recieved,
-					{'S'},
-					{item_name}
+					Utils::MakeArray('S'),
+					Utils::MakeSvArray(item_name)
 				) + Player::escape_symbol + "."
 			);
 		}

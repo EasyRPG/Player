@@ -25,6 +25,7 @@
 #include <random>
 #include "system.h"
 #include "string_view.h"
+#include "span.h"
 
 namespace Utils {
 	/**
@@ -327,7 +328,7 @@ namespace Utils {
 	 * should match types in number of elements and order.
 	 * @return A new string with placeholders replaced.
 	 */
-	std::string ReplacePlaceholders(StringView text_template, const std::vector<char>& types, const std::vector<StringView>& values);
+	std::string ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values);
 
 	/**
 	 * @return value clamped between min and max

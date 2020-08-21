@@ -8,7 +8,9 @@
 
 static void BM_ReplacePlaceholders(benchmark::State& state) {
 	for (auto _: state) {
-		Utils::ReplacePlaceholders("One night is %V %U", {'V', 'U'}, {"Rest", "Do not Rest"});
+		Utils::ReplacePlaceholders("One night is %V %U",
+				Utils::MakeArray('V', 'U'),
+				Utils::MakeSvArray("Rest", "Do not Rest"));
 	}
 }
 

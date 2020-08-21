@@ -630,7 +630,7 @@ std::vector<uint8_t> Utils::ReadStream(std::istream& stream) {
 	return outbuf;
 }
 
-std::string Utils::ReplacePlaceholders(StringView text_template, const std::vector<char>& types, const std::vector<StringView>& values) {
+std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values) {
 	auto str = std::string(text_template);
 	size_t index = str.find("%");
 	while (index != std::string::npos) {
