@@ -100,7 +100,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 		if (!in_section) {
 			if (line.empty() || line[0] != '[') {
 				continue;
-			} else if (Utils::StartsWith(Utils::LowerCaseInPlace(line), formatted_key_search)) {
+			} else if (ToStringView(Utils::LowerCaseInPlace(line)).starts_with(formatted_key_search)) {
 				// Found the section
 				in_section = true;
 			}
@@ -110,7 +110,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 				break;
 			}
 
-			if (Utils::StartsWith(Utils::LowerCase(line), formatted_val)) {
+			if (ToStringView(Utils::LowerCase(line)).starts_with(formatted_val)) {
 				// value found
 				string_value = line.substr(formatted_val.length());
 				break;

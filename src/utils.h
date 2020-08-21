@@ -63,24 +63,6 @@ namespace Utils {
 	int StrICmp(const char* l, const char* r);
 
 	/**
-	 * Tests if a string starts with a substring.
-	 *
-	 * @param str String to search in
-	 * @param end Substring to check at the start of str
-	 * @return true when the start matches
-	 */
-	bool StartsWith(const std::string& str, const std::string& end);
-
-	/**
-	 * Tests if a string ends with a substring.
-	 *
-	 * @param str String to search in
-	 * @param end Substring to check at the end of str
-	 * @return true when the end matches
-	 */
-	bool EndsWith(const std::string& str, const std::string& end);
-
-	/**
 	 * Converts Utf8 to UTF-16.
 	 *
 	 * @param str string to convert.

@@ -372,7 +372,7 @@ std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
 }
 
 std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std::string& path_in) {
-	if (!Utils::StartsWith(path_in, path_to)) {
+	if (!ToStringView(path_in).starts_with(path_to)) {
 		return path_in;
 	}
 
@@ -888,7 +888,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 			string_map mem = tree->sub_members["music"];
 			for (auto& i : mem) {
 				std::string file = mem[i.first];
-				if (Utils::EndsWith(Utils::LowerCase(file), ".mp3")) {
+				if (ToStringView(Utils::LowerCase(file)).ends_with(".mp3")) {
 					Output::Debug("MP3 file ({}) found", file);
 					return true;
 				}

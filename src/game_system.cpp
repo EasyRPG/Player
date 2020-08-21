@@ -56,7 +56,7 @@ bool Game_System::IsStopFilename(const std::string& name, std::string (*find_fun
 
 	found_name = find_func(name);
 
-	return found_name.empty() && (Utils::StartsWith(name, "(") && Utils::EndsWith(name, ")"));
+	return found_name.empty() && (ToStringView(name).starts_with('(') && ToStringView(name).ends_with(')'));
 }
 
 
@@ -468,7 +468,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (Utils::EndsWith(result->file, ".link")) {
+	if (ToStringView(result->file).ends_with(".link")) {
 		// Handle Ineluki's MP3 patch
 		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
