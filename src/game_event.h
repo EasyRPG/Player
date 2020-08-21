@@ -202,6 +202,8 @@ private:
 	 */
 	void MoveTypeAwayFromPlayer();
 
+	void CheckCollisonOnMoveFailure();
+
 	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;

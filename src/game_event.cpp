@@ -388,19 +388,16 @@ bool Game_Event::CheckEventCollision() {
 	return false;
 }
 
-bool Game_Event::Move(int dir) {
-	auto rc = Game_Character::Move(dir);
-
-	if (rc) {
-		return rc;
+void Game_Event::CheckCollisonOnMoveFailure() {
+	if (Game_Map::GetInterpreter().IsRunning()) {
+		return;
 	}
 
-	// FIXME: Why does RPG_RT round here?
-	const auto x = Game_Map::RoundX(GetX());
-	const auto y = Game_Map::RoundY(GetY());
+	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	if (Main_Data::game_player->GetX() == x
-			|| Main_Data::game_player->GetY() == y
+	if (Main_Data::game_player->GetX() == front_x
+			|| Main_Data::game_player->GetY() == front_y
 			|| GetLayer() == lcf::rpg::EventPage::Layers_same
 			|| GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
 	{
@@ -409,8 +406,15 @@ bool Game_Event::Move(int dir) {
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);
 	}
+}
 
-	return false;
+bool Game_Event::Move(int dir) {
+	Game_Character::Move(dir);
+	if (IsStopping()) {
+		CheckCollisonOnMoveFailure();
+		return false;
+	}
+	return true;
 }
 
 void Game_Event::UpdateNextMovementAction() {
@@ -544,7 +548,6 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 
 	constexpr int offset = TILE_SIZE * 2;
 
-	// FIXME: Check virtual calls in dynrpg
 	const bool in_sight = (sx >= -offset && sx <= SCREEN_TARGET_WIDTH + offset
 			&& sy >= -offset && sy <= SCREEN_TARGET_HEIGHT + offset);
 
