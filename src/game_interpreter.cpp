@@ -967,14 +967,13 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Number of var A ops B
 			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
 			break;
-		case 3:
+		case 3: {
 			// Random between range
-			if (com.parameters[0] != 1) {
-				int rmax = max(com.parameters[5], com.parameters[6]);
-				int rmin = min(com.parameters[5], com.parameters[6]);
-				value = Utils::GetRandomNumber(rmin, rmax);
-			}
+			int rmax = max(com.parameters[5], com.parameters[6]);
+			int rmin = min(com.parameters[5], com.parameters[6]);
+			value = Utils::GetRandomNumber(rmin, rmax);
 			break;
+		}
 		case 4:
 			// Items
 			switch (com.parameters[6]) {
