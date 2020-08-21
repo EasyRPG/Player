@@ -1534,6 +1534,12 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 		return false;
 	}
 
+	// Items ignore reflect
+	if (item) {
+		reflect = 0;
+		return false;
+	}
+
 	std::vector<Game_Battler*> anim_targets;
 
 	bool has_reflect = false;
