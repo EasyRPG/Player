@@ -671,7 +671,8 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	int channel = Mix_PlayChannel(-1, snd_data.chunk.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Warning("Couldn't play {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+		// FIXME Not displaying as warning because multiple games exhaust free channels available, see #1356
+		Output::Debug("Couldn't play {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
 		return;
 	}
 	sounds[channel] = std::move(snd_data);
