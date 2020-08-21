@@ -487,6 +487,8 @@ protected:
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
+
+	bool party_target_set = false;
 };
 
 // Special algorithm for battlers which have no action. 
