@@ -147,6 +147,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 
 	current_target = targets.end();
 	party_target = target;
+	party_target_set = true;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
@@ -236,7 +237,13 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	}
 
 	if (on_source) {
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() });
+		if (!party_target_set) {
+			Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() });
+		} else {
+			std::vector<Game_Battler*> anim_targets;
+			source->GetParty().GetActiveBattlers(anim_targets);
+			Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets);
+		}
 		has_animation_played = true;
 		return;
 	}
@@ -607,7 +614,13 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	if (IsReflected()) {
-		return source;
+		if (!party_target_set) {
+			return source;
+		} else {
+			std::vector<Game_Battler*> newtargets;
+			source->GetParty().GetActiveBattlers(newtargets);
+			return *(newtargets.begin());
+		}
 	}
 
 	if (current_target == targets.end()) {
@@ -776,8 +789,15 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	if (IsReflected()) {
-		// Only source available, can't target again
-		return false;
+		if (!party_target_set) {
+			// Only source available, can't target again
+			return false;
+		} else {
+			targets.clear();
+			source->GetParty().GetActiveBattlers(targets);
+			current_target = targets.begin();
+			return TargetNextInternal();
+		}
 	}
 	++cur_repeat;
 	if (IsTargetValid() && cur_repeat < repeat) {
