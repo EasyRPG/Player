@@ -7,7 +7,9 @@
 #include <climits>
 #include <initializer_list>
 
-#include "test_move_route.h"
+#include "mock_game.h"
+
+static constexpr auto map_id = MockMap::ePassBlock20x15;
 
 static_assert(Game_Character::GetStationaryAnimFrames(1) == 12, "AnimFrames broken");
 static_assert(Game_Character::GetStationaryAnimFrames(2) == 10, "AnimFrames broken");
@@ -41,8 +43,8 @@ static void testChar( const Game_Character& ch, int anim_count, int anim_frame)
 	REQUIRE_EQ(ch.GetAnimFrame(), anim_frame);
 }
 
-static auto MakeEvent(AnimType at, int speed) {
-	auto ch = MoveRouteEvent();
+static auto& GetEvent(AnimType at, int speed) {
+	auto& ch = *MockGame::GetEvent(1);
 	ch.SetAnimationType(at);
 	ch.SetMoveSpeed(speed);
 	ch.SetX(8);
@@ -124,9 +126,9 @@ static void testAnimJump(T& ch) {
 }
 
 static void testStanding(AnimType at, int speed) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(at, speed);
+	auto& ch = GetEvent(at, speed);
 
 	CAPTURE(at);
 	CAPTURE(speed);
@@ -144,9 +146,9 @@ static void testStanding(AnimType at, int speed) {
 }
 
 static void testPaused(AnimType at, int speed) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(at, speed);
+	auto& ch = GetEvent(at, speed);
 	ch.SetAnimPaused(true);
 	REQUIRE(!ch.IsAnimated());
 
@@ -160,9 +162,9 @@ static void testPaused(AnimType at, int speed) {
 }
 
 static void testJumping(AnimType at, int speed) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(at, speed);
+	auto& ch = GetEvent(at, speed);
 
 	CAPTURE(at);
 	CAPTURE(speed);
@@ -177,9 +179,9 @@ static void testJumping(AnimType at, int speed) {
 }
 
 static void testMoving(AnimType at, int speed) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(at, speed);
+	auto& ch = GetEvent(at, speed);
 
 	const auto limit = Game_Character::GetStationaryAnimFrames(ch.GetMoveSpeed());
 
@@ -210,9 +212,9 @@ static void testMoving(AnimType at, int speed) {
 }
 
 static void testCenterStep(AnimType at, int speed, int frame) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(at, speed);
+	auto& ch = GetEvent(at, speed);
 
 	const auto slimit = Game_Character::GetStationaryAnimFrames(ch.GetMoveSpeed());
 	const auto climit = Game_Character::GetContinuousAnimFrames(ch.GetMoveSpeed());
@@ -255,9 +257,9 @@ static void testCenterStep(AnimType at, int speed, int frame) {
 }
 
 TEST_CASE("Flags") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(lcf::rpg::EventPage::AnimType_non_continuous, 4);
+	auto& ch = GetEvent(lcf::rpg::EventPage::AnimType_non_continuous, 4);
 
 	ch.SetAnimationType(lcf::rpg::EventPage::AnimType_non_continuous);
 
@@ -348,9 +350,9 @@ TEST_CASE("ResetStep") {
 }
 
 TEST_CASE("SpinFacingLocked") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MakeEvent(lcf::rpg::EventPage::AnimType_spin, 4);
+	auto& ch = GetEvent(lcf::rpg::EventPage::AnimType_spin, 4);
 	ch.SetFacingLocked(true);
 
 	// Continues spinning even with facing locked flag set
@@ -358,9 +360,9 @@ TEST_CASE("SpinFacingLocked") {
 }
 
 static void testBoat(Game_Vehicle::Type vt, AnimType at, int speed, bool move, bool jump, bool flying) {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	auto ch = MoveRouteVehicle(vt);
+	auto& ch = *mg.GetVehicle(vt);
 	if (flying) {
 		ch.SetFlying(flying);
 	}
