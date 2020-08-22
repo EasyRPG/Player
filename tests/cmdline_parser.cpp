@@ -73,3 +73,7 @@ TEST_CASE("ParseMulti") {
 	REQUIRE_EQ(li, 2);
 }
 
+TEST_CASE("ParseNull") {
+	CmdlineParser cp(0, (char**)nullptr);
+	REQUIRE(cp.Done());
+}
