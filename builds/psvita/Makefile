@@ -12,6 +12,7 @@ LIBS = -llcf -lexpat -lvita2d \
 	-lpixman-1 -lpng16 -lz -licuuc -licui18n -licudata -lfmt \
 	-lfreetype -lharfbuzz -lfreetype -lxmp-lite -lmpg123 -lsndfile \
 	-lvorbisfile -lvorbis -logg -lWildMidi -lspeexdsp -lopusfile -lopus \
+	-lfluidlite \
 	-lpthread -lSceLibKernel_stub -lSceDisplay_stub -lSceGxm_stub \
 	-lvitashaders -lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub \
 	-lScePgf_stub -lScePower_stub -lSceCommonDialog_stub -lSceAudio_stub
@@ -33,7 +34,8 @@ ASFLAGS = $(CFLAGS)
 CPPFLAGS = -DPSP2 -DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 		-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_OGGVORBIS \
 		-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
-		-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
+		-DHAVE_LIBSPEEXDSP -DHAVE_FLUIDLITE \
+		-DWANT_FMMIDI -DWANT_FASTWAV \
 		-I../../src \
 		-I$(TOOLCHAIN_DIR)/include \
 		-I$(LIBLCF_DIR)/include \

@@ -444,7 +444,9 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(FMT_CFLAGS) \
 	$(LIBSNDFILE_CFLAGS) \
 	$(LIBXMP_CFLAGS) \
-	$(LIBSPEEXDSP_CFLAGS)
+	$(LIBSPEEXDSP_CFLAGS) \
+	$(FLUIDSYNTH_CFLAGS) \
+	$(FLUIDLITE_CFLAGS)
 
 libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 
@@ -466,7 +468,9 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(FMT_LIBS) \
 	$(LIBSNDFILE_LIBS) \
 	$(LIBXMP_LIBS) \
-	$(LIBSPEEXDSP_LIBS)
+	$(LIBSPEEXDSP_LIBS) \
+	$(FLUIDSYNTH_LIBS) \
+	$(FLUIDLITE_LIBS)
 
 if MACOS
 easyrpg_player_LDFLAGS = -framework Foundation

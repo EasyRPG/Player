@@ -64,7 +64,8 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
-			-DHAVE_LIBSAMPLERATE -DWANT_FMMIDI -DWANT_FASTWAV \
+			-DHAVE_LIBSAMPLERATE -DHAVE_FLUIDLITE \
+			-DWANT_FMMIDI -DWANT_FASTWAV \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 			-I$(TOOLCHAIN_DIR)/include/opus \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
@@ -79,7 +80,7 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
 		-lsndfile -lvorbisidec -logg -lxmp-lite \
-		-lWildMidi -lsamplerate -lopusfile -lopus \
+		-lWildMidi -lsamplerate -lopusfile -lopus -lfluidlite \
 		-lglad -lEGL -lglapi -ldrm_nouveau -lnx -lm
 
 #---------------------------------------------------------------------------------
