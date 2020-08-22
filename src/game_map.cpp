@@ -655,11 +655,11 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 
 	if (tile_raw_id >= BLOCK_E) {
 		tile_id = tile_raw_id - BLOCK_E;
-		tile_id = map_info.lower_tiles[tile_id] + 18;
+		tile_id = map_info.lower_tiles[tile_id] + BLOCK_E_INDEX;
 
 	} else if (tile_raw_id >= BLOCK_D) {
-		tile_id = (tile_raw_id - BLOCK_D) / 50 + 6;
-		int autotile_id = (tile_raw_id - BLOCK_D) % 50;
+		tile_id = (tile_raw_id - BLOCK_D) / BLOCK_D_STRIDE + BLOCK_D_INDEX;
+		int autotile_id = (tile_raw_id - BLOCK_D) % BLOCK_D_STRIDE;
 
 		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
 				(autotile_id >= 20 && autotile_id <= 23) ||
@@ -669,10 +669,10 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 			return true;
 
 	} else if (tile_raw_id >= BLOCK_C) {
-		tile_id = (tile_raw_id - BLOCK_C) / 50 + 3;
+		tile_id = (tile_raw_id - BLOCK_C) / BLOCK_C_STRIDE + BLOCK_C_INDEX;
 
 	} else if (map->lower_layer[tile_index] < BLOCK_C) {
-		tile_id = tile_raw_id / 1000;
+		tile_id = tile_raw_id / BLOCK_B_STRIDE;
 	}
 
 	return (passages_down[tile_id] & bit) != 0;
