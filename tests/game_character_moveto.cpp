@@ -7,9 +7,11 @@
 #include <climits>
 #include <initializer_list>
 
-#include "test_move_route.h"
+#include "mock_game.h"
 
 TEST_SUITE_BEGIN("Game_Character_MoveTo");
+
+static constexpr auto map_id = MockMap::ePassBlock20x15;
 
 static void testChar(const Game_Character& ch, int map_id, int x, int y,
 		int remaining_step, bool jumping,
@@ -55,8 +57,7 @@ static void testPlayer(Game_Player& ch) {
 	ch.SetMenuCalling(true);
 	ch.SetEncounterCalling(true);
 
-	// FIXME: Reset animation?
-	ch.MoveTo(1, 2, 3);
+	ch.MoveTo(static_cast<int>(map_id), 2, 3);
 
 	testChar(ch, 1, 2, 3, 0, true, 77, 88, 9, 2, "", 0);
 
@@ -79,38 +80,38 @@ static void testNonPlayer(T& ch) {
 	ch.SetAnimFrame(2);
 	ch.SetSpriteGraphic("GRAPHIC", 1);
 
-	ch.MoveTo(1, 2, 3);
+	ch.MoveTo(static_cast<int>(map_id), 2, 3);
 
 	testChar(ch, 1, 2, 3, 0, true, 77, 88, 9, 2, "GRAPHIC", 1);
 }
 
 TEST_CASE("Vehicle") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	Game_Vehicle ch(Game_Vehicle::Boat);
-
-	testNonPlayer(ch);
+	testNonPlayer(*mg.GetVehicle(Game_Vehicle::Boat));
+	testNonPlayer(*mg.GetVehicle(Game_Vehicle::Ship));
+	testNonPlayer(*mg.GetVehicle(Game_Vehicle::Airship));
 }
 
 TEST_CASE("Event") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
-	lcf::rpg::Event event;
-	Game_Event ch(1, &event);
-
-	testNonPlayer(ch);
+	testNonPlayer(*mg.GetEvent(1));
 }
 
 TEST_CASE("Player") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	// This tests a limited case
 	// * NO vehicle
 	// * No map change
-	Game_Player ch;
-	ch.SetMapId(1);
+	auto& ch = *mg.GetPlayer();
+	ch.SetMapId(static_cast<int>(map_id));
 
 	testPlayer(ch);
+
+	// FIXME: Test map change
+	// FIXME: Test in vehicle
 }
 
 TEST_SUITE_END();

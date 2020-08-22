@@ -7,7 +7,7 @@
 #include <climits>
 #include <initializer_list>
 
-#include "test_move_route.h"
+#include "mock_game.h"
 
 TEST_SUITE_BEGIN("Game_Character_Flash");
 
@@ -22,9 +22,9 @@ static void testChar(const Game_Character& ch, Color color, double power, int ti
 }
 
 static void testFlash(int r, int g, int b, double power, int frames) {
-	const MapGuard mg;
+	const MockGame mg(MockMap::ePassBlock20x15);
 
-	auto ch = MoveRouteEvent();
+	auto& ch = *mg.GetEvent(1);
 
 	CAPTURE(r);
 	CAPTURE(g);
