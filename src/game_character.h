@@ -1202,7 +1202,6 @@ inline int Game_Character::GetTransparency() const {
 }
 
 inline void Game_Character::SetTransparency(int value) {
-	// FIXME: Move this clamp out of here.
 	data()->transparency = Utils::Clamp(value, 0, 7);
 }
 

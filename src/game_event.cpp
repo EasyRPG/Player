@@ -184,8 +184,10 @@ void Game_Event::RefreshPage() {
 		SetDirection(page->character_direction);
 	}
 
-	// FIXME: RPG_RT doesn't set this value.
+	// This fixes a load game bug in RPG_RT where if you save and load while an event
+	// has an active move route, it's frequency gets set to zero after the move route ends.
 	original_move_frequency = page->move_frequency;
+
 	SetTransparency(page->translucent ? 3 : 0);
 	SetMoveFrequency(page->move_frequency);
 	SetLayer(page->layer);
@@ -197,7 +199,6 @@ void Game_Event::RefreshPage() {
 		SetDirection(page->character_direction);
 	}
 
-	// FIXME: 2k3e Step frame fix?
 	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
 			|| GetAnimationType() == lcf::rpg::EventPage::AnimType_spin) {
 		SetAnimFrame(page->character_pattern);
