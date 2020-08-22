@@ -3,8 +3,9 @@
 #include "options.h"
 #include "game_map.h"
 #include "main_data.h"
-#include "test_move_route.h"
 #include <climits>
+
+#include "mock_game.h"
 
 TEST_SUITE_BEGIN("Game_Player");
 
@@ -93,10 +94,13 @@ TEST_CASE("LockPan") {
 }
 
 static void testAnimPan(Game_Player::PanDirection dir_x, Game_Player::PanDirection dir_y, int speed) {
-	const MapGuard mg(40, 30);
+	static constexpr auto map_id = MockMap::ePass40x30;
 
-	auto& ch = *Main_Data::game_player;
-	ch.MoveTo(1, 20, 15);
+	const MockGame mg(map_id);
+	auto& ch = *mg.GetPlayer();
+
+	ch.SetMapId(static_cast<int>(map_id));
+	ch.MoveTo(static_cast<int>(map_id), 20, 15);
 
 	ch.StartPan(dir_x, 1, speed);
 	ch.StartPan(dir_y, 2, speed);
@@ -179,10 +183,13 @@ TEST_CASE("AnimatePan") {
 }
 
 static void testAnimBlocked(Game_Player::PanDirection dir_x, Game_Player::PanDirection dir_y, int speed) {
-	const MapGuard mg;
+	static constexpr auto map_id = MockMap::ePassBlock20x15;
 
-	auto& ch = *Main_Data::game_player;
-	ch.MoveTo(1, 0, 0);
+	const MockGame mg(map_id);
+	auto& ch = *mg.GetPlayer();
+
+	ch.SetMapId(static_cast<int>(map_id));
+	ch.MoveTo(static_cast<int>(map_id), 0, 0);
 
 	const auto wait = 2 * SCREEN_TILE_SIZE / (2 << speed);
 	int fx = 1 * SCREEN_TILE_SIZE;

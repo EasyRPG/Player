@@ -82,8 +82,16 @@ void MockGame::DoReset() {
 std::unique_ptr<lcf::rpg::Map> MakeMockMap(MockMap maptag) {
 	auto map = std::make_unique<lcf::rpg::Map>();
 
-	const auto w = 20;
-	const auto h = 15;
+	auto w = 20;
+	auto h = 15;
+
+	switch (maptag) {
+		case MockMap::ePass40x30:
+			w = 40;
+			h = 30;
+		default:
+			break;
+	}
 
 	// FIXME: Add a SetSize(w, h) method?
 	map->width = w;
@@ -101,6 +109,7 @@ std::unique_ptr<lcf::rpg::Map> MakeMockMap(MockMap maptag) {
 	switch (maptag) {
 		case MockMap::eNone:
 		case MockMap::eMapCount:
+		case MockMap::ePass40x30:
 			break;
 		case MockMap::ePassBlock20x15:
 			for (int y = 0; y < h; ++y) {

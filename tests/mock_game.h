@@ -21,6 +21,7 @@
 enum class MockMap {
 	eNone,
 	ePassBlock20x15, // Left half is passable, right half is blocked
+	ePass40x30,
 	eMapCount
 };
 
