@@ -14,6 +14,7 @@
 #include "game_pictures.h"
 #include "input.h"
 #include "output.h"
+#include "player.h"
 #include <lcf/data.h>
 #include <lcf/rpg/moveroute.h>
 
@@ -50,6 +51,23 @@ private:
 	struct {
 	} _restore;
 	bool _active = false;
+};
+
+class DebugGuard {
+public:
+	DebugGuard(bool f) {
+		_flag = Player::debug_flag;
+		Player::debug_flag = f;
+	}
+
+	DebugGuard(const DebugGuard&) = delete;
+	DebugGuard& operator=(const DebugGuard&) = delete;
+
+	~DebugGuard() {
+		Player::debug_flag = _flag;
+	}
+private:
+	bool _flag = false;
 };
 
 namespace {

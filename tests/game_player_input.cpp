@@ -3,11 +3,14 @@
 #include "options.h"
 #include "game_map.h"
 #include "main_data.h"
-#include "test_move_route.h"
 #include "game_system.h"
 #include <climits>
 
+#include "mock_game.h"
+
 TEST_SUITE_BEGIN("Game_Player Input");
+
+static constexpr auto map_id = MockMap::ePassBlock20x15;
 
 // FIXME: Test conditions which disable input
 
@@ -36,32 +39,66 @@ static void testPos(Game_Player& ch, int x, int y,
 	REQUIRE_EQ(ch.IsAboard(), aboard);
 }
 
-static void testMove(int input_dir, int dir, int x, int y) {
-	const MapGuard mg;
+static void testMove(bool success, int input_dir, int dir, int x, int y, int dx, int dy, bool cheat, bool debug) {
+	DebugGuard dg(debug);
+	const MockGame mg(map_id);
+	auto& ch = *mg.GetPlayer();
 
-	auto& ch = *Main_Data::game_player;
-	ch.SetX(8);
-	ch.SetY(8);
+	CAPTURE(cheat);
+	CAPTURE(debug);
+	CAPTURE(input_dir);
+	CAPTURE(dir);
+	CAPTURE(x);
+	CAPTURE(y);
+
+	ch.SetX(x);
+	ch.SetY(y);
 
 	Input::ResetKeys();
 
 	Input::dir4 = input_dir;
-	// FIXME: Test collision
-	Input::press_time[Input::DEBUG_THROUGH] = 1;
+
+	if (cheat) {
+		Input::press_time[Input::DEBUG_THROUGH] = 1;
+	}
+
+	const auto tx = x + dx;
+	const auto ty = y + dy;
 
 	ForceUpdate(ch);
-	testPos(ch, x, y, dir, dir, 224, false, 0, 0, 100, false, false, 0, false, false);
+	if (success) {
+		int enc_steps = (cheat && debug) ? 0 : 100;
+		testPos(ch, tx, ty, dir, dir, 224, false, 0, 0, enc_steps, false, false, 0, false, false);
+	} else {
+		testPos(ch, tx, ty, dir, dir, 0, false, 1, 0, 0, false, false, 0, false, false);
+	}
 }
 
 TEST_CASE("Move") {
-	testMove(8, Up, 8, 7);
-	testMove(6, Right, 9, 8);
-	testMove(2, Down, 8, 9);
-	testMove(4, Left, 7, 8);
+	testMove(true, 8, Up, 4, 8, 0, -1, false, false);
+	testMove(true, 6, Right, 4, 8, 1, 0, false, false);
+	testMove(true, 2, Down, 4, 8, 0, 1, false, false);
+	testMove(true, 4, Left, 4, 8, -1, 0, false, false);
+
+	testMove(false, 8, Up, 16, 8, 0, 0, false, false);
+	testMove(false, 6, Right, 16, 8, 0, 0, false, false);
+	testMove(false, 2, Down, 16, 8, 0, 0, false, false);
+	testMove(false, 4, Left, 16, 8, 0, 0, false, false);
+
+	testMove(false, 8, Up, 16, 8, 0, 0, true, false);
+	testMove(false, 6, Right, 16, 8, 0, 0, true, false);
+	testMove(false, 2, Down, 16, 8, 0, 0, true, false);
+	testMove(false, 4, Left, 16, 8, 0, 0, true, false);
+
+	testMove(true, 8, Up, 16, 8, 0, -1, true, true);
+	testMove(true, 6, Right, 16, 8, 1, 0, true, true);
+	testMove(true, 2, Down, 16, 8, 0, 1, true, true);
+	testMove(true, 4, Left, 16, 8, -1, 0, true, true);
 }
 
 static void testDecision(bool moved, int vehicle, bool boarding, bool aboard) {
-	auto& ch = *Main_Data::game_player;
+	auto& ch = *MockGame::GetPlayer();
+
 	ch.SetX(8);
 	ch.SetY(8);
 
@@ -78,13 +115,13 @@ static void testDecision(bool moved, int vehicle, bool boarding, bool aboard) {
 }
 
 TEST_CASE("DecisionNone") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	testDecision(false, 0, false, false);
 }
 
 TEST_CASE("DecisionEvent") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	auto* event = Game_Map::GetEvent(1);
 	REQUIRE(event);
@@ -96,7 +133,7 @@ TEST_CASE("DecisionEvent") {
 }
 
 TEST_CASE("DecisionBoard") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 	auto& ch = *Main_Data::game_player;
 
 	auto* vh = Game_Map::GetVehicle(Game_Vehicle::Boat);
@@ -113,7 +150,7 @@ TEST_CASE("DecisionBoard") {
 }
 
 TEST_CASE("DecisionUnboard") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	// FIXME: Implement
 }
@@ -134,13 +171,13 @@ static void testMenu(bool success) {
 }
 
 TEST_CASE("CallMenu") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	testMenu(true);
 }
 
 TEST_CASE("CallMenuDisabled") {
-	const MapGuard mg;
+	const MockGame mg(map_id);
 
 	Game_System::SetAllowMenu(false);
 
