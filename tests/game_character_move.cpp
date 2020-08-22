@@ -8,7 +8,7 @@
 #include <climits>
 #include <initializer_list>
 
-#include "test_move_route.h"
+#include "mock_game.h"
 
 TEST_SUITE_BEGIN("Game_Character_Move");
 
@@ -68,138 +68,144 @@ static void testChar(
 
 template <bool success>
 static void testMove(int move_dir, int x, int y, int dir, int face,
-		int tx, int ty, int tdir, int tface,
+		int dx, int dy, int tdir, int tface,
 		int freq, int speed, bool facing_locked) {
+	const MockGame mg(MockMap::ePassBlock20x15);
 
-	auto ch = MoveRouteVehicle();
+	auto& ch = *mg.GetEvent(1);
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
 	ch.SetSpriteDirection(face);
-	ch.SetAllowMovement(success);
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
-	ch.SetAllowMovement(success);
+	const auto maxstop = ch.GetMaxStopCount();
 	if (facing_locked) {
 		ch.SetFacingLocked(facing_locked);
 	}
 
+	const auto tx = x + dx;
+	const auto ty = y + dy;
+
+	CAPTURE(success);
+	CAPTURE(x);
+	CAPTURE(y);
+	CAPTURE(dx);
+	CAPTURE(dy);
+
+	auto rc = ch.Move(move_dir);
 	REQUIRE_EQ(ch.Move(move_dir), success);
 
 	if (!success) {
-		testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, 0);
+		testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, maxstop);
 		return;
 	}
-	// FIXME: Verify stop_count and max_stop_count setting / frequency
-	testChar(ch, tx, ty, tdir, tface, 256, false, 0, 0, freq, speed, 0, 0);
+	testChar(ch, tx, ty, tdir, tface, 256, false, 0, 0, freq, speed, 0, maxstop);
 
 	const auto dt = 1 << (1 + speed);
 
+	CAPTURE(dt);
 	for(int i = 256 - dt; i > 0; i -= dt) {
+		CAPTURE(i);
 		ForceUpdate(ch);
-		testChar(ch, tx, ty, tdir, tface, i, false, 0, 0, freq, speed, 0, 0);
+		testChar(ch, tx, ty, tdir, tface, i, false, 0, 0, freq, speed, 0, maxstop);
 	}
 
 	ForceUpdate(ch);
-	testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, 0);
+	testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, maxstop);
 }
 
 TEST_CASE("Move") {
-	const MapGuard mg;
-
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Up, freq, speed, false);
-			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Right, freq, speed, false);
-			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed, false);
-			testMove<true>(Left, 8, 8, Down, Down, 7, 8, Left, Left, freq, speed, false);
+			testMove<true>(Up, 4, 4, Down, Down, 0, -1, Up, Up, freq, speed, false);
+			testMove<true>(Right, 4, 4, Down, Down, 1, 0, Right, Right, freq, speed, false);
+			testMove<true>(Down, 4, 4, Down, Down, 0, 1, Down, Down, freq, speed, false);
+			testMove<true>(Left, 4, 4, Down, Down, -1, 0, Left, Left, freq, speed, false);
 
-			testMove<true>(Up, 8, 8, Down, Down, 8, 7, Up, Down, freq, speed, true);
-			testMove<true>(Right, 8, 8, Down, Down, 9, 8, Right, Down, freq, speed, true);
-			testMove<true>(Down, 8, 8, Down, Down, 8, 9, Down, Down, freq, speed, true);
-			testMove<true>(Left, 8, 8, Down, Down, 7, 8, Left, Down, freq, speed, true);
+			testMove<true>(Up, 4, 4, Down, Down, 0, -1, Up, Down, freq, speed, true);
+			testMove<true>(Right, 4, 4, Down, Down, 1, 0, Right, Down, freq, speed, true);
+			testMove<true>(Down, 4, 4, Down, Down, 0, 1, Down, Down, freq, speed, true);
+			testMove<true>(Left, 4, 4, Down, Down, -1, 0, Left, Down, freq, speed, true);
 		}
 	}
 }
 
 TEST_CASE("MoveFail") {
-	const MapGuard mg;
-
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Up, freq, speed, false);
-			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Right, freq, speed, false);
-			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed, false);
-			testMove<false>(Left, 8, 8, Down, Down, 8, 8, Left, Left, freq, speed, false);
+			testMove<false>(Up, 16, 16, Down, Down, 0, 0, Up, Up, freq, speed, false);
+			testMove<false>(Right, 16, 16, Down, Down, 0, 0, Right, Right, freq, speed, false);
+			testMove<false>(Down, 16, 16, Down, Down, 0, 0, Down, Down, freq, speed, false);
+			testMove<false>(Left, 16, 16, Down, Down, 0, 0, Left, Left, freq, speed, false);
 
-			testMove<false>(Up, 8, 8, Down, Down, 8, 8, Up, Down, freq, speed, true);
-			testMove<false>(Right, 8, 8, Down, Down, 8, 8, Right, Down, freq, speed, true);
-			testMove<false>(Down, 8, 8, Down, Down, 8, 8, Down, Down, freq, speed, true);
-			testMove<false>(Left, 8, 8, Down, Down, 8, 8, Left, Down, freq, speed, true);
+			testMove<false>(Up, 16, 16, Down, Down, 0, 0, Up, Down, freq, speed, true);
+			testMove<false>(Right, 16, 16, Down, Down, 0, 0, Right, Down, freq, speed, true);
+			testMove<false>(Down, 16, 16, Down, Down, 0, 0, Down, Down, freq, speed, true);
+			testMove<false>(Left, 16, 16, Down, Down, 0, 0, Left, Down, freq, speed, true);
 		}
 	}
 }
 
 TEST_CASE("MoveDiagonal") {
-	const MapGuard mg;
-
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
-			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed, false);
-			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed, false);
-			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Up, freq, speed, false);
-			testMove<true>(UpRight, 8, 8, Left, Left, 9, 7, UpRight, Right, freq, speed, false);
+			testMove<true>(UpRight, 4, 4, Up, Up, 1, -1, UpRight, Up, freq, speed, false);
+			testMove<true>(UpRight, 4, 4, Right, Right, 1, -1, UpRight, Right, freq, speed, false);
+			testMove<true>(UpRight, 4, 4, Down, Down, 1, -1, UpRight, Up, freq, speed, false);
+			testMove<true>(UpRight, 4, 4, Left, Left, 1, -1, UpRight, Right, freq, speed, false);
 
-			testMove<true>(UpRight, 8, 8, Up, Up, 9, 7, UpRight, Up, freq, speed, true);
-			testMove<true>(UpRight, 8, 8, Right, Right, 9, 7, UpRight, Right, freq, speed, true);
-			testMove<true>(UpRight, 8, 8, Down, Down, 9, 7, UpRight, Down, freq, speed, true);
-			testMove<true>(UpRight, 8, 8, Left, Left, 9, 7, UpRight, Left, freq, speed, true);
+			testMove<true>(UpRight, 4, 4, Up, Up, 1, -1, UpRight, Up, freq, speed, true);
+			testMove<true>(UpRight, 4, 4, Right, Right, 1, -1, UpRight, Right, freq, speed, true);
+			testMove<true>(UpRight, 4, 4, Down, Down, 1, -1, UpRight, Down, freq, speed, true);
+			testMove<true>(UpRight, 4, 4, Left, Left, 1, -1, UpRight, Left, freq, speed, true);
 
-			testMove<true>(DownRight, 8, 8, Up, Up, 9, 9, DownRight, Down, freq, speed, false);
-			testMove<true>(DownRight, 8, 8, Right, Right, 9, 9, DownRight, Right, freq, speed, false);
-			testMove<true>(DownRight, 8, 8, Down, Down, 9, 9, DownRight, Down, freq, speed, false);
-			testMove<true>(DownRight, 8, 8, Left, Left, 9, 9, DownRight, Right, freq, speed, false);
+			testMove<true>(DownRight, 4, 4, Up, Up, 1, 1, DownRight, Down, freq, speed, false);
+			testMove<true>(DownRight, 4, 4, Right, Right, 1, 1, DownRight, Right, freq, speed, false);
+			testMove<true>(DownRight, 4, 4, Down, Down, 1, 1, DownRight, Down, freq, speed, false);
+			testMove<true>(DownRight, 4, 4, Left, Left, 1, 1, DownRight, Right, freq, speed, false);
 
-			testMove<true>(DownRight, 8, 8, Up, Up, 9, 9, DownRight, Up, freq, speed, true);
-			testMove<true>(DownRight, 8, 8, Right, Right, 9, 9, DownRight, Right, freq, speed, true);
-			testMove<true>(DownRight, 8, 8, Down, Down, 9, 9, DownRight, Down, freq, speed, true);
-			testMove<true>(DownRight, 8, 8, Left, Left, 9, 9, DownRight, Left, freq, speed, true);
+			testMove<true>(DownRight, 4, 4, Up, Up, 1, 1, DownRight, Up, freq, speed, true);
+			testMove<true>(DownRight, 4, 4, Right, Right, 1, 1, DownRight, Right, freq, speed, true);
+			testMove<true>(DownRight, 4, 4, Down, Down, 1, 1, DownRight, Down, freq, speed, true);
+			testMove<true>(DownRight, 4, 4, Left, Left, 1, 1, DownRight, Left, freq, speed, true);
 
-			testMove<true>(UpLeft, 8, 8, Up, Up, 7, 7, UpLeft, Up, freq, speed, false);
-			testMove<true>(UpLeft, 8, 8, Right, Right, 7, 7, UpLeft, Left, freq, speed, false);
-			testMove<true>(UpLeft, 8, 8, Down, Down, 7, 7, UpLeft, Up, freq, speed, false);
-			testMove<true>(UpLeft, 8, 8, Left, Left, 7, 7, UpLeft, Left, freq, speed, false);
+			testMove<true>(UpLeft, 4, 4, Up, Up, -1, -1, UpLeft, Up, freq, speed, false);
+			testMove<true>(UpLeft, 4, 4, Right, Right, -1, -1, UpLeft, Left, freq, speed, false);
+			testMove<true>(UpLeft, 4, 4, Down, Down, -1, -1, UpLeft, Up, freq, speed, false);
+			testMove<true>(UpLeft, 4, 4, Left, Left, -1, -1, UpLeft, Left, freq, speed, false);
 
-			testMove<true>(UpLeft, 8, 8, Up, Up, 7, 7, UpLeft, Up, freq, speed, true);
-			testMove<true>(UpLeft, 8, 8, Right, Right, 7, 7, UpLeft, Right, freq, speed, true);
-			testMove<true>(UpLeft, 8, 8, Down, Down, 7, 7, UpLeft, Down, freq, speed, true);
-			testMove<true>(UpLeft, 8, 8, Left, Left, 7, 7, UpLeft, Left, freq, speed, true);
+			testMove<true>(UpLeft, 4, 4, Up, Up, -1, -1, UpLeft, Up, freq, speed, true);
+			testMove<true>(UpLeft, 4, 4, Right, Right, -1, -1, UpLeft, Right, freq, speed, true);
+			testMove<true>(UpLeft, 4, 4, Down, Down, -1, -1, UpLeft, Down, freq, speed, true);
+			testMove<true>(UpLeft, 4, 4, Left, Left, -1, -1, UpLeft, Left, freq, speed, true);
 
-			testMove<true>(DownLeft, 8, 8, Up, Up, 7, 9, DownLeft, Down, freq, speed, false);
-			testMove<true>(DownLeft, 8, 8, Right, Right, 7, 9, DownLeft, Left, freq, speed, false);
-			testMove<true>(DownLeft, 8, 8, Down, Down, 7, 9, DownLeft, Down, freq, speed, false);
-			testMove<true>(DownLeft, 8, 8, Left, Left, 7, 9, DownLeft, Left, freq, speed, false);
+			testMove<true>(DownLeft, 4, 4, Up, Up, -1, 1, DownLeft, Down, freq, speed, false);
+			testMove<true>(DownLeft, 4, 4, Right, Right, -1, 1, DownLeft, Left, freq, speed, false);
+			testMove<true>(DownLeft, 4, 4, Down, Down, -1, 1, DownLeft, Down, freq, speed, false);
+			testMove<true>(DownLeft, 4, 4, Left, Left, -1, 1, DownLeft, Left, freq, speed, false);
 
-			testMove<true>(DownLeft, 8, 8, Up, Up, 7, 9, DownLeft, Up, freq, speed, true);
-			testMove<true>(DownLeft, 8, 8, Right, Right, 7, 9, DownLeft, Right, freq, speed, true);
-			testMove<true>(DownLeft, 8, 8, Down, Down, 7, 9, DownLeft, Down, freq, speed, true);
-			testMove<true>(DownLeft, 8, 8, Left, Left, 7, 9, DownLeft, Left, freq, speed, true);
+			testMove<true>(DownLeft, 4, 4, Up, Up, -1, 1, DownLeft, Up, freq, speed, true);
+			testMove<true>(DownLeft, 4, 4, Right, Right, -1, 1, DownLeft, Right, freq, speed, true);
+			testMove<true>(DownLeft, 4, 4, Down, Down, -1, 1, DownLeft, Down, freq, speed, true);
+			testMove<true>(DownLeft, 4, 4, Left, Left, -1, 1, DownLeft, Left, freq, speed, true);
 		}
 	}
 }
 
 static void testJump(bool success, int x, int y, int dir, int face,
-		int tx, int ty, int freq, int speed, bool facing_locked) {
+		int dx, int dy, int freq, int speed, bool facing_locked) {
 
-	auto ch = MoveRouteVehicle();
+	const MockGame mg(MockMap::ePassBlock20x15);
+	auto& ch = *mg.GetEvent(1);
+
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
 	ch.SetSpriteDirection(face);
-	ch.SetAllowMovement(success);
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
-	ch.SetAllowMovement(success);
+	const auto maxstop = ch.GetMaxStopCount();
 	if (facing_locked) {
 		ch.SetFacingLocked(true);
 	}
@@ -208,8 +214,8 @@ static void testJump(bool success, int x, int y, int dir, int face,
 	CAPTURE(speed);
 	CAPTURE(freq);
 
-	auto dx = tx - x;
-	auto dy = ty - y;
+	const auto tx = x + dx;
+	const auto ty = y + dy;
 
 	// Expected direction after the jump finishes.
 	auto tdir = Down;
@@ -231,11 +237,11 @@ static void testJump(bool success, int x, int y, int dir, int face,
 
 	if (!success) {
 		INFO("FAIL JUMP");
-		testChar(ch, x, y, tdir, tface, 0, false, 0, 0, freq, speed, 0, 0);
+		testChar(ch, tx, ty, tdir, tface, 0, false, 0, 0, freq, speed, 0, maxstop);
 		return;
 	}
 
-	testChar(ch, tx, ty, tdir, tface, 256, true, x, y, freq, speed, 0, 0);
+	testChar(ch, tx, ty, tdir, tface, 256, true, x, y, freq, speed, 0, maxstop);
 
 	// FIXME: Verify all speeds
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
@@ -245,47 +251,44 @@ static void testJump(bool success, int x, int y, int dir, int face,
 
 	for(int i = 256 - dt; i > 0; i -= dt) {
 		ForceUpdate(ch);
-		testChar(ch, tx, ty, tdir, tface, i, true, x, y, freq, speed, 0, 0);
+		testChar(ch, tx, ty, tdir, tface, i, true, x, y, freq, speed, 0, maxstop);
 	}
 
 	INFO("AFTER JUMP");
 
 	ForceUpdate(ch);
-	testChar(ch, tx, ty, tdir, tface, 0, false, x, y, freq, speed, 0, 0);
+	testChar(ch, tx, ty, tdir, tface, 0, false, x, y, freq, speed, 0, maxstop);
 }
 
 TEST_CASE("Jump") {
-	const MapGuard mg;
-
 	for (int freq = 1; freq <= 8; ++freq) {
 		for (int speed = 1; speed <= 6; ++speed) {
 			for (int dx = -2; dx <= 2; ++dx) {
 				for (int dy = -2; dy <= 2; ++dy) {
 					// Normal jump
-					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, false);
-					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, false);
+					testJump(true, 4, 4, Down, Down, dx, dy, freq, speed, false);
+					testJump(false, 16, 16, Down, Down, 0, 0, freq, speed, false);
 
 					// Facing locked jump
-					testJump(true, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, true);
-					testJump(false, 8, 8, Down, Down, 8 + dx, 8 + dy, freq, speed, true);
+					testJump(true, 4, 4, Down, Down, dx, dy, freq, speed, true);
+					testJump(false, 16, 16, Down, Down, 0, 0, freq, speed, true);
 				}
 			}
 		}
 	}
 }
 
-static void testStop(bool success, bool jump) {
-	const MapGuard mg;
+static void testStop(bool success, bool jump, int x, int y) {
+	const MockGame mg(MockMap::ePassBlock20x15);
 
-	auto ch = MoveRouteVehicle();
-	ch.SetX(8);
-	ch.SetY(8);
+	auto& ch = *MockGame::GetEvent(1);
+	ch.SetX(x);
+	ch.SetY(y);
 	ch.SetStopCount(99);
 	ch.SetMaxStopCount(200);
-	ch.SetAllowMovement(success);
 
 	if (jump) {
-		REQUIRE_EQ(ch.Jump(9, 9), success);
+		REQUIRE_EQ(ch.Jump(x + 1, y + 1), success);
 	} else {
 		REQUIRE_EQ(ch.Move(Up), success);
 	}
@@ -294,9 +297,9 @@ static void testStop(bool success, bool jump) {
 	REQUIRE_EQ(ch.GetMaxStopCount(), 200);
 }
 
-TEST_CASE("StopCountMove") { testStop(true, false); }
-TEST_CASE("StopCountMoveFail") { testStop(false, false); }
-TEST_CASE("StopCountJump") { testStop(true, true); }
-TEST_CASE("StopCountJumpFail") { testStop(false, true); }
+TEST_CASE("StopCountMove") { testStop(true, false, 4, 4); }
+TEST_CASE("StopCountMoveFail") { testStop(false, false, 16, 16); }
+TEST_CASE("StopCountJump") { testStop(true, true, 4, 4); }
+TEST_CASE("StopCountJumpFail") { testStop(false, true, 16, 16); }
 
 TEST_SUITE_END();
