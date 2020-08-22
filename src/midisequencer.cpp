@@ -426,6 +426,7 @@ namespace midisequencer{
             uint_least32_t tempo = 500000;
             double time_offset = 0;
             double base = 0;
+            loop_position = messages.begin();
             for(std::vector<midi_message>::iterator i = messages.begin(); i != messages.end(); ++i){
                 float org_time = i->time;
                 i->time = (i->time - base) * tempo / 1000000.0 / division + time_offset;
