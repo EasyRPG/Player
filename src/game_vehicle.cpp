@@ -37,7 +37,7 @@ Game_Vehicle::Game_Vehicle(Type type)
 {
 	data()->vehicle = static_cast<int>(type);
 	SetDirection(Left);
-	SetSpriteDirection(Left);
+	SetFacing(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
 	SetLayer(lcf::rpg::EventPage::Layers_same);
 
@@ -98,7 +98,7 @@ const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 
 void Game_Vehicle::StartDescent() {
 	if (IsFlying()) {
-		SetSpriteDirection(Left);
+		SetFacing(Left);
 		data()->remaining_descent = SCREEN_TILE_SIZE;
 	}
 }
@@ -124,7 +124,7 @@ void Game_Vehicle::SyncWithRider(const Game_Character* rider) {
 	SetX(rider->GetX());
 	SetY(rider->GetY());
 	SetDirection(rider->GetDirection());
-	SetSpriteDirection(rider->GetSpriteDirection());
+	SetFacing(rider->GetFacing());
 	SetRemainingStep(rider->GetRemainingStep());
 
 	// RPG_RT doesn't copy jumping chunks

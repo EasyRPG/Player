@@ -56,7 +56,7 @@ static void testMoveRouteDir(const Game_Character& ch,
 	CAPTURE(face);
 
 	REQUIRE_EQ(ch.GetDirection(), dir);
-	REQUIRE_EQ(ch.GetSpriteDirection(), face);
+	REQUIRE_EQ(ch.GetFacing(), face);
 	testMoveRoute(ch, std::forward<Args>(args)...);
 }
 
@@ -185,7 +185,7 @@ static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
-	ch.SetSpriteDirection(face);
+	ch.SetFacing(face);
 	ch.SetAllowMovement(success);
 
 	auto mr = MakeRoute({{ static_cast<int>(code) }}, repeat, skip);
@@ -443,7 +443,7 @@ static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, in
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(orig_dir);
-	ch.SetSpriteDirection(orig_dir);
+	ch.SetFacing(orig_dir);
 	auto mr = MakeRoute({{ static_cast<int>(code) }});
 
 	CAPTURE(code);
@@ -537,7 +537,7 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
-	ch.SetSpriteDirection(face);
+	ch.SetFacing(face);
 	ch.SetAllowMovement(success);
 
 	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::begin_jump) }}, repeat, skip);

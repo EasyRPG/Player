@@ -91,32 +91,32 @@ public:
 	void SetMapId(int new_map_id);
 
 	/**
-	 * Gets character's front direction.
+	 * Gets character's movement direction.
 	 *
 	 * @return current front direction.
 	 */
 	int GetDirection() const;
 
 	/**
-	 * Sets character's front direction.
+	 * Sets character's movement direction.
 	 *
 	 * @param new_direction New current front direction.
 	 */
 	void SetDirection(int new_direction);
 
 	/**
-	 * Gets direction of the sprite.
+	 * Gets character's visible facing direction.
 	 *
 	 * @return direction of the sprite.
 	 */
-	int GetSpriteDirection() const;
+	int GetFacing() const;
 
 	/**
-	 * Sets sprite direction.
+	 * Sets character's visible facing direction.
 	 *
-	 * @param new_direction New sprite direction.
+	 * @param new_direction New facing direction.
 	 */
-	void SetSpriteDirection(int new_direction);
+	void SetFacing(int new_direction);
 
 	/**
 	 * Gets whether facing is locked.
@@ -955,11 +955,11 @@ inline void Game_Character::SetDirection(int new_direction) {
 	data()->direction = new_direction;
 }
 
-inline int Game_Character::GetSpriteDirection() const {
+inline int Game_Character::GetFacing() const {
 	return data()->sprite_direction;
 }
 
-inline void Game_Character::SetSpriteDirection(int new_direction) {
+inline void Game_Character::SetFacing(int new_direction) {
 	data()->sprite_direction = new_direction;
 }
 

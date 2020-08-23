@@ -26,7 +26,7 @@ static void testPos(Game_Player& ch, int x, int y,
 	REQUIRE_EQ(ch.GetX(), x);
 	REQUIRE_EQ(ch.GetY(), y);
 	REQUIRE_EQ(ch.GetDirection(), dir);
-	REQUIRE_EQ(ch.GetSpriteDirection(), face);
+	REQUIRE_EQ(ch.GetFacing(), face);
 	REQUIRE_EQ(ch.GetRemainingStep(), remaining_step);
 	REQUIRE_EQ(ch.IsJumping(), false);
 	REQUIRE_EQ(ch.GetStopCount(), stop_count);

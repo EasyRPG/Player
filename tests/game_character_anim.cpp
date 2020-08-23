@@ -91,7 +91,7 @@ static void testAnimSpin(Game_Event& ch, bool move = false, bool jump = false) {
 		auto frame = 1;
 		auto dir = ((i / limit) + 2) % 4;
 		testChar(ch, count, frame);
-		REQUIRE_EQ(ch.GetSpriteDirection(), dir);
+		REQUIRE_EQ(ch.GetFacing(), dir);
 		ForceUpdate(ch);
 	}
 }

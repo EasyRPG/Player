@@ -153,7 +153,7 @@ static void testInitVehicle(Game_Vehicle::Type vt) {
 	testInit(ch);
 
 	REQUIRE_EQ(ch.GetDirection(), 3);
-	REQUIRE_EQ(ch.GetSpriteDirection(), 3);
+	REQUIRE_EQ(ch.GetFacing(), 3);
 	if (vt == Game_Vehicle::Airship) {
 		REQUIRE_EQ(ch.GetMoveSpeed(), 5);
 	} else {
@@ -191,7 +191,7 @@ TEST_CASE("InitPlayer") {
 	testInit(ch);
 
 	REQUIRE_EQ(ch.GetDirection(), 2);
-	REQUIRE_EQ(ch.GetSpriteDirection(), 2);
+	REQUIRE_EQ(ch.GetFacing(), 2);
 	REQUIRE_EQ(ch.GetMoveSpeed(), 4);
 	REQUIRE(!ch.GetThrough());
 	REQUIRE_EQ(ch.GetVehicleType(), Game_Vehicle::None);
@@ -228,7 +228,7 @@ TEST_CASE("InitEventNoPage") {
 	testInit(ch);
 
 	REQUIRE_EQ(ch.GetDirection(), 2);
-	REQUIRE_EQ(ch.GetSpriteDirection(), 2);
+	REQUIRE_EQ(ch.GetFacing(), 2);
 	REQUIRE_EQ(ch.GetMoveSpeed(), 4);
 	REQUIRE(ch.GetThrough());
 	REQUIRE_EQ(ch.GetLayer(), 1);
@@ -253,7 +253,7 @@ TEST_CASE("InitEventDefaultPage") {
 	testInit(ch);
 
 	REQUIRE_EQ(ch.GetDirection(), 2);
-	REQUIRE_EQ(ch.GetSpriteDirection(), 2);
+	REQUIRE_EQ(ch.GetFacing(), 2);
 	REQUIRE_EQ(ch.GetMoveSpeed(), 3);
 	REQUIRE(!ch.GetThrough());
 	REQUIRE_EQ(ch.GetLayer(), 0);
@@ -284,8 +284,8 @@ static void testBasicSet(Game_Character& ch) {
 	ch.SetDirection(Game_Character::UpLeft);
 	REQUIRE_EQ(ch.GetDirection(), Game_Character::UpLeft);
 
-	ch.SetSpriteDirection(Game_Character::Up);
-	REQUIRE_EQ(ch.GetSpriteDirection(), Game_Character::Up);
+	ch.SetFacing(Game_Character::Up);
+	REQUIRE_EQ(ch.GetFacing(), Game_Character::Up);
 
 	ch.SetFacingLocked(true);
 	REQUIRE(ch.IsFacingLocked());

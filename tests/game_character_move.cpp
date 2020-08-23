@@ -38,7 +38,7 @@ static void testChar(
 	REQUIRE_EQ(ch.GetX(), x);
 	REQUIRE_EQ(ch.GetY(), y);
 	REQUIRE_EQ(ch.GetDirection(), dir);
-	REQUIRE_EQ(ch.GetSpriteDirection(), face);
+	REQUIRE_EQ(ch.GetFacing(), face);
 	REQUIRE_EQ(ch.GetRemainingStep(), remaining_step);
 	REQUIRE_EQ(ch.IsJumping(), is_jumping);
 	REQUIRE_EQ(ch.GetBeginJumpX(), begin_jump_x);
@@ -76,7 +76,7 @@ static void testMove(int move_dir, int x, int y, int dir, int face,
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
-	ch.SetSpriteDirection(face);
+	ch.SetFacing(face);
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
 	const auto maxstop = ch.GetMaxStopCount();
@@ -202,7 +202,7 @@ static void testJump(bool success, int x, int y, int dir, int face,
 	ch.SetX(x);
 	ch.SetY(y);
 	ch.SetDirection(dir);
-	ch.SetSpriteDirection(face);
+	ch.SetFacing(face);
 	ch.SetMoveSpeed(speed);
 	ch.SetMoveFrequency(freq);
 	const auto maxstop = ch.GetMaxStopCount();

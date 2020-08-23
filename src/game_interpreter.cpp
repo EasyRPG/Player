@@ -1095,7 +1095,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					case 3:
 						// Orientation
 						int dir;
-						dir = character->GetSpriteDirection();
+						dir = character->GetFacing();
 						value = dir == 0 ? 8 :
 								dir == 1 ? 6 :
 								dir == 2 ? 2 : 4;
@@ -3095,7 +3095,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		// Orientation of char
 		character = GetCharacter(com.parameters[1]);
 		if (character != NULL) {
-			result = character->GetSpriteDirection() == com.parameters[2];
+			result = character->GetFacing() == com.parameters[2];
 		}
 		break;
 	case 7: {

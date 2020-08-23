@@ -180,7 +180,7 @@ void Game_Event::RefreshPage() {
 				|| old_page->character_direction != new_page->character_direction
 				|| old_page->character_pattern != new_page->character_pattern))
 	{
-		SetSpriteDirection(page->character_direction);
+		SetFacing(page->character_direction);
 		SetDirection(page->character_direction);
 	}
 
@@ -196,7 +196,7 @@ void Game_Event::RefreshPage() {
 	SetMoveSpeed(page->move_speed);
 
 	if (IsFacingLocked()) {
-		SetSpriteDirection(page->character_direction);
+		SetFacing(page->character_direction);
 	}
 
 	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
@@ -346,7 +346,7 @@ bool Game_Event::ScheduleForegroundExecution(bool by_decision_key) {
 	}
 
 	if (!(IsFacingLocked() || IsSpinning())) {
-		SetSpriteDirection(GetDirectionToHero());
+		SetFacing(GetDirectionToHero());
 	}
 
 	data()->waiting_execution = true;
@@ -497,7 +497,7 @@ void Game_Event::MoveTypeRandom() {
 		} else {
 			SetDirection(prev_dir);
 			if (!IsFacingLocked()) {
-				SetSpriteDirection(prev_dir);
+				SetFacing(prev_dir);
 			}
 		}
 	}
@@ -528,7 +528,7 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 		} else {
 			SetDirection(prev_dir);
 			if (!IsFacingLocked()) {
-				SetSpriteDirection(prev_dir);
+				SetFacing(prev_dir);
 			}
 		}
 	}
@@ -579,7 +579,7 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 		} else {
 			SetDirection(prev_dir);
 			if (!IsFacingLocked()) {
-				SetSpriteDirection(prev_dir);
+				SetFacing(prev_dir);
 			}
 		}
 	}

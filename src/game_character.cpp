@@ -170,7 +170,7 @@ void Game_Character::UpdateAnimation() {
 		IncAnimCount();
 
 		if (GetAnimCount() >= limit) {
-			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
+			SetFacing((GetFacing() + 1) % 4);
 			SetAnimCount(0);
 		}
 		return;
@@ -246,7 +246,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 		using Code = lcf::rpg::MoveCommand::Code;
 		const auto& move_command = current_route.move_commands[current_index];
 		const auto prev_direction = GetDirection();
-		const auto prev_facing = GetSpriteDirection();
+		const auto prev_facing = GetFacing();
 		const auto saved_index = current_index;
 		const auto cmd = static_cast<Code>(move_command.command_id);
 
@@ -282,13 +282,13 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 				// Move failed
 				if (current_route.skippable) {
 					SetDirection(prev_direction);
-					SetSpriteDirection(prev_facing);
+					SetFacing(prev_facing);
 				} else {
 					return;
 				}
 			}
 			if (cmd == Code::move_forward) {
-				SetSpriteDirection(prev_facing);
+				SetFacing(prev_facing);
 			}
 
 			SetMaxStopCountForStep();
@@ -330,7 +330,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 				default:
 					break;
 			}
-			SetSpriteDirection(GetDirection());
+			SetFacing(GetDirection());
 			SetMaxStopCountForTurn();
 			SetStopCount(0);
 		} else {
@@ -344,7 +344,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 						// Jump failed
 						if (current_route.skippable) {
 							SetDirection(prev_direction);
-							SetSpriteDirection(prev_facing);
+							SetFacing(prev_facing);
 						} else {
 							current_index = saved_index;
 							return;
@@ -484,15 +484,15 @@ bool Game_Character::Move(int dir) {
 }
 
 void Game_Character::Turn90DegreeLeft() {
-	SetDirection(GetDirection90DegreeLeft(GetSpriteDirection()));
+	SetDirection(GetDirection90DegreeLeft(GetFacing()));
 }
 
 void Game_Character::Turn90DegreeRight() {
-	SetDirection(GetDirection90DegreeRight(GetSpriteDirection()));
+	SetDirection(GetDirection90DegreeRight(GetFacing()));
 }
 
 void Game_Character::Turn180Degree() {
-	SetDirection(GetDirection180Degree(GetSpriteDirection()));
+	SetDirection(GetDirection180Degree(GetFacing()));
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
@@ -660,7 +660,7 @@ bool Game_Character::Jump(int x, int y) {
 
 	if (dx != 0 || dy != 0) {
 		if (!IsFacingLocked()) {
-			SetSpriteDirection(GetDirection());
+			SetFacing(GetDirection());
 		}
 
 		// FIXME: Remove dependency on jump from within Game_Map::MakeWay?
@@ -878,7 +878,7 @@ void Game_Character::UpdateFacing() {
 		return;
 	}
 	const auto dir = GetDirection();
-	const auto facing = GetSpriteDirection();
+	const auto facing = GetFacing();
 	if (dir >= 4) /* is diagonal */ {
 		// [UR, DR, DL, UL] -> [U, D, D, U]
 		const auto f1 = ((dir + (dir >= 6)) % 2) * 2;
@@ -886,10 +886,10 @@ void Game_Character::UpdateFacing() {
 		const auto f2 = (dir / 2) - (dir < 6);
 		if (facing != f1 && facing != f2) {
 			// Reverse the direction.
-			SetSpriteDirection((facing + 2) % 4);
+			SetFacing((facing + 2) % 4);
 		}
 	} else {
-		SetSpriteDirection(dir);
+		SetFacing(dir);
 	}
 }
 

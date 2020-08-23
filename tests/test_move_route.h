@@ -26,7 +26,7 @@ class MoveRouteVehicle : public Game_Vehicle {
 	public:
 		MoveRouteVehicle(Game_Vehicle::Type vt = Game_Vehicle::Boat) : Game_Vehicle(vt) {
 			SetDirection(Game_Character::Down);
-			SetSpriteDirection(Game_Character::Down);
+			SetFacing(Game_Character::Down);
 			SetX(8);
 			SetY(8);
 		}
@@ -46,7 +46,7 @@ class MoveRouteEvent : public Game_Event {
 	public:
 		MoveRouteEvent() : Game_Event(1, &Game_Map::GetMap().events[0]) {
 			SetDirection(Game_Character::Down);
-			SetSpriteDirection(Game_Character::Down);
+			SetFacing(Game_Character::Down);
 		}
 
 		bool MakeWay(int, int, int, int) override {

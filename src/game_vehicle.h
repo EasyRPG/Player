@@ -124,7 +124,7 @@ inline bool Game_Vehicle::IsVisible() const {
 
 inline void Game_Vehicle::SetDefaultDirection() {
 	SetDirection(Left);
-	SetSpriteDirection(Left);
+	SetFacing(Left);
 }
 
 inline int Game_Vehicle::GetVehicleType() const {

@@ -225,7 +225,7 @@ bool Game_Player::UpdateAirship() {
 				// If we landed, them disembark
 				Main_Data::game_player->SetFlying(vehicle->IsFlying());
 				data()->aboard = false;
-				SetSpriteDirection(Down);
+				SetFacing(Down);
 				data()->vehicle = 0;
 				SetMoveSpeed(data()->preboard_move_speed);
 
@@ -344,7 +344,7 @@ void Game_Player::Update() {
 			data()->aboard = true;
 			data()->boarding = false;
 			// Note: RPG_RT ignores the lock_facing flag here!
-			SetSpriteDirection(Left);
+			SetFacing(Left);
 
 			auto* vehicle = GetVehicle();
 			SetMoveSpeed(vehicle->GetMoveSpeed());
@@ -460,7 +460,7 @@ void Game_Player::ResetGraphic() {
 
 bool Game_Player::GetOnOffVehicle() {
 	if (IsDirectionDiagonal(GetDirection())) {
-		SetDirection(GetSpriteDirection());
+		SetDirection(GetFacing());
 	}
 
 	return IsAboard()
@@ -479,7 +479,7 @@ bool Game_Player::GetOnVehicle() {
 		data()->aboard = true;
 
 		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(Left);
+		SetFacing(Left);
 
 		data()->preboard_move_speed = GetMoveSpeed();
 		SetMoveSpeed(vehicle->GetMoveSpeed());
@@ -531,7 +531,7 @@ bool Game_Player::GetOffVehicle() {
 		}
 
 		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(Left);
+		SetFacing(Left);
 		vehicle->StartDescent();
 		return true;
 	}
