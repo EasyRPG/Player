@@ -39,7 +39,7 @@ public class GameBrowserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static Boolean libraryLoaded = false;
 
-    private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
+    private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 290;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -172,8 +172,6 @@ public class GameBrowserActivity extends AppCompatActivity
      * Set the layout manager depending on the screen orientation
      */
     public void setLayoutManager(Configuration configuration) {
-        int orientation = configuration.orientation;
-
         // Determine the layout template (List or Grid, number of element per line for the grid)
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -292,11 +290,23 @@ public class GameBrowserActivity extends AppCompatActivity
         }
 
         public void updateFavoriteButton(ViewHolder holder, GameInformation game){
+            int buttonImageResource;
+
             if (game.isFavorite()) {
-                holder.favoriteButton.setImageResource(R.drawable.ic_action_favorite_on);
+                if (nbOfGamesPerLine == 1) {
+                    buttonImageResource = R.drawable.ic_action_favorite_on_black;
+                } else {
+                    buttonImageResource = R.drawable.ic_action_favorite_on_white;
+                }
             } else {
-                holder.favoriteButton.setImageResource(R.drawable.ic_action_favorite_off);
+                if (nbOfGamesPerLine == 1) {
+                    buttonImageResource = R.drawable.ic_action_favorite_off_black;
+                } else {
+                    buttonImageResource = R.drawable.ic_action_favorite_off_white;
+                }
             }
+
+            holder.favoriteButton.setImageResource(buttonImageResource);
         }
 
         public void chooseLayout(final Context context, final GameInformation pi) {
