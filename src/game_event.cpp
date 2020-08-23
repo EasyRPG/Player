@@ -398,9 +398,9 @@ void Game_Event::CheckCollisonOnMoveFailure() {
 	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
 	if (Main_Data::game_player->GetX() == front_x
-			|| Main_Data::game_player->GetY() == front_y
-			|| GetLayer() == lcf::rpg::EventPage::Layers_same
-			|| GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
+			&& Main_Data::game_player->GetY() == front_y
+			&& GetLayer() == lcf::rpg::EventPage::Layers_same
+			&& GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
 	{
 		ScheduleForegroundExecution(false);
 		// Events with trigger collision and layer same always reset their
