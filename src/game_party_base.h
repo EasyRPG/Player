@@ -106,7 +106,7 @@ public:
 	 *
 	 * @return average agility
 	 */
-	virtual int GetAverageAgility();
+	int GetAverageAgility();
 
 private:
 

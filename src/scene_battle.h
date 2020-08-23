@@ -169,6 +169,9 @@ protected:
 
 	void EndBattle(BattleResult result);
 
+	void InitEscapeChance();
+	bool TryEscape();
+
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
@@ -181,7 +184,9 @@ protected:
 	int skill_id;
 	int pending_command;
 	int troop_id = 0;
+	int escape_chance = 0;
 	bool allow_escape = false;
+	bool first_strike = false;
 
 	int actor_index = 0;
 	Game_Actor* active_actor = nullptr;

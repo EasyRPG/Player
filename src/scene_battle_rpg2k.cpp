@@ -39,7 +39,6 @@
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 	Scene_Battle(args)
 {
-	first_strike = args.first_strike;
 }
 
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
@@ -1180,13 +1179,7 @@ void Scene_Battle_Rpg2k::Escape() {
 	if (battle_action_substate == eBegin) {
 		battle_message_window->Clear();
 
-		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0], first_strike);
-
-		auto next_ss = escape_alg.Execute()
-			? eSuccess
-			: eFailure;
-
-		escape_alg.Apply();
+		auto next_ss = TryEscape() ? eSuccess : eFailure;
 
 		if (next_ss == eSuccess) {
 			battle_message_window->Push(lcf::Data::terms.escape_success);
