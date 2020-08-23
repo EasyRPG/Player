@@ -147,7 +147,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 
 	current_target = targets.end();
 	party_target = target;
-	party_target_set = true;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
@@ -237,13 +236,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	}
 
 	if (on_source) {
-		if (!party_target_set) {
-			Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() });
-		} else {
-			std::vector<Game_Battler*> anim_targets;
-			source->GetParty().GetActiveBattlers(anim_targets);
-			Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets);
-		}
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() });
 		has_animation_played = true;
 		return;
 	}
@@ -613,16 +606,6 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
-	if (IsReflected()) {
-		if (!party_target_set) {
-			return source;
-		} else {
-			std::vector<Game_Battler*> newtargets;
-			source->GetParty().GetActiveBattlers(newtargets);
-			return *(newtargets.begin());
-		}
-	}
-
 	if (current_target == targets.end()) {
 		return NULL;
 	}
@@ -773,8 +756,20 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (party_target) {
-		party_target->GetBattlers(targets);
+		if (reflect_set) {
+			PlayAnimation();
+			targets.clear();
+			source->GetParty().GetActiveBattlers(targets);
+		} else {
+			party_target->GetBattlers(targets);
+		}
 		party_target = nullptr;
+	} else {
+		if (reflect_set) {
+			PlayAnimation();
+			targets.clear();
+			targets.push_back(source);
+		}
 	}
 
 	current_target = targets.begin();
@@ -788,17 +783,6 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	if (IsReflected()) {
-		if (!party_target_set) {
-			// Only source available, can't target again
-			return false;
-		} else {
-			targets.clear();
-			source->GetParty().GetActiveBattlers(targets);
-			current_target = targets.begin();
-			return TargetNextInternal();
-		}
-	}
 	++cur_repeat;
 	if (IsTargetValid() && cur_repeat < repeat) {
 		first_attack = false;
@@ -869,10 +853,6 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 
 int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
 	return 0;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
-	return false;
 }
 
 Game_BattleAlgorithm::Null::Null(Game_Battler* source) :
@@ -1174,6 +1154,32 @@ void Game_BattleAlgorithm::Skill::Init() {
 		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
 		if (!animation) {
 			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+		}
+	}
+
+	// Skill reflect checks
+	// Skills invoked by items ignore reflect
+	if (!item) {
+		// One or more targets?
+		if (party_target) {
+			std::vector<Game_Battler*> targetlist;
+			party_target->GetActiveBattlers(targetlist);
+			for (Game_Battler* t : targetlist) {
+				// Targets on enemy side?
+				if (GetSource()->GetType() != t->GetType()) {
+					// If at least one enemy has the reflect state, set reflect_set to true
+					if (t->HasReflectState()) {
+						reflect_set = true;
+						break;
+					}
+				}
+			}
+		} else {
+			// Target on enemy side?
+			if (GetSource()->GetType() != GetTarget()->GetType()) {
+				// If the target has the reflect state, set reflect_set to true
+				if (GetTarget()->HasReflectState()) reflect_set = true;
+			}
 		}
 	}
 }
@@ -1511,48 +1517,6 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 
 int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
 	return skill.physical_rate * 10;
-}
-
-bool Game_BattleAlgorithm::Skill::IsReflected() const {
-	// Reflect must be stored because after "Apply" the return value for
-	// reflect can be incorrect when states are added.
-	if (reflect != -1) {
-		return !!reflect;
-	}
-
-	if (current_target == targets.end()) {
-		reflect = 0;
-		return false;
-	}
-
-	auto old_current_target = current_target;
-	bool old_first_attack = first_attack;
-
-	// Only negative skills are reflected
-	if (GetSource()->GetType() == (*current_target)->GetType()) {
-		reflect = 0;
-		return false;
-	}
-
-	// Items ignore reflect
-	if (item) {
-		reflect = 0;
-		return false;
-	}
-
-	std::vector<Game_Battler*> anim_targets;
-
-	bool has_reflect = false;
-
-	do {
-		has_reflect |= (*current_target)->HasReflectState();
-	} while (TargetNextInternal());
-
-	current_target = old_current_target;
-	first_attack = old_first_attack;
-
-	reflect = has_reflect ? 1 : 0;
-	return has_reflect;
 }
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
