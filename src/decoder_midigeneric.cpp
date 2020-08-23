@@ -27,9 +27,14 @@ constexpr int GenericMidiDecoder::midi_default_tempo;
 
 GenericMidiDecoder::GenericMidiDecoder(MidiDecoder* mididec)
 	: mididec(mididec) {
+	assert(mididec);
 	seq = std::make_unique<midisequencer::sequencer>();
 
 	music_type = "midi";
+}
+
+GenericMidiDecoder::~GenericMidiDecoder() {
+	mididec->OnMidiReset();
 }
 
 static int read_func(void* instance) {

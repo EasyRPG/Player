@@ -34,6 +34,8 @@ public:
 	 */
 	explicit GenericMidiDecoder(MidiDecoder* midi_dec);
 
+	~GenericMidiDecoder() override;
+
 	/**
 	 * Assigns a stream to the midi decoder.
 	 * Open should be only called once per audio decoder instance.

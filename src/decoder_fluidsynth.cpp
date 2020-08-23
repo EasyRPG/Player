@@ -231,7 +231,7 @@ void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
 			fluid_synth_pitch_bend(instance_synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
 			break;
 		case 0xFF:
-			fluid_synth_program_reset(instance_synth);
+			fluid_synth_system_reset(instance_synth);
 			break;
 		default:
 			break;
@@ -243,7 +243,7 @@ void FluidSynthDecoder::OnMidiReset() {
 		return;
 	}
 
-	fluid_synth_program_reset(instance_synth);
+	fluid_synth_system_reset(instance_synth);
 }
 
 #endif
