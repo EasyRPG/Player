@@ -196,7 +196,7 @@ void Game_Event::RefreshPage() {
 	SetMoveSpeed(page->move_speed);
 
 	if (IsFacingLocked()) {
-		SetDirection(page->character_direction);
+		SetSpriteDirection(page->character_direction);
 	}
 
 	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
