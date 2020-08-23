@@ -508,17 +508,18 @@ void Game_Event::MoveTypeRandom() {
 void Game_Event::MoveTypeCycle(int default_dir) {
 	if (GetStopCount() < GetMaxStopCount()) return;
 
-	const int reverse_dir = ReverseDir(default_dir);
+	const auto prev_dir = GetDirection();
+
+	const auto reverse_dir = ReverseDir(default_dir);
 	int move_dir = GetDirection();
 	if (move_dir != reverse_dir) {
 		move_dir = default_dir;
 	}
 
-	const auto prev_dir = GetDirection();
 	Move(move_dir);
 
 	if (IsStopping() && GetStopCount() >= GetMaxStopCount() + 20) {
-		Move(reverse_dir);
+		Move(ReverseDir(move_dir));
 	}
 
 	if (IsStopping()) {
