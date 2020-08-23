@@ -85,6 +85,8 @@ namespace Input {
 
 		std::bitset<Input::Keys::KEYS_COUNT> keystates;
 		Point mouse_pos;
+
+		int last_written_frame = -1;
 	};
 
 	/**
@@ -115,6 +117,10 @@ namespace Input {
 		operator bool() const { return bool(log_file); }
 	private:
 		Filesystem_Stream::InputStream log_file;
+		int version = 1;
+		int last_read_frame = -1;
+		// NOTE: First field is the frame number
+		std::vector<std::string> keys;
 	};
 
 	extern std::unique_ptr<Source> source;
