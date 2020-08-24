@@ -387,6 +387,18 @@ public:
 	virtual int GetPhysicalDamageRate() const;
 
 	/**
+	 * Returns whether the attack is reflected to the source.
+	 * This is automatically handled by the battle algorithm class and
+	 * GetTarget will return the source instead.
+	 * The only exception is PlayAnimation which must be controlled through
+	 * an extra argument because a reflected skill renders both animations:
+	 * First time on target, then second time on source.
+	 *
+	 * @return true when reflected
+	 */
+	virtual bool IsReflected() const;
+
+	/**
 	 * Returns the algorithm type of this object.
 	 */
 	Type GetType() const;
@@ -475,8 +487,6 @@ protected:
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
-
-	bool reflect_set = false;
 };
 
 // Special algorithm for battlers which have no action. 
@@ -527,6 +537,7 @@ public:
 	const RPG::Sound* GetResultSe() const override;
 	std::string GetFailureMessage() const override;
 	int GetPhysicalDamageRate() const override;
+	bool IsReflected() const override;
 	bool ActionIsPossible() const override;
 
 private:

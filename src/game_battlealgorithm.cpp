@@ -756,7 +756,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (party_target) {
-		if (reflect_set) {
+		if (IsReflected()) {
 			targets.clear();
 			source->GetParty().GetActiveBattlers(targets);
 		} else {
@@ -764,7 +764,7 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 		}
 		party_target = nullptr;
 	} else {
-		if (reflect_set) {
+		if (IsReflected()) {
 			targets.clear();
 			targets.push_back(source);
 		}
@@ -851,6 +851,10 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 
 int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
 	return 0;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
+	return false;
 }
 
 Game_BattleAlgorithm::Null::Null(Game_Battler* source) :
@@ -1152,32 +1156,6 @@ void Game_BattleAlgorithm::Skill::Init() {
 		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
 		if (!animation) {
 			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
-		}
-	}
-
-	// Skill reflect checks
-	// Skills invoked by items ignore reflect
-	if (!item) {
-		// One or more targets?
-		if (party_target) {
-			std::vector<Game_Battler*> targetlist;
-			party_target->GetActiveBattlers(targetlist);
-			for (Game_Battler* t : targetlist) {
-				// Targets on enemy side?
-				if (GetSource()->GetType() != t->GetType()) {
-					// If at least one enemy has the reflect state, set reflect_set to true
-					if (t->HasReflectState()) {
-						reflect_set = true;
-						break;
-					}
-				}
-			}
-		} else {
-			// Target on enemy side?
-			if (GetSource()->GetType() != GetTarget()->GetType()) {
-				// If the target has the reflect state, set reflect_set to true
-				if (GetTarget()->HasReflectState()) reflect_set = true;
-			}
 		}
 	}
 }
@@ -1515,6 +1493,41 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 
 int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
 	return skill.physical_rate * 10;
+}
+
+bool Game_BattleAlgorithm::Skill::IsReflected() const {
+	// Reflect already checked?
+	if (reflect == -1) {
+		reflect = 0;
+		// Skills invoked by items ignore reflect
+		if (!item) {
+			// One or more targets?
+			if (party_target) {
+				std::vector<Game_Battler*> targetlist;
+				party_target->GetActiveBattlers(targetlist);
+				for (Game_Battler* t : targetlist) {
+					// Targets on enemy side?
+					if (GetSource()->GetType() != t->GetType()) {
+						// If at least one enemy has the reflect state, return true
+						if (t->HasReflectState()) {
+							reflect = 1;
+							return true;
+						}
+					}
+				}
+			} else {
+				// Target on enemy side?
+				if (GetSource()->GetType() != GetTarget()->GetType()) {
+					// If the target has the reflect state, return true
+					if (GetTarget()->HasReflectState()) {
+						reflect = 1;
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return !!reflect;
 }
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
