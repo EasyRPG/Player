@@ -1102,7 +1102,7 @@ Options:
                            Set to 0 to run with unlimited frames per second.
                            This option is not supported on all platforms.
       --no-vsync           Disable vertical sync and use fps-limit. Even without
-						   this option, vsync may not be supported on all platforms.
+                           this option, vsync may not be supported on all platforms.
       --enable-mouse       Use mouse click for decision and scroll wheel for lists
       --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the

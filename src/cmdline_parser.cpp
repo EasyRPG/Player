@@ -41,7 +41,9 @@ bool CmdlineArg::ParseValue(int i, long& value) const {
 
 CmdlineParser::CmdlineParser(int argc, char** argv)
 {
-	args.reserve(argc - 1);
+	if (argc > 0) {
+		args.reserve(argc - 1);
+	}
 	for (int i = 1; i < argc; ++i) {
 		args.push_back(argv[i]);
 	}
@@ -49,7 +51,9 @@ CmdlineParser::CmdlineParser(int argc, char** argv)
 
 CmdlineParser::CmdlineParser(int argc, wchar_t** argv)
 {
-	args.reserve(argc - 1);
+	if (argc > 0) {
+		args.reserve(argc - 1);
+	}
 	for (int i = 1; i < argc; ++i) {
 		args.push_back(Utils::FromWideString(argv[i]));
 	}
