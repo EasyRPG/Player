@@ -757,7 +757,6 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (party_target) {
 		if (reflect_set) {
-			PlayAnimation();
 			targets.clear();
 			source->GetParty().GetActiveBattlers(targets);
 		} else {
@@ -766,7 +765,6 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 		party_target = nullptr;
 	} else {
 		if (reflect_set) {
-			PlayAnimation();
 			targets.clear();
 			targets.push_back(source);
 		}
