@@ -75,13 +75,13 @@ std::string Scene_Save::GetSaveFilename(const FileFinder::DirectoryTree& tree, i
 	return filename;
 }
 
-void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
+void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id, bool prepare_save) {
 	const auto filename = GetSaveFilename(tree, slot_id);
 	auto save_stream = FileFinder::OpenOutputStream(filename);
-	Save(save_stream, slot_id);
+	Save(save_stream, slot_id, prepare_save);
 }
 
-void Scene_Save::Save(std::ostream& os, int slot_id) {
+void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	// TODO: Maybe find a better place to setup the save file?
 	lcf::rpg::SaveTitle title;
@@ -119,7 +119,10 @@ void Scene_Save::Save(std::ostream& os, int slot_id) {
 
 	Game_Map::PrepareSave();
 
-	lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
+	if (prepare_save) {
+		lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
+	}
+
 	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
 	if (Player::IsRPG2k()) {
