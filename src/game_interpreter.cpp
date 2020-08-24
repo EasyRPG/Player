@@ -335,6 +335,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		if (_state.wait_key_enter) {
+			if (Game_Message::IsMessageActive()) {
+				break;
+			}
+
 			if (!Input::IsTriggered(Input::DECISION)) {
 				break;
 			}
@@ -349,6 +353,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		if (_keyinput.wait) {
+			if (Game_Message::IsMessageActive()) {
+				break;
+			}
+
 			const int key = _keyinput.CheckInput();
 			Main_Data::game_variables->Set(_keyinput.variable, key);
 			Game_Map::SetNeedRefresh(true);
