@@ -38,6 +38,8 @@ public:
 
 	void Action(int index) override;
 	bool IsSlotValid(int index) override;
+
+	static void Save(const FileFinder::DirectoryTree& tree, int slot_id);
 };
 
 #endif

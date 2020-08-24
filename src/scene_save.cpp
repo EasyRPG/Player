@@ -57,10 +57,15 @@ void Scene_Save::Start() {
 }
 
 void Scene_Save::Action(int index) {
-	std::stringstream ss;
-	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
+	Save(*tree, index + 1);
 
-	Output::Debug("Saving to {}", ss.str());
+	Scene::Pop();
+}
+
+void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
+	const auto save_file = fmt::format("Save{:02d}.lsd", slot_id);
+
+	Output::Debug("Saving to {}", save_file);
 
 	// TODO: Maybe find a better place to setup the save file?
 	lcf::rpg::SaveTitle title;
@@ -94,15 +99,14 @@ void Scene_Save::Action(int index) {
 
 	Main_Data::game_data.title = title;
 
-	Game_System::SetSaveSlot(index + 1);
+	Game_System::SetSaveSlot(slot_id);
 
 	Game_Map::PrepareSave();
 
-	std::string save_file = ss.str();
-	std::string filename = FileFinder::FindDefault(*tree, ss.str());
+	std::string filename = FileFinder::FindDefault(tree, save_file);
 
 	if (filename.empty()) {
-		filename = FileFinder::MakePath((*tree).directory_path, save_file);
+		filename = FileFinder::MakePath(tree.directory_path, save_file);
 	}
 
 	lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
@@ -144,7 +148,6 @@ void Scene_Save::Action(int index) {
 	});
 #endif
 
-	Scene::Pop();
 }
 
 bool Scene_Save::IsSlotValid(int) {
