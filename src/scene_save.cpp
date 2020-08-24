@@ -62,10 +62,26 @@ void Scene_Save::Action(int index) {
 	Scene::Pop();
 }
 
-void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
+std::string Scene_Save::GetSaveFilename(const FileFinder::DirectoryTree& tree, int slot_id) {
 	const auto save_file = fmt::format("Save{:02d}.lsd", slot_id);
 
 	Output::Debug("Saving to {}", save_file);
+
+	std::string filename = FileFinder::FindDefault(tree, save_file);
+
+	if (filename.empty()) {
+		filename = FileFinder::MakePath(tree.directory_path, save_file);
+	}
+	return filename;
+}
+
+void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
+	const auto filename = GetSaveFilename(tree, slot_id);
+	auto save_stream = FileFinder::OpenOutputStream(filename);
+	Save(save_stream, slot_id);
+}
+
+void Scene_Save::Save(std::ostream& os, int slot_id) {
 
 	// TODO: Maybe find a better place to setup the save file?
 	lcf::rpg::SaveTitle title;
@@ -103,12 +119,6 @@ void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
 
 	Game_Map::PrepareSave();
 
-	std::string filename = FileFinder::FindDefault(tree, save_file);
-
-	if (filename.empty()) {
-		filename = FileFinder::MakePath(tree.directory_path, save_file);
-	}
-
 	lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
 	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
@@ -137,8 +147,7 @@ void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id) {
 			sme.map_id = 0;
 		}
 	}
-	auto save_stream = FileFinder::OpenOutputStream(filename);
-	lcf::LSD_Reader::Save(save_stream, data_copy, Player::encoding);
+	lcf::LSD_Reader::Save(os, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system
