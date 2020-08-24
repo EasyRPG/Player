@@ -28,12 +28,12 @@
 /**
  * The AudioDecoder class provides an abstraction over the decoding of
  * common audio formats.
- * Create will instantitate a proper audio decoder and calling Decode will
+ * Create will instantiate a proper audio decoder and calling Decode will
  * fill a buffer with audio data which must be passed to the audio hardware.
  */
 class AudioDecoder {
 public:
-	virtual ~AudioDecoder() {}
+	virtual ~AudioDecoder() = default;
 
 	/** Sample format */
 	enum class Format {
@@ -75,7 +75,7 @@ public:
 	 * The filename is used for debug purposes but should match the FILE handle.
 	 * Upon failure the FILE handle is valid and points at the beginning.
 	 *
-	 * @param stream File handle to parse
+	 * @param stream handle to parse
 	 * @param filename Path to the file handle
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
@@ -189,7 +189,7 @@ public:
 	 * Open should be only called once per audio decoder instance.
 	 * Use GetError to get the error reason on failure.
 	 *
-	 * @return true if inititalizing was succesful, false otherwise
+	 * @return true if initializing was successful, false otherwise
 	 */
 	virtual bool Open(Filesystem_Stream::InputStream stream) = 0;
 
@@ -211,7 +211,7 @@ public:
 	virtual void GetFormat(int& frequency, Format& format, int& channels) const = 0;
 
 	/**
-	 * Requests a prefered format from the audio decoder. Not all decoders
+	 * Requests a preferred format from the audio decoder. Not all decoders
 	 * support everything and it's recommended to use the audio hardware
 	 * for audio processing.
 	 * When false is returned use GetFormat to get the real format of the

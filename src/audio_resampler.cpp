@@ -182,7 +182,7 @@ inline static int DecodeAndConvertInt16(AudioDecoder * wrapped_decoder,
 }
 #endif
 
-AudioResampler::AudioResampler(std::unique_ptr<AudioDecoder> wrapped, bool pitch_handled, AudioResampler::Quality quality)
+AudioResampler::AudioResampler(std::unique_ptr<AudioDecoder> wrapped, AudioResampler::Quality quality)
 	: wrapped_decoder(std::move(wrapped))
 {
 	//There is no need for a standalone resampler decoder
@@ -190,7 +190,6 @@ AudioResampler::AudioResampler(std::unique_ptr<AudioDecoder> wrapped, bool pitch
 
 	music_type = wrapped_decoder->GetType();
 	lasterror = 0;
-	pitch_handled_by_decoder = pitch_handled;
 
 	#if defined(HAVE_LIBSPEEXDSP)
 		switch (quality) {
@@ -219,8 +218,6 @@ AudioResampler::AudioResampler(std::unique_ptr<AudioDecoder> wrapped, bool pitch
 	#endif
 
 	finished = false;
-	pitch = 100;
-
 }
 
 AudioResampler::~AudioResampler() {
@@ -340,20 +337,13 @@ bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels)
 }
 
 int AudioResampler::GetPitch() const {
-	if (pitch_handled_by_decoder) {
-		return wrapped_decoder->GetPitch();
-	} else {
-		return pitch;
-	}
+	return pitch;
 }
 
 bool AudioResampler::SetPitch(int pitch_) {
-	if (pitch_handled_by_decoder) {
-		return wrapped_decoder->SetPitch(pitch_);
-	} else {
-		pitch = pitch_;
-		return true;
-	}
+	pitch_handled_by_decoder = wrapped_decoder->SetPitch(pitch_);
+	pitch = pitch_;
+	return true;
 }
 
 int AudioResampler::FillBuffer(uint8_t* buffer, int length) {

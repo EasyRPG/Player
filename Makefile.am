@@ -18,6 +18,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
+	src/audio_midi.cpp \
+	src/audio_midi.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
@@ -46,10 +48,14 @@ libeasyrpg_player_a_SOURCES = \
 	src/cmdline_parser.h \
 	src/color.h \
 	src/compiler.h \
+	src/decoder_fluidsynth.cpp \
+	src/decoder_fluidsynth.h \
 	src/decoder_fmmidi.cpp \
 	src/decoder_fmmidi.h \
 	src/decoder_libsndfile.cpp \
 	src/decoder_libsndfile.h \
+	src/decoder_midigeneric.cpp \
+	src/decoder_midigeneric.h \
 	src/decoder_mpg123.cpp \
 	src/decoder_mpg123.h \
 	src/decoder_oggvorbis.cpp \
@@ -170,6 +176,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/message_overlay.h \
 	src/meta.cpp \
 	src/meta.h \
+	src/midisequencer.cpp \
+	src/midisequencer.h \
 	src/opacity.h \
 	src/options.h \
 	src/output.cpp \
@@ -375,8 +383,6 @@ libeasyrpg_player_a_SOURCES = \
 if WANT_FMMIDI
 libeasyrpg_player_a_SOURCES += \
 	src/midiprogram.h \
-	src/midisequencer.cpp \
-	src/midisequencer.h \
 	src/midisynth.cpp \
 	src/midisynth.h
 endif
@@ -438,7 +444,9 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(FMT_CFLAGS) \
 	$(LIBSNDFILE_CFLAGS) \
 	$(LIBXMP_CFLAGS) \
-	$(LIBSPEEXDSP_CFLAGS)
+	$(LIBSPEEXDSP_CFLAGS) \
+	$(FLUIDSYNTH_CFLAGS) \
+	$(FLUIDLITE_CFLAGS)
 
 libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 
@@ -460,7 +468,9 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(FMT_LIBS) \
 	$(LIBSNDFILE_LIBS) \
 	$(LIBXMP_LIBS) \
-	$(LIBSPEEXDSP_LIBS)
+	$(LIBSPEEXDSP_LIBS) \
+	$(FLUIDSYNTH_LIBS) \
+	$(FLUIDLITE_LIBS)
 
 if MACOS
 easyrpg_player_LDFLAGS = -framework Foundation

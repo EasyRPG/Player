@@ -67,7 +67,7 @@ CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DNDEBUG \
 			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
-			-DHAVE_LIBSPEEXDSP -DWANT_FASTWAV
+			-DHAVE_LIBSPEEXDSP -DHAVE_FLUIDLITE -DWANT_FASTWAV
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
 
@@ -79,7 +79,8 @@ LIBS	:= -lcitro2d -lcitro3d -lctru \
 		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype \
 		-lmpg123 -lsndfile -lvorbisidec -lopusfile -lopus \
-		-logg -lxmp-lite -lWildMidi -lspeexdsp -lm
+		-logg -lxmp-lite -lWildMidi -lspeexdsp -lfluidlite \
+		-lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

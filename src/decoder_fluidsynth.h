@@ -15,37 +15,55 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_DECODER_FMMIDI_H
-#define EP_DECODER_FMMIDI_H
+#ifndef EP_DECODER_FLUIDSYNTH_H
+#define EP_DECODER_FLUIDSYNTH_H
 
 // Headers
 #include <string>
 #include <memory>
+
 #include "audio_midi.h"
-#include "midisequencer.h"
-#include "midisynth.h"
+#include "system.h"
+
+#if defined(HAVE_FLUIDSYNTH) && defined(HAVE_FLUIDLITE)
+#error "Only HAVE_FLUIDSYNTH or HAVE_FLUIDLITE may be defined!"
+#endif
+
+#if defined(HAVE_FLUIDSYNTH)
+#include <fluidsynth.h>
+#elif defined(HAVE_FLUIDLITE)
+#include <fluidlite.h>
+#define FLUID_FAILED (-1)
+#endif
 
 /**
- * Audio decoder for MIDI powered by FM MIDI
+ * Audio decoder for MIDI powered by FluidSynth or FluidLite
  */
-class FmMidiDecoder : public MidiDecoder {
+class FluidSynthDecoder : public MidiDecoder {
 public:
-	FmMidiDecoder();
+	FluidSynthDecoder();
+	~FluidSynthDecoder() override;
+
+	static bool Initialize(std::string& error_message);
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	void OnMidiMessage(uint32_t message) override;
-	void OnSysExMessage(const void* data, size_t size) override;
+
 	void OnMidiReset() override;
 
-	std::unique_ptr<midisynth::synthesizer> synth;
-	std::unique_ptr<midisynth::fm_note_factory> note_factory;
-	midisynth::DRUMPARAMETER p;
-	void load_programs();
-
 	std::string GetName() override {
-		return "FmMidi";
+#if defined(HAVE_FLUIDSYNTH)
+		return "FluidSynth";
+#else
+		return "FluidLite";
+#endif
 	};
+
+private:
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	fluid_synth_t* instance_synth;
+#endif
 };
 
 #endif

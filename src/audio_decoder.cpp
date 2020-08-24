@@ -19,19 +19,18 @@
 #include <cassert>
 #include <cstring>
 #include "audio_decoder.h"
+#include "audio_midi.h"
+#include "audio_resampler.h"
 #include "output.h"
 #include "system.h"
 #include "utils.h"
 
-#include "decoder_fmmidi.h"
 #include "decoder_mpg123.h"
 #include "decoder_oggvorbis.h"
 #include "decoder_opus.h"
-#include "decoder_wildmidi.h"
 #include "decoder_libsndfile.h"
 #include "decoder_wav.h"
 #include "decoder_xmp.h"
-#include "audio_resampler.h"
 
 void AudioDecoder::Pause() {
 	paused = true;
@@ -133,35 +132,10 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-#ifdef HAVE_WILDMIDI
-		static bool wildmidi_works = true;
-		if (wildmidi_works) {
-			auto mididec = std::unique_ptr<AudioDecoder>(new WildMidiDecoder());
-			if (mididec->WasInited()) {
-				if (resample) {
-					mididec = std::unique_ptr<AudioResampler>(new AudioResampler(std::move(mididec)));
-				}
-				return mididec;
-			} else {
-				wildmidi_works = false;
-				Output::Debug("WildMidi Failed: {}", mididec->GetError());
-			}
+		auto midi = MidiDecoder::Create(stream, resample);
+		if (midi) {
+			return midi;
 		}
-#endif
-#if WANT_FMMIDI == 1
-		auto mididec = std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
-
-		if (mididec->WasInited()) {
-			if (resample) {
-				mididec = std::unique_ptr<AudioResampler>(new AudioResampler(std::move(mididec), true));
-			}
-			return mididec;
-		} else {
-			Output::Debug("FmMidi Failed: {}", mididec->GetError());
-		}
-#endif
-		// No MIDI decoder available
-		return nullptr;
 	}
 
 	// Try to use internal OGG decoder

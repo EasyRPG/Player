@@ -23,6 +23,7 @@ LOCAL_STATIC_LIBRARIES := \
 		vorbisfile vorbis ogg WildMidi \
 		xmp-lite mpg123 speexdsp sndfile \
 		freetype pixman-1 png opusfile opus \
+		fluidlite \
 		lcf expat icui18n icuuc icudata \
 		cpufeatures fmt
 
@@ -31,7 +32,7 @@ LOCAL_LDLIBS := -lGLESv1_CM -llog -lz -latomic
 LOCAL_CFLAGS := -O2 -Wall -Wextra -DUSE_SDL=2 -fno-math-errno \
 		-DHAVE_MPG123 -DWANT_FMMIDI -DHAVE_OPUS -DHAVE_WILDMIDI \
 		-DHAVE_OGGVORBIS -DHAVE_XMP -DHAVE_LIBSNDFILE \
-		-DHAVE_LIBSPEEXDSP -DSUPPORT_AUDIO
+		-DHAVE_LIBSPEEXDSP -DHAVE_FLUIDLITE -DSUPPORT_AUDIO
 
 LOCAL_CXXFLAGS := $(LOCAL_C_FLAGS) -std=c++14 -fno-rtti
 

@@ -25,6 +25,8 @@ add_library(${PROJECT_NAME}
 	src/audio_generic.cpp
 	src/audio_generic.h
 	src/audio.h
+	src/audio_midi.cpp
+	src/audio_midi.h
 	src/audio_resampler.cpp
 	src/audio_resampler.h
 	src/audio_sdl.cpp
@@ -54,8 +56,12 @@ add_library(${PROJECT_NAME}
 	src/color.h
 	src/compiler.h
 	src/config_param.h
+	src/decoder_fluidsynth.cpp
+	src/decoder_fluidsynth.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h
+	src/decoder_midigeneric.cpp
+	src/decoder_midigeneric.h
 	src/decoder_mpg123.cpp
 	src/decoder_mpg123.h
 	src/decoder_oggvorbis.cpp
@@ -178,6 +184,8 @@ add_library(${PROJECT_NAME}
 	src/message_overlay.h
 	src/meta.cpp
 	src/meta.h
+	src/midisequencer.cpp
+	src/midisequencer.h
 	src/opacity.h
 	src/options.h
 	src/output.cpp
@@ -626,6 +634,8 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" O
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
@@ -697,6 +707,20 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 		DEFINITION HAVE_WILDMIDI
 		TARGET WildMidi::WildMidi)
 
+	# fluidsynth
+	player_find_package(NAME FluidSynth
+		CONDITION PLAYER_WITH_FLUIDSYNTH
+		DEFINITION HAVE_FLUIDSYNTH
+		TARGET fluidsynth::fluidsynth)
+
+	# fluidlite
+	if(NOT FLUIDSYNTH_FOUND)
+		player_find_package(NAME FluidLite
+			CONDITION PLAYER_WITH_FLUIDLITE
+			DEFINITION HAVE_FLUIDLITE
+			TARGET fluidlite::fluidlite)
+	endif()
+
 	# xmp (lite)
 	player_find_package(NAME XMP
 		CONDITION PLAYER_WITH_XMP
@@ -708,8 +732,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 			src/decoder_fmmidi.cpp
 			src/decoder_fmmidi.h
 			src/midiprogram.h
-			src/midisequencer.cpp
-			src/midisequencer.h
 			src/midisynth.cpp
 			src/midisynth.h)
 	endif()
@@ -886,22 +908,26 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 		message(STATUS "WAV playback: None")
 	endif()
 
+	set(MIDI_LIBS)
+	if(FLUIDSYNTH_FOUND)
+		list(APPEND MIDI_LIBS "FluidSynth")
+	endif()
+	if(FLUIDLITE_FOUND)
+		list(APPEND MIDI_LIBS "FluidLite")
+	endif()
 	if(WILDMIDI_FOUND)
-		if(${PLAYER_ENABLE_FMMIDI} MATCHES "(Fallback|ON)")
-			message(STATUS "MIDI playback: WildMidi. Fallback to built-in (FmMidi)")
-		else()
-			message(STATUS "MIDI playback: WildMidi")
-		endif()
-	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "Fallback")
-		message(STATUS "MIDI playback: SDL2_mixer. Fallback to built-in (FmMidi)")
-	elseif(PLAYER_ENABLE_FMMIDI)
-		message(STATUS "MIDI playback: built-in (FmMidi)")
+		list(APPEND MIDI_LIBS "WildMidi")
+	endif()
+	if(PLAYER_ENABLE_FMMIDI)
+		list(APPEND MIDI_LIBS "built-in (FmMidi)")
+	endif()
+
+	if(MIDI_LIBS)
+		message(STATUS "MIDI playback: ${MIDI_LIBS}")
+	elseif(SDL2_MIXER_FOUND)
+		message(STATUS "MIDI playback: SDL2_mixer.")
 	else()
-		if(SDL2_MIXER_FOUND)
-			message(STATUS "MIDI playback: SDL2_mixer.")
-		else()
-			message(STATUS "MIDI playback: None")
-		endif()
+		message(STATUS "MIDI playback: None")
 	endif()
 
 	if(MPG123_FOUND)

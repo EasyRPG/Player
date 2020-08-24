@@ -42,7 +42,8 @@ CFLAGS		= 	-g -O2 -Wall -Wextra -fno-math-errno \
 				-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 				-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 				-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
-				-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
+				-DHAVE_LIBSPEEXDSP -DHAVE_FLUIDLITE \
+				-DWANT_FMMIDI -DWANT_FASTWAV \
 				$(MACHDEP) $(INCLUDE)
 
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
@@ -57,7 +58,7 @@ LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz -lSDL \
 			-licuuc -licui18n -licudata -lfmt \
 			-lfreetype -lharfbuzz -lfreetype \
 			-lmpg123 -lsndfile -lvorbisidec -logg -lxmp-lite \
-			-lWildMidi -lspeexdsp -lopusfile -lopus \
+			-lWildMidi -lspeexdsp -lopusfile -lopus -lfluidlite \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
