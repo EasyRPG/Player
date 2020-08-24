@@ -46,6 +46,10 @@ public:
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
+	bool SetPitch(int) override {
+		return false;
+	}
+
 private:
 #ifdef HAVE_WILDMIDI
 	midi* handle = nullptr;

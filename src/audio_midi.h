@@ -56,7 +56,7 @@ public:
 	 * - Open
 	 * - Seek
 	 * - Tell
-	 * - SetPitch
+	 * - SetPitch - Return "false" for resampling
 	 */
 
 	/**
