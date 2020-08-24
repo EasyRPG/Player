@@ -73,6 +73,45 @@ enum PushPopOperation {
 
 int Scene::push_pop_operation = 0;
 
+lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
+	switch (t) {
+		case Null:
+		case GameBrowser:
+		case SceneMax:
+		case Logo:
+			break;
+		case Title:
+			return lcf::rpg::SaveSystem::Scene_title;
+		case Map:
+			return lcf::rpg::SaveSystem::Scene_map;
+		case Menu:
+		case Item:
+		case Skill:
+		case Equip:
+		case ActorTarget:
+		case Status:
+		case Teleport:
+		case Order:
+		case End:
+			return lcf::rpg::SaveSystem::Scene_menu;
+		case File:
+		case Save:
+		case Load:
+			return lcf::rpg::SaveSystem::Scene_file;
+		case Battle:
+			return lcf::rpg::SaveSystem::Scene_battle;
+		case Shop:
+			return lcf::rpg::SaveSystem::Scene_shop;
+		case Name:
+			return lcf::rpg::SaveSystem::Scene_name;
+		case Gameover:
+			return lcf::rpg::SaveSystem::Scene_game_over;
+		case Debug:
+			return lcf::rpg::SaveSystem::Scene_debug;
+	}
+	return lcf::rpg::SaveSystem::Scene(-1);
+}
+
 Scene::Scene() {
 	type = Scene::Null;
 }
