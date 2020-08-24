@@ -124,6 +124,10 @@ int Game_Pictures::GetDefaultNumberOfPictures() {
 		return 1000;
 	}
 	else if (Player::IsMajorUpdatedVersion()) {
+		if (Player::IsPatchDynRpg() && Player::IsRPG2k3()) {
+			// DynRPG only exists for RPG Maker 2003 1.08
+			return 2000;
+		}
 		return 50;
 	}
 	else if (Player::IsRPG2k3Legacy()) {
