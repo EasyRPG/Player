@@ -40,7 +40,7 @@ using namespace std::chrono_literals;
 
 namespace {
 	std::string MakeHashKey(StringView folder_name, StringView filename, bool transparent) {
-		return std::string(folder_name) + ":" + std::string(filename) + ":" + (transparent ? "T" : " ");
+		return ToString(folder_name) + ":" + ToString(filename) + ":" + (transparent ? "T" : " ");
 	}
 
 	std::string MakeTileHashKey(StringView chipset_name, int id) {
@@ -140,7 +140,7 @@ namespace {
 
 		if (it == cache.end()) {
 			// FIXME: STRING_VIEW string copies here
-			const std::string path = FileFinder::FindImage(std::string(folder_name), std::string(filename));
+			const std::string path = FileFinder::FindImage(ToString(folder_name), ToString(filename));
 
 			BitmapRef bmp = BitmapRef();
 
