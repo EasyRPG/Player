@@ -153,8 +153,8 @@ void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 			return;
 		}
 	}
-
-	Output::Warning("Couldn't play {} SE. No free channel available", FileFinder::GetPathInsideGamePath(file));
+	// FIXME Not displaying as warning because multiple games exhaust free channels available, see #1356
+	Output::Debug("Couldn't play {} SE. No free channel available", FileFinder::GetPathInsideGamePath(file));
 }
 
 void GenericAudio::SE_Stop() {
