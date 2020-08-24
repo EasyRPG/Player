@@ -23,6 +23,7 @@
 #include <memory>
 #include "filesystem_stream.h"
 #include "input_buttons.h"
+#include "keys.h"
 
 namespace Input {
 	/**
@@ -59,6 +60,10 @@ namespace Input {
 			}
 			return pressed;
 		}
+		/** @return Returns raw keystates for reading the keyboard directly.*/
+		const std::bitset<Input::Keys::KEYS_COUNT>& GetPressedKeys() const {
+			return keystates;
+		}
 
 		ButtonMappingArray& GetButtonMappings() { return button_mappings; }
 		const ButtonMappingArray& GetButtonMappings() const { return button_mappings; }
@@ -68,6 +73,8 @@ namespace Input {
 
 		bool InitRecording(const std::string& record_to_path);
 
+		Point GetMousePosition() const { return mouse_pos; }
+
 	protected:
 		void Record();
 
@@ -75,6 +82,9 @@ namespace Input {
 		ButtonMappingArray button_mappings;
 		DirectionMappingArray direction_mappings;
 		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
+
+		std::bitset<Input::Keys::KEYS_COUNT> keystates;
+		Point mouse_pos;
 	};
 
 	/**

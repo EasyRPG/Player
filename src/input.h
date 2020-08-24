@@ -21,9 +21,11 @@
 // Headers
 #include <vector>
 #include <bitset>
+#include "point.h"
 #include "system.h"
 #include "input_buttons.h"
 #include "input_source.h"
+#include "keys.h"
 
 /**
  * Input namespace.
@@ -197,6 +199,38 @@ namespace Input {
 	 */
 	std::vector<InputButton> GetAllReleased();
 
+	/*
+	 * Gets if a key is pressed.
+	 * Low level function accessing keys directly bypassing the button mapping.
+	 *
+	 * @param key key ID.
+	 * @return whether the key is being pressed.
+	 */
+	bool IsRawKeyPressed(Input::Keys::InputKey key);
+
+	/*
+	 * Gets if a key is triggered.
+	 * Low level function accessing keys directly bypassing the button mapping.
+	 *
+	 * @param key key ID.
+	 * @return whether the key is being released.
+	 */
+	bool IsRawKeyTriggered(Input::Keys::InputKey key);
+
+	/*
+	 * Gets if a key is released.
+	 * Low level function accessing keys directly bypassing the button mapping.
+	 *
+	 * @param key key ID.
+	 * @return whether the key is being released.
+	 */
+	bool IsRawKeyReleased(Input::Keys::InputKey key);
+
+	/**
+	 * @return Position of the mouse cursor relative to the screen
+	 */
+	Point GetMousePosition();
+
 	/** Buttons press time (in frames). */
 	extern std::array<int, BUTTON_COUNT> press_time;
 
@@ -208,6 +242,15 @@ namespace Input {
 
 	/** Buttons trigger state. */
 	extern std::bitset<BUTTON_COUNT> released;
+
+	/** Raw keys triggered state. */
+	extern std::bitset<Input::Keys::KEYS_COUNT> raw_triggered;
+
+	/** Raw keys pressed state. */
+	extern std::bitset<Input::Keys::KEYS_COUNT> raw_pressed;
+
+	/** Raw keys released state. */
+	extern std::bitset<Input::Keys::KEYS_COUNT> raw_released;
 
 	/** Horizontal and vertical directions state. */
 	extern int dir4;
