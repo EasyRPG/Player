@@ -104,7 +104,7 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 		return nullptr;
 	}
 
-	fluid_synth_set_interp_method(syn, -1, 7);
+	fluid_synth_set_interp_method(syn, -1, FLUID_INTERP_LINEAR);
 
 	return syn;
 }
@@ -156,7 +156,7 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 
 		fluid_settings_setnum(global_settings.get(), "synth.gain", 0.6);
 		fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
-		fluid_settings_setint(global_settings.get(), "synth.polyphony", 32);
+		fluid_settings_setint(global_settings.get(), "synth.polyphony", 256);
 
 #ifdef HAVE_FLUIDSYNTH
 		fluid_settings_setint(global_settings.get(), "synth.reverb.active", 0);
