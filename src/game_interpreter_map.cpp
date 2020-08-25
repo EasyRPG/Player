@@ -368,80 +368,53 @@ bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { /
 	}
 
 	auto pm = PendingMessage();
-	std::ostringstream out;
+
+	StringView greeting_1, greeting_2, greeting_3, accept, cancel;
 
 	switch (inn_type) {
 		case 0:
-			if (Player::IsRPG2kE()) {
-				out << inn_price;
-				pm.PushLine(
-					Utils::ReplacePlaceholders(
-						lcf::Data::terms.inn_a_greeting_1,
-						{'V', 'U'},
-						{out.str(), lcf::Data::terms.gold}
-					)
-				);
-				pm.PushLine(
-					Utils::ReplacePlaceholders(
-						lcf::Data::terms.inn_a_greeting_3,
-						{'V', 'U'},
-						{out.str(), lcf::Data::terms.gold}
-					)
-				);
-			}
-			else {
-				out << lcf::Data::terms.inn_a_greeting_1
-					<< " " << inn_price << lcf::Data::terms.gold
-					<< " " << lcf::Data::terms.inn_a_greeting_2;
-				pm.PushLine(out.str());
-				pm.PushLine(lcf::Data::terms.inn_a_greeting_3);
-			}
+			greeting_1 = lcf::Data::terms.inn_a_greeting_1;
+			greeting_2 = lcf::Data::terms.inn_a_greeting_2;
+			greeting_3 = lcf::Data::terms.inn_a_greeting_3;
+			accept = lcf::Data::terms.inn_a_accept;
+			cancel = lcf::Data::terms.inn_a_cancel;
 			break;
 		case 1:
-			if (Player::IsRPG2kE()) {
-				out << inn_price;
-				pm.PushLine(
-					Utils::ReplacePlaceholders(
-						lcf::Data::terms.inn_b_greeting_1,
-						{'V', 'U'},
-						{out.str(), lcf::Data::terms.gold}
-					)
-				);
-				pm.PushLine(
-					Utils::ReplacePlaceholders(
-						lcf::Data::terms.inn_b_greeting_3,
-						{'V', 'U'},
-						{out.str(), lcf::Data::terms.gold}
-					)
-				);
-			}
-			else {
-				out << lcf::Data::terms.inn_b_greeting_1
-					<< " " << inn_price << lcf::Data::terms.gold
-					<< " " << lcf::Data::terms.inn_b_greeting_2;
-				pm.PushLine(out.str());
-				pm.PushLine(lcf::Data::terms.inn_b_greeting_3);
-			}
+			greeting_1 = lcf::Data::terms.inn_b_greeting_1;
+			greeting_2 = lcf::Data::terms.inn_b_greeting_2;
+			greeting_3 = lcf::Data::terms.inn_b_greeting_3;
+			accept = lcf::Data::terms.inn_b_accept;
+			cancel = lcf::Data::terms.inn_b_cancel;
 			break;
-		default:
-			return false;
+	}
+
+	if (Player::IsRPG2kE()) {
+		auto price_s = std::to_string(inn_price);
+		pm.PushLine(
+			Utils::ReplacePlaceholders(
+				greeting_1,
+				Utils::MakeArray('V', 'U'),
+				Utils::MakeSvArray(price_s, lcf::Data::terms.gold)
+			)
+		);
+		pm.PushLine(
+			Utils::ReplacePlaceholders(
+				greeting_3,
+				Utils::MakeArray('V', 'U'),
+				Utils::MakeSvArray(price_s, lcf::Data::terms.gold)
+			)
+		);
+	}
+	else {
+		pm.PushLine(fmt::format("{} {}{} {}", greeting_1, inn_price, lcf::Data::terms.gold, greeting_2));
+		pm.PushLine(ToString(greeting_3));
 	}
 
 	bool can_afford = (Main_Data::game_party->GetGold() >= inn_price);
 	pm.SetChoiceResetColors(true);
 
-	switch (inn_type) {
-		case 0:
-			pm.PushChoice(lcf::Data::terms.inn_a_accept, can_afford);
-			pm.PushChoice(lcf::Data::terms.inn_a_cancel);
-			break;
-		case 1:
-			pm.PushChoice(lcf::Data::terms.inn_b_accept, can_afford);
-			pm.PushChoice(lcf::Data::terms.inn_b_cancel);
-			break;
-		default:
-			return false;
-	}
+	pm.PushChoice(ToString(accept), can_afford);
+	pm.PushChoice(ToString(cancel));
 
 	pm.SetShowGoldWindow(true);
 

@@ -35,41 +35,41 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	SetZ(Priority_Window + 50);
 }
 
-void Window_BattleMessage::Push(const std::string& message) {
+void Window_BattleMessage::Push(StringView message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
 	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
-	Utils::ForEachLine(message, [this](const std::string& line)
+	Utils::ForEachLine(message, [this](StringView line)
 			{ PushLine(line); });
 }
 
-void Window_BattleMessage::PushLine(const std::string& line) {
+void Window_BattleMessage::PushLine(StringView line) {
 	if (Player::IsRPG2kE()) {
 		Game_Message::WordWrap(
 				line,
 				GetWidth() - 20,
-				[this](const std::string& wrap_line) {
-					lines.push_back(wrap_line);
+				[this](StringView wrap_line) {
+					lines.push_back(std::string(wrap_line));
 				}
 				);
 	}
 	else {
-		lines.push_back(line);
+		lines.push_back(std::string(line));
 	}
 
 	needs_refresh = true;
 }
 
-void Window_BattleMessage::PushWithSubject(const std::string& message, const std::string& subject) {
+void Window_BattleMessage::PushWithSubject(StringView message, StringView subject) {
 	if (Player::IsRPG2kE()) {
 		Push(Utils::ReplacePlaceholders(
 			message,
-			{'S'},
-			{subject}
+			Utils::MakeArray('S'),
+			Utils::MakeSvArray(subject)
 		));
 	}
 	else {
-		Push(subject + message);
+		Push(std::string(subject) + std::string(message));
 	}
 	needs_refresh = true;
 }

@@ -22,6 +22,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "string_view.h"
 
 class FileRequestAsync;
 struct FileRequestResult;
@@ -48,7 +49,7 @@ namespace AsyncHandler {
 	 * @param file_name Name of the requested file requested.
 	 * @return The async request.
 	 */
-	FileRequestAsync* RequestFile(const std::string& folder_name, const std::string& file_name);
+	FileRequestAsync* RequestFile(StringView folder_name, StringView file_name);
 
 	/**
 	 * Creates a request to a file.
@@ -60,7 +61,7 @@ namespace AsyncHandler {
 	 * @param file_name Name of the requested file requested.
 	 * @return The async request.
 	 */
-	FileRequestAsync* RequestFile(const std::string& file_name);
+	FileRequestAsync* RequestFile(StringView file_name);
 
 	/**
 	 * Checks if any file with important-flag hasn't finished downloading yet.

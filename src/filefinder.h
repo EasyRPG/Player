@@ -21,6 +21,7 @@
 // Headers
 #include "system.h"
 #include "filesystem_stream.h"
+#include "string_view.h"
 
 #include <string>
 #include <cstdio>
@@ -203,7 +204,7 @@ namespace FileFinder {
 	 * @param name file name to be appended to dir.
 	 * @return combined path
 	 */
-	std::string MakePath(const std::string& dir, const std::string& name);
+	std::string MakePath(StringView dir, StringView name);
 
 	/**
 	 * Converts a path to the canonical equivalent.

@@ -22,6 +22,7 @@
 #include "memory_management.h"
 #include "rect.h"
 #include "color.h"
+#include "string_view.h"
 #include <string>
 
 class Font;
@@ -52,7 +53,7 @@ namespace Text {
 	 *
 	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, const std::string& text, Text::Alignment align = Text::AlignLeft);
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws the text onto dest bitmap with given parameters. Does not draw a shadow.
@@ -66,7 +67,7 @@ namespace Text {
 	 *
 	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, const std::string& text);
+	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, StringView text);
 
 	/**
 	 * Draws the character onto dest bitmap with given parameters.

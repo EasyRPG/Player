@@ -264,6 +264,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/sdl_ui.h \
 	src/shinonome_gothic.h \
 	src/shinonome_mincho.h \
+	src/span.h \
 	src/sprite.cpp \
 	src/sprite.h \
 	src/sprite_airshipshadow.h \
@@ -283,6 +284,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/state.cpp \
 	src/state.h \
 	src/std_clock.h \
+	src/string_view.h \
 	src/system.h \
 	src/teleport_target.h \
 	src/text.cpp \

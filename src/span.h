@@ -15,42 +15,14 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_NAME_H
-#define EP_WINDOW_NAME_H
+#ifndef EP_SPAN_H
+#define EP_SPAN_H
 
-// Headers
-#include <string>
-#include "window_base.h"
-#include "string_view.h"
+#include <lcf/span.h>
 
-/**
- * Window Name Class.
- */
-class Window_Name :	public Window_Base {
-public:
-	/**
-	 * Constructor.
-	 */
-	Window_Name(int ix, int iy, int iwidth, int iheight);
-
-	/**
-	 * Renders the current name on the window.
-	 */
-	void Refresh();
-
-	void Set(std::string text);
-	void Append(StringView text);
-	void Erase();
-	const std::string& Get() const;
-
-	void Update() override;
-
-protected:
-	std::string name;
-};
-
-inline const std::string& Window_Name::Get() const {
-	return name;
-}
+using lcf::Span;
+using lcf::ExtentT;
+using lcf::dynamic_extent;
+using lcf::MakeSpan;
 
 #endif

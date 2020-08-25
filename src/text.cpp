@@ -44,7 +44,7 @@ Rect Text::Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch
 	}
 }
 
-Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap& system, const int color, const std::string& text, const Text::Alignment align) {
+Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
 	if (text.length() == 0) return { x, y, 0, 0 };
 
 	Rect dst_rect = font.GetSize(text);
@@ -87,7 +87,7 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap
 	return { x, y, next_glyph_pos, ih };
 }
 
-Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color color, const std::string& text) {
+Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color color, StringView text) {
 	if (text.length() == 0) return { x, y, 0, 0 };
 
 	int dx = x;

@@ -24,6 +24,7 @@
 
 #include "system.h"
 #include "memory_management.h"
+#include "string_view.h"
 
 #define CACHE_DEFAULT_BITMAP "\x01"
 
@@ -35,25 +36,25 @@ class Tone;
  * Cache namespace.
  */
 namespace Cache {
-	BitmapRef Backdrop(const std::string& filename);
-	BitmapRef Battle(const std::string& filename);
-	BitmapRef Battle2(const std::string& filename);
-	BitmapRef Battlecharset(const std::string& filename);
-	BitmapRef Battleweapon(const std::string& filename);
-	BitmapRef Charset(const std::string& filename);
+	BitmapRef Backdrop(StringView filename);
+	BitmapRef Battle(StringView filename);
+	BitmapRef Battle2(StringView filename);
+	BitmapRef Battlecharset(StringView filename);
+	BitmapRef Battleweapon(StringView filename);
+	BitmapRef Charset(StringView filename);
 	BitmapRef Exfont();
-	BitmapRef Faceset(const std::string& filename);
-	BitmapRef Frame(const std::string& filename, bool transparent = true);
-	BitmapRef Gameover(const std::string& filename);
-	BitmapRef Monster(const std::string& filename);
-	BitmapRef Panorama(const std::string& filename);
-	BitmapRef Picture(const std::string& filename, bool transparent);
-	BitmapRef Chipset(const std::string& filename);
-	BitmapRef Title(const std::string& filename);
-	BitmapRef System(const std::string& filename);
-	BitmapRef System2(const std::string& filename);
+	BitmapRef Faceset(StringView filename);
+	BitmapRef Frame(StringView filename, bool transparent = true);
+	BitmapRef Gameover(StringView filename);
+	BitmapRef Monster(StringView filename);
+	BitmapRef Panorama(StringView filename);
+	BitmapRef Picture(StringView filename, bool transparent);
+	BitmapRef Chipset(StringView filename);
+	BitmapRef Title(StringView filename);
+	BitmapRef System(StringView filename);
+	BitmapRef System2(StringView filename);
 
-	BitmapRef Tile(const std::string& filename, int tile_id);
+	BitmapRef Tile(StringView filename, int tile_id);
 	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend);
 
 	void Clear();
@@ -70,8 +71,8 @@ namespace Cache {
 	/** @return the configured system2 bitmap, or nullptr if there is no system2 */
 	BitmapRef System2();
 
-	void SetSystemName(std::string const& filename);
-	void SetSystem2Name(std::string const& filename);
+	void SetSystemName(std::string filename);
+	void SetSystem2Name(std::string filename);
 
 	extern std::vector<uint8_t> exfont_custom;
 }

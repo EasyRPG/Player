@@ -51,8 +51,8 @@ namespace {
 
 }
 
-std::string Utils::LowerCase(const std::string& str) {
-	std::string result = str;
+std::string Utils::LowerCase(StringView str) {
+	auto result = std::string(str);
 	LowerCaseInPlace(result);
 	return result;
 }
@@ -62,10 +62,15 @@ std::string& Utils::LowerCaseInPlace(std::string& str) {
 	return str;
 }
 
-std::string Utils::UpperCase(const std::string& str) {
-	std::string result = str;
-	std::transform(result.begin(), result.end(), result.begin(), Upper);
+std::string Utils::UpperCase(StringView str) {
+	auto result = std::string(str);
+	UpperCaseInPlace(result);
 	return result;
+}
+
+std::string& Utils::UpperCaseInPlace(std::string& str) {
+	std::transform(str.begin(), str.end(), str.begin(), Upper);
+	return str;
 }
 
 int Utils::StrICmp(const char* l, const char* r) {
@@ -82,17 +87,7 @@ int Utils::StrICmp(const char* l, const char* r) {
 	return *l - *r;
 }
 
-bool Utils::StartsWith(const std::string& str, const std::string& start) {
-	return str.length() >= start.length() &&
-		   0 == str.compare(0, start.length(), start);
-}
-
-bool Utils::EndsWith(const std::string& str, const std::string& end) {
-	return str.length() >= end.length() &&
-		0 == str.compare(str.length() - end.length(), end.length(), end);
-}
-
-std::u16string Utils::DecodeUTF16(const std::string& str) {
+std::u16string Utils::DecodeUTF16(StringView str) {
 	std::u16string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint8_t c1 = *it;
@@ -167,7 +162,7 @@ std::u16string Utils::DecodeUTF16(const std::string& str) {
 	return result;
 }
 
-std::u32string Utils::DecodeUTF32(const std::string& str) {
+std::u32string Utils::DecodeUTF32(StringView str) {
 	std::u32string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint8_t c1 = *it;
@@ -425,22 +420,22 @@ Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escap
 
 #if !defined(__amigaos4__) && !defined(__AROS__)
 template<size_t WideSize>
-static std::wstring ToWideStringImpl(const std::string&);
+static std::wstring ToWideStringImpl(StringView);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
 template<> // utf32
-std::wstring ToWideStringImpl<4>(const std::string& str) {
-	std::u32string const tmp = Utils::DecodeUTF32(str);
+std::wstring ToWideStringImpl<4>(StringView str) {
+	const auto tmp = Utils::DecodeUTF32(str);
 	return std::wstring(tmp.begin(), tmp.end());
 }
 #else
 template<> // utf16
-std::wstring ToWideStringImpl<2>(const std::string& str) {
-	std::u16string const tmp = Utils::DecodeUTF16(str);
+std::wstring ToWideStringImpl<2>(StringView str) {
+	const auto tmp = Utils::DecodeUTF16(str);
 	return std::wstring(tmp.begin(), tmp.end());
 }
 #endif
 
-std::wstring Utils::ToWideString(const std::string& str) {
+std::wstring Utils::ToWideString(StringView str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
 }
 
@@ -596,7 +591,7 @@ std::string Utils::ReadLine(std::istream &is) {
 	}
 }
 
-std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::function<bool(char32_t)> predicate) {
+std::vector<std::string> Utils::Tokenize(StringView str_to_tokenize, const std::function<bool(char32_t)> predicate) {
 	std::u32string text = DecodeUTF32(str_to_tokenize);
 	std::vector<std::string> tokens;
 	std::u32string cur_token;
@@ -630,8 +625,8 @@ std::vector<uint8_t> Utils::ReadStream(std::istream& stream) {
 	return outbuf;
 }
 
-std::string Utils::ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
-	std::string str = text_template;
+std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values) {
+	auto str = std::string(text_template);
 	size_t index = str.find("%");
 	while (index != std::string::npos) {
 		if (index + 1 < str.length()) {
@@ -642,7 +637,7 @@ std::string Utils::ReplacePlaceholders(const std::string& text_template, std::ve
 					t_it != types.end() && v_it != values.end();
 					++t_it, ++v_it) {
 					if (std::toupper(type) == *t_it) {
-						str.replace(index, 2, *v_it);
+						str.replace(index, 2, v_it->data(), v_it->size());
 						index += (*v_it).length() - 2;
 						break;
 					}

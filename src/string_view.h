@@ -15,42 +15,24 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_NAME_H
-#define EP_WINDOW_NAME_H
+#ifndef EP_STRING_VIEW_H
+#define EP_STRING_VIEW_H
 
-// Headers
-#include <string>
-#include "window_base.h"
-#include "string_view.h"
+#include <lcf/string_view.h>
+#include <fmt/core.h>
 
-/**
- * Window Name Class.
- */
-class Window_Name :	public Window_Base {
-public:
-	/**
-	 * Constructor.
-	 */
-	Window_Name(int ix, int iy, int iwidth, int iheight);
+using StringView = lcf::StringView;
 
-	/**
-	 * Renders the current name on the window.
-	 */
-	void Refresh();
+using lcf::ToString;
+using lcf::ToStringView;
 
-	void Set(std::string text);
-	void Append(StringView text);
-	void Erase();
-	const std::string& Get() const;
-
-	void Update() override;
-
-protected:
-	std::string name;
-};
-
-inline const std::string& Window_Name::Get() const {
-	return name;
+// FIXME: liblcf doesn't depend on fmt, so we need to add this here to enable fmtlib support for our StringView.
+namespace nonstd { namespace sv_lite {
+template <typename C, typename T>
+inline fmt::basic_string_view<C> to_string_view(basic_string_view<C,T> s) {
+    return fmt::basic_string_view<C>(s.data(), s.size());
 }
+} }
+
 
 #endif

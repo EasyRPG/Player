@@ -24,6 +24,8 @@
 #include <vector>
 #include <random>
 #include "system.h"
+#include "string_view.h"
+#include "span.h"
 
 namespace Utils {
 	/**
@@ -32,7 +34,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string LowerCase(const std::string& str);
+	std::string LowerCase(StringView str);
 
 	/**
 	 * Converts a string to lower case in-place (ASCII only, faster)
@@ -48,7 +50,15 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string UpperCase(const std::string& str);
+	std::string UpperCase(StringView str);
+
+	/**
+	 * Converts a string to upper case in-place. (ASCII only, faster)
+	 *
+	 * @param str string to convert.
+	 * @return the converted string.
+	 */
+	std::string& UpperCaseInPlace(std::string& str);
 
 	/**
 	 * Case insensitive (ascii only) lexicographical compare of 2 strings.
@@ -61,30 +71,12 @@ namespace Utils {
 	int StrICmp(const char* l, const char* r);
 
 	/**
-	 * Tests if a string starts with a substring.
-	 *
-	 * @param str String to search in
-	 * @param end Substring to check at the start of str
-	 * @return true when the start matches
-	 */
-	bool StartsWith(const std::string& str, const std::string& end);
-
-	/**
-	 * Tests if a string ends with a substring.
-	 *
-	 * @param str String to search in
-	 * @param end Substring to check at the end of str
-	 * @return true when the end matches
-	 */
-	bool EndsWith(const std::string& str, const std::string& end);
-
-	/**
 	 * Converts Utf8 to UTF-16.
 	 *
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::u16string DecodeUTF16(const std::string& str);
+	std::u16string DecodeUTF16(StringView str);
 
 	/**
 	 * Converts UTF-8 to UTF-32.
@@ -92,7 +84,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::u32string DecodeUTF32(const std::string& str);
+	std::u32string DecodeUTF32(StringView str);
 
 	/**
 	 * Converts UTF-16 to UTF-8.
@@ -132,7 +124,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::wstring ToWideString(const std::string& str);
+	std::wstring ToWideString(StringView str);
 
 	/**
 	 * Converts std::wstring to UTF-8 string.
@@ -295,7 +287,7 @@ namespace Utils {
 	 * @param predicate Predicate function, must return true when the character is used for splitting.
 	 * @return vector containing the elements between the tokens
 	 */
-	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);
+	std::vector<std::string> Tokenize(StringView str_to_tokenize, const std::function<bool(char32_t)> predicate);
 
 	/*
 	 * Searches for newlines and calls f(const std::string&) for each line.
@@ -304,7 +296,7 @@ namespace Utils {
 	 * @param f function of type void(const std::string&)
 	 */
 	template <typename F>
-	void ForEachLine(const std::string& line, F&& f);
+	void ForEachLine(StringView line, F&& f);
 
 
 	/**
@@ -326,7 +318,7 @@ namespace Utils {
 	 * should match types in number of elements and order.
 	 * @return A new string with placeholders replaced.
 	 */
-	std::string ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values);
+	std::string ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values);
 
 	/**
 	 * @return value clamped between min and max
@@ -352,6 +344,45 @@ namespace Utils {
 	template <typename Dest, typename Src>
 	std::enable_if_t<std::is_arithmetic<Src>::value && std::is_arithmetic<Dest>::value, Dest> RoundTo(Src v);
 
+	namespace detail {
+	template <typename D, typename...> struct MakeArrayReturnHelper { using type = D; };
+	template <typename... Types> struct MakeArrayReturnHelper<void, Types...> : std::common_type<Types...> {};
+	template <typename D, typename... Types> using MakeArrayReturn = std::array<typename MakeArrayReturnHelper<D,Types...>::type, sizeof...(Types)>;
+	template <typename D, typename... Types> using MakeVectorReturn = std::vector<typename MakeArrayReturnHelper<D,Types...>::type>;
+	} // namespace detail
+
+	/**
+	 * Create a std::array from the given parameters, automatically deducing the type and size.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr detail::MakeArrayReturn<D,Types...> MakeArray(Types&& ... t) {
+		return { std::forward<Types>(t)... };
+	}
+
+	/**
+	 * Create a std::array<StringView,N> from the given parameters, automatically deducing the size.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr auto MakeSvArray(Types&& ... t) {
+		return MakeArray<StringView>(std::forward<Types>(t)...);
+	}
+
+	/**
+	 * Create a std::vector from the given parameters, automatically deducing the type.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr detail::MakeVectorReturn<D,Types...> MakeVector(Types&& ... t) {
+		return { std::forward<Types>(t)... };
+	}
+
+	/**
+	 * Create a std::vector<StringView> from the given parameters.
+	 */
+	template <typename D = void, typename... Types>
+	constexpr auto MakeSvVector(Types&& ... t) {
+		return MakeVector<StringView>(std::forward<Types>(t)...);
+	}
+
 } // namespace Utils
 
 template <typename T>
@@ -364,11 +395,11 @@ inline bool Utils::PercentChance(long rate) {
 }
 
 template <typename F>
-inline void Utils::ForEachLine(const std::string& line, F&& f) {
+inline void Utils::ForEachLine(StringView line, F&& f) {
 	size_t next = 0;
 	do {
 		auto idx = line.find('\n', next);
-		if (idx == std::string::npos) {
+		if (idx == decltype(line)::npos) {
 			if (next == 0) {
 				// Optimize the common case
 				f(line);

@@ -309,7 +309,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::Opaque());
 }
 
-void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
+void Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
@@ -328,13 +328,13 @@ void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text
 	}
 }
 
-void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align) {
+void Bitmap::TextDraw(int x, int y, int color, StringView text, Text::Alignment align) {
 	auto font = Font::Default();
 	auto system = Cache::SystemOrBlack();
 	Text::Draw(*this, x, y, *font, *system, color, text, align);
 }
 
-void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
+void Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
@@ -353,7 +353,7 @@ void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Te
 	}
 }
 
-void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
+void Bitmap::TextDraw(int x, int y, Color color, StringView text) {
 	auto font = Font::Default();
 	Text::Draw(*this, x, y, *font, color, text);
 }

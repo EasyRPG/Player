@@ -265,6 +265,7 @@ add_library(${PROJECT_NAME}
 	src/shake.h
 	src/shinonome_gothic.h
 	src/shinonome_mincho.h
+	src/span.h
 	src/sprite_airshipshadow.cpp
 	src/sprite_airshipshadow.h
 	src/sprite_battler.cpp
@@ -284,6 +285,7 @@ add_library(${PROJECT_NAME}
 	src/state.cpp
 	src/state.h
 	src/std_clock.h
+	src/string_view.h
 	src/system.h
 	src/teleport_target.h
 	src/text.cpp
