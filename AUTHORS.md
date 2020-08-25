@@ -16,6 +16,7 @@ EasyRPG Player authors
 * Matthew Fioravante (fmatthew5876)
 * Patrick Müssig (Tondorian)
 * Paulo "Zhek" Vizcaino (paulo_v)
+* rueter37
 * scurest
 * Shin-NiL
 * Takeshi Watanabe (takecheeze)
