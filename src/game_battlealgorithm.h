@@ -234,13 +234,14 @@ public:
 	 * Must be called before calling TargetNext, otherwise the result will
 	 * be incorrect.
 	 *
-	 * @param on_source Renders the animation on the source instead of the
-	 *                  targets (required for reflect)
+	 * @param on_original_targets Renders the animation on the original
+	 *                            targets instead of the current
+	 *                            targets (required for reflect)
 	 */
-	void PlayAnimation(bool on_source = false);
-	void PlaySecondAnimation(bool on_source = false);
+	void PlayAnimation(bool on_original_targets = false);
+	void PlaySecondAnimation(bool on_original_targets = false);
 
-	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
+	void PlaySoundAnimation(bool on_original_targets = false, int cutoff = -1);
 
 	/**
 	 * Returns whether the action hit the target.
@@ -415,6 +416,11 @@ public:
 	void SetRepeat(int repeat);
 
 	/**
+	 * @return true if the size of original_targets is greater than zero.
+	 */
+	bool OriginalTargetsSet() const;
+
+	/**
 	 * @return the critical hit message
 	 */
 	std::string GetCriticalHitMessage() const;
@@ -487,6 +493,8 @@ protected:
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
+
+	std::vector<Game_Battler*> original_targets;
 };
 
 // Special algorithm for battlers which have no action. 
