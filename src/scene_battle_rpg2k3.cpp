@@ -832,6 +832,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	if (play_reflect_anim) {
+		play_reflect_anim = false;
+		action->PlayAnimation();
+		return false;
+	}
+
 	Sprite_Battler* source_sprite;
 	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 
@@ -915,7 +921,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
-		action->PlayAnimation();
+		if (action->OriginalTargetsSet()) {
+			play_reflect_anim = true;
+			action->PlayAnimation(true);
+		} else {
+			action->PlayAnimation();
+		}
 
 		{
 			std::vector<Game_Battler*> battlers;
