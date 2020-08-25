@@ -261,26 +261,26 @@ namespace midisequencer{
     }
 
     float sequencer::get_start_skipping_silence() {
-        for (auto i = messages.begin(); i != messages.end(); ++i) {
+        for (auto& msg: messages) {
             // If we find Loop Start before the first NoteOn, just start there
-            if (is_loop_start(i->message)) {
-                float time = i->time;
+            if (is_loop_start(msg.message)) {
+                float time = msg.time;
                 // RPG_RT always rewinds "a little"
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
-                time = std::max(0.0f, time - (i->tempo / 2100000.0f));
+                time = std::max(0.0f, time - (msg.tempo / 2100000.0f));
                 return time;
-            } else if ((i->message & 0xFF) == 0xF0) {
+            } else if ((msg.message & 0xFF) == 0xF0) {
                 // SysEx message. RPG_RT doesn't skip silence if there's a SysEx
                 // message in the beginning, so neither should we...
                 return 0.0f;
-            } else if ((i->message & 0xF0) == 0x90) {
+            } else if ((msg.message & 0xF0) == 0x90) {
                 // NoteOn -- found the first note!
-                float time = i->time;
+                float time = msg.time;
                 // RPG_RT always rewinds "a little"
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
-                time = std::max(0.0f, time - (i->tempo / 2100000.0f));
+                time = std::max(0.0f, time - (msg.tempo / 2100000.0f));
                 return time;
             }
         }

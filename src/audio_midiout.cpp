@@ -28,7 +28,8 @@
 
 class GenericMidiOut : public MidiOut, public midisequencer::output {
 public:
-	GenericMidiOut(MidiOutDevice* device);
+	GenericMidiOut(std::unique_ptr<MidiOutDevice> device);
+	~GenericMidiOut();
 
 	void SetFade(int begin, int end, int duration) override;
 	void SetVolume(int volume) override;
@@ -41,9 +42,8 @@ public:
 	virtual bool SetPitch(int pitch) override;
 	virtual int GetPitch() const override;
 	virtual int GetTicks() const override;
-	virtual void Update(long long delta) override;
+	virtual void Update(std::chrono::microseconds delta) override;
 	virtual bool Open(Filesystem_Stream::InputStream stream) override;
-	virtual bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 	virtual void Reset() override;
 
 	virtual std::string GetError() const override {
@@ -100,6 +100,8 @@ private:
 	void reset_tempos_after_loop();
 };
 
+constexpr int GenericMidiOut::midi_default_tempo;
+
 static const uint8_t midi_event_control_change = 0b1011;
 static const uint8_t midi_control_volume = 7;
 static const uint8_t midi_control_all_sound_off = 120;
@@ -130,10 +132,31 @@ static uint32_t midimsg_reset_all_controller(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_reset_all_controller, 0);
 }
 
-GenericMidiOut::GenericMidiOut(MidiOutDevice* device)
-	: device(device) {
+static inline uint8_t midimsg_get_event_type(uint32_t msg) {
+	return (msg & 0x0000F0) >> 4;
+}
+
+static inline uint8_t midimsg_get_channel(uint32_t msg) {
+	return (msg & 0x00000F);
+}
+
+static inline uint8_t midimsg_get_value1(uint32_t msg) {
+	return (msg & 0x00FF00) >> 8;
+}
+
+static inline uint8_t midimsg_get_value2(uint32_t msg) {
+	return (msg & 0xFF0000) >> 16;
+}
+
+GenericMidiOut::GenericMidiOut(std::unique_ptr<MidiOutDevice> device)
+	: device(std::move(device)) {
 	seq = std::make_unique<midisequencer::sequencer>();
 	channel_volumes.fill(127);
+}
+
+GenericMidiOut::~GenericMidiOut()
+{
+	reset();
 }
 
 std::unique_ptr<MidiOut> MidiOut::Create(Filesystem_Stream::InputStream& stream, const std::string& filename) {
@@ -151,14 +174,14 @@ std::unique_ptr<MidiOut> MidiOut::Create(Filesystem_Stream::InputStream& stream,
 	if (!device->IsOK()) {
 		return nullptr;
 	}
-	midiout = std::make_unique<GenericMidiOut>(device.release());
+	midiout = std::make_unique<GenericMidiOut>(std::move(device));
 #endif
 #ifdef __APPLE__
 	std::unique_ptr<MidiOutDevice> device = std::make_unique<CoreAudioMidiOutDevice>();
 	if (!device->IsOK()) {
 		return nullptr;
 	}
-	midiout = std::make_unique<GenericMidiOut>(device.release());
+	midiout = std::make_unique<GenericMidiOut>(std::move(device));
 #endif
 	return midiout;
 }
@@ -270,7 +293,7 @@ int GenericMidiOut::GetTicks() const {
 	return tempo.back().GetTicks(mtime);
 }
 
-void GenericMidiOut::Update(long long delta) {
+void GenericMidiOut::Update(std::chrono::microseconds delta) {
 	if (paused) {
 		return;
 	}
@@ -285,23 +308,12 @@ void GenericMidiOut::Update(long long delta) {
 	}
 
 	seq->play(mtime, this);
-	mtime = mtime + ((delta / 1000000.0f) * tempo_multiplier);
+	mtime = mtime + ((delta.count() / 1000000.0f) * tempo_multiplier);
 
 	if (IsFinished() && looping) {
 		mtime = seq->rewind_to_loop();
 		reset_tempos_after_loop();
 	}
-}
-
-bool GenericMidiOut::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
-	if (offset == 0 && origin == std::ios_base::beg) {
-		seq->rewind();
-		mtime = 0.0f;
-		reset_tempos_after_loop();
-		SendMessageToAllChannels(midimsg_all_note_off(0));
-		return true;
-	}
-	return false;
 }
 
 void GenericMidiOut::Reset() {
@@ -312,17 +324,17 @@ void GenericMidiOut::Reset() {
 
 void GenericMidiOut::SendMessageToAllChannels(uint32_t midi_msg) {
 	for (int channel = 0; channel < 16; channel++) {
-		uint8_t event_type = (midi_msg & 0x0000F0) >> 4;
+		uint8_t event_type = midimsg_get_event_type(midi_msg);
 		midi_msg |= (((event_type << 4) & 0xF0) | (channel & 0x0F)) & 0x0000FF;
 		device->SendMidiMessage(midi_msg);
 	}
 }
 
 void GenericMidiOut::midi_message(int, uint_least32_t message) {
-	uint8_t event_type = (message & 0x0000F0) >> 4;
-	uint8_t channel = (message & 0x00000F);
-	uint8_t value1 = (message & 0x00FF00) >> 8;
-	uint8_t value2 = (message & 0xFF0000) >> 16;
+	uint8_t event_type = midimsg_get_event_type(message);
+	uint8_t channel = midimsg_get_channel(message);
+	uint8_t value1 = midimsg_get_value1(message);
+	uint8_t value2 = midimsg_get_value2(message);
 
 	if (event_type == midi_event_control_change && value1 == midi_control_volume) {
 		// Adjust channel volume

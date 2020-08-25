@@ -38,10 +38,6 @@ public:
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 
-	bool IsOK() override {
-		return midi_out != NULL;
-	}
-
 private:
 	HMIDIOUT midi_out;
 };

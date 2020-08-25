@@ -34,7 +34,7 @@ public:
 	bool midiout_thread_exit = false;
 private:
 	SDL_Thread *midiout_thread = nullptr;
-	SDL_mutex *midiout_mutex;
+	SDL_mutex *midiout_mutex = nullptr;
 }; // class SdlAudio
 
 #endif

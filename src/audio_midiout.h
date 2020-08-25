@@ -19,6 +19,7 @@
 #define EP_AUDIO_MIDIOUT_H
 
 #include <string>
+#include <chrono>
 #include "filesystem_stream.h"
 #include "audio_midiout_device.h"
 
@@ -83,21 +84,6 @@ public:
 	virtual void Rewind() {};
 
 	/**
-	 * Seeks in the MIDI sequence. The value of offset is implementation
-	 * defined but is guaranteed to match the result of Tell.
-	 * Libraries must support at least seek from the start for Rewind().
-	 *
-	 * @param offset Offset to seek to
-	 * @param origin Position to seek from
-	 * @return Whether seek was successful
-	 */
-	virtual bool Seek(std::streamoff offset, std::ios_base::seekdir origin) {
-		(void)offset;
-		(void)origin;
-		return false;
-	}
-
-	/**
 	 * Gets if the MIDI will loop when it finishes.
 	 *
 	 * @return if looping
@@ -132,9 +118,9 @@ public:
 	virtual bool IsFinished() const = 0;
 
 	/* Call this every ~1ms. 
-	 * @param delta Time in microseconds since last called. 
+	 * @param delta Time since last called. 
 	 */
-	virtual void Update(long long delta) = 0;
+	virtual void Update(std::chrono::microseconds delta) = 0;
 
 	/**
 	 * Provides an error message when Open or a Decode function fail.

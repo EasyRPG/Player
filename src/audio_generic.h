@@ -55,7 +55,7 @@ public:
 	void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) override;
 	void SE_Stop() override;
 	virtual void Update() override;
-	virtual void UpdateMidiOut(long long delta);
+	virtual void UpdateMidiOut(std::chrono::microseconds delta);
 
 	void SetFormat(int frequency, AudioDecoder::Format format, int channels);
 
@@ -72,6 +72,7 @@ private:
 		std::unique_ptr<MidiOut> midiout;
 		bool paused;
 		bool stopped;
+		void SetPaused(bool newPaused);
 	};
 	struct SeChannel {
 		std::unique_ptr<AudioDecoder> decoder;

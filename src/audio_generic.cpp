@@ -34,9 +34,6 @@ std::vector<float> GenericAudio::mixer_buffer = {};
 
 GenericAudio::GenericAudio() {
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout->Reset();
-		}
 		BGM_Channel.midiout.reset();
 		BGM_Channel.decoder.reset();
 	}
@@ -74,10 +71,7 @@ void GenericAudio::BGM_Pause() {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		if (BGM_Channel.decoder || BGM_Channel.midiout) {
-			if (BGM_Channel.midiout) {
-				BGM_Channel.midiout->Pause();
-			}
-			BGM_Channel.paused = true;
+			BGM_Channel.SetPaused(true);
 		}
 	}
 	UnlockMidiOutMutex();
@@ -87,29 +81,25 @@ void GenericAudio::BGM_Resume() {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		if (BGM_Channel.decoder || BGM_Channel.midiout) {
-			if (BGM_Channel.midiout) {
-				BGM_Channel.midiout->Resume();
-			}
-			BGM_Channel.paused = false;
+			BGM_Channel.SetPaused(false);
 		}
 	}
 	UnlockMidiOutMutex();
 }
 
 void GenericAudio::BGM_Stop() {
+	LockMutex();
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
 		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout->Reset();
 			BGM_Channel.midiout.reset();
 		} else if (BGM_Channel.decoder) {
-			LockMutex();
 			BGM_Channel.decoder.reset();
-			UnlockMutex();
 		}
 	}
 	UnlockMidiOutMutex();
+	UnlockMutex();
 }
 
 bool GenericAudio::BGM_PlayedOnce() const {
@@ -207,7 +197,7 @@ void GenericAudio::Update() {
 	// no-op, handled by the Decode function called through a thread
 }
 
-void GenericAudio::UpdateMidiOut(long long delta) {
+void GenericAudio::UpdateMidiOut(std::chrono::microseconds delta) {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		if (BGM_Channel.midiout && !BGM_Channel.paused) {
@@ -467,5 +457,12 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 		memcpy(output_buffer, sample_buffer.data(), buffer_length);
 	} else {
 		memset(output_buffer, '\0', buffer_length);
+	}
+}
+
+void GenericAudio::BgmChannel::SetPaused(bool newPaused) {
+	paused = newPaused;
+	if (midiout) {
+		midiout->Pause();
 	}
 }

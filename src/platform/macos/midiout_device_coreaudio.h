@@ -34,13 +34,9 @@ public:
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 
-	bool IsOK() override {
-		return graph != NULL;
-	}
-
 private:
 	AudioUnit midi_out;
-    AUGraph graph;
+	AUGraph graph;
 };
 
 #endif

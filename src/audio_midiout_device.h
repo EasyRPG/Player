@@ -27,6 +27,11 @@
   */
 class MidiOutDevice {
 public:
+	MidiOutDevice() = default;
+	MidiOutDevice(MidiOutDevice&&) = delete;
+	MidiOutDevice(const MidiOutDevice&) = delete;
+	MidiOutDevice& operator=(const MidiOutDevice&) = delete;
+	MidiOutDevice& operator=(MidiOutDevice&&) = delete;
 	virtual ~MidiOutDevice() = default;
 
 	virtual void Pause() {}
@@ -46,9 +51,12 @@ public:
 
 	virtual void SendMidiReset() {}
 
-	virtual bool IsOK() {
-		return true;
+	bool IsOK() {
+		return isOK;
 	}
+
+protected:
+	bool isOK;
 };
 
 #endif

@@ -50,7 +50,7 @@ static int MidioutThreadMain(void* ptr) {
 
 		should_exit = data->midiout_thread_exit;
 		auto us = std::chrono::duration_cast<std::chrono::microseconds>(ticks - start_ticks);
-		data->UpdateMidiOut(us.count());
+		data->UpdateMidiOut(us);
 
 		data->UnlockMidiOutMutex();
 		Game_Clock::SleepFor(1ms);

@@ -30,7 +30,10 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 	if (err != MMSYSERR_NOERROR) {
 		Output::Debug("Open MIDI device {} failed: error {}", 0, err);
 		midi_out = NULL;
+		isOK = false;
+		return;
 	}
+	isOK = true;
 }
 
 Win32MidiOutDevice::~Win32MidiOutDevice() {

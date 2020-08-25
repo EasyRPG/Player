@@ -23,6 +23,7 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	OSStatus status = NewAUGraph(&graph);
 	if (status != noErr) {
 		Output::Debug("Open MIDI device failed: error {}", status);
+		isOK = false;
 		return;
 	}
 	AudioComponentDescription synthDesc = {
@@ -69,6 +70,11 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 
 	status = AUGraphStart(graph);
 
+	if (status != noErr) {
+		isOK = false;
+		return;
+	}
+	isOK = true;
 }
 
 CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice() {
