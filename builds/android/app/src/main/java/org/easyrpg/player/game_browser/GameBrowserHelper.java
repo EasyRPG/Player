@@ -30,7 +30,7 @@ import java.util.LinkedList;
 
 public class GameBrowserHelper {
     //Files' names
-    private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini";
+    private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini", EXE_FILE = "RPG_RT.exe";
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     private static int GRANTED_PERMISSION = 0;
@@ -50,6 +50,9 @@ public class GameBrowserHelper {
         boolean databaseFound = false;
         boolean treemapFound = false;
 
+        // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
+        int rpgrtCount = 0;
+
         for (File entry : dir.listFiles()) {
             if (entry.isFile() && entry.canRead()) {
                 if (!databaseFound && entry.getName().equalsIgnoreCase(DATABASE_NAME)) {
@@ -58,10 +61,24 @@ public class GameBrowserHelper {
                     treemapFound = true;
                 }
 
+                // Count non-standard files.
+                // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
+                if (entry.getName().toLowerCase().startsWith("rpg_rt.")) {
+                    if (!(entry.getName().equalsIgnoreCase(INI_FILE) || entry.getName().equalsIgnoreCase(EXE_FILE))) {
+                        rpgrtCount += 1;
+                    }
+                }
+
                 if (databaseFound && treemapFound) {
                     return true;
                 }
             }
+        }
+
+        // We might be dealing with a non-standard extension.
+        // Show it, and let the C++ code sort out which file is which.
+        if (rpgrtCount == 2) {
+            return true;
         }
 
         return false;

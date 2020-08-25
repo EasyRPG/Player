@@ -48,13 +48,27 @@
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
 
+/** Prefix for .ldb and .lmt files; used when guessing non-standard extensions. */
+#define RPG_RT_PREFIX "RPG_RT"
+#define EASY_RT_PREFIX "EASY_RT"
+
+/** Suffixes for LDB/LMT/LMU files */
+#define SUFFIX_LDB "ldb"
+#define SUFFIX_LMT "lmt"
+#define SUFFIX_LMU "lmu"
+
+/** Suffixes for their EasyRPG equivalents */
+#define SUFFIX_EDB "edb"
+#define SUFFIX_EMT "emt"
+#define SUFFIX_EMU "emu"
+
 /** lcf::Database filename. */
-#define DATABASE_NAME "RPG_RT.ldb"
-#define DATABASE_NAME_EASYRPG "EASY_RT.edb"
+#define DATABASE_NAME RPG_RT_PREFIX "." SUFFIX_LDB
+#define DATABASE_NAME_EASYRPG EASY_RT_PREFIX "." SUFFIX_EDB
 
 /** Map tree filename. */
-#define TREEMAP_NAME "RPG_RT.lmt"
-#define TREEMAP_NAME_EASYRPG "EASY_RT.emt"
+#define TREEMAP_NAME RPG_RT_PREFIX "." SUFFIX_LMT
+#define TREEMAP_NAME_EASYRPG EASY_RT_PREFIX "." SUFFIX_EMT
 
 /** File name for additional metadata, such as multi-game save imports. */
 #define META_NAME "easyrpg.ini"

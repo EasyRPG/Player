@@ -41,6 +41,7 @@
 #include "options.h"
 #include "utils.h"
 #include "filefinder.h"
+#include "fileext_guesser.h"
 #include "output.h"
 #include "player.h"
 #include "registry.h"
@@ -726,7 +727,7 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 }
 
 bool FileFinder::IsValidProject(DirectoryTree const & dir) {
-	return IsRPG2kProject(dir) || IsEasyRpgProject(dir);
+	return IsRPG2kProject(dir) || IsEasyRpgProject(dir) || IsRPG2kProjectWithRenames(dir);
 }
 
 std::string FileFinder::FindDefault(FileFinder::DirectoryTree const &tree, const std::string &dir, const std::string &name,	const char **exts) {
@@ -747,6 +748,10 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
 
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
+bool FileFinder::IsRPG2kProjectWithRenames(DirectoryTree const& dir) {
+	return !FileExtGuesser::GetRPG2kProjectWithRenames(dir).Empty();
 }
 
 bool FileFinder::HasSavegame() {

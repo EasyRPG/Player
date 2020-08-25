@@ -43,6 +43,16 @@ public:
 	Meta(const std::string& meta_file);
 
 	/**
+	 * When dealing with non-standard extensions, Meta will need
+	 * to be re-initialized with the two files that *might* be
+	 * database files, so that it can determine the CRC32 of them.
+	 *
+	 * @file1 The first of two identical files (either LMT/LDB, but with no way of knowing at the time)
+	 * @file2 The second of two identical files (either LMT/LDB, but with no way of knowing at the time)
+	 */
+	void ReInitForNonStandardExtensions(const std::string& file1, const std::string& file2);
+
+	/**
 	 * Retrieves the map used for pivoting between multi-game save files
 	 * All save files listed will match the given pivot map ID (i.e., "last saved here")
 	 * @return the pivot map ID, or 0 (on error) for "no map restriction"
@@ -79,6 +89,24 @@ public:
 	std::vector<FileItem> SearchImportPaths(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path) const;
 
 	/**
+	 * Retrieve the LDB extension's replacement in non-standard projects.
+	 * @return The extension's alias, or the empty string if none could be found.
+	 */
+	std::string GetLdbAlias() const;
+
+	/**
+	 * Retrieve the LMT extension's replacement in non-standard projects.
+         * @return The extension's alias, or the empty string if none could be found.
+         */
+	std::string GetLmtAlias() const;
+
+	/**
+	 * Retrieve the LMU extension's replacement in non-standard projects.
+         * @return The extension's alias, or the empty string if none could be found.
+         */
+	std::string GetLmuAlias() const;
+
+	/**
 	 * Is multi-game save importing enabled? If so, the title screen should show an Import option.
 	 * @return true if the meta INI file contains a parentGame for this game
 	 */
@@ -110,8 +138,11 @@ private:
 	/**
 	 * Heuristically tries to guess the canonical name of this game,
 	 *  and stores it locally in this Meta object.
+	 *
+	 * @param lmtFile The path to the file we expect to be RPG_RT.lmt
+	 * @param ldbFile The path to the file we expect to be RPG_RT.ldb
 	 */
-	void IdentifyCanonName();
+	void IdentifyCanonName(const std::string& lmtFile, const std::string& ldbFile);
 
 	/**
 	 * Internal function called by SearchImportPaths

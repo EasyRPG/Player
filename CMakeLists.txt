@@ -88,6 +88,8 @@ add_library(${PROJECT_NAME}
 	src/exfont.h
 	src/filefinder.cpp
 	src/filefinder.h
+	src/fileext_guesser.cpp
+	src/fileext_guesser.h
 	src/filesystem.cpp
 	src/filesystem.h
 	src/filesystem_stream.h

@@ -649,6 +649,15 @@ namespace Game_Map {
 	bool UpdateMessage(MapUpdateAsyncContext& actx);
 	bool UpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
+	/**
+	 * Construct a map name, either for EasyRPG or RPG Maker projects
+	 *
+	 * @param map_id The ID of the map to construct
+	 * @param isEasyRpg Is the an easyrpg (emu) project, or an RPG Maker (lmu) one?
+	 * @return The map name, as Map<map_id>.<map_extension>
+	 */
+	std::string ConstructMapName(int map_id, bool isEasyRpg);
+
 	FileRequestAsync* RequestMap(int map_id);
 
 	namespace Parallax {

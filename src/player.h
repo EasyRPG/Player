@@ -19,6 +19,7 @@
 #define EP_PLAYER_H
 
 // Headers
+#include "fileext_guesser.h"
 #include "meta.h"
 #include "game_clock.h"
 #include "game_config.h"
@@ -325,6 +326,9 @@ namespace Player {
 
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
+
+	/** File extension rewriter, for non-standard extensions. */
+	extern FileExtGuesser::RPG2KFileExtRemap fileext_map;
 
 	/**
 	 * The default speed modifier applied when the speed up button is pressed

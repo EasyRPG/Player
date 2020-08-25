@@ -271,17 +271,14 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	location.map_id = _id;
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
-	std::stringstream ss;
-	ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".emu";
-
-	std::string map_file = FileFinder::FindDefault(ss.str());
+	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
+	std::string map_file = FileFinder::FindDefault(map_name);
 	if (map_file.empty()) {
-		ss.str("");
-		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
-		map_file = FileFinder::FindDefault(ss.str());
+		map_name = Game_Map::ConstructMapName(location.map_id, false);
+		map_file = FileFinder::FindDefault(map_name);
 
 		if (map_file.empty()) {
-			Output::Error("Loading of Map {} failed.\nThe map was not found.", ss.str());
+			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
 		}
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
@@ -290,7 +287,8 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		auto map_stream = FileFinder::OpenInputStream(map_file);
 		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
-	Output::Debug("Loading Map {}", ss.str());
+
+	Output::Debug("Loading Map {}", map_name);
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());
@@ -300,7 +298,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 	int current_index = GetMapIndex(location.map_id);
 
-	ss.str("");
+	std::stringstream ss;
 	for (int cur = current_index;
 		GetMapIndex(lcf::Data::treemap.maps[cur].parent_map) != cur;
 		cur = GetMapIndex(lcf::Data::treemap.maps[cur].parent_map)) {
@@ -1703,11 +1701,18 @@ int Game_Map::GetTargetPanY() {
 	return location.pan_finish_y;
 }
 
-FileRequestAsync* Game_Map::RequestMap(int map_id) {
+std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 	std::stringstream ss;
-	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id;
+	if (is_easyrpg) {
+		return Player::fileext_map.MakeFilename(ss.str(), SUFFIX_EMU);
+	} else {
+		return Player::fileext_map.MakeFilename(ss.str(), SUFFIX_LMU);
+	}
+}
 
-	return AsyncHandler::RequestFile(ss.str());
+FileRequestAsync* Game_Map::RequestMap(int map_id) {
+	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
 }
 
 // Parallax
