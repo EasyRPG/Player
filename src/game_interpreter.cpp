@@ -481,7 +481,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 	}
 }
 
-int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
+int Game_Interpreter::DecodeInt(lcf::DBArray<int32_t>::const_iterator& it) {
 	int value = 0;
 
 	for (;;) {
@@ -495,7 +495,7 @@ int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
 	return value;
 }
 
-const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_iterator& it) {
+const std::string Game_Interpreter::DecodeString(lcf::DBArray<int32_t>::const_iterator& it) {
 	std::ostringstream out;
 	int len = DecodeInt(it);
 
@@ -507,7 +507,7 @@ const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_ite
 	return result;
 }
 
-lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterator& it) {
+lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(lcf::DBArray<int32_t>::const_iterator& it) {
 	lcf::rpg::MoveCommand cmd;
 	cmd.command_id = *it++;
 
@@ -2696,9 +2696,9 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 		route.repeat = com.parameters[2] != 0;
 		route.skippable = com.parameters[3] != 0;
 
-		std::vector<int32_t>::const_iterator it;
-		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
+		for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
 			route.move_commands.push_back(DecodeMove(it));
+		}
 
 		event->ForceMoveRoute(route, move_freq);
 	}

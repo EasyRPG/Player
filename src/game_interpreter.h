@@ -24,6 +24,7 @@
 #include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
+#include <lcf/dbarray.h>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/eventcommand.h>
 #include "system.h"
@@ -253,9 +254,9 @@ protected:
 	bool CommandExitGame(lcf::rpg::EventCommand const& com);
 	bool CommandToggleFullscreen(lcf::rpg::EventCommand const& com);
 
-	int DecodeInt(std::vector<int32_t>::const_iterator& it);
-	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
-	lcf::rpg::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
+	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
+	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
+	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
 
 	void SetSubcommandIndex(int indent, int idx);
 	uint8_t& ReserveSubcommandIndex(int indent);
