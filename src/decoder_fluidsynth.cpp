@@ -86,7 +86,7 @@ struct FluidSynthDeleter {
 namespace {
 	std::unique_ptr<fluid_settings_t, FluidSettingsDeleter> global_settings;
 	std::unique_ptr<fluid_synth_t, FluidSynthDeleter> global_synth;
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 	fluid_sfloader_t* global_loader; // owned by global_settings
 #endif
 	int instances = 0;
@@ -95,7 +95,7 @@ namespace {
 static fluid_synth_t* create_synth(std::string& error_message) {
 	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
 
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 	fluid_synth_add_sfloader(syn, global_loader);
 #endif
 
@@ -158,7 +158,7 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
 		fluid_settings_setint(global_settings.get(), "synth.polyphony", 256);
 
-#ifdef HAVE_FLUIDSYNTH
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 		fluid_settings_setint(global_settings.get(), "synth.reverb.active", 0);
 		fluid_settings_setint(global_settings.get(), "synth.chorus.active", 0);
 #else
@@ -166,7 +166,8 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 		fluid_settings_setstr(global_settings.get(), "synth.chorus.active", "no");
 #endif
 
-#ifdef HAVE_FLUIDSYNTH
+		// Fluidsynth 1.x does not support VIO API for soundfonts
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 		// owned by fluid_settings
 		global_loader = new_fluid_defsfloader(global_settings.get());
 		fluid_sfloader_set_callbacks(global_loader,
@@ -216,7 +217,12 @@ void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
 			fluid_synth_noteon(instance_synth, channel, param1, param2);
 			break;
 		case 0xA0:
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR == 1
+			// unsupported
+			return;
+#else
 			fluid_synth_key_pressure(instance_synth, event, param1, param2);
+#endif
 			break;
 		case 0xB0:
 			fluid_synth_cc(instance_synth, channel, param1, param2);
