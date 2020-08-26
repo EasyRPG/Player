@@ -19,6 +19,7 @@
 #define EP_GAME_PLAYER_H
 
 // Headers
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/music.h>
 #include <lcf/rpg/savepartylocation.h>
 #include "game_character.h"
@@ -27,11 +28,6 @@
 #include <vector>
 
 class Game_Vehicle;
-namespace lcf {
-namespace rpg {
-	class SaveTarget;
-} // namespace rpg
-} // namespace lcf
 
 /**
  * Game Player class

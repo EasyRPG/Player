@@ -22,19 +22,10 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/saveactor.h>
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
-
-namespace lcf {
-namespace rpg {
-	class Actor;
-	class Skill;
-	class BattleCommand;
-	class Item;
-	class Class;
-} // namespace rpg
-} // namespace lcf
 
 class PendingMessage;
 

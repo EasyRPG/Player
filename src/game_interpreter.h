@@ -24,6 +24,7 @@
 #include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/eventcommand.h>
 #include "system.h"
 #include <lcf/rpg/saveeventexecstate.h>
@@ -33,12 +34,6 @@
 class Game_Event;
 class Game_CommonEvent;
 class PendingMessage;
-
-namespace lcf {
-namespace rpg {
-	class EventPage;
-} // namespace rpg
-} // namespace lcf
 
 /**
  * Game_Interpreter class

@@ -20,19 +20,11 @@
 
 #include <string>
 #include <vector>
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/state.h>
 
 class Game_Battler;
 class Game_Party_Base;
-namespace lcf {
-namespace rpg {
-	class Animation;
-	class Item;
-	class State;
-	class Skill;
-	class Sound;
-} // namespace rpg
-} // namespace lcf
 
 /**
  * Contains algorithms to handle the different battle attacks, skills and items.
