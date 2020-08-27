@@ -454,9 +454,6 @@ endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	option(PLAYER_JS_BUILD_SHELL "Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
-	set(PLAYER_JS_PREJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-pre.js" CACHE STRING "File to use for --pre-js")
-	set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js" CACHE STRING "File to use for --post-js")
-	set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html" CACHE STRING "Shell file to use (--shell-file). Requires PLAYER_JS_BUILD_SHELL=ON")
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
 	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
 endif()
@@ -739,6 +736,10 @@ if (${PLAYER_BUILD_EXECUTABLE})
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		set(PLAYER_JS_PREJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-pre.js")
+		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
+		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
+
 		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY=1  --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS}")
 		set_source_files_properties("src/main.cpp" PROPERTIES OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS}")
 
