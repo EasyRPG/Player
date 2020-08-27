@@ -455,6 +455,7 @@ endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	option(PLAYER_JS_BUILD_SHELL "Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
+	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
 	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
 endif()
 
@@ -750,6 +751,7 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 		target_link_libraries(${PROJECT_NAME}_exe "idbfs.js")
 
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "${PLAYER_JS_OUTPUT_NAME}")
 	endif()
 
 	# installation
@@ -762,6 +764,14 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 	if(MSVC)
 		install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+	endif()
+
+	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		# Emscripten does not install the wasm file (or the js file when building a shell)
+		if(PLAYER_JS_BUILD_SHELL)
+			install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.js DESTINATION ${CMAKE_INSTALL_BINDIR})
+		endif()
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
 endif()
 
