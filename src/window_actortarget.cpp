@@ -56,7 +56,7 @@ void Window_ActorTarget::UpdateCursorRect() {
 	if (index < -10) { // Entire Party
 		cursor_rect = { 48 + 4, 0, 120, item_max * (48 + 10) - 10 };
 	} else if (index < 0) { // Fixed to one
-		cursor_rect = { 48 + 4, -index * (48 + 10), 120, 48 };
+		cursor_rect = { 48 + 4, (-index - 1) * (48 + 10), 120, 48 };
 	} else {
 		cursor_rect = { 48 + 4, index * (48 + 10), 120, 48 };
 	}
@@ -65,7 +65,7 @@ void Window_ActorTarget::UpdateCursorRect() {
 Game_Actor* Window_ActorTarget::GetActor() {
 	int ind = GetIndex();
 	if (ind >= -10 && ind < 0) {
-		ind = -ind;
+		ind = -ind - 1;
 	}
 	else if (ind == -100) {
 		return NULL;
