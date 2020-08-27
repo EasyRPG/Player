@@ -23,10 +23,6 @@ PKG_PROG_PKG_CONFIG
 AC_PROG_OBJCXX
 
 # Options
-AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
-AS_IF([test "x$EM_GAME_URL" != "x"],[
-	AC_DEFINE_UNQUOTED([EM_GAME_URL], ["$EM_GAME_URL"], [Game URL (Emscripten)])
-])
 AC_ARG_ENABLE([fmmidi],
 	AS_HELP_STRING([--enable-fmmidi@<:@=fallback@:>@],[use internal MIDI sequencer/as fallback @<:@default=no@:>@]))
 AS_IF([test "x$enable_fmmidi" = "xyes"],[want_fmmidi=1],[test "x$enable_fmmidi" = "xfallback"],[want_fmmidi=2])
@@ -175,7 +171,6 @@ if test "yes" != "$silent"; then
 	echo "Paths:"
 	echo "  prefix: $prefix"
 	echo "  bash completion: $BASHCOMPLETION_DIR"
-	test -n "$EM_GAME_URL" && echo "Emscripten Game URL: $EM_GAME_URL"
 
 	# FIXME SDL version
 	echo "Backend: SDL"
