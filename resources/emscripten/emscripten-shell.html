@@ -25,9 +25,9 @@
 
     <div id="controls"><input type="button" value="Fullscreen" onclick="Module['canvas'].requestFullscreen()"></div>
 
-    <div id="status">Downloading...</div>
+    <div id="status"></div>
 
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 onmouseenter="window.focus()" onclick="window.focus()"></canvas>
 
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
