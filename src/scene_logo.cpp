@@ -124,9 +124,12 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	ini->SetImportantFile(true);
 	FileRequestAsync* exfont = AsyncHandler::RequestFile("ExFont");
 	exfont->SetImportantFile(true);
+	FileRequestAsync* soundfont = AsyncHandler::RequestFile("easyrpg.soundfont");
+	soundfont->SetImportantFile(true);
 
 	db->Start();
 	tree->Start();
 	ini->Start();
 	exfont->Start();
+	soundfont->Start();
 }
