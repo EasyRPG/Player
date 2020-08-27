@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(EasyRPG_Player VERSION 0.6.2.1 LANGUAGES C CXX)
+project(EasyRPG_Player VERSION 0.6.2.1 LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -739,18 +739,16 @@ if (${PLAYER_BUILD_EXECUTABLE})
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		# These must be set before calling em_link_*
-		# See emscripten repo: tests/cmake/target_js/CMakeLists.txt#L94
-		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY=1")
+		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY=1  --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS}")
+		set_source_files_properties("src/main.cpp" PROPERTIES OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS}")
 
 		if(PLAYER_JS_BUILD_SHELL)
 			set_target_properties(${PROJECT_NAME}_exe PROPERTIES SUFFIX ".html")
-			set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "--shell-file ${PLAYER_JS_SHELL}")
+			set_property(TARGET ${PROJECT_NAME}_exe APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
 		endif()
 
 		target_link_libraries(${PROJECT_NAME}_exe "idbfs.js")
-		em_link_pre_js(${PROJECT_NAME}_exe "${PLAYER_JS_PREJS}")
-		em_link_post_js(${PROJECT_NAME}_exe "${PLAYER_JS_POSTJS}")
+
 	endif()
 
 	# installation
