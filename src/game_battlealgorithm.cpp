@@ -230,13 +230,13 @@ const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimati
 	return animation2;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
+void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
 	}
 
-	if (on_source) {
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() });
+	if (on_original_targets) {
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, original_targets);
 		has_animation_played = true;
 		return;
 	}
@@ -259,13 +259,13 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	first_attack = old_first_attack;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_source) {
+void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_targets) {
 	if (current_target == targets.end() || !GetSecondAnimation()) {
 		return;
 	}
 
-	if (on_source) {
-		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, { GetSource() });
+	if (on_original_targets) {
+		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, original_targets);
 		has_animation2_played = true;
 		return;
 	}
@@ -288,13 +288,13 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_source) {
 	first_attack = old_first_attack;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int cutoff) {
+void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_original_targets, int cutoff) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
 	}
 
-	if (on_source) {
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() }, true, cutoff);
+	if (on_original_targets) {
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, original_targets, true, cutoff);
 		return;
 	}
 
@@ -605,10 +605,6 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
-	if (IsReflected()) {
-		return source;
-	}
-
 	if (current_target == targets.end()) {
 		return NULL;
 	}
@@ -759,8 +755,20 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (party_target) {
-		party_target->GetBattlers(targets);
+		if (IsReflected()) {
+			party_target->GetBattlers(original_targets);
+			targets.clear();
+			source->GetParty().GetActiveBattlers(targets);
+		} else {
+			party_target->GetBattlers(targets);
+		}
 		party_target = nullptr;
+	} else {
+		if (IsReflected()) {
+			original_targets.push_back(GetTarget());
+			targets.clear();
+			targets.push_back(source);
+		}
 	}
 
 	current_target = targets.begin();
@@ -774,10 +782,6 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	if (IsReflected()) {
-		// Only source available, can't target again
-		return false;
-	}
 	++cur_repeat;
 	if (IsTargetValid() && cur_repeat < repeat) {
 		first_attack = false;
@@ -805,6 +809,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
 	this->repeat = repeat;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
+	return (original_targets.size() > 0);
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
@@ -1493,39 +1501,38 @@ int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected() const {
-	// Reflect must be stored because after "Apply" the return value for
-	// reflect can be incorrect when states are added.
-	if (reflect != -1) {
-		return !!reflect;
-	}
-
-	if (current_target == targets.end()) {
+	// Reflect already checked?
+	if (reflect == -1) {
 		reflect = 0;
-		return false;
+		// Skills invoked by items ignore reflect
+		if (!item) {
+			// One or more targets?
+			if (party_target) {
+				std::vector<Game_Battler*> targetlist;
+				party_target->GetActiveBattlers(targetlist);
+				for (Game_Battler* t : targetlist) {
+					// Targets on enemy side?
+					if (GetSource()->GetType() != t->GetType()) {
+						// If at least one enemy has the reflect state, return true
+						if (t->HasReflectState()) {
+							reflect = 1;
+							return true;
+						}
+					}
+				}
+			} else {
+				// Target on enemy side?
+				if (GetSource()->GetType() != GetTarget()->GetType()) {
+					// If the target has the reflect state, return true
+					if (GetTarget()->HasReflectState()) {
+						reflect = 1;
+						return true;
+					}
+				}
+			}
+		}
 	}
-
-	auto old_current_target = current_target;
-	bool old_first_attack = first_attack;
-
-	// Only negative skills are reflected
-	if (GetSource()->GetType() == (*current_target)->GetType()) {
-		reflect = 0;
-		return false;
-	}
-
-	std::vector<Game_Battler*> anim_targets;
-
-	bool has_reflect = false;
-
-	do {
-		has_reflect |= (*current_target)->HasReflectState();
-	} while (TargetNextInternal());
-
-	current_target = old_current_target;
-	first_attack = old_first_attack;
-
-	reflect = has_reflect ? 1 : 0;
-	return has_reflect;
+	return !!reflect;
 }
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {

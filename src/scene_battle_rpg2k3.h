@@ -138,7 +138,7 @@ protected:
 	int battle_action_state = BattleActionState_Execute;
 	bool battle_action_need_event_refresh = true;
 	int combo_repeat = 1;
-	bool play_reflected_anim = false;
+	bool play_reflect_anim = false;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;
 	std::unique_ptr<Window_ActorSp> sp_window;

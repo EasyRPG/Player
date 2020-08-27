@@ -835,9 +835,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
-	if (play_reflected_anim) {
-		action->PlayAnimation(true);
-		play_reflected_anim = false;
+	if (play_reflect_anim) {
+		play_reflect_anim = false;
+		action->PlayAnimation();
 		return false;
 	}
 
@@ -924,8 +924,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
-		action->PlayAnimation();
-		play_reflected_anim = action->IsReflected();
+		if (action->OriginalTargetsSet()) {
+			play_reflect_anim = true;
+			action->PlayAnimation(true);
+		} else {
+			action->PlayAnimation();
+		}
 
 		{
 			std::vector<Game_Battler*> battlers;
