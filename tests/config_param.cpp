@@ -1,3 +1,4 @@
+#include <ostream>
 #include "config_param.h"
 #include "doctest.h"
 #include <climits>

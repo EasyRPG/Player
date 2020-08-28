@@ -1,5 +1,4 @@
-#include <cstring>
-#include <iostream>
+#include <ostream>
 #include "filefinder.h"
 #include "player.h"
 #include "rtp.h"

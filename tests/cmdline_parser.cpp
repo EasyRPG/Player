@@ -1,3 +1,4 @@
+#include <ostream>
 #include "cmdline_parser.h"
 #include "doctest.h"
 
