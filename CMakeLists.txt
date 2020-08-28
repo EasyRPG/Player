@@ -474,6 +474,13 @@ if(APPLE)
 		src/platform/macos/utils.h)
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+	option(PLAYER_JS_BUILD_SHELL "Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
+	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
+	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
+	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
@@ -752,7 +759,7 @@ if (${PLAYER_BUILD_EXECUTABLE})
 		add_executable(${EXE_NAME} WIN32 "src/main.cpp")
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
-	
+
 	if(WIN32)
 		# Open console for Debug builds
 		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -768,6 +775,25 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
+	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		set(PLAYER_JS_PREJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-pre.js")
+		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
+		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
+
+		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext']")
+		set_source_files_properties("src/main.cpp" PROPERTIES OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS}")
+
+		if(PLAYER_JS_BUILD_SHELL)
+			set_target_properties(${PROJECT_NAME}_exe PROPERTIES SUFFIX ".html")
+			set_property(TARGET ${PROJECT_NAME}_exe APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
+		endif()
+
+		target_link_libraries(${PROJECT_NAME}_exe "idbfs.js")
+
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "${PLAYER_JS_OUTPUT_NAME}")
+	endif()
+
+	# installation
 	include(GNUInstallDirs)
 	if(APPLE)
 		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION BUNDLE DESTINATION "${CMAKE_BINARY_DIR}/Package")
@@ -777,6 +803,14 @@ if (${PLAYER_BUILD_EXECUTABLE})
 
 	if(MSVC)
 		install(FILES $<TARGET_PDB_FILE:${EXE_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+	endif()
+
+	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		# Emscripten does not install the wasm file (or the js file when building a shell)
+		if(PLAYER_JS_BUILD_SHELL)
+			install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.js DESTINATION ${CMAKE_INSTALL_BINDIR})
+		endif()
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
 endif()
 

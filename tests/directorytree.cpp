@@ -2,7 +2,15 @@
 #include "main_data.h"
 #include "doctest.h"
 
-TEST_SUITE_BEGIN("DirectoryTree");
+static bool skip_tests() {
+#ifdef EMSCRIPTEN
+	return true;
+#else
+	return false;
+#endif
+}
+
+TEST_SUITE_BEGIN("DirectoryTree" * doctest::skip(skip_tests()));
 
 TEST_CASE("CreateDirectoryTree") {
 	Main_Data::Init();

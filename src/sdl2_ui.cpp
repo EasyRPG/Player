@@ -146,6 +146,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 	// Set the application class name
 	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
 #endif
+#ifdef EMSCRIPTEN
+	SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
+#endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());

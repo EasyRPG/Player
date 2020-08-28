@@ -259,6 +259,9 @@ void Player::MainLoop() {
 
 	auto frame_limit = DisplayUi->GetFrameLimit();
 	if (frame_limit == Game_Clock::duration()) {
+#ifdef EMSCRIPTEN
+		emscripten_sleep(0);
+#endif
 		return;
 	}
 
@@ -268,6 +271,11 @@ void Player::MainLoop() {
 	if (Game_Clock::now() < next) {
 		iframe.End();
 		Game_Clock::SleepFor(next - now);
+	} else {
+#ifdef EMSCRIPTEN
+		// Yield back to browser once per frame
+		emscripten_sleep(0);
+#endif
 	}
 }
 
