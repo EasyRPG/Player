@@ -23,6 +23,7 @@
 #include <vector>
 #include <limits>
 #include <lcf/rpg/state.h>
+#include <lcf/dbbitarray.h>
 #include "system.h"
 #include "state.h"
 #include "color.h"
@@ -203,7 +204,7 @@ public:
 	 * @param attributes set for the incoming action
 	 * @return effect multiplier
 	 */
-	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
+	float GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const;
 
 	/**
 	 * Gets the characters name

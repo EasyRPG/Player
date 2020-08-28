@@ -149,7 +149,7 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 	if (query_set->size() <= (unsigned)(query_idx)) {
 		return true;
 	}
-	return query_set->at(query_idx);
+	return (*query_set)[query_idx];
 }
 
 bool Game_Actor::IsSkillLearned(int skill_id) const {
@@ -1432,7 +1432,7 @@ PermanentStates Game_Actor::GetPermanentStates() const {
 		auto& states = item->state_set;
 		// Invalid states in armor already reported earlier in
 		// calls to AdjustEquipmentStates.
-		int num_states = std::min(states.size(), lcf::Data::states.size());
+		int num_states = std::min<int>(states.size(), lcf::Data::states.size());
 		for (int i = 0; i < num_states; ++i) {
 			if (states[i]) {
 				ps.Add(i + 1);

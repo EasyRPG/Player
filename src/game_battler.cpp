@@ -140,7 +140,7 @@ int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
 	return 0;
 }
 
-float Game_Battler::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
+float Game_Battler::GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const {
 	constexpr auto min_mod = std::numeric_limits<int>::min();
 	int physical = min_mod;
 	int magical = min_mod;
