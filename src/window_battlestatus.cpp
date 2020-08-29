@@ -88,7 +88,7 @@ void Window_BattleStatus::Refresh() {
 			} else {
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
 					DrawActorState(*actor, 84, y);
-					contents->TextDraw(136 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+					contents->TextDraw(136 + 4 * 6, y, actor->GetHp() == 0 ? Font::ColorKnockout : actor->GetHp() <= actor->GetMaxHp() / 4 ? Font::ColorCritical : Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 				} else {
 					DrawActorState(*actor, 80, y);
 				}
