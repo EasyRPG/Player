@@ -6,28 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EasyRPG Player</title>
     <style>
-      body { font-family: sans-serif; margin: 0; padding: none; color: white; background: black; }
-      canvas.emscripten { border: 0px none; width: 320px; height: 240px; max-width: 100%; max-height: 100%; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+      body { font-family: sans-serif; margin: 0; padding: 0; color: white; background: black; }
       #status { font-weight: bold; color: #888888; text-align: center; margin: auto; }
-      #controls { text-align: right; } #controls input { border: 1px solid gray; background: black; color: gray; }
-      @media all and (min-width: 640px) { canvas.emscripten { width: 640px; height: 480px;
-        image-rendering: optimizeSpeed;             /* Older versions of FF          */
-        image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
-        image-rendering: -webkit-optimize-contrast; /* Safari                        */
-        image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
-        image-rendering: pixelated;                 /* Awesome future-browsers       */
-        -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
-      } }
-      @media all and (max-width: 639px) { canvas.emscripten { width: 320px; height: 240px; } }
+      #controls { text-align: right; } #controls input { position: relative; z-index: 1; padding: 2px 4px; background: transparent; border: 1px solid gray; color: gray; }
+      canvas.emscripten { width: 320px; height: 240px; border: 0px none; image-rendering: pixelated; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+      @media all and (min-width: 320px) and (min-height: 240px) and not { canvas.emscripten { width: 320px; height: 240px; } }
+      @media all and (min-width: 640px) and (min-height: 480px) { canvas.emscripten { width: 640px; height: 480px; } }
+      @media all and (min-width: 960px) and (min-height: 720px) { canvas.emscripten { width: 960px; height: 720px; } }
+      @media all and (min-width: 1280px) and (min-height: 720px) { canvas.emscripten { width: 1280px; height: 720px; } }
+      @media all and (min-width: 1600px) and (min-height: 1200px) { canvas.emscripten { width: 1600px; height: 1200px; } }
+      @media all and (min-width: 1920px) and (min-height: 1440px) { canvas.emscripten { width: 1920px; height: 1440px; } }
+      @media all and (min-width: 2240px) and (min-height: 1680px) { canvas.emscripten { width: 2240px; height: 1680px; } }
+      @media all and (min-width: 2560px) and (min-height: 1920px) { canvas.emscripten { width: 2560px; height: 1920px; } }
+      @media all and (min-width: 2880px) and (min-height: 2160px) { canvas.emscripten { width: 2880px; height: 2160px; } }
+      @media all and (min-width: 3200px) and (min-height: 2400px) { canvas.emscripten { width: 3200px; height: 2400px; } }
+      @media all and (min-width: 3520px) and (min-height: 2640px) { canvas.emscripten { width: 3520px; height: 2640px; } }
+      @media all and (min-width: 3840px) and (min-height: 2880px) { canvas.emscripten { width: 3840px; height: 2880px; } }
+      @media all and (min-width: 4160px) and (min-height: 3120px) { canvas.emscripten { width: 4160px; height: 3120px; } }
+      @media all and (min-width: 4480px) and (min-height: 3360px) { canvas.emscripten { width: 4480px; height: 3360px; } }
+      @media all and (min-width: 4800px) and (min-height: 3600px) { canvas.emscripten { width: 4800px; height: 3600px; } }
+      @media all and (min-width: 5120px) and (min-height: 3840px) { canvas.emscripten { width: 5120px; height: 3840px; } }
+      @media all and (min-width: 5440px) and (min-height: 4080px) { canvas.emscripten { width: 5440px; height: 4080px; } }
+      @media all and (min-width: 5760px) and (min-height: 4320px) { canvas.emscripten { width: 5760px; height: 4320px; } }
     </style>
   </head>
   <body>
 
-    <div id="controls"><input type="button" value="Fullscreen" onclick="Module['canvas'].requestFullscreen()"></div>
+    <div id="controls"><input type="button" value="⛶" onclick="if (Module['canvas'].requestFullscreen()) Module['canvas'].requestFullscreen()"></div>
 
-    <div id="status">Downloading...</div>
+    <div id="status"></div>
 
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 onmouseenter="window.focus()" onclick="window.focus()"></canvas>
 
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
