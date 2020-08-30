@@ -256,13 +256,13 @@ void Game_Player::UpdateNextMovementAction() {
 
 	if (IsEncounterCalling()) {
 		SetMenuCalling(false);
+		SetEncounterCalling(false);
 
 		BattleArgs args;
 		if (Game_Map::PrepareEncounter(args)) {
 			Scene::instance->SetRequestedScene(Scene_Battle::Create(std::move(args)));
+			return;
 		}
-		SetEncounterCalling(false);
-		return;
 	}
 
 	if (IsMenuCalling()) {
