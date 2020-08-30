@@ -110,10 +110,11 @@ public:
 	 * Schedule the event for execution on the map's foreground interpreter.
 	 *
 	 * @param triggered_by_decision_key set whether this was triggered by decision key
+	 * @param face_hero if scheduled, event faces the player.
 	 *
 	 * @return true if event was scheduled.
 	 */
-	bool ScheduleForegroundExecution(bool triggered_by_decision_key);
+	bool ScheduleForegroundExecution(bool triggered_by_decision_key, bool face_player);
 
 	/** 
 	 * Update this for the current frame

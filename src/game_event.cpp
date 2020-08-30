@@ -336,7 +336,7 @@ lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
 }
 
 
-bool Game_Event::ScheduleForegroundExecution(bool by_decision_key) {
+bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_player) {
 	// RPG_RT always resets this everytime this function is called, whether successful or not
 	data()->triggered_by_decision_key = by_decision_key;
 
@@ -345,7 +345,7 @@ bool Game_Event::ScheduleForegroundExecution(bool by_decision_key) {
 		return false;
 	}
 
-	if (!(IsFacingLocked() || IsSpinning())) {
+	if (face_player && !(IsFacingLocked() || IsSpinning())) {
 		SetFacing(GetDirectionToHero());
 	}
 
@@ -368,7 +368,7 @@ void Game_Event::OnFinishForegroundEvent() {
 
 bool Game_Event::CheckEventAutostart() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start) {
-		ScheduleForegroundExecution(false);
+		ScheduleForegroundExecution(false, false);
 		return true;
 	}
 	return false;
@@ -382,7 +382,7 @@ bool Game_Event::CheckEventCollision() {
 			&& Main_Data::game_player->GetX() == GetX()
 			&& Main_Data::game_player->GetY() == GetY())
 	{
-		ScheduleForegroundExecution(false);
+		ScheduleForegroundExecution(false, true);
 		SetStopCount(0);
 		return true;
 	}
@@ -402,7 +402,7 @@ void Game_Event::CheckCollisonOnMoveFailure() {
 			&& GetLayer() == lcf::rpg::EventPage::Layers_same
 			&& GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
 	{
-		ScheduleForegroundExecution(false);
+		ScheduleForegroundExecution(false, true);
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);
