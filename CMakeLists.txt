@@ -852,6 +852,10 @@ if(PLAYER_ENABLE_TESTS)
 	endif()
 	add_dependencies(check_player test_runner_player)
 	add_dependencies(check check_player)
+
+	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		set_property(TARGET test_runner_player APPEND_STRING PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH")
+	endif()
 endif()
 
 # Instrumentation framework
