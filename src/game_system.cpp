@@ -575,6 +575,6 @@ Color Game_System::GetBackgroundColor() {
 	return bg_color;
 }
 
-const bool& Game_System::GetInvertAnimations() {
+bool Game_System::GetInvertAnimations() {
 	return lcf::Data::system.invert_animations;
 }

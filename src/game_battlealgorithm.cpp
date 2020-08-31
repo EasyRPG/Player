@@ -250,12 +250,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets
 		anim_targets.push_back(*current_target);
 	} while (TargetNextInternal());
 
-	Game_Battle::ShowBattleAnimation(
-		GetAnimation()->ID,
-		anim_targets,
-		false,
-		-1,
-		invert);
+	Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, -1, invert);
 	has_animation_played = true;
 
 	current_target = old_current_target;
@@ -763,7 +758,6 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (party_target) {
 		if (IsReflected()) {
 			party_target->GetBattlers(original_targets);
-			current_original_target = original_targets.begin();
 			targets.clear();
 			source->GetParty().GetActiveBattlers(targets);
 		} else {
@@ -773,7 +767,6 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	} else {
 		if (IsReflected()) {
 			original_targets.push_back(GetTarget());
-			current_original_target = original_targets.begin();
 			targets.clear();
 			targets.push_back(source);
 		}
@@ -823,12 +816,8 @@ bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
 	return (original_targets.size() > 0);
 }
 
-Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetOriginalTarget() const {
-	if (current_original_target == original_targets.end()) {
-		return NULL;
-	}
-
-	return *current_original_target;
+Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetFirstOriginalTarget() const {
+	return *original_targets.begin();
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {

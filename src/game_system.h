@@ -349,7 +349,7 @@ namespace Game_System {
 	Color GetBackgroundColor();
 
 	/** @return true if battle animations are flipped if attacked from behind */
-	const bool& GetInvertAnimations();
+	bool GetInvertAnimations();
 }
 
 inline bool Game_System::HasSystemGraphic() {

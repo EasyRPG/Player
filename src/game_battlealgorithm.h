@@ -427,11 +427,11 @@ public:
 	bool OriginalTargetsSet() const;
 
 	/**
-	 * Returns the current original target.
+	 * Returns the first original target.
 	 *
-	 * @return current original target battler
+	 * @return current first original target battler
 	 */
-	Game_Battler* GetOriginalTarget() const;
+	Game_Battler* GetFirstOriginalTarget() const;
 
 	/**
 	 * @return the critical hit message
@@ -508,7 +508,6 @@ protected:
 	std::vector<int> switch_off;
 
 	std::vector<Game_Battler*> original_targets;
-	mutable std::vector<Game_Battler*>::iterator current_original_target;
 };
 
 // Special algorithm for battlers which have no action. 

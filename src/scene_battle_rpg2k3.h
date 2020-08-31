@@ -126,6 +126,8 @@ protected:
 	bool IsEscapeAllowedFromOptionWindow() const;
 	bool IsEscapeAllowedFromActorCommand() const;
 
+	bool CheckAnimFlip(Game_Battler* battler);
+
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 
 	struct FloatText {
@@ -151,8 +153,6 @@ protected:
 	bool battle_action_pending = false;
 	bool first_strike = false;
 	bool initial_directions_updated = false;
-
-	bool invert_animation = false;
 };
 
 #endif
