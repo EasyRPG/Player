@@ -336,6 +336,10 @@ void Player::Update(bool update_scene) {
 		}
 	}
 
+	if (update_scene) {
+		IncFrame();
+	}
+
 	Audio().Update();
 	Input::Update();
 
@@ -359,7 +363,6 @@ void Player::Update(bool update_scene) {
 	}
 
 	if (update_scene) {
-		IncFrame();
 		Scene::instance->Update();
 	}
 }
