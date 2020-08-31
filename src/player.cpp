@@ -359,14 +359,8 @@ void Player::Update(bool update_scene) {
 	}
 
 	if (update_scene) {
-		Scene::instance->Update();
-		// Async file loading or transition. Don't increment the frame
-		// counter as we now have to "suspend" and "resume"
-		if (Scene::IsAsyncPending()) {
-			old_instance->SetAsyncFromMainLoop();
-			return;
-		}
 		IncFrame();
+		Scene::instance->Update();
 	}
 }
 
