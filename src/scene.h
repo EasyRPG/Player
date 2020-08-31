@@ -24,6 +24,7 @@
 #include "drawable_list.h"
 #include <vector>
 #include <functional>
+#include <lcf/rpg/savesystem.h>
 
 /**
  * Scene virtual class.
@@ -56,6 +57,8 @@ public:
 		Teleport,
 		SceneMax
 	};
+
+	static lcf::rpg::SaveSystem::Scene rpgRtSceneFromSceneType(SceneType);
 
 	static constexpr int kStartGameDelayFrames = 60;
 	static constexpr int kReturnTitleDelayFrames = 20;

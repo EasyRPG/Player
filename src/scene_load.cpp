@@ -30,10 +30,7 @@ Scene_Load::Scene_Load() :
 }
 
 void Scene_Load::Action(int index) {
-	std::stringstream ss;
-	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
-
-	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
+	std::string save_name = FileFinder::FindDefault(*tree, fmt::format("Save{:02d}.lsd", index + 1));
 
 	Player::LoadSavegame(save_name);
 }

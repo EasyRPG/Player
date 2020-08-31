@@ -57,10 +57,31 @@ void Scene_Save::Start() {
 }
 
 void Scene_Save::Action(int index) {
-	std::stringstream ss;
-	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
+	Save(*tree, index + 1);
 
-	Output::Debug("Saving to {}", ss.str());
+	Scene::Pop();
+}
+
+std::string Scene_Save::GetSaveFilename(const FileFinder::DirectoryTree& tree, int slot_id) {
+	const auto save_file = fmt::format("Save{:02d}.lsd", slot_id);
+
+	Output::Debug("Saving to {}", save_file);
+
+	std::string filename = FileFinder::FindDefault(tree, save_file);
+
+	if (filename.empty()) {
+		filename = FileFinder::MakePath(tree.directory_path, save_file);
+	}
+	return filename;
+}
+
+void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id, bool prepare_save) {
+	const auto filename = GetSaveFilename(tree, slot_id);
+	auto save_stream = FileFinder::OpenOutputStream(filename);
+	Save(save_stream, slot_id, prepare_save);
+}
+
+void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	// TODO: Maybe find a better place to setup the save file?
 	lcf::rpg::SaveTitle title;
@@ -94,18 +115,14 @@ void Scene_Save::Action(int index) {
 
 	Main_Data::game_data.title = title;
 
-	Game_System::SetSaveSlot(index + 1);
+	Game_System::SetSaveSlot(slot_id);
 
 	Game_Map::PrepareSave();
 
-	std::string save_file = ss.str();
-	std::string filename = FileFinder::FindDefault(*tree, ss.str());
-
-	if (filename.empty()) {
-		filename = FileFinder::MakePath((*tree).directory_path, save_file);
+	if (prepare_save) {
+		lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
 	}
 
-	lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
 	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
 	if (Player::IsRPG2k()) {
@@ -125,16 +142,15 @@ void Scene_Save::Action(int index) {
 	data_copy.screen = Main_Data::game_screen->GetSaveData();
 	data_copy.pictures = Main_Data::game_pictures->GetSaveData();
 
-	// RPG_RT saves always have the scene set to this.
-	data_copy.system.scene = lcf::rpg::SaveSystem::Scene_file;
+	data_copy.system.scene = Scene::instance ? Scene::rpgRtSceneFromSceneType(Scene::instance->type) : -1;
+
 	// 2k RPG_RT always stores SaveMapEvent with map_id == 0.
 	if (Player::IsRPG2k()) {
 		for (auto& sme: data_copy.map_info.events) {
 			sme.map_id = 0;
 		}
 	}
-	auto save_stream = FileFinder::OpenOutputStream(filename);
-	lcf::LSD_Reader::Save(save_stream, data_copy, Player::encoding);
+	lcf::LSD_Reader::Save(os, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system
@@ -144,7 +160,6 @@ void Scene_Save::Action(int index) {
 	});
 #endif
 
-	Scene::Pop();
 }
 
 bool Scene_Save::IsSlotValid(int) {
