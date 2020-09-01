@@ -130,6 +130,12 @@ namespace Player {
 	void ResetGameObjects();
 
 	/**
+	 * Determine if the LDB and LMT files are not present, and if so, guess 
+	 * if they may have been renamed. Populates fileext_map.
+	 */
+	void GuessNonStandardExtensions();
+
+	/**
 	 * Loads all databases.
 	 */
 	void LoadDatabase();
@@ -299,6 +305,9 @@ namespace Player {
 
 	/** Mutes audio playback */
 	extern bool no_audio_flag;
+
+	/** Is this project using EasyRPG files, or the RPG_RT format? */
+	extern bool is_easyrpg_project;
 
 	/** Encoding used */
 	extern std::string encoding;
