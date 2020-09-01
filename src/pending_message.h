@@ -60,6 +60,9 @@ class PendingMessage {
 
 		void SetEnableFace(bool value) { enable_face = value; }
 		bool IsFaceEnabled() const { return enable_face; }
+
+		void SetIsEventMessage(bool value) { is_event_message = value; }
+		bool IsEventMessage() const { return is_event_message; }
 	private:
 		int PushLineImpl(std::string msg);
 
@@ -77,6 +80,7 @@ class PendingMessage {
 		bool choice_reset_color = false;
 		bool show_gold_window = false;
 		bool enable_face = true;
+		bool is_event_message = false;
 };
 
 

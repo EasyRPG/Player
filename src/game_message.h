@@ -170,6 +170,11 @@ namespace Game_Message {
 	 */
 	int GetRealPosition();
 
+	/**
+	 * Sets pending message text for the messaging system to display.
+	 *
+	 * @param pm - the pending message text
+	 */
 	void SetPendingMessage(PendingMessage&& pm);
 
 	/** Callback type for WordWrap function */

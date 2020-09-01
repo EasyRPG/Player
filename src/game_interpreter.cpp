@@ -792,6 +792,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	}
 
 	auto pm = PendingMessage();
+	pm.SetIsEventMessage(true);
 
 	// Set first line
 	pm.PushLine(ToString(com.string));
@@ -882,6 +883,7 @@ bool Game_Interpreter::CommandShowChoices(lcf::rpg::EventCommand const& com) { /
 	}
 
 	auto pm = PendingMessage();
+	pm.SetIsEventMessage(true);
 
 	// Choices setup
 	std::vector<std::string> choices = GetChoices(4);
@@ -912,6 +914,7 @@ bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { /
 	}
 
 	auto pm = PendingMessage();
+	pm.SetIsEventMessage(true);
 
 	int variable_id = com.parameters[1];
 	int digits = com.parameters[0];
