@@ -77,6 +77,7 @@ public:
 	void StartAscent();
 	void StartDescent();
 	void SetDefaultDirection();
+	void ForceLand();
 
 	/**
 	 * Sets default sprite name. Usually the name of the graphic file.

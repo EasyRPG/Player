@@ -86,6 +86,7 @@ public:
 	bool InAirship() const;
 	bool IsAboard() const;
 	bool IsBoardingOrUnboarding() const;
+	void ForceGetOffVehicle();
 	int GetVehicleType() const;
 	Game_Vehicle* GetVehicle() const;
 

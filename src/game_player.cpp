@@ -558,6 +558,23 @@ bool Game_Player::GetOffVehicle() {
 	return true;
 }
 
+void Game_Player::ForceGetOffVehicle() {
+	if (!IsAboard()) {
+		return;
+	}
+
+	auto* vehicle = GetVehicle();
+	vehicle->ForceLand();
+	vehicle->SetDefaultDirection();
+
+	data()->flying = false;
+	data()->aboard = false;
+	SetMoveSpeed(data()->preboard_move_speed);
+	data()->unboarding = true;
+	data()->vehicle = 0;
+	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+}
+
 bool Game_Player::InVehicle() const {
 	return data()->vehicle > 0;
 }

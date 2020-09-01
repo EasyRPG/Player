@@ -190,6 +190,12 @@ bool Game_Vehicle::AnimateAscentDescent() {
 	return false;
 }
 
+void Game_Vehicle::ForceLand() {
+	data()->remaining_descent = 0;
+	data()->remaining_ascent = 0;
+	data()->flying = 0;
+}
+
 void Game_Vehicle::Update() {
 	Game_Character::Update();
 }
