@@ -139,9 +139,9 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 		se = cache.find(filename)->second;
 		se->last_access = Game_Clock::GetFrameTime();
 
-		std::unique_ptr<AudioDecoder> dec = std::unique_ptr<AudioDecoder>(new AudioSeDecoder(se));
+		std::unique_ptr<AudioDecoder> dec = std::make_unique<AudioSeDecoder>(se);
 #ifdef USE_AUDIO_RESAMPLER
-		dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
+		dec = std::make_unique<AudioResampler>(std::move(dec));
 #endif
 		Filesystem_Stream::InputStream is;
 		dec->Open(std::move(is));
