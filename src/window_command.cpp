@@ -65,9 +65,9 @@ void Window_Command::EnableItem(int i) {
 	DrawItem(i, Font::ColorDefault);
 }
 
-void Window_Command::SetItemText(unsigned index, std::string const& text) {
+void Window_Command::SetItemText(unsigned index, StringView text) {
 	if (index < commands.size()) {
-		commands[index] = text;
+		commands[index] = ToString(text);
 		DrawItem(index, Font::ColorDefault);
 	}
 }

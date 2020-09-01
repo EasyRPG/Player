@@ -118,7 +118,6 @@ protected:
 	BitmapRef graphic;
 	int anim_state = AnimationState_Idle;
 	int cycle = 0;
-	std::string sprite_file;
 	int sprite_frame = -1;
 	int fade_out = 255;
 	int fade_out_incr = 15;

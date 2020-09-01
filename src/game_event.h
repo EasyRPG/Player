@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return event name.
 	 */
-	std::string GetName() const;
+	StringView GetName() const;
 
 	/** Clears waiting_execution flag */
 	void ClearWaitingForegroundExecution();

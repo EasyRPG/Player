@@ -1364,7 +1364,7 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
 	if (lcf::Data::treemap.maps[current_index].background_type == 2) {
-		args.background = lcf::Data::treemap.maps[current_index].background_name;
+		args.background = ToString(lcf::Data::treemap.maps[current_index].background_name);
 	}
 }
 
@@ -1488,14 +1488,14 @@ int Game_Map::GetMapIndex(int id) {
 	return -1;
 }
 
-std::string Game_Map::GetMapName(int id) {
+StringView Game_Map::GetMapName(int id) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		if (lcf::Data::treemap.maps[i].ID == id) {
 			return lcf::Data::treemap.maps[i].name;
 		}
 	}
 	// nothing found
-	return "";
+	return {};
 }
 
 int Game_Map::GetMapType(int map_id) {
@@ -1523,7 +1523,7 @@ void Game_Map::SetChipset(int id) {
 	if (!chipset) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
-		chipset_name = chipset->chipset_name;
+		chipset_name = ToString(chipset->chipset_name);
 		passages_down = chipset->passable_data_lower;
 		passages_up = chipset->passable_data_upper;
 		animation_type = chipset->animation_type;
@@ -1735,7 +1735,7 @@ static Game_Map::Parallax::Params GetParallaxParams() {
 		params.scroll_vert_auto = map_info.parallax_vert_auto;
 		params.scroll_vert_speed = map_info.parallax_vert_speed;
 	} else if (map->parallax_flag) {
-		params.name = map->parallax_name;
+		params.name = ToString(map->parallax_name);
 		params.scroll_horz = map->parallax_loop_x;
 		params.scroll_horz_auto = map->parallax_auto_loop_x;
 		params.scroll_horz_speed = map->parallax_sx;

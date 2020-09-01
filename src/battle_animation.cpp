@@ -42,7 +42,7 @@ BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_soun
 
 	SetZ(Priority_BattleAnimation);
 
-	const std::string& name = animation.animation_name;
+	StringView name = animation.animation_name;
 	BitmapRef graphic;
 
 	if (name.empty()) return;

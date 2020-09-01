@@ -25,6 +25,7 @@
 #include <lcf/rpg/commonevent.h>
 #include <lcf/rpg/saveeventexecstate.h>
 #include "async_op.h"
+#include "string_view.h"
 
 /**
  * Game_CommonEvent class.
@@ -65,7 +66,7 @@ public:
 	 *
 	 * @return event name.
 	 */
-	std::string GetName() const;
+	StringView GetName() const;
 
 	/**
 	 * Gets trigger condition.

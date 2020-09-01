@@ -239,7 +239,7 @@ bool Game_Interpreter_Battle::CommandShowHiddenMonster(lcf::rpg::EventCommand co
 }
 
 bool Game_Interpreter_Battle::CommandChangeBattleBG(lcf::rpg::EventCommand const& com) {
-	Game_Battle::ChangeBackground(com.string);
+	Game_Battle::ChangeBackground(ToString(com.string));
 	return true;
 }
 

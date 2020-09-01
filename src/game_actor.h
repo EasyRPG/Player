@@ -22,19 +22,11 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/saveactor.h>
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
-
-namespace lcf {
-namespace rpg {
-	class Actor;
-	class Skill;
-	class BattleCommand;
-	class Item;
-	class Class;
-} // namespace rpg
-} // namespace lcf
+#include "string_view.h"
 
 class PendingMessage;
 
@@ -245,14 +237,14 @@ public:
 	 *
 	 * @return name.
 	 */
-	const std::string& GetName() const override;
+	StringView GetName() const override;
 
 	/**
 	 * Gets actor character sprite filename.
 	 *
 	 * @return character sprite filename.
 	 */
-	const std::string& GetSpriteName() const override;
+	StringView GetSpriteName() const override;
 
 	/**
 	 * Gets actor character sprite index.
@@ -271,7 +263,7 @@ public:
 	 *
 	 * @return face graphic filename.
 	 */
-	const std::string& GetFaceName() const;
+	StringView GetFaceName() const;
 
 	/**
 	 * Gets actor face graphic index.
@@ -681,7 +673,7 @@ public:
 	 *
 	 * @return name of skill menu item
 	 */
-	const std::string& GetSkillName() const;
+	StringView GetSkillName() const;
 
 	/**
 	 * Sets new actor name.
@@ -764,7 +756,7 @@ public:
 	 *
 	 * @return Rpg2k3 hero class name
 	 */
-	std::string GetClassName() const;
+	StringView GetClassName() const;
 
 	/**
 	 * Gets battle commands.
@@ -889,7 +881,7 @@ inline void Game_Actor::SetName(const std::string &new_name) {
 }
 
 
-inline const std::string& Game_Actor::GetName() const {
+inline StringView Game_Actor::GetName() const {
 	return GetData().name;
 }
 
@@ -901,7 +893,7 @@ inline const std::string& Game_Actor::GetTitle() const {
 	return GetData().title;
 }
 
-inline const std::string& Game_Actor::GetSpriteName() const {
+inline StringView Game_Actor::GetSpriteName() const {
 	return GetData().sprite_name;
 }
 
@@ -913,7 +905,7 @@ inline int Game_Actor::GetSpriteTransparency() const {
 	return GetData().transparency;
 }
 
-inline const std::string& Game_Actor::GetFaceName() const {
+inline StringView Game_Actor::GetFaceName() const {
 	return GetData().face_name;
 }
 

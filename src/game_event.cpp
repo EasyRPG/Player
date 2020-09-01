@@ -91,7 +91,7 @@ void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
 		return;
 	}
 
-	SetSpriteGraphic(page->character_name, page->character_index);
+	SetSpriteGraphic(ToString(page->character_name), page->character_index);
 
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
@@ -286,7 +286,7 @@ int Game_Event::GetId() const {
 	return event.ID;
 }
 
-std::string Game_Event::GetName() const {
+StringView Game_Event::GetName() const {
 	return event.name;
 }
 

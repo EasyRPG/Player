@@ -29,6 +29,7 @@
 #include "flash.h"
 #include "utils.h"
 #include "point.h"
+#include "string_view.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -209,14 +210,14 @@ public:
 	 *
 	 * @return Character name
 	 */
-	virtual const std::string& GetName() const = 0;
+	virtual StringView GetName() const = 0;
 
 	/**
 	 * Gets the filename of the character sprite
 	 *
 	 * @return Filename of character sprite
 	 */
-	virtual const std::string& GetSpriteName() const = 0;
+	virtual StringView GetSpriteName() const = 0;
 
 	/**
 	 * Gets battler HP.

@@ -481,7 +481,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 	}
 }
 
-int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
+int Game_Interpreter::DecodeInt(lcf::DBArray<int32_t>::const_iterator& it) {
 	int value = 0;
 
 	for (;;) {
@@ -495,7 +495,7 @@ int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
 	return value;
 }
 
-const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_iterator& it) {
+const std::string Game_Interpreter::DecodeString(lcf::DBArray<int32_t>::const_iterator& it) {
 	std::ostringstream out;
 	int len = DecodeInt(it);
 
@@ -507,7 +507,7 @@ const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_ite
 	return result;
 }
 
-lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterator& it) {
+lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(lcf::DBArray<int32_t>::const_iterator& it) {
 	lcf::rpg::MoveCommand cmd;
 	cmd.command_id = *it++;
 
@@ -517,11 +517,11 @@ lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_i
 		cmd.parameter_a = DecodeInt(it);
 		break;
 	case 34:	// Change Graphic
-		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_string = lcf::DBString(DecodeString(it));
 		cmd.parameter_a = DecodeInt(it);
 		break;
 	case 35:	// Play Sound Effect
-		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_string = lcf::DBString(DecodeString(it));
 		cmd.parameter_a = DecodeInt(it);
 		cmd.parameter_b = DecodeInt(it);
 		cmd.parameter_c = DecodeInt(it);
@@ -760,7 +760,7 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
-			s_choices.push_back(list[index_temp].string);
+			s_choices.push_back(ToString(list[index_temp].string));
 		}
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceEnd) {
@@ -793,14 +793,14 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	auto pm = PendingMessage();
 
 	// Set first line
-	pm.PushLine(com.string);
+	pm.PushLine(ToString(com.string));
 
 	++index;
 
 	// Check for continued lines via ShowMessage_2
 	while (index < static_cast<int>(list.size()) && static_cast<Cmd>(list[index].code) == Cmd::ShowMessage_2) {
 		// Add second (another) line
-		pm.PushLine(list[index].string);
+		pm.PushLine(ToString(list[index].string));
 		++index;
 	}
 
@@ -850,7 +850,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& co
 		return false;
 	}
 
-	Game_Message::SetFaceName(com.string);
+	Game_Message::SetFaceName(ToString(com.string));
 	Game_Message::SetFaceIndex(com.parameters[0]);
 	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
 	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
@@ -1835,7 +1835,7 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
-	music.name = com.string;
+	music.name = ToString(com.string);
 	music.fadein = com.parameters[0];
 	music.volume = com.parameters[1];
 	music.tempo = com.parameters[2];
@@ -1852,7 +1852,7 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
-	sound.name = com.string;
+	sound.name = ToString(com.string);
 	sound.volume = com.parameters[0];
 	sound.tempo = com.parameters[1];
 	sound.balance = com.parameters[2];
@@ -1893,7 +1893,7 @@ bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) 
 		return true;
 	}
 
-	actor->SetName(com.string);
+	actor->SetName(ToString(com.string));
 	return true;
 }
 
@@ -1905,7 +1905,7 @@ bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com)
 		return true;
 	}
 
-	actor->SetTitle(com.string);
+	actor->SetTitle(ToString(com.string));
 	return true;
 }
 
@@ -1917,7 +1917,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	const std::string &file = com.string;
+	auto file = ToString(com.string);
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
@@ -1933,7 +1933,7 @@ bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com)
 		return true;
 	}
 
-	actor->SetFace(com.string, com.parameters[1]);
+	actor->SetFace(ToString(com.string), com.parameters[1]);
 	return true;
 }
 
@@ -1946,7 +1946,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	const std::string& name = com.string;
+	const std::string& name = ToString(com.string);
 	int vehicle_index = com.parameters[1];
 
 	vehicle->SetSpriteGraphic(name, vehicle_index);
@@ -1958,7 +1958,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com) { //code 10660
 	lcf::rpg::Music music;
 	int context = com.parameters[0];
-	music.name = com.string;
+	music.name = ToString(com.string);
 	music.fadein = com.parameters[1];
 	music.volume = com.parameters[2];
 	music.tempo = com.parameters[3];
@@ -1970,7 +1970,7 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com) { //code 10670
 	lcf::rpg::Sound sound;
 	int context = com.parameters[0];
-	sound.name = com.string;
+	sound.name = ToString(com.string);
 	sound.volume = com.parameters[1];
 	sound.tempo = com.parameters[2];
 	sound.balance = com.parameters[3];
@@ -1979,9 +1979,9 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Game_System::SetSystemGraphic(com.string,
-			(lcf::rpg::System::Stretch)com.parameters[0],
-			(lcf::rpg::System::Font)com.parameters[1]);
+	Game_System::SetSystemGraphic(ToString(com.string),
+			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
+			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
 	return true;
 }
@@ -2488,7 +2488,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	int pic_id = com.parameters[0];
 
 	Game_Pictures::ShowParams params = {};
-	params.name = com.string;
+	params.name = ToString(com.string);
 	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
@@ -2696,9 +2696,9 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 		route.repeat = com.parameters[2] != 0;
 		route.skippable = com.parameters[3] != 0;
 
-		std::vector<int32_t>::const_iterator it;
-		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
+		for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
 			route.move_commands.push_back(DecodeMove(it));
+		}
 
 		event->ForceMoveRoute(route, move_freq);
 	}
@@ -2872,7 +2872,7 @@ bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com
 
 bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
-	params.name = com.string;
+	params.name = ToString(com.string);
 	params.scroll_horz = com.parameters[0] != 0;
 	params.scroll_vert = com.parameters[1] != 0;
 	params.scroll_horz_auto = com.parameters[2] != 0;

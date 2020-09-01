@@ -117,7 +117,7 @@ void Sprite_Character::ChipsetUpdated() {
 	refresh_bitmap = true;
 }
 
-Rect Sprite_Character::GetCharacterRect(const std::string& name, int index, const Rect bitmap_rect) {
+Rect Sprite_Character::GetCharacterRect(StringView name, int index, const Rect bitmap_rect) {
 	Rect rect;
 	// Allow large 4x2 spriteset of 3x4 sprites
 	// when the character name starts with a $ sign.

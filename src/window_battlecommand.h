@@ -59,7 +59,6 @@ public:
 	void SetIndex(int index);
 	void SetActive(bool active);
 	void UpdateCursorRect();
-	lcf::rpg::BattleCommand GetCommand();
 	int GetSkillSubset();
 
 protected:

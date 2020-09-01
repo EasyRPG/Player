@@ -56,17 +56,17 @@ public:
 protected:
 	void UpdateCursorRect();
 
-	std::string greeting;
-	std::string regreeting;
-	std::string buy_msg;
-	std::string sell_msg;
-	std::string leave_msg;
-	std::string buy_select;
-	std::string buy_number;
-	std::string purchased;
-	std::string sell_select;
-	std::string sell_number;
-	std::string sold_msg;
+	StringView greeting;
+	StringView regreeting;
+	StringView buy_msg;
+	StringView sell_msg;
+	StringView leave_msg;
+	StringView buy_select;
+	StringView buy_number;
+	StringView purchased;
+	StringView sell_select;
+	StringView sell_number;
+	StringView sold_msg;
 	int index;
 	int mode;
 	int buy_index;

@@ -47,19 +47,19 @@ void Game_Vehicle::LoadSystemSettings() {
 		case None:
 			break;
 		case Boat:
-			SetSpriteGraphic(lcf::Data::system.boat_name, lcf::Data::system.boat_index);
+			SetSpriteGraphic(ToString(lcf::Data::system.boat_name), lcf::Data::system.boat_index);
 			SetMapId(lcf::Data::treemap.start.boat_map_id);
 			SetX(lcf::Data::treemap.start.boat_x);
 			SetY(lcf::Data::treemap.start.boat_y);
 			break;
 		case Ship:
-			SetSpriteGraphic(lcf::Data::system.ship_name, lcf::Data::system.ship_index);
+			SetSpriteGraphic(ToString(lcf::Data::system.ship_name), lcf::Data::system.ship_index);
 			SetMapId(lcf::Data::treemap.start.ship_map_id);
 			SetX(lcf::Data::treemap.start.ship_x);
 			SetY(lcf::Data::treemap.start.ship_y);
 			break;
 		case Airship:
-			SetSpriteGraphic(lcf::Data::system.airship_name, lcf::Data::system.airship_index);
+			SetSpriteGraphic(ToString(lcf::Data::system.airship_name), lcf::Data::system.airship_index);
 			SetMapId(lcf::Data::treemap.start.airship_map_id);
 			SetX(lcf::Data::treemap.start.airship_x);
 			SetY(lcf::Data::treemap.start.airship_y);
@@ -265,7 +265,7 @@ int Game_Vehicle::GetVehicleType() const {
 	return data()->vehicle;
 }
 
-const std::string& Game_Vehicle::GetOrigSpriteName() const {
+StringView Game_Vehicle::GetOrigSpriteName() const {
 	if (!data()->orig_sprite_name.empty()) {
 		return data()->orig_sprite_name;
 	}
@@ -279,8 +279,7 @@ const std::string& Game_Vehicle::GetOrigSpriteName() const {
 		default:
 			break;
 	}
-	static const std::string _sentinel = {};
-	return _sentinel;
+	return {};
 }
 
 int Game_Vehicle::GetOrigSpriteIndex() const {

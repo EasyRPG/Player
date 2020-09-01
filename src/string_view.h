@@ -19,6 +19,7 @@
 #define EP_STRING_VIEW_H
 
 #include <lcf/string_view.h>
+#include <lcf/dbstring.h>
 #include <fmt/core.h>
 
 using StringView = lcf::StringView;
@@ -33,6 +34,5 @@ inline fmt::basic_string_view<C> to_string_view(basic_string_view<C,T> s) {
     return fmt::basic_string_view<C>(s.data(), s.size());
 }
 } }
-
 
 #endif

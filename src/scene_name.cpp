@@ -42,7 +42,7 @@ void Scene_Name::Start() {
 	assert(actor);
 
 	name_window.reset(new Window_Name(96, 40, 192, 32));
-	name_window->Set(use_default_name ? actor->GetName() : "");
+	name_window->Set(use_default_name ? ToString(actor->GetName()) : "");
 	name_window->Refresh();
 
 	face_window.reset(new Window_Face(32, 8, 64, 64));
@@ -112,7 +112,7 @@ void Scene_Name::Update() {
 			auto* actor = Game_Actors::GetActor(actor_id);
 			if (actor != nullptr) {
 				if (name_window->Get().empty()) {
-					name_window->Set(actor->GetName());
+					name_window->Set(ToString(actor->GetName()));
 					name_window->Refresh();
 				} else {
 					actor->SetName(name_window->Get());

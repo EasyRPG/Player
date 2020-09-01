@@ -75,9 +75,8 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-		it != enemies.end(); ++it) {
-		commands.push_back((*it)->GetName());
+	for (auto& enemy: enemies) {
+		commands.push_back(ToString(enemy->GetName()));
 	}
 
 	target_window.reset(new Window_Command(commands, 136, 4));
@@ -89,10 +88,10 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
-	commands.push_back(lcf::Data::terms.command_attack);
-	commands.push_back(lcf::Data::terms.command_skill);
-	commands.push_back(lcf::Data::terms.command_defend);
-	commands.push_back(lcf::Data::terms.command_item);
+	commands.push_back(ToString(lcf::Data::terms.command_attack));
+	commands.push_back(ToString(lcf::Data::terms.command_skill));
+	commands.push_back(ToString(lcf::Data::terms.command_defend));
+	commands.push_back(ToString(lcf::Data::terms.command_item));
 
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
@@ -496,7 +495,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 		}
 
 		if (pri_state != nullptr) {
-			const auto& msg = pri_was_healed
+			StringView msg = pri_was_healed
 				? pri_state->message_recovery
 				: pri_state->message_affected;
 
@@ -505,7 +504,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 			// If state is inflicted, only prints if msg not empty.
 			if (pri_was_healed || !msg.empty()) {
 				show_message = true;
-				pending_message = msg;
+				pending_message = ToString(msg);
 			}
 		}
 
@@ -1502,10 +1501,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 		// No Output::Warning needed here, reported later when the item is added
-		std::string item_name = "??? BAD ITEM ???";
-		if (item) {
-			item_name = item->name;
-		}
+		StringView item_name = item ? item->name : "??? BAD ITEM ???";
 
 		if (Player::IsRPG2kE()) {
 			pm.PushLine(
@@ -1537,7 +1533,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
-		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 
 		std::stringstream ss;
 		if (exp > 0) {
@@ -1586,7 +1582,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 
 		pm.SetWordWrapped(Player::IsRPG2kE());
 
-		pm.PushLine(lcf::Data::terms.defeat);
+		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 

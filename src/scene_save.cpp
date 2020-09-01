@@ -43,7 +43,7 @@
 #include "version.h"
 
 Scene_Save::Scene_Save() :
-	Scene_File(lcf::Data::terms.save_game_message) {
+	Scene_File(ToString(lcf::Data::terms.save_game_message)) {
 	Scene::type = Scene::Save;
 }
 
@@ -92,25 +92,25 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	if (size > 3) {
 		actor = Main_Data::game_party->GetActors()[3];
 		title.face4_id = actor->GetFaceIndex();
-		title.face4_name = actor->GetFaceName();
+		title.face4_name = ToString(actor->GetFaceName());
 	}
 	if (size > 2) {
 		actor = Main_Data::game_party->GetActors()[2];
 		title.face3_id = actor->GetFaceIndex();
-		title.face3_name = actor->GetFaceName();
+		title.face3_name = ToString(actor->GetFaceName());
 	}
 	if (size > 1) {
 		actor = Main_Data::game_party->GetActors()[1];
 		title.face2_id = actor->GetFaceIndex();
-		title.face2_name = actor->GetFaceName();
+		title.face2_name = ToString(actor->GetFaceName());
 	}
 	if (size > 0) {
 		actor = Main_Data::game_party->GetActors()[0];
 		title.face1_id = actor->GetFaceIndex();
-		title.face1_name = actor->GetFaceName();
+		title.face1_name = ToString(actor->GetFaceName());
 		title.hero_hp = actor->GetHp();
 		title.hero_level = actor->GetLevel();
-		title.hero_name = actor->GetName();
+		title.hero_name = ToString(actor->GetName());
 	}
 
 	Main_Data::game_data.title = title;

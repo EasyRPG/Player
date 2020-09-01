@@ -69,7 +69,7 @@ int Game_CommonEvent::GetIndex() const {
 
 // Game_Map ensures validity of Common Events
 
-std::string Game_CommonEvent::GetName() const {
+StringView Game_CommonEvent::GetName() const {
 	return lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id)->name;
 }
 

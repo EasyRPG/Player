@@ -85,13 +85,13 @@ void Window_ShopBuy::UpdateHelp() {
 	if (!data.empty()) {
 		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, data[index]);
 		if (item) {
-			help_text = item->description;
+			help_text = ToString(item->description);
 		} else {
 			help_text = "??? BAD ITEM ???";
 		}
 	}
 
-	help_window->SetText(help_text);
+	help_window->SetText(std::move(help_text));
 }
 
 bool Window_ShopBuy::CheckEnable(int item_id) {

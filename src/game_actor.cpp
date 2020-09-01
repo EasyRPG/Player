@@ -747,7 +747,7 @@ std::string Game_Actor::GetLearningMessage(const lcf::rpg::Skill& skill) const {
 		);
 	}
 
-	return skill.name + (Player::IsRPG2k3E() ? " " : "") + lcf::Data::terms.skill_learned;
+	return ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "") + ToString(lcf::Data::terms.skill_learned);
 }
 
 void Game_Actor::ChangeLevel(int new_level, PendingMessage* pm) {
@@ -823,9 +823,9 @@ Point Game_Actor::GetOriginalPosition() const {
 	return { actor.battle_x, actor.battle_y };
 }
 
-const std::string& Game_Actor::GetSkillName() const {
+StringView Game_Actor::GetSkillName() const {
 	auto& a = GetActor();
-	return a.rename_skill ? a.skill_name : lcf::Data::terms.command_skill;
+	return a.rename_skill ? StringView(a.skill_name) : StringView(lcf::Data::terms.command_skill);
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
@@ -1041,9 +1041,9 @@ void Game_Actor::ChangeClass(int new_class_id,
 	}
 }
 
-std::string Game_Actor::GetClassName() const {
+StringView Game_Actor::GetClassName() const {
     if (!GetClass()) {
-        return "";
+        return {};
     }
     return GetClass()->name;
 }

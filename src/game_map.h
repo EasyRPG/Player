@@ -551,7 +551,7 @@ namespace Game_Map {
 	 * @param id map ID.
 	 * @return map name from MapInfo vector.
 	 */
-	std::string GetMapName(int id);
+	StringView GetMapName(int id);
 
 	/**
 	 * Gets the type (1 = normal, 2 = area) of the map.

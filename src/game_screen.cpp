@@ -168,9 +168,9 @@ void Game_Screen::SetWeatherEffect(int type, int strength) {
 	}
 }
 
-void Game_Screen::PlayMovie(const std::string& filename,
+void Game_Screen::PlayMovie(std::string filename,
 							int pos_x, int pos_y, int res_x, int res_y) {
-	movie_filename = filename;
+	movie_filename = std::move(filename);
 	movie_pos_x = pos_x;
 	movie_pos_y = pos_y;
 	movie_res_x = res_x;

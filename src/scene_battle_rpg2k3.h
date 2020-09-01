@@ -93,7 +93,7 @@ protected:
 	void CreateBattleCommandWindow();
 
 	void UpdateCursors() override;
-	void DrawFloatText(int x, int y, int color, const std::string& text);
+	void DrawFloatText(int x, int y, int color, StringView text);
 
 	void RefreshCommandWindow();
 
@@ -120,7 +120,7 @@ protected:
 
 	void ActionSelectedCallback(Game_Battler* for_battler) override;
 
-	void ShowNotification(const std::string& text);
+	void ShowNotification(std::string text);
 
 	bool IsEscapeAllowed() const = delete; // disable accidental calls to base class version
 	bool IsEscapeAllowedFromOptionWindow() const;

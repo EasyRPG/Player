@@ -95,8 +95,7 @@ void Window_Skill::DrawItem(int index) {
 }
 
 void Window_Skill::UpdateHelp() {
-	help_window->SetText(GetSkill() == NULL ? "" :
-		GetSkill()->description);
+	help_window->SetText(GetSkill() == nullptr ? "" : ToString(GetSkill()->description));
 }
 
 bool Window_Skill::CheckInclude(int skill_id) {

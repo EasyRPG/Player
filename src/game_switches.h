@@ -23,6 +23,7 @@
 #include <string>
 #include <lcf/data.h>
 #include "compiler.h"
+#include "string_view.h"
 
 /**
  * Game_Switches class
@@ -45,7 +46,7 @@ public:
 	bool Flip(int switch_id);
 	void FlipRange(int first_id, int last_id);
 
-	std::string GetName(int switch_id) const;
+	StringView GetName(int switch_id) const;
 
 	bool IsValid(int switch_id) const;
 

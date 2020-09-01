@@ -440,7 +440,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				for (auto state_id : states) {
 					// States are sanitized in Game_Battler
 					const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
-					std::string name = state->name;
+					auto name = ToString(state->name);
 					int color = state->color;
 					FontRef font = Font::Default();
 					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);
@@ -458,7 +458,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text) {
 	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
@@ -486,9 +486,8 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-		it != enemies.end(); ++it) {
-		commands.push_back((*it)->GetName());
+	for (auto& enemy: enemies) {
+		commands.push_back(ToString(enemy->GetName()));
 	}
 
 	target_window.reset(new Window_Command(commands, 136, 4));
@@ -520,7 +519,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 		int i = 0;
 		for (const lcf::rpg::BattleCommand* command : bcmds) {
-			commands.push_back(command->name);
+			commands.push_back(ToString(command->name));
 
 			if (!IsEscapeAllowedFromActorCommand() && command->type == lcf::rpg::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);
@@ -1287,7 +1286,7 @@ void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
 	}
 
 	SetState(State_SelectActor);
-	ShowNotification(lcf::Data::terms.escape_failure);
+	ShowNotification(ToString(lcf::Data::terms.escape_failure));
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
@@ -1311,7 +1310,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.PushLine(lcf::Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 		pm.PushPageEnd();
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
@@ -1331,10 +1330,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
 			// No Output::Warning needed here, reported later when the item is added
-			std::string item_name = "??? BAD ITEM ???";
-			if (item) {
-				item_name = item->name;
-			}
+			StringView item_name = item ? item->name : "??? BAD ITEM ???";
 
 			ss.str("");
 			ss << item_name << space << lcf::Data::terms.item_recieved;
@@ -1381,7 +1377,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
-		pm.PushLine(lcf::Data::terms.defeat);
+		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 		Game_Message::SetPendingMessage(std::move(pm));
@@ -1479,12 +1475,12 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	first_strike = false;
 }
 
-void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {
+void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 	if (text.empty()) {
 		return;
 	}
 	help_window->SetVisible(true);
 	message_timer = 60;
-	help_window->SetText(text);
+	help_window->SetText(std::move(text));
 }
 

@@ -19,6 +19,7 @@
 #define EP_GAME_BATTLE_H
 
 #include <functional>
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/troop.h>
 #include "teleport_target.h"
@@ -30,12 +31,6 @@ class Game_Enemy;
 class Game_Actor;
 class Game_Interpreter;
 class Spriteset_Battle;
-
-namespace lcf {
-namespace rpg {
-	class EventPage;
-} // namespace rpg
-} // namespace lcf
 
 enum class BattleResult {
 	Victory,

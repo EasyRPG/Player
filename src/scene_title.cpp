@@ -142,8 +142,8 @@ void Scene_Title::CreateTitleGraphic() {
 void Scene_Title::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(lcf::Data::terms.new_game);
-	options.push_back(lcf::Data::terms.load_game);
+	options.push_back(ToString(lcf::Data::terms.new_game));
+	options.push_back(ToString(lcf::Data::terms.load_game));
 
 	// Set "Import" based on metadata
 	if (Player::meta->IsImportEnabled()) {
@@ -152,7 +152,7 @@ void Scene_Title::CreateCommandWindow() {
 		exit_index = 3;
 	}
 
-	options.push_back(lcf::Data::terms.exit_game);
+	options.push_back(ToString(lcf::Data::terms.exit_game));
 
 	command_window.reset(new Window_Command(options));
 	if (!Player::hide_title_flag) {
@@ -205,7 +205,7 @@ void Scene_Title::PrepareBattleTest() {
 	args.troop_id = Game_Battle::battle_test.troop_id;
 	args.first_strike = false;
 	args.allow_escape = true;
-	args.background = lcf::Data::system.battletest_background;
+	args.background = ToString(lcf::Data::system.battletest_background);
 	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
 
 	if (Player::IsRPG2k3()) {

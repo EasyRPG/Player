@@ -33,23 +33,24 @@ void Window_Help::SetText(std::string text,	Text::Alignment align) {
 	if (this->text != text || this->align != align) {
 		contents->Clear();
 
-		this->text = text;
-		this->align = align;
-
 		int x = 0;
 		std::string::size_type pos = 0;
 		std::string::size_type nextpos = 0;
 		while (nextpos != std::string::npos) {
 			nextpos = text.find(' ', pos);
-			auto segment = text.substr(pos, nextpos - pos);
+			auto segment = ToStringView(text).substr(pos, nextpos - pos);
 			contents->TextDraw(x, 2, Font::ColorDefault, segment, align);
 			x += Font::Default()->GetSize(segment).width;
 
-			if (nextpos != std::string::npos) {
+			if (nextpos != decltype(text)::npos) {
 				x += Font::Default()->GetSize(" ").width / 2;
 				pos = nextpos + 1;
 			}
 		}
+
+		this->text = std::move(text);
+		this->align = align;
+
 	}
 }
 

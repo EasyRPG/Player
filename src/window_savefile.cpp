@@ -110,7 +110,7 @@ void Window_SaveFile::Refresh() {
 		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
 	}
 
-	auto lvl_short = lcf::Data::terms.lvl_short;
+	auto lvl_short = ToString(lcf::Data::terms.lvl_short);
 	if (lvl_short.size() != 2) {
 		lvl_short.resize(2, ' ');
 	}
@@ -122,7 +122,7 @@ void Window_SaveFile::Refresh() {
 	out << std::setw(2) << std::setfill(' ') << data.hero_level;
 	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
 
-	auto hp_short = lcf::Data::terms.hp_short;
+	auto hp_short = ToString(lcf::Data::terms.hp_short);
 	if (hp_short.size() != 2) {
 		hp_short.resize(2, ' ');
 	}
