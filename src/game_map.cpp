@@ -262,10 +262,10 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	// FIXME: Assert map was cached for async platforms
-	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
+	std::string map_name = Game_Map::ConstructMapName(map_id, true);
 	std::string map_file = FileFinder::FindDefault(map_name);
 	if (map_file.empty()) {
-		map_name = Game_Map::ConstructMapName(location.map_id, false);
+		map_name = Game_Map::ConstructMapName(map_id, false);
 		map_file = FileFinder::FindDefault(map_name);
 
 		if (map_file.empty()) {
