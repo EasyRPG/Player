@@ -813,7 +813,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetFirstOriginalTarget() const {
 	if (original_targets.empty()) {
-		return NULL;
+		return nullptr;
 	} else {
 		return *original_targets.begin();
 	}
