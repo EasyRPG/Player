@@ -19,11 +19,6 @@ public class GameScanner {
     // (Such as caching games' thumbnail, avoiding some syscall ...)
     private static volatile GameScanner instance = null;
 
-    //Files' names
-    private final static String DATABASE_NAME = "RPG_RT.ldb",
-            TREEMAP_NAME = "RPG_RT.lmt",
-            INI_FILE = "RPG_RT.ini";
-
     private List<GameInformation> gameList;
     private List<String> errorList;
     private Activity context;
@@ -106,42 +101,11 @@ public class GameScanner {
         Log.i("Browser", gameList.size() + " games found : " + gameList);
     }
 
-    /**
-     * Tests if a folder is a RPG2k Game.
-     * (contains DATABASE_NAME and TREEMAP_NAME)
-     * @param dir Directory to test
-     * @return true if RPG2k game
-     */
-    private static boolean isRpg2kGame(File dir) {
-        if (!dir.isDirectory() || !dir.canRead()) {
-            return false;
-        }
-
-        boolean databaseFound = false;
-        boolean treemapFound = false;
-
-        for (File entry : dir.listFiles()) {
-            if (entry.isFile() && entry.canRead()) {
-                if (!databaseFound && entry.getName().equalsIgnoreCase(DATABASE_NAME)) {
-                    databaseFound = true;
-                } else if (!treemapFound && entry.getName().equalsIgnoreCase(TREEMAP_NAME)) {
-                    treemapFound = true;
-                }
-
-                if (databaseFound && treemapFound) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     private void scanFolder(File[] list, int depth) {
         if (list != null) {
             for (File file : list) {
                 if (!file.getName().startsWith(".")) {
-                    if (isRpg2kGame(file)) {
+                    if (GameBrowserHelper.isRpg2kGame(file)) {
                         gameList.add(new GameInformation(file.getName(), file.getAbsolutePath()));
                     } else if (file.isDirectory() && file.canRead() && depth > 0) {
                         // Not a RPG2k Game but a directory -> recurse

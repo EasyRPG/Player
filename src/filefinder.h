@@ -286,6 +286,15 @@ namespace FileFinder {
 	bool IsEasyRpgProject(DirectoryTree const& dir);
 
 	/**
+	 * Determines if the directory in question represents an RPG2k project with non-standard 
+	 *   database, map tree, or map file names.
+	 *
+	 * @param dir The directory tree in question
+	 * @return true if this is likely an RPG2k project; false otherwise
+	 */
+	bool IsRPG2kProjectWithRenames(DirectoryTree const& dir);
+
+	/**
 	 * Checks whether the save directory contains any savegame with name
 	 * SaveXX.lsd (XX from 00 to 15).
 	 *

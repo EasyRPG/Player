@@ -556,7 +556,7 @@ RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 	#endif
 	info->library_version = PLAYER_VERSION GIT_VERSION;
 	info->need_fullpath = true;
-	info->valid_extensions = "ldb";
+	info->valid_extensions = SUFFIX_LDB;
 }
 
 /* Gets information about system audio/video timings and geometry.

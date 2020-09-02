@@ -39,6 +39,9 @@
 #define MTINI_IMPORT_SAVE_PARENT "ImportSaveParent"
 #define MTINI_EASY_RPG_SECTION "EasyRPG"
 #define MTINI_FILE_FORMAT_VERSION "FileFormatVersion"
+#define MTINI_FILEXT_LDB_ALIAS "LdbFileAlias"
+#define MTINI_FILEXT_LMT_ALIAS "LmtFileAlias"
+#define MTINI_FILEXT_LMU_ALIAS "LmuFileAlias"
 
 // Extended vocab key/value pairs
 #define MTINI_EXVOCAB_IMPORT_SAVE_HELP_KEY "Vocab_ImportSaveHelp"
@@ -71,13 +74,26 @@ Meta::Meta(const std::string& meta_file) {
 	if (!Empty()) {
 		std::string version = ini->GetString(MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, "");
 		if (version == "1") {
-			IdentifyCanonName();
+			IdentifyCanonName(TREEMAP_NAME, DATABASE_NAME);
 		} else {
 			Output::Warning("Metadata error in {}, format property {}:{} is missing or invalid: '{}'", meta_file, MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, version);
+			ini = nullptr;
 		}
 	}
 
 }
+
+void Meta::ReInitForNonStandardExtensions(const std::string& file1, const std::string& file2) {
+	if (!Empty()) {
+		if (canon_ini_lookup.empty()) {
+			IdentifyCanonName(file1, file2);
+		}
+		if (canon_ini_lookup.empty()) {
+			IdentifyCanonName(file2, file1);
+		}
+	}
+}
+
 
 int Meta::GetPivotMap() const {
 	if (!Empty()) {
@@ -170,6 +186,28 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::Dir
 	return res;
 }
 
+std::string Meta::GetLdbAlias() const {
+	if (!Empty()) {
+		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LDB_ALIAS, "");
+	}
+	return "";
+}
+
+std::string Meta::GetLmtAlias() const {
+        if (!Empty()) {
+                return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMT_ALIAS, "");
+        }
+        return "";
+}
+
+std::string Meta::GetLmuAlias() const {
+        if (!Empty()) {
+                return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMU_ALIAS, "");
+        }
+        return "";
+}
+
+
 bool Meta::IsImportEnabled() const {
 	return !GetParentGame().empty();
 }
@@ -191,22 +229,23 @@ std::string Meta::GetExVocab(const std::string& term, const std::string& def_val
 	return def_value;
 }
 
-void Meta::IdentifyCanonName() {
-	std::string lmtPath = FileFinder::FindDefault(TREEMAP_NAME);
-
+void Meta::IdentifyCanonName(const std::string& lmtFile, const std::string& ldbFile) {
 	// Calculate the lookup based on the LMT/LDB hashes, preferring to use LMT only if possible.
 	// This requires a mandatory field, for which we will use "Name".
 	if (!Empty()) {
+		std::string lmtPath = FileFinder::FindDefault(lmtFile);
 		std::string crcLMT = crc32file(lmtPath);
 		std::string crcLDB = "*";
+		Output::Debug("CRC32 of 'LMT' file ('{}') is {}", lmtFile, crcLMT);
 		if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 			canon_ini_lookup = crcLMT + "/" + crcLDB;
 		} else {
-			std::string ldbPath = FileFinder::FindDefault(DATABASE_NAME);
+			std::string ldbPath = FileFinder::FindDefault(ldbFile);
 			crcLDB = crc32file(ldbPath);
 			if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 				canon_ini_lookup = crcLMT + "/" + crcLDB;
 			}
+			Output::Debug("CRC32 of 'LDB' file ('{}') file is {}", ldbFile, crcLDB);
 		}
 	}
 }

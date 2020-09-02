@@ -46,6 +46,7 @@
 #include "cache.h"
 #include "cmdline_parser.h"
 #include "filefinder.h"
+#include "fileext_guesser.h"
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_map.h"
@@ -101,6 +102,7 @@ namespace Player {
 	int start_map_id;
 	bool no_rtp_flag;
 	bool no_audio_flag;
+	bool is_easyrpg_project;
 	bool mouse_flag;
 	bool touch_flag;
 	std::string encoding;
@@ -110,6 +112,7 @@ namespace Player {
 	std::string game_title;
 	int patch;
 	std::shared_ptr<Meta> meta;
+	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
@@ -429,6 +432,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 	start_map_id = -1;
 	no_rtp_flag = false;
 	no_audio_flag = false;
+	is_easyrpg_project = false;
 	mouse_flag = false;
 	touch_flag = false;
 	Game_Battle::battle_test.enabled = false;
@@ -649,6 +653,14 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 }
 
 void Player::CreateGameObjects() {
+	// Load the meta information file.
+	// Note: This should eventually be split across multiple folders as described in Issue #1210
+	std::string meta_file = FileFinder::FindDefault(META_NAME);
+	meta.reset(new Meta(meta_file));
+
+	// Guess non-standard extensions (for the DB) before loading the encoding
+	GuessNonStandardExtensions();
+
 	GetEncoding();
 	escape_symbol = lcf::ReaderUtil::Recode("\\", encoding);
 	if (escape_symbol.empty()) {
@@ -666,11 +678,6 @@ void Player::CreateGameObjects() {
 	}
 
 	LoadDatabase();
-
-	// Load the meta information file.
-	// Note: This should eventually be split across multiple folders as described in Issue #1210
-	std::string meta_file = FileFinder::FindDefault(META_NAME);
-	meta.reset(new Meta(meta_file));
 
 	bool no_rtp_warning_flag = false;
 	{ // Scope lifetime of variables for ini parsing
@@ -822,42 +829,69 @@ void Player::ResetGameObjects() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
 
+static bool DefaultLmuStartFileExists(const FileFinder::DirectoryTree& dir) {
+	// Compute map_id based on command line.
+	int map_id = Player::start_map_id == -1 ? lcf::Data::treemap.start.party_map_id : Player::start_map_id;
+	std::string mapName = Game_Map::ConstructMapName(map_id, false);
+
+	// Now see if the file exists.
+	return dir.files.find(Utils::LowerCase(mapName)) != dir.files.end();
+}
+
+void Player::GuessNonStandardExtensions() {
+	// Check all conditions, but check the remap last (since it is potentially slower).
+	FileExtGuesser::RPG2KNonStandardFilenameGuesser rpg2kRemap;
+	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
+		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
+
+		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(*FileFinder::GetDirectoryTree());
+		if (rpg2kRemap.Empty()) {
+			// Unlikely to happen because of the game browser only launches valid games
+			Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
+
+			Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
+				"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
+				"This engine only supports RPG Maker 2000 and 2003\ngames.",
+				"RPG Maker XP, VX, VX Ace and MV are NOT supported.");
+		}
+	}
+
+	// At this point we haven't yet determined if this is an easyrpg project or not.
+	// There are several ways to handle this, but we just put 'is_easyrpg_project' in the header
+	// and calculate it here.
+	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
+	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
+	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+	is_easyrpg_project = !edb.empty() && !emt.empty();
+
+	// Non-standard extensions only apply to non-EasyRPG projects
+	if (!is_easyrpg_project && !rpg2kRemap.Empty()) {
+		fileext_map = rpg2kRemap.guessExtensions(*meta);
+	} else {
+		fileext_map = FileExtGuesser::RPG2KFileExtRemap();
+	}
+}
+
 void Player::LoadDatabase() {
 	// Load lcf::Database
 	lcf::Data::Clear();
 
-	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
-		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
-		// Unlikely to happen because of the game browser only launches valid games
-
-		Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
-
-		Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
-			"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
-			"This engine only supports RPG Maker 2000 and 2003\ngames.",
-			"RPG Maker XP, VX, VX Ace and MV are NOT supported.");
-	}
-
-	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
-	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
-
-	bool easyrpg_project = !edb.empty() && !emt.empty();
-
-	if (easyrpg_project) {
+	if (is_easyrpg_project) {
+		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
 		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios::ios_base::in );
 		if (!lcf::LDB_Reader::LoadXml(edb_stream)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 
+		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
 		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios::ios_base::in);
 		if (!lcf::LMT_Reader::LoadXml(emt_stream)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
-	}
-	else {
-		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
+	} else {
+		// Retrieve the appropriately-renamed files.
+		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
+		std::string lmt = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT));
 
 		auto ldb_stream = FileFinder::OpenInputStream(ldb);
 		if (!lcf::LDB_Reader::Load(ldb_stream, encoding)) {
@@ -867,6 +901,11 @@ void Player::LoadDatabase() {
 		auto lmt_stream = FileFinder::OpenInputStream(lmt);
 		if (!lcf::LMT_Reader::Load(lmt_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		}
+
+		// Override map extension, if needed.
+		if (!DefaultLmuStartFileExists(*FileFinder::GetDirectoryTree())) {
+			FileExtGuesser::GuessAndAddLmuExtension(*FileFinder::GetDirectoryTree(), *meta, fileext_map);
 		}
 	}
 }
@@ -1023,7 +1062,7 @@ std::string Player::GetEncoding() {
 	if (encoding.empty() || encoding == "auto") {
 		encoding = "";
 
-		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
 		auto ldb_stream = FileFinder::OpenInputStream(ldb);
 		std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
 
@@ -1052,7 +1091,6 @@ std::string Player::GetEncoding() {
 			}
 		}
 #endif
-
 		if (!encodings.empty() && encoding.empty()) {
 			// No encoding found that matches the files, maybe RTP missing.
 			// Use the first one instead

@@ -19,6 +19,7 @@
 #define EP_PLAYER_H
 
 // Headers
+#include "fileext_guesser.h"
 #include "meta.h"
 #include "game_clock.h"
 #include "game_config.h"
@@ -127,6 +128,12 @@ namespace Player {
 	 * the database is not reparsed.
 	 */
 	void ResetGameObjects();
+
+	/**
+	 * Determine if the LDB and LMT files are not present, and if so, guess 
+	 * if they may have been renamed. Populates fileext_map.
+	 */
+	void GuessNonStandardExtensions();
 
 	/**
 	 * Loads all databases.
@@ -299,6 +306,9 @@ namespace Player {
 	/** Mutes audio playback */
 	extern bool no_audio_flag;
 
+	/** Is this project using EasyRPG files, or the RPG_RT format? */
+	extern bool is_easyrpg_project;
+
 	/** Encoding used */
 	extern std::string encoding;
 
@@ -325,6 +335,9 @@ namespace Player {
 
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
+
+	/** File extension rewriter, for non-standard extensions. */
+	extern FileExtGuesser::RPG2KFileExtRemap fileext_map;
 
 	/**
 	 * The default speed modifier applied when the speed up button is pressed
