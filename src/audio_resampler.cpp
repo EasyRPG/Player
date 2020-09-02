@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#if defined(HAVE_LIBSPEEXDSP) || defined(HAVE_LIBSAMPLERATE) 
+#ifdef USE_AUDIO_RESAMPLER
 
 #include <cassert>
 #include <cstring>

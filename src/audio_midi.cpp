@@ -73,9 +73,11 @@ std::unique_ptr<AudioDecoder> MidiDecoder::Create(Filesystem_Stream::InputStream
 	}
 #endif
 
+#ifdef USE_AUDIO_RESAMPLER
 	if (mididec && resample) {
 		mididec = std::make_unique<AudioResampler>(std::move(mididec));
 	}
+#endif
 
 	return mididec;
 }

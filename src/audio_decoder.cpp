@@ -126,9 +126,13 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 	(void)filename;
 #endif
 
-#ifndef USE_AUDIO_RESAMPLER
-	resample = false;
+	auto add_resampler = [resample](std::unique_ptr<AudioDecoder> dec) -> std::unique_ptr<AudioDecoder> {
+#ifdef USE_AUDIO_RESAMPLER
+		if (resample)
+			return std::make_unique<AudioResampler>(std::move(dec));
 #endif
+		return dec;
+	};
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
@@ -148,11 +152,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "Opus", 4)) {
-			if (resample) {
-				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new OpusDecoder())));
-			} else {
-				return std::unique_ptr<AudioDecoder>(new OpusDecoder());
-			}
+			return add_resampler(std::make_unique<OpusDecoder>());
 		}
 #endif
 
@@ -164,11 +164,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "vorb", 4)) {
-			if (resample) {
-				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new OggVorbisDecoder())));
-			} else {
-				return std::unique_ptr<AudioDecoder>(new OggVorbisDecoder());
-			}
+			return add_resampler(std::make_unique<OggVorbisDecoder>());
 		}
 #endif
 	}
@@ -183,11 +179,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 		Utils::SwapByteOrder(raw_enc);
 		stream.seekg(0, std::ios::ios_base::beg);
 		if (raw_enc == 0x01) { // Codec is normal PCM
-			if (resample) {
-				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new WavDecoder())));
-			} else {
-				return std::unique_ptr<AudioDecoder>(new WavDecoder());
-			}
+			return add_resampler(std::make_unique<WavDecoder>());
 		}
 	}
 
@@ -199,28 +191,20 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 		!strncmp(magic, "OggS", 4) || // OGG
 		!strncmp(magic, "fLaC", 4)) { // FLAC
 #ifdef HAVE_LIBSNDFILE
-		if (resample) {
-			return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new LibsndfileDecoder())));
-		} else {
-			return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
-		}
+		return add_resampler(std::make_unique<LibsndfileDecoder>());
 #endif
 		return nullptr;
 	}
 
 	// Inform about WMA issue
 	if (!memcmp(magic, wma_magic, 4)) {
-		return std::unique_ptr<AudioDecoder>(new WMAUnsupportedFormatDecoder());
+		return std::make_unique<WMAUnsupportedFormatDecoder>();
 	}
 
 	// Test for tracker modules
 #ifdef HAVE_XMP
 	if (XMPDecoder::IsModule(filename)) {
-		if (resample) {
-			return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new XMPDecoder())));
-		} else {
-			return std::unique_ptr<AudioDecoder>(new XMPDecoder());
-		}
+		return add_resampler(std::make_unique<XMPDecoder>());
 	}
 #endif
 
@@ -228,40 +212,20 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 #ifdef HAVE_MPG123
 	static bool mpg123_works = true;
 	if (mpg123_works) {
-		AudioDecoder* mp3dec = nullptr;
-		if (strncmp(magic, "ID3", 3) == 0) {
-			if (resample) {
-				mp3dec = new AudioResampler(std::unique_ptr<AudioDecoder>(new Mpg123Decoder()));
-			} else {
-				mp3dec = new Mpg123Decoder();
+		auto mp3dec = add_resampler(std::make_unique<Mpg123Decoder>());
+		if (mp3dec->WasInited()) {
+			if (strncmp(magic, "ID3", 3) == 0) {
+				return mp3dec;
 			}
-			if (mp3dec) {
-				if (mp3dec->WasInited())
-					return std::unique_ptr<AudioDecoder>(mp3dec);
 
-				delete mp3dec;
+			// Parsing MP3s seems to be the only reliable way to detect them
+			if (Mpg123Decoder::IsMp3(stream)) {
+				stream.clear();
+				stream.seekg(0, std::ios_base::beg);
+				return mp3dec;
 			}
+		} else {
 			mpg123_works = false;
-			return nullptr;
-		}
-
-		// Parsing MP3s seems to be the only reliable way to detect them
-		if (Mpg123Decoder::IsMp3(stream)) {
-			stream.clear();
-			stream.seekg(0, std::ios_base::beg);
-			if (resample) {
-				mp3dec = new AudioResampler(std::unique_ptr<AudioDecoder>(new Mpg123Decoder()));
-			} else {
-				mp3dec = new Mpg123Decoder();
-			}
-			if (mp3dec) {
-				if(mp3dec->WasInited())
-					return std::unique_ptr<AudioDecoder>(mp3dec);
-
-				delete mp3dec;
-			}
-			mpg123_works = false;
-			return nullptr;
 		}
 	}
 #endif
