@@ -277,12 +277,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_t
 		anim_targets.push_back(*current_target);
 	} while (TargetNextInternal());
 
-	Game_Battle::ShowBattleAnimation(
-		GetSecondAnimation()->ID,
-		anim_targets,
-		false,
-		-1,
-		invert);
+	Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets, false, -1, invert);
 	has_animation2_played = true;
 
 	current_target = old_current_target;
@@ -817,7 +812,11 @@ bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetFirstOriginalTarget() const {
-	return *original_targets.begin();
+	if (original_targets.empty()) {
+		return NULL;
+	} else {
+		return *original_targets.begin();
+	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
