@@ -1287,11 +1287,6 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	actor_index--;
 	active_actor = allies[actor_index];
 
-	if (active_actor->IsDead()) {
-		SelectPreviousActor();
-		return;
-	}
-
 	battle_actions.back()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_back();
 
