@@ -47,7 +47,7 @@ void Scene_End::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
-			Game_System::BgmFade(800);
+			Game_System::BgmFade(400);
 			Scene::ReturnToTitleScene();
 			break;
 		case 1: // No
