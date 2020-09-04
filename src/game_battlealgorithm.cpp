@@ -963,7 +963,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			} else {
 				auto& a1 = weapon1->attribute_set;
 				auto& a2 = weapon2->attribute_set;
-				std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
+				lcf::DBBitArray attribute_set(std::max(a1.size(), a2.size()), false);
 				for (size_t i = 0; i < attribute_set.size(); ++i) {
 					if (i < a1.size())
 						attribute_set[i] = attribute_set[i] | a1[i];

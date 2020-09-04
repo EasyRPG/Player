@@ -1267,7 +1267,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 			return false;
 		}
 
-		const std::vector<bool>& terrain_set = troop->terrain_set;
+		const auto& terrain_set = troop->terrain_set;
 
 		// RPG_RT optimisation: Omitted entries are the default value (true)
 		return terrain_set.size() <= (unsigned)(terrain_tag - 1) ||
