@@ -254,9 +254,9 @@ void Weather::CreateSandParticle() {
 
 	const std::array<uint32_t,num_sand_colors> pixels = {{
 		Bitmap::pixel_format.rgba_to_uint32_t(255,255,32,255), // Yellow
-		Bitmap::pixel_format.rgba_to_uint32_t(255,184,32,255), // Orange
+		Bitmap::pixel_format.rgba_to_uint32_t(255,180,32,255), // Orange
 		Bitmap::pixel_format.rgba_to_uint32_t(255,32,32,255), // Red
-		Bitmap::pixel_format.rgba_to_uint32_t(255,255,248,255), // White
+		Bitmap::pixel_format.rgba_to_uint32_t(255,255,240,255), // White
 	}};
 
 	auto* img = reinterpret_cast<uint32_t*>(sand_particle_bitmap->pixels());
