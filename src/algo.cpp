@@ -42,6 +42,8 @@ int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target
 	}
 
 	// AGI adjustment.
+	// NOTE: RPG_RT 2k3 has a bug where if the source is an actor with a selected weapon, the agi
+	// calculation calls a bespoke function which doesn't consider states which can cause half or double AGI.
 	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target.GetAgi()) / float(source.GetAgi(weapon)) - 1.0f) / 2.0f) ;
 
 	// If target has physical dodge evasion:

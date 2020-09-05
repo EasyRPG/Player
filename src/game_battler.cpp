@@ -478,84 +478,46 @@ static int AffectParameter(const int type, const int val) {
 		val;
 }
 
-int Game_Battler::GetAtk(int weapon) const {
-	int base_atk = GetBaseAtk(weapon);
-	int n = Utils::Clamp(base_atk, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_attack) {
-			n = AffectParameter(state.affect_type, base_atk);
-			break;
+static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states, bool lcf::rpg::State::*adj) {
+	auto value = Utils::Clamp(base + mod, 1, maxval);
+	bool half = false;
+	bool dbl = false;
+	for (auto i: states) {
+		const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, i);
+		assert(state);
+		if (state->*adj) {
+			half |= (state->affect_type == lcf::rpg::State::AffectType_half);
+			dbl |= (state->affect_type == lcf::rpg::State::AffectType_double);
 		}
 	}
+	if (dbl != half) {
+		if (dbl) {
+			value *= 2;
+		} else {
+			value = std::max(1, value /= 2);
+		}
+	}
+	// NOTE: RPG_RT does not clamp these values to the upper range!
+	// Exceptions:
+	// * 2k3 special function which computes atk for individual weapons / dual wield dmg does clamp at the end
+	// * 2k3 special function which computes agi for individual weapons / dual wield hit ratio does clamp, but also has a bug where it ignores states which modify agi!
+	return value;
+}
 
-	n += atk_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+int Game_Battler::GetAtk(int weapon) const {
+	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
 }
 
 int Game_Battler::GetDef(int weapon) const {
-	int base_def = GetBaseDef(weapon);
-	int n = Utils::Clamp(base_def, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_defense) {
-			n = AffectParameter(state.affect_type, base_def);
-			break;
-		}
-	}
-
-	n += def_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+	return AdjustParam(GetBaseDef(weapon), def_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
 }
 
 int Game_Battler::GetSpi(int weapon) const {
-	int base_spi = GetBaseSpi(weapon);
-	int n = Utils::Clamp(base_spi, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_spirit) {
-			n = AffectParameter(state.affect_type, base_spi);
-			break;
-		}
-	}
-
-	n += spi_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+	return AdjustParam(GetBaseSpi(weapon), spi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
 }
 
 int Game_Battler::GetAgi(int weapon) const {
-	int base_agi = GetBaseAgi(weapon);
-	int n = Utils::Clamp(base_agi, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_agility) {
-			n = AffectParameter(state.affect_type, base_agi);
-			break;
-		}
-	}
-
-	n += agi_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+	return AdjustParam(GetBaseAgi(weapon), agi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
 }
 
 int Game_Battler::GetDisplayX() const {
