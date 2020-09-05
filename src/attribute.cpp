@@ -43,7 +43,7 @@ int GetAttributeRate(const lcf::rpg::Attribute& attr, int rate) {
 
 static bool HasAttribute(Span<const lcf::DBBitArray*> attribute_sets, int id) {
 	for (auto* as: attribute_sets) {
-		if (as->size() < id && (*as)[id - 1]) {
+		if (static_cast<int>(as->size()) < id && (*as)[id - 1]) {
 			return true;
 		}
 	}

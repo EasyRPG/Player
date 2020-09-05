@@ -27,6 +27,7 @@
 #include "output.h"
 #include "utils.h"
 #include "player.h"
+#include "attribute.h"
 
 namespace {
 	constexpr int levitation_frame_count = 14;
@@ -82,7 +83,7 @@ int Game_Enemy::GetAttributeModifier(int attribute_id) const {
 		rate = 4;
 	}
 
-	return GetAttributeRate(attribute_id, rate);
+	return Attribute::GetAttributeRate(attribute_id, rate);
 }
 
 void Game_Enemy::SetHp(int _hp) {

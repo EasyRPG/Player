@@ -147,15 +147,6 @@ public:
 	int GetStateRate(int state_id, int rate) const;
 
 	/**
-	 * Gets the attribute damage multiplier/protection (A-E).
-	 *
-	 * @param attribute_id Attribute to test
-	 * @param rate Attribute rate to get
-	 * @return Attribute rate
-	 */
-	int GetAttributeRate(int attribute_id, int rate) const;
-
-	/**
 	 * Applies a modifier (buff/debuff) to an attribute rate.
 	 * GetAttributeModifier will use this shift in the rate lookup.
 	 * A shift of +1 changed a C to D and a -1 a C to B.
@@ -197,14 +188,6 @@ public:
 	 * @return Attribute resistence
 	 */
 	virtual int GetAttributeModifier(int attribute_id) const = 0;
-
-	/**
-	 * Gets the final effect multiplier when a skill/attack is targeting this battler.
-	 *
-	 * @param attributes set for the incoming action
-	 * @return effect multiplier
-	 */
-	float GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const;
 
 	/**
 	 * Gets the characters name

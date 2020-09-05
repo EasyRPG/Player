@@ -41,6 +41,7 @@
 #include "sprite_battler.h"
 #include "utils.h"
 #include "state.h"
+#include "attribute.h"
 
 static inline int MaxDamageValue() {
 	return Player::IsRPG2k() ? 999 : 9999;
@@ -958,8 +959,6 @@ void Game_BattleAlgorithm::Normal::Init() {
 bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
-	float multiplier = 1;
-
 	auto* target = GetTarget();
 
 	// Criticals cannot occur when ally attacks ally or enemy attacks enemy (e.g. confusion)
@@ -967,33 +966,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	if (source->GetType() != GetTarget()->GetType()) {
 		if (GetTarget()->GetType() != Game_Battler::Type_Ally || !static_cast<Game_Actor*>(GetTarget())->PreventsCritical()) {
 			crit_chance = source->GetCriticalHitChance();
-		}
-	}
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		const auto* weapon1 = ally->GetWeapon();
-		const auto* weapon2 = ally->Get2ndWeapon();
-		if (weapon1 == nullptr) {
-			weapon1 = weapon2;
-		}
-
-		if (weapon1) {
-			if (!weapon2) {
-				multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
-			} else {
-				auto& a1 = weapon1->attribute_set;
-				auto& a2 = weapon2->attribute_set;
-				lcf::DBBitArray attribute_set(std::max(a1.size(), a2.size()), false);
-				for (size_t i = 0; i < attribute_set.size(); ++i) {
-					if (i < a1.size())
-						attribute_set[i] = attribute_set[i] | a1[i];
-					if (i < a2.size())
-						attribute_set[i] = attribute_set[i] | a2[i];
-				}
-
-				multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
-			}
 		}
 	}
 
@@ -1030,7 +1002,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (effect < 0)
 			effect = 0;
 
-		effect *= multiplier;
+		if (source->GetType() == Game_Battler::Type_Ally) {
+			Game_Actor* ally = static_cast<Game_Actor*>(source);
+
+			effect = Attribute::ApplyAttributeMultiplier(effect, ally->GetWeapon(), ally->Get2ndWeapon(), *GetTarget());
+		}
 
 		// Row defender adjustments (RPG2k3 only)
 		if (Player::IsRPG2k3()) {
@@ -1284,7 +1260,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
 
-			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
+			effect = Attribute::ApplyAttributeMultiplier(effect, skill, *GetTarget());
 
 			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
@@ -1330,7 +1306,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
 				effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
 			}
-			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
+			effect = Attribute::ApplyAttributeMultiplier(effect, skill, *GetTarget());
 
 			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 

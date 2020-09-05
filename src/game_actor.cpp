@@ -32,6 +32,7 @@
 #include "utils.h"
 #include "pending_message.h"
 #include "compiler.h"
+#include "attribute.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -637,7 +638,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 		rate = 4;
 	}
 
-	return GetAttributeRate(attribute_id, rate);
+	return Attribute::GetAttributeRate(attribute_id, rate);
 }
 
 int Game_Actor::GetWeaponId() const {

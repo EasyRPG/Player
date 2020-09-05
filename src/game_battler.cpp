@@ -40,6 +40,7 @@
 #include "game_battlealgorithm.h"
 #include "state.h"
 #include "shake.h"
+#include "attribute.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -112,60 +113,6 @@ const lcf::rpg::State* Game_Battler::GetSignificantState() const {
 
 int Game_Battler::GetStateRate(int state_id, int rate) const {
 	return State::GetStateRate(state_id, rate);
-}
-
-int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
-	const lcf::rpg::Attribute* attribute = lcf::ReaderUtil::GetElement(lcf::Data::attributes, attribute_id);
-
-	if (!attribute) {
-		Output::Warning("GetAttributeRate: Invalid attribute ID {}", attribute_id);
-		return 0;
-	}
-
-	switch (rate) {
-	case 0:
-		return attribute->a_rate;
-	case 1:
-		return attribute->b_rate;
-	case 2:
-		return attribute->c_rate;
-	case 3:
-		return attribute->d_rate;
-	case 4:
-		return attribute->e_rate;
-	default:;
-	}
-
-	assert(false && "bad rate");
-	return 0;
-}
-
-float Game_Battler::GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const {
-	constexpr auto min_mod = std::numeric_limits<int>::min();
-	int physical = min_mod;
-	int magical = min_mod;
-
-	for (unsigned int i = 0; i < attributes_set.size(); i++) {
-		if (attributes_set[i]) {
-			auto* attr = lcf::ReaderUtil::GetElement(lcf::Data::attributes, i + 1);
-			if (attr) {
-				if (attr->type == lcf::rpg::Attribute::Type_physical) {
-					physical = std::max(physical, GetAttributeModifier(i + 1));
-				} else {
-					magical = std::max(magical, GetAttributeModifier(i + 1));
-				}
-			}
-		}
-	}
-
-	if (physical == min_mod) {
-		physical = 100;
-	}
-	if (magical == min_mod) {
-		magical = 100;
-	}
-
-	return float(physical * magical) / 10000.0;
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
@@ -318,14 +265,12 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		float mul = GetAttributeMultiplier(skill->attribute_effects);
-
 		int effect = skill->power;
 		if (source != nullptr) {
 			effect += source->GetAtk() * skill->physical_rate / 20 +
 				source->GetSpi() * skill->magical_rate / 40;
 		}
-		effect *= mul;
+		Attribute::ApplyAttributeMultiplier(effect, *skill, *source);
 
 		if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill->variance);
 
