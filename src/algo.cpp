@@ -19,6 +19,15 @@ bool IsRowAdjusted(const Game_Actor& actor, lcf::rpg::System::BattleCondition co
 		   );
 }
 
+static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const Game_Battler& target, int weapon) {
+	// NOTE: RPG_RT 2k3 has a bug where if the source is an actor with a selected weapon, the agi
+	// calculation calls a bespoke function which doesn't consider states which can cause half or double AGI.
+	const float src_agi = std::max(1, source.GetAgi(weapon));
+	const float tgt_agi = target.GetAgi();
+
+	return 100 - (100 - to_hit) * (1.0f + (tgt_agi / src_agi - 1.0f) / 2.0f);
+}
+
 int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target, int weapon, lcf::rpg::System::BattleCondition cond) {
 	auto to_hit = source.GetHitChance(weapon);
 
@@ -42,9 +51,7 @@ int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target
 	}
 
 	// AGI adjustment.
-	// NOTE: RPG_RT 2k3 has a bug where if the source is an actor with a selected weapon, the agi
-	// calculation calls a bespoke function which doesn't consider states which can cause half or double AGI.
-	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target.GetAgi()) / float(source.GetAgi(weapon)) - 1.0f) / 2.0f) ;
+	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, weapon);
 
 	// If target has physical dodge evasion:
 	if (target.GetType() == Game_Battler::Type_Ally
@@ -58,8 +65,9 @@ int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target
 			to_hit -= 25;
 		} else if(source.GetType() == Game_Battler::Type_Ally
 				&& target.GetType() == Game_Battler::Type_Enemy
-				&& cond == lcf::rpg::System::BattleCondition_back) {
-			// FIXME: RPG_RT always adjusts damage down for back attack, regardless of row - when to handle and not handle this?
+				&& cond == lcf::rpg::System::BattleCondition_back)
+		{
+			// FIXME: RPG_RT Bug: always adjusts damage down for back attack, regardless of row
 			to_hit -= 25;
 		}
 	}
@@ -91,7 +99,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	}
 
 	// AGI adjustment.
-	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target.GetAgi()) / float(source.GetAgi()) - 1.0f) / 2.0f) ;
+	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, Game_Battler::kWeaponAll);
 
 	// If target has physical dodge evasion:
 	if (target.GetType() == Game_Battler::Type_Ally
@@ -162,7 +170,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 			dmg = 75 * dmg / 100;
 		} else if(source.GetType() == Game_Battler::Type_Ally
 				&& target.GetType() == Game_Battler::Type_Enemy
-				&& cond == lcf::rpg::System::BattleCondition_back) {
+				&& cond == lcf::rpg::System::BattleCondition_back)
+		{
 			// FIXME: RPG_RT always adjusts damage down for back attack, regardless of row - when to handle and not handle this?
 			dmg = 75 * dmg / 100;
 		}
