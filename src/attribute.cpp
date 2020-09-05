@@ -5,6 +5,7 @@
 #include <lcf/reader_util.h>
 #include <lcf/data.h>
 #include "game_battler.h"
+#include "game_actor.h"
 #include "output.h"
 #include "player.h"
 #include <climits>
@@ -50,7 +51,7 @@ static bool HasAttribute(Span<const lcf::DBBitArray*> attribute_sets, int id) {
 	return false;
 }
 
-int ApplyAttributeMultiplier(int effect, Span<const lcf::DBBitArray*> attribute_sets, const Game_Battler& target) {
+int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const lcf::DBBitArray*> attribute_sets) {
 	int physical = INT_MIN;
 	int magical = INT_MIN;
 
@@ -97,26 +98,29 @@ int ApplyAttributeMultiplier(int effect, Span<const lcf::DBBitArray*> attribute_
 	return effect;
 }
 
-int ApplyAttributeMultiplier(int effect, const lcf::rpg::Item* weapon1, const lcf::rpg::Item* weapon2, const Game_Battler& target) {
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, int weapon) {
 	std::array<const lcf::DBBitArray*, 2> attribute_sets;
 
 	size_t n = 0;
-	if (weapon1 && weapon1->type == lcf::rpg::Item::Type_weapon) {
-		attribute_sets[n++] = &weapon1->attribute_set;
-	}
-	if (weapon2 && weapon2->type == lcf::rpg::Item::Type_weapon) {
-		attribute_sets[n++] = &weapon2->attribute_set;
-	}
-	if (n == 0) {
-		return effect;
+	auto add = [&](int i) {
+		if (weapon == i || weapon == Game_Battler::kWeaponAll) {
+			auto* item = source.GetEquipment(i);
+			if (item && item->type == lcf::rpg::Item::Type_weapon) {
+				attribute_sets[n++] = &item->attribute_set;
+			}
+		}
+	};
+
+	for (int i = 0; i < static_cast<int>(attribute_sets.size()); ++i) {
+		add(i);
 	}
 
-	return ApplyAttributeMultiplier(effect, Span<const lcf::DBBitArray*>(attribute_sets.data(), n), target);
+	return ApplyAttributeMultiplier(effect, target, Span<const lcf::DBBitArray*>(attribute_sets.data(), n));
 }
 
-int ApplyAttributeMultiplier(int effect, const lcf::rpg::Skill& skill, const Game_Battler& target) {
+int ApplyAttributeSkillMultiplier(int effect, const Game_Battler& target, const lcf::rpg::Skill& skill) {
 	std::array<const lcf::DBBitArray*, 1> attribute_sets = { &skill.attribute_effects };
-	return ApplyAttributeMultiplier(effect, MakeSpan(attribute_sets), target);
+	return ApplyAttributeMultiplier(effect, target, MakeSpan(attribute_sets));
 }
 
 } // namespace Attribute

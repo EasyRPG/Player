@@ -914,8 +914,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
 
-	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battle::GetBattleCondition());
-	auto crit_chance = Algo::CalcCriticalHitChance(source, target);
+	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battler::kWeaponAll, Game_Battle::GetBattleCondition());
+	auto crit_chance = Algo::CalcCriticalHitChance(source, target, Game_Battler::kWeaponAll);
 
 	// Damage calculation
 	if (Utils::PercentChance(to_hit)) {
@@ -923,7 +923,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			critical_hit = true;
 		}
 
-		auto effect = Algo::CalcNormalAttackEffect(source, target, critical_hit, true, Game_Battle::GetBattleCondition());
+		auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::kWeaponAll, critical_hit, true, Game_Battle::GetBattleCondition());
 		effect = Algo::AdjustDamageForDefend(effect, target);
 		// FIXME: Handle negative effect from attributes
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());

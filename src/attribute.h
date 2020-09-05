@@ -23,6 +23,7 @@
 #include <span.h>
 
 class Game_Battler;
+class Game_Actor;
 
 /** Namespace of functions dealing with attribute modifiers */
 namespace Attribute {
@@ -49,22 +50,22 @@ int GetAttributeRate(const lcf::rpg::Attribute& attr, int rate);
  * Modifies the effect by weapon attributes against the target.
  *
  * @param effect Base effect to adjust
- * @param weapon1 First weapon being used against target. If nullptr or type is not weapon type, is ignored.
- * @param weapon2 Second weapon being used against target. If nullptr or type is not weapon type, is ignored.
+ * @param source Source who is attacking target
  * @param target Target to apply attributes against
+ * @param weapon The weapon to use, or kWeaponAll
  * @return modified effect
  */
-int ApplyAttributeMultiplier(int effect, const lcf::rpg::Item* weapon1, const lcf::rpg::Item* weapon2, const Game_Battler& target);
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, int weapon);
 
 /**
  * Modifies the effect by weapon attributes against the target.
  *
  * @param effect Base effect to adjust
- * @param skill Skill being used against target
  * @param target Target to apply attributes against
+ * @param skill Skill being used against target
  * @return modified effect
  */
-int ApplyAttributeMultiplier(int effect, const lcf::rpg::Skill& skill, const Game_Battler& target);
+int ApplyAttributeSkillMultiplier(int effect, const Game_Battler& target, const lcf::rpg::Skill& skill);
 
 /**
  * Modifies the effect by weapon attributes against the target.
@@ -74,7 +75,7 @@ int ApplyAttributeMultiplier(int effect, const lcf::rpg::Skill& skill, const Gam
  * @param target Target to apply attributes against
  * @return modified effect
  */
-int ApplyAttributeMultiplier(int effect, Span<const lcf::DBBitArray*> attribute_sets, const Game_Battler& target);
+int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const lcf::DBBitArray*> attribute_sets);
 
 } // namespace Attribute
 

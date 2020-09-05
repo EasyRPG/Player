@@ -54,10 +54,11 @@ int VarianceAdjustEffect(int base, int var);
  * @param source The source of the action
  * @param target The target of the action
  * @param cond The current battle condition
+ * @param weapon Which weapon to use or kWeaponAll for combined
  *
  * @return Success hit rate
  */
-int CalcNormalAttackToHit(const Game_Battler& source, const Game_Battler& target, lcf::rpg::System::BattleCondition cond);
+int CalcNormalAttackToHit(const Game_Battler& source, const Game_Battler& target, int weapon, lcf::rpg::System::BattleCondition cond);
 
 /**
  * Compute the hit rate for a skill
@@ -74,10 +75,11 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
  *
  * @param source The attacker
  * @param target The defender
+ * @param weapon Which weapon to use or kWeaponAll for combined
  *
  * @return Critical hit rate.
  */
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target);
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, int weapon);
 
 /**
  * Check if target is defending and perform damage adjustment if so.
@@ -96,6 +98,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target);
  *
  * @param source The source of the action
  * @param target The target of the action
+ * @param weapon Which weapon to use or kWeaponAll for combined
  * @param is_critical_hit If true, apply critical hit bonus
  * @param apply_variance If true, apply variance to the damage
  * @param cond The current battle condition
@@ -104,6 +107,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target);
  */
 int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
+		int weapon,
 		bool is_critical_hit,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond);
