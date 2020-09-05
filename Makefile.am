@@ -10,6 +10,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/async_handler.cpp \
 	src/async_handler.h \
 	src/async_op.h \
+	src/attribute.h \
+	src/attribute.cpp \
 	src/audio.cpp \
 	src/audio.h \
 	src/audio_al.cpp \
