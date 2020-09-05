@@ -43,6 +43,8 @@
 #include "attribute.h"
 #include "algo.h"
 
+constexpr int Game_Battler::kWeaponAll;
+
 Game_Battler::Game_Battler() {
 	ResetBattle();
 }
@@ -476,8 +478,8 @@ static int AffectParameter(const int type, const int val) {
 		val;
 }
 
-int Game_Battler::GetAtk() const {
-	int base_atk = GetBaseAtk();
+int Game_Battler::GetAtk(int weapon) const {
+	int base_atk = GetBaseAtk(weapon);
 	int n = Utils::Clamp(base_atk, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
@@ -496,8 +498,8 @@ int Game_Battler::GetAtk() const {
 	return n;
 }
 
-int Game_Battler::GetDef() const {
-	int base_def = GetBaseDef();
+int Game_Battler::GetDef(int weapon) const {
+	int base_def = GetBaseDef(weapon);
 	int n = Utils::Clamp(base_def, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
@@ -516,8 +518,8 @@ int Game_Battler::GetDef() const {
 	return n;
 }
 
-int Game_Battler::GetSpi() const {
-	int base_spi = GetBaseSpi();
+int Game_Battler::GetSpi(int weapon) const {
+	int base_spi = GetBaseSpi(weapon);
 	int n = Utils::Clamp(base_spi, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
@@ -536,8 +538,8 @@ int Game_Battler::GetSpi() const {
 	return n;
 }
 
-int Game_Battler::GetAgi() const {
-	int base_agi = GetBaseAgi();
+int Game_Battler::GetAgi(int weapon) const {
+	int base_agi = GetBaseAgi(weapon);
 	int n = Utils::Clamp(base_agi, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {

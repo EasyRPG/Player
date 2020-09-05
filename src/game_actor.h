@@ -36,6 +36,7 @@ class PendingMessage;
 class Game_Actor final : public Game_Battler {
 public:
 	using RowType = lcf::rpg::SaveActor::RowType;
+
 	/**
 	 * Constructor.
 	 *
@@ -538,7 +539,7 @@ public:
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAtk(bool mod, bool equip) const;
+	int GetBaseAtk(int weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the defense for the current level.
@@ -546,7 +547,7 @@ public:
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseDef(bool mod, bool equip) const;
+	int GetBaseDef(int weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the spirit for the current level.
@@ -554,7 +555,7 @@ public:
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseSpi(bool mod, bool equip) const;
+	int GetBaseSpi(int weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the agility for the current level.
@@ -562,7 +563,7 @@ public:
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAgi(bool mod, bool equip) const;
+	int GetBaseAgi(int weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the max HP for the current level.
@@ -580,25 +581,25 @@ public:
 	 * Gets the attack for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAtk() const override;
+	int GetBaseAtk(int weapon = kWeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseDef() const override;
+	int GetBaseDef(int weapon = kWeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseSpi() const override;
+	int GetBaseSpi(int weapon = kWeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAgi() const override;
+	int GetBaseAgi(int weapon = kWeaponAll) const override;
 
 	/**
 	 * Sets the base max HP by adjusting the modifier bonus.
@@ -784,26 +785,26 @@ public:
 	 *
 	 * @return true if a weapon is having preempt attribute
 	 */
-	bool HasPreemptiveAttack() const override;
+	bool HasPreemptiveAttack(int weapon = kWeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon that grants dual attack.
 	 *
 	 * @return true if a weapon is having dual attack attribute
 	 */
-	bool HasDualAttack() const;
+	bool HasDualAttack(int weapon = kWeaponAll) const;
 
 	/**
 	 * Tests if the battler has a weapon that grants attack all
 	 *
 	 * @return true if a weapon is having attack all attribute
 	 */
-	bool HasAttackAll() const;
+	bool HasAttackAll(int weapon = kWeaponAll) const;
 
 	/**
 	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool AttackIgnoresEvasion() const;
+	bool AttackIgnoresEvasion(int weapon = kWeaponAll) const;
 
 	/**
 	 * @return If the actor has equipment that protects against terrain damage.
@@ -827,8 +828,8 @@ public:
 
 	int GetBattleAnimationId() const override;
 
-	int GetHitChance() const override;
-	float GetCriticalHitChance() const override;
+	int GetHitChance(int weapon = kWeaponAll) const override;
+	float GetCriticalHitChance(int weapon = kWeaponAll) const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
 	std::string GetLearningMessage(const lcf::rpg::Skill& skill) const;
