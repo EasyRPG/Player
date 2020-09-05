@@ -41,59 +41,11 @@
 #include "sprite_battler.h"
 #include "utils.h"
 #include "state.h"
+#include "algo.h"
 #include "attribute.h"
 
 static inline int MaxDamageValue() {
 	return Player::IsRPG2k() ? 999 : 9999;
-}
-
-static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int to_hit) {
-	// If target has rm2k3 state which grants 100% dodge.
-	if (target->EvadesAllPhysicalAttacks()) {
-		return 0;
-	}
-
-	// If target has Restriction "do_nothing", the attack always hits
-	if (target->GetSignificantRestriction() == lcf::rpg::State::Restriction_do_nothing) {
-		return 100;
-	}
-
-	// Modify hit chance for each state the source has
-	to_hit = (to_hit * source->GetHitChanceModifierFromStates()) / 100;
-
-	// Stop here if attacker ignores evasion.
-	if (source->GetType() == Game_Battler::Type_Ally
-		&& static_cast<Game_Actor*>(source)->AttackIgnoresEvasion()) {
-		return to_hit;
-	}
-
-	// AGI adjustment.
-	to_hit = 100 - (100 - to_hit) * (1.0f + (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f) / 2.0f) ;
-
-	// If target has physical dodge evasion:
-	if (target->GetType() == Game_Battler::Type_Ally
-			&& static_cast<Game_Actor*>(target)->HasPhysicalEvasionUp()) {
-		to_hit -= 25;
-	}
-
-	// Row adjustment (RPG2k3 only)
-	if (Player::IsRPG2k3()) {
-		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
-			if (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_back) {
-				to_hit -= 25;
-			}
-		}
-		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
-			if (target->GetType() == Game_Battler::Type_Enemy || (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_front)) {
-				to_hit -= 25;
-			}
-		}
-		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
-			to_hit -= 25;
-		}
-	}
-
-	return to_hit;
 }
 
 static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, const PermanentStates& ps, std::vector<Game_BattleAlgorithm::StateEffect>& states) {
@@ -959,18 +911,11 @@ void Game_BattleAlgorithm::Normal::Init() {
 bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
-	auto* target = GetTarget();
+	auto& source = *GetSource();
+	auto& target = *GetTarget();
 
-	// Criticals cannot occur when ally attacks ally or enemy attacks enemy (e.g. confusion)
-	float crit_chance = 0.0f;
-	if (source->GetType() != GetTarget()->GetType()) {
-		if (GetTarget()->GetType() != Game_Battler::Type_Ally || !static_cast<Game_Actor*>(GetTarget())->PreventsCritical()) {
-			crit_chance = source->GetCriticalHitChance();
-		}
-	}
-
-	auto to_hit = source->GetHitChance();
-	to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
+	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battle::GetBattleCondition());
+	auto crit_chance = Algo::CalcCriticalHitChance(source, target);
 
 	// Damage calculation
 	if (Utils::PercentChance(to_hit)) {
@@ -978,70 +923,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			critical_hit = true;
 		}
 
-		int effect = (source->GetAtk() / 2 - GetTarget()->GetDef() / 4);
-
-		// Row attacker adjustments (RPG2k3 only)
-		if (Player::IsRPG2k3()) {
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
-				if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetBattleRow() == Game_Actor::RowType::RowType_front) {
-					effect = 125 * effect / 100;
-				}
-			}
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
-				if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetBattleRow() == Game_Actor::RowType::RowType_back && target->GetType() != Game_Battler::Type_Ally) {
-					effect = 125 * effect / 100;
-				}
-			}
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
-				if (source->GetType() == Game_Battler::Type_Ally) {
-					effect = 125 * effect / 100;
-				}
-			}
-		}
-
-		if (effect < 0)
-			effect = 0;
-
-		if (source->GetType() == Game_Battler::Type_Ally) {
-			Game_Actor* ally = static_cast<Game_Actor*>(source);
-
-			effect = Attribute::ApplyAttributeMultiplier(effect, ally->GetWeapon(), ally->Get2ndWeapon(), *GetTarget());
-		}
-
-		// Row defender adjustments (RPG2k3 only)
-		if (Player::IsRPG2k3()) {
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
-				if (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_back) {
-					effect = 75 * effect / 100;
-				}
-			}
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
-				if (target->GetType() == Game_Battler::Type_Enemy || (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_front)) {
-					effect = 75 * effect / 100;
-				}
-			}
-			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
-				effect = 75 * effect / 100;
-			}
-		}
-
-		if (critical_hit) {
-			effect *= 3;
-		} else if(physical_charged) {
-			effect *= 2;
-		}
-		if (GetTarget()->IsDefending()) {
-			if (GetTarget()->HasStrongDefense()) {
-				effect /= 4;
-			} else {
-				effect /= 2;
-			}
-		}
-
-		if (Player::IsLegacy() || effect > 0) {
-			effect = Game_Battle::VarianceAdjustEffect(effect, 4);
-		}
-
+		auto effect = Algo::CalcNormalAttackEffect(source, target, critical_hit, true, Game_Battle::GetBattleCondition());
+		effect = Algo::AdjustDamageForDefend(effect, target);
+		// FIXME: Handle negative effect from attributes
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 		this->hp = effect;
@@ -1053,18 +937,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 		else {
 			// Make a copy of the target's state set and see what we can apply.
-			auto target_states = target->GetStates();
-			auto target_perm_states = target->GetPermanentStates();
+			auto target_states = target.GetStates();
+			auto target_perm_states = target.GetPermanentStates();
 
 			// Conditions healed by physical attack:
 			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 
 			// Conditions caused / healed by weapon.
-			if (source->GetType() == Game_Battler::Type_Ally) {
-				auto* ally = static_cast<Game_Actor*>(source);
+			if (source.GetType() == Game_Battler::Type_Ally) {
+				auto& ally = static_cast<Game_Actor&>(source);
 				const bool is2k3 = Player::IsRPG2k();
-				auto* weapon1 = ally->GetWeapon();
-				auto* weapon2 = ally->Get2ndWeapon();
+				auto* weapon1 = ally.GetWeapon();
+				auto* weapon2 = ally.Get2ndWeapon();
 
 				int state_limit = 0;
 				if (weapon1) {
@@ -1248,25 +1132,14 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (skill.type == lcf::rpg::Skill::Type_normal ||
 		skill.type >= lcf::rpg::Skill::Type_subskill) {
 
-		int to_hit = skill.hit;
+		auto to_hit = Algo::CalcSkillToHit(*GetSource(), *GetTarget(), skill);
 
-		// If Physical technique, apply physical restrictions
-		if (skill.failure_message == 3) {
-			to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
-		}
+		auto effect = Algo::CalcSkillEffect(*GetSource(), *GetTarget(), skill, true);
+		// FIXME: Handle negative effect from attributes
+		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 		if (this->healing) {
-			int effect = skill.power +
-				source->GetAtk() * skill.physical_rate / 20 +
-				source->GetSpi() * skill.magical_rate / 40;
-
-			effect = Attribute::ApplyAttributeMultiplier(effect, skill, *GetTarget());
-
-			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
-
-			effect = Utils::Clamp(effect, 0, MaxDamageValue());
-
-			if (skill.affect_hp && Utils::PercentChance(to_hit)) {
+			if (skill.affect_hp) {
 				if (Player::IsRPG2k3()) {
 					this->hp = effect;
 				} else {
@@ -1298,23 +1171,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (!healing) {
 			absorb = skill.absorb_damage;
 
-			int effect = skill.power +
-				source->GetAtk() * skill.physical_rate / 20 +
-				source->GetSpi() * skill.magical_rate / 40;
-
-			if (!skill.ignore_defense) {
-				effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
-				effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
-			}
-			effect = Attribute::ApplyAttributeMultiplier(effect, skill, *GetTarget());
-
-			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
-
-			effect = Utils::Clamp(effect, 0, MaxDamageValue());
-
-			if (skill.affect_hp && Utils::PercentChance(to_hit)) {
-				this->hp = effect /
-					(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
+			if (skill.affect_hp) {
+				this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
 
 				if (IsAbsorb())
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
@@ -1885,17 +1743,11 @@ int Game_BattleAlgorithm::SelfDestruct::GetPhysicalDamageRate() const {
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	Reset();
 
-	auto* target = GetTarget();
+	auto& source = *GetSource();
+	auto& target = *GetTarget();
 
-	// Like a normal attack, but with double damage and always hitting
-	// Never crits, ignores charge
-	int effect = source->GetAtk() - GetTarget()->GetDef() / 2;
-	if (Player::IsLegacy() || effect > 0) {
-		effect = Game_Battle::VarianceAdjustEffect(effect, 4);
-	}
-
-	effect /= GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1;
-
+	auto effect = Algo::CalcSelfDestructEffect(source, target, true);
+	effect = Algo::AdjustDamageForDefend(effect, target);
 	effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 	this->hp = effect;
@@ -1907,8 +1759,8 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	}
 
 	// Make a copy of the target's state set and see what we can apply.
-	auto target_states = target->GetStates();
-	auto target_perm_states = target->GetPermanentStates();
+	auto target_states = target.GetStates();
+	auto target_perm_states = target.GetPermanentStates();
 
 	// Conditions healed by physical attack:
 	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);

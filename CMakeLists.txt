@@ -17,6 +17,8 @@ add_library(${PROJECT_NAME}
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
+	src/algo.h
+	src/algo.cpp
 	src/attribute.h
 	src/attribute.cpp
 	src/audio_al.cpp

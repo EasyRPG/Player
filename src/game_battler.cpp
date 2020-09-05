@@ -41,6 +41,7 @@
 #include "state.h"
 #include "shake.h"
 #include "attribute.h"
+#include "algo.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -265,17 +266,8 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		int effect = skill->power;
-		if (source != nullptr) {
-			effect += source->GetAtk() * skill->physical_rate / 20 +
-				source->GetSpi() * skill->magical_rate / 40;
-		}
-		Attribute::ApplyAttributeMultiplier(effect, *skill, *source);
-
-		if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill->variance);
-
-		if (effect < 0)
-			effect = 0;
+		// FIXME: What about negative attributes? Does it do damage here? Can it kill?
+		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true);
 
 		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {

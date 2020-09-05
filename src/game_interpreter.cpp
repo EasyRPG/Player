@@ -53,6 +53,7 @@
 #include "utils.h"
 #include "transition.h"
 #include "baseui.h"
+#include "algo.h"
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1
@@ -1793,7 +1794,7 @@ bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com)
 		result -= (actor->GetDef() * def) / 400;
 		result -= (actor->GetSpi() * spi) / 800;
 		result = std::max(result, 0);
-		result = Game_Battle::VarianceAdjustEffect(result, var);
+		result = Algo::VarianceAdjustEffect(result, var);
 
 		result = std::max(0, result);
 		actor->ChangeHp(-result);
