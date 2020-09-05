@@ -667,7 +667,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
 		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
-		if (IsAbsorb() && Player::IsRPG2k3()) {
+		if (IsAbsorb() && Player::IsRPG2k3Updated()) {
 			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAtkModifier(atk);
 		}
@@ -676,7 +676,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
 		target->ChangeDefModifier(IsPositive() ? def : -def);
-		if (IsAbsorb() && Player::IsRPG2k3()) {
+		if (IsAbsorb() && Player::IsRPG2k3Updated()) {
 			def = std::max<int>(0, std::min<int>(def, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeDefModifier(def);
 		}
@@ -685,7 +685,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
 		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
-		if (IsAbsorb() && Player::IsRPG2k3()) {
+		if (IsAbsorb() && Player::IsRPG2k3Updated()) {
 			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeSpiModifier(spi);
 		}
@@ -694,7 +694,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
 		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
-		if (IsAbsorb() && Player::IsRPG2k3()) {
+		if (IsAbsorb() && Player::IsRPG2k3Updated()) {
 			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAgiModifier(agi);
 		}
@@ -1004,7 +1004,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 		}
 
-		if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) {
+		if (Player::IsLegacy() || effect > 0) {
 			effect = Game_Battle::VarianceAdjustEffect(effect, 4);
 		}
 
@@ -1228,7 +1228,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
+			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1274,7 +1274,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
-			if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
+			if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill.variance);
 
 			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
@@ -1856,7 +1856,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
 	int effect = source->GetAtk() - GetTarget()->GetDef() / 2;
-	if ((Player::IsRPG2k() && !Player::IsRPG2kUpdated()) || effect > 0) {
+	if (Player::IsLegacy() || effect > 0) {
 		effect = Game_Battle::VarianceAdjustEffect(effect, 4);
 	}
 
