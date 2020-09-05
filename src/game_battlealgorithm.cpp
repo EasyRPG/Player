@@ -75,6 +75,23 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 		to_hit -= 25;
 	}
 
+	// Row adjustment (RPG2k3 only)
+	if (Player::IsRPG2k3()) {
+		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
+			if (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_back) {
+				to_hit -= 25;
+			}
+		}
+		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
+			if (target->GetType() == Game_Battler::Type_Enemy || (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_front)) {
+				to_hit -= 25;
+			}
+		}
+		if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
+			to_hit -= 25;
+		}
+	}
+
 	return to_hit;
 }
 
@@ -987,10 +1004,47 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 		int effect = (source->GetAtk() / 2 - GetTarget()->GetDef() / 4);
 
+		// Row attacker adjustments (RPG2k3 only)
+		if (Player::IsRPG2k3()) {
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
+				if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetBattleRow() == Game_Actor::RowType::RowType_front) {
+					effect = 125 * effect / 100;
+				}
+			}
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
+				if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetBattleRow() == Game_Actor::RowType::RowType_back && target->GetType() != Game_Battler::Type_Ally) {
+					effect = 125 * effect / 100;
+				}
+			}
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
+				if (source->GetType() == Game_Battler::Type_Ally) {
+					effect = 125 * effect / 100;
+				}
+			}
+		}
+
 		if (effect < 0)
 			effect = 0;
 
 		effect *= multiplier;
+
+		// Row defender adjustments (RPG2k3 only)
+		if (Player::IsRPG2k3()) {
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_none || Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_initiative) {
+				if (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_back) {
+					effect = 75 * effect / 100;
+				}
+			}
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_back) {
+				if (target->GetType() == Game_Battler::Type_Enemy || (target->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(target)->GetBattleRow() == Game_Actor::RowType::RowType_front)) {
+					effect = 75 * effect / 100;
+				}
+			}
+			if (Game_Battle::GetBattleCondition() == lcf::rpg::System::BattleCondition_surround) {
+				effect = 75 * effect / 100;
+			}
+		}
+
 		if (critical_hit) {
 			effect *= 3;
 		} else if(physical_charged) {
