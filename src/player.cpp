@@ -815,7 +815,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
 	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
 
-	Game_Actors::Init();
+	Main_Data::game_actors = std::make_unique<Game_Actors>();
+
 	Game_Map::Init();
 	Game_Message::Init();
 	Game_System::Init();
@@ -986,7 +987,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_data = *save.get();
 	Main_Data::game_data.system.Fixup();
 
-	Game_Actors::Fixup();
+	Main_Data::game_actors->Fixup();
 	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
 	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
 	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));

@@ -87,7 +87,7 @@ void Game_Battle::Init(int troop_id) {
 		return false;
 	});
 
-	Game_Actors::ResetBattle();
+	Main_Data::game_actors->ResetBattle();
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
@@ -118,7 +118,7 @@ void Game_Battle::Quit() {
 	page_executed.clear();
 	page_can_run.clear();
 
-	Game_Actors::ResetBattle();
+	Main_Data::game_actors->ResetBattle();
 	Main_Data::game_enemyparty->ResetBattle(0);
 	Main_Data::game_pictures->OnBattleEnd();
 }
@@ -203,8 +203,8 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			// Reset pages of specific actor after that actors turn
 			if (page_executed[page.ID - 1]) {
 				if (battler->GetType() == Game_Battler::Type_Ally &&
-						((condition.flags.turn_actor && Game_Actors::GetActor(condition.turn_actor_id) == battler) ||
-						(condition.flags.command_actor && Game_Actors::GetActor(condition.command_actor_id) == battler))) {
+						((condition.flags.turn_actor && Main_Data::game_actors->GetActor(condition.turn_actor_id) == battler) ||
+						(condition.flags.command_actor && Main_Data::game_actors->GetActor(condition.command_actor_id) == battler))) {
 					page_executed[page.ID - 1] = false;
 				}
 			}
@@ -309,7 +309,7 @@ bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition
 		return false;
 
 	if (condition.flags.turn_actor &&
-		!CheckTurns(Game_Actors::GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
+		!CheckTurns(Main_Data::game_actors->GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
 		return false;
 
 	if (condition.flags.fatigue) {
@@ -328,7 +328,7 @@ bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition
 	}
 
 	if (condition.flags.actor_hp) {
-		Game_Actor* actor = Game_Actors::GetActor(condition.actor_id);
+		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
 		int hp = actor->GetHp();
 		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
 		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
@@ -337,7 +337,7 @@ bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition
 	}
 
 	if (condition.flags.command_actor &&
-		condition.command_id != Game_Actors::GetActor(condition.command_actor_id)->GetLastBattleAction())
+		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
 		return false;
 
 	return true;

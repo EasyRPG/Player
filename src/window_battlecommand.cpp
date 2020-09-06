@@ -143,7 +143,7 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 		commands.push_back(!lcf::Data::terms.command_skill.empty() ? ToString(lcf::Data::terms.command_skill) : "Skill");
 	}
 	else {
-		Game_Actor* actor = Game_Actors::GetActor(actor_id);
+		Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 		for (const lcf::rpg::BattleCommand* command : bcmds) {
 			commands.push_back(ToString(command->name));
@@ -158,7 +158,7 @@ int Window_BattleCommand::GetSkillSubset() {
 	if (actor_id == 0)
 		return lcf::rpg::Skill::Type_normal;
 
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 	const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
 	int bcmd = bcmds[index]->ID;
 

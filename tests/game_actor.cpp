@@ -75,7 +75,7 @@ public:
 		Main_Data::Cleanup();
 		Main_Data::game_data.Setup();
 
-		Game_Actors::Init();
+		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 		Main_Data::game_party = std::make_unique<Game_Party>();
 
@@ -83,10 +83,6 @@ public:
 	}
 
 	~MockActor() {
-		Main_Data::game_party = {};
-		Main_Data::game_enemyparty = {};
-		Game_Actors::Dispose();
-
 		Main_Data::Cleanup();
 
 		lcf::Data::actors = {};
@@ -102,7 +98,7 @@ TEST_SUITE_BEGIN("Game_Actor");
 TEST_CASE("Limits2k") {
 	const MockActor m(Player::EngineRpg2k);
 
-	auto* actor = Game_Actors::GetActor(1);
+	auto* actor = Main_Data::game_actors->GetActor(1);
 
 	REQUIRE(actor != nullptr);
 	REQUIRE_EQ(actor->MaxHpValue(), 999);
@@ -114,7 +110,7 @@ TEST_CASE("Limits2k") {
 TEST_CASE("Limits2k3") {
 	const MockActor m(Player::EngineRpg2k3);
 
-	auto* actor = Game_Actors::GetActor(1);
+	auto* actor = Main_Data::game_actors->GetActor(1);
 
 	REQUIRE(actor != nullptr);
 	REQUIRE_EQ(actor->MaxHpValue(), 9999);
@@ -127,7 +123,7 @@ TEST_CASE("Limits2k3") {
 TEST_CASE("Base") {
 	const MockActor m;
 
-	auto* actor = Game_Actors::GetActor(1);
+	auto* actor = Main_Data::game_actors->GetActor(1);
 
 	REQUIRE(actor != nullptr);
 	REQUIRE_EQ(actor->GetType(), Game_Battler::Type_Ally);
@@ -199,7 +195,7 @@ TEST_CASE("Base") {
 TEST_CASE("AdjParams") {
 	const MockActor m;
 
-	auto* actor = Game_Actors::GetActor(1);
+	auto* actor = Main_Data::game_actors->GetActor(1);
 
 	REQUIRE(actor != nullptr);
 
@@ -251,7 +247,7 @@ TEST_CASE("AdjParams") {
 TEST_CASE("TryEquip") {
 	const MockActor m;
 
-	auto* actor = Game_Actors::GetActor(1);
+	auto* actor = Main_Data::game_actors->GetActor(1);
 
 	REQUIRE(actor != nullptr);
 
@@ -408,7 +404,7 @@ TEST_CASE("SingleWeapon") {
 	MakeEquip(1, lcf::rpg::Item::Type_weapon, 1, 2, 3, 4);
 	MakeEquip(2, lcf::rpg::Item::Type_shield, 11, 12, 13, 14);
 
-	auto* a = Game_Actors::GetActor(1);
+	auto* a = Main_Data::game_actors->GetActor(1);
 	REQUIRE(a != nullptr);
 	REQUIRE_FALSE(a->HasTwoWeapons());
 
@@ -423,7 +419,7 @@ TEST_CASE("DualWeaponParams") {
 	MakeEquip(1, lcf::rpg::Item::Type_weapon, 1, 2, 3, 4);
 	MakeEquip(2, lcf::rpg::Item::Type_weapon, 5, 6, 7, 8);
 
-	auto* a = Game_Actors::GetActor(2);
+	auto* a = Main_Data::game_actors->GetActor(2);
 	REQUIRE(a != nullptr);
 	REQUIRE(a->HasTwoWeapons());
 
@@ -436,7 +432,7 @@ TEST_CASE("DualWeaponHit") {
 	MakeEquip(1, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 20, 40);
 	MakeEquip(2, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 75, 20);
 
-	auto* a = Game_Actors::GetActor(2);
+	auto* a = Main_Data::game_actors->GetActor(2);
 	REQUIRE(a != nullptr);
 	REQUIRE(a->HasTwoWeapons());
 
@@ -451,7 +447,7 @@ TEST_CASE("DualWeaponFlags") {
 	MakeEquip(3, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 100, 0, false, false, true, false);
 	MakeEquip(4, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 100, 0, false, false, false, true);
 
-	auto* a = Game_Actors::GetActor(2);
+	auto* a = Main_Data::game_actors->GetActor(2);
 	REQUIRE(a != nullptr);
 	REQUIRE(a->HasTwoWeapons());
 
@@ -470,7 +466,7 @@ TEST_CASE("ArmorFlags") {
 	MakeEquip(3, lcf::rpg::Item::Type_helmet, 0, 0, 0, 0, 0, 0, false, false, false, false, false, false, true, false);
 	MakeEquip(4, lcf::rpg::Item::Type_accessory, 0, 0, 0, 0, 0, 0, false, false, false, false, false, false, false, true);
 
-	auto* a = Game_Actors::GetActor(1);
+	auto* a = Main_Data::game_actors->GetActor(1);
 	REQUIRE(a != nullptr);
 
 	testWeapon(a, 0, 1, 0, 0, 0);
@@ -484,7 +480,7 @@ TEST_CASE("WeaponWithArmorFlags") {
 
 	MakeEquip(1, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 100, 100, true, true, true, true, true, true, true, true);
 
-	auto* a = Game_Actors::GetActor(1);
+	auto* a = Main_Data::game_actors->GetActor(1);
 	REQUIRE(a != nullptr);
 
 	a->SetEquipment(1, 1);
@@ -501,7 +497,7 @@ TEST_CASE("ArmorWithWeaponFlags") {
 
 	MakeEquip(1, lcf::rpg::Item::Type_armor, 0, 0, 0, 0, 100, 100, true, true, true, true, true, true, true, true);
 
-	auto* a = Game_Actors::GetActor(1);
+	auto* a = Main_Data::game_actors->GetActor(1);
 	REQUIRE(a != nullptr);
 
 	a->SetEquipment(3, 1);

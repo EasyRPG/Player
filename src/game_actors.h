@@ -26,22 +26,23 @@
 /**
  * Game_Actors namespace.
  */
-namespace Game_Actors {
+class Game_Actors {
+public:
 	/**
 	 * Initializes Game Actors.
 	 */
-	void Init();
+	Game_Actors();
+
+	/**
+	 * Disposes Game Actors.
+	 */
+	~Game_Actors();
 
 	/**
 	 * Used after savegame loading to replace savegame default values with
 	 * database ones.
 	 */
 	void Fixup();
-
-	/**
-	 * Disposes Game Actors.
-	 */
-	void Dispose();
 
 	/**
 	 * Gets an actor by its ID.
@@ -63,6 +64,9 @@ namespace Game_Actors {
 	 * Resets battle modifiers of all actors.
 	 */
 	void ResetBattle();
-}
+
+private:
+	std::vector<std::shared_ptr<Game_Actor> > data;
+};
 
 #endif

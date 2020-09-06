@@ -22,14 +22,14 @@
 #include "main_data.h"
 #include "output.h"
 
-namespace {
-	std::vector<std::shared_ptr<Game_Actor> > data;
+Game_Actors::Game_Actors() {
+	data.resize(lcf::Data::actors.size());
+	for (size_t i = 1; i <= data.size(); i++) {
+		GetActor(i)->Init();
+	}
 }
 
-void Game_Actors::Init() {
-	data.resize(lcf::Data::actors.size());
-	for (size_t i = 1; i <= data.size(); i++)
-		GetActor(i)->Init();
+Game_Actors::~Game_Actors() {
 }
 
 void Game_Actors::Fixup() {
@@ -52,10 +52,6 @@ void Game_Actors::Fixup() {
 	for (size_t i = 1; i <= data.size(); ++i) {
 		GetActor(i)->Fixup();
 	}
-}
-
-void Game_Actors::Dispose() {
-	data.clear();
 }
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {

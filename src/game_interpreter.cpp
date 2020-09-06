@@ -995,7 +995,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		case 5:
 			// Hero
-			actor = Game_Actors::GetActor(com.parameters[5]);
+			actor = Main_Data::game_actors->GetActor(com.parameters[5]);
 
 			if (!actor) {
 				Output::Warning("ControlVariables: Invalid actor ID {}", com.parameters[5]);
@@ -1354,7 +1354,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		break;
 	case 1:
 		// Hero
-		actor = Game_Actors::GetActor(id);
+		actor = Main_Data::game_actors->GetActor(id);
 
 		if (!actor) {
 			Output::Warning("Invalid actor ID {}", id);
@@ -1365,7 +1365,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		break;
 	case 2:
 		// Var hero
-		actor = Game_Actors::GetActor(Main_Data::game_variables->Get(id));
+		actor = Main_Data::game_actors->GetActor(Main_Data::game_variables->Get(id));
 		if (!actor) {
 			Output::Warning("Invalid actor ID {}", Main_Data::game_variables->Get(id));
 			return actors;
@@ -1482,7 +1482,7 @@ bool Game_Interpreter::CommandChangePartyMember(lcf::rpg::EventCommand const& co
 		id = Main_Data::game_variables->Get(com.parameters[2]);
 	}
 
-	actor = Game_Actors::GetActor(id);
+	actor = Main_Data::game_actors->GetActor(id);
 
 	if (!actor) {
 		Output::Warning("ChangePartyMember: Invalid actor ID {}", id);
@@ -1884,7 +1884,7 @@ bool Game_Interpreter::CommandGameOver(lcf::rpg::EventCommand const& /* com */) 
 }
 
 bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) { // code 10610
-	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
 
 	if (!actor) {
 		Output::Warning("ChangeHeroName: Invalid actor ID {}", com.parameters[0]);
@@ -1896,7 +1896,7 @@ bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) 
 }
 
 bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com) { // code 10620
-	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
 
 	if (!actor) {
 		Output::Warning("ChangeHeroTitle: Invalid actor ID {}", com.parameters[0]);
@@ -1908,7 +1908,7 @@ bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand const& com) { // code 10630
-	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
 
 	if (!actor) {
 		Output::Warning("ChangeSpriteAssociation: Invalid actor ID {}", com.parameters[0]);
@@ -1924,7 +1924,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 }
 
 bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com) { // code 10640
-	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
 
 	if (!actor) {
 		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", com.parameters[0]);
@@ -3039,7 +3039,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 	case 5:
 		// Hero
 		actor_id = com.parameters[1];
-		actor = Game_Actors::GetActor(actor_id);
+		actor = Main_Data::game_actors->GetActor(actor_id);
 
 		if (!actor) {
 			Output::Warning("ConditionalBranch: Invalid actor ID {}", actor_id);
