@@ -33,6 +33,9 @@ public:
 	 */
 	Game_Actors();
 
+	Game_Actors(const Game_Actors&) = delete;
+	Game_Actors& operator=(const Game_Actors&) = delete;
+
 	/**
 	 * Disposes Game Actors.
 	 */
@@ -63,7 +66,7 @@ public:
 	void ResetBattle();
 
 private:
-	std::vector<std::shared_ptr<Game_Actor> > data;
+	std::vector<Game_Actor> data;
 };
 
 #endif

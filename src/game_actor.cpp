@@ -55,8 +55,29 @@ int Game_Actor::MaxStatBaseValue() const {
 
 Game_Actor::Game_Actor(int actor_id) {
 	data.ID = actor_id;
+	if (actor_id == 0) {
+		return;
+	}
+
 	data.Setup(actor_id);
 	Setup();
+
+	const auto& skills = GetActor().skills;
+	for (auto& skill: skills) {
+		if (skill.level <= GetLevel()) {
+			LearnSkill(skill.skill_id, nullptr);
+		}
+	}
+
+	RemoveInvalidData();
+
+	if (GetLevel() > 0) {
+		SetHp(GetMaxHp());
+		SetSp(GetMaxSp());
+		SetExp(exp_list[GetLevel() - 1]);
+	}
+
+	ResetEquipmentStates(false);
 }
 
 void Game_Actor::Setup() {
@@ -75,22 +96,7 @@ const lcf::rpg::SaveActor& Game_Actor::GetSaveData() const {
 }
 
 void Game_Actor::Init() {
-	const std::vector<lcf::rpg::Learning>& skills = GetActor().skills;
-	for (int i = 0; i < (int)skills.size(); i++) {
-		if (skills[i].level <= GetLevel()) {
-			LearnSkill(skills[i].skill_id, nullptr);
-		}
-	}
 
-	RemoveInvalidData();
-
-	if (GetLevel() > 0) {
-		SetHp(GetMaxHp());
-		SetSp(GetMaxSp());
-		SetExp(exp_list[GetLevel() - 1]);
-	}
-
-	ResetEquipmentStates(false);
 }
 
 void Game_Actor::Fixup() {

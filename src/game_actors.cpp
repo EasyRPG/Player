@@ -23,9 +23,9 @@
 #include "output.h"
 
 Game_Actors::Game_Actors() {
-	data.resize(lcf::Data::actors.size());
-	for (size_t i = 1; i <= data.size(); i++) {
-		GetActor(i)->Init();
+	data.resize(lcf::Data::actors.size(), Game_Actor(0));
+	for (size_t i = 0; i < data.size(); i++) {
+		data[i] = Game_Actor(i + 1);
 	}
 }
 
@@ -39,7 +39,7 @@ void Game_Actors::SetSaveData(std::vector<lcf::rpg::SaveActor> save) {
 	}
 
 	for (size_t i = 0; i < std::min(save.size(), data.size()); ++i) {
-		data[i]->SetSaveData(std::move(save[i]));
+		data[i].SetSaveData(std::move(save[i]));
 	}
 }
 
@@ -47,7 +47,7 @@ std::vector<lcf::rpg::SaveActor> Game_Actors::GetSaveData() const {
 	std::vector<lcf::rpg::SaveActor> save;
 	save.reserve(data.size());
 	for (auto& actor: data) {
-		save.push_back(actor->GetSaveData());
+		save.push_back(actor.GetSaveData());
 	}
 	return save;
 }
@@ -55,20 +55,17 @@ std::vector<lcf::rpg::SaveActor> Game_Actors::GetSaveData() const {
 Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
 		return nullptr;
-	} else if (!data[actor_id - 1]) {
-		data[actor_id - 1].reset(new Game_Actor(actor_id));
 	}
 
-	return data[actor_id - 1].get();
+	return &data[actor_id - 1];
 }
 
 bool Game_Actors::ActorExists(int actor_id) {
-	return actor_id > 0 && (size_t)actor_id <= data.size();
+	return actor_id > 0 && actor_id <= static_cast<int>(data.size());
 }
 
 void Game_Actors::ResetBattle() {
-	for (size_t i = 1; i <= data.size(); ++i) {
-		GetActor(i)->ResetBattle();
+	for (auto& actor: data) {
+		actor.ResetBattle();
 	}
-
 }
