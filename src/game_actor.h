@@ -44,6 +44,9 @@ public:
 	 */
 	Game_Actor(int actor_id);
 
+	void SetSaveData(lcf::rpg::SaveActor save);
+	const lcf::rpg::SaveActor& GetSaveData() const;
+
 	int MaxHpValue() const override;
 
 	int MaxStatBattleValue() const override;
@@ -858,18 +861,12 @@ private:
 	 */
 	const lcf::rpg::Actor& GetActor() const;
 
-	// same reason as for Game_Picture, see comment
-	/**
-	 * @return Reference to the SaveActor data
-	 */
-	lcf::rpg::SaveActor& GetData() const;
-
 	/**
 	 * Removes invalid data from the actor.
 	 */
 	void RemoveInvalidData();
 
-	int actor_id;
+	lcf::rpg::SaveActor data;
 	std::vector<int> exp_list;
 };
 
@@ -878,90 +875,87 @@ inline Game_Battler::BattlerType Game_Actor::GetType() const {
 }
 
 inline void Game_Actor::SetName(const std::string &new_name) {
-	GetData().name = new_name;
+	data.name = new_name;
 }
 
-
 inline StringView Game_Actor::GetName() const {
-	return GetData().name;
+	return data.name;
 }
 
 inline void Game_Actor::SetTitle(const std::string &new_title) {
-	GetData().title = new_title;
+	data.title = new_title;
 }
 
 inline const std::string& Game_Actor::GetTitle() const {
-	return GetData().title;
+	return data.title;
 }
 
 inline StringView Game_Actor::GetSpriteName() const {
-	return GetData().sprite_name;
+	return data.sprite_name;
 }
 
 inline int Game_Actor::GetSpriteIndex() const {
-	return GetData().sprite_id;
+	return data.sprite_id;
 }
 
 inline int Game_Actor::GetSpriteTransparency() const {
-	return GetData().transparency;
+	return data.transparency;
 }
 
 inline StringView Game_Actor::GetFaceName() const {
-	return GetData().face_name;
+	return data.face_name;
 }
 
 inline int Game_Actor::GetFaceIndex() const {
-	return GetData().face_id;
+	return data.face_id;
 }
 
 inline int Game_Actor::GetLevel() const {
-	return GetData().level;
+	return data.level;
 }
 
 inline int Game_Actor::GetExp() const {
-	return GetData().exp;
+	return data.exp;
 }
 
 inline int Game_Actor::GetHp() const {
-	return GetData().current_hp;
+	return data.current_hp;
 }
 
 inline int Game_Actor::GetSp() const {
-	return GetData().current_sp;
+	return data.current_sp;
 }
 
 inline bool Game_Actor::HasTwoWeapons() const {
-	return GetData().two_weapon;
+	return data.two_weapon;
 }
 
 inline bool Game_Actor::GetAutoBattle() const {
-	return GetData().auto_battle;
+	return data.auto_battle;
 }
 
 inline bool Game_Actor::HasStrongDefense() const {
-	return GetData().super_guard;
+	return data.super_guard;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetSkills() const {
-	return GetData().skills;
+	return data.skills;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetStates() const {
-	return GetData().status;
+	return data.status;
 }
 
 inline std::vector<int16_t>& Game_Actor::GetStates() {
-	return GetData().status;
+	return data.status;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
-	return GetData().equipped;
+	return data.equipped;
 }
 
 inline int Game_Actor::GetId() const {
-	return actor_id;
+	return data.ID;
 }
-
-
 
 #endif

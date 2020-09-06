@@ -38,11 +38,8 @@ public:
 	 */
 	~Game_Actors();
 
-	/**
-	 * Used after savegame loading to replace savegame default values with
-	 * database ones.
-	 */
-	void Fixup();
+	void SetSaveData(std::vector<lcf::rpg::SaveActor> save);
+	std::vector<lcf::rpg::SaveActor> GetSaveData() const;
 
 	/**
 	 * Gets an actor by its ID.

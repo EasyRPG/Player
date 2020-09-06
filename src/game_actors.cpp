@@ -32,26 +32,24 @@ Game_Actors::Game_Actors() {
 Game_Actors::~Game_Actors() {
 }
 
-void Game_Actors::Fixup() {
+void Game_Actors::SetSaveData(std::vector<lcf::rpg::SaveActor> save) {
 	// Ensure actor save data and LDB actors has correct size
-	if (Main_Data::game_data.actors.size() != data.size()) {
-		size_t save_actor_size = Main_Data::game_data.actors.size();
-
-		Output::Warning("Actor array size doesn't match Savegame actor array size ({} != {})",
-						data.size(), save_actor_size);
-
-		Main_Data::game_data.actors.resize(data.size());
-
-		// When the save data size is smaller than the LDB size set the additional actors to nullptr.
-		// GetActor will copy the actor data to the savegame data next time it is invoked.
-		if (save_actor_size < data.size()) {
-			std::fill(data.begin() + save_actor_size, data.end(), nullptr);
-		}
+	if (save.size() > data.size()) {
+		Output::Warning("Game_Actors: Save game array size {} is larger than number of LDB actors {} : Dropping extras ...", save.size(), data.size());
 	}
 
-	for (size_t i = 1; i <= data.size(); ++i) {
-		GetActor(i)->Fixup();
+	for (size_t i = 0; i < std::min(save.size(), data.size()); ++i) {
+		data[i]->SetSaveData(std::move(save[i]));
 	}
+}
+
+std::vector<lcf::rpg::SaveActor> Game_Actors::GetSaveData() const {
+	std::vector<lcf::rpg::SaveActor> save;
+	save.reserve(data.size());
+	for (auto& actor: data) {
+		save.push_back(actor->GetSaveData());
+	}
+	return save;
 }
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {
