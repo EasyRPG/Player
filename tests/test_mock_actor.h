@@ -104,8 +104,7 @@ static lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
 }
 
 static lcf::rpg::Enemy* MakeDBEnemy(int id,
-		int hp, int sp, int atk, int def, int spi, int agi,
-		bool crit = false, int crit_chance = 30, bool miss = false)
+		int hp, int sp, int atk, int def, int spi, int agi)
 {
 	if (lcf::Data::enemies.size() <= id) {
 		lcf::Data::enemies.resize(id + 1);
@@ -118,9 +117,6 @@ static lcf::rpg::Enemy* MakeDBEnemy(int id,
 	enemy.defense = def;
 	enemy.spirit = spi;
 	enemy.agility = agi;
-	enemy.critical_hit = crit;
-	enemy.critical_hit_chance = crit_chance;
-	enemy.miss = miss;
 	return &enemy;
 }
 

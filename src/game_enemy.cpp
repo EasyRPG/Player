@@ -65,7 +65,7 @@ int Game_Enemy::MaxStatBaseValue() const {
 int Game_Enemy::GetStateProbability(int state_id) const {
 	int rate = 2; // C - default
 
-	if (state_id <= (int)enemy->state_ranks.size()) {
+	if (state_id >= 1 && state_id <= (int)enemy->state_ranks.size()) {
 		rate = enemy->state_ranks[state_id - 1];
 	}
 
@@ -75,7 +75,7 @@ int Game_Enemy::GetStateProbability(int state_id) const {
 int Game_Enemy::GetAttributeModifier(int attribute_id) const {
 	int rate = 2; // C - default
 
-	if (attribute_id <= (int)enemy->attribute_ranks.size()) {
+	if (attribute_id >= 1 && attribute_id <= (int)enemy->attribute_ranks.size()) {
 		rate = enemy->attribute_ranks[attribute_id - 1];
 	}
 

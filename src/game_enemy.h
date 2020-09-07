@@ -132,8 +132,8 @@ public:
 
 	void Transform(int new_enemy_id);
 
-	int GetHitChance(int) const override;
-	float GetCriticalHitChance(int) const override;
+	int GetHitChance(int = kWeaponAll) const override;
+	float GetCriticalHitChance(int = kWeaponAll) const override;
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;
