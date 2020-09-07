@@ -33,17 +33,17 @@ Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 		assert(false && "Subscript out of range");
 	}
 
-	return *enemies[index];
+	return enemies[index];
 }
 
 int Game_EnemyParty::GetBattlerCount() const {
-	return (int)enemies.size();
+	return static_cast<int>(enemies.size());
 }
 
 int Game_EnemyParty::GetVisibleBattlerCount() const {
 	int visible = 0;
 	for (const auto& enemy: enemies) {
-		visible += !enemy->IsHidden();
+		visible += !enemy.IsHidden();
 	}
 	return visible;
 }
@@ -58,8 +58,8 @@ void Game_EnemyParty::ResetBattle(int battle_troop_id) {
 
 	int non_hidden = static_cast<int>(troop->members.size());
 	for (const auto& mem : troop->members) {
-		enemies.push_back(std::make_shared<Game_Enemy>(mem));
-		non_hidden -= enemies.back()->IsHidden();
+		enemies.emplace_back(&mem);
+		non_hidden -= enemies.back().IsHidden();
 	}
 
 	if (troop->appear_randomly) {
@@ -68,52 +68,55 @@ void Game_EnemyParty::ResetBattle(int battle_troop_id) {
 				// At least one party member must be visible
 				break;
 			}
-			if (enemy->IsHidden()) {
+			if (enemy.IsHidden()) {
 				continue;
 			}
 
 			if (Utils::PercentChance(40)) {
-				enemy->SetHidden(true);
+				enemy.SetHidden(true);
 				--non_hidden;
 			}
 		}
 	}
 }
 
-std::vector<std::shared_ptr<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
-	return enemies;
+std::vector<Game_Enemy*> Game_EnemyParty::GetEnemies() {
+	std::vector<Game_Enemy*> party;
+	party.reserve(enemies.size());
+	for (auto& e: enemies) {
+		party.push_back(&e);
+	}
+	return party;
 }
 
+
 int Game_EnemyParty::GetExp() const {
-	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
 	int sum = 0;
-	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		if ((*it)->IsDead()) {
-			sum += (*it)->GetExp();
+	for (auto& enemy: enemies) {
+		if (enemy.IsDead()) {
+			sum += enemy.GetExp();
 		}
 	}
 	return sum;
 }
 
 int Game_EnemyParty::GetMoney() const {
-	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
 	int sum = 0;
-	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		if ((*it)->IsDead()) {
-			sum += (*it)->GetMoney();
+	for (auto& enemy: enemies) {
+		if (enemy.IsDead()) {
+			sum += enemy.GetMoney();
 		}
 	}
 	return sum;
 }
 
 void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
-	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
-	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		if ((*it)->IsDead()) {
+	for (auto& enemy: enemies) {
+		if (enemy.IsDead()) {
 			// Only roll if the enemy has something to drop
-			if ((*it)->GetDropId() != 0) {
-				if (Utils::ChanceOf((*it)->GetDropProbability(), 100)) {
-					out.push_back((*it)->GetDropId());
+			if (enemy.GetDropId() != 0) {
+				if (Utils::ChanceOf(enemy.GetDropProbability(), 100)) {
+					out.push_back(enemy.GetDropId());
 				}
 			}
 		}

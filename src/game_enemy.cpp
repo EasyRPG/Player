@@ -34,9 +34,12 @@ namespace {
 	constexpr int levitation_frame_cycle = 20;
 }
 
-Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember& member)
-	: troop_member(&member)
+Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
+	: troop_member(member)
 {
+	if (troop_member == nullptr) {
+		return;
+	}
 	Transform(troop_member->enemy_id);
 
 	hp = GetMaxHp();

@@ -30,7 +30,7 @@
 class Game_Enemy final : public Game_Battler
 {
 public:
-	explicit Game_Enemy(const lcf::rpg::TroopMember& tm);
+	explicit Game_Enemy(const lcf::rpg::TroopMember* tm);
 
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;

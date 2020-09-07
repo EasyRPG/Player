@@ -593,7 +593,7 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Enemy& enemy) {
 	// If monster is hidden -> use real party idx / real party size
 	// If monster is visible -> use visible party idx / visible party size
 	for (auto& e: Main_Data::game_enemyparty->GetEnemies()) {
-		if (e.get() == &enemy) {
+		if (e == &enemy) {
 			found_myself = true;
 		}
 		if (enemy.IsHidden() || !e->IsHidden()) {
