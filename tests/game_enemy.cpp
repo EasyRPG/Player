@@ -199,31 +199,23 @@ static Game_Enemy& MakeEnemyAttribute(int id, int attr_id, int rank) {
 
 TEST_CASE("Attribute") {
 	const MockActor m;
-	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
 
 	SUBCASE("0") {
 		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), -100);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 0);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 0);
 	}
 
 	SUBCASE("1") {
 		const auto& enemy = MakeEnemyAttribute(1, 1, 1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 1);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 1);
 	}
 
 	SUBCASE("2") {
 		const auto& enemy = MakeEnemyAttribute(1, 1, 2);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
-	}
-
-	SUBCASE("3") {
-		const auto& enemy = MakeEnemyAttribute(1, 1, 3);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
-	}
-
-	SUBCASE("4") {
-		const auto& enemy = MakeEnemyAttribute(1, 1, 4);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 0);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 2);
 	}
 }
 
@@ -233,46 +225,71 @@ TEST_CASE("BadAttribute") {
 
 	SUBCASE("0") {
 		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
-		REQUIRE_EQ(enemy.GetAttributeModifier(0), 0);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(0), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(0), 2);
 	}
 
 	SUBCASE("INT_MAX") {
 		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
-		REQUIRE_EQ(enemy.GetAttributeModifier(INT_MAX), 0);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(INT_MAX), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(INT_MAX), 2);
 	}
 }
 
 TEST_CASE("AttributeShift") {
 	const MockActor m;
-	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
-	auto& enemy = MakeEnemyAttribute(1, 1, 2);
 
-	REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
-	REQUIRE(enemy.CanShiftAttributeRate(1, 1));
-	REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, 2));
-	REQUIRE(enemy.CanShiftAttributeRate(1, -1));
-	REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, -2));
+	SUBCASE("normal") {
+		auto& enemy = MakeEnemyAttribute(1, 1, 2);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
+		REQUIRE(enemy.CanShiftAttributeRate(1, 1));
+		REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, 2));
+		REQUIRE(enemy.CanShiftAttributeRate(1, -1));
+		REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, -2));
 
-	SUBCASE("baseline") {
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 2);
+
+		enemy.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 3);
+
+		enemy.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 2);
+
+		enemy.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 1);
+
+		enemy.ShiftAttributeRate(1, 100);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 3);
+
+		enemy.ShiftAttributeRate(1, -100);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 1);
 	}
 
-	SUBCASE("up") {
+	SUBCASE("overflow") {
+		auto& enemy = MakeEnemyAttribute(1, 1, 4);
 		enemy.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
-		enemy.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
-		enemy.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 4);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 4);
 	}
 
-	SUBCASE("down") {
+	SUBCASE("underflow") {
+		auto& enemy = MakeEnemyAttribute(1, 1, 0);
 		enemy.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
-		enemy.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
-		enemy.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
+		REQUIRE_EQ(enemy.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 0);
+		REQUIRE_EQ(enemy.GetAttributeRate(1), 0);
 	}
 }
 

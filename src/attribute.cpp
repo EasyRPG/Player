@@ -12,7 +12,7 @@
 
 namespace Attribute {
 
-int GetAttributeRate(int attribute_id, int rate) {
+int GetAttributeRateModifier(int attribute_id, int rate) {
 	const auto* attribute = lcf::ReaderUtil::GetElement(lcf::Data::attributes, attribute_id);
 
 	if (!attribute) {
@@ -20,10 +20,10 @@ int GetAttributeRate(int attribute_id, int rate) {
 		return 0;
 	}
 
-	return GetAttributeRate(*attribute, rate);
+	return GetAttributeRateModifier(*attribute, rate);
 }
 
-int GetAttributeRate(const lcf::rpg::Attribute& attr, int rate) {
+int GetAttributeRateModifier(const lcf::rpg::Attribute& attr, int rate) {
 	switch (rate) {
 	case 0:
 		return attr.a_rate;
@@ -74,11 +74,12 @@ int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const 
 			break;
 		}
 
-		const auto m = target.GetAttributeModifier(id);
+		const auto rate = target.GetAttributeRate(id);
+		const auto mod = GetAttributeRateModifier(id, rate);
 		if (attr->type == lcf::rpg::Attribute::Type_physical) {
-			physical = std::max(physical, m);
+			physical = std::max(physical, mod);
 		} else {
-			magical = std::max(magical, m);
+			magical = std::max(magical, mod);
 		}
 	}
 

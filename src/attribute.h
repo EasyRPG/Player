@@ -35,7 +35,7 @@ namespace Attribute {
  * @param rate Attribute rate to get
  * @return Attribute rate
  */
-int GetAttributeRate(int attribute_id, int rate);
+int GetAttributeRateModifier(int attribute_id, int rate);
 
 /**
  * Gets the attribute damage multiplier/protection (A-E).
@@ -44,7 +44,7 @@ int GetAttributeRate(int attribute_id, int rate);
  * @param rate Attribute rate to get
  * @return Attribute rate
  */
-int GetAttributeRate(const lcf::rpg::Attribute& attr, int rate);
+int GetAttributeRateModifier(const lcf::rpg::Attribute& attr, int rate);
 
 /**
  * Modifies the effect by weapon attributes against the target.

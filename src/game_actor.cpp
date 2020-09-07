@@ -634,41 +634,21 @@ int Game_Actor::GetStateProbability(int state_id) const {
 	return GetStateRate(state_id, rate) * mul / 100;
 }
 
-int Game_Actor::GetAttributeModifier(int attribute_id) const {
+int Game_Actor::GetBaseAttributeRate(int attribute_id) const {
 	int rate = 2; // C - default
 
-	const uint8_t* r = lcf::ReaderUtil::GetElement(GetActor().attribute_ranks, attribute_id);
+	const auto* r = lcf::ReaderUtil::GetElement(GetActor().attribute_ranks, attribute_id);
 	if (r) {
 		rate = *r;
 	}
 
-	// GetAttributeRate will verify this but actors already need a check earlier
-	// because of attribute_shift
-	const int* shift = lcf::ReaderUtil::GetElement(attribute_shift, attribute_id);
+	bool boost = false;
+	ForEachEquipment<false,true>(GetWholeEquipment(), [&](auto& item) {
+			boost |= attribute_id >= 1 && attribute_id <= static_cast<int>(item.attribute_set.size()) && item.attribute_set[attribute_id - 1];
+			});
+	rate += boost;
 
-	if (!shift) {
-		Output::Warning("GetAttributeModifier: Invalid attribute ID {}", attribute_id);
-		return 0;
-	}
-
-	rate += *shift;
-	for (auto id_object : GetWholeEquipment()) {
-		lcf::rpg::Item *object = lcf::ReaderUtil::GetElement(lcf::Data::items, id_object);
-		if (object != nullptr && (object->type == lcf::rpg::Item::Type_shield || object->type == lcf::rpg::Item::Type_armor
-			|| object->type == lcf::rpg::Item::Type_helmet || object->type == lcf::rpg::Item::Type_accessory)
-			&& static_cast<int>(object->attribute_set.size()) >= attribute_id && object->attribute_set[attribute_id - 1]) {
-			rate++;
-			break;
-		}
-	}
-
-	if (rate < 0) {
-		rate = 0;
-	} else if (rate > 4) {
-		rate = 4;
-	}
-
-	return Attribute::GetAttributeRate(attribute_id, rate);
+	return Utils::Clamp(rate, 0, 4);
 }
 
 int Game_Actor::GetWeaponId() const {

@@ -72,21 +72,14 @@ int Game_Enemy::GetStateProbability(int state_id) const {
 	return GetStateRate(state_id, rate);
 }
 
-int Game_Enemy::GetAttributeModifier(int attribute_id) const {
+int Game_Enemy::GetBaseAttributeRate(int attribute_id) const {
 	int rate = 2; // C - default
 
 	if (attribute_id >= 1 && attribute_id <= (int)enemy->attribute_ranks.size()) {
 		rate = enemy->attribute_ranks[attribute_id - 1];
-
-		rate += attribute_shift[attribute_id - 1];
-		if (rate < 0) {
-			rate = 0;
-		} else if (rate > 4) {
-			rate = 4;
-		}
 	}
 
-	return Attribute::GetAttributeRate(attribute_id, rate);
+	return rate;
 }
 
 void Game_Enemy::SetHp(int _hp) {

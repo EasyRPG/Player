@@ -229,12 +229,12 @@ public:
 	int GetStateProbability(int state_id) const override;
 
 	/**
-	 * Gets attribute protection when the actor is damaged.
-	 *
-	 * @param attribute_id Attribute to test
-	 * @return Attribute resistence
+	 * Gets the base attribute rate when actor is damaged.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
 	 */
-	int GetAttributeModifier(int attribute_id) const override;
+	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
 	 * Gets actor name.

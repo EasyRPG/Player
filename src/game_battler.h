@@ -149,6 +149,22 @@ public:
 	int GetStateRate(int state_id, int rate) const;
 
 	/**
+	 * Gets the base attribute rate when actor is damaged, without battle attribute shifts.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
+	 */
+	virtual int GetBaseAttributeRate(int attribute_id) const;
+
+	/**
+	 * Gets the attribute rate when actor is damaged.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
+	 */
+	int GetAttributeRate(int attribute_id) const;
+
+	/**
 	 * Applies a modifier (buff/debuff) to an attribute rate.
 	 * GetAttributeModifier will use this shift in the rate lookup.
 	 * A shift of +1 changed a C to D and a -1 a C to B.
@@ -182,14 +198,6 @@ public:
 	 * @return Probability of state infliction
 	 */
 	virtual int GetStateProbability(int state_id) const = 0;
-
-	/**
-	 * Gets attribute protection when the actor is damaged.
-	 *
-	 * @param attribute_id Attribute to test
-	 * @return Attribute resistence
-	 */
-	virtual int GetAttributeModifier(int attribute_id) const = 0;
 
 	/**
 	 * Gets the characters name
@@ -896,6 +904,10 @@ inline bool Game_Battler::IsDirectionFlipped() const {
 
 inline void Game_Battler::SetDirectionFlipped(bool flip) {
 	direction_flipped = flip;
+}
+
+inline int Game_Battler::GetBaseAttributeRate(int attribute_id) const {
+	return 2;
 }
 
 #endif

@@ -594,25 +594,19 @@ void Game_Battler::ResetBattle() {
 	SetBattleAlgorithm(nullptr);
 }
 
+int Game_Battler::GetAttributeRate(int attribute_id) const {
+	auto rate = GetBaseAttributeRate(attribute_id);
+	rate += GetAttributeRateShift(attribute_id);
+	return Utils::Clamp(rate, 0, 4);
+}
+
 void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
 		return;
 	}
 
-	if (shift < -1 || shift > 1) {
-		return;
-	}
-
-	if (shift == 0) {
-		return;
-	}
-
-	int& old_shift = attribute_shift[attribute_id - 1];
-	if ((old_shift == -1 || old_shift == 0) && shift == 1) {
-		++old_shift;
-	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
-		--old_shift;
-	}
+	auto& a = attribute_shift[attribute_id -1];
+	a = Utils::Clamp(a + shift, -1, 1);
 }
 
 int Game_Battler::GetAttributeRateShift(int attribute_id) const {

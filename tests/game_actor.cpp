@@ -435,80 +435,155 @@ static Game_Actor MakeActorAttribute(int id, int attr_id, int rank) {
 
 TEST_CASE("Attribute") {
 	const MockActor m;
-	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
 
 	SUBCASE("0") {
 		const auto& actor = MakeActorAttribute(1, 1, 0);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), -100);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 0);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 0);
 	}
 
 	SUBCASE("1") {
 		const auto& actor = MakeActorAttribute(1, 1, 1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 1);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 1);
 	}
 
 	SUBCASE("2") {
 		const auto& actor = MakeActorAttribute(1, 1, 2);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
-	}
-
-	SUBCASE("3") {
-		const auto& actor = MakeActorAttribute(1, 1, 3);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
-	}
-
-	SUBCASE("4") {
-		const auto& actor = MakeActorAttribute(1, 1, 4);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 0);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 2);
 	}
 }
 
 TEST_CASE("BadAttribute") {
 	const MockActor m;
-	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+	const auto& actor = MakeActorAttribute(1, 1, 2);
 
-	SUBCASE("0") {
-		const auto& actor = MakeActorAttribute(1, 1, 2);
-		REQUIRE_EQ(actor.GetAttributeModifier(0), 0);
+	REQUIRE_EQ(actor.GetBaseAttributeRate(0), 2);
+	REQUIRE_EQ(actor.GetAttributeRate(0), 2);
+	REQUIRE_EQ(actor.GetBaseAttributeRate(INT_MAX), 2);
+	REQUIRE_EQ(actor.GetAttributeRate(INT_MAX), 2);
+}
+
+TEST_CASE("AttributeEquip") {
+	const MockActor m;
+	MakeDBEquip(1, lcf::rpg::Item::Type_weapon);
+	MakeDBEquip(2, lcf::rpg::Item::Type_shield);
+	MakeDBEquip(3, lcf::rpg::Item::Type_armor);
+	MakeDBEquip(4, lcf::rpg::Item::Type_helmet);
+	MakeDBEquip(5, lcf::rpg::Item::Type_accessory);
+
+	for (int i = 1; i <= 5; ++i) {
+		SetDBItemAttribute(i, 1, true);
+
 	}
 
-	SUBCASE("INT_MAX") {
-		const auto& actor = MakeActorAttribute(1, 1, 2);
-		REQUIRE_EQ(actor.GetAttributeModifier(INT_MAX), 0);
+	SUBCASE("normal") {
+		auto actor = MakeActorAttribute(1, 1, 2);
+
+		SUBCASE("weapon") {
+			actor.SetEquipment(1, 1);
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 2);
+		}
+
+		SUBCASE("shield") {
+			actor.SetEquipment(2, 2);
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 3);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+		}
+
+		SUBCASE("armor") {
+			actor.SetEquipment(3, 3);
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 3);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+		}
+
+		SUBCASE("helmet") {
+			actor.SetEquipment(4, 4);
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 3);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+		}
+
+		SUBCASE("accessory") {
+			actor.SetEquipment(5, 5);
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 3);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+		}
+
+		SUBCASE("all") {
+			for (int i = 1; i <= 5; ++i) {
+				actor.SetEquipment(i, i);
+			}
+			REQUIRE_EQ(actor.GetBaseAttributeRate(1), 3);
+			REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+		}
+	}
+
+	SUBCASE("overflow") {
+		auto actor = MakeActorAttribute(1, 1, 4);
+		for (int i = 1; i <= 5; ++i) {
+			actor.SetEquipment(i, i);
+		}
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 4);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 4);
 	}
 }
 
 TEST_CASE("AttributeShift") {
 	const MockActor m;
-	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
-	auto actor = MakeActorAttribute(1, 1, 2);
 
-	REQUIRE_EQ(actor.GetAttributeRateShift(1), 0);
-	REQUIRE(actor.CanShiftAttributeRate(1, 1));
-	REQUIRE_FALSE(actor.CanShiftAttributeRate(1, 2));
-	REQUIRE(actor.CanShiftAttributeRate(1, -1));
-	REQUIRE_FALSE(actor.CanShiftAttributeRate(1, -2));
+	SUBCASE("normal") {
+		auto actor = MakeActorAttribute(1, 1, 2);
 
-	SUBCASE("baseline") {
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
+		REQUIRE(actor.CanShiftAttributeRate(1, 1));
+		REQUIRE_FALSE(actor.CanShiftAttributeRate(1, 2));
+		REQUIRE(actor.CanShiftAttributeRate(1, -1));
+		REQUIRE_FALSE(actor.CanShiftAttributeRate(1, -2));
+
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 0);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 2);
+
+		actor.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+
+		actor.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 0);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 2);
+
+		actor.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 1);
+
+		actor.ShiftAttributeRate(1, 100);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+
+		actor.ShiftAttributeRate(1, -100);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 1);
 	}
 
-	SUBCASE("up") {
+	SUBCASE("overflow") {
+		auto actor = MakeActorAttribute(1, 1, 4);
 		actor.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
-		actor.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
-		actor.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 4);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 4);
 	}
 
-	SUBCASE("down") {
+	SUBCASE("underflow") {
+		auto actor = MakeActorAttribute(1, 1, 0);
 		actor.ShiftAttributeRate(1, -1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
-		actor.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
-		actor.ShiftAttributeRate(1, 1);
-		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 0);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 0);
 	}
 }
 
@@ -533,5 +608,38 @@ TEST_CASE("AttributeShiftInvalid") {
 	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, 1));
 	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, -1));
 }
+
+TEST_CASE("AttributeShiftEquip") {
+	const MockActor m;
+	MakeDBEquip(1, lcf::rpg::Item::Type_shield);
+	SetDBItemAttribute(1, 1, true);
+
+	SUBCASE("normal") {
+		auto actor = MakeActorAttribute(1, 1, 1);
+		actor.SetEquipment(2, 1);
+		actor.ShiftAttributeRate(1, 1);
+
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 3);
+
+		actor.ShiftAttributeRate(1, -2);
+
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), -1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 1);
+	}
+
+	SUBCASE("overflow") {
+		auto actor = MakeActorAttribute(1, 1, 4);
+		actor.SetEquipment(2, 1);
+		actor.ShiftAttributeRate(1, 1);
+
+		REQUIRE_EQ(actor.GetAttributeRateShift(1), 1);
+		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 4);
+		REQUIRE_EQ(actor.GetAttributeRate(1), 4);
+	}
+}
+
 
 TEST_SUITE_END();
