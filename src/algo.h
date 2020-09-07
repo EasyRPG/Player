@@ -20,8 +20,8 @@
 
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
+#include <game_battler.h>
 
-class Game_Battler;
 class Game_Actor;
 class Game_Enemy;
 
@@ -58,7 +58,7 @@ int VarianceAdjustEffect(int base, int var);
  *
  * @return Success hit rate
  */
-int CalcNormalAttackToHit(const Game_Battler& source, const Game_Battler& target, int weapon, lcf::rpg::System::BattleCondition cond);
+int CalcNormalAttackToHit(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond);
 
 /**
  * Compute the hit rate for a skill
@@ -79,7 +79,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
  *
  * @return Critical hit rate.
  */
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, int weapon);
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon);
 
 /**
  * Check if target is defending and perform damage adjustment if so.
@@ -107,7 +107,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target);
  */
 int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
-		int weapon,
+		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond);

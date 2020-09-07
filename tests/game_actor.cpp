@@ -7,6 +7,10 @@ static Game_Actor MakeActor(int id, Args... args) {
 	return Game_Actor(id);
 }
 
+static auto AllWeaponTypes() {
+	return std::array<Game_Battler::Weapon,4>{{ Game_Battler::WeaponAll, Game_Battler::WeaponNone, Game_Battler::WeaponPrimary, Game_Battler::WeaponSecondary }};
+}
+
 TEST_SUITE_BEGIN("Game_Actor");
 
 TEST_CASE("Limits2k") {
@@ -55,7 +59,7 @@ TEST_CASE("Default") {
 	REQUIRE_EQ(actor.GetHp(), 100);
 	REQUIRE_EQ(actor.GetSp(), 10);
 
-	for (int w = -1; w < 2; ++w) {
+	for (auto w: AllWeaponTypes()) {
 		REQUIRE_EQ(actor.GetBaseAtk(w), 11);
 		REQUIRE_EQ(actor.GetBaseDef(w), 12);
 		REQUIRE_EQ(actor.GetBaseSpi(w), 13);
@@ -140,7 +144,7 @@ TEST_CASE("AdjParams") {
 	REQUIRE_EQ(actor.GetHp(), 100);
 	REQUIRE_EQ(actor.GetSp(), 10);
 
-	for (int w = -1; w < 2; ++w) {
+	for (auto w: AllWeaponTypes()) {
 		REQUIRE_EQ(actor.GetBaseAtk(w), 503);
 		REQUIRE_EQ(actor.GetBaseDef(w), 504);
 		REQUIRE_EQ(actor.GetBaseSpi(w), 505);
@@ -157,7 +161,7 @@ TEST_CASE("AdjParams") {
 	actor.SetSpiModifier(30);
 	actor.SetAgiModifier(40);
 
-	for (int w = -1; w < 2; ++w) {
+	for (auto w: AllWeaponTypes()) {
 		REQUIRE_EQ(actor.GetBaseAtk(w), 503);
 		REQUIRE_EQ(actor.GetBaseDef(w), 504);
 		REQUIRE_EQ(actor.GetBaseSpi(w), 505);
@@ -206,8 +210,15 @@ static void testWeapon3(const Game_Actor* a,
 		lcf::rpg::Item* i3,
 		lcf::rpg::Item* i4,
 		lcf::rpg::Item* i5,
-		int wid)
+		Game_Battler::Weapon wid)
 {
+	if (wid != Game_Battler::WeaponAll && wid != Game_Battler::WeaponPrimary && i1 && i1->type == lcf::rpg::Item::Type_weapon) {
+		i1 = nullptr;
+	}
+	if (wid != Game_Battler::WeaponAll && wid != Game_Battler::WeaponSecondary && i2 && i2->type == lcf::rpg::Item::Type_weapon) {
+		i2 = nullptr;
+	}
+
 	const auto isw1 = i1 && i1->type == lcf::rpg::Item::Type_weapon;
 	const auto atk1 = i1 ? i1->atk_points1 : 0;
 	const auto def1 = i1 ? i1->def_points1 : 0;
@@ -309,9 +320,12 @@ static void testWeapon2(Game_Actor* a, int id1, int id2, int id3, int id4, int i
 	REQUIRE_EQ(a->GetHelmetId(), id4);
 	REQUIRE_EQ(a->GetAccessoryId(), id5);
 
-	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::kWeaponAll);
-	testWeapon3(a, i1, ((i2 && i2->type == lcf::rpg::Item::Type_weapon) ? nullptr : i2), i3, i4, i5, 0);
-	testWeapon3(a, ((i1 && i1->type == lcf::rpg::Item::Type_weapon) ? nullptr : i1), i2, i3, i4, i5, 1);
+	const auto* w1 = ((i1 && i1->type == lcf::rpg::Item::Type_weapon) ? i1 : nullptr);
+
+	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponAll);
+	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponNone);
+	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponPrimary);
+	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponSecondary);
 }
 
 static void testWeapon(Game_Actor* a, int id1, int id2, int armor = 0, int helmet = 0, int acc = 0) {
@@ -416,7 +430,7 @@ TEST_CASE("ArmorWithWeaponFlags") {
 	actor.SetEquipment(3, 1);
 	REQUIRE_EQ(actor.GetArmorId(), 1);
 
-	for (int wid = -1; wid <= 5; ++wid ) {
+	for (auto wid: AllWeaponTypes()) {
 		CAPTURE(wid);
 
 		REQUIRE_EQ(actor.GetHitChance(wid), 90);

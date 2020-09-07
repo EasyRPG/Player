@@ -3,8 +3,6 @@
 #include "doctest.h"
 #include "utils.h"
 
-static void nullDBEnemy(lcf::rpg::Enemy& e) {}
-
 static Game_Actor MakeActor(int id) {
 	return Game_Actor(id);
 }
@@ -354,37 +352,51 @@ TEST_CASE("NormalAttack") {
 	MakeDBEquip(2, lcf::rpg::Item::Type_weapon);
 	SetDBItemAttribute(2, 2, true);
 	MakeDBEquip(3, lcf::rpg::Item::Type_weapon);
+	MakeDBEquip(4, lcf::rpg::Item::Type_shield);
+	SetDBItemAttribute(1, 4, true);
 
 	lcf::Data::actors[1].two_weapon = true;
 	auto source = MakeActor(2);
 	const auto& target = MakeActor(1);
 
 	SUBCASE("none") {
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::kWeaponAll), 100);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 0), 100);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 1), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponAll), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponNone), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponPrimary), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponSecondary), 100);
 	}
 
 	SUBCASE("primary") {
 		source.SetEquipment(1, 1);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::kWeaponAll), 300);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 0), 300);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 1), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponAll), 300);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponNone), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponPrimary), 300);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponSecondary), 100);
 	}
 
 	SUBCASE("secondary") {
 		source.SetEquipment(2, 2);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::kWeaponAll), 200);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 0), 100);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 1), 200);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponAll), 200);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponNone), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponPrimary), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponSecondary), 200);
 	}
 
 	SUBCASE("dual") {
 		source.SetEquipment(1, 1);
 		source.SetEquipment(2, 2);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::kWeaponAll), 300);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 0), 300);
-		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, 1), 200);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponAll), 300);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponNone), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponPrimary), 300);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponSecondary), 200);
+	}
+
+	SUBCASE("shield") {
+		source.SetEquipment(2, 4);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponAll), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponNone), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponPrimary), 100);
+		REQUIRE_EQ(Attribute::ApplyAttributeNormalAttackMultiplier(100, source, target, Game_Battler::WeaponSecondary), 100);
 	}
 }
 

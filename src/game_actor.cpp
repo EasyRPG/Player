@@ -411,7 +411,7 @@ static bool IsArmorType(const lcf::rpg::Item* item) {
 }
 
 template <bool allow_weapon, bool allow_armor, typename F>
-void ForEachEquipment(Span<const short> equipped, F&& f, int weapon = Game_Battler::kWeaponAll) {
+void ForEachEquipment(Span<const short> equipped, F&& f, Game_Battler::Weapon weapon = Game_Battler::WeaponAll) {
 	for (int slot = 0; slot < static_cast<int>(equipped.size()); ++slot) {
 		const auto item_id = equipped[slot];
 		if (item_id <= 0) {
@@ -423,7 +423,7 @@ void ForEachEquipment(Span<const short> equipped, F&& f, int weapon = Game_Battl
 		assert(item != nullptr);
 
 		if (item->type == lcf::rpg::Item::Type_weapon) {
-			if (!allow_weapon || (weapon != Game_Battler::kWeaponAll && weapon != slot)) {
+			if (!allow_weapon || (weapon != Game_Battler::WeaponAll && weapon != slot + 1)) {
 				continue;
 			}
 		} else if (IsArmorType(item)) {
@@ -438,7 +438,7 @@ void ForEachEquipment(Span<const short> equipped, F&& f, int weapon = Game_Battl
 	}
 }
 
-int Game_Actor::GetBaseAtk(int weapon, bool mod, bool equip) const {
+int Game_Actor::GetBaseAtk(Weapon weapon, bool mod, bool equip) const {
 	int n = 0;
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
@@ -457,11 +457,11 @@ int Game_Actor::GetBaseAtk(int weapon, bool mod, bool equip) const {
 	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
-int Game_Actor::GetBaseAtk(int weapon) const {
+int Game_Actor::GetBaseAtk(Weapon weapon) const {
 	return GetBaseAtk(weapon, true, true);
 }
 
-int Game_Actor::GetBaseDef(int weapon, bool mod, bool equip) const {
+int Game_Actor::GetBaseDef(Weapon weapon, bool mod, bool equip) const {
 	int n = 0;
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
@@ -480,11 +480,11 @@ int Game_Actor::GetBaseDef(int weapon, bool mod, bool equip) const {
 	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
-int Game_Actor::GetBaseDef(int weapon) const {
+int Game_Actor::GetBaseDef(Weapon weapon) const {
 	return GetBaseDef(weapon, true, true);
 }
 
-int Game_Actor::GetBaseSpi(int weapon, bool mod, bool equip) const {
+int Game_Actor::GetBaseSpi(Weapon weapon, bool mod, bool equip) const {
 	int n = 0;
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
@@ -503,11 +503,11 @@ int Game_Actor::GetBaseSpi(int weapon, bool mod, bool equip) const {
 	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
-int Game_Actor::GetBaseSpi(int weapon) const {
+int Game_Actor::GetBaseSpi(Weapon weapon) const {
 	return GetBaseSpi(weapon, true, true);
 }
 
-int Game_Actor::GetBaseAgi(int weapon, bool mod, bool equip) const {
+int Game_Actor::GetBaseAgi(Weapon weapon, bool mod, bool equip) const {
 	int n = 0;
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
@@ -526,7 +526,7 @@ int Game_Actor::GetBaseAgi(int weapon, bool mod, bool equip) const {
 	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
-int Game_Actor::GetBaseAgi(int weapon) const {
+int Game_Actor::GetBaseAgi(Weapon weapon) const {
 	return GetBaseAgi(weapon, true, true);
 }
 
@@ -1154,14 +1154,14 @@ int Game_Actor::GetBattleAnimationId() const {
 	return anim;
 }
 
-int Game_Actor::GetHitChance(int weapon) const {
+int Game_Actor::GetHitChance(Weapon weapon) const {
 	int hit = INT_MIN;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { hit = std::max(hit, static_cast<int>(item.hit)); }, weapon);
 
 	return hit != INT_MIN ? hit : 90;
 }
 
-float Game_Actor::GetCriticalHitChance(int weapon) const {
+float Game_Actor::GetCriticalHitChance(Weapon weapon) const {
 	auto& actor = GetActor();
 	float crit_chance = actor.critical_hit ? 1.0f / actor.critical_hit_chance : 0.0f;
 
@@ -1309,25 +1309,25 @@ const lcf::rpg::Item* Game_Actor::GetAccessory() const {
 	return nullptr;
 }
 
-bool Game_Actor::HasPreemptiveAttack(int weapon) const {
+bool Game_Actor::HasPreemptiveAttack(Weapon weapon) const {
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.preemptive; }, weapon);
 	return rc;
 }
 
-bool Game_Actor::HasDualAttack(int weapon) const {
+bool Game_Actor::HasDualAttack(Weapon weapon) const {
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.dual_attack; }, weapon);
 	return rc;
 }
 
-bool Game_Actor::HasAttackAll(int weapon) const {
+bool Game_Actor::HasAttackAll(Weapon weapon) const {
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.attack_all; }, weapon);
 	return rc;
 }
 
-bool Game_Actor::AttackIgnoresEvasion(int weapon) const {
+bool Game_Actor::AttackIgnoresEvasion(Weapon weapon) const {
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.ignore_evasion; }, weapon);
 	return rc;

@@ -19,7 +19,7 @@ bool IsRowAdjusted(const Game_Actor& actor, lcf::rpg::System::BattleCondition co
 		   );
 }
 
-static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const Game_Battler& target, int weapon) {
+static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
 	// NOTE: RPG_RT 2k3 has a bug where if the source is an actor with a selected weapon, the agi
 	// calculation calls a bespoke function which doesn't consider states which can cause half or double AGI.
 	const float src_agi = std::max(1, source.GetAgi(weapon));
@@ -28,7 +28,7 @@ static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const 
 	return 100 - (100 - to_hit) * (1.0f + (tgt_agi / src_agi - 1.0f) / 2.0f);
 }
 
-int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target, int weapon, lcf::rpg::System::BattleCondition cond) {
+int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond) {
 	auto to_hit = source.GetHitChance(weapon);
 
 	// If target has rm2k3 state which grants 100% dodge.
@@ -94,12 +94,12 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 
 	// Stop here if attacker ignores evasion.
 	if (source.GetType() == Game_Battler::Type_Ally
-		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(Game_Battler::kWeaponAll)) {
+		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(Game_Battler::WeaponAll)) {
 		return to_hit;
 	}
 
 	// AGI adjustment.
-	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, Game_Battler::kWeaponAll);
+	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, Game_Battler::WeaponAll);
 
 	// If target has physical dodge evasion:
 	if (target.GetType() == Game_Battler::Type_Ally
@@ -110,7 +110,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	return to_hit;
 }
 
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, int weapon) {
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
 	// FIXME: Make this function return int 0 to 100.
 	auto crit_chance = static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0);
 	if (target.GetType() == Game_Battler::Type_Ally && static_cast<const Game_Actor&>(target).PreventsCritical()) {
@@ -142,7 +142,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target) {
 
 int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
-		int weapon,
+		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond) {

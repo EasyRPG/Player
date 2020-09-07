@@ -539,34 +539,38 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAtk(int weapon, bool mod, bool equip) const;
+	int GetBaseAtk(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseDef(int weapon, bool mod, bool equip) const;
+	int GetBaseDef(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseSpi(int weapon, bool mod, bool equip) const;
+	int GetBaseSpi(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAgi(int weapon, bool mod, bool equip) const;
+	int GetBaseAgi(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the max HP for the current level.
@@ -584,25 +588,25 @@ public:
 	 * Gets the attack for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAtk(int weapon = kWeaponAll) const override;
+	int GetBaseAtk(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseDef(int weapon = kWeaponAll) const override;
+	int GetBaseDef(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseSpi(int weapon = kWeaponAll) const override;
+	int GetBaseSpi(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAgi(int weapon = kWeaponAll) const override;
+	int GetBaseAgi(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Sets the base max HP by adjusting the modifier bonus.
@@ -788,26 +792,26 @@ public:
 	 *
 	 * @return true if a weapon is having preempt attribute
 	 */
-	bool HasPreemptiveAttack(int weapon = kWeaponAll) const override;
+	bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon that grants dual attack.
 	 *
 	 * @return true if a weapon is having dual attack attribute
 	 */
-	bool HasDualAttack(int weapon = kWeaponAll) const;
+	bool HasDualAttack(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * Tests if the battler has a weapon that grants attack all
 	 *
 	 * @return true if a weapon is having attack all attribute
 	 */
-	bool HasAttackAll(int weapon = kWeaponAll) const;
+	bool HasAttackAll(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool AttackIgnoresEvasion(int weapon = kWeaponAll) const;
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * @return If the actor has equipment that protects against terrain damage.
@@ -831,8 +835,8 @@ public:
 
 	int GetBattleAnimationId() const override;
 
-	int GetHitChance(int weapon = kWeaponAll) const override;
-	float GetCriticalHitChance(int weapon = kWeaponAll) const override;
+	int GetHitChance(Weapon weapon = WeaponAll) const override;
+	float GetCriticalHitChance(Weapon weapon = WeaponAll) const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
 	std::string GetLearningMessage(const lcf::rpg::Skill& skill) const;

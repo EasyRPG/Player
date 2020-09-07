@@ -43,8 +43,6 @@
 #include "attribute.h"
 #include "algo.h"
 
-constexpr int Game_Battler::kWeaponAll;
-
 Game_Battler::Game_Battler() {
 	ResetBattle();
 }
@@ -504,19 +502,19 @@ static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states
 	return value;
 }
 
-int Game_Battler::GetAtk(int weapon) const {
+int Game_Battler::GetAtk(Weapon weapon) const {
 	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
 }
 
-int Game_Battler::GetDef(int weapon) const {
+int Game_Battler::GetDef(Weapon weapon) const {
 	return AdjustParam(GetBaseDef(weapon), def_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
 }
 
-int Game_Battler::GetSpi(int weapon) const {
+int Game_Battler::GetSpi(Weapon weapon) const {
 	return AdjustParam(GetBaseSpi(weapon), spi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
 }
 
-int Game_Battler::GetAgi(int weapon) const {
+int Game_Battler::GetAgi(Weapon weapon) const {
 	return AdjustParam(GetBaseAgi(weapon), agi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
 }
 

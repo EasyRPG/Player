@@ -20,7 +20,8 @@
 
 #include <lcf/rpg/fwd.h>
 #include <lcf/dbbitarray.h>
-#include <span.h>
+#include "span.h"
+#include "game_battler.h"
 
 class Game_Battler;
 class Game_Actor;
@@ -55,7 +56,7 @@ int GetAttributeRateModifier(const lcf::rpg::Attribute& attr, int rate);
  * @param weapon The weapon to use, or kWeaponAll
  * @return modified effect
  */
-int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, int weapon);
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon);
 
 /**
  * Modifies the effect by weapon attributes against the target.

@@ -100,12 +100,12 @@ int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const 
 	return effect;
 }
 
-int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, int weapon) {
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
 	std::array<const lcf::DBBitArray*, 2> attribute_sets;
 
 	size_t n = 0;
 	auto add = [&](int i) {
-		if (weapon == i || weapon == Game_Battler::kWeaponAll) {
+		if (weapon == Game_Battler::Weapon(i + 1) || weapon == Game_Battler::WeaponAll) {
 			auto* item = source.GetEquipment(i + 1);
 			if (item && item->type == lcf::rpg::Item::Type_weapon) {
 				attribute_sets[n++] = &item->attribute_set;

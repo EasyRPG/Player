@@ -46,7 +46,17 @@ typedef std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
  */
 class Game_Battler {
 public:
-	static constexpr int kWeaponAll = -1;
+	/** Weapon mode used for various accessors, used to specify which weapons to include in calculation */
+	enum Weapon {
+		/** Use all weapons combined */
+		WeaponAll = -1,
+		/** Use no weapons */
+		WeaponNone = 0,
+		/** Use only primary weapon */
+		WeaponPrimary = 1,
+		/** Use only secondary weapon */
+		WeaponSecondary = 2,
+	};
 
 	/**
 	 * Constructor.
@@ -283,30 +293,34 @@ public:
 	/**
 	 * Gets the current battler attack.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current attack.
 	 */
-	int GetAtk(int weapon = Game_Battler::kWeaponAll) const;
+	int GetAtk(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler defense.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current defense.
 	 */
-	int GetDef(int weapon = Game_Battler::kWeaponAll) const;
+	int GetDef(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler spirit.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current spirit.
 	 */
-	int GetSpi(int weapon = Game_Battler::kWeaponAll) const;
+	int GetSpi(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler agility.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current agility.
 	 */
-	int GetAgi(int weapon = Game_Battler::kWeaponAll) const;
+	int GetAgi(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the maximum HP for the current level.
@@ -325,30 +339,34 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return attack.
 	 */
-	virtual int GetBaseAtk(int weapon = kWeaponAll) const = 0;
+	virtual int GetBaseAtk(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return defense.
 	 */
-	virtual int GetBaseDef(int weapon = kWeaponAll) const = 0;
+	virtual int GetBaseDef(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return spirit.
 	 */
-	virtual int GetBaseSpi(int weapon = kWeaponAll) const = 0;
+	virtual int GetBaseSpi(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return agility.
 	 */
-	virtual int GetBaseAgi(int weapon = kWeaponAll) const = 0;
+	virtual int GetBaseAgi(Weapon weapon = WeaponAll) const = 0;
 
 	/** @return whether the battler is facing the opposite it's normal direction */
 	bool IsDirectionFlipped() const;
@@ -510,9 +528,21 @@ public:
 
 	virtual int GetBattleAnimationId() const = 0;
 
-	virtual int GetHitChance(int weapon = kWeaponAll) const = 0;
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
+	virtual int GetHitChance(Weapon weapon = WeaponAll) const = 0;
 
-	virtual float GetCriticalHitChance(int weapon = kWeaponAll) const = 0;
+	/**
+	 * Gets the chance to critical hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return critical hit rate [0.0f-1.0f]
+	 */
+	virtual float GetCriticalHitChance(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * @return If battler is charged (next attack double damages)
@@ -546,9 +576,10 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants preemption.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having preempt attribute
 	 */
-	virtual bool HasPreemptiveAttack(int weapon = kWeaponAll) const;
+	virtual bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const;
 
 	enum BattlerType {
 		Type_Ally,
@@ -804,7 +835,7 @@ inline bool Game_Battler::HasStrongDefense() const {
 	return false;
 }
 
-inline bool Game_Battler::HasPreemptiveAttack(int) const {
+inline bool Game_Battler::HasPreemptiveAttack(Weapon) const {
 	return false;
 }
 

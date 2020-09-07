@@ -114,11 +114,11 @@ void Game_Enemy::Transform(int new_enemy_id) {
 	}
 }
 
-int Game_Enemy::GetHitChance(int) const {
+int Game_Enemy::GetHitChance(Weapon) const {
 	return enemy->miss ? 70 : 90;
 }
 
-float Game_Enemy::GetCriticalHitChance(int) const {
+float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 

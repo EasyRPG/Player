@@ -99,28 +99,28 @@ public:
 	 *
 	 * @return attack.
 	 */
-	int GetBaseAtk(int = kWeaponAll) const override;
+	int GetBaseAtk(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
 	 * @return defense.
 	 */
-	int GetBaseDef(int = kWeaponAll) const override;
+	int GetBaseDef(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
 	 * @return spirit.
 	 */
-	int GetBaseSpi(int = kWeaponAll) const override;
+	int GetBaseSpi(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
 	 * @return agility.
 	 */
-	int GetBaseAgi(int = kWeaponAll) const override;
+	int GetBaseAgi(Weapon = WeaponAll) const override;
 
 	int GetHue() const override;
 
@@ -132,8 +132,8 @@ public:
 
 	void Transform(int new_enemy_id);
 
-	int GetHitChance(int = kWeaponAll) const override;
-	float GetCriticalHitChance(int = kWeaponAll) const override;
+	int GetHitChance(Weapon = WeaponAll) const override;
+	float GetCriticalHitChance(Weapon = WeaponAll) const override;
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;
@@ -221,19 +221,19 @@ inline int Game_Enemy::GetBaseMaxSp() const {
 	return enemy->max_sp;
 }
 
-inline int Game_Enemy::GetBaseAtk(int) const {
+inline int Game_Enemy::GetBaseAtk(Weapon) const {
 	return enemy->attack;
 }
 
-inline int Game_Enemy::GetBaseDef(int) const {
+inline int Game_Enemy::GetBaseDef(Weapon) const {
 	return enemy->defense;
 }
 
-inline int Game_Enemy::GetBaseSpi(int) const {
+inline int Game_Enemy::GetBaseSpi(Weapon) const {
 	return enemy->spirit;
 }
 
-inline int Game_Enemy::GetBaseAgi(int) const {
+inline int Game_Enemy::GetBaseAgi(Weapon) const {
 	return enemy->agility;
 }
 
