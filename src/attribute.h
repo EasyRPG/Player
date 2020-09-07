@@ -56,7 +56,7 @@ int GetAttributeRateModifier(const lcf::rpg::Attribute& attr, int rate);
  * @param weapon The weapon to use, or kWeaponAll
  * @return modified effect
  */
-int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon);
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon);
 
 /**
  * Modifies the effect by weapon attributes against the target.

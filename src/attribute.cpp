@@ -100,7 +100,12 @@ int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const 
 	return effect;
 }
 
-int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
+int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Battler& source_battler, const Game_Battler& target, Game_Battler::Weapon weapon) {
+	if (source_battler.GetType() != Game_Battler::Type_Ally) {
+		return effect;
+	}
+	auto& source = static_cast<const Game_Actor&>(source_battler);
+
 	std::array<const lcf::DBBitArray*, 2> attribute_sets;
 
 	size_t n = 0;

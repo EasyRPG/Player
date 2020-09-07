@@ -60,8 +60,10 @@ int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target
 	}
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3() && target.GetType() == Game_Battler::Type_Ally) {
-		if (IsRowAdjusted(static_cast<const Game_Actor&>(target), cond, false)) {
+	if (Player::IsRPG2k3()) {
+		if (target.GetType() == Game_Battler::Type_Ally
+				&& IsRowAdjusted(static_cast<const Game_Actor&>(target), cond, false))
+		{
 			to_hit -= 25;
 		} else if(source.GetType() == Game_Battler::Type_Ally
 				&& target.GetType() == Game_Battler::Type_Enemy
@@ -83,6 +85,11 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 		   || (skill.scope != lcf::rpg::Skill::Scope_enemy && skill.scope != lcf::rpg::Skill::Scope_enemies)) {
 		return to_hit;
 	}
+
+	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
+	// Despite that, RPG_RT still checks the flag and run the below code?
+	// FIXME: Verify if skills ported from 2k retain this flag and exercise the evasion logic in 2k3?
+	// RPG_RT BUG: RPG_RT does not check for "EvadesAllPhysicaAttacks() states here
 
 	// If target has Restriction "do_nothing", the attack always hits
 	if (!target.CanAct()) {
@@ -111,7 +118,6 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 }
 
 int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
-	// FIXME: Make this function return int 0 to 100.
 	auto crit_chance = static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0);
 	if (target.GetType() == Game_Battler::Type_Ally && static_cast<const Game_Actor&>(target).PreventsCritical()) {
 		crit_chance = 0;
@@ -123,7 +129,8 @@ int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target
 }
 
 int VarianceAdjustEffect(int base, int var) {
-	if (var > 0) {
+	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
+	if (var > 0 && (base > 0 || Player::IsLegacy())) {
 		int adj = std::max(1, var * base / 10);
 		return base + Utils::GetRandomNumber(0, adj) - adj / 2;
 	}
@@ -145,7 +152,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
 		bool apply_variance,
-		lcf::rpg::System::BattleCondition cond) {
+		lcf::rpg::System::BattleCondition cond)
+{
 	const auto atk = source.GetAtk(weapon);
 	const auto def = target.GetDef();
 
@@ -160,9 +168,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	}
 
 	// Attacker weapon attribute adjustment
-	if (source.GetType() == Game_Battler::Type_Ally) {
-		Attribute::ApplyAttributeNormalAttackMultiplier(dmg, static_cast<const Game_Actor&>(source), target, weapon);
-	}
+	dmg = Attribute::ApplyAttributeNormalAttackMultiplier(dmg, source, target, weapon);
 
 	// Defender row adjustment
 	if (Player::IsRPG2k3()) {
@@ -184,9 +190,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		dmg *= 2;
 	}
 
-	// Variance Adjustment
-	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
-	if (apply_variance && (dmg > 0 || Player::IsLegacy())) {
+	if (apply_variance) {
 		dmg = VarianceAdjustEffect(dmg, 4);
 	}
 
@@ -206,15 +210,14 @@ int CalcSkillEffect(const Game_Battler& source,
 			|| skill.scope == lcf::rpg::Skill::Scope_enemies)
 			&& !skill.ignore_defense) {
 		effect -= skill.physical_rate * target.GetDef() / 40;
-		effect -= skill.magical_rate * target.GetSpi() / 40;
+		effect -= skill.magical_rate * target.GetSpi() / 80;
 	}
 
 	effect = std::max(0, effect);
 
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
 
-	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
-	if (apply_variance && (effect > 0 || Player::IsLegacy())) {
+	if (apply_variance) {
 		effect = VarianceAdjustEffect(effect, skill.variance);
 	}
 
@@ -228,8 +231,7 @@ int CalcSelfDestructEffect(const Game_Battler& source,
 	auto effect = source.GetAtk() - target.GetDef() / 2;
 	effect = std::max(0, effect);
 
-	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
-	if (apply_variance && (effect > 0 || Player::IsLegacy())) {
+	if (apply_variance) {
 		effect = VarianceAdjustEffect(effect, 4);
 	}
 

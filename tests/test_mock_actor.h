@@ -25,6 +25,7 @@ static void InitEmptyDB() {
 	initVec(lcf::Data::troops, 20);
 	initVec(lcf::Data::terrains, 20);
 	initVec(lcf::Data::attributes, 20);
+	initVec(lcf::Data::states, 20);
 	initVec(lcf::Data::chipsets, 20);
 	initVec(lcf::Data::commonevents, 20);
 	initVec(lcf::Data::battlecommands.commands, 20);
@@ -60,6 +61,10 @@ static void InitEmptyDB() {
 	for (auto& tp: lcf::Data::troops) {
 		initVec(tp.members, 8);
 	}
+
+	auto& death = lcf::Data::states[0];
+	death.priority = 100;
+	death.restriction = lcf::rpg::State::Restriction_do_nothing;
 
 }
 
@@ -153,7 +158,7 @@ static lcf::rpg::Item* MakeDBEquip(int id, int type,
 	item.spi_points1 = spi;
 	item.agi_points1 = agi;
 	item.hit = hit;
-	item.critical_hit = 0;
+	item.critical_hit = crt;
 	item.preemptive = w1;
 	item.dual_attack = w2;
 	item.attack_all = w3;

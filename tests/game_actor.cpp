@@ -13,27 +13,6 @@ static auto AllWeaponTypes() {
 
 TEST_SUITE_BEGIN("Game_Actor");
 
-TEST_CASE("Limits2k") {
-	const MockActor m(Player::EngineRpg2k);
-	auto actor = MakeActor(1, 1, 99, 100, 10, 11, 12, 13, 14);
-
-	REQUIRE_EQ(actor.MaxHpValue(), 999);
-	REQUIRE_EQ(actor.MaxStatBaseValue(), 999);
-	// FIXME: Verify Clamps
-	REQUIRE_EQ(actor.MaxStatBattleValue(), 999);
-}
-
-TEST_CASE("Limits2k3") {
-	const MockActor m(Player::EngineRpg2k3);
-
-	auto actor = MakeActor(1, 1, 99, 100, 10, 11, 12, 13, 14);
-
-	REQUIRE_EQ(actor.MaxHpValue(), 9999);
-	REQUIRE_EQ(actor.MaxStatBaseValue(), 999);
-	// FIXME: Verify Clamps
-	REQUIRE_EQ(actor.MaxStatBattleValue(), 9999);
-}
-
 
 TEST_CASE("Default") {
 	const MockActor m;
@@ -103,6 +82,126 @@ TEST_CASE("Default") {
 	REQUIRE_FALSE(actor.GetAutoBattle());
 
 	REQUIRE_EQ(actor.GetBattleRow(), Game_Actor::RowType::RowType_front);
+}
+
+static void testBaseLimits(Game_Actor& actor, int hp, int sp, int base) {
+	REQUIRE_EQ(actor.GetBaseMaxHp(), hp);
+	REQUIRE_EQ(actor.GetMaxHp(), hp);
+	REQUIRE_EQ(actor.GetBaseMaxSp(), sp);
+	REQUIRE_EQ(actor.GetMaxSp(), sp);
+	REQUIRE_EQ(actor.GetBaseAtk(), base);
+	REQUIRE_EQ(actor.GetAtk(), base);
+	REQUIRE_EQ(actor.GetBaseDef(), base);
+	REQUIRE_EQ(actor.GetDef(), base);
+	REQUIRE_EQ(actor.GetBaseSpi(), base);
+	REQUIRE_EQ(actor.GetSpi(), base);
+	REQUIRE_EQ(actor.GetBaseAgi(), base);
+	REQUIRE_EQ(actor.GetAgi(), base);
+}
+
+static void testModBaseLimits(Game_Actor& actor, int hp, int base) {
+	REQUIRE_EQ(actor.GetMaxHpMod(), hp);
+	REQUIRE_EQ(actor.GetMaxSpMod(), base);
+	REQUIRE_EQ(actor.GetAtkMod(), base);
+	REQUIRE_EQ(actor.GetDefMod(), base);
+	REQUIRE_EQ(actor.GetSpiMod(), base);
+	REQUIRE_EQ(actor.GetAgiMod(), base);
+}
+
+static void testLimits(int hp, int base, int battle) {
+	SUBCASE("limit values") {
+		auto actor = MakeActor(1, 1, 99, 1, 1, 1, 1, 1, 1);
+
+		REQUIRE_EQ(actor.MaxHpValue(), hp);
+		REQUIRE_EQ(actor.MaxStatBaseValue(), base);
+		REQUIRE_EQ(actor.MaxStatBattleValue(), battle);
+	}
+
+	SUBCASE("base limits") {
+		auto actor = MakeActor(1, 1, 99, hp, base, base, base, base, base);
+
+		testBaseLimits(actor, hp, base, base);
+		testModBaseLimits(actor, 0, 0);
+
+		SUBCASE("weapon up") {
+			MakeDBEquip(1, lcf::rpg::Item::Type_weapon, base, base, base, base);
+			actor.SetEquipment(1, 1);
+			testBaseLimits(actor, hp, base, base);
+			testModBaseLimits(actor, 0, 0);
+		}
+
+		SUBCASE("weapon down") {
+			MakeDBEquip(1, lcf::rpg::Item::Type_weapon, -base, -base, -base, -base);
+			actor.SetEquipment(1, 1);
+			testBaseLimits(actor, hp, base, 1);
+			testModBaseLimits(actor, 0, 0);
+		}
+
+		SUBCASE("mod up") {
+			actor.SetBaseMaxHp(999999);
+			actor.SetBaseMaxSp(999999);
+			actor.SetBaseAtk(999999);
+			actor.SetBaseDef(999999);
+			actor.SetBaseSpi(999999);
+			actor.SetBaseAgi(999999);
+
+			testBaseLimits(actor, hp, base, base);
+			testModBaseLimits(actor, hp, base);
+		}
+
+		SUBCASE("mod down") {
+			actor.SetBaseMaxHp(-999999);
+			actor.SetBaseMaxSp(-999999);
+			actor.SetBaseAtk(-999999);
+			actor.SetBaseDef(-999999);
+			actor.SetBaseSpi(-999999);
+			actor.SetBaseAgi(-999999);
+
+			testBaseLimits(actor, 1, 0, 1);
+			testModBaseLimits(actor, -hp, -base);
+		}
+	}
+
+	SUBCASE("battle limits") {
+		auto actor = MakeActor(1, 1, 99, 1, 1, 1, 1, 1, 1);
+
+		SUBCASE("up") {
+			actor.SetAtkModifier(999999);
+			actor.SetDefModifier(999999);
+			actor.SetSpiModifier(999999);
+			actor.SetAgiModifier(999999);
+
+			REQUIRE_EQ(actor.GetAtk(), battle);
+			REQUIRE_EQ(actor.GetDef(), battle);
+			REQUIRE_EQ(actor.GetSpi(), battle);
+			REQUIRE_EQ(actor.GetAgi(), battle);
+		}
+
+		SUBCASE("down") {
+			actor.SetAtkModifier(-999999);
+			actor.SetDefModifier(-999999);
+			actor.SetSpiModifier(-999999);
+			actor.SetAgiModifier(-999999);
+
+			REQUIRE_EQ(actor.GetAtk(), 1);
+			REQUIRE_EQ(actor.GetDef(), 1);
+			REQUIRE_EQ(actor.GetSpi(), 1);
+			REQUIRE_EQ(actor.GetAgi(), 1);
+		}
+	}
+}
+
+TEST_CASE("Limits") {
+	SUBCASE("2k") {
+		const MockActor m(Player::EngineRpg2k);
+
+		testLimits(999, 999, 999);
+	}
+	SUBCASE("2k3") {
+		const MockActor m(Player::EngineRpg2k3);
+
+		testLimits(9999, 999, 9999);
+	}
 }
 
 TEST_CASE("ActorFlags") {

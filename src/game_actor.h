@@ -662,6 +662,24 @@ public:
 	 */
 	void SetBaseAgi(int _agi);
 
+	/** @return Permanent max hp modifier */
+	int GetMaxHpMod() const;
+
+	/** @return Permanent max sp modifier */
+	int GetMaxSpMod() const;
+
+	/** @return Permanent atk modifier */
+	int GetAtkMod() const;
+
+	/** @return Permanent atk modifier */
+	int GetDefMod() const;
+
+	/** @return Permanent def modifier */
+	int GetSpiMod() const;
+
+	/** @return Permanent agi modifier */
+	int GetAgiMod() const;
+
 	/**
 	 * Gets if actor has two weapons.
 	 *
@@ -960,6 +978,30 @@ inline const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
 
 inline int Game_Actor::GetId() const {
 	return data.ID;
+}
+
+inline int Game_Actor::GetMaxHpMod() const {
+	return data.hp_mod;
+}
+
+inline int Game_Actor::GetMaxSpMod() const {
+	return data.sp_mod;
+}
+
+inline int Game_Actor::GetAtkMod() const {
+	return data.attack_mod;
+}
+
+inline int Game_Actor::GetDefMod() const {
+	return data.defense_mod;
+}
+
+inline int Game_Actor::GetSpiMod() const {
+	return data.spirit_mod;
+}
+
+inline int Game_Actor::GetAgiMod() const {
+	return data.agility_mod;
 }
 
 #endif

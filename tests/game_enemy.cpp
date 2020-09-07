@@ -17,26 +17,6 @@ static Game_Enemy& MakeEnemy(int id, int hp, int sp, int atk, int def, int spi, 
 
 TEST_SUITE_BEGIN("Game_Enemy");
 
-TEST_CASE("Limits2k") {
-	const MockActor m(Player::EngineRpg2k);
-
-	const auto& enemy = MakeEnemy(1, 100, 10, 11, 12, 13, 14);
-
-	REQUIRE_EQ(enemy.MaxHpValue(), 9999);
-	REQUIRE_EQ(enemy.MaxStatBaseValue(), 999);
-	REQUIRE_EQ(enemy.MaxStatBattleValue(), 9999);
-}
-
-TEST_CASE("Limits2k3") {
-	const MockActor m(Player::EngineRpg2k3);
-
-	const auto& enemy = MakeEnemy(1, 100, 10, 11, 12, 13, 14);
-
-	REQUIRE_EQ(enemy.MaxHpValue(), 99999);
-	REQUIRE_EQ(enemy.MaxStatBaseValue(), 999);
-	REQUIRE_EQ(enemy.MaxStatBattleValue(), 9999);
-}
-
 TEST_CASE("Default") {
 	const MockActor m;
 
@@ -70,6 +50,49 @@ TEST_CASE("Default") {
 	REQUIRE_EQ(e.GetFlyingOffset(), 0);
 	REQUIRE_EQ(e.IsTransparent(), 0);
 	REQUIRE(e.IsInParty());
+}
+
+static void testLimits(int hp, int base, int battle) {
+	auto& enemy = MakeEnemy(1, 100, 10, 11, 12, 13, 14);
+
+	REQUIRE_EQ(enemy.MaxHpValue(), hp);
+	REQUIRE_EQ(enemy.MaxStatBaseValue(), base);
+	REQUIRE_EQ(enemy.MaxStatBattleValue(), battle);
+
+	SUBCASE("up") {
+		enemy.SetAtkModifier(999999);
+		enemy.SetDefModifier(999999);
+		enemy.SetSpiModifier(999999);
+		enemy.SetAgiModifier(999999);
+		REQUIRE_EQ(enemy.GetAtk(), battle);
+		REQUIRE_EQ(enemy.GetDef(), battle);
+		REQUIRE_EQ(enemy.GetSpi(), battle);
+		REQUIRE_EQ(enemy.GetAgi(), battle);
+	}
+
+	SUBCASE("down") {
+		enemy.SetAtkModifier(-999999);
+		enemy.SetDefModifier(-999999);
+		enemy.SetSpiModifier(-999999);
+		enemy.SetAgiModifier(-999999);
+		REQUIRE_EQ(enemy.GetAtk(), 1);
+		REQUIRE_EQ(enemy.GetDef(), 1);
+		REQUIRE_EQ(enemy.GetSpi(), 1);
+		REQUIRE_EQ(enemy.GetAgi(), 1);
+	}
+}
+
+TEST_CASE("Limits") {
+	SUBCASE("2k") {
+		const MockActor m(Player::EngineRpg2k);
+
+		testLimits(9999, 999, 9999);
+	}
+	SUBCASE("2k3") {
+		const MockActor m(Player::EngineRpg2k3);
+
+		testLimits(99999, 999, 9999);
+	}
 }
 
 static decltype(auto) MakeEnemyHit(bool miss) {

@@ -503,19 +503,19 @@ static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states
 }
 
 int Game_Battler::GetAtk(Weapon weapon) const {
-	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
+	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
 }
 
 int Game_Battler::GetDef(Weapon weapon) const {
-	return AdjustParam(GetBaseDef(weapon), def_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
+	return AdjustParam(GetBaseDef(weapon), def_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
 }
 
 int Game_Battler::GetSpi(Weapon weapon) const {
-	return AdjustParam(GetBaseSpi(weapon), spi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
+	return AdjustParam(GetBaseSpi(weapon), spi_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
 }
 
 int Game_Battler::GetAgi(Weapon weapon) const {
-	return AdjustParam(GetBaseAgi(weapon), agi_modifier, MaxStatBaseValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
+	return AdjustParam(GetBaseAgi(weapon), agi_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
 }
 
 int Game_Battler::GetDisplayX() const {
