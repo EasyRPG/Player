@@ -44,7 +44,8 @@ int GetAttributeRate(const lcf::rpg::Attribute& attr, int rate) {
 
 static bool HasAttribute(Span<const lcf::DBBitArray*> attribute_sets, int id) {
 	for (auto* as: attribute_sets) {
-		if (static_cast<int>(as->size()) < id && (*as)[id - 1]) {
+		const auto idx = id - 1;
+		if (idx < static_cast<int>(as->size()) && (*as)[idx]) {
 			return true;
 		}
 	}
@@ -104,7 +105,7 @@ int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, c
 	size_t n = 0;
 	auto add = [&](int i) {
 		if (weapon == i || weapon == Game_Battler::kWeaponAll) {
-			auto* item = source.GetEquipment(i);
+			auto* item = source.GetEquipment(i + 1);
 			if (item && item->type == lcf::rpg::Item::Type_weapon) {
 				attribute_sets[n++] = &item->attribute_set;
 			}
@@ -119,7 +120,7 @@ int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Actor& source, c
 }
 
 int ApplyAttributeSkillMultiplier(int effect, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	std::array<const lcf::DBBitArray*, 1> attribute_sets = { &skill.attribute_effects };
+	auto attribute_sets = Utils::MakeArray(&skill.attribute_effects);
 	return ApplyAttributeMultiplier(effect, target, MakeSpan(attribute_sets));
 }
 

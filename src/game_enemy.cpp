@@ -77,13 +77,13 @@ int Game_Enemy::GetAttributeModifier(int attribute_id) const {
 
 	if (attribute_id >= 1 && attribute_id <= (int)enemy->attribute_ranks.size()) {
 		rate = enemy->attribute_ranks[attribute_id - 1];
-	}
 
-	rate += attribute_shift[attribute_id - 1];
-	if (rate < 0) {
-		rate = 0;
-	} else if (rate > 4) {
-		rate = 4;
+		rate += attribute_shift[attribute_id - 1];
+		if (rate < 0) {
+			rate = 0;
+		} else if (rate > 4) {
+			rate = 4;
+		}
 	}
 
 	return Attribute::GetAttributeRate(attribute_id, rate);

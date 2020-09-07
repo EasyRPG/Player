@@ -173,7 +173,7 @@ public:
 	 * @param attribute_id Attribute modified
 	 * @return shift Shift applied.
 	 */
-	int GetAttributeRateShift(int attribute_id);
+	int GetAttributeRateShift(int attribute_id) const;
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.

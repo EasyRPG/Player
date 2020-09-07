@@ -428,4 +428,110 @@ TEST_CASE("ArmorWithWeaponFlags") {
 	}
 }
 
+static Game_Actor MakeActorAttribute(int id, int attr_id, int rank) {
+	SetDBActorAttribute(id, attr_id, rank);
+	return MakeActor(id, 1, 99, 1, 1, 1, 1, 1, 1);
+}
+
+TEST_CASE("Attribute") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+
+	SUBCASE("0") {
+		const auto& actor = MakeActorAttribute(1, 1, 0);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), -100);
+	}
+
+	SUBCASE("1") {
+		const auto& actor = MakeActorAttribute(1, 1, 1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
+	}
+
+	SUBCASE("2") {
+		const auto& actor = MakeActorAttribute(1, 1, 2);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
+	}
+
+	SUBCASE("3") {
+		const auto& actor = MakeActorAttribute(1, 1, 3);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
+	}
+
+	SUBCASE("4") {
+		const auto& actor = MakeActorAttribute(1, 1, 4);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 0);
+	}
+}
+
+TEST_CASE("BadAttribute") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+
+	SUBCASE("0") {
+		const auto& actor = MakeActorAttribute(1, 1, 2);
+		REQUIRE_EQ(actor.GetAttributeModifier(0), 0);
+	}
+
+	SUBCASE("INT_MAX") {
+		const auto& actor = MakeActorAttribute(1, 1, 2);
+		REQUIRE_EQ(actor.GetAttributeModifier(INT_MAX), 0);
+	}
+}
+
+TEST_CASE("AttributeShift") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+	auto actor = MakeActorAttribute(1, 1, 2);
+
+	REQUIRE_EQ(actor.GetAttributeRateShift(1), 0);
+	REQUIRE(actor.CanShiftAttributeRate(1, 1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(1, 2));
+	REQUIRE(actor.CanShiftAttributeRate(1, -1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(1, -2));
+
+	SUBCASE("baseline") {
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
+	}
+
+	SUBCASE("up") {
+		actor.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
+		actor.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
+		actor.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
+	}
+
+	SUBCASE("down") {
+		actor.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 200);
+		actor.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 100);
+		actor.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(actor.GetAttributeModifier(1), 50);
+	}
+}
+
+TEST_CASE("AttributeShiftInvalid") {
+	const MockActor m;
+	auto actor = MakeActorAttribute(1, 1, 100);
+
+	REQUIRE_EQ(actor.GetAttributeRateShift(0), 0);
+	REQUIRE_EQ(actor.GetAttributeRateShift(INT_MAX), 0);
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(0, 1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(0, -1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, 1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, -1));
+
+	actor.ShiftAttributeRate(0, 1);
+	actor.ShiftAttributeRate(INT_MAX, 1);
+
+	REQUIRE_EQ(actor.GetAttributeRateShift(0), 0);
+	REQUIRE_EQ(actor.GetAttributeRateShift(INT_MAX), 0);
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(0, 1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(0, -1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, 1));
+	REQUIRE_FALSE(actor.CanShiftAttributeRate(INT_MAX, -1));
+}
+
 TEST_SUITE_END();

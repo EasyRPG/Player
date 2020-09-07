@@ -595,12 +595,12 @@ void Game_Battler::ResetBattle() {
 }
 
 void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
-	if (attribute_id < 1 || attribute_id > (int)lcf::Data::attributes.size()) {
-		assert(false && "invalid attribute_id");
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
+		return;
 	}
 
 	if (shift < -1 || shift > 1) {
-		assert(false && "Invalid shift");
+		return;
 	}
 
 	if (shift == 0) {
@@ -615,15 +615,15 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	}
 }
 
-int Game_Battler::GetAttributeRateShift(int attribute_id) {
-	if (attribute_id < 1 || attribute_id >(int)lcf::Data::attributes.size()) {
-		assert(false && "invalid attribute_id");
+int Game_Battler::GetAttributeRateShift(int attribute_id) const {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
+		return 0;
 	}
 	return attribute_shift[attribute_id - 1];
 }
 
 bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
-	if (attribute_id < 1 || attribute_id > (int)lcf::Data::attributes.size()) {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
 		return false;
 	}
 	auto new_shift = attribute_shift[attribute_id - 1] + shift;

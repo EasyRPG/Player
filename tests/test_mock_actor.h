@@ -6,6 +6,7 @@
 #include "game_enemyparty.h"
 #include "main_data.h"
 #include "player.h"
+#include "output.h"
 #include <lcf/data.h>
 
 static void InitEmptyDB() {
@@ -36,6 +37,24 @@ static void InitEmptyDB() {
 		actor.initial_level = 1;
 		actor.final_level = 99;
 		actor.parameters.Setup(actor.final_level);
+
+		actor.state_ranks.resize(lcf::Data::states.size(), 2);
+		actor.attribute_ranks.resize(lcf::Data::attributes.size(), 2);
+	}
+
+	for (auto& item: lcf::Data::items) {
+		item.attribute_set = lcf::DBBitArray(lcf::Data::attributes.size());
+		item.state_set = lcf::DBBitArray(lcf::Data::states.size());
+	}
+
+	for (auto& skill: lcf::Data::skills) {
+		skill.attribute_effects = lcf::DBBitArray(lcf::Data::attributes.size());
+		skill.state_effects = lcf::DBBitArray(lcf::Data::states.size());
+	}
+
+	for (auto& enemy: lcf::Data::enemies) {
+		enemy.state_ranks.resize(lcf::Data::states.size(), 2);
+		enemy.attribute_ranks.resize(lcf::Data::attributes.size(), 2);
 	}
 
 	for (auto& tp: lcf::Data::troops) {
@@ -50,6 +69,9 @@ public:
 	{
 		_engine = Player::engine;
 		Player::engine = eng;
+
+		_ll = Output::GetLogLevel();
+		Output::SetLogLevel(LogLevel::Error);
 
 		InitEmptyDB();
 
@@ -68,9 +90,11 @@ public:
 
 		lcf::Data::data = {};
 		Player::engine = _engine;
+		Output::SetLogLevel(_ll);
 	}
 private:
 	int _engine = {};
+	LogLevel _ll = {};
 };
 
 static lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
@@ -106,10 +130,6 @@ static lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
 static lcf::rpg::Enemy* MakeDBEnemy(int id,
 		int hp, int sp, int atk, int def, int spi, int agi)
 {
-	if (lcf::Data::enemies.size() <= id) {
-		lcf::Data::enemies.resize(id + 1);
-	}
-
 	auto& enemy = lcf::Data::enemies[id - 1];
 	enemy.max_hp = hp;
 	enemy.max_sp = sp;
@@ -143,6 +163,50 @@ static lcf::rpg::Item* MakeDBEquip(int id, int type,
 	item.half_sp_cost = a3;
 	item.no_terrain_damage = a4;
 	return &item;
+}
+
+static lcf::rpg::Skill* MakeDBSkill(int id, int hit, int power, int phys, int mag, int var)
+{
+	auto& skill = lcf::Data::skills[id - 1];
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.hit = hit;
+	skill.power = power;
+	skill.physical_rate = phys;
+	skill.magical_rate = mag;
+	skill.variance = var;
+	return &skill;
+}
+
+static lcf::rpg::Attribute* MakeDBAttribute(int id, int type, int a, int b, int c, int d, int e)
+{
+	auto& attr = lcf::Data::attributes[id - 1];
+	attr.type = type;
+	attr.a_rate = a;
+	attr.b_rate = b;
+	attr.c_rate = c;
+	attr.d_rate = d;
+	attr.e_rate = e;
+	return &attr;
+}
+
+static void SetDBActorAttribute(int id, int attr_id, int rank) {
+	auto& actor = lcf::Data::actors[id - 1];
+	actor.attribute_ranks[attr_id - 1] = rank;
+}
+
+static void SetDBEnemyAttribute(int id, int attr_id, int rank) {
+	auto& enemy = lcf::Data::enemies[id - 1];
+	enemy.attribute_ranks[attr_id - 1] = rank;
+}
+
+static void SetDBItemAttribute(int id, int attr_id, bool value) {
+	auto& item = lcf::Data::items[id - 1];
+	item.attribute_set[attr_id - 1] = value;
+}
+
+static void SetDBSkillAttribute(int id, int attr_id, bool value) {
+	auto& skill = lcf::Data::skills[id - 1];
+	skill.attribute_effects[attr_id - 1] = value;
 }
 
 #endif

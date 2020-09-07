@@ -193,4 +193,109 @@ TEST_CASE("RewardItem") {
 	}
 }
 
+static Game_Enemy& MakeEnemyAttribute(int id, int attr_id, int rank) {
+	return MakeEnemy(id, 1, 1, 1, 1, 1, 1, [&](auto&) { SetDBEnemyAttribute(id, attr_id, rank); } );
+}
+
+TEST_CASE("Attribute") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+
+	SUBCASE("0") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), -100);
+	}
+
+	SUBCASE("1") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
+	}
+
+	SUBCASE("2") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 2);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
+	}
+
+	SUBCASE("3") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 3);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
+	}
+
+	SUBCASE("4") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 4);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 0);
+	}
+}
+
+TEST_CASE("BadAttribute") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+
+	SUBCASE("0") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
+		REQUIRE_EQ(enemy.GetAttributeModifier(0), 0);
+	}
+
+	SUBCASE("INT_MAX") {
+		const auto& enemy = MakeEnemyAttribute(1, 1, 0);
+		REQUIRE_EQ(enemy.GetAttributeModifier(INT_MAX), 0);
+	}
+}
+
+TEST_CASE("AttributeShift") {
+	const MockActor m;
+	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, -100, 200, 100, 50, 0);
+	auto& enemy = MakeEnemyAttribute(1, 1, 2);
+
+	REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
+	REQUIRE(enemy.CanShiftAttributeRate(1, 1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, 2));
+	REQUIRE(enemy.CanShiftAttributeRate(1, -1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, -2));
+
+	SUBCASE("baseline") {
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
+	}
+
+	SUBCASE("up") {
+		enemy.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
+		enemy.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
+		enemy.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
+	}
+
+	SUBCASE("down") {
+		enemy.ShiftAttributeRate(1, -1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 200);
+		enemy.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 100);
+		enemy.ShiftAttributeRate(1, 1);
+		REQUIRE_EQ(enemy.GetAttributeModifier(1), 50);
+	}
+}
+
+TEST_CASE("AttributeShiftInvalid") {
+	const MockActor m;
+	auto& enemy = MakeEnemyAttribute(1, 1, 100);
+
+	REQUIRE_EQ(enemy.GetAttributeRateShift(0), 0);
+	REQUIRE_EQ(enemy.GetAttributeRateShift(INT_MAX), 0);
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(0, 1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(0, -1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(INT_MAX, 1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(INT_MAX, -1));
+
+	enemy.ShiftAttributeRate(0, 1);
+	enemy.ShiftAttributeRate(INT_MAX, 1);
+
+	REQUIRE_EQ(enemy.GetAttributeRateShift(0), 0);
+	REQUIRE_EQ(enemy.GetAttributeRateShift(INT_MAX), 0);
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(0, 1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(0, -1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(INT_MAX, 1));
+	REQUIRE_FALSE(enemy.CanShiftAttributeRate(INT_MAX, -1));
+}
+
 TEST_SUITE_END();
