@@ -210,7 +210,6 @@ void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operat
 
 void Scene_Debug::Pop() {
 	auto pui = GetFrame().uimode;
-	auto& idx = prev[mode];
 
 	if (pui == eUiVarList) {
 		var_window->SetIndex(-1);

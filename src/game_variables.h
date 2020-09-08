@@ -88,10 +88,10 @@ public:
 
 	void SetWarning(int w);
 
-	const Var_t GetMaxValue() const;
-	const Var_t GetMinValue() const;
+	Var_t GetMaxValue() const;
+	Var_t GetMinValue() const;
 
-	const int GetMaxDigits() const;
+	int GetMaxDigits() const;
 private:
 	bool ShouldWarn(int first_id, int last_id) const;
 	void WarnGet(int variable_id) const;
@@ -148,11 +148,11 @@ inline void Game_Variables::SetWarning(int w) {
 	_warnings = w;
 }
 
-inline const Game_Variables::Var_t Game_Variables::GetMaxValue() const {
+inline Game_Variables::Var_t Game_Variables::GetMaxValue() const {
 	return _max;
 }
 
-inline const Game_Variables::Var_t Game_Variables::GetMinValue() const {
+inline Game_Variables::Var_t Game_Variables::GetMinValue() const {
 	return _min;
 }
 

@@ -660,7 +660,7 @@ Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& na
 #endif
 		m));
 
-	return std::move(is);
+	return is;
 }
 
 Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& name,
@@ -676,7 +676,7 @@ Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& 
 #endif
 		m));
 
-	return std::move(os);
+	return os;
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {

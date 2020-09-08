@@ -955,9 +955,6 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 
 bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com) { // code 10220
 	int value = 0;
-	// If max is < value, it was never set. If they are equal, we don't need to call the RNG.
-	// If max > value, we have random number range to compute.
-	int max_random_value = INT_MIN;
 
 	Game_Actor* actor = nullptr;
 	Game_Character* character = nullptr;
