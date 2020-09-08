@@ -32,6 +32,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
+	src/autobattle.cpp \
+	src/autobattle.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
