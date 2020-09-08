@@ -199,7 +199,6 @@ void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, const Rect rect
 
 	const auto strength = Main_Data::game_screen->GetWeatherStrength();
 	const auto& particles = Main_Data::game_screen->GetParticles();
-	const auto& screen_rect = Main_Data::game_screen->GetScreenEffectsRect();
 
 	const int num_particles = num_rain_or_snow_particles[Utils::Clamp(strength, 0, num_strength - 1)];
 	const auto ainc = abase + strength;
@@ -269,7 +268,6 @@ void Weather::CreateSandParticle() {
 void Weather::DrawSandParticles(Bitmap& dst, const Bitmap& particle_bitmap) {
 	const auto strength = Main_Data::game_screen->GetWeatherStrength();
 	const auto& particles = Main_Data::game_screen->GetParticles();
-	const auto offset = sand_particle_rect.height * num_sand_colors;
 
 	auto* bitmap = ApplyToneEffect(particle_bitmap, particle_bitmap.GetRect());
 
