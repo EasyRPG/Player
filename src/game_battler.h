@@ -937,7 +937,7 @@ inline void Game_Battler::SetDirectionFlipped(bool flip) {
 	direction_flipped = flip;
 }
 
-inline int Game_Battler::GetBaseAttributeRate(int attribute_id) const {
+inline int Game_Battler::GetBaseAttributeRate(int) const {
 	return 2;
 }
 
