@@ -650,7 +650,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int atk = GetAffectedAttack();
 		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
 		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
+			atk = Utils::Clamp(std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk(), 0, atk);
 			source->ChangeAtkModifier(atk);
 		}
 	}
@@ -659,7 +659,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int def = GetAffectedDefense();
 		target->ChangeDefModifier(IsPositive() ? def : -def);
 		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			def = std::max<int>(0, std::min<int>(def, std::min<int>(source->MaxStatBattleValue(), source->GetBaseDef() * 2) - source->GetDef()));
+			def = Utils::Clamp(std::min<int>(source->MaxStatBattleValue(), source->GetBaseDef() * 2) - source->GetDef(), 0, def);
 			source->ChangeDefModifier(def);
 		}
 	}
@@ -668,7 +668,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int spi = GetAffectedSpirit();
 		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
 		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseSpi() * 2) - source->GetSpi()));
+			spi = Utils::Clamp(std::min<int>(source->MaxStatBattleValue(), source->GetBaseSpi() * 2) - source->GetSpi(), 0, spi);
 			source->ChangeSpiModifier(spi);
 		}
 	}
@@ -677,7 +677,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int agi = GetAffectedAgility();
 		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
 		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAgi() * 2) - source->GetAgi()));
+			agi = Utils::Clamp(std::min<int>(source->MaxStatBattleValue(), source->GetBaseAgi() * 2) - source->GetAgi(), 0, agi);
 			source->ChangeAgiModifier(agi);
 		}
 	}
@@ -1162,128 +1162,82 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		// Handle negative effect from attributes
 		if (effect < 0) {
 			this->negative_effect = true;
+			this->healing = !this->healing;
+			effect = -effect;
 		}
 
-		if (this->healing) {
-			if (this->negative_effect) {
-				this->healing = false;
-				effect = -effect;
-			}
+		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
-			effect = Utils::Clamp(effect, 0, MaxDamageValue());
+		if (!this->healing ^ this->negative_effect) absorb = skill.absorb_damage;
 
-			if (skill.affect_hp && Rand::PercentChance(to_hit)) {
-				if (this->healing) {
-					if (Player::IsRPG2k3()) {
-						this->hp = effect;
-					} else {
-						this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
-					}
-				} else {
-					this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetHp() - 1));
-				}
-			}
-			if (skill.affect_sp && Rand::PercentChance(to_hit)) {
-				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
-				if (this->healing) {
-					this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost));
-				} else {
-					this->sp = effect;
-				}
-			}
-			if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-				if (this->healing) {
-					this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
-				} else {
-					this->attack = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2));
-				}
-			}
-			if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-				if (this->healing) {
-					this->defense = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef()));
-				} else {
-					this->defense = std::max<int>(0, std::min<int>(effect, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2));
-				}
-			}
-			if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-				if (this->healing) {
-					this->spirit = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi()));
-				} else {
-					this->spirit = std::max<int>(0, std::min<int>(effect, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2));
-				}
-			}
-			if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-				if (this->healing) {
-					this->agility = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi()));
-				} else {
-					this->agility = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2));
-				}
-			}
-
-			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
-				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
-
-			// If resurrected and no HP selected, the effect value is a percentage:
-			if (IsRevived() && !skill.affect_hp) {
-				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
-				this->success = true;
-			}
-		} else {
-			if (this->negative_effect) {
-				this->healing = true;
-				effect = -effect;
-			}
-
-			effect = Utils::Clamp(effect, 0, MaxDamageValue());
-
-			absorb = skill.absorb_damage;
-
-			if (skill.affect_hp && Rand::PercentChance(to_hit)) {
+		if (skill.affect_hp && Rand::PercentChance(to_hit)) {
+			if (!this->healing ^ this->negative_effect) {
 				this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
 
 				if (IsAbsorb())
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
 
-				if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
+				if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
 					// Death state
 					lethal = true;
 					killed_by_dmg = true;
 				}
+			} else {
+				if (!this->negative_effect) {
+					if (Player::IsRPG2k3()) {
+						this->hp = effect;
+					} else {
+						this->hp = Utils::Clamp(GetTarget()->GetMaxHp() - GetTarget()->GetHp(), 0, effect);
+					}
+				} else {
+					this->hp = Utils::Clamp(GetTarget()->GetHp() - 1, 0, effect);
+				}
 			}
+		}
 
-			if (skill.affect_sp && Rand::PercentChance(to_hit)) {
+		if (skill.affect_sp && Rand::PercentChance(to_hit)) {
+			if (!this->healing ^ this->negative_effect) {
 				this->sp = std::min<int>(effect, GetTarget()->GetSp());
+			} else {
+				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
+				if (!this->negative_effect) {
+					this->sp = Utils::Clamp(GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost, 0, effect);
+				} else {
+					this->sp = effect;
+				}
 			}
+		}
 
-			if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-				if (!this->healing) {
-					this->attack = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2));
-				} else {
-					this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
-				}
+		if (skill.affect_attack && Rand::PercentChance(to_hit)) {
+			if (!this->healing) {
+				this->attack = Utils::Clamp(GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2, 0, effect);
+			} else {
+				this->attack = Utils::Clamp(std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk(), 0, effect);
 			}
-			if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-				if (!this->healing) {
-					this->defense = std::max<int>(0, std::min<int>(effect, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2));
-				} else {
-					this->defense = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef()));
-				}
+		}
+		if (skill.affect_defense && Rand::PercentChance(to_hit)) {
+			if (!this->healing) {
+				this->defense = Utils::Clamp(GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2, 0, effect);
+			} else {
+				this->defense = Utils::Clamp(std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef(), 0, effect);
 			}
-			if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-				if (!this->healing) {
-					this->spirit = std::max<int>(0, std::min<int>(effect, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2));
-				} else {
-					this->spirit = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi()));
-				}
+		}
+		if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
+			if (!this->healing) {
+				this->spirit = Utils::Clamp(GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2, 0, effect);
+			} else {
+				this->spirit = Utils::Clamp(std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi(), 0, effect);
 			}
-			if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-				if (!this->healing) {
-					this->agility = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2));
-				} else {
-					this->agility = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi()));
-				}
+		}
+		if (skill.affect_agility && Rand::PercentChance(to_hit)) {
+			if (!this->healing) {
+				this->agility = Utils::Clamp(GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2, 0, effect);
+			} else {
+				this->agility = Utils::Clamp(std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi(), 0, effect);
 			}
+		}
 
+		if (!this->healing ^ this->negative_effect) {
 			if (skill.affect_hp) {
 				if (skill.affect_sp) {
 					if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
@@ -1304,10 +1258,20 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					}
 				}
 			}
+		}
 
-			this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
-				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+		this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
+			|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 
+		if (this->healing ^ this->negative_effect) {
+			// If resurrected and no HP selected, the effect value is a percentage:
+			if (IsRevived() && !skill.affect_hp) {
+				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
+				this->success = true;
+			}
+		}
+
+		if (!this->healing ^ this->negative_effect) {
 			if (!success &&
 					((IsAbsorb() && ((GetAffectedHp() == 0 && GetAffectedSp() <= 0) || (GetAffectedHp() <= 0 && GetAffectedSp() == 0))) ||
 					(!IsAbsorb() && GetAffectedSp() == 0 && GetAffectedHp() == -1)))
@@ -1622,13 +1586,13 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			if (Player::IsRPG2k3()) {
 				this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
 			} else {
-				this->hp = std::max<int>(0, std::min<int>(item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
+				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() - GetTarget()->GetHp(), 0, item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp);
 			}
 		}
 
 		// SP recovery
 		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
-			this->sp = std::max<int>(0, std::min<int>(item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp, GetTarget()->GetMaxSp() - GetTarget()->GetSp()));
+			this->sp = Utils::Clamp(GetTarget()->GetMaxSp() - GetTarget()->GetSp(), 0, item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp);
 		}
 
 		// Make a copy of the target's state set and see what we can apply.
