@@ -203,6 +203,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/point.h \
 	src/game_quit.cpp \
 	src/game_quit.h \
+	src/rand.cpp \
+	src/rand.h \
 	src/rect.cpp \
 	src/rect.h \
 	src/registry.cpp \
