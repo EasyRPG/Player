@@ -836,7 +836,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	if (play_reflect_anim) {
 		play_reflect_anim = false;
-		action->PlayAnimation();
+		action->PlayAnimation(false, CheckAnimFlip(action->GetFirstOriginalTarget()));
 		return false;
 	}
 
@@ -925,9 +925,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (action->OriginalTargetsSet()) {
 			play_reflect_anim = true;
-			action->PlayAnimation(true);
+			action->PlayAnimation(true, CheckAnimFlip(action->GetSource()));
 		} else {
-			action->PlayAnimation();
+			action->PlayAnimation(false, CheckAnimFlip(action->GetSource()));
 		}
 
 		{
@@ -1484,3 +1484,9 @@ void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 	help_window->SetText(std::move(text));
 }
 
+bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
+	if (Game_System::GetInvertAnimations()) {
+		return battler->IsDirectionFlipped() ^ battler->GetType() == Game_Battler::Type_Enemy;
+	}
+	return false;
+}

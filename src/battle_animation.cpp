@@ -107,9 +107,10 @@ void BattleAnimation::DrawAt(Bitmap& dst, int x, int y) {
 			continue;
 		}
 
-		SetX(cell.x + x);
+		SetX(invert ? x - cell.x : cell.x + x);
 		SetY(cell.y + y);
 		int sx = cell.cell_id % 5;
+		if (invert) sx = 4 - sx;
 		int sy = cell.cell_id / 5;
 		int size = animation.large ? 128 : 96;
 		SetSrcRect(Rect(sx * size, sy * size, size, size));
@@ -122,6 +123,7 @@ void BattleAnimation::DrawAt(Bitmap& dst, int x, int y) {
 		SetOpacity(255 * (100 - cell.transparency) / 100);
 		SetZoomX(cell.zoom / 100.0);
 		SetZoomY(cell.zoom / 100.0);
+		SetFlipX(invert);
 		Sprite::Draw(dst);
 	}
 
@@ -274,9 +276,10 @@ void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time 
 
 /////////
 
-BattleAnimationBattle::BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
+BattleAnimationBattle::BattleAnimationBattle(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame, bool set_invert) :
 	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
+	invert = set_invert;
 }
 
 void BattleAnimationBattle::Draw(Bitmap& dst) {

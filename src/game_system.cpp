@@ -574,3 +574,7 @@ void Game_System::IncFrameCounter() {
 Color Game_System::GetBackgroundColor() {
 	return bg_color;
 }
+
+bool Game_System::GetInvertAnimations() {
+	return lcf::Data::system.invert_animations;
+}

@@ -235,9 +235,10 @@ public:
 	 * @param on_original_targets Renders the animation on the original
 	 *                            targets instead of the current
 	 *                            targets (required for reflect)
+	 * @param invert Flips the animation
 	 */
-	void PlayAnimation(bool on_original_targets = false);
-	void PlaySecondAnimation(bool on_original_targets = false);
+	void PlayAnimation(bool on_original_targets = false, bool invert = false);
+	void PlaySecondAnimation(bool on_original_targets = false, bool invert = false);
 
 	void PlaySoundAnimation(bool on_original_targets = false, int cutoff = -1);
 
@@ -417,6 +418,13 @@ public:
 	 * @return true if the size of original_targets is greater than zero.
 	 */
 	bool OriginalTargetsSet() const;
+
+	/**
+	 * Returns the first original target.
+	 *
+	 * @return current first original target battler
+	 */
+	Game_Battler* GetFirstOriginalTarget() const;
 
 	/**
 	 * @return the critical hit message

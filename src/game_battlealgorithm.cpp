@@ -230,13 +230,13 @@ const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimati
 	return animation2;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets) {
+void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets, bool invert) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
 	}
 
 	if (on_original_targets) {
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, original_targets);
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, original_targets, false, -1, invert);
 		has_animation_played = true;
 		return;
 	}
@@ -250,22 +250,20 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets
 		anim_targets.push_back(*current_target);
 	} while (TargetNextInternal());
 
-	Game_Battle::ShowBattleAnimation(
-		GetAnimation()->ID,
-		anim_targets);
+	Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, -1, invert);
 	has_animation_played = true;
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_targets) {
+void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_targets, bool invert) {
 	if (current_target == targets.end() || !GetSecondAnimation()) {
 		return;
 	}
 
 	if (on_original_targets) {
-		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, original_targets);
+		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, original_targets, false, -1, invert);
 		has_animation2_played = true;
 		return;
 	}
@@ -279,9 +277,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_t
 		anim_targets.push_back(*current_target);
 	} while (TargetNextInternal());
 
-	Game_Battle::ShowBattleAnimation(
-		GetSecondAnimation()->ID,
-		anim_targets);
+	Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets, false, -1, invert);
 	has_animation2_played = true;
 
 	current_target = old_current_target;
@@ -813,6 +809,14 @@ void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
 
 bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
 	return (original_targets.size() > 0);
+}
+
+Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetFirstOriginalTarget() const {
+	if (original_targets.empty()) {
+		return nullptr;
+	} else {
+		return *original_targets.begin();
+	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {

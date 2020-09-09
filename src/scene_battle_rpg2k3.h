@@ -126,6 +126,8 @@ protected:
 	bool IsEscapeAllowedFromOptionWindow() const;
 	bool IsEscapeAllowedFromActorCommand() const;
 
+	bool CheckAnimFlip(Game_Battler* battler);
+
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 
 	struct FloatText {
