@@ -24,6 +24,7 @@
 #include <lcf/reader_util.h>
 #include "utils.h"
 #include "output.h"
+#include "rand.h"
 
 Game_EnemyParty::Game_EnemyParty() {
 }
@@ -72,7 +73,7 @@ void Game_EnemyParty::ResetBattle(int battle_troop_id) {
 				continue;
 			}
 
-			if (Utils::PercentChance(40)) {
+			if (Rand::PercentChance(40)) {
 				enemy.SetHidden(true);
 				--non_hidden;
 			}
@@ -115,7 +116,7 @@ void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 		if (enemy.IsDead()) {
 			// Only roll if the enemy has something to drop
 			if (enemy.GetDropId() != 0) {
-				if (Utils::ChanceOf(enemy.GetDropProbability(), 100)) {
+				if (Rand::ChanceOf(enemy.GetDropProbability(), 100)) {
 					out.push_back(enemy.GetDropId());
 				}
 			}

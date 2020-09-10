@@ -35,6 +35,7 @@
 #include "spriteset_battle.h"
 #include "output.h"
 #include "utils.h"
+#include "rand.h"
 
 namespace Game_Battle {
 	const lcf::rpg::Troop* troop = nullptr;
@@ -709,3 +710,4 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
 
 	return position;
 }
+

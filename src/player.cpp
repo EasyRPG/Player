@@ -44,6 +44,7 @@
 #include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
+#include "rand.h"
 #include "cmdline_parser.h"
 #include "filefinder.h"
 #include "fileext_guesser.h"
@@ -168,7 +169,7 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 
 	Game_Clock::logClockInfo();
-	Utils::SeedRandomNumberGenerator(time(NULL));
+	Rand::SeedRandomNumberGenerator(time(NULL));
 
 	auto cfg = ParseCommandLine(argc, argv);
 
@@ -544,7 +545,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}*/
 		if (cp.ParseNext(arg, 1, "--seed")) {
 			if (arg.ParseValue(0, li_value)) {
-				Utils::SeedRandomNumberGenerator(li_value);
+				Rand::SeedRandomNumberGenerator(li_value);
 			}
 			continue;
 		}

@@ -33,6 +33,7 @@
 #include "drawable.h"
 #include "drawable_mgr.h"
 #include "output.h"
+#include "rand.h"
 
 int Transition::GetDefaultFrames(Transition::Type type)
 {
@@ -130,7 +131,7 @@ void Transition::SetAttributesTransitions() {
 	case TransitionRandomBlocks:
 		random_block_transition = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
 		current_blocks_print = 0;
-		std::shuffle(random_blocks.begin(), random_blocks.end(), Utils::GetRNG());
+		std::shuffle(random_blocks.begin(), random_blocks.end(), Rand::GetRNG());
 		break;
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
@@ -143,7 +144,7 @@ void Transition::SetAttributesTransitions() {
 		length = 10;
 		for (int i = 0; i < h - 1; i++) {
 			end_i = (i < length ? 2 * i + 1 : i <= h - length ? i + length : (i + h) / 2) * w;
-			std::shuffle(random_blocks.begin() + i * w, random_blocks.begin() + end_i, Utils::GetRNG());
+			std::shuffle(random_blocks.begin() + i * w, random_blocks.begin() + end_i, Rand::GetRNG());
 
 			beg_i = i * w + (i % 2 == 0 ? 0 : 2);
 			mid_i = i * w + (i % 2 == 0 ? 1 : 3) + (i > h * 2 / 3 ? 3 : 0);

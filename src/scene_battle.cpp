@@ -41,6 +41,7 @@
 #include "scene_gameover.h"
 #include "scene_debug.h"
 #include "game_interpreter.h"
+#include "rand.h"
 
 Scene_Battle::Scene_Battle(const BattleArgs& args)
 	: troop_id(args.troop_id),
@@ -116,7 +117,7 @@ void Scene_Battle::InitEscapeChance() {
 }
 
 bool Scene_Battle::TryEscape() {
-	if (first_strike || Utils::PercentChance(escape_chance)) {
+	if (first_strike || Rand::PercentChance(escape_chance)) {
 		return true;
 	}
 	escape_chance += 10;

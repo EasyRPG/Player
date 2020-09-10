@@ -30,6 +30,7 @@
 #include "utils.h"
 #include "util_macro.h"
 #include "output.h"
+#include "rand.h"
 #include <cmath>
 #include <cassert>
 
@@ -508,7 +509,7 @@ void Game_Character::Turn180Degree() {
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
-	if (Utils::ChanceOf(1,2)) {
+	if (Rand::ChanceOf(1,2)) {
 		Turn90DegreeLeft();
 	} else {
 		Turn90DegreeRight();
@@ -546,7 +547,7 @@ void Game_Character::TurnAwayFromHero() {
 }
 
 void Game_Character::TurnRandom() {
-	SetDirection(Utils::GetRandomNumber(0, 3));
+	SetDirection(Rand::GetRandomNumber(0, 3));
 }
 
 void Game_Character::Wait() {

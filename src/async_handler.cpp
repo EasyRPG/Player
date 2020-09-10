@@ -34,6 +34,7 @@
 #include <fstream>
 #include "utils.h"
 #include "transition.h"
+#include "rand.h"
 
 // When this option is enabled async requests are randomly delayed.
 // This allows testing some aspects of async file fetching locally.
@@ -231,7 +232,7 @@ void FileRequestAsync::UpdateProgress() {
 #ifndef EMSCRIPTEN
 	// Fake download for testing event handlers
 
-	if (!IsReady() && Utils::ChanceOf(1, 100)) {
+	if (!IsReady() && Rand::ChanceOf(1, 100)) {
 		DownloadDone(true);
 	}
 #endif

@@ -33,6 +33,7 @@
 #include "pending_message.h"
 #include "compiler.h"
 #include "attribute.h"
+#include "rand.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -809,7 +810,7 @@ const lcf::rpg::Skill* Game_Actor::GetRandomSkill() const {
 	}
 
 	// Skills are guaranteed to be valid
-	return lcf::ReaderUtil::GetElement(lcf::Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
+	return lcf::ReaderUtil::GetElement(lcf::Data::skills, skills[Rand::GetRandomNumber(0, skills.size() - 1)]);
 }
 
 Point Game_Actor::GetOriginalPosition() const {

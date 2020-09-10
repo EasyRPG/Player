@@ -54,6 +54,7 @@
 #include "transition.h"
 #include "baseui.h"
 #include "algo.h"
+#include "rand.h"
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1
@@ -980,7 +981,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Random between range
 			int rmax = max(com.parameters[5], com.parameters[6]);
 			int rmin = min(com.parameters[5], com.parameters[6]);
-			value = Utils::GetRandomNumber(rmin, rmax);
+			value = Rand::GetRandomNumber(rmin, rmax);
 			break;
 		}
 		case 4:

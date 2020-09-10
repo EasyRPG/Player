@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "player.h"
 #include "attribute.h"
+#include "rand.h"
 
 namespace {
 	constexpr int levitation_frame_count = 14;
@@ -45,7 +46,7 @@ Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 	SetHidden(troop_member->invisible);
-	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
+	cycle = Rand::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
 
 	SetBattlePosition(GetOriginalPosition());
 }
@@ -227,7 +228,7 @@ const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 		return nullptr;
 	}
 
-	int which = Utils::GetRandomNumber(0, total - 1);
+	int which = Rand::GetRandomNumber(0, total - 1);
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
 		const lcf::rpg::EnemyAction& action = actions[*it];
 		if (which >= action.rating) {

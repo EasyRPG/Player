@@ -42,6 +42,7 @@
 #include "shake.h"
 #include "attribute.h"
 #include "algo.h"
+#include "rand.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -541,7 +542,7 @@ std::vector<int16_t> Game_Battler::BattleStateHeal() {
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
 			if (states[i] > lcf::Data::states[i].hold_turn
-					&& Utils::ChanceOf(lcf::Data::states[i].auto_release_prob, 100)
+					&& Rand::ChanceOf(lcf::Data::states[i].auto_release_prob, 100)
 					&& RemoveState(i + 1, false)
 					) {
 				healed_states.push_back(i + 1);
