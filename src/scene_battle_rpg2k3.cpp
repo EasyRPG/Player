@@ -526,6 +526,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 			}
 			++i;
 		}
+		commands.push_back(ToString(lcf::Data::terms.row));
 	}
 
 	command_window.reset(new Window_Command(commands, option_command_mov));
@@ -1198,43 +1199,49 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k3::CommandSelected() {
-	const lcf::rpg::BattleCommand* command = active_actor->GetBattleCommands()[command_window->GetIndex()];
+	int index = command_window->GetIndex();
+	// Row command always uses the last index
+	if (index < command_window->GetRowMax() - 1) {
+		const lcf::rpg::BattleCommand* command = active_actor->GetBattleCommands()[index];
 
-	switch (command->type) {
-	case lcf::rpg::BattleCommand::Type_attack:
-		AttackSelected();
-		break;
-	case lcf::rpg::BattleCommand::Type_defense:
-		DefendSelected();
-		break;
-	case lcf::rpg::BattleCommand::Type_escape:
-		if (!IsEscapeAllowedFromActorCommand()) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-		}
-		else {
+		switch (command->type) {
+		case lcf::rpg::BattleCommand::Type_attack:
+			AttackSelected();
+			break;
+		case lcf::rpg::BattleCommand::Type_defense:
+			DefendSelected();
+			break;
+		case lcf::rpg::BattleCommand::Type_escape:
+			if (!IsEscapeAllowedFromActorCommand()) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			}
+			else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				active_actor->SetAtbGauge(0);
+				SetState(State_Escape);
+			}
+			break;
+		case lcf::rpg::BattleCommand::Type_item:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			active_actor->SetAtbGauge(0);
-			SetState(State_Escape);
+			SetState(State_SelectItem);
+			break;
+		case lcf::rpg::BattleCommand::Type_skill:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			skill_window->SetSubsetFilter(0);
+			sp_window->SetBattler(*active_actor);
+			SetState(State_SelectSkill);
+			break;
+		case lcf::rpg::BattleCommand::Type_special:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SpecialSelected();
+			break;
+		case lcf::rpg::BattleCommand::Type_subskill:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SubskillSelected();
+			break;
 		}
-		break;
-	case lcf::rpg::BattleCommand::Type_item:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		SetState(State_SelectItem);
-		break;
-	case lcf::rpg::BattleCommand::Type_skill:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		skill_window->SetSubsetFilter(0);
-		sp_window->SetBattler(*active_actor);
-		SetState(State_SelectSkill);
-		break;
-	case lcf::rpg::BattleCommand::Type_special:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		SpecialSelected();
-		break;
-	case lcf::rpg::BattleCommand::Type_subskill:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		SubskillSelected();
-		break;
+	} else {
+		RowSelected();
 	}
 }
 
@@ -1275,6 +1282,30 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
 
 	ActionSelectedCallback(active_actor);
+}
+
+void Scene_Battle_Rpg2k3::RowSelected() {
+	// Switching rows is only possible if in back row or
+	// if at least 2 party members are in front row
+	int current_row = active_actor->GetBattleRow();
+	int front_row_battlers = 0;
+	if (current_row == active_actor->IsDirectionFlipped()) {
+		for (auto& actor: Main_Data::game_party->GetActors()) {
+			if (actor->GetBattleRow() == actor->IsDirectionFlipped()) front_row_battlers++;
+		}
+	}
+	if (current_row != active_actor->IsDirectionFlipped() || front_row_battlers >= 2) {
+		if (active_actor->GetBattleRow() == Game_Actor::RowType::RowType_front) {
+			active_actor->SetBattleRow(Game_Actor::RowType::RowType_back);
+		} else {
+			active_actor->SetBattleRow(Game_Actor::RowType::RowType_front);
+		}
+		active_actor->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*active_actor));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
+		ActionSelectedCallback(active_actor);
+	} else {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+	}
 }
 
 void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
@@ -1461,8 +1492,21 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	for_battler->SetAtbGauge(0);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
-		const lcf::rpg::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[command_window->GetIndex()];
-		for_battler->SetLastBattleAction(command->ID);
+		int index = command_window->GetIndex();
+		// Row command always uses the last index
+		if (index < command_window->GetRowMax() - 1) {
+			const lcf::rpg::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[index];
+			for_battler->SetLastBattleAction(command->ID);
+		} else {
+			// RPG_RT behavior: If the row command is used,
+			// then check if the actor has at least 6 battle commands.
+			// If yes, then set -1 as last battle action, otherwise 0.
+			if (static_cast<Game_Actor*>(for_battler)->GetBattleCommands().size() >= 6) {
+				for_battler->SetLastBattleAction(-1);
+			} else {
+				for_battler->SetLastBattleAction(0);
+			}
+		}
 		status_window->SetIndex(-1);
 	}
 

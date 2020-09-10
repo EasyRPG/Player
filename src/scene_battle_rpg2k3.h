@@ -113,6 +113,7 @@ protected:
 	void AttackSelected() override;
 	void SubskillSelected();
 	void SpecialSelected();
+	void RowSelected();
 
 	void Escape(bool force_allow = false);
 
