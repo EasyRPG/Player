@@ -914,7 +914,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
 
-	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, Game_Battle::GetBattleCondition());
+	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, Game_Battle::GetBattleCondition(), true);
 	auto crit_chance = Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll);
 
 	// Damage calculation
@@ -923,7 +923,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			critical_hit = true;
 		}
 
-		auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, critical_hit, true, Game_Battle::GetBattleCondition());
+		// FIXME: Differentiate the cases where 2k3 back attack bug applies
+		auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, critical_hit, true, Game_Battle::GetBattleCondition(), true);
 		effect = Algo::AdjustDamageForDefend(effect, target);
 		// FIXME: Handle negative effect from attributes
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());

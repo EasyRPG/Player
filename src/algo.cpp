@@ -10,13 +10,25 @@
 
 namespace Algo {
 
-bool IsRowAdjusted(const Game_Actor& actor, lcf::rpg::System::BattleCondition cond, bool offense) {
+bool IsRowAdjusted(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense) {
 	return (cond == lcf::rpg::System::BattleCondition_surround
-			|| (actor.GetBattleRow() == (1 - offense)
+			|| (row == (1 - offense)
 				&& (cond == lcf::rpg::System::BattleCondition_none || cond == lcf::rpg::System::BattleCondition_initiative))
-			|| (actor.GetBattleRow() == offense
+			|| (row == offense
 				&& (cond == lcf::rpg::System::BattleCondition_back))
 		   );
+}
+
+bool IsRowAdjusted(const Game_Battler& battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy) {
+	lcf::rpg::SaveActor::RowType row = lcf::rpg::SaveActor::RowType_front;
+	if (battler.GetType() == Game_Battler::Type_Ally) {
+		row = static_cast<const Game_Actor&>(battler).GetBattleRow();
+	}
+
+	if (battler.GetType() == Game_Battler::Type_Ally || allow_enemy) {
+		return IsRowAdjusted(row, cond, offense);
+	}
+	return false;
 }
 
 static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
@@ -28,7 +40,11 @@ static int CalcToHitAgiAdjustment(int to_hit, const Game_Battler& source, const 
 	return 100 - (100 - to_hit) * (1.0f + (tgt_agi / src_agi - 1.0f) / 2.0f);
 }
 
-int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond) {
+int CalcNormalAttackToHit(const Game_Battler &source,
+		const Game_Battler &target,
+		Game_Battler::Weapon weapon,
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug) {
 	auto to_hit = source.GetHitChance(weapon);
 
 	// If target has rm2k3 state which grants 100% dodge.
@@ -60,18 +76,8 @@ int CalcNormalAttackToHit(const Game_Battler &source, const Game_Battler &target
 	}
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3()) {
-		if (target.GetType() == Game_Battler::Type_Ally
-				&& IsRowAdjusted(static_cast<const Game_Actor&>(target), cond, false))
-		{
-			to_hit -= 25;
-		} else if(source.GetType() == Game_Battler::Type_Ally
-				&& target.GetType() == Game_Battler::Type_Enemy
-				&& cond == lcf::rpg::System::BattleCondition_back)
-		{
-			// FIXME: RPG_RT Bug: always adjusts damage down for back attack, regardless of row
-			to_hit -= 25;
-		}
+	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+		to_hit -= 25;
 	}
 
 	return to_hit;
@@ -152,7 +158,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
 		bool apply_variance,
-		lcf::rpg::System::BattleCondition cond)
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug)
 {
 	const auto atk = source.GetAtk(weapon);
 	const auto def = target.GetDef();
@@ -161,26 +168,16 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	auto dmg = std::max(0, atk / 2 - def / 4);
 
 	// Attacker row adjustment
-	if (Player::IsRPG2k3() && source.GetType() == Game_Battler::Type_Ally) {
-		if (IsRowAdjusted(static_cast<const Game_Actor&>(source), cond, true)) {
-			dmg = 125 * dmg / 100;
-		}
+	if (Player::IsRPG2k3() && IsRowAdjusted(source, cond, true, false)) {
+		dmg = 125 * dmg / 100;
 	}
 
 	// Attacker weapon attribute adjustment
 	dmg = Attribute::ApplyAttributeNormalAttackMultiplier(dmg, source, target, weapon);
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3()) {
-		if (target.GetType() == Game_Battler::Type_Ally && IsRowAdjusted(static_cast<const Game_Actor&>(target), cond, false)) {
-			dmg = 75 * dmg / 100;
-		} else if(source.GetType() == Game_Battler::Type_Ally
-				&& target.GetType() == Game_Battler::Type_Enemy
-				&& cond == lcf::rpg::System::BattleCondition_back)
-		{
-			// FIXME: RPG_RT always adjusts damage down for back attack, regardless of row - when to handle and not handle this?
-			dmg = 75 * dmg / 100;
-		}
+	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+		dmg = 75 * dmg / 100;
 	}
 
 	// Critical and charge adjustment

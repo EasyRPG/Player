@@ -17,48 +17,98 @@ static Game_Enemy& MakeEnemy(int id) {
 
 TEST_SUITE_BEGIN("Algo");
 
+static void testRowAdj(lcf::rpg::SaveActor::RowType row, bool offense, bool none, bool back, bool surround, bool pincers) {
+	REQUIRE_EQ(none, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_none, offense));
+	REQUIRE_EQ(none, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_initiative, offense));
+	REQUIRE_EQ(back, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_back, offense));
+	REQUIRE_EQ(surround, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_surround, offense));
+	REQUIRE_EQ(pincers, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_pincers, offense));
+}
+
+
 TEST_CASE("RowAdj") {
 	const MockActor m;
 
-	auto actor = MakeActor(1);
-
 	SUBCASE("front") {
-		actor.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+		auto row = lcf::rpg::SaveActor::RowType_front;
 
 		SUBCASE("offsense") {
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_none, true));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_initiative, true));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_back, true));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_surround, true));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_pincers, true));
+			testRowAdj(row, true, true, false, true, false);
 		}
 
 		SUBCASE("defense") {
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_none, false));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_initiative, false));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_back, false));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_surround, false));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_pincers, false));
+			testRowAdj(row, false, false, true, true, false);
 		}
 	}
 
 	SUBCASE("back") {
-		actor.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+		auto row = lcf::rpg::SaveActor::RowType_back;
 
 		SUBCASE("offsense") {
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_none, true));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_initiative, true));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_back, true));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_surround, true));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_pincers, true));
+			testRowAdj(row, true, false, true, true, false);
 		}
 
 		SUBCASE("defense") {
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_none, false));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_initiative, false));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_back, false));
-			REQUIRE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_surround, false));
-			REQUIRE_FALSE(Algo::IsRowAdjusted(actor, lcf::rpg::System::BattleCondition_pincers, false));
+			testRowAdj(row, false, true, false, true, false);
+		}
+	}
+}
+
+static void testRowAdjBattler(const Game_Battler& battler, bool offense, bool bug,
+		bool none, bool back, bool surround, bool pincers) {
+	REQUIRE_EQ(none, Algo::IsRowAdjusted(battler, lcf::rpg::System::BattleCondition_none, offense, bug));
+	REQUIRE_EQ(none, Algo::IsRowAdjusted(battler, lcf::rpg::System::BattleCondition_initiative, offense, bug));
+	REQUIRE_EQ(back, Algo::IsRowAdjusted(battler, lcf::rpg::System::BattleCondition_back, offense, bug));
+	REQUIRE_EQ(surround, Algo::IsRowAdjusted(battler, lcf::rpg::System::BattleCondition_surround, offense, bug));
+	REQUIRE_EQ(pincers, Algo::IsRowAdjusted(battler, lcf::rpg::System::BattleCondition_pincers, offense, bug));
+}
+
+TEST_CASE("RowAdjBattler") {
+	const MockActor m;
+
+	SUBCASE("actor") {
+		auto actor = MakeActor(1);
+
+		SUBCASE("front") {
+			actor.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+
+			SUBCASE("offsense") {
+				testRowAdjBattler(actor, true, true, true, false, true, false);
+				testRowAdjBattler(actor, true, false, true, false, true, false);
+			}
+
+			SUBCASE("defense") {
+				testRowAdjBattler(actor, false, true, false, true, true, false);
+				testRowAdjBattler(actor, false, false, false, true, true, false);
+			}
+		}
+
+		SUBCASE("back") {
+			actor.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+
+			SUBCASE("offsense") {
+				testRowAdjBattler(actor, true, true, false, true, true, false);
+				testRowAdjBattler(actor, true, false, false, true, true, false);
+			}
+
+			SUBCASE("defense") {
+				testRowAdjBattler(actor, false, true, true, false, true, false);
+				testRowAdjBattler(actor, false, false, true, false, true, false);
+			}
+		}
+	}
+
+	SUBCASE("enemy") {
+		auto enemy = MakeEnemy(1);
+
+		SUBCASE("offsense") {
+			testRowAdjBattler(enemy, true, true, true, false, true, false);
+			testRowAdjBattler(enemy, true, false, false, false, false, false);
+		}
+
+		SUBCASE("defense") {
+			testRowAdjBattler(enemy, false, true, false, true, true, false);
+			testRowAdjBattler(enemy, false, false, false, false, false, false);
 		}
 	}
 }
@@ -159,7 +209,7 @@ static void testAgi(int src, int tgt, int res) {
 	auto source = MakeAgiActor(1, src);
 	auto target = MakeAgiEnemy(1, tgt);
 
-	REQUIRE_EQ(res, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+	REQUIRE_EQ(res, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[1]));
 	for (int i = 2; i < 6; ++i) {
@@ -184,13 +234,13 @@ TEST_CASE("HitRateAgi") {
 static void testStates(Game_Battler& source, Game_Battler& target, int base) {
 	SUBCASE("Cannot act") {
 		target.AddState(2, true);
-		REQUIRE_EQ(100, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(100, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	}
 
 	SUBCASE("Avoid attacks") {
 		target.AddState(3, true);
-		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		// RPG_RT bug
 		REQUIRE_EQ(base, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	}
@@ -198,7 +248,7 @@ static void testStates(Game_Battler& source, Game_Battler& target, int base) {
 	SUBCASE("Avoid attacks and cannot act") {
 		target.AddState(2, true);
 		target.AddState(3, true);
-		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		// RPG_RT bug
 		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	}
@@ -218,11 +268,25 @@ TEST_CASE("HitRateStates") {
 
 	SUBCASE("source blind50") {
 		source.AddState(4, true);
-		REQUIRE_EQ(45, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(45, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		REQUIRE_EQ(45, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 
 		testStates(source, target, 45);
 	}
+}
+
+static void testHitRateRow(Game_Battler& source, Game_Battler& target, int none, int back, int surround, int pincer, int back_no_bug, int surround_no_bug) {
+	REQUIRE_EQ(none, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
+	REQUIRE_EQ(none, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative, true));
+	REQUIRE_EQ(back, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back, true));
+	REQUIRE_EQ(surround, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround, true));
+	REQUIRE_EQ(pincer, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers, true));
+
+	REQUIRE_EQ(none, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, false));
+	REQUIRE_EQ(none, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative, false));
+	REQUIRE_EQ(back_no_bug, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back, false));
+	REQUIRE_EQ(surround_no_bug, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround, false));
+	REQUIRE_EQ(pincer, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers, false));
 }
 
 TEST_CASE("HitRateArmorAndRow2k3") {
@@ -239,11 +303,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 			target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 
 			SUBCASE("no armor") {
-				REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-				REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+				testHitRateRow(source, target, 90, 65, 65, 90, 65, 65);
 
 				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 			}
@@ -252,11 +312,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 				target.SetEquipment(3, 1);
 				REQUIRE(target.HasPhysicalEvasionUp());
 
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-				REQUIRE_EQ(40, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-				REQUIRE_EQ(40, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+				testHitRateRow(source, target, 65, 40, 40, 65, 40, 40);
 
 				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 			}
@@ -266,11 +322,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 			target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 
 			SUBCASE("no armor") {
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-				REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-				REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+				testHitRateRow(source, target, 65, 90, 65, 90, 90, 65);
 
 				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 			}
@@ -278,11 +330,8 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 			SUBCASE("phys eva up") {
 				target.SetEquipment(3, 1);
 				REQUIRE(target.HasPhysicalEvasionUp());
-				REQUIRE_EQ(40, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(40, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-				REQUIRE_EQ(40, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-				REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+
+				testHitRateRow(source, target, 40, 65, 40, 65, 65, 40);
 
 				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 			}
@@ -292,15 +341,14 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 	SUBCASE("enemy target") {
 		auto target = MakeAgiEnemy(2, 100);
 
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-		// RPG_RT bug we implement
-		REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+		testHitRateRow(source, target, 90, 65, 65, 90, 90, 90);
 
 		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	}
+}
+
+static void testHitRateRow2k(Game_Battler& source, Game_Battler& target, int rate) {
+	testHitRateRow(source, target, rate, rate, rate, rate, rate, rate);
 }
 
 TEST_CASE("HitRateArmorAndRow2k") {
@@ -314,11 +362,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 		auto target = MakeAgiActor(2, 100);
 
 		SUBCASE("no armor") {
-			REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-			REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-			REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-			REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-			REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+			testHitRateRow2k(source, target, 90);
 
 			REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 		}
@@ -327,11 +371,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 			target.SetEquipment(3, 1);
 			REQUIRE(target.HasPhysicalEvasionUp());
 
-			REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-			REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-			REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-			REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-			REQUIRE_EQ(65, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+			testHitRateRow2k(source, target, 65);
 
 			REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 		}
@@ -340,11 +380,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 	SUBCASE("enemy target") {
 		auto target = MakeAgiEnemy(2, 100);
 
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_initiative));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_back));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_surround));
-		REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_pincers));
+		testHitRateRow2k(source, target, 90);
 
 		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 	}
@@ -363,19 +399,19 @@ TEST_CASE("HitRateWeapons") {
 
 	REQUIRE_EQ(source.GetAgi(Game_Battler::WeaponAll), 150);
 	REQUIRE(source.AttackIgnoresEvasion(Game_Battler::WeaponAll));
-	REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none));
+	REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 
 	REQUIRE_EQ(source.GetAgi(Game_Battler::WeaponNone), 100);
 	REQUIRE_FALSE(source.AttackIgnoresEvasion(Game_Battler::WeaponNone));
-	REQUIRE_EQ(85, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponNone, lcf::rpg::System::BattleCondition_none));
+	REQUIRE_EQ(85, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponNone, lcf::rpg::System::BattleCondition_none, true));
 
 	REQUIRE_EQ(source.GetAgi(Game_Battler::WeaponPrimary), 100);
 	REQUIRE(source.AttackIgnoresEvasion(Game_Battler::WeaponPrimary));
-	REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponPrimary, lcf::rpg::System::BattleCondition_none));
+	REQUIRE_EQ(90, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponPrimary, lcf::rpg::System::BattleCondition_none, true));
 
 	REQUIRE_EQ(source.GetAgi(Game_Battler::WeaponSecondary), 150);
 	REQUIRE_FALSE(source.AttackIgnoresEvasion(Game_Battler::WeaponSecondary));
-	REQUIRE_EQ(88, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponSecondary, lcf::rpg::System::BattleCondition_none));
+	REQUIRE_EQ(88, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponSecondary, lcf::rpg::System::BattleCondition_none, true));
 
 	REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
 }
@@ -520,12 +556,12 @@ TEST_CASE("SelfDestructEffect") {
 		REQUIRE_EQ(0, Algo::CalcSelfDestructEffect(source, target, false));
 	}
 
-	SUBCASE("150_0") {
+	SUBCASE("150_100") {
 		auto source = MakeStatEnemy(1, 150, 0, 0);
 		REQUIRE_EQ(100, Algo::CalcSelfDestructEffect(source, target, false));
 	}
 
-	SUBCASE("150_0_var") {
+	SUBCASE("150_100_var") {
 		auto source = MakeStatEnemy(1, 150, 0, 0);
 		for (int i = 0; i < 200; ++i) {
 			auto effect = Algo::CalcSelfDestructEffect(source, target, true);
@@ -616,22 +652,30 @@ static void testEnemyAttackEnemy(Game_Battler& source, Game_Battler& target, int
 			CAPTURE(cid);
 
 			SUBCASE("no crit") {
-				REQUIRE_EQ(dmg, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), false, false, lcf::rpg::System::BattleCondition(cid)));
+				REQUIRE_EQ(dmg, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), false, false, lcf::rpg::System::BattleCondition(cid), true));
+				REQUIRE_EQ(dmg, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), false, false, lcf::rpg::System::BattleCondition(cid), false));
 			}
 
 			SUBCASE("crit") {
-				REQUIRE_EQ(crit, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), true, false, lcf::rpg::System::BattleCondition(cid)));
+				REQUIRE_EQ(crit, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), true, false, lcf::rpg::System::BattleCondition(cid), true));
+				REQUIRE_EQ(crit, Algo::CalcNormalAttackEffect(source, target, Game_Battler::Weapon(wid), true, false, lcf::rpg::System::BattleCondition(cid), false));
 			}
 		}
 	}
 }
 
-static void testActorAttackRow(Game_Battler& source, Game_Battler& target, int none, int init, int back, int surround, int pincers) {
-	REQUIRE_EQ(none, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none));
-	REQUIRE_EQ(init, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_initiative));
-	REQUIRE_EQ(back, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_back));
-	REQUIRE_EQ(surround, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_surround));
-	REQUIRE_EQ(pincers, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_pincers));
+static void testActorAttackRow(Game_Battler& source, Game_Battler& target, int none, int back, int surround, int pincers, int back_no_bug, int surround_no_bug) {
+	REQUIRE_EQ(none, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, true));
+	REQUIRE_EQ(none, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_initiative, true));
+	REQUIRE_EQ(back, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_back, true));
+	REQUIRE_EQ(surround, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_surround, true));
+	REQUIRE_EQ(pincers, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_pincers, true));
+
+	REQUIRE_EQ(none, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, false));
+	REQUIRE_EQ(none, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_initiative, false));
+	REQUIRE_EQ(back_no_bug, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_back, false));
+	REQUIRE_EQ(surround_no_bug, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_surround, false));
+	REQUIRE_EQ(pincers, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_pincers, false));
 }
 
 static void TestNormalAttack(int engine) {
@@ -662,14 +706,14 @@ static void TestNormalAttack(int engine) {
 		auto source = MakeStatEnemy(1, 0, 0, 0);
 		auto target = MakeStatEnemy(2, 0, 100, 0);
 
-		REQUIRE_EQ(0, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(0, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, true));
 	}
 
 	SUBCASE("enemy 9999/0 -> enemy 0/0") {
 		auto source = MakeStatEnemy(1, 9999, 0, 0);
 		auto target = MakeStatEnemy(2, 0, 0, 0);
 
-		REQUIRE_EQ(4999, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none));
+		REQUIRE_EQ(4999, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, true));
 	}
 
 	SUBCASE("actor 120/0 -> enemy 0/90") {
@@ -682,18 +726,18 @@ static void TestNormalAttack(int engine) {
 		SUBCASE("front row") {
 			source.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 			if (is2k3) {
-				testActorAttackRow(source, target, 47, 47, /* RPG_RT bug */ 28, 47, 38);
+				testActorAttackRow(source, target, 47, 28, 35, 38, 38, 47);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 
 		SUBCASE("back row") {
 			source.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 			if (is2k3) {
-				testActorAttackRow(source, target, 38, 38, /* RPG_RT bug */ 35, 47, 38);
+				testActorAttackRow(source, target, 38, 35, 35, 38, 47, 47);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 
@@ -712,16 +756,16 @@ static void TestNormalAttack(int engine) {
 
 			if (is2k3) {
 				REQUIRE_EQ(140, source.GetAtk(Game_Battler::WeaponAll));
-				REQUIRE_EQ(120, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(47, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(60, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(94, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, lcf::rpg::System::BattleCondition_none));
+				REQUIRE_EQ(120, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(47, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(60, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(94, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, lcf::rpg::System::BattleCondition_none, true));
 			} else {
 				REQUIRE_EQ(140, source.GetAtk(Game_Battler::WeaponAll));
-				REQUIRE_EQ(96, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(38, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(48, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, lcf::rpg::System::BattleCondition_none));
-				REQUIRE_EQ(76, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, lcf::rpg::System::BattleCondition_none));
+				REQUIRE_EQ(96, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(38, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(48, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(76, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, lcf::rpg::System::BattleCondition_none, true));
 			}
 		}
 	}
@@ -738,17 +782,17 @@ static void TestNormalAttack(int engine) {
 			SUBCASE("target front") {
 				target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 				if (is2k3) {
-					testActorAttackRow(source, target, 47, 47, 28, 35, 38);
+					testActorAttackRow(source, target, 47, 28, 35, 38, 28, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 			SUBCASE("target back") {
 				target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 				if (is2k3) {
-					testActorAttackRow(source, target, 35, 35, 38, 35, 38);
+					testActorAttackRow(source, target, 35, 38, 35, 38, 38, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 		}
@@ -758,17 +802,17 @@ static void TestNormalAttack(int engine) {
 			SUBCASE("target front") {
 				target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 				if (is2k3) {
-					testActorAttackRow(source, target, 38, 38, 35, 35, 38);
+					testActorAttackRow(source, target, 38, 35, 35, 38, 35, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 			SUBCASE("target back") {
 				target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 				if (is2k3) {
-					testActorAttackRow(source, target, 28, 28, 47, 35, 38);
+					testActorAttackRow(source, target, 28, 47, 35, 38, 47, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38);
+					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 		}

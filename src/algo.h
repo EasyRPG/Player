@@ -20,6 +20,7 @@
 
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
+#include <lcf/rpg/saveactor.h>
 #include <game_battler.h>
 
 class Game_Actor;
@@ -30,13 +31,28 @@ namespace Algo {
 /**
  * Compute whether a row adjustment should occur.
  * 
- * @param actor The actor whose row to check
+ * @param row The row value to check
  * @param cond The current battle condition
  * @param offense Whether to adjust for an offensive action (true) or defensive action (false)
  *
  * @return Whether the row adjustment should apply or not.
  */
-bool IsRowAdjusted(const Game_Actor& actor, lcf::rpg::System::BattleCondition cond, bool offense);
+bool IsRowAdjusted(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense);
+
+/**
+ * Compute whether a row adjustment should occur.
+ * 
+ * @param actor The actor whose row to check
+ * @param cond The current battle condition
+ * @param offense Whether to adjust for an offensive action (true) or defensive action (false)
+ * @param allow_enemy Compute row adjustment for enemies also and treat them as always in front row.
+ *
+ * @return Whether the row adjustment should apply or not.
+ */
+bool IsRowAdjusted(const Game_Battler& battler,
+		lcf::rpg::System::BattleCondition cond,
+		bool offense,
+		bool allow_enemy);
 
 /**
  * Uses RPG_RT algorithm for performing a variance adjument to damage/healing effects and returns the result.
@@ -55,10 +71,15 @@ int VarianceAdjustEffect(int base, int var);
  * @param target The target of the action
  * @param cond The current battle condition
  * @param weapon Which weapon to use or kWeaponAll for combined
+ * @param emulate_2k3_enemy_row_bug Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row
  *
  * @return Success hit rate
  */
-int CalcNormalAttackToHit(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond);
+int CalcNormalAttackToHit(const Game_Battler& source,
+		const Game_Battler& target,
+		Game_Battler::Weapon weapon,
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug);
 
 /**
  * Compute the hit rate for a skill
@@ -102,6 +123,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target);
  * @param is_critical_hit If true, apply critical hit bonus
  * @param apply_variance If true, apply variance to the damage
  * @param cond The current battle condition
+ * @param emulate_2k3_enemy_row_bug Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row
  *
  * @return effect amount
  */
@@ -110,7 +132,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
 		bool apply_variance,
-		lcf::rpg::System::BattleCondition cond);
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug);
 
 /**
  * Compute the base damage for a skill
