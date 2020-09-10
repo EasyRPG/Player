@@ -1486,7 +1486,7 @@ void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 
 bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
 	if (Game_System::GetInvertAnimations()) {
-		return battler->IsDirectionFlipped() ^ battler->GetType() == Game_Battler::Type_Enemy;
+		return battler->IsDirectionFlipped() ^ (battler->GetType() == Game_Battler::Type_Enemy);
 	}
 	return false;
 }
