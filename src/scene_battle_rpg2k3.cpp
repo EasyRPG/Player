@@ -1498,7 +1498,14 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 			const lcf::rpg::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[index];
 			for_battler->SetLastBattleAction(command->ID);
 		} else {
-			for_battler->SetLastBattleAction(-1);
+			// RPG_RT behavior: If the row command is used,
+			// then check if the actor has at least 6 battle commands.
+			// If yes, then set -1 as last battle action, otherwise 0.
+			if (static_cast<Game_Actor*>(for_battler)->GetBattleCommands().size() >= 6) {
+				for_battler->SetLastBattleAction(-1);
+			} else {
+				for_battler->SetLastBattleAction(0);
+			}
 		}
 		status_window->SetIndex(-1);
 	}
