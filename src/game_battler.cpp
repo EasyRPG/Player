@@ -469,13 +469,6 @@ bool Game_Battler::HasFullSp() const {
 	return GetMaxSp() == GetSp();
 }
 
-static int AffectParameter(const int type, const int val) {
-	return
-		type == 0? val / 2 :
-		type == 1? val * 2 :
-		val;
-}
-
 static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states, bool lcf::rpg::State::*adj) {
 	auto value = Utils::Clamp(base + mod, 1, maxval);
 	bool half = false;
@@ -492,7 +485,7 @@ static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states
 		if (dbl) {
 			value *= 2;
 		} else {
-			value = std::max(1, value /= 2);
+			value = std::max(1, value / 2);
 		}
 	}
 	// NOTE: RPG_RT does not clamp these values to the upper range!
