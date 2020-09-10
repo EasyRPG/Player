@@ -56,7 +56,7 @@ static inline void HSL_to_RGB(const int& h, const int& s, const int& l,
 
 static inline void HSL_adjust(int& h, int& s, int& l, int hue) {
 	h += hue;
-	if (h > 0x600) h -= 0x600;
+	if (h >= 0x600) h -= 0x600;
 	if (s > 0xFF) s = 0xFF;
 	l = (l > 0xFF) ? 0xFF : (l < 0) ? 0 : l;
 }
