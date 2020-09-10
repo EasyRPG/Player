@@ -305,6 +305,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 
 	bool cure_hp_percentage = false;
 	bool was_used = false;
+	int revived = 0;
 
 	if (skill->type == lcf::rpg::Skill::Type_normal || skill->type >= lcf::rpg::Skill::Type_subskill) {
 		// Only takes care of healing skills outside of battle,
@@ -326,7 +327,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 		effect *= mul;
 
-		effect += (effect * Utils::GetRandomNumber(-skill->variance * 10, skill->variance * 10) / 100);
+		if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill->variance);
 
 		if (effect < 0)
 			effect = 0;
@@ -341,11 +342,15 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 					AddState(lcf::Data::states[i].ID, false);
 				}
 				else {
+					if (i == 0 && IsDead()) {
+						revived = 1;
+					}
+
 					was_used |= HasState(lcf::Data::states[i].ID);
 					RemoveState(lcf::Data::states[i].ID, false);
 
 					// If Death is cured and HP is not selected, we set a bool so it later heals HP percentage
-					if (i == 0 && !skill->affect_hp) {
+					if (i == 0 && !skill->affect_hp && revived) {
 						cure_hp_percentage = true;
 					}
 				}
@@ -355,11 +360,11 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		// Skills only increase hp and sp outside of battle
 		if (effect > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
 			was_used = true;
-			ChangeHp(effect);
+			ChangeHp(effect - revived);
 		}
 		else if (effect > 0 && cure_hp_percentage) {
 			was_used = true;
-			ChangeHp(GetMaxHp() * effect / 100);
+			ChangeHp(GetMaxHp() * effect / 100 - revived);
 		}
 
 		if (effect > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
@@ -455,7 +460,7 @@ int Game_Battler::ApplyConditions() {
 			}
 		}
 		else if(state.hp_change_type == state.ChangeType_gain) {
-			src_hp = std::min(source_hp, hp);
+			src_hp = hp;
 			if(src_hp < 0) {
 				src_hp = 0;
 			}
@@ -471,8 +476,8 @@ int Game_Battler::ApplyConditions() {
 
 		}
 		else if (state.sp_change_type == state.ChangeType_gain) {
-			src_sp = std::min(source_sp, sp);
-			if(src_sp < 0 ) {
+			src_sp = sp;
+			if(src_sp < 0) {
 				src_sp = 0;
 			}
 		}
