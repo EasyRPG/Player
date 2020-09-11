@@ -46,7 +46,7 @@ int Game_Actor::MaxHpValue() const {
 }
 
 int Game_Actor::MaxStatBattleValue() const {
-	return Player::IsRPG2k() ? 999 : 9999;
+	return 9999;
 }
 
 int Game_Actor::MaxStatBaseValue() const {

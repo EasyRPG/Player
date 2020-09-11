@@ -195,7 +195,7 @@ TEST_CASE("Limits") {
 	SUBCASE("2k") {
 		const MockActor m(Player::EngineRpg2k);
 
-		testLimits(999, 999, 999);
+		testLimits(999, 999, 9999);
 	}
 	SUBCASE("2k3") {
 		const MockActor m(Player::EngineRpg2k3);
