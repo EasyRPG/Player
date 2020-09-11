@@ -1,7 +1,7 @@
 #include "test_mock_actor.h"
 #include "doctest.h"
 
-static void nullDBEnemy(lcf::rpg::Enemy& e) {}
+static void nullDBEnemy(lcf::rpg::Enemy&) {}
 
 template <typename F = decltype(&nullDBEnemy)>
 static Game_Enemy& MakeEnemy(int id, int hp, int sp, int atk, int def, int spi, int agi, const F& f = &nullDBEnemy) {

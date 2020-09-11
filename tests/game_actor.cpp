@@ -419,8 +419,6 @@ static void testWeapon2(Game_Actor* a, int id1, int id2, int id3, int id4, int i
 	REQUIRE_EQ(a->GetHelmetId(), id4);
 	REQUIRE_EQ(a->GetAccessoryId(), id5);
 
-	const auto* w1 = ((i1 && i1->type == lcf::rpg::Item::Type_weapon) ? i1 : nullptr);
-
 	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponAll);
 	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponNone);
 	testWeapon3(a, i1, i2, i3, i4, i5, Game_Battler::WeaponPrimary);

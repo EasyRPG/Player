@@ -7,15 +7,6 @@ static Game_Actor MakeActor(int id) {
 	return Game_Actor(id);
 }
 
-static Game_Enemy& MakeEnemy(int id) {
-	auto& tp = lcf::Data::troops[0];
-	tp.members.resize(1);
-	tp.members[0].enemy_id = id;
-	Main_Data::game_enemyparty->ResetBattle(1);
-	auto& enemy = (*Main_Data::game_enemyparty)[0];
-	return enemy;
-}
-
 static lcf::DBBitArray MakeAttributeSet(std::initializer_list<bool> v = {}) {
 	auto a = lcf::DBBitArray(lcf::Data::attributes.size());
 	int idx = 0;
@@ -195,13 +186,6 @@ TEST_CASE("ApplyMultiplerMaxMulti") {
 
 	SUBCASE("mag") {
 		testMaxMulti(lcf::rpg::Attribute::Type_magical);
-	}
-}
-
-static void makeTestAttributes() {
-	for (int i = 1; i <= 8; ++i) {
-		auto type = (i >= 5) ? lcf::rpg::Attribute::Type_physical : lcf::rpg::Attribute::Type_magical;
-		MakeDBAttribute(i, type, -100, 200, 100, 50, 0);
 	}
 }
 

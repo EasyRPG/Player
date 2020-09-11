@@ -102,14 +102,10 @@ private:
 	LogLevel _ll = {};
 };
 
-static lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
+inline lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
 		int hp, int sp, int atk, int def, int spi, int agi,
 		bool two_weapon = false, bool lock_equip = false, bool autobattle = false, bool super_guard = false)
 {
-	if (lcf::Data::actors.size() <= id) {
-		lcf::Data::actors.resize(id + 1);
-	}
-
 	auto& actor = lcf::Data::actors[id - 1];
 	actor.initial_level = 1;
 	actor.final_level = final_level;
@@ -132,7 +128,7 @@ static lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
 	return &actor;
 }
 
-static lcf::rpg::Enemy* MakeDBEnemy(int id,
+inline lcf::rpg::Enemy* MakeDBEnemy(int id,
 		int hp, int sp, int atk, int def, int spi, int agi)
 {
 	auto& enemy = lcf::Data::enemies[id - 1];
@@ -145,7 +141,7 @@ static lcf::rpg::Enemy* MakeDBEnemy(int id,
 	return &enemy;
 }
 
-static lcf::rpg::Item* MakeDBEquip(int id, int type,
+inline lcf::rpg::Item* MakeDBEquip(int id, int type,
 		int atk = 1, int def = 1, int spi = 1, int agi = 1,
 		int hit=100, int crt=0,
 		bool w1 = false, bool w2 = false, bool w3 = false, bool w4 = false,
@@ -170,7 +166,7 @@ static lcf::rpg::Item* MakeDBEquip(int id, int type,
 	return &item;
 }
 
-static lcf::rpg::Skill* MakeDBSkill(int id, int hit, int power, int phys, int mag, int var)
+inline lcf::rpg::Skill* MakeDBSkill(int id, int hit, int power, int phys, int mag, int var)
 {
 	auto& skill = lcf::Data::skills[id - 1];
 	skill.type = lcf::rpg::Skill::Type_normal;
@@ -182,7 +178,7 @@ static lcf::rpg::Skill* MakeDBSkill(int id, int hit, int power, int phys, int ma
 	return &skill;
 }
 
-static lcf::rpg::Attribute* MakeDBAttribute(int id, int type, int a, int b, int c, int d, int e)
+inline lcf::rpg::Attribute* MakeDBAttribute(int id, int type, int a, int b, int c, int d, int e)
 {
 	auto& attr = lcf::Data::attributes[id - 1];
 	attr.type = type;
@@ -194,22 +190,22 @@ static lcf::rpg::Attribute* MakeDBAttribute(int id, int type, int a, int b, int 
 	return &attr;
 }
 
-static void SetDBActorAttribute(int id, int attr_id, int rank) {
+inline void SetDBActorAttribute(int id, int attr_id, int rank) {
 	auto& actor = lcf::Data::actors[id - 1];
 	actor.attribute_ranks[attr_id - 1] = rank;
 }
 
-static void SetDBEnemyAttribute(int id, int attr_id, int rank) {
+inline void SetDBEnemyAttribute(int id, int attr_id, int rank) {
 	auto& enemy = lcf::Data::enemies[id - 1];
 	enemy.attribute_ranks[attr_id - 1] = rank;
 }
 
-static void SetDBItemAttribute(int id, int attr_id, bool value) {
+inline void SetDBItemAttribute(int id, int attr_id, bool value) {
 	auto& item = lcf::Data::items[id - 1];
 	item.attribute_set[attr_id - 1] = value;
 }
 
-static void SetDBSkillAttribute(int id, int attr_id, bool value) {
+inline void SetDBSkillAttribute(int id, int attr_id, bool value) {
 	auto& skill = lcf::Data::skills[id - 1];
 	skill.attribute_effects[attr_id - 1] = value;
 }
