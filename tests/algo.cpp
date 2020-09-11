@@ -817,6 +817,31 @@ static void TestNormalAttack(int engine) {
 			}
 		}
 	}
+
+	SUBCASE("enemy 120/0 -> actor 0/90") {
+		auto source = MakeStatEnemy(1, 120, 0, 0);
+		auto target = MakeStatActor(1, 0, 90, 0);
+
+		REQUIRE_EQ(source.GetAtk(), 120);
+		REQUIRE_EQ(target.GetDef(), 90);
+
+		SUBCASE("target front") {
+			target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+			if (is2k3) {
+				testActorAttackRow(source, target, 38, 28, 28, 38, 28, 28);
+			} else {
+				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+			}
+		}
+		SUBCASE("target back") {
+			target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+			if (is2k3) {
+				testActorAttackRow(source, target, 28, 38, 28, 38, 38, 28);
+			} else {
+				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+			}
+		}
+	}
 }
 
 TEST_CASE("NormalAttackEffect") {
