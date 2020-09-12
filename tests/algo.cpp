@@ -589,6 +589,33 @@ static void testSkillStats(int power, int phys, int mag, Game_Battler& source, G
 	MakeDBSkill(10, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_party;
 	SetDBSkillAttribute(10, 1, true);
 
+	MakeDBSkill(11, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_enemy;
+	lcf::Data::skills[10].ignore_defense = true;
+	MakeDBSkill(12, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_enemies;
+	lcf::Data::skills[11].ignore_defense = true;
+	MakeDBSkill(13, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_self;
+	lcf::Data::skills[12].ignore_defense = true;
+	MakeDBSkill(14, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_ally;
+	lcf::Data::skills[13].ignore_defense = true;
+	MakeDBSkill(15, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_party;
+	lcf::Data::skills[14].ignore_defense = true;
+
+	MakeDBSkill(16, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_enemy;
+	SetDBSkillAttribute(16, 1, true);
+	lcf::Data::skills[15].ignore_defense = true;
+	MakeDBSkill(17, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_enemies;
+	SetDBSkillAttribute(17, 1, true);
+	lcf::Data::skills[16].ignore_defense = true;
+	MakeDBSkill(18, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_self;
+	SetDBSkillAttribute(18, 1, true);
+	lcf::Data::skills[17].ignore_defense = true;
+	MakeDBSkill(19, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_ally;
+	SetDBSkillAttribute(19, 1, true);
+	lcf::Data::skills[18].ignore_defense = true;
+	MakeDBSkill(20, 100, power, phys, mag, 0)->scope = lcf::rpg::Skill::Scope_party;
+	SetDBSkillAttribute(20, 1, true);
+	lcf::Data::skills[19].ignore_defense = true;
+
 	SUBCASE("baseline") {
 		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[0], false));
 		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[1], false));
@@ -603,6 +630,22 @@ static void testSkillStats(int power, int phys, int mag, Game_Battler& source, G
 		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[7], false));
 		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[8], false));
 		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[9], false));
+	}
+
+	SUBCASE("ignore_defense") {
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[10], false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[11], false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[12], false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[13], false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[14], false));
+	}
+
+	SUBCASE("ignore_defense+attr2x") {
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[15], false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[16], false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[17], false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[18], false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[19], false));
 	}
 }
 
