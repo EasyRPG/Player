@@ -371,8 +371,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 
 	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
 	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, 1);
-	StringView message = is_ally ? state->message_actor
-										: state->message_enemy;
+	StringView message = is_ally ? StringView(state->message_actor) : StringView(state->message_enemy);
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -433,9 +432,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int val
 std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
-	StringView message = target_is_ally ?
-		lcf::Data::terms.actor_undamaged :
-		lcf::Data::terms.enemy_undamaged;
+	StringView message = target_is_ally
+		? StringView(lcf::Data::terms.actor_undamaged)
+		: StringView(lcf::Data::terms.enemy_undamaged);
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -452,9 +451,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
 std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
-	StringView message = target_is_ally ?
-		lcf::Data::terms.actor_critical :
-		lcf::Data::terms.enemy_critical;
+	StringView message = target_is_ally
+		? StringView(lcf::Data::terms.actor_critical)
+		: StringView(lcf::Data::terms.enemy_critical);
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -471,9 +470,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int value, StringView points) const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
-	StringView message = target_is_ally ?
-		lcf::Data::terms.actor_hp_absorbed :
-		lcf::Data::terms.enemy_hp_absorbed;
+	StringView message = target_is_ally
+		? StringView(lcf::Data::terms.actor_hp_absorbed)
+		: StringView(lcf::Data::terms.enemy_hp_absorbed);
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -505,9 +504,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
-	StringView message = target_is_ally ?
-		lcf::Data::terms.actor_damaged :
-		lcf::Data::terms.enemy_damaged;
+	StringView message = target_is_ally
+		? StringView(lcf::Data::terms.actor_damaged)
+		: StringView(lcf::Data::terms.enemy_damaged);
 	int value = GetAffectedHp();
 
 	if (Player::IsRPG2kE()) {
@@ -534,9 +533,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, StringView points) const {
-	StringView message = is_positive ?
-		lcf::Data::terms.parameter_increase :
-		lcf::Data::terms.parameter_decrease;
+	StringView message = is_positive
+		? StringView(lcf::Data::terms.parameter_increase)
+	   	: StringView(lcf::Data::terms.parameter_decrease);
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -579,9 +578,9 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(StringView mess
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage(StringView attribute) const {
-	StringView message = IsPositive() ?
-		lcf::Data::terms.resistance_increase :
-		lcf::Data::terms.resistance_decrease;
+	StringView message = IsPositive()
+		? StringView(lcf::Data::terms.resistance_increase)
+		: StringView(lcf::Data::terms.resistance_decrease);
 	std::stringstream ss;
 
 	if (Player::IsRPG2kE()) {
