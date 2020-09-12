@@ -116,6 +116,13 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--autobattle-algo")) {
+			std::string svalue;
+			if (arg.ParseValue(0, svalue)) {
+				player.autobattle_algo.Set(std::move(svalue));
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -131,6 +138,14 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 		Output::Debug("Failed to parse ini config file {}", path);
 		return;
 	}
+
+	/** PLAYER SECTION */
+
+	if (ini.HasValue("player", "autobattle-algo")) {
+		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", "RPG_RT"));
+	}
+
+	/** VIDEO SECTION */
 
 	if (ini.HasValue("video", "vsync")) {
 		video.vsync.Set(ini.GetBoolean("video", "vsync", false));
@@ -150,6 +165,10 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 	if (ini.HasValue("video", "window-zoom")) {
 		video.window_zoom.Set(ini.GetInteger("video", "window-zoom", 0));
 	}
+
+	/** AUDIO SECTION */
+
+	/** INPUT SECTION */
 }
 
 void Game_Config::WriteToConfig(const std::string& path) const {
@@ -159,6 +178,13 @@ void Game_Config::WriteToConfig(const std::string& path) const {
 		Output::Debug("Failed to open {} for writing: {}", path, strerror(errno));
 		return;
 	}
+
+	/** PLAYER SECTION */
+	of << "[player]\n";
+	of << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	of << "\n";
+
+	/** VIDEO SECTION */
 
 	of << "[video]\n";
 	if (video.vsync.Enabled()) {
@@ -180,5 +206,9 @@ void Game_Config::WriteToConfig(const std::string& path) const {
 		of << "window-zoom=" << video.window_zoom.Get() << "\n";
 	}
 	of << "\n";
+
+	/** AUDIO SECTION */
+
+	/** INPUT SECTION */
 }
 

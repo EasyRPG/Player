@@ -23,6 +23,14 @@
 #include <iostream>
 #include <sstream>
 
+bool CmdlineArg::ParseValue(int i, std::string& value) const {
+	if (i >= NumValues()) {
+		return false;
+	}
+	value = Value(i);
+	return true;
+}
+
 bool CmdlineArg::ParseValue(int i, long& value) const {
 	if (i >= NumValues()) {
 		return false;

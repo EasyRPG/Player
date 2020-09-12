@@ -23,6 +23,10 @@
 
 class CmdlineParser;
 
+struct Game_ConfigPlayer {
+	StringConfigParam autobattle_algo{ "RPG_RT" };
+};
+
 struct Game_ConfigVideo {
 	BoolConfigParam vsync{ true };
 	BoolConfigParam fullscreen{ true };
@@ -41,6 +45,9 @@ struct Game_ConfigInput {
 struct Game_Config {
 	/** Path to last config file we read from */
 	std::string config_path;
+
+	/** Gameplay subsystem options */
+	Game_ConfigPlayer player;
 
 	/** Video subsystem options */
 	Game_ConfigVideo video;

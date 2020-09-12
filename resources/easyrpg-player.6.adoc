@@ -104,6 +104,12 @@ directory!
   Overwrite the map used for new games and use Map__ID__.lmu instead ('ID' is
   padded to four digits).
 
+*--autobattle-algo* 'ALGO'::
+  Which AutoBattle algorithm to use. Possible options:
+   - 'RPG_RT'     - The default RPG_RT compatible algo, including RPG_RT bugs
+   - 'RPG_RT+'    - The default RPG_RT compatible algo, with bug fixes
+   - 'ATTACK'     - RPG_RT+ but only physical attacks, no skills
+
 NOTE: Incompatible with *--load-game-id*.
 
 *--start-position* 'X' 'Y'::

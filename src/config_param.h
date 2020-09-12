@@ -44,7 +44,7 @@ public:
 		return false;
 	}
 
-	bool IsValid(const T& value) const {
+	bool IsValid(const T&) const {
 		return true;
 	}
 

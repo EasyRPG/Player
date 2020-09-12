@@ -44,6 +44,10 @@ class Action;
 class SpriteAction;
 }
 
+namespace AutoBattle {
+class AlgorithmBase;
+}
+
 class Game_Battler;
 
 using BattleContinuation = std::function<void(BattleResult)>;
@@ -205,6 +209,7 @@ protected:
 	std::unique_ptr<Window_Message> message_window;
 
 	std::deque<Game_Battler*> battle_actions;
+	std::unique_ptr<AutoBattle::AlgorithmBase> autobattle_algo;
 
 	BattleContinuation on_battle_end;
 };

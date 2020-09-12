@@ -36,6 +36,7 @@
 #include "scene_gameover.h"
 #include "output.h"
 #include "rand.h"
+#include "autobattle.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 	Scene_Battle(args)
@@ -1260,13 +1261,8 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	}
 
 	if (auto_battle || active_actor->GetAutoBattle()) {
-		if (active_actor->HasAttackAll()) {
-			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor,
-						Main_Data::game_enemyparty.get()));
-		} else {
-			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor,
-						Main_Data::game_enemyparty->GetRandomActiveBattler()));
-		}
+		this->autobattle_algo->SetAutoBattleAction(*active_actor);
+		assert(active_actor->GetBattleAlgorithm() != nullptr);
 		battle_actions.push_back(active_actor);
 
 		SelectNextActor();

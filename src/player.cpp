@@ -120,6 +120,7 @@ namespace Player {
 	std::string record_input_path;
 	std::string command_line;
 	int speed_modifier = 3;
+	Game_ConfigPlayer player_config;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -204,6 +205,8 @@ void Player::Init(int argc, char *argv[]) {
 
 	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
+
+	player_config = std::move(cfg.player);
 }
 
 void Player::Run() {
@@ -1212,6 +1215,11 @@ Options:
       --start-map-id N     Overwrite the map used for new games and use.
                            MapN.lmu instead (N is padded to four digits).
                            Incompatible with --load-game-id.
+      --autobattle-algo A  Which AutoBattle algorithm to use.
+                           Possible options:
+                            RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
+                            RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
+                            ATTACK     - RPG_RT+ but only physical attacks, no skills
       --start-position X Y Overwrite the party start position and move the
                            party to position (X, Y).
                            Incompatible with --load-game-id.
