@@ -110,10 +110,6 @@ private:
 	mutable int _warnings = max_warnings;
 };
 
-inline Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
-	: _min(minval), _max(maxval)
-{ }
-
 inline void Game_Variables::SetData(Variables_t v) {
 	_variables = std::move(v);
 }
