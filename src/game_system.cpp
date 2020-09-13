@@ -45,7 +45,7 @@ static auto& dbsys = lcf::Data::system;
 bool bgm_pending = false;
 
 void Game_System::Init() {
-	data.Setup();
+	data = {};
 }
 
 bool Game_System::IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name) {
