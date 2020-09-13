@@ -39,7 +39,8 @@ namespace {
 	Color bg_color = Color{ 0, 0, 0, 255 };
 }
 
-static lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
+static auto& data = Main_Data::game_data.system;
+static auto& dbsys = lcf::Data::system;
 
 bool bgm_pending = false;
 
@@ -244,26 +245,8 @@ StringView Game_System::GetSystem2Name() {
 	return lcf::Data::system.system2_name;
 }
 
-lcf::rpg::Music& Game_System::GetSystemBGM(int which) {
-	switch (which) {
-		case BGM_Battle:		return data.battle_music;
-		case BGM_Victory:		return data.battle_end_music;
-		case BGM_Inn:			return data.inn_music;
-		case BGM_Boat:			return data.boat_music;
-		case BGM_Ship:			return data.ship_music;
-		case BGM_Airship:		return data.airship_music;
-		case BGM_GameOver:		return data.gameover_music;
-	}
-
-	return data.battle_music; // keep the compiler happy
-}
-
-lcf::rpg::Music& Game_System::GetCurrentBGM() {
+const lcf::rpg::Music& Game_System::GetCurrentBGM() {
 	return data.current_music;
-}
-
-void Game_System::SetSystemBGM(int which, const lcf::rpg::Music& bgm) {
-	GetSystemBGM(which) = bgm;
 }
 
 void Game_System::MemorizeBGM() {
@@ -274,26 +257,141 @@ void Game_System::PlayMemorizedBGM() {
 	BgmPlay(data.stored_music);
 }
 
-lcf::rpg::Sound& Game_System::GetSystemSE(int which) {
-	switch (which) {
-		case SFX_Cursor:		return data.cursor_se;
-		case SFX_Decision:		return data.decision_se;
-		case SFX_Cancel:		return data.cancel_se;
-		case SFX_Buzzer:		return data.buzzer_se;
-		case SFX_BeginBattle:	return data.battle_se;
-		case SFX_Escape:		return data.escape_se;
-		case SFX_EnemyAttacks:	return data.enemy_attack_se;
-		case SFX_EnemyDamage:	return data.enemy_damaged_se;
-		case SFX_AllyDamage:	return data.actor_damaged_se;
-		case SFX_Evasion:		return data.dodge_se;
-		case SFX_EnemyKill:		return data.enemy_death_se;
-		case SFX_UseItem:		return data.item_se;
-	}
-	return data.cursor_se; // keep the compiler happy
+
+template <typename T>
+static const T& GetAudio(const T& save, const T& db) {
+	return save.name.empty() ? db : save;
 }
 
-void Game_System::SetSystemSE(int which, const lcf::rpg::Sound& sfx) {
-	GetSystemSE(which) = sfx;
+template <typename T>
+static void SetAudio(T& save, const T& db, T update) {
+	if (update == db) {
+		save = {};
+		save.name.clear();
+	} else {
+		save = std::move(update);
+	}
+}
+
+const lcf::rpg::Music& Game_System::GetSystemBGM(int which) {
+	switch (which) {
+		case BGM_Battle:
+			return GetAudio(data.battle_music, dbsys.battle_music);
+		case BGM_Victory:
+			return GetAudio(data.battle_end_music, dbsys.battle_end_music);
+		case BGM_Inn:
+			return GetAudio(data.inn_music, dbsys.inn_music);
+		case BGM_Boat:
+			return GetAudio(data.boat_music, dbsys.boat_music);
+		case BGM_Ship:
+			return GetAudio(data.ship_music, dbsys.ship_music);
+		case BGM_Airship:
+			return GetAudio(data.airship_music, dbsys.airship_music);
+		case BGM_GameOver:
+			return GetAudio(data.gameover_music, dbsys.gameover_music);
+	}
+
+	static lcf::rpg::Music empty;
+	return empty;
+}
+
+void Game_System::SetSystemBGM(int which, lcf::rpg::Music bgm) {
+	switch (which) {
+		case BGM_Battle:
+			SetAudio(data.battle_music, dbsys.battle_music, std::move(bgm));
+			break;
+		case BGM_Victory:
+			SetAudio(data.battle_end_music, dbsys.battle_end_music, std::move(bgm));
+			break;
+		case BGM_Inn:
+			SetAudio(data.inn_music, dbsys.inn_music, std::move(bgm));
+			break;
+		case BGM_Boat:
+			SetAudio(data.boat_music, dbsys.boat_music, std::move(bgm));
+			break;
+		case BGM_Ship:
+			SetAudio(data.ship_music, dbsys.ship_music, std::move(bgm));
+			break;
+		case BGM_Airship:
+			SetAudio(data.airship_music, dbsys.airship_music, std::move(bgm));
+			break;
+		case BGM_GameOver:
+			SetAudio(data.gameover_music, dbsys.gameover_music, std::move(bgm));
+			break;
+	}
+}
+
+const lcf::rpg::Sound& Game_System::GetSystemSE(int which) {
+	switch (which) {
+		case SFX_Cursor:
+			return GetAudio(data.cursor_se, dbsys.cursor_se);
+		case SFX_Decision:
+			return GetAudio(data.decision_se, dbsys.decision_se);
+		case SFX_Cancel:
+			return GetAudio(data.cancel_se, dbsys.cancel_se);
+		case SFX_Buzzer:
+			return GetAudio(data.buzzer_se, dbsys.buzzer_se);
+		case SFX_BeginBattle:
+			return GetAudio(data.battle_se, dbsys.battle_se);
+		case SFX_Escape:
+			return GetAudio(data.escape_se, dbsys.escape_se);
+		case SFX_EnemyAttacks:
+			return GetAudio(data.enemy_attack_se, dbsys.enemy_attack_se);
+		case SFX_EnemyDamage:
+			return GetAudio(data.enemy_damaged_se, dbsys.enemy_damaged_se);
+		case SFX_AllyDamage:
+			return GetAudio(data.actor_damaged_se, dbsys.actor_damaged_se);
+		case SFX_Evasion:
+			return GetAudio(data.dodge_se, dbsys.dodge_se);
+		case SFX_EnemyKill:
+			return GetAudio(data.enemy_death_se, dbsys.enemy_death_se);
+		case SFX_UseItem:
+			return GetAudio(data.item_se, dbsys.item_se);
+	}
+
+	static lcf::rpg::Sound empty;
+	return empty;
+}
+
+void Game_System::SetSystemSE(int which, lcf::rpg::Sound sfx) {
+	switch (which) {
+		case SFX_Cursor:
+			SetAudio(data.cursor_se, dbsys.cursor_se, std::move(sfx));
+			break;
+		case SFX_Decision:
+			SetAudio(data.decision_se, dbsys.decision_se, std::move(sfx));
+			break;
+		case SFX_Cancel:
+			SetAudio(data.cancel_se, dbsys.cancel_se, std::move(sfx));
+			break;
+		case SFX_Buzzer:
+			SetAudio(data.buzzer_se, dbsys.buzzer_se, std::move(sfx));
+			break;
+		case SFX_BeginBattle:
+			SetAudio(data.battle_se, dbsys.battle_se, std::move(sfx));
+			break;
+		case SFX_Escape:
+			SetAudio(data.escape_se, dbsys.escape_se, std::move(sfx));
+			break;
+		case SFX_EnemyAttacks:
+			SetAudio(data.enemy_attack_se, dbsys.enemy_attack_se, std::move(sfx));
+			break;
+		case SFX_EnemyDamage:
+			SetAudio(data.enemy_damaged_se, dbsys.enemy_damaged_se, std::move(sfx));
+			break;
+		case SFX_AllyDamage:
+			SetAudio(data.actor_damaged_se, dbsys.actor_damaged_se, std::move(sfx));
+			break;
+		case SFX_Evasion:
+			SetAudio(data.dodge_se, dbsys.dodge_se, std::move(sfx));
+			break;
+		case SFX_EnemyKill:
+			SetAudio(data.enemy_death_se, dbsys.enemy_death_se, std::move(sfx));
+			break;
+		case SFX_UseItem:
+			SetAudio(data.item_se, dbsys.item_se, std::move(sfx));
+			break;
+	}
 }
 
 void Game_System::SetAllowTeleport(bool allow) {
