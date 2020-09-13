@@ -266,8 +266,8 @@ static const T& GetAudio(const T& save, const T& db) {
 template <typename T>
 static void SetAudio(T& save, const T& db, T update) {
 	if (update == db) {
-		save = {};
-		save.name.clear();
+		// RPG_RT only clears the name, but leaves the rest of the values alone
+		save.name = {};
 	} else {
 		save = std::move(update);
 	}
