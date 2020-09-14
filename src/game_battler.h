@@ -46,6 +46,18 @@ typedef std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
  */
 class Game_Battler {
 public:
+	/** Weapon mode used for various accessors, used to specify which weapons to include in calculation */
+	enum Weapon {
+		/** Use all weapons combined */
+		WeaponAll = -1,
+		/** Use no weapons */
+		WeaponNone = 0,
+		/** Use only primary weapon */
+		WeaponPrimary = 1,
+		/** Use only secondary weapon */
+		WeaponSecondary = 2,
+	};
+
 	/**
 	 * Constructor.
 	 */
@@ -147,13 +159,20 @@ public:
 	int GetStateRate(int state_id, int rate) const;
 
 	/**
-	 * Gets the attribute damage multiplier/protection (A-E).
-	 *
-	 * @param attribute_id Attribute to test
-	 * @param rate Attribute rate to get
+	 * Gets the base attribute rate when actor is damaged, without battle attribute shifts.
+	 * 
+	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
-	int GetAttributeRate(int attribute_id, int rate) const;
+	virtual int GetBaseAttributeRate(int attribute_id) const = 0;
+
+	/**
+	 * Gets the attribute rate when actor is damaged.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
+	 */
+	int GetAttributeRate(int attribute_id) const;
 
 	/**
 	 * Applies a modifier (buff/debuff) to an attribute rate.
@@ -180,7 +199,7 @@ public:
 	 * @param attribute_id Attribute modified
 	 * @return shift Shift applied.
 	 */
-	int GetAttributeRateShift(int attribute_id);
+	int GetAttributeRateShift(int attribute_id) const;
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
@@ -189,22 +208,6 @@ public:
 	 * @return Probability of state infliction
 	 */
 	virtual int GetStateProbability(int state_id) const = 0;
-
-	/**
-	 * Gets attribute protection when the actor is damaged.
-	 *
-	 * @param attribute_id Attribute to test
-	 * @return Attribute resistence
-	 */
-	virtual int GetAttributeModifier(int attribute_id) const = 0;
-
-	/**
-	 * Gets the final effect multiplier when a skill/attack is targeting this battler.
-	 *
-	 * @param attributes set for the incoming action
-	 * @return effect multiplier
-	 */
-	float GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const;
 
 	/**
 	 * Gets the characters name
@@ -290,30 +293,34 @@ public:
 	/**
 	 * Gets the current battler attack.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current attack.
 	 */
-	virtual int GetAtk() const;
+	int GetAtk(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler defense.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current defense.
 	 */
-	virtual int GetDef() const;
+	int GetDef(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler spirit.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current spirit.
 	 */
-	virtual int GetSpi() const;
+	int GetSpi(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the current battler agility.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return current agility.
 	 */
-	virtual int GetAgi() const;
+	int GetAgi(Weapon weapon = Game_Battler::WeaponAll) const;
 
 	/**
 	 * Gets the maximum HP for the current level.
@@ -332,30 +339,34 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return attack.
 	 */
-	virtual int GetBaseAtk() const = 0;
+	virtual int GetBaseAtk(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return defense.
 	 */
-	virtual int GetBaseDef() const = 0;
+	virtual int GetBaseDef(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return spirit.
 	 */
-	virtual int GetBaseSpi() const = 0;
+	virtual int GetBaseSpi(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return agility.
 	 */
-	virtual int GetBaseAgi() const = 0;
+	virtual int GetBaseAgi(Weapon weapon = WeaponAll) const = 0;
 
 	/** @return whether the battler is facing the opposite it's normal direction */
 	bool IsDirectionFlipped() const;
@@ -517,9 +528,21 @@ public:
 
 	virtual int GetBattleAnimationId() const = 0;
 
-	virtual int GetHitChance() const = 0;
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
+	virtual int GetHitChance(Weapon weapon = WeaponAll) const = 0;
 
-	virtual float GetCriticalHitChance() const = 0;
+	/**
+	 * Gets the chance to critical hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return critical hit rate [0.0f-1.0f]
+	 */
+	virtual float GetCriticalHitChance(Weapon weapon = WeaponAll) const = 0;
 
 	/**
 	 * @return If battler is charged (next attack double damages)
@@ -553,9 +576,10 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants preemption.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having preempt attribute
 	 */
-	virtual bool HasPreemptiveAttack() const;
+	virtual bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const;
 
 	enum BattlerType {
 		Type_Ally,
@@ -670,7 +694,7 @@ public:
 	/**
 	 * Initializes battle related data to there default values.
 	 */
-	virtual void ResetBattle();
+	void ResetBattle();
 
 	/**
 	 * @return Effective physical hit rate modifier from inflicted states.
@@ -811,7 +835,7 @@ inline bool Game_Battler::HasStrongDefense() const {
 	return false;
 }
 
-inline bool Game_Battler::HasPreemptiveAttack() const {
+inline bool Game_Battler::HasPreemptiveAttack(Weapon) const {
 	return false;
 }
 

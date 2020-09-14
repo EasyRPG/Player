@@ -33,10 +33,27 @@ inline fmt::basic_string_view<char> to_string_view(const lcf::DBString& s) {
 }
 }
 
+enum class LogLevel {
+	Error,
+	Warning,
+	Info,
+	Debug
+};
+
 /**
  * Output Namespace.
  */
 namespace Output {
+	/** @return the configurated log level */
+	LogLevel GetLogLevel();
+
+	/**
+	 * Sets the log level for filtering logs
+	 *
+	 * @param ll the new log level
+	 */
+	void SetLogLevel(LogLevel ll);
+
 	/**
 	 * Closes the log file handle and trims the file.
 	 */

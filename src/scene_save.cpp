@@ -30,6 +30,7 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
+#include "game_actors.h"
 #include "game_system.h"
 #include "game_targets.h"
 #include "game_screen.h"
@@ -138,6 +139,7 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	data_copy.system.switches = Main_Data::game_switches->GetData();
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();
+	data_copy.actors = Main_Data::game_actors->GetSaveData();
 
 	data_copy.screen = Main_Data::game_screen->GetSaveData();
 	data_copy.pictures = Main_Data::game_pictures->GetSaveData();

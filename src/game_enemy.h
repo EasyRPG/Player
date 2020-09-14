@@ -30,7 +30,7 @@
 class Game_Enemy final : public Game_Battler
 {
 public:
-	explicit Game_Enemy(const lcf::rpg::TroopMember& tm);
+	explicit Game_Enemy(const lcf::rpg::TroopMember* tm);
 
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
@@ -52,12 +52,12 @@ public:
 	int GetStateProbability(int state_id) const override;
 
 	/**
-	 * Gets attribute multiplier when the enemy is damaged.
-	 *
-	 * @param attribute_id Attribute to test
-	 * @return Attribute resistence
+	 * Gets the base attribute rate when actor is damaged.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
 	 */
-	int GetAttributeModifier(int attribute_id) const override;
+	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
 	 * Gets the enemy ID.
@@ -97,30 +97,34 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return attack.
 	 */
-	int GetBaseAtk() const override;
+	int GetBaseAtk(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return defense.
 	 */
-	int GetBaseDef() const override;
+	int GetBaseDef(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return spirit.
 	 */
-	int GetBaseSpi() const override;
+	int GetBaseSpi(Weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return agility.
 	 */
-	int GetBaseAgi() const override;
+	int GetBaseAgi(Weapon = WeaponAll) const override;
 
 	int GetHue() const override;
 
@@ -132,8 +136,21 @@ public:
 
 	void Transform(int new_enemy_id);
 
-	int GetHitChance() const override;
-	float GetCriticalHitChance() const override;
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
+	int GetHitChance(Weapon = WeaponAll) const override;
+
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
+	float GetCriticalHitChance(Weapon = WeaponAll) const override;
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;
@@ -221,19 +238,19 @@ inline int Game_Enemy::GetBaseMaxSp() const {
 	return enemy->max_sp;
 }
 
-inline int Game_Enemy::GetBaseAtk() const {
+inline int Game_Enemy::GetBaseAtk(Weapon) const {
 	return enemy->attack;
 }
 
-inline int Game_Enemy::GetBaseDef() const {
+inline int Game_Enemy::GetBaseDef(Weapon) const {
 	return enemy->defense;
 }
 
-inline int Game_Enemy::GetBaseSpi() const {
+inline int Game_Enemy::GetBaseSpi(Weapon) const {
 	return enemy->spirit;
 }
 
-inline int Game_Enemy::GetBaseAgi() const {
+inline int Game_Enemy::GetBaseAgi(Weapon) const {
 	return enemy->agility;
 }
 

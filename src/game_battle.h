@@ -207,16 +207,6 @@ namespace Game_Battle {
 	 */
 	void SetNeedRefresh(bool refresh);
 
-	/**
-	 * Uses RPG_RT algorithm for performing a variance adjument to damage/healing effects and returns the result.
-	 *
-	 * @param base - the base amount of the effect
-	 * @param var - the variance level from 0 to 10
-	 *
-	 * @return the adjusted damage amount
-	 */
-	int VarianceAdjustEffect(int base, int var);
-
 	struct BattleTest {
 		bool enabled = false;
 		int troop_id = 0;
@@ -246,14 +236,6 @@ namespace Game_Battle {
 
 inline bool Game_Battle::IsBattleRunning() {
 	return battle_running;
-}
-
-inline int Game_Battle::VarianceAdjustEffect(int base, int var) {
-	if (var > 0) {
-		int adj = std::max(1, var * base / 10);
-		return base + Utils::GetRandomNumber(0, adj) - adj / 2;
-	}
-	return base;
 }
 
 #endif

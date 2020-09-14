@@ -41,7 +41,7 @@ void Window_ActorStatus::Refresh() {
 
 void Window_ActorStatus::DrawStatus(){
 
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	// Draw Hp
 	contents->TextDraw(1, 2, 1, lcf::Data::terms.health_points);
@@ -61,13 +61,13 @@ void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
 	if (max >= 0)
 		ss << min;
 	else
-		ss << Game_Actors::GetActor(actor_id)->GetExpString();
+		ss << Main_Data::game_actors->GetActor(actor_id)->GetExpString();
 	contents->TextDraw(cx, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 	ss.str("");
 	if (max >= 0)
 		ss << max;
 	else
-		ss << Game_Actors::GetActor(actor_id)->GetNextExpString();
+		ss << Main_Data::game_actors->GetActor(actor_id)->GetNextExpString();
 	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }

@@ -36,12 +36,16 @@ class PendingMessage;
 class Game_Actor final : public Game_Battler {
 public:
 	using RowType = lcf::rpg::SaveActor::RowType;
+
 	/**
 	 * Constructor.
 	 *
 	 * @param actor_id database actor ID.
 	 */
 	Game_Actor(int actor_id);
+
+	void SetSaveData(lcf::rpg::SaveActor save);
+	const lcf::rpg::SaveActor& GetSaveData() const;
 
 	int MaxHpValue() const override;
 
@@ -147,9 +151,12 @@ public:
 	int CalculateSkillCost(int skill_id) const override;
 
 	/**
+	 * Calculates the Sp cost for attacking with a weapon.
+	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return sp cost for attacking with weapon.
 	 */
-	int CalculateWeaponSpCost() const;
+	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * Gets the actor ID.
@@ -225,12 +232,12 @@ public:
 	int GetStateProbability(int state_id) const override;
 
 	/**
-	 * Gets attribute protection when the actor is damaged.
-	 *
-	 * @param attribute_id Attribute to test
-	 * @return Attribute resistence
+	 * Gets the base attribute rate when actor is damaged.
+	 * 
+	 * @param attribute_id Attribute to query
+	 * @return Attribute rate
 	 */
-	int GetAttributeModifier(int attribute_id) const override;
+	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
 	 * Gets actor name.
@@ -535,34 +542,38 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAtk(bool mod, bool equip) const;
+	int GetBaseAtk(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseDef(bool mod, bool equip) const;
+	int GetBaseDef(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseSpi(bool mod, bool equip) const;
+	int GetBaseSpi(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @param mod include the modifier bonus.
 	 * @param equip include the equipment bonuses.
 	 */
-	int GetBaseAgi(bool mod, bool equip) const;
+	int GetBaseAgi(Weapon weapon, bool mod, bool equip) const;
 
 	/**
 	 * Gets the max HP for the current level.
@@ -579,26 +590,30 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
-	int GetBaseAtk() const override;
+	int GetBaseAtk(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
-	int GetBaseDef() const override;
+	int GetBaseDef(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
-	int GetBaseSpi() const override;
+	int GetBaseSpi(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
-	int GetBaseAgi() const override;
+	int GetBaseAgi(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Sets the base max HP by adjusting the modifier bonus.
@@ -653,6 +668,24 @@ public:
 	 * @param _agi agility.
 	 */
 	void SetBaseAgi(int _agi);
+
+	/** @return Permanent max hp modifier */
+	int GetMaxHpMod() const;
+
+	/** @return Permanent max sp modifier */
+	int GetMaxSpMod() const;
+
+	/** @return Permanent atk modifier */
+	int GetAtkMod() const;
+
+	/** @return Permanent atk modifier */
+	int GetDefMod() const;
+
+	/** @return Permanent def modifier */
+	int GetSpiMod() const;
+
+	/** @return Permanent agi modifier */
+	int GetAgiMod() const;
 
 	/**
 	 * Gets if actor has two weapons.
@@ -782,28 +815,34 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants preemption.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having preempt attribute
 	 */
-	bool HasPreemptiveAttack() const override;
+	bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon that grants dual attack.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having dual attack attribute
 	 */
-	bool HasDualAttack() const;
+	bool HasDualAttack(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * Tests if the battler has a weapon that grants attack all
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having attack all attribute
 	 */
-	bool HasAttackAll() const;
+	bool HasAttackAll(Weapon weapon = WeaponAll) const;
 
 	/**
+	 * Tests if the battler has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool AttackIgnoresEvasion() const;
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * @return If the actor has equipment that protects against terrain damage.
@@ -827,8 +866,21 @@ public:
 
 	int GetBattleAnimationId() const override;
 
-	int GetHitChance() const override;
-	float GetCriticalHitChance() const override;
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
+	int GetHitChance(Weapon weapon = WeaponAll) const override;
+
+	/**
+	 * Gets the chance to critical hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return critical hit rate [0.0f-1.0f]
+	 */
+	float GetCriticalHitChance(Weapon weapon = WeaponAll) const override;
 
 	std::string GetLevelUpMessage(int new_level) const;
 	std::string GetLearningMessage(const lcf::rpg::Skill& skill) const;
@@ -857,18 +909,12 @@ private:
 	 */
 	const lcf::rpg::Actor& GetActor() const;
 
-	// same reason as for Game_Picture, see comment
-	/**
-	 * @return Reference to the SaveActor data
-	 */
-	lcf::rpg::SaveActor& GetData() const;
-
 	/**
 	 * Removes invalid data from the actor.
 	 */
 	void RemoveInvalidData();
 
-	int actor_id;
+	lcf::rpg::SaveActor data;
 	std::vector<int> exp_list;
 };
 
@@ -877,90 +923,111 @@ inline Game_Battler::BattlerType Game_Actor::GetType() const {
 }
 
 inline void Game_Actor::SetName(const std::string &new_name) {
-	GetData().name = new_name;
+	data.name = new_name;
 }
 
-
 inline StringView Game_Actor::GetName() const {
-	return GetData().name;
+	return data.name;
 }
 
 inline void Game_Actor::SetTitle(const std::string &new_title) {
-	GetData().title = new_title;
+	data.title = new_title;
 }
 
 inline const std::string& Game_Actor::GetTitle() const {
-	return GetData().title;
+	return data.title;
 }
 
 inline StringView Game_Actor::GetSpriteName() const {
-	return GetData().sprite_name;
+	return data.sprite_name;
 }
 
 inline int Game_Actor::GetSpriteIndex() const {
-	return GetData().sprite_id;
+	return data.sprite_id;
 }
 
 inline int Game_Actor::GetSpriteTransparency() const {
-	return GetData().transparency;
+	return data.transparency;
 }
 
 inline StringView Game_Actor::GetFaceName() const {
-	return GetData().face_name;
+	return data.face_name;
 }
 
 inline int Game_Actor::GetFaceIndex() const {
-	return GetData().face_id;
+	return data.face_id;
 }
 
 inline int Game_Actor::GetLevel() const {
-	return GetData().level;
+	return data.level;
 }
 
 inline int Game_Actor::GetExp() const {
-	return GetData().exp;
+	return data.exp;
 }
 
 inline int Game_Actor::GetHp() const {
-	return GetData().current_hp;
+	return data.current_hp;
 }
 
 inline int Game_Actor::GetSp() const {
-	return GetData().current_sp;
+	return data.current_sp;
 }
 
 inline bool Game_Actor::HasTwoWeapons() const {
-	return GetData().two_weapon;
+	return data.two_weapon;
 }
 
 inline bool Game_Actor::GetAutoBattle() const {
-	return GetData().auto_battle;
+	return data.auto_battle;
 }
 
 inline bool Game_Actor::HasStrongDefense() const {
-	return GetData().super_guard;
+	return data.super_guard;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetSkills() const {
-	return GetData().skills;
+	return data.skills;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetStates() const {
-	return GetData().status;
+	return data.status;
 }
 
 inline std::vector<int16_t>& Game_Actor::GetStates() {
-	return GetData().status;
+	return data.status;
 }
 
 inline const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
-	return GetData().equipped;
+	return data.equipped;
 }
 
 inline int Game_Actor::GetId() const {
-	return actor_id;
+	return data.ID;
 }
 
+inline int Game_Actor::GetMaxHpMod() const {
+	return data.hp_mod;
+}
 
+inline int Game_Actor::GetMaxSpMod() const {
+	return data.sp_mod;
+}
+
+inline int Game_Actor::GetAtkMod() const {
+	return data.attack_mod;
+}
+
+inline int Game_Actor::GetDefMod() const {
+	return data.defense_mod;
+}
+
+inline int Game_Actor::GetSpiMod() const {
+	return data.spirit_mod;
+}
+
+inline int Game_Actor::GetAgiMod() const {
+	return data.agility_mod;
+}
 
 #endif

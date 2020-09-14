@@ -108,7 +108,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			iter = parse_ret.next;
 			int value = parse_ret.value;
 
-			const auto* actor = Game_Actors::GetActor(value);
+			const auto* actor = Main_Data::game_actors->GetActor(value);
 			if (!actor) {
 				Output::Warning("Invalid Actor Id {} in message text", value);
 			} else{

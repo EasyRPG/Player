@@ -102,7 +102,7 @@ void Game_Party::SetupBattleTestMembers() {
 
 	for (auto& btdata : lcf::Data::system.battletest_data) {
 		AddActor(btdata.actor_id);
-		Game_Actor* actor = Game_Actors::GetActor(btdata.actor_id);
+		Game_Actor* actor = Main_Data::game_actors->GetActor(btdata.actor_id);
 
 		// Filter garbage btdata inserted by the editor
 		std::array<int, 5> ids = {{ btdata.weapon_id, btdata.shield_id, btdata.armor_id, btdata.helmet_id, btdata.accessory_id }};
@@ -140,7 +140,7 @@ int Game_Party::GetEquippedItemCount(int item_id) const {
 	int number = 0;
 	if (item_id > 0) {
 		for (int i = 0; i < (int) data.party.size(); i++) {
-			Game_Actor* actor = Game_Actors::GetActor(data.party[i]);
+			Game_Actor* actor = Main_Data::game_actors->GetActor(data.party[i]);
 			number += actor->GetItemCount(item_id);
 		}
 	}
@@ -474,13 +474,13 @@ std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
 	for (it = data.party.begin(); it != data.party.end(); ++it)
-		actors.push_back(Game_Actors::GetActor(*it));
+		actors.push_back(Main_Data::game_actors->GetActor(*it));
 	return actors;
 }
 
 Game_Actor* Game_Party::GetActor(int idx) const {
 	if (idx < static_cast<int>(data.party.size())) {
-		return Game_Actors::GetActor(data.party[idx]);
+		return Main_Data::game_actors->GetActor(data.party[idx]);
 	}
 	return nullptr;
 }
@@ -652,7 +652,7 @@ void Game_Party::RemoveInvalidData() {
 	std::swap(temp_party, data.party);
 	std::vector<int16_t>::iterator it;
 	for (it = temp_party.begin(); it != temp_party.end(); ++it) {
-		if (Game_Actors::ActorExists(*it)) {
+		if (Main_Data::game_actors->ActorExists(*it)) {
 			data.party.push_back(*it);
 		} else {
 			Output::Warning("Removing invalid party member {}", *it);

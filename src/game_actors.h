@@ -26,22 +26,18 @@
 /**
  * Game_Actors namespace.
  */
-namespace Game_Actors {
+class Game_Actors {
+public:
 	/**
 	 * Initializes Game Actors.
 	 */
-	void Init();
+	Game_Actors();
 
-	/**
-	 * Used after savegame loading to replace savegame default values with
-	 * database ones.
-	 */
-	void Fixup();
+	Game_Actors(const Game_Actors&) = delete;
+	Game_Actors& operator=(const Game_Actors&) = delete;
 
-	/**
-	 * Disposes Game Actors.
-	 */
-	void Dispose();
+	void SetSaveData(std::vector<lcf::rpg::SaveActor> save);
+	std::vector<lcf::rpg::SaveActor> GetSaveData() const;
 
 	/**
 	 * Gets an actor by its ID.
@@ -63,6 +59,9 @@ namespace Game_Actors {
 	 * Resets battle modifiers of all actors.
 	 */
 	void ResetBattle();
-}
+
+private:
+	std::vector<Game_Actor> data;
+};
 
 #endif

@@ -22,59 +22,47 @@
 #include "main_data.h"
 #include "output.h"
 
-namespace {
-	std::vector<std::shared_ptr<Game_Actor> > data;
+Game_Actors::Game_Actors() {
+	data.resize(lcf::Data::actors.size(), Game_Actor(0));
+	for (size_t i = 0; i < data.size(); i++) {
+		data[i] = Game_Actor(i + 1);
+	}
 }
 
-void Game_Actors::Init() {
-	data.resize(lcf::Data::actors.size());
-	for (size_t i = 1; i <= data.size(); i++)
-		GetActor(i)->Init();
-}
-
-void Game_Actors::Fixup() {
+void Game_Actors::SetSaveData(std::vector<lcf::rpg::SaveActor> save) {
 	// Ensure actor save data and LDB actors has correct size
-	if (Main_Data::game_data.actors.size() != data.size()) {
-		size_t save_actor_size = Main_Data::game_data.actors.size();
-
-		Output::Warning("Actor array size doesn't match Savegame actor array size ({} != {})",
-						data.size(), save_actor_size);
-
-		Main_Data::game_data.actors.resize(data.size());
-
-		// When the save data size is smaller than the LDB size set the additional actors to nullptr.
-		// GetActor will copy the actor data to the savegame data next time it is invoked.
-		if (save_actor_size < data.size()) {
-			std::fill(data.begin() + save_actor_size, data.end(), nullptr);
-		}
+	if (save.size() > data.size()) {
+		Output::Warning("Game_Actors: Save game array size {} is larger than number of LDB actors {} : Dropping extras ...", save.size(), data.size());
 	}
 
-	for (size_t i = 1; i <= data.size(); ++i) {
-		GetActor(i)->Fixup();
+	for (size_t i = 0; i < std::min(save.size(), data.size()); ++i) {
+		data[i].SetSaveData(std::move(save[i]));
 	}
 }
 
-void Game_Actors::Dispose() {
-	data.clear();
+std::vector<lcf::rpg::SaveActor> Game_Actors::GetSaveData() const {
+	std::vector<lcf::rpg::SaveActor> save;
+	save.reserve(data.size());
+	for (auto& actor: data) {
+		save.push_back(actor.GetSaveData());
+	}
+	return save;
 }
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
 		return nullptr;
-	} else if (!data[actor_id - 1]) {
-		data[actor_id - 1].reset(new Game_Actor(actor_id));
 	}
 
-	return data[actor_id - 1].get();
+	return &data[actor_id - 1];
 }
 
 bool Game_Actors::ActorExists(int actor_id) {
-	return actor_id > 0 && (size_t)actor_id <= data.size();
+	return actor_id > 0 && actor_id <= static_cast<int>(data.size());
 }
 
 void Game_Actors::ResetBattle() {
-	for (size_t i = 1; i <= data.size(); ++i) {
-		GetActor(i)->ResetBattle();
+	for (auto& actor: data) {
+		actor.ResetBattle();
 	}
-
 }

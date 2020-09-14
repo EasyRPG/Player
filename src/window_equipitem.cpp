@@ -31,7 +31,7 @@ Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
 	}
 
 	if (this->equip_type == Window_EquipItem::shield &&
-		Game_Actors::GetActor(actor_id)->HasTwoWeapons()) {
+		Main_Data::game_actors->GetActor(actor_id)->HasTwoWeapons()) {
 
 		this->equip_type = Window_EquipItem::weapon;
 	}
@@ -73,7 +73,7 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 		if (Main_Data::game_party->GetItemCount(item_id) == 0) {
 			return false;
 		} else {
-			return Game_Actors::GetActor(actor_id)->IsEquippable(item_id);
+			return Main_Data::game_actors->GetActor(actor_id)->IsEquippable(item_id);
 		}
 	} else {
 		return false;

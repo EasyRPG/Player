@@ -50,7 +50,7 @@ public:
 	 *
 	 * @return list of party members
 	 */
-	std::vector<std::shared_ptr<Game_Enemy> >& GetEnemies();
+	std::vector<Game_Enemy*> GetEnemies();
 
 	/**
 	 * Sums up the experience points of all enemy party members.
@@ -74,7 +74,7 @@ public:
 	void GenerateDrops(std::vector<int>& out) const;
 
 private:
-	std::vector<std::shared_ptr<Game_Enemy> > enemies;
+	std::vector<Game_Enemy> enemies;
 };
 
 #endif

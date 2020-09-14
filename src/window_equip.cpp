@@ -42,7 +42,7 @@ void Window_Equip::Refresh() {
 
 	// Add the equipment of the actor to data
 	data.clear();
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 	for (int i = 1; i <= 5; ++i) {
 		const lcf::rpg::Item* item = actor->GetEquipment(i);
 		data.push_back(item ? item->ID : 0);

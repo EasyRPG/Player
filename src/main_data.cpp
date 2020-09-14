@@ -61,6 +61,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
 	std::unique_ptr<Game_Pictures> game_pictures;
+	std::unique_ptr<Game_Actors> game_actors;
 	std::unique_ptr<Game_Player> game_player;
 	std::unique_ptr<Game_Party> game_party;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
@@ -157,7 +158,6 @@ void Main_Data::Init() {
 
 void Main_Data::Cleanup() {
 	Game_Map::Quit();
-	Game_Actors::Dispose();
 
 	game_switches.reset();
 	game_screen.reset();
@@ -165,6 +165,7 @@ void Main_Data::Cleanup() {
 	game_player.reset();
 	game_party.reset();
 	game_enemyparty.reset();
+	game_actors.reset();
 	game_targets.reset();
 	game_quit.reset();
 

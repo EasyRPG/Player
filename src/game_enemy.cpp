@@ -27,15 +27,19 @@
 #include "output.h"
 #include "utils.h"
 #include "player.h"
+#include "attribute.h"
 
 namespace {
 	constexpr int levitation_frame_count = 14;
 	constexpr int levitation_frame_cycle = 20;
 }
 
-Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember& member)
-	: troop_member(&member)
+Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
+	: troop_member(member)
 {
+	if (troop_member == nullptr) {
+		return;
+	}
 	Transform(troop_member->enemy_id);
 
 	hp = GetMaxHp();
@@ -61,28 +65,21 @@ int Game_Enemy::MaxStatBaseValue() const {
 int Game_Enemy::GetStateProbability(int state_id) const {
 	int rate = 2; // C - default
 
-	if (state_id <= (int)enemy->state_ranks.size()) {
+	if (state_id >= 1 && state_id <= (int)enemy->state_ranks.size()) {
 		rate = enemy->state_ranks[state_id - 1];
 	}
 
 	return GetStateRate(state_id, rate);
 }
 
-int Game_Enemy::GetAttributeModifier(int attribute_id) const {
+int Game_Enemy::GetBaseAttributeRate(int attribute_id) const {
 	int rate = 2; // C - default
 
-	if (attribute_id <= (int)enemy->attribute_ranks.size()) {
+	if (attribute_id >= 1 && attribute_id <= (int)enemy->attribute_ranks.size()) {
 		rate = enemy->attribute_ranks[attribute_id - 1];
 	}
 
-	rate += attribute_shift[attribute_id - 1];
-	if (rate < 0) {
-		rate = 0;
-	} else if (rate > 4) {
-		rate = 4;
-	}
-
-	return GetAttributeRate(attribute_id, rate);
+	return rate;
 }
 
 void Game_Enemy::SetHp(int _hp) {
@@ -117,11 +114,11 @@ void Game_Enemy::Transform(int new_enemy_id) {
 	}
 }
 
-int Game_Enemy::GetHitChance() const {
+int Game_Enemy::GetHitChance(Weapon) const {
 	return enemy->miss ? 70 : 90;
 }
 
-float Game_Enemy::GetCriticalHitChance() const {
+float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 

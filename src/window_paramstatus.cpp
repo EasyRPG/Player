@@ -36,7 +36,7 @@ Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, 
 void Window_ParamStatus::Refresh() {
 	contents->Clear();
 
-	auto* actor = Game_Actors::GetActor(actor_id);
+	auto* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	auto draw = [this](int y, StringView name, int value) {
 		// Draw Term

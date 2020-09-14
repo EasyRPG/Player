@@ -40,6 +40,8 @@
 #include "game_battlealgorithm.h"
 #include "state.h"
 #include "shake.h"
+#include "attribute.h"
+#include "algo.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -112,60 +114,6 @@ const lcf::rpg::State* Game_Battler::GetSignificantState() const {
 
 int Game_Battler::GetStateRate(int state_id, int rate) const {
 	return State::GetStateRate(state_id, rate);
-}
-
-int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
-	const lcf::rpg::Attribute* attribute = lcf::ReaderUtil::GetElement(lcf::Data::attributes, attribute_id);
-
-	if (!attribute) {
-		Output::Warning("GetAttributeRate: Invalid attribute ID {}", attribute_id);
-		return 0;
-	}
-
-	switch (rate) {
-	case 0:
-		return attribute->a_rate;
-	case 1:
-		return attribute->b_rate;
-	case 2:
-		return attribute->c_rate;
-	case 3:
-		return attribute->d_rate;
-	case 4:
-		return attribute->e_rate;
-	default:;
-	}
-
-	assert(false && "bad rate");
-	return 0;
-}
-
-float Game_Battler::GetAttributeMultiplier(const lcf::DBBitArray& attributes_set) const {
-	constexpr auto min_mod = std::numeric_limits<int>::min();
-	int physical = min_mod;
-	int magical = min_mod;
-
-	for (unsigned int i = 0; i < attributes_set.size(); i++) {
-		if (attributes_set[i]) {
-			auto* attr = lcf::ReaderUtil::GetElement(lcf::Data::attributes, i + 1);
-			if (attr) {
-				if (attr->type == lcf::rpg::Attribute::Type_physical) {
-					physical = std::max(physical, GetAttributeModifier(i + 1));
-				} else {
-					magical = std::max(magical, GetAttributeModifier(i + 1));
-				}
-			}
-		}
-	}
-
-	if (physical == min_mod) {
-		physical = 100;
-	}
-	if (magical == min_mod) {
-		magical = 100;
-	}
-
-	return float(physical * magical) / 10000.0;
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
@@ -318,19 +266,8 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		float mul = GetAttributeMultiplier(skill->attribute_effects);
-
-		int effect = skill->power;
-		if (source != nullptr) {
-			effect += source->GetAtk() * skill->physical_rate / 20 +
-				source->GetSpi() * skill->magical_rate / 40;
-		}
-		effect *= mul;
-
-		if (Player::IsLegacy() || effect > 0) effect = Game_Battle::VarianceAdjustEffect(effect, skill->variance);
-
-		if (effect < 0)
-			effect = 0;
+		// FIXME: What about negative attributes? Does it do damage here? Can it kill?
+		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true);
 
 		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
@@ -532,91 +469,46 @@ bool Game_Battler::HasFullSp() const {
 	return GetMaxSp() == GetSp();
 }
 
-static int AffectParameter(const int type, const int val) {
-	return
-		type == 0? val / 2 :
-		type == 1? val * 2 :
-		val;
-}
-
-int Game_Battler::GetAtk() const {
-	int base_atk = GetBaseAtk();
-	int n = Utils::Clamp(base_atk, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_attack) {
-			n = AffectParameter(state.affect_type, base_atk);
-			break;
+static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states, bool lcf::rpg::State::*adj) {
+	auto value = Utils::Clamp(base + mod, 1, maxval);
+	bool half = false;
+	bool dbl = false;
+	for (auto i: states) {
+		const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, i);
+		assert(state);
+		if (state->*adj) {
+			half |= (state->affect_type == lcf::rpg::State::AffectType_half);
+			dbl |= (state->affect_type == lcf::rpg::State::AffectType_double);
 		}
 	}
-
-	n += atk_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
-}
-
-int Game_Battler::GetDef() const {
-	int base_def = GetBaseDef();
-	int n = Utils::Clamp(base_def, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_defense) {
-			n = AffectParameter(state.affect_type, base_def);
-			break;
+	if (dbl != half) {
+		if (dbl) {
+			value *= 2;
+		} else {
+			value = std::max(1, value / 2);
 		}
 	}
-
-	n += def_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+	// NOTE: RPG_RT does not clamp these values to the upper range!
+	// Exceptions:
+	// * 2k3 special function which computes atk for individual weapons / dual wield dmg does clamp at the end
+	// * 2k3 special function which computes agi for individual weapons / dual wield hit ratio does clamp, but also has a bug where it ignores states which modify agi!
+	return value;
 }
 
-int Game_Battler::GetSpi() const {
-	int base_spi = GetBaseSpi();
-	int n = Utils::Clamp(base_spi, 1, MaxStatBaseValue());
-
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_spirit) {
-			n = AffectParameter(state.affect_type, base_spi);
-			break;
-		}
-	}
-
-	n += spi_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+int Game_Battler::GetAtk(Weapon weapon) const {
+	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
 }
 
-int Game_Battler::GetAgi() const {
-	int base_agi = GetBaseAgi();
-	int n = Utils::Clamp(base_agi, 1, MaxStatBaseValue());
+int Game_Battler::GetDef(Weapon weapon) const {
+	return AdjustParam(GetBaseDef(weapon), def_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
+}
 
-	for (int16_t i : GetInflictedStates()) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, i);
-		if (state.affect_agility) {
-			n = AffectParameter(state.affect_type, base_agi);
-			break;
-		}
-	}
+int Game_Battler::GetSpi(Weapon weapon) const {
+	return AdjustParam(GetBaseSpi(weapon), spi_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
+}
 
-	n += agi_modifier;
-
-	n = Utils::Clamp(n, 1, MaxStatBattleValue());
-
-	return n;
+int Game_Battler::GetAgi(Weapon weapon) const {
+	return AdjustParam(GetBaseAgi(weapon), agi_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
 }
 
 int Game_Battler::GetDisplayX() const {
@@ -693,36 +585,30 @@ void Game_Battler::ResetBattle() {
 	SetBattleAlgorithm(nullptr);
 }
 
+int Game_Battler::GetAttributeRate(int attribute_id) const {
+	auto rate = GetBaseAttributeRate(attribute_id);
+	rate += GetAttributeRateShift(attribute_id);
+	return Utils::Clamp(rate, 0, 4);
+}
+
 void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
-	if (attribute_id < 1 || attribute_id > (int)lcf::Data::attributes.size()) {
-		assert(false && "invalid attribute_id");
-	}
-
-	if (shift < -1 || shift > 1) {
-		assert(false && "Invalid shift");
-	}
-
-	if (shift == 0) {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
 		return;
 	}
 
-	int& old_shift = attribute_shift[attribute_id - 1];
-	if ((old_shift == -1 || old_shift == 0) && shift == 1) {
-		++old_shift;
-	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
-		--old_shift;
-	}
+	auto& a = attribute_shift[attribute_id -1];
+	a = Utils::Clamp(a + shift, -1, 1);
 }
 
-int Game_Battler::GetAttributeRateShift(int attribute_id) {
-	if (attribute_id < 1 || attribute_id >(int)lcf::Data::attributes.size()) {
-		assert(false && "invalid attribute_id");
+int Game_Battler::GetAttributeRateShift(int attribute_id) const {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
+		return 0;
 	}
 	return attribute_shift[attribute_id - 1];
 }
 
 bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
-	if (attribute_id < 1 || attribute_id > (int)lcf::Data::attributes.size()) {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
 		return false;
 	}
 	auto new_shift = attribute_shift[attribute_id - 1] + shift;

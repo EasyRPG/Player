@@ -139,7 +139,7 @@ bool Game_Interpreter_Battle::CommandEnableCombo(lcf::rpg::EventCommand const& c
 	int command_id = com.parameters[1];
 	int multiple = com.parameters[2];
 
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	if (!actor) {
 		Output::Warning("EnableCombo: Invalid actor ID {}", actor_id);
@@ -346,7 +346,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 			break;
 		case 2: {
 			// Hero can act
-			Game_Actor* actor = Game_Actors::GetActor(com.parameters[1]);
+			Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[1]);
 
 			if (!actor) {
 				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
@@ -371,7 +371,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 			break;
 		case 5: {
 			// Hero uses the ... command
-			Game_Actor *actor = Game_Actors::GetActor(com.parameters[1]);
+			Game_Actor *actor = Main_Data::game_actors->GetActor(com.parameters[1]);
 
 			if (!actor) {
 				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);

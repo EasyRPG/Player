@@ -29,7 +29,7 @@ Scene_Name::Scene_Name(int actor_id, int charset, bool use_default_name)
 {
 	Scene::type = Scene::Name;
 
-	auto *actor = Game_Actors::GetActor(actor_id);
+	auto *actor = Main_Data::game_actors->GetActor(actor_id);
 	if (!actor) {
 		Output::Error("EnterHeroName: Invalid actor ID {}", actor_id);
 	}
@@ -38,7 +38,7 @@ Scene_Name::Scene_Name(int actor_id, int charset, bool use_default_name)
 void Scene_Name::Start() {
 	// Create the windows
 
-	auto *actor = Game_Actors::GetActor(actor_id);
+	auto *actor = Main_Data::game_actors->GetActor(actor_id);
 	assert(actor);
 
 	name_window.reset(new Window_Name(96, 40, 192, 32));
@@ -109,7 +109,7 @@ void Scene_Name::Update() {
 		assert(!s.empty());
 
 		if (s == Window_Keyboard::DONE) {
-			auto* actor = Game_Actors::GetActor(actor_id);
+			auto* actor = Main_Data::game_actors->GetActor(actor_id);
 			if (actor != nullptr) {
 				if (name_window->Get().empty()) {
 					name_window->Set(ToString(actor->GetName()));
