@@ -1,5 +1,6 @@
 #include "test_mock_actor.h"
 #include "algo.h"
+#include "rand.h"
 #include "doctest.h"
 
 static Game_Actor MakeActor(int id) {
@@ -118,22 +119,29 @@ TEST_CASE("Variance") {
 		REQUIRE_EQ(Algo::VarianceAdjustEffect(100, 0), 100);
 	}
 
-	const int num_iterations = 200;
 	SUBCASE(">0") {
-		for (int var = 1; var <= 10; ++var) {
-			for (int i = 0; i < num_iterations; ++i) {
-				auto adj = Algo::VarianceAdjustEffect(100, 1);
-				REQUIRE_GE(adj, 100 - 5 * var);
-				REQUIRE_LE(adj, 100 + 5 * var);
+		SUBCASE("max") {
+			Rand::LockGuard lk(INT32_MAX);
+			for (int var = 1; var <= 10; ++var) {
+				REQUIRE_EQ(100 + 5 * var, Algo::VarianceAdjustEffect(100, var));
+			}
+		}
+		SUBCASE("min") {
+			Rand::LockGuard lk(INT32_MIN);
+			for (int var = 1; var <= 10; ++var) {
+				REQUIRE_EQ(100 - 5 * var, Algo::VarianceAdjustEffect(100, var));
 			}
 		}
 	}
 
 	SUBCASE("one") {
-		for (int i = 0; i < num_iterations; ++i) {
-			auto adj = Algo::VarianceAdjustEffect(1, 10);
-			REQUIRE_GE(adj, 1);
-			REQUIRE_LE(adj, 2);
+		SUBCASE("max") {
+			Rand::LockGuard lk(INT32_MAX);
+			REQUIRE_EQ(2, Algo::VarianceAdjustEffect(1, 10));
+		}
+		SUBCASE("min") {
+			Rand::LockGuard lk(INT32_MIN);
+			REQUIRE_EQ(1, Algo::VarianceAdjustEffect(1, 10));
 		}
 	}
 
@@ -143,20 +151,22 @@ TEST_CASE("Variance") {
 			const MockActor m(Player::EngineEnglish);
 			REQUIRE_FALSE(Player::IsLegacy());
 
-			for (int i = 0; i < num_iterations; ++i) {
-				REQUIRE_EQ(Algo::VarianceAdjustEffect(0, 0), 0);
-				REQUIRE_EQ(Algo::VarianceAdjustEffect(0, 1), 0);
-			}
+			REQUIRE_EQ(Algo::VarianceAdjustEffect(0, 0), 0);
+			REQUIRE_EQ(Algo::VarianceAdjustEffect(0, 1), 0);
 		}
 		SUBCASE("legacy") {
 			const MockActor m(Player::EngineRpg2k);
 			REQUIRE(Player::IsLegacy());
 
-			for (int i = 0; i < num_iterations; ++i) {
-				REQUIRE_EQ(Algo::VarianceAdjustEffect(0, 0), 0);
-				auto adj = Algo::VarianceAdjustEffect(0, 1);
-				REQUIRE_GE(adj, 0);
-				REQUIRE_LE(adj, 1);
+			SUBCASE("max") {
+				Rand::LockGuard lk(INT32_MAX);
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
+				REQUIRE_EQ(1, Algo::VarianceAdjustEffect(0, 1));
+			}
+			SUBCASE("min") {
+				Rand::LockGuard lk(INT32_MIN);
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 1));
 			}
 		}
 	}
@@ -560,15 +570,6 @@ TEST_CASE("SelfDestructEffect") {
 		auto source = MakeStatEnemy(1, 150, 0, 0);
 		REQUIRE_EQ(100, Algo::CalcSelfDestructEffect(source, target, false));
 	}
-
-	SUBCASE("150_100_var") {
-		auto source = MakeStatEnemy(1, 150, 0, 0);
-		for (int i = 0; i < 200; ++i) {
-			auto effect = Algo::CalcSelfDestructEffect(source, target, true);
-			REQUIRE_GE(effect, 80);
-			REQUIRE_LE(effect, 120);
-		}
-	}
 }
 
 static void testSkillStats(int power, int phys, int mag, Game_Battler& source, Game_Battler& target, int dmg, int heal) {
@@ -894,6 +895,82 @@ TEST_CASE("NormalAttackEffect") {
 
 	SUBCASE("2k3") {
 		TestNormalAttack(Player::EngineRpg2k3 | Player::EngineEnglish);
+	}
+}
+
+TEST_CASE("NormalAttackVariance") {
+	const MockActor m;
+
+	SUBCASE("enemy 120/0 -> enemy 0/90") {
+		auto source = MakeStatEnemy(1, 120, 0, 0);
+		auto target = MakeStatEnemy(2, 0, 90, 0);
+
+		REQUIRE_EQ(source.GetAtk(), 120);
+		REQUIRE_EQ(target.GetDef(), 90);
+
+		SUBCASE("max") {
+			Rand::LockGuard lk(INT32_MAX);
+			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
+		}
+		SUBCASE("min") {
+			Rand::LockGuard lk(INT32_MIN);
+			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
+		}
+	}
+}
+
+static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, int dmg_low, int dmg_high, int heal_low, int heal_high) {
+	CAPTURE(var);
+	auto* skill1 = MakeDBSkill(1, 100, 10, 10, 10, var);
+	skill1->scope = lcf::rpg::Skill::Scope_enemy;
+
+	auto* skill2 = MakeDBSkill(2, 100, 10, 10, 10, var);
+	skill2->scope = lcf::rpg::Skill::Scope_ally;
+
+	SUBCASE("max") {
+		Rand::LockGuard lk(INT32_MAX);
+		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true));
+		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true));
+	}
+	SUBCASE("min") {
+		Rand::LockGuard lk(INT32_MIN);
+		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true));
+		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true));
+	}
+}
+
+TEST_CASE("SkillEffectVariance") {
+	const MockActor m;
+	auto source = MakeStatActor(1, 100, 0, 120);
+	auto target = MakeStatActor(1, 0, 100, 90);
+
+	SUBCASE("0") {
+		testSkillVar(source, target, 0, 54, 54, 90, 90);
+	}
+	SUBCASE("1") {
+		testSkillVar(source, target, 1, 52, 57, 86, 95);
+	}
+	SUBCASE("2") {
+		testSkillVar(source, target, 2, 49, 59, 81, 99);
+	}
+	SUBCASE("10") {
+		testSkillVar(source, target, 10, 27, 81, 45, 135);
+	}
+}
+
+TEST_CASE("SelfDestructVariance") {
+	const MockActor m;
+
+	auto target = MakeStatActor(1, 0, 100, 0);
+	auto source = MakeStatEnemy(1, 150, 0, 0);
+
+	SUBCASE("max") {
+		Rand::LockGuard lk(INT32_MAX);
+		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(source, target, true));
+	}
+	SUBCASE("min") {
+		Rand::LockGuard lk(INT32_MIN);
+		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(source, target, true));
 	}
 }
 
