@@ -164,7 +164,7 @@ public:
 	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
-	virtual int GetBaseAttributeRate(int attribute_id) const;
+	virtual int GetBaseAttributeRate(int attribute_id) const = 0;
 
 	/**
 	 * Gets the attribute rate when actor is damaged.
@@ -935,10 +935,6 @@ inline bool Game_Battler::IsDirectionFlipped() const {
 
 inline void Game_Battler::SetDirectionFlipped(bool flip) {
 	direction_flipped = flip;
-}
-
-inline int Game_Battler::GetBaseAttributeRate(int) const {
-	return 2;
 }
 
 #endif

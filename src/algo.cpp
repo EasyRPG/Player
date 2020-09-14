@@ -28,7 +28,7 @@ namespace Algo {
 
 bool IsRowAdjusted(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense) {
 	return (cond == lcf::rpg::System::BattleCondition_surround
-			|| (row == (1 - offense)
+			|| (row != offense
 				&& (cond == lcf::rpg::System::BattleCondition_none || cond == lcf::rpg::System::BattleCondition_initiative))
 			|| (row == offense
 				&& (cond == lcf::rpg::System::BattleCondition_back))
@@ -103,15 +103,14 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
 	auto to_hit = skill.hit;
 
+	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
+	// Despite that, RPG_RT still checks the flag and run the below code?
 	if (skill.failure_message != 3
 		   || (skill.scope != lcf::rpg::Skill::Scope_enemy && skill.scope != lcf::rpg::Skill::Scope_enemies)) {
 		return to_hit;
 	}
 
-	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
-	// Despite that, RPG_RT still checks the flag and run the below code?
-	// FIXME: Verify if skills ported from 2k retain this flag and exercise the evasion logic in 2k3?
-	// RPG_RT BUG: RPG_RT does not check for "EvadesAllPhysicaAttacks() states here
+	// RPG_RT BUG: RPG_RT 2k3 does not check for "EvadesAllPhysicaAttacks() states here
 
 	// If target has Restriction "do_nothing", the attack always hits
 	if (!target.CanAct()) {

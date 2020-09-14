@@ -122,7 +122,7 @@ int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Battler& source_
 	}
 	auto& source = static_cast<const Game_Actor&>(source_battler);
 
-	std::array<const lcf::DBBitArray*, 2> attribute_sets;
+	std::array<const lcf::DBBitArray*, 2> attribute_sets = {{}};
 
 	size_t n = 0;
 	auto add = [&](int i) {

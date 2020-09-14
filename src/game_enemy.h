@@ -97,6 +97,7 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return attack.
 	 */
 	int GetBaseAtk(Weapon = WeaponAll) const override;
@@ -104,6 +105,7 @@ public:
 	/**
 	 * Gets the defense for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return defense.
 	 */
 	int GetBaseDef(Weapon = WeaponAll) const override;
@@ -111,6 +113,7 @@ public:
 	/**
 	 * Gets the spirit for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return spirit.
 	 */
 	int GetBaseSpi(Weapon = WeaponAll) const override;
@@ -118,6 +121,7 @@ public:
 	/**
 	 * Gets the agility for the current level.
 	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return agility.
 	 */
 	int GetBaseAgi(Weapon = WeaponAll) const override;
@@ -132,7 +136,20 @@ public:
 
 	void Transform(int new_enemy_id);
 
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
 	int GetHitChance(Weapon = WeaponAll) const override;
+
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
 	float GetCriticalHitChance(Weapon = WeaponAll) const override;
 	int GetBattleAnimationId() const override;
 

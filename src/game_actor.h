@@ -587,24 +587,28 @@ public:
 	/**
 	 * Gets the attack for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
 	int GetBaseAtk(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
 	int GetBaseDef(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
 	int GetBaseSpi(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 * Modifier and equipment bonuses are included.
+	 * @param weapon Which weapons to include in calculating result.
 	 */
 	int GetBaseAgi(Weapon weapon = WeaponAll) const override;
 
@@ -808,6 +812,7 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants preemption.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having preempt attribute
 	 */
 	bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const override;
@@ -815,6 +820,7 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants dual attack.
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having dual attack attribute
 	 */
 	bool HasDualAttack(Weapon weapon = WeaponAll) const;
@@ -822,11 +828,15 @@ public:
 	/**
 	 * Tests if the battler has a weapon that grants attack all
 	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having attack all attribute
 	 */
 	bool HasAttackAll(Weapon weapon = WeaponAll) const;
 
 	/**
+	 * Tests if the battler has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
 	 * @return If the actor has weapon that ignores evasion
 	 */
 	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const;
@@ -853,7 +863,20 @@ public:
 
 	int GetBattleAnimationId() const override;
 
+	/**
+	 * Gets the chance to hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return hit rate. [0-100]
+	 */
 	int GetHitChance(Weapon weapon = WeaponAll) const override;
+
+	/**
+	 * Gets the chance to critical hit for a normal attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return critical hit rate [0.0f-1.0f]
+	 */
 	float GetCriticalHitChance(Weapon weapon = WeaponAll) const override;
 
 	std::string GetLevelUpMessage(int new_level) const;

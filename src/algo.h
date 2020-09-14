@@ -21,7 +21,7 @@
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/saveactor.h>
-#include <game_battler.h>
+#include "game_battler.h"
 
 class Game_Actor;
 class Game_Enemy;
@@ -86,6 +86,7 @@ int CalcNormalAttackToHit(const Game_Battler& source,
  *
  * @param source The source of the action
  * @param target The target of the action
+ * @param skill Which skill to calculate hit rate for
  *
  * @return Success hit rate
  */

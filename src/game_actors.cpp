@@ -29,9 +29,6 @@ Game_Actors::Game_Actors() {
 	}
 }
 
-Game_Actors::~Game_Actors() {
-}
-
 void Game_Actors::SetSaveData(std::vector<lcf::rpg::SaveActor> save) {
 	// Ensure actor save data and LDB actors has correct size
 	if (save.size() > data.size()) {

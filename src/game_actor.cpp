@@ -431,6 +431,7 @@ void ForEachEquipment(Span<const short> equipped, F&& f, Game_Battler::Weapon we
 				continue;
 			}
 		} else {
+			assert(false && "Invalid item type equipped!");
 			continue;
 		}
 

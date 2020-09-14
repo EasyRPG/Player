@@ -36,11 +36,6 @@ public:
 	Game_Actors(const Game_Actors&) = delete;
 	Game_Actors& operator=(const Game_Actors&) = delete;
 
-	/**
-	 * Disposes Game Actors.
-	 */
-	~Game_Actors();
-
 	void SetSaveData(std::vector<lcf::rpg::SaveActor> save);
 	std::vector<lcf::rpg::SaveActor> GetSaveData() const;
 
