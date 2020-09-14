@@ -539,6 +539,24 @@ TEST_CASE("ArmorWithWeaponFlags") {
 	}
 }
 
+TEST_CASE("WeaponSpCost") {
+	const MockActor m;
+	auto actor = MakeActor(1, 1, 99, 100, 10, 11, 12, 13, 14, true);
+
+	MakeDBEquip(1, lcf::rpg::Item::Type_weapon)->sp_cost = 0;
+	MakeDBEquip(2, lcf::rpg::Item::Type_weapon)->sp_cost = 5;
+
+	REQUIRE(actor.HasTwoWeapons());
+
+	actor.SetEquipment(1, 1);
+	actor.SetEquipment(2, 2);
+
+	REQUIRE_EQ(actor.CalculateWeaponSpCost(Game_Battler::WeaponAll), 5);
+	REQUIRE_EQ(actor.CalculateWeaponSpCost(Game_Battler::WeaponNone), 0);
+	REQUIRE_EQ(actor.CalculateWeaponSpCost(Game_Battler::WeaponPrimary), 0);
+	REQUIRE_EQ(actor.CalculateWeaponSpCost(Game_Battler::WeaponSecondary), 5);
+}
+
 static Game_Actor MakeActorAttribute(int id, int attr_id, int rank) {
 	SetDBActorAttribute(id, attr_id, rank);
 	return MakeActor(id, 1, 99, 1, 1, 1, 1, 1, 1);

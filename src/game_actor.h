@@ -151,9 +151,12 @@ public:
 	int CalculateSkillCost(int skill_id) const override;
 
 	/**
+	 * Calculates the Sp cost for attacking with a weapon.
+	 *
+	 * @param weapon which weapons to include in calculating result.
 	 * @return sp cost for attacking with weapon.
 	 */
-	int CalculateWeaponSpCost() const;
+	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * Gets the actor ID.

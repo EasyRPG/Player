@@ -207,24 +207,6 @@ int Game_Actor::CalculateSkillCost(int skill_id) const {
 	return cost;
 }
 
-int Game_Actor::CalculateWeaponSpCost() const {
-	int cost = 0;
-	auto* w1 = GetWeapon();
-	if (w1) {
-		cost += w1->sp_cost;
-	}
-	auto* w2 = Get2ndWeapon();
-	if (w2) {
-		cost += w2->sp_cost;
-	}
-
-	if (HasHalfSpCost()) {
-		cost = (cost + 1) / 2;
-	}
-
-	return cost;
-}
-
 bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
@@ -1356,6 +1338,16 @@ bool Game_Actor::HasHalfSpCost() const {
 	bool rc = false;
 	ForEachEquipment<false, true>(GetWholeEquipment(), [&](auto& item) { rc |= item.half_sp_cost; });
 	return rc;
+}
+
+int Game_Actor::CalculateWeaponSpCost(Weapon weapon) const {
+	int cost = 0;
+	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { cost += item.sp_cost; }, weapon);
+	if (HasHalfSpCost()) {
+		cost = (cost + 1) / 2;
+	}
+
+	return cost;
 }
 
 void Game_Actor::AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states) {
