@@ -946,7 +946,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Handle negative effect from attributes
 		if (effect < 0) {
 			this->healing = true;
-			effect = -effect;
+			// RPG_RT bug: Negative effects have double strength
+			effect = -effect * 2;
 		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
@@ -1163,7 +1164,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (effect < 0) {
 			this->negative_effect = true;
 			this->healing = !this->healing;
-			effect = -effect;
+			// RPG_RT bug: Negative effects have double strength
+			effect = -effect * 2;
 		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
