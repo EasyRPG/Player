@@ -311,7 +311,6 @@ void Weather::CreateFogOverlay() {
 	auto* sand_img = reinterpret_cast<uint32_t*>(sand_bitmap->pixels());
 
 	for (int i = 0; i < w * h; ++i) {
-		// FIXME: How well does this match RPG_RT textures?
 		int px = Utils::GetRandomNumber(0, num_overlay_colors - 1);
 		// FIXME: This only works for 32bit pixel formats
 		fog_img[i] = fog_pixels[px];
