@@ -694,7 +694,7 @@ public:
 	/**
 	 * Initializes battle related data to there default values.
 	 */
-	virtual void ResetBattle();
+	void ResetBattle();
 
 	/**
 	 * @return Effective physical hit rate modifier from inflicted states.
