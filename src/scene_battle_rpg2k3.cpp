@@ -383,7 +383,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
 		options_window->SetBackOpacity(transp);
 		item_window->SetBackOpacity(transp);
 		skill_window->SetBackOpacity(transp);
@@ -514,7 +514,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window->SetZ(Priority_Window + 10);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
 		target_window->SetBackOpacity(transp);
 	}
 }
@@ -563,7 +563,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
 		command_window->SetBackOpacity(transp);
 	}
 }
