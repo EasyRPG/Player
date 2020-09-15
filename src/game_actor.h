@@ -905,16 +905,12 @@ private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 
 	/**
-	 * @return Reference to the Actor data of the LDB
-	 */
-	const lcf::rpg::Actor& GetActor() const;
-
-	/**
 	 * Removes invalid data from the actor.
 	 */
 	void RemoveInvalidData();
 
 	lcf::rpg::SaveActor data;
+	const lcf::rpg::Actor* dbActor = nullptr;
 	std::vector<int> exp_list;
 };
 
