@@ -260,6 +260,17 @@ void Scene_Battle_Rpg2k3::Update() {
 	}
 
 	switch (state) {
+		case State_SelectEnemyTarget:
+		case State_SelectAllyTarget:
+			if (previous_state == State_SelectSkill || previous_state == State_SelectItem) {
+				break;
+			}
+			// fallthrough
+		case State_SelectCommand:
+			if (Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait) {
+				break;
+			}
+			// fallthrough
 		case State_SelectActor:
 		case State_AutoBattle: {
 			if (!IsWindowMoving()) {
@@ -268,22 +279,26 @@ void Scene_Battle_Rpg2k3::Update() {
 					Game_Battle::UpdateAtbGauges();
 				}
 
-				int old_state = state;
-				SelectNextActor();
+				if (state != State_SelectEnemyTarget) {
+					int old_state = state;
+					if (state == State_SelectActor || state == State_AutoBattle) {
+						SelectNextActor();
+					}
 
-				if (old_state == state && battle_actions.empty()) {
-					// No actor got the turn
-					std::vector<Game_Battler*> enemies;
-					Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+					if (old_state == state && battle_actions.empty()) {
+						// No actor got the turn
+						std::vector<Game_Battler*> enemies;
+						Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-					for (auto* battler: enemies) {
-						if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm()) {
-							auto* enemy = static_cast<Game_Enemy*>(battler);
-							const auto* action = enemy->ChooseRandomAction();
-							if (action) {
-								CreateEnemyAction(enemy, action);
+						for (auto* battler: enemies) {
+							if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm()) {
+								auto* enemy = static_cast<Game_Enemy*>(battler);
+								const auto* action = enemy->ChooseRandomAction();
+								if (action) {
+									CreateEnemyAction(enemy, action);
+								}
+								//FIXME: Do we need to handle invalid actions or empty action list here?
 							}
-							//FIXME: Do we need to handle invalid actions or empty action list here?
 						}
 					}
 				}
