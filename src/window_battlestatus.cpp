@@ -81,13 +81,17 @@ void Window_BattleStatus::Refresh() {
 			int y = 2 + i * 16;
 
 			DrawActorName(*actor, 4, y);
-			DrawActorState(*actor, 84 + (Player::IsRPG2k() ? 2 : 0), y);
-			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
-				contents->TextDraw(132 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+			if (Player::IsRPG2k()) {
+				DrawActorState(*actor, 86, y);
+				DrawActorHp(*actor, 142, y, 3, true);
+				DrawActorSp(*actor, 202, y, 3, false);
 			} else {
-				int digits = Player::IsRPG2k() ? 3 : 4;
-				DrawActorHp(*actor, 126 + (Player::IsRPG2k() ? 16 : 0), y, digits, true);
-				DrawActorSp(*actor, 198 + (Player::IsRPG2k() ? 4 : 0), y, 3, false);
+				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+					DrawActorState(*actor, 84, y);
+					contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+				} else {
+					DrawActorState(*actor, 80, y);
+				}
 			}
 		}
 	}
@@ -97,11 +101,6 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
-		int gauge_x = contents->GetWidth() - 48;
-		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
-			contents->ClearRect(Rect(gauge_x + 10, 0, 25 + 16, 15 * item_max));
-		}
-
 		for (int i = 0; i < item_max; ++i) {
 			// The party always contains valid battlers
 			Game_Battler* actor;
@@ -154,9 +153,10 @@ void Window_BattleStatus::RefreshGauge() {
 			else {
 				int y = 2 + i * 16;
 
-				DrawGauge(*actor, gauge_x, y - 2);
+				DrawGauge(*actor, 202 - 10, y - 2);
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
-					DrawActorSp(*actor, 198, y, 3, false);
+					DrawActorHp(*actor, 136, y, 4, true);
+					DrawActorSp(*actor, 202, y, 3, false);
 				}
 			}
 		}
