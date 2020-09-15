@@ -63,7 +63,7 @@ int Game_Enemy::MaxStatBaseValue() const {
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {
-	int rate = 2; // C - default
+	int rate = 1; // Enemies have only B as the default state rank
 
 	if (state_id >= 1 && state_id <= (int)enemy->state_ranks.size()) {
 		rate = enemy->state_ranks[state_id - 1];
