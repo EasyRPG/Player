@@ -258,8 +258,13 @@ void Game_Actor::UnlearnAllSkills() {
 }
 
 void Game_Actor::SetFace(const std::string& file_name, int index) {
-	data.face_name.assign(file_name);
-	data.face_id = index;
+	if (file_name == dbActor->face_name && index == dbActor->face_index) {
+		data.face_name = "";
+		data.face_id = 0;
+	} else {
+		data.face_name.assign(file_name);
+		data.face_id = index;
+	}
 }
 
 const lcf::rpg::Item* Game_Actor::GetEquipment(int equip_type) const {
@@ -823,9 +828,17 @@ StringView Game_Actor::GetSkillName() const {
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
-	data.sprite_name = file;
-	data.sprite_id = index;
-	data.transparency = transparent ? 3 : 0;
+	if (file == dbActor->character_name
+			&& index == dbActor->character_index
+			&& transparent == dbActor->transparent) {
+		data.sprite_name = "";
+		data.sprite_id = 0;
+		data.transparency = 0;
+	} else {
+		data.sprite_name = file;
+		data.sprite_id = index;
+		data.transparency = transparent ? 3 : 0;
+	}
 }
 
 void Game_Actor::ChangeBattleCommands(bool add, int id) {
