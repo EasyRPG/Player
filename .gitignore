@@ -106,3 +106,6 @@ liblcf.pc
 
 # Android
 *.iml
+
+# libretro
+easyrpg_libretro.*
