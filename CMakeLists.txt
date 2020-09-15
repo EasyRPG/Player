@@ -407,6 +407,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
 
+	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared easyrpg_libretro core")
+
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
@@ -497,10 +499,14 @@ if(PLAYER_BUILD_LIBLCF)
 			"${PLAYER_BUILD_LIBLCF_GIT}"
 			"${LIBLCF_PATH}")
 	endif()
-	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build liblcf shared library")
 	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 
-	add_subdirectory(${LIBLCF_PATH})
+	# Always build static liblcf
+	function(add_liblcf)
+		set(BUILD_SHARED_LIBS OFF)
+		add_subdirectory(${LIBLCF_PATH})
+	endfunction()
+	add_liblcf()
 	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
