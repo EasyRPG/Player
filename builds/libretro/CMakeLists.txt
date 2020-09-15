@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.7)
 
 project(retro_common VERSION 1.0 LANGUAGES C)
 
+# Only for ugly MD-MT patching on old versions, new CMAKE_MSVC_RUNTIME_LIBRARY is inherited
+if(${CMAKE_VERSION} VERSION_LESS "3.15.0") 
+	include(ConfigureWindows)
+endif()
+
 # Check availability of libretro-common submodule
 file(GLOB RETRO_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libretro-common/*)
 list(LENGTH RETRO_COMMON_DIR RETRO_COMMON_DIR_LEN)
@@ -16,7 +21,8 @@ add_library(retro_common STATIC
 target_include_directories(retro_common PUBLIC
 	libretro-common/include)
 
-# FIXME: Likely won't work on all platforms
-target_link_libraries(retro_common "pthread")
+if(NOT MSVC)
+	target_link_libraries(retro_common "pthread")
+endif()
 
 mark_as_advanced(RETRO_COMMON_DIR RETRO_COMMON_DIR_LEN)

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
+cmake_policy(SET CMP0091 NEW) # Support MSVC_RUNTIME_LIBRARY
 
 project(EasyRPG_Player VERSION 0.6.2 LANGUAGES CXX)
 
@@ -434,6 +435,11 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
 
+	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared easyrpg_libretro core")
+	if(BUILD_SHARED_LIBS)
+		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	endif()
+
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
@@ -478,6 +484,9 @@ if(APPLE)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/utils.mm
 		src/platform/macos/utils.h)
+
+	find_library(MACOSFOUNDATION Foundation)
+	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION})
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
@@ -521,10 +530,14 @@ if(PLAYER_BUILD_LIBLCF)
 			"${PLAYER_BUILD_LIBLCF_GIT}"
 			"${LIBLCF_PATH}")
 	endif()
-	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build liblcf shared library")
 	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 
-	add_subdirectory(${LIBLCF_PATH})
+	# Always build static liblcf
+	function(add_liblcf)
+		set(BUILD_SHARED_LIBS OFF)
+		add_subdirectory(${LIBLCF_PATH})
+	endfunction()
+	add_liblcf()
 	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
@@ -871,21 +884,6 @@ endif()
 option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 
 if(PLAYER_ENABLE_TESTS)
-	set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/TestGame")
-	if(NOT EXISTS ${TEST_GAME_REPOSITORY_PATH})
-		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
-			"https://github.com/EasyRPG/TestGame.git"
-			"${TEST_GAME_REPOSITORY_PATH}")
-	endif()
-	set(TEST_GAME_PATH "${TEST_GAME_REPOSITORY_PATH}/TestGame-2000")
-
-	set(TEST_ENVS "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
-	if(EXISTS $ENV{RPG_RTP_PATH})
-		get_filename_component(RPG_RTP_PATH "$ENV{RPG_RTP_PATH}" ABSOLUTE)
-		message(STATUS "using rtp path ${RPG_RTP_PATH}")
-		list(APPEND TEST_ENVS "RPG_RTP_PATH=${RPG_RTP_PATH}")
-	endif()
-
 	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 	add_executable(test_runner_player EXCLUDE_FROM_ALL ${TEST_FILES})
 	set_target_properties(test_runner_player PROPERTIES OUTPUT_NAME "test_runner")
