@@ -103,7 +103,6 @@ void Game_Actor::Init() {
 }
 
 void Game_Actor::Fixup() {
-	data.Fixup(GetId());
 	if (Player::IsRPG2k()) {
 		data.two_weapon = dbActor->two_weapon;
 		data.lock_equipment = dbActor->lock_equipment;
