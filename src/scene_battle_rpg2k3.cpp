@@ -858,6 +858,11 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			UpdateActorsDirection();
 			SetState(State_SelectOption);
 			break;
+		case State_SelectOption:
+			if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+				SetState(State_SelectActor);
+				break;
+			}
 		case State_SelectActor:
 		case State_AutoBattle:
 		case State_Battle:
@@ -1207,11 +1212,15 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_SelectActor:
 		case State_AutoBattle:
-			SetState(State_SelectOption);
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+				SetState(State_SelectOption);
+			}
 			break;
 		case State_SelectCommand:
-			active_actor->SetLastBattleAction(-1);
-			SetState(State_SelectOption);
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+				active_actor->SetLastBattleAction(-1);
+				SetState(State_SelectOption);
+			}
 			break;
 		case State_SelectItem:
 		case State_SelectSkill:
