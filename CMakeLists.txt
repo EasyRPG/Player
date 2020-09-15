@@ -436,6 +436,9 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
 
 	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared easyrpg_libretro core")
+	if(BUILD_SHARED_LIBS)
+		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	endif()
 
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
