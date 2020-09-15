@@ -109,7 +109,7 @@ Read more detailed instructions at:
 
 https://wiki.easyrpg.org/development/compiling/player/cmake
 
-CMake is the only supported way to build liblcf for Windows. All dependencies
+CMake is the only supported way to build Player for Windows. All dependencies
 must be installed with [vcpkg].
 
 ### Building a libretro core:
