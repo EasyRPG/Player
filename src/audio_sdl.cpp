@@ -128,12 +128,16 @@ SdlAudio::SdlAudio() :
 
 #if SDL_MAJOR_VERSION >= 2
 	// Start midiout polling thread, SDL2-only. Wii doesn't support MidiOut.
-	// TODO: don't make a thread if we're on a platform that won't use MidiOut
-	midiout_mutex = SDL_CreateMutex();
-	midiout_thread = SDL_CreateThread(MidioutThreadMain, "MidioutThread", this);
-	if (!midiout_thread) {
-		Output::Warning("Couldn't start midiout thread: {}", SDL_GetError());
-		return;
+	if (MidiOut::IsSupported()) {
+		// TODO: Just because MidiOut is supported doesn't mean it's configured to be used.
+		// Should we default to Fluidsynth if an easyrpg.soundfont is found, for example?
+		// In which case this thread is wasteful...
+		midiout_mutex = SDL_CreateMutex();
+		midiout_thread = SDL_CreateThread(MidioutThreadMain, "MidioutThread", this);
+		if (!midiout_thread) {
+			Output::Warning("Couldn't start midiout thread: {}", SDL_GetError());
+			return;
+		}
 	}
 #endif
 }

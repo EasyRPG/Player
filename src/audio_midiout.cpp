@@ -159,6 +159,13 @@ GenericMidiOut::~GenericMidiOut()
 	reset();
 }
 
+bool MidiOut::IsSupported() {
+#if defined(_WIN32) || defined (__APPLE__)
+	return true;
+#endif
+	return false;
+}
+
 std::unique_ptr<MidiOut> MidiOut::Create(Filesystem_Stream::InputStream& stream, const std::string& filename) {
 	std::unique_ptr<MidiOut> midiout = nullptr;
 	char magic[4] = { 0 };

@@ -31,6 +31,12 @@ class MidiOut {
 public:
 	virtual ~MidiOut() = default;
 
+	/**
+	 * Is MidiOut supported by this platform?
+	 * @return true if on a supported MidiOut platform.
+	 */
+	static bool IsSupported();
+
 	static std::unique_ptr<MidiOut> Create(Filesystem_Stream::InputStream& stream, const std::string& filename);
 
 	/**
