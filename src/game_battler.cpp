@@ -425,8 +425,8 @@ int Game_Battler::ApplyConditions() {
 	for (int16_t inflicted : GetInflictedStates()) {
 		// States are guaranteed to be valid
 		RPG::State& state = *ReaderUtil::GetElement(Data::states, inflicted);
-		int hp = state.hp_change_val + (int)(std::ceil(GetMaxHp() * state.hp_change_max / 100.0));
-		int sp = state.sp_change_val + (int)(std::ceil(GetMaxHp() * state.sp_change_max / 100.0));
+		int hp = state.hp_change_val + (GetMaxHp() * state.hp_change_max / 100);
+		int sp = state.sp_change_val + (GetMaxSp() * state.sp_change_max / 100);
 		int source_hp = this->GetHp();
 		int source_sp = this->GetSp();
 		int src_hp = 0;
