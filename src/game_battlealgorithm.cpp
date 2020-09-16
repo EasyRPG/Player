@@ -945,14 +945,19 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 		// Handle negative effect from attributes
 		if (effect < 0) {
+			this->negative_effect = true;
 			this->healing = true;
-			// RPG_RT bug: Negative effects have double strength
-			effect = -effect * 2;
+			effect = -effect;
 		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 		this->hp = effect;
+
+		// RPG_RT bug: Negative effects affect HP double
+		if (this->negative_effect) {
+			this->hp *= 2;
+		}
 
 		if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
@@ -1164,17 +1169,21 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (effect < 0) {
 			this->negative_effect = true;
 			this->healing = !this->healing;
-			// RPG_RT bug: Negative effects have double strength
-			effect = -effect * 2;
+			effect = -effect;
 		}
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
-		if (!this->healing ^ this->negative_effect) absorb = skill.absorb_damage;
+		if (IsNegativeSkill()) absorb = skill.absorb_damage;
 
 		if (skill.affect_hp && Rand::PercentChance(to_hit)) {
-			if (!this->healing ^ this->negative_effect) {
+			if (IsNegativeSkill()) {
 				this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
+
+				// RPG_RT bug: Negative effects affect HP double
+				if (this->negative_effect) {
+					this->hp *= 2;
+				}
 
 				if (IsAbsorb())
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
@@ -1198,7 +1207,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 		if (skill.affect_sp && Rand::PercentChance(to_hit)) {
-			if (!this->healing ^ this->negative_effect) {
+			if (IsNegativeSkill()) {
 				this->sp = std::min<int>(effect, GetTarget()->GetSp());
 			} else {
 				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
@@ -1239,7 +1248,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 		}
 
-		if (!this->healing ^ this->negative_effect) {
+		if (IsNegativeSkill()) {
 			if (skill.affect_hp) {
 				if (skill.affect_sp) {
 					if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
@@ -1265,7 +1274,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
 			|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 
-		if (this->healing ^ this->negative_effect) {
+		if (IsPositiveSkill()) {
 			// If resurrected and no HP selected, the effect value is a percentage:
 			if (IsRevived() && !skill.affect_hp) {
 				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
@@ -1273,7 +1282,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 		}
 
-		if (!this->healing ^ this->negative_effect) {
+		if (IsNegativeSkill()) {
 			if (!success &&
 					((IsAbsorb() && ((GetAffectedHp() == 0 && GetAffectedSp() <= 0) || (GetAffectedHp() <= 0 && GetAffectedSp() == 0))) ||
 					(!IsAbsorb() && GetAffectedSp() == 0 && GetAffectedHp() == -1)))
@@ -1290,7 +1299,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 		// Conditions:
-		bool heals_states = (IsPositive() ^ this->negative_effect) ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
+		bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
@@ -1331,7 +1340,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		// Attribute resistance / weakness + an attribute selected + can be modified
 		if (skill.affect_attr_defence) {
 			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
-				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, (IsPositive() ^ this->negative_effect) ? 1 : -1)) {
+				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositiveSkill() ? 1 : -1)) {
 					if (!Rand::PercentChance(to_hit))
 						continue;
 					shift_attributes.push_back(i + 1);
@@ -1365,7 +1374,7 @@ void Game_BattleAlgorithm::Skill::Apply() {
 	AlgorithmBase::Apply();
 
 	for (auto& sa: shift_attributes) {
-		GetTarget()->ShiftAttributeRate(sa, (healing ^ negative_effect) ? 1 : -1);
+		GetTarget()->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
 	}
 }
 

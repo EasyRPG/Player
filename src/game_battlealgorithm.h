@@ -427,6 +427,16 @@ public:
 	Game_Battler* GetFirstOriginalTarget() const;
 
 	/**
+	 * If the skill is negative before applying attribute modifiers.
+	 */
+	bool IsNegativeSkill() const;
+
+	/**
+	 * If the skill is positive before applying attribute modifiers.
+	 */
+	bool IsPositiveSkill() const;
+
+	/**
 	 * @return the critical hit message
 	 */
 	std::string GetCriticalHitMessage() const;
@@ -668,6 +678,14 @@ inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
 
 inline bool AlgorithmBase::IsTargetingParty() const {
 	return party_target != nullptr;
+}
+
+inline bool AlgorithmBase::IsNegativeSkill() const {
+	return !healing ^ negative_effect;
+}
+
+inline bool AlgorithmBase::IsPositiveSkill() const {
+	return healing ^ negative_effect;
 }
 
 } //namespace Game_BattleAlgorithm
