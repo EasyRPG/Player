@@ -32,11 +32,10 @@
 #include "output.h"
 
 Game_Party::Game_Party() {
-	SetupNewGame();
 }
 
 void Game_Party::SetupNewGame() {
-	data.Setup();
+	data.party = lcf::Data::system.party;
 	RemoveInvalidData();
 }
 
