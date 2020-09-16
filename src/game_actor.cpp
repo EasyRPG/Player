@@ -59,50 +59,41 @@ Game_Actor::Game_Actor(int actor_id) {
 	if (actor_id == 0) {
 		return;
 	}
-
 	dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, GetId());
 
-	data.Setup(actor_id);
-	Setup();
+	data.two_weapon = dbActor->two_weapon;
+	data.lock_equipment = dbActor->lock_equipment;
+	data.auto_battle = dbActor->auto_battle;
+	data.super_guard = dbActor->super_guard;
 
-	const auto& skills = dbActor->skills;
-	for (auto& skill: skills) {
-		if (skill.level <= GetLevel()) {
-			LearnSkill(skill.skill_id, nullptr);
-		}
-	}
+	data.hp_mod = 0;
+	data.sp_mod = 0;
+	data.attack_mod = 0;
+	data.defense_mod = 0;
+	data.spirit_mod = 0;
+	data.agility_mod = 0;
 
-	RemoveInvalidData();
-
-	if (GetLevel() > 0) {
-		SetHp(GetMaxHp());
-		SetSp(GetMaxSp());
-		SetExp(exp_list[GetLevel() - 1]);
-	}
-
-	ResetEquipmentStates(false);
-}
-
-void Game_Actor::Setup() {
 	MakeExpList();
 	SetBattlePosition(GetOriginalPosition());
+
+	ChangeLevel(dbActor->initial_level, nullptr);
+	SetHp(GetMaxHp());
+	SetSp(GetMaxSp());
+
+	SetEquipment(1, dbActor->initial_equipment.weapon_id);
+	SetEquipment(2, dbActor->initial_equipment.shield_id);
+	SetEquipment(3, dbActor->initial_equipment.armor_id);
+	SetEquipment(4, dbActor->initial_equipment.helmet_id);
+	SetEquipment(5, dbActor->initial_equipment.accessory_id);
+
+	data.status.resize(lcf::Data::states.size(), 0);
+
+	Fixup();
 }
 
 void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
 	data = std::move(save);
-	Setup();
-	Fixup();
-}
 
-const lcf::rpg::SaveActor& Game_Actor::GetSaveData() const {
-	return data;
-}
-
-void Game_Actor::Init() {
-
-}
-
-void Game_Actor::Fixup() {
 	if (Player::IsRPG2k()) {
 		data.two_weapon = dbActor->two_weapon;
 		data.lock_equipment = dbActor->lock_equipment;
@@ -110,11 +101,24 @@ void Game_Actor::Fixup() {
 		data.super_guard = dbActor->super_guard;
 	}
 
+	Fixup();
+}
+
+lcf::rpg::SaveActor Game_Actor::GetSaveData() const {
+	auto save = data;
+	if (Player::IsRPG2k()) {
+		// RPG_RT doesn't save these chunks in rm2k as they are meaningless
+		save.two_weapon = false;
+		save.lock_equipment = false;
+		save.auto_battle = false;
+		save.super_guard = false;
+	}
+	return save;
+}
+
+void Game_Actor::Fixup() {
 	RemoveInvalidData();
-
 	ResetEquipmentStates(false);
-
-	MakeExpList();
 }
 
 bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {

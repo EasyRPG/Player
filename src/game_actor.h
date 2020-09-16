@@ -46,7 +46,7 @@ public:
 	Game_Actor(int actor_id);
 
 	void SetSaveData(lcf::rpg::SaveActor save);
-	const lcf::rpg::SaveActor& GetSaveData() const;
+	lcf::rpg::SaveActor GetSaveData() const;
 
 	int MaxHpValue() const override;
 
@@ -57,24 +57,6 @@ public:
 	virtual PermanentStates GetPermanentStates() const override;
 
 	Point GetOriginalPosition() const override;
-
-	/**
-	 * Sets up the game actor
-	 * This is automatically called in the constructor.
-	 */
-	void Setup();
-
-	/**
-	 * Initializes the game actor to the database state.
-	 * Sets the skills, HP, SP and experience.
-	 */
-	void Init();
-
-	/**
-	 * Used after savegame loading to replace savegame default values with
-	 * database ones.
-	 */
-	void Fixup();
 
 	/**
 	 * Applies the effects of an item.
@@ -904,6 +886,7 @@ public:
 
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
+	void Fixup();
 
 	/**
 	 * Removes invalid data from the actor.
