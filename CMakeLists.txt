@@ -382,6 +382,9 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
 endif()
 
+# Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
+option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
+
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
@@ -407,7 +410,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
 
-	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared easyrpg_libretro core")
 	if(BUILD_SHARED_LIBS)
 		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 	endif()
