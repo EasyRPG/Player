@@ -1181,7 +1181,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
 
 				// RPG_RT bug: Negative effects affect HP double
-				if (this->negative_effect) {
+				// HP absorbing is not affected by this bug
+				if (this->negative_effect && !IsAbsorb()) {
 					this->hp *= 2;
 				}
 
