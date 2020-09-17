@@ -1439,12 +1439,15 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 					}
 				}
 			} else {
-				// Target on enemy side?
-				if (GetSource()->GetType() != GetTarget()->GetType()) {
-					// If the target has the reflect state, return true
-					if (GetTarget()->HasReflectState()) {
-						reflect = 1;
-						return true;
+				// Check if target exists to prevent crashes
+				if (GetTarget() != nullptr) {
+					// Target on enemy side?
+					if (GetSource()->GetType() != GetTarget()->GetType()) {
+						// If the target has the reflect state, return true
+						if (GetTarget()->HasReflectState()) {
+							reflect = 1;
+							return true;
+						}
 					}
 				}
 			}
