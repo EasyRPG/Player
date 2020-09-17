@@ -1186,7 +1186,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					this->hp *= 2;
 				}
 
-				if (IsAbsorb())
+				if (IsAbsorb() && !this->negative_effect)
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
 
 				if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
@@ -1209,7 +1209,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		if (skill.affect_sp && Rand::PercentChance(to_hit)) {
 			if (IsNegativeSkill()) {
-				this->sp = std::min<int>(effect, GetTarget()->GetSp());
+				if (!this->negative_effect) {
+					this->sp = std::min<int>(effect, GetTarget()->GetSp());
+				} else {
+					this->sp = effect;
+				}
 			} else {
 				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
 				if (!this->negative_effect) {
