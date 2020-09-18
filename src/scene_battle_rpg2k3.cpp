@@ -418,18 +418,18 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 
 		std::vector<Game_Battler*> actors;
 
-		if (ally_index >= 0 && lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+		if (ally_index >= 0 && (state == State_SelectActor || state == State_SelectAllyTarget)) {
 			ally_cursor->SetVisible(true);
 			Main_Data::game_party->GetBattlers(actors);
 			Game_Battler* actor = actors[ally_index];
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
 			ally_cursor->SetX(actor->GetBattlePosition().x);
-			ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
+			ally_cursor->SetY(actor->GetBattlePosition().y - 40);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
 
-			if (cycle % 30 == 0) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional && cycle % 30 == 0) {
 				SelectionFlash(actor);
 			}
 		}
