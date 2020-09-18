@@ -40,7 +40,7 @@ public:
 	 * @param text text to show.
 	 * @param align text alignment.
 	 */
-	void SetText(std::string text, Text::Alignment align = Text::AlignLeft);
+	void SetText(std::string text, Text::Alignment align = Text::AlignLeft, bool halfwidthspace = true);
 
 	/**
 	 * Clears the window

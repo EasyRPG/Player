@@ -1850,7 +1850,7 @@ void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 		return;
 	}
 	help_window->SetVisible(true);
-	help_window->SetText(std::move(text));
+	help_window->SetText(std::move(text), Text::AlignLeft, false);
 }
 
 bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
