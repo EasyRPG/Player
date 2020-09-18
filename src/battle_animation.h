@@ -72,6 +72,13 @@ public:
 	 */
 	int GetAnimationCellHeight() const;
 
+	/**
+	 * Set if the animation ignores vertical offset
+	 *
+	 * @param ignoreyoffset if the animation ignores vertical offset
+	 **/
+	void SetIgnoreYOffset(bool ignoreyoffset);
+
 protected:
 	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
@@ -95,6 +102,7 @@ protected:
 	FileRequestBinding request_id;
 	bool only_sound = false;
 	bool invert = false;
+	bool ignore_y_offset = false;
 };
 
 // For playing animations on the map.

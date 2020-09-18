@@ -294,7 +294,7 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 	for (auto* battler: battlers) {
 		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
 		int offset = 0;
-		if (sprite && sprite->GetBitmap()) {
+		if (sprite && (sprite->GetBitmap() || (sprite->IsUsingAnimationAsSprite() && !ignore_y_offset))) {
 			offset = CalculateOffset(animation.position, sprite->GetHeight());
 		}
 		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y + offset);
@@ -327,3 +327,6 @@ void BattleAnimation::SetFrame(int frame) {
 	this->frame = frame;
 }
 
+void BattleAnimation::SetIgnoreYOffset(bool ignoreyoffset) {
+	ignore_y_offset = ignoreyoffset;
+}

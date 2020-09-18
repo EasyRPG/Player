@@ -234,6 +234,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 					animation.reset();
 				} else {
 					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
+					animation->SetIgnoreYOffset(true);
 					animation->SetZ(GetZ());
 				}
 			}
@@ -278,7 +279,7 @@ int Sprite_Battler::GetHeight() const {
 	return Sprite::GetHeight();
 }
 
-bool Sprite_Battler::IsUsingAnimationAsSprite() {
+bool Sprite_Battler::IsUsingAnimationAsSprite() const {
 	return animation != nullptr;
 }
 

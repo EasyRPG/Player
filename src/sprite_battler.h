@@ -91,7 +91,7 @@ public:
 	int GetWidth() const override;
 	int GetHeight() const override;
 
-	bool IsUsingAnimationAsSprite();
+	bool IsUsingAnimationAsSprite() const;
 
 	/**
 	 * A hack for 2k battle system. Treat the sprite as not dead
