@@ -397,7 +397,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 
 				ally_cursor->SetVisible(true);
 				ally_cursor->SetX(actor->GetBattlePosition().x);
-				ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
+				ally_cursor->SetY(actor->GetBattlePosition().y - 40);
 
 				if (frame_counter % 30 == 0) {
 					SelectionFlash(actor);
