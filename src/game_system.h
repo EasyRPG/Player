@@ -173,7 +173,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @return the music.
 	 */
-	lcf::rpg::Music& GetSystemBGM(int which);
+	const lcf::rpg::Music& GetSystemBGM(int which);
 
 	/**
 	 * Sets the system music.
@@ -181,7 +181,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @param bgm the music.
 	 */
-	void SetSystemBGM(int which, lcf::rpg::Music const& bgm);
+	void SetSystemBGM(int which, lcf::rpg::Music bgm);
 
 	/**
 	 * Gets the system sound effects.
@@ -189,7 +189,7 @@ namespace Game_System {
 	 * @param which which "context" to set the music for.
 	 * @return the sound.
 	 */
-	lcf::rpg::Sound& GetSystemSE(int which);
+	const lcf::rpg::Sound& GetSystemSE(int which);
 
 	/**
 	 * Sets a system sound effect.
@@ -197,7 +197,7 @@ namespace Game_System {
 	 * @param which which "context" to set the effect for.
 	 * @param sfx the sound effect.
 	 */
-	void SetSystemSE(int which, lcf::rpg::Sound const& sfx);
+	void SetSystemSE(int which, lcf::rpg::Sound sfx);
 
 	/**
 	 * Gets the system transitions.
@@ -268,7 +268,7 @@ namespace Game_System {
 
 	int GetSaveCount();
 
-	lcf::rpg::Music& GetCurrentBGM();
+	const lcf::rpg::Music& GetCurrentBGM();
 	void MemorizeBGM();
 	void PlayMemorizedBGM();
 

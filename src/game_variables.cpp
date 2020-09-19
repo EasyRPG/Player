@@ -20,6 +20,7 @@
 #include "game_variables.h"
 #include "output.h"
 #include <lcf/reader_util.h>
+#include <lcf/data.h>
 #include "utils.h"
 #include <cmath>
 
@@ -56,6 +57,12 @@ constexpr Var_t VarDiv(Var_t n, Var_t d) {
 constexpr Var_t VarMod(Var_t n, Var_t d) {
 	return EP_LIKELY(d != 0) ? n % d : 0;
 };
+}
+
+Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
+	: _min(minval), _max(maxval)
+{
+	_variables.reserve(lcf::Data::variables.size());
 }
 
 void Game_Variables::WarnGet(int variable_id) const {

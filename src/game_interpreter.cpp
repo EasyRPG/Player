@@ -1961,7 +1961,7 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 	music.volume = com.parameters[2];
 	music.tempo = com.parameters[3];
 	music.balance = com.parameters[4];
-	Game_System::SetSystemBGM(context, music);
+	Game_System::SetSystemBGM(context, std::move(music));
 	return true;
 }
 
@@ -1972,7 +1972,7 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 	sound.volume = com.parameters[1];
 	sound.tempo = com.parameters[2];
 	sound.balance = com.parameters[3];
-	Game_System::SetSystemSE(context, sound);
+	Game_System::SetSystemSE(context, std::move(sound));
 	return true;
 }
 

@@ -985,7 +985,6 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_Map::Dispose();
 
 	Main_Data::game_data = *save.get();
-	Main_Data::game_data.system.Fixup();
 
 	Main_Data::game_actors->SetSaveData(std::move(Main_Data::game_data.actors));
 	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));

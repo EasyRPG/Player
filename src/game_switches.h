@@ -33,7 +33,7 @@ public:
 	using Switches_t = std::vector<bool>;
 	static constexpr int kMaxWarnings = 10;
 
-	Game_Switches() = default;
+	Game_Switches();
 
 	void SetData(Switches_t s);
 	const Switches_t& GetData() const;
