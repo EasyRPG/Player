@@ -286,7 +286,7 @@ void Window_BattleStatus::Update() {
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
-	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 		SetCursorRect(Rect());
 		return;
 	}

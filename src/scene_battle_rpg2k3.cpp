@@ -688,6 +688,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			target_window->SetIndex(-1);
 			target_window->SetZ(Priority_Window - 10);
 			target_window->SetVisible(true);
+		} else {
+			status_window->SetIndex(-1);
 		}
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetX(SCREEN_TARGET_WIDTH);
@@ -716,6 +718,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_SelectCommand:
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
 			options_window->SetVisible(true);
+			status_window->SetIndex(-1);
 		}
 		status_window->SetVisible(true);
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
@@ -745,6 +748,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			status_window->SetZ(Priority_Window - 10);
 			target_window->SetZ(Priority_Window + 10);
 			target_window->SetVisible(true);
+		} else {
+			status_window->SetIndex(-1);
 		}
 		break;
 	case State_SelectAllyTarget:
@@ -763,6 +768,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			target_window->SetZ(Priority_Window - 10);
 			target_window->SetVisible(true);
 		}
+		status_window->SetIndex(0);
 		command_window->SetVisible(true);
 		break;
 	case State_Battle:
@@ -790,6 +796,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			target_window->SetZ(Priority_Window - 10);
 			target_window->SetVisible(true);
 			command_window->SetVisible(false);
+		} else {
+			status_window->SetIndex(-1);
 		}
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
@@ -804,6 +812,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			target_window->SetZ(Priority_Window - 10);
 			target_window->SetVisible(true);
 			command_window->SetVisible(false);
+		} else {
+			status_window->SetIndex(-1);
 		}
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
