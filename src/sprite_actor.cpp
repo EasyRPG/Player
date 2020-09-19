@@ -59,6 +59,7 @@ void Sprite_Actor::Update() {
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				// Is a battle animation
+				animation->SetInvert(battler->IsDirectionFlipped());
 				animation->Update();
 
 				if (animation->IsDone()) {
@@ -127,9 +128,6 @@ void Sprite_Actor::Update() {
 
 	const bool flip = battler->IsDirectionFlipped();
 	SetFlipX(flip);
-	if (animation) {
-		SetFlipX(flip);
-	}
 }
 
 void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
@@ -174,6 +172,7 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 				animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
 				animation->SetZ(GetZ());
 			}
+			animation->SetInvert(battler->IsDirectionFlipped());
 		}
 		else {
 			animation.reset();

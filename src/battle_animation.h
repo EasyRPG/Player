@@ -72,6 +72,13 @@ public:
 	 */
 	int GetAnimationCellHeight() const;
 
+	/**
+	 * Set if the animation is inverted
+	 *
+	 * @param inverted if the animation is inverted
+	 **/
+	void SetInvert(bool inverted);
+
 protected:
 	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
