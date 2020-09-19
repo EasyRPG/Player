@@ -330,3 +330,7 @@ void BattleAnimation::SetFrame(int frame) {
 void BattleAnimation::SetIgnoreYOffset(bool ignoreyoffset) {
 	ignore_y_offset = ignoreyoffset;
 }
+
+void BattleAnimation::SetInvert(bool inverted) {
+	invert = inverted;
+}

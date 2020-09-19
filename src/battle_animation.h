@@ -73,6 +73,13 @@ public:
 	int GetAnimationCellHeight() const;
 
 	/**
+	 * Set if the animation is inverted
+	 *
+	 * @param inverted if the animation is inverted
+	 **/
+	void SetInvert(bool inverted);
+
+	/**
 	 * Set if the animation ignores vertical offset
 	 *
 	 * @param ignoreyoffset if the animation ignores vertical offset

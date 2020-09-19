@@ -112,6 +112,7 @@ void Sprite_Battler::Update() {
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				// Is a battle animation
+				animation->SetInvert(battler->IsDirectionFlipped());
 				animation->SetFlashEffect(battler->GetFlashColor());
 				animation->Update();
 
@@ -189,7 +190,7 @@ void Sprite_Battler::Update() {
 	const bool flip = battler->IsDirectionFlipped();
 	SetFlipX(flip);
 	if (animation) {
-		SetFlipX(flip);
+		animation->SetInvert(flip);
 	}
 }
 
