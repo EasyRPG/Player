@@ -369,7 +369,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	enemy_status_window->SetVisible(false);
 	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
 	sp_window->SetVisible(false);
-	sp_window->SetZ(Priority_Window + 1);
+	sp_window->SetZ(Priority_Window + 2);
 
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
@@ -380,6 +380,13 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 
 		// Default window too small for 4 actors
 		status_window.reset(new Window_BattleStatus(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
+	}
+
+	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+		status_window.reset(new Window_BattleStatus(104, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH - 104, 80));
+		status_window->SetZ(Priority_Window - 10);
+		skill_window->SetZ(Priority_Window + 1);
+		item_window->SetZ(Priority_Window + 1);
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
@@ -507,11 +514,17 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 		commands.push_back(ToString(enemy->GetName()));
 	}
 
-	target_window.reset(new Window_Command(commands, 136, 4));
+	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+		target_window.reset(new Window_Command(commands, 136, 4));
+		// Above other windows
+		target_window->SetZ(Priority_Window + 10);
+	} else {
+		target_window.reset(new Window_Command(commands, 104, 4));
+		// Below other windows
+		target_window->SetZ(Priority_Window - 10);
+	}
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
-	// Above other windows
-	target_window->SetZ(Priority_Window + 10);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
 		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
@@ -556,9 +569,12 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 		command_window->SetX(0);
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2);
-	}
-	else {
-		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
+	} else {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
+		} else {
+			command_window->SetX(28);
+		}
 		command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 	}
 
@@ -664,9 +680,15 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		options_window->SetVisible(true);
 		options_window->SetX(0);
 		status_window->SetVisible(true);
-		status_window->SetX(option_command_mov);
+		status_window->SetX(lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional ? 104 : option_command_mov);
 		status_window->SetIndex(-1);
 		status_window->Refresh();
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+		}
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetX(SCREEN_TARGET_WIDTH);
 			command_window->SetIndex(-1);
@@ -677,11 +699,17 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		options_window->SetVisible(true);
 		options_window->SetX(-option_command_mov);
 		status_window->SetVisible(true);
-		status_window->SetX(0);
+		status_window->SetX(lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional ? 104 : 0);
 		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+		}
 		command_window->SetIndex(-1);
-		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
-		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 			command_window->SetVisible(true);
 		}
 		break;
@@ -690,6 +718,12 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 			options_window->SetVisible(true);
 		}
 		status_window->SetVisible(true);
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+		}
 		command_window->SetVisible(true);
 		break;
 	case State_SelectEnemyTarget:
@@ -701,12 +735,34 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		}
 
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (previous_state == State_SelectSkill) {
+				skill_window->SetVisible(true);
+				sp_window->SetVisible(true);
+			}
+			if (previous_state == State_SelectItem) {
+				item_window->SetVisible(true);
+			}
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetZ(Priority_Window + 10);
 			target_window->SetVisible(true);
 		}
 		break;
 	case State_SelectAllyTarget:
 		status_window->SetVisible(true);
-		status_window->SetX(0);
+		status_window->SetX(lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional ? 104 : 0);
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (previous_state == State_SelectSkill) {
+				skill_window->SetVisible(true);
+				sp_window->SetVisible(true);
+			}
+			if (previous_state == State_SelectItem) {
+				item_window->SetVisible(true);
+			}
+			status_window->SetZ(Priority_Window + 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+		}
 		command_window->SetVisible(true);
 		break;
 	case State_Battle:
@@ -728,15 +784,31 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_Victory:
 	case State_Defeat:
 		status_window->SetVisible(true);
-		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+			command_window->SetVisible(false);
+		}
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
 		}
-		status_window->SetX(0);
+		status_window->SetX(lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional ? 104 : 0);
 		break;
 	case State_Escape:
 		status_window->SetVisible(true);
-		command_window->SetVisible(true);
-		status_window->SetX(0);
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetZ(Priority_Window - 10);
+			target_window->SetIndex(-1);
+			target_window->SetZ(Priority_Window - 10);
+			target_window->SetVisible(true);
+			command_window->SetVisible(false);
+		}
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetVisible(true);
+		}
+		status_window->SetX(lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional ? 104 : 0);
 		break;
 	}
 
@@ -922,6 +994,14 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Execute:
+		// Refresh target window in traditional battle mode
+		// This is needed for enemies who get killed or revived by events
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			CreateBattleTargetWindow();
+			target_window->SetActive(false);
+			target_window->SetIndex(-1);
+		}
+
 		if (battle_action_need_event_refresh) {
 			action->GetSource()->NextBattleTurn();
 
@@ -1112,6 +1192,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 
 				if ((*it)->IsDead()) {
+					// Refresh target window in traditional battle mode
+					if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+						CreateBattleTargetWindow();
+						target_window->SetActive(false);
+						target_window->SetIndex(-1);
+					}
 					if (action->GetDeathSe()) {
 						Main_Data::game_system->SePlay(*action->GetDeathSe());
 					}
@@ -1148,6 +1234,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return flag.switch_a || flag.switch_b || flag.variable ||
 				   flag.fatigue || flag.actor_hp || flag.enemy_hp;
 		});
+
+		if (action->IsRevived()) {
+			// Refresh target window in traditional battle mode
+			if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+				CreateBattleTargetWindow();
+				target_window->SetActive(false);
+				target_window->SetIndex(-1);
+			}
+		}
 
 		return false;
 	}
