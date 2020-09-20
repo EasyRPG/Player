@@ -46,6 +46,14 @@ Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 	RefreshPage();
 }
 
+void Game_Event::SanitizeData() {
+	StringView name = event->name;
+	Game_Character::SanitizeData(name);
+	if (page != nullptr) {
+		SanitizeMoveRoute(name, page->move_route, data()->original_move_route_index, "original_move_route_index");
+	}
+}
+
 void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 {
 	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
@@ -55,19 +63,7 @@ void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 	data()->ID = event->ID;
 	SetMapId(map_id);
 
-	// Sanity checks on bad save data
-	auto checkMoveRoute = [&](const auto& mr, auto& idx, const auto& name) {
-		const auto n = static_cast<int>(mr.move_commands.size());
-		if (idx < 0 || idx > n) {
-			idx = n;
-			Output::Warning("Event {}: Save Data invalid {}={}. Fixing ...", data()->ID, name, idx);
-		}
-	};
-
-	checkMoveRoute(data()->move_route, data()->move_route_index, "move_route_index");
-	if (page != nullptr) {
-		checkMoveRoute(page->move_route, data()->original_move_route_index, "original_move_route_index");
-	}
+	SanitizeData();
 
 	if (!data()->active || page == nullptr) {
 		return;

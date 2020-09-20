@@ -29,6 +29,7 @@
 #include "player.h"
 #include "utils.h"
 #include "util_macro.h"
+#include "output.h"
 #include <cmath>
 #include <cassert>
 
@@ -38,6 +39,18 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 }
 
 Game_Character::~Game_Character() {
+}
+
+void Game_Character::SanitizeData(StringView name) {
+	SanitizeMoveRoute(name, data()->move_route, data()->move_route_index, "move_route_index");
+}
+
+void Game_Character::SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name) {
+	const auto n = static_cast<int32_t>(mr.move_commands.size());
+	if (idx < 0 || idx > n) {
+		idx = n;
+		Output::Warning("{} {}: Save Data invalid {}={}. Fixing ...", TypeToStr(_type), name, chunk_name, idx);
+	}
 }
 
 void Game_Character::MoveTo(int map_id, int x, int y) {
@@ -147,7 +160,7 @@ void Game_Character::UpdateMovement(int amount) {
 			SetMoveRouteRepeated(true);
 			SetMoveRouteIndex(0);
 			if (!move_route.repeat) {
-				// If the last command of a move route is or jump,
+				// If the last command of a move route is a move or jump,
 				// RPG_RT cancels the entire move route immediately.
 				CancelMoveRoute();
 			}
@@ -159,10 +172,6 @@ void Game_Character::UpdateMovement(int amount) {
 
 void Game_Character::UpdateAnimation() {
 	const auto speed = Utils::Clamp(GetMoveSpeed(), 1, 6);
-
-	constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
-	constexpr int stationary_limits[] = { 11, 9, 7, 5, 4, 3 };
-	constexpr int continuous_limits[] = { 15, 11, 9, 7, 6, 5 };
 
 	if (IsSpinning()) {
 		const auto limit = GetSpinAnimFrames(speed);
@@ -216,6 +225,9 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 	}
 
 	const auto num_commands = static_cast<int>(current_route.move_commands.size());
+	// Invalid index could occur from a corrupted save game.
+	// Player, Vehicle, and Event all check for and fix this, but we still assert here in
+	// case any bug causes this to happen still.
 	assert(current_index >= 0);
 	assert(current_index <= num_commands);
 
@@ -546,7 +558,7 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 	int jdx = 0;
 	int jdy = 0;
 
-	for (++current_index; current_index < current_route.move_commands.size(); ++current_index) {
+	for (++current_index; current_index < static_cast<int>(current_route.move_commands.size()); ++current_index) {
 		using Code = lcf::rpg::MoveCommand::Code;
 		const auto& move_command = current_route.move_commands[current_index];
 		const auto cmd = static_cast<Code>(move_command.command_id);

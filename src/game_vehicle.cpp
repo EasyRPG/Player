@@ -71,8 +71,11 @@ Game_Vehicle::Game_Vehicle(Type type)
 void Game_Vehicle::SetSaveData(lcf::rpg::SaveVehicleLocation save) {
 	auto type = data()->vehicle;
 	*data() = std::move(save);
+
 	// Old EasyRPG savegames pre 6.0 didn't write the vehicle chunk.
 	data()->vehicle = type;
+
+	SanitizeData(TypeNames[type]);
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {

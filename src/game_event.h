@@ -159,6 +159,9 @@ public:
 	/** @returns the number of pages this event has */
 	int GetNumPages() const;
 
+protected:
+	/** Check for and fix incorrect data after loading save game */
+	void SanitizeData();
 private:
 	bool CheckEventAutostart();
 	bool CheckEventCollision();

@@ -163,7 +163,7 @@ public:
 	void OnBattleEnd();
 
 	/**
-	 * Called when map scrolls right
+	 * Called when map scrolls
 	 *
 	 * @param dx x distance in 1/16th pixels
 	 * @param dy y distance in 1/16th pixels
