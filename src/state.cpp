@@ -30,16 +30,8 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 		return false;
 	}
 
-	if (Has(lcf::rpg::State::kDeathID, states)) {
-		return false;
-	}
-
 	if (!allow_battle_states && state->type == lcf::rpg::State::Persistence_ends) {
 		return false;
-	}
-
-	if (state_id == lcf::rpg::State::kDeathID) {
-		RemoveAll(states, ps);
 	}
 
 	if (state_id > static_cast<int>(states.size())) {
