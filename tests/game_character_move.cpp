@@ -93,7 +93,6 @@ static void testMove(int move_dir, int x, int y, int dir, int face,
 	CAPTURE(dx);
 	CAPTURE(dy);
 
-	auto rc = ch.Move(move_dir);
 	REQUIRE_EQ(ch.Move(move_dir), success);
 
 	if (!success) {

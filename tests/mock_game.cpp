@@ -1,4 +1,5 @@
 #include "mock_game.h"
+#include "game_actors.h"
 
 static lcf::rpg::Terrain MakeTerrain() {
 	return {};
@@ -23,6 +24,7 @@ MockGame::MockGame(MockMap maptag) {
 	lcf::Data::terrains.push_back(MakeTerrain());
 	lcf::Data::chipsets.push_back(MakeChipset());
 
+	Main_Data::game_actors = std::make_unique<Game_Actors>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
 
 	auto& treemap = lcf::Data::treemap;

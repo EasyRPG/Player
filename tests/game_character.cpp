@@ -93,7 +93,7 @@ static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage
 
 TEST_SUITE_BEGIN("Game_Character");
 
-static void testInit(Game_Character& ch) {
+static void testInit(Game_Character& ch, int max_stop_count = 0) {
 	REQUIRE_EQ(ch.GetX(), 0);
 	REQUIRE_EQ(ch.GetY(), 0);
 	REQUIRE_EQ(ch.GetMapId(), 0);
@@ -113,8 +113,8 @@ static void testInit(Game_Character& ch) {
 	REQUIRE_EQ(ch.GetFlashLevel(), 0.0);
 	REQUIRE_EQ(ch.GetFlashTimeLeft(), 0);
 	REQUIRE_EQ(ch.GetStopCount(), 0);
-	REQUIRE_EQ(ch.GetMaxStopCount(), 0);
-	REQUIRE(!ch.IsStopCountActive());
+	REQUIRE_EQ(ch.GetMaxStopCount(), max_stop_count);
+	REQUIRE_EQ(ch.IsStopCountActive(), (max_stop_count != 0));
 	REQUIRE_EQ(ch.GetAnimCount(), 0);
 	REQUIRE(!ch.IsMoving());
 	REQUIRE(!ch.IsJumping());
@@ -250,7 +250,7 @@ TEST_CASE("InitEventDefaultPage") {
 	event.pages.push_back({});
 	Game_Event ch(0, &event);
 
-	testInit(ch);
+	testInit(ch, 64);
 
 	REQUIRE_EQ(ch.GetDirection(), 2);
 	REQUIRE_EQ(ch.GetFacing(), 2);

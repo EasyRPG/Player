@@ -84,22 +84,21 @@ constexpr auto UpRight = Game_Character::UpRight;
 constexpr auto DownRight = Game_Character::DownRight;
 constexpr auto DownLeft = Game_Character::DownLeft;
 constexpr auto UpLeft = Game_Character::UpLeft;
+}
 
-static void ForceUpdate(Game_Vehicle& ch) {
+inline void ForceUpdate(Game_Vehicle& ch) {
 	ch.SetProcessed(false);
 	ch.Update();
 }
 
-static void ForceUpdate(Game_Player& ch) {
+inline void ForceUpdate(Game_Player& ch) {
 	ch.SetProcessed(false);
 	ch.Update();
 }
 
-static void ForceUpdate(Game_Event& ch) {
+inline void ForceUpdate(Game_Event& ch) {
 	ch.SetProcessed(false);
 	ch.Update(false);
-}
-
 }
 
 #endif
