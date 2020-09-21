@@ -76,7 +76,11 @@ Game_Actor::Game_Actor(int actor_id) {
 	MakeExpList();
 	SetBattlePosition(GetOriginalPosition());
 
-	ChangeLevel(dbActor->initial_level, nullptr);
+	data.level = 0;
+	if (dbActor->initial_level > 0) {
+		// For games like COLORS: Lost Memories which use level 0, don't change level because it'll clamp to 1.
+		ChangeLevel(dbActor->initial_level, nullptr);
+	}
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 
@@ -705,7 +709,7 @@ void Game_Actor::ChangeExp(int exp, PendingMessage* pm) {
 }
 
 void Game_Actor::SetLevel(int _level) {
-	data.level = min(max(_level, 1), GetMaxLevel());
+	data.level = Utils::Clamp(_level, 1, GetMaxLevel());
 	// Ensure current HP/SP remain clamped if new Max HP/SP is less.
 	SetHp(GetHp());
 	SetSp(GetSp());
