@@ -268,6 +268,12 @@ void Scene_Battle_Rpg2k3::Update() {
 					Game_Battle::UpdateAtbGauges();
 				}
 
+				if (state == State_SelectCommand) {
+					if (active_actor->GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
+						SetState(State_SelectActor);
+					}
+				}
+
 				if (state != State_SelectEnemyTarget) {
 					int old_state = state;
 
@@ -1645,7 +1651,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 
 	int i = 0;
 	for (auto* battler: actors) {
-		if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm() && battle_actions.empty()) {
+		if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm() && battle_actions.empty() && battler->GetSignificantRestriction() != lcf::rpg::State::Restriction_do_nothing) {
 			actor_index = i;
 			active_actor = static_cast<Game_Actor*>(battler);
 
