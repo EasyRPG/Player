@@ -352,7 +352,7 @@ int Game_Actor::GetItemCount(int item_id) {
 
 void Game_Actor::FullHeal() {
 	RemoveAllStates();
-	ChangeHp(GetMaxHp());
+	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 	// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
 	ResetEquipmentStates(true);

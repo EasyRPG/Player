@@ -617,7 +617,7 @@ bool Game_Player::Move(int dir) {
 			for (auto hero : Main_Data::game_party->GetActors()) {
 				if (!hero->PreventsTerrainDamage()) {
 					red_flash = true;
-					hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
+					hero->ChangeHp(-terrain->damage, false);
 				}
 			}
 		}

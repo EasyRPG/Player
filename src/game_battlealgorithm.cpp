@@ -628,11 +628,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedHp() != -1 && !was_dead) {
 		int hp = GetAffectedHp();
 		int target_hp = target->GetHp();
-		target->ChangeHp(IsPositive() ? hp : -hp);
+		target->ChangeHp(IsPositive() ? hp : -hp, true);
 		if (IsAbsorb() && !IsPositive()) {
 			// Only absorb the hp that were left
 			int src_hp = std::min(target_hp, hp);
-			source->ChangeHp(src_hp);
+			source->ChangeHp(src_hp, true);
 		}
 	}
 
@@ -685,7 +685,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (IsPositive() && was_dead && !target->IsDead()) {
 		if (GetAffectedHp()) {
 			int hp = GetAffectedHp();
-			target->ChangeHp(hp - 1);
+			target->ChangeHp(hp - 1, true);
 		}
 	}
 }

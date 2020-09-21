@@ -489,11 +489,8 @@ void Game_Party::ApplyDamage(int damage, bool lethal) {
 		return;
 	}
 
-	std::vector<Game_Actor*> actors = GetActors();
-
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
-		Game_Actor* actor = *i;
-		actor->ChangeHp(lethal? -damage : - std::max<int>(0, std::min<int>(damage, actor->GetHp() - 1)));
+	for (auto* actor: GetActors()) {
+		actor->ChangeHp(-damage, lethal);
 	}
 }
 
@@ -700,11 +697,11 @@ bool Game_Party::ApplyStateDamage() {
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
 					if (state->hp_change_type == lcf::rpg::State::ChangeType_lose) {
-						actor->ChangeHp(-std::max<int>(0, std::min<int>(state->hp_change_map_val, actor->GetHp() - 1)));
+						actor->ChangeHp(-state->hp_change_map_val, false);
 						damage = true;
 					}
 					else if (state->hp_change_type == lcf::rpg::State::ChangeType_gain) {
-						actor->ChangeHp(state->hp_change_map_val);
+						actor->ChangeHp(state->hp_change_map_val, false);
 					}
 				}
 			}

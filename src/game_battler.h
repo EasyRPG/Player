@@ -243,9 +243,10 @@ public:
 	 * Also handles death condition.
 	 *
 	 * @param hp relative hp change
+	 * @param lethal whether this change can kill the battler or not. If not, minimum 1 hp is allowed.
 	 * @return how much hp was actually changed.
 	 */
-	int ChangeHp(int hp);
+	int ChangeHp(int hp, bool lethal);
 
 	/**
 	 * Gets the battler max HP.
@@ -803,7 +804,7 @@ inline Color Game_Battler::GetFlashColor() const {
 }
 
 inline void Game_Battler::Kill() {
-	ChangeHp(-GetHp());
+	ChangeHp(-GetHp(), true);
 }
 
 inline bool Game_Battler::IsDead() const {
