@@ -1086,12 +1086,14 @@ void Game_Actor::SetBaseMaxSp(int maxsp) {
 	SetSp(data.current_sp);
 }
 
-void Game_Actor::SetHp(int hp) {
+int Game_Actor::SetHp(int hp) {
 	data.current_hp = Utils::Clamp(hp, 0, GetMaxHp());
+	return data.current_hp;
 }
 
-void Game_Actor::SetSp(int sp) {
+int Game_Actor::SetSp(int sp) {
 	data.current_sp = Utils::Clamp(sp, 0, GetMaxSp());
+	return data.current_sp;
 }
 
 void Game_Actor::SetBaseAtk(int atk) {

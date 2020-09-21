@@ -83,12 +83,14 @@ int Game_Enemy::GetBaseAttributeRate(int attribute_id) const {
 	return rate;
 }
 
-void Game_Enemy::SetHp(int _hp) {
-	hp = std::min(std::max(_hp, 0), GetMaxHp());
+int Game_Enemy::SetHp(int _hp) {
+	hp = Utils::Clamp(_hp, 0, GetMaxHp());
+	return hp;
 }
 
-void Game_Enemy::SetSp(int _sp) {
-	sp = std::min(std::max(_sp, 0), GetMaxSp());
+int Game_Enemy::SetSp(int _sp) {
+	sp = Utils::Clamp(_sp, 0, GetMaxSp());
+	return sp;
 }
 
 Point Game_Enemy::GetOriginalPosition() const {

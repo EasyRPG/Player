@@ -454,16 +454,18 @@ void Game_Battler::RemoveAllStates() {
 	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
-
-void Game_Battler::ChangeHp(int hp) {
-	if (!IsDead()) {
-		SetHp(GetHp() + hp);
-
-		// Death
-		if (GetHp() <= 0) {
-			AddState(lcf::rpg::State::kDeathID, true);
-		}
+int Game_Battler::ChangeHp(int hp) {
+	if (IsDead()) {
+		return 0;
 	}
+	const auto prev_hp = GetHp();
+	auto new_hp = SetHp(prev_hp + hp);
+
+	// Death
+	if (new_hp <= 0) {
+		AddState(lcf::rpg::State::kDeathID, true);
+	}
+	return new_hp - prev_hp;
 }
 
 int Game_Battler::GetMaxHp() const {
@@ -474,8 +476,10 @@ bool Game_Battler::HasFullHp() const {
 	return GetMaxHp() == GetHp();
 }
 
-void Game_Battler::ChangeSp(int sp) {
-	SetSp(GetSp() + sp);
+int Game_Battler::ChangeSp(int sp) {
+	const auto prev_sp = GetSp();
+	const auto new_sp = SetSp(prev_sp + sp);
+	return new_sp - prev_sp;
 }
 
 int Game_Battler::GetMaxSp() const {
@@ -657,5 +661,33 @@ void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
 	flash.blue = b;
 	flash.current_level = power;
 	flash.time_left = frames;
+}
+
+int Game_Battler::ChangeAtkModifier(int modifier) {
+	const auto prev = atk_modifier;
+	const auto base = GetBaseAtk();
+	SetAtkModifier(Utils::Clamp(atk_modifier + modifier, -base / 2, base));
+	return atk_modifier - prev;
+}
+
+int Game_Battler::ChangeDefModifier(int modifier) {
+	const auto prev = def_modifier;
+	const auto base = GetBaseDef();
+	SetDefModifier(Utils::Clamp(def_modifier + modifier, -base / 2, base));
+	return def_modifier - prev;
+}
+
+int Game_Battler::ChangeSpiModifier(int modifier) {
+	const auto prev = spi_modifier;
+	const auto base = GetBaseSpi();
+	SetSpiModifier(Utils::Clamp(spi_modifier + modifier, -base / 2, base));
+	return spi_modifier - prev;
+}
+
+int Game_Battler::ChangeAgiModifier(int modifier) {
+	const auto prev = agi_modifier;
+	const auto base = GetBaseAgi();
+	SetAgiModifier(Utils::Clamp(agi_modifier + modifier, -base / 2, base));
+	return agi_modifier - prev;
 }
 
