@@ -54,6 +54,7 @@ void Scene_Teleport::Update() {
 
 		const lcf::rpg::SaveTarget& target = teleport_window->GetTarget();
 
+		Main_Data::game_player->ForceGetOffVehicle();
 		Main_Data::game_player->ReserveTeleport(target);
 
 		Scene::PopUntil(Scene::Map);

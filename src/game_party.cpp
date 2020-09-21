@@ -120,7 +120,7 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetSp(actor->GetMaxSp());
 	}
 
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::GetItems(std::vector<int>& item_list) {
@@ -376,9 +376,9 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 	}
 
 	if (skill->type == lcf::rpg::Skill::Type_escape) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget() && !Main_Data::game_player->IsFlying();
 	} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
+		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets() && !Main_Data::game_player->IsFlying();
 	} else if (skill->type == lcf::rpg::Skill::Type_normal ||
 		skill->type >= lcf::rpg::Skill::Type_subskill) {
 		int scope = skill->scope;
@@ -446,14 +446,14 @@ void Game_Party::AddActor(int actor_id) {
 	if (data.party.size() >= 4)
 		return;
 	data.party.push_back((int16_t)actor_id);
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::RemoveActor(int actor_id) {
 	if (!IsActorInParty(actor_id))
 		return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::Clear() {

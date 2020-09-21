@@ -31,6 +31,17 @@
 #include <lcf/rpg/mapinfo.h>
 #include "async_op.h"
 
+namespace lcf {
+namespace rpg {
+class SaveMapInfo;
+class SavePanorama;
+class SaveCommonEvent;
+class SaveVehiceLocation;
+class SaveEventExecState;
+class Save;
+} // namespace rpg
+} // namespace lcf
+
 class FileRequestAsync;
 struct BattleArgs;
 
@@ -84,36 +95,48 @@ namespace Game_Map {
 	void Dispose();
 
 	/**
-	 * Setups a map.
+	 * Loads the map from disk
 	 *
-	 * @param map_id map ID.
-	 * @param tt the type of teleport used to setup the map
+	 * @param map_id the id of the map to load
+	 * @return the map, or nullptr if it couldn't be loaded
 	 */
-	void Setup(int map_id, TeleportTarget::Type tt);
+	std::unique_ptr<lcf::rpg::Map> loadMapFile(int map_id);
+
+	/**
+	 * Setups a new map.
+	 *
+	 * @pre Main_Data::game_player->GetMapId() reflects the new map.
+	 */
+	void Setup(std::unique_ptr<lcf::rpg::Map> map);
 
 	/**
 	 * Setups a map from a savegame.
+	 * 
+	 * @param map - The map data
+	 * @param save_map - The map state
+	 * @param save_boat - The boat state
+	 * @param save_ship - The ship state
+	 * @param save_airship - The airship state
+	 * @param save_fg_exec - The foreground interpreter state
+	 * @param save_pan - The panorama state
+	 * @param save_ce - The common event state
 	 */
-	void SetupFromSave();
-
-	/**
-	 * Performs Setup on a map when teleport to self.
-	 *
-	 * @param map_id map ID.
-	 */
-	void SetupFromTeleportSelf();
-
-	/**
-	 * Shared code of the Setup methods.
-	 *
-	 * @param _id map ID.
-	 */
-	void SetupCommon(int _id, bool is_load_savegame);
+	void SetupFromSave(
+			std::unique_ptr<lcf::rpg::Map> map,
+			lcf::rpg::SaveMapInfo save_map,
+			lcf::rpg::SaveVehicleLocation save_boat,
+			lcf::rpg::SaveVehicleLocation save_ship,
+			lcf::rpg::SaveVehicleLocation save_airship,
+			lcf::rpg::SaveEventExecState save_fg_exec,
+			lcf::rpg::SavePanorama save_pan,
+			std::vector<lcf::rpg::SaveCommonEvent> save_ce);
 
 	/**
 	 * Copies event data into lcf::rpg::Save data.
+	 *
+	 * @param save - save data to populate.
 	 */
-	void PrepareSave();
+	void PrepareSave(lcf::rpg::Save& save);
 
 	/**
 	 * Runs map.
@@ -129,18 +152,12 @@ namespace Game_Map {
 	void OnContinueFromBattle();
 
 	/**
-	 * Scrolls the map view right.
+	 * Scrolls the map view in the given directions.
 	 *
-	 * @param distance scroll amount in sixteenths of a pixel
+	 * @param dx amount to scroll along x-axis in 1/16th pixels
+	 * @param dy amount to scroll along x-axis in 1/16th pixels
 	 */
-	void ScrollRight(int distance);
-
-	/**
-	 * Scrolls the map view down.
-	 *
-	 * @param distance scroll amount in sixteenths of a pixel
-	 */
-	void ScrollDown(int distance);
+	void Scroll(int dx, int dy);
 
 	/**
 	 * Adds inc, a distance in sixteenths of a pixel, to screen_x, the
@@ -153,12 +170,6 @@ namespace Game_Map {
 
 	/** Same as AddScreenX, but for the Y-direction. */
 	void AddScreenY(int& screen_y, int& inc);
-
-	/** @return how many sixteenths we scrolled right during this frame */
-	int GetScrolledRight();
-
-	/** @return how many sixteenths we scrolled down during this frame */
-	int GetScrolledDown();
 
 	/**
 	 * Gets if a tile coordinate is valid.
@@ -177,11 +188,15 @@ namespace Game_Map {
 	 * Returns true if move is possible.
 	 *
 	 * @param self Character to move.
-	 * @param x new tile x.
-	 * @param y new tile y.
+	 * @param from_x from tile x.
+	 * @param from_y from tile y.
+	 * @param to_x to new tile x.
+	 * @param to_y to new tile y.
 	 * @return whether is passable.
 	 */
-	bool MakeWay(const Game_Character& self, int x, int y);
+	bool MakeWay(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)
@@ -211,6 +226,13 @@ namespace Game_Map {
 	 * @return whether is posible to disembark the boat or ship
 	 */
 	bool CanDisembarkShip(Game_Player& player, int x, int y);
+
+	/**
+	 * Return the tiles array for the given tiles layer.
+	 *
+	 * @param layer which layer to return
+	 */
+	const std::vector<uint8_t>& GetTilesLayer(int layer);
 
 	/**
 	 * Gets the bush depth at a certain tile.
@@ -315,25 +337,6 @@ namespace Game_Map {
 	void SetEncounterRate(int step);
 
 	/**
-	 * Gets encounter steps.
-	 *
-	 * @return number of steps scaled by terrain encounter rate percentage.
-	 */
-	int GetEncounterSteps();
-
-	/**
-	 * Updates encounter steps according to terrain.
-	 *
-	 * @return true if an encounter should trigger.
-	 */
-	bool UpdateEncounterSteps();
-
-	/**
-	 * Sets encounter_steps to steps.
-	 */
-	void SetEncounterSteps(int steps);
-
-	/**
 	 * Gets possible encounters at a location.
 	 * Respects areas and terrain settings.
 	 *
@@ -425,8 +428,11 @@ namespace Game_Map {
 	/**
 	 * Sets the offset of the screen from the left edge
 	 * of the map, as given by GetPositionX.
+	 *
+	 * @param new_position_x new position x.
+	 * @param reset_panorama whether to reset panorama
 	 */
-	void SetPositionX(int new_position_x);
+	void SetPositionX(int new_position_x, bool reset_panorama = true);
 
 	/**
 	 * Gets display y.
@@ -443,8 +449,9 @@ namespace Game_Map {
 	 * of the map.
 	 *
 	 * @param new_position_y new position y.
+	 * @param reset_panorama whether to reset panorama
 	 */
-	void SetPositionY(int new_position_y);
+	void SetPositionY(int new_position_y, bool reset_panorama = true);
 
 	/**
 	 * @return need refresh flag.
@@ -531,8 +538,11 @@ namespace Game_Map {
 	bool LoopHorizontal();
 	bool LoopVertical();
 
-	int RoundX(int x);
-	int RoundY(int y);
+	int RoundX(int x, int units = 1);
+	int RoundY(int y, int units = 1);
+
+	int RoundDx(int x, int units = 1);
+	int RoundDy(int y, int units = 1);
 
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
@@ -607,22 +617,6 @@ namespace Game_Map {
 	 */
 	bool IsPassableLowerTile(int bit, int tile_index);
 
-	enum PanDirection {
-		PanUp,
-		PanRight,
-		PanDown,
-		PanLeft
-	};
-
-	void LockPan();
-	void UnlockPan();
-	void StartPan(int direction, int distance, int speed);
-	void ResetPan(int speed);
-	void UpdatePan();
-
-	/** @return how many frames it'll take to finish the current pan */
-	int GetPanWait();
-
 	/**
 	 * Gets whether there are any starting non-parallel event or common event.
 	 * Used as a workaround for the Game Player.
@@ -631,17 +625,14 @@ namespace Game_Map {
 	 */
 	bool IsAnyEventStarting();
 
-	bool IsAnyMovePending();
-	void AddPendingMove(Game_Character* character);
-	void RemovePendingMove(Game_Character* character);
-	void RemoveAllPendingMoves();
+	/** @return the number of times this map was saved in the editor */
+	int GetMapSaveCount();
 
-	bool IsPanActive();
-	bool IsPanLocked();
-	int GetPanX();
-	int GetPanY();
-	int GetTargetPanX();
-	int GetTargetPanY();
+	/** @return true if any event on this map has an active move route */
+	bool IsAnyMovePending();
+
+	/** Cancel active move routes for all events on this map */
+	void RemoveAllPendingMoves();
 
 	void UpdateProcessedFlags(bool is_preupdate);
 	bool UpdateCommonEvents(MapUpdateAsyncContext& actx);

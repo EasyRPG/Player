@@ -336,6 +336,10 @@ void Player::Update(bool update_scene) {
 		}
 	}
 
+	if (update_scene) {
+		IncFrame();
+	}
+
 	Audio().Update();
 	Input::Update();
 
@@ -360,13 +364,6 @@ void Player::Update(bool update_scene) {
 
 	if (update_scene) {
 		Scene::instance->Update();
-		// Async file loading or transition. Don't increment the frame
-		// counter as we now have to "suspend" and "resume"
-		if (Scene::IsAsyncPending()) {
-			old_instance->SetAsyncFromMainLoop();
-			return;
-		}
-		IncFrame();
 	}
 }
 
@@ -921,20 +918,21 @@ static void FixSaveGames() {
 		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 	}
-
-	if (Main_Data::game_data.easyrpg_data.version <= 600) {
-		// Old savegames didn't write the vehicle chunk.
-		Main_Data::game_data.boat_location.vehicle = 1;
-		Main_Data::game_data.ship_location.vehicle = 2;
-		Main_Data::game_data.airship_location.vehicle = 3;
-	}
 }
 
 static void OnMapSaveFileReady(FileRequestResult*) {
-	Game_Map::SetupFromSave();
+	auto& save = Main_Data::game_data;
+	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
+	Game_Map::SetupFromSave(
+			std::move(map),
+			save.map_info,
+			save.boat_location,
+			save.ship_location,
+			save.airship_location,
+			save.foreground_event_execstate,
+			save.panorama,
+			save.common_events);
 	FixSaveGames();
-
-	Main_Data::game_player->Refresh();
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
@@ -994,7 +992,8 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_pictures->SetSaveData(std::move(Main_Data::game_data.pictures));
 	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
 
-	int map_id = save->party_location.map_id;
+	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
+	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(&OnMapSaveFileReady);
@@ -1015,15 +1014,12 @@ static void OnMapFileReady(FileRequestResult*) {
 		lcf::Data::treemap.start.party_y : Player::party_y_position;
 	if (Player::party_members.size() > 0) {
 		Main_Data::game_party->Clear();
-		std::vector<int>::iterator member;
-		for (member = Player::party_members.begin(); member != Player::party_members.end(); ++member) {
-			Main_Data::game_party->AddActor(*member);
+		for (auto& member: Player::party_members) {
+			Main_Data::game_party->AddActor(member);
 		}
 	}
 
-	Game_Map::Setup(map_id, TeleportTarget::eParallelTeleport);
-	Main_Data::game_player->MoveTo(x_pos, y_pos);
-	Main_Data::game_player->Refresh();
+	Main_Data::game_player->MoveTo(map_id, x_pos, y_pos);
 }
 
 void Player::SetupNewGame() {

@@ -34,116 +34,40 @@
 #include <cmath>
 #include <cassert>
 
-Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event) :
-	Game_Character(Event, new lcf::rpg::SaveMapEvent()),
-	_data_copy(this->data()),
+Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
+	Game_EventBase(Event),
 	event(event)
 {
+	data()->ID = event->ID;
 	SetMapId(map_id);
-	SetMoveSpeed(3);
-	MoveTo(event.x, event.y);
-	Refresh();
+	SetX(event->x);
+	SetY(event->y);
+
+	RefreshPage();
 }
 
-Game_Event::Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& orig_data) :
-	//FIXME: This will leak if Game_Character() throws.
-	Game_Character(Event, new lcf::rpg::SaveMapEvent(orig_data)),
-	_data_copy(this->data()),
-	event(event)
+void Game_Event::SanitizeData() {
+	StringView name = event->name;
+	Game_Character::SanitizeData(name);
+	if (page != nullptr) {
+		SanitizeMoveRoute(name, page->move_route, data()->original_move_route_index, "original_move_route_index");
+	}
+}
+
+void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 {
 	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
+	auto map_id = GetMapId();
+	*data() = std::move(save);
+
+	data()->ID = event->ID;
 	SetMapId(map_id);
 
-	this->event.ID = data()->ID;
+	SanitizeData();
 
-	Refresh(true);
-}
-
-int Game_Event::GetOriginalMoveRouteIndex() const {
-	return data()->original_move_route_index;
-}
-
-void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
-	data()->original_move_route_index = new_index;
-}
-
-void Game_Event::ClearWaitingForegroundExecution() {
-	data()->waiting_execution = false;
-}
-
-void Game_Event::Setup(const lcf::rpg::EventPage* new_page) {
-	bool from_null = page == nullptr;
-
-	const lcf::rpg::EventPage* old_page = page;
-	page = new_page;
-
-	// If the new page is null and the interpreter is running, it should
-	// carry on executing its command list during this frame
-	if (interpreter && page) {
-		interpreter->Clear();
-	}
-
-	SetPaused(false);
-
-	if (page == nullptr) {
-		SetSpriteGraphic("", 0);
-		SetDirection(lcf::rpg::EventPage::Direction_down);
+	if (!data()->active || page == nullptr) {
 		return;
 	}
-
-	SetSpriteGraphic(ToString(page->character_name), page->character_index);
-
-	SetMoveSpeed(page->move_speed);
-	SetMoveFrequency(page->move_frequency);
-	SetFacingLocked(false);
-	if (page->move_type == lcf::rpg::EventPage::MoveType_custom) {
-		SetMaxStopCountForTurn();
-	} else {
-		SetMaxStopCountForStep();
-	}
-	original_move_frequency = page->move_frequency;
-	SetOriginalMoveRouteIndex(0);
-
-	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
-	SetAnimationType(lcf::rpg::EventPage::AnimType(page->animation_type));
-
-	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
-			|| GetAnimationType() == lcf::rpg::EventPage::AnimType_spin) {
-		SetAnimFrame(page->character_pattern);
-	}
-
-	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
-		SetSpriteDirection(page->character_direction);
-		SetDirection(page->character_direction);
-	}
-
-	if (IsDirectionFixed()) {
-		SetSpriteDirection(page->character_direction);
-	}
-
-	SetTransparency(page->translucent ? 3 : 0);
-	SetLayer(page->layer);
-	data()->overlap_forbidden = page->overlap_forbidden;
-
-	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
-		if (!page->event_commands.empty()) {
-			if (!interpreter) {
-				interpreter.reset(new Game_Interpreter_Map());
-			}
-			// RPG_RT will wait until the next call to Update() to push the interpreter code.
-			// This forces the interpreter to yield when it changes it's own page.
-		}
-	}
-}
-
-void Game_Event::SetupFromSave(const lcf::rpg::EventPage* new_page) {
-	page = new_page;
-
-	if (page == nullptr) {
-		return;
-	}
-
-	original_move_frequency = page->move_frequency;
 
 	if (interpreter) {
 		interpreter->Clear();
@@ -169,38 +93,142 @@ void Game_Event::SetupFromSave(const lcf::rpg::EventPage* new_page) {
 	}
 }
 
-void Game_Event::Refresh(bool from_save) {
-	if (!data()->active) {
-		if (from_save) {
-			SetVisible(false);
+lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
+	auto save = *data();
+
+	lcf::rpg::SaveEventExecState state;
+	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
+		if (interpreter) {
+			state = interpreter->GetState();
 		}
-		return;
+
+		if (state.stack.empty() && page->event_commands.empty()) {
+			// RPG_RT always stores an empty stack frame for empty parallel events.
+			lcf::rpg::SaveEventExecFrame frame;
+			frame.event_id = GetId();
+			state.stack.push_back(std::move(frame));
+		}
+	}
+	save.parallel_event_execstate = std::move(state);
+
+	return save;
+}
+
+int Game_Event::GetOriginalMoveRouteIndex() const {
+	return data()->original_move_route_index;
+}
+
+void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
+	data()->original_move_route_index = new_index;
+}
+
+void Game_Event::ClearWaitingForegroundExecution() {
+	data()->waiting_execution = false;
+}
+
+static bool CompareMoveRouteCommandCodes(const lcf::rpg::MoveRoute& l, const lcf::rpg::MoveRoute& r) {
+	auto& lmc = l.move_commands;
+	auto& rmc = r.move_commands;
+	if (lmc.size() != rmc.size()) {
+		return false;
 	}
 
-	lcf::rpg::EventPage* new_page = nullptr;
-	std::vector<lcf::rpg::EventPage>::reverse_iterator i;
-	for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
+	for (size_t i = 0; i < lmc.size(); ++i) {
+		if (lmc[i].command_id != rmc[i].command_id) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void Game_Event::RefreshPage() {
+	const lcf::rpg::EventPage* new_page = nullptr;
+	for (auto i = event->pages.crbegin(); i != event->pages.crend(); ++i) {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
 			new_page = &(*i);
-			SetVisible(true);
 			// Stop looking for more...
 			break;
 		}
 	}
 
 	if (!new_page) {
-		SetVisible(false);
+		ClearWaitingForegroundExecution();
+		SetPaused(false);
+		SetThrough(true);
+		this->page = new_page;
+		return;
 	}
 
-	// Only update the page pointer when game is loaded,
-	// don't setup event, already done
-	if (from_save) {
-		SetupFromSave(new_page);
+	if (new_page == this->page) {
+		return;
 	}
-	else if (new_page != this->page) {
-		ClearWaitingForegroundExecution();
-		Setup(new_page);
+
+	ClearWaitingForegroundExecution();
+	SetPaused(false);
+	const auto* old_page = page;
+	page = new_page;
+
+	SetSpriteGraphic(ToString(page->character_name), page->character_index);
+
+	if (IsStopping()
+			&& (!old_page
+				|| old_page->character_direction != new_page->character_direction
+				|| old_page->character_pattern != new_page->character_pattern))
+	{
+		SetFacing(page->character_direction);
+		SetDirection(page->character_direction);
+	}
+
+	// This fixes a load game bug in RPG_RT where if you save and load while an event
+	// has an active move route, it's frequency gets set to zero after the move route ends.
+	original_move_frequency = page->move_frequency;
+
+	SetTransparency(page->translucent ? 3 : 0);
+	SetMoveFrequency(page->move_frequency);
+	SetLayer(page->layer);
+	data()->overlap_forbidden = page->overlap_forbidden;
+	SetAnimationType(static_cast<lcf::rpg::EventPage::AnimType>(page->animation_type));
+	SetMoveSpeed(page->move_speed);
+
+	if (IsFacingLocked()) {
+		SetFacing(page->character_direction);
+	}
+
+	if (GetAnimationType() == lcf::rpg::EventPage::AnimType_fixed_graphic
+			|| GetAnimationType() == lcf::rpg::EventPage::AnimType_spin) {
+		SetAnimFrame(page->character_pattern);
+	}
+
+	if (page->move_type == lcf::rpg::EventPage::MoveType_random) {
+		SetMaxStopCountForRandom();
+	} else if (page->move_type == lcf::rpg::EventPage::MoveType_custom) {
+		SetMaxStopCountForTurn();
+	} else {
+		SetMaxStopCountForStep();
+	}
+
+	// When the page is being changed, RPG_RT will not reset the original move route index
+	// if the move routes of the old page and the new page have the same size and all their command codes are the same.
+	// To clarify, other move route command parameters such as switch_id etc... are not considered in the comparison!
+	if (!old_page || !CompareMoveRouteCommandCodes(old_page->move_route, new_page->move_route)) {
+		SetOriginalMoveRouteIndex(0);
+	}
+
+	ResetThrough();
+
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) {
+		if (!page->event_commands.empty()) {
+			if (!interpreter) {
+				interpreter.reset(new Game_Interpreter_Map());
+			}
+			// RPG_RT will wait until the next call to Update() to push the interpreter code.
+			// This forces the interpreter to yield when it changes it's own page.
+		}
+	}
+
+	if (interpreter) {
+		interpreter->Clear();
 	}
 }
 
@@ -283,11 +311,11 @@ bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 }
 
 int Game_Event::GetId() const {
-	return event.ID;
+	return data()->ID;
 }
 
 StringView Game_Event::GetName() const {
-	return event.name;
+	return event->name;
 }
 
 bool Game_Event::IsWaitingForegroundExecution() const {
@@ -304,18 +332,20 @@ lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
 }
 
 
-bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
-	// RGSS scripts consider list empty if size <= 1. Why?
-	if (GetList().empty() || !data()->active) {
+bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_player) {
+	// RPG_RT always resets this everytime this function is called, whether successful or not
+	data()->triggered_by_decision_key = by_decision_key;
+
+	auto& list = GetList();
+	if (!IsActive() || IsWaitingForegroundExecution() || list.empty()) {
 		return false;
 	}
 
-	if (face_hero && !(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
-		SetSpriteDirection(GetDirectionToHero());
+	if (face_player && !(IsFacingLocked() || IsSpinning())) {
+		SetFacing(GetDirectionToHero());
 	}
 
 	data()->waiting_execution = true;
-	data()->triggered_by_decision_key = by_decision_key;
 	SetPaused(true);
 
 	return true;
@@ -328,66 +358,89 @@ const std::vector<lcf::rpg::EventCommand>& Game_Event::GetList() const {
 }
 
 void Game_Event::OnFinishForegroundEvent() {
-	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
-		SetSpriteDirection(GetDirection());
-	}
+	UpdateFacing();
 	SetPaused(false);
 }
 
-void Game_Event::CheckEventAutostart() {
-	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start
-			&& GetRemainingStep() == 0) {
-		SetAsWaitingForegroundExecution(false, false);
-		return;
+bool Game_Event::CheckEventAutostart() {
+	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start) {
+		ScheduleForegroundExecution(false, false);
+		return true;
 	}
+	return false;
 }
 
-void Game_Event::CheckEventCollision() {
+bool Game_Event::CheckEventCollision() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_collision
 			&& GetLayer() != lcf::rpg::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning()
-			&& !Main_Data::game_player->InAirship()
-			&& Main_Data::game_player->IsInPosition(GetX(), GetY())) {
-		SetAsWaitingForegroundExecution(true, false);
-		return;
+			&& Main_Data::game_player->GetX() == GetX()
+			&& Main_Data::game_player->GetY() == GetY())
+	{
+		ScheduleForegroundExecution(false, true);
+		SetStopCount(0);
+		return true;
 	}
+	return false;
 }
 
-void Game_Event::OnMoveFailed(int x, int y) {
-	if (Main_Data::game_player->InAirship()
-			|| GetLayer() != lcf::rpg::EventPage::Layers_same
-			|| GetTrigger() != lcf::rpg::EventPage::Trigger_collision) {
+void Game_Event::CheckCollisonOnMoveFailure() {
+	if (Game_Map::GetInterpreter().IsRunning()) {
 		return;
 	}
 
-	if (Main_Data::game_player->IsInPosition(x, y)) {
-		SetAsWaitingForegroundExecution(false, false);
+	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+	if (Main_Data::game_player->GetX() == front_x
+			&& Main_Data::game_player->GetY() == front_y
+			&& GetLayer() == lcf::rpg::EventPage::Layers_same
+			&& GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
+	{
+		ScheduleForegroundExecution(false, true);
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);
-		return;
 	}
 }
 
-void Game_Event::UpdateSelfMovement() {
-	if (IsPaused())
-		return;
-	if (IsMoveRouteOverwritten()) {
+bool Game_Event::Move(int dir) {
+	Game_Character::Move(dir);
+	if (IsStopping()) {
+		CheckCollisonOnMoveFailure();
+		return false;
+	}
+	return true;
+}
+
+void Game_Event::UpdateNextMovementAction() {
+	if (!page) {
 		return;
 	}
-	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
-		return;
-	if (!IsStopping())
-		return;
-	if (page == nullptr) {
+
+	UpdateMoveRoute(data()->move_route_index, data()->move_route, true);
+
+	CheckEventAutostart();
+
+	if (!IsStopping()) {
 		return;
 	}
-	if (IsStopCountActive()) {
+
+	CheckEventCollision();
+
+	if (!page
+			|| IsPaused()
+			|| IsMoveRouteOverwritten()
+			|| IsStopCountActive()
+			|| (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning()))
+	{
 		return;
 	}
 
 	switch (page->move_type) {
+	case lcf::rpg::EventPage::MoveType_stationary:
+		break;
 	case lcf::rpg::EventPage::MoveType_random:
 		MoveTypeRandom();
 		break;
@@ -404,59 +457,79 @@ void Game_Event::UpdateSelfMovement() {
 		MoveTypeAwayFromPlayer();
 		break;
 	case lcf::rpg::EventPage::MoveType_custom:
-		UpdateMoveRoute(data()->original_move_route_index, page->move_route);
+		UpdateMoveRoute(data()->original_move_route_index, page->move_route, false);
 		break;
 	}
 }
 
-void Game_Event::MoveTypeRandom() {
+void Game_Event::SetMaxStopCountForRandom() {
 	auto st = GetMaxStopCountForStep(GetMoveFrequency());
 	st *= (Utils::GetRandomNumber(0, 3) + 3) / 5;
 	SetMaxStopCount(st);
+}
 
+void Game_Event::MoveTypeRandom() {
 	int draw = Utils::GetRandomNumber(0, 9);
 
-	const auto opt = MoveOption::IgnoreIfCantMove;
+	const auto prev_dir = GetDirection();
 
 	if (draw < 3) {
-		auto dir = GetDirection();
-		Move(dir, opt);
 	} else if (draw < 5) {
-		auto dir = GetDirection90DegreeLeft(GetDirection());
-		Move(dir, opt);
+		Turn90DegreeLeft();
 	} else if (draw < 7) {
-		auto dir = GetDirection90DegreeRight(GetDirection());
-		Move(dir, opt);
+		Turn90DegreeRight();
 	} else if (draw < 8) {
-		auto dir = GetDirection180Degree(GetDirection());
-		Move(dir, opt);
+		Turn180Degree();
 	} else {
 		SetStopCount(Utils::GetRandomNumber(0, GetMaxStopCount()));
+		return;
 	}
+
+	Move(GetDirection());
+
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetFacing(prev_dir);
+			}
+		}
+	}
+
+	SetMaxStopCountForRandom();
 }
 
 void Game_Event::MoveTypeCycle(int default_dir) {
-	SetMaxStopCountForStep();
 	if (GetStopCount() < GetMaxStopCount()) return;
 
-	const int reverse_dir = ReverseDir(default_dir);
+	const auto prev_dir = GetDirection();
+
+	const auto reverse_dir = ReverseDir(default_dir);
 	int move_dir = GetDirection();
 	if (move_dir != reverse_dir) {
 		move_dir = default_dir;
 	}
 
-	Move(move_dir, MoveOption::IgnoreIfCantMove);
+	Move(move_dir);
 
-	if (move_failed) {
-		if (GetStopCount() >= GetMaxStopCount() + 20) {
-			if (GetStopCount() >= GetMaxStopCount() + 60) {
-				Move(ReverseDir(move_dir));
-				SetStopCount(0);
-			} else {
-				Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
+	if (IsStopping() && GetStopCount() >= GetMaxStopCount() + 20) {
+		Move(ReverseDir(move_dir));
+	}
+
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetFacing(prev_dir);
 			}
 		}
 	}
+
+	SetMaxStopCountForStep();
 }
 
 void Game_Event::MoveTypeCycleLeftRight() {
@@ -476,6 +549,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 	const bool in_sight = (sx >= -offset && sx <= SCREEN_TARGET_WIDTH + offset
 			&& sy >= -offset && sy <= SCREEN_TARGET_HEIGHT + offset);
 
+	const auto prev_dir = GetDirection();
+
 	int dir = 0;
 	if (!in_sight) {
 		dir = Utils::GetRandomNumber(0, 3);
@@ -492,17 +567,20 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 		}
 	}
 
-	const bool stop_limit = (GetStopCount() >= 60);
+	Move(dir);
 
-	const auto move_opt = stop_limit
-		? MoveOption::Normal
-		: MoveOption::IgnoreIfCantMove;
-
-	Move(dir, move_opt);
-
-	if (move_failed && stop_limit) {
-		SetStopCount(0);
+	if (IsStopping()) {
+		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
+			SetStopCount(0);
+		} else {
+			SetDirection(prev_dir);
+			if (!IsFacingLocked()) {
+				SetFacing(prev_dir);
+			}
+		}
 	}
+
+	SetMaxStopCountForStep();
 }
 
 void Game_Event::MoveTypeTowardsPlayer() {
@@ -541,59 +619,19 @@ AsyncOp Game_Event::Update(bool resume_async) {
 		}
 	}
 
-	if (IsProcessed()) {
-		return {};
-	}
-	SetProcessed(true);
+	Game_Character::Update();
 
-	CheckEventAutostart();
-
-	if (!IsMoveRouteOverwritten() || IsMoving()) {
-		CheckEventCollision();
-	}
-
-	auto was_moving = !IsStopping();
-	Game_Character::UpdateMovement();
-	Game_Character::UpdateAnimation(was_moving);
-	Game_Character::UpdateFlash();
-
-	if (IsStopping()) {
-		CheckEventCollision();
-	}
 	return {};
 }
 
 const lcf::rpg::EventPage* Game_Event::GetPage(int page) const {
-	if (page <= 0 || page - 1 >= static_cast<int>(event.pages.size())) {
+	if (page <= 0 || page - 1 >= static_cast<int>(event->pages.size())) {
 		return nullptr;
 	}
-	return &event.pages[page - 1];
+	return &event->pages[page - 1];
 }
 
 const lcf::rpg::EventPage *Game_Event::GetActivePage() const {
 	return page;
 }
 
-const lcf::rpg::SaveMapEvent& Game_Event::GetSaveData() {
-	lcf::rpg::SaveEventExecState state;
-	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
-		if (interpreter) {
-			state = interpreter->GetState();
-		}
-
-		if (state.stack.empty() && page->event_commands.empty()) {
-			// RPG_RT always stores an empty stack frame for empty parallel events.
-			lcf::rpg::SaveEventExecFrame frame;
-			frame.event_id = GetId();
-			state.stack.push_back(std::move(frame));
-		}
-	}
-	data()->parallel_event_execstate = std::move(state);
-	data()->ID = event.ID;
-
-	return *data();
-}
-
-bool Game_Event::IsMoveRouteActive() const {
-	return true;
-}

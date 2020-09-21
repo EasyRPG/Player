@@ -40,6 +40,8 @@ public:
 		Vehicle
 	};
 
+	static StringView TypeToStr(Type t);
+
 	/**
 	 * Destructor.
 	 */
@@ -91,32 +93,32 @@ public:
 	void SetMapId(int new_map_id);
 
 	/**
-	 * Gets character's front direction.
+	 * Gets character's movement direction.
 	 *
 	 * @return current front direction.
 	 */
 	int GetDirection() const;
 
 	/**
-	 * Sets character's front direction.
+	 * Sets character's movement direction.
 	 *
 	 * @param new_direction New current front direction.
 	 */
 	void SetDirection(int new_direction);
 
 	/**
-	 * Gets direction of the sprite.
+	 * Gets character's visible facing direction.
 	 *
 	 * @return direction of the sprite.
 	 */
-	int GetSpriteDirection() const;
+	int GetFacing() const;
 
 	/**
-	 * Sets sprite direction.
+	 * Sets character's visible facing direction.
 	 *
-	 * @param new_direction New sprite direction.
+	 * @param new_direction New facing direction.
 	 */
-	void SetSpriteDirection(int new_direction);
+	void SetFacing(int new_direction);
 
 	/**
 	 * Gets whether facing is locked.
@@ -196,11 +198,6 @@ public:
 	void SetMoveRoute(const lcf::rpg::MoveRoute& move_route);
 
 	/**
-	 * @return true if this character is currently following a move route.
-	 */
-	virtual bool IsMoveRouteActive() const;
-
-	/**
 	 * Returns current index of the route assigned via a MoveEvent.
 	 *
 	 * @return current move route index
@@ -261,6 +258,15 @@ public:
 	void SetSpriteGraphic(std::string sprite_name, int index);
 
 	/**
+	 * Sets sprite name from a move route command. Usually the name of the graphic file.
+	 * This can be overridden to change behavior by child classes.
+	 *
+	 * @param sprite_name new sprite name
+	 * @param index the index of the new sprite.
+	 */
+	virtual void MoveRouteSetSpriteGraphic(std::string sprite_name, int index);
+
+	/**
 	 * Gets sprite index of character.
 	 *
 	 * @return sprite index
@@ -286,15 +292,17 @@ public:
 	 */
 	bool IsAnimPaused() const;
 
-	/** @return the type of vehicle this event itself is, or is boarded */
-	virtual int GetVehicleType() const;
-
 	/**
 	 * Sets whether animation is paused.
 	 *
 	 * @param value whether to pause the animation.
 	 */
 	void SetAnimPaused(bool value);
+
+	/**
+	 * Updates the sprite facing direction based on current direction
+	 */
+	void UpdateFacing();
 
 	/**
 	 * Begins a flash.
@@ -356,6 +364,9 @@ public:
 	 */
 	void SetThrough(bool through);
 
+	/** Resets the through flag to the route_through flag */
+	void ResetThrough();
+
 	/**
 	 * @return stop_count
 	 */
@@ -390,6 +401,24 @@ public:
 	 * @param freq input movement frequency
 	 */
 	static constexpr int GetMaxStopCountForWait(int freq);
+
+	/**
+	 * @return the number of frames for animating steps while not moving
+	 * @param speed the movement speed.
+	 */
+	static constexpr int GetStationaryAnimFrames(int speed);
+
+	/**
+	 * @return the number of frames for animating steps while moving or continuous.
+	 * @param speed the movement speed.
+	 */
+	static constexpr int GetContinuousAnimFrames(int speed);
+
+	/**
+	 * @return the number of frames for animating steps while spinning.
+	 * @param speed the movement speed.
+	 */
+	static constexpr int GetSpinAnimFrames(int speed);
 
 	/**
 	 * Sets the max_stop_count
@@ -513,62 +542,46 @@ public:
 	bool IsStopping() const;
 
 	/**
-	 * Makes way for the character to move to (x,y). Returns
-	 * true if the move can be completed.
+	 * Moves the character to a new location.
 	 *
-	 * @param x new x position.
-	 * @param y new y position.
-	 * @return whether the character can walk through.
-	 */
-	virtual bool MakeWay(int x, int y) const;
-
-	/**
-	 * Moves the character to a new tile.
-	 *
+	 * @param map_id map id
 	 * @param x tile x.
 	 * @param y tile y.
 	 */
-	virtual void MoveTo(int x, int y);
-
-	/**
-	 * Updates character and movement.
-	 */
-	void UpdateMovement();
-
-	/**
-	 * Updates character animation
-	 *
-	 * @param was_moving if the event moved or jumped this frame
-	 */
-	void UpdateAnimation(bool was_moving);
-
-	/**
-	 * Updates character flash
-	 */
-	void UpdateFlash();
-
-	/**
-	 * Walks around on a custom move route.
-	 */
-
-	void Turn(int dir);
-
-	enum class MoveOption { Normal, IgnoreIfCantMove };
+	virtual void MoveTo(int map_id, int x, int y);
 
 	/**
 	 * Move in the direction dir.
+	 *
+	 * @param dir the direction to move to.
+	 *
+	 * @return Whether move was successful or a move or jump is already in progress.
+	 * @post If successful, IsStopping() == false.
 	 */
-	void Move(int dir, MoveOption option = MoveOption::Normal);
+	virtual bool Move(int dir);
 
 	/**
-	 * Moves the character forward.
+	 * Jump to (x, y)
+	 *
+	 * @param x the x position to jump to.
+	 * @param y the y position to jump to.
+	 *
+	 * @return Whether jump was successful or a move or jump is already in progress.
+	 * @post If successful, IsStopping() == false.
 	 */
-	void MoveForward(MoveOption option = MoveOption::Normal);
+	bool Jump(int x, int y);
 
 	/**
-	 * Does a random movement.
+	 * Check if this can move to the given tile.
+	 *
+	 * @param from_x Moving from x position
+	 * @param from_y Moving from y position
+	 * @param to_x Moving from x position
+	 * @param to_y Moving from y position
+	 *
+	 * @return true if this can occupy (to_x, to_y) from (from_x, from_y)
 	 */
-	void MoveRandom(MoveOption option = MoveOption::Normal);
+	virtual bool MakeWay(int from_x, int from_y, int to_x, int to_y);
 
 	/**
 	 * Turns the character 90 Degree to the left.
@@ -590,11 +603,6 @@ public:
 	 * by using a random number.
 	 */
 	void Turn90DegreeLeftOrRight();
-
-	/**
-	 * Signals a move begin.
-	 */
-	virtual void BeginMove();
 
 	/** @return the direction we would need to face the hero. */
 	int GetDirectionToHero();
@@ -626,7 +634,7 @@ public:
 	/**
 	 * Character looks in a random direction
 	 */
-	void FaceRandomDirection();
+	void TurnRandom();
 
 	/**
 	 * Character looks towards the hero.
@@ -642,19 +650,6 @@ public:
 	 * Character waits for 20 frames more.
 	 */
 	void Wait();
-
-	/**
-	 * Jump action begins. Ends the movement when EndJump is missing.
-	 *
-	 * @param current_index Index in the current route
-	 * @param current_route Current move route
-	 */
-	void BeginJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
-
-	/**
-	 * Jump action ends.
-	 */
-	void EndJump();
 
 	/**
 	 * Forces a new, temporary, move route.
@@ -767,7 +762,7 @@ public:
 	int GetOpacity() const;
 
 	/**
-	 * @return transparency (0 = Invisible, 255 = opaque)
+	 * @return RPG_RT transparency
 	 */
 	int GetTransparency() const;
 
@@ -783,7 +778,7 @@ public:
 	 *
 	 * @return if visible, when true Opaque value is used
 	 */
-	virtual bool GetVisible() const;
+	virtual bool IsVisible() const;
 
 	/**
 	 * Makes character visible/not visible.
@@ -791,16 +786,19 @@ public:
 	 * Needed for the "SetHeroTransparency" command because this can't be
 	 * altered via the "Increase Transparency" move command.
 	 *
-	 * @param visible true: visible, false: invisible
+	 * @param hidden true: invisible, false: visible
 	 */
-	void SetVisible(bool visible);
+	void SetSpriteHidden(bool hidden);
+
+	/** @return true if sprite is hidden */
+	bool IsSpriteHidden() const;
 
 	/**
 	 * Tests if animation type is any fixed state.
 	 *
 	 * @return Whether direction is fixed
 	 */
-	bool IsDirectionFixed() const;
+	static constexpr bool IsDirectionFixedAnimationType(AnimType);
 
 	/**
 	 * Tests if the step animation is enabled.
@@ -851,39 +849,73 @@ public:
 		UpLeft
 	};
 
+	static bool IsDirectionDiagonal(int d);
+
 	/** Reverses a direction, ex: ReverseDir(Up) == Down. */
 	static int ReverseDir(int dir);
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
+	static constexpr int GetDxFromDirection(int dir);
+	static constexpr int GetDyFromDirection(int dir);
+
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
-	virtual void UpdateSelfMovement() {}
-	virtual void OnMoveFailed(int /*x*/, int /*y*/) {}
-	void UpdateJump();
+	/** Check for and fix incorrect data after loading save game */
+	void SanitizeData(StringView name);
+	/** Check for and fix incorrect move route data after loading save game */
+	void SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name);
+	void Update();
+	virtual void UpdateAnimation();
+	virtual void UpdateNextMovementAction() = 0;
+	virtual void UpdateMovement(int amount);
+
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
-	virtual void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
+	void UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite);
 	void IncAnimCount();
 	void IncAnimFrame();
+	void UpdateFlash();
+	bool BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;
 
 	int original_move_frequency = 2;
-	bool move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
-	bool any_move_successful;
 
-	int jump_plus_x;
-	int jump_plus_y;
-
-	bool visible;
-
-	Type _type;
+	Type _type = {};
 	lcf::rpg::SaveMapEventBase* _data = nullptr;
 };
+
+template <typename T>
+class Game_CharacterDataStorage : public Game_Character
+{
+	public:
+		using Type = Game_Character::Type;
+		Game_CharacterDataStorage(Type typ);
+
+		Game_CharacterDataStorage(const Game_CharacterDataStorage&) = delete;
+		Game_CharacterDataStorage& operator=(const Game_CharacterDataStorage&) = delete;
+
+		Game_CharacterDataStorage(Game_CharacterDataStorage&&) noexcept;
+		Game_CharacterDataStorage& operator=(Game_CharacterDataStorage&&) noexcept;
+
+		~Game_CharacterDataStorage() = default;
+
+		T* data();
+		const T* data() const;
+	private:
+		T _data = {};
+};
+
+constexpr bool Game_Character::IsDirectionFixedAnimationType(AnimType at) {
+	return
+		at == lcf::rpg::EventPage::AnimType_fixed_continuous ||
+		at == lcf::rpg::EventPage::AnimType_fixed_graphic ||
+		at == lcf::rpg::EventPage::AnimType_fixed_non_continuous;
+}
 
 inline lcf::rpg::SaveMapEventBase* Game_Character::data() {
 	return _data;
@@ -929,11 +961,11 @@ inline void Game_Character::SetDirection(int new_direction) {
 	data()->direction = new_direction;
 }
 
-inline int Game_Character::GetSpriteDirection() const {
+inline int Game_Character::GetFacing() const {
 	return data()->sprite_direction;
 }
 
-inline void Game_Character::SetSpriteDirection(int new_direction) {
+inline void Game_Character::SetFacing(int new_direction) {
 	data()->sprite_direction = new_direction;
 }
 
@@ -942,7 +974,7 @@ inline bool Game_Character::IsFacingLocked() const {
 }
 
 inline void Game_Character::SetFacingLocked(bool locked) {
-	data()->lock_facing = locked;
+	data()->lock_facing = locked || IsDirectionFixedAnimationType(GetAnimationType());
 }
 
 inline int Game_Character::GetLayer() const {
@@ -1014,6 +1046,10 @@ inline void Game_Character::SetSpriteGraphic(std::string sprite_name, int index)
 	data()->sprite_id = index;
 }
 
+inline void Game_Character::MoveRouteSetSpriteGraphic(std::string sprite_name, int index) {
+	SetSpriteGraphic(std::move(sprite_name), index);
+}
+
 inline int Game_Character::GetSpriteIndex() const {
 	return data()->sprite_id;
 }
@@ -1062,6 +1098,9 @@ inline void Game_Character::SetThrough(bool through) {
 	data()->through = through;
 }
 
+inline void Game_Character::ResetThrough() {
+	data()->through = data()->route_through;
+}
 
 inline Game_Character::AnimType Game_Character::GetAnimationType() const {
 	return AnimType(data()->animation_type);
@@ -1069,6 +1108,7 @@ inline Game_Character::AnimType Game_Character::GetAnimationType() const {
 
 inline void Game_Character::SetAnimationType(Game_Character::AnimType anim_type) {
 	data()->animation_type = int(anim_type);
+	SetFacingLocked(IsDirectionFixedAnimationType(anim_type));
 }
 
 inline int Game_Character::GetStopCount() const {
@@ -1139,7 +1179,6 @@ inline bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-
 inline int Game_Character::GetBeginJumpX() const {
 	return data()->begin_jump_x;
 }
@@ -1192,12 +1231,24 @@ inline bool Game_Character::IsActive() const {
 	return data()->active;
 }
 
+inline void Game_Character::SetActive(bool active) {
+	data()->active = active;
+}
+
 inline bool Game_Character::HasTileSprite() const {
 	return GetSpriteName().empty();
 }
 
-inline void Game_Character::SetVisible(bool visible) {
-	this->visible = visible;
+inline int Game_Character::GetTileId() const {
+	return HasTileSprite() ? GetSpriteIndex() : 0;
+}
+
+inline void Game_Character::SetSpriteHidden(bool hidden) {
+	data()->sprite_transparent = hidden;
+}
+
+inline bool Game_Character::IsSpriteHidden() const {
+	return data()->sprite_transparent;
 }
 
 constexpr int Game_Character::GetDirection90DegreeLeft(int dir) {
@@ -1222,6 +1273,83 @@ constexpr int Game_Character::GetMaxStopCountForTurn(int freq) {
 
 constexpr int Game_Character::GetMaxStopCountForWait(int freq) {
 	return 20 + GetMaxStopCountForTurn(freq);
+}
+
+constexpr int Game_Character::GetDxFromDirection(int dir) {
+	return (dir == Game_Character::Right || dir == Game_Character::UpRight || dir == Game_Character::DownRight)
+		- (dir == Game_Character::Left || dir == Game_Character::DownLeft || dir == Game_Character::UpLeft);
+}
+
+constexpr int Game_Character::GetDyFromDirection(int dir) {
+	return (dir == Game_Character::Down || dir == Game_Character::DownRight || dir == Game_Character::DownLeft)
+		- (dir == Game_Character::Up || dir == Game_Character::UpRight || dir == Game_Character::UpLeft);
+}
+
+constexpr int Game_Character::GetStationaryAnimFrames(int speed) {
+	constexpr int limits[] = { 12, 10, 8, 6, 5, 4 };
+	return limits[speed - 1];
+}
+
+constexpr int Game_Character::GetContinuousAnimFrames(int speed) {
+	constexpr int limits[] = { 16, 12, 10, 8, 7, 6 };
+	return limits[speed - 1];
+}
+
+constexpr int Game_Character::GetSpinAnimFrames(int speed) {
+	constexpr int limits[] = { 24, 16, 12, 8, 6, 4 };
+	return limits[speed - 1];
+}
+
+inline bool Game_Character::IsVisible() const {
+	return IsActive() && !IsSpriteHidden() && GetOpacity() > 0;
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Type typ)
+	: Game_Character(typ, nullptr)
+{
+	Game_Character::_data = &this->_data;
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Game_CharacterDataStorage&& o) noexcept
+: Game_Character(std::move(o)), _data(std::move(o._data))
+{
+	Game_Character::_data = &this->_data;
+}
+
+template <typename T>
+inline Game_CharacterDataStorage<T>& Game_CharacterDataStorage<T>::operator=(Game_CharacterDataStorage&& o) noexcept
+{
+	static_cast<Game_Character*>(this) = std::move(o);
+	if (this != &o) {
+		_data = std::move(o._data);
+		Game_Character::_data = &this->_data;
+	}
+	return *this;
+}
+
+template <typename T>
+inline T* Game_CharacterDataStorage<T>::data() {
+	return static_cast<T*>(Game_Character::data());
+}
+
+template <typename T>
+inline const T* Game_CharacterDataStorage<T>::data() const {
+	return static_cast<const T*>(Game_Character::data());
+}
+
+inline bool Game_Character::IsDirectionDiagonal(int d) {
+	return d >= UpRight;
+}
+
+inline StringView Game_Character::TypeToStr(Game_Character::Type type) {
+	switch (type) {
+		case Player: return "Player";
+		case Vehicle: return "Vehicle";
+		case Event: return "Event";
+	}
+	return "UnknownCharacter";
 }
 
 #endif

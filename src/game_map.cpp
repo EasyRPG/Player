@@ -50,13 +50,8 @@
 #include "scene_gameover.h"
 
 namespace {
-	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
-	constexpr int default_pan_y = 7 * SCREEN_TILE_SIZE;
-	constexpr int default_pan_speed = 16;
-
-	lcf::rpg::SaveMapInfo& map_info = Main_Data::game_data.map_info;
-	lcf::rpg::SavePartyLocation& location = Main_Data::game_data.party_location;
-	lcf::rpg::SavePanorama& panorama = Main_Data::game_data.panorama;
+	lcf::rpg::SaveMapInfo map_info;
+	lcf::rpg::SavePanorama panorama;
 
 	std::string chipset_name;
 	std::string battleback_name;
@@ -72,20 +67,17 @@ namespace {
 	std::unique_ptr<lcf::rpg::Map> map;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
-	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
-	std::vector<Game_Character*> pending;
+	std::vector<Game_Vehicle> vehicles;
 
 	lcf::rpg::Chipset* chipset;
-
-	int last_encounter_idx = 0;
 
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
+}
 
-	// How much we scrolled during this frame.
-	int scrolled_right = 0;
-	int scrolled_down = 0;
+namespace Game_Map {
+void SetupCommon();
 }
 
 void Game_Map::OnContinueFromBattle() {
@@ -97,13 +89,12 @@ static Game_Map::Parallax::Params GetParallaxParams();
 void Game_Map::Init() {
 	Dispose();
 
-	map_info.position_x = 0;
-	map_info.position_y = 0;
+	map_info = {};
+	map_info.Setup();
+	panorama = {};
 	SetNeedRefresh(true);
 
-	location.map_id = 0;
 	interpreter.reset(new Game_Interpreter_Map(true));
-	map_info.encounter_rate = 0;
 
 	common_events.clear();
 	common_events.reserve(lcf::Data::commonevents.size());
@@ -112,22 +103,17 @@ void Game_Map::Init() {
 	}
 
 	vehicles.clear();
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.boat_location));
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.ship_location));
-	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.airship_location));
-
-	location.pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
-	location.pan_speed = default_pan_speed;
-	location.pan_finish_x = default_pan_x;
-	location.pan_finish_y = default_pan_y;
-	location.pan_current_x = default_pan_x;
-	location.pan_current_y = default_pan_y;
+	vehicles.emplace_back(Game_Vehicle::Boat);
+	vehicles.emplace_back(Game_Vehicle::Ship);
+	vehicles.emplace_back(Game_Vehicle::Airship);
 }
 
 void Game_Map::Dispose() {
 	events.clear();
-	pending.clear();
 	map.reset();
+	map_info = {};
+	map_info.Setup();
+	panorama = {};
 }
 
 void Game_Map::Quit() {
@@ -136,18 +122,20 @@ void Game_Map::Quit() {
 	interpreter.reset();
 }
 
-void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
+int Game_Map::GetMapSaveCount() {
+	return (Player::IsRPG2k3() && map->save_count_2k3e > 0)
+		? map->save_count_2k3e
+		: map->save_count;
+}
+
+void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Dispose();
-	if (tt != TeleportTarget::eAsyncQuickTeleport) {
-		Main_Data::game_screen->OnMapChange();
-		Main_Data::game_pictures->OnMapChange();
-	}
-	SetupCommon(_id, false);
-	map_info.encounter_rate = GetMapInfo().encounter_steps;
-	SetEncounterSteps(0);
+
+	map = std::move(map_in);
+
+	SetupCommon();
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
-	panorama = {};
 
 	Parallax::ClearChangedBG();
 
@@ -160,20 +148,8 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 		map_info.upper_tiles[i] = i;
 	}
 
-	events.reserve(map->events.size());
-	for (const lcf::rpg::Event& ev : map->events) {
-		events.emplace_back(location.map_id, ev);
-	}
-
-	// pan_state does not reset when you change maps.
-	location.pan_speed = default_pan_speed;
-	location.pan_finish_x = default_pan_x;
-	location.pan_finish_y = default_pan_y;
-	location.pan_current_x = default_pan_x;
-	location.pan_current_y = default_pan_y;
-
 	// Save allowed
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	int can_save = lcf::Data::treemap.maps[current_index].save;
 	int can_escape = lcf::Data::treemap.maps[current_index].escape;
 	int can_teleport = lcf::Data::treemap.maps[current_index].teleport;
@@ -210,45 +186,65 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Game_System::SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
 
-	if (interpreter) {
-		if (tt != TeleportTarget::eAsyncQuickTeleport) {
-			interpreter->OnMapChange();
-		}
-	}
+	auto& player = *Main_Data::game_player;
+
+	SetPositionX(player.GetX() * SCREEN_TILE_SIZE - player.GetPanX());
+	SetPositionY(player.GetY() * SCREEN_TILE_SIZE - player.GetPanY());
+
+	// Update the save counts so that if the player saves the game
+	// events will properly resume upon loading.
+	Main_Data::game_player->UpdateSaveCounts(lcf::Data::system.save_count, GetMapSaveCount());
 }
 
-void Game_Map::SetupFromSave() {
-	SetupCommon(location.map_id, true);
+void Game_Map::SetupFromSave(
+		std::unique_ptr<lcf::rpg::Map> map_in,
+		lcf::rpg::SaveMapInfo save_map,
+		lcf::rpg::SaveVehicleLocation save_boat,
+		lcf::rpg::SaveVehicleLocation save_ship,
+		lcf::rpg::SaveVehicleLocation save_airship,
+		lcf::rpg::SaveEventExecState save_fg_exec,
+		lcf::rpg::SavePanorama save_pan,
+		std::vector<lcf::rpg::SaveCommonEvent> save_ce) {
 
-	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
+	map = std::move(map_in);
+	map_info = std::move(save_map);
+	panorama = std::move(save_pan);
 
-	events.reserve(map->events.size());
-	for (size_t i = 0; i < map->events.size(); ++i) {
-		if (i < map_info.events.size()) {
-			events.emplace_back(location.map_id, map->events[i], map_info.events[i]);
+	SetupCommon();
+
+	const bool is_db_save_compat = Main_Data::game_player->IsDatabaseCompatibleWithSave(lcf::Data::system.save_count);
+	const bool is_map_save_compat = Main_Data::game_player->IsMapCompatibleWithSave(GetMapSaveCount());
+
+	if (is_db_save_compat && is_map_save_compat) {
+		for (size_t i = 0; i < std::min(save_ce.size(), common_events.size()); ++i) {
+			common_events[i].SetSaveData(save_ce[i].parallel_event_execstate);
 		}
-		else {
-			events.emplace_back(location.map_id, map->events[i]);
-		}
-
-		if (events.back().IsMoveRouteOverwritten())
-			pending.push_back(&events.back());
 	}
 
-	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
-		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
+	if (is_map_save_compat) {
+		for (size_t i = 0; i < std::min(map->events.size(), map_info.events.size()); ++i) {
+			auto& ev = events[i];
+			ev.SetSaveData(map_info.events[i]);
+		}
 	}
+	map_info.events.clear();
 
-	for (size_t i = 0; i < 3; i++)
-		if (vehicles[i]->IsMoveRouteOverwritten())
-			pending.push_back(vehicles[i].get());
+	GetVehicle(Game_Vehicle::Boat)->SetSaveData(std::move(save_boat));
+	GetVehicle(Game_Vehicle::Ship)->SetSaveData(std::move(save_ship));
+	GetVehicle(Game_Vehicle::Airship)->SetSaveData(std::move(save_airship));
+
+	if (is_map_save_compat) {
+		// Make main interpreter "busy" if save contained events to prevent auto-events from starting
+		interpreter->SetState(std::move(save_fg_exec));
+	}
 
 	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
 
-	SetEncounterSteps(location.encounter_steps);
+	if (!is_map_save_compat) {
+		panorama = {};
+	}
 
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
@@ -261,24 +257,20 @@ void Game_Map::SetupFromSave() {
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-
-void Game_Map::SetupFromTeleportSelf() {
-	SetEncounterSteps(0);
-}
-
-void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
-
-	location.map_id = _id;
+std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
+	std::unique_ptr<lcf::rpg::Map> map;
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
-	std::string map_name = Game_Map::ConstructMapName(location.map_id, true);
+	// FIXME: Assert map was cached for async platforms
+	std::string map_name = Game_Map::ConstructMapName(map_id, true);
 	std::string map_file = FileFinder::FindDefault(map_name);
 	if (map_file.empty()) {
-		map_name = Game_Map::ConstructMapName(location.map_id, false);
+		map_name = Game_Map::ConstructMapName(map_id, false);
 		map_file = FileFinder::FindDefault(map_name);
 
 		if (map_file.empty()) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
+			return nullptr;
 		}
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
@@ -288,17 +280,21 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 
-	Output::Debug("Loading Map {}", map_name);
+	Output::Debug("Loaded Map {}", map_name);
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());
 	}
 
+	return map;
+}
+
+void Game_Map::SetupCommon() {
 	SetNeedRefresh(true);
 
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	for (int cur = current_index;
 		GetMapIndex(lcf::Data::treemap.maps[cur].parent_map) != cur;
 		cur = GetMapIndex(lcf::Data::treemap.maps[cur].parent_map)) {
@@ -309,59 +305,43 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	if (!is_load_savegame) {
-		for (auto& vehicle: vehicles) {
-			vehicle->Refresh();
-		}
+	map_info.Fixup(GetMap());
+	map_info.Fixup(GetMapInfo());
+
+	// Create the map events
+	events.reserve(map->events.size());
+	for (const auto& ev : map->events) {
+		events.emplace_back(GetMapId(), &ev);
 	}
-
-	if (Main_Data::game_player->IsMoveRouteOverwritten())
-		pending.push_back(Main_Data::game_player.get());
-
-	auto map_save_count = map->save_count;
-	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
-		map_save_count =  map->save_count_2k3e;
-	}
-
-	//When loading a save game and versions have changed, we need to reset the running events.
-	if (is_load_savegame) {
-		if (location.map_save_count != map_save_count) {
-			Main_Data::game_data.common_events = {};
-			Main_Data::game_data.foreground_event_execstate = {};
-			Main_Data::game_data.map_info.events = {};
-			Main_Data::game_data.panorama = {};
-		} else if (location.database_save_count != lcf::Data::system.save_count) {
-			Main_Data::game_data.common_events = {};
-		}
-	}
-
-	// Update the save counts so that if the player saves the game
-	// events will properly resume upon loading.
-	location.map_save_count = map_save_count;
-	location.database_save_count = lcf::Data::system.save_count;
 }
 
-void Game_Map::PrepareSave() {
-	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
+void Game_Map::PrepareSave(lcf::rpg::Save& save) {
+	save.foreground_event_execstate = interpreter->GetState();
 
-	map_info.events.clear();
-	map_info.events.reserve(events.size());
+	save.airship_location = GetVehicle(Game_Vehicle::Airship)->GetSaveData();
+	save.ship_location = GetVehicle(Game_Vehicle::Ship)->GetSaveData();
+	save.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
+
+	save.map_info = map_info;
+	save.map_info.events.clear();
+	save.map_info.events.reserve(events.size());
 	for (Game_Event& ev : events) {
-		map_info.events.push_back(ev.GetSaveData());
+		save.map_info.events.push_back(ev.GetSaveData());
 	}
 
-	std::vector<lcf::rpg::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
-	save_common_events.clear();
-	save_common_events.reserve(common_events.size());
+	save.panorama = panorama;
+
+	save.common_events.clear();
+	save.common_events.reserve(common_events.size());
 	for (Game_CommonEvent& ev : common_events) {
-		save_common_events.push_back(lcf::rpg::SaveCommonEvent());
-		save_common_events.back().ID = ev.GetIndex();
-		save_common_events.back().parallel_event_execstate = ev.GetSaveData();
+		save.common_events.push_back(lcf::rpg::SaveCommonEvent());
+		save.common_events.back().ID = ev.GetIndex();
+		save.common_events.back().parallel_event_execstate = ev.GetSaveData();
 	}
 }
 
 void Game_Map::PlayBgm() {
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	while (lcf::Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
@@ -379,10 +359,14 @@ void Game_Map::PlayBgm() {
 	}
 }
 
+const std::vector<uint8_t>& Game_Map::GetTilesLayer(int layer) {
+	return layer >= 1 ? map_info.upper_tiles : map_info.lower_tiles;
+}
+
 void Game_Map::Refresh() {
-	if (location.map_id > 0) {
+	if (GetMapId() > 0) {
 		for (Game_Event& ev : events) {
-			ev.Refresh();
+			ev.RefreshPage();
 		}
 	}
 
@@ -394,28 +378,23 @@ Game_Interpreter_Map& Game_Map::GetInterpreter() {
 	return *interpreter;
 }
 
-void Game_Map::ScrollRight(int distance) {
+void Game_Map::Scroll(int dx, int dy) {
 	int x = map_info.position_x;
-	AddScreenX(x, distance);
+	AddScreenX(x, dx);
 	map_info.position_x = x;
-	scrolled_right += distance;
-	if (distance == 0) {
-		return;
-	}
 
-	Game_Map::Parallax::ScrollRight(distance);
-}
-
-void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
-	AddScreenY(y, distance);
+	AddScreenY(y, dy);
 	map_info.position_y = y;
-	scrolled_down += distance;
-	if (distance == 0) {
+
+	if (dx == 0 && dy == 0) {
 		return;
 	}
 
-	Game_Map::Parallax::ScrollDown(distance);
+	Main_Data::game_screen->OnMapScrolled(dx, dy);
+	Main_Data::game_pictures->OnMapScrolled(dx, dy);
+	Game_Map::Parallax::ScrollRight(dx);
+	Game_Map::Parallax::ScrollDown(dy);
 }
 
 // Add inc to acc, clamping the result into the range [low, high].
@@ -430,7 +409,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
 	int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
-		screen_x = Utils::PositiveModulo(screen_x + inc, map_width);
+		screen_x = (screen_x + inc) % map_width;
 	} else {
 		ClampingAdd(0, map_width - SCREEN_WIDTH, screen_x, inc);
 	}
@@ -439,18 +418,10 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
-		screen_y = Utils::PositiveModulo(screen_y + inc, map_height);
+		screen_y = (screen_y + inc) % map_height;
 	} else {
 		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
 	}
-}
-
-int Game_Map::GetScrolledRight() {
-	return scrolled_right;
-}
-
-int Game_Map::GetScrolledDown() {
-	return scrolled_down;
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -476,14 +447,6 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 	}
 
 	if (!self.IsActive() || !other.IsActive()) {
-		return false;
-	}
-
-	if (self.GetType() == Game_Character::Event && static_cast<const Game_Event&>(self).GetActivePage() == nullptr) {
-		return false;
-	}
-
-	if (other.GetType() == Game_Character::Event && static_cast<const Game_Event&>(other).GetActivePage() == nullptr) {
 		return false;
 	}
 
@@ -533,34 +496,28 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 	return WouldCollide(self, other, self_conflict);
 }
 
-bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
-	// Moving to same tile (used for jumps) always succeeds
-	if (x == self.GetX() && y == self.GetY()) {
-		return true;
+static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
+	if (ch && ch->GetType() == Game_Character::Vehicle) {
+		return static_cast<Game_Vehicle::Type>(static_cast<const Game_Vehicle*>(ch)->GetVehicleType());
 	}
-	if (!self.IsJumping() && x != self.GetX() && y != self.GetY()) {
-		// Handle diagonal stepping.
-		// Must be able to step on at least one of the 2 adjacent tiles and also the target tile.
-		// Verified behavior: Always checks vertical first, only checks horizontal if vertical fails.
-		bool vertical_ok = MakeWay(self, self.GetX(), y);
-		if (!vertical_ok) {
-			bool horizontal_ok = MakeWay(self, x, self.GetY());
-			if (!horizontal_ok) {
-				return false;
-			}
-		}
-	}
+	return Game_Vehicle::None;
+}
 
+bool Game_Map::MakeWay(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y
+		)
+{
 	// Infer directions before we do any rounding.
-	const auto bit_from = GetPassableMask(self.GetX(), self.GetY(), x, y);
-	const auto bit_to = GetPassableMask(x, y, self.GetX(), self.GetY());
+	const auto bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
+	const auto bit_to = GetPassableMask(to_x, to_y, from_x, from_y);
 
 	// Now round for looping maps.
-	x = Game_Map::RoundX(x);
-	y = Game_Map::RoundY(y);
+	to_x = Game_Map::RoundX(to_x);
+	to_y = Game_Map::RoundY(to_y);
 
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
-	if (!Game_Map::IsValid(x, y)) {
+	if (!Game_Map::IsValid(to_x, to_y)) {
 		return false;
 	}
 
@@ -568,7 +525,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		return true;
 	}
 
-	const auto vehicle_type = static_cast<Game_Vehicle::Type>(self.GetVehicleType());
+	const auto vehicle_type = GetCollisionVehicleType(&self);
 
 	bool self_conflict = false;
 	if (!self.IsJumping()) {
@@ -585,7 +542,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		if (vehicle_type == Game_Vehicle::None) {
 			// Check that we are allowed to step off of the current tile.
 			// Note: Vehicles can always step off a tile.
-			if (!IsPassableTile(&self, bit_from, self.GetX(), self.GetY())) {
+			if (!IsPassableTile(&self, bit_from, from_x, from_y)) {
 				return false;
 			}
 		}
@@ -594,27 +551,27 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 	if (vehicle_type != Game_Vehicle::Airship) {
 		// Check for collision with events on the target tile.
 		for (auto& other: GetEvents()) {
-			if (MakeWayCollideEvent(x, y, self, other, self_conflict)) {
+			if (MakeWayCollideEvent(to_x, to_y, self, other, self_conflict)) {
 				return false;
 			}
 		}
 		auto& player = Main_Data::game_player;
 		if (player->GetVehicleType() == Game_Vehicle::None) {
-			if (MakeWayCollideEvent(x, y, self, *Main_Data::game_player, self_conflict)) {
+			if (MakeWayCollideEvent(to_x, to_y, self, *Main_Data::game_player, self_conflict)) {
 				return false;
 			}
 		}
 		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
 			auto& other = vehicles[vid - 1];
-			if (other->IsInCurrentMap()) {
-				if (MakeWayCollideEvent(x, y, self, *other, self_conflict)) {
+			if (other.IsInCurrentMap()) {
+				if (MakeWayCollideEvent(to_x, to_y, self, other, self_conflict)) {
 					return false;
 				}
 			}
 		}
 		auto& airship = vehicles[Game_Vehicle::Airship - 1];
-		if (airship->IsInCurrentMap() && self.GetType() != Game_Character::Player) {
-			if (MakeWayCollideEvent(x, y, self, *airship, self_conflict)) {
+		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
+			if (MakeWayCollideEvent(to_x, to_y, self, airship, self_conflict)) {
 				return false;
 			}
 		}
@@ -625,7 +582,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
 	}
 
-	return IsPassableTile(&self, bit, x, y);
+	return IsPassableTile(&self, bit, to_x, to_y);
 }
 
 bool Game_Map::CanLandAirship(int x, int y) {
@@ -649,7 +606,7 @@ bool Game_Map::CanLandAirship(int x, int y) {
 	}
 	for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship }) {
 		auto& vehicle = vehicles[vid - 1];
-		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y)) {
+		if (vehicle.IsInCurrentMap() && vehicle.IsInPosition(x, y)) {
 			return false;
 		}
 	}
@@ -698,11 +655,11 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 
 	if (tile_raw_id >= BLOCK_E) {
 		tile_id = tile_raw_id - BLOCK_E;
-		tile_id = map_info.lower_tiles[tile_id] + 18;
+		tile_id = map_info.lower_tiles[tile_id] + BLOCK_E_INDEX;
 
 	} else if (tile_raw_id >= BLOCK_D) {
-		tile_id = (tile_raw_id - BLOCK_D) / 50 + 6;
-		int autotile_id = (tile_raw_id - BLOCK_D) % 50;
+		tile_id = (tile_raw_id - BLOCK_D) / BLOCK_D_STRIDE + BLOCK_D_INDEX;
+		int autotile_id = (tile_raw_id - BLOCK_D) % BLOCK_D_STRIDE;
 
 		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
 				(autotile_id >= 20 && autotile_id <= 23) ||
@@ -712,10 +669,10 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 			return true;
 
 	} else if (tile_raw_id >= BLOCK_C) {
-		tile_id = (tile_raw_id - BLOCK_C) / 50 + 3;
+		tile_id = (tile_raw_id - BLOCK_C) / BLOCK_C_STRIDE + BLOCK_C_INDEX;
 
 	} else if (map->lower_layer[tile_index] < BLOCK_C) {
-		tile_id = tile_raw_id / 1000;
+		tile_id = tile_raw_id / BLOCK_B_STRIDE;
 	}
 
 	return (passages_down[tile_id] & bit) != 0;
@@ -724,8 +681,7 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y) {
 	if (!IsValid(x, y)) return false;
 
-	auto vehicle_type = (self != nullptr)
-		? self->GetVehicleType() : Game_Vehicle::None;
+	const auto vehicle_type = GetCollisionVehicleType(self);
 
 	if (vehicle_type != Game_Vehicle::None) {
 		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
@@ -882,19 +838,35 @@ bool Game_Map::LoopVertical() {
 	return map->scroll_type == lcf::rpg::Map::ScrollType_vertical || map->scroll_type == lcf::rpg::Map::ScrollType_both;
 }
 
-int Game_Map::RoundX(int x) {
+int Game_Map::RoundX(int x, int units) {
 	if (LoopHorizontal()) {
-		return Utils::PositiveModulo(x, GetWidth());
+		return Utils::PositiveModulo(x, GetWidth() * units);
 	} else {
 		return x;
 	}
 }
 
-int Game_Map::RoundY(int y) {
+int Game_Map::RoundY(int y, int units) {
 	if (LoopVertical()) {
-		return Utils::PositiveModulo(y, GetHeight());
+		return Utils::PositiveModulo(y, GetHeight() * units);
 	} else {
 		return y;
+	}
+}
+
+int Game_Map::RoundDx(int dx, int units) {
+	if (LoopHorizontal()) {
+		return Utils::PositiveModulo(std::abs(dx), GetWidth() * units) * Utils::Sign(dx);
+	} else {
+		return dx;
+	}
+}
+
+int Game_Map::RoundDy(int dy, int units) {
+	if (LoopVertical()) {
+		return Utils::PositiveModulo(std::abs(dy), GetHeight() * units) * Utils::Sign(dy);
+	} else {
+		return dy;
 	}
 }
 
@@ -917,12 +889,6 @@ int Game_Map::CheckEvent(int x, int y) {
 }
 
 void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
-	scrolled_right = 0;
-	scrolled_down = 0;
-
-	// Reset the scrolled amount when we exit this function.
-	auto sg = lcf::makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
-
 	if (GetNeedRefresh()) {
 		Refresh();
 	}
@@ -953,11 +919,10 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	if (!actx.IsActive()) {
 		//If not resuming from async op ...
 		Main_Data::game_player->Update();
-		UpdatePan();
 
 		for (auto& vehicle: vehicles) {
-			if (vehicle->GetMapId() == location.map_id) {
-				vehicle->Update();
+			if (vehicle.GetMapId() == GetMapId()) {
+				vehicle.Update();
 			}
 		}
 	}
@@ -994,8 +959,8 @@ void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
 	if (!is_preupdate) {
 		Main_Data::game_player->SetProcessed(false);
 		for (auto& vehicle: vehicles) {
-			if (vehicle->IsInCurrentMap()) {
-				vehicle->SetProcessed(false);
+			if (vehicle.IsInCurrentMap()) {
+				vehicle.SetProcessed(false);
 			}
 		}
 	}
@@ -1141,7 +1106,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 }
 
 lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
-	auto idx = GetMapIndex(location.map_id);
+	auto idx = GetMapIndex(GetMapId());
 	return lcf::Data::treemap.maps[idx];
 }
 
@@ -1150,7 +1115,7 @@ lcf::rpg::Map const& Game_Map::GetMap() {
 }
 
 int Game_Map::GetMapId() {
-	return location.map_id;
+	return Main_Data::game_player->GetMapId();
 }
 
 int Game_Map::GetWidth() {
@@ -1162,7 +1127,7 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
-	return lcf::Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
+	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
 int Game_Map::GetEncounterRate() {
@@ -1171,90 +1136,6 @@ int Game_Map::GetEncounterRate() {
 
 void Game_Map::SetEncounterRate(int step) {
 	map_info.encounter_rate = step;
-}
-
-int Game_Map::GetEncounterSteps() {
-	return location.encounter_steps;
-}
-
-bool Game_Map::UpdateEncounterSteps() {
-	if (Player::debug_flag &&
-		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return false;
-	}
-
-	if(Main_Data::game_player->InAirship()) {
-		return false;
-	}
-
-	if (GetEncounterRate() <= 0) {
-		location.encounter_steps = 0;
-		return false;
-	}
-
-	int x = Main_Data::game_player->GetX();
-	int y = Main_Data::game_player->GetY();
-
-	const lcf::rpg::Terrain* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x,y));
-	if (!terrain) {
-		Output::Warning("UpdateEncounterSteps: Invalid terrain at ({}, {})", x, y);
-		return false;
-	}
-
-	location.encounter_steps += terrain->encounter_rate;
-
-	struct Row {
-		int ratio;
-		float pmod;
-	};
-
-#if 1
-	static constexpr Row enc_table[] = {
-		{ 0, 0.0625},
-		{ 20, 0.125 },
-		{ 40, 0.25 },
-		{ 60, 0.5 },
-		{ 100, 2.0 },
-		{ 140, 4.0 },
-		{ 160, 8.0 },
-		{ 180, 16.0 },
-		{ INT_MAX, 16.0 }
-	};
-#else
-	//Old versions of RM2k used this table.
-	//Left here for posterity.
-	static constexpr Row enc_table[] = {
-		{ 0, 0.5 },
-		{ 20, 2.0 / 3.0 },
-		{ 50, 5.0 / 6.0 },
-		{ 100, 6.0 / 5.0 },
-		{ 200, 3.0 / 2.0 },
-		{ INT_MAX, 3.0 / 2.0 }
-	};
-#endif
-	const auto encounter_rate = GetEncounterRate();
-	const auto ratio = location.encounter_steps / encounter_rate;
-
-	auto& idx = last_encounter_idx;
-	while (ratio > enc_table[idx+1].ratio) {
-		++idx;
-	}
-	const auto& row = enc_table[idx];
-
-	const auto pmod = row.pmod;
-	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
-
-	if (Utils::PercentChance(p)) {
-		SetEncounterSteps(0);
-		return true;
-	}
-
-	return false;
-}
-
-void Game_Map::SetEncounterSteps(int steps) {
-	last_encounter_idx = 0;
-	location.encounter_steps = steps;
 }
 
 std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
@@ -1279,13 +1160,13 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		lcf::rpg::MapInfo& map = lcf::Data::treemap.maps[i];
 
-		if (map.ID == location.map_id) {
-			for (const lcf::rpg::Encounter& enc : map.encounters) {
+		if (map.ID == GetMapId()) {
+			for (const auto& enc : map.encounters) {
 				if (is_acceptable(enc.troop_id)) {
 					out.push_back(enc.troop_id);
 				}
 			}
-		} else if (map.parent_map == location.map_id && map.type == lcf::rpg::TreeMap::MapType_area) {
+		} else if (map.parent_map == GetMapId() && map.type == lcf::rpg::TreeMap::MapType_area) {
 			// Area
 			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
 			Rect player_rect(x, y, 1, 1);
@@ -1357,7 +1238,7 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 
 	args.terrain_id = GetTerrainTag(x, y);
 
-	int current_index = GetMapIndex(location.map_id);
+	int current_index = GetMapIndex(GetMapId());
 	while (lcf::Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
 	}
@@ -1400,7 +1281,7 @@ int Game_Map::GetDisplayX() {
 	return map_info.position_x + Main_Data::game_screen->GetShakeOffsetX() * 16;
 }
 
-void Game_Map::SetPositionX(int x) {
+void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
@@ -1408,7 +1289,9 @@ void Game_Map::SetPositionX(int x) {
 		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
 	map_info.position_x = x;
-	Parallax::ResetPositionX();
+	if (reset_panorama) {
+		Parallax::ResetPositionX();
+	}
 }
 
 int Game_Map::GetPositionY() {
@@ -1419,7 +1302,7 @@ int Game_Map::GetDisplayY() {
 	return map_info.position_y + Main_Data::game_screen->GetShakeOffsetY() * 16;
 }
 
-void Game_Map::SetPositionY(int y) {
+void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	const int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
@@ -1427,7 +1310,9 @@ void Game_Map::SetPositionY(int y) {
 		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
 	map_info.position_y = y;
-	Parallax::ResetPositionY();
+	if (reset_panorama) {
+		Parallax::ResetPositionY();
+	}
 }
 
 bool Game_Map::GetNeedRefresh() {
@@ -1538,7 +1423,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	if (which == Game_Vehicle::Boat ||
 		which == Game_Vehicle::Ship ||
 		which == Game_Vehicle::Airship) {
-		return vehicles[which - 1].get();
+		return &vehicles[which - 1];
 	}
 
 	return nullptr;
@@ -1557,8 +1442,20 @@ bool Game_Map::IsAnyEventStarting() {
 }
 
 bool Game_Map::IsAnyMovePending() {
-	for (auto& ev: pending) {
-		if (ev->GetMapId() == GetMapId() && !ev->IsMoveRouteRepeated()) {
+	auto check = [](auto& ev) {
+		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteRepeated();
+	};
+	const auto map_id = GetMapId();
+	if (check(*Main_Data::game_player)) {
+		return true;
+	}
+	for (auto& vh: vehicles) {
+		if (vh.GetMapId() == map_id && check(vh)) {
+			return true;
+		}
+	}
+	for (auto& ev: events) {
+		if (check(ev)) {
 			return true;
 		}
 	}
@@ -1566,21 +1463,16 @@ bool Game_Map::IsAnyMovePending() {
 	return false;
 }
 
-void Game_Map::AddPendingMove(Game_Character* character) {
-	pending.push_back(character);
-}
-
-void Game_Map::RemovePendingMove(Game_Character* character) {
-	if (pending.empty()) {
-		return;
-	}
-
-	pending.erase(std::remove(pending.begin(), pending.end(), character), pending.end());
-}
-
 void Game_Map::RemoveAllPendingMoves() {
-	while (!pending.empty()) {
-		pending.back()->CancelMoveRoute();
+	const auto map_id = GetMapId();
+	Main_Data::game_player->CancelMoveRoute();
+	for (auto& vh: vehicles) {
+		if (vh.GetMapId() == map_id) {
+			vh.CancelMoveRoute();
+		}
+	}
+	for (auto& ev: events) {
+		ev.CancelMoveRoute();
 	}
 }
 
@@ -1601,104 +1493,6 @@ int Game_Map::SubstituteDown(int old_id, int new_id) {
 
 int Game_Map::SubstituteUp(int old_id, int new_id) {
 	return DoSubstitute(map_info.upper_tiles, old_id, new_id);
-}
-
-void Game_Map::LockPan() {
-	location.pan_state = lcf::rpg::SavePartyLocation::PanState_fixed;
-}
-
-void Game_Map::UnlockPan() {
-	location.pan_state = lcf::rpg::SavePartyLocation::PanState_follow;
-}
-
-void Game_Map::StartPan(int direction, int distance, int speed) {
-	distance *= SCREEN_TILE_SIZE;
-
-	if (direction == PanUp) {
-		int new_pan = location.pan_finish_y + distance;
-		location.pan_finish_y = new_pan;
-	} else if (direction == PanRight) {
-		int new_pan = location.pan_finish_x - distance;
-		location.pan_finish_x = new_pan;
-	} else if (direction == PanDown) {
-		int new_pan = location.pan_finish_y - distance;
-		location.pan_finish_y = new_pan;
-	} else if (direction == PanLeft) {
-		int new_pan = location.pan_finish_x + distance;
-		location.pan_finish_x = new_pan;
-	}
-
-	location.pan_speed = 2 << speed;
-}
-
-void Game_Map::ResetPan(int speed) {
-	location.pan_finish_x = default_pan_x;
-	location.pan_finish_y = default_pan_y;
-	location.pan_speed = 2 << speed;
-}
-
-int Game_Map::GetPanWait() {
-	const auto distance = std::max(
-			std::abs(location.pan_current_x - location.pan_finish_x),
-			std::abs(location.pan_current_y - location.pan_finish_y));
-	const auto speed = location.pan_speed;
-	assert(speed > 0);
-	return distance / speed + (distance % speed != 0);
-}
-
-void Game_Map::UpdatePan() {
-	if (!IsPanActive())
-		return;
-
-	const int step = location.pan_speed;
-	const int pan_remain_x = location.pan_current_x - location.pan_finish_x;
-	const int pan_remain_y = location.pan_current_y - location.pan_finish_y;
-
-	int dx = std::min(step, std::abs(pan_remain_x));
-	dx = pan_remain_x >= 0 ? dx : -dx;
-	int dy = std::min(step, std::abs(pan_remain_y));
-	dy = pan_remain_y >= 0 ? dy : -dy;
-
-	int screen_x = Game_Map::GetPositionX();
-	int screen_y = Game_Map::GetPositionY();
-
-	Game_Map::AddScreenX(screen_x, dx);
-	Game_Map::AddScreenY(screen_y, dy);
-
-	// If we hit the edge of the map before pan finishes.
-	if (dx == 0 && dy == 0) {
-		return;
-	}
-
-	Game_Map::ScrollRight(dx);
-	Game_Map::ScrollDown(dy);
-
-	location.pan_current_x -= dx;
-	location.pan_current_y -= dy;
-}
-
-bool Game_Map::IsPanActive() {
-	return location.pan_current_x != location.pan_finish_x || location.pan_current_y != location.pan_finish_y;
-}
-
-bool Game_Map::IsPanLocked() {
-	return location.pan_state == lcf::rpg::SavePartyLocation::PanState_fixed;
-}
-
-int Game_Map::GetPanX() {
-	return location.pan_current_x;
-}
-
-int Game_Map::GetPanY() {
-	return location.pan_current_y;
-}
-
-int Game_Map::GetTargetPanX() {
-	return location.pan_finish_x;
-}
-
-int Game_Map::GetTargetPanY() {
-	return location.pan_finish_y;
 }
 
 std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
@@ -1811,6 +1605,10 @@ void Game_Map::Parallax::ResetPositionY() {
 }
 
 void Game_Map::Parallax::ScrollRight(int distance) {
+	if (!distance) {
+		return;
+	}
+
 	Params params = GetParallaxParams();
 	if (params.name.empty()) {
 		return;
@@ -1834,6 +1632,10 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 }
 
 void Game_Map::Parallax::ScrollDown(int distance) {
+	if (!distance) {
+		return;
+	}
+
 	Params params = GetParallaxParams();
 	if (params.name.empty()) {
 		return;

@@ -162,6 +162,14 @@ public:
 	/** To be called when a battle ends */
 	void OnBattleEnd();
 
+	/**
+	 * Called when map scrolls
+	 *
+	 * @param dx x distance in 1/16th pixels
+	 * @param dy y distance in 1/16th pixels
+	 */
+	void OnMapScrolled(int dx, int dy);
+
 private:
 	std::unique_ptr<BattleAnimation> animation;
 	std::unique_ptr<Weather> weather;

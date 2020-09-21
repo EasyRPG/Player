@@ -27,37 +27,37 @@
 #include "game_interpreter_map.h"
 #include "async_op.h"
 
+using Game_EventBase = Game_CharacterDataStorage<lcf::rpg::SaveMapEvent>;
+
 /**
  * Game_Event class.
  */
-class Game_Event : public Game_Character {
+class Game_Event : public Game_EventBase {
 public:
 	/**
 	 * Constructor.
 	 */
-	Game_Event(int map_id, const lcf::rpg::Event& event);
+	Game_Event(int map_id, const lcf::rpg::Event* event);
 
-	/**
-	 * Constructor.
-	 * Create event from save data.
-	 */
-	Game_Event(int map_id, const lcf::rpg::Event& event, const lcf::rpg::SaveMapEvent& data);
+	/** Load from saved game */
+	void SetSaveData(lcf::rpg::SaveMapEvent save);
+
+	/** @return save game data */
+	lcf::rpg::SaveMapEvent GetSaveData() const;
 
 	/**
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool IsMoveRouteActive() const override;
-	void OnMoveFailed(int x, int y) override;
+	bool Move(int dir) override;
+	void UpdateNextMovementAction() override;
+	bool IsVisible() const override;
 	/** @} */
 
 	/**
-	 * Does refresh.
+	 * Re-checks active pages and sets up new page on change.
 	 */
-	void Refresh(bool from_save = false);
-
-	void Setup(const lcf::rpg::EventPage* new_page);
-	void SetupFromSave(const lcf::rpg::EventPage* new_page);
+	void RefreshPage();
 
 	/**
 	 * Gets event ID.
@@ -106,8 +106,15 @@ public:
 	 */
 	void OnFinishForegroundEvent();
 
-	/** Mark the event as waiting for execution */
-	bool SetAsWaitingForegroundExecution(bool face_hero, bool triggered_by_decision_key);
+	/**
+	 * Schedule the event for execution on the map's foreground interpreter.
+	 *
+	 * @param triggered_by_decision_key set whether this was triggered by decision key
+	 * @param face_hero if scheduled, event faces the player.
+	 *
+	 * @return true if event was scheduled.
+	 */
+	bool ScheduleForegroundExecution(bool triggered_by_decision_key, bool face_player);
 
 	/** 
 	 * Update this for the current frame
@@ -152,16 +159,13 @@ public:
 	/** @returns the number of pages this event has */
 	int GetNumPages() const;
 
-	const lcf::rpg::SaveMapEvent& GetSaveData();
-
 protected:
-	lcf::rpg::SaveMapEvent* data();
-	const lcf::rpg::SaveMapEvent* data() const;
-
+	/** Check for and fix incorrect data after loading save game */
+	void SanitizeData();
 private:
-	void UpdateSelfMovement() override;
-	void CheckEventAutostart();
-	void CheckEventCollision();
+	bool CheckEventAutostart();
+	bool CheckEventCollision();
+	void SetMaxStopCountForRandom();
 
 	/**
 	 * Moves on a random route.
@@ -202,26 +206,19 @@ private:
 	 */
 	void MoveTypeAwayFromPlayer();
 
-	// Not a reference on purpose.
-	// Events change during map change and old are destroyed, breaking the
-	// reference.
-	std::unique_ptr<lcf::rpg::SaveMapEvent> _data_copy;
+	void CheckCollisonOnMoveFailure();
 
-	lcf::rpg::Event event;
+	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
 
-inline lcf::rpg::SaveMapEvent* Game_Event::data() {
-	return static_cast<lcf::rpg::SaveMapEvent*>(Game_Character::data());
-}
-
-inline const lcf::rpg::SaveMapEvent* Game_Event::data() const {
-	return static_cast<const lcf::rpg::SaveMapEvent*>(Game_Character::data());
-}
-
 inline int Game_Event::GetNumPages() const {
-	return event.pages.size();
+	return event->pages.size();
+}
+
+inline bool Game_Event::IsVisible() const {
+	return GetActivePage() != nullptr && Game_Character::IsVisible();
 }
 
 #endif

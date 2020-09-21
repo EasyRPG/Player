@@ -24,10 +24,12 @@
 #include <lcf/rpg/savevehiclelocation.h>
 #include "game_character.h"
 
+using Game_VehicleBase = Game_CharacterDataStorage<lcf::rpg::SaveVehicleLocation>;
+
 /**
  * Game_Vehicle class.
  */
-class Game_Vehicle : public Game_Character {
+class Game_Vehicle : public Game_VehicleBase {
 public:
 	enum Type {
 		None = 0,
@@ -38,39 +40,44 @@ public:
 
 	static const char TypeNames[4][8];
 
-	explicit Game_Vehicle(lcf::rpg::SaveVehicleLocation* vdata);
+	explicit Game_Vehicle(Type type);
+
+	/** Load from saved game */
+	void SetSaveData(lcf::rpg::SaveVehicleLocation save);
+
+	/** @return save game data */
+	lcf::rpg::SaveVehicleLocation GetSaveData() const;
 
 	/**
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetVehicleType() const override;
+	void UpdateNextMovementAction() override;
+	void UpdateAnimation() override;
 	/** @} */
 
 	/** Update this for the current frame */
 	void Update();
 
-	void LoadSystemSettings();
 	const lcf::rpg::Music& GetBGM();
-	void Refresh();
-	void SetPosition(int _map_id, int _x, int _y);
+	int GetVehicleType() const;
 	bool IsInCurrentMap() const;
 	bool IsInPosition(int x, int y) const override;
-	bool GetVisible() const override;
+	bool IsVisible() const override;
 	bool IsAscending() const;
 	bool IsDescending() const;
 	bool IsAscendingOrDescending() const;
 	int GetAltitude() const;
-	void GetOn();
-	void GetOff();
 	bool IsInUse() const;
 	bool IsAboard() const;
-	void SyncWithPlayer();
-	void AnimateAscentDescent();
+	void SyncWithRider(const Game_Character* rider);
+	bool AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
 	bool CanLand() const;
-	void UpdateAnimationShip();
-	void UpdateAnimationAirship();
+	void StartAscent();
+	void StartDescent();
+	void SetDefaultDirection();
+	void ForceLand();
 
 	/**
 	 * Sets default sprite name. Usually the name of the graphic file.
@@ -85,25 +92,45 @@ public:
 
 	/** Gets the original sprite graphic index */
 	int GetOrigSpriteIndex() const;
-
-protected:
-	lcf::rpg::SaveVehicleLocation* data();
-	const lcf::rpg::SaveVehicleLocation* data() const;
-
-	bool driving;
 };
-
-inline lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() {
-	return static_cast<lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
-}
-
-inline const lcf::rpg::SaveVehicleLocation* Game_Vehicle::data() const {
-	return static_cast<const lcf::rpg::SaveVehicleLocation*>(Game_Character::data());
-}
 
 inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int index) {
 	data()->orig_sprite_name = std::move(sprite_name);
 	data()->orig_sprite_id = index;
 }
+
+inline lcf::rpg::SaveVehicleLocation Game_Vehicle::GetSaveData() const {
+	return *data();
+}
+
+inline bool Game_Vehicle::IsInPosition(int x, int y) const {
+	return IsInCurrentMap() && Game_Character::IsInPosition(x, y);
+}
+
+inline bool Game_Vehicle::IsAscending() const {
+	return data()->remaining_ascent > 0;
+}
+
+inline bool Game_Vehicle::IsDescending() const {
+	return data()->remaining_descent > 0;
+}
+
+inline bool Game_Vehicle::IsAscendingOrDescending() const {
+	return IsAscending() || IsDescending();
+}
+
+inline bool Game_Vehicle::IsVisible() const {
+	return IsInCurrentMap() && Game_Character::IsVisible();
+}
+
+inline void Game_Vehicle::SetDefaultDirection() {
+	SetDirection(Left);
+	SetFacing(Left);
+}
+
+inline int Game_Vehicle::GetVehicleType() const {
+	return data()->vehicle;
+}
+
 
 #endif

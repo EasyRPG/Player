@@ -208,6 +208,10 @@ AsyncOp Game_Message::Update() {
 
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	if (window) {
+		// This flag has no known use, but RPG_RT sets it whenever an event message command
+		// spawns a message. We replicate it for save game compatibility.
+		data.event_message_active = pm.IsEventMessage();
+
 		window->StartMessageProcessing(std::move(pm));
 	}
 }
