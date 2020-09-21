@@ -72,11 +72,6 @@ public:
 	bool CheckValidPlayerLocation();
 
 	/**
-	 * Initializes a battle test session.
-	 */
-	void PrepareBattleTest();
-
-	/**
 	 * Option New Game.
 	 * Starts a new game.
 	 */

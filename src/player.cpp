@@ -1046,6 +1046,40 @@ void Player::SetupPlayerSpawn() {
 	request->Start();
 }
 
+void Player::SetupBattleTest() {
+	BattleArgs args;
+	args.troop_id = Game_Battle::battle_test.troop_id;
+	args.first_strike = false;
+	args.allow_escape = true;
+	args.background = ToString(lcf::Data::system.battletest_background);
+	args.terrain_id = 1; //Not used in 2k, for 2k3 only used to determine grid layout if formation == terrain.
+
+	if (Player::IsRPG2k3()) {
+		args.formation = Game_Battle::battle_test.formation;
+		args.condition = Game_Battle::battle_test.condition;
+
+		if (args.formation == lcf::rpg::System::BattleFormation_terrain) {
+			args.terrain_id = Game_Battle::battle_test.terrain_id;
+		}
+
+		Output::Debug("BattleTest Mode 2k3 troop=({}) background=({}) formation=({}) condition=({}) terrain=({})",
+				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
+	} else {
+		Output::Debug("BattleTest Mode 2k troop=({}) background=({})", args.troop_id, args.background);
+	}
+
+	auto* troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, args.troop_id);
+	if (troop == nullptr) {
+		Output::Error("BattleTest: Invalid Monster Party ID {}", args.troop_id);
+	}
+
+	if (Game_Battle::battle_test.enabled) {
+		Main_Data::game_party->SetupBattleTest();
+	}
+
+	Scene::Push(Scene_Battle::Create(std::move(args)), true);
+}
+
 std::string Player::GetEncoding() {
 	encoding = forced_encoding;
 

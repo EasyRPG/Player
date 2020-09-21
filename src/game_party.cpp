@@ -35,6 +35,8 @@ Game_Party::Game_Party() {
 }
 
 void Game_Party::SetupNewGame() {
+	Clear();
+
 	data.party = lcf::Data::system.party;
 	RemoveInvalidData();
 }
@@ -96,7 +98,7 @@ int Game_Party::GetVisibleBattlerCount() const {
 	return visible;
 }
 
-void Game_Party::SetupBattleTestMembers() {
+void Game_Party::SetupBattleTest() {
 	Clear();
 
 	for (auto& btdata : lcf::Data::system.battletest_data) {
@@ -118,8 +120,6 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 	}
-
-	Main_Data::game_player->ResetGraphic();
 }
 
 void Game_Party::GetItems(std::vector<int>& item_list) {
