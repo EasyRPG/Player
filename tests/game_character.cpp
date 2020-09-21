@@ -248,6 +248,7 @@ TEST_CASE("InitEventNoPage") {
 TEST_CASE("InitEventDefaultPage") {
 	lcf::rpg::Event event;
 	event.pages.push_back({});
+	event.pages.back().move_type = lcf::rpg::EventPage::MoveType_stationary;
 	Game_Event ch(0, &event);
 
 	testInit(ch, 64);
