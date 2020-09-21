@@ -58,29 +58,12 @@ bool DynRpg::HasFunction(const std::string& name) {
 	return dyn_rpg_functions.find(name) != dyn_rpg_functions.end();
 }
 
-float DynRpg::GetFloat(const std::string& str, bool* valid) {
-	if (str.empty()) {
-		if (valid) {
-			*valid = true;
-		}
-
-		return 0.0f;
-	}
-
-	std::istringstream iss(str);
-	float f;
-	iss >> f;
-
-	if (valid) {
-		*valid = !iss.fail();
-	}
-
-	return f;
-}
-
 // Var arg referenced by $n
-std::string DynRpg::ParseVarArg(const dyn_arg_list& args, int index) {
+std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay) {
+	parse_okay = true;
 	if (index >= args.size()) {
+		parse_okay = false;
+		Output::Warning("{}: Vararg {} out of range", func_name, index);
 		return "";
 	}
 
@@ -111,6 +94,8 @@ std::string DynRpg::ParseVarArg(const dyn_arg_list& args, int index) {
 				}
 				else {
 					// $-ref out of range
+					parse_okay = false;
+					Output::Warning("{}: Vararg $-ref {} out of range", func_name, i);
 					return "";
 				}
 
@@ -156,13 +141,13 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 			// Convert backwards
 			for (std::string::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it) {
 				if (*it == 'N') {
-					if (!Game_Actors::ActorExists(number)) {
+					if (!Main_Data::game_actors->ActorExists(number)) {
 						Output::Warning("{}: Invalid actor id {} in {}", function_name, number, token);
 						return "";
 					}
 
 					// N is last
-					return ToString(Game_Actors::GetActor(number)->GetName());
+					return ToString(Main_Data::game_actors->GetActor(number)->GetName());
 				} else {
 					// Variable
 					if (!Main_Data::game_variables->IsValid(number)) {
@@ -253,7 +238,7 @@ bool DynRpg::Invoke(const std::string& command) {
 	DynRpg_ParseMode mode = ParseMode_Function;
 	std::string function_name;
 	std::string tmp;
-	dyn_arg_list args;
+	std::vector<std::string> args;
 	std::stringstream token;
 
 	++text_index;
@@ -410,7 +395,7 @@ bool DynRpg::Invoke(const std::string& command) {
 	return true;
 }
 
-bool DynRpg::Invoke(const std::string& func, const dyn_arg_list& args) {
+bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
 	if (!DynRpg::HasFunction(func)) {
 		// Not a supported function
 		Output::Warning("Unsupported DynRPG function: {}", func);

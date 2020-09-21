@@ -21,6 +21,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include "output.h"
 #include "utils.h"
 
@@ -31,56 +32,94 @@ namespace rpg {
 }
 }
 
-typedef std::vector<std::string> dyn_arg_list;
-typedef bool(*dynfunc)(const dyn_arg_list&);
-
-// Macros
-
-#define DYNRPG_FUNCTION(var) \
-	std::string func_name = var;
-
-#define DYNRPG_CHECK_ARG_LENGTH(len) \
-	if (args.size() < len) { \
-		Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), len); \
-		return true; \
-	}
-
-#define DYNRPG_GET_FLOAT_ARG(i, var) \
-	float var; \
-	bool valid_float##var; \
-	var = DynRpg::GetFloat(args[i], &valid_float##var); \
-	if (!valid_float##var) { \
-	Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]); \
-	return true; \
-	}
-
-#define DYNRPG_GET_INT_ARG(i, var) \
-	DYNRPG_GET_FLOAT_ARG(i, var##_float_arg) \
-	int var = (int)var##_float_arg;
-
-#define DYNRPG_GET_STR_ARG(i, var) \
-	const std::string& var = args[i];
-
-#define DYNRPG_GET_VAR_ARG(i, var) \
-	std::string var = DynRpg::ParseVarArg(args, i); \
-	if (var.empty()) { \
-	Output::Warning("{}: Vararg {} out of range", func_name, i); \
-	}
+using dyn_arg_list = const Span<std::string>;
+using dynfunc = bool(*)(dyn_arg_list);
 
 /**
  * DynRPG namespace
  */
 namespace DynRpg {
+	namespace detail {
+		inline float get_float(const std::string& str, bool& parse_okay) {
+			float f = 0.0f;
+			if (str.empty()) {
+				parse_okay = true;
+				return f;
+			}
+			std::istringstream iss(str);
+			iss >> f;
+			parse_okay = !iss.fail();
+			return f;
+		}
+
+		template <typename T>
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, T& value, bool& parse_okay) {
+			static_assert(sizeof(T) == -1, "Only parsing int, float and std::string supported");
+		}
+
+		template <>
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, float& value, bool& parse_okay) {
+			if (!parse_okay) return false;
+			value = get_float(args[i], parse_okay);
+			if (!parse_okay) {
+				Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]);
+				parse_okay = false;
+			}
+			return parse_okay;
+		}
+
+		template <>
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, int& value, bool& parse_okay) {
+			if (!parse_okay) return false;
+			float out;
+			if (!parse_arg(func_name, args, i, out, parse_okay)) {
+				parse_okay = false;
+				return parse_okay;
+			}
+			value = (int)out;
+			parse_okay = true;
+			return parse_okay;
+		}
+
+		template <>
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, std::string& value, bool& parse_okay) {
+			if (!parse_okay) return false;
+			value = args[i];
+			parse_okay = true;
+			return parse_okay;
+		}
+
+		template <typename Tuple, std::size_t... I>
+		inline void parse_args(StringView func_name, dyn_arg_list in, Tuple& value, bool& parse_okay, std::index_sequence<I...>) {
+			(void)std::initializer_list<bool>{parse_arg(func_name, in, I, std::get<I>(value), parse_okay)...};
+		}
+	}
+
 	void RegisterFunction(const std::string& name, dynfunc function);
 	bool HasFunction(const std::string& name);
-	float GetFloat(const std::string& str, bool* valid = nullptr);
-	std::string ParseVarArg(const dyn_arg_list &args, int index);
+	std::string ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay);
 	bool Invoke(const std::string& command);
-	bool Invoke(const std::string& func, const dyn_arg_list& args);
+	bool Invoke(const std::string& func, dyn_arg_list args);
 	void Update();
 	void Reset();
 	void Load(int slot);
 	void Save(int slot);
+
+	template <typename... Targs>
+	std::tuple<Targs...> ParseArgs(StringView func_name, dyn_arg_list args, bool* parse_okay = nullptr) {
+		std::tuple<Targs...> t;
+		if (args.size() < sizeof...(Targs)) {
+			if (parse_okay)
+				*parse_okay = false;
+			Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), sizeof...(Targs));
+			return t;
+		}
+		bool okay;
+		detail::parse_args(func_name, args, t, okay, std::make_index_sequence<sizeof...(Targs)>{});
+		if (parse_okay)
+			*parse_okay = okay;
+		return t;
+	}
 }
 
 class DynRpgPlugin {

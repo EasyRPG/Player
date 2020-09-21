@@ -24,13 +24,15 @@
 #include "utils.h"
 #include "version.h"
 
-static bool EasyOput(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("output")
+static bool EasyOput(dyn_arg_list args) {
+	auto func = "output";
+	bool okay = false;
+	std::string mode;
+	std::tie(mode, std::ignore) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_CHECK_ARG_LENGTH(2);
-
-	DYNRPG_GET_STR_ARG(0, mode);
-	DYNRPG_GET_VAR_ARG(1, msg);
+	auto msg = DynRpg::ParseVarArg(func, args, 1, okay);
 
 	if (mode == "Debug") {
 		Output::DebugStr(msg);
@@ -45,12 +47,8 @@ static bool EasyOput(const dyn_arg_list& args) {
 	return true;
 }
 
-static bool EasyCall(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("call")
-
-	DYNRPG_CHECK_ARG_LENGTH(1)
-
-	DYNRPG_GET_STR_ARG(0, token)
+static bool EasyCall(dyn_arg_list args) {
+	auto token = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
 
 	if (token.empty()) {
 		// empty function name
@@ -65,25 +63,26 @@ static bool EasyCall(const dyn_arg_list& args) {
 		return true;
 	}
 
-	dyn_arg_list new_args(args.begin() + 1, args.end());
-
-	return DynRpg::Invoke(token, new_args);
+	return DynRpg::Invoke(token, args.subspan(1));
 }
 
-static bool EasyAdd(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("easyrpg_add")
+static bool EasyAdd(dyn_arg_list args) {
+	auto func = "easyrpg_add";
+	bool okay = false;
 
-	DYNRPG_CHECK_ARG_LENGTH(2);
+	int target_var;
+	int val;
+	std::tie(target_var, val) = DynRpg::ParseArgs<int, int>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_INT_ARG(0, target_var);
-
-	int res = 0;
-	for (size_t i = 1; i < args.size(); ++i) {
-		DYNRPG_GET_INT_ARG(i, val);
-		res += val;
+	for (size_t i = 2; i < args.size(); ++i) {
+		val += std::get<0>(DynRpg::ParseArgs<int>(func, args.subspan(i), &okay));
+		if (!okay)
+			return true;
 	}
 
-	Main_Data::game_variables->Set(target_var, res);
+	Main_Data::game_variables->Set(target_var, val);
 
 	return true;
 }
