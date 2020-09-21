@@ -270,6 +270,7 @@ void Scene_Battle_Rpg2k3::Update() {
 
 				if (state == State_SelectCommand) {
 					if (active_actor->GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
+						status_window->SetIndex(-1);
 						SetState(State_SelectActor);
 					}
 				}
@@ -593,6 +594,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
 	CreateBattleCommandWindow();
 	command_window->SetActive(false);
+	command_window->SetIndex(-1);
 }
 
 void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
@@ -635,6 +637,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectCommand:
 		RefreshCommandWindow();
+		command_window->SetIndex(0);
 		command_window->SetActive(true);
 		break;
 	case State_SelectEnemyTarget:
@@ -1283,7 +1286,12 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			}
 			break;
 		case State_SelectActor:
-			// no-op
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional && selected_actor_index != -1) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+				ally_cursor->SetVisible(false);
+				selected_actor_index = -1;
+				SetState(State_SelectCommand);
+			}
 			break;
 		case State_AutoBattle:
 			// no-op
@@ -1324,6 +1332,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		case State_SelectActor:
 		case State_AutoBattle:
 			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+				selected_actor_index = -1;
 				SetState(State_SelectOption);
 			}
 			break;
@@ -1348,6 +1357,62 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		case State_Defeat:
 		case State_Escape:
 			// no-op
+			break;
+		}
+	}
+
+	if (Input::IsTriggered(Input::UP)) {
+		switch (state) {
+		case State_SelectActor:
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional && selected_actor_index != -1) {
+				std::vector<Game_Battler*> actors;
+				Main_Data::game_party->GetBattlers(actors);
+				int ind = selected_actor_index;
+				for (int i = 0; i < actors.size(); i++) {
+					ind--;
+					if (ind < 0) {
+						ind = actors.size() - 1;
+					}
+					if (actors[ind] != nullptr) {
+						Game_Battler* battler = actors[ind];
+						if (battler->IsAtbGaugeFull() && battler->GetSignificantRestriction() == lcf::rpg::State::Restriction_normal) {
+							if (selected_actor_index != ind) {
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+							}
+							selected_actor_index = ind;
+							break;
+						}
+					}
+				}
+			}
+			break;
+		}
+	}
+
+	if (Input::IsTriggered(Input::DOWN)) {
+		switch (state) {
+		case State_SelectActor:
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional && selected_actor_index != -1) {
+				std::vector<Game_Battler*> actors;
+				Main_Data::game_party->GetBattlers(actors);
+				int ind = selected_actor_index;
+				for (int i = 0; i < actors.size(); i++) {
+					ind++;
+					if (ind >= actors.size()) {
+						ind = 0;
+					}
+					if (actors[ind] != nullptr) {
+						Game_Battler* battler = actors[ind];
+						if (battler->IsAtbGaugeFull() && battler->GetSignificantRestriction() == lcf::rpg::State::Restriction_normal) {
+							if (selected_actor_index != ind) {
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+							}
+							selected_actor_index = ind;
+							break;
+						}
+					}
+				}
+			}
 			break;
 		}
 	}
@@ -1649,6 +1714,23 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 	std::vector<Game_Battler*> actors;
 	Main_Data::game_party->GetBattlers(actors);
 
+	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional && state == State_SelectActor) {
+		if (selected_actor_index >= 0) {
+			if (actors[selected_actor_index] != nullptr) {
+				Game_Battler* battler = actors[selected_actor_index];
+				if (battler->GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
+					selected_actor_index = -1;
+				}
+			} else {
+				selected_actor_index = -1;
+			}
+			if (selected_actor_index == -1) {
+				status_window->SetIndex(-1);
+				ally_cursor->SetVisible(false);
+			}
+		}
+	}
+
 	int i = 0;
 	for (auto* battler: actors) {
 		if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm() && battle_actions.empty() && battler->GetSignificantRestriction() != lcf::rpg::State::Restriction_do_nothing) {
@@ -1685,6 +1767,29 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				return;
 			}
 
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+				// Check if selected actor can do an action
+				if (selected_actor_index >= 0) {
+					if (actors[selected_actor_index] != nullptr) {
+						Game_Battler* battler = actors[selected_actor_index];
+						if (battler->GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
+							selected_actor_index = -1;
+						}
+					} else {
+						selected_actor_index = -1;
+					}
+				}
+				if (selected_actor_index == -1) {
+					selected_actor_index = actor_index;
+				}
+
+				Game_Battler* battler = actors[selected_actor_index];
+				if (battler != nullptr) {
+					active_actor = static_cast<Game_Actor*>(battler);
+					actor_index = selected_actor_index;
+				}
+			}
+
 			// Handle manual attack
 			status_window->SetIndex(actor_index);
 
@@ -1698,9 +1803,11 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 
 			RefreshCommandWindow();
 
-			SetState(Scene_Battle::State_SelectCommand);
+			if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+				SetState(Scene_Battle::State_SelectCommand);
 
-			return;
+				return;
+			}
 		}
 
 		++i;

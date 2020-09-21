@@ -162,6 +162,8 @@ protected:
 	bool escape_initiated = false;
 	bool win_wait_elapsed = false;
 	bool lose_wait_elapsed = false;
+
+	int selected_actor_index = -1;
 };
 
 #endif
