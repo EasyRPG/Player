@@ -977,11 +977,11 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Scene::PopUntil(Scene::Title);
 	Game_Map::Dispose();
 
+	Main_Data::game_switches->SetData(std::move(save->system.switches));
+	Main_Data::game_variables->SetData(std::move(save->system.variables));
 	Main_Data::game_system->SetupFromSave(std::move(save->system));
 	Main_Data::game_actors->SetSaveData(std::move(save->actors));
 	Main_Data::game_party->SetupFromSave(std::move(save->inventory));
-	Main_Data::game_switches->SetData(std::move(save->system.switches));
-	Main_Data::game_variables->SetData(std::move(save->system.variables));
 	Main_Data::game_screen->SetSaveData(std::move(save->screen));
 	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
 	Main_Data::game_targets->SetSaveData(std::move(save->targets));
