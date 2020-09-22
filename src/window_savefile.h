@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include "window_base.h"
+#include <lcf/rpg/savetitle.h>
 
 /**
  * Window Save File Class.

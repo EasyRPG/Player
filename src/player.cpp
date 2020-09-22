@@ -798,8 +798,6 @@ void Player::ResetGameObjects() {
 	// The init order is important
 	Main_Data::Cleanup();
 
-	Main_Data::game_data.Setup();
-
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 
 	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
@@ -908,31 +906,17 @@ void Player::LoadDatabase() {
 	}
 }
 
-static void FixSaveGames() {
-	// Compatibility hacks for old EasyRPG Player saves.
-	if (Main_Data::game_data.easyrpg_data.version == 0) {
-		// Old savegames accidentally wrote animation_type as
-		// continuous for all events.
-		Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-	}
-}
-
-static void OnMapSaveFileReady(FileRequestResult*) {
-	auto& save = Main_Data::game_data;
+static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
 	Game_Map::SetupFromSave(
 			std::move(map),
-			save.map_info,
-			save.boat_location,
-			save.ship_location,
-			save.airship_location,
-			save.foreground_event_execstate,
-			save.panorama,
-			save.common_events);
-	FixSaveGames();
+			std::move(save.map_info),
+			std::move(save.boat_location),
+			std::move(save.ship_location),
+			std::move(save.airship_location),
+			std::move(save.foreground_event_execstate),
+			std::move(save.panorama),
+			std::move(save.common_events));
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
@@ -979,25 +963,32 @@ void Player::LoadSavegame(const std::string& save_name) {
 			verstr.str(), PLAYER_VERSION);
 	}
 
+	// Compatibility hacks for old EasyRPG Player saves.
+	if (save->easyrpg_data.version == 0) {
+		// Old savegames accidentally wrote animation_type as continuous for all events.
+		save->party_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->boat_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->ship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->airship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+	}
+
 	Scene::PopUntil(Scene::Title);
 	Game_Map::Dispose();
 
-	Main_Data::game_data = *save.get();
+	Main_Data::game_system->SetupFromSave(std::move(save->system));
+	Main_Data::game_actors->SetSaveData(std::move(save->actors));
+	Main_Data::game_party->SetupFromSave(std::move(save->inventory));
+	Main_Data::game_switches->SetData(std::move(save->system.switches));
+	Main_Data::game_variables->SetData(std::move(save->system.variables));
+	Main_Data::game_screen->SetSaveData(std::move(save->screen));
+	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
+	Main_Data::game_targets->SetSaveData(std::move(save->targets));
+	Main_Data::game_player->SetSaveData(save->party_location);
 
-	Main_Data::game_system->SetupFromSave(std::move(Main_Data::game_data.system));
-	Main_Data::game_actors->SetSaveData(std::move(Main_Data::game_data.actors));
-	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
-	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
-	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
-	Main_Data::game_screen->SetSaveData(std::move(Main_Data::game_data.screen));
-	Main_Data::game_pictures->SetSaveData(std::move(Main_Data::game_data.pictures));
-	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
-
-	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
 	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
-	save_request_id = map->Bind(&OnMapSaveFileReady);
+	save_request_id = map->Bind([save=std::move(*save)](auto* request) { OnMapSaveFileReady(request, std::move(save)); });
 	map->SetImportantFile(true);
 
 	Main_Data::game_system->ReloadSystemGraphic();

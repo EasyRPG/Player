@@ -37,6 +37,7 @@
 #include <lcf/scope_guard.h>
 #include "scene_battle.h"
 #include "scene_menu.h"
+#include <lcf/rpg/savetarget.h>
 #include <algorithm>
 #include <cmath>
 

@@ -48,6 +48,7 @@
 #include "utils.h"
 #include "rand.h"
 #include <lcf/scope_guard.h>
+#include <lcf/rpg/save.h>
 #include "scene_gameover.h"
 
 namespace {

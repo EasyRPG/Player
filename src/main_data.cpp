@@ -69,8 +69,6 @@ namespace Main_Data {
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	std::unique_ptr<Game_Targets> game_targets;
 	std::unique_ptr<Game_Quit> game_quit;
-
-	lcf::rpg::Save game_data;
 }
 
 void Main_Data::Init() {
@@ -171,8 +169,6 @@ void Main_Data::Cleanup() {
 	game_targets.reset();
 	game_quit.reset();
 	game_system.reset();
-
-	game_data = lcf::rpg::Save();
 }
 
 const std::string& Main_Data::GetProjectPath() {

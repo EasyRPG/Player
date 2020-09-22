@@ -82,7 +82,6 @@ public:
 		InitEmptyDB();
 
 		Main_Data::Cleanup();
-		Main_Data::game_data.Setup();
 
 		Main_Data::game_system = std::make_unique<Game_System>();
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
