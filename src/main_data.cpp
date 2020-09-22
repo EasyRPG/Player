@@ -18,6 +18,7 @@
 // Headers
 #include <cstdlib>
 #include "main_data.h"
+#include "game_system.h"
 #include "game_actors.h"
 #include "game_party.h"
 #include "game_enemyparty.h"
@@ -57,6 +58,7 @@ std::string save_path;
 
 namespace Main_Data {
 	// Dynamic Game lcf::Data
+	std::unique_ptr<Game_System> game_system;
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
@@ -168,6 +170,7 @@ void Main_Data::Cleanup() {
 	game_actors.reset();
 	game_targets.reset();
 	game_quit.reset();
+	game_system.reset();
 
 	game_data = lcf::rpg::Save();
 }

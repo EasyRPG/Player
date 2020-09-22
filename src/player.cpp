@@ -795,8 +795,6 @@ void Player::CreateGameObjects() {
 }
 
 void Player::ResetGameObjects() {
-	Game_System::ResetSystemGraphic();
-
 	// The init order is important
 	Main_Data::Cleanup();
 
@@ -816,8 +814,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_actors = std::make_unique<Game_Actors>();
 
 	Game_Map::Init();
-	Game_System::Init();
 
+	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
@@ -825,6 +823,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
+
+	Main_Data::game_system->ReloadSystemGraphic();
 }
 
 static bool DefaultLmuStartFileExists(const FileFinder::DirectoryTree& dir) {
@@ -984,6 +984,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	Main_Data::game_data = *save.get();
 
+	Main_Data::game_system->SetupFromSave(std::move(Main_Data::game_data.system));
 	Main_Data::game_actors->SetSaveData(std::move(Main_Data::game_data.actors));
 	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
 	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));

@@ -128,6 +128,7 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	data_copy.targets = Main_Data::game_targets->GetSaveData();
+	data_copy.system = Main_Data::game_system->GetSaveData();
 	data_copy.system.switches = Main_Data::game_switches->GetData();
 	data_copy.system.variables = Main_Data::game_variables->GetData();
 	data_copy.inventory = Main_Data::game_party->GetSaveData();
