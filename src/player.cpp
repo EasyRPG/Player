@@ -376,7 +376,9 @@ void Player::Draw() {
 
 void Player::IncFrame() {
 	++frames;
-	Main_Data::game_system->IncFrameCounter();
+	if (Main_Data::game_system) {
+		Main_Data::game_system->IncFrameCounter();
+	}
 }
 
 int Player::GetFrames() {

@@ -40,6 +40,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 
 void Scene_GameBrowser::Start() {
 	initial_debug_flag = Player::debug_flag;
+	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
