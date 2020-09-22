@@ -1,5 +1,6 @@
 #include "mock_game.h"
 #include "game_actors.h"
+#include "game_system.h"
 
 static lcf::rpg::Terrain MakeTerrain() {
 	return {};
@@ -38,6 +39,7 @@ MockGame::MockGame(MockMap maptag) {
 	}
 
 	Game_Map::Init();
+	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
 	Main_Data::game_pictures = std::make_unique<Game_Pictures>();

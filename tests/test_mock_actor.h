@@ -4,6 +4,7 @@
 #include "game_actors.h"
 #include "game_party.h"
 #include "game_enemyparty.h"
+#include "game_system.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -83,6 +84,7 @@ public:
 		Main_Data::Cleanup();
 		Main_Data::game_data.Setup();
 
+		Main_Data::game_system = std::make_unique<Game_System>();
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 		Main_Data::game_party = std::make_unique<Game_Party>();

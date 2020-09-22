@@ -62,12 +62,12 @@ void Window_BattleCommand::Update() {
 	int old_index = index;
 	if (active && num_commands > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index++;
 		}
 
 		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index--;
 		}
 

@@ -49,7 +49,7 @@ void Window_Name::Append(StringView text) {
 	if(Font::Default()->GetSize(name).width <= (12 * 6)) {
 		Refresh();
 	} else {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		name.resize(name.size() - text.size());
 	}
 }

@@ -252,7 +252,7 @@ void Window_BattleStatus::Update() {
 
 	if (active && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			for (int i = 1; i < item_max; i++) {
 				int new_index = (index + i) % item_max;
 				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
@@ -262,7 +262,7 @@ void Window_BattleStatus::Update() {
 			}
 		}
 		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			for (int i = item_max - 1; i > 0; i--) {
 				int new_index = (index + i) % item_max;
 				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {

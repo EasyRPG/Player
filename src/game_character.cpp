@@ -135,7 +135,7 @@ void Game_Character::Update() {
 
 	if (IsStopping()) {
 		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
-				((Game_System::GetMessageContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
+				((Main_Data::game_system->GetMessageContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
 			SetStopCount(GetStopCount() + 1);
 		}
 	} else if (IsJumping()) {
@@ -417,7 +417,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 						sound.tempo = move_command.parameter_b;
 						sound.balance = move_command.parameter_c;
 
-						Game_System::SePlay(sound);
+						Main_Data::game_system->SePlay(sound);
 					}
 					break;
 				case Code::walk_everywhere_on:

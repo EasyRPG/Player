@@ -148,7 +148,7 @@ void BattleAnimation::ProcessAnimationFlash(const lcf::rpg::AnimationTiming& tim
 
 void BattleAnimation::ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing) {
 	// Play the SE.
-	Game_System::SePlay(timing.se);
+	Main_Data::game_system->SePlay(timing.se);
 	if (IsOnlySound()) {
 		return;
 	}

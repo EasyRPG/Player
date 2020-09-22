@@ -74,9 +74,9 @@ void Scene_Map::Start() {
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
-		auto current_music = Game_System::GetCurrentBGM();
-		Game_System::BgmStop();
-		Game_System::BgmPlay(current_music);
+		auto current_music = Main_Data::game_system->GetCurrentBGM();
+		Main_Data::game_system->BgmStop();
+		Main_Data::game_system->BgmPlay(current_music);
 	} else {
 		Game_Map::PlayBgm();
 	}
@@ -158,7 +158,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	}
 
 	if (prev_scene == Scene::Battle) {
-		transition.InitShow(Game_System::GetTransition(Game_System::Transition_EndBattleShow), this);
+		transition.InitShow(Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_EndBattleShow), this);
 		return;
 	}
 
@@ -167,7 +167,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 
 void Scene_Map::Suspend(SceneType next_scene) {
 	if (next_scene == Scene::Title) {
-		Game_System::BgmStop();
+		Main_Data::game_system->BgmStop();
 	}
 }
 
@@ -186,7 +186,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 
 	if (next_scene == Scene::Battle) {
 		if (!transition.IsErasedNotActive()) {
-			auto tt = Game_System::GetTransition(Game_System::Transition_BeginBattleErase);
+			auto tt = Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_BeginBattleErase);
 			if (tt == Transition::TransitionNone) {
 				// If transition type is none, RPG_RT flashes and then waits 40 frames before starting the battle.
 				transition.InitErase(Transition::TransitionCutOut, this, 40);
@@ -302,7 +302,7 @@ void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	auto& transition = Transition::instance();
 
 	if (!transition.IsErasedNotActive() && tp.erase_screen) {
-		transition.InitErase(Game_System::GetTransition(Game_System::Transition_TeleportErase), this);
+		transition.InitErase(Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_TeleportErase), this);
 	}
 
 	AsyncNext([=]() { FinishPendingTeleport(tp); });
@@ -342,7 +342,7 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	if (tp.use_default_transition_in && transition.IsErasedNotActive()) {
 		transition.InitShow(Transition::TransitionFadeIn, this);
 	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-		transition.InitShow(Game_System::GetTransition(Game_System::Transition_TeleportShow), this);
+		transition.InitShow(Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_TeleportShow), this);
 	}
 
 	// Call any requested scenes when transition is done.
@@ -416,10 +416,10 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (aop.GetType() == AsyncOp::eCallInn) {
 		activate_inn = true;
 		inn_started = false;
-		music_before_inn = Game_System::GetCurrentBGM();
+		music_before_inn = Main_Data::game_system->GetCurrentBGM();
 		map_async_continuation = std::forward<F>(f);
 
-		Game_System::BgmFade(800);
+		Main_Data::game_system->BgmFade(800);
 
 		UpdateInn();
 		return;
@@ -442,13 +442,13 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 }
 
 void Scene_Map::StartInn() {
-	const lcf::rpg::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
-	if (Game_System::IsStopMusicFilename(bgm_inn.name)) {
+	const lcf::rpg::Music& bgm_inn = Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Inn);
+	if (Main_Data::game_system->IsStopMusicFilename(bgm_inn.name)) {
 		FinishInn();
 		return;
 	}
 
-	Game_System::BgmPlay(bgm_inn);
+	Main_Data::game_system->BgmPlay(bgm_inn);
 }
 
 void Scene_Map::FinishInn() {
@@ -459,7 +459,7 @@ void Scene_Map::FinishInn() {
 	auto& transition = Transition::instance();
 
 	transition.InitShow(Transition::TransitionFadeIn, Scene::instance.get());
-	Game_System::BgmPlay(music_before_inn);
+	Main_Data::game_system->BgmPlay(music_before_inn);
 
 	// Full heal
 	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
@@ -491,6 +491,6 @@ void Scene_Map::UpdateInn() {
 		return;
 	}
 
-	Game_System::BgmStop();
+	Main_Data::game_system->BgmStop();
 	FinishInn();
 }

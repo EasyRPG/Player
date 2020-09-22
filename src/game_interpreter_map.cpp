@@ -663,7 +663,7 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* 
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /* com */) {
-	Game_System::ToggleAtbMode();
+	Main_Data::game_system->ToggleAtbMode();
 	return true;
 }
 

@@ -133,15 +133,15 @@ void Scene_File::Update() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (IsSlotValid(index)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Action(index);
 		}
 		else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	}
 
@@ -152,7 +152,7 @@ void Scene_File::Update() {
 	if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 		if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)
 			|| index < max_index) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index = (index + 1) % file_windows.size();
 		}
 
@@ -161,7 +161,7 @@ void Scene_File::Update() {
 	if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
 		if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)
 			|| index >= 1) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index = (index + max_index) % file_windows.size();
 		}
 
@@ -169,11 +169,11 @@ void Scene_File::Update() {
 	}
 
 	if (Input::IsRepeated(Input::PAGE_DOWN) && index < max_index) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		index = (index + 3 <= max_index) ? index + 3 : max_index;
 	}
 	if (Input::IsRepeated(Input::PAGE_UP) && index >= 1) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		index = (index > 3) ? index - 3 : 0;
 	}
 

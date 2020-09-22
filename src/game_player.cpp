@@ -232,7 +232,7 @@ bool Game_Player::UpdateAirship() {
 				data()->vehicle = 0;
 				SetMoveSpeed(data()->preboard_move_speed);
 
-				Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+				Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
 			}
 
 			return true;
@@ -272,7 +272,7 @@ void Game_Player::UpdateNextMovementAction() {
 		SetMenuCalling(false);
 
 		ResetAnimation();
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 		return;
 	}
@@ -367,7 +367,7 @@ void Game_Player::Update() {
 	UpdatePan();
 
 	// ESC-Menu calling
-	if (Game_System::GetAllowMenu()
+	if (Main_Data::game_system->GetAllowMenu()
 			&& !Game_Message::IsMessageActive()
 			&& !Game_Map::GetInterpreter().IsRunning())
 	{
@@ -514,8 +514,8 @@ bool Game_Player::GetOnVehicle() {
 		data()->boarding = true;
 	}
 
-	Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
-	Game_System::BgmPlay(vehicle->GetBGM());
+	Main_Data::game_system->SetBeforeVehicleMusic(Main_Data::game_system->GetCurrentBGM());
+	Main_Data::game_system->BgmPlay(vehicle->GetBGM());
 	return true;
 }
 
@@ -556,7 +556,7 @@ bool Game_Player::GetOffVehicle() {
 	ResetThrough();
 
 	data()->vehicle = 0;
-	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
 
 	return true;
 }
@@ -575,7 +575,7 @@ void Game_Player::ForceGetOffVehicle() {
 	SetMoveSpeed(data()->preboard_move_speed);
 	data()->unboarding = true;
 	data()->vehicle = 0;
-	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
+	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
 }
 
 bool Game_Player::InVehicle() const {
@@ -610,7 +610,7 @@ bool Game_Player::Move(int dir) {
 
 	if (terrain) {
 		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
-			Game_System::SePlay(terrain->footstep);
+			Main_Data::game_system->SePlay(terrain->footstep);
 		}
 		if (terrain->damage > 0) {
 			for (auto hero : Main_Data::game_party->GetActors()) {

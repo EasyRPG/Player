@@ -82,8 +82,8 @@ Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight)
 void Window_Shop::UpdateCursorRect() {
 	int x = 4;
 	int width = contents->GetWidth() - 8;
-	if (!Game_System::GetMessageFaceName().empty()) {
-		if (!Game_System::IsMessageFaceRightPosition()) {
+	if (!Main_Data::game_system->GetMessageFaceName().empty()) {
+		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			x += LeftMargin + FaceSize + RightFaceMargin;
 		}
 		width -= LeftMargin + FaceSize + RightFaceMargin;
@@ -107,13 +107,13 @@ void Window_Shop::Refresh() {
 	contents->Clear();
 
 	int x = 0;
-	if (!Game_System::GetMessageFaceName().empty()) {
-		if (!Game_System::IsMessageFaceRightPosition()) {
+	if (!Main_Data::game_system->GetMessageFaceName().empty()) {
+		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			x += LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), LeftMargin, TopMargin, Game_System::IsMessageFaceFlipped());
+			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), LeftMargin, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
 		}
 		else {
-			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), 248, TopMargin, Game_System::IsMessageFaceFlipped());
+			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), 248, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
 		}
 	}
 
@@ -186,7 +186,7 @@ void Window_Shop::Update() {
 					else {
 						index = 1;
 					}
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
 				if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
 					if (index > 1) {
@@ -195,10 +195,10 @@ void Window_Shop::Update() {
 					else {
 						index = leave_index;
 					}
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
 				if (Input::IsTriggered(Input::DECISION)) {
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					if (index == buy_index)
 						choice = Scene_Shop::Buy;
 					if (index == sell_index)

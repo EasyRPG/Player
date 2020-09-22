@@ -217,7 +217,7 @@ void Scene_Shop::Update() {
 
 void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (shop_window->GetChoice()) {
@@ -237,7 +237,7 @@ void Scene_Shop::UpdateBuySelection() {
 	party_window->SetItemId(buy_window->GetItemId());
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		if (allow_sell) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -248,7 +248,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 		// checks the money and number of items possessed before buy
 		if (buy_window->CheckEnable(item_id)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 			// Items are guaranteed to be valid
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
@@ -264,14 +264,14 @@ void Scene_Shop::UpdateBuySelection() {
 			SetMode(BuyHowMany);
 		}
 		else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	}
 }
 
 void Scene_Shop::UpdateSellSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		if (allow_buy) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -284,18 +284,18 @@ void Scene_Shop::UpdateSellSelection() {
 		party_window->SetItemId(item_id);
 
 		if (item && item->price > 0) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);
 		} else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	}
 }
 
 void Scene_Shop::UpdateNumberInput() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		switch (shop_window->GetChoice()) {
 		case Buy:
 			SetMode(Buy); break;
@@ -322,7 +322,7 @@ void Scene_Shop::UpdateNumberInput() {
 			status_window->Refresh();
 			SetMode(Sold); break;
 		}
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 		did_transaction = true;
 	}

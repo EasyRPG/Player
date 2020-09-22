@@ -305,7 +305,7 @@ void Window_Keyboard::Update() {
 	}
 
 	if (play_cursor) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		play_cursor = false;
 	}
 	UpdateCursorRect();

@@ -53,14 +53,14 @@ int Game_Message::GetRealPosition() {
 		}
 	}
 
-	if (Game_System::IsMessagePositionFixed()) {
-		return Game_System::GetMessagePosition();
+	if (Main_Data::game_system->IsMessagePositionFixed()) {
+		return Main_Data::game_system->GetMessagePosition();
 	}
 	else {
 		// Move Message Box to prevent player hiding
 		int disp = Main_Data::game_player->GetScreenY();
 
-		switch (Game_System::GetMessagePosition()) {
+		switch (Main_Data::game_system->GetMessagePosition()) {
 		case 0: // Up
 			return disp > (16 * 7) ? 0 : 2;
 		case 1: // Center
@@ -132,7 +132,7 @@ void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	if (window) {
 		// This flag has no known use, but RPG_RT sets it whenever an event message command
 		// spawns a message. We replicate it for save game compatibility.
-		Game_System::SetMessageEventMessageActive(pm.IsEventMessage());
+		Main_Data::game_system->SetMessageEventMessageActive(pm.IsEventMessage());
 
 		window->StartMessageProcessing(std::move(pm));
 	}

@@ -330,7 +330,7 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::ReturnToTitleScene()) {
 			// Fade out music and stop sound effects before returning
-			Game_System::BgmFade(800);
+			Main_Data::game_system->BgmFade(800);
 			Audio().SE_Stop();
 			// Do not update this scene until it's properly set up in the next main loop
 			update_scene = false;
@@ -376,7 +376,7 @@ void Player::Draw() {
 
 void Player::IncFrame() {
 	++frames;
-	Game_System::IncFrameCounter();
+	Main_Data::game_system->IncFrameCounter();
 }
 
 int Player::GetFrames() {
@@ -937,7 +937,7 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 
 void Player::LoadSavegame(const std::string& save_name) {
 	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
-	Game_System::BgmFade(800);
+	Main_Data::game_system->BgmFade(800);
 
 	// We erase the screen now before loading the saved game. This prevents an issue where
 	// if the save game has a different system graphic, the load screen would change before
@@ -1000,7 +1000,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
 
-	Game_System::ReloadSystemGraphic();
+	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
 	Scene::Push(std::make_shared<Scene_Map>(true));
@@ -1024,8 +1024,8 @@ static void OnMapFileReady(FileRequestResult*) {
 }
 
 void Player::SetupNewGame() {
-	Game_System::BgmFade(800);
-	Game_System::ResetFrameCounter();
+	Main_Data::game_system->BgmFade(800);
+	Main_Data::game_system->ResetFrameCounter();
 	auto title = Scene::Find(Scene::Title);
 	if (title) {
 		static_cast<Scene_Title*>(title.get())->OnGameStart();

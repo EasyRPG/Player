@@ -46,7 +46,7 @@ namespace {
 static int frame_offset = 0;
 
 void DebugLogResetFrameCounter() {
-	frame_offset = Game_System::GetFrameCounter();
+	frame_offset = Main_Data::game_system->GetFrameCounter();
 }
 #else
 void DebugLogResetFrameCounter() { }
@@ -55,7 +55,7 @@ void DebugLogResetFrameCounter() { }
 #ifdef EP_DEBUG_MESSAGE
 template <typename... Args>
 void DebugLog(const char* fmt, Args&&... args) {
-	int frames = Game_System::GetFrameCounter() - frame_offset;
+	int frames = Main_Data::game_system->GetFrameCounter() - frame_offset;
 	Output::Debug(fmt, frames, std::forward<Args>(args)...);
 }
 #else
@@ -67,7 +67,7 @@ void DebugLog(const char*, Args&&...) { }
 #ifdef EP_DEBUG_MESSAGE_TEXT
 template <typename... Args>
 void DebugLogText(const char* fmt, Args&&... args) {
-	int frames = Game_System::GetFrameCounter() - frame_offset;
+	int frames = Main_Data::game_system->GetFrameCounter() - frame_offset;
 	Output::Debug(fmt, frames, std::forward<Args>(args)...);
 }
 #else
@@ -114,7 +114,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 
 	gold_window->SetVisible(false);
 
-	Game_System::ClearMessageFace();
+	Main_Data::game_system->ClearMessageFace();
 	Game_Message::SetWindow(this);
 }
 
@@ -212,7 +212,7 @@ void Window_Message::StartChoiceProcessing() {
 
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
-	if (IsFaceEnabled() && !Game_System::IsMessageFaceRightPosition()) {
+	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
@@ -260,7 +260,7 @@ void Window_Message::InsertNewPage() {
 
 	y = Game_Message::GetRealPosition() * 80;
 
-	if (Game_System::IsMessageTransparent()) {
+	if (Main_Data::game_system->IsMessageTransparent()) {
 		SetOpacity(0);
 		gold_window->SetBackOpacity(0);
 	} else {
@@ -269,12 +269,12 @@ void Window_Message::InsertNewPage() {
 	}
 
 	if (IsFaceEnabled()) {
-		if (!Game_System::IsMessageFaceRightPosition()) {
+		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), LeftMargin, TopMargin, Game_System::IsMessageFaceFlipped());
+			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), LeftMargin, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
 		} else {
 			contents_x = 0;
-			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), 248, TopMargin, Game_System::IsMessageFaceFlipped());
+			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), 248, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
 		}
 	} else {
 		contents_x = 0;
@@ -306,7 +306,7 @@ void Window_Message::InsertNewPage() {
 
 void Window_Message::InsertNewLine() {
 	DebugLog("{}: MSG NEW LINE");
-	if (IsFaceEnabled() && !Game_System::IsMessageFaceRightPosition()) {
+	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
 		contents_x = LeftMargin + FaceSize + RightFaceMargin;
 	} else {
 		contents_x = 0;
@@ -672,7 +672,7 @@ void Window_Message::UpdateCursorRect() {
 		int width = contents->GetWidth();
 
 		if (IsFaceEnabled()) {
-			if (!Game_System::IsMessageFaceRightPosition()) {
+			if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 				x_pos += LeftMargin + FaceSize + RightFaceMargin;
 			}
 			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;
@@ -696,16 +696,16 @@ void Window_Message::InputChoice() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (pending_message.GetChoiceCancelType() > 0) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			choice_result = pending_message.GetChoiceCancelType() - 1; // Cancel
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (!pending_message.IsChoiceEnabled(index)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
 		}
 
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		choice_result = index;
 	}
 
@@ -722,7 +722,7 @@ void Window_Message::InputChoice() {
 void Window_Message::InputNumber() {
 	number_input_window->SetVisible(true);
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(true);
 		number_input_window->SetNumber(0);
@@ -782,6 +782,6 @@ void Window_Message::SetWait(int frames) {
 }
 
 bool Window_Message::IsFaceEnabled() const {
-	return pending_message.IsFaceEnabled() && !Game_System::GetMessageFaceName().empty();
+	return pending_message.IsFaceEnabled() && !Main_Data::game_system->GetMessageFaceName().empty();
 }
 

@@ -123,7 +123,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 	}
 
 	if (result) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 	}
 
 	return true;
@@ -179,7 +179,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	enemy.ChangeHp(change);
 
 	if (enemy.IsDead()) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 		Game_Battle::SetNeedRefresh(true);
 	}
 

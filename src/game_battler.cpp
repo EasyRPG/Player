@@ -130,11 +130,11 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	}
 
 	if (skill->type == lcf::rpg::Skill::Type_escape) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget();
+		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget();
 	}
 
 	if (skill->type == lcf::rpg::Skill::Type_teleport) {
-		return !Game_Battle::IsBattleRunning() && Game_System::GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
+		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
 	}
 
 	if (skill->type == lcf::rpg::Skill::Type_switch) {
@@ -327,10 +327,10 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 	} else if (skill->type == lcf::rpg::Skill::Type_teleport || skill->type == lcf::rpg::Skill::Type_escape) {
-		Game_System::SePlay(skill->sound_effect);
+		Main_Data::game_system->SePlay(skill->sound_effect);
 		was_used = true;
 	} else if (skill->type == lcf::rpg::Skill::Type_switch) {
-		Game_System::SePlay(skill->sound_effect);
+		Main_Data::game_system->SePlay(skill->sound_effect);
 		Main_Data::game_switches->Set(skill->switch_id, true);
 		was_used = true;
 	}

@@ -40,7 +40,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 
 void Scene_GameBrowser::Start() {
 	initial_debug_flag = Player::debug_flag;
-	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
+	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
@@ -61,8 +61,8 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 
-	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
-	Game_System::BgmStop();
+	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
+	Main_Data::game_system->BgmStop();
 
 	Player::debug_flag = initial_debug_flag;
 }
@@ -132,7 +132,7 @@ void Scene_GameBrowser::UpdateCommand() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 

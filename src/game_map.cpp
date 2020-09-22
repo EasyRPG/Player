@@ -82,7 +82,7 @@ void SetupCommon();
 }
 
 void Game_Map::OnContinueFromBattle() {
-	Game_System::BgmPlay(Game_System::GetBeforeBattleMusic());
+	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeBattleMusic());
 }
 
 static Game_Map::Parallax::Params GetParallaxParams();
@@ -183,9 +183,9 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 			can_teleport = lcf::Data::treemap.maps[current_index].teleport;
 		}
 	}
-	Game_System::SetAllowSave(can_save != lcf::rpg::MapInfo::TriState_forbid);
-	Game_System::SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
-	Game_System::SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
+	Main_Data::game_system->SetAllowSave(can_save != lcf::rpg::MapInfo::TriState_forbid);
+	Main_Data::game_system->SetAllowEscape(can_escape != lcf::rpg::MapInfo::TriState_forbid);
+	Main_Data::game_system->SetAllowTeleport(can_teleport != lcf::rpg::MapInfo::TriState_forbid);
 
 	auto& player = *Main_Data::game_player;
 
@@ -353,9 +353,9 @@ void Game_Map::PlayBgm() {
 		}
 		auto& music = lcf::Data::treemap.maps[current_index].music;
 		if (!Main_Data::game_player->IsAboard()) {
-			Game_System::BgmPlay(music);
+			Main_Data::game_system->BgmPlay(music);
 		} else {
-			Game_System::SetBeforeVehicleMusic(music);
+			Main_Data::game_system->SetBeforeVehicleMusic(music);
 		}
 	}
 }

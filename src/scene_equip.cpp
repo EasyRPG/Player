@@ -147,25 +147,25 @@ static bool CanRemoveEquipment(const Game_Actor& actor, int index) {
 
 void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (!CanRemoveEquipment(actor, equip_window->GetIndex())) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
 		}
 
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
 		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
 		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
@@ -174,12 +174,12 @@ void Scene_Equip::UpdateEquipSelection() {
 
 void Scene_Equip::UpdateItemSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		equip_window->SetActive(true);
 		item_window->SetActive(false);
 		item_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 		const lcf::rpg::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
