@@ -82,8 +82,8 @@ Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight)
 void Window_Shop::UpdateCursorRect() {
 	int x = 4;
 	int width = contents->GetWidth() - 8;
-	if (!Game_Message::GetFaceName().empty()) {
-		if (!Game_Message::IsFaceRightPosition()) {
+	if (!Game_System::GetMessageFaceName().empty()) {
+		if (!Game_System::IsMessageFaceRightPosition()) {
 			x += LeftMargin + FaceSize + RightFaceMargin;
 		}
 		width -= LeftMargin + FaceSize + RightFaceMargin;
@@ -107,13 +107,13 @@ void Window_Shop::Refresh() {
 	contents->Clear();
 
 	int x = 0;
-	if (!Game_Message::GetFaceName().empty()) {
-		if (!Game_Message::IsFaceRightPosition()) {
+	if (!Game_System::GetMessageFaceName().empty()) {
+		if (!Game_System::IsMessageFaceRightPosition()) {
 			x += LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin, TopMargin, Game_Message::IsFaceFlipped());
+			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), LeftMargin, TopMargin, Game_System::IsMessageFaceFlipped());
 		}
 		else {
-			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), 248, TopMargin, Game_Message::IsFaceFlipped());
+			DrawFace(Game_System::GetMessageFaceName(), Game_System::GetMessageFaceIndex(), 248, TopMargin, Game_System::IsMessageFaceFlipped());
 		}
 	}
 

@@ -816,7 +816,6 @@ void Player::ResetGameObjects() {
 	Main_Data::game_actors = std::make_unique<Game_Actors>();
 
 	Game_Map::Init();
-	Game_Message::Init();
 	Game_System::Init();
 
 	Main_Data::game_targets = std::make_unique<Game_Targets>();

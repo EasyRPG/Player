@@ -55,7 +55,7 @@ Scene_Battle::Scene_Battle(const BattleArgs& args)
 
 	// Face graphic is cleared when battle scene is created.
 	// Even if the battle gets interrupted by another scene and never starts.
-	Game_Message::ClearFace();
+	Game_System::ClearMessageFace();
 	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));

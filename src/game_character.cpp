@@ -135,7 +135,7 @@ void Game_Character::Update() {
 
 	if (IsStopping()) {
 		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
-				((Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
+				((Game_System::GetMessageContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
 			SetStopCount(GetStopCount() + 1);
 		}
 	} else if (IsJumping()) {

@@ -1569,9 +1569,9 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 	if (Game_Battle::CheckLose()) {
 		SetState(State_Defeat);
 
-		Game_Message::SetPositionFixed(true);
-		Game_Message::SetPosition(2);
-		Game_Message::SetTransparent(false);
+		Game_System::SetMessagePositionFixed(true);
+		Game_System::SetMessagePosition(2);
+		Game_System::SetMessageTransparent(false);
 
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);

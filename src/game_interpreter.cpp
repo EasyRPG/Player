@@ -107,7 +107,7 @@ void Game_Interpreter::Push(
 	frame.event_id = event_id;
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
-		Game_Message::ClearFace();
+		Game_System::ClearMessageFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
@@ -719,7 +719,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	const bool is_base_frame = _state.stack.size() == 1;
 
 	if (main_flag && is_base_frame && !Game_Battle::IsBattleRunning()) {
-		Game_Message::ClearFace();
+		Game_System::ClearMessageFace();
 	}
 
 	int event_id = frame.event_id;
@@ -841,10 +841,10 @@ bool Game_Interpreter::CommandMessageOptions(lcf::rpg::EventCommand const& com) 
 		return false;
 	}
 
-	Game_Message::SetTransparent(com.parameters[0] != 0);
-	Game_Message::SetPosition(com.parameters[1]);
-	Game_Message::SetPositionFixed(com.parameters[2] == 0);
-	Game_Message::SetContinueEvents(com.parameters[3] != 0);
+	Game_System::SetMessageTransparent(com.parameters[0] != 0);
+	Game_System::SetMessagePosition(com.parameters[1]);
+	Game_System::SetMessagePositionFixed(com.parameters[2] == 0);
+	Game_System::SetMessageContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 
@@ -853,10 +853,10 @@ bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& co
 		return false;
 	}
 
-	Game_Message::SetFaceName(ToString(com.string));
-	Game_Message::SetFaceIndex(com.parameters[0]);
-	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
-	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
+	Game_System::SetMessageFaceName(ToString(com.string));
+	Game_System::SetMessageFaceIndex(com.parameters[0]);
+	Game_System::SetMessageFaceRightPosition(com.parameters[1] != 0);
+	Game_System::SetMessageFaceFlipped(com.parameters[2] != 0);
 	return true;
 }
 

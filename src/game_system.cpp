@@ -20,6 +20,7 @@
 #include <functional>
 #include "game_system.h"
 #include "async_handler.h"
+#include "game_battle.h"
 #include "audio.h"
 #include "baseui.h"
 #include "bitmap.h"
@@ -676,3 +677,85 @@ Color Game_System::GetBackgroundColor() {
 bool Game_System::GetInvertAnimations() {
 	return lcf::Data::system.invert_animations;
 }
+
+void Game_System::ClearMessageFace() {
+	SetMessageFaceName("");
+	SetMessageFaceIndex(0);
+}
+
+std::string Game_System::GetMessageFaceName() {
+	return data.face_name;
+}
+
+void Game_System::SetMessageFaceName(const std::string& face) {
+	data.face_name = face;
+}
+
+int Game_System::GetMessageFaceIndex() {
+	return data.face_id;
+}
+
+void Game_System::SetMessageFaceIndex(int index) {
+	data.face_id = index;
+}
+
+bool Game_System::IsMessageFaceFlipped() {
+	return data.face_flip;
+}
+
+void Game_System::SetMessageFaceFlipped(bool flipped) {
+	data.face_flip = flipped;
+}
+
+bool Game_System::IsMessageFaceRightPosition() {
+	return data.face_right;
+}
+
+void Game_System::SetMessageFaceRightPosition(bool right) {
+	data.face_right = right;
+}
+
+bool Game_System::IsMessageTransparent() {
+	if (Player::IsRPG2k() && Game_Battle::IsBattleRunning()) {
+		return false;
+	}
+
+	return data.message_transparent != 0;
+}
+
+void Game_System::SetMessageTransparent(bool transparent) {
+	data.message_transparent = transparent;
+}
+
+int Game_System::GetMessagePosition() {
+	return data.message_position;
+}
+
+void Game_System::SetMessagePosition(int new_position) {
+	data.message_position = new_position;
+}
+
+bool Game_System::IsMessagePositionFixed() {
+	return !data.message_prevent_overlap;
+}
+
+void Game_System::SetMessagePositionFixed(bool fixed) {
+	data.message_prevent_overlap = !fixed;
+}
+
+bool Game_System::GetMessageContinueEvents() {
+	return data.message_continue_events;
+}
+
+void Game_System::SetMessageContinueEvents(bool continue_events) {
+	data.message_continue_events = continue_events;
+}
+
+void Game_System::SetMessageEventMessageActive(bool value) {
+	data.event_message_active = value;
+}
+
+bool Game_System::GetMessageEventMessageActive() {
+	return data.event_message_active;
+}
+

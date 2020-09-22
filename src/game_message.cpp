@@ -21,6 +21,7 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "game_battle.h"
+#include "game_system.h"
 #include "main_data.h"
 #include "window_message.h"
 #include "font.h"
@@ -34,91 +35,12 @@
 
 static Window_Message* window = nullptr;
 
-lcf::rpg::SaveSystem& data = Main_Data::game_data.system;
-
-void Game_Message::Init() {
-	ClearFace();
-}
-
-void Game_Message::ClearFace() {
-	SetFaceName("");
-	SetFaceIndex(0);
-}
-
 void Game_Message::SetWindow(Window_Message* w) {
 	window = w;
 }
 
 Window_Message* Game_Message::GetWindow() {
 	return window;
-}
-
-std::string Game_Message::GetFaceName() {
-	return data.face_name;
-}
-
-void Game_Message::SetFaceName(const std::string& face) {
-	data.face_name = face;
-}
-
-int Game_Message::GetFaceIndex() {
-	return data.face_id;
-}
-
-void Game_Message::SetFaceIndex(int index) {
-	data.face_id = index;
-}
-
-bool Game_Message::IsFaceFlipped() {
-	return data.face_flip;
-}
-
-void Game_Message::SetFaceFlipped(bool flipped) {
-	data.face_flip = flipped;
-}
-
-bool Game_Message::IsFaceRightPosition() {
-	return data.face_right;
-}
-
-void Game_Message::SetFaceRightPosition(bool right) {
-	data.face_right = right;
-}
-
-bool Game_Message::IsTransparent() {
-	if (Player::IsRPG2k() && Game_Battle::IsBattleRunning()) {
-		return false;
-	}
-
-	return data.message_transparent != 0;
-}
-
-void Game_Message::SetTransparent(bool transparent) {
-	data.message_transparent = transparent;
-}
-
-int Game_Message::GetPosition() {
-	return data.message_position;
-}
-
-void Game_Message::SetPosition(int new_position) {
-	data.message_position = new_position;
-}
-
-bool Game_Message::IsPositionFixed() {
-	return !data.message_prevent_overlap;
-}
-
-void Game_Message::SetPositionFixed(bool fixed) {
-	data.message_prevent_overlap = !fixed;
-}
-
-bool Game_Message::GetContinueEvents() {
-	return !!data.message_continue_events;
-}
-
-void Game_Message::SetContinueEvents(bool continue_events) {
-	data.message_continue_events = continue_events;
 }
 
 int Game_Message::GetRealPosition() {
@@ -131,14 +53,14 @@ int Game_Message::GetRealPosition() {
 		}
 	}
 
-	if (Game_Message::IsPositionFixed()) {
-		return Game_Message::GetPosition();
+	if (Game_System::IsMessagePositionFixed()) {
+		return Game_System::GetMessagePosition();
 	}
 	else {
 		// Move Message Box to prevent player hiding
 		int disp = Main_Data::game_player->GetScreenY();
 
-		switch (Game_Message::GetPosition()) {
+		switch (Game_System::GetMessagePosition()) {
 		case 0: // Up
 			return disp > (16 * 7) ? 0 : 2;
 		case 1: // Center
@@ -210,7 +132,7 @@ void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	if (window) {
 		// This flag has no known use, but RPG_RT sets it whenever an event message command
 		// spawns a message. We replicate it for save game compatibility.
-		data.event_message_active = pm.IsEventMessage();
+		Game_System::SetMessageEventMessageActive(pm.IsEventMessage());
 
 		window->StartMessageProcessing(std::move(pm));
 	}

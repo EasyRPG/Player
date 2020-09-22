@@ -351,6 +351,130 @@ namespace Game_System {
 
 	/** @return true if battle animations are flipped if attacked from behind */
 	bool GetInvertAnimations();
+
+	/** Reset the face graphic. */
+	void ClearMessageFace();
+
+	/** @return name of file that contains the face. */
+	std::string GetMessageFaceName();
+
+	/**
+	 * Set FaceSet graphic file containing the face.
+	 *
+	 * @param face FaceSet file
+	 */
+	void SetMessageFaceName(const std::string& face);
+
+	/**
+	 * Gets index of the face to display.
+	 *
+	 * @return face index
+	 */
+	int GetMessageFaceIndex();
+
+	/**
+	 * Sets index of the face to display
+	 *
+	 * @param index face index
+	 */
+	void SetMessageFaceIndex(int index);
+
+	/** 
+	 * Whether to mirror the face. 
+	 *
+	 * @return true: flipped, false: normal
+	 */
+	bool IsMessageFaceFlipped();
+
+	/**
+	 * Sets whether to mirror the face.
+	 *
+	 * @param flipped Enable/Disable mirroring
+	 */
+	void SetMessageFaceFlipped(bool flipped);
+
+	/**
+	 * If the face shall be placed right.
+	 *
+	 * @return true: right side, false: left side
+	 */
+	bool IsMessageFaceRightPosition();
+
+	/**
+	 * Sets the face position.
+	 *
+	 * @param right true: right side, false: left side
+	 */
+	void SetMessageFaceRightPosition(bool right);
+
+	/**
+	 * Gets if the message background is transparent.
+	 *
+	 * @return message transparent
+	 */
+	bool IsMessageTransparent();
+
+	/**
+	 * Sets message box background state
+	 *
+	 * @param transparent true: transparent, false: opaque
+	 */
+	void SetMessageTransparent(bool transparent);
+
+	/**
+	 * Gets the message box position.
+	 *
+	 * @return 0: top, 1: middle, 2: bottom
+	 */
+	int GetMessagePosition();
+
+	/**
+	 * Sets the message box position.
+	 * Depending on the player position this value is ignored to prevent overlap.
+	 * (see SetPositionFixed)
+	 *
+	 * @param new_position 0: top, 1: middle, 2: bottom
+	 */
+	void SetMessagePosition(int new_position);
+
+	/**
+	 * Gets whether message box position is fixed.
+	 * In that case the hero can be obstructed.
+	 *
+	 * @return fixed
+	 */
+	bool IsMessagePositionFixed();
+
+	/**
+	 * Sets if message box is moved to avoid obscuring the player.
+	 *
+	 * @param fixed position fixed
+	 */
+	void SetMessagePositionFixed(bool fixed);
+
+	/**
+	 * Gets if parallel events continue while message box is displayed.
+	 *
+	 * @return whether events continue
+	 */
+	bool GetMessageContinueEvents();
+
+	/**
+	 * Sets if parallel events continue while message box is displayed.
+	 *
+	 * @param continue_events continue events
+	 */
+	void SetMessageContinueEvents(bool continue_events);
+
+	/**
+	 * Sets the RpgRt event message active flag.
+	 *
+	 * @param value what to set the flag to
+	 */
+	void SetMessageEventMessageActive(bool value);
+
+	/** @return the RpgRt event message active flag */
+	bool GetMessageEventMessageActive();
 }
 
 inline bool Game_System::HasSystemGraphic() {
