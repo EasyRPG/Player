@@ -267,17 +267,21 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		// FIXME: What about negative attributes? Does it do damage here? Can it kill?
 		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true);
+
+		// Negative attributes do damage but cannot kill
+		bool negative_effect = false;
+		if (effect < 0) {
+			negative_effect = true;
+			effect = -effect;
+		}
 
 		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
 			if (skill->state_effects[i]) {
 				if (skill->reverse_state_effect) {
 					was_used |= !HasState(lcf::Data::states[i].ID);
-					// FIXME: This logic always called from menu, so we set false
-					// to allow_battle_states
-					AddState(lcf::Data::states[i].ID, false);
+					AddState(lcf::Data::states[i].ID, true);
 				}
 				else {
 					if (i == 0 && IsDead()) {
@@ -296,18 +300,30 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Skills only increase hp and sp outside of battle
-		if (effect > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
-			was_used = true;
-			ChangeHp(effect - revived);
-		}
-		else if (effect > 0 && cure_hp_percentage) {
-			was_used = true;
-			ChangeHp(GetMaxHp() * effect / 100 - revived);
-		}
+		if (!negative_effect) {
+			if (effect > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
+				was_used = true;
+				ChangeHp(effect - revived);
+			}
+			else if (effect > 0 && cure_hp_percentage) {
+				was_used = true;
+				ChangeHp(GetMaxHp() * effect / 100 - revived);
+			}
 
-		if (effect > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
-			was_used = true;
-			ChangeSp(effect);
+			if (effect > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
+				was_used = true;
+				ChangeSp(effect);
+			}
+		} else {
+			if (effect > 0 && skill->affect_hp && !IsDead()) {
+				was_used = true;
+				ChangeHp(std::max<int>(-effect, -GetHp() + 1));
+			}
+
+			if (effect > 0 && skill->affect_sp && !IsDead()) {
+				was_used = true;
+				ChangeSp(-effect);
+			}
 		}
 
 	} else if (skill->type == lcf::rpg::Skill::Type_teleport || skill->type == lcf::rpg::Skill::Type_escape) {
