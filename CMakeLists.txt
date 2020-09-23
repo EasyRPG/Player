@@ -13,8 +13,15 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Need fPIC when compiling a shared library (e.g. libretro.so)
+# Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
+option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
+if(BUILD_SHARED_LIBS)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
 # Source Files
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
@@ -412,9 +419,6 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
 endif()
 
-# Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
-option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
-
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
@@ -429,21 +433,8 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	find_package(SDL2 2.0.5 REQUIRED)
 	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/libretro/libretro_audio.cpp
-		src/platform/libretro/libretro_audio.h
-		src/platform/libretro/libretro_input_buttons.cpp
-		src/platform/libretro/libretro_ui.cpp
-		src/platform/libretro/libretro_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
-	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
-	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
-
-	if(BUILD_SHARED_LIBS)
-		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	endif()
-
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
@@ -834,6 +825,18 @@ if (${PLAYER_BUILD_EXECUTABLE})
 			install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.js DESTINATION ${CMAKE_INSTALL_BINDIR})
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
+else()
+	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+		add_library(easyrpg_libretro
+			src/platform/libretro/libretro_audio.cpp
+			src/platform/libretro/libretro_audio.h
+			src/platform/libretro/libretro_input_buttons.cpp
+			src/platform/libretro/libretro_ui.cpp
+			src/platform/libretro/libretro_ui.h)
+		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
+	else()
+		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()
 endif()
 
