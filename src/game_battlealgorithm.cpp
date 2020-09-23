@@ -40,6 +40,7 @@
 #include <lcf/rpg/item.h>
 #include "sprite_battler.h"
 #include "utils.h"
+#include "rand.h"
 #include "state.h"
 #include "algo.h"
 #include "attribute.h"
@@ -66,7 +67,7 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 		if (state->release_by_damage > 0) {
 			int release_chance = state->release_by_damage * physical_rate / 100;
 
-			if (!Utils::ChanceOf(release_chance, 100)) {
+			if (!Rand::ChanceOf(release_chance, 100)) {
 				continue;
 			}
 
@@ -932,8 +933,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto crit_chance = Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll);
 
 	// Damage calculation
-	if (Utils::PercentChance(to_hit)) {
-		if (Utils::PercentChance(crit_chance)) {
+	if (Rand::PercentChance(to_hit)) {
+		if (Rand::PercentChance(crit_chance)) {
 			critical_hit = true;
 		}
 
@@ -985,7 +986,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					if (!weapon_heals_states) {
 						pct = pct * GetTarget()->GetStateProbability(state_id) / 100;
 					}
-					if (!Utils::PercentChance(pct)) {
+					if (!Rand::PercentChance(pct)) {
 						return false;
 					}
 					if (weapon_heals_states) {
@@ -1161,17 +1162,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
 				}
 			}
-			if (skill.affect_sp && Utils::PercentChance(to_hit)) {
+			if (skill.affect_sp && Rand::PercentChance(to_hit)) {
 				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
 				this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost));
 			}
-			if (skill.affect_attack && Utils::PercentChance(to_hit))
+			if (skill.affect_attack && Rand::PercentChance(to_hit))
 				this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
-			if (skill.affect_defense && Utils::PercentChance(to_hit))
+			if (skill.affect_defense && Rand::PercentChance(to_hit))
 				this->defense = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef()));
-			if (skill.affect_spirit && Utils::PercentChance(to_hit))
+			if (skill.affect_spirit && Rand::PercentChance(to_hit))
 				this->spirit = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi()));
-			if (skill.affect_agility && Utils::PercentChance(to_hit))
+			if (skill.affect_agility && Rand::PercentChance(to_hit))
 				this->agility = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi()));
 
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
@@ -1199,17 +1200,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				}
 			}
 
-			if (skill.affect_sp && Utils::PercentChance(to_hit)) {
+			if (skill.affect_sp && Rand::PercentChance(to_hit)) {
 				this->sp = std::min<int>(effect, GetTarget()->GetSp());
 			}
 
-			if (skill.affect_attack && Utils::PercentChance(to_hit))
+			if (skill.affect_attack && Rand::PercentChance(to_hit))
 				this->attack = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2));
-			if (skill.affect_defense && Utils::PercentChance(to_hit))
+			if (skill.affect_defense && Rand::PercentChance(to_hit))
 				this->defense = std::max<int>(0, std::min<int>(effect, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2));
-			if (skill.affect_spirit && Utils::PercentChance(to_hit))
+			if (skill.affect_spirit && Rand::PercentChance(to_hit))
 				this->spirit = std::max<int>(0, std::min<int>(effect, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2));
-			if (skill.affect_agility && Utils::PercentChance(to_hit))
+			if (skill.affect_agility && Rand::PercentChance(to_hit))
 				this->agility = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2));
 
 			if (skill.affect_hp) {
@@ -1268,7 +1269,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (heals_states && !target_has_state) {
 				continue;
 			}
-			if (!Utils::PercentChance(to_hit)) {
+			if (!Rand::PercentChance(to_hit)) {
 				continue;
 			}
 
@@ -1278,7 +1279,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				if (State::Remove(state_id, target_states, target_perm_states)) {
 					states.push_back({state_id, StateEffect::Healed});
 				}
-			} else if (Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+			} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 				if (State::Add(state_id, target_states, target_perm_states, true)) {
 					this->success = true;
 					states.push_back({state_id, StateEffect::Inflicted});
@@ -1294,7 +1295,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (skill.affect_attr_defence) {
 			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
 				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositive() ? 1 : -1)) {
-					if (!Utils::PercentChance(to_hit))
+					if (!Rand::PercentChance(to_hit))
 						continue;
 					shift_attributes.push_back(i + 1);
 					this->success = true;

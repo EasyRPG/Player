@@ -20,6 +20,7 @@
 #include "game_enemy.h"
 #include "attribute.h"
 #include "player.h"
+#include "rand.h"
 #include <lcf/rpg/skill.h>
 
 #include <algorithm>
@@ -153,7 +154,7 @@ int VarianceAdjustEffect(int base, int var) {
 	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
 	if (var > 0 && (base > 0 || Player::IsLegacy())) {
 		int adj = std::max(1, var * base / 10);
-		return base + Utils::GetRandomNumber(0, adj) - adj / 2;
+		return base + Rand::GetRandomNumber(0, adj) - adj / 2;
 	}
 	return base;
 }

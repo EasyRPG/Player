@@ -30,6 +30,7 @@
 #include "main_data.h"
 #include "player.h"
 #include "utils.h"
+#include "rand.h"
 #include "output.h"
 #include <cmath>
 #include <cassert>
@@ -464,12 +465,12 @@ void Game_Event::UpdateNextMovementAction() {
 
 void Game_Event::SetMaxStopCountForRandom() {
 	auto st = GetMaxStopCountForStep(GetMoveFrequency());
-	st *= (Utils::GetRandomNumber(0, 3) + 3) / 5;
+	st *= (Rand::GetRandomNumber(0, 3) + 3) / 5;
 	SetMaxStopCount(st);
 }
 
 void Game_Event::MoveTypeRandom() {
-	int draw = Utils::GetRandomNumber(0, 9);
+	int draw = Rand::GetRandomNumber(0, 9);
 
 	const auto prev_dir = GetDirection();
 
@@ -481,7 +482,7 @@ void Game_Event::MoveTypeRandom() {
 	} else if (draw < 8) {
 		Turn180Degree();
 	} else {
-		SetStopCount(Utils::GetRandomNumber(0, GetMaxStopCount()));
+		SetStopCount(Rand::GetRandomNumber(0, GetMaxStopCount()));
 		return;
 	}
 
@@ -553,13 +554,13 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 
 	int dir = 0;
 	if (!in_sight) {
-		dir = Utils::GetRandomNumber(0, 3);
+		dir = Rand::GetRandomNumber(0, 3);
 	} else {
-		int draw = Utils::GetRandomNumber(0, 9);
+		int draw = Rand::GetRandomNumber(0, 9);
 		if (draw == 0) {
 			dir = GetDirection();
 		} else if(draw == 1) {
-			dir = Utils::GetRandomNumber(0, 3);
+			dir = Rand::GetRandomNumber(0, 3);
 		} else {
 			dir = towards
 				? GetDirectionToHero()

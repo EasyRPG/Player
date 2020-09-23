@@ -210,6 +210,8 @@ add_library(${PROJECT_NAME}
 	src/player.cpp
 	src/player.h
 	src/point.h
+	src/rand.cpp
+	src/rand.h
 	src/rect.cpp
 	src/rect.h
 	src/registry.h

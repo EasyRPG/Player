@@ -220,56 +220,6 @@ namespace Utils {
 	 */
 	void SwapByteOrder(double& d);
 
-	/**
-	 * Gets a random number in the inclusive range from - to.
-	 *
-	 * @param from Interval start
-	 * @param to Interval end
-	 * @return Random number in inclusive interval
-	 */
-	int32_t GetRandomNumber(int32_t from, int32_t to);
-
-	/**
-	 * Gets the seeded Random Number Generator (RNG).
-	 *
-	 * @return the random number generator
-	 */
-	std::mt19937 &GetRNG();
-
-	/**
-	 * Has an n/m chance of returning true. If n>m, always returns true.
-	 *
-	 * @param n number of times out of m to return true (non-negative)
-	 * @param m denominator of the probability (positive)
-	 * @return true with probability n/m, false with probability 1-n/m
-	 */
-	bool ChanceOf(int32_t n, int32_t m);
-
-
-	/**
-	 * Rolls a random number in [0.0f, 1.0f) returns true if it's less than rate.
-	 *
-	 * @param rate a value in [0.0f, 1.0f]. Values out of this range are clamped.
-	 * @return true with probability rate.
-	 */
-	bool PercentChance(float rate);
-
-	/**
-	 * Rolls a random number in [0, 99] and returns true if it's less than rate.
-	 *
-	 * @param rate a value in [0, 100]. Values out of this range are clamped.
-	 * @return true with probability rate.
-	 */
-	bool PercentChance(int rate);
-	bool PercentChance(long rate);
-
-	/**
-	 * Seeds the RNG used by GetRandomNumber and ChanceOf.
-	 *
-	 * @param seed Seed to use
-	 */
-	void SeedRandomNumberGenerator(int32_t seed);
-
 	/** @return -1 if t < 0, 0 if t== 0, 1 if t > 0 */
 	template <typename T>
 		int Signum(const T& val);
@@ -396,10 +346,6 @@ namespace Utils {
 template <typename T>
 constexpr T Utils::Clamp(T value, const T& minv, const T& maxv) {
 	return (value < minv) ? (minv) : ((value > maxv) ? maxv : value);
-}
-
-inline bool Utils::PercentChance(long rate) {
-	return Utils::PercentChance(static_cast<int>(rate));
 }
 
 template <typename F>

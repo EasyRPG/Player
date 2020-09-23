@@ -35,6 +35,7 @@
 #include "weather.h"
 #include "flash.h"
 #include "shake.h"
+#include "rand.h"
 
 Game_Screen::Game_Screen()
 {
@@ -214,9 +215,9 @@ void Game_Screen::InitParticles(int num_particles) {
 		// RPG_RT always initializes all particles to these values on startup.
 		// This can cause minor visual glitches for the first few frames the
 		// first time you start the sandstorm effect. We're bug compatible with RPG_RT.
-		p.t = Utils::GetRandomNumber(0, 39);
-		p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
-		p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
+		p.t = Rand::GetRandomNumber(0, 39);
+		p.x = Rand::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+		p.y = Rand::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 	}
 }
 
@@ -226,10 +227,10 @@ void Game_Screen::UpdateRain() {
 			--p.t;
 			p.y += 4;
 			p.x -= 1;
-		} else if (Utils::PercentChance(10)) {
+		} else if (Rand::PercentChance(10)) {
 			p.t = 12;
-			p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
-			p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
+			p.x = Rand::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+			p.y = Rand::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 		}
 	}
 }
@@ -238,12 +239,12 @@ void Game_Screen::UpdateSnow() {
 	for (auto& p: particles) {
 		if (p.t > 0) {
 			--p.t;
-			p.x -= Utils::GetRandomNumber(0, 1);
-			p.y += Utils::GetRandomNumber(2, 3);
-		} else if (Utils::PercentChance(5)) {
+			p.x -= Rand::GetRandomNumber(0, 1);
+			p.y += Rand::GetRandomNumber(2, 3);
+		} else if (Rand::PercentChance(5)) {
 			p.t = 30;
-			p.x = Utils::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
-			p.y = Utils::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
+			p.x = Rand::GetRandomNumber(0, GetPanLimitX() / 16 - 1);
+			p.y = Rand::GetRandomNumber(0, GetPanLimitY() / 16 - 1);
 		}
 	}
 }
@@ -259,7 +260,7 @@ void Game_Screen::UpdateSandstorm() {
 	// accounts for the range starting at 1 (not 0) and ending at 127 (not 128).
 
 	constexpr auto epsilon = 1.0f / 128.0f;
-	auto& rng = Utils::GetRNG();
+	auto& rng = Rand::GetRNG();
 	auto dist = std::uniform_real_distribution<float>(epsilon, M_PI - epsilon);
 
 	UpdateFog();
@@ -273,12 +274,12 @@ void Game_Screen::UpdateSandstorm() {
 			p.y += static_cast<int>(p.vy);
 			p.vx += p.ax;
 			p.vy += p.ay;
-		} else if (Utils::PercentChance(10)) {
+		} else if (Rand::PercentChance(10)) {
 			p.t = 80;
 
 			auto c = std::cos(dist(rng));
 			auto s = std::sin(dist(rng));
-			auto d = Utils::GetRandomNumber(16, 95);
+			auto d = Rand::GetRandomNumber(16, 95);
 
 			p.x = static_cast<int>(d * c * 2.0f) * SCREEN_TARGET_WIDTH / 320 + SCREEN_TARGET_WIDTH / 2;
 			p.y = static_cast<int>(d * s) * SCREEN_TARGET_HEIGHT / 240;

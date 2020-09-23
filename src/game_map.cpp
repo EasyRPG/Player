@@ -46,6 +46,7 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
+#include "rand.h"
 #include <lcf/scope_guard.h>
 #include "scene_gameover.h"
 
@@ -1219,9 +1220,9 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 		return false;
 	}
 
-	args.troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
+	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
 
-	if (Utils::GetRandomNumber(1, 32) == 1) {
+	if (Rand::GetRandomNumber(1, 32) == 1) {
 		args.first_strike = true;
 	}
 

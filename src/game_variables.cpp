@@ -22,6 +22,7 @@
 #include <lcf/reader_util.h>
 #include <lcf/data.h>
 #include "utils.h"
+#include "rand.h"
 #include <cmath>
 
 constexpr int Game_Variables::max_warnings;
@@ -237,32 +238,32 @@ void Game_Variables::ModRangeVariableIndirect(int first_id, int last_id, int var
 
 void Game_Variables::SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarSet);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSet);
 }
 
 void Game_Variables::AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] += rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarAdd);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarAdd);
 }
 
 void Game_Variables::SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] -= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarSub);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSub);
 }
 
 void Game_Variables::MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] *= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarMult);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMult);
 }
 
 void Game_Variables::DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] /= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarDiv);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarDiv);
 }
 
 void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] %= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Utils::GetRandomNumber(minval, maxval); }, VarMod);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMod);
 }
 
 StringView Game_Variables::GetName(int _id) const {

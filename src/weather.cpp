@@ -27,6 +27,7 @@
 #include "drawable_mgr.h"
 #include "player.h"
 #include "output.h"
+#include "rand.h"
 
 Weather::Weather() :
 	Drawable(Priority_Weather, Drawable::Flags::Shared)
@@ -311,7 +312,7 @@ void Weather::CreateFogOverlay() {
 	auto* sand_img = reinterpret_cast<uint32_t*>(sand_bitmap->pixels());
 
 	for (int i = 0; i < w * h; ++i) {
-		int px = Utils::GetRandomNumber(0, num_overlay_colors - 1);
+		int px = Rand::GetRandomNumber(0, num_overlay_colors - 1);
 		// FIXME: This only works for 32bit pixel formats
 		fog_img[i] = fog_pixels[px];
 		sand_img[i] = sand_pixels[px];

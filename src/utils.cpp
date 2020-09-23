@@ -28,11 +28,6 @@
 #include <cctype>
 
 namespace {
-	std::mt19937 rng;
-
-	/** Gets a random number uniformly distributed in [0, U32_MAX] */
-	uint32_t GetRandomU32() { return rng(); }
-
 	char Lower(char c) {
 		if (c >= 'A' && c <= 'Z') {
 			return c + 'a' - 'A';
@@ -502,64 +497,6 @@ void Utils::SwapByteOrder(double& d) {
 	uint32_t tmp = p[0];
 	p[0] = p[1];
 	p[1] = tmp;
-}
-
-/** Generate a random number in the range [0,max] */
-static uint32_t GetRandomUnsigned(uint32_t max)
-{
-	if (max == 0xffffffffull) return GetRandomU32();
-
-	// Rejection sampling:
-	// 1. Divide the range of uint32 into blocks of max+1
-	//    numbers each, with rem numbers left over.
-	// 2. Generate a random u32. If it belongs to a block,
-	//    mod it into the range [0,max] and accept it.
-	// 3. If it fell into the range of rem leftover numbers,
-	//    reject it and go back to step 2.
-	uint32_t m = max + 1;
-	uint32_t rem = -m % m; // = 2^32 mod m
-	while (true) {
-		uint32_t n = GetRandomU32();
-		if (n >= rem)
-			return n % m;
-	}
-}
-
-int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
-	assert(from <= to);
-	// Don't use uniform_int_distribution--the algorithm used isn't
-	// portable between stdlibs.
-	// We do from + (rand int in [0, to-from]). The miracle of two's
-	// complement let's us do this all in unsigned and then just cast
-	// back.
-	uint32_t ufrom = uint32_t(from);
-	uint32_t uto = uint32_t(to);
-	uint32_t urange = uto - ufrom;
-	uint32_t ures = ufrom + GetRandomUnsigned(urange);
-	return int32_t(ures);
-}
-
-std::mt19937 &Utils::GetRNG() {
-	return rng;
-}
-
-bool Utils::ChanceOf(int32_t n, int32_t m) {
-	assert(n >= 0 && m > 0);
-	return GetRandomNumber(1, m) <= n;
-}
-
-bool Utils::PercentChance(float rate) {
-	constexpr auto scale = 0x1000000;
-	return GetRandomNumber(0, scale-1) < int32_t(rate * scale);
-}
-
-bool Utils::PercentChance(int rate) {
-	return GetRandomNumber(0, 99) < rate;
-}
-
-void Utils::SeedRandomNumberGenerator(int32_t seed) {
-	rng.seed(seed);
-	Output::Debug("Seeded the RNG with {}.", seed);
 }
 
 // via https://stackoverflow.com/questions/6089231/

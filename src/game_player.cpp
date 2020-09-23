@@ -31,6 +31,7 @@
 #include "util_macro.h"
 #include "game_switches.h"
 #include "output.h"
+#include "rand.h"
 #include "utils.h"
 #include <lcf/reader_util.h>
 #include <lcf/scope_guard.h>
@@ -705,7 +706,7 @@ void Game_Player::UpdateEncounterSteps() {
 	const auto pmod = row.pmod;
 	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
 
-	if (!Utils::PercentChance(p)) {
+	if (!Rand::PercentChance(p)) {
 		return;
 	}
 
