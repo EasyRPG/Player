@@ -640,7 +640,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int sp = GetAffectedSp();
 		int target_sp = target->GetSp();
 		target->SetSp(target->GetSp() + (IsPositive() ? sp : -sp));
-		if (IsAbsorb() && !IsPositive()) {
+		if (IsAbsorb() && !IsPositive() && !IsKilledByDamage()) {
 			int src_sp = std::min(target_sp, sp);
 			source->ChangeSp(src_sp);
 		}
@@ -649,37 +649,21 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
 		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
-		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			atk = Utils::Clamp(atk, 0, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk());
-			source->ChangeAtkModifier(atk);
-		}
 	}
 
 	if (GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
 		target->ChangeDefModifier(IsPositive() ? def : -def);
-		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			def = Utils::Clamp(def, 0, std::min<int>(source->MaxStatBattleValue(), source->GetBaseDef() * 2) - source->GetDef());
-			source->ChangeDefModifier(def);
-		}
 	}
 
 	if (GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
 		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
-		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			spi = Utils::Clamp(spi, 0, std::min<int>(source->MaxStatBattleValue(), source->GetBaseSpi() * 2) - source->GetSpi());
-			source->ChangeSpiModifier(spi);
-		}
 	}
 
 	if (GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
 		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
-		if (IsAbsorb() && !IsPositive() && Player::IsRPG2k3Updated()) {
-			agi = Utils::Clamp(agi, 0, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAgi() * 2) - source->GetAgi());
-			source->ChangeAgiModifier(agi);
-		}
 	}
 
 	// Apply states
