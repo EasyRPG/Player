@@ -13,12 +13,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Need fPIC when compiling a shared library (e.g. libretro.so)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
-if(BUILD_SHARED_LIBS)
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
 
 # Source Files
 add_library(${PROJECT_NAME} STATIC
@@ -468,6 +464,12 @@ else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
+if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
+	# Need fPIC when compiling a shared library (e.g. libretro.so)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif()
+
 if(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/registry.cpp
@@ -835,6 +837,7 @@ else()
 			src/platform/libretro/libretro_ui.cpp
 			src/platform/libretro/libretro_ui.h)
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
+		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()
