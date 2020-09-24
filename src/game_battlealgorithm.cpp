@@ -975,7 +975,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			// Conditions caused / healed by weapon.
 			if (source.GetType() == Game_Battler::Type_Ally) {
 				auto& ally = static_cast<Game_Actor&>(source);
-				const bool is2k3 = Player::IsRPG2k();
+				const bool is2k3 = Player::IsRPG2k3();
 				auto* weapon1 = ally.GetWeapon();
 				auto* weapon2 = ally.Get2ndWeapon();
 
@@ -1019,13 +1019,12 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 				if (addStates(weapon1, lcf::rpg::State::kDeathID)
 						|| addStates(weapon2, lcf::rpg::State::kDeathID)) {
-					// If death is inflicted, we're done adding states.
 					lethal = true;
-				} else {
-					for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
-						addStates(weapon1, state_id);
-						addStates(weapon2, state_id);
-					}
+				}
+
+				for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
+					addStates(weapon1, state_id);
+					addStates(weapon2, state_id);
 				}
 			}
 		}
@@ -1304,39 +1303,41 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 		// Conditions:
-		bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
-		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
-			if (!skill.state_effects[i])
-				continue;
-			auto state_id = i + 1;
+		// If the target gets killed by damage, do not add or remove states
+		if (!lethal) {
+			bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
+			for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
+				if (!skill.state_effects[i])
+					continue;
+				auto state_id = i + 1;
 
-			bool target_has_state = State::Has(state_id, target_states);
+				bool target_has_state = State::Has(state_id, target_states);
 
-			if (!heals_states && target_has_state) {
-				this->success = true;
-				states.push_back({state_id, StateEffect::AlreadyInflicted});
-				continue;
-			}
-			if (heals_states && !target_has_state) {
-				continue;
-			}
-			if (!Rand::PercentChance(to_hit)) {
-				continue;
-			}
-
-			if (heals_states) {
-				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
-				this->success = true;
-				if (State::Remove(state_id, target_states, target_perm_states)) {
-					states.push_back({state_id, StateEffect::Healed});
-				}
-			} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-				if (State::Add(state_id, target_states, target_perm_states, true)) {
+				if (!heals_states && target_has_state) {
 					this->success = true;
-					states.push_back({state_id, StateEffect::Inflicted});
-					if (state_id == lcf::rpg::State::kDeathID) {
-						lethal = true;
-						break;
+					states.push_back({state_id, StateEffect::AlreadyInflicted});
+					continue;
+				}
+				if (heals_states && !target_has_state) {
+					continue;
+				}
+				if (!Rand::PercentChance(to_hit)) {
+					continue;
+				}
+
+				if (heals_states) {
+					// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
+					this->success = true;
+					if (State::Remove(state_id, target_states, target_perm_states)) {
+						states.push_back({state_id, StateEffect::Healed});
+					}
+				} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+					if (State::Add(state_id, target_states, target_perm_states, true)) {
+						this->success = true;
+						states.push_back({state_id, StateEffect::Inflicted});
+						if (state_id == lcf::rpg::State::kDeathID) {
+							lethal = true;
+						}
 					}
 				}
 			}
