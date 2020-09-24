@@ -36,6 +36,9 @@ public:
 	/** Initialize for new game */
 	void SetupNewGame();
 
+	/** Setups battle test party */
+	void SetupBattleTest();
+
 	/** Initialize from save game */
 	void SetupFromSave(lcf::rpg::SaveInventory save);
 
@@ -47,10 +50,6 @@ public:
 	int GetBattlerCount() const override;
 	int GetVisibleBattlerCount() const override;
 
-	/**
-	 * Setups battle test party.
-	 */
-	void SetupBattleTestMembers();
 
 	/**
 	 * Adds an actor to the party.

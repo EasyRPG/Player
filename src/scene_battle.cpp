@@ -91,10 +91,6 @@ void Scene_Battle::Start() {
 
 	Output::Debug("Starting battle {} ({})", troop_id, troop->name);
 
-	if (Game_Battle::battle_test.enabled) {
-		Main_Data::game_party->SetupBattleTestMembers();
-	}
-
 	Game_Battle::Init(troop_id);
 
 	cycle = 0;

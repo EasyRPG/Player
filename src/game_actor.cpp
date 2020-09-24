@@ -59,62 +59,70 @@ Game_Actor::Game_Actor(int actor_id) {
 	if (actor_id == 0) {
 		return;
 	}
+	dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, GetId());
 
-	data.Setup(actor_id);
-	Setup();
+	data.two_weapon = dbActor->two_weapon;
+	data.lock_equipment = dbActor->lock_equipment;
+	data.auto_battle = dbActor->auto_battle;
+	data.super_guard = dbActor->super_guard;
 
-	const auto& skills = GetActor().skills;
-	for (auto& skill: skills) {
-		if (skill.level <= GetLevel()) {
-			LearnSkill(skill.skill_id, nullptr);
-		}
-	}
+	data.hp_mod = 0;
+	data.sp_mod = 0;
+	data.attack_mod = 0;
+	data.defense_mod = 0;
+	data.spirit_mod = 0;
+	data.agility_mod = 0;
 
-	RemoveInvalidData();
-
-	if (GetLevel() > 0) {
-		SetHp(GetMaxHp());
-		SetSp(GetMaxSp());
-		SetExp(exp_list[GetLevel() - 1]);
-	}
-
-	ResetEquipmentStates(false);
-}
-
-void Game_Actor::Setup() {
 	MakeExpList();
 	SetBattlePosition(GetOriginalPosition());
+
+	data.level = 0;
+	if (dbActor->initial_level > 0) {
+		// For games like COLORS: Lost Memories which use level 0, don't change level because it'll clamp to 1.
+		ChangeLevel(dbActor->initial_level, nullptr);
+	}
+	SetHp(GetMaxHp());
+	SetSp(GetMaxSp());
+
+	SetEquipment(1, dbActor->initial_equipment.weapon_id);
+	SetEquipment(2, dbActor->initial_equipment.shield_id);
+	SetEquipment(3, dbActor->initial_equipment.armor_id);
+	SetEquipment(4, dbActor->initial_equipment.helmet_id);
+	SetEquipment(5, dbActor->initial_equipment.accessory_id);
+
+	data.status.resize(lcf::Data::states.size(), 0);
+
+	Fixup();
 }
 
 void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
 	data = std::move(save);
-	Setup();
+
+	if (Player::IsRPG2k()) {
+		data.two_weapon = dbActor->two_weapon;
+		data.lock_equipment = dbActor->lock_equipment;
+		data.auto_battle = dbActor->auto_battle;
+		data.super_guard = dbActor->super_guard;
+	}
+
 	Fixup();
 }
 
-const lcf::rpg::SaveActor& Game_Actor::GetSaveData() const {
-	return data;
-}
-
-void Game_Actor::Init() {
-
+lcf::rpg::SaveActor Game_Actor::GetSaveData() const {
+	auto save = data;
+	if (Player::IsRPG2k()) {
+		// RPG_RT doesn't save these chunks in rm2k as they are meaningless
+		save.two_weapon = false;
+		save.lock_equipment = false;
+		save.auto_battle = false;
+		save.super_guard = false;
+	}
+	return save;
 }
 
 void Game_Actor::Fixup() {
-	data.Fixup(GetId());
-	if (Player::IsRPG2k()) {
-		auto& actor = GetActor();
-		data.two_weapon = actor.two_weapon;
-		data.lock_equipment = actor.lock_equipment;
-		data.auto_battle = actor.auto_battle;
-		data.super_guard = actor.super_guard;
-	}
-
 	RemoveInvalidData();
-
 	ResetEquipmentStates(false);
-
-	MakeExpList();
 }
 
 bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
@@ -229,7 +237,7 @@ bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
 }
 
 int Game_Actor::LearnLevelSkills(int min_level, int max_level, PendingMessage* pm) {
-	auto& skills = data.class_id > 0 ? GetClass()->skills : GetActor().skills;
+	auto& skills = data.class_id > 0 ? GetClass()->skills : dbActor->skills;
 
 	int count = 0;
 
@@ -257,8 +265,13 @@ void Game_Actor::UnlearnAllSkills() {
 }
 
 void Game_Actor::SetFace(const std::string& file_name, int index) {
-	data.face_name.assign(file_name);
-	data.face_id = index;
+	if (file_name == dbActor->face_name && index == dbActor->face_index) {
+		data.face_name = "";
+		data.face_id = 0;
+	} else {
+		data.face_name.assign(file_name);
+		data.face_id = index;
+	}
 }
 
 const lcf::rpg::Item* Game_Actor::GetEquipment(int equip_type) const {
@@ -355,7 +368,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 		// the normal actor attributes.
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.maxhp, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.maxhp, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.maxhp, GetLevel());
 	}
 
 	if (mod)
@@ -373,7 +386,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.maxsp, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.maxsp, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.maxsp, GetLevel());
 	}
 
 	if (mod)
@@ -427,7 +440,7 @@ int Game_Actor::GetBaseAtk(Weapon weapon, bool mod, bool equip) const {
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.attack, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.attack, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.attack, GetLevel());
 	}
 
 	if (mod) {
@@ -450,7 +463,7 @@ int Game_Actor::GetBaseDef(Weapon weapon, bool mod, bool equip) const {
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.defense, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.defense, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.defense, GetLevel());
 	}
 
 	if (mod) {
@@ -473,7 +486,7 @@ int Game_Actor::GetBaseSpi(Weapon weapon, bool mod, bool equip) const {
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.spirit, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.spirit, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.spirit, GetLevel());
 	}
 
 	if (mod) {
@@ -496,7 +509,7 @@ int Game_Actor::GetBaseAgi(Weapon weapon, bool mod, bool equip) const {
 	if (GetLevel() > 0) {
 		n = data.class_id > 0
 			? *lcf::ReaderUtil::GetElement(GetClass()->parameters.agility, GetLevel())
-			: *lcf::ReaderUtil::GetElement(GetActor().parameters.agility, GetLevel());
+			: *lcf::ReaderUtil::GetElement(dbActor->parameters.agility, GetLevel());
 	}
 
 	if (mod) {
@@ -597,7 +610,7 @@ int Game_Actor::GetNextExp(int level) const {
 int Game_Actor::GetStateProbability(int state_id) const {
 	int rate = 2, mul = 100; // C - default
 
-	const uint8_t* r = lcf::ReaderUtil::GetElement(GetActor().state_ranks, state_id);
+	const uint8_t* r = lcf::ReaderUtil::GetElement(dbActor->state_ranks, state_id);
 	if (r) {
 		rate = *r;
 	}
@@ -621,7 +634,7 @@ int Game_Actor::GetStateProbability(int state_id) const {
 int Game_Actor::GetBaseAttributeRate(int attribute_id) const {
 	int rate = 2; // C - default
 
-	const auto* r = lcf::ReaderUtil::GetElement(GetActor().attribute_ranks, attribute_id);
+	const auto* r = lcf::ReaderUtil::GetElement(dbActor->attribute_ranks, attribute_id);
 	if (r) {
 		rate = *r;
 	}
@@ -661,7 +674,7 @@ int Game_Actor::GetAccessoryId() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return std::max<int32_t>(1, std::min<int32_t>(GetActor().final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
+	return std::max<int32_t>(1, std::min<int32_t>(dbActor->final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
 }
 
 void Game_Actor::SetExp(int _exp) {
@@ -696,7 +709,7 @@ void Game_Actor::ChangeExp(int exp, PendingMessage* pm) {
 }
 
 void Game_Actor::SetLevel(int _level) {
-	data.level = min(max(_level, 1), GetMaxLevel());
+	data.level = Utils::Clamp(_level, 1, GetMaxLevel());
 	// Ensure current HP/SP remain clamped if new Max HP/SP is less.
 	SetHp(GetHp());
 	SetSp(GetSp());
@@ -814,19 +827,25 @@ const lcf::rpg::Skill* Game_Actor::GetRandomSkill() const {
 }
 
 Point Game_Actor::GetOriginalPosition() const {
-	auto& actor = GetActor();
-	return { actor.battle_x, actor.battle_y };
+	return { dbActor->battle_x, dbActor->battle_y };
 }
 
 StringView Game_Actor::GetSkillName() const {
-	auto& a = GetActor();
-	return a.rename_skill ? StringView(a.skill_name) : StringView(lcf::Data::terms.command_skill);
+	return dbActor->rename_skill ? StringView(dbActor->skill_name) : StringView(lcf::Data::terms.command_skill);
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
-	data.sprite_name = file;
-	data.sprite_id = index;
-	data.transparency = transparent ? 3 : 0;
+	if (file == dbActor->character_name
+			&& index == dbActor->character_index
+			&& transparent == dbActor->transparent) {
+		data.sprite_name = "";
+		data.sprite_id = 0;
+		data.transparency = 0;
+	} else {
+		data.sprite_name = file;
+		data.sprite_id = index;
+		data.transparency = transparent ? 3 : 0;
+	}
 }
 
 void Game_Actor::ChangeBattleCommands(bool add, int id) {
@@ -910,7 +929,7 @@ const lcf::rpg::Class* Game_Actor::GetClass() const {
 
 	if (id < 0) {
 		// This means class ID hasn't been changed yet.
-		id = GetActor().class_id;
+		id = dbActor->class_id;
 	}
 
 	return lcf::ReaderUtil::GetElement(lcf::Data::classes, id);
@@ -967,14 +986,14 @@ void Game_Actor::ChangeClass(int new_class_id,
 
 		data.battle_commands = cls->battle_commands;
 	} else {
-		data.super_guard = GetActor().super_guard;
-		data.lock_equipment = GetActor().lock_equipment;
-		data.two_weapon = GetActor().two_weapon;
-		data.auto_battle = GetActor().auto_battle;
+		data.super_guard = dbActor->super_guard;
+		data.lock_equipment = dbActor->lock_equipment;
+		data.two_weapon = dbActor->two_weapon;
+		data.auto_battle = dbActor->auto_battle;
 
 		data.battler_animation = 0;
 
-		data.battle_commands = GetActor().battle_commands;
+		data.battle_commands = dbActor->battle_commands;
 	}
 
 	MakeExpList();
@@ -1118,9 +1137,9 @@ int Game_Actor::GetBattleAnimationId() const {
 		if ((data.class_id > 0) && GetClass()) {
 			anim = GetClass()->battler_animation;
 		} else {
-			const lcf::rpg::BattlerAnimation* anima = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, GetActor().battler_animation);
+			const lcf::rpg::BattlerAnimation* anima = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, dbActor->battler_animation);
 			if (!anima) {
-				Output::Warning("Actor {}: Invalid battle animation ID {}", GetId(), GetActor().battler_animation);
+				Output::Warning("Actor {}: Invalid battle animation ID {}", GetId(), dbActor->battler_animation);
 				return 0;
 			}
 
@@ -1146,8 +1165,7 @@ int Game_Actor::GetHitChance(Weapon weapon) const {
 }
 
 float Game_Actor::GetCriticalHitChance(Weapon weapon) const {
-	auto& actor = GetActor();
-	float crit_chance = actor.critical_hit ? 1.0f / actor.critical_hit_chance : 0.0f;
+	float crit_chance = dbActor->critical_hit ? 1.0f / dbActor->critical_hit_chance : 0.0f;
 
 	float bonus = 0;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { bonus = std::max(bonus, static_cast<float>(item.critical_hit)); }, weapon);
@@ -1158,11 +1176,6 @@ int Game_Actor::IsControllable() const {
 	return GetSignificantRestriction() == lcf::rpg::State::Restriction_normal && !GetAutoBattle();
 }
 
-
-const lcf::rpg::Actor& Game_Actor::GetActor() const {
-	// Always valid
-	return *lcf::ReaderUtil::GetElement(lcf::Data::actors, GetId());
-}
 
 void Game_Actor::RemoveInvalidData() {
 	/*

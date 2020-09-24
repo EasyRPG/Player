@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/saveactor.h>
+#include <lcf/rpg/actor.h>
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
 #include "string_view.h"
@@ -45,7 +46,7 @@ public:
 	Game_Actor(int actor_id);
 
 	void SetSaveData(lcf::rpg::SaveActor save);
-	const lcf::rpg::SaveActor& GetSaveData() const;
+	lcf::rpg::SaveActor GetSaveData() const;
 
 	int MaxHpValue() const override;
 
@@ -56,24 +57,6 @@ public:
 	virtual PermanentStates GetPermanentStates() const override;
 
 	Point GetOriginalPosition() const override;
-
-	/**
-	 * Sets up the game actor
-	 * This is automatically called in the constructor.
-	 */
-	void Setup();
-
-	/**
-	 * Initializes the game actor to the database state.
-	 * Sets the skills, HP, SP and experience.
-	 */
-	void Init();
-
-	/**
-	 * Used after savegame loading to replace savegame default values with
-	 * database ones.
-	 */
-	void Fixup();
 
 	/**
 	 * Applies the effects of an item.
@@ -284,7 +267,7 @@ public:
 	 *
 	 * @return title.
 	 */
-	const std::string& GetTitle() const;
+	StringView GetTitle() const;
 
 	/**
 	 * Gets actor equipped weapon ID.
@@ -903,11 +886,7 @@ public:
 
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
-
-	/**
-	 * @return Reference to the Actor data of the LDB
-	 */
-	const lcf::rpg::Actor& GetActor() const;
+	void Fixup();
 
 	/**
 	 * Removes invalid data from the actor.
@@ -915,6 +894,7 @@ private:
 	void RemoveInvalidData();
 
 	lcf::rpg::SaveActor data;
+	const lcf::rpg::Actor* dbActor = nullptr;
 	std::vector<int> exp_list;
 };
 
@@ -923,39 +903,57 @@ inline Game_Battler::BattlerType Game_Actor::GetType() const {
 }
 
 inline void Game_Actor::SetName(const std::string &new_name) {
-	data.name = new_name;
+	data.name = (new_name != dbActor->name)
+		? new_name
+		: lcf::rpg::SaveActor::kEmptyName;
 }
 
 inline StringView Game_Actor::GetName() const {
-	return data.name;
+	return data.name != lcf::rpg::SaveActor::kEmptyName
+		? StringView(data.name)
+		: StringView(dbActor->name);
 }
 
 inline void Game_Actor::SetTitle(const std::string &new_title) {
-	data.title = new_title;
+	data.title = (new_title != dbActor->title)
+		? new_title
+		: lcf::rpg::SaveActor::kEmptyName;
 }
 
-inline const std::string& Game_Actor::GetTitle() const {
-	return data.title;
+inline StringView Game_Actor::GetTitle() const {
+	return data.title != lcf::rpg::SaveActor::kEmptyName
+		? StringView(data.title)
+		: StringView(dbActor->title);
 }
 
 inline StringView Game_Actor::GetSpriteName() const {
-	return data.sprite_name;
+	return (!data.sprite_name.empty())
+		? StringView(data.sprite_name)
+		: StringView(dbActor->character_name);
 }
 
 inline int Game_Actor::GetSpriteIndex() const {
-	return data.sprite_id;
+	return (!data.sprite_name.empty())
+		? data.sprite_id
+		: dbActor->character_index;
 }
 
 inline int Game_Actor::GetSpriteTransparency() const {
-	return data.transparency;
+	return (!data.sprite_name.empty())
+		? data.transparency
+		: (dbActor->transparent ? 3 : 0);
 }
 
 inline StringView Game_Actor::GetFaceName() const {
-	return data.face_name;
+	return (!data.face_name.empty())
+		? StringView(data.face_name)
+		: StringView(dbActor->face_name);
 }
 
 inline int Game_Actor::GetFaceIndex() const {
-	return data.face_id;
+	return (!data.face_name.empty())
+		? data.face_id
+		: dbActor->face_index;
 }
 
 inline int Game_Actor::GetLevel() const {

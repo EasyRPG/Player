@@ -127,16 +127,6 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	}
 
 	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
-	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
-	if (Player::IsRPG2k()) {
-		for (auto& actor: data_copy.actors) {
-			actor.two_weapon = 0;
-			actor.lock_equipment = 0;
-			actor.auto_battle = 0;
-			actor.super_guard = 0;
-		}
-	}
-
 	data_copy.targets = Main_Data::game_targets->GetSaveData();
 	data_copy.system.switches = Main_Data::game_switches->GetData();
 	data_copy.system.variables = Main_Data::game_variables->GetData();

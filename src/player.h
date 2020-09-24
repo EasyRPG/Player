@@ -153,6 +153,11 @@ namespace Player {
 	void SetupNewGame();
 
 	/**
+	 * Starts a new game
+	 */
+	void SetupBattleTest();
+
+	/**
 	 * Moves the player to the start map.
 	 */
 	void SetupPlayerSpawn();
