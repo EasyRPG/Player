@@ -204,13 +204,13 @@ void BattleAnimation::UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b,
 void BattleAnimation::UpdateScreenFlash() {
 	int r, g, b, p;
 	UpdateFlashGeneric(screen_flash_timing, r, g, b, p);
-	if (r > 0 || g > 0 || b > 0 || p > 0) Main_Data::game_screen->FlashOnce(r, g, b, p, 0);
+	if (!overwrite_screen_effects) Main_Data::game_screen->FlashOnce(r, g, b, p, 0);
 }
 
 void BattleAnimation::UpdateTargetFlash() {
 	int r, g, b, p;
 	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
-	if (r > 0 || g > 0 || b > 0 || p > 0) FlashTargets(r, g, b, p);
+	if (!overwrite_screen_effects) FlashTargets(r, g, b, p);
 }
 
 // For handling the vertical position.
@@ -333,4 +333,8 @@ void BattleAnimation::SetIgnoreYOffset(bool ignoreyoffset) {
 
 void BattleAnimation::SetInvert(bool inverted) {
 	invert = inverted;
+}
+
+void BattleAnimation::SetOverwriteScreenEffects(bool overwrite) {
+	overwrite_screen_effects = overwrite;
 }

@@ -236,6 +236,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				} else {
 					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
 					animation->SetIgnoreYOffset(true);
+					animation->SetOverwriteScreenEffects(true);
 					animation->SetZ(GetZ());
 				}
 			}

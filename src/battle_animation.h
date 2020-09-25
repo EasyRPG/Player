@@ -86,6 +86,13 @@ public:
 	 **/
 	void SetIgnoreYOffset(bool ignoreyoffset);
 
+	/**
+	 * Set if the animation overwrites screen effects
+	 *
+	 * @param overwrite if the animation overwrites screen effects
+	 **/
+	void SetOverwriteScreenEffects(bool overwrite);
+
 protected:
 	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
@@ -110,6 +117,7 @@ protected:
 	bool only_sound = false;
 	bool invert = false;
 	bool ignore_y_offset = false;
+	bool overwrite_screen_effects = false;
 };
 
 // For playing animations on the map.
