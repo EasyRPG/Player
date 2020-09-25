@@ -50,7 +50,11 @@ namespace {
 		return -1;
 	}
 
+#if SDL_MAJOR_VERSION>1
 	Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
+#else
+	int SDLCALL vio_seek(struct SDL_RWops * context, int offset, int whence) {
+#endif
 		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
 
 		stream->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(whence));
@@ -58,7 +62,11 @@ namespace {
 		return stream->tellg();
 	}
 
+#if SDL_MAJOR_VERSION>1
 	size_t SDLCALL vio_read(struct SDL_RWops * context, void *ptr, size_t size, size_t maxnum) {
+#else
+	int SDLCALL vio_read(struct SDL_RWops * context, void *ptr, int size, int maxnum) {
+#endif
 		auto stream = reinterpret_cast<Filesystem_Stream::InputStream*>(context->hidden.unknown.data1);
 
 		if (size == 0) return 0;
@@ -66,7 +74,11 @@ namespace {
 		return stream->read(reinterpret_cast<char*>(ptr), size * maxnum).gcount() / size;
 	}
 
+#if SDL_MAJOR_VERSION>1
 	size_t SDLCALL vio_write(struct SDL_RWops*, const void*, size_t, size_t) {
+#else
+	int SDLCALL vio_write(struct SDL_RWops*, const void*, int, int) {
+#endif
 		// Not needed
 		return 0;
 	}
@@ -86,7 +98,9 @@ namespace {
 		ret->close = vio_close;
 		ret->read = vio_read;
 		ret->write = vio_write;
+		#if SDL_MAJOR_VERSION>1
 		ret->size = vio_size;
+		#endif
 		ret->seek = vio_seek;
 
 		return ret;
