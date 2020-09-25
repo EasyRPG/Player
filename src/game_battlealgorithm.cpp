@@ -917,104 +917,105 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto crit_chance = Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll);
 
 	// Damage calculation
-	if (Rand::PercentChance(to_hit)) {
-		if (Rand::PercentChance(crit_chance)) {
-			critical_hit = true;
-		}
-
-		// FIXME: Differentiate the cases where 2k3 back attack bug applies
-		auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, critical_hit, true, Game_Battle::GetBattleCondition(), true);
-		effect = Algo::AdjustDamageForDefend(effect, target);
-
-		// Handle negative effect from attributes
-		if (effect < 0) {
-			this->negative_effect = true;
-			this->healing = true;
-			effect = -effect;
-		}
-
-		effect = Utils::Clamp(effect, 0, MaxDamageValue());
-
-		this->hp = effect;
-
-		// RPG_RT bug: Negative effects affect HP double
-		if (this->negative_effect) {
-			this->hp *= 2;
-		}
-
-		if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
-			// Death state
-			lethal = true;
-			killed_by_dmg = true;
-		}
-		else {
-			// Make a copy of the target's state set and see what we can apply.
-			auto target_states = target.GetStates();
-			auto target_perm_states = target.GetPermanentStates();
-
-			// Conditions healed by physical attack:
-			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
-
-			// Conditions caused / healed by weapon.
-			if (source.GetType() == Game_Battler::Type_Ally) {
-				auto& ally = static_cast<Game_Actor&>(source);
-				const bool is2k3 = Player::IsRPG2k3();
-				auto* weapon1 = ally.GetWeapon();
-				auto* weapon2 = ally.Get2ndWeapon();
-
-				int state_limit = 0;
-				if (weapon1) {
-					state_limit = weapon1->state_set.size();
-				}
-				if (weapon2) {
-					state_limit = std::max(state_limit, (int)weapon2->state_set.size());
-				}
-
-				auto addStates = [&](const lcf::rpg::Item* weapon, int state_id) {
-					if (weapon == nullptr
-							|| state_id > (int)weapon->state_set.size()
-							|| !weapon->state_set[state_id - 1]
-					   ) {
-						return false;
-					}
-					bool weapon_heals_states = is2k3 && weapon->reverse_state_effect;
-					auto pct = weapon->state_chance;
-					if (!weapon_heals_states) {
-						pct = pct * GetTarget()->GetStateProbability(state_id) / 100;
-					}
-					if (!Rand::PercentChance(pct)) {
-						return false;
-					}
-					if (weapon_heals_states) {
-						if (State::Remove(state_id, target_states, target_perm_states)) {
-							states.push_back(StateEffect(state_id, StateEffect::Healed));
-						}
-						return false;
-					}
-					// Normal attacks don't produce AlreadyInflicted messages in 2k battle
-					// so we filter on HasState.
-					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-						states.push_back(StateEffect(state_id, StateEffect::Inflicted));
-						return true;
-					}
-					return false;
-				};
-
-				if (addStates(weapon1, lcf::rpg::State::kDeathID)
-						|| addStates(weapon2, lcf::rpg::State::kDeathID)) {
-					lethal = true;
-				}
-
-				for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
-					addStates(weapon1, state_id);
-					addStates(weapon2, state_id);
-				}
-			}
-		}
-	}
-	else {
+	if (!Rand::PercentChance(to_hit)) {
 		this->success = false;
 		return this->success;
+	}
+
+	if (Rand::PercentChance(crit_chance)) {
+		critical_hit = true;
+	}
+
+	// FIXME: Differentiate the cases where 2k3 back attack bug applies
+	auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, critical_hit, true, Game_Battle::GetBattleCondition(), true);
+	effect = Algo::AdjustDamageForDefend(effect, target);
+
+	// Handle negative effect from attributes
+	if (effect < 0) {
+		this->negative_effect = true;
+		this->healing = true;
+		effect = -effect;
+	}
+
+	effect = Utils::Clamp(effect, 0, MaxDamageValue());
+
+	this->hp = effect;
+
+	// RPG_RT bug: Negative effects affect HP double
+	if (this->negative_effect) {
+		this->hp *= 2;
+	}
+
+	if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
+		// Death state
+		lethal = true;
+		killed_by_dmg = true;
+
+		this->success = true;
+		return this->success;
+	}
+
+	// Make a copy of the target's state set and see what we can apply.
+	auto target_states = target.GetStates();
+	auto target_perm_states = target.GetPermanentStates();
+
+	// Conditions healed by physical attack:
+	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
+
+	// Conditions caused / healed by weapon.
+	if (source.GetType() == Game_Battler::Type_Ally) {
+		auto& ally = static_cast<Game_Actor&>(source);
+		const bool is2k3 = Player::IsRPG2k3();
+		auto* weapon1 = ally.GetWeapon();
+		auto* weapon2 = ally.Get2ndWeapon();
+
+		int state_limit = 0;
+		if (weapon1) {
+			state_limit = weapon1->state_set.size();
+		}
+		if (weapon2) {
+			state_limit = std::max(state_limit, (int)weapon2->state_set.size());
+		}
+
+		auto addStates = [&](const lcf::rpg::Item* weapon, int state_id) {
+			if (weapon == nullptr
+					|| state_id > (int)weapon->state_set.size()
+					|| !weapon->state_set[state_id - 1]
+			   ) {
+				return false;
+			}
+			bool weapon_heals_states = is2k3 && weapon->reverse_state_effect;
+			auto pct = weapon->state_chance;
+			if (!weapon_heals_states) {
+				pct = pct * GetTarget()->GetStateProbability(state_id) / 100;
+			}
+			if (!Rand::PercentChance(pct)) {
+				return false;
+			}
+			if (weapon_heals_states) {
+				if (State::Remove(state_id, target_states, target_perm_states)) {
+					states.push_back(StateEffect(state_id, StateEffect::Healed));
+				}
+				return false;
+			}
+			// Normal attacks don't produce AlreadyInflicted messages in 2k battle
+			// so we filter on HasState.
+			if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
+				states.push_back(StateEffect(state_id, StateEffect::Inflicted));
+				return true;
+			}
+			return false;
+		};
+
+		if (addStates(weapon1, lcf::rpg::State::kDeathID)
+				|| addStates(weapon2, lcf::rpg::State::kDeathID)) {
+			lethal = true;
+		}
+
+		for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
+			addStates(weapon1, state_id);
+			addStates(weapon2, state_id);
+		}
 	}
 
 	this->success = true;
@@ -1140,211 +1141,211 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		&& skill.state_effects[lcf::rpg::State::kDeathID - 1]
 		&& GetTarget()->IsDead();
 
-	if (skill.type == lcf::rpg::Skill::Type_normal ||
-		skill.type >= lcf::rpg::Skill::Type_subskill) {
+	if (skill.type == lcf::rpg::Skill::Type_switch) {
+		switch_id = skill.switch_id;
+		this->success = true;
+		return this->success;
+	}
 
-		auto to_hit = Algo::CalcSkillToHit(*GetSource(), *GetTarget(), skill);
+	if (!(skill.type == lcf::rpg::Skill::Type_normal ||
+				skill.type >= lcf::rpg::Skill::Type_subskill)) {
+		assert(false && "Unsupported skill type");
+		this->success = false;
+		return this->success;
+	}
 
-		auto effect = Algo::CalcSkillEffect(*GetSource(), *GetTarget(), skill, true);
+	auto to_hit = Algo::CalcSkillToHit(*GetSource(), *GetTarget(), skill);
+	auto effect = Algo::CalcSkillEffect(*GetSource(), *GetTarget(), skill, true);
 
-		// Handle negative effect from attributes
-		if (effect < 0) {
-			this->negative_effect = true;
-			this->healing = !this->healing;
-			effect = -effect;
-		}
+	// Handle negative effect from attributes
+	if (effect < 0) {
+		this->negative_effect = true;
+		this->healing = !this->healing;
+		effect = -effect;
+	}
 
-		effect = Utils::Clamp(effect, 0, MaxDamageValue());
+	effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
-		if (IsNegativeSkill()) absorb = skill.absorb_damage;
+	if (IsNegativeSkill()) absorb = skill.absorb_damage;
 
-		if (skill.affect_hp && Rand::PercentChance(to_hit)) {
-			if (IsNegativeSkill()) {
-				this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
-
-				// RPG_RT bug: Negative effects affect HP double
-				// HP absorbing is not affected by this bug
-				if (this->negative_effect && !IsAbsorb()) {
-					this->hp *= 2;
-				}
-
-				if (IsAbsorb() && !this->negative_effect)
-					this->hp = std::min<int>(hp, GetTarget()->GetHp());
-
-				if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
-					// Death state
-					lethal = true;
-					killed_by_dmg = true;
-				}
-			} else {
-				if (!this->negative_effect) {
-					if (Player::IsRPG2k3()) {
-						this->hp = effect;
-					} else {
-						this->hp = Utils::Clamp(effect, 0, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
-					}
-				} else {
-					this->hp = Utils::Clamp(effect, 0, GetTarget()->GetHp() - 1);
-				}
-			}
-		}
-
-		if (skill.affect_sp && Rand::PercentChance(to_hit)) {
-			if (IsNegativeSkill()) {
-				if (!this->negative_effect) {
-					this->sp = std::min<int>(effect, GetTarget()->GetSp());
-				} else {
-					this->sp = effect;
-				}
-			} else {
-				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
-				if (!this->negative_effect) {
-					this->sp = Utils::Clamp(effect, 0, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost);
-				} else {
-					this->sp = effect;
-				}
-			}
-		}
-
-		if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-			if (!this->healing) {
-				this->attack = Utils::Clamp(effect, 0, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2);
-			} else {
-				this->attack = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk());
-			}
-		}
-		if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-			if (!this->healing) {
-				this->defense = Utils::Clamp(effect, 0, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2);
-			} else {
-				this->defense = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef());
-			}
-		}
-		if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-			if (!this->healing) {
-				this->spirit = Utils::Clamp(effect, 0, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2);
-			} else {
-				this->spirit = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi());
-			}
-		}
-		if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-			if (!this->healing) {
-				this->agility = Utils::Clamp(effect, 0, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2);
-			} else {
-				this->agility = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi());
-			}
-		}
-
+	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
 		if (IsNegativeSkill()) {
-			if (skill.affect_hp) {
-				if (skill.affect_sp) {
-					if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
-						this->success = false;
-						return this->success;
-					}
+			this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
+
+			// RPG_RT bug: Negative effects affect HP double
+			// HP absorbing is not affected by this bug
+			if (this->negative_effect && !IsAbsorb()) {
+				this->hp *= 2;
+			}
+
+			if (IsAbsorb() && !this->negative_effect)
+				this->hp = std::min<int>(hp, GetTarget()->GetHp());
+
+			if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
+				// Death state
+				lethal = true;
+				killed_by_dmg = true;
+			}
+		} else {
+			if (!this->negative_effect) {
+				if (Player::IsRPG2k3()) {
+					this->hp = effect;
 				} else {
-					if (GetAffectedHp() == -1) {
-						this->success = false;
-						return this->success;
-					}
+					this->hp = Utils::Clamp(effect, 0, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
 				}
 			} else {
-				if (skill.affect_sp) {
-					if (GetAffectedSp() == -1) {
-						this->success = false;
-						return this->success;
+				this->hp = Utils::Clamp(effect, 0, GetTarget()->GetHp() - 1);
+			}
+		}
+	}
+
+	if (skill.affect_sp && Rand::PercentChance(to_hit)) {
+		if (IsNegativeSkill()) {
+			if (!this->negative_effect) {
+				this->sp = std::min<int>(effect, GetTarget()->GetSp());
+			} else {
+				this->sp = effect;
+			}
+		} else {
+			int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
+			if (!this->negative_effect) {
+				this->sp = Utils::Clamp(effect, 0, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost);
+			} else {
+				this->sp = effect;
+			}
+		}
+	}
+
+	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
+		if (!this->healing) {
+			this->attack = Utils::Clamp(effect, 0, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2);
+		} else {
+			this->attack = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk());
+		}
+	}
+	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
+		if (!this->healing) {
+			this->defense = Utils::Clamp(effect, 0, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2);
+		} else {
+			this->defense = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef());
+		}
+	}
+	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
+		if (!this->healing) {
+			this->spirit = Utils::Clamp(effect, 0, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2);
+		} else {
+			this->spirit = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi());
+		}
+	}
+	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
+		if (!this->healing) {
+			this->agility = Utils::Clamp(effect, 0, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2);
+		} else {
+			this->agility = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi());
+		}
+	}
+
+	if (IsNegativeSkill()) {
+		if (skill.affect_hp) {
+			if (skill.affect_sp) {
+				if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
+					this->success = false;
+					return this->success;
+				}
+			} else {
+				if (GetAffectedHp() == -1) {
+					this->success = false;
+					return this->success;
+				}
+			}
+		} else {
+			if (skill.affect_sp) {
+				if (GetAffectedSp() == -1) {
+					this->success = false;
+					return this->success;
+				}
+			}
+		}
+	}
+
+	this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
+		|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+
+	if (IsPositiveSkill()) {
+		// If resurrected and no HP selected, the effect value is a percentage:
+		if (IsRevived() && !skill.affect_hp) {
+			this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
+			this->success = true;
+		}
+	}
+
+	if (IsNegativeSkill()) {
+		if (!success &&
+				((IsAbsorb() && ((GetAffectedHp() == 0 && GetAffectedSp() <= 0) || (GetAffectedHp() <= 0 && GetAffectedSp() == 0))) ||
+				 (!IsAbsorb() && GetAffectedSp() == 0 && GetAffectedHp() == -1)))
+			return this->success;
+	}
+
+	// Make a copy of the target's state set and see what we can apply.
+	auto target_states = target->GetStates();
+	auto target_perm_states = target->GetPermanentStates();
+
+	// Conditions healed by physical attack:
+	if (!IsPositive() && skill.affect_hp) {
+		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
+	}
+
+	// Conditions:
+	// If the target gets killed by damage, do not add or remove states
+	if (!lethal) {
+		bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
+		for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
+			if (!skill.state_effects[i])
+				continue;
+			auto state_id = i + 1;
+
+			bool target_has_state = State::Has(state_id, target_states);
+
+			if (!heals_states && target_has_state) {
+				this->success = true;
+				states.push_back({state_id, StateEffect::AlreadyInflicted});
+				continue;
+			}
+			if (heals_states && !target_has_state) {
+				continue;
+			}
+			if (!Rand::PercentChance(to_hit)) {
+				continue;
+			}
+
+			if (heals_states) {
+				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
+				this->success = true;
+				if (State::Remove(state_id, target_states, target_perm_states)) {
+					states.push_back({state_id, StateEffect::Healed});
+				}
+			} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+				if (State::Add(state_id, target_states, target_perm_states, true)) {
+					this->success = true;
+					states.push_back({state_id, StateEffect::Inflicted});
+					if (state_id == lcf::rpg::State::kDeathID) {
+						lethal = true;
 					}
 				}
 			}
 		}
+	}
 
-		this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
-			|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
-
-		if (IsPositiveSkill()) {
-			// If resurrected and no HP selected, the effect value is a percentage:
-			if (IsRevived() && !skill.affect_hp) {
-				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
+	// Attribute resistance / weakness + an attribute selected + can be modified
+	if (skill.affect_attr_defence) {
+		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
+			if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositiveSkill() ? 1 : -1)) {
+				if (!Rand::PercentChance(to_hit))
+					continue;
+				shift_attributes.push_back(i + 1);
 				this->success = true;
 			}
 		}
-
-		if (IsNegativeSkill()) {
-			if (!success &&
-					((IsAbsorb() && ((GetAffectedHp() == 0 && GetAffectedSp() <= 0) || (GetAffectedHp() <= 0 && GetAffectedSp() == 0))) ||
-					(!IsAbsorb() && GetAffectedSp() == 0 && GetAffectedHp() == -1)))
-				return this->success;
-		}
-
-		// Make a copy of the target's state set and see what we can apply.
-		auto target_states = target->GetStates();
-		auto target_perm_states = target->GetPermanentStates();
-
-		// Conditions healed by physical attack:
-		if (!IsPositive() && skill.affect_hp) {
-			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
-		}
-
-		// Conditions:
-		// If the target gets killed by damage, do not add or remove states
-		if (!lethal) {
-			bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
-			for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
-				if (!skill.state_effects[i])
-					continue;
-				auto state_id = i + 1;
-
-				bool target_has_state = State::Has(state_id, target_states);
-
-				if (!heals_states && target_has_state) {
-					this->success = true;
-					states.push_back({state_id, StateEffect::AlreadyInflicted});
-					continue;
-				}
-				if (heals_states && !target_has_state) {
-					continue;
-				}
-				if (!Rand::PercentChance(to_hit)) {
-					continue;
-				}
-
-				if (heals_states) {
-					// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
-					this->success = true;
-					if (State::Remove(state_id, target_states, target_perm_states)) {
-						states.push_back({state_id, StateEffect::Healed});
-					}
-				} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-					if (State::Add(state_id, target_states, target_perm_states, true)) {
-						this->success = true;
-						states.push_back({state_id, StateEffect::Inflicted});
-						if (state_id == lcf::rpg::State::kDeathID) {
-							lethal = true;
-						}
-					}
-				}
-			}
-		}
-
-		// Attribute resistance / weakness + an attribute selected + can be modified
-		if (skill.affect_attr_defence) {
-			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
-				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositiveSkill() ? 1 : -1)) {
-					if (!Rand::PercentChance(to_hit))
-						continue;
-					shift_attributes.push_back(i + 1);
-					this->success = true;
-				}
-			}
-		}
-
-	}
-	else if (skill.type == lcf::rpg::Skill::Type_switch) {
-		switch_id = skill.switch_id;
-		this->success = true;
-	}
-	else {
-		assert(false && "Unsupported skill type");
 	}
 
 	return this->success;
