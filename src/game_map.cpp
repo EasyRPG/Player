@@ -139,6 +139,7 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 
 	Parallax::ClearChangedBG();
 
+	SetEncounterRate(GetMapInfo().encounter_steps);
 	SetChipset(map->chipset_id);
 
 	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
@@ -238,7 +239,7 @@ void Game_Map::SetupFromSave(
 		interpreter->SetState(std::move(save_fg_exec));
 	}
 
-	map_info.Fixup(GetMapInfo());
+	SetEncounterRate(map_info.encounter_rate);
 	SetChipset(map_info.chipset_id);
 
 	if (!is_map_save_compat) {
@@ -304,8 +305,6 @@ void Game_Map::SetupCommon() {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	map_info.Fixup(GetMapInfo());
-
 	// Create the map events
 	events.reserve(map->events.size());
 	for (const auto& ev : map->events) {
@@ -325,6 +324,9 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 	if (save.map_info.chipset_id == GetOriginalChipset()) {
 		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
 		save.map_info.chipset_id = 0;
+	}
+	if (save.map_info.encounter_rate == GetOriginalEncounterRate()) {
+		save.map_info.encounter_rate = -1;
 	}
 	save.map_info.events.clear();
 	save.map_info.events.reserve(events.size());
@@ -1110,6 +1112,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 
 lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
 	auto idx = GetMapIndex(GetMapId());
+	assert(idx >= 0 && idx < static_cast<int>(lcf::Data::treemap.maps.size()));
 	return lcf::Data::treemap.maps[idx];
 }
 
@@ -1133,11 +1136,18 @@ std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
 	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
+int Game_Map::GetOriginalEncounterRate() {
+	return GetMapInfo().encounter_steps;
+}
+
 int Game_Map::GetEncounterRate() {
 	return map_info.encounter_rate;
 }
 
 void Game_Map::SetEncounterRate(int step) {
+	if (step < 0) {
+		step = GetOriginalEncounterRate();
+	}
 	map_info.encounter_rate = step;
 }
 

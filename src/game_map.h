@@ -317,11 +317,10 @@ namespace Game_Map {
 	 */
 	std::vector<lcf::rpg::Encounter>& GetEncounterList();
 
-	/**
-	 * Gets battle encounter rate.
-	 *
-	 * @return battle encounter left steps.
-	 */
+	/** @return original map battle encounter rate steps. */
+	int GetOriginalEncounterRate();
+
+	/** @return battle encounter rate steps. */
 	int GetEncounterRate();
 
 	/**
