@@ -55,8 +55,6 @@ namespace {
 	lcf::rpg::SaveMapInfo map_info;
 	lcf::rpg::SavePanorama panorama;
 
-	std::string chipset_name;
-	std::string battleback_name;
 	bool need_refresh;
 
 	int animation_type;
@@ -1261,18 +1259,10 @@ int Game_Map::GetChipset() {
 	return map_info.chipset_id;
 }
 
-std::string& Game_Map::GetChipsetName() {
-	return chipset_name;
-}
-void Game_Map::SetChipsetName(std::string new_chipset_name) {
-	chipset_name = new_chipset_name;
-}
-
-std::string& Game_Map::GetBattlebackName() {
-	return battleback_name;
-}
-void Game_Map::SetBattlebackName(std::string new_battleback_name) {
-	battleback_name = new_battleback_name;
+StringView Game_Map::GetChipsetName() {
+	return chipset != nullptr
+		? StringView(chipset->chipset_name)
+		: StringView("");
 }
 
 int Game_Map::GetPositionX() {
@@ -1408,7 +1398,6 @@ void Game_Map::SetChipset(int id) {
 	if (!chipset) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
-		chipset_name = ToString(chipset->chipset_name);
 		passages_down = chipset->passable_data_lower;
 		passages_up = chipset->passable_data_upper;
 		animation_type = chipset->animation_type;

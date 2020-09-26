@@ -385,28 +385,7 @@ namespace Game_Map {
 	 *
 	 * @return chipset filename.
 	 */
-	std::string& GetChipsetName();
-
-	/**
-	 * Sets the chipset name.
-	 *
-	 * @param chipset_name new chipset name.
-	 */
-	void SetChipsetName(std::string chipset_name);
-
-	/**
-	 * Gets battleback filename.
-	 *
-	 * @return battleback filename.
-	 */
-	std::string& GetBattlebackName();
-
-	/**
-	 * Sets the battleback name.
-	 *
-	 * @param battleback_name new battleback name.
-	 */
-	void SetBattlebackName(std::string battleback_name);
+	StringView GetChipsetName();
 
 	/**
 	 * Gets the offset of the screen from the left edge

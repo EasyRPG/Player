@@ -91,7 +91,7 @@ bool Sprite_Character::UsesCharset() const {
 }
 
 void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
-	std::string chipset = Game_Map::GetChipsetName();
+	const auto chipset = Game_Map::GetChipsetName();
 
 	BitmapRef tile;
 	if (!chipset.empty()) {
