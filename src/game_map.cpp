@@ -90,7 +90,6 @@ void Game_Map::Init() {
 	Dispose();
 
 	map_info = {};
-	map_info.Setup();
 	panorama = {};
 	SetNeedRefresh(true);
 
@@ -112,7 +111,6 @@ void Game_Map::Dispose() {
 	events.clear();
 	map.reset();
 	map_info = {};
-	map_info.Setup();
 	panorama = {};
 }
 
@@ -254,6 +252,10 @@ void Game_Map::SetupFromSave(
 	// This produces compatible behavior for old RPG_RT saves, namely
 	// the pan_x/y is always forced to 0.
 	// If the later async code will load panorama, set the flag to not clear the offsets.
+	// FIXME: RPG_RT compatibility bug: Everytime we load a savegame with default panorama chunks,
+	// this causes them to get overwritten
+	// FIXME: RPG_RT compatibility bug: On async platforms, panorama async loading can
+	// cause panorama chunks to be out of sync.
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
@@ -328,6 +330,8 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 	if (save.map_info.encounter_rate == GetOriginalEncounterRate()) {
 		save.map_info.encounter_rate = -1;
 	}
+	// Note: RPG_RT does not use a sentinel for parallax parameters. Once the parallax BG is changed, it stays that way forever.
+
 	save.map_info.events.clear();
 	save.map_info.events.reserve(events.size());
 	for (Game_Event& ev : events) {
@@ -1546,6 +1550,7 @@ static Game_Map::Parallax::Params GetParallaxParams() {
 		params.scroll_vert_auto = map_info.parallax_vert_auto;
 		params.scroll_vert_speed = map_info.parallax_vert_speed;
 	} else if (map->parallax_flag) {
+		// Default case when map parallax hasn't been overwritten.
 		params.name = ToString(map->parallax_name);
 		params.scroll_horz = map->parallax_loop_x;
 		params.scroll_horz_auto = map->parallax_auto_loop_x;
