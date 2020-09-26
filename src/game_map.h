@@ -373,18 +373,13 @@ namespace Game_Map {
 	 */
 	std::vector<short>& GetMapDataUp();
 
-	/**
-	 * Gets chipset Id.
-	 *
-	 * @return chipset ID
-	 */
+	/** @return original map chipset ID */
+	int GetOriginalChipset();
+
+	/** @return current chipset ID */
 	int GetChipset();
 
-	/**
-	 * Gets chipset filename.
-	 *
-	 * @return chipset filename.
-	 */
+	/** @return chipset filename.  */
 	StringView GetChipsetName();
 
 	/**

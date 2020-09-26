@@ -238,7 +238,6 @@ void Game_Map::SetupFromSave(
 		interpreter->SetState(std::move(save_fg_exec));
 	}
 
-	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
 
@@ -305,7 +304,6 @@ void Game_Map::SetupCommon() {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	map_info.Fixup(GetMap());
 	map_info.Fixup(GetMapInfo());
 
 	// Create the map events
@@ -323,6 +321,11 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 	save.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
 
 	save.map_info = map_info;
+	save.map_info.chipset_id = GetChipset();
+	if (save.map_info.chipset_id == GetOriginalChipset()) {
+		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
+		save.map_info.chipset_id = 0;
+	}
 	save.map_info.events.clear();
 	save.map_info.events.reserve(events.size());
 	for (Game_Event& ev : events) {
@@ -1255,8 +1258,12 @@ std::vector<short>& Game_Map::GetMapDataUp() {
 	return map->upper_layer;
 }
 
+int Game_Map::GetOriginalChipset() {
+	return map != nullptr ? map->chipset_id : 0;
+}
+
 int Game_Map::GetChipset() {
-	return map_info.chipset_id;
+	return chipset != nullptr ? chipset->ID : 0;
 }
 
 StringView Game_Map::GetChipsetName() {
@@ -1392,6 +1399,10 @@ int Game_Map::GetParentId(int map_id) {
 }
 
 void Game_Map::SetChipset(int id) {
+	if (id == 0) {
+		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
+		id = GetOriginalChipset();
+	}
 	map_info.chipset_id = id;
 
 	chipset = lcf::ReaderUtil::GetElement(lcf::Data::chipsets, map_info.chipset_id);
