@@ -98,6 +98,7 @@ namespace DynRpg {
 	void RegisterFunction(const std::string& name, dynfunc function);
 	bool HasFunction(const std::string& name);
 	std::string ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay);
+	std::string ParseCommand(const std::string& command, std::vector<std::string>& params);
 	bool Invoke(const std::string& command);
 	bool Invoke(const std::string& func, dyn_arg_list args);
 	void Update();
@@ -127,7 +128,7 @@ public:
 	explicit DynRpgPlugin(std::string identifier) : identifier(std::move(identifier)) {}
 	DynRpgPlugin() = delete;
 
-	std::string GetIdentifier() const { return identifier; }
+	const std::string& GetIdentifier() const { return identifier; }
 	virtual void RegisterFunctions() {}
 	virtual void Update() {}
 	virtual void Load(std::vector<uint8_t>&) {}

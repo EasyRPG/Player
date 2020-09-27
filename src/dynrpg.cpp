@@ -188,21 +188,6 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 	return token;
 }
 
-static bool ValidFunction(const std::string& token) {
-	if (token.empty()) {
-		// empty function name
-		return false;
-	}
-
-	if (!DynRpg::HasFunction(token)) {
-		// Not a supported function
-		Output::Warning("Unsupported DynRPG function: {}", token);
-		return false;
-	}
-
-	return true;
-}
-
 void create_all_plugins() {
 	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
 
@@ -213,10 +198,10 @@ void create_all_plugins() {
 	init = true;
 }
 
-bool DynRpg::Invoke(const std::string& command) {
+std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::string>& args) {
 	if (command.empty()) {
 		// Not a DynRPG function (empty comment)
-		return true;
+		return "";
 	}
 
 	std::string::iterator text_index, end;
@@ -228,17 +213,12 @@ bool DynRpg::Invoke(const std::string& command) {
 
 	if (chr != '@') {
 		// Not a DynRPG function, normal comment
-		return true;
-	}
-
-	if (!init) {
-		create_all_plugins();
+		return "";
 	}
 
 	DynRpg_ParseMode mode = ParseMode_Function;
 	std::string function_name;
 	std::string tmp;
-	std::vector<std::string> args;
 	std::stringstream token;
 
 	++text_index;
@@ -259,140 +239,158 @@ bool DynRpg::Invoke(const std::string& command) {
 
 		if (text_index == end) {
 			switch (mode) {
-			case ParseMode_Function:
-				// End of function token
-				ValidFunction(token.str());
-				function_name = Utils::LowerCase(token.str());
-				token.str("");
+				case ParseMode_Function:
+					// End of function token
+					function_name = Utils::LowerCase(token.str());
+					if (function_name.empty()) {
+						// empty function name
+						Output::Warning("Empty DynRPG function name");
+						return "";
+					}
+					token.str("");
 
-				mode = ParseMode_WaitForArg;
-				break;
-			case ParseMode_WaitForComma:
-				// no-op
-				break;
-			case ParseMode_WaitForArg:
-				if (!args.empty()) {
-					// Found , but no token -> empty arg
-					args.push_back("");
-				}
-				break;
-			case ParseMode_String:
-				Output::Warning("{}: Unterminated literal", function_name);
-				return true;
-			case ParseMode_Token:
-				tmp = ParseToken(token.str(), function_name);
-				if (tmp.empty()) {
-					return true;
-				}
-				args.push_back(tmp);
-				mode = ParseMode_WaitForComma;
-				token.str("");
-				break;
+					mode = ParseMode_WaitForArg;
+					break;
+				case ParseMode_WaitForComma:
+					// no-op
+					break;
+				case ParseMode_WaitForArg:
+					if (!args.empty()) {
+						// Found , but no token -> empty arg
+						args.emplace_back("");
+					}
+					break;
+				case ParseMode_String:
+					Output::Warning("{}: Unterminated literal", function_name);
+					return "";
+				case ParseMode_Token:
+					tmp = ParseToken(token.str(), function_name);
+					if (tmp.empty()) {
+						return "";
+					}
+					args.emplace_back(tmp);
+					mode = ParseMode_WaitForComma;
+					token.str("");
+					break;
 			}
 
 			break;
 		} else if (chr == ' ') {
 			switch (mode) {
-			case ParseMode_Function:
-				// End of function token
-				ValidFunction(token.str());
-				function_name = Utils::LowerCase(token.str());
-				token.str("");
+				case ParseMode_Function:
+					// End of function token
+					function_name = Utils::LowerCase(token.str());
+					if (function_name.empty()) {
+						// empty function name
+						Output::Warning("Empty DynRPG function name");
+						return "";
+					}
+					token.str("");
 
-				mode = ParseMode_WaitForArg;
-				break;
-			case ParseMode_WaitForComma:
-			case ParseMode_WaitForArg:
-				// no-op
-				break;
-			case ParseMode_String:
-				token << chr;
-				break;
-			case ParseMode_Token:
-				// Skip whitespace
-				break;
+					mode = ParseMode_WaitForArg;
+					break;
+				case ParseMode_WaitForComma:
+				case ParseMode_WaitForArg:
+					// no-op
+					break;
+				case ParseMode_String:
+					token << chr;
+					break;
+				case ParseMode_Token:
+					// Skip whitespace
+					break;
 			}
 		} else if (chr == ',') {
 			switch (mode) {
-			case ParseMode_Function:
-				// End of function token
-				Output::Warning("{}: Expected space or end, got \",\"", function_name);
-				return true;
-			case ParseMode_WaitForComma:
-				mode = ParseMode_WaitForArg;
-				break;
-			case ParseMode_WaitForArg:
-				// Empty arg
-				args.push_back("");
-				break;
-			case ParseMode_String:
-				token << chr;
-				break;
-			case ParseMode_Token:
-				tmp = ParseToken(token.str(), function_name);
-				if (tmp.empty()) {
-					return true;
-				}
-				args.push_back(tmp);
-				// already on a comma
-				mode = ParseMode_WaitForArg;
-				token.str("");
-				break;
+				case ParseMode_Function:
+					// End of function token
+					Output::Warning("{}: Expected space or end, got \",\"", function_name);
+					return "";
+				case ParseMode_WaitForComma:
+					mode = ParseMode_WaitForArg;
+					break;
+				case ParseMode_WaitForArg:
+					// Empty arg
+					args.emplace_back("");
+					break;
+				case ParseMode_String:
+					token << chr;
+					break;
+				case ParseMode_Token:
+					tmp = ParseToken(token.str(), function_name);
+					if (tmp.empty()) {
+						return "";
+					}
+					args.emplace_back(tmp);
+					// already on a comma
+					mode = ParseMode_WaitForArg;
+					token.str("");
+					break;
 			}
 		} else {
 			// Anything else that isn't special purpose
 			switch (mode) {
-			case ParseMode_Function:
-				token << chr;
-				break;
-			case ParseMode_WaitForComma:
-				Output::Warning("{}: Expected \",\", got token", function_name);
-				return true;
-			case ParseMode_WaitForArg:
-				if (chr == '"') {
-					mode = ParseMode_String;
-					// begin of string
-				}
-				else {
-					mode = ParseMode_Token;
+				case ParseMode_Function:
 					token << chr;
-				}
-				break;
-			case ParseMode_String:
-				if (chr == '"') {
-					// Test for "" -> append "
-					// otherwise end of string
-					if (std::distance(text_index, end) > 1 && *std::next(text_index, 1) == '"') {
-						token << '"';
-						++text_index;
+					break;
+				case ParseMode_WaitForComma:
+					Output::Warning("{}: Expected \",\", got token", function_name);
+					return "";
+				case ParseMode_WaitForArg:
+					if (chr == '"') {
+						mode = ParseMode_String;
+						// begin of string
 					}
 					else {
-						// End of string
-						args.push_back(token.str());
-
-						mode = ParseMode_WaitForComma;
-						token.str("");
+						mode = ParseMode_Token;
+						token << chr;
 					}
-				}
-				else {
+					break;
+				case ParseMode_String:
+					if (chr == '"') {
+						// Test for "" -> append "
+						// otherwise end of string
+						if (std::distance(text_index, end) > 1 && *std::next(text_index, 1) == '"') {
+							token << '"';
+							++text_index;
+						}
+						else {
+							// End of string
+							args.emplace_back(token.str());
+
+							mode = ParseMode_WaitForComma;
+							token.str("");
+						}
+					}
+					else {
+						token << chr;
+					}
+					break;
+				case ParseMode_Token:
 					token << chr;
-				}
-				break;
-			case ParseMode_Token:
-				token << chr;
-				break;
+					break;
 			}
 		}
 
 		++text_index;
 	}
 
-	dyn_rpg_func::const_iterator const name_it = dyn_rpg_functions.find(function_name);
+	return function_name;
+}
 
-	if (name_it != dyn_rpg_functions.end()) {
-		return name_it->second(args);
+bool DynRpg::Invoke(const std::string& command) {
+	if (!init) {
+		create_all_plugins();
 	}
-	return true;
+
+	std::vector<std::string> args;
+	std::string function_name = ParseCommand(command, args);
+
+	if (function_name.empty()) {
+		return true;
+	}
+
+	return Invoke(function_name, args);
 }
 
 bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
