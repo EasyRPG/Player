@@ -1030,7 +1030,7 @@ void Player::SetupNewGame() {
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
-	Scene::Push(std::make_shared<Scene_Map>(false));
+	Scene::Push(std::make_shared<Scene_Map>(0));
 }
 
 void Player::SetupPlayerSpawn() {

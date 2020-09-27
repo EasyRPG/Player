@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	explicit Scene_Map(int from_save_id = 0);
+	explicit Scene_Map(int from_save_id);
 
 	~Scene_Map();
 
