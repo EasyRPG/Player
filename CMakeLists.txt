@@ -167,6 +167,8 @@ add_library(${PROJECT_NAME}
 	src/hslrgb.cpp
 	src/hslrgb.h
 	src/icon.h
+	src/idutils.h
+	src/idutils.cpp
 	src/image_bmp.cpp
 	src/image_bmp.h
 	src/image_png.cpp
