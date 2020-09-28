@@ -18,6 +18,7 @@
 #ifndef EP_DYNRPG_H
 #define EP_DYNRPG_H
 
+#include <locale>
 #include <vector>
 #include <sstream>
 #include <string>
@@ -40,27 +41,25 @@ using dynfunc = bool(*)(dyn_arg_list);
  */
 namespace DynRpg {
 	namespace detail {
-		inline float get_float(const std::string& str, bool& parse_okay) {
-			float f = 0.0f;
-			if (str.empty()) {
-				parse_okay = true;
-				return f;
-			}
-			std::istringstream iss(str);
-			iss >> f;
-			parse_okay = !iss.fail();
-			return f;
-		}
-
 		template <typename T>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, T& value, bool& parse_okay) {
+		inline bool parse_arg(StringView, dyn_arg_list, const int, T& value, bool& parse_okay) {
 			static_assert(sizeof(T) == -1, "Only parsing int, float and std::string supported");
 		}
 
+		// FIXME: Extracting floats that are followed by chars behaviour varies depending on the C++ library
+		// see https://bugs.llvm.org/show_bug.cgi?id=17782
 		template <>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, float& value, bool& parse_okay) {
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, float& value, bool& parse_okay) {
 			if (!parse_okay) return false;
-			value = get_float(args[i], parse_okay);
+			value = 0.0;
+			if (args[i].empty()) {
+				parse_okay = true;
+				return parse_okay;
+			}
+			std::istringstream iss(args[i]);
+			iss.imbue(std::locale::classic());
+			iss >> value;
+			parse_okay = !iss.fail();
 			if (!parse_okay) {
 				Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]);
 				parse_okay = false;
@@ -69,20 +68,25 @@ namespace DynRpg {
 		}
 
 		template <>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, int& value, bool& parse_okay) {
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, int& value, bool& parse_okay) {
 			if (!parse_okay) return false;
-			float out;
-			if (!parse_arg(func_name, args, i, out, parse_okay)) {
-				parse_okay = false;
+			value = 0;
+			if (args[i].empty()) {
+				parse_okay = true;
 				return parse_okay;
 			}
-			value = (int)out;
-			parse_okay = true;
+			std::istringstream iss(args[i]);
+			iss >> value;
+			parse_okay = !iss.fail();
+			if (!parse_okay) {
+				Output::Warning("{}: Arg {} ({}) is not an integer", func_name, i, args[i]);
+				parse_okay = false;
+			}
 			return parse_okay;
 		}
 
 		template <>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, int i, std::string& value, bool& parse_okay) {
+		inline bool parse_arg(StringView, dyn_arg_list args, const int i, std::string& value, bool& parse_okay) {
 			if (!parse_okay) return false;
 			value = args[i];
 			parse_okay = true;

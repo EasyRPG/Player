@@ -114,8 +114,10 @@ TEST_CASE("Variable names with junk") {
 }
 
 TEST_CASE("Arg parse") {
+	// 2.5x not tested here because the result differs between different C++ libraries
+	// See: https://bugs.llvm.org/show_bug.cgi?id=17782
 	LogGuard lg;
-	std::vector<std::string> args = {"A", "1x", "2.5y"};
+	std::vector<std::string> args = {"A", "1y", "2.5 x"};
 	bool okay = false;
 
 	std::string s, s2;
@@ -134,15 +136,28 @@ TEST_CASE("Arg parse") {
 	CHECK(i2 == 0);
 	CHECK(f == 0.0);
 
+	std::tie(f, i,s) = DynRpg::ParseArgs<float, int, std::string>("func", args, &okay);
+	CHECK(!okay);
+	CHECK(f == 0.0f);
+	CHECK(i == 0);
+	CHECK(s == "");
+
 	std::tie(s, s2, i) = DynRpg::ParseArgs<std::string, std::string, int>("func", args, &okay);
 	CHECK(okay);
 	CHECK(s == "A");
-	CHECK(s2 == "1x");
+	CHECK(s2 == "1y");
 	CHECK(i == 2);
 
 	std::tie(std::ignore, std::ignore, s) = DynRpg::ParseArgs<std::string, std::string, std::string>("func", args, &okay);
 	CHECK(okay);
-	CHECK(s == "2.5y");
+	CHECK(s == "2.5 x");
+
+	// DynRPG reports string here but for convenience empty strings are 0
+	args = {"", ""};
+	std::tie(f, i) = DynRpg::ParseArgs<float, int>("func", args, &okay);
+	CHECK(okay);
+	CHECK(f == 0.0f);
+	CHECK(i == 0);
 }
 
 TEST_CASE("easyrpg dynrpg invoke") {
