@@ -719,7 +719,7 @@ void Game_Actor::SetLevel(int _level) {
 std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 	std::stringstream ss;
 	if (Player::IsRPG2k3E()) {
-		ss << data.name;
+		ss << GetName();
 		ss << " " << lcf::Data::terms.level_up << " ";
 		ss << " " << lcf::Data::terms.level << " " << new_level;
 		return ss.str();
@@ -728,7 +728,7 @@ std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.level_up,
 			Utils::MakeArray('S', 'V', 'U'),
-			Utils::MakeSvArray(data.name, ss.str(), lcf::Data::terms.level)
+			Utils::MakeSvArray(GetName(), ss.str(), lcf::Data::terms.level)
 		);
 	} else {
 		std::string particle, space = "";
@@ -739,7 +739,7 @@ std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 		else {
 			particle = " ";
 		}
-		ss << data.name;
+		ss << GetName();
 		ss << particle << lcf::Data::terms.level << " ";
 		ss << new_level << space << lcf::Data::terms.level_up;
 		return ss.str();
@@ -751,7 +751,7 @@ std::string Game_Actor::GetLearningMessage(const lcf::rpg::Skill& skill) const {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.skill_learned,
 			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(data.name, skill.name)
+			Utils::MakeSvArray(GetName(), skill.name)
 		);
 	}
 
