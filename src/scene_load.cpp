@@ -17,7 +17,6 @@
 
 // Headers
 #include <sstream>
-#include "dynrpg.h"
 #include "filefinder.h"
 #include "output.h"
 #include "player.h"

@@ -93,11 +93,12 @@ void DynRpg::EasyRpgPlugin::RegisterFunctions() {
 	DynRpg::RegisterFunction("easyrpg_add", EasyAdd);
 }
 
-void DynRpg::EasyRpgPlugin::Load(std::vector<uint8_t>& buffer) {
+void DynRpg::EasyRpgPlugin::Load(const std::vector<uint8_t>& buffer) {
 	if (buffer.size() < 4) {
 		Output::Warning("EasyRpgPlugin: Bad savegame data");
 	} else {
-		uint32_t ver = *reinterpret_cast<uint32_t*>(buffer.data());
+		uint32_t ver;
+		memcpy(&ver, buffer.data(), 4);
 		Utils::SwapByteOrder(ver);
 		Output::Debug("DynRpg Savegame version {}", ver);
 	}

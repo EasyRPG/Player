@@ -135,7 +135,7 @@ public:
 	const std::string& GetIdentifier() const { return identifier; }
 	virtual void RegisterFunctions() {}
 	virtual void Update() {}
-	virtual void Load(std::vector<uint8_t>&) {}
+	virtual void Load(const std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }
 
 private:

@@ -30,7 +30,7 @@ namespace DynRpg {
 		EasyRpgPlugin() : DynRpgPlugin("EasyRpgPlugin") {}
 
 		void RegisterFunctions() override;
-		void Load(std::vector<uint8_t>& buffer) override;
+		void Load(const std::vector<uint8_t>& buffer) override;
 		std::vector<uint8_t> Save() override;
 	};
 }
