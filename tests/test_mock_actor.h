@@ -103,8 +103,8 @@ private:
 	LogLevel _ll = {};
 };
 
-inline lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
-		int hp, int sp, int atk, int def, int spi, int agi,
+inline lcf::rpg::Actor* MakeDBActor(int id, int level = 1, int final_level = 50,
+		int hp = 1, int sp = 0, int atk = 0, int def = 0, int spi = 0, int agi = 0,
 		bool two_weapon = false, bool lock_equip = false, bool autobattle = false, bool super_guard = false)
 {
 	auto& actor = lcf::Data::actors[id - 1];

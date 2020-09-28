@@ -115,7 +115,7 @@ namespace DynRpg {
 			Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), sizeof...(Targs));
 			return t;
 		}
-		bool okay;
+		bool okay = true;
 		detail::parse_args(func_name, args, t, okay, std::make_index_sequence<sizeof...(Targs)>{});
 		if (parse_okay)
 			*parse_okay = okay;

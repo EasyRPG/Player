@@ -137,6 +137,9 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 			std::string tmp = number_part.str();
 			int number = atoi(tmp.c_str());
 			tmp = var_part.str();
+			if (tmp.empty()) {
+				return token;
+			}
 
 			// Convert backwards
 			for (std::string::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it) {
@@ -150,11 +153,6 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 					return ToString(Main_Data::game_actors->GetActor(number)->GetName());
 				} else {
 					// Variable
-					if (!Main_Data::game_variables->IsValid(number)) {
-						Output::Warning("{}: Invalid variable {} in {}", function_name, number, token);
-						return "";
-					}
-
 					number = Main_Data::game_variables->Get(number);
 				}
 			}
@@ -162,20 +160,16 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 			number_part.str("");
 			number_part << number;
 			return number_part.str();
+		} else if (number_encountered || (chr >= '0' && chr <= '9')) {
+			number_encountered = true;
+			number_part << chr;
 		} else if (chr == 'N') {
-			if (!first || number_encountered) {
+			if (!first) {
 				break;
 			}
 			var_part << chr;
 		} else if (chr == 'V') {
-			if (number_encountered) {
-				break;
-			}
 			var_part << chr;
-		}
-		else if (chr >= '0' && chr <= '9') {
-			number_encountered = true;
-			number_part << chr;
 		} else {
 			break;
 		}
@@ -185,7 +179,7 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 	}
 
 	// Normal token
-	return token;
+	return Utils::LowerCase(token);
 }
 
 void create_all_plugins() {
@@ -247,9 +241,6 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 						Output::Warning("Empty DynRPG function name");
 						return "";
 					}
-					token.str("");
-
-					mode = ParseMode_WaitForArg;
 					break;
 				case ParseMode_WaitForComma:
 					// no-op
@@ -261,16 +252,12 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					}
 					break;
 				case ParseMode_String:
-					Output::Warning("{}: Unterminated literal", function_name);
-					return "";
+					// Unterminated literal, handled like a terminated literal
+					args.emplace_back(token.str());
+					break;
 				case ParseMode_Token:
 					tmp = ParseToken(token.str(), function_name);
-					if (tmp.empty()) {
-						return "";
-					}
 					args.emplace_back(tmp);
-					mode = ParseMode_WaitForComma;
-					token.str("");
 					break;
 			}
 
@@ -304,8 +291,17 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 			switch (mode) {
 				case ParseMode_Function:
 					// End of function token
-					Output::Warning("{}: Expected space or end, got \",\"", function_name);
-					return "";
+					function_name = Utils::LowerCase(token.str());
+					if (function_name.empty()) {
+						// empty function name
+						Output::Warning("Empty DynRPG function name");
+						return "";
+					}
+					token.str("");
+					// Empty arg
+					args.emplace_back("");
+					mode = ParseMode_WaitForArg;
+					break;
 				case ParseMode_WaitForComma:
 					mode = ParseMode_WaitForArg;
 					break;
@@ -318,9 +314,6 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					break;
 				case ParseMode_Token:
 					tmp = ParseToken(token.str(), function_name);
-					if (tmp.empty()) {
-						return "";
-					}
 					args.emplace_back(tmp);
 					// already on a comma
 					mode = ParseMode_WaitForArg;
@@ -394,6 +387,10 @@ bool DynRpg::Invoke(const std::string& command) {
 }
 
 bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
+	if (!init) {
+		create_all_plugins();
+	}
+
 	if (!DynRpg::HasFunction(func)) {
 		// Not a supported function
 		Output::Warning("Unsupported DynRPG function: {}", func);
