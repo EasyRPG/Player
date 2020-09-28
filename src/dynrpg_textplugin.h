@@ -15,21 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_DYNRPG_TEXTPLUGIN_H_
-#define _EASYRPG_DYNRPG_TEXTPLUGIN_H_
+#ifndef EP_DYNRPG_TEXTPLUGIN_H
+#define EP_DYNRPG_TEXTPLUGIN_H
 
 #include "dynrpg.h"
 
 namespace DynRpg {
 	class TextPlugin : public DynRpgPlugin {
 	public:
+		TextPlugin() : DynRpgPlugin("DynTextPlugin") {}
 		~TextPlugin();
 
-		std::string GetIdentifier();
-		void RegisterFunctions();
-		void Update();
-		void Load(const std::vector<uint8_t>&);
-		std::vector<uint8_t> Save();
+		void RegisterFunctions() override;
+		void Update() override;
+		void Load(const std::vector<uint8_t>&) override;
+		std::vector<uint8_t> Save() override;
 	};
 }
 

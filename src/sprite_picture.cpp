@@ -53,7 +53,9 @@ void Sprite_Picture::OnPictureShow() {
 			priority = Drawable::GetPriorityForMapLayer(pic.data.map_layer);
 		}
 		if (priority > 0) {
-			SetZ(priority + pic_id);
+			// Small offset (10) to ensure there is space for graphics that are
+			// drawn at the image position (e.g. DynRPG Text Plugin)
+			SetZ(priority + pic_id * 10);
 		}
 	}
 }
