@@ -17,21 +17,20 @@
 
 // Headers
 #include <map>
+#include <memory>
+#include <lcf/reader_util.h>
 
 #include "dynrpg_textplugin.h"
 #include "baseui.h"
 #include "bitmap.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
-#include "game_actors.h"
 #include "game_map.h"
-#include "game_party.h"
+#include "game_message.h"
 #include "game_pictures.h"
-#include "game_screen.h"
 #include "game_variables.h"
-#include "graphics.h"
 #include "main_data.h"
-#include "player.h"
+#include "pending_message.h"
 
 class DynRpgText;
 
@@ -103,26 +102,36 @@ public:
 			return;
 		}
 
-		const Sprite* sprite = Main_Data::game_pictures->GetPicture(pic_id).GetSprite();
+		const Game_Pictures::Picture* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
+		if (!pic) {
+			return;
+		}
+		const Sprite_Picture* sprite = pic->sprite;
 		if (!sprite) {
 			return;
 		}
 
+		// For unknown reasons the official plugin has an y-offset of 2
 		if (fixed) {
-			dst.Blit(x - Game_Map::GetDisplayX() / 16, y - Game_Map::GetDisplayY() / 16, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
+			dst.Blit(x - Game_Map::GetDisplayX() / 16, y - Game_Map::GetDisplayY() / 16 + 2, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
 		} else {
-			dst.Blit(x, y, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
+			dst.Blit(x, y + 2, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
 		}
 	};
 
 	void Update() {
-		const Sprite *sprite = Main_Data::game_pictures->GetPicture(pic_id).GetSprite();
+		const Game_Pictures::Picture* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
+		if (!pic) {
+			return;
+		}
+		const Sprite_Picture* sprite = pic->sprite;
+		if (!sprite) {
+			return;
+		}
 
-		if (sprite) {
-			if (z != sprite->GetZ()) {
-				z = sprite->GetZ() + 1;
-				SetZ(z);
-			}
+		if (z != sprite->GetZ()) {
+			z = sprite->GetZ() + 1;
+			SetZ(z);
 		}
 	}
 
@@ -154,198 +163,57 @@ public:
 		return data;
 	}
 
-	static int ParseParameter(bool& is_valid, std::u32string::iterator& text_index, std::u32string::iterator& end) {
-		++text_index;
+	static DynRpgText* GetTextHandle(const std::string& id, bool silent = false) {
+		PendingMessage pm;
+		pm.PushLine(id, DynRpgText::CommandCodeInserter);
+		std::string new_id = pm.GetLines().front();
 
-		if (text_index == end ||
-			*text_index != '[') {
-			--text_index;
-			is_valid = false;
-			return 0;
+		auto it = graphics.find(new_id);
+		if (it == graphics.end()) {
+			if (!silent) {
+				Output::Warning("No text with ID %s found", new_id.c_str());
+			}
+			return nullptr;
 		}
 
-		++text_index; // Skip the [
-
-		bool null_at_start = false;
-		std::stringstream ss;
-		for (;;) {
-			if (text_index == end) {
-				break;
-			} else if (*text_index == '\n') {
-				--text_index;
-				break;
-			}
-			else if (*text_index == '0') {
-				// Truncate 0 at the start
-				if (!ss.str().empty()) {
-					ss << "0";
-				} else {
-					null_at_start = true;
-				}
-			}
-			else if (*text_index >= '1' &&
-					 *text_index <= '9') {
-				ss << std::string(text_index, std::next(text_index));
-			} else if (*text_index == ']') {
-				break;
-			} else {
-				// End of number
-				// Search for ] or line break
-				while (text_index != end) {
-					if (*text_index == '\n') {
-						--text_index;
-						break;
-					} else if (*text_index == ']') {
-						break;
-					}
-					++text_index;
-				}
-				break;
-			}
-			++text_index;
-		}
-
-		if (ss.str().empty()) {
-			if (null_at_start) {
-				ss << "0";
-			} else {
-				is_valid = false;
-				return 0;
-			}
-		}
-
-		int num;
-		ss >> num;
-		is_valid = true;
-		return num;
+		return (*it).second.get();
 	}
 
-	static std::string ParseCommandCode(bool& success, std::u32string::iterator& text_index, std::u32string::iterator& end) {
-		int parameter;
-		bool is_valid;
-		uint32_t cmd_char = *text_index;
-		success = true;
-
-		switch (cmd_char) {
-			case 'n':
-			case 'N':
-				// Output Hero name
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid) {
-					Game_Actor* actor = NULL;
-					if (parameter == 0) {
-						// Party hero
-						actor = Main_Data::game_party->GetActors()[0];
-					} else {
-						actor = Game_Actors::GetActor(parameter);
-					}
-					if (actor != NULL) {
-						return actor->GetName();
-					}
-				}
-				break;
-			case 'v':
-			case 'V':
-				// Show Variable value
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid && Main_Data::game_variables->IsValid(parameter)) {
-					std::stringstream ss;
-					ss << Main_Data::game_variables->Get(parameter);
-					return ss.str();
-				} else {
-					// Invalid Var is always 0
-					return "0";
-				}
-			case 'i':
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid && parameter > 0 && parameter <= Data::items.size()) {
-					return Data::items[parameter - 1].name;
-				}
-				return "";
-			case 'I':
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid && parameter > 0 && parameter <= Data::items.size()) {
-					return Data::items[parameter - 1].description;
-				}
-				return "";
-			case 't':
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid && parameter > 0 && parameter <= Data::skills.size()) {
-					return Data::skills[parameter - 1].name;
-				}
-				return "";
-			case 'T':
-				parameter = ParseParameter(is_valid, text_index, end);
-				if (is_valid && parameter > 0 && parameter <= Data::skills.size()) {
-					return Data::skills[parameter - 1].description;
-				}
-				return "";
-			case 'x':
-			case 'X':
-				// Take text of ID referenced by X (if exists) TODO
-				{
-
-				}
-				return "";
-			default:;
-				// When this happens text_index was not on a \ during calling
+	static std::string CommandCodeInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+		if (ch == 'N' || ch == 'n') {
+			return PendingMessage::DefaultCommandInserter('n', iter, end, escape_char);
+		} else if (ch == 'V' || ch == 'v') {
+			return PendingMessage::DefaultCommandInserter('v', iter, end, escape_char);
+		} else if (ch == 'I' || ch == 'i') {
+			auto parse_ret = Game_Message::ParseParamImpl('I', 'i', *iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
+			const auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, value);
+			if (!item) {
+				Output::Warning("Invalid Item Id {} in DynTextPlugin text", value);
+			} else{
+				return ToString(ch == 'i' ? item->name : item->description);
+			}
+		} else if (ch == 'T' || ch == 't') {
+			auto parse_ret = Game_Message::ParseParamImpl('I', 'i', *iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
+			const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, value);
+			if (!skill) {
+				Output::Warning("Invalid Item Id {} in DynTextPlugin text", value);
+			} else{
+				return ToString(ch == 't' ? skill->name : skill->description);
+			}
+		} else if (ch == 'x' || ch == 'X') {
+			auto parse_ret = Game_Message::ParseStringParamImpl('X', 'x', *iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			std::string value = parse_ret.value;
+			auto* handle = GetTextHandle(value);
+			if (handle)
+				return handle->texts[0];
 		}
-		success = false;
 		return "";
-	}
-
-	static std::string Substitute(const std::string& text) {
-		std::u32string::iterator text_index, end;
-		std::u32string utext;
-
-		utext = Utils::DecodeUTF32(text);
-		text_index = utext.end();
-		end = utext.end();
-
-		uint32_t escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
-
-		if (!utext.empty()) {
-			// Move on first valid char
-			--text_index;
-
-			// Apply commands that insert text
-			while (std::distance(text_index, utext.begin()) <= -1) {
-				switch (tolower(*text_index--)) {
-					case 'n':
-					case 'v':
-					case 'i':
-					case 't':
-					case 'x':
-					{
-						if (*text_index != escape_char) {
-							continue;
-						}
-						++text_index;
-
-						auto start_code = text_index - 1;
-						bool success;
-						std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, text_index, end));
-						if (!success) {
-							text_index = start_code - 2;
-							continue;
-						}
-						utext.replace(start_code, text_index + 1, command_result);
-						// Start from the beginning, the inserted text might add new commands
-						text_index = utext.end();
-
-						// Move on first valid char
-						--text_index;
-
-						break;
-					}
-					default:
-						break;
-				}
-			}
-		}
-
-		return Utils::EncodeUTF(utext);
-	}
+	};
 
 private:
 	void Refresh() {
@@ -360,7 +228,9 @@ private:
 		const FontRef& font = Font::Default();
 
 		for (auto& t : texts) {
-			t = Substitute(t);
+			PendingMessage pm;
+			pm.PushLine(t, CommandCodeInserter);
+			t = pm.GetLines().front();
 
 			Rect r = font->GetSize(t);
 			width = std::max(width, r.width);
@@ -386,100 +256,95 @@ private:
 	bool fixed = false;
 };
 
-DynRpgText* get_text(const std::string& id, bool silent = false) {
-	std::string new_id = DynRpgText::Substitute(id);
+static bool WriteText(dyn_arg_list args) {
+	auto func = "write_text";
+	bool okay;
+	std::string id, text;
+	int x, y;
 
-	auto it = graphics.find(new_id);
-	if (it == graphics.end()) {
-		if (!silent) {
-			Output::Warning("No text with ID %s found", new_id.c_str());
-		}
-		return nullptr;
-	}
+	std::tie(id, x, y, text) = DynRpg::ParseArgs<std::string, int, int, std::string>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	return (*it).second.get();
-}
-
-static bool WriteText(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("write_text")
-
-	DYNRPG_CHECK_ARG_LENGTH(4);
-
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_INT_ARG(1, x)
-	DYNRPG_GET_INT_ARG(2, y)
-	DYNRPG_GET_STR_ARG(3, text)
-
-	const std::string new_id = DynRpgText::Substitute(id);
-	graphics[new_id] = std::unique_ptr<DynRpgText>(new DynRpgText(1, x, y + 2, text));
+	PendingMessage pm;
+	pm.PushLine(id, DynRpgText::CommandCodeInserter);
+	std::string new_id = pm.GetLines().front();
+	graphics[new_id] = std::make_unique<DynRpgText>(1, x, y, text);
 
 	if (args.size() > 4) {
-		DYNRPG_GET_STR_ARG(4, fixed)
+		std::string fixed = std::get<0>(DynRpg::ParseArgs<std::string>(func, args.subspan(4), &okay));
+		if (!okay)
+			return true;
 		graphics[new_id]->SetFixed(fixed == "fixed");
 	}
 
 	if (args.size() > 5) {
-		DYNRPG_GET_INT_ARG(5, color)
+		int color = std::get<0>(DynRpg::ParseArgs<int>(func, args.subspan(5), &okay));
+		if (!okay)
+			return true;
 		graphics[new_id]->SetColor(color);
 	}
 
 	if (args.size() > 6) {
-		DYNRPG_GET_INT_ARG(6, pic_id)
+		int pic_id = std::get<0>(DynRpg::ParseArgs<int>(func, args.subspan(6), &okay));
+		if (!okay)
+			return true;
 		graphics[new_id]->SetPictureId(pic_id);
 	}
 
 	return true;
 }
 
-static bool AppendLine(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("append_line")
+static bool AppendLine(dyn_arg_list args) {
+	auto func = "append_line";
+	bool okay;
+	std::string id, text;
 
-	DYNRPG_CHECK_ARG_LENGTH(2);
+	std::tie(id, text) = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_STR_ARG(1, text)
-
-	DynRpgText* handle = get_text(id);
-
+	DynRpgText* handle = DynRpgText::GetTextHandle(id);
 	if (!handle) {
 		return true;
 	}
 
 	handle->AddLine(text);
-
 	return true;
 }
 
-static bool AppendText(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("append_text")
+static bool AppendText(dyn_arg_list args) {
+	auto func = "append_line";
+	bool okay;
+	std::string id, text;
 
-	DYNRPG_CHECK_ARG_LENGTH(2);
+	std::tie(id, text) = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_STR_ARG(1, text)
-
-	DynRpgText* handle = get_text(id);
-
+	DynRpgText* handle = DynRpgText::GetTextHandle(id);
 	if (!handle) {
 		return true;
 	}
 
 	handle->AddText(text);
-
 	return true;
 }
 
-static bool ChangeText(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("change_text")
+static bool ChangeText(dyn_arg_list args) {
+	auto func = "change_text";
+	bool okay;
+	std::string id, text;
+	int color;
 
-	DYNRPG_CHECK_ARG_LENGTH(3);
+	std::tie(id, text, std::ignore) = DynRpg::ParseArgs<std::string, std::string, std::string>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_STR_ARG(1, text)
-	DYNRPG_GET_INT_ARG(2, color)
+	// Color can be a string (usually "end") or a number, don't warn about it
+	std::tie(color) = DynRpg::ParseArgs<int>(func, args.subspan(2), nullptr, false);
 
-	DynRpgText* handle = get_text(id);
-
+	DynRpgText* handle = DynRpgText::GetTextHandle(id);
 	if (!handle) {
 		return true;
 	}
@@ -487,62 +352,49 @@ static bool ChangeText(const dyn_arg_list& args) {
 	handle->ClearText();
 	handle->SetColor(color);
 	handle->AddText(text);
-
 	return true;
 }
 
-static bool ChangePosition(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("change_position")
+static bool ChangePosition(dyn_arg_list args) {
+	auto func = "change_position";
+	bool okay;
+	std::string id;
+	int x, y;
 
-	DYNRPG_CHECK_ARG_LENGTH(3);
+	std::tie(id, x, y) = DynRpg::ParseArgs<std::string, int, int>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_INT_ARG(1, x)
-	DYNRPG_GET_INT_ARG(2, y)
-
-	DynRpgText* handle = get_text(id);
-
+	DynRpgText* handle = DynRpgText::GetTextHandle(id);
 	if (!handle) {
 		return true;
 	}
 
-	// Offset is somehow wrong compared to RPG_RT
-	handle->SetPosition(x, y + 2);
-
+	handle->SetPosition(x, y);
 	return true;
 }
 
-static bool RemoveText(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("remove_text")
+static bool RemoveText(dyn_arg_list args) {
+	auto func = "remove_text";
+	bool okay;
+	std::string id;
 
-	DYNRPG_CHECK_ARG_LENGTH(2);
+	std::tie(id) = DynRpg::ParseArgs<std::string>(func, args, &okay);
+	if (!okay)
+		return true;
 
-	DYNRPG_GET_STR_ARG(0, id)
-	DYNRPG_GET_STR_ARG(1, nothing)
-
-	DynRpgText* handle = get_text(id, true);
-
+	DynRpgText* handle = DynRpgText::GetTextHandle(id, true);
 	if (!handle) {
 		return true;
 	}
 
 	handle->ClearText();
-
 	return true;
 }
 
-static bool RemoveAll(const dyn_arg_list& args) {
-	DYNRPG_FUNCTION("remove_all")
-
-	DYNRPG_CHECK_ARG_LENGTH(0);
-
+static bool RemoveAll(dyn_arg_list) {
 	graphics.clear();
-
 	return true;
-}
-
-std::string DynRpg::TextPlugin::GetIdentifier() {
-	return "DynTextPlugin";
 }
 
 void DynRpg::TextPlugin::RegisterFunctions() {
@@ -600,7 +452,7 @@ void DynRpg::TextPlugin::Load(const std::vector<uint8_t>& in_buffer) {
 				color = atoi(t.c_str());
 				break;
 			case 4:
-				// transparency, but isn't that from the picture?
+				// ignore transparency, the picture defines this
 				break;
 			case 5:
 				fixed = t == "1";
@@ -620,7 +472,7 @@ void DynRpg::TextPlugin::Load(const std::vector<uint8_t>& in_buffer) {
 		if (counter == 8) {
 			counter = 0;
 
-			graphics[id] = std::unique_ptr<DynRpgText>(new DynRpgText(pic_id, x, y + 2, texts));
+			graphics[id] = std::make_unique<DynRpgText>(pic_id, x, y, texts);
 			texts.clear();
 			graphics[id]->SetColor(color);
 			graphics[id]->SetFixed(fixed);

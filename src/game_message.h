@@ -108,6 +108,14 @@ namespace Game_Message {
 		int value = 0;
 	};
 
+	/** Struct returned by parameter parsing methods */
+	struct ParseParamStringResult {
+		/** iterator to the next character after parsed content */
+		const char* next = nullptr;
+		/** value that was parsed */
+		std::string value;
+	};
+
 	/** Parse a \v[] variable string
 	 *
 	 * @param iter start of utf8 string
@@ -155,7 +163,9 @@ namespace Game_Message {
 	 * @return \refer ParseParamResult
 	 */
 	ParseParamResult ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
-}
 
+	Game_Message::ParseParamResult ParseParamImpl(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+	Game_Message::ParseParamStringResult ParseStringParamImpl(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+}
 
 #endif
