@@ -13,8 +13,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
+option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
+
 # Source Files
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
@@ -412,9 +415,6 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
 endif()
 
-# Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
-option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
-
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
@@ -429,21 +429,8 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	find_package(SDL2 2.0.5 REQUIRED)
 	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/libretro/libretro_audio.cpp
-		src/platform/libretro/libretro_audio.h
-		src/platform/libretro/libretro_input_buttons.cpp
-		src/platform/libretro/libretro_ui.cpp
-		src/platform/libretro/libretro_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
-	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
-	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
-
-	if(BUILD_SHARED_LIBS)
-		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	endif()
-
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
@@ -475,6 +462,12 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC __SWITCH__)
 else()
 	message(FATAL_ERROR "Invalid target platform")
+endif()
+
+if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
+	# Need fPIC when compiling a shared library (e.g. libretro.so)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
 endif()
 
 if(WIN32)
@@ -803,15 +796,15 @@ if (${PLAYER_BUILD_EXECUTABLE})
 		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
 		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
 
-		set_property(TARGET ${PROJECT_NAME}_exe PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext']")
+		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext']")
 		set_source_files_properties("src/main.cpp" PROPERTIES OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS};${PLAYER_JS_SHELL}")
 
 		if(PLAYER_JS_BUILD_SHELL)
-			set_target_properties(${PROJECT_NAME}_exe PROPERTIES SUFFIX ".html")
-			set_property(TARGET ${PROJECT_NAME}_exe APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
+			set_target_properties(${EXE_NAME} PROPERTIES SUFFIX ".html")
+			set_property(TARGET ${EXE_NAME} APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
 		endif()
 
-		target_link_libraries(${PROJECT_NAME}_exe "idbfs.js")
+		target_link_libraries(${EXE_NAME} "idbfs.js")
 
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "${PLAYER_JS_OUTPUT_NAME}")
 	endif()
@@ -834,6 +827,19 @@ if (${PLAYER_BUILD_EXECUTABLE})
 			install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.js DESTINATION ${CMAKE_INSTALL_BINDIR})
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
+else()
+	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+		add_library(easyrpg_libretro
+			src/platform/libretro/libretro_audio.cpp
+			src/platform/libretro/libretro_audio.h
+			src/platform/libretro/libretro_input_buttons.cpp
+			src/platform/libretro/libretro_ui.cpp
+			src/platform/libretro/libretro_ui.h)
+		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
+		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
+	else()
+		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()
 endif()
 
