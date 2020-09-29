@@ -226,7 +226,7 @@ int CalcSkillEffect(const Game_Battler& source,
 		effect -= skill.magical_rate * target.GetSpi() / 80;
 	}
 
-	effect = std::max(0, effect);
+	effect = std::max<int>(0, effect);
 
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
 
@@ -242,7 +242,7 @@ int CalcSelfDestructEffect(const Game_Battler& source,
 		bool apply_variance) {
 
 	auto effect = source.GetAtk() - target.GetDef() / 2;
-	effect = std::max(0, effect);
+	effect = std::max<int>(0, effect);
 
 	if (apply_variance) {
 		effect = VarianceAdjustEffect(effect, 4);

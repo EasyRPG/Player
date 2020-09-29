@@ -1587,13 +1587,13 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			if (Player::IsRPG2k3()) {
 				this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
 			} else {
-				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() - GetTarget()->GetHp(), 0, item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp);
+				this->hp = Utils::Clamp<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(), 0, item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp);
 			}
 		}
 
 		// SP recovery
 		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
-			this->sp = Utils::Clamp(GetTarget()->GetMaxSp() - GetTarget()->GetSp(), 0, item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp);
+			this->sp = Utils::Clamp<int>(GetTarget()->GetMaxSp() - GetTarget()->GetSp(), 0, item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp);
 		}
 
 		// Make a copy of the target's state set and see what we can apply.
