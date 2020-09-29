@@ -43,7 +43,7 @@ void Window_ActorTarget::Refresh() {
 		DrawActorName(actor, 48 + 8, i * 48 + 2 + y);
 		DrawActorLevel(actor, 48 + 8, i * 48 + 2 + 16 + y);
 		DrawActorState(actor, 48 + 8, i * 48 + 2 + 16 + 16 + y);
-		int x_offset = 48 + 8 + 42 + (Player::IsRPG2k() ? 16 : 0);
+		int x_offset = 48 + 8 + 46 + (Player::IsRPG2k() ? 12 : 0);
 		int digits = (Player::IsRPG2k() ? 3 : 4);
 		DrawActorHp(actor, x_offset, i * 48 + 2 + 16 + y, digits);
 		DrawActorSp(actor, x_offset, i * 48 + 2 + 16 + 16 + y, digits);
