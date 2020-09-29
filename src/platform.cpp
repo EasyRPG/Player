@@ -21,6 +21,16 @@
 #include <cassert>
 #include <utility>
 
+#ifndef DT_UNKNOWN
+#define DT_UNKNOWN 0
+#endif
+#ifndef DT_REG
+#define DT_REG DT_UNKNOWN
+#endif
+#ifndef DT_DIR
+#define DT_DIR DT_UNKNOWN
+#endif
+
 Platform::File::File(std::string name) :
 #ifdef _WIN32
 		filename(Utils::ToWideString(name))
