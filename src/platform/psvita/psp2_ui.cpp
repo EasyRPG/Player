@@ -272,4 +272,11 @@ bool Psp2Ui::ShowCursor(bool /* flag */) {
 	return true;
 }
 
+void Psp2Ui::GetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("Vita (Software)");
+	cfg.vsync.Disable();
+	cfg.window_zoom.Disable();
+	cfg.fullscreen.Lock(IsFullscreen());
+}
+
 #endif

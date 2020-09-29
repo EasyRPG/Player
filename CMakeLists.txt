@@ -268,6 +268,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/scene_skill.h
 	src/scene_status.cpp
 	src/scene_status.h
+	src/scene_settings.h
+	src/scene_settings.cpp
 	src/scene_teleport.cpp
 	src/scene_teleport.h
 	src/scene_title.cpp
@@ -372,6 +374,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/window_savefile.h
 	src/window_selectable.cpp
 	src/window_selectable.h
+	src/window_settings.cpp
+	src/window_settings.h
 	src/window_shopbuy.cpp
 	src/window_shopbuy.h
 	src/window_shop.cpp

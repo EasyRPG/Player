@@ -334,4 +334,11 @@ bool CtrUi::ShowCursor(bool /* flag */) {
 	return true;
 }
 
+void Ctr2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("3DS Citro (Software)");
+	cfg.vsync.Disable();
+	cfg.window_zoom.Disable();
+	cfg.fullscreen.Lock(IsFullscreen());
+}
+
 #endif

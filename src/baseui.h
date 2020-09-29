@@ -173,6 +173,11 @@ public:
 	 */
 	Game_Clock::duration GetFrameLimit() const;
 
+	/**
+	 * @return current video options.
+	 */
+	Game_ConfigVideo GetConfig() const;
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
@@ -181,6 +186,7 @@ protected:
 
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);
+	virtual void vGetConfig(Game_ConfigVideo& cfg) const = 0;
 
 	/**
 	 * Display mode data struct.

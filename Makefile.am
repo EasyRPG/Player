@@ -259,6 +259,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_skill.h \
 	src/scene_status.cpp \
 	src/scene_status.h \
+	src/scene_settings.cpp \
+	src/scene_settings.h \
 	src/scene_teleport.cpp \
 	src/scene_teleport.h \
 	src/scene_title.cpp \
@@ -367,6 +369,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_savefile.h \
 	src/window_selectable.cpp \
 	src/window_selectable.h \
+	src/window_settings.cpp \
+	src/window_settings.h \
 	src/window_shop.cpp \
 	src/window_shop.h \
 	src/window_shopbuy.cpp \

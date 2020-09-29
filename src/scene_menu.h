@@ -67,7 +67,8 @@ public:
 		Wait,
 		Quit,
 		// EasyRPG extra
-		Debug = 100
+		Debug = 100,
+		Settings = 101,
 	};
 
 private:

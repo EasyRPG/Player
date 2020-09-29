@@ -17,6 +17,7 @@
 
 // Headers
 #include "scene_gamebrowser.h"
+#include "scene_settings.h"
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_system.h"
@@ -90,9 +91,10 @@ void Scene_GameBrowser::CreateWindows() {
 
 	options.push_back("Games");
 	options.push_back("About");
+	options.push_back("Settings");
 	options.push_back("Exit");
 
-	command_window.reset(new Window_Command(options, 60));
+	command_window.reset(new Window_Command(std::move(options), 60));
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
@@ -147,6 +149,9 @@ void Scene_GameBrowser::UpdateCommand() {
 				gamelist_window->SetIndex(old_gamelist_index);
 				break;
 			case About:
+				break;
+			case Options:
+				Scene::Push(std::make_shared<Scene_Settings>());
 				break;
 			default:
 				Scene::Pop();

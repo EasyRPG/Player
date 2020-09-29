@@ -55,6 +55,7 @@ public:
 		Order,
 		GameBrowser,
 		Teleport,
+		Settings,
 		SceneMax
 	};
 
