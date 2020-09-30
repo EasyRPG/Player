@@ -123,11 +123,8 @@ void Window_Item::DrawItem(int index) {
 		bool enabled = CheckEnable(item_id);
 		DrawItemName(*item, rect.x, rect.y, enabled);
 
-		std::stringstream ss;
-		ss << number;
 		Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "x");
-		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
+		contents->TextDraw(rect.x + rect.width - 24, rect.y, color, fmt::format(":{:3d}", number));
 	}
 }
 

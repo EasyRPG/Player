@@ -64,12 +64,9 @@ int Window_Selectable::GetPageItemMax() {
 
 Rect Window_Selectable::GetItemRect(int index) {
 	Rect rect = Rect();
-	rect.width = (contents->GetWidth()) / column_max - 4;
+	rect.width = (width / column_max - 16);
+	rect.x = (index % column_max * (rect.width + 16));
 	rect.height = 12;
-	rect.x = index % column_max * rect.width;
-	if (rect.x > 0){
-		rect.x += 8;
-	}
 	rect.y = index / column_max * 16 + 2;
 	return rect;
 }
@@ -103,14 +100,8 @@ void Window_Selectable::UpdateCursorRect() {
 		SetTopRow(row - (GetPageRowMax() - 1));
 	}
 
-	if (column_max > 1){
-		cursor_width = (width / column_max - 16) + 12;
-		x = (index % column_max * cursor_width) - 4 ;
-	}
-	else{
-		cursor_width = (width / column_max - 16) + 8;
-		x = (index % column_max * (cursor_width + 16)) - 4;
-	}
+	cursor_width = (width / column_max - 16) + 8;
+	x = (index % column_max * (cursor_width + 8)) - 4;
 
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
@@ -133,15 +124,13 @@ void Window_Selectable::Update() {
 	Window_Base::Update();
 	if (active && item_max > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-			if (index < item_max - column_max || (column_max == 1 &&
-				(Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)))) {
+			if (index < item_max - column_max || column_max == 1) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				index = (index + column_max) % item_max;
 			}
 		}
 		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
-			if (index >= column_max || (column_max == 1 &&
-				(Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)))) {
+			if (index >= column_max || column_max == 1) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				index = (index - column_max + item_max) % item_max;
 			}

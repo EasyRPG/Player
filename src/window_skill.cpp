@@ -84,10 +84,7 @@ void Window_Skill::DrawItem(int index) {
 		bool enabled = CheckEnable(skill_id);
 		int color = !enabled ? Font::ColorDisabled : Font::ColorDefault;
 
-		std::stringstream ss;
-		ss << costs;
-		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "-");
-		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
+		contents->TextDraw(rect.x + rect.width - 24, rect.y, color, fmt::format("-{:3d}", costs));
 
 		// Skills are guaranteed to be valid
 		DrawSkillName(*lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id), rect.x, rect.y, enabled);

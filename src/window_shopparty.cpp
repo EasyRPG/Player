@@ -29,6 +29,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetBorderX(4);
+	SetBorderY(4);
 	SetContents(Bitmap::Create(width - GetBorderX() * 2, height - 16));
 
 	cycle = 0;
@@ -99,6 +100,7 @@ void Window_ShopParty::Refresh() {
 	for (int i = 0; i < static_cast<int>(actors.size()) && i < 4; i++) {
 		Game_Actor *actor = actors[i];
 		int phase = (cycle / anim_rate) % 4;
+		int phasecmp = phase;
 		if (phase == 3) {
 			phase = 1;
 		}
@@ -132,13 +134,13 @@ void Window_ShopParty::Refresh() {
 			else {
 				int cmp = CmpEquip(actor, new_item);
 				if (cmp > 0) {
-					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 0, 8, 8), 255);
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phasecmp, 0, 8, 8), 255);
 				}
 				else if (cmp < 0) {
-					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 16, 8, 8), 255);
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phasecmp, 16, 8, 8), 255);
 				}
 				else {
-					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 8, 8, 8), 255);
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phasecmp, 8, 8, 8), 255);
 				}
 			}
 		}
