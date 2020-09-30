@@ -896,7 +896,10 @@ option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 if(PLAYER_ENABLE_TESTS)
 	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 	add_executable(test_runner_player EXCLUDE_FROM_ALL ${TEST_FILES})
-	set_target_properties(test_runner_player PROPERTIES OUTPUT_NAME "test_runner")
+	set_target_properties(test_runner_player PROPERTIES
+		OUTPUT_NAME "test_runner"
+		WIN32_EXECUTABLE FALSE
+	)
 	target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\")
 	target_link_libraries(test_runner_player ${PROJECT_NAME})
 	add_custom_target(check_player COMMAND test_runner_player)
@@ -922,7 +925,6 @@ if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
 	endif()
 endif()
 
-
 # Benchmarks
 option(PLAYER_ENABLE_BENCHMARKS "Build benchmarks" OFF)
 
@@ -932,12 +934,11 @@ if(PLAYER_ENABLE_BENCHMARKS)
 	foreach(i ${BENCH_FILES})
 		get_filename_component(name "${i}" NAME_WE)
 		add_executable(bench_${name} ${i})
+		set_target_properties(bench_${name} PROPERTIES WIN32_EXECUTABLE FALSE)
 		target_link_libraries(bench_${name} ${PROJECT_NAME})
 		target_link_libraries(bench_${name} benchmark)
 	endforeach()
 endif()
-
-
 
 # Print summary
 message(STATUS "")
