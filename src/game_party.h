@@ -22,6 +22,7 @@
 #include <vector>
 #include "game_party_base.h"
 #include "game_actor.h"
+#include <lcf/rpg/saveinventory.h>
 
 /**
  * Game_Party class.

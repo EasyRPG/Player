@@ -54,7 +54,7 @@ void Scene_Item::Update() {
 	item_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItem() == NULL ? 0 : item_window->GetItem()->ID;
@@ -64,7 +64,7 @@ void Scene_Item::Update() {
 			const lcf::rpg::Item& item = *item_window->GetItem();
 
 			if (item.type == lcf::rpg::Item::Type_switch) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Main_Data::game_party->ConsumeItemUse(item_id);
 				Main_Data::game_switches->Set(item.switch_id, true);
 				Scene::PopUntil(Scene::Map);
@@ -77,11 +77,11 @@ void Scene_Item::Update() {
 				}
 
 				if (skill->type == lcf::rpg::Skill::Type_teleport) {
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					Scene::Push(std::make_shared<Scene_Teleport>(item, *skill));
 				} else if (skill->type == lcf::rpg::Skill::Type_escape) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
-					Game_System::SePlay(skill->sound_effect);
+					Main_Data::game_system->SePlay(skill->sound_effect);
 
 					Main_Data::game_player->ForceGetOffVehicle();
 					Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
@@ -89,22 +89,22 @@ void Scene_Item::Update() {
 					Scene::PopUntil(Scene::Map);
 				} else if (skill->type == lcf::rpg::Skill::Type_switch) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
-					Game_System::SePlay(skill->sound_effect);
+					Main_Data::game_system->SePlay(skill->sound_effect);
 					Main_Data::game_switches->Set(skill->switch_id, true);
 					Scene::PopUntil(Scene::Map);
 					Game_Map::SetNeedRefresh(true);
 				} else {
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					Scene::Push(std::make_shared<Scene_ActorTarget>(item_id));
 					item_index = item_window->GetIndex();
 				}
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(item_id));
 				item_index = item_window->GetIndex();
 			}
 		} else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	}
 }

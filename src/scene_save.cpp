@@ -84,8 +84,9 @@ void Scene_Save::Save(const FileFinder::DirectoryTree& tree, int slot_id, bool p
 
 void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
+	lcf::rpg::Save save;
+	auto& title = save.title;
 	// TODO: Maybe find a better place to setup the save file?
-	lcf::rpg::SaveTitle title;
 
 	int size = (int)Main_Data::game_party->GetActors().size();
 	Game_Actor* actor;
@@ -114,37 +115,34 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 		title.hero_name = ToString(actor->GetName());
 	}
 
-	Main_Data::game_data.title = title;
-
-	Game_System::SetSaveSlot(slot_id);
-
-	Main_Data::game_data.party_location = Main_Data::game_player->GetSaveData();
-
-	Game_Map::PrepareSave(Main_Data::game_data);
+	Main_Data::game_system->SetSaveSlot(slot_id);
+	save.party_location = Main_Data::game_player->GetSaveData();
+	Game_Map::PrepareSave(save);
 
 	if (prepare_save) {
-		lcf::LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
+		lcf::LSD_Reader::PrepareSave(save, PLAYER_SAVEGAME_VERSION);
 	}
 
-	auto data_copy = lcf::LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
-	data_copy.targets = Main_Data::game_targets->GetSaveData();
-	data_copy.system.switches = Main_Data::game_switches->GetData();
-	data_copy.system.variables = Main_Data::game_variables->GetData();
-	data_copy.inventory = Main_Data::game_party->GetSaveData();
-	data_copy.actors = Main_Data::game_actors->GetSaveData();
+	save.targets = Main_Data::game_targets->GetSaveData();
+	save.system = Main_Data::game_system->GetSaveData();
+	save.system.switches = Main_Data::game_switches->GetData();
+	save.system.variables = Main_Data::game_variables->GetData();
+	save.inventory = Main_Data::game_party->GetSaveData();
+	save.actors = Main_Data::game_actors->GetSaveData();
 
-	data_copy.screen = Main_Data::game_screen->GetSaveData();
-	data_copy.pictures = Main_Data::game_pictures->GetSaveData();
+	save.screen = Main_Data::game_screen->GetSaveData();
+	save.pictures = Main_Data::game_pictures->GetSaveData();
 
-	data_copy.system.scene = Scene::instance ? Scene::rpgRtSceneFromSceneType(Scene::instance->type) : -1;
+	save.system.scene = Scene::instance ? Scene::rpgRtSceneFromSceneType(Scene::instance->type) : -1;
 
 	// 2k RPG_RT always stores SaveMapEvent with map_id == 0.
 	if (Player::IsRPG2k()) {
-		for (auto& sme: data_copy.map_info.events) {
+		for (auto& sme: save.map_info.events) {
 			sme.map_id = 0;
 		}
 	}
-	lcf::LSD_Reader::Save(os, data_copy, Player::encoding);
+	save = lcf::LSD_Reader::ClearDefaults(save, Game_Map::GetMapInfo(), Game_Map::GetMap());
+	lcf::LSD_Reader::Save(os, save, Player::encoding);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system

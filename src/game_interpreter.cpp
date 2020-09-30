@@ -107,7 +107,7 @@ void Game_Interpreter::Push(
 	frame.event_id = event_id;
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
-		Game_Message::ClearFace();
+		Main_Data::game_system->ClearMessageFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
@@ -719,7 +719,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	const bool is_base_frame = _state.stack.size() == 1;
 
 	if (main_flag && is_base_frame && !Game_Battle::IsBattleRunning()) {
-		Game_Message::ClearFace();
+		Main_Data::game_system->ClearMessageFace();
 	}
 
 	int event_id = frame.event_id;
@@ -841,10 +841,10 @@ bool Game_Interpreter::CommandMessageOptions(lcf::rpg::EventCommand const& com) 
 		return false;
 	}
 
-	Game_Message::SetTransparent(com.parameters[0] != 0);
-	Game_Message::SetPosition(com.parameters[1]);
-	Game_Message::SetPositionFixed(com.parameters[2] == 0);
-	Game_Message::SetContinueEvents(com.parameters[3] != 0);
+	Main_Data::game_system->SetMessageTransparent(com.parameters[0] != 0);
+	Main_Data::game_system->SetMessagePosition(com.parameters[1]);
+	Main_Data::game_system->SetMessagePositionFixed(com.parameters[2] == 0);
+	Main_Data::game_system->SetMessageContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 
@@ -853,10 +853,10 @@ bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& co
 		return false;
 	}
 
-	Game_Message::SetFaceName(ToString(com.string));
-	Game_Message::SetFaceIndex(com.parameters[0]);
-	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
-	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
+	Main_Data::game_system->SetMessageFaceName(ToString(com.string));
+	Main_Data::game_system->SetMessageFaceIndex(com.parameters[0]);
+	Main_Data::game_system->SetMessageFaceRightPosition(com.parameters[1] != 0);
+	Main_Data::game_system->SetMessageFaceFlipped(com.parameters[2] != 0);
 	return true;
 }
 
@@ -1130,7 +1130,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 				case 3:
 					// Number of saves
-					value = Game_System::GetSaveCount();
+					value = Main_Data::game_system->GetSaveCount();
 					break;
 				case 4:
 					// Number of battles
@@ -1842,13 +1842,13 @@ bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // co
 	music.volume = com.parameters[1];
 	music.tempo = com.parameters[2];
 	music.balance = com.parameters[3];
-	Game_System::BgmPlay(music);
+	Main_Data::game_system->BgmPlay(music);
 	return true;
 }
 
 bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { // code 11520
 	int fadeout = com.parameters[0];
-	Game_System::BgmFade(fadeout);
+	Main_Data::game_system->BgmFade(fadeout);
 	return true;
 }
 
@@ -1858,7 +1858,7 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 	sound.volume = com.parameters[0];
 	sound.tempo = com.parameters[1];
 	sound.balance = com.parameters[2];
-	Game_System::SePlay(sound, true);
+	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }
 
@@ -1965,7 +1965,7 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 	music.volume = com.parameters[2];
 	music.tempo = com.parameters[3];
 	music.balance = com.parameters[4];
-	Game_System::SetSystemBGM(context, std::move(music));
+	Main_Data::game_system->SetSystemBGM(context, std::move(music));
 	return true;
 }
 
@@ -1976,12 +1976,12 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 	sound.volume = com.parameters[1];
 	sound.tempo = com.parameters[2];
 	sound.balance = com.parameters[3];
-	Game_System::SetSystemSE(context, std::move(sound));
+	Main_Data::game_system->SetSystemSE(context, std::move(sound));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Game_System::SetSystemGraphic(ToString(com.string),
+	Main_Data::game_system->SetSystemGraphic(ToString(com.string),
 			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
 			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
@@ -1989,7 +1989,7 @@ bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const&
 }
 
 bool Game_Interpreter::CommandChangeScreenTransitions(lcf::rpg::EventCommand const& com) { // code 10690
-	Game_System::SetTransition(com.parameters[0], com.parameters[1]);
+	Main_Data::game_system->SetTransition(com.parameters[0], com.parameters[1]);
 	return true;
 }
 
@@ -2142,7 +2142,7 @@ bool Game_Interpreter::CommandEraseScreen(lcf::rpg::EventCommand const& com) { /
 
 	switch (com.parameters[0]) {
 	case -1:
-		tt = Game_System::GetTransition(Game_System::Transition_TeleportErase);
+		tt = Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_TeleportErase);
 		break;
 	case 0:
 		tt = Transition::TransitionFadeOut;
@@ -2229,7 +2229,7 @@ bool Game_Interpreter::CommandShowScreen(lcf::rpg::EventCommand const& com) { //
 
 	switch (com.parameters[0]) {
 	case -1:
-		tt = Game_System::GetTransition(Game_System::Transition_TeleportShow);
+		tt = Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_TeleportShow);
 		break;
 	case 0:
 		tt = Transition::TransitionFadeIn;
@@ -2711,12 +2711,12 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 }
 
 bool Game_Interpreter::CommandMemorizeBGM(lcf::rpg::EventCommand const& /* com */) { // code 11530
-	Game_System::MemorizeBGM();
+	Main_Data::game_system->MemorizeBGM();
 	return true;
 }
 
 bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* com */) { // code 11540
-	Game_System::PlayMemorizedBGM();
+	Main_Data::game_system->PlayMemorizedBGM();
 	return true;
 }
 
@@ -2931,7 +2931,7 @@ bool Game_Interpreter::CommandTeleportTargets(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandChangeTeleportAccess(lcf::rpg::EventCommand const& com) { // code 11820
-	Game_System::SetAllowTeleport(com.parameters[0] != 0);
+	Main_Data::game_system->SetAllowTeleport(com.parameters[0] != 0);
 	return true;
 }
 
@@ -2946,17 +2946,17 @@ bool Game_Interpreter::CommandEscapeTarget(lcf::rpg::EventCommand const& com) { 
 }
 
 bool Game_Interpreter::CommandChangeEscapeAccess(lcf::rpg::EventCommand const& com) { // code 11840
-	Game_System::SetAllowEscape(com.parameters[0] != 0);
+	Main_Data::game_system->SetAllowEscape(com.parameters[0] != 0);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSaveAccess(lcf::rpg::EventCommand const& com) { // code 11930
-	Game_System::SetAllowSave(com.parameters[0] != 0);
+	Main_Data::game_system->SetAllowSave(com.parameters[0] != 0);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeMainMenuAccess(lcf::rpg::EventCommand const& com) { // code 11960
-	Game_System::SetAllowMenu(com.parameters[0] != 0);
+	Main_Data::game_system->SetAllowMenu(com.parameters[0] != 0);
 	return true;
 }
 
@@ -3148,7 +3148,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			break;
 		case 2:
 			// Is ATB wait on?
-			result = Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait;
+			result = Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait;
 			break;
 		case 3:
 			// Is Fullscreen active?

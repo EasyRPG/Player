@@ -275,7 +275,7 @@ void Scene_Debug::Update() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		UpdateFrameValueFromUi();
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		UpdateFrameValueFromUi();
@@ -288,9 +288,9 @@ void Scene_Debug::Update() {
 						|| (!is_battle && (next_mode == eCallBattleEvent))
 				   )
 				{
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 				} else {
-					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					mode = next_mode;
 				}
 			}
@@ -717,7 +717,7 @@ void Scene_Debug::DoMap() {
 void Scene_Debug::DoFullHeal() {
 	const auto id = GetFrame(0).value;
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_UseItem));
 	auto actors = Main_Data::game_party->GetActors();
 	if (id <= 1) {
 		for (auto& actor: actors) {

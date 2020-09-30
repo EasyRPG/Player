@@ -330,7 +330,7 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::ReturnToTitleScene()) {
 			// Fade out music and stop sound effects before returning
-			Game_System::BgmFade(800);
+			Main_Data::game_system->BgmFade(800);
 			Audio().SE_Stop();
 			// Do not update this scene until it's properly set up in the next main loop
 			update_scene = false;
@@ -376,7 +376,9 @@ void Player::Draw() {
 
 void Player::IncFrame() {
 	++frames;
-	Game_System::IncFrameCounter();
+	if (Main_Data::game_system) {
+		Main_Data::game_system->IncFrameCounter();
+	}
 }
 
 int Player::GetFrames() {
@@ -795,12 +797,8 @@ void Player::CreateGameObjects() {
 }
 
 void Player::ResetGameObjects() {
-	Game_System::ResetSystemGraphic();
-
 	// The init order is important
 	Main_Data::Cleanup();
-
-	Main_Data::game_data.Setup();
 
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 
@@ -816,9 +814,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_actors = std::make_unique<Game_Actors>();
 
 	Game_Map::Init();
-	Game_Message::Init();
-	Game_System::Init();
 
+	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_targets = std::make_unique<Game_Targets>();
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
@@ -826,6 +823,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
+
+	Main_Data::game_system->ReloadSystemGraphic();
 }
 
 static bool DefaultLmuStartFileExists(const FileFinder::DirectoryTree& dir) {
@@ -909,36 +908,22 @@ void Player::LoadDatabase() {
 	}
 }
 
-static void FixSaveGames() {
-	// Compatibility hacks for old EasyRPG Player saves.
-	if (Main_Data::game_data.easyrpg_data.version == 0) {
-		// Old savegames accidentally wrote animation_type as
-		// continuous for all events.
-		Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-	}
-}
-
-static void OnMapSaveFileReady(FileRequestResult*) {
-	auto& save = Main_Data::game_data;
+static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
 	Game_Map::SetupFromSave(
 			std::move(map),
-			save.map_info,
-			save.boat_location,
-			save.ship_location,
-			save.airship_location,
-			save.foreground_event_execstate,
-			save.panorama,
-			save.common_events);
-	FixSaveGames();
+			std::move(save.map_info),
+			std::move(save.boat_location),
+			std::move(save.ship_location),
+			std::move(save.airship_location),
+			std::move(save.foreground_event_execstate),
+			std::move(save.panorama),
+			std::move(save.common_events));
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
 	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
-	Game_System::BgmFade(800);
+	Main_Data::game_system->BgmFade(800);
 
 	// We erase the screen now before loading the saved game. This prevents an issue where
 	// if the save game has a different system graphic, the load screen would change before
@@ -980,27 +965,35 @@ void Player::LoadSavegame(const std::string& save_name) {
 			verstr.str(), PLAYER_VERSION);
 	}
 
+	// Compatibility hacks for old EasyRPG Player saves.
+	if (save->easyrpg_data.version == 0) {
+		// Old savegames accidentally wrote animation_type as continuous for all events.
+		save->party_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->boat_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->ship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+		save->airship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
+	}
+
 	Scene::PopUntil(Scene::Title);
 	Game_Map::Dispose();
 
-	Main_Data::game_data = *save.get();
+	Main_Data::game_switches->SetData(std::move(save->system.switches));
+	Main_Data::game_variables->SetData(std::move(save->system.variables));
+	Main_Data::game_system->SetupFromSave(std::move(save->system));
+	Main_Data::game_actors->SetSaveData(std::move(save->actors));
+	Main_Data::game_party->SetupFromSave(std::move(save->inventory));
+	Main_Data::game_screen->SetSaveData(std::move(save->screen));
+	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
+	Main_Data::game_targets->SetSaveData(std::move(save->targets));
+	Main_Data::game_player->SetSaveData(save->party_location);
 
-	Main_Data::game_actors->SetSaveData(std::move(Main_Data::game_data.actors));
-	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
-	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
-	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
-	Main_Data::game_screen->SetSaveData(std::move(Main_Data::game_data.screen));
-	Main_Data::game_pictures->SetSaveData(std::move(Main_Data::game_data.pictures));
-	Main_Data::game_targets->SetSaveData(std::move(Main_Data::game_data.targets));
-
-	Main_Data::game_player->SetSaveData(Main_Data::game_data.party_location);
 	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
-	save_request_id = map->Bind(&OnMapSaveFileReady);
+	save_request_id = map->Bind([save=std::move(*save)](auto* request) { OnMapSaveFileReady(request, std::move(save)); });
 	map->SetImportantFile(true);
 
-	Game_System::ReloadSystemGraphic();
+	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
 	Scene::Push(std::make_shared<Scene_Map>(true));
@@ -1024,8 +1017,8 @@ static void OnMapFileReady(FileRequestResult*) {
 }
 
 void Player::SetupNewGame() {
-	Game_System::BgmFade(800);
-	Game_System::ResetFrameCounter();
+	Main_Data::game_system->BgmFade(800);
+	Main_Data::game_system->ResetFrameCounter();
 	auto title = Scene::Find(Scene::Title);
 	if (title) {
 		static_cast<Scene_Title*>(title.get())->OnGameStart();

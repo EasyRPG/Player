@@ -44,7 +44,7 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	Game_System::ResetSystemGraphic();
+	Main_Data::game_system->ResetSystemGraphic();
 
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
@@ -57,7 +57,7 @@ void Scene_Title::Start() {
 
 
 void Scene_Title::Continue(SceneType prev_scene) {
-	Game_System::ResetSystemGraphic();
+	Main_Data::game_system->ResetSystemGraphic();
 
 	if (restart_title_cache) {
 		// Clear the cache when the game returns to the title screen
@@ -184,9 +184,9 @@ void Scene_Title::CreateCommandWindow() {
 
 void Scene_Title::PlayTitleMusic() {
 	// Workaround Android problem: BGM doesn't start when game is started again
-	Game_System::BgmStop();
+	Main_Data::game_system->BgmStop();
 	// Play BGM
-	Game_System::BgmPlay(lcf::Data::system.title_music);
+	Main_Data::game_system->BgmPlay(lcf::Data::system.title_music);
 }
 
 bool Scene_Title::CheckEnableTitleGraphicAndMusic() {
@@ -205,16 +205,16 @@ void Scene_Title::CommandNewGame() {
 		Output::Warning("The game has no start location set.");
 	} else {
 		Output::Debug("Starting new game");
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Player::SetupNewGame();
 	}
 }
 
 void Scene_Title::CommandContinue() {
 	if (continue_enabled) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	} else {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 
@@ -222,13 +222,13 @@ void Scene_Title::CommandContinue() {
 }
 
 void Scene_Title::CommandImport() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	Scene::Push(std::make_shared<Scene_Import>());
 }
 
 void Scene_Title::CommandShutdown() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	Transition::instance().InitErase(Transition::TransitionFadeOut, this);
 	Scene::Pop();
 }

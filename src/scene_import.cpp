@@ -91,7 +91,7 @@ void Scene_Import::Update() {
 void Scene_Import::UpdateScanAndProgress() {
 	// Every tick, we still check for user input specifically for canceling...
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 		return;
 	}

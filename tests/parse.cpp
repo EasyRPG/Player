@@ -14,29 +14,21 @@ constexpr char escape = '\\';
 
 struct DataInit {
 	DataInit() {
-		Main_Data::game_data = lcf::rpg::Save();
-		auto& actors = Main_Data::game_data.actors;
-		for (auto id : {1,2,3,4}) {
-			Main_Data::game_data.actors.push_back({});
-			Main_Data::game_data.actors.back().ID = id;
-			Main_Data::game_data.actors.back().level = 1;
-		}
-
-		for (const auto& actor : actors) {
+		for (int i = 0; i < 4; ++i) {
 			lcf::Data::actors.push_back({});
-			lcf::Data::actors.back().ID = actor.ID;
+			lcf::Data::actors.back().ID = i + 1;
 			lcf::Data::actors.back().Setup();
 		}
-		Main_Data::game_data.inventory.party.push_back(3);
+		lcf::rpg::SaveInventory inventory;
+		inventory.party.push_back(3);
 
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_party = std::make_unique<Game_Party>();
-		Main_Data::game_party->SetupFromSave(Main_Data::game_data.inventory);
+		Main_Data::game_party->SetupFromSave(std::move(inventory));
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k3, Game_Variables::max_2k3);
 		Main_Data::game_variables->SetWarning(0);
 	}
 	~DataInit() {
-		Main_Data::game_data = lcf::rpg::Save();
 		lcf::Data::actors.clear();
 		Main_Data::game_party.reset();
 		Main_Data::game_variables.reset();

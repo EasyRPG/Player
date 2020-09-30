@@ -35,7 +35,7 @@ Window_Base::Window_Base(int x, int y, int width, int height, Drawable::Flags fl
 	SetY(y);
 	SetWidth(width);
 	SetHeight(height);
-	SetStretch(Game_System::GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
+	SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
 	SetZ(Priority_Window);
 }
 
@@ -57,7 +57,7 @@ bool Window_Base::IsMovementActive() {
 void Window_Base::Update() {
 	Window::Update();
 	SetWindowskin(Cache::SystemOrBlack());
-	SetStretch(Game_System::GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
+	SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
 	UpdateMovement();
 }
 

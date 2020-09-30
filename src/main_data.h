@@ -20,13 +20,13 @@
 
 // Headers
 #include <lcf/data.h>
-#include <lcf/rpg/save.h>
 #include <string>
 #include <memory>
 
 /**
  * Main lcf::Data namespace.
  */
+class Game_System;
 class Game_Player;
 class Game_Screen;
 class Game_Pictures;
@@ -40,6 +40,7 @@ class Game_Quit;
 
 namespace Main_Data {
 	// Dynamic Game lcf::Data
+	extern std::unique_ptr<Game_System> game_system;
 	extern std::unique_ptr<Game_Switches> game_switches;
 	extern std::unique_ptr<Game_Variables> game_variables;
 	extern std::unique_ptr<Game_Screen> game_screen;
@@ -50,7 +51,6 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	extern std::unique_ptr<Game_Targets> game_targets;
 	extern std::unique_ptr<Game_Quit> game_quit;
-	extern lcf::rpg::Save game_data;
 
 	void Init();
 	void Cleanup();

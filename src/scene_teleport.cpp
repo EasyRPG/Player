@@ -50,7 +50,7 @@ void Scene_Teleport::Update() {
 			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
 		}
 
-		Game_System::SePlay(skill->sound_effect);
+		Main_Data::game_system->SePlay(skill->sound_effect);
 
 		const lcf::rpg::SaveTarget& target = teleport_window->GetTarget();
 
@@ -59,7 +59,7 @@ void Scene_Teleport::Update() {
 
 		Scene::PopUntil(Scene::Map);
 	} else if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 
 		Scene::Pop();
 	}

@@ -434,7 +434,7 @@ void Game_Event::UpdateNextMovementAction() {
 			|| IsPaused()
 			|| IsMoveRouteOverwritten()
 			|| IsStopCountActive()
-			|| (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning()))
+			|| (!Main_Data::game_system->GetMessageContinueEvents() && Game_Map::GetInterpreter().IsRunning()))
 	{
 		return;
 	}

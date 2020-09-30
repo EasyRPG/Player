@@ -104,7 +104,7 @@ void Scene_ActorTarget::Update() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	}
 }
@@ -112,7 +112,7 @@ void Scene_ActorTarget::Update() {
 void Scene_ActorTarget::UpdateItem() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (Main_Data::game_party->GetItemCount(id) <= 0) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
 		}
 		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
@@ -134,14 +134,14 @@ void Scene_ActorTarget::UpdateItem() {
 				assert(skill);
 				auto* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
 				if (animation) {
-					Game_System::SePlay(*animation);
+					Main_Data::game_system->SePlay(*animation);
 				}
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_UseItem));
 			}
 		}
 		else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 
 		status_window->Refresh();
@@ -154,21 +154,21 @@ void Scene_ActorTarget::UpdateSkill() {
 		Game_Actor* actor = &(*Main_Data::game_party)[actor_index];
 
 		if (actor->GetSp() < actor->CalculateSkillCost(id)) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
 			lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, id);
 			lcf::rpg::Animation* animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill->animation_id);
 			if (animation) {
-				Game_System::SePlay(*animation);
+				Main_Data::game_system->SePlay(*animation);
 			}
 			else {
 				Output::Warning("UpdateSkill: Skill {} references invalid animation {}", id, skill->animation_id);
 			}
 		}
 		else {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 
 		status_window->Refresh();

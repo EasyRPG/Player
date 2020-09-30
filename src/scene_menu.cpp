@@ -117,7 +117,7 @@ void Scene_Menu::CreateCommandWindow() {
 			options.push_back(ToString(lcf::Data::terms.order));
 			break;
 		case Wait:
-			options.push_back(ToString(Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off));
+			options.push_back(ToString(Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off));
 			break;
 		case Debug:
 			options.push_back("Debug");
@@ -136,7 +136,7 @@ void Scene_Menu::CreateCommandWindow() {
 		switch(*it) {
 		case Save:
 			// If save is forbidden disable this item
-			if (!Game_System::GetAllowSave()) {
+			if (!Main_Data::game_system->GetAllowSave()) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 		case Wait:
@@ -159,7 +159,7 @@ void Scene_Menu::CreateCommandWindow() {
 
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		menu_index = command_window->GetIndex();
@@ -167,9 +167,9 @@ void Scene_Menu::UpdateCommand() {
 		switch (command_options[menu_index]) {
 		case Item:
 			if (Main_Data::game_party->GetActors().empty()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_Item>());
 			}
 			break;
@@ -178,42 +178,42 @@ void Scene_Menu::UpdateCommand() {
 		case Status:
 		case Row:
 			if (Main_Data::game_party->GetActors().empty()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				command_window->SetActive(false);
 				menustatus_window->SetActive(true);
 				menustatus_window->SetIndex(0);
 			}
 			break;
 		case Save:
-			if (!Game_System::GetAllowSave()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			if (!Main_Data::game_system->GetAllowSave()) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_Save>());
 			}
 			break;
 		case Order:
 			if (Main_Data::game_party->GetActors().size() <= 1) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_Order>());
 			}
 			break;
 		case Wait:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			Game_System::ToggleAtbMode();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+			Main_Data::game_system->ToggleAtbMode();
 			command_window->SetItemText(menu_index,
-				Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
+				Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
 			break;
 		case Debug:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Debug>());
 			break;
 		case Quit:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Scene::Push(std::make_shared<Scene_End>());
 			break;
 		}
@@ -222,7 +222,7 @@ void Scene_Menu::UpdateCommand() {
 
 void Scene_Menu::UpdateActorSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		command_window->SetActive(true);
 		menustatus_window->SetActive(false);
 		menustatus_window->SetIndex(-1);
@@ -230,23 +230,23 @@ void Scene_Menu::UpdateActorSelection() {
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
 			if (!menustatus_window->GetActor()->CanAct()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 				return;
 			}
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Equip>(*menustatus_window->GetActor()));
 			break;
 		case Status:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Status>(menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			// Don't allow entire party in the back row.
 			const auto& actors = Main_Data::game_party->GetActors();
 			int num_in_back = 0;

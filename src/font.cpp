@@ -23,6 +23,7 @@
 
 #include "system.h"
 #include "game_system.h"
+#include "main_data.h"
 
 #ifdef HAVE_FREETYPE
 #	include <ft2build.h>
@@ -356,7 +357,8 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
-	return Default(Game_System::GetFontId() == lcf::rpg::System::Font_mincho);
+	const bool mincho = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
+	return Default(mincho);
 }
 
 FontRef Font::Default(bool const m) {

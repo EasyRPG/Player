@@ -26,21 +26,16 @@
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "game_player.h"
+#include <lcf/rpg/fwd.h>
 #include <lcf/rpg/encounter.h>
 #include <lcf/rpg/map.h>
 #include <lcf/rpg/mapinfo.h>
+#include <lcf/rpg/savemapinfo.h>
+#include <lcf/rpg/savepanorama.h>
+#include <lcf/rpg/savepartylocation.h>
+#include <lcf/rpg/savevehiclelocation.h>
+#include <lcf/rpg/savecommonevent.h>
 #include "async_op.h"
-
-namespace lcf {
-namespace rpg {
-class SaveMapInfo;
-class SavePanorama;
-class SaveCommonEvent;
-class SaveVehiceLocation;
-class SaveEventExecState;
-class Save;
-} // namespace rpg
-} // namespace lcf
 
 class FileRequestAsync;
 struct BattleArgs;

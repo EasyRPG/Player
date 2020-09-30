@@ -802,12 +802,12 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const {
-	return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
+	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 	if (!success) {
-		return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
+		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 	}
 	if (healing || IsAbsorb()) {
 		return NULL;
@@ -815,8 +815,8 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const 
 	if (GetAffectedHp() > -1) {
 		if (current_target != targets.end()) {
 			return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
-				&Game_System::GetSystemSE(Game_System::SFX_AllyDamage) :
-				&Game_System::GetSystemSE(Game_System::SFX_EnemyDamage));
+				&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage) :
+				&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
 		}
 	}
 
@@ -825,7 +825,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const 
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 	return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
-		NULL : &Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
+		NULL : &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
@@ -1056,7 +1056,7 @@ int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
+		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
 	}
 	else {
 		return NULL;
@@ -1659,7 +1659,7 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	if (item.type == lcf::rpg::Item::Type_medicine || item.type == lcf::rpg::Item::Type_switch) {
-		return &Game_System::GetSystemSE(Game_System::SFX_UseItem);
+		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_UseItem);
 	}
 	else {
 		return NULL;
@@ -1788,7 +1788,7 @@ int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
-	return &Game_System::GetSystemSE(Game_System::SFX_EnemyKill);
+	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill);
 }
 
 int Game_BattleAlgorithm::SelfDestruct::GetPhysicalDamageRate() const {
@@ -1871,7 +1871,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 		return AlgorithmBase::GetStartSe();
 	}
 	else {
-		return &Game_System::GetSystemSE(Game_System::SFX_Escape);
+		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape);
 	}
 }
 

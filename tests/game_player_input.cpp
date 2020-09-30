@@ -179,7 +179,7 @@ TEST_CASE("CallMenu") {
 TEST_CASE("CallMenuDisabled") {
 	const MockGame mg(map_id);
 
-	Game_System::SetAllowMenu(false);
+	Main_Data::game_system->SetAllowMenu(false);
 
 	testMenu(false);
 }

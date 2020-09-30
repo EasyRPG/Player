@@ -55,10 +55,10 @@ Scene_Battle::Scene_Battle(const BattleArgs& args)
 
 	// Face graphic is cleared when battle scene is created.
 	// Even if the battle gets interrupted by another scene and never starts.
-	Game_Message::ClearFace();
-	Game_System::SetBeforeBattleMusic(Game_System::GetCurrentBGM());
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
-	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
+	Main_Data::game_system->ClearMessageFace();
+	Main_Data::game_system->SetBeforeBattleMusic(Main_Data::game_system->GetCurrentBGM());
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_BeginBattle));
+	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Battle));
 
 	Game_Battle::SetTerrainId(args.terrain_id);
 	Game_Battle::ChangeBackground(args.background);
@@ -132,7 +132,7 @@ void Scene_Battle::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Transition::instance().InitShow(Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this);
+	Transition::instance().InitShow(Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_BeginBattleShow), this);
 }
 
 void Scene_Battle::TransitionOut(SceneType next_scene) {
@@ -148,7 +148,7 @@ void Scene_Battle::TransitionOut(SceneType next_scene) {
 		return;
 	}
 
-	transition.InitErase(Game_System::GetTransition(Game_System::Transition_EndBattleErase), this);
+	transition.InitErase(Main_Data::game_system->GetTransition(Main_Data::game_system->Transition_EndBattleErase), this);
 }
 
 void Scene_Battle::DrawBackground(Bitmap& dst) {
@@ -313,7 +313,7 @@ void Scene_Battle::EnemySelected() {
 		}
 	}
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
@@ -345,12 +345,12 @@ void Scene_Battle::AllySelected() {
 		assert("Invalid previous state for ally selection" && false);
 	}
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
 void Scene_Battle::AttackSelected() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	if (active_actor->HasAttackAll()) {
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
@@ -361,7 +361,7 @@ void Scene_Battle::AttackSelected() {
 }
 
 void Scene_Battle::DefendSelected() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(active_actor));
 
@@ -372,11 +372,11 @@ void Scene_Battle::ItemSelected() {
 	const lcf::rpg::Item* item = item_window->GetItem();
 
 	if (!item || !item_window->CheckEnable(item->ID)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	switch (item->type) {
 		case lcf::rpg::Item::Type_normal:
@@ -418,11 +418,11 @@ void Scene_Battle::SkillSelected() {
 	const lcf::rpg::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !skill_window->CheckEnable(skill->ID)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	AssignSkill(skill, nullptr);
 }

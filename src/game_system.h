@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include <map>
 #include <lcf/rpg/animation.h>
 #include <lcf/rpg/music.h>
 #include <lcf/rpg/sound.h>
@@ -28,13 +29,15 @@
 #include "color.h"
 #include "transition.h"
 #include "string_view.h"
+#include "async_handler.h"
 
 struct FileRequestResult;
 
 /**
  * Game System namespace.
  */
-namespace Game_System {
+class Game_System {
+public:
 	enum sys_bgm {
 		BGM_Battle,
 		BGM_Victory,
@@ -99,7 +102,13 @@ namespace Game_System {
 	/**
 	 * Initializes Game System.
 	 */
-	void Init();
+	Game_System();
+
+	/** Initialize from save game */
+	void SetupFromSave(lcf::rpg::SaveSystem save);
+
+	/** @return save game data */
+	const lcf::rpg::SaveSystem& GetSaveData() const;
 
 	/**
 	 * Plays a Music.
@@ -272,8 +281,6 @@ namespace Game_System {
 	void MemorizeBGM();
 	void PlayMemorizedBGM();
 
-	void OnBgmReady(FileRequestResult* result);
-	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
 	void ReloadSystemGraphic();
 
 	/**
@@ -291,12 +298,12 @@ namespace Game_System {
 	 * @return true when the file is supposed to Stop playback.
 	 *         false otherwise and file to play is returned as found_name
 	 */
-	bool IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name);
+	static bool IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name);
 
-	bool IsStopMusicFilename(const std::string& name, std::string& found_name);
-	bool IsStopMusicFilename(const std::string& name);
-	bool IsStopSoundFilename(const std::string& name, std::string& found_name);
-	bool IsStopSoundFilename(const std::string& name);
+	static bool IsStopMusicFilename(const std::string& name, std::string& found_name);
+	static bool IsStopMusicFilename(const std::string& name);
+	static bool IsStopSoundFilename(const std::string& name, std::string& found_name);
+	static bool IsStopSoundFilename(const std::string& name);
 
 	/** @return current atb mode */
 	AtbMode GetAtbMode();
@@ -351,7 +358,143 @@ namespace Game_System {
 
 	/** @return true if battle animations are flipped if attacked from behind */
 	bool GetInvertAnimations();
-}
+
+	/** Reset the face graphic. */
+	void ClearMessageFace();
+
+	/** @return name of file that contains the face. */
+	StringView GetMessageFaceName();
+
+	/**
+	 * Set FaceSet graphic file containing the face.
+	 *
+	 * @param face FaceSet file
+	 */
+	void SetMessageFaceName(const std::string& face);
+
+	/**
+	 * Gets index of the face to display.
+	 *
+	 * @return face index
+	 */
+	int GetMessageFaceIndex();
+
+	/**
+	 * Sets index of the face to display
+	 *
+	 * @param index face index
+	 */
+	void SetMessageFaceIndex(int index);
+
+	/** 
+	 * Whether to mirror the face. 
+	 *
+	 * @return true: flipped, false: normal
+	 */
+	bool IsMessageFaceFlipped();
+
+	/**
+	 * Sets whether to mirror the face.
+	 *
+	 * @param flipped Enable/Disable mirroring
+	 */
+	void SetMessageFaceFlipped(bool flipped);
+
+	/**
+	 * If the face shall be placed right.
+	 *
+	 * @return true: right side, false: left side
+	 */
+	bool IsMessageFaceRightPosition();
+
+	/**
+	 * Sets the face position.
+	 *
+	 * @param right true: right side, false: left side
+	 */
+	void SetMessageFaceRightPosition(bool right);
+
+	/**
+	 * Gets if the message background is transparent.
+	 *
+	 * @return message transparent
+	 */
+	bool IsMessageTransparent();
+
+	/**
+	 * Sets message box background state
+	 *
+	 * @param transparent true: transparent, false: opaque
+	 */
+	void SetMessageTransparent(bool transparent);
+
+	/**
+	 * Gets the message box position.
+	 *
+	 * @return 0: top, 1: middle, 2: bottom
+	 */
+	int GetMessagePosition();
+
+	/**
+	 * Sets the message box position.
+	 * Depending on the player position this value is ignored to prevent overlap.
+	 * (see SetPositionFixed)
+	 *
+	 * @param new_position 0: top, 1: middle, 2: bottom
+	 */
+	void SetMessagePosition(int new_position);
+
+	/**
+	 * Gets whether message box position is fixed.
+	 * In that case the hero can be obstructed.
+	 *
+	 * @return fixed
+	 */
+	bool IsMessagePositionFixed();
+
+	/**
+	 * Sets if message box is moved to avoid obscuring the player.
+	 *
+	 * @param fixed position fixed
+	 */
+	void SetMessagePositionFixed(bool fixed);
+
+	/**
+	 * Gets if parallel events continue while message box is displayed.
+	 *
+	 * @return whether events continue
+	 */
+	bool GetMessageContinueEvents();
+
+	/**
+	 * Sets if parallel events continue while message box is displayed.
+	 *
+	 * @param continue_events continue events
+	 */
+	void SetMessageContinueEvents(bool continue_events);
+
+	/**
+	 * Sets the RpgRt event message active flag.
+	 *
+	 * @param value what to set the flag to
+	 */
+	void SetMessageEventMessageActive(bool value);
+
+	/** @return the RpgRt event message active flag */
+	bool GetMessageEventMessageActive();
+private:
+	void OnBgmReady(FileRequestResult* result);
+	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
+	void OnChangeSystemGraphicReady(FileRequestResult* result);
+private:
+	lcf::rpg::SaveSystem data;
+	const lcf::rpg::System* dbsys;
+	FileRequestBinding music_request_id;
+	FileRequestBinding system_request_id;
+	std::map<std::string, FileRequestBinding> se_request_ids;
+	Color bg_color = Color{ 0, 0, 0, 255 };
+	bool bgm_pending = false;
+};
 
 inline bool Game_System::HasSystemGraphic() {
 	return !GetSystemName().empty();
@@ -369,5 +512,187 @@ inline bool Game_System::IsStopSoundFilename(const std::string& name) {
 	std::string s;
 	return IsStopSoundFilename(name, s);
 }
+
+inline void Game_System::ClearMessageFace() {
+	SetMessageFaceName("");
+	SetMessageFaceIndex(0);
+}
+
+inline StringView Game_System::GetMessageFaceName() {
+	return data.face_name;
+}
+
+inline void Game_System::SetMessageFaceName(const std::string& face) {
+	data.face_name = face;
+}
+
+inline int Game_System::GetMessageFaceIndex() {
+	return data.face_id;
+}
+
+inline void Game_System::SetMessageFaceIndex(int index) {
+	data.face_id = index;
+}
+
+inline bool Game_System::IsMessageFaceFlipped() {
+	return data.face_flip;
+}
+
+inline void Game_System::SetMessageFaceFlipped(bool flipped) {
+	data.face_flip = flipped;
+}
+
+inline bool Game_System::IsMessageFaceRightPosition() {
+	return data.face_right;
+}
+
+inline void Game_System::SetMessageFaceRightPosition(bool right) {
+	data.face_right = right;
+}
+
+inline void Game_System::SetMessageTransparent(bool transparent) {
+	data.message_transparent = transparent;
+}
+
+inline int Game_System::GetMessagePosition() {
+	return data.message_position;
+}
+
+inline void Game_System::SetMessagePosition(int new_position) {
+	data.message_position = new_position;
+}
+
+inline bool Game_System::IsMessagePositionFixed() {
+	return !data.message_prevent_overlap;
+}
+
+inline void Game_System::SetMessagePositionFixed(bool fixed) {
+	data.message_prevent_overlap = !fixed;
+}
+
+inline bool Game_System::GetMessageContinueEvents() {
+	return data.message_continue_events;
+}
+
+inline void Game_System::SetMessageContinueEvents(bool continue_events) {
+	data.message_continue_events = continue_events;
+}
+
+inline void Game_System::SetMessageEventMessageActive(bool value) {
+	data.event_message_active = value;
+}
+
+inline bool Game_System::GetMessageEventMessageActive() {
+	return data.event_message_active;
+}
+
+inline Game_System::AtbMode Game_System::GetAtbMode() {
+	return static_cast<Game_System::AtbMode>(data.atb_mode);
+}
+
+inline void Game_System::SetAtbMode(AtbMode m) {
+	data.atb_mode = m;
+}
+
+inline void Game_System::ToggleAtbMode() {
+	data.atb_mode = !data.atb_mode;
+}
+
+inline const lcf::rpg::Music& Game_System::GetBeforeBattleMusic() {
+	return data.before_battle_music;
+}
+
+inline void Game_System::SetBeforeBattleMusic(lcf::rpg::Music music) {
+	data.before_battle_music = std::move(music);
+}
+
+inline const lcf::rpg::Music& Game_System::GetBeforeVehicleMusic() {
+	return data.before_vehicle_music;
+}
+
+inline void Game_System::SetBeforeVehicleMusic(lcf::rpg::Music music) {
+	data.before_vehicle_music = std::move(music);
+}
+
+inline int Game_System::GetSaveSlot() {
+	return data.save_slot;
+}
+
+inline void Game_System::SetSaveSlot(int slot) {
+	data.save_slot = slot;
+}
+
+inline int Game_System::GetFrameCounter() {
+	return data.frame_count;
+}
+
+inline void Game_System::ResetFrameCounter() {
+	data.frame_count = 0;
+}
+
+inline void Game_System::IncFrameCounter() {
+	++data.frame_count;
+}
+
+inline Color Game_System::GetBackgroundColor() {
+	return bg_color;
+}
+
+inline bool Game_System::GetInvertAnimations() {
+	return dbsys->invert_animations;
+}
+
+inline int Game_System::GetSaveCount() {
+	return data.save_count;
+}
+
+inline StringView Game_System::GetSystem2Name() {
+	return dbsys->system2_name;
+}
+
+inline const lcf::rpg::Music& Game_System::GetCurrentBGM() {
+	return data.current_music;
+}
+
+inline void Game_System::MemorizeBGM() {
+	data.stored_music = data.current_music;
+}
+
+inline void Game_System::PlayMemorizedBGM() {
+	BgmPlay(data.stored_music);
+}
+
+inline void Game_System::SetAllowTeleport(bool allow) {
+	data.teleport_allowed = allow;
+}
+
+inline bool Game_System::GetAllowTeleport() {
+	return data.teleport_allowed;
+}
+
+inline void Game_System::SetAllowEscape(bool allow) {
+	data.escape_allowed = allow;
+}
+
+inline bool Game_System::GetAllowEscape() {
+	return data.escape_allowed;
+}
+
+inline void Game_System::SetAllowSave(bool allow) {
+	data.save_allowed = allow;
+}
+
+inline bool Game_System::GetAllowSave() {
+	return data.save_allowed;
+}
+
+inline void Game_System::SetAllowMenu(bool allow) {
+	data.menu_allowed = allow;
+}
+
+inline bool Game_System::GetAllowMenu() {
+	return data.menu_allowed;
+}
+
 
 #endif

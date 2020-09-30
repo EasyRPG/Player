@@ -79,7 +79,7 @@ void Window_ShopNumber::Update() {
 		}
 
 		if (last_number != number) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			Refresh();
 		}
 	}

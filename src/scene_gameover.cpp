@@ -36,7 +36,7 @@ void Scene_Gameover::Start() {
 		request->Start();
 	}
 	// Play gameover music
-	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
+	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
 }
 
 void Scene_Gameover::Update() {

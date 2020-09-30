@@ -267,7 +267,7 @@ void Scene_Battle_Rpg2k3::Update() {
 			}
 			// fallthrough
 		case State_SelectCommand:
-			if (Game_System::GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait) {
+			if (Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait) {
 				break;
 			}
 			// fallthrough
@@ -390,8 +390,8 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 		enemy_status_window->SetBackOpacity(transp);
 	}
 
-	if (!Cache::System2() && Game_System::HasSystem2Graphic()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("System2", Game_System::GetSystem2Name());
+	if (!Cache::System2() && Main_Data::game_system->HasSystem2Graphic()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("System2", Main_Data::game_system->GetSystem2Name());
 		request->SetGraphicFile(true);
 		request_id = request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
 		request->Start();
@@ -965,7 +965,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 
 			if (action->GetStartSe()) {
-				Game_System::SePlay(*action->GetStartSe());
+				Main_Data::game_system->SePlay(*action->GetStartSe());
 			}
 		}
 
@@ -1019,7 +1019,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		//FIXME: Figure out specific logic for 2k3 and remove GetResultSe() method.
 		//This method is no longer used in 2k battle system.
 		if (action->GetResultSe()) {
-			Game_System::SePlay(*action->GetResultSe());
+			Main_Data::game_system->SePlay(*action->GetResultSe());
 		}
 
 		battle_action_wait = 30;
@@ -1052,7 +1052,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 				if ((*it)->IsDead()) {
 					if (action->GetDeathSe()) {
-						Game_System::SePlay(*action->GetDeathSe());
+						Main_Data::game_system->SePlay(*action->GetDeathSe());
 					}
 				}
 
@@ -1139,7 +1139,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		switch (state) {
 		case State_Start:
 		case State_SelectOption:
@@ -1193,21 +1193,21 @@ bool Scene_Battle_Rpg2k3::IsEscapeAllowedFromActorCommand() const {
 void Scene_Battle_Rpg2k3::OptionSelected() {
 	switch (options_window->GetIndex()) {
 		case 0: // Battle
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			auto_battle = false;
 			SetState(State_SelectActor);
 			break;
 		case 1: // Auto Battle
 			auto_battle = true;
 			SetState(State_AutoBattle);
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			break;
 		case 2: // Escape
 			if (IsEscapeAllowedFromOptionWindow()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Escape(true);
 			} else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			}
 			break;
 	}
@@ -1228,30 +1228,30 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 			break;
 		case lcf::rpg::BattleCommand::Type_escape:
 			if (!IsEscapeAllowedFromActorCommand()) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			}
 			else {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				active_actor->SetAtbGauge(0);
 				SetState(State_Escape);
 			}
 			break;
 		case lcf::rpg::BattleCommand::Type_item:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			SetState(State_SelectItem);
 			break;
 		case lcf::rpg::BattleCommand::Type_skill:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			skill_window->SetSubsetFilter(0);
 			sp_window->SetBattler(*active_actor);
 			SetState(State_SelectSkill);
 			break;
 		case lcf::rpg::BattleCommand::Type_special:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			SpecialSelected();
 			break;
 		case lcf::rpg::BattleCommand::Type_subskill:
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			SubskillSelected();
 			break;
 		}
@@ -1292,7 +1292,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 }
 
 void Scene_Battle_Rpg2k3::SpecialSelected() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
 
@@ -1319,14 +1319,14 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
 		ActionSelectedCallback(active_actor);
 	} else {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 	}
 }
 
 void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
 	if (force_allow || TryEscape()) {
 		// There is no success text for escape in 2k3
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 		EndBattle(BattleResult::Escape);
 		return;
 	}
@@ -1387,7 +1387,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		message_window->SetHeight(32);
 		Game_Message::SetPendingMessage(std::move(pm));
 
-		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));
+		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Victory));
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
@@ -1417,15 +1417,15 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 		SetState(State_Defeat);
 
 		message_window->SetHeight(32);
-		Game_Message::SetPositionFixed(true);
-		Game_Message::SetPosition(0);
-		Game_Message::SetTransparent(false);
+		Main_Data::game_system->SetMessagePositionFixed(true);
+		Main_Data::game_system->SetMessagePosition(0);
+		Main_Data::game_system->SetMessageTransparent(false);
 
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
-		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
+		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
 		Game_Message::SetPendingMessage(std::move(pm));
 
 		return true;
@@ -1544,7 +1544,7 @@ void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 }
 
 bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
-	if (Game_System::GetInvertAnimations()) {
+	if (Main_Data::game_system->GetInvertAnimations()) {
 		return battler->IsDirectionFlipped() ^ (battler->GetType() == Game_Battler::Type_Enemy);
 	}
 	return false;

@@ -88,11 +88,11 @@ const lcf::rpg::Music& Game_Vehicle::GetBGM() {
 		assert(false);
 		break;
 	case Boat:
-		return Game_System::GetSystemBGM(Game_System::BGM_Boat);
+		return Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Boat);
 	case Ship:
-		return Game_System::GetSystemBGM(Game_System::BGM_Ship);
+		return Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Ship);
 	case Airship:
-		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
+		return Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Airship);
 	}
 
 	static lcf::rpg::Music empty;
