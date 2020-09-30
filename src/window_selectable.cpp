@@ -126,18 +126,34 @@ void Window_Selectable::UpdateArrows() {
 void Window_Selectable::Update() {
 	Window_Base::Update();
 	if (active && item_max > 0 && index >= 0) {
-		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-			if (index < item_max - column_max || column_max == 1) {
+		auto move_down = [&]() {
+			if (index < item_max - column_max || column_max == 1 ) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index = (index + column_max) % item_max;
 			}
+		};
+		if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+			move_down();
+		} else if (Input::IsRepeated(Input::DOWN)) {
+			if (endless_scrolling || (index + column_max) % item_max > index) {
+				move_down();
+			}
 		}
-		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+
+		auto move_up = [&]() {
 			if (index >= column_max || column_max == 1) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index = (index - column_max + item_max) % item_max;
 			}
+		};
+		if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+			move_up();
+		} else if (Input::IsRepeated(Input::UP)) {
+			if (endless_scrolling || (index - column_max + item_max) % item_max < index) {
+				move_up();
+			}
 		}
+
 		// page up/down is limited to selectables with one column
 		if (column_max == 1) {
 			if (Input::IsRepeated(Input::PAGE_DOWN) && index < item_max - 1) {
@@ -169,4 +185,9 @@ void Window_Selectable::Update() {
 	}
 	UpdateCursorRect();
 	UpdateArrows();
+}
+
+// Set endless scrolling state
+void Window_Selectable::SetEndlessScrolling(bool state) {
+	endless_scrolling = state;
 }
