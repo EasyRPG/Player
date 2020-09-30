@@ -28,6 +28,7 @@
 #include "game_battle.h"
 #include "game_party.h"
 #include "game_party_base.h"
+#include "game_player.h"
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_targets.h"
@@ -129,49 +130,19 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 		return false;
 	}
 
-	if (skill->type == lcf::rpg::Skill::Type_escape) {
-		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget();
-	}
-
-	if (skill->type == lcf::rpg::Skill::Type_teleport) {
-		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets();
-	}
-
-	if (skill->type == lcf::rpg::Skill::Type_switch) {
-		if (Game_Battle::IsBattleRunning()) {
-			return skill->occasion_battle;
-		} else {
-			return skill->occasion_field;
+	for (auto state_id: GetInflictedStates()) {
+		const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
+		if (state) {
+			if (state->restrict_skill && skill->physical_rate >= state->restrict_skill_level) {
+				return false;
+			}
+			if (state->restrict_magic && skill->magical_rate >= state->restrict_magic_level) {
+				return false;
+			}
 		}
 	}
 
-	// > 10 makes any skill usable
-	int32_t smallest_physical_rate = 11;
-	int32_t smallest_magical_rate = 11;
-
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator it = states.begin();
-		it != states.end(); ++it) {
-		// States are guaranteed to be valid
-		const lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, (*it));
-
-		if (state.restrict_skill) {
-			smallest_physical_rate = std::min(state.restrict_skill_level, smallest_physical_rate);
-		}
-
-		if (state.restrict_magic) {
-			smallest_magical_rate = std::min(state.restrict_magic_level, smallest_magical_rate);
-		}
-	}
-
-	if (skill->physical_rate >= smallest_physical_rate) {
-		return false;
-	}
-	if (skill->magical_rate >= smallest_magical_rate) {
-		return false;
-	}
-
-	return true;
+	return Algo::IsSkillUsable(*skill, true);
 }
 
 bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {

@@ -181,6 +181,16 @@ int CalcSelfDestructEffect(const Game_Battler& source,
  */
 int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost);
 
+/*
+ * Determine whether a skill is usable.
+ *
+ * @param skill the skill to check
+ * @param require_states_persist If we should require persistent states for non-battle.
+ * @return Whether the skill can be used.
+ */
+bool IsSkillUsable(const lcf::rpg::Skill& skill,
+		bool require_states_persist);
+
 } // namespace Algo
 
 

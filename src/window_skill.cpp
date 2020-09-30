@@ -121,7 +121,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 bool Window_Skill::CheckEnable(int skill_id) {
 	const Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
-	return actor->IsSkillLearned(skill_id) && Main_Data::game_party->IsSkillUsable(skill_id, actor);
+	return actor->IsSkillLearned(skill_id) && actor->IsSkillUsable(skill_id);
 }
 
 void Window_Skill::SetSubsetFilter(int subset) {
