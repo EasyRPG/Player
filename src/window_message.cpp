@@ -669,18 +669,18 @@ void Window_Message::UpdateCursorRect() {
 	if (index >= 0) {
 		int x_pos = 2;
 		int y_pos = (pending_message.GetChoiceStartLine() + index) * 16;
-		int width = contents->GetWidth();
+		int width = contents->GetWidth() - 4;
 
 		if (IsFaceEnabled()) {
 			if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 				x_pos += LeftMargin + FaceSize + RightFaceMargin;
 			}
-			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;
+			width = width - LeftMargin - FaceSize - RightFaceMargin;
 		}
 
-		cursor_rect = { x_pos, y_pos, width, 16 };
+		SetCursorRect(Rect(x_pos, y_pos, width, 16));
 	} else {
-		cursor_rect = { 0, 0, 0, 0 };
+		SetCursorRect(Rect());
 	}
 }
 
