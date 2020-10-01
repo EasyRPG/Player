@@ -6,20 +6,6 @@
 
 TEST_SUITE_BEGIN("DynRPG");
 
-class LogGuard {
-public:
-	LogGuard() {
-		lvl = Output::GetLogLevel();
-		Output::SetLogLevel(LogLevel::Error);
-	}
-
-	~LogGuard() {
-		Output::SetLogLevel(lvl);
-	}
-
-	LogLevel lvl;
-};
-
 TEST_CASE("Basic parsing") {
 	std::vector<std::string> args;
 	CHECK(DynRpg::ParseCommand(R"(@FunC abc , "Hello World", 42, 1.5, 1.5a, "Str"",ing")", args) == "func");
@@ -64,7 +50,8 @@ TEST_CASE("Tokens") {
 }
 
 TEST_CASE("Variable names") {
-	Main_Data::game_variables = std::make_unique<Game_Variables>(-99999, 99999);
+	const MockActor m;
+
 	std::vector<int32_t> vars = {100, 4, 2, 1};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);
@@ -80,7 +67,8 @@ TEST_CASE("Variable names") {
 }
 
 TEST_CASE("Variable names with junk") {
-	Main_Data::game_variables = std::make_unique<Game_Variables>(-99999, 99999);
+	const MockActor m;
+
 	std::vector<int32_t> vars = {0, 4, 2, 1};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);
@@ -94,12 +82,12 @@ TEST_CASE("Variable names with junk") {
 }
 
 TEST_CASE("Variable names with junk") {
-	Main_Data::game_variables = std::make_unique<Game_Variables>(-99999, 99999);
+	const MockActor m;
+
 	std::vector<int32_t> vars = {0, 4, 2};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);
 
-	MockActor m;
 	MakeDBActor(2);
 	MakeDBActor(4);
 	Main_Data::game_actors->GetActor(2)->SetName("Actor 2");
@@ -114,9 +102,10 @@ TEST_CASE("Variable names with junk") {
 }
 
 TEST_CASE("Arg parse") {
+	const MockActor m; // disable log
+
 	// 2.5x not tested here because the result differs between different C++ libraries
 	// See: https://bugs.llvm.org/show_bug.cgi?id=17782
-	LogGuard lg;
 	std::vector<std::string> args = {"A", "1y", "2.5 x"};
 	bool okay = false;
 
@@ -161,11 +150,11 @@ TEST_CASE("Arg parse") {
 }
 
 TEST_CASE("easyrpg dynrpg invoke") {
-	Main_Data::game_variables = std::make_unique<Game_Variables>(-99999, 99999);
+	const MockActor m;
+
 	std::vector<int32_t> vars = {-1};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);
-	LogGuard lg;
 
 	DynRpg::Invoke("@easyrpg_add 1, 2, 4");
 	CHECK(Main_Data::game_variables->Get(1) == 6);
@@ -197,7 +186,8 @@ TEST_CASE("easyrpg dynrpg invoke") {
 }
 
 TEST_CASE("Incompatible changes") {
-	LogGuard lg;
+	const MockActor m; // disable log
+
 	std::vector<std::string> args;
 
 	// Empty function name (DynRPG accepts this, but makes no sense)
