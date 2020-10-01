@@ -46,6 +46,7 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
+#include "dynrpg.h"
 #include "filefinder.h"
 #include "fileext_guesser.h"
 #include "game_actors.h"
@@ -397,6 +398,7 @@ void Player::Exit() {
 
 	Player::ResetGameObjects();
 	Font::Dispose();
+	DynRpg::Reset();
 	Graphics::Quit();
 	FileFinder::Quit();
 	Output::Quit();
@@ -822,6 +824,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
+	DynRpg::Reset();
+
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	Main_Data::game_system->ReloadSystemGraphic();
@@ -921,7 +925,7 @@ static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 			std::move(save.common_events));
 }
 
-void Player::LoadSavegame(const std::string& save_name) {
+void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
 	Main_Data::game_system->BgmFade(800);
 
@@ -996,7 +1000,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
-	Scene::Push(std::make_shared<Scene_Map>(true));
+	Scene::Push(std::make_shared<Scene_Map>(save_id));
 }
 
 static void OnMapFileReady(FileRequestResult*) {
@@ -1026,7 +1030,7 @@ void Player::SetupNewGame() {
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
-	Scene::Push(std::make_shared<Scene_Map>(false));
+	Scene::Push(std::make_shared<Scene_Map>(0));
 }
 
 void Player::SetupPlayerSpawn() {

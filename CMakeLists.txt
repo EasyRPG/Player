@@ -91,6 +91,10 @@ add_library(${PROJECT_NAME} STATIC
 	src/drawable_list.h
 	src/drawable_mgr.cpp
 	src/drawable_mgr.h
+	src/dynrpg.cpp
+	src/dynrpg.h
+	src/dynrpg_easyrpg.cpp
+	src/dynrpg_easyrpg.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h

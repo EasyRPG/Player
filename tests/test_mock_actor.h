@@ -5,6 +5,7 @@
 #include "game_party.h"
 #include "game_enemyparty.h"
 #include "game_system.h"
+#include "game_variables.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -87,6 +88,7 @@ public:
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 		Main_Data::game_party = std::make_unique<Game_Party>();
+		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k, Game_Variables::max_2k);
 
 		Main_Data::game_party->SetupNewGame();
 	}
@@ -103,8 +105,8 @@ private:
 	LogLevel _ll = {};
 };
 
-inline lcf::rpg::Actor* MakeDBActor(int id, int level, int final_level,
-		int hp, int sp, int atk, int def, int spi, int agi,
+inline lcf::rpg::Actor* MakeDBActor(int id, int level = 1, int final_level = 50,
+		int hp = 1, int sp = 0, int atk = 0, int def = 0, int spi = 0, int agi = 0,
 		bool two_weapon = false, bool lock_equip = false, bool autobattle = false, bool super_guard = false)
 {
 	auto& actor = lcf::Data::actors[id - 1];

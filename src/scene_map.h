@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	explicit Scene_Map(bool from_save);
+	explicit Scene_Map(int from_save_id);
 
 	~Scene_Map();
 
@@ -91,7 +91,7 @@ private:
 	std::unique_ptr<Window_Message> message_window;
 
 	int debug_menuoverwrite_counter = 0;
-	bool from_save = false;
+	int from_save_id = 0;
 	bool screen_erased_by_event = false;
 
 	AsyncContinuation map_async_continuation = {};

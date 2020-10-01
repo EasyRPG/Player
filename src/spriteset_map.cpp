@@ -18,6 +18,7 @@
 // Headers
 #include "spriteset_map.h"
 #include "cache.h"
+#include "dynrpg.h"
 #include "game_map.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
@@ -109,6 +110,8 @@ void Spriteset_Map::Update() {
 
 	timer1->Update();
 	timer2->Update();
+
+	DynRpg::Update();
 }
 
 // Finds the sprite for a specific character

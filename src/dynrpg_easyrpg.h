@@ -15,25 +15,24 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
-#include <sstream>
-#include "filefinder.h"
-#include "output.h"
-#include "player.h"
-#include "scene_load.h"
-#include "scene_map.h"
+#ifndef EP_DYNRPG_EASYRPG_H
+#define EP_DYNRPG_EASYRPG_H
 
-Scene_Load::Scene_Load() :
-	Scene_File(ToString(lcf::Data::terms.load_game_message)) {
-	Scene::type = Scene::Load;
+#include "dynrpg.h"
+
+namespace DynRpg {
+	/**
+	 * A DynRPG plugin that provides EasyRPG specific built-in functions.
+	 * Mostly for testing.
+	 */
+	class EasyRpgPlugin : public DynRpgPlugin {
+	public:
+		EasyRpgPlugin() : DynRpgPlugin("EasyRpgPlugin") {}
+
+		void RegisterFunctions() override;
+		void Load(const std::vector<uint8_t>& buffer) override;
+		std::vector<uint8_t> Save() override;
+	};
 }
 
-void Scene_Load::Action(int index) {
-	std::string save_name = FileFinder::FindDefault(*tree, fmt::format("Save{:02d}.lsd", index + 1));
-
-	Player::LoadSavegame(save_name, index + 1);
-}
-
-bool Scene_Load::IsSlotValid(int index) {
-	return file_windows[index]->IsValid();
-}
+#endif

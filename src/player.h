@@ -144,8 +144,9 @@ namespace Player {
 	 * Loads savegame data.
 	 *
 	 * @param save_file Savegame file to load
+	 * @param save_id ID of the savegame to load
 	 */
-	void LoadSavegame(const std::string& save_file);
+	void LoadSavegame(const std::string& save_file, int save_id = 0);
 
 	/**
 	 * Starts a new game
