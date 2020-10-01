@@ -232,16 +232,21 @@ public:
 
 	/**
 	 * Sets the current battler HP.
+	 *
+	 * @param hp the new hp value to try to set
+	 * @return the actual hp set
 	 */
-	virtual void SetHp(int hp) = 0;
+	virtual int SetHp(int hp) = 0;
 
 	/**
 	 * Increases/Decreases hp.
 	 * Also handles death condition.
 	 *
 	 * @param hp relative hp change
+	 * @param lethal whether this change can kill the battler or not. If not, minimum 1 hp is allowed.
+	 * @return how much hp was actually changed.
 	 */
-	virtual void ChangeHp(int hp);
+	int ChangeHp(int hp, bool lethal);
 
 	/**
 	 * Gets the battler max HP.
@@ -266,15 +271,18 @@ public:
 
 	/**
 	 * Sets the current battler SP.
+	 * @param sp the new sp value to try to set
+	 * @return the actual sp set
 	 */
-	virtual void SetSp(int _sp) = 0;
+	virtual int SetSp(int sp) = 0;
 
 	/**
 	 * Increases/Decreases sp.
 	 *
 	 * @param sp relative sp change
+	 * @return how much hp was actually changed.
 	 */
-	virtual void ChangeSp(int sp);
+	int ChangeSp(int sp);
 
 	/**
 	 * Gets the battler max SP.
@@ -459,13 +467,37 @@ public:
 	 */
 	void SetAgiModifier(int modifier);
 
-	void ChangeAtkModifier(int modifier);
+	/**
+	 * Increases/Decreases battler attack modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier was actually changed.
+	 */
+	int ChangeAtkModifier(int modifier);
 
-	void ChangeDefModifier(int modifier);
+	/**
+	 * Increases/Decreases battler defense modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier was actually changed.
+	 */
+	int ChangeDefModifier(int modifier);
 
-	void ChangeSpiModifier(int modifier);
+	/**
+	 * Increases/Decreases battler spirit modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier was actually changed.
+	 */
+	int ChangeSpiModifier(int modifier);
 
-	void ChangeAgiModifier(int modifier);
+	/**
+	 * Increases/Decreases battler agility modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier was actually changed.
+	 */
+	int ChangeAgiModifier(int modifier);
 
 	/**
 	 * Add a State.
@@ -772,7 +804,7 @@ inline Color Game_Battler::GetFlashColor() const {
 }
 
 inline void Game_Battler::Kill() {
-	ChangeHp(-GetHp());
+	ChangeHp(-GetHp(), true);
 }
 
 inline bool Game_Battler::IsDead() const {
@@ -797,22 +829,6 @@ inline void Game_Battler::SetSpiModifier(int modifier) {
 
 inline void Game_Battler::SetAgiModifier(int modifier) {
 	agi_modifier = modifier;
-}
-
-inline void Game_Battler::ChangeAtkModifier(int modifier) {
-	SetAtkModifier(atk_modifier + modifier);
-}
-
-inline void Game_Battler::ChangeDefModifier(int modifier) {
-	SetDefModifier(def_modifier + modifier);
-}
-
-inline void Game_Battler::ChangeSpiModifier(int modifier) {
-	SetSpiModifier(spi_modifier + modifier);
-}
-
-inline void Game_Battler::ChangeAgiModifier(int modifier) {
-	SetAgiModifier(agi_modifier + modifier);
 }
 
 inline bool Game_Battler::IsCharged() const {

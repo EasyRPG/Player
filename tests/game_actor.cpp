@@ -770,5 +770,94 @@ TEST_CASE("AttributeShiftEquip") {
 	}
 }
 
+TEST_CASE("ChangeHp") {
+	const MockActor m;
+
+	auto actor = MakeActor(1, 1, 1, 500, 500, 500, 500, 500, 500);
+
+	REQUIRE_EQ(actor.GetHp(), 500);
+
+	SUBCASE("dmg") {
+		REQUIRE_EQ(actor.ChangeHp(-9999, true), -500);
+		REQUIRE_EQ(actor.GetHp(), 0);
+		REQUIRE(actor.IsDead());
+
+		REQUIRE_EQ(actor.ChangeHp(9999, true), 0);
+	}
+
+	SUBCASE("kill") {
+		actor.Kill();
+		REQUIRE_EQ(actor.GetHp(), 0);
+		REQUIRE(actor.IsDead());
+
+		REQUIRE_EQ(actor.ChangeHp(9999, true), 0);
+	}
+
+	SUBCASE("dmg_nokill") {
+		REQUIRE_EQ(actor.ChangeHp(-9999, false), -499);
+		REQUIRE_EQ(actor.GetHp(), 1);
+		REQUIRE_FALSE(actor.IsDead());
+
+		REQUIRE_EQ(actor.ChangeHp(9999, true), 499);
+		REQUIRE_EQ(actor.GetHp(), 500);
+		REQUIRE_FALSE(actor.IsDead());
+	}
+}
+
+TEST_CASE("ChangeSp") {
+	const MockActor m;
+
+	auto actor = MakeActor(1, 1, 1, 500, 500, 500, 500, 500, 500);
+
+	REQUIRE_EQ(actor.GetSp(), 500);
+
+	REQUIRE_EQ(actor.ChangeSp(-9999), -500);
+	REQUIRE_EQ(actor.GetSp(), 0);
+
+	REQUIRE_EQ(actor.ChangeSp(9999), 500);
+}
+
+TEST_CASE("ChangeParam") {
+	const MockActor m;
+
+	auto actor = MakeActor(1, 1, 1, 500, 500, 200, 300, 400, 500);
+
+	REQUIRE_EQ(actor.GetAtk(), 200);
+	REQUIRE_EQ(actor.GetDef(), 300);
+	REQUIRE_EQ(actor.GetSpi(), 400);
+	REQUIRE_EQ(actor.GetAgi(), 500);
+
+	SUBCASE("atk") {
+		REQUIRE_EQ(actor.ChangeAtkModifier(-9999), -100);
+		REQUIRE_EQ(actor.GetAtk(), 100);
+
+		REQUIRE_EQ(actor.ChangeAtkModifier(9999), 300);
+		REQUIRE_EQ(actor.GetAtk(), 400);
+	}
+
+	SUBCASE("def") {
+		REQUIRE_EQ(actor.ChangeDefModifier(-9999), -150);
+		REQUIRE_EQ(actor.GetDef(), 150);
+
+		REQUIRE_EQ(actor.ChangeDefModifier(9999), 450);
+		REQUIRE_EQ(actor.GetDef(), 600);
+	}
+
+	SUBCASE("spi") {
+		REQUIRE_EQ(actor.ChangeSpiModifier(-9999), -200);
+		REQUIRE_EQ(actor.GetSpi(), 200);
+
+		REQUIRE_EQ(actor.ChangeSpiModifier(9999), 600);
+		REQUIRE_EQ(actor.GetSpi(), 800);
+	}
+
+	SUBCASE("agi") {
+		REQUIRE_EQ(actor.ChangeAgiModifier(-9999), -250);
+		REQUIRE_EQ(actor.GetAgi(), 250);
+
+		REQUIRE_EQ(actor.ChangeAgiModifier(9999), 750);
+		REQUIRE_EQ(actor.GetAgi(), 1000);
+	}
+}
 
 TEST_SUITE_END();

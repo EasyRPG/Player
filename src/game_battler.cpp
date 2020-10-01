@@ -207,7 +207,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 		}
 
 		if (hp_change > 0 && !HasFullHp()) {
-			ChangeHp(hp_change - revived);
+			ChangeHp(hp_change - revived, false);
 			was_used = true;
 		}
 
@@ -303,11 +303,11 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		if (!negative_effect) {
 			if (effect > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
 				was_used = true;
-				ChangeHp(effect - revived);
+				ChangeHp(effect - revived, false);
 			}
 			else if (effect > 0 && cure_hp_percentage) {
 				was_used = true;
-				ChangeHp(GetMaxHp() * effect / 100 - revived);
+				ChangeHp(GetMaxHp() * effect / 100 - revived, false);
 			}
 
 			if (effect > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
@@ -317,7 +317,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		} else {
 			if (effect > 0 && skill->affect_hp && !IsDead()) {
 				was_used = true;
-				ChangeHp(std::max<int>(-effect, -GetHp() + 1));
+				ChangeHp(-effect, false);
 			}
 
 			if (effect > 0 && skill->affect_sp && !IsDead()) {
@@ -403,12 +403,10 @@ int Game_Battler::ApplyConditions() {
 		lcf::rpg::State& state = *lcf::ReaderUtil::GetElement(lcf::Data::states, inflicted);
 		int hp = state.hp_change_val + (GetMaxHp() * state.hp_change_max / 100);
 		int sp = state.sp_change_val + (GetMaxSp() * state.sp_change_max / 100);
-		int source_hp = this->GetHp();
-		int source_sp = this->GetSp();
 		int src_hp = 0;
 		int src_sp = 0;
 		if (state.hp_change_type == state.ChangeType_lose) {
-			src_hp = -std::min(source_hp - 1, hp);
+			src_hp = -hp;
 			if(src_hp > 0) {
 				src_hp = 0;
 			}
@@ -423,7 +421,7 @@ int Game_Battler::ApplyConditions() {
 			src_hp = 0;
 		}
 		if (state.sp_change_type == state.ChangeType_lose) {
-			src_sp = -std::min(source_sp, sp);
+			src_sp = -sp;
 			if(src_sp > 0) {
 				src_sp = 0;
 			}
@@ -438,7 +436,7 @@ int Game_Battler::ApplyConditions() {
 		else {
 			src_sp = 0;
 		}
-		this->ChangeHp(src_hp);
+		this->ChangeHp(src_hp, false);
 		this->ChangeSp(src_sp);
 		damageTaken += src_hp;
 	}
@@ -454,16 +452,22 @@ void Game_Battler::RemoveAllStates() {
 	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
-
-void Game_Battler::ChangeHp(int hp) {
-	if (!IsDead()) {
-		SetHp(GetHp() + hp);
-
-		// Death
-		if (GetHp() <= 0) {
-			AddState(lcf::rpg::State::kDeathID, true);
-		}
+int Game_Battler::ChangeHp(int hp, bool lethal) {
+	if (IsDead()) {
+		return 0;
 	}
+	const auto prev_hp = GetHp();
+	auto req_new_hp = prev_hp + hp;
+	if (!lethal) {
+		req_new_hp = std::max(1, req_new_hp);
+	}
+	auto new_hp = SetHp(req_new_hp);
+
+	// Death
+	if (new_hp <= 0) {
+		AddState(lcf::rpg::State::kDeathID, true);
+	}
+	return new_hp - prev_hp;
 }
 
 int Game_Battler::GetMaxHp() const {
@@ -474,8 +478,10 @@ bool Game_Battler::HasFullHp() const {
 	return GetMaxHp() == GetHp();
 }
 
-void Game_Battler::ChangeSp(int sp) {
-	SetSp(GetSp() + sp);
+int Game_Battler::ChangeSp(int sp) {
+	const auto prev_sp = GetSp();
+	const auto new_sp = SetSp(prev_sp + sp);
+	return new_sp - prev_sp;
 }
 
 int Game_Battler::GetMaxSp() const {
@@ -657,5 +663,33 @@ void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
 	flash.blue = b;
 	flash.current_level = power;
 	flash.time_left = frames;
+}
+
+int Game_Battler::ChangeAtkModifier(int modifier) {
+	const auto prev = atk_modifier;
+	const auto base = GetBaseAtk();
+	SetAtkModifier(Utils::Clamp(atk_modifier + modifier, -base / 2, base));
+	return atk_modifier - prev;
+}
+
+int Game_Battler::ChangeDefModifier(int modifier) {
+	const auto prev = def_modifier;
+	const auto base = GetBaseDef();
+	SetDefModifier(Utils::Clamp(def_modifier + modifier, -base / 2, base));
+	return def_modifier - prev;
+}
+
+int Game_Battler::ChangeSpiModifier(int modifier) {
+	const auto prev = spi_modifier;
+	const auto base = GetBaseSpi();
+	SetSpiModifier(Utils::Clamp(spi_modifier + modifier, -base / 2, base));
+	return spi_modifier - prev;
+}
+
+int Game_Battler::ChangeAgiModifier(int modifier) {
+	const auto prev = agi_modifier;
+	const auto base = GetBaseAgi();
+	SetAgiModifier(Utils::Clamp(agi_modifier + modifier, -base / 2, base));
+	return agi_modifier - prev;
 }
 

@@ -503,10 +503,10 @@ public:
 	void FullHeal();
 
 	int GetHp() const override;
-	void SetHp(int _hp) override;
+	int SetHp(int _hp) override;
 
 	int GetSp() const override;
-	void SetSp(int _sp) override;
+	int SetSp(int _sp) override;
 
 	/**
 	 * Gets the max HP for the current level.

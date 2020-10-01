@@ -1721,13 +1721,7 @@ bool Game_Interpreter::CommandChangeHP(lcf::rpg::EventCommand const& com) { // C
 		amount = -amount;
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		int hp = actor->GetHp();
-
-		if (!lethal && hp + amount <= 0) {
-			actor->ChangeHp(-hp + 1);
-		} else {
-			actor->ChangeHp(amount);
-		}
+		actor->ChangeHp(amount, lethal);
 
 		if (actor->IsDead()) {
 			Game_Battle::SetNeedRefresh(true);
@@ -1802,7 +1796,7 @@ bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com)
 		result = Algo::VarianceAdjustEffect(result, var);
 
 		result = std::max(0, result);
-		actor->ChangeHp(-result);
+		actor->ChangeHp(-result, true);
 
 		if (com.parameters[6] != 0) {
 			Main_Data::game_variables->Set(com.parameters[7], result);
