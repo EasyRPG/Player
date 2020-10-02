@@ -299,6 +299,18 @@ void Scene_Battle_Rpg2k3::Update() {
 		default:;
 	}
 
+	if (escape_initiated) {
+		for (auto& actor: Main_Data::game_party->GetActors()) {
+			Point p = actor->GetBattlePosition();
+			if (actor->IsDirectionFlipped()) {
+				p.x -= 6;
+			} else {
+				p.x += 6;
+			}
+			actor->SetBattlePosition(p);
+		}
+	}
+
 	for (std::vector<FloatText>::iterator it = floating_texts.begin();
 		it != floating_texts.end();) {
 		int &time = (*it).remaining_time;
@@ -1375,6 +1387,16 @@ void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
 	if (force_allow || TryEscape()) {
 		// There is no success text for escape in 2k3
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
+		for (auto& actor: Main_Data::game_party->GetActors()) {
+			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			if (sprite) {
+				if (actor->IsDirectionFlipped()) {
+					sprite->SetAnimationState(Sprite_Battler::AnimationState_WalkingLeft);
+				} else {
+					sprite->SetAnimationState(Sprite_Battler::AnimationState_WalkingRight);
+				}
+			}
+		}
 		escape_initiated = true;
 		SetWait(10, 30);
 		return;
