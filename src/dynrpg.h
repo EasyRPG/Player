@@ -44,6 +44,7 @@ namespace DynRpg {
 		template <typename T>
 		inline bool parse_arg(StringView, dyn_arg_list, const int, T& value, bool& parse_okay) {
 			static_assert(sizeof(T) == -1, "Only parsing int, float and std::string supported");
+			return false;
 		}
 
 		// FIXME: Extracting floats that are followed by chars behaviour varies depending on the C++ library
