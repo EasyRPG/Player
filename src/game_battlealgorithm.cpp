@@ -1248,7 +1248,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (IsNegativeSkill()) {
 		if (skill.affect_hp) {
 			if (skill.affect_sp) {
-				if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
+				if (GetAffectedHp() == -1 && GetAffectedSp() <= 0) {
 					this->success = false;
 					return this->success;
 				}
@@ -1260,7 +1260,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 		} else {
 			if (skill.affect_sp) {
-				if (GetAffectedSp() == -1) {
+				if (GetAffectedSp() <= 0) {
 					this->success = false;
 					return this->success;
 				}
