@@ -281,9 +281,6 @@ void Scene_Battle_Rpg2k3::Update() {
 
 				if (state != State_SelectEnemyTarget) {
 					int old_state = state;
-					if (state == State_SelectActor || state == State_AutoBattle) {
-						SelectNextActor();
-					}
 
 					if (old_state == state && battle_actions.empty()) {
 						// No actor got the turn
@@ -300,6 +297,10 @@ void Scene_Battle_Rpg2k3::Update() {
 								//FIXME: Do we need to handle invalid actions or empty action list here?
 							}
 						}
+					}
+
+					if (state == State_SelectActor || state == State_AutoBattle) {
+						SelectNextActor();
 					}
 				}
 			}
