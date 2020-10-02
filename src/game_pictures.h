@@ -86,8 +86,8 @@ public:
 	void OnMapScrolled(int dx, int dy);
 
 	struct Picture {
-		Picture(int id) { data.ID = id; }
-		Picture(lcf::rpg::SavePicture data);
+		explicit Picture(int id) { data.ID = id; }
+		explicit Picture(lcf::rpg::SavePicture data);
 
 		Sprite_Picture* sprite = nullptr;
 		lcf::rpg::SavePicture data;

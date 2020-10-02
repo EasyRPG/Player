@@ -95,6 +95,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/dynrpg.h
 	src/dynrpg_easyrpg.cpp
 	src/dynrpg_easyrpg.h
+	src/dynrpg_textplugin.cpp
+	src/dynrpg_textplugin.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h

@@ -230,6 +230,7 @@ void Scene_Map::Update() {
 		UpdateInn();
 		return;
 	}
+
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
 }

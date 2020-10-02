@@ -42,14 +42,14 @@ using dynfunc = bool(*)(dyn_arg_list);
 namespace DynRpg {
 	namespace detail {
 		template <typename T>
-		inline bool parse_arg(StringView, dyn_arg_list, const int, T& value, bool& parse_okay) {
+		inline bool parse_arg(StringView, dyn_arg_list, const int, T&, bool&, bool) {
 			static_assert(sizeof(T) == -1, "Only parsing int, float and std::string supported");
 		}
 
 		// FIXME: Extracting floats that are followed by chars behaviour varies depending on the C++ library
 		// see https://bugs.llvm.org/show_bug.cgi?id=17782
 		template <>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, float& value, bool& parse_okay) {
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, float& value, bool& parse_okay, bool warn) {
 			if (!parse_okay) return false;
 			value = 0.0;
 			if (args[i].empty()) {
@@ -61,14 +61,15 @@ namespace DynRpg {
 			iss >> value;
 			parse_okay = !iss.fail();
 			if (!parse_okay) {
-				Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]);
+				if (warn)
+					Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]);
 				parse_okay = false;
 			}
 			return parse_okay;
 		}
 
 		template <>
-		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, int& value, bool& parse_okay) {
+		inline bool parse_arg(StringView func_name, dyn_arg_list args, const int i, int& value, bool& parse_okay, bool warn) {
 			if (!parse_okay) return false;
 			value = 0;
 			if (args[i].empty()) {
@@ -79,14 +80,15 @@ namespace DynRpg {
 			iss >> value;
 			parse_okay = !iss.fail();
 			if (!parse_okay) {
-				Output::Warning("{}: Arg {} ({}) is not an integer", func_name, i, args[i]);
+				if (warn)
+					Output::Warning("{}: Arg {} ({}) is not an integer", func_name, i, args[i]);
 				parse_okay = false;
 			}
 			return parse_okay;
 		}
 
 		template <>
-		inline bool parse_arg(StringView, dyn_arg_list args, const int i, std::string& value, bool& parse_okay) {
+		inline bool parse_arg(StringView, dyn_arg_list args, const int i, std::string& value, bool& parse_okay, bool) {
 			if (!parse_okay) return false;
 			value = args[i];
 			parse_okay = true;
@@ -94,8 +96,8 @@ namespace DynRpg {
 		}
 
 		template <typename Tuple, std::size_t... I>
-		inline void parse_args(StringView func_name, dyn_arg_list in, Tuple& value, bool& parse_okay, std::index_sequence<I...>) {
-			(void)std::initializer_list<bool>{parse_arg(func_name, in, I, std::get<I>(value), parse_okay)...};
+		inline void parse_args(StringView func_name, dyn_arg_list in, Tuple& value, bool& parse_okay, bool warn, std::index_sequence<I...>) {
+			(void)std::initializer_list<bool>{parse_arg(func_name, in, I, std::get<I>(value), parse_okay, warn)...};
 		}
 	}
 
@@ -111,16 +113,17 @@ namespace DynRpg {
 	void Save(int slot);
 
 	template <typename... Targs>
-	std::tuple<Targs...> ParseArgs(StringView func_name, dyn_arg_list args, bool* parse_okay = nullptr) {
+	std::tuple<Targs...> ParseArgs(StringView func_name, dyn_arg_list args, bool* parse_okay = nullptr, bool warn = true) {
 		std::tuple<Targs...> t;
 		if (args.size() < sizeof...(Targs)) {
 			if (parse_okay)
 				*parse_okay = false;
-			Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), sizeof...(Targs));
+			if (warn)
+				Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), sizeof...(Targs));
 			return t;
 		}
 		bool okay = true;
-		detail::parse_args(func_name, args, t, okay, std::make_index_sequence<sizeof...(Targs)>{});
+		detail::parse_args(func_name, args, t, okay, warn, std::make_index_sequence<sizeof...(Targs)>{});
 		if (parse_okay)
 			*parse_okay = okay;
 		return t;

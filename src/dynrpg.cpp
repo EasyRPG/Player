@@ -25,6 +25,7 @@
 #include "player.h"
 
 #include "dynrpg_easyrpg.h"
+#include "dynrpg_textplugin.h"
 
 #include <cstring>
 #include <fstream>
@@ -184,7 +185,8 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 
 void create_all_plugins() {
 	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
-
+	plugins.emplace_back(new DynRpg::TextPlugin());
+	
 	for (auto& plugin : plugins) {
 		plugin->RegisterFunctions();
 	}
