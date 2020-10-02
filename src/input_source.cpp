@@ -187,6 +187,12 @@ void Input::Source::Record() {
 	}
 }
 
+void Input::Source::AddRecordingData(Input::RecordingData type, StringView data) {
+	if (record_log) {
+		*record_log << static_cast<char>(type) << " " << data << "\n";
+	}
+}
+
 void Input::LogSource::UpdateSystem() {
 	// input log does not record actions outside of logical frames.
 }

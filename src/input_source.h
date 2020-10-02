@@ -26,6 +26,14 @@
 #include "keys.h"
 
 namespace Input {
+	enum class RecordingData : char {
+		CommandLine = 'C',
+		EventCommand = 'E', // unused - reserved
+		Hash = 'L',
+		MoveRoute = 'M', // unused - reserved
+		GameTitle = 'N'
+	};
+
 	/**
 	 * A source for button presses.
 	 */
@@ -47,6 +55,18 @@ namespace Input {
 
 		/** Called once each physical frame when no logical frames occured to update pressed_buttons for system buttons. */
 		virtual void UpdateSystem() = 0;
+
+		/**
+		 * Used to submit additional metadata for input recording
+		 * @param type type of data sent
+		 * @param data Sent data
+		 */
+		void AddRecordingData(RecordingData type, StringView data);
+
+		/** @return If the input is recorded */
+		bool IsRecording() const {
+			return bool(record_log);
+		}
 
 		const std::bitset<BUTTON_COUNT>& GetPressedButtons() const {
 			return pressed_buttons;

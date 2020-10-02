@@ -22,10 +22,11 @@
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
-#include <stdio.h>
+#include <cstdio>
 #include <algorithm>
 #include <random>
 #include <cctype>
+#include <zlib.h>
 
 namespace {
 	char Lower(char c) {
@@ -560,6 +561,16 @@ std::vector<uint8_t> Utils::ReadStream(std::istream& stream) {
 	outbuf.resize(outbuf.size() - buffer_incr + stream.gcount());
 
 	return outbuf;
+}
+
+uint32_t Utils::CRC32(std::istream& stream) {
+	uLong crc = crc32(0L, Z_NULL, 0);
+	std::array<uint8_t, 8192> buffer = {};
+	do {
+		stream.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
+		crc = crc32(crc, buffer.data(), stream.gcount());
+	} while (stream.gcount() == buffer.size());
+	return crc;
 }
 
 std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values) {

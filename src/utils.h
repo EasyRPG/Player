@@ -266,6 +266,13 @@ namespace Utils {
 	std::vector<uint8_t> ReadStream(std::istream& stream);
 
 	/**
+	 * Calculates the CRC32 of the stream content
+	 * @param stream Stream to calculate crc32 from
+	 * @return crc32
+	 */
+	uint32_t CRC32(std::istream& stream);
+
+	/**
 	 * Replaces placeholders (like %S, %O, %V, %U) in strings.
 	 *
 	 * @param text_template String with placeholders to replace.

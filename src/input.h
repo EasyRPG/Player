@@ -231,6 +231,16 @@ namespace Input {
 	 */
 	Point GetMousePosition();
 
+	/**
+	 * Used to submit additional metadata for input recording
+	 * @param type type of data sent
+	 * @param data Sent data
+	 */
+	void AddRecordingData(RecordingData type, StringView data);
+
+	/** @return If the input is recorded */
+	bool IsRecording();
+
 	/** Buttons press time (in frames). */
 	extern std::array<int, BUTTON_COUNT> press_time;
 

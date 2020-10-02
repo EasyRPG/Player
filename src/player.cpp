@@ -118,6 +118,7 @@ namespace Player {
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
+	std::string command_line;
 	int speed_modifier = 3;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
@@ -202,6 +203,7 @@ void Player::Init(int argc, char *argv[]) {
 	auto directions = Input::GetDefaultDirectionMappings();
 
 	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
+	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 }
 
 void Player::Run() {
@@ -444,6 +446,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		ss << argv[i] << " ";
 	}
 	Output::Debug("CLI: {}", ss.str());
+	command_line = ss.str();
 
 #if defined(_WIN32) && !defined(__WINRT__)
 	CmdlineParser cp(argc, argv_w);
@@ -697,6 +700,7 @@ void Player::CreateGameObjects() {
 	if (!game_title.empty()) {
 		Output::Debug("Loading game {}", game_title);
 		title << game_title << " - ";
+		Input::AddRecordingData(Input::RecordingData::GameTitle, game_title);
 	} else {
 		Output::Debug("Could not read game title.");
 	}
@@ -903,6 +907,17 @@ void Player::LoadDatabase() {
 		auto lmt_stream = FileFinder::OpenInputStream(lmt);
 		if (!lcf::LMT_Reader::Load(lmt_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		}
+
+		if (Input::IsRecording()) {
+			ldb_stream.clear();
+			ldb_stream.seekg(0, std::ios::beg);
+			lmt_stream.clear();
+			lmt_stream.seekg(0, std::ios::beg);
+			Input::AddRecordingData(Input::RecordingData::Hash,
+									fmt::format("ldb {:#08x}", Utils::CRC32(ldb_stream)));
+			Input::AddRecordingData(Input::RecordingData::Hash,
+						   fmt::format("lmt {:#08x}", Utils::CRC32(lmt_stream)));
 		}
 
 		// Override map extension, if needed.
