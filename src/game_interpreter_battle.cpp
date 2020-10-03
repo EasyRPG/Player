@@ -155,6 +155,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	int id = com.parameters[0];
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
 	bool lose = com.parameters[1] > 0;
+	bool lethal = com.parameters[4] > 0;
 	int hp = enemy.GetHp();
 
 	if (enemy.IsDead())
@@ -176,7 +177,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	if (lose)
 		change = -change;
 
-	enemy.ChangeHp(change, true);
+	enemy.ChangeHp(change, lethal);
 
 	if (enemy.IsDead()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
