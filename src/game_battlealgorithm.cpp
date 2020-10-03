@@ -1106,6 +1106,11 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 
 	if (skill.scope == lcf::rpg::Skill::Scope_ally ||
 		skill.scope == lcf::rpg::Skill::Scope_party) {
+		// Ignore hidden targets
+		if (GetTarget()->IsHidden()) {
+			return false;
+		}
+
 		if (GetTarget()->IsDead()) {
 			// Cures death
 			// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
