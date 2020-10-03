@@ -953,6 +953,21 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		return ProcessNextAction(BattleActionState_Death, action);
 	}
 
+	// Check if dead enemies get revived to make them visible again
+	if (battle_action_substate == eConditions
+			&& action->IsRevived())
+	{
+		if (action->GetTarget() != nullptr) {
+			auto* target = action->GetTarget();
+			if (target->GetType() == Game_Battler::Type_Enemy) {
+				auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+				if (target_sprite) {
+					target_sprite->DetectStateChange();
+				}
+			}
+		}
+	}
+
 	// All of the normal states are odd numbers.
 	if ((battle_action_substate & 1) != 0) {
 		battle_message_window->Push(pending_message);
