@@ -29,7 +29,7 @@
 #define PLAYER_MAJOR 0
 #define PLAYER_MINOR 6
 #define PLAYER_PATCH 2
-#define PLAYER_TWEAK 2
+#define PLAYER_TWEAK 3
 #define PLAYER_ADDTL ""
 
 #if PLAYER_TWEAK > 0

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 cmake_policy(SET CMP0091 NEW) # Support MSVC_RUNTIME_LIBRARY
 
-project(EasyRPG_Player VERSION 0.6.2.2 LANGUAGES CXX)
+project(EasyRPG_Player VERSION 0.6.2.3 LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")

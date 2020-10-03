@@ -49,7 +49,7 @@ EXEFS_SRC	:=	exefs_src
 
 APP_TITLE	:= EasyRPG Player
 APP_AUTHOR	:= EasyRPG Team & Rinnegatamante
-APP_VERSION	:= 0.6.2.2
+APP_VERSION	:= 0.6.2.3
 ICON		:= icon.jpg
 
 #---------------------------------------------------------------------------------
