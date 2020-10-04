@@ -16,6 +16,7 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include "system.h"
 #include "player.h"
@@ -142,6 +143,16 @@ void Window::Draw(Bitmap& dst) {
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
 		dst.Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
+	}
+
+	if (right_arrow) {
+		Rect src_rect(40, 16, 16, 8);
+		dst.RotateZoomOpacityBlit(x + width - 8, y + height / 2 - 8, 16, 0, *windowskin, src_rect, -M_PI / 2, 1.0, 1.0, 255);
+	}
+
+	if (left_arrow) {
+		Rect src_rect(40, 8, 16, 8);
+		dst.RotateZoomOpacityBlit(x, y + height / 2 - 8, 16, 0, *windowskin, src_rect, -M_PI / 2, 1.0, 1.0, 255);
 	}
 }
 

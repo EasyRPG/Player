@@ -55,6 +55,8 @@ struct IndexSet {
 std::array<IndexSet,Scene_Debug::eLastMainMenuOption> prev = {};
 }
 
+constexpr int arrow_animation_frames = 20;
+
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
 }
@@ -446,6 +448,8 @@ void Scene_Debug::Update() {
 		UpdateRangeListWindow();
 		var_window->Refresh();
 	}
+
+	UpdateArrows();
 }
 
 void Scene_Debug::CreateRangeWindow() {
@@ -805,4 +809,16 @@ void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {
 
 void Scene_Debug::TransitionOut(SceneType /* next_scene */) {
 	Transition::instance().InitErase(Transition::TransitionCutOut, this);
+}
+
+void Scene_Debug::UpdateArrows() {
+	bool show_left_arrow = (range_page > 0);
+	bool show_right_arrow = (range_page < GetLastPage());
+
+	if (show_left_arrow || show_right_arrow) {
+		arrow_frame = (arrow_frame + 1) % (arrow_animation_frames * 2);
+	}
+	bool arrow_visible = (arrow_frame < arrow_animation_frames);
+	range_window->SetLeftArrow(show_left_arrow && arrow_visible);
+	range_window->SetRightArrow(show_right_arrow && arrow_visible);
 }

@@ -139,6 +139,9 @@ private:
 	void UpdateFrameValueFromUi();
 
 	bool IsValidMapId(int map_id) const;
+
+	void UpdateArrows();
+	int arrow_frame = 0;
 };
 
 #endif
