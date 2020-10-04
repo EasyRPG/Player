@@ -618,7 +618,58 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const lcf::rpg::Ene
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), *skill));
 			break;
 		case lcf::rpg::Skill::Scope_ally:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), *skill));
+			Game_Battler* preferred_target;
+			preferred_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
+			// Check skill for preferred ally
+			if (skill->affect_hp ||
+				skill->affect_sp ||
+	                        skill->affect_attack ||
+	                        skill->affect_defense ||
+	                        skill->affect_spirit ||
+	                        skill->affect_agility ||
+	                        (skill->affect_attr_defence && skill->attribute_effects.size() > 0))
+			{
+				// Do not change the preferred target here
+			} else {
+				// Choose a preferred target if this skill heals only
+				// states without affecting anything
+				if (!skill->reverse_state_effect && skill->state_effects.size() > 0) {
+					std::vector<Game_Battler*> deadenemies;
+					std::vector<Game_Battler*> enemies;
+					std::vector<Game_Battler*> targetpool;
+					targetpool.clear();
+
+					Main_Data::game_enemyparty->GetDeadBattlers(deadenemies);
+					Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+					for (int i = 0; i < static_cast<int>(skill->state_effects.size()); i++) {
+						if (!skill->state_effects[i]) {
+							continue;
+						}
+						auto state_id = i + 1;
+						if (state_id == lcf::rpg::State::kDeathID) {
+							for (auto& enemy: deadenemies) {
+								if (std::find(targetpool.begin(), targetpool.end(), enemy) == targetpool.end()) {
+									targetpool.push_back(enemy);
+								}
+							}
+						} else {
+							for (auto& enemy: enemies) {
+								if (enemy->HasState(state_id)) {
+									if (std::find(targetpool.begin(), targetpool.end(), enemy) == targetpool.end()) {
+										targetpool.push_back(enemy);
+									}
+								}
+							}
+						}
+					}
+
+					if (targetpool.size() > 0) {
+						preferred_target = targetpool[Rand::GetRandomNumber(0, targetpool.size() - 1)];
+					}
+				}
+			}
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, preferred_target, *skill));
 			break;
 		case lcf::rpg::Skill::Scope_enemies:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill));

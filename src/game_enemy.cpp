@@ -22,6 +22,7 @@
 #include "game_battle.h"
 #include "game_enemy.h"
 #include "game_party.h"
+#include "game_enemyparty.h"
 #include "game_switches.h"
 #include <lcf/reader_util.h>
 #include "output.h"
@@ -218,10 +219,11 @@ const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	int total = 0;
 	for (auto it = valid.begin(); it != valid.end();) {
-		if (actions[*it].rating < highest_rating - 9) {
+		const lcf::rpg::EnemyAction& action = actions[*it];
+		if (action.rating < highest_rating - 9 || (action.kind == action.Kind_skill && !IsSkillUsableForAI(action.skill_id))) {
 			it = valid.erase(it);
 		} else {
-			total += actions[*it].rating;
+			total += 10 - (highest_rating - action.rating);
 			++it;
 		}
 	}
@@ -233,8 +235,9 @@ const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	int which = Rand::GetRandomNumber(0, total - 1);
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
 		const lcf::rpg::EnemyAction& action = actions[*it];
-		if (which >= action.rating) {
-			which -= action.rating;
+		int weight = 10 - (highest_rating - action.rating);
+		if (which >= weight) {
+			which -= weight;
 			continue;
 		}
 
@@ -244,3 +247,65 @@ const lcf::rpg::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	return nullptr;
 }
 
+bool Game_Enemy::IsSkillUsableForAI(int skill_id) const {
+        const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
+
+        if (!skill) {
+                Output::Warning("IsSkillUsable: Invalid skill ID {}", skill_id);
+                return false;
+        }
+
+	// Skills which targets the user, one ally or all allies have special checks
+	// while skills which targets one enemy or all enemies are always accepted
+	if (skill->scope == lcf::rpg::Skill::Scope_self || skill->scope == lcf::rpg::Skill::Scope_ally || skill->scope == lcf::rpg::Skill::Scope_party) {
+		// Skills which affects at least one stat or the attribute ranks are
+		// always accepted regardless of power and hit rate
+		if (skill->affect_hp ||
+			skill->affect_sp ||
+			skill->affect_attack ||
+			skill->affect_defense ||
+			skill->affect_spirit ||
+			skill->affect_agility ||
+			(skill->affect_attr_defence && skill->attribute_effects.size() > 0))
+		{
+			return true;
+		}
+		// Skills which heals states only are only used if there are targets
+		// who have at least one state inflicted which are affected by the
+		// skill
+		if (!skill->reverse_state_effect && skill->state_effects.size() > 0) {
+			if (skill->scope == lcf::rpg::Skill::Scope_self) {
+				for (int i = 0; i < static_cast<int>(skill->state_effects.size()); i++) {
+					if (!skill->state_effects[i]) {
+						continue;
+					}
+					auto state_id = i + 1;
+					if (HasState(state_id)) return true;
+				}
+			} else {
+				std::vector<Game_Battler*> deadenemies;
+				std::vector<Game_Battler*> enemies;
+
+				Main_Data::game_enemyparty->GetDeadBattlers(deadenemies);
+				Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+				for (int i = 0; i < static_cast<int>(skill->state_effects.size()); i++) {
+					if (!skill->state_effects[i]) {
+						continue;
+					}
+					auto state_id = i + 1;
+					if (state_id == lcf::rpg::State::kDeathID) {
+						if (deadenemies.size() > 0) return true;
+					} else {
+						for (auto& enemy: enemies) {
+							if (enemy->HasState(state_id)) return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	return true;
+}

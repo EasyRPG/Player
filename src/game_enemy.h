@@ -184,6 +184,14 @@ public:
 	const lcf::rpg::EnemyAction* ChooseRandomAction();
 	bool IsInParty() const override;
 
+        /**
+         * Checks if the AI wants to use the skill.
+         *
+         * @param skill_id ID of skill to check.
+         * @return true if the AI wants to use that skill.
+         */
+        bool IsSkillUsableForAI(int skill_id) const;
+
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
 	const lcf::rpg::TroopMember* troop_member = nullptr;
