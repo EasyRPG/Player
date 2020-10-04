@@ -18,11 +18,15 @@
 #include <algorithm>
 #include <cstring>
 #include <cerrno>
+#include <ctime>
 
 #include "baseui.h"
 #include "input_source.h"
 #include "player.h"
 #include "output.h"
+#include "game_system.h"
+#include "main_data.h"
+#include "version.h"
 
 std::unique_ptr<Input::Source> Input::Source::Create(
 		Input::ButtonMappingArray buttons,
@@ -73,10 +77,52 @@ void Input::UiSource::UpdateSystem() {
 Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
 	: Source(std::move(buttons), std::move(directions)),
 	log_file(FileFinder::OpenInputStream(log_path, std::ios::in))
-{}
+{
+	std::string header = Utils::ReadLine(log_file);
+	if (StringView(header).starts_with("H EasyRPG")) {
+		std::string ver = Utils::ReadLine(log_file);
+		if (StringView(ver).starts_with("V 2")) {
+			version = 2;
+		} else {
+			Output::Error("Unsupported logfile version {}", ver);
+		}
+	} else {
+		Output::Debug("Using legacy inputlog format");
+	}
+}
 
 void Input::LogSource::Update() {
-	log_file >> pressed_buttons;
+	if (version == 2) {
+		if (!Main_Data::game_system) {
+			return;
+		}
+
+		if (last_read_frame == -1) {
+			pressed_buttons.reset();
+
+			std::string line = Utils::ReadLine(log_file);
+			while (!StringView(line).starts_with("F ") && log_file) {
+				line = Utils::ReadLine(log_file);
+			}
+			if (!line.empty()) {
+				keys = Utils::Tokenize(line.substr(2), [](char32_t c) { return c == ','; });
+				if (!keys.empty()) {
+					last_read_frame = atoi(keys[0].c_str());
+				}
+			}
+		}
+		if (Main_Data::game_system->GetFrameCounter() == last_read_frame) {
+			for (const auto& key : keys) {
+				auto it = std::find(Input::kButtonNames.begin(), Input::kButtonNames.end(), key);
+				if (it != Input::kButtonNames.end()) {
+					pressed_buttons[std::distance(Input::kButtonNames.begin(), it)] = true;
+				}
+			}
+			last_read_frame = -1;
+		}
+	} else {
+		log_file >> pressed_buttons;
+	}
 
 	if (!log_file) {
 		Player::exit_flag = true;
@@ -96,13 +142,54 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 			Output::Warning("Failed to open file {} for input recording : {}", path, strerror(errno));
 			return false;
 		}
+
+		*record_log << "H EasyRPG Player Recording\n";
+		*record_log << "V 2 " PLAYER_VERSION "\n";
+
+		std::time_t t = std::time(nullptr);
+		// trigraph ?-escapes
+		std::string date = R"(????-??-?? ??:??:??)";
+		char timestr[100];
+		if (std::strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", std::localtime(&t))) {
+			date = std::string(timestr);
+		}
+
+		*record_log << "D " << date << '\n';
 	}
 	return true;
 }
 
 void Input::Source::Record() {
 	if (record_log) {
-		*record_log << GetPressedNonSystemButtons() << '\n';
+		const auto& buttons = GetPressedNonSystemButtons();
+		if (buttons.any()) {
+			if (!Main_Data::game_system) {
+				return;
+			}
+			int cur_frame = Main_Data::game_system->GetFrameCounter();
+			if (cur_frame == last_written_frame) {
+				return;
+			}
+			last_written_frame = cur_frame;
+
+			*record_log << "F " << cur_frame;
+
+			for (size_t i = 0; i < buttons.size(); ++i) {
+				if (!buttons[i]) {
+					continue;
+				}
+
+				*record_log << ',' << Input::kButtonNames[i];
+			}
+
+			*record_log << '\n';
+		}
+	}
+}
+
+void Input::Source::AddRecordingData(Input::RecordingData type, StringView data) {
+	if (record_log) {
+		*record_log << static_cast<char>(type) << " " << data << "\n";
 	}
 }
 

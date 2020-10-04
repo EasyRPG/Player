@@ -277,6 +277,13 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
 		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
+
+		if (Input::IsRecording()) {
+			map_stream.clear();
+			map_stream.seekg(0);
+			Input::AddRecordingData(Input::RecordingData::Hash,
+						   fmt::format("map{} {:#08x}", Utils::CRC32(map_stream)));
+		}
 	} else {
 		auto map_stream = FileFinder::OpenInputStream(map_file);
 		map = lcf::LMU_Reader::LoadXml(map_stream);

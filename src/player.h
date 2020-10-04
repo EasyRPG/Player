@@ -333,6 +333,9 @@ namespace Player {
 	/** Path to record input log to */
 	extern std::string record_input_path;
 
+	/** The concatenated command line */
+	extern std::string command_line;
+
 	/** Game title. */
 	extern std::string game_title;
 

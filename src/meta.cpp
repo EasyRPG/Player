@@ -21,7 +21,6 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
-#include <zlib.h>
 #include <lcf/data.h>
 #include "filefinder.h"
 #include <lcf/lmt/reader.h>
@@ -55,9 +54,7 @@ std::string crc32file(std::string file_name) {
 	if (!file_name.empty()) {
 		auto in = FileFinder::OpenInputStream(file_name, std::ios::binary);
 		if (in) {
-			std::string buffer((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-			unsigned long crc = ::crc32(0, reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length());
-
+			auto crc = Utils::CRC32(in);
 			std::stringstream res;
 			res <<std::hex <<std::setfill('0') <<std::setw(8) <<crc;
 			return res.str();

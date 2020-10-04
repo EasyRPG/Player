@@ -316,3 +316,13 @@ bool Input::IsRawKeyReleased(Input::Keys::InputKey key) {
 Point Input::GetMousePosition() {
 	return source->GetMousePosition();
 }
+
+void Input::AddRecordingData(Input::RecordingData type, StringView data) {
+	assert(source);
+	source->AddRecordingData(type, data);
+}
+
+bool Input::IsRecording() {
+	assert(source);
+	return source->IsRecording();
+}
