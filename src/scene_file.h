@@ -56,9 +56,11 @@ protected:
 	virtual void PopulatePartyFaces(Window_SaveFile& win, int id, lcf::rpg::Save& savegame);
 	virtual void UpdateLatestTimestamp(int id, lcf::rpg::Save& savegame);
 	static std::unique_ptr<Sprite> MakeBorderSprite(int y);
+	static std::unique_ptr<Sprite> MakeArrowSprite(bool down);
 
 	void Refresh();
 	void MoveFileWindows(int dy, int dt);
+	void UpdateArrows();
 
 	int index = 0;
 	int top_index = 0;
@@ -66,12 +68,16 @@ protected:
 	std::vector<std::shared_ptr<Window_SaveFile> > file_windows;
 	std::unique_ptr<Sprite> border_top;
 	std::unique_ptr<Sprite> border_bottom;
+	std::unique_ptr<Sprite> up_arrow;
+	std::unique_ptr<Sprite> down_arrow;
 	std::string message;
 
 	std::unique_ptr<DirectoryTree> tree;
 
 	double latest_time = 0;
 	int latest_slot = 0;
+
+	int arrow_frame = 0;
 };
 
 #endif
