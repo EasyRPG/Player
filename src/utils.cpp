@@ -579,7 +579,7 @@ uint32_t Utils::CRC32(std::istream& stream) {
 	do {
 		stream.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
 		crc = crc32(crc, buffer.data(), stream.gcount());
-	} while (stream.gcount() == buffer.size());
+	} while (stream.gcount() == static_cast<std::streamsize>(buffer.size()));
 	return crc;
 }
 
