@@ -30,6 +30,7 @@
 #include "game_system.h"
 #include <lcf/reader_util.h>
 #include "output.h"
+#include "algo.h"
 
 Game_Party::Game_Party() {
 }
@@ -258,45 +259,30 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		return false;
 	}
 
-	switch (item->type) {
-		case lcf::rpg::Item::Type_weapon:
-		case lcf::rpg::Item::Type_shield:
-		case lcf::rpg::Item::Type_armor:
-		case lcf::rpg::Item::Type_helmet:
-		case lcf::rpg::Item::Type_accessory:
-			if (item->use_skill) {
-				auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
-				if (skill && (
-							skill->type == lcf::rpg::Skill::Type_escape
-							|| skill->type == lcf::rpg::Skill::Type_teleport
-							|| skill->type == lcf::rpg::Skill::Type_switch
-							)
-				   ) {
-					return false;
-				}
-				return IsSkillUsable(item->skill_id, nullptr, true);
-			}
-			return false;
-		case lcf::rpg::Item::Type_special:
-			return IsSkillUsable(item->skill_id, nullptr, true);
+	const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
+	const bool in_battle = Game_Battle::IsBattleRunning();
+
+	if (item->use_skill) {
+		// RPG_RT BUG: Does not check if skill is usable.
+		return skill &&
+			(in_battle
+			 || skill->scope == lcf::rpg::Skill::Scope_self
+			 || skill->scope == lcf::rpg::Skill::Scope_ally
+			 || skill->scope == lcf::rpg::Skill::Scope_party);
 	}
 
-	if (Game_Battle::IsBattleRunning()) {
-		switch (item->type) {
-			case lcf::rpg::Item::Type_medicine:
-				return !item->occasion_field1;
-			case lcf::rpg::Item::Type_switch:
-				return item->occasion_battle;
-		}
-	} else {
-		switch (item->type) {
-			case lcf::rpg::Item::Type_medicine:
-			case lcf::rpg::Item::Type_material:
-			case lcf::rpg::Item::Type_book:
-				return true;
-			case lcf::rpg::Item::Type_switch:
-				return item->occasion_field2;
-		}
+	switch (item->type) {
+		case lcf::rpg::Item::Type_medicine:
+			return !in_battle || !item->occasion_field1;
+		case lcf::rpg::Item::Type_material:
+		case lcf::rpg::Item::Type_book:
+			return !in_battle;
+		case lcf::rpg::Item::Type_switch:
+			return in_battle ? item->occasion_battle : item->occasion_field2;
+		case lcf::rpg::Item::Type_special:
+			return skill && Algo::IsSkillUsable(*skill, false);
+		default:
+			break;
 	}
 
 	return false;
