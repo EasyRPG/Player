@@ -45,13 +45,13 @@ constexpr decltype(AttackOnly::name) AttackOnly::name;
 constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
 
 std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
-	if (name == RpgRtImproved::name) {
+	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
 		return std::make_unique<RpgRtImproved>();
 	}
-	if (name == AttackOnly::name) {
+	if (Utils::StrICmp(name, AttackOnly::name) == 0) {
 		return std::make_unique<AttackOnly>();
 	}
-	if (name != RpgRtCompat::name) {
+	if (Utils::StrICmp(name, RpgRtCompat::name) != 0) {
 		static bool warned = false;
 		if (!warned) {
 			Output::Debug("Invalid AutoBattle algo name `{}' falling back to {} ...", name, RpgRtCompat::name);
