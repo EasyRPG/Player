@@ -184,6 +184,9 @@ public:
 	const lcf::rpg::EnemyAction* ChooseRandomAction();
 	bool IsInParty() const override;
 
+	/** @return database enemy struct */
+	const lcf::rpg::Enemy& GetDbEnemy() const;
+
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
 	const lcf::rpg::TroopMember* troop_member = nullptr;
@@ -281,6 +284,10 @@ inline StringView Game_Enemy::GetSpriteName() const {
 inline bool Game_Enemy::IsInParty() const {
 	// Enemies can never be removed from enemy party
 	return true;
+}
+
+inline const lcf::rpg::Enemy& Game_Enemy::GetDbEnemy() const {
+	return *enemy;
 }
 
 #endif
