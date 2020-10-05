@@ -17,26 +17,38 @@ TEST_CASE("Upper") {
 	REQUIRE_EQ(Utils::UpperCase("!A/b"), "!A/B");
 }
 
+template <typename T>
+static void testStrICmp() {
+	REQUIRE_EQ(Utils::StrICmp(T("easyrpg"), T("easyrpg")), 0);
+	REQUIRE_EQ(Utils::StrICmp(T("easyrpg"), T("EASYRPG")), 0);
+	REQUIRE_EQ(Utils::StrICmp(T("EASYRPG"), T("easyrpg")), 0);
+
+	REQUIRE_LT(Utils::StrICmp(T("A"), T("B")), 0);
+	REQUIRE_LT(Utils::StrICmp(T("a"), T("B")), 0);
+	REQUIRE_LT(Utils::StrICmp(T("A"), T("b")), 0);
+
+	REQUIRE_GT(Utils::StrICmp(T("B"), T("A")), 0);
+	REQUIRE_GT(Utils::StrICmp(T("b"), T("A")), 0);
+	REQUIRE_GT(Utils::StrICmp(T("B"), T("a")), 0);
+
+	REQUIRE_GT(Utils::StrICmp(T("AA"), T("A")), 0);
+	REQUIRE_GT(Utils::StrICmp(T("aa"), T("A")), 0);
+	REQUIRE_GT(Utils::StrICmp(T("AA"), T("a")), 0);
+
+	REQUIRE_LT(Utils::StrICmp(T("A"), T("AA")), 0);
+	REQUIRE_LT(Utils::StrICmp(T("a"), T("AA")), 0);
+	REQUIRE_LT(Utils::StrICmp(T("A"), T("aa")), 0);
+}
+
 TEST_CASE("StrICmp") {
-	REQUIRE_EQ(Utils::StrICmp("easyrpg", "easyrpg"), 0);
-	REQUIRE_EQ(Utils::StrICmp("easyrpg", "EASYRPG"), 0);
-	REQUIRE_EQ(Utils::StrICmp("EASYRPG", "easyrpg"), 0);
 
-	REQUIRE_LT(Utils::StrICmp("A", "B"), 0);
-	REQUIRE_LT(Utils::StrICmp("a", "B"), 0);
-	REQUIRE_LT(Utils::StrICmp("A", "b"), 0);
+	SUBCASE("cstr") {
+		testStrICmp<const char*>();
+	}
 
-	REQUIRE_GT(Utils::StrICmp("B", "A"), 0);
-	REQUIRE_GT(Utils::StrICmp("b", "A"), 0);
-	REQUIRE_GT(Utils::StrICmp("B", "a"), 0);
-
-	REQUIRE_GT(Utils::StrICmp("AA", "A"), 0);
-	REQUIRE_GT(Utils::StrICmp("aa", "A"), 0);
-	REQUIRE_GT(Utils::StrICmp("AA", "a"), 0);
-
-	REQUIRE_LT(Utils::StrICmp("A", "AA"), 0);
-	REQUIRE_LT(Utils::StrICmp("a", "AA"), 0);
-	REQUIRE_LT(Utils::StrICmp("A", "aa"), 0);
+	SUBCASE("sv") {
+		testStrICmp<StringView>();
+	}
 }
 
 TEST_SUITE_END();

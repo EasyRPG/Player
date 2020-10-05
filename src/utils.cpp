@@ -83,6 +83,16 @@ int Utils::StrICmp(const char* l, const char* r) {
 	return *l - *r;
 }
 
+int Utils::StrICmp(StringView l, StringView r) {
+	for (size_t i = 0; i < std::min(l.size(), r.size()); ++i) {
+		auto d = Lower(l[i]) - Lower(r[i]);
+		if (d != 0) {
+			return d;
+		}
+	}
+	return l.size() - r.size();
+}
+
 std::u16string Utils::DecodeUTF16(StringView str) {
 	std::u16string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {

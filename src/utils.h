@@ -71,6 +71,16 @@ namespace Utils {
 	int StrICmp(const char* l, const char* r);
 
 	/**
+	 * Case insensitive (ascii only) lexicographical compare of 2 strings.
+	 *
+	 * @param l left string
+	 * @param r right string
+	 *
+	 * @return < 0 if l is before r, 0 if equal, > 0 l is after r
+	 */
+	int StrICmp(StringView l, StringView r);
+
+	/**
 	 * Converts Utf8 to UTF-16.
 	 *
 	 * @param str string to convert.
