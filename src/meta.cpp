@@ -110,17 +110,20 @@ std::string Meta::GetParentGame() const {
 	return "";
 }
 
-std::vector<std::string> Meta::GetImportChildPaths(const FileFinder::DirectoryTree& parent_tree) const {
+std::vector<std::string> Meta::GetImportChildPaths(const DirectoryTree& parent_tree) const {
 	std::vector<std::string> res;
+#if 0
+	FIXME
 	if (!Empty()) {
 		for (const auto& paths : parent_tree.directories) {
 			res.push_back(paths.second);
 		}
 	}
+#endif
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(const DirectoryTree& parent_tree, const std::string& child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
@@ -131,11 +134,12 @@ std::vector<Meta::FileItem> Meta::SearchImportPaths(const FileFinder::DirectoryT
 }
 
 
-std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const {
+std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const {
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
-
+#if 0
+	FIXME
 	// Try to read the game name. Note that we assume the games all have the same encoding (and use Player::encoding)
 	auto child_full_path = FileFinder::MakePath(parent_tree.directory_path, child_path);
 	auto child_tree = FileFinder::CreateDirectoryTree(child_full_path, FileFinder::FILES);
@@ -181,6 +185,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::Dir
 			}
 		}
 	}
+#endif
 
 	return res;
 }

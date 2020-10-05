@@ -78,7 +78,7 @@ public:
 	 * @param parent_tree the tree for the parent folder of the current game (../)
 	 * @return vector of paths of child game folders, including that of the current game
 	 */
-	std::vector<std::string> GetImportChildPaths(const FileFinder::DirectoryTree& parent_tree) const;
+	std::vector<std::string> GetImportChildPaths(const DirectoryTree& parent_tree) const;
 
 	/**
 	 * Given a parent/child game, retrieves a vector of save files that are considered for multi-game importing.
@@ -86,7 +86,7 @@ public:
 	 * @param child_path the path of the child relative to parent_tree
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> SearchImportPaths(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path) const;
+	std::vector<FileItem> SearchImportPaths(const DirectoryTree& parent_tree, const std::string& child_path) const;
 
 	/**
 	 * Retrieve the LDB extension's replacement in non-standard projects.
@@ -158,7 +158,7 @@ private:
 	 * @param pivot_map_id the id of the map used to pivot between the prequel and the current game
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> BuildImportCandidateList(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const;
+	std::vector<FileItem> BuildImportCandidateList(const DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const;
 
 	/**
 	 * Was the INI file passed to the constructor invalid or empty?

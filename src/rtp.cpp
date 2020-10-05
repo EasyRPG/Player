@@ -51,8 +51,8 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 }
 
 template <typename T>
-static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
-		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, const char** ext_list) {
+static void detect_helper(DirectoryTreeView tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
+		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list) {
 	for (int i = range.first; i < range.second; ++i) {
 		const char* category = rtp_table[i][0];
 		for (int j = 1; j <= num_rtps; ++j) {
@@ -69,7 +69,7 @@ static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<str
 	}
 }
 
-std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTree> tree, int version) {
+std::vector<RTP::RtpHitInfo> RTP::Detect(DirectoryTreeView tree, int version) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
 		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, tree},
 		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, tree},
@@ -84,12 +84,12 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		{RTP::Type::RPG2003_OfficialTraditionalChinese, Names[10], 2003, 0, 676, tree}
 	}};
 
-	static const char* SOUND_TYPES[] = { ".wav", ".mp3", nullptr };
-	static const char* MUSIC_TYPES[] = { ".wav", ".mid", nullptr };
-	static const char* MOVIE_TYPES[] = { ".avi", nullptr };
-	static const char* IMAGE_TYPES[] = { ".png", nullptr };
+	auto SOUND_TYPES = Utils::MakeSvVector(".wav", ".mp3");
+	auto MUSIC_TYPES = Utils::MakeSvVector(".wav", ".mid");
+	auto MOVIE_TYPES = Utils::MakeSvVector(".avi");
+	auto IMAGE_TYPES = Utils::MakeSvVector(".png");
 
-	auto ext_for_cat = [](const char* category) {
+	auto ext_for_cat = [=](const char* category) {
 		if (!strcmp("sound", category)) {
 			return SOUND_TYPES;
 		} else if (!strcmp("music", category)) {
@@ -105,16 +105,16 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		for (int i = 0; rtp_table_2k_categories[i] != nullptr; ++i) {
 			const char* category = rtp_table_2k_categories[i];
 			std::pair<int, int> range = {rtp_table_2k_categories_idx[i], rtp_table_2k_categories_idx[i+1]};
-			const char** ext_list = ext_for_cat(category);
-			detect_helper(*tree, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
+			auto ext_list = ext_for_cat(category);
+			detect_helper(tree, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
 		}
 	}
 	if (version == 2003 || version == 0) {
 		for (int i = 0; rtp_table_2k3_categories[i] != nullptr; ++i) {
 			const char* category = rtp_table_2k3_categories[i];
 			std::pair<int, int> range = {rtp_table_2k3_categories_idx[i], rtp_table_2k3_categories_idx[i+1]};
-			const char** ext_list = ext_for_cat(category);
-			detect_helper(*tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
+			auto ext_list = ext_for_cat(category);
+			detect_helper(tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
 		}
 	}
 

@@ -6,10 +6,10 @@
 
 TEST_SUITE_BEGIN("RTP");
 
-static std::shared_ptr<FileFinder::DirectoryTree> make_tree() {
+static DirectoryTreeView make_tree() {
 	Player::escape_symbol = "\\";
 
-	auto tree = std::make_shared<FileFinder::DirectoryTree>();
+	auto tree = std::make_shared<DirectoryTree>();
 	tree->directories["faceset"] = "FaceSet";
 	tree->directories["music"] = "Music";
 	tree->directories["sound"] = "Sound";

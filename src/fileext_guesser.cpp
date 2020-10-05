@@ -31,9 +31,11 @@ namespace {
 }
 
 
-FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::DirectoryTree const& dir) {
+FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(DirectoryTreeView tree) {
 	// Try to rescue and determine file extensions.
 	// We need to figure out the names of the map tree and the DB (maps come later).
+#if 0
+FIXME
 	std::vector<RPG2KNonStandardFilenameGuesser::ExtAndSize> candidates;
 	for (const auto& item : dir.files) {
 		if (item.first.length()==RtPrefix.length()+3 && lcf::ToStringView(item.first).starts_with(RtPrefix)) {
@@ -56,12 +58,15 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 		res.rpgRTs.second = candidates[1];
 		return res;
 	}
+#endif
 
 	return RPG2KNonStandardFilenameGuesser();
 }
 
-void FileExtGuesser::GuessAndAddLmuExtension(FileFinder::DirectoryTree const& dir, Meta const& meta, RPG2KFileExtRemap& mapping)
+void FileExtGuesser::GuessAndAddLmuExtension(DirectoryTreeView tree, Meta const& meta, RPG2KFileExtRemap& mapping)
 {
+#if 0
+	FIXME
 	// If metadata is provided, rely on that.
 	std::string metaLmu = meta.GetLmuAlias();
 	if (!metaLmu.empty()) {
@@ -84,6 +89,7 @@ void FileExtGuesser::GuessAndAddLmuExtension(FileFinder::DirectoryTree const& di
 			}
 		}
 	}
+#endif
 }
 
 FileExtGuesser::RPG2KFileExtRemap FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions(Meta& meta)

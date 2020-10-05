@@ -22,6 +22,7 @@
 #include "system.h"
 #include "filesystem_stream.h"
 #include "string_view.h"
+#include "directory_tree.h"
 
 #include <string>
 #include <cstdio>
@@ -47,22 +48,6 @@ namespace FileFinder {
 	 * Quits FileFinder.
 	 */
 	void Quit();
-
-	/**
-	 * { case lowered path, real path }
-	 */
-	typedef std::unordered_map<std::string, std::string> string_map;
-
-	/**
-	 * { case lowered directory name, non directory file list }
-	 */
-	typedef std::unordered_map<std::string, string_map> sub_members_type;
-
-	struct DirectoryTree {
-		std::string directory_path;
-		string_map files, directories;
-		sub_members_type sub_members;
-	}; // struct DirectoryTree
 
 	/**
 	 * Finds an image file.
@@ -101,7 +86,7 @@ namespace FileFinder {
 	 * @param name the path and name
 	 * @return path to file.
 	 */
-	std::string FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name);
+	std::string FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name);
 
 	/**
 	 * Finds a file from the root of a custom project tree.
@@ -110,7 +95,7 @@ namespace FileFinder {
 	 * @param name the path and name
 	 * @return path to file.
 	 */
-	std::string FindDefault(const DirectoryTree& tree, const std::string& name);
+	std::string FindDefault(DirectoryTreeView tree, const std::string& name);
 
 	/**
 	 * Finds a file with different extensions in a subdirectory of a custom directory tree.
@@ -121,7 +106,7 @@ namespace FileFinder {
 	 * @param exts list of extensions
 	 * @return path to file.
 	 */
-	std::string FindDefault(FileFinder::DirectoryTree const& tree, const std::string& dir, const std::string& name, char const* exts[]);
+	std::string FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name, Span<StringView> exts);
 
 	/**
 	 * Finds a music file.
@@ -172,12 +157,6 @@ namespace FileFinder {
 	Filesystem_Stream::OutputStream OpenOutputStream(const std::string& name,
 			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
 
-	struct Directory {
-		std::string base;
-		string_map files;
-		string_map directories;
-	}; // struct Directory
-
 	/**
 	 * Checks whether passed file is directory.
 	 * This function is case sensitve on some platform.
@@ -214,7 +193,7 @@ namespace FileFinder {
 	 * @param initial_deepness How deep the passed path is relative to the game root
 	 * @return canonical path
 	 */
-	std::string MakeCanonical(const std::string& path, int initial_deepness);
+	std::string MakeCanonical(StringView path, int initial_deepness);
 
 	/**
 	 * Splits a path in it's components.
@@ -222,7 +201,22 @@ namespace FileFinder {
 	 * @param path Path to split
 	 * @return Vector containing path components
 	 */
-	std::vector<std::string> SplitPath(const std::string& path);
+	std::vector<std::string> SplitPath(StringView path);
+
+	/**
+	 * Splits a path into path and filename
+	 *
+	 * @param path Path to split
+	 * @return Pair containing dir and name
+	 */
+	std::pair<std::string, std::string> GetPathAndFilename(StringView path);
+
+	/**
+	 * Converts all path delimiters to forward slash (/)
+	 *
+	 * @param path to convert
+	 */
+	void ConvertPathDelimiters(std::string& path);
 
 	/**
 	 * Returns the part of "path_in" that is inside "path_to".
@@ -245,54 +239,34 @@ namespace FileFinder {
 	std::string GetPathInsideGamePath(const std::string& path_in);
 
 	/**
-	 * GetDirectoryMembers member listing mode.
-	 */
-	enum Mode {
-		ALL, /**< list files and directory */
-		FILES, /**< list only non-directory files */
-		DIRECTORIES, /**< list only directories */
-		RECURSIVE /**< list non-directory files recursively */
-	};
-
-	/**
-	 * Lists directory members.
-	 *
-	 * @param dir directory to list members.
-	 * @param m member listing mode.
-	 * @param parent name of current relative folder (used if m is RECURSIVE)
-	 * @return member list.
-	 */
-	Directory GetDirectoryMembers(const std::string& dir, Mode m = ALL, const std::string& parent = "");
-
-	/**
 	 * Sets the directory tree that is used for executing the current RPG Maker
 	 * game.
 	 *
 	 * @param directory_tree Directory tree to use.
 	 */
-	void SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree);
+	void SetDirectoryTree(std::unique_ptr<DirectoryTree> directory_tree);
 
 	/**
 	 * Gets the directory tree that is used by the current game.
 	 *
 	 * @return directory tree
 	 */
-	const std::shared_ptr<DirectoryTree> GetDirectoryTree();
-	const std::shared_ptr<DirectoryTree> CreateSaveDirectoryTree();
-	std::shared_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p, Mode mode = RECURSIVE);
+	DirectoryTreeView GetDirectoryTree();
+	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
+	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p);
 
-	bool IsValidProject(DirectoryTree const& dir);
-	bool IsRPG2kProject(DirectoryTree const& dir);
-	bool IsEasyRpgProject(DirectoryTree const& dir);
+	bool IsValidProject(DirectoryTreeView tree);
+	bool IsRPG2kProject(DirectoryTreeView tree);
+	bool IsEasyRpgProject(DirectoryTreeView tree);
 
 	/**
 	 * Determines if the directory in question represents an RPG2k project with non-standard 
 	 *   database, map tree, or map file names.
 	 *
-	 * @param dir The directory tree in question
+	 * @param tree The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
-	bool IsRPG2kProjectWithRenames(DirectoryTree const& dir);
+	bool IsRPG2kProjectWithRenames(DirectoryTreeView tree);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name

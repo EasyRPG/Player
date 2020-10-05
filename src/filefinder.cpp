@@ -64,9 +64,9 @@ namespace {
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 #endif
 
-	using search_path_list = std::vector<std::shared_ptr<FileFinder::DirectoryTree>>;
+	using search_path_list = std::vector<DirectoryTreeView>;
 
-	std::shared_ptr<FileFinder::DirectoryTree> game_directory_tree;
+	std::unique_ptr<DirectoryTree> game_directory_tree;
 	std::string fonts_path;
 
 	struct {
@@ -83,17 +83,13 @@ namespace {
 		/** the RTP the game uses, when only one left the RTP of the game is known */
 		std::vector<RTP::Type> game_rtp;
 	} rtp_state;
-
-	std::string FindFile(FileFinder::DirectoryTree const& tree,
+#if 0
+	std::string FindFile(DirectoryTreeView tree,
 										  const std::string& dir,
 										  const std::string& name,
-										  char const* exts[],
-										  bool translate=false)
+										  char const* exts[])
 	{
 		using namespace FileFinder;
-
-		// Avoid searching entirely if there is no active translation
-		if (translate && Tr::GetCurrentTranslationId().empty()) { return ""; }
 
 #ifdef EMSCRIPTEN
 		// The php filefinder should have given us an useable path
@@ -103,9 +99,9 @@ namespace {
 			return em_file;
 #endif
 
-		std::string corrected_dir = lcf::ReaderUtil::Normalize(translate?Tr::GetTranslationDir():dir);
+		std::string corrected_dir = lcf::ReaderUtil::Normalize(dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = lcf::ReaderUtil::Normalize(translate?MakePath(MakePath(Tr::GetCurrentTranslationId(), dir), name):name);
+		std::string corrected_name = lcf::ReaderUtil::Normalize(name);
 
 		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);
@@ -233,18 +229,9 @@ namespace {
 		return normal_search();
 	}
 
-	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[], bool tryTranslate=false) {
-		// Search for translated resources first.
-		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
-		if (tryTranslate) {
-			std::string ret = FindFile(*tree, dir, name, exts, true);
-			if (!ret.empty()) {
-				return ret;
-			}
-		}
-
-		// Try without translating.
-		std::string ret = FindFile(*tree, dir, name, exts, false);
+	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
+		const DirectoryTreeView tree = FileFinder::GetDirectoryTree();
+		std::string ret = FindFile(*tree, dir, name, exts);
 		if (!ret.empty()) {
 			return ret;
 		}
@@ -276,65 +263,36 @@ namespace {
 
 		return ret;
 	}
+#endif
 } // anonymous namespace
 
-const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
-	return game_directory_tree;
+DirectoryTreeView FileFinder::GetDirectoryTree() {
+	return game_directory_tree->AsView();
 }
 
-const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
+std::unique_ptr<DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
 	std::string save_path = Main_Data::GetSavePath();
-
-	if (!(Exists(save_path) && IsDirectory(save_path, true))) { return std::shared_ptr<DirectoryTree>(); }
-
-	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
-	tree->directory_path = save_path;
-
-	Directory mem = GetDirectoryMembers(tree->directory_path, FILES);
-
-	for (auto& i : mem.files) {
-		tree->files[i.first] = i.second;
-	}
-	for (auto& i : mem.directories) {
-		tree->directories[i.first] = i.second;
-	}
-
-	return tree;
+	return DirectoryTree::Create(save_path);
 }
 
-void FileFinder::SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree) {
-	game_directory_tree = directory_tree;
+void FileFinder::SetDirectoryTree(std::unique_ptr<DirectoryTree> directory_tree) {
+	game_directory_tree = std::move(directory_tree);
 }
 
-std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p, Mode mode) {
-	if(! (Exists(p) && IsDirectory(p, true))) { return std::shared_ptr<DirectoryTree>(); }
-	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
-	tree->directory_path = p;
-
-	bool recursive = false;
-	if (mode == RECURSIVE) {
-		mode = ALL;
-		recursive = true;
-	}
-
-	Directory mem = GetDirectoryMembers(tree->directory_path, mode);
-	for (auto& i : mem.files) {
-		tree->files[i.first] = i.second;
-	}
-	for (auto& i : mem.directories) {
-		tree->directories[i.first] = i.second;
-	}
-
-	if (recursive) {
-		for (auto& i : mem.directories) {
-			GetDirectoryMembers(MakePath(tree->directory_path, i.second), RECURSIVE).files.swap(tree->sub_members[i.first]);
-		}
-	}
-	return tree;
+std::unique_ptr<DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p) {
+	return DirectoryTree::Create(p);
 }
 
 std::string FileFinder::MakePath(StringView dir, StringView name) {
-	std::string str = dir.empty()? std::string(name) : std::string(dir) + "/" + std::string(name);
+	std::string str;
+	if (dir.empty()) {
+		str = ToString(name);
+	} else if (name.empty()) {
+		str = ToString(dir);
+	} else {
+		str = std::string(dir) + "/" + std::string(name);
+	}
+
 #ifdef _WIN32
 	std::replace(str.begin(), str.end(), '/', '\\');
 #else
@@ -343,7 +301,7 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 	return str;
 }
 
-std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepness) {
+std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 	std::vector<std::string> path_components = SplitPath(path);
 	std::vector<std::string> path_can;
 
@@ -365,15 +323,15 @@ std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepn
 	}
 
 	std::string ret;
-	for (std::string s : path_can) {
+	for (const std::string& s : path_can) {
 		ret = MakePath(ret, s);
 	}
 
 	return ret;
 }
 
-std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
-	// Tokens are patch delimiters ("/" and encoding aware "\")
+std::vector<std::string> FileFinder::SplitPath(StringView path) {
+	// Tokens are path delimiters ("/" and encoding aware "\")
 	std::function<bool(char32_t)> f = [](char32_t t) {
 		char32_t escape_char_back = '\0';
 		if (!Player::escape_symbol.empty()) {
@@ -383,6 +341,33 @@ std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
 		return t == escape_char_back || t == escape_char_forward;
 	};
 	return Utils::Tokenize(path, f);
+}
+
+std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView path) {
+	std::string path_copy = ToString(path);
+	ConvertPathDelimiters(path_copy);
+
+	const size_t last_slash_idx = path.find_last_of("/");
+	if (last_slash_idx == std::string::npos) {
+		return {ToString(""), path_copy};
+	}
+
+	return {
+		path_copy.substr(0, last_slash_idx),
+		path_copy.substr(last_slash_idx + 1)
+	};
+}
+
+void FileFinder::ConvertPathDelimiters(std::string& path) {
+	const std::string& esc = Player::escape_symbol;
+	if (!esc.empty()) {
+		std::size_t escape_pos = path.find(esc);
+		while (escape_pos != std::string::npos) {
+			path.erase(escape_pos, esc.length());
+			path.insert(escape_pos, "/");
+			escape_pos = path.find(esc);
+		}
+	}
 }
 
 std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std::string& path_in) {
@@ -399,7 +384,7 @@ std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std:
 }
 
 std::string FileFinder::GetPathInsideGamePath(const std::string& path_in) {
-	return FileFinder::GetPathInsidePath(GetDirectoryTree()->directory_path, path_in);
+	return FileFinder::GetPathInsidePath(ToString(GetDirectoryTree().GetRootPath()), path_in);
 }
 
 #if defined(_WIN32) && !defined(_ARM_)
@@ -449,9 +434,8 @@ std::string GetFontFilename(const std::string& name) {
 #endif
 
 std::string FileFinder::FindFont(const std::string& name) {
-	static const char* FONTS_TYPES[] = {
-		".ttf", ".ttc", ".otf", ".fon", NULL, };
-	std::string path = FindFile("Font", name, FONTS_TYPES);
+	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
+	std::string path = game_directory_tree->FindFile("Font", name, FONTS_TYPES);
 
 #if defined(_WIN32) && !defined(_ARM_)
 	if (!path.empty()) {
@@ -484,12 +468,12 @@ std::string FileFinder::FindFont(const std::string& name) {
 
 static void add_rtp_path(const std::string& p) {
 	using namespace FileFinder;
-	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
+	auto tree = DirectoryTree::Create(p);
 	if (tree) {
 		Output::Debug("Adding {} to RTP path", p);
-		rtp_state.search_paths.push_back(tree);
+		rtp_state.search_paths.push_back(tree->AsView());
 
-		auto hit_info = RTP::Detect(tree, Player::EngineVersion());
+		auto hit_info = RTP::Detect(tree->AsView(), Player::EngineVersion());
 
 		if (hit_info.empty()) {
 			Output::Debug("The folder does not contain a known RTP!");
@@ -704,74 +688,46 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 	return FindDefault(dir, name);
 #endif
 
-	static const char* IMG_TYPES[] = { ".bmp",  ".png", ".xyz", NULL };
-	return FindFile(dir, name, IMG_TYPES, true);
+	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
+	return game_directory_tree->FindFile(dir, name, IMG_TYPES);
 }
 
 std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
-	static const char* no_exts[] = {"", NULL};
-	return FindFile(dir, name, no_exts);
+	return GetDirectoryTree().FindFile(dir, name);
 }
 
 std::string FileFinder::FindDefault(const std::string& name) {
-	return FindDefault(*GetDirectoryTree(), name);
+	return GetDirectoryTree().FindFile(name);
 }
 
-std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name) {
-	static const char* no_exts[] = { "", NULL };
-
-	return FindFile(tree, dir, name, no_exts);
+std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name) {
+	return tree.FindFile(dir, name);
 }
 
-std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& name) {
-	DirectoryTree const& p = tree;
-
-	std::vector<std::string> path_comps = SplitPath(name);
-	if (path_comps.size() > 1) {
-		// When the searched name contains a directory search in this directory
-		// instead of the root
-
-		std::string f;
-		for (auto it = path_comps.begin() + 1; it != path_comps.end(); ++it) {
-			f = MakePath(f, *it);
-		}
-
-		return FindDefault(path_comps[0], f);
-	}
-
-	string_map const& files = p.files;
-
-	string_map::const_iterator const it = files.find(lcf::ReaderUtil::Normalize(name));
-
-	return(it != files.end()) ? MakePath(p.directory_path, it->second) : "";
+std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& name) {
+	return tree.FindFile(name);
 }
 
-bool FileFinder::IsValidProject(DirectoryTree const & dir) {
-	return IsRPG2kProject(dir) || IsEasyRpgProject(dir) || IsRPG2kProjectWithRenames(dir);
+std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name, Span<StringView> exts) {
+	return tree.FindFile(dir, name, exts);
 }
 
-std::string FileFinder::FindDefault(FileFinder::DirectoryTree const &tree, const std::string &dir, const std::string &name,	const char **exts) {
-	return FindFile(tree, dir, name, exts);
+bool FileFinder::IsValidProject(DirectoryTreeView tree) {
+	return IsRPG2kProject(tree) || IsEasyRpgProject(tree) || IsRPG2kProjectWithRenames(tree);
 }
 
-bool FileFinder::IsRPG2kProject(DirectoryTree const& dir) {
-	string_map::const_iterator const
-		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME)),
-		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME));
-
-	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+bool FileFinder::IsRPG2kProject(DirectoryTreeView tree) {
+	return !tree.FindFile(DATABASE_NAME).empty() &&
+		!tree.FindFile(TREEMAP_NAME).empty();
 }
 
-bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
-	string_map::const_iterator const
-		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME_EASYRPG)),
-		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
-
-	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+bool FileFinder::IsEasyRpgProject(DirectoryTreeView tree){
+	return !tree.FindFile(DATABASE_NAME_EASYRPG).empty() &&
+		   !tree.FindFile(TREEMAP_NAME_EASYRPG).empty();
 }
 
-bool FileFinder::IsRPG2kProjectWithRenames(DirectoryTree const& dir) {
-	return !FileExtGuesser::GetRPG2kProjectWithRenames(dir).Empty();
+bool FileFinder::IsRPG2kProjectWithRenames(DirectoryTreeView tree) {
+	return !FileExtGuesser::GetRPG2kProjectWithRenames(tree).Empty();
 }
 
 bool FileFinder::HasSavegame() {
@@ -779,20 +735,18 @@ bool FileFinder::HasSavegame() {
 }
 
 int FileFinder::GetSavegames() {
-	int count = 0;
-
-	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+	auto tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
-		std::string filename = FileFinder::FindDefault(*tree, ss.str());
+		std::string filename = tree->FindFile(ss.str());
 
 		if (!filename.empty()) {
-			++count;
+			return true;
 		}
 	}
-	return count;
+	return false;
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {
@@ -800,9 +754,9 @@ std::string FileFinder::FindMusic(const std::string& name) {
 	return FindDefault("Music", name);
 #endif
 
-	static const char* MUSIC_TYPES[] = {
-		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma", nullptr };
-	return FindFile("Music", name, MUSIC_TYPES);
+	auto MUSIC_TYPES = Utils::MakeSvArray(
+		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	return game_directory_tree->FindFile("Music", name, MUSIC_TYPES);
 }
 
 std::string FileFinder::FindSound(const std::string& name) {
@@ -810,9 +764,9 @@ std::string FileFinder::FindSound(const std::string& name) {
 	return FindDefault("Sound", name);
 #endif
 
-	static const char* SOUND_TYPES[] = {
-		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma", nullptr };
-	return FindFile("Sound", name, SOUND_TYPES);
+	auto SOUND_TYPES = Utils::MakeSvArray(
+		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
+	return game_directory_tree->FindFile("Sound", name, SOUND_TYPES);
 }
 
 bool FileFinder::Exists(const std::string& filename) {
@@ -821,77 +775,6 @@ bool FileFinder::Exists(const std::string& filename) {
 
 bool FileFinder::IsDirectory(const std::string& dir, bool follow_symlinks) {
 	return Platform::File(dir).IsDirectory(follow_symlinks);
-}
-
-FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m, const std::string& parent) {
-	assert(FileFinder::Exists(path));
-	assert(FileFinder::IsDirectory(path, true));
-
-	Directory result;
-
-	result.base = path;
-
-	Platform::Directory dir(path);
-	if (!dir) {
-		Output::Debug("Error opening dir {}: {}", path, ::strerror(errno));
-		return result;
-	}
-
-	while (dir.Read()) {
-		const std::string name = dir.GetEntryName();
-		Platform::FileType type = dir.GetEntryType();
-
-		static bool has_fast_dir_stat = true;
-		bool is_directory = false;
-		if (has_fast_dir_stat) {
-			if (type == Platform::FileType::Unknown) {
-				has_fast_dir_stat = false;
-			} else {
-				is_directory = type == Platform::FileType::Directory;
-			}
-		}
-
-		if (!has_fast_dir_stat) {
-			is_directory = IsDirectory(MakePath(path, name), true);
-		}
-
-		if (name == "." || name == "..") {
-			continue;
-		}
-
-		switch(m) {
-		case FILES:
-			if (is_directory) { continue; }
-		    break;
-		case DIRECTORIES:
-			if (!is_directory) { continue; }
-			break;
-		case ALL:
-			break;
-		case RECURSIVE:
-			if (is_directory) {
-				Directory rdir = GetDirectoryMembers(MakePath(path, name), RECURSIVE, MakePath(parent, name));
-				result.files.insert(rdir.files.begin(), rdir.files.end());
-				result.directories.insert(rdir.directories.begin(), rdir.directories.end());
-				continue;
-			}
-
-			result.files[lcf::ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
-			continue;
-		}
-		std::string name_norm = lcf::ReaderUtil::Normalize(name);
-		if (is_directory) {
-			if (result.directories.find(name_norm) != result.directories.end()) {
-				Output::Warning("This game provides the folder \"{}\" twice.", name);
-				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
-			}
-			result.directories[name_norm] = name;
-		} else {
-			result.files[name_norm] = name;
-		}
-	}
-
-	return result;
 }
 
 int64_t FileFinder::GetFileSize(const std::string& file) {
@@ -912,8 +795,10 @@ bool FileFinder::IsMajorUpdatedTree() {
 			find_mp3 = false;
 		}
 	}
+#if 0
+	FIXME
 	if (find_mp3) {
-		const std::shared_ptr<DirectoryTree> tree = GetDirectoryTree();
+		const DirectoryTreeView tree = GetDirectoryTree();
 		string_map::const_iterator const music_it = tree->directories.find("music");
 		if (music_it != tree->directories.end()) {
 			string_map mem = tree->sub_members["music"];
@@ -926,6 +811,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 			}
 		}
 	}
+#endif
 
 	// Compare the size of RPG_RT.exe with threshold
 	std::string rpg_rt = FindDefault("RPG_RT.exe");

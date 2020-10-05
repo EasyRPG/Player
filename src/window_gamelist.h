@@ -60,7 +60,7 @@ public:
 	std::string GetGamePath();
 
 private:
-	std::shared_ptr<FileFinder::DirectoryTree> tree;
+	std::unique_ptr<DirectoryTree> tree;
 	std::vector<std::string> game_directories;
 };
 

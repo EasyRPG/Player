@@ -29,7 +29,7 @@ Scene_Load::Scene_Load() :
 }
 
 void Scene_Load::Action(int index) {
-	std::string save_name = FileFinder::FindDefault(*tree, fmt::format("Save{:02d}.lsd", index + 1));
+	std::string save_name = tree->FindFile(fmt::format("Save{:02d}.lsd", index + 1));
 
 	Player::LoadSavegame(save_name, index + 1);
 }

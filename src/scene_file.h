@@ -68,7 +68,7 @@ protected:
 	std::unique_ptr<Sprite> border_bottom;
 	std::string message;
 
-	std::shared_ptr<FileFinder::DirectoryTree> tree;
+	std::unique_ptr<DirectoryTree> tree;
 
 	double latest_time = 0;
 	int latest_slot = 0;
