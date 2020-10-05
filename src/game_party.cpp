@@ -255,10 +255,6 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		return false;
 	}
 
-	if (data.party.size() == 0) {
-		return false;
-	}
-
 	const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 	const bool in_battle = Game_Battle::IsBattleRunning();
 
@@ -280,7 +276,21 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		case lcf::rpg::Item::Type_switch:
 			return in_battle ? item->occasion_battle : item->occasion_field2;
 		case lcf::rpg::Item::Type_special:
-			return skill && Algo::IsSkillUsable(*skill, false);
+			if (skill && Algo::IsSkillUsable(*skill, false)) {
+				// RPG_RT requires one actor in the party and alive who can use the item.
+				// But only if the item invokes a normal or subskill. This check is
+				// not performed for escape, teleport, or switch skills!
+				if (!Algo::IsNormalOrSubskill(*skill)) {
+					return true;
+				} else {
+					for (auto* actor: GetActors()) {
+						if (actor->CanAct() && actor->IsItemUsable(item_id)) {
+							return true;
+						}
+					}
+				}
+			}
+			return false;
 		default:
 			break;
 	}
