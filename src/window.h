@@ -46,9 +46,13 @@ public:
 	bool GetPause() const;
 	void SetPause(bool npause);
 	bool GetUpArrow() const;
-	void SetUpArrow(bool npause);
+	void SetUpArrow(bool nup_arrow);
 	bool GetDownArrow() const;
-	void SetDownArrow(bool npause);
+	void SetDownArrow(bool ndown_arrow);
+	bool GetLeftArrow() const;
+	void SetLeftArrow(bool nleft_arrow);
+	bool GetRightArrow() const;
+	void SetRightArrow(bool nright_arrow);
 	int GetX() const;
 	void SetX(int nx);
 	int GetY() const;
@@ -87,6 +91,8 @@ protected:
 	bool closing = false;
 	bool up_arrow = false;
 	bool down_arrow = false;
+	bool left_arrow = false;
+	bool right_arrow = false;
 	int x = 0;
 	int y = 0;
 	int width = 0;
@@ -183,6 +189,22 @@ inline bool Window::GetDownArrow() const {
 
 inline void Window::SetDownArrow(bool ndown_arrow) {
 	down_arrow = ndown_arrow;
+}
+
+inline bool Window::GetLeftArrow() const {
+	return left_arrow;
+}
+
+inline void Window::SetLeftArrow(bool nleft_arrow) {
+	left_arrow = nleft_arrow;
+}
+
+inline bool Window::GetRightArrow() const {
+	return right_arrow;
+}
+
+inline void Window::SetRightArrow(bool nright_arrow) {
+	right_arrow = nright_arrow;
 }
 
 inline int Window::GetX() const {
