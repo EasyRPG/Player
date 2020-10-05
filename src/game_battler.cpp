@@ -227,7 +227,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 	bool was_used = false;
 	int revived = 0;
 
-	if (skill->type == lcf::rpg::Skill::Type_normal || skill->type >= lcf::rpg::Skill::Type_subskill) {
+	if (Algo::IsNormalOrSubskill(*skill)) {
 		// Only takes care of healing skills outside of battle,
 		// the other skill logic is in Game_BattleAlgorithm
 

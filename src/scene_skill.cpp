@@ -17,6 +17,7 @@
 
 // Headers
 #include "scene_skill.h"
+#include "algo.h"
 #include "game_map.h"
 #include "game_party.h"
 #include "game_player.h"
@@ -65,7 +66,7 @@ void Scene_Skill::Update() {
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
-			} else if (skill->type == lcf::rpg::Skill::Type_normal || skill->type >= lcf::rpg::Skill::Type_subskill) {
+			} else if (Algo::IsNormalOrSubskill(*skill)) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
 				skill_index = skill_window->GetIndex();

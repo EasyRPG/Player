@@ -374,8 +374,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget() && !Main_Data::game_player->IsFlying();
 	} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
 		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets() && !Main_Data::game_player->IsFlying();
-	} else if (skill->type == lcf::rpg::Skill::Type_normal ||
-		skill->type >= lcf::rpg::Skill::Type_subskill) {
+	} else if (Algo::IsNormalOrSubskill(*skill)) {
 		int scope = skill->scope;
 
 		if (Game_Battle::IsBattleRunning()) {
