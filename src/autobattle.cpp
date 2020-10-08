@@ -89,7 +89,7 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 	const double tgt_hp = target.GetHp();
 
 	if (target.GetHp() > 0) {
-		// Can the skill can heal the target?
+		// Can the skill heal the target?
 		if (!skill.affect_hp) {
 			return 0.0;
 		}
@@ -100,7 +100,6 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 		auto rank = static_cast<double>(max_effect) / static_cast<double>(tgt_max_hp);
 		if (src_max_sp > 0) {
 			const double cost = source.CalculateSkillCost(skill.ID);
-			// Note: RPG_RT 2ke only uses integer division for cost / src_max_sp here.
 			rank -= cost / src_max_sp / 8.0;
 			rank = std::max(rank, 0.0);
 		}
@@ -131,14 +130,12 @@ double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Bat
 	const double tgt_hp = target.GetHp();
 
 	const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance);
-	// Note: RPG_RT 2ke only uses integer division for effect / tgt_hp here.
 	rank = std::min(base_effect, tgt_hp) / tgt_hp;
 	if (rank == 1.0) {
 		rank = 1.5;
 	}
 	if (src_max_sp > 0) {
 		const double cost = source.CalculateSkillCost(skill.ID);
-		// Note: RPG_RT 2ke only uses integer division for cost / src_max_sp here.
 		rank -= cost / src_max_sp / 4.0;
 		rank = std::max(rank, 0.0);
 	}
@@ -226,7 +223,6 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 	}
 	const double tgt_hp = target.GetHp();
 
-	// Note: RPG_RT 2ke only uses integer division for effect / tgt_hp here.
 	auto rank = std::min(base_effect, tgt_hp) / tgt_hp;
 	if (rank == 1.0) {
 		rank = 1.5;

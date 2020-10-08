@@ -92,7 +92,7 @@ void Scene_Battle::Start() {
 
 	autobattle_algo = AutoBattle::CreateAlgorithm(Player::player_config.autobattle_algo.Get());
 
-	Output::Debug("Starting battle {} ({}) : autobattle={}", troop_id, troop->name, autobattle_algo->GetName());
+	Output::Debug("Starting battle {} ({}): autobattle={}", troop_id, troop->name, autobattle_algo->GetName());
 
 	Game_Battle::Init(troop_id);
 

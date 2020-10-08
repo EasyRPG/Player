@@ -35,7 +35,7 @@ _easyrpg-player ()
       #_filedir '@(lmu|emu)'
       return
       ;;
-    # load map files
+    # Select autobattle algorithm
     --autobattle-algos)
       COMPREPLY=($(compgen -W "$autobattle_algos" -- $cur))
       return
