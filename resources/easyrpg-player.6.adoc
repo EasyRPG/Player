@@ -100,15 +100,20 @@ directory!
 *--seed* 'SEED'::
   Seeds the random number generator.
 
-*--start-map-id* 'ID'::
-  Overwrite the map used for new games and use Map__ID__.lmu instead ('ID' is
-  padded to four digits).
-
 *--autobattle-algo* 'ALGO'::
   Which AutoBattle algorithm to use. Possible options:
    - 'RPG_RT'     - The default RPG_RT compatible algo, including RPG_RT bugs
    - 'RPG_RT+'    - The default RPG_RT compatible algo, with bug fixes
    - 'ATTACK'     - RPG_RT+ but only physical attacks, no skills
+
+*--enemyai-algo* 'ALGO'::
+  Which EnemyAI algorithm to use. Possible options:
+   - 'RPG_RT'     - The default RPG_RT compatible algo, including RPG_RT bugs
+   - 'RPG_RT+'    - The default RPG_RT compatible algo, with bug fixes
+
+*--start-map-id* 'ID'::
+  Overwrite the map used for new games and use Map__ID__.lmu instead ('ID' is
+  padded to four digits).
 
 NOTE: Incompatible with *--load-game-id*.
 

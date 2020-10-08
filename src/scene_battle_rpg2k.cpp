@@ -37,6 +37,7 @@
 #include "output.h"
 #include "rand.h"
 #include "autobattle.h"
+#include "enemyai.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 	Scene_Battle(args)
@@ -1338,26 +1339,13 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	if (first_strike) {
 		return;
 	}
-	std::vector<Game_Battler*> enemies;
-	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-	for (Game_Battler* battler : enemies) {
-		if (!battler->CanAct()) {
-			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-			ActionSelectedCallback(battler);
-			continue;
+	for (auto* enemy : Main_Data::game_enemyparty->GetEnemies()) {
+		if (!EnemyAi::SetStateRestrictedAction(*enemy)) {
+			enemyai_algo->SetEnemyAiAction(*enemy);
 		}
-
-		const lcf::rpg::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
-		if (action) {
-			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
-		}
-
-		if (battler->GetBattleAlgorithm() == nullptr) {
-			// Enemies with no valid actions get Null action so that their states still process.
-			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Null>(battler));
-			ActionSelectedCallback(battler);
-		}
+		assert(enemy->GetBattleAlgorithm() != nullptr);
+		ActionSelectedCallback(enemy);
 	}
 }
 

@@ -128,7 +128,7 @@ static Game_Battler* GetRandomSkillTarget(Game_Party_Base& party, const lcf::rpg
 static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeSkillAction(Game_Enemy& enemy, const lcf::rpg::EnemyAction& action, bool emulate_bugs) {
 	const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, action.skill_id);
 	if (!skill) {
-		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill {}", action.skill_id);
+		Output::Warning("EnemyAi::MakeSkillAction: Enemy can't use invalid skill {}", action.skill_id);
 		return nullptr;
 	}
 

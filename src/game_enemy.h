@@ -73,6 +73,9 @@ public:
 	 */
 	StringView GetName() const override;
 
+	/** @return The troop member id in the battle lineup */
+	int GetTroopMemberId() const;
+
 	/**
 	 * Gets the filename of the enemy sprite
 	 *
@@ -180,8 +183,6 @@ public:
 
 	BattlerType GetType() const override;
 
-	bool IsActionValid(const lcf::rpg::EnemyAction& action);
-	const lcf::rpg::EnemyAction* ChooseRandomAction();
 	bool IsInParty() const override;
 
 	/** @return database enemy struct */
@@ -231,6 +232,10 @@ inline int Game_Enemy::GetHue() const {
 
 inline int Game_Enemy::GetId() const {
 	return enemy->ID;
+}
+
+inline int Game_Enemy::GetTroopMemberId() const {
+	return troop_member->ID;
 }
 
 inline int Game_Enemy::GetBaseMaxHp() const {

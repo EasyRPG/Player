@@ -36,6 +36,7 @@
 #include "font.h"
 #include "output.h"
 #include "autobattle.h"
+#include "enemyai.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -279,11 +280,11 @@ void Scene_Battle_Rpg2k3::Update() {
 						for (auto* battler: enemies) {
 							if (battler->IsAtbGaugeFull() && !battler->GetBattleAlgorithm()) {
 								auto* enemy = static_cast<Game_Enemy*>(battler);
-								const auto* action = enemy->ChooseRandomAction();
-								if (action) {
-									CreateEnemyAction(enemy, action);
+								if (!EnemyAi::SetStateRestrictedAction(*enemy)) {
+									enemyai_algo->SetEnemyAiAction(*enemy);
 								}
-								//FIXME: Do we need to handle invalid actions or empty action list here?
+								assert(enemy->GetBattleAlgorithm() != nullptr);
+								ActionSelectedCallback(enemy);
 							}
 						}
 					}
