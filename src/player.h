@@ -355,6 +355,11 @@ namespace Player {
 	 */
 	extern int speed_modifier;
 
+	/**
+	 * The game logic configuration
+	 */
+	extern Game_ConfigPlayer player_config;
+
 #ifdef EMSCRIPTEN
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;

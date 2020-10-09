@@ -42,6 +42,7 @@
 #include "scene_debug.h"
 #include "game_interpreter.h"
 #include "rand.h"
+#include "autobattle.h"
 
 Scene_Battle::Scene_Battle(const BattleArgs& args)
 	: troop_id(args.troop_id),
@@ -89,7 +90,9 @@ void Scene_Battle::Start() {
 		return;
 	}
 
-	Output::Debug("Starting battle {} ({})", troop_id, troop->name);
+	autobattle_algo = AutoBattle::CreateAlgorithm(Player::player_config.autobattle_algo.Get());
+
+	Output::Debug("Starting battle {} ({}): autobattle={}", troop_id, troop->name, autobattle_algo->GetName());
 
 	Game_Battle::Init(troop_id);
 

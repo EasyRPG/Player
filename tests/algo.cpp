@@ -975,4 +975,38 @@ TEST_CASE("SelfDestructVariance") {
 }
 
 
+TEST_CASE("SkillCost") {
+	const MockActor m;
+
+	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
+
+	SUBCASE("9") {
+		skill->sp_cost = 9;
+		skill->sp_type = lcf::rpg::Skill::SpType_cost;
+		REQUIRE_EQ(9, Algo::CalcSkillCost(*skill, 100, false));
+		REQUIRE_EQ(5, Algo::CalcSkillCost(*skill, 100, true));
+	}
+
+	SUBCASE("10") {
+		skill->sp_cost = 10;
+		skill->sp_type = lcf::rpg::Skill::SpType_cost;
+		REQUIRE_EQ(10, Algo::CalcSkillCost(*skill, 100, false));
+		REQUIRE_EQ(5, Algo::CalcSkillCost(*skill, 100, true));
+	}
+
+	SUBCASE("49%") {
+		skill->sp_percent = 49;
+		skill->sp_type = lcf::rpg::Skill::SpType_percent;
+		REQUIRE_EQ(49, Algo::CalcSkillCost(*skill, 100, false));
+		REQUIRE_EQ(24, Algo::CalcSkillCost(*skill, 100, true));
+	}
+
+	SUBCASE("50%") {
+		skill->sp_percent = 50;
+		skill->sp_type = lcf::rpg::Skill::SpType_percent;
+		REQUIRE_EQ(50, Algo::CalcSkillCost(*skill, 100, false));
+		REQUIRE_EQ(25, Algo::CalcSkillCost(*skill, 100, true));
+	}
+}
+
 TEST_SUITE_END();

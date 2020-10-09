@@ -344,10 +344,7 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 		Output::Warning("CalculateSkillCost: Invalid skill ID {}", skill_id);
 		return 0;
 	}
-
-	return (Player::IsRPG2k3() && skill->sp_type == lcf::rpg::Skill::SpType_percent)
-		? GetMaxSp() * skill->sp_percent / 100
-		: skill->sp_cost;
+	return Algo::CalcSkillCost(*skill, GetMaxSp(), false);
 }
 
 bool Game_Battler::AddState(int state_id, bool allow_battle_states) {

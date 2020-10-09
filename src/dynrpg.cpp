@@ -61,7 +61,7 @@ bool DynRpg::HasFunction(const std::string& name) {
 // Var arg referenced by $n
 std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay) {
 	parse_okay = true;
-	if (index >= args.size()) {
+	if (index >= static_cast<int>(args.size())) {
 		parse_okay = false;
 		Output::Warning("{}: Vararg {} out of range", func_name, index);
 		return "";
@@ -89,7 +89,7 @@ std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int ind
 			} else if (n >= '1' && n <= '9') {
 				int i = (int)(n - '0');
 
-				if (i + index < args.size()) {
+				if (i + index < static_cast<int>(args.size())) {
 					msg << args[i + index];
 				}
 				else {

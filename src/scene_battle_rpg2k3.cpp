@@ -35,6 +35,7 @@
 #include "utils.h"
 #include "font.h"
 #include "output.h"
+#include "autobattle.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -1467,18 +1468,19 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				default:
 					break;
 				}
+				if (random_target) {
+					active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+					battle_actions.push_back(active_actor);
+					active_actor->SetAtbGauge(0);
+					return;
+				}
 			}
 
-			if (random_target || auto_battle || active_actor->GetAutoBattle()) {
-				if (!random_target) {
-					random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
-				}
-
-				// ToDo: Auto battle logic is dumb
-				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+			if (auto_battle || active_actor->GetAutoBattle()) {
+				this->autobattle_algo->SetAutoBattleAction(*active_actor);
+				assert(active_actor->GetBattleAlgorithm() != nullptr);
 				battle_actions.push_back(active_actor);
 				active_actor->SetAtbGauge(0);
-
 				return;
 			}
 

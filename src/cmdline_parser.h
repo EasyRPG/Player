@@ -72,6 +72,15 @@ public:
 	 * @return true if i < NumValues() and the string value was able to be parsed to an integer.
 	 */
 	bool ParseValue(int i, long& value) const;
+
+	/**
+	 * Gets an argument value to a string
+	 *
+	 * @param i the index to the value.
+	 * @param value the value to write to. If the function returns true, this parameter is written, if returns false, this parameter is not touched.
+	 * @return true if i < NumValues()
+	 */
+	bool ParseValue(int i, std::string& value) const;
 private:
 	const std::string* ptr = nullptr;
 	int num_values = 0;

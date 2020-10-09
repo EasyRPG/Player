@@ -34,6 +34,7 @@
 #include "compiler.h"
 #include "attribute.h"
 #include "rand.h"
+#include "algo.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -209,11 +210,12 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 }
 
 int Game_Actor::CalculateSkillCost(int skill_id) const {
-	int cost = Game_Battler::CalculateSkillCost(skill_id);
-	if (HasHalfSpCost()) {
-		cost = (cost + 1) / 2;
+	const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
+	if (!skill) {
+		Output::Warning("CalculateSkillCost: Invalid skill ID {}", skill_id);
+		return 0;
 	}
-	return cost;
+	return Algo::CalcSkillCost(*skill, GetMaxSp(), HasHalfSpCost());
 }
 
 bool Game_Actor::LearnSkill(int skill_id, PendingMessage* pm) {
