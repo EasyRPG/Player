@@ -108,9 +108,6 @@ void Spriteset_Map::Update() {
 		shadow->Update();
 	}
 
-	timer1->Update();
-	timer2->Update();
-
 	DynRpg::Update();
 }
 

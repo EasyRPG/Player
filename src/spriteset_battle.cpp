@@ -94,9 +94,6 @@ void Spriteset_Battle::Update() {
 		sprite->Update();
 		sprite->SetTone(new_tone);
 	}
-
-	timer1->Update();
-	timer2->Update();
 }
 
 Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
