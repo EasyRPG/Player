@@ -317,11 +317,10 @@ namespace Game_Map {
 	 */
 	std::vector<lcf::rpg::Encounter>& GetEncounterList();
 
-	/**
-	 * Gets battle encounter rate.
-	 *
-	 * @return battle encounter left steps.
-	 */
+	/** @return original map battle encounter rate steps. */
+	int GetOriginalEncounterRate();
+
+	/** @return battle encounter rate steps. */
 	int GetEncounterRate();
 
 	/**
@@ -373,40 +372,14 @@ namespace Game_Map {
 	 */
 	std::vector<short>& GetMapDataUp();
 
-	/**
-	 * Gets chipset Id.
-	 *
-	 * @return chipset ID
-	 */
+	/** @return original map chipset ID */
+	int GetOriginalChipset();
+
+	/** @return current chipset ID */
 	int GetChipset();
 
-	/**
-	 * Gets chipset filename.
-	 *
-	 * @return chipset filename.
-	 */
-	std::string& GetChipsetName();
-
-	/**
-	 * Sets the chipset name.
-	 *
-	 * @param chipset_name new chipset name.
-	 */
-	void SetChipsetName(std::string chipset_name);
-
-	/**
-	 * Gets battleback filename.
-	 *
-	 * @return battleback filename.
-	 */
-	std::string& GetBattlebackName();
-
-	/**
-	 * Sets the battleback name.
-	 *
-	 * @param battleback_name new battleback name.
-	 */
-	void SetBattlebackName(std::string battleback_name);
+	/** @return chipset filename.  */
+	StringView GetChipsetName();
 
 	/**
 	 * Gets the offset of the screen from the left edge

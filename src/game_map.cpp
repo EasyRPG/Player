@@ -55,8 +55,6 @@ namespace {
 	lcf::rpg::SaveMapInfo map_info;
 	lcf::rpg::SavePanorama panorama;
 
-	std::string chipset_name;
-	std::string battleback_name;
 	bool need_refresh;
 
 	int animation_type;
@@ -92,7 +90,6 @@ void Game_Map::Init() {
 	Dispose();
 
 	map_info = {};
-	map_info.Setup();
 	panorama = {};
 	SetNeedRefresh(true);
 
@@ -114,7 +111,6 @@ void Game_Map::Dispose() {
 	events.clear();
 	map.reset();
 	map_info = {};
-	map_info.Setup();
 	panorama = {};
 }
 
@@ -141,6 +137,7 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 
 	Parallax::ClearChangedBG();
 
+	SetEncounterRate(GetMapInfo().encounter_steps);
 	SetChipset(map->chipset_id);
 
 	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
@@ -240,8 +237,7 @@ void Game_Map::SetupFromSave(
 		interpreter->SetState(std::move(save_fg_exec));
 	}
 
-	map_info.Fixup(GetMap());
-	map_info.Fixup(GetMapInfo());
+	SetEncounterRate(map_info.encounter_rate);
 	SetChipset(map_info.chipset_id);
 
 	if (!is_map_save_compat) {
@@ -256,6 +252,10 @@ void Game_Map::SetupFromSave(
 	// This produces compatible behavior for old RPG_RT saves, namely
 	// the pan_x/y is always forced to 0.
 	// If the later async code will load panorama, set the flag to not clear the offsets.
+	// FIXME: RPG_RT compatibility bug: Everytime we load a savegame with default panorama chunks,
+	// this causes them to get overwritten
+	// FIXME: RPG_RT compatibility bug: On async platforms, panorama async loading can
+	// cause panorama chunks to be out of sync.
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
@@ -314,9 +314,6 @@ void Game_Map::SetupCommon() {
 	}
 	Output::Debug("Tree: {}", ss.str());
 
-	map_info.Fixup(GetMap());
-	map_info.Fixup(GetMapInfo());
-
 	// Create the map events
 	events.reserve(map->events.size());
 	for (const auto& ev : map->events) {
@@ -332,6 +329,16 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 	save.boat_location = GetVehicle(Game_Vehicle::Boat)->GetSaveData();
 
 	save.map_info = map_info;
+	save.map_info.chipset_id = GetChipset();
+	if (save.map_info.chipset_id == GetOriginalChipset()) {
+		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
+		save.map_info.chipset_id = 0;
+	}
+	if (save.map_info.encounter_rate == GetOriginalEncounterRate()) {
+		save.map_info.encounter_rate = -1;
+	}
+	// Note: RPG_RT does not use a sentinel for parallax parameters. Once the parallax BG is changed, it stays that way forever.
+
 	save.map_info.events.clear();
 	save.map_info.events.reserve(events.size());
 	for (Game_Event& ev : events) {
@@ -1116,6 +1123,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 
 lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
 	auto idx = GetMapIndex(GetMapId());
+	assert(idx >= 0 && idx < static_cast<int>(lcf::Data::treemap.maps.size()));
 	return lcf::Data::treemap.maps[idx];
 }
 
@@ -1139,11 +1147,18 @@ std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
 	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
+int Game_Map::GetOriginalEncounterRate() {
+	return GetMapInfo().encounter_steps;
+}
+
 int Game_Map::GetEncounterRate() {
 	return map_info.encounter_rate;
 }
 
 void Game_Map::SetEncounterRate(int step) {
+	if (step < 0) {
+		step = GetOriginalEncounterRate();
+	}
 	map_info.encounter_rate = step;
 }
 
@@ -1264,22 +1279,18 @@ std::vector<short>& Game_Map::GetMapDataUp() {
 	return map->upper_layer;
 }
 
+int Game_Map::GetOriginalChipset() {
+	return map != nullptr ? map->chipset_id : 0;
+}
+
 int Game_Map::GetChipset() {
-	return map_info.chipset_id;
+	return chipset != nullptr ? chipset->ID : 0;
 }
 
-std::string& Game_Map::GetChipsetName() {
-	return chipset_name;
-}
-void Game_Map::SetChipsetName(std::string new_chipset_name) {
-	chipset_name = new_chipset_name;
-}
-
-std::string& Game_Map::GetBattlebackName() {
-	return battleback_name;
-}
-void Game_Map::SetBattlebackName(std::string new_battleback_name) {
-	battleback_name = new_battleback_name;
+StringView Game_Map::GetChipsetName() {
+	return chipset != nullptr
+		? StringView(chipset->chipset_name)
+		: StringView("");
 }
 
 int Game_Map::GetPositionX() {
@@ -1409,13 +1420,16 @@ int Game_Map::GetParentId(int map_id) {
 }
 
 void Game_Map::SetChipset(int id) {
+	if (id == 0) {
+		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
+		id = GetOriginalChipset();
+	}
 	map_info.chipset_id = id;
 
 	chipset = lcf::ReaderUtil::GetElement(lcf::Data::chipsets, map_info.chipset_id);
 	if (!chipset) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
-		chipset_name = ToString(chipset->chipset_name);
 		passages_down = chipset->passable_data_lower;
 		passages_up = chipset->passable_data_upper;
 		animation_type = chipset->animation_type;
@@ -1543,6 +1557,7 @@ static Game_Map::Parallax::Params GetParallaxParams() {
 		params.scroll_vert_auto = map_info.parallax_vert_auto;
 		params.scroll_vert_speed = map_info.parallax_vert_speed;
 	} else if (map->parallax_flag) {
+		// Default case when map parallax hasn't been overwritten.
 		params.name = ToString(map->parallax_name);
 		params.scroll_horz = map->parallax_loop_x;
 		params.scroll_horz_auto = map->parallax_auto_loop_x;
