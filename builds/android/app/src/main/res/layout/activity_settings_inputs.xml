@@ -40,7 +40,7 @@
                 android:text="@string/fast_forward"
                 android:textSize="20sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/settings_fast_forward_mode"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="wrap_content"

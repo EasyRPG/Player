@@ -33,7 +33,7 @@
 
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
-	std::vector<uint8_t> *p = (std::vector<uint8_t>*)png_get_io_ptr(png_ptr);
+	std::vector<uint8_t> *p = reinterpret_cast<std::vector<uint8_t>*>(png_get_io_ptr(png_ptr));
 	p->insert(p->end(), data, data + length);
 }
 
@@ -110,7 +110,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_d
 		return nullptr;
 	}
 	
-	std::vector<uint8_t*> png_outbuf;
+	std::vector<uint8_t> png_outbuf;
 	
 	png_set_write_fn(png_ptr, &png_outbuf, custom_png_write_func, nullptr);
 
@@ -160,14 +160,9 @@ JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_d
 	png_free(png_ptr, palette);
 	palette = NULL;
 
-	// No idea why but using the png_outbuf vector we pass in as custom arg
-	// directly returns the wrong value for size() o.O
-	
-	std::vector<uint8_t> *p = (std::vector<uint8_t>*)png_get_io_ptr(png_ptr);
+	jbyteArray result=env->NewByteArray(png_outbuf.size());
 
-	jbyteArray result=env->NewByteArray(p->size());
-
-	env->SetByteArrayRegion(result, 0, p->size(), reinterpret_cast<jbyte*>(p->data()));
+	env->SetByteArrayRegion(result, 0, png_outbuf.size(), reinterpret_cast<jbyte*>(png_outbuf.data()));
 
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 	
