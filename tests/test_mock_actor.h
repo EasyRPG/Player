@@ -6,6 +6,8 @@
 #include "game_enemyparty.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "game_switches.h"
+#include "game_player.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -35,6 +37,7 @@ static void InitEmptyDB() {
 	initVec(lcf::Data::battleranimations, 200);
 	initVec(lcf::Data::switches, 200);
 	initVec(lcf::Data::variables, 200);
+	initVec(lcf::Data::animations, 200);
 
 	for (auto& actor: lcf::Data::actors) {
 		actor.initial_level = 1;
@@ -88,7 +91,9 @@ public:
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 		Main_Data::game_party = std::make_unique<Game_Party>();
+		Main_Data::game_switches = std::make_unique<Game_Switches>();
 		Main_Data::game_variables = std::make_unique<Game_Variables>(Game_Variables::min_2k, Game_Variables::max_2k);
+		Main_Data::game_player = std::make_unique<Game_Player>();
 
 		Main_Data::game_party->SetupNewGame();
 	}
