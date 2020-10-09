@@ -168,6 +168,19 @@ int CalcSelfDestructEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		bool apply_variance);
 
+/**
+ * Calculate the sp cost for a skill.
+ * This includes: power, source atk, target def, variance
+ * It does not include: hit rate, target defend adjustment, value clamping
+ *
+ * @param skill The skill to compute
+ * @param max_sp the max sp of the user
+ * @param half_sp_cost if user has half_sp_cost modifier
+ *
+ * @return sp cost
+ */
+int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost);
+
 } // namespace Algo
 
 
