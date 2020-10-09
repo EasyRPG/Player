@@ -35,16 +35,10 @@ public:
 
 	~Sprite_Timer() override;
 
-	/**
-	 * Updates sprite state.
-	 */
-	void Update();
-
 protected:
-	void CreateSprite();
 	void Draw(Bitmap& dst) override;
 
-	int which;
+	int which = 0;
 
 	Rect digits[5];
 };

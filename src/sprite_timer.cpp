@@ -32,39 +32,41 @@ Sprite_Timer::Sprite_Timer(int which) :
 		assert(false && "Invalid timer");
 	}
 
-	CreateSprite();
+	for (auto& d: digits) {
+		d = Rect(0, 32, 8, 16);
+	}
+	digits[2].x = 32 + 8 * 10; // :
+
+	SetBitmap(Bitmap::Create(40, 16));
+
+	SetVisible(false);
+
+	switch (which) {
+		case Game_Party::Timer1:
+			SetX(4);
+			break;
+		case Game_Party::Timer2:
+			SetX(SCREEN_TARGET_WIDTH - 8 * 5 - 4);
+			break;
+		default:
+			break;
+	}
+
+	SetZ(Priority_Timer);
+	SetVisible(true);
 }
 
 Sprite_Timer::~Sprite_Timer() {
 }
 
 void Sprite_Timer::Draw(Bitmap& dst) {
-	// RPG_RT never displays timers if there is no system graphic.
-	BitmapRef system = Cache::System();
-	if (!system) {
+	if (!Main_Data::game_party->GetTimerVisible(which, Game_Battle::IsBattleRunning())) {
 		return;
 	}
 
-	GetBitmap()->Clear();
-	for (int i = 0; i < 5; ++i) {
-		if (i == 2) { // :
-			int frames =  Main_Data::game_party->GetTimerFrames(which);
-			if (frames % DEFAULT_FPS < DEFAULT_FPS / 2) {
-				continue;
-			}
-		}
-		GetBitmap()->Blit(i * 8, 0, *system, digits[i], Opacity());
-	}
-
-	Sprite::Draw(dst);
-}
-
-void Sprite_Timer::Update() {
-	const bool visible = Main_Data::game_party->GetTimerVisible(which, Game_Battle::IsBattleRunning());
-
-	SetVisible(visible);
-
-	if (!visible) {
+	// RPG_RT never displays timers if there is no system graphic.
+	BitmapRef system = Cache::System();
+	if (!system) {
 		return;
 	}
 
@@ -94,27 +96,17 @@ void Sprite_Timer::Update() {
 		SetY(4);
 	}
 
-	SetZ(Priority_Timer);
-}
-
-void Sprite_Timer::CreateSprite() {
+	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {
-		digits[i] = Rect(0, 32, 8, 16);
+		if (i == 2) { // :
+			int frames =  Main_Data::game_party->GetTimerFrames(which);
+			if (frames % DEFAULT_FPS < DEFAULT_FPS / 2) {
+				continue;
+			}
+		}
+		GetBitmap()->Blit(i * 8, 0, *system, digits[i], Opacity());
 	}
-	digits[2].x = 32 + 8 * 10; // :
 
-	SetBitmap(Bitmap::Create(40, 16));
-
-	SetVisible(false);
-
-	switch (which) {
-		case Game_Party::Timer1:
-			SetX(4);
-			break;
-		case Game_Party::Timer2:
-			SetX(SCREEN_TARGET_WIDTH - 8 * 5 - 4);
-			break;
-		default:
-			break;
-	}
+	Sprite::Draw(dst);
 }
+
