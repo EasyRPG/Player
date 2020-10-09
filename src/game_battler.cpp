@@ -370,6 +370,9 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	if (GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
 		SetIsDefending(false);
 		SetCharged(false);
+		if (GetBattleAlgorithm() != nullptr) {
+			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(this));
+		}
 	}
 
 	return was_added;
