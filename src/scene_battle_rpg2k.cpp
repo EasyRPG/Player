@@ -511,7 +511,9 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 		}
 
 		if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
-			SelectionFlash(action->GetSource());
+			if (action->GetSource()->CanAct()) {
+				SelectionFlash(action->GetSource());
+			}
 		}
 
 		if (show_message) {
