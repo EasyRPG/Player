@@ -80,6 +80,13 @@ void RpgRtImproved::vSetAutoBattleAction(Game_Actor& source) {
 	SelectAutoBattleAction(source, Game_Battler::WeaponAll, Game_Battle::GetBattleCondition(), true, false, false, false);
 }
 
+static int CalcSkillCostAutoBattle(const Game_Actor& source, const lcf::rpg::Skill& skill, bool emulate_bugs) {
+	// RPG_RT autobattle ignores half sp cost modifier
+	return emulate_bugs
+		? Algo::CalcSkillCost(skill, source.GetMaxSp(), false)
+		: source.CalculateSkillCost(skill.ID);
+}
+
 double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
 	assert(skill.type == lcf::rpg::Skill::Type_normal || skill.type >= lcf::rpg::Skill::Type_subskill);
 	assert(skill.scope == lcf::rpg::Skill::Scope_self || skill.scope == lcf::rpg::Skill::Scope_ally || skill.scope == lcf::rpg::Skill::Scope_party);
@@ -99,7 +106,7 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 
 		auto rank = static_cast<double>(max_effect) / static_cast<double>(tgt_max_hp);
 		if (src_max_sp > 0) {
-			const double cost = source.CalculateSkillCost(skill.ID);
+			const double cost = CalcSkillCostAutoBattle(source, skill, emulate_bugs);
 			rank -= cost / src_max_sp / 8.0;
 			rank = std::max(rank, 0.0);
 		}
@@ -135,7 +142,7 @@ double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Bat
 		rank = 1.5;
 	}
 	if (src_max_sp > 0) {
-		const double cost = source.CalculateSkillCost(skill.ID);
+		const double cost = CalcSkillCostAutoBattle(source, skill, emulate_bugs);
 		rank -= cost / src_max_sp / 4.0;
 		rank = std::max(rank, 0.0);
 	}
