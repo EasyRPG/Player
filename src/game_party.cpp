@@ -612,7 +612,7 @@ int Game_Party::GetAverageLevel() {
 }
 
 int Game_Party::GetFatigue() {
-	std::vector<Game_Actor*> actors = GetActors();
+	const auto& actors = GetActors();
 
 	if (actors.empty()) {
 		return 0;
@@ -622,7 +622,7 @@ int Game_Party::GetFatigue() {
 	int total_hp = 0;
 	int sp = 0;
 	int total_sp = 0;
-	for (Game_Actor* a : actors) {
+	for (auto* a : actors) {
 		hp += a->GetHp();
 		total_hp += a->GetMaxHp();
 		sp += a->GetSp();
@@ -634,7 +634,8 @@ int Game_Party::GetFatigue() {
 		total_sp = 1;
 	}
 
-	return (int)std::ceil(100 - 100.0f * (((float)hp / total_hp * 2.0f + (float)sp / total_sp) / 3.0f));
+	auto p = Utils::RoundTo<int>(100.0f * ((static_cast<double>(hp) / total_hp * 2.0 + static_cast<double>(sp) / total_sp) / 3.0f));
+	return 100 - p;
 }
 
 void Game_Party::RemoveInvalidData() {
