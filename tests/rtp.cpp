@@ -4,12 +4,23 @@
 #include "rtp.h"
 #include "doctest.h"
 
-TEST_SUITE_BEGIN("RTP");
 
-static DirectoryTreeView make_tree() {
+static bool skip_tests() {
+#ifdef EMSCRIPTEN
+	return true;
+#else
+	return false;
+#endif
+}
+
+TEST_SUITE_BEGIN("RTP" * doctest::skip(skip_tests()));
+
+static std::unique_ptr<DirectoryTree> make_tree() {
 	Player::escape_symbol = "\\";
 
-	auto tree = std::make_shared<DirectoryTree>();
+	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/rtp");
+
+#if 0
 	tree->directories["faceset"] = "FaceSet";
 	tree->directories["music"] = "Music";
 	tree->directories["sound"] = "Sound";
@@ -28,6 +39,7 @@ static DirectoryTreeView make_tree() {
 			{"カーソル1.wav", "カーソル1.wav"},
 			{"キャンセル1.wav", "キャンセル2.wav"}
 	};
+#endif
 
 	return tree;
 }
@@ -56,20 +68,19 @@ TEST_CASE("RTP 2003: lookup table is correct") {
 
 TEST_CASE("RTP 2000: Detection") {
 	auto tree = make_tree();
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree, 2000);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree->AsView(), 2000);
 
 	REQUIRE(hits.size() == 2);
 
 	REQUIRE(hits[0].type == RTP::Type::RPG2000_OfficialJapanese);
 	REQUIRE(hits[0].hits == 4);
-	REQUIRE(hits[0].tree.get() == tree.get());
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2000_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
 }
 
 TEST_CASE("RTP 2003: Detection") {
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree(), 2003);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree()->AsView(), 2003);
 
 	REQUIRE(hits.size() == 2);
 

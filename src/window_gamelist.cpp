@@ -31,16 +31,23 @@ Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
 void Window_GameList::Refresh() {
 	tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath());
 	game_directories.clear();
-#if 0
-	FIXME
+
+	if (!tree) {
+		return;
+	}
+
 	// Find valid game diectories
-	for (auto dir : tree.get()->directories) {
-		DirectoryTreeView subtree = FileFinder::CreateDirectoryTree(FileFinder::MakePath(Main_Data::GetProjectPath(), dir.second), FileFinder::FILES);
-		if (FileFinder::IsValidProject(*subtree)) {
-			game_directories.push_back(dir.second);
+	for (auto& dir : *tree->ListDirectory()) {
+		if (dir.second.type != DirectoryTree::FileType::Directory) {
+			continue;
+		}
+
+		DirectoryTreeView subtree = tree->AsView(dir.second.name);
+		if (FileFinder::IsValidProject(subtree)) {
+			game_directories.push_back(dir.second.name);
 		}
 	}
-#endif
+
 	// Sort game list in place
 	std::sort(game_directories.begin(), game_directories.end(),
 			  [](const std::string& s, const std::string& s2) {

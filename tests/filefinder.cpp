@@ -28,19 +28,19 @@ TEST_CASE("IsDirectory") {
 TEST_CASE("IsRPG2kProject") {
 	Main_Data::Init();
 
-	DirectoryTreeView const tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/game");
-	CHECK(FileFinder::IsRPG2kProject(*tree));
+	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/game");
+	CHECK(FileFinder::IsRPG2kProject(tree->AsView()));
 
 	Player::escape_symbol = "\\";
-	FileFinder::SetDirectoryTree(tree);
+	FileFinder::SetDirectoryTree(std::move(tree));
 	CHECK(!FileFinder::FindImage("CharSet", "Chara1").empty());
 }
 
 TEST_CASE("IsNotRPG2kProject") {
 	Main_Data::Init();
 
-	DirectoryTreeView const tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/notagame");
-	CHECK(!FileFinder::IsRPG2kProject(*tree));
+	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/notagame");
+	CHECK(!FileFinder::IsRPG2kProject(tree->AsView()));
 }
 
 TEST_SUITE_END();

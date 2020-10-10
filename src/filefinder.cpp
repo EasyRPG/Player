@@ -51,7 +51,7 @@
 
 namespace {
 #ifdef SUPPORT_MOVIES
-	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
+	auto MOVIE_TYPES = { ".avi", ".mpg" };
 #endif
 
 	std::unique_ptr<DirectoryTree> game_directory_tree;
@@ -94,6 +94,8 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 }
 
 std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
+	bool initial_slash = !path.empty() && path[0] == '/';
+
 	std::vector<std::string> path_components = SplitPath(path);
 	std::vector<std::string> path_can;
 
@@ -119,7 +121,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 		ret = MakePath(ret, s);
 	}
 
-	return ret;
+	return (initial_slash ? "/" : "") + ret;
 }
 
 std::vector<std::string> FileFinder::SplitPath(StringView path) {
@@ -227,7 +229,7 @@ std::string GetFontFilename(const std::string& name) {
 
 std::string FileFinder::FindFont(const std::string& name) {
 	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
-	std::string path = game_directory_tree->FindFile("Font", name, FONTS_TYPES);
+	std::string path = game_directory_tree->FindFile({ MakePath("Font", name), FONTS_TYPES, 1 });
 
 #if defined(_WIN32) && !defined(_ARM_)
 	if (!path.empty()) {
@@ -307,7 +309,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 #endif
 
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	return game_directory_tree->FindFile(dir, name, IMG_TYPES);
+	return game_directory_tree->FindFile({ MakePath(dir, name), IMG_TYPES, 1 });
 }
 
 std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
@@ -374,7 +376,7 @@ std::string FileFinder::FindMusic(const std::string& name) {
 
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	return game_directory_tree->FindFile("Music", name, MUSIC_TYPES);
+	return game_directory_tree->FindFile({ MakePath("Music", name), MUSIC_TYPES, 1 });
 }
 
 std::string FileFinder::FindSound(const std::string& name) {
@@ -384,7 +386,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 
 	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	return game_directory_tree->FindFile("Sound", name, SOUND_TYPES);
+	return game_directory_tree->FindFile({ MakePath("Sound", name), SOUND_TYPES, 1 });
 }
 
 bool FileFinder::Exists(const std::string& filename) {
@@ -413,23 +415,19 @@ bool FileFinder::IsMajorUpdatedTree() {
 			find_mp3 = false;
 		}
 	}
-#if 0
-	FIXME
+
 	if (find_mp3) {
-		const DirectoryTreeView tree = GetDirectoryTree();
-		string_map::const_iterator const music_it = tree->directories.find("music");
-		if (music_it != tree->directories.end()) {
-			string_map mem = tree->sub_members["music"];
-			for (auto& i : mem) {
-				std::string file = mem[i.first];
-				if (ToStringView(Utils::LowerCase(file)).ends_with(".mp3")) {
-					Output::Debug("MP3 file ({}) found", file);
+		auto tree = GetDirectoryTree();
+		auto entries = tree.ListDirectory("music");
+		if (entries) {
+			for (const auto& entry : *entries) {
+				if (entry.second.type == DirectoryTree::FileType::Regular && StringView(entry.first).ends_with(".mp3")) {
+					Output::Debug("MP3 file ({}) found", entry.second.name);
 					return true;
 				}
 			}
 		}
 	}
-#endif
 
 	// Compare the size of RPG_RT.exe with threshold
 	std::string rpg_rt = FindDefault("RPG_RT.exe");

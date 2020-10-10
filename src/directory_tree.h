@@ -45,6 +45,14 @@ public:
 		Entry(std::string name, FileType type) : name(std::move(name)), type(type) {}
 	};
 
+	struct Args {
+		std::string path;
+		lcf::Span<StringView> exts;
+		int canonical_initial_deepness = 0;
+		bool use_rtp = true;
+		bool file_not_found_warning = true;
+	};
+
 	using DirectoryListType = std::unordered_map<std::string, Entry>;
 
 	static std::unique_ptr<DirectoryTree> Create();
@@ -72,6 +80,13 @@ public:
 	 */
 	std::string FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts = {}) const;
 
+	/**
+	 *
+	 * @param args
+	 * @return
+	 */
+	std::string FindFile(const DirectoryTree::Args& args) const;
+
 	StringView GetRootPath() const;
 
 	std::string MakePath(StringView subpath) const;
@@ -95,8 +110,10 @@ public:
 
 	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
 	std::string FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts = {}) const;
+	std::string FindFile(const DirectoryTree::Args& args) const;
 	StringView GetRootPath() const;
 	std::string MakePath(StringView subdir) const;
+	DirectoryTree::DirectoryListType* ListDirectory(StringView path = "") const;
 
 	explicit operator bool() const noexcept;
 

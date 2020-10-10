@@ -61,16 +61,17 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 
  DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
 	std::vector<Entry> entries;
+	std::string fs_path = ToString(path);
 	std::string full_path = MakePath(path);
 
 	DebugLog("ListDirectory: {}", full_path);
 
-	auto dir_key = make_key(path);
+	auto dir_key = make_key(fs_path);
 
 	auto dir_it = dir_cache.find(dir_key);
 	if (dir_it != dir_cache.end()) {
 		// Already cached
-		DebugLog("ListDirectory Cache Hit");
+		DebugLog("ListDirectory Cache Hit: {}", dir_key);
 		auto file_it = fs_cache.find(dir_key);
 		assert(file_it != fs_cache.end());
 		return &file_it->second;
@@ -78,9 +79,37 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 
 	assert(fs_cache.find(dir_key) == fs_cache.end());
 
+	// FIXME: Skip this scan when the directory name matches the passed name
+
+	if (!fs_path.empty()) {
+		// Go up and determine the proper casing of the folder
+		std::string parent_dir, child_dir;
+		std::tie(parent_dir, child_dir) = FileFinder::GetPathAndFilename(fs_path);
+
+		auto* parent_tree = ListDirectory(parent_dir);
+		if (!parent_tree) {
+			Output::Debug("Error opening dir {}", parent_dir);
+			return nullptr;
+		}
+
+		auto parent_key = make_key(parent_dir);
+		auto parent_it = dir_cache.find(parent_key);
+		assert(parent_it != dir_cache.end());
+
+		auto child_key = make_key(child_dir);
+		auto child_it = parent_tree->find(child_key);
+		if (child_it != parent_tree->end()) {
+			full_path = FileFinder::MakePath(MakePath(parent_it->second), child_it->second.name);
+			fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
+		} else {
+			Output::Debug("Directory {} not found", FileFinder::MakePath(parent_dir, child_dir));
+			return nullptr;
+		}
+	}
+
 	Platform::Directory dir(full_path);
 	if (!dir) {
-		Output::Debug("Error opening dir {}: {}", path, ::strerror(errno));
+		Output::Debug("Error opening dir {}: {}", full_path, ::strerror(errno));
 		return nullptr;
 	}
 
@@ -99,7 +128,8 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 		}
 
 		if (!has_fast_dir_stat) {
-			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(path, name), true);
+			// FIXME
+			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(fs_path, name), true);
 		}
 
 		if (name == "." || name == "..") {
@@ -125,7 +155,7 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 #endif
 	}
 
-	dir_cache[dir_key] = ToString(path);
+	dir_cache[dir_key] = fs_path;
 
 	DirectoryListType fs_cache_entry;
 
@@ -144,10 +174,18 @@ DirectoryTreeView DirectoryTree::AsView(std::string sub_path) {
 }
 
 std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) const {
+	return FindFile({ ToString(filename), exts });
+}
+
+std::string DirectoryTree::FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts) const {
+	return FindFile({ FileFinder::MakePath(directory, filename), exts });
+}
+
+std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	std::string dir, name, canonical_path;
 	// Few games (e.g. Yume2kki) use path traversal (..) in the filenames to point
 	// to files outside of the actual directory.
-	canonical_path = FileFinder::MakeCanonical(filename, 1);
+	canonical_path = FileFinder::MakeCanonical(args.path, args.canonical_initial_deepness);
 
 #ifdef EMSCRIPTEN
 	if (Exists(canonical_path))
@@ -159,7 +197,9 @@ std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) 
 
 	auto* entries = ListDirectory(dir);
 	if (!entries) {
-		Output::Debug("Cannot find: {}/{}", dir, name);
+		if (args.file_not_found_warning) {
+			Output::Debug("Cannot find: {}/{}", dir, name);
+		}
 		return "";
 	}
 
@@ -168,35 +208,33 @@ std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) 
 	assert(dir_it != dir_cache.end());
 
 	std::string name_key = make_key(name);
-	if (exts.empty()) {
+	if (args.exts.empty()) {
 		auto entry_it = entries->find(name_key);
 		if (entry_it != entries->end()) {
-			return FileFinder::MakePath(dir_it->second, entry_it->second.name);
+			return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
 		}
 	} else {
-		for (const auto& ext : exts) {
+		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
 			auto entry_it = entries->find(full_name_key);
 			if (entry_it != entries->end()) {
-				return FileFinder::MakePath(dir_it->second, entry_it->second.name);
+				return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
 			}
 		}
 	}
 
-	if (Main_Data::filefinder_rtp) {
-		auto rtp_file = Main_Data::filefinder_rtp->Lookup(dir, name, exts);
+	if (args.use_rtp && Main_Data::filefinder_rtp) {
+		auto rtp_file = Main_Data::filefinder_rtp->Lookup(dir, name, args.exts);
 		if (!rtp_file.empty()) {
 			return rtp_file;
 		}
 	}
 
-	Output::Debug("Cannot find: {}/{}", dir, name);
+	if (args.file_not_found_warning) {
+		Output::Debug("Cannot find: {}/{}", dir, name);
+	}
 
 	return "";
-}
-
-std::string DirectoryTree::FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts) const {
-	return FindFile(FileFinder::MakePath(directory, filename), exts);
 }
 
 std::string DirectoryTree::MakePath(StringView subpath) const {
@@ -225,6 +263,13 @@ std::string DirectoryTreeView::FindFile(StringView dir, StringView name, Span<St
 	return tree->FindFile(MakePath(dir), name, exts);
 }
 
+std::string DirectoryTreeView::FindFile(const DirectoryTree::Args& args) const {
+	auto args_cp = args;
+	std::string path = MakePath(args.path);
+	args_cp.path = path;
+	return tree->FindFile(args_cp);
+}
+
 StringView DirectoryTreeView::GetRootPath() const {
 	assert(tree);
 	return tree->MakePath(sub_path);
@@ -233,4 +278,8 @@ StringView DirectoryTreeView::GetRootPath() const {
 std::string DirectoryTreeView::MakePath(StringView subdir) const {
 	assert(tree);
 	return FileFinder::MakePath(sub_path, subdir);
+}
+
+DirectoryTree::DirectoryListType* DirectoryTreeView::ListDirectory(StringView path) const {
+	return tree->ListDirectory(MakePath(path));
 }

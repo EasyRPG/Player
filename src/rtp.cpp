@@ -60,7 +60,8 @@ static void detect_helper(DirectoryTreeView tree, std::vector<struct RTP::RtpHit
 			if (name != nullptr) {
 				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
-				ret = FileFinder::FindDefault(tree, category, name, ext_list);
+				DirectoryTree::Args args = { FileFinder::MakePath(category, name), ext_list, 1, false, false };
+				ret = tree.FindFile(args);
 				if (!ret.empty()) {
 					hit_list[offset + j - 1].hits++;
 				}
