@@ -51,6 +51,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	SetCurrentDirectory(L"..");
 #endif
 
+	Main_Data::game_system->BgmStop();
 	Main_Data::SetProjectPath(browser_dir);
 
 	Cache::Clear();
@@ -62,8 +63,8 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 
+	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
-	Main_Data::game_system->BgmStop();
 
 	Player::debug_flag = initial_debug_flag;
 }
