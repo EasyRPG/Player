@@ -59,7 +59,6 @@ namespace {
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
 	int target_enemy_index;
-	bool need_refresh;
 	std::vector<bool> page_can_run;
 
 	std::function<bool(const lcf::rpg::TroopPage&)> last_event_filter;
@@ -75,7 +74,6 @@ void Game_Battle::Init(int troop_id) {
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
 	target_enemy_index = 0;
-	need_refresh = false;
 
 	// troop_id is guaranteed to be valid
 	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
@@ -135,18 +133,8 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
-
-	if (need_refresh) {
-		need_refresh = false;
-		std::vector<Game_Battler*> battlers;
-		Main_Data::game_party->GetBattlers(battlers);
-		Main_Data::game_enemyparty->GetBattlers(battlers);
-		for (Game_Battler* b : battlers) {
-			Sprite_Battler* spr = spriteset->FindBattler(b);
-			if (spr) {
-				spr->DetectStateChange();
-			}
-		}
+	if (spriteset->GetNeedRefresh()) {
+		spriteset->Refresh();
 	}
 }
 
@@ -442,7 +430,9 @@ int Game_Battle::GetEnemyTargetIndex() {
 }
 
 void Game_Battle::SetNeedRefresh(bool refresh) {
-	need_refresh = refresh;
+	if (spriteset) {
+		spriteset->SetNeedRefresh(refresh);
+	}
 }
 
 bool Game_Battle::HasDeathHandler() {
