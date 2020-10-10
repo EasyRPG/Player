@@ -48,6 +48,7 @@
 #include "cmdline_parser.h"
 #include "dynrpg.h"
 #include "filefinder.h"
+#include "filefinder_rtp.h"
 #include "fileext_guesser.h"
 #include "game_actors.h"
 #include "game_battle.h"
@@ -764,7 +765,7 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
+	Main_Data::filefinder_rtp.reset(new FileFinder_RTP(no_rtp_flag, no_rtp_warning_flag));
 
 	if (!FileFinder::FindDefault("dynloader.dll").empty()) {
 		patch |= PatchDynRpg;

@@ -98,6 +98,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/exfont.h \
 	src/filefinder.cpp \
 	src/filefinder.h \
+	src/filefinder_rtp.cpp \
+	src/filefinder_rtp.h \
 	src/fileext_guesser.cpp \
 	src/fileext_guesser.h \
 	src/filesystem.cpp \

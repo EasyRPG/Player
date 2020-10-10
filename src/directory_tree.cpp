@@ -17,6 +17,8 @@
 
 #include "directory_tree.h"
 #include "filefinder.h"
+#include "filefinder_rtp.h"
+#include "main_data.h"
 #include "output.h"
 #include "platform.h"
 #include "player.h"
@@ -35,8 +37,12 @@ static void DebugLog(const char*, Args&&...) {}
 
 namespace {
 	std::string make_key(StringView n) {
-		return Utils::LowerCase(lcf::ReaderUtil::Normalize(n));
+		return lcf::ReaderUtil::Normalize(n);
 	};
+}
+
+std::unique_ptr<DirectoryTree> DirectoryTree::Create() {
+	return std::make_unique<DirectoryTree>();
 }
 
 std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
@@ -177,6 +183,13 @@ std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) 
 		}
 	}
 
+	if (Main_Data::filefinder_rtp) {
+		auto rtp_file = Main_Data::filefinder_rtp->Lookup(dir, name, exts);
+		if (!rtp_file.empty()) {
+			return rtp_file;
+		}
+	}
+
 	Output::Debug("Cannot find: {}/{}", dir, name);
 
 	return "";
@@ -193,6 +206,11 @@ std::string DirectoryTree::MakePath(StringView subpath) const {
 
 StringView DirectoryTree::GetRootPath() const {
 	return root;
+}
+
+DirectoryTreeView::DirectoryTreeView(const DirectoryTree* tree, std::string sub_path) :
+	tree(tree), sub_path(std::move(sub_path)) {
+	valid = tree->ListDirectory(this->sub_path) != nullptr;
 }
 
 std::string DirectoryTreeView::FindFile(StringView name, Span<StringView> exts) const {

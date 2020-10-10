@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "string_view.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -41,12 +42,12 @@ namespace Registry {
 	/**
 	 * Reads string value.
 	 */
-	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view = NATIVE);
+	std::string ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view = NATIVE);
 
 	/**
 	 * Reads binary value.
 	 */
-	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin, REGVIEW view = NATIVE);
+	int ReadBinValue(HKEY hkey, StringView, StringView val, unsigned char* bin, REGVIEW view = NATIVE);
 }
 
 #endif

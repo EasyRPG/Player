@@ -37,11 +37,11 @@ namespace RTP {
 	};
 }
 
-static std::pair<int, int> get_table_idx(const char* const lookup_table[16], const int lookup_table_idx[16], const std::string& category) {
+static std::pair<int, int> get_table_idx(const char* const lookup_table[16], const int lookup_table_idx[16], StringView category) {
 	int i;
 
 	for (i = 0; lookup_table[i] != nullptr; ++i) {
-		if (!strcmp(lookup_table[i], category.c_str())) {
+		if (StringView(lookup_table[i]) == category) {
 			return {lookup_table_idx[i], lookup_table_idx[i+1]};
 		}
 	}
@@ -137,13 +137,13 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(DirectoryTreeView tree, int version) {
 
 template <typename T>
 static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
-		const std::string& src_name, int num_rtps, int offset) {
+		StringView src_name, int num_rtps, int offset) {
 	std::vector<RTP::Type> type_hits;
 
 	for (int i = range.first; i < range.second; ++i) {
 		for (int j = 1; j <= num_rtps; ++j) {
 			const char* name = rtp_table[i][j];
-			if (name != nullptr && !strcmp(src_name.c_str(), name)) {
+			if (name != nullptr && src_name == StringView(name)) {
 				type_hits.push_back((RTP::Type)(j - 1 + offset));
 			}
 		}
@@ -152,7 +152,7 @@ static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table, const std::p
 	return type_hits;
 }
 
-std::vector<RTP::Type> RTP::LookupAnyToRtp(const std::string& src_category, const std::string &src_name, int version) {
+std::vector<RTP::Type> RTP::LookupAnyToRtp(StringView src_category, StringView src_name, int version) {
 	if (version == 2000) {
 		auto tbl_idx = get_table_idx(rtp_table_2k_categories, rtp_table_2k_categories_idx, src_category);
 		return lookup_any_to_rtp_helper(rtp_table_2k, tbl_idx, src_name, num_2k_rtps, 0);
@@ -164,11 +164,11 @@ std::vector<RTP::Type> RTP::LookupAnyToRtp(const std::string& src_category, cons
 
 template <typename T>
 static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
-		const std::string& src_name, int src_index, int dst_index, bool* is_rtp_asset) {
+		StringView src_name, int src_index, int dst_index, bool* is_rtp_asset) {
 
 	for (int i = range.first; i < range.second; ++i) {
 		const char* name = rtp_table[i][src_index + 1];
-		if (name != nullptr && !strcmp(src_name.c_str(), name)) {
+		if (name != nullptr && src_name == StringView(name)) {
 			const char* dst_name = rtp_table[i][dst_index + 1];
 
 			if (is_rtp_asset) {
@@ -186,7 +186,7 @@ static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, in
 	return "";
 }
 
-std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::string& src_name, RTP::Type src_rtp,
+std::string RTP::LookupRtpToRtp(StringView src_category, StringView src_name, RTP::Type src_rtp,
 		RTP::Type target_rtp, bool* is_rtp_asset) {
 	// ensure both 2k or 2k3
 	assert(((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps) ||
@@ -197,7 +197,7 @@ std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::stri
 		if (is_rtp_asset) {
 			*is_rtp_asset = false;
 		}
-		return src_name;
+		return ToString(src_name);
 	}
 
 	if ((int)src_rtp < num_2k_rtps) {

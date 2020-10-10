@@ -47,6 +47,7 @@ public:
 
 	using DirectoryListType = std::unordered_map<std::string, Entry>;
 
+	static std::unique_ptr<DirectoryTree> Create();
 	static std::unique_ptr<DirectoryTree> Create(std::string path);
 	DirectoryTreeView AsView(std::string sub_path = "");
 
@@ -90,18 +91,24 @@ private:
 class DirectoryTreeView {
 public:
 	DirectoryTreeView() = default;
-	DirectoryTreeView(const DirectoryTree* tree, std::string sub_path) :
-		tree(tree), sub_path(std::move(sub_path)) {};
+	DirectoryTreeView(const DirectoryTree* tree, std::string sub_path);
 
 	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
 	std::string FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts = {}) const;
 	StringView GetRootPath() const;
 	std::string MakePath(StringView subdir) const;
 
+	explicit operator bool() const noexcept;
+
 private:
 	const DirectoryTree* tree = nullptr;
 	std::string sub_path;
+	bool valid = false;
 };
+
+inline DirectoryTreeView::operator bool() const noexcept {
+	return valid;
+}
 
 inline bool operator<(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
 	return
