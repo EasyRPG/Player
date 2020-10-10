@@ -1140,10 +1140,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	auto* target = GetTarget();
 
-	this->healing =
-		skill.scope == lcf::rpg::Skill::Scope_ally ||
-		skill.scope == lcf::rpg::Skill::Scope_party ||
-		skill.scope == lcf::rpg::Skill::Scope_self;
+	this->healing = Algo::SkillTargetsAllies(skill);
 
 	this->revived = this->healing
 		&& !skill.state_effects.empty()
