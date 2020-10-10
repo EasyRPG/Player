@@ -53,25 +53,29 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 	return tree;
 }
 
-std::vector<DirectoryTree::DirectoryEntry> DirectoryTree::ListDirectory(StringView path, bool *error) const {
-	std::vector<DirectoryEntry> entries;
+ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
+	std::vector<Entry> entries;
 	std::string full_path = MakePath(path);
 
 	DebugLog("ListDirectory: {}", full_path);
 
-	if (error) {
-		*error = false;
+	auto dir_key = make_key(path);
+
+	auto dir_it = dir_cache.find(dir_key);
+	if (dir_it != dir_cache.end()) {
+		// Already cached
+		DebugLog("ListDirectory Cache Hit");
+		auto file_it = fs_cache.find(dir_key);
+		assert(file_it != fs_cache.end());
+		return &file_it->second;
 	}
 
-	DirectoryEntry result;
+	assert(fs_cache.find(dir_key) == fs_cache.end());
 
 	Platform::Directory dir(full_path);
 	if (!dir) {
 		Output::Debug("Error opening dir {}: {}", path, ::strerror(errno));
-		if (error) {
-			*error = true;
-		}
-		return entries;
+		return nullptr;
 	}
 
 	while (dir.Read()) {
@@ -96,10 +100,9 @@ std::vector<DirectoryTree::DirectoryEntry> DirectoryTree::ListDirectory(StringVi
 			continue;
 		}
 
-		result.type = is_directory ? FileType::Directory : FileType::Regular;
-		result.name = name;
-
-		entries.push_back(result);
+		entries.emplace_back(
+			name,
+			is_directory ? FileType::Directory : FileType::Regular);
 
 #if 0
 		FIXME
@@ -116,7 +119,18 @@ std::vector<DirectoryTree::DirectoryEntry> DirectoryTree::ListDirectory(StringVi
 #endif
 	}
 
-	return entries;
+	dir_cache[dir_key] = ToString(path);
+
+	DirectoryListType fs_cache_entry;
+
+	for (auto& entry : entries) {
+		fs_cache_entry.emplace(std::make_pair(make_key(entry.name), entry));
+	}
+	fs_cache.emplace(dir_key, fs_cache_entry);
+
+	dir_it = dir_cache.find(dir_key);
+
+	return &fs_cache.find(dir_key)->second;
 }
 
 DirectoryTreeView DirectoryTree::AsView(std::string sub_path) {
@@ -137,39 +151,28 @@ std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) 
 	std::tie(dir, name) = FileFinder::GetPathAndFilename(canonical_path);
 	DebugLog("FindFile: {} | {} | {}", canonical_path, dir, name);
 
-	std::string dir_key = make_key(dir);
-
-	auto dir_it = dir_cache.find(dir_key);
-	if (dir_it == dir_cache.end()) {
-		assert(fs_cache.find(dir_key) == fs_cache.end());
-
-		// FIXME: Error handling
-		auto entries = ListDirectory(dir);
-		dir_cache[dir_key] = dir;
-
-		std::unordered_map<std::string, DirectoryEntry> fs_cache_entry;
-		for (auto& entry : entries) {
-			fs_cache_entry[make_key(entry.name)] = entry;
-		}
-		fs_cache.emplace(dir_key, fs_cache_entry);
-
-		dir_it = dir_cache.find(dir_key);
+	auto* entries = ListDirectory(dir);
+	if (!entries) {
+		Output::Debug("Cannot find: {}/{}", dir, name);
+		return "";
 	}
 
-	auto file_it = fs_cache.find(dir_key);
-	assert(file_it != fs_cache.end());
+	std::string dir_key = make_key(dir);
+	auto dir_it = dir_cache.find(dir_key);
+	assert(dir_it != dir_cache.end());
 
 	std::string name_key = make_key(name);
 	if (exts.empty()) {
-		auto entry_it = file_it->second.find(name_key);
-		if (entry_it != file_it->second.end()) {
-			return FileFinder::MakePath((*dir_it).second, (*entry_it).second.name);
+		auto entry_it = entries->find(name_key);
+		if (entry_it != entries->end()) {
+			return FileFinder::MakePath(dir_it->second, entry_it->second.name);
 		}
 	} else {
 		for (const auto& ext : exts) {
-			auto entry_it = file_it->second.find(name_key + ToString(ext));
-			if (entry_it != file_it->second.end()) {
-				return FileFinder::MakePath((*dir_it).second, (*entry_it).second.name);
+			auto full_name_key = name_key + ToString(ext);
+			auto entry_it = entries->find(full_name_key);
+			if (entry_it != entries->end()) {
+				return FileFinder::MakePath(dir_it->second, entry_it->second.name);
 			}
 		}
 	}

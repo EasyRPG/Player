@@ -68,7 +68,7 @@ void Scene_Logo::Update() {
 		}
 
 		if (FileFinder::IsValidProject(tree->AsView())) {
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
+			FileFinder::SetDirectoryTree(std::move(tree));
 			Player::CreateGameObjects();
 			is_valid = true;
 		}

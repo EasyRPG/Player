@@ -38,10 +38,14 @@ public:
 	/**
 	 * A entry of a directory (eg. file or subdir)
 	 */
-	struct DirectoryEntry {
+	struct Entry {
 		std::string name;
 		FileType type;
+
+		Entry(std::string name, FileType type) : name(std::move(name)), type(type) {}
 	};
+
+	using DirectoryListType = std::unordered_map<std::string, Entry>;
 
 	static std::unique_ptr<DirectoryTree> Create(std::string path);
 	DirectoryTreeView AsView(std::string sub_path = "");
@@ -71,13 +75,14 @@ public:
 
 	std::string MakePath(StringView subpath) const;
 
-private:
-	std::vector<DirectoryEntry> ListDirectory(StringView path, bool* error = nullptr) const;
+	DirectoryListType* ListDirectory(StringView path = "") const;
 
+private:
 	std::string root;
 
 	// lowered dir (full path from root) -> <map of> lowered file -> Entry
-	mutable std::unordered_map<std::string, std::unordered_map<std::string, DirectoryEntry>> fs_cache;
+	mutable std::unordered_map<std::string, DirectoryListType> fs_cache;
+
 	// lowered dir -> real dir (both full path from root)
 	mutable std::unordered_map<std::string, std::string> dir_cache;
 };
@@ -97,5 +102,19 @@ private:
 	const DirectoryTree* tree = nullptr;
 	std::string sub_path;
 };
+
+inline bool operator<(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return
+			std::tie(l.name, l.type) <
+			std::tie(r.name, r.type);
+}
+
+inline bool operator==(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return l.name == r.name && l.type == r.type;
+}
+
+inline bool operator!=(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return !(l == r);
+}
 
 #endif
