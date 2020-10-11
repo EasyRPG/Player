@@ -57,7 +57,7 @@ void Scene_Save::Start() {
 }
 
 void Scene_Save::Action(int index) {
-	Save(tree->AsView(), index + 1);
+	Save(*tree, index + 1);
 
 	Scene::Pop();
 }
@@ -67,7 +67,7 @@ std::string Scene_Save::GetSaveFilename(DirectoryTreeView tree, int slot_id) {
 
 	Output::Debug("Saving to {}", save_file);
 
-	std::string filename = FileFinder::FindDefault(tree, save_file);
+	std::string filename = tree.FindFile(save_file);
 
 	if (filename.empty()) {
 		filename = tree.MakePath(save_file);

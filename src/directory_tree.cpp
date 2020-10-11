@@ -24,7 +24,6 @@
 #include "player.h"
 #include <lcf/reader_util.h>
 
-#define EP_DEBUG_DIRECTORYTREE
 #ifdef EP_DEBUG_DIRECTORYTREE
 template <typename... Args>
 static void DebugLog(const char* fmt, Args&&... args) {
@@ -59,7 +58,7 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 	return tree;
 }
 
- DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
+DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
 	std::vector<Entry> entries;
 	std::string fs_path = ToString(path);
 	std::string full_path = MakePath(path);
@@ -183,7 +182,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	canonical_path = FileFinder::MakeCanonical(args.path, args.canonical_initial_deepness);
 
 #ifdef EMSCRIPTEN
-	if (Exists(canonical_path))
+	if (FileFinder::Exists(canonical_path))
 		return canonical_path;
 #endif
 
@@ -233,7 +232,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 }
 
 std::string DirectoryTree::MakePath(StringView subpath) const {
-	Output::Debug("MakePath {} {} : {}", root, subpath, FileFinder::MakePath(root, subpath));
+	DebugLog("MakePath {} {} : {}", root, subpath, FileFinder::MakePath(root, subpath));
 	return FileFinder::MakePath(root, subpath);
 }
 

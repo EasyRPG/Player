@@ -67,8 +67,8 @@ std::string crc32file(std::string file_name) {
 }
 
 
-Meta::Meta(const std::string& meta_file) {
-	ini.reset(new lcf::INIReader(meta_file));
+Meta::Meta(StringView meta_file) {
+	ini = std::make_unique<lcf::INIReader>(ToString(meta_file));
 
 	// Cache per-game lookups
 	if (!Empty()) {
@@ -83,7 +83,7 @@ Meta::Meta(const std::string& meta_file) {
 
 }
 
-void Meta::ReInitForNonStandardExtensions(const std::string& file1, const std::string& file2) {
+void Meta::ReInitForNonStandardExtensions(StringView file1, StringView file2) {
 	if (!Empty()) {
 		if (canon_ini_lookup.empty()) {
 			IdentifyCanonName(file1, file2);
@@ -129,7 +129,7 @@ std::vector<std::string> Meta::GetImportChildPaths(DirectoryTreeView parent_tree
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(const DirectoryTree& parent_tree, const std::string& child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(DirectoryTreeView parent_tree, StringView child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
@@ -233,26 +233,26 @@ std::string Meta::GetExVocabTranslateTitleText() const {
 	return GetExVocab(MTINI_EXVOCAB_TRANSLATE_TITLE_KEY, MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE);
 }
 
-std::string Meta::GetExVocab(const std::string& term, const std::string& def_value) const {
+std::string Meta::GetExVocab(StringView term, StringView def_value) const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, term, def_value);
+		return ini->GetString(canon_ini_lookup, ToString(term), ToString(def_value));
 	}
 
-	return def_value;
+	return ToString(def_value);
 }
 
-void Meta::IdentifyCanonName(const std::string& lmtFile, const std::string& ldbFile) {
+void Meta::IdentifyCanonName(StringView lmtFile, StringView ldbFile) {
 	// Calculate the lookup based on the LMT/LDB hashes, preferring to use LMT only if possible.
 	// This requires a mandatory field, for which we will use "Name".
 	if (!Empty()) {
-		std::string lmtPath = FileFinder::FindDefault(lmtFile);
+		std::string lmtPath = FileFinder::FindDefault(ToString(lmtFile));
 		std::string crcLMT = crc32file(lmtPath);
 		std::string crcLDB = "*";
 		Output::Debug("CRC32 of 'LMT' file ('{}') is {}", lmtFile, crcLMT);
 		if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 			canon_ini_lookup = crcLMT + "/" + crcLDB;
 		} else {
-			std::string ldbPath = FileFinder::FindDefault(ldbFile);
+			std::string ldbPath = FileFinder::FindDefault(ToString(ldbFile));
 			crcLDB = crc32file(ldbPath);
 			if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 				canon_ini_lookup = crcLMT + "/" + crcLDB;

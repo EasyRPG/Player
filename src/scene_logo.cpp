@@ -67,7 +67,7 @@ void Scene_Logo::Update() {
 			Output::Error("{} is not a valid path", Main_Data::GetProjectPath());
 		}
 
-		if (FileFinder::IsValidProject(tree->AsView())) {
+		if (FileFinder::IsValidProject(*tree)) {
 			FileFinder::SetDirectoryTree(std::move(tree));
 			Player::CreateGameObjects();
 			is_valid = true;

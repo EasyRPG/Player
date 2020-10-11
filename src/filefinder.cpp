@@ -59,7 +59,7 @@ namespace {
 }
 
 DirectoryTreeView FileFinder::GetDirectoryTree() {
-	return game_directory_tree->AsView();
+	return *game_directory_tree;
 }
 
 std::unique_ptr<DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
@@ -71,8 +71,8 @@ void FileFinder::SetDirectoryTree(std::unique_ptr<DirectoryTree> directory_tree)
 	game_directory_tree = std::move(directory_tree);
 }
 
-std::unique_ptr<DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p) {
-	return DirectoryTree::Create(p);
+std::unique_ptr<DirectoryTree> FileFinder::CreateDirectoryTree(std::string p) {
+	return DirectoryTree::Create(std::move(p));
 }
 
 std::string FileFinder::MakePath(StringView dir, StringView name) {
@@ -117,7 +117,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 	}
 
 	std::string ret;
-	for (const std::string& s : path_can) {
+	for (StringView s : path_can) {
 		ret = MakePath(ret, s);
 	}
 
@@ -164,20 +164,20 @@ void FileFinder::ConvertPathDelimiters(std::string& path) {
 	}
 }
 
-std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std::string& path_in) {
-	if (!ToStringView(path_in).starts_with(path_to)) {
-		return path_in;
+std::string FileFinder::GetPathInsidePath(StringView path_to, StringView path_in) {
+	if (!path_in.starts_with(path_to)) {
+		return ToString(path_in);
 	}
 
-	std::string path_out = path_in.substr(path_to.size());
+	StringView path_out = path_in.substr(path_to.size());
 	if (!path_out.empty() && (path_out[0] == '/' || path_out[0] == '\\')) {
 		path_out = path_out.substr(1);
 	}
 
-	return path_out;
+	return ToString(path_out);
 }
 
-std::string FileFinder::GetPathInsideGamePath(const std::string& path_in) {
+std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
 	return FileFinder::GetPathInsidePath(ToString(GetDirectoryTree().GetRootPath()), path_in);
 }
 
@@ -206,7 +206,7 @@ std::string GetFontsPath() {
 	}
 }
 
-std::string GetFontFilename(const std::string& name) {
+std::string GetFontFilename(StringView name) {
 	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
 	if (real_name.length() > 0) {
 		if (FileFinder::Exists(real_name))
@@ -227,7 +227,7 @@ std::string GetFontFilename(const std::string& name) {
 }
 #endif
 
-std::string FileFinder::FindFont(const std::string& name) {
+std::string FileFinder::FindFont(StringView name) {
 	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
 	std::string path = game_directory_tree->FindFile({ MakePath("Font", name), FONTS_TYPES, 1 });
 
@@ -303,7 +303,7 @@ Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& 
 	return os;
 }
 
-std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
+std::string FileFinder::FindImage(StringView dir, StringView name) {
 #ifdef EMSCRIPTEN
 	return FindDefault(dir, name);
 #endif
@@ -312,24 +312,12 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 	return game_directory_tree->FindFile({ MakePath(dir, name), IMG_TYPES, 1 });
 }
 
-std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
+std::string FileFinder::FindDefault(StringView dir, StringView name) {
 	return GetDirectoryTree().FindFile(dir, name);
 }
 
-std::string FileFinder::FindDefault(const std::string& name) {
+std::string FileFinder::FindDefault(StringView name) {
 	return GetDirectoryTree().FindFile(name);
-}
-
-std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name) {
-	return tree.FindFile(dir, name);
-}
-
-std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& name) {
-	return tree.FindFile(name);
-}
-
-std::string FileFinder::FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name, Span<StringView> exts) {
-	return tree.FindFile(dir, name, exts);
 }
 
 bool FileFinder::IsValidProject(DirectoryTreeView tree) {
@@ -369,7 +357,7 @@ int FileFinder::GetSavegames() {
 	return false;
 }
 
-std::string FileFinder::FindMusic(const std::string& name) {
+std::string FileFinder::FindMusic(StringView name) {
 #ifdef EMSCRIPTEN
 	return FindDefault("Music", name);
 #endif
@@ -379,7 +367,7 @@ std::string FileFinder::FindMusic(const std::string& name) {
 	return game_directory_tree->FindFile({ MakePath("Music", name), MUSIC_TYPES, 1 });
 }
 
-std::string FileFinder::FindSound(const std::string& name) {
+std::string FileFinder::FindSound(StringView name) {
 #ifdef EMSCRIPTEN
 	return FindDefault("Sound", name);
 #endif
@@ -389,16 +377,16 @@ std::string FileFinder::FindSound(const std::string& name) {
 	return game_directory_tree->FindFile({ MakePath("Sound", name), SOUND_TYPES, 1 });
 }
 
-bool FileFinder::Exists(const std::string& filename) {
-	return Platform::File(filename).Exists();
+bool FileFinder::Exists(StringView filename) {
+	return Platform::File(ToString(filename)).Exists();
 }
 
-bool FileFinder::IsDirectory(const std::string& dir, bool follow_symlinks) {
-	return Platform::File(dir).IsDirectory(follow_symlinks);
+bool FileFinder::IsDirectory(StringView dir, bool follow_symlinks) {
+	return Platform::File(ToString(dir)).IsDirectory(follow_symlinks);
 }
 
-int64_t FileFinder::GetFileSize(const std::string& file) {
-	return Platform::File(file).GetSize();
+int64_t FileFinder::GetFileSize(StringView file) {
+	return Platform::File(ToString(file)).GetSize();
 }
 
 bool FileFinder::IsMajorUpdatedTree() {

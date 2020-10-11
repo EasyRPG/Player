@@ -40,7 +40,7 @@ namespace FileExtGuesser {
 		 * @param suffix The suffix (e.g., 'lmu')
 		 * @return The joined filename (e.g., 'Map0001.lmu', OR 'Map0001.xyz')
 		 */
-		std::string MakeFilename(std::string const& prefix, std::string const& suffix);
+		std::string MakeFilename(StringView prefix, StringView suffix);
 
 		std::unordered_map<std::string, std::string> extMap;
 	};

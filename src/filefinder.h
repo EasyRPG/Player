@@ -57,7 +57,7 @@ namespace FileFinder {
 	 * @param name image file name to check.
 	 * @return path to file.
 	 */
-	std::string FindImage(const std::string& dir, const std::string& name);
+	std::string FindImage(StringView dir, StringView name);
 
 	/**
 	 * Finds a file.
@@ -67,7 +67,7 @@ namespace FileFinder {
 	 * @param name file name to check.
 	 * @return path to file.
 	 */
-	std::string FindDefault(const std::string& dir, const std::string& name);
+	std::string FindDefault(StringView dir, StringView name);
 
 	/**
 	 * Finds a file.
@@ -76,37 +76,7 @@ namespace FileFinder {
 	 * @param name the path and name.
 	 * @return path to file.
 	 */
-	std::string FindDefault(const std::string& name);
-
-	/**
-	 * Finds a file in a subdirectory of a custom directory tree.
-	 *
-	 * @param tree Project tree to search
-	 * @param dir directory to check
-	 * @param name the path and name
-	 * @return path to file.
-	 */
-	std::string FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name);
-
-	/**
-	 * Finds a file from the root of a custom project tree.
-	 *
-	 * @param tree Project tree to search
-	 * @param name the path and name
-	 * @return path to file.
-	 */
-	std::string FindDefault(DirectoryTreeView tree, const std::string& name);
-
-	/**
-	 * Finds a file with different extensions in a subdirectory of a custom directory tree.
-	 *
-	 * @param tree Project tree to search
-	 * @param dir directory to check
-	 * @param name the path and name
-	 * @param exts list of extensions
-	 * @return path to file.
-	 */
-	std::string FindDefault(DirectoryTreeView tree, const std::string& dir, const std::string& name, Span<StringView> exts);
+	std::string FindDefault(StringView name);
 
 	/**
 	 * Finds a music file.
@@ -116,7 +86,7 @@ namespace FileFinder {
 	 * @param name the music path and name.
 	 * @return path to file.
 	 */
-	std::string FindMusic(const std::string& name);
+	std::string FindMusic(StringView name);
 
 	/**
 	 * Finds a sound file.
@@ -126,7 +96,7 @@ namespace FileFinder {
 	 * @param name the sound path and name.
 	 * @return path to file.
 	 */
-	std::string FindSound(const std::string& name);
+	std::string FindSound(StringView name);
 
 	/**
 	 * Finds a font file.
@@ -135,7 +105,7 @@ namespace FileFinder {
 	 * @param name the font name.
 	 * @return path to file.
 	 */
-	std::string FindFont(const std::string& name);
+	std::string FindFont(StringView name);
 
 	/**
 	* Creates stream from UTF-8 file name.
@@ -165,7 +135,7 @@ namespace FileFinder {
 	 * @param follow_symlinks if true, follow symlinks and report about the target.
 	 * @return true if file is directory, otherwise false.
 	 */
-	bool IsDirectory(const std::string& file, bool follow_symlinks);
+	bool IsDirectory(StringView file, bool follow_symlinks);
 
 	/**
 	 * Checks whether passed file exists.
@@ -174,7 +144,7 @@ namespace FileFinder {
 	 * @param file file to check
 	 * @return true if file exists, otherwise false.
 	 */
-	bool Exists(const std::string& file);
+	bool Exists(StringView file);
 
 	/**
 	 * Appends name to directory.
@@ -227,7 +197,7 @@ namespace FileFinder {
 	 *
 	 * @return The part of path_in that is inside path_to. path_in when the path is not in path_to
 	 */
-	std::string GetPathInsidePath(const std::string& path_to, const std::string& path_in);
+	std::string GetPathInsidePath(StringView path_to, StringView path_in);
 
 	/**
 	 * Return the part of "path_in" that is inside the current games directory.
@@ -236,7 +206,7 @@ namespace FileFinder {
 	 * @param path_in An absolute path inside the game directory
 	 * @return The part of path_in that is inside the game directory, path_in when it's not in the directory
 	 */
-	std::string GetPathInsideGamePath(const std::string& path_in);
+	std::string GetPathInsideGamePath(StringView path_in);
 
 	/**
 	 * Sets the directory tree that is used for executing the current RPG Maker
@@ -253,7 +223,7 @@ namespace FileFinder {
 	 */
 	DirectoryTreeView GetDirectoryTree();
 	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
-	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p);
+	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string p);
 
 	bool IsValidProject(DirectoryTreeView tree);
 	bool IsRPG2kProject(DirectoryTreeView tree);
@@ -285,7 +255,7 @@ namespace FileFinder {
 	 * @param file the path to a file
 	 * @return the filesize, or -1 on error
 	 */
-	int64_t GetFileSize(const std::string& file);
+	int64_t GetFileSize(StringView file);
 
 	/**
 	 * Known file sizes

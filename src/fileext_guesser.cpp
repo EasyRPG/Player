@@ -148,12 +148,12 @@ bool FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty() const {
 	return rpgRTs.first.ext.empty() || rpgRTs.second.ext.empty();
 }
 
-std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(std::string const& prefix, std::string const& suffix)
+std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(StringView prefix, StringView suffix)
 {
 	std::stringstream res;
 	res <<prefix <<".";
 
-	auto it = extMap.find(suffix);
+	auto it = extMap.find(ToString(suffix));
 	if (it != extMap.end()) {
 		res << it->second;
 	} else {
