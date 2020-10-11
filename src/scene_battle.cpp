@@ -683,6 +683,11 @@ void Scene_Battle::EndBattle(BattleResult result) {
 
 	Scene::Pop();
 
+	// For RPG_RT compatibility, wait 30 frames if a battle test ends
+	if (Game_Battle::battle_test.enabled) {
+		Scene::instance->SetDelayFrames(30);
+	}
+
 	if (on_battle_end) {
 		on_battle_end(result);
 		on_battle_end = {};

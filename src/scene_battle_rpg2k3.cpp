@@ -248,18 +248,6 @@ void Scene_Battle_Rpg2k3::FaceTarget(Game_Actor& source, const Game_Battler& tar
 }
 
 void Scene_Battle_Rpg2k3::Update() {
-	// FIXME: RPG_RT sets initial directions on start, displays any
-	// battle start messages, and then monsters may turn to face the party
-	// and the party turns to face the monsters.
-	// This only happens once on battle start. Until we refactor 2k3 state machine,
-	// we emulate the behavior with this bool.
-	// Monster directions never change during battle, but actors can.
-	if (!initial_directions_updated) {
-		UpdateEnemiesDirection();
-		UpdateActorsDirection();
-		initial_directions_updated = true;
-	}
-
 	switch (state) {
 		case State_SelectEnemyTarget:
 		case State_SelectAllyTarget:
@@ -274,7 +262,7 @@ void Scene_Battle_Rpg2k3::Update() {
 			// fallthrough
 		case State_SelectActor:
 		case State_AutoBattle: {
-			if (!IsWindowMoving()) {
+			if (battle_action_wait == 0 && !IsWindowMoving()) {
 
 				if (battle_actions.empty()) {
 					Game_Battle::UpdateAtbGauges();
@@ -777,13 +765,40 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		return;
 	}
 
+	const bool wait = !CheckWait();
+
+	if (wait) {
+		return;
+	}
+
+	if (escape_initiated) {
+		EndBattle(BattleResult::Escape);
+		return;
+	}
+
 	if (!battle_actions.empty()) {
 		auto* battler = battle_actions.front();
 		if (!battle_action_pending) {
 			// If we will start a new battle action, first check for state changes
 			// such as death, paralyze, confuse, etc..
 			PrepareBattleAction(battler);
+			auto* action = battler->GetBattleAlgorithm().get();
 
+			if (action->GetSource()->GetType() == Game_Battler::Type_Enemy && combo_repeat == 1) {
+				std::string notification = action->GetStartMessage();
+
+				ShowNotification(notification);
+				if (!notification.empty()) {
+					if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+						SetWait(15, 50);
+					} else {
+						SetWait(10, 40);
+					}
+				}
+			}
+
+			battle_action_pending = true;
+			return;
 		}
 		auto* alg = battler->GetBattleAlgorithm().get();
 		battle_action_pending = true;
@@ -800,14 +815,35 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		}
 	}
 
-	if (help_window->IsVisible() && message_timer > 0) {
-		message_timer--;
-		if (message_timer <= 0)
+	if (help_window->IsVisible()) {
+		if ((state == State_SelectActor || state == State_SelectCommand || state == State_AutoBattle) && battle_action_wait == 0) {
 			help_window->SetVisible(false);
+		}
 	}
 
 	switch (state) {
 		case State_Start:
+			if (start_message_shown == 0) {
+				start_message_shown = 1;
+				if (!lcf::Data::terms.battle_start.empty()) {
+					ShowNotification(ToString(lcf::Data::terms.battle_start));
+					SetWait(10, 80);
+				}
+				return;
+			}
+			if (start_message_shown == 1) {
+				start_message_shown = 2;
+				const auto cond = Game_Battle::GetBattleCondition();
+				if (!lcf::Data::terms.special_combat.empty() && (cond != lcf::rpg::System::BattleCondition_none || first_strike)) {
+					if (cond == lcf::rpg::System::BattleCondition_initiative || cond == lcf::rpg::System::BattleCondition_surround || (cond == lcf::rpg::System::BattleCondition_none && first_strike)) {
+						ShowNotification(ToString(lcf::Data::terms.special_combat));
+					}
+					SetWait(30, 70);
+				}
+				return;
+			}
+			UpdateEnemiesDirection();
+			UpdateActorsDirection();
 			SetState(State_SelectOption);
 			break;
 		case State_SelectActor:
@@ -901,8 +937,14 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->TargetFirst();
 
-		if (combo_repeat == 1) {
-			ShowNotification(action->GetStartMessage());
+		if (action->GetSource()->GetType() == Game_Battler::Type_Ally && combo_repeat == 1) {
+			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+				ShowNotification(action->GetStartMessage());
+				SetWait(15, 50);
+			} else if (action->GetType() == Game_BattleAlgorithm::Type::Item) {
+				ShowNotification(action->GetStartMessage());
+				SetWait(10, 40);
+			}
 		}
 
 		if (!action->IsTargetValid()) {
@@ -1097,6 +1139,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 }
 
 void Scene_Battle_Rpg2k3::ProcessInput() {
+	if (battle_action_wait > 0) {
+		return;
+	}
+
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
@@ -1329,16 +1375,25 @@ void Scene_Battle_Rpg2k3::Escape(bool force_allow) {
 	if (force_allow || TryEscape()) {
 		// There is no success text for escape in 2k3
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
-		EndBattle(BattleResult::Escape);
+		escape_initiated = true;
+		SetWait(10, 30);
 		return;
 	}
 
 	SetState(State_SelectActor);
 	ShowNotification(ToString(lcf::Data::terms.escape_failure));
+	SetWait(10, 30);
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
 	if (Game_Battle::CheckWin()) {
+		if (!win_wait_elapsed) {
+			win_wait_elapsed = true;
+			Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Victory));
+			SetWait(30, 30);
+			return false;
+		}
+
 		SetState(State_Victory);
 
 		std::vector<Game_Battler*> battlers;
@@ -1389,8 +1444,6 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		message_window->SetHeight(32);
 		Game_Message::SetPendingMessage(std::move(pm));
 
-		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Victory));
-
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
 		Main_Data::game_party->GetActiveBattlers(ally_battlers);
@@ -1416,6 +1469,13 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 bool Scene_Battle_Rpg2k3::CheckLose() {
 	if (Game_Battle::CheckLose()) {
+		if (!lose_wait_elapsed) {
+			lose_wait_elapsed = true;
+			Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
+			SetWait(60, 60);
+			return false;
+		}
+
 		SetState(State_Defeat);
 
 		message_window->SetHeight(32);
@@ -1427,7 +1487,6 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 		pm.SetEnableFace(false);
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
-		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
 		Game_Message::SetPendingMessage(std::move(pm));
 
 		return true;
@@ -1542,7 +1601,6 @@ void Scene_Battle_Rpg2k3::ShowNotification(std::string text) {
 		return;
 	}
 	help_window->SetVisible(true);
-	message_timer = 60;
 	help_window->SetText(std::move(text));
 }
 
@@ -1551,4 +1609,28 @@ bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
 		return battler->IsDirectionFlipped() ^ (battler->GetType() == Game_Battler::Type_Enemy);
 	}
 	return false;
+}
+
+void Scene_Battle_Rpg2k3::SetWait(int min_wait, int max_wait) {
+        battle_action_wait = max_wait;
+        battle_action_min_wait = max_wait - min_wait;
+}
+
+bool Scene_Battle_Rpg2k3::CheckWait() {
+        if (battle_action_wait > 0) {
+                if (Input::IsPressed(Input::CANCEL)) {
+                        return false;
+                }
+                --battle_action_wait;
+                if (battle_action_wait > battle_action_min_wait) {
+                        return false;
+                }
+                if (!Input::IsPressed(Input::DECISION)
+                        && !Input::IsPressed(Input::SHIFT)
+                        && battle_action_wait > 0) {
+                        return false;
+                }
+                battle_action_wait = 0;
+        }
+        return true;
 }

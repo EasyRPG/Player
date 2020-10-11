@@ -129,6 +129,9 @@ protected:
 
 	bool CheckAnimFlip(Game_Battler* battler);
 
+	void SetWait(int min_wait, int max_wait);
+	bool CheckWait();
+
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 
 	struct FloatText {
@@ -137,7 +140,8 @@ protected:
 	};
 
 	std::vector<FloatText> floating_texts;
-	int battle_action_wait = 30;
+	int battle_action_wait = 0;
+	int battle_action_min_wait = 0;
 	int battle_action_state = BattleActionState_Execute;
 	bool battle_action_need_event_refresh = true;
 	int combo_repeat = 1;
@@ -153,7 +157,11 @@ protected:
 	FileRequestBinding request_id;
 	bool battle_action_pending = false;
 	bool first_strike = false;
-	bool initial_directions_updated = false;
+
+	int start_message_shown = 0;
+	bool escape_initiated = false;
+	bool win_wait_elapsed = false;
+	bool lose_wait_elapsed = false;
 };
 
 #endif

@@ -1044,7 +1044,11 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 		}
 	}
 	else {
-		return "";
+		if (repeat == 2) {
+			return "Double Attack";
+		} else {
+			return "";
+		}
 	}
 }
 
@@ -1690,7 +1694,7 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 		return ToString(source->GetName()) + ToString(lcf::Data::terms.defending);
 	}
 	else {
-		return "";
+		return "Defend";
 	}
 }
 
@@ -1724,7 +1728,7 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 		return ToString(source->GetName()) + ToString(lcf::Data::terms.observing);
 	}
 	else {
-		return "";
+		return "Observe";
 	}
 }
 
@@ -1751,7 +1755,7 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 		return ToString(source->GetName()) + ToString(lcf::Data::terms.focus);
 	}
 	else {
-		return "";
+		return "Charge Up";
 	}
 }
 
@@ -1782,7 +1786,7 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 		return ToString(source->GetName()) + ToString(lcf::Data::terms.autodestruction);
 	}
 	else {
-		return "";
+		return "Self-Destruct";
 	}
 }
 
@@ -1857,7 +1861,7 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 		}
 	}
 
-	return "";
+	return "Escape";
 }
 
 int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
