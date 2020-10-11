@@ -38,6 +38,10 @@ public:
 
 	void ResetAllBattlerZ();
 
+	void SetNeedRefresh(bool value);
+	bool GetNeedRefresh() const;
+	void Refresh();
+
 protected:
 	std::unique_ptr<Background> background;
 	std::vector<std::shared_ptr<Sprite_Battler>> sprites;
@@ -46,6 +50,15 @@ protected:
 
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
+	bool need_refresh;
 };
+
+inline void Spriteset_Battle::SetNeedRefresh(bool value) {
+	need_refresh = value;
+}
+
+inline bool Spriteset_Battle::GetNeedRefresh() const {
+	return need_refresh;
+}
 
 #endif
