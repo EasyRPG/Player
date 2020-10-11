@@ -128,31 +128,26 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(std::string path) {
 		}
 
 		if (!has_fast_dir_stat) {
-			// FIXME
-			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(fs_path, name), true);
+			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(full_path, name), true);
 		}
 
 		if (name == "." || name == "..") {
 			continue;
 		}
 
-		entries.emplace_back(
-			name,
-			is_directory ? FileType::Directory : FileType::Regular);
-
-#if 0
-		FIXME
-		std::string name_norm = lcf::ReaderUtil::Normalize(name);
 		if (is_directory) {
-			if (result.directories.find(name_norm) != result.directories.end()) {
+			std::string new_entry_key = make_key(name);
+			if (std::find_if(entries.begin(), entries.end(), [&](const auto& e) {
+				return e.type == DirectoryTree::FileType::Directory && make_key(e.name) == new_entry_key;
+			}) != entries.end()) {
 				Output::Warning("This game provides the folder \"{}\" twice.", name);
 				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
-			result.directories[name_norm] = name;
-		} else {
-			result.files[name_norm] = name;
 		}
-#endif
+
+		entries.emplace_back(
+			name,
+			is_directory ? FileType::Directory : FileType::Regular);
 	}
 
 	dir_cache[dir_key] = fs_path;
