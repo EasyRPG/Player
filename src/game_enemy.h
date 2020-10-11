@@ -43,6 +43,8 @@ public:
 
 	Point GetOriginalPosition() const override;
 
+	void ResetBattle() override;
+
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
@@ -188,14 +190,48 @@ public:
 	/** @return database enemy struct */
 	const lcf::rpg::Enemy& GetDbEnemy() const;
 
+	/** @return the blink animation timer */
+	int GetBlinkTimer() const;
+
+	/**
+	 * Set the blink animation timer
+	 *
+	 * @param t the value to set.
+	 */
+	void SetBlinkTimer(int t = 20);
+
+	/** @return the explode animation timer */
+	int GetExplodeTimer() const;
+
+	/**
+	 * Set the explode animation timer
+	 *
+	 * @param t the value to set.
+	 */
+	void SetExplodeTimer(int t = 20);
+
+	/** @return the death animation timer */
+	int GetDeathTimer() const;
+
+	/**
+	 * Set the death animation timer
+	 *
+	 * @param t the value to set.
+	 */
+	void SetDeathTimer(int t = 36);
+
+	/** @return true if enemy is flying */
+	bool IsFlying() const;
+
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
 	const lcf::rpg::TroopMember* troop_member = nullptr;
 	std::vector<int16_t> states;
 	int hp = 0;
 	int sp = 0;
-	int cycle = 0;
-	int flying_offset = 0;
+	int blink_timer = 0;
+	int death_timer = 0;
+	int explode_timer = 0;
 };
 
 inline Game_Battler::BattlerType Game_Enemy::GetType() const {
@@ -293,6 +329,34 @@ inline bool Game_Enemy::IsInParty() const {
 
 inline const lcf::rpg::Enemy& Game_Enemy::GetDbEnemy() const {
 	return *enemy;
+}
+
+inline int Game_Enemy::GetBlinkTimer() const {
+	return blink_timer;
+}
+
+inline void Game_Enemy::SetBlinkTimer(int t) {
+	blink_timer = t;
+}
+
+inline int Game_Enemy::GetExplodeTimer() const {
+	return explode_timer;
+}
+
+inline void Game_Enemy::SetExplodeTimer(int t) {
+	explode_timer = t;
+}
+
+inline int Game_Enemy::GetDeathTimer() const {
+	return death_timer;
+}
+
+inline void Game_Enemy::SetDeathTimer(int t) {
+	death_timer = t;
+}
+
+inline bool Game_Enemy::IsFlying() const {
+	return enemy->levitate;
 }
 
 #endif
