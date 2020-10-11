@@ -30,6 +30,7 @@
 #include "game_system.h"
 #include <lcf/reader_util.h>
 #include "output.h"
+#include "algo.h"
 
 Game_Party::Game_Party() {
 }
@@ -254,49 +255,44 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		return false;
 	}
 
-	if (data.party.size() == 0) {
-		return false;
+	const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
+	const bool in_battle = Game_Battle::IsBattleRunning();
+
+	if (item->use_skill) {
+		// RPG_RT BUG: Does not check if skill is usable.
+		return skill &&
+			(in_battle
+			 || skill->scope == lcf::rpg::Skill::Scope_self
+			 || skill->scope == lcf::rpg::Skill::Scope_ally
+			 || skill->scope == lcf::rpg::Skill::Scope_party);
 	}
 
 	switch (item->type) {
-		case lcf::rpg::Item::Type_weapon:
-		case lcf::rpg::Item::Type_shield:
-		case lcf::rpg::Item::Type_armor:
-		case lcf::rpg::Item::Type_helmet:
-		case lcf::rpg::Item::Type_accessory:
-			if (item->use_skill) {
-				auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
-				if (skill && (
-							skill->type == lcf::rpg::Skill::Type_escape
-							|| skill->type == lcf::rpg::Skill::Type_teleport
-							|| skill->type == lcf::rpg::Skill::Type_switch
-							)
-				   ) {
-					return false;
+		case lcf::rpg::Item::Type_medicine:
+			return !in_battle || !item->occasion_field1;
+		case lcf::rpg::Item::Type_material:
+		case lcf::rpg::Item::Type_book:
+			return !in_battle;
+		case lcf::rpg::Item::Type_switch:
+			return in_battle ? item->occasion_battle : item->occasion_field2;
+		case lcf::rpg::Item::Type_special:
+			if (skill && Algo::IsSkillUsable(*skill, false)) {
+				// RPG_RT requires one actor in the party and alive who can use the item.
+				// But only if the item invokes a normal or subskill. This check is
+				// not performed for escape, teleport, or switch skills!
+				if (!Algo::IsNormalOrSubskill(*skill)) {
+					return true;
+				} else {
+					for (auto* actor: GetActors()) {
+						if (actor->CanAct() && actor->IsItemUsable(item_id)) {
+							return true;
+						}
+					}
 				}
-				return IsSkillUsable(item->skill_id, nullptr, true);
 			}
 			return false;
-		case lcf::rpg::Item::Type_special:
-			return IsSkillUsable(item->skill_id, nullptr, true);
-	}
-
-	if (Game_Battle::IsBattleRunning()) {
-		switch (item->type) {
-			case lcf::rpg::Item::Type_medicine:
-				return !item->occasion_field1;
-			case lcf::rpg::Item::Type_switch:
-				return item->occasion_battle;
-		}
-	} else {
-		switch (item->type) {
-			case lcf::rpg::Item::Type_medicine:
-			case lcf::rpg::Item::Type_material:
-			case lcf::rpg::Item::Type_book:
-				return true;
-			case lcf::rpg::Item::Type_switch:
-				return item->occasion_field2;
-		}
+		default:
+			break;
 	}
 
 	return false;
@@ -378,8 +374,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowEscape() && Main_Data::game_targets->HasEscapeTarget() && !Main_Data::game_player->IsFlying();
 	} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
 		return !Game_Battle::IsBattleRunning() && Main_Data::game_system->GetAllowTeleport() && Main_Data::game_targets->HasTeleportTargets() && !Main_Data::game_player->IsFlying();
-	} else if (skill->type == lcf::rpg::Skill::Type_normal ||
-		skill->type >= lcf::rpg::Skill::Type_subskill) {
+	} else if (Algo::IsNormalOrSubskill(*skill)) {
 		int scope = skill->scope;
 
 		if (Game_Battle::IsBattleRunning()) {

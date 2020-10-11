@@ -1152,9 +1152,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		return this->success;
 	}
 
-	if (!(skill.type == lcf::rpg::Skill::Type_normal ||
-				skill.type >= lcf::rpg::Skill::Type_subskill)) {
-		assert(false && "Unsupported skill type");
+	if (!Algo::IsNormalOrSubskill(skill)) {
 		this->success = false;
 		return this->success;
 	}

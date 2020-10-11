@@ -189,20 +189,22 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 		return false;
 	}
 
-	// Actor must have all attributes of the skill equipped as weapons
-	const lcf::rpg::Item* item = GetEquipment(lcf::rpg::Item::Type_weapon);
-	const lcf::rpg::Item* item2 = HasTwoWeapons() ? GetEquipment(lcf::rpg::Item::Type_weapon + 1) : nullptr;
+	if (!skill->affect_attr_defence) {
+		// Actor must have all attributes of the skill equipped as weapons
+		const auto* w1 = GetWeapon();
+		const auto* w2 = Get2ndWeapon();
 
-	for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
-		bool required = skill->attribute_effects[i] && lcf::Data::attributes[i].type == lcf::rpg::Attribute::Type_physical;
-		if (required) {
-			if (item && i < item->attribute_set.size() && item->attribute_set[i]) {
-				continue;
+		for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
+			bool required = skill->attribute_effects[i] && lcf::Data::attributes[i].type == lcf::rpg::Attribute::Type_physical;
+			if (required) {
+				if (w1 && i < w1->attribute_set.size() && w1->attribute_set[i]) {
+					continue;
+				}
+				if (w2 && i < w2->attribute_set.size() && w2->attribute_set[i]) {
+					continue;
+				}
+				return false;
 			}
-			if (item2 && i < item2->attribute_set.size() && item2->attribute_set[i]) {
-				continue;
-			}
-			return false;
 		}
 	}
 

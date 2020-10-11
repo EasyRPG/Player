@@ -439,8 +439,6 @@ void Scene_Battle::AssignSkill(const lcf::rpg::Skill* skill, const lcf::rpg::Ite
 			ActionSelectedCallback(active_actor);
 			return;
 		}
-		case lcf::rpg::Skill::Type_normal:
-		case lcf::rpg::Skill::Type_subskill:
 		default:
 			break;
 	}

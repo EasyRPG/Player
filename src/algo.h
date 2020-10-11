@@ -21,6 +21,7 @@
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/saveactor.h>
+#include <lcf/rpg/skill.h>
 #include "game_battler.h"
 
 class Game_Actor;
@@ -180,6 +181,27 @@ int CalcSelfDestructEffect(const Game_Battler& source,
  * @return sp cost
  */
 int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost);
+
+/*
+ * Determine whether a skill is usable.
+ *
+ * @param skill the skill to check
+ * @param require_states_persist If we should require persistent states for non-battle.
+ * @return Whether the skill can be used.
+ */
+bool IsSkillUsable(const lcf::rpg::Skill& skill,
+		bool require_states_persist);
+
+/**
+ * Checks if the skill is a normal or subskill type.
+ *
+ * @param skill the skill to check
+ * @return true if a normal skill or a 2k3 subskill.
+ */
+inline bool IsNormalOrSubskill(const lcf::rpg::Skill& skill) {
+	return skill.type == lcf::rpg::Skill::Type_normal
+		|| skill.type >= lcf::rpg::Skill::Type_subskill;
+}
 
 } // namespace Algo
 
