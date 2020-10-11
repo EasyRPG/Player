@@ -107,12 +107,20 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 	} else {
 		using fn = std::function<void(const picojson::object&,const std::string&)>;
 		fn parse = [&] (const picojson::object& obj, const std::string& path) {
+			std::string dirname;
+			for (const auto& value : obj) {
+				if (value.first == "_dirname" && value.second.is<std::string>()) {
+					dirname = value.second.to_str();
+				}
+			}
+			dirname = FileFinder::MakePath(path, dirname);
+
 			for (const auto& value : obj) {
 				const auto& second = value.second;
 				if (second.is<picojson::object>()) {
-					parse(second.get<picojson::object>(), FileFinder::MakePath(path, value.first));
+					parse(second.get<picojson::object>(), dirname);
 				} else if (second.is<std::string>()){
-					file_mapping[FileFinder::MakePath(path, value.first)] = FileFinder::MakePath(path, second.to_str());
+					file_mapping[FileFinder::MakePath(Utils::LowerCase(dirname), value.first)] = FileFinder::MakePath(dirname, second.to_str());
 				}
 			}
 		};
