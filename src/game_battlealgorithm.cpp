@@ -696,7 +696,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 	return 0;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
+void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
 	auto* target = GetTarget();
 	if (!target) {
 		return;
@@ -705,18 +705,16 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
 	bool was_dead = target->IsDead();
 
 	// Apply states
-	for (auto& se: states) {
-		switch (se.effect) {
-			case StateEffect::Inflicted:
-				target->AddState(se.state_id, true);
-				break;
-			case StateEffect::Healed:
-			case StateEffect::HealedByAttack:
-				target->RemoveState(se.state_id, false);
-				break;
-			default:
-				break;
-		}
+	switch (se.effect) {
+		case StateEffect::Inflicted:
+			target->AddState(se.state_id, true);
+			break;
+		case StateEffect::Healed:
+		case StateEffect::HealedByAttack:
+			target->RemoveState(se.state_id, false);
+			break;
+		default:
+			break;
 	}
 
 	// Apply revived hp healing
@@ -727,6 +725,30 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
 		}
 	}
 }
+
+void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
+	auto* target = GetTarget();
+	if (!target) {
+		return;
+	}
+
+	bool was_dead = target->IsDead();
+
+	// Apply states
+	for (auto& se: states) {
+		ApplyStateEffect(se);
+	}
+
+	// Apply revived hp healing
+	if (IsPositive() && was_dead && !target->IsDead()) {
+		if (GetAffectedHp()) {
+			int hp = GetAffectedHp();
+			target->ChangeHp(hp - 1, true);
+		}
+	}
+}
+
+
 
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {

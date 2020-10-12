@@ -286,6 +286,7 @@ public:
 	int ApplyDefEffect();
 	int ApplySpiEffect();
 	int ApplyAgiEffect();
+	void ApplyStateEffect(StateEffect se);
 	void ApplyStateEffects();
 	void ApplyAttributeShiftEffects();
 	void ApplyAll();
