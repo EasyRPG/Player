@@ -16,11 +16,13 @@
  */
 
 #include <cstdlib>
+#include <fstream>
 #include <map>
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #  include <regex>
+#  include <lcf/reader_util.h>
 #  include "picojson.h"
 #endif
 
@@ -31,7 +33,6 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
-#include <fstream>
 #include "utils.h"
 #include "transition.h"
 #include "rand.h"
@@ -44,6 +45,7 @@ namespace {
 	std::unordered_map<std::string, FileRequestAsync> async_requests;
 	std::unordered_map<std::string, std::string> file_mapping;
 	int next_id = 0;
+	int index_version = 1;
 
 	FileRequestAsync* GetRequest(const std::string& path) {
 		auto it = async_requests.find(path);
@@ -86,8 +88,47 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 	picojson::value v;
 	picojson::parse(v, f);
 
-	for (const auto& value : v.get<picojson::object>()) {
-		file_mapping[value.first] = value.second.to_str();
+	const auto& metadata = v.get("metadata");
+	if (metadata.is<picojson::object>()) {
+		for (const auto& value : metadata.get<picojson::object>()) {
+			if (value.first == "version") {
+				index_version = (int)value.second.get<double>();
+			}
+		}
+	}
+
+	Output::Debug("Parsing index.json version %d", index_version);
+
+	if (index_version <= 1) {
+		// legacy format
+		for (const auto& value : v.get<picojson::object>()) {
+			file_mapping[value.first] = value.second.to_str();
+		}
+	} else {
+		using fn = std::function<void(const picojson::object&,const std::string&)>;
+		fn parse = [&] (const picojson::object& obj, const std::string& path) {
+			std::string dirname;
+			for (const auto& value : obj) {
+				if (value.first == "_dirname" && value.second.is<std::string>()) {
+					dirname = value.second.to_str();
+				}
+			}
+			dirname = FileFinder::MakePath(path, dirname);
+
+			for (const auto& value : obj) {
+				const auto& second = value.second;
+				if (second.is<picojson::object>()) {
+					parse(second.get<picojson::object>(), dirname);
+				} else if (second.is<std::string>()){
+					file_mapping[FileFinder::MakePath(Utils::LowerCase(dirname), value.first)] = FileFinder::MakePath(dirname, second.to_str());
+				}
+			}
+		};
+
+		const auto& cache = v.get("cache");
+		if (cache.is<picojson::object>()) {
+			parse(cache.get<picojson::object>(), "");
+		}
 	}
 #else
 	// no-op
@@ -190,13 +231,14 @@ void FileRequestAsync::Start() {
 		request_path += "default/";
 	}
 
-	std::string real_path = Utils::LowerCase(path);
-	if (directory != ".") {
-		// Don't alter the path when the file is in the main directory
-		real_path = FileFinder::MakeCanonical(real_path, 1);
+	std::string modified_path;
+	if (index_version >= 2) {
+		modified_path = lcf::ReaderUtil::Normalize(path);
+	} else {
+		modified_path = Utils::LowerCase(path);
 	}
 
-	auto it = file_mapping.find(real_path);
+	auto it = file_mapping.find(modified_path);
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
