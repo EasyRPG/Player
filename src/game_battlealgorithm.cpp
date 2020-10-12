@@ -1374,7 +1374,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	auto target_perm_states = target->GetPermanentStates();
 
 	// Conditions healed by physical attack:
-	if (!IsPositive() && skill.affect_hp) {
+	if (!IsPositive() && skill.affect_hp && !IsAbsorb()) {
 		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 	}
 

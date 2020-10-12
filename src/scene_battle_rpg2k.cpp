@@ -660,11 +660,7 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 		return ProcessNextAction(BattleActionState_Finished, action);
 	}
 
-	if (!action->IsPositive() && action->GetAffectedHp() >= 0) {
-		return ProcessNextAction(BattleActionState_Damage, action);
-	}
-
-	return ProcessNextAction(BattleActionState_Results, action);
+	return ProcessNextAction(BattleActionState_Damage, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -702,6 +698,10 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	};
 
 	if (battle_action_substate == eBegin) {
+		if (action->IsPositive() || action->GetAffectedHp() < 0 || (action->IsAbsorb() && action->GetAffectedHp() <= 0)) {
+			return ProcessNextAction(BattleActionState_Results, action);
+		}
+
 		SetWait(4,4);
 		return ProcessNextSubState(eMessage, action);
 	}
