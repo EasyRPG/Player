@@ -25,4 +25,8 @@ if(NOT MSVC)
 	target_link_libraries(retro_common "pthread")
 endif()
 
+if(BUILD_SHARED_LIBS)
+	set_property(TARGET retro_common PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif()
+
 mark_as_advanced(RETRO_COMMON_DIR RETRO_COMMON_DIR_LEN)
