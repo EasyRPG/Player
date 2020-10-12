@@ -450,10 +450,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			return ProcessActionFailure(action);
 		case BattleActionState_Damage:
 			return ProcessActionDamage(action);
-		case BattleActionState_Results:
-			return ProcessActionResults(action);
-		case BattleActionState_Death:
-			return ProcessActionDeath(action);
+		case BattleActionState_Params:
+			return ProcessActionParamEffects(action);
+		case BattleActionState_States:
+			return ProcessActionStateEffects(action);
+		case BattleActionState_Attributes:
+			return ProcessActionAttributeEffects(action);
 		case BattleActionState_Finished:
 			return ProcessActionFinished(action);
 	}
@@ -699,7 +701,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 
 	if (battle_action_substate == eBegin) {
 		if (action->IsPositive() || action->GetAffectedHp() < 0 || (action->IsAbsorb() && action->GetAffectedHp() <= 0)) {
-			return ProcessNextAction(BattleActionState_Results, action);
+			return ProcessNextAction(BattleActionState_Params, action);
 		}
 
 		SetWait(4,4);
@@ -743,8 +745,6 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 			SetWait(20, 40);
 		}
 
-		battle_action_dmg_index = battle_message_window->GetLineCount();
-
 		return ProcessNextSubState(eApply, action);
 	}
 
@@ -756,8 +756,10 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		auto* target = action->GetTarget();
 		assert(target);
 		if (target->IsDead()) {
-			return ProcessNextAction(BattleActionState_Death, action);
+			ProcessDeath(action);
 		}
+
+		battle_action_dmg_index = battle_message_window->GetLineCount();
 
 		return ProcessNextSubState(ePreStates, action);
 	}
@@ -796,10 +798,10 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		SetWait(0, 10);
 	}
 
-	return ProcessNextAction(BattleActionState_Results, action);
+	return ProcessNextAction(BattleActionState_Params, action);
 }
 
-bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action) {
+bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		ePreHp,
 		eHp,
@@ -813,14 +815,10 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		eSpi,
 		ePreAgi,
 		eAgi,
-		ePreConditions,
-		eConditions,
-		ePreAttributes,
-		eAttributes,
 		eDone
 	};
 
-	auto* target = action->GetTarget();
+	const auto next_state = BattleActionState_States;
 
 	// All of the "Pre" states are even numbers, so catch all Pre here.
 	if ((battle_action_substate & 1) == 0) {
@@ -894,53 +892,6 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			checkNext();
 		}
 
-		if (battle_action_substate == ePreConditions) {
-			const auto& states = action->GetStateEffects();
-			auto& idx = battle_action_substate_index;
-			for (;idx < (int)states.size(); ++idx) {
-				auto& se = states[idx];
-				auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
-				if (!state) {
-					continue;
-				}
-
-				action->ApplyStateEffect(se);
-				bool is_actor = target->GetType() == Game_Battler::Type_Ally;
-				switch (se.effect) {
-					case Game_BattleAlgorithm::StateEffect::Inflicted:
-						pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
-						break;
-					case Game_BattleAlgorithm::StateEffect::Healed:
-						pending_message = action->GetStateMessage(state->message_recovery);
-						break;
-					case Game_BattleAlgorithm::StateEffect::AlreadyInflicted:
-						pending_message = action->GetStateMessage(state->message_already);
-						break;
-					default:
-						break;
-				}
-
-				if (!pending_message.empty()) {
-					++battle_action_substate_index;
-					break;
-				}
-			}
-			checkNext();
-		}
-
-		if (battle_action_substate == ePreAttributes) {
-			const auto& attrs = action->GetShiftedAttributes();
-			if (battle_action_substate_index < (int)attrs.size()) {
-				int attr_id = attrs[battle_action_substate_index];
-				auto shifted = action->ApplyAttributeShiftEffect(attr_id);
-				if (shifted != 0) {
-					pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
-				}
-				++battle_action_substate_index;
-			}
-			checkNext();
-		}
-
 		if (!pending_message.empty()) {
 			battle_message_window->PopUntil(battle_action_results_index);
 			battle_message_window->ScrollToEnd();
@@ -954,34 +905,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 	// checkNext() to increment +2 without worrying about overflowing
 	// past eDone.
 	if (battle_action_substate >= eDone) {
-		return ProcessNextAction(BattleActionState_Finished, action);
-	}
-
-	// Once we get to the conditions stage, if death was inflicted
-	// we stop everything and jump to death.
-	// RPG_RT has a bug where death caused by state infliction has an extra
-	// wait(20,60) after the death message. We don't emulate this bug.
-	// RPG_RT: Wait(36,60), Wait(4,4), Wait(20, 60)
-	// Player: Wait(4,4), Wait(36,60)
-	if (battle_action_substate == eConditions
-			&& action->IsLethal())
-	{
-		return ProcessNextAction(BattleActionState_Death, action);
-	}
-
-	// Check if dead enemies get revived to make them visible again
-	if (battle_action_substate == eConditions
-			&& action->IsRevived())
-	{
-		if (action->GetTarget() != nullptr) {
-			auto* target = action->GetTarget();
-			if (target->GetType() == Game_Battler::Type_Enemy) {
-				auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-				if (target_sprite) {
-					target_sprite->DetectStateChange();
-				}
-			}
-		}
+		return ProcessNextAction(next_state, action);
 	}
 
 	// All of the normal states are odd numbers.
@@ -990,52 +914,162 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		battle_message_window->ScrollToEnd();
 		SetWait(20, 60);
 
-		// For actions which use the index (conditions, attributes, etc..)
-		// We transition back to "pre" state and let that logic decide
-		// what to do next.
-		if (battle_action_substate_index != 0) {
-			return ProcessNextSubState(battle_action_substate - 1, action, false);
-		}
 		return ProcessNextSubState(battle_action_substate + 1, action);
 	}
 
-	return ProcessNextAction(BattleActionState_Finished, action);
+	return ProcessNextAction(next_state, action);
 }
 
-bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
+bool Scene_Battle_Rpg2k::ProcessActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
-		eProcess,
-		ePost
+		eApply,
+		ePreWait,
+		eMessage,
+		eDone
 	};
 
-	if (battle_action_substate == eProcess) {
-		auto* target = action->GetTarget();
-		assert(target);
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		battle_message_window->Push(action->GetDeathMessage());
+	const auto next_state = BattleActionState_Attributes;
+
+	auto* target = action->GetTarget();
+
+	if (battle_action_substate == eApply) {
+		pending_message.clear();
+
+		const auto was_dead = target->IsDead();
+		const auto& states = action->GetStateEffects();
+		auto& idx = battle_action_substate_index;
+
+		if (idx >= static_cast<int>(states.size())) {
+			return ProcessNextAction(next_state, action);
+		}
+
+		for (;idx < (int)states.size(); ++idx) {
+			auto& se = states[idx];
+			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
+			if (!state) {
+				continue;
+			}
+
+			action->ApplyStateEffect(se);
+			bool is_actor = target->GetType() == Game_Battler::Type_Ally;
+			switch (se.effect) {
+				case Game_BattleAlgorithm::StateEffect::Inflicted:
+					pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
+					break;
+				case Game_BattleAlgorithm::StateEffect::Healed:
+					pending_message = action->GetStateMessage(state->message_recovery);
+					break;
+				case Game_BattleAlgorithm::StateEffect::AlreadyInflicted:
+					pending_message = action->GetStateMessage(state->message_already);
+					break;
+				default:
+					break;
+			}
+
+			if (!was_dead != target->IsDead() || !pending_message.empty()) {
+				break;
+			}
+		}
+
+		// Make dead enemies visible again
+		if (was_dead && !target->IsDead()) {
+			auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+			if (target_sprite) {
+				target_sprite->DetectStateChange();
+			}
+		}
+
+		battle_message_window->PopUntil(battle_action_results_index);
 		battle_message_window->ScrollToEnd();
-		SetWait(36, 60);
 
-		auto* se = action->GetDeathSe();
-		if (se) {
-			Main_Data::game_system->SePlay(*se);
+		// If we were killed by state
+		if (!was_dead && target->IsDead()) {
+			ProcessDeath(action);
 		}
-		if (target_sprite) {
-			target_sprite->DetectStateChange();
-		}
-
-		if (action->IsKilledByDamage()) {
-			// When target is killed by damage, we skip the ePost substate in damage
-			// and instead of do it here after the kill message.
-			return ProcessNextSubState(ePost, action);
-		}
+		return ProcessNextSubState(ePreWait, action, false);
 	}
 
-	if (battle_action_substate == ePost) {
-		SetWait(0, 10);
+	if (battle_action_substate == ePreWait) {
+		SetWait(4,4);
+		return ProcessNextSubState(eMessage, action, false);
 	}
 
-	return ProcessNextAction(BattleActionState_Finished, action);
+	if (battle_action_substate == eMessage) {
+		battle_message_window->Push(pending_message);
+		battle_message_window->ScrollToEnd();
+		SetWait(20, 60);
+
+		// Process the next state
+		++battle_action_substate_index;
+		return ProcessNextSubState(eApply, action, false);
+	}
+
+	return ProcessNextAction(next_state, action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
+	enum SubState {
+		eApply,
+		eMessage,
+	};
+
+	const auto next_state = BattleActionState_Finished;
+
+	// All of the "Pre" states are even numbers, so catch all Pre here.
+	if (battle_action_substate == eApply) {
+		pending_message.clear();
+
+		const auto& attrs = action->GetShiftedAttributes();
+		auto& idx = battle_action_substate_index;
+		if (idx >= static_cast<int>(attrs.size())) {
+			return ProcessNextAction(next_state, action);
+		}
+
+		for (;idx < (int)attrs.size(); ++idx) {
+			int attr_id = attrs[battle_action_substate_index];
+			auto shifted = action->ApplyAttributeShiftEffect(attr_id);
+			if (shifted != 0) {
+				pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
+				break;
+			}
+		}
+
+		battle_message_window->PopUntil(battle_action_results_index);
+		battle_message_window->ScrollToEnd();
+		SetWait(4,4);
+
+		return ProcessNextSubState(eMessage, action, false);
+	}
+
+	// All of the normal states are odd numbers.
+	if (battle_action_substate == eMessage) {
+		battle_message_window->Push(pending_message);
+		battle_message_window->ScrollToEnd();
+		SetWait(20, 60);
+
+		++battle_action_substate_index;
+		return ProcessNextSubState(eApply, action, false);
+	}
+
+	return ProcessNextAction(next_state, action);
+}
+
+void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* target = action->GetTarget();
+	assert(target);
+
+	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+	battle_message_window->Push(action->GetDeathMessage());
+	battle_message_window->ScrollToEnd();
+	SetWait(36, 60);
+
+	auto* se = action->GetDeathSe();
+	if (se) {
+		Main_Data::game_system->SePlay(*se);
+	}
+	if (target_sprite) {
+		target_sprite->DetectStateChange();
+	}
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {

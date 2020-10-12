@@ -84,14 +84,29 @@ public:
 		BattleActionState_Damage,
 		/**
 		* Called repeatedly.
-		* Used for the results, to push and pop each message.
+		* Used for hp healing, sp, atk, def, api, agi, to push and pop each message.
 		*/
-		BattleActionState_Results,
+		BattleActionState_Params,
 		/**
-		 * Called once per target if killed.
+		* Called repeatedly.
+		* Used for states.
+		*/
+		BattleActionState_States,
+		/**
+		* Called repeatedly.
+		* Used for attribute shifts.
+		*/
+		BattleActionState_Attributes,
+		/**
+		 * Called once per target if killed by damage.
 		 * Action treating whether the enemy died or not.
 		 */
-		BattleActionState_Death,
+		BattleActionState_DeathDamage,
+		/**
+		 * Called once per target if killed by a state..
+		 * Action treating whether the enemy died or not.
+		 */
+		BattleActionState_DeathState,
 		/**
 		 * Called once per target.
 		 * It finishes the action and checks whether to repeat it if there is another target to hit.
@@ -197,9 +212,12 @@ protected:
 	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
+	void ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	void SetWait(int min_wait, int max_wait);
 	void SetWaitForUsage(Game_BattleAlgorithm::Type type);
