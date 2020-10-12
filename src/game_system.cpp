@@ -505,11 +505,11 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (ToStringView(result->file).ends_with(".link")) {
+	if (StringView(result->file).ends_with(".link")) {
 		// Handle Ineluki's MP3 patch
 		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
-			Output::Warning("Ineluki link read error: {}", path);
+			Output::Warning("Ineluki MP3: Link read error: {}", path);
 			return;
 		}
 
@@ -517,27 +517,23 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		std::string line = Utils::ReadLine(stream);
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
-		Output::Debug("Ineluki link file: {} -> {}", path, line);
-
-		#ifdef EMSCRIPTEN
-		Output::Warning("Ineluki MP3 patch unsupported in the web player");
-		return;
-		#else
+		Output::Debug("Ineluki MP3: Link file: {} -> {}", path, line);
 		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
 
-		std::string ineluki_path = FileFinder::FindDefault(line_canonical);
-		if (ineluki_path.empty()) {
-			Output::Debug("Music not found: {}", line_canonical);
-			return;
-		}
-
-		Audio().BGM_Play(ineluki_path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
-
+		// Needs another Async roundtrip
+		bgm_pending = true;
+		FileRequestAsync *request = AsyncHandler::RequestFile(line_canonical);
+		music_request_id = request->Bind(&Game_System::OnBgmInelukiReady, this);
+		request->Start();
 		return;
-		#endif
 	}
 
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+}
+
+void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
+	bgm_pending = false;
+	Audio().BGM_Play(FileFinder::FindDefault(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {
