@@ -46,24 +46,26 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	return false;
 }
 
-bool Game_Ineluki::Execute(const std::string& ini_file) {
-	if (functions.find(ini_file) == functions.end()) {
+bool Game_Ineluki::Execute(StringView ini_file) {
+	auto ini_file_s = ToString(ini_file);
+
+	if (functions.find(ini_file_s) == functions.end()) {
 		if (!Parse(ini_file)) {
 			return false;
 		}
 	}
 
-	for (const auto& cmd : functions[ini_file]) {
+	for (const auto& cmd : functions[ini_file_s]) {
 		//Output::Debug("Ineluki {} {}", cmd.name, cmd.arg);
 
 		if (cmd.name == "writetolog") {
 			Output::InfoStr(cmd.arg);
 		} else if (cmd.name == "execprogram") {
 			// Fake execute some known programs
-			if (Utils::StartsWith(cmd.arg, "exitgame") ||
-					Utils::StartsWith(cmd.arg, "taskkill")) {
+			if (StringView(cmd.arg).starts_with("exitgame") ||
+					StringView(cmd.arg).starts_with("taskkill")) {
 				Player::exit_flag = true;
-			} else if (Utils::StartsWith(cmd.arg, "SaveCount.dat")) {
+			} else if (StringView(cmd.arg).starts_with("SaveCount.dat")) {
 				// no-op, detected through saves.script access
 			} else {
 				Output::Warning("Ineluki ExecProgram {}: Not supported", cmd.arg);
@@ -108,10 +110,7 @@ bool Game_Ineluki::Execute(const std::string& ini_file) {
 				return true;
 			}
 
-			int mouse_x;
-			int mouse_y;
-
-			Input::GetMousePosition(mouse_x, mouse_y);
+			Point mouse_pos = Input::GetMousePosition();
 
 			bool left = Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT);
 			bool right = Input::IsRawKeyPressed(Input::Keys::MOUSE_RIGHT);
@@ -119,8 +118,8 @@ bool Game_Ineluki::Execute(const std::string& ini_file) {
 			int key = left && right ? 3 : right ? 2 : left ? 1 : 0;
 
 			output_list.push_back(key);
-			output_list.push_back(mouse_y);
-			output_list.push_back(mouse_x);
+			output_list.push_back(mouse_pos.y);
+			output_list.push_back(mouse_pos.x);
 			output_list.push_back(mouse_id_prefix);
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
@@ -152,14 +151,20 @@ bool Game_Ineluki::ExecuteAutorunScript() {
 	return true;
 }
 
-bool Game_Ineluki::Parse(const std::string& ini_file) {
-	auto is = FileFinder::OpenInputStream(ini_file);
+bool Game_Ineluki::Parse(StringView ini_file) {
+	auto ini_file_s = ToString(ini_file);
+
+	auto is = FileFinder::OpenInputStream(ini_file_s);
+	if (!is) {
+		return false;
+	}
+
 	lcf::INIReader ini(is);
 	if (ini.ParseError() == -1) {
 		return false;
 	}
 
-	Output::Debug("Ineluki: Parsing script {}", FileFinder::GetPathInsideGamePath(ini_file));
+	Output::Debug("Ineluki: Parsing script {}", FileFinder::GetPathInsideGamePath(ini_file_s));
 
 	command_list commands;
 	std::string section = "execute";
@@ -212,7 +217,7 @@ bool Game_Ineluki::Parse(const std::string& ini_file) {
 		section = ini.Get(section, "next", std::string());
 	} while (!section.empty());
 
-	functions[ini_file] = commands;
+	functions[ini_file_s] = commands;
 
 	return true;
 }

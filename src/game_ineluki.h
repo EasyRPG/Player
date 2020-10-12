@@ -26,6 +26,7 @@
 #include <lcf/rpg/sound.h>
 
 #include "keys.h"
+#include "string_view.h"
 
 /**
  * Implements Ineluki's Key Patch
@@ -33,7 +34,7 @@
 class Game_Ineluki {
 public:
 	bool Execute(const lcf::rpg::Sound& se);
-	bool Execute(const std::string& ini_file);
+	bool Execute(StringView ini_file);
 
 	bool ExecuteAutorunScript();
 
@@ -42,7 +43,7 @@ public:
 	void Update();
 
 private:
-	bool Parse(const std::string& ini_file);
+	bool Parse(StringView ini_file);
 
 	struct InelukiCommand {
 		std::string name;
