@@ -501,10 +501,17 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage(int value) co
 	}
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, StringView points) const {
+std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(int value, StringView points) const {
+	const bool is_positive = (value >= 0);
+	value = std::abs(value);
+	if (value == 0) {
+		return "";
+	}
+
 	StringView message = is_positive
 		? StringView(lcf::Data::terms.parameter_increase)
 	   	: StringView(lcf::Data::terms.parameter_decrease);
+
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(

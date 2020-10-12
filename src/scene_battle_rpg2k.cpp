@@ -835,8 +835,9 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		if (battle_action_substate == ePreHp) {
 			// Damage is handled by Damage state, so only check healing here.
 			if (action->IsPositive() && action->GetAffectedHp() != -1) {
+				auto hp = action->ApplyHpEffect();
 				if (!action->IsRevived() && (action->GetAffectedHp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item)) {
-					pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedHp(), lcf::Data::terms.health_points);
+					pending_message = action->GetHpSpRecoveredMessage(hp, lcf::Data::terms.health_points);
 				}
 			}
 			checkNext();
@@ -844,16 +845,17 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 
 		if (battle_action_substate == ePreSp) {
 			if (action->GetAffectedSp() != -1) {
+				auto sp = action->ApplySpEffect();
 				if (action->IsPositive()) {
-					if (action->GetAffectedSp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item) {
-						pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedSp(), lcf::Data::terms.spirit_points);
+					if (action->GetType() != Game_BattleAlgorithm::Type::Item) {
+						pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
 					}
-				} else if (action->GetAffectedSp() > 0) {
+				} else {
 					if (action->IsAbsorb()) {
-						pending_message = action->GetHpSpAbsorbedMessage(action->GetAffectedSp(), lcf::Data::terms.spirit_points);
+						pending_message = action->GetHpSpAbsorbedMessage(std::abs(sp), lcf::Data::terms.spirit_points);
 					}
 					else {
-						pending_message = action->GetParameterChangeMessage(false, action->GetAffectedSp(), lcf::Data::terms.spirit_points);
+						pending_message = action->GetParameterChangeMessage(sp, lcf::Data::terms.spirit_points);
 					}
 				}
 			}
@@ -861,29 +863,33 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		}
 
 		if (battle_action_substate == ePreAtk) {
-			if (action->GetAffectedAttack() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAttack(), lcf::Data::terms.attack);
+			auto atk = action->ApplyAtkEffect();
+			if (atk != 0) {
+				pending_message = action->GetParameterChangeMessage(atk, lcf::Data::terms.attack);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreDef) {
-			if (action->GetAffectedDefense() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedDefense(), lcf::Data::terms.defense);
+			auto def = action->ApplyDefEffect();
+			if (def != 0) {
+				pending_message = action->GetParameterChangeMessage(def, lcf::Data::terms.defense);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreSpi) {
-			if (action->GetAffectedSpirit() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedSpirit(), lcf::Data::terms.spirit);
+			auto spi = action->ApplySpiEffect();
+			if (spi != 0) {
+				pending_message = action->GetParameterChangeMessage(spi, lcf::Data::terms.spirit);
 			}
 			checkNext();
 		}
 
 		if (battle_action_substate == ePreAgi) {
-			if (action->GetAffectedAgility() > 0) {
-				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAgility(), lcf::Data::terms.agility);
+			auto agi = action->ApplyAgiEffect();
+			if (agi != 0) {
+				pending_message = action->GetParameterChangeMessage(agi, lcf::Data::terms.agility);
 			}
 			checkNext();
 		}
