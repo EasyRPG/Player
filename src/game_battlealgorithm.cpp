@@ -1274,12 +1274,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 		} else {
 			if (!this->negative_effect) {
-				if (Player::IsRPG2k3()) {
-					this->hp = effect;
-				} else {
-					this->hp = Utils::Clamp(effect, 0, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
-				}
+				this->hp = effect;
 			} else {
+				// RPG_RT negative healing skills are non lethal
 				this->hp = Utils::Clamp(effect, 0, GetTarget()->GetHp() - 1);
 			}
 		}
