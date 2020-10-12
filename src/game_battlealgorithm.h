@@ -524,7 +524,6 @@ public:
 	std::string GetStartMessage() const override;
 
 	bool Execute() override;
-	void Apply() override;
 };
 
 class Normal : public AlgorithmBase {
@@ -660,7 +659,6 @@ public:
 	std::string GetStartMessage() const override;
 
 	bool Execute() override;
-	void Apply() override;
 };
 
 

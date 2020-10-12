@@ -853,11 +853,6 @@ bool Game_BattleAlgorithm::Null::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Null::Apply() {
-	ApplyActionSwitches();
-}
-
-
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {
@@ -1935,9 +1930,5 @@ std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
 bool Game_BattleAlgorithm::NoMove::Execute() {
 	this->success = true;
 	return true;
-}
-
-void Game_BattleAlgorithm::NoMove::Apply() {
-	ApplyActionSwitches();
 }
 
