@@ -926,14 +926,14 @@ bool Game_BattleAlgorithm::Null::Execute() {
 	return true;
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(Type::Normal, source, target)
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, Game_Battler::Weapon weapon) :
+	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
 {
 	Init();
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
-	AlgorithmBase(Type::Normal, source, target)
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, Game_Battler::Weapon weapon) :
+	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
 {
 	Init();
 }
@@ -942,34 +942,20 @@ void Game_BattleAlgorithm::Normal::Init() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 
-		if (ally->HasDualAttack()) {
+		auto weapons = ally->GetWeapons(weapon);
+
+		// FIMXE: This is only for 2k battles
+		if (ally->HasDualAttack(weapon)) {
 			SetRepeat(2);
 		}
 
-		const auto* weapon1 = ally->GetWeapon();
-		const auto* weapon2 = ally->Get2ndWeapon();
-		if (weapon1 == nullptr) {
-			weapon1 = weapon2;
-		}
-
-		if (weapon1) {
-			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapon1->animation_id);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon1->animation_id);
-				return;
-			}
-			if (weapon2) {
-				animation2 = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapon2->animation_id);
-				if (!animation2) {
-					Output::Warning("Algorithm Normal: Invalid weapon animation ID {}", weapon2->animation_id);
-				}
+		if (weapons[0]) {
+			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapons[0]->animation_id);
+			if (weapons[1]) {
+				animation2 = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapons[1]->animation_id);
 			}
 		} else {
-			const lcf::rpg::Actor& actor = *lcf::ReaderUtil::GetElement(lcf::Data::actors, ally->GetId());
-			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, actor.unarmed_animation);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid unarmed animation ID {}", actor.unarmed_animation);
-			}
+			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, ally->GetUnarmedBattleAnimationId());
 		}
 	}
 	if (source->GetType() == Game_Battler::Type_Enemy) {
@@ -985,8 +971,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
 
-	auto to_hit = Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, Game_Battle::GetBattleCondition(), true);
-	auto crit_chance = Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll);
+	auto to_hit = Algo::CalcNormalAttackToHit(source, target, weapon, Game_Battle::GetBattleCondition(), true);
+	auto crit_chance = Algo::CalcCriticalHitChance(source, target, weapon);
 
 	// Damage calculation
 	if (!Rand::PercentChance(to_hit)) {
@@ -999,7 +985,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	}
 
 	// FIXME: Differentiate the cases where 2k3 back attack bug applies
-	auto effect = Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, critical_hit, true, Game_Battle::GetBattleCondition(), true);
+	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, critical_hit, true, Game_Battle::GetBattleCondition(), true);
 	effect = Algo::AdjustDamageForDefend(effect, target);
 
 	// Handle negative effect from attributes
@@ -1035,50 +1021,55 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	if (source.GetType() == Game_Battler::Type_Ally) {
 		auto& ally = static_cast<Game_Actor&>(source);
 		const bool is2k3 = Player::IsRPG2k3();
-		auto* weapon1 = ally.GetWeapon();
-		auto* weapon2 = ally.Get2ndWeapon();
+		auto weapons = ally.GetWeapons(weapon);
 
-		int state_limit = 0;
-		if (weapon1) {
-			state_limit = weapon1->state_set.size();
-		}
-		if (weapon2) {
-			state_limit = std::max(state_limit, (int)weapon2->state_set.size());
-		}
-
-		auto addStates = [&](const lcf::rpg::Item* weapon, int state_id) {
-			if (weapon == nullptr
-					|| state_id > (int)weapon->state_set.size()
-					|| !weapon->state_set[state_id - 1]
-			   ) {
-				return false;
-			}
-			bool weapon_heals_states = is2k3 && weapon->reverse_state_effect;
-			auto pct = weapon->state_chance;
-			if (!weapon_heals_states) {
-				pct = pct * GetTarget()->GetStateProbability(state_id) / 100;
-			}
-			if (!Rand::PercentChance(pct)) {
-				return false;
-			}
-			if (weapon_heals_states) {
-				if (State::Remove(state_id, target_states, target_perm_states)) {
-					states.push_back(StateEffect(state_id, StateEffect::Healed));
+		if (weapons[0]) {
+			int num_states = 0;
+			for (auto* w: weapons) {
+				if (w) {
+					num_states = std::max(num_states, static_cast<int>(w->state_set.size()));
 				}
-				return false;
 			}
-			// Normal attacks don't produce AlreadyInflicted messages in 2k battle
-			// so we filter on HasState.
-			if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-				states.push_back(StateEffect(state_id, StateEffect::Inflicted));
-				return true;
-			}
-			return false;
-		};
 
-		for (int state_id = lcf::rpg::State::kDeathID; state_id <= state_limit; ++state_id) {
-			addStates(weapon1, state_id);
-			addStates(weapon2, state_id);
+			for (int i = 0; i < num_states; ++i) {
+				// EasyRPG extension: This logic allows heal/inflict to work properly with a combined weapon attack.
+				// If the first weapon heals and the second inflicts, then this will do then in the right order.
+				// If both heal or both inflict, we take the max probability as RPG_RT does.
+				int heal_pct = 0;
+				int inflict_pct = 0;
+				for (auto* w: weapons) {
+					if (w && i < static_cast<int>(w->state_set.size()) && w->state_set[i]) {
+						if (is2k3 && w->reverse_state_effect) {
+							heal_pct = std::max(heal_pct, static_cast<int>(w->state_chance));
+						} else {
+							inflict_pct = std::max(inflict_pct, static_cast<int>(w->state_chance));
+						}
+					}
+				}
+				auto state_id = (i + 1);
+
+				for (auto* w: weapons) {
+					if (is2k3 && w->reverse_state_effect) {
+						if (heal_pct > 0 && Rand::PercentChance(heal_pct)) {
+							if (State::Remove(state_id, target_states, target_perm_states)) {
+								states.push_back(StateEffect(state_id, StateEffect::Healed));
+							}
+						}
+						heal_pct = 0;
+					} else {
+						if (inflict_pct > 0) {
+							inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
+							if (Rand::PercentChance(inflict_pct)) {
+								// Unlike skills, weapons do not try to reinflict states already present
+								if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
+									states.push_back(StateEffect(state_id, StateEffect::Inflicted));
+								}
+							}
+							inflict_pct = 0;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -1090,7 +1081,7 @@ void Game_BattleAlgorithm::Normal::ApplyInitialEffect() {
 	AlgorithmBase::ApplyInitialEffect();
 
 	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
-		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
+		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost(weapon));
 	}
 }
 

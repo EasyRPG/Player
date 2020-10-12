@@ -315,6 +315,13 @@ public:
 	const lcf::rpg::Item* Get2ndWeapon() const;
 
 	/**
+	 * Get all weapons equipped by the actor
+	 *
+	 * @param weapon which weapons to retrieve
+	 */
+	std::array<const lcf::rpg::Item*, 2> GetWeapons(Game_Battler::Weapon weapon) const;
+
+	/**
 	 * @return actor's shield if equipped and type == lcf::rpg::Item::Type_shield
 	 */
 	const lcf::rpg::Item* GetShield() const;
@@ -884,6 +891,9 @@ public:
 
 	bool IsInParty() const override;
 
+	/** @return the id of the actors unarmed battle animation */
+	int GetUnarmedBattleAnimationId() const;
+
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 	void Fixup();
@@ -1026,6 +1036,10 @@ inline int Game_Actor::GetSpiMod() const {
 
 inline int Game_Actor::GetAgiMod() const {
 	return data.agility_mod;
+}
+
+inline int Game_Actor::GetUnarmedBattleAnimationId() const {
+	return dbActor->unarmed_animation;
 }
 
 #endif

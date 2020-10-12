@@ -1431,3 +1431,17 @@ PermanentStates Game_Actor::GetPermanentStates() const {
 bool Game_Actor::IsInParty() const {
 	return Main_Data::game_party->IsActorInParty(GetId());
 }
+
+std::array<const lcf::rpg::Item*, 2> Game_Actor::GetWeapons(Game_Battler::Weapon weapon) const {
+	std::array<const lcf::rpg::Item*, 2> w;
+	int i = 0;
+	if (weapon == Game_Battler::WeaponPrimary || weapon == Game_Battler::WeaponAll) {
+		w[i] = GetWeapon();
+		if (w[i]) { ++i; }
+	}
+	if (weapon == Game_Battler::WeaponSecondary || weapon == Game_Battler::WeaponAll) {
+		w[i] = Get2ndWeapon();
+	}
+	return w;
+}
+

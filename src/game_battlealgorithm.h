@@ -23,6 +23,7 @@
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/state.h>
 #include "string_view.h"
+#include "game_battler.h"
 
 class Game_Battler;
 class Game_Party_Base;
@@ -524,8 +525,8 @@ public:
 
 class Normal : public AlgorithmBase {
 public:
-	Normal(Game_Battler* source, Game_Battler* target);
-	Normal(Game_Battler* source, Game_Party_Base* target);
+	Normal(Game_Battler* source, Game_Battler* target, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
+	Normal(Game_Battler* source, Game_Party_Base* target, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
 
 	bool Execute() override;
 	void ApplyInitialEffect() override;
@@ -536,6 +537,7 @@ public:
 	int GetPhysicalDamageRate() const override;
 private:
 	void Init();
+	Game_Battler::Weapon weapon= Game_Battler::WeaponAll;
 };
 
 class Skill : public AlgorithmBase {
