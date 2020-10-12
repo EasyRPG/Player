@@ -765,12 +765,13 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	if (battle_action_substate == ePreStates) {
 		const auto& states = action->GetStateEffects();
 		auto& idx = battle_action_substate_index;
-		for (;idx < (int)states.size(); ++idx) {
+		for (;idx < static_cast<int>(states.size()); ++idx) {
 			auto& se = states[idx];
 			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
 			if (!state || se.effect != Game_BattleAlgorithm::StateEffect::HealedByAttack) {
 				continue;
 			}
+			action->ApplyStateEffect(se);
 			pending_message = action->GetStateMessage(state->message_recovery);
 			++battle_action_substate_index;
 
