@@ -131,14 +131,14 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 	return true;
 }
 
-bool Game_Ineluki::ExecuteAutorunScript() {
-	auto is = FileFinder::OpenInputStream(FileFinder::FindDefault("autorun.script"));
+bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
+	auto is = FileFinder::OpenInputStream(ToString(list_file));
 
 	if (!is) {
 		return false;
 	}
 
-	Output::Debug("Ineluki: Processing autostart script");
+	Output::Debug("Ineluki: Processing script list {}", FileFinder::GetPathInsideGamePath(ToString(list_file)));
 
 	std::string line = Utils::ReadLine(is);
 	while (!is.eof()) {

@@ -33,16 +33,55 @@
  */
 class Game_Ineluki {
 public:
+	/**
+	 * Executes the specified sound effect (which is actually an INI file) as a keypatch script.
+	 * The file is not requested asynchroniously.
+	 *
+	 * @param se Sound Effect (INI file) to execute
+	 * @return Whether the file is a valid script
+	 */
 	bool Execute(const lcf::rpg::Sound& se);
+
+	/**
+	 * Executes the specified INI file as a keypatch script.
+	 * The file is not requested asynchroniously.
+	 *
+	 * @param ini_file INI file to execute
+	 * @return Whether the file is a valid script
+	 */
 	bool Execute(StringView ini_file);
 
-	bool ExecuteAutorunScript();
+	/**
+	 * Executes a file containing a list of script files.
+	 * Usually used for the autorun.script on startup.
+	 * The scripts are requested asynchroniously as important files and executed in
+	 * order but the file itself is not fetched.
+	 *
+	 * @param list_file File to process
+	 * @return Whether the file was found
+	 */
+	bool ExecuteScriptList(StringView list_file);
 
+	/**
+	 * Returns the normal midi ticks or an element from the output list depending
+	 * on the output state
+	 *
+	 * @return Midi Ticks or output list
+	 */
 	int GetMidiTicks();
 
+	/**
+	 * Updates the key up/down list. Must be called once per update frame.
+	 */
 	void Update();
 
 private:
+	/**
+	 * Parses and caches the script.
+	 *
+	 * @param ini_file Script to parse
+	 * @return Whether the file is a valid script
+	 */
 	bool Parse(StringView ini_file);
 
 	struct InelukiCommand {
@@ -53,11 +92,12 @@ private:
 	};
 
 	using command_list = std::vector<InelukiCommand>;
-
 	std::map<std::string, command_list> functions;
 
 	enum class OutputMode {
+		/** GetMidiTicks returns the audio ticks */
 		Original,
+		/** GetMidiTicks returns from the output list */
 		Output
 	};
 
@@ -65,11 +105,15 @@ private:
 	std::vector<int> output_list;
 
 	struct KeyList {
+		/** Key to watch */
 		Input::Keys::InputKey key;
+		/** Value to push when key event occurs */
 		int value;
 	};
 
+	/** List of key down events to watch */
 	std::vector<KeyList> keylist_down;
+	/** List of key up events to watch */
 	std::vector<KeyList> keylist_up;
 
 	bool key_support = false;
@@ -81,6 +125,7 @@ private:
 		const char* name;
 	};
 
+	/** Mapping from input key to Ineluki key (yes, they are German) */
 	static constexpr std::array<Mapping, 61> key_to_ineluki = {{
 		{Input::Keys::LEFT, "(links)"},
 		{Input::Keys::RIGHT, "(rechts)"},
@@ -139,7 +184,7 @@ private:
 		{Input::Keys::CAPS_LOCK, "(capslock)"},
 		{Input::Keys::NUM_LOCK, "(numlock)"},
 		{Input::Keys::SCROLL_LOCK, "(scrolllock)"},
-		// FIXME: Why runter (down) and hoch (up)?
+		// FIXME: Why does Ineluki have runter (down) and hoch (up)?
 		{Input::Keys::LSHIFT, "(lshift runter)"},
 		{Input::Keys::RSHIFT, "(rshift runter)"},
 		{Input::Keys::LSHIFT, "(lshift hoch)"},

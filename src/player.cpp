@@ -809,7 +809,7 @@ void Player::CreateGameObjects() {
 
 	ResetGameObjects();
 
-	Main_Data::game_ineluki->ExecuteAutorunScript();
+	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::FindDefault("autorun.script"));
 }
 
 void Player::ResetGameObjects() {

@@ -67,7 +67,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 		AudioSeCache::Clear();
 
 		Player::ResetGameObjects();
-		Main_Data::game_ineluki->ExecuteAutorunScript();
+		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::FindDefault("autorun.script"));
 
 		Start();
 	} else if (CheckEnableTitleGraphicAndMusic()) {
