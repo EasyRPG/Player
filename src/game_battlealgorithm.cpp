@@ -687,6 +687,10 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			target->ChangeHp(hp - 1, true);
 		}
 	}
+
+	for (auto& sa: shift_attributes) {
+		target->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
+	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
@@ -1366,10 +1370,6 @@ void Game_BattleAlgorithm::Skill::Apply() {
 	}
 
 	AlgorithmBase::Apply();
-
-	for (auto& sa: shift_attributes) {
-		GetTarget()->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
-	}
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
