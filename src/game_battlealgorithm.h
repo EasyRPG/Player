@@ -288,6 +288,7 @@ public:
 	int ApplyAgiEffect();
 	void ApplyStateEffect(StateEffect se);
 	void ApplyStateEffects();
+	int ApplyAttributeShiftEffect(int attr);
 	void ApplyAttributeShiftEffects();
 	void ApplyAll();
 

@@ -184,8 +184,9 @@ public:
 	 *
 	 * @param attribute_id Attribute to modify
 	 * @param shift Shift to apply.
+	 * @return the amount shifted.
 	 */
-	void ShiftAttributeRate(int attribute_id, int shift);
+	int ShiftAttributeRate(int attribute_id, int shift);
 
 	/*
 	 * @return true if we can shift the attribute rate by shift

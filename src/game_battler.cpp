@@ -585,13 +585,15 @@ int Game_Battler::GetAttributeRate(int attribute_id) const {
 	return Utils::Clamp(rate, 0, 4);
 }
 
-void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
+int Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
-		return;
+		return 0;
 	}
 
 	auto& a = attribute_shift[attribute_id -1];
+	const auto prev_a = a;
 	a = Utils::Clamp(a + shift, -1, 1);
+	return a - prev_a;
 }
 
 int Game_Battler::GetAttributeRateShift(int attribute_id) const {

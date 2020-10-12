@@ -755,15 +755,17 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
 	}
 }
 
-
-
-
-void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
+int Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffect(int attr_id) {
 	auto* target = GetTarget();
 	if (target) {
-		for (auto& sa: shift_attributes) {
-			target->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
-		}
+		return target->ShiftAttributeRate(attr_id, IsPositiveSkill() ? 1 : -1);
+	}
+	return 0;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
+	for (auto& sa: shift_attributes) {
+		ApplyAttributeShiftEffect(sa);
 	}
 }
 
