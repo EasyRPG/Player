@@ -880,6 +880,14 @@ else()
 	endif()
 endif()
 
+# bash completion
+set(BASHCOMPLETION_STATUS "Unavailable")
+find_package(bash-completion QUIET)
+if(BASH_COMPLETION_FOUND OR (UNIX AND NOT APPLE))
+	set(BASHCOMPLETION_STATUS "Available")
+	install(FILES resources/unix/bash-completion/easyrpg-player DESTINATION "${CMAKE_INSTALL_DATADIR}/bash-completion/completions")
+endif()
+
 # Doxygen
 # Handled as extra target "doc"
 find_package(Doxygen)
@@ -1065,6 +1073,7 @@ endif()
 message(STATUS "")
 
 message(STATUS "Manual page: ${MANUAL_STATUS}")
+message(STATUS "Bash completion: ${BASHCOMPLETION_STATUS}")
 message(STATUS "Doxygen: ${DOXYGEN_STATUS}")
 
 message(STATUS "")
