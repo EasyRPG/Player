@@ -471,13 +471,12 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 	}
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
+std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage(int value) const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	StringView message = target_is_ally
 		? StringView(lcf::Data::terms.actor_damaged)
 		: StringView(lcf::Data::terms.enemy_damaged);
-	int value = GetAffectedHp();
 
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(

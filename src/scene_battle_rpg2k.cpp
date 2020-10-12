@@ -646,7 +646,7 @@ bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBa
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
-	action->ApplyAll();
+	action->ApplyInitialEffect();
 
 	battle_action_results_index = battle_message_window->GetLineCount();
 
@@ -658,15 +658,6 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 
 	if (!target) {
 		return ProcessNextAction(BattleActionState_Finished, action);
-	}
-
-	// This is a hack to ensure the sprite's death animation doesn't happen
-	// until we actually transition to the death state in the battle system.
-	if (action->IsLethal()) {
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		if (target_sprite) {
-			target_sprite->SetForcedAlive(true);
-		}
 	}
 
 	if (!action->IsPositive() && action->GetAffectedHp() >= 0) {
@@ -703,7 +694,8 @@ bool Scene_Battle_Rpg2k::ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBas
 bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eBegin = 0,
-		eProcess,
+		eMessage,
+		eApply,
 		ePreStates,
 		eStates,
 		ePost,
@@ -711,13 +703,14 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 
 	if (battle_action_substate == eBegin) {
 		SetWait(4,4);
-		return ProcessNextSubState(eProcess, action);
+		return ProcessNextSubState(eMessage, action);
 	}
 
-	if (battle_action_substate == eProcess) {
+	if (battle_action_substate == eMessage) {
 		auto* target = action->GetTarget();
 		assert(target);
 		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		auto display_dmg = action->GetAffectedHp();
 
 		if (!action->IsAbsorb()) {
 			if (target->GetType() == Game_Battler::Type_Ally) {
@@ -734,12 +727,12 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		}
 
 		std::string msg;
-		if (action->GetAffectedHp() == 0) {
+		if (display_dmg == 0) {
 			msg = action->GetUndamagedMessage();
 		} else  if (action->IsAbsorb()) {
-			msg = action->GetHpSpAbsorbedMessage(action->GetAffectedHp(), lcf::Data::terms.health_points);
+			msg = action->GetHpSpAbsorbedMessage(display_dmg, lcf::Data::terms.health_points);
 		} else {
-			msg = action->GetDamagedMessage();
+			msg = action->GetDamagedMessage(display_dmg);
 		}
 
 		battle_message_window->Push(msg);
@@ -752,7 +745,17 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 
 		battle_action_dmg_index = battle_message_window->GetLineCount();
 
-		if (action->IsLethal() && action->IsKilledByDamage()) {
+		return ProcessNextSubState(eApply, action);
+	}
+
+	if (battle_action_substate == eApply) {
+		// Hp damage is delayed until after the message, so that the target death animation
+		// occurs at the right time.
+		action->ApplyHpEffect();
+
+		auto* target = action->GetTarget();
+		assert(target);
+		if (target->IsDead()) {
 			return ProcessNextAction(BattleActionState_Death, action);
 		}
 
@@ -1007,7 +1010,6 @@ bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase*
 			Main_Data::game_system->SePlay(*se);
 		}
 		if (target_sprite) {
-			target_sprite->SetForcedAlive(false);
 			target_sprite->DetectStateChange();
 		}
 

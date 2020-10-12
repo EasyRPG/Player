@@ -449,7 +449,7 @@ public:
 
 	std::string GetUndamagedMessage() const;
 	std::string GetHpSpAbsorbedMessage(int value, StringView points) const;
-	std::string GetDamagedMessage() const;
+	std::string GetDamagedMessage(int value) const;
 	std::string GetHpSpRecoveredMessage(int value, StringView points) const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, StringView points) const;
 	std::string GetStateMessage(StringView message) const;
