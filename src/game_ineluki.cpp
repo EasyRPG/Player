@@ -24,6 +24,7 @@
 #include "audio.h"
 #include "input.h"
 #include "player.h"
+#include "system.h"
 
 #include <lcf/inireader.h>
 
@@ -86,6 +87,11 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			output_list.push_back(atoi(cmd.arg.c_str()));
 		} else if (cmd.name == "enablekeysupport") {
 			key_support = Utils::LowerCase(cmd.arg) == "true";
+#if !defined(SUPPORT_KEYBOARD)
+			if (key_support) {
+				Output::Warning("Ineluki: Keyboard input is not supported on this platform");
+			}
+#endif
 		} else if (cmd.name == "registerkeydownevent") {
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
 			auto it = std::find_if(key_to_ineluki.begin(), key_to_ineluki.end(), [&](const auto& k) {
@@ -106,7 +112,13 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
 			// TODO: automatic (append mouse pos every 500ms) not implemented
+#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+			if (mouse_support) {
+				Output::Debug("Ineluki: Mouse input is not supported on this platform");
+			}
+#endif
 		} else if (cmd.name == "getmouseposition") {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			if (!mouse_support) {
 				return true;
 			}
@@ -115,13 +127,13 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 
 			bool left = Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT);
 			bool right = Input::IsRawKeyPressed(Input::Keys::MOUSE_RIGHT);
-
 			int key = left && right ? 3 : right ? 2 : left ? 1 : 0;
 
 			output_list.push_back(key);
 			output_list.push_back(mouse_pos.y);
 			output_list.push_back(mouse_pos.x);
 			output_list.push_back(mouse_id_prefix);
+#endif
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
 		} else if (cmd.name == "registercheatevent") {
