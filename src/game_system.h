@@ -484,7 +484,7 @@ public:
 	bool GetMessageEventMessageActive();
 private:
 	void OnBgmReady(FileRequestResult* result);
-	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
+	void OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds);
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 private:
 	lcf::rpg::SaveSystem data;

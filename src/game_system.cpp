@@ -139,13 +139,6 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 		return;
 	}
 
-	std::string end = ".script";
-	if (se.name.length() >= end.length() &&
-		0 == se.name.compare(se.name.length() - end.length(), end.length(), end)) {
-		Main_Data::game_ineluki->Execute(se);
-		return;
-	}
-
 	// NOTE: Yume Nikki plays hundreds of sound effects at 0% volume on startup,
 	// probably for caching. This avoids "No free channels" warnings.
 	if (se.volume == 0)
@@ -166,7 +159,14 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, volume, tempo, stop_sounds);
+	lcf::rpg::Sound se_adj = se;
+	se_adj.volume = volume;
+	se_adj.tempo = tempo;
+	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, se_adj, stop_sounds);
+	if (StringView(se.name).ends_with(".script")) {
+		// Is a Ineluki Script File
+		request->SetImportantFile(true);
+	}
 	request->Start();
 }
 
@@ -540,10 +540,16 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
-void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds) {
+void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {
 	auto item = se_request_ids.find(result->file);
 	if (item != se_request_ids.end()) {
 		se_request_ids.erase(item);
+	}
+
+	if (StringView(se.name).ends_with(".script")) {
+		// Is a Ineluki Script File
+		Main_Data::game_ineluki->Execute(se);
+		return;
 	}
 
 	std::string path;
@@ -557,7 +563,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 		return;
 	}
 
-	Audio().SE_Play(path, volume, tempo);
+	Audio().SE_Play(path, se.volume, se.tempo);
 }
 
 bool Game_System::IsMessageTransparent() {

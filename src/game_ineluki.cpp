@@ -285,7 +285,7 @@ void Game_Ineluki::Update() {
 		// There is no efficient way to check for wrong keys being pressed (no callback API)
 		if (Input::IsRawKeyPressed(cheat.keys[cheat.index])) {
 			++cheat.index;
-			if (cheat.index >= cheat.keys.size()) {
+			if (cheat.index >= static_cast<int>(cheat.keys.size())) {
 				output_list.push_back(cheat.value);
 				cheat.index = 0;
 			}
