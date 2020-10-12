@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_ineluki.h"
+#include "async_handler.h"
 #include "filefinder.h"
 #include "utils.h"
 #include "output.h"
@@ -133,6 +134,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 
 bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 	auto is = FileFinder::OpenInputStream(ToString(list_file));
+	assert(async_scripts.empty());
 
 	if (!is) {
 		return false;
@@ -141,11 +143,20 @@ bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 	Output::Debug("Ineluki: Processing script list {}", FileFinder::GetPathInsideGamePath(ToString(list_file)));
 
 	std::string line = Utils::ReadLine(is);
+	std::vector<FileRequestAsync*> requests;
 	while (!is.eof()) {
 		if (!line.empty()) {
-			Execute(FileFinder::FindDefault(line));
+			FileRequestAsync* request = AsyncHandler::RequestFile(line);
+			auto binding = request->Bind(&Game_Ineluki::OnScriptFileReady, this);
+			async_scripts.emplace_back(binding, line);
+			requests.push_back(request);
 		}
 		line = Utils::ReadLine(is);
+	}
+
+	for (auto& r: requests) {
+		r->SetImportantFile(true);
+		r->Start();
 	}
 
 	return true;
@@ -252,5 +263,22 @@ void Game_Ineluki::Update() {
 			//Output::Debug("Key Up: {}", key.key, key.value);
 			output_list.push_back(key.value);
 		}
+	}
+}
+
+void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
+	auto it = std::find_if(async_scripts.begin(), async_scripts.end(), [&](const auto& a) {
+		return a.script_name == result->file;
+	});
+	assert(it != async_scripts.end());
+	it->invoked = true;
+
+	if (std::all_of(async_scripts.begin(), async_scripts.end(), [](const auto& a) {
+		return a.invoked;
+	})) {
+		std::for_each(async_scripts.begin(), async_scripts.end(), [this](const auto& a) {
+			Execute(FileFinder::FindDefault(a.script_name));
+		});
+		async_scripts.clear();
 	}
 }

@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include <utility>
 #include <vector>
 #include <map>
 
@@ -27,6 +28,7 @@
 
 #include "keys.h"
 #include "string_view.h"
+#include "async_handler.h"
 
 /**
  * Implements Ineluki's Key Patch
@@ -190,6 +192,17 @@ private:
 		{Input::Keys::LSHIFT, "(lshift hoch)"},
 		{Input::Keys::RSHIFT, "(rshift hoch)"},
 	}};
+
+	void OnScriptFileReady(FileRequestResult* result);
+	struct AsyncArgs {
+		FileRequestBinding binding;
+		std::string script_name;
+		bool invoked = false;
+
+		AsyncArgs(FileRequestBinding binding, std::string script_name) :
+			binding(std::move(binding)), script_name(std::move(script_name)) {}
+	};
+	std::vector<AsyncArgs> async_scripts;
 };
 
 #endif

@@ -108,7 +108,7 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 			Audio().BGM_Stop();
 			bgm_pending = true;
 			FileRequestAsync* request = AsyncHandler::RequestFile("Music", bgm.name);
-			music_request_id = request->Bind([this](auto* result) { OnBgmReady(result); });
+			music_request_id = request->Bind(&Game_System::OnBgmReady, this);
 			request->Start();
 		}
 	} else {
@@ -166,7 +166,7 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind([=](auto* result) { OnSeReady(result, volume, tempo, stop_sounds); });
+	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, volume, tempo, stop_sounds);
 	request->Start();
 }
 
@@ -199,7 +199,7 @@ void Game_System::OnChangeSystemGraphicReady(FileRequestResult* result) {
 
 void Game_System::ReloadSystemGraphic() {
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", GetSystemName());
-	system_request_id = request->Bind([this](auto* result) { OnChangeSystemGraphicReady(result); });
+	system_request_id = request->Bind(&Game_System::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
 	request->SetGraphicFile(true);
 	request->Start();
