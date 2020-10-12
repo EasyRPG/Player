@@ -455,7 +455,7 @@ public:
 	std::string GetHpSpRecoveredMessage(int value, StringView points) const;
 	std::string GetParameterChangeMessage(int value, StringView points) const;
 	std::string GetStateMessage(StringView message) const;
-	std::string GetAttributeShiftMessage(StringView attribute) const;
+	std::string GetAttributeShiftMessage(int value, StringView attribute) const;
 
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);

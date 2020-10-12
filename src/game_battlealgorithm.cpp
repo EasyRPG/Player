@@ -553,8 +553,13 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(StringView mess
 	}
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage(StringView attribute) const {
-	StringView message = IsPositive()
+std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage(int value, StringView attribute) const {
+	const bool is_positive = (value >= 0);
+	value = std::abs(value);
+	if (value == 0) {
+		return "";
+	}
+	StringView message = is_positive
 		? StringView(lcf::Data::terms.resistance_increase)
 		: StringView(lcf::Data::terms.resistance_decrease);
 	std::stringstream ss;

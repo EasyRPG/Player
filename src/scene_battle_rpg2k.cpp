@@ -931,7 +931,10 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			const auto& attrs = action->GetShiftedAttributes();
 			if (battle_action_substate_index < (int)attrs.size()) {
 				int attr_id = attrs[battle_action_substate_index];
-				pending_message = action->GetAttributeShiftMessage(lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
+				auto shifted = action->ApplyAttributeShiftEffect(attr_id);
+				if (shifted != 0) {
+					pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
+				}
 				++battle_action_substate_index;
 			}
 			checkNext();
