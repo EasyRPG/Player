@@ -371,11 +371,11 @@ void Player::Update(bool update_scene) {
 	}
 
 	if (update_scene) {
-		Scene::instance->Update();
-
 		if (Main_Data::game_ineluki) {
 			Main_Data::game_ineluki->Update();
 		}
+
+		Scene::instance->Update();
 	}
 }
 

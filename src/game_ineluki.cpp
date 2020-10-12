@@ -254,14 +254,12 @@ void Game_Ineluki::Update() {
 
 	for (const auto& key : keylist_down) {
 		if (Input::IsRawKeyTriggered(key.key)) {
-			//Output::Debug("Key Down: {}", key.key, key.value);
 			output_list.push_back(key.value);
 		}
 	}
 
 	for (const auto& key : keylist_up) {
 		if (Input::IsRawKeyReleased(key.key)) {
-			//Output::Debug("Key Up: {}", key.key, key.value);
 			output_list.push_back(key.value);
 		}
 	}
@@ -277,7 +275,6 @@ void Game_Ineluki::Update() {
 			++cheat.index;
 			if (cheat.index >= cheat.keys.size()) {
 				output_list.push_back(cheat.value);
-				Output::Debug("Cheat enabled");
 				cheat.index = 0;
 			}
 		}

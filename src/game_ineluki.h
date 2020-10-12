@@ -126,11 +126,14 @@ private:
 		const char* name;
 	};
 
-	/** Mapping from input key to Ineluki key (yes, they are German) */
+	/**
+	 * Mapping from input key to Ineluki key (yes, they are German)
+	 * ä. ö, ü and other German keyboard keys are not supported
+	 */
 	static constexpr std::array<Mapping, 61> key_to_ineluki = {{
 		{Input::Keys::LEFT, "(links)"},
 		{Input::Keys::RIGHT, "(rechts)"},
-		{Input::Keys::UP, "(oben)"},
+		{Input::Keys::UP, "(hoch)"},
 		{Input::Keys::DOWN, "(runter)"},
 		{Input::Keys::A, "a"},
 		{Input::Keys::B, "b"},
