@@ -607,20 +607,24 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::Apply() {
-	ApplyActionSwitches();
-
-	if (!success)
-		return;
-
-	if (GetAffectedSwitch() != -1) {
-		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
+void Game_BattleAlgorithm::AlgorithmBase::ApplyInitialEffect() {
+	for (int s : switch_on) {
+		Main_Data::game_switches->Set(s, true);
 	}
 
-	auto* target = GetTarget();
+	for (int s : switch_off) {
+		Main_Data::game_switches->Set(s, false);
+	}
 
+	if (success && GetAffectedSwitch() != -1) {
+		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
+	}
+}
+
+int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
+	auto* target = GetTarget();
 	if (!target) {
-		return;
+		return 0;
 	}
 
 	bool was_dead = target->IsDead();
@@ -633,9 +637,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			// Only absorb the hp that were left
 			source->ChangeHp(-hp, false);
 		}
+		return hp;
 	}
+	return 0;
+}
 
-	if (GetAffectedSp() != -1) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
+	auto* target = GetTarget();
+	if (target && GetAffectedSp() != -1) {
 		int sp = GetAffectedSp();
 		sp = IsPositive() ? sp : -sp;
 		sp = target->ChangeSp(sp);
@@ -643,27 +652,58 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
+		return sp;
 	}
+	return 0;
+}
 
-	if (GetAffectedAttack() != -1) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
+	auto* target = GetTarget();
+	if (target && GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
 		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
+		return atk;
 	}
+	return 0;
+}
 
-	if (GetAffectedDefense() != -1) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
+	auto* target = GetTarget();
+	if (target && GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
 		target->ChangeDefModifier(IsPositive() ? def : -def);
+		return def;
 	}
+	return 0;
+}
 
-	if (GetAffectedSpirit() != -1) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
+	auto* target = GetTarget();
+	if (target && GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
 		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
+		return spi;
 	}
+	return 0;
+}
 
-	if (GetAffectedAgility() != -1) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
+	auto* target = GetTarget();
+	if (target && GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
 		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
+		return agi;
 	}
+	return 0;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
+	auto* target = GetTarget();
+	if (!target) {
+		return;
+	}
+
+	bool was_dead = target->IsDead();
 
 	// Apply states
 	for (auto& se: states) {
@@ -687,20 +727,28 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			target->ChangeHp(hp - 1, true);
 		}
 	}
+}
 
-	for (auto& sa: shift_attributes) {
-		target->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
+
+void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
+	auto* target = GetTarget();
+	if (target) {
+		for (auto& sa: shift_attributes) {
+			target->ShiftAttributeRate(sa, IsPositiveSkill() ? 1 : -1);
+		}
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
-	for (int s : switch_on) {
-		Main_Data::game_switches->Set(s, true);
-	}
-
-	for (int s : switch_off) {
-		Main_Data::game_switches->Set(s, false);
-	}
+void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
+	ApplyInitialEffect();
+	ApplyHpEffect();
+	ApplySpEffect();
+	ApplyAtkEffect();
+	ApplyDefEffect();
+	ApplySpiEffect();
+	ApplyAgiEffect();
+	ApplyStateEffects();
+	ApplyAttributeShiftEffects();
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
@@ -1021,8 +1069,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Normal::Apply() {
-	AlgorithmBase::Apply();
+void Game_BattleAlgorithm::Normal::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 
 	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
@@ -1354,7 +1402,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Skill::Apply() {
+void Game_BattleAlgorithm::Skill::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
+
 	if (IsFirstAttack()) {
 		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
@@ -1363,8 +1413,6 @@ void Game_BattleAlgorithm::Skill::Apply() {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
-
-	AlgorithmBase::Apply();
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
@@ -1623,8 +1671,8 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Item::Apply() {
-	AlgorithmBase::Apply();
+void Game_BattleAlgorithm::Item::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 
 	if (first_attack) {
 		Main_Data::game_party->ConsumeItemUse(item.ID);
@@ -1699,10 +1747,6 @@ bool Game_BattleAlgorithm::Defend::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Defend::Apply() {
-	ApplyActionSwitches();
-}
-
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
 AlgorithmBase(Type::Observe, source) {
 	// no-op
@@ -1756,9 +1800,9 @@ bool Game_BattleAlgorithm::Charge::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Charge::Apply() {
+void Game_BattleAlgorithm::Charge::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 	source->SetCharged(true);
-	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
@@ -1824,8 +1868,8 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::SelfDestruct::Apply() {
-	AlgorithmBase::Apply();
+void Game_BattleAlgorithm::SelfDestruct::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
@@ -1882,9 +1926,9 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Escape::Apply() {
+void Game_BattleAlgorithm::Escape::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 	static_cast<Game_Enemy*>(source)->SetHidden(true);
-	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
@@ -1913,9 +1957,9 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Transform::Apply() {
+void Game_BattleAlgorithm::Transform::ApplyInitialEffect() {
+	AlgorithmBase::ApplyInitialEffect();
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
-	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :

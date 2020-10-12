@@ -1045,7 +1045,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			Game_Battler* target = action->GetTarget();
 
-			action->Apply();
+			action->ApplyAll();
 
 			if (target) {
 				if (action->IsSuccess()) {

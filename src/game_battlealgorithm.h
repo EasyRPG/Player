@@ -279,10 +279,16 @@ public:
 	 */
 	virtual bool Execute() = 0;
 
-	/**
-	 * Applies the results (last Execute-call) of the algorithm to the target.
-	 */
-	virtual void Apply();
+	virtual void ApplyInitialEffect();
+	int ApplyHpEffect();
+	int ApplySpEffect();
+	int ApplyAtkEffect();
+	int ApplyDefEffect();
+	int ApplySpiEffect();
+	int ApplyAgiEffect();
+	void ApplyStateEffects();
+	void ApplyAttributeShiftEffects();
+	void ApplyAll();
 
 	/**
 	 * Tests if it makes sense to apply an action on the target.
@@ -456,8 +462,6 @@ protected:
 
 	std::string GetAttackFailureMessage(StringView points) const;
 
-	void ApplyActionSwitches();
-
 	void Reset();
 
 	/**
@@ -532,7 +536,7 @@ public:
 	Normal(Game_Battler* source, Game_Party_Base* target);
 
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
@@ -550,7 +554,7 @@ public:
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 
 	std::string GetStartMessage() const override;
 	bool HasSecondStartMessage() const override;
@@ -578,7 +582,7 @@ public:
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
@@ -596,7 +600,6 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	bool Execute() override;
-	void Apply() override;
 };
 
 class Observe : public AlgorithmBase {
@@ -613,7 +616,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -625,7 +628,7 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 };
 
 class Escape : public AlgorithmBase {
@@ -636,7 +639,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 };
 
 class Transform : public AlgorithmBase {
@@ -645,7 +648,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
-	void Apply() override;
+	void ApplyInitialEffect() override;
 
 private:
 	int new_monster_id;
