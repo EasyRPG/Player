@@ -1554,8 +1554,8 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 			actor->ChangeExp(actor->GetExp() + exp, &pm);
 		}
 		Main_Data::game_party->GainGold(money);
-		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			Main_Data::game_party->AddItem(*it, 1);
+		for (auto& item: drops) {
+			Main_Data::game_party->AddItem(item, 1);
 		}
 
 		Game_Message::SetPendingMessage(std::move(pm));
