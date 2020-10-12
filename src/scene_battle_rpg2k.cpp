@@ -904,6 +904,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 					continue;
 				}
 
+				action->ApplyStateEffect(se);
 				bool is_actor = target->GetType() == Game_Battler::Type_Ally;
 				switch (se.effect) {
 					case Game_BattleAlgorithm::StateEffect::Inflicted:
