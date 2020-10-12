@@ -251,16 +251,6 @@ public:
 	bool IsSuccess() const;
 
 	/**
-	 * @return true when this action inflicts death on the target.
-	 */
-	bool IsLethal() const;
-
-	/**
-	 * @return true when the target was killed by damage.
-	 */
-	bool IsKilledByDamage() const;
-
-	/**
 	 * Gets if the last action was a critical hit.
 	 */
 	bool IsCriticalHit() const;

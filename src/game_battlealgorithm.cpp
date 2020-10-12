@@ -131,8 +131,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	healing = false;
 	negative_effect = false;
 	success = false;
-	lethal = false;
-	killed_by_dmg = false;
 	critical_hit = false;
 	absorb = false;
 	revived = false;
@@ -308,14 +306,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::HasSecondAnimationPlayed() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsLethal() const {
-	return lethal;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByDamage() const {
-	return killed_by_dmg;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
@@ -659,7 +649,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 		int sp = GetAffectedSp();
 		sp = IsPositive() ? sp : -sp;
 		sp = target->ChangeSp(sp);
-		if (IsAbsorb() && !IsPositive() && !IsKilledByDamage()) {
+		if (IsAbsorb() && !IsPositive()) {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
@@ -1028,11 +1018,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		this->hp *= 2;
 	}
 
+	// If target is killed, states not applied
 	if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
-		// Death state
-		lethal = true;
-		killed_by_dmg = true;
-
 		this->success = true;
 		return this->success;
 	}
@@ -1089,12 +1076,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			return false;
 		};
 
-		if (addStates(weapon1, lcf::rpg::State::kDeathID)
-				|| addStates(weapon2, lcf::rpg::State::kDeathID)) {
-			lethal = true;
-		}
-
-		for (int state_id = lcf::rpg::State::kDeathID + 1; state_id <= state_limit; ++state_id) {
+		for (int state_id = lcf::rpg::State::kDeathID; state_id <= state_limit; ++state_id) {
 			addStates(weapon1, state_id);
 			addStates(weapon2, state_id);
 		}
@@ -1267,10 +1249,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (IsAbsorb() && !this->negative_effect)
 				this->hp = std::min<int>(hp, GetTarget()->GetHp());
 
+			// If target is killed, no further affects are applied.
 			if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
-				// Death state
-				lethal = true;
-				killed_by_dmg = true;
+				this->success = true;
+				return true;
 			}
 		} else {
 			if (!this->negative_effect) {
@@ -1378,45 +1360,47 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 	}
 
-	// Conditions:
-	// If the target gets killed by damage, do not add or remove states
-	if (!lethal) {
-		bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
-		for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
-			if (!skill.state_effects[i])
-				continue;
-			auto state_id = i + 1;
+	bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
+	bool adds_death_state = false;
+	for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
+		if (!skill.state_effects[i])
+			continue;
+		auto state_id = i + 1;
 
-			bool target_has_state = State::Has(state_id, target_states);
+		bool target_has_state = State::Has(state_id, target_states);
 
-			if (!heals_states && target_has_state) {
+		if (!heals_states && target_has_state) {
+			this->success = true;
+			states.push_back({state_id, StateEffect::AlreadyInflicted});
+			continue;
+		}
+		if (heals_states && !target_has_state) {
+			continue;
+		}
+		if (!Rand::PercentChance(to_hit)) {
+			continue;
+		}
+
+		if (heals_states) {
+			// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
+			this->success = true;
+			if (State::Remove(state_id, target_states, target_perm_states)) {
+				states.push_back({state_id, StateEffect::Healed});
+			}
+		} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+			if (State::Add(state_id, target_states, target_perm_states, true)) {
 				this->success = true;
-				states.push_back({state_id, StateEffect::AlreadyInflicted});
-				continue;
-			}
-			if (heals_states && !target_has_state) {
-				continue;
-			}
-			if (!Rand::PercentChance(to_hit)) {
-				continue;
-			}
-
-			if (heals_states) {
-				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
-				this->success = true;
-				if (State::Remove(state_id, target_states, target_perm_states)) {
-					states.push_back({state_id, StateEffect::Healed});
-				}
-			} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-				if (State::Add(state_id, target_states, target_perm_states, true)) {
-					this->success = true;
-					states.push_back({state_id, StateEffect::Inflicted});
-					if (state_id == lcf::rpg::State::kDeathID) {
-						lethal = true;
-					}
+				states.push_back({state_id, StateEffect::Inflicted});
+				if (state_id == lcf::rpg::State::kDeathID) {
+					adds_death_state = true;
 				}
 			}
 		}
+	}
+
+	// When a skill inflicts death state, other states can also be inflicted, but attributes will be skipped
+	if (adds_death_state) {
+		return this->success;
 	}
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
@@ -1882,18 +1866,15 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	this->hp = effect;
 
-	if (GetTarget()->GetHp() - this->hp <= 0) {
-		// Death state
-		lethal = true;
-		killed_by_dmg = true;
+	// Recover physical states only if not killed.
+	if (GetTarget()->GetHp() - this->hp > 0) {
+		// Make a copy of the target's state set and see what we can apply.
+		auto target_states = target.GetStates();
+		auto target_perm_states = target.GetPermanentStates();
+
+		// Conditions healed by physical attack:
+		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 	}
-
-	// Make a copy of the target's state set and see what we can apply.
-	auto target_states = target.GetStates();
-	auto target_perm_states = target.GetPermanentStates();
-
-	// Conditions healed by physical attack:
-	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 
 	success = true;
 
