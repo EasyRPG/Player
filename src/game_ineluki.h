@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <utility>
 #include <vector>
 #include <map>
 
@@ -106,7 +105,7 @@ private:
 	OutputMode output_mode = OutputMode::Original;
 	std::vector<int> output_list;
 
-	struct KeyList {
+	struct KeyItem {
 		/** Key to watch */
 		Input::Keys::InputKey key;
 		/** Value to push when key event occurs */
@@ -114,9 +113,9 @@ private:
 	};
 
 	/** List of key down events to watch */
-	std::vector<KeyList> keylist_down;
+	std::vector<KeyItem> keylist_down;
 	/** List of key up events to watch */
-	std::vector<KeyList> keylist_up;
+	std::vector<KeyItem> keylist_up;
 
 	bool key_support = false;
 	bool mouse_support = false;
@@ -192,6 +191,18 @@ private:
 		{Input::Keys::LSHIFT, "(lshift hoch)"},
 		{Input::Keys::RSHIFT, "(rshift hoch)"},
 	}};
+
+	struct CheatItem {
+		/** Cheat code */
+		std::vector<Input::Keys::InputKey> keys;
+		/** Value to push when cheat was entered */
+		int value = 0;
+		/** Current index in the cheatcode */
+		int index = 0;
+
+		CheatItem(const std::string& code, int value);
+	};
+	std::vector<CheatItem> cheatlist;
 
 	void OnScriptFileReady(FileRequestResult* result);
 	struct AsyncArgs {

@@ -88,19 +88,19 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			key_support = Utils::LowerCase(cmd.arg) == "true";
 		} else if (cmd.name == "registerkeydownevent") {
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
-			for (auto& i : key_to_ineluki) {
-				if (!strcmp(arg_lower.c_str(), i.name)) {
-					keylist_down.push_back({i.key, atoi(cmd.arg2.c_str())});
-					break;
-				}
+			auto it = std::find_if(key_to_ineluki.begin(), key_to_ineluki.end(), [&](const auto& k) {
+				return !strcmp(arg_lower.c_str(), k.name);
+			});
+			if (it != key_to_ineluki.end()) {
+				keylist_down.push_back({it->key, atoi(cmd.arg2.c_str())});
 			}
 		} else if (cmd.name == "registerkeyupevent") {
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
-			for (auto& i : key_to_ineluki) {
-				if (!strcmp(cmd.arg.c_str(), i.name)) {
-					keylist_up.push_back({i.key, atoi(cmd.arg2.c_str())});
-					break;
-				}
+			auto it = std::find_if(key_to_ineluki.begin(), key_to_ineluki.end(), [&](const auto& k) {
+				return !strcmp(arg_lower.c_str(), k.name);
+			});
+			if (it != key_to_ineluki.end()) {
+				keylist_up.push_back({it->key, atoi(cmd.arg2.c_str())});
 			}
 		} else if (cmd.name == "enablemousesupport") {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
@@ -125,7 +125,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
 		} else if (cmd.name == "registercheatevent") {
-			// TODO
+			cheatlist.emplace_back(Utils::LowerCase(cmd.arg), atoi(cmd.arg2.c_str()));
 		}
 	}
 
@@ -218,6 +218,7 @@ bool Game_Ineluki::Parse(StringView ini_file) {
 			cmd.arg = ini.Get(section, "cheat", std::string());
 			cmd.arg2 = ini.Get(section, "value", std::string());
 		} else {
+			Output::Debug("Ineluki: Unknown command {}", cmd.name);
 			valid = false;
 		}
 
@@ -264,6 +265,23 @@ void Game_Ineluki::Update() {
 			output_list.push_back(key.value);
 		}
 	}
+
+	for (auto& cheat: cheatlist) {
+		if (cheat.keys.empty()) {
+			continue;
+		}
+
+		// FIXME: This does not reset the cheat when the wrong key is pressed
+		// There is no efficient way to check for wrong keys being pressed (no callback API)
+		if (Input::IsRawKeyPressed(cheat.keys[cheat.index])) {
+			++cheat.index;
+			if (cheat.index >= cheat.keys.size()) {
+				output_list.push_back(cheat.value);
+				Output::Debug("Cheat enabled");
+				cheat.index = 0;
+			}
+		}
+	}
 }
 
 void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
@@ -280,5 +298,16 @@ void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
 			Execute(FileFinder::FindDefault(a.script_name));
 		});
 		async_scripts.clear();
+	}
+}
+
+Game_Ineluki::CheatItem::CheatItem(const std::string& code, int value) : value(value) {
+	for (char c: code) {
+		auto it = std::find_if(key_to_ineluki.begin(), key_to_ineluki.end(), [&](const auto& k) {
+			return c == k.name[0];
+		});
+		if (it != key_to_ineluki.end()) {
+			keys.push_back(it->key);
+		}
 	}
 }
