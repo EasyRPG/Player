@@ -27,8 +27,8 @@
 
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
-#  include <Windows.h>
-#  include <Shellapi.h>
+#  include <windows.h>
+#  include <shellapi.h>
 #elif defined(GEKKO)
 #  include <fat.h>
 #elif defined(EMSCRIPTEN)
