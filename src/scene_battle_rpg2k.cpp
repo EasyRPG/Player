@@ -827,19 +827,15 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		}
 
 		if (battle_action_substate == ePreSp) {
-			if (action->GetAffectedSp() != -1) {
-				auto sp = action->ApplySpEffect();
-				if (action->IsPositive()) {
-					if (action->GetType() != Game_BattleAlgorithm::Type::Item) {
-						pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
-					}
+			auto sp = action->ApplySpEffect();
+			if (sp > 0 && action->GetType() != Game_BattleAlgorithm::Type::Item) {
+				pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
+			}
+			if (sp < 0) {
+				if (action->IsAbsorb()) {
+					pending_message = action->GetHpSpAbsorbedMessage(std::abs(sp), lcf::Data::terms.spirit_points);
 				} else {
-					if (action->IsAbsorb()) {
-						pending_message = action->GetHpSpAbsorbedMessage(std::abs(sp), lcf::Data::terms.spirit_points);
-					}
-					else {
-						pending_message = action->GetParameterChangeMessage(sp, lcf::Data::terms.spirit_points);
-					}
+					pending_message = action->GetParameterChangeMessage(sp, lcf::Data::terms.spirit_points);
 				}
 			}
 			checkNext();

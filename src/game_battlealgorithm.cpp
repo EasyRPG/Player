@@ -108,7 +108,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	hp = -1;
-	sp = -1;
+	sp = 0;
 	attack = 0;
 	defense = 0;
 	spirit = 0;
@@ -573,17 +573,16 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 	auto* target = GetTarget();
-	if (target && GetAffectedSp() != -1) {
-		int sp = GetAffectedSp();
-		sp = IsPositive() ? sp : -sp;
+	assert(target);
+	auto sp = GetAffectedSp();
+	if (sp != 0) {
 		sp = target->ChangeSp(sp);
-		if (IsAbsorb() && !IsPositive()) {
+		if (IsAbsorb()) {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
-		return sp;
 	}
-	return 0;
+	return sp;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
@@ -1181,19 +1180,20 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 
 	if (skill.affect_sp && Rand::PercentChance(to_hit)) {
-		if (IsNegativeSkill()) {
-			if (!this->negative_effect) {
-				this->sp = std::min<int>(effect, GetTarget()->GetSp());
+		const auto sp_cost = (source == target) ? source->CalculateSkillCost(skill.ID) : 0;
+		const auto max_sp = target->GetMaxSp();
+		const auto cur_sp = target->GetSp() - sp_cost;
+
+		if (target_enemies) {
+			if (IsAbsorb()) {
+				this->sp = -std::min(cur_sp, effect);
 			} else {
-				this->sp = effect;
+				this->sp = -(cur_sp - Utils::Clamp(cur_sp - effect, 0, max_sp));
 			}
-		} else {
-			int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
-			if (!this->negative_effect) {
-				this->sp = Utils::Clamp(effect, 0, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost);
-			} else {
-				this->sp = effect;
-			}
+		}
+
+		if (target_allies) {
+			this->sp = Utils::Clamp(cur_sp + effect, 0, max_sp);
 		}
 		this->success |= this->sp;
 	}
@@ -1491,17 +1491,14 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 	this->success = false;
 
-	// All other items are handled as skills because they invoke skills
-	switch (item.type) {
-		case lcf::rpg::Item::Type_medicine:
-		case lcf::rpg::Item::Type_switch:
-			break;
-		default:
-			assert("Unsupported battle item type");
-			return false;
+	if (item.type == lcf::rpg::Item::Type_switch) {
+		switch_id = item.switch_id;
+		this->success = true;
+		return true;
 	}
 
 	if (item.type == lcf::rpg::Item::Type_medicine) {
+		this->success = true;
 		this->healing = true;
 
 		this->revived = !item.state_set.empty()
@@ -1511,25 +1508,21 @@ bool Game_BattleAlgorithm::Item::Execute() {
 		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
 		if (GetTarget()->GetType() == Game_Battler::Type_Ally && !static_cast<Game_Actor*>(GetTarget())->IsItemUsable(item.ID)) {
 			// No effect, but doesn't behave like a dodge or damage to set healing and success to true.
-			this->success = true;
 			return this->success;
 		}
+
 		if (item.ko_only && !GetTarget()->IsDead()) {
 			return this->success;
 		}
 
 		// HP recovery
 		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
-			if (Player::IsRPG2k3()) {
-				this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
-			} else {
-				this->hp = Utils::Clamp<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(), 0, item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp);
-			}
+			this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
 		}
 
 		// SP recovery
 		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
-			this->sp = Utils::Clamp<int>(GetTarget()->GetMaxSp() - GetTarget()->GetSp(), 0, item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp);
+			this->sp = item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp;
 		}
 
 		// Make a copy of the target's state set and see what we can apply.
@@ -1547,17 +1540,16 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			}
 		}
 
-		if (GetTarget()->IsDead() && !is_dead_cured)
+		if (GetTarget()->IsDead() && !is_dead_cured) {
 			this->hp = -1;
+		}
 
-		this->success = this->hp > -1 || this->sp > -1 || !states.empty();
-	}
-	else if (item.type == lcf::rpg::Item::Type_switch) {
-		switch_id = item.switch_id;
-		this->success = true;
+		return this->success;
 	}
 
-	return this->success;
+	assert("Unsupported battle item type");
+	this->success = false;
+	return false;
 }
 
 void Game_BattleAlgorithm::Item::vApplyFirstTimeEffect() {

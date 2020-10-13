@@ -448,7 +448,7 @@ protected:
 	Game_Party_Base* party_target = nullptr;
 
 	int hp = -1;
-	int sp = -1;
+	int sp = 0;
 	int attack = 0;
 	int defense = 0;
 	int spirit = 0;
