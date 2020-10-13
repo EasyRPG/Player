@@ -631,7 +631,7 @@ bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBa
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
-	action->ApplyInitialEffect();
+	action->ApplyFirstTimeEffect();
 
 	battle_action_results_index = battle_message_window->GetLineCount();
 

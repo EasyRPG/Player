@@ -270,7 +270,7 @@ public:
 	 */
 	virtual bool Execute() = 0;
 
-	virtual void ApplyInitialEffect();
+	void ApplyFirstTimeEffect();
 	int ApplyHpEffect();
 	int ApplySpEffect();
 	int ApplyAtkEffect();
@@ -451,6 +451,7 @@ public:
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
+	virtual void vApplyFirstTimeEffect();
 
 	std::string GetAttackFailureMessage(StringView points) const;
 
@@ -480,7 +481,9 @@ protected:
 	int agility;
 	int switch_id;
 
-	mutable bool first_attack = true;
+private:
+	bool first_attack = true;
+protected:
 	bool healing;
 	bool negative_effect;
 	bool success;
@@ -526,7 +529,7 @@ public:
 	Normal(Game_Battler* source, Game_Party_Base* target, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
 
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
@@ -545,7 +548,7 @@ public:
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 
 	std::string GetStartMessage() const override;
 	bool HasSecondStartMessage() const override;
@@ -573,7 +576,7 @@ public:
 
 	bool IsTargetValid() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
@@ -607,7 +610,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -619,7 +622,7 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 };
 
 class Escape : public AlgorithmBase {
@@ -630,7 +633,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 };
 
 class Transform : public AlgorithmBase {
@@ -639,7 +642,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
-	void ApplyInitialEffect() override;
+	void vApplyFirstTimeEffect() override;
 
 private:
 	int new_monster_id;
@@ -678,6 +681,10 @@ inline bool AlgorithmBase::IsNegativeSkill() const {
 
 inline bool AlgorithmBase::IsPositiveSkill() const {
 	return healing ^ negative_effect;
+}
+
+inline bool AlgorithmBase::IsFirstAttack() const {
+	return first_attack;
 }
 
 } //namespace Game_BattleAlgorithm

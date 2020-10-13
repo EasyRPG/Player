@@ -203,8 +203,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets
 	}
 
 	auto old_current_target = current_target;
-	bool old_first_attack = first_attack;
-
 	std::vector<Game_Battler*> anim_targets;
 
 	do {
@@ -215,7 +213,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets
 	has_animation_played = true;
 
 	current_target = old_current_target;
-	first_attack = old_first_attack;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_targets, bool invert) {
@@ -235,7 +232,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_t
 	}
 
 	auto old_current_target = current_target;
-	bool old_first_attack = first_attack;
 
 	std::vector<Game_Battler*> anim_targets;
 
@@ -247,7 +243,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_t
 	has_animation2_played = true;
 
 	current_target = old_current_target;
-	first_attack = old_first_attack;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_original_targets, int cutoff) {
@@ -266,7 +261,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_original_ta
 	}
 
 	auto old_current_target = current_target;
-	bool old_first_attack = first_attack;
 
 	std::vector<Game_Battler*> anim_targets;
 
@@ -279,7 +273,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_original_ta
 		anim_targets, true, cutoff);
 
 	current_target = old_current_target;
-	first_attack = old_first_attack;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::HasAnimationPlayed() const {
@@ -296,10 +289,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsFirstAttack() const {
-	return first_attack;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::HasSecondStartMessage() const {
@@ -594,7 +583,16 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplyInitialEffect() {
+void Game_BattleAlgorithm::AlgorithmBase::ApplyFirstTimeEffect() {
+	if (!first_attack) {
+		return;
+	}
+	vApplyFirstTimeEffect();
+
+	if (success && GetAffectedSwitch() != -1) {
+		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
+	}
+
 	for (int s : switch_on) {
 		Main_Data::game_switches->Set(s, true);
 	}
@@ -602,10 +600,10 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyInitialEffect() {
 	for (int s : switch_off) {
 		Main_Data::game_switches->Set(s, false);
 	}
+	first_attack = false;
+}
 
-	if (success && GetAffectedSwitch() != -1) {
-		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
-	}
+void Game_BattleAlgorithm::AlgorithmBase::vApplyFirstTimeEffect() {
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
@@ -751,7 +749,7 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
-	ApplyInitialEffect();
+	ApplyFirstTimeEffect();
 	ApplyHpEffect();
 	ApplySpEffect();
 	ApplyAtkEffect();
@@ -799,14 +797,11 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	if (!IsTargetValid()) {
 		TargetNext();
 	}
-
-	first_attack = true;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	++cur_repeat;
 	if (IsTargetValid() && cur_repeat < repeat) {
-		first_attack = false;
 		return true;
 	}
 	cur_repeat = 0;
@@ -823,8 +818,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 
 		++current_target;
 	} while (!IsTargetValid());
-
-	first_attack = false;
 
 	return true;
 }
@@ -1057,10 +1050,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Normal::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
-
-	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
+void Game_BattleAlgorithm::Normal::vApplyFirstTimeEffect() {
+	if (source->GetType() == Game_Battler::Type_Ally) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost(weapon));
 	}
 }
@@ -1384,16 +1375,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Skill::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
-
-	if (IsFirstAttack()) {
-		if (item) {
-			Main_Data::game_party->ConsumeItemUse(item->ID);
-		}
-		else {
-			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
-		}
+void Game_BattleAlgorithm::Skill::vApplyFirstTimeEffect() {
+	if (item) {
+		Main_Data::game_party->ConsumeItemUse(item->ID);
+	}
+	else {
+		source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 	}
 }
 
@@ -1647,12 +1634,8 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Item::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
-
-	if (first_attack) {
-		Main_Data::game_party->ConsumeItemUse(item.ID);
-	}
+void Game_BattleAlgorithm::Item::vApplyFirstTimeEffect() {
+	Main_Data::game_party->ConsumeItemUse(item.ID);
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
@@ -1776,8 +1759,7 @@ bool Game_BattleAlgorithm::Charge::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Charge::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
+void Game_BattleAlgorithm::Charge::vApplyFirstTimeEffect() {
 	source->SetCharged(true);
 }
 
@@ -1841,9 +1823,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::SelfDestruct::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
-
+void Game_BattleAlgorithm::SelfDestruct::vApplyFirstTimeEffect() {
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
@@ -1905,8 +1885,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Escape::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
+void Game_BattleAlgorithm::Escape::vApplyFirstTimeEffect() {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
 		auto* sprite = Game_Battle::GetSpriteset().FindBattler(GetSource());
@@ -1944,8 +1923,7 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Transform::ApplyInitialEffect() {
-	AlgorithmBase::ApplyInitialEffect();
+void Game_BattleAlgorithm::Transform::vApplyFirstTimeEffect() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }
 
