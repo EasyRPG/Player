@@ -134,46 +134,22 @@ public:
 	 */
 	void SetSwitchDisable(int switch_id);
 
-	/**
-	 * Gets how many Hp were gained/lost.
-	 *
-	 * @return Hp change or -1 when algorithm didn't affect Hp
-	 */
+	/** @return how much hp is to be gained or lost */
 	int GetAffectedHp() const;
 
-	/**
-	 * Gets how many Sp were gained/lost.
-	 *
-	 * @return Sp change or -1 when algorithm didn't affect Sp
-	 */
+	/** @return how much sp is to be gained or lost */
 	int GetAffectedSp() const;
 
-	/**
-	 * Gets how many Attack was gained/lost.
-	 *
-	 * @return Attack change or -1 when algorithm didn't affect Attack
-	 */
+	/** @return how much attack is to be gained or lost */
 	int GetAffectedAttack() const;
 
-	/**
-	 * Gets how many Defense was gained/lost.
-	 *
-	 * @return Defense change or -1 when algorithm didn't affect Defense
-	 */
+	/** @return how much defense is to be gained or lost */
 	int GetAffectedDefense() const;
 
-	/**
-	 * Gets how many Spirit was gained/lost.
-	 *
-	 * @return Spirit change or -1 when algorithm didn't affect Spirit
-	 */
+	/** @return how much spirit is to be gained or lost */
 	int GetAffectedSpirit() const;
 
-	/**
-	 * Gets how many Agility was gained/lost.
-	 *
-	 * @return Agility change or -1 when algorithm didn't affect Agility
-	 */
+	/** @return how much spirit is to be gained or lost */
 	int GetAffectedAgility() const;
 
 	/**
@@ -471,13 +447,13 @@ protected:
 	mutable std::vector<Game_Battler*>::iterator current_target;
 	Game_Party_Base* party_target = nullptr;
 
-	int hp;
-	int sp;
-	int attack;
-	int defense;
-	int spirit;
-	int agility;
-	int switch_id;
+	int hp = -1;
+	int sp = -1;
+	int attack = 0;
+	int defense = 0;
+	int spirit = 0;
+	int agility = 0;
+	int switch_id = 0;
 
 private:
 	bool first_attack = true;
@@ -680,6 +656,62 @@ inline bool AlgorithmBase::IsPositiveSkill() const {
 
 inline bool AlgorithmBase::IsFirstAttack() const {
 	return first_attack;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
+	return hp;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSp() const {
+	return sp;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAttack() const {
+	return attack;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedDefense() const {
+	return defense;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
+	return spirit;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
+	return agility;
+}
+
+inline const std::vector<Game_BattleAlgorithm::AttributeEffect>& Game_BattleAlgorithm::AlgorithmBase::GetShiftedAttributes() const {
+	return attributes;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
+	return switch_id;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
+	return healing;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
+	return absorb;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
+	return revived;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
+	return true;
+}
+
+inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
+	return animation;
+}
+
+inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
+	return animation2;
 }
 
 } //namespace Game_BattleAlgorithm

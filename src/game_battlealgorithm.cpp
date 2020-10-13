@@ -109,11 +109,11 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	hp = -1;
 	sp = -1;
-	attack = -1;
-	defense = -1;
-	spirit = -1;
-	agility = -1;
-	switch_id = -1;
+	attack = 0;
+	defense = 0;
+	spirit = 0;
+	agility = 0;
+	switch_id = 0;
 	healing = false;
 	negative_effect = false;
 	success = false;
@@ -128,62 +128,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 		switch_on.clear();
 		switch_off.clear();
 	}
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
-	return hp;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSp() const {
-	return sp;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAttack() const {
-	return attack;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedDefense() const {
-	return defense;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
-	return spirit;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
-	return agility;
-}
-
-const std::vector<Game_BattleAlgorithm::AttributeEffect>& Game_BattleAlgorithm::AlgorithmBase::GetShiftedAttributes() const {
-	return attributes;
-}
-
-int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
-	return switch_id;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
-	return healing;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
-	return absorb;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
-	return revived;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
-	return true;
-}
-
-const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
-	return animation;
-}
-
-const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
-	return animation2;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets, bool invert) {
@@ -589,7 +533,7 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyFirstTimeEffect() {
 	}
 	vApplyFirstTimeEffect();
 
-	if (success && GetAffectedSwitch() != -1) {
+	if (GetAffectedSwitch() > 0) {
 		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
 	}
 
@@ -644,42 +588,42 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 	auto* target = GetTarget();
-	if (target && GetAffectedAttack() != -1) {
-		int atk = GetAffectedAttack();
-		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
-		return atk;
+	assert(target);
+	auto atk = GetAffectedAttack();
+	if (atk) {
+		atk = target->ChangeAtkModifier(atk);
 	}
-	return 0;
+	return atk;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 	auto* target = GetTarget();
-	if (target && GetAffectedDefense() != -1) {
-		int def = GetAffectedDefense();
-		target->ChangeDefModifier(IsPositive() ? def : -def);
-		return def;
+	assert(target);
+	auto def = GetAffectedDefense();
+	if (def) {
+		def = target->ChangeDefModifier(def);
 	}
-	return 0;
+	return def;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 	auto* target = GetTarget();
-	if (target && GetAffectedSpirit() != -1) {
-		int spi = GetAffectedSpirit();
-		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
-		return spi;
+	assert(target);
+	auto spi = GetAffectedSpirit();
+	if (spi) {
+		spi = target->ChangeSpiModifier(spi);
 	}
-	return 0;
+	return spi;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 	auto* target = GetTarget();
-	if (target && GetAffectedAgility() != -1) {
-		int agi = GetAffectedAgility();
-		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
-		return agi;
+	assert(target);
+	auto agi = GetAffectedAgility();
+	if (agi) {
+		agi = target->ChangeAgiModifier(agi);
 	}
-	return 0;
+	return agi;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
@@ -1261,19 +1205,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	const auto param_effect = healing ? effect : -effect;
 
 	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-		this->attack = std::abs(target->CanChangeAtkModifier(param_effect));
+		this->attack = target->CanChangeAtkModifier(param_effect);
 		this->success |= this->attack;
 	}
 	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-		this->defense = std::abs(target->CanChangeDefModifier(param_effect));
+		this->defense = target->CanChangeDefModifier(param_effect);
 		this->success |= this->defense;
 	}
 	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-		this->spirit = std::abs(target->CanChangeSpiModifier(param_effect));
+		this->spirit = target->CanChangeSpiModifier(param_effect);
 		this->success |= this->spirit;
 	}
 	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-		this->agility = std::abs(target->CanChangeAgiModifier(param_effect));
+		this->agility = target->CanChangeAgiModifier(param_effect);
 		this->success |= this->agility;
 	}
 
