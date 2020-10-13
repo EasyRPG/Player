@@ -343,12 +343,17 @@ void Game_Ineluki::Update() {
 			continue;
 		}
 
-		// FIXME: This does not reset the cheat when the wrong key is pressed
-		// There is no efficient way to check for wrong keys being pressed (no callback API)
 		if (Input::IsRawKeyPressed(cheat.keys[cheat.index])) {
 			++cheat.index;
 			if (cheat.index >= static_cast<int>(cheat.keys.size())) {
 				output_list.push_back(cheat.value);
+				cheat.index = 0;
+			}
+		} else if (cheat.index > 0) {
+			auto pressed = Input::GetAllRawPressed();
+			// Don't reset when the previous cheat key is (still) pressed
+			pressed[cheat.keys[cheat.index - 1]] = false;
+			if (pressed.any()) {
 				cheat.index = 0;
 			}
 		}

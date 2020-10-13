@@ -46,7 +46,7 @@ namespace Input {
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
-	std::bitset<Input::Keys::KEYS_COUNT> raw_triggered, raw_pressed, raw_released;
+	Input::KeyStatus raw_triggered, raw_pressed, raw_released;
 	int dir4;
 	int dir8;
 	std::unique_ptr<Source> source;
@@ -313,6 +313,18 @@ bool Input::IsRawKeyTriggered(Input::Keys::InputKey key) {
 
 bool Input::IsRawKeyReleased(Input::Keys::InputKey key) {
 	return raw_released[key];
+}
+
+const Input::KeyStatus& Input::GetAllRawPressed() {
+	return raw_pressed;
+}
+
+const Input::KeyStatus& Input::GetAllRawTriggered() {
+	return raw_triggered;
+}
+
+const Input::KeyStatus& Input::GetAllRawReleased() {
+	return raw_released;
 }
 
 Point Input::GetMousePosition() {

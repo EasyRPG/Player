@@ -245,6 +245,27 @@ namespace Input {
 	bool IsRawKeyReleased(Input::Keys::InputKey key);
 
 	/**
+	 * Gets all raw keys being pressed.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawPressed();
+
+	/**
+	 * Gets all raw keys being triggered.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawTriggered();
+
+	/**
+	 * Gets all raw keys being released.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawReleased();
+
+	/**
 	 * @return Position of the mouse cursor relative to the screen
 	 */
 	Point GetMousePosition();
