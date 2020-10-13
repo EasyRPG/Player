@@ -915,6 +915,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 	}
 
 	bool is_target_party = false;
+	std::vector<const lcf::rpg::Sound*> sfx;
+	auto queueSe = [&](auto* se) {
+		if (se != nullptr) {
+			auto iter = std::find(sfx.begin(), sfx.end(), se);
+			if (iter == sfx.end()) {
+				sfx.push_back(se);
+			}
+		}
+	};
 
 	switch (battle_action_state) {
 	case BattleActionState_Execute:
@@ -976,6 +985,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
+		// FIXME: This needs to be attached to the monster target window.
+		// Counterexample is weapon with attack all, engine still makes you target a specific enemy,
+		// even though your weapon will hit all enemies.
 		if (action->GetSource()->GetType() == Game_Battler::Type_Ally
 				&& !is_target_party
 				&& action->GetTarget()
@@ -986,8 +998,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 
 		//Output::Debug("Action: {}", action->GetSource()->GetName());
-
-		action->Execute();
 
 		if (source_sprite) {
 			SelectionFlash(action->GetSource());
@@ -1033,10 +1043,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
 
+		sfx.clear();
+
 		do {
-			if (!action->IsFirstAttack()) {
-				action->Execute();
-			}
+			action->Execute();
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 			if (action->IsSuccess() && action->GetAffectedHp() < 0 && target_sprite) {
@@ -1064,19 +1074,14 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 						if (!action->IsPositive() && !action->IsAbsorb()) {
 							if (target->GetType() == Game_Battler::Type_Ally) {
-								auto& se = Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage);
-								Main_Data::game_system->SePlay(se);
+								queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
 							} else {
-								auto& se = Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage);
-								Main_Data::game_system->SePlay(se);
+								queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
 							}
 						}
 					}
 				} else {
-					auto* se = action->GetFailureSe();
-					if (se) {
-						Main_Data::game_system->SePlay(*se);
-					}
+					queueSe(action->GetFailureSe());
 					DrawFloatText(
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
@@ -1089,6 +1094,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			status_window->Refresh();
 		} while (action->TargetNext());
+
+		for (auto* se: sfx) {
+			Main_Data::game_system->SePlay(*se);
+		}
 
 		battle_action_wait = 30;
 
