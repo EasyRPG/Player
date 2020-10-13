@@ -1101,7 +1101,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		battle_action_wait = 30;
 
-		battle_action_state = BattleActionState_Finished;
+		if (action->RepeatNext()) {
+			battle_action_state = BattleActionState_Execute;
+		} else {
+			battle_action_state = BattleActionState_Finished;
+		}
 
 		break;
 	case BattleActionState_Finished:
