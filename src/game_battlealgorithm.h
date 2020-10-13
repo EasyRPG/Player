@@ -134,6 +134,13 @@ public:
 	 */
 	void SetSwitchDisable(int switch_id);
 
+	bool IsAffectHp() const;
+	bool IsAffectSp() const;
+	bool IsAffectAtk() const;
+	bool IsAffectDef() const;
+	bool IsAffectSpi() const;
+	bool IsAffectAgi() const;
+
 	/** @return how much hp is to be gained or lost */
 	int GetAffectedHp() const;
 
@@ -174,7 +181,7 @@ public:
 	int GetAffectedSwitch() const;
 
 	/**
-	 * Gets whether the action was positive (e.g. healing) instead of demage.
+	 * Gets whether the action was positive (e.g. healing) instead of damage.
 	 *
 	 * @return Whether action was positive
 	 */
@@ -400,16 +407,6 @@ public:
 	Game_Battler* GetFirstOriginalTarget() const;
 
 	/**
-	 * If the skill is negative before applying attribute modifiers.
-	 */
-	bool IsNegativeSkill() const;
-
-	/**
-	 * If the skill is positive before applying attribute modifiers.
-	 */
-	bool IsPositiveSkill() const;
-
-	/**
 	 * @return the critical hit message
 	 */
 	std::string GetCriticalHitMessage() const;
@@ -447,7 +444,7 @@ protected:
 	mutable std::vector<Game_Battler*>::iterator current_target;
 	Game_Party_Base* party_target = nullptr;
 
-	int hp = -1;
+	int hp = 0;
 	int sp = 0;
 	int attack = 0;
 	int defense = 0;
@@ -458,13 +455,16 @@ protected:
 private:
 	bool first_attack = true;
 protected:
-	bool healing;
-	bool negative_effect;
-	bool success;
-	bool lethal = false;
-	bool killed_by_dmg = false;
-	bool critical_hit;
-	bool absorb;
+	bool affect_hp = false;
+	bool affect_sp = false;
+	bool affect_atk = false;
+	bool affect_def = false;
+	bool affect_spi = false;
+	bool affect_agi = false;
+	bool positive = false;
+	bool success = false;
+	bool critical_hit = false;
+	bool absorb = false;
 	bool revived = false;
 	bool physical_charged = false;
 	mutable int reflect;
@@ -646,14 +646,6 @@ inline bool AlgorithmBase::IsTargetingParty() const {
 	return party_target != nullptr;
 }
 
-inline bool AlgorithmBase::IsNegativeSkill() const {
-	return !healing ^ negative_effect;
-}
-
-inline bool AlgorithmBase::IsPositiveSkill() const {
-	return healing ^ negative_effect;
-}
-
 inline bool AlgorithmBase::IsFirstAttack() const {
 	return first_attack;
 }
@@ -691,7 +683,7 @@ inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
-	return healing;
+	return positive;
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
@@ -712,6 +704,30 @@ inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimat
 
 inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
 	return animation2;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectHp() const {
+	return affect_hp;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectSp() const {
+	return affect_sp;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAtk() const {
+	return affect_atk;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectDef() const {
+	return affect_def;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectSpi() const {
+	return affect_spi;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAgi() const {
+	return affect_agi;
 }
 
 } //namespace Game_BattleAlgorithm

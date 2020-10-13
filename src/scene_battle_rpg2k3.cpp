@@ -1039,7 +1039,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-			if (action->IsSuccess() && !action->IsPositive() && target_sprite) {
+			if (action->IsSuccess() && action->GetAffectedHp() < 0 && target_sprite) {
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
@@ -1052,12 +1052,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					if (action->IsCriticalHit()) {
 						Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
 					}
-					if (action->GetAffectedHp() != -1) {
-						DrawFloatText(
-							target->GetBattlePosition().x,
-							target->GetBattlePosition().y,
-							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
-							std::to_string(action->GetAffectedHp()));
+					if (action->IsAffectHp()) {
+						const auto hp = action->GetAffectedHp();
+						if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
+							DrawFloatText(
+									target->GetBattlePosition().x,
+									target->GetBattlePosition().y,
+									hp > 0 ? Font::ColorHeal : Font::ColorDefault,
+									std::to_string(std::abs(hp)));
+						}
 					}
 				} else {
 					DrawFloatText(

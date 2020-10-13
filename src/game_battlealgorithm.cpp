@@ -107,15 +107,20 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
-	hp = -1;
+	hp = 0;
 	sp = 0;
 	attack = 0;
 	defense = 0;
 	spirit = 0;
 	agility = 0;
 	switch_id = 0;
-	healing = false;
-	negative_effect = false;
+	affect_hp = false;
+	affect_sp = false;
+	affect_atk = false;
+	affect_def = false;
+	affect_spi = false;
+	affect_agi = false;
+	positive = false;
 	success = false;
 	critical_hit = false;
 	absorb = false;
@@ -552,23 +557,20 @@ void Game_BattleAlgorithm::AlgorithmBase::vApplyFirstTimeEffect() {
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
 	auto* target = GetTarget();
-	if (!target) {
+	assert(target);
+
+	if (target->IsDead()) {
 		return 0;
 	}
-
-	bool was_dead = target->IsDead();
-
-	if (GetAffectedHp() != -1 && !was_dead) {
-		int hp = GetAffectedHp();
-		hp = IsPositive() ? hp : -hp;
+	int hp = GetAffectedHp();
+	if (hp != 0) {
 		hp = target->ChangeHp(hp, true);
-		if (IsAbsorb() && !IsPositive()) {
+		if (IsAbsorb()) {
 			// Only absorb the hp that were left
 			source->ChangeHp(-hp, false);
 		}
-		return hp;
 	}
-	return 0;
+	return hp;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
@@ -647,33 +649,16 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
 	}
 
 	// Apply revived hp healing
-	if (IsPositive() && was_dead && !target->IsDead()) {
-		if (GetAffectedHp()) {
-			int hp = GetAffectedHp();
-			target->ChangeHp(hp - 1, true);
-		}
+	if (was_dead && !target->IsDead()) {
+		auto hp = GetAffectedHp();
+		target->ChangeHp(hp - 1, false);
 	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
-	auto* target = GetTarget();
-	if (!target) {
-		return;
-	}
-
-	bool was_dead = target->IsDead();
-
 	// Apply states
 	for (auto& se: states) {
 		ApplyStateEffect(se);
-	}
-
-	// Apply revived hp healing
-	if (IsPositive() && was_dead && !target->IsDead()) {
-		if (GetAffectedHp()) {
-			int hp = GetAffectedHp();
-			target->ChangeHp(hp - 1, true);
-		}
 	}
 }
 
@@ -801,8 +786,8 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const 
 	if (!success) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 	}
-	if (healing || IsAbsorb()) {
-		return NULL;
+	if (IsPositive() || IsAbsorb()) {
+		return nullptr;
 	}
 	if (GetAffectedHp() > -1) {
 		if (current_target != targets.end()) {
@@ -900,24 +885,19 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, critical_hit, true, Game_Battle::GetBattleCondition(), true);
 	effect = Algo::AdjustDamageForDefend(effect, target);
 
-	// Handle negative effect from attributes
-	if (effect < 0) {
-		this->negative_effect = true;
-		this->healing = true;
-		effect = -effect;
-	}
+	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
-	effect = Utils::Clamp(effect, 0, MaxDamageValue());
+	this->hp = -effect;
+	this->affect_hp = true;
 
-	this->hp = effect;
-
-	// RPG_RT bug: Negative effects affect HP double
-	if (this->negative_effect) {
-		this->hp *= 2;
+	// RPG_RT BUG: 2k3 has a bug where a negative attribute reversal of damage causes hp effect to double
+	// RPG_RT applies the affect but it doesn't appear in the floating numbers.
+	if (this->hp > 0) {
+		this->hp = std::min(this->hp * 2, MaxDamageValue());
 	}
 
 	// If target is killed, states not applied
-	if (!this->healing && GetTarget()->GetHp() - this->hp <= 0) {
+	if (target.GetHp() + this->hp <= 0) {
 		this->success = true;
 		return this->success;
 	}
@@ -1099,10 +1079,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	auto* target = GetTarget();
 	assert(target);
 
-	const bool target_enemies = Algo::SkillTargetsEnemies(skill);
-	const bool target_allies = Algo::SkillTargetsAllies(skill);
-
-	this->healing = target_allies;
+	this->positive = Algo::SkillTargetsAllies(skill);
 
 	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		switch_id = skill.switch_id;
@@ -1117,65 +1094,67 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
 	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true);
+	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
-	// Handle negative effect from attributes
-	if (effect < 0) {
-		this->negative_effect = true;
-		this->healing = !this->healing;
+	if (!IsPositive()) {
 		effect = -effect;
 	}
 
 	const bool is_dead = target->IsDead();
-	const bool cures_death = target_allies
+	const bool cures_death = IsPositive()
 		&& !skill.state_effects.empty()
 		&& skill.state_effects[lcf::rpg::State::kDeathID - 1]
 		&& is_dead;
 
 	// Dead targets only allowed if this skill revives later
-	if (is_dead && (!this->healing || !cures_death)) {
+	if (is_dead && (!IsPositive() || !cures_death)) {
 		this->success = false;
 		return false;
 	}
 
-	effect = Utils::Clamp(effect, 0, MaxDamageValue());
+	// Absorb only works on offensive skills.
+	this->absorb = skill.absorb_damage && !IsPositive();
 
-	if (IsNegativeSkill()) absorb = skill.absorb_damage;
+	// Make a copy of the target's state set and see what we can apply.
+	auto target_states = target->GetStates();
+	auto target_perm_states = target->GetPermanentStates();
 
 	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
-		const auto target_hp = target->GetHp();
-		if (IsNegativeSkill()) {
-			// Calculate HP damage effects
-			this->hp = Algo::AdjustDamageForDefend(effect, *target);
+		const auto cur_hp = target->GetHp();
+		this->affect_hp = true;
 
-			if (IsAbsorb()) {
-				this->hp = std::min<int>(hp, target_hp);
+		if (IsAbsorb()) {
+			// Cannot aborb more hp than the target has.
+			this->hp = -std::max<int>(-this->hp, cur_hp);
 
-				// Absorb requires damage to be successful
-				this->success = (hp != 0);
+			// Absorb requires damage to be successful
+			this->success = (hp != 0);
+		} else {
+			if (IsPositive()) {
+				// RPG_RT attribute inverted healing effects are non-lethal
+				this->hp = std::max(-(cur_hp - 1), effect);
+				// HP recovery is sucessful if the effect is non-zero, even at full hp.
+				this->success |= (effect != 0);
 			} else {
-				// RPG_RT bug: Negative effects affect HP double
-				// HP absorbing is not affected by this bug
-				if (this->negative_effect) {
-					this->hp *= 2;
+				this->hp = effect;
+
+				// RPG_RT BUG: 2k3 has a bug where a negative attribute reversal of damage causes hp effect to double
+				// RPG_RT applies the affect but it doesn't appear in the floating numbers.
+				if (this->hp > 0) {
+					this->hp = std::min(this->hp * 2, MaxDamageValue());
 				}
 
-				// Normal damage always successful, even if 0
+				// Conditions healed by physical attack:
+				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states, states);
+
+				// Hp damage always successful, even if 0
 				this->success = true;
-			}
-		} else if (!is_dead) {
-			// Calculate HP recovery effects
-			this->success |= (effect != 0);
-			if (!this->negative_effect) {
-				this->hp = effect;
-			} else {
-				// RPG_RT negative healing skills are non lethal
-				this->hp = Utils::Clamp(effect, 0, GetTarget()->GetHp() - 1);
 			}
 		}
 	}
 
-	// If target is killed, no further affects are applied.
-	if (!is_dead && !IsPositive() && GetTarget()->GetHp() - this->hp <= 0) {
+	// If target will be killed, no further affects are applied.
+	if (!is_dead && GetTarget()->GetHp() + this->hp <= 0) {
 		return this->success;
 	}
 
@@ -1184,54 +1163,44 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		const auto max_sp = target->GetMaxSp();
 		const auto cur_sp = target->GetSp() - sp_cost;
 
-		if (target_enemies) {
-			if (IsAbsorb()) {
-				this->sp = -std::min(cur_sp, effect);
-			} else {
-				this->sp = -(cur_sp - Utils::Clamp(cur_sp - effect, 0, max_sp));
-			}
+		this->affect_sp = true;
+		if (IsAbsorb()) {
+			// FIXME: Verify behavior on negative attributes
+			this->sp = -std::min(cur_sp, -effect);
+		} else {
+			this->sp = Utils::Clamp(cur_sp + effect, 0, max_sp) - cur_sp;
 		}
 
-		if (target_allies) {
-			this->sp = Utils::Clamp(cur_sp + effect, 0, max_sp);
-		}
 		this->success |= this->sp;
 	}
 
-	if (target_enemies && !this->success && (skill.affect_hp || skill.affect_sp)) {
+	if (!IsPositive() && !this->success && (skill.affect_hp || skill.affect_sp)) {
 		return this->success;
 	}
 
-	const auto param_effect = healing ? effect : -effect;
-
 	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-		this->attack = target->CanChangeAtkModifier(param_effect);
+		this->affect_atk = true;
+		this->attack = target->CanChangeAtkModifier(effect);
 		this->success |= this->attack;
 	}
 	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-		this->defense = target->CanChangeDefModifier(param_effect);
+		this->affect_def = true;
+		this->defense = target->CanChangeDefModifier(effect);
 		this->success |= this->defense;
 	}
 	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-		this->spirit = target->CanChangeSpiModifier(param_effect);
+		this->affect_spi = true;
+		this->spirit = target->CanChangeSpiModifier(effect);
 		this->success |= this->spirit;
 	}
 	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-		this->agility = target->CanChangeAgiModifier(param_effect);
+		this->affect_agi = true;
+		this->agility = target->CanChangeAgiModifier(effect);
 		this->success |= this->agility;
 	}
 
-	// Make a copy of the target's state set and see what we can apply.
-	auto target_states = target->GetStates();
-	auto target_perm_states = target->GetPermanentStates();
-
-	// Conditions healed by physical attack:
-	if (!IsPositive() && skill.affect_hp && !IsAbsorb()) {
-		BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states, states);
-	}
-
-	bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
-	bool adds_death_state = false;
+	bool heals_states = IsPositive() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
+	bool affected_death = false;
 	for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
 		if (!skill.state_effects[i])
 			continue;
@@ -1255,37 +1224,37 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->success = true;
 				if (State::Remove(state_id, target_states, target_perm_states)) {
 					states.push_back({state_id, StateEffect::Healed});
+					affected_death |= (state_id == lcf::rpg::State::kDeathID);
 				}
 			}
 		} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 			if (State::Add(state_id, target_states, target_perm_states, true)) {
 				this->success = true;
 				states.push_back({state_id, StateEffect::Inflicted});
-				if (state_id == lcf::rpg::State::kDeathID) {
-					adds_death_state = true;
-				}
+				affected_death |= (state_id == lcf::rpg::State::kDeathID);
 			}
 		}
 	}
 
-	if (target_allies && cures_death) {
+	if (heals_states && affected_death) {
+		this->affect_hp = true;
 		// If resurrected and no HP selected, the effect value is a percentage:
 		if (skill.affect_hp) {
-			this->hp = std::max(0, effect - 1);
+			this->hp = std::max(0, effect);
 		} else {
-			this->hp = target->GetMaxHp() * effect / 100 - 1;
+			this->hp = target->GetMaxHp() * effect / 100;
 		}
 		this->revived = true;
 	}
 
 	// When a skill inflicts death state, other states can also be inflicted, but attributes will be skipped
-	if (adds_death_state) {
+	if (!heals_states && affected_death) {
 		return this->success;
 	}
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
 	if (skill.affect_attr_defence) {
-		auto shift = target_allies ? 1 : -1;
+		auto shift = IsPositive() ? 1 : -1;
 		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
 			auto id = i + 1;
 			if (skill.attribute_effects[i]
@@ -1499,7 +1468,7 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 	if (item.type == lcf::rpg::Item::Type_medicine) {
 		this->success = true;
-		this->healing = true;
+		this->positive = true;
 
 		this->revived = !item.state_set.empty()
 			&& item.state_set[lcf::rpg::State::kDeathID - 1]
@@ -1515,16 +1484,6 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			return this->success;
 		}
 
-		// HP recovery
-		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
-			this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
-		}
-
-		// SP recovery
-		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
-			this->sp = item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp;
-		}
-
 		// Make a copy of the target's state set and see what we can apply.
 		auto target_states = target->GetStates();
 		auto target_perm_states = target->GetPermanentStates();
@@ -1532,16 +1491,23 @@ bool Game_BattleAlgorithm::Item::Execute() {
 		bool is_dead_cured = false;
 		for (int i = 0; i < (int)item.state_set.size(); i++) {
 			if (item.state_set[i]) {
-				if (i == 0)
-					is_dead_cured = true;
+				is_dead_cured |= (i == 0);
 				if (State::Remove(i + 1, target_states, target_perm_states)) {
 					states.push_back({i+1, StateEffect::Healed});
 				}
 			}
 		}
 
-		if (GetTarget()->IsDead() && !is_dead_cured) {
-			this->hp = -1;
+		// HP recovery
+		if ((item.recover_hp != 0 || item.recover_hp_rate != 0) && (!target->IsDead() || is_dead_cured)) {
+			this->affect_hp = true;
+			this->hp = item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp;
+		}
+
+		// SP recovery
+		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
+			this->affect_sp = true;
+			this->sp = item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp;
 		}
 
 		return this->success;
@@ -1718,12 +1684,13 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	auto effect = Algo::CalcSelfDestructEffect(source, target, true);
 	effect = Algo::AdjustDamageForDefend(effect, target);
-	effect = Utils::Clamp(effect, 0, MaxDamageValue());
+	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
-	this->hp = effect;
+	this->hp = -effect;
+	this->affect_hp = true;
 
 	// Recover physical states only if not killed.
-	if (GetTarget()->GetHp() - this->hp > 0) {
+	if (target.GetHp() + this->hp > 0) {
 		// Make a copy of the target's state set and see what we can apply.
 		auto target_states = target.GetStates();
 		auto target_perm_states = target.GetPermanentStates();

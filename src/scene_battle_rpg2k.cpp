@@ -683,7 +683,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	};
 
 	if (battle_action_substate == eBegin) {
-		if (action->IsPositive() || action->GetAffectedHp() < 0 || (action->IsAbsorb() && action->GetAffectedHp() <= 0)) {
+		if (!action->IsAffectHp() || action->GetAffectedHp() > 0 || ((action->IsPositive() || action->IsAbsorb()) && action->GetAffectedHp() == 0)) {
 			return ProcessNextAction(BattleActionState_Params, action);
 		}
 
@@ -695,12 +695,12 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		auto* target = action->GetTarget();
 		assert(target);
 		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		auto display_dmg = action->GetAffectedHp();
+		auto dmg = action->GetAffectedHp();
 
 		if (!action->IsAbsorb()) {
 			if (target->GetType() == Game_Battler::Type_Ally) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
-				if (action->GetAffectedHp() > 0) {
+				if (dmg < 0) {
 					Main_Data::game_screen->ShakeOnce(3, 5, 8);
 				}
 			} else {
@@ -712,12 +712,14 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		}
 
 		std::string msg;
-		if (display_dmg == 0) {
-			msg = action->GetUndamagedMessage();
-		} else  if (action->IsAbsorb()) {
-			msg = action->GetHpSpAbsorbedMessage(display_dmg, lcf::Data::terms.health_points);
+		if (action->IsAbsorb()) {
+			msg = action->GetHpSpAbsorbedMessage(-dmg, lcf::Data::terms.health_points);
 		} else {
-			msg = action->GetDamagedMessage(display_dmg);
+			if (dmg == 0) {
+				msg = action->GetUndamagedMessage();
+			} else {
+				msg = action->GetDamagedMessage(-dmg);
+			}
 		}
 
 		battle_message_window->Push(msg);
@@ -815,11 +817,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 
 		if (battle_action_substate == ePreHp) {
 			// Damage is handled by Damage state, so only check healing here.
-			if (action->IsPositive()
-					&& !action->IsRevived()
-					&& action->GetAffectedHp() > 0
-					&& action->GetType() != Game_BattleAlgorithm::Type::Item)
-			{
+			if (action->GetAffectedHp() > 0 && !action->IsRevived() && action->GetType() != Game_BattleAlgorithm::Type::Item) {
 				auto hp = action->ApplyHpEffect();
 				pending_message = action->GetHpSpRecoveredMessage(hp, lcf::Data::terms.health_points);
 			}
@@ -828,13 +826,13 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 
 		if (battle_action_substate == ePreSp) {
 			auto sp = action->ApplySpEffect();
-			if (sp > 0 && action->GetType() != Game_BattleAlgorithm::Type::Item) {
-				pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
-			}
-			if (sp < 0) {
-				if (action->IsAbsorb()) {
-					pending_message = action->GetHpSpAbsorbedMessage(std::abs(sp), lcf::Data::terms.spirit_points);
-				} else {
+			if (action->IsAbsorb()) {
+				pending_message = action->GetHpSpAbsorbedMessage(-sp, lcf::Data::terms.spirit_points);
+			} else {
+				if (sp > 0 && action->GetType() != Game_BattleAlgorithm::Type::Item) {
+					pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
+				}
+				if (sp < 0) {
 					pending_message = action->GetParameterChangeMessage(sp, lcf::Data::terms.spirit_points);
 				}
 			}
