@@ -174,14 +174,15 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	    break;
 	}
 
-	if (lose)
+	if (lose) {
 		change = -change;
+	}
 
 	enemy.ChangeHp(change, lethal);
 
 	if (enemy.IsDead()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-		Game_Battle::SetNeedRefresh(true);
+		enemy.SetDeathTimer();
 	}
 
 	return true;
@@ -218,16 +219,9 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(lcf::rpg::EventComma
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove) {
+		// RPG_RT BUG: Monster dissapears immediately and doesn't animate death
 		enemy.RemoveState(state_id, false);
-		if (state_id == lcf::rpg::State::kDeathID) {
-			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
-			Game_Battle::SetNeedRefresh(true);
-		}
 	} else {
-		if (state_id == lcf::rpg::State::kDeathID) {
-			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
-			Game_Battle::SetNeedRefresh(true);
-		}
 		enemy.AddState(state_id, true);
 	}
 	return true;

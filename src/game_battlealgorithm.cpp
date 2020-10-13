@@ -1687,13 +1687,9 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 void Game_BattleAlgorithm::SelfDestruct::vApplyFirstTimeEffect() {
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		static_cast<Game_Enemy*>(source)->SetHidden(true);
-		auto* sprite = Game_Battle::GetSpriteset().FindBattler(GetSource());
-		if (sprite) {
-			sprite->SetAnimationState(
-					Sprite_Battler::AnimationState_SelfDestruct,
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-		}
+		auto* enemy = static_cast<Game_Enemy*>(source);
+		enemy->SetHidden(true);
+		enemy->SetExplodeTimer();
 	}
 }
 
@@ -1748,13 +1744,9 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 void Game_BattleAlgorithm::Escape::vApplyFirstTimeEffect() {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		static_cast<Game_Enemy*>(source)->SetHidden(true);
-		auto* sprite = Game_Battle::GetSpriteset().FindBattler(GetSource());
-		if (sprite) {
-			sprite->SetAnimationState(
-					Sprite_Battler::AnimationState_Dead,
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-		}
+		auto* enemy = static_cast<Game_Enemy*>(source);
+		enemy->SetHidden(true);
+		enemy->SetDeathTimer();
 	}
 }
 

@@ -1046,16 +1046,26 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		sfx.clear();
 
 		do {
-			action->Execute();
+			auto* target = action->GetTarget();
+			auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-			if (action->IsSuccess() && action->GetAffectedHp() < 0 && target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+			const bool was_dead = target->IsDead();
+
+			action->Execute();
+			action->ApplyAll();
+
+			if (action->IsSuccess() && action->GetAffectedHp() < 0) {
+				if (target->GetType() == Game_Battler::Type_Enemy) {
+					auto* enemy = static_cast<Game_Enemy*>(target);
+					enemy->SetBlinkTimer();
+					if (!was_dead && enemy->IsDead()) {
+						enemy->SetDeathTimer();
+					}
+				} else {
+					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+				}
 			}
 
-			Game_Battler* target = action->GetTarget();
-
-			action->ApplyAll();
 
 			if (target) {
 				if (action->IsSuccess()) {

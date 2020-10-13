@@ -50,10 +50,6 @@ void Sprite_Battler::Update() {
 	}
 
 	if (!battler->IsHidden() && old_hidden != battler->IsHidden()) {
-		SetZoomX(1.0);
-		SetZoomY(1.0);
-		SetOpacity(GetMaxOpacity());
-		SetVisible(true);
 		DoIdleAnimation();
 	}
 
@@ -61,53 +57,7 @@ void Sprite_Battler::Update() {
 
 	++cycle;
 
-	if (battler->GetBattleAnimationId() <= 0) {
-		// Animations for monster
-		if (anim_state != AnimationState_Dead && anim_state != AnimationState_SelfDestruct) {
-			fade_out = GetMaxOpacity();
-			fade_out_incr = GetMaxOpacity() * (Player::IsRPG2k() ? 6 : 15) / 255;
-			zoom = 1.0;
-		}
-
-		if (anim_state == AnimationState_Idle) {
-			SetOpacity(GetMaxOpacity());
-			idling = true;
-		}
-		else if (anim_state == AnimationState_Dead) {
-			if (fade_out > 0) {
-				fade_out -= fade_out_incr;
-				SetOpacity(std::max(0, fade_out));
-			} else {
-				idling = true;
-			}
-		}
-		else if (anim_state == AnimationState_SelfDestruct) {
-			if (fade_out > 0) {
-				fade_out -= fade_out_incr;
-				zoom += 0.07;
-				SetOpacity(std::max(0, fade_out));
-				SetZoomX(zoom);
-				SetZoomY(zoom);
-			}
-			else {
-				idling = true;
-			}
-		}
-		else if (anim_state == AnimationState_Damage) {
-			flash_counter = (flash_counter + 1) % 10;
-			SetOpacity(flash_counter > 5 ? 50 : GetMaxOpacity());
-			if (cycle == 30) {
-				DoIdleAnimation();
-				cycle = 0;
-			}
-		}
-		else {
-			if (cycle == 60) {
-				DoIdleAnimation();
-				cycle = 0;
-			}
-		}
-	} else if (anim_state > 0) {
+	if (battler->GetType() == Game_Battler::Type_Ally && anim_state > 0) {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
@@ -174,13 +124,6 @@ void Sprite_Battler::Update() {
 		}
 	}
 
-	// needed for screen shaking
-	SetX(battler->GetDisplayX());
-	// needed for flying enemies
-	SetY(battler->GetDisplayY());
-
-	SetFlashEffect(battler->GetFlashColor());
-
 	if (animation) {
 		animation->SetVisible(IsVisible());
 	}
@@ -193,6 +136,9 @@ void Sprite_Battler::Update() {
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
+	if (battler->GetType() == Game_Battler::Type_Enemy) {
+		return;
+	}
 	// Default value is 100 (function called with val+1)
 	// 100 maps all states to "Bad state" (7)
 	if (state == 101) {
@@ -200,8 +146,6 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	}
 
 	anim_state = state;
-
-	flash_counter = 0;
 
 	loop_state = loop;
 
@@ -327,8 +271,6 @@ void Sprite_Battler::CreateSprite() {
 		SetAnimationState(anim_state);
 		idling = true;
 	}
-
-	SetVisible(!battler->IsHidden());
 }
 
 void Sprite_Battler::DoIdleAnimation() {
@@ -384,9 +326,48 @@ void Sprite_Battler::OnBattlercharsetReady(FileRequestResult* result, int32_t ba
 	SetSrcRect(Rect(0, battler_index * 48, 48, 48));
 }
 
-int Sprite_Battler::GetMaxOpacity() const {
+void Sprite_Battler::Draw(Bitmap& dst) {
+
+	auto alpha = 255;
+	auto zoom = 1.0;
+
 	if (battler->GetType() == Game_Battler::Type_Enemy) {
-		return static_cast<Game_Enemy*>(battler)->IsTransparent()? 255 - 96 : 255;
+		auto* enemy = static_cast<Game_Enemy*>(battler);
+
+		const auto bt = enemy->GetBlinkTimer();
+		const auto dt = enemy->GetDeathTimer();
+		const auto et = enemy->GetExplodeTimer();
+
+		if (!enemy->Exists() && dt == 0 && et == 0) {
+			return;
+		}
+
+		if (bt % 10 >= 5) {
+			return;
+		}
+
+		if (dt > 0) {
+			alpha = 7 * dt;
+		} else if (et > 0) {
+			alpha = 12 * et;
+			zoom = static_cast<double>(20 - et) / 20.0 + 1.0;
+		}
+
+		if (enemy->IsTransparent()) {
+			alpha = 160 * alpha / 255;
+		}
+	} else {
+		if (battler->IsHidden()) {
+			return;
+		}
 	}
-	return 255;
+
+	SetOpacity(alpha);
+	SetZoomX(zoom);
+	SetZoomY(zoom);
+	SetX(battler->GetDisplayX());
+	SetY(battler->GetDisplayY());
+	SetFlashEffect(battler->GetFlashColor());
+
+	Sprite::Draw(dst);
 }

@@ -694,7 +694,6 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	if (battle_action_substate == eMessage) {
 		auto* target = action->GetTarget();
 		assert(target);
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 		auto dmg = action->GetAffectedHp();
 
 		if (!action->IsAbsorb()) {
@@ -706,8 +705,8 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 			} else {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
 			}
-			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
+			if (target->GetType() == Game_Battler::Type_Enemy) {
+				static_cast<Game_Enemy*>(target)->SetBlinkTimer();
 			}
 		}
 
@@ -945,16 +944,8 @@ bool Scene_Battle_Rpg2k::ProcessActionStateEffects(Game_BattleAlgorithm::Algorit
 					break;
 			}
 
-			if (!was_dead != target->IsDead() || !pending_message.empty()) {
+			if ((!was_dead && target->IsDead()) || !pending_message.empty()) {
 				break;
-			}
-		}
-
-		// Make dead enemies visible again
-		if (was_dead && !target->IsDead()) {
-			auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-			if (target_sprite) {
-				target_sprite->DetectStateChange();
 			}
 		}
 
@@ -1037,7 +1028,6 @@ void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* actio
 	auto* target = action->GetTarget();
 	assert(target);
 
-	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 	battle_message_window->Push(action->GetDeathMessage());
 	battle_message_window->ScrollToEnd();
 	SetWait(36, 60);
@@ -1046,19 +1036,12 @@ void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* actio
 	if (se) {
 		Main_Data::game_system->SePlay(*se);
 	}
-	if (target_sprite) {
-		target_sprite->DetectStateChange();
+	if (target->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(target)->SetDeathTimer();
 	}
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (action->GetTarget()) {
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-		if (target_sprite && !target_sprite->IsIdling()) {
-			return false;
-		}
-	}
-
 	if (action->RepeatNext() || action->TargetNext()) {
 		// Clear the console for the next target
 		battle_message_window->PopUntil(battle_action_start_index);
