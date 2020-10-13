@@ -1151,14 +1151,15 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	absorb = false;
 	this->success = false;
 
+	auto* source = GetSource();
+	assert(source);
 	auto* target = GetTarget();
+	assert(target);
 
-	this->healing = Algo::SkillTargetsAllies(skill);
+	const bool target_enemies = Algo::SkillTargetsEnemies(skill);
+	const bool target_allies = Algo::SkillTargetsAllies(skill);
 
-	this->revived = this->healing
-		&& !skill.state_effects.empty()
-		&& skill.state_effects[lcf::rpg::State::kDeathID - 1]
-		&& GetTarget()->IsDead();
+	this->healing = target_allies;
 
 	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		switch_id = skill.switch_id;
@@ -1171,8 +1172,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		return this->success;
 	}
 
-	auto to_hit = Algo::CalcSkillToHit(*GetSource(), *GetTarget(), skill);
-	auto effect = Algo::CalcSkillEffect(*GetSource(), *GetTarget(), skill, true);
+	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
+	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true);
 
 	// Handle negative effect from attributes
 	if (effect < 0) {
@@ -1181,29 +1182,46 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		effect = -effect;
 	}
 
+	const bool is_dead = target->IsDead();
+	const bool cures_death = target_allies
+		&& !skill.state_effects.empty()
+		&& skill.state_effects[lcf::rpg::State::kDeathID - 1]
+		&& is_dead;
+
+	// Dead targets only allowed if this skill revives later
+	if (is_dead && (!this->healing || !cures_death)) {
+		this->success = false;
+		return false;
+	}
+
 	effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 	if (IsNegativeSkill()) absorb = skill.absorb_damage;
 
 	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
+		const auto target_hp = target->GetHp();
 		if (IsNegativeSkill()) {
-			this->hp = Algo::AdjustDamageForDefend(effect, *GetTarget());
+			// Calculate HP damage effects
+			this->hp = Algo::AdjustDamageForDefend(effect, *target);
 
-			// RPG_RT bug: Negative effects affect HP double
-			// HP absorbing is not affected by this bug
-			if (this->negative_effect && !IsAbsorb()) {
-				this->hp *= 2;
-			}
+			if (IsAbsorb()) {
+				this->hp = std::min<int>(hp, target_hp);
 
-			if (IsAbsorb() && !this->negative_effect)
-				this->hp = std::min<int>(hp, GetTarget()->GetHp());
+				// Absorb requires damage to be successful
+				this->success = (hp != 0);
+			} else {
+				// RPG_RT bug: Negative effects affect HP double
+				// HP absorbing is not affected by this bug
+				if (this->negative_effect) {
+					this->hp *= 2;
+				}
 
-			// If target is killed, no further affects are applied.
-			if (!this->negative_effect && GetTarget()->GetHp() - this->hp <= 0) {
+				// Normal damage always successful, even if 0
 				this->success = true;
-				return true;
 			}
-		} else {
+		} else if (!is_dead) {
+			// Calculate HP recovery effects
+			this->success |= (effect != 0);
 			if (!this->negative_effect) {
 				this->hp = effect;
 			} else {
@@ -1211,6 +1229,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->hp = Utils::Clamp(effect, 0, GetTarget()->GetHp() - 1);
 			}
 		}
+	}
+
+	// If target is killed, no further affects are applied.
+	if (!is_dead && !IsPositive() && GetTarget()->GetHp() - this->hp <= 0) {
+		return this->success;
 	}
 
 	if (skill.affect_sp && Rand::PercentChance(to_hit)) {
@@ -1228,62 +1251,30 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->sp = effect;
 			}
 		}
+		this->success |= this->sp;
+	}
+
+	if (target_enemies && !this->success && (skill.affect_hp || skill.affect_sp)) {
+		return this->success;
 	}
 
 	const auto param_effect = healing ? effect : -effect;
 
 	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
 		this->attack = std::abs(target->CanChangeAtkModifier(param_effect));
+		this->success |= this->attack;
 	}
 	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
 		this->defense = std::abs(target->CanChangeDefModifier(param_effect));
+		this->success |= this->defense;
 	}
 	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
 		this->spirit = std::abs(target->CanChangeSpiModifier(param_effect));
+		this->success |= this->spirit;
 	}
 	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
 		this->agility = std::abs(target->CanChangeAgiModifier(param_effect));
-	}
-
-	if (IsNegativeSkill()) {
-		if (skill.affect_hp) {
-			if (skill.affect_sp) {
-				if (GetAffectedHp() == -1 && GetAffectedSp() == -1) {
-					this->success = false;
-					return this->success;
-				}
-			} else {
-				if (GetAffectedHp() == -1) {
-					this->success = false;
-					return this->success;
-				}
-			}
-		} else {
-			if (skill.affect_sp) {
-				if (GetAffectedSp() == -1) {
-					this->success = false;
-					return this->success;
-				}
-			}
-		}
-	}
-
-	this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
-		|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
-
-	if (IsPositiveSkill()) {
-		// If resurrected and no HP selected, the effect value is a percentage:
-		if (IsRevived() && !skill.affect_hp) {
-			this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
-			this->success = true;
-		}
-	}
-
-	if (IsNegativeSkill()) {
-		if (!success &&
-				((IsAbsorb() && ((GetAffectedHp() == 0 && GetAffectedSp() <= 0) || (GetAffectedHp() <= 0 && GetAffectedSp() == 0))) ||
-				 (!IsAbsorb() && GetAffectedSp() == 0 && GetAffectedHp() == -1)))
-			return this->success;
+		this->success |= this->agility;
 	}
 
 	// Make a copy of the target's state set and see what we can apply.
@@ -1309,18 +1300,18 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			states.push_back({state_id, StateEffect::AlreadyInflicted});
 			continue;
 		}
-		if (heals_states && !target_has_state) {
-			continue;
-		}
+
 		if (!Rand::PercentChance(to_hit)) {
 			continue;
 		}
 
 		if (heals_states) {
-			// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
-			this->success = true;
-			if (State::Remove(state_id, target_states, target_perm_states)) {
-				states.push_back({state_id, StateEffect::Healed});
+			if (target_has_state) {
+				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
+				this->success = true;
+				if (State::Remove(state_id, target_states, target_perm_states)) {
+					states.push_back({state_id, StateEffect::Healed});
+				}
 			}
 		} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 			if (State::Add(state_id, target_states, target_perm_states, true)) {
@@ -1333,6 +1324,16 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 	}
 
+	if (target_allies && cures_death) {
+		// If resurrected and no HP selected, the effect value is a percentage:
+		if (skill.affect_hp) {
+			this->hp = std::max(0, effect - 1);
+		} else {
+			this->hp = target->GetMaxHp() * effect / 100 - 1;
+		}
+		this->revived = true;
+	}
+
 	// When a skill inflicts death state, other states can also be inflicted, but attributes will be skipped
 	if (adds_death_state) {
 		return this->success;
@@ -1340,7 +1341,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
 	if (skill.affect_attr_defence) {
-		auto shift = IsPositiveSkill() ? 1 : -1;
+		auto shift = target_allies ? 1 : -1;
 		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
 			auto id = i + 1;
 			if (skill.attribute_effects[i]
