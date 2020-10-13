@@ -604,23 +604,6 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 		}
 	}
 
-	if (action->GetSource()->GetType() == Game_Battler::Type_Enemy) {
-		if (action->GetType() == Game_BattleAlgorithm::Type::Escape) {
-			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			source_sprite->SetAnimationState(
-					Sprite_Battler::AnimationState_Dead,
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-		}
-
-		if (action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
-			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			source_sprite->SetAnimationState(
-					Sprite_Battler::AnimationState_SelfDestruct,
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-		}
-	}
-
-
 	// Wait for last start message and animations.
 	SetWaitForUsage(action->GetType());
 

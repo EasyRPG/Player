@@ -44,6 +44,7 @@
 #include "state.h"
 #include "algo.h"
 #include "attribute.h"
+#include "spriteset_battle.h"
 
 static inline int MaxDamageValue() {
 	return Player::IsRPG2k() ? 999 : 9999;
@@ -1878,6 +1879,12 @@ void Game_BattleAlgorithm::SelfDestruct::ApplyInitialEffect() {
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
+		auto* sprite = Game_Battle::GetSpriteset().FindBattler(GetSource());
+		if (sprite) {
+			sprite->SetAnimationState(
+					Sprite_Battler::AnimationState_SelfDestruct,
+					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+		}
 	}
 }
 
@@ -1932,7 +1939,15 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 void Game_BattleAlgorithm::Escape::ApplyInitialEffect() {
 	AlgorithmBase::ApplyInitialEffect();
-	static_cast<Game_Enemy*>(source)->SetHidden(true);
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(source)->SetHidden(true);
+		auto* sprite = Game_Battle::GetSpriteset().FindBattler(GetSource());
+		if (sprite) {
+			sprite->SetAnimationState(
+					Sprite_Battler::AnimationState_Dead,
+					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+		}
+	}
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
