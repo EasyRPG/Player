@@ -1061,8 +1061,22 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 									hp > 0 ? Font::ColorHeal : Font::ColorDefault,
 									std::to_string(std::abs(hp)));
 						}
+
+						if (!action->IsPositive() && !action->IsAbsorb()) {
+							if (target->GetType() == Game_Battler::Type_Ally) {
+								auto& se = Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage);
+								Main_Data::game_system->SePlay(se);
+							} else {
+								auto& se = Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage);
+								Main_Data::game_system->SePlay(se);
+							}
+						}
 					}
 				} else {
+					auto* se = action->GetFailureSe();
+					if (se) {
+						Main_Data::game_system->SePlay(*se);
+					}
 					DrawFloatText(
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
@@ -1075,12 +1089,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			status_window->Refresh();
 		} while (action->TargetNext());
-
-		//FIXME: Figure out specific logic for 2k3 and remove GetResultSe() method.
-		//This method is no longer used in 2k battle system.
-		if (action->GetResultSe()) {
-			Main_Data::game_system->SePlay(*action->GetResultSe());
-		}
 
 		battle_action_wait = 30;
 

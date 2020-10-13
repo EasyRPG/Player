@@ -336,13 +336,6 @@ public:
 	virtual const lcf::rpg::Sound* GetFailureSe() const;
 
 	/**
-	 * Gets the sound effect that is played then the action took place.
-	 *
-	 * @return result se
-	 */
-	virtual const lcf::rpg::Sound* GetResultSe() const;
-
-	/**
 	 * Gets the sound effect that is played when the target died.
 	 *
 	 * @return death se
@@ -529,7 +522,6 @@ public:
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
-	const lcf::rpg::Sound* GetResultSe() const override;
 	std::string GetFailureMessage() const override;
 	bool IsReflected() const override;
 	bool ActionIsPossible() const override;

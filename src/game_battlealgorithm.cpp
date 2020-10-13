@@ -782,24 +782,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 }
 
-const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
-	if (!success) {
-		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
-	}
-	if (IsPositive() || IsAbsorb()) {
-		return nullptr;
-	}
-	if (GetAffectedHp() > -1) {
-		if (current_target != targets.end()) {
-			return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
-				&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage) :
-				&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
-		}
-	}
-
-	return NULL;
-}
-
 const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 	return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
 		NULL : &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
@@ -1358,11 +1340,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
 	return skill.failure_message != 3
 		? nullptr
-		: AlgorithmBase::GetResultSe();
-}
-
-const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
-	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
+		: &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 }
 
 std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
