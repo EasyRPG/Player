@@ -122,7 +122,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	reflect = -1;
 	states.clear();
-	shift_attributes.clear();
+	attributes.clear();
 
 	if (!IsFirstAttack()) {
 		switch_on.clear();
@@ -154,8 +154,8 @@ int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
 	return agility;
 }
 
-const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetShiftedAttributes() const {
-	return shift_attributes;
+const std::vector<Game_BattleAlgorithm::AttributeEffect>& Game_BattleAlgorithm::AlgorithmBase::GetShiftedAttributes() const {
+	return attributes;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
@@ -734,17 +734,17 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
 	}
 }
 
-int Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffect(int attr_id) {
+int Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffect(AttributeEffect ae) {
 	auto* target = GetTarget();
 	if (target) {
-		return target->ShiftAttributeRate(attr_id, IsPositiveSkill() ? 1 : -1);
+		return target->ShiftAttributeRate(ae.attr_id, ae.shift);
 	}
 	return 0;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
-	for (auto& sa: shift_attributes) {
-		ApplyAttributeShiftEffect(sa);
+	for (auto& ae: attributes) {
+		ApplyAttributeShiftEffect(ae);
 	}
 }
 
@@ -1354,11 +1354,18 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
 	if (skill.affect_attr_defence) {
+		auto shift = IsPositiveSkill() ? 1 : -1;
 		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
-			if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositiveSkill() ? 1 : -1)) {
-				if (!Rand::PercentChance(to_hit))
-					continue;
-				shift_attributes.push_back(i + 1);
+			auto id = i + 1;
+			if (skill.attribute_effects[i]
+					&& GetTarget()->CanShiftAttributeRate(id, shift)
+					&& Rand::PercentChance(to_hit)
+					)
+			{
+				AttributeEffect ae;
+				ae.attr_id = id;
+				ae.shift = shift;
+				attributes.push_back(ae);
 				this->success = true;
 			}
 		}

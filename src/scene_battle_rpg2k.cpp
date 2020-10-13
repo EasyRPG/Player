@@ -1009,10 +1009,10 @@ bool Scene_Battle_Rpg2k::ProcessActionAttributeEffects(Game_BattleAlgorithm::Alg
 		}
 
 		for (;idx < (int)attrs.size(); ++idx) {
-			int attr_id = attrs[battle_action_substate_index];
-			auto shifted = action->ApplyAttributeShiftEffect(attr_id);
+			auto& ae = attrs[battle_action_substate_index];
+			auto shifted = action->ApplyAttributeShiftEffect(ae);
 			if (shifted != 0) {
-				pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, attr_id)->name);
+				pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, ae.attr_id)->name);
 				break;
 			}
 		}

@@ -68,6 +68,11 @@ struct StateEffect {
 		: state_id(state_id), effect(effect) {}
 };
 
+struct AttributeEffect {
+	int16_t attr_id = 0;
+	int16_t shift = 0;
+};
+
 class AlgorithmBase {
 public:
 	virtual ~AlgorithmBase() {}
@@ -183,7 +188,7 @@ public:
 	 *
 	 * @return shifted attributes
 	 */
-	const std::vector<int16_t>& GetShiftedAttributes() const;
+	const std::vector<AttributeEffect>& GetShiftedAttributes() const;
 
 	/**
 	 * Gets activated switch.
@@ -279,7 +284,7 @@ public:
 	int ApplyAgiEffect();
 	void ApplyStateEffect(StateEffect se);
 	void ApplyStateEffects();
-	int ApplyAttributeShiftEffect(int attr);
+	int ApplyAttributeShiftEffect(AttributeEffect ae);
 	void ApplyAttributeShiftEffects();
 	void ApplyAll();
 
@@ -497,7 +502,7 @@ protected:
 	bool has_animation2_played = false;
 
 	std::vector<StateEffect> states;
-	std::vector<int16_t> shift_attributes;
+	std::vector<AttributeEffect> attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 
