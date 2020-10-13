@@ -487,6 +487,10 @@ if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
 endif()
 
+if(ANDROID)
+	target_link_libraries(${PROJECT_NAME} log)
+endif()
+
 if(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/registry.cpp
