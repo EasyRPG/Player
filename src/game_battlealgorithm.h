@@ -449,7 +449,6 @@ public:
 	std::string GetAttributeShiftMessage(int value, StringView attribute) const;
 
 protected:
-	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 
@@ -473,8 +472,6 @@ protected:
 	mutable std::vector<Game_Battler*>::iterator current_target;
 	Game_Party_Base* party_target = nullptr;
 
-	bool no_target;
-
 	int hp;
 	int sp;
 	int attack;
@@ -483,7 +480,7 @@ protected:
 	int agility;
 	int switch_id;
 
-	mutable bool first_attack;
+	mutable bool first_attack = true;
 	bool healing;
 	bool negative_effect;
 	bool success;

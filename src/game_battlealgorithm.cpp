@@ -79,23 +79,8 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 	}
 }
 
-
-
-Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
-	type(ty), source(source), no_target(true), first_attack(true),
-	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
-{
-	Reset();
-
-	source->SetIsDefending(false);
-	physical_charged = source->IsCharged();
-	source->SetCharged(false);
-
-	current_target = targets.end();
-}
-
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
-	type(ty), source(source), no_target(false), first_attack(true),
+	type(ty), source(source),
 	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
@@ -108,7 +93,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
-	type(ty), source(source), no_target(false), first_attack(true),
+	type(ty), source(source),
 	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	Reset();
@@ -778,12 +763,6 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
-	if (no_target) {
-		// Selected algorithm does not need a target because it targets
-		// the source
-		return true;
-	}
-
 	if (current_target == targets.end()) {
 		// End of target list reached
 		return false;
@@ -914,7 +893,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 }
 
 Game_BattleAlgorithm::Null::Null(Game_Battler* source) :
-AlgorithmBase(Type::Null, source) {
+AlgorithmBase(Type::Null, source, source) {
 	// no-op
 }
 
@@ -1140,9 +1119,8 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
-	AlgorithmBase(Type::Skill, source), skill(skill), item(item)
+	Skill(source, source, skill, item)
 {
-	Init();
 }
 
 void Game_BattleAlgorithm::Skill::Init() {
@@ -1156,10 +1134,6 @@ void Game_BattleAlgorithm::Skill::Init() {
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
-	if (no_target) {
-		return true;
-	}
-
 	if (current_target == targets.end()) {
 		return false;
 	}
@@ -1588,15 +1562,9 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, const lcf::rpg::Item& item) :
-AlgorithmBase(Type::Item, source), item(item) {
-	// no-op
-}
+	Item(source, source, item) {}
 
 bool Game_BattleAlgorithm::Item::IsTargetValid() const {
-	if (no_target) {
-		return true;
-	}
-
 	if (current_target == targets.end()) {
 		return false;
 	}
@@ -1726,7 +1694,7 @@ bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
-	AlgorithmBase(Type::Defend, source) {
+	AlgorithmBase(Type::Defend, source, source) {
 		source->SetIsDefending(true);
 }
 
@@ -1756,7 +1724,7 @@ bool Game_BattleAlgorithm::Defend::Execute() {
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
-AlgorithmBase(Type::Observe, source) {
+AlgorithmBase(Type::Observe, source, source) {
 	// no-op
 }
 
@@ -1783,7 +1751,7 @@ bool Game_BattleAlgorithm::Observe::Execute() {
 }
 
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
-AlgorithmBase(Type::Charge, source) {
+AlgorithmBase(Type::Charge, source, source) {
 	// no-op
 }
 
@@ -1889,7 +1857,7 @@ void Game_BattleAlgorithm::SelfDestruct::ApplyInitialEffect() {
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
-	AlgorithmBase(Type::Escape, source) {
+	AlgorithmBase(Type::Escape, source, source) {
 	// no-op
 }
 
@@ -1951,7 +1919,7 @@ void Game_BattleAlgorithm::Escape::ApplyInitialEffect() {
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
-AlgorithmBase(Type::Transform, source), new_monster_id(new_monster_id) {
+AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 	// no-op
 }
 
@@ -1982,7 +1950,7 @@ void Game_BattleAlgorithm::Transform::ApplyInitialEffect() {
 }
 
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
-AlgorithmBase(Type::NoMove, source) {
+AlgorithmBase(Type::NoMove, source, source) {
 	// no-op
 }
 
