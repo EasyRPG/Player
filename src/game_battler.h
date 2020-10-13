@@ -188,10 +188,12 @@ public:
 	 */
 	int ShiftAttributeRate(int attribute_id, int shift);
 
-	/*
-	 * @return true if we can shift the attribute rate by shift
+	/**
+	 * Checks if we can shift an attribute.
+	 *
+	 * @return The amount we are able to shift by.
 	 */
-	bool CanShiftAttributeRate(int attribute_id, int shift) const;
+	int CanShiftAttributeRate(int attribute_id, int shift) const;
 
 	/**
 	 * Gets the current modifier (buff/debuff) to an attribute rate.
@@ -499,6 +501,38 @@ public:
 	 * @return how much the modifier was actually changed.
 	 */
 	int ChangeAgiModifier(int modifier);
+
+	/**
+	 * Check if we can increases or decreases battler attack modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeAtkModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler defense modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeDefModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler spirit modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeSpiModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler agility modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeAgiModifier(int modifier) const;
 
 	/**
 	 * Add a State.

@@ -266,9 +266,9 @@ TEST_CASE("AttributeShift") {
 		auto& enemy = MakeEnemyAttribute(1, 1, 2);
 		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
 		REQUIRE(enemy.CanShiftAttributeRate(1, 1));
-		REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, 2));
+		REQUIRE_EQ(1, enemy.CanShiftAttributeRate(1, 2));
 		REQUIRE(enemy.CanShiftAttributeRate(1, -1));
-		REQUIRE_FALSE(enemy.CanShiftAttributeRate(1, -2));
+		REQUIRE_EQ(-1, enemy.CanShiftAttributeRate(1, -2));
 
 		REQUIRE_EQ(enemy.GetAttributeRateShift(1), 0);
 		REQUIRE_EQ(enemy.GetBaseAttributeRate(1), 2);

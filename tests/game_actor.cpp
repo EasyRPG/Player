@@ -666,9 +666,9 @@ TEST_CASE("AttributeShift") {
 		auto actor = MakeActorAttribute(1, 1, 2);
 
 		REQUIRE(actor.CanShiftAttributeRate(1, 1));
-		REQUIRE_FALSE(actor.CanShiftAttributeRate(1, 2));
+		REQUIRE_EQ(1, actor.CanShiftAttributeRate(1, 2));
 		REQUIRE(actor.CanShiftAttributeRate(1, -1));
-		REQUIRE_FALSE(actor.CanShiftAttributeRate(1, -2));
+		REQUIRE_EQ(-1, actor.CanShiftAttributeRate(1, -2));
 
 		REQUIRE_EQ(actor.GetAttributeRateShift(1), 0);
 		REQUIRE_EQ(actor.GetBaseAttributeRate(1), 2);

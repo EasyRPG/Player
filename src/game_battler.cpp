@@ -586,14 +586,11 @@ int Game_Battler::GetAttributeRate(int attribute_id) const {
 }
 
 int Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
-	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
-		return 0;
+	auto delta = CanShiftAttributeRate(attribute_id, shift);
+	if (delta) {
+		attribute_shift[attribute_id -1] += delta;
 	}
-
-	auto& a = attribute_shift[attribute_id -1];
-	const auto prev_a = a;
-	a = Utils::Clamp(a + shift, -1, 1);
-	return a - prev_a;
+	return delta;
 }
 
 int Game_Battler::GetAttributeRateShift(int attribute_id) const {
@@ -603,12 +600,13 @@ int Game_Battler::GetAttributeRateShift(int attribute_id) const {
 	return attribute_shift[attribute_id - 1];
 }
 
-bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
+int Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
 	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
-		return false;
+		return 0;
 	}
-	auto new_shift = attribute_shift[attribute_id - 1] + shift;
-	return new_shift >= -1 && new_shift <= 1;
+	const auto prev_shift = attribute_shift[attribute_id - 1];
+	const auto new_shift = Utils::Clamp(prev_shift + shift, -1, 1);
+	return new_shift - prev_shift;
 }
 
 int Game_Battler::GetHitChanceModifierFromStates() const {
@@ -638,31 +636,55 @@ void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
 	flash.time_left = frames;
 }
 
-int Game_Battler::ChangeAtkModifier(int modifier) {
+int Game_Battler::CanChangeAtkModifier(int modifier) const {
 	const auto prev = atk_modifier;
 	const auto base = GetBaseAtk();
-	SetAtkModifier(Utils::Clamp(atk_modifier + modifier, -base / 2, base));
-	return atk_modifier - prev;
+	const auto new_mod = (Utils::Clamp(atk_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeDefModifier(int modifier) const {
+	const auto prev = def_modifier;
+	const auto base = GetBaseDef();
+	const auto new_mod = (Utils::Clamp(def_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeSpiModifier(int modifier) const {
+	const auto prev = spi_modifier;
+	const auto base = GetBaseSpi();
+	const auto new_mod = (Utils::Clamp(spi_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeAgiModifier(int modifier) const {
+	const auto prev = agi_modifier;
+	const auto base = GetBaseAgi();
+	const auto new_mod = (Utils::Clamp(agi_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::ChangeAtkModifier(int modifier) {
+	auto delta = CanChangeAtkModifier(modifier);
+	SetAtkModifier(atk_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeDefModifier(int modifier) {
-	const auto prev = def_modifier;
-	const auto base = GetBaseDef();
-	SetDefModifier(Utils::Clamp(def_modifier + modifier, -base / 2, base));
-	return def_modifier - prev;
+	auto delta = CanChangeDefModifier(modifier);
+	SetDefModifier(def_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeSpiModifier(int modifier) {
-	const auto prev = spi_modifier;
-	const auto base = GetBaseSpi();
-	SetSpiModifier(Utils::Clamp(spi_modifier + modifier, -base / 2, base));
-	return spi_modifier - prev;
+	auto delta = CanChangeSpiModifier(modifier);
+	SetSpiModifier(spi_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeAgiModifier(int modifier) {
-	const auto prev = agi_modifier;
-	const auto base = GetBaseAgi();
-	SetAgiModifier(Utils::Clamp(agi_modifier + modifier, -base / 2, base));
-	return agi_modifier - prev;
+	auto delta = CanChangeAgiModifier(modifier);
+	SetAgiModifier(agi_modifier + delta);
+	return delta;
 }
 

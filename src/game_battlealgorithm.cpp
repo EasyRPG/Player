@@ -1230,33 +1230,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 	}
 
+	const auto param_effect = healing ? effect : -effect;
+
 	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
-		if (!this->healing) {
-			this->attack = Utils::Clamp(effect, 0, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2);
-		} else {
-			this->attack = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk());
-		}
+		this->attack = std::abs(target->CanChangeAtkModifier(param_effect));
 	}
 	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
-		if (!this->healing) {
-			this->defense = Utils::Clamp(effect, 0, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2);
-		} else {
-			this->defense = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef());
-		}
+		this->defense = std::abs(target->CanChangeDefModifier(param_effect));
 	}
 	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
-		if (!this->healing) {
-			this->spirit = Utils::Clamp(effect, 0, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2);
-		} else {
-			this->spirit = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi());
-		}
+		this->spirit = std::abs(target->CanChangeSpiModifier(param_effect));
 	}
 	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
-		if (!this->healing) {
-			this->agility = Utils::Clamp(effect, 0, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2);
-		} else {
-			this->agility = Utils::Clamp(effect, 0, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi());
-		}
+		this->agility = std::abs(target->CanChangeAgiModifier(param_effect));
 	}
 
 	if (IsNegativeSkill()) {
