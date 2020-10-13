@@ -21,8 +21,9 @@ add_library(retro_common STATIC
 target_include_directories(retro_common PUBLIC
 	libretro-common/include)
 
-if(NOT MSVC)
-	target_link_libraries(retro_common "pthread")
+find_library(PTHREAD_LIBRARY pthread)
+if(PTHREAD_LIBRARY)
+	target_link_libraries(retro_common "${PTHREAD_LIBRARY}")
 endif()
 
 if(BUILD_SHARED_LIBS)
