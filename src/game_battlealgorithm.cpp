@@ -720,7 +720,6 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	}
 
 	current_target = targets.begin();
-	cur_repeat = 0;
 
 	if (!IsTargetValid()) {
 		TargetNext();
@@ -728,13 +727,16 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	++cur_repeat;
-	if (IsTargetValid() && cur_repeat < repeat) {
-		return true;
-	}
-	cur_repeat = 0;
-
 	return TargetNextInternal();
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::RepeatNext() {
+	++cur_repeat;
+	if (!IsTargetValid() || cur_repeat >= repeat) {
+		cur_repeat = 0;
+		return false;
+	}
+	return true;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {

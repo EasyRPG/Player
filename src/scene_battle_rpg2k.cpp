@@ -1059,7 +1059,7 @@ bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBa
 		}
 	}
 
-	if (action->TargetNext()) {
+	if (action->RepeatNext() || action->TargetNext()) {
 		// Clear the console for the next target
 		battle_message_window->PopUntil(battle_action_start_index);
 		battle_message_window->ScrollToEnd();

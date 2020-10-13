@@ -119,6 +119,13 @@ public:
 	bool TargetNext();
 
 	/**
+	 * Performs the next repeated action.
+	 *
+	 * @return true if the action should be repeated. Once false is returned, the repetition resets.
+	 */
+	bool RepeatNext();
+
+	/**
 	 * Defines switches that will be switched on after the action is finished.
 	 * Multiple calls to this function will add additional switches to the list.
 	 * 
