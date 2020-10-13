@@ -30,6 +30,53 @@
 
 constexpr std::array<Game_Ineluki::Mapping, 61> Game_Ineluki::key_to_ineluki;
 
+namespace {
+#if defined(SUPPORT_KEYBOARD)
+	void mask_kb(bool mask) {
+		constexpr std::array<Input::Keys::InputKey, 4> keys = {
+				Input::Keys::W,
+				Input::Keys::S,
+				Input::Keys::A,
+				Input::Keys::D
+		};
+
+		auto keymask = Input::GetMask();
+		for (auto k : keys) {
+			keymask[k] = mask;
+		}
+		Input::SetMask(keymask);
+	}
+#endif
+
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	void mask_mouse(bool mask) {
+		constexpr std::array<Input::Keys::InputKey, 2> keys = {
+			Input::Keys::MOUSE_LEFT,
+			Input::Keys::MOUSE_RIGHT
+		};
+
+		auto keymask = Input::GetMask();
+		for (auto k : keys) {
+			keymask[k] = mask;
+		}
+		Input::SetMask(keymask);
+	}
+#endif
+}
+
+Game_Ineluki::~Game_Ineluki() {
+#if defined(SUPPORT_KEYBOARD)
+	if (key_support) {
+		mask_kb(false);
+	}
+#endif
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	if (mouse_support) {
+		mask_mouse(false);
+	}
+#endif
+}
+
 bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	if (Utils::LowerCase(se.name) == "saves.script") {
 		// Support for the script written by SaveCount.dat
@@ -86,11 +133,19 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 		} else if (cmd.name == "addoutput") {
 			output_list.push_back(atoi(cmd.arg.c_str()));
 		} else if (cmd.name == "enablekeysupport") {
+			bool prev_key_support = key_support;
 			key_support = Utils::LowerCase(cmd.arg) == "true";
+
 #if !defined(SUPPORT_KEYBOARD)
 			if (key_support) {
 				Output::Warning("Ineluki: Keyboard input is not supported on this platform");
 			}
+#else
+			if (prev_key_support != key_support) {
+				Output::Debug("Ineluki: Key support is now {}", key_support ? "Enabled" : "Disabled");
+			}
+
+			mask_kb(key_support);
 #endif
 		} else if (cmd.name == "registerkeydownevent") {
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
@@ -109,6 +164,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 				keylist_up.push_back({it->key, atoi(cmd.arg2.c_str())});
 			}
 		} else if (cmd.name == "enablemousesupport") {
+			bool prev_mouse_support = mouse_support;
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
 			// TODO: automatic (append mouse pos every 500ms) not implemented
@@ -116,6 +172,12 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			if (mouse_support) {
 				Output::Debug("Ineluki: Mouse input is not supported on this platform");
 			}
+#else
+			if (prev_mouse_support != mouse_support) {
+				Output::Debug("Ineluki: Mouse support is now {}", mouse_support ? "Enabled" : "Disabled");
+			}
+
+			mask_mouse(mouse_support);
 #endif
 		} else if (cmd.name == "getmouseposition") {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)

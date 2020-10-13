@@ -73,6 +73,8 @@ void Input::Init(
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
+
+	ResetMask();
 }
 
 static void UpdateButton(int i, bool pressed) {
@@ -325,4 +327,38 @@ void Input::AddRecordingData(Input::RecordingData type, StringView data) {
 bool Input::IsRecording() {
 	assert(source);
 	return source->IsRecording();
+}
+
+Input::KeyStatus Input::GetMask() {
+	assert(source);
+	return source->GetMask();
+}
+
+void Input::SetMask(Input::KeyStatus new_mask) {
+	auto& old_mask = source->GetMask();
+
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	if (!Player::mouse_flag) {
+		// Mask mouse input when mouse input is not enabled
+		constexpr std::array<Input::Keys::InputKey, 7> mouse_keys = {
+			Input::Keys::MOUSE_LEFT,
+			Input::Keys::MOUSE_RIGHT,
+			Input::Keys::MOUSE_MIDDLE,
+			Input::Keys::MOUSE_XBUTTON1,
+			Input::Keys::MOUSE_XBUTTON2,
+			Input::Keys::MOUSE_SCROLLUP,
+			Input::Keys::MOUSE_SCROLLDOWN
+		};
+		for (auto k: mouse_keys) {
+			new_mask[k] = true;
+		}
+	}
+#endif
+
+	old_mask = new_mask;
+}
+
+void Input::ResetMask() {
+	assert(source);
+	SetMask(source->GetMask());
 }

@@ -34,6 +34,8 @@
  */
 class Game_Ineluki {
 public:
+	~Game_Ineluki();
+
 	/**
 	 * Executes the specified sound effect (which is actually an INI file) as a keypatch script.
 	 * The file is not requested asynchroniously.

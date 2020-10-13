@@ -56,6 +56,10 @@ void Input::UiSource::DoUpdate(bool system_only) {
 	pressed_buttons = {};
 
 	for (auto& bm: button_mappings) {
+		if (keymask[bm.second]) {
+			continue;
+		}
+
 		if (!system_only || Input::IsSystemButton(bm.first)) {
 			pressed_buttons[bm.first] = pressed_buttons[bm.first] | keystates[bm.second];
 		}

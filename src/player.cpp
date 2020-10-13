@@ -844,6 +844,8 @@ void Player::ResetGameObjects() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	Main_Data::game_system->ReloadSystemGraphic();
+
+	Input::ResetMask();
 }
 
 static bool DefaultLmuStartFileExists(const FileFinder::DirectoryTree& dir) {
