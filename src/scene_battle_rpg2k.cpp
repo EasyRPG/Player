@@ -547,7 +547,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 
 bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action) {
 
-	action->TargetFirst();
+	action->InitTargets();
 	if (!action->IsTargetValid()) {
 		if (!action->GetTarget()) {
 			// No target but not a target-only action.

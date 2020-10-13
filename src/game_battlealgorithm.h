@@ -104,7 +104,7 @@ public:
 	 * Initializes targetting. Must be called after initialising a multi target
 	 * skill, otherwise will behave incorrectly.
 	 */
-	void TargetFirst();
+	void InitTargets();
 
 	/**
 	 * Changes the target reference to the next target.

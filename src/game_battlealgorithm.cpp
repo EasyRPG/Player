@@ -773,7 +773,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Idle;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	if (party_target) {
 		if (IsReflected()) {
 			party_target->GetBattlers(original_targets);

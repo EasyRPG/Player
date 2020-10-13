@@ -943,12 +943,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return false;
 		}
 
-		// FIXME: This gets cleared after calling TargetFirst() so we query it now.
+		// FIXME: This gets cleared after calling InitTargets() so we query it now.
 		// Refactor this to be less brittle.
 		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
 		is_target_party = action->IsTargetingParty();
 
-		action->TargetFirst();
+		action->InitTargets();
 
 		if (action->GetSource()->GetType() == Game_Battler::Type_Ally && combo_repeat == 1) {
 			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
