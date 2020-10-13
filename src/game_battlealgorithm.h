@@ -379,13 +379,6 @@ public:
 	virtual std::string GetDeathMessage() const;
 
 	/**
-	 * Returns the physical rate of the attack.
-	 *
-	 * @return physical rate
-	 */
-	virtual int GetPhysicalDamageRate() const;
-
-	/**
 	 * Returns whether the attack is reflected to the source.
 	 * This is automatically handled by the battle algorithm class and
 	 * GetTarget will return the source instead.
@@ -534,7 +527,6 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
-	int GetPhysicalDamageRate() const override;
 private:
 	void Init();
 	Game_Battler::Weapon weapon= Game_Battler::WeaponAll;
@@ -558,7 +550,6 @@ public:
 	const lcf::rpg::Sound* GetFailureSe() const override;
 	const lcf::rpg::Sound* GetResultSe() const override;
 	std::string GetFailureMessage() const override;
-	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
 	bool ActionIsPossible() const override;
 
@@ -620,7 +611,6 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
-	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
 };

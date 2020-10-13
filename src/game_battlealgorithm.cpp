@@ -877,10 +877,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 		NULL : &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 }
 
-int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
-	return 0;
-}
-
 bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
@@ -988,7 +984,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto target_perm_states = target.GetPermanentStates();
 
 	// Conditions healed by physical attack:
-	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
+	BattlePhysicalStateHeal(100, target_states, target_perm_states, states);
 
 	// Conditions caused / healed by weapon.
 	if (source.GetType() == Game_Battler::Type_Ally) {
@@ -1091,10 +1087,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	else {
 		return NULL;
 	}
-}
-
-int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
-	return 100;
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
@@ -1314,7 +1306,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	// Conditions healed by physical attack:
 	if (!IsPositive() && skill.affect_hp && !IsAbsorb()) {
-		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
+		BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states, states);
 	}
 
 	bool heals_states = IsPositiveSkill() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
@@ -1480,10 +1472,6 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 			break;
 	}
 	return "BUG: INVALID SKILL FAIL MSG";
-}
-
-int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
-	return skill.physical_rate * 10;
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected() const {
@@ -1792,10 +1780,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill);
 }
 
-int Game_BattleAlgorithm::SelfDestruct::GetPhysicalDamageRate() const {
-	return 100;
-}
-
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	Reset();
 
@@ -1815,7 +1799,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		auto target_perm_states = target.GetPermanentStates();
 
 		// Conditions healed by physical attack:
-		BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
+		BattlePhysicalStateHeal(100, target_states, target_perm_states, states);
 	}
 
 	success = true;
