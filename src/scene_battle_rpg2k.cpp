@@ -816,7 +816,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 
 		if (battle_action_substate == ePreHp) {
 			// Damage is handled by Damage state, so only check healing here.
-			if (action->GetAffectedHp() > 0 && !action->IsRevived() && action->GetType() != Game_BattleAlgorithm::Type::Item) {
+			if (action->GetAffectedHp() > 0 && !action->IsRevived()) {
 				auto hp = action->ApplyHpEffect();
 				pending_message = action->GetHpSpRecoveredMessage(hp, lcf::Data::terms.health_points);
 			}
@@ -828,7 +828,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 			if (action->IsAbsorb()) {
 				pending_message = action->GetHpSpAbsorbedMessage(-sp, lcf::Data::terms.spirit_points);
 			} else {
-				if (sp > 0 && action->GetType() != Game_BattleAlgorithm::Type::Item) {
+				if (sp > 0) {
 					pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
 				}
 				if (sp < 0) {
