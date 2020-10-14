@@ -1648,10 +1648,6 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 	}
 }
 
-int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_SelfDestruct;
-}
-
 const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill);
 }

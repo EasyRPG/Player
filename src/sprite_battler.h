@@ -44,7 +44,6 @@ public:
 		AnimationState_WalkingRight,
 		AnimationState_Victory,
 		AnimationState_Item,
-		AnimationState_SelfDestruct = 255
 	};
 
 	enum LoopState {

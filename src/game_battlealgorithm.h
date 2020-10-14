@@ -589,7 +589,6 @@ public:
 	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
 
 	std::string GetStartMessage() const override;
-	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
