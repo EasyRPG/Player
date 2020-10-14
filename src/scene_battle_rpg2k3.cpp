@@ -969,7 +969,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
-		if (!action->IsTargetValid()) {
+		if (!action->IsCurrentTargetValid()) {
 			if (!action->GetTarget()) {
 				// No target but not a target-only action.
 				// Maybe a bug report will help later
@@ -979,7 +979,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 
-			if (!action->IsTargetValid()) {
+			if (!action->IsCurrentTargetValid()) {
 				// Nothing left to target, abort
 				return true;
 			}

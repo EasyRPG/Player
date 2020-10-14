@@ -282,9 +282,13 @@ public:
 	 * Tests if it makes sense to apply an action on the target.
 	 * E.g. when it is dead.
 	 *
+	 * @param target the target to check
 	 * @return true if valid, in case of false another target should be selected.
 	 */
-	virtual bool IsTargetValid() const;
+	virtual bool IsTargetValid(const Game_Battler& target) const;
+
+	/** @return whether the current target is valid */
+	bool IsCurrentTargetValid() const;
 
 	/**
 	 * Gets the first line message that is displayed when the action is invoked.
@@ -519,7 +523,7 @@ public:
 	Skill(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 	Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 
-	bool IsTargetValid() const override;
+	bool IsTargetValid(const Game_Battler&) const override;
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
 
@@ -545,7 +549,7 @@ public:
 	Item(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Item& item);
 	Item(Game_Battler* source, const lcf::rpg::Item& item);
 
-	bool IsTargetValid() const override;
+	bool IsTargetValid(const Game_Battler&) const override;
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
 

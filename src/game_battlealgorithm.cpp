@@ -688,13 +688,8 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
 	ApplyAttributeShiftEffects();
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
-	if (current_target == targets.end()) {
-		// End of target list reached
-		return false;
-	}
-
-	return GetTarget()->Exists();
+bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid(const Game_Battler& target) const {
+	return target.Exists();
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
@@ -721,7 +716,7 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 
 	current_target = targets.begin();
 
-	if (!IsTargetValid()) {
+	if (!IsCurrentTargetValid()) {
 		TargetNext();
 	}
 }
@@ -732,11 +727,18 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 
 bool Game_BattleAlgorithm::AlgorithmBase::RepeatNext() {
 	++cur_repeat;
-	if (!IsTargetValid() || cur_repeat >= repeat) {
+	if (!IsCurrentTargetValid() || cur_repeat >= repeat) {
 		cur_repeat = 0;
 		return false;
 	}
 	return true;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsCurrentTargetValid() const {
+	if (current_target == targets.end()) {
+		return false;
+	}
+	return IsTargetValid(**current_target);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
@@ -747,7 +749,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 		}
 
 		++current_target;
-	} while (!IsTargetValid());
+	} while (!IsCurrentTargetValid());
 
 	return true;
 }
@@ -1023,28 +1025,18 @@ void Game_BattleAlgorithm::Skill::Init() {
 	}
 }
 
-bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
-	if (current_target == targets.end()) {
+bool Game_BattleAlgorithm::Skill::IsTargetValid(const Game_Battler& target) const {
+	if (target.IsHidden()) {
 		return false;
 	}
 
-	if (skill.scope == lcf::rpg::Skill::Scope_ally ||
-		skill.scope == lcf::rpg::Skill::Scope_party) {
-		// Ignore hidden targets
-		if (GetTarget()->IsHidden()) {
-			return false;
-		}
-
-		if (GetTarget()->IsDead()) {
-			// Cures death
-			// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
-			return !skill.state_effects.empty() && skill.state_effects[0];
-		}
-
-		return true;
+	if (Algo::SkillTargetsAllies(skill) && target.IsDead()) {
+		// Cures death
+		// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
+		return !skill.state_effects.empty() && skill.state_effects[0];
 	}
 
-	return GetTarget()->Exists();
+	return true;
 }
 
 
@@ -1426,10 +1418,7 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, const lcf::rpg::Item& item) :
 	Item(source, source, item) {}
 
-bool Game_BattleAlgorithm::Item::IsTargetValid() const {
-	if (current_target == targets.end()) {
-		return false;
-	}
+bool Game_BattleAlgorithm::Item::IsTargetValid(const Game_Battler&) const {
 	return item.type == lcf::rpg::Item::Type_medicine;
 }
 
