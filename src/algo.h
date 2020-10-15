@@ -224,6 +224,16 @@ inline bool SkillTargetsAllies(const lcf::rpg::Skill& skill) {
 	return !SkillTargetsEnemies(skill);
 }
 
+/**
+ * Returns the number of attacks the weapon can do.
+ *
+ * @param the id of the actor to check
+ * @param weapon the item to check
+ * @pre If weapon is not a weapon type, the result is undefined.
+ * @return the number of attacks.
+ */
+int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon);
+
 } // namespace Algo
 
 

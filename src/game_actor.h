@@ -811,12 +811,12 @@ public:
 	bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const override;
 
 	/**
-	 * Tests if the battler has a weapon that grants dual attack.
+	 * Returns the number of times the battler will attack.
 	 *
 	 * @param weapon Which weapons to include in calculating result.
-	 * @return true if a weapon is having dual attack attribute
+	 * @return the number of attacks.
 	 */
-	bool HasDualAttack(Weapon weapon = WeaponAll) const;
+	int GetNumberOfAttacks(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon that grants attack all

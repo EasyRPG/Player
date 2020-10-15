@@ -648,6 +648,14 @@ public:
 	 */
 	virtual bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const;
 
+	/**
+	 * Returns the number of times the battler will attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return the number of attacks.
+	 */
+	virtual int GetNumberOfAttacks(Weapon weapon = WeaponAll) const;
+
 	enum BattlerType {
 		Type_Ally,
 		Type_Enemy
@@ -891,6 +899,10 @@ inline bool Game_Battler::HasStrongDefense() const {
 
 inline bool Game_Battler::HasPreemptiveAttack(Weapon) const {
 	return false;
+}
+
+inline int Game_Battler::GetNumberOfAttacks(Weapon) const {
+	return 1;
 }
 
 inline void Game_Battler::SetHidden(bool _hidden) {

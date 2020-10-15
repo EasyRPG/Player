@@ -50,7 +50,7 @@ TEST_CASE("Default") {
 		REQUIRE_EQ(actor.GetAgi(w), 14);
 
 		REQUIRE_FALSE(actor.HasPreemptiveAttack(w));
-		REQUIRE_FALSE(actor.HasDualAttack(w));
+		REQUIRE_EQ(actor.GetNumberOfAttacks(w), 1);
 		REQUIRE_FALSE(actor.HasAttackAll(w));
 		REQUIRE_FALSE(actor.AttackIgnoresEvasion(w));
 
@@ -372,7 +372,7 @@ static void testWeapon3(const Game_Actor* a,
 	REQUIRE_EQ(a->GetBaseAgi(wid), 14 + agi1 + agi2 + agiA);
 
 	REQUIRE_EQ(a->HasPreemptiveAttack(wid), pre1 | pre2);
-	REQUIRE_EQ(a->HasDualAttack(wid), dul1 | dul2);
+	REQUIRE_EQ(a->GetNumberOfAttacks(wid), 1 + (dul1 | dul2));
 	REQUIRE_EQ(a->HasAttackAll(wid), all1 | all2);
 	REQUIRE_EQ(a->AttackIgnoresEvasion(wid), eva1 | eva2);
 
@@ -533,7 +533,7 @@ TEST_CASE("ArmorWithWeaponFlags") {
 		REQUIRE_EQ(actor.GetHitChance(wid), 90);
 		REQUIRE_EQ(actor.GetCriticalHitChance(wid), doctest::Approx(0.03333f));
 		REQUIRE_FALSE(actor.HasPreemptiveAttack(wid));
-		REQUIRE_FALSE(actor.HasDualAttack(wid));
+		REQUIRE_EQ(1, actor.GetNumberOfAttacks(wid));
 		REQUIRE_FALSE(actor.HasAttackAll(wid));
 		REQUIRE_FALSE(actor.AttackIgnoresEvasion(wid));
 	}

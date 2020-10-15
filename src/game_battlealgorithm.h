@@ -489,8 +489,8 @@ public:
 
 class Normal : public AlgorithmBase {
 public:
-	Normal(Game_Battler* source, Game_Battler* target, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
-	Normal(Game_Battler* source, Game_Party_Base* target, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
+	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
+	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
 
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;

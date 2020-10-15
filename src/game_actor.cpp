@@ -1319,10 +1319,10 @@ bool Game_Actor::HasPreemptiveAttack(Weapon weapon) const {
 	return rc;
 }
 
-bool Game_Actor::HasDualAttack(Weapon weapon) const {
-	bool rc = false;
-	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.dual_attack; }, weapon);
-	return rc;
+int Game_Actor::GetNumberOfAttacks(Weapon weapon) const {
+	int hits = 1;
+	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { hits = std::max(hits, Algo::GetNumberOfAttacks(GetId(), item)); }, weapon);
+	return hits;
 }
 
 bool Game_Actor::HasAttackAll(Weapon weapon) const {

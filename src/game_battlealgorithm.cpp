@@ -730,27 +730,16 @@ bool Game_BattleAlgorithm::Null::Execute() {
 	return true;
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, Game_Battler::Weapon weapon) :
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Game_Battler::Weapon weapon) :
 	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
 {
-	Init();
+	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(weapon));
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, Game_Battler::Weapon weapon) :
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier, Game_Battler::Weapon weapon) :
 	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
 {
-	Init();
-}
-
-void Game_BattleAlgorithm::Normal::Init() {
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		Game_Actor* ally = static_cast<Game_Actor*>(source);
-
-		// FIMXE: This is only for 2k battles
-		if (ally->HasDualAttack(weapon)) {
-			SetRepeat(2);
-		}
-	}
+	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(weapon));
 }
 
 int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
