@@ -54,7 +54,7 @@ public:
 		BattleActionState_Usage2,
 		/**
 		 * Called once
-		 * Handles the animation
+		 * Handles the animations
 		 */
 		BattleActionState_Animation,
 		/**
@@ -220,7 +220,7 @@ protected:
 	void ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	void SetWait(int min_wait, int max_wait);
-	void SetWaitForUsage(Game_BattleAlgorithm::Type type);
+	void SetWaitForUsage(Game_BattleAlgorithm::Type type, int anim_frames);
 	bool CheckWait();
 
 	std::unique_ptr<Window_BattleMessage> battle_message_window;

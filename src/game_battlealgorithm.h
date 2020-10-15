@@ -209,34 +209,25 @@ public:
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
 	 *
-	 * @return Battle Animation or NULL if no animation is assigned
+	 * @param i Which animation to fetch, starting from 0.
+	 * @return Battle Animation id or 0 if no animation is assigned
 	 */
-	const lcf::rpg::Animation* GetAnimation() const;
-	const lcf::rpg::Animation* GetSecondAnimation() const;
-
-	/**
-	 * Checks if the animation has already played once
-	 *
-	 * @return Whether the animation played once
-	 */
-	bool HasAnimationPlayed() const;
-	bool HasSecondAnimationPlayed() const;
+	virtual int GetAnimationId(int i) const;
 
 	/**
 	 * Plays the battle animation on the targets.
 	 * Takes care of single- and multi-target animations.
-	 * Must be called before calling TargetNext, otherwise the result will
-	 * be incorrect.
 	 *
+	 * @param anim_id the ID of the animation to play.
 	 * @param on_original_targets Renders the animation on the original
 	 *                            targets instead of the current
 	 *                            targets (required for reflect)
+	 * @param sound_only Only play sounds
+	 * @param cutoff If >= 0 maximum number of frames to play
 	 * @param invert Flips the animation
+	 * @return the number of frames the animation will play
 	 */
-	void PlayAnimation(bool on_original_targets = false, bool invert = false);
-	void PlaySecondAnimation(bool on_original_targets = false, bool invert = false);
-
-	void PlaySoundAnimation(bool on_original_targets = false, int cutoff = -1);
+	int PlayAnimation(int anim_id, bool on_original_targets, bool sound_only = false, int cutoff = -1, bool invert = false);
 
 	/**
 	 * Returns whether the action hit the target.
@@ -476,11 +467,6 @@ protected:
 	int cur_repeat = 0;
 	int repeat = 1;
 
-	lcf::rpg::Animation* animation = nullptr;
-	lcf::rpg::Animation* animation2 = nullptr;
-	bool has_animation_played = false;
-	bool has_animation2_played = false;
-
 	std::vector<StateEffect> states;
 	std::vector<AttributeEffect> attributes;
 	std::vector<int> switch_on;
@@ -509,6 +495,7 @@ public:
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
 
+	int GetAnimationId(int i) const override;
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
@@ -527,6 +514,7 @@ public:
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
 
+	int GetAnimationId(int i) const override;
 	std::string GetStartMessage() const override;
 	bool HasSecondStartMessage() const override;
 	std::string GetSecondStartMessage() const override;
@@ -700,12 +688,8 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
 	return true;
 }
 
-inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
-	return animation;
-}
-
-inline const lcf::rpg::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
-	return animation2;
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAnimationId(int) const {
+	return 0;
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectHp() const {

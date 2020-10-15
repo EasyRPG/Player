@@ -135,101 +135,22 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_original_targets, bool invert) {
-	if (current_target == targets.end() || !GetAnimation()) {
-		return;
+int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool on_original_targets, bool only_sound, int cutoff, bool invert) {
+	if (anim_id == 0) {
+		return 0;
 	}
 
-	if (on_original_targets) {
-		std::vector<Game_Battler*> anim_original_targets;
-		for (Game_Battler* original_target : original_targets) {
-			if (original_target->Exists()) anim_original_targets.push_back(original_target);
-		}
-
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_original_targets, false, -1, invert);
-		has_animation_played = true;
-		return;
-	}
-
-	auto old_current_target = current_target;
-	std::vector<Game_Battler*> anim_targets;
-
-	do {
-		anim_targets.push_back(*current_target);
-	} while (TargetNextInternal());
-
-	Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, -1, invert);
-	has_animation_played = true;
-
-	current_target = old_current_target;
-}
-
-void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_original_targets, bool invert) {
-	if (current_target == targets.end() || !GetSecondAnimation()) {
-		return;
-	}
-
-	if (on_original_targets) {
-		std::vector<Game_Battler*> anim_original_targets;
-		for (Game_Battler* original_target : original_targets) {
-			if (original_target->Exists()) anim_original_targets.push_back(original_target);
-		}
-
-		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_original_targets, false, -1, invert);
-		has_animation2_played = true;
-		return;
-	}
-
-	auto old_current_target = current_target;
+	const auto& candidates = on_original_targets
+		? original_targets : targets;
 
 	std::vector<Game_Battler*> anim_targets;
-
-	do {
-		anim_targets.push_back(*current_target);
-	} while (TargetNextInternal());
-
-	Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets, false, -1, invert);
-	has_animation2_played = true;
-
-	current_target = old_current_target;
-}
-
-void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_original_targets, int cutoff) {
-	if (current_target == targets.end() || !GetAnimation()) {
-		return;
-	}
-
-	if (on_original_targets) {
-		std::vector<Game_Battler*> anim_original_targets;
-		for (Game_Battler* original_target : original_targets) {
-			if (original_target->Exists()) anim_original_targets.push_back(original_target);
+	for (auto* t: candidates) {
+		if (IsTargetValid(*t)) {
+			anim_targets.push_back(t);
 		}
-
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_original_targets, true, cutoff);
-		return;
 	}
 
-	auto old_current_target = current_target;
-
-	std::vector<Game_Battler*> anim_targets;
-
-	do {
-		anim_targets.push_back(*current_target);
-	} while (TargetNextInternal());
-
-	Game_Battle::ShowBattleAnimation(
-		GetAnimation()->ID,
-		anim_targets, true, cutoff);
-
-	current_target = old_current_target;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::HasAnimationPlayed() const {
-	return has_animation_played;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::HasSecondAnimationPlayed() const {
-	return has_animation2_played;
+	return Game_Battle::ShowBattleAnimation(anim_id, anim_targets, only_sound, cutoff, invert);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
@@ -825,27 +746,32 @@ void Game_BattleAlgorithm::Normal::Init() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 
-		auto weapons = ally->GetWeapons(weapon);
-
 		// FIMXE: This is only for 2k battles
 		if (ally->HasDualAttack(weapon)) {
 			SetRepeat(2);
 		}
+	}
+}
 
-		if (weapons[0]) {
-			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapons[0]->animation_id);
-			if (weapons[1]) {
-				animation2 = lcf::ReaderUtil::GetElement(lcf::Data::animations, weapons[1]->animation_id);
-			}
-		} else {
-			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, ally->GetUnarmedBattleAnimationId());
+int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		Game_Actor* ally = static_cast<Game_Actor*>(source);
+		auto weapons = ally->GetWeapons(weapon);
+		auto* item = (idx >= 0 && idx < static_cast<int>(weapons.size()))
+			? weapons[idx] : nullptr;
+		if (item) {
+			return item->animation_id;
+		} else if (idx == 0) {
+			return ally->GetUnarmedBattleAnimationId();
 		}
+		return 0;
 	}
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		if (Player::IsRPG2k3() && !lcf::Data::animations.empty()) {
-			animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, 1);
-		}
+	if (source->GetType() == Game_Battler::Type_Enemy
+			&& Player::IsRPG2k3()
+			&& !lcf::Data::animations.empty()) {
+		return 1;
 	}
+	return 0;
 }
 
 bool Game_BattleAlgorithm::Normal::Execute() {
@@ -1016,13 +942,10 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& 
 }
 
 void Game_BattleAlgorithm::Skill::Init() {
-	animation = nullptr;
-	if (skill.animation_id != 0) {
-		animation = lcf::ReaderUtil::GetElement(lcf::Data::animations, skill.animation_id);
-		if (!animation) {
-			Output::Warning("Algorithm Skill: Invalid skill animation ID {}", skill.animation_id);
-		}
-	}
+}
+
+int Game_BattleAlgorithm::Skill::GetAnimationId(int idx) const {
+	return idx == 0 ? skill.animation_id : 0;
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid(const Game_Battler& target) const {

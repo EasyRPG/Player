@@ -903,8 +903,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	if (play_reflect_anim) {
 		play_reflect_anim = false;
-		action->PlayAnimation(false, CheckAnimFlip(action->GetFirstOriginalTarget()));
-		return false;
+		auto anim_id = action->GetAnimationId(0);
+		if (anim_id) {
+			action->PlayAnimation(anim_id, false, false, -1, CheckAnimFlip(action->GetFirstOriginalTarget()));
+			return false;
+		}
 	}
 
 	Sprite_Battler* source_sprite;
@@ -1006,11 +1009,16 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
-		if (action->OriginalTargetsSet()) {
-			play_reflect_anim = true;
-			action->PlayAnimation(true, CheckAnimFlip(action->GetSource()));
-		} else {
-			action->PlayAnimation(false, CheckAnimFlip(action->GetSource()));
+		{
+			const auto anim_id = action->GetAnimationId(0);
+			if (anim_id) {
+				if (action->OriginalTargetsSet()) {
+					play_reflect_anim = true;
+					action->PlayAnimation(anim_id, true, false, -1, CheckAnimFlip(action->GetSource()));
+				} else {
+					action->PlayAnimation(anim_id, false, false, -1, CheckAnimFlip(action->GetSource()));
+				}
+			}
 		}
 
 		{

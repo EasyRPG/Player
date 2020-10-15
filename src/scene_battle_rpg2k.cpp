@@ -419,14 +419,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 	const bool wait = !CheckWait();
 
-	if (Game_Battle::IsBattleAnimationWaiting()) {
-		return false;
-	}
-	if (action->HasAnimationPlayed() && action->GetSecondAnimation() != nullptr && !action->HasSecondAnimationPlayed()) {
-		action->PlaySecondAnimation();
-		return false;
-	}
-
 	if (wait) {
 		return false;
 	}
@@ -572,7 +564,7 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 		battle_message_window->ScrollToEnd();
 
 		if (action->HasSecondStartMessage()) {
-			SetWaitForUsage(action->GetType());
+			SetWaitForUsage(action->GetType(), 0);
 		}
 	}
 
@@ -584,11 +576,6 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase
 		battle_message_window->Push(action->GetSecondStartMessage());
 		battle_message_window->ScrollToEnd();
 	}
-
-	return ProcessNextAction(BattleActionState_Animation, action);
-}
-
-bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
 	battle_action_start_index = battle_message_window->GetLineCount();
 
 	auto* se = action->GetStartSe();
@@ -596,30 +583,51 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 		Main_Data::game_system->SePlay(*se);
 	}
 
-	if (action->GetTarget() && action->GetAnimation()) {
-		if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
-			action->PlayAnimation();
-		} else {
-			action->PlaySoundAnimation(false, 40);
+	return ProcessNextAction(BattleActionState_Animation, action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
+	int frames = 0;
+	while(1) {
+		const int cur_anim = action->GetAnimationId(battle_action_substate_index);
+		++battle_action_substate_index;
+		int next_anim = 0;
+
+		if (cur_anim) {
+			if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
+				frames = action->PlayAnimation(cur_anim, false);
+			} else {
+				frames = action->PlayAnimation(cur_anim, false, true, 40);
+			}
+			next_anim = action->GetAnimationId(battle_action_substate_index);
+		}
+
+		if (!next_anim) {
+			break;
+		}
+
+		if (frames) {
+			SetWait(frames, frames);
+			return false;
 		}
 	}
 
-	// Wait for last start message and animations.
-	SetWaitForUsage(action->GetType());
+	// Wait for last start message and last animation.
+	SetWaitForUsage(action->GetType(), frames);
 
 	return ProcessNextAction(BattleActionState_Execute, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
-	action->Execute();
-	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
-			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
-		SetWait(4,4);
-		if (action->IsSuccess() && action->IsCriticalHit()) {
-			return ProcessNextAction(BattleActionState_Critical, action);
-		}
+action->Execute();
+if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+		|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
+	SetWait(4,4);
+	if (action->IsSuccess() && action->IsCriticalHit()) {
+		return ProcessNextAction(BattleActionState_Critical, action);
 	}
-	return ProcessNextAction(BattleActionState_Apply, action);
+}
+return ProcessNextAction(BattleActionState_Apply, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1366,20 +1374,27 @@ void Scene_Battle_Rpg2k::SetWait(int min_wait, int max_wait) {
 	battle_action_min_wait = max_wait - min_wait;
 }
 
-void Scene_Battle_Rpg2k::SetWaitForUsage(Game_BattleAlgorithm::Type type) {
+void Scene_Battle_Rpg2k::SetWaitForUsage(Game_BattleAlgorithm::Type type, int anim_frames) {
+	int min_wait = 0;
+	int max_wait = 0;
 	switch (type) {
 		case Game_BattleAlgorithm::Type::Normal:
-			SetWait(20, 40);
+			min_wait = 20;
+			max_wait = 40;
 			break;
 		case Game_BattleAlgorithm::Type::Escape:
-			SetWait(36, 60);
+			min_wait = 36;
+			max_wait = 60;
 			break;
 		case Game_BattleAlgorithm::Type::NoMove:
+			min_wait = max_wait = 0;
 			break;
 		default:
-			SetWait(20, 60);
+			min_wait = 20;
+			max_wait = 60;
 			break;
 	}
+	SetWait(std::max(min_wait, anim_frames), std::max(max_wait, anim_frames));
 }
 
 bool Scene_Battle_Rpg2k::CheckWait() {
