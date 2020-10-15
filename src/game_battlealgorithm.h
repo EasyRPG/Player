@@ -489,8 +489,17 @@ public:
 
 class Normal : public AlgorithmBase {
 public:
-	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
-	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Game_Battler::Weapon weapon = Game_Battler::WeaponAll);
+	enum Style {
+		/** 2k style, single combined attack with both weapons */
+		Style_Combined,
+		/** 2k3 style, multiple attacks, one per weapon */
+		Style_MultiHit,
+	};
+
+	static Style GetDefaultStyle();
+
+	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
+	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
 
 	bool Execute() override;
 	void vApplyFirstTimeEffect() override;
@@ -499,9 +508,10 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
+	Game_Battler::Weapon GetWeapon() const;
 private:
-	void Init();
-	Game_Battler::Weapon weapon= Game_Battler::WeaponAll;
+	void Init(int hits, Style style);
+	int weapon_style = -1;
 };
 
 class Skill : public AlgorithmBase {

@@ -618,6 +618,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
+	first_attack = true;
 	if (party_target) {
 		if (IsReflected()) {
 			party_target->GetBattlers(original_targets);
@@ -730,19 +731,46 @@ bool Game_BattleAlgorithm::Null::Execute() {
 	return true;
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Game_Battler::Weapon weapon) :
-	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
+	AlgorithmBase(Type::Normal, source, target)
 {
-	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(weapon));
+	Init(hits_multiplier, style);
 }
 
-Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier, Game_Battler::Weapon weapon) :
-	AlgorithmBase(Type::Normal, source, target), weapon(weapon)
+Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier, Style style) :
+	AlgorithmBase(Type::Normal, source, target)
 {
-	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(weapon));
+	Init(hits_multiplier, style);
+}
+
+Game_BattleAlgorithm::Normal::Style Game_BattleAlgorithm::Normal::GetDefaultStyle() {
+	return Player::IsRPG2k3() ? Style_MultiHit : Style_Combined;
+}
+
+Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
+	if (weapon_style < 0) {
+		return Game_Battler::WeaponAll;
+	}
+	return cur_repeat >= weapon_style ? Game_Battler::WeaponSecondary : Game_Battler::WeaponPrimary;
+}
+
+void Game_BattleAlgorithm::Normal::Init(int hits_multiplier, Style style) {
+	weapon_style = -1;
+	if (GetSource()->GetType() == Game_Battler::Type_Ally && style == Style_MultiHit) {
+		auto* ally = static_cast<Game_Actor*>(GetSource());
+		if (ally->GetWeapon() && ally->Get2ndWeapon()) {
+			auto hits = ally->GetNumberOfAttacks(Game_Battler::WeaponPrimary);
+			weapon_style = hits;
+			hits += ally->GetNumberOfAttacks(Game_Battler::WeaponSecondary);
+			SetRepeat(hits_multiplier * hits);
+			return;
+		}
+	}
+	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(GetWeapon()));
 }
 
 int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
+	const auto weapon = GetWeapon();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		auto weapons = ally->GetWeapons(weapon);
@@ -766,6 +794,7 @@ int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
+	const auto weapon = GetWeapon();
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
 
@@ -872,6 +901,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 void Game_BattleAlgorithm::Normal::vApplyFirstTimeEffect() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
+		const auto weapon = GetWeapon();
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost(weapon));
 	}
 }
