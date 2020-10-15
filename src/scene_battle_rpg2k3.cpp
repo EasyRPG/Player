@@ -901,15 +901,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
-	if (play_reflect_anim) {
-		play_reflect_anim = false;
-		auto anim_id = action->GetAnimationId(0);
-		if (anim_id) {
-			action->PlayAnimation(anim_id, false, false, -1, CheckAnimFlip(action->GetFirstOriginalTarget()));
-			return false;
-		}
-	}
-
 	Sprite_Battler* source_sprite;
 	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 
@@ -1012,12 +1003,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		{
 			const auto anim_id = action->GetAnimationId(0);
 			if (anim_id) {
-				if (action->OriginalTargetsSet()) {
-					play_reflect_anim = true;
-					action->PlayAnimation(anim_id, true, false, -1, CheckAnimFlip(action->GetSource()));
-				} else {
-					action->PlayAnimation(anim_id, false, false, -1, CheckAnimFlip(action->GetSource()));
-				}
+				action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetSource()));
 			}
 		}
 
@@ -1041,6 +1027,30 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			if (action->GetStartSe()) {
 				Main_Data::game_system->SePlay(*action->GetStartSe());
+			}
+		}
+
+		if (action->ReflectTargets()) {
+			battle_action_state = BattleActionState_Reflect;
+		} else {
+			battle_action_state = BattleActionState_ResultPush;
+		}
+
+		// If was reflected, but the original user isn't a valid target???
+		// FIXME: Can this ever happen?
+		if (!action->IsCurrentTargetValid()) {
+			// Nothing left to target, abort
+			return true;
+		}
+
+		break;
+	case BattleActionState_Reflect:
+
+		{
+			const auto anim_id = action->GetAnimationId(0);
+			if (anim_id) {
+				assert(action->GetReflectTarget());
+				action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetReflectTarget()));
 			}
 		}
 
@@ -1119,7 +1129,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		battle_action_wait = 30;
 
-		if (action->RepeatNext()) {
+		if (action->RepeatNext(false)) {
 			battle_action_state = BattleActionState_Execute;
 		} else {
 			battle_action_state = BattleActionState_Finished;

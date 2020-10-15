@@ -125,7 +125,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	critical_hit = false;
 	absorb = false;
 	revived = false;
-	reflect = -1;
 	states.clear();
 	attributes.clear();
 
@@ -135,18 +134,15 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	}
 }
 
-int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool on_original_targets, bool only_sound, int cutoff, bool invert) {
+int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool only_sound, int cutoff, bool invert) {
 	if (anim_id == 0) {
 		return 0;
 	}
 
-	const auto& candidates = on_original_targets
-		? original_targets : targets;
-
 	std::vector<Game_Battler*> anim_targets;
-	for (auto* t: candidates) {
-		if (IsTargetValid(*t)) {
-			anim_targets.push_back(t);
+	for (auto iter = current_target; iter != targets.end(); ++iter) {
+		if (IsTargetValid(**iter)) {
+			anim_targets.push_back(*iter);
 		}
 	}
 
@@ -451,6 +447,7 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 		// Set target is invalid
 		current_target = targets.end();
 	}
+	num_original_targets = targets.size();
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyFirstTimeEffect() {
@@ -619,21 +616,15 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	first_attack = true;
+	reflect_target = nullptr;
+
 	if (party_target) {
-		if (IsReflected()) {
-			party_target->GetBattlers(original_targets);
-			targets.clear();
-			source->GetParty().GetActiveBattlers(targets);
-		} else {
-			party_target->GetBattlers(targets);
-		}
-		party_target = nullptr;
+		targets.clear();
+		party_target->GetBattlers(targets);
+		num_original_targets = targets.size();
 	} else {
-		if (IsReflected()) {
-			original_targets.push_back(GetTarget());
-			targets.clear();
-			targets.push_back(source);
-		}
+		// Remove any previously set reflect targets
+		targets.resize(num_original_targets);
 	}
 
 	current_target = targets.begin();
@@ -643,13 +634,39 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	}
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::ReflectTargets() {
+	auto iter = std::find_if(current_target, targets.end(), [this](auto* target) { return IsReflected(*target); });
+
+	// No reflect
+	if (iter == targets.end()) {
+		return false;
+	}
+
+	reflect_target = *iter;
+
+	if (party_target) {
+		// Reflect back on source party
+		const auto offset = targets.size();
+		source->GetParty().GetBattlers(targets);
+		current_target = targets.begin() + offset;
+	} else {
+		// Reflect back on source
+		current_target = targets.insert(targets.end(), source);
+	}
+
+	if (!IsCurrentTargetValid()) {
+		TargetNext();
+	}
+	return true;
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	return TargetNextInternal();
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::RepeatNext() {
+bool Game_BattleAlgorithm::AlgorithmBase::RepeatNext(bool require_valid) {
 	++cur_repeat;
-	if (!IsCurrentTargetValid() || cur_repeat >= repeat) {
+	if (cur_repeat >= repeat || (require_valid && !IsCurrentTargetValid())) {
 		cur_repeat = 0;
 		return false;
 	}
@@ -663,14 +680,11 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsCurrentTargetValid() const {
 	return IsTargetValid(**current_target);
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
+bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() {
 	do {
-		if (current_target == targets.end() ||
-			current_target + 1 == targets.end()) {
+		if (current_target == targets.end() || ++current_target == targets.end()) {
 			return false;
 		}
-
-		++current_target;
 	} while (!IsCurrentTargetValid());
 
 	return true;
@@ -678,18 +692,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
 	this->repeat = repeat;
-}
-
-bool Game_BattleAlgorithm::AlgorithmBase::OriginalTargetsSet() const {
-	return (original_targets.size() > 0);
-}
-
-Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetFirstOriginalTarget() const {
-	if (original_targets.empty()) {
-		return nullptr;
-	} else {
-		return *original_targets.begin();
-	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
@@ -713,7 +715,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 		NULL : &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsReflected(const Game_Battler&) const {
 	return false;
 }
 
@@ -1295,42 +1297,12 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 	return "BUG: INVALID SKILL FAIL MSG";
 }
 
-bool Game_BattleAlgorithm::Skill::IsReflected() const {
-	// Reflect already checked?
-	if (reflect == -1) {
-		reflect = 0;
-		// Skills invoked by items ignore reflect
-		if (!item) {
-			// One or more targets?
-			if (party_target) {
-				std::vector<Game_Battler*> targetlist;
-				party_target->GetActiveBattlers(targetlist);
-				for (Game_Battler* t : targetlist) {
-					// Targets on enemy side?
-					if (GetSource()->GetType() != t->GetType()) {
-						// If at least one enemy has the reflect state, return true
-						if (t->HasReflectState()) {
-							reflect = 1;
-							return true;
-						}
-					}
-				}
-			} else {
-				// Check if target exists to prevent crashes
-				if (GetTarget() != nullptr) {
-					// Target on enemy side?
-					if (GetSource()->GetType() != GetTarget()->GetType()) {
-						// If the target has the reflect state, return true
-						if (GetTarget()->HasReflectState()) {
-							reflect = 1;
-							return true;
-						}
-					}
-				}
-			}
-		}
+bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const {
+	// Skills invoked by items ignore reflect
+	if (item) {
+		return false;
 	}
-	return !!reflect;
+	return IsTargetValid(target) && target.HasReflectState() && target.GetType() != GetSource()->GetType();
 }
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {

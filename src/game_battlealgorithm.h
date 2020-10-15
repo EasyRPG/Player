@@ -91,6 +91,9 @@ public:
 	 */
 	Game_Battler* GetTarget() const;
 
+	/** @return If the action was reflected, returns the target which triggered the reflect */
+	Game_Battler* GetReflectTarget() const;
+
 	/** @return true if this algorithm targets a party */
 	bool IsTargetingParty() const;
 
@@ -112,18 +115,27 @@ public:
 	void InitTargets();
 
 	/**
-	 * Changes the target reference to the next target.
+	 * If IsReflectable(), will reflect the action back on the source or the source's party.
 	 *
-	 * @return true if there was a next target available
+	 * @return true if this algo was reflected.
+	 */
+	bool ReflectTargets();
+
+	/**
+	 * Changes the target reference to the next target.
+	 * When reaches the last target, will return false and reset back to first target.
+	 *
+	 * @return true if there was a next target available.
 	 */
 	bool TargetNext();
 
 	/**
 	 * Performs the next repeated action.
 	 *
+	 * @param require_valid_target only repeat if current target is valid.
 	 * @return true if the action should be repeated. Once false is returned, the repetition resets.
 	 */
-	bool RepeatNext();
+	bool RepeatNext(bool require_valid_target);
 
 	/**
 	 * Defines switches that will be switched on after the action is finished.
@@ -219,15 +231,12 @@ public:
 	 * Takes care of single- and multi-target animations.
 	 *
 	 * @param anim_id the ID of the animation to play.
-	 * @param on_original_targets Renders the animation on the original
-	 *                            targets instead of the current
-	 *                            targets (required for reflect)
 	 * @param sound_only Only play sounds
 	 * @param cutoff If >= 0 maximum number of frames to play
 	 * @param invert Flips the animation
 	 * @return the number of frames the animation will play
 	 */
-	int PlayAnimation(int anim_id, bool on_original_targets, bool sound_only = false, int cutoff = -1, bool invert = false);
+	int PlayAnimation(int anim_id, bool sound_only = false, int cutoff = -1, bool invert = false);
 
 	/**
 	 * Returns whether the action hit the target.
@@ -362,16 +371,12 @@ public:
 	virtual std::string GetDeathMessage() const;
 
 	/**
-	 * Returns whether the attack is reflected to the source.
-	 * This is automatically handled by the battle algorithm class and
-	 * GetTarget will return the source instead.
-	 * The only exception is PlayAnimation which must be controlled through
-	 * an extra argument because a reflected skill renders both animations:
-	 * First time on target, then second time on source.
+	 * Returns whether the attack would be reflected if used upon the target.
 	 *
+	 * @param the target to check
 	 * @return true when reflected
 	 */
-	virtual bool IsReflected() const;
+	virtual bool IsReflected(const Game_Battler& target) const;
 
 	/**
 	 * Returns the algorithm type of this object.
@@ -388,18 +393,6 @@ public:
 	 * Set number of times to repeat the same action on a target
 	 */
 	void SetRepeat(int repeat);
-
-	/**
-	 * @return true if the size of original_targets is greater than zero.
-	 */
-	bool OriginalTargetsSet() const;
-
-	/**
-	 * Returns the first original target.
-	 *
-	 * @return current first original target battler
-	 */
-	Game_Battler* GetFirstOriginalTarget() const;
 
 	/**
 	 * @return the critical hit message
@@ -431,13 +424,14 @@ protected:
 	 *
 	 * @return true if there was a next target available
 	 */
-	bool TargetNextInternal() const;
+	bool TargetNextInternal();
 
 	Type type = Type::Null;
 	Game_Battler* source = nullptr;
 	std::vector<Game_Battler*> targets;
-	mutable std::vector<Game_Battler*>::iterator current_target;
+	std::vector<Game_Battler*>::iterator current_target;
 	Game_Party_Base* party_target = nullptr;
+	Game_Battler* reflect_target = nullptr;
 
 	int hp = 0;
 	int sp = 0;
@@ -462,8 +456,8 @@ protected:
 	bool absorb = false;
 	bool revived = false;
 	bool physical_charged = false;
-	mutable int reflect;
 	lcf::rpg::State::Restriction source_restriction = lcf::rpg::State::Restriction_normal;
+	int num_original_targets = 0;
 	int cur_repeat = 0;
 	int repeat = 1;
 
@@ -471,8 +465,6 @@ protected:
 	std::vector<AttributeEffect> attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
-
-	std::vector<Game_Battler*> original_targets;
 };
 
 // Special algorithm for battlers which have no action. 
@@ -532,7 +524,7 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
 	std::string GetFailureMessage() const override;
-	bool IsReflected() const override;
+	bool IsReflected(const Game_Battler&) const override;
 	bool ActionIsPossible() const override;
 
 private:
@@ -724,6 +716,10 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectSpi() const {
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAgi() const {
 	return affect_agi;
+}
+
+inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetReflectTarget() const {
+	return reflect_target;
 }
 
 } //namespace Game_BattleAlgorithm

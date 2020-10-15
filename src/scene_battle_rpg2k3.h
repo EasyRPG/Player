@@ -46,6 +46,10 @@ public:
 		 */
 		BattleActionState_Apply,
 		/**
+		 * Used to process reflected battle animation.
+		 */
+		BattleActionState_Reflect,
+		/**
 		* 4th action, called repeatedly.
 		* Used for the results, concretely wait a few frames and pop the messages.
 		*/
@@ -145,7 +149,6 @@ protected:
 	int battle_action_state = BattleActionState_Execute;
 	bool battle_action_need_event_refresh = true;
 	int combo_repeat = 1;
-	bool play_reflect_anim = false;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;
 	std::unique_ptr<Window_ActorSp> sp_window;

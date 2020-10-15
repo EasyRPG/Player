@@ -595,9 +595,9 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 
 		if (cur_anim) {
 			if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
-				frames = action->PlayAnimation(cur_anim, false);
+				frames = action->PlayAnimation(cur_anim);
 			} else {
-				frames = action->PlayAnimation(cur_anim, false, true, 40);
+				frames = action->PlayAnimation(cur_anim, true, 40);
 			}
 			next_anim = action->GetAnimationId(battle_action_substate_index);
 		}
@@ -1050,7 +1050,7 @@ void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* actio
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (action->RepeatNext() || action->TargetNext()) {
+	if (action->RepeatNext(true) || action->TargetNext()) {
 		// Clear the console for the next target
 		battle_message_window->PopUntil(battle_action_start_index);
 		battle_message_window->ScrollToEnd();
