@@ -145,7 +145,7 @@ void Scene_Title::Update() {
 	} else if (Input::IsTriggered(Input::CANCEL)) {
 		if (active_window == 1) {
 			// Switch back
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			HideTranslationWindow();
 		}
 	}
@@ -300,7 +300,7 @@ void Scene_Title::CommandImport() {
 }
 
 void Scene_Title::CommandTranslation() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	// Switch windows
 	active_window = 1;
@@ -310,7 +310,7 @@ void Scene_Title::CommandTranslation() {
 }
 
 void Scene_Title::ChangeLanguage(const std::string& trstr) {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	// No-op?
 	if (trstr == Player::translation.GetCurrLanguageId()) {
