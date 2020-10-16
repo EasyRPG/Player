@@ -34,6 +34,10 @@ using Platform_Clock = NxClock;
 #elif defined(PSP2)
 #include "platform/psvita/psp2_clock.h"
 using Platform_Clock = Psp2Clock;
+#elif defined(USE_LIBRETRO)
+// Only use libretro clock on platforms with no custom clock
+#include "platform/libretro/libretro_clock.h"
+using Platform_Clock = LibretroClock;
 #else
 #include "std_clock.h"
 using Platform_Clock = StdClock;

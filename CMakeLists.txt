@@ -860,6 +860,8 @@ else()
 		add_library(easyrpg_libretro
 			src/platform/libretro/libretro_audio.cpp
 			src/platform/libretro/libretro_audio.h
+			src/platform/libretro/libretro_clock.cpp
+			src/platform/libretro/libretro_clock.h
 			src/platform/libretro/libretro_input_buttons.cpp
 			src/platform/libretro/libretro_ui.cpp
 			src/platform/libretro/libretro_ui.h)
