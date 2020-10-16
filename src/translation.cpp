@@ -458,12 +458,9 @@ namespace {
 
 
 
-std::vector<std::vector<std::string>> Translation::TranslateMessageStream(const Dictionary& dict, const std::stringstream& msg1, const std::stringstream* msg2, char trimChar) {
+std::vector<std::vector<std::string>> Translation::TranslateMessageStream(const Dictionary& dict, const std::stringstream& msg, char trimChar) {
 	// Prepare source string
-	std::string msgStr = msg1.str();
-	if (msg2!=nullptr) {
-		msgStr += msg2->str();
-	}
+	std::string msgStr = msg.str();
 	if (msgStr.size()>0 && msgStr.back() == trimChar) {
 		msgStr.pop_back();
 	}
@@ -507,60 +504,32 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	// have to track the current index directly in this function.
 	CommandIterator commands(commandsOrig);
 	while (!commands.Done()) {
-		// Logic: build up both the Message stream and the Choice stream, since we'll need to 
-		//        deal with both eventually. Then, if they can be merged do that.
-		if (commands.CurrIsShowMessage() || commands.CurrIsShowChoice()) {
-			// First build up the lines of Message texts
+		// We only need to deal with either Message or Choice commands
+		if (commands.CurrIsShowMessage()) {
+			// Build up the lines of Message texts
 			std::stringstream msg_str;
 			std::vector<size_t> msg_indexes;
 			commands.BuildMessageString(msg_str, msg_indexes);
 
-			// Next, build up the lines of Choice elements
-			std::stringstream choice_str;
-			std::vector<size_t> choice_indexes; // Number of entries == number of choices
-			commands.BuildChoiceString(choice_str, choice_indexes);
-
-			// Will they fit on screen if we combine them?
-			bool combine = false; //msg_indexes.size()>0 && msg_indexes.size()+choice_indexes.size() <= 4;
-
 			// Go through messages first, including possible choices
 			if (msg_indexes.size()>0) {
 				// Get our lines, possibly including "combined"
-				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, msg_str, (combine?&choice_str:nullptr), '\n');
+				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, msg_str, '\n');
 				if (msgs.size()>0) {
 					// The complex replacement logic is based on the last message box, then all remaining things are simply left back in.
 					std::vector<std::string>& lines = msgs.back();
 
-					// There is a special case here: if we are asked to remove a message box, we should cancel the "combine" action and do nothing further
+					// There is a special case here: if we are asked to remove a message box, we should do nothing further
 					// This command is *only* respected as the first line of a message box.
 					if (lines[0]==TRCUST_REMOVEMSG) {
-						// Update the index of all choice items first
-						for (size_t& index : choice_indexes) {
-							index -= msg_indexes.size();
-						}
-
-						// Now clear all message boxes in reverse order.
+						// Clear all message boxes in reverse order.
 						while (!msg_indexes.empty()) {
 							commands.RemoveByIndex(msg_indexes.back());
 							msg_indexes.pop_back();
 						}
-
-						// Finally, reset the "combine" flag so that we process the message box command correctly.
-						combine = false;
 					} else {
-						// We only need the last X Choices from the translation, since we can't change the Choice count.
-						size_t maxLines = 4;
-						if (combine) {
-							// Go backwards through our lines/choices
-							while (!choice_indexes.empty() && !lines.empty()) {
-								commands.ReWriteString(choice_indexes.back(), lines.back());
-								choice_indexes.pop_back();
-								lines.pop_back();
-								maxLines -= 1;
-							}
-						}
-
 						// Trim lines down to allowed remaining (with choices).
+						const size_t maxLines = 4;
 						while (lines.size() > maxLines) {
 							lines.pop_back();
 						}
@@ -589,10 +558,17 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 				}
 			}
 
-			// Go through choices second.
-			if (!combine && choice_indexes.size()>0) {
+			// Note that commands.Advance() has already happened within the above code.
+		} else if (commands.CurrIsShowChoice()) {
+			// Build up the lines of Choice elements
+			std::stringstream choice_str;
+			std::vector<size_t> choice_indexes; // Number of entries == number of choices
+			commands.BuildChoiceString(choice_str, choice_indexes);
+
+			// Go through choices. 
+			if (choice_indexes.size()>0) {
 				// Translate, break back into lines.
-				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, choice_str, nullptr, '\n');
+				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, choice_str, '\n');
 				if (msgs.size()>0) {
 					// Logic here is also based on the last message box.
 					std::vector<std::string>& lines = msgs.back();

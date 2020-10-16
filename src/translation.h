@@ -241,17 +241,16 @@ private:
 	void RewriteCommonEventMessages();
 
 	/**
-	 * Convert a stream of msgbox + choices to a list of output message boxes
+	 * Convert a stream of msgbox or choices to a list of output message boxes
 	 * 
 	 * @param dict The dictionary to use for translation
-	 * @param msg1 The first message string to use for lookup. String with newlines.
-	 * @param msg2 The (optiona) second message string to use for lookup. String with newlines.
+	 * @param msg The message string to use for lookup. String with newlines.
 	 * @param trimChar Trim this character if the lookup string ends with this.
 	 * @return A vector of Message Boxes, where each Message Box is represented as a vector of lines (strings), or an empty vector if there is no translation.
 	 *         It is guaranteed that each MessageBox vector will have at least one entry (containing "") if it would otherwise be empty; this can happen
 	 *         if the message box insertion commands are used. Note that the last MessageBox vector may contain translated "Choice" entries (it is based on the input).
 	 */
-	std::vector<std::vector<std::string>> TranslateMessageStream(const Dictionary& dict, const std::stringstream& msg1, const std::stringstream* msg2, char trimChar);
+	std::vector<std::vector<std::string>> TranslateMessageStream(const Dictionary& dict, const std::stringstream& msg, char trimChar);
 
 	/**
 	 * Rewrite a list of event commands (from any map, battle, or common event) given a dictionary.
