@@ -299,6 +299,14 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 }
 
 void Game_Map::SetupCommon() {
+	if (!Tr::CurrTranslationId().empty()) {
+		//  Build our map translation id.
+		std::stringstream ss;
+		ss << "map" << std::setfill('0') << std::setw(4) << GetMapId() << ".po";
+
+		// Translate all messages for this map
+		Player::translation.RewriteMapMessages(ss.str(), *map);
+	}
 	SetNeedRefresh(true);
 
 	int current_index = GetMapIndex(GetMapId());

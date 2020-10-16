@@ -1,0 +1,284 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef EP_TRANSLATION_H
+#define EP_TRANSLATION_H
+
+// Headers
+#include <string>
+#include <sstream>
+#include <memory>
+#include <unordered_map>
+
+#include "filefinder.h"
+
+namespace lcf {
+	namespace rpg {
+		class Map;
+		class EventCommand;
+	}
+	class DBString;
+}
+
+
+/**
+ * Namespace used to retrieve translations of Terms, BattlEvents, etc.
+ */
+namespace Tr {
+	/**
+	 * The name of the translation directory.
+	 * @return The translation directory.
+	 */
+	std::string TranslationDir();
+
+	/**
+	 * The id of the current translation (e.g., "Spanish"). If empty, there is no active translation.
+	 * @return The translation ID
+	 */
+	std::string CurrTranslationId();
+
+} // End namespace Tr
+
+
+//////////////////////////////////////////////////////////
+// NOTE: The code for Entry and Dictionary is duplicated in LcfTrans.
+//       At some point it should be merged to a common location.
+//////////////////////////////////////////////////////////
+
+/**
+ * An entry in the dictionary
+ */
+class Entry {
+public:
+	std::string original; // msgid
+	std::string translation; // msgstr
+	std::string context; // msgctxt
+};
+
+/**
+ * A .po file loaded into memory. Contains a dictionary of entries.
+ */
+class Dictionary {
+public:
+	/**
+	 * Super simple parser.
+	 * Only parses msgstr, msgid and msgctx
+	 * Returns false on failure.
+	 *
+	 * @param res The dictionary to store the translated entries in.
+	 * @param in The stream to load the translated entries from.
+	 * @param return True if the file was loaded without error; false otherwise.
+	 */
+	static bool FromPo(Dictionary& res, std::istream& in);
+
+	/**
+	 * Replace an original string with the translated string.
+	 * Template can be "std::string" or "lcf::DBString"
+	 *
+	 * @param context The 'context' of this string; used to differentiate strings that have the same
+	 *                original language value but different target language values.
+	 * @param original The string to lookup. Will be replaced if a lookup is found.
+	 * @return True if the original string was replaced; false otherwise.
+	 */
+	template <class StringType>
+	bool TranslateString(const std::string& context, StringType& original) const;
+
+private:
+	/**
+	 * Add an entry to the dictionary.
+	 *
+	 * @param entry The entry to add.
+	 */
+	void addEntry(const Entry& entry);
+
+	// Lookup by context, where context can be empty ("") for no context.
+	std::unordered_map<std::string, std::unordered_map<std::string, std::string>> entries;
+};
+
+
+// Template implementation
+template <class StringType>
+bool Dictionary::TranslateString(const std::string& context, StringType& original) const
+{
+	std::stringstream key;
+	key <<original;
+	auto it = entries.find(context);
+	if (it != entries.end()) {
+		auto it2 = it->second.find(key.str());
+		if (it2 != it->second.end()) {
+			original = StringType(it2->second);
+			return true;
+		}
+	}
+	return false;
+}
+
+
+/**
+ * Properties of a language
+ */
+struct Language {
+	std::string langDir;  // Language directory (e.g., "en", "English_Localization")
+	std::string langName; // Display name for this language (e.g., "English")
+	std::string langDesc; // Helper text to show when the menu is highlighted
+};
+
+
+/**
+ * Class that holds a list of all available translations and tracks the current one.
+ * Allows changing the language and rewriting the database.
+ */
+class Translation {
+public:
+	/**
+	 * Scan the Languages directory and build up a list of known languages.
+	 */
+	void InitTranslations();
+
+	/**
+	 * Do any translations besides the default exist?
+	 *
+	 * @return True if there is at least one translation (language); false otherwise
+	 */
+	bool HasTranslations() const;
+
+	/**
+	 * Retrieve the root directory for all Languages
+	 *
+	 * @return the Languages directory.
+	 */
+	std::string RootDir() const;
+
+	/**
+	 * Retrieves a vector of all known languages.
+	 *
+	 * @return the Languages vector
+	 */
+	const std::vector<Language>& GetLanguages() const;
+
+	/**
+	 * Switches to a given language. Resets the database and the Image Cache.
+	 *
+	 * @param langId The language ID (or "" for "Default")
+	 */
+	void SelectLanguage(const std::string& langId);
+
+	/**
+	 * Rewrite all Messages and Choices in this Map
+	 * 
+	 * @param mapName The name of the map with formatting similar to the .po file; e.g., "map0104.po"
+	 * @param map The map object itself (for modifying).
+	 */
+	void RewriteMapMessages(const std::string& mapName, lcf::rpg::Map& map);
+
+	/**
+	 * Retrieve the ID of the current (active) language.
+	 *
+	 * @return the current language ID, or "" for the Default language
+	 */
+	std::string GetCurrLanguageId() const;
+
+
+private:
+	/**
+	 * Reset all saved language data and revert to "no translation".
+	 */
+	void Reset();
+
+	/**
+	 * Reset all lookups loaded from .po files for the active language.
+	 */
+	void ClearTranslationLookups();
+
+	/**
+	 * Parse a .po file and save its language-related strings.
+	 *
+	 * @param path The path to the .po file used as input.
+	 * @param out The Dictionary to save these entries in (output).
+	 */
+	void ParsePoFile(const std::string& path, Dictionary& out);
+
+	/**
+	 * Parse all .po files for the given language.
+	 * 
+	 * @param langId The ID of the language to parse, or "" for Default (no parsing is done)
+	 * @return True if the language directory was found; false otherwise
+	 */
+	bool ParseLanguageFiles(const std::string& langId);
+
+	/**
+	 * Rewrite RPG_RT.ldb with the current translation entries
+	 */
+	void RewriteDatabase();
+
+	/**
+	 * Rewrite RPG_RT.lmt with the current translation entries
+	 */
+	void RewriteTreemapNames();
+
+	/**
+	 * Rewrite all Battle Messages with the current translation entries
+	 */
+	void RewriteBattleEventMessages();
+
+	/**
+	 * Rewrite all Common Event Messages with the current translation entries
+	 */
+	void RewriteCommonEventMessages();
+
+	/**
+	 * Convert a stream of msgbox + choices to a list of output message boxes
+	 * 
+	 * @param dict The dictionary to use for translation
+	 * @param msg1 The first message string to use for lookup. String with newlines.
+	 * @param msg2 The (optiona) second message string to use for lookup. String with newlines.
+	 * @param trimChar Trim this character if the lookup string ends with this.
+	 * @return A vector of Message Boxes, where each Message Box is represented as a vector of lines (strings), or an empty vector if there is no translation.
+	 *         It is guaranteed that each MessageBox vector will have at least one entry (containing "") if it would otherwise be empty; this can happen
+	 *         if the message box insertion commands are used. Note that the last MessageBox vector may contain translated "Choice" entries (it is based on the input).
+	 */
+	std::vector<std::vector<std::string>> TranslateMessageStream(const Dictionary& dict, const std::stringstream& msg1, const std::stringstream* msg2, char trimChar);
+
+	/**
+	 * Rewrite a list of event commands (from any map, battle, or common event) given a dictionary.
+	 * Takes into account deleting and adding message boxes.
+	 *
+	 * @param dict The dictionary to use for translation.
+	 * @param commands The commands to search through and update.
+	 */
+	void RewriteEventCommandMessage(const Dictionary& dict, std::vector<lcf::rpg::EventCommand>& commands);
+
+
+private:
+	// Our translations are broken apart into multiple files; we store a lookup for each one.
+	std::unique_ptr<Dictionary> sys;       // RPG_RT.ldb.po
+	std::unique_ptr<Dictionary> common;    // RPG_RT.ldb.common.po
+	std::unique_ptr<Dictionary> battle;    // RPG_RT.ldb.battle.po
+	std::unique_ptr<Dictionary> mapnames;  // RPG_RT.lmt.po (map names, used only in the "Teleport" event command)
+	std::unordered_map<std::string, std::unique_ptr<Dictionary>> maps;  // map<id>.po, indexed by map name
+
+	// Our list of available Languages (translations, localizations), determined by scanning the files on disk.
+	std::vector<Language> languages;
+
+	// The "languages" directory, but with appropriate capitalization.
+	std::string translationRootDir;
+
+	// The translation we are currently showing (e.g., "English_1")
+	std::string currLanguage;
+};
+
+#endif  // EP_TRANSLATION_H

@@ -19,6 +19,7 @@
 #define EP_WINDOW_SELECTABLE_H
 
 // Headers
+#include <functional>
 #include "window_base.h"
 #include "window_help.h"
 
@@ -50,6 +51,13 @@ public:
 	 * @return Rect where the item is drawn.
 	 */
 	Rect GetItemRect(int index);
+
+	/**
+	 * Function called by the base UpdateHelp() implementation.
+	 * Passes in the Help Window and the current selected index
+	 * Will not be called if the help_window is null
+	 */
+	std::function<void(Window_Help&, int)> UpdateHelpFn;
 
 	Window_Help* GetHelpWindow();
 

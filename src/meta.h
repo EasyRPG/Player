@@ -123,6 +123,12 @@ public:
 	 * @return the INI-defined value, or the defualt value for this vocabulary term
 	 */
 	std::string GetExVocabImportSaveTitleText() const;
+
+	/**
+	 * Retrieve the menu item text for Scen_Title translations (languages)
+	 * @return the INI-defined value, or the default value for this vocabulary term
+	 */
+	std::string GetExVocabTranslateTitleText() const; 
 	
 
 private:

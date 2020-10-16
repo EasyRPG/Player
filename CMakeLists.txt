@@ -318,6 +318,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/transform.h
 	src/transition.cpp
 	src/transition.h
+	src/translation.cpp
+	src/translation.h
 	src/util_macro.h
 	src/utils.cpp
 	src/utils.h

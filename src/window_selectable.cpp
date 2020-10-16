@@ -83,6 +83,9 @@ void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 }
 
 void Window_Selectable::UpdateHelp() {
+	if (UpdateHelpFn && help_window != nullptr) {
+		UpdateHelpFn(*help_window, index);
+	}
 }
 
 // Update Cursor Rect
