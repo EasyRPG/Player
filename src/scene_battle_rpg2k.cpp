@@ -1320,8 +1320,8 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 	for (auto battler : battle_actions) {
 		int battle_order = battler->GetAgi() + Rand::GetRandomNumber(0, battler->GetAgi() / 4 + 3);
 		if (battler->GetBattleAlgorithm()->GetType() == Game_BattleAlgorithm::Type::Normal && battler->HasPreemptiveAttack()) {
-			// This is an arbitrarily large number to separate preemptive vs non-preemptive battlers
-			battle_order += 100000;
+			// RPG_RT sets this value
+			battle_order += 9999;
 		}
 		battler->SetBattleOrderAgi(battle_order);
 	}
