@@ -299,7 +299,7 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
 }
 
-void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
+void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha) const {
 	BitmapRef system2 = Cache::System2();
 	if (!system2) {
 		return;
@@ -319,10 +319,10 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 	Rect dst_rect1(cx + 16, cy, 13, 16);
 	Rect dst_rect2(cx + 16 + 13, cy, 12, 16);
 
-	contents->Blit(cx + 0, cy, *system2, gauge_left, 255);
-	contents->Blit(cx + 16 + 25, cy, *system2, gauge_right, 255);
-	contents->StretchBlit(dst_rect1, *system2, gauge_center1, 255);
-	contents->StretchBlit(dst_rect2, *system2, gauge_center2, 255);
+	contents->Blit(cx + 0, cy, *system2, gauge_left, alpha);
+	contents->Blit(cx + 16 + 25, cy, *system2, gauge_right, alpha);
+	contents->StretchBlit(dst_rect1, *system2, gauge_center1, alpha);
+	contents->StretchBlit(dst_rect2, *system2, gauge_center2, alpha);
 
 	const auto atb = actor.GetAtbGauge();
 	const auto gauge_w = 25 * atb / actor.GetMaxAtbGauge();
@@ -333,11 +333,11 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 		if (gauge_w >= 13) {
 			Rect bar_rect1(cx + 16, cy, 13, 16);
 			Rect bar_rect2(cx + 16 + 13, cy, gauge_w - 13, 16);
-			contents->StretchBlit(bar_rect1, *system2, gauge_bar1, 255);
-			contents->StretchBlit(bar_rect2, *system2, gauge_bar2, 255);
+			contents->StretchBlit(bar_rect1, *system2, gauge_bar1, alpha);
+			contents->StretchBlit(bar_rect2, *system2, gauge_bar2, alpha);
 		} else {
 			Rect bar_rect(cx + 16, cy, gauge_w, 16);
-			contents->StretchBlit(bar_rect, *system2, gauge_bar1, 255);
+			contents->StretchBlit(bar_rect, *system2, gauge_bar1, alpha);
 		}
 	}
 }
