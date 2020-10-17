@@ -630,7 +630,15 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	current_target = targets.begin();
 
 	if (!IsCurrentTargetValid()) {
-		TargetNext();
+		if (!TargetNext() && !party_target) {
+			auto* last_target = targets.back();
+			// If no current targets are valid, choose a new target.
+			SetTarget(last_target->GetParty().GetNextActiveBattler(last_target));
+
+			if (!IsCurrentTargetValid()) {
+				TargetNext();
+			}
+		}
 	}
 }
 

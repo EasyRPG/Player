@@ -946,8 +946,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return false;
 		}
 
-		// FIXME: This gets cleared after calling InitTargets() so we query it now.
-		// Refactor this to be less brittle.
 		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
 		is_target_party = action->IsTargetingParty();
 
@@ -963,20 +961,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
+		// No more targets left? Abort
 		if (!action->IsCurrentTargetValid()) {
-			if (!action->GetTarget()) {
-				// No target but not a target-only action.
-				// Maybe a bug report will help later
-				Output::Warning("Battle: BattleAction without valid target.");
-				return true;
-			}
-
-			action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
-
-			if (!action->IsCurrentTargetValid()) {
-				// Nothing left to target, abort
-				return true;
-			}
+			return true;
 		}
 
 		// FIXME: This needs to be attached to the monster target window.

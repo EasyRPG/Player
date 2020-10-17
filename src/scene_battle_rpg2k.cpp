@@ -541,20 +541,7 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 
 	action->InitTargets();
 	if (!action->IsCurrentTargetValid()) {
-		if (!action->GetTarget()) {
-			// No target but not a target-only action.
-			// Maybe a bug report will help later
-			Output::Warning("ProcessActionUsage1: BattleAction without valid target.");
-			Output::Warning("Please report a bug!");
-			return true;
-		}
-
-		action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
-
-		if (!action->IsCurrentTargetValid()) {
-			// Nothing left to target, abort
-			return true;
-		}
+		return true;
 	}
 
 	battle_message_window->Clear();
