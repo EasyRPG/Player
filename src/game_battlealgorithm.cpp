@@ -948,18 +948,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
+	const auto* target = (targets.size() == 1) ? targets.front() : nullptr;
 	if (line == 0) {
 		if (Player::IsRPG2k()) {
 			if (item && item->using_message == 0) {
 				return BattleMessage::GetItemStartMessage2k(*GetSource(), *item);
 			}
-			return BattleMessage::GetSkillFirstStartMessage2k(*GetSource(), *GetTarget(), skill);
+			return BattleMessage::GetSkillFirstStartMessage2k(*GetSource(), target, skill);
 		} else {
 			return BattleMessage::GetSkillStartMessage2k3(skill);
 		}
 	}
 	if (line == 1 && Player::IsRPG2k()) {
-		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), *GetTarget(), skill);
+		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), target, skill);
 	}
 	return "";
 }

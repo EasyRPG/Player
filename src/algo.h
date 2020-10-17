@@ -225,6 +225,18 @@ inline bool SkillTargetsAllies(const lcf::rpg::Skill& skill) {
 }
 
 /**
+ * Checks if the skill has a single target
+ *
+ * @param skill the skill to check
+ * @return true if targets a single battler
+ */
+inline bool SkillTargetsOne(const lcf::rpg::Skill& skill) {
+	return skill.scope == lcf::rpg::Skill::Scope_ally
+				|| skill.scope == lcf::rpg::Skill::Scope_enemy
+				|| skill.scope == lcf::rpg::Skill::Scope_self;
+}
+
+/**
  * Returns the number of attacks the weapon can do.
  *
  * @param the id of the actor to check

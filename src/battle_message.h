@@ -82,9 +82,9 @@ std::string GetEscapeStartMessage2k(const Game_Battler& source);
 
 std::string GetTransformStartMessage(const Game_Battler& source, const lcf::rpg::Enemy& new_enemy);
 
-std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill);
+std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill);
 
-std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill);
+std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill);
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item);
 

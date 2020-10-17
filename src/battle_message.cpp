@@ -17,6 +17,7 @@
 #include "battle_message.h"
 #include "player.h"
 #include "utils.h"
+#include "algo.h"
 #include "game_battler.h"
 #include <lcf/rpg/state.h>
 #include <lcf/data.h>
@@ -372,23 +373,27 @@ std::string GetTransformStartMessage(const Game_Battler& source, const lcf::rpg:
 	return ToString(source.GetName()) + ToString(lcf::Data::terms.enemy_transform);
 }
 
-static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler& target, StringView name, StringView usage) {
+static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill, StringView usage) {
+	StringView target_name = "???";
+	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
+		target_name = target->GetName();
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 				usage,
 				Utils::MakeArray('S', 'O', 'U'),
-				Utils::MakeSvArray(source.GetName(), target.GetName(), name)
+				Utils::MakeSvArray(source.GetName(), target_name, skill.name)
 				);
 	}
 	return ToString(source.GetName()) + ToString(usage);
 }
 
-std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	return GetSkillStartMessageGeneric(source, target, skill.name, skill.using_message1);
+std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
+	return GetSkillStartMessageGeneric(source, target, skill, skill.using_message1);
 }
 
-std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	return GetSkillStartMessageGeneric(source, target, skill.name, skill.using_message2);
+std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
+	return GetSkillStartMessageGeneric(source, target, skill, skill.using_message2);
 }
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item) {
