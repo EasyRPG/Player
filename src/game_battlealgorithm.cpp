@@ -457,26 +457,16 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 	return NULL;
 }
 
+std::string Game_BattleAlgorithm::AlgorithmBase::GetStartMessage(int) const {
+	return "";
+}
+
 const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const {
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsReflected(const Game_Battler&) const {
 	return false;
-}
-
-Game_BattleAlgorithm::Null::Null(Game_Battler* source) :
-AlgorithmBase(Type::Null, source, source) {
-	// no-op
-}
-
-std::string Game_BattleAlgorithm::Null::GetStartMessage(int) const {
-	return "";
-}
-
-bool Game_BattleAlgorithm::Null::Execute() {
-	this->success = true;
-	return true;
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
@@ -1333,10 +1323,6 @@ void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
 AlgorithmBase(Type::NoMove, source, source) {
 	// no-op
-}
-
-std::string Game_BattleAlgorithm::NoMove::GetStartMessage(int) const {
-	return "";
 }
 
 bool Game_BattleAlgorithm::NoMove::Execute() {

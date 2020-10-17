@@ -39,7 +39,7 @@ class Game_Party_Base;
 namespace Game_BattleAlgorithm {
 
 enum class Type {
-	Null,
+	NoMove,
 	Normal,
 	Skill,
 	Item,
@@ -49,7 +49,6 @@ enum class Type {
 	SelfDestruct,
 	Escape,
 	Transform,
-	NoMove,
 };
 
 struct StateEffect {
@@ -286,7 +285,7 @@ public:
 	 * @param line which line of the message to fetch
 	 * @return message
 	 */
-	virtual std::string GetStartMessage(int line) const = 0;
+	virtual std::string GetStartMessage(int line) const;
 
 	/**
 	 * Checks if there is a first line message to display when the action is invoked.
@@ -370,7 +369,7 @@ protected:
 	 */
 	bool TargetNextInternal();
 
-	Type type = Type::Null;
+	Type type = Type::NoMove;
 	Game_Battler* source = nullptr;
 	std::vector<Game_Battler*> targets;
 	std::vector<Game_Battler*>::iterator current_target;
@@ -407,18 +406,6 @@ protected:
 	std::vector<AttributeEffect> attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
-};
-
-// Special algorithm for battlers which have no action. 
-// Similar to NoMove, but treated as no action wheras NoMove
-// is an action that does nothing.
-class Null : public AlgorithmBase {
-public:
-	Null(Game_Battler* source);
-
-	std::string GetStartMessage(int line) const override;
-
-	bool Execute() override;
 };
 
 class Normal : public AlgorithmBase {
@@ -559,8 +546,6 @@ private:
 class NoMove : public AlgorithmBase {
 public:
 	NoMove(Game_Battler* source);
-
-	std::string GetStartMessage(int line) const override;
 
 	bool Execute() override;
 };

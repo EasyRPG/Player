@@ -506,7 +506,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 			}
 		}
 
-		if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
+		if (action->GetType() != Game_BattleAlgorithm::Type::NoMove || show_message) {
 			SelectionFlash(action->GetSource());
 		}
 
@@ -527,8 +527,8 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
 
-		if (action->GetType() == Game_BattleAlgorithm::Type::Null) {
-			return true;
+		if (action->GetType() == Game_BattleAlgorithm::Type::NoMove) {
+			return ProcessNextAction(BattleActionState_Finished, action);
 		}
 
 		SetWait(4,4);
