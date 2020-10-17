@@ -240,9 +240,6 @@ public:
 	/** @return if the last action was a critical hit.  */
 	bool IsCriticalHit() const;
 
-	/** @return if that is the first target of the action.  */
-	bool IsFirstAttack() const;
-
 	/**
 	 * Executes the algorithm. Must be called before using the other functions.
 	 * This function only simulates the Algorithm, call Apply to add the
@@ -252,8 +249,11 @@ public:
 	 */
 	virtual bool Execute() = 0;
 
-	/** Apply the first time effect such as sp cost etc.. */
-	void ApplyFirstTimeEffect();
+	/** Apply custom effects */
+	virtual void ApplyCustomEffect();
+
+	/** Apply switch enabled by action */
+	void ApplySwitchEffect();
 
 	/** Apply hp damage or healing. Hp healing is not applied if the action revivies */
 	int ApplyHpEffect();
@@ -287,6 +287,9 @@ public:
 
 	/** Apply all effects in order */
 	void ApplyAll();
+
+	/** Apply switches set on the action externally (e.g. enemy actions) */
+	void ProcessPostActionSwitches();
 
 	/**
 	 * Tests if it makes sense to apply an action on the target.
@@ -415,7 +418,6 @@ protected:
 	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 	virtual bool vStart();
-	virtual void vApplyFirstTimeEffect();
 
 	std::string GetAttackFailureMessage(StringView points) const;
 
@@ -446,8 +448,6 @@ protected:
 	int agility = 0;
 	int switch_id = 0;
 
-private:
-	bool first_attack = true;
 protected:
 	bool affect_hp = false;
 	bool affect_sp = false;
@@ -590,7 +590,7 @@ public:
 	std::string GetStartMessage() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
+	void ApplyCustomEffect() override;
 };
 
 class Escape : public AlgorithmBase {
@@ -601,7 +601,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
+	void ApplyCustomEffect() override;
 };
 
 class Transform : public AlgorithmBase {
@@ -610,7 +610,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
+	void ApplyCustomEffect() override;
 
 private:
 	int new_monster_id;
@@ -641,10 +641,6 @@ inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
 
 inline bool AlgorithmBase::IsTargetingParty() const {
 	return party_target != nullptr;
-}
-
-inline bool AlgorithmBase::IsFirstAttack() const {
-	return first_attack;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {

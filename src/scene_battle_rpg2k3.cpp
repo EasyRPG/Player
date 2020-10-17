@@ -1135,6 +1135,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			targets.clear();
 			combo_repeat = 1;
 
+			action->ProcessPostActionSwitches();
+
 			return true;
 		}
 

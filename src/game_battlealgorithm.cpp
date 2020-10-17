@@ -139,11 +139,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	states.clear();
 	attributes.clear();
-
-	if (!IsFirstAttack()) {
-		switch_on.clear();
-		switch_off.clear();
-	}
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool only_sound, int cutoff, bool invert) {
@@ -448,27 +443,14 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplyFirstTimeEffect() {
-	if (!first_attack) {
-		return;
-	}
-	vApplyFirstTimeEffect();
-
-	if (GetAffectedSwitch() > 0) {
-		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
-	}
-
-	for (int s : switch_on) {
-		Main_Data::game_switches->Set(s, true);
-	}
-
-	for (int s : switch_off) {
-		Main_Data::game_switches->Set(s, false);
-	}
-	first_attack = false;
+void Game_BattleAlgorithm::AlgorithmBase::ApplyCustomEffect() {
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::vApplyFirstTimeEffect() {
+void Game_BattleAlgorithm::AlgorithmBase::ApplySwitchEffect() {
+	const auto sw = GetAffectedSwitch();
+	if (sw > 0) {
+		Main_Data::game_switches->Set(sw, true);
+	}
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
@@ -593,7 +575,8 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyAttributeShiftEffects() {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
-	ApplyFirstTimeEffect();
+	ApplyCustomEffect();
+	ApplySwitchEffect();
 	ApplyHpEffect();
 	ApplySpEffect();
 	ApplyAtkEffect();
@@ -602,6 +585,16 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyAll() {
 	ApplyAgiEffect();
 	ApplyStateEffects();
 	ApplyAttributeShiftEffects();
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::ProcessPostActionSwitches() {
+	for (int s : switch_on) {
+		Main_Data::game_switches->Set(s, true);
+	}
+
+	for (int s : switch_off) {
+		Main_Data::game_switches->Set(s, false);
+	}
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid(const Game_Battler& target) const {
@@ -613,7 +606,6 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Start() {
-	first_attack = true;
 	reflect_target = nullptr;
 
 	if (party_target) {
@@ -1598,7 +1590,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::SelfDestruct::vApplyFirstTimeEffect() {
+void Game_BattleAlgorithm::SelfDestruct::ApplyCustomEffect() {
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
@@ -1656,7 +1648,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Escape::vApplyFirstTimeEffect() {
+void Game_BattleAlgorithm::Escape::ApplyCustomEffect() {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
 		enemy->SetHidden(true);
@@ -1690,7 +1682,7 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 	return true;
 }
 
-void Game_BattleAlgorithm::Transform::vApplyFirstTimeEffect() {
+void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }
 

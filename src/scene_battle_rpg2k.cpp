@@ -626,7 +626,8 @@ bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBa
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
-	action->ApplyFirstTimeEffect();
+	action->ApplyCustomEffect();
+	action->ApplySwitchEffect();
 
 	battle_action_results_index = battle_message_window->GetLineCount();
 
@@ -1043,6 +1044,7 @@ bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBa
 	}
 
 	battle_message_window->Clear();
+	action->ProcessPostActionSwitches();
 	return true;
 }
 
