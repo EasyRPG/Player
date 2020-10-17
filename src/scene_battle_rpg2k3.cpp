@@ -1077,12 +1077,14 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					auto* enemy = static_cast<Game_Enemy*>(target);
 					enemy->SetBlinkTimer();
 					if (!was_dead && enemy->IsDead()) {
+						Main_Data::game_system->SePlay(*action->GetDeathSe());
 						enemy->SetDeathTimer();
 					}
 				} else {
 					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 				}
 			}
+			target_sprite->DetectStateChange();
 
 
 			if (target) {
@@ -1151,24 +1153,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (battle_action_wait--) {
 			return false;
-		}
-
-		{
-			std::vector<Game_Battler*>::const_iterator it;
-
-			for (it = targets.begin(); it != targets.end(); ++it) {
-				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
-
-				if ((*it)->IsDead()) {
-					if (action->GetDeathSe()) {
-						Main_Data::game_system->SePlay(*action->GetDeathSe());
-					}
-				}
-
-				if (target_sprite) {
-					target_sprite->DetectStateChange();
-				}
-			}
 		}
 
 		// Check if a combo is enabled and redo the whole action in that case
