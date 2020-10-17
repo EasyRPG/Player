@@ -153,43 +153,46 @@ public:
 	 */
 	void SetSwitchDisable(int switch_id);
 
+	/** @return true if this action affects hp. */
 	bool IsAffectHp() const;
+
+	/** @return true if this action affects sp. */
 	bool IsAffectSp() const;
+
+	/** @return true if this action affects atk. */
 	bool IsAffectAtk() const;
+
+	/** @return true if this action affects def. */
 	bool IsAffectDef() const;
+
+	/** @return true if this action affects spi. */
 	bool IsAffectSpi() const;
+
+	/** @return true if this action affects agi. */
 	bool IsAffectAgi() const;
 
-	/** @return how much hp is to be gained or lost */
+	/** @return signed value of how much hp is to be gained or lost */
 	int GetAffectedHp() const;
 
-	/** @return how much sp is to be gained or lost */
+	/** @return signed value of how much sp is to be gained or lost */
 	int GetAffectedSp() const;
 
-	/** @return how much attack is to be gained or lost */
+	/** @return signed value of how much attack is to be gained or lost */
 	int GetAffectedAttack() const;
 
-	/** @return how much defense is to be gained or lost */
+	/** @return signed value of how much defense is to be gained or lost */
 	int GetAffectedDefense() const;
 
-	/** @return how much spirit is to be gained or lost */
+	/** @return signed value of how much spirit is to be gained or lost */
 	int GetAffectedSpirit() const;
 
-	/** @return how much spirit is to be gained or lost */
+	/** @return signed value of how much spirit is to be gained or lost */
 	int GetAffectedAgility() const;
 
-	/**
-	 * Gets all states changes caused by this action in order.
-	 *
-	 * @return state effects
-	 */
+	/** @return all states changes caused by this action in order. */
 	const std::vector<StateEffect>& GetStateEffects() const;
 
-	/**
-	 * Gets which attributes were shifited.
-	 *
-	 * @return shifted attributes
-	 */
+	/** @return all attributes which are shifited by this action. */
 	const std::vector<AttributeEffect>& GetShiftedAttributes() const;
 
 	/**
@@ -227,8 +230,8 @@ public:
 	virtual int GetAnimationId(int i) const;
 
 	/**
-	 * Plays the battle animation on the targets.
-	 * Takes care of single- and multi-target animations.
+	 * Plays the battle animation on all valid targets starting from the current target to the last target.
+	 * Takes care of single and multi-target animations.
 	 *
 	 * @param anim_id the ID of the animation to play.
 	 * @param sound_only Only play sounds
@@ -246,14 +249,10 @@ public:
 	 */
 	bool IsSuccess() const;
 
-	/**
-	 * Gets if the last action was a critical hit.
-	 */
+	/** @return if the last action was a critical hit.  */
 	bool IsCriticalHit() const;
 
-	/**
-	 * Gets if that is the first target of the action.
-	 */
+	/** @return if that is the first target of the action.  */
 	bool IsFirstAttack() const;
 
 	/**
@@ -265,17 +264,40 @@ public:
 	 */
 	virtual bool Execute() = 0;
 
+	/** Apply the first time effect such as sp cost etc.. */
 	void ApplyFirstTimeEffect();
+
+	/** Apply hp damage or healing. Hp healing is not applied if the action revivies */
 	int ApplyHpEffect();
+
+	/** Apply sp increase or decrease. */
 	int ApplySpEffect();
+
+	/** Apply atk increase or decrease. */
 	int ApplyAtkEffect();
+
+	/** Apply def increase or decrease. */
 	int ApplyDefEffect();
+
+	/** Apply spi increase or decrease. */
 	int ApplySpiEffect();
+
+	/** Apply agi increase or decrease. */
 	int ApplyAgiEffect();
+
+	/** Apply the given state effect */
 	void ApplyStateEffect(StateEffect se);
+
+	/** Apply all state effects */
 	void ApplyStateEffects();
+
+	/** Apply the given attribute effect */
 	int ApplyAttributeShiftEffect(AttributeEffect ae);
+
+	/** Apply all attribute effects */
 	void ApplyAttributeShiftEffects();
+
+	/** Apply all effects in order */
 	void ApplyAll();
 
 	/**

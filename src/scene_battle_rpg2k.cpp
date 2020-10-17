@@ -619,15 +619,15 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
-action->Execute();
-if (action->GetType() == Game_BattleAlgorithm::Type::Normal
-		|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
-	SetWait(4,4);
-	if (action->IsSuccess() && action->IsCriticalHit()) {
-		return ProcessNextAction(BattleActionState_Critical, action);
+	action->Execute();
+	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
+		SetWait(4,4);
+		if (action->IsSuccess() && action->IsCriticalHit()) {
+			return ProcessNextAction(BattleActionState_Critical, action);
+		}
 	}
-}
-return ProcessNextAction(BattleActionState_Apply, action);
+	return ProcessNextAction(BattleActionState_Apply, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
