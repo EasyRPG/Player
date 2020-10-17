@@ -396,7 +396,7 @@ public:
 	/** @return true if this battler is in it's party */
 	virtual bool IsInParty() const = 0;
 
-	virtual bool Exists() const;
+	bool Exists() const;
 	bool IsDead() const;
 
 	/**
@@ -854,7 +854,8 @@ inline void Game_Battler::Kill() {
 }
 
 inline bool Game_Battler::IsDead() const {
-	return HasState(lcf::rpg::State::kDeathID);
+	// RPG_RT compatibility requires checking the death state and not hp.
+	return GetHp() == 0;
 }
 
 inline bool Game_Battler::Exists() const {
