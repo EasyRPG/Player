@@ -721,11 +721,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Evasion);
 }
 
-const lcf::rpg::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
-	return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
-		NULL : &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-}
-
 bool Game_BattleAlgorithm::AlgorithmBase::IsReflected(const Game_Battler&) const {
 	return false;
 }

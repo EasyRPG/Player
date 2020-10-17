@@ -358,13 +358,6 @@ public:
 	virtual const lcf::rpg::Sound* GetFailureSe() const;
 
 	/**
-	 * Gets the sound effect that is played when the target died.
-	 *
-	 * @return death se
-	 */
-	virtual const lcf::rpg::Sound* GetDeathSe() const;
-
-	/**
 	 * Returns the message used when the action fails.
 	 *
 	 * @return failure message

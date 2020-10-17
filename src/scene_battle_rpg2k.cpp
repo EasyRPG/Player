@@ -1027,12 +1027,9 @@ void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* actio
 	battle_message_window->ScrollToEnd();
 	SetWait(36, 60);
 
-	auto* se = action->GetDeathSe();
-	if (se) {
-		Main_Data::game_system->SePlay(*se);
-	}
 	if (target->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(target)->SetDeathTimer();
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 	}
 }
 

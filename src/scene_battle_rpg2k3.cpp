@@ -1064,7 +1064,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					auto* enemy = static_cast<Game_Enemy*>(target);
 					enemy->SetBlinkTimer();
 					if (!was_dead && enemy->IsDead()) {
-						Main_Data::game_system->SePlay(*action->GetDeathSe());
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 						enemy->SetDeathTimer();
 					}
 				} else {
