@@ -17,7 +17,7 @@ struct DataInit {
 		for (int i = 0; i < 4; ++i) {
 			lcf::Data::actors.push_back({});
 			lcf::Data::actors.back().ID = i + 1;
-			lcf::Data::actors.back().Setup();
+			lcf::Data::actors.back().Setup(true);
 		}
 		lcf::rpg::SaveInventory inventory;
 		inventory.party.push_back(3);
