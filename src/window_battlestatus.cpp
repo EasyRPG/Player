@@ -101,6 +101,10 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			contents->ClearRect(Rect(192, 0, 45, 64));
+		}
+
 		for (int i = 0; i < item_max; ++i) {
 			// The party always contains valid battlers
 			Game_Battler* actor;
@@ -154,7 +158,10 @@ void Window_BattleStatus::RefreshGauge() {
 				int y = 2 + i * 16;
 
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
-					DrawGauge(*actor, 202 - 10, y - 2);
+					// RPG_RT Bug (?): Gauge hidden when selected due to transparency (wrong color when rendering)
+					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (2 + index * 16 != y)) {
+						DrawGauge(*actor, 202 - 10, y - 2, lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ? 96 : 255);
+					}
 					DrawActorHp(*actor, 136, y, 4, true);
 					DrawActorSp(*actor, 202, y, 3, false);
 				} else {

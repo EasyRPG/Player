@@ -306,7 +306,7 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
 }
 
-void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
+void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha) const {
 	BitmapRef system2 = Cache::System2();
 	if (!system2) {
 		return;
@@ -324,9 +324,9 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 
 	Rect dst_rect(cx + 16, cy, 25, 16);
 
-	contents->Blit(cx + 0, cy, *system2, gauge_left, 255);
-	contents->Blit(cx + 16 + 25, cy, *system2, gauge_right, 255);
-	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
+	contents->Blit(cx + 0, cy, *system2, gauge_left, alpha);
+	contents->Blit(cx + 16 + 25, cy, *system2, gauge_right, alpha);
+	contents->StretchBlit(dst_rect, *system2, gauge_center, alpha);
 
 	const auto atb = actor.GetAtbGauge();
 	const auto gauge_w = 25 * atb / actor.GetMaxAtbGauge();
@@ -334,6 +334,6 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 		// Full or not full bar
 		Rect gauge_bar(full ? 64 : 48, gauge_y, 16, 16);
 		Rect bar_rect(cx + 16, cy, gauge_w, 16);
-		contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
+		contents->StretchBlit(bar_rect, *system2, gauge_bar, alpha);
 	}
 }
