@@ -949,7 +949,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
 		is_target_party = action->IsTargetingParty();
 
-		action->InitTargets();
+		action->Start();
 
 		if (action->GetSource()->GetType() == Game_Battler::Type_Ally && combo_repeat == 1) {
 			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {

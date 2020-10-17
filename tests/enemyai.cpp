@@ -648,7 +648,6 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
-		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Ally), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 
 	SUBCASE("NoAct") {
@@ -663,6 +662,7 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		enemy.GetBattleAlgorithm()->Start();
 		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Enemy), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 
@@ -671,6 +671,7 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		enemy.GetBattleAlgorithm()->Start();
 		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Ally), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 }

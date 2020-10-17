@@ -147,6 +147,10 @@ int Game_Party::GetEquippedItemCount(int item_id) const {
 	return number;
 }
 
+int Game_Party::GetItemTotalCount(int item_id) const {
+	return GetItemCount(item_id) + GetEquippedItemCount(item_id);
+}
+
 void Game_Party::GainGold(int n) {
 	data.gold = data.gold + n;
 	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);

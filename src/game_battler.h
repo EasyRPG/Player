@@ -443,6 +443,14 @@ public:
 	virtual int CalculateSkillCost(int skill_id) const;
 
 	/**
+	 * Calculates the Sp cost for attacking with a weapon.
+	 *
+	 * @param weapon which weapons to include in calculating result.
+	 * @return sp cost for attacking with weapon.
+	 */
+	virtual int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
+
+	/**
 	 * Sets the battler attack modifier.
 	 *
 	 * @param modifier attack modifier
@@ -1019,6 +1027,10 @@ inline void Game_Battler::SetDirectionFlipped(bool flip) {
 
 inline int Game_Battler::GetBattleFrameCounter() const {
 	return frame_counter;
+}
+
+inline int Game_Battler::CalculateWeaponSpCost(Weapon) const {
+	return 0;
 }
 
 #endif

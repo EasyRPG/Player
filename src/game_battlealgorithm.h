@@ -98,10 +98,9 @@ public:
 	bool IsTargetingParty() const;
 
 	/**
-	 * Initializes targetting. Must be called after initialising a multi target
-	 * skill, otherwise will behave incorrectly.
+	 * Initializes targetting and performs any initial actions such as sp cost reduction for the user.
 	 */
-	void InitTargets();
+	void Start();
 
 	/**
 	 * If IsReflectable(), will reflect the action back on the source or the source's party.
@@ -413,8 +412,9 @@ public:
 
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
+	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
-	virtual void vInitTargets();
+	virtual bool vStart();
 	virtual void vApplyFirstTimeEffect();
 
 	std::string GetAttackFailureMessage(StringView points) const;
@@ -499,8 +499,7 @@ public:
 	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
 
 	bool Execute() override;
-	void vInitTargets() override;
-	void vApplyFirstTimeEffect() override;
+	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage() const override;
@@ -520,7 +519,7 @@ public:
 
 	bool IsTargetValid(const Game_Battler&) const override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
+	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage() const override;
@@ -547,7 +546,7 @@ public:
 
 	bool IsTargetValid(const Game_Battler&) const override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
+	bool vStart() override;
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
@@ -580,8 +579,8 @@ public:
 	Charge(Game_Battler* source);
 
 	std::string GetStartMessage() const override;
+	bool vStart() override;
 	bool Execute() override;
-	void vApplyFirstTimeEffect() override;
 };
 
 class SelfDestruct : public AlgorithmBase {

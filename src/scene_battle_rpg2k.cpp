@@ -539,7 +539,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 
 bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action) {
 
-	action->InitTargets();
+	action->Start();
 	if (!action->IsCurrentTargetValid()) {
 		return true;
 	}

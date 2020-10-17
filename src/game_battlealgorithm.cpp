@@ -80,11 +80,16 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
-	type(ty), source(source),
+	AlgorithmBase(ty, source, std::vector<Game_Battler*>{ target }) {}
+
+Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, std::vector<Game_Battler*> in_targets) :
+	type(ty), source(source), targets(std::move(in_targets)),
 	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
 	assert(source != nullptr);
-	assert(target != nullptr);
+	for (auto* t: targets) {
+		assert(t != nullptr);
+	}
 
 	Reset();
 
@@ -92,7 +97,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	physical_charged = source->IsCharged();
 	source->SetCharged(false);
 
-	targets = { target };
 	num_original_targets = targets.size();
 	current_target = targets.end();
 }
@@ -608,7 +612,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Idle;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
+void Game_BattleAlgorithm::AlgorithmBase::Start() {
 	first_attack = true;
 	reflect_target = nullptr;
 
@@ -622,16 +626,11 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 	}
 	current_target = targets.begin();
 
-	// Call any custom targeting logic, then check if we need to retarget
-	vInitTargets();
+	// Call any custom start logic, then check if we need to retarget
+	bool allow_retarget = vStart();
 
-	// This case must be true before returning.
-	assert(current_target == targets.end() || IsCurrentTargetValid());
-}
-
-void Game_BattleAlgorithm::AlgorithmBase::vInitTargets() {
 	if (!IsCurrentTargetValid()) {
-		if (!TargetNext() && !party_target && !targets.empty()) {
+		if (!TargetNext() && allow_retarget && !party_target && !targets.empty()) {
 			auto* last_target = targets.back();
 			auto* next_target = last_target->GetParty().GetNextActiveBattler(last_target);
 			if (next_target) {
@@ -643,6 +642,13 @@ void Game_BattleAlgorithm::AlgorithmBase::vInitTargets() {
 			}
 		}
 	}
+
+	// This case must be true before returning.
+	assert(current_target == targets.end() || IsCurrentTargetValid());
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::vStart() {
+	return true;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::ReflectTargets() {
@@ -777,21 +783,20 @@ void Game_BattleAlgorithm::Normal::Init(int hits_multiplier, Style style) {
 	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(GetWeapon()));
 }
 
-void Game_BattleAlgorithm::Normal::vInitTargets() {
-	assert(!targets.empty());
+bool Game_BattleAlgorithm::Normal::vStart() {
 	// If this weapon attacks all, then attack all enemies regardless of original targetting.
-	if (!party_target && source->HasAttackAll(GetWeapon())) {
+	const auto weapon = GetWeapon();
+	if (!party_target && source->HasAttackAll(weapon)) {
 		auto* target = targets.back();
 		auto idx = targets.size();
 		target->GetParty().GetBattlers(targets);
 		current_target = targets.begin() + idx;
 	}
 
-	// Now perform the default retargeting logic
-	AlgorithmBase::vInitTargets();
+	source->ChangeSp(-source->CalculateWeaponSpCost(weapon));
+
+	return true;
 }
-
-
 
 int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 	const auto weapon = GetWeapon();
@@ -923,13 +928,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Normal::vApplyFirstTimeEffect() {
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		const auto weapon = GetWeapon();
-		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost(weapon));
-	}
-}
-
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
 		if (Player::IsRPG2kE()) {
@@ -985,6 +983,15 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& 
 }
 
 void Game_BattleAlgorithm::Skill::Init() {
+}
+
+bool Game_BattleAlgorithm::Skill::vStart() {
+	if (item) {
+		Main_Data::game_party->ConsumeItemUse(item->ID);
+	} else {
+		source->ChangeSp(-source->CalculateSkillCost(skill.ID));
+	}
+	return true;
 }
 
 int Game_BattleAlgorithm::Skill::GetAnimationId(int idx) const {
@@ -1216,15 +1223,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	return this->success;
 }
 
-void Game_BattleAlgorithm::Skill::vApplyFirstTimeEffect() {
-	if (item) {
-		Main_Data::game_party->ConsumeItemUse(item->ID);
-	}
-	else {
-		source->ChangeSp(-source->CalculateSkillCost(skill.ID));
-	}
-}
-
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
 		if (item && item->using_message == 0) {
@@ -1329,14 +1327,7 @@ bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const 
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	if (item) {
-		int count = Main_Data::game_party->GetItemCount(item->ID);
-		if (count == 0) {
-			auto* src = GetSource();
-			if (src && src->GetType() == Game_Battler::Type_Ally) {
-				count += static_cast<Game_Actor*>(src)->IsEquipped(item->ID);
-			}
-		}
-		return count > 0;
+		return Main_Data::game_party->GetItemTotalCount(item->ID) > 0;
 	}
 	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
 }
@@ -1349,6 +1340,11 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, con
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Item& item) :
 	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
+}
+
+bool Game_BattleAlgorithm::Item::vStart() {
+	Main_Data::game_party->ConsumeItemUse(item.ID);
+	return true;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, const lcf::rpg::Item& item) :
@@ -1423,10 +1419,6 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	return false;
 }
 
-void Game_BattleAlgorithm::Item::vApplyFirstTimeEffect() {
-	Main_Data::game_party->ConsumeItemUse(item.ID);
-}
-
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -1462,7 +1454,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 }
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
-	return Main_Data::game_party->GetItemCount(item.ID) > 0;
+	return Main_Data::game_party->GetItemTotalCount(item.ID) > 0;
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
@@ -1527,6 +1519,11 @@ AlgorithmBase(Type::Charge, source, source) {
 	// no-op
 }
 
+bool Game_BattleAlgorithm::Charge::vStart() {
+	source->SetCharged(true);
+	return true;
+}
+
 std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -1546,10 +1543,6 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 bool Game_BattleAlgorithm::Charge::Execute() {
 	this->success = true;
 	return true;
-}
-
-void Game_BattleAlgorithm::Charge::vApplyFirstTimeEffect() {
-	source->SetCharged(true);
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :

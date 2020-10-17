@@ -139,7 +139,7 @@ public:
 	 * @param weapon which weapons to include in calculating result.
 	 * @return sp cost for attacking with weapon.
 	 */
-	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
+	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the actor ID.
