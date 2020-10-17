@@ -329,16 +329,6 @@ public:
 	virtual std::string GetFailureMessage() const;
 
 	/**
-	 * This is used to handle a corner case in the RPG2k battle system.
-	 * When a battler dies because his hp reached 0 the "[NAME] has fallen"
-	 * message is displayed on a new line. When the death is caused by a
-	 * condition it is printed on the same line as all other conditions.
-	 *
-	 * @return death message
-	 */
-	virtual std::string GetDeathMessage() const;
-
-	/**
 	 * Returns whether the attack would be reflected if used upon the target.
 	 *
 	 * @param the target to check
@@ -362,26 +352,11 @@ public:
 	 */
 	void SetRepeat(int repeat);
 
-	/**
-	 * @return the critical hit message
-	 */
-	std::string GetCriticalHitMessage() const;
-
-	std::string GetUndamagedMessage() const;
-	std::string GetHpSpAbsorbedMessage(int value, StringView points) const;
-	std::string GetDamagedMessage(int value) const;
-	std::string GetHpSpRecoveredMessage(int value, StringView points) const;
-	std::string GetParameterChangeMessage(int value, StringView points) const;
-	std::string GetStateMessage(StringView message) const;
-	std::string GetAttributeShiftMessage(int value, StringView attribute) const;
-
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 	virtual bool vStart();
-
-	std::string GetAttackFailureMessage(StringView points) const;
 
 	void Reset();
 

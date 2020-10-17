@@ -38,6 +38,7 @@
 #include "rand.h"
 #include "autobattle.h"
 #include "enemyai.h"
+#include "battle_message.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 	Scene_Battle(args)
@@ -618,7 +619,7 @@ bool Scene_Battle_Rpg2k::ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBas
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_message_window->Push(action->GetCriticalHitMessage());
+	battle_message_window->Push(BattleMessage::GetCriticalHitMessage(*action->GetSource(), *action->GetTarget()));
 	battle_message_window->ScrollToEnd();
 	SetWait(10, 30);
 
@@ -708,12 +709,12 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 
 		std::string msg;
 		if (action->IsAbsorb()) {
-			msg = action->GetHpSpAbsorbedMessage(-dmg, lcf::Data::terms.health_points);
+			msg = BattleMessage::GetHpAbsorbedMessage(*action->GetTarget(), *target, -dmg);
 		} else {
 			if (dmg == 0) {
-				msg = action->GetUndamagedMessage();
+				msg = BattleMessage::GetUndamagedMessage(*target);
 			} else {
-				msg = action->GetDamagedMessage(-dmg);
+				msg = BattleMessage::GetDamagedMessage(*target, -dmg);
 			}
 		}
 
@@ -745,6 +746,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	}
 
 	if (battle_action_substate == ePreStates) {
+		auto* target = action->GetTarget();
 		const auto& states = action->GetStateEffects();
 		auto& idx = battle_action_substate_index;
 		for (;idx < static_cast<int>(states.size()); ++idx) {
@@ -754,7 +756,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 				continue;
 			}
 			action->ApplyStateEffect(se);
-			pending_message = action->GetStateMessage(state->message_recovery);
+			pending_message = BattleMessage::GetStateRecoveryMessage(*target, *state);
 			++battle_action_substate_index;
 
 			battle_message_window->PopUntil(battle_action_dmg_index);
@@ -799,6 +801,8 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 	};
 
 	const auto next_state = BattleActionState_States;
+	auto* source = action->GetSource();
+	auto* target = action->GetTarget();
 
 	// All of the "Pre" states are even numbers, so catch all Pre here.
 	if ((battle_action_substate & 1) == 0) {
@@ -814,7 +818,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 			// Damage is handled by Damage state, so only check healing here.
 			if (action->GetAffectedHp() > 0 && !action->IsRevived()) {
 				auto hp = action->ApplyHpEffect();
-				pending_message = action->GetHpSpRecoveredMessage(hp, lcf::Data::terms.health_points);
+				pending_message = BattleMessage::GetHpRecoveredMessage(*target, hp);
 			}
 			checkNext();
 		}
@@ -822,13 +826,13 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		if (battle_action_substate == ePreSp) {
 			auto sp = action->ApplySpEffect();
 			if (action->IsAbsorb()) {
-				pending_message = action->GetHpSpAbsorbedMessage(-sp, lcf::Data::terms.spirit_points);
+				pending_message = BattleMessage::GetSpAbsorbedMessage(*source, *target, -sp);
 			} else {
 				if (sp > 0) {
-					pending_message = action->GetHpSpRecoveredMessage(sp, lcf::Data::terms.spirit_points);
+					pending_message = BattleMessage::GetSpRecoveredMessage(*target, sp);
 				}
 				if (sp < 0) {
-					pending_message = action->GetParameterChangeMessage(sp, lcf::Data::terms.spirit_points);
+					pending_message = BattleMessage::GetSpReduceMessage(*target, -sp);
 				}
 			}
 			checkNext();
@@ -837,7 +841,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		if (battle_action_substate == ePreAtk) {
 			auto atk = action->ApplyAtkEffect();
 			if (atk != 0) {
-				pending_message = action->GetParameterChangeMessage(atk, lcf::Data::terms.attack);
+				pending_message = BattleMessage::GetAtkChangeMessage(*target, atk);
 			}
 			checkNext();
 		}
@@ -845,7 +849,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		if (battle_action_substate == ePreDef) {
 			auto def = action->ApplyDefEffect();
 			if (def != 0) {
-				pending_message = action->GetParameterChangeMessage(def, lcf::Data::terms.defense);
+				pending_message = BattleMessage::GetDefChangeMessage(*target, def);
 			}
 			checkNext();
 		}
@@ -853,7 +857,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		if (battle_action_substate == ePreSpi) {
 			auto spi = action->ApplySpiEffect();
 			if (spi != 0) {
-				pending_message = action->GetParameterChangeMessage(spi, lcf::Data::terms.spirit);
+				pending_message = BattleMessage::GetSpiChangeMessage(*target, spi);
 			}
 			checkNext();
 		}
@@ -861,7 +865,7 @@ bool Scene_Battle_Rpg2k::ProcessActionParamEffects(Game_BattleAlgorithm::Algorit
 		if (battle_action_substate == ePreAgi) {
 			auto agi = action->ApplyAgiEffect();
 			if (agi != 0) {
-				pending_message = action->GetParameterChangeMessage(agi, lcf::Data::terms.agility);
+				pending_message = BattleMessage::GetAgiChangeMessage(*target, agi);
 			}
 			checkNext();
 		}
@@ -925,16 +929,15 @@ bool Scene_Battle_Rpg2k::ProcessActionStateEffects(Game_BattleAlgorithm::Algorit
 			}
 
 			action->ApplyStateEffect(se);
-			bool is_actor = target->GetType() == Game_Battler::Type_Ally;
 			switch (se.effect) {
 				case Game_BattleAlgorithm::StateEffect::Inflicted:
-					pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
+					pending_message = BattleMessage::GetStateInflictMessage(*target, *state);
 					break;
 				case Game_BattleAlgorithm::StateEffect::Healed:
-					pending_message = action->GetStateMessage(state->message_recovery);
+					pending_message = BattleMessage::GetStateRecoveryMessage(*target, *state);
 					break;
 				case Game_BattleAlgorithm::StateEffect::AlreadyInflicted:
-					pending_message = action->GetStateMessage(state->message_already);
+					pending_message = BattleMessage::GetStateAffectedMessage(*target, *state);
 					break;
 				default:
 					break;
@@ -995,7 +998,8 @@ bool Scene_Battle_Rpg2k::ProcessActionAttributeEffects(Game_BattleAlgorithm::Alg
 			auto& ae = attrs[battle_action_substate_index];
 			auto shifted = action->ApplyAttributeShiftEffect(ae);
 			if (shifted != 0) {
-				pending_message = action->GetAttributeShiftMessage(shifted, lcf::ReaderUtil::GetElement(lcf::Data::attributes, ae.attr_id)->name);
+				auto* attr = lcf::ReaderUtil::GetElement(lcf::Data::attributes, ae.attr_id);
+				pending_message = BattleMessage::GetAttributeShiftMessage(*action->GetTarget(), shifted, *attr);
 				break;
 			}
 		}
@@ -1024,7 +1028,7 @@ void Scene_Battle_Rpg2k::ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* actio
 	auto* target = action->GetTarget();
 	assert(target);
 
-	battle_message_window->Push(action->GetDeathMessage());
+	battle_message_window->Push(BattleMessage::GetDeathMessage(*action->GetTarget()));
 	battle_message_window->ScrollToEnd();
 	SetWait(36, 60);
 

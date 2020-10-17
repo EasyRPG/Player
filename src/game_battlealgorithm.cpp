@@ -31,6 +31,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "battle_message.h"
 #include "output.h"
 #include "player.h"
 #include <lcf/reader_util.h>
@@ -164,263 +165,12 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
-	if (current_target == targets.end()) {
-		return "";
-	}
-
-	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
-	const lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, 1);
-	StringView message = is_ally ? StringView(state->message_actor) : StringView(state->message_enemy);
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(GetTarget()->GetName())
-		);
-	}
-	else {
-		return ToString(GetTarget()->GetName()) + ToString(message);
-	}
-}
-
 lcf::rpg::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
 	return source_restriction;
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(StringView message) const {
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(GetSource()->GetName(), GetTarget()->GetName())
-		);
-	}
-	else {
-		return ToString(GetTarget()->GetName()) + ToString(message);
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int value, StringView points) const {
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.hp_recovery,
-			Utils::MakeArray('S', 'V', 'U'),
-			Utils::MakeSvArray(GetTarget()->GetName(), std::to_string(value), points)
-		);
-	}
-	else {
-		std::stringstream ss;
-		std::string particle, particle2, space = "";
-
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << points << particle2;
-		ss << value << space << lcf::Data::terms.hp_recovery;
-		return ss.str();
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
-	bool target_is_ally = (GetTarget()->GetType() ==
-			Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_undamaged)
-		: StringView(lcf::Data::terms.enemy_undamaged);
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(GetTarget()->GetName())
-		);
-	}
-	else {
-		return ToString(GetTarget()->GetName()) + ToString(message);
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
-	bool target_is_ally = (GetTarget()->GetType() ==
-			Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_critical)
-		: StringView(lcf::Data::terms.enemy_critical);
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(GetSource()->GetName(), GetTarget()->GetName())
-		);
-	}
-	else {
-		return ToString(message);
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int value, StringView points) const {
-	bool target_is_ally = (GetTarget()->GetType() ==
-			Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_hp_absorbed)
-		: StringView(lcf::Data::terms.enemy_hp_absorbed);
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'O', 'V', 'U'),
-			Utils::MakeSvArray(GetSource()->GetName(), GetTarget()->GetName(), std::to_string(value), points)
-		);
-	}
-	else {
-		std::stringstream ss;
-		std::string particle, particle2, space = "";
-
-		ss << GetTarget()->GetName();
-
-		if (Player::IsCP932()) {
-			particle = (target_is_ally ? "は" : "の");
-			particle2 = "を ";
-			space += " ";
-		} else {
-			particle = particle2 = " ";
-		}
-		ss << particle << points << particle2;
-		ss << value << space << message;
-
-		return ss.str();
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage(int value) const {
-	bool target_is_ally = (GetTarget()->GetType() ==
-			Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_damaged)
-		: StringView(lcf::Data::terms.enemy_damaged);
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'V', 'U'),
-			Utils::MakeSvArray(GetTarget()->GetName(), std::to_string(value), lcf::Data::terms.health_points)
-		);
-	}
-	else {
-		std::stringstream ss;
-		std::string particle, space = "";
-		ss << GetTarget()->GetName();
-
-		if (Player::IsCP932()) {
-			particle = (target_is_ally ? "は " : "に ");
-			space += " ";
-		} else {
-			particle = " ";
-		}
-		ss << particle << value << space << message;
-		return ss.str();
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(int value, StringView points) const {
-	const bool is_positive = (value >= 0);
-	value = std::abs(value);
-	if (value == 0) {
-		return "";
-	}
-
-	StringView message = is_positive
-		? StringView(lcf::Data::terms.parameter_increase)
-	   	: StringView(lcf::Data::terms.parameter_decrease);
-
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'V', 'U'),
-			Utils::MakeSvArray(GetTarget()->GetName(), std::to_string(value), points)
-		);
-	}
-	else {
-		std::stringstream ss;
-		std::string particle, particle2, space = "";
-		ss << GetTarget()->GetName();
-
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << points << particle2 << value << space;
-		ss << message;
-
-		return ss.str();
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(StringView message) const {
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(GetTarget()->GetName())
-		);
-	}
-	else {
-		return ToString(GetTarget()->GetName()) + ToString(message);
-	}
-}
-
-std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage(int value, StringView attribute) const {
-	const bool is_positive = (value >= 0);
-	value = std::abs(value);
-	if (value == 0) {
-		return "";
-	}
-	StringView message = is_positive
-		? StringView(lcf::Data::terms.resistance_increase)
-		: StringView(lcf::Data::terms.resistance_decrease);
-	std::stringstream ss;
-
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			message,
-			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(GetTarget()->GetName(), attribute)
-		);
-	}
-	else {
-		std::string particle, space = "";
-		ss << GetTarget()->GetName();
-
-		if (Player::IsCP932()) {
-			particle = "は";
-			space += " ";
-		}
-		else {
-			particle = " ";
-		}
-		ss << particle << attribute << space;
-		ss << message;
-
-		return ss.str();
-	}
-}
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetFailureMessage() const {
-	return GetAttackFailureMessage(lcf::Data::terms.dodge);
+	return BattleMessage::GetPhysicalFailureMessage(*GetSource(), *GetTarget());
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
@@ -913,28 +663,15 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 }
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
-	}
-	if (Player::IsRPG2k()) {
-		if (Player::IsRPG2kE()) {
-			return Utils::ReplacePlaceholders(
-				lcf::Data::terms.attacking,
-				Utils::MakeArray('S'),
-				Utils::MakeSvArray(source->GetName())
-			);
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
-		else {
-			return ToString(source->GetName()) + ToString(lcf::Data::terms.attacking);
+		if (GetSource()->GetType() == Game_Battler::Type_Enemy && repeat == 2) {
+			return BattleMessage::GetDoubleAttackStartMessage2k3();
 		}
 	}
-	else {
-		if (repeat == 2) {
-			return "Double Attack";
-		} else {
-			return "";
-		}
-	}
+	return "";
 }
 
 int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
@@ -1211,58 +948,20 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
-	switch (line) {
-		case 0:
-			return GetFirstStartMessage();
-		case 1:
-			return GetSecondStartMessage();
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			if (item && item->using_message == 0) {
+				return BattleMessage::GetItemStartMessage2k(*GetSource(), *item);
+			}
+			return BattleMessage::GetSkillFirstStartMessage2k(*GetSource(), *GetTarget(), skill);
+		} else {
+			return BattleMessage::GetSkillStartMessage2k3(skill);
+		}
+	}
+	if (line == 1 && Player::IsRPG2k()) {
+		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), *GetTarget(), skill);
 	}
 	return "";
-}
-
-std::string Game_BattleAlgorithm::Skill::GetFirstStartMessage() const {
-	if (Player::IsRPG2k()) {
-		if (item && item->using_message == 0) {
-			// Use item message
-			return Item(source, *item).GetStartMessage(0);
-		}
-		if (Player::IsRPG2kE()) {
-			auto* target = GetTarget();
-			return Utils::ReplacePlaceholders(
-				skill.using_message1,
-				Utils::MakeArray('S', 'O', 'U'),
-				Utils::MakeSvArray(GetSource()->GetName(), (target ? target->GetName() : "???"), skill.name)
-			);
-		}
-		else {
-			return ToString(source->GetName()) + ToString(skill.using_message1);
-		}
-	}
-	else {
-		return ToString(skill.name);
-	}
-}
-
-std::string Game_BattleAlgorithm::Skill::GetSecondStartMessage() const {
-	if (Player::IsRPG2k()) {
-		if (item && item->using_message == 0) {
-			return "";
-		}
-		if (Player::IsRPG2kE()) {
-			auto* target = GetTarget();
-			return Utils::ReplacePlaceholders(
-				skill.using_message2,
-				Utils::MakeArray('S', 'O', 'U'),
-				Utils::MakeSvArray(GetSource()->GetName(), (target ? target->GetName() : "???"), skill.name)
-			);
-		}
-		else {
-			return ToString(skill.using_message2);
-		}
-	}
-	else {
-		return "";
-	}
 }
 
 int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
@@ -1295,19 +994,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
 }
 
 std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
-	switch (skill.failure_message) {
-		case 0:
-			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_a);
-		case 1:
-			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_b);
-		case 2:
-			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.skill_failure_c);
-		case 3:
-			return AlgorithmBase::GetAttackFailureMessage(lcf::Data::terms.dodge);
-		default:
-			break;
-	}
-	return "BUG: INVALID SKILL FAIL MSG";
+	return BattleMessage::GetSkillFailureMessage(*GetSource(), *GetTarget(), skill);
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const {
@@ -1413,27 +1100,14 @@ bool Game_BattleAlgorithm::Item::Execute() {
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetItemStartMessage2k(*GetSource(), item);
+		} else {
+			return BattleMessage::GetItemStartMessage2k3(item);
+		}
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.use_item,
-			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(source->GetName(), item.name)
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		std::string particle;
-		if (Player::IsCP932())
-			particle = "は";
-		else
-			particle = " ";
-		return ToString(source->GetName()) + particle + ToString(item.name) + ToString(lcf::Data::terms.use_item);
-	}
-	else {
-		return ToString(item.name);
-	}
+	return "";
 }
 
 int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
@@ -1459,22 +1133,14 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetDefendStartMessage2k(*GetSource());
+		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
+			return BattleMessage::GetDefendStartMessage2k3();
+		}
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.defending,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(source->GetName())
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		return ToString(source->GetName()) + ToString(lcf::Data::terms.defending);
-	}
-	else {
-		return "Defend";
-	}
+	return "";
 }
 
 int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
@@ -1492,22 +1158,14 @@ AlgorithmBase(Type::Observe, source, source) {
 }
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetObserveStartMessage2k(*GetSource());
+		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
+			return BattleMessage::GetObserveStartMessage2k3();
+		}
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.observing,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(source->GetName())
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		return ToString(source->GetName()) + ToString(lcf::Data::terms.observing);
-	}
-	else {
-		return "Observe";
-	}
+	return "";
 }
 
 bool Game_BattleAlgorithm::Observe::Execute() {
@@ -1527,22 +1185,14 @@ bool Game_BattleAlgorithm::Charge::vStart() {
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetChargeUpStartMessage2k(*GetSource());
+		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
+			return BattleMessage::GetChargeUpStartMessage2k3();
+		}
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.focus,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(source->GetName())
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		return ToString(source->GetName()) + ToString(lcf::Data::terms.focus);
-	}
-	else {
-		return "Charge Up";
-	}
+	return "";
 }
 
 bool Game_BattleAlgorithm::Charge::Execute() {
@@ -1556,22 +1206,14 @@ AlgorithmBase(Type::SelfDestruct, source, target) {
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetSelfDestructStartMessage2k(*GetSource());
+		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
+			return BattleMessage::GetSelfDestructStartMessage2k3();
+		}
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.autodestruction,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(source->GetName())
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		return ToString(source->GetName()) + ToString(lcf::Data::terms.autodestruction);
-	}
-	else {
-		return "Self-Destruct";
-	}
+	return "";
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
@@ -1621,24 +1263,14 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
-	}
-	// Only monsters can escape during a battle phase
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.enemy_escape,
-			Utils::MakeArray('S'),
-			Utils::MakeSvArray(source->GetName())
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return ToString(source->GetName()) + ToString(lcf::Data::terms.enemy_escape);
+	if (line == 0) {
+		if (Player::IsRPG2k()) {
+			return BattleMessage::GetEscapeStartMessage2k(*GetSource());
+		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
+			return BattleMessage::GetEscapeStartMessage2k3();
 		}
 	}
-
-	return "Escape";
+	return "";
 }
 
 int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
@@ -1681,22 +1313,11 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
-	if (line != 0) {
-		return "";
+	if (line == 0 && Player::IsRPG2k()) {
+		auto* enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id);
+		return BattleMessage::GetTransformStartMessage(*GetSource(), *enemy);
 	}
-	if (Player::IsRPG2kE()) {
-		return Utils::ReplacePlaceholders(
-			lcf::Data::terms.enemy_transform,
-			Utils::MakeArray('S', 'O'),
-			Utils::MakeSvArray(source->GetName(), lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id)->name) // Sanity check in Game_Enemy
-		);
-	}
-	else if (Player::IsRPG2k()) {
-		return ToString(source->GetName()) + ToString(lcf::Data::terms.enemy_transform);
-	}
-	else {
-		return "";
-	}
+	return "";
 }
 
 bool Game_BattleAlgorithm::Transform::Execute() {
