@@ -164,10 +164,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::HasSecondStartMessage() const {
-	return false;
-}
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
 	return "";
 }
@@ -1236,10 +1232,6 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 	else {
 		return ToString(skill.name);
 	}
-}
-
-bool Game_BattleAlgorithm::Skill::HasSecondStartMessage() const {
-	return Player::IsRPG2k() && (!item || item->using_message != 0) && !skill.using_message2.empty();
 }
 
 std::string Game_BattleAlgorithm::Skill::GetSecondStartMessage() const {

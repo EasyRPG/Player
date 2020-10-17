@@ -77,18 +77,10 @@ class AlgorithmBase {
 public:
 	virtual ~AlgorithmBase() {}
 
-	/**
-	 * Returns the source of the battle action.
-	 *
-	 * @return source battler
-	 */
+	/** @return the source of the battle action. */
 	Game_Battler* GetSource() const;
 
-	/**
-	 * Returns the current target.
-	 *
-	 * @return current target battler
-	 */
+	/** @return current target battler */
 	Game_Battler* GetTarget() const;
 
 	/** @return If the action was reflected, returns the target which triggered the reflect */
@@ -97,9 +89,7 @@ public:
 	/** @return true if this algorithm targets a party */
 	bool IsTargetingParty() const;
 
-	/**
-	 * Initializes targetting and performs any initial actions such as sp cost reduction for the user.
-	 */
+	/** Initializes targetting and performs any initial actions such as sp cost reduction for the user. */
 	void Start();
 
 	/**
@@ -140,6 +130,9 @@ public:
 	 * @param switch_id Switch to turn off
 	 */
 	void SetSwitchDisable(int switch_id);
+
+	/** @return activated switch id or 0 when algorithm didn't affect a switch */
+	int GetAffectedSwitch() const;
 
 	/** @return true if this action affects hp. */
 	bool IsAffectHp() const;
@@ -183,30 +176,13 @@ public:
 	/** @return all attributes which are shifited by this action. */
 	const std::vector<AttributeEffect>& GetShiftedAttributes() const;
 
-	/**
-	 * Gets activated switch.
-	 *
-	 * @return switch id or -1 when algorithm didn't affect a switch
-	 */
-	int GetAffectedSwitch() const;
-
-	/**
-	 * Gets whether the action was positive (e.g. healing) instead of damage.
-	 *
-	 * @return Whether action was positive
-	 */
+	/** @return Whether action was positive (e.g. healing) instead of damage. */
 	bool IsPositive() const;
 
-	/**
-	 * Gets whether the action had absorb component.
-	 *
-	 * @return Whether action was absorb
-	 */
+	/** @return whether the action had absorb component. */
 	bool IsAbsorb() const;
 
-	/*
-	 * @return Whether target will be revived from death
-	 */
+	/** @return Whether target will be revived from death */
 	bool IsRevived() const;
 
 	/**
@@ -323,7 +299,7 @@ public:
 	 *
 	 * @return check
 	 */
-	virtual bool HasSecondStartMessage() const;
+	bool HasSecondStartMessage() const;
 
 	/**
 	 * Gets the second line message that is displayed when the action is invoked.
@@ -523,7 +499,6 @@ public:
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage() const override;
-	bool HasSecondStartMessage() const override;
 	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
@@ -633,6 +608,10 @@ inline Type AlgorithmBase::GetType() const {
 
 inline bool AlgorithmBase::HasStartMessage() const {
 	return !GetStartMessage().empty();
+}
+
+inline bool AlgorithmBase::HasSecondStartMessage() const {
+	return !GetSecondStartMessage().empty();
 }
 
 inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
