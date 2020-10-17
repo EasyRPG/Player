@@ -656,6 +656,15 @@ public:
 	 */
 	virtual int GetNumberOfAttacks(Weapon weapon = WeaponAll) const;
 
+	/**
+	 * Tests if the battler has a weapon that grants attack all
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return true if a weapon is having attack all attribute
+	 */
+	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const;
+
+
 	enum BattlerType {
 		Type_Ally,
 		Type_Enemy
@@ -904,6 +913,10 @@ inline bool Game_Battler::HasPreemptiveAttack(Weapon) const {
 
 inline int Game_Battler::GetNumberOfAttacks(Weapon) const {
 	return 1;
+}
+
+inline bool Game_Battler::HasAttackAll(Weapon) const {
+	return false;
 }
 
 inline void Game_Battler::SetHidden(bool _hidden) {

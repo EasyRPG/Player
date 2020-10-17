@@ -139,8 +139,8 @@ protected:
 	bool IsWindowMoving();
 	bool IsEscapeAllowed() const;
 
-	virtual void EnemySelected();
-	virtual void AllySelected();
+	virtual Game_Enemy* EnemySelected();
+	virtual Game_Actor* AllySelected();
 	virtual void AttackSelected();
 	virtual void DefendSelected();
 	virtual void ItemSelected();

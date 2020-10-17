@@ -83,19 +83,27 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	type(ty), source(source),
 	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
+	assert(source != nullptr);
+	assert(target != nullptr);
+
 	Reset();
 
 	source->SetIsDefending(false);
 	physical_charged = source->IsCharged();
 	source->SetCharged(false);
 
-	SetTarget(target);
+	targets = { target };
+	num_original_targets = targets.size();
+	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
 	type(ty), source(source),
 	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
 {
+	assert(source != nullptr);
+	assert(target != nullptr);
+
 	Reset();
 
 	source->SetIsDefending(false);
@@ -436,20 +444,6 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
-	targets.clear();
-
-	if (target) {
-		targets.push_back(target);
-		current_target = targets.begin();
-	}
-	else {
-		// Set target is invalid
-		current_target = targets.end();
-	}
-	num_original_targets = targets.size();
-}
-
 void Game_BattleAlgorithm::AlgorithmBase::ApplyFirstTimeEffect() {
 	if (!first_attack) {
 		return;
@@ -626,14 +620,23 @@ void Game_BattleAlgorithm::AlgorithmBase::InitTargets() {
 		// Remove any previously set reflect targets
 		targets.resize(num_original_targets);
 	}
-
 	current_target = targets.begin();
 
+	// Call any custom targeting logic, then check if we need to retarget
+	vInitTargets();
+
+	// This case must be true before returning.
+	assert(current_target == targets.end() || IsCurrentTargetValid());
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::vInitTargets() {
 	if (!IsCurrentTargetValid()) {
-		if (!TargetNext() && !party_target) {
+		if (!TargetNext() && !party_target && !targets.empty()) {
 			auto* last_target = targets.back();
-			// If no current targets are valid, choose a new target.
-			SetTarget(last_target->GetParty().GetNextActiveBattler(last_target));
+			auto* next_target = last_target->GetParty().GetNextActiveBattler(last_target);
+			if (next_target) {
+				current_target = targets.insert(targets.end(), next_target);
+			}
 
 			if (!IsCurrentTargetValid()) {
 				TargetNext();
@@ -778,6 +781,22 @@ void Game_BattleAlgorithm::Normal::Init(int hits_multiplier, Style style) {
 	}
 	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(GetWeapon()));
 }
+
+void Game_BattleAlgorithm::Normal::vInitTargets() {
+	assert(!targets.empty());
+	// If this weapon attacks all, then attack all enemies regardless of original targetting.
+	if (!party_target && source->HasAttackAll(GetWeapon())) {
+		auto* target = targets.back();
+		auto idx = targets.size();
+		target->GetParty().GetBattlers(targets);
+		current_target = targets.begin() + idx;
+	}
+
+	// Now perform the default retargeting logic
+	AlgorithmBase::vInitTargets();
+}
+
+
 
 int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 	const auto weapon = GetWeapon();

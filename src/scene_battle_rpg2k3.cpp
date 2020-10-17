@@ -1179,6 +1179,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		return;
 	}
 
+	Game_Enemy* enemy = nullptr;
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
@@ -1200,7 +1201,10 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			CommandSelected();
 			break;
 		case State_SelectEnemyTarget:
-			EnemySelected();
+			enemy = EnemySelected();
+			if (enemy) {
+				FaceTarget(*active_actor, *enemy);
+			}
 			break;
 		case State_SelectAllyTarget:
 			AllySelected();
@@ -1345,7 +1349,9 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k3::AttackSelected() {
-	Scene_Battle::AttackSelected();
+	// RPG_RT still requires you to select an enemy target, even if your weapon has attack all.
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+	SetState(State_SelectEnemyTarget);
 }
 
 void Scene_Battle_Rpg2k3::SubskillSelected() {

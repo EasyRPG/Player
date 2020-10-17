@@ -278,7 +278,7 @@ void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {
 	}
 }
 
-void Scene_Battle::EnemySelected() {
+Game_Enemy* Scene_Battle::EnemySelected() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
@@ -302,7 +302,7 @@ void Scene_Battle::EnemySelected() {
 			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("EnemySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
-				return;
+				return nullptr;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, item));
 		} else {
@@ -320,9 +320,10 @@ void Scene_Battle::EnemySelected() {
 
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
+	return target;
 }
 
-void Scene_Battle::AllySelected() {
+Game_Actor* Scene_Battle::AllySelected() {
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill) {
@@ -340,7 +341,7 @@ void Scene_Battle::AllySelected() {
 			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("AllySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
-				return;
+				return nullptr;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill, item));
 		} else {
@@ -352,6 +353,7 @@ void Scene_Battle::AllySelected() {
 
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
+	return &target;
 }
 
 void Scene_Battle::AttackSelected() {

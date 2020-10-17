@@ -824,7 +824,7 @@ public:
 	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having attack all attribute
 	 */
-	bool HasAttackAll(Weapon weapon = WeaponAll) const;
+	bool HasAttackAll(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon which ignores evasion.

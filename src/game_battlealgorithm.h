@@ -98,17 +98,6 @@ public:
 	bool IsTargetingParty() const;
 
 	/**
-	 * Allows changing of the target.
-	 * Purpose is to allow attacking someone else if the old target is
-	 * already dead (don't call this when attacking a party).
-	 * This function doesn't adjust the algorithm if new and old target types
-	 * mismatch (ally instead of enemy e.g.).
-	 *
-	 * @param target new target
-	 */
-	void SetTarget(Game_Battler* target);
-
-	/**
 	 * Initializes targetting. Must be called after initialising a multi target
 	 * skill, otherwise will behave incorrectly.
 	 */
@@ -432,6 +421,7 @@ public:
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
+	virtual void vInitTargets();
 	virtual void vApplyFirstTimeEffect();
 
 	std::string GetAttackFailureMessage(StringView points) const;
@@ -516,6 +506,7 @@ public:
 	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
 
 	bool Execute() override;
+	void vInitTargets() override;
 	void vApplyFirstTimeEffect() override;
 
 	int GetAnimationId(int i) const override;
