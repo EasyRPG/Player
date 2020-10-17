@@ -35,8 +35,10 @@ enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
 
-Game_Interpreter_Battle::Game_Interpreter_Battle()
-	: Game_Interpreter(true) {}
+Game_Interpreter_Battle::Game_Interpreter_Battle(int num_pages)
+	: Game_Interpreter(true), pages_state(num_pages * 2, false)
+{
+}
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {

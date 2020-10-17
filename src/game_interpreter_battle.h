@@ -22,6 +22,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cassert>
 #include "game_character.h"
 #include <lcf/rpg/eventcommand.h>
 #include "system.h"
@@ -36,7 +37,18 @@ class Game_CommonEvent;
 class Game_Interpreter_Battle : public Game_Interpreter
 {
 public:
-	Game_Interpreter_Battle();
+	explicit Game_Interpreter_Battle(int num_pages);
+
+	bool IsValidPage(int page_id) const;
+
+	bool HasPageExecuted(int page_id) const;
+	void SetHasPageExecuted(int page_id, bool value);
+
+	bool CanPageRun(int page_id) const;
+	void SetCanPageRun(int page_id, bool value);
+
+	void ResetAllPagesExecuted();
+	int GetNumPages() const;
 
 	bool ExecuteCommand() override;
 private:
@@ -53,6 +65,42 @@ private:
 	bool CommandConditionalBranchBattle(lcf::rpg::EventCommand const& com);
 	bool CommandElseBranchBattle(lcf::rpg::EventCommand const& com);
 	bool CommandEndBranchBattle(lcf::rpg::EventCommand const& com);
+private:
+	std::vector<bool> pages_state;
 };
+
+inline int Game_Interpreter_Battle::GetNumPages() const {
+	return static_cast<int>(pages_state.size() / 2);
+}
+
+inline bool Game_Interpreter_Battle::IsValidPage(int page_id) const {
+	return page_id >= 1 && page_id <= GetNumPages();
+}
+
+inline bool Game_Interpreter_Battle::HasPageExecuted(int page_id) const {
+	assert(IsValidPage(page_id));
+	return pages_state[(page_id - 1) * 2];
+}
+
+inline void Game_Interpreter_Battle::SetHasPageExecuted(int page_id, bool value) {
+	assert(IsValidPage(page_id));
+	pages_state[(page_id - 1) * 2] = value;
+}
+
+inline bool Game_Interpreter_Battle::CanPageRun(int page_id) const {
+	assert(IsValidPage(page_id));
+	return pages_state[(page_id - 1) * 2 + 1];
+}
+
+inline void Game_Interpreter_Battle::SetCanPageRun(int page_id, bool value) {
+	assert(IsValidPage(page_id));
+	pages_state[(page_id - 1) * 2 + 1] = value;
+}
+
+inline void Game_Interpreter_Battle::ResetAllPagesExecuted() {
+	for (int i = 0; i < GetNumPages(); ++i) {
+		SetHasPageExecuted(i + 1, false);
+	}
+}
 
 #endif

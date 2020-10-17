@@ -42,7 +42,7 @@ namespace Game_Battle {
 
 	std::string background_name;
 
-	std::unique_ptr<Game_Interpreter> interpreter;
+	std::unique_ptr<Game_Interpreter_Battle> interpreter;
 	/** Contains battle related sprites */
 	std::unique_ptr<Spriteset_Battle> spriteset;
 
@@ -55,34 +55,28 @@ namespace Game_Battle {
 }
 
 namespace {
-	std::vector<bool> page_executed;
 	int terrain_id;
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
 	int target_enemy_index;
-	std::vector<bool> page_can_run;
 
 	std::function<bool(const lcf::rpg::TroopPage&)> last_event_filter;
 }
 
 void Game_Battle::Init(int troop_id) {
-	Main_Data::game_enemyparty->ResetBattle(troop_id);
-	interpreter.reset(new Game_Interpreter_Battle());
-	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
-	spriteset->Update();
-	animation_actors.reset();
-	animation_enemies.reset();
-
+	// troop_id is guaranteed to be valid
+	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
+	assert(troop);
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
 	target_enemy_index = 0;
 
-	// troop_id is guaranteed to be valid
-	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
-	page_executed.resize(troop->pages.size());
-	std::fill(page_executed.begin(), page_executed.end(), false);
-	page_can_run.resize(troop->pages.size());
-	std::fill(page_can_run.begin(), page_can_run.end(), false);
+	Main_Data::game_enemyparty->ResetBattle(troop_id);
+	interpreter.reset(new Game_Interpreter_Battle(troop->pages.size()));
+	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
+	spriteset->Update();
+	animation_actors.reset();
+	animation_enemies.reset();
 
 	RefreshEvents([](const lcf::rpg::TroopPage&) {
 		return false;
@@ -116,9 +110,6 @@ void Game_Battle::Quit() {
 		(*it)->RemoveBattleStates();
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
-
-	page_executed.clear();
-	page_can_run.clear();
 
 	Main_Data::game_actors->ResetBattle();
 	Main_Data::game_enemyparty->ResetBattle(0);
@@ -210,7 +201,7 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 
 void Game_Battle::NextTurn(Game_Battler* battler) {
 	if (battler == nullptr) {
-		std::fill(page_executed.begin(), page_executed.end(), false);
+		interpreter->ResetAllPagesExecuted();
 	} else {
 		for (const lcf::rpg::TroopPage& page : troop->pages) {
 			const lcf::rpg::TroopPageCondition& condition = page.condition;
@@ -219,15 +210,15 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			if (!condition.flags.turn_actor &&
 				!condition.flags.turn_enemy &&
 				!condition.flags.command_actor) {
-				page_executed[page.ID - 1] = false;
+				interpreter->SetHasPageExecuted(page.ID, false);
 			}
 
 			// Reset pages of specific actor after that actors turn
-			if (page_executed[page.ID - 1]) {
+			if (interpreter->HasPageExecuted(page.ID)) {
 				if (battler->GetType() == Game_Battler::Type_Ally &&
 						((condition.flags.turn_actor && Main_Data::game_actors->GetActor(condition.turn_actor_id) == battler) ||
 						(condition.flags.command_actor && Main_Data::game_actors->GetActor(condition.command_actor_id) == battler))) {
-					page_executed[page.ID - 1] = false;
+					interpreter->SetHasPageExecuted(page.ID, false);
 				}
 			}
 
@@ -235,7 +226,7 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			if (battler->GetType() == Game_Battler::Type_Enemy &&
 				condition.flags.turn_enemy &&
 				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
-				page_executed[page.ID - 1] = false;
+				interpreter->SetHasPageExecuted(page.ID, false);
 			}
 		}
 	}
@@ -386,11 +377,11 @@ bool Game_Battle::UpdateEvents() {
 	RefreshEvents(last_event_filter);
 
 	for (const auto& page : troop->pages) {
-		if (page_can_run[page.ID - 1]) {
+		if (interpreter->CanPageRun(page.ID)) {
 			interpreter->Clear();
 			interpreter->Push(page.event_commands, 0);
-			page_can_run[page.ID - 1] = false;
-			page_executed[page.ID - 1] = true;
+			interpreter->SetCanPageRun(page.ID, false);
+			interpreter->SetHasPageExecuted(page.ID, true);
 			return false;
 		}
 	}
@@ -413,12 +404,12 @@ void Game_Battle::RefreshEvents() {
 void Game_Battle::RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate) {
 	for (const auto& it : troop->pages) {
 		const lcf::rpg::TroopPage& page = it;
-		if (!page_executed[page.ID - 1] && AreConditionsMet(page.condition)) {
+		if (!interpreter->HasPageExecuted(page.ID) && AreConditionsMet(page.condition)) {
 			if (predicate(it)) {
-				page_can_run[it.ID - 1] = true;
+				interpreter->SetCanPageRun(page.ID, true);
 			}
 		} else {
-			page_can_run[it.ID - 1] = false;
+			interpreter->SetCanPageRun(page.ID, false);
 		}
 	}
 
