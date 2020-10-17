@@ -56,6 +56,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/baseui.h
 	src/battle_animation.cpp
 	src/battle_animation.h
+	src/battle_message.cpp
+	src/battle_message.h
 	src/bitmap.cpp
 	src/bitmapfont.h
 	src/bitmapfont_glyph.h

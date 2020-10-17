@@ -42,6 +42,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/baseui.h \
 	src/battle_animation.cpp \
 	src/battle_animation.h \
+	src/battle_message.cpp \
+	src/battle_message.h \
 	src/bitmap.cpp \
 	src/bitmap.h \
 	src/bitmapfont.h \
