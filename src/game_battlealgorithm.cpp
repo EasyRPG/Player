@@ -164,10 +164,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
-	return "";
-}
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	if (current_target == targets.end()) {
 		return "";
@@ -724,7 +720,7 @@ AlgorithmBase(Type::Null, source, source) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::Null::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Null::GetStartMessage(int) const {
 	return "";
 }
 
@@ -916,7 +912,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	return this->success;
 }
 
-std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2k()) {
 		if (Player::IsRPG2kE()) {
 			return Utils::ReplacePlaceholders(
@@ -1211,11 +1210,21 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	return this->success;
 }
 
-std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
+	switch (line) {
+		case 0:
+			return GetFirstStartMessage();
+		case 1:
+			return GetSecondStartMessage();
+	}
+	return "";
+}
+
+std::string Game_BattleAlgorithm::Skill::GetFirstStartMessage() const {
 	if (Player::IsRPG2k()) {
 		if (item && item->using_message == 0) {
 			// Use item message
-			return Item(source, *item).GetStartMessage();
+			return Item(source, *item).GetStartMessage(0);
 		}
 		if (Player::IsRPG2kE()) {
 			auto* target = GetTarget();
@@ -1403,7 +1412,10 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	return false;
 }
 
-std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.use_item,
@@ -1446,7 +1458,10 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 		source->SetIsDefending(true);
 }
 
-std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.defending,
@@ -1476,7 +1491,10 @@ AlgorithmBase(Type::Observe, source, source) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.observing,
@@ -1508,7 +1526,10 @@ bool Game_BattleAlgorithm::Charge::vStart() {
 	return true;
 }
 
-std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.focus,
@@ -1534,7 +1555,10 @@ AlgorithmBase(Type::SelfDestruct, source, target) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
+std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.autodestruction,
@@ -1596,7 +1620,10 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	// Only monsters can escape during a battle phase
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
@@ -1653,7 +1680,10 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
+std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
+	if (line != 0) {
+		return "";
+	}
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.enemy_transform,
@@ -1683,7 +1713,7 @@ AlgorithmBase(Type::NoMove, source, source) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
+std::string Game_BattleAlgorithm::NoMove::GetStartMessage(int) const {
 	return "";
 }
 

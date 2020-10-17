@@ -546,11 +546,11 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 
 	battle_message_window->Clear();
 
-	if (action->HasStartMessage()) {
-		battle_message_window->Push(action->GetStartMessage());
+	if (action->HasStartMessage(0)) {
+		battle_message_window->Push(action->GetStartMessage(0));
 		battle_message_window->ScrollToEnd();
 
-		if (action->HasSecondStartMessage()) {
+		if (action->HasStartMessage(1)) {
 			SetWaitForUsage(action->GetType(), 0);
 		}
 	}
@@ -559,8 +559,8 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (action->HasSecondStartMessage()) {
-		battle_message_window->Push(action->GetSecondStartMessage());
+	if (action->HasStartMessage(1)) {
+		battle_message_window->Push(action->GetStartMessage(1));
 		battle_message_window->ScrollToEnd();
 	}
 	battle_action_start_index = battle_message_window->GetLineCount();

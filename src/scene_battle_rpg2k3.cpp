@@ -798,7 +798,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			auto* action = battler->GetBattleAlgorithm().get();
 
 			if (action->GetSource()->GetType() == Game_Battler::Type_Enemy && combo_repeat == 1) {
-				std::string notification = action->GetStartMessage();
+				std::string notification = action->GetStartMessage(0);
 
 				ShowNotification(notification);
 				if (!notification.empty()) {
@@ -953,10 +953,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (action->GetSource()->GetType() == Game_Battler::Type_Ally && combo_repeat == 1) {
 			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
-				ShowNotification(action->GetStartMessage());
+				ShowNotification(action->GetStartMessage(0));
 				SetWait(15, 50);
 			} else if (action->GetType() == Game_BattleAlgorithm::Type::Item) {
-				ShowNotification(action->GetStartMessage());
+				ShowNotification(action->GetStartMessage(0));
 				SetWait(10, 40);
 			}
 		}

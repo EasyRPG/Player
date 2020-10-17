@@ -283,31 +283,17 @@ public:
 	 * Gets the first line message that is displayed when the action is invoked.
 	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
 	 *
+	 * @param line which line of the message to fetch
 	 * @return message
 	 */
-	virtual std::string GetStartMessage() const = 0;
+	virtual std::string GetStartMessage(int line) const = 0;
 
 	/**
 	 * Checks if there is a first line message to display when the action is invoked.
 	 *
 	 * @return check
 	 */
-	bool HasStartMessage() const;
-
-	/**
-	 * Checks if there is a second line message to display when the action is invoked.
-	 *
-	 * @return check
-	 */
-	bool HasSecondStartMessage() const;
-
-	/**
-	 * Gets the second line message that is displayed when the action is invoked.
-	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
-	 *
-	 * @return message
-	 */
-	virtual std::string GetSecondStartMessage() const;
+	bool HasStartMessage(int line) const;
 
 	/**
 	 * Gets animation state id of the source character.
@@ -455,7 +441,7 @@ class Null : public AlgorithmBase {
 public:
 	Null(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 
 	bool Execute() override;
 };
@@ -478,7 +464,7 @@ public:
 	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
@@ -498,8 +484,7 @@ public:
 	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
-	std::string GetStartMessage() const override;
-	std::string GetSecondStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
@@ -509,6 +494,8 @@ public:
 
 private:
 	void Init();
+	std::string GetFirstStartMessage() const;
+	std::string GetSecondStartMessage() const;
 	const lcf::rpg::Skill& skill;
 	const lcf::rpg::Item* item;
 };
@@ -523,12 +510,14 @@ public:
 	bool Execute() override;
 	bool vStart() override;
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool ActionIsPossible() const override;
 
 private:
+	std::string GetFirstStartMessage() const;
+	std::string GetSecondStartMessage() const;
 	const lcf::rpg::Item& item;
 };
 
@@ -536,7 +525,7 @@ class Defend : public AlgorithmBase {
 public:
 	Defend(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	int GetSourceAnimationState() const override;
 	bool Execute() override;
 };
@@ -545,7 +534,7 @@ class Observe : public AlgorithmBase {
 public:
 	Observe(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	bool Execute() override;
 };
 
@@ -553,7 +542,7 @@ class Charge : public AlgorithmBase {
 public:
 	Charge(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	bool vStart() override;
 	bool Execute() override;
 };
@@ -562,7 +551,7 @@ class SelfDestruct : public AlgorithmBase {
 public:
 	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void ApplyCustomEffect() override;
@@ -572,7 +561,7 @@ class Escape : public AlgorithmBase {
 public:
 	Escape(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	int GetSourceAnimationState() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
@@ -583,7 +572,7 @@ class Transform : public AlgorithmBase {
 public:
 	Transform(Game_Battler* source, int new_monster_id);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 	bool Execute() override;
 	void ApplyCustomEffect() override;
 
@@ -596,7 +585,7 @@ class NoMove : public AlgorithmBase {
 public:
 	NoMove(Game_Battler* source);
 
-	std::string GetStartMessage() const override;
+	std::string GetStartMessage(int line) const override;
 
 	bool Execute() override;
 };
@@ -606,12 +595,8 @@ inline Type AlgorithmBase::GetType() const {
 	return type;
 }
 
-inline bool AlgorithmBase::HasStartMessage() const {
-	return !GetStartMessage().empty();
-}
-
-inline bool AlgorithmBase::HasSecondStartMessage() const {
-	return !GetSecondStartMessage().empty();
+inline bool AlgorithmBase::HasStartMessage(int line) const {
+	return !GetStartMessage(line).empty();
 }
 
 inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
