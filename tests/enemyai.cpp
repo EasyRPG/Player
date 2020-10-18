@@ -654,7 +654,7 @@ TEST_CASE("SetStateRestrictedAction") {
 		enemy.AddState(2, true);
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
-		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::NoMove), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::None), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
 	}
 
 	SUBCASE("Confuse") {

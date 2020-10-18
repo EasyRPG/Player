@@ -893,7 +893,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	// Immediately quit for dead actors no move. Prevents any animations or delays.
-	if (action->GetType() == Game_BattleAlgorithm::Type::NoMove && action->GetSource()->IsDead()) {
+	if (action->GetType() == Game_BattleAlgorithm::Type::None && action->GetSource()->IsDead()) {
 		return true;
 	}
 
@@ -1386,7 +1386,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 void Scene_Battle_Rpg2k3::SpecialSelected() {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
-	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(active_actor));
 
 	ActionSelectedCallback(active_actor);
 }
@@ -1408,7 +1408,7 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 			active_actor->SetBattleRow(Game_Actor::RowType::RowType_front);
 		}
 		active_actor->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*active_actor));
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(active_actor));
 		ActionSelectedCallback(active_actor);
 	} else {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));

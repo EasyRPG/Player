@@ -39,7 +39,7 @@ class Game_Party_Base;
 namespace Game_BattleAlgorithm {
 
 enum class Type {
-	NoMove,
+	None,
 	Normal,
 	Skill,
 	Item,
@@ -49,6 +49,7 @@ enum class Type {
 	SelfDestruct,
 	Escape,
 	Transform,
+	DoNothing,
 };
 
 struct StateEffect {
@@ -369,7 +370,7 @@ protected:
 	 */
 	bool TargetNextInternal();
 
-	Type type = Type::NoMove;
+	Type type = Type::None;
 	Game_Battler* source = nullptr;
 	std::vector<Game_Battler*> targets;
 	std::vector<Game_Battler*>::iterator current_target;
@@ -407,6 +408,15 @@ protected:
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };
+
+// Special algorithm for handling non-moving because of states
+class None : public AlgorithmBase {
+public:
+	None(Game_Battler* source);
+
+	bool Execute() override;
+};
+
 
 class Normal : public AlgorithmBase {
 public:
@@ -542,14 +552,13 @@ private:
 	int new_monster_id;
 };
 
-// Special algorithm for handling non-moving because of states
-class NoMove : public AlgorithmBase {
+// EnemyAi "Do Nothing" action. Handled slightly differently than None.
+class DoNothing : public AlgorithmBase {
 public:
-	NoMove(Game_Battler* source);
+	DoNothing(Game_Battler* source);
 
 	bool Execute() override;
 };
-
 
 inline Type AlgorithmBase::GetType() const {
 	return type;

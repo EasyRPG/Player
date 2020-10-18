@@ -64,7 +64,7 @@ std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 void AlgorithmBase::SetAutoBattleAction(Game_Actor& source) {
 	vSetAutoBattleAction(source);
 	if (source.GetBattleAlgorithm() == nullptr) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 	}
 }
 

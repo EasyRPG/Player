@@ -341,7 +341,7 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		SetIsDefending(false);
 		SetCharged(false);
 		if (GetBattleAlgorithm() != nullptr) {
-			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(this));
+			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
 		}
 	}
 

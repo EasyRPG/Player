@@ -506,7 +506,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 			}
 		}
 
-		if (action->GetType() != Game_BattleAlgorithm::Type::NoMove || show_message) {
+		if (action->GetType() != Game_BattleAlgorithm::Type::None || show_message) {
 			SelectionFlash(action->GetSource());
 		}
 
@@ -527,7 +527,7 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
 
-		if (action->GetType() == Game_BattleAlgorithm::Type::NoMove) {
+		if (action->GetType() == Game_BattleAlgorithm::Type::None) {
 			return ProcessNextAction(BattleActionState_Finished, action);
 		}
 
@@ -1257,7 +1257,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	Game_Battler* random_target = NULL;
 
 	if (!active_actor->CanAct()) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(active_actor));
 		battle_actions.push_back(active_actor);
 		SelectNextActor();
 		return;
@@ -1376,7 +1376,7 @@ void Scene_Battle_Rpg2k::SetWaitForUsage(Game_BattleAlgorithm::Type type, int an
 			min_wait = 36;
 			max_wait = 60;
 			break;
-		case Game_BattleAlgorithm::Type::NoMove:
+		case Game_BattleAlgorithm::Type::None:
 			min_wait = max_wait = 0;
 			break;
 		default:

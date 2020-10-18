@@ -70,7 +70,7 @@ std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 void AlgorithmBase::SetEnemyAiAction(Game_Enemy& source) {
 	vSetEnemyAiAction(source);
 	if (source.GetBattleAlgorithm() == nullptr) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 	}
 }
 
@@ -99,7 +99,7 @@ static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeBasicAction(Game
 		case lcf::rpg::EnemyAction::Basic_escape:
 			return std::make_shared<Game_BattleAlgorithm::Escape>(&enemy);
 		case lcf::rpg::EnemyAction::Basic_nothing:
-			return std::make_shared<Game_BattleAlgorithm::NoMove>(&enemy);
+			return std::make_shared<Game_BattleAlgorithm::DoNothing>(&enemy);
 	}
 	return nullptr;
 }
@@ -359,7 +359,7 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 
 bool SetStateRestrictedAction(Game_Enemy& source) {
 	if (!source.CanAct()) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 		return true;
 	}
 

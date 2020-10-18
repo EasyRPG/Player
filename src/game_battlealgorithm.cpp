@@ -470,6 +470,16 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected(const Game_Battler&) const
 	return false;
 }
 
+Game_BattleAlgorithm::None::None(Game_Battler* source) :
+AlgorithmBase(Type::None, source, source) {
+	// no-op
+}
+
+bool Game_BattleAlgorithm::None::Execute() {
+	this->success = true;
+	return true;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
 	AlgorithmBase(Type::Normal, source, target)
 {
@@ -1327,12 +1337,12 @@ void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }
 
-Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
-AlgorithmBase(Type::NoMove, source, source) {
+Game_BattleAlgorithm::DoNothing::DoNothing(Game_Battler* source) :
+AlgorithmBase(Type::DoNothing, source, source) {
 	// no-op
 }
 
-bool Game_BattleAlgorithm::NoMove::Execute() {
+bool Game_BattleAlgorithm::DoNothing::Execute() {
 	this->success = true;
 	return true;
 }
