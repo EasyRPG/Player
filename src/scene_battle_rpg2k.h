@@ -226,7 +226,7 @@ protected:
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
-	bool battle_action_pending = false;
+	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};
 	int battle_action_state = BattleActionState_Begin;
 	int battle_action_substate = 0;
 	int battle_action_start_index = 0;

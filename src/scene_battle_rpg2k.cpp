@@ -297,7 +297,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
-		if (!battle_action_pending) {
+		if (pending_battle_action == nullptr) {
 			// If no battle action is running, we need to check for battle events which could have
 			// triggered win/loss.
 			if (CheckResultConditions()) {
@@ -310,20 +310,24 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		}
 		if (!battle_actions.empty()) {
 			auto* battler = battle_actions.front();
-			if (!battle_action_pending) {
+			if (pending_battle_action == nullptr) {
 				// If we will start a new battle action, first check for state changes
 				// such as death, paralyze, confuse, etc..
 				PrepareBattleAction(battler);
+				pending_battle_action = battler->GetBattleAlgorithm();
+
+				// Initialize battle state
+				battle_action_wait = 0;
+				SetBattleActionState(BattleActionState_Begin);
+				battle_action_start_index = 0;
+				battle_action_results_index = 0;
+				battle_action_dmg_index = 0;
+				battle_action_substate_index = 0;
+				pending_message = {};
 			}
 
-			auto* alg = battler->GetBattleAlgorithm().get();
-			if (alg == nullptr) {
-				Output::Warning("ProcessActions: Invalid action for battler {} ({})", battler->GetId(), battler->GetName());
-				Output::Warning("Please report a bug!");
-			}
-
-			if (ProcessBattleAction(alg)) {
-				battle_action_pending = false;
+			if (ProcessBattleAction(pending_battle_action.get())) {
+				pending_battle_action = nullptr;
 				RemoveCurrentAction();
 				battle_message_window->Clear();
 				Game_Battle::RefreshEvents();
@@ -402,16 +406,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		Output::Warning("ProcessBattleAction: Invalid battle action");
 		Output::Warning("Please report a bug!");
 		return true;
-	}
-
-	if (!battle_action_pending) {
-		// First time we are called, do initialization.
-		battle_action_wait = 0;
-		SetBattleActionState(BattleActionState_Begin);
-		battle_action_start_index = 0;
-		battle_action_results_index = 0;
-
-		battle_action_pending = true;
 	}
 
 	const bool wait = !CheckWait();

@@ -158,7 +158,7 @@ protected:
 	int select_target_flash_count = 0;
 
 	FileRequestBinding request_id;
-	bool battle_action_pending = false;
+	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};
 	bool first_strike = false;
 
 	int start_message_shown = 0;

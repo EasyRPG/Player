@@ -789,13 +789,18 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		return;
 	}
 
+	// Remove actions for battlers who were killed or removed from the battle.
+	while (!battle_actions.empty() && !battle_actions.front()->Exists()) {
+		RemoveCurrentAction();
+	}
+
 	if (!battle_actions.empty()) {
 		auto* battler = battle_actions.front();
-		if (!battle_action_pending) {
+		if (pending_battle_action == nullptr) {
 			// If we will start a new battle action, first check for state changes
 			// such as death, paralyze, confuse, etc..
 			PrepareBattleAction(battler);
-			auto* action = battler->GetBattleAlgorithm().get();
+			auto action = battler->GetBattleAlgorithm();
 
 			if (action->GetSource()->GetType() == Game_Battler::Type_Enemy && combo_repeat == 1) {
 				std::string notification = action->GetStartMessage(0);
@@ -810,13 +815,12 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 				}
 			}
 
-			battle_action_pending = true;
+			pending_battle_action = std::move(action);
 			return;
 		}
-		auto* alg = battler->GetBattleAlgorithm().get();
-		battle_action_pending = true;
+		auto* alg = pending_battle_action.get();
 		if (ProcessBattleAction(alg)) {
-			battle_action_pending = false;
+			pending_battle_action = {};
 			RemoveCurrentAction();
 			if (CheckResultConditions()) {
 				return;
@@ -892,6 +896,10 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	if (action == nullptr) {
+		return true;
+	}
+
 	// Immediately quit for dead actors no move. Prevents any animations or delays.
 	if (action->GetType() == Game_BattleAlgorithm::Type::None && action->GetSource()->IsDead()) {
 		return true;
