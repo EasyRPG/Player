@@ -515,18 +515,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	}
 }
 
-void Scene_Battle::RemoveActionsForNonExistantBattlers() {
-	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(),
-			[](Game_Battler* b) {
-				if (!b->Exists()) {
-					b->SetBattleAlgorithm(nullptr);
-					return true;
-				}
-				return false;
-			});
-	battle_actions.erase(iter, battle_actions.end());
-}
-
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(nullptr);
 	battle_actions.pop_front();

@@ -303,8 +303,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			if (CheckResultConditions()) {
 				return;
 			}
-			// Don't remove actions until the current action is done.
-			RemoveActionsForNonExistantBattlers();
+			// Remove actions for battlers who were killed or removed from the battle.
+			while (!battle_actions.empty() && !battle_actions.front()->Exists()) {
+				RemoveCurrentAction();
+			}
 		}
 		if (!battle_actions.empty()) {
 			auto* battler = battle_actions.front();

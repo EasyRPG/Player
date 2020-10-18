@@ -160,7 +160,6 @@ protected:
 
 	void PrepareBattleAction(Game_Battler* battler);
 
-	void RemoveActionsForNonExistantBattlers();
 	void RemoveCurrentAction();
 
 	void CallDebug();
