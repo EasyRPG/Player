@@ -43,6 +43,7 @@
 #include "utils.h"
 #include "rand.h"
 #include "state.h"
+#include "enemyai.h"
 #include "algo.h"
 #include "attribute.h"
 #include "spriteset_battle.h"
@@ -999,6 +1000,12 @@ bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	if (item) {
 		return Main_Data::game_party->GetItemTotalCount(item->ID) > 0;
+	}
+	// RPG_RT performs this check only for enemies and if skill is single target
+	if (source->GetType() == Game_Battler::Type_Enemy && targets.size() == 1 && targets.front()->GetType() == source->GetType()) {
+		if (!EnemyAi::IsSkillEffectiveOn(skill, *targets.front(), true)) {
+			return false;
+		}
 	}
 	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
 }
