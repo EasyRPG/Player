@@ -1258,11 +1258,12 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 void Game_BattleAlgorithm::SelfDestruct::ApplyCustomEffect() {
 	// Only monster can self destruct
-	if (source->GetType() == Game_Battler::Type_Enemy) {
+	if (animate && source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
 		enemy->SetHidden(true);
 		enemy->SetExplodeTimer();
 	}
+	animate = false;
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :

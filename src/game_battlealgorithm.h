@@ -527,6 +527,8 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void ApplyCustomEffect() override;
+private:
+	bool animate = true;
 };
 
 class Escape : public AlgorithmBase {
