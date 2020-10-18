@@ -295,12 +295,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_AutoBattle:
 		CheckResultConditions();
 
-		if (help_window->IsVisible() && message_timer > 0) {
-			message_timer--;
-			if (message_timer <= 0)
-				help_window->SetVisible(false);
-		}
-
 		break;
 	case State_Battle:
 		if (!battle_action_pending) {

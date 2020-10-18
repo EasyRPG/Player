@@ -98,10 +98,6 @@ void Scene_Battle::Start() {
 
 	Game_Battle::Init(troop_id);
 
-	cycle = 0;
-	auto_battle = false;
-	enemy_action = NULL;
-
 	CreateUi();
 
 	InitEscapeChance();

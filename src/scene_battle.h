@@ -39,11 +39,6 @@
 #include "window_message.h"
 #include "game_battle.h"
 
-namespace Battle {
-class Action;
-class SpriteAction;
-}
-
 namespace AutoBattle {
 class AlgorithmBase;
 }
@@ -124,8 +119,6 @@ public:
 protected:
 	explicit Scene_Battle(const BattleArgs& args);
 
-	friend class Battle::SpriteAction;
-
 	virtual void CreateUi();
 
 	virtual void ProcessActions() = 0;
@@ -180,14 +173,8 @@ protected:
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
-	bool auto_battle;
-	int cycle;
-	int attack_state;
-	int message_timer;
-	const lcf::rpg::EnemyAction* enemy_action;
-	std::deque<std::shared_ptr<Battle::Action> > actions;
-	int skill_id;
-	int pending_command;
+	bool auto_battle = false;
+	int cycle = 0;
 	int troop_id = 0;
 	int escape_chance = 0;
 	bool allow_escape = false;
