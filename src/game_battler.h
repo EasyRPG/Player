@@ -972,6 +972,9 @@ inline const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
 }
 
 inline void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
+	if (battle_algorithm != nullptr) {
+		SetCharged(false);
+	}
 	this->battle_algorithm = battle_algorithm;
 }
 

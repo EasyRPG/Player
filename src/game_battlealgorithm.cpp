@@ -96,7 +96,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 
 	source->SetIsDefending(false);
 	physical_charged = source->IsCharged();
-	source->SetCharged(false);
 
 	num_original_targets = targets.size();
 	current_target = targets.end();
@@ -112,7 +111,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 
 	source->SetIsDefending(false);
 	physical_charged = source->IsCharged();
-	source->SetCharged(false);
 
 	current_target = targets.end();
 	party_target = target;
