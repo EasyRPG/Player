@@ -342,12 +342,6 @@ public:
 	Type GetType() const;
 
 	/**
-	 * @return The significant restriction of the source when this
-	 *      algorithm was created.
-	 */
-	lcf::rpg::State::Restriction GetSourceRestrictionWhenStarted() const;
-
-	/**
 	 * Set number of times to repeat the same action on a target
 	 */
 	void SetRepeat(int repeat);
@@ -398,7 +392,6 @@ protected:
 	bool absorb = false;
 	bool revived = false;
 	bool physical_charged = false;
-	lcf::rpg::State::Restriction source_restriction = lcf::rpg::State::Restriction_normal;
 	int num_original_targets = 0;
 	int cur_repeat = 0;
 	int repeat = 1;

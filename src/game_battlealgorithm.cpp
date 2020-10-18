@@ -85,8 +85,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	AlgorithmBase(ty, source, std::vector<Game_Battler*>{ target }) {}
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, std::vector<Game_Battler*> in_targets) :
-	type(ty), source(source), targets(std::move(in_targets)),
-	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
+	type(ty), source(source), targets(std::move(in_targets))
 {
 	assert(source != nullptr);
 	for (auto* t: targets) {
@@ -104,8 +103,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
-	type(ty), source(source),
-	source_restriction(lcf::rpg::State::Restriction(source->GetSignificantRestriction()))
+	type(ty), source(source)
 {
 	assert(source != nullptr);
 	assert(target != nullptr);
@@ -164,10 +162,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
-}
-
-lcf::rpg::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
-	return source_restriction;
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetFailureMessage() const {

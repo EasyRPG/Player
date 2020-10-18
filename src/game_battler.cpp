@@ -340,7 +340,8 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	if (GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
 		SetIsDefending(false);
 		SetCharged(false);
-		if (GetBattleAlgorithm() != nullptr) {
+		if (GetBattleAlgorithm() != nullptr
+				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None) {
 			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
 		}
 	}
@@ -351,6 +352,7 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
 	PermanentStates ps;
 
+	auto prev_restriction = GetSignificantRestriction();
 	auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 
 	if (!(always_remove_battle_states && state && state->type == lcf::rpg::State::Persistence_ends)) {
@@ -358,9 +360,17 @@ bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
 	}
 
 	auto was_removed = State::Remove(state_id, GetStates(), ps);
+	if (was_removed) {
+		if (state_id == lcf::rpg::State::kDeathID) {
+			SetHp(1);
+		}
 
-	if (was_removed && state_id == lcf::rpg::State::kDeathID) {
-		SetHp(1);
+		auto cur_restriction = GetSignificantRestriction();
+		if (GetBattleAlgorithm() != nullptr
+				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None
+				&& cur_restriction != prev_restriction) {
+			SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
+		}
 	}
 
 	return was_removed;

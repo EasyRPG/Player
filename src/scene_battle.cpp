@@ -509,14 +509,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 		return;
 	}
 
-	// If we had a state restriction previously but were recovered, we do nothing for this round.
-	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != lcf::rpg::State::Restriction_normal) {
-		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None) {
-			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(battler));
-		}
-		return;
-	}
-
 	// If we can no longer perform the action (no more items, ran out of SP, etc..)
 	if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(battler));
