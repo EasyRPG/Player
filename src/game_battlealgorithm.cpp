@@ -1334,7 +1334,11 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 }
 
 void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
-	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		auto* enemy = static_cast<Game_Enemy*>(source);
+		enemy->Transform(new_monster_id);
+		enemy->Flash(31,31,31,31,20);
+	}
 }
 
 Game_BattleAlgorithm::DoNothing::DoNothing(Game_Battler* source) :
