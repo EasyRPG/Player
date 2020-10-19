@@ -138,7 +138,6 @@ protected:
 
 	void ProcessActions() override;
 
-	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void ProcessInput() override;
 
 	/**
@@ -190,7 +189,7 @@ protected:
 	 * @return the return value of the state handler
 	 * @post battle_action_substate is reset to 0
 	 */
-	bool ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessNextBattleAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action);
 
 	/**
 	 * Switch to the next action substate
@@ -200,24 +199,27 @@ protected:
 	 * @param reset_index if true, reset the substate index
 	 * @return the return value of the state handler
 	 */
-	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index = true);
+	bool ProcessNextBattleActionSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index = true);
+
+	// BattleAction State Machine Driver
+	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	// BattleAction State Machine Handlers
-	bool ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
-	void ProcessDeath(Game_BattleAlgorithm::AlgorithmBase* action);
+	void ProcessBattleActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	void SetWait(int min_wait, int max_wait);
 	void SetWaitForUsage(Game_BattleAlgorithm::Type type, int anim_frames);
