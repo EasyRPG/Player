@@ -121,6 +121,7 @@ public:
 	void Update() override;
 
 protected:
+	bool UpdateBattleState();
 	void SetState(State new_state) override;
 
 	void NextTurn();
@@ -132,13 +133,12 @@ protected:
 
 	bool CheckWin();
 	bool CheckLose();
-	bool CheckResultConditions();
+	bool RefreshEventsAndCheckBattleEnd();
 
 	void RefreshCommandWindow();
 
-	void ProcessActions() override;
-
-	void ProcessInput() override;
+	void ProcessActions() override {}
+	void ProcessInput() override {}
 
 	/**
 	 * Adds a message about the gold received into
@@ -167,13 +167,29 @@ protected:
 	void OptionSelected();
 	void CommandSelected();
 
-	void Escape();
-
 	void SelectNextActor();
 	void SelectPreviousActor();
 
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
+
+	// SceneAction State Machine Driver
+	bool ProcessSceneAction();
+
+	// SceneAction State Machine Handlers
+	bool ProcessSceneActionStart();
+	bool ProcessSceneActionOption();
+	bool ProcessSceneActionActor();
+	bool ProcessSceneActionAutoBattle();
+	bool ProcessSceneActionCommand();
+	bool ProcessSceneActionItem();
+	bool ProcessSceneActionSkill();
+	bool ProcessSceneActionEnemyTarget();
+	bool ProcessSceneActionAllyTarget();
+	bool ProcessSceneActionBattle();
+	bool ProcessSceneActionVictory();
+	bool ProcessSceneActionDefeat();
+	bool ProcessSceneActionEscape();
 
 	// Battle Start Handlers
 	bool DisplayMonstersInMessageWindow();
@@ -246,7 +262,7 @@ protected:
 	bool encounter_message_first_strike = false;
 	bool message_box_got_visible = false;
 	bool move_screen = false;
-
+	bool skip_update_battle_state = false;
 };
 
 #endif

@@ -182,6 +182,76 @@ void Scene_Battle::CreateUi() {
 	Game_Message::SetWindow(message_window.get());
 }
 
+void Scene_Battle::UpdateScreen() {
+	Main_Data::game_screen->Update();
+	Main_Data::game_pictures->Update(true);
+}
+
+void Scene_Battle::UpdateBattlers() {
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_enemyparty->GetBattlers(battlers);
+	Main_Data::game_party->GetBattlers(battlers);
+	for (auto* b : battlers) {
+		b->UpdateBattle();
+	}
+	Game_Battle::UpdateAnimation();
+}
+
+void Scene_Battle::UpdateUi() {
+	options_window->Update();
+	status_window->Update();
+	command_window->Update();
+	help_window->Update();
+	item_window->Update();
+	skill_window->Update();
+	target_window->Update();
+
+	Game_Message::Update();
+}
+
+bool Scene_Battle::UpdateEvents() {
+	auto& interp = Game_Battle::GetInterpreter();
+	interp.Update();
+	status_window->Refresh();
+
+	auto call = TakeRequestedScene();
+	if (call && call->type == Scene::Gameover) {
+		Scene::Push(std::move(call));
+	}
+
+	if (interp.IsAsyncPending()) {
+		auto aop = interp.GetAsyncOp();
+
+		if (aop.GetType() == AsyncOp::eTerminateBattle) {
+			EndBattle(static_cast<BattleResult>(aop.GetBattleResult()));
+			return true;
+		}
+
+		if (CheckSceneExit(aop)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Scene_Battle::UpdateTimers() {
+	const int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
+	const int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
+
+	// Screen Effects
+	Main_Data::game_party->UpdateTimers();
+
+	// Query Timer before and after update.
+	// If it reached zero during update was a running battle timer.
+	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
+		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
+		EndBattle(BattleResult::Abort);
+		return true;
+	}
+	return false;
+}
+
 void Scene_Battle::Update() {
 	options_window->Update();
 	status_window->Update();
@@ -536,10 +606,12 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 	}
 }
 
-void Scene_Battle::CallDebug() {
+bool Scene_Battle::CallDebug() {
 	if (Player::debug_flag) {
 		Scene::Push(std::make_shared<Scene_Debug>());
+		return true;
 	}
+	return false;
 }
 
 void Scene_Battle::SelectionFlash(Game_Battler* battler) {

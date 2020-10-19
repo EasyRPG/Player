@@ -78,6 +78,12 @@ public:
 
 	void Start() override;
 	void Update() override;
+
+	void UpdateScreen();
+	void UpdateBattlers();
+	void UpdateUi();
+	bool UpdateEvents();
+	bool UpdateTimers();
 	void UpdateGraphics() override;
 
 	void Continue(SceneType prev_scene) override;
@@ -162,7 +168,7 @@ protected:
 
 	void RemoveCurrentAction();
 
-	void CallDebug();
+	bool CallDebug();
 
 	void EndBattle(BattleResult result);
 
