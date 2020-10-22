@@ -143,6 +143,22 @@ void Game_Interpreter_Battle::ResetPagesExecuted(const Game_Battler* battler) {
 }
 
 
+bool Game_Interpreter_Battle::ScheduleNextPage() {
+	if (IsRunning()) {
+		return false;
+	}
+	for (const auto& page : pages) {
+		if (!HasPageExecuted(page.ID) && AreConditionsMet(page.condition)) {
+			Clear();
+			Push(page.event_commands, 0);
+			SetCanPageRun(page.ID, false);
+			SetHasPageExecuted(page.ID, true);
+			return true;
+		}
+	}
+	return false;
+}
+
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
 	auto& frame = GetFrame();

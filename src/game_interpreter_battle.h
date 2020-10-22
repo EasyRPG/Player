@@ -52,6 +52,7 @@ public:
 
 	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
 	void ResetPagesExecuted(const Game_Battler* Battler);
+	bool ScheduleNextPage();
 
 	bool ExecuteCommand() override;
 private:
