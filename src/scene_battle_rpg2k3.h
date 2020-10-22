@@ -165,6 +165,7 @@ protected:
 	bool escape_initiated = false;
 	bool win_wait_elapsed = false;
 	bool lose_wait_elapsed = false;
+	bool auto_battle = false;
 };
 
 #endif

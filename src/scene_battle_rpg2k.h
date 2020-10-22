@@ -134,6 +134,9 @@ protected:
 	bool CheckBattleEndConditions();
 	bool RefreshEventsAndCheckBattleEnd();
 
+	void ResetWindows(bool make_invisible);
+	void SetCommandWindows(int x);
+	void MoveCommandWindows(int x, int frames);
 	void RefreshCommandWindow();
 
 	void ProcessActions() override {}
@@ -166,7 +169,7 @@ protected:
 	void OptionSelected();
 	void CommandSelected();
 
-	void SelectNextActor();
+	void SelectNextActor(bool auto_battle);
 	void SelectPreviousActor();
 
 	void CreateExecutionOrder();
@@ -179,7 +182,7 @@ protected:
 
 	// SceneAction State Machine Handlers
 	bool ProcessSceneActionStart();
-	bool ProcessSceneActionOption();
+	bool ProcessSceneActionFightAutoEscape();
 	bool ProcessSceneActionActor();
 	bool ProcessSceneActionAutoBattle();
 	bool ProcessSceneActionCommand();
@@ -260,7 +263,6 @@ protected:
 	int battle_action_min_wait = 0;
 
 	bool message_box_got_visible = false;
-	bool move_screen = false;
 	bool resume_from_debug_scene = false;
 };
 

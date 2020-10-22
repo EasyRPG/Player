@@ -178,7 +178,6 @@ protected:
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
-	bool auto_battle = false;
 	int cycle = 0;
 	int troop_id = 0;
 	int escape_chance = 0;
