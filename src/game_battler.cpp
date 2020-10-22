@@ -334,7 +334,6 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		SetIsDefending(false);
 		SetCharged(false);
 		attribute_shift.clear();
-		attribute_shift.resize(lcf::Data::attributes.size());
 	}
 
 	if (GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
@@ -586,7 +585,6 @@ void Game_Battler::ResetBattle() {
 	battle_combo_command_id = -1;
 	battle_combo_times = -1;
 	attribute_shift.clear();
-	attribute_shift.resize(lcf::Data::attributes.size());
 	SetBattleAlgorithm(nullptr);
 }
 
@@ -599,13 +597,16 @@ int Game_Battler::GetAttributeRate(int attribute_id) const {
 int Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	auto delta = CanShiftAttributeRate(attribute_id, shift);
 	if (delta) {
-		attribute_shift[attribute_id -1] += delta;
+		if (attribute_id > static_cast<int>(attribute_shift.size())) {
+			attribute_shift.resize(attribute_id);
+		}
+		attribute_shift[attribute_id - 1] += delta;
 	}
 	return delta;
 }
 
 int Game_Battler::GetAttributeRateShift(int attribute_id) const {
-	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(attribute_shift.size())) {
 		return 0;
 	}
 	return attribute_shift[attribute_id - 1];
@@ -615,7 +616,7 @@ int Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
 	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
 		return 0;
 	}
-	const auto prev_shift = attribute_shift[attribute_id - 1];
+	const auto prev_shift = GetAttributeRateShift(attribute_id);
 	const auto new_shift = Utils::Clamp(prev_shift + shift, -1, 1);
 	return new_shift - prev_shift;
 }
