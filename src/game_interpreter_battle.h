@@ -51,6 +51,7 @@ public:
 	int GetNumPages() const;
 
 	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
+	void ResetPagesExecuted(const Game_Battler* Battler);
 
 	bool ExecuteCommand() override;
 private:

@@ -200,36 +200,7 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 }
 
 void Game_Battle::NextTurn(Game_Battler* battler) {
-	if (battler == nullptr) {
-		interpreter->ResetAllPagesExecuted();
-	} else {
-		for (const lcf::rpg::TroopPage& page : troop->pages) {
-			const lcf::rpg::TroopPageCondition& condition = page.condition;
-
-			// Reset pages without actor/enemy condition each turn
-			if (!condition.flags.turn_actor &&
-				!condition.flags.turn_enemy &&
-				!condition.flags.command_actor) {
-				interpreter->SetHasPageExecuted(page.ID, false);
-			}
-
-			// Reset pages of specific actor after that actors turn
-			if (interpreter->HasPageExecuted(page.ID)) {
-				if (battler->GetType() == Game_Battler::Type_Ally &&
-						((condition.flags.turn_actor && Main_Data::game_actors->GetActor(condition.turn_actor_id) == battler) ||
-						(condition.flags.command_actor && Main_Data::game_actors->GetActor(condition.command_actor_id) == battler))) {
-					interpreter->SetHasPageExecuted(page.ID, false);
-				}
-			}
-
-			// Reset pages of specific enemy after that enemies turn
-			if (battler->GetType() == Game_Battler::Type_Enemy &&
-				condition.flags.turn_enemy &&
-				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
-				interpreter->SetHasPageExecuted(page.ID, false);
-			}
-		}
-	}
+	interpreter->ResetPagesExecuted(battler);
 
 	Main_Data::game_party->IncTurns();
 }
