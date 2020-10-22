@@ -37,7 +37,7 @@ class Game_CommonEvent;
 class Game_Interpreter_Battle : public Game_Interpreter
 {
 public:
-	explicit Game_Interpreter_Battle(int num_pages);
+	explicit Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages);
 
 	bool IsValidPage(int page_id) const;
 
@@ -49,6 +49,8 @@ public:
 
 	void ResetAllPagesExecuted();
 	int GetNumPages() const;
+
+	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
 
 	bool ExecuteCommand() override;
 private:
@@ -66,6 +68,7 @@ private:
 	bool CommandElseBranchBattle(lcf::rpg::EventCommand const& com);
 	bool CommandEndBranchBattle(lcf::rpg::EventCommand const& com);
 private:
+	Span<const lcf::rpg::TroopPage> pages;
 	std::vector<bool> pages_state;
 };
 

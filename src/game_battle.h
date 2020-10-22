@@ -115,8 +115,6 @@ namespace Game_Battle {
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
 
-	bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
-
 	/**
 	 * Runs the current interpreter or starts a new one when pages are pending
 	 *

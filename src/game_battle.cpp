@@ -72,7 +72,7 @@ void Game_Battle::Init(int troop_id) {
 	target_enemy_index = 0;
 
 	Main_Data::game_enemyparty->ResetBattle(troop_id);
-	interpreter.reset(new Game_Interpreter_Battle(troop->pages.size()));
+	interpreter.reset(new Game_Interpreter_Battle(troop->pages));
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
 	animation_actors.reset();
@@ -289,73 +289,6 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	}
 }
 
-bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition) {
-	if (!condition.flags.switch_a &&
-		!condition.flags.switch_b &&
-		!condition.flags.variable &&
-		!condition.flags.turn &&
-		!condition.flags.turn_enemy &&
-		!condition.flags.turn_actor &&
-		!condition.flags.fatigue &&
-		!condition.flags.enemy_hp &&
-		!condition.flags.actor_hp &&
-		!condition.flags.command_actor
-		) {
-		// Pages without trigger are never run
-		return false;
-	}
-
-	if (condition.flags.switch_a && !Main_Data::game_switches->Get(condition.switch_a_id))
-		return false;
-
-	if (condition.flags.switch_b && !Main_Data::game_switches->Get(condition.switch_b_id))
-		return false;
-
-	if (condition.flags.variable && !(Main_Data::game_variables->Get(condition.variable_id) >= condition.variable_value))
-		return false;
-
-	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))
-		return false;
-
-	if (condition.flags.turn_enemy &&
-		!CheckTurns((*Main_Data::game_enemyparty)[condition.turn_enemy_id].GetBattleTurn(),	condition.turn_enemy_b, condition.turn_enemy_a))
-		return false;
-
-	if (condition.flags.turn_actor &&
-		!CheckTurns(Main_Data::game_actors->GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
-		return false;
-
-	if (condition.flags.fatigue) {
-		int fatigue = Main_Data::game_party->GetFatigue();
-		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
-			return false;
-	}
-
-	if (condition.flags.enemy_hp) {
-		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
-		int hp = enemy.GetHp();
-		int hpmin = enemy.GetMaxHp() * condition.enemy_hp_min / 100;
-		int hpmax = enemy.GetMaxHp() * condition.enemy_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
-			return false;
-	}
-
-	if (condition.flags.actor_hp) {
-		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
-		int hp = actor->GetHp();
-		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
-		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
-			return false;
-	}
-
-	if (condition.flags.command_actor &&
-		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
-		return false;
-
-	return true;
-}
-
 bool Game_Battle::UpdateEvents() {
 	const auto battle_end = Game_Battle::CheckWin() || Game_Battle::CheckLose();
 
@@ -404,7 +337,7 @@ void Game_Battle::RefreshEvents() {
 void Game_Battle::RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate) {
 	for (const auto& it : troop->pages) {
 		const lcf::rpg::TroopPage& page = it;
-		if (!interpreter->HasPageExecuted(page.ID) && AreConditionsMet(page.condition)) {
+		if (!interpreter->HasPageExecuted(page.ID) && interpreter->AreConditionsMet(page.condition)) {
 			if (predicate(it)) {
 				interpreter->SetCanPageRun(page.ID, true);
 			}
