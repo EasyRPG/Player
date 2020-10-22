@@ -224,15 +224,15 @@ bool Scene_Battle::UpdateEvents() {
 
 		if (aop.GetType() == AsyncOp::eTerminateBattle) {
 			EndBattle(static_cast<BattleResult>(aop.GetBattleResult()));
-			return true;
+			return false;
 		}
 
 		if (CheckSceneExit(aop)) {
-			return true;
+			return false;
 		}
 	}
 
-	return false;
+	return true;
 }
 
 bool Scene_Battle::UpdateTimers() {
@@ -247,9 +247,9 @@ bool Scene_Battle::UpdateTimers() {
 	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
 		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
 		EndBattle(BattleResult::Abort);
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 
 void Scene_Battle::Update() {

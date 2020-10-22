@@ -30,6 +30,7 @@ class Game_Battler;
 class Game_Enemy;
 class Game_Actor;
 class Game_Interpreter;
+class Game_Interpreter_Battle;
 class Spriteset_Battle;
 
 enum class BattleResult {
@@ -140,6 +141,13 @@ namespace Game_Battle {
 	 * @return the game interpreter.
 	 */
 	Game_Interpreter& GetInterpreter();
+
+	/**
+	 * Gets the game interpreter.
+	 *
+	 * @return the game interpreter.
+	 */
+	Game_Interpreter_Battle& GetInterpreterBattle();
 
 	void SetTerrainId(int id);
 	int GetTerrainId();

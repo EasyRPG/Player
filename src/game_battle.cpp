@@ -325,6 +325,11 @@ Game_Interpreter& Game_Battle::GetInterpreter() {
 	return *interpreter;
 }
 
+Game_Interpreter_Battle& Game_Battle::GetInterpreterBattle() {
+	assert(interpreter);
+	return *interpreter;
+}
+
 void Game_Battle::SetTerrainId(int id) {
 	terrain_id = id;
 }

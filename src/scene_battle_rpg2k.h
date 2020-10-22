@@ -131,8 +131,7 @@ protected:
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
 
-	bool CheckWin();
-	bool CheckLose();
+	bool CheckBattleEndConditions();
 	bool RefreshEventsAndCheckBattleEnd();
 
 	void RefreshCommandWindow();
@@ -173,6 +172,8 @@ protected:
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 
+	void SetSceneActionSubState(int substate);
+
 	// SceneAction State Machine Driver
 	bool ProcessSceneAction();
 
@@ -191,8 +192,7 @@ protected:
 	bool ProcessSceneActionDefeat();
 	bool ProcessSceneActionEscape();
 
-	// Battle Start Handlers
-	bool DisplayMonstersInMessageWindow();
+	bool CheckBattleEndAndScheduleEvents();
 
 	void SetBattleActionState(BattleActionState state);
 	void SetBattleActionSubState(int substate, bool reset_index = true);
@@ -245,6 +245,7 @@ protected:
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};
+	int scene_action_substate = 0;
 	int battle_action_state = BattleActionState_Begin;
 	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
@@ -258,11 +259,9 @@ protected:
 	int battle_action_wait = 0;
 	int battle_action_min_wait = 0;
 
-	bool encounter_message_first_monster = true;
-	bool encounter_message_first_strike = false;
 	bool message_box_got_visible = false;
 	bool move_screen = false;
-	bool skip_update_battle_state = false;
+	bool resume_from_debug_scene = false;
 };
 
 #endif
