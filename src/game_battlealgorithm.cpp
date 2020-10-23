@@ -39,6 +39,7 @@
 #include <lcf/rpg/state.h>
 #include <lcf/rpg/skill.h>
 #include <lcf/rpg/item.h>
+#include <lcf/rpg/battleranimation.h>
 #include "sprite_battler.h"
 #include "utils.h"
 #include "rand.h"
@@ -336,8 +337,8 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid(const Game_Battler& targ
 	return target.Exists();
 }
 
-int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Idle;
+int Game_BattleAlgorithm::AlgorithmBase::GetSourcePose() const {
+	return lcf::rpg::BattlerAnimation::Pose_Idle;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Start() {
@@ -667,10 +668,11 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 	return "";
 }
 
-int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
-	// ToDo when it is Dual attack the 2nd call should return LeftHand
-
-	return Sprite_Battler::AnimationState_RightHand;
+int Game_BattleAlgorithm::Normal::GetSourcePose() const {
+	auto weapon = GetWeapon();
+	return weapon == Game_Battler::WeaponSecondary
+		? lcf::rpg::BattlerAnimation::Pose_AttackLeft
+		: lcf::rpg::BattlerAnimation::Pose_AttackRight;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
@@ -971,18 +973,14 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 	return "";
 }
 
-int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
+int Game_BattleAlgorithm::Skill::GetSourcePose() const {
 	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
 		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
-			int pose = skill.battler_animation_data[source->GetId() - 1].pose;
-
-			if (pose > 0) {
-				return pose + 1;
-			}
+			return skill.battler_animation_data[source->GetId() - 1].pose;
 		}
 	}
 
-	return Sprite_Battler::AnimationState_SkillUse;
+	return lcf::rpg::BattlerAnimation::Pose_Skill;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
@@ -1123,8 +1121,8 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
 	return "";
 }
 
-int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Item;
+int Game_BattleAlgorithm::Item::GetSourcePose() const {
+	return lcf::rpg::BattlerAnimation::Pose_Item;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
@@ -1156,8 +1154,8 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 	return "";
 }
 
-int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Defending;
+int Game_BattleAlgorithm::Defend::GetSourcePose() const {
+	return lcf::rpg::BattlerAnimation::Pose_Defend;
 }
 
 bool Game_BattleAlgorithm::Defend::Execute() {
@@ -1287,13 +1285,8 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 	return "";
 }
 
-int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		return AlgorithmBase::GetSourceAnimationState();
-	}
-	else {
-		return Sprite_Battler::AnimationState_Dead;
-	}
+int Game_BattleAlgorithm::Escape::GetSourcePose() const {
+	return lcf::rpg::BattlerAnimation::Pose_WalkRight;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {

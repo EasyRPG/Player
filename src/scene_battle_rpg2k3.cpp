@@ -17,6 +17,7 @@
 
 #include "scene_battle_rpg2k3.h"
 #include <lcf/rpg/battlecommand.h>
+#include <lcf/rpg/battleranimation.h>
 #include "input.h"
 #include "output.h"
 #include "player.h"
@@ -895,6 +896,22 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 	}
 }
 
+static int AdjustPoseForDirection(const Game_Battler* battler, int pose) {
+	if (battler->IsDirectionFlipped()) {
+		switch (pose) {
+			case lcf::rpg::BattlerAnimation::Pose_AttackRight:
+				return lcf::rpg::BattlerAnimation::Pose_AttackLeft;
+			case lcf::rpg::BattlerAnimation::Pose_AttackLeft:
+				return lcf::rpg::BattlerAnimation::Pose_AttackRight;
+			case lcf::rpg::BattlerAnimation::Pose_WalkRight:
+				return lcf::rpg::BattlerAnimation::Pose_WalkLeft;
+			case lcf::rpg::BattlerAnimation::Pose_WalkLeft:
+				return lcf::rpg::BattlerAnimation::Pose_WalkRight;
+		}
+	}
+	return pose;
+}
+
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action == nullptr) {
 		return true;
@@ -990,8 +1007,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (source_sprite) {
 			SelectionFlash(action->GetSource());
+			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
+			// FIXME: This gets cleaned up when CBA is implemented
+			auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);
 			source_sprite->SetAnimationState(
-				action->GetSourceAnimationState(),
+				action_state,
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 

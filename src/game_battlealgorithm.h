@@ -288,16 +288,10 @@ public:
 	 */
 	virtual std::string GetStartMessage(int line) const;
 
-	/**
-	 * Gets animation state id of the source character.
-	 *
-	 * @return animation state
-	 */
-	virtual int GetSourceAnimationState() const;
+	/** @return the pose the source should be in when performing the action */
+	virtual int GetSourcePose() const;
 
-	/**
-	* @return true if it is still possible to perform this action now.
-	*/
+	/** @return true if it is still possible to perform this action now.  */
 	virtual bool ActionIsPossible() const;
 
 	/**
@@ -423,7 +417,7 @@ public:
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
-	int GetSourceAnimationState() const override;
+	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
 private:
@@ -444,7 +438,7 @@ public:
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
-	int GetSourceAnimationState() const override;
+	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
 	std::string GetFailureMessage() const override;
@@ -470,7 +464,7 @@ public:
 	bool vStart() override;
 
 	std::string GetStartMessage(int line) const override;
-	int GetSourceAnimationState() const override;
+	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool ActionIsPossible() const override;
 
@@ -485,7 +479,7 @@ public:
 	Defend(Game_Battler* source);
 
 	std::string GetStartMessage(int line) const override;
-	int GetSourceAnimationState() const override;
+	int GetSourcePose() const override;
 	bool Execute() override;
 };
 
@@ -523,7 +517,7 @@ public:
 	Escape(Game_Battler* source);
 
 	std::string GetStartMessage(int line) const override;
-	int GetSourceAnimationState() const override;
+	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void ApplyCustomEffect() override;
