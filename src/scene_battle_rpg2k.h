@@ -36,6 +36,22 @@ class PendingMessage;
  */
 class Scene_Battle_Rpg2k : public Scene_Battle {
 public:
+	/** The return value from a scene action state machine callback */
+	enum class SceneActionReturn {
+		/** Return from Update() and wait until the next frame */
+		eWaitTillNextFrame,
+		/** Continue processing this frame, unless CheckWait() etc.. requires us to block */
+		eContinueThisFrame,
+	};
+
+	/** The return value from a battle action state machine callback */
+	enum class BattleActionReturn {
+		/** The battle action is not yet finished */
+		eContinue,
+		/** The battle action is finished */
+		eFinished,
+	};
+
 	enum BattleActionState {
 		/**
 		 * Called once
@@ -178,22 +194,22 @@ protected:
 	void SetSceneActionSubState(int substate);
 
 	// SceneAction State Machine Driver
-	bool ProcessSceneAction();
+	SceneActionReturn ProcessSceneAction();
 
 	// SceneAction State Machine Handlers
-	bool ProcessSceneActionStart();
-	bool ProcessSceneActionFightAutoEscape();
-	bool ProcessSceneActionActor();
-	bool ProcessSceneActionAutoBattle();
-	bool ProcessSceneActionCommand();
-	bool ProcessSceneActionItem();
-	bool ProcessSceneActionSkill();
-	bool ProcessSceneActionEnemyTarget();
-	bool ProcessSceneActionAllyTarget();
-	bool ProcessSceneActionBattle();
-	bool ProcessSceneActionVictory();
-	bool ProcessSceneActionDefeat();
-	bool ProcessSceneActionEscape();
+	SceneActionReturn ProcessSceneActionStart();
+	SceneActionReturn ProcessSceneActionFightAutoEscape();
+	SceneActionReturn ProcessSceneActionActor();
+	SceneActionReturn ProcessSceneActionAutoBattle();
+	SceneActionReturn ProcessSceneActionCommand();
+	SceneActionReturn ProcessSceneActionItem();
+	SceneActionReturn ProcessSceneActionSkill();
+	SceneActionReturn ProcessSceneActionEnemyTarget();
+	SceneActionReturn ProcessSceneActionAllyTarget();
+	SceneActionReturn ProcessSceneActionBattle();
+	SceneActionReturn ProcessSceneActionVictory();
+	SceneActionReturn ProcessSceneActionDefeat();
+	SceneActionReturn ProcessSceneActionEscape();
 
 	bool CheckBattleEndAndScheduleEvents();
 
@@ -201,22 +217,22 @@ protected:
 	void SetBattleActionSubState(int substate, bool reset_index = true);
 
 	// BattleAction State Machine Driver
-	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	// BattleAction State Machine Handlers
-	bool ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	void ProcessBattleActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 

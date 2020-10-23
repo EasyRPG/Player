@@ -158,8 +158,7 @@ void Scene_Battle_Rpg2k::Update() {
 			break;
 		}
 
-
-		if (!ProcessSceneAction()) {
+		if (ProcessSceneAction() == SceneActionReturn::eWaitTillNextFrame) {
 			break;
 		}
 	}
@@ -197,7 +196,7 @@ bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {
 }
 
 
-bool Scene_Battle_Rpg2k::ProcessSceneAction() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneAction() {
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
 	static int last_state = -1;
 	static int last_substate = -1;
@@ -236,10 +235,10 @@ bool Scene_Battle_Rpg2k::ProcessSceneAction() {
 			return ProcessSceneActionEscape();
 	}
 	assert(false && "Invalid SceneActionState!");
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionStart() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionStart() {
 	enum SubState {
 		eBegin,
 		eDisplayMonsters,
@@ -267,13 +266,13 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionStart() {
 
 		SetWait(4, 4);
 		SetSceneActionSubState(eDisplayMonsters);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eDisplayMonsters) {
 		if (battle_result_messages_it == battle_result_messages.end()) {
 			SetSceneActionSubState(eFirstStrike);
-			return true;
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		if (battle_message_window->IsPageFilled()) {
@@ -291,7 +290,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionStart() {
 			SetWait(8, 8);
 		}
 
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eFirstStrike) {
@@ -306,7 +305,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionStart() {
 
 		SetSceneActionSubState(eClear);
 
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eClear) {
@@ -314,7 +313,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionStart() {
 		SetState(State_SelectOption);
 	}
 
-	return true;
+	return SceneActionReturn::eContinueThisFrame;
 }
 
 void Scene_Battle_Rpg2k::ResetWindows(bool make_invisible) {
@@ -361,7 +360,7 @@ void Scene_Battle_Rpg2k::MoveCommandWindows(int x, int frames) {
 			x, command_window->GetY(), frames);
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionFightAutoEscape() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFightAutoEscape() {
 	enum SubState {
 		eBegin,
 		eCheckEvents,
@@ -378,13 +377,13 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionFightAutoEscape() {
 
 	if (scene_action_substate == eCheckEvents) {
 		if (!CheckBattleEndAndScheduleEvents()) {
-			return true;
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		// No Auto battle/Escape when all actors are sleeping or similar
 		if (!Main_Data::game_party->IsAnyControllable()) {
 			SetState(State_SelectActor);
-			return true;
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		SetSceneActionSubState(eMoveWindow);
@@ -405,7 +404,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionFightAutoEscape() {
 			SetCommandWindows(0);
 		}
 		SetSceneActionSubState(eWaitForInput);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eWaitForInput) {
@@ -436,23 +435,23 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionFightAutoEscape() {
 						break;
 				}
 			}
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionActor() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionActor() {
 	SelectNextActor(false);
-	return true;
+	return SceneActionReturn::eContinueThisFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionAutoBattle() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionAutoBattle() {
 	SelectNextActor(true);
-	return true;
+	return SceneActionReturn::eContinueThisFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionCommand() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionCommand() {
 	enum SubState {
 		eMoveWindow,
 		eWaitForInput,
@@ -472,7 +471,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionCommand() {
 
 		MoveCommandWindows(-options_window->GetWidth(), 8);
 		SetSceneActionSubState(eWaitForInput);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eWaitForInput) {
@@ -497,19 +496,19 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionCommand() {
 					// no-op
 					break;
 			}
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			--actor_index;
 			SelectPreviousActor();
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionItem() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionItem() {
 	enum SubState {
 		eBegin,
 		eWaitForInput,
@@ -531,18 +530,18 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionItem() {
 	if (scene_action_substate == eWaitForInput) {
 		if (Input::IsTriggered(Input::DECISION)) {
 			ItemSelected();
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(State_SelectCommand);
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionSkill() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionSkill() {
 	enum SubState {
 		eBegin,
 		eWaitForInput,
@@ -567,19 +566,19 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionSkill() {
 		if (Input::IsTriggered(Input::DECISION)) {
 			skill_window->SaveActorIndex(actor_index - 1);
 			SkillSelected();
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			skill_window->SaveActorIndex(actor_index - 1);
 			SetState(State_SelectCommand);
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionEnemyTarget() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionEnemyTarget() {
 	enum SubState {
 		eBegin,
 		eWaitForInput,
@@ -611,18 +610,18 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionEnemyTarget() {
 	if (scene_action_substate == eWaitForInput) {
 		if (Input::IsTriggered(Input::DECISION)) {
 			EnemySelected();
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(previous_state);
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionAllyTarget() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionAllyTarget() {
 	enum SubState {
 		eBegin,
 		eWaitForInput,
@@ -640,18 +639,18 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionAllyTarget() {
 	if (scene_action_substate == eWaitForInput) {
 		if (Input::IsTriggered(Input::DECISION)) {
 			AllySelected();
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(previous_state);
-			return false;
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
 	enum SubState {
 		eBegin,
 		ePreAction,
@@ -675,12 +674,12 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
 		// Check for end battle, and run events before action
 		// This happens before each battler acts and also right after the last battler acts.
 		if (!CheckBattleEndAndScheduleEvents()) {
-			return true;
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		if (battle_actions.empty()) {
 			SetSceneActionSubState(ePost);
-			return true;
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		auto* battler = battle_actions.front();
@@ -706,9 +705,8 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
 	}
 
 	if (scene_action_substate == eBattleAction) {
-		// Runs the battle action state machine. This returns true when the battle action is finished.
-		if (!ProcessBattleAction(pending_battle_action.get())) {
-			return true;
+		if (ProcessBattleAction(pending_battle_action.get()) == BattleActionReturn::eContinue) {
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		pending_battle_action = nullptr;
@@ -716,7 +714,7 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
 		battle_message_window->Clear();
 
 		SetSceneActionSubState(ePreAction);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == ePost) {
@@ -725,12 +723,12 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionBattle() {
 		first_strike = false;
 
 		SetState(State_SelectOption);
-		return false;
+		return SceneActionReturn::eWaitTillNextFrame;
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionVictory() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVictory() {
 	enum SubState {
 		eBegin = 0,
 		eEnd = 1,
@@ -781,14 +779,14 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionVictory() {
 		Game_Message::SetPendingMessage(std::move(pm));
 
 		SetSceneActionSubState(eEnd);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	EndBattle(BattleResult::Victory);
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionDefeat() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionDefeat() {
 	enum SubState {
 		eBegin = 0,
 		eEnd = 1,
@@ -815,14 +813,14 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionDefeat() {
 		Game_Message::SetPendingMessage(std::move(pm));
 		SetSceneActionSubState(eEnd);
 
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	EndBattle(BattleResult::Defeat);
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-bool Scene_Battle_Rpg2k::ProcessSceneActionEscape() {
+Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionEscape() {
 	enum SubState {
 		eBegin = 0,
 		eSuccess = 1,
@@ -843,14 +841,14 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionEscape() {
 		}
 		SetWait(10, 60);
 		SetSceneActionSubState(next_ss);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eSuccess) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 
 		EndBattle(BattleResult::Escape);
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
 
 	if (scene_action_substate == eFailure) {
@@ -860,9 +858,9 @@ bool Scene_Battle_Rpg2k::ProcessSceneActionEscape() {
 		CreateEnemyActions();
 		CreateExecutionOrder();
 		//Game_Battle::RefreshEvents();
-		return true;
+		return SceneActionReturn::eContinueThisFrame;
 	}
-	return false;
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
 void Scene_Battle_Rpg2k::SetBattleActionState(BattleActionState state) {
@@ -877,11 +875,11 @@ void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate, bool reset_index)
 	}
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action == nullptr) {
 		Output::Warning("ProcessBattleAction: Invalid battle action");
 		Output::Warning("Please report a bug!");
-		return true;
+		return BattleActionReturn::eFinished;
 	}
 
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
@@ -926,10 +924,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 	assert(false && "Invalid BattleActionState!");
 
-	return true;
+	return BattleActionReturn::eFinished;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eBegin = 0,
 		eShowMessage,
@@ -984,7 +982,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::Algorith
 		if (show_message) {
 			SetWait(4,4);
 			SetBattleActionSubState(eShowMessage);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 		battle_action_substate = ePost;
 	}
@@ -994,7 +992,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::Algorith
 		SetWait(20, 60);
 		pending_message.clear();
 		SetBattleActionSubState(ePost);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == ePost) {
@@ -1002,22 +1000,22 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::Algorith
 
 		if (action->GetType() == Game_BattleAlgorithm::Type::None) {
 			SetBattleActionState(BattleActionState_Finished);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 
 		SetWait(4,4);
 	}
 
 	SetBattleActionState(BattleActionState_Usage1);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action) {
 
 	action->Start();
 	if (!action->IsCurrentTargetValid()) {
-		return true;
+		return BattleActionReturn::eFinished;
 	}
 
 	battle_message_window->Clear();
@@ -1032,10 +1030,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionUsage1(Game_BattleAlgorithm::Algorit
 	}
 
 	SetBattleActionState(BattleActionState_Usage2);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action->HasStartMessage(1)) {
 		battle_message_window->Push(action->GetStartMessage(1));
 		battle_message_window->ScrollToEnd();
@@ -1048,10 +1046,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionUsage2(Game_BattleAlgorithm::Algorit
 	}
 
 	SetBattleActionState(BattleActionState_Animation);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
 	int frames = 0;
 	while(1) {
 		const int cur_anim = action->GetAnimationId(battle_action_substate_index);
@@ -1073,7 +1071,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::Algo
 
 		if (frames) {
 			SetWait(frames, frames);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 	}
 
@@ -1081,33 +1079,33 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::Algo
 	SetWaitForUsage(action->GetType(), frames);
 
 	SetBattleActionState(BattleActionState_Execute);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
 	action->Execute();
 	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
 			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
 		SetWait(4,4);
 		if (action->IsSuccess() && action->IsCriticalHit()) {
 			SetBattleActionState(BattleActionState_Critical);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 	}
 	SetBattleActionState(BattleActionState_Apply);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
 	battle_message_window->Push(BattleMessage::GetCriticalHitMessage(*action->GetSource(), *action->GetTarget()));
 	battle_message_window->ScrollToEnd();
 	SetWait(10, 30);
 
 	SetBattleActionState(BattleActionState_Apply);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
 	action->ApplyCustomEffect();
 	action->ApplySwitchEffect();
 
@@ -1115,21 +1113,21 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionApply(Game_BattleAlgorithm::Algorith
 
 	if (!action->IsSuccess()) {
 		SetBattleActionState(BattleActionState_Failure);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	auto* target = action->GetTarget();
 
 	if (!target) {
 		SetBattleActionState(BattleActionState_Finished);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	SetBattleActionState(BattleActionState_Damage);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eBegin = 0,
 		eProcess,
@@ -1138,7 +1136,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::Algori
 	if (battle_action_substate == eBegin) {
 		SetWait(4,4);
 		SetBattleActionSubState(eProcess);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	auto* se = action->GetFailureSe();
@@ -1152,10 +1150,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::Algori
 	SetWait(20, 60);
 
 	SetBattleActionState(BattleActionState_Finished);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eBegin = 0,
 		eMessage,
@@ -1168,12 +1166,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 	if (battle_action_substate == eBegin) {
 		if (!action->IsAffectHp() || action->GetAffectedHp() > 0 || ((action->IsPositive() || action->IsAbsorb()) && action->GetAffectedHp() == 0)) {
 			SetBattleActionState(BattleActionState_Params);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 
 		SetWait(4,4);
 		SetBattleActionSubState(eMessage);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == eMessage) {
@@ -1215,7 +1213,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 		}
 
 		SetBattleActionSubState(eApply);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == eApply) {
@@ -1232,7 +1230,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 		battle_action_dmg_index = battle_message_window->GetLineCount();
 
 		SetBattleActionSubState(ePreStates);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == ePreStates) {
@@ -1254,10 +1252,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 			SetWait(4,4);
 
 			SetBattleActionSubState(eStates, false);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 		SetBattleActionSubState(ePost);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == eStates) {
@@ -1266,7 +1264,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 		SetWait(20, 40);
 
 		SetBattleActionSubState(ePreStates, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == ePost) {
@@ -1274,10 +1272,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 	}
 
 	SetBattleActionState(BattleActionState_Params);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		ePreHp,
 		eHp,
@@ -1370,7 +1368,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 			SetWait(4,4);
 
 			SetBattleActionSubState(battle_action_substate + 1, false);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 	}
 
@@ -1379,7 +1377,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 	// past eDone.
 	if (battle_action_substate >= eDone) {
 		SetBattleActionState(next_state);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	// All of the normal states are odd numbers.
@@ -1389,14 +1387,14 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 		SetWait(20, 60);
 
 		SetBattleActionSubState(battle_action_substate + 1);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	SetBattleActionState(next_state);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eApply,
 		ePreWait,
@@ -1417,7 +1415,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 
 		if (idx >= static_cast<int>(states.size())) {
 			SetBattleActionState(next_state);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 
 		for (;idx < (int)states.size(); ++idx) {
@@ -1455,13 +1453,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 			ProcessBattleActionDeath(action);
 		}
 		SetBattleActionSubState(ePreWait, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == ePreWait) {
 		SetWait(4,4);
 		SetBattleActionSubState(eMessage, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	if (battle_action_substate == eMessage) {
@@ -1472,14 +1470,14 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 		// Process the next state
 		++battle_action_substate_index;
 		SetBattleActionSubState(eApply, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	SetBattleActionState(next_state);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
 		eApply,
 		eMessage,
@@ -1495,7 +1493,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 		auto& idx = battle_action_substate_index;
 		if (idx >= static_cast<int>(attrs.size())) {
 			SetBattleActionState(next_state);
-			return false;
+			return BattleActionReturn::eContinue;
 		}
 
 		for (;idx < (int)attrs.size(); ++idx) {
@@ -1513,7 +1511,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 		SetWait(4,4);
 
 		SetBattleActionSubState(eMessage, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	// All of the normal states are odd numbers.
@@ -1524,11 +1522,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 
 		++battle_action_substate_index;
 		SetBattleActionSubState(eApply, false);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	SetBattleActionState(next_state);
-	return false;
+	return BattleActionReturn::eContinue;
 }
 
 void Scene_Battle_Rpg2k::ProcessBattleActionDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1545,19 +1543,19 @@ void Scene_Battle_Rpg2k::ProcessBattleActionDeath(Game_BattleAlgorithm::Algorith
 	}
 }
 
-bool Scene_Battle_Rpg2k::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action->RepeatNext(true) || action->TargetNext()) {
 		// Clear the console for the next target
 		battle_message_window->PopUntil(battle_action_start_index);
 		battle_message_window->ScrollToEnd();
 
 		SetBattleActionState(BattleActionState_Execute);
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	battle_message_window->Clear();
 	action->ProcessPostActionSwitches();
-	return true;
+	return BattleActionReturn::eFinished;
 }
 
 void Scene_Battle_Rpg2k::SelectNextActor(bool auto_battle) {
