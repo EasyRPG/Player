@@ -473,15 +473,15 @@ bool Game_BattleAlgorithm::None::Execute() {
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
-	AlgorithmBase(Type::Normal, source, target)
+	AlgorithmBase(Type::Normal, source, target), hits_multiplier(hits_multiplier)
 {
-	Init(hits_multiplier, style);
+	Init(style);
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier, Style style) :
-	AlgorithmBase(Type::Normal, source, target)
+	AlgorithmBase(Type::Normal, source, target), hits_multiplier(hits_multiplier)
 {
-	Init(hits_multiplier, style);
+	Init(style);
 }
 
 Game_BattleAlgorithm::Normal::Style Game_BattleAlgorithm::Normal::GetDefaultStyle() {
@@ -495,15 +495,15 @@ Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
 	return cur_repeat >= weapon_style ? Game_Battler::WeaponSecondary : Game_Battler::WeaponPrimary;
 }
 
-void Game_BattleAlgorithm::Normal::Init(int hits_multiplier, Style style) {
+void Game_BattleAlgorithm::Normal::Init(Style style) {
 	weapon_style = -1;
 	if (GetSource()->GetType() == Game_Battler::Type_Ally && style == Style_MultiHit) {
 		auto* ally = static_cast<Game_Actor*>(GetSource());
 		if (ally->GetWeapon() && ally->Get2ndWeapon()) {
-			auto hits = ally->GetNumberOfAttacks(Game_Battler::WeaponPrimary);
+			auto hits = hits_multiplier * ally->GetNumberOfAttacks(Game_Battler::WeaponPrimary);
 			weapon_style = hits;
-			hits += ally->GetNumberOfAttacks(Game_Battler::WeaponSecondary);
-			SetRepeat(hits_multiplier * hits);
+			hits += hits_multiplier * ally->GetNumberOfAttacks(Game_Battler::WeaponSecondary);
+			SetRepeat(hits);
 			return;
 		}
 	}
@@ -660,7 +660,7 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
-		if (GetSource()->GetType() == Game_Battler::Type_Enemy && repeat == 2) {
+		if (GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2) {
 			return BattleMessage::GetDoubleAttackStartMessage2k3();
 		}
 	}

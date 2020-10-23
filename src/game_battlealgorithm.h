@@ -427,7 +427,8 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
 private:
-	void Init(int hits, Style style);
+	void Init(Style style);
+	int hits_multiplier = 1;
 	int weapon_style = -1;
 };
 
