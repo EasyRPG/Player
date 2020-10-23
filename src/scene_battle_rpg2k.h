@@ -200,26 +200,6 @@ protected:
 	void SetBattleActionState(BattleActionState state);
 	void SetBattleActionSubState(int substate, bool reset_index = true);
 
-	/**
-	 * Switch to the next action state, resetting the substate.
-	 *
-	 * @param state the state to change to
-	 * @param action the action we're processing
-	 * @return the return value of the state handler
-	 * @post battle_action_substate is reset to 0
-	 */
-	bool ProcessNextBattleAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action);
-
-	/**
-	 * Switch to the next action substate
-	 *
-	 * @param substate the substate to change to
-	 * @param action the action we're processing
-	 * @param reset_index if true, reset the substate index
-	 * @return the return value of the state handler
-	 */
-	bool ProcessNextBattleActionSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index = true);
-
 	// BattleAction State Machine Driver
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 

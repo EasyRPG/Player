@@ -877,25 +877,11 @@ void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate, bool reset_index)
 	}
 }
 
-bool Scene_Battle_Rpg2k::ProcessNextBattleAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action) {
-    SetBattleActionState(state);
-    return ProcessBattleAction(action);
-}
-
-bool Scene_Battle_Rpg2k::ProcessNextBattleActionSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index) {
-	SetBattleActionSubState(substate, reset_index);
-	return ProcessBattleAction(action);
-}
-
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action == nullptr) {
 		Output::Warning("ProcessBattleAction: Invalid battle action");
 		Output::Warning("Please report a bug!");
 		return true;
-	}
-
-	if (!CheckWait()) {
-		return false;
 	}
 
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
@@ -997,7 +983,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::Algorith
 
 		if (show_message) {
 			SetWait(4,4);
-			return ProcessNextBattleActionSubState(eShowMessage, action);
+			SetBattleActionSubState(eShowMessage);
+			return false;
 		}
 		battle_action_substate = ePost;
 	}
@@ -1006,20 +993,23 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionBegin(Game_BattleAlgorithm::Algorith
 		battle_message_window->PushWithSubject(std::move(pending_message), action->GetSource()->GetName());
 		SetWait(20, 60);
 		pending_message.clear();
-		return ProcessNextBattleActionSubState(ePost, action);
+		SetBattleActionSubState(ePost);
+		return false;
 	}
 
 	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
 
 		if (action->GetType() == Game_BattleAlgorithm::Type::None) {
-			return ProcessNextBattleAction(BattleActionState_Finished, action);
+			SetBattleActionState(BattleActionState_Finished);
+			return false;
 		}
 
 		SetWait(4,4);
 	}
 
-	return ProcessNextBattleAction(BattleActionState_Usage1, action);
+	SetBattleActionState(BattleActionState_Usage1);
+	return false;
 }
 
 
@@ -1041,7 +1031,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionUsage1(Game_BattleAlgorithm::Algorit
 		}
 	}
 
-	return ProcessNextBattleAction(BattleActionState_Usage2, action);
+	SetBattleActionState(BattleActionState_Usage2);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1056,7 +1047,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionUsage2(Game_BattleAlgorithm::Algorit
 		Main_Data::game_system->SePlay(*se);
 	}
 
-	return ProcessNextBattleAction(BattleActionState_Animation, action);
+	SetBattleActionState(BattleActionState_Animation);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1088,7 +1080,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::Algo
 	// Wait for last start message and last animation.
 	SetWaitForUsage(action->GetType(), frames);
 
-	return ProcessNextBattleAction(BattleActionState_Execute, action);
+	SetBattleActionState(BattleActionState_Execute);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1097,10 +1090,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::Algori
 			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
 		SetWait(4,4);
 		if (action->IsSuccess() && action->IsCriticalHit()) {
-			return ProcessNextBattleAction(BattleActionState_Critical, action);
+			SetBattleActionState(BattleActionState_Critical);
+			return false;
 		}
 	}
-	return ProcessNextBattleAction(BattleActionState_Apply, action);
+	SetBattleActionState(BattleActionState_Apply);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1108,7 +1103,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionCritical(Game_BattleAlgorithm::Algor
 	battle_message_window->ScrollToEnd();
 	SetWait(10, 30);
 
-	return ProcessNextBattleAction(BattleActionState_Apply, action);
+	SetBattleActionState(BattleActionState_Apply);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1118,16 +1114,19 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionApply(Game_BattleAlgorithm::Algorith
 	battle_action_results_index = battle_message_window->GetLineCount();
 
 	if (!action->IsSuccess()) {
-		return ProcessNextBattleAction(BattleActionState_Failure, action);
+		SetBattleActionState(BattleActionState_Failure);
+		return false;
 	}
 
 	auto* target = action->GetTarget();
 
 	if (!target) {
-		return ProcessNextBattleAction(BattleActionState_Finished, action);
+		SetBattleActionState(BattleActionState_Finished);
+		return false;
 	}
 
-	return ProcessNextBattleAction(BattleActionState_Damage, action);
+	SetBattleActionState(BattleActionState_Damage);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1138,7 +1137,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::Algori
 
 	if (battle_action_substate == eBegin) {
 		SetWait(4,4);
-		return ProcessNextBattleActionSubState(eProcess, action);
+		SetBattleActionSubState(eProcess);
+		return false;
 	}
 
 	auto* se = action->GetFailureSe();
@@ -1151,7 +1151,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionFailure(Game_BattleAlgorithm::Algori
 	battle_message_window->ScrollToEnd();
 	SetWait(20, 60);
 
-	return ProcessNextBattleAction(BattleActionState_Finished, action);
+	SetBattleActionState(BattleActionState_Finished);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1166,11 +1167,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 
 	if (battle_action_substate == eBegin) {
 		if (!action->IsAffectHp() || action->GetAffectedHp() > 0 || ((action->IsPositive() || action->IsAbsorb()) && action->GetAffectedHp() == 0)) {
-			return ProcessNextBattleAction(BattleActionState_Params, action);
+			SetBattleActionState(BattleActionState_Params);
+			return false;
 		}
 
 		SetWait(4,4);
-		return ProcessNextBattleActionSubState(eMessage, action);
+		SetBattleActionSubState(eMessage);
+		return false;
 	}
 
 	if (battle_action_substate == eMessage) {
@@ -1211,7 +1214,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 			SetWait(20, 40);
 		}
 
-		return ProcessNextBattleActionSubState(eApply, action);
+		SetBattleActionSubState(eApply);
+		return false;
 	}
 
 	if (battle_action_substate == eApply) {
@@ -1227,7 +1231,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 
 		battle_action_dmg_index = battle_message_window->GetLineCount();
 
-		return ProcessNextBattleActionSubState(ePreStates, action);
+		SetBattleActionSubState(ePreStates);
+		return false;
 	}
 
 	if (battle_action_substate == ePreStates) {
@@ -1248,9 +1253,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 			battle_message_window->ScrollToEnd();
 			SetWait(4,4);
 
-			return ProcessNextBattleActionSubState(eStates, action, false);
+			SetBattleActionSubState(eStates, false);
+			return false;
 		}
-		return ProcessNextBattleActionSubState(ePost, action);
+		SetBattleActionSubState(ePost);
+		return false;
 	}
 
 	if (battle_action_substate == eStates) {
@@ -1258,14 +1265,16 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionDamage(Game_BattleAlgorithm::Algorit
 		battle_message_window->ScrollToEnd();
 		SetWait(20, 40);
 
-		return ProcessNextBattleActionSubState(ePreStates, action, false);
+		SetBattleActionSubState(ePreStates, false);
+		return false;
 	}
 
 	if (battle_action_substate == ePost) {
 		SetWait(0, 10);
 	}
 
-	return ProcessNextBattleAction(BattleActionState_Params, action);
+	SetBattleActionState(BattleActionState_Params);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1360,7 +1369,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 			battle_message_window->ScrollToEnd();
 			SetWait(4,4);
 
-			return ProcessNextBattleActionSubState(battle_action_substate + 1, action, false);
+			SetBattleActionSubState(battle_action_substate + 1, false);
+			return false;
 		}
 	}
 
@@ -1368,7 +1378,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 	// checkNext() to increment +2 without worrying about overflowing
 	// past eDone.
 	if (battle_action_substate >= eDone) {
-		return ProcessNextBattleAction(next_state, action);
+		SetBattleActionState(next_state);
+		return false;
 	}
 
 	// All of the normal states are odd numbers.
@@ -1377,10 +1388,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionParamEffects(Game_BattleAlgorithm::A
 		battle_message_window->ScrollToEnd();
 		SetWait(20, 60);
 
-		return ProcessNextBattleActionSubState(battle_action_substate + 1, action);
+		SetBattleActionSubState(battle_action_substate + 1);
+		return false;
 	}
 
-	return ProcessNextBattleAction(next_state, action);
+	SetBattleActionState(next_state);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1403,7 +1416,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 		auto& idx = battle_action_substate_index;
 
 		if (idx >= static_cast<int>(states.size())) {
-			return ProcessNextBattleAction(next_state, action);
+			SetBattleActionState(next_state);
+			return false;
 		}
 
 		for (;idx < (int)states.size(); ++idx) {
@@ -1440,12 +1454,14 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 		if (!was_dead && target->IsDead()) {
 			ProcessBattleActionDeath(action);
 		}
-		return ProcessNextBattleActionSubState(ePreWait, action, false);
+		SetBattleActionSubState(ePreWait, false);
+		return false;
 	}
 
 	if (battle_action_substate == ePreWait) {
 		SetWait(4,4);
-		return ProcessNextBattleActionSubState(eMessage, action, false);
+		SetBattleActionSubState(eMessage, false);
+		return false;
 	}
 
 	if (battle_action_substate == eMessage) {
@@ -1455,10 +1471,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionStateEffects(Game_BattleAlgorithm::A
 
 		// Process the next state
 		++battle_action_substate_index;
-		return ProcessNextBattleActionSubState(eApply, action, false);
+		SetBattleActionSubState(eApply, false);
+		return false;
 	}
 
-	return ProcessNextBattleAction(next_state, action);
+	SetBattleActionState(next_state);
+	return false;
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1476,7 +1494,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 		const auto& attrs = action->GetShiftedAttributes();
 		auto& idx = battle_action_substate_index;
 		if (idx >= static_cast<int>(attrs.size())) {
-			return ProcessNextBattleAction(next_state, action);
+			SetBattleActionState(next_state);
+			return false;
 		}
 
 		for (;idx < (int)attrs.size(); ++idx) {
@@ -1493,7 +1512,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 		battle_message_window->ScrollToEnd();
 		SetWait(4,4);
 
-		return ProcessNextBattleActionSubState(eMessage, action, false);
+		SetBattleActionSubState(eMessage, false);
+		return false;
 	}
 
 	// All of the normal states are odd numbers.
@@ -1503,10 +1523,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionAttributeEffects(Game_BattleAlgorith
 		SetWait(20, 60);
 
 		++battle_action_substate_index;
-		return ProcessNextBattleActionSubState(eApply, action, false);
+		SetBattleActionSubState(eApply, false);
+		return false;
 	}
 
-	return ProcessNextBattleAction(next_state, action);
+	SetBattleActionState(next_state);
+	return false;
 }
 
 void Scene_Battle_Rpg2k::ProcessBattleActionDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -1529,7 +1551,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleActionFinished(Game_BattleAlgorithm::Algor
 		battle_message_window->PopUntil(battle_action_start_index);
 		battle_message_window->ScrollToEnd();
 
-		return ProcessNextBattleAction(BattleActionState_Execute, action);
+		SetBattleActionState(BattleActionState_Execute);
+		return false;
 	}
 
 	battle_message_window->Clear();
