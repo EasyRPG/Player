@@ -69,6 +69,11 @@ public:
 		 */
 		BattleActionState_Animation,
 		/**
+		 * Called once
+		 * Handles the animations when skill is reflected (easyrpg extension)
+		 */
+		BattleActionState_AnimationReflect,
+		/**
 		 * Called once per target.
 		 * Used to execute the algorithm.
 		 */
@@ -218,6 +223,8 @@ protected:
 	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionUsage(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAnimationImpl(Game_BattleAlgorithm::AlgorithmBase* action, bool reflect);
 	BattleActionReturn ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);

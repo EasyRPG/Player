@@ -865,7 +865,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionEsca
 
 void Scene_Battle_Rpg2k::SetBattleActionState(BattleActionState state) {
 	battle_action_state = state;
-	battle_action_substate = 0;
+	SetBattleActionSubState(0);
 }
 
 void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate, bool reset_index) {
@@ -900,6 +900,8 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleAction(G
 			return ProcessBattleActionUsage(action);
 		case BattleActionState_Animation:
 			return ProcessBattleActionAnimation(action);
+		case BattleActionState_AnimationReflect:
+			return ProcessBattleActionAnimationReflect(action);
 		case BattleActionState_Execute:
 			return ProcessBattleActionExecute(action);
 		case BattleActionState_Critical:
@@ -1055,6 +1057,14 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionUs
 }
 
 Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
+	return ProcessBattleActionAnimationImpl(action, false);
+}
+
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action) {
+	return ProcessBattleActionAnimationImpl(action, true);
+}
+
+Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAnimationImpl(Game_BattleAlgorithm::AlgorithmBase* action, bool reflect) {
 	int frames = 0;
 	while(1) {
 		const int cur_anim = action->GetAnimationId(battle_action_substate_index);
@@ -1080,8 +1090,19 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAn
 		}
 	}
 
-	// Wait for last start message and last animation.
-	SetWaitForUsage(action->GetType(), frames);
+	if (!reflect) {
+		// Wait for last start message and last animation.
+		SetWaitForUsage(action->GetType(), frames);
+
+		// EasyRPG extension: Support 2k3 reflect feature in 2k battle system.
+		if (action->ReflectTargets()) {
+			SetBattleActionState(BattleActionState_AnimationReflect);
+			return BattleActionReturn::eContinue;
+		}
+	} else {
+		// Wait for reflected animation - no message.
+		SetWait(frames, frames);
+	}
 
 	SetBattleActionState(BattleActionState_Execute);
 	return BattleActionReturn::eContinue;
