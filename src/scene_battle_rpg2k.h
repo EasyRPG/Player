@@ -60,14 +60,9 @@ public:
 		BattleActionState_Begin,
 		/**
 		 * Called once
-		 * Handles first start message
+		 * Handles the start messages
 		 */
-		BattleActionState_Usage1,
-		/**
-		 * Called once
-		 * Handles second start message
-		 */
-		BattleActionState_Usage2,
+		BattleActionState_Usage,
 		/**
 		 * Called once
 		 * Handles the animations
@@ -221,8 +216,7 @@ protected:
 
 	// BattleAction State Machine Handlers
 	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
-	BattleActionReturn ProcessBattleActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
-	BattleActionReturn ProcessBattleActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionUsage(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);

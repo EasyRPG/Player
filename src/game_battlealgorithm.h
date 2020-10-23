@@ -289,13 +289,6 @@ public:
 	virtual std::string GetStartMessage(int line) const;
 
 	/**
-	 * Checks if there is a first line message to display when the action is invoked.
-	 *
-	 * @return check
-	 */
-	bool HasStartMessage(int line) const;
-
-	/**
 	 * Gets animation state id of the source character.
 	 *
 	 * @return animation state
@@ -557,10 +550,6 @@ public:
 
 inline Type AlgorithmBase::GetType() const {
 	return type;
-}
-
-inline bool AlgorithmBase::HasStartMessage(int line) const {
-	return !GetStartMessage(line).empty();
 }
 
 inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
