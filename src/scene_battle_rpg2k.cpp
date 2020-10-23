@@ -888,8 +888,9 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleAction(G
 	static int last_substate_index = -1;
 	if (battle_action_state != last_state || battle_action_substate != last_substate || battle_action_substate_index != last_substate_index) {
 		Output::Debug("Battle2k ProcessBattleAction({}, {},{},{}) frames={}", action->GetSource()->GetName(), battle_action_state, battle_action_substate, battle_action_substate_index, Main_Data::game_system->GetFrameCounter());
-		last_state = state;
-		last_substate = scene_action_substate;
+		last_state = battle_action_state;
+		last_substate = battle_action_substate;
+		last_substate_index = battle_action_substate_index;
 	}
 #endif
 
