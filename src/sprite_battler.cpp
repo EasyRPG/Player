@@ -142,7 +142,7 @@ void Sprite_Battler::Update() {
 				return;
 			}
 
-			const lcf::rpg::BattlerAnimationExtension* ext = lcf::ReaderUtil::GetElement(anim->base_data, anim_state);
+			const auto* ext = lcf::ReaderUtil::GetElement(anim->poses, anim_state);
 			if (!ext) {
 				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
@@ -217,7 +217,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				return;
 			}
 
-			const lcf::rpg::BattlerAnimationExtension* ext = lcf::ReaderUtil::GetElement(anim->base_data, anim_state);
+			const auto* ext = lcf::ReaderUtil::GetElement(anim->poses, anim_state);
 			if (!ext) {
 				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
 				return;
@@ -225,11 +225,11 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			StringView sprite_file = ext->battler_name;
 
-			if (ext->animation_type == lcf::rpg::BattlerAnimationExtension::AnimType_animation) {
+			if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
 				SetBitmap(BitmapRef());
-				lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->animation_id);
+				lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->battle_animation_id);
 				if (!battle_anim) {
-					Output::Warning("Invalid battle animation ID {}", ext->animation_id);
+					Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
 					animation.reset();
 				} else {
 					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
