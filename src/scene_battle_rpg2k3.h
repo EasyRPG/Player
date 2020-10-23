@@ -29,45 +29,20 @@
  */
 class Scene_Battle_Rpg2k3 : public Scene_Battle {
 public:
+	/** The return value from a battle action state machine callback */
+	enum class BattleActionReturn {
+		/** The battle action is not yet finished */
+		eContinue,
+		/** The battle action is finished */
+		eFinished,
+	};
+
 	enum BattleActionState {
-		/**
-		 * 1st action, called repeatedly.
-		 * Handles healing of conditions that get auto removed after X turns.
-		 */
-		BattleActionState_ConditionHeal,
-		/**
-		 * 2nd action, called once.
-		 * Used to execute the algorithm and print the first start line.
-		 */
-		BattleActionState_Execute,
-		/**
-		 * 3rd action, called once.
-		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
-		 */
+		BattleActionState_Begin,
+		BattleActionState_StartAlgo,
+		BattleActionState_Animation,
+		BattleActionState_AnimationReflect,
 		BattleActionState_Apply,
-		/**
-		 * Used to process reflected battle animation.
-		 */
-		BattleActionState_Reflect,
-		/**
-		* 4th action, called repeatedly.
-		* Used for the results, concretely wait a few frames and pop the messages.
-		*/
-		BattleActionState_ResultPop,
-		/**
-		 * 5th action, called repeatedly.
-		 * Used to push the message results, effects and advances the messages. If it finishes, it calls Death. If not, it calls ResultPop
-		 */
-		BattleActionState_ResultPush,
-		/**
-		 * 6th action, called once.
-		 * Action treating whether the enemy died or not.
-		 */
-		BattleActionState_Death,
-		/**
-		 * 7th action, called once.
-		 * It finishes the action and checks whether to repeat it if there is another target to hit.
-		 */
 		BattleActionState_Finished
 	};
 
@@ -108,7 +83,6 @@ protected:
 	bool CheckResultConditions();
 
 	void ProcessActions() override;
-	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void FaceTarget(Game_Actor& source, const Game_Battler& target);
 	void ProcessInput() override;
 
@@ -136,6 +110,19 @@ protected:
 	void SetWait(int min_wait, int max_wait);
 	bool CheckWait();
 
+	void SetBattleActionState(BattleActionState state);
+
+	/** Battle Action Driver */
+	BattleActionReturn ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
+
+	/** Battle Action State Machine callbacks */
+	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 
 	struct FloatText {
@@ -146,8 +133,7 @@ protected:
 	std::vector<FloatText> floating_texts;
 	int battle_action_wait = 0;
 	int battle_action_min_wait = 0;
-	int battle_action_state = BattleActionState_Execute;
-	bool battle_action_need_event_refresh = true;
+	int battle_action_state = BattleActionState_Begin;
 	int combo_repeat = 1;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;

@@ -803,24 +803,17 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			PrepareBattleAction(battler);
 			auto action = battler->GetBattleAlgorithm();
 
-			if (action->GetSource()->GetType() == Game_Battler::Type_Enemy && combo_repeat == 1) {
-				std::string notification = action->GetStartMessage(0);
 
-				ShowNotification(notification);
-				if (!notification.empty()) {
-					if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
-						SetWait(15, 50);
-					} else {
-						SetWait(10, 40);
-					}
-				}
-			}
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+			Output::Debug("Battle2k3 StartBattleAction battler={} frame={}", battler->GetName(), Main_Data::game_system->GetFrameCounter());
+#endif
 
 			pending_battle_action = std::move(action);
+			SetBattleActionState(BattleActionState_Begin);
 			return;
 		}
 		auto* alg = pending_battle_action.get();
-		if (ProcessBattleAction(alg)) {
+		if (ProcessBattleAction(alg) == BattleActionReturn::eFinished) {
 			pending_battle_action = {};
 			RemoveCurrentAction();
 			if (CheckResultConditions()) {
@@ -912,28 +905,187 @@ static int AdjustPoseForDirection(const Game_Battler* battler, int pose) {
 	return pose;
 }
 
-bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+void Scene_Battle_Rpg2k3::SetBattleActionState(BattleActionState state) {
+	battle_action_state = state;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (action == nullptr) {
-		return true;
+		return BattleActionReturn::eFinished;
 	}
 
 	// Immediately quit for dead actors no move. Prevents any animations or delays.
 	if (action->GetType() == Game_BattleAlgorithm::Type::None && action->GetSource()->IsDead()) {
-		return true;
+		return BattleActionReturn::eFinished;
 	}
 
 	if (Game_Battle::IsBattleAnimationWaiting()) {
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
 	Sprite_Battler* source_sprite;
 	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 
 	if (source_sprite && !source_sprite->IsIdling()) {
-		return false;
+		return BattleActionReturn::eContinue;
 	}
 
-	bool is_target_party = false;
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+	static int last_state = -1;
+	if (battle_action_state != last_state) {
+		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) frames={}", action->GetSource()->GetName(), battle_action_state, Main_Data::game_system->GetFrameCounter());
+		last_state = battle_action_state;
+	}
+#endif
+
+	switch (battle_action_state) {
+		case BattleActionState_Begin:
+			return ProcessBattleActionBegin(action);
+		case BattleActionState_StartAlgo:
+			return ProcessBattleActionStartAlgo(action);
+		case BattleActionState_Animation:
+			return ProcessBattleActionAnimation(action);
+		case BattleActionState_AnimationReflect:
+			return ProcessBattleActionAnimationReflect(action);
+		case BattleActionState_Apply:
+			return ProcessBattleActionApply(action);
+		case BattleActionState_Finished:
+			return ProcessBattleActionFinished(action);
+	}
+
+	assert(false && "Invalid BattleActionState!");
+
+	return BattleActionReturn::eFinished;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
+	action->GetSource()->NextBattleTurn();
+
+	// The internal state turn counter increments for all every turn
+	std::vector<Game_Battler*> battler;
+	Main_Data::game_party->GetActiveBattlers(battler);
+	Main_Data::game_enemyparty->GetActiveBattlers(battler);
+
+	for (auto& b : battler) {
+		b->BattleStateHeal();
+	}
+
+	NextTurn(action->GetSource());
+
+	// Next turn events must run before the battle animation is played
+	Game_Battle::RefreshEvents([](const lcf::rpg::TroopPage& page) {
+			const lcf::rpg::TroopPageCondition::Flags& flag = page.condition.flags;
+			return flag.turn || flag.turn_actor || flag.turn_enemy ||
+			flag.command_actor;
+			});
+
+	if (combo_repeat == 1) {
+		std::string notification = action->GetStartMessage(0);
+
+		ShowNotification(notification);
+		if (!notification.empty()) {
+			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+				SetWait(15, 50);
+			} else {
+				SetWait(10, 40);
+			}
+		}
+	}
+
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_party->GetActiveBattlers(battlers);
+	Main_Data::game_enemyparty->GetActiveBattlers(battlers);
+
+	if (combo_repeat == 1) {
+		for (auto &b : battlers) {
+			int damageTaken = b->ApplyConditions();
+			if (damageTaken != 0) {
+				DrawFloatText(
+						b->GetBattlePosition().x,
+						b->GetBattlePosition().y,
+						damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
+						std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
+			}
+		}
+	}
+
+	SetBattleActionState(BattleActionState_StartAlgo);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action) {
+	const auto is_target_party = action->IsTargetingParty();
+	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+
+	action->Start();
+
+	// FIXME: This needs to be attached to the monster target window.
+	// Counterexample is weapon with attack all, engine still makes you target a specific enemy,
+	// even though your weapon will hit all enemies.
+	if (action->GetSource()->GetType() == Game_Battler::Type_Ally
+			&& !is_target_party
+			&& action->GetTarget()
+			&& action->GetTarget()->GetType() == Game_Battler::Type_Enemy)
+	{
+		auto* actor = static_cast<Game_Actor*>(action->GetSource());
+		FaceTarget(*actor, *action->GetTarget());
+	}
+
+	//Output::Debug("Action: {}", action->GetSource()->GetName());
+
+	if (source_sprite) {
+		SelectionFlash(action->GetSource());
+		const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
+		// FIXME: This gets cleaned up when CBA is implemented
+		auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);
+		source_sprite->SetAnimationState(
+				action_state,
+				Sprite_Battler::LoopState_WaitAfterFinish);
+	}
+
+	SetBattleActionState(BattleActionState_Animation);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
+	const auto anim_id = action->GetAnimationId(0);
+	if (anim_id) {
+		action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetSource()));
+	}
+	if (action->GetStartSe()) {
+		Main_Data::game_system->SePlay(*action->GetStartSe());
+	}
+
+	if (action->ReflectTargets()) {
+		SetBattleActionState(BattleActionState_AnimationReflect);
+	} else {
+		SetBattleActionState(BattleActionState_Apply);
+	}
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action) {
+	const auto anim_id = action->GetAnimationId(0);
+	if (anim_id) {
+		assert(action->GetReflectTarget());
+		action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetReflectTarget()));
+	}
+	SetBattleActionState(BattleActionState_Apply);
+	return BattleActionReturn::eContinue;
+}
+
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
+	if (!action->IsCurrentTargetValid()) {
+		SetBattleActionState(BattleActionState_Finished);
+		return BattleActionReturn::eContinue;
+	}
+
+	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+	if (source_sprite) {
+		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+	}
+
 	std::vector<const lcf::rpg::Sound*> sfx;
 	auto queueSe = [&](auto* se) {
 		if (se != nullptr) {
@@ -944,264 +1096,115 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 	};
 
-	switch (battle_action_state) {
-	case BattleActionState_Execute:
-		if (battle_action_need_event_refresh) {
-			action->GetSource()->NextBattleTurn();
+	do {
+		auto* target = action->GetTarget();
+		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 
-			// The internal state turn counter increments for all every turn
-			std::vector<Game_Battler*> battler;
-			Main_Data::game_party->GetActiveBattlers(battler);
-			Main_Data::game_enemyparty->GetActiveBattlers(battler);
+		const bool was_dead = target->IsDead();
 
-			for (auto& b : battler) {
-				b->BattleStateHeal();
-			}
+		action->Execute();
+		action->ApplyAll();
 
-			NextTurn(action->GetSource());
-			battle_action_need_event_refresh = false;
-
-			// Next turn events must run before the battle animation is played
-			Game_Battle::RefreshEvents([](const lcf::rpg::TroopPage& page) {
-				const lcf::rpg::TroopPageCondition::Flags& flag = page.condition.flags;
-				return flag.turn || flag.turn_actor || flag.turn_enemy ||
-					   flag.command_actor;
-			});
-
-			return false;
-		}
-
-		// FIXME: This bool should be locally scoped here, but that requires refactoring this switch statement.
-		is_target_party = action->IsTargetingParty();
-
-		action->Start();
-
-		if (action->GetSource()->GetType() == Game_Battler::Type_Ally && combo_repeat == 1) {
-			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
-				ShowNotification(action->GetStartMessage(0));
-				SetWait(15, 50);
-			} else if (action->GetType() == Game_BattleAlgorithm::Type::Item) {
-				ShowNotification(action->GetStartMessage(0));
-				SetWait(10, 40);
+		if (action->IsSuccess() && action->GetAffectedHp() < 0) {
+			if (target->GetType() == Game_Battler::Type_Enemy) {
+				auto* enemy = static_cast<Game_Enemy*>(target);
+				enemy->SetBlinkTimer();
+				if (!was_dead && enemy->IsDead()) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
+					enemy->SetDeathTimer();
+				}
+			} else {
+				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 		}
+		target_sprite->DetectStateChange();
 
-		// No more targets left? Abort
-		if (!action->IsCurrentTargetValid()) {
-			return true;
-		}
 
-		// FIXME: This needs to be attached to the monster target window.
-		// Counterexample is weapon with attack all, engine still makes you target a specific enemy,
-		// even though your weapon will hit all enemies.
-		if (action->GetSource()->GetType() == Game_Battler::Type_Ally
-				&& !is_target_party
-				&& action->GetTarget()
-				&& action->GetTarget()->GetType() == Game_Battler::Type_Enemy)
-		{
-			auto* actor = static_cast<Game_Actor*>(action->GetSource());
-			FaceTarget(*actor, *action->GetTarget());
-		}
-
-		//Output::Debug("Action: {}", action->GetSource()->GetName());
-
-		if (source_sprite) {
-			SelectionFlash(action->GetSource());
-			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
-			// FIXME: This gets cleaned up when CBA is implemented
-			auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);
-			source_sprite->SetAnimationState(
-				action_state,
-				Sprite_Battler::LoopState_WaitAfterFinish);
-		}
-
-		{
-			const auto anim_id = action->GetAnimationId(0);
-			if (anim_id) {
-				action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetSource()));
-			}
-		}
-
-		{
-			std::vector<Game_Battler*> battlers;
-			Main_Data::game_party->GetActiveBattlers(battlers);
-			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
-
-			if (combo_repeat == 1) {
-				for (auto &b : battlers) {
-					int damageTaken = b->ApplyConditions();
-					if (damageTaken != 0) {
+		if (target) {
+			if (action->IsSuccess()) {
+				if (action->IsCriticalHit()) {
+					Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
+				}
+				if (action->IsAffectHp()) {
+					const auto hp = action->GetAffectedHp();
+					if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
 						DrawFloatText(
-								b->GetBattlePosition().x,
-								b->GetBattlePosition().y,
-								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-								std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
+								target->GetBattlePosition().x,
+								target->GetBattlePosition().y,
+								hp > 0 ? Font::ColorHeal : Font::ColorDefault,
+								std::to_string(std::abs(hp)));
 					}
-				}
-			}
 
-			if (action->GetStartSe()) {
-				Main_Data::game_system->SePlay(*action->GetStartSe());
-			}
-		}
-
-		if (action->ReflectTargets()) {
-			battle_action_state = BattleActionState_Reflect;
-		} else {
-			battle_action_state = BattleActionState_ResultPush;
-		}
-
-		// If was reflected, but the original user isn't a valid target???
-		// FIXME: Can this ever happen?
-		if (!action->IsCurrentTargetValid()) {
-			// Nothing left to target, abort
-			return true;
-		}
-
-		break;
-	case BattleActionState_Reflect:
-
-		{
-			const auto anim_id = action->GetAnimationId(0);
-			if (anim_id) {
-				assert(action->GetReflectTarget());
-				action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetReflectTarget()));
-			}
-		}
-
-		battle_action_state = BattleActionState_ResultPush;
-		break;
-	case BattleActionState_ResultPush:
-		if (source_sprite) {
-			source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-		}
-
-		sfx.clear();
-
-		do {
-			auto* target = action->GetTarget();
-			auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-
-			const bool was_dead = target->IsDead();
-
-			action->Execute();
-			action->ApplyAll();
-
-			if (action->IsSuccess() && action->GetAffectedHp() < 0) {
-				if (target->GetType() == Game_Battler::Type_Enemy) {
-					auto* enemy = static_cast<Game_Enemy*>(target);
-					enemy->SetBlinkTimer();
-					if (!was_dead && enemy->IsDead()) {
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-						enemy->SetDeathTimer();
-					}
-				} else {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-				}
-			}
-			target_sprite->DetectStateChange();
-
-
-			if (target) {
-				if (action->IsSuccess()) {
-					if (action->IsCriticalHit()) {
-						Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
-					}
-					if (action->IsAffectHp()) {
-						const auto hp = action->GetAffectedHp();
-						if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
-							DrawFloatText(
-									target->GetBattlePosition().x,
-									target->GetBattlePosition().y,
-									hp > 0 ? Font::ColorHeal : Font::ColorDefault,
-									std::to_string(std::abs(hp)));
-						}
-
-						if (!action->IsPositive() && !action->IsAbsorb()) {
-							if (target->GetType() == Game_Battler::Type_Ally) {
-								queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
-							} else {
-								queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
-							}
+					if (!action->IsPositive() && !action->IsAbsorb()) {
+						if (target->GetType() == Game_Battler::Type_Ally) {
+							queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
+						} else {
+							queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
 						}
 					}
-				} else {
-					queueSe(action->GetFailureSe());
-					DrawFloatText(
+				}
+			} else {
+				queueSe(action->GetFailureSe());
+				DrawFloatText(
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
 						0,
 						lcf::Data::terms.miss);
-				}
-
-				targets.push_back(target);
 			}
 
-			status_window->Refresh();
-		} while (action->TargetNext());
-
-		for (auto* se: sfx) {
-			Main_Data::game_system->SePlay(*se);
+			targets.push_back(target);
 		}
 
-		battle_action_wait = 30;
+		status_window->Refresh();
+	} while (action->TargetNext());
 
-		if (action->RepeatNext(false)) {
-			battle_action_state = BattleActionState_Execute;
-		} else {
-			battle_action_state = BattleActionState_Finished;
-		}
-
-		break;
-	case BattleActionState_Finished:
-		if (battle_action_need_event_refresh) {
-			battle_action_wait = 30;
-			battle_action_need_event_refresh = true;
-
-			// Reset variables
-			battle_action_state = BattleActionState_Execute;
-			targets.clear();
-			combo_repeat = 1;
-
-			action->ProcessPostActionSwitches();
-
-			return true;
-		}
-
-		if (battle_action_wait--) {
-			return false;
-		}
-
-		// Check if a combo is enabled and redo the whole action in that case
-		int combo_command_id;
-		int combo_times;
-
-		action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
-		if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
-			combo_times > combo_repeat) {
-			// TODO: Prevent combo when the combo is a skill and needs more SP
-			// then available
-
-			battle_action_state = BattleActionState_Execute;
-			// Count how often we have to repeat
-			++combo_repeat;
-			return false;
-		}
-
-		// Must loop another time otherwise the event update happens during
-		// SelectActor which updates the gauge
-		battle_action_need_event_refresh = true;
-
-		Game_Battle::RefreshEvents([](const lcf::rpg::TroopPage& page) {
-			const lcf::rpg::TroopPageCondition::Flags& flag = page.condition.flags;
-			return flag.switch_a || flag.switch_b || flag.variable ||
-				   flag.fatigue || flag.actor_hp || flag.enemy_hp;
-		});
-
-		return false;
+	for (auto* se: sfx) {
+		Main_Data::game_system->SePlay(*se);
 	}
 
-	return false;
+	SetWait(30, 30);
+
+	// If action does multiple attacks, repeat again.
+	if (action->RepeatNext(false)) {
+		SetBattleActionState(BattleActionState_StartAlgo);
+		return BattleActionReturn::eContinue;
+	}
+
+	// Check if a combo is enabled and redo the whole action in that case
+	int combo_command_id;
+	int combo_times;
+
+	action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
+	if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
+			combo_times > combo_repeat) {
+		// TODO: Prevent combo when the combo is a skill and needs more SP
+		// then available
+
+		// Count how often we have to repeat
+		++combo_repeat;
+		SetBattleActionState(BattleActionState_StartAlgo);
+		return BattleActionReturn::eContinue;
+	}
+
+	SetBattleActionState(BattleActionState_Finished);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
+	Game_Battle::RefreshEvents([](const lcf::rpg::TroopPage& page) {
+			const lcf::rpg::TroopPageCondition::Flags& flag = page.condition.flags;
+			return flag.switch_a || flag.switch_b || flag.variable ||
+			flag.fatigue || flag.actor_hp || flag.enemy_hp;
+			});
+
+	SetWait(30, 30);
+
+	targets.clear();
+	combo_repeat = 1;
+
+	action->ProcessPostActionSwitches();
+
+	return BattleActionReturn::eFinished;
 }
 
 void Scene_Battle_Rpg2k3::ProcessInput() {
