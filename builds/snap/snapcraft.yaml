@@ -42,7 +42,6 @@ parts:
       - --prefix=/usr
     override-build: |
       git fetch
-      git checkout 0.6.2
       snapcraftctl build
     build-packages:
       - libexpat1-dev
