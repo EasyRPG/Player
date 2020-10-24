@@ -1034,7 +1034,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	//Output::Debug("Action: {}", action->GetSource()->GetName());
 
 	if (source_sprite) {
-		SelectionFlash(action->GetSource());
+		ActionFlash(action->GetSource());
 		const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
 		// FIXME: This gets cleaned up when CBA is implemented
 		auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);

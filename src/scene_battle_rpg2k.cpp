@@ -977,7 +977,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionBe
 		}
 
 		if (action->GetType() != Game_BattleAlgorithm::Type::None || show_message) {
-			SelectionFlash(action->GetSource());
+			ActionFlash(action->GetSource());
 		}
 
 		if (show_message) {
