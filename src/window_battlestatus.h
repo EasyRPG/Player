@@ -68,6 +68,8 @@ public:
 	 */
 	void SetChoiceMode(ChoiceMode new_mode);
 
+	void RefreshActiveFromValid();
+
 protected:
 	/**
 	 * Updates the cursor rectangle.
