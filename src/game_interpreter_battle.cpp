@@ -143,7 +143,7 @@ void Game_Interpreter_Battle::ResetPagesExecuted(const Game_Battler* battler) {
 }
 
 
-int Game_Interpreter_Battle::ScheduleNextPage() {
+int Game_Interpreter_Battle::ScheduleNextPage(const Game_Battler* battler) {
 	if (IsRunning()) {
 		return 0;
 	}

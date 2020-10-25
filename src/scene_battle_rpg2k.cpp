@@ -181,7 +181,7 @@ bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {
 
 	auto& interp = Game_Battle::GetInterpreterBattle();
 
-	int page = interp.ScheduleNextPage();
+	int page = interp.ScheduleNextPage(nullptr);
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
 	if (page) {
 		Output::Debug("Battle2k ScheduleNextEventPage Scheduled Page {} frame={}", page, Main_Data::game_system->GetFrameCounter());
