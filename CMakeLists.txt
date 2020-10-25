@@ -855,7 +855,8 @@ endif()
 # Handled as extra target "man"
 set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
-if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
+set(MANUAL_STATUS "Unavailable")
+if(A2X_EXECUTABLE)
 	add_custom_command(OUTPUT resources/${MAN_NAME}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMAND ${A2X_EXECUTABLE} -a player_version="${PROJECT_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
@@ -863,22 +864,38 @@ if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
 	if(UNIX)
-		add_custom_target(man ALL DEPENDS resources/${MAN_NAME})
+		add_custom_target(player_man ALL DEPENDS resources/${MAN_NAME})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/${MAN_NAME} DESTINATION ${CMAKE_INSTALL_MANDIR}/man6)
 	else()
-		add_custom_target(man DEPENDS resources/${MAN_NAME})
+		add_custom_target(player_man DEPENDS resources/${MAN_NAME})
 	endif()
+	if(NOT TARGET man)
+		add_custom_target(man)
+	endif()
+	add_dependencies(man player_man)
+	set(MANUAL_STATUS "Generated")
 else()
 	# no a2x, distribution archive?
 	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME})
 		install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
+		set(MANUAL_STATUS "Bundled")
 	endif()
+endif()
+
+# bash completion
+set(BASHCOMPLETION_STATUS "Unavailable")
+find_package(bash-completion QUIET)
+if(BASH_COMPLETION_FOUND OR (UNIX AND NOT APPLE))
+	set(BASHCOMPLETION_STATUS "Available")
+	install(FILES resources/unix/bash-completion/easyrpg-player DESTINATION "${CMAKE_INSTALL_DATADIR}/bash-completion/completions")
 endif()
 
 # Doxygen
 # Handled as extra target "doc"
 find_package(Doxygen)
+set(DOXYGEN_STATUS "Unavailable")
 if(DOXYGEN_FOUND)
+	set(DOXYGEN_STATUS "Available (target \"doc\")")
 	# fake autotools variables
 	set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
 	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -1054,5 +1071,11 @@ elseif(Freetype_FOUND)
 else()
 	message(STATUS "Font rendering: built-in")
 endif()
+
+message(STATUS "")
+
+message(STATUS "Manual page: ${MANUAL_STATUS}")
+message(STATUS "Bash completion: ${BASHCOMPLETION_STATUS}")
+message(STATUS "Doxygen: ${DOXYGEN_STATUS}")
 
 message(STATUS "")
