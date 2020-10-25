@@ -80,6 +80,10 @@ void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition 
 	}
 
 	Game_Battle::SetBattleCondition(condition);
+
+	if (condition == lcf::rpg::System::BattleCondition_back || condition == lcf::rpg::System::BattleCondition_pincers) {
+		first_strike = false;
+	}
 }
 
 void Scene_Battle_Rpg2k3::InitEnemies() {
