@@ -155,9 +155,6 @@ protected:
 	void MoveCommandWindows(int x, int frames);
 	void RefreshCommandWindow();
 
-	void ProcessActions() override {}
-	void ProcessInput() override {}
-
 	/**
 	 * Adds a message about the gold received into
 	 * Game_Message::texts.

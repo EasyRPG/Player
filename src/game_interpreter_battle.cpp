@@ -36,7 +36,7 @@ enum BranchBattleSubcommand {
 };
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages)
-	: Game_Interpreter(true), pages(pages), pages_state(pages.size() * 2, false)
+	: Game_Interpreter(true), pages(pages), executed(pages.size(), false)
 {
 }
 
@@ -107,41 +107,6 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 	return true;
 }
 
-void Game_Interpreter_Battle::ResetPagesExecuted(const Game_Battler* battler) {
-	if (battler == nullptr) {
-		for (int i = 0; i < GetNumPages(); ++i) {
-			SetHasPageExecuted(i + 1, false);
-		}
-	} else {
-		for (const auto& page : pages) {
-			const auto& condition = page.condition;
-
-			// Reset pages without actor/enemy condition each turn
-			if (!condition.flags.turn_actor &&
-				!condition.flags.turn_enemy &&
-				!condition.flags.command_actor) {
-				SetHasPageExecuted(page.ID, false);
-			}
-
-			// Reset pages of specific actor after that actors turn
-			if (HasPageExecuted(page.ID)) {
-				if (battler->GetType() == Game_Battler::Type_Ally &&
-						((condition.flags.turn_actor && Main_Data::game_actors->GetActor(condition.turn_actor_id) == battler) ||
-						(condition.flags.command_actor && Main_Data::game_actors->GetActor(condition.command_actor_id) == battler))) {
-					SetHasPageExecuted(page.ID, false);
-				}
-			}
-
-			// Reset pages of specific enemy after that enemies turn
-			if (battler->GetType() == Game_Battler::Type_Enemy &&
-				condition.flags.turn_enemy &&
-				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
-				SetHasPageExecuted(page.ID, false);
-			}
-		}
-	}
-}
-
 int Game_Interpreter_Battle::ScheduleNextPage() {
 	lcf::rpg::TroopPageCondition::Flags f;
 	for (auto& ff: f.flags) ff = true;
@@ -163,17 +128,17 @@ int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flag
 		return 0;
 	}
 
-	for (const auto& page : pages) {
-		if (HasPageExecuted(page.ID)
+	for (size_t i = 0; i < pages.size(); ++i) {
+		auto& page = pages[i];
+		if (executed[i]
 				|| !HasRequiredCondition(page.condition.flags, required_conditions)
 				|| !AreConditionsMet(page.condition)) {
 			continue;
 		}
 		Clear();
 		Push(page.event_commands, 0);
-		SetCanPageRun(page.ID, false);
-		SetHasPageExecuted(page.ID, true);
-		return page.ID;
+		executed[i] = true;
+		return i + 1;
 	}
 	return 0;
 }

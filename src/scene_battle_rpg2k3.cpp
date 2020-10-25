@@ -752,7 +752,7 @@ void Scene_Battle_Rpg2k3::Update() {
 void Scene_Battle_Rpg2k3::NextTurn(Game_Battler* battler) {
 	Main_Data::game_party->IncTurns();
 	battler->NextBattleTurn();
-	Game_Battle::GetInterpreterBattle().ResetAllPagesExecuted();
+	Game_Battle::GetInterpreterBattle().ResetPagesExecuted();
 }
 
 bool Scene_Battle_Rpg2k3::CheckBattleEndConditions() {

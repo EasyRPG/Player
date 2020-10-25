@@ -40,22 +40,16 @@ class Game_Interpreter_Battle : public Game_Interpreter
 public:
 	explicit Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages);
 
-	bool IsValidPage(int page_id) const;
-
-	bool HasPageExecuted(int page_id) const;
-	void SetHasPageExecuted(int page_id, bool value);
-
-	bool CanPageRun(int page_id) const;
-	void SetCanPageRun(int page_id, bool value);
-
-	void ResetAllPagesExecuted();
 	int GetNumPages() const;
 
+	bool IsValidPage(int page_id) const;
+	bool HasPageExecuted(int page_id) const;
+
 	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
-	void ResetPagesExecuted(const Game_Battler* battler);
 
 	int ScheduleNextPage();
 	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions);
+	void ResetPagesExecuted();
 
 	bool ExecuteCommand() override;
 private:
@@ -74,11 +68,11 @@ private:
 	bool CommandEndBranchBattle(lcf::rpg::EventCommand const& com);
 private:
 	Span<const lcf::rpg::TroopPage> pages;
-	std::vector<bool> pages_state;
+	std::vector<bool> executed;
 };
 
 inline int Game_Interpreter_Battle::GetNumPages() const {
-	return static_cast<int>(pages_state.size() / 2);
+	return static_cast<int>(pages.size());
 }
 
 inline bool Game_Interpreter_Battle::IsValidPage(int page_id) const {
@@ -87,28 +81,11 @@ inline bool Game_Interpreter_Battle::IsValidPage(int page_id) const {
 
 inline bool Game_Interpreter_Battle::HasPageExecuted(int page_id) const {
 	assert(IsValidPage(page_id));
-	return pages_state[(page_id - 1) * 2];
+	return executed[page_id - 1];
 }
 
-inline void Game_Interpreter_Battle::SetHasPageExecuted(int page_id, bool value) {
-	assert(IsValidPage(page_id));
-	pages_state[(page_id - 1) * 2] = value;
-}
-
-inline bool Game_Interpreter_Battle::CanPageRun(int page_id) const {
-	assert(IsValidPage(page_id));
-	return pages_state[(page_id - 1) * 2 + 1];
-}
-
-inline void Game_Interpreter_Battle::SetCanPageRun(int page_id, bool value) {
-	assert(IsValidPage(page_id));
-	pages_state[(page_id - 1) * 2 + 1] = value;
-}
-
-inline void Game_Interpreter_Battle::ResetAllPagesExecuted() {
-	for (int i = 0; i < GetNumPages(); ++i) {
-		SetHasPageExecuted(i + 1, false);
-	}
+inline void Game_Interpreter_Battle::ResetPagesExecuted() {
+	std::fill(executed.begin(), executed.end(), false);
 }
 
 #endif

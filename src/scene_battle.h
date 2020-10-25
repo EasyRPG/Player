@@ -77,7 +77,6 @@ public:
 	~Scene_Battle() override;
 
 	void Start() override;
-	void Update() override;
 
 	void UpdateScreen();
 	void UpdateBattlers();
@@ -127,10 +126,6 @@ protected:
 	explicit Scene_Battle(const BattleArgs& args);
 
 	virtual void CreateUi();
-
-	virtual void ProcessActions() = 0;
-	virtual void ProcessInput() = 0;
-	virtual void UpdateCursors() {}
 
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 

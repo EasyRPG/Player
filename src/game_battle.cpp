@@ -59,8 +59,6 @@ namespace {
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
 	int target_enemy_index;
-
-	std::function<bool(const lcf::rpg::TroopPage&)> last_event_filter;
 }
 
 void Game_Battle::Init(int troop_id) {
@@ -77,10 +75,6 @@ void Game_Battle::Init(int troop_id) {
 	spriteset->Update();
 	animation_actors.reset();
 	animation_enemies.reset();
-
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return false;
-	});
 
 	Main_Data::game_actors->ResetBattle();
 
@@ -199,12 +193,6 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation_actors) || bool(animation_enemies);
 }
 
-void Game_Battle::NextTurn(Game_Battler* battler) {
-	interpreter->ResetPagesExecuted(battler);
-
-	Main_Data::game_party->IncTurns();
-}
-
 void Game_Battle::UpdateAtbGauges() {
 	std::vector<Game_Battler*> battlers;
 	Main_Data::game_enemyparty->GetBattlers(battlers);
@@ -259,66 +247,6 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	else {
 		return turns >= base && (turns - base) % multiple == 0;
 	}
-}
-
-bool Game_Battle::UpdateEvents() {
-	const auto battle_end = Game_Battle::CheckWin() || Game_Battle::CheckLose();
-
-	// 2k3 battle interupts events immediately when battle end conditions occur.
-	if (Player::IsRPG2k3() && battle_end) {
-		return true;
-	}
-
-	if (interpreter->IsRunning()) {
-		return false;
-	}
-
-	// 2k battle end conditions wait for interpreter to finish.
-	if (Player::IsRPG2k() && battle_end) {
-		return true;
-	}
-
-	// Check if another page can run now or if a page that could run can no longer run.
-	RefreshEvents(last_event_filter);
-
-	for (const auto& page : troop->pages) {
-		if (interpreter->CanPageRun(page.ID)) {
-			interpreter->Clear();
-			interpreter->Push(page.event_commands, 0);
-			interpreter->SetCanPageRun(page.ID, false);
-			interpreter->SetHasPageExecuted(page.ID, true);
-			return false;
-		}
-	}
-
-	// No event can run anymore, cancel the interpreter calling until
-	// the battle system wants to run events again.
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return false;
-	});
-
-	return true;
-}
-
-void Game_Battle::RefreshEvents() {
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return true;
-	});
-}
-
-void Game_Battle::RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate) {
-	for (const auto& it : troop->pages) {
-		const lcf::rpg::TroopPage& page = it;
-		if (!interpreter->HasPageExecuted(page.ID) && interpreter->AreConditionsMet(page.condition)) {
-			if (predicate(it)) {
-				interpreter->SetCanPageRun(page.ID, true);
-			}
-		} else {
-			interpreter->SetCanPageRun(page.ID, false);
-		}
-	}
-
-	last_event_filter = predicate;
 }
 
 Game_Interpreter& Game_Battle::GetInterpreter() {

@@ -174,7 +174,7 @@ void Scene_Battle_Rpg2k::SetSceneActionSubState(int substate) {
 
 void Scene_Battle_Rpg2k::NextTurn() {
 	Main_Data::game_party->IncTurns();
-	Game_Battle::GetInterpreterBattle().ResetAllPagesExecuted();
+	Game_Battle::GetInterpreterBattle().ResetPagesExecuted();
 }
 
 bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {

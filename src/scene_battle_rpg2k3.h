@@ -85,6 +85,7 @@ protected:
 	void CreateEnemyActions();
 	void CreateActorAutoActions();
 	bool UpdateAtb();
+	void UpdateCursors();
 	bool UpdateBattleState();
 
 	void OnSystem2Ready(FileRequestResult* result);
@@ -95,16 +96,13 @@ protected:
 	void CreateBattleStatusWindow();
 	void CreateBattleCommandWindow();
 
-	void UpdateCursors() override;
 	void DrawFloatText(int x, int y, int color, StringView text);
 
 	void RefreshCommandWindow();
 
 	void SetState(Scene_Battle::State new_state) override;
 
-	void ProcessActions() override {}
 	void FaceTarget(Game_Actor& source, const Game_Battler& target);
-	void ProcessInput() override {}
 
 	void CommandSelected();
 	void AttackSelected() override;
