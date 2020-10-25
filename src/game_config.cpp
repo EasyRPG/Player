@@ -123,6 +123,13 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--enemyai-algo")) {
+			std::string svalue;
+			if (arg.ParseValue(0, svalue)) {
+				player.enemyai_algo.Set(std::move(svalue));
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -143,6 +150,9 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 
 	if (ini.HasValue("player", "autobattle-algo")) {
 		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", "RPG_RT"));
+	}
+	if (ini.HasValue("player", "enemyai-algo")) {
+		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", "RPG_RT"));
 	}
 
 	/** VIDEO SECTION */
@@ -182,6 +192,7 @@ void Game_Config::WriteToConfig(const std::string& path) const {
 	/** PLAYER SECTION */
 	of << "[player]\n";
 	of << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	of << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
 	of << "\n";
 
 	/** VIDEO SECTION */

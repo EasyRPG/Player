@@ -14,13 +14,14 @@ _easyrpg-player ()
 
   # all possible options
   ouropts='--autobattle-algo --battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
-           --encoding --engine --fps-limit --fps-render-window --fullscreen -h --help \
+           --encoding --enemyai-algo --engine --fps-limit --fps-render-window --fullscreen -h --help \
            --hide-title --load-game-id --new-game --no-vsync --project-path --record-input \
            --replay-input --save-path --seed --show-fps --start-map-id --start-party \
            --start-position --test-play --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
   engines='rpg2k rpg2kv150 rpg2ke rpg2k3 rpg2k3v105 rpg2k3e'
   autobattle_algos='RPG_RT RPG_RT+ ATTACK'
+  enemyai_algos='RPG_RT RPG_RT+'
 
   # first list all special cases
   case $prev in
@@ -36,8 +37,13 @@ _easyrpg-player ()
       return
       ;;
     # Select autobattle algorithm
-    --autobattle-algos)
+    --autobattle-algo)
       COMPREPLY=($(compgen -W "$autobattle_algos" -- $cur))
+      return
+      ;;
+    # Select enemyai algorithm
+    --enemyai-algo)
+      COMPREPLY=($(compgen -W "$enemyai_algos" -- $cur))
       return
       ;;
     # load save files

@@ -88,8 +88,8 @@ static int CalcSkillCostAutoBattle(const Game_Actor& source, const lcf::rpg::Ski
 }
 
 double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
-	assert(skill.type == lcf::rpg::Skill::Type_normal || skill.type >= lcf::rpg::Skill::Type_subskill);
-	assert(skill.scope == lcf::rpg::Skill::Scope_self || skill.scope == lcf::rpg::Skill::Scope_ally || skill.scope == lcf::rpg::Skill::Scope_party);
+	assert(Algo::IsNormalOrSubskill(skill));
+	assert(Algo::SkillTargetsAllies(skill));
 
 	const double src_max_sp = source.GetMaxSp();
 	const double tgt_max_hp = target.GetMaxHp();
@@ -124,8 +124,8 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 }
 
 double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
-	assert(skill.type == lcf::rpg::Skill::Type_normal || skill.type >= lcf::rpg::Skill::Type_subskill);
-	assert(skill.scope == lcf::rpg::Skill::Scope_enemy || skill.scope == lcf::rpg::Skill::Scope_enemies);
+	assert(Algo::IsNormalOrSubskill(skill));
+	assert(Algo::SkillTargetsEnemies(skill));
 	(void)emulate_bugs;
 
 	if (!(skill.affect_hp && target.Exists())) {
@@ -164,7 +164,7 @@ double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& 
 	if (!source.IsSkillUsable(skill.ID)) {
 		return 0.0;
 	}
-	if (skill.type != lcf::rpg::Skill::Type_normal && skill.type < lcf::rpg::Skill::Type_subskill) {
+	if (!Algo::IsNormalOrSubskill(skill)) {
 		return 0.0;
 	}
 

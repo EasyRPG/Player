@@ -1009,4 +1009,55 @@ TEST_CASE("SkillCost") {
 	}
 }
 
+TEST_CASE("SkillTargets") {
+	const MockActor m;
+
+	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
+
+	skill->scope = lcf::rpg::Skill::Scope_enemy;
+	REQUIRE(Algo::SkillTargetsEnemies(*skill));
+	REQUIRE_FALSE(Algo::SkillTargetsAllies(*skill));
+
+	skill->scope = lcf::rpg::Skill::Scope_enemies;
+	REQUIRE(Algo::SkillTargetsEnemies(*skill));
+	REQUIRE_FALSE(Algo::SkillTargetsAllies(*skill));
+
+	skill->scope = lcf::rpg::Skill::Scope_self;
+	REQUIRE_FALSE(Algo::SkillTargetsEnemies(*skill));
+	REQUIRE(Algo::SkillTargetsAllies(*skill));
+
+	skill->scope = lcf::rpg::Skill::Scope_ally;
+	REQUIRE_FALSE(Algo::SkillTargetsEnemies(*skill));
+	REQUIRE(Algo::SkillTargetsAllies(*skill));
+
+	skill->scope = lcf::rpg::Skill::Scope_party;
+	REQUIRE_FALSE(Algo::SkillTargetsEnemies(*skill));
+	REQUIRE(Algo::SkillTargetsAllies(*skill));
+}
+
+TEST_CASE("SkillTypes") {
+	const MockActor m;
+
+	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
+
+	skill->type = lcf::rpg::Skill::Type_normal;
+	REQUIRE(Algo::IsNormalOrSubskill(*skill));
+
+	skill->type = lcf::rpg::Skill::Type_teleport;
+	REQUIRE_FALSE(Algo::IsNormalOrSubskill(*skill));
+
+	skill->type = lcf::rpg::Skill::Type_escape;
+	REQUIRE_FALSE(Algo::IsNormalOrSubskill(*skill));
+
+	skill->type = lcf::rpg::Skill::Type_switch;
+	REQUIRE_FALSE(Algo::IsNormalOrSubskill(*skill));
+
+	skill->type = lcf::rpg::Skill::Type_subskill;
+	REQUIRE(Algo::IsNormalOrSubskill(*skill));
+
+	skill->type = lcf::rpg::Skill::Type_subskill + 1;
+	REQUIRE(Algo::IsNormalOrSubskill(*skill));
+
+}
+
 TEST_SUITE_END();

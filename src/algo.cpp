@@ -112,8 +112,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 
 	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
 	// Despite that, RPG_RT still checks the flag and run the below code?
-	if (skill.failure_message != 3
-		   || (skill.scope != lcf::rpg::Skill::Scope_enemy && skill.scope != lcf::rpg::Skill::Scope_enemies)) {
+	if (skill.failure_message != 3 || SkillTargetsAllies(skill)) {
 		return to_hit;
 	}
 
@@ -225,9 +224,7 @@ int CalcSkillEffect(const Game_Battler& source,
 	effect += skill.physical_rate * source.GetAtk() / 20;
 	effect += skill.magical_rate * source.GetSpi() / 40;
 
-	if ((skill.scope == lcf::rpg::Skill::Scope_enemy
-			|| skill.scope == lcf::rpg::Skill::Scope_enemies)
-			&& !skill.ignore_defense) {
+	if (SkillTargetsEnemies(skill) && !skill.ignore_defense) {
 		effect -= skill.physical_rate * target.GetDef() / 40;
 		effect -= skill.magical_rate * target.GetSpi() / 80;
 	}
@@ -285,8 +282,7 @@ bool IsSkillUsable(const lcf::rpg::Skill& skill,
 		return true;
 	}
 
-	if (skill.scope == lcf::rpg::Skill::Scope_enemy
-			|| skill.scope == lcf::rpg::Skill::Scope_enemies) {
+	if (SkillTargetsEnemies(skill)) {
 		return false;
 	}
 

@@ -48,6 +48,10 @@ namespace AutoBattle {
 class AlgorithmBase;
 }
 
+namespace EnemyAi {
+class AlgorithmBase;
+}
+
 class Game_Battler;
 
 using BattleContinuation = std::function<void(BattleResult)>;
@@ -162,9 +166,6 @@ protected:
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
 	void PrepareBattleAction(Game_Battler* battler);
-	void CreateEnemyAction(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
-	void CreateEnemyActionBasic(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
-	void CreateEnemyActionSkill(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action);
 
 	void RemoveActionsForNonExistantBattlers();
 	void RemoveCurrentAction();
@@ -210,6 +211,7 @@ protected:
 
 	std::deque<Game_Battler*> battle_actions;
 	std::unique_ptr<AutoBattle::AlgorithmBase> autobattle_algo;
+	std::unique_ptr<EnemyAi::AlgorithmBase> enemyai_algo;
 
 	BattleContinuation on_battle_end;
 };

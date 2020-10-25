@@ -43,6 +43,7 @@
 #include "game_interpreter.h"
 #include "rand.h"
 #include "autobattle.h"
+#include "enemyai.h"
 
 Scene_Battle::Scene_Battle(const BattleArgs& args)
 	: troop_id(args.troop_id),
@@ -91,8 +92,9 @@ void Scene_Battle::Start() {
 	}
 
 	autobattle_algo = AutoBattle::CreateAlgorithm(Player::player_config.autobattle_algo.Get());
+	enemyai_algo = EnemyAi::CreateAlgorithm(Player::player_config.enemyai_algo.Get());
 
-	Output::Debug("Starting battle {} ({}): autobattle={}", troop_id, troop->name, autobattle_algo->GetName());
+	Output::Debug("Starting battle {} ({}): algos=({}/{})", troop_id, troop->name, autobattle_algo->GetName(), enemyai_algo->GetName());
 
 	Game_Battle::Init(troop_id);
 
@@ -523,69 +525,6 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	}
 }
 
-void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
-	switch (action->kind) {
-		case lcf::rpg::EnemyAction::Kind_basic:
-			CreateEnemyActionBasic(enemy, action);
-			break;
-		case lcf::rpg::EnemyAction::Kind_skill:
-			CreateEnemyActionSkill(enemy, action);
-			break;
-		case lcf::rpg::EnemyAction::Kind_transformation:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
-			if (action->switch_on) {
-				enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
-			}
-			if (action->switch_off) {
-				enemy->GetBattleAlgorithm()->SetSwitchDisable(action->switch_off_id);
-			}
-			ActionSelectedCallback(enemy);
-	}
-}
-
-void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
-	if (action->kind != lcf::rpg::EnemyAction::Kind_basic) {
-		return;
-	}
-
-	switch (action->basic) {
-		case lcf::rpg::EnemyAction::Basic_attack:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
-			break;
-		case lcf::rpg::EnemyAction::Basic_dual_attack:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
-			enemy->GetBattleAlgorithm()->SetRepeat(2);
-			break;
-		case lcf::rpg::EnemyAction::Basic_defense:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));
-			break;
-		case lcf::rpg::EnemyAction::Basic_observe:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Observe>(enemy));
-			break;
-		case lcf::rpg::EnemyAction::Basic_charge:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Charge>(enemy));
-			break;
-		case lcf::rpg::EnemyAction::Basic_autodestruction:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
-			break;
-		case lcf::rpg::EnemyAction::Basic_escape:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Escape>(enemy));
-			break;
-		case lcf::rpg::EnemyAction::Basic_nothing:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(enemy));
-			break;
-	}
-
-	if (action->switch_on) {
-		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
-	}
-	if (action->switch_off) {
-		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_off_id);
-	}
-
-	ActionSelectedCallback(enemy);
-}
-
 void Scene_Battle::RemoveActionsForNonExistantBattlers() {
 	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(),
 			[](Game_Battler* b) {
@@ -601,45 +540,6 @@ void Scene_Battle::RemoveActionsForNonExistantBattlers() {
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(nullptr);
 	battle_actions.pop_front();
-}
-
-void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const lcf::rpg::EnemyAction* action) {
-	if (action->kind != lcf::rpg::EnemyAction::Kind_skill) {
-		return;
-	}
-
-	lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, action->skill_id);
-	if (!skill) {
-		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill {}", action->skill_id);
-		return;
-	}
-
-	switch (skill->scope) {
-		case lcf::rpg::Skill::Scope_enemy:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), *skill));
-			break;
-		case lcf::rpg::Skill::Scope_ally:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), *skill));
-			break;
-		case lcf::rpg::Skill::Scope_enemies:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill));
-			break;
-		case lcf::rpg::Skill::Scope_self:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, enemy, *skill));
-			break;
-		case lcf::rpg::Skill::Scope_party:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill));
-			break;
-	}
-
-	if (action->switch_on) {
-		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
-	}
-	if (action->switch_off) {
-		enemy->GetBattleAlgorithm()->SetSwitchDisable(action->switch_off_id);
-	}
-
-	ActionSelectedCallback(enemy);
 }
 
 void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {

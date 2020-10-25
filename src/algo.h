@@ -203,6 +203,27 @@ inline bool IsNormalOrSubskill(const lcf::rpg::Skill& skill) {
 		|| skill.type >= lcf::rpg::Skill::Type_subskill;
 }
 
+/**
+ * Checks if the skill targets the opposing party.
+ *
+ * @param skill the skill to check
+ * @return true if targets opposing party
+ */
+inline bool SkillTargetsEnemies(const lcf::rpg::Skill& skill) {
+	return skill.scope == lcf::rpg::Skill::Scope_enemy
+		|| skill.scope == lcf::rpg::Skill::Scope_enemies;
+}
+
+/**
+ * Checks if the skill targets the allied party.
+ *
+ * @param skill the skill to check
+ * @return true if targets allied party
+ */
+inline bool SkillTargetsAllies(const lcf::rpg::Skill& skill) {
+	return !SkillTargetsEnemies(skill);
+}
+
 } // namespace Algo
 
 

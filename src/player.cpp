@@ -1220,6 +1220,10 @@ Options:
                             RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
                             RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
                             ATTACK     - RPG_RT+ but only physical attacks, no skills
+      --enemyai-algo A     Which EnemyAI algorithm to use.
+                           Possible options:
+                            RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
+                            RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
       --start-position X Y Overwrite the party start position and move the
                            party to position (X, Y).
                            Incompatible with --load-game-id.
