@@ -3423,3 +3423,7 @@ Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 		? Game_Battle::GetInterpreter()
 		: Game_Map::GetInterpreter();
 }
+
+bool Game_Interpreter::IsWaitingForWaitCommand() const {
+	return (_state.wait_time > 0) || _state.wait_key_enter;
+}
