@@ -980,7 +980,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionBe
 		}
 
 		if (action->GetType() != Game_BattleAlgorithm::Type::None || show_message) {
-			ActionFlash(action->GetSource());
+			action->GetSource()->Flash(31, 31, 31, 10, 10);
 		}
 
 		if (show_message) {

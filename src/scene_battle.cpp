@@ -535,12 +535,6 @@ bool Scene_Battle::CallDebug() {
 	return false;
 }
 
-void Scene_Battle::ActionFlash(Game_Battler* battler) {
-	if (battler) {
-		battler->Flash(31, 31, 31, 10, 10);
-	}
-}
-
 void Scene_Battle::SelectionFlash(Game_Battler* battler) {
 	if (battler) {
 		battler->Flash(31, 31, 31, 24, 16);

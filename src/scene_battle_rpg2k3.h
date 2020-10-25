@@ -55,6 +55,8 @@ public:
 
 	enum BattleActionState {
 		BattleActionState_Begin,
+		BattleActionState_Conditions,
+		BattleActionState_Notify,
 		BattleActionState_StartAlgo,
 		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
@@ -159,6 +161,8 @@ protected:
 
 	/** Battle Action State Machine callbacks */
 	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionConditions(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionNotify(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);

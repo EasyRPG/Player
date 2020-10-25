@@ -676,12 +676,10 @@ int Game_BattleAlgorithm::Normal::GetSourcePose() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
+	if (Player::IsRPG2k() && source->GetType() == Game_Battler::Type_Enemy) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
 	}
-	else {
-		return NULL;
-	}
+	return nullptr;
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
@@ -987,9 +985,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		return &skill.sound_effect;
 	}
-	else {
-		return NULL;
-	}
+	return nullptr;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
@@ -1129,9 +1125,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	if (item.type == lcf::rpg::Item::Type_medicine || item.type == lcf::rpg::Item::Type_switch) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_UseItem);
 	}
-	else {
-		return NULL;
-	}
+	return nullptr;
 }
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
@@ -1293,9 +1287,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		return AlgorithmBase::GetStartSe();
 	}
-	else {
-		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape);
-	}
+	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape);
 }
 
 bool Game_BattleAlgorithm::Escape::Execute() {

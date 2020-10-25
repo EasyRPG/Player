@@ -119,7 +119,6 @@ public:
 		State_Escape
 	};
 
-	static void ActionFlash(Game_Battler* battler);
 	static void SelectionFlash(Game_Battler* battler);
 
 protected:

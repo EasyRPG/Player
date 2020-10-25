@@ -1361,7 +1361,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 	enum SubState {
 		eBegin,
 		ePreAction,
-		ePreEvents,
 		eBattleAction,
 		ePostEvents,
 		ePost,
@@ -1374,19 +1373,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 	}
 
 	if (scene_action_substate == ePreAction) {
-		// Remove actions for battlers who were killed or removed from the battle.
-		while (!battle_actions.empty() && !battle_actions.front()->Exists()) {
-			// FIXME: Verify what happens when battler removed from party before they act. Can this happen in RPG_RT?
-			// Also double check death / hide, does it make turns increment and pages reset?
-			// FIXME: Do we need to run interpreter before and after each of these?
-			// FIXME: Do we need to update battler conditions for each of these?
-			if (battle_actions.front()->IsInParty()) {
-				NextTurn(battle_actions.front());
-			}
-
-			RemoveCurrentAction();
-		}
-
 		if (battle_actions.empty()) {
 			SetSceneActionSubState(ePost);
 			return SceneActionReturn::eContinueThisFrame;
@@ -1399,26 +1385,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 
 		pending_battle_action = battler->GetBattleAlgorithm();
 		SetBattleActionState(BattleActionState_Begin);
-		SetSceneActionSubState(ePreEvents);
 
 		NextTurn(battler);
-	}
-
-	if (scene_action_substate == ePreEvents) {
-		assert(pending_battle_action);
-		auto* battler = pending_battle_action->GetSource();
-
-		// Check for end battle, and run events before action
-		// This happens before each battler acts and also right after the last battler acts.
-		// FIXME: RPG_RT repeats this each frame if the battle action doesn't start.
-		if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eBeforeBattleAction)) {
-			return SceneActionReturn::eContinueThisFrame;
-		}
 
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 		Output::Debug("Battle2k3 StartBattleAction battler={} frame={}", battler->GetName(), Main_Data::game_system->GetFrameCounter());
 #endif
-
 		SetSceneActionSubState(eBattleAction);
 	}
 
@@ -1433,7 +1405,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 
 		SetSceneActionSubState(ePostEvents);
 	}
-
 
 	if (scene_action_substate == ePostEvents) {
 		assert(pending_battle_action);
@@ -1695,6 +1666,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	switch (battle_action_state) {
 		case BattleActionState_Begin:
 			return ProcessBattleActionBegin(action);
+		case BattleActionState_Conditions:
+			return ProcessBattleActionConditions(action);
+		case BattleActionState_Notify:
+			return ProcessBattleActionNotify(action);
 		case BattleActionState_StartAlgo:
 			return ProcessBattleActionStartAlgo(action);
 		case BattleActionState_Animation:
@@ -1713,42 +1688,81 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
-	// The internal state turn counter increments for all every turn
-	std::vector<Game_Battler*> battler;
-	Main_Data::game_party->GetActiveBattlers(battler);
-	Main_Data::game_enemyparty->GetActiveBattlers(battler);
-
-	for (auto& b : battler) {
-		b->BattleStateHeal();
+	// RPG_RT always runs the interpreter before starting the action.
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eBeforeBattleAction)) {
+		return BattleActionReturn::eContinue;
 	}
 
-	if (combo_repeat == 1) {
-		std::string notification = action->GetStartMessage(0);
+	// If any battle animation is running for any reason, RPG_RT waits until the animation finishes.
+	// This also means that the interpreter can run again.
+	if (Game_Battle::IsBattleAnimationWaiting()) {
+		return BattleActionReturn::eWait;
+	}
 
-		ShowNotification(notification);
-		if (!notification.empty()) {
-			if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
-				SetWait(15, 50);
-			} else {
-				SetWait(10, 40);
-			}
+	// Now perform filtering. RPG_RT will run events but will early abort the battle algo if any of the following conditions hold.
+	auto* source = action->GetSource();
+
+	// FIXME: RPG_RT doesn't actually check hidden (maybe it's impossible?) But we do it here for extensions.
+	// FIXME: RPG_RT doesn't check for dead enemies, only actors. Why?
+	if (source->IsHidden()
+			|| !source->IsInParty()
+			|| !source->CanActOrRecoverable()
+			) {
+		return BattleActionReturn::eFinished;
+	}
+
+	// RPG_RT cancels all enemy actions when first_strike flag is still active. This is different than
+	// initiative / surround, unless the flag is set for those too.
+	if (source->GetType() == Game_Battler::Type_Enemy
+			&& !source->Exists()
+			&& first_strike) {
+		return BattleActionReturn::eFinished;
+	}
+
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		if (action->GetType() != Game_BattleAlgorithm::Type::None
+				&& action->GetType() != Game_BattleAlgorithm::Type::DoNothing) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_EnemyAttacks));
+			source->Flash(31, 31,31, 32, 48);
 		}
 	}
+
+	SetBattleActionState(BattleActionState_Conditions);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionConditions(Game_BattleAlgorithm::AlgorithmBase* action) {
+	(void)action;
 
 	std::vector<Game_Battler*> battlers;
 	Main_Data::game_party->GetActiveBattlers(battlers);
 	Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
-	if (combo_repeat == 1) {
-		for (auto &b : battlers) {
-			int damageTaken = b->ApplyConditions();
-			if (damageTaken != 0) {
-				DrawFloatText(
-						b->GetBattlePosition().x,
-						b->GetBattlePosition().y,
-						damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-						std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
-			}
+	for (auto* b : battlers) {
+		b->BattleStateHeal();
+		int damageTaken = b->ApplyConditions();
+		if (damageTaken != 0) {
+			DrawFloatText(
+					b->GetBattlePosition().x,
+					b->GetBattlePosition().y,
+					damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
+					std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
+		}
+	}
+
+	SetBattleActionState(BattleActionState_Notify);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionNotify(Game_BattleAlgorithm::AlgorithmBase* action) {
+
+	std::string notification = action->GetStartMessage(0);
+	ShowNotification(notification);
+	if (!notification.empty()) {
+		if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+			SetWait(15, 50);
+		} else {
+			SetWait(10, 40);
 		}
 	}
 
@@ -1774,10 +1788,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		FaceTarget(*actor, *action->GetTarget());
 	}
 
-	//Output::Debug("Action: {}", action->GetSource()->GetName());
-
 	if (source_sprite) {
-		ActionFlash(action->GetSource());
 		const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
 		// FIXME: This gets cleaned up when CBA is implemented
 		auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);
