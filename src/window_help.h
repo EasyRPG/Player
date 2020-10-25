@@ -21,6 +21,7 @@
 // Headers
 #include "window_base.h"
 #include "text.h"
+#include "font.h"
 
 /**
  * Window_Help class.
@@ -40,7 +41,7 @@ public:
 	 * @param text text to show.
 	 * @param align text alignment.
 	 */
-	void SetText(std::string text, Text::Alignment align = Text::AlignLeft);
+	void SetText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Clears the window
@@ -50,6 +51,8 @@ public:
 private:
 	/** Text to draw. */
 	std::string text;
+	/** Color of Text to draw. */
+	int color = Font::ColorDefault;
 	/** Alignment of text. */
 	Text::Alignment align;
 };
