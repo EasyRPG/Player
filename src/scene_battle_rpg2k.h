@@ -245,6 +245,7 @@ protected:
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};
+	int actor_index = 0;
 	int scene_action_substate = 0;
 	int battle_action_state = BattleActionState_Begin;
 	int battle_action_substate = 0;

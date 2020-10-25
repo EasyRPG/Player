@@ -142,20 +142,38 @@ void Game_Interpreter_Battle::ResetPagesExecuted(const Game_Battler* battler) {
 	}
 }
 
+int Game_Interpreter_Battle::ScheduleNextPage() {
+	lcf::rpg::TroopPageCondition::Flags f;
+	for (auto& ff: f.flags) ff = true;
 
-int Game_Interpreter_Battle::ScheduleNextPage(const Game_Battler* battler) {
+	return ScheduleNextPage(f);
+}
+
+static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::rpg::TroopPageCondition::Flags required) {
+	for (size_t i = 0; i < page.flags.size(); ++i) {
+		if (required.flags[i] && page.flags[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions) {
 	if (IsRunning()) {
 		return 0;
 	}
 
 	for (const auto& page : pages) {
-		if (!HasPageExecuted(page.ID) && AreConditionsMet(page.condition)) {
-			Clear();
-			Push(page.event_commands, 0);
-			SetCanPageRun(page.ID, false);
-			SetHasPageExecuted(page.ID, true);
-			return page.ID;
+		if (HasPageExecuted(page.ID)
+				|| !HasRequiredCondition(page.condition.flags, required_conditions)
+				|| !AreConditionsMet(page.condition)) {
+			continue;
 		}
+		Clear();
+		Push(page.event_commands, 0);
+		SetCanPageRun(page.ID, false);
+		SetHasPageExecuted(page.ID, true);
+		return page.ID;
 	}
 	return 0;
 }

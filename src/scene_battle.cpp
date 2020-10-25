@@ -176,8 +176,6 @@ void Scene_Battle::CreateUi() {
 	skill_window.reset(new Window_BattleSkill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
-
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 	Game_Message::SetWindow(message_window.get());
 }
@@ -331,10 +329,6 @@ void Scene_Battle::UpdateGraphics() {
 
 bool Scene_Battle::IsWindowMoving() {
 	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
-}
-
-void Scene_Battle::NextTurn(Game_Battler* battler) {
-	Game_Battle::NextTurn(battler);
 }
 
 void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {

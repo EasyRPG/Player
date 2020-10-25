@@ -29,12 +29,28 @@
  */
 class Scene_Battle_Rpg2k3 : public Scene_Battle {
 public:
+	/** The return value from a scene action state machine callback */
+	enum class SceneActionReturn {
+		/** Return from Update() and wait until the next frame */
+		eWaitTillNextFrame,
+		/** Continue processing this frame, unless CheckWait() etc.. requires us to block */
+		eContinueThisFrame,
+	};
+
 	/** The return value from a battle action state machine callback */
 	enum class BattleActionReturn {
-		/** The battle action is not yet finished */
+		/** The battle action is not yet finished but we can try again this frame */
 		eContinue,
+		/** The battle action is not yet finished and we need to wait for another frame*/
+		eWait,
 		/** The battle action is finished */
 		eFinished,
+	};
+
+	enum class EventTriggerType {
+		eBeforeBattleAction,
+		eAfterBattleAction,
+		eAll,
 	};
 
 	enum BattleActionState {
@@ -64,11 +80,19 @@ protected:
 	void UpdateEnemiesDirection();
 	void UpdateActorsDirection();
 
+	bool IsAtbAccumulating() const;
+	bool IsBattleActionPending() const;
+	void CreateEnemyActions();
+	void CreateActorAutoActions();
+	bool UpdateAtb();
+	bool UpdateBattleState();
+
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
 
 	void CreateBattleTargetWindow();
+	void CreateBattleStatusWindow();
 	void CreateBattleCommandWindow();
 
 	void UpdateCursors() override;
@@ -78,28 +102,20 @@ protected:
 
 	void SetState(Scene_Battle::State new_state) override;
 
-	bool CheckWin();
-	bool CheckLose();
-	bool CheckResultConditions();
-
-	void ProcessActions() override;
+	void ProcessActions() override {}
 	void FaceTarget(Game_Actor& source, const Game_Battler& target);
-	void ProcessInput() override;
+	void ProcessInput() override {}
 
-	void OptionSelected();
 	void CommandSelected();
 	void AttackSelected() override;
 	void SubskillSelected();
 	void SpecialSelected();
 	void RowSelected();
 
-	void Escape(bool force_allow = false);
-
-	void SelectNextActor();
-
 	void ActionSelectedCallback(Game_Battler* for_battler) override;
 
 	void ShowNotification(std::string text);
+	void EndNotification();
 
 	bool IsEscapeAllowed() const = delete; // disable accidental calls to base class version
 	bool IsEscapeAllowedFromOptionWindow() const;
@@ -109,6 +125,34 @@ protected:
 
 	void SetWait(int min_wait, int max_wait);
 	bool CheckWait();
+
+	void ResetWindows(bool make_invisible);
+	void MoveCommandWindows(int x, int frames);
+
+	void SetSceneActionSubState(int substate);
+
+	// SceneAction State Machine Driver
+	SceneActionReturn ProcessSceneAction();
+
+	// SceneAction State Machine Handlers
+	SceneActionReturn ProcessSceneActionStart();
+	SceneActionReturn ProcessSceneActionFightAutoEscape();
+	SceneActionReturn ProcessSceneActionActor();
+	SceneActionReturn ProcessSceneActionAutoBattle();
+	SceneActionReturn ProcessSceneActionActorImpl(bool auto_battle);
+	SceneActionReturn ProcessSceneActionCommand();
+	SceneActionReturn ProcessSceneActionItem();
+	SceneActionReturn ProcessSceneActionSkill();
+	SceneActionReturn ProcessSceneActionEnemyTarget();
+	SceneActionReturn ProcessSceneActionAllyTarget();
+	SceneActionReturn ProcessSceneActionBattle();
+	SceneActionReturn ProcessSceneActionVictory();
+	SceneActionReturn ProcessSceneActionDefeat();
+	SceneActionReturn ProcessSceneActionEscape();
+
+	void NextTurn(Game_Battler* battler);
+	bool CheckBattleEndAndScheduleEvents(EventTriggerType tt);
+	bool CheckBattleEndConditions();
 
 	void SetBattleActionState(BattleActionState state);
 
@@ -133,25 +177,19 @@ protected:
 	std::vector<FloatText> floating_texts;
 	int battle_action_wait = 0;
 	int battle_action_min_wait = 0;
+	int scene_action_substate = 0;
 	int battle_action_state = BattleActionState_Begin;
 	int combo_repeat = 1;
 
-	std::unique_ptr<Window_BattleStatus> enemy_status_window;
 	std::unique_ptr<Window_ActorSp> sp_window;
 
 	std::vector<Game_Battler*> targets;
 
-	int select_target_flash_count = 0;
-
 	FileRequestBinding request_id;
 	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};
 	bool first_strike = false;
-
-	int start_message_shown = 0;
-	bool escape_initiated = false;
-	bool win_wait_elapsed = false;
-	bool lose_wait_elapsed = false;
-	bool auto_battle = false;
+	bool running_away = false;
+	bool resume_from_debug_scene = false;
 };
 
 #endif

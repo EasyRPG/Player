@@ -52,6 +52,8 @@ Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
 void Scene_Battle_Rpg2k::CreateUi() {
 	Scene_Battle::CreateUi();
 
+	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
+
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
@@ -171,7 +173,8 @@ void Scene_Battle_Rpg2k::SetSceneActionSubState(int substate) {
 }
 
 void Scene_Battle_Rpg2k::NextTurn() {
-	Scene_Battle::NextTurn(nullptr);
+	Main_Data::game_party->IncTurns();
+	Game_Battle::GetInterpreterBattle().ResetAllPagesExecuted();
 }
 
 bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {
@@ -181,7 +184,7 @@ bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {
 
 	auto& interp = Game_Battle::GetInterpreterBattle();
 
-	int page = interp.ScheduleNextPage(nullptr);
+	int page = interp.ScheduleNextPage();
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
 	if (page) {
 		Output::Debug("Battle2k ScheduleNextEventPage Scheduled Page {} frame={}", page, Main_Data::game_system->GetFrameCounter());

@@ -134,8 +134,6 @@ protected:
 
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
-	void NextTurn(Game_Battler* battler);
-
 	bool IsWindowMoving();
 	bool IsEscapeAllowed() const;
 
@@ -185,7 +183,6 @@ protected:
 	bool allow_escape = false;
 	bool first_strike = false;
 
-	int actor_index = 0;
 	Game_Actor* active_actor = nullptr;
 
 	/** Displays Fight, Autobattle, Flee */

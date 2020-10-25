@@ -225,7 +225,8 @@ void Game_Battle::UpdateAtbGauges() {
 
 	for (auto* bat: battlers) {
 		// RPG_RT always updates atb for non-hidden enemies, even if they can't act.
-		if (bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
+		// We don't update ATB for battlers with a pending battle algo
+		if (!bat->GetBattleAlgorithm() && bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
 		{
 			const auto agi = bat->GetAgi();
 			auto increment = max_atb / (sum_agi / (agi + 1));

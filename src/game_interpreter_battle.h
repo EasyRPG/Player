@@ -25,6 +25,7 @@
 #include <cassert>
 #include "game_character.h"
 #include <lcf/rpg/eventcommand.h>
+#include <lcf/rpg/trooppagecondition.h>
 #include "system.h"
 #include "game_interpreter.h"
 
@@ -52,7 +53,9 @@ public:
 
 	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
 	void ResetPagesExecuted(const Game_Battler* battler);
-	int ScheduleNextPage(const Game_Battler* battler);
+
+	int ScheduleNextPage();
+	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions);
 
 	bool ExecuteCommand() override;
 private:
