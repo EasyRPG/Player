@@ -97,10 +97,11 @@ protected:
 	void CreateBattleTargetWindow();
 	void CreateBattleStatusWindow();
 	void CreateBattleCommandWindow();
+	void RefreshTargetWindow();
+	void RefreshCommandWindow(const Game_Actor* actor);
 
 	void DrawFloatText(int x, int y, int color, StringView text);
 
-	void RefreshCommandWindow();
 
 	void SetState(Scene_Battle::State new_state) override;
 

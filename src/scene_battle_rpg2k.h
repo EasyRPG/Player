@@ -146,6 +146,7 @@ protected:
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
+	void RefreshTargetWindow();
 
 	bool CheckBattleEndConditions();
 	bool RefreshEventsAndCheckBattleEnd();

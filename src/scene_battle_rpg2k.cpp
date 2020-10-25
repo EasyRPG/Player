@@ -69,8 +69,9 @@ void Scene_Battle_Rpg2k::CreateUi() {
 	battle_message_window->SetVisible(true);
 }
 
-void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
+static std::vector<std::string> GetEnemyTargetNames() {
 	std::vector<std::string> commands;
+
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
@@ -78,11 +79,21 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 		commands.push_back(ToString(enemy->GetName()));
 	}
 
-	target_window.reset(new Window_Command(commands, 136, 4));
+	return commands;
+}
+
+void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
+	auto commands = GetEnemyTargetNames();
+	target_window.reset(new Window_Command(std::move(commands), 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
+}
+
+void Scene_Battle_Rpg2k::RefreshTargetWindow() {
+	auto commands = GetEnemyTargetNames();
+	target_window->ReplaceCommands(std::move(commands));
 }
 
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
@@ -93,7 +104,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 		ToString(lcf::Data::terms.command_item)
 	};
 
-	command_window.reset(new Window_Command(commands, 76));
+	command_window.reset(new Window_Command(std::move(commands), 76));
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
@@ -418,8 +429,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 				switch (options_window->GetIndex()) {
 					case 0: // Battle
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-						// FIXME: We should replace the contents and not create a new window every time!
-						CreateBattleTargetWindow();
+						RefreshTargetWindow();
 						target_window->SetVisible(false);
 						SetState(State_SelectActor);
 						break;

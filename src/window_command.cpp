@@ -33,16 +33,10 @@ static int CalculateWidth(const std::vector<std::string>& commands, int width) {
 	}
 }
 
-Window_Command::Window_Command(const std::vector<std::string>& commands, int width, int max_item) :
-	Window_Selectable(0, 0, CalculateWidth(commands, width), (max_item < 0 ? commands.size() : max_item) * 16 + 16),
-	commands(commands) {
-
-	index = 0;
-	item_max = commands.size();
-
-	SetContents(Bitmap::Create(this->width - 16, item_max * 16));
-
-	Refresh();
+Window_Command::Window_Command(std::vector<std::string> in_commands, int width, int max_item) :
+	Window_Selectable(0, 0, CalculateWidth(in_commands, width), (max_item < 0 ? in_commands.size() : max_item) * 16 + 16)
+{
+	ReplaceCommands(std::move(in_commands));
 }
 
 void Window_Command::Refresh() {
@@ -70,4 +64,14 @@ void Window_Command::SetItemText(unsigned index, StringView text) {
 		commands[index] = ToString(text);
 		DrawItem(index, Font::ColorDefault);
 	}
+}
+
+void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
+	commands = std::move(in_commands);
+	index = 0;
+	item_max = commands.size();
+	const int num_contents = item_max > 0 ? item_max : 1;
+	SetContents(Bitmap::Create(this->width - 16, num_contents * 16));
+
+	Refresh();
 }

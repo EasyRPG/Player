@@ -279,7 +279,6 @@ void Scene_Battle_Rpg2k3::SetupSystem2Graphics() {
 void Scene_Battle_Rpg2k3::CreateUi() {
 	Scene_Battle::CreateUi();
 
-
 	CreateBattleTargetWindow();
 	CreateBattleStatusWindow();
 	CreateBattleCommandWindow();
@@ -392,7 +391,7 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text
 	floating_texts.push_back(float_text);
 }
 
-void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
+static std::vector<std::string> GetEnemyTargetNames() {
 	std::vector<std::string> commands;
 
 	std::vector<Game_Battler*> enemies;
@@ -402,9 +401,15 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 		commands.push_back(ToString(enemy->GetName()));
 	}
 
+	return commands;
+}
+
+void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
+	auto commands = GetEnemyTargetNames();
+
 	int width = (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) ? 104 : 136;
 
-	target_window.reset(new Window_Command(commands, width, 4));
+	target_window.reset(new Window_Command(std::move(commands), width, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	// Above other windows
@@ -414,6 +419,12 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
 		target_window->SetBackOpacity(transp);
 	}
+}
+
+void Scene_Battle_Rpg2k3::RefreshTargetWindow() {
+	// FIXME: Handle live refresh in traditional when the window is always visible
+	auto commands = GetEnemyTargetNames();
+	target_window->ReplaceCommands(std::move(commands));
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
@@ -442,38 +453,36 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 	status_window->SetZ(Priority_Window + 1);
 }
 
-void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
+static std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor) {
 	std::vector<std::string> commands;
-	std::vector<int> disabled_items;
-
-	Game_Actor* actor;
-
-	if (!active_actor && Main_Data::game_party->GetBattlerCount() > 0) {
-		actor = &(*Main_Data::game_party)[0];
-	}
-	else {
-		actor = active_actor;
-	}
-
 	if (actor) {
-		const std::vector<const lcf::rpg::BattleCommand*> bcmds = actor->GetBattleCommands();
-		int i = 0;
-		for (const lcf::rpg::BattleCommand* command : bcmds) {
-			commands.push_back(ToString(command->name));
-
-			if (!IsEscapeAllowedFromActorCommand() && command->type == lcf::rpg::BattleCommand::Type_escape) {
-				disabled_items.push_back(i);
-			}
-			++i;
+		for (auto* cmd: actor->GetBattleCommands()) {
+			commands.push_back(ToString(cmd->name));
 		}
-		commands.push_back(ToString(lcf::Data::terms.row));
 	}
 
-	command_window.reset(new Window_Command(commands, option_command_mov));
+	return commands;
+}
 
-	for (std::vector<int>::iterator it = disabled_items.begin(); it != disabled_items.end(); ++it) {
-		command_window->DisableItem(*it);
+static void SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor) {
+	if (actor) {
+		const auto& cmds = actor->GetBattleCommands();
+		for (size_t i = 0; i < cmds.size(); ++i) {
+			auto* cmd = cmds[i];
+			if (cmd->type == lcf::rpg::BattleCommand::Type_escape) {
+				window.DisableItem(i);
+			}
+		}
 	}
+}
+
+void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
+	auto* actor = Main_Data::game_party->GetActor(0);
+	auto commands = GetBattleCommandNames(actor);
+
+	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
+
+	SetBattleCommandsDisable(*command_window, actor);
 
 	command_window->SetHeight(80);
 	switch (lcf::Data::battlecommands.battle_type) {
@@ -482,7 +491,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 			command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 			break;
 		case lcf::rpg::BattleCommands::BattleType_alternative:
-			command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
+			command_window->SetX(SCREEN_TARGET_WIDTH);
 			command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 			break;
 		case lcf::rpg::BattleCommands::BattleType_gauge:
@@ -499,9 +508,10 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
-	CreateBattleCommandWindow();
-	command_window->SetActive(false);
+void Scene_Battle_Rpg2k3::RefreshCommandWindow(const Game_Actor* actor) {
+	auto commands = GetBattleCommandNames(actor);
+	command_window->ReplaceCommands(std::move(commands));
+	SetBattleCommandsDisable(*command_window, actor);
 }
 
 void Scene_Battle_Rpg2k3::ResetWindows(bool make_invisible) {
@@ -627,6 +637,7 @@ void Scene_Battle_Rpg2k3::CreateActorAutoActions() {
 			assert(actor->GetBattleAlgorithm() != nullptr);
 		}
 
+		// FIXME: This crashes until we refactor combo
 		ActionSelectedCallback(actor);
 	}
 }
@@ -693,8 +704,15 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	}
 
 	// FIXME: RPG_RT doesn't update all ui components here
-	// FIXME: Input needs to be disabled when Battle Algo is running
+	auto prev_actor_idx = status_window->GetIndex();
+	if (prev_actor_idx < 0) prev_actor_idx = 0;
 	UpdateUi();
+	auto cur_actor_idx = status_window->GetIndex();
+	if (cur_actor_idx < 0) cur_actor_idx = 0;
+	if (prev_actor_idx != cur_actor_idx) {
+		RefreshCommandWindow(Main_Data::game_party->GetActor(cur_actor_idx));
+	}
+
 
 	if (!UpdateEvents()) {
 		return false;
@@ -836,6 +854,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	// If actor was killed or event removed from the party, immediately cancel out of menu states
 	if (active_actor && !active_actor->Exists()) {
 		active_actor = nullptr;
+		status_window->Refresh();
+		RefreshCommandWindow(Main_Data::game_party->GetActor(0));
 		SetState(State_SelectActor);
 	}
 
@@ -951,6 +971,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 			command_window->SetVisible(true);
 		}
 		status_window->SetIndex(-1);
+		RefreshCommandWindow(Main_Data::game_party->GetActor(0));
 		status_window->Refresh();
 		command_window->SetIndex(-1);
 
@@ -1035,6 +1056,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(status_window->GetActive());
 		}
+
+		if (status_window->GetActive() && status_window->GetIndex() >= 0) {
+			active_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
+		} else {
+			active_actor = nullptr;
+		}
 	}
 
 	// If any battler is waiting to attack, immediately interrupt and do the attack.
@@ -1045,6 +1072,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 	if (scene_action_substate == eWaitInput) {
 		if (Input::IsTriggered(Input::CANCEL)) {
+			active_actor = nullptr;
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(State_SelectOption);
 			return SceneActionReturn::eWaitTillNextFrame;
@@ -1052,8 +1080,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 		if (status_window->GetActive() && status_window->GetIndex() >= 0) {
 			if (Input::IsTriggered(Input::DECISION)) {
-				const auto actor_index = status_window->GetIndex();
-				active_actor = Main_Data::game_party->GetActors()[actor_index];
+				command_window->SetIndex(0);
 				SetState(State_SelectCommand);
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
@@ -1066,7 +1093,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 		const auto& actors = Main_Data::game_party->GetActors();
 		for (size_t i = 0; i < actors.size(); ++i) {
 			active_actor = actors[i];
+			RefreshCommandWindow(active_actor);
 			status_window->SetIndex(i);
+			command_window->SetIndex(0);
 			SetState(State_SelectCommand);
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
@@ -1082,6 +1111,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 }
 
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAutoBattle() {
+	active_actor = nullptr;
 	return ProcessSceneActionActorImpl(true);
 }
 
@@ -1094,8 +1124,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
-
-		RefreshCommandWindow();
 
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
@@ -1268,7 +1296,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 	};
 
 	if (scene_action_substate == eBegin) {
-		CreateBattleTargetWindow();
+		RefreshTargetWindow();
 
 		switch (lcf::Data::battlecommands.battle_type) {
 			case lcf::rpg::BattleCommands::BattleType_traditional:
@@ -1280,7 +1308,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 				ResetWindows(true);
 				status_window->SetVisible(true);
 				command_window->SetVisible(true);
-				command_window->SetIndex(-1);
+				//command_window->SetIndex(-1);
 				break;
 			case lcf::rpg::BattleCommands::BattleType_gauge:
 				ResetWindows(true);
@@ -2040,7 +2068,10 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 		int index = command_window->GetIndex();
 		// Row command always uses the last index
 		if (index < command_window->GetRowMax() - 1) {
-			const lcf::rpg::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[index];
+			const auto& cmds = static_cast<Game_Actor*>(for_battler)->GetBattleCommands();
+			assert(index >= 0);
+			assert(index < static_cast<int>(cmds.size()));
+			const lcf::rpg::BattleCommand* command = cmds[index];
 			for_battler->SetLastBattleAction(command->ID);
 		} else {
 			// RPG_RT behavior: If the row command is used,
