@@ -876,7 +876,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	if (active_actor && !active_actor->Exists()) {
 		status_window->Refresh();
 		SetActiveActor(-1);
-		SetState(State_SelectActor);
+		if (state != State_Battle) {
+			SetState(State_SelectActor);
+		}
 	}
 
 	switch (state) {
@@ -1495,27 +1497,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
 
-		SetSceneActionSubState(ePostEvents);
-	}
-
-	if (scene_action_substate == ePostEvents) {
-		assert(pending_battle_action);
 		auto* battler = pending_battle_action->GetSource();
+		assert(battler != active_actor);
 
-		// FIXME: RPG_RT only runs events after the action for monsters?
-		if (battler->GetType() == Game_Battler::Type_Enemy) {
-			if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction)) {
-				return SceneActionReturn::eContinueThisFrame;
-			}
-		}
-		// If the currently selected actor did their action, then they are not longer being controlled.
-		// Reset here so that we exit out of the command windows
-		if (battler == active_actor) {
-			active_actor = nullptr;
-		}
 		pending_battle_action = {};
 		RemoveCurrentAction();
 
+		// If battle ended, quit now
 		if (CheckBattleEndConditions()) {
 			return SceneActionReturn::eContinueThisFrame;
 		}
@@ -1777,6 +1765,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			return ProcessBattleActionAnimationReflect(action);
 		case BattleActionState_Apply:
 			return ProcessBattleActionApply(action);
+		case BattleActionState_PostAction:
+			return ProcessBattleActionPostAction(action);
+		case BattleActionState_PostEvents:
+			return ProcessBattleActionPostEvents(action);
 		case BattleActionState_Finished:
 			return ProcessBattleActionFinished(action);
 	}
@@ -1985,11 +1977,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (!action->IsCurrentTargetValid()) {
-		SetBattleActionState(BattleActionState_Finished);
+		SetBattleActionState(BattleActionState_PostAction);
 		return BattleActionReturn::eContinue;
 	}
 
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+	auto* source = action->GetSource();
+	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
 	if (source_sprite) {
 		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 	}
@@ -2076,17 +2069,39 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		return BattleActionReturn::eContinue;
 	}
 
+	SetBattleActionState(BattleActionState_PostAction);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPostAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+	action->ProcessPostActionSwitches();
+
+	// RPG_RT bug: Final interpreter call is only done for normal and skill for actors
+	if (source->GetType() == Game_Battler::Type_Enemy
+			|| action->GetType() == Game_BattleAlgorithm::Type::Normal
+			|| action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+		SetBattleActionState(BattleActionState_PostEvents);
+	} else {
+		SetBattleActionState(BattleActionState_Finished);
+	}
+
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action) {
+	(void)action;
+	// RPG_RT always runs the interpreter before starting the action.
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction)) {
+		return BattleActionReturn::eContinue;
+	}
+
 	SetBattleActionState(BattleActionState_Finished);
 	return BattleActionReturn::eContinue;
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (action->GetType() != Game_BattleAlgorithm::Type::None
-			&& action->GetType() != Game_BattleAlgorithm::Type::DoNothing) {
-		SetWait(30, 30);
-	}
-
-	action->ProcessPostActionSwitches();
+	(void)action;
 	first_strike = false;
 
 	return BattleActionReturn::eFinished;

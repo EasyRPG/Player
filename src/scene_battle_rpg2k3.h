@@ -63,6 +63,8 @@ public:
 		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
 		BattleActionState_Apply,
+		BattleActionState_PostAction,
+		BattleActionState_PostEvents,
 		BattleActionState_Finished
 	};
 
@@ -172,6 +174,8 @@ protected:
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionPostAction(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
