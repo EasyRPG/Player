@@ -461,6 +461,7 @@ static std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor) {
 			commands.push_back(ToString(cmd->name));
 		}
 	}
+	commands.push_back("Row");
 
 	return commands;
 }
@@ -513,6 +514,17 @@ void Scene_Battle_Rpg2k3::RefreshCommandWindow(const Game_Actor* actor) {
 	auto commands = GetBattleCommandNames(actor);
 	command_window->ReplaceCommands(std::move(commands));
 	SetBattleCommandsDisable(*command_window, actor);
+	command_window->SetIndex(-1);
+}
+
+void Scene_Battle_Rpg2k3::SetActiveActor(int idx) {
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+	Output::Debug("Battle2k3 SetActiveActor({}) frame={}", idx, Main_Data::game_system->GetFrameCounter());
+#endif
+	status_window->SetIndex(idx);
+	active_actor = Main_Data::game_party->GetActor(idx);
+	auto* display_actor = active_actor ? active_actor : Main_Data::game_party->GetActor(0);
+	RefreshCommandWindow(display_actor);
 }
 
 void Scene_Battle_Rpg2k3::ResetWindows(bool make_invisible) {
@@ -704,16 +716,7 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 		}
 	}
 
-	// FIXME: RPG_RT doesn't update all ui components here
-	auto prev_actor_idx = status_window->GetIndex();
-	if (prev_actor_idx < 0) prev_actor_idx = 0;
 	UpdateUi();
-	auto cur_actor_idx = status_window->GetIndex();
-	if (cur_actor_idx < 0) cur_actor_idx = 0;
-	if (prev_actor_idx != cur_actor_idx) {
-		RefreshCommandWindow(Main_Data::game_party->GetActor(cur_actor_idx));
-	}
-
 
 	if (!UpdateEvents()) {
 		return false;
@@ -856,9 +859,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 
 	// If actor was killed or event removed from the party, immediately cancel out of menu states
 	if (active_actor && !active_actor->Exists()) {
-		active_actor = nullptr;
 		status_window->Refresh();
-		RefreshCommandWindow(Main_Data::game_party->GetActor(0));
+		SetActiveActor(-1);
 		SetState(State_SelectActor);
 	}
 
@@ -973,7 +975,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 			command_window->SetVisible(true);
 		}
-		status_window->SetIndex(-1);
+		SetActiveActor(-1);
 		RefreshCommandWindow(Main_Data::game_party->GetActor(0));
 		status_window->Refresh();
 		command_window->SetIndex(-1);
@@ -1018,7 +1020,17 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionActorImpl(bool auto_battle) {
+static int GetFirstReadyActor() {
+	const auto& actors = Main_Data::game_party->GetActors();
+	for (size_t i = 0; i < actors.size(); ++i) {
+		if (actors[i]->IsAtbGaugeFull()) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionActor() {
 	enum SubState {
 		eBegin,
 		eWaitInput,
@@ -1039,11 +1051,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
-		if (auto_battle) {
-			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
-		} else {
-			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_Ready);
-		}
+		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_Ready);
+
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
 		}
@@ -1052,18 +1061,19 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	}
 
 	if (scene_action_substate == eWaitInput) {
-		if (!auto_battle) {
-			status_window->RefreshActiveFromValid();
+		auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
+		if (selected_actor == nullptr || !selected_actor->IsAtbGaugeFull()) {
+			// If current selection is no longer valid, force a new selection
+			const auto idx = GetFirstReadyActor();
+			SetActiveActor(idx);
+		} else if (selected_actor != active_actor) {
+			// If selection changed due to player input
+			SetActiveActor(status_window->GetIndex());
 		}
+		status_window->SetActive(active_actor != nullptr);
 
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(status_window->GetActive());
-		}
-
-		if (status_window->GetActive() && status_window->GetIndex() >= 0) {
-			active_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
-		} else {
-			active_actor = nullptr;
 		}
 	}
 
@@ -1075,7 +1085,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 	if (scene_action_substate == eWaitInput) {
 		if (Input::IsTriggered(Input::CANCEL)) {
-			active_actor = nullptr;
+			SetActiveActor(-1);
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(State_SelectOption);
 			return SceneActionReturn::eWaitTillNextFrame;
@@ -1093,16 +1103,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	}
 
 	if (scene_action_substate == eWaitActor) {
-		const auto& actors = Main_Data::game_party->GetActors();
-		for (size_t i = 0; i < actors.size(); ++i) {
-			if (actors[i]->IsAtbGaugeFull() && actors[i]->GetBattleAlgorithm() == nullptr) {
-				active_actor = actors[i];
-				RefreshCommandWindow(active_actor);
-				status_window->SetIndex(i);
-				command_window->SetIndex(0);
-				SetState(State_SelectCommand);
-				return SceneActionReturn::eWaitTillNextFrame;
-			}
+		const auto idx = GetFirstReadyActor();
+		SetActiveActor(idx);
+		if (idx >= 0) {
+			command_window->SetIndex(0);
+			SetState(State_SelectCommand);
+			return SceneActionReturn::eWaitTillNextFrame;
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
@@ -1111,13 +1117,43 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionActor() {
-	return ProcessSceneActionActorImpl(false);
-}
-
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAutoBattle() {
-	active_actor = nullptr;
-	return ProcessSceneActionActorImpl(true);
+	enum SubState {
+		eBegin,
+		eWaitInput,
+	};
+
+	if (scene_action_substate == eBegin) {
+		ResetWindows(true);
+
+		status_window->SetVisible(true);
+		command_window->SetIndex(-1);
+		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetVisible(true);
+		}
+		SetActiveActor(-1);
+
+		SetSceneActionSubState(eWaitInput);
+	}
+
+	// If any battler is waiting to attack, immediately interrupt and do the attack.
+	if (IsBattleActionPending()) {
+		SetState(State_Battle);
+		return SceneActionReturn::eContinueThisFrame;
+	}
+
+	if (scene_action_substate == eWaitInput) {
+		if (Input::IsTriggered(Input::CANCEL)) {
+			SetActiveActor(-1);
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+			SetState(State_SelectOption);
+			return SceneActionReturn::eWaitTillNextFrame;
+		}
+		return SceneActionReturn::eWaitTillNextFrame;
+	}
+
+	return SceneActionReturn::eWaitTillNextFrame;
 }
 
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCommand() {
@@ -1188,11 +1224,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 							break;
 						case lcf::rpg::BattleCommand::Type_subskill:
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-							SubskillSelected();
+							SubskillSelected(command->ID);
 							break;
 					}
 				}
 			} else {
+				active_actor->SetLastBattleAction(-1);
 				// FIXME: Verify how battle interpreter runs with row command
 				RowSelected();
 			}
@@ -1200,7 +1237,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-			SetState(State_SelectActor);
+			SetState(State_SelectOption);
 
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
@@ -1328,15 +1365,16 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 		help_window->SetVisible(true);
 		target_window->SetActive(true);
 
-
 		SetSceneActionSubState(eWaitInput);
 	}
 
 	if (scene_action_substate == eWaitInput) {
 		if (Input::IsTriggered(Input::DECISION)) {
+			auto* actor = active_actor;
+			// active_actor gets reset after the next call, so save it.
 			auto* enemy = EnemySelected();
 			if (enemy) {
-				FaceTarget(*active_actor, *enemy);
+				FaceTarget(*actor, *enemy);
 			}
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
@@ -1695,9 +1733,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	static int last_state = -1;
 	if (battle_action_state != last_state) {
-		int actor_id = active_actor ? active_actor->GetId() : 0;
-		StringView actor_name = active_actor ? StringView(active_actor->GetName()) : "Null";
-		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) actor={}({}) frames={}", action->GetSource()->GetName(), battle_action_state, actor_name, actor_id, Main_Data::game_system->GetFrameCounter());
+		auto* source = action->GetSource();
+		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) actor={}({}) frames={}", action->GetSource()->GetName(), battle_action_state,
+				source->GetName(), source->GetId(),
+				Main_Data::game_system->GetFrameCounter());
 		last_state = battle_action_state;
 	}
 #endif
@@ -2016,25 +2055,20 @@ void Scene_Battle_Rpg2k3::AttackSelected() {
 	SetState(State_SelectEnemyTarget);
 }
 
-void Scene_Battle_Rpg2k3::SubskillSelected() {
+void Scene_Battle_Rpg2k3::SubskillSelected(int command) {
+	auto idx = command - 1;
 	// Resolving a subskill battle command to skill id
 	int subskill = lcf::rpg::Skill::Type_subskill;
 
-	const std::vector<const lcf::rpg::BattleCommand*> bcmds = active_actor->GetBattleCommands();
-	// Get ID of battle command
-	int command_id = bcmds[command_window->GetIndex()]->ID - 1;
-
 	// Loop through all battle commands smaller then that ID and count subsets
-	int i = 0;
-	for (lcf::rpg::BattleCommand& cmd : lcf::Data::battlecommands.commands) {
-		if (i >= command_id) {
+	for (int i = 0; i < static_cast<int>(lcf::Data::battlecommands.commands.size()); ++i) {
+		auto& cmd = lcf::Data::battlecommands.commands[i];
+		if (i >= idx) {
 			break;
 		}
-
 		if (cmd.type == lcf::rpg::BattleCommand::Type_subskill) {
 			++subskill;
 		}
-		++i;
 	}
 
 	// skill subset is 4 (Type_subskill) + counted subsets
@@ -2078,8 +2112,9 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	for_battler->SetAtbGauge(0);
 
-	if (for_battler->GetType() == Game_Battler::Type_Ally) {
-		status_window->SetIndex(-1);
+	if (for_battler == active_actor) {
+		auto idx = GetFirstReadyActor();
+		SetActiveActor(idx);
 	}
 
 	Scene_Battle::ActionSelectedCallback(for_battler);

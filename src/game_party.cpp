@@ -477,7 +477,7 @@ std::vector<Game_Actor*> Game_Party::GetActors() const {
 }
 
 Game_Actor* Game_Party::GetActor(int idx) const {
-	if (idx < static_cast<int>(data.party.size())) {
+	if (idx >= 0 && idx < static_cast<int>(data.party.size())) {
 		return Main_Data::game_actors->GetActor(data.party[idx]);
 	}
 	return nullptr;

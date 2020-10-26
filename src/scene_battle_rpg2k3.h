@@ -100,6 +100,7 @@ protected:
 	void CreateBattleCommandWindow();
 	void RefreshTargetWindow();
 	void RefreshCommandWindow(const Game_Actor* actor);
+	void SetActiveActor(int idx);
 
 	void DrawFloatText(int x, int y, int color, StringView text);
 
@@ -110,7 +111,7 @@ protected:
 
 	void CommandSelected();
 	void AttackSelected() override;
-	void SubskillSelected();
+	void SubskillSelected(int command);
 	void SpecialSelected();
 	void RowSelected();
 
@@ -141,7 +142,6 @@ protected:
 	SceneActionReturn ProcessSceneActionFightAutoEscape();
 	SceneActionReturn ProcessSceneActionActor();
 	SceneActionReturn ProcessSceneActionAutoBattle();
-	SceneActionReturn ProcessSceneActionActorImpl(bool auto_battle);
 	SceneActionReturn ProcessSceneActionCommand();
 	SceneActionReturn ProcessSceneActionItem();
 	SceneActionReturn ProcessSceneActionSkill();
