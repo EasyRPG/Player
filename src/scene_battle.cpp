@@ -299,12 +299,6 @@ Game_Enemy* Scene_Battle::EnemySelected() {
 		assert("Invalid previous state for enemy selection" && false);
 	}
 
-	for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
-		if (&(*Main_Data::game_enemyparty)[i] == target) {
-			Game_Battle::SetEnemyTargetIndex(i);
-		}
-	}
-
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
 	return target;

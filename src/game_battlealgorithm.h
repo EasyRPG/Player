@@ -89,6 +89,9 @@ public:
 	/** @return true if this algorithm targets a party */
 	bool IsTargetingParty() const;
 
+	/** @return the original targets of the action before reflect or other modifications */
+	Span<Game_Battler*> GetOriginalTargets();
+
 	/** Initializes targetting and performs any initial actions such as sp cost reduction for the user. */
 	void Start();
 
@@ -642,6 +645,10 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAgi() const {
 
 inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetReflectTarget() const {
 	return reflect_target;
+}
+
+inline Span<Game_Battler*> Game_BattleAlgorithm::AlgorithmBase::GetOriginalTargets() {
+	return Span<Game_Battler*>(targets.data(), num_original_targets);
 }
 
 } //namespace Game_BattleAlgorithm

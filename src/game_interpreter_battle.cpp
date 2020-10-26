@@ -468,21 +468,16 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 			break;
 		case 4:
 			// Monster is the current target
-			result = Game_Battle::GetEnemyTargetIndex() == com.parameters[1];
+			result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
 			break;
 		case 5: {
 			// Hero uses the ... command
-			Game_Actor *actor = Main_Data::game_actors->GetActor(com.parameters[1]);
-
-			if (!actor) {
-				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
-				// Use Else branch
-				SetSubcommandIndex(com.indent, 1);
-				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
-				return true;
+			if (current_actor_id == com.parameters[1]) {
+				auto *actor = Main_Data::game_actors->GetActor(current_actor_id);
+				if (actor) {
+					result = actor->GetLastBattleAction() == com.parameters[2];
+				}
 			}
-
-			result = actor->GetLastBattleAction() == com.parameters[2];
 			break;
 		}
 	}

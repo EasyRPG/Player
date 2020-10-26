@@ -51,6 +51,10 @@ public:
 	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions);
 	void ResetPagesExecuted();
 
+	void SetCurrentEnemyTargetIndex(int idx);
+	void SetCurrentActionTargetsSingleEnemy(bool value);
+	void SetCurrentActingActorId(int id);
+
 	bool ExecuteCommand() override;
 private:
 	bool CommandCallCommonEvent(lcf::rpg::EventCommand const& com);
@@ -69,6 +73,9 @@ private:
 private:
 	Span<const lcf::rpg::TroopPage> pages;
 	std::vector<bool> executed;
+	int target_enemy_index = -1;
+	int current_actor_id = 0;
+	bool targets_single_enemy = false;
 };
 
 inline int Game_Interpreter_Battle::GetNumPages() const {
@@ -86,6 +93,18 @@ inline bool Game_Interpreter_Battle::HasPageExecuted(int page_id) const {
 
 inline void Game_Interpreter_Battle::ResetPagesExecuted() {
 	std::fill(executed.begin(), executed.end(), false);
+}
+
+inline void Game_Interpreter_Battle::SetCurrentEnemyTargetIndex(int idx) {
+	target_enemy_index = idx;
+}
+
+inline void Game_Interpreter_Battle::SetCurrentActionTargetsSingleEnemy(bool value) {
+	targets_single_enemy = value;
+}
+
+inline void Game_Interpreter_Battle::SetCurrentActingActorId(int id) {
+	current_actor_id = id;
 }
 
 #endif

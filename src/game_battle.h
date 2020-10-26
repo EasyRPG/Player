@@ -173,20 +173,6 @@ namespace Game_Battle {
 	Point Calculate2k3BattlePosition(const Game_Actor& actor);
 
 	/**
-	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
-	 *
-	 * @param target_enemy id of targeted enemy
-	 */
-	void SetEnemyTargetIndex(int target_enemy);
-
-	/**
-	 * Gets the party index of the latest targeted enemy. Only used by battle branch "is target"
-	 *
-	 * @return targeted enemy
-	 */
-	int GetEnemyTargetIndex();
-
-	/**
 	 * Sets the need refresh flag.
 	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
 	 *

@@ -130,3 +130,10 @@ void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 		}
 	}
 }
+
+int Game_EnemyParty::GetEnemyPositionInParty(const Game_Enemy* enemy) const {
+	if (enemy >= enemies.data() && enemy < enemies.data() + enemies.size()) {
+		return enemy - enemies.data();
+	}
+	return -1;
+}

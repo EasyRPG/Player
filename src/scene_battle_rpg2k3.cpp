@@ -1761,6 +1761,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	switch (battle_action_state) {
 		case BattleActionState_Begin:
 			return ProcessBattleActionBegin(action);
+		case BattleActionState_PreEvents:
+			return ProcessBattleActionPreEvents(action);
 		case BattleActionState_Conditions:
 			return ProcessBattleActionConditions(action);
 		case BattleActionState_Notify:
@@ -1785,6 +1787,42 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+
+	// Setup enemy targets
+	// FIXME: This is not 100% bug compatible with RPG_RT but pretty close
+	// See: https://github.com/EasyRPG/Player/issues/2405#issuecomment-716298981
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto& interp = Game_Battle::GetInterpreterBattle();
+		auto* actor = static_cast<Game_Actor*>(source);
+		interp.SetCurrentActingActorId(actor->GetId());
+
+		if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+				|| action->GetType() == Game_BattleAlgorithm::Type::Skill
+				|| action->GetType() == Game_BattleAlgorithm::Type::Item)
+		{
+			const auto& original_targets = action->GetOriginalTargets();
+
+			if (original_targets.size() == 1 && original_targets.front()->GetType() == Game_Battler::Type_Enemy) {
+				auto* enemy = static_cast<Game_Enemy*>(original_targets.front());
+				interp.SetCurrentEnemyTargetIndex(Main_Data::game_enemyparty->GetEnemyPositionInParty(enemy));
+				interp.SetCurrentActionTargetsSingleEnemy(true);
+			} else {
+				interp.SetCurrentActionTargetsSingleEnemy(false);
+			}
+		}
+	}
+	// Enemy doesn't change the values, and inherits whatever the last actor did...
+	// Defend, row, etc.. is similar..
+
+	SetBattleActionState(BattleActionState_PreEvents);
+	return BattleActionReturn::eContinue;
+}
+
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPreEvents(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+
 	// RPG_RT always runs the interpreter before starting the action.
 	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eBeforeBattleAction)) {
 		return BattleActionReturn::eContinue;
@@ -1797,8 +1835,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	}
 
 	// Now perform filtering. RPG_RT will run events but will early abort the battle algo if any of the following conditions hold.
-	auto* source = action->GetSource();
-
 	// FIXME: RPG_RT doesn't actually check hidden (maybe it's impossible?) But we do it here for extensions.
 	// FIXME: RPG_RT doesn't check for dead enemies, only actors. Why?
 	if (source->IsHidden()
@@ -2045,7 +2081,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
-	SetWait(30, 30);
+	if (action->GetType() != Game_BattleAlgorithm::Type::None
+			&& action->GetType() != Game_BattleAlgorithm::Type::DoNothing) {
+		SetWait(30, 30);
+	}
 
 	action->ProcessPostActionSwitches();
 	first_strike = false;

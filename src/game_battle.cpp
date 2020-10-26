@@ -58,7 +58,6 @@ namespace {
 	int terrain_id;
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
-	int target_enemy_index;
 }
 
 void Game_Battle::Init(int troop_id) {
@@ -67,7 +66,6 @@ void Game_Battle::Init(int troop_id) {
 	assert(troop);
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
-	target_enemy_index = 0;
 
 	Main_Data::game_enemyparty->ResetBattle(troop_id);
 	interpreter.reset(new Game_Interpreter_Battle(troop->pages));
@@ -281,14 +279,6 @@ void Game_Battle::SetBattleFormation(lcf::rpg::System::BattleFormation form) {
 
 lcf::rpg::System::BattleFormation Game_Battle::GetBattleFormation() {
 	return battle_form;
-}
-
-void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
-	target_enemy_index = target_enemy;
-}
-
-int Game_Battle::GetEnemyTargetIndex() {
-	return target_enemy_index;
 }
 
 void Game_Battle::SetNeedRefresh(bool refresh) {
