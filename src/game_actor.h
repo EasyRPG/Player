@@ -788,6 +788,9 @@ public:
 	 */
 	const std::vector<const lcf::rpg::BattleCommand*> GetBattleCommands() const;
 
+	/** @return the battle command at the given index */
+	const lcf::rpg::BattleCommand* GetBattleCommand(int idx) const;
+
 	/**
 	 * Gets battle row for Rpg2k3 battles.
 	 *

@@ -463,6 +463,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected(const Game_Battler&) const
 	return false;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::ApplyComboHitsMultiplier(int hits) {
+	repeat *= hits;
+}
+
 Game_BattleAlgorithm::None::None(Game_Battler* source) :
 AlgorithmBase(Type::None, source, source) {
 	// no-op
@@ -510,6 +514,15 @@ void Game_BattleAlgorithm::Normal::Init(Style style) {
 	}
 	SetRepeat(hits_multiplier * source->GetNumberOfAttacks(GetWeapon()));
 }
+
+void Game_BattleAlgorithm::Normal::ApplyComboHitsMultiplier(int hits) {
+	AlgorithmBase::ApplyComboHitsMultiplier(hits);
+	if (weapon_style > 0) {
+		// For dual wield normal attack, the first weapon gets combo'd then the second weapon.
+		weapon_style *= hits;
+	}
+}
+
 
 bool Game_BattleAlgorithm::Normal::vStart() {
 	// If this weapon attacks all, then attack all enemies regardless of original targetting.

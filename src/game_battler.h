@@ -780,8 +780,19 @@ public:
 
 	int GetLastBattleAction() const;
 
+	/**
+	 * Setup the combo command
+	 *
+	 * @param which battle command to enable combos
+	 * @param times how many times to repeat
+	 */
 	void SetBattleCombo(int command_id, int times);
-	void GetBattleCombo(int& command_id, int& times) const;
+
+	/** @return combo command id */
+	int GetBattleComboCommand() const;
+
+	/** @return combo command number of times */
+	int GetBattleComboTimes() const;
 
 	/**
 	 * Initializes battle related data to there default values.
@@ -833,7 +844,7 @@ protected:
 	int frame_counter = 0;
 	int last_battle_action = -1;
 	int battle_combo_command_id = -1;
-	int battle_combo_times = -1;
+	int battle_combo_times = 1;
 	Point position = { 0, 0 };
 	bool defending = false;
 	bool charged = false;
@@ -999,9 +1010,12 @@ inline void Game_Battler::SetBattleCombo(int command_id, int times) {
 	battle_combo_times = times;
 }
 
-inline void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
-	command_id = battle_combo_command_id;
-	times = battle_combo_times;
+inline int Game_Battler::GetBattleComboCommand() const {
+	return battle_combo_command_id;
+}
+
+inline int Game_Battler::GetBattleComboTimes() const {
+	return std::max(1, battle_combo_times);
 }
 
 inline void Game_Battler::SetBattleOrderAgi(int val) {

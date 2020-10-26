@@ -583,7 +583,7 @@ void Game_Battler::ResetBattle() {
 	agi_modifier = 0;
 	frame_counter = Rand::GetRandomNumber(0, 63);
 	battle_combo_command_id = -1;
-	battle_combo_times = -1;
+	battle_combo_times = 1;
 	attribute_shift.clear();
 	SetBattleAlgorithm(nullptr);
 }

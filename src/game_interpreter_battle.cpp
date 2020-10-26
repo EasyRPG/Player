@@ -100,6 +100,7 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 			return false;
 	}
 
+	// FIXME: This also requires current acting hero db id
 	if (condition.flags.command_actor &&
 		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
 		return false;

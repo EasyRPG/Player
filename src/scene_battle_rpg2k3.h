@@ -57,6 +57,7 @@ public:
 		BattleActionState_Begin,
 		BattleActionState_Conditions,
 		BattleActionState_Notify,
+		BattleActionState_Combo,
 		BattleActionState_StartAlgo,
 		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
@@ -164,6 +165,7 @@ protected:
 	BattleActionReturn ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionConditions(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionNotify(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionCombo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
@@ -182,11 +184,8 @@ protected:
 	int battle_action_min_wait = 0;
 	int scene_action_substate = 0;
 	int battle_action_state = BattleActionState_Begin;
-	int combo_repeat = 1;
 
 	std::unique_ptr<Window_ActorSp> sp_window;
-
-	std::vector<Game_Battler*> targets;
 
 	FileRequestBinding request_id;
 	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};

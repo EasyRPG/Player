@@ -18,6 +18,7 @@
 #include "scene_battle_rpg2k3.h"
 #include <lcf/rpg/battlecommand.h>
 #include <lcf/rpg/battleranimation.h>
+#include <lcf/reader_util.h>
 #include "drawable.h"
 #include "input.h"
 #include "output.h"
@@ -637,7 +638,7 @@ void Scene_Battle_Rpg2k3::CreateActorAutoActions() {
 			assert(actor->GetBattleAlgorithm() != nullptr);
 		}
 
-		// FIXME: This crashes until we refactor combo
+		actor->SetLastBattleAction(-1);
 		ActionSelectedCallback(actor);
 	}
 }
@@ -845,7 +846,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	static int last_state = -1;
 	static int last_substate = -1;
 	if (state != last_state || scene_action_substate != last_substate) {
-		Output::Debug("Battle2k3 ProcessSceneAction({},{}) frames={}", state, scene_action_substate, Main_Data::game_system->GetFrameCounter());
+		int actor_id = active_actor ? active_actor->GetId() : 0;
+		StringView actor_name = active_actor ? StringView(active_actor->GetName()) : "Null";
+		Output::Debug("Battle2k3 ProcessSceneAction({}, {}) actor={}({}) frames={}", state, scene_action_substate, actor_name, actor_id, Main_Data::game_system->GetFrameCounter());
 		last_state = state;
 		last_substate = scene_action_substate;
 	}
@@ -1092,12 +1095,14 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	if (scene_action_substate == eWaitActor) {
 		const auto& actors = Main_Data::game_party->GetActors();
 		for (size_t i = 0; i < actors.size(); ++i) {
-			active_actor = actors[i];
-			RefreshCommandWindow(active_actor);
-			status_window->SetIndex(i);
-			command_window->SetIndex(0);
-			SetState(State_SelectCommand);
-			return SceneActionReturn::eWaitTillNextFrame;
+			if (actors[i]->IsAtbGaugeFull() && actors[i]->GetBattleAlgorithm() == nullptr) {
+				active_actor = actors[i];
+				RefreshCommandWindow(active_actor);
+				status_window->SetIndex(i);
+				command_window->SetIndex(0);
+				SetState(State_SelectCommand);
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
@@ -1146,52 +1151,55 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 			int index = command_window->GetIndex();
 			// Row command always uses the last index
 			if (index < command_window->GetRowMax() - 1) {
-				const lcf::rpg::BattleCommand* command = active_actor->GetBattleCommands()[index];
+				const auto* command = active_actor->GetBattleCommand(index);
 
-				switch (command->type) {
-					case lcf::rpg::BattleCommand::Type_attack:
-						AttackSelected();
-						break;
-					case lcf::rpg::BattleCommand::Type_defense:
-						DefendSelected();
-						break;
-					case lcf::rpg::BattleCommand::Type_escape:
-						if (!IsEscapeAllowedFromActorCommand()) {
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-						}
-						else {
+				if (command) {
+					active_actor->SetLastBattleAction(command->ID);
+					switch (command->type) {
+						case lcf::rpg::BattleCommand::Type_attack:
+							AttackSelected();
+							break;
+						case lcf::rpg::BattleCommand::Type_defense:
+							DefendSelected();
+							break;
+						case lcf::rpg::BattleCommand::Type_escape:
+							if (!IsEscapeAllowedFromActorCommand()) {
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+							}
+							else {
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+								active_actor->SetAtbGauge(0);
+								SetState(State_Escape);
+							}
+							break;
+						case lcf::rpg::BattleCommand::Type_item:
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-							active_actor->SetAtbGauge(0);
-							SetState(State_Escape);
-						}
-						break;
-					case lcf::rpg::BattleCommand::Type_item:
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-						SetState(State_SelectItem);
-						break;
-					case lcf::rpg::BattleCommand::Type_skill:
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-						skill_window->SetSubsetFilter(0);
-						sp_window->SetBattler(*active_actor);
-						SetState(State_SelectSkill);
-						break;
-					case lcf::rpg::BattleCommand::Type_special:
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-						SpecialSelected();
-						break;
-					case lcf::rpg::BattleCommand::Type_subskill:
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-						SubskillSelected();
-						break;
+							SetState(State_SelectItem);
+							break;
+						case lcf::rpg::BattleCommand::Type_skill:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							skill_window->SetSubsetFilter(0);
+							sp_window->SetBattler(*active_actor);
+							SetState(State_SelectSkill);
+							break;
+						case lcf::rpg::BattleCommand::Type_special:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							SpecialSelected();
+							break;
+						case lcf::rpg::BattleCommand::Type_subskill:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							SubskillSelected();
+							break;
+					}
 				}
 			} else {
+				// FIXME: Verify how battle interpreter runs with row command
 				RowSelected();
 			}
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-			active_actor->SetLastBattleAction(-1);
 			SetState(State_SelectActor);
 
 			return SceneActionReturn::eWaitTillNextFrame;
@@ -1248,7 +1256,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSk
 	};
 
 	const auto actor_index = Main_Data::game_party->GetActorPositionInParty(active_actor->GetId());
-	skill_window->SaveActorIndex(actor_index);
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
@@ -1271,6 +1278,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSk
 
 		SetSceneActionSubState(eWaitInput);
 	}
+
+	skill_window->SaveActorIndex(actor_index);
 
 	if (scene_action_substate == eWaitInput) {
 		if (Input::IsTriggered(Input::DECISION)) {
@@ -1686,7 +1695,9 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	static int last_state = -1;
 	if (battle_action_state != last_state) {
-		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) frames={}", action->GetSource()->GetName(), battle_action_state, Main_Data::game_system->GetFrameCounter());
+		int actor_id = active_actor ? active_actor->GetId() : 0;
+		StringView actor_name = active_actor ? StringView(active_actor->GetName()) : "Null";
+		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) actor={}({}) frames={}", action->GetSource()->GetName(), battle_action_state, actor_name, actor_id, Main_Data::game_system->GetFrameCounter());
 		last_state = battle_action_state;
 	}
 #endif
@@ -1698,6 +1709,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			return ProcessBattleActionConditions(action);
 		case BattleActionState_Notify:
 			return ProcessBattleActionNotify(action);
+		case BattleActionState_Combo:
+			return ProcessBattleActionCombo(action);
 		case BattleActionState_StartAlgo:
 			return ProcessBattleActionStartAlgo(action);
 		case BattleActionState_Animation:
@@ -1783,7 +1796,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionNotify(Game_BattleAlgorithm::AlgorithmBase* action) {
-
 	std::string notification = action->GetStartMessage(0);
 	ShowNotification(notification);
 	if (!notification.empty()) {
@@ -1794,6 +1806,28 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 	}
 
+	SetBattleActionState(BattleActionState_Combo);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCombo(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* actor = static_cast<Game_Actor*>(source);
+		auto combo_cmd = actor->GetBattleComboCommand();
+		auto combo_times = actor->GetBattleComboTimes();
+
+		if (combo_times > 1 && combo_cmd >= 0 && combo_cmd == actor->GetLastBattleAction()) {
+			auto* cmd = lcf::ReaderUtil::GetElement(lcf::Data::battlecommands.commands, combo_cmd);
+			if (cmd && (cmd->type == lcf::rpg::BattleCommand::Type_attack
+						|| cmd->type == lcf::rpg::BattleCommand::Type_skill
+						|| cmd->type == lcf::rpg::BattleCommand::Type_subskill))
+			{
+				// RPG_RT doesn't allow combo for item or other actions other than attack and skills.
+				action->ApplyComboHitsMultiplier(combo_times);
+			}
+		}
+	}
 	SetBattleActionState(BattleActionState_StartAlgo);
 	return BattleActionReturn::eContinue;
 }
@@ -1933,8 +1967,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 						0,
 						lcf::Data::terms.miss);
 			}
-
-			targets.push_back(target);
 		}
 
 		status_window->Refresh();
@@ -1952,22 +1984,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		return BattleActionReturn::eContinue;
 	}
 
-	// Check if a combo is enabled and redo the whole action in that case
-	int combo_command_id;
-	int combo_times;
-
-	action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
-	if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
-			combo_times > combo_repeat) {
-		// TODO: Prevent combo when the combo is a skill and needs more SP
-		// then available
-
-		// Count how often we have to repeat
-		++combo_repeat;
-		SetBattleActionState(BattleActionState_StartAlgo);
-		return BattleActionReturn::eContinue;
-	}
-
 	SetBattleActionState(BattleActionState_Finished);
 	return BattleActionReturn::eContinue;
 }
@@ -1975,10 +1991,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
 	SetWait(30, 30);
 
-	targets.clear();
-	combo_repeat = 1;
-
 	action->ProcessPostActionSwitches();
+	first_strike = false;
 
 	return BattleActionReturn::eFinished;
 }
@@ -2065,31 +2079,10 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	for_battler->SetAtbGauge(0);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
-		int index = command_window->GetIndex();
-		// Row command always uses the last index
-		if (index < command_window->GetRowMax() - 1) {
-			const auto& cmds = static_cast<Game_Actor*>(for_battler)->GetBattleCommands();
-			assert(index >= 0);
-			assert(index < static_cast<int>(cmds.size()));
-			const lcf::rpg::BattleCommand* command = cmds[index];
-			for_battler->SetLastBattleAction(command->ID);
-		} else {
-			// RPG_RT behavior: If the row command is used,
-			// then check if the actor has at least 6 battle commands.
-			// If yes, then set -1 as last battle action, otherwise 0.
-			if (static_cast<Game_Actor*>(for_battler)->GetBattleCommands().size() >= 6) {
-				for_battler->SetLastBattleAction(-1);
-			} else {
-				for_battler->SetLastBattleAction(0);
-			}
-		}
 		status_window->SetIndex(-1);
 	}
 
 	Scene_Battle::ActionSelectedCallback(for_battler);
-
-	// First strike escape bonus cancelled on actor non-escape action.
-	first_strike = false;
 
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	Output::Debug("Battle2k3 ScheduleAction {} name={} type={} frame={}",

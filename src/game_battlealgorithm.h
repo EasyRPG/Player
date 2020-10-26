@@ -333,6 +333,13 @@ public:
 	 */
 	void SetRepeat(int repeat);
 
+	/** 
+	 * Apply a combo number of hits to repeat the action.
+	 *
+	 * @param hits the number of combo hits
+	 */
+	virtual void ApplyComboHitsMultiplier(int hits);
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
@@ -357,6 +364,7 @@ protected:
 	std::vector<Game_Battler*>::iterator current_target;
 	Game_Party_Base* party_target = nullptr;
 	Game_Battler* reflect_target = nullptr;
+	int battle_command_used = -1;
 
 	int hp = 0;
 	int sp = 0;
@@ -420,6 +428,7 @@ public:
 	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
+	void ApplyComboHitsMultiplier(int hits) override;
 private:
 	void Init(Style style);
 	int hits_multiplier = 1;

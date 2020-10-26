@@ -898,6 +898,20 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	cmds.resize(7, -1);
 }
 
+const lcf::rpg::BattleCommand* Game_Actor::GetBattleCommand(int idx) const {
+	Span<const int32_t> commands;
+	if (data.changed_battle_commands) {
+		commands = data.battle_commands;
+	} else if (dbActor) {
+		commands = dbActor->battle_commands;
+	}
+	int cmd_id = 0;
+	if (idx >= 0 && idx < static_cast<int>(commands.size())) {
+		cmd_id = commands[idx];
+	}
+	return lcf::ReaderUtil::GetElement(lcf::Data::battlecommands.commands, cmd_id);
+}
+
 const std::vector<const lcf::rpg::BattleCommand*> Game_Actor::GetBattleCommands() const {
 	std::vector<const lcf::rpg::BattleCommand*> commands;
 	std::vector<int32_t> obc = data.battle_commands;
