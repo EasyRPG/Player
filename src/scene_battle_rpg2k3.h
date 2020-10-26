@@ -88,7 +88,7 @@ protected:
 	void CreateEnemyActions();
 	void CreateActorAutoActions();
 	bool UpdateAtb();
-	void UpdateCursors();
+	void UpdateAnimations();
 	bool UpdateBattleState();
 
 	void OnSystem2Ready(FileRequestResult* result);

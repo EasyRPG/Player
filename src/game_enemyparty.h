@@ -73,6 +73,9 @@ public:
 	 */
 	void GenerateDrops(std::vector<int>& out) const;
 
+	/** @return enemy from party */
+	Game_Enemy* GetEnemy(int idx);
+
 private:
 	std::vector<Game_Enemy> enemies;
 };

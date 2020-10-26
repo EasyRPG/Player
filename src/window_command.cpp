@@ -72,6 +72,7 @@ void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
 	item_max = commands.size();
 	const int num_contents = item_max > 0 ? item_max : 1;
 	SetContents(Bitmap::Create(this->width - 16, num_contents * 16));
+	SetTopRow(0);
 
 	Refresh();
 }

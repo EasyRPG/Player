@@ -317,57 +317,104 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	ResetWindows(true);
 }
 
-void Scene_Battle_Rpg2k3::UpdateCursors() {
-	const auto ally_index = status_window->GetIndex();
+void Scene_Battle_Rpg2k3::UpdateAnimations() {
+	for (auto it = floating_texts.begin(); it != floating_texts.end();) {
+		int &time = it->remaining_time;
+
+		if (time % 2 == 0) {
+			int modifier = time <= 10 ? 1 :
+						   time < 20 ? 0 :
+						   -1;
+			it->sprite->SetY(it->sprite->GetY() + modifier);
+		}
+
+		--time;
+		if (time <= 0) {
+			it = floating_texts.erase(it);
+		} else {
+			++it;
+		}
+	}
+
+	if (running_away) {
+		for (auto& actor: Main_Data::game_party->GetActors()) {
+			Point p = actor->GetBattlePosition();
+			if (actor->IsDirectionFlipped()) {
+				p.x -= 6;
+			} else {
+				p.x += 6;
+			}
+			actor->SetBattlePosition(p);
+		}
+	}
+
+	auto frame_counter = Main_Data::game_system->GetFrameCounter();
+
+	bool ally_set = false;
 	if (status_window->GetActive()
-			&& ally_index >= 0
 			&& lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional)
 	{
-		ally_cursor->SetVisible(true);
-		std::vector<Game_Battler*> actors;
-		Main_Data::game_party->GetBattlers(actors);
-		auto* actor = actors[ally_index];
-		const auto* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
-		ally_cursor->SetX(actor->GetBattlePosition().x);
-		ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
-		static const int frames[] = { 0, 1, 2, 1 };
-		int frame = frames[(cycle / 15) % 4];
-		ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
+		auto* actor = Main_Data::game_party->GetActor(status_window->GetIndex());
+		if (actor) {
+			const auto* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			if (sprite) {
+				static const int frames[] = { 0, 1, 2, 1 };
+				int sprite_frame = frames[(frame_counter / 15) % 4];
+				ally_cursor->SetSrcRect(Rect(sprite_frame * 16, 16, 16, 16));
 
-		if (cycle % 30 == 0) {
-			SelectionFlash(actor);
+				ally_cursor->SetVisible(true);
+				ally_cursor->SetX(actor->GetBattlePosition().x);
+				ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
+
+				if (sprite_frame % 30 == 0) {
+					SelectionFlash(actor);
+				}
+				ally_set = true;
+			}
 		}
-	} else {
+	}
+	if (!ally_set) {
 		ally_cursor->SetVisible(false);
 	}
 
-	const auto enemy_index = target_window->GetIndex();
-	if (target_window->GetActive() && enemy_index >= 0) {
-		enemy_cursor->SetVisible(true);
-		std::vector<Game_Battler*> enemies;
-		Main_Data::game_enemyparty->GetActiveBattlers(enemies);
-		auto* enemy = enemies[enemy_index];
-		const auto* sprite = Game_Battle::GetSpriteset().FindBattler(enemy);
-		enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
-		enemy_cursor->SetY(enemy->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
-		static const int frames[] = { 0, 1, 2, 1 };
-		int frame = frames[(cycle / 15) % 4];
-		enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
+	bool enemy_set = false;
+	if (target_window->GetActive()) {
+		std::vector<Game_Battler*> battlers;
+		Main_Data::game_enemyparty->GetActiveBattlers(battlers);
+		auto idx = target_window->GetIndex();
+		if (idx >= 0) {
+			auto* enemy = battlers[idx];
+			if (enemy) {
+				const auto* sprite = Game_Battle::GetSpriteset().FindBattler(enemy);
+				if (sprite) {
+					static const int frames[] = { 0, 1, 2, 1 };
+					int sprite_frame = frames[(frame_counter / 15) % 4];
+					enemy_cursor->SetSrcRect(Rect(sprite_frame * 16, 0, 16, 16));
 
-		auto* state = enemy->GetSignificantState();
-		if (state) {
-			help_window->SetText(ToString(state->name), state->color);
-		} else {
+					enemy_cursor->SetVisible(true);
+					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
+					enemy_cursor->SetY(enemy->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
+
+					auto* state = enemy->GetSignificantState();
+					if (state) {
+						help_window->SetText(ToString(state->name), state->color);
+					}
+
+					if (sprite_frame % 30 == 0) {
+						SelectionFlash(enemy);
+					}
+					enemy_set = true;
+				}
+			}
+		}
+		if (!enemy_set) {
 			help_window->Clear();
 		}
+	}
 
-		if (cycle % 30 == 0) {
-			SelectionFlash(enemy);
-		}
-	} else {
+	if (!enemy_set) {
 		enemy_cursor->SetVisible(false);
 	}
-	++cycle;
 }
 
 void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text) {
@@ -684,38 +731,6 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	// FIXME: RPG_RT updates actors first, and this goes into doing actor battle actions
 	UpdateBattlers();
 
-	for (auto it = floating_texts.begin(); it != floating_texts.end();) {
-		int &time = (*it).remaining_time;
-
-		if (time % 2 == 0) {
-			int modifier = time <= 10 ? 1 :
-						   time < 20 ? 0 :
-						   -1;
-			(*it).sprite->SetY((*it).sprite->GetY() + modifier);
-		}
-
-		--time;
-		if (time <= 0) {
-			it = floating_texts.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-
-	// FIXME: Refactor this to be cleaner
-	if (running_away) {
-		for (auto& actor: Main_Data::game_party->GetActors()) {
-			Point p = actor->GetBattlePosition();
-			if (actor->IsDirectionFlipped()) {
-				p.x -= 6;
-			} else {
-				p.x += 6;
-			}
-			actor->SetBattlePosition(p);
-		}
-	}
-
 	UpdateUi();
 
 	if (!UpdateEvents()) {
@@ -742,7 +757,6 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	CheckBattleEndConditions();
 	UpdateAtb();
 	// FIXME: This goes after death but before victory?
-	UpdateCursors();
 	return true;
 }
 
@@ -772,7 +786,8 @@ void Scene_Battle_Rpg2k3::Update() {
 		}
 	}
 
-	Game_Battle::UpdateGraphics();
+	UpdateAnimations();
+	UpdateGraphics();
 }
 
 void Scene_Battle_Rpg2k3::NextTurn(Game_Battler* battler) {
@@ -1065,7 +1080,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 		if (selected_actor == nullptr || !selected_actor->IsAtbGaugeFull()) {
 			// If current selection is no longer valid, force a new selection
 			const auto idx = GetFirstReadyActor();
-			SetActiveActor(idx);
+			if (idx != status_window->GetIndex()) {
+				SetActiveActor(idx);
+			}
 		} else if (selected_actor != active_actor) {
 			// If selection changed due to player input
 			SetActiveActor(status_window->GetIndex());
@@ -1405,7 +1422,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAl
 				status_window->SetVisible(true);
 				command_window->SetVisible(true);
 				command_window->SetIndex(-1);
-				target_window->SetActive(true);
 				break;
 			case lcf::rpg::BattleCommands::BattleType_gauge:
 				ResetWindows(true);
@@ -1425,6 +1441,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAl
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+			status_window->SetIndex(Main_Data::game_party->GetActorPositionInParty(active_actor->GetId()));
 			SetState(previous_state);
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
