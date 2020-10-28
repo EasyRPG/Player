@@ -736,8 +736,11 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	UpdateUi();
 
 	if (state != State_Victory && state != State_Defeat) {
-		if (!UpdateEvents()) {
-			return false;
+		// FIXME: Interpreter also blocked by an RPG_RT continueBattle flag. What is this flag?
+		if (!Game_Battle::IsBattleAnimationWaiting()) {
+			if (!UpdateEvents()) {
+				return false;
+			}
 		}
 
 		// FIXME: Update Panorama
