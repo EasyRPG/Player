@@ -2200,7 +2200,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected(int command) {
 void Scene_Battle_Rpg2k3::SpecialSelected() {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
-	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(active_actor));
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::DoNothing>(active_actor));
 
 	ActionSelectedCallback(active_actor);
 }
