@@ -199,37 +199,40 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand cons
 
 bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com) {
 	bool check = com.parameters[2] == 0;
-	bool result = false;
 
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_pincers) {
-			_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Escape));
-			result = true;
+			this->force_flee_enabled = true;
 		}
 	    break;
 	case 1:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
-			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
-				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
-				enemy.Kill();
+			int num_escaped = 0;
+			for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+				if (enemy->Exists()) {
+					enemy->SetHidden(true);
+					enemy->SetDeathTimer();
+					++num_escaped;
+				}
+			}
+			if (num_escaped) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
 			}
 			Game_Battle::SetNeedRefresh(true);
-			result = true;
 		}
 	    break;
 	case 2:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
-			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
-			enemy.Kill();
-			Game_Battle::SetNeedRefresh(true);
-			result = true;
+			auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
+			if (enemy->Exists()) {
+				enemy->SetHidden(true);
+				enemy->SetDeathTimer();
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
+				Game_Battle::SetNeedRefresh(true);
+			}
 		}
 	    break;
-	}
-
-	if (result) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 	}
 
 	return true;

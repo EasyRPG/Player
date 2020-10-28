@@ -55,6 +55,8 @@ public:
 	void SetCurrentActionTargetsSingleEnemy(bool value);
 	void SetCurrentActingActorId(int id);
 
+	bool IsForceFleeEnabled() const;
+
 	bool ExecuteCommand() override;
 private:
 	bool CommandCallCommonEvent(lcf::rpg::EventCommand const& com);
@@ -76,6 +78,7 @@ private:
 	int target_enemy_index = -1;
 	int current_actor_id = 0;
 	bool targets_single_enemy = false;
+	bool force_flee_enabled = false;
 };
 
 inline int Game_Interpreter_Battle::GetNumPages() const {
@@ -105,6 +108,10 @@ inline void Game_Interpreter_Battle::SetCurrentActionTargetsSingleEnemy(bool val
 
 inline void Game_Interpreter_Battle::SetCurrentActingActorId(int id) {
 	current_actor_id = id;
+}
+
+inline bool Game_Interpreter_Battle::IsForceFleeEnabled() const {
+	return force_flee_enabled;
 }
 
 #endif

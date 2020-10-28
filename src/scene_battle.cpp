@@ -25,6 +25,7 @@
 #include "player.h"
 #include "transition.h"
 #include "game_battlealgorithm.h"
+#include "game_interpreter_battle.h"
 #include "game_message.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -114,7 +115,7 @@ void Scene_Battle::InitEscapeChance() {
 }
 
 bool Scene_Battle::TryEscape() {
-	if (first_strike || Rand::PercentChance(escape_chance)) {
+	if (first_strike || Game_Battle::GetInterpreterBattle().IsForceFleeEnabled() || Rand::PercentChance(escape_chance)) {
 		return true;
 	}
 	escape_chance += 10;
@@ -208,9 +209,15 @@ void Scene_Battle::UpdateUi() {
 }
 
 bool Scene_Battle::UpdateEvents() {
-	auto& interp = Game_Battle::GetInterpreter();
+	auto& interp = Game_Battle::GetInterpreterBattle();
 	interp.Update();
 	status_window->Refresh();
+
+	if (interp.IsForceFleeEnabled()) {
+		if (state != State_Escape) {
+			SetState(State_Escape);
+		}
+	}
 
 	auto call = TakeRequestedScene();
 	if (call && call->type == Scene::Gameover) {

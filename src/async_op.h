@@ -39,6 +39,7 @@ class AsyncOp {
 			eToTitle,
 			eExitGame,
 			eTerminateBattle,
+			eEscapeBattle,
 		};
 
 		AsyncOp() = default;
@@ -63,6 +64,9 @@ class AsyncOp {
 
 		/** @return a TerminateBattle async operation */
 		static AsyncOp MakeTerminateBattle(int result);
+
+		/** @return a TerminateBattle async operation */
+		static AsyncOp MakeEscapeBattle();
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -173,6 +177,10 @@ inline AsyncOp AsyncOp::MakeExitGame() {
 
 inline AsyncOp AsyncOp::MakeTerminateBattle(int transition_type) {
 	return AsyncOp(eTerminateBattle, transition_type);
+}
+
+inline AsyncOp AsyncOp::MakeEscapeBattle() {
+	return AsyncOp(eEscapeBattle);
 }
 
 #endif
