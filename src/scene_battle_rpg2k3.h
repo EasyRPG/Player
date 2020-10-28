@@ -119,6 +119,7 @@ protected:
 	void AttackSelected() override;
 	void SubskillSelected(int command);
 	void SpecialSelected();
+	void EscapeSelected();
 	void RowSelected();
 
 	void ActionSelectedCallback(Game_Battler* for_battler) override;
@@ -183,6 +184,9 @@ protected:
 	BattleActionReturn ProcessBattleActionPostAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
+	std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor);
+	void SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor);
 
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 

@@ -501,7 +501,7 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 	status_window->SetZ(Priority_Window + 1);
 }
 
-static std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor) {
+std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_Actor* actor) {
 	std::vector<std::string> commands;
 	if (actor) {
 		for (auto* cmd: actor->GetBattleCommands()) {
@@ -513,12 +513,12 @@ static std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor) {
 	return commands;
 }
 
-static void SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor) {
+void Scene_Battle_Rpg2k3::SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor) {
 	if (actor) {
 		const auto& cmds = actor->GetBattleCommands();
 		for (size_t i = 0; i < cmds.size(); ++i) {
 			auto* cmd = cmds[i];
-			if (cmd->type == lcf::rpg::BattleCommand::Type_escape) {
+			if (cmd->type == lcf::rpg::BattleCommand::Type_escape && !IsEscapeAllowedFromActorCommand()) {
 				window.DisableItem(i);
 			}
 		}
@@ -1229,14 +1229,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 							DefendSelected();
 							break;
 						case lcf::rpg::BattleCommand::Type_escape:
-							if (!IsEscapeAllowedFromActorCommand()) {
-								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-							}
-							else {
-								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-								active_actor->SetAtbGauge(0);
-								SetState(State_Escape);
-							}
+							EscapeSelected();
 							break;
 						case lcf::rpg::BattleCommand::Type_item:
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
@@ -1501,6 +1494,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 
 	if (scene_action_substate == eBattleAction) {
 		auto rc = ProcessBattleAction(pending_battle_action.get());
+		// If interpreter or something else changed the battle state, cleanup before we abort.
+		if (state != State_Battle) {
+			pending_battle_action = {};
+			RemoveCurrentAction();
+		}
 		if (rc == BattleActionReturn::eContinue) {
 			return SceneActionReturn::eContinueThisFrame;
 		}
@@ -1937,9 +1935,16 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action) {
 	const auto is_target_party = action->IsTargetingParty();
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+	auto* source = action->GetSource();
+	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
 
 	action->Start();
+
+	// Drop out of the battle state machine to process actor escape.
+	if (action->GetType() == Game_BattleAlgorithm::Type::Escape && source->GetType() == Game_Battler::Type_Ally) {
+		SetState(State_Escape);
+		return BattleActionReturn::eContinue;
+	}
 
 	// FIXME: This needs to be attached to the monster target window.
 	// Counterexample is weapon with attack all, engine still makes you target a specific enemy,
@@ -2205,6 +2210,16 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 	ActionSelectedCallback(active_actor);
 }
 
+void Scene_Battle_Rpg2k3::EscapeSelected() {
+	if (!IsEscapeAllowedFromActorCommand()) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Escape>(active_actor));
+	ActionSelectedCallback(active_actor);
+}
+
 void Scene_Battle_Rpg2k3::RowSelected() {
 	// Switching rows is only possible if in back row or
 	// if at least 2 party members are in front row
@@ -2222,7 +2237,7 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 			active_actor->SetBattleRow(Game_Actor::RowType::RowType_front);
 		}
 		active_actor->SetBattlePosition(Game_Battle::Calculate2k3BattlePosition(*active_actor));
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(active_actor));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::DoNothing>(active_actor));
 		ActionSelectedCallback(active_actor);
 	} else {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
