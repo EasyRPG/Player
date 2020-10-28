@@ -110,6 +110,23 @@ private:
 	LogLevel _ll = {};
 };
 
+struct MockBattle : public MockActor {
+	MockBattle(int party_size = 4, int troop_size = 4, int eng = Player::EngineRpg2k3 | Player::EngineEnglish) : MockActor(eng)
+	{
+		Main_Data::game_party->Clear();
+		for (int i = 0; i < party_size; ++i) {
+			Main_Data::game_party->AddActor(i + 1);
+		}
+
+		auto& tp = lcf::Data::troops[0];
+		tp.members.resize(troop_size);
+		for (int i = 0; i < troop_size; ++i) {
+			tp.members[i].enemy_id = i + 1;
+		}
+		Main_Data::game_enemyparty->ResetBattle(1);
+	}
+};
+
 inline lcf::rpg::Actor* MakeDBActor(int id, int level = 1, int final_level = 50,
 		int hp = 1, int sp = 0, int atk = 0, int def = 0, int spi = 0, int agi = 0,
 		bool two_weapon = false, bool lock_equip = false, bool autobattle = false, bool super_guard = false)
