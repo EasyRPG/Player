@@ -1763,6 +1763,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			return ProcessBattleActionAnimation(action);
 		case BattleActionState_AnimationReflect:
 			return ProcessBattleActionAnimationReflect(action);
+		case BattleActionState_FinishPose:
+			return ProcessBattleActionFinishPose(action);
+		case BattleActionState_Execute:
+			return ProcessBattleActionExecute(action);
+		case BattleActionState_SwitchEvents:
+			return ProcessBattleActionSwitchEvents(action);
 		case BattleActionState_Apply:
 			return ProcessBattleActionApply(action);
 		case BattleActionState_PostAction:
@@ -1959,7 +1965,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	if (action->ReflectTargets()) {
 		SetBattleActionState(BattleActionState_AnimationReflect);
 	} else {
-		SetBattleActionState(BattleActionState_Apply);
+		SetBattleActionState(BattleActionState_Execute);
 	}
 	return BattleActionReturn::eContinue;
 }
@@ -1970,12 +1976,22 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		assert(action->GetReflectTarget());
 		action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetReflectTarget()));
 	}
-	SetBattleActionState(BattleActionState_Apply);
+	SetBattleActionState(BattleActionState_FinishPose);
 	return BattleActionReturn::eContinue;
 }
 
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	if (source_sprite) {
+		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+	}
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
+	SetBattleActionState(BattleActionState_Execute);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (!action->IsCurrentTargetValid()) {
 		SetBattleActionState(BattleActionState_PostAction);
 		return BattleActionReturn::eContinue;
@@ -1987,78 +2003,98 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 	}
 
-	std::vector<const lcf::rpg::Sound*> sfx;
-	auto queueSe = [&](auto* se) {
-		if (se != nullptr) {
-			auto iter = std::find(sfx.begin(), sfx.end(), se);
-			if (iter == sfx.end()) {
-				sfx.push_back(se);
+	action->Execute();
+	action->ApplyCustomEffect();
+	action->ApplySwitchEffect();
+
+	if (action->GetAffectedSwitch() > 0) {
+		SetBattleActionState(BattleActionState_SwitchEvents);
+	} else {
+		SetBattleActionState(BattleActionState_Apply);
+	}
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionSwitchEvents(Game_BattleAlgorithm::AlgorithmBase* action) {
+	(void)action;
+	// RPG_RT always runs the interpreter before starting the action.
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction)) {
+		return BattleActionReturn::eContinue;
+	}
+
+	SetBattleActionState(BattleActionState_Apply);
+	return BattleActionReturn::eContinue;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* target = action->GetTarget();
+	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+
+	const bool was_dead = target->IsDead();
+
+	action->ApplyHpEffect();
+	action->ApplySpEffect();
+	action->ApplyAtkEffect();
+	action->ApplyDefEffect();
+	action->ApplySpiEffect();
+	action->ApplyAgiEffect();
+	action->ApplyStateEffects();
+	action->ApplyAttributeShiftEffects();
+
+	if (action->IsSuccess() && action->GetAffectedHp() < 0) {
+		if (target->GetType() == Game_Battler::Type_Enemy) {
+			auto* enemy = static_cast<Game_Enemy*>(target);
+			enemy->SetBlinkTimer();
+			if (!was_dead && enemy->IsDead()) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
+				enemy->SetDeathTimer();
 			}
+		} else {
+			target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
-	};
+	}
+	target_sprite->DetectStateChange();
 
-	do {
-		auto* target = action->GetTarget();
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-
-		const bool was_dead = target->IsDead();
-
-		action->Execute();
-		action->ApplyAll();
-
-		if (action->IsSuccess() && action->GetAffectedHp() < 0) {
-			if (target->GetType() == Game_Battler::Type_Enemy) {
-				auto* enemy = static_cast<Game_Enemy*>(target);
-				enemy->SetBlinkTimer();
-				if (!was_dead && enemy->IsDead()) {
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-					enemy->SetDeathTimer();
-				}
-			} else {
-				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-			}
+	if (action->IsSuccess()) {
+		if (action->IsCriticalHit()) {
+			Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
 		}
-		target_sprite->DetectStateChange();
-
-
-		if (target) {
-			if (action->IsSuccess()) {
-				if (action->IsCriticalHit()) {
-					Main_Data::game_screen->FlashOnce(28, 28, 28, 20, 8);
-				}
-				if (action->IsAffectHp()) {
-					const auto hp = action->GetAffectedHp();
-					if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
-						DrawFloatText(
-								target->GetBattlePosition().x,
-								target->GetBattlePosition().y,
-								hp > 0 ? Font::ColorHeal : Font::ColorDefault,
-								std::to_string(std::abs(hp)));
-					}
-
-					if (!action->IsPositive() && !action->IsAbsorb()) {
-						if (target->GetType() == Game_Battler::Type_Ally) {
-							queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
-						} else {
-							queueSe(&Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
-						}
-					}
-				}
-			} else {
-				queueSe(action->GetFailureSe());
+		if (action->IsAffectHp()) {
+			const auto hp = action->GetAffectedHp();
+			if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
 				DrawFloatText(
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
-						0,
-						lcf::Data::terms.miss);
+						hp > 0 ? Font::ColorHeal : Font::ColorDefault,
+						std::to_string(std::abs(hp)));
+			}
+
+			if (!action->IsPositive() && !action->IsAbsorb()) {
+				if (target->GetType() == Game_Battler::Type_Ally) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyDamage));
+				}
 			}
 		}
+	} else {
+		auto* se = action->GetFailureSe();
+		if (se) {
+			Main_Data::game_system->SePlay(*se);
+		}
+		DrawFloatText(
+				target->GetBattlePosition().x,
+				target->GetBattlePosition().y,
+				0,
+				lcf::Data::terms.miss);
+	}
 
-		status_window->Refresh();
-	} while (action->TargetNext());
+	status_window->Refresh();
 
-	for (auto* se: sfx) {
-		Main_Data::game_system->SePlay(*se);
+	// Repeat on next target
+	if (action->TargetNext()) {
+		SetBattleActionState(BattleActionState_Execute);
+		return BattleActionReturn::eContinue;
 	}
 
 	SetWait(30, 30);

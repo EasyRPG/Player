@@ -725,7 +725,7 @@ bool Game_BattleAlgorithm::Skill::vStart() {
 }
 
 int Game_BattleAlgorithm::Skill::GetAnimationId(int idx) const {
-	return idx == 0 ? skill.animation_id : 0;
+	return idx == 0 && Algo::IsNormalOrSubskill(skill) ? skill.animation_id : 0;
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid(const Game_Battler& target) const {

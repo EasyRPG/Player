@@ -62,6 +62,9 @@ public:
 		BattleActionState_StartAlgo,
 		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
+		BattleActionState_FinishPose,
+		BattleActionState_Execute,
+		BattleActionState_SwitchEvents,
 		BattleActionState_Apply,
 		BattleActionState_PostAction,
 		BattleActionState_PostEvents,
@@ -173,6 +176,9 @@ protected:
 	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionSwitchEvents(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionPostAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action);
