@@ -731,32 +731,36 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	// FIXME: RPG_RT updates actors first, and this goes into doing actor battle actions
 	UpdateBattlers();
 
+	// FIXME: RPG_RT updates UI later, but UI updates also tie in with actor and monster processing.
+	// Order those things correctly.
 	UpdateUi();
 
-	if (!UpdateEvents()) {
-		return false;
-	}
-
-	// FIXME: Update Panorama
-
-	if (!UpdateTimers()) {
-		return false;
-	}
-
-	if (Input::IsTriggered(Input::DEBUG_MENU)) {
-		if (this->CallDebug()) {
-			// Set this flag so that when we return and run update again, we resume exactly from after this point.
-			resume_from_debug_scene = true;
+	if (state != State_Victory && state != State_Defeat) {
+		if (!UpdateEvents()) {
 			return false;
 		}
-	}
 
-	// FIXME: Check for defeat
-	// FIXME: If not victory, update monster displayed conditions and other UI components
-	// FIXME: Check for victory
-	CheckBattleEndConditions();
-	UpdateAtb();
-	// FIXME: This goes after death but before victory?
+		// FIXME: Update Panorama
+
+		if (!UpdateTimers()) {
+			return false;
+		}
+
+		if (Input::IsTriggered(Input::DEBUG_MENU)) {
+			if (this->CallDebug()) {
+				// Set this flag so that when we return and run update again, we resume exactly from after this point.
+				resume_from_debug_scene = true;
+				return false;
+			}
+		}
+
+		// FIXME: Check for defeat
+		// FIXME: If not victory, update monster displayed conditions and other UI components
+		// FIXME: Check for victory
+		CheckBattleEndConditions();
+		UpdateAtb();
+		// FIXME: This goes after death but before victory?
+	}
 	return true;
 }
 
@@ -773,7 +777,11 @@ void Scene_Battle_Rpg2k3::Update() {
 			break;
 		}
 
-		if (Game_Message::IsMessageActive() || Game_Battle::GetInterpreter().IsRunning()) {
+		if (Game_Message::IsMessageActive()) {
+			break;
+		}
+
+		if (state != State_Victory && state != State_Defeat && Game_Battle::GetInterpreter().IsRunning()) {
 			break;
 		}
 
@@ -1542,6 +1550,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		}
 		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Victory));
 		SetWait(30, 30);
+		SetSceneActionSubState(eMessages);
 		return SceneActionReturn::eContinueThisFrame;
 	}
 
@@ -1597,6 +1606,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 			Main_Data::game_party->AddItem(item, 1);
 		}
 
+		SetSceneActionSubState(eEnd);
 		return SceneActionReturn::eContinueThisFrame;
 	}
 
