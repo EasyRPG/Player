@@ -46,7 +46,8 @@ namespace Game_Battle {
 	/** Contains battle related sprites */
 	std::unique_ptr<Spriteset_Battle> spriteset;
 
-	std::unique_ptr<BattleAnimation> animation;
+	std::unique_ptr<BattleAnimation> animation_actors;
+	std::unique_ptr<BattleAnimation> animation_enemies;
 
 	bool battle_running = false;
 
@@ -69,7 +70,8 @@ void Game_Battle::Init(int troop_id) {
 	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
-	animation.reset();
+	animation_actors.reset();
+	animation_enemies.reset();
 
 	Game_Battle::battle_running = true;
 	Main_Data::game_party->ResetTurns();
@@ -100,7 +102,8 @@ void Game_Battle::Quit() {
 
 	interpreter.reset();
 	spriteset.reset();
-	animation.reset();
+	animation_actors.reset();
+	animation_enemies.reset();
 
 	Game_Battle::battle_running = false;
 	terrain_id = 0;
@@ -123,10 +126,16 @@ void Game_Battle::Quit() {
 }
 
 void Game_Battle::UpdateAnimation() {
-	if (animation) {
-		animation->Update();
-		if (animation->IsDone()) {
-			animation.reset();
+	if (animation_actors) {
+		animation_actors->Update();
+		if (animation_actors->IsDone()) {
+			animation_actors.reset();
+		}
+	}
+	if (animation_enemies) {
+		animation_enemies->Update();
+		if (animation_enemies->IsDone()) {
+			animation_enemies.reset();
 		}
 	}
 }
@@ -166,13 +175,37 @@ int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*
 		return 0;
 	}
 
-	animation.reset(new BattleAnimationBattle(*anim, std::move(targets), only_sound, cutoff, invert));
-	auto frames = animation->GetFrames();
-	return cutoff >= 0 ? std::min(frames, cutoff) : frames;
+	const auto main_type = targets.empty() ? Game_Battler::Type_Ally : targets.front()->GetType();
+	std::vector<Game_Battler*> alt_targets;
+
+	for (auto iter = targets.begin(); iter != targets.end();) {
+		if ((*iter)->GetType() == main_type) {
+			++iter;
+		} else {
+			alt_targets.push_back(*iter);
+			iter = targets.erase(iter);
+		}
+	}
+
+	auto& main_anim = main_type == Game_Battler::Type_Ally ? animation_actors : animation_enemies;
+	auto& alt_anim = main_type == Game_Battler::Type_Ally ? animation_enemies : animation_actors;
+
+	main_anim.reset(new BattleAnimationBattle(*anim, std::move(targets), only_sound, cutoff, invert));
+	auto main_frames = main_anim->GetFrames();
+	main_frames = cutoff >= 0 ? std::min(main_frames, cutoff) : main_frames;
+
+	auto alt_frames = 0;
+	if (!alt_targets.empty()) {
+		alt_anim.reset(new BattleAnimationBattle(*anim, std::move(alt_targets), only_sound, cutoff, invert));
+		auto alt_frames = alt_anim->GetFrames();
+		alt_frames = cutoff >= 0 ? std::min(alt_frames, cutoff) : alt_frames;
+	}
+
+	return std::max(main_frames, alt_frames);
 }
 
 bool Game_Battle::IsBattleAnimationWaiting() {
-	return bool(animation);
+	return bool(animation_actors) || bool(animation_enemies);
 }
 
 void Game_Battle::NextTurn(Game_Battler* battler) {
