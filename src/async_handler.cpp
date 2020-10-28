@@ -45,7 +45,9 @@ namespace {
 	std::unordered_map<std::string, FileRequestAsync> async_requests;
 	std::unordered_map<std::string, std::string> file_mapping;
 	int next_id = 0;
+#ifdef EMSCRIPTEN
 	int index_version = 1;
+#endif
 
 	FileRequestAsync* GetRequest(const std::string& path) {
 		auto it = async_requests.find(path);

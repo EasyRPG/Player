@@ -308,7 +308,7 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 		const auto& action = actions[i];
 		if (IsActionValid(source, action)) {
 			prios[i] = action.rating;
-			max_prio = std::max(max_prio, action.rating);
+			max_prio = std::max<int>(max_prio, action.rating);
 			DebugLog("ENEMYAI: Enemy {}({}) Allow Action id={} kind={} basic={} rating={}", source.GetName(), source.GetTroopMemberId(), action.ID, action.kind, action.basic, action.rating);
 		} else {
 			DebugLog("ENEMYAI: Enemy {}({}) Discard Action id={} kind={} basic={} rating={}", source.GetName(), source.GetTroopMemberId(), action.ID, action.kind, action.basic, action.rating);
@@ -319,7 +319,7 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 
 	if (max_prio) {
 		for (auto& pr: prios) {
-			pr = std::max(0, pr - max_prio + 10);
+			pr = std::max<int>(0, pr - max_prio + 10);
 		}
 	}
 
