@@ -581,8 +581,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		critical_hit = true;
 	}
 
-	// FIXME: Differentiate the cases where 2k3 back attack bug applies
-	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, critical_hit, true, Game_Battle::GetBattleCondition(), true);
+	// Emulates an RPG_RT bug where whenver an actor attacks an enemy, the hit rate and damage
+	// is adjusted as if the enemy were in the front row.
+	const bool treat_enemies_asif_in_front_row = (source.GetType() == Game_Battler::Type_Ally);
+
+	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, critical_hit, true, Game_Battle::GetBattleCondition(), treat_enemies_asif_in_front_row);
 	effect = Algo::AdjustDamageForDefend(effect, target);
 
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
