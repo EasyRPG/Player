@@ -264,7 +264,6 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionStar
 		ResetWindows(true);
 		battle_message_window->SetVisible(true);
 
-		// FIXME: Handle if no enemies - no waits
 		std::vector<Game_Battler *> visible_enemies;
 		// First time entered, initialize.
 		Main_Data::game_enemyparty->GetActiveBattlers(visible_enemies);
@@ -278,7 +277,9 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionStar
 		battle_result_messages_it = battle_result_messages.begin();
 		battle_message_window->Clear();
 
-		SetWait(4, 4);
+		if (!visible_enemies.empty()) {
+			SetWait(4, 4);
+		}
 		SetSceneActionSubState(eDisplayMonsters);
 		return SceneActionReturn::eContinueThisFrame;
 	}
