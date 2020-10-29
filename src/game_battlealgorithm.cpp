@@ -804,7 +804,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		if (IsAbsorb()) {
 			// Cannot aborb more hp than the target has.
-			this->hp = -std::max<int>(-this->hp, cur_hp);
+			this->hp = std::max<int>(effect, -cur_hp);
 
 			// Absorb requires damage to be successful
 			this->success = (hp != 0);
@@ -844,8 +844,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		this->affect_sp = true;
 		if (IsAbsorb()) {
-			// FIXME: Verify behavior on negative attributes
-			this->sp = -std::min(cur_sp, -effect);
+			// Cannot aborb more hp than the target has.
+			this->sp = std::max(effect, -cur_sp);
 		} else {
 			this->sp = Utils::Clamp(cur_sp + effect, 0, max_sp) - cur_sp;
 		}
