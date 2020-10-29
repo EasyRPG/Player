@@ -343,6 +343,84 @@ public:
 	 */
 	virtual void ApplyComboHitsMultiplier(int hits);
 
+	/**
+	 * Set the affected switch id 
+	 * @param s the switch id
+	 */
+	int SetAffectedSwitch(int s);
+
+	/**
+	 * Set the affected hp
+	 * @param hp the signed hp gain/loss value
+	 */
+	int SetAffectedHp(int hp);
+
+	/**
+	 * Set the affected sp
+	 * @param hp the signed sp gain/loss value
+	 */
+	int SetAffectedSp(int sp);
+
+	/**
+	 * Set the affected atk
+	 * @param hp the signed atk gain/loss value
+	 */
+	int SetAffectedAtk(int hp);
+
+	/**
+	 * Set the affected def
+	 * @param hp the signed def gain/loss value
+	 */
+	int SetAffectedDef(int hp);
+
+	/**
+	 * Set the affected agi
+	 * @param hp the signed agi gain/loss value
+	 */
+	int SetAffectedAgi(int hp);
+
+	/**
+	 * Set the affected spi
+	 * @param hp the signed spi gain/loss value
+	 */
+	int SetAffectedSpi(int hp);
+
+	/**
+	 * Set if the original intention was positive (healing)
+	 * @param p if positive or not
+	 */
+	bool SetIsPositive(bool p);
+
+	/**
+	 * Set if the effect was a critical hit
+	 * @param c if critical hit or not
+	 */
+	bool SetIsCriticalHit(bool c);
+
+	/**
+	 * Set if the effect was an aborbsion attack
+	 * @param a if absorb or not
+	 */
+	bool SetIsAbsorb(bool a);
+
+	/**
+	 * Set if the effect revives the target.
+	 * @param r if revive or not
+	 */
+	bool SetIsRevived(bool r);
+
+	/** Set if the algo was a success  */
+	bool SetIsSuccess();
+
+	/**
+	 * Set the algo to successful if the condition is true. If it's false, no change.
+	 * @param x condition to check
+	 */
+	bool SetIsSuccessIf(bool x);
+
+	/** Set if the algo failed  */
+	bool SetIsFailure();
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
@@ -369,6 +447,7 @@ protected:
 	Game_Battler* reflect_target = nullptr;
 	int battle_command_used = -1;
 
+private:
 	int hp = 0;
 	int sp = 0;
 	int attack = 0;
@@ -377,7 +456,6 @@ protected:
 	int agility = 0;
 	int switch_id = 0;
 
-protected:
 	bool affect_hp = false;
 	bool affect_sp = false;
 	bool affect_atk = false;
@@ -389,6 +467,7 @@ protected:
 	bool critical_hit = false;
 	bool absorb = false;
 	bool revived = false;
+protected:
 	bool physical_charged = false;
 	int num_original_targets = 0;
 	int cur_repeat = 0;
@@ -650,6 +729,81 @@ inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetReflectTarget() con
 inline Span<Game_Battler*> Game_BattleAlgorithm::AlgorithmBase::GetOriginalTargets() {
 	return Span<Game_Battler*>(targets.data(), num_original_targets);
 }
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSwitch(int s) {
+	return this->switch_id = s;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedHp(int hp) {
+	this->affect_hp = true;
+	return this->hp = hp;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSp(int sp) {
+	this->affect_sp = true;
+	return this->sp = sp;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedAtk(int atk) {
+	this->affect_atk = true;
+	return this->attack = atk;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedDef(int def) {
+	this->affect_def = true;
+	return this->defense = def;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedAgi(int agi) {
+	this->affect_agi = true;
+	return this->agility = agi;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSpi(int spi) {
+	this->affect_spi = true;
+	return this->spirit = spi;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsPositive(bool p) {
+	return positive = p;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsCriticalHit(bool c) {
+	return critical_hit = c;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorb(bool a) {
+	return absorb = a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsRevived(bool r) {
+	return revived = r;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsSuccess() {
+	return success = true;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsSuccessIf(bool x) {
+	return success |= x;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsFailure() {
+	return success = false;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
+	return success;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
+	return critical_hit;
+}
+
+inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
+	return source;
+}
+
 
 } //namespace Game_BattleAlgorithm
 
