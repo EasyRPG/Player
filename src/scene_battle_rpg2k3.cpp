@@ -123,7 +123,6 @@ void Scene_Battle_Rpg2k3::InitActors() {
 	// ROW ADJUSTMENT
 	// If all actors in the front row have battle loss conditions,
 	// all back row actors forced to the front row.
-	// FIXME: Does this happen mid battle too?
 	bool force_front_row = true;
 	for (auto& actor: actors) {
 		if (actor->GetBattleRow() == Game_Actor::RowType::RowType_front
@@ -985,6 +984,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
+		target_window->SetIndex(-1);
 
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
 			SetState(State_SelectActor);
@@ -1067,6 +1067,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
+		target_window->SetIndex(-1);
 
 		status_window->SetVisible(true);
 		command_window->SetIndex(-1);
@@ -1155,6 +1156,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAu
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
+		target_window->SetIndex(-1);
 
 		status_window->SetVisible(true);
 		command_window->SetIndex(-1);
@@ -1195,6 +1197,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 
 	if (scene_action_substate == eBegin) {
 		ResetWindows(true);
+		target_window->SetIndex(-1);
 
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
@@ -1366,6 +1369,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 
 	if (scene_action_substate == eBegin) {
 		RefreshTargetWindow();
+		target_window->SetIndex(0);
 
 		switch (lcf::Data::battlecommands.battle_type) {
 			case lcf::rpg::BattleCommands::BattleType_traditional:
@@ -1399,11 +1403,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 			if (enemy) {
 				FaceTarget(*actor, *enemy);
 			}
+			target_window->SetIndex(-1);
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			SetState(previous_state);
+			target_window->SetIndex(-1);
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
 	}
