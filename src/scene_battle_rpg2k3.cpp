@@ -1816,10 +1816,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 				|| action->GetType() == Game_BattleAlgorithm::Type::Skill
 				|| action->GetType() == Game_BattleAlgorithm::Type::Item)
 		{
-			const auto& original_targets = action->GetOriginalTargets();
+			auto* original_target = action->GetOriginalSingleTarget();
 
-			if (original_targets.size() == 1 && original_targets.front()->GetType() == Game_Battler::Type_Enemy) {
-				auto* enemy = static_cast<Game_Enemy*>(original_targets.front());
+			if (original_target && original_target->GetType() == Game_Battler::Type_Enemy) {
+				auto* enemy = static_cast<Game_Enemy*>(original_target);
 				interp.SetCurrentEnemyTargetIndex(Main_Data::game_enemyparty->GetEnemyPositionInParty(enemy));
 				interp.SetCurrentActionTargetsSingleEnemy(true);
 			} else {

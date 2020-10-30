@@ -956,8 +956,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 		return "";
 	}
 
-	const auto* target = (targets.size() == 1) ? targets.front() : nullptr;
-
+	const auto* target = GetOriginalSingleTarget();
 	if (line == 0) {
 		if (Player::IsRPG2k()) {
 			if (!skill.using_message1.empty()) {
@@ -1017,8 +1016,9 @@ bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 		return Main_Data::game_party->GetItemTotalCount(item->ID) > 0;
 	}
 	// RPG_RT performs this check only for enemies and if skill is single target
-	if (source->GetType() == Game_Battler::Type_Enemy && targets.size() == 1 && targets.front()->GetType() == source->GetType()) {
-		if (!EnemyAi::IsSkillEffectiveOn(skill, *targets.front(), true)) {
+	const auto* target = GetOriginalSingleTarget();
+	if (source->GetType() == Game_Battler::Type_Enemy && target && target->GetType() == source->GetType()) {
+		if (!EnemyAi::IsSkillEffectiveOn(skill, *target, true)) {
 			return false;
 		}
 	}

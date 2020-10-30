@@ -94,7 +94,10 @@ public:
 	bool IsTargetingParty() const;
 
 	/** @return the original targets of the action before reflect or other modifications */
-	Span<Game_Battler*> GetOriginalTargets();
+	Span<Game_Battler* const> GetOriginalTargets() const;
+
+	/** @return If the action originally had a single target, return that target. Otherwise return nullptr */
+	Game_Battler* GetOriginalSingleTarget() const;
 
 	/** @return the current repetition of the algorithm */
 	int GetCurrentRepeat() const;
@@ -741,8 +744,14 @@ inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetReflectTarget() con
 	return reflect_target;
 }
 
-inline Span<Game_Battler*> Game_BattleAlgorithm::AlgorithmBase::GetOriginalTargets() {
-	return Span<Game_Battler*>(targets.data(), num_original_targets);
+inline Span<Game_Battler* const> Game_BattleAlgorithm::AlgorithmBase::GetOriginalTargets() const {
+	assert(num_original_targets <= static_cast<int>(targets.size()));
+	return Span<Game_Battler* const>(targets.data(), num_original_targets);
+}
+
+inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetOriginalSingleTarget() const {
+	assert(num_original_targets <= static_cast<int>(targets.size()));
+	return num_original_targets == 1 ? targets.front() : nullptr;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSwitch(int s) {
