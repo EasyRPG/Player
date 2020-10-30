@@ -71,6 +71,10 @@ struct StateEffect {
 struct AttributeEffect {
 	int16_t attr_id = 0;
 	int16_t shift = 0;
+
+	AttributeEffect() = default;
+	AttributeEffect(int id, int shift)
+		: attr_id(id), shift(shift) {}
 };
 
 class AlgorithmBase {
@@ -91,6 +95,9 @@ public:
 
 	/** @return the original targets of the action before reflect or other modifications */
 	Span<Game_Battler*> GetOriginalTargets();
+
+	/** @return the current repetition of the algorithm */
+	int GetCurrentRepeat() const;
 
 	/** Initializes targetting and performs any initial actions such as sp cost reduction for the user. */
 	void Start();
@@ -386,6 +393,18 @@ public:
 	int SetAffectedSpi(int hp);
 
 	/**
+	 * Add a state effect
+	 * @param se the state effect to add
+	 */
+	void AddAffectedState(StateEffect se);
+
+	/**
+	 * Add an attribute shift effect
+	 * @param se the attribute shift effect to add
+	 */
+	void AddAffectedAttribute(AttributeEffect ae);
+
+	/**
 	 * Set if the original intention was positive (healing)
 	 * @param p if positive or not
 	 */
@@ -402,12 +421,6 @@ public:
 	 * @param a if absorb or not
 	 */
 	bool SetIsAbsorb(bool a);
-
-	/**
-	 * Set if the effect revives the target.
-	 * @param r if revive or not
-	 */
-	bool SetIsRevived(bool r);
 
 	/** Set if the algo was a success  */
 	bool SetIsSuccess();
@@ -439,15 +452,18 @@ protected:
 	 */
 	bool TargetNextInternal();
 
-	Type type = Type::None;
-	Game_Battler* source = nullptr;
-	std::vector<Game_Battler*> targets;
-	std::vector<Game_Battler*>::iterator current_target;
-	Game_Party_Base* party_target = nullptr;
-	Game_Battler* reflect_target = nullptr;
-	int battle_command_used = -1;
+	void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, const PermanentStates& ps);
 
 private:
+	Type type = Type::None;
+	Game_Battler* source = nullptr;
+protected:
+	std::vector<Game_Battler*> targets;
+	std::vector<Game_Battler*>::iterator current_target;
+private:
+	Game_Party_Base* party_target = nullptr;
+	Game_Battler* reflect_target = nullptr;
+
 	int hp = 0;
 	int sp = 0;
 	int attack = 0;
@@ -467,7 +483,6 @@ private:
 	bool critical_hit = false;
 	bool absorb = false;
 	bool revived = false;
-protected:
 	bool physical_charged = false;
 	int num_original_targets = 0;
 	int cur_repeat = 0;
@@ -776,10 +791,6 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorb(bool a) {
 	return absorb = a;
 }
 
-inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsRevived(bool r) {
-	return revived = r;
-}
-
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsSuccess() {
 	return success = true;
 }
@@ -802,6 +813,10 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 
 inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 	return source;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetCurrentRepeat() const {
+	return cur_repeat;
 }
 
 

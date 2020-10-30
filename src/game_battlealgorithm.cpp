@@ -53,35 +53,6 @@ static inline int MaxDamageValue() {
 	return Player::IsRPG2k() ? 999 : 9999;
 }
 
-static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, const PermanentStates& ps, std::vector<Game_BattleAlgorithm::StateEffect>& states) {
-	if (physical_rate <= 0) {
-		return;
-	}
-
-	for (int i = 0; i < (int)target_states.size(); ++i) {
-		auto state_id = i + 1;
-		if (!State::Has(state_id, target_states)) {
-			continue;
-		}
-
-		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
-		if (state == nullptr) {
-			continue;
-		}
-		if (state->release_by_damage > 0) {
-			int release_chance = state->release_by_damage * physical_rate / 100;
-
-			if (!Rand::ChanceOf(release_chance, 100)) {
-				continue;
-			}
-
-			if (State::Remove(state_id, target_states, ps)) {
-				states.push_back(Game_BattleAlgorithm::StateEffect(state_id, Game_BattleAlgorithm::StateEffect::HealedByAttack));
-			}
-		}
-	}
-}
-
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(ty, source, std::vector<Game_Battler*>{ target }) {}
 
@@ -455,6 +426,51 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyComboHitsMultiplier(int hits) {
 	repeat *= hits;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::AddAffectedState(StateEffect se) {
+	auto* target = GetTarget();
+	if (se.state_id == lcf::rpg::State::kDeathID
+			&& (se.effect == StateEffect::Healed || se.effect == StateEffect::HealedByAttack)
+			&& target && target->IsDead()) {
+		revived = true;
+	}
+	states.push_back(std::move(se));
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::AddAffectedAttribute(AttributeEffect ae) {
+	attributes.push_back(std::move(ae));
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, const PermanentStates& ps) {
+	if (physical_rate <= 0) {
+		return;
+	}
+
+	for (int i = 0; i < (int)target_states.size(); ++i) {
+		auto state_id = i + 1;
+		if (!State::Has(state_id, target_states)) {
+			continue;
+		}
+
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
+		if (state == nullptr) {
+			continue;
+		}
+		if (state->release_by_damage > 0) {
+			int release_chance = state->release_by_damage * physical_rate / 100;
+
+			if (!Rand::ChanceOf(release_chance, 100)) {
+				continue;
+			}
+
+			if (State::Remove(state_id, target_states, ps)) {
+				AddAffectedState(StateEffect{state_id, Game_BattleAlgorithm::StateEffect::HealedByAttack});
+			}
+		}
+	}
+}
+
+
+
 Game_BattleAlgorithm::None::None(Game_Battler* source) :
 AlgorithmBase(Type::None, source, source) {
 	// no-op
@@ -484,13 +500,14 @@ Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
 	if (weapon_style < 0) {
 		return Game_Battler::WeaponAll;
 	}
-	return cur_repeat >= weapon_style ? Game_Battler::WeaponSecondary : Game_Battler::WeaponPrimary;
+	return GetCurrentRepeat() >= weapon_style ? Game_Battler::WeaponSecondary : Game_Battler::WeaponPrimary;
 }
 
 void Game_BattleAlgorithm::Normal::Init(Style style) {
 	weapon_style = -1;
-	if (GetSource()->GetType() == Game_Battler::Type_Ally && style == Style_MultiHit) {
-		auto* ally = static_cast<Game_Actor*>(GetSource());
+	auto* source = GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally && style == Style_MultiHit) {
+		auto* ally = static_cast<Game_Actor*>(source);
 		if (ally->GetWeapon() && ally->Get2ndWeapon()) {
 			auto hits = hits_multiplier * ally->GetNumberOfAttacks(Game_Battler::WeaponPrimary);
 			weapon_style = hits;
@@ -514,7 +531,8 @@ void Game_BattleAlgorithm::Normal::ApplyComboHitsMultiplier(int hits) {
 bool Game_BattleAlgorithm::Normal::vStart() {
 	// If this weapon attacks all, then attack all enemies regardless of original targetting.
 	const auto weapon = GetWeapon();
-	if (!party_target && source->HasAttackAll(weapon)) {
+	auto* source = GetSource();
+	if (!IsTargetingParty() && source->HasAttackAll(weapon)) {
 		auto* target = targets.back();
 		auto idx = targets.size();
 		target->GetParty().GetBattlers(targets);
@@ -528,6 +546,7 @@ bool Game_BattleAlgorithm::Normal::vStart() {
 
 int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 	const auto weapon = GetWeapon();
+	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		auto weapons = ally->GetWeapons(weapon);
@@ -594,7 +613,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	auto target_perm_states = target.GetPermanentStates();
 
 	// Conditions healed by physical attack:
-	BattlePhysicalStateHeal(100, target_states, target_perm_states, states);
+	BattlePhysicalStateHeal(100, target_states, target_perm_states);
 
 	// Conditions caused / healed by weapon.
 	if (source.GetType() == Game_Battler::Type_Ally) {
@@ -631,7 +650,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					if (is2k3 && w->reverse_state_effect) {
 						if (heal_pct > 0 && Rand::PercentChance(heal_pct)) {
 							if (State::Remove(state_id, target_states, target_perm_states)) {
-								states.push_back(StateEffect(state_id, StateEffect::Healed));
+								AddAffectedState(StateEffect{state_id, StateEffect::Healed});
 							}
 						}
 						heal_pct = 0;
@@ -641,7 +660,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 							if (Rand::PercentChance(inflict_pct)) {
 								// Unlike skills, weapons do not try to reinflict states already present
 								if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-									states.push_back(StateEffect(state_id, StateEffect::Inflicted));
+									AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
 								}
 							}
 							inflict_pct = 0;
@@ -675,7 +694,7 @@ int Game_BattleAlgorithm::Normal::GetSourcePose() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
-	if (Player::IsRPG2k() && source->GetType() == Game_Battler::Type_Enemy) {
+	if (Player::IsRPG2k() && GetSource()->GetType() == Game_Battler::Type_Enemy) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
 	}
 	return nullptr;
@@ -702,6 +721,7 @@ void Game_BattleAlgorithm::Skill::Init() {
 }
 
 bool Game_BattleAlgorithm::Skill::vStart() {
+	auto* source = GetSource();
 	if (item) {
 		Main_Data::game_party->ConsumeItemUse(item->ID);
 	} else {
@@ -805,7 +825,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				}
 
 				// Conditions healed by physical attack:
-				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states, states);
+				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states);
 
 				// Hp damage always successful, even if 0
 				SetIsSuccess();
@@ -865,7 +885,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		if (!heals_states && target_has_state) {
 			SetIsSuccess();
-			states.push_back({state_id, StateEffect::AlreadyInflicted});
+			AddAffectedState(StateEffect{state_id, StateEffect::AlreadyInflicted});
 			continue;
 		}
 
@@ -878,27 +898,26 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
 				SetIsSuccess();
 				if (State::Remove(state_id, target_states, target_perm_states)) {
-					states.push_back({state_id, StateEffect::Healed});
+					AddAffectedState(StateEffect{state_id, StateEffect::Healed});
 					affected_death |= (state_id == lcf::rpg::State::kDeathID);
 				}
 			}
 		} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 			if (State::Add(state_id, target_states, target_perm_states, true)) {
 				SetIsSuccess();
-				states.push_back({state_id, StateEffect::Inflicted});
+				AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
 				affected_death |= (state_id == lcf::rpg::State::kDeathID);
 			}
 		}
 	}
 
-	if (heals_states && affected_death) {
+	if (IsRevived()) {
 		// If resurrected and no HP selected, the effect value is a percentage:
 		if (skill.affect_hp) {
 			SetAffectedHp(std::max(0, effect));
 		} else {
 			SetAffectedHp(target->GetMaxHp() * effect / 100);
 		}
-		SetIsRevived(true);
 	}
 
 	// When a skill inflicts death state, other states can also be inflicted, but attributes will be skipped
@@ -916,10 +935,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					&& Rand::PercentChance(to_hit)
 					)
 			{
-				AttributeEffect ae;
-				ae.attr_id = id;
-				ae.shift = shift;
-				attributes.push_back(ae);
+				AddAffectedAttribute({ id, shift});
 				SetIsSuccess();
 			}
 		}
@@ -960,6 +976,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 }
 
 int Game_BattleAlgorithm::Skill::GetSourcePose() const {
+	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
 		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
 			return skill.battler_animation_data[source->GetId() - 1].pose;
@@ -995,6 +1012,7 @@ bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const 
 }
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
+	auto* source = GetSource();
 	if (item) {
 		return Main_Data::game_party->GetItemTotalCount(item->ID) > 0;
 	}
@@ -1042,10 +1060,6 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	if (item.type == lcf::rpg::Item::Type_medicine) {
 		SetIsPositive(true);
 
-		SetIsRevived(!item.state_set.empty()
-			&& item.state_set[lcf::rpg::State::kDeathID - 1]
-			&& GetTarget()->IsDead());
-
 		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
 		if (GetTarget()->GetType() == Game_Battler::Type_Ally && !static_cast<Game_Actor*>(GetTarget())->IsItemUsable(item.ID)) {
 			// No effect, but doesn't behave like a dodge or damage to set healing and success to true.
@@ -1060,18 +1074,16 @@ bool Game_BattleAlgorithm::Item::Execute() {
 		auto target_states = target->GetStates();
 		auto target_perm_states = target->GetPermanentStates();
 
-		bool is_dead_cured = false;
 		for (int i = 0; i < (int)item.state_set.size(); i++) {
 			if (item.state_set[i]) {
-				is_dead_cured |= (i == 0);
 				if (State::Remove(i + 1, target_states, target_perm_states)) {
-					states.push_back({i+1, StateEffect::Healed});
+					AddAffectedState(StateEffect(i+1, StateEffect::Healed));
 				}
 			}
 		}
 
 		// HP recovery
-		if ((item.recover_hp != 0 || item.recover_hp_rate != 0) && (!target->IsDead() || is_dead_cured)) {
+		if ((item.recover_hp != 0 || item.recover_hp_rate != 0) && (!target->IsDead() || IsRevived())) {
 			SetAffectedHp(item.recover_hp_rate * GetTarget()->GetMaxHp() / 100 + item.recover_hp);
 		}
 
@@ -1164,7 +1176,7 @@ AlgorithmBase(Type::Charge, source, source) {
 }
 
 bool Game_BattleAlgorithm::Charge::vStart() {
-	source->SetCharged(true);
+	GetSource()->SetCharged(true);
 	return true;
 }
 
@@ -1222,13 +1234,14 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		auto target_perm_states = target.GetPermanentStates();
 
 		// Conditions healed by physical attack:
-		BattlePhysicalStateHeal(100, target_states, target_perm_states, states);
+		BattlePhysicalStateHeal(100, target_states, target_perm_states);
 	}
 
 	return SetIsSuccess();
 }
 
 void Game_BattleAlgorithm::SelfDestruct::ApplyCustomEffect() {
+	auto* source = GetSource();
 	// Only monster can self destruct
 	if (animate && source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
@@ -1259,6 +1272,7 @@ int Game_BattleAlgorithm::Escape::GetSourcePose() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
+	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		return AlgorithmBase::GetStartSe();
 	}
@@ -1272,6 +1286,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 }
 
 void Game_BattleAlgorithm::Escape::ApplyCustomEffect() {
+	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
 		enemy->SetHidden(true);
@@ -1297,6 +1312,7 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 }
 
 void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
+	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(source);
 		enemy->Transform(new_monster_id);
