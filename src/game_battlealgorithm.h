@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include <bitset>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/state.h>
 #include "string_view.h"
@@ -166,20 +167,38 @@ public:
 	/** @return true if this action affects hp. */
 	bool IsAffectHp() const;
 
+	/** @return true if this action absorbs hp. */
+	bool IsAbsorbHp() const;
+
 	/** @return true if this action affects sp. */
 	bool IsAffectSp() const;
+
+	/** @return true if this action absorbs sp. */
+	bool IsAbsorbSp() const;
 
 	/** @return true if this action affects atk. */
 	bool IsAffectAtk() const;
 
+	/** @return true if this action absorbs atk. */
+	bool IsAbsorbAtk() const;
+
 	/** @return true if this action affects def. */
 	bool IsAffectDef() const;
+
+	/** @return true if this action absorbs def. */
+	bool IsAbsorbDef() const;
 
 	/** @return true if this action affects spi. */
 	bool IsAffectSpi() const;
 
+	/** @return true if this action absorbs spi. */
+	bool IsAbsorbSpi() const;
+
 	/** @return true if this action affects agi. */
 	bool IsAffectAgi() const;
+
+	/** @return true if this action affects agi. */
+	bool IsAbsorbAgi() const;
 
 	/** @return signed value of how much hp is to be gained or lost */
 	int GetAffectedHp() const;
@@ -215,9 +234,6 @@ public:
 
 	/** @return Whether action was positive (e.g. healing) instead of damage. */
 	bool IsPositive() const;
-
-	/** @return whether the action had absorb component. */
-	bool IsAbsorb() const;
 
 	/** @return Whether target will be revived from death */
 	bool IsRevived() const;
@@ -410,10 +426,22 @@ public:
 	int SetAffectedHp(int hp);
 
 	/**
+	 * Set whether the effect will absorb hp from the target
+	 * @param a whether to absorb or not.
+	 */
+	bool SetIsAbsorbHp(bool a);
+
+	/**
 	 * Set the affected sp
 	 * @param hp the signed sp gain/loss value
 	 */
 	int SetAffectedSp(int sp);
+
+	/**
+	 * Set whether the effect will absorb sp from the target
+	 * @param a whether to absorb or not.
+	 */
+	bool SetIsAbsorbSp(bool a);
 
 	/**
 	 * Set the affected atk
@@ -422,10 +450,34 @@ public:
 	int SetAffectedAtk(int hp);
 
 	/**
+	 * Set whether the effect will absorb atk from the target
+	 * @param a whether to absorb or not.
+	 */
+	bool SetIsAbsorbAtk(bool a);
+
+	/**
 	 * Set the affected def
 	 * @param hp the signed def gain/loss value
 	 */
 	int SetAffectedDef(int hp);
+
+	/**
+	 * Set whether the effect will absorb def from the target
+	 * @param a whether to absorb or not.
+	 */
+	bool SetIsAbsorbDef(bool a);
+
+	/**
+	 * Set the affected spi
+	 * @param hp the signed spi gain/loss value
+	 */
+	int SetAffectedSpi(int hp);
+
+	/**
+	 * Set whether the effect will absorb spi from the target
+	 * @param a whether to absorb or not.
+	 */
+	bool SetIsAbsorbSpi(bool a);
 
 	/**
 	 * Set the affected agi
@@ -434,10 +486,10 @@ public:
 	int SetAffectedAgi(int hp);
 
 	/**
-	 * Set the affected spi
-	 * @param hp the signed spi gain/loss value
+	 * Set whether the effect will absorb agi from the target
+	 * @param a whether to absorb or not.
 	 */
-	int SetAffectedSpi(int hp);
+	bool SetIsAbsorbAgi(bool a);
 
 	/**
 	 * Add a state effect
@@ -462,12 +514,6 @@ public:
 	 * @param c if critical hit or not
 	 */
 	bool SetIsCriticalHit(bool c);
-
-	/**
-	 * Set if the effect was an aborbsion attack
-	 * @param a if absorb or not
-	 */
-	bool SetIsAbsorb(bool a);
 
 	/** Set if the algo was a success  */
 	bool SetIsSuccess();
@@ -517,18 +563,25 @@ private:
 	int agility = 0;
 	int switch_id = 0;
 
-	bool affect_hp = false;
-	bool affect_sp = false;
-	bool affect_atk = false;
-	bool affect_def = false;
-	bool affect_spi = false;
-	bool affect_agi = false;
-	bool positive = false;
-	bool success = false;
-	bool critical_hit = false;
-	bool absorb = false;
-	bool revived = false;
-	bool physical_charged = false;
+	enum Flag {
+		eSuccess,
+		ePositive,
+		eCriticalHit,
+		eRevived,
+		eAffectHp,
+		eAbsorbHp,
+		eAffectSp,
+		eAbsorbSp,
+		eAffectAtk,
+		eAbsorbAtk,
+		eAffectDef,
+		eAbsorbDef,
+		eAffectSpi,
+		eAbsorbSpi,
+		eAffectAgi,
+		eAbsorbAgi,
+	};
+	std::bitset<64> flags = {};
 	int num_original_targets = 0;
 	int cur_repeat = 0;
 	int repeat = 1;
@@ -537,6 +590,9 @@ private:
 	std::vector<AttributeEffect> attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
+
+	bool SetFlag(Flag f, bool value);
+	bool GetFlag(Flag f) const;
 };
 
 // Special algorithm for handling non-moving because of states
@@ -739,15 +795,11 @@ inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
-	return positive;
-}
-
-inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
-	return absorb;
+	return GetFlag(ePositive);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
-	return revived;
+	return GetFlag(eRevived);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
@@ -759,28 +811,53 @@ inline int Game_BattleAlgorithm::AlgorithmBase::GetAnimationId(int) const {
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectHp() const {
-	return affect_hp;
+	return GetFlag(eAffectHp);
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbHp() const {
+	return GetFlag(eAbsorbHp);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectSp() const {
-	return affect_sp;
+	return GetFlag(eAffectSp);
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbSp() const {
+	return GetFlag(eAbsorbSp);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAtk() const {
-	return affect_atk;
+	return GetFlag(eAffectAtk);
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbAtk() const {
+	return GetFlag(eAbsorbAtk);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectDef() const {
-	return affect_def;
+	return GetFlag(eAffectDef);
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbDef() const {
+	return GetFlag(eAbsorbDef);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectSpi() const {
-	return affect_spi;
+	return GetFlag(eAffectSpi);
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbSpi() const {
+	return GetFlag(eAbsorbSpi);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsAffectAgi() const {
-	return affect_agi;
+	return GetFlag(eAffectAgi);
 }
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorbAgi() const {
+	return GetFlag(eAbsorbAgi);
+}
+
 
 inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetReflectTarget() const {
 	return reflect_target;
@@ -801,65 +878,61 @@ inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSwitch(int s) {
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedHp(int hp) {
-	this->affect_hp = true;
+	SetFlag(eAffectHp, true);
 	return this->hp = hp;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSp(int sp) {
-	this->affect_sp = true;
+	SetFlag(eAffectSp, true);
 	return this->sp = sp;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedAtk(int atk) {
-	this->affect_atk = true;
+	SetFlag(eAffectAtk, true);
 	return this->attack = atk;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedDef(int def) {
-	this->affect_def = true;
+	SetFlag(eAffectDef, true);
 	return this->defense = def;
 }
 
-inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedAgi(int agi) {
-	this->affect_agi = true;
-	return this->agility = agi;
-}
-
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSpi(int spi) {
-	this->affect_spi = true;
+	SetFlag(eAffectSpi, true);
 	return this->spirit = spi;
 }
 
+inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedAgi(int agi) {
+	SetFlag(eAffectAgi, true);
+	return this->agility = agi;
+}
+
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsPositive(bool p) {
-	return positive = p;
+	return SetFlag(ePositive, p);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsCriticalHit(bool c) {
-	return critical_hit = c;
-}
-
-inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorb(bool a) {
-	return absorb = a;
+	return SetFlag(eCriticalHit, c);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsSuccess() {
-	return success = true;
+	return SetFlag(eSuccess, true);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsSuccessIf(bool x) {
-	return success |= x;
+	return SetFlag(eSuccess, GetFlag(eSuccess) | x);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsFailure() {
-	return success = false;
+	return SetFlag(eSuccess, false);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
-	return success;
+	return GetFlag(eSuccess);
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
-	return critical_hit;
+	return GetFlag(eCriticalHit);
 }
 
 inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
@@ -870,6 +943,44 @@ inline int Game_BattleAlgorithm::AlgorithmBase::GetCurrentRepeat() const {
 	return cur_repeat;
 }
 
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetFlag(Flag f, bool value) {
+	flags.set(uint64_t(f), value);
+	return value;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::GetFlag(Flag f) const {
+	return flags.test(uint64_t(f));
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbHp(bool a) {
+	SetFlag(eAbsorbHp, a);
+	return a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbSp(bool a) {
+	SetFlag(eAbsorbSp, a);
+	return a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbAtk(bool a) {
+	SetFlag(eAbsorbAtk, a);
+	return a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbDef(bool a) {
+	SetFlag(eAbsorbDef, a);
+	return a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbSpi(bool a) {
+	SetFlag(eAbsorbSpi, a);
+	return a;
+}
+
+inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbAgi(bool a) {
+	SetFlag(eAbsorbAgi, a);
+	return a;
+}
 
 } //namespace Game_BattleAlgorithm
 

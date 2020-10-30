@@ -46,11 +46,19 @@ std::string GetHpRecoveredMessage(const Game_Battler& target, int value);
 
 std::string GetSpRecoveredMessage(const Game_Battler& target, int value);
 
-std::string GetHpSpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points);
+std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points);
 
 std::string GetHpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
 
 std::string GetSpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
+
+std::string GetAtkAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
+
+std::string GetDefAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
+
+std::string GetSpiAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
+
+std::string GetAgiAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
 
 std::string GetDamagedMessage(const Game_Battler& target, int value);
 

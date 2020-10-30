@@ -67,7 +67,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	Reset();
 
 	source->SetIsDefending(false);
-	physical_charged = source->IsCharged();
 
 	num_original_targets = targets.size();
 	current_target = targets.end();
@@ -82,7 +81,6 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	Reset();
 
 	source->SetIsDefending(false);
-	physical_charged = source->IsCharged();
 
 	current_target = targets.end();
 	party_target = target;
@@ -96,17 +94,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	spirit = 0;
 	agility = 0;
 	switch_id = 0;
-	affect_hp = false;
-	affect_sp = false;
-	affect_atk = false;
-	affect_def = false;
-	affect_spi = false;
-	affect_agi = false;
-	positive = false;
-	success = false;
-	critical_hit = false;
-	absorb = false;
-	revived = false;
+	flags = {};
 	states.clear();
 	attributes.clear();
 }
@@ -159,7 +147,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
 	int hp = GetAffectedHp();
 	if (hp != 0) {
 		hp = target->ChangeHp(hp, true);
-		if (IsAbsorb()) {
+		if (IsAbsorbHp()) {
 			// Only absorb the hp that were left
 			source->ChangeHp(-hp, true);
 		}
@@ -173,7 +161,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 	auto sp = GetAffectedSp();
 	if (sp != 0) {
 		sp = target->ChangeSp(sp);
-		if (IsAbsorb()) {
+		if (IsAbsorbSp()) {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
@@ -185,8 +173,11 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 	auto* target = GetTarget();
 	assert(target);
 	auto atk = GetAffectedAtk();
-	if (atk) {
+	if (atk != 0) {
 		atk = target->ChangeAtkModifier(atk);
+		if (IsAbsorbAtk()) {
+			source->ChangeAtkModifier(-atk);
+		}
 	}
 	return atk;
 }
@@ -195,8 +186,11 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 	auto* target = GetTarget();
 	assert(target);
 	auto def = GetAffectedDef();
-	if (def) {
+	if (def != 0) {
 		def = target->ChangeDefModifier(def);
+		if (IsAbsorbDef()) {
+			source->ChangeDefModifier(-def);
+		}
 	}
 	return def;
 }
@@ -207,6 +201,9 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 	auto spi = GetAffectedSpi();
 	if (spi) {
 		spi = target->ChangeSpiModifier(spi);
+		if (IsAbsorbSpi()) {
+			source->ChangeSpiModifier(-spi);
+		}
 	}
 	return spi;
 }
@@ -217,6 +214,9 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 	auto agi = GetAffectedAgi();
 	if (agi) {
 		agi = target->ChangeAgiModifier(agi);
+		if (IsAbsorbAgi()) {
+			source->ChangeAgiModifier(-agi);
+		}
 	}
 	return agi;
 }
@@ -449,7 +449,7 @@ void Game_BattleAlgorithm::AlgorithmBase::AddAffectedState(StateEffect se) {
 	if (se.state_id == lcf::rpg::State::kDeathID
 			&& (se.effect == StateEffect::Healed || se.effect == StateEffect::HealedByAttack)
 			&& target && target->IsDead()) {
-		revived = true;
+		SetFlag(eRevived, true);
 	}
 	states.push_back(std::move(se));
 }
@@ -810,7 +810,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 
 	// Absorb only works on offensive skills.
-	SetIsAbsorb(skill.absorb_damage && !IsPositive());
+	if (skill.absorb_damage && !IsPositive()) {
+		// RPG_RT only support absorbing hp and sp.
+		// Absorbing parameters is an EasyRPG extension.
+		SetIsAbsorbHp(skill.affect_hp);
+		SetIsAbsorbSp(skill.affect_sp);
+	}
 
 	// Make a copy of the target's state set and see what we can apply.
 	auto target_states = target->GetStates();
@@ -819,7 +824,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
 		const auto cur_hp = target->GetHp();
 
-		if (IsAbsorb()) {
+		if (IsAbsorbHp()) {
 			// Cannot aborb more hp than the target has.
 			SetAffectedHp(std::max<int>(effect, -cur_hp));
 
@@ -859,7 +864,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		const auto max_sp = target->GetMaxSp();
 		const auto cur_sp = target->GetSp() - sp_cost;
 
-		if (IsAbsorb()) {
+		if (IsAbsorbSp()) {
 			// Cannot aborb more hp than the target has.
 			SetAffectedSp(std::max(effect, -cur_sp));
 		} else {

@@ -1205,7 +1205,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionDa
 	};
 
 	if (battle_action_substate == eBegin) {
-		if (!action->IsAffectHp() || action->GetAffectedHp() > 0 || ((action->IsPositive() || action->IsAbsorb()) && action->GetAffectedHp() == 0)) {
+		if (!action->IsAffectHp() || action->GetAffectedHp() > 0 || ((action->IsPositive() || action->IsAbsorbHp()) && action->GetAffectedHp() == 0)) {
 			SetBattleActionState(BattleActionState_Params);
 			return BattleActionReturn::eContinue;
 		}
@@ -1220,7 +1220,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionDa
 		assert(target);
 		auto dmg = action->GetAffectedHp();
 
-		if (!action->IsAbsorb()) {
+		if (!action->IsAbsorbHp()) {
 			if (target->GetType() == Game_Battler::Type_Ally) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
 				if (dmg < 0) {
@@ -1235,7 +1235,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionDa
 		}
 
 		std::string msg;
-		if (action->IsAbsorb()) {
+		if (action->IsAbsorbHp()) {
 			msg = BattleMessage::GetHpAbsorbedMessage(*action->GetTarget(), *target, -dmg);
 		} else {
 			if (dmg == 0) {
@@ -1247,7 +1247,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionDa
 
 		battle_message_window->Push(msg);
 		battle_message_window->ScrollToEnd();
-		if (action->IsAbsorb()) {
+		if (action->IsAbsorbHp()) {
 			SetWait(20, 60);
 		} else {
 			SetWait(20, 40);
@@ -1358,7 +1358,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionPa
 
 		if (battle_action_substate == ePreSp) {
 			auto sp = action->ApplySpEffect();
-			if (action->IsAbsorb()) {
+			if (action->IsAbsorbSp()) {
 				pending_message = BattleMessage::GetSpAbsorbedMessage(*source, *target, -sp);
 			} else {
 				if (sp > 0) {
@@ -1374,7 +1374,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionPa
 		if (battle_action_substate == ePreAtk) {
 			auto atk = action->ApplyAtkEffect();
 			if (atk != 0) {
-				pending_message = BattleMessage::GetAtkChangeMessage(*target, atk);
+				if (action->IsAbsorbAtk()) {
+					pending_message = BattleMessage::GetAtkAbsorbedMessage(*source, *target, -atk);
+				} else {
+					pending_message = BattleMessage::GetAtkChangeMessage(*target, atk);
+				}
 			}
 			checkNext();
 		}
@@ -1382,7 +1386,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionPa
 		if (battle_action_substate == ePreDef) {
 			auto def = action->ApplyDefEffect();
 			if (def != 0) {
-				pending_message = BattleMessage::GetDefChangeMessage(*target, def);
+				if (action->IsAbsorbDef()) {
+					pending_message = BattleMessage::GetDefAbsorbedMessage(*source, *target, -def);
+				} else {
+					pending_message = BattleMessage::GetDefChangeMessage(*target, def);
+				}
 			}
 			checkNext();
 		}
@@ -1390,7 +1398,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionPa
 		if (battle_action_substate == ePreSpi) {
 			auto spi = action->ApplySpiEffect();
 			if (spi != 0) {
-				pending_message = BattleMessage::GetSpiChangeMessage(*target, spi);
+				if (action->IsAbsorbSpi()) {
+					pending_message = BattleMessage::GetSpiAbsorbedMessage(*source, *target, -spi);
+				} else {
+					pending_message = BattleMessage::GetSpiChangeMessage(*target, spi);
+				}
 			}
 			checkNext();
 		}
@@ -1398,7 +1410,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionPa
 		if (battle_action_substate == ePreAgi) {
 			auto agi = action->ApplyAgiEffect();
 			if (agi != 0) {
-				pending_message = BattleMessage::GetAgiChangeMessage(*target, agi);
+				if (action->IsAbsorbAgi()) {
+					pending_message = BattleMessage::GetAgiAbsorbedMessage(*source, *target, -agi);
+				} else {
+					pending_message = BattleMessage::GetAgiChangeMessage(*target, agi);
+				}
 			}
 			checkNext();
 		}

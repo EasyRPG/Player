@@ -170,7 +170,7 @@ std::string GetSpRecoveredMessage(const Game_Battler& target, int value) {
 	return GetHpSpRecoveredMessage(target, value, lcf::Data::terms.spirit_points);
 }
 
-std::string GetHpSpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points) {
+std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points) {
 	const auto target_is_ally = (target.GetType() == Game_Battler::Type_Ally);
 	StringView message = target_is_ally
 		? StringView(lcf::Data::terms.actor_hp_absorbed)
@@ -202,11 +202,27 @@ std::string GetHpSpAbsorbedMessage(const Game_Battler& source, const Game_Battle
 }
 
 std::string GetHpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
-	return GetHpSpAbsorbedMessage(source, target, value, lcf::Data::terms.health_points);
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.health_points);
 }
 
 std::string GetSpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
-	return GetHpSpAbsorbedMessage(source, target, value, lcf::Data::terms.spirit_points);
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.spirit_points);
+}
+
+std::string GetAtkAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.attack);
+}
+
+std::string GetDefAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.defense);
+}
+
+std::string GetSpiAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.spirit);
+}
+
+std::string GetAgiAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value) {
+	return GetParameterAbsorbedMessage(source, target, value, lcf::Data::terms.agility);
 }
 
 std::string GetDamagedMessage(const Game_Battler& target, int value) {

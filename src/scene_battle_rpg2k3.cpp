@@ -2085,7 +2085,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 		if (action->IsAffectHp()) {
 			const auto hp = action->GetAffectedHp();
-			if (hp != 0 || (!action->IsPositive() && !action->IsAbsorb())) {
+			if (hp != 0 || (!action->IsPositive() && !action->IsAbsorbHp())) {
 				DrawFloatText(
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
@@ -2093,7 +2093,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 						std::to_string(std::abs(hp)));
 			}
 
-			if (!action->IsPositive() && !action->IsAbsorb()) {
+			if (!action->IsPositive() && !action->IsAbsorbHp()) {
 				if (target->GetType() == Game_Battler::Type_Ally) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_AllyDamage));
 				} else {

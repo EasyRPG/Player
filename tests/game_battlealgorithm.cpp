@@ -84,12 +84,17 @@ TEST_CASE("Default") {
 	REQUIRE_EQ(0, algo.GetAffectedDef());
 	REQUIRE_EQ(0, algo.GetAffectedSpi());
 	REQUIRE_EQ(0, algo.GetAffectedAgi());
+	REQUIRE_EQ(false, algo.IsAbsorbHp());
+	REQUIRE_EQ(false, algo.IsAbsorbSp());
+	REQUIRE_EQ(false, algo.IsAbsorbAtk());
+	REQUIRE_EQ(false, algo.IsAbsorbDef());
+	REQUIRE_EQ(false, algo.IsAbsorbSpi());
+	REQUIRE_EQ(false, algo.IsAbsorbAgi());
 	REQUIRE_EQ(0, algo.GetStateEffects().size());
 	REQUIRE_EQ(0, algo.GetShiftedAttributes().size());
 
 	REQUIRE_EQ(false, algo.IsSuccess());
 	REQUIRE_EQ(false, algo.IsPositive());
-	REQUIRE_EQ(false, algo.IsAbsorb());
 	REQUIRE_EQ(false, algo.IsRevived());
 	REQUIRE_EQ(false, algo.IsCriticalHit());
 }
@@ -505,16 +510,6 @@ TEST_CASE("Flags") {
 		REQUIRE_FALSE(algo.IsCriticalHit());
 	}
 
-	SUBCASE("absorb") {
-		REQUIRE_FALSE(algo.IsAbsorb());
-
-		REQUIRE(algo.SetIsAbsorb(true));
-		REQUIRE(algo.IsAbsorb());
-
-		REQUIRE_FALSE(algo.SetIsAbsorb(false));
-		REQUIRE_FALSE(algo.IsAbsorb());
-	}
-
 	SUBCASE("positive") {
 		REQUIRE_FALSE(algo.IsPositive());
 
@@ -585,7 +580,7 @@ TEST_CASE("HpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbHp(true);
 			REQUIRE_EQ(0, algo.ApplyHpEffect());
 
 			REQUIRE_EQ(100, source->GetHp());
@@ -617,7 +612,7 @@ TEST_CASE("HpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbHp(true);
 			REQUIRE_EQ(-50, algo.ApplyHpEffect());
 
 			REQUIRE_EQ(150, source->GetHp());
@@ -649,7 +644,7 @@ TEST_CASE("HpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbHp(true);
 			REQUIRE_EQ(50, algo.ApplyHpEffect());
 
 			REQUIRE_EQ(50, source->GetHp());
@@ -681,7 +676,7 @@ TEST_CASE("HpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbHp(true);
 			REQUIRE_EQ(-100, algo.ApplyHpEffect());
 
 			REQUIRE_EQ(200, source->GetHp());
@@ -713,7 +708,7 @@ TEST_CASE("HpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbHp(true);
 			REQUIRE_EQ(100, algo.ApplyHpEffect());
 
 			REQUIRE_EQ(0, source->GetHp());
@@ -755,7 +750,7 @@ TEST_CASE("SpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSp(true);
 			REQUIRE_EQ(0, algo.ApplySpEffect());
 
 			REQUIRE_EQ(100, source->GetSp());
@@ -776,7 +771,7 @@ TEST_CASE("SpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSp(true);
 			REQUIRE_EQ(-50, algo.ApplySpEffect());
 
 			REQUIRE_EQ(150, source->GetSp());
@@ -797,7 +792,7 @@ TEST_CASE("SpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSp(true);
 			REQUIRE_EQ(50, algo.ApplySpEffect());
 
 			REQUIRE_EQ(50, source->GetSp());
@@ -818,7 +813,7 @@ TEST_CASE("SpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSp(true);
 			REQUIRE_EQ(-100, algo.ApplySpEffect());
 
 			REQUIRE_EQ(200, source->GetSp());
@@ -839,7 +834,7 @@ TEST_CASE("SpEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSp(true);
 			REQUIRE_EQ(100, algo.ApplySpEffect());
 
 			REQUIRE_EQ(0, source->GetSp());
@@ -877,7 +872,7 @@ TEST_CASE("AtkEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAtk(true);
 			REQUIRE_EQ(0, algo.ApplyAtkEffect());
 
 			REQUIRE_EQ(200, source->GetAtk());
@@ -898,10 +893,10 @@ TEST_CASE("AtkEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAtk(true);
 			REQUIRE_EQ(-50, algo.ApplyAtkEffect());
 
-			REQUIRE_EQ(200, source->GetAtk());
+			REQUIRE_EQ(250, source->GetAtk());
 			REQUIRE_EQ(150, target->GetAtk());
 		}
 	}
@@ -919,10 +914,10 @@ TEST_CASE("AtkEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAtk(true);
 			REQUIRE_EQ(50, algo.ApplyAtkEffect());
 
-			REQUIRE_EQ(200, source->GetAtk());
+			REQUIRE_EQ(150, source->GetAtk());
 			REQUIRE_EQ(250, target->GetAtk());
 		}
 	}
@@ -940,10 +935,10 @@ TEST_CASE("AtkEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAtk(true);
 			REQUIRE_EQ(-100, algo.ApplyAtkEffect());
 
-			REQUIRE_EQ(200, source->GetAtk());
+			REQUIRE_EQ(300, source->GetAtk());
 			REQUIRE_EQ(100, target->GetAtk());
 		}
 	}
@@ -961,10 +956,10 @@ TEST_CASE("AtkEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAtk(true);
 			REQUIRE_EQ(200, algo.ApplyAtkEffect());
 
-			REQUIRE_EQ(200, source->GetAtk());
+			REQUIRE_EQ(100, source->GetAtk());
 			REQUIRE_EQ(400, target->GetAtk());
 		}
 	}
@@ -999,7 +994,7 @@ TEST_CASE("DefEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbDef(true);
 			REQUIRE_EQ(0, algo.ApplyDefEffect());
 
 			REQUIRE_EQ(200, source->GetDef());
@@ -1020,10 +1015,10 @@ TEST_CASE("DefEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbDef(true);
 			REQUIRE_EQ(-50, algo.ApplyDefEffect());
 
-			REQUIRE_EQ(200, source->GetDef());
+			REQUIRE_EQ(250, source->GetDef());
 			REQUIRE_EQ(150, target->GetDef());
 		}
 	}
@@ -1041,10 +1036,10 @@ TEST_CASE("DefEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbDef(true);
 			REQUIRE_EQ(50, algo.ApplyDefEffect());
 
-			REQUIRE_EQ(200, source->GetDef());
+			REQUIRE_EQ(150, source->GetDef());
 			REQUIRE_EQ(250, target->GetDef());
 		}
 	}
@@ -1062,10 +1057,10 @@ TEST_CASE("DefEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbDef(true);
 			REQUIRE_EQ(-100, algo.ApplyDefEffect());
 
-			REQUIRE_EQ(200, source->GetDef());
+			REQUIRE_EQ(300, source->GetDef());
 			REQUIRE_EQ(100, target->GetDef());
 		}
 	}
@@ -1083,10 +1078,10 @@ TEST_CASE("DefEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbDef(true);
 			REQUIRE_EQ(200, algo.ApplyDefEffect());
 
-			REQUIRE_EQ(200, source->GetDef());
+			REQUIRE_EQ(100, source->GetDef());
 			REQUIRE_EQ(400, target->GetDef());
 		}
 	}
@@ -1121,7 +1116,7 @@ TEST_CASE("SpiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSpi(true);
 			REQUIRE_EQ(0, algo.ApplySpiEffect());
 
 			REQUIRE_EQ(200, source->GetSpi());
@@ -1142,10 +1137,10 @@ TEST_CASE("SpiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSpi(true);
 			REQUIRE_EQ(-50, algo.ApplySpiEffect());
 
-			REQUIRE_EQ(200, source->GetSpi());
+			REQUIRE_EQ(250, source->GetSpi());
 			REQUIRE_EQ(150, target->GetSpi());
 		}
 	}
@@ -1163,10 +1158,10 @@ TEST_CASE("SpiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSpi(true);
 			REQUIRE_EQ(50, algo.ApplySpiEffect());
 
-			REQUIRE_EQ(200, source->GetSpi());
+			REQUIRE_EQ(150, source->GetSpi());
 			REQUIRE_EQ(250, target->GetSpi());
 		}
 	}
@@ -1184,10 +1179,10 @@ TEST_CASE("SpiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSpi(true);
 			REQUIRE_EQ(-100, algo.ApplySpiEffect());
 
-			REQUIRE_EQ(200, source->GetSpi());
+			REQUIRE_EQ(300, source->GetSpi());
 			REQUIRE_EQ(100, target->GetSpi());
 		}
 	}
@@ -1205,10 +1200,10 @@ TEST_CASE("SpiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbSpi(true);
 			REQUIRE_EQ(200, algo.ApplySpiEffect());
 
-			REQUIRE_EQ(200, source->GetSpi());
+			REQUIRE_EQ(100, source->GetSpi());
 			REQUIRE_EQ(400, target->GetSpi());
 		}
 	}
@@ -1244,7 +1239,7 @@ TEST_CASE("AgiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAgi(true);
 			REQUIRE_EQ(0, algo.ApplyAgiEffect());
 
 			REQUIRE_EQ(200, source->GetAgi());
@@ -1265,10 +1260,10 @@ TEST_CASE("AgiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAgi(true);
 			REQUIRE_EQ(-50, algo.ApplyAgiEffect());
 
-			REQUIRE_EQ(200, source->GetAgi());
+			REQUIRE_EQ(250, source->GetAgi());
 			REQUIRE_EQ(150, target->GetAgi());
 		}
 	}
@@ -1286,10 +1281,10 @@ TEST_CASE("AgiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAgi(true);
 			REQUIRE_EQ(50, algo.ApplyAgiEffect());
 
-			REQUIRE_EQ(200, source->GetAgi());
+			REQUIRE_EQ(150, source->GetAgi());
 			REQUIRE_EQ(250, target->GetAgi());
 		}
 	}
@@ -1307,10 +1302,10 @@ TEST_CASE("AgiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAgi(true);
 			REQUIRE_EQ(-100, algo.ApplyAgiEffect());
 
-			REQUIRE_EQ(200, source->GetAgi());
+			REQUIRE_EQ(300, source->GetAgi());
 			REQUIRE_EQ(100, target->GetAgi());
 		}
 	}
@@ -1328,10 +1323,10 @@ TEST_CASE("AgiEffect") {
 		}
 
 		SUBCASE("absorb") {
-			algo.SetIsAbsorb(true);
+			algo.SetIsAbsorbAgi(true);
 			REQUIRE_EQ(200, algo.ApplyAgiEffect());
 
-			REQUIRE_EQ(200, source->GetAgi());
+			REQUIRE_EQ(100, source->GetAgi());
 			REQUIRE_EQ(400, target->GetAgi());
 		}
 	}
