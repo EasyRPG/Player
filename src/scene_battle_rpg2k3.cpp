@@ -1940,7 +1940,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action) {
-	const auto is_target_party = action->IsTargetingParty();
+	const auto is_target_party = action->GetOriginalPartyTarget() != nullptr;
 	auto* source = action->GetSource();
 	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
 

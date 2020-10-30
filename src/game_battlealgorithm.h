@@ -91,7 +91,7 @@ public:
 	Game_Battler* GetReflectTarget() const;
 
 	/** @return true if this algorithm targets a party */
-	bool IsTargetingParty() const;
+	Game_Party_Base* GetOriginalPartyTarget() const;
 
 	/** @return the original targets of the action before reflect or other modifications */
 	Span<Game_Battler* const> GetOriginalTargets() const;
@@ -106,7 +106,7 @@ public:
 	void Start();
 
 	/**
-	 * If IsReflectable(), will reflect the action back on the source or the source's party.
+	 * If IsReflected(target) true on any target, will reflect the action back on the source or the source's party.
 	 *
 	 * @return true if this algo was reflected.
 	 */
@@ -188,16 +188,16 @@ public:
 	int GetAffectedSp() const;
 
 	/** @return signed value of how much attack is to be gained or lost */
-	int GetAffectedAttack() const;
+	int GetAffectedAtk() const;
 
 	/** @return signed value of how much defense is to be gained or lost */
-	int GetAffectedDefense() const;
+	int GetAffectedDef() const;
 
 	/** @return signed value of how much spirit is to be gained or lost */
-	int GetAffectedSpirit() const;
+	int GetAffectedSpi() const;
 
 	/** @return signed value of how much spirit is to be gained or lost */
-	int GetAffectedAgility() const;
+	int GetAffectedAgi() const;
 
 	/** @return all states changes caused by this action in order. */
 	const std::vector<StateEffect>& GetStateEffects() const;
@@ -257,34 +257,62 @@ public:
 	/** Apply custom effects */
 	virtual void ApplyCustomEffect();
 
-	/** Apply switch enabled by action */
-	void ApplySwitchEffect();
+	/**
+	 * Apply switch enabled by action
+	 * @return the switch id enabled, or 0 if none.
+	 */
+	int ApplySwitchEffect();
 
-	/** Apply hp damage or healing. Hp healing is not applied if the action revivies */
+	/**
+	 * Apply hp damage or healing.
+	 * @note Hp healing is not applied if the action revivies
+	 * @return the amount of hp changed.
+	 */
 	int ApplyHpEffect();
 
-	/** Apply sp increase or decrease. */
+	/**
+	 * Apply sp increase or decrease.
+	 * @return the amount of sp changed.
+	 */
 	int ApplySpEffect();
 
-	/** Apply atk increase or decrease. */
+	/**
+	 * Apply atk increase or decrease.
+	 * @return the amount of atk changed.
+	 */
 	int ApplyAtkEffect();
 
-	/** Apply def increase or decrease. */
+	/**
+	 * Apply def increase or decrease.
+	 * @return the amount of def changed.
+	 */
 	int ApplyDefEffect();
 
-	/** Apply spi increase or decrease. */
+	/**
+	 * Apply spi increase or decrease.
+	 * @return the amount of spi changed.
+	 */
 	int ApplySpiEffect();
 
-	/** Apply agi increase or decrease. */
+	/**
+	 * Apply agi increase or decrease.
+	 * @return the amount of agi changed.
+	 */
 	int ApplyAgiEffect();
 
-	/** Apply the given state effect */
-	void ApplyStateEffect(StateEffect se);
+	/**
+	 * Apply the given state effect.
+	 * @return true if state was successfully added or removed.
+	 */
+	bool ApplyStateEffect(StateEffect se);
 
 	/** Apply all state effects */
 	void ApplyStateEffects();
 
-	/** Apply the given attribute effect */
+	/**
+	 * Apply the given attribute effect
+	 * @return the amount the attribute was shifted.
+	 */
 	int ApplyAttributeShiftEffect(AttributeEffect ae);
 
 	/** Apply all attribute effects */
@@ -674,8 +702,8 @@ inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
 	return states;
 }
 
-inline bool AlgorithmBase::IsTargetingParty() const {
-	return party_target != nullptr;
+inline Game_Party_Base* AlgorithmBase::GetOriginalPartyTarget() const {
+	return party_target;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
@@ -686,19 +714,19 @@ inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSp() const {
 	return sp;
 }
 
-inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAttack() const {
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAtk() const {
 	return attack;
 }
 
-inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedDefense() const {
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedDef() const {
 	return defense;
 }
 
-inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpi() const {
 	return spirit;
 }
 
-inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
+inline int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgi() const {
 	return agility;
 }
 
@@ -765,7 +793,7 @@ inline Span<Game_Battler* const> Game_BattleAlgorithm::AlgorithmBase::GetOrigina
 
 inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetOriginalSingleTarget() const {
 	assert(num_original_targets <= static_cast<int>(targets.size()));
-	return num_original_targets == 1 ? targets.front() : nullptr;
+	return (GetOriginalPartyTarget() == nullptr && num_original_targets == 1) ? targets.front() : nullptr;
 }
 
 inline int Game_BattleAlgorithm::AlgorithmBase::SetAffectedSwitch(int s) {

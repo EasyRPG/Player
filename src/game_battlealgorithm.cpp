@@ -141,11 +141,12 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 void Game_BattleAlgorithm::AlgorithmBase::ApplyCustomEffect() {
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplySwitchEffect() {
+int Game_BattleAlgorithm::AlgorithmBase::ApplySwitchEffect() {
 	const auto sw = GetAffectedSwitch();
 	if (sw > 0) {
 		Main_Data::game_switches->Set(sw, true);
 	}
+	return sw;
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
@@ -160,7 +161,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyHpEffect() {
 		hp = target->ChangeHp(hp, true);
 		if (IsAbsorb()) {
 			// Only absorb the hp that were left
-			source->ChangeHp(-hp, false);
+			source->ChangeHp(-hp, true);
 		}
 	}
 	return hp;
@@ -183,7 +184,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 	auto* target = GetTarget();
 	assert(target);
-	auto atk = GetAffectedAttack();
+	auto atk = GetAffectedAtk();
 	if (atk) {
 		atk = target->ChangeAtkModifier(atk);
 	}
@@ -193,7 +194,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 	auto* target = GetTarget();
 	assert(target);
-	auto def = GetAffectedDefense();
+	auto def = GetAffectedDef();
 	if (def) {
 		def = target->ChangeDefModifier(def);
 	}
@@ -203,7 +204,7 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 	auto* target = GetTarget();
 	assert(target);
-	auto spi = GetAffectedSpirit();
+	auto spi = GetAffectedSpi();
 	if (spi) {
 		spi = target->ChangeSpiModifier(spi);
 	}
@@ -213,29 +214,30 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 	auto* target = GetTarget();
 	assert(target);
-	auto agi = GetAffectedAgility();
+	auto agi = GetAffectedAgi();
 	if (agi) {
 		agi = target->ChangeAgiModifier(agi);
 	}
 	return agi;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
+bool Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
 	auto* target = GetTarget();
 	if (!target) {
-		return;
+		return false;
 	}
 
+	bool rc = false;
 	bool was_dead = target->IsDead();
 
 	// Apply states
 	switch (se.effect) {
 		case StateEffect::Inflicted:
-			target->AddState(se.state_id, true);
+			rc = target->AddState(se.state_id, true);
 			break;
 		case StateEffect::Healed:
 		case StateEffect::HealedByAttack:
-			target->RemoveState(se.state_id, false);
+			rc = target->RemoveState(se.state_id, false);
 			break;
 		default:
 			break;
@@ -246,6 +248,7 @@ void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffect(StateEffect se) {
 		auto hp = GetAffectedHp();
 		target->ChangeHp(hp - 1, false);
 	}
+	return rc;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyStateEffects() {
@@ -341,7 +344,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::vStart() {
 void Game_BattleAlgorithm::AlgorithmBase::AddTarget(Game_Battler* target, bool set_current) {
 	assert(target != nullptr);
 
-	const auto idx = std::distance(current_target, targets.end());
+	const auto idx = std::distance(targets.begin(), current_target);
 	const auto size = targets.size();
 	targets.push_back(target);
 	current_target = targets.begin() + (set_current ? size : idx);
@@ -349,7 +352,7 @@ void Game_BattleAlgorithm::AlgorithmBase::AddTarget(Game_Battler* target, bool s
 
 void Game_BattleAlgorithm::AlgorithmBase::AddTargets(Game_Party_Base* party, bool set_current) {
 	assert(party != nullptr);
-	const auto idx = std::distance(current_target, targets.end());
+	const auto idx = std::distance(targets.begin(), current_target);
 	const auto size = targets.size();
 	party->GetBattlers(targets);
 	current_target = targets.begin() + (set_current ? size : idx);
@@ -547,7 +550,7 @@ bool Game_BattleAlgorithm::Normal::vStart() {
 	// If this weapon attacks all, then attack all enemies regardless of original targetting.
 	const auto weapon = GetWeapon();
 	auto* source = GetSource();
-	if (!IsTargetingParty() && source->HasAttackAll(weapon)) {
+	if (GetOriginalPartyTarget() == nullptr && source->HasAttackAll(weapon)) {
 		auto* target = GetOriginalTargets().back();
 		AddTargets(&target->GetParty(), true);
 	}
