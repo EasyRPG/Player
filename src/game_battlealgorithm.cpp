@@ -338,6 +338,23 @@ bool Game_BattleAlgorithm::AlgorithmBase::vStart() {
 	return true;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::AddTarget(Game_Battler* target, bool set_current) {
+	assert(target != nullptr);
+
+	const auto idx = std::distance(current_target, targets.end());
+	const auto size = targets.size();
+	targets.push_back(target);
+	current_target = targets.begin() + (set_current ? size : idx);
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::AddTargets(Game_Party_Base* party, bool set_current) {
+	assert(party != nullptr);
+	const auto idx = std::distance(current_target, targets.end());
+	const auto size = targets.size();
+	party->GetBattlers(targets);
+	current_target = targets.begin() + (set_current ? size : idx);
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::ReflectTargets() {
 	auto iter = std::find_if(current_target, targets.end(), [this](auto* target) { return IsReflected(*target); });
 
@@ -350,12 +367,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::ReflectTargets() {
 
 	if (party_target) {
 		// Reflect back on source party
-		const auto offset = targets.size();
-		source->GetParty().GetBattlers(targets);
-		current_target = targets.begin() + offset;
+		AddTargets(&source->GetParty(), true);
 	} else {
 		// Reflect back on source
-		current_target = targets.insert(targets.end(), source);
+		AddTarget(source, true);
 	}
 
 	if (!IsCurrentTargetValid()) {
@@ -533,10 +548,8 @@ bool Game_BattleAlgorithm::Normal::vStart() {
 	const auto weapon = GetWeapon();
 	auto* source = GetSource();
 	if (!IsTargetingParty() && source->HasAttackAll(weapon)) {
-		auto* target = targets.back();
-		auto idx = targets.size();
-		target->GetParty().GetBattlers(targets);
-		current_target = targets.begin() + idx;
+		auto* target = GetOriginalTargets().back();
+		AddTargets(&target->GetParty(), true);
 	}
 
 	source->ChangeSp(-source->CalculateWeaponSpCost(weapon));

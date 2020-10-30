@@ -113,6 +113,22 @@ public:
 	bool ReflectTargets();
 
 	/**
+	 * Add a new target to the algo.
+	 *
+	 * @param target the target to add
+	 * @param set_current Whether or not to reset the current target to this one
+	 */
+	void AddTarget(Game_Battler* target, bool set_current);
+
+	/**
+	 * Add all party targets to the algo.
+	 *
+	 * @param targets the party to add
+	 * @param set_current Whether or not to reset the current target to the first member of the party
+	 */
+	void AddTargets(Game_Party_Base* party, bool set_current);
+
+	/**
 	 * Changes the target reference to the next target.
 	 * When reaches the last target, will return false and reset back to first target.
 	 *
@@ -189,6 +205,14 @@ public:
 	/** @return all attributes which are shifited by this action. */
 	const std::vector<AttributeEffect>& GetShiftedAttributes() const;
 
+	/**
+	 * Returns whether the action hit the target.
+	 * This function returns the same as the last Execute-call.
+	 *
+	 * @return if the action hit the target
+	 */
+	bool IsSuccess() const;
+
 	/** @return Whether action was positive (e.g. healing) instead of damage. */
 	bool IsPositive() const;
 
@@ -197,6 +221,9 @@ public:
 
 	/** @return Whether target will be revived from death */
 	bool IsRevived() const;
+
+	/** @return if the last action was a critical hit.  */
+	bool IsCriticalHit() const;
 
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
@@ -217,17 +244,6 @@ public:
 	 * @return the number of frames the animation will play
 	 */
 	int PlayAnimation(int anim_id, bool sound_only = false, int cutoff = -1, bool invert = false);
-
-	/**
-	 * Returns whether the action hit the target.
-	 * This function returns the same as the last Execute-call.
-	 *
-	 * @return if the action hit the target
-	 */
-	bool IsSuccess() const;
-
-	/** @return if the last action was a critical hit.  */
-	bool IsCriticalHit() const;
 
 	/**
 	 * Executes the algorithm. Must be called before using the other functions.
@@ -460,10 +476,8 @@ protected:
 private:
 	Type type = Type::None;
 	Game_Battler* source = nullptr;
-protected:
 	std::vector<Game_Battler*> targets;
 	std::vector<Game_Battler*>::iterator current_target;
-private:
 	Game_Party_Base* party_target = nullptr;
 	Game_Battler* reflect_target = nullptr;
 
