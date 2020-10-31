@@ -2336,6 +2336,7 @@ TEST_CASE("Algo::Skill::HpEffect") {
 	skill.power = 1;
 	skill.hit = 100;
 	skill.physical_rate = 10;
+	skill.magical_rate = 0;
 
 	auto& state = lcf::Data::states[1];
 	state.release_by_damage = 100;
@@ -2483,9 +2484,9 @@ TEST_CASE("Algo::Skill::SpEffect") {
 
 	skill.type = lcf::rpg::Skill::Type_normal;
 	skill.affect_sp = true;
+	skill.physical_rate = skill.magical_rate = 0;
 	skill.power = 1;
 	skill.hit = 100;
-	skill.physical_rate = 10;
 
 	Game_BattleAlgorithm::Skill algo(source, target, skill);
 
@@ -2578,6 +2579,168 @@ TEST_CASE("Algo::Skill::SpEffect") {
 		SUBCASE("zero") {
 			testZero();
 		}
+	}
+}
+
+TEST_CASE("Algo::Skill::ParamEffect") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 200, 100, 100, 100, 100);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.power = 1;
+	skill.physical_rate = skill.magical_rate = 0;
+	skill.hit = 100;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	auto test = [&](bool increase) {
+		CAPTURE(increase);
+		algo.Execute();
+
+		REQUIRE_EQ(false, algo.IsAbsorbAtk());
+		REQUIRE_EQ(false, algo.IsAbsorbDef());
+		REQUIRE_EQ(false, algo.IsAbsorbSpi());
+		REQUIRE_EQ(false, algo.IsAbsorbAgi());
+
+		if (skill.affect_attack) {
+			if (increase) {
+				REQUIRE(algo.GetAffectedAtk() > 0);
+			} else {
+				REQUIRE(algo.GetAffectedAtk() < 0);
+			}
+			REQUIRE_EQ(true, algo.IsAffectAtk());
+		}
+		if (skill.affect_defense) {
+			if (increase) {
+				REQUIRE(algo.GetAffectedDef() > 0);
+			} else {
+				REQUIRE(algo.GetAffectedDef() < 0);
+			}
+			REQUIRE_EQ(true, algo.IsAffectDef());
+		}
+		if (skill.affect_spirit) {
+			if (increase) {
+				REQUIRE(algo.GetAffectedSpi() > 0);
+			} else {
+				REQUIRE(algo.GetAffectedSpi() < 0);
+			}
+			REQUIRE_EQ(true, algo.IsAffectSpi());
+		}
+		if (skill.affect_agility) {
+			if (increase) {
+				REQUIRE(algo.GetAffectedAgi() > 0);
+			} else {
+				REQUIRE(algo.GetAffectedAgi() < 0);
+			}
+			REQUIRE_EQ(true, algo.IsAffectAgi());
+		}
+		REQUIRE_EQ(true, algo.IsSuccess());
+	};
+
+	auto testZero = [&]() {
+		skill.power = 0;
+		algo.Execute();
+		REQUIRE_EQ(0, algo.GetAffectedAtk());
+		REQUIRE_EQ(0, algo.GetAffectedDef());
+		REQUIRE_EQ(0, algo.GetAffectedSpi());
+		REQUIRE_EQ(0, algo.GetAffectedAgi());
+		REQUIRE_EQ(false, algo.IsAffectAtk());
+		REQUIRE_EQ(false, algo.IsAffectDef());
+		REQUIRE_EQ(false, algo.IsAffectSpi());
+		REQUIRE_EQ(false, algo.IsAffectAgi());
+		REQUIRE_EQ(false, algo.IsSuccess());
+		REQUIRE_EQ(false, algo.IsAbsorbAtk());
+		REQUIRE_EQ(false, algo.IsAbsorbDef());
+		REQUIRE_EQ(false, algo.IsAbsorbSpi());
+		REQUIRE_EQ(false, algo.IsAbsorbAgi());
+	};
+
+	auto doParamTest = [&]() {
+		SUBCASE("positive") {
+			skill.scope = lcf::rpg::Skill::Scope_ally;
+			algo.Start();
+
+			SUBCASE("normal") {
+				SUBCASE("normal") {
+					test(true);
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					test(true);
+				}
+			}
+
+			SUBCASE("attribute flip") {
+				auto& attr = lcf::Data::attributes[0];
+				attr.c_rate = -100;
+				skill.attribute_effects = { true };
+
+				SUBCASE("normal") {
+					test(false);
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					test(false);
+				}
+			}
+
+			SUBCASE("zero") {
+				testZero();
+			}
+		}
+
+		SUBCASE("negative") {
+			skill.scope = lcf::rpg::Skill::Scope_enemy;
+			algo.Start();
+
+			SUBCASE("normal") {
+				SUBCASE("normal") {
+					test(false);
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					test(false);
+				}
+			}
+
+			SUBCASE("attribute flip") {
+				auto& attr = lcf::Data::attributes[0];
+				attr.c_rate = -100;
+				skill.attribute_effects = { true };
+
+				SUBCASE("normal") {
+					test(true);
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					test(true);
+				}
+			}
+
+			SUBCASE("zero") {
+				testZero();
+			}
+		}
+	};
+
+	SUBCASE("atk") {
+		skill.affect_attack = true;
+		doParamTest();
+	}
+	SUBCASE("def") {
+		skill.affect_defense = true;
+		doParamTest();
+	}
+	SUBCASE("spi") {
+		skill.affect_spirit = true;
+		doParamTest();
+	}
+	SUBCASE("agi") {
+		skill.affect_agility = true;
+		doParamTest();
 	}
 }
 

@@ -881,19 +881,31 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 
 	if (skill.affect_attack && Rand::PercentChance(to_hit)) {
 		const auto atk = target->CanChangeAtkModifier(effect);
-		SetIsSuccessIf(SetAffectedAtk(atk));
+		if (atk != 0) {
+			SetAffectedAtk(atk);
+			SetIsSuccess();
+		}
 	}
 	if (skill.affect_defense && Rand::PercentChance(to_hit)) {
 		const auto def = target->CanChangeDefModifier(effect);
-		SetIsSuccessIf(SetAffectedDef(def));
+		if (def != 0) {
+			SetAffectedDef(def);
+			SetIsSuccess();
+		}
 	}
 	if (skill.affect_spirit && Rand::PercentChance(to_hit)) {
 		const auto spi = target->CanChangeSpiModifier(effect);
-		SetIsSuccessIf(SetAffectedSpi(spi));
+		if (spi != 0) {
+			SetAffectedSpi(spi);
+			SetIsSuccess();
+		}
 	}
 	if (skill.affect_agility && Rand::PercentChance(to_hit)) {
 		const auto agi = target->CanChangeAgiModifier(effect);
-		SetIsSuccessIf(SetAffectedAgi(agi));
+		if (agi != 0) {
+			SetAffectedAgi(agi);
+			SetIsSuccess();
+		}
 	}
 
 	bool heals_states = IsPositive() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
