@@ -2238,4 +2238,325 @@ TEST_CASE("Algo::Skill::PositiveFlag") {
 	}
 }
 
+TEST_CASE("Algo::Skill::HitFail") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.affect_hp = true;
+	skill.affect_sp = true;
+	skill.affect_attack = true;
+	skill.affect_defense = true;
+	skill.affect_spirit = true;
+	skill.affect_agility = true;
+	skill.state_effects = { false, true };
+	skill.attribute_effects = { true };
+	skill.affect_attr_defence = true;
+	skill.power = 1;
+	skill.hit = 0;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	auto test = [&]() {
+		algo.Start();
+		algo.Execute();
+		REQUIRE_EQ(false, algo.IsSuccess());
+		REQUIRE_EQ(false, algo.IsAffectHp());
+		REQUIRE_EQ(false, algo.IsAffectSp());
+		REQUIRE_EQ(false, algo.IsAffectAtk());
+		REQUIRE_EQ(false, algo.IsAffectDef());
+		REQUIRE_EQ(false, algo.IsAffectSpi());
+		REQUIRE_EQ(false, algo.IsAffectAgi());
+		REQUIRE_EQ(false, algo.IsAbsorbHp());
+		REQUIRE_EQ(false, algo.IsAbsorbSp());
+		REQUIRE_EQ(false, algo.IsAbsorbAtk());
+		REQUIRE_EQ(false, algo.IsAbsorbDef());
+		REQUIRE_EQ(false, algo.IsAbsorbSpi());
+		REQUIRE_EQ(false, algo.IsAbsorbAgi());
+		REQUIRE_EQ(0, algo.GetStateEffects().size());
+		REQUIRE_EQ(0, algo.GetShiftedAttributes().size());
+	};
+
+	SUBCASE("positive") {
+		skill.scope = lcf::rpg::Skill::Scope_ally;
+		SUBCASE("normal") {
+			test();
+		}
+		SUBCASE("absorb") {
+			skill.absorb_damage = true;
+			test();
+		}
+	}
+
+	SUBCASE("negative") {
+		skill.scope = lcf::rpg::Skill::Scope_enemy;
+		SUBCASE("normal") {
+			test();
+		}
+		SUBCASE("absorb") {
+			skill.absorb_damage = true;
+			test();
+		}
+	}
+}
+
+TEST_CASE("Algo::Skill::HpEffect") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 0, 1, 1, 1, 1);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.affect_hp = true;
+	skill.power = 1;
+	skill.hit = 100;
+	skill.physical_rate = 10;
+
+	auto& state = lcf::Data::states[1];
+	state.release_by_damage = 100;
+
+	target->AddState(2, true);
+	REQUIRE_EQ(true, target->HasState(2));
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	auto test = [&](bool absorb, bool healing, bool recover_states) {
+		CAPTURE(absorb);
+		CAPTURE(healing);
+		CAPTURE(recover_states);
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsAffectHp());
+		REQUIRE_EQ(true, algo.IsSuccess());
+
+		REQUIRE_EQ(absorb, algo.IsAbsorbHp());
+		if (healing) {
+			REQUIRE(algo.GetAffectedHp() > 0);
+		} else {
+			REQUIRE(algo.GetAffectedHp() < 0);
+		}
+
+		if (recover_states) {
+			REQUIRE_EQ(1, algo.GetStateEffects().size());
+			REQUIRE_EQ(2, algo.GetStateEffects()[0].state_id);
+			REQUIRE_EQ(Game_BattleAlgorithm::StateEffect::HealedByAttack, algo.GetStateEffects()[0].effect);
+		} else {
+			REQUIRE_EQ(0, algo.GetStateEffects().size());
+		}
+	};
+
+	auto testZero = [&](bool success, bool absorb) {
+		skill.power = 0;
+		algo.Execute();
+		REQUIRE_EQ(0, algo.GetAffectedHp());
+		REQUIRE_EQ(success, algo.IsAffectHp());
+		REQUIRE_EQ(success, algo.IsSuccess());
+		REQUIRE_EQ(absorb, algo.IsAbsorbHp());
+	};
+
+	SUBCASE("positive") {
+		skill.scope = lcf::rpg::Skill::Scope_ally;
+		algo.Start();
+
+		SUBCASE("normal") {
+			SUBCASE("normal") {
+				test(false, true, false);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				test(false, true, false);
+			}
+		}
+
+		SUBCASE("attribute flip") {
+			auto& attr = lcf::Data::attributes[0];
+			attr.c_rate = -100;
+			skill.attribute_effects = { true };
+
+			SUBCASE("normal") {
+				test(false, false, false);
+			}
+			SUBCASE("absorb") {
+				test(false, false, false);
+			}
+		}
+
+		SUBCASE("zero") {
+			SUBCASE("normal") {
+				testZero(false, false);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				testZero(false, false);
+			}
+		}
+	}
+
+	SUBCASE("negative") {
+		skill.scope = lcf::rpg::Skill::Scope_enemy;
+		algo.Start();
+
+		SUBCASE("normal") {
+			SUBCASE("normal") {
+				SUBCASE("physical") {
+					skill.physical_rate = 10;
+					test(false, false, true);
+				}
+				SUBCASE("nophysical") {
+					skill.physical_rate = 0;
+					test(false, false, false);
+				}
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				skill.physical_rate = 10;
+				test(true, false, false);
+			}
+		}
+
+		SUBCASE("attribute flip") {
+			auto& attr = lcf::Data::attributes[0];
+			attr.c_rate = -100;
+			skill.attribute_effects = { true };
+
+			SUBCASE("normal") {
+				SUBCASE("physical") {
+					skill.physical_rate = 10;
+					test(false, true, true);
+				}
+				SUBCASE("nophysical") {
+					skill.physical_rate = 0;
+					test(false, true, false);
+				}
+			}
+			SUBCASE("absorb") {
+				skill.physical_rate = 10;
+				skill.absorb_damage = true;
+				test(false, true, true);
+			}
+		}
+
+		SUBCASE("zero") {
+			SUBCASE("normal") {
+				testZero(true, false);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				testZero(false, false);
+			}
+		}
+	}
+}
+
+TEST_CASE("Algo::Skill::SpEffect") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 200, 1, 1, 1, 1);
+	target->SetSp(100);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.affect_sp = true;
+	skill.power = 1;
+	skill.hit = 100;
+	skill.physical_rate = 10;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	auto test = [&](bool absorb, bool healing) {
+		CAPTURE(absorb);
+		CAPTURE(healing);
+		algo.Execute();
+
+		REQUIRE_EQ(absorb, algo.IsAbsorbSp());
+		if (healing) {
+			REQUIRE(algo.GetAffectedSp() > 0);
+		} else {
+			REQUIRE(algo.GetAffectedSp() < 0);
+		}
+
+		REQUIRE_EQ(true, algo.IsAffectSp());
+		REQUIRE_EQ(true, algo.IsSuccess());
+	};
+
+	auto testZero = [&]() {
+		skill.power = 0;
+		algo.Execute();
+		REQUIRE_EQ(0, algo.GetAffectedSp());
+		REQUIRE_EQ(false, algo.IsAffectSp());
+		REQUIRE_EQ(false, algo.IsSuccess());
+		REQUIRE_EQ(false, algo.IsAbsorbSp());
+	};
+
+	SUBCASE("positive") {
+		skill.scope = lcf::rpg::Skill::Scope_ally;
+		algo.Start();
+
+		SUBCASE("normal") {
+			SUBCASE("normal") {
+				test(false, true);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				test(false, true);
+			}
+		}
+
+		SUBCASE("attribute flip") {
+			auto& attr = lcf::Data::attributes[0];
+			attr.c_rate = -100;
+			skill.attribute_effects = { true };
+
+			SUBCASE("normal") {
+				test(false, false);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				test(false, false);
+			}
+		}
+
+		SUBCASE("zero") {
+			testZero();
+		}
+	}
+
+	SUBCASE("negative") {
+		skill.scope = lcf::rpg::Skill::Scope_enemy;
+		algo.Start();
+
+		SUBCASE("normal") {
+			SUBCASE("normal") {
+				test(false, false);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				test(true, false);
+			}
+		}
+
+		SUBCASE("attribute flip") {
+			auto& attr = lcf::Data::attributes[0];
+			attr.c_rate = -100;
+			skill.attribute_effects = { true };
+
+			SUBCASE("normal") {
+				test(false, true);
+			}
+			SUBCASE("absorb") {
+				skill.absorb_damage = true;
+				test(false, true);
+			}
+		}
+
+		SUBCASE("zero") {
+			testZero();
+		}
+	}
+}
+
 TEST_SUITE_END();

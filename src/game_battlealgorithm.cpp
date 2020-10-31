@@ -819,13 +819,8 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		return SetIsFailure();
 	}
 
-	// Absorb only works on offensive skills.
-	if (skill.absorb_damage && !IsPositive()) {
-		// RPG_RT only support absorbing hp and sp.
-		// Absorbing parameters is an EasyRPG extension.
-		SetIsAbsorbHp(skill.affect_hp);
-		SetIsAbsorbSp(skill.affect_sp);
-	}
+	// Absorb only works on offensive skills, when effect was not flipped by attributes
+	const auto absorb = (skill.absorb_damage && !IsPositive() && effect <= 0);
 
 	// Make a copy of the target's state set and see what we can apply.
 	auto target_states = target->GetStates();
@@ -834,18 +829,25 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
 		const auto cur_hp = target->GetHp();
 
-		if (IsAbsorbHp()) {
+		if (absorb) {
 			// Cannot aborb more hp than the target has.
-			SetAffectedHp(std::max<int>(effect, -cur_hp));
+			auto hp = std::max<int>(effect, -cur_hp);
+			if (hp != 0) {
+				SetAffectedHp(hp);
+				SetIsAbsorbHp(true);
 
-			// Absorb requires damage to be successful
-			SetIsSuccessIf(GetAffectedHp() != 0);
+				// Absorb requires damage to be successful
+				SetIsSuccess();
+			}
 		} else {
 			if (IsPositive()) {
 				// RPG_RT attribute inverted healing effects are non-lethal
-				SetAffectedHp(std::max(-(cur_hp - 1), effect));
-				// HP recovery is sucessful if the effect is non-zero, even at full hp.
-				SetIsSuccessIf(effect != 0);
+				auto hp = std::max(-(cur_hp - 1), effect);
+				if (hp != 0) {
+					// HP recovery is sucessful if the effect is non-zero, even at full hp.
+					SetAffectedHp(hp);
+					SetIsSuccess();
+				}
 			} else {
 				SetAffectedHp(effect);
 
@@ -874,14 +876,19 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto max_sp = target->GetMaxSp();
 		const auto cur_sp = target->GetSp() - sp_cost;
 
-		if (IsAbsorbSp()) {
-			// Cannot aborb more hp than the target has.
-			SetAffectedSp(std::max(effect, -cur_sp));
+		int sp = 0;
+		if (absorb) {
+			// Cannot aborb more sp than the target has.
+			sp = std::max(effect, -cur_sp);
 		} else {
-			SetAffectedSp(Utils::Clamp(cur_sp + effect, 0, max_sp) - cur_sp);
+			sp = Utils::Clamp(cur_sp + effect, 0, max_sp) - cur_sp;
 		}
 
-		SetIsSuccessIf(GetAffectedSp());
+		if (sp != 0) {
+			SetAffectedSp(sp);
+			SetIsAbsorbSp(absorb);
+			SetIsSuccess();
+		}
 	}
 
 	if (!IsPositive() && !IsSuccess() && (skill.affect_hp || skill.affect_sp)) {
