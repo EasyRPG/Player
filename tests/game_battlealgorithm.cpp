@@ -1901,9 +1901,11 @@ TEST_CASE("Algo::Item::Switch") {
 
 	Game_BattleAlgorithm::Item algo(source, target, item);
 	Main_Data::game_party->AddItem(1, 1);
+	REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
 
 	algo.Start();
 	REQUIRE_EQ(target, algo.GetTarget());
+	REQUIRE_EQ(0, Main_Data::game_party->GetItemCount(1));
 
 	algo.Execute();
 	REQUIRE(algo.IsSuccess());
@@ -1929,8 +1931,10 @@ TEST_CASE("Algo::Item::Medicine") {
 	Game_BattleAlgorithm::Item algo(source, target, item);
 
 	Main_Data::game_party->AddItem(1, 1);
+	REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
 
 	algo.Start();
+	REQUIRE_EQ(0, Main_Data::game_party->GetItemCount(1));
 	REQUIRE_EQ(target, algo.GetTarget());
 
 	SUBCASE("hp") {
@@ -2130,6 +2134,44 @@ TEST_CASE("Algo::Skill::TargetValid") {
 		REQUIRE(algo.IsTargetValid(*target));
 		skill.reverse_state_effect = true;
 		REQUIRE(algo.IsTargetValid(*target));
+	}
+}
+
+TEST_CASE("Algo::Skill::Consumption") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto& skill = lcf::Data::skills[0];
+	skill.sp_cost = 20;
+	Setup(source, 200, 200, 1, 1, 1, 1);
+
+	SUBCASE("skill") {
+		Game_BattleAlgorithm::Skill algo(source, skill, nullptr);
+
+		REQUIRE_EQ(200, source->GetSp());
+		algo.Start();
+		REQUIRE_EQ(180, source->GetSp());
+	}
+
+	SUBCASE("skill item") {
+		auto& item = lcf::Data::items[0];
+		item.type = lcf::rpg::Item::Type_special;
+
+		Game_BattleAlgorithm::Skill algo(source, skill, &item);
+		Main_Data::game_party->AddItem(1, 1);
+		REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
+		algo.Start();
+		REQUIRE_EQ(0, Main_Data::game_party->GetItemCount(1));
+	}
+
+	SUBCASE("skill equip") {
+		auto& item = lcf::Data::items[0];
+		item.type = lcf::rpg::Item::Type_weapon;
+
+		Game_BattleAlgorithm::Skill algo(source, skill, &item);
+		Main_Data::game_party->AddItem(1, 1);
+		REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
+		algo.Start();
+		REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
 	}
 }
 
