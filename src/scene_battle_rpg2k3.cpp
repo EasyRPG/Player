@@ -1804,6 +1804,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
 
+	// Emulate an RPG_RT bug where whenver actors attack, the damage and evasion calculations are performed
+	// as if the enemies are in the front row.
+	if (source->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Normal) {
+		static_cast<Game_BattleAlgorithm::Normal*>(action)->SetTreatEnemiesAsifInFrontRow(true);
+	}
+
 	// Setup enemy targets
 	// FIXME: This is not 100% bug compatible with RPG_RT but pretty close
 	// See: https://github.com/EasyRPG/Player/issues/2405#issuecomment-716298981
@@ -2056,7 +2062,13 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 	const bool was_dead = target->IsDead();
 
+
 	action->ApplyHpEffect();
+	// Emulates an RPG_RT bug where damage which is reversed into healing due to negative attributes is applied twice.
+	// The displayed numbers are normal, but the actual effect is doubled.
+	if (!action->IsPositive() && action->IsAffectHp() && action->GetAffectedHp() > 0) {
+		action->ApplyHpEffect();
+	}
 	action->ApplySpEffect();
 	action->ApplyAtkEffect();
 	action->ApplyDefEffect();

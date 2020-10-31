@@ -615,22 +615,12 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 		SetIsCriticalHit(true);
 	}
 
-	// Emulates an RPG_RT bug where whenver an actor attacks an enemy, the hit rate and damage
-	// is adjusted as if the enemy were in the front row.
-	const bool treat_enemies_asif_in_front_row = (source.GetType() == Game_Battler::Type_Ally);
-
 	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, IsCriticalHit(), true, Game_Battle::GetBattleCondition(), treat_enemies_asif_in_front_row);
 	effect = Algo::AdjustDamageForDefend(effect, target);
 
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
 	this->SetAffectedHp(-effect);
-
-	// RPG_RT BUG: 2k3 has a bug where a negative attribute reversal of damage causes hp effect to double
-	// RPG_RT applies the affect but it doesn't appear in the floating numbers.
-	if (GetAffectedHp() > 0) {
-		SetAffectedHp(std::min(GetAffectedHp() * 2, MaxDamageValue()));
-	}
 
 	// If target is killed, states not applied
 	if (target.GetHp() + GetAffectedHp() <= 0) {
@@ -850,12 +840,6 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 				}
 			} else {
 				SetAffectedHp(effect);
-
-				// RPG_RT BUG: 2k3 has a bug where a negative attribute reversal of damage causes hp effect to double
-				// RPG_RT applies the affect but it doesn't appear in the floating numbers.
-				if (GetAffectedHp() > 0) {
-					SetAffectedHp(std::min(this->GetAffectedHp() * 2, MaxDamageValue()));
-				}
 
 				// Conditions healed by physical attack:
 				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states);

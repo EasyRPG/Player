@@ -626,10 +626,15 @@ public:
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
 	void ApplyComboHitsMultiplier(int hits) override;
+
+	// Emulates an RPG_RT bug where whenver an actor attacks an enemy, the hit rate and damage
+	// is adjusted as if the enemy were in the front row.
+	void SetTreatEnemiesAsifInFrontRow(bool v);
 private:
 	void Init(Style style);
 	int hits_multiplier = 1;
 	int weapon_style = -1;
+	bool treat_enemies_asif_in_front_row = false;
 };
 
 class Skill : public AlgorithmBase {
@@ -972,6 +977,10 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbSpi(bool a) {
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbAgi(bool a) {
 	SetFlag(eAbsorbAgi, a);
 	return a;
+}
+
+inline void Game_BattleAlgorithm::Normal::SetTreatEnemiesAsifInFrontRow(bool v) {
+	treat_enemies_asif_in_front_row = v;
 }
 
 } //namespace Game_BattleAlgorithm
