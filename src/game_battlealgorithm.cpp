@@ -863,7 +863,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		int sp = 0;
 		if (absorb) {
 			// Cannot aborb more sp than the target has.
-			sp = std::max(effect, -cur_sp);
+			sp = std::max<int>(effect, -cur_sp);
 		} else {
 			sp = Utils::Clamp(cur_sp + effect, 0, max_sp) - cur_sp;
 		}

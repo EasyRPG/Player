@@ -2324,6 +2324,128 @@ TEST_CASE("Algo::Skill::HitFail") {
 	}
 }
 
+TEST_CASE("Algo::Skill::KilledByDamage") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 200, 1, 1, 1, 1);
+	target->SetHp(1);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.affect_hp = true;
+	skill.affect_sp = true;
+	skill.affect_attack = true;
+	skill.affect_defense = true;
+	skill.affect_spirit = true;
+	skill.affect_agility = true;
+	skill.state_effects = { false, true };
+	skill.attribute_effects = { true };
+	skill.affect_attr_defence = true;
+	skill.power = 999;
+	skill.physical_rate = skill.magical_rate = 0;
+	skill.hit = 100;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	skill.scope = lcf::rpg::Skill::Scope_enemy;
+
+	algo.Start();
+
+	auto test = [&](bool absorb) {
+		algo.Execute();
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(true, algo.IsAffectHp());
+		REQUIRE_GE(-1, algo.GetAffectedHp());
+		REQUIRE_EQ(absorb, algo.IsAbsorbHp());
+
+		// When killed, all other effects skipped.
+		REQUIRE_EQ(false, algo.IsAffectSp());
+		REQUIRE_EQ(false, algo.IsAffectAtk());
+		REQUIRE_EQ(false, algo.IsAffectDef());
+		REQUIRE_EQ(false, algo.IsAffectSpi());
+		REQUIRE_EQ(false, algo.IsAffectAgi());
+		REQUIRE_EQ(false, algo.IsAbsorbSp());
+		REQUIRE_EQ(false, algo.IsAbsorbAtk());
+		REQUIRE_EQ(false, algo.IsAbsorbDef());
+		REQUIRE_EQ(false, algo.IsAbsorbSpi());
+		REQUIRE_EQ(false, algo.IsAbsorbAgi());
+		REQUIRE_EQ(0, algo.GetStateEffects().size());
+		REQUIRE_EQ(0, algo.GetShiftedAttributes().size());
+	};
+
+	SUBCASE("normal") {
+		test(false);
+	}
+	SUBCASE("absorb") {
+		skill.absorb_damage = true;
+		test(true);
+	}
+}
+
+TEST_CASE("Algo::Skill::SkipIfHpSpFail") {
+	// Skills should fail if hp and sp effect was active and failed, regardless of what additional effects might have succeeded
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 200, 1, 1, 1, 1);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.affect_attack = true;
+	skill.affect_defense = true;
+	skill.affect_spirit = true;
+	skill.affect_agility = true;
+	skill.state_effects = { false, true };
+	skill.attribute_effects = { true };
+	skill.affect_attr_defence = true;
+	skill.power = 999;
+	skill.physical_rate = skill.magical_rate = 0;
+	skill.hit = 100;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	skill.scope = lcf::rpg::Skill::Scope_enemy;
+
+	algo.Start();
+
+	auto test = [&]() {
+		algo.Execute();
+		REQUIRE_EQ(false, algo.IsSuccess());
+		REQUIRE_EQ(false, algo.IsAffectHp());
+		REQUIRE_EQ(false, algo.IsAffectSp());
+		REQUIRE_EQ(false, algo.IsAffectAtk());
+		REQUIRE_EQ(false, algo.IsAffectDef());
+		REQUIRE_EQ(false, algo.IsAffectSpi());
+		REQUIRE_EQ(false, algo.IsAffectAgi());
+		REQUIRE_EQ(false, algo.IsAbsorbSp());
+		REQUIRE_EQ(false, algo.IsAbsorbAtk());
+		REQUIRE_EQ(false, algo.IsAbsorbDef());
+		REQUIRE_EQ(false, algo.IsAbsorbSpi());
+		REQUIRE_EQ(false, algo.IsAbsorbAgi());
+		REQUIRE_EQ(0, algo.GetStateEffects().size());
+		REQUIRE_EQ(0, algo.GetShiftedAttributes().size());
+	};
+
+	SUBCASE("hp fail") {
+		skill.affect_hp = true;
+		// Not normally allowed to run on dead target, but a 0 hp absorb will trigger failure
+		target->Kill();
+		skill.power = 0;
+		skill.absorb_damage = true;
+		test();
+	}
+
+	SUBCASE("sp fail") {
+		skill.affect_sp = true;
+		// Absorb 0 sp will fail.
+		target->SetSp(0);
+		skill.absorb_damage = true;
+		test();
+	}
+}
+
+
 TEST_CASE("Algo::Skill::HpEffect") {
 	const MockBattle mb;
 	auto* source = Main_Data::game_party->GetActor(0);
