@@ -268,7 +268,7 @@ public:
 	 *
 	 * @return true if the action was successful, false if failed/dodged
 	 */
-	virtual bool Execute() = 0;
+	bool Execute();
 
 	/** Apply custom effects */
 	virtual void ApplyCustomEffect();
@@ -532,6 +532,7 @@ protected:
 	AlgorithmBase(Type t, Game_Battler* source, std::vector<Game_Battler*> targets);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 	virtual bool vStart();
+	virtual bool vExecute();
 
 	void Reset();
 
@@ -599,8 +600,6 @@ private:
 class None : public AlgorithmBase {
 public:
 	None(Game_Battler* source);
-
-	bool Execute() override;
 };
 
 
@@ -618,7 +617,7 @@ public:
 	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
 	Normal(Game_Battler* source, Game_Party_Base* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
 
-	bool Execute() override;
+	bool vExecute() override;
 	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
@@ -640,7 +639,7 @@ public:
 	Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 
 	bool IsTargetValid(const Game_Battler&) const override;
-	bool Execute() override;
+	bool vExecute() override;
 	bool vStart() override;
 
 	int GetAnimationId(int i) const override;
@@ -667,7 +666,7 @@ public:
 	Item(Game_Battler* source, const lcf::rpg::Item& item);
 
 	bool IsTargetValid(const Game_Battler&) const override;
-	bool Execute() override;
+	bool vExecute() override;
 	bool vStart() override;
 
 	std::string GetStartMessage(int line) const override;
@@ -687,7 +686,6 @@ public:
 
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
-	bool Execute() override;
 };
 
 class Observe : public AlgorithmBase {
@@ -695,7 +693,6 @@ public:
 	Observe(Game_Battler* source);
 
 	std::string GetStartMessage(int line) const override;
-	bool Execute() override;
 };
 
 class Charge : public AlgorithmBase {
@@ -703,8 +700,7 @@ public:
 	Charge(Game_Battler* source);
 
 	std::string GetStartMessage(int line) const override;
-	bool vStart() override;
-	bool Execute() override;
+	void ApplyCustomEffect() override;
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -713,7 +709,7 @@ public:
 
 	std::string GetStartMessage(int line) const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
-	bool Execute() override;
+	bool vExecute() override;
 	void ApplyCustomEffect() override;
 private:
 	bool animate = true;
@@ -726,7 +722,6 @@ public:
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
-	bool Execute() override;
 	void ApplyCustomEffect() override;
 };
 
@@ -735,7 +730,6 @@ public:
 	Transform(Game_Battler* source, int new_monster_id);
 
 	std::string GetStartMessage(int line) const override;
-	bool Execute() override;
 	void ApplyCustomEffect() override;
 
 private:
@@ -746,8 +740,6 @@ private:
 class DoNothing : public AlgorithmBase {
 public:
 	DoNothing(Game_Battler* source);
-
-	bool Execute() override;
 };
 
 inline Type AlgorithmBase::GetType() const {

@@ -27,7 +27,6 @@ public:
 	TestAlgo(Game_Battler* source)
 		: AlgoBase(AlgoType::None, source, source) {}
 
-	bool Execute() override { return SetIsSuccess(); }
 	bool IsReflected(const Game_Battler& target) const override {
 		return &target == mock_reflect_target;
 	}
@@ -35,30 +34,6 @@ public:
 public:
 	const Game_Battler* mock_reflect_target = nullptr;
 };
-
-void Setup(Game_Actor* actor, int hp, int sp, int atk, int def, int spi, int agi) {
-	actor->SetBaseMaxHp(hp);
-	actor->SetHp(hp);
-	actor->SetBaseMaxSp(sp);
-	actor->SetSp(sp);
-	actor->SetBaseAtk(atk);
-	actor->SetBaseDef(def);
-	actor->SetBaseSpi(spi);
-	actor->SetBaseAgi(agi);
-}
-
-void Setup(Game_Enemy* enemy, int hp, int sp, int atk, int def, int spi, int agi) {
-	auto& db = lcf::Data::enemies[enemy->GetId() - 1];
-	db.max_hp = hp;
-	db.max_sp = sp;
-	db.attack = atk;
-	db.defense = def;
-	db.spirit = spi;
-	db.agility = agi;
-
-	enemy->SetHp(hp);
-	enemy->SetSp(sp);
-}
 
 } // namespace
 
@@ -1678,6 +1653,199 @@ TEST_CASE("PostActionSwitches") {
 
 	REQUIRE(Main_Data::game_switches->Get(1));
 	REQUIRE_FALSE(Main_Data::game_switches->Get(4));
+}
+
+TEST_CASE("Algo::None") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	Game_BattleAlgorithm::None algo(source);
+
+	REQUIRE(algo.GetStartMessage(0).empty());
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::Defend") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	Game_BattleAlgorithm::Defend algo(source);
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Defend, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	REQUIRE(source->IsDefending());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
+
+	REQUIRE(source->IsDefending());
+}
+
+TEST_CASE("Algo::Observe") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	Game_BattleAlgorithm::Observe algo(source);
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::Charge") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	Game_BattleAlgorithm::Charge algo(source);
+
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+	REQUIRE_FALSE(source->IsCharged());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	REQUIRE(source->IsCharged());
+
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::SelfDestruct") {
+	const MockBattle mb(4, 4);
+	auto* source = Main_Data::game_enemyparty->GetEnemy(0);
+	auto* targets = Main_Data::game_party.get();
+	Game_BattleAlgorithm::SelfDestruct algo(source, targets);
+
+	auto& state = lcf::Data::states[1];
+	state.release_by_damage = 100;
+
+	REQUIRE_EQ(true, targets->GetActor(0)->AddState(2, true));
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	algo.Start();
+	REQUIRE_EQ(false, source->IsHidden());
+	REQUIRE_EQ(true, targets->GetActor(0)->HasState(2));
+	for (int i = 0; i < 4; ++i) {
+		REQUIRE_EQ(targets->GetActor(i), algo.GetTarget());
+
+		algo.Execute();
+		REQUIRE(algo.IsAffectHp());
+		REQUIRE(algo.GetAffectedHp() < 0);
+		REQUIRE(algo.IsSuccess());
+		REQUIRE_EQ(i > 0, source->IsHidden());
+
+		algo.ApplyAll();
+		REQUIRE_EQ(true, source->IsHidden());
+		REQUIRE_EQ(false, targets->GetActor(i)->HasState(2));
+		REQUIRE_EQ(i < 3, algo.TargetNext());
+	}
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::Escape") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_enemyparty->GetEnemy(0);
+	Game_BattleAlgorithm::Escape algo(source);
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_WalkRight, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+
+	algo.ApplyAll();
+	REQUIRE_EQ(true, source->IsHidden());
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::Transform") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_enemyparty->GetEnemy(0);
+	Game_BattleAlgorithm::Transform algo(source, 10);
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+	REQUIRE_EQ(1, source->GetId());
+
+	algo.ApplyAll();
+	REQUIRE_EQ(10, source->GetId());
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::DoNothing") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	Game_BattleAlgorithm::None algo(source);
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Idle, algo.GetSourcePose());
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	REQUIRE(algo.GetStartMessage(0).empty());
+
+	algo.Start();
+	REQUIRE_EQ(source, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+
+	algo.ProcessPostActionSwitches();
 }
 
 TEST_SUITE_END();

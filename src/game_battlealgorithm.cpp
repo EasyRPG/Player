@@ -1,4 +1,5 @@
 /*
+ *
  * This file is part of EasyRPG Player.
  *
  * EasyRPG Player is free software: you can redistribute it and/or modify
@@ -124,6 +125,15 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	}
 
 	return *current_target;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::Execute() {
+	Reset();
+	return vExecute();
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::vExecute() {
+	return SetIsSuccess();
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyCustomEffect() {
@@ -494,10 +504,6 @@ AlgorithmBase(Type::None, source, source) {
 	// no-op
 }
 
-bool Game_BattleAlgorithm::None::Execute() {
-	return SetIsSuccess();
-}
-
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
 	AlgorithmBase(Type::Normal, source, target), hits_multiplier(hits_multiplier)
 {
@@ -583,9 +589,7 @@ int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 	return 0;
 }
 
-bool Game_BattleAlgorithm::Normal::Execute() {
-	Reset();
-
+bool Game_BattleAlgorithm::Normal::vExecute() {
 	const auto weapon = GetWeapon();
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
@@ -765,13 +769,10 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid(const Game_Battler& target) cons
 }
 
 
-bool Game_BattleAlgorithm::Skill::Execute() {
+bool Game_BattleAlgorithm::Skill::vExecute() {
 	if (item && item->skill_id != skill.ID) {
 		assert(false && "Item skill mismatch");
 	}
-
-	Reset();
-
 	auto* source = GetSource();
 	assert(source);
 	auto* target = GetTarget();
@@ -1068,9 +1069,7 @@ bool Game_BattleAlgorithm::Item::IsTargetValid(const Game_Battler&) const {
 	return item.type == lcf::rpg::Item::Type_medicine;
 }
 
-bool Game_BattleAlgorithm::Item::Execute() {
-	Reset();
-
+bool Game_BattleAlgorithm::Item::vExecute() {
 	auto* target = GetTarget();
 
 	if (item.type == lcf::rpg::Item::Type_switch) {
@@ -1166,10 +1165,6 @@ int Game_BattleAlgorithm::Defend::GetSourcePose() const {
 	return lcf::rpg::BattlerAnimation::Pose_Defend;
 }
 
-bool Game_BattleAlgorithm::Defend::Execute() {
-	return SetIsSuccess();
-}
-
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
 AlgorithmBase(Type::Observe, source, source) {
 	// no-op
@@ -1186,19 +1181,9 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 	return "";
 }
 
-bool Game_BattleAlgorithm::Observe::Execute() {
-	// Observe only prints the start message
-	return SetIsSuccess();
-}
-
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
 AlgorithmBase(Type::Charge, source, source) {
 	// no-op
-}
-
-bool Game_BattleAlgorithm::Charge::vStart() {
-	GetSource()->SetCharged(true);
-	return true;
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
@@ -1212,8 +1197,8 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
 	return "";
 }
 
-bool Game_BattleAlgorithm::Charge::Execute() {
-	return SetIsSuccess();
+void Game_BattleAlgorithm::Charge::ApplyCustomEffect() {
+	GetTarget()->SetCharged(true);
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
@@ -1236,9 +1221,7 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill);
 }
 
-bool Game_BattleAlgorithm::SelfDestruct::Execute() {
-	Reset();
-
+bool Game_BattleAlgorithm::SelfDestruct::vExecute() {
 	auto& source = *GetSource();
 	auto& target = *GetTarget();
 
@@ -1300,12 +1283,6 @@ const lcf::rpg::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 	return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape);
 }
 
-bool Game_BattleAlgorithm::Escape::Execute() {
-	Reset();
-
-	return SetIsSuccess();
-}
-
 void Game_BattleAlgorithm::Escape::ApplyCustomEffect() {
 	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Enemy) {
@@ -1328,10 +1305,6 @@ std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
 	return "";
 }
 
-bool Game_BattleAlgorithm::Transform::Execute() {
-	return SetIsSuccess();
-}
-
 void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 	auto* source = GetSource();
 	if (source->GetType() == Game_Battler::Type_Enemy) {
@@ -1344,9 +1317,5 @@ void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 Game_BattleAlgorithm::DoNothing::DoNothing(Game_Battler* source) :
 AlgorithmBase(Type::DoNothing, source, source) {
 	// no-op
-}
-
-bool Game_BattleAlgorithm::DoNothing::Execute() {
-	return SetIsSuccess();
 }
 

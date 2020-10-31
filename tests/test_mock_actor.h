@@ -235,4 +235,30 @@ inline void SetDBSkillAttribute(int id, int attr_id, bool value) {
 	skill.attribute_effects[attr_id - 1] = value;
 }
 
+inline void Setup(Game_Actor* actor, int hp, int sp, int atk, int def, int spi, int agi) {
+	actor->SetBaseMaxHp(hp);
+	actor->SetHp(hp);
+	actor->SetBaseMaxSp(sp);
+	actor->SetSp(sp);
+	actor->SetBaseAtk(atk);
+	actor->SetBaseDef(def);
+	actor->SetBaseSpi(spi);
+	actor->SetBaseAgi(agi);
+}
+
+inline void Setup(Game_Enemy* enemy, int hp, int sp, int atk, int def, int spi, int agi) {
+	auto& db = lcf::Data::enemies[enemy->GetId() - 1];
+	db.max_hp = hp;
+	db.max_sp = sp;
+	db.attack = atk;
+	db.defense = def;
+	db.spirit = spi;
+	db.agility = agi;
+
+	enemy->SetHp(hp);
+	enemy->SetSp(sp);
+}
+
+
+
 #endif
