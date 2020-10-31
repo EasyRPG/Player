@@ -448,6 +448,27 @@ TEST_CASE("Repeat") {
 	}
 }
 
+TEST_CASE("Combo") {
+	const MockBattle mb(4, 4);
+	auto* source = Main_Data::game_party->GetActor(0);
+	std::vector<Game_Battler*> targets = { Main_Data::game_enemyparty->GetEnemy(1), Main_Data::game_enemyparty->GetEnemy(2) };
+	TestAlgo algo(source, targets);
+
+	algo.SetRepeat(3);
+	REQUIRE_EQ(algo.GetCurrentRepeat(), 0);
+	algo.ApplyComboHitsMultiplier(2);
+	REQUIRE_EQ(algo.GetCurrentRepeat(), 0);
+
+	algo.Start();
+
+	for (int i = 0; i < 5; ++i) {
+		REQUIRE_EQ(algo.GetCurrentRepeat(), i);
+		REQUIRE_EQ(true, algo.RepeatNext(false));
+	}
+	REQUIRE_EQ(algo.GetCurrentRepeat(), 5);
+	REQUIRE_EQ(false, algo.RepeatNext(false));
+	REQUIRE_EQ(algo.GetCurrentRepeat(), 0);
+}
 
 TEST_CASE("Flags") {
 	const MockBattle mb;
