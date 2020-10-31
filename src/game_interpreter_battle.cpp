@@ -363,10 +363,13 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(lcf::rpg::EventCommand 
 		std::vector<Game_Battler*> v;
 
 		if (allies) {
-			Main_Data::game_party->GetActiveBattlers(v);
+			Main_Data::game_party->GetBattlers(v);
 		} else {
-			Main_Data::game_enemyparty->GetActiveBattlers(v);
+			Main_Data::game_enemyparty->GetBattlers(v);
 		}
+		auto iter = std::remove_if(v.begin(), v.end(),
+				[](auto* target) { return !(target->Exists() || (target->GetType() == Game_Battler::Type_Ally && target->IsDead())); });
+		v.erase(iter, v.end());
 
 		frames = Game_Battle::ShowBattleAnimation(animation_id, v, false);
 	}

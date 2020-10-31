@@ -105,10 +105,19 @@ int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool only_so
 		return 0;
 	}
 
+	auto anim_iter = targets.begin();
+	auto anim_end = targets.end();
+	// If targets were added, skip the originals and use the added one
+	// Cases: reflect, retargeting, etc..
+	if (num_original_targets < static_cast<int>(targets.size())) {
+		anim_iter += num_original_targets;
+	}
+
 	std::vector<Game_Battler*> anim_targets;
-	for (auto iter = current_target; iter != targets.end(); ++iter) {
-		if (IsTargetValid(**iter)) {
-			anim_targets.push_back(*iter);
+	for (; anim_iter != anim_end; ++anim_iter) {
+		auto* target = *anim_iter;
+		if (target->Exists() || (target->GetType() == Game_Battler::Type_Ally && target->IsDead())) {
+			anim_targets.push_back(target);
 		}
 	}
 
