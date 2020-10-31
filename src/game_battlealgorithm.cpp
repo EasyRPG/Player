@@ -787,8 +787,6 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	auto* target = GetTarget();
 	assert(target);
 
-	SetIsPositive(Algo::SkillTargetsAllies(skill));
-
 	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		SetAffectedSwitch(skill.switch_id);
 		return SetIsSuccess();
@@ -799,6 +797,8 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		// Silently does nothing.
 		return SetIsSuccess();
 	}
+
+	SetIsPositive(Algo::SkillTargetsAllies(skill));
 
 	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
 	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true);

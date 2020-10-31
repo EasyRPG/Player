@@ -523,16 +523,13 @@ TEST_CASE("SwitchEffect") {
 
 	TestAlgo algo(source);
 
-	SUBCASE("switch") {
-		REQUIRE_EQ(0, algo.GetAffectedSwitch());
+	REQUIRE_EQ(0, algo.GetAffectedSwitch());
+	REQUIRE_EQ(7, algo.SetAffectedSwitch(7));
+	REQUIRE_EQ(7, algo.GetAffectedSwitch());
 
-		REQUIRE_EQ(7, algo.SetAffectedSwitch(7));
-		REQUIRE_EQ(7, algo.GetAffectedSwitch());
-
-		REQUIRE_EQ(false, Main_Data::game_switches->Get(7));
-		REQUIRE_EQ(7, algo.ApplySwitchEffect());
-		REQUIRE_EQ(true, Main_Data::game_switches->Get(7));
-	}
+	REQUIRE_EQ(false, Main_Data::game_switches->Get(7));
+	REQUIRE_EQ(7, algo.ApplySwitchEffect());
+	REQUIRE_EQ(true, Main_Data::game_switches->Get(7));
 }
 
 TEST_CASE("HpEffect") {
@@ -1910,11 +1907,6 @@ TEST_CASE("Algo::Item::Switch") {
 	algo.Execute();
 	REQUIRE(algo.IsSuccess());
 	REQUIRE_EQ(5, algo.GetAffectedSwitch());
-	REQUIRE_EQ(false, Main_Data::game_switches->Get(5));
-
-	algo.ApplyAll();
-
-	REQUIRE_EQ(true, Main_Data::game_switches->Get(5));
 }
 
 TEST_CASE("Algo::Item::Medicine") {
@@ -2172,6 +2164,77 @@ TEST_CASE("Algo::Skill::Consumption") {
 		REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
 		algo.Start();
 		REQUIRE_EQ(1, Main_Data::game_party->GetItemCount(1));
+	}
+}
+
+TEST_CASE("Algo::Skill::Switch") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto& skill = lcf::Data::skills[0];
+	skill.type = lcf::rpg::Skill::Type_switch;
+	skill.switch_id = 7;
+
+	Game_BattleAlgorithm::Skill algo(source, skill);
+
+	algo.Start();
+	REQUIRE_EQ(0, algo.GetAffectedSwitch());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+	REQUIRE_EQ(7, algo.GetAffectedSwitch());
+}
+
+TEST_CASE("Algo::Skill::EscapeTeleport") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto& skill = lcf::Data::skills[0];
+	SUBCASE("escape") {
+		skill.type = lcf::rpg::Skill::Type_escape;
+	}
+	SUBCASE("teleport") {
+		skill.type = lcf::rpg::Skill::Type_teleport;
+	}
+
+	Game_BattleAlgorithm::Skill algo(source, skill);
+
+	algo.Start();
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+}
+
+TEST_CASE("Algo::Skill::EscapeTeleport") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto& skill = lcf::Data::skills[0];
+	skill.type = lcf::rpg::Skill::Type_switch;
+	skill.switch_id = 7;
+
+	Game_BattleAlgorithm::Skill algo(source, skill);
+
+	algo.Start();
+	REQUIRE_EQ(0, algo.GetAffectedSwitch());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+	REQUIRE_EQ(7, algo.GetAffectedSwitch());
+}
+
+TEST_CASE("Algo::Skill::PositiveFlag") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto& skill = lcf::Data::skills[0];
+
+	for (int type = 0; type < 10; ++type) {
+		for (int scope = 0; scope < 10; ++scope) {
+			skill.type = type;
+			skill.scope = scope;
+			bool positive = Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsAllies(skill);
+
+			Game_BattleAlgorithm::Skill algo(source, skill);
+			algo.Start();
+			algo.Execute();
+			REQUIRE_EQ(positive, algo.IsPositive());
+		}
 	}
 }
 
