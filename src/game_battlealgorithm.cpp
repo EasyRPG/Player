@@ -1066,7 +1066,7 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, const lcf::rpg::Item& ite
 	Item(source, source, item) {}
 
 bool Game_BattleAlgorithm::Item::IsTargetValid(const Game_Battler&) const {
-	return item.type == lcf::rpg::Item::Type_medicine;
+	return item.type == lcf::rpg::Item::Type_medicine || item.type == lcf::rpg::Item::Type_switch;
 }
 
 bool Game_BattleAlgorithm::Item::vExecute() {

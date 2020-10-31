@@ -1848,4 +1848,195 @@ TEST_CASE("Algo::DoNothing") {
 	algo.ProcessPostActionSwitches();
 }
 
+TEST_CASE("Algo::Item::PossibleAndValid") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_party->GetActor(1);
+	auto& item = lcf::Data::items[0];
+
+	Game_BattleAlgorithm::Item algo(source, target, item);
+
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Item, algo.GetSourcePose());
+	REQUIRE_EQ(false, algo.ActionIsPossible());
+
+	Main_Data::game_party->AddItem(1, 1);
+
+	REQUIRE_EQ(true, algo.ActionIsPossible());
+
+	for (int i = 0; i < 20; ++i) {
+		item.type = i;
+		bool success = (i == lcf::rpg::Item::Type_medicine || i == lcf::rpg::Item::Type_switch);
+		REQUIRE_EQ(success, algo.IsTargetValid(*source));
+	}
+}
+
+
+TEST_CASE("Algo::Item::Switch") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_party->GetActor(1);
+	auto& item = lcf::Data::items[0];
+	item.type = lcf::rpg::Item::Type_switch;
+	item.switch_id = 5;
+
+	Game_BattleAlgorithm::Item algo(source, target, item);
+	Main_Data::game_party->AddItem(1, 1);
+
+	algo.Start();
+	REQUIRE_EQ(target, algo.GetTarget());
+
+	algo.Execute();
+	REQUIRE(algo.IsSuccess());
+	REQUIRE_EQ(5, algo.GetAffectedSwitch());
+	REQUIRE_EQ(false, Main_Data::game_switches->Get(5));
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(true, Main_Data::game_switches->Get(5));
+}
+
+TEST_CASE("Algo::Item::Medicine") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_party->GetActor(1);
+	Setup(target, 200, 200, 1, 1, 1, 1);
+	target->SetHp(100);
+	target->SetSp(100);
+
+	auto& item = lcf::Data::items[0];
+	item.type = lcf::rpg::Item::Type_medicine;
+
+	Game_BattleAlgorithm::Item algo(source, target, item);
+
+	Main_Data::game_party->AddItem(1, 1);
+
+	algo.Start();
+	REQUIRE_EQ(target, algo.GetTarget());
+
+	SUBCASE("hp") {
+		item.recover_hp = 20;
+		item.recover_hp_rate = 100;
+
+		SUBCASE("normal") {
+			SUBCASE("alive") {
+				algo.Execute();
+
+				REQUIRE_EQ(220, algo.GetAffectedHp());
+				REQUIRE_EQ(0, algo.GetAffectedSp());
+			}
+
+			SUBCASE("dead") {
+				target->Kill();
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(0, algo.GetAffectedSp());
+			}
+		}
+
+		SUBCASE("koonly") {
+			item.ko_only = true;
+			SUBCASE("alive") {
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(0, algo.GetAffectedSp());
+			}
+
+			SUBCASE("dead") {
+				target->Kill();
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(0, algo.GetAffectedSp());
+			}
+		}
+	}
+
+	SUBCASE("sp") {
+		item.recover_sp = 20;
+		item.recover_sp_rate = 100;
+
+		SUBCASE("normal") {
+			SUBCASE("alive") {
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(220, algo.GetAffectedSp());
+			}
+
+			SUBCASE("dead") {
+				target->Kill();
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(220, algo.GetAffectedSp());
+			}
+		}
+
+		SUBCASE("koonly") {
+			item.ko_only = true;
+			SUBCASE("alive") {
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(0, algo.GetAffectedSp());
+			}
+
+			SUBCASE("dead") {
+				target->Kill();
+				algo.Execute();
+
+				REQUIRE_EQ(0, algo.GetAffectedHp());
+				REQUIRE_EQ(220, algo.GetAffectedSp());
+			}
+		}
+	}
+
+	SUBCASE("state") {
+		item.state_set = { false, true };
+		target->AddState(2, true);
+
+		algo.Execute();
+
+		REQUIRE_EQ(1, algo.GetStateEffects().size());
+		REQUIRE_EQ(2, algo.GetStateEffects()[0].state_id);
+		REQUIRE_EQ(Game_BattleAlgorithm::StateEffect::Healed, algo.GetStateEffects()[0].effect);
+	}
+
+	SUBCASE("revive") {
+		item.state_set = { true };
+		target->Kill();
+
+		SUBCASE("only revive") {
+			algo.Execute();
+
+			REQUIRE_EQ(0, algo.GetAffectedHp());
+			REQUIRE_EQ(0, algo.GetAffectedSp());
+		}
+
+		SUBCASE("revive+hp") {
+			item.recover_hp = 20;
+			item.recover_hp_rate = 100;
+
+			algo.Execute();
+
+			REQUIRE_EQ(220, algo.GetAffectedHp());
+			REQUIRE_EQ(0, algo.GetAffectedSp());
+		}
+
+		REQUIRE_EQ(1, algo.GetStateEffects().size());
+		REQUIRE_EQ(1, algo.GetStateEffects()[0].state_id);
+		REQUIRE_EQ(Game_BattleAlgorithm::StateEffect::Healed, algo.GetStateEffects()[0].effect);
+	}
+
+	REQUIRE(algo.IsSuccess());
+	REQUIRE(algo.IsPositive());
+
+	algo.ApplyAll();
+
+	REQUIRE_EQ(false, algo.TargetNext());
+	algo.ProcessPostActionSwitches();
+}
+
 TEST_SUITE_END();
