@@ -369,6 +369,28 @@ TEST_CASE("ReflectTarget") {
 	}
 }
 
+TEST_CASE("Retarget") {
+	const MockBattle mb(4, 4);
+	auto* source = Main_Data::game_party->GetActor(0);
+
+	auto test = [&](auto* target, auto* next) {
+		TestAlgo algo(source, target);
+
+		target->Kill();
+		algo.Start();
+
+		REQUIRE_EQ(next, algo.GetTarget());
+	};
+
+	SUBCASE("enemy") {
+		test(Main_Data::game_enemyparty->GetEnemy(0), Main_Data::game_enemyparty->GetEnemy(1));
+	}
+
+	SUBCASE("actor") {
+		test(Main_Data::game_party->GetActor(0), Main_Data::game_party->GetActor(1));
+	}
+}
+
 TEST_CASE("Repeat") {
 	const MockBattle mb(4, 4);
 	auto* source = Main_Data::game_party->GetActor(0);
