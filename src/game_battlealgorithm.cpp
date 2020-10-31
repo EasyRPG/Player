@@ -936,7 +936,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 					affected_death |= (state_id == lcf::rpg::State::kDeathID);
 				}
 			}
-		} else if (Rand::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+		} else if (Rand::PercentChance(target->GetStateProbability(state_id))) {
 			if (State::Add(state_id, target_states, target_perm_states, true)) {
 				SetIsSuccess();
 				AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});

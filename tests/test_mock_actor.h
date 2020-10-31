@@ -59,7 +59,7 @@ static void InitEmptyDB() {
 	}
 
 	for (auto& enemy: lcf::Data::enemies) {
-		enemy.state_ranks.resize(lcf::Data::states.size(), 2);
+		enemy.state_ranks.resize(lcf::Data::states.size(), 1);
 		enemy.attribute_ranks.resize(lcf::Data::attributes.size(), 2);
 	}
 
