@@ -759,10 +759,10 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid(const Game_Battler& target) cons
 		return false;
 	}
 
-	if (Algo::SkillTargetsAllies(skill) && target.IsDead()) {
+	if (target.IsDead()) {
 		// Cures death
 		// NOTE: RPG_RT 2k3 also allows this targetting if reverse_state_effect.
-		return !skill.state_effects.empty() && skill.state_effects[0];
+		return Algo::SkillTargetsAllies(skill) && !skill.state_effects.empty() && skill.state_effects[0];
 	}
 
 	return true;

@@ -1870,7 +1870,6 @@ TEST_CASE("Algo::Item::PossibleAndValid") {
 	}
 }
 
-
 TEST_CASE("Algo::Item::Switch") {
 	const MockBattle mb;
 	auto* source = Main_Data::game_party->GetActor(0);
@@ -2037,6 +2036,80 @@ TEST_CASE("Algo::Item::Medicine") {
 
 	REQUIRE_EQ(false, algo.TargetNext());
 	algo.ProcessPostActionSwitches();
+}
+
+TEST_CASE("Algo::Skill::Possible") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_party->GetActor(1);
+	auto& skill = lcf::Data::skills[0];
+	auto& item = lcf::Data::items[0];
+	Setup(source, 200, 200, 1, 1, 1, 1);
+
+	skill.sp_cost = 20;
+
+	SUBCASE("normal") {
+		Game_BattleAlgorithm::Skill algo(source, target, skill, nullptr);
+		REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Skill, algo.GetSourcePose());
+
+		source->SetSp(0);
+		REQUIRE_EQ(false, algo.ActionIsPossible());
+
+		source->SetSp(200);
+		REQUIRE_EQ(true, algo.ActionIsPossible());
+	}
+
+	SUBCASE("item") {
+		Game_BattleAlgorithm::Skill algo(source, target, skill, &item);
+		REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Skill, algo.GetSourcePose());
+
+		REQUIRE_EQ(false, algo.ActionIsPossible());
+
+		Main_Data::game_party->AddItem(1, 1);
+
+		REQUIRE_EQ(true, algo.ActionIsPossible());
+	}
+}
+
+TEST_CASE("Algo::Skill::TargetValid") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_party->GetActor(1);
+	auto& skill = lcf::Data::skills[0];
+	Setup(target, 200, 200, 1, 1, 1, 1);
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill, nullptr);
+	REQUIRE_EQ(lcf::rpg::BattlerAnimation::Pose_Skill, algo.GetSourcePose());
+
+	REQUIRE(algo.IsTargetValid(*target));
+
+	SUBCASE("hidden") {
+		target->SetHidden(true);
+		REQUIRE_FALSE(algo.IsTargetValid(*target));
+	}
+
+	SUBCASE("dead") {
+		target->Kill();
+		REQUIRE_FALSE(algo.IsTargetValid(*target));
+	}
+
+	SUBCASE("dead+kill") {
+		target->Kill();
+		skill.scope = lcf::rpg::Skill::Scope_enemy;
+		skill.state_effects = { true };
+		REQUIRE_FALSE(algo.IsTargetValid(*target));
+		skill.reverse_state_effect = true;
+		REQUIRE_FALSE(algo.IsTargetValid(*target));
+	}
+
+	SUBCASE("dead+revive") {
+		target->Kill();
+		skill.scope = lcf::rpg::Skill::Scope_ally;
+		skill.state_effects = { true };
+		REQUIRE(algo.IsTargetValid(*target));
+		skill.reverse_state_effect = true;
+		REQUIRE(algo.IsTargetValid(*target));
+	}
 }
 
 TEST_SUITE_END();
