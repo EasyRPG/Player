@@ -432,7 +432,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
-	this->repeat = repeat;
+	this->repeat = std::max(1, repeat);
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {

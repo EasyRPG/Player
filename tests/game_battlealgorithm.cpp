@@ -3256,4 +3256,103 @@ TEST_CASE("Algo::Skill::SkipIfHpSpFail") {
 	}
 }
 
+TEST_CASE("Algo::Normal::WeaponHits") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& w1 = lcf::Data::items[0];
+	auto& w2 = lcf::Data::items[1];
+	w1.type = lcf::rpg::Item::Type_weapon;
+	w2.type = lcf::rpg::Item::Type_weapon;
+
+	source->SetEquipment(1, 1);
+	source->SetEquipment(2, 2);
+
+	REQUIRE_EQ(&w1, source->GetWeapon());
+	REQUIRE_EQ(&w2, source->Get2ndWeapon());
+
+	auto test = [&](int total_hits, int hits_mult, int combo, auto style) {
+		CAPTURE(total_hits);
+		CAPTURE(hits_mult);
+		CAPTURE(combo);
+		CAPTURE(style);
+		CAPTURE(w1.dual_attack);
+		CAPTURE(w2.dual_attack);
+
+		Game_BattleAlgorithm::Normal algo(source, target, hits_mult, style);
+		if (combo > 1) {
+			algo.ApplyComboHitsMultiplier(combo);
+		}
+		REQUIRE_EQ(total_hits, algo.GetTotalRepetitions());
+
+		algo.Start();
+
+		if (style == Game_BattleAlgorithm::Normal::Style_Combined) {
+			auto expect = source->GetNumberOfAttacks(Game_Battler::WeaponAll) * hits_mult * combo;
+			REQUIRE_EQ(expect, total_hits);
+			for (int i = 0; i < total_hits; ++i) {
+				REQUIRE_EQ(Game_Battler::WeaponAll, algo.GetWeapon());
+				algo.RepeatNext(false);
+			}
+		}
+
+		if (style == Game_BattleAlgorithm::Normal::Style_MultiHit) {
+			auto expect_pri = source->GetNumberOfAttacks(Game_Battler::WeaponPrimary) * hits_mult * combo;
+			auto expect_sec = source->GetNumberOfAttacks(Game_Battler::WeaponSecondary) * hits_mult * combo;
+			REQUIRE_EQ(expect_pri + expect_sec, total_hits);
+
+			for (int i = 0; i < expect_pri; ++i) {
+				REQUIRE_EQ(Game_Battler::WeaponPrimary, algo.GetWeapon());
+				algo.RepeatNext(false);
+			}
+			for (int i = 0; i < expect_sec; ++i) {
+				REQUIRE_EQ(Game_Battler::WeaponSecondary, algo.GetWeapon());
+				algo.RepeatNext(false);
+			}
+		}
+	};
+
+	SUBCASE("combined style") {
+		for (int c = 1; c < 4; ++c) {
+			for (int m = 1; m < 4; ++m) {
+				const auto mc = m * c;
+				w1.dual_attack = false;
+				w2.dual_attack = false;
+				test(1 * mc, m, c, Game_BattleAlgorithm::Normal::Style_Combined);
+				w1.dual_attack = true;
+				w2.dual_attack = false;
+				test(2 * mc, m, c, Game_BattleAlgorithm::Normal::Style_Combined);
+				w1.dual_attack = false;
+				w2.dual_attack = true;
+				test(2 * mc, m, c, Game_BattleAlgorithm::Normal::Style_Combined);
+				w1.dual_attack = true;
+				w2.dual_attack = true;
+				test(2 * mc, m, c, Game_BattleAlgorithm::Normal::Style_Combined);
+			}
+		}
+	}
+
+	SUBCASE("multi style") {
+		for (int c = 1; c < 4; ++c) {
+			for (int m = 1; m < 4; ++m) {
+				const auto mc = m * c;
+				w1.dual_attack = false;
+				w2.dual_attack = false;
+				test(2 * mc, m, c, Game_BattleAlgorithm::Normal::Style_MultiHit);
+				w1.dual_attack = true;
+				w2.dual_attack = false;
+				test(3 * mc, m, c, Game_BattleAlgorithm::Normal::Style_MultiHit);
+				w1.dual_attack = false;
+				w2.dual_attack = true;
+				test(3 * mc, m, c, Game_BattleAlgorithm::Normal::Style_MultiHit);
+				w1.dual_attack = true;
+				w2.dual_attack = true;
+				test(4 * mc, m, c, Game_BattleAlgorithm::Normal::Style_MultiHit);
+			}
+		}
+	}
+}
+
+
+
 TEST_SUITE_END();

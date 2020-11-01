@@ -103,6 +103,9 @@ public:
 	/** @return the current repetition of the algorithm */
 	int GetCurrentRepeat() const;
 
+	/** @return the total number of times this algo will repeat */
+	int GetTotalRepetitions() const;
+
 	/** Initializes targetting and performs any initial actions such as sp cost reduction for the user. */
 	void Start();
 
@@ -938,6 +941,10 @@ inline Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 
 inline int Game_BattleAlgorithm::AlgorithmBase::GetCurrentRepeat() const {
 	return cur_repeat;
+}
+
+inline int Game_BattleAlgorithm::AlgorithmBase::GetTotalRepetitions() const {
+	return repeat;
 }
 
 inline bool Game_BattleAlgorithm::AlgorithmBase::SetFlag(Flag f, bool value) {
