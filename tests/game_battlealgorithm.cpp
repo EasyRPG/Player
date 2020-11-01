@@ -2533,6 +2533,10 @@ TEST_CASE("Algo::Skill::SpEffect") {
 				skill.absorb_damage = true;
 				test(false, true);
 			}
+			SUBCASE("limit") {
+				target->SetSp(200);
+				testZero();
+			}
 		}
 
 		SUBCASE("attribute flip") {
@@ -2546,6 +2550,10 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			SUBCASE("absorb") {
 				skill.absorb_damage = true;
 				test(false, false);
+			}
+			SUBCASE("limit") {
+				target->SetSp(0);
+				testZero();
 			}
 		}
 
@@ -2566,6 +2574,17 @@ TEST_CASE("Algo::Skill::SpEffect") {
 				skill.absorb_damage = true;
 				test(true, false);
 			}
+			SUBCASE("limit") {
+				SUBCASE("normal") {
+					target->SetSp(0);
+					testZero();
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					target->SetSp(0);
+					testZero();
+				}
+			}
 		}
 
 		SUBCASE("attribute flip") {
@@ -2579,6 +2598,17 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			SUBCASE("absorb") {
 				skill.absorb_damage = true;
 				test(false, true);
+			}
+			SUBCASE("limit") {
+				SUBCASE("normal") {
+					target->SetSp(200);
+					testZero();
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					target->SetSp(200);
+					testZero();
+				}
 			}
 		}
 
