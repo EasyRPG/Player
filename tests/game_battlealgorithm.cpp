@@ -3353,6 +3353,87 @@ TEST_CASE("Algo::Normal::WeaponHits") {
 	}
 }
 
+TEST_CASE("Algo::Normal::HitFail") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& w1 = lcf::Data::items[0];
+	w1.type = lcf::rpg::Item::Type_weapon;
+	w1.hit = 0;
 
+	source->SetEquipment(1, 1);
+
+	REQUIRE_EQ(&w1, source->GetWeapon());
+
+	Game_BattleAlgorithm::Normal algo(source, target);
+
+	algo.Start();
+	algo.Execute();
+
+	REQUIRE_EQ(false, algo.IsSuccess());
+	REQUIRE_EQ(false, algo.IsAffectHp());
+	REQUIRE_EQ(false, algo.IsAbsorbHp());
+}
+
+TEST_CASE("Algo::Normal::HpEffect") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	Setup(target, 200, 0, 1, 1, 1, 1);
+	auto& w1 = lcf::Data::items[0];
+	w1.type = lcf::rpg::Item::Type_weapon;
+	w1.hit = 100;
+
+	source->SetEquipment(1, 1);
+	REQUIRE_EQ(&w1, source->GetWeapon());
+
+	auto& state = lcf::Data::states[1];
+	state.release_by_damage = 100;
+
+	target->AddState(2, true);
+	REQUIRE_EQ(true, target->HasState(2));
+
+	Game_BattleAlgorithm::Normal algo(source, target);
+
+	algo.Start();
+
+	auto test = [&](bool increase, bool recover_states) {
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(true, algo.IsAffectHp());
+		if (increase) {
+			REQUIRE_LE(0, algo.GetAffectedHp());
+		} else {
+			REQUIRE_GE(0, algo.GetAffectedHp());
+		}
+		if (recover_states) {
+			REQUIRE_EQ(1, algo.GetStateEffects().size());
+			REQUIRE_EQ(2, algo.GetStateEffects()[0].state_id);
+			REQUIRE_EQ(Game_BattleAlgorithm::StateEffect::HealedByAttack, algo.GetStateEffects()[0].effect);
+		} else {
+			REQUIRE_EQ(0, algo.GetStateEffects().size());
+		}
+
+		algo.ApplyAll();
+	};
+
+	SUBCASE("normal") {
+		test(false, true);
+	}
+
+	SUBCASE("attribute flip") {
+		auto& attr = lcf::Data::attributes[0];
+		attr.c_rate = -100;
+		w1.attribute_set = { true };
+		test(true, true);
+	}
+
+	SUBCASE("kill") {
+		w1.atk_points1 = 99999;
+		test(false, false);
+		REQUIRE_EQ(true, target->IsDead());
+	}
+}
 
 TEST_SUITE_END();

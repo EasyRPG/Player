@@ -666,7 +666,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 				auto state_id = (i + 1);
 
 				for (auto* w: weapons) {
-					if (is2k3 && w->reverse_state_effect) {
+					if (is2k3 && w && w->reverse_state_effect) {
 						if (heal_pct > 0 && Rand::PercentChance(heal_pct)) {
 							if (State::Remove(state_id, target_states, target_perm_states)) {
 								AddAffectedState(StateEffect{state_id, StateEffect::Healed});
