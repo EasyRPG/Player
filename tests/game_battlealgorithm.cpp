@@ -2341,7 +2341,6 @@ TEST_CASE("Algo::Skill::HpEffect") {
 	skill.affect_hp = true;
 	skill.power = 1;
 	skill.hit = 100;
-	skill.physical_rate = 10;
 	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 
 	auto& state = lcf::Data::states[1];
@@ -2398,6 +2397,12 @@ TEST_CASE("Algo::Skill::HpEffect") {
 				skill.absorb_damage = true;
 				test(false, true, false);
 			}
+
+			SUBCASE("limit") {
+				skill.power = 999999;
+				algo.Execute();
+				REQUIRE_EQ(9999, algo.GetAffectedHp());
+			}
 		}
 
 		SUBCASE("attribute flip") {
@@ -2410,6 +2415,13 @@ TEST_CASE("Algo::Skill::HpEffect") {
 			}
 			SUBCASE("absorb") {
 				test(false, false, false);
+			}
+
+			SUBCASE("limit") {
+				// Inverting healing always non-lethal
+				skill.power = 999999;
+				algo.Execute();
+				REQUIRE_EQ(-199, algo.GetAffectedHp());
 			}
 		}
 
@@ -2444,6 +2456,19 @@ TEST_CASE("Algo::Skill::HpEffect") {
 				skill.physical_rate = 10;
 				test(true, false, false);
 			}
+
+			SUBCASE("limit") {
+				skill.power = 999999;
+				SUBCASE("normal") {
+					algo.Execute();
+					REQUIRE_EQ(-9999, algo.GetAffectedHp());
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					algo.Execute();
+					REQUIRE_EQ(-200, algo.GetAffectedHp());
+				}
+			}
 		}
 
 		SUBCASE("attribute flip") {
@@ -2465,6 +2490,19 @@ TEST_CASE("Algo::Skill::HpEffect") {
 				skill.physical_rate = 10;
 				skill.absorb_damage = true;
 				test(false, true, true);
+			}
+
+			SUBCASE("limit") {
+				skill.power = 999999;
+				SUBCASE("normal") {
+					algo.Execute();
+					REQUIRE_EQ(9999, algo.GetAffectedHp());
+				}
+				SUBCASE("absorb") {
+					skill.absorb_damage = true;
+					algo.Execute();
+					REQUIRE_EQ(9999, algo.GetAffectedHp());
+				}
 			}
 		}
 
@@ -2512,13 +2550,22 @@ TEST_CASE("Algo::Skill::SpEffect") {
 		REQUIRE_EQ(true, algo.IsSuccess());
 	};
 
-	auto testZero = [&]() {
-		skill.power = 0;
+	auto testFail = [&]() {
 		algo.Execute();
 		REQUIRE_EQ(0, algo.GetAffectedSp());
 		REQUIRE_EQ(false, algo.IsAffectSp());
 		REQUIRE_EQ(false, algo.IsSuccess());
 		REQUIRE_EQ(false, algo.IsAbsorbSp());
+	};
+
+	auto testZero = [&]() {
+		skill.power = 0;
+		testFail();
+	};
+
+	auto testLimit = [&]() {
+		skill.power = 9999;
+		testFail();
 	};
 
 	SUBCASE("positive") {
@@ -2535,7 +2582,7 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			}
 			SUBCASE("limit") {
 				target->SetSp(200);
-				testZero();
+				testLimit();
 			}
 		}
 
@@ -2553,7 +2600,7 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			}
 			SUBCASE("limit") {
 				target->SetSp(0);
-				testZero();
+				testLimit();
 			}
 		}
 
@@ -2577,12 +2624,12 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			SUBCASE("limit") {
 				SUBCASE("normal") {
 					target->SetSp(0);
-					testZero();
+					testLimit();
 				}
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					target->SetSp(0);
-					testZero();
+					testLimit();
 				}
 			}
 		}
@@ -2602,12 +2649,12 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			SUBCASE("limit") {
 				SUBCASE("normal") {
 					target->SetSp(200);
-					testZero();
+					testLimit();
 				}
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					target->SetSp(200);
-					testZero();
+					testLimit();
 				}
 			}
 		}
