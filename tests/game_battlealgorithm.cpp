@@ -2840,6 +2840,64 @@ TEST_CASE("Algo::Skill::State") {
 	}
 }
 
+TEST_CASE("Algo::Skill::AttributeShift") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.hit = 100;
+	skill.attribute_effects = { true };
+	skill.affect_attr_defence = true;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+	algo.Start();
+
+	auto good = [&](auto shift) {
+		CAPTURE(shift);
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(1, algo.GetShiftedAttributes().size());
+		REQUIRE_EQ(1, algo.GetShiftedAttributes()[0].attr_id);
+		REQUIRE_EQ(shift, algo.GetShiftedAttributes()[0].shift);
+	};
+
+	auto fail = [&]() {
+		algo.Execute();
+
+		REQUIRE_EQ(false, algo.IsSuccess());
+		REQUIRE_EQ(0, algo.GetStateEffects().size());
+	};
+
+	SUBCASE("positive") {
+		skill.scope = lcf::rpg::Skill::Scope_ally;
+		SUBCASE("normal") {
+			SUBCASE("ok") {
+				good(1);
+			}
+			SUBCASE("fail") {
+				target->ShiftAttributeRate(1, 1);
+				fail();
+			}
+		}
+	}
+
+	SUBCASE("negative") {
+		skill.scope = lcf::rpg::Skill::Scope_enemy;
+		SUBCASE("normal") {
+			SUBCASE("ok") {
+				good(-1);
+			}
+			SUBCASE("fail") {
+				target->ShiftAttributeRate(1, -1);
+				fail();
+			}
+		}
+	}
+}
+
 TEST_CASE("Algo::Skill::KilledByDamage") {
 	const MockBattle mb;
 	auto* source = Main_Data::game_party->GetActor(0);
