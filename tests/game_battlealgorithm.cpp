@@ -2659,6 +2659,25 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 		REQUIRE_EQ(false, algo.IsAbsorbAgi());
 	};
 
+	auto testLimit = [&](bool increase) {
+		skill.power = 999;
+		const auto adj = increase ? 9999 : -9999;
+		if (skill.affect_attack) {
+			target->ChangeAtkModifier(adj);
+		}
+		if (skill.affect_defense) {
+			target->ChangeDefModifier(adj);
+		}
+		if (skill.affect_spirit) {
+			target->ChangeSpiModifier(adj);
+		}
+		if (skill.affect_agility) {
+			target->ChangeAgiModifier(adj);
+		}
+
+		testZero();
+	};
+
 	auto doParamTest = [&]() {
 		SUBCASE("positive") {
 			skill.scope = lcf::rpg::Skill::Scope_ally;
@@ -2671,6 +2690,10 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					test(true);
+				}
+
+				SUBCASE("limit") {
+					testLimit(true);
 				}
 			}
 
@@ -2685,6 +2708,9 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					test(false);
+				}
+				SUBCASE("limit") {
+					testLimit(false);
 				}
 			}
 
@@ -2705,6 +2731,10 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 					skill.absorb_damage = true;
 					test(false);
 				}
+
+				SUBCASE("limit") {
+					testLimit(false);
+				}
 			}
 
 			SUBCASE("attribute flip") {
@@ -2718,6 +2748,10 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					test(true);
+				}
+
+				SUBCASE("limit") {
+					testLimit(true);
 				}
 			}
 
