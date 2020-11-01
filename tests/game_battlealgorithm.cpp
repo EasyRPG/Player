@@ -1739,6 +1739,11 @@ TEST_CASE("Algo::Defend") {
 	algo.ProcessPostActionSwitches();
 
 	REQUIRE(source->IsDefending());
+
+	Game_BattleAlgorithm::None algo2(source);
+
+	// Any other algo clears defend status
+	REQUIRE_FALSE(source->IsDefending());
 }
 
 TEST_CASE("Algo::Observe") {
@@ -2337,7 +2342,7 @@ TEST_CASE("Algo::Skill::HpEffect") {
 	skill.power = 1;
 	skill.hit = 100;
 	skill.physical_rate = 10;
-	skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 
 	auto& state = lcf::Data::states[1];
 	state.release_by_damage = 100;
@@ -2485,7 +2490,7 @@ TEST_CASE("Algo::Skill::SpEffect") {
 
 	skill.type = lcf::rpg::Skill::Type_normal;
 	skill.affect_sp = true;
-	skill.physical_rate = skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 	skill.power = 1;
 	skill.hit = 100;
 
@@ -2592,7 +2597,7 @@ TEST_CASE("Algo::Skill::ParamEffect") {
 
 	skill.type = lcf::rpg::Skill::Type_normal;
 	skill.power = 1;
-	skill.physical_rate = skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 	skill.hit = 100;
 
 	Game_BattleAlgorithm::Skill algo(source, target, skill);
@@ -2874,6 +2879,66 @@ TEST_CASE("Algo::Skill::State") {
 	}
 }
 
+TEST_CASE("Algo::Skill::Revive") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	auto& skill = lcf::Data::skills[0];
+	auto& state = lcf::Data::states[1];
+	state.b_rate = 100;
+	Setup(target, 200, 0, 1 ,1, 1, 1);
+
+	skill.type = lcf::rpg::Skill::Type_normal;
+	skill.hit = 100;
+	skill.state_effects = { true };
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
+
+	Game_BattleAlgorithm::Skill algo(source, target, skill);
+
+	auto good = [&](int hp) {
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsRevived());
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(1, algo.GetStateEffects().size());
+		REQUIRE_EQ(1, algo.GetStateEffects()[0].state_id);
+		REQUIRE_EQ(Game_BattleAlgorithm::StateEffect::Healed, algo.GetStateEffects()[0].effect);
+
+		if (hp > 0) {
+			REQUIRE_EQ(true, algo.IsAffectHp());
+			REQUIRE_EQ(hp, algo.GetAffectedHp());
+		} else {
+			REQUIRE_EQ(false, algo.IsAffectHp());
+		}
+	};
+
+	target->Kill();
+	skill.scope = lcf::rpg::Skill::Scope_ally;
+	algo.Start();
+	REQUIRE_EQ(target, algo.GetTarget());
+
+	SUBCASE("0") {
+		good(0);
+	}
+
+	SUBCASE("50%") {
+		skill.power = 50;
+		good(100);
+	}
+
+	SUBCASE("100%") {
+		skill.power = 100;
+		good(200);
+	}
+
+	SUBCASE("75") {
+		skill.affect_hp = true;
+		skill.power = 75;
+		good(75);
+	}
+
+}
+
 TEST_CASE("Algo::Skill::AttributeShift") {
 	const MockBattle mb;
 	auto* source = Main_Data::game_party->GetActor(0);
@@ -2951,7 +3016,7 @@ TEST_CASE("Algo::Skill::KilledByDamage") {
 	skill.attribute_effects = { true };
 	skill.affect_attr_defence = true;
 	skill.power = 999;
-	skill.physical_rate = skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 	skill.hit = 100;
 
 	Game_BattleAlgorithm::Skill algo(source, target, skill);
@@ -3013,7 +3078,7 @@ TEST_CASE("Algo::Skill::KilledByState") {
 	skill.attribute_effects = { true };
 	skill.affect_attr_defence = true;
 	skill.power = 1;
-	skill.physical_rate = skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 	skill.hit = 100;
 
 	Game_BattleAlgorithm::Skill algo(source, target, skill);
@@ -3069,7 +3134,7 @@ TEST_CASE("Algo::Skill::SkipIfHpSpFail") {
 	skill.attribute_effects = { true };
 	skill.affect_attr_defence = true;
 	skill.power = 999;
-	skill.physical_rate = skill.magical_rate = 0;
+	skill.physical_rate = skill.magical_rate = skill.variance = 0;
 	skill.hit = 100;
 
 	Game_BattleAlgorithm::Skill algo(source, target, skill);
