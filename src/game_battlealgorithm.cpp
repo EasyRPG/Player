@@ -673,17 +673,15 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 							}
 						}
 						heal_pct = 0;
-					} else {
-						if (inflict_pct > 0) {
-							inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
-							if (Rand::PercentChance(inflict_pct)) {
-								// Unlike skills, weapons do not try to reinflict states already present
-								if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-									AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
-								}
+					} else if (inflict_pct > 0) {
+						inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
+						if (Rand::PercentChance(inflict_pct)) {
+							// Unlike skills, weapons do not try to reinflict states already present
+							if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
+								AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
 							}
-							inflict_pct = 0;
 						}
+						inflict_pct = 0;
 					}
 				}
 			}

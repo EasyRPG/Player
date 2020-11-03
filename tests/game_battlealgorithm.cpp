@@ -3436,4 +3436,65 @@ TEST_CASE("Algo::Normal::HpEffect") {
 	}
 }
 
+TEST_CASE("Algo::Normal::StateEffect") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_party->GetActor(0);
+	auto* target = Main_Data::game_enemyparty->GetEnemy(0);
+	Setup(target, 200, 0, 1, 1, 1, 1);
+	auto& w1 = lcf::Data::items[0];
+	w1.type = lcf::rpg::Item::Type_weapon;
+	w1.hit = 100;
+	w1.state_set = { false, true };
+	w1.state_chance = 100;
+
+	auto& state = lcf::Data::states[1];
+	state.b_rate = 100;
+
+	source->SetEquipment(1, 1);
+	REQUIRE_EQ(&w1, source->GetWeapon());
+
+	Game_BattleAlgorithm::Normal algo(source, target);
+
+	algo.Start();
+
+	auto good = [&](auto effect) {
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(1, algo.GetStateEffects().size());
+		REQUIRE_EQ(2, algo.GetStateEffects()[0].state_id);
+		REQUIRE_EQ(effect, algo.GetStateEffects()[0].effect);
+	};
+
+	auto none = [&]() {
+		algo.Execute();
+
+		REQUIRE_EQ(true, algo.IsSuccess());
+		REQUIRE_EQ(0, algo.GetStateEffects().size());
+	};
+
+	SUBCASE("inflict") {
+		SUBCASE("have") {
+			target->AddState(2, true);
+			none();
+		}
+		SUBCASE("havenot") {
+			good(Game_BattleAlgorithm::StateEffect::Inflicted);
+		}
+	}
+
+	SUBCASE("reverse") {
+		w1.reverse_state_effect = true;
+		SUBCASE("have") {
+			target->AddState(2, true);
+			good(Game_BattleAlgorithm::StateEffect::Healed);
+		}
+		SUBCASE("havenot") {
+			none();
+		}
+	}
+}
+
+
+
 TEST_SUITE_END();
