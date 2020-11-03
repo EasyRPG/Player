@@ -220,10 +220,11 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 		return 0.0;
 	}
 	const bool is_critical_hit = false;
+	const bool is_charged = false;
 
 	// RPG_RT BUG: Normal damage variance is not used
 	// Note: RPG_RT does not do the "2k3_enemy_row_bug" when computing autobattle ranks.
-	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, apply_variance, cond, false);
+	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, is_charged, apply_variance, cond, false);
 	// RPG_RT BUG: Dual Attack is ignored
 	if (!emulate_bugs) {
 		base_effect *= source.GetNumberOfAttacks(weapon);

@@ -3495,6 +3495,33 @@ TEST_CASE("Algo::Normal::StateEffect") {
 	}
 }
 
+TEST_CASE("Algo::Normal::Charged") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_enemyparty->GetEnemy(0);
+	auto* target = Main_Data::game_party->GetActor(0);
+
+	source->SetCharged(true);
+
+	Game_BattleAlgorithm::Normal algo(source, target);
+
+	REQUIRE_EQ(true, source->IsCharged());
+	algo.Start();
+
+	REQUIRE_EQ(false, source->IsCharged());
+	REQUIRE_EQ(true, algo.IsChargedAttack());
+}
+
+TEST_CASE("Algo::None::Charged") {
+	const MockBattle mb;
+	auto* source = Main_Data::game_enemyparty->GetEnemy(0);
+	source->SetCharged(true);
+
+	Game_BattleAlgorithm::None algo(source);
+
+	REQUIRE_EQ(true, source->IsCharged());
+	algo.Start();
+	REQUIRE_EQ(false, source->IsCharged());
+}
 
 
 TEST_SUITE_END();

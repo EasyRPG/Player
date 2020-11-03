@@ -178,6 +178,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
+		bool is_charged,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond,
 		bool emulate_2k3_enemy_row_bug)
@@ -204,7 +205,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	// Critical and charge adjustment
 	if (is_critical_hit) {
 		dmg *= 3;
-	} else if (source.IsCharged()) {
+	} else if (is_charged) {
 		dmg *= 2;
 	}
 

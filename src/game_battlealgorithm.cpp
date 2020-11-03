@@ -354,6 +354,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Start() {
 
 	// This case must be true before returning.
 	assert(current_target == targets.end() || IsCurrentTargetValid());
+
+	source->SetCharged(false);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::vStart() {
@@ -537,8 +539,9 @@ Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
 }
 
 void Game_BattleAlgorithm::Normal::Init(Style style) {
-	weapon_style = -1;
 	auto* source = GetSource();
+	charged_attack = source->IsCharged();
+	weapon_style = -1;
 	if (source->GetType() == Game_Battler::Type_Ally && style == Style_MultiHit) {
 		auto* ally = static_cast<Game_Actor*>(source);
 		if (ally->GetWeapon() && ally->Get2ndWeapon()) {
@@ -615,7 +618,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 		SetIsCriticalHit(true);
 	}
 
-	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, IsCriticalHit(), true, Game_Battle::GetBattleCondition(), treat_enemies_asif_in_front_row);
+	auto effect = Algo::CalcNormalAttackEffect(source, target, weapon, IsCriticalHit(), charged_attack, true, Game_Battle::GetBattleCondition(), treat_enemies_asif_in_front_row);
 	effect = Algo::AdjustDamageForDefend(effect, target);
 
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
