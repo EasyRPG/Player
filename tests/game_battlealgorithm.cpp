@@ -9,6 +9,10 @@
 
 TEST_SUITE_BEGIN("BattleAlgorithm");
 
+doctest::String toString(Game_BattleAlgorithm::StateEffect::Effect e) {
+	return doctest::toString(int(e));
+}
+
 namespace {
 using AlgoBase = Game_BattleAlgorithm::AlgorithmBase;
 using AlgoType = Game_BattleAlgorithm::Type;
