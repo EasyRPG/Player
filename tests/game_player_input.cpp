@@ -4,6 +4,7 @@
 #include "game_map.h"
 #include "main_data.h"
 #include "game_system.h"
+#include "rand.h"
 #include <climits>
 
 #include "mock_game.h"
@@ -65,6 +66,8 @@ static void testMove(bool success, int input_dir, int dir, int x, int y, int dx,
 	const auto tx = x + dx;
 	const auto ty = y + dy;
 
+	// Force RNG to always fail to generate a random encounter
+	Rand::LockGuard lk(INT32_MAX);
 	ForceUpdate(ch);
 	if (success) {
 		int enc_steps = (cheat && debug) ? 0 : 100;
