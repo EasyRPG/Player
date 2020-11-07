@@ -566,3 +566,5 @@ void Scene_Battle::EndBattle(BattleResult result) {
 	}
 }
 
+void Scene_Battle::OnPartyChanged(Game_Actor*, bool) {
+}

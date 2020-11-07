@@ -2322,3 +2322,15 @@ bool Scene_Battle_Rpg2k3::CheckWait() {
         }
         return true;
 }
+
+void Scene_Battle_Rpg2k3::OnPartyChanged(Game_Actor* actor, bool added) {
+	auto* sprite = actor->GetBattleSprite();
+	sprite->SetVisible(added);
+
+	// RPG_RT only does this when actors added to party
+	if (added) {
+		// Reset actor positions
+		InitActors();
+		Game_Battle::GetSpriteset().ResetAllBattlerZ();
+	}
+}

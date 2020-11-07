@@ -59,7 +59,7 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 
 		auto sprite = std::make_unique<Sprite_Battler>(b, index);
 		if (b->GetType() == Game_Battler::Type_Ally) {
-			sprite->SetVisible(false);
+			sprite->SetVisible(Main_Data::game_party->IsActorInParty(b->GetId()));
 		}
 		b->SetBattleSprite(std::move(sprite));
 		sprites.push_back(b->GetBattleSprite());
@@ -88,11 +88,6 @@ void Spriteset_Battle::Update() {
 	background->Update();
 
 	for (auto sprite : sprites) {
-		Game_Battler* battler = sprite->GetBattler();
-		if (battler->GetType() == Game_Battler::Type_Ally) {
-			sprite->SetVisible(Main_Data::game_party->IsActorInParty(battler->GetId()));
-		}
-
 		sprite->Update();
 		sprite->SetTone(new_tone);
 	}

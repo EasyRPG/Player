@@ -77,6 +77,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void OnPartyChanged(Game_Actor* actor, bool add) override;
 
 protected:
 	void Start2();

@@ -28,6 +28,7 @@
 #include "game_battle.h"
 #include "game_targets.h"
 #include "game_system.h"
+#include "scene_battle.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "algo.h"
@@ -439,12 +440,25 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 }
 
 void Game_Party::AddActor(int actor_id) {
+	auto* actor = Main_Data::game_actors->GetActor(actor_id);
+	if (!actor) {
+		return;
+	}
+
 	if (IsActorInParty(actor_id))
 		return;
 	if (data.party.size() >= 4)
 		return;
 	data.party.push_back((int16_t)actor_id);
 	Main_Data::game_player->ResetGraphic();
+
+	auto scene = Scene::Find(Scene::Battle);
+	if (scene) {
+		auto* bscene = dynamic_cast<Scene_Battle*>(scene.get());
+		if (bscene) {
+			bscene->OnPartyChanged(actor, true);
+		}
+	}
 }
 
 void Game_Party::RemoveActor(int actor_id) {
@@ -452,6 +466,19 @@ void Game_Party::RemoveActor(int actor_id) {
 		return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
 	Main_Data::game_player->ResetGraphic();
+
+	auto* actor = Main_Data::game_actors->GetActor(actor_id);
+	if (!actor) {
+		return;
+	}
+
+	auto scene = Scene::Find(Scene::Battle);
+	if (scene) {
+		auto* bscene = dynamic_cast<Scene_Battle*>(scene.get());
+		if (bscene) {
+			bscene->OnPartyChanged(actor, false);
+		}
+	}
 }
 
 void Game_Party::Clear() {
