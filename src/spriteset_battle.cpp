@@ -57,10 +57,12 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 		const int index = (b->GetType() == Game_Battler::Type_Ally)
 			? b->GetId() : enemy_index++;
 
-		sprites.push_back(std::make_shared<Sprite_Battler>(b, index));
+		auto sprite = std::make_unique<Sprite_Battler>(b, index);
 		if (b->GetType() == Game_Battler::Type_Ally) {
-			sprites.back()->SetVisible(false);
+			sprite->SetVisible(false);
 		}
+		b->SetBattleSprite(std::move(sprite));
+		sprites.push_back(b->GetBattleSprite());
 	}
 
 	timer1.reset(new Sprite_Timer(0));
@@ -94,16 +96,6 @@ void Spriteset_Battle::Update() {
 		sprite->Update();
 		sprite->SetTone(new_tone);
 	}
-}
-
-Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
-{
-	std::vector<std::shared_ptr<Sprite_Battler> >::iterator it;
-	for (it = sprites.begin(); it != sprites.end(); ++it) {
-		if ((*it)->GetBattler() == battler)
-			return it->get();
-	}
-	return NULL;
 }
 
 void Spriteset_Battle::ResetAllBattlerZ() {

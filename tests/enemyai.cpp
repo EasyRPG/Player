@@ -16,7 +16,7 @@ static Game_Enemy MakeEnemy(int id) {
 	tp.members[id - 1].enemy_id = id;
 	Main_Data::game_enemyparty->ResetBattle(1);
 	auto& enemy = (*Main_Data::game_enemyparty)[id - 1];
-	return enemy;
+	return std::move(enemy);
 }
 
 decltype(auto) MakeActor(int id) {

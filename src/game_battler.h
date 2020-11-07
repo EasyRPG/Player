@@ -31,9 +31,10 @@
 #include "utils.h"
 #include "point.h"
 #include "string_view.h"
+#include "sprite_battler.h"
 
-class Game_Actor;
 class Game_Party_Base;
+class Sprite_Battler;
 
 namespace Game_BattleAlgorithm {
 	class AlgorithmBase;
@@ -63,7 +64,12 @@ public:
 	 */
 	Game_Battler();
 
-	virtual ~Game_Battler() {}
+	Game_Battler(const Game_Battler&) = delete;
+	Game_Battler& operator=(const Game_Battler&) = delete;
+	Game_Battler(Game_Battler&&) noexcept = default;
+	Game_Battler& operator=(Game_Battler&&) noexcept = default;
+
+	virtual ~Game_Battler() = default;
 
 	virtual int MaxHpValue() const = 0;
 
@@ -752,6 +758,15 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
+	/** @return the battle sprite for the battler */
+	Sprite_Battler* GetBattleSprite() const;
+
+	/**
+	 * Sets the battle sprite
+	 * @param s the new sprite
+	 */
+	void SetBattleSprite(std::unique_ptr<Sprite_Battler> s);
+
 	/**
 	 * @return Current turn in battle
 	 */
@@ -851,6 +866,7 @@ protected:
 	bool hidden = false;
 	bool direction_flipped = false;
 
+	std::unique_ptr<Sprite_Battler> battle_sprite;
 	std::vector<int> attribute_shift;
 
 	int battle_order = 0;
@@ -984,6 +1000,14 @@ inline const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
 
 inline void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
+}
+
+inline Sprite_Battler* Game_Battler::GetBattleSprite() const {
+	return battle_sprite.get();
+}
+
+inline void Game_Battler::SetBattleSprite(std::unique_ptr<Sprite_Battler> s) {
+	battle_sprite = std::move(s);
 }
 
 inline void Game_Battler::NextBattleTurn() {

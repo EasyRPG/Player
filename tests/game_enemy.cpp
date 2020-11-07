@@ -341,7 +341,7 @@ TEST_CASE("AttributeShiftInvalid") {
 TEST_CASE("ChangeHp") {
 	const MockActor m;
 
-	auto enemy = MakeEnemy(1, 500, 500, 500, 500, 500, 500);
+	auto& enemy = MakeEnemy(1, 500, 500, 500, 500, 500, 500);
 
 	REQUIRE_EQ(enemy.GetHp(), 500);
 
@@ -375,7 +375,7 @@ TEST_CASE("ChangeHp") {
 TEST_CASE("ChangeSp") {
 	const MockActor m;
 
-	auto enemy = MakeEnemy(1, 500, 500, 500, 500, 500, 500);
+	auto& enemy = MakeEnemy(1, 500, 500, 500, 500, 500, 500);
 
 	REQUIRE_EQ(enemy.GetSp(), 500);
 
@@ -388,7 +388,7 @@ TEST_CASE("ChangeSp") {
 TEST_CASE("ChangeParam") {
 	const MockActor m;
 
-	auto enemy = MakeEnemy(1, 500, 500, 200, 300, 400, 500);
+	auto& enemy = MakeEnemy(1, 500, 500, 200, 300, 400, 500);
 
 	REQUIRE_EQ(enemy.GetAtk(), 200);
 	REQUIRE_EQ(enemy.GetDef(), 300);

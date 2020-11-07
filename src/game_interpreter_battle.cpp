@@ -219,7 +219,6 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 			if (num_escaped) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
 			}
-			Game_Battle::SetNeedRefresh(true);
 		}
 	    break;
 	case 2:
@@ -229,7 +228,6 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 				enemy->SetHidden(true);
 				enemy->SetDeathTimer();
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
-				Game_Battle::SetNeedRefresh(true);
 			}
 		}
 	    break;

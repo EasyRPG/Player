@@ -20,10 +20,10 @@
 
 // Headers
 #include "sprite.h"
-#include "game_battler.h"
 #include "async_handler.h"
 
 class BattleAnimation;
+class Game_Battler;
 
 /**
  * Sprite_Battler class, used for battle sprites

@@ -34,7 +34,6 @@ public:
 	explicit Spriteset_Battle(std::string background, int terrain_id);
 
 	void Update();
-	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
 	void ResetAllBattlerZ();
 
@@ -44,7 +43,7 @@ public:
 
 protected:
 	std::unique_ptr<Background> background;
-	std::vector<std::shared_ptr<Sprite_Battler>> sprites;
+	std::vector<Sprite_Battler*> sprites;
 	std::string background_name;
 	std::unique_ptr<Screen> screen;
 

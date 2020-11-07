@@ -19,6 +19,7 @@
 #include "battle_animation.h"
 #include "game_enemy.h"
 #include "sprite_battler.h"
+#include "game_battler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"

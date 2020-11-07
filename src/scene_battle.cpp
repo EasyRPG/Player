@@ -266,7 +266,7 @@ bool Scene_Battle::IsWindowMoving() {
 }
 
 void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {
-	Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+	Sprite_Battler* target_sprite = target->GetBattleSprite();
 	if (target_sprite) {
 		target_sprite->SetAnimationState(new_state);
 	}

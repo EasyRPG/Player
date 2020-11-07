@@ -355,7 +355,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 	{
 		auto* actor = Main_Data::game_party->GetActor(status_window->GetIndex());
 		if (actor) {
-			const auto* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			const auto* sprite = actor->GetBattleSprite();
 			if (sprite) {
 				static const int frames[] = { 0, 1, 2, 1 };
 				int sprite_frame = frames[(frame_counter / 15) % 4];
@@ -384,7 +384,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 		if (idx >= 0) {
 			auto* enemy = battlers[idx];
 			if (enemy) {
-				const auto* sprite = Game_Battle::GetSpriteset().FindBattler(enemy);
+				const auto* sprite = enemy->GetBattleSprite();
 				if (sprite) {
 					static const int frames[] = { 0, 1, 2, 1 };
 					int sprite_frame = frames[(frame_counter / 15) % 4];
@@ -1550,7 +1550,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 
 	if (scene_action_substate == eBegin) {
 		for (auto* actor: Main_Data::game_party->GetActors()) {
-			auto* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			auto* sprite = actor->GetBattleSprite();
 			if (sprite) {
 				sprite->SetAnimationState(Sprite_Battler::AnimationState_Victory);
 			}
@@ -1675,7 +1675,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEs
 			// There is no success text for escape in 2k3, however 2k3 still waits the same as if there was.
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 			for (auto& actor: Main_Data::game_party->GetActors()) {
-				Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+				Sprite_Battler* sprite = actor->GetBattleSprite();
 				if (sprite) {
 					if (actor->IsDirectionFlipped()) {
 						sprite->SetAnimationState(Sprite_Battler::AnimationState_WalkingLeft);
@@ -1732,6 +1732,7 @@ void Scene_Battle_Rpg2k3::SetBattleActionState(BattleActionState state) {
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	// End any notification started by battle action
 	EndNotification();
+	auto* source = action->GetSource();
 
 	if (action == nullptr) {
 		return BattleActionReturn::eFinished;
@@ -1746,7 +1747,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		return BattleActionReturn::eWait;
 	}
 
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+	auto* source_sprite = source->GetBattleSprite();
 
 	if (source_sprite && !source_sprite->IsIdling()) {
 		return BattleActionReturn::eWait;
@@ -1948,7 +1949,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action) {
 	const auto is_target_party = action->GetOriginalPartyTarget() != nullptr;
 	auto* source = action->GetSource();
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	auto* source_sprite = source->GetBattleSprite();
 
 	action->Start();
 
@@ -2012,7 +2013,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	auto* source_sprite = source->GetBattleSprite();
 	if (source_sprite) {
 		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 	}
@@ -2028,7 +2029,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	}
 
 	auto* source = action->GetSource();
-	auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	auto* source_sprite = source->GetBattleSprite();
 	if (source_sprite) {
 		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 	}
@@ -2058,7 +2059,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* target = action->GetTarget();
-	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+	auto* target_sprite = target->GetBattleSprite();
 
 	const bool was_dead = target->IsDead();
 

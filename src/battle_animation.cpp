@@ -291,7 +291,7 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 	}
 
 	for (auto* battler: battlers) {
-		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
+		const Sprite_Battler* sprite = battler->GetBattleSprite();
 		int offset = 0;
 		if (sprite && sprite->GetBitmap()) {
 			offset = CalculateOffset(animation.position, sprite->GetHeight());

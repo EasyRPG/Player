@@ -68,13 +68,14 @@ void Game_Battle::Init(int troop_id) {
 	Main_Data::game_party->ResetTurns();
 
 	Main_Data::game_enemyparty->ResetBattle(troop_id);
+	Main_Data::game_actors->ResetBattle();
+
 	interpreter.reset(new Game_Interpreter_Battle(troop->pages));
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
 	animation_actors.reset();
 	animation_enemies.reset();
 
-	Main_Data::game_actors->ResetBattle();
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
@@ -404,7 +405,7 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Enemy& enemy) {
 	const auto terrain_id = Game_Battle::GetTerrainId();
 	const auto cond = Game_Battle::GetBattleCondition();
 	const auto form = Game_Battle::GetBattleFormation();
-	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&enemy);
+	auto* sprite = enemy.GetBattleSprite();
 
 	int half_height = 0;
 	int half_width = 0;
@@ -487,7 +488,7 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
 	const auto terrain_id = Game_Battle::GetTerrainId();
 	const auto cond = Game_Battle::GetBattleCondition();
 	const auto form = Game_Battle::GetBattleFormation();
-	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&actor);
+	auto* sprite = actor.GetBattleSprite();
 
 	int half_height = 0;
 	int half_width = 0;

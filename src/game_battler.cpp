@@ -586,6 +586,7 @@ void Game_Battler::ResetBattle() {
 	battle_combo_times = 1;
 	attribute_shift.clear();
 	SetBattleAlgorithm(nullptr);
+	SetBattleSprite(nullptr);
 }
 
 int Game_Battler::GetAttributeRate(int attribute_id) const {
