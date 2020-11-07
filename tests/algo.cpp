@@ -3,19 +3,6 @@
 #include "rand.h"
 #include "doctest.h"
 
-static Game_Actor MakeActor(int id) {
-	return Game_Actor(id);
-}
-
-static Game_Enemy& MakeEnemy(int id) {
-	auto& tp = lcf::Data::troops[0];
-	tp.members.resize(8);
-	tp.members[id - 1].enemy_id = id;
-	Main_Data::game_enemyparty->ResetBattle(1);
-	auto& enemy = (*Main_Data::game_enemyparty)[id - 1];
-	return enemy;
-}
-
 TEST_SUITE_BEGIN("Algo");
 
 static void testRowAdj(lcf::rpg::SaveActor::RowType row, bool offense, bool none, bool back, bool surround, bool pincers) {
@@ -65,10 +52,10 @@ static void testRowAdjBattler(const Game_Battler& battler, bool offense, bool bu
 }
 
 TEST_CASE("RowAdjBattler") {
-	const MockActor m;
+	const MockBattle mb;
 
 	SUBCASE("actor") {
-		auto actor = MakeActor(1);
+		auto& actor = *Main_Data::game_party->GetActor(0);
 
 		SUBCASE("front") {
 			actor.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
@@ -100,7 +87,7 @@ TEST_CASE("RowAdjBattler") {
 	}
 
 	SUBCASE("enemy") {
-		auto enemy = MakeEnemy(1);
+		auto& enemy = *Main_Data::game_enemyparty->GetEnemy(0);
 
 		SUBCASE("offsense") {
 			testRowAdjBattler(enemy, true, true, true, false, true, false);
@@ -204,20 +191,21 @@ void makeAgiSkills() {
 	s->failure_message = 0;
 }
 
-decltype(auto) MakeAgiEnemy(int id, int agi) {
-	MakeDBEnemy(id, 1, 1, 1, 1, 1, agi);
-	return MakeEnemy(id);
+auto* MakeAgiEnemy(int idx, int agi) {
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(idx);
+	Setup(enemy, 1, 1, 1, 1, 1, agi);
+	return enemy;
 }
 
-decltype(auto) MakeAgiActor(int id, int agi) {
-	auto actor = MakeActor(id);
-	actor.SetBaseAgi(agi);
+auto* MakeAgiActor(int idx, int agi) {
+	auto* actor = Main_Data::game_party->GetActor(idx);
+	Setup(actor, 1, 1, 1, 1, 1, agi);
 	return actor;
 }
 
 static void testAgi(int src, int tgt, int res) {
-	auto source = MakeAgiActor(1, src);
-	auto target = MakeAgiEnemy(1, tgt);
+	auto& source = *MakeAgiActor(0, src);
+	auto& target = *MakeAgiEnemy(0, tgt);
 
 	REQUIRE_EQ(res, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
@@ -230,7 +218,7 @@ static void testAgi(int src, int tgt, int res) {
 }
 
 TEST_CASE("HitRateAgi") {
-	const MockActor m;
+	const MockBattle mb;
 	makeAgiSkills();
 
 	SUBCASE("100_100") { testAgi(100, 100, 90); }
@@ -265,14 +253,14 @@ static void testStates(Game_Battler& source, Game_Battler& target, int base) {
 }
 
 TEST_CASE("HitRateStates") {
-	const MockActor m;
+	const MockBattle mb;
 	makeAgiSkills();
 	lcf::Data::states[2 - 1].restriction = lcf::rpg::State::Restriction_do_nothing;
 	lcf::Data::states[3 - 1].avoid_attacks = true;
 	lcf::Data::states[4 - 1].reduce_hit_ratio = 50;
 
-	auto source = MakeAgiActor(1, 100);
-	auto target = MakeAgiEnemy(1, 100);
+	auto& source = *MakeAgiActor(0, 100);
+	auto& target = *MakeAgiEnemy(0, 100);
 
 	testStates(source, target, 90);
 
@@ -300,14 +288,14 @@ static void testHitRateRow(Game_Battler& source, Game_Battler& target, int none,
 }
 
 TEST_CASE("HitRateArmorAndRow2k3") {
-	const MockActor m(Player::EngineRpg2k3);
+	const MockBattle mb(4, 4, Player::EngineRpg2k3);
 	makeAgiSkills();
 	MakeDBEquip(1, lcf::rpg::Item::Type_armor, 0, 0, 0, 0, 100, 0, false, false, false, false, false, true, false, false);
 
-	auto source = MakeAgiActor(1, 100);
+	auto& source = *MakeAgiActor(1, 100);
 
 	SUBCASE("actor target") {
-		auto target = MakeAgiActor(2, 100);
+		auto& target = *MakeAgiActor(2, 100);
 
 		SUBCASE("Front") {
 			target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
@@ -349,7 +337,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 	}
 
 	SUBCASE("enemy target") {
-		auto target = MakeAgiEnemy(2, 100);
+		auto& target = *MakeAgiEnemy(2, 100);
 
 		testHitRateRow(source, target, 90, 65, 65, 90, 90, 90);
 
@@ -362,14 +350,14 @@ static void testHitRateRow2k(Game_Battler& source, Game_Battler& target, int rat
 }
 
 TEST_CASE("HitRateArmorAndRow2k") {
-	const MockActor m(Player::EngineRpg2k);
+	const MockBattle mb(4, 4, Player::EngineRpg2k);
 	makeAgiSkills();
 	MakeDBEquip(1, lcf::rpg::Item::Type_armor, 0, 0, 0, 0, 100, 0, false, false, false, false, false, true, false, false);
 
-	auto source = MakeAgiActor(1, 100);
+	auto& source = *MakeAgiActor(1, 100);
 
 	SUBCASE("actor target") {
-		auto target = MakeAgiActor(2, 100);
+		auto& target = *MakeAgiActor(2, 100);
 
 		SUBCASE("no armor") {
 			testHitRateRow2k(source, target, 90);
@@ -388,7 +376,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 	}
 
 	SUBCASE("enemy target") {
-		auto target = MakeAgiEnemy(2, 100);
+		auto& target = *MakeAgiEnemy(2, 100);
 
 		testHitRateRow2k(source, target, 90);
 
@@ -397,12 +385,12 @@ TEST_CASE("HitRateArmorAndRow2k") {
 }
 
 TEST_CASE("HitRateWeapons") {
-	const MockActor m(Player::EngineRpg2k3);
+	const MockBattle mb(4, 4, Player::EngineRpg2k3);
 	MakeDBEquip(1, lcf::rpg::Item::Type_weapon, 0, 0, 0, 0, 90, 0, false, false, false, true, false, false, false, false);
 	MakeDBEquip(2, lcf::rpg::Item::Type_weapon, 0, 0, 0, 50, 90, 0, false, false, false, false, false, false, false, false);
 
-	auto source = MakeAgiActor(1, 100);
-	auto target = MakeAgiEnemy(1, 200);
+	auto& source = *MakeAgiActor(1, 100);
+	auto& target = *MakeAgiEnemy(1, 200);
 
 	source.SetEquipment(1, 1);
 	source.SetEquipment(2, 2);
@@ -427,7 +415,7 @@ TEST_CASE("HitRateWeapons") {
 }
 
 TEST_CASE("CritRate") {
-	const MockActor m(Player::EngineRpg2k3);
+	const MockBattle mb(4, 4, Player::EngineRpg2k3);
 	lcf::Data::enemies[0].critical_hit = true;
 	lcf::Data::enemies[0].critical_hit_chance = 30;
 	lcf::Data::enemies[1].critical_hit = true;
@@ -437,8 +425,8 @@ TEST_CASE("CritRate") {
 	MakeDBEquip(3, lcf::rpg::Item::Type_armor)->prevent_critical = true;
 
 	SUBCASE("actor -> actor - always fails") {
-		auto source = MakeActor(1);
-		auto target = MakeActor(2);
+		auto& source = *Main_Data::game_party->GetActor(0);
+		auto& target = *Main_Data::game_party->GetActor(1);
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
@@ -446,8 +434,8 @@ TEST_CASE("CritRate") {
 	}
 
 	SUBCASE("enemy -> enemy - always fails") {
-		auto source = MakeEnemy(1);
-		auto target = MakeEnemy(2);
+		auto& source = *Main_Data::game_enemyparty->GetEnemy(0);
+		auto& target = *Main_Data::game_enemyparty->GetEnemy(1);
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
@@ -455,8 +443,8 @@ TEST_CASE("CritRate") {
 	}
 
 	SUBCASE("actor -> enemy") {
-		auto source = MakeActor(1);
-		auto target = MakeEnemy(1);
+		auto& source = *Main_Data::game_party->GetActor(0);
+		auto& target = *Main_Data::game_enemyparty->GetEnemy(0);
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
@@ -479,8 +467,8 @@ TEST_CASE("CritRate") {
 	}
 
 	SUBCASE("enemy -> actor") {
-		auto source = MakeEnemy(1);
-		auto target = MakeActor(1);
+		auto& source = *Main_Data::game_enemyparty->GetEnemy(0);
+		auto& target = *Main_Data::game_party->GetActor(0);
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
@@ -502,73 +490,71 @@ TEST_CASE("CritRate") {
 	}
 }
 
-decltype(auto) MakeStatEnemy(int id, int atk, int def, int spi) {
-	MakeDBEnemy(id, 1, 1, atk, def, spi, 1);
-	return MakeEnemy(id);
+auto* MakeStatEnemy(int idx, int atk, int def, int spi) {
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(idx);
+	Setup(enemy, 1, 1, atk, def, spi, 1);
+	return enemy;
 }
 
-decltype(auto) MakeStatActor(int id, int atk, int def, int spi) {
-	auto actor = MakeActor(id);
-	actor.SetBaseAtk(atk);
-	actor.SetBaseDef(def);
-	actor.SetBaseSpi(spi);
+auto* MakeStatActor(int idx, int atk, int def, int spi) {
+	auto* actor = Main_Data::game_party->GetActor(idx);
+	Setup(actor, 1, 1, atk, def, spi, 1);
 	return actor;
 }
 
 TEST_CASE("DefendAdjustment") {
-	const MockActor m;
+	const MockBattle m;
+	auto target = Main_Data::game_party->GetActor(0);
 
 	SUBCASE("no strong") {
-		auto target = MakeActor(1);
 
 		SUBCASE("baseline") {
-			REQUIRE_EQ(100, Algo::AdjustDamageForDefend(100, target));
+			REQUIRE_EQ(100, Algo::AdjustDamageForDefend(100, *target));
 		}
 
 		SUBCASE("defend") {
-			target.SetIsDefending(true);
-			REQUIRE_EQ(50, Algo::AdjustDamageForDefend(100, target));
+			target->SetIsDefending(true);
+			REQUIRE_EQ(50, Algo::AdjustDamageForDefend(100, *target));
 		}
 	}
 
 	SUBCASE("strong") {
-		lcf::Data::actors[0].super_guard = true;
-		auto target = MakeActor(1);
+		target->SetStrongDefense(true);
 
 		SUBCASE("baseline") {
-			REQUIRE_EQ(100, Algo::AdjustDamageForDefend(100, target));
+			REQUIRE_EQ(100, Algo::AdjustDamageForDefend(100, *target));
 		}
 
 		SUBCASE("defend") {
-			target.SetIsDefending(true);
-			REQUIRE_EQ(25, Algo::AdjustDamageForDefend(100, target));
+			target->SetIsDefending(true);
+			REQUIRE_EQ(25, Algo::AdjustDamageForDefend(100, *target));
 		}
 	}
 }
 
 TEST_CASE("SelfDestructEffect") {
-	const MockActor m;
+	const MockBattle m;
 
 	auto target = MakeStatActor(1, 0, 100, 0);
 
 	SUBCASE("100_100") {
 		auto source = MakeStatEnemy(1, 100, 0, 0);
-		REQUIRE_EQ(50, Algo::CalcSelfDestructEffect(source, target, false));
+		REQUIRE_EQ(50, Algo::CalcSelfDestructEffect(*source, *target, false));
 	}
 
 	SUBCASE("200_100") {
 		auto source = MakeStatEnemy(1, 200, 0, 0);
-		REQUIRE_EQ(150, Algo::CalcSelfDestructEffect(source, target, false));
+		REQUIRE_EQ(150, Algo::CalcSelfDestructEffect(*source, *target, false));
 	}
 
 	SUBCASE("1_100") {
 		auto source = MakeStatEnemy(1, 1, 0, 0);
-		REQUIRE_EQ(0, Algo::CalcSelfDestructEffect(source, target, false));
+		REQUIRE_EQ(0, Algo::CalcSelfDestructEffect(*source, *target, false));
 	}
 
 	SUBCASE("150_100") {
 		auto source = MakeStatEnemy(1, 150, 0, 0);
-		REQUIRE_EQ(100, Algo::CalcSelfDestructEffect(source, target, false));
+		REQUIRE_EQ(100, Algo::CalcSelfDestructEffect(*source, *target, false));
 	}
 }
 
@@ -651,40 +637,40 @@ static void testSkillStats(int power, int phys, int mag, Game_Battler& source, G
 }
 
 TEST_CASE("SkillEffect") {
-	const MockActor m;
+	const MockBattle m;
 	MakeDBAttribute(1, lcf::rpg::Attribute::Type_magical, 200, 200, 200, 200, 200);
 
 	SUBCASE("100/0/120 -> 0/100/90") {
-		auto source = MakeStatActor(1, 100, 0, 120);
+		auto source = MakeStatActor(0, 100, 0, 120);
 		auto target = MakeStatActor(1, 0, 100, 90);
 
 		SUBCASE("10/10/10") {
-			testSkillStats(10, 10, 10, source, target, 54, 90);
+			testSkillStats(10, 10, 10, *source, *target, 54, 90);
 		}
 
 		SUBCASE("0/10/10") {
-			testSkillStats(0, 10, 10, source, target, 44, 80);
+			testSkillStats(0, 10, 10, *source, *target, 44, 80);
 		}
 
 		SUBCASE("10/0/10") {
-			testSkillStats(10, 0, 10, source, target, 29, 40);
+			testSkillStats(10, 0, 10, *source, *target, 29, 40);
 		}
 
 		SUBCASE("10/10/0") {
-			testSkillStats(10, 10, 0, source, target, 35, 60);
+			testSkillStats(10, 10, 0, *source, *target, 35, 60);
 		}
 
 		SUBCASE("0/0/0") {
-			testSkillStats(0, 0, 0, source, target, 0, 0);
+			testSkillStats(0, 0, 0, *source, *target, 0, 0);
 		}
 	}
 
 	SUBCASE("10/0/10 -> 0/100/100") {
-		auto source = MakeStatActor(1, 10, 0, 10);
+		auto source = MakeStatActor(0, 10, 0, 10);
 		auto target = MakeStatActor(1, 0, 100, 100);
 
 		SUBCASE("0/10/10") {
-			testSkillStats(0, 10, 10, source, target, 0, 7);
+			testSkillStats(0, 10, 10, *source, *target, 0, 7);
 		}
 	}
 }
@@ -733,58 +719,58 @@ static void testActorAttackRow(Game_Battler& source, Game_Battler& target, int n
 }
 
 static void TestNormalAttack(int engine) {
-	const MockActor m(engine);
+	const MockBattle m(4, 4, engine);
 	lcf::Data::enemies[1].attribute_ranks[0] = 2;
 	MakeDBAttribute(1, lcf::rpg::Attribute::Type_physical, 200, 200, 200, 200, 200);
 
 	const bool is2k3 = Player::IsRPG2k3();
 
 	SUBCASE("enemy 120/0 -> enemy 0/90") {
-		auto source = MakeStatEnemy(1, 120, 0, 0);
-		auto target = MakeStatEnemy(2, 0, 90, 0);
+		auto source = MakeStatEnemy(0, 120, 0, 0);
+		auto target = MakeStatEnemy(1, 0, 90, 0);
 
-		REQUIRE_EQ(source.GetAtk(), 120);
-		REQUIRE_EQ(target.GetDef(), 90);
+		REQUIRE_EQ(source->GetAtk(), 120);
+		REQUIRE_EQ(target->GetDef(), 90);
 
-		testEnemyAttackEnemy(source, target, 38, 114, 76);
+		testEnemyAttackEnemy(*source, *target, 38, 114, 76);
 	}
 
 	SUBCASE("enemy 0/0 -> enemy 0/100") {
-		auto source = MakeStatEnemy(1, 0, 0, 0);
-		auto target = MakeStatEnemy(2, 0, 100, 0);
+		auto source = MakeStatEnemy(0, 0, 0, 0);
+		auto target = MakeStatEnemy(1, 0, 100, 0);
 
-		REQUIRE_EQ(0, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+		REQUIRE_EQ(0, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
 	}
 
 	SUBCASE("enemy 9999/0 -> enemy 0/0") {
-		auto source = MakeStatEnemy(1, 9999, 0, 0);
-		auto target = MakeStatEnemy(2, 0, 0, 0);
+		auto source = MakeStatEnemy(0, 9999, 0, 0);
+		auto target = MakeStatEnemy(1, 0, 0, 0);
 
-		REQUIRE_EQ(4999, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+		REQUIRE_EQ(4999, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
 	}
 
 	SUBCASE("actor 120/0 -> enemy 0/90") {
-		auto source = MakeStatActor(1, 120, 0, 0);
-		auto target = MakeStatEnemy(1, 0, 90, 0);
+		auto source = MakeStatActor(0, 120, 0, 0);
+		auto target = MakeStatEnemy(0, 0, 90, 0);
 
-		REQUIRE_EQ(source.GetAtk(), 120);
-		REQUIRE_EQ(target.GetDef(), 90);
+		REQUIRE_EQ(source->GetAtk(), 120);
+		REQUIRE_EQ(target->GetDef(), 90);
 
 		SUBCASE("front row") {
-			source.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+			source->SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 			if (is2k3) {
-				testActorAttackRow(source, target, 47, 28, 35, 38, 38, 47);
+				testActorAttackRow(*source, *target, 47, 28, 35, 38, 38, 47);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+				testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 
 		SUBCASE("back row") {
-			source.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+			source->SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 			if (is2k3) {
-				testActorAttackRow(source, target, 38, 35, 35, 38, 47, 47);
+				testActorAttackRow(*source, *target, 38, 35, 35, 38, 47, 47);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+				testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 
@@ -795,97 +781,97 @@ static void TestNormalAttack(int engine) {
 
 			REQUIRE(lcf::Data::items[1].attribute_set[0]);
 
-			source.SetEquipment(1, 1);
-			source.SetEquipment(2, 2);
+			source->SetEquipment(1, 1);
+			source->SetEquipment(2, 2);
 
-			REQUIRE_EQ(source.GetWeaponId(), 1);
-			REQUIRE_EQ(source.GetShieldId(), 2);
+			REQUIRE_EQ(source->GetWeaponId(), 1);
+			REQUIRE_EQ(source->GetShieldId(), 2);
 
 			if (is2k3) {
-				REQUIRE_EQ(140, source.GetAtk(Game_Battler::WeaponAll));
-				REQUIRE_EQ(120, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(47, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(60, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(94, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(140, source->GetAtk(Game_Battler::WeaponAll));
+				REQUIRE_EQ(120, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(47, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponNone, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(60, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponPrimary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(94, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponSecondary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
 			} else {
-				REQUIRE_EQ(140, source.GetAtk(Game_Battler::WeaponAll));
-				REQUIRE_EQ(96, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(38, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponNone, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(48, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponPrimary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
-				REQUIRE_EQ(76, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponSecondary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(140, source->GetAtk(Game_Battler::WeaponAll));
+				REQUIRE_EQ(96, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(38, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponNone, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(48, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponPrimary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
+				REQUIRE_EQ(76, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponSecondary, false, false, false, lcf::rpg::System::BattleCondition_none, true));
 			}
 		}
 	}
 
 	SUBCASE("actor 120/0 -> actor 0/90") {
-		auto source = MakeStatActor(1, 120, 0, 0);
-		auto target = MakeStatActor(2, 0, 90, 0);
+		auto source = MakeStatActor(0, 120, 0, 0);
+		auto target = MakeStatActor(1, 0, 90, 0);
 
-		REQUIRE_EQ(source.GetAtk(), 120);
-		REQUIRE_EQ(target.GetDef(), 90);
+		REQUIRE_EQ(source->GetAtk(), 120);
+		REQUIRE_EQ(target->GetDef(), 90);
 
 		SUBCASE("source front") {
-			source.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+			source->SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 			SUBCASE("target front") {
-				target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+				target->SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 				if (is2k3) {
-					testActorAttackRow(source, target, 47, 28, 35, 38, 28, 35);
+					testActorAttackRow(*source, *target, 47, 28, 35, 38, 28, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+					testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 			SUBCASE("target back") {
-				target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+				target->SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 				if (is2k3) {
-					testActorAttackRow(source, target, 35, 38, 35, 38, 38, 35);
+					testActorAttackRow(*source, *target, 35, 38, 35, 38, 38, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+					testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 		}
 
 		SUBCASE("source back") {
-			source.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+			source->SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 			SUBCASE("target front") {
-				target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+				target->SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 				if (is2k3) {
-					testActorAttackRow(source, target, 38, 35, 35, 38, 35, 35);
+					testActorAttackRow(*source, *target, 38, 35, 35, 38, 35, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+					testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 			SUBCASE("target back") {
-				target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+				target->SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 				if (is2k3) {
-					testActorAttackRow(source, target, 28, 47, 35, 38, 47, 35);
+					testActorAttackRow(*source, *target, 28, 47, 35, 38, 47, 35);
 				} else {
-					testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+					testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 				}
 			}
 		}
 	}
 
 	SUBCASE("enemy 120/0 -> actor 0/90") {
-		auto source = MakeStatEnemy(1, 120, 0, 0);
-		auto target = MakeStatActor(1, 0, 90, 0);
+		auto source = MakeStatEnemy(0, 120, 0, 0);
+		auto target = MakeStatActor(0, 0, 90, 0);
 
-		REQUIRE_EQ(source.GetAtk(), 120);
-		REQUIRE_EQ(target.GetDef(), 90);
+		REQUIRE_EQ(source->GetAtk(), 120);
+		REQUIRE_EQ(target->GetDef(), 90);
 
 		SUBCASE("target front") {
-			target.SetBattleRow(lcf::rpg::SaveActor::RowType_front);
+			target->SetBattleRow(lcf::rpg::SaveActor::RowType_front);
 			if (is2k3) {
-				testActorAttackRow(source, target, 38, 28, 28, 38, 28, 28);
+				testActorAttackRow(*source, *target, 38, 28, 28, 38, 28, 28);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+				testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 		SUBCASE("target back") {
-			target.SetBattleRow(lcf::rpg::SaveActor::RowType_back);
+			target->SetBattleRow(lcf::rpg::SaveActor::RowType_back);
 			if (is2k3) {
-				testActorAttackRow(source, target, 28, 38, 28, 38, 38, 28);
+				testActorAttackRow(*source, *target, 28, 38, 28, 38, 38, 28);
 			} else {
-				testActorAttackRow(source, target, 38, 38, 38, 38, 38, 38);
+				testActorAttackRow(*source, *target, 38, 38, 38, 38, 38, 38);
 			}
 		}
 	}
@@ -902,22 +888,22 @@ TEST_CASE("NormalAttackEffect") {
 }
 
 TEST_CASE("NormalAttackVariance") {
-	const MockActor m;
+	const MockBattle m;
 
 	SUBCASE("enemy 120/0 -> enemy 0/90") {
-		auto source = MakeStatEnemy(1, 120, 0, 0);
-		auto target = MakeStatEnemy(2, 0, 90, 0);
+		auto source = MakeStatEnemy(0, 120, 0, 0);
+		auto target = MakeStatEnemy(1, 0, 90, 0);
 
-		REQUIRE_EQ(source.GetAtk(), 120);
-		REQUIRE_EQ(target.GetDef(), 90);
+		REQUIRE_EQ(source->GetAtk(), 120);
+		REQUIRE_EQ(target->GetDef(), 90);
 
 		SUBCASE("max") {
 			Rand::LockGuard lk(INT32_MAX);
-			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, true, lcf::rpg::System::BattleCondition_none, false));
+			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, true, lcf::rpg::System::BattleCondition_none, false));
 		}
 		SUBCASE("min") {
 			Rand::LockGuard lk(INT32_MIN);
-			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, false, true, lcf::rpg::System::BattleCondition_none, false));
+			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(*source, *target, Game_Battler::WeaponAll, false, false, true, lcf::rpg::System::BattleCondition_none, false));
 		}
 	}
 }
@@ -943,43 +929,43 @@ static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, in
 }
 
 TEST_CASE("SkillEffectVariance") {
-	const MockActor m;
-	auto source = MakeStatActor(1, 100, 0, 120);
+	const MockBattle m;
+	auto source = MakeStatActor(0, 100, 0, 120);
 	auto target = MakeStatActor(1, 0, 100, 90);
 
 	SUBCASE("0") {
-		testSkillVar(source, target, 0, 54, 54, 90, 90);
+		testSkillVar(*source, *target, 0, 54, 54, 90, 90);
 	}
 	SUBCASE("1") {
-		testSkillVar(source, target, 1, 52, 57, 86, 95);
+		testSkillVar(*source, *target, 1, 52, 57, 86, 95);
 	}
 	SUBCASE("2") {
-		testSkillVar(source, target, 2, 49, 59, 81, 99);
+		testSkillVar(*source, *target, 2, 49, 59, 81, 99);
 	}
 	SUBCASE("10") {
-		testSkillVar(source, target, 10, 27, 81, 45, 135);
+		testSkillVar(*source, *target, 10, 27, 81, 45, 135);
 	}
 }
 
 TEST_CASE("SelfDestructVariance") {
-	const MockActor m;
+	const MockBattle m;
 
-	auto target = MakeStatActor(1, 0, 100, 0);
-	auto source = MakeStatEnemy(1, 150, 0, 0);
+	auto target = MakeStatActor(0, 0, 100, 0);
+	auto source = MakeStatEnemy(0, 150, 0, 0);
 
 	SUBCASE("max") {
 		Rand::LockGuard lk(INT32_MAX);
-		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(source, target, true));
+		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(*source, *target, true));
 	}
 	SUBCASE("min") {
 		Rand::LockGuard lk(INT32_MIN);
-		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(source, target, true));
+		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(*source, *target, true));
 	}
 }
 
 
 TEST_CASE("SkillCost") {
-	const MockActor m;
+	const MockBattle m;
 
 	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
 
@@ -1013,7 +999,7 @@ TEST_CASE("SkillCost") {
 }
 
 TEST_CASE("SkillTargets") {
-	const MockActor m;
+	const MockBattle m;
 
 	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
 
@@ -1039,7 +1025,7 @@ TEST_CASE("SkillTargets") {
 }
 
 TEST_CASE("SkillTypes") {
-	const MockActor m;
+	const MockBattle m;
 
 	auto* skill = MakeDBSkill(1, 90, 0, 0, 0, 0);
 

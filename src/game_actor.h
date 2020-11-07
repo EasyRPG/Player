@@ -897,6 +897,18 @@ public:
 	/** @return the id of the actors unarmed battle animation */
 	int GetUnarmedBattleAnimationId() const;
 
+	/** Set whether the actor can use 2 weapons */
+	void SetTwoWeapons(bool value);
+
+	/** Set whether the actor's equipment is locked */
+	void SetLockEquipment(bool value);
+
+	/** Set whether the actor's always fights with auto battle */
+	void SetAutoBattle(bool value);
+
+	/** Set whether the actor has super guard */
+	void SetStrongDefense(bool value);
+
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 	void Fixup();
@@ -1043,6 +1055,22 @@ inline int Game_Actor::GetAgiMod() const {
 
 inline int Game_Actor::GetUnarmedBattleAnimationId() const {
 	return dbActor->unarmed_animation;
+}
+
+inline void Game_Actor::SetTwoWeapons(bool value) {
+	data.two_weapon = value;
+}
+
+inline void Game_Actor::SetLockEquipment(bool value) {
+	data.lock_equipment = value;
+}
+
+inline void Game_Actor::SetAutoBattle(bool value) {
+	data.auto_battle = value;
+}
+
+inline void Game_Actor::SetStrongDefense(bool value) {
+	data.super_guard = value;
 }
 
 #endif
