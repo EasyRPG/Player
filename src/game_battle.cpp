@@ -126,9 +126,6 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
-	if (spriteset->GetNeedRefresh()) {
-		spriteset->Refresh();
-	}
 }
 
 bool Game_Battle::CheckWin() {
@@ -280,12 +277,6 @@ void Game_Battle::SetBattleFormation(lcf::rpg::System::BattleFormation form) {
 
 lcf::rpg::System::BattleFormation Game_Battle::GetBattleFormation() {
 	return battle_form;
-}
-
-void Game_Battle::SetNeedRefresh(bool refresh) {
-	if (spriteset) {
-		spriteset->SetNeedRefresh(refresh);
-	}
 }
 
 bool Game_Battle::HasDeathHandler() {

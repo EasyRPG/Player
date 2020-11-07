@@ -104,9 +104,3 @@ void Spriteset_Battle::ResetAllBattlerZ() {
 	}
 }
 
-void Spriteset_Battle::Refresh() {
-	for (auto& sprite: sprites) {
-		sprite->DetectStateChange();
-	}
-	need_refresh = false;
-}

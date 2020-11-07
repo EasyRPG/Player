@@ -172,14 +172,6 @@ namespace Game_Battle {
 	 */
 	Point Calculate2k3BattlePosition(const Game_Actor& actor);
 
-	/**
-	 * Sets the need refresh flag.
-	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
-	 *
-	 * @param refresh need refresh state.
-	 */
-	void SetNeedRefresh(bool refresh);
-
 	struct BattleTest {
 		bool enabled = false;
 		int troop_id = 0;
