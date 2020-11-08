@@ -22,9 +22,11 @@
 #include "output.h"
 #include "player.h"
 #include "map_data.h"
+#include "main_data.h"
 #include "bitmap.h"
 #include "compiler.h"
 #include "game_map.h"
+#include "game_system.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 
@@ -228,6 +230,19 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 		int rem = n % m;
 		return rem >= 0 ? rem : m + rem;
 	};
+
+	// FIXME: When Game_Map singleton is made an object we can remove this null check
+	const auto frames = Main_Data::game_system ? Main_Data::game_system->GetFrameCounter() : 0;
+	auto animation_step_c = (frames / 6) % 4;
+	auto animation_step_ab = frames / animation_speed;
+	if (animation_type) {
+		animation_step_ab %= 3;
+	} else {
+		animation_step_ab %= 4;
+		if (animation_step_ab == 3) {
+			animation_step_ab = 1;
+		}
+	}
 
 	const int div_ox = div_rounding_down(ox, TILE_SIZE);
 	const int div_oy = div_rounding_down(oy, TILE_SIZE);
@@ -587,32 +602,6 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::unordered_map<ui
 	}
 
 	return tiles;
-}
-
-void TilemapLayer::Update() {
-	animation_frame += 1;
-
-	// Step to the next animation frame
-	if (animation_frame % 6 == 0) {
-		animation_step_c = (animation_step_c + 1) % 4;
-	}
-	if (animation_frame == animation_speed) {
-		animation_step_ab = 1;
-	} else if (animation_frame == animation_speed * 2) {
-		animation_step_ab = 2;
-	} else if (animation_frame == animation_speed * 3) {
-		if (animation_type == 0) {
-			// If animation type is 1-2-3-2
-			animation_step_ab = 1;
-		} else {
-			// If animation type is 1-2-3
-			animation_step_ab = 0;
-			animation_frame = 0;
-		}
-	} else if (animation_frame >= animation_speed * 4) {
-		animation_step_ab = 0;
-		animation_frame = 0;
-	}
 }
 
 void TilemapLayer::SetChipset(BitmapRef const& nchipset) {

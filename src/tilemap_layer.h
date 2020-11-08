@@ -27,6 +27,7 @@
 #include "drawable.h"
 #include "tone.h"
 #include "opacity.h"
+#include "span.h"
 
 class TilemapLayer;
 
@@ -51,8 +52,6 @@ public:
 	TilemapLayer(int ilayer);
 
 	void Draw(Bitmap& dst, int z_order);
-
-	void Update();
 
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
@@ -92,16 +91,12 @@ private:
 	std::unordered_set<uint32_t> chipset_tone_tiles;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
-	// FIXME Should be span<uint8_t>
-	const std::vector<uint8_t>& substitutions;
+	Span<const uint8_t> substitutions;
 	int ox = 0;
 	int oy = 0;
 	int width = 0;
 	int height = 0;
-	char animation_frame = 0;
-	char animation_step_ab = 0;
-	char animation_step_c = 0;
-	int animation_speed = 0;
+	int animation_speed = 1;
 	int animation_type = 0;
 	int layer = 0;
 	bool fast_blit = false;
@@ -214,7 +209,7 @@ inline int TilemapLayer::GetAnimationSpeed() const {
 }
 
 inline void TilemapLayer::SetAnimationSpeed(int speed) {
-	animation_speed = speed;
+	animation_speed = std::max(1, speed);
 }
 
 inline int TilemapLayer::GetAnimationType() const {

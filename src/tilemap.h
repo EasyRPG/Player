@@ -31,8 +31,6 @@ class Tilemap {
 public:
 	Tilemap();
 
-	void Update();
-
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
 

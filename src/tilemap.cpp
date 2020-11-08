@@ -24,11 +24,6 @@
 Tilemap::Tilemap(): layer_down(0), layer_up(1) {
 }
 
-// Update
-void Tilemap::Update() {
-	layer_down.Update();
-}
-
 // Properties
 BitmapRef const& Tilemap::GetChipset() const {
 	return layer_down.GetChipset();
