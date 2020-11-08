@@ -454,10 +454,7 @@ void Game_Party::AddActor(int actor_id) {
 
 	auto scene = Scene::Find(Scene::Battle);
 	if (scene) {
-		auto* bscene = dynamic_cast<Scene_Battle*>(scene.get());
-		if (bscene) {
-			bscene->OnPartyChanged(actor, true);
-		}
+		scene->OnPartyChanged(actor, true);
 	}
 }
 
@@ -474,10 +471,7 @@ void Game_Party::RemoveActor(int actor_id) {
 
 	auto scene = Scene::Find(Scene::Battle);
 	if (scene) {
-		auto* bscene = dynamic_cast<Scene_Battle*>(scene.get());
-		if (bscene) {
-			bscene->OnPartyChanged(actor, false);
-		}
+		scene->OnPartyChanged(actor, true);
 	}
 }
 

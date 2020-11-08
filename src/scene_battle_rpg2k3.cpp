@@ -768,23 +768,25 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	}
 
 	UpdateScreen();
-	// FIXME: RPG_RT updates actors first, and this goes into doing actor battle actions
+	// FIXME: RPG_RT updates actors first, and this goes into doing CBA actor battle actions initiated last frame
 	UpdateBattlers();
 
-	// FIXME: RPG_RT updates UI later, but UI updates also tie in with actor and monster processing.
-	// Order those things correctly.
 	UpdateUi();
 
-	if (state != State_Victory && state != State_Defeat) {
+	const auto battle_ending = (state != State_Victory && state != State_Defeat);
+
+	if (!battle_ending) {
 		// FIXME: Interpreter also blocked by an RPG_RT continueBattle flag. What is this flag?
 		if (!Game_Battle::IsBattleAnimationWaiting()) {
 			if (!UpdateEvents()) {
 				return false;
 			}
 		}
+	}
 
-		// FIXME: Update Panorama
+	// FIXME: Update Panorama
 
+	if (!battle_ending) {
 		if (!UpdateTimers()) {
 			return false;
 		}
@@ -797,12 +799,8 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 			}
 		}
 
-		// FIXME: Check for defeat
-		// FIXME: If not victory, update monster displayed conditions and other UI components
-		// FIXME: Check for victory
 		CheckBattleEndConditions();
 		UpdateAtb();
-		// FIXME: This goes after death but before victory?
 	}
 	return true;
 }

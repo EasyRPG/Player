@@ -121,14 +121,6 @@ public:
 
 	static void SelectionFlash(Game_Battler* battler);
 
-	/**
-	 * Called when the party changes
-	 *
-	 * @param actor_id the actor which was affected
-	 * @param Whether actor as added or removed
-	 */
-	virtual void OnPartyChanged(Game_Actor* actor, bool add);
-
 protected:
 	explicit Scene_Battle(const BattleArgs& args);
 

@@ -26,6 +26,8 @@
 #include <functional>
 #include <lcf/rpg/savesystem.h>
 
+class Game_Actor;
+
 /**
  * Scene virtual class.
  */
@@ -256,6 +258,8 @@ public:
 
 	/** @return true if this scene uses shared drawables */
 	bool UsesSharedDrawables() const;
+
+	virtual void OnPartyChanged(Game_Actor* actor, bool add);
 
 protected:
 	using AsyncContinuation = std::function<void(void)>;
