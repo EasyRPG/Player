@@ -1463,4 +1463,8 @@ std::array<const lcf::rpg::Item*, 2> Game_Actor::GetWeapons(Game_Battler::Weapon
 
 void Game_Actor::UpdateBattle() {
 	Game_Battler::UpdateBattle();
+	auto* sprite = GetActorBattleSprite();
+	if (sprite) {
+		sprite->Update();
+	}
 }

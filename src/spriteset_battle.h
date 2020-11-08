@@ -35,8 +35,6 @@ public:
 
 	void Update();
 
-	void ResetAllBattlerZ();
-
 protected:
 	std::unique_ptr<Background> background;
 	std::vector<Sprite_Battler*> sprites;

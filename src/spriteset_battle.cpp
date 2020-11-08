@@ -53,25 +53,6 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 		}
 	}
 
-	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
-		auto sprite = std::make_unique<Sprite_Enemy>(enemy);
-		sprite->SetVisible(true);
-
-		sprites.push_back(sprite.get());
-		enemy->SetBattleSprite(std::move(sprite));
-	}
-
-	if (Player::IsRPG2k3()) {
-		for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
-			auto* actor = Main_Data::game_actors->GetActor(i + 1);
-			auto sprite = std::make_unique<Sprite_Actor>(actor);
-			sprite->SetVisible(Main_Data::game_party->IsActorInParty(actor->GetId()));
-
-			sprites.push_back(sprite.get());
-			actor->SetBattleSprite(std::move(sprite));
-		}
-	}
-
 	timer1.reset(new Sprite_Timer(0));
 	timer2.reset(new Sprite_Timer(1));
 
@@ -93,16 +74,4 @@ void Spriteset_Battle::Update() {
 	}
 	background->SetTone(new_tone);
 	background->Update();
-
-	for (auto sprite : sprites) {
-		sprite->SetTone(new_tone);
-		sprite->Update();
-	}
 }
-
-void Spriteset_Battle::ResetAllBattlerZ() {
-	for (auto& sprite: sprites) {
-		sprite->ResetZ();
-	}
-}
-

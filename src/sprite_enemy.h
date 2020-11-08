@@ -41,14 +41,11 @@ public:
 
 	~Sprite_Enemy() override;
 
-	/**
-	 * Updates sprite state.
-	 */
-	void Update();
-
 	void Draw(Bitmap& dst) override;
 
 	Game_Enemy* GetBattler() const;
+
+	void Refresh();
 
 protected:
 	void CreateSprite();

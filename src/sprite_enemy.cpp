@@ -18,6 +18,7 @@
 // Headers
 #include "battle_animation.h"
 #include "game_enemy.h"
+#include "game_screen.h"
 #include "sprite_enemy.h"
 #include "bitmap.h"
 #include "cache.h"
@@ -29,6 +30,7 @@
 Sprite_Enemy::Sprite_Enemy(Game_Enemy* enemy)
 	: Sprite_Battler(enemy, enemy->GetTroopMemberId())
 {
+	CreateSprite();
 }
 
 Sprite_Enemy::~Sprite_Enemy() {
@@ -36,15 +38,6 @@ Sprite_Enemy::~Sprite_Enemy() {
 
 Game_Enemy* Sprite_Enemy::GetBattler() const {
 	return static_cast<Game_Enemy*>(Sprite_Battler::GetBattler());
-}
-
-void Sprite_Enemy::Update() {
-	if (IsVisible() &&
-		(sprite_name != GetBattler()->GetSpriteName() ||
-		hue != GetBattler()->GetHue())) {
-
-		CreateSprite();
-	}
 }
 
 void Sprite_Enemy::CreateSprite() {
@@ -121,10 +114,18 @@ void Sprite_Enemy::Draw(Bitmap& dst) {
 	SetOpacity(alpha);
 	SetZoomX(zoom);
 	SetZoomY(zoom);
+
+	SetTone(Main_Data::game_screen->GetTone());
 	SetX(enemy->GetDisplayX());
 	SetY(enemy->GetDisplayY());
 	SetFlashEffect(enemy->GetFlashColor());
 	SetFlipX(enemy->IsDirectionFlipped());
 
 	Sprite_Battler::Draw(dst);
+}
+
+void Sprite_Enemy::Refresh() {
+	if (sprite_name != GetBattler()->GetSpriteName() || hue != GetBattler()->GetHue()) {
+		CreateSprite();
+	}
 }

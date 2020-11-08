@@ -96,7 +96,6 @@ protected:
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
 
-	std::string sprite_name;
 	BitmapRef graphic;
 	int anim_state = AnimationState_Idle;
 	int cycle = 0;

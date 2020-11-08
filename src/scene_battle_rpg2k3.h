@@ -101,6 +101,9 @@ protected:
 	void OnSystem2Ready(FileRequestResult* result);
 	void SetupSystem2Graphics();
 	void CreateUi() override;
+	void CreateEnemySprites();
+	void CreateActorSprites();
+	void ResetAllBattlerZ();
 
 	void CreateBattleTargetWindow();
 	void CreateBattleStatusWindow();

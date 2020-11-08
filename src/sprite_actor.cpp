@@ -21,6 +21,7 @@
 #include "sprite_actor.h"
 #include "game_battler.h"
 #include "game_actor.h"
+#include "game_screen.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
@@ -31,6 +32,7 @@
 Sprite_Actor::Sprite_Actor(Game_Actor* actor)
 	: Sprite_Battler(actor, actor->GetId())
 {
+	CreateSprite();
 }
 
 Sprite_Actor::~Sprite_Actor() {
@@ -43,9 +45,6 @@ Game_Actor* Sprite_Actor::GetBattler() const {
 
 void Sprite_Actor::Update() {
 	auto* battler = GetBattler();
-	if (IsVisible() && (sprite_name != battler->GetSpriteName())) {
-		CreateSprite();
-	}
 
 	if (!battler->IsHidden() && old_hidden != battler->IsHidden()) {
 		DoIdleAnimation();
@@ -150,41 +149,39 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 
 	auto* battler = GetBattler();
 
-	if (Player::IsRPG2k3()) {
-		if (battler->GetBattleAnimationId() > 0) {
-			const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
-			if (!anim) {
-				Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
-				return;
-			}
+	if (battler->GetBattleAnimationId() > 0) {
+		const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
+		if (!anim) {
+			Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
+			return;
+		}
 
-			const auto* ext = lcf::ReaderUtil::GetElement(anim->poses, anim_state);
-			if (!ext) {
-				Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
-				return;
-			}
+		const auto* ext = lcf::ReaderUtil::GetElement(anim->poses, anim_state);
+		if (!ext) {
+			Output::Warning("Animation {}: Invalid battler anim-extension state {}", anim->ID, anim_state);
+			return;
+		}
 
-			StringView sprite_file = ext->battler_name;
+		StringView sprite_file = ext->battler_name;
 
-			if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
-				SetBitmap(BitmapRef());
-				lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->battle_animation_id);
-				if (!battle_anim) {
-					Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
-					animation.reset();
-				} else {
-					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
-					animation->SetZ(GetZ());
-				}
-			}
-			else {
+		if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
+			SetBitmap(BitmapRef());
+			lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->battle_animation_id);
+			if (!battle_anim) {
+				Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
 				animation.reset();
-				if (!sprite_file.empty()) {
-					FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-					request->SetGraphicFile(true);
-					request_id = request->Bind(&Sprite_Actor::OnBattlercharsetReady, this, ext->battler_index);
-					request->Start();
-				}
+			} else {
+				animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
+				animation->SetZ(GetZ());
+			}
+		}
+		else {
+			animation.reset();
+			if (!sprite_file.empty()) {
+				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
+				request->SetGraphicFile(true);
+				request_id = request->Bind(&Sprite_Actor::OnBattlercharsetReady, this, ext->battler_index);
+				request->Start();
 			}
 		}
 	}
@@ -220,7 +217,6 @@ int Sprite_Actor::GetHeight() const {
 
 void Sprite_Actor::CreateSprite() {
 	auto* battler = GetBattler();
-	sprite_name = ToString(battler->GetSpriteName());
 
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
@@ -275,6 +271,7 @@ void Sprite_Actor::Draw(Bitmap& dst) {
 		return;
 	}
 
+	SetTone(Main_Data::game_screen->GetTone());
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
 	SetFlashEffect(battler->GetFlashColor());

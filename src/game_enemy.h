@@ -20,6 +20,7 @@
 
 // Headers
 #include "game_battler.h"
+#include "sprite_enemy.h"
 #include <lcf/rpg/enemy.h>
 #include <lcf/rpg/enemyaction.h>
 #include <lcf/rpg/troopmember.h>
@@ -223,6 +224,8 @@ public:
 	/** @return true if enemy is flying */
 	bool IsFlying() const;
 
+	Sprite_Enemy* GetEnemyBattleSprite() const;
+
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
 	const lcf::rpg::TroopMember* troop_member = nullptr;
@@ -358,5 +361,10 @@ inline void Game_Enemy::SetDeathTimer(int t) {
 inline bool Game_Enemy::IsFlying() const {
 	return enemy->levitate;
 }
+
+inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
+	return static_cast<Sprite_Enemy*>(Game_Battler::GetBattleSprite());
+}
+
 
 #endif

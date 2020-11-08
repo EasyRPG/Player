@@ -112,6 +112,11 @@ void Game_Enemy::Transform(int new_enemy_id) {
 		static auto dummy = makeDummyEnemy();
 		enemy = &dummy;
 	}
+
+	auto* sprite = GetEnemyBattleSprite();
+	if (sprite) {
+		sprite->Refresh();
+	}
 }
 
 int Game_Enemy::GetHitChance(Weapon) const {

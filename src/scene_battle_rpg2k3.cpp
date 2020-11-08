@@ -24,7 +24,10 @@
 #include "output.h"
 #include "player.h"
 #include "sprite.h"
+#include "sprite_enemy.h"
+#include "sprite_actor.h"
 #include "cache.h"
+#include "game_actors.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "game_enemy.h"
@@ -51,6 +54,8 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
 	InitBattleCondition(Game_Battle::GetBattleCondition());
+	CreateEnemySprites();
+	CreateActorSprites();
 
 	// We need to wait for actor and enemy graphics to load before we can finish initializing the battle.
 	AsyncNext([this]() { Start2(); });
@@ -62,7 +67,7 @@ void Scene_Battle_Rpg2k3::Start2() {
 	InitAtbGauges();
 
 	// Changed enemy place means we need to recompute Z order
-	Game_Battle::GetSpriteset().ResetAllBattlerZ();
+	ResetAllBattlerZ();
 }
 
 void Scene_Battle_Rpg2k3::InitBattleCondition(lcf::rpg::System::BattleCondition condition) {
@@ -314,6 +319,42 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	ResetWindows(true);
+}
+
+void Scene_Battle_Rpg2k3::CreateEnemySprites() {
+	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		auto sprite = std::make_unique<Sprite_Enemy>(enemy);
+		sprite->SetVisible(true);
+
+		enemy->SetBattleSprite(std::move(sprite));
+	}
+}
+
+void Scene_Battle_Rpg2k3::CreateActorSprites() {
+	for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
+		auto* actor = Main_Data::game_actors->GetActor(i + 1);
+		auto sprite = std::make_unique<Sprite_Actor>(actor);
+		sprite->SetVisible(Main_Data::game_party->IsActorInParty(actor->GetId()));
+
+		actor->SetBattleSprite(std::move(sprite));
+	}
+}
+
+void Scene_Battle_Rpg2k3::ResetAllBattlerZ() {
+	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		auto* sprite = enemy->GetBattleSprite();
+		if (sprite) {
+			sprite->ResetZ();
+		}
+	}
+
+	for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
+		auto* actor = Main_Data::game_actors->GetActor(i + 1);
+		auto* sprite = actor->GetBattleSprite();
+		if (sprite) {
+			sprite->ResetZ();
+		}
+	}
 }
 
 void Scene_Battle_Rpg2k3::UpdateAnimations() {
@@ -2345,6 +2386,6 @@ void Scene_Battle_Rpg2k3::OnPartyChanged(Game_Actor* actor, bool added) {
 	if (added) {
 		// Reset actor positions
 		InitActors();
-		Game_Battle::GetSpriteset().ResetAllBattlerZ();
+		ResetAllBattlerZ();
 	}
 }

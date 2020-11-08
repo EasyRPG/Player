@@ -20,6 +20,7 @@
 #include "input.h"
 #include "player.h"
 #include "sprite.h"
+#include "sprite_enemy.h"
 #include "game_battler.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -49,6 +50,11 @@ Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
 }
 
+void Scene_Battle_Rpg2k::Start() {
+	Scene_Battle::Start();
+	CreateEnemySprites();
+}
+
 void Scene_Battle_Rpg2k::CreateUi() {
 	Scene_Battle::CreateUi();
 
@@ -67,6 +73,14 @@ void Scene_Battle_Rpg2k::CreateUi() {
 
 	ResetWindows(true);
 	battle_message_window->SetVisible(true);
+}
+
+void Scene_Battle_Rpg2k::CreateEnemySprites() {
+	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		auto sprite = std::make_unique<Sprite_Enemy>(enemy);
+		sprite->SetVisible(true);
+		enemy->SetBattleSprite(std::move(sprite));
+	}
 }
 
 static std::vector<std::string> GetEnemyTargetNames() {

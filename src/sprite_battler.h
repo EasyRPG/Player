@@ -44,8 +44,6 @@ public:
 
 	void SetBattler(Game_Battler* new_battler);
 
-	virtual void Update() = 0;
-
 	/**
 	 * Recompute the Z value for the sprite from it's Y coordinate.
 	 */

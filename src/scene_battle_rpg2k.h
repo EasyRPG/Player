@@ -134,6 +134,7 @@ public:
 	explicit Scene_Battle_Rpg2k(const BattleArgs& args);
 	~Scene_Battle_Rpg2k() override;
 
+	void Start() override;
 	void Update() override;
 
 protected:
@@ -143,6 +144,7 @@ protected:
 	void NextTurn();
 
 	void CreateUi() override;
+	void CreateEnemySprites();
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
