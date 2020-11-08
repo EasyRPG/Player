@@ -773,7 +773,7 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 
 	UpdateUi();
 
-	const auto battle_ending = (state != State_Victory && state != State_Defeat);
+	const auto battle_ending = (state == State_Victory || state == State_Defeat);
 
 	if (!battle_ending) {
 		// FIXME: Interpreter also blocked by an RPG_RT continueBattle flag. What is this flag?
@@ -871,9 +871,8 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt) {
 		return false;
 	}
 
-	// FIXME: Test this logic in RPG_RT
-	if (tt != EventTriggerType::eAfterBattleAction
-			&& (interp.IsWaitingForWaitCommand() || Game_Message::IsMessageActive())) {
+	if (tt == EventTriggerType::eAfterBattleAction
+			&& (Game_Message::IsMessageActive() || interp.IsWaitingForWaitCommand())) {
 		return true;
 	}
 
