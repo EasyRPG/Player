@@ -1585,14 +1585,35 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVictory() {
 	enum SubState {
 		eBegin,
+		ePreMessage,
 		eMessages,
 		eEnd,
 	};
 
 	if (scene_action_substate == eBegin) {
+		ResetWindows(true);
+		status_window->SetVisible(true);
+
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
+			target_window->SetVisible(true);
+		}
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetVisible(true);
+		}
+		battle_end_timer = 60;
+		SetSceneActionSubState(ePreMessage);
+	}
+
+	if (scene_action_substate == ePreMessage) {
+		if (battle_end_timer > 0) {
+			--battle_end_timer;
+			return SceneActionReturn::eContinueThisFrame;
+		}
+
 		for (auto* actor: Main_Data::game_party->GetActors()) {
 			auto* sprite = actor->GetActorBattleSprite();
-			if (sprite) {
+			if (actor->Exists() && sprite) {
 				sprite->SetAnimationState(Sprite_Actor::AnimationState_Victory);
 			}
 		}
@@ -1669,11 +1690,32 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionDefeat() {
 	enum SubState {
 		eBegin,
+		ePreMessage,
 		eMessages,
 		eEnd,
 	};
 
 	if (scene_action_substate == eBegin) {
+		ResetWindows(true);
+		status_window->SetVisible(true);
+
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
+			target_window->SetVisible(true);
+		}
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			command_window->SetVisible(true);
+		}
+
+		battle_end_timer = 60;
+		SetSceneActionSubState(ePreMessage);
+	}
+
+	if (scene_action_substate == ePreMessage) {
+		if (battle_end_timer > 0) {
+			--battle_end_timer;
+			return SceneActionReturn::eContinueThisFrame;
+		}
 		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
 		SetWait(60, 60);
 		SetSceneActionSubState(eMessages);

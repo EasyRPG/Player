@@ -204,6 +204,7 @@ protected:
 	int battle_action_min_wait = 0;
 	int scene_action_substate = 0;
 	int battle_action_state = BattleActionState_Begin;
+	int battle_end_timer = 0;
 
 	std::unique_ptr<Window_ActorSp> sp_window;
 
