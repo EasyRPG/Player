@@ -301,8 +301,12 @@ add_library(${PROJECT_NAME} STATIC
 	src/span.h
 	src/sprite_airshipshadow.cpp
 	src/sprite_airshipshadow.h
+	src/sprite_actor.cpp
+	src/sprite_actor.h
 	src/sprite_battler.cpp
 	src/sprite_battler.h
+	src/sprite_enemy.cpp
+	src/sprite_enemy.h
 	src/sprite_character.cpp
 	src/sprite_character.h
 	src/sprite_picture.h

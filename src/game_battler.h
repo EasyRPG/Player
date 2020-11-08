@@ -605,8 +605,6 @@ public:
 	/** @return Adjusted Y position on the screen.  */
 	int GetDisplayY() const;
 
-	virtual int GetHue() const;
-
 	virtual int GetBattleAnimationId() const = 0;
 
 	/**
@@ -964,10 +962,6 @@ inline bool Game_Battler::IsHidden() const {
 
 inline bool Game_Battler::IsImmortal() const {
 	return false;
-}
-
-inline int Game_Battler::GetHue() const {
-	return 0;
 }
 
 constexpr int Game_Battler::GetMaxAtbGauge() {

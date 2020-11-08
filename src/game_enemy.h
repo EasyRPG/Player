@@ -131,7 +131,7 @@ public:
 	 */
 	int GetBaseAgi(Weapon = WeaponAll) const override;
 
-	int GetHue() const override;
+	int GetHue() const;
 
 	int GetHp() const override;
 	int SetHp(int _hp) override;

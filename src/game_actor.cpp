@@ -23,6 +23,7 @@
 #include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "sprite_actor.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -1459,3 +1460,7 @@ std::array<const lcf::rpg::Item*, 2> Game_Actor::GetWeapons(Game_Battler::Weapon
 	return w;
 }
 
+
+void Game_Actor::UpdateBattle() {
+	Game_Battler::UpdateBattle();
+}

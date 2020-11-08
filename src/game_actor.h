@@ -28,6 +28,7 @@
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
 #include "string_view.h"
+#include "sprite_actor.h"
 
 class PendingMessage;
 
@@ -909,6 +910,10 @@ public:
 	/** Set whether the actor has super guard */
 	void SetStrongDefense(bool value);
 
+	void UpdateBattle() override;
+
+	Sprite_Actor* GetActorBattleSprite() const;
+
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 	void Fixup();
@@ -1071,6 +1076,10 @@ inline void Game_Actor::SetAutoBattle(bool value) {
 
 inline void Game_Actor::SetStrongDefense(bool value) {
 	data.super_guard = value;
+}
+
+inline Sprite_Actor* Game_Actor::GetActorBattleSprite() const {
+	return static_cast<Sprite_Actor*>(Game_Battler::GetBattleSprite());
 }
 
 #endif

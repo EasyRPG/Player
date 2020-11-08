@@ -1550,9 +1550,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 
 	if (scene_action_substate == eBegin) {
 		for (auto* actor: Main_Data::game_party->GetActors()) {
-			auto* sprite = actor->GetBattleSprite();
+			auto* sprite = actor->GetActorBattleSprite();
 			if (sprite) {
-				sprite->SetAnimationState(Sprite_Battler::AnimationState_Victory);
+				sprite->SetAnimationState(Sprite_Actor::AnimationState_Victory);
 			}
 		}
 		Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_Victory));
@@ -1675,12 +1675,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEs
 			// There is no success text for escape in 2k3, however 2k3 still waits the same as if there was.
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 			for (auto& actor: Main_Data::game_party->GetActors()) {
-				Sprite_Battler* sprite = actor->GetBattleSprite();
+				auto* sprite = actor->GetActorBattleSprite();
 				if (sprite) {
 					if (actor->IsDirectionFlipped()) {
-						sprite->SetAnimationState(Sprite_Battler::AnimationState_WalkingLeft);
+						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingLeft);
 					} else {
-						sprite->SetAnimationState(Sprite_Battler::AnimationState_WalkingRight);
+						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
 					}
 				}
 			}
@@ -1747,10 +1747,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		return BattleActionReturn::eWait;
 	}
 
-	auto* source_sprite = source->GetBattleSprite();
-
-	if (source_sprite && !source_sprite->IsIdling()) {
-		return BattleActionReturn::eWait;
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
+		if (sprite && !sprite->IsIdling()) {
+			return BattleActionReturn::eWait;
+		}
 	}
 
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
@@ -1949,7 +1950,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action) {
 	const auto is_target_party = action->GetOriginalPartyTarget() != nullptr;
 	auto* source = action->GetSource();
-	auto* source_sprite = source->GetBattleSprite();
 
 	action->Start();
 
@@ -1971,13 +1971,17 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		FaceTarget(*actor, *action->GetTarget());
 	}
 
-	if (source_sprite) {
-		const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
-		// FIXME: This gets cleaned up when CBA is implemented
-		auto action_state = static_cast<Sprite_Battler::AnimationState>(pose + 1);
-		source_sprite->SetAnimationState(
-				action_state,
-				Sprite_Battler::LoopState_WaitAfterFinish);
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* actor = static_cast<Game_Actor*>(source);
+		auto* sprite = actor->GetActorBattleSprite();
+		if (sprite) {
+			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
+			// FIXME: This gets cleaned up when CBA is implemented
+			auto action_state = static_cast<Sprite_Actor::AnimationState>(pose + 1);
+			sprite->SetAnimationState(
+					action_state,
+					Sprite_Actor::LoopState_WaitAfterFinish);
+		}
 	}
 
 	SetBattleActionState(BattleActionState_Animation);
@@ -2013,9 +2017,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
-	auto* source_sprite = source->GetBattleSprite();
-	if (source_sprite) {
-		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
+		if (sprite) {
+			sprite->SetAnimationLoop(Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
+		}
 	}
 
 	SetBattleActionState(BattleActionState_Execute);
@@ -2029,9 +2035,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	}
 
 	auto* source = action->GetSource();
-	auto* source_sprite = source->GetBattleSprite();
-	if (source_sprite) {
-		source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
+		if (sprite) {
+			sprite->SetAnimationLoop(Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
+		}
 	}
 
 	action->Execute();
@@ -2059,7 +2067,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* target = action->GetTarget();
-	auto* target_sprite = target->GetBattleSprite();
+
+	Sprite_Actor* target_sprite = nullptr;
+	if (target->GetType() == Game_Battler::Type_Ally) {
+		target_sprite = static_cast<Game_Actor*>(target)->GetActorBattleSprite();
+	}
 
 	const bool was_dead = target->IsDead();
 
@@ -2087,10 +2099,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 				enemy->SetDeathTimer();
 			}
 		} else {
-			target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+			target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Damage, Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
 		}
 	}
-	target_sprite->DetectStateChange();
+	if (target_sprite) {
+		target_sprite->DetectStateChange();
+	}
 
 	if (action->IsSuccess()) {
 		if (action->IsCriticalHit()) {

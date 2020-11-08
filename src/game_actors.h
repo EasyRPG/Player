@@ -47,6 +47,9 @@ public:
 	 */
 	Game_Actor* GetActor(int actor_id);
 
+	/** @return the number of actors */
+	int GetNumActors() const;
+
 	/**
 	 * Gets if an actor ID is valid.
 	 *
@@ -63,5 +66,9 @@ public:
 private:
 	std::vector<Game_Actor> data;
 };
+
+inline int Game_Actors::GetNumActors() const {
+	return static_cast<int>(data.size());
+}
 
 #endif

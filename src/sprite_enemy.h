@@ -15,20 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_SPRITE_BATTLER_H
-#define EP_SPRITE_BATTLER_H
+#ifndef EP_SPRITE_ENEMY_H
+#define EP_SPRITE_ENEMY_H
 
 // Headers
-#include "sprite.h"
+#include "sprite_battler.h"
 #include "async_handler.h"
 
 class BattleAnimation;
 class Game_Battler;
+class Game_Enemy;
 
 /**
  * Sprite_Battler class, used for battle sprites
  */
-class Sprite_Battler : public Sprite {
+class Sprite_Enemy : public Sprite_Battler {
 public:
 	/**
 	 * Constructor.
@@ -36,33 +37,30 @@ public:
 	 * @param battler game battler to display
 	 * @param battle_index battle index for Z ordering
 	 */
-	Sprite_Battler(Game_Battler* battler, int battle_index);
+	Sprite_Enemy(Game_Enemy* battler);
 
-	~Sprite_Battler() override;
-
-	Game_Battler* GetBattler() const;
-
-	void SetBattler(Game_Battler* new_battler);
-
-	virtual void Update() = 0;
+	~Sprite_Enemy() override;
 
 	/**
-	 * Recompute the Z value for the sprite from it's Y coordinate.
+	 * Updates sprite state.
 	 */
-	void ResetZ();
+	void Update();
+
+	void Draw(Bitmap& dst) override;
+
+	Game_Enemy* GetBattler() const;
 
 protected:
-	Game_Battler* battler = nullptr;
-	int battle_index = 0;
+	void CreateSprite();
+	void OnMonsterSpriteReady(FileRequestResult* result);
+
+	std::string sprite_name;
+	BitmapRef graphic;
+	int hue = 0;
+	float zoom = 1.0;
+
+	FileRequestBinding request_id;
 };
-
-inline Game_Battler* Sprite_Battler::GetBattler() const {
-	return battler;
-}
-
-inline void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
-	battler = new_battler;
-}
 
 
 #endif

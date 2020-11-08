@@ -28,6 +28,8 @@
 #include "main_data.h"
 #include "player.h"
 #include "sprite_battler.h"
+#include "sprite_actor.h"
+#include "sprite_enemy.h"
 
 Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 {
@@ -51,18 +53,23 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 		}
 	}
 
-	int enemy_index = 0;
-	for (Game_Battler* b : battler) {
-		// For Z ordering, actors use actors id and enemies use troop id.
-		const int index = (b->GetType() == Game_Battler::Type_Ally)
-			? b->GetId() : enemy_index++;
+	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+		auto sprite = std::make_unique<Sprite_Enemy>(enemy);
+		sprite->SetVisible(true);
 
-		auto sprite = std::make_unique<Sprite_Battler>(b, index);
-		if (b->GetType() == Game_Battler::Type_Ally) {
-			sprite->SetVisible(Main_Data::game_party->IsActorInParty(b->GetId()));
+		sprites.push_back(sprite.get());
+		enemy->SetBattleSprite(std::move(sprite));
+	}
+
+	if (Player::IsRPG2k3()) {
+		for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
+			auto* actor = Main_Data::game_actors->GetActor(i + 1);
+			auto sprite = std::make_unique<Sprite_Actor>(actor);
+			sprite->SetVisible(Main_Data::game_party->IsActorInParty(actor->GetId()));
+
+			sprites.push_back(sprite.get());
+			actor->SetBattleSprite(std::move(sprite));
 		}
-		b->SetBattleSprite(std::move(sprite));
-		sprites.push_back(b->GetBattleSprite());
 	}
 
 	timer1.reset(new Sprite_Timer(0));
@@ -88,8 +95,8 @@ void Spriteset_Battle::Update() {
 	background->Update();
 
 	for (auto sprite : sprites) {
-		sprite->Update();
 		sprite->SetTone(new_tone);
+		sprite->Update();
 	}
 }
 

@@ -265,13 +265,6 @@ bool Scene_Battle::IsWindowMoving() {
 	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
 }
 
-void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {
-	Sprite_Battler* target_sprite = target->GetBattleSprite();
-	if (target_sprite) {
-		target_sprite->SetAnimationState(new_state);
-	}
-}
-
 Game_Enemy* Scene_Battle::EnemySelected() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);

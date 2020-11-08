@@ -1724,8 +1724,8 @@ bool Game_Interpreter::CommandChangeHP(lcf::rpg::EventCommand const& com) { // C
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeHp(amount, lethal);
 
-		if (actor->IsDead() && actor->GetBattleSprite()) {
-			actor->GetBattleSprite()->DetectStateChange();
+		if (actor->IsDead() && actor->GetActorBattleSprite()) {
+			actor->GetActorBattleSprite()->DetectStateChange();
 		}
 	}
 
@@ -1764,8 +1764,8 @@ bool Game_Interpreter::CommandChangeCondition(lcf::rpg::EventCommand const& com)
 			// RPG_RT always adds states from event commands, even battle states.
 			actor->AddState(state_id, true);
 		}
-		if (actor->GetBattleSprite()) {
-			actor->GetBattleSprite()->DetectStateChange();
+		if (actor->GetActorBattleSprite()) {
+			actor->GetActorBattleSprite()->DetectStateChange();
 		}
 	}
 
@@ -1776,8 +1776,8 @@ bool Game_Interpreter::CommandChangeCondition(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandFullHeal(lcf::rpg::EventCommand const& com) { // Code 10490
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->FullHeal();
-		if (actor->GetBattleSprite()) {
-			actor->GetBattleSprite()->DetectStateChange();
+		if (actor->GetActorBattleSprite()) {
+			actor->GetActorBattleSprite()->DetectStateChange();
 		}
 	}
 

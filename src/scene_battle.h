@@ -156,15 +156,6 @@ protected:
 	 */
 	virtual void ActionSelectedCallback(Game_Battler* for_battler);
 
-	/**
-	 * Convenience function, sets the animation state of the target if it has
-	 * a valid battler sprite, does nothing otherwise.
-	 *
-	 * @param target Battler whose anim state is changed
-	 * @param new_state new animation state
-	 */
-	virtual void SetAnimationState(Game_Battler* target, int new_state);
-
 	void PrepareBattleAction(Game_Battler* battler);
 
 	void RemoveCurrentAction();
