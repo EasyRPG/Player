@@ -124,9 +124,9 @@ namespace Game_Battle {
 	Game_Interpreter& GetInterpreter();
 
 	/**
-	 * Gets the game interpreter.
+	 * Gets the battle game interpreter.
 	 *
-	 * @return the game interpreter.
+	 * @return the battle game interpreter.
 	 */
 	Game_Interpreter_Battle& GetInterpreterBattle();
 

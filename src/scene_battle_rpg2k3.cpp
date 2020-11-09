@@ -1411,7 +1411,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 				ResetWindows(true);
 				status_window->SetVisible(true);
 				command_window->SetVisible(true);
-				//command_window->SetIndex(-1);
 				break;
 			case lcf::rpg::BattleCommands::BattleType_gauge:
 				ResetWindows(true);

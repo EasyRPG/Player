@@ -73,7 +73,12 @@ public:
 	 */
 	void GenerateDrops(std::vector<int>& out) const;
 
-	/** @return enemy from party */
+	/**
+	 * Get the enemy by party index.
+	 *
+	 * @param idx the index of the enemy.
+	 * @return enemy from party
+	 */
 	Game_Enemy* GetEnemy(int idx);
 
 	/** 

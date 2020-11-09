@@ -218,7 +218,7 @@ public:
 	/** @return signed value of how much spirit is to be gained or lost */
 	int GetAffectedSpi() const;
 
-	/** @return signed value of how much spirit is to be gained or lost */
+	/** @return signed value of how much agility is to be gained or lost */
 	int GetAffectedAgi() const;
 
 	/** @return all states changes caused by this action in order. */

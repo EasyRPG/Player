@@ -885,7 +885,6 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionEsca
 
 		CreateEnemyActions();
 		CreateExecutionOrder();
-		//Game_Battle::RefreshEvents();
 		return SceneActionReturn::eContinueThisFrame;
 	}
 	return SceneActionReturn::eWaitTillNextFrame;

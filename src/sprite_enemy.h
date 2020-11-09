@@ -35,7 +35,6 @@ public:
 	 * Constructor.
 	 *
 	 * @param battler game battler to display
-	 * @param battle_index battle index for Z ordering
 	 */
 	Sprite_Enemy(Game_Enemy* battler);
 
