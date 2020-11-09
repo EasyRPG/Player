@@ -376,7 +376,7 @@ void Scene::TransferDrawablesFrom(Scene& prev_scene) {
 	for (auto iter = instances.rbegin() + 1; iter != instances.rend(); ++iter) {
 		auto& scene = *iter;
 		if (scene->UsesSharedDrawables()) {
-			drawable_list.TakeFrom(scene->GetDrawableList(), [this](auto* draw) { return draw->IsShared(); });
+			drawable_list.TakeFrom(scene->GetDrawableList(), [](auto* draw) { return draw->IsShared(); });
 			break;
 		}
 	}

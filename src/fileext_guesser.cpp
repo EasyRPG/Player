@@ -35,7 +35,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 	// Try to rescue and determine file extensions.
 	// We need to figure out the names of the map tree and the DB (maps come later).
 	std::vector<RPG2KNonStandardFilenameGuesser::ExtAndSize> candidates;
-	for (const std::pair<std::string, std::string>& item : dir.files) {
+	for (const auto& item : dir.files) {
 		if (item.first.length()==RtPrefix.length()+3 && lcf::ToStringView(item.first).starts_with(RtPrefix)) {
 			std::string ext = item.first.substr(RtPrefix.length());
 			if (ext != "exe" && ext != "ini") {

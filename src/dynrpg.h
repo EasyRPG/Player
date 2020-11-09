@@ -42,7 +42,7 @@ using dynfunc = bool(*)(dyn_arg_list);
 namespace DynRpg {
 	namespace detail {
 		template <typename T>
-		inline bool parse_arg(StringView, dyn_arg_list, const int, T& value, bool& parse_okay) {
+		inline bool parse_arg(StringView, dyn_arg_list, const int, T&, bool&) {
 			static_assert(sizeof(T) == -1, "Only parsing int, float and std::string supported");
 			return false;
 		}
@@ -132,6 +132,7 @@ class DynRpgPlugin {
 public:
 	explicit DynRpgPlugin(std::string identifier) : identifier(std::move(identifier)) {}
 	DynRpgPlugin() = delete;
+	virtual ~DynRpgPlugin() {}
 
 	const std::string& GetIdentifier() const { return identifier; }
 	virtual void RegisterFunctions() {}
