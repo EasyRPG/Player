@@ -23,7 +23,7 @@
 
 class Meta;
 namespace FileFinder {
-	class DirectoryTree;
+	struct DirectoryTree;
 }
 
 /**

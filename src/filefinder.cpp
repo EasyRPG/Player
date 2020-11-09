@@ -161,7 +161,7 @@ namespace {
 
 		auto normal_search = [&]() -> std::string {
 			is_rtp_asset = false;
-			for (const auto path : rtp_state.search_paths) {
+			for (const auto& path : rtp_state.search_paths) {
 				const std::string ret = FindFile(*path, dir, name, exts);
 				if (!ret.empty()) {
 					return ret;
