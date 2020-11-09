@@ -471,7 +471,7 @@ void Game_Party::RemoveActor(int actor_id) {
 
 	auto scene = Scene::Find(Scene::Battle);
 	if (scene) {
-		scene->OnPartyChanged(actor, true);
+		scene->OnPartyChanged(actor, false);
 	}
 }
 

@@ -323,20 +323,13 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 
 void Scene_Battle_Rpg2k3::CreateEnemySprites() {
 	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
-		auto sprite = std::make_unique<Sprite_Enemy>(enemy);
-		sprite->SetVisible(true);
-
-		enemy->SetBattleSprite(std::move(sprite));
+		enemy->SetBattleSprite(std::make_unique<Sprite_Enemy>(enemy));
 	}
 }
 
 void Scene_Battle_Rpg2k3::CreateActorSprites() {
-	for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
-		auto* actor = Main_Data::game_actors->GetActor(i + 1);
-		auto sprite = std::make_unique<Sprite_Actor>(actor);
-		sprite->SetVisible(Main_Data::game_party->IsActorInParty(actor->GetId()));
-
-		actor->SetBattleSprite(std::move(sprite));
+	for (auto* actor: Main_Data::game_party->GetActors()) {
+		actor->SetBattleSprite(std::make_unique<Sprite_Actor>(actor));
 	}
 }
 
@@ -348,8 +341,7 @@ void Scene_Battle_Rpg2k3::ResetAllBattlerZ() {
 		}
 	}
 
-	for (int i = 0; i < Main_Data::game_actors->GetNumActors(); ++i) {
-		auto* actor = Main_Data::game_actors->GetActor(i + 1);
+	for (auto* actor: Main_Data::game_party->GetActors()) {
 		auto* sprite = actor->GetBattleSprite();
 		if (sprite) {
 			sprite->ResetZ();
@@ -2418,13 +2410,17 @@ bool Scene_Battle_Rpg2k3::CheckWait() {
 }
 
 void Scene_Battle_Rpg2k3::OnPartyChanged(Game_Actor* actor, bool added) {
-	auto* sprite = actor->GetBattleSprite();
-	sprite->SetVisible(added);
+	if (!added) {
+		actor->SetBattleSprite(nullptr);
+		return;
+	}
+
+	actor->SetBattleSprite(std::make_unique<Sprite_Actor>(actor));
 
 	// RPG_RT only does this when actors added to party
-	if (added) {
-		// Reset actor positions
-		InitActors();
-		ResetAllBattlerZ();
-	}
+	// Wait until sprites loaded
+	AsyncNext([this]() {
+			InitActors();
+			ResetAllBattlerZ();
+			});
 }
