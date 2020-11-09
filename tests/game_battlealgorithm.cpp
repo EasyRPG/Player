@@ -2493,7 +2493,7 @@ TEST_CASE("Algo::Skill::HpEffect") {
 			SUBCASE("absorb") {
 				skill.physical_rate = 10;
 				skill.absorb_damage = true;
-				test(false, true, true);
+				test(true, true, false);
 			}
 
 			SUBCASE("limit") {
@@ -2648,7 +2648,7 @@ TEST_CASE("Algo::Skill::SpEffect") {
 			}
 			SUBCASE("absorb") {
 				skill.absorb_damage = true;
-				test(false, true);
+				test(true, true);
 			}
 			SUBCASE("limit") {
 				SUBCASE("normal") {
@@ -2658,7 +2658,9 @@ TEST_CASE("Algo::Skill::SpEffect") {
 				SUBCASE("absorb") {
 					skill.absorb_damage = true;
 					target->SetSp(200);
-					testLimit();
+					skill.power = 9999;
+					test(true, true);
+					REQUIRE_EQ(9999, algo.GetAffectedSp());
 				}
 			}
 		}

@@ -2148,12 +2148,21 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	const bool was_dead = target->IsDead();
 
 
+	const bool was_absorb_hp = action->IsAbsorbHp();
+	// Emulates an RPG_RT bug where inverted absorb damage doesn't absorb hp anymore.
+	// This bug only affects hp, not sp.
+	if (action->IsAbsorbHp() && action->GetAffectedHp() > 0) {
+		action->SetIsAbsorbHp(false);
+	}
+
 	action->ApplyHpEffect();
+
 	// Emulates an RPG_RT bug where damage which is reversed into healing due to negative attributes is applied twice.
 	// The displayed numbers are normal, but the actual effect is doubled.
-	if (!action->IsPositive() && action->IsAffectHp() && action->GetAffectedHp() > 0) {
+	if (!action->IsPositive() && !was_absorb_hp && action->IsAffectHp() && action->GetAffectedHp() > 0) {
 		action->ApplyHpEffect();
 	}
+
 	action->ApplySpEffect();
 	action->ApplyAtkEffect();
 	action->ApplyDefEffect();

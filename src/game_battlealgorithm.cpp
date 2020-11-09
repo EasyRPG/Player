@@ -810,8 +810,8 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		return SetIsFailure();
 	}
 
-	// Absorb only works on offensive skills, when effect was not flipped by attributes
-	const auto absorb = (skill.absorb_damage && !IsPositive() && effect <= 0);
+	// Absorb only works on offensive skills.
+	const auto absorb = (skill.absorb_damage && !IsPositive());
 
 	// Make a copy of the target's state set and see what we can apply.
 	auto target_states = target->GetStates();
