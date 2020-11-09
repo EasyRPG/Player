@@ -1504,7 +1504,7 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionSt
 					pending_message = BattleMessage::GetStateRecoveryMessage(*target, *state);
 					break;
 				case Game_BattleAlgorithm::StateEffect::AlreadyInflicted:
-					pending_message = BattleMessage::GetStateAffectedMessage(*target, *state);
+					pending_message = BattleMessage::GetStateAlreadyMessage(*target, *state);
 					break;
 				default:
 					break;

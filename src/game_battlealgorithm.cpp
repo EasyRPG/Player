@@ -1003,7 +1003,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 			return BattleMessage::GetSkillStartMessage2k3(skill);
 		}
 	}
-	if (line == 1 && Player::IsRPG2k() && !skill.using_message1.empty()) {
+	if (line == 1 && Player::IsRPG2k() && !skill.using_message2.empty()) {
 		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), target, skill);
 	}
 	return "";

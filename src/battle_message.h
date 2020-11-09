@@ -32,6 +32,8 @@ std::string GetStateRecoveryMessage(const Game_Battler& target, const lcf::rpg::
 
 std::string GetStateAffectedMessage(const Game_Battler& target, const lcf::rpg::State& state);
 
+std::string GetStateAlreadyMessage(const Game_Battler& target, const lcf::rpg::State& state);
+
 std::string GetDeathMessage(const Game_Battler& target);
 
 std::string GetPhysicalFailureMessage(const Game_Battler& source, const Game_Battler& target);

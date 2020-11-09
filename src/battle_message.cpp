@@ -56,6 +56,10 @@ std::string GetStateAffectedMessage(const Game_Battler& target, const lcf::rpg::
 	return GetStateMessage(target.GetName(), state.message_affected);
 }
 
+std::string GetStateAlreadyMessage(const Game_Battler& target, const lcf::rpg::State& state) {
+	return GetStateMessage(target.GetName(), state.message_already);
+}
+
 std::string GetDeathMessage(const Game_Battler& target) {
 	const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, 1);
 	if (state) {
