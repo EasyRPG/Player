@@ -8,6 +8,6 @@ if (Module.EASYRPG_GAME.length > 0) {
 
 // Use IDBFS for Save storage when the filesystem was not
 // overwritten by a custom emscripten shell file
-if (typeof(Module.EASYRPG_FS) === "undefined") {
+if (typeof Module.EASYRPG_FS === "undefined") {
     Module.EASYRPG_FS = IDBFS;
 }
