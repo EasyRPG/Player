@@ -90,10 +90,10 @@ void Scene_Equip::UpdateStatusWindow() {
 
 		const auto eidx = equip_window->GetIndex();
 
-		auto atk = actor.GetAtk();
-		auto def = actor.GetDef();
-		auto spi = actor.GetSpi();
-		auto agi = actor.GetAgi();
+		auto atk = actor.GetBaseAtk(Game_Battler::WeaponAll, true, false);
+		auto def = actor.GetBaseDef(Game_Battler::WeaponAll, true, false);
+		auto spi = actor.GetBaseSpi(Game_Battler::WeaponAll, true, false);
+		auto agi = actor.GetBaseAgi(Game_Battler::WeaponAll, true, false);
 
 		auto add_item = [&](const lcf::rpg::Item* item, int mod = 1) {
 			if (item) {
@@ -103,6 +103,11 @@ void Scene_Equip::UpdateStatusWindow() {
 				agi += item->agi_points1 * mod;
 			}
 		};
+
+		for (int i = 1; i <= 5; i++) {
+			auto* count_item = actor.GetEquipment(i);
+			add_item(count_item, 1);
+		}
 
 		auto* old_item = actor.GetEquipment(eidx + 1);
 		// If its a weapon or shield, get the other hand
@@ -125,6 +130,11 @@ void Scene_Equip::UpdateStatusWindow() {
 		def = Utils::Clamp(def, 1, 999);
 		spi = Utils::Clamp(spi, 1, 999);
 		agi = Utils::Clamp(agi, 1, 999);
+
+		atk = actor.CalcValueAfterAtkStates(atk);
+		def = actor.CalcValueAfterDefStates(def);
+		spi = actor.CalcValueAfterSpiStates(spi);
+		agi = actor.CalcValueAfterAgiStates(agi);
 
 		equipstatus_window->SetNewParameters(atk, def, spi, agi);
 
