@@ -294,7 +294,7 @@ std::string GetParameterChangeMessage(const Game_Battler& target, int value, Str
 }
 
 std::string GetSpReduceMessage(const Game_Battler& target, int value) {
-	return GetParameterChangeMessage(target, -value, lcf::Data::terms.attack);
+	return GetParameterChangeMessage(target, -value, lcf::Data::terms.spirit_points);
 }
 
 std::string GetAtkChangeMessage(const Game_Battler& target, int value) {
