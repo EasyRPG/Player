@@ -818,11 +818,15 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	auto target_perm_states = target->GetPermanentStates();
 
 	if (skill.affect_hp && Rand::PercentChance(to_hit)) {
+		const auto hp_effect = IsPositive()
+			? effect
+			: Algo::AdjustDamageForDefend(effect, *target);
+
 		const auto cur_hp = target->GetHp();
 
 		if (absorb) {
 			// Cannot aborb more hp than the target has.
-			auto hp = std::max<int>(effect, -cur_hp);
+			auto hp = std::max<int>(hp_effect, -cur_hp);
 			if (hp != 0) {
 				SetAffectedHp(hp);
 				SetIsAbsorbHp(true);
@@ -833,14 +837,14 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		} else {
 			if (IsPositive()) {
 				// RPG_RT attribute inverted healing effects are non-lethal
-				auto hp = std::max(-(cur_hp - 1), effect);
+				auto hp = std::max(-(cur_hp - 1), hp_effect);
 				if (hp != 0) {
 					// HP recovery is sucessful if the effect is non-zero, even at full hp.
 					SetAffectedHp(hp);
 					SetIsSuccess();
 				}
 			} else {
-				SetAffectedHp(effect);
+				SetAffectedHp(hp_effect);
 
 				// Conditions healed by physical attack:
 				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states);
