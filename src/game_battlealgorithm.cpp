@@ -116,7 +116,7 @@ int Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(int anim_id, bool only_so
 	std::vector<Game_Battler*> anim_targets;
 	for (; anim_iter != anim_end; ++anim_iter) {
 		auto* target = *anim_iter;
-		if (target->Exists() || (target->GetType() == Game_Battler::Type_Ally && target->IsDead())) {
+		if (!target->IsHidden() && (IsTargetValid(*target) || (target->GetType() == Game_Battler::Type_Ally && target->IsDead()))) {
 			anim_targets.push_back(target);
 		}
 	}
