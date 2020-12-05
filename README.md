@@ -164,6 +164,8 @@ EasyRPG Player makes use of the following 3rd party software:
 * [Dirent] interface for Microsoft Visual Studio -
   Copyright (c) 2006-2012 Toni Ronkko, provided under the MIT license
 
+* [Teenyicons] - Copyright (c) 2020 Anja van Staden, provided under the MIT license
+
 [liblcf]: https://github.com/EasyRPG/liblcf
 [vcpkg]: https://github.com/Microsoft/vcpkg
 [#easyrpg at irc.freenode.net]: https://kiwiirc.com/nextclient/#ircs://irc.freenode.net/#easyrpg?nick=rpgguest??
@@ -171,3 +173,4 @@ EasyRPG Player makes use of the following 3rd party software:
 [FMMidi]: http://unhaut.x10host.com/fmmidi/
 [PicoJSON]: https://github.com/kazuho/picojson
 [Dirent]: https://github.com/tronkko/dirent
+[Teenyicons]: https://github.com/teenyicons/teenyicons

@@ -1,103 +1,117 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EasyRPG Player</title>
-    <style>
-      body { font-family: sans-serif; margin: 0; padding: 0; color: white; background: black; }
-      #status { font-weight: bold; color: #888888; text-align: center; margin: auto; }
-      #controls { text-align: right; } #controls input { position: relative; z-index: 1; padding: 2px 4px; background: transparent; border: 1px solid gray; color: gray; }
-      canvas.emscripten { width: 320px; height: 240px; border: 0px none; image-rendering: pixelated; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-      @media all and (min-width: 320px) and (min-height: 240px) and not { canvas.emscripten { width: 320px; height: 240px; } }
-      @media all and (min-width: 640px) and (min-height: 480px) { canvas.emscripten { width: 640px; height: 480px; } }
-      @media all and (min-width: 960px) and (min-height: 720px) { canvas.emscripten { width: 960px; height: 720px; } }
-      @media all and (min-width: 1280px) and (min-height: 720px) { canvas.emscripten { width: 1280px; height: 720px; } }
-      @media all and (min-width: 1600px) and (min-height: 1200px) { canvas.emscripten { width: 1600px; height: 1200px; } }
-      @media all and (min-width: 1920px) and (min-height: 1440px) { canvas.emscripten { width: 1920px; height: 1440px; } }
-      @media all and (min-width: 2240px) and (min-height: 1680px) { canvas.emscripten { width: 2240px; height: 1680px; } }
-      @media all and (min-width: 2560px) and (min-height: 1920px) { canvas.emscripten { width: 2560px; height: 1920px; } }
-      @media all and (min-width: 2880px) and (min-height: 2160px) { canvas.emscripten { width: 2880px; height: 2160px; } }
-      @media all and (min-width: 3200px) and (min-height: 2400px) { canvas.emscripten { width: 3200px; height: 2400px; } }
-      @media all and (min-width: 3520px) and (min-height: 2640px) { canvas.emscripten { width: 3520px; height: 2640px; } }
-      @media all and (min-width: 3840px) and (min-height: 2880px) { canvas.emscripten { width: 3840px; height: 2880px; } }
-      @media all and (min-width: 4160px) and (min-height: 3120px) { canvas.emscripten { width: 4160px; height: 3120px; } }
-      @media all and (min-width: 4480px) and (min-height: 3360px) { canvas.emscripten { width: 4480px; height: 3360px; } }
-      @media all and (min-width: 4800px) and (min-height: 3600px) { canvas.emscripten { width: 4800px; height: 3600px; } }
-      @media all and (min-width: 5120px) and (min-height: 3840px) { canvas.emscripten { width: 5120px; height: 3840px; } }
-      @media all and (min-width: 5440px) and (min-height: 4080px) { canvas.emscripten { width: 5440px; height: 4080px; } }
-      @media all and (min-width: 5760px) and (min-height: 4320px) { canvas.emscripten { width: 5760px; height: 4320px; } }
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyRPG Player</title>
+  <style>
+    html { touch-action: none; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; margin: 0; color: white; background: black; }
+    #status { font-weight: bold; color: hsl(0, 0%, 55%); text-align: center; }
+    #controls { text-align: right; }
+    #controls button { -webkit-appearance: button; display: inline-flex; background: transparent; border: 0; color: white; font-family: inherit; font-size: 1em; line-height: inherit; cursor: pointer; padding: 1rem; }
+    #controls svg { pointer-events: none; }
+    #canvas { position: absolute; top: 50%; left: 50%; width: 320px; height: 240px; border: 0; image-rendering: pixelated; image-rendering: crisp-edges; transform: translate(-50%, -50%); }
+    @media all and (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
+    @media all and (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
+    @media all and (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
+    @media all and (min-width: 1280px) and (min-height: 720px) { #canvas { width: 1280px; height: 720px; } }
+    @media all and (min-width: 1600px) and (min-height: 1200px) { #canvas { width: 1600px; height: 1200px; } }
+    @media all and (min-width: 1920px) and (min-height: 1440px) { #canvas { width: 1920px; height: 1440px; } }
+    @media all and (min-width: 2240px) and (min-height: 1680px) { #canvas { width: 2240px; height: 1680px; } }
+    @media all and (min-width: 2560px) and (min-height: 1920px) { #canvas { width: 2560px; height: 1920px; } }
+    @media all and (min-width: 2880px) and (min-height: 2160px) { #canvas { width: 2880px; height: 2160px; } }
+    @media all and (min-width: 3200px) and (min-height: 2400px) { #canvas { width: 3200px; height: 2400px; } }
+    @media all and (min-width: 3520px) and (min-height: 2640px) { #canvas { width: 3520px; height: 2640px; } }
+    @media all and (min-width: 3840px) and (min-height: 2880px) { #canvas { width: 3840px; height: 2880px; } }
+    @media all and (min-width: 4160px) and (min-height: 3120px) { #canvas { width: 4160px; height: 3120px; } }
+    @media all and (min-width: 4480px) and (min-height: 3360px) { #canvas { width: 4480px; height: 3360px; } }
+    @media all and (min-width: 4800px) and (min-height: 3600px) { #canvas { width: 4800px; height: 3600px; } }
+    @media all and (min-width: 5120px) and (min-height: 3840px) { #canvas { width: 5120px; height: 3840px; } }
+    @media all and (min-width: 5440px) and (min-height: 4080px) { #canvas { width: 5440px; height: 4080px; } }
+    @media all and (min-width: 5760px) and (min-height: 4320px) { #canvas { width: 5760px; height: 4320px; } }
+  </style>
+</head>
+<body>
 
-    <div id="controls"><input type="button" value="⛶" onclick="if (Module['canvas'].requestFullscreen()) Module['canvas'].requestFullscreen()"></div>
+  <div id="controls">
+    <button onclick="Module['canvas'].requestFullscreen()">
+      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="25" height="25"><path d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4" stroke="currentColor"></path></svg>
+    </button>
+  </div>
 
-    <div id="status"></div>
+  <div id="status"></div>
 
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 onmouseenter="window.focus()" onclick="window.focus()"></canvas>
+  <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()" onmouseenter="window.focus()" onclick="window.focus()"></canvas>
 
-    <script type='text/javascript'>
-      var statusElement = document.getElementById('status');
+<script>
+  var Module = {
+    preRun: [],
+    postRun: [],
 
-      var Module = {
-        preRun: [],
-        postRun: [],
-        print: (function() {
-          var element = document.getElementById('output');
-          if (element) element.value = ''; // clear browser cache
-          return function(text) {
-            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-            console.log(text);
-            if (element) {
-              element.value += text + "\n";
-              element.scrollTop = element.scrollHeight; // focus on bottom
-            }
-          };
-        })(),
-        printErr: function(text) {
-          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-          console.error(text);
-        },
-        canvas: (function() {
-          var canvas = document.getElementById('canvas');
+    print: (...args) => {
+      console.log(...args);
+    },
 
-          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
-          // application robust, you may want to override this behavior before shipping!
-          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+    printErr: (...args) => {
+      console.error(...args);
+    },
 
-          return canvas;
-        })(),
-        setStatus: function(text) {
-          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
-          if (text === Module.setStatus.text) return;
-          statusElement.innerHTML = text;
-        },
-        totalDependencies: 0,
-        monitorRunDependencies: function(left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'Downloading game data...');
-        }
-      };
-      Module.setStatus('Downloading...');
-      window.onerror = function(event) {
-        Module.setStatus('Exception thrown, see JavaScript console');
-        Module.setStatus = function(text) {
-          if (text) Module.printErr('[post-exception status] ' + text);
-        };
-      };
-    </script>
-    {{{ SCRIPT }}}
-    <script>
-      //prevents scrolling on arrow key press
-      window.addEventListener("keydown", function(e) {
-          // space and arrow keys, from 112 to 123 for function keys (only works in some browsers)
-          if([32, 37, 38, 39, 40, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123].indexOf(e.keyCode) > -1) {
-              e.preventDefault();
-          }
+    canvas: (() => {
+      var canvas = document.getElementById('canvas');
+
+      // As a default initial behavior, pop up an alert when webgl context is lost
+      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+      canvas.addEventListener('webglcontextlost', event => {
+        alert('WebGL context lost. You will need to reload the page.');
+        event.preventDefault();
       }, false);
-    </script>
-  </body>
+
+      return canvas;
+    })(),
+
+    setStatus: text => {
+      if (!Module.setStatus.last) Module.setStatus.last = {
+        time: Date.now(),
+        text: ''
+      };
+      if (text === Module.setStatus.text) return;
+      document.getElementById('status').innerHTML = text;
+    },
+
+    totalDependencies: 0,
+
+    monitorRunDependencies: left => {
+      Module.totalDependencies = Math.max(Module.totalDependencies, left);
+      Module.setStatus(left ? `Preparing... (${Module.totalDependencies - left}/${Module.totalDependencies})` : 'Downloading game data...');
+    }
+  };
+
+  Module.setStatus('Downloading...');
+
+  window.addEventListener('error', event => {
+    Module.setStatus('Exception thrown, see JavaScript console');
+    Module.setStatus = text => {
+      if (text) Module.printErr(`[post-exception status] ${text}`);
+    };
+  });
+</script>
+
+{{{ SCRIPT }}}
+
+<script>
+  // Prevent scrolling when pressing specific keys
+  window.addEventListener('keydown', event => {
+    if ([
+      // arrow keys
+      32, 37, 38, 39, 40,
+      // function keys (not catchable in all browsers)
+      112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123
+    ].includes(event.keyCode)) {
+      event.preventDefault();
+    }
+  }, false);
+</script>
+
+</body>
 </html>
