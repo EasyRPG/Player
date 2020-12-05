@@ -121,15 +121,16 @@ private:
 
 	/**
 	 * Moves a window (typically the New/Continue/Quit menu) to the middle or bottom-center of the screen.
-	 * @param centerVertical If true, the menu will be centered vertically. Otherwise, it will be at the bottom of the screen.
+	 * @param window The window to resposition.
+	 * @param center_vertical If true, the menu will be centered vertically. Otherwise, it will be at the bottom of the screen.
 	 */
-	void RepositionWindow(Window_Command& window, bool centerVertical);
+	void RepositionWindow(Window_Command& window, bool center_vertical);
 
 	/**
 	 * Picks a new language based and switches to it.
-	 * @param langStr If the empty string, switches the game to 'No Translation'. Otherwise, switch to that translation by name.
+	 * @param lang_str If the empty string, switches the game to 'No Translation'. Otherwise, switch to that translation by name.
 	 */
-	void ChangeLanguage(const std::string& langStr);
+	void ChangeLanguage(const std::string& lang_str);
 
 	void HideTranslationWindow();
 
@@ -165,11 +166,11 @@ private:
 	 * Stored in a struct for easy resetting, as Scene_Title can be reused.
 	 */
 	struct CommandIndices {
-		int new_game       =  0;
-		int continue_game  =  1;
-		int import         = -1;
-		int translate      = -1;
-		int exit           =  2;
+		int new_game =  0;
+		int continue_game =  1;
+		int import = -1;
+		int translate = -1;
+		int exit =  2;
 	};
 	CommandIndices indices;
 

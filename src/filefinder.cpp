@@ -93,7 +93,7 @@ namespace {
 		using namespace FileFinder;
 
 		// Avoid searching entirely if there is no active translation
-		if (translate && Tr::CurrTranslationId().empty()) { return ""; }
+		if (translate && Tr::GetCurrentTranslationId().empty()) { return ""; }
 
 #ifdef EMSCRIPTEN
 		// The php filefinder should have given us an useable path
@@ -103,9 +103,9 @@ namespace {
 			return em_file;
 #endif
 
-		std::string corrected_dir = lcf::ReaderUtil::Normalize(translate?Tr::TranslationDir():dir);
+		std::string corrected_dir = lcf::ReaderUtil::Normalize(translate?Tr::GetTranslationDir():dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = lcf::ReaderUtil::Normalize(translate?MakePath(MakePath(Tr::CurrTranslationId(), dir), name):name);
+		std::string corrected_name = lcf::ReaderUtil::Normalize(translate?MakePath(MakePath(Tr::GetCurrentTranslationId(), dir), name):name);
 
 		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);

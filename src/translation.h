@@ -43,13 +43,13 @@ namespace Tr {
 	 * The name of the translation directory.
 	 * @return The translation directory.
 	 */
-	std::string TranslationDir();
+	std::string GetTranslationDir();
 
 	/**
 	 * The id of the current translation (e.g., "Spanish"). If empty, there is no active translation.
 	 * @return The translation ID
 	 */
-	std::string CurrTranslationId();
+	std::string GetCurrentTranslationId();
 
 } // End namespace Tr
 
@@ -132,9 +132,9 @@ bool Dictionary::TranslateString(const std::string& context, StringType& origina
  * Properties of a language
  */
 struct Language {
-	std::string langDir;  // Language directory (e.g., "en", "English_Localization")
-	std::string langName; // Display name for this language (e.g., "English")
-	std::string langDesc; // Helper text to show when the menu is highlighted
+	std::string lang_dir;  // Language directory (e.g., "en", "English_Localization")
+	std::string lang_name; // Display name for this language (e.g., "English")
+	std::string lang_desc; // Helper text to show when the menu is highlighted
 };
 
 
@@ -173,24 +173,24 @@ public:
 	/**
 	 * Switches to a given language. Resets the database and the Image Cache.
 	 *
-	 * @param langId The language ID (or "" for "Default")
+	 * @param lang_id The language ID (or "" for "Default")
 	 */
-	void SelectLanguage(const std::string& langId);
+	void SelectLanguage(const std::string& lang_id);
 
 	/**
 	 * Rewrite all Messages and Choices in this Map
 	 * 
-	 * @param mapName The name of the map with formatting similar to the .po file; e.g., "map0104.po"
+	 * @param map_name The name of the map with formatting similar to the .po file; e.g., "map0104.po"
 	 * @param map The map object itself (for modifying).
 	 */
-	void RewriteMapMessages(const std::string& mapName, lcf::rpg::Map& map);
+	void RewriteMapMessages(const std::string& map_name, lcf::rpg::Map& map);
 
 	/**
 	 * Retrieve the ID of the current (active) language.
 	 *
 	 * @return the current language ID, or "" for the Default language
 	 */
-	std::string GetCurrLanguageId() const;
+	std::string GetCurrentLanguageId() const;
 
 
 private:
@@ -215,10 +215,10 @@ private:
 	/**
 	 * Parse all .po files for the given language.
 	 * 
-	 * @param langId The ID of the language to parse, or "" for Default (no parsing is done)
+	 * @param lang_id The ID of the language to parse, or "" for Default (no parsing is done)
 	 * @return True if the language directory was found; false otherwise
 	 */
-	bool ParseLanguageFiles(const std::string& langId);
+	bool ParseLanguageFiles(const std::string& lang_id);
 
 	/**
 	 * Rewrite RPG_RT.ldb with the current translation entries
@@ -274,10 +274,10 @@ private:
 	std::vector<Language> languages;
 
 	// The "languages" directory, but with appropriate capitalization.
-	std::string translationRootDir;
+	std::string translation_root_dir;
 
 	// The translation we are currently showing (e.g., "English_1")
-	std::string currLanguage;
+	std::string current_language;
 };
 
 #endif  // EP_TRANSLATION_H

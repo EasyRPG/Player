@@ -165,8 +165,8 @@ void Scene_Title::CreateTitleGraphic() {
 	}
 }
 
-void Scene_Title::RepositionWindow(Window_Command& window, bool centerVertical) {
-	if (!centerVertical) {
+void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical) {
+	if (!center_vertical) {
 		window.SetX(SCREEN_TARGET_WIDTH / 2 - window.GetWidth() / 2);
 		window.SetY(SCREEN_TARGET_HEIGHT * 53 / 60 - window.GetHeight());
 	} else {
@@ -232,9 +232,9 @@ void Scene_Title::CreateTranslationWindow() {
 
 	// Push menu entries with the display name, but also save the directory location and help text.
 	for (const Language& lg : Player::translation.GetLanguages()) {
-		lang_names.push_back(lg.langName);
-		lang_dirs.push_back(lg.langDir);
-		lang_helps.push_back(lg.langDesc);
+		lang_names.push_back(lg.lang_name);
+		lang_dirs.push_back(lg.lang_dir);
+		lang_helps.push_back(lg.lang_desc);
 	}
 
 	translate_window.reset(new Window_Command(lang_names));
@@ -309,17 +309,17 @@ void Scene_Title::CommandTranslation() {
 	help_window->SetVisible(true);
 }
 
-void Scene_Title::ChangeLanguage(const std::string& trstr) {
+void Scene_Title::ChangeLanguage(const std::string& lang_str) {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	// No-op?
-	if (trstr == Player::translation.GetCurrLanguageId()) {
+	if (lang_str == Player::translation.GetCurrentLanguageId()) {
 		HideTranslationWindow();
 		return;
 	}
 
 	// First change the language
-	Player::translation.SelectLanguage(trstr);
+	Player::translation.SelectLanguage(lang_str);
 
 	// Now reset the scene (force asset reload)
 	Scene::Push(std::make_shared<Scene_Title>(), true);

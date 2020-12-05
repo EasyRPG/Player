@@ -49,12 +49,12 @@
 #define TRCUST_ADDMSG           "__EASY_RPG_CMD:ADD_MSGBOX__"
 
 
-std::string Tr::TranslationDir() {
+std::string Tr::GetTranslationDir() {
 	return Player::translation.RootDir();
 }
 
-std::string Tr::CurrTranslationId() {
-	return Player::translation.GetCurrLanguageId();
+std::string Tr::GetCurrentTranslationId() {
+	return Player::translation.GetCurrentLanguageId();
 }
 
 void Translation::Reset()
@@ -62,8 +62,8 @@ void Translation::Reset()
 	ClearTranslationLookups();
 
 	languages.clear();
-	currLanguage = "";
-	translationRootDir = "";
+	current_language = "";
+	translation_root_dir = "";
 }
 
 void Translation::InitTranslations()
@@ -76,25 +76,25 @@ void Translation::InitTranslations()
 	auto langIt = tree->directories.find(TRDIR_NAME);
 	if (langIt != tree->directories.end()) {
 		// Save the root directory for later.
-		translationRootDir = langIt->second;
+		translation_root_dir = langIt->second;
 
 		// Now list all directories within the translate dir
-		auto translation_path = FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, translationRootDir);
+		auto translation_path = FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, translation_root_dir);
 		auto translation_tree = FileFinder::CreateDirectoryTree(translation_path, FileFinder::RECURSIVE);
 		if (translation_tree == nullptr) {  return; }
 
 		// Now iterate over every subdirectory.
 		for (const auto& trName : translation_tree->directories) {
 			Language item;
-			item.langDir = trName.second;
-			item.langName = trName.second;
+			item.lang_dir = trName.second;
+			item.lang_name = trName.second;
 
 			// If there's a manifest file, read the language name and help text from that.
 			std::string metaName = FileFinder::FindDefault(*translation_tree, trName.second, TRFILE_META_INI);
 			if (!metaName.empty()) {
 				lcf::INIReader ini(metaName);
-				item.langName = ini.GetString("Language", "Name", item.langName);
-				item.langDesc = ini.GetString("Language", "Description", "");
+				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
+				item.lang_desc = ini.GetString("Language", "Description", "");
 			}
 
 			languages.push_back(item);
@@ -102,14 +102,14 @@ void Translation::InitTranslations()
 	}
 }
 
-std::string Translation::GetCurrLanguageId() const 
+std::string Translation::GetCurrentLanguageId() const 
 {
-	return currLanguage;
+	return current_language;
 }
 
 std::string Translation::RootDir() const
 {
-	return translationRootDir;
+	return translation_root_dir;
 }
 
 bool Translation::HasTranslations() const 
@@ -123,21 +123,21 @@ const std::vector<Language>& Translation::GetLanguages() const
 }
 
 
-void Translation::SelectLanguage(const std::string& langId)
+void Translation::SelectLanguage(const std::string& lang_id)
 {
 	// Try to read in our language files.
-	Output::Debug("Changing language to: '{}'", (!langId.empty() ? langId : "<Default>"));
-	if (!ParseLanguageFiles(langId)) {
+	Output::Debug("Changing language to: '{}'", (!lang_id.empty() ? lang_id : "<Default>"));
+	if (!ParseLanguageFiles(lang_id)) {
 		return;
 	}
-	currLanguage = langId;
+	current_language = lang_id;
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.	
-	if (!currLanguage.empty()) {
+	if (!current_language.empty()) {
 		RewriteDatabase();
 		RewriteTreemapNames();
 		RewriteBattleEventMessages();
@@ -149,15 +149,15 @@ void Translation::SelectLanguage(const std::string& langId)
 }
 
 
-bool Translation::ParseLanguageFiles(const std::string& langId)
+bool Translation::ParseLanguageFiles(const std::string& lang_id)
 {
 	// Create the directory tree (for lookups).
 	std::shared_ptr<FileFinder::DirectoryTree> translation_tree;
-	if (langId != "") {
-		auto translation_path = FileFinder::MakePath(FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, RootDir()), langId);
+	if (lang_id != "") {
+		auto translation_path = FileFinder::MakePath(FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, RootDir()), lang_id);
 		translation_tree = FileFinder::CreateDirectoryTree(translation_path, FileFinder::FILES);
 		if (translation_tree == nullptr) {
-			Output::Warning("Translation for '{}' does not appear to exist", langId);
+			Output::Warning("Translation for '{}' does not appear to exist", lang_id);
 			return false;
 		}
 	}
@@ -273,94 +273,98 @@ namespace {
 	public:
 		CommandIterator(std::vector<lcf::rpg::EventCommand>& commands) : commands(commands) {}
 
-		/// Returns true if the index is past the end of the command list
+		/** Returns true if the index is past the end of the command list */
 		bool Done() const {
 			return index >= commands.size();
 		}
 
-		/// Advance the index through the command list by 1
+		/** Advance the index through the command list by 1 */
 		void Advance() {
 			index += 1;
 		}
 
-		/// Retrieve the code of the EventCommand at the index
-		lcf::rpg::EventCommand::Code CurrCmdCode() const {
+		/** Retrieve the code of the EventCommand at the index */
+		lcf::rpg::EventCommand::Code CurrentCmdCode() const {
 			return static_cast<lcf::rpg::EventCommand::Code>(commands[index].code);
 		}
 
-		/// Retrieve the string of the EventCommand at the index
-		std::string CurrCmdString() const {
+		/** Retrieve the string of the EventCommand at the index */
+		std::string CurrentCmdString() const {
 			return ToString(commands[index].string);
 		}
 
-		/// Retrieve the indent level of the EventCommand at the index
-		int CurrCmdIndent() const {
+		/** Retrieve the indent level of the EventCommand at the index */
+		int CurrentCmdIndent() const {
 			return commands[index].indent;
 		}
 
-		/// Retrieve parameter at position 'pos' of the EventCommand at the current index, or the devValue if no such parameter exists.
-		int CurrCmdParam(size_t pos, int defVal) const {
+		/** Retrieve parameter at position 'pos' of the EventCommand at the current index, or the devValue if no such parameter exists. */
+		int CurrentCmdParam(size_t pos, int defVal) const {
 			if (pos < commands[index].parameters.size()) {
 				return commands[index].parameters[pos];
 			}
 			return defVal;
 		}
 
-		/// Returns true if the current Event Command is ShowMessage
-		bool CurrIsShowMessage() const {
-			return CurrCmdCode() == lcf::rpg::EventCommand::Code::ShowMessage;
+		/** Returns true if the current Event Command is ShowMessage */
+		bool CurrentIsShowMessage() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowMessage;
 		}
 
-		/// Returns true if the current Event Command is ShowMessage_2
-		bool CurrIsShowMessage2() const {
-			return CurrCmdCode() == lcf::rpg::EventCommand::Code::ShowMessage_2;
+		/** Returns true if the current Event Command is ShowMessage_2 */
+		bool CurrentIsShowMessage2() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowMessage_2;
 		}
 
-		/// Returns true if the current Event Command is ShowChoice
-		bool CurrIsShowChoice() const {
-			return CurrCmdCode() == lcf::rpg::EventCommand::Code::ShowChoice;
+		/** Returns true if the current Event Command is ShowChoice */
+		bool CurrentIsShowChoice() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowChoice;
 		}
 
-		/// Returns true if the current Event Command is ShowChoiceOption
-		bool CurrIsShowChoiceOption() const {
-			return CurrCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceOption;
+		/** Returns true if the current Event Command is ShowChoiceOption */
+		bool CurrentIsShowChoiceOption() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceOption;
 		}
 
-		/// Returns true if the current Event Command is ShowChoiceEnd
-		bool CurrIsShowChoiceEnd() const {
-			return CurrCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceEnd;
+		/** Returns true if the current Event Command is ShowChoiceEnd */
+		bool CurrentIsShowChoiceEnd() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceEnd;
 		}
 
-		/// Add each line of a [ShowMessage,ShowMessage_2,...] chain to "msg_str" (followed by a newline)
-		/// and save to "indexes" the index of each ShowMessage(2) command that was used to populate this
-		/// (for rewriting later). 
-		/// Advances the index until after the last ShowMessage(2) command
+		/**
+		 * Add each line of a [ShowMessage,ShowMessage_2,...] chain to "msg_str" (followed by a newline)
+		 * and save to "indexes" the index of each ShowMessage(2) command that was used to populate this
+		 * (for rewriting later). 
+		 * Advances the index until after the last ShowMessage(2) command
+		 */
 		void BuildMessageString(std::stringstream& msg_str, std::vector<size_t>& indexes) {
 			// No change if we're not on the right command.
-			if (Done() || !CurrIsShowMessage()) {
+			if (Done() || !CurrentIsShowMessage()) {
 				return;
 			}
 
 			// Add the first line
-			msg_str << CurrCmdString() <<"\n";
+			msg_str << CurrentCmdString() <<"\n";
 			indexes.push_back(index);
 			Advance();
 
 			// Build lines 2 through 4
-			while (!Done() && CurrIsShowMessage2()) {
-				msg_str << CurrCmdString() <<"\n";
+			while (!Done() && CurrentIsShowMessage2()) {
+				msg_str << CurrentCmdString() <<"\n";
 				indexes.push_back(index);
 				Advance();
 			}
 		}
 
-		/// Add each line of a [ShowChoice,ShowChoiceOption,...,ShowChoiceEnd] chain to "msg_str" (followed by a newline)
-		/// and save to "indexes" the index of each ShowChoiceOption command that was used to populate this
-		/// (for rewriting later).
-		/// Advances the index until after the (first) ShowChoice command (but it will likely still be on a ShowChoiceOption/End)
+		/**
+		 * Add each line of a [ShowChoice,ShowChoiceOption,...,ShowChoiceEnd] chain to "msg_str" (followed by a newline)
+		 * and save to "indexes" the index of each ShowChoiceOption command that was used to populate this
+		 * (for rewriting later).
+		 * Advances the index until after the (first) ShowChoice command (but it will likely still be on a ShowChoiceOption/End)
+		 */
 		void BuildChoiceString(std::stringstream& msg_str, std::vector<size_t>& indexes) {
 			// No change if we're not on the right command.
-			if (Done() || !CurrIsShowChoice()) {
+			if (Done() || !CurrentIsShowChoice()) {
 				return;
 			}
 
@@ -372,18 +376,18 @@ namespace {
 
 			// Choices must be on the same indent level.
 			// We have to save/restore the index, though, in the rare case that we skip something that can be translated.
-			int indent = CurrCmdIndent();
+			int indent = CurrentCmdIndent();
 			size_t savedIndex = index;
 			while (!Done()) {
-				if (indent == CurrCmdIndent()) {
+				if (indent == CurrentCmdIndent()) {
 					// Handle a new index
-					if (CurrIsShowChoiceOption() && CurrCmdParam(0,0) < 4) {
-						msg_str << CurrCmdString() <<"\n";
+					if (CurrentIsShowChoiceOption() && CurrentCmdParam(0,0) < 4) {
+						msg_str << CurrentCmdString() <<"\n";
 						indexes.push_back(index);
 					}
 
 					// Done?
-					if (CurrIsShowChoiceEnd()) {
+					if (CurrentIsShowChoiceEnd()) {
 						break;
 					}
 				}
@@ -392,16 +396,18 @@ namespace {
 			index = savedIndex;
 		}
 
-		/// Change the string value of the EventCommand at position "idx" to "newStr"
+		/** Change the string value of the EventCommand at position "idx" to "newStr" */
 		void ReWriteString(size_t idx, const std::string& newStr) {
 			if (idx < commands.size()) {
 				commands[idx].string = lcf::DBString(newStr);
 			}
 		}
 
-		/// Puts a "ShowMessage" or "ShowMessage_2" command into the command stack before position "idx".
-		/// Sets the string value to "line". Note that ShowMessage_2 is chosen if baseMsgBox is false.
-		/// This also updates the index if relevant, but it does not update external index caches.
+		/**
+		 * Puts a "ShowMessage" or "ShowMessage_2" command into the command stack before position "idx".
+		 * Sets the string value to "line". Note that ShowMessage_2 is chosen if baseMsgBox is false.
+		 * This also updates the index if relevant, but it does not update external index caches.
+		 */
 		void PutShowMessageBeforeIndex(const std::string& line, size_t idx, bool baseMsgBox) {
 			// We need a reference index for the indent.
 			size_t refIndent = 0;
@@ -425,8 +431,10 @@ namespace {
 			}
 		}
 
-		/// Remove the EventCommand at position "idx" from the command stack.
-		/// Also updates our index, if relevant.
+		/**
+		 * Remove the EventCommand at position "idx" from the command stack.
+		 * Also updates our index, if relevant.
+		 */
 		void RemoveByIndex(size_t idx) {
 			if (idx < commands.size()) {
 				commands.erase(commands.begin() + idx);
@@ -438,9 +446,11 @@ namespace {
 			}
 		}
 
-		/// Add multiple message boxes to the command stack before "idx".
-		/// The "msgs" each represent lines in new, independent message boxes (so they will have both ShowMessage and ShowMessage_2)
-		/// Also updates our index, if relevant.
+		/**
+		 * Add multiple message boxes to the command stack before "idx".
+		 * The "msgs" each represent lines in new, independent message boxes (so they will have both ShowMessage and ShowMessage_2)
+		 * Also updates our index, if relevant.
+		 */
 		void InsertMultiMessageBefore(std::vector<std::vector<std::string>>& msgs, size_t idx) {
 			for (std::vector<std::string>& lines : msgs) {
 				while (!lines.empty()) {
@@ -505,7 +515,7 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	CommandIterator commands(commandsOrig);
 	while (!commands.Done()) {
 		// We only need to deal with either Message or Choice commands
-		if (commands.CurrIsShowMessage()) {
+		if (commands.CurrentIsShowMessage()) {
 			// Build up the lines of Message texts
 			std::stringstream msg_str;
 			std::vector<size_t> msg_indexes;
@@ -559,7 +569,7 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			}
 
 			// Note that commands.Advance() has already happened within the above code.
-		} else if (commands.CurrIsShowChoice()) {
+		} else if (commands.CurrentIsShowChoice()) {
 			// Build up the lines of Choice elements
 			std::stringstream choice_str;
 			std::vector<size_t> choice_indexes; // Number of entries == number of choices
@@ -592,9 +602,9 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	}
 }
 
-void Translation::RewriteMapMessages(const std::string& mapName, lcf::rpg::Map& map) {
+void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map& map) {
 	// Retrieve lookup for this map.
-	auto mapIt = maps.find(mapName);
+	auto mapIt = maps.find(map_name);
 	if (mapIt==maps.end()) { return; }
 
 	// Rewrite all event commands on all pages.
