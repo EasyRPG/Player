@@ -47,37 +47,68 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-static int CalcEquipScore(const lcf::rpg::Item* item) {
-	if (item == nullptr) {
-		return 0;
-	}
-	return item->atk_points1 + item->def_points1 + item->agi_points1 + item->spi_points1;
-}
-
 static int CmpEquip(const Game_Actor* actor, const lcf::rpg::Item* new_item) {
-	int new_score = CalcEquipScore(new_item);
-	switch (new_item->type) {
-	case lcf::rpg::Item::Type_weapon:
-	{
-		int score = CalcEquipScore(actor->GetWeapon());
-		if (actor->HasTwoWeapons()) {
-			int score2 = CalcEquipScore(actor->Get2ndWeapon());
-			score = (new_item->two_handed) ? score + score2 : std::min(score, score2);
+	auto atk = actor->GetBaseAtk(Game_Battler::WeaponAll, true, false);
+	auto def = actor->GetBaseDef(Game_Battler::WeaponAll, true, false);
+	auto spi = actor->GetBaseSpi(Game_Battler::WeaponAll, true, false);
+	auto agi = actor->GetBaseAgi(Game_Battler::WeaponAll, true, false);
+
+	auto add_item = [&](const lcf::rpg::Item* item, int mod = 1) {
+		if (item) {
+			atk += item->atk_points1 * mod;
+			def += item->def_points1 * mod;
+			spi += item->spi_points1 * mod;
+			agi += item->agi_points1 * mod;
 		}
-		return new_score - score;
+	};
+
+	for (int i = 1; i <= 5; i++) {
+		auto* count_item = actor->GetEquipment(i);
+		add_item(count_item, 1);
 	}
-	case lcf::rpg::Item::Type_helmet:
-		return new_score - CalcEquipScore(actor->GetHelmet());
-	case lcf::rpg::Item::Type_shield:
-		return new_score - CalcEquipScore(actor->GetShield());
-	case lcf::rpg::Item::Type_armor:
-		return new_score - CalcEquipScore(actor->GetArmor());
-	case lcf::rpg::Item::Type_accessory:
-		return new_score - CalcEquipScore(actor->GetAccessory());
-	default:
-		break;
+
+	atk = Utils::Clamp(atk, 1, 999);
+	def = Utils::Clamp(def, 1, 999);
+	spi = Utils::Clamp(spi, 1, 999);
+	agi = Utils::Clamp(agi, 1, 999);
+
+	int old_score = atk + def + spi + agi;
+
+	atk = actor->GetBaseAtk(Game_Battler::WeaponAll, true, false);
+	def = actor->GetBaseDef(Game_Battler::WeaponAll, true, false);
+	spi = actor->GetBaseSpi(Game_Battler::WeaponAll, true, false);
+	agi = actor->GetBaseAgi(Game_Battler::WeaponAll, true, false);
+
+	for (int i = 1; i <= 5; i++) {
+		auto* count_item = actor->GetEquipment(i);
+		add_item(count_item, 1);
 	}
-	return 0;
+
+	auto* old_item = actor->GetEquipment(new_item->type);
+	// If its a weapon or shield, get the other hand
+	const lcf::rpg::Item* other_old_item = nullptr;
+	if (new_item->type == lcf::rpg::Item::Type_weapon) {
+		other_old_item = actor->GetEquipment(lcf::rpg::Item::Type_shield);
+	} else if (new_item->type == lcf::rpg::Item::Type_shield) {
+		other_old_item = actor->GetEquipment(lcf::rpg::Item::Type_weapon);
+	}
+
+	add_item(old_item, -1);
+	// If other hand had a two handed weapon, or we considering a 2 handed weapon, remove the other hand.
+	if (new_item && other_old_item &&
+			(other_old_item->two_handed || new_item->two_handed)) {
+		add_item(other_old_item, -1);
+	}
+	add_item(new_item, 1);
+
+	atk = Utils::Clamp(atk, 1, 999);
+	def = Utils::Clamp(def, 1, 999);
+	spi = Utils::Clamp(spi, 1, 999);
+	agi = Utils::Clamp(agi, 1, 999);
+
+	int new_score = atk + def + spi + agi;
+
+	return new_score - old_score;
 }
 
 static bool IsEquipment(const lcf::rpg::Item* item) {
