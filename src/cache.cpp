@@ -518,6 +518,8 @@ void Cache::Clear() {
 	}
 
 	cache_tiles.clear();
+
+	system2_name.clear();
 }
 
 void Cache::SetSystemName(std::string filename) {
