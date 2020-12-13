@@ -465,7 +465,8 @@ void Game_Event::UpdateNextMovementAction() {
 
 void Game_Event::SetMaxStopCountForRandom() {
 	auto st = GetMaxStopCountForStep(GetMoveFrequency());
-	st *= (Rand::GetRandomNumber(0, 3) + 3) / 5;
+	st *= Rand::GetRandomNumber(0, 3) + 3;
+	st /= 5;
 	SetMaxStopCount(st);
 }
 
