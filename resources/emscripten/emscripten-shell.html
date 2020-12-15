@@ -139,21 +139,21 @@
   const keysDown = new Map();
   let lastTouchedId;
 
-  function simulateKeyEvent(eventType, key, keyCode) {
+  function simulateKeyboardEvent(eventType, key, keyCode) {
     const event = new Event(eventType, { bubbles: true });
-    event.key = key
-    event.code = key
+    event.key = key;
+    event.code = key;
     // Deprecated, but necessary for emscripten somehow
-    event.keyCode = keyCode
-    event.which = keyCode
+    event.keyCode = keyCode;
+    event.which = keyCode;
 
     Module.canvas.dispatchEvent(event);
   }
 
-  function simulateKeyPress(key, keyCode) {
-    simulateKeyEvent('keydown', key, keyCode);
+  function simulateKeyboardInput(key, keyCode) {
+    simulateKeyboardEvent('keydown', key, keyCode);
     window.setTimeout(() => {
-      simulateKeyEvent('keyup', key, keyCode);
+      simulateKeyboardEvent('keyup', key, keyCode);
     }, 100);
   }
 
@@ -162,7 +162,7 @@
 
     node.addEventListener('touchstart', event => {
       event.preventDefault();
-      simulateKeyEvent('keydown', key, keyCode);
+      simulateKeyboardEvent('keydown', key, keyCode);
       keysDown.set(event.target.id, node.id);
       node.classList.add('active');
     });
@@ -170,10 +170,10 @@
     node.addEventListener('touchend', event => {
       event.preventDefault();
 
-      const pressedKey = keysDown.get(event.target.id)
+      const pressedKey = keysDown.get(event.target.id);
       if (pressedKey && keys.has(pressedKey)) {
         const { key, keyCode } = keys.get(pressedKey);
-        simulateKeyEvent('keyup', key, keyCode);
+        simulateKeyboardEvent('keyup', key, keyCode);
       }
 
       keysDown.delete(event.target.id);
@@ -184,6 +184,7 @@
       }
     });
 
+    // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
     node.addEventListener('touchmove', event => {
       const { target, clientX, clientY } = event.changedTouches[0];
       const origTargetId = keysDown.get(target.id);
@@ -192,14 +193,14 @@
 
       if (origTargetId) {
         const { key, keyCode } = keys.get(origTargetId);
-        simulateKeyEvent('keyup', key, keyCode);
+        simulateKeyboardEvent('keyup', key, keyCode);
         keysDown.delete(target.id);
         document.getElementById(origTargetId).classList.remove('active');
       }
 
       if (keys.has(nextTargetId)) {
         const { key, keyCode } = keys.get(nextTargetId);
-        simulateKeyEvent('keydown', key, keyCode);
+        simulateKeyboardEvent('keydown', key, keyCode);
         keysDown.set(target.id, nextTargetId);
         lastTouchedId = nextTargetId;
         document.getElementById(nextTargetId).classList.add('active');
@@ -222,11 +223,11 @@
 
     Module.canvas.addEventListener('contextmenu', event => {
       event.preventDefault();
-      // simulateKeyPress('Escape', 27);
+      // simulateKeyboardInput('Escape', 27);
     });
 
     // Module.canvas.addEventListener('click', () => {
-    //   simulateKeyPress('Enter', 13);
+    //   simulateKeyboardInput('Enter', 13);
     // });
   }
 </script>
