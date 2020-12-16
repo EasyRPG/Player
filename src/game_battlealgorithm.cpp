@@ -701,7 +701,7 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
 		if (GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2) {
-			return BattleMessage::GetDoubleAttackStartMessage2k3();
+			return BattleMessage::GetDoubleAttackStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
@@ -1178,7 +1178,7 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetDefendStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
-			return BattleMessage::GetDefendStartMessage2k3();
+			return BattleMessage::GetDefendStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
@@ -1198,7 +1198,7 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetObserveStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
-			return BattleMessage::GetObserveStartMessage2k3();
+			return BattleMessage::GetObserveStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
@@ -1214,7 +1214,7 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetChargeUpStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
-			return BattleMessage::GetChargeUpStartMessage2k3();
+			return BattleMessage::GetChargeUpStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
@@ -1234,7 +1234,7 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const 
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetSelfDestructStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
-			return BattleMessage::GetSelfDestructStartMessage2k3();
+			return BattleMessage::GetSelfDestructStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
@@ -1288,7 +1288,7 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetEscapeStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
-			return BattleMessage::GetEscapeStartMessage2k3();
+			return BattleMessage::GetEscapeStartMessage2k3(*GetSource());
 		}
 	}
 	return "";
