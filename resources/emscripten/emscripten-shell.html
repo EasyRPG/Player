@@ -170,6 +170,10 @@
 {{{ SCRIPT }}}
 
 <script>
+// Make EasyRPG player embeddable
+Module.canvas.addEventListener('mouseenter', () => window.focus());
+Module.canvas.addEventListener('click', () => window.focus());
+
 // Handle clicking on the fullscreen button
 document.querySelector('#controls-fullscreen').addEventListener('click', () => {
   if (Module.canvas.requestFullscreen) {
