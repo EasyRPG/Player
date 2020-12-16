@@ -170,6 +170,12 @@
 {{{ SCRIPT }}}
 
 <script>
+const isMobile = !window.matchMedia('(hover: hover)').matches;
+const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
+const keys = new Map();
+const keysDown = new Map();
+let lastTouchedId;
+
 // Make EasyRPG player embeddable
 Module.canvas.addEventListener('mouseenter', () => window.focus());
 Module.canvas.addEventListener('click', () => window.focus());
@@ -180,11 +186,6 @@ document.querySelector('#controls-fullscreen').addEventListener('click', () => {
     Module.canvas.requestFullscreen();
   }
 });
-
-const isMobile = !window.matchMedia('(hover: hover)').matches;
-const keys = new Map();
-const keysDown = new Map();
-let lastTouchedId;
 
 /**
  * Simulate a keyboard event on the emscripten canvas
@@ -275,28 +276,29 @@ function bindKey(node, key, keyCode) {
   })
 }
 
+// Bind all elements providing a `data-key` attribute with the
+// given key on touch-based devices
 if (isMobile) {
   for (const button of document.querySelectorAll('[data-key]')) {
     bindKey(button, button.dataset.key, button.dataset.keyCode);
   }
-} else {
-  // Prevent scrolling when pressing specific keys
-  window.addEventListener('keydown', event => {
-    const ignoredKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
-    if (ignoredKeys.includes(event.key)) {
-      event.preventDefault();
-    }
-  }, false);
-
-  Module.canvas.addEventListener('contextmenu', event => {
-    event.preventDefault();
-    // simulateKeyboardInput('Escape', 27);
-  });
-
-  // Module.canvas.addEventListener('click', () => {
-  //   simulateKeyboardInput('Enter', 13);
-  // });
 }
+
+// Prevent scrolling when pressing specific keys
+window.addEventListener('keydown', event => {
+  if (preventNativeKeys.includes(event.key)) {
+    event.preventDefault();
+  }
+});
+
+Module.canvas.addEventListener('contextmenu', event => {
+  event.preventDefault();
+  // simulateKeyboardInput('Escape', 27);
+});
+
+// Module.canvas.addEventListener('click', () => {
+//   simulateKeyboardInput('Enter', 13);
+// });
 </script>
 
 </body>
