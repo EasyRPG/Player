@@ -172,7 +172,7 @@
 {{{ SCRIPT }}}
 
 <script>
-const isMobile = !window.matchMedia('(hover: hover)').matches;
+const hasTouchscreen = window.matchMedia('(pointer: coarse)').matches;
 const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
 const keys = new Map();
 const keysDown = new Map();
@@ -281,7 +281,7 @@ function bindKey(node, key, keyCode) {
 
 // Bind all elements providing a `data-key` attribute with the
 // given key on touch-based devices
-if (isMobile) {
+if (hasTouchscreen) {
   for (const button of document.querySelectorAll('[data-key]')) {
     bindKey(button, button.dataset.key, button.dataset.keyCode);
   }
