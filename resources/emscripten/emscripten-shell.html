@@ -282,23 +282,23 @@ if (isMobile) {
   for (const button of document.querySelectorAll('[data-key]')) {
     bindKey(button, button.dataset.key, button.dataset.keyCode);
   }
-}
-
-// Prevent scrolling when pressing specific keys
-window.addEventListener('keydown', event => {
-  if (preventNativeKeys.includes(event.key)) {
+} else {
+  // Prevent scrolling when pressing specific keys
+  window.addEventListener('keydown', event => {
+    if (preventNativeKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  });
+  
+  Module.canvas.addEventListener('contextmenu', event => {
     event.preventDefault();
-  }
-});
-
-Module.canvas.addEventListener('contextmenu', event => {
-  event.preventDefault();
-  // simulateKeyboardInput('Escape', 27);
-});
-
-// Module.canvas.addEventListener('click', () => {
-//   simulateKeyboardInput('Enter', 13);
-// });
+    // simulateKeyboardInput('Escape', 27);
+  });
+  
+  // Module.canvas.addEventListener('click', () => {
+  //   simulateKeyboardInput('Enter', 13);
+  // });
+}
 </script>
 
 </body>
