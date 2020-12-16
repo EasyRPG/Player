@@ -115,7 +115,7 @@
       opacity: 0.4;
     }
 
-    @media (hover: hover) {
+    @media (hover: hover) and (pointer: fine) {
       #apad,
       #dpad {
         display: none;
@@ -172,7 +172,7 @@
 {{{ SCRIPT }}}
 
 <script>
-const hasTouchscreen = window.matchMedia('(pointer: coarse)').matches;
+const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
 const keys = new Map();
 const keysDown = new Map();
