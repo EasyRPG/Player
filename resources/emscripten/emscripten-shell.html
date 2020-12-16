@@ -5,25 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EasyRPG Player</title>
   <style>
-    :root { --color-gray: hsl(0, 0%, 55%); --controls-size: 10vh; }
-    @media (orientation: landscape) { :root { --controls-size: 20vh; } }
-    html { touch-action: none; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; margin: 0; color: white; background: black; }
-    .unselectable { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-    #status { font-size: 1.5rem; color: var(--color-gray); text-align: center; }
-    #controls { text-align: right; }
-    #controls button { -webkit-appearance: button; display: inline-flex; background: transparent; border: 0; color: white; font-family: inherit; font-size: 1em; line-height: inherit; cursor: pointer; padding: 1rem; }
-    #controls svg { pointer-events: none; }
-    #canvas { position: absolute; top: 50%; left: 50%; width: 320px; height: 240px; border: 0; image-rendering: pixelated; image-rendering: crisp-edges; transform: translate(-50%, -50%); }
-    #dpad, #apad { position: fixed; bottom: 1rem; }
-    #dpad { left: 1rem; }
-    #apad { right: 1rem; }
-    #dpad svg { width: calc(2 * var(--controls-size)); height: calc(2 * var(--controls-size)); fill: var(--color-gray); }
-    #dpad svg rect { opacity: 0.4; }
-    #apad > * { width: var(--controls-size); height: var(--controls-size); background-color: var(--color-gray); border-radius: 50%; }
-    #apad > :last-child { position: relative; right: var(--controls-size); }
-    #dpad path:not(.active), #apad > *:not(.active) { opacity: 0.4; }
-    @media (hover: hover) { #apad, #dpad { display: none; } }
+    :root {
+      --color-gray: hsl(0, 0%, 55%);
+      --controls-size: 10vh;
+    }
+
+    @media (orientation: landscape) {
+      :root {
+        --controls-size: 20vh;
+      }
+    }
+
+    html {
+      touch-action: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      margin: 0;
+      color: white;
+      background: black;
+    }
+
+    .unselectable {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    #status {
+      font-size: 1.5rem;
+      color: var(--color-gray);
+      text-align: center;
+    }
+
+    #controls {
+      text-align: right;
+    }
+
+    #controls button {
+      -webkit-appearance: button;
+      display: inline-flex;
+      background: transparent;
+      border: 0;
+      color: white;
+      font-family: inherit;
+      font-size: 1em;
+      line-height: inherit;
+      cursor: pointer;
+      padding: 1rem;
+    }
+
+    #controls svg {
+      pointer-events: none;
+    }
+
+    #canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      height: 240px;
+      border: 0;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transform: translate(-50%, -50%);
+    }
+
+    #dpad,
+    #apad {
+      position: fixed;
+      bottom: 1rem;
+    }
+
+    #dpad {
+      left: 1rem;
+    }
+
+    #apad {
+      right: 1rem;
+    }
+
+    #dpad svg {
+      width: calc(2 * var(--controls-size));
+      height: calc(2 * var(--controls-size));
+      fill: var(--color-gray);
+    }
+
+    #dpad svg rect {
+      opacity: 0.4;
+    }
+
+    #apad > * {
+      width: var(--controls-size);
+      height: var(--controls-size);
+      background-color: var(--color-gray);
+      border-radius: 50%;
+    }
+
+    #apad > :last-child {
+      position: relative;
+      right: var(--controls-size);
+    }
+
+    #dpad path:not(.active),
+    #apad > *:not(.active) {
+      opacity: 0.4;
+    }
+
+    @media (hover: hover) {
+      #apad,
+      #dpad {
+        display: none;
+      }
+    }
+
     @media (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
     @media (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
     @media (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
@@ -71,166 +167,132 @@
     <div id="apad-escape" data-key="Escape" data-key-code="27"></div>
   </div>
 
-<script>
-  var Module = {
-    preRun: [],
-    postRun: [],
-
-    print: (...args) => {
-      console.log(...args);
-    },
-
-    printErr: (...args) => {
-      console.error(...args);
-    },
-
-    canvas: (() => {
-      const canvas = document.getElementById('canvas');
-
-      // As a default initial behavior, pop up an alert when webgl context is lost
-      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-      canvas.addEventListener('webglcontextlost', event => {
-        alert('WebGL context lost. You will need to reload the page.');
-        event.preventDefault();
-      }, false);
-
-      return canvas;
-    })(),
-
-    setStatus: text => {
-      if (!Module.setStatus.last) Module.setStatus.last = {
-        time: Date.now(),
-        text: ''
-      };
-
-      if (text !== Module.setStatus.text) {
-        document.getElementById('status').innerHTML = text;
-      }
-    },
-
-    totalDependencies: 0,
-
-    monitorRunDependencies: left => {
-      Module.totalDependencies = Math.max(Module.totalDependencies, left);
-      Module.setStatus(left ? `Preparing... (${Module.totalDependencies - left}/${Module.totalDependencies})` : 'Downloading game data...');
-    }
-  };
-
-  Module.setStatus('Downloading...');
-
-  window.addEventListener('error', event => {
-    Module.setStatus('Exception thrown, see JavaScript console…');
-    Module.setStatus = text => {
-      if (text) Module.printErr(`[post-exception status] ${text}`);
-    };
-  });
-
-  document.querySelector('#controls-fullscreen').addEventListener('click', () => {
-    if (Module.canvas.requestFullscreen) {
-      Module.canvas.requestFullscreen();
-    }
-  });
-</script>
-
 {{{ SCRIPT }}}
 
 <script>
-  const isMobile = !window.matchMedia('(hover: hover)').matches;
-  const keys = new Map();
-  const keysDown = new Map();
-  let lastTouchedId;
-
-  function simulateKeyboardEvent(eventType, key, keyCode) {
-    const event = new Event(eventType, { bubbles: true });
-    event.key = key;
-    event.code = key;
-    // Deprecated, but necessary for emscripten somehow
-    event.keyCode = keyCode;
-    event.which = keyCode;
-
-    Module.canvas.dispatchEvent(event);
+// Handle clicking on the fullscreen button
+document.querySelector('#controls-fullscreen').addEventListener('click', () => {
+  if (Module.canvas.requestFullscreen) {
+    Module.canvas.requestFullscreen();
   }
+});
 
-  function simulateKeyboardInput(key, keyCode) {
+const isMobile = !window.matchMedia('(hover: hover)').matches;
+const keys = new Map();
+const keysDown = new Map();
+let lastTouchedId;
+
+/**
+ * Simulate a keyboard event on the emscripten canvas
+ *
+ * @param {string} eventType Type of the keyboard event
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function simulateKeyboardEvent(eventType, key, keyCode) {
+  const event = new Event(eventType, { bubbles: true });
+  event.key = key;
+  event.code = key;
+  // Deprecated, but necessary for emscripten somehow
+  event.keyCode = keyCode;
+  event.which = keyCode;
+
+  Module.canvas.dispatchEvent(event);
+}
+
+/**
+ * Simulate a keyboard input from `keydown` to `keyup`
+ *
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function simulateKeyboardInput(key, keyCode) {
+  simulateKeyboardEvent('keydown', key, keyCode);
+  window.setTimeout(() => {
+    simulateKeyboardEvent('keyup', key, keyCode);
+  }, 100);
+}
+
+/**
+ * Bind a node by a specific key to simulate on touch
+ *
+ * @param {*} node The node to bind a key to
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function bindKey(node, key, keyCode) {
+  keys.set(node.id, { key, keyCode });
+
+  node.addEventListener('touchstart', event => {
+    event.preventDefault();
     simulateKeyboardEvent('keydown', key, keyCode);
-    window.setTimeout(() => {
+    keysDown.set(event.target.id, node.id);
+    node.classList.add('active');
+  });
+
+  node.addEventListener('touchend', event => {
+    event.preventDefault();
+
+    const pressedKey = keysDown.get(event.target.id);
+    if (pressedKey && keys.has(pressedKey)) {
+      const { key, keyCode } = keys.get(pressedKey);
       simulateKeyboardEvent('keyup', key, keyCode);
-    }, 100);
-  }
-
-  function bindKey(node, key, keyCode) {
-    keys.set(node.id, { key, keyCode });
-
-    node.addEventListener('touchstart', event => {
-      event.preventDefault();
-      simulateKeyboardEvent('keydown', key, keyCode);
-      keysDown.set(event.target.id, node.id);
-      node.classList.add('active');
-    });
-
-    node.addEventListener('touchend', event => {
-      event.preventDefault();
-
-      const pressedKey = keysDown.get(event.target.id);
-      if (pressedKey && keys.has(pressedKey)) {
-        const { key, keyCode } = keys.get(pressedKey);
-        simulateKeyboardEvent('keyup', key, keyCode);
-      }
-
-      keysDown.delete(event.target.id);
-      node.classList.remove('active');
-    
-      if (lastTouchedId) {
-        document.getElementById(lastTouchedId).classList.remove('active');
-      }
-    });
-
-    // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
-    node.addEventListener('touchmove', event => {
-      const { target, clientX, clientY } = event.changedTouches[0];
-      const origTargetId = keysDown.get(target.id);
-      const nextTargetId = document.elementFromPoint(clientX, clientY).id;
-      if (origTargetId === nextTargetId) return;
-
-      if (origTargetId) {
-        const { key, keyCode } = keys.get(origTargetId);
-        simulateKeyboardEvent('keyup', key, keyCode);
-        keysDown.delete(target.id);
-        document.getElementById(origTargetId).classList.remove('active');
-      }
-
-      if (keys.has(nextTargetId)) {
-        const { key, keyCode } = keys.get(nextTargetId);
-        simulateKeyboardEvent('keydown', key, keyCode);
-        keysDown.set(target.id, nextTargetId);
-        lastTouchedId = nextTargetId;
-        document.getElementById(nextTargetId).classList.add('active');
-      }
-    })
-  }
-
-  if (isMobile) {
-    for (const button of document.querySelectorAll('[data-key]')) {
-      bindKey(button, button.dataset.key, button.dataset.keyCode);
     }
-  } else {
-    // Prevent scrolling when pressing specific keys
-    window.addEventListener('keydown', event => {
-      const ignoredKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
-      if (ignoredKeys.includes(event.key)) {
-        event.preventDefault();
-      }
-    }, false);
 
-    Module.canvas.addEventListener('contextmenu', event => {
-      event.preventDefault();
-      // simulateKeyboardInput('Escape', 27);
-    });
+    keysDown.delete(event.target.id);
+    node.classList.remove('active');
+  
+    if (lastTouchedId) {
+      document.getElementById(lastTouchedId).classList.remove('active');
+    }
+  });
 
-    // Module.canvas.addEventListener('click', () => {
-    //   simulateKeyboardInput('Enter', 13);
-    // });
+  // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
+  node.addEventListener('touchmove', event => {
+    const { target, clientX, clientY } = event.changedTouches[0];
+    const origTargetId = keysDown.get(target.id);
+    const nextTargetId = document.elementFromPoint(clientX, clientY).id;
+    if (origTargetId === nextTargetId) return;
+
+    if (origTargetId) {
+      const { key, keyCode } = keys.get(origTargetId);
+      simulateKeyboardEvent('keyup', key, keyCode);
+      keysDown.delete(target.id);
+      document.getElementById(origTargetId).classList.remove('active');
+    }
+
+    if (keys.has(nextTargetId)) {
+      const { key, keyCode } = keys.get(nextTargetId);
+      simulateKeyboardEvent('keydown', key, keyCode);
+      keysDown.set(target.id, nextTargetId);
+      lastTouchedId = nextTargetId;
+      document.getElementById(nextTargetId).classList.add('active');
+    }
+  })
+}
+
+if (isMobile) {
+  for (const button of document.querySelectorAll('[data-key]')) {
+    bindKey(button, button.dataset.key, button.dataset.keyCode);
   }
+} else {
+  // Prevent scrolling when pressing specific keys
+  window.addEventListener('keydown', event => {
+    const ignoredKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
+    if (ignoredKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }, false);
+
+  Module.canvas.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    // simulateKeyboardInput('Escape', 27);
+  });
+
+  // Module.canvas.addEventListener('click', () => {
+  //   simulateKeyboardInput('Enter', 13);
+  // });
+}
 </script>
 
 </body>
