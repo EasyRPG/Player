@@ -174,16 +174,17 @@ const isMobile = !window.matchMedia('(hover: hover)').matches;
 const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
 const keys = new Map();
 const keysDown = new Map();
+const canvas = document.getElementById('canvas');
 let lastTouchedId;
 
 // Make EasyRPG player embeddable
-Module.canvas.addEventListener('mouseenter', () => window.focus());
-Module.canvas.addEventListener('click', () => window.focus());
+canvas.addEventListener('mouseenter', () => window.focus());
+canvas.addEventListener('click', () => window.focus());
 
 // Handle clicking on the fullscreen button
 document.querySelector('#controls-fullscreen').addEventListener('click', () => {
-  if (Module.canvas.requestFullscreen) {
-    Module.canvas.requestFullscreen();
+  if (canvas.requestFullscreen) {
+    canvas.requestFullscreen();
   }
 });
 
@@ -202,7 +203,7 @@ function simulateKeyboardEvent(eventType, key, keyCode) {
   event.keyCode = keyCode;
   event.which = keyCode;
 
-  Module.canvas.dispatchEvent(event);
+  canvas.dispatchEvent(event);
 }
 
 /**
@@ -290,12 +291,12 @@ if (isMobile) {
     }
   });
   
-  Module.canvas.addEventListener('contextmenu', event => {
+  canvas.addEventListener('contextmenu', event => {
     event.preventDefault();
     // simulateKeyboardInput('Escape', 27);
   });
   
-  // Module.canvas.addEventListener('click', () => {
+  // canvas.addEventListener('click', () => {
   //   simulateKeyboardInput('Enter', 13);
   // });
 }
