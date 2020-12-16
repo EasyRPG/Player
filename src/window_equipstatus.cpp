@@ -121,12 +121,18 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
-		if (Player::IsCP932()) {
-			// Draw fullwidth arrow
-			contents->TextDraw(cx, cy, 1, "→");
+		if (lcf::Data::terms.easyrpg_equipment_arrow == lcf::Data::terms.kDefaultTerm) {
+			if (Player::IsCP932()) {
+				// Draw fullwidth arrow
+				contents->TextDraw(cx, cy, 1, "→");
+			} else {
+				// Draw arrow (+3 for center between the two numbers)
+				contents->TextDraw(cx + 3, cy, 1, ">");
+			}
 		} else {
-			// Draw arrow (+3 for center between the two numbers)
-			contents->TextDraw(cx + 3, cy, 1, ">");
+			// Draw arrow
+			int offset = (12 - Font::Default()->GetSize(lcf::Data::terms.easyrpg_equipment_arrow).width) / 2;
+			contents->TextDraw(cx + offset, cy, 1, lcf::Data::terms.easyrpg_equipment_arrow);
 		}
 
 		// Draw New Value

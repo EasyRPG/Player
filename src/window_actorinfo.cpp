@@ -41,7 +41,7 @@ void Window_ActorInfo::Refresh() {
 
 void Window_ActorInfo::DrawInfo() {
 	// Draw Row formation.
-	std::string battle_row = Main_Data::game_actors->GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? "Back" : "Front";
+	std::string battle_row = Main_Data::game_actors->GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_back, "Back") : lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_front, "Front");
 	contents->TextDraw(contents->GetWidth(), 2, Font::ColorDefault, battle_row, Text::AlignRight);
 
 	const Game_Actor& actor = *Main_Data::game_actors->GetActor(actor_id);
@@ -50,19 +50,19 @@ void Window_ActorInfo::DrawInfo() {
 	DrawActorFace(actor, 0, 0);
 
 	// Draw Name
-	contents->TextDraw(0, 50, 1, "Name");
+	contents->TextDraw(0, 50, 1, lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_name, "Name"));
 	DrawActorName(actor, 36, 66);
 
 	// Draw Profession
-	contents->TextDraw(3, 80, 1, "Class");
+	contents->TextDraw(0, 82, 1, lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_class, "Class"));
 	DrawActorClass(actor, 36, 98);
 
 	// Draw Rank
-	contents->TextDraw(3, 110, 1, "Nickname");
+	contents->TextDraw(0, 114, 1, lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_title, "Title"));
 	DrawActorTitle(actor, 36, 130);
 
 	// Draw Status
-	contents->TextDraw(3, 140, 1, "State");
+	contents->TextDraw(0, 146, 1, lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_condition, "State"));
 	DrawActorState(actor, 36, 162);
 
 	//Draw Level
