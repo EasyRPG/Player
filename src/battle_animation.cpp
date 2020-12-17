@@ -293,8 +293,12 @@ void BattleAnimationBattle::Draw(Bitmap& dst) {
 	for (auto* battler: battlers) {
 		const Sprite_Battler* sprite = battler->GetBattleSprite();
 		int offset = 0;
-		if (sprite && sprite->GetBitmap()) {
-			offset = CalculateOffset(animation.position, sprite->GetHeight());
+		if (sprite) {
+			if (sprite->GetBitmap()) {
+				offset = CalculateOffset(animation.position, sprite->GetHeight());
+			} else {
+				offset = CalculateOffset(animation.position, GetAnimationCellHeight() / 2);
+			}
 		}
 		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y + offset);
 	}
@@ -306,6 +310,37 @@ void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
 }
 
 void BattleAnimationBattle::ShakeTargets(int str, int spd, int time) {
+	for (auto& battler: battlers) {
+		battler->ShakeOnce(str, spd, time);
+	}
+}
+
+BattleAnimationBattler::BattleAnimationBattler(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame, bool set_invert) :
+	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
+{
+	invert = set_invert;
+}
+
+void BattleAnimationBattler::Draw(Bitmap& dst) {
+	if (IsOnlySound())
+		return;
+	if (animation.scope == lcf::rpg::Animation::Scope_screen) {
+		DrawAt(dst, SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
+		return;
+	}
+
+	for (auto* battler: battlers) {
+		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y);
+	}
+}
+
+void BattleAnimationBattler::FlashTargets(int r, int g, int b, int p) {
+	for (auto& battler: battlers) {
+		battler->Flash(r, g, b, p, 0);
+	}
+}
+
+void BattleAnimationBattler::ShakeTargets(int str, int spd, int time) {
 	for (auto& battler: battlers) {
 		battler->ShakeOnce(str, spd, time);
 	}

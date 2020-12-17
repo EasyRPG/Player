@@ -169,7 +169,7 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 				Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
 				animation.reset();
 			} else {
-				animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
+				animation.reset(new BattleAnimationBattler(*battle_anim, { battler }));
 				animation->SetZ(GetZ());
 			}
 			animation->SetInvert(battler->IsDirectionFlipped());
