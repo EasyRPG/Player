@@ -45,8 +45,11 @@
 #define TRFILE_META_INI      "META.INI"
 
 // Message box commands to remove a message box or add one in place.
-#define TRCUST_REMOVEMSG        "__EASY_RPG_CMD:REMOVE_MSGBOX__"
-#define TRCUST_ADDMSG           "__EASY_RPG_CMD:ADD_MSGBOX__"
+// These commands are added by translators in the .po files to manipulate
+//   text boxes at runtime. They are magic strings that will not otherwise
+//   appear in the source of EasyRPG, but they should not be deleted.
+#define TRCUST_REMOVEMSG        "<easyrpg:delete_page>"
+#define TRCUST_ADDMSG           "<easyrpg:new_page>"
 
 
 std::string Tr::GetTranslationDir() {
