@@ -26,6 +26,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "output.h"
+#include "game_ineluki.h"
 #include "transition.h"
 #include "main_data.h"
 #include "player.h"
@@ -107,7 +108,7 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 			Audio().BGM_Stop();
 			bgm_pending = true;
 			FileRequestAsync* request = AsyncHandler::RequestFile("Music", bgm.name);
-			music_request_id = request->Bind([this](auto* result) { OnBgmReady(result); });
+			music_request_id = request->Bind(&Game_System::OnBgmReady, this);
 			request->Start();
 		}
 	} else {
@@ -129,25 +130,11 @@ void Game_System::BgmFade(int duration) {
 }
 
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
-	static bool ineluki_warning_shown = false;
-
 	if (se.name.empty()) {
 		return;
 	} else if (se.name == "(OFF)") {
 		if (stop_sounds) {
 			Audio().SE_Stop();
-		}
-		return;
-	}
-
-	std::string end = ".script";
-	if (se.name.length() >= end.length() &&
-		0 == se.name.compare(se.name.length() - end.length(), end.length(), end)) {
-		if (!ineluki_warning_shown) {
-			Output::Warning("This game seems to use Ineluki's key patch to support "
-				"additional keys, mouse or scripts. Such patches are "
-				"unsupported, so this functionality will not work!");
-			ineluki_warning_shown = true;
 		}
 		return;
 	}
@@ -172,7 +159,14 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind([=](auto* result) { OnSeReady(result, volume, tempo, stop_sounds); });
+	lcf::rpg::Sound se_adj = se;
+	se_adj.volume = volume;
+	se_adj.tempo = tempo;
+	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, se_adj, stop_sounds);
+	if (StringView(se.name).ends_with(".script")) {
+		// Is a Ineluki Script File
+		request->SetImportantFile(true);
+	}
 	request->Start();
 }
 
@@ -205,7 +199,7 @@ void Game_System::OnChangeSystemGraphicReady(FileRequestResult* result) {
 
 void Game_System::ReloadSystemGraphic() {
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", GetSystemName());
-	system_request_id = request->Bind([this](auto* result) { OnChangeSystemGraphicReady(result); });
+	system_request_id = request->Bind(&Game_System::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
 	request->SetGraphicFile(true);
 	request->Start();
@@ -511,11 +505,11 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (ToStringView(result->file).ends_with(".link")) {
+	if (StringView(result->file).ends_with(".link")) {
 		// Handle Ineluki's MP3 patch
 		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
-			Output::Warning("Ineluki link read error: {}", path);
+			Output::Warning("Ineluki MP3: Link read error: {}", path);
 			return;
 		}
 
@@ -523,33 +517,35 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		std::string line = Utils::ReadLine(stream);
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
-		Output::Debug("Ineluki link file: {} -> {}", path, line);
-
-		#ifdef EMSCRIPTEN
-		Output::Warning("Ineluki MP3 patch unsupported in the web player");
-		return;
-		#else
+		Output::Debug("Ineluki MP3: Link file: {} -> {}", path, line);
 		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
 
-		std::string ineluki_path = FileFinder::FindDefault(line_canonical);
-		if (ineluki_path.empty()) {
-			Output::Debug("Music not found: {}", line_canonical);
-			return;
-		}
-
-		Audio().BGM_Play(ineluki_path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
-
+		// Needs another Async roundtrip
+		bgm_pending = true;
+		FileRequestAsync *request = AsyncHandler::RequestFile(line_canonical);
+		music_request_id = request->Bind(&Game_System::OnBgmInelukiReady, this);
+		request->Start();
 		return;
-		#endif
 	}
 
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
-void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds) {
+void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
+	bgm_pending = false;
+	Audio().BGM_Play(FileFinder::FindDefault(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+}
+
+void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {
 	auto item = se_request_ids.find(result->file);
 	if (item != se_request_ids.end()) {
 		se_request_ids.erase(item);
+	}
+
+	if (StringView(se.name).ends_with(".script")) {
+		// Is a Ineluki Script File
+		Main_Data::game_ineluki->Execute(se);
+		return;
 	}
 
 	std::string path;
@@ -563,7 +559,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 		return;
 	}
 
-	Audio().SE_Play(path, volume, tempo);
+	Audio().SE_Play(path, se.volume, se.tempo);
 }
 
 bool Game_System::IsMessageTransparent() {

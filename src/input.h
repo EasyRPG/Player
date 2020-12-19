@@ -199,6 +199,24 @@ namespace Input {
 	 */
 	std::vector<InputButton> GetAllReleased();
 
+	/**
+	 * Returns the key mask for manipulation. When a bit is set the key is
+	 * ignored even if it is mapped. Only raw reads will return the key state.
+	 *
+	 * @return key mask
+	 */
+	Input::KeyStatus GetMask();
+
+	/**
+	 * @param new_mask The new key mask to set
+	 */
+	void SetMask(Input::KeyStatus new_mask);
+
+	/**
+	 * Resets the key mask. All keys are reported again.
+	 */
+	void ResetMask();
+
 	/*
 	 * Gets if a key is pressed.
 	 * Low level function accessing keys directly bypassing the button mapping.
@@ -225,6 +243,27 @@ namespace Input {
 	 * @return whether the key is being released.
 	 */
 	bool IsRawKeyReleased(Input::Keys::InputKey key);
+
+	/**
+	 * Gets all raw keys being pressed.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawPressed();
+
+	/**
+	 * Gets all raw keys being triggered.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawTriggered();
+
+	/**
+	 * Gets all raw keys being released.
+	 *
+	 * @return a vector with the key IDs.
+	 */
+	const Input::KeyStatus& GetAllRawReleased();
 
 	/**
 	 * @return Position of the mouse cursor relative to the screen

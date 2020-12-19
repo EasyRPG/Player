@@ -54,6 +54,7 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_enemyparty.h"
+#include "game_ineluki.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_switches.h"
@@ -370,6 +371,10 @@ void Player::Update(bool update_scene) {
 	}
 
 	if (update_scene) {
+		if (Main_Data::game_ineluki) {
+			Main_Data::game_ineluki->Update();
+		}
+
 		Scene::instance->Update();
 	}
 }
@@ -803,6 +808,8 @@ void Player::CreateGameObjects() {
 	}
 
 	ResetGameObjects();
+
+	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::FindDefault("autorun.script"));
 }
 
 void Player::ResetGameObjects() {
@@ -830,12 +837,15 @@ void Player::ResetGameObjects() {
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
+	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
 
 	DynRpg::Reset();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	Main_Data::game_system->ReloadSystemGraphic();
+
+	Input::ResetMask();
 }
 
 static bool DefaultLmuStartFileExists(const FileFinder::DirectoryTree& dir) {

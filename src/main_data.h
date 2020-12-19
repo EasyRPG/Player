@@ -37,6 +37,7 @@ class Game_Switches;
 class Game_Variables;
 class Game_Targets;
 class Game_Quit;
+class Game_Ineluki;
 
 namespace Main_Data {
 	// Dynamic Game lcf::Data
@@ -51,6 +52,7 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	extern std::unique_ptr<Game_Targets> game_targets;
 	extern std::unique_ptr<Game_Quit> game_quit;
+	extern std::unique_ptr<Game_Ineluki> game_ineluki;
 
 	void Init();
 	void Cleanup();

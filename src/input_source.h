@@ -26,6 +26,8 @@
 #include "keys.h"
 
 namespace Input {
+	using KeyStatus = std::bitset<Input::Keys::KEYS_COUNT>;
+
 	enum class RecordingData : char {
 		CommandLine = 'C',
 		EventCommand = 'E', // unused - reserved
@@ -95,6 +97,9 @@ namespace Input {
 
 		Point GetMousePosition() const { return mouse_pos; }
 
+		const KeyStatus& GetMask() const { return keymask; }
+		KeyStatus& GetMask() { return keymask; }
+
 	protected:
 		void Record();
 
@@ -103,7 +108,8 @@ namespace Input {
 		DirectionMappingArray direction_mappings;
 		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
 
-		std::bitset<Input::Keys::KEYS_COUNT> keystates;
+		KeyStatus keystates;
+		KeyStatus keymask;
 		Point mouse_pos;
 
 		int last_written_frame = -1;

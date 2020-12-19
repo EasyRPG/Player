@@ -637,9 +637,6 @@ void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 
 void Sdl2Ui::ProcessMouseWheelEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	if (!Player::mouse_flag)
-		return;
-
 	// Ignore Finger (touch) events here
 	if (evnt.wheel.which == SDL_TOUCH_MOUSEID)
 		return;
@@ -660,9 +657,6 @@ void Sdl2Ui::ProcessMouseWheelEvent(SDL_Event& evnt) {
 
 void Sdl2Ui::ProcessMouseButtonEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	if (!Player::mouse_flag)
-		return;
-
 	// Ignore Finger (touch) events here
 	if (evnt.button.which == SDL_TOUCH_MOUSEID)
 		return;

@@ -46,7 +46,7 @@ namespace Input {
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
-	std::bitset<Input::Keys::KEYS_COUNT> raw_triggered, raw_pressed, raw_released;
+	Input::KeyStatus raw_triggered, raw_pressed, raw_released;
 	int dir4;
 	int dir8;
 	std::unique_ptr<Source> source;
@@ -73,6 +73,8 @@ void Input::Init(
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
+
+	ResetMask();
 }
 
 static void UpdateButton(int i, bool pressed) {
@@ -313,6 +315,18 @@ bool Input::IsRawKeyReleased(Input::Keys::InputKey key) {
 	return raw_released[key];
 }
 
+const Input::KeyStatus& Input::GetAllRawPressed() {
+	return raw_pressed;
+}
+
+const Input::KeyStatus& Input::GetAllRawTriggered() {
+	return raw_triggered;
+}
+
+const Input::KeyStatus& Input::GetAllRawReleased() {
+	return raw_released;
+}
+
 Point Input::GetMousePosition() {
 	return source->GetMousePosition();
 }
@@ -325,4 +339,38 @@ void Input::AddRecordingData(Input::RecordingData type, StringView data) {
 bool Input::IsRecording() {
 	assert(source);
 	return source->IsRecording();
+}
+
+Input::KeyStatus Input::GetMask() {
+	assert(source);
+	return source->GetMask();
+}
+
+void Input::SetMask(Input::KeyStatus new_mask) {
+	auto& old_mask = source->GetMask();
+
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	if (!Player::mouse_flag) {
+		// Mask mouse input when mouse input is not enabled
+		constexpr std::array<Input::Keys::InputKey, 7> mouse_keys = {
+			Input::Keys::MOUSE_LEFT,
+			Input::Keys::MOUSE_RIGHT,
+			Input::Keys::MOUSE_MIDDLE,
+			Input::Keys::MOUSE_XBUTTON1,
+			Input::Keys::MOUSE_XBUTTON2,
+			Input::Keys::MOUSE_SCROLLUP,
+			Input::Keys::MOUSE_SCROLLDOWN
+		};
+		for (auto k: mouse_keys) {
+			new_mask[k] = true;
+		}
+	}
+#endif
+
+	old_mask = new_mask;
+}
+
+void Input::ResetMask() {
+	assert(source);
+	SetMask(source->GetMask());
 }

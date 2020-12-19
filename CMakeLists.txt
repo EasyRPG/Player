@@ -141,6 +141,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/game_enemyparty.h
 	src/game_event.cpp
 	src/game_event.h
+	src/game_ineluki.cpp
+	src/game_ineluki.h
 	src/game_interpreter_battle.cpp
 	src/game_interpreter_battle.h
 	src/game_interpreter.cpp

@@ -131,6 +131,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_enemyparty.h \
 	src/game_event.cpp \
 	src/game_event.h \
+	src/game_ineluki.cpp \
+	src/game_ineluki.h \
 	src/game_interpreter.cpp \
 	src/game_interpreter.h \
 	src/game_interpreter_battle.cpp \
