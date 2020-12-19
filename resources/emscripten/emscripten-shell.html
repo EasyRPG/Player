@@ -1,116 +1,307 @@
 <!doctype html>
-<html lang="en-us">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EasyRPG Player</title>
   <style>
-    html { touch-action: none; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; margin: 0; color: white; background: black; }
-    #status { font-weight: bold; color: hsl(0, 0%, 55%); text-align: center; }
-    #controls { text-align: right; }
-    #controls button { -webkit-appearance: button; display: inline-flex; background: transparent; border: 0; color: white; font-family: inherit; font-size: 1em; line-height: inherit; cursor: pointer; padding: 1rem; }
-    #controls svg { pointer-events: none; }
-    #canvas { position: absolute; top: 50%; left: 50%; width: 320px; height: 240px; border: 0; image-rendering: pixelated; image-rendering: crisp-edges; transform: translate(-50%, -50%); }
-    @media all and (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
-    @media all and (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
-    @media all and (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
-    @media all and (min-width: 1280px) and (min-height: 720px) { #canvas { width: 1280px; height: 720px; } }
-    @media all and (min-width: 1600px) and (min-height: 1200px) { #canvas { width: 1600px; height: 1200px; } }
-    @media all and (min-width: 1920px) and (min-height: 1440px) { #canvas { width: 1920px; height: 1440px; } }
-    @media all and (min-width: 2240px) and (min-height: 1680px) { #canvas { width: 2240px; height: 1680px; } }
-    @media all and (min-width: 2560px) and (min-height: 1920px) { #canvas { width: 2560px; height: 1920px; } }
-    @media all and (min-width: 2880px) and (min-height: 2160px) { #canvas { width: 2880px; height: 2160px; } }
-    @media all and (min-width: 3200px) and (min-height: 2400px) { #canvas { width: 3200px; height: 2400px; } }
-    @media all and (min-width: 3520px) and (min-height: 2640px) { #canvas { width: 3520px; height: 2640px; } }
-    @media all and (min-width: 3840px) and (min-height: 2880px) { #canvas { width: 3840px; height: 2880px; } }
-    @media all and (min-width: 4160px) and (min-height: 3120px) { #canvas { width: 4160px; height: 3120px; } }
-    @media all and (min-width: 4480px) and (min-height: 3360px) { #canvas { width: 4480px; height: 3360px; } }
-    @media all and (min-width: 4800px) and (min-height: 3600px) { #canvas { width: 4800px; height: 3600px; } }
-    @media all and (min-width: 5120px) and (min-height: 3840px) { #canvas { width: 5120px; height: 3840px; } }
-    @media all and (min-width: 5440px) and (min-height: 4080px) { #canvas { width: 5440px; height: 4080px; } }
-    @media all and (min-width: 5760px) and (min-height: 4320px) { #canvas { width: 5760px; height: 4320px; } }
+    :root {
+      --color-gray: hsl(0, 0%, 55%);
+      --controls-size: 10vh;
+    }
+
+    @media (orientation: landscape) {
+      :root {
+        --controls-size: 20vh;
+      }
+    }
+
+    html {
+      touch-action: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      margin: 0;
+      color: white;
+      background: black;
+    }
+
+    .unselectable {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    #status {
+      font-size: 1.5rem;
+      color: var(--color-gray);
+      text-align: center;
+    }
+
+    #controls {
+      position: relative;
+      text-align: right;
+      z-index: 10;
+    }
+
+    #controls button {
+      -webkit-appearance: button;
+      display: inline-flex;
+      background: transparent;
+      border: 0;
+      color: white;
+      font-family: inherit;
+      font-size: 1em;
+      line-height: inherit;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    #controls svg {
+      pointer-events: none;
+    }
+
+    #canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      height: 240px;
+      border: 0;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transform: translate(-50%, -50%);
+    }
+
+    #dpad,
+    #apad {
+      position: fixed;
+      bottom: 1rem;
+    }
+
+    #dpad {
+      left: 1rem;
+    }
+
+    #apad {
+      right: 1rem;
+    }
+
+    #dpad svg {
+      width: calc(2 * var(--controls-size));
+      height: calc(2 * var(--controls-size));
+      fill: var(--color-gray);
+    }
+
+    #dpad svg rect {
+      opacity: 0.4;
+    }
+
+    #apad > * {
+      width: var(--controls-size);
+      height: var(--controls-size);
+      background-color: var(--color-gray);
+      border-radius: 50%;
+    }
+
+    #apad > :last-child {
+      position: relative;
+      right: var(--controls-size);
+    }
+
+    #dpad path:not(.active),
+    #apad > *:not(.active) {
+      opacity: 0.4;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      #apad,
+      #dpad {
+        display: none;
+      }
+    }
+
+    @media (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
+    @media (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
+    @media (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
+    @media (min-width: 1280px) and (min-height: 720px) { #canvas { width: 1280px; height: 720px; } }
+    @media (min-width: 1600px) and (min-height: 1200px) { #canvas { width: 1600px; height: 1200px; } }
+    @media (min-width: 1920px) and (min-height: 1440px) { #canvas { width: 1920px; height: 1440px; } }
+    @media (min-width: 2240px) and (min-height: 1680px) { #canvas { width: 2240px; height: 1680px; } }
+    @media (min-width: 2560px) and (min-height: 1920px) { #canvas { width: 2560px; height: 1920px; } }
+    @media (min-width: 2880px) and (min-height: 2160px) { #canvas { width: 2880px; height: 2160px; } }
+    @media (min-width: 3200px) and (min-height: 2400px) { #canvas { width: 3200px; height: 2400px; } }
+    @media (min-width: 3520px) and (min-height: 2640px) { #canvas { width: 3520px; height: 2640px; } }
+    @media (min-width: 3840px) and (min-height: 2880px) { #canvas { width: 3840px; height: 2880px; } }
+    @media (min-width: 4160px) and (min-height: 3120px) { #canvas { width: 4160px; height: 3120px; } }
+    @media (min-width: 4480px) and (min-height: 3360px) { #canvas { width: 4480px; height: 3360px; } }
+    @media (min-width: 4800px) and (min-height: 3600px) { #canvas { width: 4800px; height: 3600px; } }
+    @media (min-width: 5120px) and (min-height: 3840px) { #canvas { width: 5120px; height: 3840px; } }
+    @media (min-width: 5440px) and (min-height: 4080px) { #canvas { width: 5440px; height: 4080px; } }
+    @media (min-width: 5760px) and (min-height: 4320px) { #canvas { width: 5760px; height: 4320px; } }
   </style>
 </head>
 <body>
 
   <div id="controls">
-    <button onclick="Module['canvas'].requestFullscreen()">
+    <button id="controls-fullscreen" class="unselectable">
       <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="25" height="25"><path d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4" stroke="currentColor"></path></svg>
     </button>
   </div>
 
   <div id="status"></div>
 
-  <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()" onmouseenter="window.focus()" onclick="window.focus()"></canvas>
+  <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
 
-<script>
-  var Module = {
-    preRun: [],
-    postRun: [],
+  <div id="dpad" class="unselectable">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+      <path id="dpad-up" data-key="ArrowUp" data-key-code="38" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
+      <path id="dpad-right" data-key="ArrowRight" data-key-code="39" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
+      <path id="dpad-down" data-key="ArrowDown" data-key-code="40" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
+      <path id="dpad-left" data-key="ArrowLeft" data-key-code="37" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
+      <rect id="dpad-center" x="24" y="24" width="24" height="24" />
+    </svg>
+  </div>
 
-    print: (...args) => {
-      console.log(...args);
-    },
-
-    printErr: (...args) => {
-      console.error(...args);
-    },
-
-    canvas: (() => {
-      var canvas = document.getElementById('canvas');
-
-      // As a default initial behavior, pop up an alert when webgl context is lost
-      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-      canvas.addEventListener('webglcontextlost', event => {
-        alert('WebGL context lost. You will need to reload the page.');
-        event.preventDefault();
-      }, false);
-
-      return canvas;
-    })(),
-
-    setStatus: text => {
-      if (!Module.setStatus.last) Module.setStatus.last = {
-        time: Date.now(),
-        text: ''
-      };
-      if (text === Module.setStatus.text) return;
-      document.getElementById('status').innerHTML = text;
-    },
-
-    totalDependencies: 0,
-
-    monitorRunDependencies: left => {
-      Module.totalDependencies = Math.max(Module.totalDependencies, left);
-      Module.setStatus(left ? `Preparing... (${Module.totalDependencies - left}/${Module.totalDependencies})` : 'Downloading game data...');
-    }
-  };
-
-  Module.setStatus('Downloading...');
-
-  window.addEventListener('error', event => {
-    Module.setStatus('Exception thrown, see JavaScript console');
-    Module.setStatus = text => {
-      if (text) Module.printErr(`[post-exception status] ${text}`);
-    };
-  });
-</script>
+  <div id="apad" class="unselectable">
+    <div id="apad-escape" data-key="Escape" data-key-code="27"></div>
+    <div id="apad-enter" data-key="Enter" data-key-code="13"></div>
+  </div>
 
 {{{ SCRIPT }}}
 
 <script>
+const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
+const keys = new Map();
+const keysDown = new Map();
+const canvas = document.getElementById('canvas');
+let lastTouchedId;
+
+// Make EasyRPG player embeddable
+canvas.addEventListener('mouseenter', () => window.focus());
+canvas.addEventListener('click', () => window.focus());
+
+// Handle clicking on the fullscreen button
+document.querySelector('#controls-fullscreen').addEventListener('click', () => {
+  if (canvas.requestFullscreen) {
+    canvas.requestFullscreen();
+  }
+});
+
+/**
+ * Simulate a keyboard event on the emscripten canvas
+ *
+ * @param {string} eventType Type of the keyboard event
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function simulateKeyboardEvent(eventType, key, keyCode) {
+  const event = new Event(eventType, { bubbles: true });
+  event.key = key;
+  event.code = key;
+  // Deprecated, but necessary for emscripten somehow
+  event.keyCode = keyCode;
+  event.which = keyCode;
+
+  canvas.dispatchEvent(event);
+}
+
+/**
+ * Simulate a keyboard input from `keydown` to `keyup`
+ *
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function simulateKeyboardInput(key, keyCode) {
+  simulateKeyboardEvent('keydown', key, keyCode);
+  window.setTimeout(() => {
+    simulateKeyboardEvent('keyup', key, keyCode);
+  }, 100);
+}
+
+/**
+ * Bind a node by a specific key to simulate on touch
+ *
+ * @param {*} node The node to bind a key to
+ * @param {string} key Key to simulate
+ * @param {number} keyCode Key code to simulate (deprecated)
+ */
+function bindKey(node, key, keyCode) {
+  keys.set(node.id, { key, keyCode });
+
+  node.addEventListener('touchstart', event => {
+    event.preventDefault();
+    simulateKeyboardEvent('keydown', key, keyCode);
+    keysDown.set(event.target.id, node.id);
+    node.classList.add('active');
+  });
+
+  node.addEventListener('touchend', event => {
+    event.preventDefault();
+
+    const pressedKey = keysDown.get(event.target.id);
+    if (pressedKey && keys.has(pressedKey)) {
+      const { key, keyCode } = keys.get(pressedKey);
+      simulateKeyboardEvent('keyup', key, keyCode);
+    }
+
+    keysDown.delete(event.target.id);
+    node.classList.remove('active');
+  
+    if (lastTouchedId) {
+      document.getElementById(lastTouchedId).classList.remove('active');
+    }
+  });
+
+  // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
+  node.addEventListener('touchmove', event => {
+    const { target, clientX, clientY } = event.changedTouches[0];
+    const origTargetId = keysDown.get(target.id);
+    const nextTargetId = document.elementFromPoint(clientX, clientY).id;
+    if (origTargetId === nextTargetId) return;
+
+    if (origTargetId) {
+      const { key, keyCode } = keys.get(origTargetId);
+      simulateKeyboardEvent('keyup', key, keyCode);
+      keysDown.delete(target.id);
+      document.getElementById(origTargetId).classList.remove('active');
+    }
+
+    if (keys.has(nextTargetId)) {
+      const { key, keyCode } = keys.get(nextTargetId);
+      simulateKeyboardEvent('keydown', key, keyCode);
+      keysDown.set(target.id, nextTargetId);
+      lastTouchedId = nextTargetId;
+      document.getElementById(nextTargetId).classList.add('active');
+    }
+  })
+}
+
+// Bind all elements providing a `data-key` attribute with the
+// given key on touch-based devices
+if (hasTouchscreen) {
+  for (const button of document.querySelectorAll('[data-key]')) {
+    bindKey(button, button.dataset.key, button.dataset.keyCode);
+  }
+} else {
   // Prevent scrolling when pressing specific keys
   window.addEventListener('keydown', event => {
-    if ([
-      // arrow keys
-      32, 37, 38, 39, 40,
-      // function keys (not catchable in all browsers)
-      112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123
-    ].includes(event.keyCode)) {
+    if (preventNativeKeys.includes(event.key)) {
       event.preventDefault();
     }
-  }, false);
+  });
+
+  canvas.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    // simulateKeyboardInput('Escape', 27);
+  });
+
+  // canvas.addEventListener('click', () => {
+  //   simulateKeyboardInput('Enter', 13);
+  // });
+}
 </script>
 
 </body>
