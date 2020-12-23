@@ -52,6 +52,16 @@ public:
 	void CreateCommandWindow();
 
 	/**
+	 * Creates the Window displaying available translations.
+	 */
+	void CreateTranslationWindow();
+
+	/**
+	 * Creates the Help window and hides it
+	 */
+	void CreateHelpWindow();
+
+	/**
 	 * Plays the title music.
 	 */
 	void PlayTitleMusic();
@@ -90,6 +100,12 @@ public:
 	void CommandImport();
 
 	/**
+	 * Option Translation.
+	 * Shows the Translation menu, for picking between multiple languages or localizations
+	 */
+	void CommandTranslation();
+
+	/**
 	 * Option Shutdown.
 	 * Does a player shutdown.
 	 */
@@ -103,17 +119,60 @@ public:
 private:
 	void OnTitleSpriteReady(FileRequestResult* result);
 
+	/**
+	 * Moves a window (typically the New/Continue/Quit menu) to the middle or bottom-center of the screen.
+	 * @param window The window to resposition.
+	 * @param center_vertical If true, the menu will be centered vertically. Otherwise, it will be at the bottom of the screen.
+	 */
+	void RepositionWindow(Window_Command& window, bool center_vertical);
+
+	/**
+	 * Picks a new language based and switches to it.
+	 * @param lang_str If the empty string, switches the game to 'No Translation'. Otherwise, switch to that translation by name.
+	 */
+	void ChangeLanguage(const std::string& lang_str);
+
+	void HideTranslationWindow();
+
 	/** Displays the options of the title scene. */
 	std::unique_ptr<Window_Command> command_window;
+
+	/** Displays all available translations (languages). */
+	std::unique_ptr<Window_Command> translate_window;
+
+	/** Displays help text for a given language **/
+	std::unique_ptr<Window_Help> help_window;
+
+	/** Contains directory names for each language; entry 0 is resverd for the default (no) translation */
+	std::vector<std::string> lang_dirs;
+
+	/** Contains help strings for each language; entry 0 is resverd for the default (no) translation */
+	std::vector<std::string> lang_helps;
 
 	/** Background graphic. */
 	std::unique_ptr<Sprite> title;
 
-	/** Offsets for each selection, in case "Import" is enabled. */
-	int new_game_index =  0;
-	int continue_index =  1;
-	int exit_index     =  2;
-	int import_index   = -1;
+	/**
+	 * Current active window
+	 *   0 = command
+	 *   1 = translate
+	 */
+	int active_window = 0;
+
+	/** 
+	 * Offsets for each selection, in case "Import" or "Translate" is enabled.
+	 *   Listed in the order they may appear; exit_index will always be last,
+	 *   and import appears before translate, if it exists.
+	 * Stored in a struct for easy resetting, as Scene_Title can be reused.
+	 */
+	struct CommandIndices {
+		int new_game =  0;
+		int continue_game =  1;
+		int import = -1;
+		int translate = -1;
+		int exit =  2;
+	};
+	CommandIndices indices;
 
 	/** Contains the state of continue button. */
 	bool continue_enabled = false;

@@ -21,6 +21,7 @@
 // Headers
 #include "fileext_guesser.h"
 #include "meta.h"
+#include "translation.h"
 #include "game_clock.h"
 #include "game_config.h"
 #include <vector>
@@ -347,6 +348,9 @@ namespace Player {
 
 	/** File extension rewriter, for non-standard extensions. */
 	extern FileExtGuesser::RPG2KFileExtRemap fileext_map;
+
+	/** Translation manager, including list of languages and current translation. */
+	extern Translation translation;
 
 	/**
 	 * The default speed modifier applied when the speed up button is pressed

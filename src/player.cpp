@@ -116,6 +116,7 @@ namespace Player {
 	int patch;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
+	Translation translation;
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
@@ -680,6 +681,9 @@ void Player::CreateGameObjects() {
 		Output::Error("Invalid encoding: {}.", encoding);
 	}
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
+
+	// Check for translation-related directories and load language names.
+	translation.InitTranslations();
 
 	std::string game_path = Main_Data::GetProjectPath();
 	std::string save_path = Main_Data::GetSavePath();

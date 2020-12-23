@@ -47,6 +47,8 @@
 #define MTINI_EXVOCAB_IMPORT_SAVE_HELP_VALUE "Import Existing Save (Multi-Games Only)"
 #define MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY "Vocab_ImportSave"
 #define MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE "Import Save"
+#define MTINI_EXVOCAB_TRANSLATE_TITLE_KEY "Vocab_Translate"
+#define MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE "Translation"
 
 
 // Helper: Get the CRC32 of a given file as a hex string
@@ -216,6 +218,10 @@ std::string Meta::GetExVocabImportSaveHelpText() const {
 
 std::string Meta::GetExVocabImportSaveTitleText() const {
 	return GetExVocab(MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY, MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE);
+}
+
+std::string Meta::GetExVocabTranslateTitleText() const {
+	return GetExVocab(MTINI_EXVOCAB_TRANSLATE_TITLE_KEY, MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE);
 }
 
 std::string Meta::GetExVocab(const std::string& term, const std::string& def_value) const {

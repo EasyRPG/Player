@@ -87,9 +87,13 @@ namespace {
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  const std::string& dir,
 										  const std::string& name,
-										  char const* exts[])
+										  char const* exts[],
+										  bool translate=false)
 	{
 		using namespace FileFinder;
+
+		// Avoid searching entirely if there is no active translation
+		if (translate && Tr::GetCurrentTranslationId().empty()) { return ""; }
 
 #ifdef EMSCRIPTEN
 		// The php filefinder should have given us an useable path
@@ -99,9 +103,9 @@ namespace {
 			return em_file;
 #endif
 
-		std::string corrected_dir = lcf::ReaderUtil::Normalize(dir);
+		std::string corrected_dir = lcf::ReaderUtil::Normalize(translate?Tr::GetTranslationDir():dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = lcf::ReaderUtil::Normalize(name);
+		std::string corrected_name = lcf::ReaderUtil::Normalize(translate?MakePath(MakePath(Tr::GetCurrentTranslationId(), dir), name):name);
 
 		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);
@@ -229,9 +233,18 @@ namespace {
 		return normal_search();
 	}
 
-	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
+	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[], bool tryTranslate=false) {
+		// Search for translated resources first.
 		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
-		std::string ret = FindFile(*tree, dir, name, exts);
+		if (tryTranslate) {
+			std::string ret = FindFile(*tree, dir, name, exts, true);
+			if (!ret.empty()) {
+				return ret;
+			}
+		}
+
+		// Try without translating.
+		std::string ret = FindFile(*tree, dir, name, exts, false);
 		if (!ret.empty()) {
 			return ret;
 		}
@@ -685,7 +698,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 #endif
 
 	static const char* IMG_TYPES[] = { ".bmp",  ".png", ".xyz", NULL };
-	return FindFile(dir, name, IMG_TYPES);
+	return FindFile(dir, name, IMG_TYPES, true);
 }
 
 std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
