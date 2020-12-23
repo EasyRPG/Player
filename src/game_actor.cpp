@@ -106,6 +106,7 @@ void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
 		data.super_guard = dbActor->super_guard;
 	}
 
+	MakeExpList();
 	Fixup();
 }
 
