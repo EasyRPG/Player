@@ -142,6 +142,7 @@ void Window_SaveFile::Refresh() {
 }
 
 void Window_SaveFile::Update() {
-	Window_Base::Update();
+	Window::Update();
+	Window_Base::UpdateMovement();
 	UpdateCursorRect();
 }
