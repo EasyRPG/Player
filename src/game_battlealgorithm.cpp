@@ -1054,6 +1054,9 @@ bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	if (item) {
 		return Main_Data::game_party->GetItemTotalCount(item->ID) > 0;
 	}
+	if (!source->IsSkillUsable(skill.ID)) {
+		return false;
+	}
 	// RPG_RT performs this check only for enemies and if skill is single target
 	const auto* target = GetOriginalSingleTarget();
 	if (source->GetType() == Game_Battler::Type_Enemy && target && target->GetType() == source->GetType()) {
@@ -1061,7 +1064,7 @@ bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 			return false;
 		}
 	}
-	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
+	return true;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const lcf::rpg::Item& item) :

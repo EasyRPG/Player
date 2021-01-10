@@ -8,6 +8,7 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "game_player.h"
+#include "game_battle.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -124,6 +125,11 @@ struct MockBattle : public MockActor {
 			tp.members[i].enemy_id = i + 1;
 		}
 		Main_Data::game_enemyparty->ResetBattle(1);
+		Game_Battle::battle_running = true;
+	}
+
+	~MockBattle() {
+		Game_Battle::battle_running = false;
 	}
 };
 

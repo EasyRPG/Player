@@ -632,7 +632,7 @@ public:
 
 	// Emulates an RPG_RT bug where whenver an actor attacks an enemy, the hit rate and damage
 	// is adjusted as if the enemy were in the front row.
-	void SetTreatEnemiesAsifInFrontRow(bool v);
+	void SetTreatEnemiesAsIfInFrontRow(bool v);
 
 	// Return true if this is a charged attack.
 	bool IsChargedAttack() const;
@@ -990,7 +990,7 @@ inline bool Game_BattleAlgorithm::AlgorithmBase::SetIsAbsorbAgi(bool a) {
 	return a;
 }
 
-inline void Game_BattleAlgorithm::Normal::SetTreatEnemiesAsifInFrontRow(bool v) {
+inline void Game_BattleAlgorithm::Normal::SetTreatEnemiesAsIfInFrontRow(bool v) {
 	treat_enemies_asif_in_front_row = v;
 }
 

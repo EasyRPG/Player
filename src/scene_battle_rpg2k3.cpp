@@ -1880,7 +1880,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	// Emulate an RPG_RT bug where whenver actors attack, the damage and evasion calculations are performed
 	// as if the enemies are in the front row.
 	if (source->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Normal) {
-		static_cast<Game_BattleAlgorithm::Normal*>(action)->SetTreatEnemiesAsifInFrontRow(true);
+		static_cast<Game_BattleAlgorithm::Normal*>(action)->SetTreatEnemiesAsIfInFrontRow(true);
 	}
 
 	// Setup enemy targets
@@ -1927,6 +1927,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return BattleActionReturn::eWait;
 	}
+
+	// If the event made the current action ususable, such as MP loss or silence etc..
+	PrepareBattleAction(source);
+	pending_battle_action = source->GetBattleAlgorithm();
+	action = pending_battle_action.get();
 
 	// Now perform filtering. RPG_RT will run events but will early abort the battle algo if any of the following conditions hold.
 	// FIXME: RPG_RT doesn't actually check hidden (maybe it's impossible?) But we do it here for extensions.
