@@ -1523,6 +1523,9 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionSt
 		// If we were killed by state
 		if (!was_dead && target->IsDead()) {
 			ProcessBattleActionDeath(action);
+			SetBattleActionState(next_state);
+			// FIXES an RPG_RT bug where RPG_RT does an extra SetWait(4,4), SetWait(20,60) on death state infliction
+			return BattleActionReturn::eContinue;
 		}
 		SetBattleActionSubState(ePreWait, false);
 		return BattleActionReturn::eContinue;
