@@ -2174,14 +2174,20 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (target->GetType() == Game_Battler::Type_Enemy) {
 			auto* enemy = static_cast<Game_Enemy*>(target);
 			enemy->SetBlinkTimer();
-			if (!was_dead && enemy->IsDead()) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-				enemy->SetDeathTimer();
-			}
 		} else {
 			target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Damage, Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
 		}
 	}
+
+
+	if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Enemy) {
+		auto* enemy = static_cast<Game_Enemy*>(target);
+		if (!was_dead && enemy->IsDead()) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
+			enemy->SetDeathTimer();
+		}
+	}
+
 	if (target_sprite) {
 		target_sprite->DetectStateChange();
 	}
