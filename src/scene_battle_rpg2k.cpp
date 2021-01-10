@@ -306,6 +306,8 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionStar
 
 		if (battle_message_window->IsPageFilled()) {
 			battle_message_window->Clear();
+			SetWait(4, 4);
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		battle_message_window->Push(*battle_result_messages_it);
@@ -1769,6 +1771,7 @@ void Scene_Battle_Rpg2k::SetWaitForUsage(Game_BattleAlgorithm::Type type, int an
 			max_wait = 60;
 			break;
 		case Game_BattleAlgorithm::Type::None:
+		case Game_BattleAlgorithm::Type::DoNothing:
 			min_wait = max_wait = 0;
 			break;
 		default:
