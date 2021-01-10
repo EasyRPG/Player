@@ -1492,6 +1492,12 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionSt
 
 		for (;idx < (int)states.size(); ++idx) {
 			auto& se = states[idx];
+			// Already applied earlier after damage
+			if (se.effect == Game_BattleAlgorithm::StateEffect::HealedByAttack) {
+				++idx;
+				return BattleActionReturn::eContinue;
+			}
+
 			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, se.state_id);
 			if (!state) {
 				continue;
