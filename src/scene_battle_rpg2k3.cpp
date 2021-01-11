@@ -515,6 +515,9 @@ void Scene_Battle_Rpg2k3::RefreshTargetWindow() {
 	// FIXME: Handle live refresh in traditional when the window is always visible
 	auto commands = GetEnemyTargetNames();
 	target_window->ReplaceCommands(std::move(commands));
+	if (!target_window->GetActive()) {
+		target_window->SetIndex(-1);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
@@ -942,6 +945,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt) {
 #else
 	(void)page;
 #endif
+	RefreshTargetWindow();
 
 	return !interp.IsRunning();
 }
@@ -2237,6 +2241,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (!was_dead && enemy->IsDead()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 			enemy->SetDeathTimer();
+			RefreshTargetWindow();
 		}
 	}
 
