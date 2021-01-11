@@ -7,7 +7,7 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LIBRARIES = libeasyrpg-player.a
 libeasyrpg_player_a_SOURCES = \
-	src/lcf/data.cpp \
+	src/lcf_data.cpp \
 	src/lcf/data.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
