@@ -78,6 +78,7 @@ public:
 	void Start() override;
 	void Update() override;
 	void OnPartyChanged(Game_Actor* actor, bool add) override;
+	void OnEventHpChanged(Game_Battler* battler, int hp) override;
 
 protected:
 	void Start2();

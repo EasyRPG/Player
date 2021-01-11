@@ -1724,6 +1724,11 @@ bool Game_Interpreter::CommandChangeHP(lcf::rpg::EventCommand const& com) { // C
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeHp(amount, lethal);
 
+		auto& scene = Scene::instance;
+		if (scene) {
+			scene->OnEventHpChanged(actor, amount);
+		}
+
 		if (actor->IsDead() && actor->GetActorBattleSprite()) {
 			actor->GetActorBattleSprite()->DetectStateChange();
 		}

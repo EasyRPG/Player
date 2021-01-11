@@ -1978,7 +1978,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 					b->GetBattlePosition().x,
 					b->GetBattlePosition().y,
 					damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-					std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
+					std::to_string(std::abs(damageTaken)));
 		}
 	}
 
@@ -2451,4 +2451,12 @@ void Scene_Battle_Rpg2k3::OnPartyChanged(Game_Actor* actor, bool added) {
 			InitActors();
 			ResetAllBattlerZ();
 			});
+}
+
+void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
+	DrawFloatText(
+			battler->GetBattlePosition().x,
+			battler->GetBattlePosition().y,
+			hp < 0 ? Font::ColorDefault : Font::ColorHeal,
+			std::to_string(std::abs(hp)));
 }

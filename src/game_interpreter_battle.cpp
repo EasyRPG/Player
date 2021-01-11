@@ -287,6 +287,11 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 
 	enemy.ChangeHp(change, lethal);
 
+	auto& scene = Scene::instance;
+	if (scene) {
+		scene->OnEventHpChanged(&enemy, change);
+	}
+
 	if (enemy.IsDead()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 		enemy.SetDeathTimer();

@@ -26,6 +26,7 @@
 #include <functional>
 #include <lcf/rpg/savesystem.h>
 
+class Game_Battler;
 class Game_Actor;
 
 /**
@@ -260,6 +261,7 @@ public:
 	bool UsesSharedDrawables() const;
 
 	virtual void OnPartyChanged(Game_Actor* actor, bool add);
+	virtual void OnEventHpChanged(Game_Battler* battler, int hp);
 
 protected:
 	using AsyncContinuation = std::function<void(void)>;
