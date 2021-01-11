@@ -430,6 +430,9 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 					auto* state = enemy->GetSignificantState();
 					if (state) {
 						help_window->SetText(ToString(state->name), state->color);
+						help_window->SetVisible(true);
+					} else {
+						help_window->SetVisible(false);
 					}
 
 					if (sprite_frame % 30 == 0) {
@@ -1418,7 +1421,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 				break;
 		}
 
-		help_window->SetVisible(true);
 		target_window->SetActive(true);
 
 		SetSceneActionSubState(eWaitInput);
