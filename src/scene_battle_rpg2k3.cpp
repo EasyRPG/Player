@@ -2176,11 +2176,11 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	action->ApplyStateEffects();
 	action->ApplyAttributeShiftEffects();
 
-	if (action->IsSuccess() && action->GetAffectedHp() < 0) {
+	if (action->IsSuccess() && action->IsAffectHp() && action->GetAffectedHp() <= 0) {
 		if (target->GetType() == Game_Battler::Type_Enemy) {
 			auto* enemy = static_cast<Game_Enemy*>(target);
 			enemy->SetBlinkTimer();
-		} else {
+		} else if (action->GetAffectedHp() < 0) {
 			target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Damage, Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
 		}
 	}
