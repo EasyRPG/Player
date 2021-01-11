@@ -60,7 +60,6 @@ public:
 		BattleActionState_Notify,
 		BattleActionState_Combo,
 		BattleActionState_StartAlgo,
-		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
 		BattleActionState_FinishPose,
 		BattleActionState_Execute,
@@ -180,7 +179,6 @@ protected:
 	BattleActionReturn ProcessBattleActionNotify(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionCombo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
-	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);

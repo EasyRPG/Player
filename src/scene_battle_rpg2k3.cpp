@@ -1851,8 +1851,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			return ProcessBattleActionCombo(action);
 		case BattleActionState_StartAlgo:
 			return ProcessBattleActionStartAlgo(action);
-		case BattleActionState_Animation:
-			return ProcessBattleActionAnimation(action);
 		case BattleActionState_AnimationReflect:
 			return ProcessBattleActionAnimationReflect(action);
 		case BattleActionState_FinishPose:
@@ -2062,11 +2060,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 	}
 
-	SetBattleActionState(BattleActionState_Animation);
-	return BattleActionReturn::eContinue;
-}
-
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
 	const auto anim_id = action->GetAnimationId(0);
 	if (anim_id) {
 		action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetSource()));
