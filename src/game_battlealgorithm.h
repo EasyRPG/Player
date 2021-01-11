@@ -663,6 +663,9 @@ public:
 	bool IsReflected(const Game_Battler&) const override;
 	bool ActionIsPossible() const override;
 
+	const lcf::rpg::Skill& GetSkill() const;
+	const lcf::rpg::Item* GetItem() const;
+
 private:
 	void Init();
 	std::string GetFirstStartMessage() const;
@@ -996,6 +999,14 @@ inline void Game_BattleAlgorithm::Normal::SetTreatEnemiesAsIfInFrontRow(bool v) 
 
 inline bool Game_BattleAlgorithm::Normal::IsChargedAttack() const {
 	return charged_attack;
+}
+
+inline const lcf::rpg::Skill& Game_BattleAlgorithm::Skill::GetSkill() const {
+	return skill;
+}
+
+inline const lcf::rpg::Item* Game_BattleAlgorithm::Skill::GetItem() const {
+	return item;
 }
 
 } //namespace Game_BattleAlgorithm

@@ -336,11 +336,24 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		attribute_shift.clear();
 	}
 
+	if (!Game_Battle::IsBattleRunning()) {
+		return was_added;
+	}
+
 	if (GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
 		SetIsDefending(false);
 		SetCharged(false);
 		if (GetBattleAlgorithm() != nullptr
 				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None) {
+			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
+		}
+	}
+
+	if (GetBattleAlgorithm() != nullptr && GetBattleAlgorithm()->GetType() == Game_BattleAlgorithm::Type::Skill) {
+		auto* algo = static_cast<Game_BattleAlgorithm::Skill*>(GetBattleAlgorithm().get());
+		auto& skill = algo->GetSkill();
+		if (!IsSkillUsable(skill.ID)) {
+			SetCharged(false);
 			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
 		}
 	}
