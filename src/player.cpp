@@ -902,14 +902,20 @@ void Player::LoadDatabase() {
 	if (is_easyrpg_project) {
 		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
 		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios::ios_base::in );
-		if (!lcf::LDB_Reader::LoadXml(edb_stream)) {
+		auto db = lcf::LDB_Reader::LoadXml(edb_stream);
+		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		} else {
+			lcf::Data::data = std::move(*db);
 		}
 
 		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
 		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios::ios_base::in);
-		if (!lcf::LMT_Reader::LoadXml(emt_stream)) {
+		auto treemap = lcf::LMT_Reader::LoadXml(emt_stream);
+		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		} else {
+			lcf::Data::treemap = std::move(*treemap);
 		}
 	} else {
 		// Retrieve the appropriately-renamed files.
@@ -917,13 +923,19 @@ void Player::LoadDatabase() {
 		std::string lmt = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT));
 
 		auto ldb_stream = FileFinder::OpenInputStream(ldb);
-		if (!lcf::LDB_Reader::Load(ldb_stream, encoding)) {
+		auto db = lcf::LDB_Reader::Load(ldb_stream, encoding);
+		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		} else {
+			lcf::Data::data = std::move(*db);
 		}
 
 		auto lmt_stream = FileFinder::OpenInputStream(lmt);
-		if (!lcf::LMT_Reader::Load(lmt_stream, encoding)) {
+		auto treemap = lcf::LMT_Reader::Load(lmt_stream, encoding);
+		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+		} else {
+			lcf::Data::treemap = std::move(*treemap);
 		}
 
 		if (Input::IsRecording()) {

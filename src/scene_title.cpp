@@ -241,7 +241,7 @@ void Scene_Title::CreateTranslationWindow() {
 
 	translate_window.reset(new Window_Command(lang_names));
 	translate_window->UpdateHelpFn = [this](Window_Help& win, int index) {
-		if (index>=0 && index<lang_helps.size()) {
+		if (index >= 0 && index < static_cast<int>(lang_helps.size())) {
 			win.SetText(lang_helps[index]);
 		} else {
 			win.SetText("");

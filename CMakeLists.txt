@@ -18,6 +18,8 @@ option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
 # Source Files
 add_library(${PROJECT_NAME} STATIC
+	src/lcf/data.cpp
+	src/lcf/data.h
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h

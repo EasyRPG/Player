@@ -140,7 +140,8 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 			sme.map_id = 0;
 		}
 	}
-	lcf::LSD_Reader::Save(os, save, Player::encoding);
+	auto lcf_engine = Player::IsRPG2k3() ? lcf::EngineVersion::e2k3 : lcf::EngineVersion::e2k;
+	lcf::LSD_Reader::Save(os, save, lcf_engine, Player::encoding);
 
 	DynRpg::Save(slot_id);
 
