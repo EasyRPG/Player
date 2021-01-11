@@ -704,6 +704,13 @@ void Scene_Battle_Rpg2k3::CreateEnemyActions() {
 }
 
 void Scene_Battle_Rpg2k3::CreateActorAutoActions() {
+	if (state != State_SelectActor
+			&& state != State_AutoBattle
+			&& state != State_Battle
+			) {
+		return;
+	}
+
 	// FIXME: RPG_RT checks only actor animations?
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		if (!actor->IsAtbGaugeFull()
