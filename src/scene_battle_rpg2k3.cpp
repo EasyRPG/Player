@@ -2142,6 +2142,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
 	auto* target = action->GetTarget();
 
 	Sprite_Actor* target_sprite = nullptr;
@@ -2209,6 +2210,14 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 						target->GetBattlePosition().y,
 						hp > 0 ? Font::ColorHeal : Font::ColorDefault,
 						std::to_string(std::abs(hp)));
+
+				if (action->IsAbsorbHp()) {
+					DrawFloatText(
+							source->GetBattlePosition().x,
+							source->GetBattlePosition().y,
+							hp > 0 ? Font::ColorDefault : Font::ColorHeal,
+							std::to_string(std::abs(hp)));
+				}
 			}
 
 			if (!action->IsPositive() && !action->IsAbsorbHp()) {
