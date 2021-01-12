@@ -57,7 +57,7 @@ public:
 
 	static std::unique_ptr<DirectoryTree> Create();
 	static std::unique_ptr<DirectoryTree> Create(std::string path);
-	DirectoryTreeView AsView(std::string sub_path);
+	DirectoryTreeView Subtree(std::string sub_path);
 
 	// Helper functions for finding files in a case insensitive way
 	/**
@@ -116,6 +116,7 @@ public:
 	StringView GetRootPath() const;
 	std::string MakePath(StringView subdir) const;
 	DirectoryTree::DirectoryListType* ListDirectory(StringView path = "") const;
+	DirectoryTreeView Subtree(const std::string& sub_path);
 
 	explicit operator bool() const noexcept;
 
@@ -143,6 +144,6 @@ inline bool operator!=(const DirectoryTree::Entry& l, const DirectoryTree::Entry
 	return !(l == r);
 }
 
-inline DirectoryTree::operator DirectoryTreeView() { return AsView(""); }
+inline DirectoryTree::operator DirectoryTreeView() { return Subtree(""); }
 
 #endif

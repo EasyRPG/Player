@@ -68,7 +68,7 @@ TEST_CASE("RTP 2003: lookup table is correct") {
 
 TEST_CASE("RTP 2000: Detection") {
 	auto tree = make_tree();
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree->AsView(), 2000);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*tree, 2000);
 
 	REQUIRE(hits.size() == 2);
 
@@ -80,7 +80,7 @@ TEST_CASE("RTP 2000: Detection") {
 }
 
 TEST_CASE("RTP 2003: Detection") {
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree()->AsView(), 2003);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*make_tree(), 2003);
 
 	REQUIRE(hits.size() == 2);
 

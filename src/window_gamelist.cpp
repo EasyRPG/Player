@@ -42,7 +42,7 @@ void Window_GameList::Refresh() {
 			continue;
 		}
 
-		DirectoryTreeView subtree = tree->AsView(dir.second.name);
+		DirectoryTreeView subtree = tree->Subtree(dir.second.name);
 		if (FileFinder::IsValidProject(subtree)) {
 			game_directories.push_back(dir.second.name);
 		}

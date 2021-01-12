@@ -162,7 +162,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	return &fs_cache.find(dir_key)->second;
 }
 
-DirectoryTreeView DirectoryTree::AsView(std::string sub_path) {
+DirectoryTreeView DirectoryTree::Subtree(std::string sub_path) {
 	return DirectoryTreeView(this, std::move(sub_path));
 }
 
@@ -275,4 +275,8 @@ std::string DirectoryTreeView::MakePath(StringView subdir) const {
 
 DirectoryTree::DirectoryListType* DirectoryTreeView::ListDirectory(StringView path) const {
 	return tree->ListDirectory(MakePath(path));
+}
+
+DirectoryTreeView DirectoryTreeView::Subtree(const std::string& sub_path) {
+	return DirectoryTreeView(tree, MakePath(sub_path));
 }

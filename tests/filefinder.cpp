@@ -29,7 +29,7 @@ TEST_CASE("IsRPG2kProject") {
 	Main_Data::Init();
 
 	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/game");
-	CHECK(FileFinder::IsRPG2kProject(tree->AsView()));
+	CHECK(FileFinder::IsRPG2kProject(*tree));
 
 	Player::escape_symbol = "\\";
 	FileFinder::SetDirectoryTree(std::move(tree));
@@ -40,7 +40,7 @@ TEST_CASE("IsNotRPG2kProject") {
 	Main_Data::Init();
 
 	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/notagame");
-	CHECK(!FileFinder::IsRPG2kProject(tree->AsView()));
+	CHECK(!FileFinder::IsRPG2kProject(*tree));
 }
 
 TEST_SUITE_END();
