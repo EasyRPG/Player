@@ -87,7 +87,6 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 
 		auto* parent_tree = ListDirectory(parent_dir);
 		if (!parent_tree) {
-			Output::Debug("Error opening dir {}", parent_dir);
 			return nullptr;
 		}
 
@@ -184,6 +183,16 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	if (FileFinder::Exists(canonical_path))
 		return canonical_path;
 #endif
+
+	if (args.translate && !Tr::GetCurrentTranslationId().empty()) {
+		// Search in the active language tree but do not translate again and swallow not found warnings
+		auto translated_file = Tr::GetCurrentTranslationTree().FindFile(
+				{args.path, args.exts, args.canonical_initial_deepness, args.use_rtp, false, false});
+		if (!translated_file.empty()) {
+			DebugLog("Translated {} as {}", args.path, translated_file);
+			return translated_file;
+		}
+	}
 
 	std::tie(dir, name) = FileFinder::GetPathAndFilename(canonical_path);
 	DebugLog("FindFile: {} | {} | {}", canonical_path, dir, name);

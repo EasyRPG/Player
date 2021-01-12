@@ -20,6 +20,7 @@
 // Headers
 #include <fstream>
 #include <iomanip>
+#include <memory>
 #include <lcf/data.h>
 #include <lcf/rpg/terms.h>
 #include <lcf/rpg/map.h>
@@ -52,13 +53,18 @@
 #define TRCUST_ADDMSG           "<easyrpg:new_page>"
 
 
-std::string Tr::GetTranslationDir() {
-	return Player::translation.RootDir();
+DirectoryTreeView Tr::GetTranslationTree() {
+	return Player::translation.GetRootTree();
 }
 
 std::string Tr::GetCurrentTranslationId() {
 	return Player::translation.GetCurrentLanguageId();
 }
+
+DirectoryTreeView Tr::GetCurrentTranslationTree() {
+	return Player::translation.GetRootTree().Subtree(GetCurrentTranslationId());
+}
+
 
 void Translation::Reset()
 {
@@ -66,7 +72,6 @@ void Translation::Reset()
 
 	languages.clear();
 	current_language = "";
-	translation_root_dir = "";
 }
 
 void Translation::InitTranslations()
@@ -76,26 +81,21 @@ void Translation::InitTranslations()
 
 	// Determine if the "languages" directory exists, and convert its case.
 	auto tree = FileFinder::GetDirectoryTree();
-	auto langIt = tree->directories.find(TRDIR_NAME);
-	if (langIt != tree->directories.end()) {
-		// Save the root directory for later.
-		translation_root_dir = langIt->second;
-
+	translation_root_tree = tree.Subtree(TRDIR_NAME);
+	if (translation_root_tree) {
 		// Now list all directories within the translate dir
-		auto translation_path = FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, translation_root_dir);
-		auto translation_tree = FileFinder::CreateDirectoryTree(translation_path, FileFinder::RECURSIVE);
-		if (translation_tree == nullptr) {  return; }
+		auto translation_tree = translation_root_tree.ListDirectory();
 
 		// Now iterate over every subdirectory.
-		for (const auto& trName : translation_tree->directories) {
+		for (const auto& tr_name : *translation_tree) {
 			Language item;
-			item.lang_dir = trName.second;
-			item.lang_name = trName.second;
+			item.lang_dir = tr_name.second.name;
+			item.lang_name = tr_name.second.name;
 
 			// If there's a manifest file, read the language name and help text from that.
-			std::string metaName = FileFinder::FindDefault(*translation_tree, trName.second, TRFILE_META_INI);
-			if (!metaName.empty()) {
-				lcf::INIReader ini(metaName);
+			std::string meta_name = translation_root_tree.FindFile(item.lang_dir, TRFILE_META_INI);
+			if (!meta_name.empty()) {
+				lcf::INIReader ini(meta_name);
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
 			}
@@ -110,9 +110,9 @@ std::string Translation::GetCurrentLanguageId() const
 	return current_language;
 }
 
-std::string Translation::RootDir() const
+DirectoryTreeView Translation::GetRootTree() const
 {
-	return translation_root_dir;
+	return translation_root_tree;
 }
 
 bool Translation::HasTranslations() const 
@@ -154,12 +154,12 @@ void Translation::SelectLanguage(const std::string& lang_id)
 
 bool Translation::ParseLanguageFiles(const std::string& lang_id)
 {
+	DirectoryTreeView language_tree;
+
 	// Create the directory tree (for lookups).
-	std::shared_ptr<FileFinder::DirectoryTree> translation_tree;
-	if (lang_id != "") {
-		auto translation_path = FileFinder::MakePath(FileFinder::MakePath(FileFinder::GetDirectoryTree()->directory_path, RootDir()), lang_id);
-		translation_tree = FileFinder::CreateDirectoryTree(translation_path, FileFinder::FILES);
-		if (translation_tree == nullptr) {
+	if (!lang_id.empty()) {
+		language_tree = GetRootTree().Subtree(lang_id);
+		if (!language_tree) {
 			Output::Warning("Translation for '{}' does not appear to exist", lang_id);
 			return false;
 		}
@@ -169,31 +169,35 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 	ClearTranslationLookups();
 
 	// For default, this is all we need.
-	if (translation_tree == nullptr) {
+	if (!language_tree) {
 		return true;
 	}
 
 	// Scan for files in the directory and parse them.
-	for (const auto& trName : translation_tree->files) {
-		std::string fileName = FileFinder::FindDefault(*translation_tree, trName.first);
+	for (const auto& tr_name : *language_tree.ListDirectory()) {
+		if (tr_name.second.type != DirectoryTree::FileType::Regular) {
+			continue;
+		}
 
-		if (trName.first == TRFILE_RPG_RT_LDB) {
-			sys.reset(new Dictionary());
-			ParsePoFile(fileName, *sys);
-		} else if (trName.first == TRFILE_RPG_RT_BATTLE) {
-			battle.reset(new Dictionary());
-			ParsePoFile(fileName, *battle);
-		} else if (trName.first == TRFILE_RPG_RT_COMMON) {
-			common.reset(new Dictionary());
-			ParsePoFile(fileName, *common);
-		} else if (trName.first == TRFILE_RPG_RT_LMT) {
-			mapnames.reset(new Dictionary());
-			ParsePoFile(fileName, *mapnames);
+		auto is = FileFinder::OpenInputStream(language_tree.FindFile(tr_name.first));
+
+		if (tr_name.first == TRFILE_RPG_RT_LDB) {
+			sys = std::make_unique<Dictionary>();
+			ParsePoFile(std::move(is), *sys);
+		} else if (tr_name.first == TRFILE_RPG_RT_BATTLE) {
+			battle = std::make_unique<Dictionary>();
+			ParsePoFile(std::move(is), *battle);
+		} else if (tr_name.first == TRFILE_RPG_RT_COMMON) {
+			common = std::make_unique<Dictionary>();
+			ParsePoFile(std::move(is), *common);
+		} else if (tr_name.first == TRFILE_RPG_RT_LMT) {
+			mapnames = std::make_unique<Dictionary>();
+			ParsePoFile(std::move(is), *mapnames);
 		} else {
 			std::unique_ptr<Dictionary> dict;
-			dict.reset(new Dictionary());
-			ParsePoFile(fileName, *dict);
-			maps[trName.first] = std::move(dict);
+			dict = std::make_unique<Dictionary>();
+			ParsePoFile(std::move(is), *dict);
+			maps[tr_name.first] = std::move(dict);
 		}
 	}
 
@@ -618,18 +622,15 @@ void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map&
 	}
 }
 
-
-void Translation::ParsePoFile(const std::string& path, Dictionary& out)
+void Translation::ParsePoFile(Filesystem_Stream::InputStream is, Dictionary& out)
 {
-	std::ifstream in(path.c_str());
-	if (in.good()) {
-		if (!Dictionary::FromPo(out, in)) {
-			Output::Warning("Failure parsing PO file, resetting: '{}'", path);
-			out = Dictionary(); 
+	if (is.good()) {
+		if (!Dictionary::FromPo(out, is)) {
+			Output::Warning("Failure parsing PO file, resetting");
+			out = Dictionary();
 		}
 	}
 }
-
 
 void Translation::ClearTranslationLookups()
 {

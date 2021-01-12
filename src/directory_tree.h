@@ -51,6 +51,7 @@ public:
 		int canonical_initial_deepness = 0;
 		bool use_rtp = false;
 		bool file_not_found_warning = false;
+		bool translate = false;
 	};
 
 	using DirectoryListType = std::unordered_map<std::string, Entry>;
