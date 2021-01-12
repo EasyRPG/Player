@@ -141,7 +141,7 @@ std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView pa
 	std::string path_copy = ToString(path);
 	ConvertPathDelimiters(path_copy);
 
-	const size_t last_slash_idx = path.find_last_of("/");
+	const size_t last_slash_idx = path_copy.find_last_of("/");
 	if (last_slash_idx == std::string::npos) {
 		return {ToString(""), path_copy};
 	}
@@ -207,7 +207,7 @@ std::string GetFontsPath() {
 }
 
 std::string GetFontFilename(StringView name) {
-	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
+	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
 	if (real_name.length() > 0) {
 		if (FileFinder::Exists(real_name))
 			return real_name;
@@ -215,7 +215,7 @@ std::string GetFontFilename(StringView name) {
 			return GetFontsPath() + real_name;
 	}
 
-	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", name + " (TrueType)");
+	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
 	if (real_name.length() > 0) {
 		if (FileFinder::Exists(real_name))
 			return real_name;
@@ -223,7 +223,7 @@ std::string GetFontFilename(StringView name) {
 			return GetFontsPath() + real_name;
 	}
 
-	return name;
+	return ToString(name);
 }
 #endif
 
@@ -237,7 +237,7 @@ std::string FileFinder::FindFont(StringView name) {
 	}
 
 	std::string folder_path = "";
-	std::string filename = name;
+	std::string filename = ToString(name);
 
 	size_t separator_pos = path.rfind('\\');
 	if (separator_pos != std::string::npos) {
