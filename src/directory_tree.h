@@ -49,8 +49,8 @@ public:
 		std::string path;
 		lcf::Span<StringView> exts;
 		int canonical_initial_deepness = 0;
-		bool use_rtp = true;
-		bool file_not_found_warning = true;
+		bool use_rtp = false;
+		bool file_not_found_warning = false;
 	};
 
 	using DirectoryListType = std::unordered_map<std::string, Entry>;

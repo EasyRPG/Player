@@ -229,7 +229,7 @@ std::string GetFontFilename(StringView name) {
 
 std::string FileFinder::FindFont(StringView name) {
 	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
-	std::string path = game_directory_tree->FindFile({ MakePath("Font", name), FONTS_TYPES, 1 });
+	std::string path = game_directory_tree->FindFile({ MakePath("Font", name), FONTS_TYPES, 1, true, true });
 
 #if defined(_WIN32) && !defined(_ARM_)
 	if (!path.empty()) {
@@ -309,7 +309,7 @@ std::string FileFinder::FindImage(StringView dir, StringView name) {
 #endif
 
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	return game_directory_tree->FindFile({ MakePath(dir, name), IMG_TYPES, 1 });
+	return game_directory_tree->FindFile({ MakePath(dir, name), IMG_TYPES, 1, true, true });
 }
 
 std::string FileFinder::FindDefault(StringView dir, StringView name) {
@@ -364,7 +364,7 @@ std::string FileFinder::FindMusic(StringView name) {
 
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	return game_directory_tree->FindFile({ MakePath("Music", name), MUSIC_TYPES, 1 });
+	return game_directory_tree->FindFile({ MakePath("Music", name), MUSIC_TYPES, 1, true, true });
 }
 
 std::string FileFinder::FindSound(StringView name) {
@@ -374,7 +374,7 @@ std::string FileFinder::FindSound(StringView name) {
 
 	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	return game_directory_tree->FindFile({ MakePath("Sound", name), SOUND_TYPES, 1 });
+	return game_directory_tree->FindFile({ MakePath("Sound", name), SOUND_TYPES, 1, true, true });
 }
 
 bool FileFinder::Exists(StringView filename) {

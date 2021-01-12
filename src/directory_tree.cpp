@@ -101,7 +101,6 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 			full_path = FileFinder::MakePath(MakePath(parent_it->second), child_it->second.name);
 			fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
 		} else {
-			Output::Debug("Directory {} not found", FileFinder::MakePath(parent_dir, child_dir));
 			return nullptr;
 		}
 	}
