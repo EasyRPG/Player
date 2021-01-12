@@ -27,7 +27,7 @@
 
 
 /**
- * The Meta class loads from a file (easyrpg.ini) and contains 
+ * The Meta class loads from a file (easyrpg.ini) and contains
  * additional information on a per-game basis.
  * Every public function in this class is safe to call and
  * returns sensible defaults, even if the INI file passed
@@ -73,12 +73,12 @@ public:
 	};
 
 	/**
-	 * Retrieves a vector of paths of child games (../ from the current game) that may be 
+	 * Retrieves a vector of paths of child games (../ from the current game) that may be
 	 * considered when searching for multi-game save files. These should be passed to SearchImportPaths()
 	 * @param parent_tree the tree for the parent folder of the current game (../)
 	 * @return vector of paths of child game folders, including that of the current game
 	 */
-	std::vector<std::string> GetImportChildPaths(DirectoryTreeView parent_tree) const;
+	std::vector<std::string> GetImportChildPaths(const DirectoryTreeView& parent_tree) const;
 
 	/**
 	 * Given a parent/child game, retrieves a vector of save files that are considered for multi-game importing.
@@ -86,7 +86,7 @@ public:
 	 * @param child_path the path of the child relative to parent_tree
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> SearchImportPaths(DirectoryTreeView parent_tree, StringView child_path) const;
+	std::vector<FileItem> SearchImportPaths(const DirectoryTreeView& parent_tree, StringView child_path) const;
 
 	/**
 	 * Retrieve the LDB extension's replacement in non-standard projects.
@@ -128,8 +128,8 @@ public:
 	 * Retrieve the menu item text for Scen_Title translations (languages)
 	 * @return the INI-defined value, or the default value for this vocabulary term
 	 */
-	std::string GetExVocabTranslateTitleText() const; 
-	
+	std::string GetExVocabTranslateTitleText() const;
+
 
 private:
 	/**
@@ -140,7 +140,7 @@ private:
 	 * @return the INI-defined value, or the defualt value for this vocabulary term
 	 */
 	std::string GetExVocab(StringView term, StringView def_value) const;
-	
+
 	/**
 	 * Heuristically tries to guess the canonical name of this game,
 	 *  and stores it locally in this Meta object.
@@ -158,7 +158,7 @@ private:
 	 * @param pivot_map_id the id of the map used to pivot between the prequel and the current game
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> BuildImportCandidateList(DirectoryTreeView parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
+	std::vector<FileItem> BuildImportCandidateList(const DirectoryTreeView& parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
 
 	/**
 	 * Was the INI file passed to the constructor invalid or empty?

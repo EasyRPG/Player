@@ -59,7 +59,7 @@ std::string crc32file(std::string file_name) {
 		if (in) {
 			auto crc = Utils::CRC32(in);
 			std::stringstream res;
-			res <<std::hex <<std::setfill('0') <<std::setw(8) <<crc;
+			res <<std::hex << std::setfill('0') <<std::setw(8) <<crc;
 			return res.str();
 		}
 	}
@@ -111,7 +111,7 @@ std::string Meta::GetParentGame() const {
 	return "";
 }
 
-std::vector<std::string> Meta::GetImportChildPaths(DirectoryTreeView parent_tree) const {
+std::vector<std::string> Meta::GetImportChildPaths(const DirectoryTreeView& parent_tree) const {
 	std::vector<std::string> res;
 
 	if (!Empty()) {
@@ -129,7 +129,7 @@ std::vector<std::string> Meta::GetImportChildPaths(DirectoryTreeView parent_tree
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(DirectoryTreeView parent_tree, StringView child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(const DirectoryTreeView& parent_tree, StringView child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
@@ -140,7 +140,7 @@ std::vector<Meta::FileItem> Meta::SearchImportPaths(DirectoryTreeView parent_tre
 }
 
 
-std::vector<Meta::FileItem> Meta::BuildImportCandidateList(DirectoryTreeView parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
+std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const DirectoryTreeView& parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
@@ -149,7 +149,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(DirectoryTreeView par
 	auto child_full_path = FileFinder::MakePath(parent_tree.GetRootPath(), child_path);
 	auto child_tree = FileFinder::CreateDirectoryTree(child_full_path);
 	bool is_match = false;
-	if (child_tree != nullptr) { 
+	if (child_tree != nullptr) {
 		// Try to match the parent game name
 		std::string lmtPath = child_tree->FindFile(TREEMAP_NAME);
 		std::string crcLMT = crc32file(lmtPath);

@@ -51,7 +51,7 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 }
 
 template <typename T>
-static void detect_helper(DirectoryTreeView tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
+static void detect_helper(const DirectoryTreeView& tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
 		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list) {
 	for (int i = range.first; i < range.second; ++i) {
 		const char* category = rtp_table[i][0];
@@ -70,7 +70,7 @@ static void detect_helper(DirectoryTreeView tree, std::vector<struct RTP::RtpHit
 	}
 }
 
-std::vector<RTP::RtpHitInfo> RTP::Detect(DirectoryTreeView tree, int version) {
+std::vector<RTP::RtpHitInfo> RTP::Detect(const DirectoryTreeView& tree, int version) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
 		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, tree},
 		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, tree},

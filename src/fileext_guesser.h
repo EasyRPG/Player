@@ -33,7 +33,7 @@ namespace FileExtGuesser {
 	// Bookkeeping structures for use with GuessAndAddLmuExtension()
 	struct RPG2KFileExtRemap {
 		/**
-		 * Construct a filename from a given prefix and suffix. 
+		 * Construct a filename from a given prefix and suffix.
 		 * Performs extension substitution based on the values stored in extMap
 		 *
 		 * @param prefix The prefix (e.g., 'Map0001')
@@ -46,13 +46,13 @@ namespace FileExtGuesser {
 	};
 
 	/**
-	 * Attempts to determine the LMU extension for non-standard projects. 
-	 * 
+	 * Attempts to determine the LMU extension for non-standard projects.
+	 *
 	 * @param dir The directory tree of the project in question
 	 * @param meta The meta object, which can be used to directly specify the extension
 	 * @param mapping The resultant mapping, if any, is stored in this lookup.
 	 */
-	void GuessAndAddLmuExtension(DirectoryTreeView tree, Meta const& meta, RPG2KFileExtRemap& mapping);
+	void GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping);
 
 	// Bookkeeping structure for use with GetRPG2kProjectWithRenames()
 	struct RPG2KNonStandardFilenameGuesser {
@@ -88,7 +88,7 @@ namespace FileExtGuesser {
 	 * @param dir The directory tree of the project in question
 	 * @return An object that contains the candidates (check with .Empty())
 	 */
-	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(DirectoryTreeView tree);
+	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(const DirectoryTreeView& tree);
 
 }
 

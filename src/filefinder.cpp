@@ -320,21 +320,21 @@ std::string FileFinder::FindDefault(StringView name) {
 	return GetDirectoryTree().FindFile(name);
 }
 
-bool FileFinder::IsValidProject(DirectoryTreeView tree) {
+bool FileFinder::IsValidProject(const DirectoryTreeView& tree) {
 	return IsRPG2kProject(tree) || IsEasyRpgProject(tree) || IsRPG2kProjectWithRenames(tree);
 }
 
-bool FileFinder::IsRPG2kProject(DirectoryTreeView tree) {
+bool FileFinder::IsRPG2kProject(const DirectoryTreeView& tree) {
 	return !tree.FindFile(DATABASE_NAME).empty() &&
 		!tree.FindFile(TREEMAP_NAME).empty();
 }
 
-bool FileFinder::IsEasyRpgProject(DirectoryTreeView tree){
+bool FileFinder::IsEasyRpgProject(const DirectoryTreeView& tree){
 	return !tree.FindFile(DATABASE_NAME_EASYRPG).empty() &&
 		   !tree.FindFile(TREEMAP_NAME_EASYRPG).empty();
 }
 
-bool FileFinder::IsRPG2kProjectWithRenames(DirectoryTreeView tree) {
+bool FileFinder::IsRPG2kProjectWithRenames(const DirectoryTreeView& tree) {
 	return !FileExtGuesser::GetRPG2kProjectWithRenames(tree).Empty();
 }
 

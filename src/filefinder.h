@@ -225,18 +225,18 @@ namespace FileFinder {
 	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
 	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string p);
 
-	bool IsValidProject(DirectoryTreeView tree);
-	bool IsRPG2kProject(DirectoryTreeView tree);
-	bool IsEasyRpgProject(DirectoryTreeView tree);
+	bool IsValidProject(const DirectoryTreeView& tree);
+	bool IsRPG2kProject(const DirectoryTreeView& tree);
+	bool IsEasyRpgProject(const DirectoryTreeView& tree);
 
 	/**
-	 * Determines if the directory in question represents an RPG2k project with non-standard 
+	 * Determines if the directory in question represents an RPG2k project with non-standard
 	 *   database, map tree, or map file names.
 	 *
 	 * @param tree The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
-	bool IsRPG2kProjectWithRenames(DirectoryTreeView tree);
+	bool IsRPG2kProjectWithRenames(const DirectoryTreeView& tree);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name

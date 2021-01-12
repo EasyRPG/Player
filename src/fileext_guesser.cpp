@@ -31,7 +31,7 @@ namespace {
 }
 
 
-FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(DirectoryTreeView tree) {
+FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(const DirectoryTreeView& tree) {
 	// Try to rescue and determine file extensions.
 	// We need to figure out the names of the map tree and the DB (maps come later).
 	std::vector<RPG2KNonStandardFilenameGuesser::ExtAndSize> candidates;
@@ -67,7 +67,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 	return RPG2KNonStandardFilenameGuesser();
 }
 
-void FileExtGuesser::GuessAndAddLmuExtension(DirectoryTreeView tree, Meta const& meta, RPG2KFileExtRemap& mapping)
+void FileExtGuesser::GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping)
 {
 	// If metadata is provided, rely on that.
 	std::string metaLmu = meta.GetLmuAlias();
@@ -105,8 +105,8 @@ void FileExtGuesser::GuessAndAddLmuExtension(DirectoryTreeView tree, Meta const&
 FileExtGuesser::RPG2KFileExtRemap FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions(Meta& meta)
 {
 	RPG2KFileExtRemap res;
-	
-	// Since the file extensions are non-standard, we 
+
+	// Since the file extensions are non-standard, we
 	// won't have CRCs for them, so we need to guess more
 	if (!this->Empty()) {
 		meta.ReInitForNonStandardExtensions(rpgRTs.first.fname, rpgRTs.second.fname);

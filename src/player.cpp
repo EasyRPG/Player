@@ -853,7 +853,7 @@ void Player::ResetGameObjects() {
 	Input::ResetMask();
 }
 
-static bool DefaultLmuStartFileExists(DirectoryTreeView tree) {
+static bool DefaultLmuStartFileExists(const DirectoryTreeView& tree) {
 	// Compute map_id based on command line.
 	int map_id = Player::start_map_id == -1 ? lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 	std::string mapName = Game_Map::ConstructMapName(map_id, false);

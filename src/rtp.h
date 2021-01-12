@@ -71,7 +71,7 @@ namespace RTP {
 	 * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
 	 * @return List of detected RTP types
 	 */
-	std::vector<RtpHitInfo> Detect(DirectoryTreeView tree, int version);
+	std::vector<RtpHitInfo> Detect(const DirectoryTreeView& tree, int version);
 
 	/**
 	 * Takes an asset name and returns all RTP that match
