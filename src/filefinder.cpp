@@ -660,35 +660,42 @@ void FileFinder::Quit() {
 	game_directory_tree.reset();
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& name,
-	std::ios_base::openmode m)
-{
-	auto *buf = new std::filebuf();
 
-	Filesystem_Stream::InputStream is(buf->open(
+Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& name, std::ios_base::openmode m) {
+	auto* buf = new std::filebuf();
+	buf->open(
 #ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
 		name.c_str(),
 #endif
-		m));
+		m);
 
+	if (!buf->is_open()) {
+		delete buf;
+		return Filesystem_Stream::InputStream();
+	}
+
+	Filesystem_Stream::InputStream is(buf);
 	return is;
 }
 
-Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& name,
-	std::ios_base::openmode m)
-{
-	auto *buf = new std::filebuf();
-
-	Filesystem_Stream::OutputStream os(buf->open(
+Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& name, std::ios_base::openmode m) {
+	auto* buf = new std::filebuf();
+	buf->open(
 #ifdef _MSC_VER
-			Utils::ToWideString(name).c_str(),
+		Utils::ToWideString(name).c_str(),
 #else
-			name.c_str(),
+		name.c_str(),
 #endif
-		m));
+		m);
 
+	if (!buf->is_open()) {
+		delete buf;
+		return Filesystem_Stream::OutputStream();
+	}
+
+	Filesystem_Stream::OutputStream os(buf);
 	return os;
 }
 
