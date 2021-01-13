@@ -222,11 +222,32 @@ namespace FileFinder {
 	 * @return directory tree
 	 */
 	DirectoryTreeView GetDirectoryTree();
+
+	/** @return A new directory tree that is rooted at the save directory or nullptr when not readable */
 	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
+
+	/**
+	 * @param p root directory of the tree
+	 * @return New directory tree or nullptr when p is not readable
+	 */
 	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string p);
 
+	/**
+	 * @param p tree Tree to check
+	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
+	 */
 	bool IsValidProject(const DirectoryTreeView& tree);
+
+	/**
+	 * @param p tree Tree to check
+	 * @return Whether the tree contains a valid RPG2k(3) project
+	 */
 	bool IsRPG2kProject(const DirectoryTreeView& tree);
+
+	/**
+	 * @param p tree Tree to check
+	 * @return Whether the tree contains a valid EasyRPG project
+	 */
 	bool IsEasyRpgProject(const DirectoryTreeView& tree);
 
 	/**
