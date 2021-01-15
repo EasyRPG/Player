@@ -16,32 +16,7 @@ static bool skip_tests() {
 TEST_SUITE_BEGIN("RTP" * doctest::skip(skip_tests()));
 
 static std::unique_ptr<DirectoryTree> make_tree() {
-	Player::escape_symbol = "\\";
-
-	auto tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/rtp");
-
-#if 0
-	tree->directories["faceset"] = "FaceSet";
-	tree->directories["music"] = "Music";
-	tree->directories["sound"] = "Sound";
-
-	tree->sub_members["faceset"] = {
-			{"主人公1.png", "主人公1.png"}, // Official Japanese
-			{"actor2.png", "actor2.png"} // Official English
-	};
-
-	tree->sub_members["music"] = {
-			{"ダンジョン1.wav", "ダンジョン1.wav"},
-			{"ダンジョン2.ogg", "ダンジョン2.ogg"} // Not detected, wrong ending
-	};
-
-	tree->sub_members["sound"] = {
-			{"カーソル1.wav", "カーソル1.wav"},
-			{"キャンセル1.wav", "キャンセル2.wav"}
-	};
-#endif
-
-	return tree;
+	return FileFinder::CreateDirectoryTree(EP_TEST_PATH "/rtp");
 }
 
 TEST_CASE("RTP 2000: lookup table is correct") {
@@ -67,6 +42,8 @@ TEST_CASE("RTP 2003: lookup table is correct") {
 }
 
 TEST_CASE("RTP 2000: Detection") {
+	Player::escape_symbol = "\\";
+
 	auto tree = make_tree();
 	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*tree, 2000);
 
@@ -77,9 +54,13 @@ TEST_CASE("RTP 2000: Detection") {
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2000_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
+
+	Player::escape_symbol = "";
 }
 
 TEST_CASE("RTP 2003: Detection") {
+	Player::escape_symbol = "\\";
+
 	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*make_tree(), 2003);
 
 	REQUIRE(hits.size() == 2);
@@ -89,6 +70,8 @@ TEST_CASE("RTP 2003: Detection") {
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2003_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
+
+	Player::escape_symbol = "";
 }
 
 TEST_CASE("RTP 2000: Lookup Any to RTP with 1 hit") {

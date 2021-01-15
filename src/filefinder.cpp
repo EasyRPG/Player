@@ -141,7 +141,7 @@ std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView pa
 	std::string path_copy = ToString(path);
 	ConvertPathDelimiters(path_copy);
 
-	const size_t last_slash_idx = path_copy.find_last_of("/");
+	const size_t last_slash_idx = path_copy.find_last_of('/');
 	if (last_slash_idx == std::string::npos) {
 		return {ToString(""), path_copy};
 	}

@@ -212,14 +212,14 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	std::string name_key = make_key(name);
 	if (args.exts.empty()) {
 		auto entry_it = entries->find(name_key);
-		if (entry_it != entries->end()) {
+		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 			return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
 		}
 	} else {
 		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
 			auto entry_it = entries->find(full_name_key);
-			if (entry_it != entries->end()) {
+			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
 			}
 		}
