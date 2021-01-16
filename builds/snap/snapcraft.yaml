@@ -114,7 +114,6 @@ parts:
       - libwayland-egl1-mesa
       - libwildmidi-config
       - libxmp4
-      - locales-all
 
   libwildmidi:
     plugin: cmake
@@ -135,5 +134,3 @@ parts:
     plugin: make
     build-packages:
       - libglib2.0-dev
-    stage-packages:
-      - libglib2.0-bin
