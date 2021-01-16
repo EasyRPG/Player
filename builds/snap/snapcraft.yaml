@@ -40,6 +40,7 @@ parts:
     source-type: git
     autotools-configure-parameters:
       - --prefix=/usr
+      - --disable-static
     override-build: |
       git fetch
       snapcraftctl build
@@ -55,18 +56,20 @@ parts:
     after: [libwildmidi,liblcf,desktop-glib-only]
     source: https://github.com/EasyRPG/Player
     source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     autotools-configure-parameters:
       - --prefix=/usr
     override-build: |
-      last_committed_tag="$(git tag --list | tac | head -n1)"
-      trimmed_tag="$(echo $last_committed_tag | sed 's/desc\///' | sed 's/git//' | sed 's/^v//')"
+      last_committed_tag="$(git tag --list | tail -n1)"
       last_released_tag="$(snap info easyrpg-player | awk '$1 == "latest/beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
       # beta, build that tag instead of master.
-      if [ "${trimmed_tag}" != "${last_released_tag}" ]; then
+      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
         git fetch
         git checkout -f "${last_committed_tag}"
-        snapcraftctl set-version $(git -C ../src tag --list | tac | head -n1 | sed 's/desc\///' | sed 's/git//' | sed 's/^v//')
+        snapcraftctl set-version $(git -C ../src tag --list | head -n1)
       else
         snapcraftctl set-version $(git describe | sed 's/desc\///')
       fi
@@ -80,10 +83,10 @@ parts:
       - libopusfile-dev
       - libpixman-1-dev
       - libpng-dev
+      - libsndfile1-dev
       - libsdl2-dev
       - libsdl2-mixer-dev
       - libsdl2-ttf-dev
-      - libsndfile1-dev
       - libspeexdsp-dev
       - libvorbis-dev
       - libxmp-dev
@@ -92,14 +95,13 @@ parts:
       - freepats
       - libfreetype6
       - libharfbuzz0b
-      - libmpg123-dev
+      - libmpg123-0
       - libstdc++6
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
       - libopusfile0
       - libpixman-1-0
-      - libpng16-16
       - libsdl2-2.0-0
       - libsdl2-mixer-2.0-0
       - libsdl2-ttf-2.0-0
@@ -117,12 +119,10 @@ parts:
     source-type: git
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
-      - -DBUILD_SHARED_LIBS=OFF
-      - -DWANT_PLAYER=ON
-      - -DWANT_STATIC=ON
-    stage-packages:
-      - libasound2
- 
+      - -DBUILD_SHARED_LIBS=ON
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DWANT_PLAYER=OFF
+
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
