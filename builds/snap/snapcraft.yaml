@@ -38,6 +38,9 @@ parts:
     plugin: autotools
     source: https://github.com/EasyRPG/liblcf
     source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-static
@@ -117,6 +120,9 @@ parts:
     plugin: cmake
     source: https://github.com/Mindwerks/wildmidi
     source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_SHARED_LIBS=ON
