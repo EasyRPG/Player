@@ -47,6 +47,9 @@ parts:
     override-build: |
       git fetch
       snapcraftctl build
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/lcf2xml
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/lcfstrings
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/lib/liblcf.so.0.0.0
     build-packages:
       - libexpat1-dev
       - libicu-dev
@@ -77,6 +80,7 @@ parts:
         snapcraftctl set-version $(git describe | sed 's/desc\///')
       fi
       snapcraftctl build
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/easyrpg-player
 
     build-packages:
       - libfmt-dev
@@ -99,7 +103,6 @@ parts:
       - libfreetype6
       - libharfbuzz0b
       - libmpg123-0
-      - libstdc++6
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
