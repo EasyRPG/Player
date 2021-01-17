@@ -1,0 +1,137 @@
+name: easyrpg-player
+base: core20
+adopt-info: easyrpg-player
+summary: easyrpg-player
+description: |
+    EasyRPG Player is a program that allows to play games created with RPG Maker 2000 and 2003.
+    EasyRPG is developed by the amazing people running the [EasyRPG project](https://easyrpg.org/).
+
+    It aims to be a free (as in freedom) cross-platform RPG Maker 2000/2003 interpreter.
+    The main goal is to play all games created with them as the original game interpreter (RPG_RT) does.
+confinement: strict
+grade: stable
+
+apps:
+  easyrpg-player:
+    command: bin/desktop-launch $SNAP/usr/bin/easyrpg-player
+    plugs:
+      - x11
+      - wayland
+      - unity7
+      - opengl
+      - audio-playback
+      - joystick
+      - home
+
+    environment:
+      XDG_DATA_HOME: $SNAP_USER_COMMON/
+      DBUS_FATAL_WARNINGS: 0
+
+layout:
+  /etc/wildmidi:
+    bind: $SNAP/etc/wildmidi
+  /usr/share/midi/freepats:
+    bind: $SNAP/usr/share/midi/freepats
+
+parts:
+  liblcf:
+    plugin: autotools
+    source: https://github.com/EasyRPG/liblcf
+    source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+    autotools-configure-parameters:
+      - --prefix=/usr
+      - --disable-static
+      - --disable-tools
+    override-build: |
+      git fetch
+      snapcraftctl build
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/lib/liblcf.so.0.0.0
+    build-packages:
+      - libexpat1-dev
+      - libicu-dev
+      - icu-devtools
+    stage-packages:
+      - libicu66
+
+  easyrpg-player:   
+    plugin: autotools
+    after: [libwildmidi,liblcf,desktop-glib-only]
+    source: https://github.com/EasyRPG/Player
+    source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+    autotools-configure-parameters:
+      - --prefix=/usr
+    override-build: |
+      last_committed_tag="$(git tag --list | tail -n1)"
+      last_released_tag="$(snap info easyrpg-player | awk '$1 == "latest/beta:" { print $2 }')"
+      # If the latest tag from the upstream project has not been released to
+      # beta, build that tag instead of master.
+      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
+        git fetch
+        git checkout -f "${last_committed_tag}"
+        snapcraftctl set-version $(git -C ../src tag --list | tail -n1)
+      else
+        snapcraftctl set-version $(git describe | sed 's/desc\///')
+      fi
+      snapcraftctl build
+      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/easyrpg-player
+
+    build-packages:
+      - libfmt-dev
+      - libfreetype6-dev
+      - libharfbuzz-dev
+      - libmpg123-dev
+      - libopusfile-dev
+      - libpixman-1-dev
+      - libpng-dev
+      - libsndfile1-dev
+      - libsdl2-dev
+      - libsdl2-mixer-dev
+      - libspeexdsp-dev
+      - libvorbis-dev
+      - libxmp-dev
+
+    stage-packages:
+      - freepats
+      - libfreetype6
+      - libharfbuzz0b
+      - libmpg123-0
+      - libgl1-mesa-dri
+      - libgl1-mesa-glx
+      - libglu1-mesa
+      - libopusfile0
+      - libpixman-1-0
+      - libpng16-16
+      - libsdl2-2.0-0
+      - libsdl2-mixer-2.0-0
+      - libsndfile1
+      - libspeexdsp1
+      - libvorbis0a
+      - libwayland-egl1-mesa
+      - libwildmidi-config
+      - libxmp4
+
+  libwildmidi:
+    plugin: cmake
+    source: https://github.com/Mindwerks/wildmidi
+    source-type: git
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
+      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=ON
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DWANT_PLAYER=OFF
+
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
