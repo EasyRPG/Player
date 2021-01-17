@@ -44,11 +44,10 @@ parts:
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-static
+      - --disable-tools
     override-build: |
       git fetch
       snapcraftctl build
-      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/lcf2xml
-      strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/lcfstrings
       strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/lib/liblcf.so.0.0.0
     build-packages:
       - libexpat1-dev
@@ -75,7 +74,7 @@ parts:
       if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
         git fetch
         git checkout -f "${last_committed_tag}"
-        snapcraftctl set-version $(git -C ../src tag --list | head -n1)
+        snapcraftctl set-version $(git -C ../src tag --list | tail -n1)
       else
         snapcraftctl set-version $(git describe | sed 's/desc\///')
       fi
@@ -93,7 +92,6 @@ parts:
       - libsndfile1-dev
       - libsdl2-dev
       - libsdl2-mixer-dev
-      - libsdl2-ttf-dev
       - libspeexdsp-dev
       - libvorbis-dev
       - libxmp-dev
@@ -108,9 +106,9 @@ parts:
       - libglu1-mesa
       - libopusfile0
       - libpixman-1-0
+      - libpng16-16
       - libsdl2-2.0-0
       - libsdl2-mixer-2.0-0
-      - libsdl2-ttf-2.0-0
       - libsndfile1
       - libspeexdsp1
       - libvorbis0a
