@@ -177,7 +177,7 @@ void FileFinder_RTP::AddPath(StringView p) {
 		// Only consider the best RTP hits (usually 100% if properly installed)
 		float best = 0.0;
 		for (const auto& hit : hit_info) {
-			float rate = (float)hit.hits / hit.max;
+			float rate = static_cast<float>(hit.hits) / hit.max;
 			if (rate >= best) {
 				Output::Debug("RTP is \"{}\" ({}/{})", hit.name, hit.hits, hit.max);
 				detected_rtp.emplace_back(hit);

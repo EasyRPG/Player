@@ -42,7 +42,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 				continue;
 			}
 
-			if (item.first.length() == RtPrefix.length() + 3 && lcf::ToStringView(item.first).starts_with(RtPrefix)) {
+			if (item.first.length() == RtPrefix.length() + 3 && ToStringView(item.first).starts_with(RtPrefix)) {
 				std::string ext = item.first.substr(RtPrefix.length());
 				if (ext != "exe" && ext != "ini") {
 					candidates.emplace_back(item.second.name, ext, FileFinder::GetFileSize(tree.FindFile(item.second.name)));

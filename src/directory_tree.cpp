@@ -111,25 +111,18 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	}
 
 	while (dir.Read()) {
-		const std::string name = dir.GetEntryName();
+		const auto& name = dir.GetEntryName();
 		Platform::FileType type = dir.GetEntryType();
-
-		static bool has_fast_dir_stat = true;
-		bool is_directory = false;
-		if (has_fast_dir_stat) {
-			if (type == Platform::FileType::Unknown) {
-				has_fast_dir_stat = false;
-			} else {
-				is_directory = type == Platform::FileType::Directory;
-			}
-		}
-
-		if (!has_fast_dir_stat) {
-			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(full_path, name), true);
-		}
 
 		if (name == "." || name == "..") {
 			continue;
+		}
+
+		bool is_directory = false;
+		if (type == Platform::FileType::Directory) {
+			is_directory = true;
+		} else if (type == Platform::FileType::Unknown) {
+			is_directory = FileFinder::IsDirectory(FileFinder::MakePath(full_path, name), true);
 		}
 
 		if (is_directory) {
@@ -156,8 +149,6 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	}
 	fs_cache.emplace(dir_key, fs_cache_entry);
 
-	dir_it = dir_cache.find(dir_key);
-
 	return &fs_cache.find(dir_key)->second;
 }
 
@@ -169,7 +160,7 @@ std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) 
 	return FindFile({ ToString(filename), exts });
 }
 
-std::string DirectoryTree::FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts) const {
+std::string DirectoryTree::FindFile(StringView directory, StringView filename, Span<StringView> exts) const {
 	return FindFile({ FileFinder::MakePath(directory, filename), exts });
 }
 
@@ -250,7 +241,7 @@ StringView DirectoryTree::GetRootPath() const {
 
 DirectoryTreeView::DirectoryTreeView(const DirectoryTree* tree, std::string sub_path) :
 	tree(tree), sub_path(std::move(sub_path)) {
-	valid = tree->ListDirectory(this->sub_path) != nullptr;
+	valid = (tree->ListDirectory(this->sub_path) != nullptr);
 }
 
 std::string DirectoryTreeView::FindFile(StringView name, Span<StringView> exts) const {

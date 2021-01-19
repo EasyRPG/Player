@@ -60,7 +60,7 @@ public:
 		/** File relative to the current tree to search */
 		std::string path;
 		/** File extensions to append to the filename when searching */
-		lcf::Span<StringView> exts;
+		Span<StringView> exts;
 		/**
 		 * How often moving upwards when ".." is encountered in the path is
 		 * allowed (to prevent directory traversal)
@@ -122,7 +122,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts = {}) const;
+	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -197,7 +197,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, lcf::Span<StringView> exts = {}) const;
+	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -248,17 +248,27 @@ inline DirectoryTreeView::operator bool() const noexcept {
 }
 
 inline bool operator<(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
-	return
-			std::tie(l.name, l.type) <
-			std::tie(r.name, r.type);
+	return std::tie(l.name, l.type) < std::tie(r.name, r.type);
 }
 
 inline bool operator==(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
 	return l.name == r.name && l.type == r.type;
 }
 
+inline bool operator<=(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return l < r || l == r;
+}
+
+inline bool operator>(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return !(l <= r);
+}
+
 inline bool operator!=(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
 	return !(l == r);
+}
+
+inline bool operator>=(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
+	return !(l < r);
 }
 
 inline DirectoryTree::operator DirectoryTreeView() { return Subtree(""); }
