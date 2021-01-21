@@ -73,8 +73,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/decoder_oggvorbis.h \
 	src/decoder_opus.cpp \
 	src/decoder_opus.h \
-	src/decoder_wav.cpp \
-	src/decoder_wav.h \
 	src/decoder_wildmidi.cpp \
 	src/decoder_wildmidi.h \
 	src/decoder_xmp.cpp \
@@ -429,6 +427,13 @@ libeasyrpg_player_a_SOURCES += \
 	src/midiprogram.h \
 	src/midisynth.cpp \
 	src/midisynth.h
+endif
+
+if WANT_DRWAV
+libeasyrpg_player_a_SOURCES += \
+	src/decoder_drwav.cpp \
+	src/decoder_drwav.h \
+	src/dr_wav.h
 endif
 
 if MACOS

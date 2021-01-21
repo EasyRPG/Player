@@ -27,8 +27,14 @@ AC_ARG_ENABLE([fmmidi],
 	AS_HELP_STRING([--enable-fmmidi@<:@=fallback@:>@],[use internal MIDI sequencer/as fallback @<:@default=no@:>@]))
 AS_IF([test "x$enable_fmmidi" = "xyes"],[want_fmmidi=1],[test "x$enable_fmmidi" = "xfallback"],[want_fmmidi=2])
 AS_IF([test "x$want_fmmidi" != "x"],
-	AC_DEFINE_UNQUOTED([WANT_FMMIDI],[$want_fmmidi],[Enable internal MIDI sequencer(1)/as fallback(2)]))
+	[AC_DEFINE_UNQUOTED([WANT_FMMIDI],[$want_fmmidi],[Enable internal MIDI sequencer(1)/as fallback(2)])])
 AM_CONDITIONAL([WANT_FMMIDI],[test "x$want_fmmidi" != "x"])
+
+AC_ARG_ENABLE([drwav],
+	AS_HELP_STRING([--disable-drwav],[use internal WAV library dr_wav @<:@default=yes@:>@]), ,[enable_drwav="yes"])
+AS_IF([test "x$enable_drwav" = "xyes"],
+	[AC_DEFINE([WANT_DRWAV],[1],[use internal WAV library dr_wav])])
+AM_CONDITIONAL([WANT_DRWAV],[test "x$enable_drwav" = "xyes"])
 
 # Checks for libraries.
 AC_DEFUN([EP_PKG_CHECK],[ dnl VARIABLE-PREFIX, MODULES, [DESCRIPTION], [DEFAULT=auto]
@@ -79,7 +85,7 @@ AS_IF([test "x$with_audio" != "xno"],[
     ], [AC_SUBST([with_fluidlite], "no"]))
 	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
-	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support.])
+	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support. Fallback when unsupported by dr_wav.])
 	EP_PKG_CHECK([LIBXMP],[libxmp],[Tracker module support.])
 	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support. Using SDL_mixer instead may result in noise.])
 
@@ -204,6 +210,7 @@ if test "yes" != "$silent"; then
 		echo "  -midi (FluidLite):         $with_fluidlite"
 		echo "  -ogg Vorbis (vorbisfile):  $with_oggvorbis"
 		echo "  -opus (opusfile):          $with_opus"
+		echo "  -built-in WAV (dr_wav):    $enable_drwav"
 		echo "  -improved WAV (sndfile):   $with_libsndfile"
 		echo "  -tracker module (libxmp):  $with_libxmp"
 		echo "  -resampling (speexdsp):    $with_libspeexdsp"
