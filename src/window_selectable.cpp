@@ -123,8 +123,13 @@ void Window_Selectable::UpdateArrows() {
 }
 
 // Update
-void Window_Selectable::Update() {
-	Window_Base::Update();
+void Window_Selectable::Update(bool block_system_change) {
+	if (block_system_change) {
+		Window::Update();
+		Window_Base::UpdateMovement();
+	} else {
+		Window_Base::Update();
+	}
 	if (active && item_max > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 			if (index < item_max - column_max || column_max == 1) {

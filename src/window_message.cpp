@@ -381,7 +381,7 @@ void Window_Message::Update() {
 
 	const bool was_closing = IsClosing();
 
-	Window_Selectable::Update();
+	Window_Selectable::Update(IsClosing());
 	number_input_window->Update();
 	gold_window->Update();
 
