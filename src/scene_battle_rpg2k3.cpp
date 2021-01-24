@@ -1844,7 +1844,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		return BattleActionReturn::eFinished;
 	}
 
-	if (Game_Battle::IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting() && !(action->GetType() == Game_BattleAlgorithm::Type::Normal && source->GetType() == Game_Battler::Type_Enemy)) {
 		return BattleActionReturn::eWait;
 	}
 
