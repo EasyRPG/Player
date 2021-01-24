@@ -66,7 +66,6 @@ public:
 	static void SetRetroVideoCallback(retro_video_refresh_t cb);
 	static void SetRetroInputStateCallback(retro_input_state_t cb);
 
-	static retro_usec_t time_in_microseconds;
 	static retro_environment_t environ_cb;
 	static retro_input_poll_t input_poll_cb;
 	static bool player_exit_called;

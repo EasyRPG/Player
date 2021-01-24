@@ -19,6 +19,7 @@
 
 // Headers
 #include "libretro_ui.h"
+#include "libretro_clock.h"
 #include "bitmap.h"
 #include "color.h"
 #include "graphics.h"
@@ -46,7 +47,6 @@ AudioInterface& LibretroUi::GetAudio() {
 }
 #endif
 
-retro_usec_t LibretroUi::time_in_microseconds = 0;
 retro_environment_t LibretroUi::environ_cb = nullptr;
 retro_input_poll_t LibretroUi::input_poll_cb = nullptr;
 bool LibretroUi::player_exit_called = false;
@@ -416,7 +416,7 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 static const unsigned AUDIO_SAMPLERATE = 48000;
 
 RETRO_CALLCONV void retro_time_update(retro_usec_t usec) {
-	LibretroUi::time_in_microseconds += usec;
+	LibretroClock::time_in_microseconds += usec;
 }
 
 RETRO_CALLCONV void retro_write_audio() {

@@ -53,6 +53,13 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Pixman
 	REQUIRED_VARS PIXMAN_LIBRARY PIXMAN_INCLUDE_DIR)
 
+if(ANDROID)
+	enable_language(C)
+	# armeabi-v7a requires this
+	add_library(cpufeatures STATIC
+		${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
+endif()
+
 if(PIXMAN_FOUND)
 	set(PIXMAN_INCLUDE_DIRS ${PIXMAN_INCLUDE_DIR})
 
@@ -82,6 +89,11 @@ if(PIXMAN_FOUND)
 		if(NOT PIXMAN_LIBRARY_RELEASE AND NOT PIXMAN_LIBRARY_DEBUG)
 			set_property(TARGET PIXMAN::PIXMAN APPEND PROPERTY
 				IMPORTED_LOCATION "${PIXMAN_LIBRARY}")
+		endif()
+
+		if(ANDROID)
+			set_property(TARGET PIXMAN::PIXMAN APPEND PROPERTY
+				INTERFACE_LINK_LIBRARIES cpufeatures)
 		endif()
 	endif()
 endif()
