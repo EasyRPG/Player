@@ -2007,6 +2007,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 					damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
 					std::to_string(std::abs(damageTaken)));
 		}
+		if (b->GetType() == Game_Battler::Type_Ally) {
+			auto* sprite = static_cast<Game_Actor*>(b)->GetActorBattleSprite();
+			if (sprite) {
+				sprite->DetectStateChange();
+			}
+		}
 	}
 
 	SetBattleActionState(BattleActionState_Notify);
