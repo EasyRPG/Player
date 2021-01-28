@@ -71,11 +71,12 @@ private:
 	C2D_SpriteSheet assets;
 	bool fullscreen;
 	bool trigger_state;
+	bool touchscreen;
 
 #ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
 #endif
-	
+
 };
 
 #endif

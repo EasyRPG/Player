@@ -65,6 +65,8 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 
+	touchscreen = false;
+
 	fullscreen = false;
 	trigger_state = false;
 
@@ -78,12 +80,18 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 		osSetSpeedupEnable(true);
 	}
 
+	// Turn off bottom screen initially
+	gspLcdInit();
+	GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+	gspLcdExit();
+
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 	C2D_Prepare();
 	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+
 
 #ifndef NDEBUG
 	consoleInit(GFX_BOTTOM, nullptr);
@@ -194,7 +202,6 @@ void CtrUi::ProcessEvents() {
 #endif
 
 #ifdef NDEBUG
-	// Touchscreen support
 	u32 keys_tbl[16] = {
 		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
 		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
@@ -220,6 +227,13 @@ void CtrUi::ProcessEvents() {
 		touch_y = pos.py;
 
 		keys[keys_tbl[col + (row * 4)]] = true;
+
+		if (!touchscreen) {
+			touchscreen = true;
+			gspLcdInit();
+			GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+			gspLcdExit();
+		}
 	}
 #endif
 }
@@ -277,49 +291,46 @@ void CtrUi::UpdateDisplay() {
 
 #if NDEBUG
 	// bottom screen
-	C2D_SceneBegin(bottom_screen);
+		C2D_SceneBegin(bottom_screen);
 
-	// More low hanging fruit optimisation:
-	// Only refresh the bottom when a touch happens and one frame after
-	static bool once = false;
-	if (!once || touch_state == 2) {
-		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
-		touch_state = 0;
-		once = true;
-	}
-
-	if (touch_state == 1) {
-		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
-
-		u32 gray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
-		u32 white = C2D_Color32f(1, 1, 1, 1);
-
-		// "circle" cursor
-		C2D_DrawRectSolid(touch_x - 1, touch_y, 0.5f, 3, 1, gray);
-		C2D_DrawRectSolid(touch_x, touch_y - 1, 0.5f, 1, 3, gray);
-
-		// get touched button
-		u8 col = touch_x / button_width;
-		u8 row = touch_y / button_height;
-		u8 pos_x = col * button_width;
-		u8 pos_y = row * button_height;
-
-		// "0" is handled specially
-		u8 draw_width = button_width;
-		if (col < 2 && row == 3) {
-			draw_width *= 2;
-			if (col == 1)
-				pos_x = 0;
+		// More low hanging fruit optimisation:
+		// Only refresh the bottom when a touch happens and one frame after
+		static bool once = false;
+		if (!once || touch_state == 2) {
+			C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+			C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+			touch_state = 0;
+			once = true;
+		}
+		if(touch_state == 0){
+			C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+			C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
 		}
 
-		// darkened button with outline
-		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
-		C2D_DrawRectSolid(pos_x + draw_width - 2, pos_y, 0.5f, 2, button_height, white); // right
-		C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, draw_width, 2, white); // bottom
-		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, draw_width, 2, gray); // top
-		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
+		if (touch_state == 1) {
+			C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+			C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+
+			u32 gray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
+			u32 white = C2D_Color32f(1, 1, 1, 1);
+
+			// "circle" cursor
+			C2D_DrawRectSolid(touch_x - 1, touch_y, 0.5f, 3, 1, gray);
+			C2D_DrawRectSolid(touch_x, touch_y - 1, 0.5f, 1, 3, gray);
+
+			// get touched button
+			u8 col = touch_x / button_width;
+			u8 row = touch_y / button_height;
+			u8 pos_x = col * button_width;
+			u8 pos_y = row * button_height;
+			u8 draw_width = button_width;
+
+			// darkened button with outline
+			C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
+			C2D_DrawRectSolid(pos_x + draw_width - 2, pos_y, 0.5f, 2, button_height, white); // right
+			C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, draw_width, 2, white); // bottom
+			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, draw_width, 2, gray); // top
+			C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
 	}
 #endif
 
