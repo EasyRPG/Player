@@ -25,6 +25,7 @@
 #include "scene_title.h"
 #include "bitmap.h"
 #include "audio.h"
+#include "db.h"
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -57,6 +58,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Cache::Clear();
 	AudioSeCache::Clear();
 	lcf::Data::Clear();
+	db::Clear();
 	Main_Data::Cleanup();
 	FileFinder::Quit();
 

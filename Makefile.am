@@ -56,6 +56,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/cmdline_parser.h \
 	src/color.h \
 	src/compiler.h \
+	src/db.cpp \
+	src/db.h \
 	src/decoder_fluidsynth.cpp \
 	src/decoder_fluidsynth.h \
 	src/decoder_fmmidi.cpp \
@@ -170,6 +172,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/hslrgb.cpp \
 	src/hslrgb.h \
 	src/icon.h \
+	src/idutils.h \
+	src/idutils.cpp \
 	src/image_bmp.cpp \
 	src/image_bmp.h \
 	src/image_png.cpp \

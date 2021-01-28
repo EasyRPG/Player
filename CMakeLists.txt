@@ -71,6 +71,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/color.h
 	src/compiler.h
 	src/config_param.h
+	src/db.cpp
+	src/db.h
 	src/decoder_fluidsynth.cpp
 	src/decoder_fluidsynth.h
 	src/decoder_libsndfile.cpp
@@ -185,6 +187,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/hslrgb.cpp
 	src/hslrgb.h
 	src/icon.h
+	src/idutils.h
+	src/idutils.cpp
 	src/image_bmp.cpp
 	src/image_bmp.h
 	src/image_png.cpp
