@@ -497,15 +497,15 @@ bool Game_Character::Move(int dir) {
 }
 
 void Game_Character::Turn90DegreeLeft() {
-	SetDirection(GetDirection90DegreeLeft(GetFacing()));
+	SetDirection(GetDirection90DegreeLeft(GetDirection()));
 }
 
 void Game_Character::Turn90DegreeRight() {
-	SetDirection(GetDirection90DegreeRight(GetFacing()));
+	SetDirection(GetDirection90DegreeRight(GetDirection()));
 }
 
 void Game_Character::Turn180Degree() {
-	SetDirection(GetDirection180Degree(GetFacing()));
+	SetDirection(GetDirection180Degree(GetDirection()));
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
