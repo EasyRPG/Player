@@ -167,7 +167,7 @@ void SetEnemyAction(Game_Enemy& enemy, const lcf::rpg::EnemyAction& action, bool
 			algo->SetSwitchEnable(action.switch_on_id);
 		}
 		if (action.switch_off) {
-			algo->SetSwitchEnable(action.switch_off_id);
+			algo->SetSwitchDisable(action.switch_off_id);
 		}
 	}
 
