@@ -425,8 +425,8 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 					enemy_cursor->SetSrcRect(Rect(sprite_frame * 16, 0, 16, 16));
 
 					enemy_cursor->SetVisible(true);
-					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
-					enemy_cursor->SetY(enemy->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
+					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2);
+					enemy_cursor->SetY(enemy->GetBattlePosition().y);
 
 					std::vector<lcf::rpg::State*> ordered_states = enemy->GetInflictedStatesOrderedByPriority();
 					if (ordered_states.size() > 0) {
