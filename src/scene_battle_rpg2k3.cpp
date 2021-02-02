@@ -2214,10 +2214,15 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			auto* enemy = static_cast<Game_Enemy*>(target);
 			enemy->SetBlinkTimer();
 		} else if (action->GetAffectedHp() < 0) {
-			target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Damage, Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
+			if (!target->IsDead()) {
+				target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Damage, Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
+			}
 		}
 	}
 
+	if (!was_dead && target->GetType() == Game_Battler::Type_Ally && target->IsDead()) {
+		target_sprite->SetAnimationState(Sprite_Actor::AnimationState_Dead, Sprite_Actor::LoopState_WaitAfterFinish);
+	}
 
 	if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Enemy) {
 		auto* enemy = static_cast<Game_Enemy*>(target);
