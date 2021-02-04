@@ -83,6 +83,8 @@ public:
 	 */
 	bool IsIdling();
 
+	void DoIdleAnimation();
+
 	int GetWidth() const override;
 	int GetHeight() const override;
 
@@ -92,7 +94,6 @@ public:
 
 protected:
 	void CreateSprite();
-	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
 
@@ -107,6 +108,8 @@ protected:
 	bool idling = true;
 
 	FileRequestBinding request_id;
+
+	bool do_not_draw = false;
 };
 
 

@@ -322,6 +322,10 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourcePose() const {
 	return lcf::rpg::BattlerAnimation::Pose_Idle;
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetCBAMovement() const {
+	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::Start() {
 	reflect_target = nullptr;
 
@@ -714,6 +718,25 @@ int Game_BattleAlgorithm::Normal::GetSourcePose() const {
 		: lcf::rpg::BattlerAnimation::Pose_AttackRight;
 }
 
+int Game_BattleAlgorithm::Normal::GetCBAMovement() const {
+	const auto weapon = GetWeapon();
+	auto* source = GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* ally = static_cast<Game_Actor*>(source);
+		auto weapons = ally->GetWeapons(weapon);
+		auto* item = weapons[0];
+		if (item) {
+			if (item->animation_id > 0) {
+				if (static_cast<int>(item->animation_data.size()) > source->GetId() - 1) {
+					return item->animation_data[source->GetId() - 1].movement;
+				}
+			}
+		}
+	}
+
+	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
+}
+
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	if (Player::IsRPG2k() && GetSource()->GetType() == Game_Battler::Type_Enemy) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
@@ -1027,6 +1050,17 @@ int Game_BattleAlgorithm::Skill::GetSourcePose() const {
 	return lcf::rpg::BattlerAnimation::Pose_Skill;
 }
 
+int Game_BattleAlgorithm::Skill::GetCBAMovement() const {
+	auto* source = GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
+		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
+			return skill.battler_animation_data[source->GetId() - 1].movement;
+		}
+	}
+
+	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
+}
+
 const lcf::rpg::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	if (skill.type == lcf::rpg::Skill::Type_switch) {
 		return &skill.sound_effect;
@@ -1155,6 +1189,17 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
 
 int Game_BattleAlgorithm::Item::GetSourcePose() const {
 	return lcf::rpg::BattlerAnimation::Pose_Item;
+}
+
+int Game_BattleAlgorithm::Item::GetCBAMovement() const {
+	auto* source = GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally && item.animation_id > 0) {
+		if (static_cast<int>(item.animation_data.size()) > source->GetId() - 1) {
+			return item.animation_data[source->GetId() - 1].movement;
+		}
+	}
+
+	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
