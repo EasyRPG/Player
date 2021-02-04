@@ -1788,11 +1788,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEs
 			for (auto& actor: Main_Data::game_party->GetActors()) {
 				auto* sprite = actor->GetActorBattleSprite();
 				if (sprite) {
-					if (actor->IsDirectionFlipped()) {
-						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingLeft);
-					} else {
-						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
-					}
+					sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
 				}
 			}
 			running_away = true;
