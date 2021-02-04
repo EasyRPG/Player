@@ -367,6 +367,9 @@ public:
 	/** @return the pose the source should be in when performing the action */
 	virtual int GetSourcePose() const;
 
+	/** @return the CBA movement to use when performing the action */
+	virtual int GetCBAMovement() const;
+
 	/** @return true if it is still possible to perform this action now.  */
 	virtual bool ActionIsPossible() const;
 
@@ -626,6 +629,7 @@ public:
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
+	int GetCBAMovement() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
 	void ApplyComboHitsMultiplier(int hits) override;
@@ -657,6 +661,7 @@ public:
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
+	int GetCBAMovement() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
 	std::string GetFailureMessage() const override;
@@ -686,6 +691,7 @@ public:
 
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
+	int GetCBAMovement() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	bool ActionIsPossible() const override;
 
