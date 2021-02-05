@@ -254,7 +254,7 @@ void Sprite_Actor::DoIdleAnimation() {
 	if (idling_anim == 101)
 		idling_anim = 7;
 
-	if (idling_anim != anim_state)
+	if (idling_anim != anim_state || loop_state == LoopState_DefaultAnimationAfterFinish)
 		SetAnimationState(idling_anim);
 
 	idling = true;
