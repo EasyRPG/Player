@@ -277,3 +277,10 @@ void Sprite_Actor::Draw(Bitmap& dst) {
 
 	Sprite_Battler::Draw(dst);
 }
+
+void Sprite_Actor::ResetZ() {
+	Sprite_Battler::ResetZ();
+	if (animation) {
+		animation->SetZ(GetZ());
+	}
+}
