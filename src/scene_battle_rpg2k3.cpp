@@ -2024,6 +2024,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 	}
 
+	status_window->Refresh();
+
 	SetBattleActionState(BattleActionState_Notify);
 	return BattleActionReturn::eContinue;
 }
