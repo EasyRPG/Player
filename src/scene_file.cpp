@@ -69,7 +69,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	std::stringstream ss;
 	ss << "Save" << (id <= 8 ? "0" : "") << (id + 1) << ".lsd";
 
-	std::string file = FileFinder::FindDefault(*tree, ss.str());
+	std::string file = tree->FindFile(ss.str());
 
 	if (!file.empty()) {
 		// File found

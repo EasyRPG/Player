@@ -39,7 +39,7 @@
 	#endif
 #endif
 
-std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view) {
+std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view) {
 	char value[1024];
 	DWORD size = 1024;
 	DWORD type = REG_SZ;
@@ -58,13 +58,13 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 			break;
 	}
 
-	std::wstring wkey = Utils::ToWideString(key.c_str());
+	std::wstring wkey = Utils::ToWideString(ToString(key));
 
 	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, desired_access, &key_handle)) {
 		return "";
 	}
 
-	std::wstring wval = Utils::ToWideString(val.c_str());
+	std::wstring wval = Utils::ToWideString(ToString(val));
 
 	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, (LPBYTE)&value, &size)) {
 		return "";
@@ -80,7 +80,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 	return string_value;
 }
 
-int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin, REGVIEW view) {
+int Registry::ReadBinValue(HKEY hkey, StringView key, StringView val, unsigned char* bin, REGVIEW view) {
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;
 	HKEY key_handle;
@@ -98,13 +98,13 @@ int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const&
 			break;
 	}
 
-	std::wstring wkey = Utils::ToWideString(key.c_str());
+	std::wstring wkey = Utils::ToWideString(ToString(key));
 
 	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, desired_access, &key_handle)) {
 		return 0;
 	}
 
-	std::wstring wval = Utils::ToWideString(val.c_str());
+	std::wstring wval = Utils::ToWideString(ToString(val));
 
 	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, bin, &size)) {
 		return 0;

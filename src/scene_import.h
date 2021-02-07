@@ -51,7 +51,7 @@ private:
 	std::unique_ptr<Window_ImportProgress> progress_window;
 
 	/** Collection of all folders in ../ */
-	std::shared_ptr<FileFinder::DirectoryTree> parent_tree;
+	std::unique_ptr<DirectoryTree> parent_tree;
 
 	/** Tracking status: vector of child folders to check and current index in that list */
 	std::vector<std::string> children;

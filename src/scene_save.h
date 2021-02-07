@@ -39,8 +39,8 @@ public:
 	void Action(int index) override;
 	bool IsSlotValid(int index) override;
 
-	static std::string GetSaveFilename(const FileFinder::DirectoryTree& tree, int slot_id);
-	static void Save(const FileFinder::DirectoryTree& tree, int slot_id, bool prepare_save = true);
+	static std::string GetSaveFilename(const DirectoryTreeView& tree, int slot_id);
+	static void Save(const DirectoryTreeView& tree, int slot_id, bool prepare_save = true);
 	static void Save(std::ostream& os, int slot_id, bool prepare_save = true);
 };
 

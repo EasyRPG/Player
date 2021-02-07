@@ -18,6 +18,7 @@
 // Headers
 #include <cstdlib>
 #include "main_data.h"
+#include "filefinder_rtp.h"
 #include "game_system.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -71,6 +72,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Targets> game_targets;
 	std::unique_ptr<Game_Quit> game_quit;
 	std::unique_ptr<Game_Ineluki> game_ineluki;
+	std::unique_ptr<FileFinder_RTP> filefinder_rtp;
 }
 
 void Main_Data::Init() {

@@ -35,7 +35,7 @@ Wine registry file example:
 "RuntimePackagePath"="C:\\Program Files (x86)\\ASCII\\RPG2000\\RTP"
  */
 
-std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std::string& val, REGVIEW view) {
+std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view) {
 	std::string prefix =
 			getenv("WINEPREFIX")? getenv("WINEPREFIX"):
 			getenv("HOME")? std::string(getenv("HOME")).append("/.wine"):
@@ -43,7 +43,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 
 	std::string registry_file;
 	std::string string_value;
-	std::string formatted_key = key;
+	std::string formatted_key = ToString(key);
 
 	// Replaces key backslashes with double backslashes
 	size_t pos = 0;
@@ -53,7 +53,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 	}
 
 	// Puts value between quotes and add =
-	std::string formatted_val = "\"" + val + "\""  + "=";
+	std::string formatted_val = "\"" + ToString(val) + "\""  + "=";
 
 	if (prefix.empty() || !FileFinder::Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"{}\"", prefix.c_str());
@@ -153,7 +153,7 @@ std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std:
 	return path;
 }
 
-int Registry::ReadBinValue(HKEY, const std::string&, const std::string&, unsigned char*, REGVIEW) {
+int Registry::ReadBinValue(HKEY, StringView, StringView, unsigned char*, REGVIEW) {
 	return 0; // not really used yet
 }
 

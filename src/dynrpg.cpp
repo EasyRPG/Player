@@ -401,14 +401,14 @@ bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
 }
 
 std::string get_filename(int slot) {
-	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+	auto tree = FileFinder::CreateSaveDirectoryTree();
 
 	std::string filename = std::string("Save") + (slot <= 9 ? "0" : "") + std::to_string(slot) + ".dyn";
 
-	std::string found = FileFinder::FindDefault(*tree, filename);
+	std::string found = tree->FindFile(filename);
 
 	if (found.empty()) {
-		found = FileFinder::MakePath((*tree).directory_path, filename);
+		found = tree->MakePath(filename);
 	}
 
 	return found;

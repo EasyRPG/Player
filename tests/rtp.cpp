@@ -4,32 +4,19 @@
 #include "rtp.h"
 #include "doctest.h"
 
-TEST_SUITE_BEGIN("RTP");
 
-static std::shared_ptr<FileFinder::DirectoryTree> make_tree() {
-	Player::escape_symbol = "\\";
+static bool skip_tests() {
+#ifdef EMSCRIPTEN
+	return true;
+#else
+	return false;
+#endif
+}
 
-	auto tree = std::make_shared<FileFinder::DirectoryTree>();
-	tree->directories["faceset"] = "FaceSet";
-	tree->directories["music"] = "Music";
-	tree->directories["sound"] = "Sound";
+TEST_SUITE_BEGIN("RTP" * doctest::skip(skip_tests()));
 
-	tree->sub_members["faceset"] = {
-			{"主人公1.png", "主人公1.png"}, // Official Japanese
-			{"actor2.png", "actor2.png"} // Official English
-	};
-
-	tree->sub_members["music"] = {
-			{"ダンジョン1.wav", "ダンジョン1.wav"},
-			{"ダンジョン2.ogg", "ダンジョン2.ogg"} // Not detected, wrong ending
-	};
-
-	tree->sub_members["sound"] = {
-			{"カーソル1.wav", "カーソル1.wav"},
-			{"キャンセル1.wav", "キャンセル2.wav"}
-	};
-
-	return tree;
+static std::unique_ptr<DirectoryTree> make_tree() {
+	return FileFinder::CreateDirectoryTree(EP_TEST_PATH "/rtp");
 }
 
 TEST_CASE("RTP 2000: lookup table is correct") {
@@ -55,21 +42,26 @@ TEST_CASE("RTP 2003: lookup table is correct") {
 }
 
 TEST_CASE("RTP 2000: Detection") {
+	Player::escape_symbol = "\\";
+
 	auto tree = make_tree();
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree, 2000);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*tree, 2000);
 
 	REQUIRE(hits.size() == 2);
 
 	REQUIRE(hits[0].type == RTP::Type::RPG2000_OfficialJapanese);
 	REQUIRE(hits[0].hits == 4);
-	REQUIRE(hits[0].tree.get() == tree.get());
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2000_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
+
+	Player::escape_symbol = "";
 }
 
 TEST_CASE("RTP 2003: Detection") {
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree(), 2003);
+	Player::escape_symbol = "\\";
+
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*make_tree(), 2003);
 
 	REQUIRE(hits.size() == 2);
 
@@ -78,6 +70,8 @@ TEST_CASE("RTP 2003: Detection") {
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2003_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
+
+	Player::escape_symbol = "";
 }
 
 TEST_CASE("RTP 2000: Lookup Any to RTP with 1 hit") {

@@ -20,11 +20,10 @@
 
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include "directory_tree.h"
 
 class Meta;
-namespace FileFinder {
-	struct DirectoryTree;
-}
 
 /**
  * FileExtGuesser contains helper methods for guessing the extensions used on non-standard RPG Projects.
@@ -34,32 +33,31 @@ namespace FileExtGuesser {
 	// Bookkeeping structures for use with GuessAndAddLmuExtension()
 	struct RPG2KFileExtRemap {
 		/**
-		 * Construct a filename from a given prefix and suffix. 
+		 * Construct a filename from a given prefix and suffix.
 		 * Performs extension substitution based on the values stored in extMap
 		 *
 		 * @param prefix The prefix (e.g., 'Map0001')
 		 * @param suffix The suffix (e.g., 'lmu')
 		 * @return The joined filename (e.g., 'Map0001.lmu', OR 'Map0001.xyz')
 		 */
-		std::string MakeFilename(std::string const& prefix, std::string const& suffix);
+		std::string MakeFilename(StringView prefix, StringView suffix);
 
 		std::unordered_map<std::string, std::string> extMap;
 	};
 
 	/**
-	 * Attempts to determine the LMU extension for non-standard projects. 
-	 * 
+	 * Attempts to determine the LMU extension for non-standard projects.
+	 *
 	 * @param dir The directory tree of the project in question
 	 * @param meta The meta object, which can be used to directly specify the extension
 	 * @param mapping The resultant mapping, if any, is stored in this lookup.
 	 */
-	void GuessAndAddLmuExtension(FileFinder::DirectoryTree const& dir, Meta const& meta, RPG2KFileExtRemap& mapping);
-
+	void GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping);
 
 	// Bookkeeping structure for use with GetRPG2kProjectWithRenames()
 	struct RPG2KNonStandardFilenameGuesser {
 		struct ExtAndSize {
-			ExtAndSize(const std::string& fname="", const std::string& ext="", int64_t sz=0) : fname(fname), ext(ext), sz(sz) {}
+			ExtAndSize(std::string fname = "", std::string ext = "", int64_t sz = 0) : fname(std::move(fname)), ext(std::move(ext)), sz(sz) {}
 			std::string fname;
 			std::string ext;
 			int64_t sz;
@@ -90,7 +88,7 @@ namespace FileExtGuesser {
 	 * @param dir The directory tree of the project in question
 	 * @return An object that contains the candidates (check with .Empty())
 	 */
-	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(FileFinder::DirectoryTree const& dir);
+	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(const DirectoryTreeView& tree);
 
 }
 

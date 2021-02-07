@@ -46,7 +46,7 @@ const lcf::rpg::SaveSystem& Game_System::GetSaveData() const {
 	return data;
 }
 
-bool Game_System::IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name) {
+bool Game_System::IsStopFilename(StringView name, std::string (*find_func) (StringView), std::string& found_name) {
 	found_name = "";
 
 	if (name.empty() || name == "(OFF)") {
@@ -55,15 +55,14 @@ bool Game_System::IsStopFilename(const std::string& name, std::string (*find_fun
 
 	found_name = find_func(name);
 
-	return found_name.empty() && (ToStringView(name).starts_with('(') && ToStringView(name).ends_with(')'));
+	return found_name.empty() && (name.starts_with('(') && name.ends_with(')'));
 }
 
-
-bool Game_System::IsStopMusicFilename(const std::string& name, std::string& found_name) {
+bool Game_System::IsStopMusicFilename(StringView name, std::string& found_name) {
 	return IsStopFilename(name, FileFinder::FindMusic, found_name);
 }
 
-bool Game_System::IsStopSoundFilename(const std::string& name, std::string& found_name) {
+bool Game_System::IsStopSoundFilename(StringView name, std::string& found_name) {
 	return IsStopFilename(name, FileFinder::FindSound, found_name);
 }
 

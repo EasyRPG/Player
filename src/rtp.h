@@ -60,7 +60,7 @@ namespace RTP {
 		int version;
 		int hits;
 		int max;
-		std::shared_ptr<FileFinder::DirectoryTree> tree;
+		DirectoryTreeView tree;
 	};
 
 	/**
@@ -71,7 +71,7 @@ namespace RTP {
 	 * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
 	 * @return List of detected RTP types
 	 */
-	std::vector<RtpHitInfo> Detect(std::shared_ptr<FileFinder::DirectoryTree> tree, int version);
+	std::vector<RtpHitInfo> Detect(const DirectoryTreeView& tree, int version);
 
 	/**
 	 * Takes an asset name and returns all RTP that match
@@ -81,7 +81,7 @@ namespace RTP {
 	 * @param version rtp version (2000 or 2003)
 	 * @return List of possible RTP
 	 */
-	std::vector<RTP::Type> LookupAnyToRtp(const std::string& src_category, const std::string& src_name, int version);
+	std::vector<RTP::Type> LookupAnyToRtp(StringView src_category, StringView src_name, int version);
 
 	/**
 	 * Takes a source and a destination RTP. Maps source name to destination name and returns it.
@@ -93,7 +93,7 @@ namespace RTP {
 	 * @param is_rtp_asset When not null indicates if src_name is a known entry in the src_rtp but only when src_rtp != target_rtp
 	 * @return The translated asset name or empty string when the mapping is unavailable
 	 */
-	std::string LookupRtpToRtp(const std::string& src_category, const std::string& src_name,
+	std::string LookupRtpToRtp(StringView src_category, StringView src_name,
 		RTP::Type src_rtp, RTP::Type target_rtp, bool* is_rtp_asset = nullptr);
 }
 

@@ -31,36 +31,43 @@ namespace {
 }
 
 
-FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::DirectoryTree const& dir) {
+FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(const DirectoryTreeView& tree) {
 	// Try to rescue and determine file extensions.
 	// We need to figure out the names of the map tree and the DB (maps come later).
 	std::vector<RPG2KNonStandardFilenameGuesser::ExtAndSize> candidates;
-	for (const auto& item : dir.files) {
-		if (item.first.length()==RtPrefix.length()+3 && lcf::ToStringView(item.first).starts_with(RtPrefix)) {
-			std::string ext = item.first.substr(RtPrefix.length());
-			if (ext != "exe" && ext != "ini") {
-				candidates.push_back({item.second, ext, FileFinder::GetFileSize(FileFinder::FindDefault(dir, item.second))});
+	const auto* entries = tree.ListDirectory();
+	if (entries) {
+		for (const auto &item: *entries) {
+			if (item.second.type != DirectoryTree::FileType::Regular) {
+				continue;
+			}
+
+			if (item.first.length() == RtPrefix.length() + 3 && ToStringView(item.first).starts_with(RtPrefix)) {
+				std::string ext = item.first.substr(RtPrefix.length());
+				if (ext != "exe" && ext != "ini") {
+					candidates.emplace_back(item.second.name, ext, FileFinder::GetFileSize(tree.FindFile(item.second.name)));
+				}
+			}
+
+			// Avoid needless scanning if we can't figure it out
+			if (candidates.size() > 2) {
+				break;
 			}
 		}
 
-		// Avoid needless scanning if we can't figure it out
-		if (candidates.size()>2) {
-			break;
+		// Return only if we matched exactly two files.
+		if (candidates.size() == 2) {
+			RPG2KNonStandardFilenameGuesser res;
+			res.rpgRTs.first = candidates[0];
+			res.rpgRTs.second = candidates[1];
+			return res;
 		}
-	}
-
-	// Return only if we matched exactly two files. 
-	if (candidates.size() == 2) {
-		RPG2KNonStandardFilenameGuesser res;
-		res.rpgRTs.first = candidates[0];
-		res.rpgRTs.second = candidates[1];
-		return res;
 	}
 
 	return RPG2KNonStandardFilenameGuesser();
 }
 
-void FileExtGuesser::GuessAndAddLmuExtension(FileFinder::DirectoryTree const& dir, Meta const& meta, RPG2KFileExtRemap& mapping)
+void FileExtGuesser::GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping)
 {
 	// If metadata is provided, rely on that.
 	std::string metaLmu = meta.GetLmuAlias();
@@ -72,14 +79,23 @@ void FileExtGuesser::GuessAndAddLmuExtension(FileFinder::DirectoryTree const& di
 		// Without metadata, scan for matching files. Stop after you find a few;
 		//   we can't just pick the first since there may be some backup files on disk.
 		std::unordered_map<std::string, int> extCounts; // ext => count
-		for (const std::pair<std::string, std::string>& item : dir.files) {
-			if (item.first.length()==MapPrefixLength+3 &&  lcf::ToStringView(item.first).starts_with(MapPrefix)) {
-				std::string ext = item.first.substr(MapPrefixLength);
-				extCounts[ext] += 1;
-				if (extCounts[ext] >= 5) {
-					mapping.extMap[SUFFIX_LMU] = ext;
-					Output::Debug("Guessing non-standard extension for LMU({})", ext);
-					break;
+
+		const auto* entries = tree.ListDirectory();
+		if (entries) {
+			for (const auto &item: *entries) {
+				if (item.second.type != DirectoryTree::FileType::Regular) {
+					continue;
+				}
+
+				if (item.first.length() == MapPrefixLength + 3 &&
+					StringView(item.first).starts_with(MapPrefix)) {
+					std::string ext = item.first.substr(MapPrefixLength);
+					extCounts[ext] += 1;
+					if (extCounts[ext] >= 5) {
+						mapping.extMap[SUFFIX_LMU] = ext;
+						Output::Debug("Guessing non-standard extension for LMU({})", ext);
+						break;
+					}
 				}
 			}
 		}
@@ -89,8 +105,8 @@ void FileExtGuesser::GuessAndAddLmuExtension(FileFinder::DirectoryTree const& di
 FileExtGuesser::RPG2KFileExtRemap FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions(Meta& meta)
 {
 	RPG2KFileExtRemap res;
-	
-	// Since the file extensions are non-standard, we 
+
+	// Since the file extensions are non-standard, we
 	// won't have CRCs for them, so we need to guess more
 	if (!this->Empty()) {
 		meta.ReInitForNonStandardExtensions(rpgRTs.first.fname, rpgRTs.second.fname);
@@ -132,12 +148,12 @@ bool FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty() const {
 	return rpgRTs.first.ext.empty() || rpgRTs.second.ext.empty();
 }
 
-std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(std::string const& prefix, std::string const& suffix)
+std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(StringView prefix, StringView suffix)
 {
 	std::stringstream res;
 	res <<prefix <<".";
 
-	auto it = extMap.find(suffix);
+	auto it = extMap.find(ToString(suffix));
 	if (it != extMap.end()) {
 		res << it->second;
 	} else {

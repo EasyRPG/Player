@@ -90,6 +90,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/decoder_xmp.cpp
 	src/decoder_xmp.h
 	src/default_graphics.h
+	src/directory_tree.cpp
+	src/directory_tree.h
 	src/dirent_win.h
 	src/docmain.h
 	src/drawable.cpp
@@ -109,6 +111,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/exfont.h
 	src/filefinder.cpp
 	src/filefinder.h
+	src/filefinder_rtp.cpp
+	src/filefinder_rtp.h
 	src/fileext_guesser.cpp
 	src/fileext_guesser.h
 	src/filesystem.cpp

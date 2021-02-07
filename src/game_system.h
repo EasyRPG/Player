@@ -298,12 +298,12 @@ public:
 	 * @return true when the file is supposed to Stop playback.
 	 *         false otherwise and file to play is returned as found_name
 	 */
-	static bool IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name);
+	static bool IsStopFilename(StringView name, std::string (*find_func) (StringView), std::string& found_name);
 
-	static bool IsStopMusicFilename(const std::string& name, std::string& found_name);
-	static bool IsStopMusicFilename(const std::string& name);
-	static bool IsStopSoundFilename(const std::string& name, std::string& found_name);
-	static bool IsStopSoundFilename(const std::string& name);
+	static bool IsStopMusicFilename(StringView name, std::string& found_name);
+	static bool IsStopMusicFilename(StringView name);
+	static bool IsStopSoundFilename(StringView name, std::string& found_name);
+	static bool IsStopSoundFilename(StringView name);
 
 	/** @return current atb mode */
 	AtbMode GetAtbMode();
@@ -505,11 +505,12 @@ inline bool Game_System::HasSystem2Graphic() {
 	return !GetSystem2Name().empty();
 }
 
-inline bool Game_System::IsStopMusicFilename(const std::string& name) {
+inline bool Game_System::IsStopMusicFilename(StringView name) {
 	std::string s;
 	return IsStopMusicFilename(name, s);
 }
-inline bool Game_System::IsStopSoundFilename(const std::string& name) {
+
+inline bool Game_System::IsStopSoundFilename(StringView name) {
 	std::string s;
 	return IsStopSoundFilename(name, s);
 }

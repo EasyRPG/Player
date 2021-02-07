@@ -40,16 +40,20 @@ namespace lcf {
  */
 namespace Tr {
 	/**
-	 * The name of the translation directory.
-	 * @return The translation directory.
+	 * @return The directory tree of the translation directory.
 	 */
-	std::string GetTranslationDir();
+	DirectoryTreeView GetTranslationTree();
 
 	/**
 	 * The id of the current translation (e.g., "Spanish"). If empty, there is no active translation.
 	 * @return The translation ID
 	 */
 	std::string GetCurrentTranslationId();
+
+	/**
+	 * @return The directory tree of the active translation.
+	 */
+	DirectoryTreeView GetCurrentTranslationTree();
 
 } // End namespace Tr
 
@@ -157,11 +161,11 @@ public:
 	bool HasTranslations() const;
 
 	/**
-	 * Retrieve the root directory for all Languages
+	 * Retrieve the root directory tree for all Languages
 	 *
-	 * @return the Languages directory.
+	 * @return the Languages directory tree.
 	 */
-	std::string RootDir() const;
+	DirectoryTreeView GetRootTree() const;
 
 	/**
 	 * Retrieves a vector of all known languages.
@@ -179,7 +183,7 @@ public:
 
 	/**
 	 * Rewrite all Messages and Choices in this Map
-	 * 
+	 *
 	 * @param map_name The name of the map with formatting similar to the .po file; e.g., "map0104.po"
 	 * @param map The map object itself (for modifying).
 	 */
@@ -207,14 +211,14 @@ private:
 	/**
 	 * Parse a .po file and save its language-related strings.
 	 *
-	 * @param path The path to the .po file used as input.
+	 * @param is Handle to a Po file to read.
 	 * @param out The Dictionary to save these entries in (output).
 	 */
-	void ParsePoFile(const std::string& path, Dictionary& out);
+	void ParsePoFile(Filesystem_Stream::InputStream is, Dictionary& out);
 
 	/**
 	 * Parse all .po files for the given language.
-	 * 
+	 *
 	 * @param lang_id The ID of the language to parse, or "" for Default (no parsing is done)
 	 * @return True if the language directory was found; false otherwise
 	 */
@@ -242,7 +246,7 @@ private:
 
 	/**
 	 * Convert a stream of msgbox or choices to a list of output message boxes
-	 * 
+	 *
 	 * @param dict The dictionary to use for translation
 	 * @param msg The message string to use for lookup. String with newlines.
 	 * @param trimChar Trim this character if the lookup string ends with this.
@@ -274,7 +278,7 @@ private:
 	std::vector<Language> languages;
 
 	// The "languages" directory, but with appropriate capitalization.
-	std::string translation_root_dir;
+	DirectoryTreeView translation_root_tree;
 
 	// The translation we are currently showing (e.g., "English_1")
 	std::string current_language;

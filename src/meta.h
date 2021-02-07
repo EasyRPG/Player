@@ -27,7 +27,7 @@
 
 
 /**
- * The Meta class loads from a file (easyrpg.ini) and contains 
+ * The Meta class loads from a file (easyrpg.ini) and contains
  * additional information on a per-game basis.
  * Every public function in this class is safe to call and
  * returns sensible defaults, even if the INI file passed
@@ -40,7 +40,7 @@ public:
 	 * Construct a Meta object by parsing a file
 	 * @param meta_file The path to the ini file to load
 	 */
-	Meta(const std::string& meta_file);
+	Meta(StringView meta_file);
 
 	/**
 	 * When dealing with non-standard extensions, Meta will need
@@ -50,7 +50,7 @@ public:
 	 * @file1 The first of two identical files (either LMT/LDB, but with no way of knowing at the time)
 	 * @file2 The second of two identical files (either LMT/LDB, but with no way of knowing at the time)
 	 */
-	void ReInitForNonStandardExtensions(const std::string& file1, const std::string& file2);
+	void ReInitForNonStandardExtensions(StringView file1, StringView file2);
 
 	/**
 	 * Retrieves the map used for pivoting between multi-game save files
@@ -73,12 +73,12 @@ public:
 	};
 
 	/**
-	 * Retrieves a vector of paths of child games (../ from the current game) that may be 
+	 * Retrieves a vector of paths of child games (../ from the current game) that may be
 	 * considered when searching for multi-game save files. These should be passed to SearchImportPaths()
 	 * @param parent_tree the tree for the parent folder of the current game (../)
 	 * @return vector of paths of child game folders, including that of the current game
 	 */
-	std::vector<std::string> GetImportChildPaths(const FileFinder::DirectoryTree& parent_tree) const;
+	std::vector<std::string> GetImportChildPaths(const DirectoryTreeView& parent_tree) const;
 
 	/**
 	 * Given a parent/child game, retrieves a vector of save files that are considered for multi-game importing.
@@ -86,7 +86,7 @@ public:
 	 * @param child_path the path of the child relative to parent_tree
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> SearchImportPaths(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path) const;
+	std::vector<FileItem> SearchImportPaths(const DirectoryTreeView& parent_tree, StringView child_path) const;
 
 	/**
 	 * Retrieve the LDB extension's replacement in non-standard projects.
@@ -128,8 +128,8 @@ public:
 	 * Retrieve the menu item text for Scen_Title translations (languages)
 	 * @return the INI-defined value, or the default value for this vocabulary term
 	 */
-	std::string GetExVocabTranslateTitleText() const; 
-	
+	std::string GetExVocabTranslateTitleText() const;
+
 
 private:
 	/**
@@ -139,8 +139,8 @@ private:
 	 * @param def_value The default value to return if the ini contains no override.
 	 * @return the INI-defined value, or the defualt value for this vocabulary term
 	 */
-	std::string GetExVocab(const std::string& term, const std::string& def_value) const;
-	
+	std::string GetExVocab(StringView term, StringView def_value) const;
+
 	/**
 	 * Heuristically tries to guess the canonical name of this game,
 	 *  and stores it locally in this Meta object.
@@ -148,7 +148,7 @@ private:
 	 * @param lmtFile The path to the file we expect to be RPG_RT.lmt
 	 * @param ldbFile The path to the file we expect to be RPG_RT.ldb
 	 */
-	void IdentifyCanonName(const std::string& lmtFile, const std::string& ldbFile);
+	void IdentifyCanonName(StringView lmtFile, StringView ldbFile);
 
 	/**
 	 * Internal function called by SearchImportPaths
@@ -158,7 +158,7 @@ private:
 	 * @param pivot_map_id the id of the map used to pivot between the prequel and the current game
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> BuildImportCandidateList(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const;
+	std::vector<FileItem> BuildImportCandidateList(const DirectoryTreeView& parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
 
 	/**
 	 * Was the INI file passed to the constructor invalid or empty?

@@ -106,7 +106,7 @@ void Scene_Import::UpdateScanAndProgress() {
 	if (children.empty()) {
 		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
 			auto parentPath = FileFinder::MakePath(Main_Data::GetSavePath(), "..");
-			parent_tree = FileFinder::CreateDirectoryTree(parentPath, FileFinder::DIRECTORIES);
+			parent_tree = FileFinder::CreateDirectoryTree(parentPath);
 			if (parent_tree != nullptr) {
 				children = Player::meta->GetImportChildPaths(*parent_tree);
 			}
