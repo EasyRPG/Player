@@ -47,7 +47,7 @@ private:
 	void ReadRegistry(StringView company, StringView product, StringView key);
 	std::string LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const;
 
-	using search_path_list = std::vector<std::unique_ptr<DirectoryTree>>;
+	using search_path_list = std::vector<FilesystemView>;
 
 	/** all RTP search paths */
 	search_path_list search_paths;

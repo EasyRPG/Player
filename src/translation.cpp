@@ -53,7 +53,7 @@
 #define TRCUST_ADDMSG           "<easyrpg:new_page>"
 
 
-DirectoryTreeView Tr::GetTranslationTree() {
+FilesystemView Tr::GetTranslationFilesystem() {
 	return Player::translation.GetRootTree();
 }
 
@@ -61,7 +61,7 @@ std::string Tr::GetCurrentTranslationId() {
 	return Player::translation.GetCurrentLanguageId();
 }
 
-DirectoryTreeView Tr::GetCurrentTranslationTree() {
+FilesystemView Tr::GetCurrentTranslationFilesystem() {
 	return Player::translation.GetRootTree().Subtree(GetCurrentTranslationId());
 }
 
@@ -80,11 +80,11 @@ void Translation::InitTranslations()
 	Reset();
 
 	// Determine if the "languages" directory exists, and convert its case.
-	auto tree = FileFinder::GetDirectoryTree();
-	translation_root_tree = tree.Subtree(TRDIR_NAME);
-	if (translation_root_tree) {
+	auto fs = FileFinder::Game();
+	translation_root_fs = fs.Subtree(TRDIR_NAME);
+	if (translation_root_fs) {
 		// Now list all directories within the translate dir
-		auto translation_tree = translation_root_tree.ListDirectory();
+		auto translation_tree = translation_root_fs.ListDirectory();
 
 		// Now iterate over every subdirectory.
 		for (const auto& tr_name : *translation_tree) {
@@ -93,7 +93,7 @@ void Translation::InitTranslations()
 			item.lang_name = tr_name.second.name;
 
 			// If there's a manifest file, read the language name and help text from that.
-			std::string meta_name = translation_root_tree.FindFile(item.lang_dir, TRFILE_META_INI);
+			std::string meta_name = translation_root_fs.FindFile(item.lang_dir, TRFILE_META_INI);
 			if (!meta_name.empty()) {
 				lcf::INIReader ini(meta_name);
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
@@ -110,9 +110,9 @@ std::string Translation::GetCurrentLanguageId() const
 	return current_language;
 }
 
-DirectoryTreeView Translation::GetRootTree() const
+FilesystemView Translation::GetRootTree() const
 {
-	return translation_root_tree;
+	return translation_root_fs;
 }
 
 bool Translation::HasTranslations() const
@@ -154,7 +154,7 @@ void Translation::SelectLanguage(const std::string& lang_id)
 
 bool Translation::ParseLanguageFiles(const std::string& lang_id)
 {
-	DirectoryTreeView language_tree;
+	FilesystemView language_tree;
 
 	// Create the directory tree (for lookups).
 	if (!lang_id.empty()) {

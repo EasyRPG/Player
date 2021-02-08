@@ -68,6 +68,7 @@ namespace Platform {
 		 * @param name File to access
 		 */
 		explicit File(std::string name);
+
 		~File() = default;
 
 		/** @return True when the file exists */

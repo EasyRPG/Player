@@ -21,6 +21,7 @@
 // Headers
 #include "system.h"
 #include "filesystem_stream.h"
+#include "filesystem.h"
 #include "string_view.h"
 #include "directory_tree.h"
 
@@ -40,6 +41,11 @@ namespace FileFinder {
 	 * Quits FileFinder.
 	 */
 	void Quit();
+
+	FilesystemView Root();
+	FilesystemView Game();
+	void SetGameFilesystem(FilesystemView filesystem);
+	FilesystemView Save();
 
 	/**
 	 * Finds an image file.
@@ -201,46 +207,22 @@ namespace FileFinder {
 	std::string GetPathInsideGamePath(StringView path_in);
 
 	/**
-	 * Sets the directory tree that is used for executing the current RPG Maker
-	 * game.
-	 *
-	 * @param directory_tree Directory tree to use.
-	 */
-	void SetDirectoryTree(std::unique_ptr<DirectoryTree> directory_tree);
-
-	/**
-	 * Gets the directory tree that is used by the current game.
-	 *
-	 * @return directory tree
-	 */
-	DirectoryTreeView GetDirectoryTree();
-
-	/** @return A new directory tree that is rooted at the save directory or nullptr when not readable */
-	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
-
-	/**
-	 * @param p root directory of the tree
-	 * @return New directory tree or nullptr when p is not readable
-	 */
-	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string p);
-
-	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
 	 */
-	bool IsValidProject(const DirectoryTreeView& tree);
+	bool IsValidProject(const FilesystemView& fs);
 
 	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) project
 	 */
-	bool IsRPG2kProject(const DirectoryTreeView& tree);
+	bool IsRPG2kProject(const FilesystemView& fs);
 
 	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid EasyRPG project
 	 */
-	bool IsEasyRpgProject(const DirectoryTreeView& tree);
+	bool IsEasyRpgProject(const FilesystemView& fs);
 
 	/**
 	 * Determines if the directory in question represents an RPG2k project with non-standard
@@ -249,7 +231,7 @@ namespace FileFinder {
 	 * @param tree The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
-	bool IsRPG2kProjectWithRenames(const DirectoryTreeView& tree);
+	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name

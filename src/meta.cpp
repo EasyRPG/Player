@@ -111,11 +111,11 @@ std::string Meta::GetParentGame() const {
 	return "";
 }
 
-std::vector<std::string> Meta::GetImportChildPaths(const DirectoryTreeView& parent_tree) const {
+std::vector<std::string> Meta::GetImportChildPaths(const FilesystemView& parent_fs) const {
 	std::vector<std::string> res;
 
 	if (!Empty()) {
-		const auto* entries = parent_tree.ListDirectory();
+		const auto* entries = parent_fs.ListDirectory();
 		if (entries) {
 			for (const auto &item: *entries) {
 				if (item.second.type != DirectoryTree::FileType::Directory) {
@@ -129,24 +129,25 @@ std::vector<std::string> Meta::GetImportChildPaths(const DirectoryTreeView& pare
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(const DirectoryTreeView& parent_tree, StringView child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent_fs, StringView child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
-		return BuildImportCandidateList(parent_tree, child_path, parent, pivotMapId);
+		return BuildImportCandidateList(parent_fs, child_path, parent, pivotMapId);
 	}
 
 	return std::vector<Meta::FileItem>();
 }
 
 
-std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const DirectoryTreeView& parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
+std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
-
+#if 0
+	FIXME
 	// Try to read the game name. Note that we assume the games all have the same encoding (and use Player::encoding)
-	auto child_full_path = FileFinder::MakePath(parent_tree.GetRootPath(), child_path);
+	auto child_full_path = child_path;
 	auto child_tree = FileFinder::CreateDirectoryTree(child_full_path);
 	bool is_match = false;
 	if (child_tree != nullptr) {
@@ -190,7 +191,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const DirectoryTreeVi
 			}
 		}
 	}
-
+#endif
 	return res;
 }
 

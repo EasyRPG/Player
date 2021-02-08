@@ -57,26 +57,26 @@ void Scene_Save::Start() {
 }
 
 void Scene_Save::Action(int index) {
-	Save(*tree, index + 1);
+	Save(fs, index + 1);
 
 	Scene::Pop();
 }
 
-std::string Scene_Save::GetSaveFilename(const DirectoryTreeView& tree, int slot_id) {
+std::string Scene_Save::GetSaveFilename(const FilesystemView& fs, int slot_id) {
 	const auto save_file = fmt::format("Save{:02d}.lsd", slot_id);
 
 	Output::Debug("Saving to {}", save_file);
 
-	std::string filename = tree.FindFile(save_file);
+	std::string filename = fs.FindFile(save_file);
 
 	if (filename.empty()) {
-		filename = tree.MakePath(save_file);
+		filename = fs.MakePath(save_file);
 	}
 	return filename;
 }
 
-void Scene_Save::Save(const DirectoryTreeView& tree, int slot_id, bool prepare_save) {
-	const auto filename = GetSaveFilename(tree, slot_id);
+void Scene_Save::Save(const FilesystemView& fs, int slot_id, bool prepare_save) {
+	const auto filename = GetSaveFilename(fs, slot_id);
 	auto save_stream = FileFinder::OpenOutputStream(filename);
 	if (!save_stream) {
 		Output::Warning("Failed saving to {}", filename);

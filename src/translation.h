@@ -42,7 +42,7 @@ namespace Tr {
 	/**
 	 * @return The directory tree of the translation directory.
 	 */
-	DirectoryTreeView GetTranslationTree();
+	FilesystemView GetTranslationFilesystem();
 
 	/**
 	 * The id of the current translation (e.g., "Spanish"). If empty, there is no active translation.
@@ -53,7 +53,7 @@ namespace Tr {
 	/**
 	 * @return The directory tree of the active translation.
 	 */
-	DirectoryTreeView GetCurrentTranslationTree();
+	FilesystemView GetCurrentTranslationFilesystem();
 
 } // End namespace Tr
 
@@ -165,7 +165,7 @@ public:
 	 *
 	 * @return the Languages directory tree.
 	 */
-	DirectoryTreeView GetRootTree() const;
+	FilesystemView GetRootTree() const;
 
 	/**
 	 * Retrieves a vector of all known languages.
@@ -278,7 +278,7 @@ private:
 	std::vector<Language> languages;
 
 	// The "languages" directory, but with appropriate capitalization.
-	DirectoryTreeView translation_root_tree;
+	FilesystemView translation_root_fs;
 
 	// The translation we are currently showing (e.g., "English_1")
 	std::string current_language;

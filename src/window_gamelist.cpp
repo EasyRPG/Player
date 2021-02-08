@@ -29,6 +29,8 @@ Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
 }
 
 void Window_GameList::Refresh() {
+#if 0
+	FIXME
 	tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath());
 	game_directories.clear();
 
@@ -42,7 +44,7 @@ void Window_GameList::Refresh() {
 			continue;
 		}
 
-		DirectoryTreeView subtree = tree->Subtree(dir.second.name);
+		FilesystemView subtree = tree->Subtree(dir.second.name);
 		if (FileFinder::IsValidProject(subtree)) {
 			game_directories.push_back(dir.second.name);
 		}
@@ -70,6 +72,7 @@ void Window_GameList::Refresh() {
 
 		DrawErrorText();
 	}
+#endif
 }
 
 void Window_GameList::DrawItem(int index) {

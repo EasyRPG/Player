@@ -51,7 +51,7 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 }
 
 template <typename T>
-static void detect_helper(const DirectoryTreeView& tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
+static void detect_helper(const FilesystemView& fs, std::vector<struct RTP::RtpHitInfo>& hit_list,
 		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list) {
 	for (int i = range.first; i < range.second; ++i) {
 		const char* category = rtp_table[i][0];
@@ -61,7 +61,7 @@ static void detect_helper(const DirectoryTreeView& tree, std::vector<struct RTP:
 				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
 				DirectoryTree::Args args = { FileFinder::MakePath(category, name), ext_list, 1, false, false };
-				ret = tree.FindFile(args);
+				ret = fs.FindFile(args);
 				if (!ret.empty()) {
 					hit_list[offset + j - 1].hits++;
 				}
@@ -70,19 +70,19 @@ static void detect_helper(const DirectoryTreeView& tree, std::vector<struct RTP:
 	}
 }
 
-std::vector<RTP::RtpHitInfo> RTP::Detect(const DirectoryTreeView& tree, int version) {
+std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
-		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, tree},
-		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, tree},
-		{RTP::Type::RPG2000_DonMiguelEnglish, Names[2], 2000, 0, 500, tree},
-		{RTP::Type::RPG2000_DonMiguelAddon, Names[3], 2000, 0, 503, tree},
-		{RTP::Type::RPG2003_OfficialJapanese, Names[4], 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_OfficialEnglish, Names[5], 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_VladRussian, Names[7], 2003, 0, 350, tree},
-		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, Names[8], 2003, 0, 600, tree},
-		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_OfficialTraditionalChinese, Names[10], 2003, 0, 676, tree}
+		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, fs},
+		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, fs},
+		{RTP::Type::RPG2000_DonMiguelEnglish, Names[2], 2000, 0, 500, fs},
+		{RTP::Type::RPG2000_DonMiguelAddon, Names[3], 2000, 0, 503, fs},
+		{RTP::Type::RPG2003_OfficialJapanese, Names[4], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_OfficialEnglish, Names[5], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_VladRussian, Names[7], 2003, 0, 350, fs},
+		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, Names[8], 2003, 0, 600, fs},
+		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_OfficialTraditionalChinese, Names[10], 2003, 0, 676, fs}
 	}};
 
 	auto SOUND_TYPES = Utils::MakeSvVector(".wav", ".mp3");
@@ -107,7 +107,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(const DirectoryTreeView& tree, int vers
 			const char* category = rtp_table_2k_categories[i];
 			std::pair<int, int> range = {rtp_table_2k_categories_idx[i], rtp_table_2k_categories_idx[i+1]};
 			auto ext_list = ext_for_cat(category);
-			detect_helper(tree, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
+			detect_helper(fs, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
 		}
 	}
 	if (version == 2003 || version == 0) {
@@ -115,7 +115,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(const DirectoryTreeView& tree, int vers
 			const char* category = rtp_table_2k3_categories[i];
 			std::pair<int, int> range = {rtp_table_2k3_categories_idx[i], rtp_table_2k3_categories_idx[i+1]};
 			auto ext_list = ext_for_cat(category);
-			detect_helper(tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
+			detect_helper(fs, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
 		}
 	}
 

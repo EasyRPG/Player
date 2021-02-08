@@ -106,16 +106,16 @@ void Scene_Import::UpdateScanAndProgress() {
 	if (children.empty()) {
 		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
 			auto parentPath = FileFinder::MakePath(Main_Data::GetSavePath(), "..");
-			parent_tree = FileFinder::CreateDirectoryTree(parentPath);
-			if (parent_tree != nullptr) {
-				children = Player::meta->GetImportChildPaths(*parent_tree);
+			parent_fs = FileFinder::Root().Create(parentPath);
+			if (parent_fs) {
+				children = Player::meta->GetImportChildPaths(parent_fs);
 			}
 		}
 		if (children.empty()) {
 			FinishScan();
 		}
 	} else if (curr_child_id < children.size()) {
-		auto candidates = Player::meta->SearchImportPaths(*parent_tree, children[curr_child_id]);
+		auto candidates = Player::meta->SearchImportPaths(parent_fs, children[curr_child_id]);
 		files.insert(files.end(), candidates.begin(), candidates.end());
 
 		progress_window->SetProgress((curr_child_id*100)/children.size(), children[curr_child_id]);

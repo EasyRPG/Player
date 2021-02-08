@@ -865,22 +865,22 @@ void Player::ResetGameObjects() {
 	Input::ResetMask();
 }
 
-static bool DefaultLmuStartFileExists(const DirectoryTreeView& tree) {
+static bool DefaultLmuStartFileExists(const FilesystemView& fs) {
 	// Compute map_id based on command line.
 	int map_id = Player::start_map_id == -1 ? lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 	std::string mapName = Game_Map::ConstructMapName(map_id, false);
 
 	// Now see if the file exists.
-	return !tree.FindFile(mapName).empty();
+	return !fs.FindFile(mapName).empty();
 }
 
 void Player::GuessNonStandardExtensions() {
 	// Check all conditions, but check the remap last (since it is potentially slower).
 	FileExtGuesser::RPG2KNonStandardFilenameGuesser rpg2kRemap;
-	if (!FileFinder::IsRPG2kProject(FileFinder::GetDirectoryTree()) &&
-		!FileFinder::IsEasyRpgProject(FileFinder::GetDirectoryTree())) {
+	if (!FileFinder::IsRPG2kProject(FileFinder::Game()) &&
+		!FileFinder::IsEasyRpgProject(FileFinder::Game())) {
 
-		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::GetDirectoryTree());
+		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::Game());
 		if (rpg2kRemap.Empty()) {
 			// Unlikely to happen because of the game browser only launches valid games
 			Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
@@ -984,8 +984,8 @@ void Player::LoadDatabase() {
 		}
 
 		// Override map extension, if needed.
-		if (!DefaultLmuStartFileExists(FileFinder::GetDirectoryTree())) {
-			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::GetDirectoryTree(), *meta, fileext_map);
+		if (!DefaultLmuStartFileExists(FileFinder::Game())) {
+			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::Game(), *meta, fileext_map);
 		}
 	}
 }

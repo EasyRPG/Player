@@ -31,11 +31,11 @@ namespace {
 }
 
 
-FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(const DirectoryTreeView& tree) {
+FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames(const FilesystemView& fs) {
 	// Try to rescue and determine file extensions.
 	// We need to figure out the names of the map tree and the DB (maps come later).
 	std::vector<RPG2KNonStandardFilenameGuesser::ExtAndSize> candidates;
-	const auto* entries = tree.ListDirectory();
+	const auto* entries = fs.ListDirectory();
 	if (entries) {
 		for (const auto &item: *entries) {
 			if (item.second.type != DirectoryTree::FileType::Regular) {
@@ -45,7 +45,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 			if (item.first.length() == RtPrefix.length() + 3 && ToStringView(item.first).starts_with(RtPrefix)) {
 				std::string ext = item.first.substr(RtPrefix.length());
 				if (ext != "exe" && ext != "ini") {
-					candidates.emplace_back(item.second.name, ext, FileFinder::GetFileSize(tree.FindFile(item.second.name)));
+					candidates.emplace_back(item.second.name, ext, FileFinder::GetFileSize(fs.FindFile(item.second.name)));
 				}
 			}
 
@@ -67,7 +67,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 	return RPG2KNonStandardFilenameGuesser();
 }
 
-void FileExtGuesser::GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping)
+void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta const& meta, RPG2KFileExtRemap& mapping)
 {
 	// If metadata is provided, rely on that.
 	std::string metaLmu = meta.GetLmuAlias();
@@ -80,7 +80,7 @@ void FileExtGuesser::GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta
 		//   we can't just pick the first since there may be some backup files on disk.
 		std::unordered_map<std::string, int> extCounts; // ext => count
 
-		const auto* entries = tree.ListDirectory();
+		const auto* entries = fs.ListDirectory();
 		if (entries) {
 			for (const auto &item: *entries) {
 				if (item.second.type != DirectoryTree::FileType::Regular) {

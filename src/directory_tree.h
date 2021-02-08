@@ -20,13 +20,14 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 #include <unordered_map>
 
 #include "span.h"
 #include "string_view.h"
 
 class DirectoryTreeView;
+class Filesystem;
+class FilesystemView;
 
 /**
  * A directory tree manages case-insenseitive file searching in a root folder
@@ -92,10 +93,10 @@ public:
 	/**
 	 * Creates a new DirectoryTree
 	 *
-	 * @param path root path of the tree
+	 * @param fs Filesystem this tree belongs to
 	 * @return new DirectoryTree
 	 */
-	static std::unique_ptr<DirectoryTree> Create(std::string path);
+	static std::unique_ptr<DirectoryTree> Create(Filesystem& fs);
 
 	/**
 	 * Creates a new view on the tree that is rooted at the sub_path.
@@ -135,9 +136,6 @@ public:
 	 */
 	std::string FindFile(const DirectoryTree::Args& args) const;
 
-	/** @return root path of the tree */
-	StringView GetRootPath() const;
-
 	/**
 	 * @param subpath Path to append to the root
 	 * @return Combined path
@@ -156,7 +154,7 @@ public:
 	operator DirectoryTreeView ();
 
 private:
-	std::string root;
+	Filesystem* fs = nullptr;
 
 	/** lowered dir (full path from root) -> <map of> lowered file -> Entry */
 	mutable std::unordered_map<std::string, DirectoryListType> fs_cache;
@@ -210,22 +208,11 @@ public:
 	 */
 	std::string FindFile(const DirectoryTree::Args& args) const;
 
-	/** @return root path of the subtree */
-	StringView GetRootPath() const;
-
 	/**
-	 * Creates path consisting of root + subtree + subdir
 	 * @param subpath Path to append to the subtree root
 	 * @return Combined path
 	 */
 	std::string MakePath(StringView subdir) const;
-
-    /**
-     * Creates a path consisting of subtree + subdir
-     * @param subpath Path to append to the subtree
-     * @return Combined path
-     */
-    std::string MakeSubPath(StringView subdir) const;
 
 	/**
 	 * Enumerates a directory.
@@ -241,14 +228,14 @@ public:
 	 * @param sub_path root of the subtree
 	 * @return subtree rooted at sub_path
 	 */
-	DirectoryTreeView Subtree(const std::string& sub_path);
+	DirectoryTreeView Subtree(StringView sub_path);
 
 	/** @return true when the subtree points at a readable directory */
 	explicit operator bool() const noexcept;
 
 private:
 	const DirectoryTree* tree = nullptr;
-	std::string full_path;
+	Filesystem* fs = nullptr;
 	std::string sub_path;
 	bool valid = false;
 };

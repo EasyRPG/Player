@@ -75,18 +75,18 @@ public:
 	/**
 	 * Retrieves a vector of paths of child games (../ from the current game) that may be
 	 * considered when searching for multi-game save files. These should be passed to SearchImportPaths()
-	 * @param parent_tree the tree for the parent folder of the current game (../)
+	 * @param parent_fs the filesystem for the parent folder of the current game (../)
 	 * @return vector of paths of child game folders, including that of the current game
 	 */
-	std::vector<std::string> GetImportChildPaths(const DirectoryTreeView& parent_tree) const;
+	std::vector<std::string> GetImportChildPaths(const FilesystemView& parent_fs) const;
 
 	/**
 	 * Given a parent/child game, retrieves a vector of save files that are considered for multi-game importing.
-	 * @param parent_tree the tree for the parent folder of the current game (../)
+	 * @param parent_fs the filesystem for the parent folder of the current game (../)
 	 * @param child_path the path of the child relative to parent_tree
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> SearchImportPaths(const DirectoryTreeView& parent_tree, StringView child_path) const;
+	std::vector<FileItem> SearchImportPaths(const FilesystemView& parent_fs, StringView child_path) const;
 
 	/**
 	 * Retrieve the LDB extension's replacement in non-standard projects.
@@ -152,13 +152,13 @@ private:
 
 	/**
 	 * Internal function called by SearchImportPaths
-	 * @param parent_tree the tree for the parent folder of the current game (../)
+	 * @param parent_fs the filesystem for the parent folder of the current game (../)
 	 * @param child_path the path of the child relative to parent_tree
 	 * @param parent_game_name canonical name of the parent game
 	 * @param pivot_map_id the id of the map used to pivot between the prequel and the current game
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> BuildImportCandidateList(const DirectoryTreeView& parent_tree, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
+	std::vector<FileItem> BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
 
 	/**
 	 * Was the INI file passed to the constructor invalid or empty?

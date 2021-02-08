@@ -185,8 +185,8 @@ void Scene_GameBrowser::BootGame() {
 		browser_dir = Main_Data::GetProjectPath();
 	Main_Data::SetProjectPath(path);
 
-	auto tree = FileFinder::CreateDirectoryTree(path);
-	FileFinder::SetDirectoryTree(std::move(tree));
+	auto fs = FileFinder::Root().Create(path);
+	FileFinder::SetGameFilesystem(fs);
 
 	Player::CreateGameObjects();
 

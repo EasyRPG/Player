@@ -21,7 +21,7 @@
 #include <string>
 #include <unordered_map>
 #include <utility>
-#include "directory_tree.h"
+#include "filesystem.h"
 
 class Meta;
 
@@ -48,11 +48,11 @@ namespace FileExtGuesser {
 	/**
 	 * Attempts to determine the LMU extension for non-standard projects.
 	 *
-	 * @param dir The directory tree of the project in question
+	 * @param fs The filesystem of the project in question
 	 * @param meta The meta object, which can be used to directly specify the extension
 	 * @param mapping The resultant mapping, if any, is stored in this lookup.
 	 */
-	void GuessAndAddLmuExtension(const DirectoryTreeView& tree, Meta const& meta, RPG2KFileExtRemap& mapping);
+	void GuessAndAddLmuExtension(const FilesystemView& fs, Meta const& meta, RPG2KFileExtRemap& mapping);
 
 	// Bookkeeping structure for use with GetRPG2kProjectWithRenames()
 	struct RPG2KNonStandardFilenameGuesser {
@@ -85,10 +85,10 @@ namespace FileExtGuesser {
 	/**
 	 * Scans a directory tree and tries to identify the LMT/LDB files, but with non-standard extensions.
 	 *
-	 * @param dir The directory tree of the project in question
+	 * @param fs The filesystem of the project in question
 	 * @return An object that contains the candidates (check with .Empty())
 	 */
-	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(const DirectoryTreeView& tree);
+	RPG2KNonStandardFilenameGuesser GetRPG2kProjectWithRenames(const FilesystemView& fs);
 
 }
 

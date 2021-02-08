@@ -162,13 +162,13 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 
 void FileFinder_RTP::AddPath(StringView p) {
 	using namespace FileFinder;
-	auto tree = DirectoryTree::Create(ToString(p));
-	if (tree) {
+	auto fs = FileFinder::Root().Create(ToString(p));
+	if (fs) {
 		Output::Debug("Adding {} to RTP path", p);
 
-		auto hit_info = RTP::Detect(*tree, Player::EngineVersion());
+		auto hit_info = RTP::Detect(fs, Player::EngineVersion());
 
-		search_paths.push_back(std::move(tree));
+		search_paths.push_back(fs);
 
 		if (hit_info.empty()) {
 			Output::Debug("The folder does not contain a known RTP!");
@@ -215,7 +215,7 @@ std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span
 	auto normal_search = [&]() -> std::string {
 		is_rtp_asset = false;
 		for (const auto& path : search_paths) {
-			const std::string ret = path->FindFile(dir, name, exts);
+			const std::string ret = path.FindFile(dir, name, exts);
 			if (!ret.empty()) {
 				return ret;
 			}
