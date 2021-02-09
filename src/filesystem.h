@@ -25,9 +25,12 @@
 #include <vector>
 #include <cassert>
 #include "directory_tree.h"
-#include "filesystem_stream.h"
 
 class FilesystemView;
+namespace Filesystem_Stream {
+	class InputStream;
+	class OutputStream;
+}
 
 class Filesystem {
 public:
@@ -92,8 +95,9 @@ public:
 	 * Clears the filesystem cache. Changes in the filesystem become visible
 	 * to the FindFile functions.
 	 * This is automatically called when an output stream is closed.
+	 * @param path Path to flush
 	 */
-	void ClearCache();
+	void ClearCache(StringView path) const;
 
 	/**
 	 * Creates a new appropriate filesystem from the specified path.
@@ -195,6 +199,8 @@ public:
 	std::string GetSubPath() const;
 
 	const Filesystem& GetOwner() const;
+
+	void ClearCache() const;
 
 	/**
 	 * Does a case insensitive search for the file.

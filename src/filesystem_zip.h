@@ -19,6 +19,7 @@
 #define EP_FILESYSTEM_ZIP_H
 
 #include "filesystem.h"
+#include "filesystem_stream.h"
 #include <fstream>
 #include <memory>
 #include <unordered_map>

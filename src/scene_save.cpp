@@ -70,7 +70,7 @@ std::string Scene_Save::GetSaveFilename(const FilesystemView& fs, int slot_id) {
 	std::string filename = fs.FindFile(save_file);
 
 	if (filename.empty()) {
-		filename = fs.MakePath(save_file);
+		filename = save_file;
 	}
 	return filename;
 }

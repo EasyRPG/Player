@@ -344,11 +344,10 @@ void FileRequestAsync::DownloadDone(bool success) {
 	}
 
 	if (success) {
-
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
 			// Update directory structure (new file was added)
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
+			FileFinder::Game().ClearCache();
 		}
 #endif
 

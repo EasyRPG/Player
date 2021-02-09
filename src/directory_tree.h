@@ -136,6 +136,8 @@ public:
 	 */
 	DirectoryListType* ListDirectory(StringView path = "") const;
 
+	void ClearCache(StringView path) const;
+
 private:
 	Filesystem* fs = nullptr;
 

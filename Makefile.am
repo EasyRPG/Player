@@ -107,7 +107,12 @@ libeasyrpg_player_a_SOURCES = \
 	src/fileext_guesser.h \
 	src/filesystem.cpp \
 	src/filesystem.h \
+	src/filesystem_native.cpp \
+	src/filesystem_native.h \
+	src/filesystem_stream.cpp \
 	src/filesystem_stream.h \
+	src/filesystem_zip.cpp \
+	src/filesystem_zip.h \
 	src/flash.h \
 	src/flat_map.h \
 	src/font.cpp \

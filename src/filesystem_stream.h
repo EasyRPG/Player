@@ -22,29 +22,19 @@
 #include <cassert>
 #include <istream>
 #include <ostream>
+#include "filesystem.h"
 #include "utils.h"
 
 namespace Filesystem_Stream {
 	class InputStream final : public std::istream {
 	public:
 		explicit InputStream(): std::istream(nullptr) {}
-		explicit InputStream(std::streambuf* sb) : std::istream(sb) {}
-		~InputStream() override {
-			delete rdbuf();
-		}
+		explicit InputStream(std::streambuf* sb);
+		~InputStream() override;
 		InputStream(const InputStream&) = delete;
 		InputStream& operator=(const InputStream&) = delete;
-		InputStream(InputStream&& is) : std::istream(std::move(is)) {
-			set_rdbuf(is.rdbuf());
-			is.set_rdbuf(nullptr);
-		}
-		InputStream& operator=(InputStream&& is) {
-			if (this == &is) return is;
-			std::istream::operator=(std::move(is));
-			set_rdbuf(is.rdbuf());
-			is.set_rdbuf(nullptr);
-			return is;
-		}
+		InputStream(InputStream&& is) noexcept;
+		InputStream& operator=(InputStream&& is) noexcept;
 
 		template <typename T>
 		bool ReadIntoObj(T& obj);
@@ -57,23 +47,15 @@ namespace Filesystem_Stream {
 	class OutputStream final : public std::ostream {
 	public:
 		explicit OutputStream(): std::ostream(nullptr) {}
-		explicit OutputStream(std::streambuf* sb) : std::ostream(sb) {};
-		~OutputStream() override {
-			delete rdbuf();
-		}
+		explicit OutputStream(std::streambuf* sb, FilesystemView fs);
+		~OutputStream() override;
 		OutputStream(const OutputStream&) = delete;
 		OutputStream& operator=(const OutputStream&) = delete;
-		OutputStream(OutputStream&& os) noexcept : std::ostream(std::move(os)) {
-			set_rdbuf(os.rdbuf());
-			os.set_rdbuf(nullptr);
-		}
-		OutputStream& operator=(OutputStream&& os) noexcept {
-			if (this == &os) return os;
-			std::ostream::operator=(std::move(os));
-			set_rdbuf(os.rdbuf());
-			os.set_rdbuf(nullptr);
-			return os;
-		}
+		OutputStream(OutputStream&& os) noexcept;
+		OutputStream& operator=(OutputStream&& os) noexcept;
+
+	private:
+		FilesystemView fs;
 	};
 
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);

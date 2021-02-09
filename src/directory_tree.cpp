@@ -116,6 +116,18 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	return &fs_cache.find(dir_key)->second;
 }
 
+void DirectoryTree::ClearCache(StringView path) const {
+	auto dir_key = make_key(path);
+	auto fs_it = fs_cache.find(dir_key);
+	if (fs_it != fs_cache.end()) {
+		fs_cache.erase(fs_it);
+	}
+	auto dir_it = dir_cache.find(dir_key);
+	if (dir_it != dir_cache.end()) {
+		dir_cache.erase(dir_it);
+	}
+}
+
 std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) const {
 	return FindFile({ ToString(filename), exts });
 }

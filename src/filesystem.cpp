@@ -18,6 +18,7 @@
 #include "filesystem.h"
 #include "filesystem_native.h"
 #include "filesystem_zip.h"
+#include "filesystem_stream.h"
 #include "filefinder.h"
 #include "utils.h"
 #include "output.h"
@@ -40,12 +41,16 @@ Filesystem_Stream::InputStream Filesystem::OpenInputStream(StringView name, std:
 
 Filesystem_Stream::OutputStream Filesystem::OpenOutputStream(StringView name, std::ios_base::openmode m) const {
 	std::streambuf* buf = CreateOutputStreambuffer(name, m | std::ios_base::out);
-	Filesystem_Stream::OutputStream os(buf);
+
+	std::string path;
+	std::tie(path, std::ignore) = FileFinder::GetPathAndFilename(name);
+	Filesystem_Stream::OutputStream os(buf, Subtree(path));
+
 	return os;
 }
 
-void Filesystem::ClearCache() {
-	// TODO
+void Filesystem::ClearCache(StringView path) const {
+	tree->ClearCache(path);
 }
 
 FilesystemView Filesystem::Create(StringView path) const {
@@ -151,6 +156,11 @@ std::string FilesystemView::GetFullPath() const {
 const Filesystem& FilesystemView::GetOwner() const {
 	assert(fs);
 	return *fs;
+}
+
+void FilesystemView::ClearCache() const {
+	assert(fs);
+	fs->ClearCache(GetSubPath());
 }
 
 std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) const {
