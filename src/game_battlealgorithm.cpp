@@ -1149,8 +1149,9 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const {
-	// Skills invoked by items ignore reflect
-	if (item) {
+	// Skills invoked by items and skills with the attribute
+        // "easyrpg_ignore_reflect" set ignore reflect
+	if (item || skill.easyrpg_ignore_reflect) {
 		return false;
 	}
 	return IsTargetValid(target) && target.HasReflectState() && target.GetType() != GetSource()->GetType();
