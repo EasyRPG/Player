@@ -74,7 +74,7 @@ void FileFinder::SetGameFilesystem(FilesystemView filesystem) {
 
 FilesystemView FileFinder::Save() {
 	std::string save_path = Main_Data::GetSavePath();
-	return root_fs->Subtree(save_path);
+	return Root().Subtree(save_path);
 }
 
 FilesystemView FileFinder::Root() {
@@ -280,45 +280,6 @@ void FileFinder::Quit() {
 	root_fs.reset();
 }
 
-
-Filesystem_Stream::InputStream FileFinder::OpenInputStream(const std::string& name, std::ios_base::openmode m) {
-	auto* buf = new std::filebuf();
-	buf->open(
-#ifdef _MSC_VER
-		Utils::ToWideString(name).c_str(),
-#else
-		name.c_str(),
-#endif
-		m);
-
-	if (!buf->is_open()) {
-		delete buf;
-		return Filesystem_Stream::InputStream();
-	}
-
-	Filesystem_Stream::InputStream is(buf);
-	return is;
-}
-
-Filesystem_Stream::OutputStream FileFinder::OpenOutputStream(const std::string& name, std::ios_base::openmode m) {
-	auto* buf = new std::filebuf();
-	buf->open(
-#ifdef _MSC_VER
-		Utils::ToWideString(name).c_str(),
-#else
-		name.c_str(),
-#endif
-		m);
-
-	if (!buf->is_open()) {
-		delete buf;
-		return Filesystem_Stream::OutputStream();
-	}
-
-	Filesystem_Stream::OutputStream os(buf);
-	return os;
-}
-
 std::string FileFinder::FindImage(StringView dir, StringView name) {
 #ifdef EMSCRIPTEN
 	return FindDefault(dir, name);
@@ -329,11 +290,11 @@ std::string FileFinder::FindImage(StringView dir, StringView name) {
 }
 
 std::string FileFinder::FindDefault(StringView dir, StringView name) {
-	return Root().FindFile(dir, name);
+	return Game().FindFile(dir, name);
 }
 
 std::string FileFinder::FindDefault(StringView name) {
-	return Root().FindFile(name);
+	return Game().FindFile(name);
 }
 
 bool FileFinder::IsValidProject(const FilesystemView& fs) {

@@ -207,7 +207,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 }
 
 bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
-	auto is = FileFinder::OpenInputStream(ToString(list_file));
+	auto is = FileFinder::Game().OpenInputStream(ToString(list_file));
 	assert(async_scripts.empty());
 
 	if (!is) {
@@ -238,7 +238,7 @@ bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 bool Game_Ineluki::Parse(StringView ini_file) {
 	auto ini_file_s = ToString(ini_file);
 
-	auto is = FileFinder::OpenInputStream(ini_file_s);
+	auto is = FileFinder::Game().OpenInputStream(ini_file_s);
 	if (!is) {
 		return false;
 	}

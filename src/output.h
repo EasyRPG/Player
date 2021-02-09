@@ -72,7 +72,7 @@ namespace Output {
 	 * @param file file to save.
 	 * @return true if success, otherwise false.
 	 */
-	bool TakeScreenshot(std::string const& file);
+	bool TakeScreenshot(StringView file);
 
 	/**
 	 * Takes screenshot and save it to specified stream.

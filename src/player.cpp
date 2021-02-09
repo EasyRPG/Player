@@ -708,7 +708,8 @@ void Player::CreateGameObjects() {
 	bool no_rtp_warning_flag = false;
 	{ // Scope lifetime of variables for ini parsing
 		std::string ini_file = FileFinder::FindDefault(INI_NAME);
-		auto ini_stream = FileFinder::OpenInputStream(ini_file, std::ios_base::in);
+
+		auto ini_stream = FileFinder::Game().OpenInputStream(ini_file, std::ios_base::in);
 		if (ini_stream) {
 			lcf::INIReader ini(ini_stream);
 			if (ini.ParseError() != -1) {
@@ -801,7 +802,7 @@ void Player::CreateGameObjects() {
 		// a ExFont can be manually bundled there)
 		std::string exep = FileFinder::FindDefault(EXE_NAME);
 		if (!exep.empty()) {
-			auto exesp = FileFinder::OpenInputStream(exep);
+			auto exesp = FileFinder::Game().OpenInputStream(exep);
 			if (exesp) {
 				Output::Debug("Loading ExFont from {}", exep);
 				EXEReader exe_reader = EXEReader(exesp);
@@ -815,7 +816,7 @@ void Player::CreateGameObjects() {
 	}
 #endif
 	if (!exfont_file.empty()) {
-		auto exfont_stream = FileFinder::OpenInputStream(exfont_file);
+		auto exfont_stream = FileFinder::Game().OpenInputStream(exfont_file);
 		if (exfont_stream) {
 			Output::Debug("Using custom ExFont: {}", exfont_file);
 			Cache::exfont_custom = Utils::ReadStream(exfont_stream);
@@ -914,11 +915,12 @@ void Player::LoadDatabase() {
 
 	if (is_easyrpg_project) {
 		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios_base::in);
+		auto edb_stream = FileFinder::Game().OpenInputStream(edb, std::ios_base::in);
 		if (!edb_stream) {
 			Output::Error("Error loading {}", DATABASE_NAME_EASYRPG);
 			return;
 		}
+
 		auto db = lcf::LDB_Reader::LoadXml(edb_stream);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -928,11 +930,12 @@ void Player::LoadDatabase() {
 		}
 
 		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
-		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios_base::in);
+		auto emt_stream = FileFinder::Game().OpenInputStream(emt, std::ios_base::in);
 		if (!emt_stream) {
 			Output::Error("Error loading {}", TREEMAP_NAME_EASYRPG);
 			return;
 		}
+
 		auto treemap = lcf::LMT_Reader::LoadXml(emt_stream);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -946,11 +949,12 @@ void Player::LoadDatabase() {
 		std::string lmt_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT);
 		std::string lmt = FileFinder::FindDefault(lmt_name);
 
-		auto ldb_stream = FileFinder::OpenInputStream(ldb);
+		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (!ldb_stream) {
 			Output::Error("Error loading {}", ldb_name);
 			return;
 		}
+
 		auto db = lcf::LDB_Reader::Load(ldb_stream, encoding);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -959,11 +963,12 @@ void Player::LoadDatabase() {
 			lcf::Data::data = std::move(*db);
 		}
 
-		auto lmt_stream = FileFinder::OpenInputStream(lmt);
+		auto lmt_stream = FileFinder::Game().OpenInputStream(lmt);
 		if (!lmt_stream) {
 			Output::Error("Error loading {}", lmt_name);
 			return;
 		}
+
 		auto treemap = lcf::LMT_Reader::Load(lmt_stream, encoding);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -1017,7 +1022,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	auto save_stream = FileFinder::OpenInputStream(save_name);
+	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
 	if (!save_stream) {
 		Output::Error("Error loading {}", save_name);
 		return;
@@ -1167,7 +1172,7 @@ std::string Player::GetEncoding() {
 	// command line > ini > detection > current locale
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
-		auto ini_stream = FileFinder::OpenInputStream(ini);
+		auto ini_stream = FileFinder::Game().OpenInputStream(ini);
 		if (ini_stream) {
 			encoding = lcf::ReaderUtil::GetEncoding(ini_stream);
 		}
@@ -1177,7 +1182,7 @@ std::string Player::GetEncoding() {
 		encoding = "";
 
 		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
-		auto ldb_stream = FileFinder::OpenInputStream(ldb);
+		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (ldb_stream) {
 			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
 

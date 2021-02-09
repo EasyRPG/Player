@@ -507,7 +507,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 	if (StringView(result->file).ends_with(".link")) {
 		// Handle Ineluki's MP3 patch
-		auto stream = FileFinder::OpenInputStream(path, std::ios_base::in);
+		auto stream = FileFinder::Game().OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
 			Output::Warning("Ineluki MP3: Link read error: {}", path);
 			return;

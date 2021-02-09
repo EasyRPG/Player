@@ -16,6 +16,7 @@
  */
 
 #include "filesystem_zip.h"
+#include "filefinder.h"
 #include "output.h"
 #include "utils.h"
 
@@ -308,7 +309,7 @@ static std::string normalize_path(StringView path) {
 	if (path == "." || path == "/" || path == "") {
 		return "";
 	};
-	std::string inner_path = ToString(path);
+	std::string inner_path = FileFinder::MakeCanonical(path, 1);
 	std::replace(inner_path.begin(), inner_path.end(), '\\', '/');
 	if (inner_path.front() == '.') {
 		inner_path = inner_path.substr(1, inner_path.size() - 1);
@@ -368,13 +369,13 @@ ZIPFilesystem::ZIPFilesystem(FilesystemView source_fs, std::string base_path, St
 				std::string enc_test = lcf::ReaderUtil::Recode("\\", enc);
 				if (enc_test.empty()) {
 					// Bad encoding
-					Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
+					Output::Debug("Bad encoding: {}. Trying next.", enc);
 					continue;
 				}
 				zip_encoding = enc;
 				break;
 			}
-			Output::Debug("Detected ZIP encoding: %s", zip_encoding.c_str());
+			Output::Debug("Detected ZIP encoding: {}", zip_encoding);
 		}
 
 		zipfile.clear();

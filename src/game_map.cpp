@@ -275,7 +275,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 			return nullptr;
 		}
 
-		auto map_stream = FileFinder::OpenInputStream(map_file);
+		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
 		if (!map_stream) {
 			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
 			return nullptr;
@@ -290,7 +290,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 						   fmt::format("map{} {:#08x}", Utils::CRC32(map_stream)));
 		}
 	} else {
-		auto map_stream = FileFinder::OpenInputStream(map_file);
+		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
 		if (!map_stream) {
 			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
 			return nullptr;

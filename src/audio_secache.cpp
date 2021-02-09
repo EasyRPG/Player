@@ -78,7 +78,7 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 	if (it == cache.end()) {
 		// Not in cache
 
-		auto f = FileFinder::OpenInputStream(filename);
+		auto f = FileFinder::Game().OpenInputStream(filename);
 
 		if (!f) {
 			se.reset();

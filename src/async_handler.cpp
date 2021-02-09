@@ -85,7 +85,7 @@ namespace {
 
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #ifdef EMSCRIPTEN
-	auto f = FileFinder::OpenInputStream(file);
+	auto f = FileFinder::Game().OpenInputStream(file);
 	if (!f) {
 		Output::Error("Emscripten: Reading index.json failed");
 		return;

@@ -29,7 +29,7 @@ static void* vio_open(const char* filename) {
 #else
 static void* vio_open(fluid_fileapi_t*, const char* filename) {
 #endif
-	auto is = FileFinder::OpenInputStream(filename);
+	auto is = FileFinder::Game().OpenInputStream(filename);
 	if (!is) {
 		Output::Warning("Fluidsynth: vio_open failed for {}", filename);
 		return nullptr;

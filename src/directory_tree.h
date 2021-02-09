@@ -129,12 +129,6 @@ public:
 	std::string FindFile(const DirectoryTree::Args& args) const;
 
 	/**
-	 * @param subpath Path to append to the root
-	 * @return Combined path
-	 */
-	std::string MakePath(StringView subpath) const;
-
-	/**
 	 * Enumerates a directory.
 	 *
 	 * @param path Path to enumerate, empty for root path

@@ -22,7 +22,7 @@
 #include <vector>
 #include "window_help.h"
 #include "window_selectable.h"
-#include "filefinder.h"
+#include "filesystem.h"
 
 /**
  * Window_GameList class.
@@ -60,7 +60,7 @@ public:
 	std::string GetGamePath();
 
 private:
-	std::unique_ptr<DirectoryTree> tree;
+	FilesystemView fs;
 	std::vector<std::string> game_directories;
 };
 

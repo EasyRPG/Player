@@ -205,7 +205,6 @@ protected:
 
 private:
 	std::string base_path;
-	std::string sub_dir;
 	mutable std::vector<std::unique_ptr<Filesystem>> child_fs;
 };
 
@@ -261,6 +260,11 @@ public:
 	 */
 	std::string MakePath(StringView subdir) const;
 
+	bool IsFile(StringView path) const;
+	bool IsDirectory(StringView path, bool follow_symlinks) const;
+	bool Exists(StringView path) const;
+	int64_t GetFilesize(StringView path) const;
+
 	/**
 	 * Enumerates a directory.
 	 *
@@ -303,31 +307,31 @@ inline std::string Filesystem::GetPath() const {
 }
 
 inline bool Filesystem::IsFile(StringView path) const {
-	return IsFileImpl(tree->MakePath(path));
+	return IsFileImpl(path);
 }
 
 inline bool Filesystem::IsDirectory(StringView path, bool follow_symlinks) const {
-	return IsDirectoryImpl(tree->MakePath(path), follow_symlinks);
+	return IsDirectoryImpl(path, follow_symlinks);
 }
 
 inline bool Filesystem::Exists(StringView path) const {
-	return ExistsImpl(tree->MakePath(path));
+	return ExistsImpl(path);
 }
 
 inline int64_t Filesystem::GetFilesize(StringView path) const {
-	return GetFilesizeImpl(tree->MakePath(path));
+	return GetFilesizeImpl(path);
 }
 
 inline std::streambuf* Filesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-	return CreateInputStreambufferImpl(tree->MakePath(path), mode);
+	return CreateInputStreambufferImpl(path, mode);
 }
 
 inline std::streambuf* Filesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-	return CreateOutputStreambufferImpl(tree->MakePath(path), mode);
+	return CreateOutputStreambufferImpl(path, mode);
 }
 
 inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(StringView path) const {
-	return tree->ListDirectory(tree->MakePath(path));
+	return tree->ListDirectory(path);
 }
 
 inline bool Filesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {

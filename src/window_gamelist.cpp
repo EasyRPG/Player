@@ -124,5 +124,5 @@ bool Window_GameList::HasValidGames() {
 }
 
 std::string Window_GameList::GetGamePath() {
-	return tree->MakePath(game_directories[GetIndex()]);
+	return fs.MakePath(game_directories[GetIndex()]);
 }

@@ -72,7 +72,7 @@ namespace {
 
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out | std::ios_base::app);
+			LOG_FILE = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -216,7 +216,7 @@ void Output::Quit() {
 
 	char* buf = new char[log_size];
 
-	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::in);
+	auto in = FileFinder::Save().OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::in);
 	if (in) {
 		in.seekg(0, std::ios_base::end);
 		if (in.tellg() > log_size) {
@@ -226,7 +226,7 @@ void Output::Quit() {
 			in.read(buf, 1024 * 100);
 			size_t read = in.gcount();
 
-			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out);
+			auto out = FileFinder::Save().OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out);
 			if (out) {
 				out.write(buf, read);
 			}
@@ -240,16 +240,13 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::GetSavePath(),
-								 "screenshot_"
-								 + std::to_string(index++)
-								 + ".png");
-	} while(FileFinder::Exists(p));
+		p = "screenshot_" + std::to_string(index++) + ".png";
+	} while(FileFinder::Save().Exists(p));
 	return TakeScreenshot(p);
 }
 
-bool Output::TakeScreenshot(std::string const& file) {
-	auto ret = FileFinder::OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+bool Output::TakeScreenshot(StringView file) {
+	auto ret = FileFinder::Save().OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
 		Output::Debug("Saving Screenshot {}", file);

@@ -88,7 +88,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 
 	if (!file.empty()) {
 		// File found
-		auto save_stream = FileFinder::OpenInputStream(file);
+		auto save_stream = FileFinder::Save().OpenInputStream(file);
 		if (!save_stream) {
 			Output::Debug("Save {} read error", file);
 			win.SetCorrupted(true);

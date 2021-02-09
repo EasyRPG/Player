@@ -106,26 +106,6 @@ namespace FileFinder {
 	std::string FindFont(StringView name);
 
 	/**
-	* Creates stream from UTF-8 file name.
-	*
-	* @param name UTF-8 string file name.
-	* @param m stream mode.
-	* @return NULL if open failed.
-	*/
-	Filesystem_Stream::InputStream OpenInputStream(const std::string& name,
-			std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary);
-
-	/**
-	* Creates stream from UTF-8 file name.
-	*
-	* @param name UTF-8 string file name.
-	* @param m stream mode.
-	* @return NULL if open failed.
-	*/
-	Filesystem_Stream::OutputStream OpenOutputStream(const std::string& name,
-			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
-
-	/**
 	 * Checks whether passed file is directory.
 	 * This function is case sensitve on some platform.
 	 *

@@ -429,7 +429,7 @@ void DynRpg::Load(int slot) {
 		return;
 	}
 
-	auto in = FileFinder::OpenInputStream(filename);
+	auto in = FileFinder::Game().OpenInputStream(filename);
 
 	if (!in) {
 		Output::Warning("Couldn't read DynRPG save: {}", filename);
@@ -498,7 +498,7 @@ void DynRpg::Save(int slot) {
 
 	std::string filename = get_filename(slot);
 
-	auto out = FileFinder::OpenOutputStream(filename);
+	auto out = FileFinder::Save().OpenOutputStream(filename);
 
 	if (!out) {
 		Output::Warning("Couldn't write DynRPG save: {}", filename);
