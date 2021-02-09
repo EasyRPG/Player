@@ -30,23 +30,23 @@
 NativeFilesystem::NativeFilesystem(std::string base_path) : Filesystem(std::move(base_path)) {
 }
 
-bool NativeFilesystem::IsFileImpl(StringView path) const {
+bool NativeFilesystem::IsFile(StringView path) const {
 	return Platform::File(ToString(path)).IsFile(false);
 }
 
-bool NativeFilesystem::IsDirectoryImpl(StringView dir, bool follow_symlinks) const {
+bool NativeFilesystem::IsDirectory(StringView dir, bool follow_symlinks) const {
 	return Platform::File(ToString(dir)).IsDirectory(follow_symlinks);
 }
 
-bool NativeFilesystem::ExistsImpl(StringView filename) const {
+bool NativeFilesystem::Exists(StringView filename) const {
 	return Platform::File(ToString(filename)).Exists();
 }
 
-int64_t NativeFilesystem::GetFilesizeImpl(StringView path) const {
+int64_t NativeFilesystem::GetFilesize(StringView path) const {
 	return Platform::File(ToString(path)).GetSize();
 }
 
-std::streambuf* NativeFilesystem::CreateInputStreambufferImpl(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
 	auto* buf = new std::filebuf();
 	buf->open(
 #ifdef _MSC_VER
@@ -64,7 +64,7 @@ std::streambuf* NativeFilesystem::CreateInputStreambufferImpl(StringView path, s
 	return buf;
 }
 
-std::streambuf* NativeFilesystem::CreateOutputStreambufferImpl(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
 	auto* buf = new std::filebuf();
 	buf->open(
 #ifdef _MSC_VER
@@ -82,7 +82,7 @@ std::streambuf* NativeFilesystem::CreateOutputStreambufferImpl(StringView path, 
 	return buf;
 }
 
-bool NativeFilesystem::GetDirectoryContentImpl(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
 	std::string p = ToString(path);
 
 	Platform::Directory dir(p);

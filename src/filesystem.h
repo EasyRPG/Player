@@ -54,37 +54,6 @@ public:
 	std::string GetPath() const;
 
 	/**
-	 * Checks whether the passed path is a file.
-	 * This function is case sensitive on some platforms.
-	 *
-	 * @param path a path relative to the filesystems root
-	 */
-	bool IsFile(StringView path) const;
-
-	/**
-	 * Checks whether the passed path is a directory.
-	 * This function is case sensitive on some platforms.
-	 *
-	 * @param path a path relative to the filesystems root
-	 */
-	bool IsDirectory(StringView path, bool follow_symlinks) const;
-
-	/**
-	 * Checks whether the passed path is an existant file.
-	 * This function is case sensitive on some platforms.
-	 *
-	 * @param path a path relative to the filesystems root
-	 */
-	bool Exists(StringView path) const;
-
-	/**
-	 * Retrieves the size of the file on the given path.
-	 *
-	 * @param path a path relative to the filesystems root
-	 */
-	int64_t GetFilesize(StringView path) const;
-
-	/**
 	 * Creates stream from UTF-8 file name for reading.
 	 *
 	 * @param name UTF-8 string file name.
@@ -93,14 +62,6 @@ public:
 	 */
 	Filesystem_Stream::InputStream OpenInputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
-
-	/**
-	 * Allocates a streambuffer with input capabilities on the given path.
-	 *
-	 * @param path a path relative to the filesystems root
-	 * @return A valid pointer to a streambuffer or a nullptr in case of failure.
-	 */
-	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const;
 
 	/**
 	 * Creates stream from UTF-8 file name for writing.
@@ -113,14 +74,6 @@ public:
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
 
 	/**
-	 * Allocates a streambuffer with output capabilities on the given path.
-	 *
-	 * @param path a path relative to the filesystems root
-	 * @return A valid pointer to a streambuffer or a nullptr in case of failure.
-	 */
-	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
-
-	/**
 	 * Returns a directory listing of the given path.
 	 *
 	 * @param path a path relative to the filesystems root
@@ -128,8 +81,6 @@ public:
 	 * @return List of directory entries
 	 */
 	DirectoryTree::DirectoryListType* ListDirectory(StringView path) const;
-
-	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const;
 
 	/**
 	 * Clears the filesystem cache. Changes in the filesystem become visible
@@ -183,22 +134,22 @@ public:
 	/** Implicit conversion to FilesystemView */
 	operator FilesystemView();
 
+	/**
+	 * Abstract methods to be implemented by filesystems.
+	 * The path is already adjusted to the filesystem base.
+	 */
+	 /** @{ */
+	virtual bool IsFile(StringView path) const = 0;
+	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
+	virtual bool Exists(StringView path) const = 0;
+	virtual int64_t GetFilesize(StringView path) const = 0;
+	virtual std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
+	virtual std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
+	virtual bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const = 0;
+	/** @} */
+
 protected:
 	explicit Filesystem(std::string base_path);
-
-	/**
- 	 * Abstract methods to be implemented by filesystems.
- 	 * The path is already adjusted to the filesystem base.
- 	 */
-	/** @{ */
-	virtual bool IsFileImpl(StringView path) const = 0;
-	virtual bool IsDirectoryImpl(StringView path, bool follow_symlinks) const = 0;
-	virtual bool ExistsImpl(StringView path) const = 0;
-	virtual int64_t GetFilesizeImpl(StringView path) const = 0;
-	virtual std::streambuf* CreateInputStreambufferImpl(StringView path, std::ios_base::openmode mode) const = 0;
-	virtual std::streambuf* CreateOutputStreambufferImpl(StringView path, std::ios_base::openmode mode) const = 0;
-	virtual bool GetDirectoryContentImpl(StringView path, std::vector<DirectoryTree::Entry>& entries) const = 0;
-	/** @} */
 
 	friend FilesystemView;
 	std::unique_ptr<DirectoryTree> tree;
@@ -306,36 +257,8 @@ inline std::string Filesystem::GetPath() const {
 	return base_path;
 }
 
-inline bool Filesystem::IsFile(StringView path) const {
-	return IsFileImpl(path);
-}
-
-inline bool Filesystem::IsDirectory(StringView path, bool follow_symlinks) const {
-	return IsDirectoryImpl(path, follow_symlinks);
-}
-
-inline bool Filesystem::Exists(StringView path) const {
-	return ExistsImpl(path);
-}
-
-inline int64_t Filesystem::GetFilesize(StringView path) const {
-	return GetFilesizeImpl(path);
-}
-
-inline std::streambuf* Filesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-	return CreateInputStreambufferImpl(path, mode);
-}
-
-inline std::streambuf* Filesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-	return CreateOutputStreambufferImpl(path, mode);
-}
-
 inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(StringView path) const {
 	return tree->ListDirectory(path);
-}
-
-inline bool Filesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
-	return GetDirectoryContentImpl(path, entries);
 }
 
 inline Filesystem::operator FilesystemView() { return Subtree(""); }

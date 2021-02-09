@@ -522,7 +522,7 @@ ZIPFilesystem::~ZIPFilesystem() {
 	}
 }
 
-bool ZIPFilesystem::IsFileImpl(StringView path) const {
+bool ZIPFilesystem::IsFile(StringView path) const {
 	std::string path_normalized = normalize_path(path);
 	auto it = m_zipContent.find(path_normalized);
 	if (it != m_zipContent.end()) {
@@ -533,7 +533,7 @@ bool ZIPFilesystem::IsFileImpl(StringView path) const {
 	}
 }
 
-bool ZIPFilesystem::IsDirectoryImpl(StringView path, bool) const {
+bool ZIPFilesystem::IsDirectory(StringView path, bool) const {
 	std::string path_normalized = normalize_path(path);
 	auto it = m_zipContent.find(path_normalized);
 	if (it != m_zipContent.end()) {
@@ -544,13 +544,13 @@ bool ZIPFilesystem::IsDirectoryImpl(StringView path, bool) const {
 	}
 }
 
-bool ZIPFilesystem::ExistsImpl(StringView path) const {
+bool ZIPFilesystem::Exists(StringView path) const {
 	std::string path_normalized = normalize_path(path);
 	auto it = m_zipContent.find(path_normalized);
 	return (it != m_zipContent.end());
 }
 
-int64_t ZIPFilesystem::GetFilesizeImpl(StringView path) const {
+int64_t ZIPFilesystem::GetFilesize(StringView path) const {
 	std::string path_normalized = normalize_path(path);
 
 	auto it = m_zipContent.find(path_normalized);
@@ -562,7 +562,7 @@ int64_t ZIPFilesystem::GetFilesizeImpl(StringView path) const {
 	}
 }
 
-std::streambuf* ZIPFilesystem::CreateInputStreambufferImpl(StringView path, std::ios_base::openmode) const {
+std::streambuf* ZIPFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode) const {
 	if (!m_isValid) return nullptr;
 
 	std::string path_normalized = normalize_path(path);
@@ -607,11 +607,11 @@ std::streambuf* ZIPFilesystem::CreateInputStreambufferImpl(StringView path, std:
 	return nullptr;
 }
 
-std::streambuf* ZIPFilesystem::CreateOutputStreambufferImpl(StringView, std::ios_base::openmode) const {
+std::streambuf* ZIPFilesystem::CreateOutputStreambuffer(StringView, std::ios_base::openmode) const {
 	return nullptr;
 }
 
-bool ZIPFilesystem::GetDirectoryContentImpl(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool ZIPFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
 	if (!m_isValid) {
 		return false;
 	}

@@ -35,13 +35,13 @@ protected:
  	 * Implementation of abstract methods
  	 */
 	/** @{ */
-	bool IsFileImpl(StringView path) const override;
-	bool IsDirectoryImpl(StringView path, bool follow_symlinks) const override;
-	bool ExistsImpl(StringView path) const override;
-	int64_t GetFilesizeImpl(StringView path) const override;
-	std::streambuf* CreateInputStreambufferImpl(StringView path, std::ios_base::openmode mode) const override;
-	std::streambuf* CreateOutputStreambufferImpl(StringView path, std::ios_base::openmode mode) const override;
-	bool GetDirectoryContentImpl(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
+	bool IsFile(StringView path) const override;
+	bool IsDirectory(StringView path, bool follow_symlinks) const override;
+	bool Exists(StringView path) const override;
+	int64_t GetFilesize(StringView path) const override;
+	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
+	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
+	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
 	/** @} */
 };
 
