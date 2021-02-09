@@ -1080,12 +1080,19 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		ResetWindows(true);
 		target_window->SetIndex(-1);
 
-		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || (!lcf::Data::system.easyrpg_enable_auto_battle && !IsEscapeAllowedFromOptionWindow())) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(-options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		options_window->SetActive(true);
+		if (lcf::Data::system.easyrpg_enable_auto_battle) {
+			options_window->EnableItem(1);
+		} else {
+			options_window->DisableItem(1);
+		}
+
 		if (IsEscapeAllowedFromOptionWindow()) {
 			options_window->EnableItem(2);
 		} else {
@@ -1122,9 +1129,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 					SetState(State_SelectActor);
 					break;
 				case 1: // Auto Battle
-					MoveCommandWindows(-options_window->GetWidth(), 8);
-					SetState(State_AutoBattle);
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					if (lcf::Data::system.easyrpg_enable_auto_battle) {
+						MoveCommandWindows(-options_window->GetWidth(), 8);
+						SetState(State_AutoBattle);
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					} else {
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+					}
 					break;
 				case 2: // Escape
 					if (IsEscapeAllowedFromOptionWindow()) {
