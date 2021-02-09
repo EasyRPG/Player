@@ -686,13 +686,16 @@ void Player::CreateGameObjects() {
 	// Check for translation-related directories and load language names.
 	translation.InitTranslations();
 
-	std::string game_path = Main_Data::GetProjectPath();
-	std::string save_path = Main_Data::GetSavePath();
+	std::string game_path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
+	std::string save_path = FileFinder::GetFullFilesystemPath(FileFinder::Save());
 	if (game_path == save_path) {
-		Output::Debug("Using {} as Game and Save directory", game_path);
+		Output::DebugStr("Game and Save Directory:");
+		FileFinder::DumpFilesystem(FileFinder::Game());
 	} else {
-		Output::Debug("Using {} as Game directory", game_path);
-		Output::Debug("Using {} as Save directory", save_path);
+		Output::Debug("Game Directory:");
+		FileFinder::DumpFilesystem(FileFinder::Game());
+		Output::Debug("SaveDirectory:", save_path);
+		FileFinder::DumpFilesystem(FileFinder::Save());
 	}
 
 	LoadDatabase();

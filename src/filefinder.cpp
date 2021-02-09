@@ -433,3 +433,22 @@ bool FileFinder::IsMajorUpdatedTree() {
 	Output::Debug("Assuming {} engine", assume_newer ? "newer" : "older");
 	return assume_newer;
 }
+
+std::string FileFinder::GetFullFilesystemPath(FilesystemView fs) {
+	FilesystemView cur_fs = fs;
+	std::string full_path = "";
+	while (cur_fs) {
+		full_path = MakePath(cur_fs.GetFullPath(), full_path);
+		cur_fs = cur_fs.GetOwner().GetParent();
+	}
+	return full_path;
+}
+
+void FileFinder::DumpFilesystem(FilesystemView fs) {
+	FilesystemView cur_fs = fs;
+	int i = 1;
+	while (cur_fs) {
+		Output::Debug("{}: {}", i++, cur_fs.Describe());
+		cur_fs = cur_fs.GetOwner().GetParent();
+	}
+}

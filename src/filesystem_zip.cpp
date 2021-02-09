@@ -26,6 +26,7 @@
 #include <sstream>
 #include <cassert>
 #include <algorithm>
+#include <fmt/core.h>
 
 static const uint32_t endOfCentralDirectory = 0x06054b50;
 static const int32_t endOfCentralDirectorySize = 22;
@@ -320,7 +321,7 @@ static std::string normalize_path(StringView path) {
 	return inner_path;
 }
 
-ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding) :
+ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, StringView enc) :
 	Filesystem(base_path, parent_fs) {
 	// Open first entry of the input filebuffer pool
 	m_isValid = false;
@@ -339,9 +340,9 @@ ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, St
 
 	std::istream& zipfile = initialEntry->stream; // Take the first streambuffer of the pool
 
-	std::string zip_encoding = ToString(encoding);
+	encoding = ToString(enc);
 	if (FindCentralDirectory(zipfile, centralDirectoryOffset, centralDirectorySize, centralDirectoryEntries)) {
-		if (zip_encoding.empty()) {
+		if (encoding.empty()) {
 			zipfile.seekg(centralDirectoryOffset); // Seek to the start of the central directory
 			std::stringstream filename_guess;
 
@@ -372,17 +373,17 @@ ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, St
 					Output::Debug("Bad encoding: {}. Trying next.", enc);
 					continue;
 				}
-				zip_encoding = enc;
+				encoding = enc;
 				break;
 			}
-			Output::Debug("Detected ZIP encoding: {}", zip_encoding);
+			Output::Debug("Detected ZIP encoding: {}", encoding);
 		}
 
 		zipfile.clear();
 		zipfile.seekg(centralDirectoryOffset); // Seek to the start of the central directory
 		while (ReadCentralDirectoryEntry(zipfile, filepath_arr, entry.fileoffset, entry.filesize)) {
 			filepath = filepath_arr.data();
-			filepath = lcf::ReaderUtil::Recode(filepath, zip_encoding);
+			filepath = lcf::ReaderUtil::Recode(filepath, encoding);
 			// remove the offset directory from the front of the path
 
 			// check if the entry is an directory or not (indicated by trailing /)
@@ -628,4 +629,8 @@ bool ZIPFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	}
 
 	return true;
+}
+
+std::string ZIPFilesystem::Describe() const {
+	return fmt::format("[Zip] {} ({})", GetPath(), encoding);
 }

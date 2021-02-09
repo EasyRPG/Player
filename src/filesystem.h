@@ -154,6 +154,7 @@ public:
 	virtual int64_t GetFilesize(StringView path) const = 0;
 	virtual bool CreateDirectory(StringView dir, bool follow_symlinks) const;
 	virtual bool IsFeatureSupported(Feature f) const;
+	virtual std::string Describe() const = 0;
 	/** @} */
 
 protected:
@@ -272,6 +273,8 @@ public:
 	 * @return subtree rooted at sub_path
 	 */
 	FilesystemView Subtree(StringView sub_path) const;
+
+	std::string Describe() const;
 
 	/** @return true when the subtree points at a readable directory */
 	explicit operator bool() const noexcept;

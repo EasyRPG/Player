@@ -22,6 +22,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <fmt/core.h>
 
 #include "system.h"
 #include "output.h"
@@ -132,4 +133,8 @@ bool NativeFilesystem::CreateDirectory(StringView path, bool follow_symlinks) co
 
 bool NativeFilesystem::IsFeatureSupported(Feature f) const {
 	return f == Filesystem::Feature::Write;
+}
+
+std::string NativeFilesystem::Describe() const {
+	return fmt::format("[Native] {}.", GetPath());
 }

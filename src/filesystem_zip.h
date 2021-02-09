@@ -53,6 +53,7 @@ protected:
 	int64_t GetFilesize(StringView path) const override;
 	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
 	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
+	std::string Describe() const override;
 	/** @} */
 
 private:
@@ -80,6 +81,7 @@ private:
 	std::string fs_path;
 	mutable std::vector<StreamPoolEntry*> m_InputPool;
 	std::unordered_map<std::string, ZipEntry> m_zipContent;
+	std::string encoding;
 };
 
 #endif

@@ -261,3 +261,12 @@ FilesystemView FilesystemView::Subtree(StringView sub_path) const {
 	assert(fs);
 	return FilesystemView(fs, MakePath(sub_path));
 }
+
+std::string FilesystemView::Describe() const {
+	assert(fs);
+	if (GetSubPath().empty()) {
+		return fs->Describe();
+	} else {
+		return fs->Describe() + " -> " + GetSubPath();
+	}
+}

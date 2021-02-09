@@ -263,6 +263,9 @@ namespace FileFinder {
 		RPG2K = 735000,
 		RPG2K3 = 927000,
 	};
+
+	std::string GetFullFilesystemPath(FilesystemView fs);
+	void DumpFilesystem(FilesystemView fs);
 } // namespace FileFinder
 
 #endif
