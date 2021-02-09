@@ -22,7 +22,7 @@
 #include <vector>
 #include "window_help.h"
 #include "window_selectable.h"
-#include "filesystem.h"
+#include "filefinder.h"
 
 /**
  * Window_GameList class.
@@ -36,9 +36,9 @@ public:
 	Window_GameList(int ix, int iy, int iwidth, int iheight);
 
 	/**
-	 * Refreshes the item list.
+	 * Refreshes the game list.
 	 */
-	void Refresh();
+	bool Refresh(FilesystemView filesystem_base, bool show_dotdot);
 
 	/**
 	 * Draws an item together with the quantity.
@@ -50,18 +50,20 @@ public:
 	void DrawErrorText();
 
 	/**
-	 * @return true if at least one valid game is in the directory
+	 * @return true if at least one entry is in the directory
 	 */
-	bool HasValidGames();
+	bool HasValidEntry();
 
 	/**
-	 * @return path to the selected game
+	 * @return filesystem of the selected game
 	 */
-	std::string GetGamePath();
+	FilesystemView GetGameFilesystem() const;
 
 private:
-	FilesystemView fs;
+	FilesystemView base_fs;
 	std::vector<std::string> game_directories;
+
+	bool show_dotdot = false;
 };
 
 #endif

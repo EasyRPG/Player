@@ -67,8 +67,9 @@ void Scene_Logo::Update() {
 			Output::Error("{} is not a valid path", Main_Data::GetProjectPath());
 		}
 
+		FileFinder::SetGameFilesystem(fs);
+
 		if (FileFinder::IsValidProject(fs)) {
-			FileFinder::SetGameFilesystem(fs);
 			Player::CreateGameObjects();
 			is_valid = true;
 		}

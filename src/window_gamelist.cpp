@@ -28,25 +28,28 @@ Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
 	column_max = 1;
 }
 
-void Window_GameList::Refresh() {
-#if 0
-	FIXME
-	tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath());
-	game_directories.clear();
-
-	if (!tree) {
-		return;
+bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) {
+	base_fs = filesystem_base;
+	if (!base_fs) {
+		return false;
 	}
 
+	game_directories.clear();
+
+	this->show_dotdot = show_dotdot;
+
+	auto files = base_fs.ListDirectory();
+
 	// Find valid game diectories
-	for (auto& dir : *tree->ListDirectory()) {
-		if (dir.second.type != DirectoryTree::FileType::Directory) {
+	for (auto& dir : *files) {
+		if (dir.second.name.empty()) {
 			continue;
 		}
-
-		FilesystemView subtree = tree->Subtree(dir.second.name);
-		if (FileFinder::IsValidProject(subtree)) {
-			game_directories.push_back(dir.second.name);
+		if (dir.second.type == DirectoryTree::FileType::Regular &&
+			StringView(dir.second.name).ends_with(".zip")) {
+			game_directories.emplace_back(dir.second.name);
+		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
+			game_directories.emplace_back(dir.second.name);
 		}
 	}
 
@@ -56,7 +59,11 @@ void Window_GameList::Refresh() {
 				  return strcmp(Utils::LowerCase(s).c_str(), Utils::LowerCase(s2).c_str()) <= 0;
 			  });
 
-	if (HasValidGames()) {
+	if (show_dotdot) {
+		game_directories.insert(game_directories.begin(), "..");
+	}
+
+	if (HasValidEntry()) {
 		item_max = game_directories.size();
 
 		CreateContents();
@@ -68,11 +75,18 @@ void Window_GameList::Refresh() {
 		}
 	}
 	else {
+		item_max = 1;
+
 		SetContents(Bitmap::Create(width - 16, height - 16));
+
+		if (show_dotdot) {
+			DrawItem(0);
+		}
 
 		DrawErrorText();
 	}
-#endif
+
+	return true;
 }
 
 void Window_GameList::DrawItem(int index) {
@@ -81,7 +95,7 @@ void Window_GameList::DrawItem(int index) {
 
 	std::string text;
 
-	if (HasValidGames()) {
+	if (HasValidEntry()) {
 		text = game_directories[index];
 	}
 
@@ -111,18 +125,19 @@ void Window_GameList::DrawErrorText() {
 #ifdef EMSCRIPTEN
 	contents->TextDraw(0, 0, Font::ColorKnockout, "The game was not found.");
 #else
-	contents->TextDraw(0, 0, Font::ColorKnockout, "No games found in the current directory.");
+	contents->TextDraw(0, 4 + 14, Font::ColorKnockout, "No games found in the current directory.");
 #endif
 
 	for (size_t i = 0; i < error_msg.size(); ++i) {
-		contents->TextDraw(0, 2 + 14 * (i + 2), Font::ColorCritical, error_msg[i]);
+		contents->TextDraw(0, 4 + 14 * (i + 3), Font::ColorCritical, error_msg[i]);
 	}
 }
 
-bool Window_GameList::HasValidGames() {
-	return !game_directories.empty();
+bool Window_GameList::HasValidEntry() {
+	size_t minval = show_dotdot ? 1 : 0;
+	return game_directories.size() > minval;
 }
 
-std::string Window_GameList::GetGamePath() {
-	return fs.MakePath(game_directories[GetIndex()]);
+FilesystemView Window_GameList::GetGameFilesystem() const {
+	return base_fs.Create(game_directories[GetIndex()]);
 }

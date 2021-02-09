@@ -92,7 +92,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 			return fs_view;
 		}
 		child_fs.emplace_back(std::move(filesystem));
-		return filesystem->Subtree("");
+		return child_fs.back()->Subtree("");
 	} else {
 		if (!(Exists(path) || !IsDirectory(path, true))) {
 			return FilesystemView();

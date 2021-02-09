@@ -516,15 +516,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
 			if (arg.NumValues() > 0) {
-#ifdef _WIN32
 				Main_Data::SetProjectPath(arg.Value(0));
-				BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::GetProjectPath()).c_str());
-				if (cur_dir) {
-					Main_Data::SetProjectPath(".");
-				}
-#else
-				Main_Data::SetProjectPath(arg.Value(0));
-#endif
 			}
 			continue;
 		}

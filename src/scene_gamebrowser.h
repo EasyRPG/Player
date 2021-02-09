@@ -88,6 +88,8 @@ private:
 
 	/** What the state of the Player::debug_flag was at launch time */
 	bool initial_debug_flag = false;
+
+	std::vector<FilesystemView> filesystems;
 };
 
 #endif
