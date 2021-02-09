@@ -48,12 +48,58 @@ void Filesystem::ClearCache() {
 }
 
 FilesystemView Filesystem::Create(StringView path) const {
-	if (!(Exists(path) || !IsDirectory(path, true))) {
-		return FilesystemView();
-	}
+	// Determine the proper file system to use
 
-	// Handle as a normal path in the current filesystem
-	return Subtree(ToString(path));
+	// When the path doesn't exist check if the path contains a file that can
+	// be handled by another filesystem
+	std::string path_prefix = "";
+
+	if (!IsDirectory(path, true)) {
+		std::vector<std::string> components = FileFinder::SplitPath(path);
+
+		// TODO this should probably move to a static function in the FS classes
+
+		// search until ".zip", "do magic"
+		std::string internal_path;
+		bool handle_internal = false;
+		for (std::string comp : components) {
+			if (handle_internal) {
+				internal_path += comp + "/";
+			} else {
+				path_prefix += comp + "/";
+				if (StringView(comp).ends_with(".zip")) {
+					path_prefix.pop_back();
+					handle_internal = true;
+				}
+			}
+		}
+
+		if (!internal_path.empty()) {
+			internal_path.pop_back();
+		}
+
+		auto filesystem = std::make_unique<ZIPFilesystem>(Subtree(""), path_prefix);
+		if (!filesystem->IsValid()) {
+			return FilesystemView();
+		}
+		if (!internal_path.empty()) {
+			auto fs_view = filesystem->Create(internal_path);
+			if (!fs_view) {
+				return FilesystemView();
+			}
+			child_fs.emplace_back(std::move(filesystem));
+			return fs_view;
+		}
+		child_fs.emplace_back(std::move(filesystem));
+		return filesystem->Subtree("");
+	} else {
+		if (!(Exists(path) || !IsDirectory(path, true))) {
+			return FilesystemView();
+		}
+
+		// Handle as a normal path in the current filesystem
+		return Subtree(ToString(path));
+	}
 }
 
 FilesystemView Filesystem::Subtree(std::string sub_path) const {
