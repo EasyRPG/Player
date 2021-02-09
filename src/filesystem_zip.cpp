@@ -369,13 +369,13 @@ ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, St
 				std::string enc_test = lcf::ReaderUtil::Recode("\\", enc);
 				if (enc_test.empty()) {
 					// Bad encoding
-					//Output::Debug("Bad encoding: {}. Trying next.", enc);
+					Output::Debug("Bad encoding: {}. Trying next.", enc);
 					continue;
 				}
 				zip_encoding = enc;
 				break;
 			}
-			//Output::Debug("Detected ZIP encoding: {}", zip_encoding);
+			Output::Debug("Detected ZIP encoding: {}", zip_encoding);
 		}
 
 		zipfile.clear();

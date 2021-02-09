@@ -68,6 +68,7 @@ namespace {
 	}
 
 	Filesystem_Stream::OutputStream LOG_FILE;
+	bool output_recurse = false;
 	bool init = false;
 
 	std::ostream& output_time() {
@@ -136,13 +137,17 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 	const char* prefix = GetLogPrefix(lvl);
 	// Skip logging to file in the browser
 #ifndef EMSCRIPTEN
-	if (!Main_Data::GetSavePath().empty()) {
+	if (!output_recurse && !Main_Data::GetSavePath().empty()) {
+		output_recurse = true;
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
-		for (std::string& log : log_buffer) {
-			output_time() << log << std::endl;
+		if (!log_buffer.empty()) {
+			std::vector<std::string> local_log_buffer = std::move(log_buffer);
+			for (std::string& log : local_log_buffer) {
+				output_time() << log << '\n';
+			}
+			local_log_buffer.clear();
 		}
-		log_buffer.clear();
 
 		// Every new message is written once to the file.
 		// When it is repeated increment a counter until a different message appears,
@@ -152,9 +157,9 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 		} else {
 			if (last_message.repeat > 0) {
 				output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
-				output_time() << prefix << msg << std::endl;
+				output_time() << prefix << msg << '\n';
 			} else {
-				output_time() << prefix << msg << std::endl;
+				output_time() << prefix << msg << '\n';
 			}
 			last_message.repeat = 0;
 			last_message.msg = msg;
@@ -169,12 +174,14 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 #ifdef __ANDROID__
 	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
 #else
-	std::cerr << prefix << msg << std::endl;
+	std::cerr << prefix << msg << '\n';
 #endif
 
 	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
 		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}
+
+	output_recurse = false;
 }
 
 static void HandleErrorOutput(const std::string& err) {
