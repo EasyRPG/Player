@@ -1170,6 +1170,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 			command_window->SetVisible(true);
 		}
 
+		if (lcf::Data::battlecommands.easyrpg_sequential_order) {
+			SetSceneActionSubState(eWaitActor);
+			return SceneActionReturn::eContinueThisFrame;
+		}
+
 		SetSceneActionSubState(eWaitInput);
 	}
 
@@ -1224,6 +1229,15 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 			command_window->SetIndex(0);
 			SetState(State_SelectCommand);
 			return SceneActionReturn::eWaitTillNextFrame;
+		}
+
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				SetActiveActor(-1);
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+				SetState(State_SelectOption);
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
