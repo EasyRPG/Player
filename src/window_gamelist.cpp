@@ -42,7 +42,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 
 	// Find valid game diectories
 	for (auto& dir : *files) {
-		if (dir.second.name.empty()) {
+		if (dir.second.name.empty() || StringView(dir.second.name).ends_with(".save")) {
 			continue;
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular &&
@@ -138,6 +138,6 @@ bool Window_GameList::HasValidEntry() {
 	return game_directories.size() > minval;
 }
 
-FilesystemView Window_GameList::GetGameFilesystem() const {
-	return base_fs.Create(game_directories[GetIndex()]);
+std::pair<FilesystemView, std::string> Window_GameList::GetGameFilesystem() const {
+	return { base_fs.Create(game_directories[GetIndex()]), game_directories[GetIndex()] };
 }

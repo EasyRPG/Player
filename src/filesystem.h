@@ -190,7 +190,9 @@ public:
 	 */
 	FilesystemView(const Filesystem* fs, std::string sub_path);
 
-	std::string GetPath() const;
+	std::string GetBasePath() const;
+	std::string GetFullPath() const;
+	std::string GetSubPath() const;
 
 	const Filesystem& GetOwner() const;
 

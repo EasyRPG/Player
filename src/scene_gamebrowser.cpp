@@ -39,7 +39,7 @@ void Scene_GameBrowser::Start() {
 	initial_debug_flag = Player::debug_flag;
 	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
-	filesystems.push_back(FileFinder::Game());
+	filesystems.emplace_back(FileFinder::Game(), FileFinder::Game().GetFullPath());
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
@@ -92,7 +92,7 @@ void Scene_GameBrowser::CreateWindows() {
 	command_window->SetIndex(0);
 
 	gamelist_window.reset(new Window_GameList(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
-	gamelist_window->Refresh(filesystems.back(), false);
+	gamelist_window->Refresh(filesystems.back().first, false);
 
 	if (filesystems.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
@@ -170,14 +170,16 @@ void Scene_GameBrowser::BootGame() {
 	if (filesystems.size() > 1 && gamelist_window->GetIndex() == 0) {
 		// ".." -> Go one level up
 		filesystems.pop_back();
-		gamelist_window->Refresh(filesystems.back(), filesystems.size() > 1);
+		gamelist_window->Refresh(filesystems.back().first, filesystems.size() > 1);
 		gamelist_window->SetIndex(0);
 		load_window->SetVisible(false);
 		game_loading = false;
 		return;
 	}
 
-	FilesystemView fs = gamelist_window->GetGameFilesystem();
+	FilesystemView fs;
+	std::string entry;
+	std::tie(fs, entry) = gamelist_window->GetGameFilesystem();
 
 	if (!fs) {
 		Output::Warning("The selected file or directory cannot be opened");
@@ -194,7 +196,7 @@ void Scene_GameBrowser::BootGame() {
 			Output::Warning("The selected file or directory cannot be opened");
 			return;
 		}
-		filesystems.push_back(fs);
+		filesystems.emplace_back(fs, entry);
 		gamelist_window->SetIndex(0);
 
 		return;
@@ -204,9 +206,9 @@ void Scene_GameBrowser::BootGame() {
 
 	std::string startup_path = "";
 	for (auto f : filesystems) {
-		startup_path = FileFinder::MakePath(startup_path, f.GetPath());
+		startup_path = FileFinder::MakePath(startup_path, f.second);
 	}
-	Main_Data::SetProjectPath(FileFinder::MakePath(startup_path, fs.GetPath()));
+	Main_Data::SetProjectPath(FileFinder::MakePath(startup_path, entry));
 
 	Player::CreateGameObjects();
 

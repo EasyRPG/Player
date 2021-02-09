@@ -80,19 +80,19 @@ FilesystemView FileFinder::Save() {
 			FilesystemView parent = save_fs;
 			std::string child_path;
 			for (;;) {
-				std::string owner_path = parent.GetPath();
+				std::string owner_path = parent.GetBasePath();
+				std::string sub_path = parent.GetSubPath();
 				parent = parent.GetOwner().GetParent();
 				if (!parent || parent.IsFeatureSupported(Filesystem::Feature::Write)) {
 					std::string path;
 					std::string name;
-					std::tie(path, name) = FileFinder::GetPathAndFilename(owner_path);
-					std::string save_path = FileFinder::MakePath(owner_path + ".save", child_path);
+					std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
 
 					parent.CreateDirectory(save_path, true);
 					save_fs = Root().Create(save_path);
 					break;
 				}
-				child_path = MakePath(owner_path, child_path);
+				child_path = MakePath(MakePath(owner_path, sub_path), child_path);
 			}
 		}
 	}

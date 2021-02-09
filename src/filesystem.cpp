@@ -133,7 +133,17 @@ FilesystemView::FilesystemView(const Filesystem* fs, std::string sub_path) :
 	valid = (fs->ListDirectory(this->sub_path) != nullptr);
 }
 
-std::string FilesystemView::GetPath() const {
+std::string FilesystemView::GetBasePath() const {
+	assert(fs);
+	return fs->GetPath();
+}
+
+std::string FilesystemView::GetSubPath() const {
+	assert(fs);
+	return sub_path;
+}
+
+std::string FilesystemView::GetFullPath() const {
 	assert(fs);
 	return FileFinder::MakePath(fs->GetPath(), sub_path);
 }
@@ -147,11 +157,6 @@ std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) con
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(name), exts);
 	if (!found.empty()) {
-#ifdef _DEBUG
-		std::string found2 = found;
-		FileFinder::ConvertPathDelimiters(found2);
-		assert(StringView(found2).starts_with(sub_path));
-#endif
 		return found.substr(sub_path.size());
 	}
 	return "";
@@ -161,11 +166,6 @@ std::string FilesystemView::FindFile(StringView dir, StringView name, Span<Strin
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(dir), name, exts);
 	if (!found.empty()) {
-#ifdef _DEBUG
-		std::string found2 = found;
-		FileFinder::ConvertPathDelimiters(found2);
-		assert(StringView(found2).starts_with(sub_path));
-#endif
 		return found.substr(sub_path.size());
 	}
 	return "";
@@ -177,11 +177,6 @@ std::string FilesystemView::FindFile(const DirectoryTree::Args& args) const {
 	args_cp.path = path;
 	std::string found = fs->FindFile(args_cp);
 	if (!found.empty()) {
-#ifdef _DEBUG
-		std::string found2 = found;
-		FileFinder::ConvertPathDelimiters(found2);
-		assert(StringView(found2).starts_with(sub_path));
-#endif
 		return found.substr(sub_path.size());
 	}
 	return "";
