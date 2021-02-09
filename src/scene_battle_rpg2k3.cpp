@@ -563,7 +563,7 @@ std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_A
 			commands.push_back(ToString(cmd->name));
 		}
 	}
-	commands.push_back(ToString(lcf::Data::terms.row));
+	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) commands.push_back(ToString(lcf::Data::terms.row));
 
 	return commands;
 }
@@ -1303,7 +1303,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 		if (Input::IsTriggered(Input::DECISION)) {
 			int index = command_window->GetIndex();
 			// Row command always uses the last index
-			if (index < command_window->GetRowMax() - 1) {
+			if (!lcf::Data::battlecommands.easyrpg_enable_battle_row_command || index < command_window->GetRowMax() - 1) {
 				const auto* command = active_actor->GetBattleCommand(index);
 
 				if (command) {
