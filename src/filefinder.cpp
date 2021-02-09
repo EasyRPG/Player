@@ -61,7 +61,6 @@ namespace {
 	std::string fonts_path;
 	std::unique_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
-	FilesystemView save_fs;
 }
 
 FilesystemView FileFinder::Game() {
@@ -73,15 +72,38 @@ void FileFinder::SetGameFilesystem(FilesystemView filesystem) {
 }
 
 FilesystemView FileFinder::Save() {
-	std::string save_path = Main_Data::GetSavePath();
-	return Root().Subtree(save_path);
+	auto save_fs = Root().Create(Main_Data::GetSavePath());
+	if (!save_fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
+			// When the Project path equals the Save path (this means the path was not configured)
+			// and the filesystem has no write support do a redirection to a folder with ".save" appended
+			FilesystemView parent = save_fs;
+			std::string child_path;
+			for (;;) {
+				std::string owner_path = parent.GetPath();
+				parent = parent.GetOwner().GetParent();
+				if (!parent || parent.IsFeatureSupported(Filesystem::Feature::Write)) {
+					std::string path;
+					std::string name;
+					std::tie(path, name) = FileFinder::GetPathAndFilename(owner_path);
+					std::string save_path = FileFinder::MakePath(owner_path + ".save", child_path);
+
+					parent.CreateDirectory(save_path, true);
+					save_fs = Root().Create(save_path);
+					break;
+				}
+				child_path = MakePath(owner_path, child_path);
+			}
+		}
+	}
+	return save_fs;
 }
 
 FilesystemView FileFinder::Root() {
 	// ToDo: Support an optional path argument which support namespaces,
 	// e.g. apk:// for accessing the APK on Android
 	if (!root_fs) {
-		root_fs = std::make_unique<NativeFilesystem>("");
+		root_fs = std::make_unique<NativeFilesystem>("", FilesystemView());
 	}
 
 	return root_fs->Subtree("");

@@ -27,7 +27,8 @@
 #include <cassert>
 #include <utility>
 
-Filesystem::Filesystem(std::string base_path) : base_path(std::move(base_path)) {
+Filesystem::Filesystem(std::string base_path, FilesystemView parent_fs) : base_path(std::move(base_path)) {
+	this->parent_fs = std::make_unique<FilesystemView>(parent_fs);
 	tree = DirectoryTree::Create(*this);
 };
 
@@ -78,7 +79,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 			internal_path.pop_back();
 		}
 
-		auto filesystem = std::make_unique<ZIPFilesystem>(Subtree(""), path_prefix);
+		auto filesystem = std::make_unique<ZIPFilesystem>(path_prefix, Subtree(""));
 		if (!filesystem->IsValid()) {
 			return FilesystemView();
 		}
@@ -106,6 +107,10 @@ FilesystemView Filesystem::Subtree(std::string sub_path) const {
 	return FilesystemView(this, sub_path);
 }
 
+bool Filesystem::CreateDirectory(StringView, bool) const {
+	return false;
+}
+
 bool Filesystem::IsValid() const {
 	// FIXME: better way to do this?
 	return Exists("");
@@ -126,6 +131,16 @@ std::string Filesystem::FindFile(const DirectoryTree::Args& args) const {
 FilesystemView::FilesystemView(const Filesystem* fs, std::string sub_path) :
 	fs(fs), sub_path(std::move(sub_path)) {
 	valid = (fs->ListDirectory(this->sub_path) != nullptr);
+}
+
+std::string FilesystemView::GetPath() const {
+	assert(fs);
+	return FileFinder::MakePath(fs->GetPath(), sub_path);
+}
+
+const Filesystem& FilesystemView::GetOwner() const {
+	assert(fs);
+	return *fs;
 }
 
 std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) const {
@@ -212,9 +227,29 @@ Filesystem_Stream::OutputStream FilesystemView::OpenOutputStream(StringView name
 	return fs->OpenOutputStream(MakePath(name), m);
 }
 
+std::streambuf* FilesystemView::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+	assert(fs);
+	return fs->CreateInputStreambuffer(MakePath(path), mode);
+}
+
+std::streambuf* FilesystemView::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+	assert(fs);
+	return fs->CreateOutputStreambuffer(MakePath(path), mode);
+}
+
 FilesystemView FilesystemView::Create(StringView p) const {
 	assert(fs);
 	return fs->Create(MakePath(p));
+}
+
+bool FilesystemView::CreateDirectory(StringView dir, bool follow_symlinks) const {
+	assert(fs);
+	return fs->CreateDirectory(MakePath(dir), follow_symlinks);
+}
+
+bool FilesystemView::IsFeatureSupported(Filesystem::Feature f) const {
+	assert(fs);
+	return fs->IsFeatureSupported(f);
 }
 
 FilesystemView FilesystemView::Subtree(StringView sub_path) const {

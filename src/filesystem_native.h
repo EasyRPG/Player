@@ -20,6 +20,10 @@
 
 #include "filesystem.h"
 
+#ifdef _WIN32
+#undef CreateDirectory
+#endif
+
 /**
  * A virtual filesystem that represents the file system of the host system.
  */
@@ -28,7 +32,7 @@ public:
 	/**
 	 * Initializes a OS Filesystem on the given os path
 	 */
-	explicit NativeFilesystem(std::string base_path);
+	explicit NativeFilesystem(std::string base_path, FilesystemView parent_fs);
 
 protected:
 	/**
@@ -42,6 +46,8 @@ protected:
 	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
 	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
 	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
+	bool CreateDirectory(StringView path, bool follow_symlinks) const override;
+	bool IsFeatureSupported(Feature f) const override;
 	/** @} */
 };
 

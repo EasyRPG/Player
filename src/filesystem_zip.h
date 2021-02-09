@@ -33,11 +33,11 @@ public:
 	/**
 	 * Initializes a filesystem inside the given ZIP File
 	 *
-	 * @param source_fs Filesystem used to create handles on the zip file
-	 * @param base_path Path passed to source_fs to open the zip file
+	 * @param base_path Path passed to parent_fs to open the zip file
+	 * @param parent_fs Filesystem used to create handles on the zip file
 	 * @param encoding Encoding to use, use empty string for autodetection
 	 */
-	ZIPFilesystem(FilesystemView source_fs, std::string base_path, StringView encoding = "");
+	ZIPFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding = "");
 
 	~ZIPFilesystem();
 
@@ -51,7 +51,6 @@ protected:
 	bool Exists(StringView path) const override;
 	int64_t GetFilesize(StringView path) const override;
 	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
-	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
 	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
 	/** @} */
 
@@ -77,7 +76,6 @@ private:
 	static bool ReadLocalHeader(std::istream & zipfile, uint32_t & offset, StorageMethod & method,uint32_t & compressedSize);
 
 	bool m_isValid;
-	FilesystemView source_fs;
 	std::string fs_path;
 	mutable std::vector<StreamPoolEntry*> m_InputPool;
 	std::unordered_map<std::string, ZipEntry> m_zipContent;

@@ -24,7 +24,6 @@
 #include <unordered_map>
 #include <vector>
 #include <cassert>
-#include "system.h"
 #include "directory_tree.h"
 #include "filesystem_stream.h"
 
@@ -32,6 +31,11 @@ class FilesystemView;
 
 class Filesystem {
 public:
+	enum class Feature {
+		/** Filesystem supports Write operations */
+		Write = 1
+	};
+
 	virtual ~Filesystem() {}
 
 	Filesystem(const Filesystem&) = delete;
@@ -52,6 +56,8 @@ public:
 	 * @return filesystem root path
 	 */
 	std::string GetPath() const;
+
+	FilesystemView GetParent() const;
 
 	/**
 	 * Creates stream from UTF-8 file name for reading.
@@ -136,29 +142,38 @@ public:
 
 	/**
 	 * Abstract methods to be implemented by filesystems.
-	 * The path is already adjusted to the filesystem base.
 	 */
-	 /** @{ */
+	/** @{ */
 	virtual bool IsFile(StringView path) const = 0;
 	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
 	virtual bool Exists(StringView path) const = 0;
 	virtual int64_t GetFilesize(StringView path) const = 0;
-	virtual std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
-	virtual std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
-	virtual bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const = 0;
+	virtual bool CreateDirectory(StringView dir, bool follow_symlinks) const;
+	virtual bool IsFeatureSupported(Feature f) const;
 	/** @} */
 
 protected:
-	explicit Filesystem(std::string base_path);
+	/**
+	 * Abstract methods to be implemented by filesystems.
+	 */
+	/** @{ */
+	virtual bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const = 0;
+	virtual std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
+	virtual std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+	/** @} */
+
+	explicit Filesystem(std::string base_path, FilesystemView parent_fs);
 
 	friend FilesystemView;
+	friend DirectoryTree;
+
 	std::unique_ptr<DirectoryTree> tree;
 
 private:
 	std::string base_path;
 	mutable std::vector<std::unique_ptr<Filesystem>> child_fs;
+	std::unique_ptr<FilesystemView> parent_fs;
 };
-
 
 /**
  * A TreeView is a non-owning view at a subdirectory of the base DirectoryTree.
@@ -174,6 +189,10 @@ public:
 	 * @param sub_path Path relative to the tree
 	 */
 	FilesystemView(const Filesystem* fs, std::string sub_path);
+
+	std::string GetPath() const;
+
+	const Filesystem& GetOwner() const;
 
 	/**
 	 * Does a case insensitive search for the file.
@@ -230,7 +249,13 @@ public:
 	Filesystem_Stream::OutputStream OpenOutputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
 
+	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+
 	FilesystemView Create(StringView p) const;
+
+	bool CreateDirectory(StringView dir, bool follow_symlinks) const;
+	bool IsFeatureSupported(Filesystem::Feature f) const;
 
 	/**
 	 * Creates a new view on the subtree that is rooted at the sub_path.
@@ -242,6 +267,8 @@ public:
 
 	/** @return true when the subtree points at a readable directory */
 	explicit operator bool() const noexcept;
+
+	friend DirectoryTree;
 
 private:
 	const Filesystem* fs = nullptr;
@@ -255,6 +282,19 @@ inline FilesystemView::operator bool() const noexcept {
 
 inline std::string Filesystem::GetPath() const {
 	return base_path;
+}
+
+inline FilesystemView Filesystem::GetParent() const {
+	return *parent_fs;
+}
+
+inline bool Filesystem::IsFeatureSupported(Filesystem::Feature) const {
+	return false;
+}
+
+inline std::streambuf* Filesystem::CreateOutputStreambuffer(StringView, std::ios_base::openmode) const {
+	assert(!IsFeatureSupported(Feature::Write) && "Write supported but CreateOutputStreambuffer not implemented");
+	return nullptr;
 }
 
 inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(StringView path) const {

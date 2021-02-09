@@ -320,13 +320,13 @@ static std::string normalize_path(StringView path) {
 	return inner_path;
 }
 
-ZIPFilesystem::ZIPFilesystem(FilesystemView source_fs, std::string base_path, StringView encoding) :
-	Filesystem(base_path), source_fs(source_fs) {
+ZIPFilesystem::ZIPFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding) :
+	Filesystem(base_path, parent_fs) {
 	// Open first entry of the input filebuffer pool
 	m_isValid = false;
 	StreamPoolEntry* initialEntry = new StreamPoolEntry();
 	initialEntry->used = true;
-	initialEntry->stream = source_fs.OpenInputStream(GetPath());
+	initialEntry->stream = parent_fs.OpenInputStream(GetPath());
 	assert(initialEntry->stream);
 
 	uint16_t centralDirectoryEntries = 0;
@@ -369,13 +369,13 @@ ZIPFilesystem::ZIPFilesystem(FilesystemView source_fs, std::string base_path, St
 				std::string enc_test = lcf::ReaderUtil::Recode("\\", enc);
 				if (enc_test.empty()) {
 					// Bad encoding
-					Output::Debug("Bad encoding: {}. Trying next.", enc);
+					//Output::Debug("Bad encoding: {}. Trying next.", enc);
 					continue;
 				}
 				zip_encoding = enc;
 				break;
 			}
-			Output::Debug("Detected ZIP encoding: {}", zip_encoding);
+			//Output::Debug("Detected ZIP encoding: {}", zip_encoding);
 		}
 
 		zipfile.clear();
@@ -579,7 +579,7 @@ std::streambuf* ZIPFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		// If theres no unused stream in the pool - create a new one ;)
 		if (inputStream == nullptr) {
 			StreamPoolEntry* newEntry = new StreamPoolEntry();
-			newEntry->stream = source_fs.OpenInputStream(GetPath());
+			newEntry->stream = GetParent().OpenInputStream(GetPath());
 			newEntry->used = false;
 			m_InputPool.push_back(newEntry);
 			inputStream = m_InputPool.back();
@@ -604,10 +604,6 @@ std::streambuf* ZIPFilesystem::CreateInputStreambuffer(StringView path, std::ios
 			}
 		}
 	}
-	return nullptr;
-}
-
-std::streambuf* ZIPFilesystem::CreateOutputStreambuffer(StringView, std::ios_base::openmode) const {
 	return nullptr;
 }
 

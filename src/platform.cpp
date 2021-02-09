@@ -17,6 +17,7 @@
 
 // Headers
 #include "platform.h"
+#include "filefinder.h"
 #include "utils.h"
 #include <cassert>
 #include <utility>
@@ -122,6 +123,39 @@ int64_t Platform::File::GetSize() const {
 	int result = ::stat(filename.c_str(), &sb);
 	return (result == 0) ? (int64_t)sb.st_size : (int64_t)-1;
 #endif
+}
+
+bool Platform::File::CreateDirectory(bool follow_symlinks) const {
+#ifdef _WIN32
+	std::string path = Utils::FromWideString(filename);
+#else
+	std::string path = filename;
+#endif
+
+	auto components = FileFinder::SplitPath(path);
+	std::string cur_path = "";
+
+	for (const auto& comp : components) {
+		cur_path = FileFinder::MakePath(cur_path, comp);
+		File cf(cur_path);
+		if (cf.IsDirectory(follow_symlinks)) {
+			continue;
+		} else if (cf.IsFile(follow_symlinks) || cf.Exists()) {
+			return false;
+		} else {
+#ifdef _WIN32
+			if (!CreateDirectoryW(Utils::ToWideString(cur_path).c_str(), nullptr)) {
+				return false;
+			}
+#else
+			int res = mkdir(cur_path.c_str(), 777);
+			if (res < 0) {
+				return false;
+			}
+#endif
+		}
+	}
+	return true;
 }
 
 Platform::Directory::Directory(const std::string& name) {
