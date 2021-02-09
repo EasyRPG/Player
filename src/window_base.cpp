@@ -56,8 +56,10 @@ bool Window_Base::IsMovementActive() {
 
 void Window_Base::Update() {
 	Window::Update();
-	SetWindowskin(Cache::SystemOrBlack());
-	SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
+	if (IsSystemGraphicUpdateAllowed()) {
+		SetWindowskin(Cache::SystemOrBlack());
+		SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
+	}
 	UpdateMovement();
 }
 
