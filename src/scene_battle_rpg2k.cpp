@@ -65,6 +65,10 @@ void Scene_Battle_Rpg2k::CreateUi() {
 
 	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 
+	if (!lcf::Data::system.easyrpg_enable_auto_battle) {
+		options_window->DisableItem(1);
+	}
+
 	if (!IsEscapeAllowed()) {
 		options_window->DisableItem(2);
 	}
@@ -451,8 +455,13 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 						SetState(State_SelectActor);
 						break;
 					case 1: // Auto Battle
-						SetState(State_AutoBattle);
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+						if (!lcf::Data::system.easyrpg_enable_auto_battle) {
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+						}
+						else {
+							SetState(State_AutoBattle);
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+						}
 						break;
 					case 2: // Escape
 						if (!IsEscapeAllowed()) {
