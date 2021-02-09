@@ -550,13 +550,13 @@ test_runner_SOURCES = \
 	tests/bitmapfont.cpp \
 	tests/cmdline_parser.cpp \
 	tests/config_param.cpp \
-	tests/directorytree.cpp \
 	tests/doctest.h \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
 	tests/dynrpg.cpp \
 	tests/enemyai.cpp \
 	tests/filefinder.cpp \
+	tests/filesystem.cpp \
 	tests/flat_map.cpp \
 	tests/font.cpp \
 	tests/game_actor.cpp \
@@ -588,6 +588,7 @@ test_runner_SOURCES = \
 	tests/utils.cpp \
 	tests/variables.cpp \
 	tests/wordwrap.cpp
+
 test_runner_CXXFLAGS = \
 	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests/assets\"
 test_runner_LDADD = \

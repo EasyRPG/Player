@@ -15,8 +15,8 @@ static bool skip_tests() {
 
 TEST_SUITE_BEGIN("RTP" * doctest::skip(skip_tests()));
 
-static std::unique_ptr<DirectoryTree> make_tree() {
-	return FileFinder::CreateDirectoryTree(EP_TEST_PATH "/rtp");
+static FilesystemView make_tree() {
+	return FileFinder::Root().Subtree(EP_TEST_PATH "/rtp");
 }
 
 TEST_CASE("RTP 2000: lookup table is correct") {
@@ -45,7 +45,7 @@ TEST_CASE("RTP 2000: Detection") {
 	Player::escape_symbol = "\\";
 
 	auto tree = make_tree();
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*tree, 2000);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree, 2000);
 
 	REQUIRE(hits.size() == 2);
 
@@ -61,7 +61,7 @@ TEST_CASE("RTP 2000: Detection") {
 TEST_CASE("RTP 2003: Detection") {
 	Player::escape_symbol = "\\";
 
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(*make_tree(), 2003);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree(), 2003);
 
 	REQUIRE(hits.size() == 2);
 
