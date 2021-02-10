@@ -160,7 +160,8 @@ namespace FileFinder {
 	std::pair<std::string, std::string> GetPathAndFilename(StringView path);
 
 	/**
-	 * Converts all path delimiters to forward slash (/)
+	 * Converts all path delimiters to the platform delimiters.
+	 * \ on Windows, / on others.
 	 *
 	 * @param path to convert
 	 */

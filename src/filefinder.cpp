@@ -119,11 +119,8 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 		str = std::string(dir) + "/" + std::string(name);
 	}
 
-#ifdef _WIN32
-	std::replace(str.begin(), str.end(), '/', '\\');
-#else
-	std::replace(str.begin(), str.end(), '\\', '/');
-#endif
+	ConvertPathDelimiters(str);
+
 	return str;
 }
 
@@ -189,15 +186,18 @@ std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView pa
 }
 
 void FileFinder::ConvertPathDelimiters(std::string& path) {
-	std::string esc = Player::escape_symbol;
-	if (esc.empty()) {
-		esc = "\\";
-	}
-	std::size_t escape_pos = path.find(esc);
-	while (escape_pos != std::string::npos) {
-		path.erase(escape_pos, esc.length());
-		path.insert(escape_pos, "/");
-		escape_pos = path.find(esc);
+	auto replace = [&](const std::string& esc_ch) {
+		std::size_t escape_pos = path.find(esc_ch);
+		while (escape_pos != std::string::npos) {
+			path.erase(escape_pos, esc_ch.length());
+			path.insert(escape_pos, "/");
+			escape_pos = path.find(esc_ch);
+		}
+	};
+
+	replace("\\");
+	if (!Player::escape_symbol.empty() && Player::escape_symbol != "\\") {
+		replace(Player::escape_symbol);
 	}
 }
 

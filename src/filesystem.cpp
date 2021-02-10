@@ -167,6 +167,7 @@ std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) con
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(name), exts);
 	if (!found.empty()) {
+		assert(StringView(found).starts_with(sub_path));
 		return found.substr(sub_path.size());
 	}
 	return "";
@@ -176,6 +177,7 @@ std::string FilesystemView::FindFile(StringView dir, StringView name, Span<Strin
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(dir), name, exts);
 	if (!found.empty()) {
+		assert(StringView(found).starts_with(sub_path));
 		return found.substr(sub_path.size());
 	}
 	return "";
@@ -187,6 +189,7 @@ std::string FilesystemView::FindFile(const DirectoryTree::Args& args) const {
 	args_cp.path = path;
 	std::string found = fs->FindFile(args_cp);
 	if (!found.empty()) {
+		assert(StringView(found).starts_with(sub_path));
 		return found.substr(sub_path.size());
 	}
 	return "";
