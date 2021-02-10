@@ -84,7 +84,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 			internal_path.pop_back();
 		}
 
-		auto filesystem = std::make_unique<ZIPFilesystem>(path_prefix, Subtree(""));
+		auto filesystem = std::make_unique<ZipFilesystem>(path_prefix, Subtree(""));
 		if (!filesystem->IsValid()) {
 			return FilesystemView();
 		}

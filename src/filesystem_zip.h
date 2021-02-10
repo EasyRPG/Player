@@ -28,7 +28,7 @@
 /**
  * A virtual filesystem that allows file/directory operations inside a ZIP archive.
  */
-class ZIPFilesystem : public Filesystem {
+class ZipFilesystem : public Filesystem {
 public:
 
 	/**
@@ -38,9 +38,7 @@ public:
 	 * @param parent_fs Filesystem used to create handles on the zip file
 	 * @param encoding Encoding to use, use empty string for autodetection
 	 */
-	ZIPFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding = "");
-
-	~ZIPFilesystem();
+	ZipFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding = "");
 
 protected:
 	/**
@@ -57,30 +55,21 @@ protected:
 	/** @} */
 
 private:
-	enum class StorageMethod {Unknown,Plain,Deflate};
+	enum class StorageMethod {Unknown, Plain, Deflate};
 	struct ZipEntry {
 		uint32_t filesize;
 		uint32_t fileoffset;
-		bool isDirectory;
+		bool is_directory;
 	};
 
-	struct StreamPoolEntry {
-		Filesystem_Stream::InputStream stream;
-		bool used;
-	};
-	class StorageIStreambuf;
-	class DeflateIStreambuf;
-	//No standard Constructor
-	ZIPFilesystem() = delete;
+	ZipFilesystem() = delete;
 
-	static bool FindCentralDirectory(std::istream & stream, uint32_t & offset, uint32_t & size, uint16_t & numberOfEntries);
-	static bool ReadCentralDirectoryEntry(std::istream & zipfile, std::vector<char> & filepath, uint32_t & offset, uint32_t & uncompressed_size);
-	static bool ReadLocalHeader(std::istream & zipfile, uint32_t & offset, StorageMethod & method,uint32_t & compressedSize);
+	static bool FindCentralDirectory(std::istream& stream, uint32_t& offset, uint32_t& size, uint16_t& num_entries);
+	static bool ReadCentralDirectoryEntry(std::istream& zipfile, std::vector<char>& filepath, uint32_t& offset, uint32_t& uncompressed_size);
+	static bool ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressed_size);
 
-	bool m_isValid;
-	std::string fs_path;
-	mutable std::vector<StreamPoolEntry*> m_InputPool;
-	std::unordered_map<std::string, ZipEntry> m_zipContent;
+	mutable std::unordered_map<std::string, std::vector<uint8_t>> input_pool;
+	std::unordered_map<std::string, ZipEntry> zip_entries;
 	std::string encoding;
 };
 

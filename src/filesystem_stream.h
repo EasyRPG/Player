@@ -58,6 +58,30 @@ namespace Filesystem_Stream {
 		FilesystemView fs;
 	};
 
+	class InputMemoryStreamBuf : public std::streambuf {
+	public:
+		explicit InputMemoryStreamBuf(Span<uint8_t> buffer);
+		InputMemoryStreamBuf(InputMemoryStreamBuf const& other) = delete;
+		InputMemoryStreamBuf const& operator=(InputMemoryStreamBuf const& other) = delete;
+
+	protected:
+		std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override;
+		std::streambuf::pos_type seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) override;
+
+	private:
+		Span<uint8_t> buffer;
+	};
+
+	class InputSharedStreamBuf : public InputMemoryStreamBuf {
+	public:
+		explicit InputSharedStreamBuf(std::shared_ptr<std::vector<uint8_t>> buffer);
+		InputSharedStreamBuf(InputSharedStreamBuf const& other) = delete;
+		InputSharedStreamBuf const& operator=(InputSharedStreamBuf const& other) = delete;
+
+	private:
+		std::shared_ptr<std::vector<uint8_t>> buffer;
+	};
+
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
 
 	static constexpr int CppSeekdirToCSeekdir(std::ios_base::seekdir origin);
