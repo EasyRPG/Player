@@ -545,6 +545,8 @@ int Game_Actor::GetBaseAgi(Weapon weapon) const {
 int Game_Actor::CalculateExp(int level) const {
 	const lcf::rpg::Class* klass = lcf::ReaderUtil::GetElement(lcf::Data::classes, data.class_id);
 
+	int exp_curve = (lcf::Data::system.easyrpg_alternative_exp == 0 ? (Player::IsRPG2k() ? 1 : 2) : lcf::Data::system.easyrpg_alternative_exp);
+
 	double base, inflation, correction;
 	if (klass) {
 		base = klass->exp_base;
@@ -559,7 +561,7 @@ int Game_Actor::CalculateExp(int level) const {
 	}
 
 	int result = 0;
-	if (Player::IsRPG2k()) {
+	if (exp_curve == 1) {
 		inflation = 1.5 + (inflation * 0.01);
 
 		for (int i = level; i >= 1; i--)
