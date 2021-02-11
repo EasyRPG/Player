@@ -45,7 +45,7 @@ static int max_exp_value() {
 }
 
 int Game_Actor::MaxHpValue() const {
-	return Player::IsRPG2k() ? 999 : 9999;
+	return lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp;
 }
 
 int Game_Actor::MaxStatBattleValue() const {

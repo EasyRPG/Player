@@ -48,7 +48,8 @@ void Window_SkillStatus::Refresh() {
 	x += 44;
 	DrawActorState(actor, x, y);
 	x += 54;
-	DrawActorHp(actor, x + (Player::IsRPG2k() ? 6 : 0), y, (Player::IsRPG2k() ? 3 : 4));
+	int digits = (lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 ? 4 : 3;
+	DrawActorHp(actor, x + (digits == 3 ? 6 : 0), y, digits);
 	x += 72;
 	DrawActorSp(actor, x, y, 3);
 }
