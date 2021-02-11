@@ -51,7 +51,7 @@
 #include "spriteset_battle.h"
 
 static inline int MaxDamageValue() {
-	return Player::IsRPG2k() ? 999 : 9999;
+	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
