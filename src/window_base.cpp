@@ -148,7 +148,7 @@ void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) cons
 void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 	// Draw EXP-String
 	int width = 7;
-	if (Player::IsRPG2k()) {
+	if ((lcf::Data::system.easyrpg_max_exp == -1 ? (Player::IsRPG2k() ? 999999 : 9999999) : lcf::Data::system.easyrpg_max_exp) < 1000000) {
 		width = 6;
 		contents->TextDraw(cx, cy, 1, lcf::Data::terms.exp_short);
 	}
@@ -163,7 +163,7 @@ void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(width) << actor.GetNextExpString();
-	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
+	contents->TextDraw(cx + (width == 6 ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
 }
 
 void Window_Base::DrawActorHp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max) const {

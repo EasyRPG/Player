@@ -41,7 +41,7 @@ constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 
 static int max_exp_value() {
-	return Player::IsRPG2k() ? 999999 : 9999999;
+	return lcf::Data::system.easyrpg_max_exp == -1 ? (Player::IsRPG2k() ? 999999 : 9999999) : lcf::Data::system.easyrpg_max_exp;
 }
 
 int Game_Actor::MaxHpValue() const {
@@ -588,16 +588,16 @@ void Game_Actor::MakeExpList() {
 	}
 }
 
-std::string Game_Actor::GetExpString() const {
+std::string Game_Actor::GetExpString(bool status_scene) const {
 	// RPG_RT displays dashes for max level. As a customization
 	// we always display the amount of EXP.
-	// if (GetNextExp() == -1) { return Player::IsRPG2k3() ? "-------" : "------"; }
+	// if (GetNextExp() == -1) { return (max_exp_value() >= 1000000 || status_scene) ? "-------" : "------"; }
 	return std::to_string(GetExp());
 }
 
-std::string Game_Actor::GetNextExpString() const {
+std::string Game_Actor::GetNextExpString(bool status_scene) const {
 	if (GetNextExp() == -1) {
-		return Player::IsRPG2k3() ? "-------" : "------";
+		return (max_exp_value() >= 1000000 || status_scene) ? "-------" : "------";
 	}
 	return std::to_string(GetNextExp());
 }
