@@ -43,8 +43,8 @@ void Window_ActorTarget::Refresh() {
 		DrawActorName(actor, 48 + 8, i * 48 + 2 + y);
 		DrawActorLevel(actor, 48 + 8, i * 48 + 2 + 16 + y);
 		DrawActorState(actor, 48 + 8, i * 48 + 2 + 16 + 16 + y);
-		int x_offset = 48 + 8 + 46 + (Player::IsRPG2k() ? 12 : 0);
-		int digits = (Player::IsRPG2k() ? 3 : 4);
+		int digits = (lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 ? 4 : 3;
+		int x_offset = 48 + 8 + 46 + (digits == 3 ? 12 : 0);
 		DrawActorHp(actor, x_offset, i * 48 + 2 + 16 + y, digits);
 		DrawActorSp(actor, x_offset, i * 48 + 2 + 16 + 16 + y, digits);
 
