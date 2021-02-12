@@ -85,6 +85,8 @@ public:
 	void Update() override;
 
 protected:
+	bool IsSystemGraphicUpdateAllowed() const override;
+
 	void UpdateCursorRect();
 	std::string GetSaveFileName() const;
 
@@ -96,5 +98,9 @@ protected:
 	bool has_save = false;
 	bool has_party = false;
 };
+
+inline bool Window_SaveFile::IsSystemGraphicUpdateAllowed() const {
+	return false;
+}
 
 #endif

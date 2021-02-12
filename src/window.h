@@ -83,6 +83,8 @@ public:
 	bool IsOpeningOrClosing() const;
 
 protected:
+	virtual bool IsSystemGraphicUpdateAllowed() const;
+
 	unsigned long ID;
 	BitmapRef windowskin, contents;
 	bool stretch = true;
@@ -285,6 +287,10 @@ inline int Window::GetContentsOpacity() const {
 
 inline void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
+}
+
+inline bool Window::IsSystemGraphicUpdateAllowed() const {
+	return !IsClosing();
 }
 
 #endif
