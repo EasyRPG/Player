@@ -691,7 +691,7 @@ int Game_Actor::GetAccessoryId() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return std::max<int32_t>(1, std::min<int32_t>(dbActor->final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
+	return std::max<int32_t>(1, std::min<int32_t>(dbActor->final_level, lcf::Data::system.easyrpg_max_level == -1 ? (Player::IsRPG2k() ? max_level_2k : max_level_2k3) : lcf::Data::system.easyrpg_max_level));
 }
 
 void Game_Actor::SetExp(int _exp) {
