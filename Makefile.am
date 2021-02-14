@@ -307,6 +307,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/sprite_picture.h \
 	src/sprite_timer.cpp \
 	src/sprite_timer.h \
+	src/sprite_weapon.cpp \
+	src/sprite_weapon.h \
 	src/spriteset_battle.cpp \
 	src/spriteset_battle.h \
 	src/spriteset_map.cpp \

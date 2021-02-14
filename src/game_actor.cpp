@@ -1467,4 +1467,8 @@ void Game_Actor::UpdateBattle() {
 	if (sprite) {
 		sprite->Update();
 	}
+	auto* weapon = Game_Battler::GetWeaponSprite();
+	if (weapon) {
+		weapon->Update();
+	}
 }

@@ -32,6 +32,7 @@
 #include "point.h"
 #include "string_view.h"
 #include "sprite_battler.h"
+#include "sprite_weapon.h"
 
 class Game_Party_Base;
 class Sprite_Battler;
@@ -797,6 +798,15 @@ public:
 	 */
 	void SetBattleSprite(std::unique_ptr<Sprite_Battler> s);
 
+	/** @return the weapon sprite for the battler */
+	Sprite_Weapon* GetWeaponSprite() const;
+
+	/**
+	 * Sets the weapon sprite
+	 * @param w the new sprite
+	 */
+	void SetWeaponSprite(std::unique_ptr<Sprite_Weapon> w);
+
 	/**
 	 * @return Current turn in battle
 	 */
@@ -900,6 +910,7 @@ protected:
 	bool direction_flipped = false;
 
 	std::unique_ptr<Sprite_Battler> battle_sprite;
+	std::unique_ptr<Sprite_Weapon> weapon_sprite;
 	std::vector<int> attribute_shift;
 
 	int battle_order = 0;
@@ -1037,6 +1048,14 @@ inline Sprite_Battler* Game_Battler::GetBattleSprite() const {
 
 inline void Game_Battler::SetBattleSprite(std::unique_ptr<Sprite_Battler> s) {
 	battle_sprite = std::move(s);
+}
+
+inline Sprite_Weapon* Game_Battler::GetWeaponSprite() const {
+	return weapon_sprite.get();
+}
+
+inline void Game_Battler::SetWeaponSprite(std::unique_ptr<Sprite_Weapon> w) {
+	weapon_sprite = std::move(w);
 }
 
 inline void Game_Battler::NextBattleTurn() {

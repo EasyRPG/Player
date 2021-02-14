@@ -47,7 +47,7 @@ public:
 	/**
 	 * Recompute the Z value for the sprite from it's Y coordinate.
 	 */
-	void ResetZ();
+	virtual void ResetZ();
 
 protected:
 	Game_Battler* battler = nullptr;

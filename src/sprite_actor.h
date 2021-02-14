@@ -67,7 +67,7 @@ public:
 	 */
 	void Update();
 
-	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
+	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation, int animation_id = 0);
 	void SetAnimationLoop(LoopState loop);
 
 	/**
@@ -92,6 +92,8 @@ public:
 
 	Game_Actor* GetBattler() const;
 
+	void SetNormalAttacking(bool nnormal_attacking);
+
 protected:
 	void CreateSprite();
 	void OnMonsterSpriteReady(FileRequestResult* result);
@@ -110,6 +112,7 @@ protected:
 	FileRequestBinding request_id;
 
 	bool do_not_draw = false;
+	bool normal_attacking = false;
 };
 
 
