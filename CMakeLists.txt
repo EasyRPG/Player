@@ -311,6 +311,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/sprite_character.h
 	src/sprite_picture.h
 	src/sprite_picture.cpp
+	src/sprite_weapon.cpp
+	src/sprite_weapon.h
 	src/sprite.cpp
 	src/sprite.h
 	src/spriteset_battle.cpp

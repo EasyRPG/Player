@@ -80,7 +80,7 @@ void Sprite_Actor::Update() {
 			// Is a battle charset animation
 
 			static const int frames[] = {0,1,2,1,0};
-			int frame = (battler->IsDefending() ? 0 : frames[cycle / 10]);
+			int frame = (battler->IsDefending() ? 0 : (normal_attacking ? std::min(2, cycle / 10) : frames[cycle / 10]));
 			if (frame == sprite_frame)
 				return;
 
@@ -98,7 +98,7 @@ void Sprite_Actor::Update() {
 
 			SetSrcRect(Rect(frame * 48, ext->battler_index * 48, 48, 48));
 
-			if (cycle == ((idling || anim_state == AnimationState_WalkingLeft || anim_state == AnimationState_WalkingRight || anim_state == AnimationState_Victory) ? 40 : 30)) {
+			if (cycle == ((idling || normal_attacking || anim_state == AnimationState_WalkingLeft || anim_state == AnimationState_WalkingRight || anim_state == AnimationState_Victory) ? 40 : 30)) {
 				switch (loop_state) {
 					case LoopState_DefaultAnimationAfterFinish:
 						DoIdleAnimation();
@@ -125,7 +125,7 @@ void Sprite_Actor::Update() {
 	SetFlipX(flip);
 }
 
-void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
+void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id) {
 	// Default value is 100 (function called with val+1)
 	// 100 maps all states to "Bad state" (7)
 	if (state == 101) {
@@ -160,9 +160,10 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 		if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
 			do_not_draw = false;
 			SetBitmap(BitmapRef());
-			lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->battle_animation_id);
+			if (animation_id == 0) animation_id = ext->battle_animation_id;
+			lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 			if (!battle_anim) {
-				Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
+				Output::Warning("Invalid battle animation ID {}", animation_id);
 				animation.reset();
 			} else {
 				animation.reset(new BattleAnimationBattler(*battle_anim, { battler }));
@@ -282,4 +283,8 @@ void Sprite_Actor::ResetZ() {
 	if (animation) {
 		animation->SetZ(GetZ());
 	}
+}
+
+void Sprite_Actor::SetNormalAttacking(bool nnormal_attacking) {
+	normal_attacking = nnormal_attacking;
 }
