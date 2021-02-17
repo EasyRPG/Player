@@ -26,12 +26,68 @@
 #include "system.h"
 #include "string_view.h"
 #include "span.h"
+#include "utils.h"
 
 namespace Rand {
 /**
  * The random number generator object to use
  */
-using RNG = std::mt19937;
+
+class AbstractRngWrapper
+{
+public:
+	using result_type = std::uint32_t;
+	
+	virtual ~AbstractRngWrapper() noexcept = default;
+
+	AbstractRngWrapper(const AbstractRngWrapper&) = delete;
+	AbstractRngWrapper& operator =(const AbstractRngWrapper&) = delete;
+	AbstractRngWrapper(AbstractRngWrapper&&) = delete;
+	AbstractRngWrapper& operator =(AbstractRngWrapper&&) = delete;
+	
+	virtual result_type operator()() = 0;
+	virtual std::int32_t operator()(std::int32_t from, std::int32_t to) = 0;
+	virtual void seed(result_type seed) = 0;
+	static result_type min() { return std::numeric_limits<result_type>::min(); }
+	static result_type max() { return std::numeric_limits<result_type>::max(); }
+
+protected:
+	AbstractRngWrapper() noexcept = default;
+};
+
+class ConstNumberGeneratorWrapper :
+	public AbstractRngWrapper
+{
+public:
+	explicit ConstNumberGeneratorWrapper(std::int64_t value) noexcept :
+		m_Value{ value }
+	{
+	}
+	
+	result_type operator()() override
+	{
+		return static_cast<std::uint32_t>(Utils::Clamp<std::int64_t>( m_Value, std::numeric_limits<std::uint32_t>::min(), std::numeric_limits<std::uint32_t>::max()));
+	}
+	
+	std::int32_t operator()(std::int32_t from, std::int32_t to) override
+	{
+		return Utils::Clamp(static_cast<std::int32_t>(m_Value), from, to);
+	}
+	
+	void seed(result_type seed) override
+	{
+	}
+
+private:
+	std::int64_t m_Value;
+};
+	
+using RNG = AbstractRngWrapper;
+
+struct Service
+{
+	static RNG& rng();
+};
 
 /**
  * Gets a random number in the inclusive range from - to.
@@ -40,14 +96,14 @@ using RNG = std::mt19937;
  * @param to Interval end
  * @return Random number in inclusive interval
  */
-int32_t GetRandomNumber(int32_t from, int32_t to);
+int32_t GetRandomNumber(int32_t from, int32_t to, RNG& generator = Service::rng());
 
 /**
  * Gets the seeded Random Number Generator (RNG).
  *
  * @return the random number generator
  */
-RNG& GetRNG();
+RNG& GetRNG(RNG& generator = Service::rng());
 
 /**
  * Has an n/m chance of returning true. If n>m, always returns true.
@@ -56,7 +112,7 @@ RNG& GetRNG();
  * @param m denominator of the probability (positive)
  * @return true with probability n/m, false with probability 1-n/m
  */
-bool ChanceOf(int32_t n, int32_t m);
+bool ChanceOf(int32_t n, int32_t m, RNG& generator = Service::rng());
 
 /**
  * Rolls a random number in [0.0f, 1.0f) returns true if it's less than rate.
@@ -64,7 +120,7 @@ bool ChanceOf(int32_t n, int32_t m);
  * @param rate a value in [0.0f, 1.0f]. Values out of this range are clamped.
  * @return true with probability rate.
  */
-bool PercentChance(float rate);
+bool PercentChance(float rate, RNG& generator = Service::rng());
 
 /**
  * Rolls a random number in [0, 99] and returns true if it's less than rate.
@@ -72,15 +128,15 @@ bool PercentChance(float rate);
  * @param rate a value in [0, 100]. Values out of this range are clamped.
  * @return true with probability rate.
  */
-bool PercentChance(int rate);
-bool PercentChance(long rate);
+bool PercentChance(int rate, RNG& generator = Service::rng());
+bool PercentChance(long rate, RNG& generator = Service::rng());
 
 /**
  * Seeds the RNG used by GetRandomNumber and ChanceOf.
  *
  * @param seed Seed to use
  */
-void SeedRandomNumberGenerator(int32_t seed);
+void SeedRandomNumberGenerator(int32_t seed, RNG& generator = Service::rng());
 
 /**
  * Forces GetRandomNumber() and all dervative functions to return a fixed value.
@@ -89,75 +145,75 @@ void SeedRandomNumberGenerator(int32_t seed);
  * @param lock_value the value to set. A calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b)
  * @post All calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b)
  */
-void LockRandom(int32_t lock_value);
-
-/**
- * Disables locked random number and returns RNG to original state.
- * @post All calls to GetRandomNumber(a, b) will return random values.
- */
-void UnlockRandom();
-
-/**
- * Retrive whether random numbers are locked and if so, which value they are locked to.
- * @return whether or not random numbers are locked and if so, to what value.
- */
-std::pair<bool,int32_t> GetRandomLocked();
+//void LockRandom(int32_t lock_value);
+//
+///**
+// * Disables locked random number and returns RNG to original state.
+// * @post All calls to GetRandomNumber(a, b) will return random values.
+// */
+//void UnlockRandom();
+//
+///**
+// * Retrive whether random numbers are locked and if so, which value they are locked to.
+// * @return whether or not random numbers are locked and if so, to what value.
+// */
+//std::pair<bool,int32_t> GetRandomLocked();
 
 /** An RAII guard which fixes the rng while active and resets on destruction */
-class LockGuard {
-public:
-	/**
-	 * Store current state and set locked state
-	 * @param lock_value The rng value to fix to
-	 * @param locked Whether to fix or reset
-	 */
-	LockGuard(int32_t lock_value, bool locked = true);
-
-	LockGuard(const LockGuard&) = delete;
-	LockGuard& operator=(const LockGuard&) = delete;
-
-	/** Move other LockGuard to this */
-	LockGuard(LockGuard&& o) noexcept;
-	LockGuard& operator=(LockGuard&&) = delete;
-
-	/** Calls Release() */
-	~LockGuard();
-
-	/** If Enabled(), returns the rng locked state to what it was */
-	void Release() noexcept;
-
-	/** Disables the LockGuard leaving the rng state as is */
-	void Dismiss();
-
-	/** @return whether the guard is enabled and will release on destruction */
-	bool Enabled() const;
-private:
-	int32_t _prev_lock_value = 0;
-	bool _prev_locked = false;
-	bool _active = false;
-};
-
-inline bool PercentChance(long rate) {
-	return PercentChance(static_cast<int>(rate));
-}
-
-inline LockGuard::LockGuard(LockGuard&& o) noexcept {
-	std::swap(_prev_lock_value, o._prev_lock_value);
-	std::swap(_prev_locked, o._prev_locked);
-	std::swap(_active, o._active);
-}
-
-inline LockGuard::~LockGuard() {
-	Release();
-}
-
-inline void LockGuard::Dismiss() {
-	_active = false;
-}
-
-inline bool LockGuard::Enabled() const {
-	return _active;
-}
+//class LockGuard {
+//public:
+//	/**
+//	 * Store current state and set locked state
+//	 * @param lock_value The rng value to fix to
+//	 * @param locked Whether to fix or reset
+//	 */
+//	LockGuard(int32_t lock_value, bool locked = true);
+//
+//	LockGuard(const LockGuard&) = delete;
+//	LockGuard& operator=(const LockGuard&) = delete;
+//
+//	/** Move other LockGuard to this */
+//	LockGuard(LockGuard&& o) noexcept;
+//	LockGuard& operator=(LockGuard&&) = delete;
+//
+//	/** Calls Release() */
+//	~LockGuard();
+//
+//	/** If Enabled(), returns the rng locked state to what it was */
+//	void Release() noexcept;
+//
+//	/** Disables the LockGuard leaving the rng state as is */
+//	void Dismiss();
+//
+//	/** @return whether the guard is enabled and will release on destruction */
+//	bool Enabled() const;
+//private:
+//	int32_t _prev_lock_value = 0;
+//	bool _prev_locked = false;
+//	bool _active = false;
+//};
+//
+//inline bool PercentChance(long rate) {
+//	return PercentChance(static_cast<int>(rate));
+//}
+//
+//inline LockGuard::LockGuard(LockGuard&& o) noexcept {
+//	std::swap(_prev_lock_value, o._prev_lock_value);
+//	std::swap(_prev_locked, o._prev_locked);
+//	std::swap(_active, o._active);
+//}
+//
+//inline LockGuard::~LockGuard() {
+//	Release();
+//}
+//
+//inline void LockGuard::Dismiss() {
+//	_active = false;
+//}
+//
+//inline bool LockGuard::Enabled() const {
+//	return _active;
+//}
 
 } // namespace Rand
 

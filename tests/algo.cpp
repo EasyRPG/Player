@@ -121,27 +121,27 @@ TEST_CASE("Variance") {
 
 	SUBCASE(">0") {
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
 			for (int var = 1; var <= 10; ++var) {
-				REQUIRE_EQ(100 + 5 * var, Algo::VarianceAdjustEffect(100, var));
+				REQUIRE_EQ(100 + 5 * var, Algo::VarianceAdjustEffect(100, var, gen));
 			}
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
 			for (int var = 1; var <= 10; ++var) {
-				REQUIRE_EQ(100 - 5 * var, Algo::VarianceAdjustEffect(100, var));
+				REQUIRE_EQ(100 - 5 * var, Algo::VarianceAdjustEffect(100, var, gen));
 			}
 		}
 	}
 
 	SUBCASE("one") {
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
-			REQUIRE_EQ(2, Algo::VarianceAdjustEffect(1, 10));
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
+			REQUIRE_EQ(2, Algo::VarianceAdjustEffect(1, 10, gen));
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
-			REQUIRE_EQ(1, Algo::VarianceAdjustEffect(1, 10));
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
+			REQUIRE_EQ(1, Algo::VarianceAdjustEffect(1, 10, gen));
 		}
 	}
 
@@ -159,14 +159,14 @@ TEST_CASE("Variance") {
 			REQUIRE(Player::IsLegacy());
 
 			SUBCASE("max") {
-				Rand::LockGuard lk(INT32_MAX);
-				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
-				REQUIRE_EQ(1, Algo::VarianceAdjustEffect(0, 1));
+				Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0, gen));
+				REQUIRE_EQ(1, Algo::VarianceAdjustEffect(0, 1, gen));
 			}
 			SUBCASE("min") {
-				Rand::LockGuard lk(INT32_MIN);
-				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
-				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 1));
+				Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0, gen));
+				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 1, gen));
 			}
 		}
 	}
@@ -909,12 +909,12 @@ TEST_CASE("NormalAttackVariance") {
 		REQUIRE_EQ(target.GetDef(), 90);
 
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
-			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
+			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false, gen));
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
-			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
+			Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
+			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false, gen));
 		}
 	}
 }
@@ -928,14 +928,14 @@ static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, in
 	skill2->scope = lcf::rpg::Skill::Scope_ally;
 
 	SUBCASE("max") {
-		Rand::LockGuard lk(INT32_MAX);
-		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true));
-		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true));
+		Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
+		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true, gen));
+		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true, gen));
 	}
 	SUBCASE("min") {
-		Rand::LockGuard lk(INT32_MIN);
-		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true));
-		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true));
+		Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
+		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true, gen));
+		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true, gen));
 	}
 }
 
@@ -965,12 +965,12 @@ TEST_CASE("SelfDestructVariance") {
 	auto source = MakeStatEnemy(1, 150, 0, 0);
 
 	SUBCASE("max") {
-		Rand::LockGuard lk(INT32_MAX);
-		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(source, target, true));
+		Rand::ConstNumberGeneratorWrapper gen(INT32_MAX);
+		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(source, target, true, gen));
 	}
 	SUBCASE("min") {
-		Rand::LockGuard lk(INT32_MIN);
-		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(source, target, true));
+		Rand::ConstNumberGeneratorWrapper gen(INT32_MIN);
+		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(source, target, true, gen));
 	}
 }
 

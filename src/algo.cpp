@@ -155,11 +155,11 @@ int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target
 	return crit_chance;
 }
 
-int VarianceAdjustEffect(int base, int var) {
+int VarianceAdjustEffect(int base, int var, Rand::RNG& rng) {
 	// FIXME: RPG_RT 2k3 doesn't apply variance if negative attribute flips damage
 	if (var > 0 && (base > 0 || Player::IsLegacy())) {
 		int adj = std::max(1, var * base / 10);
-		return base + Rand::GetRandomNumber(0, adj) - adj / 2;
+		return base + Rand::GetRandomNumber(0, adj, rng) - adj / 2;
 	}
 	return base;
 }
@@ -180,7 +180,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		bool is_critical_hit,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond,
-		bool emulate_2k3_enemy_row_bug)
+		bool emulate_2k3_enemy_row_bug,
+		Rand::RNG& rng)
 {
 	const auto atk = source.GetAtk(weapon);
 	const auto def = target.GetDef();
@@ -209,7 +210,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	}
 
 	if (apply_variance) {
-		dmg = VarianceAdjustEffect(dmg, 4);
+		dmg = VarianceAdjustEffect(dmg, 4, rng);
 	}
 
 	return dmg;
@@ -218,7 +219,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
-		bool apply_variance) {
+		bool apply_variance,
+		Rand::RNG& rng) {
 
 	auto effect = skill.power;
 	effect += skill.physical_rate * source.GetAtk() / 20;
@@ -234,7 +236,7 @@ int CalcSkillEffect(const Game_Battler& source,
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
 
 	if (apply_variance) {
-		effect = VarianceAdjustEffect(effect, skill.variance);
+		effect = VarianceAdjustEffect(effect, skill.variance, rng);
 	}
 
 	return effect;
@@ -242,13 +244,14 @@ int CalcSkillEffect(const Game_Battler& source,
 
 int CalcSelfDestructEffect(const Game_Battler& source,
 		const Game_Battler& target,
-		bool apply_variance) {
+		bool apply_variance,
+		Rand::RNG& rng) {
 
 	auto effect = source.GetAtk() - target.GetDef() / 2;
 	effect = std::max<int>(0, effect);
 
 	if (apply_variance) {
-		effect = VarianceAdjustEffect(effect, 4);
+		effect = VarianceAdjustEffect(effect, 4, rng);
 	}
 
 	return effect;

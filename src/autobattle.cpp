@@ -214,7 +214,8 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 		Game_Battler::Weapon weapon,
 		lcf::rpg::System::BattleCondition cond,
 		bool apply_variance,
-		bool emulate_bugs)
+		bool emulate_bugs,
+		Rand::RNG& rng)
 {
 	if (!target.Exists()) {
 		return 0.0;
@@ -223,7 +224,7 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 
 	// RPG_RT BUG: Normal damage variance is not used
 	// Note: RPG_RT does not do the "2k3_enemy_row_bug" when computing autobattle ranks.
-	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, apply_variance, cond, false);
+	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, apply_variance, cond, false, rng);
 	// RPG_RT BUG: Dual Attack is ignored
 	if (!emulate_bugs && source.HasDualAttack(weapon)) {
 		base_effect *= 2;
@@ -254,7 +255,7 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 		}
 	}
 	if (rank > 0.0) {
-		rank = Rand::GetRandomNumber(0, 99) / 100.0 + rank * 1.5;
+		rank = Rand::GetRandomNumber(0, 99, rng) / 100.0 + rank * 1.5;
 	}
 	return rank;
 }

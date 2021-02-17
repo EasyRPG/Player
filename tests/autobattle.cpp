@@ -28,11 +28,11 @@ decltype(auto) MakeActor(int id, int hp, int sp, int atk, int def, int spi, int 
 
 TEST_SUITE_BEGIN("Autobattle");
 
-static void testNormalAttack(const Game_Actor& source, const Game_Battler& target, double v0, double v1, double v2, double v3) {
-	REQUIRE(doctest::Approx(v0) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, false, true));
-	REQUIRE(doctest::Approx(v1) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, false, false));
-	REQUIRE(doctest::Approx(v2) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true, true));
-	REQUIRE(doctest::Approx(v3) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true, false));
+static void testNormalAttack(const Game_Actor& source, const Game_Battler& target, double v0, double v1, double v2, double v3, Rand::RNG& rng) {
+	REQUIRE(doctest::Approx(v0) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, false, true, rng));
+	REQUIRE(doctest::Approx(v1) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, false, false, rng));
+	REQUIRE(doctest::Approx(v2) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true, true, rng));
+	REQUIRE(doctest::Approx(v3) == AutoBattle::CalcNormalAttackAutoBattleTargetRank(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true, false, rng));
 }
 
 TEST_CASE("NormalAttackTargetRank") {
@@ -46,12 +46,12 @@ TEST_CASE("NormalAttackTargetRank") {
 		REQUIRE_EQ(target.GetDef(), 90);
 
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
-			testNormalAttack(source, target, 1.131, 1.131, 1.158, 1.158);
+			Rand::ConstNumberGeneratorWrapper rng(INT32_MAX);
+			testNormalAttack(source, target, 1.131, 1.131, 1.158, 1.158, rng);
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
-			testNormalAttack(source, target, 0.141, 0.141, 0.114, 0.114);
+			Rand::ConstNumberGeneratorWrapper rng(INT32_MIN);
+			testNormalAttack(source, target, 0.141, 0.141, 0.114, 0.114, rng);
 		}
 	}
 }

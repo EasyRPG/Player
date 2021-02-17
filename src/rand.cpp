@@ -26,20 +26,58 @@
 #include <algorithm>
 #include <random>
 
+template <class TGenerator>
+class RngWrapper :
+	public Rand::AbstractRngWrapper
+{
+public:
+	explicit RngWrapper(TGenerator generator = TGenerator{}) :
+		AbstractRngWrapper{},
+		m_Generator{ std::move(generator) }
+	{
+	}
+
+	void seed(result_type seed) override
+	{
+		m_Generator.seed(seed);
+	}
+
+	result_type operator()() override
+	{
+		return m_Generator();
+	}
+
+	std::int32_t operator()(std::int32_t from, std::int32_t to) override
+	{
+		auto ufrom =  static_cast<std::uint32_t>(from);
+		auto uto =  static_cast<std::uint32_t>(to);
+		auto urange = uto - ufrom;
+		auto ures = ufrom + GetRandomUnsigned(urange, *this);
+		return static_cast<std::int32_t>(ures);
+	}
+
+private:
+	TGenerator m_Generator;
+};
+
+Rand::RNG& Rand::Service::rng()
+{
+	static RngWrapper<std::mt19937> rng{};
+	return rng;
+}
+
 namespace {
-Rand::RNG rng;
-
 /** Gets a random number uniformly distributed in [0, U32_MAX] */
-uint32_t GetRandomU32() { return rng(); }
+uint32_t GetRandomU32(Rand::RNG& rng) { return rng(); }
 
-int32_t rng_lock_value = 0;
-bool rng_locked= false;
+//int32_t rng_lock_value = 0;
+//bool rng_locked= false;
 }
 
 /** Generate a random number in the range [0,max] */
-static uint32_t GetRandomUnsigned(uint32_t max)
+static uint32_t GetRandomUnsigned(uint32_t max, Rand::RNG& rng)
 {
-	if (max == 0xffffffffull) return GetRandomU32();
+	if (max == 0xffffffffull) return GetRandomU32(rng);
 
 	// Rejection sampling:
 	// 1. Divide the range of uint32 into blocks of max+1
@@ -51,85 +89,81 @@ static uint32_t GetRandomUnsigned(uint32_t max)
 	uint32_t m = max + 1;
 	uint32_t rem = -m % m; // = 2^32 mod m
 	while (true) {
-		uint32_t n = GetRandomU32();
+		uint32_t n = GetRandomU32(rng);
 		if (n >= rem)
 			return n % m;
 	}
 }
 
-int32_t Rand::GetRandomNumber(int32_t from, int32_t to) {
+int32_t Rand::GetRandomNumber(int32_t from, int32_t to, RNG& rng) {
 	assert(from <= to);
-	if (rng_locked) {
-		return Utils::Clamp(rng_lock_value, from, to);
-	}
+	//if (rng_locked) {
+	//	return Utils::Clamp(rng_lock_value, from, to);
+	//}
 	// Don't use uniform_int_distribution--the algorithm used isn't
 	// portable between stdlibs.
 	// We do from + (rand int in [0, to-from]). The miracle of two's
 	// complement let's us do this all in unsigned and then just cast
 	// back.
-	uint32_t ufrom = uint32_t(from);
-	uint32_t uto = uint32_t(to);
-	uint32_t urange = uto - ufrom;
-	uint32_t ures = ufrom + GetRandomUnsigned(urange);
-	return int32_t(ures);
+	return rng(from, to);
 }
 
-Rand::RNG& Rand::GetRNG() {
+Rand::RNG& Rand::GetRNG(RNG& rng) {
 	return rng;
 }
 
-bool Rand::ChanceOf(int32_t n, int32_t m) {
+bool Rand::ChanceOf(int32_t n, int32_t m, RNG& rng) {
 	assert(n >= 0 && m > 0);
-	return GetRandomNumber(1, m) <= n;
+	return GetRandomNumber(1, m, rng) <= n;
 }
 
-bool Rand::PercentChance(float rate) {
+bool Rand::PercentChance(float rate, RNG& rng) {
 	constexpr auto scale = 0x1000000;
-	return GetRandomNumber(0, scale-1) < int32_t(rate * scale);
+	return GetRandomNumber(0, scale-1, rng) < int32_t(rate * scale);
 }
 
-bool Rand::PercentChance(int rate) {
-	return GetRandomNumber(0, 99) < rate;
+bool Rand::PercentChance(int rate, RNG& rng) {
+	return GetRandomNumber(0, 99, rng) < rate;
 }
 
-void Rand::SeedRandomNumberGenerator(int32_t seed) {
+void Rand::SeedRandomNumberGenerator(int32_t seed, RNG& rng) {
 	rng.seed(seed);
 	Output::Debug("Seeded the RNG with {}.", seed);
 }
 
-void Rand::LockRandom(int32_t value) {
-	rng_locked = true;
-	rng_lock_value = value;
-}
+//void Rand::LockRandom(int32_t value) {
+//	rng_locked = true;
+//	rng_lock_value = value;
+//}
+//
+//void Rand::UnlockRandom() {
+//	rng_locked = false;
+//}
+//
+//std::pair<bool,int32_t> Rand::GetRandomLocked() {
+//	return { rng_locked, rng_lock_value };
+//}
 
-void Rand::UnlockRandom() {
-	rng_locked = false;
-}
-
-std::pair<bool,int32_t> Rand::GetRandomLocked() {
-	return { rng_locked, rng_lock_value };
-}
-
-Rand::LockGuard::LockGuard(int32_t lock_value, bool locked) {
-	auto p = GetRandomLocked();
-	_prev_locked = p.first;
-	_prev_lock_value = p.second;
-	_active = true;
-
-	if (locked) {
-		LockRandom(lock_value);
-	} else {
-		UnlockRandom();
-	}
-}
-
-void Rand::LockGuard::Release() noexcept {
-	if (Enabled()) {
-		if (_prev_locked) {
-			LockRandom(_prev_lock_value);
-		} else {
-			UnlockRandom();
-		}
-		Dismiss();
-	}
-}
+//Rand::LockGuard::LockGuard(int32_t lock_value, bool locked) {
+//	auto p = GetRandomLocked();
+//	_prev_locked = p.first;
+//	_prev_lock_value = p.second;
+//	_active = true;
+//
+//	if (locked) {
+//		LockRandom(lock_value);
+//	} else {
+//		UnlockRandom();
+//	}
+//}
+//
+//void Rand::LockGuard::Release() noexcept {
+//	if (Enabled()) {
+//		if (_prev_locked) {
+//			LockRandom(_prev_lock_value);
+//		} else {
+//			UnlockRandom();
+//		}
+//		Dismiss();
+//	}
+//}

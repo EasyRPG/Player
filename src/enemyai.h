@@ -22,6 +22,7 @@
 #include <lcf/rpg/saveactor.h>
 #include <game_battler.h>
 #include <memory>
+#include "rand.h"
 
 class Game_Actor;
 class Game_Enemy;
@@ -91,7 +92,7 @@ private:
  * @param emulate_bugs if true, emulate RPG_RT bugs
  * @post If an action was selected, the source will have a new battle algorithm attached.
  */
-void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs);
+void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs, Rand::RNG& rng = Rand::Service::rng());
 
 /**
  * Checks if the skill will be effective on a target.

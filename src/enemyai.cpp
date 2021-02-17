@@ -300,7 +300,7 @@ static bool IsSkillEffectiveOnAnyTarget(Game_Enemy& source, int skill_id, bool e
 	return true;
 }
 
-void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
+void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs, Rand::RNG& rng) {
 	const auto& actions = source.GetDbEnemy().actions;
 	std::vector<int> prios(actions.size(), 0);
 	int max_prio = 0;
@@ -344,7 +344,7 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 		return;
 	}
 
-	int which = Rand::GetRandomNumber(0, sum_prios - 1);
+	int which = Rand::GetRandomNumber(0, sum_prios - 1, rng);
 	DebugLog("ENEMYAI: Enemy {}({}) sum_prios={} which={}", source.GetName(), source.GetTroopMemberId(), sum_prios, which);
 	const lcf::rpg::EnemyAction* selected_action = nullptr;
 	for (int i = 0; i < static_cast<int>(actions.size()); ++i) {

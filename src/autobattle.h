@@ -22,6 +22,7 @@
 #include <lcf/rpg/saveactor.h>
 #include <game_battler.h>
 #include <memory>
+#include "rand.h"
 
 class Game_Actor;
 class Game_Enemy;
@@ -143,7 +144,7 @@ double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& 
  * @param apply_variance If true, apply variance to the damage
  * @param emulate_bugs Emulate all RPG_RT bugs for accuracy
  */
-double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs);
+double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs, Rand::RNG& rng = Rand::Service::rng());
 
 /**
  * Calculate the auto battle total effectiveness rank of using a normal attack.
