@@ -19,75 +19,72 @@
 #define EP_RANDOM_H
 
 #include <functional>
-#include <string>
-#include <sstream>
 #include <vector>
 #include <random>
-#include "system.h"
 #include "string_view.h"
 #include "span.h"
-#include "utils.h"
 
 namespace Rand {
-/**
- * The random number generator object to use
- */
 
-class AbstractRngWrapper
+using Seed_t = std::uint32_t;
+
+class AbstractRNGWrapper
 {
 public:
 	using result_type = std::uint32_t;
 	
-	virtual ~AbstractRngWrapper() noexcept = default;
+	virtual ~AbstractRNGWrapper() noexcept = default;
 
-	AbstractRngWrapper(const AbstractRngWrapper&) = delete;
-	AbstractRngWrapper& operator =(const AbstractRngWrapper&) = delete;
-	AbstractRngWrapper(AbstractRngWrapper&&) = delete;
-	AbstractRngWrapper& operator =(AbstractRngWrapper&&) = delete;
-	
+	AbstractRNGWrapper(const AbstractRNGWrapper&) = delete;
+	AbstractRNGWrapper& operator =(const AbstractRNGWrapper&) = delete;
+	AbstractRNGWrapper(AbstractRNGWrapper&&) = delete;
+	AbstractRNGWrapper& operator =(AbstractRNGWrapper&&) = delete;
+
 	virtual result_type operator()() = 0;
-	virtual std::int32_t operator()(std::int32_t from, std::int32_t to) = 0;
-	virtual void seed(result_type seed) = 0;
+	virtual result_type distribute(std::uint32_t max) = 0;
+	virtual std::int32_t distribute(std::int32_t from, std::int32_t to) = 0;
+	virtual void seed(Seed_t seed) = 0;
+	
 	static result_type min() { return std::numeric_limits<result_type>::min(); }
 	static result_type max() { return std::numeric_limits<result_type>::max(); }
 
 protected:
-	AbstractRngWrapper() noexcept = default;
+	AbstractRNGWrapper() noexcept = default;
 };
 
-class ConstNumberGeneratorWrapper :
-	public AbstractRngWrapper
+class SequencedRNGWrapper :
+	public AbstractRNGWrapper
 {
 public:
-	explicit ConstNumberGeneratorWrapper(std::int64_t value) noexcept :
-		m_Value{ value }
+	template <class... TArgs, typename = std::enable_if_t<std::is_convertible_v<std::common_type_t<TArgs...>, result_type>>>
+	explicit SequencedRNGWrapper(TArgs ... args) noexcept :
+		AbstractRNGWrapper{},
+	m_Sequence{ static_cast<result_type>(args)... }
 	{
+		assert(!std::empty(m_Sequence) && "Empty sequence is not allowed.");
 	}
-	
-	result_type operator()() override
-	{
-		return static_cast<std::uint32_t>(Utils::Clamp<std::int64_t>( m_Value, std::numeric_limits<std::uint32_t>::min(), std::numeric_limits<std::uint32_t>::max()));
-	}
-	
-	std::int32_t operator()(std::int32_t from, std::int32_t to) override
-	{
-		return Utils::Clamp(static_cast<std::int32_t>(m_Value), from, to);
-	}
-	
-	void seed(result_type seed) override
-	{
-	}
+
+	result_type operator()() override;
+
+	result_type distribute(std::uint32_t max) override;
+	std::int32_t distribute(std::int32_t from, std::int32_t to) override;
+
+	void seed(Seed_t seed) override;
 
 private:
-	std::int64_t m_Value;
-};
-	
-using RNG = AbstractRngWrapper;
+	std::size_t m_NextIndex = 0;
+	std::vector<result_type> m_Sequence;
 
-struct Service
-{
-	static RNG& rng();
+	result_type pickNext();
 };
+
+ /**
+ * The random number generator object to use
+ */
+using RNG = AbstractRNGWrapper;
+using RngPtr = std::unique_ptr<RNG>;
+
+RngPtr ExchangeRNG(RngPtr newRng);
 
 /**
  * Gets a random number in the inclusive range from - to.
@@ -96,14 +93,14 @@ struct Service
  * @param to Interval end
  * @return Random number in inclusive interval
  */
-int32_t GetRandomNumber(int32_t from, int32_t to, RNG& generator = Service::rng());
+std::int32_t GetRandomNumber(std::int32_t from, std::int32_t to);
 
 /**
  * Gets the seeded Random Number Generator (RNG).
  *
  * @return the random number generator
  */
-RNG& GetRNG(RNG& generator = Service::rng());
+RNG& GetRNG();
 
 /**
  * Has an n/m chance of returning true. If n>m, always returns true.
@@ -112,7 +109,7 @@ RNG& GetRNG(RNG& generator = Service::rng());
  * @param m denominator of the probability (positive)
  * @return true with probability n/m, false with probability 1-n/m
  */
-bool ChanceOf(int32_t n, int32_t m, RNG& generator = Service::rng());
+bool ChanceOf(std::int32_t n, std::int32_t m);
 
 /**
  * Rolls a random number in [0.0f, 1.0f) returns true if it's less than rate.
@@ -120,7 +117,7 @@ bool ChanceOf(int32_t n, int32_t m, RNG& generator = Service::rng());
  * @param rate a value in [0.0f, 1.0f]. Values out of this range are clamped.
  * @return true with probability rate.
  */
-bool PercentChance(float rate, RNG& generator = Service::rng());
+bool PercentChance(float rate);
 
 /**
  * Rolls a random number in [0, 99] and returns true if it's less than rate.
@@ -128,94 +125,56 @@ bool PercentChance(float rate, RNG& generator = Service::rng());
  * @param rate a value in [0, 100]. Values out of this range are clamped.
  * @return true with probability rate.
  */
-bool PercentChance(int rate, RNG& generator = Service::rng());
-bool PercentChance(long rate, RNG& generator = Service::rng());
+bool PercentChance(int rate);
+bool PercentChance(long rate);
 
 /**
  * Seeds the RNG used by GetRandomNumber and ChanceOf.
  *
  * @param seed Seed to use
  */
-void SeedRandomNumberGenerator(int32_t seed, RNG& generator = Service::rng());
+void SeedRandomNumberGenerator(Seed_t seed);
 
-/**
- * Forces GetRandomNumber() and all dervative functions to return a fixed value.
- * Useful for testing.
- *
- * @param lock_value the value to set. A calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b)
- * @post All calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b)
- */
-//void LockRandom(int32_t lock_value);
-//
-///**
-// * Disables locked random number and returns RNG to original state.
-// * @post All calls to GetRandomNumber(a, b) will return random values.
-// */
-//void UnlockRandom();
-//
-///**
-// * Retrive whether random numbers are locked and if so, which value they are locked to.
-// * @return whether or not random numbers are locked and if so, to what value.
-// */
-//std::pair<bool,int32_t> GetRandomLocked();
+namespace test
+{
+	template <class TRNGWrapper, typename = std::enable_if_t<std::is_base_of_v<AbstractRNGWrapper, TRNGWrapper>>>
+	class ScopedRNGExchange
+	{
+	public:
+		template <class... TArgs, typename = std::enable_if_t<std::is_constructible_v<TRNGWrapper, TArgs...>>>
+		explicit ScopedRNGExchange(TArgs&&... args) :
+			m_PreviousRNG{ Rand::ExchangeRNG(std::make_unique<TRNGWrapper>(std::forward<TArgs>(args)...)) }
+		{
+		}
 
-/** An RAII guard which fixes the rng while active and resets on destruction */
-//class LockGuard {
-//public:
-//	/**
-//	 * Store current state and set locked state
-//	 * @param lock_value The rng value to fix to
-//	 * @param locked Whether to fix or reset
-//	 */
-//	LockGuard(int32_t lock_value, bool locked = true);
-//
-//	LockGuard(const LockGuard&) = delete;
-//	LockGuard& operator=(const LockGuard&) = delete;
-//
-//	/** Move other LockGuard to this */
-//	LockGuard(LockGuard&& o) noexcept;
-//	LockGuard& operator=(LockGuard&&) = delete;
-//
-//	/** Calls Release() */
-//	~LockGuard();
-//
-//	/** If Enabled(), returns the rng locked state to what it was */
-//	void Release() noexcept;
-//
-//	/** Disables the LockGuard leaving the rng state as is */
-//	void Dismiss();
-//
-//	/** @return whether the guard is enabled and will release on destruction */
-//	bool Enabled() const;
-//private:
-//	int32_t _prev_lock_value = 0;
-//	bool _prev_locked = false;
-//	bool _active = false;
-//};
-//
-//inline bool PercentChance(long rate) {
-//	return PercentChance(static_cast<int>(rate));
-//}
-//
-//inline LockGuard::LockGuard(LockGuard&& o) noexcept {
-//	std::swap(_prev_lock_value, o._prev_lock_value);
-//	std::swap(_prev_locked, o._prev_locked);
-//	std::swap(_active, o._active);
-//}
-//
-//inline LockGuard::~LockGuard() {
-//	Release();
-//}
-//
-//inline void LockGuard::Dismiss() {
-//	_active = false;
-//}
-//
-//inline bool LockGuard::Enabled() const {
-//	return _active;
-//}
+		~ScopedRNGExchange() noexcept
+		{
+			if (m_PreviousRNG)
+			{
+				ExchangeRNG(std::move(m_PreviousRNG));
+			}
+		}
 
+		ScopedRNGExchange(const ScopedRNGExchange&) = delete;
+		ScopedRNGExchange& operator =(const ScopedRNGExchange&) = delete;
+
+		ScopedRNGExchange(ScopedRNGExchange&&) noexcept = default;
+		ScopedRNGExchange& operator =(ScopedRNGExchange&&) noexcept = default;
+	
+	private:
+		RngPtr m_PreviousRNG;
+	};
+
+	template <class TRNGWrapper, class... TArgs>
+	std::enable_if_t<
+		std::is_base_of_v<AbstractRNGWrapper, TRNGWrapper> && std::is_constructible_v<TRNGWrapper, TArgs...>,
+		ScopedRNGExchange<TRNGWrapper>	// actual return type
+	>
+	makeScopedRNGExchange(TArgs&&... args)
+	{
+		return ScopedRNGExchange<TRNGWrapper>{ std::forward<TArgs>(args)... };
+	}
+}
 } // namespace Rand
-
 
 #endif

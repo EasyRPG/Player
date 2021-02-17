@@ -85,10 +85,9 @@ TEST_CASE("GetRandomNumber") {
 //}
 
 static void testGetRandomNumberFixed(int32_t a, int32_t b, int32_t fix, int32_t result) {
-	//Rand::LockGuard fg(fix);
+	auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(static_cast<std::uint32_t>(fix));
 	for (int i = 0; i < 10; ++i) {
-		Rand::ConstNumberGeneratorWrapper rng(fix);
-		auto x = GetRandomNumber(a, b, rng);
+		auto x = Rand::GetRandomNumber(a, b);
 		REQUIRE_EQ(x, result);
 	}
 }

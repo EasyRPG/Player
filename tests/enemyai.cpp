@@ -244,16 +244,16 @@ static void testActionType(int start, int end, Game_BattleAlgorithm::Type type_c
 		bool bugs = true;
 		CAPTURE(bugs);
 
-		Rand::ConstNumberGeneratorWrapper gen(rng);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(rng);
 		bugs = true;
 		source.SetBattleAlgorithm(nullptr);
-		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs, gen);
+		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);
 		REQUIRE(source.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(type_compat), static_cast<int>(source.GetBattleAlgorithm()->GetType()));
 
 		bugs = false;
 		source.SetBattleAlgorithm(nullptr);
-		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs, gen);
+		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);
 		REQUIRE(source.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(type_improved), static_cast<int>(source.GetBattleAlgorithm()->GetType()));
 	}
@@ -265,15 +265,15 @@ static void testActionNullptr(int start, int end, Game_Enemy& source) {
 		bool bugs = true;
 		CAPTURE(bugs);
 
-		Rand::ConstNumberGeneratorWrapper gen(rng);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(rng);
 		bugs = true;
 		source.SetBattleAlgorithm(nullptr);
-		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs, gen);
+		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);
 		REQUIRE_FALSE(source.GetBattleAlgorithm());
 
 		bugs = false;
 		source.SetBattleAlgorithm(nullptr);
-		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs, gen);
+		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);
 		REQUIRE_FALSE(source.GetBattleAlgorithm());
 	}
 }

@@ -23,11 +23,9 @@
 #include <lcf/rpg/saveactor.h>
 #include <lcf/rpg/skill.h>
 #include "game_battler.h"
-#include "rand.h"
 
 class Game_Actor;
 class Game_Enemy;
-
 
 namespace Algo {
 
@@ -65,7 +63,7 @@ bool IsRowAdjusted(const Game_Battler& battler,
  *
  * @return the adjusted damage amount
  */
-int VarianceAdjustEffect(int base, int var, Rand::RNG& generator = Rand::Service::rng());
+int VarianceAdjustEffect(int base, int var);
 
 /**
  * Compute the hit rate for a physical attack
@@ -137,8 +135,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		bool is_critical_hit,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond,
-		bool emulate_2k3_enemy_row_bug,
-		Rand::RNG& rng = Rand::Service::rng());
+		bool emulate_2k3_enemy_row_bug);
 
 /**
  * Compute the base damage for a skill
@@ -155,8 +152,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
-		bool apply_variance,
-		Rand::RNG& rng = Rand::Service::rng());
+		bool apply_variance);
 
 /**
  * Compute the base damage for self-destruct
@@ -171,8 +167,7 @@ int CalcSkillEffect(const Game_Battler& source,
  */
 int CalcSelfDestructEffect(const Game_Battler& source,
 		const Game_Battler& target,
-		bool apply_variance,
-		Rand::RNG& rng = Rand::Service::rng());
+		bool apply_variance);
 
 /**
  * Calculate the sp cost for a skill.
