@@ -56,12 +56,17 @@ class SequencedRNGWrapper :
 	public AbstractRNGWrapper
 {
 public:
-	template <class... TArgs, typename = std::enable_if_t<std::is_convertible_v<std::common_type_t<TArgs...>, result_type>>>
-	explicit SequencedRNGWrapper(TArgs ... args) noexcept :
+	explicit SequencedRNGWrapper(std::vector<result_type> seq) noexcept :
 		AbstractRNGWrapper{},
-	m_Sequence{ static_cast<result_type>(args)... }
+		m_Sequence{ std::move(seq) }
 	{
 		assert(!std::empty(m_Sequence) && "Empty sequence is not allowed.");
+	}
+	
+	template <class... TArgs, typename = std::enable_if_t<std::is_convertible_v<std::common_type_t<TArgs...>, result_type>>>
+	explicit SequencedRNGWrapper(TArgs ... args) noexcept :
+		SequencedRNGWrapper{ std::vector<result_type>{ static_cast<result_type>(args)... } }
+	{
 	}
 
 	result_type operator()() override;
