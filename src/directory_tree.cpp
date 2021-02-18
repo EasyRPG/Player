@@ -242,18 +242,19 @@ DirectoryTreeView::DirectoryTreeView(const DirectoryTree* tree, std::string sub_
 std::string DirectoryTreeView::FindFile(StringView name, Span<StringView> exts) const {
 	assert(tree);
 	DebugLog("TreeView FindFile: {}", name);
-	return tree->FindFile(MakePath(name), exts);
+	return tree->FindFile(MakeSubPath(name), exts);
 }
 
 std::string DirectoryTreeView::FindFile(StringView dir, StringView name, Span<StringView> exts) const {
 	assert(tree);
 	DebugLog("TreeView FindFile: {} {}", dir, name);
-	return tree->FindFile(MakePath(dir), name, exts);
+	return tree->FindFile(MakeSubPath(dir), name, exts);
 }
 
 std::string DirectoryTreeView::FindFile(const DirectoryTree::Args& args) const {
+    assert(tree);
 	auto args_cp = args;
-	std::string path = MakePath(args.path);
+	std::string path = MakeSubPath(args.path);
 	args_cp.path = path;
 	return tree->FindFile(args_cp);
 }
@@ -265,13 +266,20 @@ StringView DirectoryTreeView::GetRootPath() const {
 
 std::string DirectoryTreeView::MakePath(StringView subdir) const {
 	assert(tree);
-	return FileFinder::MakePath(sub_path, subdir);
+	return FileFinder::MakePath(GetRootPath(), subdir);
+}
+
+std::string DirectoryTreeView::MakeSubPath(StringView subdir) const {
+    assert(tree);
+    return FileFinder::MakePath(sub_path, subdir);
 }
 
 DirectoryTree::DirectoryListType* DirectoryTreeView::ListDirectory(StringView path) const {
-	return tree->ListDirectory(MakePath(path));
+    assert(tree);
+	return tree->ListDirectory(MakeSubPath(sub_path));
 }
 
 DirectoryTreeView DirectoryTreeView::Subtree(const std::string& sub_path) {
-	return DirectoryTreeView(tree, MakePath(sub_path));
+    assert(tree);
+	return DirectoryTreeView(tree, MakeSubPath(sub_path));
 }

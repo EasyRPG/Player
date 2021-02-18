@@ -213,11 +213,19 @@ public:
 	/** @return root path of the subtree */
 	StringView GetRootPath() const;
 
-	/** 
+	/**
+	 * Creates path consisting of root + subtree + subdir
 	 * @param subpath Path to append to the subtree root
 	 * @return Combined path
 	 */
 	std::string MakePath(StringView subdir) const;
+
+    /**
+     * Creates a path consisting of subtree + subdir
+     * @param subpath Path to append to the subtree
+     * @return Combined path
+     */
+    std::string MakeSubPath(StringView subdir) const;
 
 	/**
 	 * Enumerates a directory.
