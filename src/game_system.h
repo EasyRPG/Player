@@ -276,6 +276,7 @@ public:
 	void SetAllowMenu(bool allow);
 
 	int GetSaveCount();
+	void IncSaveCount();
 
 	const lcf::rpg::Music& GetCurrentBGM();
 	void MemorizeBGM();
@@ -646,6 +647,10 @@ inline bool Game_System::GetInvertAnimations() {
 
 inline int Game_System::GetSaveCount() {
 	return data.save_count;
+}
+
+inline void Game_System::IncSaveCount() {
+	++data.save_count;
 }
 
 inline StringView Game_System::GetSystem2Name() {
