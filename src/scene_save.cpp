@@ -50,7 +50,7 @@ Scene_Save::Scene_Save() :
 void Scene_Save::Start() {
 	Scene_File::Start();
 
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < Utils::Clamp(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
 		file_windows[i]->SetHasSave(true);
 		file_windows[i]->Refresh();
 	}
