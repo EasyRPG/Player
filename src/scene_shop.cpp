@@ -253,7 +253,7 @@ void Scene_Shop::UpdateBuySelection() {
 			// Items are guaranteed to be valid
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 
-			int max = 99 - Main_Data::game_party->GetItemCount(item_id);
+			int max = Main_Data::game_party->GetMaxItemCount(item_id) - Main_Data::game_party->GetItemCount(item_id);
 			if (item->price > 0) {
 				max = std::min<int>(max, Main_Data::game_party->GetGold() / item->price);
 			}

@@ -158,6 +158,15 @@ int Game_Party::GetItemTotalCount(int item_id) const {
 	return GetItemCount(item_id) + GetEquippedItemCount(item_id);
 }
 
+int Game_Party::GetMaxItemCount(int item_id) const {
+	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
+	if (!item || item->easyrpg_max_count == -1) {
+		return (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);
+	} else {
+		return item->easyrpg_max_count;
+	}
+}
+
 void Game_Party::GainGold(int n) {
 	data.gold = data.gold + n;
 	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
@@ -174,12 +183,14 @@ void Game_Party::AddItem(int item_id, int amount) {
 		return;
 	}
 
+	int item_limit = GetMaxItemCount(item_id);
+
 	auto ip = GetItemIndex(item_id);
 	auto idx = ip.first;
 	auto has = ip.second;
 	if (!has) {
 		if (amount > 0) {
-			amount = std::min(amount, 99);
+			amount = std::min(amount, item_limit);
 			data.item_ids.insert(data.item_ids.begin() + idx, (int16_t)item_id);
 			data.item_counts.insert(data.item_counts.begin() + idx, (uint8_t)amount);
 			data.item_usage.insert(data.item_usage.begin() + idx, 0);
@@ -196,7 +207,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 		return;
 	}
 
-	data.item_counts[idx] = (uint8_t)std::min(total_items, 99);
+	data.item_counts[idx] = (uint8_t)std::min(total_items, item_limit);
 	// If the item was removed, the number of uses resets.
 	// (Adding an item never changes the number of uses, even when
 	// you already have x99 of them.)
