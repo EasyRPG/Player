@@ -68,7 +68,7 @@ void Window_ShopBuy::DrawItem(int index) {
 	if (!item) {
 		Output::Warning("Window ShopBuy: Invalid item ID {}", item_id);
 	} else {
-		enabled = item->price <= Main_Data::game_party->GetGold();
+		enabled = item->price <= Main_Data::game_party->GetGold() && Main_Data::game_party->GetItemCount(item_id) < 99;
 		price = item->price;
 	}
 
