@@ -35,7 +35,7 @@ Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 
 void Window_ShopNumber::SetData(int item_id, int item_max, int price) {
 	this->item_id = item_id;
-	this->item_max = min(item_max, 99);
+	this->item_max = item_max;
 	this->price = price;
 	number = 1;
 }
@@ -52,7 +52,11 @@ void Window_ShopNumber::Refresh() {
 
 	contents->TextDraw(132, y, Font::ColorDefault, "x");
 	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Text::AlignRight);
-	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
+	if (item_max >= 100) {
+		SetCursorRect(Rect(132 + 8, y - 2, 26, 16));
+	} else {
+		SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
+	}
 
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
 }

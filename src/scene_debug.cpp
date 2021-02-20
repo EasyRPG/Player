@@ -348,7 +348,7 @@ void Scene_Debug::Update() {
 					DoItem();
 				} else if (sz > 2) {
 					if (frame.value <= static_cast<int>(lcf::Data::items.size())) {
-						PushUiNumberInput(Main_Data::game_party->GetItemCount(frame.value), 2, false);
+						PushUiNumberInput(Main_Data::game_party->GetItemCount(frame.value), Main_Data::game_party->GetMaxItemCount(frame.value) >= 100 ? 3 : 2, false);
 					}
 				} else if (sz > 1) {
 					PushUiVarList();
