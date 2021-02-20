@@ -114,7 +114,7 @@ void Scene_File::Start() {
 	// Refresh File Finder Save Folder
 	fs = FileFinder::Save();
 
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < Utils::Clamp(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
