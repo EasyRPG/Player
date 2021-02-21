@@ -338,7 +338,7 @@ void Scene_Debug::Update() {
 				if (sz > 1) {
 					DoGold();
 				} else {
-					PushUiNumberInput(Main_Data::game_party->GetGold(), 7, false);
+					PushUiNumberInput(Main_Data::game_party->GetGold(), 6, false);
 					range_index = 0;
 					range_window->SetIndex(range_index);
 				}
