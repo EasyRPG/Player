@@ -55,7 +55,7 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	-g -Wall -O2 -ffunction-sections -fno-math-errno \
+CFLAGS	:=	-g -Wall -O2 -ffunction-sections -fdata-sections -fno-math-errno \
 			$(ARCH) $(DEFINES)
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
@@ -63,11 +63,7 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 			-DHAVE_LIBSAMPLERATE -DHAVE_FLUIDLITE \
-			-DWANT_FMMIDI -DWANT_FASTWAV \
-			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
-			-I$(TOOLCHAIN_DIR)/include/opus \
-			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-			-I$(TOOLCHAIN_DIR)/include/freetype2
+			-DWANT_FMMIDI
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
 
@@ -87,6 +83,8 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 #---------------------------------------------------------------------------------
 LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR) $(PORTLIBS) $(LIBNX)
 
+# These libraries have a dedicated subdirectory for headers
+EXTRAINCLUDES := pixman-1 opus libxmp-lite freetype2
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -117,6 +115,7 @@ export HFILES_BIN	:=	$(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+			$(foreach lib,$(EXTRAINCLUDES),-I$(TOOLCHAIN_DIR)/include/$(lib)) \
 			-I$(CURDIR)/$(BUILD)
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
