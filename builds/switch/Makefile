@@ -24,7 +24,6 @@ include $(DEVKITPRO)/libnx/switch_rules
 # SOURCES is a list of directories containing source code
 # DATA is a list of directories containing data files
 # INCLUDES is a list of directories containing header files
-# EXEFS_SRC is the optional input directory containing data copied into exefs, if anything this normally should only contain "main.npdm".
 # ROMFS is the directory containing data to be added to RomFS, relative to the Makefile (Optional)
 #
 # NO_ICON: if set to anything, do not use icon.
@@ -44,7 +43,6 @@ BUILD		:=	build
 SOURCES		:=	../../src ../../src/platform/switch
 DATA		:=	data
 INCLUDES	:=	../../src
-EXEFS_SRC	:=	exefs_src
 #ROMFS	:=	romfs
 
 APP_TITLE	:= EasyRPG Player
@@ -55,9 +53,9 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
+ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	-g -Wall -O2 -ffunction-sections -fno-math-errno \
+CFLAGS	:=	-g -Wall -O2 -ffunction-sections -fdata-sections -fno-math-errno \
 			$(ARCH) $(DEFINES)
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
@@ -65,11 +63,7 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 			-DHAVE_LIBSAMPLERATE -DHAVE_FLUIDLITE \
-			-DWANT_FMMIDI -DWANT_FASTWAV \
-			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
-			-I$(TOOLCHAIN_DIR)/include/opus \
-			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
-			-I$(TOOLCHAIN_DIR)/include/freetype2
+			-DWANT_FMMIDI
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
 
@@ -89,6 +83,8 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 #---------------------------------------------------------------------------------
 LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR) $(PORTLIBS) $(LIBNX)
 
+# These libraries have a dedicated subdirectory for headers
+EXTRAINCLUDES := pixman-1 opus libxmp-lite freetype2
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -110,19 +106,7 @@ CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
-#---------------------------------------------------------------------------------
-# use CXX for linking C++ projects, CC for standard C
-#---------------------------------------------------------------------------------
-ifeq ($(strip $(CPPFILES)),)
-#---------------------------------------------------------------------------------
-	export LD	:=	$(CC)
-#---------------------------------------------------------------------------------
-else
-#---------------------------------------------------------------------------------
-	export LD	:=	$(CXX)
-#---------------------------------------------------------------------------------
-endif
-#---------------------------------------------------------------------------------
+export LD	:=	$(CXX)
 
 export OFILES_BIN	:=	$(addsuffix .o,$(BINFILES))
 export OFILES_SRC	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
@@ -131,11 +115,10 @@ export HFILES_BIN	:=	$(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+			$(foreach lib,$(EXTRAINCLUDES),-I$(TOOLCHAIN_DIR)/include/$(lib)) \
 			-I$(CURDIR)/$(BUILD)
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
-
-export BUILD_EXEFS_SRC := $(TOPDIR)/$(EXEFS_SRC)
 
 ifeq ($(strip $(ICON)),)
 	icons := $(wildcard *.jpg)
@@ -178,8 +161,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).pfs0 $(TARGET).nso $(TARGET).nro $(TARGET).nacp $(TARGET).elf
-
+	@rm -fr $(BUILD) $(TARGET).nro $(TARGET).nacp $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 else
@@ -190,11 +172,7 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-all	:	$(OUTPUT).pfs0 $(OUTPUT).nro
-
-$(OUTPUT).pfs0	:	$(OUTPUT).nso
-
-$(OUTPUT).nso	:	$(OUTPUT).elf
+all	:	$(OUTPUT).nro
 
 ifeq ($(strip $(NO_NACP)),)
 $(OUTPUT).nro	:	$(OUTPUT).elf $(OUTPUT).nacp
@@ -204,7 +182,7 @@ endif
 
 $(OUTPUT).elf	:	$(OFILES)
 
-$(OFILES_SRC)	:	$(HFILES_BIN)
+$(OFILES_SRC)	: $(HFILES_BIN)
 
 # make compiling silent
 %.o: %.cpp

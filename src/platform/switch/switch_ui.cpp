@@ -102,6 +102,9 @@ namespace {
 		Input::Keys::PERIOD, Input::Keys::ADD, Input::Keys::SUBTRACT,
 		Input::Keys::MULTIPLY, Input::Keys::DIVIDE
 	};
+
+	PadState pad;
+	HidTouchScreenState touch = {0};
 }
 
 extern "C" void userAppInit() {
@@ -310,6 +313,10 @@ NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 #ifdef SUPPORT_AUDIO
 	audio_.reset(new NxAudio());
 #endif
+
+	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+	padInitializeDefault(&pad);
+	hidInitializeTouchScreen();
 }
 
 NxUi::~NxUi() {
@@ -333,46 +340,45 @@ void NxUi::ToggleZoom() {
 }
 
 void NxUi::ProcessEvents() {
-	hidScanInput();
+	padUpdate(&pad);
 
-	u32 input = hidKeysHeld(CONTROLLER_P1_AUTO);
-	keys[Input::Keys::UP] = (input & (KEY_DUP|KEY_LSTICK_UP)) > 0;
-	keys[Input::Keys::DOWN] = (input & (KEY_DDOWN|KEY_LSTICK_DOWN)) > 0;
-	keys[Input::Keys::RIGHT] = (input & (KEY_DRIGHT|KEY_LSTICK_RIGHT)) > 0;
-	keys[Input::Keys::LEFT] = (input & (KEY_DLEFT|KEY_LSTICK_LEFT)) > 0;
-	keys[Input::Keys::Z] = (input & KEY_A);
-	keys[Input::Keys::X] = (input & (KEY_B|KEY_X)) > 0;
-	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
-	keys[Input::Keys::F2] = (input & KEY_L);
-	keys[Input::Keys::F] = (input & KEY_R);
-	keys[Input::Keys::F12] = (input & KEY_MINUS);
-	keys[Input::Keys::ESCAPE] = (input & KEY_PLUS);
-
-	// cycle through GUI layouts
-	input = hidKeysDown(CONTROLLER_P1_AUTO);
-	if (input & KEY_ZL)
-		ui_mode = (ui_mode + 1) % 3;
-
-	// do not handle touch when not displaying buttons
-	if (ui_mode != 0)
-		return;
-
+	// reset touch keys
 	for (int i = 0; i < 8; ++i) {
 		keys[touch_left[i]] = false;
 		keys[touch_right[i]] = false;
 	}
-	for (uint32_t i = 0; i < hidTouchCount(); ++i) {
-		touchPosition pos;
-		hidTouchRead(&pos, i);
 
-		if (pos.px < 160) {
+	u64 input = padGetButtons(&pad);
+	keys[Input::Keys::UP] = (input & (HidNpadButton_Up|HidNpadButton_StickLUp)) > 0;
+	keys[Input::Keys::DOWN] = (input & (HidNpadButton_Down|HidNpadButton_StickLDown)) > 0;
+	keys[Input::Keys::RIGHT] = (input & (HidNpadButton_Right|HidNpadButton_StickLRight)) > 0;
+	keys[Input::Keys::LEFT] = (input & (HidNpadButton_Left|HidNpadButton_StickLLeft)) > 0;
+	keys[Input::Keys::Z] = (input & HidNpadButton_A);
+	keys[Input::Keys::X] = (input & (HidNpadButton_B|HidNpadButton_X)) > 0;
+	keys[Input::Keys::LSHIFT] = (input & HidNpadButton_Y);
+	keys[Input::Keys::F2] = (input & HidNpadButton_L);
+	keys[Input::Keys::F] = (input & HidNpadButton_R);
+	keys[Input::Keys::F12] = (input & HidNpadButton_Minus);
+	keys[Input::Keys::ESCAPE] = (input & HidNpadButton_Plus);
+
+	// cycle through GUI layouts
+	input = padGetButtonsDown(&pad);
+	if (input & KEY_ZL)
+		ui_mode = (ui_mode + 1) % 3;
+
+	// do not handle touch when not displaying buttons or no touch happened
+	if (ui_mode != 0 || !hidGetTouchScreenStates(&touch, 1))
+		return;
+
+	for (int32_t i = 0; i < touch.count; ++i) {
+		if (touch.touches[i].x < 160) {
 			// shouldn't happen
-			if (pos.py < 720) {
-				keys[touch_left[pos.py / (720 / 8)]] = true;
+			if (touch.touches[i].y < 720) {
+				keys[touch_left[touch.touches[i].y / (720 / 8)]] = true;
 			}
-		} else if (pos.px >= 1280 - 160) {
-			if (pos.py < 720) {
-				keys[touch_right[pos.py / (720 / 8)]] = true;
+		} else if (touch.touches[i].x >= 1280 - 160) {
+			if (touch.touches[i].y < 720) {
+				keys[touch_right[touch.touches[i].y / (720 / 8)]] = true;
 			}
 		}
 	}
@@ -384,7 +390,7 @@ void NxUi::UpdateDisplay() {
 
 	// full res when docked
 	int width = 1280, height = 720;
-	if (appletGetOperationMode() == AppletOperationMode_Docked) {
+	if (appletGetOperationMode() == AppletOperationMode_Console) {
 		width = 1920;
 		height = 1080;
 
