@@ -120,6 +120,7 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	if (prepare_save) {
 		lcf::LSD_Reader::PrepareSave(save, PLAYER_SAVEGAME_VERSION);
+		Main_Data::game_system->IncSaveCount();
 	}
 
 	save.targets = Main_Data::game_targets->GetSaveData();
