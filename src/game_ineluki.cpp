@@ -216,16 +216,15 @@ bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 
 	Output::Debug("Ineluki: Processing script list {}", FileFinder::GetPathInsideGamePath(ToString(list_file)));
 
-	std::string line = Utils::ReadLine(is);
+	std::string line;
 	std::vector<FileRequestAsync*> requests;
-	while (!is.eof()) {
+	while (Utils::ReadLine(is, line)) {
 		if (!line.empty()) {
 			FileRequestAsync* request = AsyncHandler::RequestFile(line);
 			auto binding = request->Bind(&Game_Ineluki::OnScriptFileReady, this);
 			async_scripts.emplace_back(binding, line);
 			requests.push_back(request);
 		}
-		line = Utils::ReadLine(is);
 	}
 
 	for (auto& r: requests) {

@@ -513,7 +513,11 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		}
 
 		// The first line contains the path to the actual audio file to play
-		std::string line = Utils::ReadLine(stream);
+		std::string line;
+		if (!Utils::ReadLine(stream, line)) {
+			Output::Warning("Ineluki MP3: Link file is empty: {}", path);
+			return;
+		}
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
 		Output::Debug("Ineluki MP3: Link file: {} -> {}", path, line);

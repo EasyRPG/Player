@@ -244,9 +244,10 @@ namespace Utils {
 	 * correctly.
 	 *
 	 * @param is Input stream to read
-	 * @return Content of the read line
+	 * @param[out] Content of the read line
+	 * @return true when a line was read, false on error (e.g. EOF)
 	 */
-	std::string ReadLine(std::istream& is);
+	bool ReadLine(std::istream& is, std::string& line_out);
 
 	/**
 	 * Splits a string into tokens specified by a predicate function.

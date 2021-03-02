@@ -82,9 +82,11 @@ Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, Di
 	: Source(std::move(buttons), std::move(directions)),
 	log_file(FileFinder::OpenInputStream(log_path, std::ios::in))
 {
-	std::string header = Utils::ReadLine(log_file);
+	std::string header;
+	Utils::ReadLine(log_file, header);
 	if (StringView(header).starts_with("H EasyRPG")) {
-		std::string ver = Utils::ReadLine(log_file);
+		std::string ver;
+		Utils::ReadLine(log_file, ver);
 		if (StringView(ver).starts_with("V 2")) {
 			version = 2;
 		} else {
@@ -104,9 +106,9 @@ void Input::LogSource::Update() {
 		if (last_read_frame == -1) {
 			pressed_buttons.reset();
 
-			std::string line = Utils::ReadLine(log_file);
-			while (!StringView(line).starts_with("F ") && log_file) {
-				line = Utils::ReadLine(log_file);
+			std::string line;
+			while (Utils::ReadLine(log_file, line) && !StringView(line).starts_with("F ")) {
+				// no-op
 			}
 			if (!line.empty()) {
 				keys = Utils::Tokenize(line.substr(2), [](char32_t c) { return c == ','; });
