@@ -28,19 +28,20 @@ static bool EasyOput(dyn_arg_list args) {
 	auto func = "output";
 	bool okay = false;
 	std::string mode;
-	std::tie(mode, std::ignore) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
+	std::tie(mode, std::ignore) = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
 	if (!okay)
 		return true;
+	mode = Utils::LowerCase(mode);
 
 	auto msg = DynRpg::ParseVarArg(func, args, 1, okay);
 
-	if (mode == "Debug") {
+	if (mode == "debug") {
 		Output::DebugStr(msg);
-	} else if (mode == "Info") {
+	} else if (mode == "info") {
 		Output::InfoStr(msg);
-	} else if (mode == "Warning") {
+	} else if (mode == "warning") {
 		Output::WarningStr(msg);
-	} else if (mode == "Error") {
+	} else if (mode == "error") {
 		Output::ErrorStr(msg);
 	}
 
