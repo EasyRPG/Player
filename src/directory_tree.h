@@ -128,7 +128,7 @@ public:
 	/**
 	 * Does a case insensitive search for a file.
 	 * Advanced version for special purposes searches. Usually not needed.
-	 * 
+	 *
 	 * @see DirectoryTree::Args
 	 * @param args See documentation of DirectoryTree::Args
 	 * @return Path to file or empty string when not found
@@ -138,7 +138,7 @@ public:
 	/** @return root path of the tree */
 	StringView GetRootPath() const;
 
-	/** 
+	/**
 	 * @param subpath Path to append to the root
 	 * @return Combined path
 	 */
@@ -203,7 +203,7 @@ public:
 	/**
 	 * Does a case insensitive search for a file.
 	 * Advanced version for special purposes searches. Usually not needed.
-	 * 
+	 *
 	 * @see DirectoryTree::Args
 	 * @param args See documentation of DirectoryTree::Args
 	 * @return Path to file or empty string when not found
@@ -248,6 +248,7 @@ public:
 
 private:
 	const DirectoryTree* tree = nullptr;
+	std::string full_path;
 	std::string sub_path;
 	bool valid = false;
 };
