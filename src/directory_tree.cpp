@@ -189,29 +189,24 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	DebugLog("FindFile: {} | {} | {}", canonical_path, dir, name);
 
 	auto* entries = ListDirectory(dir);
-	if (!entries) {
-		if (args.file_not_found_warning) {
-			Output::Debug("Cannot find: {}/{}", dir, name);
-		}
-		return "";
-	}
+	if (entries) {
+		std::string dir_key = make_key(dir);
+		auto dir_it = dir_cache.find(dir_key);
+		assert(dir_it != dir_cache.end());
 
-	std::string dir_key = make_key(dir);
-	auto dir_it = dir_cache.find(dir_key);
-	assert(dir_it != dir_cache.end());
-
-	std::string name_key = make_key(name);
-	if (args.exts.empty()) {
-		auto entry_it = entries->find(name_key);
-		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
-			return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
-		}
-	} else {
-		for (const auto& ext : args.exts) {
-			auto full_name_key = name_key + ToString(ext);
-			auto entry_it = entries->find(full_name_key);
+		std::string name_key = make_key(name);
+		if (args.exts.empty()) {
+			auto entry_it = entries->find(name_key);
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
+			}
+		} else {
+			for (const auto& ext : args.exts) {
+				auto full_name_key = name_key + ToString(ext);
+				auto entry_it = entries->find(full_name_key);
+				if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
+					return MakePath(FileFinder::MakePath(dir_it->second, entry_it->second.name));
+				}
 			}
 		}
 	}
@@ -239,44 +234,53 @@ StringView DirectoryTree::GetRootPath() const {
 	return root;
 }
 
-DirectoryTreeView::DirectoryTreeView(const DirectoryTree* tree, std::string sub_path) :
-	tree(tree), sub_path(std::move(sub_path)) {
-	valid = (tree->ListDirectory(this->sub_path) != nullptr);
+DirectoryTreeView::DirectoryTreeView(const DirectoryTree* tree, std::string subdir) :
+	tree(tree), sub_path(std::move(subdir)) {
+	full_path = tree->MakePath(sub_path);
+	valid = (tree->ListDirectory(sub_path) != nullptr);
 }
 
 std::string DirectoryTreeView::FindFile(StringView name, Span<StringView> exts) const {
 	assert(tree);
 	DebugLog("TreeView FindFile: {}", name);
-	return tree->FindFile(MakePath(name), exts);
+	return tree->FindFile(MakeSubPath(name), exts);
 }
 
 std::string DirectoryTreeView::FindFile(StringView dir, StringView name, Span<StringView> exts) const {
 	assert(tree);
 	DebugLog("TreeView FindFile: {} {}", dir, name);
-	return tree->FindFile(MakePath(dir), name, exts);
+	return tree->FindFile(MakeSubPath(dir), name, exts);
 }
 
 std::string DirectoryTreeView::FindFile(const DirectoryTree::Args& args) const {
+	assert(tree);
 	auto args_cp = args;
-	std::string path = MakePath(args.path);
+	std::string path = MakeSubPath(args.path);
 	args_cp.path = path;
 	return tree->FindFile(args_cp);
 }
 
 StringView DirectoryTreeView::GetRootPath() const {
 	assert(tree);
-	return tree->MakePath(sub_path);
+	return full_path;
 }
 
 std::string DirectoryTreeView::MakePath(StringView subdir) const {
 	assert(tree);
+	return FileFinder::MakePath(GetRootPath(), subdir);
+}
+
+std::string DirectoryTreeView::MakeSubPath(StringView subdir) const {
+	assert(tree);
 	return FileFinder::MakePath(sub_path, subdir);
 }
 
-DirectoryTree::DirectoryListType* DirectoryTreeView::ListDirectory(StringView path) const {
-	return tree->ListDirectory(MakePath(path));
+DirectoryTree::DirectoryListType* DirectoryTreeView::ListDirectory(StringView subdir) const {
+	assert(tree);
+	return tree->ListDirectory(MakeSubPath(subdir));
 }
 
-DirectoryTreeView DirectoryTreeView::Subtree(const std::string& sub_path) {
-	return DirectoryTreeView(tree, MakePath(sub_path));
+DirectoryTreeView DirectoryTreeView::Subtree(const std::string& subdir) {
+	assert(tree);
+	return DirectoryTreeView(tree, MakeSubPath(subdir));
 }
