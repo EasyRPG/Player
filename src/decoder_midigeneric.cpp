@@ -132,7 +132,7 @@ bool GenericMidiDecoder::SetPitch(int pitch) {
 		return false;
 	}
 
-	this->pitch = 100.0f / pitch;
+	this->pitch = static_cast<float>(pitch);
 
 	return true;
 }
@@ -151,7 +151,7 @@ int GenericMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 
 	size_t samples = (size_t)length / sizeof(int_least16_t) / 2;
 
-	float delta = (float)samples / (frequency * pitch);
+	float delta = (float)samples / (frequency * pitch / 100.0f);
 
 	seq->play(mtime, this);
 	int res = mididec->FillBuffer(buffer, length);
