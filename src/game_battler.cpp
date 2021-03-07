@@ -135,7 +135,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 			if (state->restrict_skill && skill->physical_rate >= state->restrict_skill_level && !skill->easyrpg_ignore_restrict_skill) {
 				return false;
 			}
-			if (state->restrict_magic && skill->magical_rate >= state->restrict_magic_level) {
+			if (state->restrict_magic && skill->magical_rate >= state->restrict_magic_level && !skill->easyrpg_ignore_restrict_magic) {
 				return false;
 			}
 		}
