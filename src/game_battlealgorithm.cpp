@@ -1004,6 +1004,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 
 	bool heals_states = IsPositive() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
 	bool affected_death = false;
+	int to_hit_states = (skill.easyrpg_state_hit != -1 ? skill.easyrpg_state_hit : to_hit);
 	for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
 		if (!skill.state_effects[i])
 			continue;
@@ -1017,7 +1018,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 			continue;
 		}
 
-		if (!Rand::PercentChance(to_hit)) {
+		if (!Rand::PercentChance(to_hit_states)) {
 			continue;
 		}
 
