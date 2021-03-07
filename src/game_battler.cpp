@@ -132,7 +132,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	for (auto state_id: GetInflictedStates()) {
 		const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 		if (state) {
-			if (state->restrict_skill && skill->physical_rate >= state->restrict_skill_level) {
+			if (state->restrict_skill && skill->physical_rate >= state->restrict_skill_level && !skill->easyrpg_ignore_restrict_skill) {
 				return false;
 			}
 			if (state->restrict_magic && skill->magical_rate >= state->restrict_magic_level) {
