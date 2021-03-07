@@ -700,12 +700,14 @@ void Player::CreateGameObjects() {
 	bool no_rtp_warning_flag = false;
 	{ // Scope lifetime of variables for ini parsing
 		std::string ini_file = FileFinder::FindDefault(INI_NAME);
-		auto ini_stream = FileFinder::OpenInputStream(ini_file, std::ios::ios_base::in);
-		lcf::INIReader ini(ini_stream);
-		if (ini.ParseError() != -1) {
-			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-			game_title = lcf::ReaderUtil::Recode(title, encoding);
-			no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
+		auto ini_stream = FileFinder::OpenInputStream(ini_file, std::ios_base::in);
+		if (ini_stream) {
+			lcf::INIReader ini(ini_stream);
+			if (ini.ParseError() != -1) {
+				std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+				game_title = lcf::ReaderUtil::Recode(title, encoding);
+				no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
+			}
 		}
 	}
 
@@ -902,16 +904,25 @@ void Player::LoadDatabase() {
 
 	if (is_easyrpg_project) {
 		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios::ios_base::in );
+		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios_base::in);
+		if (!edb_stream) {
+			Output::Error("Error loading {}", DATABASE_NAME_EASYRPG);
+			return;
+		}
 		auto db = lcf::LDB_Reader::LoadXml(edb_stream);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+			return;
 		} else {
 			lcf::Data::data = std::move(*db);
 		}
 
 		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
-		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios::ios_base::in);
+		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios_base::in);
+		if (!emt_stream) {
+			Output::Error("Error loading {}", TREEMAP_NAME_EASYRPG);
+			return;
+		}
 		auto treemap = lcf::LMT_Reader::LoadXml(emt_stream);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -920,21 +931,33 @@ void Player::LoadDatabase() {
 		}
 	} else {
 		// Retrieve the appropriately-renamed files.
-		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
-		std::string lmt = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT));
+		std::string ldb_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB);
+		std::string ldb = FileFinder::FindDefault(ldb_name);
+		std::string lmt_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT);
+		std::string lmt = FileFinder::FindDefault(lmt_name);
 
 		auto ldb_stream = FileFinder::OpenInputStream(ldb);
+		if (!ldb_stream) {
+			Output::Error("Error loading {}", ldb_name);
+			return;
+		}
 		auto db = lcf::LDB_Reader::Load(ldb_stream, encoding);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+			return;
 		} else {
 			lcf::Data::data = std::move(*db);
 		}
 
 		auto lmt_stream = FileFinder::OpenInputStream(lmt);
+		if (!lmt_stream) {
+			Output::Error("Error loading {}", lmt_name);
+			return;
+		}
 		auto treemap = lcf::LMT_Reader::Load(lmt_stream, encoding);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
+			return;
 		} else {
 			lcf::Data::treemap = std::move(*treemap);
 		}
@@ -985,10 +1008,16 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	}
 
 	auto save_stream = FileFinder::OpenInputStream(save_name);
+	if (!save_stream) {
+		Output::Error("Error loading {}", save_name);
+		return;
+	}
+
 	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, encoding);
 
 	if (!save.get()) {
-		Output::Error("{}", lcf::LcfReader::GetError());
+		Output::ErrorStr(lcf::LcfReader::GetError());
+		return;
 	}
 
 	std::stringstream verstr;
@@ -1129,7 +1158,9 @@ std::string Player::GetEncoding() {
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
 		auto ini_stream = FileFinder::OpenInputStream(ini);
-		encoding = lcf::ReaderUtil::GetEncoding(ini_stream);
+		if (ini_stream) {
+			encoding = lcf::ReaderUtil::GetEncoding(ini_stream);
+		}
 	}
 
 	if (encoding.empty() || encoding == "auto") {
@@ -1137,37 +1168,39 @@ std::string Player::GetEncoding() {
 
 		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
 		auto ldb_stream = FileFinder::OpenInputStream(ldb);
-		std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
+		if (ldb_stream) {
+			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
 
-#ifndef EMSCRIPTEN
-		for (std::string& enc : encodings) {
-			// Heuristic: Check if encoded title and system name matches the one on the filesystem
-			// When yes is a good encoding. Otherwise try the next ones.
+	#ifndef EMSCRIPTEN
+			for (std::string& enc : encodings) {
+				// Heuristic: Check if encoded title and system name matches the one on the filesystem
+				// When yes is a good encoding. Otherwise try the next ones.
 
-			escape_symbol = lcf::ReaderUtil::Recode("\\", enc);
-			if (escape_symbol.empty()) {
-				// Bad encoding
-				Output::Debug("Bad encoding: {}. Trying next.", enc);
-				continue;
+				escape_symbol = lcf::ReaderUtil::Recode("\\", enc);
+				if (escape_symbol.empty()) {
+					// Bad encoding
+					Output::Debug("Bad encoding: {}. Trying next.", enc);
+					continue;
+				}
+				escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
+
+				if ((lcf::Data::system.title_name.empty() ||
+						!FileFinder::FindImage("Title", lcf::ReaderUtil::Recode(lcf::Data::system.title_name, enc)).empty()) &&
+					(lcf::Data::system.system_name.empty() ||
+						!FileFinder::FindImage("System", lcf::ReaderUtil::Recode(lcf::Data::system.system_name, enc)).empty())) {
+					// Looks like a good encoding
+					encoding = enc;
+					break;
+				} else {
+					Output::Debug("Detected encoding: {}. Files not found. Trying next.", enc);
+				}
 			}
-			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
-
-			if ((lcf::Data::system.title_name.empty() ||
-					!FileFinder::FindImage("Title", lcf::ReaderUtil::Recode(lcf::Data::system.title_name, enc)).empty()) &&
-				(lcf::Data::system.system_name.empty() ||
-					!FileFinder::FindImage("System", lcf::ReaderUtil::Recode(lcf::Data::system.system_name, enc)).empty())) {
-				// Looks like a good encoding
-				encoding = enc;
-				break;
-			} else {
-				Output::Debug("Detected encoding: {}. Files not found. Trying next.", enc);
+	#endif
+			if (!encodings.empty() && encoding.empty()) {
+				// No encoding found that matches the files, maybe RTP missing.
+				// Use the first one instead
+				encoding = encodings[0];
 			}
-		}
-#endif
-		if (!encodings.empty() && encoding.empty()) {
-			// No encoding found that matches the files, maybe RTP missing.
-			// Use the first one instead
-			encoding = encodings[0];
 		}
 
 		escape_symbol = "";

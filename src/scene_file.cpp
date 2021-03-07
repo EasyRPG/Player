@@ -30,6 +30,7 @@
 #include "scene_file.h"
 #include "bitmap.h"
 #include <lcf/reader_util.h>
+#include "output.h"
 
 Scene_File::Scene_File(std::string message) :
 	message(message) {
@@ -74,12 +75,19 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	if (!file.empty()) {
 		// File found
 		auto save_stream = FileFinder::OpenInputStream(file);
+		if (!save_stream) {
+			Output::Debug("Save {} read error", file);
+			win.SetCorrupted(true);
+			return;
+		}
+
 		std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(save_stream, Player::encoding);
 
 		if (savegame) {
 			PopulatePartyFaces(win, id, *savegame);
 			UpdateLatestTimestamp(id, *savegame);
 		} else {
+			Output::Debug("Save {} corrupted", file);
 			win.SetCorrupted(true);
 		}
 	}

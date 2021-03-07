@@ -78,6 +78,11 @@ std::string Scene_Save::GetSaveFilename(const DirectoryTreeView& tree, int slot_
 void Scene_Save::Save(const DirectoryTreeView& tree, int slot_id, bool prepare_save) {
 	const auto filename = GetSaveFilename(tree, slot_id);
 	auto save_stream = FileFinder::OpenOutputStream(filename);
+	if (!save_stream) {
+		Output::Warning("Failed saving to {}", filename);
+		return;
+	}
+
 	Save(save_stream, slot_id, prepare_save);
 }
 

@@ -72,6 +72,7 @@ static void WildMidiDecoder_deinit() {
 static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
 	auto stream = FileFinder::OpenInputStream(filename);
 	if (!stream) {
+		Output::Warning("WildMidi: vio_allocate_file_func failed for {}", filename);
 		return nullptr;
 	}
 
