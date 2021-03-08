@@ -417,6 +417,14 @@ std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_
 }
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item) {
+	if (item.easyrpg_using_message != lcf::rpg::Item::kDefaultMessage) {
+		return Utils::ReplacePlaceholders(
+			item.easyrpg_using_message,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(source.GetName(), item.name)
+		);
+	}
+
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.use_item,
@@ -443,12 +451,44 @@ std::string GetDoubleAttackStartMessage2k3(const Game_Battler& source) {
 	);
 }
 
-std::string GetSkillStartMessage2k3(const lcf::rpg::Skill& skill) {
-	return ToString(skill.name);
+std::string GetSkillStartMessage2k3(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
+	StringView target_name = "???";
+	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
+		target_name = target->GetName();
+	}
+	if (skill.easyrpg_battle2k3_message == lcf::rpg::Skill::kDefaultMessage) {
+		if (lcf::Data::terms.easyrpg_battle2k3_skill == lcf::Data::terms.kDefaultTerm) {
+			return ToString(skill.name);
+		}
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.easyrpg_battle2k3_skill,
+			Utils::MakeArray('S', 'O', 'U'),
+			Utils::MakeSvArray(source.GetName(), target_name, skill.name)
+		);
+	}
+	return Utils::ReplacePlaceholders(
+		skill.easyrpg_battle2k3_message,
+		Utils::MakeArray('S', 'O', 'U'),
+		Utils::MakeSvArray(source.GetName(), target_name, skill.name)
+	);
 }
 
-std::string GetItemStartMessage2k3(const lcf::rpg::Item& item) {
-	return ToString(item.name);
+std::string GetItemStartMessage2k3(const Game_Battler& source, const lcf::rpg::Item& item) {
+	if (item.easyrpg_using_message == lcf::rpg::Item::kDefaultMessage) {
+		if (lcf::Data::terms.easyrpg_battle2k3_item == lcf::Data::terms.kDefaultTerm) {
+			return ToString(item.name);
+		}
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.easyrpg_battle2k3_item,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(source.GetName(), item.name)
+		);
+	}
+	return Utils::ReplacePlaceholders(
+		item.easyrpg_using_message,
+		Utils::MakeArray('S', 'O'),
+		Utils::MakeSvArray(source.GetName(), item.name)
+	);
 }
 
 std::string GetObserveStartMessage2k3(const Game_Battler& source) {

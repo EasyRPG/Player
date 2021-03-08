@@ -992,7 +992,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 			if (Player::IsRPG2k()) {
 				return BattleMessage::GetItemStartMessage2k(*GetSource(), *item);
 			} else {
-				return BattleMessage::GetItemStartMessage2k3(*item);
+				return BattleMessage::GetItemStartMessage2k3(*GetSource(), *item);
 			}
 		}
 		return "";
@@ -1007,7 +1007,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 				return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), target, skill);
 			}
 		} else {
-			return BattleMessage::GetSkillStartMessage2k3(skill);
+			return BattleMessage::GetSkillStartMessage2k3(*GetSource(), target, skill);
 		}
 	}
 	if (line == 1 && Player::IsRPG2k() && !skill.using_message2.empty()) {
@@ -1147,7 +1147,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
 		if (Player::IsRPG2k()) {
 			return BattleMessage::GetItemStartMessage2k(*GetSource(), item);
 		} else {
-			return BattleMessage::GetItemStartMessage2k3(item);
+			return BattleMessage::GetItemStartMessage2k3(*GetSource(), item);
 		}
 	}
 	return "";
