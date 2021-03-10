@@ -87,6 +87,11 @@ namespace {
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #ifdef EMSCRIPTEN
 	auto f = FileFinder::OpenInputStream(file);
+	if (!f) {
+		Output::Error("Emscripten: Reading index.json failed");
+		return;
+	}
+
 	picojson::value v;
 	picojson::parse(v, f);
 

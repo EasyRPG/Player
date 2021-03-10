@@ -276,6 +276,11 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 		}
 
 		auto map_stream = FileFinder::OpenInputStream(map_file);
+		if (!map_stream) {
+			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
+			return nullptr;
+		}
+
 		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
 
 		if (Input::IsRecording()) {
@@ -286,6 +291,10 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 		}
 	} else {
 		auto map_stream = FileFinder::OpenInputStream(map_file);
+		if (!map_stream) {
+			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
+			return nullptr;
+		}
 		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 

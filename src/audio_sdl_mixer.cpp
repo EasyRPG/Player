@@ -319,6 +319,11 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	}
 
 	filestream = FileFinder::OpenInputStream(file);
+	if (!filestream) {
+		// Unlikely, just in case
+		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
+		return;
+	}
 	SDL_RWops* rw = create_StreamRWOps(std::move(filestream));
 
 	bgm_stop = false;
@@ -654,7 +659,13 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (!snd_data.chunk) {
-		SDL_RWops* rw = create_StreamRWOps(FileFinder::OpenInputStream(file));
+		auto is = FileFinder::OpenInputStream(file);
+		if (!is) {
+			Output::Warning("SE not readable: {}", FileFinder::GetPathInsideGamePath(file));
+			return;
+		}
+
+		SDL_RWops* rw = create_StreamRWOps(std::move(is));
 
 		snd_data.chunk.reset(Mix_LoadWAV_RW(rw, 1), &Mix_FreeChunk);
 		if (!snd_data.chunk) {

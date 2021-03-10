@@ -139,6 +139,11 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 	this->config_path = path;
 
 	auto is = FileFinder::OpenInputStream(path);
+	if (!is) {
+		Output::Debug("Ini config file {} not found", path);
+		return;
+	}
+
 	lcf::INIReader ini(is);
 
 	if (ini.ParseError()) {
