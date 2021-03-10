@@ -109,9 +109,8 @@ void Scene_Order::CreateCommandWindow() {
 		options_right.push_back("");
 	}
 
-	// Are they stored anywhere in terms?
-	options_confirm.push_back("Confirm");
-	options_confirm.push_back("Redo");
+	options_confirm.push_back(lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_order_scene_confirm, "Confirm"));
+	options_confirm.push_back(lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_order_scene_redo, "Redo"));
 
 	window_left.reset(new Window_Command(options_left, 88, 4));
 	window_left->SetX(68);
