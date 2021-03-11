@@ -23,10 +23,17 @@ android {
     defaultConfig {
         externalNativeBuild {
             cmake {
-                arguments "-DPLAYER_ANDROID_TOOLCHAIN_PATH=${System.env.EASYRPG_TOOLCHAIN_DIR};${System.env.EASYRPG_LIBLCF_DIR}",
-                        "-DPLAYER_GRADLE_BUILD=ON",
+                arguments "-DPLAYER_GRADLE_BUILD=ON",
                         "-DBUILD_SHARED_LIBS=ON",
                         "-DPLAYER_ENABLE_TESTS=OFF"
+
+                if (project.hasProperty("toolchainDirs")) {
+                    arguments.add('-DPLAYER_ANDROID_TOOLCHAIN_PATH=' + project.properties['toolchainDirs'])
+                }
+
+                if (project.hasProperty("cmakeOptions")) {
+                    arguments.addAll(project.properties['cmakeOptions'].split(" "))
+                }
             }
         }
     }
