@@ -2087,11 +2087,13 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		auto* sprite = actor->GetActorBattleSprite();
 		if (sprite) {
 			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
-			// FIXME: This gets cleaned up when CBA is implemented
-			auto action_state = static_cast<Sprite_Actor::AnimationState>(pose + 1);
-			sprite->SetAnimationState(
-					action_state,
-					Sprite_Actor::LoopState_WaitAfterFinish);
+			if (pose != lcf::rpg::BattlerAnimation::Pose_Idle) {
+				// FIXME: This gets cleaned up when CBA is implemented
+				auto action_state = static_cast<Sprite_Actor::AnimationState>(pose + 1);
+				sprite->SetAnimationState(
+						action_state,
+						Sprite_Actor::LoopState_WaitAfterFinish);
+			}
 		}
 	}
 
