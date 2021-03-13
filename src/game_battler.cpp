@@ -489,6 +489,22 @@ static int AdjustParam(int base, int mod, int maxval, Span<const int16_t> states
 	return value;
 }
 
+int Game_Battler::CalcValueAfterAtkStates(int value) const {
+	return AdjustParam(value, 0, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
+}
+
+int Game_Battler::CalcValueAfterDefStates(int value) const {
+	return AdjustParam(value, 0, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_defense);
+}
+
+int Game_Battler::CalcValueAfterSpiStates(int value) const {
+	return AdjustParam(value, 0, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_spirit);
+}
+
+int Game_Battler::CalcValueAfterAgiStates(int value) const {
+	return AdjustParam(value, 0, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_agility);
+}
+
 int Game_Battler::GetAtk(Weapon weapon) const {
 	return AdjustParam(GetBaseAtk(weapon), atk_modifier, MaxStatBattleValue(), GetInflictedStates(), &lcf::rpg::State::affect_attack);
 }

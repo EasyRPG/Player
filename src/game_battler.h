@@ -299,6 +299,38 @@ public:
 	virtual bool HasFullSp() const;
 
 	/**
+	 * Calculates a value after considering the inflicted states
+	 * which influence attack.
+	 *
+	 * @return the value after considering the inflicted states.
+	 */
+	int CalcValueAfterAtkStates(int value) const;
+
+	/**
+	 * Calculates a value after considering the inflicted states
+	 * which influence defense.
+	 *
+	 * @return the value after considering the inflicted states.
+	 */
+	int CalcValueAfterDefStates(int value) const;
+
+	/**
+	 * Calculates a value after considering the inflicted states
+	 * which influence spirit.
+	 *
+	 * @return the value after considering the inflicted states.
+	 */
+	int CalcValueAfterSpiStates(int value) const;
+
+	/**
+	 * Calculates a value after considering the inflicted states
+	 * which influence agility.
+	 *
+	 * @return the value after considering the inflicted states.
+	 */
+	int CalcValueAfterAgiStates(int value) const;
+
+	/**
 	 * Gets the current battler attack.
 	 *
 	 * @param weapon Which weapons to include in calculating result.
