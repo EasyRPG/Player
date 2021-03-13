@@ -846,8 +846,10 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 			} else {
 				SetAffectedHp(hp_effect);
 
-				// Conditions healed by physical attack:
-				BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states);
+				if (cur_hp + GetAffectedHp() > 0) {
+					// Conditions healed by physical attack, but only if target not killed.
+					BattlePhysicalStateHeal(skill.physical_rate * 10, target_states, target_perm_states);
+				}
 
 				// Hp damage always successful, even if 0
 				SetIsSuccess();
