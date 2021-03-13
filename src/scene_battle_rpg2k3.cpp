@@ -679,6 +679,22 @@ void Scene_Battle_Rpg2k3::SetSceneActionSubState(int substate) {
 	scene_action_substate = substate;
 }
 
+static bool BattlerReadyToAct(const Game_Battler* battler) {
+	return battler->IsAtbGaugeFull() && battler->Exists() && battler->CanAct();
+}
+
+static int GetFirstReadyActor() {
+	const auto& actors = Main_Data::game_party->GetActors();
+	for (size_t i = 0; i < actors.size(); ++i) {
+		auto* actor = actors[i];
+		if (BattlerReadyToAct(actor)) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+
 bool Scene_Battle_Rpg2k3::IsAtbAccumulating() const {
 	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
@@ -728,9 +744,8 @@ void Scene_Battle_Rpg2k3::CreateActorAutoActions() {
 
 	// FIXME: RPG_RT checks only actor animations?
 	for (auto* actor: Main_Data::game_party->GetActors()) {
-		if (!actor->IsAtbGaugeFull()
+		if (!BattlerReadyToAct(actor)
 				|| actor->GetBattleAlgorithm()
-				|| !actor->Exists()
 				|| (actor->IsControllable() && state != State_AutoBattle)
 				) {
 			continue;
@@ -1103,16 +1118,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 	return SceneActionReturn::eWaitTillNextFrame;
 }
 
-static int GetFirstReadyActor() {
-	const auto& actors = Main_Data::game_party->GetActors();
-	for (size_t i = 0; i < actors.size(); ++i) {
-		if (actors[i]->IsAtbGaugeFull()) {
-			return i;
-		}
-	}
-	return -1;
-}
-
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionActor() {
 	enum SubState {
 		eBegin,
@@ -1146,7 +1151,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 	if (scene_action_substate == eWaitInput) {
 		auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
-		if (selected_actor == nullptr || !selected_actor->IsAtbGaugeFull()) {
+		if (selected_actor == nullptr || !BattlerReadyToAct(selected_actor)) {
 			// If current selection is no longer valid, force a new selection
 			const auto idx = GetFirstReadyActor();
 			if (idx != status_window->GetIndex()) {
