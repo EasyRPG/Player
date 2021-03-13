@@ -167,6 +167,10 @@ void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_
 	BitmapRef system2 = Cache::System2();
 	assert(system2);
 
+	if (max_value == 0) {
+		return;
+	}
+
 	int gauge_x;
 	if (cur_value == max_value) {
 		gauge_x = 16;
