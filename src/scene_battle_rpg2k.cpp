@@ -1759,6 +1759,14 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	}
 }
 
+void Scene_Battle_Rpg2k::ActionSelectedCallback(Game_Battler* for_battler) {
+	Scene_Battle::ActionSelectedCallback(for_battler);
+
+	if (for_battler->GetType() == Game_Battler::Type_Ally) {
+		SetState(State_SelectActor);
+	}
+}
+
 void Scene_Battle_Rpg2k::SetWait(int min_wait, int max_wait) {
 #if defined(EP_DEBUG_BATTLE2K_MESSAGE) || defined(EP_DEBUG_BATTLE2K_STATE_MACHINE)
 	Output::Debug("Battle2k Wait({},{}) frame={}", min_wait, max_wait, Main_Data::game_system->GetFrameCounter());

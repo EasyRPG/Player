@@ -657,7 +657,22 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	previous_state = state;
 	state = new_state;
 
+	if (new_state == State_SelectActor) {
+		auto_battle = false;
+	}
+	if (new_state == State_AutoBattle) {
+		auto_battle = true;
+	}
+
 	SetSceneActionSubState(0);
+
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+	Output::Debug("Battle2k3 SetState state={} prev={} auto_battle={}", state, previous_state, auto_battle);
+#endif
+}
+
+void Scene_Battle_Rpg2k3::ReturnToMainBattleState() {
+	SetState(auto_battle ? State_AutoBattle : State_SelectActor);
 }
 
 void Scene_Battle_Rpg2k3::SetSceneActionSubState(int substate) {
@@ -916,7 +931,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	if (state != last_state || scene_action_substate != last_substate) {
 		int actor_id = active_actor ? active_actor->GetId() : 0;
 		StringView actor_name = active_actor ? StringView(active_actor->GetName()) : "Null";
-		Output::Debug("Battle2k3 ProcessSceneAction({}, {}) actor={}({}) frames={}", state, scene_action_substate, actor_name, actor_id, Main_Data::game_system->GetFrameCounter());
+		Output::Debug("Battle2k3 ProcessSceneAction({}, {}) actor={}({}) frames={} auto_battle={}", state, scene_action_substate, actor_name, actor_id, Main_Data::game_system->GetFrameCounter(), auto_battle);
 		last_state = state;
 		last_substate = scene_action_substate;
 	}
@@ -927,7 +942,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 		status_window->Refresh();
 		SetActiveActor(-1);
 		if (state != State_Battle) {
-			SetState(State_SelectActor);
+			ReturnToMainBattleState();
 		}
 	}
 
@@ -1531,7 +1546,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 		NextTurn(battler);
 
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
-		Output::Debug("Battle2k3 StartBattleAction battler={} frame={}", battler->GetName(), Main_Data::game_system->GetFrameCounter());
+		Output::Debug("Battle2k3 StartBattleAction battler={} frame={} auto_battle={}", battler->GetName(), Main_Data::game_system->GetFrameCounter(), auto_battle);
 #endif
 		SetSceneActionSubState(eBattleAction);
 	}
@@ -1569,7 +1584,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 	if (scene_action_substate == ePost) {
 		// If the selected actor acted, or if they were killed / removed, then cancel out of their menus
 		if (active_actor == nullptr || !active_actor->Exists()) {
-			SetState(State_SelectActor);
+			ReturnToMainBattleState();
 		} else {
 			SetState(previous_state);
 		}
@@ -1776,7 +1791,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEs
 
 	if (scene_action_substate == eFailure) {
 		EndNotification();
-		SetState(State_SelectActor);
+		ReturnToMainBattleState();
 		return SceneActionReturn::eContinueThisFrame;
 	}
 
@@ -1838,9 +1853,9 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	static int last_state = -1;
 	if (battle_action_state != last_state) {
 		auto* source = action->GetSource();
-		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) actor={}({}) frames={}", action->GetSource()->GetName(), battle_action_state,
+		Output::Debug("Battle2k3 ProcessBattleAction({}, {}) actor={}({}) frames={} auto_battle={}", action->GetSource()->GetName(), battle_action_state,
 				source->GetName(), source->GetId(),
-				Main_Data::game_system->GetFrameCounter());
+				Main_Data::game_system->GetFrameCounter(), auto_battle);
 		last_state = battle_action_state;
 	}
 #endif
@@ -2388,6 +2403,10 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	}
 
 	Scene_Battle::ActionSelectedCallback(for_battler);
+
+	if (for_battler->GetType() == Game_Battler::Type_Ally) {
+		ReturnToMainBattleState();
+	}
 
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	Output::Debug("Battle2k3 ScheduleAction {} name={} type={} frame={}",

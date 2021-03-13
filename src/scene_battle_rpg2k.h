@@ -158,6 +158,8 @@ protected:
 	void MoveCommandWindows(int x, int frames);
 	void RefreshCommandWindow();
 
+	void ActionSelectedCallback(Game_Battler* for_battler) override;
+
 	/**
 	 * Adds a message about the gold received into
 	 * Game_Message::texts.

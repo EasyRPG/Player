@@ -144,6 +144,7 @@ protected:
 	void MoveCommandWindows(int x, int frames);
 
 	void SetSceneActionSubState(int substate);
+	void ReturnToMainBattleState();
 
 	// SceneAction State Machine Driver
 	SceneActionReturn ProcessSceneAction();
@@ -212,6 +213,7 @@ protected:
 	bool first_strike = false;
 	bool running_away = false;
 	bool resume_from_debug_scene = false;
+	bool auto_battle = false;
 };
 
 #endif

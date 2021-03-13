@@ -515,10 +515,6 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 	}
 
 	battle_actions.push_back(for_battler);
-
-	if (for_battler->GetType() == Game_Battler::Type_Ally) {
-		SetState(State_SelectActor);
-	}
 }
 
 bool Scene_Battle::CallDebug() {
