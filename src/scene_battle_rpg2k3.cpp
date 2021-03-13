@@ -1677,12 +1677,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 			pm.PushPageEnd();
 		}
 
-		message_window->SetHeight(32);
-		Game_Message::SetPendingMessage(std::move(pm));
-
-		// Update attributes
-		pm.PushPageEnd();
-
 		for (auto* actor: Main_Data::game_party->GetActors()) {
 			actor->ChangeExp(actor->GetExp() + exp, &pm);
 		}
@@ -1691,6 +1685,10 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		for (auto& item: drops) {
 			Main_Data::game_party->AddItem(item, 1);
 		}
+
+		message_window->SetHeight(32);
+		message_window->SetMaxLinesPerPage(1);
+		Game_Message::SetPendingMessage(std::move(pm));
 
 		SetSceneActionSubState(eEnd);
 		return SceneActionReturn::eContinueThisFrame;
@@ -1740,7 +1738,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionDe
 	}
 
 	if (scene_action_substate == eMessages) {
-		message_window->SetHeight(32);
 		Main_Data::game_system->SetMessagePositionFixed(true);
 		Main_Data::game_system->SetMessagePosition(0);
 		Main_Data::game_system->SetMessageTransparent(false);
@@ -1749,6 +1746,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionDe
 		pm.SetEnableFace(false);
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
+		message_window->SetHeight(32);
+		message_window->SetMaxLinesPerPage(1);
 		Game_Message::SetPendingMessage(std::move(pm));
 
 		SetSceneActionSubState(eEnd);
