@@ -1980,7 +1980,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		if (action->GetType() != Game_BattleAlgorithm::Type::None
 				&& action->GetType() != Game_BattleAlgorithm::Type::DoNothing) {
-			if (!Player::IsLegacy()) {
+			if (Player::IsEnglish() || Player::IsPatchDynRpg()) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_EnemyAttacks));
 			}
 			source->Flash(31, 31,31, 32, 48);
