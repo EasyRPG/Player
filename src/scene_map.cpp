@@ -29,7 +29,9 @@
 #include "game_system.h"
 #include "game_screen.h"
 #include "game_pictures.h"
+#include "game_variables.h"
 #include <lcf/rpg/system.h>
+#include <lcf/lsd/reader.h>
 #include "player.h"
 #include "transition.h"
 #include "audio.h"
@@ -389,6 +391,21 @@ template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 	if (CheckSceneExit(aop)) {
 		return;
+	}
+
+	if (aop.GetType() == AsyncOp::eSave) {
+		auto savefs = FileFinder::Save();
+		bool success = Scene_Save::Save(savefs, aop.GetSaveSlot());
+		if (aop.GetSaveResultVar() > 0) {
+			Main_Data::game_variables->Set(aop.GetSaveResultVar(), success ? 1 : 0);
+			Game_Map::SetNeedRefresh(true);
+		}
+	}
+
+	if (aop.GetType() == AsyncOp::eLoad) {
+		auto savefs = FileFinder::Save();
+		std::string save_name = Scene_Save::GetSaveFilename(savefs, aop.GetSaveSlot());
+		Player::LoadSavegame(save_name, aop.GetSaveSlot());
 	}
 
 	auto& transition = Transition::instance();

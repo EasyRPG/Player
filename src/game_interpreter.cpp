@@ -3505,8 +3505,8 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 		return true;
 	}
 
-	auto tree = FileFinder::CreateSaveDirectoryTree();
-	std::string save_name = Scene_Save::GetSaveFilename(*tree, save_number);
+	auto savefs = FileFinder::Save();
+	std::string save_name = Scene_Save::GetSaveFilename(savefs, save_number);
 	auto save = lcf::LSD_Reader::Load(save_name, Player::encoding);
 
 	if (!save) {
@@ -3564,21 +3564,53 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacSave(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacSave(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command Save not supported");
+	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (slot <= 0) {
+		Output::Debug("ManiacSave: Invalid save slot {}", slot);
+		return true;
+	}
+
+	int out_var = com.parameters[2] != 0 ? com.parameters[3] : -1;
+
+	// Maniac Patch saves directly and game data could be in an undefined state
+	// We yield first to the Update loop and then do a save.
+	_async_op = AsyncOp::MakeSave(slot, out_var);
+
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command Load not supported");
+	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (slot <= 0) {
+		Output::Debug("ManiacLoad: Invalid save slot {}", slot);
+		return true;
+	}
+
+	// Not implemented (kinda useless feature):
+	// When com.parameters[2] is 1 the check whether the file exists is skipped
+	// When skipped and missing RPG_RT will crash
+	auto savefs = FileFinder::Save();
+	std::string save_name = Scene_Save::GetSaveFilename(savefs, slot);
+	auto save = lcf::LSD_Reader::Load(save_name, Player::encoding);
+
+	if (!save) {
+		Output::Debug("ManiacLoad: Save not found {}", slot);
+		return true;
+	}
+
+	// FIXME: In Maniac the load causes a blackscreen followed by a fade-in that can be cancelled by a transition event
+	// This is not implemented yet, the loading is instant without fading
+	_async_op = AsyncOp::MakeLoad(slot);
+
 	return true;
 }
 
