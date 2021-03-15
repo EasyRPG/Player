@@ -299,6 +299,11 @@ void Game_Pictures::Erase(int id) {
 	}
 }
 
+bool Game_Pictures::Picture::Exists() const {
+	// Incompatible with the Yume2kki edge-case that uses empty filenames
+	return !data.name.empty();
+}
+
 void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	const auto& name = pic.data.name;
 	if (name.empty()) {
@@ -448,6 +453,35 @@ void Game_Pictures::Update(bool is_battle) {
 	for (auto& pic: pictures) {
 		pic.Update(is_battle);
 	}
+}
+
+Game_Pictures::ShowParams Game_Pictures::Picture::GetShowParams() const {
+	Game_Pictures::ShowParams params;
+	params.position_x = static_cast<int>(data.finish_x);
+	params.position_y = static_cast<int>(data.finish_y);
+	params.magnify = data.finish_magnify;
+	params.top_trans = data.finish_top_trans;
+	params.bottom_trans = data.finish_bot_trans;
+	params.red = data.finish_red;
+	params.green = data.finish_green;
+	params.blue = data.finish_blue;
+	params.saturation = data.finish_sat;
+	params.effect_mode = data.effect_mode;
+	params.effect_power = data.finish_effect_power;
+	params.name = data.name;
+	params.spritesheet_cols = data.spritesheet_cols;
+	params.spritesheet_rows = data.spritesheet_rows;
+	params.spritesheet_frame = data.spritesheet_frame;
+	params.spritesheet_speed = data.spritesheet_speed;
+	params.map_layer = data.map_layer;
+	params.battle_layer = data.battle_layer;
+	for (size_t i = 0; i < data.flags.flags.size(); ++i) {
+		params.flags |= data.flags.flags[i] << i;
+	}
+	params.spritesheet_play_once = data.spritesheet_play_once;
+	params.use_transparent_color = data.use_transparent_color;
+	params.fixed_to_map = data.fixed_to_map;
+	return params;
 }
 
 void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_positions) {

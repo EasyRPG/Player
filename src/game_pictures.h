@@ -43,17 +43,17 @@ public:
 	static int GetDefaultNumberOfPictures();
 
 	struct Params {
-		int position_x;
-		int position_y;
-		int magnify;
-		int top_trans;
-		int bottom_trans;
-		int red;
-		int green;
-		int blue;
-		int saturation;
-		int effect_mode;
-		int effect_power;
+		int position_x = 0;
+		int position_y = 0;
+		int magnify = 100;
+		int top_trans = 0;
+		int bottom_trans = 0;
+		int red = 100;
+		int green = 100;
+		int blue = 100;
+		int saturation = 100;
+		int effect_mode = 0;
+		int effect_power = 0;
 	};
 	struct ShowParams : Params {
 		std::string name;
@@ -72,7 +72,7 @@ public:
 	};
 
 	struct MoveParams : Params {
-		int duration;
+		int duration = 0;
 	};
 
 	void Show(int id, const ShowParams& params);
@@ -100,11 +100,13 @@ public:
 		bool IsOnBattle() const;
 		int NumSpriteSheetFrames() const;
 
+		ShowParams GetShowParams() const;
 		void SetNonEffectParams(const Params& params, bool set_positions);
 
 		bool Show(const ShowParams& params);
 		void Move(const MoveParams& params);
 		void Erase();
+		bool Exists() const;
 
 		void OnPictureSpriteReady();
 		void OnMapScrolled(int dx, int dy);
