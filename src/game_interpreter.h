@@ -257,6 +257,25 @@ protected:
 	bool CommandChangeBattleCommands(lcf::rpg::EventCommand const& com);
 	bool CommandExitGame(lcf::rpg::EventCommand const& com);
 	bool CommandToggleFullscreen(lcf::rpg::EventCommand const& com);
+	bool CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com);
+	bool CommandManiacSave(lcf::rpg::EventCommand const& com);
+	bool CommandManiacLoad(lcf::rpg::EventCommand const& com);
+	bool CommandManiacEndLoadProcess(lcf::rpg::EventCommand const& com);
+	bool CommandManiacGetMousePosition(lcf::rpg::EventCommand const& com);
+	bool CommandManiacSetMousePosition(lcf::rpg::EventCommand const& com);
+	bool CommandManiacShowStringPicture(lcf::rpg::EventCommand const& com);
+	bool CommandManiacGetPictureInfo(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlBattle(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com);
+	bool CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const& com);
+	bool CommandManiacGetBattleInfo(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlVarArray(lcf::rpg::EventCommand const& com);
+	bool CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const& com);
+	bool CommandManiacRewriteMap(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlGlobalSave(lcf::rpg::EventCommand const& com);
+	bool CommandManiacChangePictureId(lcf::rpg::EventCommand const& com);
+	bool CommandManiacSetGameOption(lcf::rpg::EventCommand const& com);
+	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
 	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
