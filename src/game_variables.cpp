@@ -58,6 +58,27 @@ constexpr Var_t VarDiv(Var_t n, Var_t d) {
 constexpr Var_t VarMod(Var_t n, Var_t d) {
 	return EP_LIKELY(d != 0) ? n % d : 0;
 };
+
+constexpr Var_t VarBitOr(Var_t n, Var_t d) {
+	return n | d;
+};
+
+constexpr Var_t VarBitAnd(Var_t n, Var_t d) {
+	return n & d;
+};
+
+constexpr Var_t VarBitXor(Var_t n, Var_t d) {
+	return n ^ d;
+};
+
+constexpr Var_t VarBitShiftLeft(Var_t n, Var_t d) {
+	return n << d;
+};
+
+constexpr Var_t VarBitShiftRight(Var_t n, Var_t d) {
+	return n >> d;
+};
+
 }
 
 Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
@@ -104,12 +125,39 @@ void Game_Variables::PrepareRange(const int first_id, const int last_id, const c
 	}
 }
 
+template <typename... Args>
+void Game_Variables::PrepareArray(const int first_id_a, const int last_id_a, const int first_id_b, const char* warn, Args... args) {
+	const int last_id_b = first_id_b + last_id_a - first_id_a;
+	if (EP_UNLIKELY(ShouldWarn(first_id_a, last_id_a) || ShouldWarn(first_id_b, last_id_b))) {
+		Output::Debug(warn, first_id_a, last_id_a, first_id_b, last_id_b, args...);
+		--_warnings;
+	}
+	auto& vv = _variables;
+	if (EP_UNLIKELY(last_id_a > static_cast<int>(vv.size()))) {
+		vv.resize(last_id_a, 0);
+	}
+	if (EP_UNLIKELY(last_id_b > static_cast<int>(vv.size()))) {
+		vv.resize(last_id_b, 0);
+	}
+}
+
 template <typename V, typename F>
 void Game_Variables::WriteRange(const int first_id, const int last_id, V&& value, F&& op) {
 	auto& vv = _variables;
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
 		auto& v = vv[i];
 		v = Utils::Clamp(op(v, value()), _min, _max);
+	}
+}
+
+template <typename F>
+void Game_Variables::WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op) {
+	auto& vv = _variables;
+	int out_b = std::max(0, first_id_b - 1);
+	for (int i = std::max(0, first_id_a - 1); i < last_id_a; ++i) {
+		auto& v_a = vv[i];
+		auto v_b = vv[out_b++];
+		v_a = Utils::Clamp(op(v_a, v_b), _min, _max);
 	}
 }
 
@@ -267,6 +315,101 @@ void Game_Variables::DivRangeRandom(int first_id, int last_id, Var_t minval, Var
 void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] %= rand({},{})!", minval, maxval);
 	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMod);
+}
+
+void Game_Variables::EnumerateRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write enumerate(var[{},{}])!");
+	Var_t out_value = value;
+	WriteRange(first_id, last_id, [&out_value](){ return out_value++; }, VarSet);
+}
+
+void Game_Variables::SortRange(int first_id, int last_id, bool asc) {
+	PrepareRange(first_id, last_id, "Invalid write sort(var[{},{}])!");
+	auto& vv = _variables;
+	int i = std::max(0, first_id - 1);
+	if (i < last_id) {
+		auto sorter = [&](auto&& fn) {
+			std::stable_sort(vv.begin() + i, vv.begin() + last_id, fn);
+		};
+		if (asc) {
+			sorter(std::less<>());
+		} else {
+			sorter(std::greater<>());
+		}
+	}
+}
+
+void Game_Variables::ShuffleRange(int first_id, int last_id) {
+	PrepareRange(first_id, last_id, "Invalid write shuffle(var[{},{}])!");
+	auto& vv = _variables;
+	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
+		int rnd_num = Rand::GetRandomNumber(first_id, last_id) - 1;
+		std::swap(vv[i], vv[rnd_num]);
+	}
+}
+
+void Game_Variables::SetArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] -> var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarSet);
+}
+
+void Game_Variables::AddArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] += var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarAdd);
+}
+
+void Game_Variables::SubArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] -= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarSub);
+}
+
+void Game_Variables::MultArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] *= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarMult);
+}
+
+void Game_Variables::DivArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] /= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarDiv);
+}
+
+void Game_Variables::ModArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] %= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarMod);
+}
+
+void Game_Variables::BitOrArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] |= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarBitOr);
+}
+
+void Game_Variables::BitAndArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] &= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarBitAnd);
+}
+
+void Game_Variables::BitXorArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] ^= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarBitXor);
+}
+
+void Game_Variables::BitShiftLeftArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <<= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarBitShiftLeft);
+}
+
+void Game_Variables::BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] >>= var[{},{}]!");
+	WriteArray(first_id_a, last_id_a, first_id_b, VarBitShiftRight);
+}
+
+void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
+	auto& vv = _variables;
+	int out_b = std::max(0, first_id_b - 1);
+	for (int i = std::max(0, first_id_a - 1); i < last_id_a; ++i) {
+		std::swap(vv[i], vv[out_b++]);
+	}
 }
 
 StringView Game_Variables::GetName(int _id) const {

@@ -3982,12 +3982,99 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlVarArray not supported");
+	int op = com.parameters[0];
+	int mode = com.parameters[1];
+	int mode_a = mode & 0xF;
+	int mode_size = (mode >> 4) & 0xF;
+	int mode_b = (mode >> 8) & 0xF;
+
+	int target_a = ValueOrVariable(mode_a, com.parameters[2]);
+	int length = ValueOrVariable(mode_size, com.parameters[3]);
+	int target_b = ValueOrVariable(mode_b, com.parameters[4]);
+	int last_target_a = target_a + length - 1;
+
+	if (target_a < 1 || length <= 0) {
+		return true;
+	}
+
+	switch (op) {
+		case 0: {
+			// Copy, assigns left to right, the others apply right to left
+			int last_target_b = target_b + length - 1;
+			Main_Data::game_variables->SetArray(target_b, last_target_b, target_a);
+			break;
+		}
+		case 1:
+			// Swap
+			Main_Data::game_variables->SwapArray(target_a, last_target_a, target_b);
+			break;
+		case 2:
+			// Sort asc
+			Main_Data::game_variables->SortRange(target_a, last_target_a, true);
+			break;
+		case 3:
+			// Sort desc
+			Main_Data::game_variables->SortRange(target_a, last_target_a, false);
+			break;
+		case 4:
+			// Shuffle
+			Main_Data::game_variables->ShuffleRange(target_a, last_target_a);
+			break;
+		case 5:
+			// Enumerate (target_b is a single value here, not an array)
+			Main_Data::game_variables->EnumerateRange(target_a, last_target_a, target_b);
+			break;
+		case 6:
+			// Add
+			Main_Data::game_variables->AddArray(target_a, last_target_a, target_b);
+			break;
+		case 7:
+			// Sub
+			Main_Data::game_variables->SubArray(target_a, last_target_a, target_b);
+			break;
+		case 8:
+			// Mul
+			Main_Data::game_variables->MultArray(target_a, last_target_a, target_b);
+			break;
+		case 9:
+			// Div
+			Main_Data::game_variables->DivArray(target_a, last_target_a, target_b);
+			break;
+		case 10:
+			// Mod
+			Main_Data::game_variables->ModArray(target_a, last_target_a, target_b);
+			break;
+		case 11:
+			// OR
+			Main_Data::game_variables->BitOrArray(target_a, last_target_a, target_b);
+			break;
+		case 12:
+			// AND
+			Main_Data::game_variables->BitAndArray(target_a, last_target_a, target_b);
+			break;
+		case 13:
+			// XOR
+			Main_Data::game_variables->BitXorArray(target_a, last_target_a, target_b);
+			break;
+		case 14:
+			// Shift left
+			Main_Data::game_variables->BitShiftLeftArray(target_a, last_target_a, target_b);
+			break;
+		case 15:
+			// Shift right
+			Main_Data::game_variables->BitShiftRightArray(target_a, last_target_a, target_b);
+			break;
+		default:
+			Output::Warning("ManiacControlVarArray: Unknown operation {}", op);
+	}
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 

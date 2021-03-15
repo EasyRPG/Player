@@ -81,6 +81,23 @@ public:
 	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 
+	void EnumerateRange(int first_id, int last_id, Var_t value);
+	void SortRange(int first_id, int last_id, bool asc);
+	void ShuffleRange(int first_id, int last_id);
+
+	void SetArray(int first_id_a, int last_id_a, int first_id_b);
+	void AddArray(int first_id_a, int last_id_a, int first_id_b);
+	void SubArray(int first_id_a, int last_id_a, int first_id_b);
+	void MultArray(int first_id_a, int last_id_a, int first_id_b);
+	void DivArray(int first_id_a, int last_id_a, int first_id_b);
+	void ModArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitOrArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitAndArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitXorArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitShiftLeftArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b);
+	void SwapArray(int first_id_a, int last_id_a, int first_id_b);
+
 	StringView GetName(int _id) const;
 
 	int GetSize() const;
@@ -100,10 +117,14 @@ private:
 		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
 	template <typename... Args>
 		void PrepareRange(const int first_id, const int last_id, const char* warn, Args... args);
+	template <typename... Args>
+		void PrepareArray(const int first_id_a, const int last_id_a, const int first_id_b, const char* warn, Args... args);
 	template <typename V, typename F>
 		void WriteRange(const int first_id, const int last_id, V&& value, F&& op);
 	template <typename F>
 		void WriteRangeVariable(const int first_id, const int last_id, int var_id, F&& op);
+	template <typename F>
+		void WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op);
 private:
 	Variables_t _variables;
 	Var_t _min = 0;
