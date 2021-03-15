@@ -1157,6 +1157,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
+					// Timer 1 remaining time
 					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
 					break;
 				case 2:
@@ -1188,7 +1189,37 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = Main_Data::game_ineluki->GetMidiTicks();
 					break;
 				case 9:
+					// Timer 2 remaining time
 					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+					break;
+				case 10:
+					// Current date (YYMMDD)
+					if (Player::IsPatchManiac()) {
+						std::time_t t = std::time(0);
+						std::tm* tm = std::localtime(&t);
+						value = (tm->tm_year - 100) * 10000 + (tm->tm_mon + 1) * 100 + tm->tm_mday;
+					}
+					break;
+				case 11:
+					// Current time (HHMMSS)
+					if (Player::IsPatchManiac()) {
+						std::time_t t = std::time(0);
+						std::tm* tm = std::localtime(&t);
+						value = tm->tm_hour * 10000 + tm->tm_min * 100 + tm->tm_sec;
+					}
+					break;
+				case 12:
+					// Frames
+					if (Player::IsPatchManiac()) {
+						value = Main_Data::game_system->GetFrameCounter();
+					}
+					break;
+				case 13:
+					// Patch version
+					if (Player::IsPatchManiac()) {
+						// Latest version before the engine rewrite
+						value = 200128;
+					}
 					break;
 			}
 			break;
