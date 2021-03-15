@@ -131,7 +131,11 @@ public:
 	/** @return the number of lines per page */
 	int GetMaxLinesPerPage() const;
 
-	/** @return the number of lines per page */
+	/** 
+	 * Set the number of lines per page
+	 *
+	 * @param lines the number of lines
+	 **/
 	void SetMaxLinesPerPage(int lines);
 
 protected:
