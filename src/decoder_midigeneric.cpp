@@ -161,7 +161,7 @@ int GenericMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	for (;;) {
 		// Process MIDI messages
 		size_t samples = std::min(samples_per_play, samples_max);
-		float delta = (float)samples / (frequency * pitch / 100.0f);
+		float delta = (float)samples / (frequency * 100.0f / pitch);
 		seq->play(mtime, this);
 		mtime += delta;
 
