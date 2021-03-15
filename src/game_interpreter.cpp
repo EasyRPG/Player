@@ -3505,7 +3505,23 @@ bool Game_Interpreter::CommandManiacGetMousePosition(lcf::rpg::EventCommand cons
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command GetMousePosition not supported");
+#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+	static bool warned = false;
+	if (!warned) {
+		// This command is polled, prevent excessive spam
+		Output::Warning("Maniac Patch: Mouse input is not supported on this platform");
+		warned = true;
+	}
+	return true;
+#endif
+
+	Point mouse_pos = Input::GetMousePosition();
+
+	Main_Data::game_variables->Set(com.parameters[0], mouse_pos.x);
+	Main_Data::game_variables->Set(com.parameters[1], mouse_pos.y);
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 
