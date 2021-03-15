@@ -1678,7 +1678,9 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		}
 
 		for (auto* actor: Main_Data::game_party->GetActors()) {
-			actor->ChangeExp(actor->GetExp() + exp, &pm);
+			if (actor->Exists()) {
+				actor->ChangeExp(actor->GetExp() + exp, &pm);
+			}
 		}
 
 		Main_Data::game_party->GainGold(money);
