@@ -639,6 +639,18 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 			no_rtp_flag = true;
 			continue;
 		}
+		if (cp.ParseNext(arg, 2, "--patch")) {
+			patch |= PatchOverride;
+			for (int i = 0; i < arg.NumValues(); ++i) {
+				const auto& v = arg.Value(i);
+				if (v == "dynrpg") {
+					patch |= PatchDynRpg;
+				} else if (v == "maniac") {
+					patch |= PatchManiac;
+				}
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
 			PrintVersion();
 			exit(0);
@@ -769,14 +781,16 @@ void Player::CreateGameObjects() {
 
 	Main_Data::filefinder_rtp.reset(new FileFinder_RTP(no_rtp_flag, no_rtp_warning_flag));
 
-	if (!FileFinder::FindDefault("dynloader.dll").empty()) {
-		patch |= PatchDynRpg;
-		Output::Warning("This game uses DynRPG and will not run properly.");
-	}
+	if ((patch & PatchOverride) == 0) {
+		if (!FileFinder::FindDefault("dynloader.dll").empty()) {
+			patch |= PatchDynRpg;
+			Output::Warning("This game uses DynRPG and will not run properly.");
+		}
 
-	if (!FileFinder::FindDefault("accord.dll").empty()) {
-		patch |= PatchManiac;
-		Output::Warning("This game uses the Maniac Patch and will not run properly.");
+		if (!FileFinder::FindDefault("accord.dll").empty()) {
+			patch |= PatchManiac;
+			Output::Warning("This game uses the Maniac Patch and will not run properly.");
+		}
 	}
 
 	Output::Debug("Patch configuration: dynrpg={} maniac={}", Player::IsPatchDynRpg(), Player::IsPatchManiac());
@@ -1284,6 +1298,11 @@ Options:
                            Possible options:
                             RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
                             RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
+      --patch PATCH...     Force emulation of engine patches, disabling auto-detection.
+                           Possible options:
+                            none       - Disable all patches
+                            dynrpg     - DynRPG patch by Cherry
+                            maniac     - Maniac Patch by BingShan
       --start-position X Y Overwrite the party start position and move the
                            party to position (X, Y).
                            Incompatible with --load-game-id.
