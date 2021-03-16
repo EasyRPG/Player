@@ -726,14 +726,6 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandManiacShowStringPicture(com);
 		case Cmd::Maniac_GetPictureInfo:
 			return CommandManiacGetPictureInfo(com);
-		case Cmd::Maniac_ControlBattle:
-			return CommandManiacControlBattle(com);
-		case Cmd::Maniac_ControlAtbGauge:
-			return CommandManiacControlAtbGauge(com);
-		case Cmd::Maniac_ChangeBattleCommandEx:
-			return CommandManiacChangeBattleCommandEx(com);
-		case Cmd::Maniac_GetBattleInfo:
-			return CommandManiacGetBattleInfo(com);
 		case Cmd::Maniac_ControlVarArray:
 			return CommandManiacControlVarArray(com);
 		case Cmd::Maniac_KeyInputProcEx:
@@ -3552,42 +3544,6 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacControlBattle(lcf::rpg::EventCommand const&) {
-	if (!Player::IsPatchManiac()) {
-		return true;
-	}
-
-	Output::Warning("Maniac Patch: Command ControlBattle not supported");
-	return true;
-}
-
-bool Game_Interpreter::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const&) {
-	if (!Player::IsPatchManiac()) {
-		return true;
-	}
-
-	Output::Warning("Maniac Patch: Command ControlAtbGauge not supported");
-	return true;
-}
-
-bool Game_Interpreter::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const&) {
-	if (!Player::IsPatchManiac()) {
-		return true;
-	}
-
-	Output::Warning("Maniac Patch: Command ChangeBattleCommandEx not supported");
-	return true;
-}
-
-bool Game_Interpreter::CommandManiacGetBattleInfo(lcf::rpg::EventCommand const&) {
-	if (!Player::IsPatchManiac()) {
-		return true;
-	}
-
-	Output::Warning("Maniac Patch: Command GetBattleInfo not supported");
-	return true;
-}
-
 bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const&) {
 	if (!Player::IsPatchManiac()) {
 		return true;
@@ -3650,7 +3606,6 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	Output::Warning("Maniac Patch: Command CallCommand not supported");
 	return true;
 }
-
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()

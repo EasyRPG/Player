@@ -265,10 +265,6 @@ protected:
 	bool CommandManiacSetMousePosition(lcf::rpg::EventCommand const& com);
 	bool CommandManiacShowStringPicture(lcf::rpg::EventCommand const& com);
 	bool CommandManiacGetPictureInfo(lcf::rpg::EventCommand const& com);
-	bool CommandManiacControlBattle(lcf::rpg::EventCommand const& com);
-	bool CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com);
-	bool CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const& com);
-	bool CommandManiacGetBattleInfo(lcf::rpg::EventCommand const& com);
 	bool CommandManiacControlVarArray(lcf::rpg::EventCommand const& com);
 	bool CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const& com);
 	bool CommandManiacRewriteMap(lcf::rpg::EventCommand const& com);
