@@ -7,9 +7,21 @@ android {
         applicationId "org.easyrpg.player"
         minSdkVersion 14
         targetSdkVersion 29
+        versionName VERSION_NAME
+        versionCode Integer.parseInt(VERSION_CODE)
     }
     buildTypes {
+        debug {
+            ndk {
+                abiFilters = []
+                abiFilters.addAll(ABI_FILTERS_DEBUG.split(','))
+            }
+        }
         release {
+            ndk {
+                abiFilters = []
+                abiFilters.addAll(ABI_FILTERS_RELEASE.split(','))
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
