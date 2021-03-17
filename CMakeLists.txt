@@ -442,6 +442,15 @@ set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
+if(ANDROID AND PLAYER_GRADLE_BUILD)
+	# Build invoked by Gradle
+	# Ugly: Gradle has no way to branch based on the ABI
+	# Inject correct search path based on PLAYER_ANDROID_TOOLCHAIN_PATH
+	foreach(f ${PLAYER_ANDROID_TOOLCHAIN_PATH})
+		list(APPEND CMAKE_FIND_ROOT_PATH "${f}/${ANDROID_ABI}-toolchain")
+	endforeach(f)
+endif()
+
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/sdl2_ui.cpp
@@ -449,7 +458,13 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
 	find_package(SDL2 2.0.5 REQUIRED)
-	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+	if(ANDROID)
+		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
+		target_link_libraries(${PROJECT_NAME} SDL2::SDL2)
+		set(PLAYER_BUILD_EXECUTABLE OFF)
+	else()
+		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -872,6 +887,13 @@ else()
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")
+	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+		add_library(easyrpg_android
+			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
+			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
+			src/main.cpp)
+		target_link_libraries(easyrpg_android ${PROJECT_NAME})
+		set(PLAYER_TEST_LIBRARIES "easyrpg_android")
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()

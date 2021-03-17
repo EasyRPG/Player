@@ -1,30 +1,57 @@
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
+    ndkVersion '21.4.7075529'
     defaultConfig {
         applicationId "org.easyrpg.player"
         minSdkVersion 14
         targetSdkVersion 29
+        versionName VERSION_NAME
+        versionCode Integer.parseInt(VERSION_CODE)
     }
     buildTypes {
+        debug {
+            ndk {
+                abiFilters = []
+                abiFilters.addAll(ABI_FILTERS_DEBUG.split(','))
+            }
+        }
         release {
+            ndk {
+                abiFilters = []
+                abiFilters.addAll(ABI_FILTERS_RELEASE.split(','))
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    android {
-        sourceSets {
-            main {
-                jni.srcDirs = []
+    externalNativeBuild {
+        cmake {
+            path "../../../CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                arguments "-DPLAYER_GRADLE_BUILD=ON",
+                        "-DBUILD_SHARED_LIBS=ON",
+                        "-DPLAYER_ENABLE_TESTS=OFF"
+
+                if (project.hasProperty("toolchainDirs")) {
+                    arguments.add('-DPLAYER_ANDROID_TOOLCHAIN_PATH=' + project.properties['toolchainDirs'])
+                }
+
+                if (project.hasProperty("cmakeOptions")) {
+                    arguments.addAll(project.properties['cmakeOptions'].split(" "))
+                }
             }
         }
     }
     lintOptions {
         disable 'MissingTranslation'
         abortOnError false
-    }
-    productFlavors {
     }
 }
 
@@ -37,8 +64,8 @@ allprojects {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

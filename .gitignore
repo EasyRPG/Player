@@ -106,6 +106,7 @@ __MACOSX
 
 # Android
 *.iml
+local.properties
 
 # libretro
 easyrpg_libretro.*
