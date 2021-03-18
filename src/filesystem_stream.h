@@ -72,16 +72,6 @@ namespace Filesystem_Stream {
 		Span<uint8_t> buffer;
 	};
 
-	class InputSharedStreamBuf : public InputMemoryStreamBuf {
-	public:
-		explicit InputSharedStreamBuf(std::shared_ptr<std::vector<uint8_t>> buffer);
-		InputSharedStreamBuf(InputSharedStreamBuf const& other) = delete;
-		InputSharedStreamBuf const& operator=(InputSharedStreamBuf const& other) = delete;
-
-	private:
-		std::shared_ptr<std::vector<uint8_t>> buffer;
-	};
-
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
 
 	static constexpr int CppSeekdirToCSeekdir(std::ios_base::seekdir origin);

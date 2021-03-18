@@ -82,7 +82,3 @@ std::streambuf::pos_type Filesystem_Stream::InputMemoryStreamBuf::seekpos(std::s
 	setg(eback(), eback() + off, egptr());
 	return off;
 }
-
-Filesystem_Stream::InputSharedStreamBuf::InputSharedStreamBuf(std::shared_ptr<std::vector<uint8_t>> buffer) :
-	InputMemoryStreamBuf(*buffer), buffer(buffer) {
-}
