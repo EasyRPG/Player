@@ -110,7 +110,7 @@ void Scene_Logo::DrawBackground(Bitmap& dst) {
 void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	async_ready = true;
 
-	if (!FileFinder::Exists("index.json")) {
+	if (!FileFinder::Game().Exists("index.json")) {
 		Output::Debug("index.json not found. The game does not exist or was not correctly deployed.");
 		return;
 	}

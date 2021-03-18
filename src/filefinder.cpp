@@ -247,17 +247,17 @@ std::string GetFontsPath() {
 std::string GetFontFilename(StringView name) {
 	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
 	if (real_name.length() > 0) {
-		if (FileFinder::Exists(real_name))
+		if (FileFinder::Root().Exists(real_name))
 			return real_name;
-		if (FileFinder::Exists(GetFontsPath() + real_name))
+		if (FileFinder::Root().Exists(GetFontsPath() + real_name))
 			return GetFontsPath() + real_name;
 	}
 
 	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
 	if (real_name.length() > 0) {
-		if (FileFinder::Exists(real_name))
+		if (FileFinder::Root().Exists(real_name))
 			return real_name;
-		if (FileFinder::Exists(GetFontsPath() + real_name))
+		if (FileFinder::Root().Exists(GetFontsPath() + real_name))
 			return GetFontsPath() + real_name;
 	}
 
@@ -285,10 +285,10 @@ std::string FileFinder::FindFont(StringView name) {
 
 	std::string font_filename = GetFontFilename(filename);
 	if (!font_filename.empty()) {
-		if (FileFinder::Exists(folder_path + font_filename))
+		if (FileFinder::Root().Exists(folder_path + font_filename))
 			return folder_path + font_filename;
 
-		if (FileFinder::Exists(fonts_path + font_filename))
+		if (FileFinder::Root().Exists(fonts_path + font_filename))
 			return fonts_path + font_filename;
 	}
 
@@ -376,19 +376,10 @@ std::string FileFinder::FindSound(StringView name) {
 	return Game().FindFile({ MakePath("Sound", name), SOUND_TYPES, 1, true, true, true });
 }
 
-bool FileFinder::Exists(StringView filename) {
-	return Platform::File(ToString(filename)).Exists();
-}
-
-bool FileFinder::IsDirectory(StringView dir, bool follow_symlinks) {
-	return Platform::File(ToString(dir)).IsDirectory(follow_symlinks);
-}
-
-int64_t FileFinder::GetFileSize(StringView file) {
-	return Platform::File(ToString(file)).GetSize();
-}
-
 bool FileFinder::IsMajorUpdatedTree() {
+	auto fs = Game();
+	assert(fs);
+
 	// Find an MP3 music file only when official Harmony.dll exists
 	// in the gamedir or the file doesn't exist because
 	// the detection doesn't return reliable results for games created with
@@ -396,7 +387,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	bool find_mp3 = true;
 	std::string harmony = FindDefault("Harmony.dll");
 	if (!harmony.empty()) {
-		auto size = GetFileSize(harmony);
+		auto size = fs.GetFilesize(harmony);
 		if (size != -1 && size != KnownFileSize::OFFICIAL_HARMONY_DLL) {
 			Output::Debug("Non-official Harmony.dll found, skipping MP3 test");
 			find_mp3 = false;
@@ -404,7 +395,6 @@ bool FileFinder::IsMajorUpdatedTree() {
 	}
 
 	if (find_mp3) {
-		auto fs = Game();
 		auto entries = fs.ListDirectory("music");
 		if (entries) {
 			for (const auto& entry : *entries) {
@@ -419,7 +409,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// Compare the size of RPG_RT.exe with threshold
 	std::string rpg_rt = FindDefault("RPG_RT.exe");
 	if (!rpg_rt.empty()) {
-		auto size = GetFileSize(rpg_rt);
+		auto size = fs.GetFilesize(rpg_rt);
 		if (size != -1) {
 			return size > (Player::IsRPG2k() ? RpgrtMajorUpdateThreshold::RPG2K : RpgrtMajorUpdateThreshold::RPG2K3);
 		}
@@ -436,7 +426,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 
 std::string FileFinder::GetFullFilesystemPath(FilesystemView fs) {
 	FilesystemView cur_fs = fs;
-	std::string full_path = "";
+	std::string full_path;
 	while (cur_fs) {
 		full_path = MakePath(cur_fs.GetFullPath(), full_path);
 		cur_fs = cur_fs.GetOwner().GetParent();

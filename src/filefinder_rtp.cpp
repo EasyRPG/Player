@@ -138,7 +138,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 	xdg_rtp = getenv("XDG_DATA_HOME") ? std::string(getenv("XDG_DATA_HOME")) :
 			  std::string(getenv("HOME")) + "/.local/share";
 	xdg_rtp += "/rtp/" + version_str;
-	if (FileFinder::Exists(xdg_rtp)) {
+	if (FileFinder::Root().Exists(xdg_rtp)) {
 		env_paths.push_back(xdg_rtp);
 	}
 
@@ -148,7 +148,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 	std::vector<std::string> tmp = Utils::Tokenize(xdg_rtp, f);
 	for (StringView p : tmp) {
 		xdg_rtp = ToString(p) + (p.back() == '/' ? "" : "/") + "rtp/" + version_str;
-		if (FileFinder::Exists(xdg_rtp)) {
+		if (FileFinder::Root().Exists(xdg_rtp)) {
 			env_paths.push_back(xdg_rtp);
 		}
 	}

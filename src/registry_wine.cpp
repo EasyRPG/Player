@@ -55,7 +55,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 	// Puts value between quotes and add =
 	std::string formatted_val = "\"" + ToString(val) + "\""  + "=";
 
-	if (prefix.empty() || !FileFinder::Exists(prefix)) {
+	if (prefix.empty() || !FileFinder::Root().Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"{}\"", prefix.c_str());
 		return std::string("");
 	}
@@ -69,7 +69,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 			break;
 	}
 
-	bool is_wine64 = FileFinder::Exists(prefix + "/drive_c/windows/syswow64");
+	bool is_wine64 = FileFinder::Root().Exists(prefix + "/drive_c/windows/syswow64");
 	bool use_redirect = (view == KEY32 && is_wine64);
 
 	/* On 64bit Windows 32bit keys are redirected in some cases, see:

@@ -425,10 +425,6 @@ void DynRpg::Load(int slot) {
 
 	std::string filename = get_filename(slot);
 
-	if (!FileFinder::Exists(filename)) {
-		return;
-	}
-
 	auto in = FileFinder::Game().OpenInputStream(filename);
 
 	if (!in) {

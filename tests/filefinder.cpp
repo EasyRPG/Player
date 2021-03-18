@@ -15,16 +15,6 @@ static bool skip_tests() {
 
 TEST_SUITE_BEGIN("FileFinder" * doctest::skip(skip_tests()));
 
-TEST_CASE("IsDirectory") {
-	Main_Data::Init();
-
-	CHECK(FileFinder::IsDirectory(".", false));
-	CHECK(FileFinder::IsDirectory(".", true));
-	CHECK(FileFinder::IsDirectory(EP_TEST_PATH "/game", true));
-	CHECK(FileFinder::IsDirectory(EP_TEST_PATH "/notagame", true));
-	CHECK(!FileFinder::IsDirectory(EP_TEST_PATH "/game/RPG_RT.ldb", true));
-}
-
 TEST_CASE("IsRPG2kProject") {
 	Main_Data::Init();
 

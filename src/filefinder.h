@@ -124,25 +124,6 @@ namespace FileFinder {
 	std::string FindFont(StringView name);
 
 	/**
-	 * Checks whether passed file is directory.
-	 * This function is case sensitve on some platform.
-	 *
-	 * @param file file to check.
-	 * @param follow_symlinks if true, follow symlinks and report about the target.
-	 * @return true if file is directory, otherwise false.
-	 */
-	bool IsDirectory(StringView file, bool follow_symlinks);
-
-	/**
-	 * Checks whether passed file exists.
-	 * This function is case sensitve on some platform.
-	 *
-	 * @param file file to check
-	 * @return true if file exists, otherwise false.
-	 */
-	bool Exists(StringView file);
-
-	/**
 	 * Appends name to directory.
 	 *
 	 * @param dir base directory.
@@ -242,14 +223,6 @@ namespace FileFinder {
 
 	/** @returns Amount of savegames in the save directory */
 	int GetSavegames();
-
-	/**
-	 * Get the size of a file
-	 *
-	 * @param file the path to a file
-	 * @return the filesize, or -1 on error
-	 */
-	int64_t GetFileSize(StringView file);
 
 	/**
 	 * Known file sizes

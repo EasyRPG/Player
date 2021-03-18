@@ -143,7 +143,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	canonical_path = FileFinder::MakeCanonical(args.path, args.canonical_initial_deepness);
 
 #ifdef EMSCRIPTEN
-	if (FileFinder::Exists(canonical_path))
+	if (fs->Exists(canonical_path))
 		return canonical_path;
 #endif
 

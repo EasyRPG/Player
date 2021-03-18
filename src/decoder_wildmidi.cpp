@@ -122,110 +122,110 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 	// Game directory
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
 		config_file = std::string(dir) + "/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// Content downloader
 	if (!found) {
 		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
 			config_file = std::string(dir) + "/wildmidi/wildmidi.cfg";
-			found = FileFinder::Exists(config_file);
+			found = FileFinder::Root().Exists(config_file);
 		}
 	}
 #elif defined(GEKKO)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 	if (!found) {
 		config_file = "sd:/data/wildmidi/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// app directory
 	if (!found) {
 		config_file = "wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// same, but legacy from SDL_mixer's timidity
 	if (!found) {
 		config_file = "usb:/data/timidity/timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 	if (!found) {
 		config_file = "sd:/data/timidity/timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 	if (!found) {
 		config_file = "timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(_3DS)
 	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
 
 	// Shipped in a romfs (for CIA and newer 3dsx files)
 	config_file = "romfs:/wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 
 	// preferred SD card directory
 	if (!found) {
 		config_file = "sdmc:/3ds/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// Current directory
 	if (!found) {
 		config_file = "wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(__SWITCH__)
 	// Only wildmidi paths, no timidity because it was never used on Switch
 	config_file = "./wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 	if (!found) {
 		config_file = "/switch/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(__ANDROID__)
 	// Use JNI to obtain the path
 	std::string path = get_timidity_path_jni();
 
 	config_file = path + "/wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 
 	// Support old app installs where wildmidi.cfg wasn't bundled
 	// (the timidity folder is only extracted on first run)
 	if (!found) {
 		config_file = path + "/timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(PSP2)
 	// Only wildmidi paths, no timidity because it was never used on PSVita
 
 	// Shipped
 	config_file = "app0:/wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 
 	// Preferred global directory
 	if (!found) {
 		config_file = "ux0:/data/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// Current directory
 	if (!found) {
 		config_file = "wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #else
 	// Prefer wildmidi in current directory
 	config_file = "wildmidi.cfg";
-	found = FileFinder::Exists(config_file);
+	found = FileFinder::Root().Exists(config_file);
 
 	// wildmidi command line player default config
 	if (!found) {
 		config_file = "/etc/wildmidi/wildmidi.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// Use Timidity strategy used in SDL mixer
@@ -235,20 +235,20 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		const char *env = getenv("TIMIDITY_CFG");
 		if (env) {
 			config_file = env;
-			found = FileFinder::Exists(config_file);
+			found = FileFinder::Root().Exists(config_file);
 		}
 	}
 
 	if (!found) {
 		config_file = "timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 #  ifdef _WIN32
 	// Probably not too useful
 	if (!found) {
 		config_file = "C:\\TIMIDITY\\timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	// TODO: We need some installer which creates registry keys for wildmidi
@@ -256,12 +256,12 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 #  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 #  else
 	if (!found) {
 		config_file = "/etc/timidity.cfg";
-		found = FileFinder::Exists(config_file);
+		found = FileFinder::Root().Exists(config_file);
 	}
 
 	if (!found) {
@@ -275,7 +275,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 
 		for (const std::string& s : folders) {
 			config_file = s + "/timidity.cfg";
-			found = FileFinder::Exists(config_file);
+			found = FileFinder::Root().Exists(config_file);
 
 			if (found) {
 				break;
@@ -283,7 +283,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 
 			// Some distributions have it in timidity++
 			config_file = s + "++/timidity.cfg";
-			found = FileFinder::Exists(config_file);
+			found = FileFinder::Root().Exists(config_file);
 
 			if (found) {
 				break;
