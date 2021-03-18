@@ -150,7 +150,7 @@ std::string FilesystemView::GetSubPath() const {
 
 std::string FilesystemView::GetFullPath() const {
 	assert(fs);
-	return FileFinder::MakePath(fs->GetPath(), sub_path);
+	return FileFinder::MakePath(GetBasePath(), GetSubPath());
 }
 
 const Filesystem& FilesystemView::GetOwner() const {

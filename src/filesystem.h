@@ -32,20 +32,28 @@ namespace Filesystem_Stream {
 	class OutputStream;
 }
 
+/**
+ * The base class for a filesystem abstraction.
+ * A virtual filesystem provides ways to open files and read directories even
+ * if they are not real filesystem structures in terms of the operating system
+ * e.g. ZIP archives or internet resources.
+ */
 class Filesystem {
 public:
+	/** Features provided by the filesystem */
 	enum class Feature {
 		/** Filesystem supports Write operations */
 		Write = 1
 	};
 
-	virtual ~Filesystem() {}
+	virtual ~Filesystem() = default;
 
 	Filesystem(const Filesystem&) = delete;
 	Filesystem& operator=(const Filesystem&) = delete;
 
 	/**
 	 * Checks whether the path used to initialize the filesystem exists.
+	 * Calling functions on an invalid filesystem is undefined.
 	 *
 	 * @return If the filesystem is valid
 	 */
@@ -60,24 +68,30 @@ public:
 	 */
 	std::string GetPath() const;
 
+	/**
+	 * Returns the owner of this filesystem.
+	 * When there is no owner an invalid Filesystem is returned.
+	 *
+	 * @return parent filesystem
+	 */
 	FilesystemView GetParent() const;
 
 	/**
-	 * Creates stream from UTF-8 file name for reading.
+	 * Creates stream from filename for reading.
 	 *
-	 * @param name UTF-8 string file name.
-	 * @param m stream mode.
-	 * @return NULL if open failed.
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed.
 	 */
 	Filesystem_Stream::InputStream OpenInputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
-	 * Creates stream from UTF-8 file name for writing.
+	 * Creates stream from filename for writing.
 	 *
-	 * @param name UTF-8 string file name.
-	 * @param m stream mode.
-	 * @return NULL if open failed.
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
 	 */
 	Filesystem_Stream::OutputStream OpenOutputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
@@ -86,7 +100,6 @@ public:
 	 * Returns a directory listing of the given path.
 	 *
 	 * @param path a path relative to the filesystems root
-	 * @param error When non-null receives true when reading failed, otherwise false
 	 * @return List of directory entries
 	 */
 	DirectoryTree::DirectoryListType* ListDirectory(StringView path) const;
@@ -95,6 +108,7 @@ public:
 	 * Clears the filesystem cache. Changes in the filesystem become visible
 	 * to the FindFile functions.
 	 * This is automatically called when an output stream is closed.
+	 *
 	 * @param path Path to flush
 	 */
 	void ClearCache(StringView path) const;
@@ -104,10 +118,18 @@ public:
 	 * The path is processed to initialize the proper virtual filesystem handler.
 	 *
 	 * @param p Virtual path to use
-	 * @return Filesystem when the parsing was successful, otherwise nullptr
+	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
 	 */
 	FilesystemView Create(StringView p) const;
 
+	/**
+	 * Creates a subview into the filesystem tree.
+	 * This function is much faster than Create and should be preferred because it
+	 * does not attempt to create new virtual filesystems.
+	 *
+	 * @param sub_path sub path to view
+	 * @return Valid Filesystem when the path exists, otherwise invalid
+	 */
 	FilesystemView Subtree(std::string sub_path) const;
 
 	// Helper functions for finding files in a case insensitive way
@@ -167,6 +189,12 @@ protected:
 	virtual std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
 	/** @} */
 
+	/**
+	 * Creates a new filesystem
+	 *
+	 * @param base_path Path the filesystem is rooted at
+	 * @param parent_fs parent filesystem
+	 */
 	explicit Filesystem(std::string base_path, FilesystemView parent_fs);
 
 	friend FilesystemView;
@@ -181,8 +209,8 @@ private:
 };
 
 /**
- * A TreeView is a non-owning view at a subdirectory of the base DirectoryTree.
- * The DirectoryTree must stay valid.
+ * A FilesystemView is a non-owning view at a subdirectory of the base Filesystem.
+ * The Filesystem must stay valid.
  */
 class FilesystemView {
 public:
@@ -195,12 +223,24 @@ public:
 	 */
 	FilesystemView(const Filesystem* fs, std::string sub_path);
 
+	/** @return The path of the owning filesystem, NOT of the view */
 	std::string GetBasePath() const;
-	std::string GetFullPath() const;
+
+	/** @return The path of the view */
 	std::string GetSubPath() const;
 
+	/** @return The path of the owning filesystem followed by the view path,
+	 *   same as MakePath(GetBasePath(), GetSubPath()) */
+	std::string GetFullPath() const;
+
+	/** @return The owning filesystem */
 	const Filesystem& GetOwner() const;
 
+	/**
+	 * Clears the filesystem cache of the view. Changes in the filesystem become
+	 * visible to the FindFile functions.
+	 * This is automatically called when an output stream is closed.
+	 */
 	void ClearCache() const;
 
 	/**
@@ -239,9 +279,29 @@ public:
 	 */
 	std::string MakePath(StringView subdir) const;
 
+	/**
+	 * @param path Path to check
+	 * @return True when path is a regular file
+	 */
 	bool IsFile(StringView path) const;
+
+	/**
+	 * @param path Path to check
+	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
+	 * @return True when path is a directory
+	 */
 	bool IsDirectory(StringView path, bool follow_symlinks) const;
+
+	/**
+	 * @param path Path to check
+	 * @return True when a file exists at the path
+	 */
 	bool Exists(StringView path) const;
+
+	/**
+	 * @param path Path to check
+	 * @return A filesize or -1 on error.
+	 */
 	int64_t GetFilesize(StringView path) const;
 
 	/**
@@ -252,18 +312,71 @@ public:
 	 */
 	DirectoryTree::DirectoryListType* ListDirectory(StringView path = "") const;
 
+	/**
+	 * Creates stream from filename for reading.
+	 *
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed.
+	 */
 	Filesystem_Stream::InputStream OpenInputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
+	/**
+	 * Creates stream from filename for writing.
+	 *
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
+	 */
 	Filesystem_Stream::OutputStream OpenOutputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
 
+	/**
+	 * Opens a streambuffer from filename for reading.
+	 * This is an internal function. Use OpenInputStream instead.
+	 *
+	 * @see OpenInputStream
+	 * @param path filename.
+	 * @param mode stream mode.
+	 * @return A Stream. The stream is invalid when the open failed.
+	 */
 	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+
+	/**
+	 * Creates stream from filename for writing.
+	 * This is an internal function. Use OpenInputStream instead.
+	 *
+	 * @see OpenOutputStream
+	 * @param path filename.
+	 * @param mode stream mode.
+	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
+	 */
 	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
 
+	/**
+	 * Creates a new appropriate filesystem from the specified path.
+	 * The path is processed to initialize the proper virtual filesystem handler.
+	 *
+	 * @param p Virtual path to use
+	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
+	 */
 	FilesystemView Create(StringView p) const;
 
+	/**
+	 * Recursively creates a new directory.
+	 * Not all filesystems support directory creation.
+	 *
+	 * @param dir Directory to create.
+	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
+	 * @return true when the path was created
+	 */
 	bool CreateDirectory(StringView dir, bool follow_symlinks) const;
+
+	/**
+	 * @param f Filesystem feature to check
+	 * @return true when the feature is supported.
+	 */
 	bool IsFeatureSupported(Filesystem::Feature f) const;
 
 	/**
@@ -274,6 +387,7 @@ public:
 	 */
 	FilesystemView Subtree(StringView sub_path) const;
 
+	/** @return human readable representation of this filesystem for debug purposes */
 	std::string Describe() const;
 
 	/** @return true when the subtree points at a readable directory */

@@ -42,9 +42,27 @@ namespace FileFinder {
 	 */
 	void Quit();
 
+	/** @return A filesystem handle for arbitrary file access inside the host filesystem */
 	FilesystemView Root();
+
+	/** @return A filesystem handle for file access inside the game directory */
 	FilesystemView Game();
+
+	/**
+	 * Sets the game filesystem.
+	 *
+	 * @param filesystem Game filesystem to use.
+	 */
 	void SetGameFilesystem(FilesystemView filesystem);
+
+	/**
+	 * A filesystem handle for file access inside the save directory.
+	 * Do not expect that this is the same as the game filesystem.
+	 * The path is based on Main_Data::SavePath but could be redirected when
+	 * the path is not writable because the filesystem does not support it.
+	 *
+	 * @return Save filesystem handle
+	 */
 	FilesystemView Save();
 
 	/**
@@ -265,7 +283,19 @@ namespace FileFinder {
 		RPG2K3 = 927000,
 	};
 
+	/**
+	 * Utility function for getting a complete filesystem path.
+	 *
+	 * @param fs Filesystem to use
+	 * @return complete path
+	 */
 	std::string GetFullFilesystemPath(FilesystemView fs);
+
+	/**
+	 * Utility function for debug printing of a filesystem path.
+	 *
+	 * @param fs Filesystem to use
+	 */
 	void DumpFilesystem(FilesystemView fs);
 } // namespace FileFinder
 
