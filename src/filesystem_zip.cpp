@@ -53,7 +53,9 @@ static std::string normalize_path(StringView path) {
 ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, StringView enc) :
 	Filesystem(base_path, parent_fs) {
 	auto zipfile = parent_fs.OpenInputStream(GetPath());
-	assert(zipfile);
+	if (!zipfile) {
+		return;
+	}
 
 	uint16_t central_directory_entries = 0;
 	uint32_t central_directory_size = 0;
