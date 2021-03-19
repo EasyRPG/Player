@@ -109,6 +109,22 @@ const lcf::rpg::State* GetSignificantState(const StateVec& states);
  */
 int GetStateRate(int state_id, int rate);
 
+/**
+ * Return vector with state objects.
+ *
+ * @param vector of states
+ * @return vector which contains the given states as state objects
+ */
+const std::vector<lcf::rpg::State*> GetObjects(const StateVec& states);
+
+/**
+ * Return vector with state objects which are sorted by priority.
+ *
+ * @param vector of state objects
+ * @return vector which contains the given state objects sorted by priority
+ */
+const std::vector<lcf::rpg::State*> SortedByPriority(const std::vector<lcf::rpg::State*>& states);
+
 } //namespace State
 
 inline bool State::Has(int state_id, const StateVec& states) {

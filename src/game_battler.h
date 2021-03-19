@@ -875,6 +875,9 @@ public:
 	/** @return battle frame counter */
 	int GetBattleFrameCounter() const;
 
+	/** @return inflicted states as state objects ordered by priority */
+	const std::vector<lcf::rpg::State*> GetInflictedStatesOrderedByPriority() const;
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge = 0;

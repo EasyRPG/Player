@@ -44,6 +44,7 @@
 #include "output.h"
 #include "autobattle.h"
 #include "enemyai.h"
+#include <algorithm>
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -427,9 +428,15 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
 					enemy_cursor->SetY(enemy->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
 
-					auto* state = enemy->GetSignificantState();
-					if (state) {
-						help_window->SetText(ToString(state->name), state->color);
+					std::vector<lcf::rpg::State*> ordered_states = enemy->GetInflictedStatesOrderedByPriority();
+					if (ordered_states.size() > 0) {
+						help_window->Clear();
+						int state_counter = 0;
+						for (lcf::rpg::State* state : ordered_states) {
+							std::string state_name = fmt::format("{:9s}", state->name);
+							help_window->AddText(state_name, state->color, Text::AlignLeft, false);
+							if (++state_counter >= 5) break;
+						}
 						help_window->SetVisible(true);
 					} else {
 						help_window->SetVisible(false);

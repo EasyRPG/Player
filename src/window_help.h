@@ -49,6 +49,16 @@ public:
 	 */
 	void Clear();
 
+	/**
+	 * Adds text to the help window. This does not overwrite the old content.
+	 *
+	 * @param text text to add.
+	 * @param color text color.
+	 * @param align text alignment.
+	 * @param halfwidthspace if half width spaces should be used.
+	 */
+	void AddText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft, bool halfwidthspace = true);
+
 private:
 	/** Text to draw. */
 	std::string text;
@@ -56,6 +66,8 @@ private:
 	int color = Font::ColorDefault;
 	/** Alignment of text. */
 	Text::Alignment align;
+	/** Current text position */
+	int text_x_offset = 0;
 };
 
 #endif

@@ -33,24 +33,8 @@ void Window_Help::SetText(std::string text, int color, Text::Alignment align, bo
 	if (this->text != text || this->color != color || this->align != align) {
 		contents->Clear();
 
-		int x = 0;
-		std::string::size_type pos = 0;
-		std::string::size_type nextpos = 0;
-		while (nextpos != std::string::npos) {
-			nextpos = text.find(' ', pos);
-			auto segment = ToStringView(text).substr(pos, nextpos - pos);
-			contents->TextDraw(x, 2, color, segment, align);
-			x += Font::Default()->GetSize(segment).width;
-
-			if (nextpos != decltype(text)::npos) {
-				if (halfwidthspace) {
-					x += Font::Default()->GetSize(" ").width / 2;
-				} else {
-					x += Font::Default()->GetSize(" ").width;
-				}
-				pos = nextpos + 1;
-			}
-		}
+		text_x_offset = 0;
+		AddText(text, color, align, halfwidthspace);
 
 		this->text = std::move(text);
 		this->align = align;
@@ -62,5 +46,26 @@ void Window_Help::Clear() {
 	this->text = "";
 	this->color = Font::ColorDefault;
 	this->align = Text::AlignLeft;
+	text_x_offset = 0;
 	contents->Clear();
+}
+
+void Window_Help::AddText(std::string text, int color, Text::Alignment align, bool halfwidthspace) {
+	std::string::size_type pos = 0;
+	std::string::size_type nextpos = 0;
+	while (nextpos != std::string::npos) {
+		nextpos = text.find(' ', pos);
+		auto segment = ToStringView(text).substr(pos, nextpos - pos);
+		contents->TextDraw(text_x_offset, 2, color, segment, align);
+		text_x_offset += Font::Default()->GetSize(segment).width;
+
+		if (nextpos != decltype(text)::npos) {
+			if (halfwidthspace) {
+				text_x_offset += Font::Default()->GetSize(" ").width / 2;
+			} else {
+				text_x_offset += Font::Default()->GetSize(" ").width;
+			}
+			pos = nextpos + 1;
+		}
+	}
 }

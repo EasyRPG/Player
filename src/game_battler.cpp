@@ -678,6 +678,11 @@ void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
 	flash.time_left = frames;
 }
 
+const std::vector<lcf::rpg::State*> Game_Battler::GetInflictedStatesOrderedByPriority() const {
+	std::vector<lcf::rpg::State*> state_list = State::GetObjects(GetStates());
+	return State::SortedByPriority(state_list);
+}
+
 int Game_Battler::CanChangeAtkModifier(int modifier) const {
 	const auto prev = atk_modifier;
 	const auto base = GetBaseAtk();
