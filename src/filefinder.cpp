@@ -90,12 +90,22 @@ FilesystemView FileFinder::Save() {
 
 					parent.CreateDirectory(save_path, true);
 					save_fs = Root().Create(save_path);
+
+					if (!save_fs) {
+						Output::Error("Invalid save directory {}", save_path);
+					}
+
 					break;
 				}
 				child_path = MakePath(MakePath(owner_path, sub_path), child_path);
 			}
 		}
 	}
+
+	if (!save_fs) {
+		Output::Error("Invalid save directory {}", Main_Data::GetSavePath());
+	}
+
 	return save_fs;
 }
 

@@ -133,9 +133,16 @@ bool Platform::File::CreateDirectory(bool follow_symlinks) const {
 #endif
 
 	auto components = FileFinder::SplitPath(path);
-	std::string cur_path = "";
+	std::string cur_path;
+	if (StringView(path).starts_with("/")) {
+		cur_path += "/";
+	}
 
 	for (const auto& comp : components) {
+		if (comp.empty() || comp == ".") {
+			continue;
+		}
+
 		cur_path = FileFinder::MakePath(cur_path, comp);
 		File cf(cur_path);
 		if (cf.IsDirectory(follow_symlinks)) {
@@ -148,7 +155,7 @@ bool Platform::File::CreateDirectory(bool follow_symlinks) const {
 				return false;
 			}
 #else
-			int res = mkdir(cur_path.c_str(), 777);
+			int res = mkdir(cur_path.c_str(), 0777);
 			if (res < 0) {
 				return false;
 			}
