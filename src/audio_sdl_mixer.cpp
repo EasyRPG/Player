@@ -326,7 +326,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 
 	// rw will be freed in Mix_FreeMusic
 #if SDL_MIXER_MAJOR_VERSION>1
-	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
+	bgm.reset(Mix_LoadMUS_RW(rw, 1), &Mix_FreeMusic);
 #else
 	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
 #endif
