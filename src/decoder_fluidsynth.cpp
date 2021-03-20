@@ -103,7 +103,9 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 	fluid_synth_add_sfloader(syn, global_loader);
 #endif
 
-	if (fluid_synth_sfload(syn, "easyrpg.soundfont", 1) == FLUID_FAILED) {
+	std::string sf_name = "easyrpg.soundfont";
+
+	if (!FileFinder::Exists(sf_name) || fluid_synth_sfload(syn, sf_name.c_str(), 1) == FLUID_FAILED) {
 		error_message = "Could not load soundfont.";
 		return nullptr;
 	}
