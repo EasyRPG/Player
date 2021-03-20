@@ -40,6 +40,18 @@
 #include <string>
 #include <math.h>
 
+namespace Options {
+	const char* retropad_x = "easyrpg_retropad_x";
+	const char* retropad_l = "easyrpg_retropad_l";
+	const char* retropad_r = "easyrpg_retropad_r";
+	const char* retropad_l2 = "easyrpg_retropad_l2";
+	const char* retropad_r2 = "easyrpg_retropad_r2";
+	const char* retropad_l3 = "easyrpg_retropad_l3";
+	const char* retropad_r3 = "easyrpg_retropad_r3";
+	const char* input = "easyrpg_input";
+	const char* debug_mode = "easyrpg_debug_mode";
+}
+
 #ifdef SUPPORT_AUDIO
 #include "libretro_audio.h"
 AudioInterface& LibretroUi::GetAudio() {
@@ -215,16 +227,16 @@ void LibretroUi::UpdateKeyboardCallback(bool down, unsigned keycode) {
 void LibretroUi::UpdateVariables() {
 	static const char* none = "None (See Core Options)";
 
-	static struct retro_variable debug = { "Debug Mode", nullptr };
-	static struct retro_variable input = { "Input", nullptr };
+	static struct retro_variable debug = { Options::debug_mode, nullptr };
+	static struct retro_variable input = { Options::input, nullptr };
 	static struct retro_variable variables[] = {
-		{ "RetroPad X", nullptr },
-		{ "RetroPad L", nullptr },
-		{ "RetroPad R", nullptr },
-		{ "RetroPad L2", nullptr },
-		{ "RetroPad R2", nullptr },
-		{ "RetroPad L3", nullptr },
-		{ "RetroPad R3", nullptr }
+		{ Options::retropad_x, nullptr },
+		{ Options::retropad_l, nullptr },
+		{ Options::retropad_r, nullptr },
+		{ Options::retropad_l2, nullptr },
+		{ Options::retropad_r2, nullptr },
+		{ Options::retropad_l3, nullptr },
+		{ Options::retropad_r3, nullptr }
 	};
 
 	static const char buttons[][24] = {
@@ -484,15 +496,15 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 #	define EP_RETRO_OPTIONS "None|0|1|2|3|4|5|6|7|8|9|+|-|*|/|.|Open Debug Menu|Walk through walls"
 
 	struct retro_variable variables[] = {
-		{ "RetroPad X", "Button mapping of RetroPad X; " EP_RETRO_OPTIONS },
-		{ "RetroPad L", "Button mapping of RetroPad L; " EP_RETRO_OPTIONS },
-		{ "RetroPad R", "Button mapping of RetroPad R; " EP_RETRO_OPTIONS },
-		{ "RetroPad L2", "Button mapping of RetroPad L2; " EP_RETRO_OPTIONS },
-		{ "RetroPad R2", "Button mapping of RetroPad R2; " EP_RETRO_OPTIONS },
-		{ "RetroPad L3", "Button mapping of RetroPad L3; " EP_RETRO_OPTIONS },
-		{ "RetroPad R3", "Button mapping of RetroPad R3; " EP_RETRO_OPTIONS },
-		{ "Input", "Keyboard and RetroPad; Use Both|Only Keyboard|Only RetroPad" },
-		{ "Debug Mode", "Debug menu and walk through walls; Disabled|Enabled" },
+		{ Options::retropad_x, "Button mapping of RetroPad X; " EP_RETRO_OPTIONS },
+		{ Options::retropad_l, "Button mapping of RetroPad L; " EP_RETRO_OPTIONS },
+		{ Options::retropad_r, "Button mapping of RetroPad R; " EP_RETRO_OPTIONS },
+		{ Options::retropad_l2, "Button mapping of RetroPad L2; " EP_RETRO_OPTIONS },
+		{ Options::retropad_r2, "Button mapping of RetroPad R2; " EP_RETRO_OPTIONS },
+		{ Options::retropad_l3, "Button mapping of RetroPad L3; " EP_RETRO_OPTIONS },
+		{ Options::retropad_r3, "Button mapping of RetroPad R3; " EP_RETRO_OPTIONS },
+		{ Options::input, "Keyboard and RetroPad; Use Both|Only Keyboard|Only RetroPad" },
+		{ Options::debug_mode, "Debug menu and walk through walls; Disabled|Enabled" },
 		{ nullptr, nullptr }
 	};
 	cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
