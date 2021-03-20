@@ -318,12 +318,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		return;
 	}
 
-	filestream = FileFinder::OpenInputStream(file);
-	if (!filestream) {
-		// Unlikely, just in case
-		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
-		return;
-	}
+	filestream.seekg(0, std::ios_base::beg);
 	SDL_RWops* rw = create_StreamRWOps(std::move(filestream));
 
 	bgm_stop = false;
