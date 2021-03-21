@@ -46,11 +46,11 @@ TEST_CASE("NormalAttackTargetRank") {
 		REQUIRE_EQ(target.GetDef(), 90);
 
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
+						auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(static_cast<std::uint32_t>(std::numeric_limits<std::int32_t>::max()));
 			testNormalAttack(source, target, 1.131, 1.131, 1.158, 1.158);
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(static_cast<std::uint32_t>(std::numeric_limits<std::int32_t>::min()));
 			testNormalAttack(source, target, 0.141, 0.141, 0.114, 0.114);
 		}
 	}

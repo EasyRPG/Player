@@ -244,7 +244,7 @@ static void testActionType(int start, int end, Game_BattleAlgorithm::Type type_c
 		bool bugs = true;
 		CAPTURE(bugs);
 
-		Rand::LockGuard lk(rng);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(rng);
 		bugs = true;
 		source.SetBattleAlgorithm(nullptr);
 		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);
@@ -265,7 +265,7 @@ static void testActionNullptr(int start, int end, Game_Enemy& source) {
 		bool bugs = true;
 		CAPTURE(bugs);
 
-		Rand::LockGuard lk(rng);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(rng);
 		bugs = true;
 		source.SetBattleAlgorithm(nullptr);
 		EnemyAi::SelectEnemyAiActionRpgRtCompat(source, bugs);

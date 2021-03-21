@@ -19,117 +19,139 @@
 #include "rand.h"
 #include "utils.h"
 #include "output.h"
-#include "compiler.h"
 #include <cassert>
 #include <cstdint>
-#include <cinttypes>
 #include <algorithm>
 #include <random>
 
-namespace {
-Rand::RNG rng;
-
-/** Gets a random number uniformly distributed in [0, U32_MAX] */
-uint32_t GetRandomU32() { return rng(); }
-
-int32_t rng_lock_value = 0;
-bool rng_locked= false;
-}
-
-/** Generate a random number in the range [0,max] */
-static uint32_t GetRandomUnsigned(uint32_t max)
+namespace Rand
 {
-	if (max == 0xffffffffull) return GetRandomU32();
+	AbstractRNGWrapper::result_type SequencedRNGWrapper::operator()()
+	{
+		return pickNext();
+	}
 
-	// Rejection sampling:
-	// 1. Divide the range of uint32 into blocks of max+1
-	//    numbers each, with rem numbers left over.
-	// 2. Generate a random u32. If it belongs to a block,
-	//    mod it into the range [0,max] and accept it.
-	// 3. If it fell into the range of rem leftover numbers,
-	//    reject it and go back to step 2.
-	uint32_t m = max + 1;
-	uint32_t rem = -m % m; // = 2^32 mod m
-	while (true) {
-		uint32_t n = GetRandomU32();
-		if (n >= rem)
-			return n % m;
+	AbstractRNGWrapper::result_type SequencedRNGWrapper::distribute(std::uint32_t max)
+	{
+		return Utils::Clamp(pickNext(), 0u, max);
+	}
+
+	std::int32_t SequencedRNGWrapper::distribute(std::int32_t from, std::int32_t to)
+	{
+		return Utils::Clamp(static_cast<std::int32_t>(pickNext()), from, to);
+	}
+
+	void SequencedRNGWrapper::seed(Seed_t seed)
+	{
+	}
+
+	AbstractRNGWrapper::result_type SequencedRNGWrapper::pickNext()
+	{
+		auto value = m_Sequence[m_NextIndex];
+		m_NextIndex = ++m_NextIndex % std::size(m_Sequence);
+		return value;
 	}
 }
 
-int32_t Rand::GetRandomNumber(int32_t from, int32_t to) {
-	assert(from <= to);
-	if (rng_locked) {
-		return Utils::Clamp(rng_lock_value, from, to);
+template <class TGenerator>
+class RNGWrapper :
+	public Rand::AbstractRNGWrapper
+{
+public:
+	explicit RNGWrapper(TGenerator generator = TGenerator{}) :
+		AbstractRNGWrapper{},
+		m_Generator{ std::move(generator) }
+	{
 	}
-	// Don't use uniform_int_distribution--the algorithm used isn't
-	// portable between stdlibs.
-	// We do from + (rand int in [0, to-from]). The miracle of two's
-	// complement let's us do this all in unsigned and then just cast
-	// back.
-	uint32_t ufrom = uint32_t(from);
-	uint32_t uto = uint32_t(to);
-	uint32_t urange = uto - ufrom;
-	uint32_t ures = ufrom + GetRandomUnsigned(urange);
-	return int32_t(ures);
+
+	void seed(Rand::Seed_t seed) override
+	{
+		m_Generator.seed(seed);
+	}
+
+	/** Gets a random number uniformly distributed in [0, U32_MAX] */
+	result_type operator()() override
+	{
+		return m_Generator();
+	}
+
+	/** Generate a random number in the range [0,max] */
+	result_type distribute(std::uint32_t max) override
+	{
+		if (max == 0xffffffffull)
+		{
+			return m_Generator();
+		}
+
+		// Rejection sampling:
+		// 1. Divide the range of uint32 into blocks of max+1
+		//    numbers each, with rem numbers left over.
+		// 2. Generate a random u32. If it belongs to a block,
+		//    mod it into the range [0,max] and accept it.
+		// 3. If it fell into the range of rem leftover numbers,
+		//    reject it and go back to step 2.
+		std::uint32_t m = max + 1;
+		std::uint32_t rem = -m % m; // = 2^32 mod m
+		while (true) {
+			auto n =  m_Generator();
+			if (n >= rem)
+				return n % m;
+		}
+	}
+	
+	std::int32_t distribute(std::int32_t from, std::int32_t to) override
+	{
+		// Don't use uniform_int_distribution--the algorithm used isn't
+		// portable between stdlibs.
+		// We do from + (rand int in [0, to-from]). The miracle of two's
+		// complement let's us do this all in unsigned and then just cast
+		// back.
+		auto ufrom =  static_cast<std::uint32_t>(from);
+		auto uto =  static_cast<std::uint32_t>(to);
+		auto urange = uto - ufrom;
+		auto ures = ufrom + distribute(urange);
+		return static_cast<std::int32_t>(ures);
+	}
+
+private:
+	TGenerator m_Generator;
+};
+
+namespace {
+	Rand::RngPtr rng = std::make_unique<RNGWrapper<std::mt19937>>();
+}
+
+Rand::RngPtr Rand::ExchangeRNG(RngPtr newRng)
+{
+	assert(newRng && "rng must not be nullptr");
+	return std::exchange(rng, std::move(newRng));
+}
+
+std::int32_t Rand::GetRandomNumber(std::int32_t from, std::int32_t to) {
+	assert(from <= to && "from must be less-equal than to");
+	return GetRNG().distribute(from, to);
 }
 
 Rand::RNG& Rand::GetRNG() {
-	return rng;
+	assert(rng && "rng is empty");
+	return *rng;
 }
 
-bool Rand::ChanceOf(int32_t n, int32_t m) {
+bool Rand::ChanceOf(std::int32_t n, std::int32_t m) {
 	assert(n >= 0 && m > 0);
 	return GetRandomNumber(1, m) <= n;
 }
 
 bool Rand::PercentChance(float rate) {
 	constexpr auto scale = 0x1000000;
-	return GetRandomNumber(0, scale-1) < int32_t(rate * scale);
+	return GetRandomNumber(0, scale-1) < static_cast<std::int32_t>(rate * scale);
 }
 
 bool Rand::PercentChance(int rate) {
 	return GetRandomNumber(0, 99) < rate;
 }
 
-void Rand::SeedRandomNumberGenerator(int32_t seed) {
-	rng.seed(seed);
+void Rand::SeedRandomNumberGenerator(Seed_t seed) {
+	GetRNG().seed(seed);
 	Output::Debug("Seeded the RNG with {}.", seed);
-}
-
-void Rand::LockRandom(int32_t value) {
-	rng_locked = true;
-	rng_lock_value = value;
-}
-
-void Rand::UnlockRandom() {
-	rng_locked = false;
-}
-
-std::pair<bool,int32_t> Rand::GetRandomLocked() {
-	return { rng_locked, rng_lock_value };
-}
-
-Rand::LockGuard::LockGuard(int32_t lock_value, bool locked) {
-	auto p = GetRandomLocked();
-	_prev_locked = p.first;
-	_prev_lock_value = p.second;
-	_active = true;
-
-	if (locked) {
-		LockRandom(lock_value);
-	} else {
-		UnlockRandom();
-	}
-}
-
-void Rand::LockGuard::Release() noexcept {
-	if (Enabled()) {
-		if (_prev_locked) {
-			LockRandom(_prev_lock_value);
-		} else {
-			UnlockRandom();
-		}
-		Dismiss();
-	}
 }

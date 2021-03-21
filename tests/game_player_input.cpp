@@ -67,7 +67,7 @@ static void testMove(bool success, int input_dir, int dir, int x, int y, int dx,
 	const auto ty = y + dy;
 
 	// Force RNG to always fail to generate a random encounter
-	Rand::LockGuard lk(INT32_MAX);
+	auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 	ForceUpdate(ch);
 	if (success) {
 		int enc_steps = (cheat && debug) ? 0 : 100;

@@ -121,13 +121,13 @@ TEST_CASE("Variance") {
 
 	SUBCASE(">0") {
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 			for (int var = 1; var <= 10; ++var) {
 				REQUIRE_EQ(100 + 5 * var, Algo::VarianceAdjustEffect(100, var));
 			}
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 			for (int var = 1; var <= 10; ++var) {
 				REQUIRE_EQ(100 - 5 * var, Algo::VarianceAdjustEffect(100, var));
 			}
@@ -136,11 +136,11 @@ TEST_CASE("Variance") {
 
 	SUBCASE("one") {
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 			REQUIRE_EQ(2, Algo::VarianceAdjustEffect(1, 10));
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 			REQUIRE_EQ(1, Algo::VarianceAdjustEffect(1, 10));
 		}
 	}
@@ -159,12 +159,12 @@ TEST_CASE("Variance") {
 			REQUIRE(Player::IsLegacy());
 
 			SUBCASE("max") {
-				Rand::LockGuard lk(INT32_MAX);
+				auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
 				REQUIRE_EQ(1, Algo::VarianceAdjustEffect(0, 1));
 			}
 			SUBCASE("min") {
-				Rand::LockGuard lk(INT32_MIN);
+				auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 0));
 				REQUIRE_EQ(0, Algo::VarianceAdjustEffect(0, 1));
 			}
@@ -909,11 +909,11 @@ TEST_CASE("NormalAttackVariance") {
 		REQUIRE_EQ(target.GetDef(), 90);
 
 		SUBCASE("max") {
-			Rand::LockGuard lk(INT32_MAX);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 			REQUIRE_EQ(46, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
 		}
 		SUBCASE("min") {
-			Rand::LockGuard lk(INT32_MIN);
+			auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 			REQUIRE_EQ(31, Algo::CalcNormalAttackEffect(source, target, Game_Battler::WeaponAll, false, true, lcf::rpg::System::BattleCondition_none, false));
 		}
 	}
@@ -928,12 +928,12 @@ static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, in
 	skill2->scope = lcf::rpg::Skill::Scope_ally;
 
 	SUBCASE("max") {
-		Rand::LockGuard lk(INT32_MAX);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true));
 		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true));
 	}
 	SUBCASE("min") {
-		Rand::LockGuard lk(INT32_MIN);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true));
 		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true));
 	}
@@ -965,11 +965,11 @@ TEST_CASE("SelfDestructVariance") {
 	auto source = MakeStatEnemy(1, 150, 0, 0);
 
 	SUBCASE("max") {
-		Rand::LockGuard lk(INT32_MAX);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::max());
 		REQUIRE_EQ(120, Algo::CalcSelfDestructEffect(source, target, true));
 	}
 	SUBCASE("min") {
-		Rand::LockGuard lk(INT32_MIN);
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(std::numeric_limits<std::int32_t>::min());
 		REQUIRE_EQ(80, Algo::CalcSelfDestructEffect(source, target, true));
 	}
 }

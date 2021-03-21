@@ -19,73 +19,66 @@ TEST_CASE("GetRandomNumber") {
 	testGetRandomNumber(-5, -2);
 }
 
-TEST_CASE("Lock") {
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
-
-	Rand::LockRandom(55);
-
-	REQUIRE(Rand::GetRandomLocked().first);
-	REQUIRE_EQ(Rand::GetRandomLocked().second, 55);
-
-	Rand::UnlockRandom();
-
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
-}
-
-TEST_CASE("LockGuardNest") {
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
+static void testSequenceGenerator(const std::vector<std::uint32_t>& seq, Rand::SequencedRNGWrapper& rng, std::size_t iterations = 1)
+{
+	for (std::size_t i = 0; i < iterations; ++i)
 	{
-		Rand::LockGuard fg(32);
-		REQUIRE(fg.Enabled());
-
-		REQUIRE(Rand::GetRandomLocked().first);
-		REQUIRE_EQ(Rand::GetRandomLocked().second, 32);
-
+		for (auto value : seq)
 		{
-			Rand::LockGuard fg(0, false);
-			REQUIRE(fg.Enabled());
-
-			REQUIRE_FALSE(Rand::GetRandomLocked().first);
+			REQUIRE(rng() == value);
 		}
-
-		REQUIRE(Rand::GetRandomLocked().first);
-		REQUIRE_EQ(Rand::GetRandomLocked().second, 32);
 	}
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
 }
 
-TEST_CASE("LockGuardRelease") {
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
+TEST_CASE("Single-Element Sequence") {
 
-	Rand::LockGuard fg(-16);
-	REQUIRE(fg.Enabled());
+	std::vector<std::uint32_t> seq{ 42 };
+	Rand::SequencedRNGWrapper seqRNG(seq);
 
-	REQUIRE(Rand::GetRandomLocked().first);
-	REQUIRE_EQ(Rand::GetRandomLocked().second, -16);
-
-	fg.Release();
-
-	REQUIRE_FALSE(Rand::GetRandomLocked().first);
-	REQUIRE_FALSE(fg.Enabled());
+	testSequenceGenerator(seq, seqRNG, 3);
 }
 
-TEST_CASE("LockGuardDismiss") {
-	Rand::LockGuard fg(INT32_MAX);
-	REQUIRE(fg.Enabled());
+TEST_CASE("Multi-Element Sequence") {
+	
+	std::vector<std::uint32_t> seq{ 42, 1337, 42, 3, 1, 3 };
+	Rand::SequencedRNGWrapper seqRNG(seq);
 
-	REQUIRE(Rand::GetRandomLocked().first);
-	REQUIRE_EQ(Rand::GetRandomLocked().second, INT32_MAX);
+	testSequenceGenerator(seq, seqRNG, 3);
+}
 
-	fg.Dismiss();
+TEST_CASE("GetRNG") {
 
-	REQUIRE(Rand::GetRandomLocked().first);
-	REQUIRE_EQ(Rand::GetRandomLocked().second, INT32_MAX);
+	REQUIRE(&Rand::GetRNG() != nullptr);
+}
 
-	Rand::UnlockRandom();
+TEST_CASE("ExchangeRNG") {
+
+	auto* preRNGPtr = &Rand::GetRNG();
+	std::vector<std::uint32_t> seq{ 42, 1337, 42, 3, 1, 3 };
+	auto seqRNG = std::make_unique<Rand::SequencedRNGWrapper>(seq);
+	auto* seqRNGPtr = seqRNG.get();
+	auto prevRNG = Rand::ExchangeRNG(std::move(seqRNG));
+	
+	REQUIRE(preRNGPtr == prevRNG.get());
+
+	REQUIRE(seqRNGPtr == &Rand::GetRNG());
+}
+
+TEST_CASE("ScopedRNGExchange") {
+
+	auto* preRNGPtr = &Rand::GetRNG();
+	
+	{
+		auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(1);
+
+		REQUIRE(preRNGPtr != &Rand::GetRNG());
+	}
+
+	REQUIRE(preRNGPtr == &Rand::GetRNG());
 }
 
 static void testGetRandomNumberFixed(int32_t a, int32_t b, int32_t fix, int32_t result) {
-	Rand::LockGuard fg(fix);
+	auto scoped = Rand::test::makeScopedRNGExchange<Rand::SequencedRNGWrapper>(fix);
 	for (int i = 0; i < 10; ++i) {
 		auto x = Rand::GetRandomNumber(a, b);
 		REQUIRE_EQ(x, result);
@@ -96,8 +89,8 @@ TEST_CASE("GetRandomNumberFixed") {
 	testGetRandomNumberFixed(-10, 12, 5, 5);
 	testGetRandomNumberFixed(-10, 12, 12, 12);
 	testGetRandomNumberFixed(-10, 12, 55, 12);
-	testGetRandomNumberFixed(-10, 12, INT32_MIN, -10);
-	testGetRandomNumberFixed(-10, 12, INT32_MAX, 12);
+	testGetRandomNumberFixed(-10, 12, std::numeric_limits<std::int32_t>::min(), -10);
+	testGetRandomNumberFixed(-10, 12, std::numeric_limits<std::int32_t>::max(), 12);
 }
 
 TEST_SUITE_END();
