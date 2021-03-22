@@ -21,6 +21,7 @@
 // Headers
 #include "game_battler.h"
 #include "sprite_enemy.h"
+#include "player.h"
 #include <lcf/rpg/enemy.h>
 #include <lcf/rpg/enemyaction.h>
 #include <lcf/rpg/troopmember.h>
@@ -224,6 +225,9 @@ public:
 	/** @return true if enemy is flying */
 	bool IsFlying() const;
 
+	/** @return the id of the enemy's unarmed battle animation */
+	int GetUnarmedBattleAnimationId() const;
+
 	Sprite_Enemy* GetEnemyBattleSprite() const;
 
 protected:
@@ -360,6 +364,10 @@ inline void Game_Enemy::SetDeathTimer(int t) {
 
 inline bool Game_Enemy::IsFlying() const {
 	return enemy->levitate;
+}
+
+inline int Game_Enemy::GetUnarmedBattleAnimationId() const {
+        return (Player::IsPatchManiac() ? enemy->maniac_unarmed_animation : 1);
 }
 
 inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
