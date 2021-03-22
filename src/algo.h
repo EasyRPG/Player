@@ -123,6 +123,7 @@ int AdjustDamageForDefend(int dmg, const Game_Battler& target);
  * @param target The target of the action
  * @param weapon Which weapon to use or kWeaponAll for combined
  * @param is_critical_hit If true, apply critical hit bonus
+ * @param is_charged If true, the attacker was charged
  * @param apply_variance If true, apply variance to the damage
  * @param cond The current battle condition
  * @param emulate_2k3_enemy_row_bug Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row
@@ -133,6 +134,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
+		bool is_charged,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond,
 		bool emulate_2k3_enemy_row_bug);
@@ -223,6 +225,28 @@ inline bool SkillTargetsEnemies(const lcf::rpg::Skill& skill) {
 inline bool SkillTargetsAllies(const lcf::rpg::Skill& skill) {
 	return !SkillTargetsEnemies(skill);
 }
+
+/**
+ * Checks if the skill has a single target
+ *
+ * @param skill the skill to check
+ * @return true if targets a single battler
+ */
+inline bool SkillTargetsOne(const lcf::rpg::Skill& skill) {
+	return skill.scope == lcf::rpg::Skill::Scope_ally
+				|| skill.scope == lcf::rpg::Skill::Scope_enemy
+				|| skill.scope == lcf::rpg::Skill::Scope_self;
+}
+
+/**
+ * Returns the number of attacks the weapon can do.
+ *
+ * @param the id of the actor to check
+ * @param weapon the item to check
+ * @pre If weapon is not a weapon type, the result is undefined.
+ * @return the number of attacks.
+ */
+int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon);
 
 } // namespace Algo
 

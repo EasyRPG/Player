@@ -76,7 +76,7 @@ public:
 	 */
 	void CancelFace();
 
-	void InitMovement(int old_x, int old_y, int new_x, int new_y, int duration);
+	bool InitMovement(int old_x, int old_y, int new_x, int new_y, int duration);
 	bool IsMovementActive();
 	void UpdateMovement();
 

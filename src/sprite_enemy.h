@@ -15,46 +15,48 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_HELP_H
-#define EP_WINDOW_HELP_H
+#ifndef EP_SPRITE_ENEMY_H
+#define EP_SPRITE_ENEMY_H
 
 // Headers
-#include "window_base.h"
-#include "text.h"
-#include "font.h"
+#include "sprite_battler.h"
+#include "async_handler.h"
+
+class BattleAnimation;
+class Game_Battler;
+class Game_Enemy;
 
 /**
- * Window_Help class.
- * Shows skill and item explanations.
+ * Sprite_Battler class, used for battle sprites
  */
-class Window_Help : public Window_Base {
-
+class Sprite_Enemy : public Sprite_Battler {
 public:
 	/**
 	 * Constructor.
-	 */
-	Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flags flags = Drawable::Flags::Default);
-
-	/**
-	 * Sets the text that will be shown.
 	 *
-	 * @param text text to show.
-	 * @param align text alignment.
+	 * @param battler game battler to display
 	 */
-	void SetText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft);
+	Sprite_Enemy(Game_Enemy* battler);
 
-	/**
-	 * Clears the window
-	 */
-	void Clear();
+	~Sprite_Enemy() override;
 
-private:
-	/** Text to draw. */
-	std::string text;
-	/** Color of Text to draw. */
-	int color = Font::ColorDefault;
-	/** Alignment of text. */
-	Text::Alignment align;
+	void Draw(Bitmap& dst) override;
+
+	Game_Enemy* GetBattler() const;
+
+	void Refresh();
+
+protected:
+	void CreateSprite();
+	void OnMonsterSpriteReady(FileRequestResult* result);
+
+	std::string sprite_name;
+	BitmapRef graphic;
+	int hue = 0;
+	float zoom = 1.0;
+
+	FileRequestBinding request_id;
 };
+
 
 #endif

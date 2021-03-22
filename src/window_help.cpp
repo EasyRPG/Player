@@ -29,8 +29,8 @@ Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flag
 	contents->Clear();
 }
 
-void Window_Help::SetText(std::string text,	Text::Alignment align) {
-	if (this->text != text || this->align != align) {
+void Window_Help::SetText(std::string text, int color, Text::Alignment align) {
+	if (this->text != text || this->color != color || this->align != align) {
 		contents->Clear();
 
 		int x = 0;
@@ -39,7 +39,7 @@ void Window_Help::SetText(std::string text,	Text::Alignment align) {
 		while (nextpos != std::string::npos) {
 			nextpos = text.find(' ', pos);
 			auto segment = ToStringView(text).substr(pos, nextpos - pos);
-			contents->TextDraw(x, 2, Font::ColorDefault, segment, align);
+			contents->TextDraw(x, 2, color, segment, align);
 			x += Font::Default()->GetSize(segment).width;
 
 			if (nextpos != decltype(text)::npos) {
@@ -50,11 +50,13 @@ void Window_Help::SetText(std::string text,	Text::Alignment align) {
 
 		this->text = std::move(text);
 		this->align = align;
-
+		this->color = color;
 	}
 }
 
 void Window_Help::Clear() {
 	this->text = "";
+	this->color = Font::ColorDefault;
+	this->align = Text::AlignLeft;
 	contents->Clear();
 }

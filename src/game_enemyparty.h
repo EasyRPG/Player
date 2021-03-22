@@ -73,6 +73,23 @@ public:
 	 */
 	void GenerateDrops(std::vector<int>& out) const;
 
+	/**
+	 * Get the enemy by party index.
+	 *
+	 * @param idx the index of the enemy.
+	 * @return enemy from party
+	 */
+	Game_Enemy* GetEnemy(int idx);
+
+	/** 
+	 * Get the position index of the enemy in the party.
+	 *
+	 * @param enemy the enemy to query.
+	 *
+	 * @return 0 based index, or -1 if not found
+	 */
+	int GetEnemyPositionInParty(const Game_Enemy* enemy) const;
+
 private:
 	std::vector<Game_Enemy> enemies;
 };

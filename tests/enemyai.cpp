@@ -16,7 +16,7 @@ static Game_Enemy MakeEnemy(int id) {
 	tp.members[id - 1].enemy_id = id;
 	Main_Data::game_enemyparty->ResetBattle(1);
 	auto& enemy = (*Main_Data::game_enemyparty)[id - 1];
-	return enemy;
+	return std::move(enemy);
 }
 
 decltype(auto) MakeActor(int id) {
@@ -648,14 +648,13 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
-		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Ally), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 
 	SUBCASE("NoAct") {
 		enemy.AddState(2, true);
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
-		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::NoMove), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::None), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
 	}
 
 	SUBCASE("Confuse") {
@@ -663,6 +662,7 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		enemy.GetBattleAlgorithm()->Start();
 		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Enemy), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 
@@ -671,6 +671,7 @@ TEST_CASE("SetStateRestrictedAction") {
 		REQUIRE(EnemyAi::SetStateRestrictedAction(enemy));
 		REQUIRE(enemy.GetBattleAlgorithm());
 		REQUIRE_EQ(static_cast<int>(Game_BattleAlgorithm::Type::Normal), static_cast<int>(enemy.GetBattleAlgorithm()->GetType()));
+		enemy.GetBattleAlgorithm()->Start();
 		REQUIRE_EQ(static_cast<int>(Game_Battler::Type_Ally), static_cast<int>(enemy.GetBattleAlgorithm()->GetTarget()->GetType()));
 	}
 }

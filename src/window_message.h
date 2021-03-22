@@ -128,6 +128,16 @@ public:
 	/** @return the last async operation */
 	AsyncOp GetAsyncOp() const;
 
+	/** @return the number of lines per page */
+	int GetMaxLinesPerPage() const;
+
+	/** 
+	 * Set the number of lines per page
+	 *
+	 * @param lines the number of lines
+	 **/
+	void SetMaxLinesPerPage(int lines);
+
 protected:
 	/** Async operation */
 	AsyncOp aop;
@@ -137,6 +147,8 @@ protected:
 	int contents_y = 0;
 	/** Current number of lines on this page. */
 	int line_count = 0;
+	/** Maximum number of lines per page */
+	int max_lines_per_page = 4;
 	/** Index of the next char in text that will be output. */
 	const char* text_index = nullptr;
 	/** text message that will be displayed. */
@@ -199,6 +211,15 @@ inline AsyncOp Window_Message::GetAsyncOp() const {
 inline bool Window_Message::GetAllowNextMessage(bool foreground) const {
 	bool is_active = (IsVisible() || close_finished_this_frame);
 	return foreground ? !is_active || close_started_this_frame : !is_active;
+}
+
+inline int Window_Message::GetMaxLinesPerPage() const {
+	return max_lines_per_page;
+}
+
+/** @return the number of lines per page */
+inline void Window_Message::SetMaxLinesPerPage(int lines) {
+	max_lines_per_page = lines;
 }
 
 #endif

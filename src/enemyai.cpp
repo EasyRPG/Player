@@ -44,12 +44,12 @@ static void DebugLog(const char*, Args&&...) {}
 constexpr decltype(RpgRtCompat::name) RpgRtCompat::name;
 constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
 
-static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttack(Game_Enemy& enemy) {
-	return std::make_shared<Game_BattleAlgorithm::Normal>(&enemy, Main_Data::game_party->GetRandomActiveBattler());
+static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttack(Game_Enemy& enemy, int hits) {
+	return std::make_shared<Game_BattleAlgorithm::Normal>(&enemy, Main_Data::game_party->GetRandomActiveBattler(), hits);
 }
 
-static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttackAllies(Game_Enemy& enemy) {
-	return std::make_shared<Game_BattleAlgorithm::Normal>(&enemy, Main_Data::game_enemyparty->GetRandomActiveBattler());
+static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttackAllies(Game_Enemy& enemy, int hits) {
+	return std::make_shared<Game_BattleAlgorithm::Normal>(&enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), hits);
 }
 
 
@@ -70,7 +70,7 @@ std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 void AlgorithmBase::SetEnemyAiAction(Game_Enemy& source) {
 	vSetEnemyAiAction(source);
 	if (source.GetBattleAlgorithm() == nullptr) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 	}
 }
 
@@ -82,19 +82,12 @@ void RpgRtImproved::vSetEnemyAiAction(Game_Enemy& source) {
 	SelectEnemyAiActionRpgRtCompat(source, false);
 }
 
-
-static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeDoubleAttack(Game_Enemy& enemy) {
-	auto algo = MakeAttack(enemy);
-	algo->SetRepeat(2);
-	return algo;
-}
-
 static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeBasicAction(Game_Enemy& enemy, const lcf::rpg::EnemyAction& action) {
 	switch (action.basic) {
 		case lcf::rpg::EnemyAction::Basic_attack:
-			return MakeAttack(enemy);
+			return MakeAttack(enemy, 1);
 		case lcf::rpg::EnemyAction::Basic_dual_attack:
-			return MakeDoubleAttack(enemy);
+			return MakeAttack(enemy, 2);
 		case lcf::rpg::EnemyAction::Basic_defense:
 			return std::make_shared<Game_BattleAlgorithm::Defend>(&enemy);
 		case lcf::rpg::EnemyAction::Basic_observe:
@@ -106,7 +99,7 @@ static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeBasicAction(Game
 		case lcf::rpg::EnemyAction::Basic_escape:
 			return std::make_shared<Game_BattleAlgorithm::Escape>(&enemy);
 		case lcf::rpg::EnemyAction::Basic_nothing:
-			return std::make_shared<Game_BattleAlgorithm::NoMove>(&enemy);
+			return std::make_shared<Game_BattleAlgorithm::DoNothing>(&enemy);
 	}
 	return nullptr;
 }
@@ -366,27 +359,26 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 
 bool SetStateRestrictedAction(Game_Enemy& source) {
 	if (!source.CanAct()) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 		return true;
 	}
 
 	if (source.GetSignificantRestriction() == lcf::rpg::State::Restriction_attack_ally) {
-		source.SetBattleAlgorithm(MakeAttackAllies(source));
+		source.SetBattleAlgorithm(MakeAttackAllies(source, 1));
 		return true;
 	}
 
 	if (source.GetSignificantRestriction() == lcf::rpg::State::Restriction_attack_enemy) {
-		source.SetBattleAlgorithm(MakeAttack(source));
+		source.SetBattleAlgorithm(MakeAttack(source, 1));
 		return true;
 	}
 
 	if (source.IsCharged()) {
-		source.SetBattleAlgorithm(MakeAttack(source));
+		source.SetBattleAlgorithm(MakeAttack(source, 1));
 		return true;
 	}
 
 	return false;
 }
-
 
 } // namespace EnemyAi

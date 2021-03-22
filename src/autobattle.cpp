@@ -64,7 +64,7 @@ std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 void AlgorithmBase::SetAutoBattleAction(Game_Actor& source) {
 	vSetAutoBattleAction(source);
 	if (source.GetBattleAlgorithm() == nullptr) {
-		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(&source));
+		source.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&source));
 	}
 }
 
@@ -220,13 +220,14 @@ double CalcNormalAttackAutoBattleTargetRank(const Game_Actor& source,
 		return 0.0;
 	}
 	const bool is_critical_hit = false;
+	const bool is_charged = false;
 
 	// RPG_RT BUG: Normal damage variance is not used
 	// Note: RPG_RT does not do the "2k3_enemy_row_bug" when computing autobattle ranks.
-	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, apply_variance, cond, false);
+	double base_effect = Algo::CalcNormalAttackEffect(source, target, weapon, is_critical_hit, is_charged, apply_variance, cond, false);
 	// RPG_RT BUG: Dual Attack is ignored
-	if (!emulate_bugs && source.HasDualAttack(weapon)) {
-		base_effect *= 2;
+	if (!emulate_bugs) {
+		base_effect *= source.GetNumberOfAttacks(weapon);
 	}
 	const double tgt_hp = target.GetHp();
 

@@ -23,6 +23,7 @@
 #include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "sprite_actor.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -898,6 +899,20 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	cmds.resize(7, -1);
 }
 
+const lcf::rpg::BattleCommand* Game_Actor::GetBattleCommand(int idx) const {
+	Span<const int32_t> commands;
+	if (data.changed_battle_commands) {
+		commands = data.battle_commands;
+	} else if (dbActor) {
+		commands = dbActor->battle_commands;
+	}
+	int cmd_id = 0;
+	if (idx >= 0 && idx < static_cast<int>(commands.size())) {
+		cmd_id = commands[idx];
+	}
+	return lcf::ReaderUtil::GetElement(lcf::Data::battlecommands.commands, cmd_id);
+}
+
 const std::vector<const lcf::rpg::BattleCommand*> Game_Actor::GetBattleCommands() const {
 	std::vector<const lcf::rpg::BattleCommand*> commands;
 	std::vector<int32_t> obc = data.battle_commands;
@@ -1319,10 +1334,10 @@ bool Game_Actor::HasPreemptiveAttack(Weapon weapon) const {
 	return rc;
 }
 
-bool Game_Actor::HasDualAttack(Weapon weapon) const {
-	bool rc = false;
-	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.dual_attack; }, weapon);
-	return rc;
+int Game_Actor::GetNumberOfAttacks(Weapon weapon) const {
+	int hits = 1;
+	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { hits = std::max(hits, Algo::GetNumberOfAttacks(GetId(), item)); }, weapon);
+	return hits;
 }
 
 bool Game_Actor::HasAttackAll(Weapon weapon) const {
@@ -1430,4 +1445,26 @@ PermanentStates Game_Actor::GetPermanentStates() const {
 
 bool Game_Actor::IsInParty() const {
 	return Main_Data::game_party->IsActorInParty(GetId());
+}
+
+std::array<const lcf::rpg::Item*, 2> Game_Actor::GetWeapons(Game_Battler::Weapon weapon) const {
+	std::array<const lcf::rpg::Item*, 2> w = {{}};
+	int i = 0;
+	if (weapon == Game_Battler::WeaponPrimary || weapon == Game_Battler::WeaponAll) {
+		w[i] = GetWeapon();
+		if (w[i]) { ++i; }
+	}
+	if (weapon == Game_Battler::WeaponSecondary || weapon == Game_Battler::WeaponAll) {
+		w[i] = Get2ndWeapon();
+	}
+	return w;
+}
+
+
+void Game_Actor::UpdateBattle() {
+	Game_Battler::UpdateBattle();
+	auto* sprite = GetActorBattleSprite();
+	if (sprite) {
+		sprite->Update();
+	}
 }

@@ -28,6 +28,8 @@
 #include "main_data.h"
 #include "player.h"
 #include "sprite_battler.h"
+#include "sprite_actor.h"
+#include "sprite_enemy.h"
 
 Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 {
@@ -48,18 +50,6 @@ Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
 	if (Player::IsRPG2k3()) {
 		for (unsigned int i = 0; i < lcf::Data::actors.size(); ++i) {
 			battler.push_back(Main_Data::game_actors->GetActor(i + 1));
-		}
-	}
-
-	int enemy_index = 0;
-	for (Game_Battler* b : battler) {
-		// For Z ordering, actors use actors id and enemies use troop id.
-		const int index = (b->GetType() == Game_Battler::Type_Ally)
-			? b->GetId() : enemy_index++;
-
-		sprites.push_back(std::make_shared<Sprite_Battler>(b, index));
-		if (b->GetType() == Game_Battler::Type_Ally) {
-			sprites.back()->SetVisible(false);
 		}
 	}
 
@@ -84,37 +74,4 @@ void Spriteset_Battle::Update() {
 	}
 	background->SetTone(new_tone);
 	background->Update();
-
-	for (auto sprite : sprites) {
-		Game_Battler* battler = sprite->GetBattler();
-		if (battler->GetType() == Game_Battler::Type_Ally) {
-			sprite->SetVisible(Main_Data::game_party->IsActorInParty(battler->GetId()));
-		}
-
-		sprite->Update();
-		sprite->SetTone(new_tone);
-	}
-}
-
-Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
-{
-	std::vector<std::shared_ptr<Sprite_Battler> >::iterator it;
-	for (it = sprites.begin(); it != sprites.end(); ++it) {
-		if ((*it)->GetBattler() == battler)
-			return it->get();
-	}
-	return NULL;
-}
-
-void Spriteset_Battle::ResetAllBattlerZ() {
-	for (auto& sprite: sprites) {
-		sprite->ResetZ();
-	}
-}
-
-void Spriteset_Battle::Refresh() {
-	for (auto& sprite: sprites) {
-		sprite->DetectStateChange();
-	}
-	need_refresh = false;
 }

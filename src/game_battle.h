@@ -30,6 +30,7 @@ class Game_Battler;
 class Game_Enemy;
 class Game_Actor;
 class Game_Interpreter;
+class Game_Interpreter_Battle;
 class Spriteset_Battle;
 
 enum class BattleResult {
@@ -115,33 +116,19 @@ namespace Game_Battle {
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
 
-	bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
-
-	/**
-	 * Runs the current interpreter or starts a new one when pages are pending
-	 *
-	 * @return true when no interpreter needs to run anymore
-	 */
-	bool UpdateEvents();
-
-	/**
-	 * Checks through all pages and marks them as pending when they want to run.
-	 */
-	void RefreshEvents();
-
-	/**
-	 * Checks through pages the match the predicate and marks them as pending when they want to run.
-	 *
-	 * @param predicate Predicate to fulfill
-	 */
-	void RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate);
-
 	/**
 	 * Gets the game interpreter.
 	 *
 	 * @return the game interpreter.
 	 */
 	Game_Interpreter& GetInterpreter();
+
+	/**
+	 * Gets the battle game interpreter.
+	 *
+	 * @return the battle game interpreter.
+	 */
+	Game_Interpreter_Battle& GetInterpreterBattle();
 
 	void SetTerrainId(int id);
 	int GetTerrainId();
@@ -184,28 +171,6 @@ namespace Game_Battle {
 	 * @param enemy the enemy to calculate.
 	 */
 	Point Calculate2k3BattlePosition(const Game_Actor& actor);
-
-	/**
-	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
-	 *
-	 * @param target_enemy id of targeted enemy
-	 */
-	void SetEnemyTargetIndex(int target_enemy);
-
-	/**
-	 * Gets the party index of the latest targeted enemy. Only used by battle branch "is target"
-	 *
-	 * @return targeted enemy
-	 */
-	int GetEnemyTargetIndex();
-
-	/**
-	 * Sets the need refresh flag.
-	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
-	 *
-	 * @param refresh need refresh state.
-	 */
-	void SetNeedRefresh(bool refresh);
 
 	struct BattleTest {
 		bool enabled = false;

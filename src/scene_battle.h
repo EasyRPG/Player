@@ -39,11 +39,6 @@
 #include "window_message.h"
 #include "game_battle.h"
 
-namespace Battle {
-class Action;
-class SpriteAction;
-}
-
 namespace AutoBattle {
 class AlgorithmBase;
 }
@@ -82,7 +77,12 @@ public:
 	~Scene_Battle() override;
 
 	void Start() override;
-	void Update() override;
+
+	void UpdateScreen();
+	void UpdateBattlers();
+	void UpdateUi();
+	bool UpdateEvents();
+	bool UpdateTimers();
 	void UpdateGraphics() override;
 
 	void Continue(SceneType prev_scene) override;
@@ -124,23 +124,15 @@ public:
 protected:
 	explicit Scene_Battle(const BattleArgs& args);
 
-	friend class Battle::SpriteAction;
-
 	virtual void CreateUi();
 
-	virtual void ProcessActions() = 0;
-	virtual void ProcessInput() = 0;
-	virtual void UpdateCursors() {}
-
 	virtual void SetState(Scene_Battle::State new_state) = 0;
-
-	void NextTurn(Game_Battler* battler);
 
 	bool IsWindowMoving();
 	bool IsEscapeAllowed() const;
 
-	virtual void EnemySelected();
-	virtual void AllySelected();
+	virtual Game_Enemy* EnemySelected();
+	virtual Game_Actor* AllySelected();
 	virtual void AttackSelected();
 	virtual void DefendSelected();
 	virtual void ItemSelected();
@@ -156,21 +148,11 @@ protected:
 	 */
 	virtual void ActionSelectedCallback(Game_Battler* for_battler);
 
-	/**
-	 * Convenience function, sets the animation state of the target if it has
-	 * a valid battler sprite, does nothing otherwise.
-	 *
-	 * @param target Battler whose anim state is changed
-	 * @param new_state new animation state
-	 */
-	virtual void SetAnimationState(Game_Battler* target, int new_state);
-
 	void PrepareBattleAction(Game_Battler* battler);
 
-	void RemoveActionsForNonExistantBattlers();
 	void RemoveCurrentAction();
 
-	void CallDebug();
+	bool CallDebug();
 
 	void EndBattle(BattleResult result);
 
@@ -180,20 +162,12 @@ protected:
 	// Variables
 	State state = State_Start;
 	State previous_state = State_Start;
-	bool auto_battle;
-	int cycle;
-	int attack_state;
-	int message_timer;
-	const lcf::rpg::EnemyAction* enemy_action;
-	std::deque<std::shared_ptr<Battle::Action> > actions;
-	int skill_id;
-	int pending_command;
+	int cycle = 0;
 	int troop_id = 0;
 	int escape_chance = 0;
 	bool allow_escape = false;
 	bool first_strike = false;
 
-	int actor_index = 0;
 	Game_Actor* active_actor = nullptr;
 
 	/** Displays Fight, Autobattle, Flee */

@@ -29,6 +29,13 @@
 Game_EnemyParty::Game_EnemyParty() {
 }
 
+Game_Enemy* Game_EnemyParty::GetEnemy(int idx) {
+	if (idx >= 0 && idx < static_cast<int>(enemies.size())) {
+		return &enemies[idx];
+	}
+	return nullptr;
+}
+
 Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 	if (index < 0 || index >= (int)enemies.size()) {
 		assert(false && "Subscript out of range");
@@ -122,4 +129,11 @@ void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 			}
 		}
 	}
+}
+
+int Game_EnemyParty::GetEnemyPositionInParty(const Game_Enemy* enemy) const {
+	if (enemy >= enemies.data() && enemy < enemies.data() + enemies.size()) {
+		return enemy - enemies.data();
+	}
+	return -1;
 }

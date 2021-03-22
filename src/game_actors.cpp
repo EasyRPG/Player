@@ -23,9 +23,9 @@
 #include "output.h"
 
 Game_Actors::Game_Actors() {
-	data.resize(lcf::Data::actors.size(), Game_Actor(0));
-	for (size_t i = 0; i < data.size(); i++) {
-		data[i] = Game_Actor(i + 1);
+	data.reserve(lcf::Data::actors.size());
+	for (size_t i = 0; i < lcf::Data::actors.size(); i++) {
+		data.emplace_back(Game_Actor(i + 1));
 	}
 }
 

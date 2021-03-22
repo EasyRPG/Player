@@ -27,6 +27,7 @@
 #include "game_battle.h"
 #include "player.h"
 #include "font.h"
+#include "output.h"
 #include "window_battlestatus.h"
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
@@ -82,7 +83,7 @@ void Window_BattleStatus::Refresh() {
 			DrawActorName(*actor, 4, y);
 			DrawActorState(*actor, 84, y);
 			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
-				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+				contents->TextDraw(132 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
 				int digits = Player::IsRPG2k() ? 3 : 4;
 				DrawActorHp(*actor, 126, y, digits, true);
@@ -96,8 +97,9 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
+		int gauge_x = contents->GetWidth() - 48;
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
-			contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
+			contents->ClearRect(Rect(gauge_x + 10, 0, 25 + 16, 15 * item_max));
 		}
 
 		for (int i = 0; i < item_max; ++i) {
@@ -152,7 +154,7 @@ void Window_BattleStatus::RefreshGauge() {
 			else {
 				int y = 2 + i * 16;
 
-				DrawGauge(*actor, 198 - 10, y - 2);
+				DrawGauge(*actor, gauge_x, y - 2);
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 					DrawActorSp(*actor, 198, y, 3, false);
 				}
@@ -164,6 +166,10 @@ void Window_BattleStatus::RefreshGauge() {
 void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_value, int which) {
 	BitmapRef system2 = Cache::System2();
 	assert(system2);
+
+	if (max_value == 0) {
+		return;
+	}
 
 	int gauge_x;
 	if (cur_value == max_value) {
@@ -277,7 +283,7 @@ void Window_BattleStatus::Update() {
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
-	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
 		SetCursorRect(Rect());
 		return;
 	}
@@ -306,3 +312,25 @@ bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
 	}
 }
 
+void Window_BattleStatus::RefreshActiveFromValid() {
+	std::vector<Game_Battler*> battlers;
+	if (enemy) {
+		Main_Data::game_enemyparty->GetBattlers(battlers);
+	} else {
+		Main_Data::game_party->GetBattlers(battlers);
+	}
+
+	for (size_t i = 0; i < battlers.size(); ++i) {
+		auto* battler = battlers[i];
+		if (IsChoiceValid(*battler)) {
+			if (!GetActive() || GetIndex() < 0) {
+				SetIndex(i);
+				SetActive(true);
+			}
+			return;
+		}
+		SetIndex(-1);
+		SetActive(false);
+	}
+	UpdateCursorRect();
+}

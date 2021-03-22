@@ -125,6 +125,14 @@ public:
 	int GetEquippedItemCount(int item_id) const;
 
 	/**
+	 * Gets number of item in inventory and equipped by party.
+	 *
+	 * @param item_id database item ID.
+	 * @return number of items.
+	 */
+	int GetItemTotalCount(int item_id) const;
+
+	/**
 	 * Gains an amount of items.
 	 *
 	 * @param item_id database item ID.

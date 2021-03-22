@@ -149,7 +149,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		}
 		++num_lines;
 
-		if (num_lines == 4 || force_page_break) {
+		if (num_lines == GetMaxLinesPerPage() || force_page_break) {
 			text.push_back('\f');
 			num_lines = 0;
 		}

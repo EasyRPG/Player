@@ -42,7 +42,7 @@ namespace Game_Battle {
 
 	std::string background_name;
 
-	std::unique_ptr<Game_Interpreter> interpreter;
+	std::unique_ptr<Game_Interpreter_Battle> interpreter;
 	/** Contains battle related sprites */
 	std::unique_ptr<Spriteset_Battle> spriteset;
 
@@ -55,40 +55,27 @@ namespace Game_Battle {
 }
 
 namespace {
-	std::vector<bool> page_executed;
 	int terrain_id;
 	lcf::rpg::System::BattleCondition battle_cond = lcf::rpg::System::BattleCondition_none;
 	lcf::rpg::System::BattleFormation battle_form = lcf::rpg::System::BattleFormation_terrain;
-	int target_enemy_index;
-	std::vector<bool> page_can_run;
-
-	std::function<bool(const lcf::rpg::TroopPage&)> last_event_filter;
 }
 
 void Game_Battle::Init(int troop_id) {
+	// troop_id is guaranteed to be valid
+	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
+	assert(troop);
+	Game_Battle::battle_running = true;
+	Main_Data::game_party->ResetTurns();
+
 	Main_Data::game_enemyparty->ResetBattle(troop_id);
-	interpreter.reset(new Game_Interpreter_Battle());
+	Main_Data::game_actors->ResetBattle();
+
+	interpreter.reset(new Game_Interpreter_Battle(troop->pages));
 	spriteset.reset(new Spriteset_Battle(background_name, terrain_id));
 	spriteset->Update();
 	animation_actors.reset();
 	animation_enemies.reset();
 
-	Game_Battle::battle_running = true;
-	Main_Data::game_party->ResetTurns();
-	target_enemy_index = 0;
-
-	// troop_id is guaranteed to be valid
-	troop = lcf::ReaderUtil::GetElement(lcf::Data::troops, troop_id);
-	page_executed.resize(troop->pages.size());
-	std::fill(page_executed.begin(), page_executed.end(), false);
-	page_can_run.resize(troop->pages.size());
-	std::fill(page_can_run.begin(), page_can_run.end(), false);
-
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return false;
-	});
-
-	Main_Data::game_actors->ResetBattle();
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
@@ -117,9 +104,6 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
-	page_executed.clear();
-	page_can_run.clear();
-
 	Main_Data::game_actors->ResetBattle();
 	Main_Data::game_enemyparty->ResetBattle(0);
 	Main_Data::game_pictures->OnBattleEnd();
@@ -142,9 +126,6 @@ void Game_Battle::UpdateAnimation() {
 
 void Game_Battle::UpdateGraphics() {
 	spriteset->Update();
-	if (spriteset->GetNeedRefresh()) {
-		spriteset->Refresh();
-	}
 }
 
 bool Game_Battle::CheckWin() {
@@ -208,41 +189,6 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation_actors) || bool(animation_enemies);
 }
 
-void Game_Battle::NextTurn(Game_Battler* battler) {
-	if (battler == nullptr) {
-		std::fill(page_executed.begin(), page_executed.end(), false);
-	} else {
-		for (const lcf::rpg::TroopPage& page : troop->pages) {
-			const lcf::rpg::TroopPageCondition& condition = page.condition;
-
-			// Reset pages without actor/enemy condition each turn
-			if (!condition.flags.turn_actor &&
-				!condition.flags.turn_enemy &&
-				!condition.flags.command_actor) {
-				page_executed[page.ID - 1] = false;
-			}
-
-			// Reset pages of specific actor after that actors turn
-			if (page_executed[page.ID - 1]) {
-				if (battler->GetType() == Game_Battler::Type_Ally &&
-						((condition.flags.turn_actor && Main_Data::game_actors->GetActor(condition.turn_actor_id) == battler) ||
-						(condition.flags.command_actor && Main_Data::game_actors->GetActor(condition.command_actor_id) == battler))) {
-					page_executed[page.ID - 1] = false;
-				}
-			}
-
-			// Reset pages of specific enemy after that enemies turn
-			if (battler->GetType() == Game_Battler::Type_Enemy &&
-				condition.flags.turn_enemy &&
-				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
-				page_executed[page.ID - 1] = false;
-			}
-		}
-	}
-
-	Main_Data::game_party->IncTurns();
-}
-
 void Game_Battle::UpdateAtbGauges() {
 	std::vector<Game_Battler*> battlers;
 	Main_Data::game_enemyparty->GetBattlers(battlers);
@@ -263,7 +209,8 @@ void Game_Battle::UpdateAtbGauges() {
 
 	for (auto* bat: battlers) {
 		// RPG_RT always updates atb for non-hidden enemies, even if they can't act.
-		if (bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
+		// We don't update ATB for battlers with a pending battle algo
+		if (!bat->GetBattleAlgorithm() && bat->Exists() && (bat->CanAct() || bat->GetType() == Game_Battler::Type_Enemy))
 		{
 			const auto agi = bat->GetAgi();
 			auto increment = max_atb / (sum_agi / (agi + 1));
@@ -298,134 +245,12 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	}
 }
 
-bool Game_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition) {
-	if (!condition.flags.switch_a &&
-		!condition.flags.switch_b &&
-		!condition.flags.variable &&
-		!condition.flags.turn &&
-		!condition.flags.turn_enemy &&
-		!condition.flags.turn_actor &&
-		!condition.flags.fatigue &&
-		!condition.flags.enemy_hp &&
-		!condition.flags.actor_hp &&
-		!condition.flags.command_actor
-		) {
-		// Pages without trigger are never run
-		return false;
-	}
-
-	if (condition.flags.switch_a && !Main_Data::game_switches->Get(condition.switch_a_id))
-		return false;
-
-	if (condition.flags.switch_b && !Main_Data::game_switches->Get(condition.switch_b_id))
-		return false;
-
-	if (condition.flags.variable && !(Main_Data::game_variables->Get(condition.variable_id) >= condition.variable_value))
-		return false;
-
-	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))
-		return false;
-
-	if (condition.flags.turn_enemy &&
-		!CheckTurns((*Main_Data::game_enemyparty)[condition.turn_enemy_id].GetBattleTurn(),	condition.turn_enemy_b, condition.turn_enemy_a))
-		return false;
-
-	if (condition.flags.turn_actor &&
-		!CheckTurns(Main_Data::game_actors->GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
-		return false;
-
-	if (condition.flags.fatigue) {
-		int fatigue = Main_Data::game_party->GetFatigue();
-		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
-			return false;
-	}
-
-	if (condition.flags.enemy_hp) {
-		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
-		int hp = enemy.GetHp();
-		int hpmin = enemy.GetMaxHp() * condition.enemy_hp_min / 100;
-		int hpmax = enemy.GetMaxHp() * condition.enemy_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
-			return false;
-	}
-
-	if (condition.flags.actor_hp) {
-		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
-		int hp = actor->GetHp();
-		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
-		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
-			return false;
-	}
-
-	if (condition.flags.command_actor &&
-		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
-		return false;
-
-	return true;
-}
-
-bool Game_Battle::UpdateEvents() {
-	const auto battle_end = Game_Battle::CheckWin() || Game_Battle::CheckLose();
-
-	// 2k3 battle interupts events immediately when battle end conditions occur.
-	if (Player::IsRPG2k3() && battle_end) {
-		return true;
-	}
-
-	if (interpreter->IsRunning()) {
-		return false;
-	}
-
-	// 2k battle end conditions wait for interpreter to finish.
-	if (Player::IsRPG2k() && battle_end) {
-		return true;
-	}
-
-	// Check if another page can run now or if a page that could run can no longer run.
-	RefreshEvents(last_event_filter);
-
-	for (const auto& page : troop->pages) {
-		if (page_can_run[page.ID - 1]) {
-			interpreter->Clear();
-			interpreter->Push(page.event_commands, 0);
-			page_can_run[page.ID - 1] = false;
-			page_executed[page.ID - 1] = true;
-			return false;
-		}
-	}
-
-	// No event can run anymore, cancel the interpreter calling until
-	// the battle system wants to run events again.
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return false;
-	});
-
-	return true;
-}
-
-void Game_Battle::RefreshEvents() {
-	RefreshEvents([](const lcf::rpg::TroopPage&) {
-		return true;
-	});
-}
-
-void Game_Battle::RefreshEvents(std::function<bool(const lcf::rpg::TroopPage&)> predicate) {
-	for (const auto& it : troop->pages) {
-		const lcf::rpg::TroopPage& page = it;
-		if (!page_executed[page.ID - 1] && AreConditionsMet(page.condition)) {
-			if (predicate(it)) {
-				page_can_run[it.ID - 1] = true;
-			}
-		} else {
-			page_can_run[it.ID - 1] = false;
-		}
-	}
-
-	last_event_filter = predicate;
-}
-
 Game_Interpreter& Game_Battle::GetInterpreter() {
+	assert(interpreter);
+	return *interpreter;
+}
+
+Game_Interpreter_Battle& Game_Battle::GetInterpreterBattle() {
 	assert(interpreter);
 	return *interpreter;
 }
@@ -452,20 +277,6 @@ void Game_Battle::SetBattleFormation(lcf::rpg::System::BattleFormation form) {
 
 lcf::rpg::System::BattleFormation Game_Battle::GetBattleFormation() {
 	return battle_form;
-}
-
-void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
-	target_enemy_index = target_enemy;
-}
-
-int Game_Battle::GetEnemyTargetIndex() {
-	return target_enemy_index;
-}
-
-void Game_Battle::SetNeedRefresh(bool refresh) {
-	if (spriteset) {
-		spriteset->SetNeedRefresh(refresh);
-	}
 }
 
 bool Game_Battle::HasDeathHandler() {
@@ -585,7 +396,7 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Enemy& enemy) {
 	const auto terrain_id = Game_Battle::GetTerrainId();
 	const auto cond = Game_Battle::GetBattleCondition();
 	const auto form = Game_Battle::GetBattleFormation();
-	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&enemy);
+	auto* sprite = enemy.GetBattleSprite();
 
 	int half_height = 0;
 	int half_width = 0;
@@ -668,7 +479,7 @@ Point Game_Battle::Calculate2k3BattlePosition(const Game_Actor& actor) {
 	const auto terrain_id = Game_Battle::GetTerrainId();
 	const auto cond = Game_Battle::GetBattleCondition();
 	const auto form = Game_Battle::GetBattleFormation();
-	auto* sprite = Game_Battle::GetSpriteset().FindBattler(&actor);
+	auto* sprite = actor.GetBattleSprite();
 
 	int half_height = 0;
 	int half_width = 0;

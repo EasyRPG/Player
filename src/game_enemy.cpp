@@ -16,6 +16,8 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <algorithm>
 #include <lcf/data.h>
 #include <lcf/rpg/enemy.h>
@@ -30,11 +32,6 @@
 #include "attribute.h"
 #include "rand.h"
 
-namespace {
-	constexpr int levitation_frame_count = 14;
-	constexpr int levitation_frame_cycle = 20;
-}
-
 Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 	: troop_member(member)
 {
@@ -45,9 +42,9 @@ Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 
 	hp = GetMaxHp();
 	sp = GetMaxSp();
-	SetHidden(troop_member->invisible);
-	cycle = Rand::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
+	ResetBattle();
 
+	SetHidden(troop_member->invisible);
 	SetBattlePosition(GetOriginalPosition());
 }
 
@@ -115,6 +112,11 @@ void Game_Enemy::Transform(int new_enemy_id) {
 		static auto dummy = makeDummyEnemy();
 		enemy = &dummy;
 	}
+
+	auto* sprite = GetEnemyBattleSprite();
+	if (sprite) {
+		sprite->Refresh();
+	}
 }
 
 int Game_Enemy::GetHitChance(Weapon) const {
@@ -125,28 +127,29 @@ float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
-
 int Game_Enemy::GetFlyingOffset() const {
 	// 2k does not support flying, albeit mentioned in the help file
-	if (Player::IsRPG2k3() && enemy->levitate) {
-		return flying_offset;
+	if (!Player::IsRPG2k3() || !IsFlying()) {
+		return 0;
 	}
-	return 0;
+
+	const auto frame = GetBattleFrameCounter();
+	auto offset = Utils::RoundTo<int>(std::sin(2 * M_PI * static_cast<double>(frame) / 256.0) * 4.0);
+	return offset;
 }
 
 void Game_Enemy::UpdateBattle() {
-	if (Player::IsRPG2k3() && enemy->levitate) {
-		static const int frames[levitation_frame_count] = { 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1 };
+	if (blink_timer > 0) --blink_timer;
+	if (death_timer > 0) --death_timer;
+	if (explode_timer > 0) --explode_timer;
 
-		cycle++;
-		// reset animation
-		if (cycle >= levitation_frame_count * levitation_frame_cycle) {
-			cycle = 0;
-		}
-		if (cycle % levitation_frame_cycle == 0) {
-			flying_offset = frames[cycle / levitation_frame_cycle];
-		}
-	}
 	Game_Battler::UpdateBattle();
 }
 
+void Game_Enemy::ResetBattle() {
+	Game_Battler::ResetBattle();
+
+	blink_timer = 0;
+	death_timer = 0;
+	explode_timer = 0;
+}

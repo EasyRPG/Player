@@ -25,6 +25,7 @@
 #include "player.h"
 #include "transition.h"
 #include "game_battlealgorithm.h"
+#include "game_interpreter_battle.h"
 #include "game_message.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -98,10 +99,6 @@ void Scene_Battle::Start() {
 
 	Game_Battle::Init(troop_id);
 
-	cycle = 0;
-	auto_battle = false;
-	enemy_action = NULL;
-
 	CreateUi();
 
 	InitEscapeChance();
@@ -118,7 +115,7 @@ void Scene_Battle::InitEscapeChance() {
 }
 
 bool Scene_Battle::TryEscape() {
-	if (first_strike || Rand::PercentChance(escape_chance)) {
+	if (first_strike || Game_Battle::GetInterpreterBattle().IsForceFleeEnabled() || Rand::PercentChance(escape_chance)) {
 		return true;
 	}
 	escape_chance += 10;
@@ -180,13 +177,26 @@ void Scene_Battle::CreateUi() {
 	skill_window.reset(new Window_BattleSkill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
-
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 	Game_Message::SetWindow(message_window.get());
 }
 
-void Scene_Battle::Update() {
+void Scene_Battle::UpdateScreen() {
+	Main_Data::game_screen->Update();
+	Main_Data::game_pictures->Update(true);
+}
+
+void Scene_Battle::UpdateBattlers() {
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_enemyparty->GetBattlers(battlers);
+	Main_Data::game_party->GetBattlers(battlers);
+	for (auto* b : battlers) {
+		b->UpdateBattle();
+	}
+	Game_Battle::UpdateAnimation();
+}
+
+void Scene_Battle::UpdateUi() {
 	options_window->Update();
 	status_window->Update();
 	command_window->Update();
@@ -195,68 +205,56 @@ void Scene_Battle::Update() {
 	skill_window->Update();
 	target_window->Update();
 
-	const int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
-	const int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
-
-	// Update Battlers
-	std::vector<Game_Battler*> battlers;
-	Main_Data::game_party->GetBattlers(battlers);
-	Main_Data::game_enemyparty->GetBattlers(battlers);
-	for (auto* b : battlers) {
-		b->UpdateBattle();
-	}
-
-	// Screen Effects
 	Game_Message::Update();
-	Main_Data::game_party->UpdateTimers();
-	Main_Data::game_screen->Update();
-	Main_Data::game_pictures->Update(true);
-	Game_Battle::UpdateAnimation();
+}
 
-	// Query Timer before and after update.
-	// If it reached zero during update was a running battle timer.
-	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
-		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
-		EndBattle(BattleResult::Abort);
-		return;
+bool Scene_Battle::UpdateEvents() {
+	auto& interp = Game_Battle::GetInterpreterBattle();
+	interp.Update();
+	status_window->Refresh();
+
+	if (interp.IsForceFleeEnabled()) {
+		if (state != State_Escape) {
+			SetState(State_Escape);
+		}
 	}
-
-	bool events_finished = Game_Battle::UpdateEvents();
 
 	auto call = TakeRequestedScene();
 	if (call && call->type == Scene::Gameover) {
 		Scene::Push(std::move(call));
 	}
 
-	if (!Game_Message::IsMessageActive() && events_finished) {
-		ProcessActions();
-		ProcessInput();
-	}
-	UpdateCursors();
-
-	auto& interp = Game_Battle::GetInterpreter();
-
-	bool events_running = interp.IsRunning();
-	interp.Update();
-
-	UpdateGraphics();
-	if (events_running && !interp.IsRunning()) {
-		// If an event that changed status finishes without displaying a message window,
-		// we need this so it can update automatically the status_window
-		status_window->Refresh();
-	}
 	if (interp.IsAsyncPending()) {
 		auto aop = interp.GetAsyncOp();
 
 		if (aop.GetType() == AsyncOp::eTerminateBattle) {
 			EndBattle(static_cast<BattleResult>(aop.GetBattleResult()));
-			return;
+			return false;
 		}
 
 		if (CheckSceneExit(aop)) {
-			return;
+			return false;
 		}
 	}
+
+	return true;
+}
+
+bool Scene_Battle::UpdateTimers() {
+	const int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
+	const int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
+
+	// Screen Effects
+	Main_Data::game_party->UpdateTimers();
+
+	// Query Timer before and after update.
+	// If it reached zero during update was a running battle timer.
+	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
+		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
+		EndBattle(BattleResult::Abort);
+		return false;
+	}
+	return true;
 }
 
 void Scene_Battle::UpdateGraphics() {
@@ -267,18 +265,7 @@ bool Scene_Battle::IsWindowMoving() {
 	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
 }
 
-void Scene_Battle::NextTurn(Game_Battler* battler) {
-	Game_Battle::NextTurn(battler);
-}
-
-void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {
-	Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-	if (target_sprite) {
-		target_sprite->SetAnimationState(new_state);
-	}
-}
-
-void Scene_Battle::EnemySelected() {
+Game_Enemy* Scene_Battle::EnemySelected() {
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
@@ -302,7 +289,7 @@ void Scene_Battle::EnemySelected() {
 			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("EnemySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
-				return;
+				return nullptr;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, item));
 		} else {
@@ -312,17 +299,12 @@ void Scene_Battle::EnemySelected() {
 		assert("Invalid previous state for enemy selection" && false);
 	}
 
-	for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
-		if (&(*Main_Data::game_enemyparty)[i] == target) {
-			Game_Battle::SetEnemyTargetIndex(i);
-		}
-	}
-
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
+	return target;
 }
 
-void Scene_Battle::AllySelected() {
+Game_Actor* Scene_Battle::AllySelected() {
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill) {
@@ -340,7 +322,7 @@ void Scene_Battle::AllySelected() {
 			const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, item->skill_id);
 			if (!skill) {
 				Output::Warning("AllySelected: Item {} references invalid skill {}", item->ID, item->skill_id);
-				return;
+				return nullptr;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill, item));
 		} else {
@@ -352,6 +334,7 @@ void Scene_Battle::AllySelected() {
 
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 	ActionSelectedCallback(active_actor);
+	return &target;
 }
 
 void Scene_Battle::AttackSelected() {
@@ -487,8 +470,8 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	}
 
 	if (!battler->CanAct()) {
-		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
-			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None) {
+			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(battler));
 		}
 		return;
 	}
@@ -511,30 +494,10 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 		return;
 	}
 
-	// If we had a state restriction previously but were recovered, we do nothing for this round.
-	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != lcf::rpg::State::Restriction_normal) {
-		if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
-			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-		}
-		return;
-	}
-
 	// If we can no longer perform the action (no more items, ran out of SP, etc..)
 	if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(battler));
 	}
-}
-
-void Scene_Battle::RemoveActionsForNonExistantBattlers() {
-	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(),
-			[](Game_Battler* b) {
-				if (!b->Exists()) {
-					b->SetBattleAlgorithm(nullptr);
-					return true;
-				}
-				return false;
-			});
-	battle_actions.erase(iter, battle_actions.end());
 }
 
 void Scene_Battle::RemoveCurrentAction() {
@@ -552,16 +515,14 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 	}
 
 	battle_actions.push_back(for_battler);
-
-	if (for_battler->GetType() == Game_Battler::Type_Ally) {
-		SetState(State_SelectActor);
-	}
 }
 
-void Scene_Battle::CallDebug() {
+bool Scene_Battle::CallDebug() {
 	if (Player::debug_flag) {
 		Scene::Push(std::make_shared<Scene_Debug>());
+		return true;
 	}
+	return false;
 }
 
 void Scene_Battle::SelectionFlash(Game_Battler* battler) {

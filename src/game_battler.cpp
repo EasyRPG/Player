@@ -46,7 +46,6 @@
 #include "rand.h"
 
 Game_Battler::Game_Battler() {
-	ResetBattle();
 }
 
 bool Game_Battler::HasState(int state_id) const {
@@ -335,14 +334,27 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		SetIsDefending(false);
 		SetCharged(false);
 		attribute_shift.clear();
-		attribute_shift.resize(lcf::Data::attributes.size());
+	}
+
+	if (!Game_Battle::IsBattleRunning()) {
+		return was_added;
 	}
 
 	if (GetSignificantRestriction() != lcf::rpg::State::Restriction_normal) {
 		SetIsDefending(false);
 		SetCharged(false);
-		if (GetBattleAlgorithm() != nullptr) {
-			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(this));
+		if (GetBattleAlgorithm() != nullptr
+				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None) {
+			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
+		}
+	}
+
+	if (GetBattleAlgorithm() != nullptr && GetBattleAlgorithm()->GetType() == Game_BattleAlgorithm::Type::Skill) {
+		auto* algo = static_cast<Game_BattleAlgorithm::Skill*>(GetBattleAlgorithm().get());
+		auto& skill = algo->GetSkill();
+		if (!IsSkillUsable(skill.ID)) {
+			SetCharged(false);
+			this->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
 		}
 	}
 
@@ -352,6 +364,7 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
 	PermanentStates ps;
 
+	auto prev_restriction = GetSignificantRestriction();
 	auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
 
 	if (!(always_remove_battle_states && state && state->type == lcf::rpg::State::Persistence_ends)) {
@@ -359,9 +372,17 @@ bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
 	}
 
 	auto was_removed = State::Remove(state_id, GetStates(), ps);
+	if (was_removed) {
+		if (state_id == lcf::rpg::State::kDeathID) {
+			SetHp(1);
+		}
 
-	if (was_removed && state_id == lcf::rpg::State::kDeathID) {
-		SetHp(1);
+		auto cur_restriction = GetSignificantRestriction();
+		if (GetBattleAlgorithm() != nullptr
+				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None
+				&& cur_restriction != prev_restriction) {
+			SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
+		}
 	}
 
 	return was_removed;
@@ -542,6 +563,7 @@ Game_Party_Base& Game_Battler::GetParty() const {
 void Game_Battler::UpdateBattle() {
 	Shake::Update(shake.position, shake.time_left, shake.strength, shake.speed, false);
 	Flash::Update(flash.current_level, flash.time_left);
+	++frame_counter;
 }
 
 std::vector<int16_t> Game_Battler::BattleStateHeal() {
@@ -588,11 +610,12 @@ void Game_Battler::ResetBattle() {
 	def_modifier = 0;
 	spi_modifier = 0;
 	agi_modifier = 0;
+	frame_counter = Rand::GetRandomNumber(0, 63);
 	battle_combo_command_id = -1;
-	battle_combo_times = -1;
+	battle_combo_times = 1;
 	attribute_shift.clear();
-	attribute_shift.resize(lcf::Data::attributes.size());
 	SetBattleAlgorithm(nullptr);
+	SetBattleSprite(nullptr);
 }
 
 int Game_Battler::GetAttributeRate(int attribute_id) const {
@@ -601,28 +624,31 @@ int Game_Battler::GetAttributeRate(int attribute_id) const {
 	return Utils::Clamp(rate, 0, 4);
 }
 
-void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
-	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
-		return;
+int Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
+	auto delta = CanShiftAttributeRate(attribute_id, shift);
+	if (delta) {
+		if (attribute_id > static_cast<int>(attribute_shift.size())) {
+			attribute_shift.resize(attribute_id);
+		}
+		attribute_shift[attribute_id - 1] += delta;
 	}
-
-	auto& a = attribute_shift[attribute_id -1];
-	a = Utils::Clamp(a + shift, -1, 1);
+	return delta;
 }
 
 int Game_Battler::GetAttributeRateShift(int attribute_id) const {
-	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
+	if (attribute_id < 1 || attribute_id > static_cast<int>(attribute_shift.size())) {
 		return 0;
 	}
 	return attribute_shift[attribute_id - 1];
 }
 
-bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
+int Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
 	if (attribute_id < 1 || attribute_id > static_cast<int>(lcf::Data::attributes.size())) {
-		return false;
+		return 0;
 	}
-	auto new_shift = attribute_shift[attribute_id - 1] + shift;
-	return new_shift >= -1 && new_shift <= 1;
+	const auto prev_shift = GetAttributeRateShift(attribute_id);
+	const auto new_shift = Utils::Clamp(prev_shift + shift, -1, 1);
+	return new_shift - prev_shift;
 }
 
 int Game_Battler::GetHitChanceModifierFromStates() const {
@@ -652,31 +678,55 @@ void Game_Battler::Flash(int r, int g, int b, int power, int frames) {
 	flash.time_left = frames;
 }
 
-int Game_Battler::ChangeAtkModifier(int modifier) {
+int Game_Battler::CanChangeAtkModifier(int modifier) const {
 	const auto prev = atk_modifier;
 	const auto base = GetBaseAtk();
-	SetAtkModifier(Utils::Clamp(atk_modifier + modifier, -base / 2, base));
-	return atk_modifier - prev;
+	const auto new_mod = (Utils::Clamp(atk_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeDefModifier(int modifier) const {
+	const auto prev = def_modifier;
+	const auto base = GetBaseDef();
+	const auto new_mod = (Utils::Clamp(def_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeSpiModifier(int modifier) const {
+	const auto prev = spi_modifier;
+	const auto base = GetBaseSpi();
+	const auto new_mod = (Utils::Clamp(spi_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::CanChangeAgiModifier(int modifier) const {
+	const auto prev = agi_modifier;
+	const auto base = GetBaseAgi();
+	const auto new_mod = (Utils::Clamp(agi_modifier + modifier, -base / 2, base));
+	return new_mod - prev;
+}
+
+int Game_Battler::ChangeAtkModifier(int modifier) {
+	auto delta = CanChangeAtkModifier(modifier);
+	SetAtkModifier(atk_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeDefModifier(int modifier) {
-	const auto prev = def_modifier;
-	const auto base = GetBaseDef();
-	SetDefModifier(Utils::Clamp(def_modifier + modifier, -base / 2, base));
-	return def_modifier - prev;
+	auto delta = CanChangeDefModifier(modifier);
+	SetDefModifier(def_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeSpiModifier(int modifier) {
-	const auto prev = spi_modifier;
-	const auto base = GetBaseSpi();
-	SetSpiModifier(Utils::Clamp(spi_modifier + modifier, -base / 2, base));
-	return spi_modifier - prev;
+	auto delta = CanChangeSpiModifier(modifier);
+	SetSpiModifier(spi_modifier + delta);
+	return delta;
 }
 
 int Game_Battler::ChangeAgiModifier(int modifier) {
-	const auto prev = agi_modifier;
-	const auto base = GetBaseAgi();
-	SetAgiModifier(Utils::Clamp(agi_modifier + modifier, -base / 2, base));
-	return agi_modifier - prev;
+	auto delta = CanChangeAgiModifier(modifier);
+	SetAgiModifier(agi_modifier + delta);
+	return delta;
 }
 

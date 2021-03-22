@@ -31,9 +31,10 @@
 #include "utils.h"
 #include "point.h"
 #include "string_view.h"
+#include "sprite_battler.h"
 
-class Game_Actor;
 class Game_Party_Base;
+class Sprite_Battler;
 
 namespace Game_BattleAlgorithm {
 	class AlgorithmBase;
@@ -63,7 +64,12 @@ public:
 	 */
 	Game_Battler();
 
-	virtual ~Game_Battler() {}
+	Game_Battler(const Game_Battler&) = delete;
+	Game_Battler& operator=(const Game_Battler&) = delete;
+	Game_Battler(Game_Battler&&) noexcept = default;
+	Game_Battler& operator=(Game_Battler&&) noexcept = default;
+
+	virtual ~Game_Battler() = default;
 
 	virtual int MaxHpValue() const = 0;
 
@@ -184,13 +190,16 @@ public:
 	 *
 	 * @param attribute_id Attribute to modify
 	 * @param shift Shift to apply.
+	 * @return the amount shifted.
 	 */
-	void ShiftAttributeRate(int attribute_id, int shift);
+	int ShiftAttributeRate(int attribute_id, int shift);
 
-	/*
-	 * @return true if we can shift the attribute rate by shift
+	/**
+	 * Checks if we can shift an attribute.
+	 *
+	 * @return The amount we are able to shift by.
 	 */
-	bool CanShiftAttributeRate(int attribute_id, int shift) const;
+	int CanShiftAttributeRate(int attribute_id, int shift) const;
 
 	/**
 	 * Gets the current modifier (buff/debuff) to an attribute rate.
@@ -425,7 +434,7 @@ public:
 	/** @return true if this battler is in it's party */
 	virtual bool IsInParty() const = 0;
 
-	virtual bool Exists() const;
+	bool Exists() const;
 	bool IsDead() const;
 
 	/**
@@ -470,6 +479,14 @@ public:
 	 * @return needed skill cost.
 	 */
 	virtual int CalculateSkillCost(int skill_id) const;
+
+	/**
+	 * Calculates the Sp cost for attacking with a weapon.
+	 *
+	 * @param weapon which weapons to include in calculating result.
+	 * @return sp cost for attacking with weapon.
+	 */
+	virtual int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
 
 	/**
 	 * Sets the battler attack modifier.
@@ -532,6 +549,38 @@ public:
 	int ChangeAgiModifier(int modifier);
 
 	/**
+	 * Check if we can increases or decreases battler attack modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeAtkModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler defense modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeDefModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler spirit modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeSpiModifier(int modifier) const;
+
+	/**
+	 * Check if we can increases or decreases battler agility modifier.
+	 *
+	 * @param modifier relative modifier change
+	 * @return how much the modifier will change.
+	 */
+	int CanChangeAgiModifier(int modifier) const;
+
+	/**
 	 * Add a State.
 	 *
 	 * @param state_id ID of state to add.
@@ -588,8 +637,6 @@ public:
 	/** @return Adjusted Y position on the screen.  */
 	int GetDisplayY() const;
 
-	virtual int GetHue() const;
-
 	virtual int GetBattleAnimationId() const = 0;
 
 	/**
@@ -644,6 +691,23 @@ public:
 	 * @return true if a weapon is having preempt attribute
 	 */
 	virtual bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const;
+
+	/**
+	 * Returns the number of times the battler will attack.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return the number of attacks.
+	 */
+	virtual int GetNumberOfAttacks(Weapon weapon = WeaponAll) const;
+
+	/**
+	 * Tests if the battler has a weapon that grants attack all
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return true if a weapon is having attack all attribute
+	 */
+	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const;
+
 
 	enum BattlerType {
 		Type_Ally,
@@ -724,6 +788,15 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
+	/** @return the battle sprite for the battler */
+	Sprite_Battler* GetBattleSprite() const;
+
+	/**
+	 * Sets the battle sprite
+	 * @param s the new sprite
+	 */
+	void SetBattleSprite(std::unique_ptr<Sprite_Battler> s);
+
 	/**
 	 * @return Current turn in battle
 	 */
@@ -752,13 +825,24 @@ public:
 
 	int GetLastBattleAction() const;
 
+	/**
+	 * Setup the combo command
+	 *
+	 * @param which battle command to enable combos
+	 * @param times how many times to repeat
+	 */
 	void SetBattleCombo(int command_id, int times);
-	void GetBattleCombo(int& command_id, int& times) const;
+
+	/** @return combo command id */
+	int GetBattleComboCommand() const;
+
+	/** @return combo command number of times */
+	int GetBattleComboTimes() const;
 
 	/**
 	 * Initializes battle related data to there default values.
 	 */
-	void ResetBattle();
+	virtual void ResetBattle();
 
 	/**
 	 * @return Effective physical hit rate modifier from inflicted states.
@@ -788,27 +872,31 @@ public:
 	/** @return current flash color */
 	Color GetFlashColor() const;
 
+	/** @return battle frame counter */
+	int GetBattleFrameCounter() const;
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge = 0;
 
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
-
-	int atk_modifier;
-	int def_modifier;
-	int spi_modifier;
-	int agi_modifier;
-	int battle_turn;
-	int last_battle_action;
-	int battle_combo_command_id;
-	int battle_combo_times;
-	Point position;
+	int atk_modifier = 0;
+	int def_modifier = 0;
+	int spi_modifier = 0;
+	int agi_modifier = 0;
+	int battle_turn = 0;
+	int frame_counter = 0;
+	int last_battle_action = -1;
+	int battle_combo_command_id = -1;
+	int battle_combo_times = 1;
+	Point position = { 0, 0 };
 	bool defending = false;
 	bool charged = false;
 	bool hidden = false;
 	bool direction_flipped = false;
 
+	std::unique_ptr<Sprite_Battler> battle_sprite;
 	std::vector<int> attribute_shift;
 
 	int battle_order = 0;
@@ -840,7 +928,8 @@ inline void Game_Battler::Kill() {
 }
 
 inline bool Game_Battler::IsDead() const {
-	return HasState(lcf::rpg::State::kDeathID);
+	// RPG_RT compatibility requires checking the death state and not hp.
+	return GetHp() == 0;
 }
 
 inline bool Game_Battler::Exists() const {
@@ -887,6 +976,14 @@ inline bool Game_Battler::HasPreemptiveAttack(Weapon) const {
 	return false;
 }
 
+inline int Game_Battler::GetNumberOfAttacks(Weapon) const {
+	return 1;
+}
+
+inline bool Game_Battler::HasAttackAll(Weapon) const {
+	return false;
+}
+
 inline void Game_Battler::SetHidden(bool _hidden) {
 	hidden = _hidden;
 }
@@ -897,10 +994,6 @@ inline bool Game_Battler::IsHidden() const {
 
 inline bool Game_Battler::IsImmortal() const {
 	return false;
-}
-
-inline int Game_Battler::GetHue() const {
-	return 0;
 }
 
 constexpr int Game_Battler::GetMaxAtbGauge() {
@@ -935,6 +1028,14 @@ inline void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm
 	this->battle_algorithm = battle_algorithm;
 }
 
+inline Sprite_Battler* Game_Battler::GetBattleSprite() const {
+	return battle_sprite.get();
+}
+
+inline void Game_Battler::SetBattleSprite(std::unique_ptr<Sprite_Battler> s) {
+	battle_sprite = std::move(s);
+}
+
 inline void Game_Battler::NextBattleTurn() {
 	++battle_turn;
 }
@@ -956,9 +1057,12 @@ inline void Game_Battler::SetBattleCombo(int command_id, int times) {
 	battle_combo_times = times;
 }
 
-inline void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
-	command_id = battle_combo_command_id;
-	times = battle_combo_times;
+inline int Game_Battler::GetBattleComboCommand() const {
+	return battle_combo_command_id;
+}
+
+inline int Game_Battler::GetBattleComboTimes() const {
+	return std::max(1, battle_combo_times);
 }
 
 inline void Game_Battler::SetBattleOrderAgi(int val) {
@@ -983,6 +1087,14 @@ inline bool Game_Battler::IsDirectionFlipped() const {
 
 inline void Game_Battler::SetDirectionFlipped(bool flip) {
 	direction_flipped = flip;
+}
+
+inline int Game_Battler::GetBattleFrameCounter() const {
+	return frame_counter;
+}
+
+inline int Game_Battler::CalculateWeaponSpCost(Weapon) const {
+	return 0;
 }
 
 #endif

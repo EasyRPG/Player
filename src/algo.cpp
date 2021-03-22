@@ -178,6 +178,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		Game_Battler::Weapon weapon,
 		bool is_critical_hit,
+		bool is_charged,
 		bool apply_variance,
 		lcf::rpg::System::BattleCondition cond,
 		bool emulate_2k3_enemy_row_bug)
@@ -204,7 +205,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	// Critical and charge adjustment
 	if (is_critical_hit) {
 		dmg *= 3;
-	} else if (source.IsCharged()) {
+	} else if (is_charged) {
 		dmg *= 2;
 	}
 
@@ -303,6 +304,19 @@ bool IsSkillUsable(const lcf::rpg::Skill& skill,
 	}
 
 	return affects_state;
+}
+
+int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon) {
+	assert(weapon.type == lcf::rpg::Item::Type_weapon);
+	int hits = weapon.dual_attack ? 2 : 1;
+	if (Player::IsRPG2k3()) {
+		auto& cba = weapon.animation_data;
+		if (actor_id >= 1 && actor_id <= static_cast<int>(cba.size())) {
+			int cba_hits = cba[actor_id - 1].attacks + 1;
+			hits *= cba_hits;
+		}
+	}
+	return hits;
 }
 
 } // namespace Algo

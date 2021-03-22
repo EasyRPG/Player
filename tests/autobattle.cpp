@@ -10,7 +10,7 @@ static Game_Enemy MakeEnemy(int id, int hp, int sp, int atk, int def, int spi, i
 	tp.members[id - 1].enemy_id = id;
 	Main_Data::game_enemyparty->ResetBattle(1);
 	auto& enemy = (*Main_Data::game_enemyparty)[id - 1];
-	return enemy;
+	return std::move(enemy);
 }
 
 decltype(auto) MakeActor(int id, int hp, int sp, int atk, int def, int spi, int agi) {

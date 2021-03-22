@@ -28,6 +28,7 @@
 #include <lcf/rpg/learning.h>
 #include "game_battler.h"
 #include "string_view.h"
+#include "sprite_actor.h"
 
 class PendingMessage;
 
@@ -139,7 +140,7 @@ public:
 	 * @param weapon which weapons to include in calculating result.
 	 * @return sp cost for attacking with weapon.
 	 */
-	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const;
+	int CalculateWeaponSpCost(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Gets the actor ID.
@@ -313,6 +314,13 @@ public:
 	 * @return actor's 2nd weapon if equipped and type == lcf::rpg::Item::Type_weapon
 	 */
 	const lcf::rpg::Item* Get2ndWeapon() const;
+
+	/**
+	 * Get all weapons equipped by the actor
+	 *
+	 * @param weapon which weapons to retrieve
+	 */
+	std::array<const lcf::rpg::Item*, 2> GetWeapons(Game_Battler::Weapon weapon) const;
 
 	/**
 	 * @return actor's shield if equipped and type == lcf::rpg::Item::Type_shield
@@ -781,6 +789,9 @@ public:
 	 */
 	const std::vector<const lcf::rpg::BattleCommand*> GetBattleCommands() const;
 
+	/** @return the battle command at the given index */
+	const lcf::rpg::BattleCommand* GetBattleCommand(int idx) const;
+
 	/**
 	 * Gets battle row for Rpg2k3 battles.
 	 *
@@ -804,12 +815,12 @@ public:
 	bool HasPreemptiveAttack(Weapon weapon = WeaponAll) const override;
 
 	/**
-	 * Tests if the battler has a weapon that grants dual attack.
+	 * Returns the number of times the battler will attack.
 	 *
 	 * @param weapon Which weapons to include in calculating result.
-	 * @return true if a weapon is having dual attack attribute
+	 * @return the number of attacks.
 	 */
-	bool HasDualAttack(Weapon weapon = WeaponAll) const;
+	int GetNumberOfAttacks(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon that grants attack all
@@ -817,7 +828,7 @@ public:
 	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having attack all attribute
 	 */
-	bool HasAttackAll(Weapon weapon = WeaponAll) const;
+	bool HasAttackAll(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * Tests if the battler has a weapon which ignores evasion.
@@ -883,6 +894,25 @@ public:
 	void ResetEquipmentStates(bool allow_battle_states);
 
 	bool IsInParty() const override;
+
+	/** @return the id of the actors unarmed battle animation */
+	int GetUnarmedBattleAnimationId() const;
+
+	/** Set whether the actor can use 2 weapons */
+	void SetTwoWeapons(bool value);
+
+	/** Set whether the actor's equipment is locked */
+	void SetLockEquipment(bool value);
+
+	/** Set whether the actor's always fights with auto battle */
+	void SetAutoBattle(bool value);
+
+	/** Set whether the actor has super guard */
+	void SetStrongDefense(bool value);
+
+	void UpdateBattle() override;
+
+	Sprite_Actor* GetActorBattleSprite() const;
 
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
@@ -1026,6 +1056,30 @@ inline int Game_Actor::GetSpiMod() const {
 
 inline int Game_Actor::GetAgiMod() const {
 	return data.agility_mod;
+}
+
+inline int Game_Actor::GetUnarmedBattleAnimationId() const {
+	return dbActor->unarmed_animation;
+}
+
+inline void Game_Actor::SetTwoWeapons(bool value) {
+	data.two_weapon = value;
+}
+
+inline void Game_Actor::SetLockEquipment(bool value) {
+	data.lock_equipment = value;
+}
+
+inline void Game_Actor::SetAutoBattle(bool value) {
+	data.auto_battle = value;
+}
+
+inline void Game_Actor::SetStrongDefense(bool value) {
+	data.super_guard = value;
+}
+
+inline Sprite_Actor* Game_Actor::GetActorBattleSprite() const {
+	return static_cast<Sprite_Actor*>(Game_Battler::GetBattleSprite());
 }
 
 #endif

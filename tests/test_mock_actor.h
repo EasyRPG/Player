@@ -8,6 +8,7 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "game_player.h"
+#include "game_battle.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -59,7 +60,7 @@ static void InitEmptyDB() {
 	}
 
 	for (auto& enemy: lcf::Data::enemies) {
-		enemy.state_ranks.resize(lcf::Data::states.size(), 2);
+		enemy.state_ranks.resize(lcf::Data::states.size(), 1);
 		enemy.attribute_ranks.resize(lcf::Data::attributes.size(), 2);
 	}
 
@@ -108,6 +109,28 @@ public:
 private:
 	int _engine = {};
 	LogLevel _ll = {};
+};
+
+struct MockBattle : public MockActor {
+	MockBattle(int party_size = 4, int troop_size = 4, int eng = Player::EngineRpg2k3 | Player::EngineEnglish) : MockActor(eng)
+	{
+		Main_Data::game_party->Clear();
+		for (int i = 0; i < party_size; ++i) {
+			Main_Data::game_party->AddActor(i + 1);
+		}
+
+		auto& tp = lcf::Data::troops[0];
+		tp.members.resize(troop_size);
+		for (int i = 0; i < troop_size; ++i) {
+			tp.members[i].enemy_id = i + 1;
+		}
+		Main_Data::game_enemyparty->ResetBattle(1);
+		Game_Battle::battle_running = true;
+	}
+
+	~MockBattle() {
+		Game_Battle::battle_running = false;
+	}
 };
 
 inline lcf::rpg::Actor* MakeDBActor(int id, int level = 1, int final_level = 50,
@@ -217,5 +240,31 @@ inline void SetDBSkillAttribute(int id, int attr_id, bool value) {
 	auto& skill = lcf::Data::skills[id - 1];
 	skill.attribute_effects[attr_id - 1] = value;
 }
+
+inline void Setup(Game_Actor* actor, int hp, int sp, int atk, int def, int spi, int agi) {
+	actor->SetBaseMaxHp(hp);
+	actor->SetHp(hp);
+	actor->SetBaseMaxSp(sp);
+	actor->SetSp(sp);
+	actor->SetBaseAtk(atk);
+	actor->SetBaseDef(def);
+	actor->SetBaseSpi(spi);
+	actor->SetBaseAgi(agi);
+}
+
+inline void Setup(Game_Enemy* enemy, int hp, int sp, int atk, int def, int spi, int agi) {
+	auto& db = lcf::Data::enemies[enemy->GetId() - 1];
+	db.max_hp = hp;
+	db.max_sp = sp;
+	db.attack = atk;
+	db.defense = def;
+	db.spirit = spi;
+	db.agility = agi;
+
+	enemy->SetHp(hp);
+	enemy->SetSp(sp);
+}
+
+
 
 #endif

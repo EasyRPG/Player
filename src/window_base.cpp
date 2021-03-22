@@ -39,15 +39,20 @@ Window_Base::Window_Base(int x, int y, int width, int height, Drawable::Flags fl
 	SetZ(Priority_Window);
 }
 
-void Window_Base::InitMovement(int old_x, int old_y, int new_x, int new_y, int duration) {
+bool Window_Base::InitMovement(int old_x, int old_y, int new_x, int new_y, int duration) {
 	current_frame = 0;
-	total_frames = duration;
 	old_position[0] = old_x;
 	old_position[1] = old_y;
 	new_position[0] = new_x;
 	new_position[1] = new_y;
 	SetX(old_position[0]);
 	SetY(old_position[1]);
+	total_frames = 0;
+	if (old_x != new_x || old_y != new_y) {
+		total_frames = duration;
+		return true;
+	}
+	return false;
 }
 
 bool Window_Base::IsMovementActive() {

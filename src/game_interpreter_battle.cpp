@@ -35,8 +35,114 @@ enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
 
-Game_Interpreter_Battle::Game_Interpreter_Battle()
-	: Game_Interpreter(true) {}
+Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages)
+	: Game_Interpreter(true), pages(pages), executed(pages.size(), false)
+{
+}
+
+bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition) {
+	if (!condition.flags.switch_a &&
+		!condition.flags.switch_b &&
+		!condition.flags.variable &&
+		!condition.flags.turn &&
+		!condition.flags.turn_enemy &&
+		!condition.flags.turn_actor &&
+		!condition.flags.fatigue &&
+		!condition.flags.enemy_hp &&
+		!condition.flags.actor_hp &&
+		!condition.flags.command_actor
+		) {
+		// Pages without trigger are never run
+		return false;
+	}
+
+	if (condition.flags.switch_a && !Main_Data::game_switches->Get(condition.switch_a_id))
+		return false;
+
+	if (condition.flags.switch_b && !Main_Data::game_switches->Get(condition.switch_b_id))
+		return false;
+
+	if (condition.flags.variable && !(Main_Data::game_variables->Get(condition.variable_id) >= condition.variable_value))
+		return false;
+
+	if (condition.flags.turn && !Game_Battle::CheckTurns(Game_Battle::GetTurn(), condition.turn_b, condition.turn_a))
+		return false;
+
+	if (condition.flags.turn_enemy &&
+		!Game_Battle::CheckTurns((*Main_Data::game_enemyparty)[condition.turn_enemy_id].GetBattleTurn(),	condition.turn_enemy_b, condition.turn_enemy_a))
+		return false;
+
+	if (condition.flags.turn_actor &&
+		!Game_Battle::CheckTurns(Main_Data::game_actors->GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
+		return false;
+
+	if (condition.flags.fatigue) {
+		int fatigue = Main_Data::game_party->GetFatigue();
+		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
+			return false;
+	}
+
+	if (condition.flags.enemy_hp) {
+		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
+		int hp = enemy.GetHp();
+		int hpmin = enemy.GetMaxHp() * condition.enemy_hp_min / 100;
+		int hpmax = enemy.GetMaxHp() * condition.enemy_hp_max / 100;
+		if (hp < hpmin || hp > hpmax)
+			return false;
+	}
+
+	if (condition.flags.actor_hp) {
+		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
+		int hp = actor->GetHp();
+		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
+		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
+		if (hp < hpmin || hp > hpmax)
+			return false;
+	}
+
+	// FIXME: This also requires current acting hero db id
+	if (condition.flags.command_actor &&
+		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
+		return false;
+
+	return true;
+}
+
+int Game_Interpreter_Battle::ScheduleNextPage() {
+	lcf::rpg::TroopPageCondition::Flags f;
+	for (auto& ff: f.flags) ff = true;
+
+	return ScheduleNextPage(f);
+}
+
+static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::rpg::TroopPageCondition::Flags required) {
+	for (size_t i = 0; i < page.flags.size(); ++i) {
+		if (required.flags[i] && page.flags[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions) {
+	if (IsRunning()) {
+		return 0;
+	}
+
+	for (size_t i = 0; i < pages.size(); ++i) {
+		auto& page = pages[i];
+		if (executed[i]
+				|| !HasRequiredCondition(page.condition.flags, required_conditions)
+				|| !AreConditionsMet(page.condition)) {
+			continue;
+		}
+		Clear();
+		Push(page.event_commands, 0);
+		executed[i] = true;
+		return i + 1;
+	}
+	return 0;
+}
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
@@ -93,37 +199,38 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand cons
 
 bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com) {
 	bool check = com.parameters[2] == 0;
-	bool result = false;
 
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_pincers) {
-			_async_op = AsyncOp::MakeTerminateBattle(static_cast<int>(BattleResult::Escape));
-			result = true;
+			this->force_flee_enabled = true;
 		}
 	    break;
 	case 1:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
-			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
-				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
-				enemy.Kill();
+			int num_escaped = 0;
+			for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
+				if (enemy->Exists()) {
+					enemy->SetHidden(true);
+					enemy->SetDeathTimer();
+					++num_escaped;
+				}
 			}
-			Game_Battle::SetNeedRefresh(true);
-			result = true;
+			if (num_escaped) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
+			}
 		}
 	    break;
 	case 2:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
-			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
-			enemy.Kill();
-			Game_Battle::SetNeedRefresh(true);
-			result = true;
+			auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
+			if (enemy->Exists()) {
+				enemy->SetHidden(true);
+				enemy->SetDeathTimer();
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
+			}
 		}
 	    break;
-	}
-
-	if (result) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Escape));
 	}
 
 	return true;
@@ -174,14 +281,20 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	    break;
 	}
 
-	if (lose)
+	if (lose) {
 		change = -change;
+	}
 
 	enemy.ChangeHp(change, lethal);
 
+	auto& scene = Scene::instance;
+	if (scene) {
+		scene->OnEventHpChanged(&enemy, change);
+	}
+
 	if (enemy.IsDead()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-		Game_Battle::SetNeedRefresh(true);
+		enemy.SetDeathTimer();
 	}
 
 	return true;
@@ -218,16 +331,9 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(lcf::rpg::EventComma
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove) {
+		// RPG_RT BUG: Monster dissapears immediately and doesn't animate death
 		enemy.RemoveState(state_id, false);
-		if (state_id == lcf::rpg::State::kDeathID) {
-			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
-			Game_Battle::SetNeedRefresh(true);
-		}
 	} else {
-		if (state_id == lcf::rpg::State::kDeathID) {
-			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
-			Game_Battle::SetNeedRefresh(true);
-		}
 		enemy.AddState(state_id, true);
 	}
 	return true;
@@ -260,10 +366,13 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(lcf::rpg::EventCommand 
 		std::vector<Game_Battler*> v;
 
 		if (allies) {
-			Main_Data::game_party->GetActiveBattlers(v);
+			Main_Data::game_party->GetBattlers(v);
 		} else {
-			Main_Data::game_enemyparty->GetActiveBattlers(v);
+			Main_Data::game_enemyparty->GetBattlers(v);
 		}
+		auto iter = std::remove_if(v.begin(), v.end(),
+				[](auto* target) { return !(target->Exists() || (target->GetType() == Game_Battler::Type_Ally && target->IsDead())); });
+		v.erase(iter, v.end());
 
 		frames = Game_Battle::ShowBattleAnimation(animation_id, v, false);
 	}
@@ -368,21 +477,16 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 			break;
 		case 4:
 			// Monster is the current target
-			result = Game_Battle::GetEnemyTargetIndex() == com.parameters[1];
+			result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
 			break;
 		case 5: {
 			// Hero uses the ... command
-			Game_Actor *actor = Main_Data::game_actors->GetActor(com.parameters[1]);
-
-			if (!actor) {
-				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
-				// Use Else branch
-				SetSubcommandIndex(com.indent, 1);
-				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
-				return true;
+			if (current_actor_id == com.parameters[1]) {
+				auto *actor = Main_Data::game_actors->GetActor(current_actor_id);
+				if (actor) {
+					result = actor->GetLastBattleAction() == com.parameters[2];
+				}
 			}
-
-			result = actor->GetLastBattleAction() == com.parameters[2];
 			break;
 		}
 	}

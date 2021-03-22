@@ -38,7 +38,7 @@ public:
 	 *                 items, if no height is passed
 	 *                 the height is autocalculated.
 	 */
-	Window_Command(const std::vector<std::string>& commands, int width = -1, int max_item = -1);
+	Window_Command(std::vector<std::string> commands, int width = -1, int max_item = -1);
 
 	/**
 	 * Refreshes the window contents.
@@ -66,6 +66,14 @@ public:
 	 * @param text new item text.
 	 */
 	void SetItemText(unsigned index, StringView text);
+
+	/**
+	 * Replace all commands with a new command set.
+	 *
+	 * @param commands the commands to replace with
+	 * @note auto-generating width and height is not supported.
+	 */
+	void ReplaceCommands(std::vector<std::string> commands);
 
 protected:
 	std::vector<std::string> commands;

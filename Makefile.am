@@ -42,6 +42,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/baseui.h \
 	src/battle_animation.cpp \
 	src/battle_animation.h \
+	src/battle_message.cpp \
+	src/battle_message.h \
 	src/bitmap.cpp \
 	src/bitmap.h \
 	src/bitmapfont.h \
@@ -293,8 +295,12 @@ libeasyrpg_player_a_SOURCES = \
 	src/sprite.h \
 	src/sprite_airshipshadow.h \
 	src/sprite_airshipshadow.cpp \
+	src/sprite_actor.cpp \
+	src/sprite_actor.h \
 	src/sprite_battler.cpp \
 	src/sprite_battler.h \
+	src/sprite_enemy.cpp \
+	src/sprite_enemy.h \
 	src/sprite_character.cpp \
 	src/sprite_character.h \
 	src/sprite_picture.cpp \
