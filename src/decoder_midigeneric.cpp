@@ -158,7 +158,7 @@ int GenericMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 
 	// Advance the MIDI playback in smaller steps to achieve a 1ms message resolution
 	// Otherwise the MIDI sounds off because messages are processed too late.
-	for (;;) {
+	while (samples_max > 0) {
 		// Process MIDI messages
 		size_t samples = std::min(samples_per_play, samples_max);
 		float delta = (float)samples / (frequency * 100.0f / pitch);
