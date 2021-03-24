@@ -72,6 +72,12 @@ private:
 	bool CommandConditionalBranchBattle(lcf::rpg::EventCommand const& com);
 	bool CommandElseBranchBattle(lcf::rpg::EventCommand const& com);
 	bool CommandEndBranchBattle(lcf::rpg::EventCommand const& com);
+
+	bool CommandManiacControlBattle(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com);
+	bool CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const& com);
+	bool CommandManiacGetBattleInfo(lcf::rpg::EventCommand const& com);
+
 private:
 	Span<const lcf::rpg::TroopPage> pages;
 	std::vector<bool> executed;

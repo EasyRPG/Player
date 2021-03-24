@@ -51,7 +51,9 @@ namespace Player {
 		/** DynRPG */
 		PatchDynRpg = 1,
 		/** ManiacPatch */
-		PatchManiac = 2
+		PatchManiac = 1 << 1,
+		/** Patches specified on command line, no autodetect */
+		PatchOverride = 1 << 16
 	};
 
 	/**

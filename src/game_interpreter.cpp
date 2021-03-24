@@ -710,6 +710,36 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandExitGame(com);
 		case Cmd::ToggleFullscreen:
 			return CommandToggleFullscreen(com);
+		case Cmd::Maniac_GetSaveInfo:
+			return CommandManiacGetSaveInfo(com);
+		case Cmd::Maniac_Load:
+			return CommandManiacLoad(com);
+		case Cmd::Maniac_Save:
+			return CommandManiacSave(com);
+		case Cmd::Maniac_EndLoadProcess:
+			return CommandManiacEndLoadProcess(com);
+		case Cmd::Maniac_GetMousePosition:
+			return CommandManiacGetMousePosition(com);
+		case Cmd::Maniac_SetMousePosition:
+			return CommandManiacSetMousePosition(com);
+		case Cmd::Maniac_ShowStringPicture:
+			return CommandManiacShowStringPicture(com);
+		case Cmd::Maniac_GetPictureInfo:
+			return CommandManiacGetPictureInfo(com);
+		case Cmd::Maniac_ControlVarArray:
+			return CommandManiacControlVarArray(com);
+		case Cmd::Maniac_KeyInputProcEx:
+			return CommandManiacKeyInputProcEx(com);
+		case Cmd::Maniac_RewriteMap:
+			return CommandManiacRewriteMap(com);
+		case Cmd::Maniac_ControlGlobalSave:
+			return CommandManiacControlGlobalSave(com);
+		case Cmd::Maniac_ChangePictureId:
+			return CommandManiacChangePictureId(com);
+		case Cmd::Maniac_SetGameOption:
+			return CommandManiacSetGameOption(com);
+		case Cmd::Maniac_CallCommand:
+			return CommandManiacCallCommand(com);
 		default:
 			return true;
 	}
@@ -3423,6 +3453,157 @@ bool Game_Interpreter::CommandExitGame(lcf::rpg::EventCommand const& /* com */) 
 
 bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* com */) {
 	DisplayUi->ToggleFullscreen();
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command GetSaveInfo not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacSave(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command Save not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command Load not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacEndLoadProcess(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command EndLoadProcess not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacGetMousePosition(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+	static bool warned = false;
+	if (!warned) {
+		// This command is polled, prevent excessive spam
+		Output::Warning("Maniac Patch: Mouse input is not supported on this platform");
+		warned = true;
+	}
+	return true;
+#endif
+
+	Point mouse_pos = Input::GetMousePosition();
+
+	Main_Data::game_variables->Set(com.parameters[0], mouse_pos.x);
+	Main_Data::game_variables->Set(com.parameters[1], mouse_pos.y);
+
+	Game_Map::SetNeedRefresh(true);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacSetMousePosition(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command SetMousePosition not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ShowStringPicture not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command GetPictureInfo not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ControlVarArray not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command KeyInputProcEx not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command RewriteMap not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ControlGlobalSave not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ChangePictureId not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command SetGameOption not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command CallCommand not supported");
 	return true;
 }
 

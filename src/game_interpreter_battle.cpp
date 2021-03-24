@@ -176,6 +176,14 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 			return CommandElseBranchBattle(com);
 		case Cmd::EndBranch_B:
 			return CommandEndBranchBattle(com);
+		case Cmd::Maniac_ControlBattle:
+			return CommandManiacControlBattle(com);
+		case Cmd::Maniac_ControlAtbGauge:
+			return CommandManiacControlAtbGauge(com);
+		case Cmd::Maniac_ChangeBattleCommandEx:
+			return CommandManiacChangeBattleCommandEx(com);
+		case Cmd::Maniac_GetBattleInfo:
+			return CommandManiacGetBattleInfo(com);
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -506,6 +514,42 @@ bool Game_Interpreter_Battle::CommandElseBranchBattle(lcf::rpg::EventCommand con
 }
 
 bool Game_Interpreter_Battle::CommandEndBranchBattle(lcf::rpg::EventCommand const& /* com */) { //code 23311
+	return true;
+}
+
+bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ControlBattle not supported");
+	return true;
+}
+
+bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ControlAtbGauge not supported");
+	return true;
+}
+
+bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command ChangeBattleCommandEx not supported");
+	return true;
+}
+
+bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand const&) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	Output::Warning("Maniac Patch: Command GetBattleInfo not supported");
 	return true;
 }
 

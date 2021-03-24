@@ -111,6 +111,13 @@ directory!
    - 'RPG_RT'     - The default RPG_RT compatible algo, including RPG_RT bugs
    - 'RPG_RT+'    - The default RPG_RT compatible algo, with bug fixes
 
+*--patch* 'PATCH_A' ['PATCH_B' '...']::
+  Force emulation of engine patches, disabling auto detection.
+  Possible options:
+   - 'none'       - Disable all patches
+   - 'dynrpg'     - DynRPG patch by Cherry
+   - 'maniac'     - Maniac Patch by BingShan
+
 *--start-map-id* 'ID'::
   Overwrite the map used for new games and use Map__ID__.lmu instead ('ID' is
   padded to four digits).
