@@ -203,4 +203,23 @@ int GetStateRate(int state_id, int rate) {
 
 }
 
+const std::vector<lcf::rpg::State*> GetObjects(const StateVec& states) {
+	std::vector<lcf::rpg::State*> state_list;
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			lcf::rpg::State* state = lcf::ReaderUtil::GetElement(lcf::Data::states, i + 1);
+			state_list.push_back(state);
+		}
+	}
+	return state_list;
+}
+
+const std::vector<lcf::rpg::State*> SortedByPriority(const std::vector<lcf::rpg::State*>& states) {
+	std::vector<lcf::rpg::State*> state_list = states;
+	std::sort(state_list.begin(), state_list.end(), [](lcf::rpg::State* lhs, lcf::rpg::State* rhs) {
+		return std::tie(lhs->priority, lhs->ID) > std::tie(rhs->priority, rhs->ID);
+	});
+	return state_list;
+}
+
 } //namspace State
