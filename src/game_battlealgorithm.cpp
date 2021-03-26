@@ -596,7 +596,8 @@ int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 	if (source->GetType() == Game_Battler::Type_Enemy
 			&& Player::IsRPG2k3()
 			&& !lcf::Data::animations.empty()) {
-		return 1;
+		Game_Enemy* enemy = static_cast<Game_Enemy*>(source);
+		return enemy->GetUnarmedBattleAnimationId();
 	}
 	return 0;
 }
