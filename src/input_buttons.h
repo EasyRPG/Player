@@ -70,6 +70,7 @@ namespace Input {
 		SCROLL_UP,
 		SCROLL_DOWN,
 		FAST_FORWARD,
+		FAST_FORWARD_PLUS,
 		TOGGLE_FULLSCREEN,
 		TOGGLE_ZOOM,
 		BUTTON_COUNT
@@ -110,6 +111,7 @@ namespace Input {
 		"SCROLL_UP",
 		"SCROLL_DOWN",
 		"FAST_FORWARD",
+		"FAST_FORWARD_PLUS",
 		"TOGGLE_FULLSCREEN",
 		"TOGGLE_ZOOM",
 		"BUTTON_COUNT");
@@ -150,6 +152,7 @@ namespace Input {
 		"Scroll up key",
 		"Scroll down key",
 		"Fast forward key",
+		"Fast forward plus key",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
 		"Total Button Count");
@@ -166,6 +169,7 @@ namespace Input {
 			case SHOW_LOG:
 			case TOGGLE_ZOOM:
 			case FAST_FORWARD:
+			case FAST_FORWARD_PLUS:
 				return true;
 			default:
 				return false;

@@ -123,6 +123,7 @@ namespace Player {
 	std::string record_input_path;
 	std::string command_line;
 	int speed_modifier = 3;
+	int speed_modifier_plus = 10;
 	Game_ConfigPlayer player_config;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
@@ -314,7 +315,10 @@ void Player::UpdateInput() {
 	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
-		speed = Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
+		speed = speed_modifier;
+	}
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_PLUS)) {
+		speed = speed_modifier_plus;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 
