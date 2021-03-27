@@ -265,6 +265,8 @@ void Sprite_Actor::OnBattlercharsetReady(FileRequestResult* result, int32_t batt
 
 void Sprite_Actor::Draw(Bitmap& dst) {
 	auto* battler = GetBattler();
+	// "do_not_draw" is set to true if the CBA battler name is empty, this
+	// makes the sprite not being drawn. This fixes issue #1708.
 	if (battler->IsHidden() || do_not_draw) {
 		return;
 	}

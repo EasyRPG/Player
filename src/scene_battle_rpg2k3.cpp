@@ -677,6 +677,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		auto_battle = true;
 	}
 
+	// FIXME: Remove this block when a proper solution has been found
+	// for moving the attacking actor back on victory/defeat condition
+	// Moreover remove all occurences of "cba_actor" in the code then
 	if (new_state == State_Victory || new_state == State_Defeat) {
 		if (cba_actor) {
 			cba_actor->SetBattlePosition(Point(cba_start_pos.x, cba_start_pos.y));
@@ -2166,6 +2169,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	auto* source = action->GetSource();
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
+		// FIXME: How many frames does RPG_RT actually use for the CBA movement?
 		if (cba_move_frame < 15) {
 			cba_move_frame++;
 			int frame = (cba_direction_back ? 15 - cba_move_frame : cba_move_frame);
@@ -2213,7 +2217,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (sprite) {
 			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
 			if (pose != lcf::rpg::BattlerAnimation::Pose_Idle) {
-				// FIXME: This gets cleaned up when CBA is implemented
 				auto action_state = static_cast<Sprite_Actor::AnimationState>(pose + 1);
 
 				if (action->GetType() == Game_BattleAlgorithm::Type::Normal) {
@@ -2223,7 +2226,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 					if (weapon) {
 						auto* weapon_animation_data = action->GetWeaponAnimationData();
 						if (weapon_animation_data) {
-							if (weapon_animation_data->type == 0) {
+							if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_weapon) {
 								weapon->SetWeaponAnimation(weapon_animation_data->weapon_animation_id + 1);
 								weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
 							} else {
@@ -2456,7 +2459,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 				if (weapon) {
 					auto* weapon_animation_data = action->GetWeaponAnimationData();
 					if (weapon_animation_data) {
-						if (weapon_animation_data->type == 0) {
+						if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_weapon) {
 							weapon->StopAttack();
 						}
 					}

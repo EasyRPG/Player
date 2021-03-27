@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include "game_enemy.h"
 #include "sprite_weapon.h"
 #include "game_battler.h"
 #include "game_actor.h"
@@ -48,26 +47,24 @@ void Sprite_Weapon::Update() {
 	++cycle;
 
 	// Animations for allies
-	if (Player::IsRPG2k3()) {
-		// Is a battle charset animation
+	// Is a battle charset animation
 
-		int frame = std::min(2, cycle / 10);
-		if (frame == sprite_frame)
-			return;
+	int frame = std::min(2, cycle / 10);
+	if (frame == sprite_frame)
+		return;
 
-		const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
-		if (!anim) {
-			Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
-			return;
-		}
-
-		const auto* battler_animation_weapon = lcf::ReaderUtil::GetElement(anim->weapons, weapon_animation_id);
-		if (!battler_animation_weapon) {
-			return;
-		}
-
-		SetSrcRect(Rect(frame * 64, battler_animation_weapon->weapon_index * 64, 64, 64));
+	const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
+	if (!anim) {
+		Output::Warning("Invalid battler animation ID {}", battler->GetBattleAnimationId());
+		return;
 	}
+
+	const auto* battler_animation_weapon = lcf::ReaderUtil::GetElement(anim->weapons, weapon_animation_id);
+	if (!battler_animation_weapon) {
+		return;
+	}
+
+	SetSrcRect(Rect(frame * 64, battler_animation_weapon->weapon_index * 64, 64, 64));
 
 	const bool flip = battler->IsDirectionFlipped();
 	SetFlipX(flip);
@@ -95,6 +92,7 @@ void Sprite_Weapon::StartAttack(bool secondary_weapon) {
 
 		const auto* battler_animation_weapon = lcf::ReaderUtil::GetElement(anim->weapons, weapon_animation_id);
 		if (!battler_animation_weapon) {
+			Output::Warning("Invalid weapon animation ID {}", weapon_animation_id);
 			return;
 		}
 
@@ -119,7 +117,6 @@ void Sprite_Weapon::CreateSprite() {
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
 
-	// Not animated -> Monster
 	SetOx(32);
 	SetOy(32);
 	ResetZ();
@@ -146,15 +143,10 @@ void Sprite_Weapon::Draw(Bitmap& dst) {
 }
 
 void Sprite_Weapon::ResetZ() {
-	static_assert(Game_Battler::Type_Ally < Game_Battler::Type_Enemy, "Game_Battler enums re-ordered! Fix Z order logic here!");
-
 	constexpr int id_limit = 128;
 
 	const auto& graphic = GetBitmap();
 	int y = battler->GetBattlePosition().y;
-	if (battler->GetType() == Game_Battler::Type_Enemy && graphic) {
-		y += graphic->GetHeight() / 2;
-	}
 
 	int z = battler->GetType();
 	z *= SCREEN_TARGET_HEIGHT * 2;
