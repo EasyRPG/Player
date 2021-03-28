@@ -43,15 +43,24 @@ void Window_ActorStatus::DrawStatus() {
 
 	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
+	int have, max;
+	auto fontcolor = [&have, &max](bool can_knockout) {
+		if (can_knockout && have == 0) return Font::ColorKnockout;
+		if (max > 0 && (have <= max / 4)) return Font::ColorCritical;
+		return Font::ColorDefault;
+	};
+
 	// Draw Hp
 	contents->TextDraw(1, 2, 1, lcf::Data::terms.health_points);
-	int color = (actor->GetHp() == 0 ? Font::ColorKnockout : (actor->GetHp() <= actor->GetMaxHp() / 4 ? Font::ColorCritical : Font::ColorDefault));
-	DrawMinMax(90, 2, actor->GetHp(), actor->GetMaxHp(), color);
+	have = actor->GetHp();
+	max = actor->GetMaxHp();
+	DrawMinMax(90, 2, have, max, fontcolor(true));
 
 	// Draw Sp
 	contents->TextDraw(1, 18, 1, lcf::Data::terms.spirit_points);
-	color = (actor->GetMaxSp() > 0 && actor->GetSp() <= actor->GetMaxSp() / 4 ? Font::ColorCritical : Font::ColorDefault);
-	DrawMinMax(90, 18, actor->GetSp(), actor->GetMaxSp(), color);
+	have = actor->GetSp();
+	max = actor->GetMaxSp();
+	DrawMinMax(90, 18, have, max, fontcolor(false));
 
 	// Draw Exp
 	contents->TextDraw(1, 34, 1, lcf::Data::terms.exp_short);
