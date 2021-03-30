@@ -27,10 +27,10 @@ GenericAudio::BgmChannel GenericAudio::BGM_Channels[nr_of_bgm_channels];
 GenericAudio::SeChannel GenericAudio::SE_Channels[nr_of_se_channels];
 bool GenericAudio::BGM_PlayedOnceIndicator;
 
-std::vector<int16_t> GenericAudio::sample_buffer;
-std::vector<uint8_t> GenericAudio::scrap_buffer;
+std::vector<int16_t> GenericAudio::sample_buffer = {};
+std::vector<uint8_t> GenericAudio::scrap_buffer = {};
 unsigned GenericAudio::scrap_buffer_size = 0;
-std::vector<float> GenericAudio::mixer_buffer;
+std::vector<float> GenericAudio::mixer_buffer = {};
 
 GenericAudio::GenericAudio() {
 	for (auto& BGM_Channel : BGM_Channels) {
@@ -235,6 +235,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	if (scrap_buffer.size() != scrap_buffer_size) {
 		scrap_buffer.resize(scrap_buffer_size);
 	}
+	memset(mixer_buffer.data(), '\0', mixer_buffer.size());
 
 	for (unsigned i = 0; i < nr_of_bgm_channels + nr_of_se_channels; i++) {
 		int read_bytes = 0;

@@ -84,8 +84,8 @@ private:
 	bool PlayOnChannel(BgmChannel& chan,std::string const& file, int volume, int pitch, int fadein);
 	bool PlayOnChannel(SeChannel& chan,std::string const& file, int volume, int pitch);
 
-	static const unsigned nr_of_se_channels=31;
-	static const unsigned nr_of_bgm_channels=2;
+	static constexpr unsigned nr_of_se_channels = 31;
+	static constexpr unsigned nr_of_bgm_channels = 2;
 
 	static BgmChannel BGM_Channels[nr_of_bgm_channels];
 	static SeChannel SE_Channels[nr_of_se_channels];
