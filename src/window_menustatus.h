@@ -31,6 +31,9 @@ public:
 	void UpdateCursorRect() override;
 
 	Game_Actor* GetActor() const;
+
+protected:
+	int text_offset = 0;
 };
 
 #endif

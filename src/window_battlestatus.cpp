@@ -81,13 +81,13 @@ void Window_BattleStatus::Refresh() {
 			int y = 2 + i * 16;
 
 			DrawActorName(*actor, 4, y);
-			DrawActorState(*actor, 84, y);
+			DrawActorState(*actor, 84 + (Player::IsRPG2k() ? 2 : 0), y);
 			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
 				contents->TextDraw(132 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
 				int digits = Player::IsRPG2k() ? 3 : 4;
-				DrawActorHp(*actor, 126, y, digits, true);
-				DrawActorSp(*actor, 198, y, 3, false);
+				DrawActorHp(*actor, 126 + (Player::IsRPG2k() ? 16 : 0), y, digits, true);
+				DrawActorSp(*actor, 198 + (Player::IsRPG2k() ? 4 : 0), y, 3, false);
 			}
 		}
 	}

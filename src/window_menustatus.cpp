@@ -25,7 +25,13 @@
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 
-	SetContents(Bitmap::Create(width - 16, height - 16));
+	if (Player::IsRPG2k3()) {
+		SetContents(Bitmap::Create(width - 12, height - 16));
+		SetBorderX(4);
+		text_offset = 4;
+	} else {
+		SetContents(Bitmap::Create(width - 16, height - 16));
+	}
 
 	Refresh();
 }
@@ -42,18 +48,18 @@ void Window_MenuStatus::Refresh() {
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 5 : 0;
+			face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;
 		}
 		DrawActorFace(actor, face_x, i*48 + y);
 
-		DrawActorName(actor, 48 + 8, i*48 + 2 + y);
-		DrawActorTitle(actor, 48 + 8 + 88, i*48 + 2 + y);
-		DrawActorLevel(actor, 48 + 8, i*48 + 2 + 16 + y);
-		DrawActorState(actor, 48 + 8 + 42, i*48 + 2 + 16 + y);
-		DrawActorExp(actor, 48 + 8, i*48 + 2 + 16 + 16 + y);
+		DrawActorName(actor, 48 + 8 + text_offset, i*48 + 2 + y);
+		DrawActorTitle(actor, 48 + 8 + 88 + text_offset, i*48 + 2 + y);
+		DrawActorLevel(actor, 48 + 8 + text_offset, i*48 + 2 + 16 + y);
+		DrawActorState(actor, 48 + 8 + 42 + text_offset, i*48 + 2 + 16 + y);
+		DrawActorExp(actor, 48 + 8 + text_offset, i*48 + 2 + 16 + 16 + y);
 		int digits = (Player::IsRPG2k() ? 3 : 4);
-		DrawActorHp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + y, digits);
-		DrawActorSp(actor, 48 + 8 + 106 - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + 16 + y, digits);
+		DrawActorHp(actor, 48 + 8 + 106 + text_offset - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + y, digits);
+		DrawActorSp(actor, 48 + 8 + 106 + text_offset - (Player::IsRPG2k() ? 0 : 12), i * 48 + 2 + 16 + 16 + y, digits);
 
 		y += 10;
 	}
@@ -64,7 +70,7 @@ void Window_MenuStatus::UpdateCursorRect()
 	if (index < 0) {
 		cursor_rect = { 0, 0, 0, 0 };
 	} else {
-		cursor_rect = { 48 + 4, index * (48 + 10), 168, 48 };
+		cursor_rect = { 48 + 4 + text_offset, index * (48 + 10), 168, 48 };
 	}
 }
 

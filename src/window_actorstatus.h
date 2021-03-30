@@ -20,6 +20,7 @@
 
 // Headers
 #include "window_base.h"
+#include "font.h"
 
 /**
  * Window ActorStatus Class.
@@ -42,11 +43,11 @@ public:
 	 * Draws the actor status
 	 */
 	void DrawStatus();
-	
+
 	/**
 	 * Draws min and max separated by a "/" in cx, cy
 	 */
-	void DrawMinMax(int cx, int cy, int min, int max);
+	void DrawMinMax(int cx, int cy, int min, int max, int color = Font::ColorDefault);
 
 private:
 	int actor_id;

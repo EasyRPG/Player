@@ -32,6 +32,8 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
+constexpr int arrow_animation_frames = 20;
+
 Scene_File::Scene_File(std::string message) :
 	message(message) {
 }
@@ -44,6 +46,18 @@ std::unique_ptr<Sprite> Scene_File::MakeBorderSprite(int y) {
 	sprite->SetBitmap(bitmap);
 	sprite->SetX(0);
 	sprite->SetY(y);
+	return sprite;
+}
+
+std::unique_ptr<Sprite> Scene_File::MakeArrowSprite(bool down) {
+	Rect rect = Rect(40, (down ? 16 : 8), 16, 8);
+	auto bitmap = Bitmap::Create(*(Cache::System()), rect);
+	auto sprite = std::unique_ptr<Sprite>(new Sprite());
+	sprite->SetVisible(false);
+	sprite->SetZ(Priority_Window + 2);
+	sprite->SetBitmap(bitmap);
+	sprite->SetX(SCREEN_TARGET_WIDTH / 2 - 8);
+	sprite->SetY(down ? 232 : 32);
 	return sprite;
 }
 
@@ -113,6 +127,9 @@ void Scene_File::Start() {
 
 	border_bottom = Scene_File::MakeBorderSprite(232);
 
+	up_arrow = Scene_File::MakeArrowSprite(false);
+	down_arrow = Scene_File::MakeArrowSprite(true);
+
 	index = latest_slot;
 	top_index = std::max(0, index - 2);
 
@@ -133,6 +150,8 @@ void Scene_File::Refresh() {
 }
 
 void Scene_File::Update() {
+	UpdateArrows();
+
 	if (IsWindowMoving()) {
 		for (auto& fw: file_windows) {
 			fw->Update();
@@ -220,3 +239,16 @@ void Scene_File::MoveFileWindows(int dy, int dt) {
 	}
 }
 
+void Scene_File::UpdateArrows() {
+	int max_index = static_cast<int>(file_windows.size()) - 1;
+
+        bool show_up_arrow = (top_index > 0);
+        bool show_down_arrow = (top_index < max_index - 2);
+
+        if (show_up_arrow || show_down_arrow) {
+                arrow_frame = (arrow_frame + 1) % (arrow_animation_frames * 2);
+        }
+        bool arrow_visible = (arrow_frame < arrow_animation_frames);
+        up_arrow->SetVisible(show_up_arrow && arrow_visible);
+        down_arrow->SetVisible(show_down_arrow && arrow_visible);
+}

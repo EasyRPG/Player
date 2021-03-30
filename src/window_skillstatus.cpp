@@ -48,7 +48,7 @@ void Window_SkillStatus::Refresh() {
 	x += 44;
 	DrawActorState(actor, x, y);
 	x += 54;
-	DrawActorHp(actor, x, y, (Player::IsRPG2k() ? 3 : 4));
+	DrawActorHp(actor, x + (Player::IsRPG2k() ? 6 : 0), y, (Player::IsRPG2k() ? 3 : 4));
 	x += 72;
 	DrawActorSp(actor, x, y, 3);
 }

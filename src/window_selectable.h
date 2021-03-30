@@ -73,6 +73,13 @@ public:
 
 	virtual void UpdateHelp();
 
+	/**
+	 * Sets if endless scrolling is enabled.
+	 *
+	 * @param state true to enable (default), false to disable.
+	 */
+	void SetEndlessScrolling(bool state);
+
 protected:
 	void UpdateArrows();
 
@@ -81,6 +88,8 @@ protected:
 	int column_max = 1;
 	int index = -1;
 	int arrow_frame = 0;
+
+	bool endless_scrolling = true;
 };
 
 #endif
