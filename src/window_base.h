@@ -70,6 +70,7 @@ public:
 	void DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha = 255) const;
 	void DrawActorHpValue(const Game_Battler& actor, int cx, int cy) const;
 	void DrawActorSpValue(const Game_Battler& actor, int cx, int cy) const;
+	int GetValueFontColor(int have, int max, bool can_knockout) const;
 	/** @} */
 
 	/**
