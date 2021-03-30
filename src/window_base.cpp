@@ -337,3 +337,21 @@ void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha
 		contents->StretchBlit(bar_rect, *system2, gauge_bar, alpha);
 	}
 }
+
+void Window_Base::DrawActorHpValue(const Game_Battler& actor, int cx, int cy) const {
+	int color = Font::ColorDefault;
+	if (actor.GetHp() == 0) {
+		color = Font::ColorKnockout;
+	} else if (actor.GetHp() <= actor.GetMaxHp() / 4) {
+		color = Font::ColorCritical;
+	}
+	contents->TextDraw(cx, cy, color, std::to_string(actor.GetHp()), Text::AlignRight);
+}
+
+void Window_Base::DrawActorSpValue(const Game_Battler& actor, int cx, int cy) const {
+	int color = Font::ColorDefault;
+	if (actor.GetSp() <= actor.GetMaxSp() / 4) {
+		color = Font::ColorCritical;
+	}
+	contents->TextDraw(cx, cy, color, std::to_string(actor.GetSp()), Text::AlignRight);
+}
