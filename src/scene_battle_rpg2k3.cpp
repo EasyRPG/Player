@@ -302,7 +302,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		options_window->SetBackOpacity(transp);
 		item_window->SetBackOpacity(transp);
 		skill_window->SetBackOpacity(transp);
@@ -481,6 +481,10 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text
 	floating_texts.push_back(float_text);
 }
 
+bool Scene_Battle_Rpg2k3::IsTransparent() const {
+	return lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent;
+}
+
 static std::vector<std::string> GetEnemyTargetNames() {
 	std::vector<std::string> commands;
 
@@ -506,7 +510,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window->SetZ(Priority_Window + 10);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		target_window->SetBackOpacity(transp);
 	}
 }
@@ -597,7 +601,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	command_window->SetZ(Priority_Window + 20);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 160 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		command_window->SetBackOpacity(transp);
 	}
 }
