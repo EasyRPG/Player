@@ -129,3 +129,7 @@ void Sprite_Enemy::Refresh() {
 		CreateSprite();
 	}
 }
+
+void Sprite_Enemy::ResetZ() {
+	Sprite_Battler::ResetZ();
+}

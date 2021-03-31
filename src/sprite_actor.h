@@ -90,7 +90,7 @@ public:
 
 	Game_Actor* GetBattler() const;
 
-	void ResetZ() override;
+	void ResetZ() final;
 
 protected:
 	void CreateSprite();
