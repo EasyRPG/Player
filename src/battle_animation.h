@@ -85,12 +85,12 @@ protected:
 	virtual void FlashTargets(int r, int g, int b, int p) = 0;
 	virtual void ShakeTargets(int str, int spd, int time) = 0;
 	void DrawAt(Bitmap& dst, int x, int y);
-	void ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing);
-	void ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing);
+	virtual void ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing);
+	virtual void ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
-	void UpdateScreenFlash();
-	void UpdateTargetFlash();
+	virtual void UpdateScreenFlash();
+	virtual void UpdateTargetFlash();
 	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
 	const lcf::rpg::Animation& animation;
@@ -137,6 +137,10 @@ public:
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
 	void ShakeTargets(int str, int spd, int time) override;
+	void ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing) override;
+	void ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing) override;
+	void UpdateScreenFlash() override;
+	void UpdateTargetFlash() override;
 	std::vector<Game_Battler*> battlers;
 };
 
