@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "scene_battle_rpg2k3.h"
 #include <lcf/rpg/battlecommand.h>
 #include <lcf/rpg/battleranimation.h>
@@ -2581,13 +2583,6 @@ void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
 void Scene_Battle_Rpg2k3::CBAInit() {
 	auto* source = cba_action->GetSource();
 	cba_move_frame = 0;
-	if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_step) {
-		cba_num_move_frames = cba_num_move_frames_step;
-	} else if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_jump) {
-		cba_num_move_frames = cba_num_move_frames_jump;
-	} else {
-		cba_num_move_frames = cba_num_move_frames_move;
-	}
 
 	auto* actor = static_cast<Game_Actor*>(source);
 	auto* sprite = actor->GetActorBattleSprite();
@@ -2621,16 +2616,18 @@ void Scene_Battle_Rpg2k3::CBAMove() {
 	auto* source = cba_action->GetSource();
 
 	if (cba_move_frame < cba_num_move_frames) {
-		cba_move_frame++;
-		int frame = (cba_direction_back ? cba_num_move_frames - cba_move_frame : cba_move_frame);
+		// RPG_RT increments the frame counter twice per frame,
+		// so we emulate this behavior here
+		cba_move_frame += 2;
+		int frame = (cba_direction_back ? std::max(0, cba_num_move_frames - cba_move_frame) : std::min(cba_num_move_frames, cba_move_frame));
 		int move_dir_mult = (source->IsDirectionFlipped() ? 1 : -1);
 		int offset_x = 0;
 		int offset_y = 0;
 		if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_step || cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_jump) {
-			offset_x = 30 * move_dir_mult * frame / cba_num_move_frames;
+			offset_x = 25 * move_dir_mult * frame / cba_num_move_frames;
 		}
 		if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_jump) {
-			offset_y = -std::min(30 * frame / cba_num_move_frames, 30 - 30 * frame / cba_num_move_frames);
+			offset_y = -25 * sin(M_PI * frame / cba_num_move_frames) / 2;
 		}
 		if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_move) {
 			offset_x = (cba_end_pos.x - cba_start_pos.x) * frame / cba_num_move_frames;

@@ -23,11 +23,10 @@
 #include "async_handler.h"
 #include "window_actorsp.h"
 
-// CBA constants
-// FIXME: How many CBA move frames does RPG_RT actually use?
-constexpr int cba_num_move_frames_step = 15;
-constexpr int cba_num_move_frames_jump = 15;
-constexpr int cba_num_move_frames_move = 10;
+// CBA constant
+// The CBA move frame counter is incremented twice per frame in RPG_RT,
+// so the effective frame count is 13
+constexpr int cba_num_move_frames = 25;
 
 /**
  * Scene_Battle class.
@@ -234,7 +233,6 @@ protected:
 	Game_BattleAlgorithm::AlgorithmBase* cba_action;
 	bool cba_direction_back = false;
 	int cba_move_frame = 0;
-	int cba_num_move_frames = 1;
 	Point cba_start_pos;
 	Point cba_end_pos;
 };
