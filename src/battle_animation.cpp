@@ -331,7 +331,7 @@ void BattleAnimationBattler::Draw(Bitmap& dst) {
 
 	for (auto* battler: battlers) {
 		SetFlashEffect(battler->GetFlashColor());
-		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y);
+		DrawAt(dst, battler->GetDisplayX(), battler->GetDisplayY());
 	}
 }
 
