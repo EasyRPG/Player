@@ -89,6 +89,11 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
 
+	// Adjust to RPG_RT (Direct Sound) volume scale
+	if (bgm.volume > 0) {
+		data.current_music.volume = (int)(100 * std::pow(10, (-100 + bgm.volume) / 60.0));
+	}
+
 	// (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		// Same music: Only adjust volume and speed
@@ -150,6 +155,11 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	if (se.volume < 0 || se.volume > 100) {
 		Output::Debug("SE {} has invalid volume {}", se.name, se.volume);
 		volume = Utils::Clamp<int32_t>(se.volume, 0, 100);
+	}
+
+	// Adjust to RPG_RT (Direct Sound) volume scale
+	if (volume > 0) {
+		volume = (int)(100 * std::pow(10, (-100 + volume) / 60.0));
 	}
 
 	if (se.tempo < 50 || se.tempo > 200) {
