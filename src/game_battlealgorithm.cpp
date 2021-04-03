@@ -726,10 +726,8 @@ int Game_BattleAlgorithm::Normal::GetCBAMovement() const {
 		auto weapons = ally->GetWeapons(weapon);
 		auto* item = weapons[0];
 		if (item) {
-			if (item->animation_id > 0) {
-				if (static_cast<int>(item->animation_data.size()) > source->GetId() - 1) {
-					return item->animation_data[source->GetId() - 1].movement;
-				}
+			if (static_cast<int>(item->animation_data.size()) > source->GetId() - 1) {
+				return item->animation_data[source->GetId() - 1].movement;
 			}
 		}
 	}
@@ -1041,7 +1039,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 
 int Game_BattleAlgorithm::Skill::GetSourcePose() const {
 	auto* source = GetSource();
-	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
+	if (source->GetType() == Game_Battler::Type_Ally) {
 		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
 			return skill.battler_animation_data[source->GetId() - 1].pose;
 		}
@@ -1052,7 +1050,7 @@ int Game_BattleAlgorithm::Skill::GetSourcePose() const {
 
 int Game_BattleAlgorithm::Skill::GetCBAMovement() const {
 	auto* source = GetSource();
-	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
+	if (source->GetType() == Game_Battler::Type_Ally) {
 		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
 			return skill.battler_animation_data[source->GetId() - 1].movement;
 		}
@@ -1193,7 +1191,7 @@ int Game_BattleAlgorithm::Item::GetSourcePose() const {
 
 int Game_BattleAlgorithm::Item::GetCBAMovement() const {
 	auto* source = GetSource();
-	if (source->GetType() == Game_Battler::Type_Ally && item.animation_id > 0) {
+	if (source->GetType() == Game_Battler::Type_Ally) {
 		if (static_cast<int>(item.animation_data.size()) > source->GetId() - 1) {
 			return item.animation_data[source->GetId() - 1].movement;
 		}
