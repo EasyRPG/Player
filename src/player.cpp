@@ -408,8 +408,8 @@ void Player::Exit() {
 	Font::Dispose();
 	DynRpg::Reset();
 	Graphics::Quit();
-	FileFinder::Quit();
 	Output::Quit();
+	FileFinder::Quit();
 	DisplayUi.reset();
 
 #ifdef PSP2
