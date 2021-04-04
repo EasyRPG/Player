@@ -68,7 +68,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 		// search until ".zip", "do magic"
 		std::string internal_path;
 		bool handle_internal = false;
-		for (std::string comp : components) {
+		for (const std::string& comp : components) {
 			if (handle_internal) {
 				internal_path += comp + "/";
 			} else {
@@ -227,11 +227,21 @@ DirectoryTree::DirectoryListType* FilesystemView::ListDirectory(StringView path)
 
 Filesystem_Stream::InputStream FilesystemView::OpenInputStream(StringView name, std::ios_base::openmode m) const {
 	assert(fs);
+
+	if (name.empty()) {
+		return Filesystem_Stream::InputStream();
+	}
+
 	return fs->OpenInputStream(MakePath(name), m);
 }
 
 Filesystem_Stream::OutputStream FilesystemView::OpenOutputStream(StringView name, std::ios_base::openmode m) const {
 	assert(fs);
+
+	if (name.empty()) {
+		return Filesystem_Stream::OutputStream();
+	}
+
 	return fs->OpenOutputStream(MakePath(name), m);
 }
 

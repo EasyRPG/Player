@@ -136,5 +136,5 @@ bool NativeFilesystem::IsFeatureSupported(Feature f) const {
 }
 
 std::string NativeFilesystem::Describe() const {
-	return fmt::format("[Native] {}.", GetPath());
+	return fmt::format("[Native] {}", GetPath());
 }

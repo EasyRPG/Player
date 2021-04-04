@@ -121,6 +121,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/filesystem.h
 	src/filesystem_native.cpp
 	src/filesystem_native.h
+	src/filesystem_root.cpp
+	src/filesystem_root.h
 	src/filesystem_stream.cpp
 	src/filesystem_stream.h
 	src/filesystem_zip.cpp

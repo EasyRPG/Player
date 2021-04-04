@@ -39,7 +39,7 @@
 #include "utils.h"
 #include "filefinder.h"
 #include "filesystem.h"
-#include "filesystem_native.h"
+#include "filesystem_root.h"
 #include "fileext_guesser.h"
 #include "output.h"
 #include "player.h"
@@ -110,10 +110,8 @@ FilesystemView FileFinder::Save() {
 }
 
 FilesystemView FileFinder::Root() {
-	// ToDo: Support an optional path argument which support namespaces,
-	// e.g. apk:// for accessing the APK on Android
 	if (!root_fs) {
-		root_fs = std::make_unique<NativeFilesystem>("", FilesystemView());
+		root_fs = std::make_unique<RootFilesystem>();
 	}
 
 	return root_fs->Subtree("");
@@ -125,8 +123,10 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 		str = ToString(name);
 	} else if (name.empty()) {
 		str = ToString(dir);
+	} else if (dir.ends_with("/")) {
+		str = ToString(dir) + ToString(name);
 	} else {
-		str = std::string(dir) + "/" + std::string(name);
+		str = ToString(dir) + "/" + ToString(name);
 	}
 
 	ConvertPathDelimiters(str);
@@ -135,12 +135,19 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 }
 
 std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
+	StringView ns;
+	auto ns_pos = path.find("://");
+	if (ns_pos != std::string::npos) {
+		ns = path.substr(0, ns_pos + 3);
+		path = path.substr(ns_pos + 3);
+	}
+
 	bool initial_slash = !path.empty() && path[0] == '/';
 
 	std::vector<std::string> path_components = SplitPath(path);
 	std::vector<std::string> path_can;
 
-	for (std::string path_comp : path_components) {
+	for (const std::string& path_comp : path_components) {
 		if (path_comp == "..") {
 			if (path_can.size() > 0) {
 				path_can.pop_back();
@@ -162,7 +169,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 		ret = MakePath(ret, s);
 	}
 
-	return (initial_slash ? "/" : "") + ret;
+	return ToString(ns) + (initial_slash ? "/" : "") + ret;
 }
 
 std::vector<std::string> FileFinder::SplitPath(StringView path) {

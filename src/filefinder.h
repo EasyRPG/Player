@@ -140,7 +140,7 @@ namespace FileFinder {
 	 * @param initial_deepness How deep the passed path is relative to the game root
 	 * @return canonical path
 	 */
-	std::string MakeCanonical(StringView path, int initial_deepness);
+	std::string MakeCanonical(StringView path, int initial_deepness = -1);
 
 	/**
 	 * Splits a path in it's components.

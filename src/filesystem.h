@@ -120,7 +120,7 @@ public:
 	 * @param p Virtual path to use
 	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
 	 */
-	FilesystemView Create(StringView p) const;
+	virtual FilesystemView Create(StringView p) const;
 
 	/**
 	 * Creates a subview into the filesystem tree.

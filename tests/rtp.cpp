@@ -16,7 +16,7 @@ static bool skip_tests() {
 TEST_SUITE_BEGIN("RTP" * doctest::skip(skip_tests()));
 
 static FilesystemView make_tree() {
-	return FileFinder::Root().Subtree(EP_TEST_PATH "/rtp");
+	return FileFinder::Root().Create(EP_TEST_PATH "/rtp");
 }
 
 TEST_CASE("RTP 2000: lookup table is correct") {

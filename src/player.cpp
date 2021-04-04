@@ -516,13 +516,13 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
 			if (arg.NumValues() > 0) {
-				Main_Data::SetProjectPath(arg.Value(0));
+				Main_Data::SetProjectPath(FileFinder::MakeCanonical(arg.Value(0)));
 			}
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--save-path")) {
 			if (arg.NumValues() > 0) {
-				Main_Data::SetSavePath(arg.Value(0));
+				Main_Data::SetSavePath(FileFinder::MakeCanonical(arg.Value(0)));
 			}
 			continue;
 		}

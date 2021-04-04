@@ -84,7 +84,7 @@ void Main_Data::Init() {
 
 		if (project_path.empty()) {
 			// first set to current directory for all platforms
-			project_path = ".";
+			project_path = "";
 
 #if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 			// Working directory not correctly handled
@@ -117,7 +117,7 @@ void Main_Data::Init() {
 				Output::Debug("Detected a project on romFs filesystem...");
 				fclose(testfile);
 				project_path = "romfs:";
-				save_path = ".";
+				save_path = "";
 
 				if (!Player::is_3dsx) {
 					// Create savepath for CIA - unique for any ID

@@ -56,10 +56,6 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	std::vector<Entry> entries;
 	std::string fs_path = ToString(path);
 
-	if (fs_path.empty()) {
-		fs_path = ".";
-	}
-
 	DebugLog("ListDirectory: {}", fs_path);
 
 	auto dir_key = make_key(fs_path);
@@ -158,9 +154,6 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	}
 
 	std::tie(dir, name) = FileFinder::GetPathAndFilename(canonical_path);
-	if (dir.empty()) {
-		dir = ".";
-	}
 
 	DebugLog("FindFile: {} | {} | {}", canonical_path, dir, name);
 

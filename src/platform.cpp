@@ -34,9 +34,9 @@
 
 Platform::File::File(std::string name) :
 #ifdef _WIN32
-		filename(Utils::ToWideString(name))
+		filename(Utils::ToWideString(name.empty() ? "." : name))
 #else
-		filename(std::move(name))
+		filename(name.empty() ? "." : std::move(name))
 #endif
 {
 	// no-op
@@ -167,11 +167,11 @@ bool Platform::File::CreateDirectory(bool follow_symlinks) const {
 
 Platform::Directory::Directory(const std::string& name) {
 #if defined(_WIN32)
-	dir_handle = ::_wopendir(Utils::ToWideString(name).c_str());
+	dir_handle = ::_wopendir(Utils::ToWideString((name.empty() ? "." : name).c_str()));
 #elif defined(PSP2)
-	dir_handle = ::sceIoDopen(name.c_str());
+	dir_handle = ::sceIoDopen(name.empty() ? "." : name.c_str());
 #else
-	dir_handle = ::opendir(name.c_str());
+	dir_handle = ::opendir(name.empty() ? "." : name.c_str());
 #endif
 }
 
