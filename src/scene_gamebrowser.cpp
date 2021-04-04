@@ -207,7 +207,6 @@ void Scene_GameBrowser::BootGame() {
 	for (auto f : filesystems) {
 		startup_path = FileFinder::MakePath(startup_path, f.second);
 	}
-	Main_Data::SetProjectPath(FileFinder::MakePath(startup_path, entry));
 
 	Player::CreateGameObjects();
 

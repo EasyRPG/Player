@@ -516,13 +516,21 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
 			if (arg.NumValues() > 0) {
-				Main_Data::SetProjectPath(FileFinder::MakeCanonical(arg.Value(0)));
+				auto gamefs = FileFinder::Root().Create(arg.Value(0));
+				if (!gamefs) {
+					Output::Error("Invalid --project-path {}", arg.Value(0));
+				}
+				FileFinder::SetGameFilesystem(gamefs);
 			}
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--save-path")) {
 			if (arg.NumValues() > 0) {
-				Main_Data::SetSavePath(FileFinder::MakeCanonical(arg.Value(0)));
+				auto savefs = FileFinder::Root().Create(arg.Value(0));
+				if (!savefs) {
+					Output::Error("Invalid --save-path {}", arg.Value(0));
+				}
+				FileFinder::SetSaveFilesystem(savefs);
 			}
 			continue;
 		}
@@ -879,8 +887,6 @@ void Player::GuessNonStandardExtensions() {
 		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::Game());
 		if (rpg2kRemap.Empty()) {
 			// Unlikely to happen because of the game browser only launches valid games
-			Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
-
 			Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
 				"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
 				"This engine only supports RPG Maker 2000 and 2003\ngames.",
@@ -1004,7 +1010,7 @@ static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 }
 
 void Player::LoadSavegame(const std::string& save_name, int save_id) {
-	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
+	Output::Debug("Loading Save {}", save_name);
 	Main_Data::game_system->BgmFade(800);
 
 	// We erase the screen now before loading the saved game. This prevents an issue where

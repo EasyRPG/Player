@@ -167,7 +167,7 @@ bool Platform::File::CreateDirectory(bool follow_symlinks) const {
 
 Platform::Directory::Directory(const std::string& name) {
 #if defined(_WIN32)
-	dir_handle = ::_wopendir(Utils::ToWideString((name.empty() ? "." : name).c_str()));
+	dir_handle = ::_wopendir(Utils::ToWideString(name.empty() ? "." : name).c_str());
 #elif defined(PSP2)
 	dir_handle = ::sceIoDopen(name.empty() ? "." : name.c_str());
 #else

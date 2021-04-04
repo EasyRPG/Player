@@ -60,11 +60,7 @@ namespace Main_Data {
 	void Init();
 	void Cleanup();
 
-	const std::string& GetProjectPath();
-	void SetProjectPath(const std::string& path);
-
-	const std::string& GetSavePath();
-	void SetSavePath(const std::string& path);
+	const std::string& GetDefaultProjectPath();
 }
 
 #endif

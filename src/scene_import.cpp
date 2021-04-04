@@ -104,7 +104,7 @@ void Scene_Import::UpdateScanAndProgress() {
 
 	// Gather the list of children, if it does not exist.
 	if (children.empty()) {
-		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
+		/*FIXME if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
 			auto parentPath = FileFinder::MakePath(Main_Data::GetSavePath(), "..");
 			parent_fs = FileFinder::Root().Create(parentPath);
 			if (parent_fs) {
@@ -113,7 +113,7 @@ void Scene_Import::UpdateScanAndProgress() {
 		}
 		if (children.empty()) {
 			FinishScan();
-		}
+		}*/
 	} else if (curr_child_id < children.size()) {
 		auto candidates = Player::meta->SearchImportPaths(parent_fs, children[curr_child_id]);
 		files.insert(files.end(), candidates.begin(), candidates.end());

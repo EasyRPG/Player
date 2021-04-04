@@ -61,6 +61,7 @@ namespace {
 	std::string fonts_path;
 	std::unique_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
+	FilesystemView save_fs;
 }
 
 FilesystemView FileFinder::Game() {
@@ -72,41 +73,54 @@ void FileFinder::SetGameFilesystem(FilesystemView filesystem) {
 }
 
 FilesystemView FileFinder::Save() {
-	auto save_fs = Root().Create(Main_Data::GetSavePath());
-	if (!save_fs.IsFeatureSupported(Filesystem::Feature::Write)) {
-		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
-			// When the Project path equals the Save path (this means the path was not configured)
-			// and the filesystem has no write support do a redirection to a folder with ".save" appended
-			FilesystemView parent = save_fs;
-			std::string child_path;
-			for (;;) {
-				std::string owner_path = parent.GetBasePath();
-				std::string sub_path = parent.GetSubPath();
-				parent = parent.GetOwner().GetParent();
-				if (!parent || parent.IsFeatureSupported(Filesystem::Feature::Write)) {
-					std::string path;
-					std::string name;
-					std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
-
-					parent.CreateDirectory(save_path, true);
-					save_fs = Root().Create(save_path);
-
-					if (!save_fs) {
-						Output::Error("Invalid save directory {}", save_path);
-					}
-
-					break;
-				}
-				child_path = MakePath(MakePath(owner_path, sub_path), child_path);
-			}
+	if (save_fs) {
+		// This means the save filesystem was overwritten
+		if (!save_fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+			Output::Error("{} is not a valid save path (not writable)", GetFullFilesystemPath(save_fs));
 		}
+		return save_fs;
 	}
 
-	if (!save_fs) {
-		Output::Error("Invalid save directory {}", Main_Data::GetSavePath());
+	if (!game_fs) {
+		// Filesystem not initialized yet (happens on startup)
+		return FilesystemView();
 	}
 
-	return save_fs;
+	// Not overwritten, check if game fs is writable. If not redirect the write operation.
+	if (!game_fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+		// When the Project path equals the Save path (this means the path was not configured)
+		// and the filesystem has no write support do a redirection to a folder with ".save" appended
+		FilesystemView parent = game_fs;
+		FilesystemView redir;
+		std::string child_path;
+		for (;;) {
+			std::string owner_path = parent.GetBasePath();
+			std::string sub_path = parent.GetSubPath();
+			parent = parent.GetOwner().GetParent();
+			if (!parent || parent.IsFeatureSupported(Filesystem::Feature::Write)) {
+				std::string path;
+				std::string name;
+				std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
+
+				parent.CreateDirectory(save_path, true);
+				redir = Root().Create(save_path);
+
+				if (!redir) {
+					Output::Error("Invalid save directory {}", save_path);
+				}
+
+				break;
+			}
+			child_path = MakePath(MakePath(owner_path, sub_path), child_path);
+		}
+		return redir;
+	}
+
+	return game_fs;
+}
+
+void FileFinder::SetSaveFilesystem(FilesystemView filesystem) {
+	save_fs = filesystem;
 }
 
 FilesystemView FileFinder::Root() {

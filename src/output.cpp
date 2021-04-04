@@ -27,6 +27,7 @@
 #include <chrono>
 
 #include "graphics.h"
+#include "output.h"
 
 #ifdef GEKKO
 #  include <unistd.h>
@@ -137,9 +138,9 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 	const char* prefix = GetLogPrefix(lvl);
 	// Skip logging to file in the browser
 #ifndef EMSCRIPTEN
-	if (!output_recurse && !Main_Data::GetSavePath().empty()) {
+	if (!output_recurse && FileFinder::Save()) {
 		output_recurse = true;
-		// Only write to file when project path is initialized
+		// Only write to file when save path is initialized
 		// (happens after parsing the command line)
 		if (!log_buffer.empty()) {
 			std::vector<std::string> local_log_buffer = std::move(log_buffer);
@@ -223,7 +224,7 @@ void Output::Quit() {
 
 	char* buf = new char[log_size];
 
-	auto in = FileFinder::Save().OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::in);
+	auto in = FileFinder::Save().OpenInputStream(OUTPUT_FILENAME, std::ios_base::in);
 	if (in) {
 		in.seekg(0, std::ios_base::end);
 		if (in.tellg() > log_size) {
@@ -233,7 +234,7 @@ void Output::Quit() {
 			in.read(buf, 1024 * 100);
 			size_t read = in.gcount();
 
-			auto out = FileFinder::Save().OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out);
+			auto out = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out);
 			if (out) {
 				out.write(buf, read);
 			}

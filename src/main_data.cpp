@@ -18,7 +18,9 @@
 // Headers
 #include <cstdlib>
 #include "main_data.h"
+#include "filefinder.h"
 #include "filefinder_rtp.h"
+#include "filesystem.h"
 #include "game_system.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -56,7 +58,6 @@
 
 // Global variables.
 std::string project_path;
-std::string save_path;
 
 namespace Main_Data {
 	// Dynamic Game lcf::Data
@@ -104,11 +105,13 @@ void Main_Data::Init() {
 				sprintf(psp2_dir, "ux0:/data/%s",titleID);
 				fclose(f);
 				project_path = "app0:";
-				save_path = psp2_dir;
-
 				// Creating saves dir if it doesn't exist
 				sceIoMkdir(psp2_dir, 0777);
-
+				auto savefs = FileFinder::Root().Create(psp2_dir);
+				if (!savefs) {
+					Output::Error("PSP2: Invalid save path {}", psp2_dir);
+				}
+				FileFinder::SetSaveFilesystem(savefs);
 			}
 #elif defined(_3DS)
 			// Check if romFs has some files inside or not
@@ -117,7 +120,6 @@ void Main_Data::Init() {
 				Output::Debug("Detected a project on romFs filesystem...");
 				fclose(testfile);
 				project_path = "romfs:";
-				save_path = "";
 
 				if (!Player::is_3dsx) {
 					// Create savepath for CIA - unique for any ID
@@ -137,7 +139,11 @@ void Main_Data::Init() {
 					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
 					FSUSER_CloseArchive(archive);
 
-					save_path = mainDir;
+					auto savefs = FileFinder::Root().Create(mainDir);
+					if (!savefs) {
+						Output::Error("3DS: Invalid save path {}", mainDir);
+					}
+					FileFinder::SetSaveFilesystem(savefs);
 				}
 			} else if (!Player::is_3dsx) {
 				// No RomFS -> load games from hardcoded path
@@ -176,22 +182,6 @@ void Main_Data::Cleanup() {
 	game_ineluki.reset();
 }
 
-const std::string& Main_Data::GetProjectPath() {
+const std::string& Main_Data::GetDefaultProjectPath() {
 	return project_path;
-}
-
-void Main_Data::SetProjectPath(const std::string& path) {
-	project_path = path;
-}
-
-const std::string& Main_Data::GetSavePath() {
-	if (save_path.empty()) {
-		return GetProjectPath();
-	}
-
-	return save_path;
-}
-
-void Main_Data::SetSavePath(const std::string& path) {
-	save_path = path;
 }

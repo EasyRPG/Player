@@ -60,7 +60,7 @@ namespace Output {
 	void Quit();
 
 	/**
-	 * Takes screenshot and save it to Main_Data::GetProjectPath().
+	 * Takes screenshot and save it in the save directory.
 	 *
 	 * @return true if success, otherwise false.
 	 */

@@ -66,6 +66,13 @@ namespace FileFinder {
 	FilesystemView Save();
 
 	/**
+	 * Sets the save filesystem.
+	 *
+	 * @param filesystem Save filesystem to use.
+	 */
+	void SetSaveFilesystem(FilesystemView filesystem);
+
+	/**
 	 * Finds an image file.
 	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
