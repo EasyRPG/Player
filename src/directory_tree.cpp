@@ -17,9 +17,7 @@
 
 #include "directory_tree.h"
 #include "filefinder.h"
-#include "filefinder_rtp.h"
 #include "filesystem.h"
-#include "main_data.h"
 #include "output.h"
 #include "platform.h"
 #include "player.h"
@@ -146,7 +144,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	if (args.translate && !Tr::GetCurrentTranslationId().empty()) {
 		// Search in the active language tree but do not translate again and swallow not found warnings
 		auto translated_file = Tr::GetCurrentTranslationFilesystem().FindFile(
-				{args.path, args.exts, args.canonical_initial_deepness, args.use_rtp, false, false});
+				{args.path, args.exts, args.canonical_initial_deepness, false, false});
 		if (!translated_file.empty()) {
 			DebugLog("Translated {} as {}", args.path, translated_file);
 			return translated_file;
@@ -182,13 +180,6 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				return FileFinder::MakePath(dir_it->second, entry_it->second.name);
 			}
-		}
-	}
-
-	if (args.use_rtp && Main_Data::filefinder_rtp) {
-		auto rtp_file = Main_Data::filefinder_rtp->Lookup(dir, name, args.exts);
-		if (!rtp_file.empty()) {
-			return rtp_file;
 		}
 	}
 

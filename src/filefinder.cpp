@@ -337,15 +337,6 @@ void FileFinder::Quit() {
 	root_fs.reset();
 }
 
-std::string FileFinder::FindImage(StringView dir, StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().FindFile(dir, name);
-#endif
-
-	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	return Game().FindFile({ MakePath(dir, name), IMG_TYPES, 1, true, true, true });
-}
-
 bool FileFinder::IsValidProject(const FilesystemView& fs) {
 	return IsRPG2kProject(fs) || IsEasyRpgProject(fs) || IsRPG2kProjectWithRenames(fs);
 }
@@ -383,6 +374,15 @@ int FileFinder::GetSavegames() {
 	return false;
 }
 
+std::string FileFinder::FindImage(StringView dir, StringView name) {
+#ifdef EMSCRIPTEN
+	return Game().FindFile(dir, name);
+#endif
+
+	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
+	return Game().FindFile({ MakePath(dir, name), IMG_TYPES, 1, true, true });
+}
+
 std::string FileFinder::FindMusic(StringView name) {
 #ifdef EMSCRIPTEN
 	return Game().FindFile("Music", name);
@@ -390,7 +390,7 @@ std::string FileFinder::FindMusic(StringView name) {
 
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	return Game().FindFile({ MakePath("Music", name), MUSIC_TYPES, 1, true, true, true });
+	return Game().FindFile({ MakePath("Music", name), MUSIC_TYPES, 1, true, true });
 }
 
 std::string FileFinder::FindSound(StringView name) {
@@ -400,7 +400,7 @@ std::string FileFinder::FindSound(StringView name) {
 
 	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	return Game().FindFile({ MakePath("Sound", name), SOUND_TYPES, 1, true, true, true });
+	return Game().FindFile({ MakePath("Sound", name), SOUND_TYPES, 1, true, true });
 }
 
 bool FileFinder::IsMajorUpdatedTree() {

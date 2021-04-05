@@ -25,14 +25,13 @@
 #include "span.h"
 #include "string_view.h"
 
-class DirectoryTreeView;
 class Filesystem;
 class FilesystemView;
 
 /**
  * A directory tree manages case-insenseitive file searching in a root folder
  * and its subdirectories.
- * RTP and translation support can be enabled via advanced arguments.
+ * Translation support can be enabled via advanced arguments.
  * For performance reasons the entries are cached.
  */
 class DirectoryTree {
@@ -68,11 +67,6 @@ public:
 		 * allowed (to prevent directory traversal)
 		 */
 		int canonical_initial_deepness = 0;
-		/**
-		 * When true the RTP paths are scanned for the file and translated
-		 * RTP namings are checked.
-		 */
-		bool use_rtp = false;
 		/**
 		 * When true a "Not Found" message is shown in the terminal.
 		 * Off by default because file probing would spam the terminal alot.
