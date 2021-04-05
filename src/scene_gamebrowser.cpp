@@ -17,6 +17,8 @@
 
 // Headers
 #include "scene_gamebrowser.h"
+
+#include <memory>
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_system.h"
@@ -26,10 +28,6 @@
 #include "bitmap.h"
 #include "audio.h"
 #include "output.h"
-
-#ifdef _WIN32
-	#include <windows.h>
-#endif
 
 Scene_GameBrowser::Scene_GameBrowser() {
 	type = Scene::GameBrowser;
@@ -82,29 +80,29 @@ void Scene_GameBrowser::CreateWindows() {
 	// Create Options Window
 	std::vector<std::string> options;
 
-	options.push_back("Games");
-	options.push_back("About");
-	options.push_back("Exit");
+	options.emplace_back("Games");
+	options.emplace_back("About");
+	options.emplace_back("Exit");
 
-	command_window.reset(new Window_Command(options, 60));
+	command_window = std::make_unique<Window_Command>(options, 60);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window.reset(new Window_GameList(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
+	gamelist_window = std::make_unique<Window_GameList>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
 	gamelist_window->Refresh(filesystems.back().first, false);
 
 	if (filesystems.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
 
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(0, 0, SCREEN_TARGET_WIDTH, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
 
-	load_window.reset(new Window_Help(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32));
+	load_window = std::make_unique<Window_Help>(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32);
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
 
-	about_window.reset(new Window_About(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
+	about_window = std::make_unique<Window_About>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
 	about_window->Refresh();
 	about_window->SetVisible(false);
 }
@@ -203,8 +201,8 @@ void Scene_GameBrowser::BootGame() {
 
 	FileFinder::SetGameFilesystem(fs);
 
-	std::string startup_path = "";
-	for (auto f : filesystems) {
+	std::string startup_path;
+	for (const auto& f : filesystems) {
 		startup_path = FileFinder::MakePath(startup_path, f.second);
 	}
 
