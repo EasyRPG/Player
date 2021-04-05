@@ -160,6 +160,10 @@ DX_INIT_DOXYGEN(easyrpg-player, resources/Doxyfile, doc)
 AC_CONFIG_FILES([Makefile
                  resources/Doxyfile])
 
+# Absolute & Canonical source directory for unit tests
+canonical_srcdir=`cd $srcdir && pwd -P`
+AC_SUBST([canonical_srcdir])
+
 AC_OUTPUT
 
 if test "yes" != "$silent"; then
