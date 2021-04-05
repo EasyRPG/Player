@@ -18,74 +18,101 @@
 #include "filesystem_root.h"
 #include "output.h"
 
-//constexpr const StringView apk_ns = "apk://";
-constexpr const StringView file_ns = "file://";
 constexpr const StringView root_ns = "root://";
 
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
-	native_fs.reset(new NativeFilesystem("", this->Subtree("")));
+	// Add platform specific namespaces here
+
+	// IMPORTANT: This must be the last filesystem in the list, do not push anything to fs_list afterwards!
+	fs_list.push_back(std::make_pair("file", std::make_unique<NativeFilesystem>("", FilesystemView())));
+
+	assert(fs_list.back().first == "file" && "File namespace must be last!");
 }
 
 FilesystemView RootFilesystem::Create(StringView path) const {
-	if (path.starts_with(file_ns)) {
-		StringView path_sub = path.substr(file_ns.size());
-		if (path_sub.empty()) {
-			path_sub = "/";
-		}
-		return native_fs->Subtree(ToString(path_sub));
-	} else if (path.starts_with("root://")) {
+	if (path.starts_with(root_ns)) {
+		// Debug feature: root:// is a pseudo namespace
+		// Shows a list of all namespaces in the Game Browser
 		if (path.size() > root_ns.size()) {
 			Output::Error("root:// does not support any path suffix");
 		}
 		return Subtree("");
-	} else {
-		return native_fs->Create(path);
 	}
+
+	const auto& fs = FilesystemForPath(path);
+	// Strip namespace from path
+	auto ns_pos = path.find("://");
+	if (ns_pos != std::string::npos) {
+		path = path.substr(ns_pos + 3);
+	}
+	return fs.Create(path);
 }
 
-void show_assert() {
-	assert(false && "No operations supported on RootFs. Use Create to obtain a spezialized VFS.");
+bool RootFilesystem::IsFile(StringView path) const {
+	return FilesystemForPath(path).IsFile(path);
 }
 
-bool RootFilesystem::IsFile(StringView) const {
-	show_assert();
-	return false;
-}
-
-bool RootFilesystem::IsDirectory(StringView, bool) const {
-	show_assert();
-	return false;
+bool RootFilesystem::IsDirectory(StringView path, bool follow_symlinks) const {
+	return FilesystemForPath(path).IsDirectory(path, follow_symlinks);
 }
 
 bool RootFilesystem::Exists(StringView path) const {
-	return path.empty();
+	return FilesystemForPath(path).Exists(path);
 }
 
-int64_t RootFilesystem::GetFilesize(StringView) const {
-	show_assert();
-	return -1;
+int64_t RootFilesystem::GetFilesize(StringView  path) const {
+	return FilesystemForPath(path).GetFilesize(path);
 }
 
-std::streambuf* RootFilesystem::CreateInputStreambuffer(StringView, std::ios_base::openmode) const {
-	show_assert();
-	return nullptr;
+std::streambuf* RootFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+	return FilesystemForPath(path).CreateInputStreambuffer(path, mode);
 }
 
-std::streambuf* RootFilesystem::CreateOutputStreambuffer(StringView, std::ios_base::openmode) const {
-	show_assert();
-	return nullptr;
+std::streambuf* RootFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+	return FilesystemForPath(path).CreateOutputStreambuffer(path, mode);
+
 }
 
 bool RootFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& tree) const {
-	if (!path.empty()) {
-		return false;
+	if (path.empty()) {
+		// Debug feature: Return all available namespaces as a directory list
+		for (const auto& p : fs_list) {
+			tree.emplace_back(p.first + "://", DirectoryTree::FileType::Directory);
+		}
+		return true;
 	}
 
-	tree.emplace_back("file://", DirectoryTree::FileType::Directory);
-	//tree.emplace_back("apk://", DirectoryTree::FileType::Directory);
-	return true;
+	return FilesystemForPath(path).GetDirectoryContent(path, tree);
 }
 
 std::string RootFilesystem::Describe() const {
 	return "[Root]";
+}
+
+const Filesystem& RootFilesystem::FilesystemForPath(StringView path) const {
+	assert(!fs_list.empty());
+
+	StringView ns;
+	// Check if the path contains a namespace
+	auto ns_pos = path.find("://");
+	if (ns_pos != std::string::npos) {
+		ns = path.substr(0, ns_pos);
+		path = path.substr(ns_pos + 3);
+	}
+
+	if (ns.empty()) {
+		// No namespace returns the last fs which is the NativeFilesystem
+		return *fs_list.back().second;
+	}
+
+	auto it = std::find_if(fs_list.begin(), fs_list.end(), [&ns] (const auto& p) {
+		return p.first == ns;
+	});
+
+	if (it == fs_list.end()) {
+		// Only possible to trigger via commandline or bogus code, always user/dev error -> abort
+		Output::Error("Unsupported namespace {}://{}", ns, path);
+	}
+
+	return *it->second;
 }

@@ -15,12 +15,12 @@ static bool skip_tests() {
 TEST_SUITE_BEGIN("Filesystem" * doctest::skip(skip_tests()));
 
 TEST_CASE("Create") {
-	CHECK(FileFinder::Root().Create(EP_TEST_PATH "/game"));
-	CHECK(!FileFinder::Root().Create(EP_TEST_PATH "/!!!invalidpath!!!"));
+	CHECK(FileFinder::Root().Exists(EP_TEST_PATH "/game"));
+	CHECK(!FileFinder::Root().Exists(EP_TEST_PATH "/!!!invalidpath!!!"));
 }
 
 TEST_CASE("ListDirectory") {
-	auto fs = FileFinder::Root().Create(EP_TEST_PATH "/game");
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/game");
 	auto root = fs.ListDirectory();
 	CHECK(root->size() == 4);
 
@@ -46,7 +46,7 @@ TEST_CASE("ListDirectory") {
 }
 
 TEST_CASE("ListDirectorySubtree") {
-	auto fs = FileFinder::Root().Create(EP_TEST_PATH);
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH);
 	CHECK(fs.Subtree("gAmE").ListDirectory()->size() == 4);
 
 	auto subtree = fs.Subtree("game");
@@ -74,7 +74,7 @@ TEST_CASE("ListDirectorySubtree") {
 
 TEST_CASE("FindFile") {
 	// Only checking the filenames here because FindFile returns absolute paths
-	auto fs = FileFinder::Root().Create(EP_TEST_PATH "/game");
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/game");
 
 	auto name = [](const std::string& file) {
 		return std::get<1>(FileFinder::GetPathAndFilename(file));

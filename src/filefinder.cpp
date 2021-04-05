@@ -97,7 +97,10 @@ FilesystemView FileFinder::Save() {
 			std::string owner_path = parent.GetBasePath();
 			std::string sub_path = parent.GetSubPath();
 			parent = parent.GetOwner().GetParent();
-			if (!parent || parent.IsFeatureSupported(Filesystem::Feature::Write)) {
+			if (!parent) {
+				break;
+			}
+			if (parent.IsFeatureSupported(Filesystem::Feature::Write)) {
 				std::string path;
 				std::string name;
 				std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
@@ -150,6 +153,7 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 
 std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 	StringView ns;
+	// Check if the path contains a namespace and prevent that the :// is replaced with :/
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {
 		ns = path.substr(0, ns_pos + 3);

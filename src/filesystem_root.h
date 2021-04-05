@@ -29,6 +29,14 @@
 
 /**
  * A virtual filesystem that is the root of the filesystem tree of the Player.
+ * Contrary to other filesystems the root-fs does navigate into other VFS.
+ * Non-prefixed path access forwards to the NativeFilesystem.
+ * When namespaced (ns://) it is forwarded to the appropriate filesystem
+ * that supports this namespace.
+ * This ensures that code such as
+ * - Exists("/home/user/some_file.txt")
+ * - Exists("apk://assets/some_file.txt")
+ * works as expected.
  * Non-prefixed path access forwards to the NativeFilesystem.
  * Paths with namespaces (ns://) are forwarded to the appropriate filesystem
  * that supports this namespace.
@@ -67,7 +75,16 @@ protected:
 	/** @} */
 
 private:
-	std::unique_ptr<NativeFilesystem> native_fs;
+	/**
+	 * Resolves namespaces to get the appropriate filesystem back.
+	 * @param path Path to resolve.
+	 * @return Filesystem that supports this path
+	 */
+	const Filesystem& FilesystemForPath(StringView path) const;
+
+	// ns -> fs, NativeFilesystem is always last
+	using FsList = std::vector<std::pair<std::string, std::unique_ptr<NativeFilesystem>>>;
+	FsList fs_list;
 };
 
 #endif

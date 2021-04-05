@@ -27,6 +27,7 @@
 #include "directory_tree.h"
 
 class FilesystemView;
+class RootFilesystem;
 namespace Filesystem_Stream {
 	class InputStream;
 	class OutputStream;
@@ -199,6 +200,7 @@ protected:
 
 	friend FilesystemView;
 	friend DirectoryTree;
+	friend RootFilesystem;
 
 	std::unique_ptr<DirectoryTree> tree;
 
