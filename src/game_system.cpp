@@ -47,24 +47,23 @@ const lcf::rpg::SaveSystem& Game_System::GetSaveData() const {
 	return data;
 }
 
-bool Game_System::IsStopFilename(StringView name, std::string (*find_func) (StringView), std::string& found_name) {
-	found_name = "";
-
+bool Game_System::IsStopFilename(StringView name, Filesystem_Stream::InputStream (*find_func) (StringView), Filesystem_Stream::InputStream& found_stream) {
 	if (name.empty() || name == "(OFF)") {
+		found_stream = Filesystem_Stream::InputStream();
 		return true;
 	}
 
-	found_name = find_func(name);
+	found_stream = find_func(name);
 
-	return found_name.empty() && (name.starts_with('(') && name.ends_with(')'));
+	return !found_stream && (name.starts_with('(') && name.ends_with(')'));
 }
 
-bool Game_System::IsStopMusicFilename(StringView name, std::string& found_name) {
-	return IsStopFilename(name, FileFinder::FindMusic, found_name);
+bool Game_System::IsStopMusicFilename(StringView name, Filesystem_Stream::InputStream& found_stream) {
+	return IsStopFilename(name, FileFinder::OpenMusic, found_stream);
 }
 
-bool Game_System::IsStopSoundFilename(StringView name, std::string& found_name) {
-	return IsStopFilename(name, FileFinder::FindSound, found_name);
+bool Game_System::IsStopSoundFilename(StringView name, Filesystem_Stream::InputStream& found_stream) {
+	return IsStopFilename(name, FileFinder::OpenSound, found_stream);
 }
 
 void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
@@ -171,9 +170,9 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 }
 
 void Game_System::SePlay(const lcf::rpg::Animation &animation) {
-	std::string path;
+	Filesystem_Stream::InputStream stream;
 	for (const auto& anim : animation.timings) {
-		if (!IsStopSoundFilename(anim.se.name, path)) {
+		if (!IsStopSoundFilename(anim.se.name, stream)) {
 			SePlay(anim.se);
 			return;
 		}
@@ -496,32 +495,31 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
 	bgm_pending = false;
 
-	std::string path;
-	if (IsStopMusicFilename(result->file, path)) {
+	Filesystem_Stream::InputStream stream;
+	if (IsStopMusicFilename(result->file, stream)) {
 		Audio().BGM_Stop();
 		return;
-	} else if (path.empty()) {
+	} else if (!stream) {
 		Output::Debug("Music not found: {}", result->file);
 		return;
 	}
 
 	if (StringView(result->file).ends_with(".link")) {
 		// Handle Ineluki's MP3 patch
-		auto stream = FileFinder::Game().OpenInputStream(path, std::ios_base::in);
 		if (!stream) {
-			Output::Warning("Ineluki MP3: Link read error: {}", path);
+			Output::Warning("Ineluki MP3: Link read error: {}", stream.GetName());
 			return;
 		}
 
 		// The first line contains the path to the actual audio file to play
 		std::string line;
 		if (!Utils::ReadLine(stream, line)) {
-			Output::Warning("Ineluki MP3: Link file is empty: {}", path);
+			Output::Warning("Ineluki MP3: Link file is empty: {}", stream.GetName());
 			return;
 		}
 		line = lcf::ReaderUtil::Recode(line, Player::encoding);
 
-		Output::Debug("Ineluki MP3: Link file: {} -> {}", path, line);
+		Output::Debug("Ineluki MP3: Link file: {} -> {}", stream.GetName(), line);
 		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
 
 		// Needs another Async roundtrip
@@ -532,12 +530,12 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(std::move(stream), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
 	bgm_pending = false;
-	Audio().BGM_Play(FileFinder::Game().FindFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(FileFinder::Game().OpenFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {
@@ -552,18 +550,18 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		return;
 	}
 
-	std::string path;
-	if (IsStopSoundFilename(result->file, path)) {
+	Filesystem_Stream::InputStream stream;
+	if (IsStopSoundFilename(result->file, stream)) {
 		if (stop_sounds) {
 			Audio().SE_Stop();
 		}
 		return;
-	} else if (path.empty()) {
+	} else if (!stream) {
 		Output::Debug("Sound not found: {}", result->file);
 		return;
 	}
 
-	Audio().SE_Play(path, se.volume, se.tempo);
+	Audio().SE_Play(std::move(stream), se.volume, se.tempo);
 }
 
 bool Game_System::IsMessageTransparent() {

@@ -78,10 +78,10 @@ public:
 	/**
 	 * Opens the passed filename with the internal audio decoder.
 	 *
-	 * @param filename Path to the file
+	 * @param stream Stream to the audio file
 	 * @return An AudioSeCache instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioSeCache> Create(const std::string& filename);
+	static std::unique_ptr<AudioSeCache> Create(Filesystem_Stream::InputStream stream);
 
 	/**
 	 * Retrieves the format of the internal audio decoder.

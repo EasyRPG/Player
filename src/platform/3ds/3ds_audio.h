@@ -33,7 +33,7 @@ public:
 	CtrAudio();
 	~CtrAudio();
 
-	void BGM_Play(std::string const& file, int volume, int pitch, int fadein) override;
+	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;
 	void BGM_Pause() override;
 	void BGM_Resume() override;
 	void BGM_Stop() override;
@@ -43,7 +43,7 @@ public:
 	void BGM_Fade(int fade) override;
 	void BGM_Volume(int volume) override;
 	void BGM_Pitch(int pitch) override;
-	void SE_Play(std::string const& file, int volume, int pitch) override;
+	void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) override;
 	void SE_Stop() override;
 	virtual void Update() override;
 

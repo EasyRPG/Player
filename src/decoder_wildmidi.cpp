@@ -70,7 +70,7 @@ static void WildMidiDecoder_deinit() {
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
-	auto stream = FileFinder::Game().OpenInputStream(filename);
+	auto stream = FileFinder::Root().OpenInputStream(filename);
 	if (!stream) {
 		Output::Warning("WildMidi: vio_allocate_file_func failed for {}", filename);
 		return nullptr;

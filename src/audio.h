@@ -20,12 +20,13 @@
 
 // Headers
 #include <string>
+#include "filesystem_stream.h"
 
 /**
  * Base Audio class.
  */
 struct AudioInterface {
-	virtual ~AudioInterface() {}
+	virtual ~AudioInterface() = default;
 
 	/**
 	 * Update audio. Must be called each frame.
@@ -40,7 +41,7 @@ struct AudioInterface {
 	 * @param pitch pitch.
 	 * @param fadein fadein.
 	 */
-	virtual void BGM_Play(std::string const& file, int volume, int pitch, int fadein) = 0;
+	virtual void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) = 0;
 
 	/**
 	 * Stops the currently playing background music.
@@ -103,7 +104,7 @@ struct AudioInterface {
 	 * @param volume volume.
 	 * @param pitch pitch.
 	 */
-	virtual void SE_Play(std::string const& file, int volume, int pitch) = 0;
+	virtual void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) = 0;
 
 	/**
 	 * Stops the currently playing sound effect.
@@ -113,7 +114,7 @@ struct AudioInterface {
 
 struct EmptyAudio : public AudioInterface {
 public:
-	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override;
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}
 	void BGM_Stop() override;
@@ -123,7 +124,7 @@ public:
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
-	void SE_Play(std::string const&, int, int) override {}
+	void SE_Play(Filesystem_Stream::InputStream, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}
 

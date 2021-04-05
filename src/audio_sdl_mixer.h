@@ -36,7 +36,7 @@ public:
 	SdlMixerAudio();
 	~SdlMixerAudio();
 
-	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override;
 	void BGM_Pause() override;
 	void BGM_Resume() override;
 	void BGM_Stop() override;
@@ -52,7 +52,7 @@ public:
 	void BGS_Stop();
 	void BGS_Fade(int);
 	void BGS_Volume(int);
-	void SE_Play(std::string const&, int, int) override;
+	void SE_Play(Filesystem_Stream::InputStream, int, int) override;
 	void SE_Stop() override;
 	void Update() override;
 
@@ -61,7 +61,7 @@ public:
 	AudioDecoder* GetDecoder();
 	SDL_AudioCVT& GetAudioCVT();
 private:
-	void SetupAudioDecoder(Filesystem_Stream::InputStream stream, const std::string& filename, int volume, int pitch, int fadein);
+	void SetupAudioDecoder(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein);
 
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;

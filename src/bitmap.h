@@ -53,13 +53,13 @@ public:
 	static BitmapRef Create(int width, int height, const Color& color);
 
 	/**
-	 * Loads a bitmap from an image file.
+	 * Loads a bitmap from a stream.
 	 *
-	 * @param filename image file to load.
+	 * @param stream stream to read image from.
 	 * @param transparent allow transparency on bitmap.
 	 * @param flags bitmap flags.
 	 */
-	static BitmapRef Create(const std::string& filename, bool transparent = true, uint32_t flags = 0);
+	static BitmapRef Create(Filesystem_Stream::InputStream stream, bool transparent = true, uint32_t flags = 0);
 
 	/*
 	 * Loads a bitmap from memory.
@@ -102,7 +102,7 @@ public:
 	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	Bitmap(int width, int height, bool transparent);
-	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
+	Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags);
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);

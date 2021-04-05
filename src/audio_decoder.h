@@ -76,11 +76,10 @@ public:
 	 * Upon failure the FILE handle is valid and points at the beginning.
 	 *
 	 * @param stream handle to parse
-	 * @param filename Path to the file handle
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample = true);
+	static std::unique_ptr<AudioDecoder> Create(Filesystem_Stream::InputStream& stream, bool resample = true);
 
 	/**
 	 * Updates the volume for the fade in/out effect.

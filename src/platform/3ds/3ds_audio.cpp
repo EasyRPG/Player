@@ -63,18 +63,17 @@ bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, 
 	return false;
 }
 
-void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
+void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, int pitch, int fadein) {
 	if (!dsp_inited)
 		return;
 
-	auto filestream = FileFinder::OpenInputStream(file);
 	if (!filestream) {
-		Output::Warning("Couldn't play BGM {}: File not readable", file);
+		Output::Warning("Couldn't play BGM {}: File not readable", filestream.GetName());
 		return;
 	}
 
 	LockMutex();
-	bgm_decoder = AudioDecoder::Create(filestream, file);
+	bgm_decoder = AudioDecoder::Create(filestream);
 	if (bgm_decoder && bgm_decoder->Open(std::move(filestream))) {
 		int frequency;
 		AudioDecoder::Format format, out_format;
@@ -95,7 +94,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		bgm_buf[0].nsamples = nsamples;
 		bgm_buf[1].nsamples = nsamples;
 	} else {
-		Output::Warning("Couldn't play BGM {}: Format not supported", file);
+		Output::Warning("Couldn't play BGM {}: Format not supported", filestream.GetName());
 	}
 
 	UnlockMutex();
@@ -167,7 +166,7 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	}
 }
 
-void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
+void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) {
 	if (!dsp_inited)
 		return;
 
@@ -186,13 +185,13 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (se_channel == -1) {
-		Output::Warning("Couldn't play SE {}: No free channel available", file);
+		Output::Warning("Couldn't play SE {}: No free channel available", stream.GetName());
 		return;
 	}
 
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
+	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(stream);
 	if (!cache) {
-		Output::Warning("Couldn't play SE {}: Format not supported", file);
+		Output::Warning("Couldn't play SE {}: Format not supported", stream.GetName());
 		return;
 	}
 

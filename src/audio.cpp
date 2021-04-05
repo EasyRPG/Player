@@ -31,7 +31,7 @@ AudioInterface& Audio() {
 	return default_;
 }
 
-void EmptyAudio::BGM_Play(std::string const&, int, int, int) {
+void EmptyAudio::BGM_Play(Filesystem_Stream::InputStream, int, int, int) {
 	bgm_starttick = Player::GetFrames();
 	playing = true;
 }
