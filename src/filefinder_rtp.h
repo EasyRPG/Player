@@ -38,14 +38,14 @@ public:
 	 * @param dir Directory containing the file
 	 * @param name Filename
 	 * @param exts Extensions to probe
-	 * @return The filename in the RTP or an empty string if not found
+	 * @return A handle to the file or an invalid handle if not found
 	 */
-	 std::string Lookup(StringView dir, StringView name, Span<StringView> exts) const;
+	 Filesystem_Stream::InputStream Lookup(StringView dir, StringView name, Span<StringView> exts) const;
 
 private:
 	void AddPath(StringView p);
 	void ReadRegistry(StringView company, StringView product, StringView key);
-	std::string LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const;
+	Filesystem_Stream::InputStream LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const;
 
 	using search_path_list = std::vector<FilesystemView>;
 

@@ -164,6 +164,37 @@ public:
 	 */
 	std::string FindFile(const DirectoryTree::Args& args) const;
 
+	// Helper functions for finding and opening files
+	/**
+	 * Does a case insensitive search for the file and opens a read handle.
+	 *
+	 * @param filename a path relative to the filesystem root
+	 * @param exts List of file extensions to probe
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(StringView filename, Span<StringView> exts = {}) const;
+
+	/**
+	 * Does a case insensitive search for the file in a specific directory
+	 * and opens a read handle.
+	 *
+	 * @param directory a path relative to the filesystem root
+	 * @param filename Name of the file to search
+	 * @param exts List of file extensions to probe
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+
+	/**
+	 * Does a case insensitive search for the file and opens a read handle.
+	 * Advanced version for special purposes searches. Usually not needed.
+	 *
+	 * @see DirectoryTree::Args
+	 * @param args See documentation of DirectoryTree::Args
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(const DirectoryTree::Args& args) const;
+
 	/** Implicit conversion to FilesystemView */
 	operator FilesystemView();
 
@@ -274,6 +305,38 @@ public:
 	 * @return Path to file or empty string when not found
 	 */
 	std::string FindFile(const DirectoryTree::Args& args) const;
+
+	// Helper functions for finding and opening files
+	/**
+	 * Does a case insensitive search for the file and opens a read handle.
+	 *
+	 * @param filename a path relative to the filesystem root
+	 * @param exts List of file extensions to probe
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(StringView filename, Span<StringView> exts = {}) const;
+
+	/**
+	 * Does a case insensitive search for the file in a specific directory
+	 * and opens a read handle.
+	 *
+	 * @param directory a path relative to the filesystem root
+	 * @param filename Name of the file to search
+	 * @param exts List of file extensions to probe
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+
+	/**
+	 * Does a case insensitive search for the file and opens a read handle.
+	 * Advanced version for special purposes searches. Usually not needed.
+	 *
+	 * @see DirectoryTree::Args
+	 * @param args See documentation of DirectoryTree::Args
+	 * @return Handle to the file if found, otherwise an invalid handle
+	 */
+	Filesystem_Stream::InputStream OpenFile(const DirectoryTree::Args& args) const;
+
 
 	/**
 	 * @param subpath Path to append to the subtree root

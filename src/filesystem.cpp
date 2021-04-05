@@ -35,7 +35,7 @@ Filesystem::Filesystem(std::string base_path, FilesystemView parent_fs) : base_p
 
 Filesystem_Stream::InputStream Filesystem::OpenInputStream(StringView name, std::ios_base::openmode m) const {
 	std::streambuf* buf = CreateInputStreambuffer(name, m | std::ios_base::in);
-	Filesystem_Stream::InputStream is(buf);
+	Filesystem_Stream::InputStream is(buf, ToString(name));
 	return is;
 }
 
@@ -44,7 +44,7 @@ Filesystem_Stream::OutputStream Filesystem::OpenOutputStream(StringView name, st
 
 	std::string path;
 	std::tie(path, std::ignore) = FileFinder::GetPathAndFilename(name);
-	Filesystem_Stream::OutputStream os(buf, Subtree(path));
+	Filesystem_Stream::OutputStream os(buf, Subtree(path), ToString(name));
 
 	return os;
 }
@@ -133,6 +133,18 @@ std::string Filesystem::FindFile(const DirectoryTree::Args& args) const {
 	return tree->FindFile(args);
 }
 
+Filesystem_Stream::InputStream Filesystem::OpenFile(StringView filename, Span<StringView> exts) const {
+	return OpenInputStream(tree->FindFile(filename, exts));
+}
+
+Filesystem_Stream::InputStream Filesystem::OpenFile(StringView directory, StringView filename, Span<StringView> exts) const {
+	return OpenInputStream(tree->FindFile(directory, filename, exts));
+}
+
+Filesystem_Stream::InputStream Filesystem::OpenFile(const DirectoryTree::Args& args) const {
+	return OpenInputStream(tree->FindFile(args));
+}
+
 FilesystemView::FilesystemView(const Filesystem* fs, std::string sub_path) :
 	fs(fs), sub_path(std::move(sub_path)) {
 	valid = (fs->ListDirectory(this->sub_path) != nullptr);
@@ -168,7 +180,7 @@ std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) con
 	std::string found = fs->FindFile(MakePath(name), exts);
 	if (!found.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size());
+		return found.substr(sub_path.size() + 1);
 	}
 	return "";
 }
@@ -178,21 +190,40 @@ std::string FilesystemView::FindFile(StringView dir, StringView name, Span<Strin
 	std::string found = fs->FindFile(MakePath(dir), name, exts);
 	if (!found.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size());
+		return found.substr(sub_path.size() + 1);
 	}
 	return "";
 }
 
 std::string FilesystemView::FindFile(const DirectoryTree::Args& args) const {
+	assert(fs);
 	auto args_cp = args;
 	std::string path = MakePath(args.path);
 	args_cp.path = path;
 	std::string found = fs->FindFile(args_cp);
 	if (!found.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size());
+		return found.substr(sub_path.size() + 1);
 	}
 	return "";
+}
+
+Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView name, Span<StringView> exts) const {
+	assert(fs);
+	return fs->OpenFile(MakePath(name), exts);
+}
+
+Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView dir, StringView name, Span<StringView> exts) const {
+	assert(fs);
+	return fs->OpenFile(MakePath(name), dir, exts);
+}
+
+Filesystem_Stream::InputStream FilesystemView::OpenFile(const DirectoryTree::Args &args) const {
+	assert(fs);
+	auto args_cp = args;
+	std::string path = MakePath(args.path);
+	args_cp.path = path;
+	return fs->OpenFile(args_cp);
 }
 
 std::string FilesystemView::MakePath(StringView subdir) const {

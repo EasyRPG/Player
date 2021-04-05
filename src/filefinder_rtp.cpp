@@ -209,18 +209,18 @@ void FileFinder_RTP::ReadRegistry(StringView company, StringView product, String
 #endif
 }
 
-std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const {
+Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const {
 	int version = Player::EngineVersion();
 
-	auto normal_search = [&]() -> std::string {
+	auto normal_search = [&]() {
 		is_rtp_asset = false;
 		for (const auto& path : search_paths) {
 			const std::string ret = path.FindFile(dir, name, exts);
 			if (!ret.empty()) {
-				return ret;
+				return path.OpenInputStream(ret);
 			}
 		}
-		return std::string();
+		return Filesystem_Stream::InputStream();
 	};
 
 	// Detect the RTP version the game uses, when only one candidate is left the RTP is known
@@ -272,7 +272,7 @@ std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span
 				std::string ret = rtp.tree.FindFile(dir, rtp_entry, exts);
 				if (!ret.empty()) {
 					is_rtp_asset = true;
-					return ret;
+					return rtp.tree.OpenInputStream(ret);
 				}
 			}
 		}
@@ -282,27 +282,27 @@ std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span
 	return normal_search();
 }
 
-std::string FileFinder_RTP::Lookup(StringView dir, StringView name, Span<StringView> exts) const {
+Filesystem_Stream::InputStream FileFinder_RTP::Lookup(StringView dir, StringView name, Span<StringView> exts) const {
 	if (!disable_rtp) {
 		bool is_rtp_asset;
-		auto ret = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
+		auto is = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
 
 		std::string lcase = lcf::ReaderUtil::Normalize(dir);
 		bool is_audio_asset = lcase == "music" || lcase == "sound";
 
 		if (is_rtp_asset) {
-			if (!ret.empty() && game_has_full_package_flag && !warning_broken_rtp_game_shown && !is_audio_asset) {
+			if (is && game_has_full_package_flag && !warning_broken_rtp_game_shown && !is_audio_asset) {
 				warning_broken_rtp_game_shown = true;
 				Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
-			} else if (ret.empty() && !game_has_full_package_flag && !is_audio_asset) {
+			} else if (!is && !game_has_full_package_flag && !is_audio_asset) {
 				std::string msg = "Cannot find: {}/{}. " +
 								  std::string(search_paths.empty() ?
 											  "Install RTP {} to resolve this warning." : "RTP {} was probably not installed correctly.");
 				Output::Warning(msg, dir, name, Player::EngineVersion());
 			}
 		}
-		return ret;
+		return is;
 	}
 
-	return "";
+	return Filesystem_Stream::InputStream();
 }

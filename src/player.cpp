@@ -791,9 +791,9 @@ void Player::CreateGameObjects() {
 	// ExFont parsing
 	Cache::exfont_custom.clear();
 	// Check for bundled ExFont
-	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+	auto exfont_stream = FileFinder::OpenImage(".", "ExFont");
 #ifndef EMSCRIPTEN
-	if (exfont_file.empty()) {
+	if (!exfont_stream) {
 		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
 		// a ExFont can be manually bundled there)
 		std::string exep = FileFinder::Game().FindFile(EXE_NAME);
@@ -811,14 +811,9 @@ void Player::CreateGameObjects() {
 		}
 	}
 #endif
-	if (!exfont_file.empty()) {
-		auto exfont_stream = FileFinder::Game().OpenInputStream(exfont_file);
-		if (exfont_stream) {
-			Output::Debug("Using custom ExFont: {}", exfont_file);
-			Cache::exfont_custom = Utils::ReadStream(exfont_stream);
-		} else {
-			Output::Debug("Reading custom ExFont {} failed", exfont_file);
-		}
+	if (exfont_stream) {
+		Output::Debug("Using custom ExFont: {}", exfont_stream.GetName());
+		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
 	ResetGameObjects();

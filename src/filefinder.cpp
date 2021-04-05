@@ -26,8 +26,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <filefinder.h>
-#include <filefinder.h>
 
 #ifdef _WIN32
 #  include <windows.h>
@@ -38,6 +36,7 @@
 #include "options.h"
 #include "utils.h"
 #include "filefinder.h"
+#include "filefinder_rtp.h"
 #include "filesystem.h"
 #include "filesystem_root.h"
 #include "fileext_guesser.h"
@@ -380,7 +379,8 @@ std::string FileFinder::FindImage(StringView dir, StringView name) {
 #endif
 
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	return Game().FindFile({ MakePath(dir, name), IMG_TYPES, 1, true, true });
+	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
+	return FileFinder::Game().FindFile(args);
 }
 
 std::string FileFinder::FindMusic(StringView name) {
@@ -389,8 +389,9 @@ std::string FileFinder::FindMusic(StringView name) {
 #endif
 
 	auto MUSIC_TYPES = Utils::MakeSvArray(
-		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	return Game().FindFile({ MakePath("Music", name), MUSIC_TYPES, 1, true, true });
+			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
+	return FileFinder::Game().FindFile(args);
 }
 
 std::string FileFinder::FindSound(StringView name) {
@@ -399,8 +400,52 @@ std::string FileFinder::FindSound(StringView name) {
 #endif
 
 	auto SOUND_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
+	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
+	return FileFinder::Game().FindFile(args);
+}
+
+Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, DirectoryTree::Args& args) {
+	auto is = FileFinder::Game().OpenFile(args);
+	if (!is) {
+		is = Main_Data::filefinder_rtp->Lookup(dir, name, args.exts);
+		if (!is) {
+			Output::Debug("Cannot find: {}/{}", dir, name);
+		}
+	}
+	return is;
+}
+
+Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
+#ifdef EMSCRIPTEN
+	return Game().OpenFile(dir, name);
+#endif
+
+	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
+	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
+	return open_generic(dir, name, args);
+}
+
+Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
+#ifdef EMSCRIPTEN
+	return Game().OpenFile("Music", name);
+#endif
+
+	auto MUSIC_TYPES = Utils::MakeSvArray(
+		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
+	return open_generic("Music", name, args);
+}
+
+Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
+#ifdef EMSCRIPTEN
+	return Game().OpenFile("Sound", name);
+#endif
+
+	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	return Game().FindFile({ MakePath("Sound", name), SOUND_TYPES, 1, true, true });
+	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
+	return open_generic("Sound", name, args);
 }
 
 bool FileFinder::IsMajorUpdatedTree() {

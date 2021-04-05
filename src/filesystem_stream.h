@@ -29,12 +29,14 @@ namespace Filesystem_Stream {
 	class InputStream final : public std::istream {
 	public:
 		explicit InputStream(): std::istream(nullptr) {}
-		explicit InputStream(std::streambuf* sb);
+		explicit InputStream(std::streambuf* sb, std::string name);
 		~InputStream() override;
 		InputStream(const InputStream&) = delete;
 		InputStream& operator=(const InputStream&) = delete;
 		InputStream(InputStream&& is) noexcept;
 		InputStream& operator=(InputStream&& is) noexcept;
+
+		StringView GetName() const;
 
 		template <typename T>
 		bool ReadIntoObj(T& obj);
@@ -42,20 +44,25 @@ namespace Filesystem_Stream {
 	private:
 		template <typename T>
 		bool Read0(T& obj);
+
+		std::string name;
 	};
 
 	class OutputStream final : public std::ostream {
 	public:
 		explicit OutputStream(): std::ostream(nullptr) {}
-		explicit OutputStream(std::streambuf* sb, FilesystemView fs);
+		explicit OutputStream(std::streambuf* sb, FilesystemView fs, std::string name);
 		~OutputStream() override;
 		OutputStream(const OutputStream&) = delete;
 		OutputStream& operator=(const OutputStream&) = delete;
 		OutputStream(OutputStream&& os) noexcept;
 		OutputStream& operator=(OutputStream&& os) noexcept;
 
+		StringView GetName() const;
+
 	private:
 		FilesystemView fs;
+		std::string name;
 	};
 
 	class InputMemoryStreamBuf : public std::streambuf {

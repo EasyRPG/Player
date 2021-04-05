@@ -17,7 +17,10 @@
 
 #include "filesystem_stream.h"
 
-Filesystem_Stream::InputStream::InputStream(std::streambuf* sb) : std::istream(sb) {}
+#include <utility>
+
+Filesystem_Stream::InputStream::InputStream(std::streambuf* sb, std::string name) :
+	std::istream(sb), name(std::move(name)) {}
 
 Filesystem_Stream::InputStream::~InputStream() {
 	delete rdbuf();
@@ -26,18 +29,24 @@ Filesystem_Stream::InputStream::~InputStream() {
 Filesystem_Stream::InputStream::InputStream(InputStream&& is) noexcept : std::istream(std::move(is)) {
 	set_rdbuf(is.rdbuf());
 	is.set_rdbuf(nullptr);
+	name = std::move(is.name);
 }
 
 Filesystem_Stream::InputStream& Filesystem_Stream::InputStream::operator=(InputStream&& is) noexcept {
-	if (this == &is) return is;
-	std::istream::operator=(std::move(is));
+	if (this == &is) return *this;
 	set_rdbuf(is.rdbuf());
 	is.set_rdbuf(nullptr);
-	return is;
+	name = std::move(is.name);
+	std::istream::operator=(std::move(is));
+	return *this;
 }
 
-Filesystem_Stream::OutputStream::OutputStream(std::streambuf* sb, FilesystemView fs) :
-	std::ostream(sb), fs(fs) {};
+StringView Filesystem_Stream::InputStream::GetName() const {
+	return name;
+}
+
+Filesystem_Stream::OutputStream::OutputStream(std::streambuf* sb, FilesystemView fs, std::string name) :
+	std::ostream(sb), fs(std::move(fs)), name(std::move(name)) {};
 
 Filesystem_Stream::OutputStream::~OutputStream() {
 	delete rdbuf();
@@ -49,14 +58,20 @@ Filesystem_Stream::OutputStream::~OutputStream() {
 Filesystem_Stream::OutputStream::OutputStream(OutputStream&& os) noexcept : std::ostream(std::move(os)) {
 	set_rdbuf(os.rdbuf());
 	os.set_rdbuf(nullptr);
+	name = std::move(os.name);
 }
 
 Filesystem_Stream::OutputStream& Filesystem_Stream::OutputStream::operator=(OutputStream&& os) noexcept {
-	if (this == &os) return os;
-	std::ostream::operator=(std::move(os));
+	if (this == &os) return *this;
 	set_rdbuf(os.rdbuf());
 	os.set_rdbuf(nullptr);
-	return os;
+	name = std::move(os.name);
+	std::ostream::operator=(std::move(os));
+	return *this;
+}
+
+StringView Filesystem_Stream::OutputStream::GetName() const {
+	return name;
 }
 
 Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(Span<uint8_t> buffer)

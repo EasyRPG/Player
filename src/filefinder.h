@@ -73,8 +73,7 @@ namespace FileFinder {
 	void SetSaveFilesystem(FilesystemView filesystem);
 
 	/**
-	 * Finds an image file.
-	 * Searches through the current RPG Maker game and the RTP directories.
+	 * Finds an image file in the current RPG Maker game.
 	 *
 	 * @param dir directory to check.
 	 * @param name image file name to check.
@@ -83,9 +82,7 @@ namespace FileFinder {
 	std::string FindImage(StringView dir, StringView name);
 
 	/**
-	 * Finds a music file.
-	 * Searches through the Music folder of the current RPG Maker game and
-	 * the RTP directories.
+	 * Finds a music file in the current RPG Maker game.
 	 *
 	 * @param name the music path and name.
 	 * @return path to file.
@@ -93,14 +90,42 @@ namespace FileFinder {
 	std::string FindMusic(StringView name);
 
 	/**
-	 * Finds a sound file.
-	 * Searches through the Sound folder of the current RPG Maker game and
-	 * the RTP directories.
+	 * Finds a sound file in the current RPG Maker game.
 	 *
 	 * @param name the sound path and name.
 	 * @return path to file.
 	 */
 	std::string FindSound(StringView name);
+
+	/**
+	 * Finds an image file and opens a file handle to it.
+	 * Searches through the current RPG Maker game and the RTP directories.
+	 *
+	 * @param dir directory to check.
+	 * @param name image file name to check.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenImage(StringView dir, StringView name);
+
+	/**
+	 * Finds a music file and opens a file handle to it.
+	 * Searches through the Music folder of the current RPG Maker game and
+	 * the RTP directories.
+	 *
+	 * @param name the music path and name.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenMusic(StringView name);
+
+	/**
+	 * Finds a sound file and opens a file handle to it.
+	 * Searches through the Sound folder of the current RPG Maker game and
+	 * the RTP directories.
+	 *
+	 * @param name the sound path and name.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenSound(StringView name);
 
 	/**
 	 * Finds a font file.
