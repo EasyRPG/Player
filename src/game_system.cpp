@@ -537,7 +537,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
 	bgm_pending = false;
-	Audio().BGM_Play(FileFinder::FindDefault(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(FileFinder::Game().FindFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {

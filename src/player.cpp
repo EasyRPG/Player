@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <memory>
 #include <thread>
 
 #ifdef _WIN32
@@ -670,7 +671,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 void Player::CreateGameObjects() {
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210
-	std::string meta_file = FileFinder::FindDefault(META_NAME);
+	std::string meta_file = FileFinder::Game().FindFile(META_NAME);
 	meta.reset(new Meta(meta_file));
 
 	// Guess non-standard extensions (for the DB) before loading the encoding
@@ -702,7 +703,7 @@ void Player::CreateGameObjects() {
 
 	bool no_rtp_warning_flag = false;
 	{ // Scope lifetime of variables for ini parsing
-		std::string ini_file = FileFinder::FindDefault(INI_NAME);
+		std::string ini_file = FileFinder::Game().FindFile(INI_NAME);
 
 		auto ini_stream = FileFinder::Game().OpenInputStream(ini_file, std::ios_base::in);
 		if (ini_stream) {
@@ -734,7 +735,7 @@ void Player::CreateGameObjects() {
 		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
 
-			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+			if (FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
 				// Heuristic: Detect if game was converted from 2000 to 2003 and
 				// no typical 2003 feature was used at all (breaks .flow e.g.)
 				if (lcf::Data::classes.size() == 1 &&
@@ -771,15 +772,15 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	Main_Data::filefinder_rtp.reset(new FileFinder_RTP(no_rtp_flag, no_rtp_warning_flag));
+	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag);
 
 	if ((patch & PatchOverride) == 0) {
-		if (!FileFinder::FindDefault("dynloader.dll").empty()) {
+		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
 			patch |= PatchDynRpg;
 			Output::Warning("This game uses DynRPG and will not run properly.");
 		}
 
-		if (!FileFinder::FindDefault("accord.dll").empty()) {
+		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
 			patch |= PatchManiac;
 			Output::Warning("This game uses the Maniac Patch and will not run properly.");
 		}
@@ -795,7 +796,7 @@ void Player::CreateGameObjects() {
 	if (exfont_file.empty()) {
 		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
 		// a ExFont can be manually bundled there)
-		std::string exep = FileFinder::FindDefault(EXE_NAME);
+		std::string exep = FileFinder::Game().FindFile(EXE_NAME);
 		if (!exep.empty()) {
 			auto exesp = FileFinder::Game().OpenInputStream(exep);
 			if (exesp) {
@@ -822,7 +823,7 @@ void Player::CreateGameObjects() {
 
 	ResetGameObjects();
 
-	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::FindDefault("autorun.script"));
+	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 }
 
 void Player::ResetGameObjects() {
@@ -890,8 +891,8 @@ void Player::GuessNonStandardExtensions() {
 	// There are several ways to handle this, but we just put 'is_easyrpg_project' in the header
 	// and calculate it here.
 	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
-	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+	std::string edb = FileFinder::Game().FindFile(DATABASE_NAME_EASYRPG);
+	std::string emt = FileFinder::Game().FindFile(TREEMAP_NAME_EASYRPG);
 	is_easyrpg_project = !edb.empty() && !emt.empty();
 
 	// Non-standard extensions only apply to non-EasyRPG projects
@@ -907,7 +908,7 @@ void Player::LoadDatabase() {
 	lcf::Data::Clear();
 
 	if (is_easyrpg_project) {
-		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
+		std::string edb = FileFinder::Game().FindFile(DATABASE_NAME_EASYRPG);
 		auto edb_stream = FileFinder::Game().OpenInputStream(edb, std::ios_base::in);
 		if (!edb_stream) {
 			Output::Error("Error loading {}", DATABASE_NAME_EASYRPG);
@@ -922,7 +923,7 @@ void Player::LoadDatabase() {
 			lcf::Data::data = std::move(*db);
 		}
 
-		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+		std::string emt = FileFinder::Game().FindFile(TREEMAP_NAME_EASYRPG);
 		auto emt_stream = FileFinder::Game().OpenInputStream(emt, std::ios_base::in);
 		if (!emt_stream) {
 			Output::Error("Error loading {}", TREEMAP_NAME_EASYRPG);
@@ -938,9 +939,9 @@ void Player::LoadDatabase() {
 	} else {
 		// Retrieve the appropriately-renamed files.
 		std::string ldb_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB);
-		std::string ldb = FileFinder::FindDefault(ldb_name);
+		std::string ldb = FileFinder::Game().FindFile(ldb_name);
 		std::string lmt_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT);
-		std::string lmt = FileFinder::FindDefault(lmt_name);
+		std::string lmt = FileFinder::Game().FindFile(lmt_name);
 
 		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (!ldb_stream) {
@@ -1164,7 +1165,7 @@ std::string Player::GetEncoding() {
 
 	// command line > ini > detection > current locale
 	if (encoding.empty()) {
-		std::string ini = FileFinder::FindDefault(INI_NAME);
+		std::string ini = FileFinder::Game().FindFile(INI_NAME);
 		auto ini_stream = FileFinder::Game().OpenInputStream(ini);
 		if (ini_stream) {
 			encoding = lcf::ReaderUtil::GetEncoding(ini_stream);
@@ -1174,7 +1175,7 @@ std::string Player::GetEncoding() {
 	if (encoding.empty() || encoding == "auto") {
 		encoding = "";
 
-		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
+		std::string ldb = FileFinder::Game().FindFile(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
 		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (ldb_stream) {
 			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);

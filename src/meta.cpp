@@ -246,14 +246,14 @@ void Meta::IdentifyCanonName(StringView lmtFile, StringView ldbFile) {
 	// Calculate the lookup based on the LMT/LDB hashes, preferring to use LMT only if possible.
 	// This requires a mandatory field, for which we will use "Name".
 	if (!Empty()) {
-		std::string lmtPath = FileFinder::FindDefault(ToString(lmtFile));
+		std::string lmtPath = FileFinder::Game().FindFile(ToString(lmtFile));
 		std::string crcLMT = crc32file(lmtPath);
 		std::string crcLDB = "*";
 		Output::Debug("CRC32 of 'LMT' file ('{}') is {}", lmtFile, crcLMT);
 		if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 			canon_ini_lookup = crcLMT + "/" + crcLDB;
 		} else {
-			std::string ldbPath = FileFinder::FindDefault(ToString(ldbFile));
+			std::string ldbPath = FileFinder::Game().FindFile(ToString(ldbFile));
 			crcLDB = crc32file(ldbPath);
 			if (ini->HasValue(crcLMT + "/" + crcLDB , MTINI_NAME)) {
 				canon_ini_lookup = crcLMT + "/" + crcLDB;

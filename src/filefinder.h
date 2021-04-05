@@ -83,25 +83,6 @@ namespace FileFinder {
 	std::string FindImage(StringView dir, StringView name);
 
 	/**
-	 * Finds a file.
-	 * Searches through the current RPG Maker game and the RTP directories.
-	 *
-	 * @param dir directory to check.
-	 * @param name file name to check.
-	 * @return path to file.
-	 */
-	std::string FindDefault(StringView dir, StringView name);
-
-	/**
-	 * Finds a file.
-	 * Searches through the current RPG Maker game and the RTP directories.
-	 *
-	 * @param name the path and name.
-	 * @return path to file.
-	 */
-	std::string FindDefault(StringView name);
-
-	/**
 	 * Finds a music file.
 	 * Searches through the Music folder of the current RPG Maker game and
 	 * the RTP directories.

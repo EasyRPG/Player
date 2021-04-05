@@ -339,19 +339,11 @@ void FileFinder::Quit() {
 
 std::string FileFinder::FindImage(StringView dir, StringView name) {
 #ifdef EMSCRIPTEN
-	return FindDefault(dir, name);
+	return Game().FindFile(dir, name);
 #endif
 
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
 	return Game().FindFile({ MakePath(dir, name), IMG_TYPES, 1, true, true, true });
-}
-
-std::string FileFinder::FindDefault(StringView dir, StringView name) {
-	return Game().FindFile(dir, name);
-}
-
-std::string FileFinder::FindDefault(StringView name) {
-	return Game().FindFile(name);
 }
 
 bool FileFinder::IsValidProject(const FilesystemView& fs) {
@@ -393,7 +385,7 @@ int FileFinder::GetSavegames() {
 
 std::string FileFinder::FindMusic(StringView name) {
 #ifdef EMSCRIPTEN
-	return FindDefault("Music", name);
+	return Game().FindFile("Music", name);
 #endif
 
 	auto MUSIC_TYPES = Utils::MakeSvArray(
@@ -403,7 +395,7 @@ std::string FileFinder::FindMusic(StringView name) {
 
 std::string FileFinder::FindSound(StringView name) {
 #ifdef EMSCRIPTEN
-	return FindDefault("Sound", name);
+	return Game().FindFile("Sound", name);
 #endif
 
 	auto SOUND_TYPES = Utils::MakeSvArray(
@@ -420,7 +412,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// the detection doesn't return reliable results for games created with
 	// "RPG2k non-official English translation (older engine) + MP3 patch"
 	bool find_mp3 = true;
-	std::string harmony = FindDefault("Harmony.dll");
+	std::string harmony = Game().FindFile("Harmony.dll");
 	if (!harmony.empty()) {
 		auto size = fs.GetFilesize(harmony);
 		if (size != -1 && size != KnownFileSize::OFFICIAL_HARMONY_DLL) {
@@ -442,7 +434,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	}
 
 	// Compare the size of RPG_RT.exe with threshold
-	std::string rpg_rt = FindDefault("RPG_RT.exe");
+	std::string rpg_rt = Game().FindFile("RPG_RT.exe");
 	if (!rpg_rt.empty()) {
 		auto size = fs.GetFilesize(rpg_rt);
 		if (size != -1) {

@@ -370,7 +370,7 @@ void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
 		return a.invoked;
 	})) {
 		std::for_each(async_scripts.begin(), async_scripts.end(), [this](const auto& a) {
-			Execute(FileFinder::FindDefault(a.script_name));
+			Execute(FileFinder::Game().FindFile(a.script_name));
 		});
 		async_scripts.clear();
 	}
