@@ -125,7 +125,7 @@ int64_t Platform::File::GetSize() const {
 #endif
 }
 
-bool Platform::File::CreateDirectory(bool follow_symlinks) const {
+bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 #ifdef _WIN32
 	std::string path = Utils::FromWideString(filename);
 #else

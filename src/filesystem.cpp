@@ -112,7 +112,7 @@ FilesystemView Filesystem::Subtree(std::string sub_path) const {
 	return FilesystemView(this, sub_path);
 }
 
-bool Filesystem::CreateDirectory(StringView, bool) const {
+bool Filesystem::MakeDirectory(StringView, bool) const {
 	return false;
 }
 
@@ -291,9 +291,9 @@ FilesystemView FilesystemView::Create(StringView p) const {
 	return fs->Create(MakePath(p));
 }
 
-bool FilesystemView::CreateDirectory(StringView dir, bool follow_symlinks) const {
+bool FilesystemView::MakeDirectory(StringView dir, bool follow_symlinks) const {
 	assert(fs);
-	return fs->CreateDirectory(MakePath(dir), follow_symlinks);
+	return fs->MakeDirectory(MakePath(dir), follow_symlinks);
 }
 
 bool FilesystemView::IsFeatureSupported(Filesystem::Feature f) const {

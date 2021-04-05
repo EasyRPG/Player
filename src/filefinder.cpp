@@ -104,7 +104,7 @@ FilesystemView FileFinder::Save() {
 				std::string name;
 				std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
 
-				parent.CreateDirectory(save_path, true);
+				parent.MakeDirectory(save_path, true);
 				redir = Root().Create(save_path);
 
 				if (!redir) {

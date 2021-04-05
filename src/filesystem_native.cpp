@@ -127,8 +127,8 @@ bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<Director
 	return true;
 }
 
-bool NativeFilesystem::CreateDirectory(StringView path, bool follow_symlinks) const {
-	return Platform::File(ToString(path)).CreateDirectory(follow_symlinks);
+bool NativeFilesystem::MakeDirectory(StringView path, bool follow_symlinks) const {
+	return Platform::File(ToString(path)).MakeDirectory(follow_symlinks);
 }
 
 bool NativeFilesystem::IsFeatureSupported(Feature f) const {

@@ -23,7 +23,6 @@
 #include <string>
 #ifdef _WIN32
 #  include <windows.h>
-#undef CreateDirectory
 #  include <sys/types.h>
 #  include <sys/stat.h>
 #  ifdef __MINGW32__
@@ -101,7 +100,7 @@ namespace Platform {
 		 * @param follow_symlinks Whether to follow symlinks (if supported on this platform)
 		 * @return true when the directory was created.
 		 */
-		bool CreateDirectory(bool follow_symlinks) const;
+		bool MakeDirectory(bool follow_symlinks) const;
 
 	private:
 #ifdef _WIN32

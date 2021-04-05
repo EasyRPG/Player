@@ -206,7 +206,7 @@ public:
 	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
 	virtual bool Exists(StringView path) const = 0;
 	virtual int64_t GetFilesize(StringView path) const = 0;
-	virtual bool CreateDirectory(StringView dir, bool follow_symlinks) const;
+	virtual bool MakeDirectory(StringView dir, bool follow_symlinks) const;
 	virtual bool IsFeatureSupported(Feature f) const;
 	virtual std::string Describe() const = 0;
 	/** @} */
@@ -436,7 +436,7 @@ public:
 	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
 	 * @return true when the path was created
 	 */
-	bool CreateDirectory(StringView dir, bool follow_symlinks) const;
+	bool MakeDirectory(StringView dir, bool follow_symlinks) const;
 
 	/**
 	 * @param f Filesystem feature to check

@@ -23,10 +23,6 @@
 
 #include <memory>
 
-#ifdef _WIN32
-#undef CreateDirectory
-#endif
-
 /**
  * A virtual filesystem that is the root of the filesystem tree of the Player.
  * Contrary to other filesystems the root-fs does navigate into other VFS.
