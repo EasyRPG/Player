@@ -137,17 +137,11 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		}
 
 		// Create some empty DLL files. Engine & patch detection depend on them.
-		bool file_added = false;
 		for (const auto& s : {"ultimate_rt_eb.dll", "dynloader.dll", "accord.dll"}) {
 			auto it = file_mapping.find(s);
 			if (it != file_mapping.end()) {
-				FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetProjectPath(), s));
-				file_added = true;
+				FileFinder::Game().OpenOutputStream(s);
 			}
-		}
-		if (file_added) {
-			// Update directory structure (new files were added)
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
 		}
 	}
 #else
@@ -347,7 +341,9 @@ void FileRequestAsync::DownloadDone(bool success) {
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
 			// Update directory structure (new file was added)
-			FileFinder::Game().ClearCache();
+			if (FileFinder::Save()) {
+				FileFinder::Save().ClearCache();
+			}
 		}
 #endif
 

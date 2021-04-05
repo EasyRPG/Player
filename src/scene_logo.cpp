@@ -45,6 +45,16 @@ void Scene_Logo::Update() {
 	static bool is_valid = false;
 
 	if (frame_counter == 0) {
+		auto fs = FileFinder::Game();
+
+		if (!fs) {
+			fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+			if (!fs) {
+				Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+			}
+			FileFinder::SetGameFilesystem(fs);
+		}
+
 #ifdef EMSCRIPTEN
 		static bool once = true;
 		if (once) {
@@ -60,17 +70,6 @@ void Scene_Logo::Update() {
 			return;
 		}
 #endif
-
-		auto fs = FileFinder::Game();
-
-		if (!fs) {
-			fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
-			if (!fs) {
-				Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
-			}
-
-			FileFinder::SetGameFilesystem(fs);
-		}
 
 		if (FileFinder::IsValidProject(fs)) {
 			Player::CreateGameObjects();
