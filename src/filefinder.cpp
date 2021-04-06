@@ -58,7 +58,7 @@ namespace {
 #endif
 
 	std::string fonts_path;
-	std::unique_ptr<Filesystem> root_fs;
+	std::shared_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
 	FilesystemView save_fs;
 }

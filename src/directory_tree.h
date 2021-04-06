@@ -18,6 +18,7 @@
 #ifndef EP_DIRECTORY_TREE_H
 #define EP_DIRECTORY_TREE_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <unordered_map>

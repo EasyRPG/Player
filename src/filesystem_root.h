@@ -79,7 +79,7 @@ private:
 	const Filesystem& FilesystemForPath(StringView path) const;
 
 	// ns -> fs, NativeFilesystem is always last
-	using FsList = std::vector<std::pair<std::string, std::unique_ptr<NativeFilesystem>>>;
+	using FsList = std::vector<std::pair<std::string, std::shared_ptr<Filesystem>>>;
 	FsList fs_list;
 };
 

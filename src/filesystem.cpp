@@ -84,7 +84,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 			internal_path.pop_back();
 		}
 
-		auto filesystem = std::make_unique<ZipFilesystem>(path_prefix, Subtree(""));
+		auto filesystem = std::make_shared<ZipFilesystem>(path_prefix, Subtree(""));
 		if (!filesystem->IsValid()) {
 			return FilesystemView();
 		}
@@ -93,11 +93,9 @@ FilesystemView Filesystem::Create(StringView path) const {
 			if (!fs_view) {
 				return FilesystemView();
 			}
-			child_fs.emplace_back(std::move(filesystem));
 			return fs_view;
 		}
-		child_fs.emplace_back(std::move(filesystem));
-		return child_fs.back()->Subtree("");
+		return filesystem->Subtree("");
 	} else {
 		if (!(Exists(path) || !IsDirectory(path, true))) {
 			return FilesystemView();
@@ -109,7 +107,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 }
 
 FilesystemView Filesystem::Subtree(std::string sub_path) const {
-	return FilesystemView(this, sub_path);
+	return FilesystemView(shared_from_this(), sub_path);
 }
 
 bool Filesystem::MakeDirectory(StringView, bool) const {
@@ -145,7 +143,7 @@ Filesystem_Stream::InputStream Filesystem::OpenFile(const DirectoryTree::Args& a
 	return OpenInputStream(tree->FindFile(args));
 }
 
-FilesystemView::FilesystemView(const Filesystem* fs, std::string sub_path) :
+FilesystemView::FilesystemView(const std::shared_ptr<const Filesystem>& fs, std::string sub_path) :
 	fs(fs), sub_path(std::move(sub_path)) {
 	valid = (fs->ListDirectory(this->sub_path) != nullptr);
 }

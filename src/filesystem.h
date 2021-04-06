@@ -19,11 +19,12 @@
 #define EP_FILESYSTEM_H
 
 // Headers
+#include <cassert>
+#include <memory>
 #include <istream>
 #include <ostream>
 #include <unordered_map>
 #include <vector>
-#include <cassert>
 #include "directory_tree.h"
 
 class FilesystemView;
@@ -39,7 +40,7 @@ namespace Filesystem_Stream {
  * if they are not real filesystem structures in terms of the operating system
  * e.g. ZIP archives or internet resources.
  */
-class Filesystem {
+class Filesystem : public std::enable_shared_from_this<Filesystem> {
 public:
 	/** Features provided by the filesystem */
 	enum class Feature {
@@ -237,7 +238,6 @@ protected:
 
 private:
 	std::string base_path;
-	mutable std::vector<std::unique_ptr<Filesystem>> child_fs;
 	std::unique_ptr<FilesystemView> parent_fs;
 };
 
@@ -254,7 +254,7 @@ public:
 	 * @param tree Tree this view is based on
 	 * @param sub_path Path relative to the tree
 	 */
-	FilesystemView(const Filesystem* fs, std::string sub_path);
+	FilesystemView(const std::shared_ptr<const Filesystem>& fs, std::string sub_path);
 
 	/** @return The path of the owning filesystem, NOT of the view */
 	std::string GetBasePath() const;
@@ -461,7 +461,7 @@ public:
 	friend DirectoryTree;
 
 private:
-	const Filesystem* fs = nullptr;
+	std::shared_ptr<const Filesystem> fs;
 	std::string sub_path;
 	bool valid = false;
 };
