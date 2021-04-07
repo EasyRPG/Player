@@ -205,7 +205,7 @@ int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
 	return length;
 }
 
-void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
+void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 	if (!instance_synth) {
 		return;
 	}
@@ -250,7 +250,7 @@ void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
 	}
 }
 
-void FluidSynthDecoder::OnMidiReset() {
+void FluidSynthDecoder::SendMidiReset() {
 	if (!instance_synth) {
 		return;
 	}

@@ -19,9 +19,8 @@
 #define EP_AUDIO_GENERIC_H
 
 #include "audio.h"
-#include "audio_decoder.h"
 #include "audio_secache.h"
-#include "audio_midiout.h"
+#include "audio_decoder_midi.h"
 
 /**
  * A software implementation for handling EasyRPG Audio utilizing the
@@ -55,7 +54,7 @@ public:
 	void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) override;
 	void SE_Stop() override;
 	virtual void Update() override;
-	virtual void UpdateMidiOut(std::chrono::microseconds delta);
+	virtual void UpdateMidiOut(int delta);
 
 	void SetFormat(int frequency, AudioDecoder::Format format, int channels);
 
@@ -68,14 +67,14 @@ public:
 
 private:
 	struct BgmChannel {
-		std::unique_ptr<AudioDecoder> decoder;
-		std::unique_ptr<MidiOut> midiout;
+		std::unique_ptr<AudioDecoderBase> decoder;
+		std::unique_ptr<AudioDecoderMidi> midiout;
 		bool paused;
 		bool stopped;
 		void SetPaused(bool newPaused);
 	};
 	struct SeChannel {
-		std::unique_ptr<AudioDecoder> decoder;
+		std::unique_ptr<AudioDecoderBase> decoder;
 		int volume;
 		bool paused;
 		bool stopped;

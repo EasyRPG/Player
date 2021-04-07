@@ -41,15 +41,15 @@ int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	return length;
 }
 
-void FmMidiDecoder::OnMidiMessage(uint32_t message) {
+void FmMidiDecoder::SendMidiMessage(uint32_t message) {
 	synth->midi_event(message);
 }
 
-void FmMidiDecoder::OnSysExMessage(const void * data, std::size_t size) {
+void FmMidiDecoder::SendSysExMessage(const void * data, std::size_t size) {
 	synth->sysex_message(data, size);
 }
 
-void FmMidiDecoder::OnMidiReset() {
+void FmMidiDecoder::SendMidiReset() {
 	synth->reset();
 }
 

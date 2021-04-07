@@ -19,13 +19,13 @@
 #define EP_MIDIOUT_COREAUDIO_H
 
 #ifdef __APPLE__
-#include "audio_midiout_device.h"
+#include "audio_midi.h"
 #include <AudioToolbox/AudioToolbox.h>
 
 /**
  * Plays MIDI through the Apple's AudioToolbox
  */
-class CoreAudioMidiOutDevice : public MidiOutDevice {
+class CoreAudioMidiOutDevice : public MidiDecoder {
 public:
 	CoreAudioMidiOutDevice();
 	~CoreAudioMidiOutDevice();
@@ -33,6 +33,7 @@ public:
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
+	std::string GetName() override;
 
 private:
 	AudioUnit midi_out;

@@ -34,9 +34,9 @@ public:
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	void OnMidiMessage(uint32_t message) override;
-	void OnSysExMessage(const void* data, size_t size) override;
-	void OnMidiReset() override;
+	void SendMidiMessage(uint32_t message) override;
+	void SendSysExMessage(const void* data, size_t size) override;
+	void SendMidiReset() override;
 
 	std::unique_ptr<midisynth::synthesizer> synth;
 	std::unique_ptr<midisynth::fm_note_factory> note_factory;

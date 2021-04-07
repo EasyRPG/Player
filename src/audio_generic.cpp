@@ -70,9 +70,9 @@ void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, i
 void GenericAudio::BGM_Pause() {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.decoder || BGM_Channel.midiout) {
+		/*if (BGM_Channel.decoder || BGM_Channel.midiout) {
 			BGM_Channel.SetPaused(true);
-		}
+		}*/
 	}
 	UnlockMidiOutMutex();
 }
@@ -80,9 +80,9 @@ void GenericAudio::BGM_Pause() {
 void GenericAudio::BGM_Resume() {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.decoder || BGM_Channel.midiout) {
+		/*if (BGM_Channel.decoder || BGM_Channel.midiout) {
 			BGM_Channel.SetPaused(false);
-		}
+		}*/
 	}
 	UnlockMidiOutMutex();
 }
@@ -141,7 +141,6 @@ void GenericAudio::BGM_Fade(int fade) {
 		} else if (BGM_Channel.decoder) {
 			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, fade);
 		}
-		
 	}
 	UnlockMidiOutMutex();
 	UnlockMutex();
@@ -197,7 +196,7 @@ void GenericAudio::Update() {
 	// no-op, handled by the Decode function called through a thread
 }
 
-void GenericAudio::UpdateMidiOut(std::chrono::microseconds delta) {
+void GenericAudio::UpdateMidiOut(int delta) {
 	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		if (BGM_Channel.midiout && !BGM_Channel.paused) {
@@ -222,7 +221,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		return false;
 	}
 
-	chan.midiout = MidiOut::Create(filestream);
+	chan.midiout = MidiDecoder::CreateMidiOut(filestream);
 	if (chan.midiout && chan.midiout->Open(std::move(filestream))) {
 		chan.midiout->SetPitch(pitch);
 		chan.midiout->SetVolume(volume);

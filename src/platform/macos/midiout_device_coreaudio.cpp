@@ -23,7 +23,7 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	OSStatus status = NewAUGraph(&graph);
 	if (status != noErr) {
 		Output::Debug("Open MIDI device failed: error {}", status);
-		isOK = false;
+		//isOK = false;
 		return;
 	}
 	AudioComponentDescription synthDesc = {
@@ -71,10 +71,10 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	status = AUGraphStart(graph);
 
 	if (status != noErr) {
-		isOK = false;
+		//isOK = false;
 		return;
 	}
-	isOK = true;
+	//isOK = true;
 }
 
 CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice() {
@@ -83,22 +83,23 @@ CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice() {
 	}
 }
 
-void CoreAudioMidiOutDevice::SendMidiMessage(uint32_t message)
-{
+void CoreAudioMidiOutDevice::SendMidiMessage(uint32_t message) {
 	uint8_t status = (message & 0x0000FF);
 	uint8_t value1 = (message & 0x00FF00) >> 8;
 	uint8_t value2 = (message & 0xFF0000) >> 16;
 	MusicDeviceMIDIEvent(midi_out, status, value1, value2, 0);
 }
 
-void CoreAudioMidiOutDevice::SendSysExMessage(const void* data, size_t size)
-{
+void CoreAudioMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 	MusicDeviceSysEx(midi_out, (const UInt8*) data, (UInt32) size);
 }
 
-void CoreAudioMidiOutDevice::SendMidiReset()
-{
+void CoreAudioMidiOutDevice::SendMidiReset() {
 	// TODO: how do you MIDI reset a MusicDevice?
+}
+
+std::string CoreAudioMidiOutDevice::GetName() {
+	return "CoreAudio Midi";
 }
 
 #endif

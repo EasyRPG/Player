@@ -30,10 +30,10 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 	if (err != MMSYSERR_NOERROR) {
 		Output::Debug("Open MIDI device {} failed: error {}", 0, err);
 		midi_out = NULL;
-		isOK = false;
+		//isOK = false;
 		return;
 	}
-	isOK = true;
+	//isOK = true;
 }
 
 Win32MidiOutDevice::~Win32MidiOutDevice() {
@@ -43,13 +43,11 @@ Win32MidiOutDevice::~Win32MidiOutDevice() {
 	}
 }
 
-void Win32MidiOutDevice::SendMidiMessage(uint32_t message)
-{
+void Win32MidiOutDevice::SendMidiMessage(uint32_t message) {
 	midiOutShortMsg(midi_out, message);
 }
 
-void Win32MidiOutDevice::SendSysExMessage(const void* data, size_t size)
-{
+void Win32MidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 	MIDIHDR hdr;
 	hdr.dwBufferLength = size;
 	hdr.dwBytesRecorded = size;
@@ -58,9 +56,12 @@ void Win32MidiOutDevice::SendSysExMessage(const void* data, size_t size)
 	midiOutLongMsg(midi_out, &hdr, sizeof(hdr));
 }
 
-void Win32MidiOutDevice::SendMidiReset()
-{
+void Win32MidiOutDevice::SendMidiReset() {
 	midiOutReset(midi_out);
+}
+
+std::string Win32MidiOutDevice::GetName() {
+	return "Windows Midi";
 }
 
 #endif

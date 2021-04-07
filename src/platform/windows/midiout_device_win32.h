@@ -24,12 +24,12 @@
 #include <string>
 #include <windows.h>
 #include <mmsystem.h>
-#include "audio_midiout_device.h"
+#include "audio_midi.h"
 
 /**
  * Plays MIDI through the Windows API
  */
-class Win32MidiOutDevice : public MidiOutDevice {
+class Win32MidiOutDevice : public MidiDecoder {
 public:
 	Win32MidiOutDevice();
 	~Win32MidiOutDevice();
@@ -37,6 +37,7 @@ public:
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
+	std::string GetName() override;
 
 private:
 	HMIDIOUT midi_out;

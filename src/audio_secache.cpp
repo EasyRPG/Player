@@ -130,14 +130,14 @@ bool AudioSeCache::GetCachedFormat(int& frequency, AudioDecoder::Format& format,
 	return false;
 }
 
-std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
+std::unique_ptr<AudioDecoderBase> AudioSeCache::CreateSeDecoder() {
 	AudioSeRef se;
 
 	if (IsCached()) {
 		se = cache.find(filename)->second;
 		se->last_access = Game_Clock::GetFrameTime();
 
-		std::unique_ptr<AudioDecoder> dec = std::make_unique<AudioSeDecoder>(se);
+		std::unique_ptr<AudioDecoderBase> dec = std::make_unique<AudioSeDecoder>(se);
 #ifdef USE_AUDIO_RESAMPLER
 		dec = std::make_unique<AudioResampler>(std::move(dec));
 #endif
@@ -167,9 +167,9 @@ std::unique_ptr<AudioDecoder> AudioSeCache::CreateSeDecoder() {
 
 	FreeCacheMemory();
 
-	std::unique_ptr<AudioDecoder> dec = std::unique_ptr<AudioDecoder>(new AudioSeDecoder(se));
+	std::unique_ptr<AudioDecoderBase> dec = std::unique_ptr<AudioDecoderBase>(new AudioSeDecoder(se));
 #ifdef USE_AUDIO_RESAMPLER
-	dec = std::unique_ptr<AudioDecoder>(new AudioResampler(std::move(dec)));
+	dec = std::unique_ptr<AudioDecoderBase>(new AudioResampler(std::move(dec)));
 #endif
 	Filesystem_Stream::InputStream is;
 	dec->Open(std::move(is));

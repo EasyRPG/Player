@@ -18,9 +18,9 @@
 #ifndef EP_AUDIO_MIDI_H
 #define EP_AUDIO_MIDI_H
 
-// Headers
-#include "audio_decoder.h"
-#include "midisequencer.h"
+class AudioDecoderMidi;
+
+#include "audio_decoder_base.h"
 
 #if defined(GEKKO) || defined(_3DS)
 #  define EP_MIDI_FREQ 22050
@@ -36,6 +36,11 @@
  */
 class MidiDecoder {
 public:
+	MidiDecoder() = default;
+	MidiDecoder(MidiDecoder&&) = delete;
+	MidiDecoder(const MidiDecoder&) = delete;
+	MidiDecoder& operator=(const MidiDecoder&) = delete;
+	MidiDecoder& operator=(MidiDecoder&&) = delete;
 	virtual ~MidiDecoder() = default;
 
 	/*
@@ -106,7 +111,7 @@ public:
 	 * @param format Filled with the audio format
 	 * @param channels Filled with the amount of channels
 	 */
-	virtual void GetFormat(int& freq, AudioDecoder::Format& format, int& channels) const;
+	virtual void GetFormat(int& freq, AudioDecoderBase::Format& format, int& channels) const;
 
 	/**
 	 * Requests a preferred format from the audio decoder. Not all decoders
@@ -120,14 +125,14 @@ public:
 	 * @param channels Number of channels
 	 * @return true when all settings were set, otherwise false (use GetFormat)
 	 */
-	virtual bool SetFormat(int frequency, AudioDecoder::Format format, int channels);
+	virtual bool SetFormat(int frequency, AudioDecoderBase::Format format, int channels);
 
 	/**
 	 * Forwards a Midi message to the Midi decoder
 	 *
 	 * @param message Midi message
 	 */
-	virtual void OnMidiMessage(uint32_t message) {
+	virtual void SendMidiMessage(uint32_t message) {
 		(void)message;
 	}
 
@@ -137,20 +142,7 @@ public:
 	 * @param data sysex content
 	 * @param size length of sysex content (data)
 	 */
-	virtual void OnSysExMessage(const void* data, size_t size) {
-		(void)data;
-		(void)size;
-	}
-
-	/**
-	 * Forwards a Meta event to the Midi Decoder
-	 *
-	 * @param event meta event
-	 * @param data event content
-	 * @param size length of event content (data)
-	 */
-	virtual void OnMetaEvent(int event, const void* data, size_t size) {
-		(void)event;
+	virtual void SendSysExMessage(const void* data, size_t size) {
 		(void)data;
 		(void)size;
 	}
@@ -158,7 +150,7 @@ public:
 	/**
 	 * Requests a reset of the Midi Sequencer
 	 */
-	virtual void OnMidiReset() {}
+	virtual void SendMidiReset() {}
 
 	/**
 	 * Called when the synthesizer shall write data in a buffer.
@@ -167,7 +159,11 @@ public:
 	 * @param size Buffer size
 	 * @return number of bytes read or -1 on error
 	 */
-	virtual int FillBuffer(uint8_t* buffer, int length) = 0;
+	virtual int FillBuffer(uint8_t* buffer, int length) {
+		(void)buffer;
+		(void)length;
+		return -1;
+	};
 
 	/**
 	 * Returns the unique name of the Midi decoder.
@@ -183,7 +179,9 @@ public:
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return A Midi decoder instance when the Midi data is supported, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(Filesystem_Stream::InputStream& stream, bool resample);
+	static std::unique_ptr<AudioDecoderBase> CreateMidiPlayer(Filesystem_Stream::InputStream& stream, bool resample);
+
+	static std::unique_ptr<AudioDecoderMidi> CreateMidiOut(Filesystem_Stream::InputStream & stream);
 
 protected:
 	int frequency = EP_MIDI_FREQ;

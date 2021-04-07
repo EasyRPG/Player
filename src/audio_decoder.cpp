@@ -32,71 +32,6 @@
 #include "decoder_drwav.h"
 #include "decoder_xmp.h"
 
-void AudioDecoder::Pause() {
-	paused = true;
-}
-
-void AudioDecoder::Resume() {
-	paused = false;
-}
-
-int AudioDecoder::Decode(uint8_t* buffer, int length) {
-	return Decode(buffer, length, 0);
-}
-
-int AudioDecoder::Decode(uint8_t* buffer, int length, int recursion_depth) {
-	if (paused) {
-		memset(buffer, '\0', length);
-		return length;
-	}
-
-	int res = FillBuffer(buffer, length);
-
-	if (res < 0) {
-		memset(buffer, '\0', length);
-	} else if (res < length) {
-		memset(&buffer[res], '\0', length - res);
-	}
-
-	if (IsFinished() && looping && recursion_depth < 10) {
-		++loop_count;
-		Rewind();
-		if (length - res > 0) {
-			int res2 = Decode(&buffer[res], length - res, ++recursion_depth);
-			if (res2 <= 0) {
-				return res;
-			}
-			return res + res2;
-		}
-	}
-
-	if (recursion_depth == 10 && loop_count < 50) {
-		// Only report this a few times in the hope that this is only a temporary problem and to prevent log spamming
-		Output::Debug("Audio Decoder: Recursion depth exceeded. Probably stream error.");
-	}
-
-	return res;
-}
-
-std::vector<uint8_t> AudioDecoder::DecodeAll() {
-	const int buffer_size = 8192;
-
-	std::vector<uint8_t> buffer;
-	buffer.resize(buffer_size);
-
-	while (!IsFinished()) {
-		int read = Decode(buffer.data() + buffer.size() - buffer_size, buffer_size);
-		if (read < buffer_size) {
-			buffer.resize(buffer.size() - (buffer_size - read));
-			break;
-		}
-
-		buffer.resize(buffer.size() + buffer_size);
-	}
-
-	return buffer;
-}
-
 class WMAUnsupportedFormatDecoder : public AudioDecoder {
 public:
 	WMAUnsupportedFormatDecoder() {
@@ -112,7 +47,7 @@ private:
 };
 const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
 	char magic[4] = { 0 };
 	if (!stream.ReadIntoObj(magic)) {
 		return nullptr;
@@ -129,7 +64,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-		auto midi = MidiDecoder::Create(stream, resample);
+		auto midi = MidiDecoder::CreateMidiPlayer(stream, resample);
 		if (midi) {
 			return midi;
 		}
@@ -219,23 +154,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 	return nullptr;
 }
 
-void AudioDecoder::SetFade(int begin, int end, int duration) {
-	fade_time = 0.0;
+void AudioDecoder::Pause() {
+	paused = true;
+}
 
-	if (duration <= 0.0) {
-		volume = end;
-		return;
-	}
-
-	if (begin == end) {
-		volume = end;
-		return;
-	}
-
-	volume = (double)begin;
-	fade_end = (double)end;
-	fade_time = (double)duration;
-	delta_step = (fade_end - volume) / fade_time;
+void AudioDecoder::Resume() {
+	paused = false;
 }
 
 void AudioDecoder::Update(int delta) {
@@ -251,76 +175,44 @@ void AudioDecoder::Update(int delta) {
 		volume;
 }
 
-void AudioDecoder::SetVolume(int volume) {
-	this->volume = (double)volume;
-}
-
 int AudioDecoder::GetVolume() const {
 	return (int)volume;
 }
 
-void AudioDecoder::Rewind() {
-	if (!Seek(0, std::ios_base::beg)) {
-		// The libs guarantee that Rewind works
-		assert(false && "Rewind");
+void AudioDecoder::SetVolume(int volume) {
+	this->volume = (double)volume;
+}
+
+void AudioDecoder::SetFade(int begin, int end, int duration) {
+	fade_time = 0.0;
+
+	if (duration <= 0.0) {
+		SetVolume(end);
+		return;
 	}
+
+	if (begin == end) {
+		SetVolume(end);
+		return;
+	}
+
+	SetVolume(begin);
+	fade_end = (double)end;
+	fade_time = (double)duration;
+	delta_step = (fade_end - GetVolume()) / fade_time;
 }
 
-bool AudioDecoder::GetLooping() const {
-	return looping;
-}
-
-void AudioDecoder::SetLooping(bool enable) {
-	looping = enable;
-}
-
-int AudioDecoder::GetLoopCount() const {
-	return loop_count;
-}
-
-bool AudioDecoder::WasInited() const {
-	return true;
-}
-
-std::string AudioDecoder::GetError() const {
-	return error_message;
-}
-
-std::string AudioDecoder::GetType() const {
-	return music_type;
-}
-
-bool AudioDecoder::SetFormat(int, Format, int) {
-	return false;
-}
-
-int AudioDecoder::GetPitch() const {
-	return 0;
-}
-
-bool AudioDecoder::SetPitch(int) {
-	return false;
-}
-
-std::streampos AudioDecoder::Tell() const {
-	return -1;
-}
-
-int AudioDecoder::GetTicks() const {
-	return 0;
-}
-
-int AudioDecoder::GetSamplesizeForFormat(AudioDecoder::Format format) {
+int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
 	switch (format) {
-		case Format::S8:
-		case Format::U8:
+		case AudioDecoderBase::Format::S8:
+		case AudioDecoderBase::Format::U8:
 			return 1;
-		case Format::S16:
-		case Format::U16:
+		case AudioDecoderBase::Format::S16:
+		case AudioDecoderBase::Format::U16:
 			return 2;
-		case Format::S32:
-		case Format::U32:
-		case Format::F32:
+		case AudioDecoderBase::Format::S32:
+		case AudioDecoderBase::Format::U32:
+		case AudioDecoderBase::Format::F32:
 			return 4;
 	}
 

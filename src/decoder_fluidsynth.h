@@ -48,9 +48,9 @@ public:
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-	void OnMidiMessage(uint32_t message) override;
+	void SendMidiMessage(uint32_t message) override;
 
-	void OnMidiReset() override;
+	void SendMidiReset() override;
 
 	std::string GetName() override {
 #if defined(HAVE_FLUIDSYNTH)

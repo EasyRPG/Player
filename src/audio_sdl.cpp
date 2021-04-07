@@ -29,7 +29,7 @@
 
 #include "game_clock.h"
 #include "audio_sdl.h"
-#include "audio_midiout.h"
+#include "audio_midi.h"
 #include "output.h"
 
 using namespace std::chrono_literals;
@@ -49,8 +49,8 @@ static int MidioutThreadMain(void* ptr) {
 		data->LockMidiOutMutex();
 
 		should_exit = data->midiout_thread_exit;
-		auto us = std::chrono::duration_cast<std::chrono::microseconds>(ticks - start_ticks);
-		data->UpdateMidiOut(us);
+		auto us = std::chrono::duration_cast<std::chrono::milliseconds>(ticks - start_ticks);
+		data->UpdateMidiOut(us.count());
 
 		data->UnlockMidiOutMutex();
 		Game_Clock::SleepFor(1ms);
@@ -128,7 +128,7 @@ SdlAudio::SdlAudio() :
 
 #if SDL_MAJOR_VERSION >= 2
 	// Start midiout polling thread, SDL2-only. Wii doesn't support MidiOut.
-	if (MidiOut::IsSupported()) {
+	//if (MidiOut::IsSupported()) {
 		// TODO: Just because MidiOut is supported doesn't mean it's configured to be used.
 		// Should we default to Fluidsynth if an easyrpg.soundfont is found, for example?
 		// In which case this thread is wasteful...
@@ -138,7 +138,7 @@ SdlAudio::SdlAudio() :
 			Output::Warning("Couldn't start midiout thread: {}", SDL_GetError());
 			return;
 		}
-	}
+	//}
 #endif
 }
 

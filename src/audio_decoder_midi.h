@@ -15,26 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_DECODER_MIDI_GENERIC_H
-#define EP_DECODER_MIDI_GENERIC_H
+#ifndef EP_AUDIO_DECODER_MIDI_H
+#define EP_AUDIO_DECODER_MIDI_H
 
-// Headers
-#include "audio_decoder.h"
-#include "audio_midi.h"
+#include <memory>
+#include "audio_decoder_base.h"
 #include "midisequencer.h"
+#include "audio_midi.h"
 
 /**
- * GenericMidiDecoder wraps a MidiDecoder and uses a FmMidi Sequencer for
- * timing and message processing.
+ * Manages sequencing MIDI files and emitting MIDI events
  */
-class GenericMidiDecoder : public AudioDecoder, midisequencer::output {
+class AudioDecoderMidi final : public AudioDecoderBase, public midisequencer::output {
 public:
-	/**
-	 * @param midi_dec MidiDecoder to wrap
-	 */
-	explicit GenericMidiDecoder(MidiDecoder* midi_dec);
-
-	~GenericMidiDecoder() override;
+	AudioDecoderMidi(std::unique_ptr<MidiDecoder> mididec);
+	~AudioDecoderMidi();
 
 	/**
 	 * Assigns a stream to the midi decoder.
@@ -43,6 +38,43 @@ public:
 	 * @return true if initializing was successful, false otherwise
 	 */
 	bool Open(Filesystem_Stream::InputStream stream) override;
+
+	/**
+	 * Pauses the MIDI sequencer.
+	 */
+	void Pause() override;
+
+	/**
+	 * Resumes the MIDI sequencer.
+	 */
+	void Resume() override;
+
+	/**
+	 * Gets the volume of the MIDI device.
+	 * Volume changes will not really modify the volume but are only helper
+	 * functions for retrieving the volume information for the audio hardware.
+	 *
+	 * @return current volume (from 0 - 100)
+	 */
+	int GetVolume() const override;
+
+	/**
+	 * Sets the volume of the MIDI devices by sending MIDI messages
+	 *
+	 * @param volume (from 0-100)
+	 */
+	void SetVolume(int volume) override;
+
+	/**
+	 * Prepares a volume fade in/out effect.
+	 * To do a fade out begin must be larger then end.
+	 * Call Update to do the fade.
+	 *
+	 * @param begin Begin volume (from 0-100)
+	 * @param end End volume (from 0-100)
+	 * @param duration Fade duration in ms
+	 */
+	void SetFade(int begin, int end, int duration) override;
 
 	/**
 	 * Seeks in the midi stream. The value of offset is in Midi ticks.
@@ -54,16 +86,19 @@ public:
 	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	/**
-	 * @return Position in the stream in midi ticks.
-	 */
-	std::streampos Tell() const override;
-
-	/**
 	 * Determines whether the stream is finished.
 	 *
 	 * @return true stream ended
 	 */
 	bool IsFinished() const override;
+
+	/**
+	 * Updates the volume for the fade in/out effect.
+	 * For Midi out devices this must be called once per ms.
+	 *
+	 * @param delta Time in ms since the last call of this function.
+	 */
+	void Update(int delta) override;
 
 	/**
 	 * Retrieves the format of the Midi decoder.
@@ -73,7 +108,7 @@ public:
 	 * @param format Filled with the audio format
 	 * @param channels Filled with the amount of channels
 	 */
-	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
+	void GetFormat(int& frequency, AudioDecoderBase::Format& format, int& channels) const override;
 
 	/**
 	 * Requests a preferred format from the audio decoder. Not all decoders
@@ -87,14 +122,12 @@ public:
 	 * @param channels Number of channels
 	 * @return true when all settings were set, otherwise false (use GetFormat)
 	 */
-	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
+	bool SetFormat(int frequency, AudioDecoderBase::Format format, int channels) override;
 
 	/**
 	 * Sets the pitch multiplier.
 	 * 100 = normal speed
 	 * 200 = double speed and so on
-	 * Not all audio decoders support this. Using the audio hardware is
-	 * recommended.
 	 *
 	 * @param pitch Pitch multiplier to use
 	 * @return true if pitch was set, false otherwise
@@ -106,22 +139,47 @@ public:
 	 */
 	int GetTicks() const override;
 
+	/**
+	 * Generate a MIDI reset event so the device doesn't
+	 * leave notes playing or keeps any state.
+	 */
+	void Reset();
+
 	std::vector<uint8_t> file_buffer;
 	size_t file_buffer_pos = 0;
 private:
 	static constexpr int midi_default_tempo = 500000;
 
-	std::unique_ptr<MidiDecoder> mididec;
-
 	int FillBuffer(uint8_t* buffer, int length) override;
+
+	void SendMessageToAllChannels(uint32_t midi_msg);
+
+	// midisequencer::output interface
+	void midi_message(int, uint_least32_t message) override;
+	void sysex_message(int, const void* data, std::size_t size) override;
+	void meta_event(int, const void*, std::size_t) override;
+	void reset() override;
+	void reset_tempos_after_loop();
 
 	float mtime = 0.0f;
 	float pitch = 1.0f;
-	int frequency = 44100;
+	bool paused = false;
+	float volume = 0;
 	bool loops_to_end = false;
 
+	int fade_steps = 0;
+	double fade_end = 0;
+	double delta_step = 0;
+	float last_fade_mtime = 0.0f;
+
+	int frequency = 44100;
+
+	// What was the mtime when the last set of volume MIDI messages were sent out
+	float last_fade_msg_sent = 0.0f;
+	std::array<uint8_t, 16> channel_volumes;
+
 	struct MidiTempoData {
-		MidiTempoData(const GenericMidiDecoder* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);
+		MidiTempoData(const AudioDecoderMidi* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);
 
 		uint32_t tempo = midi_default_tempo;
 		float ticks_per_sec = 0.0f;
@@ -134,17 +192,13 @@ private:
 		int GetSamples(float cur_mtime) const;
 	};
 
+	std::unique_ptr<midisequencer::sequencer> seq;
+
+	std::unique_ptr<MidiDecoder> mididec;
+
 	// Contains one entry per tempo change (latest on top)
 	// When looping all entries after the loop point are dropped
 	std::vector<MidiTempoData> tempo;
-
-	// midisequencer::output interface
-	void midi_message(int, uint_least32_t message) override;
-	void sysex_message(int, const void* data, std::size_t size) override;
-	void meta_event(int, const void*, std::size_t) override;
-	void reset() override;
-
-	std::unique_ptr<midisequencer::sequencer> seq;
 };
 
 #endif
