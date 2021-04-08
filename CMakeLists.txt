@@ -41,6 +41,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/audio_decoder_midi.h
 	src/audio_generic.cpp
 	src/audio_generic.h
+	src/audio_generic_midiout.cpp
+	src/audio_generic_midiout.h
 	src/audio.h
 	src/audio_midi.cpp
 	src/audio_midi.h

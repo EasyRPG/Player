@@ -30,8 +30,6 @@ public:
 
 	void LockMutex() const override;
 	void UnlockMutex() const override;
-	void LockMidiOutMutex() const override;
-	void UnlockMidiOutMutex() const override;
 
 	static void EnableAudio(bool enabled);
 	static void AudioThreadCallback();

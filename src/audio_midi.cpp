@@ -22,11 +22,6 @@
 #include "decoder_fmmidi.h"
 #include "decoder_wildmidi.h"
 #include "output.h"
-#ifdef _WIN32
-#include "platform/windows/midiout_device_win32.h"
-#elif __APPLE__
-#include "platform/macos/midiout_device_coreaudio.h"
-#endif
 
 #ifdef USE_AUDIO_RESAMPLER
 #include "audio_resampler.h"
@@ -45,39 +40,12 @@ bool MidiDecoder::SetFormat(int frequency, AudioDecoderBase::Format format, int 
 	return true;
 }
 
-std::unique_ptr<AudioDecoderMidi> MidiDecoder::CreateMidiOut(Filesystem_Stream::InputStream& stream) {
-	std::unique_ptr<AudioDecoderMidi> midiout;
-	char magic[4] = { 0 };
-	if (!stream.ReadIntoObj(magic)) {
-		return nullptr;
-	}
-	stream.seekg(0, std::ios::beg);
-	if (strncmp(magic, "MThd", 4) != 0) {
-		return nullptr;
-	}
-#ifdef _WIN32
-	auto dec = std::make_unique<Win32MidiOutDevice>();
-	midiout = std::make_unique<AudioDecoderMidi>(std::move(dec));
-	/*FIXME if (!device->IsOK()) {
-		return nullptr;
-	}*/
-#endif
-#ifdef __APPLE__
-	auto dec = std::make_unique<CoreAudioMidiOutDevice>();
-	midiout = std::make_unique<AudioDecoderMidi>(std::move(dec));
-	/*if (!device->IsOK()) {
-		return nullptr;
-	}*/
-#endif
-	return midiout;
-}
-
 static struct {
 	bool fluidsynth = true;
 	bool wildmidi = true;
 } works;
 
-std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateMidiPlayer(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 	std::string error_message;
 

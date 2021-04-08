@@ -24,12 +24,8 @@
 #include <SDL.h>
 #include <SDL_audio.h>
 #include <SDL_version.h>
-#include <SDL_thread.h>
-#include <SDL_mutex.h>
 
-#include "game_clock.h"
 #include "audio_sdl.h"
-#include "audio_midi.h"
 #include "output.h"
 
 using namespace std::chrono_literals;
@@ -38,25 +34,6 @@ namespace {
 #if SDL_MAJOR_VERSION >= 2
 	SDL_AudioDeviceID audio_dev_id = 0;
 #endif
-}
-
-static int MidioutThreadMain(void* ptr) {
-	SdlAudio* data = reinterpret_cast<SdlAudio*>(ptr);
-	bool should_exit = false;
-	Game_Clock::time_point start_ticks = Game_Clock::now();
-	while (!should_exit) {
-		auto ticks = Game_Clock::now();
-		data->LockMidiOutMutex();
-
-		should_exit = data->midiout_thread_exit;
-		auto us = std::chrono::duration_cast<std::chrono::milliseconds>(ticks - start_ticks);
-		data->UpdateMidiOut(us.count());
-
-		data->UnlockMidiOutMutex();
-		Game_Clock::SleepFor(1ms);
-		start_ticks = ticks;
-	}
-	return 0;
 }
 
 void sdl_audio_callback(void* userdata, uint8_t* stream, int length) {
@@ -125,33 +102,9 @@ SdlAudio::SdlAudio() :
 #else
 	SDL_PauseAudio(0);
 #endif
-
-#if SDL_MAJOR_VERSION >= 2
-	// Start midiout polling thread, SDL2-only. Wii doesn't support MidiOut.
-	//if (MidiOut::IsSupported()) {
-		// TODO: Just because MidiOut is supported doesn't mean it's configured to be used.
-		// Should we default to Fluidsynth if an easyrpg.soundfont is found, for example?
-		// In which case this thread is wasteful...
-		midiout_mutex = SDL_CreateMutex();
-		midiout_thread = SDL_CreateThread(MidioutThreadMain, "MidioutThread", this);
-		if (!midiout_thread) {
-			Output::Warning("Couldn't start midiout thread: {}", SDL_GetError());
-			return;
-		}
-	//}
-#endif
 }
 
 SdlAudio::~SdlAudio() {
-	if (midiout_thread) {
-		LockMidiOutMutex();
-		midiout_thread_exit = true;
-		UnlockMidiOutMutex();
-		SDL_WaitThread(midiout_thread, NULL);
-		midiout_thread = nullptr;
-		SDL_DestroyMutex(midiout_mutex);
-		midiout_mutex = nullptr;
-	}
 #if SDL_MAJOR_VERSION >= 2
 	SDL_CloseAudioDevice(audio_dev_id);
 #else
@@ -173,18 +126,6 @@ void SdlAudio::UnlockMutex() const {
 #else
 	SDL_UnlockAudio();
 #endif
-}
-
-void SdlAudio::LockMidiOutMutex() const {
-	if (SDL_LockMutex(midiout_mutex) != 0) {
-		Output::Debug("SDL_LockMutex failure: {}", SDL_GetError());
-	}
-}
-
-void SdlAudio::UnlockMidiOutMutex() const {
-	if (SDL_UnlockMutex(midiout_mutex) != 0) {
-		Output::Debug("SDL_UnlockMutex failure: {}", SDL_GetError());
-	}
 }
 
 #endif

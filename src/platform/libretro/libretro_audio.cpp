@@ -82,14 +82,6 @@ void LibretroAudio::UnlockMutex() const {
 	slock_unlock(mutex);
 }
 
-void LibretroAudio::LockMidiOutMutex() const {
-	// No-op: MidiOut unimplemented in Libretro (for now)
-}
-
-void LibretroAudio::UnlockMidiOutMutex() const {
-	// No-op: MidiOut unimplemented in Libretro (for now)
-}
-
 void LibretroAudio::SetRetroAudioCallback(retro_audio_sample_batch_t cb){
 	RenderAudioFrames = cb;
 }

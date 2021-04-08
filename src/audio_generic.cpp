@@ -19,7 +19,9 @@
 
 #include <cstring>
 #include <cassert>
+#include "audio_decoder_midi.h"
 #include "audio_generic.h"
+#include "audio_generic_midiout.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -32,31 +34,33 @@ std::vector<uint8_t> GenericAudio::scrap_buffer = {};
 unsigned GenericAudio::scrap_buffer_size = 0;
 std::vector<float> GenericAudio::mixer_buffer = {};
 
+std::unique_ptr<GenericAudioMidiOut> GenericAudio::midi_thread;
+
 GenericAudio::GenericAudio() {
+	int i = 0;
 	for (auto& BGM_Channel : BGM_Channels) {
-		BGM_Channel.midiout.reset();
+		BGM_Channel.id = i++;
 		BGM_Channel.decoder.reset();
 	}
+	i = 0;
 	for (auto& SE_Channel : SE_Channels) {
+		SE_Channel.id = i++;
 		SE_Channel.decoder.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
+	midi_thread.reset();
 
 	// Initialize to some arbitrary (low-quality) format to prevent crashes
 	// when the inheriting class doesn't call SetFormat
 	SetFormat(12345, AudioDecoder::Format::S8, 1);
 }
 
-GenericAudio::~GenericAudio() {
-}
-
 void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) {
 	bool bgm_set = false;
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
-		if (!BGM_Channel.decoder && !BGM_Channel.midiout && !bgm_set) {
-			//If there is an unused bgm channel
+		if (!BGM_Channel.decoder && !BGM_Channel.midi_out_used && !bgm_set) {
+			// If there is an unused bgm channel
 			bgm_set = true;
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
@@ -64,41 +68,34 @@ void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, i
 			PlayOnChannel(BGM_Channel, std::move(stream), volume, pitch, fadein);
 		}
 	}
-	UnlockMidiOutMutex();
 }
 
 void GenericAudio::BGM_Pause() {
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		/*if (BGM_Channel.decoder || BGM_Channel.midiout) {
+		if (BGM_Channel.decoder || BGM_Channel.midi_out_used) {
 			BGM_Channel.SetPaused(true);
-		}*/
+		}
 	}
-	UnlockMidiOutMutex();
 }
 
 void GenericAudio::BGM_Resume() {
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		/*if (BGM_Channel.decoder || BGM_Channel.midiout) {
+		if (BGM_Channel.decoder || BGM_Channel.midi_out_used) {
 			BGM_Channel.SetPaused(false);
-		}*/
+		}
 	}
-	UnlockMidiOutMutex();
 }
 
 void GenericAudio::BGM_Stop() {
 	LockMutex();
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		BGM_Channel.stopped = true; //Stop all running background music
-		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout.reset();
+		BGM_Channel.stopped = true; // Stop all running background music
+		if (BGM_Channel.midi_out_used) {
+			BGM_Channel.midi_out_used = false;
 		} else if (BGM_Channel.decoder) {
 			BGM_Channel.decoder.reset();
 		}
 	}
-	UnlockMidiOutMutex();
 	UnlockMutex();
 }
 
@@ -118,59 +115,51 @@ bool GenericAudio::BGM_IsPlaying() const {
 int GenericAudio::BGM_GetTicks() const {
 	unsigned ticks = 0;
 	LockMutex();
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout) {
-			ticks = BGM_Channel.midiout->GetTicks();
+		if (BGM_Channel.midi_out_used) {
+			ticks = midi_thread->GetMidiOut().GetTicks();
 		} else if (BGM_Channel.decoder) {
 			ticks = BGM_Channel.decoder->GetTicks();
 			break;
 		}
 	}
-	UnlockMidiOutMutex();
 	UnlockMutex();
 	return ticks;
 }
 
 void GenericAudio::BGM_Fade(int fade) {
 	LockMutex();
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout->SetFade(BGM_Channel.midiout->GetVolume(), 0, fade);
+		if (BGM_Channel.midi_out_used) {
+			midi_thread->GetMidiOut().SetFade(midi_thread->GetMidiOut().GetVolume(), 0, fade);
 		} else if (BGM_Channel.decoder) {
 			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, fade);
 		}
 	}
-	UnlockMidiOutMutex();
 	UnlockMutex();
 }
 
 void GenericAudio::BGM_Volume(int volume) {
 	LockMutex();
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout->SetVolume(volume);
+		if (BGM_Channel.midi_out_used) {
+			midi_thread->GetMidiOut().SetVolume(volume);
 		} else if (BGM_Channel.decoder) {
 			BGM_Channel.decoder->SetVolume(volume);
 		}
 	}
-	UnlockMidiOutMutex();
 	UnlockMutex();
 }
 
 void GenericAudio::BGM_Pitch(int pitch) {
 	LockMutex();
-	LockMidiOutMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout) {
-			BGM_Channel.midiout->SetPitch(pitch);
+		if (BGM_Channel.midi_out_used) {
+			midi_thread->GetMidiOut().SetPitch(pitch);
 		} else if (BGM_Channel.decoder) {
 			BGM_Channel.decoder->SetPitch(pitch);
 		}
 	}
-	UnlockMidiOutMutex();
 	UnlockMutex();
 }
 
@@ -196,16 +185,6 @@ void GenericAudio::Update() {
 	// no-op, handled by the Decode function called through a thread
 }
 
-void GenericAudio::UpdateMidiOut(int delta) {
-	LockMidiOutMutex();
-	for (auto& BGM_Channel : BGM_Channels) {
-		if (BGM_Channel.midiout && !BGM_Channel.paused) {
-			BGM_Channel.midiout->Update(delta);
-		}
-	}
-	UnlockMidiOutMutex();
-}
-
 void GenericAudio::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
 	output_format.frequency = frequency;
 	output_format.format = format;
@@ -221,17 +200,36 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		return false;
 	}
 
-	chan.midiout = MidiDecoder::CreateMidiOut(filestream);
-	if (chan.midiout && chan.midiout->Open(std::move(filestream))) {
-		chan.midiout->SetPitch(pitch);
-		chan.midiout->SetVolume(volume);
-		chan.midiout->SetFade(0, volume, fadein);
-		chan.midiout->SetLooping(true);
-		chan.paused = false;
-		return true;
+	// Midiout is only supported on channel 0 because this is an exclusive resource
+	if (chan.id == 0 && GenericAudioMidiOut::IsSupported(filestream)) {
+		chan.decoder.reset();
+
+		if (!midi_thread) {
+			midi_thread.reset(new GenericAudioMidiOut());
+			midi_thread->StartThread();
+		}
+
+		midi_thread->LockMutex();
+		auto& midi_out = midi_thread->GetMidiOut();
+		if (midi_out.Open(std::move(filestream))) {
+			midi_out.SetPitch(pitch);
+			midi_out.SetVolume(volume);
+			midi_out.SetFade(0, volume, fadein);
+			midi_out.SetLooping(true);
+			chan.paused = false;
+			chan.midi_out_used = true;
+			midi_thread->UnlockMutex();
+			return true;
+		}
+		midi_thread->UnlockMutex();
+	}
+
+	if (midi_thread) {
+		midi_thread->GetMidiOut().Reset();
 	}
 
 	chan.decoder = AudioDecoder::Create(filestream);
+	chan.midi_out_used = false;
 	if (chan.decoder && chan.decoder->Open(std::move(filestream))) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
@@ -461,7 +459,11 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 void GenericAudio::BgmChannel::SetPaused(bool newPaused) {
 	paused = newPaused;
-	if (midiout) {
-		midiout->Pause();
+	if (midi_out_used) {
+		if (newPaused) {
+			midi_thread->GetMidiOut().Pause();
+		} else {
+			midi_thread->GetMidiOut().Resume();
+		}
 	}
 }

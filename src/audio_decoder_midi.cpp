@@ -94,7 +94,10 @@ static int read_func(void* instance) {
 }
 
 bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
+	Reset();
 	seq->clear();
+
+	file_buffer_pos = 0;
 	file_buffer = Utils::ReadStream(stream);
 
 	if (!seq->load(this, read_func)) {

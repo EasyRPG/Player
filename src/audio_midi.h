@@ -179,9 +179,7 @@ public:
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return A Midi decoder instance when the Midi data is supported, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoderBase> CreateMidiPlayer(Filesystem_Stream::InputStream& stream, bool resample);
-
-	static std::unique_ptr<AudioDecoderMidi> CreateMidiOut(Filesystem_Stream::InputStream & stream);
+	static std::unique_ptr<AudioDecoderBase> Create(Filesystem_Stream::InputStream& stream, bool resample);
 
 protected:
 	int frequency = EP_MIDI_FREQ;
