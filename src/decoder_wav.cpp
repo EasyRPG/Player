@@ -24,7 +24,7 @@
 #include "decoder_wav.h"
 #include "utils.h"
 
-WavDecoder::WavDecoder() 
+WavDecoder::WavDecoder()
 {
 	music_type = "wav";
 }
@@ -35,17 +35,17 @@ WavDecoder::~WavDecoder() {
 bool WavDecoder::Open(Filesystem_Stream::InputStream stream) {
 	decoded_samples = 0;
 	this->stream = std::move(stream);
-	stream.seekg(16, std::ios::ios_base::beg);
-	stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
+	this->stream.seekg(16, std::ios_base::beg);
+	this->stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 	Utils::SwapByteOrder(chunk_size);
-	stream.seekg(2, std::ios::ios_base::cur);
-	stream.read(reinterpret_cast<char*>(&nchannels), sizeof(nchannels));
+	this->stream.seekg(2, std::ios_base::cur);
+	this->stream.read(reinterpret_cast<char*>(&nchannels), sizeof(nchannels));
 	Utils::SwapByteOrder(nchannels);
-	stream.read(reinterpret_cast<char*>(&samplerate), sizeof(samplerate));
+	this->stream.read(reinterpret_cast<char*>(&samplerate), sizeof(samplerate));
 	Utils::SwapByteOrder(samplerate);
-	stream.seekg(6, std::ios::ios_base::cur);
+	this->stream.seekg(6, std::ios_base::cur);
 	uint16_t bitspersample;
-	stream.read(reinterpret_cast<char*>(&bitspersample), sizeof(bitspersample));
+	this->stream.read(reinterpret_cast<char*>(&bitspersample), sizeof(bitspersample));
 	Utils::SwapByteOrder(bitspersample);
 	switch (bitspersample) {
 		case 8:
@@ -62,36 +62,36 @@ bool WavDecoder::Open(Filesystem_Stream::InputStream stream) {
 	}
 
 	// Skip to next chunk using "fmt" chunk as offset
-	stream.seekg(12 + 8 + chunk_size, std::ios::ios_base::beg);
+	this->stream.seekg(12 + 8 + chunk_size, std::ios_base::beg);
 
 	char chunk_name[4] = {0};
-	stream.read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
+	this->stream.read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
 
 	// Skipping to audiobuffer start
 	while (strncmp(chunk_name, "data", 4)) {
-		stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
+		this->stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 		Utils::SwapByteOrder(chunk_size);
-		stream.seekg(chunk_size, std::ios::ios_base::cur);
-		stream.read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
+		this->stream.seekg(chunk_size, std::ios_base::cur);
+		this->stream.read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
 
-		if (!stream.good()) {
+		if (!this->stream.good()) {
 			return false;
 		}
 	}
 
 	// Get data chunk size
-	stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
+	this->stream.read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 	Utils::SwapByteOrder(chunk_size);
 
-	if (!stream.good()) {
+	if (!this->stream.good()) {
 		return false;
 	}
 
 	// Start of data chunk
-	audiobuf_offset = stream.tellg();
+	audiobuf_offset = this->stream.tellg();
 	cur_pos = audiobuf_offset;
 	finished = false;
-	return stream.good();
+	return this->stream.good();
 }
 
 bool WavDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
