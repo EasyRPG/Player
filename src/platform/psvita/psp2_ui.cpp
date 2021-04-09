@@ -132,7 +132,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	trigger_state = false;
 	set_shader = true;
 	vita2d_init();
-	vita2d_set_vblank_wait(0);
+	vita2d_set_vblank_wait(cfg.vsync.Get());
 	shaders[0] = vita2d_create_shader((SceGxmProgram*) opaque_v, (SceGxmProgram*) texture_f);
 	shaders[1] = vita2d_create_shader((SceGxmProgram*) sharp_bilinear_v, (SceGxmProgram*) sharp_bilinear_f);
 	shaders[2] = vita2d_create_shader((SceGxmProgram*) lcd3x_v, (SceGxmProgram*) lcd3x_f);
@@ -169,7 +169,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	scePowerSetGpuClockFrequency(222);
 	scePowerSetGpuXbarClockFrequency(222);
 	
-	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	
 	GPU_Mutex = sceKernelCreateSema("GPU Mutex", 0, 1, 1, NULL);
