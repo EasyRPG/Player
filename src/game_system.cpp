@@ -73,19 +73,19 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 
 	// Validate
 	if (bgm.volume < 0 || bgm.volume > 100) {
-		data.current_music.volume = Utils::Clamp(bgm.volume, 0, 100);
+		data.current_music.volume = Utils::Clamp<int32_t>(bgm.volume, 0, 100);
 
 		Output::Debug("BGM {} has invalid volume {}", bgm.name, bgm.volume);
 	}
 
 	if (bgm.fadein < 0 || bgm.fadein > 10000) {
-		data.current_music.fadein = Utils::Clamp(bgm.fadein, 0, 10000);
+		data.current_music.fadein = Utils::Clamp<int32_t>(bgm.fadein, 0, 10000);
 
 		Output::Debug("BGM {} has invalid fadein {}", bgm.name, bgm.fadein);
 	}
 
 	if (bgm.tempo < 50 || bgm.tempo > 200) {
-		data.current_music.tempo = Utils::Clamp(bgm.tempo, 50, 200);
+		data.current_music.tempo = Utils::Clamp<int32_t>(bgm.tempo, 50, 200);
 
 		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
@@ -150,12 +150,12 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	// Validate
 	if (se.volume < 0 || se.volume > 100) {
 		Output::Debug("SE {} has invalid volume {}", se.name, se.volume);
-		volume = Utils::Clamp(se.volume, 0, 100);
+		volume = Utils::Clamp<int32_t>(se.volume, 0, 100);
 	}
 
 	if (se.tempo < 50 || se.tempo > 200) {
 		Output::Debug("SE {} has invalid tempo {}", se.name, se.tempo);
-		tempo = Utils::Clamp(se.tempo, 50, 200);
+		tempo = Utils::Clamp<int32_t>(se.tempo, 50, 200);
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
