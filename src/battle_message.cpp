@@ -417,6 +417,14 @@ std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_
 }
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item) {
+	if (item.easyrpg_using_message != lcf::rpg::Item::kDefaultMessage) {
+		return Utils::ReplacePlaceholders(
+			item.easyrpg_using_message,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(source.GetName(), item.name)
+		);
+	}
+
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.use_item,
@@ -432,36 +440,110 @@ std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::It
 	return ToString(source.GetName()) + particle + ToString(item.name) + ToString(lcf::Data::terms.use_item);
 }
 
-std::string GetDoubleAttackStartMessage2k3() {
-	return "Double Attack";
+std::string GetDoubleAttackStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_double_attack == lcf::Data::terms.kDefaultTerm) {
+		return "Double Attack";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_double_attack,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
-std::string GetSkillStartMessage2k3(const lcf::rpg::Skill& skill) {
-	return ToString(skill.name);
+std::string GetSkillStartMessage2k3(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
+	StringView target_name = "???";
+	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
+		target_name = target->GetName();
+	}
+	if (skill.easyrpg_battle2k3_message == lcf::rpg::Skill::kDefaultMessage) {
+		if (lcf::Data::terms.easyrpg_battle2k3_skill == lcf::Data::terms.kDefaultTerm) {
+			return ToString(skill.name);
+		}
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.easyrpg_battle2k3_skill,
+			Utils::MakeArray('S', 'O', 'U'),
+			Utils::MakeSvArray(source.GetName(), target_name, skill.name)
+		);
+	}
+	return Utils::ReplacePlaceholders(
+		skill.easyrpg_battle2k3_message,
+		Utils::MakeArray('S', 'O', 'U'),
+		Utils::MakeSvArray(source.GetName(), target_name, skill.name)
+	);
 }
 
-std::string GetItemStartMessage2k3(const lcf::rpg::Item& item) {
-	return ToString(item.name);
+std::string GetItemStartMessage2k3(const Game_Battler& source, const lcf::rpg::Item& item) {
+	if (item.easyrpg_using_message == lcf::rpg::Item::kDefaultMessage) {
+		if (lcf::Data::terms.easyrpg_battle2k3_item == lcf::Data::terms.kDefaultTerm) {
+			return ToString(item.name);
+		}
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.easyrpg_battle2k3_item,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(source.GetName(), item.name)
+		);
+	}
+	return Utils::ReplacePlaceholders(
+		item.easyrpg_using_message,
+		Utils::MakeArray('S', 'O'),
+		Utils::MakeSvArray(source.GetName(), item.name)
+	);
 }
 
-std::string GetObserveStartMessage2k3() {
-	return "Observe";
+std::string GetObserveStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_observe == lcf::Data::terms.kDefaultTerm) {
+		return "Observe";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_observe,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
-std::string GetDefendStartMessage2k3() {
-	return "Defend";
+std::string GetDefendStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_defend == lcf::Data::terms.kDefaultTerm) {
+		return "Defend";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_defend,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
-std::string GetChargeUpStartMessage2k3() {
-	return "Charge Up";
+std::string GetChargeUpStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_charge == lcf::Data::terms.kDefaultTerm) {
+		return "Charge Up";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_charge,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
-std::string GetSelfDestructStartMessage2k3() {
-	return "Self-Destruct";
+std::string GetSelfDestructStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_selfdestruct == lcf::Data::terms.kDefaultTerm) {
+		return "Self-Destruct";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_selfdestruct,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
-std::string GetEscapeStartMessage2k3() {
-	return "Escape";
+std::string GetEscapeStartMessage2k3(const Game_Battler& source) {
+	if (lcf::Data::terms.easyrpg_battle2k3_escape == lcf::Data::terms.kDefaultTerm) {
+		return "Escape";
+	}
+	return Utils::ReplacePlaceholders(
+		lcf::Data::terms.easyrpg_battle2k3_escape,
+		Utils::MakeArray('S'),
+		Utils::MakeSvArray(source.GetName())
+	);
 }
 
 } // namespace BattleMessage

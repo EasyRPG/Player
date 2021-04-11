@@ -98,21 +98,21 @@ std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item);
 
-std::string GetDoubleAttackStartMessage2k3();
+std::string GetDoubleAttackStartMessage2k3(const Game_Battler& source);
 
-std::string GetSkillStartMessage2k3(const lcf::rpg::Skill& skill);
+std::string GetSkillStartMessage2k3(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill);
 
-std::string GetItemStartMessage2k3(const lcf::rpg::Item& item);
+std::string GetItemStartMessage2k3(const Game_Battler& source, const lcf::rpg::Item& item);
 
-std::string GetObserveStartMessage2k3();
+std::string GetObserveStartMessage2k3(const Game_Battler& source);
 
-std::string GetDefendStartMessage2k3();
+std::string GetDefendStartMessage2k3(const Game_Battler& source);
 
-std::string GetChargeUpStartMessage2k3();
+std::string GetChargeUpStartMessage2k3(const Game_Battler& source);
 
-std::string GetSelfDestructStartMessage2k3();
+std::string GetSelfDestructStartMessage2k3(const Game_Battler& source);
 
-std::string GetEscapeStartMessage2k3();
+std::string GetEscapeStartMessage2k3(const Game_Battler& source);
 
 } // namespace BattleMessage
 

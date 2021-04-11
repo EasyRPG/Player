@@ -1022,9 +1022,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSt
 	if (scene_action_substate == eSpecialMessage) {
 		EndNotification();
 		const auto cond = Game_Battle::GetBattleCondition();
-		if (!lcf::Data::terms.special_combat.empty() && (cond != lcf::rpg::System::BattleCondition_none || first_strike)) {
-			if (cond == lcf::rpg::System::BattleCondition_initiative || cond == lcf::rpg::System::BattleCondition_surround || (cond == lcf::rpg::System::BattleCondition_none && first_strike)) {
+		if ((!lcf::Data::terms.special_combat.empty() || !lcf::Data::terms.easyrpg_battle2k3_special_combat_back.empty()) && (cond != lcf::rpg::System::BattleCondition_none || first_strike)) {
+			if (!lcf::Data::terms.special_combat.empty() && (cond == lcf::rpg::System::BattleCondition_initiative || cond == lcf::rpg::System::BattleCondition_surround || (cond == lcf::rpg::System::BattleCondition_none && first_strike))) {
 				ShowNotification(ToString(lcf::Data::terms.special_combat));
+			}
+			if (!lcf::Data::terms.easyrpg_battle2k3_special_combat_back.empty() && (cond == lcf::rpg::System::BattleCondition_back || cond == lcf::rpg::System::BattleCondition_pincers)) {
+				ShowNotification(ToString(lcf::Data::terms.easyrpg_battle2k3_special_combat_back));
 			}
 			SetWait(30, 70);
 		}
