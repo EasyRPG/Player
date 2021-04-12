@@ -17,12 +17,16 @@ LIBS = -llcf -lexpat -lvita2d \
 	-lvitashaders -lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub \
 	-lScePgf_stub -lScePower_stub -lSceCommonDialog_stub -lSceAudio_stub
 
+PREFIX  = arm-vita-eabi
+CXX     = $(PREFIX)-g++
+
+ifeq ($(strip $(TOOLCHAIN_DIR)),)
+TOOLCHAIN_DIR := $(VITASDK)/$(PREFIX)
+endif
+
 ifeq ($(strip $(LIBLCF_DIR)),)
 LIBLCF_DIR := $(TOOLCHAIN_DIR)
 endif
-
-PREFIX  = arm-vita-eabi
-CXX     = $(PREFIX)-g++
 
 ifneq ($(strip $(shell command -v ccache 2> /dev/null)),)
 CCACHE = ccache
@@ -54,11 +58,7 @@ all: $(TARGET).vpk
 $(TARGET).vpk: $(TARGET).velf
 		vita-make-fself -s $< release/eboot.bin
 		vita-mksfoex -s TITLE_ID=$(APP_ID) -d ATTRIBUTE2=12 "$(APP_TITLE)" release/sce_sys/param.sfo
-ifdef HAVE_ZIP
-		cd release; zip ../$(TARGET).vpk -r ./sce_sys ./eboot.bin
-else
-		7z a -tzip ./$(TARGET).vpk -r .\release\sce_sys\* .\release\eboot.bin
-endif
+		vita-pack-vpk -s release/sce_sys/param.sfo -b release/eboot.bin -a release/sce_sys=sce_sys $(TARGET).vpk
 
 $(TARGET).velf: $(TARGET).elf
 	$(PREFIX)-strip -g -o $(TARGET)-stripped.elf $<
