@@ -50,6 +50,11 @@ void Sprite_Weapon::Update() {
 	// Is a battle charset animation
 
 	int frame = std::min(2, cycle / 10);
+
+	if (battler->IsDirectionFlipped()) {
+		frame = 2 - frame;
+	}
+
 	if (frame == sprite_frame)
 		return;
 
@@ -79,9 +84,9 @@ void Sprite_Weapon::StartAttack(bool secondary_weapon) {
 
 	attacking = true;
 
-	SetZ(default_z + (secondary_weapon ? 1 : -1));
-
 	auto* battler = GetBattler();
+
+	SetZ(default_z + ((secondary_weapon ^ battler->IsDirectionFlipped()) ? 1 : -1));
 
 	if (battler->GetBattleAnimationId() > 0) {
 		const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
@@ -124,7 +129,9 @@ void Sprite_Weapon::CreateSprite() {
 
 void Sprite_Weapon::OnBattleWeaponReady(FileRequestResult* result, int32_t weapon_index) {
 	SetBitmap(Cache::Battleweapon(result->file));
-	SetSrcRect(Rect(0, weapon_index * 64, 64, 64));
+	const bool flip = battler->IsDirectionFlipped();
+	SetFlipX(flip);
+	SetSrcRect(Rect((flip ? 128 : 0), weapon_index * 64, 64, 64));
 }
 
 void Sprite_Weapon::Draw(Bitmap& dst) {

@@ -81,6 +81,11 @@ void Sprite_Actor::Update() {
 
 			static const int frames[] = {0,1,2,1,0};
 			int frame = (battler->IsDefending() ? 0 : (normal_attacking ? std::min(2, cycle / 10) : frames[cycle / 10]));
+
+			if (battler->IsDirectionFlipped()) {
+				frame = 2 - frame;
+			}
+
 			if (frame == sprite_frame)
 				return;
 
@@ -259,7 +264,7 @@ void Sprite_Actor::DoIdleAnimation() {
 
 void Sprite_Actor::OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index) {
 	SetBitmap(Cache::Battlecharset(result->file));
-	SetSrcRect(Rect(0, battler_index * 48, 48, 48));
+	SetSrcRect(Rect((battler->IsDirectionFlipped() ? 96 : 0), battler_index * 48, 48, 48));
 }
 
 void Sprite_Actor::Draw(Bitmap& dst) {
