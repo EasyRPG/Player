@@ -103,7 +103,15 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	DirectoryListType fs_cache_entry;
 
 	for (auto& entry : entries) {
-		fs_cache_entry.emplace(std::make_pair(make_key(entry.name), entry));
+		std::string new_entry_key = make_key(entry.name);
+
+		if (entry.type == FileType::Directory) {
+			if (fs_cache_entry.find(new_entry_key) != fs_cache_entry.end()) {
+				Output::Warning("This folder \"{}\" exists twice.", entry.name);
+				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
+			}
+		}
+		fs_cache_entry.emplace(std::make_pair(std::move(new_entry_key), entry));
 	}
 	fs_cache.emplace(dir_key, fs_cache_entry);
 

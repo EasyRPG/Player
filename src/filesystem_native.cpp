@@ -107,18 +107,6 @@ bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<Director
 			is_directory = IsDirectory(name, true);
 		}
 
-		/*
-		FIXME
-		if (is_directory) {
-			std::string new_entry_key = make_key(name);
-			if (std::find_if(entries.begin(), entries.end(), [&](const auto& e) {
-				return e.type == DirectoryTree::FileType::Directory && make_key(e.name) == new_entry_key;
-			}) != entries.end()) {
-				Output::Warning("This game provides the folder \"{}\" twice.", name);
-				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
-			}
-		}*/
-
 		entries.emplace_back(
 			name,
 			is_directory ? DirectoryTree::FileType::Directory : DirectoryTree::FileType::Regular);
