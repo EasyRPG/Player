@@ -2603,7 +2603,7 @@ void Scene_Battle_Rpg2k3::CBAInit() {
 		}
 	} else {
 		if (sprite) {
-			if (cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_jump || cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_move) {
+			if (cba_action->GetType() == Game_BattleAlgorithm::Type::Normal || cba_action->GetCBAMovement() == lcf::rpg::BattlerAnimationItemSkill::Movement_move) {
 				sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
 			} else {
 				sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingLeft);
