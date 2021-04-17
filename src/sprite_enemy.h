@@ -46,6 +46,8 @@ public:
 
 	void Refresh();
 
+	void ResetZ() final;
+
 protected:
 	void CreateSprite();
 	void OnMonsterSpriteReady(FileRequestResult* result);

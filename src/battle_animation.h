@@ -62,6 +62,23 @@ public:
 	/** @return true if the animation only plays audio and doesn't display **/
 	bool IsOnlySound() const;
 
+	/**
+	 * @return the animation cell width
+	 */
+	int GetAnimationCellWidth() const;
+
+	/**
+	 * @return the animation cell height
+	 */
+	int GetAnimationCellHeight() const;
+
+	/**
+	 * Set if the animation is inverted
+	 *
+	 * @param inverted if the animation is inverted
+	 **/
+	void SetInvert(bool inverted);
+
 protected:
 	BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound = false, int cutoff = -1);
 
@@ -113,6 +130,16 @@ protected:
 	std::vector<Game_Battler*> battlers;
 };
 
+class BattleAnimationBattler : public BattleAnimation {
+public:
+	BattleAnimationBattler(const lcf::rpg::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1, bool set_invert = false);
+	void Draw(Bitmap& dst) override;
+protected:
+	void FlashTargets(int r, int g, int b, int p) override;
+	void ShakeTargets(int str, int spd, int time) override;
+	std::vector<Game_Battler*> battlers;
+};
+
 inline int BattleAnimation::GetFrame() const {
 	return frame;
 }
@@ -137,6 +164,12 @@ inline bool BattleAnimation::IsOnlySound() const {
 	return only_sound;
 }
 
+inline int BattleAnimation::GetAnimationCellWidth() const {
+	return (animation.large ? 128 : 96);
+}
 
+inline int BattleAnimation::GetAnimationCellHeight() const {
+	return (animation.large ? 128 : 96);
+}
 
 #endif

@@ -90,6 +90,8 @@ public:
 
 	Game_Actor* GetBattler() const;
 
+	void ResetZ() final;
+
 protected:
 	void CreateSprite();
 	void DoIdleAnimation();

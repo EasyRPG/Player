@@ -59,6 +59,7 @@ void Sprite_Actor::Update() {
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				// Is a battle animation
+				animation->SetInvert(battler->IsDirectionFlipped());
 				animation->Update();
 
 				if (animation->IsDone()) {
@@ -127,9 +128,6 @@ void Sprite_Actor::Update() {
 
 	const bool flip = battler->IsDirectionFlipped();
 	SetFlipX(flip);
-	if (animation) {
-		SetFlipX(flip);
-	}
 }
 
 void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
@@ -171,9 +169,10 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 				Output::Warning("Invalid battle animation ID {}", ext->battle_animation_id);
 				animation.reset();
 			} else {
-				animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
+				animation.reset(new BattleAnimationBattler(*battle_anim, { battler }));
 				animation->SetZ(GetZ());
 			}
+			animation->SetInvert(battler->IsDirectionFlipped());
 		}
 		else {
 			animation.reset();
@@ -203,14 +202,14 @@ bool Sprite_Actor::IsIdling() {
 
 int Sprite_Actor::GetWidth() const {
 	if (animation) {
-		return animation->GetWidth();
+		return animation->GetAnimationCellWidth() / 2;
 	}
 	return Sprite::GetWidth();
 }
 
 int Sprite_Actor::GetHeight() const {
 	if (animation) {
-		return animation->GetHeight();
+		return animation->GetAnimationCellHeight() / 2;
 	}
 	return Sprite::GetHeight();
 }
@@ -277,4 +276,11 @@ void Sprite_Actor::Draw(Bitmap& dst) {
 	SetFlashEffect(battler->GetFlashColor());
 
 	Sprite_Battler::Draw(dst);
+}
+
+void Sprite_Actor::ResetZ() {
+	Sprite_Battler::ResetZ();
+	if (animation) {
+		animation->SetZ(GetZ());
+	}
 }
