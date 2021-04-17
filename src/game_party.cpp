@@ -108,7 +108,13 @@ void Game_Party::SetupBattleTest() {
 		Game_Actor* actor = Main_Data::game_actors->GetActor(btdata.actor_id);
 
 		// Filter garbage btdata inserted by the editor
-		std::array<int, 5> ids = {{ btdata.weapon_id, btdata.shield_id, btdata.armor_id, btdata.helmet_id, btdata.accessory_id }};
+		// The upper 16 bit look like uninitialized data
+		std::array<int, 5> ids = {{
+			btdata.weapon_id & 0xFFFF,
+			btdata.shield_id & 0xFFFF,
+			btdata.armor_id & 0xFFFF,
+			btdata.helmet_id & 0xFFFF,
+			btdata.accessory_id & 0xFFFF }};
 		std::replace_if(ids.begin(), ids.end(), [] (const int& item_id) {
 			return lcf::ReaderUtil::GetElement(lcf::Data::items, item_id) == nullptr;
 		}, 0);
