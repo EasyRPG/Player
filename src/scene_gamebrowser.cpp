@@ -37,7 +37,7 @@ void Scene_GameBrowser::Start() {
 	initial_debug_flag = Player::debug_flag;
 	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
-	filesystems.emplace_back(FileFinder::Game(), FileFinder::Game().GetFullPath());
+	stack.push_back({ FileFinder::Game(), 0 });
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
@@ -89,9 +89,9 @@ void Scene_GameBrowser::CreateWindows() {
 	command_window->SetIndex(0);
 
 	gamelist_window = std::make_unique<Window_GameList>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
-	gamelist_window->Refresh(filesystems.back().first, false);
+	gamelist_window->Refresh(stack.back().filesystem, false);
 
-	if (filesystems.size() == 1 && !gamelist_window->HasValidEntry()) {
+	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
 
@@ -130,7 +130,7 @@ void Scene_GameBrowser::UpdateCommand() {
 
 		switch (menu_index) {
 			case GameList:
-				if (filesystems.size() == 1 && !gamelist_window->HasValidEntry()) {
+				if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 					return;
 				}
 				command_window->SetActive(false);
@@ -164,11 +164,12 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 }
 
 void Scene_GameBrowser::BootGame() {
-	if (filesystems.size() > 1 && gamelist_window->GetIndex() == 0) {
+	if (stack.size() > 1 && gamelist_window->GetIndex() == 0) {
 		// ".." -> Go one level up
-		filesystems.pop_back();
-		gamelist_window->Refresh(filesystems.back().first, filesystems.size() > 1);
-		gamelist_window->SetIndex(0);
+		int index = stack.back().index;
+		stack.pop_back();
+		gamelist_window->Refresh(stack.back().filesystem, stack.size() > 1);
+		gamelist_window->SetIndex(index);
 		load_window->SetVisible(false);
 		game_loading = false;
 		return;
@@ -193,19 +194,13 @@ void Scene_GameBrowser::BootGame() {
 			Output::Warning("The selected file or directory cannot be opened");
 			return;
 		}
-		filesystems.emplace_back(fs, entry);
+		stack.push_back({ fs, gamelist_window->GetIndex() });
 		gamelist_window->SetIndex(0);
 
 		return;
 	}
 
 	FileFinder::SetGameFilesystem(fs);
-
-	std::string startup_path;
-	for (const auto& f : filesystems) {
-		startup_path = FileFinder::MakePath(startup_path, f.second);
-	}
-
 	Player::CreateGameObjects();
 
 	Scene::Push(std::make_shared<Scene_Title>());
