@@ -95,7 +95,18 @@ FilesystemView Filesystem::Create(StringView path) const {
 			}
 			return fs_view;
 		}
-		return filesystem->Subtree("");
+		// This is the root of a new Filesystem
+		// Check if it only contains a single folder and if yes enter that folder
+		// This way archives with structure "archive/game_folder" launch the game directly
+		auto fs_view = filesystem->Subtree("");
+		if (!fs_view) {
+			return FilesystemView();
+		}
+		auto entries = fs_view.ListDirectory("");
+		if (entries->size() == 1 && entries->begin()->second.type == DirectoryTree::FileType::Directory) {
+			return fs_view.Subtree(entries->begin()->second.name);
+		}
+		return fs_view;
 	} else {
 		if (!(Exists(path) || !IsDirectory(path, true))) {
 			return FilesystemView();

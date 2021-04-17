@@ -91,14 +91,14 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 			}
 
 			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(filename_guess.str());
-			for (auto enc : encodings) {
-				std::string enc_test = lcf::ReaderUtil::Recode("\\", enc);
+			for (const auto& enc_ : encodings) {
+				std::string enc_test = lcf::ReaderUtil::Recode("\\", enc_);
 				if (enc_test.empty()) {
 					// Bad encoding
-					Output::Debug("Bad encoding: {}. Trying next.", enc);
+					Output::Debug("Bad encoding: {}. Trying next.", enc_);
 					continue;
 				}
-				encoding = enc;
+				encoding = enc_;
 				break;
 			}
 			Output::Debug("Detected ZIP encoding: {}", encoding);
@@ -330,7 +330,7 @@ bool ZipFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	}
 
 	std::string path_normalized = normalize_path(path);
-	if (path_normalized.size() != 0 && path_normalized.back() != '/') {
+	if (!path_normalized.empty() && path_normalized.back() != '/') {
 		path_normalized += "/";
 	}
 
@@ -338,6 +338,11 @@ bool ZipFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 		if (StringView(it.first).starts_with(path_normalized) &&
 			it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size()).find_last_of('/') == std::string::npos) {
 			// Everything that starts with the path but isn't the path and does contain no slash
+			auto filename = it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size());
+			if (filename.empty()) {
+				continue;
+			}
+
 			entries.emplace_back(
 				it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size()),
 				it.second.is_directory ? DirectoryTree::FileType::Directory : DirectoryTree::FileType::Regular);

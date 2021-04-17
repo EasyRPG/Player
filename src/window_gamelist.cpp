@@ -42,7 +42,9 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 
 	// Find valid game diectories
 	for (auto& dir : *files) {
-		if (dir.second.name.empty() || StringView(dir.second.name).ends_with(".save")) {
+		assert(!dir.second.name.empty() && "VFS BUG: Empty filename in the folder");
+
+		if (StringView(dir.second.name).ends_with(".save")) {
 			continue;
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular &&
