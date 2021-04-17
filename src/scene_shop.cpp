@@ -255,7 +255,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 			int max = 99 - Main_Data::game_party->GetItemCount(item_id);
 			if (item->price > 0) {
-				max = std::min(max, Main_Data::game_party->GetGold() / item->price);
+				max = std::min<int>(max, Main_Data::game_party->GetGold() / item->price);
 			}
 			number_window->SetData(item_id, max, item->price);
 
