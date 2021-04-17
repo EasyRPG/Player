@@ -138,35 +138,45 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 	const char* prefix = GetLogPrefix(lvl);
 	// Skip logging to file in the browser
 #ifndef EMSCRIPTEN
-	if (!output_recurse && FileFinder::Save()) {
-		output_recurse = true;
-		// Only write to file when save path is initialized
-		// (happens after parsing the command line)
-		if (!log_buffer.empty()) {
-			std::vector<std::string> local_log_buffer = std::move(log_buffer);
-			for (std::string& log : local_log_buffer) {
-				output_time() << log << '\n';
-			}
-			local_log_buffer.clear();
-		}
+	bool add_to_buffer = true;
 
-		// Every new message is written once to the file.
-		// When it is repeated increment a counter until a different message appears,
-		// then write the buffered message with the counter.
-		if (msg == last_message.msg) {
-			last_message.repeat++;
-		} else {
-			if (last_message.repeat > 0) {
-				output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
-				output_time() << prefix << msg << '\n';
-			} else {
-				output_time() << prefix << msg << '\n';
+	// Prevent recursion when the Save filesystem writes to the logfile on startup before it is ready
+	if (!output_recurse) {
+		output_recurse = true;
+		if (FileFinder::Save()) {
+			add_to_buffer = false;
+
+			// Only write to file when save path is initialized
+			// (happens after parsing the command line)
+			if (!log_buffer.empty()) {
+				std::vector<std::string> local_log_buffer = std::move(log_buffer);
+				for (std::string& log : local_log_buffer) {
+					output_time() << log << '\n';
+				}
+				local_log_buffer.clear();
 			}
-			last_message.repeat = 0;
-			last_message.msg = msg;
-			last_message.lvl = lvl;
+
+			// Every new message is written once to the file.
+			// When it is repeated increment a counter until a different message appears,
+			// then write the buffered message with the counter.
+			if (msg == last_message.msg) {
+				last_message.repeat++;
+			} else {
+				if (last_message.repeat > 0) {
+					output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
+					output_time() << prefix << msg << '\n';
+				} else {
+					output_time() << prefix << msg << '\n';
+				}
+				last_message.repeat = 0;
+				last_message.msg = msg;
+				last_message.lvl = lvl;
+			}
 		}
-	} else {
+		output_recurse = false;
+	}
+
+	if (add_to_buffer) {
 		// buffer log messages until file system is ready
 		log_buffer.push_back(prefix + msg);
 	}
@@ -181,8 +191,6 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
 		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}
-
-	output_recurse = false;
 }
 
 static void HandleErrorOutput(const std::string& err) {
