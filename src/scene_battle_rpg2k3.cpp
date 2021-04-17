@@ -302,7 +302,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		options_window->SetBackOpacity(transp);
 		item_window->SetBackOpacity(transp);
 		skill_window->SetBackOpacity(transp);
@@ -397,7 +397,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 
 				ally_cursor->SetVisible(true);
 				ally_cursor->SetX(actor->GetBattlePosition().x);
-				ally_cursor->SetY(actor->GetBattlePosition().y - sprite->GetHeight() / 2);
+				ally_cursor->SetY(actor->GetBattlePosition().y - 40);
 
 				if (frame_counter % 30 == 0) {
 					SelectionFlash(actor);
@@ -425,8 +425,8 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 					enemy_cursor->SetSrcRect(Rect(sprite_frame * 16, 0, 16, 16));
 
 					enemy_cursor->SetVisible(true);
-					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2 + 2);
-					enemy_cursor->SetY(enemy->GetBattlePosition().y - enemy_cursor->GetHeight() / 2);
+					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2);
+					enemy_cursor->SetY(enemy->GetBattlePosition().y);
 
 					std::vector<lcf::rpg::State*> ordered_states = enemy->GetInflictedStatesOrderedByPriority();
 					if (ordered_states.size() > 0) {
@@ -481,6 +481,10 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text
 	floating_texts.push_back(float_text);
 }
 
+bool Scene_Battle_Rpg2k3::IsTransparent() const {
+	return lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent;
+}
+
 static std::vector<std::string> GetEnemyTargetNames() {
 	std::vector<std::string> commands;
 
@@ -506,7 +510,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window->SetZ(Priority_Window + 10);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		target_window->SetBackOpacity(transp);
 	}
 }
@@ -515,6 +519,9 @@ void Scene_Battle_Rpg2k3::RefreshTargetWindow() {
 	// FIXME: Handle live refresh in traditional when the window is always visible
 	auto commands = GetEnemyTargetNames();
 	target_window->ReplaceCommands(std::move(commands));
+	if (!target_window->GetActive()) {
+		target_window->SetIndex(-1);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
@@ -594,7 +601,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	command_window->SetZ(Priority_Window + 20);
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
-		int transp = lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent ? 128 : 255;
+		int transp = IsTransparent() ? 160 : 255;
 		command_window->SetBackOpacity(transp);
 	}
 }
@@ -942,6 +949,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt) {
 #else
 	(void)page;
 #endif
+	RefreshTargetWindow();
 
 	return !interp.IsRunning();
 }
@@ -1788,11 +1796,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEs
 			for (auto& actor: Main_Data::game_party->GetActors()) {
 				auto* sprite = actor->GetActorBattleSprite();
 				if (sprite) {
-					if (actor->IsDirectionFlipped()) {
-						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingLeft);
-					} else {
-						sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
-					}
+					sprite->SetAnimationState(Sprite_Actor::AnimationState_WalkingRight);
 				}
 			}
 			running_away = true;
@@ -2028,6 +2032,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 	}
 
+	status_window->Refresh();
+
 	SetBattleActionState(BattleActionState_Notify);
 	return BattleActionReturn::eContinue;
 }
@@ -2239,6 +2245,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (!was_dead && enemy->IsDead()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
 			enemy->SetDeathTimer();
+			RefreshTargetWindow();
 		}
 	}
 

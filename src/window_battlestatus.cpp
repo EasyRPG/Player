@@ -81,13 +81,17 @@ void Window_BattleStatus::Refresh() {
 			int y = 2 + i * 16;
 
 			DrawActorName(*actor, 4, y);
-			DrawActorState(*actor, 84 + (Player::IsRPG2k() ? 2 : 0), y);
-			if (Player::IsRPG2k3() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
-				contents->TextDraw(132 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+			if (Player::IsRPG2k()) {
+				DrawActorState(*actor, 86, y);
+				DrawActorHp(*actor, 142, y, 3, true);
+				DrawActorSp(*actor, 202, y, 3, false);
 			} else {
-				int digits = Player::IsRPG2k() ? 3 : 4;
-				DrawActorHp(*actor, 126 + (Player::IsRPG2k() ? 16 : 0), y, digits, true);
-				DrawActorSp(*actor, 198 + (Player::IsRPG2k() ? 4 : 0), y, 3, false);
+				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+					DrawActorState(*actor, 84, y);
+					DrawActorHpValue(*actor, 136 + 4 * 6, y);
+				} else {
+					DrawActorState(*actor, 80, y);
+				}
 			}
 		}
 	}
@@ -97,9 +101,8 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
-		int gauge_x = contents->GetWidth() - 48;
-		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
-			contents->ClearRect(Rect(gauge_x + 10, 0, 25 + 16, 15 * item_max));
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
+			contents->ClearRect(Rect(192, 0, 45, 64));
 		}
 
 		for (int i = 0; i < item_max; ++i) {
@@ -154,9 +157,15 @@ void Window_BattleStatus::RefreshGauge() {
 			else {
 				int y = 2 + i * 16;
 
-				DrawGauge(*actor, gauge_x, y - 2);
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
-					DrawActorSp(*actor, 198, y, 3, false);
+					// RPG_RT Bug (?): Gauge hidden when selected due to transparency (wrong color when rendering)
+					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (2 + index * 16 != y)) {
+						DrawGauge(*actor, 202 - 10, y - 2, lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ? 96 : 255);
+					}
+					DrawActorHp(*actor, 136, y, 4, true);
+					DrawActorSp(*actor, 202, y, 3, false);
+				} else {
+					DrawGauge(*actor, 156, y - 2);
 				}
 			}
 		}

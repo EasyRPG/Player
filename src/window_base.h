@@ -67,7 +67,10 @@ public:
 	void DrawItemName(const lcf::rpg::Item& item, int cx, int cy, bool enabled = true) const;
 	void DrawSkillName(const lcf::rpg::Skill& skill, int cx, int cy, bool enabled = true) const;
 	void DrawCurrencyValue(int money, int cx, int cy) const;
-	void DrawGauge(const Game_Battler& actor, int cx, int cy) const;
+	void DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha = 255) const;
+	void DrawActorHpValue(const Game_Battler& actor, int cx, int cy) const;
+	void DrawActorSpValue(const Game_Battler& actor, int cx, int cy) const;
+	int GetValueFontColor(int have, int max, bool can_knockout) const;
 	/** @} */
 
 	/**

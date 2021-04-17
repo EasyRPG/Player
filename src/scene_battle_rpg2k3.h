@@ -114,6 +114,8 @@ protected:
 
 	void DrawFloatText(int x, int y, int color, StringView text);
 
+	bool IsTransparent() const;
+
 
 	void SetState(Scene_Battle::State new_state) override;
 
