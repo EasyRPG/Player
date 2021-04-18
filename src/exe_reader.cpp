@@ -19,8 +19,7 @@
 #ifndef EMSCRIPTEN
 
 #include "exe_reader.h"
-#include "filefinder.h"
-#include "bitmap.h"
+#include "image_bmp.h"
 #include "output.h"
 #include <iostream>
 #include <fstream>
@@ -60,9 +59,6 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream& core) : corefile(core) {
 	}
 }
 
-EXEReader::~EXEReader() {
-}
-
 static uint32_t djb2_hash(char* str, size_t length) {
 	uint32_t hash = 5381;
 	for (size_t i = 0; i < length; ++i) {
@@ -73,59 +69,55 @@ static uint32_t djb2_hash(char* str, size_t length) {
 
 static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem_Stream::InputStream& corefile, uint32_t position, uint32_t len) {
 	std::vector<uint8_t> exfont;
-	constexpr int header_size = 14;
+	constexpr int header_size = 14; // Size of BITMAPFILEHEADER
 	exfont.resize(len + header_size);
 
 	corefile.seekg(position, std::ios_base::beg);
+	corefile.read(reinterpret_cast<char*>(exfont.data()) + header_size, len);
+	if (corefile.gcount() != len) {
+		Output::Debug("ExFont: Error reading resource (read {}, expected {})", corefile.gcount(), len);
+		return {};
+	}
 
-	// Solely for calculating position of actual data
-	uint32_t hdrL = corefile.get();
-	hdrL |= ((uint32_t) corefile.get()) << 8;
-	hdrL |= ((uint32_t) corefile.get()) << 16;
-	hdrL |= ((uint32_t) corefile.get()) << 24;
+	auto* exfont_data = reinterpret_cast<const uint8_t*>(exfont.data()) + header_size;
+	auto* e = exfont_data + len;
+	auto header = ImageBMP::ParseHeader(exfont_data, e);
+
 	// As it turns out, EXFONTs appear to operate on all the same restrictions as an ordinary BMP.
-	// Given this particular resource is loaded by the RPG Maker half of the engine, this makes the usual amount of sense.
-	// This means 256 palette entries. Without fail. Even though only two are used, the first and last.
-	// Since this is a packed bitmap, there's nothing else to worry about.
-	hdrL += 256 * 4;
+	// Bitmap resources lack the BITMAPFILEHEADER. This header must be generated based on the BITMAPINFOHEADER.
 	// And the header that's going to be prepended.
-	hdrL += header_size;
+	int header_len = header_size + header.size;
+	if (header.depth != 8) {
+		Output::Debug("ExFont: Unsupported depth {}", header.depth);
+		return {};
+	}
+	header_len += header.num_colors * 4;
 
 	// 0 (these are in decimal)
 	int pos = 0;
 	exfont[pos++] = 'B';
 	exfont[pos++] = 'M';
 	// 2
-	uint32_t totallen = len + 14;
+	uint32_t totallen = exfont.size();
 	exfont[pos++] = (totallen) & 0xFF;
 	exfont[pos++] = (totallen >> 8) & 0xFF;
 	exfont[pos++] = (totallen >> 16) & 0xFF;
 	exfont[pos++] = (totallen >> 24) & 0xFF;
-	// 6
+	// 6 - Reserved data
 	exfont[pos++] = 'E';
 	exfont[pos++] = 'x';
 	exfont[pos++] = 'F';
 	exfont[pos++] = 'n';
 	// 10
-	exfont[pos++] = (hdrL) & 0xFF;
-	exfont[pos++] = (hdrL >> 8) & 0xFF;
-	exfont[pos++] = (hdrL >> 16) & 0xFF;
-	exfont[pos++] = (hdrL >> 24) & 0xFF;
-
-	corefile.seekg(position, std::ios_base::beg);
-	while (len > 0) {
-		int v = corefile.get();
-		if (v == -1)
-			break;
-		exfont[pos++] = v;
-		len--;
-	}
+	exfont[pos++] = (header_len) & 0xFF;
+	exfont[pos++] = (header_len >> 8) & 0xFF;
+	exfont[pos++] = (header_len >> 16) & 0xFF;
+	exfont[pos++] = (header_len >> 24) & 0xFF;
 
 	// Check if the ExFont is the original through a fast hash function
 	if (djb2_hash((char*)exfont.data() + header_size, exfont.size() - header_size) != 0x491e19de) {
 		Output::Debug("EXEReader: Custom ExFont found");
 	}
-
 	return exfont;
 }
 
