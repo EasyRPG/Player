@@ -86,11 +86,20 @@ Game_Actor::Game_Actor(int actor_id) {
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 
-	SetEquipment(1, dbActor->initial_equipment.weapon_id);
-	SetEquipment(2, dbActor->initial_equipment.shield_id);
-	SetEquipment(3, dbActor->initial_equipment.armor_id);
-	SetEquipment(4, dbActor->initial_equipment.helmet_id);
-	SetEquipment(5, dbActor->initial_equipment.accessory_id);
+	// Remove items that do not exist in the database anymore
+	std::array<int, 5> ids = {{
+		dbActor->initial_equipment.weapon_id,
+		dbActor->initial_equipment.shield_id,
+		dbActor->initial_equipment.armor_id,
+		dbActor->initial_equipment.helmet_id,
+		dbActor->initial_equipment.accessory_id }};
+	std::replace_if(ids.begin(), ids.end(), [] (const int& item_id) {
+		return lcf::ReaderUtil::GetElement(lcf::Data::items, item_id) == nullptr;
+	}, 0);
+
+	for (int i = 0; i <= 4; i++) {
+		SetEquipment(i + 1, ids[i]);
+	}
 
 	data.status.resize(lcf::Data::states.size(), 0);
 
