@@ -80,7 +80,7 @@ void Sprite_Actor::Update() {
 			// Is a battle charset animation
 
 			static const int frames[] = {0,1,2,1,0};
-			int frame = frames[cycle / 10];
+			int frame = (battler->IsDefending() ? 0 : frames[cycle / 10]);
 			if (frame == sprite_frame)
 				return;
 
@@ -98,11 +98,10 @@ void Sprite_Actor::Update() {
 
 			SetSrcRect(Rect(frame * 48, ext->battler_index * 48, 48, 48));
 
-			if (cycle == 40) {
+			if (cycle == ((idling || anim_state == AnimationState_WalkingLeft || anim_state == AnimationState_WalkingRight || anim_state == AnimationState_Victory) ? 40 : 30)) {
 				switch (loop_state) {
 					case LoopState_DefaultAnimationAfterFinish:
-						cycle = 0;
-						idling = true;
+						DoIdleAnimation();
 						break;
 					case LoopState_WaitAfterFinish:
 						--cycle; // incremented to last cycle next update
@@ -114,10 +113,6 @@ void Sprite_Actor::Update() {
 					default:
 						assert(false && "Bad loop state");
 				}
-			}
-
-			if (idling) {
-				DoIdleAnimation();
 			}
 		}
 	}
@@ -163,6 +158,7 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 		StringView sprite_file = ext->battler_name;
 
 		if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
+			do_not_draw = false;
 			SetBitmap(BitmapRef());
 			lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, ext->battle_animation_id);
 			if (!battle_anim) {
@@ -175,6 +171,7 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop) {
 			animation->SetInvert(battler->IsDirectionFlipped());
 		}
 		else {
+			do_not_draw = sprite_file.empty();
 			animation.reset();
 			if (!sprite_file.empty()) {
 				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
@@ -266,7 +263,9 @@ void Sprite_Actor::OnBattlercharsetReady(FileRequestResult* result, int32_t batt
 
 void Sprite_Actor::Draw(Bitmap& dst) {
 	auto* battler = GetBattler();
-	if (battler->IsHidden()) {
+	// "do_not_draw" is set to true if the CBA battler name is empty, this
+	// makes the sprite not being drawn. This fixes issue #1708.
+	if (battler->IsHidden() || do_not_draw) {
 		return;
 	}
 
