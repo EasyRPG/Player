@@ -101,8 +101,15 @@ namespace {
 				continue;
 			}
 
-			if (cache_size <= cache_limit && cur_ticks - it->second.last_access < 3s) {
-				// Below memory limit and last access < 3s
+			auto last_access = cur_ticks - it->second.last_access;
+			bool cache_exhausted = cache_size > cache_limit;
+			if (cache_exhausted) {
+				if (last_access <= 50ms) {
+					// Used during the last 3 frames, must be important, keep it.
+					++it;
+					continue;
+				}
+			} else if (last_access <= 3s) {
 				++it;
 				continue;
 			}
