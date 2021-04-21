@@ -165,7 +165,9 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id
 		if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
 			do_not_draw = false;
 			SetBitmap(BitmapRef());
-			if (animation_id == 0) animation_id = ext->battle_animation_id;
+			if (animation_id == 0) {
+				animation_id = ext->battle_animation_id;
+			}
 			lcf::rpg::Animation* battle_anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, animation_id);
 			if (!battle_anim) {
 				Output::Warning("Invalid battle animation ID {}", animation_id);
