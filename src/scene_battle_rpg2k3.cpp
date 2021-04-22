@@ -352,10 +352,6 @@ void Scene_Battle_Rpg2k3::ResetAllBattlerZ() {
 			sprite->ResetZ();
 			sprite->DetectStateChange();
 		}
-		auto* weapon = actor->GetWeaponSprite();
-		if (weapon) {
-			weapon->ResetZ();
-		}
 	}
 }
 

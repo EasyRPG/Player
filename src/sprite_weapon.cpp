@@ -27,23 +27,16 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Sprite_Weapon::Sprite_Weapon(Game_Actor* actor)
-	: Sprite_Battler(actor, actor->GetId())
-{
+Sprite_Weapon::Sprite_Weapon(Game_Actor* actor) : Sprite() {
+	battler = actor;
 	CreateSprite();
 }
 
 Sprite_Weapon::~Sprite_Weapon() {
 }
 
-Game_Actor* Sprite_Weapon::GetBattler() const {
-	return static_cast<Game_Actor*>(Sprite_Battler::GetBattler());
-}
-
 
 void Sprite_Weapon::Update() {
-	auto* battler = GetBattler();
-
 	++cycle;
 
 	// Animations for allies
@@ -80,13 +73,11 @@ void Sprite_Weapon::SetWeaponAnimation(int nweapon_animation_id) {
 }
 
 void Sprite_Weapon::StartAttack(bool secondary_weapon) {
+	SetZ(battler->GetBattleSprite()->GetZ() + ((secondary_weapon ^ battler->IsDirectionFlipped()) ? 1 : -1));
+
 	cycle = 0;
 
 	attacking = true;
-
-	auto* battler = GetBattler();
-
-	SetZ(default_z + ((secondary_weapon ^ battler->IsDirectionFlipped()) ? 1 : -1));
 
 	if (battler->GetBattleAnimationId() > 0) {
 		const lcf::rpg::BattlerAnimation* anim = lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, battler->GetBattleAnimationId());
@@ -117,14 +108,11 @@ void Sprite_Weapon::StopAttack() {
 }
 
 void Sprite_Weapon::CreateSprite() {
-	auto* battler = GetBattler();
-
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
 
 	SetOx(32);
 	SetOy(32);
-	ResetZ();
 }
 
 void Sprite_Weapon::OnBattleWeaponReady(FileRequestResult* result, int32_t weapon_index) {
@@ -139,30 +127,10 @@ void Sprite_Weapon::Draw(Bitmap& dst) {
 		return;
 	}
 
-	auto* battler = GetBattler();
-
 	SetTone(Main_Data::game_screen->GetTone());
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
 	SetFlashEffect(battler->GetFlashColor());
 
-	Sprite_Battler::Draw(dst);
-}
-
-void Sprite_Weapon::ResetZ() {
-	constexpr int id_limit = 128;
-
-	const auto& graphic = GetBitmap();
-	int y = battler->GetBattlePosition().y;
-
-	int z = battler->GetType();
-	z *= SCREEN_TARGET_HEIGHT * 2;
-	z += y;
-	z *= id_limit;
-	z += id_limit - battle_index;
-	z += Priority_Battler;
-
-	default_z = z;
-
-	SetZ(z);
+	Sprite::Draw(dst);
 }

@@ -22,13 +22,12 @@
 #include "sprite_battler.h"
 #include "async_handler.h"
 
-class Game_Battler;
 class Game_Actor;
 
 /**
  * Sprite_Weapon class, used for weapon battle sprites
  */
-class Sprite_Weapon : public Sprite_Battler {
+class Sprite_Weapon : public Sprite {
 public:
 	/**
 	 * Constructor.
@@ -52,20 +51,17 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
-	Game_Actor* GetBattler() const;
-
-	void ResetZ() override;
-
 protected:
 	void CreateSprite();
 	void OnBattleWeaponReady(FileRequestResult* result, int32_t weapon_index);
+
+	Game_Actor* battler;
 
 	BitmapRef graphic;
 	int weapon_animation_id = 0;
 	bool attacking = false;
 	int cycle = 0;
 	int sprite_frame = -1;
-	int default_z = 0;
 
 	FileRequestBinding request_id;
 };
