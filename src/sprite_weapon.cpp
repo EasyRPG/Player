@@ -73,7 +73,11 @@ void Sprite_Weapon::SetWeaponAnimation(int nweapon_animation_id) {
 }
 
 void Sprite_Weapon::StartAttack(bool secondary_weapon) {
-	SetZ(battler->GetBattleSprite()->GetZ() + ((secondary_weapon ^ battler->IsDirectionFlipped()) ? 1 : -1));
+	if ((secondary_weapon && !battler->IsDirectionFlipped()) || (!secondary_weapon && battler->IsDirectionFlipped())) {
+		SetZ(battler->GetBattleSprite()->GetZ() + 1);
+	} else {
+		SetZ(battler->GetBattleSprite()->GetZ() - 1);
+	}
 
 	cycle = 0;
 
