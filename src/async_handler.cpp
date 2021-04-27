@@ -253,9 +253,10 @@ void FileRequestAsync::Start() {
 		request_path += path;
 	}
 
-	// URL encode % and #
+	// URL encode % and # and +
 	request_path = std::regex_replace(request_path, std::regex("%"), "%25");
 	request_path = std::regex_replace(request_path, std::regex("#"), "%23");
+	request_path = std::regex_replace(request_path, std::regex("+"), "%2B");
 
 	emscripten_async_wget2(
 		request_path.c_str(),
