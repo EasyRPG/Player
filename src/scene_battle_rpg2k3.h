@@ -67,6 +67,9 @@ public:
 		BattleActionState_StartAlgo,
 		BattleActionState_CBAInit,
 		BattleActionState_CBAMove,
+		BattleActionState_StartAnimation,
+		BattleActionState_CBARangedWeaponInit,
+		BattleActionState_CBARangedWeaponMove,
 		BattleActionState_Animation,
 		BattleActionState_AnimationReflect,
 		BattleActionState_FinishPose,
@@ -192,6 +195,9 @@ protected:
 	BattleActionReturn ProcessBattleActionStartAlgo(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionCBAInit(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionCBAMove(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionStartAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionCBARangedWeaponInit(Game_BattleAlgorithm::AlgorithmBase* action);
+	BattleActionReturn ProcessBattleActionCBARangedWeaponMove(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAnimationReflect(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinishPose(Game_BattleAlgorithm::AlgorithmBase* action);
@@ -237,6 +243,10 @@ protected:
 	int cba_move_frame = 0;
 	Point cba_start_pos;
 	Point cba_end_pos;
+
+	std::unique_ptr<Sprite_Weapon> cba_ranged_weapon;
+	int cba_ranged_weapon_move_frame = 0;
+	int cba_num_ranged_weapon_move_frames = 60;
 };
 
 #endif

@@ -72,6 +72,10 @@ void Sprite_Weapon::SetWeaponAnimation(int nweapon_animation_id) {
 	weapon_animation_id = nweapon_animation_id;
 }
 
+void Sprite_Weapon::SetRanged(bool nranged) {
+	ranged = nranged;
+}
+
 void Sprite_Weapon::StartAttack(bool secondary_weapon) {
 	if ((secondary_weapon && !battler->IsDirectionFlipped()) || (!secondary_weapon && battler->IsDirectionFlipped())) {
 		SetZ(battler->GetBattleSprite()->GetZ() + 1);
@@ -132,8 +136,10 @@ void Sprite_Weapon::Draw(Bitmap& dst) {
 	}
 
 	SetTone(Main_Data::game_screen->GetTone());
-	SetX(battler->GetDisplayX());
-	SetY(battler->GetDisplayY());
+	if (!ranged) {
+		SetX(battler->GetDisplayX());
+		SetY(battler->GetDisplayY());
+	}
 	SetFlashEffect(battler->GetFlashColor());
 
 	Sprite::Draw(dst);

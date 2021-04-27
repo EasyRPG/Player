@@ -1901,7 +1901,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
-		if (sprite && !sprite->IsIdling() && battle_action_state != BattleActionState_CBAMove && battle_action_state != BattleActionState_Animation) {
+		if (sprite && !sprite->IsIdling() && battle_action_state != BattleActionState_CBAMove && battle_action_state != BattleActionState_StartAnimation && battle_action_state != BattleActionState_CBARangedWeaponInit && battle_action_state != BattleActionState_CBARangedWeaponMove && battle_action_state != BattleActionState_Animation) {
 			return BattleActionReturn::eWait;
 		}
 	}
@@ -1934,6 +1934,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			return ProcessBattleActionCBAInit(action);
 		case BattleActionState_CBAMove:
 			return ProcessBattleActionCBAMove(action);
+		case BattleActionState_StartAnimation:
+			return ProcessBattleActionStartAnimation(action);
+		case BattleActionState_CBARangedWeaponInit:
+			return ProcessBattleActionCBARangedWeaponInit(action);
+		case BattleActionState_CBARangedWeaponMove:
+			return ProcessBattleActionCBARangedWeaponMove(action);
 		case BattleActionState_Animation:
 			return ProcessBattleActionAnimation(action);
 		case BattleActionState_AnimationReflect:
@@ -2147,7 +2153,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		cba_direction_back = false;
 		SetBattleActionState(BattleActionState_CBAInit);
 	} else {
-		SetBattleActionState(BattleActionState_Animation);
+		SetBattleActionState(BattleActionState_StartAnimation);
 	}
 	return BattleActionReturn::eWait;
 }
@@ -2166,14 +2172,15 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (cba_direction_back) {
 			SetBattleActionState(BattleActionState_PostAction);
 		} else {
-			SetBattleActionState(BattleActionState_Animation);
+			SetBattleActionState(BattleActionState_StartAnimation);
 		}
 	}
 	return BattleActionReturn::eWait;
 }
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
+	bool ranged_weapon = false;
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		auto* actor = static_cast<Game_Actor*>(source);
@@ -2191,12 +2198,17 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 						auto* weapon_animation_data = action->GetWeaponAnimationData();
 						if (weapon_animation_data) {
 							if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_weapon) {
-								weapon->SetWeaponAnimation(weapon_animation_data->weapon_animation_id + 1);
-								weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
+								if (weapon_animation_data->weapon_animation_id >= 0) {
+									weapon->SetWeaponAnimation(weapon_animation_data->weapon_animation_id + 1);
+									weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
+								}
 							} else {
 								if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_battle) {
 									weapon_animation_id = weapon_animation_data->battle_animation_id;
 								}
+							}
+							if (weapon_animation_data->ranged) {
+								ranged_weapon = true;
 							}
 						}
 					}
@@ -2213,6 +2225,65 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		}
 	}
 
+	if (ranged_weapon) {
+		SetBattleActionState(BattleActionState_CBARangedWeaponInit);
+	} else {
+		SetBattleActionState(BattleActionState_Animation);
+	}
+	return BattleActionReturn::eWait;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponInit(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+	cba_ranged_weapon_move_frame = 0;
+
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* actor = static_cast<Game_Actor*>(source);
+
+		if (action->GetType() == Game_BattleAlgorithm::Type::Normal) {
+			auto* weapon_animation_data = action->GetWeaponAnimationData();
+			if (weapon_animation_data) {
+				cba_num_ranged_weapon_move_frames = (weapon_animation_data->ranged_speed + 1) * 20;
+				cba_ranged_weapon = std::make_unique<Sprite_Weapon>(actor);
+				cba_ranged_weapon->SetWeaponAnimation(weapon_animation_data->ranged_animation_id + 1);
+				cba_ranged_weapon->SetRanged(true);
+				cba_ranged_weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
+				cba_ranged_weapon->Update();
+			}
+		}
+	}
+
+	SetBattleActionState(BattleActionState_CBARangedWeaponMove);
+	return BattleActionReturn::eWait;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponMove(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* source = action->GetSource();
+	auto* target = action->GetOriginalSingleTarget();
+
+	if (cba_ranged_weapon_move_frame < cba_num_ranged_weapon_move_frames) {
+		cba_ranged_weapon_move_frame++;
+		int offset_x = 0;
+		int offset_y = 0;
+		if (target) {
+			offset_x = target->GetBattlePosition().x - source->GetBattlePosition().x;
+			offset_y = target->GetBattlePosition().y - source->GetBattlePosition().y;
+		}
+		cba_ranged_weapon->SetX(source->GetBattlePosition().x + (offset_x * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
+		cba_ranged_weapon->SetY(source->GetBattlePosition().y + (offset_y * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
+		cba_ranged_weapon->Update();
+	}
+
+	if (cba_ranged_weapon_move_frame >= cba_num_ranged_weapon_move_frames) {
+		cba_ranged_weapon->StopAttack();
+		cba_ranged_weapon = nullptr;
+		SetBattleActionState(BattleActionState_Animation);
+	}
+
+	return BattleActionReturn::eWait;
+}
+
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action) {
 	const auto anim_id = action->GetAnimationId(0);
 	if (anim_id) {
 		action->PlayAnimation(anim_id, false, -1, CheckAnimFlip(action->GetSource()));
