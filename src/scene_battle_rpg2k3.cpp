@@ -1901,8 +1901,17 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
-		if (sprite && !sprite->IsIdling() && battle_action_state != BattleActionState_CBAMove && battle_action_state != BattleActionState_StartAnimation && battle_action_state != BattleActionState_CBARangedWeaponInit && battle_action_state != BattleActionState_CBARangedWeaponMove && battle_action_state != BattleActionState_Animation) {
-			return BattleActionReturn::eWait;
+		if (sprite && !sprite->IsIdling()) {
+			switch (battle_action_state) {
+				case BattleActionState_CBAMove:
+				case BattleActionState_StartAnimation:
+				case BattleActionState_CBARangedWeaponInit:
+				case BattleActionState_CBARangedWeaponMove:
+				case BattleActionState_Animation:
+					break;
+				default:
+					return BattleActionReturn::eWait;
+			}
 		}
 	}
 
