@@ -330,7 +330,8 @@ void BattleAnimationBattler::Draw(Bitmap& dst) {
 	}
 
 	for (auto* battler: battlers) {
-		DrawAt(dst, battler->GetBattlePosition().x, battler->GetBattlePosition().y);
+		SetFlashEffect(battler->GetFlashColor());
+		DrawAt(dst, battler->GetDisplayX(), battler->GetDisplayY());
 	}
 }
 
@@ -343,6 +344,43 @@ void BattleAnimationBattler::FlashTargets(int r, int g, int b, int p) {
 void BattleAnimationBattler::ShakeTargets(int str, int spd, int time) {
 	for (auto& battler: battlers) {
 		battler->ShakeOnce(str, spd, time);
+	}
+}
+
+void BattleAnimationBattler::ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing) {
+	// Play the SE.
+	Main_Data::game_system->SePlay(timing.se);
+	if (IsOnlySound()) {
+		return;
+	}
+
+	// Flash.
+	ProcessAnimationFlash(timing);
+}
+
+void BattleAnimationBattler::ProcessAnimationFlash(const lcf::rpg::AnimationTiming& timing) {
+	if (IsOnlySound()) {
+		return;
+	}
+
+	if (timing.flash_scope == lcf::rpg::AnimationTiming::FlashScope_screen) {
+		target_flash_timing = &timing - animation.timings.data();
+	}
+}
+
+void BattleAnimationBattler::UpdateScreenFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(screen_flash_timing, r, g, b, p);
+	if (r > 0 || g > 0 || b > 0 || p > 0) {
+		Main_Data::game_screen->FlashOnce(r, g, b, p, 0);
+	}
+}
+
+void BattleAnimationBattler::UpdateTargetFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
+	if (r > 0 || g > 0 || b > 0 || p > 0) {
+		FlashTargets(r, g, b, p);
 	}
 }
 
