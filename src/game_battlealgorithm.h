@@ -373,6 +373,9 @@ public:
 	/** @return true if it is still possible to perform this action now.  */
 	virtual bool ActionIsPossible() const;
 
+	/** @return the weapon animation data for this action (if applicable) */
+	virtual const lcf::rpg::BattlerAnimationItemSkill* GetWeaponAnimationData() const;
+
 	/**
 	 * Gets the sound effect that is played when the action is starting.
 	 *
@@ -630,6 +633,7 @@ public:
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 	int GetCBAMovement() const override;
+	const lcf::rpg::BattlerAnimationItemSkill* GetWeaponAnimationData() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	Game_Battler::Weapon GetWeapon() const;
 	void ApplyComboHitsMultiplier(int hits) override;

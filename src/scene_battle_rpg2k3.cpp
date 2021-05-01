@@ -28,6 +28,7 @@
 #include "sprite.h"
 #include "sprite_enemy.h"
 #include "sprite_actor.h"
+#include "sprite_weapon.h"
 #include "cache.h"
 #include "game_actors.h"
 #include "game_system.h"
@@ -333,6 +334,7 @@ void Scene_Battle_Rpg2k3::CreateEnemySprites() {
 void Scene_Battle_Rpg2k3::CreateActorSprites() {
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->SetBattleSprite(std::make_unique<Sprite_Actor>(actor));
+		actor->SetWeaponSprite(std::make_unique<Sprite_Weapon>(actor));
 	}
 }
 
@@ -1631,6 +1633,17 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 	};
 
 	if (scene_action_substate == eCBAInit) {
+		for (auto* actor: Main_Data::game_party->GetActors()) {
+			auto* sprite = actor->GetActorBattleSprite();
+			if (actor->Exists() && sprite) {
+				sprite->SetNormalAttacking(false);
+				auto* weapon = actor->GetWeaponSprite();
+				if (weapon) {
+					weapon->StopAttack();
+				}
+			}
+		}
+
 		if (cba_action != nullptr && cba_direction_back) {
 			CBAInit();
 			SetSceneActionSubState(eCBAMove);
@@ -2168,11 +2181,34 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		if (sprite) {
 			const auto pose = AdjustPoseForDirection(action->GetSource(), action->GetSourcePose());
 			if (pose != lcf::rpg::BattlerAnimation::Pose_Idle) {
-				// FIXME: This gets cleaned up when CBA is implemented
 				auto action_state = static_cast<Sprite_Actor::AnimationState>(pose + 1);
-				sprite->SetAnimationState(
-						action_state,
-						Sprite_Actor::LoopState_WaitAfterFinish);
+
+				if (action->GetType() == Game_BattleAlgorithm::Type::Normal) {
+					sprite->SetNormalAttacking(true);
+					auto* weapon = actor->GetWeaponSprite();
+					int weapon_animation_id = 0;
+					if (weapon) {
+						auto* weapon_animation_data = action->GetWeaponAnimationData();
+						if (weapon_animation_data) {
+							if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_weapon) {
+								weapon->SetWeaponAnimation(weapon_animation_data->weapon_animation_id + 1);
+								weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
+							} else {
+								if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_battle) {
+									weapon_animation_id = weapon_animation_data->battle_animation_id;
+								}
+							}
+						}
+					}
+					sprite->SetAnimationState(
+							action_state,
+							Sprite_Actor::LoopState_WaitAfterFinish,
+							weapon_animation_id);
+				} else {
+					sprite->SetAnimationState(
+							action_state,
+							Sprite_Actor::LoopState_WaitAfterFinish);
+				}
 			}
 		}
 	}
@@ -2375,6 +2411,26 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	if (action->RepeatNext(false)) {
 		SetBattleActionState(BattleActionState_StartAlgo);
 		return BattleActionReturn::eContinue;
+	}
+
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		if (action->GetType() == Game_BattleAlgorithm::Type::Normal) {
+			auto* actor = static_cast<Game_Actor*>(source);
+			auto* source_sprite = actor->GetActorBattleSprite();
+			if (source_sprite) {
+				source_sprite->SetNormalAttacking(false);
+				auto* weapon = actor->GetWeaponSprite();
+				int weapon_animation_id = 0;
+				if (weapon) {
+					auto* weapon_animation_data = action->GetWeaponAnimationData();
+					if (weapon_animation_data) {
+						if (weapon_animation_data->type == lcf::rpg::BattlerAnimationItemSkill::AnimType_weapon) {
+							weapon->StopAttack();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	if (action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {

@@ -326,6 +326,10 @@ int Game_BattleAlgorithm::AlgorithmBase::GetCBAMovement() const {
 	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
 }
 
+const lcf::rpg::BattlerAnimationItemSkill* Game_BattleAlgorithm::AlgorithmBase::GetWeaponAnimationData() const {
+	return nullptr;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::Start() {
 	reflect_target = nullptr;
 
@@ -733,6 +737,23 @@ int Game_BattleAlgorithm::Normal::GetCBAMovement() const {
 	}
 
 	return lcf::rpg::BattlerAnimationItemSkill::Movement_none;
+}
+
+const lcf::rpg::BattlerAnimationItemSkill* Game_BattleAlgorithm::Normal::GetWeaponAnimationData() const {
+	const auto weapon = GetWeapon();
+	auto* source = GetSource();
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		auto* ally = static_cast<Game_Actor*>(source);
+		auto weapons = ally->GetWeapons(weapon);
+		auto* item = weapons[0];
+		if (item) {
+			if (static_cast<int>(item->animation_data.size()) > source->GetId() - 1) {
+				return &item->animation_data[source->GetId() - 1];
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
