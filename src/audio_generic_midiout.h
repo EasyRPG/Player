@@ -18,15 +18,17 @@
 #ifndef EP_AUDIO_GENERIC_MIDITHREAD_H
 #define EP_AUDIO_GENERIC_MIDITHREAD_H
 
-#include <atomic>
 #include <memory>
-#include <mutex>
-#include <thread>
 
 class AudioDecoderMidi;
 namespace Filesystem_Stream {
 	class InputStream;
 }
+
+#ifdef HAVE_NATIVE_MIDI
+#include <atomic>
+#include <mutex>
+#include <thread>
 
 /**
  * This class manages a Midi thread for sending Midi messages to a Midi device
@@ -60,4 +62,29 @@ private:
 	std::atomic_bool stop_thread;
 };
 
+#else
+// Stub implementation for systems without native midi support
+class GenericAudioMidiOut final {
+public:
+	GenericAudioMidiOut() {}
+
+	AudioDecoderMidi& GetMidiOut();
+
+	void LockMutex() {}
+	void UnlockMutex() {}
+
+	void UpdateMidiOut(int) {}
+
+	void StartThread() {};
+	void StopThread() {};
+
+	static bool IsSupported(Filesystem_Stream::InputStream&) {
+		return false;
+	}
+
+private:
+	std::unique_ptr<AudioDecoderMidi> midi_out;
+};
+
+#endif
 #endif

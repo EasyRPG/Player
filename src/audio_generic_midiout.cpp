@@ -15,10 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
-#include <chrono>
 #include "audio_generic_midiout.h"
 #include "audio_decoder_midi.h"
+#include <cassert>
+
+#ifdef HAVE_NATIVE_MIDI
+#include <chrono>
 #include "filesystem_stream.h"
 #include "game_clock.h"
 
@@ -54,11 +56,6 @@ GenericAudioMidiOut::~GenericAudioMidiOut() {
 	if (thread_started) {
 		StopThread();
 	}
-}
-
-AudioDecoderMidi& GenericAudioMidiOut::GetMidiOut() {
-	assert(midi_out);
-	return *midi_out;
 }
 
 void GenericAudioMidiOut::LockMutex() {
@@ -107,4 +104,10 @@ bool GenericAudioMidiOut::IsSupported(Filesystem_Stream::InputStream& stream) {
 	}
 	stream.seekg(0, std::ios::beg);
 	return strncmp(magic, "MThd", 4) == 0;
+}
+#endif
+
+AudioDecoderMidi& GenericAudioMidiOut::GetMidiOut() {
+	assert(midi_out);
+	return *midi_out;
 }
