@@ -62,6 +62,7 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 	uint32_t central_directory_offset = 0;
 
 	ZipEntry entry;
+	entry.is_directory = false;
 	std::vector<char> filepath_arr;
 	std::string filepath;
 
@@ -106,26 +107,38 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 
 		zipfile.clear();
 		zipfile.seekg(central_directory_offset);
+
+		std::vector<std::string> paths;
 		while (ReadCentralDirectoryEntry(zipfile, filepath_arr, entry.fileoffset, entry.filesize)) {
 			filepath = filepath_arr.data();
 			filepath = lcf::ReaderUtil::Recode(filepath, encoding);
 			// check if the entry is an directory or not (indicated by trailing /)
 			if (filepath.back() == '/') {
-				entry.is_directory = true;
 				filepath = filepath.substr(0, filepath.size() - 1);
-			}
-			else {
-				entry.is_directory = false;
-			}
 
-			zip_entries.insert(std::pair<std::string, ZipEntry>(filepath, entry));
+				// Determine intermediate directories
+				while (!filepath.empty()) {
+					paths.push_back(filepath);
+					filepath = std::get<0>(FileFinder::GetPathAndFilename(filepath));
+				}
+			} else {
+				zip_entries.insert(std::pair<std::string, ZipEntry>(filepath, entry));
+			}
 		}
-
-		// Insert root path into zip_entries
-		entry.is_directory = true;
+		// Build directories
 		entry.fileoffset = 0;
 		entry.filesize = 0;
-		zip_entries.insert(std::pair<std::string, ZipEntry>("", entry));
+		entry.is_directory = true;
+
+		// add root path
+		paths.push_back("");
+
+		std::sort(paths.begin(), paths.end());
+		auto del = std::unique(paths.begin(), paths.end());
+		paths.erase(del, paths.end());
+		for (const auto& e : paths) {
+			zip_entries.insert(std::pair<std::string, ZipEntry>(e, entry));
+		}
 	} else {
 		Output::Warning("ZipFS: {} is not a valid archive", GetPath());
 	}
@@ -147,7 +160,7 @@ bool ZipFilesystem::FindCentralDirectory(std::istream& zipfile, uint32_t& offset
 		}
 		else {
 			// if not yet found the magic number step one byte back in the file
-			zipfile.seekg(-(sizeof(magic) + 1), std::ios_base::cur);
+			zipfile.seekg(-(static_cast<int>(sizeof(magic)) + 1), std::ios_base::cur);
 		}
 	}
 
@@ -299,9 +312,9 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 				auto dec_buf = std::vector<uint8_t>(it->second.filesize);
 				z_stream zlib_stream = {};
 				zlib_stream.next_in = reinterpret_cast<Bytef*>(comp_buf.data());
-				zlib_stream.avail_in = comp_buf.size();
+				zlib_stream.avail_in = static_cast<uInt>(comp_buf.size());
 				zlib_stream.next_out = reinterpret_cast<Bytef*>(dec_buf.data());
-				zlib_stream.avail_out = dec_buf.size();
+				zlib_stream.avail_out = static_cast<uInt>(dec_buf.size());
 				inflateInit2(&zlib_stream, -MAX_WBITS);
 
 				int zlib_error = inflate(&zlib_stream, Z_NO_FLUSH);
