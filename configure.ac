@@ -70,14 +70,7 @@ AS_IF([test "$with_freetype" = "yes"],[
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
 AS_IF([test "x$with_audio" != "xno"],[
 	AC_DEFINE(SUPPORT_AUDIO,[1],[Enable Audio Support])
-	AC_ARG_WITH([sdlmixer],[AS_HELP_STRING([--without-sdlmixer],
-		[Disable audio playback through SDL2 mixer. Audio is passed through SDL2 mixer when none of the provided audio libraries support the format. @<:@default=auto@:>@])])
-	AS_IF([test "x$with_sdlmixer" != "xno"],[
-		PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL2_Mixer])],[
-			PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])],[auto_sdlmixer=0])
-		])
-	])
-	EP_PKG_CHECK([LIBMPG123],[libmpg123],[Improved MP3 support. Using SDL_mixer (<2.0.4) instead may result in noise or crashes for some MP3s.])
+	EP_PKG_CHECK([LIBMPG123],[libmpg123],[MP3 support.])
 	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support (GUS patches). Alternative to internal fmmidi.])
 	EP_PKG_CHECK([FLUIDSYNTH],[fluidsynth],[Midi support (Soundfonts). Alternative to internal fmmidi.])
     AS_IF([test "$with_fluidsynth" != "yes"],[
@@ -87,10 +80,10 @@ AS_IF([test "x$with_audio" != "xno"],[
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
 	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support. Fallback when unsupported by dr_wav.])
 	EP_PKG_CHECK([LIBXMP],[libxmp],[Tracker module support.])
-	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support. Using SDL_mixer instead may result in noise.])
+	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support.])
 
 	# FIXME: These prefixed with `LIB` must be propagated to other Makefiles and sources
-	AS_IF([test "$with_libmpg123" = "yes"],[AC_DEFINE(HAVE_MPG123,[1],[Improved MP3 support. Using SDL_mixer (<2.0.4) instead may result in noise or crashes for some MP3s.])])
+	AS_IF([test "$with_libmpg123" = "yes"],[AC_DEFINE(HAVE_MPG123,[1],[MP3 support.])])
 	AS_IF([test "$with_libwildmidi" = "yes"],[AC_DEFINE(HAVE_WILDMIDI,[1],[Midi support. Alternative to internal fmmidi.])])
 	AS_IF([test "$with_libxmp" = "yes"],[AC_DEFINE(HAVE_XMP,[1],[Tracker module support.])])
 ])
@@ -194,28 +187,22 @@ if test "yes" != "$silent"; then
 		echo "Audio support:               no"
 	else
 		echo "Audio support:"
-		test -n "$SDLMIXER_LIBS" && \
-			echo "  -SDL_mixer:                yes"
 		echo -n "  -FMMidi:                   "
 		case "$want_fmmidi" in
 			1) echo "yes" ;;
 			2) echo "as fallback" ;;
 			*) echo "no" ;;
 		esac
-		echo "  -improved MP3 (libmpg123): $with_libmpg123"
-		test -z "$LIBMPG123_LIBS" -a -n "$SDLMIXER_LIBS" && \
-			echo "    Using SDL_mixer instead, this may result in noise or crashes for some MP3s."
+		echo "  -MP3 (libmpg123): $with_libmpg123"
 		echo "  -midi (libwildmidi):       $with_libwildmidi"
 		echo "  -midi (FluidSynth):        $with_fluidsynth"
 		echo "  -midi (FluidLite):         $with_fluidlite"
 		echo "  -ogg Vorbis (vorbisfile):  $with_oggvorbis"
 		echo "  -opus (opusfile):          $with_opus"
 		echo "  -built-in WAV (dr_wav):    $enable_drwav"
-		echo "  -improved WAV (sndfile):   $with_libsndfile"
+		echo "  -WAV (sndfile):            $with_libsndfile"
 		echo "  -tracker module (libxmp):  $with_libxmp"
 		echo "  -resampling (speexdsp):    $with_libspeexdsp"
-		test -z "$LIBSPEEXDSP_LIBS" -a -n "$SDLMIXER_LIBS" && \
-			echo "    Using SDL_mixer instead, this may result in noise."
 	fi
 
 	echo "Documentation:"

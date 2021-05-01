@@ -30,8 +30,6 @@ add_library(${PROJECT_NAME} STATIC
 	src/algo.cpp
 	src/attribute.h
 	src/attribute.cpp
-	src/audio_al.cpp
-	src/audio_al.h
 	src/audio.cpp
 	src/audio_decoder.cpp
 	src/audio_decoder.h
@@ -50,8 +48,6 @@ add_library(${PROJECT_NAME} STATIC
 	src/audio_resampler.h
 	src/audio_sdl.cpp
 	src/audio_sdl.h
-	src/audio_sdl_mixer.cpp
-	src/audio_sdl_mixer.h
 	src/audio_secache.cpp
 	src/audio_secache.h
 	src/autobattle.cpp
@@ -643,24 +639,20 @@ endif()
 
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
-	set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2_mixer SDL2 OpenAL OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer OpenAL OFF)
+	set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2 OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 OFF)
+
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
+		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
+	endif()
 
 	# Configure Audio backends
 	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Auto")
 		set(PLAYER_AUDIO_BACKEND_IS_AUTO ON)
 	endif()
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available" ON "PLAYER_AUDIO_BACKEND_IS_AUTO" OFF)
 
 	if(PLAYER_AUDIO_BACKEND_IS_AUTO)
-		player_find_package(NAME SDL2_mixer
-			CONDITION PLAYER_WITH_SDL2_MIXER
-			TARGET SDL2::MIXER)
-		if(SDL2_MIXER_FOUND)
-			set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
-		else()
-			set(PLAYER_AUDIO_BACKEND "SDL2")
-		endif()
+		set(PLAYER_AUDIO_BACKEND "SDL2")
 	endif()
 else()
 	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
@@ -689,39 +681,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro)$")
 	if(PLAYER_ENABLE_FMMIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	endif()
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
-	set(PLAYER_HAS_AUDIO ON)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
-
-	# SDL2_mixer Audio
-	player_find_package(NAME SDL2_mixer
-		DEFINITION HAVE_SDL_MIXER
-		TARGET SDL2::MIXER
-		REQUIRED)
-
-	# Provide fmmidi options
-	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
-	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
-	if(${PLAYER_ENABLE_FMMIDI} STREQUAL "Fallback")
-		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=2)
-	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "ON")
-		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
-	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "OFF")
-		# noop
-	else()
-		message(FATAL_ERROR "Bad FmMidi setting ${PLAYER_ENABLE_FMMIDI}")
-	endif()
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "OpenAL")
-	# OpenAL Audio
-	set(PLAYER_HAS_AUDIO ON)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
-
-	find_package(OpenAL REQUIRED)
-	find_package(LibSndFile REQUIRED)
-	find_package(FluidSynth REQUIRED)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${OPENAL_INCLUDE_DIR})
-	target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY} LibSndFile::LibSndFile fluidsynth::fluidsynth)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_OPENAL=1)
 elseif(NOT PLAYER_AUDIO_BACKEND)
 	set(PLAYER_HAS_AUDIO OFF)
 else()
@@ -1081,9 +1040,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 
 	if(WAV_LIBS)
 		message(STATUS "WAV playback: ${WAV_LIBS}")
-	elseif(SDL2_MIXER_FOUND)
-		set(SDL_MIXER_USED ON)
-		message(STATUS "WAV playback: SDL2_mixer")
 	else()
 		message(STATUS "WAV playback: None")
 	endif()
@@ -1107,35 +1063,24 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 
 	if(MIDI_LIBS)
 		message(STATUS "MIDI playback: ${MIDI_LIBS}")
-	elseif(SDL2_MIXER_FOUND)
-		message(STATUS "MIDI playback: SDL2_mixer.")
 	else()
 		message(STATUS "MIDI playback: None")
 	endif()
 
 	if(MPG123_FOUND)
 		message(STATUS "MP3 playback: mpg123")
-	elseif(SDL2_MIXER_FOUND)
-		set(SDL_MIXER_USED ON)
-		message(STATUS "MP3 playback: SDL2_mixer")
 	else()
 		message(STATUS "MP3 playback: None")
 	endif()
 
 	if(VORBISFILE_FOUND)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
-	elseif(SDL2_MIXER_FOUND)
-		set(SDL_MIXER_USED ON)
-		message(STATUS "Ogg Vorbis playback: SDL2_mixer")
 	else()
 		message(STATUS "Ogg Vorbis playback: None")
 	endif()
 
 	if(XMP_FOUND)
 		message(STATUS "MOD playback: libxmp")
-	elseif(SDL2_MIXER_FOUND)
-		set(SDL_MIXER_USED ON)
-		message(STATUS "MOD playback: SDL2_mixer")
 	else()
 		message(STATUS "MOD playback: None")
 	endif()
@@ -1150,18 +1095,8 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 		message(STATUS "Resampler: speexdsp")
 	elseif(SAMPLERATE_FOUND)
 		message(STATUS "Resampler: libsamplerate")
-	elseif(SDL2_MIXER_FOUND)
-		set(SDL_MIXER_USED ON)
-		message(STATUS "Resampler: SDL2")
 	else()
 		message(STATUS "Resampler: None")
-	endif()
-
-	if(SDL_MIXER_USED)
-		message(STATUS "")
-		message(STATUS "WARNING:")
-		message(STATUS "Using SDL2_mixer directly for playback or resampling is not recommended.")
-		message(STATUS "Some RPG Maker features (e.g. pitch changes) will not work.")
 	endif()
 endif()
 

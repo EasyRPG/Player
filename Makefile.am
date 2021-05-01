@@ -18,8 +18,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/attribute.cpp \
 	src/audio.cpp \
 	src/audio.h \
-	src/audio_al.cpp \
-	src/audio_al.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
 	src/audio_decoder_base.cpp \
@@ -36,8 +34,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
 	src/audio_sdl.h \
-	src/audio_sdl_mixer.cpp \
-	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
 	src/autobattle.cpp \
@@ -491,7 +487,6 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(FREETYPE_CFLAGS) \
 	$(HARFBUZZ_CFLAGS) \
 	$(SDL_CFLAGS) \
-	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
 	$(LIBMPG123_CFLAGS) \
@@ -515,7 +510,6 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(FREETYPE_LIBS) \
 	$(HARFBUZZ_LIBS) \
 	$(SDL_LIBS) \
-	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
 	$(LIBMPG123_LIBS) \
