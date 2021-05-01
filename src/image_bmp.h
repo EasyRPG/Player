@@ -21,8 +21,21 @@
 #include "filesystem_stream.h"
 
 namespace ImageBMP {
+	struct BitmapHeader {
+		int size = 0;
+		int w = 0;
+		int h = 0;
+		int planes = 0;
+		int depth = 0;
+		int compression = 0;
+		int num_colors = 0;
+		int palette_size = 0;
+	};
+
 	bool ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
 	bool ReadBMP(Filesystem_Stream::InputStream& stream, bool transparent, int& width, int& height, void*& pixels);
+
+	BitmapHeader ParseHeader(const uint8_t*& ptr, uint8_t const* e);
 }
 
 #endif

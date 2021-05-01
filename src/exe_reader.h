@@ -36,7 +36,6 @@ public:
 	// 2. max offset value is this size
 
 	EXEReader(Filesystem_Stream::InputStream& core);
-	~EXEReader();
 
 	// Extracts an EXFONT resource with BMP header if present
 	// and returns exfont buffer on success.

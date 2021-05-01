@@ -44,26 +44,16 @@ static uint32_t get_4(const uint8_t *&p, const uint8_t* e) {
 	return value;
 }
 
-namespace {
-struct BitmapHeader {
-	int w = 0;
-	int h = 0;
-	int planes = 0;
-	int depth = 0;
-	int compression = 0;
-	int num_colors = 0;
-	int palette_size = 0;
-};
-
-BitmapHeader parseHeader(const uint8_t*& ptr, uint8_t const* const e) {
+ImageBMP::BitmapHeader ImageBMP::ParseHeader(const uint8_t*& ptr, uint8_t const* const e) {
 	BitmapHeader hdr;
 
 	auto* hdr_start = ptr;
 
 	auto size = get_4(ptr, e);
 
+	hdr.size = size;
 	if (size == 12) {
-		//BITMAPCOREHEADER
+		// BITMAPCOREHEADER
 		hdr.w = get_2(ptr, e);
 		hdr.h = get_2(ptr, e);
 		hdr.planes = get_2(ptr, e);
@@ -71,7 +61,7 @@ BitmapHeader parseHeader(const uint8_t*& ptr, uint8_t const* const e) {
 		hdr.num_colors = (1 << hdr.depth);
 		hdr.palette_size = 3;
 	} else {
-		//BITMAPINFOHEADER, BITMAPV4HEADER, or BITMAPV5HEADER
+		// BITMAPINFOHEADER, BITMAPV4HEADER, or BITMAPV5HEADER
 		hdr.w = get_4(ptr, e);
 		hdr.h = get_4(ptr, e);
 		hdr.planes = get_2(ptr, e);
@@ -80,12 +70,19 @@ BitmapHeader parseHeader(const uint8_t*& ptr, uint8_t const* const e) {
 		ptr += 12;
 		hdr.num_colors = std::min(uint32_t(256), get_4(ptr, e));
 		hdr.palette_size = 4;
+		if (hdr.num_colors == 0) {
+			// When 0 number of colors is the maximum allowed
+			if (hdr.depth == 4) {
+				hdr.num_colors = 16;
+			} else if (hdr.depth == 8) {
+				hdr.num_colors = 256;
+			}
+		}
 	}
 
 	ptr = hdr_start + size;
 	return hdr;
 }
-} //namespace 
 
 bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 					   int& width, int& height, void*& pixels) {
@@ -103,7 +100,7 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	ptr += BITMAPFILEHEADER_SIZE - 4;
 	const unsigned bits_offset = get_4(ptr, e);
 
-	auto hdr = parseHeader(ptr, e);
+	auto hdr = ParseHeader(ptr, e);
 
 	bool vflip = hdr.h > 0;
 	if (!vflip)
