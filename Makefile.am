@@ -58,6 +58,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/cmdline_parser.h \
 	src/color.h \
 	src/compiler.h \
+	src/config_param.h \
 	src/decoder_fluidsynth.cpp \
 	src/decoder_fluidsynth.h \
 	src/decoder_fmmidi.cpp \
@@ -437,8 +438,12 @@ EXTRA_DIST += \
 	src/platform/3ds/3ds_ui.h \
 	src/platform/3ds/3ds_audio.cpp \
 	src/platform/3ds/3ds_audio.h \
+	src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
+	src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h \
 	src/platform/libretro/libretro_audio.cpp \
 	src/platform/libretro/libretro_audio.h \
+	src/platform/libretro/libretro_clock.cpp \
+	src/platform/libretro/libretro_clock.h \
 	src/platform/libretro/libretro_input_buttons.cpp \
 	src/platform/libretro/libretro_ui.cpp \
 	src/platform/libretro/libretro_ui.h \
@@ -535,32 +540,56 @@ endif
 @DX_RULES@
 
 # tests
-EXTRA_DIST += tests/game tests/notagame tests/platform/folder \
-	tests/platform/1kb tests/platform/empty
+EXTRA_DIST += tests/assets
 
 check_PROGRAMS = test_runner
 test_runner_SOURCES = \
-	tests/doctest.h \
-	tests/test_main.cpp \
+	tests/algo.cpp \
+	tests/attribute.cpp \
+	tests/autobattle.cpp \
 	tests/bitmapfont.cpp \
+	tests/cmdline_parser.cpp \
 	tests/config_param.cpp \
 	tests/directorytree.cpp \
+	tests/doctest.h \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
+	tests/dynrpg.cpp \
+	tests/enemyai.cpp \
 	tests/filefinder.cpp \
+	tests/flat_map.cpp \
 	tests/font.cpp \
+	tests/game_actor.cpp \
+	tests/game_battlealgorithm.cpp \
+	tests/game_character_anim.cpp \
+	tests/game_character.cpp \
+	tests/game_character_flash.cpp \
+	tests/game_character_move.cpp \
+	tests/game_character_moveto.cpp \
+	tests/game_enemy.cpp \
+	tests/game_event.cpp \
+	tests/game_player_input.cpp \
+	tests/game_player_pan.cpp \
+	tests/game_player_savecount.cpp \
+	tests/mock_game.cpp \
+	tests/mock_game.h \
+	tests/move_route.cpp \
 	tests/output.cpp \
 	tests/parse.cpp \
 	tests/platform.cpp \
+	tests/rand.cpp \
 	tests/rtp.cpp \
 	tests/switches.cpp \
+	tests/test_main.cpp \
+	tests/test_mock_actor.h \
+	tests/test_move_route.h \
 	tests/text.cpp \
-	tests/utils.cpp \
 	tests/utf.cpp \
+	tests/utils.cpp \
 	tests/variables.cpp \
 	tests/wordwrap.cpp
 test_runner_CXXFLAGS = \
-	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
+	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests/assets\"
 test_runner_LDADD = \
 	$(easyrpg_player_LDADD)
 

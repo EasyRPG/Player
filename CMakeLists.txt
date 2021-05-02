@@ -981,7 +981,7 @@ if(PLAYER_ENABLE_TESTS)
 		OUTPUT_NAME "test_runner"
 		WIN32_EXECUTABLE FALSE
 	)
-	target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\")
+	target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
 	add_custom_target(check_player COMMAND test_runner_player)
 	if(NOT TARGET check)
