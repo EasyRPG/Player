@@ -103,7 +103,7 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		}
 	}
 
-	Output::Debug("Parsing index.json version %d", index_version);
+	Output::Debug("Parsing index.json version {}", index_version);
 
 	if (index_version <= 1) {
 		// legacy format
