@@ -21,7 +21,6 @@
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
-#  include <regex>
 #  include <lcf/reader_util.h>
 #  include "picojson.h"
 #endif
@@ -104,7 +103,7 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		}
 	}
 
-	Output::Debug("Parsing index.json version %d", index_version);
+	Output::Debug("Parsing index.json version {}", index_version);
 
 	if (index_version <= 1) {
 		// legacy format
@@ -241,8 +240,13 @@ void FileRequestAsync::Start() {
 	std::string modified_path;
 	if (index_version >= 2) {
 		modified_path = lcf::ReaderUtil::Normalize(path);
+		modified_path = FileFinder::MakeCanonical(modified_path, 1);
 	} else {
 		modified_path = Utils::LowerCase(path);
+		if (directory != ".") {
+			// Don't alter the path when the file is in the main directory
+			modified_path = FileFinder::MakeCanonical(modified_path, 1);
+		}
 	}
 
 	auto it = file_mapping.find(modified_path);
@@ -250,13 +254,14 @@ void FileRequestAsync::Start() {
 		request_path += it->second;
 	} else {
 		// Fall through if not found, will fail in the ajax request
+		Output::Debug("{} not in index.json", modified_path);
 		request_path += path;
 	}
 
-	// URL encode % and # and +
-	request_path = std::regex_replace(request_path, std::regex("%"), "%25");
-	request_path = std::regex_replace(request_path, std::regex("#"), "%23");
-	request_path = std::regex_replace(request_path, std::regex("+"), "%2B");
+	// URL encode %, # and +
+	request_path = Utils::ReplaceAll(request_path, "%", "%25");
+	request_path = Utils::ReplaceAll(request_path, "#", "%23");
+	request_path = Utils::ReplaceAll(request_path, "+", "%2B");
 
 	emscripten_async_wget2(
 		request_path.c_str(),

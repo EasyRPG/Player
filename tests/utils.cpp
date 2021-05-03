@@ -51,4 +51,22 @@ TEST_CASE("StrICmp") {
 	}
 }
 
+TEST_CASE("ReplaceAll") {
+	SUBCASE("one") {
+		REQUIRE(Utils::ReplaceAll("abc", "b", "xyz") == "axyzc");
+		REQUIRE(Utils::ReplaceAll("abc", "abc", "uvwxyz") == "uvwxyz");
+		REQUIRE(Utils::ReplaceAll("abc", "c", "xyz") == "abxyz");
+	}
+
+	SUBCASE("url encode") {
+		REQUIRE(Utils::ReplaceAll("ab+cd", "+", "%2B") == "ab%2Bcd");
+		REQUIRE(Utils::ReplaceAll("ab%cd", "%", "%25") == "ab%25cd");
+	}
+
+	SUBCASE("many") {
+		REQUIRE(Utils::ReplaceAll("abba", "b", "xyz") == "axyzxyza");
+		REQUIRE(Utils::ReplaceAll("abba", "a", "ba") == "babbba");
+	}
+}
+
 TEST_SUITE_END();

@@ -180,7 +180,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	text_index = text.data();
 
-	DebugLog("%d: MSG TEXT \n%s", text.c_str());
+	DebugLog("{}: MSG TEXT \n{}", text);
 
 	auto open_frames = (!IsVisible() && !Game_Battle::IsBattleRunning()) ? message_animation_frames : 0;
 	SetOpenAnimation(open_frames);
