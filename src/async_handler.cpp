@@ -240,8 +240,13 @@ void FileRequestAsync::Start() {
 	std::string modified_path;
 	if (index_version >= 2) {
 		modified_path = lcf::ReaderUtil::Normalize(path);
+		modified_path = FileFinder::MakeCanonical(modified_path, 1);
 	} else {
 		modified_path = Utils::LowerCase(path);
+		if (directory != ".") {
+			// Don't alter the path when the file is in the main directory
+			modified_path = FileFinder::MakeCanonical(modified_path, 1);
+		}
 	}
 
 	auto it = file_mapping.find(modified_path);
@@ -249,6 +254,7 @@ void FileRequestAsync::Start() {
 		request_path += it->second;
 	} else {
 		// Fall through if not found, will fail in the ajax request
+		Output::Debug("{} not in index.json", modified_path);
 		request_path += path;
 	}
 
