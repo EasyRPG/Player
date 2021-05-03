@@ -284,6 +284,16 @@ namespace Utils {
 	uint32_t CRC32(std::istream& stream);
 
 	/**
+	 * Replaces all occurences of text in a string.
+	 *
+	 * @param str Input string
+	 * @param search String to search for
+	 * @param replace String to replace with
+	 * @return String with replacement
+	 */
+	std::string ReplaceAll(std::string str, const std::string& search, const std::string& replace);
+
+	/**
 	 * Replaces placeholders (like %S, %O, %V, %U) in strings.
 	 *
 	 * @param text_template String with placeholders to replace.
