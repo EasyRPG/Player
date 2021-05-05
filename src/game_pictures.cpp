@@ -208,10 +208,6 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 
-	if (sprite) {
-		sprite->SetVisible(false);
-	}
-
 	const auto num_frames = NumSpriteSheetFrames();
 
 	// If an invalid frame is specified and no animation, skip loading picture data.
@@ -231,6 +227,11 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 void Game_Pictures::Show(int id, const ShowParams& params) {
 	auto& pic = GetPicture(id);
 	if (pic.Show(params)) {
+		if (pic.sprite && !pic.data.name.empty()) {
+			// When the name is empty the current image buffer is reused by ShowPicture command (Used by Yume2kki)
+			// In all other cases hide the current image until replaced while doing an Async load
+			pic.sprite->SetVisible(false);
+		}
 		RequestPictureSprite(pic);
 	}
 }
@@ -300,7 +301,9 @@ void Game_Pictures::Erase(int id) {
 
 void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	const auto& name = pic.data.name;
-	if (name.empty()) return;
+	if (name.empty()) {
+		return;
+	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
 	request->SetGraphicFile(true);
