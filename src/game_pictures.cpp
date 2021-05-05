@@ -229,6 +229,11 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 }
 
 void Game_Pictures::Show(int id, const ShowParams& params) {
+	if (params.name.empty()) {
+		// Filter pictures with no name
+		return;
+	}
+
 	auto& pic = GetPicture(id);
 	if (pic.Show(params)) {
 		RequestPictureSprite(pic);
