@@ -135,6 +135,20 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		if (cache.is<picojson::object>()) {
 			parse(cache.get<picojson::object>(), "");
 		}
+
+		// Create some empty DLL files. Engine & patch detection depend on them.
+		bool file_added = false;
+		for (const auto& s : {"ultimate_rt_eb.dll", "dynloader.dll", "accord.dll"}) {
+			auto it = file_mapping.find(s);
+			if (it != file_mapping.end()) {
+				FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetProjectPath(), s));
+				file_added = true;
+			}
+		}
+		if (file_added) {
+			// Update directory structure (new files were added)
+			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
+		}
 	}
 #else
 	// no-op
