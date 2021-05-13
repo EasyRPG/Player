@@ -374,20 +374,12 @@ int FileFinder::GetSavegames() {
 }
 
 std::string FileFinder::FindImage(StringView dir, StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().FindFile(dir, name);
-#endif
-
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
 	return FileFinder::Game().FindFile(args);
 }
 
 std::string FileFinder::FindMusic(StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().FindFile("Music", name);
-#endif
-
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
@@ -395,10 +387,6 @@ std::string FileFinder::FindMusic(StringView name) {
 }
 
 std::string FileFinder::FindSound(StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().FindFile("Sound", name);
-#endif
-
 	auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
@@ -417,20 +405,12 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().OpenFile(dir, name);
-#endif
-
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
 	return open_generic(dir, name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().OpenFile("Music", name);
-#endif
-
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
@@ -438,10 +418,6 @@ Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
-#ifdef EMSCRIPTEN
-	return Game().OpenFile("Sound", name);
-#endif
-
 	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
