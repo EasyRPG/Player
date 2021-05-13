@@ -119,6 +119,14 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 }
 
 void DirectoryTree::ClearCache(StringView path) const {
+	DebugLog("ClearCache: {}", path);
+
+	if (path.empty()) {
+		fs_cache.clear();
+		dir_cache.clear();
+		return;
+	}
+
 	auto dir_key = make_key(path);
 	auto fs_it = fs_cache.find(dir_key);
 	if (fs_it != fs_cache.end()) {
@@ -156,7 +164,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 
 	std::tie(dir, name) = FileFinder::GetPathAndFilename(canonical_path);
 
-	DebugLog("FindFile: {} | {} | {}", canonical_path, dir, name);
+	DebugLog("FindFile: {} | {} | {} | {}", args.path, canonical_path, dir, name);
 
 	auto* entries = ListDirectory(dir);
 	if (!entries) {
