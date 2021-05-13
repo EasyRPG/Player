@@ -4,15 +4,7 @@
 #include "doctest.h"
 #include "player.h"
 
-static bool skip_tests() {
-#ifdef EMSCRIPTEN
-	return true;
-#else
-	return false;
-#endif
-}
-
-TEST_SUITE_BEGIN("Filesystem" * doctest::skip(skip_tests()));
+TEST_SUITE_BEGIN("Filesystem");
 
 TEST_CASE("Create") {
 	CHECK(FileFinder::Root().Exists(EP_TEST_PATH "/game"));

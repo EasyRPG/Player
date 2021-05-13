@@ -3,15 +3,7 @@
 #include "platform.h"
 #include "doctest.h"
 
-static bool skip_tests() {
-#ifdef EMSCRIPTEN
-	return true;
-#else
-	return false;
-#endif
-}
-
-TEST_SUITE_BEGIN("Platform" * doctest::skip(skip_tests()));
+TEST_SUITE_BEGIN("Platform");
 
 namespace {
 	const std::string onekb = EP_TEST_PATH "/platform/1kb";

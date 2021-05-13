@@ -4,18 +4,10 @@
 #include "doctest.h"
 #include "player.h"
 
-static bool skip_tests() {
-#ifdef EMSCRIPTEN
-	return true;
-#else
-	return false;
-#endif
-}
-
 #define ZIP_PATH EP_TEST_PATH "/filesystem/test.zip"
 #define ZIP_FOLDER_PATH EP_TEST_PATH "/filesystem/folder.zip"
 
-TEST_SUITE_BEGIN("Filesystem ZIP" * doctest::skip(skip_tests()));
+TEST_SUITE_BEGIN("Filesystem ZIP");
 
 TEST_CASE("Create") {
 	CHECK(FileFinder::Root().Create(ZIP_PATH));
