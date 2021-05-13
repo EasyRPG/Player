@@ -509,7 +509,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
 			if (arg.NumValues() > 0) {
-				auto gamefs = FileFinder::Root().Create(arg.Value(0));
+				auto gamefs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
 				if (!gamefs) {
 					Output::Error("Invalid --project-path {}", arg.Value(0));
 				}
@@ -519,7 +519,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--save-path")) {
 			if (arg.NumValues() > 0) {
-				auto savefs = FileFinder::Root().Create(arg.Value(0));
+				auto savefs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
 				if (!savefs) {
 					Output::Error("Invalid --save-path {}", arg.Value(0));
 				}
