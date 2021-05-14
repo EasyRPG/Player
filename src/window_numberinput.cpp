@@ -17,6 +17,7 @@
 
 // Headers
 #include "window_numberinput.h"
+#include "game_variables.h"
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
@@ -30,7 +31,7 @@
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	digits_max(Player::IsRPG2k() ? 6 : 7) {
+	digits_max(Main_Data::game_variables->GetMaxDigits()) {
 	number = 0;
 	plus = true;
 
@@ -84,8 +85,9 @@ int Window_NumberInput::GetMaxDigits() {
 }
 
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
-	// Only accepts values between 1 and 6 (or 7) as RPG2K (or RPG2k3)
-	int top = Player::IsRPG2k() ? 6 : 7;
+	// At least 7 digits because of gold input in debug scene
+	// (free space and 6 digits for the gold value)
+	int top = std::max(7, digits_max);
 	digits_max =
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
