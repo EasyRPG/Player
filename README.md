@@ -105,7 +105,7 @@ https://wiki.easyrpg.org/development/compiling/player/autotools
 Building requirements:
 
 - pkg-config (only on Linux)
-- CMake 3.7 or newer
+- CMake 3.10 or newer
 
 Step-by-step instructions:
 
