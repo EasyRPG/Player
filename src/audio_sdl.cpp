@@ -92,10 +92,17 @@ SdlAudio::SdlAudio() :
 	const int frequency = 44100;
 #endif
 
+#if defined(EMSCRIPTEN) && SDL_MAJOR_VERSION > 1
+	// web audio only supports float
+	const int format = AUDIO_F32;
+#else
+	const int format = AUDIO_S16;
+#endif
+
 	SDL_AudioSpec want = {};
 	SDL_AudioSpec have = {};
 	want.freq = frequency;
-	want.format = AUDIO_S16;
+	want.format = format;
 	want.channels = 2;
 	want.samples = 2048;
 	want.callback = sdl_audio_callback;
