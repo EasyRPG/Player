@@ -32,6 +32,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install ppa for new libfmt
+        if: matrix.image == 'ubuntu:18.04'
+        run: |
+          apt-get update
+          apt-get install -yqq software-properties-common
+          add-apt-repository ppa:team-xbmc/ppa
+
       - name: Install dependencies
         run: |
           export DEBIAN_FRONTEND="noninteractive"
@@ -41,7 +48,7 @@ jobs:
             libicu-dev libexpat1-dev libsdl2-dev libpng-dev libpixman-1-dev \
             libfmt-dev libfreetype6-dev libharfbuzz-dev libmpg123-dev \
             libsndfile-dev libvorbis-dev libopusfile-dev libspeexdsp-dev \
-            libdrm-dev libgbm-dev # only needed for 21.04
+            libdrm-dev libgbm-dev # only needed for sdl2 on ubuntu 21.04
 
       - name: Compile
         run: |
