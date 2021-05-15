@@ -73,16 +73,18 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps);
  *
  * @param vector of states
  * @param ps permanent states that can never be removed
+ * @return whether any state was removed.
  */
-void RemoveAllBattle(StateVec& states, const PermanentStates& ps);
+bool RemoveAllBattle(StateVec& states, const PermanentStates& ps);
 
 /**
  * Removes all states.
  *
  * @param vector of states
  * @param ps permanent states that can never be removed
+ * @return wheter any state was removed.
  */
-void RemoveAll(StateVec& states, const PermanentStates& ps);
+bool RemoveAll(StateVec& states, const PermanentStates& ps);
 
 /**
  * Checks all states and returns the highest priority restriction that different to

@@ -78,7 +78,8 @@ bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 	return true;
 }
 
-void RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
+bool RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
+	bool any_removed = false;
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
 		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
@@ -91,17 +92,20 @@ void RemoveAllBattle(StateVec& states, const PermanentStates& ps) {
 				continue;
 			}
 		}
-		Remove(state_id, states, {});
+		any_removed |= Remove(state_id, states, {});
 	}
+	return any_removed;
 }
 
-void RemoveAll(StateVec& states, const PermanentStates& ps) {
+bool RemoveAll(StateVec& states, const PermanentStates& ps) {
+	bool any_removed = false;
 	for (int i = 0; i < (int)states.size(); ++i) {
 		auto state_id = i + 1;
 		if (Has(state_id, states)) {
-			Remove(state_id, states, ps);
+			any_removed |= Remove(state_id, states, ps);
 		}
 	}
+	return any_removed;
 }
 
 lcf::rpg::State::Restriction GetSignificantRestriction(const StateVec& states) {
