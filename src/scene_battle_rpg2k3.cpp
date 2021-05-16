@@ -2268,7 +2268,15 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponMove(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
-	auto* target = action->GetOriginalSingleTarget();
+	Game_Battler* target = nullptr;
+	// The ranged weapon animation targets the original single target
+	// if the weapon has the "Attack All" flag set and the ranged attack
+	// range is set to "Single Enemy"
+	if (action->GetWeaponData()->attack_all) {
+		target = action->GetOriginalSingleTarget();
+	} else {
+		target = action->GetTarget();
+	}
 
 	if (cba_ranged_weapon_move_frame < cba_num_ranged_weapon_move_frames) {
 		cba_ranged_weapon_move_frame++;
