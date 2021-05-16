@@ -361,31 +361,56 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	return was_added;
 }
 
-bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
-	PermanentStates ps;
+template<typename F>
+bool RemoveStates(Game_Battler& battler, F&& f) {
+	auto prev_restriction = battler.GetSignificantRestriction();
 
-	auto prev_restriction = GetSignificantRestriction();
-	auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
+	auto check_dead = [&]() {
+		// Cannot use IsDead here, as it checks for HP == 0
+		return State::Has(lcf::rpg::State::kDeathID, battler.GetStates());
+	};
 
-	if (!(always_remove_battle_states && state && state->type == lcf::rpg::State::Persistence_ends)) {
-		ps = GetPermanentStates();
-	}
-
-	auto was_removed = State::Remove(state_id, GetStates(), ps);
+	bool is_dead = check_dead();
+	bool was_removed = f();
 	if (was_removed) {
-		if (state_id == lcf::rpg::State::kDeathID) {
-			SetHp(1);
+		if (is_dead != check_dead()) {
+			// Was revived
+			battler.SetHp(1);
 		}
 
-		auto cur_restriction = GetSignificantRestriction();
-		if (GetBattleAlgorithm() != nullptr
-				&& GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None
-				&& cur_restriction != prev_restriction) {
-			SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(this));
+		auto cur_restriction = battler.GetSignificantRestriction();
+		if (battler.GetBattleAlgorithm() != nullptr
+			&& battler.GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::None
+			&& cur_restriction != prev_restriction) {
+				battler.SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::None>(&battler));
 		}
 	}
-
 	return was_removed;
+}
+
+void Game_Battler::RemoveBattleStates() {
+	RemoveStates(*this, [&]() {
+		return State::RemoveAllBattle(GetStates(), GetPermanentStates());
+	});
+}
+
+void Game_Battler::RemoveAllStates() {
+	RemoveStates(*this, [&]() {
+		return State::RemoveAll(GetStates(), GetPermanentStates());
+	});
+}
+
+bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
+	return RemoveStates(*this, [&]() {
+		PermanentStates ps;
+
+		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
+		if (!(always_remove_battle_states && state && state->type == lcf::rpg::State::Persistence_ends)) {
+			ps = GetPermanentStates();
+		}
+
+		return State::Remove(state_id, GetStates(), ps);
+	});
 }
 
 int Game_Battler::ApplyConditions() {
@@ -434,14 +459,6 @@ int Game_Battler::ApplyConditions() {
 	}
 
 	return damageTaken;
-}
-
-void Game_Battler::RemoveBattleStates() {
-	State::RemoveAllBattle(GetStates(), GetPermanentStates());
-}
-
-void Game_Battler::RemoveAllStates() {
-	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
 int Game_Battler::ChangeHp(int hp, bool lethal) {
