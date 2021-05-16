@@ -85,6 +85,7 @@ public class MainActivity extends Activity {
 
         if (standaloneMode) {
             // Launch the game
+            retrieveUserPreferences();
             GameInformation project = new GameInformation(dataDir + "/game");
             GameBrowserHelper.launchGame(this, project);
             finish();
@@ -95,8 +96,7 @@ public class MainActivity extends Activity {
      * Launch the proper game browser depending on the API.
      */
     private void launchProperBrowser() {
-        // Retrieve user's preferences (for application's folder)
-        SettingsManager.init(getApplicationContext());
+        retrieveUserPreferences();
 
         // Create the easyrpg's directories if they don't exist
         Helper.createEasyRPGDirectories(SettingsManager.getEasyRPGFolder());
@@ -105,5 +105,9 @@ public class MainActivity extends Activity {
         Intent intent;
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
+    }
+
+    private void retrieveUserPreferences() {
+        SettingsManager.init(getApplicationContext());
     }
 }
