@@ -31,6 +31,8 @@ Window_ActorSp::Window_ActorSp(int ix, int iy, int iwidth, int iheight) :
 void Window_ActorSp::SetBattler(const Game_Battler& battler) {
 	int cx = 0;
 
+	int digits = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 4 : 3;
+
 	int color = Font::ColorDefault;
 	if (battler.GetMaxSp() != 0 && battler.GetSp() <= battler.GetMaxSp() / 4) {
 		color = Font::ColorCritical;
@@ -39,13 +41,13 @@ void Window_ActorSp::SetBattler(const Game_Battler& battler) {
 	contents->Clear();
 
 	// Draw current Sp
-	contents->TextDraw(cx + 3 * 6, 2, color, std::to_string(battler.GetSp()), Text::AlignRight);
+	contents->TextDraw(cx + digits * 6, 2, color, std::to_string(battler.GetSp()), Text::AlignRight);
 
 	// Draw /
-	cx += 3 * 6;
+	cx += digits * 6;
 	contents->TextDraw(cx, 2, Font::ColorDefault, "/");
 
 	// Draw Max Sp
 	cx += 6;
-	contents->TextDraw(cx + 3 * 6, 2, Font::ColorDefault, std::to_string(battler.GetMaxSp()), Text::AlignRight);
+	contents->TextDraw(cx + digits * 6, 2, Font::ColorDefault, std::to_string(battler.GetMaxSp()), Text::AlignRight);
 }

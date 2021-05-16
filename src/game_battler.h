@@ -74,6 +74,8 @@ public:
 
 	virtual int MaxHpValue() const = 0;
 
+	virtual int MaxSpValue() const = 0;
+
 	virtual int MaxStatBattleValue() const = 0;
 
 	virtual int MaxStatBaseValue() const = 0;

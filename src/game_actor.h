@@ -51,6 +51,8 @@ public:
 
 	int MaxHpValue() const override;
 
+	int MaxSpValue() const override;
+
 	int MaxStatBattleValue() const override;
 
 	int MaxStatBaseValue() const override;

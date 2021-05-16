@@ -52,6 +52,10 @@ int Game_Enemy::MaxHpValue() const {
 	return lcf::Data::system.easyrpg_max_enemy_hp == -1 ? (Player::IsRPG2k() ? 9999 : 99999) : lcf::Data::system.easyrpg_max_enemy_hp;
 }
 
+int Game_Enemy::MaxSpValue() const {
+	return 9999;
+}
+
 int Game_Enemy::MaxStatBattleValue() const {
 	return 9999;
 }

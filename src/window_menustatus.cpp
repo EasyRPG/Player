@@ -57,7 +57,7 @@ void Window_MenuStatus::Refresh() {
 		DrawActorLevel(actor, 48 + 8 + text_offset, i*48 + 2 + 16 + y);
 		DrawActorState(actor, 48 + 8 + 42 + text_offset, i*48 + 2 + 16 + y);
 		DrawActorExp(actor, 48 + 8 + text_offset, i*48 + 2 + 16 + 16 + y);
-		int digits = (lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 ? 4 : 3;
+		int digits = ((lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 || (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000) ? 4 : 3;
 		DrawActorHp(actor, 48 + 8 + 106 + text_offset - (digits == 3 ? 0 : 12), i * 48 + 2 + 16 + y, digits);
 		DrawActorSp(actor, 48 + 8 + 106 + text_offset - (digits == 3 ? 0 : 12), i * 48 + 2 + 16 + 16 + y, digits);
 
