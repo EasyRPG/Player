@@ -53,7 +53,7 @@ int Game_Enemy::MaxHpValue() const {
 }
 
 int Game_Enemy::MaxSpValue() const {
-	return 9999;
+	return lcf::Data::system.easyrpg_max_enemy_sp == -1 ? 9999 : lcf::Data::system.easyrpg_max_enemy_sp;
 }
 
 int Game_Enemy::MaxStatBattleValue() const {
