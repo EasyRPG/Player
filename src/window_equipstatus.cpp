@@ -117,7 +117,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
-	cx += 10 * 6 + 6 * 3;
+	cx += (Player::IsRPG2k3() ? (8 * 6 + 6 * 4) : (10 * 6 + 6 * 3));
 	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
@@ -136,7 +136,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		}
 
 		// Draw New Value
-		cx += 6 * 2 + 6 * 3;
+		cx += 6 * 2 + (Player::IsRPG2k3() ? (6 * 4) : (6 * 3));
 		int color = GetNewParameterColor(value, new_value);
 		contents->TextDraw(cx, cy, color, std::to_string(new_value), Text::AlignRight);
 	}
