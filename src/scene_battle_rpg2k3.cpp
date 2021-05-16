@@ -292,7 +292,8 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleStatusWindow();
 	CreateBattleCommandWindow();
 
-	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
+	int spwindow_size = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 72 : 60;
+	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32));
 	sp_window->SetVisible(false);
 	sp_window->SetZ(Priority_Window + 2);
 
@@ -1772,6 +1773,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		message_window->SetHeight(32);
 		message_window->SetMaxLinesPerPage(1);
 		Game_Message::SetPendingMessage(std::move(pm));
+
+		status_window->Refresh();
 
 		SetSceneActionSubState(eEnd);
 		return SceneActionReturn::eContinueThisFrame;

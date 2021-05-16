@@ -48,6 +48,10 @@ int Game_Actor::MaxHpValue() const {
 	return lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp;
 }
 
+int Game_Actor::MaxSpValue() const {
+	return lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp;
+}
+
 int Game_Actor::MaxStatBattleValue() const {
 	return 9999;
 }
@@ -407,7 +411,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += data.sp_mod;
 
-	return Utils::Clamp(n, 0, MaxStatBaseValue());
+	return Utils::Clamp(n, 0, MaxSpValue());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -1100,6 +1104,11 @@ static int ClampMaxHpMod(int hp, const Game_Actor* actor) {
 	return Utils::Clamp(hp, -limit, limit);
 }
 
+static int ClampMaxSpMod(int sp, const Game_Actor* actor) {
+	auto limit = actor->MaxSpValue();
+	return Utils::Clamp(sp, -limit, limit);
+}
+
 static int ClampStatMod(int value, const Game_Actor* actor) {
 	auto limit = actor->MaxStatBaseValue();
 	return Utils::Clamp(value, -limit, limit);
@@ -1114,7 +1123,7 @@ void Game_Actor::SetBaseMaxHp(int maxhp) {
 
 void Game_Actor::SetBaseMaxSp(int maxsp) {
 	int new_sp_mod = data.sp_mod + (maxsp - GetBaseMaxSp());
-	data.sp_mod = ClampStatMod(new_sp_mod, this);
+	data.sp_mod = ClampMaxSpMod(new_sp_mod, this);
 
 	SetSp(data.current_sp);
 }
