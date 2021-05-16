@@ -45,6 +45,8 @@ public:
 
 	void SetWeaponAnimation(int nweapon_animation_id);
 
+	void SetRanged(bool nranged);
+
 	void StartAttack(bool secondary_weapon);
 
 	void StopAttack();
@@ -59,6 +61,7 @@ protected:
 
 	BitmapRef graphic;
 	int weapon_animation_id = 0;
+	bool ranged = false;
 	bool attacking = false;
 	int cycle = 0;
 	int sprite_frame = -1;
