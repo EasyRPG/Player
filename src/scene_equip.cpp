@@ -126,10 +126,12 @@ void Scene_Equip::UpdateStatusWindow() {
 		}
 		add_item(current_item, 1);
 
-		atk = Utils::Clamp(atk, 1, 999);
-		def = Utils::Clamp(def, 1, 999);
-		spi = Utils::Clamp(spi, 1, 999);
-		agi = Utils::Clamp(agi, 1, 999);
+		int limit = lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
+
+		atk = Utils::Clamp(atk, 1, limit);
+		def = Utils::Clamp(def, 1, limit);
+		spi = Utils::Clamp(spi, 1, limit);
+		agi = Utils::Clamp(agi, 1, limit);
 
 		atk = actor.CalcValueAfterAtkStates(atk);
 		def = actor.CalcValueAfterDefStates(def);
