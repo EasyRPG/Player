@@ -61,7 +61,7 @@ int Game_Enemy::MaxStatBattleValue() const {
 }
 
 int Game_Enemy::MaxStatBaseValue() const {
-	return 999;
+	return lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {

@@ -57,7 +57,7 @@ int Game_Actor::MaxStatBattleValue() const {
 }
 
 int Game_Actor::MaxStatBaseValue() const {
-	return 999;
+	return lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
 }
 
 Game_Actor::Game_Actor(int actor_id) {

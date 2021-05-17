@@ -113,11 +113,15 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		return;
 	}
 
+	// Check if 4 digits are needed instead of 3
+	int limit = lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
+	bool more_space_needed = (Player::IsRPG2k3() && limit >= 500) || limit >= 1000;
+
 	// Draw Term
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
-	cx += (Player::IsRPG2k3() ? (8 * 6 + 6 * 4) : (10 * 6 + 6 * 3));
+	cx += (more_space_needed ? (8 * 6 + 6 * 4) : (10 * 6 + 6 * 3));
 	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
@@ -136,7 +140,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		}
 
 		// Draw New Value
-		cx += 6 * 2 + (Player::IsRPG2k3() ? (6 * 4) : (6 * 3));
+		cx += 6 * 2 + (more_space_needed ? (6 * 4) : (6 * 3));
 		int color = GetNewParameterColor(value, new_value);
 		contents->TextDraw(cx, cy, color, std::to_string(new_value), Text::AlignRight);
 	}
