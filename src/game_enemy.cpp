@@ -57,7 +57,7 @@ int Game_Enemy::MaxSpValue() const {
 }
 
 int Game_Enemy::MaxStatBattleValue() const {
-	return 9999;
+	return lcf::Data::system.easyrpg_max_stat_battle_value == -1 ? 9999 : lcf::Data::system.easyrpg_max_stat_battle_value;
 }
 
 int Game_Enemy::MaxStatBaseValue() const {
