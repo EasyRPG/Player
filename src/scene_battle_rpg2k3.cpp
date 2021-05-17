@@ -350,6 +350,7 @@ void Scene_Battle_Rpg2k3::ResetAllBattlerZ() {
 		auto* sprite = actor->GetActorBattleSprite();
 		if (sprite) {
 			sprite->ResetZ();
+			sprite->UpdatePosition();
 			sprite->DetectStateChange();
 		}
 	}
@@ -2765,6 +2766,10 @@ void Scene_Battle_Rpg2k3::CBAInit() {
 			}
 		}
 	}
+
+	if (cba_action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {
+		sprite->SetAfterimageAmount(cba_action->GetWeaponAnimationData()->after_image == lcf::rpg::BattlerAnimationItemSkill::AfterImage_add ? 3 : 0);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CBAMove() {
@@ -2791,12 +2796,17 @@ void Scene_Battle_Rpg2k3::CBAMove() {
 		source->SetBattlePosition(Point(cba_start_pos.x + offset_x, cba_start_pos.y + offset_y));
 	}
 
-	if (cba_move_frame >= cba_num_move_frames && cba_direction_back) {
+	if (cba_move_frame >= cba_num_move_frames) {
 		auto* actor = static_cast<Game_Actor*>(source);
 		auto* sprite = actor->GetActorBattleSprite();
 		if (sprite) {
-			sprite->DoIdleAnimation();
+			sprite->DoAfterimageFade();
 		}
-		cba_action = nullptr;
+		if (cba_direction_back) {
+			if (sprite) {
+				sprite->DoIdleAnimation();
+			}
+			cba_action = nullptr;
+		}
 	}
 }

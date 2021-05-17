@@ -42,7 +42,6 @@ Game_Actor* Sprite_Actor::GetBattler() const {
 	return static_cast<Game_Actor*>(Sprite_Battler::GetBattler());
 }
 
-
 void Sprite_Actor::Update() {
 	auto* battler = GetBattler();
 
@@ -57,6 +56,8 @@ void Sprite_Actor::Update() {
 	if (anim_state > 0) {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
+			UpdatePosition();
+
 			if (animation) {
 				// Is a battle animation
 				animation->SetInvert(battler->IsDirectionFlipped());
@@ -78,7 +79,6 @@ void Sprite_Actor::Update() {
 				return;
 			}
 			// Is a battle charset animation
-
 			static const int frames[] = {0,1,2,1,0};
 			int frame = (battler->IsDefending() ? 0 : (normal_attacking ? std::min(2, cycle / 10) : frames[cycle / 10]));
 
@@ -222,8 +222,10 @@ int Sprite_Actor::GetHeight() const {
 void Sprite_Actor::CreateSprite() {
 	auto* battler = GetBattler();
 
-	SetX(battler->GetDisplayX());
-	SetY(battler->GetDisplayY());
+	images = {{battler->GetDisplayX(), battler->GetDisplayY()}};
+
+	SetX(images.back().x);
+	SetY(images.back().y);
 
 	// Not animated -> Monster
 	SetOx(24);
@@ -278,11 +280,32 @@ void Sprite_Actor::Draw(Bitmap& dst) {
 	}
 
 	SetTone(Main_Data::game_screen->GetTone());
-	SetX(battler->GetDisplayX());
-	SetY(battler->GetDisplayY());
 	SetFlashEffect(battler->GetFlashColor());
 
-	Sprite_Battler::Draw(dst);
+	int steps = static_cast<int>(256 / images.size());
+	int opacity = steps;
+	for (auto it = images.crbegin(); it != images.crend(); ++it) {
+		Sprite_Battler::SetX(it->x);
+		Sprite_Battler::SetY(it->y);
+		Sprite_Battler::SetOpacity(std::min(opacity, 255));
+		Sprite_Battler::Draw(dst);
+		opacity += steps;
+	}
+}
+
+void Sprite_Actor::UpdatePosition() {
+	assert(!images.empty());
+	images.pop_back();
+	images.insert(images.begin(), {battler->GetDisplayX(), battler->GetDisplayY()});
+
+	if (afterimage_fade >= 0) {
+		++afterimage_fade;
+		if (afterimage_fade >= images.size()) {
+			// CBA finished, remove afterimages
+			images.resize(1);
+			afterimage_fade = -1;
+		}
+	}
 }
 
 void Sprite_Actor::ResetZ() {
@@ -294,4 +317,15 @@ void Sprite_Actor::ResetZ() {
 
 void Sprite_Actor::SetNormalAttacking(bool nnormal_attacking) {
 	normal_attacking = nnormal_attacking;
+}
+
+void Sprite_Actor::SetAfterimageAmount(unsigned amount) {
+	images.resize(1 + amount);
+	std::fill(images.begin() + 1, images.end(), images.front());
+}
+
+void Sprite_Actor::DoAfterimageFade() {
+	if (images.size() > 1) {
+		afterimage_fade = 0;
+	}
 }

@@ -92,9 +92,14 @@ public:
 
 	Game_Actor* GetBattler() const;
 
+	void UpdatePosition();
+
 	void ResetZ() final;
 
 	void SetNormalAttacking(bool nnormal_attacking);
+
+	void SetAfterimageAmount(unsigned amount);
+	void DoAfterimageFade();
 
 protected:
 	void CreateSprite();
@@ -115,6 +120,9 @@ protected:
 
 	bool do_not_draw = false;
 	bool normal_attacking = false;
+
+	std::vector<Point> images;
+	int afterimage_fade = -1;
 };
 
 
