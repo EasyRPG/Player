@@ -22,6 +22,11 @@
 #include <lcf/dbstring.h>
 #include <fmt/core.h>
 
+// FIXME: needed to allow building with fmt 5, older versions are untested.
+#if FMT_VERSION < 60000
+#include <fmt/ostream.h>
+#endif
+
 using StringView = lcf::StringView;
 
 using lcf::ToString;
