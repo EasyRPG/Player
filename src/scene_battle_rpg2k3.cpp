@@ -2768,7 +2768,7 @@ void Scene_Battle_Rpg2k3::CBAInit() {
 	}
 
 	if (cba_action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {
-		sprite->SetAfterimageAmount(cba_action->GetWeaponAnimationData()->after_image == lcf::rpg::BattlerAnimationItemSkill::AfterImage_add ? 3 : 0);
+		sprite->SetAfterimageAmount(cba_action->GetCBAAfterimage() == lcf::rpg::BattlerAnimationItemSkill::Afterimage_add ? 3 : 0);
 	}
 }
 

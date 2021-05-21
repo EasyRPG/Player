@@ -370,6 +370,9 @@ public:
 	/** @return the CBA movement to use when performing the action */
 	virtual int GetCBAMovement() const;
 
+	/** @return the CBA afterimage setting to use when performing the action */
+	virtual int GetCBAAfterimage() const;
+
 	/** @return true if it is still possible to perform this action now.  */
 	virtual bool ActionIsPossible() const;
 
@@ -636,6 +639,7 @@ public:
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 	int GetCBAMovement() const override;
+	int GetCBAAfterimage() const override;
 	const lcf::rpg::BattlerAnimationItemSkill* GetWeaponAnimationData() const override;
 	const lcf::rpg::Item* GetWeaponData() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
@@ -670,6 +674,7 @@ public:
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 	int GetCBAMovement() const override;
+	int GetCBAAfterimage() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
 	const lcf::rpg::Sound* GetFailureSe() const override;
 	std::string GetFailureMessage() const override;
