@@ -81,6 +81,10 @@ for some additional binary patches.
 *--project-path* 'PATH'::
   Instead of using the working directory the game in 'PATH' is used.
 
+*--rtp-path* 'PATH'::
+  Adds 'PATH' to the RTP directory list and use this one with highest
+  precedence.
+
 *--record-input* 'PATH'::
   Records all button input to a log file at 'PATH'.
 
@@ -176,7 +180,8 @@ arguments are supported:
 
 NOTE: All '*_RTP_PATH' variables support directory lists, using colon (':') or
 semicolon (';') as separator. Useful when you have multiple translated RTP
-versions or directories with extra files.
+versions or directories with extra files. The '--rtp-path' command line
+option supports directory lists as well.
 
 
 == FILES
@@ -199,7 +204,7 @@ https://github.com/EasyRPG/Player/issues
 
 
 == COPYRIGHT / AUTHORS
-EasyRPG Player is Copyright (C) 2007-2017 the EasyRPG authors, see file
+EasyRPG Player is Copyright (C) 2007-2021 the EasyRPG authors, see file
 AUTHORS.md for details.
 
 This program is free software; you can redistribute it and/or modify it under

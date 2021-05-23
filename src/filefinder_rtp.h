@@ -29,8 +29,9 @@ public:
 	 *
 	 * @param no_rtp If true disables RTP support completely
 	 * @param no_rtp_warnings If true disables warnings when a RTP asset is used
+	 * @param rtp_path Custom RTP path to use
 	 */
-	FileFinder_RTP(bool no_rtp, bool no_rtp_warnings);
+	FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rtp_path);
 
 	/**
 	 * Looks up a file in the list of RTPs

@@ -31,7 +31,7 @@
 #   include <SDL_system.h>
 #endif
 
-FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
+FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rtp_path) {
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
 	disable_rtp = true;
@@ -129,6 +129,12 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 	if (getenv("RPG_RTP_PATH")) {
 		std::vector<std::string> tmp = Utils::Tokenize(getenv("RPG_RTP_PATH"), f);
 		env_paths.insert(env_paths.end(), tmp.begin(), tmp.end());
+	}
+
+	// If custom RTP paths are set, use these with highest precedence
+	if (!rtp_path.empty()) {
+		std::vector<std::string> tmp = Utils::Tokenize(rtp_path, f);
+		env_paths.insert(env_paths.begin(), tmp.begin(), tmp.end());
 	}
 
 #ifdef USE_XDG_RTP
