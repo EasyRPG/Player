@@ -14,5 +14,5 @@ if (typeof Module.EASYRPG_FS === "undefined") {
 }
 
 FS.mkdir("Save");
-FS.mount(Module.EASYRPG_FS, {}, 'Save');
+FS.mount(Module.EASYRPG_FS, {}, "Save");
 FS.syncfs(true, function(err) {});

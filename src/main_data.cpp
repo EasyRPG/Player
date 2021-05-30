@@ -37,6 +37,7 @@
 #include "font.h"
 #include "player.h"
 #include "system.h"
+#include "output.h"
 
 #ifndef _WIN32
 #  include <unistd.h>
@@ -46,7 +47,6 @@
 #  include <SDL_system.h>
 #elif defined(_3DS)
 #  include <3ds.h>
-#  include "output.h"
 #  include <cstdio>
 #elif defined(PSP2)
 #  include <cstdio>

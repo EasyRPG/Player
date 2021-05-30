@@ -107,7 +107,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 
 		if (entry.type == FileType::Directory) {
 			if (fs_cache_entry.find(new_entry_key) != fs_cache_entry.end()) {
-				Output::Warning("This folder \"{}\" exists twice.", entry.name);
+				Output::Warning("The folder \"{}\" exists twice.", entry.name);
 				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
 		}
