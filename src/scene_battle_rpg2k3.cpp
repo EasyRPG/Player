@@ -2309,6 +2309,10 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 		Main_Data::game_system->SePlay(*action->GetStartSe());
 	}
 
+	if (action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {
+		cba_direction_back = true;
+	}
+
 	if (action->ReflectTargets()) {
 		SetBattleActionState(BattleActionState_AnimationReflect);
 	} else {
@@ -2343,7 +2347,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (!action->IsCurrentTargetValid()) {
 		if (action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {
-			cba_direction_back = true;
 			SetBattleActionState(BattleActionState_CBAInit);
 		} else {
 			SetBattleActionState(BattleActionState_PostAction);
@@ -2522,7 +2525,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	}
 
 	if (action->GetCBAMovement() != lcf::rpg::BattlerAnimationItemSkill::Movement_none) {
-		cba_direction_back = true;
 		SetBattleActionState(BattleActionState_CBAInit);
 	} else {
 		SetBattleActionState(BattleActionState_PostAction);
