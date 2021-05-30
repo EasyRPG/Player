@@ -189,7 +189,7 @@ void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pi
 		return;
 	}
 
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(stream);
+	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(std::move(stream));
 	if (!cache) {
 		Output::Warning("Couldn't play SE {}: Format not supported", stream.GetName());
 		return;
