@@ -41,7 +41,7 @@ void Window_About::Refresh() {
 		"",
 		"Contact us:",
 		"Via Mail: easyrpg@easyrpg.org",
-		"Via Chat: #easyrpg @ freenode",
+		"Via Chat: #easyrpg @ Libera Chat",
 		"",
 		"Bugs: github.com/EasyRPG/Player/issues",
 		"Contribute: easyrpg.org/contribute",
