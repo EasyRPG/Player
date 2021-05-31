@@ -110,3 +110,6 @@ local.properties
 
 # libretro
 easyrpg_libretro.*
+
+# GitHub
+/.github/
