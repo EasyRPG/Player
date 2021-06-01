@@ -244,7 +244,8 @@ protected:
 	Point cba_start_pos;
 	Point cba_end_pos;
 
-	std::unique_ptr<Sprite_Weapon> cba_ranged_weapon;
+	std::vector<std::pair<Game_Battler&, std::unique_ptr<Sprite_Weapon>>> cba_ranged;
+	Point cba_ranged_center;
 	int cba_ranged_weapon_move_frame = 0;
 	int cba_num_ranged_weapon_move_frames = 60;
 };

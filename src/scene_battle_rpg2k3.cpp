@@ -2245,6 +2245,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponInit(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
 	cba_ranged_weapon_move_frame = 0;
+	cba_ranged.clear();
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		auto* actor = static_cast<Game_Actor*>(source);
@@ -2253,11 +2254,51 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			auto* weapon_animation_data = action->GetWeaponAnimationData();
 			if (weapon_animation_data) {
 				cba_num_ranged_weapon_move_frames = (weapon_animation_data->ranged_speed + 1) * 20;
-				cba_ranged_weapon = std::make_unique<Sprite_Weapon>(actor);
-				cba_ranged_weapon->SetWeaponAnimation(weapon_animation_data->ranged_animation_id + 1);
-				cba_ranged_weapon->SetRanged(true);
-				cba_ranged_weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
-				cba_ranged_weapon->Update();
+
+				// The ranged weapon animation targets the original single target
+				// if the weapon has the "Attack All" flag set and the ranged attack
+				// range is set to "Single Enemy"
+				if (action->GetWeaponData()->attack_all) {
+					if (action->GetWeaponData()->ranged_target == lcf::rpg::Item::Target_single) {
+						cba_ranged.emplace_back(*action->GetOriginalSingleTarget(), nullptr);
+					} else if (action->GetWeaponData()->ranged_target == lcf::rpg::Item::Target_center) {
+						std::vector<Game_Battler*> enemies;
+						Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+						int x = 0;
+						int y = 0;
+						for (Game_Battler* enemy : enemies) {
+							x += enemy->GetBattlePosition().x;
+							y += enemy->GetBattlePosition().y;
+						}
+						if (enemies.size() > 0) {
+							x /= enemies.size();
+							y /= enemies.size();
+						}
+						cba_ranged_center = Point(x, y);
+
+						// This is needed to make the ranged weapon animation appear
+						// even if the real target of the animation is the center
+						cba_ranged.emplace_back(*action->GetTarget(), nullptr);
+					} else if (action->GetWeaponData()->ranged_target == lcf::rpg::Item::Target_simultaneous) {
+						std::vector<Game_Battler*> battlers;
+						Main_Data::game_enemyparty->GetActiveBattlers(battlers);
+						for (auto& b: battlers) {
+							cba_ranged.emplace_back(*b, nullptr);
+						}
+					}
+				} else {
+					assert(action->GetTarget());
+					cba_ranged.emplace_back(*action->GetTarget(), nullptr);
+				}
+
+				for (auto& it: cba_ranged) {
+					std::unique_ptr<Sprite_Weapon> cba_ranged_weapon = std::make_unique<Sprite_Weapon>(actor);
+					cba_ranged_weapon->SetWeaponAnimation(weapon_animation_data->ranged_animation_id + 1);
+					cba_ranged_weapon->SetRanged(true);
+					cba_ranged_weapon->StartAttack(action->GetSourcePose() == lcf::rpg::BattlerAnimation::Pose_AttackLeft);
+					cba_ranged_weapon->Update();
+					it.second = std::move(cba_ranged_weapon);
+				}
 			}
 		}
 	}
@@ -2268,32 +2309,34 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponMove(Game_BattleAlgorithm::AlgorithmBase* action) {
 	auto* source = action->GetSource();
-	Game_Battler* target = nullptr;
-	// The ranged weapon animation targets the original single target
-	// if the weapon has the "Attack All" flag set and the ranged attack
-	// range is set to "Single Enemy"
-	if (action->GetWeaponData()->attack_all) {
-		target = action->GetOriginalSingleTarget();
-	} else {
-		target = action->GetTarget();
-	}
 
 	if (cba_ranged_weapon_move_frame < cba_num_ranged_weapon_move_frames) {
 		cba_ranged_weapon_move_frame++;
-		int offset_x = 0;
-		int offset_y = 0;
-		if (target) {
-			offset_x = target->GetBattlePosition().x - source->GetBattlePosition().x;
-			offset_y = target->GetBattlePosition().y - source->GetBattlePosition().y;
+		for (auto& it: cba_ranged) {
+			int offset_x = 0;
+			int offset_y = 0;
+			if (action->GetWeaponData()->ranged_target == lcf::rpg::Item::Target_center && action->GetWeaponData()->attack_all) {
+				offset_x = cba_ranged_center.x - source->GetBattlePosition().x;
+				offset_y = cba_ranged_center.y - source->GetBattlePosition().y;
+			} else {
+				auto& battler = it.first;
+				offset_x = battler.GetBattlePosition().x - source->GetBattlePosition().x;
+				offset_y = battler.GetBattlePosition().y - source->GetBattlePosition().y;
+			}
+			auto& weapon = it.second;
+			assert(weapon);
+			weapon->SetX(source->GetBattlePosition().x + (offset_x * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
+			weapon->SetY(source->GetBattlePosition().y + (offset_y * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
+			weapon->Update();
 		}
-		cba_ranged_weapon->SetX(source->GetBattlePosition().x + (offset_x * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
-		cba_ranged_weapon->SetY(source->GetBattlePosition().y + (offset_y * cba_ranged_weapon_move_frame / cba_num_ranged_weapon_move_frames));
-		cba_ranged_weapon->Update();
 	}
 
 	if (cba_ranged_weapon_move_frame >= cba_num_ranged_weapon_move_frames) {
-		cba_ranged_weapon->StopAttack();
-		cba_ranged_weapon = nullptr;
+		for (auto& it: cba_ranged) {
+			auto& weapon = it.second;
+			weapon->StopAttack();
+			weapon = nullptr;
+		}
 		SetBattleActionState(BattleActionState_Animation);
 	}
 
