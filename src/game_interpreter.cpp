@@ -3514,12 +3514,64 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 12210
-	if (!Player::IsPatchManiac() || com.parameters.empty() || com.parameters[0] == 0) {
-		// Infinite Loop
+	if (!Player::IsPatchManiac() || com.parameters.size() < 5 || com.parameters[0] == 0) {
+		// Infinite loop
 		return true;
 	}
 
-	Output::Warning("Maniac CommandLoop: Conditional loops unsupported");
+	int type = com.parameters[0];
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
+	frame.maniac_loop_info.resize((com.indent + 1) * 2);
+	frame.maniac_loop_info_size = static_cast<int32_t>(frame.maniac_loop_info.size());
+
+	int32_t& begin_loop_val = frame.maniac_loop_info[frame.maniac_loop_info.size() - 2];
+	int32_t& end_loop_val = frame.maniac_loop_info[frame.maniac_loop_info.size() - 1];
+	begin_loop_val = 0;
+	end_loop_val = 0;
+
+	int begin_arg = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
+	int end_arg = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+	int op = com.parameters[1] >> 8;
+
+	switch (type) {
+		case 1: // X times
+			end_loop_val = begin_arg;
+			break;
+		case 2: // Count up
+		case 3: // Count down
+			begin_loop_val = begin_arg;
+			end_loop_val = end_arg;
+			break;
+		case 4: // While
+		case 5: // Do While
+			break;
+		default:
+			SkipToNextConditional({Cmd::EndLoop}, com.indent);
+			++index;
+			return true;
+	}
+
+	int check_beg = begin_loop_val;
+	int check_end = end_loop_val;
+	if (type == 4) { // While
+		check_beg = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
+		check_end = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+	}
+
+	// Do While (5) always runs the loop at least once
+	if (type != 5 && !ManiacCheckContinueLoop(check_beg, check_end, type, op)) {
+		SkipToNextConditional({Cmd::EndLoop}, com.indent);
+		++index;
+	}
+
+	int loop_count_var = com.parameters[4];
+	if (loop_count_var > 0) {
+		Main_Data::game_variables->Set(loop_count_var, begin_loop_val);
+		Game_Map::SetNeedRefresh(true);
+	}
+
 	return true;
 }
 
@@ -3551,6 +3603,58 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 
 	int indent = com.indent;
 
+	if (Player::IsPatchManiac() && com.parameters.size() >= 5 && com.parameters[0] != 0) {
+		int type = com.parameters[0];
+		int offset = com.indent * 2;
+
+		if (frame.maniac_loop_info.size() < (offset + 1) * 2) {
+			frame.maniac_loop_info.resize((offset + 1) * 2);
+			frame.maniac_loop_info_size = frame.maniac_loop_info.size();
+		}
+
+		int32_t& cur_loop_val = frame.maniac_loop_info[offset];
+		int32_t& end_loop_val = frame.maniac_loop_info[offset + 1];
+
+		switch (type) {
+			case 1: // X times
+			case 2: // Count up
+			case 4: // While
+			case 5: // Do While
+				++cur_loop_val;
+				break;
+			case 3: // Count down
+				--cur_loop_val;
+				break;
+			default:
+				++index;
+				return true;
+		}
+
+		int check_cur = cur_loop_val;
+		int check_end = end_loop_val;
+		if (type >= 4) {
+			// While (4) and Do While (5) fetch variables each loop
+			// For the others it is constant
+			check_cur = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
+			check_end = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+		}
+		int op = com.parameters[1] >> 8;
+		if (!ManiacCheckContinueLoop(check_cur, check_end, type, op)) {
+			// End loop
+			frame.maniac_loop_info.resize(offset);
+			frame.maniac_loop_info_size = offset;
+			++index;
+			return true;
+		}
+
+		int loop_count_var = com.parameters[4];
+		if (loop_count_var > 0) {
+			Main_Data::game_variables->Set(loop_count_var, cur_loop_val);
+			Game_Map::SetNeedRefresh(true);
+		}
+	}
+
+	// Restart the loop
 	for (int idx = index; idx >= 0; idx--) {
 		if (list[idx].indent > indent)
 			continue;
@@ -3968,4 +4072,38 @@ Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 
 bool Game_Interpreter::IsWaitingForWaitCommand() const {
 	return (_state.wait_time > 0) || _state.wait_key_enter;
+}
+
+bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int op) const {
+	switch (type) {
+		case 0: // Infinite loop
+			return true;
+		case 1: // X times
+			return val < val2;
+		case 2: // Count up
+			return val <= val2;
+		case 3: // Count down
+			return val >= val2;
+		case 4: // While
+		case 5: // Do While
+			switch (op) {
+				case 0:
+					return val == val2;
+				case 1:
+					return val >= val2;
+				case 2:
+					return val <= val2;
+				case 3:
+					return val > val2;
+				case 4:
+					return val < val2;
+				case 5:
+					return val != val2;
+				default:
+					return false;
+			}
+			break;
+		default:
+			return false;
+	}
 }

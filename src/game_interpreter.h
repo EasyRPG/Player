@@ -317,6 +317,8 @@ protected:
 		void toSave(lcf::rpg::SaveEventExecState& save) const;
 	};
 
+	bool ManiacCheckContinueLoop(int val, int val2, int type, int op) const;
+
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
