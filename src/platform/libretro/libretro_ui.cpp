@@ -568,7 +568,7 @@ RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 	#endif
 	info->library_version = PLAYER_VERSION GIT_VERSION;
 	info->need_fullpath = true;
-	info->valid_extensions = "ldb|edb|zip";
+	info->valid_extensions = "ldb|zip|easyrpg";
 	info->block_extract = true;
 }
 

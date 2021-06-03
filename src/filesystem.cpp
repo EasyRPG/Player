@@ -65,7 +65,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 
 		// TODO this should probably move to a static function in the FS classes
 
-		// search until ".zip", "do magic"
+		// search for known file extensions and "do magic"
 		std::string internal_path;
 		bool handle_internal = false;
 		for (const std::string& comp : components) {
@@ -73,7 +73,8 @@ FilesystemView Filesystem::Create(StringView path) const {
 				internal_path += comp + "/";
 			} else {
 				path_prefix += comp + "/";
-				if (StringView(comp).ends_with(".zip")) {
+				auto sv = StringView(comp);
+				if (sv.ends_with(".zip") || sv.ends_with(".easyrpg")) {
 					path_prefix.pop_back();
 					handle_internal = true;
 				}

@@ -47,9 +47,11 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		if (StringView(dir.second.name).ends_with(".save")) {
 			continue;
 		}
-		if (dir.second.type == DirectoryTree::FileType::Regular &&
-			StringView(dir.second.name).ends_with(".zip")) {
-			game_directories.emplace_back(dir.second.name);
+		if (dir.second.type == DirectoryTree::FileType::Regular) {
+			auto sv = StringView(dir.second.name);
+			if (sv.ends_with(".zip") || sv.ends_with(".easyrpg")) {
+				game_directories.emplace_back(dir.second.name);
+			}
 		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
 			game_directories.emplace_back(dir.second.name);
 		}
