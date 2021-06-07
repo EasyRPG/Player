@@ -1,33 +1,19 @@
-#include "directory_tree.h"
+#include "filesystem.h"
 #include "filefinder.h"
 #include "main_data.h"
 #include "doctest.h"
 #include "player.h"
 
-static bool skip_tests() {
-#ifdef EMSCRIPTEN
-	return true;
-#else
-	return false;
-#endif
-}
-
-TEST_SUITE_BEGIN("DirectoryTree" * doctest::skip(skip_tests()));
+TEST_SUITE_BEGIN("Filesystem");
 
 TEST_CASE("Create") {
-	CHECK(DirectoryTree::Create(EP_TEST_PATH "/game"));
-	CHECK(!DirectoryTree::Create(EP_TEST_PATH "/!!!invalidpath!!!"));
-}
-
-TEST_CASE("Subtree") {
-	auto tree = DirectoryTree::Create(EP_TEST_PATH "/game");
-	CHECK(tree->Subtree("CharSet"));
-	CHECK(!tree->Subtree("!!!invalidpath!!!"));
+	CHECK(FileFinder::Root().Exists(EP_TEST_PATH "/game"));
+	CHECK(!FileFinder::Root().Exists(EP_TEST_PATH "/!!!invalidpath!!!"));
 }
 
 TEST_CASE("ListDirectory") {
-	auto tree = DirectoryTree::Create(EP_TEST_PATH "/game");
-	auto root = tree->ListDirectory();
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/game");
+	auto root = fs.ListDirectory();
 	CHECK(root->size() == 4);
 
 	for (const auto& it : *root) {
@@ -40,22 +26,22 @@ TEST_CASE("ListDirectory") {
 		}
 	}
 
-	auto charset = tree->ListDirectory("Charset");
+	auto charset = fs.ListDirectory("Charset");
 	CHECK(charset->size() == 1);
 	CHECK(charset->find("chara1.png") != charset->end());
 
-	charset = tree->ListDirectory("cHaRsEt");
+	charset = fs.ListDirectory("cHaRsEt");
 	CHECK(charset->size() == 1);
 	CHECK(charset->find("chara1.png") != charset->end());
 
-	CHECK(!tree->ListDirectory("!!!invaliddir!!!"));
+	CHECK(!fs.ListDirectory("!!!invaliddir!!!"));
 }
 
 TEST_CASE("ListDirectorySubtree") {
-	auto tree = DirectoryTree::Create(EP_TEST_PATH);
-	CHECK(tree->Subtree("gAmE").ListDirectory()->size() == 4);
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH);
+	CHECK(fs.Subtree("gAmE").ListDirectory()->size() == 4);
 
-	auto subtree = tree->Subtree("game");
+	auto subtree = fs.Subtree("game");
 	auto game = subtree.ListDirectory();
 	CHECK(game->size() == 4);
 
@@ -80,7 +66,7 @@ TEST_CASE("ListDirectorySubtree") {
 
 TEST_CASE("FindFile") {
 	// Only checking the filenames here because FindFile returns absolute paths
-	auto tree = DirectoryTree::Create(EP_TEST_PATH "/game");
+	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/game");
 
 	auto name = [](const std::string& file) {
 		return std::get<1>(FileFinder::GetPathAndFilename(file));
@@ -88,16 +74,16 @@ TEST_CASE("FindFile") {
 
 	Player::escape_symbol = "\\";
 
-	CHECK(name(tree->FindFile("rpg_RT.LdB")) == "RPG_RT.ldb");
-	CHECK(name(tree->FindFile("charSET/CharA1.png")) == "chara1.png");
-	CHECK(tree->FindFile("charSET").empty()); // only files are found
-	CHECK(tree->FindFile("!!!nonexistant!!!").empty());
-	CHECK(name(tree->FindFile("charSET", "CharA1.png")) == "chara1.png");
+	CHECK(name(fs.FindFile("rpg_RT.LdB")) == "RPG_RT.ldb");
+	CHECK(name(fs.FindFile("charSET/CharA1.png")) == "chara1.png");
+	CHECK(fs.FindFile("charSET").empty()); // only files are found
+	CHECK(fs.FindFile("!!!nonexistant!!!").empty());
+	CHECK(name(fs.FindFile("charSET", "CharA1.png")) == "chara1.png");
 
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	CHECK(name(tree->FindFile({ "charSET/charA1", IMG_TYPES })) == "chara1.png");
-	CHECK(name(tree->FindFile({ "folder/../charSET/charA1", IMG_TYPES, 1 })) == "chara1.png");
-	CHECK(name(tree->FindFile({ "picTures/../exfont", IMG_TYPES, 1 })) == "ExFont.png");
+	CHECK(name(fs.FindFile({ "charSET/charA1", IMG_TYPES })) == "chara1.png");
+	CHECK(name(fs.FindFile({ "folder/../charSET/charA1", IMG_TYPES, 1 })) == "chara1.png");
+	CHECK(name(fs.FindFile({ "picTures/../exfont", IMG_TYPES, 1 })) == "ExFont.png");
 
 	Player::escape_symbol = "";
 }

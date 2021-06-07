@@ -45,6 +45,16 @@ void Scene_Logo::Update() {
 	static bool is_valid = false;
 
 	if (frame_counter == 0) {
+		auto fs = FileFinder::Game();
+
+		if (!fs) {
+			fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+			if (!fs) {
+				Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+			}
+			FileFinder::SetGameFilesystem(fs);
+		}
+
 #ifdef EMSCRIPTEN
 		static bool once = true;
 		if (once) {
@@ -61,14 +71,7 @@ void Scene_Logo::Update() {
 		}
 #endif
 
-		auto tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath());
-
-		if (!tree) {
-			Output::Error("{} is not a valid path", Main_Data::GetProjectPath());
-		}
-
-		if (FileFinder::IsValidProject(*tree)) {
-			FileFinder::SetDirectoryTree(std::move(tree));
+		if (FileFinder::IsValidProject(fs)) {
 			Player::CreateGameObjects();
 			is_valid = true;
 		}
@@ -85,14 +88,14 @@ void Scene_Logo::Update() {
 		if (is_valid) {
 			Scene::Push(std::make_shared<Scene_Title>(), true);
 			if (Player::load_game_id > 0) {
-				auto tree = FileFinder::CreateSaveDirectoryTree();
+				auto save = FileFinder::Save();
 
 				std::stringstream ss;
 				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
 
 				Output::Debug("Loading Save {}", ss.str());
 
-				std::string save_name = tree->FindFile(ss.str());
+				std::string save_name = save.FindFile(ss.str());
 				Player::LoadSavegame(save_name, Player::load_game_id);
 			}
 		}
@@ -109,7 +112,7 @@ void Scene_Logo::DrawBackground(Bitmap& dst) {
 void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	async_ready = true;
 
-	if (!FileFinder::Exists("index.json")) {
+	if (!FileFinder::Game().Exists("index.json")) {
 		Output::Debug("index.json not found. The game does not exist or was not correctly deployed.");
 		return;
 	}

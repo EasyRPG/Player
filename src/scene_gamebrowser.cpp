@@ -17,6 +17,8 @@
 
 // Headers
 #include "scene_gamebrowser.h"
+
+#include <memory>
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_system.h"
@@ -25,14 +27,7 @@
 #include "scene_title.h"
 #include "bitmap.h"
 #include "audio.h"
-
-#ifdef _WIN32
-	#include <windows.h>
-#endif
-
-namespace {
-	std::string browser_dir;
-}
+#include "output.h"
 
 Scene_GameBrowser::Scene_GameBrowser() {
 	type = Scene::GameBrowser;
@@ -42,23 +37,18 @@ void Scene_GameBrowser::Start() {
 	initial_debug_flag = Player::debug_flag;
 	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
+	stack.push_back({ FileFinder::Game(), 0 });
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
 
 void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
-#ifdef _WIN32
-	SetCurrentDirectory(L"..");
-#endif
-
 	Main_Data::game_system->BgmStop();
-	Main_Data::SetProjectPath(browser_dir);
 
 	Cache::Clear();
 	AudioSeCache::Clear();
 	lcf::Data::Clear();
 	Main_Data::Cleanup();
-	FileFinder::Quit();
 
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
@@ -90,29 +80,29 @@ void Scene_GameBrowser::CreateWindows() {
 	// Create Options Window
 	std::vector<std::string> options;
 
-	options.push_back("Games");
-	options.push_back("About");
-	options.push_back("Exit");
+	options.emplace_back("Games");
+	options.emplace_back("About");
+	options.emplace_back("Exit");
 
-	command_window.reset(new Window_Command(options, 60));
+	command_window = std::make_unique<Window_Command>(options, 60);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window.reset(new Window_GameList(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
-	gamelist_window->Refresh();
+	gamelist_window = std::make_unique<Window_GameList>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
+	gamelist_window->Refresh(stack.back().filesystem, false);
 
-	if (!gamelist_window->HasValidGames()) {
+	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
 
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(0, 0, SCREEN_TARGET_WIDTH, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
 
-	load_window.reset(new Window_Help(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32));
+	load_window = std::make_unique<Window_Help>(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32);
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
 
-	about_window.reset(new Window_About(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
+	about_window = std::make_unique<Window_About>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
 	about_window->Refresh();
 	about_window->SetVisible(false);
 }
@@ -140,7 +130,7 @@ void Scene_GameBrowser::UpdateCommand() {
 
 		switch (menu_index) {
 			case GameList:
-				if (!gamelist_window->HasValidGames()) {
+				if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 					return;
 				}
 				command_window->SetActive(false);
@@ -174,20 +164,43 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 }
 
 void Scene_GameBrowser::BootGame() {
-#ifdef _WIN32
-	SetCurrentDirectory(Utils::ToWideString(gamelist_window->GetGamePath()).c_str());
-	const std::string& path = ".";
-#else
-	const std::string& path = gamelist_window->GetGamePath();
-#endif
+	if (stack.size() > 1 && gamelist_window->GetIndex() == 0) {
+		// ".." -> Go one level up
+		int index = stack.back().index;
+		stack.pop_back();
+		gamelist_window->Refresh(stack.back().filesystem, stack.size() > 1);
+		gamelist_window->SetIndex(index);
+		load_window->SetVisible(false);
+		game_loading = false;
+		return;
+	}
 
-	if (browser_dir.empty())
-		browser_dir = Main_Data::GetProjectPath();
-	Main_Data::SetProjectPath(path);
+	FilesystemView fs;
+	std::string entry;
+	std::tie(fs, entry) = gamelist_window->GetGameFilesystem();
 
-	auto tree = FileFinder::CreateDirectoryTree(path);
-	FileFinder::SetDirectoryTree(std::move(tree));
+	if (!fs) {
+		Output::Warning("The selected file or directory cannot be opened");
+		load_window->SetVisible(false);
+		game_loading = false;
+		return;
+	}
 
+	if (!FileFinder::IsValidProject(fs)) {
+		// Not a game: Open as directory
+		load_window->SetVisible(false);
+		game_loading = false;
+		if (!gamelist_window->Refresh(fs, true)) {
+			Output::Warning("The selected file or directory cannot be opened");
+			return;
+		}
+		stack.push_back({ fs, gamelist_window->GetIndex() });
+		gamelist_window->SetIndex(0);
+
+		return;
+	}
+
+	FileFinder::SetGameFilesystem(fs);
 	Player::CreateGameObjects();
 
 	Scene::Push(std::make_shared<Scene_Title>());

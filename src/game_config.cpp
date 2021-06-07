@@ -138,7 +138,7 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 void Game_Config::LoadFromConfig(const std::string& path) {
 	this->config_path = path;
 
-	auto is = FileFinder::OpenInputStream(path);
+	auto is = FileFinder::Root().OpenInputStream(path);
 	if (!is) {
 		Output::Debug("Ini config file {} not found", path);
 		return;
@@ -187,7 +187,7 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 }
 
 void Game_Config::WriteToConfig(const std::string& path) const {
-	auto of = FileFinder::OpenOutputStream(path);
+	auto of = FileFinder::Root().OpenOutputStream(path);
 
 	if (!of) {
 		Output::Debug("Failed to open {} for writing: {}", path, strerror(errno));

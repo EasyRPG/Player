@@ -47,8 +47,8 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 	return surface;
 }
 
-BitmapRef Bitmap::Create(const std::string& filename, bool transparent, uint32_t flags) {
-	BitmapRef bmp = std::make_shared<Bitmap>(filename, transparent, flags);
+BitmapRef Bitmap::Create(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {
+	BitmapRef bmp = std::make_shared<Bitmap>(std::move(stream), transparent, flags);
 
 	if (!bmp->pixels()) {
 		return BitmapRef();
@@ -91,13 +91,12 @@ Bitmap::Bitmap(void *pixels, int width, int height, int pitch, const DynamicForm
 	Init(width, height, pixels, pitch, false);
 }
 
-Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
+Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	auto stream = FileFinder::OpenInputStream(filename);
 	if (!stream) {
-		Output::Error("Couldn't open image file {}", filename);
+		Output::Error("Couldn't read image file {}", stream.GetName());
 		return;
 	}
 
@@ -118,7 +117,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
 	else
-		Output::Warning("Unsupported image file {} (Magic: {:02X})", filename, *reinterpret_cast<uint32_t*>(data));
+		Output::Warning("Unsupported image file {} (Magic: {:02X})", stream.GetName(), *reinterpret_cast<uint32_t*>(data));
 
 	if (!img_okay) {
 		free(pixels);

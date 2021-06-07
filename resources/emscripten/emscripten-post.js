@@ -12,3 +12,7 @@ if (Module.EASYRPG_GAME.length > 0) {
 if (typeof Module.EASYRPG_FS === "undefined") {
   Module.EASYRPG_FS = IDBFS;
 }
+
+FS.mkdir("Save");
+FS.mount(Module.EASYRPG_FS, {}, "Save");
+FS.syncfs(true, function(err) {});

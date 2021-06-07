@@ -85,7 +85,7 @@ namespace {
 
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #ifdef EMSCRIPTEN
-	auto f = FileFinder::OpenInputStream(file);
+	auto f = FileFinder::Game().OpenInputStream(file);
 	if (!f) {
 		Output::Error("Emscripten: Reading index.json failed");
 		return;
@@ -137,17 +137,11 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		}
 
 		// Create some empty DLL files. Engine & patch detection depend on them.
-		bool file_added = false;
 		for (const auto& s : {"ultimate_rt_eb.dll", "dynloader.dll", "accord.dll"}) {
 			auto it = file_mapping.find(s);
 			if (it != file_mapping.end()) {
-				FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetProjectPath(), s));
-				file_added = true;
+				FileFinder::Game().OpenOutputStream(s);
 			}
-		}
-		if (file_added) {
-			// Update directory structure (new files were added)
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
 		}
 	}
 #else
@@ -279,7 +273,7 @@ void FileRequestAsync::Start() {
 
 	emscripten_async_wget2(
 		request_path.c_str(),
-		path.c_str(),
+		(it != file_mapping.end() ? it->second : path).c_str(),
 		"GET",
 		NULL,
 		this,
@@ -310,7 +304,7 @@ void FileRequestAsync::UpdateProgress() {
 FileRequestBinding FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
 	FileRequestBinding pending = CreatePending();
 
-	listeners.push_back(std::make_pair(FileRequestBindingWeak(pending), func));
+	listeners.emplace_back(FileRequestBindingWeak(pending), func);
 
 	return pending;
 }
@@ -318,7 +312,7 @@ FileRequestBinding FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
 FileRequestBinding FileRequestAsync::Bind(std::function<void(FileRequestResult*)> func) {
 	FileRequestBinding pending = CreatePending();
 
-	listeners.push_back(std::make_pair(FileRequestBindingWeak(pending), func));
+	listeners.emplace_back(FileRequestBindingWeak(pending), func);
 
 	return pending;
 }
@@ -344,11 +338,12 @@ void FileRequestAsync::DownloadDone(bool success) {
 	}
 
 	if (success) {
-
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
 			// Update directory structure (new file was added)
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
+			if (FileFinder::Game()) {
+				FileFinder::Game().ClearCache();
+			}
 		}
 #endif
 

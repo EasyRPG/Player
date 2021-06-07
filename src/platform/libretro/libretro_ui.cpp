@@ -568,7 +568,8 @@ RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 	#endif
 	info->library_version = PLAYER_VERSION GIT_VERSION;
 	info->need_fullpath = true;
-	info->valid_extensions = SUFFIX_LDB;
+	info->valid_extensions = "ldb|zip|easyrpg";
+	info->block_extract = true;
 }
 
 /* Gets information about system audio/video timings and geometry.
@@ -651,19 +652,23 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 		return false;
 	}
 
-	extract_directory(parent_dir, game->path, sizeof(parent_dir));
+	Output::IgnorePause(true);
+
+	auto fs = FileFinder::Root().Create(game->path);
+	if (!fs) {
+		extract_directory(parent_dir, game->path, sizeof(parent_dir));
+		fs = FileFinder::Root().Create(parent_dir);
+		if (!fs || !FileFinder::IsValidProject(fs)) {
+			log_cb(RETRO_LOG_ERROR, "Unsupported game %s\n", parent_dir);
+			return false;
+		}
+	}
+	FileFinder::SetGameFilesystem(fs);
 
 	init_easy_rpg();
 
-	log_cb(RETRO_LOG_INFO, "parent dir is: %s\n", parent_dir );
+	Player::Run();
 
-	if (parent_dir[0] != '\0') {
-		Main_Data::SetProjectPath(parent_dir);
-		Player::Run();
-	} else {
-		Main_Data::SetProjectPath(".");
-		Player::Run();
-	}
 	return true;
 }
 

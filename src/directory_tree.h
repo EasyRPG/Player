@@ -18,20 +18,21 @@
 #ifndef EP_DIRECTORY_TREE_H
 #define EP_DIRECTORY_TREE_H
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 #include <unordered_map>
 
 #include "span.h"
 #include "string_view.h"
 
-class DirectoryTreeView;
+class Filesystem;
+class FilesystemView;
 
 /**
  * A directory tree manages case-insenseitive file searching in a root folder
  * and its subdirectories.
- * RTP and translation support can be enabled via advanced arguments.
+ * Translation support can be enabled via advanced arguments.
  * For performance reasons the entries are cached.
  */
 class DirectoryTree {
@@ -68,11 +69,6 @@ public:
 		 */
 		int canonical_initial_deepness = 0;
 		/**
-		 * When true the RTP paths are scanned for the file and translated
-		 * RTP namings are checked.
-		 */
-		bool use_rtp = false;
-		/**
 		 * When true a "Not Found" message is shown in the terminal.
 		 * Off by default because file probing would spam the terminal alot.
 		 */
@@ -92,18 +88,10 @@ public:
 	/**
 	 * Creates a new DirectoryTree
 	 *
-	 * @param path root path of the tree
+	 * @param fs Filesystem this tree belongs to
 	 * @return new DirectoryTree
 	 */
-	static std::unique_ptr<DirectoryTree> Create(std::string path);
-
-	/**
-	 * Creates a new view on the tree that is rooted at the sub_path.
-	 *
-	 * @param sub_path root of the subtree
-	 * @return subtree rooted at sub_path
-	 */
-	DirectoryTreeView Subtree(std::string sub_path);
+	static std::unique_ptr<DirectoryTree> Create(Filesystem& fs);
 
 	/**
 	 * Does a case insensitive search for the file.
@@ -134,15 +122,6 @@ public:
 	 * @return Path to file or empty string when not found
 	 */
 	std::string FindFile(const DirectoryTree::Args& args) const;
-
-	/** @return root path of the tree */
-	StringView GetRootPath() const;
-
-	/**
-	 * @param subpath Path to append to the root
-	 * @return Combined path
-	 */
-	std::string MakePath(StringView subpath) const;
 
 	/**
 	 * Enumerates a directory.
@@ -152,11 +131,10 @@ public:
 	 */
 	DirectoryListType* ListDirectory(StringView path = "") const;
 
-	/** Implicit conversion to TreeView */
-	operator DirectoryTreeView ();
+	void ClearCache(StringView path) const;
 
 private:
-	std::string root;
+	Filesystem* fs = nullptr;
 
 	/** lowered dir (full path from root) -> <map of> lowered file -> Entry */
 	mutable std::unordered_map<std::string, DirectoryListType> fs_cache;
@@ -164,98 +142,6 @@ private:
 	/** lowered dir -> real dir (both full path from root) */
 	mutable std::unordered_map<std::string, std::string> dir_cache;
 };
-
-/**
- * A TreeView is a non-owning view at a subdirectory of the base DirectoryTree.
- * The DirectoryTree must stay valid.
- */
-class DirectoryTreeView {
-public:
-	/** Constructs an invalid view */
-	DirectoryTreeView() = default;
-
-	/**
-	 * @param tree Tree this view is based on
-	 * @param sub_path Path relative to the tree
-	 */
-	DirectoryTreeView(const DirectoryTree* tree, std::string sub_path);
-
-	/**
-	 * Does a case insensitive search for the file.
-	 *
-	 * @param filename a path relative to the filesystem root
-	 * @param exts List of file extensions to probe
-	 * @return Path to file or empty string when not found
-	 */
-	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
-
-	/**
-	 * Does a case insensitive search for the file in a specific
-	 * directory.
-	 *
-	 * @param directory a path relative to the filesystem root
-	 * @param filename Name of the file to search
-	 * @param exts List of file extensions to probe
-	 * @return Path to file or empty string when not found
-	 */
-	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
-
-	/**
-	 * Does a case insensitive search for a file.
-	 * Advanced version for special purposes searches. Usually not needed.
-	 *
-	 * @see DirectoryTree::Args
-	 * @param args See documentation of DirectoryTree::Args
-	 * @return Path to file or empty string when not found
-	 */
-	std::string FindFile(const DirectoryTree::Args& args) const;
-
-	/** @return root path of the subtree */
-	StringView GetRootPath() const;
-
-	/**
-	 * Creates path consisting of root + subtree + subdir
-	 * @param subpath Path to append to the subtree root
-	 * @return Combined path
-	 */
-	std::string MakePath(StringView subdir) const;
-
-    /**
-     * Creates a path consisting of subtree + subdir
-     * @param subpath Path to append to the subtree
-     * @return Combined path
-     */
-    std::string MakeSubPath(StringView subdir) const;
-
-	/**
-	 * Enumerates a directory.
-	 *
-	 * @param path Path to enumerate, empty for subtree root path
-	 * @return list of directory entries or nullptr on failure
-	 */
-	DirectoryTree::DirectoryListType* ListDirectory(StringView path = "") const;
-
-	/**
-	 * Creates a new view on the subtree that is rooted at the sub_path.
-	 *
-	 * @param sub_path root of the subtree
-	 * @return subtree rooted at sub_path
-	 */
-	DirectoryTreeView Subtree(const std::string& sub_path);
-
-	/** @return true when the subtree points at a readable directory */
-	explicit operator bool() const noexcept;
-
-private:
-	const DirectoryTree* tree = nullptr;
-	std::string full_path;
-	std::string sub_path;
-	bool valid = false;
-};
-
-inline DirectoryTreeView::operator bool() const noexcept {
-	return valid;
-}
 
 inline bool operator<(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
 	return std::tie(l.name, l.type) < std::tie(r.name, r.type);
@@ -280,7 +166,5 @@ inline bool operator!=(const DirectoryTree::Entry& l, const DirectoryTree::Entry
 inline bool operator>=(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {
 	return !(l < r);
 }
-
-inline DirectoryTree::operator DirectoryTreeView() { return Subtree(""); }
 
 #endif

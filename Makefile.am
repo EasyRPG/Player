@@ -107,7 +107,14 @@ libeasyrpg_player_a_SOURCES = \
 	src/fileext_guesser.h \
 	src/filesystem.cpp \
 	src/filesystem.h \
+	src/filesystem_native.cpp \
+	src/filesystem_native.h \
+	src/filesystem_root.cpp \
+	src/filesystem_root.h \
+	src/filesystem_stream.cpp \
 	src/filesystem_stream.h \
+	src/filesystem_zip.cpp \
+	src/filesystem_zip.h \
 	src/flash.h \
 	src/flat_map.h \
 	src/font.cpp \
@@ -550,13 +557,13 @@ test_runner_SOURCES = \
 	tests/bitmapfont.cpp \
 	tests/cmdline_parser.cpp \
 	tests/config_param.cpp \
-	tests/directorytree.cpp \
 	tests/doctest.h \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
 	tests/dynrpg.cpp \
 	tests/enemyai.cpp \
 	tests/filefinder.cpp \
+	tests/filesystem.cpp \
 	tests/flat_map.cpp \
 	tests/font.cpp \
 	tests/game_actor.cpp \
@@ -588,8 +595,9 @@ test_runner_SOURCES = \
 	tests/utils.cpp \
 	tests/variables.cpp \
 	tests/wordwrap.cpp
+
 test_runner_CXXFLAGS = \
-	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests/assets\"
+	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(canonical_srcdir)/tests/assets\"
 test_runner_LDADD = \
 	$(easyrpg_player_LDADD)
 

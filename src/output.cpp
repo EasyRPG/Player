@@ -27,6 +27,7 @@
 #include <chrono>
 
 #include "graphics.h"
+#include "output.h"
 
 #ifdef GEKKO
 #  include <unistd.h>
@@ -68,11 +69,12 @@ namespace {
 	}
 
 	Filesystem_Stream::OutputStream LOG_FILE;
+	bool output_recurse = false;
 	bool init = false;
 
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out | std::ios_base::app);
+			LOG_FILE = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -136,31 +138,45 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 	const char* prefix = GetLogPrefix(lvl);
 	// Skip logging to file in the browser
 #ifndef EMSCRIPTEN
-	if (!Main_Data::GetSavePath().empty()) {
-		// Only write to file when project path is initialized
-		// (happens after parsing the command line)
-		for (std::string& log : log_buffer) {
-			output_time() << log << std::endl;
-		}
-		log_buffer.clear();
+	bool add_to_buffer = true;
 
-		// Every new message is written once to the file.
-		// When it is repeated increment a counter until a different message appears,
-		// then write the buffered message with the counter.
-		if (msg == last_message.msg) {
-			last_message.repeat++;
-		} else {
-			if (last_message.repeat > 0) {
-				output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
-				output_time() << prefix << msg << std::endl;
-			} else {
-				output_time() << prefix << msg << std::endl;
+	// Prevent recursion when the Save filesystem writes to the logfile on startup before it is ready
+	if (!output_recurse) {
+		output_recurse = true;
+		if (FileFinder::Save()) {
+			add_to_buffer = false;
+
+			// Only write to file when save path is initialized
+			// (happens after parsing the command line)
+			if (!log_buffer.empty()) {
+				std::vector<std::string> local_log_buffer = std::move(log_buffer);
+				for (std::string& log : local_log_buffer) {
+					output_time() << log << '\n';
+				}
+				local_log_buffer.clear();
 			}
-			last_message.repeat = 0;
-			last_message.msg = msg;
-			last_message.lvl = lvl;
+
+			// Every new message is written once to the file.
+			// When it is repeated increment a counter until a different message appears,
+			// then write the buffered message with the counter.
+			if (msg == last_message.msg) {
+				last_message.repeat++;
+			} else {
+				if (last_message.repeat > 0) {
+					output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
+					output_time() << prefix << msg << '\n';
+				} else {
+					output_time() << prefix << msg << '\n';
+				}
+				last_message.repeat = 0;
+				last_message.msg = msg;
+				last_message.lvl = lvl;
+			}
 		}
-	} else {
+		output_recurse = false;
+	}
+
+	if (add_to_buffer) {
 		// buffer log messages until file system is ready
 		log_buffer.push_back(prefix + msg);
 	}
@@ -169,7 +185,7 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 #ifdef __ANDROID__
 	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
 #else
-	std::cerr << prefix << msg << std::endl;
+	std::cerr << prefix << msg << '\n';
 #endif
 
 	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
@@ -216,7 +232,7 @@ void Output::Quit() {
 
 	char* buf = new char[log_size];
 
-	auto in = FileFinder::OpenInputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::in);
+	auto in = FileFinder::Save().OpenInputStream(OUTPUT_FILENAME, std::ios_base::in);
 	if (in) {
 		in.seekg(0, std::ios_base::end);
 		if (in.tellg() > log_size) {
@@ -226,7 +242,7 @@ void Output::Quit() {
 			in.read(buf, 1024 * 100);
 			size_t read = in.gcount();
 
-			auto out = FileFinder::OpenOutputStream(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME), std::ios_base::out);
+			auto out = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out);
 			if (out) {
 				out.write(buf, read);
 			}
@@ -240,16 +256,13 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::GetSavePath(),
-								 "screenshot_"
-								 + std::to_string(index++)
-								 + ".png");
-	} while(FileFinder::Exists(p));
+		p = "screenshot_" + std::to_string(index++) + ".png";
+	} while(FileFinder::Save().Exists(p));
 	return TakeScreenshot(p);
 }
 
-bool Output::TakeScreenshot(std::string const& file) {
-	auto ret = FileFinder::OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+bool Output::TakeScreenshot(StringView file) {
+	auto ret = FileFinder::Save().OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
 		Output::Debug("Saving Screenshot {}", file);

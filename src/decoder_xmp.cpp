@@ -125,7 +125,7 @@ bool XMPDecoder::SetFormat(int freq, AudioDecoder::Format frmt, int chans) {
 	return xmp_start_player(ctx, frequency, player_flags) == 0;
 }
 
-bool XMPDecoder::IsModule(std::string filename) {
+bool XMPDecoder::IsModule(const std::string& filename) {
 	return xmp_test_module(const_cast<char *>(filename.c_str()), NULL) == 0;
 }
 

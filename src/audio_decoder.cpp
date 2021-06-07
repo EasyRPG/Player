@@ -112,19 +112,12 @@ private:
 };
 const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, const std::string& filename, bool resample) {
+std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
 	char magic[4] = { 0 };
 	if (!stream.ReadIntoObj(magic)) {
 		return nullptr;
 	}
 	stream.seekg(0, std::ios::beg);
-
-#if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
-	/* WildMidi and XMP are the only audio decoders that need the filename passed
-	 * directly, this avoids a warning about the possibly unused variable
-	 */
-	(void)filename;
-#endif
 
 	auto add_resampler = [resample](std::unique_ptr<AudioDecoder> dec) -> std::unique_ptr<AudioDecoder> {
 #ifdef USE_AUDIO_RESAMPLER
@@ -203,7 +196,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 
 	// Test for tracker modules
 #ifdef HAVE_XMP
-	if (XMPDecoder::IsModule(filename)) {
+	if (XMPDecoder::IsModule(ToString(stream.GetName()))) {
 		return add_resampler(std::make_unique<XMPDecoder>());
 	}
 #endif

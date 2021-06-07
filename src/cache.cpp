@@ -146,17 +146,16 @@ namespace {
 		auto it = cache.find(key);
 
 		if (it == cache.end()) {
-			// FIXME: STRING_VIEW string copies here
-			const std::string path = FileFinder::FindImage(ToString(folder_name), ToString(filename));
+			auto is = FileFinder::OpenImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
 
 			FreeBitmapMemory();
 
-			if (path.empty()) {
+			if (!is) {
 				Output::Warning("Image not found: {}/{}", folder_name, filename);
 			} else {
-				bmp = Bitmap::Create(path, transparent, flags);
+				bmp = Bitmap::Create(std::move(is), transparent, flags);
 				if (!bmp) {
 					Output::Warning("Invalid image: {}/{}", folder_name, filename);
 				}

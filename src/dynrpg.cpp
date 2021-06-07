@@ -401,14 +401,14 @@ bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
 }
 
 std::string get_filename(int slot) {
-	auto tree = FileFinder::CreateSaveDirectoryTree();
+	auto fs = FileFinder::Save();
 
 	std::string filename = std::string("Save") + (slot <= 9 ? "0" : "") + std::to_string(slot) + ".dyn";
 
-	std::string found = tree->FindFile(filename);
+	std::string found = fs.FindFile(filename);
 
 	if (found.empty()) {
-		found = tree->MakePath(filename);
+		found = fs.MakePath(filename);
 	}
 
 	return found;
@@ -425,11 +425,7 @@ void DynRpg::Load(int slot) {
 
 	std::string filename = get_filename(slot);
 
-	if (!FileFinder::Exists(filename)) {
-		return;
-	}
-
-	auto in = FileFinder::OpenInputStream(filename);
+	auto in = FileFinder::Game().OpenInputStream(filename);
 
 	if (!in) {
 		Output::Warning("Couldn't read DynRPG save: {}", filename);
@@ -498,7 +494,7 @@ void DynRpg::Save(int slot) {
 
 	std::string filename = get_filename(slot);
 
-	auto out = FileFinder::OpenOutputStream(filename);
+	auto out = FileFinder::Save().OpenOutputStream(filename);
 
 	if (!out) {
 		Output::Warning("Couldn't write DynRPG save: {}", filename);

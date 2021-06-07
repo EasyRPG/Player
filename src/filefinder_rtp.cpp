@@ -138,7 +138,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 	xdg_rtp = getenv("XDG_DATA_HOME") ? std::string(getenv("XDG_DATA_HOME")) :
 			  std::string(getenv("HOME")) + "/.local/share";
 	xdg_rtp += "/rtp/" + version_str;
-	if (FileFinder::Exists(xdg_rtp)) {
+	if (FileFinder::Root().Exists(xdg_rtp)) {
 		env_paths.push_back(xdg_rtp);
 	}
 
@@ -148,7 +148,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 	std::vector<std::string> tmp = Utils::Tokenize(xdg_rtp, f);
 	for (StringView p : tmp) {
 		xdg_rtp = ToString(p) + (p.back() == '/' ? "" : "/") + "rtp/" + version_str;
-		if (FileFinder::Exists(xdg_rtp)) {
+		if (FileFinder::Root().Exists(xdg_rtp)) {
 			env_paths.push_back(xdg_rtp);
 		}
 	}
@@ -162,13 +162,13 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings) {
 
 void FileFinder_RTP::AddPath(StringView p) {
 	using namespace FileFinder;
-	auto tree = DirectoryTree::Create(ToString(p));
-	if (tree) {
+	auto fs = FileFinder::Root().Create(ToString(p));
+	if (fs) {
 		Output::Debug("Adding {} to RTP path", p);
 
-		auto hit_info = RTP::Detect(*tree, Player::EngineVersion());
+		auto hit_info = RTP::Detect(fs, Player::EngineVersion());
 
-		search_paths.push_back(std::move(tree));
+		search_paths.push_back(fs);
 
 		if (hit_info.empty()) {
 			Output::Debug("The folder does not contain a known RTP!");
@@ -209,18 +209,18 @@ void FileFinder_RTP::ReadRegistry(StringView company, StringView product, String
 #endif
 }
 
-std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const {
+Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const {
 	int version = Player::EngineVersion();
 
-	auto normal_search = [&]() -> std::string {
+	auto normal_search = [&]() {
 		is_rtp_asset = false;
 		for (const auto& path : search_paths) {
-			const std::string ret = path->FindFile(dir, name, exts);
+			const std::string ret = path.FindFile(dir, name, exts);
 			if (!ret.empty()) {
-				return ret;
+				return path.OpenInputStream(ret);
 			}
 		}
-		return std::string();
+		return Filesystem_Stream::InputStream();
 	};
 
 	// Detect the RTP version the game uses, when only one candidate is left the RTP is known
@@ -272,7 +272,7 @@ std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span
 				std::string ret = rtp.tree.FindFile(dir, rtp_entry, exts);
 				if (!ret.empty()) {
 					is_rtp_asset = true;
-					return ret;
+					return rtp.tree.OpenInputStream(ret);
 				}
 			}
 		}
@@ -282,27 +282,27 @@ std::string FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span
 	return normal_search();
 }
 
-std::string FileFinder_RTP::Lookup(StringView dir, StringView name, Span<StringView> exts) const {
+Filesystem_Stream::InputStream FileFinder_RTP::Lookup(StringView dir, StringView name, Span<StringView> exts) const {
 	if (!disable_rtp) {
 		bool is_rtp_asset;
-		auto ret = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
+		auto is = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);
 
 		std::string lcase = lcf::ReaderUtil::Normalize(dir);
 		bool is_audio_asset = lcase == "music" || lcase == "sound";
 
 		if (is_rtp_asset) {
-			if (!ret.empty() && game_has_full_package_flag && !warning_broken_rtp_game_shown && !is_audio_asset) {
+			if (is && game_has_full_package_flag && !warning_broken_rtp_game_shown && !is_audio_asset) {
 				warning_broken_rtp_game_shown = true;
 				Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
-			} else if (ret.empty() && !game_has_full_package_flag && !is_audio_asset) {
+			} else if (!is && !game_has_full_package_flag && !is_audio_asset) {
 				std::string msg = "Cannot find: {}/{}. " +
 								  std::string(search_paths.empty() ?
 											  "Install RTP {} to resolve this warning." : "RTP {} was probably not installed correctly.");
 				Output::Warning(msg, dir, name, Player::EngineVersion());
 			}
 		}
-		return ret;
+		return is;
 	}
 
-	return "";
+	return Filesystem_Stream::InputStream();
 }

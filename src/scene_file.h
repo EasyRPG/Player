@@ -72,7 +72,7 @@ protected:
 	std::unique_ptr<Sprite> down_arrow;
 	std::string message;
 
-	std::unique_ptr<DirectoryTree> tree;
+	FilesystemView fs;
 
 	double latest_time = 0;
 	int latest_slot = 0;

@@ -1,2 +1,18 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
+
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
+
+int main(int argc, char** argv) {
+#ifdef EMSCRIPTEN
+	EM_ASM({
+		FS.mkdir(UTF8ToString($0));
+		FS.mount(NODEFS, { root: UTF8ToString($1) }, UTF8ToString($0));
+		},
+		EP_TEST_PATH, EP_NATIVE_TEST_PATH
+	);
+#endif
+	return doctest::Context(argc, argv).run();
+}

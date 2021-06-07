@@ -22,29 +22,21 @@
 #include <cassert>
 #include <istream>
 #include <ostream>
+#include "filesystem.h"
 #include "utils.h"
 
 namespace Filesystem_Stream {
 	class InputStream final : public std::istream {
 	public:
 		explicit InputStream(): std::istream(nullptr) {}
-		explicit InputStream(std::streambuf* sb) : std::istream(sb) {}
-		~InputStream() override {
-			delete rdbuf();
-		}
+		explicit InputStream(std::streambuf* sb, std::string name);
+		~InputStream() override;
 		InputStream(const InputStream&) = delete;
 		InputStream& operator=(const InputStream&) = delete;
-		InputStream(InputStream&& is) : std::istream(std::move(is)) {
-			set_rdbuf(is.rdbuf());
-			is.set_rdbuf(nullptr);
-		}
-		InputStream& operator=(InputStream&& is) {
-			if (this == &is) return is;
-			std::istream::operator=(std::move(is));
-			set_rdbuf(is.rdbuf());
-			is.set_rdbuf(nullptr);
-			return is;
-		}
+		InputStream(InputStream&& is) noexcept;
+		InputStream& operator=(InputStream&& is) noexcept;
+
+		StringView GetName() const;
 
 		template <typename T>
 		bool ReadIntoObj(T& obj);
@@ -52,28 +44,39 @@ namespace Filesystem_Stream {
 	private:
 		template <typename T>
 		bool Read0(T& obj);
+
+		std::string name;
 	};
 
 	class OutputStream final : public std::ostream {
 	public:
 		explicit OutputStream(): std::ostream(nullptr) {}
-		explicit OutputStream(std::streambuf* sb) : std::ostream(sb) {};
-		~OutputStream() override {
-			delete rdbuf();
-		}
+		explicit OutputStream(std::streambuf* sb, FilesystemView fs, std::string name);
+		~OutputStream() override;
 		OutputStream(const OutputStream&) = delete;
 		OutputStream& operator=(const OutputStream&) = delete;
-		OutputStream(OutputStream&& os) noexcept : std::ostream(std::move(os)) {
-			set_rdbuf(os.rdbuf());
-			os.set_rdbuf(nullptr);
-		}
-		OutputStream& operator=(OutputStream&& os) noexcept {
-			if (this == &os) return os;
-			std::ostream::operator=(std::move(os));
-			set_rdbuf(os.rdbuf());
-			os.set_rdbuf(nullptr);
-			return os;
-		}
+		OutputStream(OutputStream&& os) noexcept;
+		OutputStream& operator=(OutputStream&& os) noexcept;
+
+		StringView GetName() const;
+
+	private:
+		FilesystemView fs;
+		std::string name;
+	};
+
+	class InputMemoryStreamBuf : public std::streambuf {
+	public:
+		explicit InputMemoryStreamBuf(Span<uint8_t> buffer);
+		InputMemoryStreamBuf(InputMemoryStreamBuf const& other) = delete;
+		InputMemoryStreamBuf const& operator=(InputMemoryStreamBuf const& other) = delete;
+
+	protected:
+		std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override;
+		std::streambuf::pos_type seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) override;
+
+	private:
+		Span<uint8_t> buffer;
 	};
 
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);

@@ -306,15 +306,14 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 	}
 }
 
-void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
-	auto filestream = FileFinder::OpenInputStream(file);
+void SdlMixerAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, int pitch, int fadein) {
 	if (!filestream) {
-		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
+		Output::Warning("Music not readable: {}", filestream.GetName());
 		return;
 	}
-	audio_decoder = AudioDecoder::Create(filestream, file);
+	audio_decoder = AudioDecoder::Create(filestream);
 	if (audio_decoder) {
-		SetupAudioDecoder(std::move(filestream), file, volume, pitch, fadein);
+		SetupAudioDecoder(std::move(filestream), volume, pitch, fadein);
 		return;
 	}
 
@@ -341,43 +340,45 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	if (!bgm) {
 #if WANT_FMMIDI == 2
 		// Fallback to FMMIDI when SDL Midi failed
+		filestream.seekg(0, std::ios_base::beg);
 		char magic[4] = { 0 };
-		auto filestream = FileFinder::OpenInputStream(file);
 		if (!filestream) {
-			Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
+			Output::Warning("Music not readable: {}", filestream.GetName());
 			return;
 		}
 		filestream.read(magic, sizeof(magic));
-		filestream.seekg(0, std::ios::ios_base::beg);
+		filestream.seekg(0, std::ios_base::beg);
 		if (!strncmp(magic, "MThd", 4)) {
-			Output::Debug("FmMidi fallback: {}", file);
+			Output::Debug("FmMidi fallback: {}", filestream.GetName());
 			audio_decoder.reset(new GenericMidiDecoder(new FmMidiDecoder()));
-			SetupAudioDecoder(std::move(filestream), file, volume, pitch, fadein);
+			SetupAudioDecoder(std::move(filestream), volume, pitch, fadein);
 			return;
 		}
 #endif
 
 #if SDL_MIXER_MAJOR_VERSION>1
+		// FIXME: Disabled due to VFS limitations, entire SDL2 mixer will be removed when Midi PR is in
 		// Try unsupported SDL_mixer ADPCM playback with SDL
-		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
+		/*if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
 			bgm_stop = true;
 			BGS_Play(file, volume, 0, fadein);
 			return;
-		}
+		}*/
 #endif
-		Output::Warning("Couldn't load {} BGM. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+		Output::Warning("Couldn't load {} BGM. {}", filestream.GetName(), Mix_GetError());
 		return;
 	}
 
 	bgm_starttick = Game_Clock::now();
 
 #if SDL_MAJOR_VERSION>1
+	// FIXME: Disabled due to VFS limitations, entire SDL2 mixer will be removed when Midi PR is in
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+	/*if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
 		BGS_Play(file, volume, 0, fadein);
 		return;
-	}
+	}*/
 #endif
 
 	BGM_Volume(volume);
@@ -389,16 +390,16 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
 		== -1) {
-			Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+			Output::Warning("Couldn't play {} BGM. {}", filestream.GetName(), Mix_GetError());
 			return;
 	}
 
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
-void SdlMixerAudio::SetupAudioDecoder(Filesystem_Stream::InputStream stream, const std::string& file, int volume, int pitch, int fadein) {
+void SdlMixerAudio::SetupAudioDecoder(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) {
 	if (!audio_decoder->Open(std::move(stream))) {
-		Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), audio_decoder->GetError());
+		Output::Warning("Couldn't play {} BGM. {}", stream.GetName(), audio_decoder->GetError());
 		audio_decoder.reset();
 		return;
 	}
@@ -624,8 +625,8 @@ void SdlMixerAudio::BGS_Volume(int volume) {
 	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 }
 
-void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
+void SdlMixerAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) {
+	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(std::move(stream));
 	sound_data snd_data;
 
 	if (cache) {
@@ -648,23 +649,22 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 			snd_data.chunk.reset(Mix_QuickLoad_RAW(snd_data.buffer.data(), snd_data.buffer.size()), &Mix_FreeChunk);
 
 			if (!snd_data.chunk) {
-				Output::Warning("Couldn't load {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+				Output::Warning("Couldn't load {} SE. {}", stream.GetName(), Mix_GetError());
 			}
 		}
 	}
 
 	if (!snd_data.chunk) {
-		auto is = FileFinder::OpenInputStream(file);
-		if (!is) {
-			Output::Warning("SE not readable: {}", FileFinder::GetPathInsideGamePath(file));
+		if (!stream) {
+			Output::Warning("SE not readable: {}", stream.GetName());
 			return;
 		}
 
-		SDL_RWops* rw = create_StreamRWOps(std::move(is));
+		SDL_RWops* rw = create_StreamRWOps(std::move(stream));
 
 		snd_data.chunk.reset(Mix_LoadWAV_RW(rw, 1), &Mix_FreeChunk);
 		if (!snd_data.chunk) {
-			Output::Warning("Couldn't load {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+			Output::Warning("Couldn't load {} SE. {}", stream.GetName(), Mix_GetError());
 			return;
 		}
 	}
@@ -673,7 +673,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
 		// FIXME Not displaying as warning because multiple games exhaust free channels available, see #1356
-		Output::Debug("Couldn't play {} SE. {}", FileFinder::GetPathInsideGamePath(file), Mix_GetError());
+		Output::Debug("Couldn't play {} SE. {}", stream.GetName(), Mix_GetError());
 		return;
 	}
 	sounds[channel] = std::move(snd_data);

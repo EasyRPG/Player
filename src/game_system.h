@@ -30,6 +30,7 @@
 #include "transition.h"
 #include "string_view.h"
 #include "async_handler.h"
+#include "filesystem_stream.h"
 
 struct FileRequestResult;
 
@@ -294,16 +295,16 @@ public:
 	 * file.
 	 *
 	 * @param name File to find
-	 * @param find_func Find function to use (FindSound or FindMusic)
-	 * @param found_name Name of the found file to play
+	 * @param find_func Find function to use (OpenSound or OpenMusic)
+	 * @param found_stream Handle to the file to play
 	 * @return true when the file is supposed to Stop playback.
-	 *         false otherwise and file to play is returned as found_name
+	 *         false otherwise and a handle to the file is returned in found_stream
 	 */
-	static bool IsStopFilename(StringView name, std::string (*find_func) (StringView), std::string& found_name);
+	static bool IsStopFilename(StringView name, Filesystem_Stream::InputStream (*find_func) (StringView), Filesystem_Stream::InputStream& found_stream);
 
-	static bool IsStopMusicFilename(StringView name, std::string& found_name);
+	static bool IsStopMusicFilename(StringView name, Filesystem_Stream::InputStream& found_stream);
 	static bool IsStopMusicFilename(StringView name);
-	static bool IsStopSoundFilename(StringView name, std::string& found_name);
+	static bool IsStopSoundFilename(StringView name, Filesystem_Stream::InputStream& found_stream);
 	static bool IsStopSoundFilename(StringView name);
 
 	/** @return current atb mode */
@@ -320,7 +321,7 @@ public:
 
 	/**
 	 * Set before battle music
-	 * 
+	 *
 	 * @param music music to set
 	 */
 	void SetBeforeBattleMusic(lcf::rpg::Music music);
@@ -330,7 +331,7 @@ public:
 
 	/**
 	 * Set before vehicle music
-	 * 
+	 *
 	 * @param name name of music to set
 	 */
 	void SetBeforeVehicleMusic(lcf::rpg::Music music);
@@ -387,8 +388,8 @@ public:
 	 */
 	void SetMessageFaceIndex(int index);
 
-	/** 
-	 * Whether to mirror the face. 
+	/**
+	 * Whether to mirror the face.
 	 *
 	 * @return true: flipped, false: normal
 	 */
@@ -507,12 +508,12 @@ inline bool Game_System::HasSystem2Graphic() {
 }
 
 inline bool Game_System::IsStopMusicFilename(StringView name) {
-	std::string s;
+	Filesystem_Stream::InputStream s;
 	return IsStopMusicFilename(name, s);
 }
 
 inline bool Game_System::IsStopSoundFilename(StringView name) {
-	std::string s;
+	Filesystem_Stream::InputStream s;
 	return IsStopSoundFilename(name, s);
 }
 

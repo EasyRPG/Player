@@ -17,6 +17,7 @@
 
 // Headers
 #include "platform.h"
+#include "filefinder.h"
 #include "utils.h"
 #include <cassert>
 #include <utility>
@@ -33,9 +34,9 @@
 
 Platform::File::File(std::string name) :
 #ifdef _WIN32
-		filename(Utils::ToWideString(name))
+		filename(Utils::ToWideString(name.empty() ? "." : name))
 #else
-		filename(std::move(name))
+		filename(name.empty() ? "." : std::move(name))
 #endif
 {
 	// no-op
@@ -124,13 +125,53 @@ int64_t Platform::File::GetSize() const {
 #endif
 }
 
+bool Platform::File::MakeDirectory(bool follow_symlinks) const {
+#ifdef _WIN32
+	std::string path = Utils::FromWideString(filename);
+#else
+	std::string path = filename;
+#endif
+
+	auto components = FileFinder::SplitPath(path);
+	std::string cur_path;
+	if (StringView(path).starts_with("/")) {
+		cur_path += "/";
+	}
+
+	for (const auto& comp : components) {
+		if (comp.empty() || comp == ".") {
+			continue;
+		}
+
+		cur_path = FileFinder::MakePath(cur_path, comp);
+		File cf(cur_path);
+		if (cf.IsDirectory(follow_symlinks)) {
+			continue;
+		} else if (cf.IsFile(follow_symlinks) || cf.Exists()) {
+			return false;
+		} else {
+#ifdef _WIN32
+			if (!CreateDirectoryW(Utils::ToWideString(cur_path).c_str(), nullptr)) {
+				return false;
+			}
+#else
+			int res = mkdir(cur_path.c_str(), 0777);
+			if (res < 0) {
+				return false;
+			}
+#endif
+		}
+	}
+	return true;
+}
+
 Platform::Directory::Directory(const std::string& name) {
 #if defined(_WIN32)
-	dir_handle = ::_wopendir(Utils::ToWideString(name).c_str());
+	dir_handle = ::_wopendir(Utils::ToWideString(name.empty() ? "." : name).c_str());
 #elif defined(PSP2)
-	dir_handle = ::sceIoDopen(name.c_str());
+	dir_handle = ::sceIoDopen(name.empty() ? "." : name.c_str());
 #else
-	dir_handle = ::opendir(name.c_str());
+	dir_handle = ::opendir(name.empty() ? "." : name.c_str());
 #endif
 }
 

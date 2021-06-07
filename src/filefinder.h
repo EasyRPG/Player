@@ -21,6 +21,7 @@
 // Headers
 #include "system.h"
 #include "filesystem_stream.h"
+#include "filesystem.h"
 #include "string_view.h"
 #include "directory_tree.h"
 
@@ -41,9 +42,38 @@ namespace FileFinder {
 	 */
 	void Quit();
 
+	/** @return A filesystem handle for arbitrary file access inside the host filesystem */
+	FilesystemView Root();
+
+	/** @return A filesystem handle for file access inside the game directory */
+	FilesystemView Game();
+
 	/**
-	 * Finds an image file.
-	 * Searches through the current RPG Maker game and the RTP directories.
+	 * Sets the game filesystem.
+	 *
+	 * @param filesystem Game filesystem to use.
+	 */
+	void SetGameFilesystem(FilesystemView filesystem);
+
+	/**
+	 * A filesystem handle for file access inside the save directory.
+	 * Do not expect that this is the same as the game filesystem.
+	 * The path is based on Main_Data::SavePath but could be redirected when
+	 * the path is not writable because the filesystem does not support it.
+	 *
+	 * @return Save filesystem handle
+	 */
+	FilesystemView Save();
+
+	/**
+	 * Sets the save filesystem.
+	 *
+	 * @param filesystem Save filesystem to use.
+	 */
+	void SetSaveFilesystem(FilesystemView filesystem);
+
+	/**
+	 * Finds an image file in the current RPG Maker game.
 	 *
 	 * @param dir directory to check.
 	 * @param name image file name to check.
@@ -52,28 +82,7 @@ namespace FileFinder {
 	std::string FindImage(StringView dir, StringView name);
 
 	/**
-	 * Finds a file.
-	 * Searches through the current RPG Maker game and the RTP directories.
-	 *
-	 * @param dir directory to check.
-	 * @param name file name to check.
-	 * @return path to file.
-	 */
-	std::string FindDefault(StringView dir, StringView name);
-
-	/**
-	 * Finds a file.
-	 * Searches through the current RPG Maker game and the RTP directories.
-	 *
-	 * @param name the path and name.
-	 * @return path to file.
-	 */
-	std::string FindDefault(StringView name);
-
-	/**
-	 * Finds a music file.
-	 * Searches through the Music folder of the current RPG Maker game and
-	 * the RTP directories.
+	 * Finds a music file in the current RPG Maker game.
 	 *
 	 * @param name the music path and name.
 	 * @return path to file.
@@ -81,14 +90,42 @@ namespace FileFinder {
 	std::string FindMusic(StringView name);
 
 	/**
-	 * Finds a sound file.
-	 * Searches through the Sound folder of the current RPG Maker game and
-	 * the RTP directories.
+	 * Finds a sound file in the current RPG Maker game.
 	 *
 	 * @param name the sound path and name.
 	 * @return path to file.
 	 */
 	std::string FindSound(StringView name);
+
+	/**
+	 * Finds an image file and opens a file handle to it.
+	 * Searches through the current RPG Maker game and the RTP directories.
+	 *
+	 * @param dir directory to check.
+	 * @param name image file name to check.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenImage(StringView dir, StringView name);
+
+	/**
+	 * Finds a music file and opens a file handle to it.
+	 * Searches through the Music folder of the current RPG Maker game and
+	 * the RTP directories.
+	 *
+	 * @param name the music path and name.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenMusic(StringView name);
+
+	/**
+	 * Finds a sound file and opens a file handle to it.
+	 * Searches through the Sound folder of the current RPG Maker game and
+	 * the RTP directories.
+	 *
+	 * @param name the sound path and name.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenSound(StringView name);
 
 	/**
 	 * Finds a font file.
@@ -98,45 +135,6 @@ namespace FileFinder {
 	 * @return path to file.
 	 */
 	std::string FindFont(StringView name);
-
-	/**
-	* Creates stream from UTF-8 file name.
-	*
-	* @param name UTF-8 string file name.
-	* @param m stream mode.
-	* @return NULL if open failed.
-	*/
-	Filesystem_Stream::InputStream OpenInputStream(const std::string& name,
-			std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary);
-
-	/**
-	* Creates stream from UTF-8 file name.
-	*
-	* @param name UTF-8 string file name.
-	* @param m stream mode.
-	* @return NULL if open failed.
-	*/
-	Filesystem_Stream::OutputStream OpenOutputStream(const std::string& name,
-			std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary);
-
-	/**
-	 * Checks whether passed file is directory.
-	 * This function is case sensitve on some platform.
-	 *
-	 * @param file file to check.
-	 * @param follow_symlinks if true, follow symlinks and report about the target.
-	 * @return true if file is directory, otherwise false.
-	 */
-	bool IsDirectory(StringView file, bool follow_symlinks);
-
-	/**
-	 * Checks whether passed file exists.
-	 * This function is case sensitve on some platform.
-	 *
-	 * @param file file to check
-	 * @return true if file exists, otherwise false.
-	 */
-	bool Exists(StringView file);
 
 	/**
 	 * Appends name to directory.
@@ -155,7 +153,7 @@ namespace FileFinder {
 	 * @param initial_deepness How deep the passed path is relative to the game root
 	 * @return canonical path
 	 */
-	std::string MakeCanonical(StringView path, int initial_deepness);
+	std::string MakeCanonical(StringView path, int initial_deepness = -1);
 
 	/**
 	 * Splits a path in it's components.
@@ -174,7 +172,8 @@ namespace FileFinder {
 	std::pair<std::string, std::string> GetPathAndFilename(StringView path);
 
 	/**
-	 * Converts all path delimiters to forward slash (/)
+	 * Converts all path delimiters to the platform delimiters.
+	 * \ on Windows, / on others.
 	 *
 	 * @param path to convert
 	 */
@@ -201,46 +200,22 @@ namespace FileFinder {
 	std::string GetPathInsideGamePath(StringView path_in);
 
 	/**
-	 * Sets the directory tree that is used for executing the current RPG Maker
-	 * game.
-	 *
-	 * @param directory_tree Directory tree to use.
-	 */
-	void SetDirectoryTree(std::unique_ptr<DirectoryTree> directory_tree);
-
-	/**
-	 * Gets the directory tree that is used by the current game.
-	 *
-	 * @return directory tree
-	 */
-	DirectoryTreeView GetDirectoryTree();
-
-	/** @return A new directory tree that is rooted at the save directory or nullptr when not readable */
-	std::unique_ptr<DirectoryTree> CreateSaveDirectoryTree();
-
-	/**
-	 * @param p root directory of the tree
-	 * @return New directory tree or nullptr when p is not readable
-	 */
-	std::unique_ptr<DirectoryTree> CreateDirectoryTree(std::string p);
-
-	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
 	 */
-	bool IsValidProject(const DirectoryTreeView& tree);
+	bool IsValidProject(const FilesystemView& fs);
 
 	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) project
 	 */
-	bool IsRPG2kProject(const DirectoryTreeView& tree);
+	bool IsRPG2kProject(const FilesystemView& fs);
 
 	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid EasyRPG project
 	 */
-	bool IsEasyRpgProject(const DirectoryTreeView& tree);
+	bool IsEasyRpgProject(const FilesystemView& fs);
 
 	/**
 	 * Determines if the directory in question represents an RPG2k project with non-standard
@@ -249,7 +224,7 @@ namespace FileFinder {
 	 * @param tree The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
-	bool IsRPG2kProjectWithRenames(const DirectoryTreeView& tree);
+	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name
@@ -261,14 +236,6 @@ namespace FileFinder {
 
 	/** @returns Amount of savegames in the save directory */
 	int GetSavegames();
-
-	/**
-	 * Get the size of a file
-	 *
-	 * @param file the path to a file
-	 * @return the filesize, or -1 on error
-	 */
-	int64_t GetFileSize(StringView file);
 
 	/**
 	 * Known file sizes
@@ -301,6 +268,21 @@ namespace FileFinder {
 		RPG2K = 735000,
 		RPG2K3 = 927000,
 	};
+
+	/**
+	 * Utility function for getting a complete filesystem path.
+	 *
+	 * @param fs Filesystem to use
+	 * @return complete path
+	 */
+	std::string GetFullFilesystemPath(FilesystemView fs);
+
+	/**
+	 * Utility function for debug printing of a filesystem path.
+	 *
+	 * @param fs Filesystem to use
+	 */
+	void DumpFilesystem(FilesystemView fs);
 } // namespace FileFinder
 
 #endif

@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <memory>
 #include <thread>
 
 #ifdef _WIN32
@@ -182,14 +183,6 @@ void Player::Init(int argc, char *argv[]) {
 
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
-
-	// Retrieve save directory from persistent storage
-	EM_ASM(({
-		FS.mkdir("Save");
-		FS.mount(Module.EASYRPG_FS, {}, 'Save');
-		FS.syncfs(true, function(err) {
-		});
-	}));
 #endif
 
 	Main_Data::Init();
@@ -412,8 +405,8 @@ void Player::Exit() {
 	Font::Dispose();
 	DynRpg::Reset();
 	Graphics::Quit();
-	FileFinder::Quit();
 	Output::Quit();
+	FileFinder::Quit();
 	DisplayUi.reset();
 
 #ifdef PSP2
@@ -520,21 +513,21 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 1, "--project-path") && arg.NumValues() > 0) {
 			if (arg.NumValues() > 0) {
-#ifdef _WIN32
-				Main_Data::SetProjectPath(arg.Value(0));
-				BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::GetProjectPath()).c_str());
-				if (cur_dir) {
-					Main_Data::SetProjectPath(".");
+				auto gamefs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
+				if (!gamefs) {
+					Output::Error("Invalid --project-path {}", arg.Value(0));
 				}
-#else
-				Main_Data::SetProjectPath(arg.Value(0));
-#endif
+				FileFinder::SetGameFilesystem(gamefs);
 			}
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--save-path")) {
 			if (arg.NumValues() > 0) {
-				Main_Data::SetSavePath(arg.Value(0));
+				auto savefs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
+				if (!savefs) {
+					Output::Error("Invalid --save-path {}", arg.Value(0));
+				}
+				FileFinder::SetSaveFilesystem(savefs);
 			}
 			continue;
 		}
@@ -682,7 +675,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 void Player::CreateGameObjects() {
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210
-	std::string meta_file = FileFinder::FindDefault(META_NAME);
+	std::string meta_file = FileFinder::Game().FindFile(META_NAME);
 	meta.reset(new Meta(meta_file));
 
 	// Guess non-standard extensions (for the DB) before loading the encoding
@@ -698,21 +691,25 @@ void Player::CreateGameObjects() {
 	// Check for translation-related directories and load language names.
 	translation.InitTranslations();
 
-	std::string game_path = Main_Data::GetProjectPath();
-	std::string save_path = Main_Data::GetSavePath();
+	std::string game_path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
+	std::string save_path = FileFinder::GetFullFilesystemPath(FileFinder::Save());
 	if (game_path == save_path) {
-		Output::Debug("Using {} as Game and Save directory", game_path);
+		Output::DebugStr("Game and Save Directory:");
+		FileFinder::DumpFilesystem(FileFinder::Game());
 	} else {
-		Output::Debug("Using {} as Game directory", game_path);
-		Output::Debug("Using {} as Save directory", save_path);
+		Output::Debug("Game Directory:");
+		FileFinder::DumpFilesystem(FileFinder::Game());
+		Output::Debug("SaveDirectory:", save_path);
+		FileFinder::DumpFilesystem(FileFinder::Save());
 	}
 
 	LoadDatabase();
 
 	bool no_rtp_warning_flag = false;
 	{ // Scope lifetime of variables for ini parsing
-		std::string ini_file = FileFinder::FindDefault(INI_NAME);
-		auto ini_stream = FileFinder::OpenInputStream(ini_file, std::ios_base::in);
+		std::string ini_file = FileFinder::Game().FindFile(INI_NAME);
+
+		auto ini_stream = FileFinder::Game().OpenInputStream(ini_file, std::ios_base::in);
 		if (ini_stream) {
 			lcf::INIReader ini(ini_stream);
 			if (ini.ParseError() != -1) {
@@ -742,7 +739,7 @@ void Player::CreateGameObjects() {
 		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
 
-			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+			if (FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
 				// Heuristic: Detect if game was converted from 2000 to 2003 and
 				// no typical 2003 feature was used at all (breaks .flow e.g.)
 				if (lcf::Data::classes.size() == 1 &&
@@ -779,15 +776,15 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	Main_Data::filefinder_rtp.reset(new FileFinder_RTP(no_rtp_flag, no_rtp_warning_flag));
+	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag);
 
 	if ((patch & PatchOverride) == 0) {
-		if (!FileFinder::FindDefault("dynloader.dll").empty()) {
+		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
 			patch |= PatchDynRpg;
 			Output::Warning("This game uses DynRPG and will not run properly.");
 		}
 
-		if (!FileFinder::FindDefault("accord.dll").empty()) {
+		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
 			patch |= PatchManiac;
 			Output::Warning("This game uses the Maniac Patch and will not run properly.");
 		}
@@ -798,14 +795,14 @@ void Player::CreateGameObjects() {
 	// ExFont parsing
 	Cache::exfont_custom.clear();
 	// Check for bundled ExFont
-	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+	auto exfont_stream = FileFinder::OpenImage(".", "ExFont");
 #ifndef EMSCRIPTEN
-	if (exfont_file.empty()) {
+	if (!exfont_stream) {
 		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
 		// a ExFont can be manually bundled there)
-		std::string exep = FileFinder::FindDefault(EXE_NAME);
+		std::string exep = FileFinder::Game().FindFile(EXE_NAME);
 		if (!exep.empty()) {
-			auto exesp = FileFinder::OpenInputStream(exep);
+			auto exesp = FileFinder::Game().OpenInputStream(exep);
 			if (exesp) {
 				Output::Debug("Loading ExFont from {}", exep);
 				EXEReader exe_reader = EXEReader(exesp);
@@ -818,19 +815,14 @@ void Player::CreateGameObjects() {
 		}
 	}
 #endif
-	if (!exfont_file.empty()) {
-		auto exfont_stream = FileFinder::OpenInputStream(exfont_file);
-		if (exfont_stream) {
-			Output::Debug("Using custom ExFont: {}", exfont_file);
-			Cache::exfont_custom = Utils::ReadStream(exfont_stream);
-		} else {
-			Output::Debug("Reading custom ExFont {} failed", exfont_file);
-		}
+	if (exfont_stream) {
+		Output::Debug("Using custom ExFont: {}", exfont_stream.GetName());
+		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
 	ResetGameObjects();
 
-	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::FindDefault("autorun.script"));
+	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 }
 
 void Player::ResetGameObjects() {
@@ -869,26 +861,24 @@ void Player::ResetGameObjects() {
 	Input::ResetMask();
 }
 
-static bool DefaultLmuStartFileExists(const DirectoryTreeView& tree) {
+static bool DefaultLmuStartFileExists(const FilesystemView& fs) {
 	// Compute map_id based on command line.
 	int map_id = Player::start_map_id == -1 ? lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 	std::string mapName = Game_Map::ConstructMapName(map_id, false);
 
 	// Now see if the file exists.
-	return !tree.FindFile(mapName).empty();
+	return !fs.FindFile(mapName).empty();
 }
 
 void Player::GuessNonStandardExtensions() {
 	// Check all conditions, but check the remap last (since it is potentially slower).
 	FileExtGuesser::RPG2KNonStandardFilenameGuesser rpg2kRemap;
-	if (!FileFinder::IsRPG2kProject(FileFinder::GetDirectoryTree()) &&
-		!FileFinder::IsEasyRpgProject(FileFinder::GetDirectoryTree())) {
+	if (!FileFinder::IsRPG2kProject(FileFinder::Game()) &&
+		!FileFinder::IsEasyRpgProject(FileFinder::Game())) {
 
-		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::GetDirectoryTree());
+		rpg2kRemap = FileExtGuesser::GetRPG2kProjectWithRenames(FileFinder::Game());
 		if (rpg2kRemap.Empty()) {
 			// Unlikely to happen because of the game browser only launches valid games
-			Output::Debug("{} is not a supported project", Main_Data::GetProjectPath());
-
 			Output::Error("{}\n\n{}\n\n{}\n\n{}","No valid game was found.",
 				"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
 				"This engine only supports RPG Maker 2000 and 2003\ngames.",
@@ -900,8 +890,8 @@ void Player::GuessNonStandardExtensions() {
 	// There are several ways to handle this, but we just put 'is_easyrpg_project' in the header
 	// and calculate it here.
 	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
-	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+	std::string edb = FileFinder::Game().FindFile(DATABASE_NAME_EASYRPG);
+	std::string emt = FileFinder::Game().FindFile(TREEMAP_NAME_EASYRPG);
 	is_easyrpg_project = !edb.empty() && !emt.empty();
 
 	// Non-standard extensions only apply to non-EasyRPG projects
@@ -917,12 +907,13 @@ void Player::LoadDatabase() {
 	lcf::Data::Clear();
 
 	if (is_easyrpg_project) {
-		std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
-		auto edb_stream = FileFinder::OpenInputStream(edb, std::ios_base::in);
+		std::string edb = FileFinder::Game().FindFile(DATABASE_NAME_EASYRPG);
+		auto edb_stream = FileFinder::Game().OpenInputStream(edb, std::ios_base::in);
 		if (!edb_stream) {
 			Output::Error("Error loading {}", DATABASE_NAME_EASYRPG);
 			return;
 		}
+
 		auto db = lcf::LDB_Reader::LoadXml(edb_stream);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -931,12 +922,13 @@ void Player::LoadDatabase() {
 			lcf::Data::data = std::move(*db);
 		}
 
-		std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
-		auto emt_stream = FileFinder::OpenInputStream(emt, std::ios_base::in);
+		std::string emt = FileFinder::Game().FindFile(TREEMAP_NAME_EASYRPG);
+		auto emt_stream = FileFinder::Game().OpenInputStream(emt, std::ios_base::in);
 		if (!emt_stream) {
 			Output::Error("Error loading {}", TREEMAP_NAME_EASYRPG);
 			return;
 		}
+
 		auto treemap = lcf::LMT_Reader::LoadXml(emt_stream);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -946,15 +938,16 @@ void Player::LoadDatabase() {
 	} else {
 		// Retrieve the appropriately-renamed files.
 		std::string ldb_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB);
-		std::string ldb = FileFinder::FindDefault(ldb_name);
+		std::string ldb = FileFinder::Game().FindFile(ldb_name);
 		std::string lmt_name = fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LMT);
-		std::string lmt = FileFinder::FindDefault(lmt_name);
+		std::string lmt = FileFinder::Game().FindFile(lmt_name);
 
-		auto ldb_stream = FileFinder::OpenInputStream(ldb);
+		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (!ldb_stream) {
 			Output::Error("Error loading {}", ldb_name);
 			return;
 		}
+
 		auto db = lcf::LDB_Reader::Load(ldb_stream, encoding);
 		if (!db) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -963,11 +956,12 @@ void Player::LoadDatabase() {
 			lcf::Data::data = std::move(*db);
 		}
 
-		auto lmt_stream = FileFinder::OpenInputStream(lmt);
+		auto lmt_stream = FileFinder::Game().OpenInputStream(lmt);
 		if (!lmt_stream) {
 			Output::Error("Error loading {}", lmt_name);
 			return;
 		}
+
 		auto treemap = lcf::LMT_Reader::Load(lmt_stream, encoding);
 		if (!treemap) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
@@ -988,8 +982,8 @@ void Player::LoadDatabase() {
 		}
 
 		// Override map extension, if needed.
-		if (!DefaultLmuStartFileExists(FileFinder::GetDirectoryTree())) {
-			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::GetDirectoryTree(), *meta, fileext_map);
+		if (!DefaultLmuStartFileExists(FileFinder::Game())) {
+			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::Game(), *meta, fileext_map);
 		}
 	}
 }
@@ -1008,7 +1002,7 @@ static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 }
 
 void Player::LoadSavegame(const std::string& save_name, int save_id) {
-	Output::Debug("Loading Save {}", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name));
+	Output::Debug("Loading Save {}", save_name);
 	Main_Data::game_system->BgmFade(800);
 
 	// We erase the screen now before loading the saved game. This prevents an issue where
@@ -1021,7 +1015,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	auto save_stream = FileFinder::OpenInputStream(save_name);
+	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
 	if (!save_stream) {
 		Output::Error("Error loading {}", save_name);
 		return;
@@ -1170,8 +1164,8 @@ std::string Player::GetEncoding() {
 
 	// command line > ini > detection > current locale
 	if (encoding.empty()) {
-		std::string ini = FileFinder::FindDefault(INI_NAME);
-		auto ini_stream = FileFinder::OpenInputStream(ini);
+		std::string ini = FileFinder::Game().FindFile(INI_NAME);
+		auto ini_stream = FileFinder::Game().OpenInputStream(ini);
 		if (ini_stream) {
 			encoding = lcf::ReaderUtil::GetEncoding(ini_stream);
 		}
@@ -1180,8 +1174,8 @@ std::string Player::GetEncoding() {
 	if (encoding.empty() || encoding == "auto") {
 		encoding = "";
 
-		std::string ldb = FileFinder::FindDefault(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
-		auto ldb_stream = FileFinder::OpenInputStream(ldb);
+		std::string ldb = FileFinder::Game().FindFile(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
+		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (ldb_stream) {
 			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
 

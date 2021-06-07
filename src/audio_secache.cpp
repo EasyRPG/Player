@@ -19,6 +19,7 @@
 #include <cassert>
 #include <cstring>
 #include <map>
+#include <memory>
 #include <set>
 #include "audio_resampler.h"
 #include "audio_secache.h"
@@ -67,28 +68,25 @@ namespace {
 	}
 }
 
-std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) {
+std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStream stream) {
 	std::unique_ptr<AudioSeCache> se;
 
-	cache_type::iterator const it = cache.find(filename);
+	auto const it = cache.find(ToString(stream.GetName()));
 
-	se.reset(new AudioSeCache());
-	se->filename = filename;
+	se = std::make_unique<AudioSeCache>();
+	se->filename = ToString(stream.GetName());
 
 	if (it == cache.end()) {
 		// Not in cache
-
-		auto f = FileFinder::OpenInputStream(filename);
-
-		if (!f) {
+		if (!stream) {
 			se.reset();
 			return se;
 		}
 
-		se->audio_decoder = AudioDecoder::Create(f, filename, false);
+		se->audio_decoder = AudioDecoder::Create(stream, false);
 
 		if (se->audio_decoder) {
-			if (!se->audio_decoder->Open(std::move(f))) {
+			if (!se->audio_decoder->Open(std::move(stream))) {
 				se->audio_decoder.reset();
 			}
 		}

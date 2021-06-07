@@ -60,18 +60,18 @@ namespace RTP {
 		int version;
 		int hits;
 		int max;
-		DirectoryTreeView tree;
+		FilesystemView tree;
 	};
 
 	/**
 	 * Uses a file finder tree to detect the installed RTP, the list is sorted from best to worst hit.
 	 * RTP with zero hits are removed.
 	 *
-	 * @param tree directory tree
+	 * @param fs Filesystem tree
 	 * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
 	 * @return List of detected RTP types
 	 */
-	std::vector<RtpHitInfo> Detect(const DirectoryTreeView& tree, int version);
+	std::vector<RtpHitInfo> Detect(const FilesystemView& fs, int version);
 
 	/**
 	 * Takes an asset name and returns all RTP that match

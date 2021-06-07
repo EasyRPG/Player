@@ -207,7 +207,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 }
 
 bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
-	auto is = FileFinder::OpenInputStream(ToString(list_file));
+	auto is = FileFinder::Game().OpenInputStream(ToString(list_file));
 	assert(async_scripts.empty());
 
 	if (!is) {
@@ -238,7 +238,7 @@ bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 bool Game_Ineluki::Parse(StringView ini_file) {
 	auto ini_file_s = ToString(ini_file);
 
-	auto is = FileFinder::OpenInputStream(ini_file_s);
+	auto is = FileFinder::Game().OpenInputStream(ini_file_s);
 	if (!is) {
 		return false;
 	}
@@ -370,7 +370,7 @@ void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
 		return a.invoked;
 	})) {
 		std::for_each(async_scripts.begin(), async_scripts.end(), [this](const auto& a) {
-			Execute(FileFinder::FindDefault(a.script_name));
+			Execute(FileFinder::Game().FindFile(a.script_name));
 		});
 		async_scripts.clear();
 	}

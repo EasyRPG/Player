@@ -88,6 +88,13 @@ private:
 
 	/** What the state of the Player::debug_flag was at launch time */
 	bool initial_debug_flag = false;
+
+	struct DirectoryStack {
+		FilesystemView filesystem;
+		int index = 0;
+	};
+
+	std::vector<DirectoryStack> stack;
 };
 
 #endif

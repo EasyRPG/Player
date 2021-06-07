@@ -49,7 +49,7 @@ GenericAudio::GenericAudio() {
 GenericAudio::~GenericAudio() {
 }
 
-void GenericAudio::BGM_Play(const std::string& file, int volume, int pitch, int fadein) {
+void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) {
 	bool bgm_set = false;
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
@@ -59,7 +59,7 @@ void GenericAudio::BGM_Play(const std::string& file, int volume, int pitch, int 
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
 			UnlockMutex();
-			PlayOnChannel(BGM_Channel, file, volume, pitch, fadein);
+			PlayOnChannel(BGM_Channel, std::move(stream), volume, pitch, fadein);
 		}
 	}
 }
@@ -145,16 +145,16 @@ void GenericAudio::BGM_Pitch(int pitch) {
 	UnlockMutex();
 }
 
-void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
+void GenericAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) {
 	for (auto& SE_Channel : SE_Channels) {
 		if (!SE_Channel.decoder) {
 			//If there is an unused se channel
-			PlayOnChannel(SE_Channel, file, volume, pitch);
+			PlayOnChannel(SE_Channel, std::move(stream), volume, pitch);
 			return;
 		}
 	}
 	// FIXME Not displaying as warning because multiple games exhaust free channels available, see #1356
-	Output::Debug("Couldn't play {} SE. No free channel available", FileFinder::GetPathInsideGamePath(file));
+	Output::Debug("Couldn't play {} SE. No free channel available", stream.GetName());
 }
 
 void GenericAudio::SE_Stop() {
@@ -173,17 +173,16 @@ void GenericAudio::SetFormat(int frequency, AudioDecoder::Format format, int cha
 	output_format.channels = channels;
 }
 
-bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int volume, int pitch, int fadein) {
+bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStream filestream, int volume, int pitch, int fadein) {
 	chan.paused = true; // Pause channel so the audio thread doesn't work on it
 	chan.stopped = false; // Unstop channel so the audio thread doesn't delete it
 
-	auto filestream = FileFinder::OpenInputStream(file);
 	if (!filestream) {
-		Output::Warning("BGM file not readable: {}", FileFinder::GetPathInsideGamePath(file));
+		Output::Warning("BGM file not readable: {}", filestream.GetName());
 		return false;
 	}
 
-	chan.decoder = AudioDecoder::Create(filestream, file);
+	chan.decoder = AudioDecoder::Create(filestream);
 	if (chan.decoder && chan.decoder->Open(std::move(filestream))) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
@@ -193,17 +192,17 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 
 		return true;
 	} else {
-		Output::Warning("Couldn't play BGM {}. Format not supported", FileFinder::GetPathInsideGamePath(file));
+		Output::Warning("Couldn't play BGM {}. Format not supported", filestream.GetName());
 	}
 
 	return false;
 }
 
-bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int volume, int pitch) {
+bool GenericAudio::PlayOnChannel(SeChannel& chan, Filesystem_Stream::InputStream filestream, int volume, int pitch) {
 	chan.paused = true; // Pause channel so the audio thread doesn't work on it
 	chan.stopped = false; // Unstop channel so the audio thread doesn't delete it
 
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
+	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(std::move(filestream));
 	if (cache) {
 		chan.decoder = cache->CreateSeDecoder();
 		chan.decoder->SetPitch(pitch);
@@ -212,7 +211,7 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int v
 		chan.paused = false; // Unpause channel -> Play it.
 		return true;
 	} else {
-		Output::Warning("Couldn't play SE {}. Format not supported", FileFinder::GetPathInsideGamePath(file));
+		Output::Warning("Couldn't play SE {}. Format not supported", filestream.GetName());
 	}
 
 	return false;

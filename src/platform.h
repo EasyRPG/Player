@@ -68,6 +68,7 @@ namespace Platform {
 		 * @param name File to access
 		 */
 		explicit File(std::string name);
+
 		~File() = default;
 
 		/** @return True when the file exists */
@@ -93,6 +94,13 @@ namespace Platform {
 
 		/** @return Filesize or -1 on error */
 		int64_t GetSize() const;
+
+		/**
+		 * Creates a directory recursively at the filename path.
+		 * @param follow_symlinks Whether to follow symlinks (if supported on this platform)
+		 * @return true when the directory was created.
+		 */
+		bool MakeDirectory(bool follow_symlinks) const;
 
 	private:
 #ifdef _WIN32
