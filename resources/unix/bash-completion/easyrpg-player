@@ -15,7 +15,7 @@ _easyrpg-player ()
   # all possible options
   ouropts='--autobattle-algo --battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
            --encoding --enemyai-algo --engine --fps-limit --fps-render-window --fullscreen -h --help \
-           --hide-title --load-game-id --new-game --no-vsync --project-path --record-input \
+           --hide-title --load-game-id --new-game --no-vsync --project-path --rtp-path --record-input \
            --replay-input --save-path --seed --show-fps --start-map-id --start-party \
            --start-position --test-play --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
@@ -54,6 +54,11 @@ _easyrpg-player ()
       ;;
     # set game directory
     --@(project-path|save-path))
+      _filedir -d
+      return
+      ;;
+    # add rtp directory
+    --rtp-path)
       _filedir -d
       return
       ;;

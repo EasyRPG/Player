@@ -106,6 +106,7 @@ namespace Player {
 	std::vector<int> party_members;
 	int start_map_id;
 	bool no_rtp_flag;
+	std::string rtp_path;
 	bool no_audio_flag;
 	bool is_easyrpg_project;
 	bool mouse_flag;
@@ -632,6 +633,12 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 			no_rtp_flag = true;
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--rtp-path")) {
+			if (arg.NumValues() > 0) {
+				rtp_path = arg.Value(0);
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 2, "--patch")) {
 			patch |= PatchOverride;
 			for (int i = 0; i < arg.NumValues(); ++i) {
@@ -776,7 +783,7 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag);
+	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
 	if ((patch & PatchOverride) == 0) {
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
