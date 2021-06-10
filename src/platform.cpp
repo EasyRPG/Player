@@ -155,7 +155,11 @@ bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 				return false;
 			}
 #else
+#  if defined(PSP2)
+			int res = sceIoMkdir(cur_path.c_str(), 0777);
+#  else
 			int res = mkdir(cur_path.c_str(), 0777);
+#  endif
 			if (res < 0) {
 				return false;
 			}
