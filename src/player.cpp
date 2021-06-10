@@ -183,6 +183,14 @@ void Player::Init(int argc, char *argv[]) {
 
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
+
+	// Retrieve save directory from persistent storage
+	EM_ASM(({
+		FS.mkdir("Save");
+		FS.mount(Module.EASYRPG_FS, {}, 'Save');
+		FS.syncfs(true, function(err) {
+		});
+	}));
 #endif
 
 	Main_Data::Init();
