@@ -39,6 +39,12 @@ Game_System::Game_System()
 	: dbsys(&lcf::Data::system)
 { }
 
+static void AdjustVolume(int& volume) {
+	if (volume > 0) {
+		volume = (int)(100 * std::pow(10, (-100 + volume) / 60.0));
+	}
+}
+
 void Game_System::SetupFromSave(lcf::rpg::SaveSystem save) {
 	data = std::move(save);
 }
@@ -88,6 +94,9 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 
 		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
+
+	// Adjust to RPG_RT (Direct Sound) volume scale
+	AdjustVolume(data.current_music.volume);
 
 	// (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
@@ -151,6 +160,9 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 		Output::Debug("SE {} has invalid volume {}", se.name, se.volume);
 		volume = Utils::Clamp<int32_t>(se.volume, 0, 100);
 	}
+
+	// Adjust to RPG_RT (Direct Sound) volume scale
+	AdjustVolume(volume);
 
 	if (se.tempo < 50 || se.tempo > 200) {
 		Output::Debug("SE {} has invalid tempo {}", se.name, se.tempo);
