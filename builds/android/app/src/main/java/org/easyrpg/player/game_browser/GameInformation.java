@@ -20,28 +20,32 @@ public class GameInformation implements Comparable<GameInformation> {
 	private String title, gameFolderPath, savePath;
 	private boolean isFavorite;
 
-	public GameInformation(String gameFolderPath) {
+	public GameInformation(String title, String gameFolderPath) {
+		this(title, gameFolderPath, "");
+	}
+
+	public GameInformation(String title, String gameFolderPath, String saveFolderPath) {
+		this.title = title;
 		this.gameFolderPath = gameFolderPath;
 		File f = new File(gameFolderPath);
 
 		// SavePath
-		if (GameBrowserHelper.canWrite(f)) {
-			this.savePath = gameFolderPath;
+		if (saveFolderPath.isEmpty()) {
+			if (GameBrowserHelper.canWrite(f)) {
+				this.savePath = gameFolderPath;
+			} else {
+				// Not writable, redirect to a different path
+				// Try preventing collisions by using the names of the two parent directories
+				String savename = f.getParentFile().getName() + "/" + f.getName();
+				savePath = SettingsManager.getEasyRPGFolder() + "/Save/" + savename;
+				new File(savePath).mkdirs();
+			}
 		} else {
-			// Not writable, redirect to a different path
-			// Try preventing collisions by using the names of the two parent directories
-			String savename = f.getParentFile().getName() + "/" + f.getName();  
-			savePath = SettingsManager.getEasyRPGFolder() + "/Save/" + savename;
-			new File(savePath).mkdirs();
+			this.savePath = saveFolderPath;
 		}
 
 		// isFavorite
 		this.isFavorite = isFavoriteFromSettings();
-	}
-	
-	public GameInformation(String title, String gameFolderPath) {
-		this(gameFolderPath);
-		this.title = title;
 	}
 
 	public String getTitle() {

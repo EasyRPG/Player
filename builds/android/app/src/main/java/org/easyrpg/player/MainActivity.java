@@ -58,35 +58,25 @@ public class MainActivity extends Activity {
      */
     private void startGameStandalone() {
         AssetManager assetManager = getAssets();
-        String dataDir = getApplication().getApplicationInfo().dataDir;
+        String gameDir = "";
 
-        // Standalone mode: Copy game in game folder to data folder and launch
-        // it
-        if (AssetUtils.exists(assetManager, "game")) {
-            Log.i("EasyRPG", "Standalone mode : a \"game\" folder is present in asset folder");
-            standaloneMode = true;
+        // Launching a folder inside the APK is unsupported because of API limitations
+        // When enumerating folders some Android implementations will only report regular files.
 
-            // Copy game in internal memory
-            if (!(new File(dataDir + "/game").exists())) {
-                AssetUtils.copyFolder(assetManager, "game", dataDir + "/game");
-            }
-        }
-
-        // Standalone mode: Unzip game.zip
+        // Standalone mode: Launch the game inside "game.zip"
         if (AssetUtils.fileExists(assetManager, "game.zip")) {
             Log.i("EasyRPG", "Standalone mode : a \"game.zip\" file is present inside the asset folder");
             standaloneMode = true;
-
-            // Unzip game to internal memory
-            if (!(new File(dataDir + "/game").exists())) {
-                AssetUtils.unzipFile(assetManager, "game.zip", dataDir + "/game");
-            }
+            gameDir = "apk://game.zip";
         }
 
         if (standaloneMode) {
             // Launch the game
             retrieveUserPreferences();
-            GameInformation project = new GameInformation(dataDir + "/game");
+            String saveDir = getApplication().getApplicationInfo().dataDir + "/Save";
+            new File(saveDir).mkdirs();
+
+            GameInformation project = new GameInformation("Standalone", gameDir, saveDir);
             GameBrowserHelper.launchGame(this, project);
             finish();
         }
