@@ -180,8 +180,6 @@ void Player::Init(int argc, char *argv[]) {
 	Game_Clock::logClockInfo();
 	Rand::SeedRandomNumberGenerator(time(NULL));
 
-	auto cfg = ParseCommandLine(argc, argv);
-
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
 
@@ -193,6 +191,8 @@ void Player::Init(int argc, char *argv[]) {
 		});
 	}));
 #endif
+
+	auto cfg = ParseCommandLine(argc, argv);
 
 	Main_Data::Init();
 
