@@ -27,6 +27,7 @@ package org.easyrpg.player.player;
 import android.app.AlertDialog;
 import android.content.ClipDescription;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -59,6 +60,7 @@ import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -69,6 +71,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
+    public static final String TAG_STANDALONE = "standalone_mode";
     public static final int LAYOUT_EDIT = 12345;
 
     DrawerLayout drawer;
@@ -194,13 +197,19 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                     ArrayList<Uri> files = new ArrayList<>();
                     // The easyrpg_log.txt
                     String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
-                    Uri saveFolder = Uri.parse(savepath);
-                    Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
-                    if(log != null) {
-                        files.add(log);
+
+                    if (getIntent().getBooleanExtra(TAG_STANDALONE, false)) {
+                        // FIXME: Attaching files does not work because the files are in /data and
+                        // other apps have no permission
+                    } else {
+                        Uri saveFolder = Uri.parse(savepath);
+                        Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
+                        if (log != null) {
+                            files.add(log);
+                        }
+                        // The save files
+                        files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
                     }
-                    // The save files
-                    files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
 
                     if (Build.VERSION.SDK_INT >= 24) {
                         // Lazy workaround as suggested on https://stackoverflow.com/q/38200282
@@ -385,6 +394,15 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         params.topMargin = topMargin;
         params.leftMargin = leftMargin;
         surface.setLayoutParams(params);
+    }
+
+    /**
+     * Used by the native APK-FS code to retrieve a handle to the asset manager.
+     *
+     * @return asset manager
+     */
+    public AssetManager getAssetManager() {
+        return getAssets();
     }
 
     /**

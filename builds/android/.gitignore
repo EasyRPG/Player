@@ -53,6 +53,7 @@ obj/
 .gradle
 
 # immediate files and libraries
+app/src/main/assets
 app/src/main/jniLibs
 
 # Keystore files
@@ -71,3 +72,4 @@ metadata/*/playstore.xml
 
 # immediate changelog files
 metadata/en-US/changelogs/*.txt
+

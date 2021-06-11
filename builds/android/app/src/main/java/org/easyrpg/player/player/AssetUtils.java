@@ -107,55 +107,6 @@ public class AssetUtils {
 		}
 	}
 
-	public static void unzipFile(AssetManager assetManager, String source, String target) {
-		String state = Environment.getExternalStorageState();
-
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			// We can read and write the media
-
-			String filename;
-			InputStream is = null;
-			ZipInputStream zis = null;
-			ZipEntry ze = null;
-
-			try {
-				is = assetManager.open(source);
-				zis = new ZipInputStream(new BufferedInputStream(is));
-
-				while((ze = zis.getNextEntry()) != null) {
-					filename = ze.getName();
-
-					if(ze.isDirectory()) {
-						File fmd = new File(target + "/" + filename);
-						fmd.mkdirs();
-						continue;
-					}
-
-					FileOutputStream fout = new FileOutputStream(target + "/" + filename);
-					copyFile(zis, fout);
-					fout.flush();
-					fout.close();
-
-					fout.close();
-					zis.closeEntry();
-				}
-				zis.close();
-				is.close();
-
-			} catch (IOException e) {
-				Log.e("ERROR", "Failed to get asset zipfile.", e);
-			}
-
-		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-			// We can only read the media
-		} else {
-			// Something else is wrong. It may be one of many other states, but
-			// all we need
-			// is to know is we can neither read nor write
-		}
-	}
-
-
 	// Method used by copyAssets() on purpose to copy a file.
 	private static void copyFile(InputStream in, OutputStream out) throws IOException {
 		byte[] buffer = new byte[1024];

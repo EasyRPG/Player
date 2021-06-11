@@ -1211,6 +1211,8 @@ else()
 		add_library(easyrpg_android
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
+			src/platform/android/filesystem_apk.cpp
+			src/platform/android/filesystem_apk.h
 			src/platform/android/filesystem_saf.cpp
 			src/platform/android/filesystem_saf.h
 			src/platform/sdl/main.cpp)
