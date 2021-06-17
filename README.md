@@ -176,7 +176,7 @@ Available options:
 
 * File an issue at https://github.com/EasyRPG/Player/issues
 * Open a thread at https://community.easyrpg.org/
-* Chat with us via IRC: [#easyrpg at irc.freenode.net]
+* Chat with us via IRC: [#easyrpg at irc.libera.chat]
 
 
 ## License
@@ -203,7 +203,7 @@ EasyRPG Player makes use of the following 3rd party software:
 [buildscripts]: https://github.com/EasyRPG/buildscripts
 [liblcf]: https://github.com/EasyRPG/liblcf
 [vcpkg]: https://github.com/Microsoft/vcpkg
-[#easyrpg at irc.freenode.net]: https://kiwiirc.com/nextclient/#ircs://irc.freenode.net/#easyrpg?nick=rpgguest??
+[#easyrpg at irc.libera.chat]: https://kiwiirc.com/nextclient/#ircs://irc.libera.chat/#easyrpg?nick=rpgguest??
 [COPYING]: COPYING
 [FMMidi]: http://unhaut.x10host.com/fmmidi/
 [PicoJSON]: https://github.com/kazuho/picojson
