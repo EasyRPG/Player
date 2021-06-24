@@ -1642,14 +1642,25 @@ bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { /
 }
 
 int Game_Interpreter::ValueOrVariable(int mode, int val) {
-	switch (mode) {
-		case 0:
-			return val;
-		case 1:
-			return Main_Data::game_variables->Get(val);
-		default:
-			return -1;
+	if (mode == 0) {
+		return val;
+	} else if (mode == 1) {
+		return Main_Data::game_variables->Get(val);
+	} else if (Player::IsPatchManiac()) {
+		// Maniac Patch does not implement all modes for all commands
+		// For simplicity it is enabled for all here
+		if (mode == 2) {
+			// Variable indirect
+			return Main_Data::game_variables->Get(Main_Data::game_variables->Get(val));
+		} else if (mode == 3) {
+			// Switch (F = 0, T = 1)
+			return Main_Data::game_switches->Get(val) ? 1 : 0;
+		} else if (mode == 4) {
+			// Switch through Variable indirect
+			return Main_Data::game_switches->Get(Main_Data::game_variables->Get(val)) ? 1 : 0;
+		}
 	}
+	return -1;
 }
 
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
