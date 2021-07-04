@@ -363,7 +363,7 @@ void NxUi::ProcessEvents() {
 
 	// cycle through GUI layouts
 	input = padGetButtonsDown(&pad);
-	if (input & KEY_ZL)
+	if (input & HidNpadButton_ZL)
 		ui_mode = (ui_mode + 1) % 3;
 
 	// do not handle touch when not displaying buttons or no touch happened
