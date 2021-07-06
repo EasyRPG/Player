@@ -670,6 +670,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro)$")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	if(${PLAYER_AUDIO_BACKEND} STREQUAL "libretro")
+		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(WIN32 OR APPLE)
 		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(UNIX)
@@ -901,7 +902,10 @@ else()
 			src/platform/libretro/libretro_clock.h
 			src/platform/libretro/libretro_input_buttons.cpp
 			src/platform/libretro/libretro_ui.cpp
-			src/platform/libretro/libretro_ui.h)
+			src/platform/libretro/libretro_ui.h
+			src/platform/libretro/midiout_device_libretro.cpp
+			src/platform/libretro/midiout_device_libretro.h
+		)
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")

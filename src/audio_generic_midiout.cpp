@@ -24,7 +24,9 @@
 #include "filesystem_stream.h"
 #include "game_clock.h"
 
-#ifdef HAVE_ALSA
+#ifdef USE_LIBRETRO
+#include "platform/libretro/midiout_device_libretro.h"
+#elif HAVE_ALSA
 #include "platform/linux/midiout_device_alsa.h"
 #elif _WIN32
 #include "platform/windows/midiout_device_win32.h"
@@ -37,7 +39,10 @@ using namespace std::chrono_literals;
 GenericAudioMidiOut::GenericAudioMidiOut() {
 	stop_thread.store(false);
 
-#ifdef HAVE_ALSA
+#ifdef USE_LIBRETRO
+	auto dec = std::make_unique<LibretroMidiOutDevice>();
+	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+#elif HAVE_ALSA
 	auto dec = std::make_unique<AlsaMidiOutDevice>();
 	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 #elif _WIN32
