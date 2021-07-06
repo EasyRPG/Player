@@ -304,8 +304,8 @@ int AudioDecoderMidi::FillBuffer(uint8_t* buffer, int length) {
 
 void AudioDecoderMidi::SendMessageToAllChannels(uint32_t midi_msg) {
 	for (int channel = 0; channel < 16; channel++) {
-		uint8_t event_type = midimsg_get_event_type(midi_msg);
-		midi_msg |= (((event_type << 4) & 0xF0) | (channel & 0x0F)) & 0x0000FF;
+		midi_msg &= ~(0xF);
+		midi_msg |= (channel & 0x0F);
 		mididec->SendMidiMessage(midi_msg);
 	}
 }

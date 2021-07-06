@@ -73,14 +73,21 @@ AS_IF([test "x$with_audio" != "xno"],[
 	EP_PKG_CHECK([LIBMPG123],[libmpg123],[MP3 support.])
 	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support (GUS patches). Alternative to internal fmmidi.])
 	EP_PKG_CHECK([FLUIDSYNTH],[fluidsynth],[Midi support (Soundfonts). Alternative to internal fmmidi.])
-    AS_IF([test "$with_fluidsynth" != "yes"],[
-        EP_PKG_CHECK([FLUIDLITE],[fluidlite],[Midi support (Soundfonts). Liteweight version of FluidSynth. Alternative to internal fmmidi.])
-    ], [AC_SUBST([with_fluidlite], "no"]))
+	AS_IF([test "$with_fluidsynth" != "yes"],[
+		EP_PKG_CHECK([FLUIDLITE],[fluidlite],[Midi support (Soundfonts). Liteweight version of FluidSynth. Alternative to internal fmmidi.])
+	], [AC_SUBST([with_fluidlite], "no"]))
+	EP_PKG_CHECK([ALSA],[alsa],[Midi support (Daemon)])
 	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
 	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support. Fallback when unsupported by dr_wav.])
 	EP_PKG_CHECK([LIBXMP],[libxmp],[Tracker module support.])
 	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support.])
+
+	AS_IF([test "$with_alsa" = "yes"],[
+		AC_DEFINE(HAVE_NATIVE_MIDI,[1],[Native Midi support])
+		AM_CONDITIONAL([HAVE_ALSA], [test "$with_alsa" = "yes"])
+		AX_PTHREAD
+	])
 
 	# FIXME: These prefixed with `LIB` must be propagated to other Makefiles and sources
 	AS_IF([test "$with_libmpg123" = "yes"],[AC_DEFINE(HAVE_MPG123,[1],[MP3 support.])])
@@ -197,6 +204,7 @@ if test "yes" != "$silent"; then
 		echo "  -midi (libwildmidi):       $with_libwildmidi"
 		echo "  -midi (FluidSynth):        $with_fluidsynth"
 		echo "  -midi (FluidLite):         $with_fluidlite"
+		echo "  -midi (Native, ALSA):      $with_alsa"
 		echo "  -ogg Vorbis (vorbisfile):  $with_oggvorbis"
 		echo "  -opus (opusfile):          $with_opus"
 		echo "  -built-in WAV (dr_wav):    $enable_drwav"

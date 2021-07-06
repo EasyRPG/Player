@@ -19,6 +19,7 @@
 #define EP_AUDIO_GENERIC_MIDITHREAD_H
 
 #include <memory>
+#include "system.h"
 
 class AudioDecoderMidi;
 namespace Filesystem_Stream {

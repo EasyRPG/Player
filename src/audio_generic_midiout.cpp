@@ -24,7 +24,9 @@
 #include "filesystem_stream.h"
 #include "game_clock.h"
 
-#ifdef _WIN32
+#ifdef HAVE_ALSA
+#include "platform/linux/midiout_device_alsa.h"
+#elif _WIN32
 #include "platform/windows/midiout_device_win32.h"
 #elif __APPLE__
 #include "platform/macos/midiout_device_coreaudio.h"
@@ -32,11 +34,13 @@
 
 using namespace std::chrono_literals;
 
-
 GenericAudioMidiOut::GenericAudioMidiOut() {
 	stop_thread.store(false);
 
-#ifdef _WIN32
+#ifdef HAVE_ALSA
+	auto dec = std::make_unique<AlsaMidiOutDevice>();
+	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+#elif _WIN32
 	auto dec = std::make_unique<Win32MidiOutDevice>();
 	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 	/*FIXME if (!device->IsOK()) {
