@@ -27,6 +27,7 @@ package org.easyrpg.player.player;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -133,7 +134,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Project preferences
         buttonMappingManager = ButtonMappingManager.getInstance(this);
-        GameInformation project = new GameInformation(getProjectPath());
+        GameInformation project = new GameInformation("", getProjectPath());
         project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
@@ -189,7 +190,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LAYOUT_EDIT) {
-            GameInformation project = new GameInformation(getProjectPath());
+            GameInformation project = new GameInformation("", getProjectPath());
             project.getProjectInputLayout(buttonMappingManager);
 
             // Choose the proper InputLayout
@@ -202,7 +203,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     
     private void editLayout() {
         Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
-        GameInformation project = new GameInformation(getProjectPath());
+        GameInformation project = new GameInformation("", getProjectPath());
         project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
@@ -368,6 +369,15 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         String str = SettingsManager.getEasyRPGFolder() + "/rtp";
         // Log.v("SDL", "getRtpPath " + str);
         return str;
+    }
+
+    /**
+     * Used by the native APK-FS code to retrieve a handle to the asset manager.
+     *
+     * @return asset manager
+     */
+    public AssetManager getAssetManager() {
+        return getAssets();
     }
 
     /**

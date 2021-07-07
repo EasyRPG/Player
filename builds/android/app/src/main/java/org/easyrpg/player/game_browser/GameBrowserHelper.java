@@ -231,39 +231,33 @@ public class GameBrowserHelper {
 
         String path = project.getGameFolderPath();
 
-        // Test again in case somebody messed with the file system
-        if (GameBrowserHelper.isRpg2kGame(new File(path))) {
-            Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
-            ArrayList<String> args = new ArrayList<String>();
+        Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
+        ArrayList<String> args = new ArrayList<String>();
 
-            // Path of game passed to PlayerActivity via intent "project_path"
-            // Command line passed via intent "command_line"
-            args.add("--project-path");
-            args.add(path);
+        // Path of game passed to PlayerActivity via intent "project_path"
+        // Command line passed via intent "command_line"
+        args.add("--project-path");
+        args.add(path);
 
-            args.add("--save-path");
-            args.add(project.getSavePath());
+        args.add("--save-path");
+        args.add(project.getSavePath());
 
-            args.add("--encoding");
-            if (project.getEncoding() == null || project.getEncoding().length() == 0) {
-                args.add("auto");
-            } else {
-                args.add(project.getEncoding());
-            }
-
-            // Disable audio depending on user preferences
-            if (!SettingsManager.isAudioEnabled()) {
-                args.add("--disable-audio");
-            }
-
-            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
-            intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
-            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
-            context.startActivity(intent);
+        args.add("--encoding");
+        if (project.getEncoding() == null || project.getEncoding().length() == 0) {
+            args.add("auto");
         } else {
-            String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            args.add(project.getEncoding());
         }
+
+        // Disable audio depending on user preferences
+        if (!SettingsManager.isAudioEnabled()) {
+            args.add("--disable-audio");
+        }
+
+        intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
+        intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
+        intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
+        context.startActivity(intent);
     }
 
     public static void openSettingsActivity(Context context) {
