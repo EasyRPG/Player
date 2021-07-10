@@ -131,9 +131,9 @@ void GenericAudio::BGM_Fade(int fade) {
 	LockMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
 		if (BGM_Channel.midi_out_used) {
-			midi_thread->GetMidiOut().SetFade(midi_thread->GetMidiOut().GetVolume(), 0, fade);
+			midi_thread->GetMidiOut().SetFade(midi_thread->GetMidiOut().GetVolume(), 0, std::chrono::milliseconds(fade));
 		} else if (BGM_Channel.decoder) {
-			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, fade);
+			BGM_Channel.decoder->SetFade(BGM_Channel.decoder->GetVolume(), 0, std::chrono::milliseconds(fade));
 		}
 	}
 	UnlockMutex();
@@ -214,7 +214,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		if (midi_out.Open(std::move(filestream))) {
 			midi_out.SetPitch(pitch);
 			midi_out.SetVolume(volume);
-			midi_out.SetFade(0, volume, fadein);
+			midi_out.SetFade(0, volume, std::chrono::milliseconds(fadein));
 			midi_out.SetLooping(true);
 			chan.paused = false;
 			chan.midi_out_used = true;
@@ -233,7 +233,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	if (chan.decoder && chan.decoder->Open(std::move(filestream))) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-		chan.decoder->SetFade(0, volume, fadein);
+		chan.decoder->SetFade(0, volume, std::chrono::milliseconds(fadein));
 		chan.decoder->SetLooping(true);
 		chan.paused = false; // Unpause channel -> Play it.
 
@@ -303,7 +303,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 				if (currently_mixed_channel.stopped) {
 					currently_mixed_channel.decoder.reset();
 				} else {
-					currently_mixed_channel.decoder->Update(1000 / 60);
+					currently_mixed_channel.decoder->Update(std::chrono::microseconds(1000 * 1000 / 60));
 					volume = current_master_volume * (currently_mixed_channel.decoder->GetVolume() / 100.0);
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);

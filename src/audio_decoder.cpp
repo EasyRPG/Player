@@ -32,6 +32,8 @@
 #include "decoder_drwav.h"
 #include "decoder_xmp.h"
 
+using namespace std::chrono_literals;
+
 class WMAUnsupportedFormatDecoder : public AudioDecoder {
 public:
 	WMAUnsupportedFormatDecoder() {
@@ -54,7 +56,7 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 	}
 	stream.seekg(0, std::ios::beg);
 
-	auto add_resampler = [resample](std::unique_ptr<AudioDecoder> dec) -> std::unique_ptr<AudioDecoder> {
+	auto add_resampler = [resample](std::unique_ptr<AudioDecoder> dec) -> std::unique_ptr<AudioDecoderBase> {
 #ifdef USE_AUDIO_RESAMPLER
 		if (resample)
 			return std::make_unique<AudioResampler>(std::move(dec));
@@ -162,13 +164,13 @@ void AudioDecoder::Resume() {
 	paused = false;
 }
 
-void AudioDecoder::Update(int delta) {
-	if (fade_time <= 0.0) {
+void AudioDecoder::Update(std::chrono::microseconds delta) {
+	if (fade_time <= 0ms) {
 		return;
 	}
 
 	fade_time -= delta;
-	volume += delta * delta_step;
+	volume += std::chrono::duration_cast<std::chrono::milliseconds>(delta).count() * delta_volume_step;
 
 	volume = volume > 100.0 ? 100.0 :
 		volume < 0.0 ? 0.0 :
@@ -183,10 +185,10 @@ void AudioDecoder::SetVolume(int volume) {
 	this->volume = (double)volume;
 }
 
-void AudioDecoder::SetFade(int begin, int end, int duration) {
-	fade_time = 0.0;
+void AudioDecoder::SetFade(int begin, int end, std::chrono::milliseconds duration) {
+	fade_time = 0ms;
 
-	if (duration <= 0.0) {
+	if (duration <= 0ms) {
 		SetVolume(end);
 		return;
 	}
@@ -197,9 +199,9 @@ void AudioDecoder::SetFade(int begin, int end, int duration) {
 	}
 
 	SetVolume(begin);
-	fade_end = (double)end;
-	fade_time = (double)duration;
-	delta_step = (fade_end - GetVolume()) / fade_time;
+	fade_volume_end = end;
+	fade_time = duration;
+	delta_volume_step = (static_cast<double>(fade_volume_end) - GetVolume()) / fade_time.count();
 }
 
 int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {

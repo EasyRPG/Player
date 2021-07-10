@@ -74,7 +74,7 @@ public:
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	void SetFade(int begin, int end, int duration) override;
+	void SetFade(int begin, int end, std::chrono::milliseconds duration) override;
 
 	/**
 	 * Seeks in the midi stream. The value of offset is in Midi ticks.
@@ -94,11 +94,18 @@ public:
 
 	/**
 	 * Updates the volume for the fade in/out effect.
-	 * For Midi out devices this must be called once per ms.
 	 *
-	 * @param delta Time in ms since the last call of this function.
+	 * @param delta Time in us since the last call of this function.
 	 */
-	void Update(int delta) override;
+	void Update(std::chrono::microseconds delta) override;
+
+	/**
+	 * Updates Midi output. Only used by Midi out devices.
+	 * For Midi out devices this must be called at least once per ms.
+	 *
+	 * @param delta Time in us since the last call of this function.
+	 */
+	void UpdateMidi(std::chrono::microseconds delta) override;
 
 	/**
 	 * Retrieves the format of the Midi decoder.
@@ -161,35 +168,35 @@ private:
 	void reset() override;
 	void reset_tempos_after_loop();
 
-	float mtime = 0.0f;
+	std::chrono::microseconds mtime = std::chrono::microseconds(0);
 	float pitch = 1.0f;
 	bool paused = false;
 	float volume = 0;
 	bool loops_to_end = false;
 
 	int fade_steps = 0;
-	double fade_end = 0;
-	double delta_step = 0;
-	float last_fade_mtime = 0.0f;
+	double fade_volume_end = 0;
+	double delta_volume_step = 0;
+	std::chrono::microseconds last_fade_mtime = std::chrono::microseconds(0);
 
 	int frequency = 44100;
 
 	// What was the mtime when the last set of volume MIDI messages were sent out
-	float last_fade_msg_sent = 0.0f;
+	std::chrono::microseconds last_fade_msg_sent;
 	std::array<uint8_t, 16> channel_volumes;
 
 	struct MidiTempoData {
 		MidiTempoData(const AudioDecoderMidi* midi, uint32_t cur_tempo, const MidiTempoData* prev = nullptr);
 
 		uint32_t tempo = midi_default_tempo;
-		float ticks_per_sec = 0.0f;
-		float mtime = 0.0f;
+		double ticks_per_us;
+		std::chrono::microseconds mtime = std::chrono::microseconds(0);
 		int ticks = 0;
 		int samples_per_tick = 0;
 		int samples = 0;
 
-		int GetTicks(float cur_mtime) const;
-		int GetSamples(float cur_mtime) const;
+		int GetTicks(std::chrono::microseconds cur_mtime) const;
+		int GetSamples(std::chrono::microseconds cur_mtime) const;
 	};
 
 	std::unique_ptr<midisequencer::sequencer> seq;

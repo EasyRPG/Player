@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <chrono>
 #include "filesystem_stream.h"
 
 /**
@@ -34,6 +35,8 @@
  */
 class AudioDecoderBase {
 public:
+	virtual ~AudioDecoderBase() = default;
+
 	/** Sample format */
 	enum class Format {
 		S8,
@@ -137,7 +140,7 @@ public:
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	virtual void SetFade(int begin, int end, int duration) = 0;
+	virtual void SetFade(int begin, int end, std::chrono::milliseconds duration) = 0;
 
 	/**
 	 * Seeks in the audio stream. The value of offset is implementation
@@ -160,9 +163,17 @@ public:
 	/**
 	 * Updates the volume for the fade in/out effect.
 	 *
-	 * @param delta Time in ms since the last call of this function.
+	 * @param delta Time in us since the last call of this function.
 	 */
-	virtual void Update(int delta) = 0;
+	virtual void Update(std::chrono::microseconds delta) = 0;
+
+	/**
+	 * Updates Midi output. Only used by Midi out devices.
+	 * For Midi out devices this must be called at least once per ms.
+	 *
+	 * @param delta Time in us since the last call of this function.
+	 */
+	virtual void UpdateMidi(std::chrono::microseconds delta);
 
 	/**
 	 * Retrieves the format of the audio decoder.

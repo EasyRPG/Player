@@ -33,6 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cassert>
 #include <algorithm>
 
+using namespace std::chrono_literals;
+
 namespace midisequencer{
     static uint_least32_t read_variable_value(void* fp, int(*fgetc)(void*), uint_least32_t* track_length, const char* errtext)
     {
@@ -70,13 +72,14 @@ namespace midisequencer{
     {
         position = messages.begin();
     }
-    float sequencer::rewind_to_loop()
+
+    std::vector<midi_message>::iterator sequencer::rewind_to_loop()
     {
         position = loop_position;
         if (position != messages.begin()) {
             position--;
         }
-        return loop_position->time;
+        return position;
     }
     bool sequencer::is_at_end()
     {
@@ -127,10 +130,10 @@ namespace midisequencer{
         }
         return ret + 1;
     }
-    float sequencer::get_total_time()const
+    std::chrono::microseconds sequencer::get_total_time()const
     {
         if(messages.empty()){
-            return 0;
+            return 0us;
         }else{
             return messages.back().time;
         }
@@ -176,7 +179,7 @@ namespace midisequencer{
         }
         return ret;
     }
-    void sequencer::play(float time, output* out)
+    void sequencer::play(std::chrono::microseconds time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){
             position = messages.begin();
@@ -213,7 +216,7 @@ namespace midisequencer{
         }
     }
 
-    void sequencer::set_time(float time, output* out)
+    void sequencer::set_time(std::chrono::microseconds time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){
             position = messages.begin();
@@ -260,31 +263,31 @@ namespace midisequencer{
         }
     }
 
-    float sequencer::get_start_skipping_silence() {
+    std::chrono::microseconds sequencer::get_start_skipping_silence() {
         for (auto& msg: messages) {
             // If we find Loop Start before the first NoteOn, just start there
             if (is_loop_start(msg.message)) {
-                float time = msg.time;
+                std::chrono::microseconds time = msg.time;
                 // RPG_RT always rewinds "a little"
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
-                time = std::max(0.0f, time - (msg.tempo / 2100000.0f));
+                time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
                 return time;
             } else if ((msg.message & 0xFF) == 0xF0) {
                 // SysEx message. RPG_RT doesn't skip silence if there's a SysEx
                 // message in the beginning, so neither should we...
-                return 0.0f;
+                return 0us;
             } else if ((msg.message & 0xF0) == 0x90) {
                 // NoteOn -- found the first note!
-                float time = msg.time;
+                std::chrono::microseconds time = msg.time;
                 // RPG_RT always rewinds "a little"
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
-                time = std::max(0.0f, time - (msg.tempo / 2100000.0f));
+                time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
                 return time;
             }
         }
-        return 0.0f;
+        return 0us;
     }
 
     void sequencer::load_smf(void* fp, int(*fgetc)(void*))
@@ -333,9 +336,9 @@ namespace midisequencer{
                 if(division & 0x8000){
                     int fps = ~(division >> 8) + 1;
                     int frames = division & 0xFF;
-                    msg.time = time / (frames * fps) + time_offset;
+                    msg.time = std::chrono::microseconds(static_cast<int>(time / (frames * fps) + time_offset));
                 }else{
-                    msg.time = time;
+                    msg.time = std::chrono::microseconds(time);
                 }
                 int param = fgetc(fp);
                 --track_length;
@@ -399,7 +402,7 @@ namespace midisequencer{
                             if(n != 5){
                                 Output::Warning("Midi sequencer: invalid SMTPE offset metaevent length");
                             }
-                            if(msg.time == 0 && (division & 0x8000)){
+                            if(msg.time == 0us && (division & 0x8000)){
                                 int hour = static_cast<unsigned char>(s[1]);
                                 int min = static_cast<unsigned char>(s[2]);
                                 int sec = static_cast<unsigned char>(s[3]);
@@ -466,12 +469,12 @@ namespace midisequencer{
         loop_position = messages.begin();
         if(!(division & 0x8000)){
             uint_least32_t tempo = 500000;
-            double time_offset = 0;
-            double base = 0;
+            std::chrono::microseconds time_offset = 0us;
+            std::chrono::microseconds base = 0us;
             loop_position = messages.begin();
             for(std::vector<midi_message>::iterator i = messages.begin(); i != messages.end(); ++i){
-                float org_time = i->time;
-                i->time = (i->time - base) * tempo / 1000000.0 / division + time_offset;
+                std::chrono::microseconds org_time = i->time;
+                i->time = std::chrono::microseconds(static_cast<int>(static_cast<double>((i->time.count() - base.count())) * tempo / division + time_offset.count()));
                 if((i->message & 0xFF) == 0xFF){
                     assert((i->message >> 8) < long_messages.size());
                     const std::string& s = long_messages[i->message >> 8];

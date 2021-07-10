@@ -47,7 +47,7 @@ public:
 	void LockMutex();
 	void UnlockMutex();
 
-	void UpdateMidiOut(int delta);
+	void UpdateMidiOut(std::chrono::microseconds delta);
 
 	void StartThread();
 	void StopThread();

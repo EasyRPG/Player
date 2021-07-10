@@ -91,23 +91,23 @@ public:
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	virtual void SetFade(int begin, int end, int duration) final override;
+	void SetFade(int begin, int end, std::chrono::milliseconds duration) final override;
 
 	/**
 	 * Updates the volume for the fade in/out effect.
 	 * Volume changes will not really modify the volume but are only helper
 	 * functions for retrieving the volume information for the audio hardware.
 	 *
-	 * @param delta Time in ms since the last call of this function.
+	 * @param delta Time in us since the last call of this function.
 	 */
-	void Update(int delta) final override;
+	void Update(std::chrono::microseconds delta) final override;
 private:
 	bool paused = false;
 	double volume = 0;
 
-	double fade_end = 0;
-	double fade_time = -1;
-	double delta_step = 0;
+	int fade_volume_end = 0;
+	std::chrono::microseconds fade_time = std::chrono::microseconds(0);
+	double delta_volume_step = 0.0;
 };
 
 #endif

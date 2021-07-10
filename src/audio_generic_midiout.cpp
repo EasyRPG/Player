@@ -75,10 +75,11 @@ void GenericAudioMidiOut::UnlockMutex() {
 	midi_mutex.unlock();
 }
 
-void GenericAudioMidiOut::UpdateMidiOut(int delta) {
+void GenericAudioMidiOut::UpdateMidiOut(std::chrono::microseconds delta) {
 	LockMutex();
 	assert(midi_out);
-	midi_out->Update(delta);
+
+	midi_out->UpdateMidi(delta);
 	UnlockMutex();
 }
 
@@ -98,8 +99,8 @@ void GenericAudioMidiOut::ThreadFunction() {
 	while (!stop_thread) {
 		auto ticks = Game_Clock::now();
 
-		auto us = std::chrono::duration_cast<std::chrono::milliseconds>(ticks - start_ticks);
-		UpdateMidiOut(us.count());
+		auto us = std::chrono::duration_cast<std::chrono::microseconds>(ticks - start_ticks);
+		UpdateMidiOut(us);
 
 		Game_Clock::SleepFor(1ms);
 		start_ticks = ticks;

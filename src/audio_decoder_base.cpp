@@ -77,6 +77,10 @@ std::string AudioDecoderBase::GetType() const {
 	return music_type;
 }
 
+void AudioDecoderBase::UpdateMidi(std::chrono::microseconds delta) {
+	(void)delta;
+}
+
 bool AudioDecoderBase::SetFormat(int, AudioDecoderBase::Format, int) {
 	return false;
 }
