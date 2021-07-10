@@ -48,13 +48,9 @@ public:
 	 * - FillBuffer
 	 * - GetName
 	 *
-	 * Depending on the capabilities of the library different functions must
-	 * be implemented:
-	 *
-	 * When the processing of Midi messages is supported:
-	 * - OnMidiMessage
-	 * - OnSysExMessage (nice to have)
-	 * - OnMetaEvent (optional)
+	 * The library must implement the following commands:
+	 * - SendMidiMessage
+	 * - SendSysExMessage (nice to have)
 	 * - OnMidiReset
 	 *
 	 * When Midi messages are not supported (library uses own sequencer)
@@ -62,6 +58,7 @@ public:
 	 * - Seek
 	 * - Tell
 	 * - SetPitch - Return "false" for resampling
+	 * - SupportsMidiMessages - Must return "false"
 	 */
 
 	/**
@@ -171,6 +168,13 @@ public:
 	 * @return decoder name
 	 */
 	virtual std::string GetName() = 0;
+
+	/**
+	 * @return False if the Library is sequencer based
+	*/
+	virtual bool SupportsMidiMessages() {
+		return true;
+	}
 
 	/**
 	 * Attempts to initialize a Midi library for processing the Midi data.

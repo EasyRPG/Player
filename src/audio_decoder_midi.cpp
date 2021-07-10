@@ -109,10 +109,12 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 	seq->rewind();
 	mtime = seq->get_start_skipping_silence();
 
-	/* FIXME if (!mididec->Open(file_buffer)) {
-		error_message = "Internal Midi: Error reading file";
-		return false;
-	}*/
+	if (!mididec->SupportsMidiMessages()) {
+		if (!mididec->Open(file_buffer)) {
+			error_message = "Internal Midi: Error reading file";
+			return false;
+		}
+	}
 
 	tempo.emplace_back(this, midi_default_tempo);
 
@@ -135,11 +137,16 @@ void AudioDecoderMidi::Resume() {
 	}
 }
 
-int AudioDecoderMidi::GetVolume()const {
-	if (fade_steps > 0) {
-		return static_cast<int>(fade_volume_end * 100);
+int AudioDecoderMidi::GetVolume() const {
+	if (!mididec->SupportsMidiMessages()) {
+		if (fade_steps > 0) {
+			return static_cast<int>(fade_volume_end * 100);
+		}
+		return static_cast<int>(volume * 100);
 	}
-	return static_cast<int>(volume * 100);
+
+	// Lie about the volume as this is handled by the Midi messages internally
+	return 100;
 }
 
 void AudioDecoderMidi::SetVolume(int new_volume) {
@@ -200,12 +207,9 @@ bool AudioDecoderMidi::Seek(std::streamoff offset, std::ios_base::seekdir origin
 			tempo.emplace_back(this, midi_default_tempo);
 		}
 
-		/* FIXME if (mididec->GetName() == "WildMidi") {
+		if (!mididec->SupportsMidiMessages()) {
 			mididec->Seek(tempo.back().GetSamples(mtime), origin);
 		}
-		else {
-			mididec->Seek(GetTicks(), origin);
-		}*/
 
 		return true;
 	}
@@ -256,6 +260,13 @@ bool AudioDecoderMidi::SetFormat(int freq, AudioDecoderBase::Format format, int 
 }
 
 bool AudioDecoderMidi::SetPitch(int pitch) {
+	if (!mididec->SupportsMidiMessages()) {
+		if (!mididec->SetPitch(pitch)) {
+			this->pitch = 100;
+			return false;
+		}
+	}
+
 	this->pitch = pitch;
 	return true;
 }
@@ -302,8 +313,6 @@ int AudioDecoderMidi::FillBuffer(uint8_t* buffer, int length) {
 
 		samples_max -= samples;
 	}
-
-	Output::Debug("mtime {}", std::chrono::duration_cast<std::chrono::milliseconds>(mtime).count());
 
 	return written;
 }
@@ -371,15 +380,23 @@ void AudioDecoderMidi::reset_tempos_after_loop() {
 AudioDecoderMidi::MidiTempoData::MidiTempoData(const AudioDecoderMidi* midi, uint32_t cur_tempo, const MidiTempoData* prev)
 	: tempo(cur_tempo) {
 	ticks_per_us = (float)midi->seq->get_division() / tempo;
+	samples_per_tick = midi->frequency * 1 / ticks_per_us;
 	mtime = midi->mtime;
 	if (prev) {
 		std::chrono::microseconds delta = mtime - prev->mtime;
 		int ticks_since_last = static_cast<int>(ticks_per_us * delta.count());
 		ticks = prev->ticks + ticks_since_last;
+		samples = prev->samples + ticks_since_last * samples_per_tick;
 	}
 }
 
 int AudioDecoderMidi::MidiTempoData::GetTicks(std::chrono::microseconds mtime_cur) const {
 	std::chrono::microseconds delta = mtime_cur - mtime;
 	return ticks + static_cast<int>(ticks_per_us * delta.count());
+}
+
+int AudioDecoderMidi::MidiTempoData::GetSamples(std::chrono::microseconds mtime_cur) const {
+	std::chrono::microseconds delta = mtime_cur - mtime;
+	int ticks_since_last = static_cast<int>(ticks_per_us * delta.count());
+	return samples + static_cast<int>(ticks_since_last * samples_per_tick);
 }

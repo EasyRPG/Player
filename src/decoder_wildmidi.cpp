@@ -80,7 +80,8 @@ static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
 
 	*size = static_cast<uint32_t>(buf.size());
 
-	char* buffer = reinterpret_cast<char*>(malloc(*size));
+	// Make buffer one byte larger, otherwise MSVC CRT detects a Heap Corruption (Wildmidi bug?)
+	char* buffer = reinterpret_cast<char*>(malloc(*size + 1));
 	memcpy(buffer, buf.data(), buf.size());
 
 	return buffer;
