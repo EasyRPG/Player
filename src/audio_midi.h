@@ -181,6 +181,12 @@ public:
 	 */
 	static std::unique_ptr<AudioDecoderBase> Create(Filesystem_Stream::InputStream& stream, bool resample);
 
+	static std::unique_ptr<AudioDecoderBase> CreateFluidsynth(Filesystem_Stream::InputStream& stream, bool resample);
+
+	static std::unique_ptr<AudioDecoderBase> CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample);
+
+	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample);
+
 protected:
 	int frequency = EP_MIDI_FREQ;
 };

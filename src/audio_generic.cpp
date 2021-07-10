@@ -204,24 +204,29 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	if (chan.id == 0 && GenericAudioMidiOut::IsSupported(filestream)) {
 		chan.decoder.reset();
 
-		if (!midi_thread) {
-			midi_thread.reset(new GenericAudioMidiOut());
-			midi_thread->StartThread();
-		}
+		// FIXME: Try Fluidsynth and WildMidi first
+		// If they work fallback to the normal AudioDecoder handler below
+		// There should be a way to configure the order
+		if (!MidiDecoder::CreateFluidsynth(filestream, true) && !MidiDecoder::CreateWildMidi(filestream, true)) {
+			if (!midi_thread) {
+				midi_thread.reset(new GenericAudioMidiOut());
+				midi_thread->StartThread();
+			}
 
-		midi_thread->LockMutex();
-		auto& midi_out = midi_thread->GetMidiOut();
-		if (midi_out.Open(std::move(filestream))) {
-			midi_out.SetPitch(pitch);
-			midi_out.SetVolume(volume);
-			midi_out.SetFade(0, volume, std::chrono::milliseconds(fadein));
-			midi_out.SetLooping(true);
-			chan.paused = false;
-			chan.midi_out_used = true;
+			midi_thread->LockMutex();
+			auto& midi_out = midi_thread->GetMidiOut();
+			if (midi_out.Open(std::move(filestream))) {
+				midi_out.SetPitch(pitch);
+				midi_out.SetVolume(volume);
+				midi_out.SetFade(0, volume, std::chrono::milliseconds(fadein));
+				midi_out.SetLooping(true);
+				chan.paused = false;
+				chan.midi_out_used = true;
+				midi_thread->UnlockMutex();
+				return true;
+			}
 			midi_thread->UnlockMutex();
-			return true;
 		}
-		midi_thread->UnlockMutex();
 	}
 
 	if (midi_thread) {

@@ -47,9 +47,23 @@ static struct {
 
 std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
-	std::string error_message;
+
+	mididec = CreateFluidsynth(stream, resample);
+	if (!mididec) {
+		mididec = CreateWildMidi(stream, resample);
+		if (!mididec) {
+			mididec = CreateFmMidi(stream, resample);
+		}
+	}
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
 
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	std::string error_message;
 	if (works.fluidsynth && FluidSynthDecoder::Initialize(error_message)) {
 		auto dec = std::make_unique<FluidSynthDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
@@ -59,7 +73,21 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputSt
 		works.fluidsynth = false;
 	}
 #endif
+
+#ifdef USE_AUDIO_RESAMPLER
+	if (mididec && resample) {
+		mididec = std::make_unique<AudioResampler>(std::move(mididec));
+	}
+#endif
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
+
 #ifdef HAVE_WILDMIDI
+	std::string error_message;
 	if (!mididec && works.wildmidi && WildMidiDecoder::Initialize(error_message)) {
 		auto dec = std::make_unique<WildMidiDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
@@ -69,6 +97,19 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputSt
 		works.wildmidi = false;
 	}
 #endif
+
+#ifdef USE_AUDIO_RESAMPLER
+	if (mididec && resample) {
+		mididec = std::make_unique<AudioResampler>(std::move(mididec));
+	}
+#endif
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
+
 #if WANT_FMMIDI == 1
 	if (!mididec) {
 		auto dec = std::make_unique<FmMidiDecoder>();
