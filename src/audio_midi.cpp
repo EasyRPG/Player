@@ -53,7 +53,6 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputSt
 	if (works.fluidsynth && FluidSynthDecoder::Initialize(error_message)) {
 		auto dec = std::make_unique<FluidSynthDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
-		resample = false;
 	}
 	else if (!mididec && works.fluidsynth) {
 		Output::Debug("{}", error_message);
@@ -74,7 +73,6 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputSt
 	if (!mididec) {
 		auto dec = std::make_unique<FmMidiDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
-		resample = false;
 	}
 #endif
 

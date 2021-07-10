@@ -275,6 +275,26 @@ bool AudioResampler::Open(Filesystem_Stream::InputStream stream) {
 	return false;
 }
 
+void AudioResampler::Pause() {
+	wrapped_decoder->Pause();
+}
+
+void AudioResampler::Resume() {
+	wrapped_decoder->Resume();
+}
+
+int AudioResampler::GetVolume() const {
+	return wrapped_decoder->GetVolume();
+}
+
+void AudioResampler::SetVolume(int volume) {
+	wrapped_decoder->SetVolume(volume);
+}
+
+void AudioResampler::SetFade(int begin, int end, std::chrono::milliseconds duration) {
+	wrapped_decoder->SetFade(begin, end, duration);
+}
+
 bool AudioResampler::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (wrapped_decoder->Seek(offset, origin)) {
 		//reset conversion data
@@ -302,6 +322,10 @@ int AudioResampler::GetTicks() const {
 
 bool AudioResampler::IsFinished() const {
 	return finished;
+}
+
+void AudioResampler::Update(std::chrono::microseconds delta) {
+	wrapped_decoder->Update(delta);
 }
 
 void AudioResampler::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
@@ -386,8 +410,8 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 }
 
 int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
-	const int input_samplesize = GetSamplesizeForFormat(input_format);
-	const int output_samplesize = GetSamplesizeForFormat(output_format);
+	const int input_samplesize = AudioDecoder::GetSamplesizeForFormat(input_format);
+	const int output_samplesize = AudioDecoder::GetSamplesizeForFormat(output_format);
 	//The buffer size has to be a multiple of a frame
 	const int buffer_size=sizeof(internal_buffer) - sizeof(internal_buffer)%(nr_of_channels*input_samplesize);
 
@@ -461,8 +485,8 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 }
 
 int AudioResampler::FillBufferDifferentRate(uint8_t* buffer, int length) {
-	const int input_samplesize = GetSamplesizeForFormat(input_format);
-	const int output_samplesize = GetSamplesizeForFormat(output_format);
+	const int input_samplesize = AudioDecoder::GetSamplesizeForFormat(input_format);
+	const int output_samplesize = AudioDecoder::GetSamplesizeForFormat(output_format);
 	//The buffer size has to be a multiple of a frame
 	const int buffer_size=sizeof(internal_buffer) - sizeof(internal_buffer)%(nr_of_channels*((input_samplesize>output_samplesize) ? input_samplesize : output_samplesize));
 

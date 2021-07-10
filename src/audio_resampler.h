@@ -35,7 +35,7 @@
  * Audio resampler powered by Libspeexdsp or Libsamplerate
  * Wraps another decoder and provides resampling.
  */
-class AudioResampler : public AudioDecoder {
+class AudioResampler : public AudioDecoderBase {
 public:
 	/** Resampling quality */
 	enum class Quality {
@@ -75,6 +75,41 @@ public:
 	bool Open(Filesystem_Stream::InputStream stream) override;
 
 	/**
+	 * Forwards a pause to the wrapped decoder.
+	 */
+	void Pause() override;
+
+	/**
+	 * Forwards a resume to the wrapped decoder.
+	 */
+	void Resume() override;
+
+	/**
+	 * Obtains the volume of the wrapped decoder.
+	 *
+	 * @return current volume (from 0 - 100)
+	 */
+	int GetVolume() const override;
+
+	/**
+	 * Sets the current volume of the wrapped decoder.
+	 *
+	 * @param volume (from 0-100)
+	 */
+	void SetVolume(int volume) override;
+
+	/**
+	 * Prepares a volume fade in/out effect.
+	 * To do a fade out begin must be larger then end.
+	 * Call Update to do the fade.
+	 *
+	 * @param begin Begin volume (from 0-100)
+	 * @param end End volume (from 0-100)
+	 * @param duration Fade duration in ms
+	 */
+	void SetFade(int begin, int end, std::chrono::milliseconds duration) override;
+
+	/**
 	 * Wraps the seek function of the contained decoder
 	 * @note If the seek function of the wrapped decoder is
 	 *	somewhat corelated to time the offset is not influenced by the resampling ratio
@@ -106,6 +141,13 @@ public:
 	 * @return true if the stream has reached it's end
 	 */
 	bool IsFinished() const override;
+
+	/**
+	 * Updates timing related audio code of the wrapped decoder.
+	 *
+	 * @param delta Time in us since the last call of this function.
+	 */
+	void Update(std::chrono::microseconds delta) override;
 
 	/**
 	 * Retrieves the format of the audio decoder.
