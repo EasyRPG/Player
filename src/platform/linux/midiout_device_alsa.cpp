@@ -20,26 +20,29 @@
 #include "system.h"
 
 AlsaMidiOutDevice::AlsaMidiOutDevice() {
-	int err;
-	err = snd_seq_open(&midi_out, "default", SND_SEQ_OPEN_DUPLEX, 0);
-	snd_seq_create_simple_port(midi_out, "Harmony", SND_SEQ_PORT_CAP_WRITE |
-		SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
-	snd_seq_set_client_name(midi_out, GAME_TITLE);
+	int status = snd_seq_open(&midi_out, "default", SND_SEQ_OPEN_DUPLEX, 0);
+	if (status < 0) {
+		Output::Debug("ALSA: snd_seq_open failed: {}", snd_strerror(status));
+		return;
+	}
 
 	snd_seq_client_info_t* client_info;
-	snd_seq_port_info_t *port_info;
+	snd_seq_port_info_t* port_info;
 	snd_seq_client_info_alloca(&client_info);
 	snd_seq_port_info_alloca(&port_info);
+
+	// TODO: This simply enumerates all devices and connects to the last matching one
+	// There should be a way to configure this
+	// The last is usually timidity++ or fluidsynth, so this works
+	std::string dst_client_name;
+	std::string dst_port_name;
+	bool candidate_found = false;
 
 	snd_seq_client_info_set_client(client_info, -1);
 	while (snd_seq_query_next_client(midi_out, client_info) == 0) {
 		const char* client_name = snd_seq_client_info_get_name(client_info);
-		if (strcmp(client_name, "EasyRPG Player") == 0) {
-			continue;
-		}
-
-		dst_client = snd_seq_client_info_get_client(client_info);
-		snd_seq_port_info_set_client(port_info, dst_client);
+		int dst_client_candidate = snd_seq_client_info_get_client(client_info);
+		snd_seq_port_info_set_client(port_info, dst_client_candidate);
 		snd_seq_port_info_set_port(port_info, -1);
 
 		while (snd_seq_query_next_port(midi_out, port_info) == 0) {
@@ -47,18 +50,53 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 			unsigned int port_type = snd_seq_port_info_get_type(port_info);
 			const int type = SND_SEQ_PORT_TYPE_MIDI_GENERIC;
 			const int cap = SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE;
-			//const char* port_name = snd_seq_port_info_get_name(port_info);
 
 			if ((port_type & type) == type && (port_caps & cap) == cap)	{
+				// This is a suitable client
+				dst_client = dst_client_candidate;
+				dst_client_name = client_name;
 				dst_port = snd_seq_port_info_get_port(port_info);
+				dst_port_name = snd_seq_port_info_get_name(port_info);
+				candidate_found = true;
 			}
 		}
 	}
 
-	err = snd_seq_connect_to(midi_out, 0, dst_client, dst_port);
+	if (!candidate_found) {
+		Output::Debug("ALSA: No suitable client found");
+		return;
+	}
+
+	Output::Debug("ALSA: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+
+	status = snd_seq_create_simple_port(midi_out, "Harmony",
+		SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
+	if (status < 0) {
+		Output::Debug("ALSA: snd_seq_create_simple_port failed: {}", snd_strerror(status));
+		return;
+	}
+
+	snd_seq_set_client_name(midi_out, GAME_TITLE);
+
+	status = snd_seq_connect_to(midi_out, 0, dst_client, dst_port);
+	if (status < 0) {
+		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(status));
+		return;
+	}
 
 	queue = snd_seq_alloc_named_queue(midi_out, GAME_TITLE);
-	err = snd_seq_start_queue(midi_out, queue, nullptr);
+	if (queue < 0) {
+		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(queue));
+		return;
+	}
+
+	status = snd_seq_start_queue(midi_out, queue, nullptr);
+	if (status < 0) {
+		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(status));
+		return;
+	}
+
+	works = true;
 }
 
 AlsaMidiOutDevice::~AlsaMidiOutDevice() {
@@ -123,7 +161,10 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 			break;
 	}
 
-	int err = snd_seq_event_output_direct(midi_out, &evt);
+	int status = snd_seq_event_output_direct(midi_out, &evt);
+	if (status < 0) {
+		Output::Debug("ALSA snd_seq_event_output_direct failed: {}", snd_strerror(status));
+	}
 }
 
 void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
@@ -138,12 +179,10 @@ void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 	evt.data.ext.ptr = const_cast<void*>(data);
 	evt.data.ext.len = size;
 
-	int err = snd_seq_event_output_direct(midi_out, &evt);
-	/*int status;
-	if ((status = snd_rawmidi_write(midi_out, data, size) < 0)) {
-		//errormessage("Problem writing to MIDI output: %s", snd_strerror(status));
-		exit(1);
-	}*/
+	int status = snd_seq_event_output_direct(midi_out, &evt);
+	if (status < 0) {
+		Output::Debug("ALSA SysEx snd_seq_event_output_direct failed: {}", snd_strerror(status));
+	}
 }
 
 void AlsaMidiOutDevice::SendMidiReset() {
@@ -153,4 +192,8 @@ void AlsaMidiOutDevice::SendMidiReset() {
 
 std::string AlsaMidiOutDevice::GetName() {
 	return "ALSA Midi";
+}
+
+bool AlsaMidiOutDevice::IsInitialized() const {
+	return works;
 }

@@ -34,12 +34,14 @@ public:
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 	std::string GetName() override;
+	bool IsInitialized() const;
 
 private:
 	snd_seq_t* midi_out = nullptr;
 	int dst_client = 0;
 	int dst_port = 0;
 	int queue = 0;
+	bool works = false;
 };
 
 #endif

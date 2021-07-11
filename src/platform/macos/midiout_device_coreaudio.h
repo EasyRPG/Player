@@ -18,7 +18,6 @@
 #ifndef EP_MIDIOUT_COREAUDIO_H
 #define EP_MIDIOUT_COREAUDIO_H
 
-#ifdef __APPLE__
 #include "audio_midi.h"
 #include <AudioToolbox/AudioToolbox.h>
 
@@ -34,12 +33,12 @@ public:
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 	std::string GetName() override;
+	bool IsInitialized() const;
 
 private:
 	AudioUnit midi_out;
 	AUGraph graph;
+	bool works = false;
 };
-
-#endif
 
 #endif

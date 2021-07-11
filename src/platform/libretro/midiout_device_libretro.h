@@ -28,12 +28,12 @@
 class LibretroMidiOutDevice : public MidiDecoder {
 public:
 	LibretroMidiOutDevice();
-	~LibretroMidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 	std::string GetName() override;
+	bool IsInitialized() const;
 
 private:
 	struct retro_midi_interface midi_out = {};

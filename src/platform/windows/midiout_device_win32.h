@@ -38,6 +38,7 @@ public:
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
 	std::string GetName() override;
+	bool IsInitialized() const;
 
 private:
 	HMIDIOUT midi_out;

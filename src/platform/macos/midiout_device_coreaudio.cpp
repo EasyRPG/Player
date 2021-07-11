@@ -22,8 +22,7 @@
 CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	OSStatus status = NewAUGraph(&graph);
 	if (status != noErr) {
-		Output::Debug("Open MIDI device failed: error {}", status);
-		//isOK = false;
+		Output::Debug("macOS Midi: NewAUGraph failed: {}", status);
 		return;
 	}
 	AudioComponentDescription synthDesc = {
@@ -71,10 +70,11 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	status = AUGraphStart(graph);
 
 	if (status != noErr) {
-		//isOK = false;
+		Output::Debug("macOS Midi: AUGraphStart failed: {}", status);
 		return;
 	}
-	//isOK = true;
+
+	works = true;
 }
 
 CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice() {
@@ -100,6 +100,10 @@ void CoreAudioMidiOutDevice::SendMidiReset() {
 
 std::string CoreAudioMidiOutDevice::GetName() {
 	return "CoreAudio Midi";
+}
+
+bool CoreAudioMidiOutDevice::IsInitialized() const {
+	return works;
 }
 
 #endif

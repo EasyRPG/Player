@@ -26,7 +26,9 @@
 
 #ifdef USE_LIBRETRO
 #include "platform/libretro/midiout_device_libretro.h"
-#elif HAVE_ALSA
+#endif
+
+#ifdef HAVE_ALSA
 #include "platform/linux/midiout_device_alsa.h"
 #elif _WIN32
 #include "platform/windows/midiout_device_win32.h"
@@ -36,33 +38,64 @@
 
 using namespace std::chrono_literals;
 
+static struct {
+	bool libretro = true;
+	bool alsa = true;
+	bool win32 = true;
+	bool coreaudio = true;
+} works;
+
 GenericAudioMidiOut::GenericAudioMidiOut() {
 	stop_thread.store(false);
 
 #ifdef USE_LIBRETRO
-	auto dec = std::make_unique<LibretroMidiOutDevice>();
-	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
-#elif HAVE_ALSA
-	auto dec = std::make_unique<AlsaMidiOutDevice>();
-	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
-#elif _WIN32
-	auto dec = std::make_unique<Win32MidiOutDevice>();
-	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
-	/*FIXME if (!device->IsOK()) {
-		return nullptr;
-	}*/
+	if (works.libretro) {
+		auto dec = std::make_unique<LibretroMidiOutDevice>();
+		if (dec->IsInitialized()) {
+			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+		} else {
+			works.libretro = false;
+		}
+	}
+
+	if (midi_out) {
+		return;
+	}
 #endif
-#ifdef __APPLE__
-	auto dec = std::make_unique<CoreAudioMidiOutDevice>();
-	midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
-	/*if (!device->IsOK()) {
-		return nullptr;
-	}*/
+
+#ifdef HAVE_ALSA
+	if (works.alsa) {
+		auto dec = std::make_unique<AlsaMidiOutDevice>();
+		if (dec->IsInitialized()) {
+			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+		} else {
+			works.alsa = false;
+		}
+	}
+#elif _WIN32
+	if (works.win32) {
+		auto dec = std::make_unique<Win32MidiOutDevice>();
+		if (dec->IsInitialized()) {
+			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+		} else {
+			works.win32 = false;
+		}
+	}
+#elif __APPLE__
+	if (works.coreaudio) {
+		auto dec = std::make_unique<CoreAudioMidiOutDevice>();
+		if (dec->IsInitialized()) {
+			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
+		} else {
+			works.coreaudio = false;
+		}
+	}
 #endif
 }
 
 GenericAudioMidiOut::~GenericAudioMidiOut() {
 	if (thread_started) {
+		GetMidiOut().Reset();
 		StopThread();
 	}
 }

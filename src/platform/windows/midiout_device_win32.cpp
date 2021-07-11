@@ -28,12 +28,10 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 
 	MMRESULT err = midiOutOpen(&midi_out, device_id, 0, 0, CALLBACK_NULL);
 	if (err != MMSYSERR_NOERROR) {
-		Output::Debug("Open MIDI device {} failed: error {}", 0, err);
-		midi_out = NULL;
-		//isOK = false;
+		Output::Debug("Win32 midiOutOpen {} failed: {}", 0, err);
+		midi_out = nullptr;
 		return;
 	}
-	//isOK = true;
 }
 
 Win32MidiOutDevice::~Win32MidiOutDevice() {
@@ -62,6 +60,10 @@ void Win32MidiOutDevice::SendMidiReset() {
 
 std::string Win32MidiOutDevice::GetName() {
 	return "Windows Midi";
+}
+
+bool Win32MidiOutDevice::IsInitialized() const {
+	return midi_out != nullptr;
 }
 
 #endif
