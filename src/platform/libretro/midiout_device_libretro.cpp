@@ -21,13 +21,16 @@
 
 LibretroMidiOutDevice::LibretroMidiOutDevice() {
 	if (!LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_MIDI_INTERFACE, &midi_out)) {
-		Output::Debug("libretro GET_MIDI_INTERFACE unsupported);
-		midi_out.output_enabled = false;
+		Output::Debug("libretro: GET_MIDI_INTERFACE unsupported");
+		return;
 	}
 
-	if (!midi_out.output_enabled) {
-		Output::Debug("libretro midi out does not support output);
+	if (!midi_out.output_enabled()) {
+		Output::Debug("libretro: MIDI output not enabled");
+		return;
 	}
+
+	works = true;
 }
 
 void LibretroMidiOutDevice::SendMidiMessage(uint32_t message) {
@@ -74,6 +77,6 @@ std::string LibretroMidiOutDevice::GetName() {
 	return "libretro Midi";
 }
 
-bool Win32MidiOutDevice::IsInitialized() const {
-	return midi_out.output_enabled;
+bool LibretroMidiOutDevice::IsInitialized() const {
+	return works && midi_out.output_enabled();
 }

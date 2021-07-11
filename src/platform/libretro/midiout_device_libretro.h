@@ -37,6 +37,7 @@ public:
 
 private:
 	struct retro_midi_interface midi_out = {};
+	bool works = false;
 };
 
 #endif

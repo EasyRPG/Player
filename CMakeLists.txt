@@ -689,7 +689,9 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro)$")
 	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_NATIVE_MIDI "Play MIDI audio using the API of the operating system" ON "SUPPORT_NATIVE_MIDI" OFF)
 	if(PLAYER_WITH_NATIVE_MIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_NATIVE_MIDI=1)
-		if(ALSA_FOUND)
+		if(WIN32)
+			target_link_libraries(${PROJECT_NAME} "winmm")
+		elseif(ALSA_FOUND)
 			target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_ALSA=1)
 			target_sources(${PROJECT_NAME} PRIVATE
 				src/platform/linux/midiout_device_alsa.cpp
