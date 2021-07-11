@@ -210,36 +210,36 @@ void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 		return;
 	}
 
-	int event = message & 0xFF;
-	int channel = event & 0x0F;
+	unsigned int event = message & 0xF0;
+	int channel = message & 0x0F;
 	int param1 = (message >> 8) & 0x7F;
 	int param2 = (message >> 16) & 0x7F;
 
-	switch (event & 0xF0){
-		case 0x80:
+	switch (event) {
+		case MidiEvent_NoteOff:
 			fluid_synth_noteoff(instance_synth, channel, param1);
 			break;
-		case 0x90:
+		case MidiEvent_NoteOn:
 			fluid_synth_noteon(instance_synth, channel, param1, param2);
 			break;
-		case 0xA0:
+		case MidiEvent_KeyPressure:
 #if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR == 1
 			// unsupported
 			return;
 #else
-			fluid_synth_key_pressure(instance_synth, event, param1, param2);
+			fluid_synth_key_pressure(instance_synth, channel, param1, param2);
 #endif
 			break;
-		case 0xB0:
+		case MidiEvent_Controller:
 			fluid_synth_cc(instance_synth, channel, param1, param2);
 			break;
-		case 0xC0:
+		case MidiEvent_ProgramChange:
 			fluid_synth_program_change(instance_synth, channel, param1);
 			break;
-		case 0xD0:
+		case MidiEvent_ChannelPressure:
 			fluid_synth_channel_pressure(instance_synth, channel, param1);
 			break;
-		case 0xE0:
+		case MidiEvent_PitchBend:
 			fluid_synth_pitch_bend(instance_synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
 			break;
 		case 0xFF:

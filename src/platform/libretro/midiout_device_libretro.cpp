@@ -35,25 +35,21 @@ LibretroMidiOutDevice::~LibretroMidiOutDevice() {
 
 
 void LibretroMidiOutDevice::SendMidiMessage(uint32_t message) {
-	int event = message & 0xFF;
-	int param1 = (message >> 8) & 0xFF;
-	int param2 = (message >> 16) & 0xFF;
+	unsigned int event = message & 0xFF;
+	unsigned int param1 = (message >> 8) & 0xFF;
+	unsigned int param2 = (message >> 16) & 0xFF;
 
 	switch (event & 0xF0) {
-		case 0x80:
-			midi_out.write(event, 0);
-			midi_out.write(param1, 0);
-			midi_out.write(0, 0);
-			break;
-		case 0xC0:
-		case 0xD0:
+		case MidiEvent_ProgramChange:
+		case MidiEvent_ChannelPressure:
 			midi_out.write(event, 0);
 			midi_out.write(param1, 0);
 			break;
-		case 0x90:
-		case 0xA0:
-		case 0xB0:
-		case 0xE0:
+		case MidiEvent_NoteOff:
+		case MidiEvent_NoteOn:
+		case MidiEvent_KeyPressure:
+		case MidiEvent_Controller:
+		case MidiEvent_PitchBend:
 			midi_out.write(event, 0);
 			midi_out.write(param1, 0);
 			midi_out.write(param2, 0);

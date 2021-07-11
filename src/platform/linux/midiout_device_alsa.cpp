@@ -75,52 +75,49 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 	evt.dest.client = dst_client;
 	evt.dest.port = dst_port;
 
-	int event = message & 0xFF;
-	int channel = event & 0x0F;
-	int param1 = (message >> 8) & 0x7F;
-	int param2 = (message >> 16) & 0x7F;
+	unsigned int event = message & 0xF0;
+	unsigned int channel = message & 0x0F;
+	unsigned int param1 = (message >> 8) & 0x7F;
+	unsigned int param2 = (message >> 16) & 0x7F;
 
-	switch (event & 0xF0) {
-		case 0x80:
+	switch (event) {
+		case MidiEvent_NoteOff:
 			evt.type = SND_SEQ_EVENT_NOTEOFF;
 			evt.data.note.channel  = channel;
 			evt.data.note.note = param1;
 			break;
-		case 0x90:
+		case MidiEvent_NoteOn:
 			evt.type = SND_SEQ_EVENT_NOTEON;
 			evt.data.note.channel = channel;
 			evt.data.note.note = param1;
 			evt.data.note.velocity = param2;
 			break;
-		case 0xA0:
+		case MidiEvent_KeyPressure:
 			evt.type = SND_SEQ_EVENT_KEYPRESS;
 			evt.data.note.channel = channel;
 			evt.data.note.note = param1;
 			evt.data.note.velocity = param2;
 			break;
-		case 0xB0:
+		case MidiEvent_Controller:
 			evt.type = SND_SEQ_EVENT_CONTROLLER;
 			evt.data.control.channel = channel;
 			evt.data.control.param = param1;
 			evt.data.control.value = param2;
 			break;
-		case 0xC0:
+		case MidiEvent_ProgramChange:
 			evt.type = SND_SEQ_EVENT_PGMCHANGE;
 			evt.data.control.channel = channel;
 			evt.data.control.value = param1;
 			break;
-		case 0xD0:
+		case MidiEvent_ChannelPressure:
 			evt.type = SND_SEQ_EVENT_CHANPRESS;
 			evt.data.control.channel = channel;
 			evt.data.control.value = param1;
 			break;
-		case 0xE0:
+		case MidiEvent_PitchBend:
 			evt.type = SND_SEQ_EVENT_PITCHBEND;
 			evt.data.control.channel = channel;
 			evt.data.control.value = ((param2 & 0x7F) << 7) | (param1 & 0x7F);
-			break;
-		case 0xFF:
-			//fluid_synth_system_reset(instance_synth);
 			break;
 		default:
 			break;

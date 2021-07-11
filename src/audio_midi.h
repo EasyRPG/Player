@@ -36,6 +36,16 @@ class AudioDecoderMidi;
  */
 class MidiDecoder {
 public:
+	enum MidiEvent {
+		MidiEvent_NoteOff = 0x80,
+		MidiEvent_NoteOn = 0x90,
+		MidiEvent_KeyPressure = 0xA0,
+		MidiEvent_Controller = 0xB0,
+		MidiEvent_ProgramChange = 0xC0,
+		MidiEvent_ChannelPressure = 0xD0,
+		MidiEvent_PitchBend = 0xE0
+	};
+
 	MidiDecoder() = default;
 	MidiDecoder(MidiDecoder&&) = delete;
 	MidiDecoder(const MidiDecoder&) = delete;
