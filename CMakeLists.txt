@@ -802,6 +802,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 
 	# xmp (lite)
 	player_find_package(NAME XMP
+		VERSION 4.5.0
 		CONDITION PLAYER_WITH_XMP
 		DEFINITION HAVE_LIBXMP
 		TARGET XMP::XMP)

@@ -20,11 +20,42 @@
 #ifdef HAVE_LIBXMP
 
 // Headers
-#include <cassert>
 #include "xmp.h"
 #include "audio_decoder.h"
-#include "output.h"
 #include "decoder_xmp.h"
+
+static unsigned long xmp_vio_read_impl(void* ptr, unsigned long size, unsigned long count, void* userdata){
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	char* ptrc = reinterpret_cast<char*>(ptr);
+	for (unsigned long i = 0; i < count; ++i) {
+		f->read(reinterpret_cast<char*>(ptrc + i * size), size);
+		if (f->gcount() != size) {
+			return i;
+		}
+	}
+	return count;
+}
+
+static int xmp_vio_seek_impl(void* userdata, long offset, int seek_type) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	if (f->eof()) f->clear(); //emulate behaviour of fseek
+
+	f->seekg(offset, Filesystem_Stream::CSeekdirToCppSeekdir(seek_type));
+
+	return 0;
+}
+
+static long xmp_vio_tell_impl(void* userdata){
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+	return f->tellg();
+}
+
+struct xmp_callbacks vio = {
+	xmp_vio_read_impl,
+	xmp_vio_seek_impl,
+	xmp_vio_tell_impl,
+	nullptr
+};
 
 XMPDecoder::XMPDecoder() {
 	music_type = "mod";
@@ -46,9 +77,7 @@ bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 	if (!ctx)
 		return false;
 
-	file_buffer = Utils::ReadStream(stream);
-
-	int res = xmp_load_module_from_memory(ctx, file_buffer.data(), file_buffer.size());
+	int res = xmp_load_module_from_callbacks(ctx, &stream, vio);
 	if (res != 0) {
 		error_message = "XMP: Error loading file";
 		return false;
@@ -125,8 +154,10 @@ bool XMPDecoder::SetFormat(int freq, AudioDecoder::Format frmt, int chans) {
 	return xmp_start_player(ctx, frequency, player_flags) == 0;
 }
 
-bool XMPDecoder::IsModule(const std::string& filename) {
-	return xmp_test_module(const_cast<char *>(filename.c_str()), NULL) == 0;
+bool XMPDecoder::IsModule(Filesystem_Stream::InputStream& stream) {
+	int res = xmp_test_module_from_callbacks(&stream, vio, nullptr);
+	stream.seekg(0, std::ios_base::beg);
+	return res == 0;
 }
 
 int XMPDecoder::FillBuffer(uint8_t* buffer, int length) {
