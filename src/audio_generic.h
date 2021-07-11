@@ -72,7 +72,13 @@ private:
 		bool paused;
 		bool stopped;
 		bool midi_out_used = false;
+		void Stop();
 		void SetPaused(bool newPaused);
+		int GetTicks() const;
+		void SetFade(int fade);
+		void SetVolume(int volume);
+		void SetPitch(int pitch);
+		bool IsUsed() const;
 	};
 	struct SeChannel {
 		int id;

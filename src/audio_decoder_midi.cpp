@@ -241,6 +241,9 @@ void AudioDecoderMidi::Update(std::chrono::microseconds delta) {
 }
 
 void AudioDecoderMidi::UpdateMidi(std::chrono::microseconds delta) {
+	if (paused) {
+		return;
+	}
 	seq->play(mtime, this);
 	mtime += std::chrono::microseconds(static_cast<int>(delta.count() * pitch / 100));
 
