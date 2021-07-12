@@ -564,7 +564,9 @@ std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_A
 			commands.push_back(ToString(cmd->name));
 		}
 	}
-	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) commands.push_back(ToString(lcf::Data::terms.row));
+	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
+		commands.push_back(ToString(lcf::Data::terms.row));
+	}
 
 	return commands;
 }

@@ -973,7 +973,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto atk = target->CanChangeAtkModifier(effect);
 		if (atk != 0) {
 			SetAffectedAtk(atk);
-			if (lcf::Data::system.easyrpg_enable_stat_absorbing) SetIsAbsorbAtk(absorb);
+			if (lcf::Data::system.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbAtk(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -981,7 +983,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto def = target->CanChangeDefModifier(effect);
 		if (def != 0) {
 			SetAffectedDef(def);
-			if (lcf::Data::system.easyrpg_enable_stat_absorbing) SetIsAbsorbDef(absorb);
+			if (lcf::Data::system.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbDef(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -989,7 +993,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto spi = target->CanChangeSpiModifier(effect);
 		if (spi != 0) {
 			SetAffectedSpi(spi);
-			if (lcf::Data::system.easyrpg_enable_stat_absorbing) SetIsAbsorbSpi(absorb);
+			if (lcf::Data::system.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbSpi(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -997,7 +1003,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto agi = target->CanChangeAgiModifier(effect);
 		if (agi != 0) {
 			SetAffectedAgi(agi);
-			if (lcf::Data::system.easyrpg_enable_stat_absorbing) SetIsAbsorbAgi(absorb);
+			if (lcf::Data::system.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbAgi(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -1155,8 +1163,6 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const {
-	// Skills invoked by items and skills with the attribute
-        // "easyrpg_ignore_reflect" set ignore reflect
 	if (item || skill.easyrpg_ignore_reflect) {
 		return false;
 	}
