@@ -30,7 +30,6 @@
  */
 class ZipFilesystem : public Filesystem {
 public:
-
 	/**
 	 * Initializes a filesystem inside the given ZIP File
 	 *
@@ -62,15 +61,16 @@ private:
 		bool is_directory;
 	};
 
-	ZipFilesystem() = delete;
-
-	static bool FindCentralDirectory(std::istream& stream, uint32_t& offset, uint32_t& size, uint16_t& num_entries);
-	static bool ReadCentralDirectoryEntry(std::istream& zipfile, std::vector<char>& filepath, uint32_t& offset, uint32_t& uncompressed_size);
-	static bool ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressed_size);
+	bool FindCentralDirectory(std::istream& stream, uint32_t& offset, uint32_t& size, uint16_t& num_entries) const;
+	bool ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filepath, uint32_t& offset, uint32_t& uncompressed_size, bool& is_utf8) const;
+	bool ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressed_size) const;
+	const ZipEntry* Find(StringView what) const;
 
 	mutable std::unordered_map<std::string, std::vector<uint8_t>> input_pool;
-	std::unordered_map<std::string, ZipEntry> zip_entries;
+	std::vector<std::pair<std::string, ZipEntry>> zip_entries;
+	std::vector<std::pair<std::string, ZipEntry>> zip_entries_cp437;
 	std::string encoding;
+	mutable std::vector<char> filename_buffer;
 };
 
 #endif
