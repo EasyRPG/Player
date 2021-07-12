@@ -87,7 +87,7 @@ int Window_NumberInput::GetMaxDigits() {
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	// At least 7 digits because of gold input in debug scene
 	// (free space and 6 digits for the gold value)
-	int top = std::max(7, digits_max);
+	int top = std::max(7, idigits_max);
 	digits_max =
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
