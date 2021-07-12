@@ -85,8 +85,6 @@ add_library(${PROJECT_NAME} STATIC
 	src/decoder_oggvorbis.h
 	src/decoder_opus.cpp
 	src/decoder_opus.h
-	src/decoder_wav.cpp
-	src/decoder_wav.h
 	src/decoder_wildmidi.cpp
 	src/decoder_wildmidi.h
 	src/decoder_xmp.cpp
@@ -723,6 +721,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
@@ -820,6 +819,14 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 			src/midiprogram.h
 			src/midisynth.cpp
 			src/midisynth.h)
+	endif()
+
+	if(PLAYER_ENABLE_DRWAV)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_DRWAV=1)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/decoder_drwav.cpp
+			src/decoder_drwav.h
+			src/dr_wav.h)
 	endif()
 endif()
 
@@ -1049,8 +1056,16 @@ message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	message(STATUS "")
 
+	set(WAV_LIBS)
+	if(PLAYER_ENABLE_DRWAV)
+		list(APPEND WAV_LIBS "built-in (dr_wav)")
+	endif()
 	if(LIBSNDFILE_FOUND)
-		message(STATUS "WAV playback: libsndfile")
+		list(APPEND WAV_LIBS "libsndfile")
+	endif()
+
+	if(WAV_LIBS)
+		message(STATUS "WAV playback: ${WAV_LIBS}")
 	elseif(SDL2_MIXER_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "WAV playback: SDL2_mixer")

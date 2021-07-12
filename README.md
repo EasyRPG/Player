@@ -151,10 +151,10 @@ Step-by-step instructions:
     tar xf easyrpg-player-0.6.2.tar.xz     # unpack the tarball
     cd easyrpg-player-0.6.2/builds/android # enter in the android directory
     ./gradlew -PtoolchainDirs="DIR1;DIR2" assembleRelease # create the APK
-    
+
 Replace ``DIR1`` etc. with the path to the player dependencies. You can use
 the scripts in the ``android`` folder of our [buildscripts] to compile them.
-    
+
 To pass additional CMake arguments use ``-PcmakeOptions``:
 
     -PcmakeOptions="-DSOME_OPTION1=ON -DSOME_OPTION2=OFF"
@@ -192,6 +192,9 @@ EasyRPG Player makes use of the following 3rd party software:
 * [FMMidi] YM2608 FM synthesizer emulator - Copyright (c) 2003-2006 yuno
   (Yoshio Uno), provided under the (3-clause) BSD license
 
+* [dr_wav] WAV audio loader and writer - Copyright (c) David Reid, provided
+  under public domain or MIT-0
+
 * [PicoJSON] JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
   Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
 
@@ -206,6 +209,7 @@ EasyRPG Player makes use of the following 3rd party software:
 [#easyrpg at irc.libera.chat]: https://kiwiirc.com/nextclient/#ircs://irc.libera.chat/#easyrpg?nick=rpgguest??
 [COPYING]: COPYING
 [FMMidi]: http://unhaut.x10host.com/fmmidi/
+[dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
 [Dirent]: https://github.com/tronkko/dirent
 [Teenyicons]: https://github.com/teenyicons/teenyicons

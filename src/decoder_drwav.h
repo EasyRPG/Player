@@ -18,19 +18,23 @@
 #ifndef EP_DECODER_WAV_H
 #define EP_DECODER_WAV_H
 
+#include "system.h"
+#ifdef WANT_DRWAV
+
 // Headers
 #include "audio_decoder.h"
+#include "dr_wav.h"
 #include <string>
 #include <memory>
 
 /**
- * Standalone basic audio decoder for WAV
+ * Standalone audio decoder powered by dr_wav
  */
-class WavDecoder : public AudioDecoder {
+class DrWavDecoder : public AudioDecoder {
 public:
-	WavDecoder();
+	DrWavDecoder();
 
-	~WavDecoder();
+	~DrWavDecoder() override;
 
 	bool Open(Filesystem_Stream::InputStream stream) override;
 
@@ -42,19 +46,15 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
-	int GetTicks() const override;
-
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
-	Format output_format;
 	Filesystem_Stream::InputStream stream;
-	bool finished;
-	uint32_t samplerate;
-	uint16_t nchannels;
-	uint32_t audiobuf_offset;
-	uint32_t chunk_size;
-	uint32_t cur_pos;
-	int decoded_samples = 0;
+	bool finished = false;
+	bool init = false;
+	drwav handle = {};
+	uint32_t bytes_per_frame = 0;
 };
+
+#endif
 
 #endif

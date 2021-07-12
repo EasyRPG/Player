@@ -29,7 +29,7 @@
 #include "decoder_oggvorbis.h"
 #include "decoder_opus.h"
 #include "decoder_libsndfile.h"
-#include "decoder_wav.h"
+#include "decoder_drwav.h"
 #include "decoder_xmp.h"
 
 void AudioDecoder::Pause() {
@@ -162,20 +162,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(Filesystem_Stream::InputStrea
 #endif
 	}
 
-#ifdef WANT_FASTWAV
-	// Try to use a basic decoder for faster wav decoding if not ADPCM
+#ifdef WANT_DRWAV
+	// Use built-in WAV decoder (dr_wav) for faster WAV decoding
 	if (!strncmp(magic, "RIFF", 4)) {
-		stream.seekg(20, std::ios::ios_base::beg);
-		uint16_t raw_enc;
-		stream.read(reinterpret_cast<char*>(&raw_enc), 2);
-
-		Utils::SwapByteOrder(raw_enc);
-		stream.seekg(0, std::ios::ios_base::beg);
-		if (raw_enc == 0x01) { // Codec is normal PCM
-			return add_resampler(std::make_unique<WavDecoder>());
-		}
+		return add_resampler(std::make_unique<DrWavDecoder>());
 	}
-
 #endif
 
 	// Try to use libsndfile for common formats
