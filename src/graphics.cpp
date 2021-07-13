@@ -16,19 +16,17 @@
  */
 
 // Headers
+#include <memory>
 #include <sstream>
 #include <chrono>
-#include <array>
 
 #include "graphics.h"
 #include "cache.h"
-#include "output.h"
 #include "player.h"
 #include "fps_overlay.h"
 #include "message_overlay.h"
 #include "transition.h"
 #include "scene.h"
-#include "drawable.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 #include "game_clock.h"
@@ -38,8 +36,6 @@ using namespace std::chrono_literals;
 namespace Graphics {
 	void UpdateTitle();
 
-	int framerate;
-
 	std::shared_ptr<Scene> current_scene;
 
 	std::unique_ptr<MessageOverlay> message_overlay;
@@ -48,16 +44,12 @@ namespace Graphics {
 	std::string window_title_key;
 }
 
-unsigned SecondToFrame(float const second) {
-	return(second * Graphics::framerate);
-}
-
 void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
 	UpdateSceneCallback();
 
-	message_overlay.reset(new MessageOverlay());
-	fps_overlay.reset(new FpsOverlay());
+	message_overlay = std::make_unique<MessageOverlay>();
+	fps_overlay = std::make_unique<FpsOverlay>();
 }
 
 void Graphics::Quit() {
