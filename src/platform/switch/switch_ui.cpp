@@ -99,8 +99,8 @@ namespace {
 
 	const int touch_right[] = {
 		Input::Keys::ESCAPE, Input::Keys::N9, Input::Keys::N0,
-		Input::Keys::PERIOD, Input::Keys::ADD, Input::Keys::SUBTRACT,
-		Input::Keys::MULTIPLY, Input::Keys::DIVIDE
+		Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT,
+		Input::Keys::KP_MULTIPLY, Input::Keys::KP_DIVIDE
 	};
 
 	PadState pad;

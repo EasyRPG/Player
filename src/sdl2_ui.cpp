@@ -926,12 +926,15 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 		case SDL_SCANCODE_KP_7			: return Input::Keys::KP7;
 		case SDL_SCANCODE_KP_8			: return Input::Keys::KP8;
 		case SDL_SCANCODE_KP_9			: return Input::Keys::KP9;
-		case SDL_SCANCODE_KP_MULTIPLY	: return Input::Keys::MULTIPLY;
-		case SDL_SCANCODE_KP_PLUS		: return Input::Keys::ADD;
+		case SDL_SCANCODE_KP_MULTIPLY	: return Input::Keys::KP_MULTIPLY;
+		case SDL_SCANCODE_KP_PLUS		: return Input::Keys::KP_ADD;
 		case SDL_SCANCODE_KP_ENTER		: return Input::Keys::RETURN;
-		case SDL_SCANCODE_KP_MINUS		: return Input::Keys::SUBTRACT;
-		case SDL_SCANCODE_KP_PERIOD		: return Input::Keys::PERIOD;
-		case SDL_SCANCODE_KP_DIVIDE		: return Input::Keys::DIVIDE;
+		case SDL_SCANCODE_KP_MINUS		: return Input::Keys::KP_SUBTRACT;
+		case SDL_SCANCODE_KP_PERIOD		: return Input::Keys::KP_PERIOD;
+		case SDL_SCANCODE_KP_DIVIDE		: return Input::Keys::KP_DIVIDE;
+		case SDL_SCANCODE_COMMA			: return Input::Keys::COMMA;
+		case SDL_SCANCODE_PERIOD		: return Input::Keys::PERIOD;
+		case SDL_SCANCODE_SLASH			: return Input::Keys::SLASH;
 		case SDL_SCANCODE_F1			: return Input::Keys::F1;
 		case SDL_SCANCODE_F2			: return Input::Keys::F2;
 		case SDL_SCANCODE_F3			: return Input::Keys::F3;
@@ -949,8 +952,13 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 		case SDL_SCANCODE_SCROLLLOCK	: return Input::Keys::SCROLL_LOCK;
 		case SDL_SCANCODE_AC_BACK		: return Input::Keys::AC_BACK;
 		case SDL_SCANCODE_SELECT		: return Input::Keys::SELECT;
+		case SDL_SCANCODE_LEFTBRACKET	: return Input::Keys::LEFT_BRACKET;
+		case SDL_SCANCODE_RIGHTBRACKET	: return Input::Keys::RIGHT_BRACKET;
+		case SDL_SCANCODE_BACKSLASH		: return Input::Keys::BACKSLASH;
+		case SDL_SCANCODE_SEMICOLON		: return Input::Keys::SEMICOLON;
+		case SDL_SCANCODE_APOSTROPHE	: return Input::Keys::APOSTROPH;
 
-		default					: return Input::Keys::NONE;
+		default							: return Input::Keys::NONE;
 	}
 }
 #endif

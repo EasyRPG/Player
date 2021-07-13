@@ -196,10 +196,10 @@ void CtrUi::ProcessEvents() {
 #ifdef NDEBUG
 	// Touchscreen support
 	u32 keys_tbl[16] = {
-		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
-		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
-		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
-		Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
+		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::KP_DIVIDE,
+		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_MULTIPLY,
+		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_SUBTRACT,
+		Input::Keys::N0, Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD
 	};
 
 	if (touch_state == 1) {
