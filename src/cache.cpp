@@ -178,24 +178,25 @@ namespace {
 		int min_height, max_height;
 		DummyRenderer dummy_renderer;
 		bool oob_check;
+		bool warn_missing;
 	};
 	constexpr Spec spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true },
-		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true },
-		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true },
-		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true },
-		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true},
-		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true },
-		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false },
-		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false },
-		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false },
-		{ "System", true, 160, 160, 80, 80, DummySystem, true },
-		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true },
-		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true },
-		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true },
-		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true},
-		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true },
-		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true },
+		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true, true },
+		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true, true },
+		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true, true },
+		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true, true },
+		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true, true},
+		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true, true },
+		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false, false },
+		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false, true },
+		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false, true },
+		{ "System", true, 160, 160, 80, 80, DummySystem, true, true },
+		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true, true },
+		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true, true },
+		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true, true },
+		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true, false },
+		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true, false },
+		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true, true },
 	};
 
 	template<Material::Type T>
@@ -221,6 +222,28 @@ namespace {
 		}
 
 		return bitmap;
+	}
+
+	template<Material::Type T>
+	BitmapRef CreateEmpty() {
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
+
+		const Spec& s = spec[T];
+
+		const auto key = MakeHashKey(s.directory, "\1Dummy", false);
+
+		auto it = cache.find(key);
+
+		if (it == cache.end()) {
+			FreeBitmapMemory();
+
+			BitmapRef bitmap = Bitmap::Create(s.min_width, s.min_height, true);
+
+			return AddToCache(key, bitmap);
+		} else {
+			it->second.last_access = Game_Clock::GetFrameTime();
+			return it->second.bitmap;
+		}
 	}
 
 	template<Material::Type T>
@@ -275,7 +298,12 @@ namespace {
 			FreeBitmapMemory();
 
 			if (!is) {
-				Output::Warning("Image not found: {}/{}", s.directory, filename);
+				if (s.warn_missing) {
+					Output::Warning("Image not found: {}/{}", s.directory, filename);
+				} else {
+					Output::Debug("Image not found: {}/{}", s.directory, filename);
+					bmp = CreateEmpty<T>();
+				}
 			} else {
 				auto flags = Bitmap::Flag_ReadOnly | (
 						T == Material::Chipset? Bitmap::Flag_Chipset :
@@ -287,14 +315,15 @@ namespace {
 			}
 
 			if (bmp) {
-				AddToCache(key, bmp);
+				bmp = AddToCache(key, bmp);
 			}
 		} else {
 			it->second.last_access = Game_Clock::GetFrameTime();
 			bmp = it->second.bitmap;
-	    }
+		}
 
 		if (!bmp) {
+			// Even for images without "warn_missing" this still creates a checkboard for invalid images
 			return LoadDummyBitmap<T>(s.directory, filename, transparent);
 		}
 
@@ -313,7 +342,7 @@ namespace {
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {
 				Output::Debug("Image size out of bounds: {}/{} ({}x{} < {}x{} < {}x{})",
-				              s.directory, filename, min_w, min_h, w, h, max_w, max_h);
+							  s.directory, filename, min_w, min_h, w, h, max_w, max_h);
 			}
 		}
 
