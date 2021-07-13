@@ -44,6 +44,8 @@ namespace Graphics {
 
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
+
+	std::string window_title_key;
 }
 
 unsigned SecondToFrame(float const second) {
@@ -77,10 +79,21 @@ void Graphics::Update() {
 }
 
 void Graphics::UpdateTitle() {
-	if (DisplayUi->IsFullscreen()) return;
+	if (DisplayUi->IsFullscreen()) {
+		return;
+	}
+
 #ifdef EMSCRIPTEN
 	return;
-#endif
+#else
+	std::string fps;
+	if (DisplayUi->ShowFpsOnTitle()) {
+		fps += fps_overlay->GetFpsString();
+	}
+
+	if (window_title_key == (Player::game_title + fps)) {
+		return;
+	}
 
 	std::stringstream title;
 	if (!Player::game_title.empty()) {
@@ -89,10 +102,13 @@ void Graphics::UpdateTitle() {
 	title << GAME_TITLE;
 
 	if (DisplayUi->ShowFpsOnTitle()) {
-		title << " - " << fps_overlay->GetFpsString();
+		title << " - " << fps;
 	}
 
 	DisplayUi->SetTitle(title.str());
+
+	window_title_key = (Player::game_title + fps);
+#endif
 }
 
 void Graphics::Draw(Bitmap& dst) {
