@@ -242,9 +242,6 @@ void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 		case MidiEvent_PitchBend:
 			fluid_synth_pitch_bend(instance_synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
 			break;
-		case 0xFF:
-			fluid_synth_system_reset(instance_synth);
-			break;
 		default:
 			break;
 	}
