@@ -205,10 +205,7 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		FreeBitmapMemory();
-
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
-		cache_size += bitmap->GetSize();
 
 		// ToDo: Maybe use different renderers depending on material
 		// Will look ugly for some image types
@@ -230,20 +227,7 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		const auto key = MakeHashKey(s.directory, "\1Dummy", false);
-
-		auto it = cache.find(key);
-
-		if (it == cache.end()) {
-			FreeBitmapMemory();
-
-			BitmapRef bitmap = Bitmap::Create(s.min_width, s.min_height, true);
-
-			return AddToCache(key, bitmap);
-		} else {
-			it->second.last_access = Game_Clock::GetFrameTime();
-			return it->second.bitmap;
-		}
+		return Bitmap::Create(s.min_width, s.min_height, true);
 	}
 
 	template<Material::Type T>
@@ -252,20 +236,7 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		const auto key = MakeHashKey(folder_name, filename, transparent);
-
-		auto it = cache.find(key);
-
-		if (it == cache.end()) {
-			FreeBitmapMemory();
-
-			BitmapRef bitmap = s.dummy_renderer();
-
-			return AddToCache(key, bitmap);
-		} else {
-			it->second.last_access = Game_Clock::GetFrameTime();
-			return it->second.bitmap;
-		}
+		return s.dummy_renderer();
 	}
 
 	template<Material::Type T>
@@ -273,10 +244,6 @@ namespace {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
-
-		if (filename == CACHE_DEFAULT_BITMAP) {
-			return LoadDummyBitmap<T>(s.directory, filename, true);
-		}
 
 #ifndef NDEBUG
 		// Test if the file was requested asynchronously before.
@@ -289,43 +256,47 @@ namespace {
 		BitmapRef bmp;
 
 		const auto key = MakeHashKey(s.directory, filename, transparent);
-
 		auto it = cache.find(key);
-
 		if (it == cache.end()) {
-			auto is = FileFinder::OpenImage(s.directory, filename);
+			if (filename == CACHE_DEFAULT_BITMAP) {
+				bmp = LoadDummyBitmap<T>(s.directory, filename, true);
+			}
 
-			FreeBitmapMemory();
+			if (!bmp) {
+				auto is = FileFinder::OpenImage(s.directory, filename);
 
-			if (!is) {
-				if (s.warn_missing) {
-					Output::Warning("Image not found: {}/{}", s.directory, filename);
+				FreeBitmapMemory();
+
+				if (!is) {
+					if (s.warn_missing) {
+						Output::Warning("Image not found: {}/{}", s.directory, filename);
+					} else {
+						Output::Debug("Image not found: {}/{}", s.directory, filename);
+						bmp = CreateEmpty<T>();
+					}
 				} else {
-					Output::Debug("Image not found: {}/{}", s.directory, filename);
-					bmp = CreateEmpty<T>();
-				}
-			} else {
-				auto flags = Bitmap::Flag_ReadOnly | (
-						T == Material::Chipset? Bitmap::Flag_Chipset :
-						T == Material::System? Bitmap::Flag_System : 0);
-				bmp = Bitmap::Create(std::move(is), transparent, flags);
-				if (!bmp) {
-					Output::Warning("Invalid image: {}/{}", s.directory, filename);
+					auto flags = Bitmap::Flag_ReadOnly | (
+							T == Material::Chipset ? Bitmap::Flag_Chipset :
+							T == Material::System ? Bitmap::Flag_System : 0);
+					bmp = Bitmap::Create(std::move(is), transparent, flags);
+					if (!bmp) {
+						Output::Warning("Invalid image: {}/{}", s.directory, filename);
+					}
 				}
 			}
 
-			if (bmp) {
-				bmp = AddToCache(key, bmp);
+			if (!bmp) {
+				// Even for images without "warn_missing" this still creates a checkboard for invalid images
+				bmp = LoadDummyBitmap<T>(s.directory, filename, transparent);
 			}
+
+			bmp = AddToCache(key, bmp);
 		} else {
 			it->second.last_access = Game_Clock::GetFrameTime();
 			bmp = it->second.bitmap;
 		}
 
-		if (!bmp) {
-			// Even for images without "warn_missing" this still creates a checkboard for invalid images
-			return LoadDummyBitmap<T>(s.directory, filename, transparent);
-		}
+		assert(bmp);
 
 		if (s.oob_check) {
 			int w = bmp->GetWidth();
