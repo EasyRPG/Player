@@ -139,38 +139,6 @@ namespace {
 		return (cache[key] = {bmp, Game_Clock::GetFrameTime()}).bitmap;
 	}
 
-	BitmapRef LoadBitmap(StringView folder_name, StringView filename,
-						 bool transparent, const uint32_t flags) {
-		const auto key = MakeHashKey(folder_name, filename, transparent);
-
-		auto it = cache.find(key);
-
-		if (it == cache.end()) {
-			auto is = FileFinder::OpenImage(folder_name, filename);
-
-			BitmapRef bmp = BitmapRef();
-
-			FreeBitmapMemory();
-
-			if (!is) {
-				Output::Warning("Image not found: {}/{}", folder_name, filename);
-			} else {
-				bmp = Bitmap::Create(std::move(is), transparent, flags);
-				if (!bmp) {
-					Output::Warning("Invalid image: {}/{}", folder_name, filename);
-				}
-			}
-
-			if (bmp) {
-				return AddToCache(key, bmp);
-			}
-			return nullptr;
-		} else {
-			it->second.last_access = Game_Clock::GetFrameTime();
-			return it->second.bitmap;
-		}
-	}
-
 	struct Material {
 		enum Type {
 			REND = -1,
@@ -195,7 +163,7 @@ namespace {
 
 	}; // struct Material
 
-	using DummyRenderer = BitmapRef(*)(void);
+	using DummyRenderer = BitmapRef(*)();
 
 	template<Material::Type T> BitmapRef DrawCheckerboard();
 
@@ -278,35 +246,61 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(StringView f, bool transparent) {
+	BitmapRef LoadBitmap(StringView filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		const Spec& s = spec[T];
 
-		if (f == CACHE_DEFAULT_BITMAP) {
-			return LoadDummyBitmap<T>(s.directory, f, true);
+		if (filename == CACHE_DEFAULT_BITMAP) {
+			return LoadDummyBitmap<T>(s.directory, filename, true);
 		}
 
 #ifndef NDEBUG
 		// Test if the file was requested asynchronously before.
 		// If not the file can't be expected to exist -> bug.
 		// This test is expensive and turned off in release builds.
-		auto* req = AsyncHandler::RequestFile(s.directory, f);
+		auto* req = AsyncHandler::RequestFile(s.directory, filename);
 		assert(req != nullptr && req->IsReady());
 #endif
 
-		BitmapRef ret = LoadBitmap(s.directory, f, transparent, Bitmap::Flag_ReadOnly | (
-										 T == Material::Chipset? Bitmap::Flag_Chipset:
-										 T == Material::System? Bitmap::Flag_System:
-										 0));
+		BitmapRef bmp;
 
-		if (!ret) {
-			return LoadDummyBitmap<T>(s.directory, f, transparent);
+		const auto key = MakeHashKey(s.directory, filename, transparent);
+
+		auto it = cache.find(key);
+
+		if (it == cache.end()) {
+			auto is = FileFinder::OpenImage(s.directory, filename);
+
+			FreeBitmapMemory();
+
+			if (!is) {
+				Output::Warning("Image not found: {}/{}", s.directory, filename);
+			} else {
+				auto flags = Bitmap::Flag_ReadOnly | (
+						T == Material::Chipset? Bitmap::Flag_Chipset :
+						T == Material::System? Bitmap::Flag_System : 0);
+				bmp = Bitmap::Create(std::move(is), transparent, flags);
+				if (!bmp) {
+					Output::Warning("Invalid image: {}/{}", s.directory, filename);
+				}
+			}
+
+			if (bmp) {
+				AddToCache(key, bmp);
+			}
+		} else {
+			it->second.last_access = Game_Clock::GetFrameTime();
+			bmp = it->second.bitmap;
+	    }
+
+		if (!bmp) {
+			return LoadDummyBitmap<T>(s.directory, filename, transparent);
 		}
 
 		if (s.oob_check) {
-			int w = ret->GetWidth();
-			int h = ret->GetHeight();
+			int w = bmp->GetWidth();
+			int h = bmp->GetHeight();
 			int min_h = s.min_height;
 			int max_h = s.max_height;
 			int min_w = s.min_width;
@@ -319,11 +313,11 @@ namespace {
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {
 				Output::Debug("Image size out of bounds: {}/{} ({}x{} < {}x{} < {}x{})",
-				              s.directory, f, min_w, min_h, w, h, max_w, max_h);
+				              s.directory, filename, min_w, min_h, w, h, max_w, max_h);
 			}
 		}
 
-		return ret;
+		return bmp;
 	}
 
 	template<Material::Type T>
