@@ -200,16 +200,36 @@ EasyRPG Player makes use of the following 3rd party software:
 
 * [rang] terminal color library - by Abhinav Gauniyal, provided under Unlicense
 
-* [Teenyicons] - Copyright (c) 2020 Anja van Staden, provided under the MIT license
+### 3rd party resources
+
+* [Baekmuk] font family (Korean) - Copyright (c) 1986-2002 Kim Jeong-Hwan,
+  provided under the Baekmuk License
+
+* [Shinonome] font familiy (Japanese) - Copyright (c) 1999-2000 Yasuyuki
+  Furukawa and contributors, provided under public domain. Glyphs were added
+  and modified for use in EasyRPG Player, all changes under public domain.
+
+* [ttyp0] font family - Copyright (c) 2012-2015 Uwe Waldmann, provided under
+  ttyp0 license
+
+* [WenQuanYi] font family (CJK) - Copyright (c) 2004-2010 WenQuanYi Project
+  Contributors provided under the GPLv2 or later with Font Exception
+
+* [Teenyicons] Tiny minimal 1px icons - Copyright (c) 2020 Anja van Staden,
+  provided under the MIT license (only used by the Emscripten web shell)
 
 [buildscripts]: https://github.com/EasyRPG/buildscripts
 [liblcf]: https://github.com/EasyRPG/liblcf
 [vcpkg]: https://github.com/Microsoft/vcpkg
 [#easyrpg at irc.libera.chat]: https://kiwiirc.com/nextclient/#ircs://irc.libera.chat/#easyrpg?nick=rpgguest??
 [COPYING]: COPYING
-[FMMidi]: http://unhaut.x10host.com/fmmidi/
+[FMMidi]: http://unhaut.epizy.com/fmmidi
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
 [Dirent]: https://github.com/tronkko/dirent
 [rang]: https://github.com/agauniyal/rang
+[baekmuk]: https://kldp.net/baekmuk
+[Shinonome]: http://openlab.ring.gr.jp/efont/shinonome
+[ttyp0]: https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0
+[WenQuanYi]: http://wenq.org
 [Teenyicons]: https://github.com/teenyicons/teenyicons

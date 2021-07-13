@@ -19,7 +19,7 @@ Summary:
     Release  : 8
     Copyright: © 2004-2010, The WenQuanYi Project 
                Board of Trustees and Qianqian Fang
-    License  : GPL v2 (with font embedding exception **)
+    License  : GPL v2 or later version (with font embedding exception **)
 ----------------------------------------------------------
 
           May the Font be with you, forever!
@@ -28,20 +28,22 @@ Summary:
 
 Legal Disclaimer:
 
-Permission is granted to copy, distribute, and/or modify 
-this document under the terms of the GNU Free Documentation 
-License, Version 1.2 or any later version published by 
-the Free Software Foundation; with no Invariant Sections, 
-no Front-Cover Texts, and no Back-Cover Texts. A copy 
-of the license is available at 
-http://www.gnu.org/licenses/fdl.html.
+Copyright (c) 2004-2010, The WenQuanYi Project 
+              Board of Trustees and Qianqian Fang
 
-This document may be copied and distributed in any medium, 
-either commercially or noncommercially, provided that the 
-GNU Free Documentation License (FDL), the copyright notices, 
-and the license notice saying the GNU FDL applies to the 
-document are reproduced in all copies, and that you add 
-no other conditions whatsoever to those of the GNU FDL. 
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 ----------------------------------------------------------
 
