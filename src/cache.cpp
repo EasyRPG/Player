@@ -202,7 +202,6 @@ namespace {
 	template<Material::Type T>
 	BitmapRef DrawCheckerboard() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
 
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
@@ -224,25 +223,20 @@ namespace {
 	template<Material::Type T>
 	BitmapRef CreateEmpty() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
-
 		return Bitmap::Create(s.min_width, s.min_height, true);
 	}
 
 	template<Material::Type T>
 	BitmapRef LoadDummyBitmap(StringView folder_name, StringView filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
-
 		return s.dummy_renderer();
 	}
 
 	template<Material::Type T>
 	BitmapRef LoadBitmap(StringView filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
 
 #ifndef NDEBUG
@@ -323,9 +317,7 @@ namespace {
 	template<Material::Type T>
 	BitmapRef LoadBitmap(StringView f) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
-
 		return LoadBitmap<T>(f, s.transparent);
 	}
 }
