@@ -72,7 +72,7 @@ namespace midisynth{
         std::vector<NOTE>::iterator i = notes.begin();
         while(i != notes.end()){
             class note* note = i->note;
-            uint_least32_t panpot = note->get_panpot();
+            int_least32_t panpot = note->get_panpot();
             if(this->panpot <= 8192){
                 panpot = panpot * this->panpot / 8192;
             }else{
@@ -83,8 +83,8 @@ namespace midisynth{
             }else{
                 panpot = panpot * (16384 - master_balance) / 8192 + (master_balance - 8192) * 2;
             }
-            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(std::max((uint_least32_t)0u, panpot - 1) * (M_PI / 2 / 16382)));
-            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(std::max((uint_least32_t)0u, panpot - 1) * (M_PI / 2 / 16382)));
+            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(std::max(0, panpot - 1) * (M_PI / 2 / 16382)));
+            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(std::max(0, panpot - 1) * (M_PI / 2 / 16382)));
             bool ret = note->synthesize(out, samples, rate, left, right);
             if(ret){
                 ++i;
@@ -287,10 +287,10 @@ namespace midisynth{
             set_freeze(value);
             break;
         case 0x60:
-            set_registered_parameter(std::max(0x3FFF, get_registered_parameter() + 1));
+            set_registered_parameter(std::min(0x3FFF, get_registered_parameter() + 1));
             break;
         case 0x61:
-            set_registered_parameter(std::min(0, get_registered_parameter() - 1));
+            set_registered_parameter(std::max(0, get_registered_parameter() - 1));
             break;
         case 0x62:
             set_NRPN((NRPN & ~0x7F) | value);
@@ -585,37 +585,37 @@ namespace midisynth{
     // Sets and executes MIDI events.
     void synthesizer::midi_event(int event, int param1, int param2)
     {
-        switch(event & 0xF0){
-        case 0x80:
-            note_off(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
-            break;
-        case 0x90:
-            note_on(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
-            break;
-        case 0xA0:
-            polyphonic_key_pressure(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
-            break;
-        case 0xB0:
-            control_change(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
-            break;
-        case 0xC0:
-            program_change(event & 0x0F, param1 & 0x7F);
-            break;
-        case 0xD0:
-            channel_pressure(event & 0x0F, param1 & 0x7F);
-            break;
-        case 0xE0:
-            pitch_bend_change(event & 0x0F, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
-            break;
-        case 0xFE:
+        if(event == 0xFE)
             active_sensing = 0.33f;
-            break;
-        case 0xFF:
+        else if (event == 0xFF) {
             all_sound_off();
             reset_all_parameters();
-            break;
-        default:
-            break;
+        }else{
+            switch(event & 0xF0){
+            case 0x80:
+                note_off(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
+                break;
+            case 0x90:
+                note_on(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
+                break;
+            case 0xA0:
+                polyphonic_key_pressure(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
+                break;
+            case 0xB0:
+                control_change(event & 0x0F, param1 & 0x7F, param2 & 0x7F);
+                break;
+            case 0xC0:
+                program_change(event & 0x0F, param1 & 0x7F);
+                break;
+            case 0xD0:
+                channel_pressure(event & 0x0F, param1 & 0x7F);
+                break;
+            case 0xE0:
+                pitch_bend_change(event & 0x0F, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
+                break;
+            default:
+                break;
+            }
         }
     }
     // Changes the system mode.
