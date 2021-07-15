@@ -79,8 +79,9 @@ namespace midisequencer{
         if (position != messages.begin()) {
             position--;
         }
-        return position;
+        return loop_position;
     }
+
     bool sequencer::is_at_end()
     {
         return position == messages.end();
