@@ -264,7 +264,24 @@ namespace midisequencer{
         }
     }
 
-    std::chrono::microseconds sequencer::get_start_skipping_silence() {
+    std::chrono::microseconds sequencer::get_start_skipping_silence(output* out) {
+        auto notify_meta_event_until = [&](std::chrono::microseconds time) {
+            // Forward meta_events because the tempo data must be correct
+            for (auto& msg: messages) {
+                if (msg.time >= time) {
+                    break;
+                }
+                if ((msg.message & 0xFF) == 0xFF) {
+                    assert((msg.message >> 8) < long_messages.size());
+                    const std::string& s = long_messages[static_cast<int>(msg.message >> 8)];
+                    assert(s.size() >= 1);
+                    out->meta_event(static_cast<unsigned char>(s[0]), s.data() + 1, s.size() - 1);
+                }
+            }
+        };
+
+        std::vector<midi_message> m;
+
         for (auto& msg: messages) {
             // If we find Loop Start before the first NoteOn, just start there
             if (is_loop_start(msg.message)) {
@@ -273,6 +290,7 @@ namespace midisequencer{
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
                 time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
+                notify_meta_event_until(time);
                 return time;
             } else if ((msg.message & 0xFF) == 0xF0) {
                 // SysEx message. RPG_RT doesn't skip silence if there's a SysEx
@@ -285,6 +303,7 @@ namespace midisequencer{
                 // This amount is based on the tempo, and this 2100000 divisor
                 // I determined experimentally.
                 time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
+                notify_meta_event_until(time);
                 return time;
             }
         }
@@ -499,7 +518,7 @@ namespace midisequencer{
         }
     }
 
-	uint32_t sequencer::get_division() const {
-		return division;
-	}
+    uint32_t sequencer::get_division() const {
+        return division;
+    }
 }

@@ -83,7 +83,7 @@ namespace midisequencer{
         uint32_t get_division()const;
         void play(std::chrono::microseconds time, output* out);
         void set_time(std::chrono::microseconds time, output* out);
-        std::chrono::microseconds get_start_skipping_silence();
+        std::chrono::microseconds get_start_skipping_silence(output* out);
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;
