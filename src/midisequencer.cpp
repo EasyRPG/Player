@@ -124,9 +124,9 @@ namespace midisequencer{
     int sequencer::get_num_ports()const
     {
         int ret = 0;
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(ret < i->port){
-                ret = i->port;
+        for(const auto& message: messages){
+            if(ret < message.port){
+                ret = message.port;
             }
         }
         return ret + 1;
@@ -141,10 +141,10 @@ namespace midisequencer{
     }
     std::string sequencer::get_title()const
     {
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+		for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 if(s.size() > 1 && s[0] == 0x03){
                     return s.substr(1);
                 }
@@ -154,10 +154,10 @@ namespace midisequencer{
     }
     std::string sequencer::get_copyright()const
     {
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+		for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 if(s.size() > 1 && s[0] == 0x02){
                     return s.substr(1);
                 }
@@ -168,10 +168,10 @@ namespace midisequencer{
     std::string sequencer::get_song()const
     {
         std::string ret;
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+		for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 assert(s.size() >= 1);
                 if(s[0] == 0x05){
                     ret += s.substr(1);
@@ -491,8 +491,7 @@ namespace midisequencer{
             uint_least32_t tempo = 500000;
             std::chrono::microseconds time_offset = 0us;
             std::chrono::microseconds base = 0us;
-            loop_position = messages.begin();
-            for(std::vector<midi_message>::iterator i = messages.begin(); i != messages.end(); ++i){
+            for(auto i = messages.begin(); i != messages.end(); ++i){
                 std::chrono::microseconds org_time = i->time;
                 i->time = std::chrono::microseconds(static_cast<int>(static_cast<double>((i->time.count() - base.count())) * tempo / division + time_offset.count()));
                 if((i->message & 0xFF) == 0xFF){
@@ -510,7 +509,7 @@ namespace midisequencer{
                 if (is_loop_start(i->message)) {
                     // Loop backwards through the messages to find the first message with the same
                     // timestamp as the loop message
-                    for (std::vector<midi_message>::iterator j = i; j != messages.begin() && j->time >= i->time; j--) {
+                    for (auto j = i; j != messages.begin() && j->time >= i->time; j--) {
                         loop_position = j;
                     }
                 }
