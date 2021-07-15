@@ -187,27 +187,11 @@ bool AudioDecoderMidi::Seek(std::streamoff offset, std::ios_base::seekdir origin
 
 	if (offset == 0 && origin == std::ios_base::beg) {
 		mtime = seq->rewind_to_loop()->time;
+		reset_tempos_after_loop();
 
 		// When the loop points to the end of the track keep it alive to match
 		// RPG_RT behaviour.
 		loops_to_end = mtime >= seq->get_total_time();
-
-		if (mtime > 0us) {
-			// Throw away all tempo data after the loop point
-			auto rit = std::find_if(tempo.rbegin(), tempo.rend(), [&](auto& t) { return t.mtime <= mtime; });
-			auto it = rit.base();
-			if (it != tempo.end()) {
-				tempo.erase(it, tempo.end());
-			}
-
-			// Bit of a hack, prevent stuck notes
-			// TODO: verify with a MIDI event stream inspector whether RPG_RT does this?
-			// FIXME synth->all_note_off();
-		}
-		else {
-			tempo.clear();
-			tempo.emplace_back(this, midi_default_tempo);
-		}
 
 		if (!mididec->SupportsMidiMessages()) {
 			mididec->Seek(tempo.back().GetSamples(mtime), origin);
