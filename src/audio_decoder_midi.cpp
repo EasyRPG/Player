@@ -107,16 +107,18 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 		return false;
 	}
 	seq->rewind();
-	mtime = seq->get_start_skipping_silence();
+	tempo.emplace_back(this, midi_default_tempo);
+	// Warning: This function updates the tempo data, only call it once
+	mtime = seq->get_start_skipping_silence(this);
 
 	if (!mididec->SupportsMidiMessages()) {
 		if (!mididec->Open(file_buffer)) {
 			error_message = "Internal Midi: Error reading file";
 			return false;
 		}
-	}
 
-	tempo.emplace_back(this, midi_default_tempo);
+		mididec->Seek(tempo.back().GetSamples(mtime), std::ios_base::beg);
+	}
 
 	return true;
 }
@@ -383,7 +385,7 @@ void AudioDecoderMidi::reset_tempos_after_loop() {
 AudioDecoderMidi::MidiTempoData::MidiTempoData(const AudioDecoderMidi* midi, uint32_t cur_tempo, const MidiTempoData* prev)
 	: tempo(cur_tempo) {
 	ticks_per_us = (float)midi->seq->get_division() / tempo;
-	samples_per_tick = midi->frequency * 1 / ticks_per_us;
+	samples_per_tick = midi->frequency * 1 / (ticks_per_us * 1000000);
 	mtime = midi->mtime;
 	if (prev) {
 		std::chrono::microseconds delta = mtime - prev->mtime;
