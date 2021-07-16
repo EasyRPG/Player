@@ -74,7 +74,7 @@ void LibretroMidiOutDevice::SendMidiReset() {
 }
 
 std::string LibretroMidiOutDevice::GetName() {
-	return "libretro Midi";
+	return "libretro MIDI";
 }
 
 bool LibretroMidiOutDevice::IsInitialized() const {

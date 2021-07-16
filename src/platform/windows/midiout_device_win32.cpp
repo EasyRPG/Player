@@ -19,6 +19,12 @@
 #include "midiout_device_win32.h"
 #include "output.h"
 
+static std::string get_error_str(MMRESULT res) {
+	char errMsg[120];
+	midiOutGetErrorTextA(res, errMsg, 120);
+	return std::string(errMsg);
+}
+
 Win32MidiOutDevice::Win32MidiOutDevice() {
 	// TODO: Windows MIDI Mapper was removed in Windows 8.
 	// This means it's impossible to change the default ("0") MIDI device
@@ -28,7 +34,7 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 
 	MMRESULT err = midiOutOpen(&midi_out, device_id, 0, 0, CALLBACK_NULL);
 	if (err != MMSYSERR_NOERROR) {
-		Output::Debug("Win32 midiOutOpen {} failed: {}", 0, err);
+		Output::Debug("Win32 midiOutOpen {} failed: ({}) {}", 0, err, get_error_str(err));
 		midi_out = nullptr;
 		return;
 	}
@@ -47,11 +53,24 @@ void Win32MidiOutDevice::SendMidiMessage(uint32_t message) {
 
 void Win32MidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 	MIDIHDR hdr;
+	MMRESULT res;
 	hdr.dwBufferLength = size;
 	hdr.dwBytesRecorded = size;
+	hdr.dwFlags = 0;
 	hdr.lpData = (LPSTR) data;
-	midiOutPrepareHeader(midi_out, &hdr, sizeof(hdr));
-	midiOutLongMsg(midi_out, &hdr, sizeof(hdr));
+	res = midiOutPrepareHeader(midi_out, &hdr, sizeof(hdr));
+	if (res != MMSYSERR_NOERROR) {
+		Output::Debug("Win32 midiOutPrepareHeader failed: ({}) {}", res, get_error_str(res));
+		return;
+	}
+	res = midiOutLongMsg(midi_out, &hdr, sizeof(hdr));
+	if (res != MMSYSERR_NOERROR) {
+		Output::Debug("Win32 midiOutLongMsg failed: ({}) {}", res, get_error_str(res));
+	}
+	res = midiOutUnprepareHeader(midi_out, &hdr, sizeof(hdr));
+	if (res != MMSYSERR_NOERROR) {
+		Output::Debug("Win32 midiOutUnprepareHeader failed: ({}) {}", res, get_error_str(res));
+	}
 }
 
 void Win32MidiOutDevice::SendMidiReset() {
@@ -59,7 +78,7 @@ void Win32MidiOutDevice::SendMidiReset() {
 }
 
 std::string Win32MidiOutDevice::GetName() {
-	return "Windows Midi";
+	return "Windows MIDI";
 }
 
 bool Win32MidiOutDevice::IsInitialized() const {

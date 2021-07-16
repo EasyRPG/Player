@@ -191,7 +191,7 @@ void AlsaMidiOutDevice::SendMidiReset() {
 }
 
 std::string AlsaMidiOutDevice::GetName() {
-	return "ALSA Midi";
+	return "ALSA MIDI";
 }
 
 bool AlsaMidiOutDevice::IsInitialized() const {

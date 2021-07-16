@@ -99,7 +99,7 @@ void CoreAudioMidiOutDevice::SendMidiReset() {
 }
 
 std::string CoreAudioMidiOutDevice::GetName() {
-	return "CoreAudio Midi";
+	return "CoreAudio MIDI";
 }
 
 bool CoreAudioMidiOutDevice::IsInitialized() const {
