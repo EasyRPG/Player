@@ -91,6 +91,10 @@ static fluid_fileapi_t fluidlite_vio = {
 };
 #endif
 
+namespace {
+	bool shutdown = false;
+}
+
 struct FluidSettingsDeleter {
 	void operator()(fluid_settings_t* s) const {
 		delete_fluid_settings(s);
@@ -100,6 +104,7 @@ struct FluidSettingsDeleter {
 struct FluidSynthDeleter {
 	void operator()(fluid_synth_t* s) const {
 		delete_fluid_synth(s);
+		shutdown = true;
 	}
 };
 
@@ -264,7 +269,7 @@ void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 }
 
 void FluidSynthDecoder::SendMidiReset() {
-	if (!instance_synth) {
+	if (!instance_synth || shutdown) {
 		return;
 	}
 
