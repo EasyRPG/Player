@@ -24,6 +24,10 @@
 #include "filefinder.h"
 #include "output.h"
 
+#if FLUIDSYNTH_VERSION_MAJOR >= 3 || (FLUIDSYNTH_VERSION_MAJOR == 2 && FLUIDSYNTH_VERSION_MINOR >= 2)
+#define FLUIDSYNTH_22_OR_NEWER
+#endif
+
 #ifdef HAVE_FLUIDSYNTH
 static void* vio_open(const char* filename) {
 #else
@@ -37,12 +41,20 @@ static void* vio_open(fluid_fileapi_t*, const char* filename) {
 	return new Filesystem_Stream::InputStream { std::move(is) };
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static int vio_read(void *ptr, fluid_long_long_t count, void* userdata) {
+#else
 static int vio_read(void *ptr, int count, void* userdata) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static int vio_seek(void* userdata, fluid_long_long_t offset, int origin) {
+#else
 static int vio_seek(void* userdata, long offset, int origin) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	if (f->eof()) f->clear(); // emulate behaviour of fseek
 
@@ -51,7 +63,11 @@ static int vio_seek(void* userdata, long offset, int origin) {
 	return f->tellg();
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static fluid_long_long_t vio_tell(void* userdata) {
+#else
 static long vio_tell(void* userdata) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	return f->tellg();
 }
