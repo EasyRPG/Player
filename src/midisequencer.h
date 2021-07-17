@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include <chrono>
 
-#define META_EVENT_ALL_NOTE_OFF		0x8888
+#define META_EVENT_ALL_NOTE_OFF 0x8888
 
 namespace midisequencer{
     /*
@@ -83,7 +83,7 @@ namespace midisequencer{
         uint32_t get_division()const;
         void play(std::chrono::microseconds time, output* out);
         void set_time(std::chrono::microseconds time, output* out);
-        std::chrono::microseconds get_start_skipping_silence(output* out);
+        std::chrono::microseconds get_start_skipping_silence();
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;

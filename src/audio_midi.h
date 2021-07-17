@@ -61,7 +61,7 @@ public:
 	 * The library must implement the following commands:
 	 * - SendMidiMessage
 	 * - SendSysExMessage (nice to have)
-	 * - OnMidiReset
+	 * - SendMidiReset
 	 *
 	 * When Midi messages are not supported (library uses own sequencer)
 	 * - Open

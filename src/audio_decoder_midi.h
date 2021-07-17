@@ -179,7 +179,7 @@ private:
 	double delta_volume_step = 0;
 	std::chrono::microseconds last_fade_mtime = std::chrono::microseconds(0);
 
-	int frequency = 44100;
+	int frequency = EP_MIDI_FREQ;
 
 	// What was the mtime when the last set of volume MIDI messages were sent out
 	std::chrono::microseconds last_fade_msg_sent;

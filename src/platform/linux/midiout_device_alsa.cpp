@@ -22,7 +22,7 @@
 AlsaMidiOutDevice::AlsaMidiOutDevice() {
 	int status = snd_seq_open(&midi_out, "default", SND_SEQ_OPEN_DUPLEX, 0);
 	if (status < 0) {
-		Output::Debug("ALSA: snd_seq_open failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: snd_seq_open failed: {}", snd_strerror(status));
 		return;
 	}
 
@@ -63,16 +63,16 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 	}
 
 	if (!candidate_found) {
-		Output::Debug("ALSA: No suitable client found");
+		Output::Debug("ALSA MIDI: No suitable client found");
 		return;
 	}
 
-	Output::Debug("ALSA: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+	Output::Debug("ALSA MIDI: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
 
 	status = snd_seq_create_simple_port(midi_out, "Harmony",
 		SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
 	if (status < 0) {
-		Output::Debug("ALSA: snd_seq_create_simple_port failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: snd_seq_create_simple_port failed: {}", snd_strerror(status));
 		return;
 	}
 
@@ -80,19 +80,19 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 
 	status = snd_seq_connect_to(midi_out, 0, dst_client, dst_port);
 	if (status < 0) {
-		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
 		return;
 	}
 
 	queue = snd_seq_alloc_named_queue(midi_out, GAME_TITLE);
 	if (queue < 0) {
-		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(queue));
+		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(queue));
 		return;
 	}
 
 	status = snd_seq_start_queue(midi_out, queue, nullptr);
 	if (status < 0) {
-		Output::Debug("ALSA: snd_seq_connect_to failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
 		return;
 	}
 
@@ -163,7 +163,7 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 
 	int status = snd_seq_event_output_direct(midi_out, &evt);
 	if (status < 0) {
-		Output::Debug("ALSA snd_seq_event_output_direct failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: snd_seq_event_output_direct failed: {}", snd_strerror(status));
 	}
 }
 
@@ -181,7 +181,7 @@ void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 
 	int status = snd_seq_event_output_direct(midi_out, &evt);
 	if (status < 0) {
-		Output::Debug("ALSA SysEx snd_seq_event_output_direct failed: {}", snd_strerror(status));
+		Output::Debug("ALSA MIDI: SysEx snd_seq_event_output_direct failed: {}", snd_strerror(status));
 	}
 }
 

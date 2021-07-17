@@ -112,7 +112,7 @@ public:
 	/**
 	 * Wraps the seek function of the contained decoder
 	 * @note If the seek function of the wrapped decoder is
-	 *	somewhat corelated to time the offset is not influenced by the resampling ratio
+	 *  somewhat correlated to time the offset is not influenced by the resampling ratio
 	 *
 	 * @param offset Offset to seek to
 	 * @param origin Position to seek from

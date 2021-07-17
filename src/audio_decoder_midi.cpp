@@ -25,9 +25,17 @@ using namespace std::chrono_literals;
 
 constexpr int AudioDecoderMidi::midi_default_tempo;
 
-// 1 ms of MIDI message resolution for a 44100 Hz samplerate
-constexpr int samples_per_play = 512;
 constexpr int bytes_per_sample = sizeof(int16_t) * 2;
+
+// ~1.5 ms of MIDI message resolution
+#if EP_MIDI_FREQ <= 11025
+constexpr int sample_divider = 4;
+#elif EP_MIDI_FREQ <= 22050
+constexpr int sample_divider = 2;
+#else
+constexpr int sample_divider = 1;
+#endif
+constexpr int samples_per_play = 64 / sample_divider;
 
 static const uint8_t midi_event_control_change = 0b1011;
 static const uint8_t midi_control_volume = 7;
@@ -108,8 +116,8 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 	}
 	seq->rewind();
 	tempo.emplace_back(this, midi_default_tempo);
-	// Warning: This function updates the tempo data, only call it once
-	mtime = seq->get_start_skipping_silence(this);
+	mtime = seq->get_start_skipping_silence();
+	seq->play(mtime, this);
 
 	if (!mididec->SupportsMidiMessages()) {
 		if (!mididec->Open(file_buffer)) {
@@ -194,7 +202,7 @@ bool AudioDecoderMidi::Seek(std::streamoff offset, std::ios_base::seekdir origin
 		loops_to_end = mtime >= seq->get_total_time();
 
 		if (!mididec->SupportsMidiMessages()) {
-			mididec->Seek(tempo.back().GetSamples(mtime), origin);
+			mididec->Seek(tempo.back().GetSamples(loops_to_end ? seq->get_total_time() : mtime), origin);
 		}
 
 		return true;
@@ -278,17 +286,25 @@ int AudioDecoderMidi::FillBuffer(uint8_t* buffer, int length) {
 		return length;
 	}
 
+	if (!mididec->SupportsMidiMessages()) {
+		// Fast path for WildMidi as it does not care about messages
+		float delta = (float)(length / bytes_per_sample) / (frequency * 100.0f / pitch);
+		mtime += std::chrono::microseconds(static_cast<int>(delta * 1'000'000));
+		seq->play(mtime, this);
+		return mididec->FillBuffer(buffer, length);
+	}
+
 	int samples_max = length / bytes_per_sample;
 	int written = 0;
 
-	// Advance the MIDI playback in smaller steps to achieve a 1ms message resolution
+	// Advance the MIDI playback in smaller steps to achieve a good message resolution
 	// Otherwise the MIDI sounds off because messages are processed too late.
 	while (samples_max > 0) {
 		// Process MIDI messages
 		size_t samples = std::min(samples_per_play, samples_max);
 		float delta = (float)samples / (frequency * 100.0f / pitch);
-		seq->play(mtime, this);
 		mtime += std::chrono::microseconds(static_cast<int>(delta * 1'000'000));
+		seq->play(mtime, this);
 
 		// Write audio samples
 		int len = samples * bytes_per_sample;
