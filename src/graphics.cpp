@@ -16,19 +16,17 @@
  */
 
 // Headers
+#include <memory>
 #include <sstream>
 #include <chrono>
-#include <array>
 
 #include "graphics.h"
 #include "cache.h"
-#include "output.h"
 #include "player.h"
 #include "fps_overlay.h"
 #include "message_overlay.h"
 #include "transition.h"
 #include "scene.h"
-#include "drawable.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
 #include "game_clock.h"
@@ -38,24 +36,20 @@ using namespace std::chrono_literals;
 namespace Graphics {
 	void UpdateTitle();
 
-	int framerate;
-
 	std::shared_ptr<Scene> current_scene;
 
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
-}
 
-unsigned SecondToFrame(float const second) {
-	return(second * Graphics::framerate);
+	std::string window_title_key;
 }
 
 void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
 	UpdateSceneCallback();
 
-	message_overlay.reset(new MessageOverlay());
-	fps_overlay.reset(new FpsOverlay());
+	message_overlay = std::make_unique<MessageOverlay>();
+	fps_overlay = std::make_unique<FpsOverlay>();
 }
 
 void Graphics::Quit() {
@@ -77,10 +71,21 @@ void Graphics::Update() {
 }
 
 void Graphics::UpdateTitle() {
-	if (DisplayUi->IsFullscreen()) return;
+	if (DisplayUi->IsFullscreen()) {
+		return;
+	}
+
 #ifdef EMSCRIPTEN
 	return;
-#endif
+#else
+	std::string fps;
+	if (DisplayUi->ShowFpsOnTitle()) {
+		fps += fps_overlay->GetFpsString();
+	}
+
+	if (window_title_key == (Player::game_title + fps)) {
+		return;
+	}
 
 	std::stringstream title;
 	if (!Player::game_title.empty()) {
@@ -89,10 +94,13 @@ void Graphics::UpdateTitle() {
 	title << GAME_TITLE;
 
 	if (DisplayUi->ShowFpsOnTitle()) {
-		title << " - " << fps_overlay->GetFpsString();
+		title << " - " << fps;
 	}
 
 	DisplayUi->SetTitle(title.str());
+
+	window_title_key = (Player::game_title + fps);
+#endif
 }
 
 void Graphics::Draw(Bitmap& dst) {
