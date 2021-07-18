@@ -412,9 +412,10 @@ public:
 	/**
 	 * Checks if the actor has a fixed equipped
 	 *
+	 * @param check_states if true also check for states that cause fixed equipment
 	 * @return true if fixed
 	 */
-	bool IsEquipmentFixed() const;
+	bool IsEquipmentFixed(bool check_states) const;
 
 	/**
 	 * Checks if the actors defense skill is stronger the usual.

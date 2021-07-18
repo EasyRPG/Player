@@ -145,7 +145,7 @@ void Scene_Equip::UpdateStatusWindow() {
 }
 
 static bool CanRemoveEquipment(const Game_Actor& actor, int index) {
-	if (actor.IsEquipmentFixed()) {
+	if (actor.IsEquipmentFixed(true)) {
 		return false;
 	}
 	auto* item = actor.GetEquipment(index + 1);

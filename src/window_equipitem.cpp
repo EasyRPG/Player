@@ -39,7 +39,7 @@ Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
 
 bool Window_EquipItem::CheckInclude(int item_id) {
 	// Do not show equippable items if the actor has its equipment fixed
-	if (Main_Data::game_actors->GetActor(actor_id)->IsEquipmentFixed()) {
+	if (Main_Data::game_actors->GetActor(actor_id)->IsEquipmentFixed(false)) {
 		return false;
 	}
 

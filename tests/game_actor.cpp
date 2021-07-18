@@ -76,7 +76,7 @@ TEST_CASE("Default") {
 	REQUIRE_EQ(actor.GetHelmet(), nullptr);
 	REQUIRE_EQ(actor.GetAccessory(), nullptr);
 
-	REQUIRE_FALSE(actor.IsEquipmentFixed());
+	REQUIRE_FALSE(actor.IsEquipmentFixed(true));
 	REQUIRE_FALSE(actor.HasStrongDefense());
 	REQUIRE_FALSE(actor.HasTwoWeapons());
 	REQUIRE_FALSE(actor.GetAutoBattle());
@@ -214,7 +214,7 @@ TEST_CASE("ActorFlags") {
 					auto actor = MakeActor(1, 1, 99, 1, 1, 1, 1, 1, 1, two_weapon, lock_equip, auto_battle, super_guard);
 
 					REQUIRE_EQ(actor.HasTwoWeapons(), two_weapon);
-					REQUIRE_EQ(actor.IsEquipmentFixed(), lock_equip);
+					REQUIRE_EQ(actor.IsEquipmentFixed(true), lock_equip);
 					REQUIRE_EQ(actor.GetAutoBattle(), auto_battle);
 					REQUIRE_EQ(actor.HasStrongDefense(), super_guard);
 				}
