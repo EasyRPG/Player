@@ -639,20 +639,11 @@ endif()
 
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
-	set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 OFF)
+	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
 
 	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
 		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
-	endif()
-
-	# Configure Audio backends
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Auto")
-		set(PLAYER_AUDIO_BACKEND_IS_AUTO ON)
-	endif()
-
-	if(PLAYER_AUDIO_BACKEND_IS_AUTO)
-		set(PLAYER_AUDIO_BACKEND "SDL2")
 	endif()
 else()
 	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
