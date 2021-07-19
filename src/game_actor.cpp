@@ -817,15 +817,17 @@ bool Game_Actor::IsEquippable(int item_id) const {
 	return IsItemUsable(item_id);
 }
 
-bool Game_Actor::IsEquipmentFixed() const {
+bool Game_Actor::IsEquipmentFixed(bool check_states) const {
 	if (data.lock_equipment) {
 		return true;
 	}
 
-	for (auto state_id: GetInflictedStates()) {
-		auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
-		if (state && state->cursed) {
-			return true;
+	if (check_states) {
+		for (auto state_id: GetInflictedStates()) {
+			auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, state_id);
+			if (state && state->cursed) {
+				return true;
+			}
 		}
 	}
 	return false;
