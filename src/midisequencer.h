@@ -32,18 +32,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <chrono>
 
-#define META_EVENT_ALL_NOTE_OFF		0x8888
+#define META_EVENT_ALL_NOTE_OFF 0x8888
 
 namespace midisequencer{
     /*
     typedef unsigned long uint_least32_t;
     */
     struct midi_message{
-        float time;
+        std::chrono::microseconds time;
         uint_least32_t message;
         int port;
         int track;
+        uint_least32_t tempo;
     };
 
     class uncopyable{
@@ -69,17 +71,19 @@ namespace midisequencer{
         sequencer();
         void clear();
         void rewind();
-        float rewind_to_loop();
+        std::vector<midi_message>::iterator rewind_to_loop();
+        bool is_at_end();
         bool load(void* fp, int(*fgetc)(void*));
         bool load(std::FILE* fp);
         int get_num_ports()const;
-        float get_total_time()const;
+        std::chrono::microseconds get_total_time()const;
         std::string get_title()const;
         std::string get_copyright()const;
         std::string get_song()const;
         uint32_t get_division()const;
-        void play(float time, output* out);
-        void set_time(float time, output* out);
+        void play(std::chrono::microseconds time, output* out);
+        void set_time(std::chrono::microseconds time, output* out);
+        std::chrono::microseconds get_start_skipping_silence();
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;

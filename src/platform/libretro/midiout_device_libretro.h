@@ -15,37 +15,29 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_DECODER_FMMIDI_H
-#define EP_DECODER_FMMIDI_H
+#ifndef EP_MIDIOUT_LIBRETRO_H
+#define EP_MIDIOUT_LIBRETRO_H
 
-// Headers
-#include <string>
-#include <memory>
+#include <cstdint>
+#include "libretro.h"
 #include "audio_midi.h"
-#include "midisequencer.h"
-#include "midisynth.h"
 
 /**
- * Audio decoder for MIDI powered by FM MIDI
+ * Plays MIDI through Libretro API
  */
-class FmMidiDecoder : public MidiDecoder {
+class LibretroMidiOutDevice : public MidiDecoder {
 public:
-	FmMidiDecoder();
-
-	int FillBuffer(uint8_t* buffer, int length) override;
+	LibretroMidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const void* data, size_t size) override;
 	void SendMidiReset() override;
+	std::string GetName() override;
+	bool IsInitialized() const;
 
-	std::unique_ptr<midisynth::synthesizer> synth;
-	std::unique_ptr<midisynth::fm_note_factory> note_factory;
-	midisynth::DRUMPARAMETER p;
-	void load_programs();
-
-	std::string GetName() override {
-		return "FmMidi";
-	};
+private:
+	struct retro_midi_interface midi_out = {};
+	bool works = false;
 };
 
 #endif

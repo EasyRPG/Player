@@ -35,7 +35,7 @@
  * Audio resampler powered by Libspeexdsp or Libsamplerate
  * Wraps another decoder and provides resampling.
  */
-class AudioResampler : public AudioDecoder {
+class AudioResampler : public AudioDecoderBase {
 public:
 	/** Resampling quality */
 	enum class Quality {
@@ -43,15 +43,15 @@ public:
 		Medium,
 		Low
 	};
-	
+
 	/**
 	 * Constructs a resampler
-	 * 
+	 *
 	 * @param[in] decoder The decoder which provides samples to the resampler - will be owned by the resampler
 	 * @param[in] quality Sets the quality rting of the resampler - higher quality implies slower filtering
 	 */
-	AudioResampler(std::unique_ptr<AudioDecoder> decoder, Quality quality=Quality::Low);
-	
+	AudioResampler(std::unique_ptr<AudioDecoderBase> decoder, Quality quality = Quality::Low);
+
 	/**
 	 * Destroys the resampler as well as its owned ressources
 	 */
@@ -67,17 +67,52 @@ public:
 
 	/**
 	 * Wraps the opening function of the contained decoder
-	 * 
+	 *
 	 * @param[in] file Filepointer to a file readable by the wrapped decoder
-	 * 
+	 *
 	 * @return Whether the operation was successful or not
 	 */
 	bool Open(Filesystem_Stream::InputStream stream) override;
 
 	/**
+	 * Forwards a pause to the wrapped decoder.
+	 */
+	void Pause() override;
+
+	/**
+	 * Forwards a resume to the wrapped decoder.
+	 */
+	void Resume() override;
+
+	/**
+	 * Obtains the volume of the wrapped decoder.
+	 *
+	 * @return current volume (from 0 - 100)
+	 */
+	int GetVolume() const override;
+
+	/**
+	 * Sets the current volume of the wrapped decoder.
+	 *
+	 * @param volume (from 0-100)
+	 */
+	void SetVolume(int volume) override;
+
+	/**
+	 * Prepares a volume fade in/out effect.
+	 * To do a fade out begin must be larger then end.
+	 * Call Update to do the fade.
+	 *
+	 * @param begin Begin volume (from 0-100)
+	 * @param end End volume (from 0-100)
+	 * @param duration Fade duration in ms
+	 */
+	void SetFade(int begin, int end, std::chrono::milliseconds duration) override;
+
+	/**
 	 * Wraps the seek function of the contained decoder
-	 * @note If the seek function of the wrapped decoder is 
-	 *	somewhat corelated to time the offset is not influenced by the resampling ratio
+	 * @note If the seek function of the wrapped decoder is
+	 *  somewhat correlated to time the offset is not influenced by the resampling ratio
 	 *
 	 * @param offset Offset to seek to
 	 * @param origin Position to seek from
@@ -99,13 +134,20 @@ public:
 	 * @return Amount of MIDI ticks.
 	 */
 	int GetTicks() const override;
-	
+
 	/**
 	 * Returns wheter the resampled audio stream is finished
 	 *
 	 * @return true if the stream has reached it's end
 	 */
 	bool IsFinished() const override;
+
+	/**
+	 * Updates timing related audio code of the wrapped decoder.
+	 *
+	 * @param delta Time in us since the last call of this function.
+	 */
+	void Update(std::chrono::microseconds delta) override;
 
 	/**
 	 * Retrieves the format of the audio decoder.
@@ -117,7 +159,7 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
 	/**
-	 * Requests a certain frame format from the resampler. 
+	 * Requests a certain frame format from the resampler.
 	 * Supported formats are:
 	 *  * float,int16_t for libspeexdsp
 	 *  * float for libsamplerate
@@ -143,7 +185,7 @@ public:
 	 * 100 = normal speed
 	 * 200 = double speed and so on
 	 * If the pitch is handled by the resampler this setting controls the resampling in conjunction with the frequency.
-	 * 
+	 *
 	 * @param pitch Pitch multiplier to use
 	 * @return true if pitch was set, false otherwise
 	 */
@@ -158,7 +200,7 @@ private:
 	 * @return number of bytes read or -1 on error
 	 */
 	int FillBuffer(uint8_t* buffer, int length) override;
-	
+
 	/**
 	 * Internally used by the FillBuffer function if the output rate equals the input rate
 	 */
@@ -168,8 +210,8 @@ private:
 	 * Internally used by the FillBuffer function if resampling is necessary
 	 */
 	int FillBufferDifferentRate(uint8_t* buffer, int length);
-	
-	std::unique_ptr<AudioDecoder> wrapped_decoder;
+
+	std::unique_ptr<AudioDecoderBase> wrapped_decoder;
 	bool pitch_handled_by_decoder = false;
 	int pitch = 100;
 	int sampling_quality;
@@ -181,7 +223,7 @@ private:
 	int input_rate;
 	Format output_format;
 	int output_rate;
-	
+
 	#if defined(HAVE_LIBSPEEXDSP)
 		struct {
 			spx_uint32_t input_frames, output_frames;

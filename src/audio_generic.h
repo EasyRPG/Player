@@ -19,8 +19,11 @@
 #define EP_AUDIO_GENERIC_H
 
 #include "audio.h"
-#include "audio_decoder.h"
 #include "audio_secache.h"
+#include "audio_decoder_base.h"
+#include <memory>
+
+class GenericAudioMidiOut;
 
 /**
  * A software implementation for handling EasyRPG Audio utilizing the
@@ -36,10 +39,10 @@
  *    calling Decode must be done manually.
  * 5. Implement update function (optional)
  */
-struct GenericAudio : public AudioInterface {
+class GenericAudio : public AudioInterface {
 public:
 	GenericAudio();
-	virtual ~GenericAudio();
+	virtual ~GenericAudio() = default;
 
 	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;
 	void BGM_Pause() override;
@@ -64,12 +67,22 @@ public:
 
 private:
 	struct BgmChannel {
-		std::unique_ptr<AudioDecoder> decoder;
+		int id;
+		std::unique_ptr<AudioDecoderBase> decoder;
 		bool paused;
 		bool stopped;
+		bool midi_out_used = false;
+		void Stop();
+		void SetPaused(bool newPaused);
+		int GetTicks() const;
+		void SetFade(int fade);
+		void SetVolume(int volume);
+		void SetPitch(int pitch);
+		bool IsUsed() const;
 	};
 	struct SeChannel {
-		std::unique_ptr<AudioDecoder> decoder;
+		int id;
+		std::unique_ptr<AudioDecoderBase> decoder;
 		int volume;
 		bool paused;
 		bool stopped;
@@ -96,6 +109,8 @@ private:
 	static std::vector<uint8_t> scrap_buffer;
 	static unsigned scrap_buffer_size;
 	static std::vector<float> mixer_buffer;
+
+	static std::unique_ptr<GenericAudioMidiOut> midi_thread;
 };
 
 #endif

@@ -27,6 +27,6 @@ public:
 
 	void LockMutex() const override;
 	void UnlockMutex() const override;
-}; // class SdlAudio
+};
 
 #endif

@@ -33,6 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cassert>
 #include <algorithm>
 
+using namespace std::chrono_literals;
+
 namespace midisequencer{
     static uint_least32_t read_variable_value(void* fp, int(*fgetc)(void*), uint_least32_t* track_length, const char* errtext)
     {
@@ -70,10 +72,19 @@ namespace midisequencer{
     {
         position = messages.begin();
     }
-    float sequencer::rewind_to_loop()
+
+    std::vector<midi_message>::iterator sequencer::rewind_to_loop()
     {
         position = loop_position;
-        return loop_position->time;
+        if (position != messages.begin()) {
+            position--;
+        }
+        return loop_position;
+    }
+
+    bool sequencer::is_at_end()
+    {
+        return position == messages.end();
     }
     bool sequencer::load(void* fp, int(*fgetc)(void*))
     {
@@ -99,6 +110,13 @@ namespace midisequencer{
     {
         return getc(static_cast<std::FILE*>(fp));
     }
+    static bool is_loop_start(uint_least32_t msg) {
+        // If the message matches the de facto standard MIDI loop instruction:
+        // Which is a Control Change on any channel with Value 111
+        uint8_t event_type = (msg & 0x0000F0) >> 4;
+        uint8_t value1 = (msg & 0x00FF00) >> 8;
+        return event_type == 0b1011 && value1 == 111;
+    }
     bool sequencer::load(std::FILE* fp)
     {
         return load(fp, fpfgetc);
@@ -106,27 +124,27 @@ namespace midisequencer{
     int sequencer::get_num_ports()const
     {
         int ret = 0;
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(ret < i->port){
-                ret = i->port;
+        for(const auto& message: messages){
+            if(ret < message.port){
+                ret = message.port;
             }
         }
         return ret + 1;
     }
-    float sequencer::get_total_time()const
+    std::chrono::microseconds sequencer::get_total_time()const
     {
         if(messages.empty()){
-            return 0;
+            return 0us;
         }else{
             return messages.back().time;
         }
     }
     std::string sequencer::get_title()const
     {
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+        for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 if(s.size() > 1 && s[0] == 0x03){
                     return s.substr(1);
                 }
@@ -136,10 +154,10 @@ namespace midisequencer{
     }
     std::string sequencer::get_copyright()const
     {
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+        for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 if(s.size() > 1 && s[0] == 0x02){
                     return s.substr(1);
                 }
@@ -150,10 +168,10 @@ namespace midisequencer{
     std::string sequencer::get_song()const
     {
         std::string ret;
-        for(std::vector<midi_message>::const_iterator i = messages.begin(); i != messages.end(); ++i){
-            if(i->track == 0 && (i->message & 0xFF) == 0xFF){
-                assert((i->message >> 8) < long_messages.size());
-                const std::string& s = long_messages[i->message >> 8];
+        for(const auto& message: messages){
+            if(message.track == 0 && (message.message & 0xFF) == 0xFF){
+                assert((message.message >> 8) < long_messages.size());
+                const std::string& s = long_messages[message.message >> 8];
                 assert(s.size() >= 1);
                 if(s[0] == 0x05){
                     ret += s.substr(1);
@@ -162,7 +180,7 @@ namespace midisequencer{
         }
         return ret;
     }
-    void sequencer::play(float time, output* out)
+    void sequencer::play(std::chrono::microseconds time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){
             position = messages.begin();
@@ -199,7 +217,7 @@ namespace midisequencer{
         }
     }
 
-    void sequencer::set_time(float time, output* out)
+    void sequencer::set_time(std::chrono::microseconds time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){
             position = messages.begin();
@@ -244,6 +262,35 @@ namespace midisequencer{
                     break;
             }
         }
+    }
+
+    std::chrono::microseconds sequencer::get_start_skipping_silence() {
+        std::vector<midi_message> m;
+
+        for (auto& msg: messages) {
+            // If we find Loop Start before the first NoteOn, just start there
+            if (is_loop_start(msg.message)) {
+                std::chrono::microseconds time = msg.time;
+                // RPG_RT always rewinds "a little"
+                // This amount is based on the tempo, and this 2100000 divisor
+                // I determined experimentally.
+                time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
+                return time;
+            } else if ((msg.message & 0xFF) == 0xF0) {
+                // SysEx message. RPG_RT doesn't skip silence if there's a SysEx
+                // message in the beginning, so neither should we...
+                return 0us;
+            } else if ((msg.message & 0xF0) == 0x90) {
+                // NoteOn -- found the first note!
+                std::chrono::microseconds time = msg.time;
+                // RPG_RT always rewinds "a little"
+                // This amount is based on the tempo, and this 2100000 divisor
+                // I determined experimentally.
+                time = std::max(0us, std::chrono::microseconds(static_cast<int>(time.count() - (msg.tempo / 2.1f))));
+                return time;
+            }
+        }
+        return 0us;
     }
 
     void sequencer::load_smf(void* fp, int(*fgetc)(void*))
@@ -292,9 +339,9 @@ namespace midisequencer{
                 if(division & 0x8000){
                     int fps = ~(division >> 8) + 1;
                     int frames = division & 0xFF;
-                    msg.time = time / (frames * fps) + time_offset;
+                    msg.time = std::chrono::microseconds(static_cast<int>(time / (frames * fps) + time_offset));
                 }else{
-                    msg.time = time;
+                    msg.time = std::chrono::microseconds(time);
                 }
                 int param = fgetc(fp);
                 --track_length;
@@ -358,7 +405,7 @@ namespace midisequencer{
                             if(n != 5){
                                 Output::Warning("Midi sequencer: invalid SMTPE offset metaevent length");
                             }
-                            if(msg.time == 0 && (division & 0x8000)){
+                            if(msg.time == 0us && (division & 0x8000)){
                                 int hour = static_cast<unsigned char>(s[1]);
                                 int min = static_cast<unsigned char>(s[2]);
                                 int sec = static_cast<unsigned char>(s[3]);
@@ -422,14 +469,14 @@ namespace midisequencer{
             }
         }
         std::stable_sort(messages.begin(), messages.end());
+        loop_position = messages.begin();
         if(!(division & 0x8000)){
             uint_least32_t tempo = 500000;
-            double time_offset = 0;
-            double base = 0;
-            loop_position = messages.begin();
-            for(std::vector<midi_message>::iterator i = messages.begin(); i != messages.end(); ++i){
-                float org_time = i->time;
-                i->time = (i->time - base) * tempo / 1000000.0 / division + time_offset;
+            std::chrono::microseconds time_offset = 0us;
+            std::chrono::microseconds base = 0us;
+            for(auto i = messages.begin(); i != messages.end(); ++i){
+                std::chrono::microseconds org_time = i->time;
+                i->time = std::chrono::microseconds(static_cast<int>(static_cast<double>((i->time.count() - base.count())) * tempo / division + time_offset.count()));
                 if((i->message & 0xFF) == 0xFF){
                     assert((i->message >> 8) < long_messages.size());
                     const std::string& s = long_messages[i->message >> 8];
@@ -441,12 +488,11 @@ namespace midisequencer{
                         time_offset = i->time;
                     }
                 }
-                // If the message matches the de facto standard MIDI loop instruction:
-                // Which is a Control Change on Channel 1 with Value 111
-                if ((i->message & 0xFFFF) == 0x6FB0) {
+                i->tempo = tempo;
+                if (is_loop_start(i->message)) {
                     // Loop backwards through the messages to find the first message with the same
                     // timestamp as the loop message
-                    for (std::vector<midi_message>::iterator j = i; j != messages.begin() && j->time >= i->time; j--) {
+                    for (auto j = i; j != messages.begin() && j->time >= i->time; j--) {
                         loop_position = j;
                     }
                 }
@@ -454,7 +500,7 @@ namespace midisequencer{
         }
     }
 
-	uint32_t sequencer::get_division() const {
-		return division;
-	}
+    uint32_t sequencer::get_division() const {
+        return division;
+    }
 }

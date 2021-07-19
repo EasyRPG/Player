@@ -24,6 +24,10 @@
 #include "filefinder.h"
 #include "output.h"
 
+#if FLUIDSYNTH_VERSION_MAJOR >= 3 || (FLUIDSYNTH_VERSION_MAJOR == 2 && FLUIDSYNTH_VERSION_MINOR >= 2)
+#define FLUIDSYNTH_22_OR_NEWER
+#endif
+
 #ifdef HAVE_FLUIDSYNTH
 static void* vio_open(const char* filename) {
 #else
@@ -37,12 +41,20 @@ static void* vio_open(fluid_fileapi_t*, const char* filename) {
 	return new Filesystem_Stream::InputStream { std::move(is) };
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static int vio_read(void *ptr, fluid_long_long_t count, void* userdata) {
+#else
 static int vio_read(void *ptr, int count, void* userdata) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static int vio_seek(void* userdata, fluid_long_long_t offset, int origin) {
+#else
 static int vio_seek(void* userdata, long offset, int origin) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	if (f->eof()) f->clear(); // emulate behaviour of fseek
 
@@ -51,7 +63,11 @@ static int vio_seek(void* userdata, long offset, int origin) {
 	return f->tellg();
 }
 
+#ifdef FLUIDSYNTH_22_OR_NEWER
+static fluid_long_long_t vio_tell(void* userdata) {
+#else
 static long vio_tell(void* userdata) {
+#endif
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
 	return f->tellg();
 }
@@ -75,6 +91,10 @@ static fluid_fileapi_t fluidlite_vio = {
 };
 #endif
 
+namespace {
+	bool shutdown = false;
+}
+
 struct FluidSettingsDeleter {
 	void operator()(fluid_settings_t* s) const {
 		delete_fluid_settings(s);
@@ -84,6 +104,7 @@ struct FluidSettingsDeleter {
 struct FluidSynthDeleter {
 	void operator()(fluid_synth_t* s) const {
 		delete_fluid_synth(s);
+		shutdown = true;
 	}
 };
 
@@ -205,53 +226,50 @@ int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
 	return length;
 }
 
-void FluidSynthDecoder::OnMidiMessage(uint32_t message) {
+void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 	if (!instance_synth) {
 		return;
 	}
 
-	int event = message & 0xFF;
-	int channel = event & 0x0F;
+	unsigned int event = message & 0xF0;
+	int channel = message & 0x0F;
 	int param1 = (message >> 8) & 0x7F;
 	int param2 = (message >> 16) & 0x7F;
 
-	switch (event & 0xF0){
-		case 0x80:
+	switch (event) {
+		case MidiEvent_NoteOff:
 			fluid_synth_noteoff(instance_synth, channel, param1);
 			break;
-		case 0x90:
+		case MidiEvent_NoteOn:
 			fluid_synth_noteon(instance_synth, channel, param1, param2);
 			break;
-		case 0xA0:
+		case MidiEvent_KeyPressure:
 #if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR == 1
 			// unsupported
 			return;
 #else
-			fluid_synth_key_pressure(instance_synth, event, param1, param2);
+			fluid_synth_key_pressure(instance_synth, channel, param1, param2);
 #endif
 			break;
-		case 0xB0:
+		case MidiEvent_Controller:
 			fluid_synth_cc(instance_synth, channel, param1, param2);
 			break;
-		case 0xC0:
+		case MidiEvent_ProgramChange:
 			fluid_synth_program_change(instance_synth, channel, param1);
 			break;
-		case 0xD0:
+		case MidiEvent_ChannelPressure:
 			fluid_synth_channel_pressure(instance_synth, channel, param1);
 			break;
-		case 0xE0:
+		case MidiEvent_PitchBend:
 			fluid_synth_pitch_bend(instance_synth, channel, ((param2 & 0x7F) << 7) | (param1 & 0x7F));
-			break;
-		case 0xFF:
-			fluid_synth_system_reset(instance_synth);
 			break;
 		default:
 			break;
 	}
 }
 
-void FluidSynthDecoder::OnMidiReset() {
-	if (!instance_synth) {
+void FluidSynthDecoder::SendMidiReset() {
+	if (!instance_synth || shutdown) {
 		return;
 	}
 

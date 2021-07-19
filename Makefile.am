@@ -18,20 +18,22 @@ libeasyrpg_player_a_SOURCES = \
 	src/attribute.cpp \
 	src/audio.cpp \
 	src/audio.h \
-	src/audio_al.cpp \
-	src/audio_al.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
+	src/audio_decoder_base.cpp \
+	src/audio_decoder_base.h \
+	src/audio_decoder_midi.cpp \
+	src/audio_decoder_midi.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
+	src/audio_generic_midiout.cpp \
+	src/audio_generic_midiout.h \
 	src/audio_midi.cpp \
 	src/audio_midi.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_sdl.cpp \
 	src/audio_sdl.h \
-	src/audio_sdl_mixer.cpp \
-	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
 	src/autobattle.cpp \
@@ -65,8 +67,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/decoder_fmmidi.h \
 	src/decoder_libsndfile.cpp \
 	src/decoder_libsndfile.h \
-	src/decoder_midigeneric.cpp \
-	src/decoder_midigeneric.h \
 	src/decoder_mpg123.cpp \
 	src/decoder_mpg123.h \
 	src/decoder_oggvorbis.cpp \
@@ -436,10 +436,18 @@ libeasyrpg_player_a_SOURCES += \
 	src/dr_wav.h
 endif
 
+if HAVE_ALSA
+libeasyrpg_player_a_SOURCES += \
+	src/platform/linux/midiout_device_alsa.cpp \
+	src/platform/linux/midiout_device_alsa.h
+endif
+
 if MACOS
 libeasyrpg_player_a_SOURCES += \
 	src/platform/macos/utils.h \
-	src/platform/macos/utils.mm
+	src/platform/macos/utils.mm \
+	src/platform/macos/midiout_device_coreaudio.cpp \
+	src/platform/macos/midiout_device_coreaudio.h
 endif
 
 # These are only taken in by the legacy homebrew Makefiles
@@ -476,6 +484,8 @@ EXTRA_DIST += \
 	src/platform/wii/wii_input_buttons.cpp \
 	src/platform/opendingux/opendingux_input_buttons.cpp \
 	src/platform/psp/psp_input_buttons.cpp \
+	src/platform/windows/midiout_device_win32.cpp \
+	src/platform/windows/midiout_device_win32.h \
 	src/platform/windows/utils.cpp \
 	src/platform/windows/utils.h
 
@@ -487,7 +497,6 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(FREETYPE_CFLAGS) \
 	$(HARFBUZZ_CFLAGS) \
 	$(SDL_CFLAGS) \
-	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
 	$(LIBMPG123_CFLAGS) \
@@ -499,7 +508,9 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(LIBXMP_CFLAGS) \
 	$(LIBSPEEXDSP_CFLAGS) \
 	$(FLUIDSYNTH_CFLAGS) \
-	$(FLUIDLITE_CFLAGS)
+	$(FLUIDLITE_CFLAGS) \
+	$(ALSA_CFLAGS) \
+	$(PTHREAD_CFLAGS)
 
 libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 
@@ -511,7 +522,6 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(FREETYPE_LIBS) \
 	$(HARFBUZZ_LIBS) \
 	$(SDL_LIBS) \
-	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
 	$(LIBMPG123_LIBS) \
@@ -523,7 +533,9 @@ easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(LIBXMP_LIBS) \
 	$(LIBSPEEXDSP_LIBS) \
 	$(FLUIDSYNTH_LIBS) \
-	$(FLUIDLITE_LIBS)
+	$(FLUIDLITE_LIBS) \
+	$(ALSA_LIBS) \
+	$(PTHREAD_LIBS)
 
 if MACOS
 easyrpg_player_LDFLAGS = -framework Foundation

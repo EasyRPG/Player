@@ -50,6 +50,10 @@ public:
 		return false;
 	}
 
+	bool SupportsMidiMessages() override {
+		return false;
+	}
+
 private:
 #ifdef HAVE_WILDMIDI
 	midi* handle = nullptr;

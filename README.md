@@ -33,11 +33,8 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - libsndfile for better WAVE audio support
 - libxmp for better tracker music support
 - SpeexDSP for proper audio resampling
-- SDL2_mixer for audio mixing. Used as a fallback when none of the provided
-  audio libraries support the format. Due to API limitations not all audio
-  effects are possible through SDL2_mixer audio.
 
-SDL 1.2 and SDL_mixer 1.2 are still supported, but deprecated.
+SDL 1.2 is still supported, but deprecated.
 
 
 ## Daily builds

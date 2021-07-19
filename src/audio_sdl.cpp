@@ -20,12 +20,15 @@
 #if defined(USE_SDL) && !defined(HAVE_SDL_MIXER) && defined(SUPPORT_AUDIO)
 
 #include <cassert>
+#include <chrono>
 #include <SDL.h>
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
 #include "audio_sdl.h"
 #include "output.h"
+
+using namespace std::chrono_literals;
 
 namespace {
 #if SDL_MAJOR_VERSION >= 2

@@ -121,7 +121,7 @@ public:
 	 *
 	 * @return Decoded sound effect
 	 */
-	std::unique_ptr<AudioDecoder> CreateSeDecoder();
+	std::unique_ptr<AudioDecoderBase> CreateSeDecoder();
 
 	/**
 	 * Returns the SE sample data handled by this SeCache.
@@ -132,7 +132,7 @@ public:
 
 	static void Clear();
 private:
-	std::unique_ptr<AudioDecoder> audio_decoder;
+	std::unique_ptr<AudioDecoderBase> audio_decoder;
 
 	std::string filename;
 };

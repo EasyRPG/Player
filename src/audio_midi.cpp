@@ -17,59 +17,103 @@
 
 // Headers
 #include "audio_midi.h"
-
-#include <memory>
-#include "audio_resampler.h"
-#include "output.h"
-#include "system.h"
-
+#include "audio_decoder_midi.h"
 #include "decoder_fluidsynth.h"
 #include "decoder_fmmidi.h"
-#include "decoder_midigeneric.h"
 #include "decoder_wildmidi.h"
+#include "output.h"
 
-void MidiDecoder::GetFormat(int &freq, AudioDecoder::Format &format, int &channels) const {
+#ifdef USE_AUDIO_RESAMPLER
+#include "audio_resampler.h"
+#endif
+
+void MidiDecoder::GetFormat(int& freq, AudioDecoderBase::Format& format, int& channels) const {
 	freq = frequency;
-	format = AudioDecoder::Format::S16;
+	format = AudioDecoderBase::Format::S16;
 	channels = 2;
 }
 
-bool MidiDecoder::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
-	if (frequency != EP_MIDI_FREQ || channels != 2 || format != AudioDecoder::Format::S16)
+bool MidiDecoder::SetFormat(int frequency, AudioDecoderBase::Format format, int channels) {
+	if (frequency != EP_MIDI_FREQ || channels != 2 || format != AudioDecoderBase::Format::S16)
 		return false;
 
 	return true;
 }
-
 
 static struct {
 	bool fluidsynth = true;
 	bool wildmidi = true;
 } works;
 
-std::unique_ptr<AudioDecoder> MidiDecoder::Create(Filesystem_Stream::InputStream &stream, bool resample) {
-	std::unique_ptr<AudioDecoder> mididec;
-	std::string error_message;
+std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
+
+	mididec = CreateFluidsynth(stream, resample);
+	if (!mididec) {
+		mididec = CreateWildMidi(stream, resample);
+		if (!mididec) {
+			mididec = CreateFmMidi(stream, resample);
+		}
+	}
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
 
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	std::string error_message;
 	if (works.fluidsynth && FluidSynthDecoder::Initialize(error_message)) {
-		mididec = std::make_unique<GenericMidiDecoder>(new FluidSynthDecoder());
-	} else if (!mididec && works.fluidsynth) {
+		auto dec = std::make_unique<FluidSynthDecoder>();
+		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
+	}
+	else if (!mididec && works.fluidsynth) {
 		Output::Debug("{}", error_message);
 		works.fluidsynth = false;
 	}
 #endif
+
+#ifdef USE_AUDIO_RESAMPLER
+	if (mididec && resample) {
+		mididec = std::make_unique<AudioResampler>(std::move(mididec));
+	}
+#endif
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
+
 #ifdef HAVE_WILDMIDI
+	std::string error_message;
 	if (!mididec && works.wildmidi && WildMidiDecoder::Initialize(error_message)) {
-		mididec = std::make_unique<GenericMidiDecoder>(new WildMidiDecoder());
-	} else if (!mididec && works.wildmidi) {
+		auto dec = std::make_unique<WildMidiDecoder>();
+		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
+	}
+	else if (!mididec && works.wildmidi) {
 		Output::Debug("{}", error_message);
 		works.wildmidi = false;
 	}
 #endif
+
+#ifdef USE_AUDIO_RESAMPLER
+	if (mididec && resample) {
+		mididec = std::make_unique<AudioResampler>(std::move(mididec));
+	}
+#endif
+
+	return mididec;
+}
+
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+	std::unique_ptr<AudioDecoderBase> mididec;
+
 #if WANT_FMMIDI == 1
 	if (!mididec) {
-		mididec = std::make_unique<GenericMidiDecoder>(new FmMidiDecoder());
+		auto dec = std::make_unique<FmMidiDecoder>();
+		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
 	}
 #endif
 
