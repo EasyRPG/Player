@@ -25,6 +25,10 @@
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
 #include "audio_sdl.h"
 #include "output.h"
 
@@ -73,10 +77,35 @@ SdlAudio::SdlAudio() :
 		return;
 	}
 
+#ifdef GEKKO
+	// Wii's DSP works at 32kHz natively
+	const int frequency = 32000;
+#elif defined(EMSCRIPTEN)
+	// Get preferred sample rate from Browser (-> OS)
+	const int frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
+#else
+	const int frequency = 44100;
+#endif
+
+#if defined(EMSCRIPTEN) && SDL_MAJOR_VERSION > 1
+	// web audio only supports float
+	const int format = AUDIO_F32;
+#else
+	const int format = AUDIO_S16;
+#endif
+
 	SDL_AudioSpec want = {};
 	SDL_AudioSpec have = {};
-	want.freq = 44100;
-	want.format = AUDIO_S16;
+	want.freq = frequency;
+	want.format = format;
 	want.channels = 2;
 	want.samples = 2048;
 	want.callback = sdl_audio_callback;
