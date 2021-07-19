@@ -139,38 +139,6 @@ namespace {
 		return (cache[key] = {bmp, Game_Clock::GetFrameTime()}).bitmap;
 	}
 
-	BitmapRef LoadBitmap(StringView folder_name, StringView filename,
-						 bool transparent, const uint32_t flags) {
-		const auto key = MakeHashKey(folder_name, filename, transparent);
-
-		auto it = cache.find(key);
-
-		if (it == cache.end()) {
-			auto is = FileFinder::OpenImage(folder_name, filename);
-
-			BitmapRef bmp = BitmapRef();
-
-			FreeBitmapMemory();
-
-			if (!is) {
-				Output::Warning("Image not found: {}/{}", folder_name, filename);
-			} else {
-				bmp = Bitmap::Create(std::move(is), transparent, flags);
-				if (!bmp) {
-					Output::Warning("Invalid image: {}/{}", folder_name, filename);
-				}
-			}
-
-			if (bmp) {
-				return AddToCache(key, bmp);
-			}
-			return nullptr;
-		} else {
-			it->second.last_access = Game_Clock::GetFrameTime();
-			return it->second.bitmap;
-		}
-	}
-
 	struct Material {
 		enum Type {
 			REND = -1,
@@ -195,7 +163,7 @@ namespace {
 
 	}; // struct Material
 
-	using DummyRenderer = BitmapRef(*)(void);
+	using DummyRenderer = BitmapRef(*)();
 
 	template<Material::Type T> BitmapRef DrawCheckerboard();
 
@@ -210,36 +178,33 @@ namespace {
 		int min_height, max_height;
 		DummyRenderer dummy_renderer;
 		bool oob_check;
+		bool warn_missing;
 	};
 	constexpr Spec spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true },
-		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true },
-		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true },
-		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true },
-		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true},
-		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true },
-		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false },
-		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false },
-		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false },
-		{ "System", true, 160, 160, 80, 80, DummySystem, true },
-		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true },
-		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true },
-		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true },
-		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true},
-		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true },
-		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true },
+		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true, true },
+		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true, true },
+		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true, true },
+		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true, true },
+		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true, true},
+		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true, true },
+		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false, false },
+		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false, true },
+		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false, true },
+		{ "System", true, 160, 160, 80, 80, DummySystem, true, true },
+		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true, true },
+		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true, true },
+		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true, true },
+		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true, false },
+		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true, false },
+		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true, true },
 	};
 
 	template<Material::Type T>
 	BitmapRef DrawCheckerboard() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
 
-		FreeBitmapMemory();
-
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
-		cache_size += bitmap->GetSize();
 
 		// ToDo: Maybe use different renderers depending on material
 		// Will look ugly for some image types
@@ -256,57 +221,80 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(StringView folder_name, StringView filename, bool transparent) {
+	BitmapRef CreateEmpty() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
-
-		const auto key = MakeHashKey(folder_name, filename, transparent);
-
-		auto it = cache.find(key);
-
-		if (it == cache.end()) {
-			FreeBitmapMemory();
-
-			BitmapRef bitmap = s.dummy_renderer();
-
-			return AddToCache(key, bitmap);
-		} else {
-			it->second.last_access = Game_Clock::GetFrameTime();
-			return it->second.bitmap;
-		}
+		return Bitmap::Create(s.min_width, s.min_height, true);
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(StringView f, bool transparent) {
+	BitmapRef LoadDummyBitmap(StringView folder_name, StringView filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
+		return s.dummy_renderer();
+	}
 
-		if (f == CACHE_DEFAULT_BITMAP) {
-			return LoadDummyBitmap<T>(s.directory, f, true);
-		}
+	template<Material::Type T>
+	BitmapRef LoadBitmap(StringView filename, bool transparent) {
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
+		const Spec& s = spec[T];
 
 #ifndef NDEBUG
 		// Test if the file was requested asynchronously before.
 		// If not the file can't be expected to exist -> bug.
 		// This test is expensive and turned off in release builds.
-		auto* req = AsyncHandler::RequestFile(s.directory, f);
+		auto* req = AsyncHandler::RequestFile(s.directory, filename);
 		assert(req != nullptr && req->IsReady());
 #endif
 
-		BitmapRef ret = LoadBitmap(s.directory, f, transparent, Bitmap::Flag_ReadOnly | (
-										 T == Material::Chipset? Bitmap::Flag_Chipset:
-										 T == Material::System? Bitmap::Flag_System:
-										 0));
+		BitmapRef bmp;
 
-		if (!ret) {
-			return LoadDummyBitmap<T>(s.directory, f, transparent);
+		const auto key = MakeHashKey(s.directory, filename, transparent);
+		auto it = cache.find(key);
+		if (it == cache.end()) {
+			if (filename == CACHE_DEFAULT_BITMAP) {
+				bmp = LoadDummyBitmap<T>(s.directory, filename, true);
+			}
+
+			if (!bmp) {
+				auto is = FileFinder::OpenImage(s.directory, filename);
+
+				FreeBitmapMemory();
+
+				if (!is) {
+					if (s.warn_missing) {
+						Output::Warning("Image not found: {}/{}", s.directory, filename);
+					} else {
+						Output::Debug("Image not found: {}/{}", s.directory, filename);
+						bmp = CreateEmpty<T>();
+					}
+				} else {
+					auto flags = Bitmap::Flag_ReadOnly | (
+							T == Material::Chipset ? Bitmap::Flag_Chipset :
+							T == Material::System ? Bitmap::Flag_System : 0);
+					bmp = Bitmap::Create(std::move(is), transparent, flags);
+					if (!bmp) {
+						Output::Warning("Invalid image: {}/{}", s.directory, filename);
+					}
+				}
+			}
+
+			if (!bmp) {
+				// Even for images without "warn_missing" this still creates a checkboard for invalid images
+				bmp = LoadDummyBitmap<T>(s.directory, filename, transparent);
+			}
+
+			bmp = AddToCache(key, bmp);
+		} else {
+			it->second.last_access = Game_Clock::GetFrameTime();
+			bmp = it->second.bitmap;
 		}
 
+		assert(bmp);
+
 		if (s.oob_check) {
-			int w = ret->GetWidth();
-			int h = ret->GetHeight();
+			int w = bmp->GetWidth();
+			int h = bmp->GetHeight();
 			int min_h = s.min_height;
 			int max_h = s.max_height;
 			int min_w = s.min_width;
@@ -319,19 +307,17 @@ namespace {
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {
 				Output::Debug("Image size out of bounds: {}/{} ({}x{} < {}x{} < {}x{})",
-				              s.directory, f, min_w, min_h, w, h, max_w, max_h);
+							  s.directory, filename, min_w, min_h, w, h, max_w, max_h);
 			}
 		}
 
-		return ret;
+		return bmp;
 	}
 
 	template<Material::Type T>
 	BitmapRef LoadBitmap(StringView f) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
-
 		const Spec& s = spec[T];
-
 		return LoadBitmap<T>(f, s.transparent);
 	}
 }
