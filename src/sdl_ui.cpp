@@ -39,12 +39,7 @@
 #include "audio.h"
 
 #ifdef SUPPORT_AUDIO
-
-#  ifdef HAVE_SDL_MIXER
-#    include "audio_sdl_mixer.h"
-#  else
-#    include "audio_sdl.h"
-#  endif
+#  include "audio_sdl.h"
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -126,17 +121,10 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	ShowCursor(false);
 
 #ifdef SUPPORT_AUDIO
-#  ifdef HAVE_SDL_MIXER
-	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlMixerAudio());
-		return;
-	}
-#  else
 	if (!Player::no_audio_flag) {
 		audio_.reset(new SdlAudio());
 		return;
 	}
-#  endif
 #else
 	audio_.reset(new EmptyAudio());
 #endif

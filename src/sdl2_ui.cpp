@@ -46,14 +46,7 @@
 #include "audio.h"
 
 #ifdef SUPPORT_AUDIO
-
-#  ifdef HAVE_SDL_MIXER
-#    include "audio_sdl_mixer.h"
-#  elif defined(HAVE_OPENAL)
-#    include "audio_al.h"
-#  else
-#    include "audio_sdl.h"
-#  endif
+#  include "audio_sdl.h"
 
 #if defined(__APPLE__) && TARGET_OS_OSX
 #  include "platform/macos/utils.h"
@@ -177,22 +170,10 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 #endif
 
 #ifdef SUPPORT_AUDIO
-#  ifdef HAVE_SDL_MIXER
-	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlMixerAudio());
-		return;
-	}
-#  elif defined(HAVE_OPENAL)
-	if (!Player::no_audio_flag) {
-		audio_.reset(new ALAudio());
-		return;
-	}
-#  else
 	if (!Player::no_audio_flag) {
 		audio_.reset(new SdlAudio());
 		return;
 	}
-#  endif
 #else
 	audio_.reset(new EmptyAudio());
 #endif
