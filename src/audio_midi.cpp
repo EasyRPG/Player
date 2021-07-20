@@ -110,7 +110,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream:
 std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-#if WANT_FMMIDI == 1
+#if WANT_FMMIDI
 	if (!mididec) {
 		auto dec = std::make_unique<FmMidiDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));

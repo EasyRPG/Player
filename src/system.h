@@ -103,23 +103,6 @@
 #  define SUPPORT_KEYBOARD
 #  define JOYSTICK_AXIS_SENSIBILITY 20000
 
-#  ifdef WANT_FMMIDI
-#    if WANT_FMMIDI != 1 && WANT_FMMIDI != 2
-#      error "WANT_FMMIDI must be set to 1 (use instead of sdl) or 2 (fallback on sdl error)"
-#    endif
-#    if !defined(HAVE_SDL_MIXER) && WANT_FMMIDI == 2
-#      error "WANT_FMMIDI must be set to 1 for non-SDL Mixer builds"
-#    endif
-#  endif
-
-#else
-
-#  ifdef WANT_FMMIDI
-#    if WANT_FMMIDI != 1
-#      error "WANT_FMMIDI must be set to 1 for non-SDL builds"
-#    endif
-#  endif
-
 #endif
 
 #if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)

@@ -24,16 +24,18 @@ AC_PROG_OBJCXX
 
 # Options
 AC_ARG_ENABLE([fmmidi],
-	AS_HELP_STRING([--enable-fmmidi@<:@=fallback@:>@],[use internal MIDI sequencer/as fallback @<:@default=no@:>@]))
-AS_IF([test "x$enable_fmmidi" = "xyes"],[want_fmmidi=1],[test "x$enable_fmmidi" = "xfallback"],[want_fmmidi=2])
-AS_IF([test "x$want_fmmidi" != "x"],
-	[AC_DEFINE_UNQUOTED([WANT_FMMIDI],[$want_fmmidi],[Enable internal MIDI sequencer(1)/as fallback(2)])])
-AM_CONDITIONAL([WANT_FMMIDI],[test "x$want_fmmidi" != "x"])
+	AS_HELP_STRING([--enable-fmmidi],[use internal MIDI sequencer @<:@default=no@:>@]))
+AS_IF([test "x$enable_fmmidi" = "xyes" -o "x$enable_fmmidi" = "xfallback"], [
+	enable_fmmidi="yes" dnl fallback counts as yes, since it is default now
+	AC_DEFINE([WANT_FMMIDI],[1],[Enable internal MIDI sequencer])
+],[enable_fmmidi="no"])
+AM_CONDITIONAL([WANT_FMMIDI],[test "x$enable_fmmidi" = "xyes"])
 
 AC_ARG_ENABLE([drwav],
 	AS_HELP_STRING([--disable-drwav],[use internal WAV library dr_wav @<:@default=yes@:>@]), ,[enable_drwav="yes"])
 AS_IF([test "x$enable_drwav" = "xyes"],
-	[AC_DEFINE([WANT_DRWAV],[1],[use internal WAV library dr_wav])])
+	[AC_DEFINE([WANT_DRWAV],[1],[use internal WAV library dr_wav])],
+	[enable_drwav="no"])
 AM_CONDITIONAL([WANT_DRWAV],[test "x$enable_drwav" = "xyes"])
 
 # Checks for libraries.
@@ -194,13 +196,8 @@ if test "yes" != "$silent"; then
 		echo "Audio support:               no"
 	else
 		echo "Audio support:"
-		echo -n "  -FMMidi:                   "
-		case "$want_fmmidi" in
-			1) echo "yes" ;;
-			2) echo "as fallback" ;;
-			*) echo "no" ;;
-		esac
-		echo "  -MP3 (libmpg123): $with_libmpg123"
+		echo "  -FMMidi:                   $enable_fmmidi"
+		echo "  -MP3 (libmpg123):          $with_libmpg123"
 		echo "  -midi (libwildmidi):       $with_libwildmidi"
 		echo "  -midi (FluidSynth):        $with_fluidsynth"
 		echo "  -midi (FluidLite):         $with_fluidlite"
