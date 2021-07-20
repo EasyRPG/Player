@@ -37,7 +37,8 @@ public:
 	enum Type {
 		Event,
 		Player,
-		Vehicle
+		Vehicle,
+		PlayerOther
 	};
 
 	static StringView TypeToStr(Type t);
@@ -867,8 +868,8 @@ protected:
 	void SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name);
 	void Update();
 	virtual void UpdateAnimation();
-	virtual void UpdateNextMovementAction() = 0;
 	virtual void UpdateMovement(int amount);
+	virtual void UpdateNextMovementAction() = 0;
 
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
@@ -1348,6 +1349,7 @@ inline StringView Game_Character::TypeToStr(Game_Character::Type type) {
 		case Player: return "Player";
 		case Vehicle: return "Vehicle";
 		case Event: return "Event";
+		case PlayerOther: return "PlayerOther";
 	}
 	return "UnknownCharacter";
 }

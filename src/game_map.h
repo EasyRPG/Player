@@ -138,6 +138,7 @@ namespace Game_Map {
 	 */
 	void PlayBgm();
 
+	void MainPlayerMoved(int dir);
 	/**
 	 * Refreshes the map.
 	 */

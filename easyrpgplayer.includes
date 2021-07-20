@@ -1,0 +1,12 @@
+builds/android/app/src/gamebrowser
+src
+src/lcf
+src/platform/3ds
+src/platform/android
+src/platform/libretro
+src/platform/macos
+src/platform/psvita
+src/platform/switch
+src/platform/wii
+src/platform/windows
+tests

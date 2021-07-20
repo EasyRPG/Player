@@ -873,7 +873,8 @@ if (${PLAYER_BUILD_EXECUTABLE})
 		endif()
 
 		target_link_libraries(${EXE_NAME} "idbfs.js")
-
+    target_link_libraries(${EXE_NAME} websocket.js)
+    
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "${PLAYER_JS_OUTPUT_NAME}")
 	endif()
 

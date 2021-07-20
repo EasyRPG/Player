@@ -8,6 +8,7 @@
 *~
 *.orig
 *.bak
+/build
 
 # autotools
 /autom4te.cache/
