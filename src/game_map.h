@@ -139,6 +139,7 @@ namespace Game_Map {
 	void PlayBgm();
 
 	void MainPlayerMoved(int dir);
+	void MainPlayerChangedMoveSpeed(int spd);
 	/**
 	 * Refreshes the map.
 	 */

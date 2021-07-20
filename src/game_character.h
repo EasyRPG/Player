@@ -26,6 +26,7 @@
 #include <lcf/rpg/eventpage.h>
 #include <lcf/rpg/savemapeventbase.h>
 #include "utils.h"
+#include "game_multiplayer.h"
 
 /**
  * Game_Character class.
@@ -995,6 +996,7 @@ inline int Game_Character::GetMoveSpeed() const {
 }
 
 inline void Game_Character::SetMoveSpeed(int speed) {
+	if (GetType() == Player && data()->move_speed != speed) Game_Multiplayer::MainPlayerChangedMoveSpeed(speed);
 	data()->move_speed = speed;
 }
 
