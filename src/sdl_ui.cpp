@@ -763,12 +763,12 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 		case SDLK_KP7			: return Input::Keys::KP7;
 		case SDLK_KP8			: return Input::Keys::KP8;
 		case SDLK_KP9			: return Input::Keys::KP9;
-		case SDLK_KP_MULTIPLY	: return Input::Keys::MULTIPLY;
-		case SDLK_KP_PLUS		: return Input::Keys::ADD;
+		case SDLK_KP_MULTIPLY	: return Input::Keys::KP_MULTIPLY;
+		case SDLK_KP_PLUS		: return Input::Keys::KP_ADD;
 		case SDLK_KP_ENTER		: return Input::Keys::RETURN;
-		case SDLK_KP_MINUS		: return Input::Keys::SUBTRACT;
-		case SDLK_KP_PERIOD		: return Input::Keys::PERIOD;
-		case SDLK_KP_DIVIDE		: return Input::Keys::DIVIDE;
+		case SDLK_KP_MINUS		: return Input::Keys::KP_SUBTRACT;
+		case SDLK_KP_PERIOD		: return Input::Keys::KP_PERIOD;
+		case SDLK_KP_DIVIDE		: return Input::Keys::KP_DIVIDE;
 		case SDLK_F1			: return Input::Keys::F1;
 		case SDLK_F2			: return Input::Keys::F2;
 		case SDLK_F3			: return Input::Keys::F3;
