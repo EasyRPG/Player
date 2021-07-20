@@ -21,10 +21,18 @@ namespace {
 	EMSCRIPTEN_WEBSOCKET_T socket;
 	bool connected = false;
 	int myid = -1;
-	//std::mutex plrs_mx;
 	std::map<int,std::queue<std::pair<int,int>>> player_mvq; //queue of move commands bc sometimes we may receive a move command while the player is being animated
 	std::map<int,std::unique_ptr<Game_PlayerOther>> players;
 	std::map<int,std::unique_ptr<Sprite_Character>> player_sprites;
+
+	void TrySend(std::string& msg) {
+		if (!connected) return;
+		unsigned short ready;
+		emscripten_websocket_get_ready_state(socket, &ready);
+		if (ready == 1) { //1 means OPEN
+			emscripten_websocket_send_binary(socket, (void*)msg.c_str(), msg.length());
+		}
+	}
 
 	void SetConnStatusWindowText(std::string s) {
 		conn_status_window->GetContents()->Clear();
@@ -52,13 +60,15 @@ namespace {
 		DrawableMgr::SetLocalList(old_list);
 	}
 	void SendMainPlayerPos() {
-		unsigned short ready;
-		emscripten_websocket_get_ready_state(socket, &ready);
-		if (connected && ready == 1) { //1 means OPEN
-			auto& player = Main_Data::game_player;
-			std::string msg = "m " + std::to_string(player->GetX()) + " " + std::to_string(player->GetY());
-			emscripten_websocket_send_binary(socket, (void*)msg.c_str(), msg.length());
-		}
+		auto& player = Main_Data::game_player;
+		std::string msg = "m " + std::to_string(player->GetX()) + " " + std::to_string(player->GetY());
+		TrySend(msg);
+	}
+
+	void SendMainPlayerMoveSpeed(int spd) {
+		auto& player = Main_Data::game_player;
+		std::string msg = "spd " + std::to_string(spd);
+		TrySend(msg);
 	}
 
 	//this assumes that the player is stopped
@@ -85,11 +95,13 @@ namespace {
 			player->SetY(y);
 		}
 	}
+
 	EM_BOOL onopen(int eventType, const EmscriptenWebSocketOpenEvent *websocketEvent, void *userData) {
 		SetConnStatusWindowText("Connected");
 		//puts("onopen");
 		connected = true;
 		SendMainPlayerPos();
+		SendMainPlayerMoveSpeed(Main_Data::game_player->GetMoveSpeed());
 
 		return EM_TRUE;
 	}
@@ -118,24 +130,25 @@ namespace {
 			if (v[0] == "s") { //set your id command
 				myid = std::stoi(v[1]);
 			}
-			if (std::stoi(v[1]) != myid) {
-				//plrs_mx.lock();
-				if (v[0] == "c") { //connect command
-					SpawnOtherPlayer(std::stoi(v[1]));
-				}
-				else if (v[0] == "d") { //disconnect command
-					players.erase(std::stoi(v[1]));
-					player_sprites.erase(std::stoi(v[1]));
-					player_mvq.erase(std::stoi(v[1]));
-				}
-				else if (v[0] == "m") { //move command
-					//if we get a move command for a player that we don't know of, probably packet loss occurred so spawn the player
-					if (players.count(std::stoi(v[1])) == 0) {
-						SpawnOtherPlayer(std::stoi(v[1]));
+			else {
+				int id = std::stoi(v[1]);
+				if (id != myid) {
+					if (players.count(id) == 0) { //if this is a command for a plyer we don't know of, spawn him
+						SpawnOtherPlayer(id);
 					}
-					player_mvq[std::stoi(v[1])].push(std::make_pair(std::stoi(v[2]), std::stoi(v[3])));
+					if (v[0] == "d") { //disconnect command
+						players.erase(id);
+						player_sprites.erase(id);
+						player_mvq.erase(id);
+					}
+					else if (v[0] == "m") { //move command
+						player_mvq[id].push(std::make_pair(std::stoi(v[2]), std::stoi(v[3])));
+					}
+					else if (v[0] == "spd") { //change move speed command
+						players[id]->SetMoveSpeed(std::stoi(v[2]));
+					}
+					//also there's a connect command "c %id%" - player with id %id% has connected
 				}
-				//plrs_mx.unlock();
 			}
 		}
 
@@ -180,7 +193,7 @@ void Game_Multiplayer::MainPlayerMoved(int dir) {
 }
 
 void Game_Multiplayer::MainPlayerChangedMoveSpeed(int spd) {
-	Output::Debug("main player newspd={}", spd);
+	SendMainPlayerMoveSpeed(spd);
 }
 
 void Game_Multiplayer::Update() {
