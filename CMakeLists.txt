@@ -759,7 +759,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	# mpg123
 	player_find_package(NAME mpg123
 		CONDITION PLAYER_WITH_MPG123
-		DEFINITION HAVE_MPG123
+		DEFINITION HAVE_LIBMPG123
 		TARGET mpg123::mpg123)
 
 	# libsndfile
@@ -783,7 +783,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	# wildmidi
 	player_find_package(NAME WildMidi
 		CONDITION PLAYER_WITH_WILDMIDI
-		DEFINITION HAVE_WILDMIDI
+		DEFINITION HAVE_LIBWILDMIDI
 		TARGET WildMidi::WildMidi)
 
 	# fluidsynth
@@ -803,7 +803,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	# xmp (lite)
 	player_find_package(NAME XMP
 		CONDITION PLAYER_WITH_XMP
-		DEFINITION HAVE_XMP
+		DEFINITION HAVE_LIBXMP
 		TARGET XMP::XMP)
 
 	if(PLAYER_ENABLE_FMMIDI)

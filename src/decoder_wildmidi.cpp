@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 
 // Headers
 #include <cassert>

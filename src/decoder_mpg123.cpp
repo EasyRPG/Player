@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_MPG123
+#ifdef HAVE_LIBMPG123
 
 // Headers
 #include <cassert>

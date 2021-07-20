@@ -21,7 +21,7 @@
 // Headers
 #include "audio_decoder.h"
 #include <string>
-#ifdef HAVE_MPG123
+#ifdef HAVE_LIBMPG123
 #include <mpg123.h>
 #endif
 #include <memory>
@@ -53,7 +53,7 @@ public:
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-#ifdef HAVE_MPG123
+#ifdef HAVE_LIBMPG123
 	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
 #endif
 	Filesystem_Stream::InputStream stream;

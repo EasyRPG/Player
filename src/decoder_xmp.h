@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <memory>
-#ifdef HAVE_XMP
+#ifdef HAVE_LIBXMP
 #include "xmp.h"
 #endif
 #include "audio_decoder.h"
@@ -51,7 +51,7 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	std::vector<uint8_t> file_buffer;
-#ifdef HAVE_XMP
+#ifdef HAVE_LIBXMP
 	xmp_context ctx = nullptr;
 #endif
 	bool finished = false;

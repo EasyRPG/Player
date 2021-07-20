@@ -90,11 +90,6 @@ AS_IF([test "x$with_audio" != "xno"],[
 		AM_CONDITIONAL([HAVE_ALSA], [test "$with_alsa" = "yes"])
 		AX_PTHREAD
 	])
-
-	# FIXME: These prefixed with `LIB` must be propagated to other Makefiles and sources
-	AS_IF([test "$with_libmpg123" = "yes"],[AC_DEFINE(HAVE_MPG123,[1],[MP3 support.])])
-	AS_IF([test "$with_libwildmidi" = "yes"],[AC_DEFINE(HAVE_WILDMIDI,[1],[Midi support. Alternative to internal fmmidi.])])
-	AS_IF([test "$with_libxmp" = "yes"],[AC_DEFINE(HAVE_XMP,[1],[Tracker module support.])])
 ])
 
 # bash completion

@@ -123,14 +123,14 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 	}
 
 	// Test for tracker modules
-#ifdef HAVE_XMP
+#ifdef HAVE_LIBXMP
 	if (XMPDecoder::IsModule(ToString(stream.GetName()))) {
 		return add_resampler(std::make_unique<XMPDecoder>());
 	}
 #endif
 
 	// False positive MP3s should be prevented before by checking for common headers
-#ifdef HAVE_MPG123
+#ifdef HAVE_LIBMPG123
 	static bool mpg123_works = true;
 	if (mpg123_works) {
 		auto mp3dec = add_resampler(std::make_unique<Mpg123Decoder>());

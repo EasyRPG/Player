@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_XMP
+#ifdef HAVE_LIBXMP
 
 // Headers
 #include <cassert>
