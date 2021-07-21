@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <memory>
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 #include <wildmidi_lib.h>
 #endif
 #include "audio_midi.h"
@@ -55,7 +55,7 @@ public:
 	}
 
 private:
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 	midi* handle = nullptr;
 #endif
 

@@ -1,0 +1,26 @@
+*         text=auto
+*.cpp     text
+*.h       text linguist-language=C++
+*.md      text
+*.cmake   text
+*.py      text
+*.rb      text
+*.sh      text
+*.ac      text
+*.am      text
+
+tests/doctest.h -diff linguist-vendored
+builds/autoconf/m4/ax_*.m4 -diff linguist-vendored
+src/dr_wav.h -diff linguist-vendored
+src/midiprogram.h -diff linguist-vendored
+src/midisequencer.* -diff linguist-vendored
+src/midisynth.* -diff linguist-vendored
+src/picojson.h -diff linguist-vendored
+builds/android/app/src/main/java/org/libsdl/app/SDL*.java -diff linguist-vendored
+builds/android/app/src/main/java/org/libsdl/app/SDLActivity.java diff
+builds/android/app/src/main/java/org/libsdl/app/HID*.java -diff linguist-vendored
+src/bitmapfont_rmg2000.h -diff linguist-generated
+src/bitmapfont_ttyp0.h -diff linguist-generated
+src/bitmapfont_wqy.h -diff linguist-generated
+src/shinonome_gothic.h -diff linguist-generated
+src/shinonome_mincho.h -diff linguist-generated

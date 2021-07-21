@@ -195,7 +195,7 @@ void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pi
 		return;
 	}
 
-	std::unique_ptr<AudioDecoder> dec = cache->CreateSeDecoder();
+	auto dec = cache->CreateSeDecoder();
 	dec->SetPitch(pitch);
 
 	int frequency;

@@ -86,7 +86,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(Filesystem_Strea
 std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 	std::string error_message;
 	if (!mididec && works.wildmidi && WildMidiDecoder::Initialize(error_message)) {
 		auto dec = std::make_unique<WildMidiDecoder>();
@@ -110,7 +110,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream:
 std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-#if WANT_FMMIDI == 1
+#if WANT_FMMIDI
 	if (!mididec) {
 		auto dec = std::make_unique<FmMidiDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
