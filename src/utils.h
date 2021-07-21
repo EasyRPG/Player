@@ -320,6 +320,14 @@ namespace Utils {
 	bool IsControlCharacter(T ch);
 
 	/**
+	 * Determines if a passed string contains only ASCII characters
+	 * (0x00 to 0x7F)
+	 * @param s
+	 * @return true when s contains only ASCII
+	 */
+	bool StringIsAscii(std::string& s);
+
+	/**
 	 * RPG_RT / Delphi compatible rounding of floating point.
 	 *
 	 * @param v the float value to convert
@@ -397,6 +405,12 @@ inline void Utils::ForEachLine(StringView line, F&& f) {
 template <typename T>
 inline bool Utils::IsControlCharacter(T ch) {
 	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
+}
+
+inline bool Utils::StringIsAscii(std::string &s) {
+	return std::all_of(s.begin(), s.end(), [](char c) {
+		return isascii(static_cast<int>(c));
+	});
 }
 
 template <typename Dest, typename Src>
