@@ -53,7 +53,7 @@ public:
 	void UnlockMutex() const;
 
 	ndspWaveBuf bgm_buf[2];
-	std::unique_ptr<AudioDecoder> bgm_decoder;
+	std::unique_ptr<AudioDecoderBase> bgm_decoder;
 	LightEvent audio_event;
 
 private:
