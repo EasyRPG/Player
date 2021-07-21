@@ -51,6 +51,8 @@ public:
 
 	int MaxHpValue() const override;
 
+	int MaxSpValue() const override;
+
 	int MaxStatBattleValue() const override;
 
 	int MaxStatBaseValue() const override;
@@ -167,14 +169,14 @@ public:
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetExpString() const;
+	std::string GetExpString(bool status_scene = false) const;
 
 	/**
 	 * Converts the Exp for the next LV to a string.
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetNextExpString() const;
+	std::string GetNextExpString(bool status_scene = false) const;
 
 	/**
 	 * Returns how many Exp are minimum for current level.

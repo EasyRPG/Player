@@ -348,7 +348,7 @@ void Scene_Debug::Update() {
 					DoItem();
 				} else if (sz > 2) {
 					if (frame.value <= static_cast<int>(lcf::Data::items.size())) {
-						PushUiNumberInput(Main_Data::game_party->GetItemCount(frame.value), 2, false);
+						PushUiNumberInput(Main_Data::game_party->GetItemCount(frame.value), Main_Data::game_party->GetMaxItemCount(frame.value) >= 100 ? 3 : 2, false);
 					}
 				} else if (sz > 1) {
 					PushUiVarList();
@@ -589,8 +589,8 @@ void Scene_Debug::CreateVarListWindow() {
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
-	numberinput_window.reset(new Window_NumberInput(105, 104,
-		Player::IsRPG2k() ? 12 * 7 + 16 : 12 * 8 + 16, 32));
+	numberinput_window.reset(new Window_NumberInput(160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, 104,
+		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16, 32));
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);

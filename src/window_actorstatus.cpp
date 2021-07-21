@@ -72,13 +72,13 @@ void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max, int color)
 	if (max >= 0)
 		ss << min;
 	else
-		ss << Main_Data::game_actors->GetActor(actor_id)->GetExpString();
+		ss << Main_Data::game_actors->GetActor(actor_id)->GetExpString(true);
 	contents->TextDraw(cx, cy, color, ss.str(), Text::AlignRight);
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 	ss.str("");
 	if (max >= 0)
 		ss << max;
 	else
-		ss << Main_Data::game_actors->GetActor(actor_id)->GetNextExpString();
+		ss << Main_Data::game_actors->GetActor(actor_id)->GetNextExpString(true);
 	contents->TextDraw(cx + 48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }

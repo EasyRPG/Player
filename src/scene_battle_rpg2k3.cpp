@@ -292,7 +292,8 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleStatusWindow();
 	CreateBattleCommandWindow();
 
-	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
+	int spwindow_size = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 72 : 60;
+	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32));
 	sp_window->SetVisible(false);
 	sp_window->SetZ(Priority_Window + 2);
 
@@ -563,7 +564,9 @@ std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_A
 			commands.push_back(ToString(cmd->name));
 		}
 	}
-	commands.push_back(ToString(lcf::Data::terms.row));
+	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
+		commands.push_back(ToString(lcf::Data::terms.row));
+	}
 
 	return commands;
 }
@@ -1080,12 +1083,19 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		ResetWindows(true);
 		target_window->SetIndex(-1);
 
-		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || (!lcf::Data::system.easyrpg_enable_auto_battle && !IsEscapeAllowedFromOptionWindow())) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(-options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		options_window->SetActive(true);
+		if (lcf::Data::system.easyrpg_enable_auto_battle) {
+			options_window->EnableItem(1);
+		} else {
+			options_window->DisableItem(1);
+		}
+
 		if (IsEscapeAllowedFromOptionWindow()) {
 			options_window->EnableItem(2);
 		} else {
@@ -1122,9 +1132,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 					SetState(State_SelectActor);
 					break;
 				case 1: // Auto Battle
-					MoveCommandWindows(-options_window->GetWidth(), 8);
-					SetState(State_AutoBattle);
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					if (lcf::Data::system.easyrpg_enable_auto_battle) {
+						MoveCommandWindows(-options_window->GetWidth(), 8);
+						SetState(State_AutoBattle);
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					} else {
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+					}
 					break;
 				case 2: // Escape
 					if (IsEscapeAllowedFromOptionWindow()) {
@@ -1168,6 +1182,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
+		}
+
+		if (lcf::Data::battlecommands.easyrpg_sequential_order) {
+			SetSceneActionSubState(eWaitActor);
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		SetSceneActionSubState(eWaitInput);
@@ -1224,6 +1243,15 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 			command_window->SetIndex(0);
 			SetState(State_SelectCommand);
 			return SceneActionReturn::eWaitTillNextFrame;
+		}
+
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				SetActiveActor(-1);
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+				SetState(State_SelectOption);
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
@@ -1303,7 +1331,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 		if (Input::IsTriggered(Input::DECISION)) {
 			int index = command_window->GetIndex();
 			// Row command always uses the last index
-			if (index < command_window->GetRowMax() - 1) {
+			if (!lcf::Data::battlecommands.easyrpg_enable_battle_row_command || index < command_window->GetRowMax() - 1) {
 				const auto* command = active_actor->GetBattleCommand(index);
 
 				if (command) {
@@ -1747,6 +1775,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		message_window->SetHeight(32);
 		message_window->SetMaxLinesPerPage(1);
 		Game_Message::SetPendingMessage(std::move(pm));
+
+		status_window->Refresh();
 
 		SetSceneActionSubState(eEnd);
 		return SceneActionReturn::eContinueThisFrame;
