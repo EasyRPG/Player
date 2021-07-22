@@ -108,10 +108,9 @@ AlsaMidiOutDevice::~AlsaMidiOutDevice() {
 
 void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 	snd_seq_event_t evt = {};
-	evt.source.port = 0;
+	snd_seq_ev_set_source(&evt, 0);
 	evt.queue = queue;
-	evt.dest.client = dst_client;
-	evt.dest.port = dst_port;
+	snd_seq_ev_set_dest(&evt, dst_client, dst_port);
 
 	unsigned int event = message & 0xF0;
 	unsigned int channel = message & 0x0F;
@@ -120,43 +119,29 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 
 	switch (event) {
 		case MidiEvent_NoteOff:
-			evt.type = SND_SEQ_EVENT_NOTEOFF;
-			evt.data.note.channel  = channel;
-			evt.data.note.note = param1;
+			snd_seq_ev_set_noteoff(&evt, channel, param1, param2);
 			break;
 		case MidiEvent_NoteOn:
-			evt.type = SND_SEQ_EVENT_NOTEON;
-			evt.data.note.channel = channel;
-			evt.data.note.note = param1;
-			evt.data.note.velocity = param2;
+			snd_seq_ev_set_noteon(&evt, channel, param1, param2);
 			break;
 		case MidiEvent_KeyPressure:
-			evt.type = SND_SEQ_EVENT_KEYPRESS;
-			evt.data.note.channel = channel;
-			evt.data.note.note = param1;
-			evt.data.note.velocity = param2;
+			snd_seq_ev_set_keypress(&evt, channel, param1, param2);
 			break;
 		case MidiEvent_Controller:
-			evt.type = SND_SEQ_EVENT_CONTROLLER;
-			evt.data.control.channel = channel;
-			evt.data.control.param = param1;
-			evt.data.control.value = param2;
+			snd_seq_ev_set_controller(&evt, channel, param1, param2);
 			break;
 		case MidiEvent_ProgramChange:
-			evt.type = SND_SEQ_EVENT_PGMCHANGE;
-			evt.data.control.channel = channel;
-			evt.data.control.value = param1;
+			snd_seq_ev_set_pgmchange(&evt, channel, param1);
 			break;
 		case MidiEvent_ChannelPressure:
-			evt.type = SND_SEQ_EVENT_CHANPRESS;
-			evt.data.control.channel = channel;
-			evt.data.control.value = param1;
+			snd_seq_ev_set_chanpress(&evt, channel, param1);
 			break;
-		case MidiEvent_PitchBend:
-			evt.type = SND_SEQ_EVENT_PITCHBEND;
-			evt.data.control.channel = channel;
-			evt.data.control.value = ((param2 & 0x7F) << 7) | (param1 & 0x7F);
+		case MidiEvent_PitchBend: {
+			int arg = ((param2 & 0x7F) << 7) | (param1 & 0x7F);
+			// ALSA pitchbend is centered at 0 instead of 0x2000 as MIDI standard does
+			snd_seq_ev_set_pitchbend(&evt, channel, arg - 0x2000);
 			break;
+		}
 		default:
 			break;
 	}
@@ -169,15 +154,11 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 
 void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 	snd_seq_event_t evt = {};
-	evt.source.port = 0;
+	snd_seq_ev_set_source(&evt, 0);
 	evt.queue = queue;
-	evt.dest.client = dst_client;
-	evt.dest.port = dst_port;
-	evt.type = SND_SEQ_EVENT_SYSEX;
+	snd_seq_ev_set_dest(&evt, dst_client, dst_port);
 
-	evt.flags |= SND_SEQ_EVENT_LENGTH_VARIABLE;
-	evt.data.ext.ptr = const_cast<void*>(data);
-	evt.data.ext.len = size;
+	snd_seq_ev_set_sysex(&evt, size, const_cast<void*>(data));
 
 	int status = snd_seq_event_output_direct(midi_out, &evt);
 	if (status < 0) {
