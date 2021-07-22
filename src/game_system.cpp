@@ -103,7 +103,7 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 		if (!data.music_stopping && previous_music.name == bgm.name) {
 			if (previous_music.volume != data.current_music.volume) {
 				if (!bgm_pending) { // Delay if not ready
-					Audio().BGM_Volume(AdjustVolume(data.current_music.volume));
+					Audio().BGM_Volume(data.current_music.volume);
 				}
 			}
 			if (previous_music.tempo != data.current_music.tempo) {
@@ -538,12 +538,12 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	Audio().BGM_Play(std::move(stream), AdjustVolume(data.current_music.volume), data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(std::move(stream), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
 	bgm_pending = false;
-	Audio().BGM_Play(FileFinder::Game().OpenFile(result->file), AdjustVolume(data.current_music.volume), data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(FileFinder::Game().OpenFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {

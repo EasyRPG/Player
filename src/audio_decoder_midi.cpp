@@ -155,8 +155,7 @@ int AudioDecoderMidi::GetVolume() const {
 		return static_cast<int>(volume * 100);
 	}
 
-	// Lie about the volume as this is handled by the Midi messages internally
-	return 100;
+	return static_cast<int>(volume * 100);
 }
 
 void AudioDecoderMidi::SetVolume(int new_volume) {
