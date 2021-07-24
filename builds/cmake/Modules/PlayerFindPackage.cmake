@@ -26,6 +26,8 @@
 #   When missing, the variable is the ``NAME`` argument in upper case.
 # ``REQUIRED`` (without arguments)
 #   The library is required. Forwarded to find_package.
+# ``VERSION`` (String)
+#   Specifies required version of the library.
 #
 # Return variables
 # ^^^^^^^^^^^^^^^^
@@ -36,7 +38,7 @@
 #
 
 function(player_find_package)
-	cmake_parse_arguments(PARSE_ARGV 0 PLAYER_FIND_PACKAGE "REQUIRED" "NAME;CONDITION;DEFINITION;FOUND;TARGET" "")
+	cmake_parse_arguments(PARSE_ARGV 0 PLAYER_FIND_PACKAGE "REQUIRED" "NAME;CONDITION;DEFINITION;FOUND;TARGET;VERSION" "")
 	string(TOUPPER ${PLAYER_FIND_PACKAGE_NAME} FIND_PACKAGE_NAME)
 
 	set(IS_REQUIRED "")
@@ -50,7 +52,7 @@ function(player_find_package)
 
 	# Assume "true" when Condition is empty, otherwise dereference the condition variable
 	if((NOT PLAYER_FIND_PACKAGE_CONDITION) OR (${PLAYER_FIND_PACKAGE_CONDITION}))
-		find_package(${PLAYER_FIND_PACKAGE_NAME} ${IS_REQUIRED})
+		find_package(${PLAYER_FIND_PACKAGE_NAME} ${PLAYER_FIND_PACKAGE_VERSION} ${IS_REQUIRED})
 		if (${${FIND_PACKAGE_NAME}_FOUND})
 			target_link_libraries(${PROJECT_NAME} ${PLAYER_FIND_PACKAGE_TARGET})
 			if(PLAYER_FIND_PACKAGE_DEFINITION)

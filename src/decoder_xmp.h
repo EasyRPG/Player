@@ -46,7 +46,7 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
-	static bool IsModule(const std::string& filename);
+	static bool IsModule(Filesystem_Stream::InputStream& stream);
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 

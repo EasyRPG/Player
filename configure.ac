@@ -82,7 +82,7 @@ AS_IF([test "x$with_audio" != "xno"],[
 	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
 	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support. Fallback when unsupported by dr_wav.])
-	EP_PKG_CHECK([LIBXMP],[libxmp],[Tracker module support.])
+	EP_PKG_CHECK([LIBXMP],[libxmp >= 4.5.0],[Tracker module support.])
 	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support.])
 
 	AS_IF([test "$with_alsa" = "yes"],[
