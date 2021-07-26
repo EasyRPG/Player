@@ -156,6 +156,7 @@ bool XMPDecoder::SetFormat(int freq, AudioDecoder::Format frmt, int chans) {
 
 bool XMPDecoder::IsModule(Filesystem_Stream::InputStream& stream) {
 	int res = xmp_test_module_from_callbacks(&stream, vio, nullptr);
+	stream.clear();
 	stream.seekg(0, std::ios_base::beg);
 	return res == 0;
 }
