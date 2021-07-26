@@ -530,12 +530,12 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 		distance = com.parameters[2];
 		// FIXME: For an "instant pan" Yume2kki passes a huge value (53) here
 		// which crashes depending on the hardware
-		speed = Utils::Clamp(com.parameters[3], 1, 6);
+		speed = Utils::Clamp<int>(com.parameters[3], 1, 6);
 		waiting_pan_screen = com.parameters[4] != 0;
 		player.StartPan(direction, distance, speed);
 		break;
 	case 3: // Reset
-		speed = Utils::Clamp(com.parameters[3], 1, 6);
+		speed = Utils::Clamp<int>(com.parameters[3], 1, 6);
 		waiting_pan_screen = com.parameters[4] != 0;
 		player.ResetPan(speed);
 		distance = std::max(
