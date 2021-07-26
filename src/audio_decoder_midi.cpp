@@ -155,8 +155,7 @@ int AudioDecoderMidi::GetVolume() const {
 		return static_cast<int>(volume * 100);
 	}
 
-	// Lie about the volume as this is handled by the Midi messages internally
-	return 100;
+	return static_cast<int>(volume * 100);
 }
 
 void AudioDecoderMidi::SetVolume(int new_volume) {
@@ -238,8 +237,10 @@ void AudioDecoderMidi::UpdateMidi(std::chrono::microseconds delta) {
 	if (paused) {
 		return;
 	}
-	seq->play(mtime, this);
+
 	mtime += std::chrono::microseconds(static_cast<int>(delta.count() * pitch / 100));
+	Update(delta);
+	seq->play(mtime, this);
 
 	if (IsFinished() && looping) {
 		mtime = seq->rewind_to_loop()->time;
