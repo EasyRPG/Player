@@ -181,32 +181,32 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 
 		if (tr_name.first == TRFILE_RPG_RT_LDB) {
 			sys = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *sys);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_BATTLE) {
 			battle = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *battle);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_COMMON) {
 			common = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *common);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_LMT) {
 			mapnames = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *mapnames);
 			}
 		} else {
 			std::unique_ptr<Dictionary> dict;
 			dict = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
