@@ -119,6 +119,13 @@ public:
 		State_Escape
 	};
 
+	/** Options available in a battle option menu. */
+	enum BattleOptionType {
+		Battle,
+		AutoBattle,
+		Escape
+	};
+
 	static void SelectionFlash(Game_Battler* battler);
 
 protected:
@@ -188,6 +195,9 @@ protected:
 	std::unique_ptr<EnemyAi::AlgorithmBase> enemyai_algo;
 
 	BattleContinuation on_battle_end;
+
+	/** Options available in the menu. */
+	std::vector<BattleOptionType> battle_options;
 };
 
 inline bool Scene_Battle::IsEscapeAllowed() const {
