@@ -144,6 +144,9 @@ NOTE: Incompatible with *--load-game-id*.
 *--window*::
   Start in window mode.
 
+*--no-log-color*::
+  Disable colors in terminal log.
+
 *-v*, *--version*::
   Display program version and exit.
 

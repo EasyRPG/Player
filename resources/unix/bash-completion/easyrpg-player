@@ -1,5 +1,5 @@
 # bash completion script for easyrpg-player
-# (c) carstene1ns <dev f4ke de> 2016-2017
+# (c) carstene1ns <dev f4ke de> 2016-2021
 # available under the MIT license
 
 _easyrpg-player ()
@@ -16,14 +16,14 @@ _easyrpg-player ()
   ouropts='--autobattle-algo --battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
            --encoding --enemyai-algo --engine --fps-limit --fps-render-window --fullscreen -h --help \
            --hide-title --load-game-id --new-game --no-vsync --project-path --rtp-path --record-input \
-           --replay-input --save-path --seed --show-fps --start-map-id --start-party \
+           --replay-input --save-path --seed --show-fps --start-map-id --start-party --no-log-color \
            --start-position --test-play --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
   engines='rpg2k rpg2kv150 rpg2ke rpg2k3 rpg2k3v105 rpg2k3e'
   autobattle_algos='RPG_RT RPG_RT+ ATTACK'
   enemyai_algos='RPG_RT RPG_RT+'
 
-  # first list all special cases
+  # first list all special cases expecting arguments
   case $prev in
     # supported engines
     --engine)
@@ -75,7 +75,8 @@ _easyrpg-player ()
     -@(v|-version|h|-help))
       return
       ;;
-    # new option
+
+    # all others do not expect arguments, just move to next option
     *)
       COMPREPLY=($(compgen -W "$ouropts $rpgrtopts" -- $cur))
       return
@@ -88,7 +89,7 @@ _easyrpg-player ()
       COMPREPLY=($(compgen -W "$rpgrtopts" -- $cur))
       return
       ;;
-    # catch all single options
+    # all our options
     -*)
       COMPREPLY=($(compgen -W "$ouropts" -- $cur))
       return

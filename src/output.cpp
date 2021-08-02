@@ -41,6 +41,8 @@
 #  include <emscripten.h>
 #endif
 
+#include "external/rang.hpp"
+
 #include "filefinder.h"
 #include "input.h"
 #include "options.h"
@@ -66,6 +68,17 @@ namespace {
 
 	static const char* GetLogPrefix(LogLevel lvl) {
 		return log_prefix[static_cast<int>(lvl)];
+	}
+
+	// Inject colors
+	std::ostream& operator<<(std::ostream& os, const LogLevel lvl)
+	{
+		if (lvl == LogLevel::Error) return os << rang::fg::red;
+		if (lvl == LogLevel::Warning) return os << rang::fg::yellow;
+		if (lvl == LogLevel::Debug) return os << rang::fg::gray;
+
+		// Default (info)
+		return os;
 	}
 
 	Filesystem_Stream::OutputStream LOG_FILE;
@@ -130,14 +143,44 @@ void Output::SetLogLevel(LogLevel ll) {
 	log_level = ll;
 }
 
+void Output::SetTermColor(bool colored) {
+	rang::setControlMode(colored ? rang::control::Auto : rang::control::Off);
+}
+
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
 static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
+#ifdef EMSCRIPTEN
+
+// Allow pretty log output and filtering in browser console
+EM_ASM({
+  lvl = $0;
+  msg = UTF8ToString($1);
+
+  switch (lvl) {
+    case 0:
+      console.error(msg);
+      break;
+    case 1:
+      console.warn(msg);
+      break;
+    case 2:
+      console.info(msg);
+      break;
+    case 3:
+      console.debug(msg);
+      break;
+    default:
+      console.log(msg);
+      break;
+  }
+}, static_cast<int>(lvl), msg.c_str());
+
+#else
+
 	const char* prefix = GetLogPrefix(lvl);
-	// Skip logging to file in the browser
-#ifndef EMSCRIPTEN
 	bool add_to_buffer = true;
 
 	// Prevent recursion when the Save filesystem writes to the logfile on startup before it is ready
@@ -180,12 +223,15 @@ static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Colo
 		// buffer log messages until file system is ready
 		log_buffer.push_back(prefix + msg);
 	}
-#endif
 
-#ifdef __ANDROID__
-	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
-#else
-	std::cerr << prefix << msg << '\n';
+#  ifdef __ANDROID__
+	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, GAME_TITLE, "%s", msg.c_str());
+#  else
+	// terminal output
+	std::cerr << rang::style::bold << lvl << prefix << rang::style::reset
+		<< lvl << msg << rang::fg::reset << std::endl;
+#  endif
+
 #endif
 
 	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
@@ -293,7 +339,7 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#if defined (GEKKO) || defined(__SWITCH__)
+#if defined (GEKKO) || defined(__SWITCH__) || defined(_3DS)
 		// stdin is non-blocking
 		sleep(5);
 #elif defined (EMSCRIPTEN)

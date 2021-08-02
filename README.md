@@ -198,6 +198,8 @@ EasyRPG Player makes use of the following 3rd party software:
 * [Dirent] interface for Microsoft Visual Studio -
   Copyright (c) 2006-2012 Toni Ronkko, provided under the MIT license
 
+* [rang] terminal color library - by Abhinav Gauniyal, provided under Unlicense
+
 * [Teenyicons] - Copyright (c) 2020 Anja van Staden, provided under the MIT license
 
 [buildscripts]: https://github.com/EasyRPG/buildscripts
@@ -209,4 +211,5 @@ EasyRPG Player makes use of the following 3rd party software:
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
 [Dirent]: https://github.com/tronkko/dirent
+[rang]: https://github.com/agauniyal/rang
 [Teenyicons]: https://github.com/teenyicons/teenyicons
