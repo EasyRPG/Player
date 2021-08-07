@@ -30,11 +30,8 @@
 #include "output.h"
 
 #ifdef GEKKO
-#  include <unistd.h>
 #  include <gccore.h>
 #  include <sys/iosupport.h>
-#elif defined(__SWITCH__)
-#  include <unistd.h>
 #elif defined(__ANDROID__)
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
@@ -43,15 +40,13 @@
 
 #include "external/rang.hpp"
 
+#include "output.h"
 #include "filefinder.h"
 #include "input.h"
 #include "options.h"
-#include "output.h"
 #include "player.h"
 #include "bitmap.h"
-#include "main_data.h"
 #include "message_overlay.h"
-#include "utils.h"
 #include "font.h"
 #include "baseui.h"
 
@@ -66,7 +61,7 @@ namespace {
 	};
 	LogLevel log_level = LogLevel::Debug;
 
-	static const char* GetLogPrefix(LogLevel lvl) {
+	const char* GetLogPrefix(LogLevel lvl) {
 		return log_prefix[static_cast<int>(lvl)];
 	}
 
@@ -90,7 +85,7 @@ namespace {
 			LOG_FILE = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
-		std::time_t t = std::time(NULL);
+		std::time_t t = std::time(nullptr);
 		char timestr[100];
 		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
 		return LOG_FILE << timestr;
@@ -341,7 +336,7 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << "EasyRPG Player will close now.";
 #if defined (GEKKO) || defined(__SWITCH__) || defined(_3DS)
 		// stdin is non-blocking
-		sleep(5);
+		Game_Clock::SleepFor(5s);
 #elif defined (EMSCRIPTEN)
 		// Don't show JavaScript Window.prompt from stdin call
 		std::cout << " Process finished.";
