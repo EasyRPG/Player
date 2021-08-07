@@ -428,6 +428,7 @@ add_library(${PROJECT_NAME} STATIC
 	src/window_teleport.h
 	src/window_varlist.cpp
 	src/window_varlist.h
+	src/external/rang.hpp
 )
 
 # These are actually unused when building in CMake

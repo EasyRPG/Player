@@ -150,6 +150,15 @@ void Player::Init(int argc, char *argv[]) {
 	// Must be called before the first call to Output
 	Graphics::Init();
 
+	// FIXME: actual command line parsing is too late for setting this,
+	// it should be refactored after release to not break things now
+	for (int i = 1; i < argc; ++i) {
+		if (strcmp(argv[i], "--no-log-color") == 0) {
+			Output::SetTermColor(false);
+			break;
+		}
+	}
+
 	// Display a nice version string
 	std::stringstream header;
 	std::string addtl_ver(PLAYER_ADDTL);
@@ -657,6 +666,10 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 					patch |= PatchManiac;
 				}
 			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--no-log-color")) {
+			Output::SetTermColor(false);
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {

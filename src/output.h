@@ -55,6 +55,13 @@ namespace Output {
 	void SetLogLevel(LogLevel ll);
 
 	/**
+	 * Sets terminal log colors
+	 *
+	 * @param colored whether to color terminal log
+	 */
+	void SetTermColor(bool colored);
+
+	/**
 	 * Closes the log file handle and trims the file.
 	 */
 	void Quit();
