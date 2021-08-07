@@ -288,7 +288,7 @@ void Game_Pictures::Picture::Erase() {
 	request_id = {};
 	data.name.clear();
 	if (sprite) {
-		sprite->SetVisible(false);
+		sprite->SetBitmap(nullptr);
 	}
 }
 
