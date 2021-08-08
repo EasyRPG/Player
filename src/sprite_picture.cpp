@@ -69,7 +69,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	auto& bitmap = GetBitmap();
 
-	if (!bitmap || data.name.empty()) {
+	if (!bitmap) {
 		return;
 	}
 
