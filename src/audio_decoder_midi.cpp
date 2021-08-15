@@ -245,6 +245,7 @@ void AudioDecoderMidi::UpdateMidi(std::chrono::microseconds delta) {
 	if (IsFinished() && looping) {
 		mtime = seq->rewind_to_loop()->time;
 		reset_tempos_after_loop();
+		loop_count += 1;
 	}
 }
 
