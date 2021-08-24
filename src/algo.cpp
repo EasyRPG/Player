@@ -99,7 +99,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 	}
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+	if ((Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
 		to_hit -= 25;
 	}
 
@@ -190,7 +190,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	auto dmg = std::max(0, atk / 2 - def / 4);
 
 	// Attacker row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(source, cond, true, false)) {
+	if ((Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) && IsRowAdjusted(source, cond, true, false)) {
 		dmg = 125 * dmg / 100;
 	}
 
@@ -198,7 +198,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	dmg = Attribute::ApplyAttributeNormalAttackMultiplier(dmg, source, target, weapon);
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+	if ((Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
 		dmg = 75 * dmg / 100;
 	}
 

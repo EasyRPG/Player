@@ -40,9 +40,11 @@ void Window_ActorInfo::Refresh() {
 }
 
 void Window_ActorInfo::DrawInfo() {
-	// Draw Row formation.
-	std::string battle_row = Main_Data::game_actors->GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_back, "Back") : lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_front, "Front");
-	contents->TextDraw(contents->GetWidth(), 2, Font::ColorDefault, battle_row, Text::AlignRight);
+	if (!lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		// Draw Row formation.
+		std::string battle_row = Main_Data::game_actors->GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_back, "Back") : lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_front, "Front");
+		contents->TextDraw(contents->GetWidth(), 2, Font::ColorDefault, battle_row, Text::AlignRight);
+	}
 
 	const Game_Actor& actor = *Main_Data::game_actors->GetActor(actor_id);
 

@@ -45,7 +45,7 @@ Window_Message* Game_Message::GetWindow() {
 
 int Game_Message::GetRealPosition() {
 	if (Game_Battle::IsBattleRunning()) {
-		if (Player::IsRPG2k()) {
+		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 			return 2;
 		}
 		else {

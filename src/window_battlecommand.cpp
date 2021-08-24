@@ -133,7 +133,7 @@ void Window_BattleCommand::SetIndex(int _index) {
 }
 
 void Window_BattleCommand::SetActor(int _actor_id) {
-	actor_id = (Player::IsRPG2k()) ? 0 : _actor_id;
+	actor_id = (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) ? 0 : _actor_id;
 	commands.clear();
 
 	if (actor_id == 0) {

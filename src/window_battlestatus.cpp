@@ -89,7 +89,7 @@ void Window_BattleStatus::Refresh() {
 			int y = menu_item_height / 8 + i * menu_item_height;
 
 			DrawActorName(*actor, 4, y);
-			if (Player::IsRPG2k()) {
+			if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 				int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
 				int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
 				DrawActorState(*actor, (hpdigits < 4 && spdigits < 4) ? 86 : 80, y);
@@ -110,7 +110,7 @@ void Window_BattleStatus::Refresh() {
 }
 
 void Window_BattleStatus::RefreshGauge() {
-	if (Player::IsRPG2k3()) {
+	if (Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			if (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
 				contents->ClearRect(Rect(192, 0, 45, 58));
@@ -277,7 +277,7 @@ void Window_BattleStatus::Update() {
 
 	if (item_max != old_item_max) {
 		Refresh();
-	} else if (Player::IsRPG2k3()) {
+	} else if (Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 		RefreshGauge();
 	}
 

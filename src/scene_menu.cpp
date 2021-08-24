@@ -84,7 +84,17 @@ void Scene_Menu::CreateCommandWindow() {
 	} else {
 		for (std::vector<int16_t>::iterator it = lcf::Data::system.menu_commands.begin();
 			it != lcf::Data::system.menu_commands.end(); ++it) {
-				command_options.push_back((CommandOptionType)*it);
+				switch (*it) {
+				case Row:
+				case Wait:
+					if (!lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+						command_options.push_back((CommandOptionType)*it);
+					}
+					break;
+				default:
+					command_options.push_back((CommandOptionType)*it);
+					break;
+				}
 		}
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);

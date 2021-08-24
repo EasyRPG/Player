@@ -48,7 +48,11 @@ void Window_MenuStatus::Refresh() {
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;
+			if (lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+				face_x = 4;
+			} else {
+				face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;
+			}
 		}
 		DrawActorFace(actor, face_x, i*48 + y);
 

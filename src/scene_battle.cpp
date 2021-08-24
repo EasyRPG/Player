@@ -473,7 +473,7 @@ void Scene_Battle::AssignSkill(const lcf::rpg::Skill* skill, const lcf::rpg::Ite
 
 std::shared_ptr<Scene_Battle> Scene_Battle::Create(const BattleArgs& args)
 {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 		return std::make_shared<Scene_Battle_Rpg2k>(args);
 	}
 	else {
