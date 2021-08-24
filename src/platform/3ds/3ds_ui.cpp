@@ -335,7 +335,7 @@ void CtrUi::UpdateDisplay() {
 		}
 
 		// "0" is handled specially
-		u8 draw_width = button_width;
+		draw_width = button_width;
 		if (col < 2 && row == 4) {
 			draw_width *= 2;
 			if (col == 1)
