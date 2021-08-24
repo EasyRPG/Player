@@ -48,7 +48,7 @@ void Window_MenuStatus::Refresh() {
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			if (lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+			if (lcf::Data::system.easyrpg_use_rpg2k_battle_system || lcf::Data::battlecommands.easyrpg_disable_row_feature) {
 				face_x = 4;
 			} else {
 				face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;

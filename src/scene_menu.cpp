@@ -86,6 +86,10 @@ void Scene_Menu::CreateCommandWindow() {
 			it != lcf::Data::system.menu_commands.end(); ++it) {
 				switch (*it) {
 				case Row:
+					if (!lcf::Data::system.easyrpg_use_rpg2k_battle_system && !lcf::Data::battlecommands.easyrpg_disable_row_feature) {
+						command_options.push_back((CommandOptionType)*it);
+					}
+					break;
 				case Wait:
 					if (!lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
 						command_options.push_back((CommandOptionType)*it);
