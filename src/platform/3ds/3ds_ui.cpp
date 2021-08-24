@@ -54,7 +54,7 @@ namespace {
 	u32 old_time_limit;
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
-	constexpr int button_height = 60;
+	constexpr int button_height = 48;
 	constexpr int joy_threshold = 25;
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
@@ -64,6 +64,8 @@ namespace {
 CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
+
+	show_touchscreen = true;
 
 	fullscreen = false;
 	trigger_state = false;
@@ -211,15 +213,33 @@ void CtrUi::ProcessEvents() {
 		keys[keys_tbl[i]] = false;
 
 	if (input & KEY_TOUCH) {
-		touch_state = 1;
-		touchPosition pos;
-		hidTouchRead(&pos);
-		u8 col = pos.px / button_width;
-		u8 row = pos.py / button_height;
-		touch_x = pos.px;
-		touch_y = pos.py;
+		if(show_touchscreen) {
+			touch_state = 1;
+			touchPosition pos;
+			hidTouchRead(&pos);
+			u8 col = pos.px / button_width;
+			u8 row = pos.py / button_height - 1;
 
-		keys[keys_tbl[col + (row * 4)]] = true;
+			if (row < 0) { // Turn off touchscreen for top "row" of buttons
+				show_touchscreen = false;
+				gspLcdInit();
+				GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+				gspLcdExit();
+
+			} else {
+				keys[keys_tbl[col + (row * 4)]] = true;
+			}
+
+			touch_x = pos.px;
+			touch_y = pos.py;
+		} else {
+			gspLcdInit();
+			if (R_SUCCEEDED(gspLcdInit())) {
+				show_touchscreen = true;
+				GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+				gspLcdExit();
+			}
+		}
 	}
 #endif
 }
@@ -306,9 +326,17 @@ void CtrUi::UpdateDisplay() {
 		u8 pos_x = col * button_width;
 		u8 pos_y = row * button_height;
 
+		// "Show Buttons" is handled specially
+		u8 draw_width = button_width;
+		if (row == 0) {
+			draw_width *= 4;
+			if (col > 0)
+				pos_x = 0;
+		}
+
 		// "0" is handled specially
 		u8 draw_width = button_width;
-		if (col < 2 && row == 3) {
+		if (col < 2 && row == 4) {
 			draw_width *= 2;
 			if (col == 1)
 				pos_x = 0;
