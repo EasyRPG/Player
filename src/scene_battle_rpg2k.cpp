@@ -780,7 +780,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVict
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.SetWordWrapped(Player::IsRPG2kE());
+		pm.SetWordWrapped(Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings));
 		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 
 		std::stringstream ss;
@@ -837,7 +837,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionDefe
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.SetWordWrapped(Player::IsRPG2kE());
+		pm.SetWordWrapped(Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings));
 
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
@@ -1822,7 +1822,7 @@ bool Scene_Battle_Rpg2k::CheckWait() {
 }
 
 void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.exp_received,
@@ -1840,7 +1840,7 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp
 
 void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) {
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.gold_recieved_a,
@@ -1864,7 +1864,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 		// No Output::Warning needed here, reported later when the item is added
 		StringView item_name = item ? StringView(item->name) : StringView("??? BAD ITEM ???");
 
-		if (Player::IsRPG2kE()) {
+		if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 			pm.PushLine(
 				Utils::ReplacePlaceholders(
 					lcf::Data::terms.item_recieved,

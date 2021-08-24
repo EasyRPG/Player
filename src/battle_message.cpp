@@ -26,7 +26,7 @@
 namespace BattleMessage {
 
 static std::string GetStateMessage(StringView target_name, StringView message) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S'),
@@ -69,7 +69,7 @@ std::string GetDeathMessage(const Game_Battler& target) {
 }
 
 static std::string GetActionFailureMessage(StringView source, StringView target, StringView message) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'O'),
@@ -112,7 +112,7 @@ std::string GetUndamagedMessage(const Game_Battler& target) {
 		? StringView(lcf::Data::terms.actor_undamaged)
 		: StringView(lcf::Data::terms.enemy_undamaged);
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S'),
@@ -129,7 +129,7 @@ std::string GetCriticalHitMessage(const Game_Battler& source, const Game_Battler
 		? StringView(lcf::Data::terms.actor_critical)
 		: StringView(lcf::Data::terms.enemy_critical);
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'O'),
@@ -142,7 +142,7 @@ std::string GetCriticalHitMessage(const Game_Battler& source, const Game_Battler
 }
 
 static std::string GetHpSpRecoveredMessage(const Game_Battler& target, int value, StringView points) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.hp_recovery,
 			Utils::MakeArray('S', 'V', 'U'),
@@ -180,7 +180,7 @@ std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_B
 		? StringView(lcf::Data::terms.actor_hp_absorbed)
 		: StringView(lcf::Data::terms.enemy_hp_absorbed);
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'O', 'V', 'U'),
@@ -235,7 +235,7 @@ std::string GetDamagedMessage(const Game_Battler& target, int value) {
 		? StringView(lcf::Data::terms.actor_damaged)
 		: StringView(lcf::Data::terms.enemy_damaged);
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'V', 'U'),
@@ -268,7 +268,7 @@ std::string GetParameterChangeMessage(const Game_Battler& target, int value, Str
 	   	: StringView(lcf::Data::terms.parameter_decrease);
 
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'V', 'U'),
@@ -324,7 +324,7 @@ std::string GetAttributeShiftMessage(const Game_Battler& target, int value, cons
 		: StringView(lcf::Data::terms.resistance_decrease);
 	std::stringstream ss;
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S', 'O'),
@@ -348,7 +348,7 @@ std::string GetAttributeShiftMessage(const Game_Battler& target, int value, cons
 }
 
 static std::string GetBasicStartMessage2k(const Game_Battler& source, StringView term) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			term,
 			Utils::MakeArray('S'),
@@ -383,7 +383,7 @@ std::string GetEscapeStartMessage2k(const Game_Battler& source) {
 }
 
 std::string GetTransformStartMessage(const Game_Battler& source, const lcf::rpg::Enemy& new_enemy) {
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.enemy_transform,
 			Utils::MakeArray('S', 'O'),
@@ -398,7 +398,7 @@ static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const
 	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
 		target_name = target->GetName();
 	}
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 				usage,
 				Utils::MakeArray('S', 'O', 'U'),
@@ -429,7 +429,7 @@ std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::It
 		);
 	}
 
-	if (Player::IsRPG2kE()) {
+	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.use_item,
 			Utils::MakeArray('S', 'O'),
