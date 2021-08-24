@@ -110,6 +110,10 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
 	auto to_hit = skill.hit;
 
+	if (!SkillTargetsAllies(skill) && skill.easyrpg_affected_by_avoid_attacks && target.EvadesAllPhysicalAttacks()) {
+		return 0;
+	}
+
 	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
 	// Despite that, RPG_RT still checks the flag and run the below code?
 	if (skill.failure_message != 3 || SkillTargetsAllies(skill)) {
