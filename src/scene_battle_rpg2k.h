@@ -186,6 +186,8 @@ protected:
 
 	void OptionSelected();
 	void CommandSelected();
+	void SubskillSelected2k3(int command);
+	void SpecialSelected2k3();
 
 	void SelectNextActor(bool auto_battle);
 	void SelectPreviousActor();
@@ -236,6 +238,8 @@ protected:
 	BattleActionReturn ProcessBattleActionStateEffects(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionAttributeEffects(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
+	std::vector<std::string> GetBattleCommandNames2k3(const Game_Actor* actor);
 
 	void ProcessBattleActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 
