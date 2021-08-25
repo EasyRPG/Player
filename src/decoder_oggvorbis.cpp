@@ -105,6 +105,14 @@ bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 					if (len >= 0) {
 						loop.end = std::min<int64_t>(loop.start + len, total);
 					}
+				} else {
+					str = vorbis_comment_query(vc, "LOOPEND", 0);
+					if (str) {
+						int end = atoi(str);
+						if (end >= 0) {
+							loop.end = Utils::Clamp<int64_t>(end, loop.start, total);
+						}
+					}
 				}
 
 				if (loop.start == total) {
