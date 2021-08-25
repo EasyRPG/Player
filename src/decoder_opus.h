@@ -54,6 +54,14 @@ private:
 	bool finished = false;
 	int frequency = 48000;
 	int channels = 2;
+
+	struct {
+		bool looping = false;
+		// When true start & end are the same, keeps the stream alive to match Midi loop behaviour
+		bool to_end = false;
+		int64_t start = -1;
+		int64_t end = -1;
+	} loop;
 };
 
 #endif
