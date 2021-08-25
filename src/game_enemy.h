@@ -160,6 +160,12 @@ public:
 	 * @return hit rate. [0-100]
 	 */
 	float GetCriticalHitChance(Weapon = WeaponAll) const override;
+
+	/**
+	 * @return If the enemy is protected against critical hits.
+	 */
+	bool PreventsCritical() const override;
+
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;

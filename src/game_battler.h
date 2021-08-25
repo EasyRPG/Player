@@ -711,6 +711,11 @@ public:
 	 */
 	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const;
 
+	/**
+	 * @return If the battler is protected against critical hits.
+	 */
+	virtual bool PreventsCritical() const = 0;
+
 
 	enum BattlerType {
 		Type_Ally,

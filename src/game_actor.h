@@ -849,9 +849,9 @@ public:
 	bool PreventsTerrainDamage() const;
 
 	/**
-	 * @return If the actor has an equipment that protects against critical hits.
+	 * @return If the actor is protected against critical hits.
 	 */
-	bool PreventsCritical() const;
+	bool PreventsCritical() const override;
 
 	/**
 	 * @return If the actor has an equipment that with physical evasion up.

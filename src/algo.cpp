@@ -150,7 +150,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 
 int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
 	auto crit_chance = static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0);
-	if (target.GetType() == Game_Battler::Type_Ally && static_cast<const Game_Actor&>(target).PreventsCritical()) {
+	if (target.PreventsCritical()) {
 		crit_chance = 0;
 	}
 	if (source.GetType() == target.GetType()) {

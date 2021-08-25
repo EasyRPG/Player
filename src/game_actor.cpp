@@ -1404,6 +1404,9 @@ bool Game_Actor::AttackIgnoresEvasion(Weapon weapon) const {
 }
 
 bool Game_Actor::PreventsCritical() const {
+	if (dbActor->easyrpg_prevent_critical) {
+		return true;
+	}
 	bool rc = false;
 	ForEachEquipment<false, true>(GetWholeEquipment(), [&](auto& item) { rc |= item.prevent_critical; });
 	return rc;

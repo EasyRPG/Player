@@ -147,6 +147,10 @@ float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
+bool Game_Enemy::PreventsCritical() const {
+	return enemy->easyrpg_prevent_critical;
+}
+
 int Game_Enemy::GetFlyingOffset() const {
 	// 2k does not support flying, albeit mentioned in the help file
 	if (!Player::IsRPG2k3() || !IsFlying()) {
