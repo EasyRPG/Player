@@ -20,9 +20,7 @@
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
 
 // Headers
-#include <cassert>
 #include "audio_decoder.h"
-#include "output.h"
 #include "decoder_oggvorbis.h"
 #include "filesystem_stream.h"
 
@@ -73,7 +71,7 @@ bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 	}
 	ovf = new OggVorbis_File;
 
-	int res = ov_open_callbacks(&this->stream, ovf, NULL, 0,vio);
+	int res = ov_open_callbacks(&this->stream, ovf, nullptr, 0,vio);
 	if (res < 0) {
 		error_message = "OggVorbis: Error reading file";
 		delete ovf;
@@ -91,15 +89,54 @@ bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 	frequency = vi->rate;
 	channels = vi->channels;
 
+	vorbis_comment* vc = ov_comment(ovf, -1);
+	if (vc) {
+		// RPG VX loop support
+		const char* str = vorbis_comment_query(vc, "LOOPSTART", 0);
+		if (str) {
+			auto total = ov_pcm_total(ovf, -1) ;
+			loop.start = std::min<int64_t>(atoi(str), total);
+			if (loop.start > 0) {
+				loop.looping = true;
+				loop.end = total;
+				str = vorbis_comment_query(vc, "LOOPLENGTH", 0);
+				if (str && strlen(str) > 0) {
+					int len = atoi(str);
+					if (len > 0) {
+						loop.end = std::min<int64_t>(loop.start + len, total);
+					} else if (len == 0 && str[0] == '0') {
+						loop.end = loop.start;
+					}
+				}
+
+				if (loop.start == total) {
+					loop.end = total;
+				}
+			}
+		}
+	}
+
+	if (!loop.looping) {
+		loop.start = 0;
+		loop.end = -1;
+	}
+
 	return true;
 }
 
 bool OggVorbisDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (offset == 0 && origin == std::ios_base::beg) {
-		if (ovf) {
-			ov_raw_seek(ovf, 0);
-		}
 		finished = false;
+
+		if (ovf) {
+			// Seeks to 0 when not looping
+			ov_pcm_seek(ovf, loop.start);
+		}
+
+		if (loop.looping && loop.start == loop.end) {
+			loop.to_end = true;
+		}
+
 		return true;
 	}
 
@@ -107,8 +144,13 @@ bool OggVorbisDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin
 }
 
 bool OggVorbisDecoder::IsFinished() const {
-	if (!ovf)
+	if (!ovf) {
 		return false;
+	}
+
+	if (loop.to_end) {
+		return false;
+	}
 
 	return finished;
 }
@@ -138,6 +180,11 @@ int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!ovf)
 		return -1;
 
+	if (loop.to_end) {
+		memset(buffer, '\0', length);
+		return length;
+	}
+
 	static int section;
 	int read = 0;
 	int to_read = length;
@@ -151,6 +198,15 @@ int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {
 		// stop decoding when error or end of file
 		if (read <= 0)
 			break;
+
+		// stop when loop end is reached
+		if (loop.looping) {
+			auto pos = ov_pcm_tell(ovf);
+			if (pos >= loop.end) {
+				finished = true;
+				break;
+			}
+		}
 
 		to_read -= read;
 	} while(to_read > 0);
