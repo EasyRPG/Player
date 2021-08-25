@@ -107,7 +107,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 
 
 int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	auto to_hit = skill.hit;
+	auto to_hit = (skill.hit < 0 ? source.GetHitChance(Game_Battler::WeaponAll) : skill.hit);
 
 	if (!SkillTargetsAllies(skill) && skill.easyrpg_affected_by_avoid_attacks && target.EvadesAllPhysicalAttacks()) {
 		return 0;
