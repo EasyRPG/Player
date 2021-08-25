@@ -81,16 +81,14 @@ bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
 		if (str) {
 			auto total = op_pcm_total(oof, -1) ;
 			loop.start = std::min<int64_t>(atoi(str), total);
-			if (loop.start > 0) {
+			if (loop.start >= 0) {
 				loop.looping = true;
 				loop.end = total;
 				str = opus_tags_query(ot, "LOOPLENGTH", 0);
-				if (str && strlen(str) > 0) {
+				if (str) {
 					int len = atoi(str);
-					if (len > 0) {
+					if (len >= 0) {
 						loop.end = std::min<int64_t>(loop.start + len, total);
-					} else if (len == 0 && str[0] == '0') {
-						loop.end = loop.start;
 					}
 				}
 

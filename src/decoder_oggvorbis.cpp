@@ -96,16 +96,14 @@ bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 		if (str) {
 			auto total = ov_pcm_total(ovf, -1) ;
 			loop.start = std::min<int64_t>(atoi(str), total);
-			if (loop.start > 0) {
+			if (loop.start >= 0) {
 				loop.looping = true;
 				loop.end = total;
 				str = vorbis_comment_query(vc, "LOOPLENGTH", 0);
-				if (str && strlen(str) > 0) {
+				if (str) {
 					int len = atoi(str);
-					if (len > 0) {
+					if (len >= 0) {
 						loop.end = std::min<int64_t>(loop.start + len, total);
-					} else if (len == 0 && str[0] == '0') {
-						loop.end = loop.start;
 					}
 				}
 
