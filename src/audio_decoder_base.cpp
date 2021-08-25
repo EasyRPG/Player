@@ -97,16 +97,7 @@ std::streampos AudioDecoderBase::Tell() const {
 	return -1;
 }
 
-int AudioDecoderBase::GetTicks() const {
-	return 0;
-}
-
 int AudioDecoderBase::Decode(uint8_t* buffer, int length, int recursion_depth) {
-	/*if (IsPaused()) { FIXME
-		memset(buffer, '\0', length);
-		return length;
-	}*/
-
 	int res = FillBuffer(buffer, length);
 
 	if (res < 0) {

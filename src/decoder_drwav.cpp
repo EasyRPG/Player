@@ -76,6 +76,14 @@ bool DrWavDecoder::SetFormat(int, AudioDecoder::Format, int) {
 	return false;
 }
 
+int DrWavDecoder::GetTicks() const {
+	if (!init) {
+		return 0;
+	}
+
+	return decoded_samples / handle.sampleRate;
+}
+
 int DrWavDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!init) {
 		return -1;
@@ -86,7 +94,7 @@ int DrWavDecoder::FillBuffer(uint8_t* buffer, int length) {
 	}
 
 	drwav_uint64 decoded = drwav_read_pcm_frames_s16(&handle, length / (handle.channels * 2), reinterpret_cast<drwav_int16*>(buffer));
-
+	decoded_samples += decoded;
 	decoded *= handle.channels * 2;
 
 	if (decoded < length)

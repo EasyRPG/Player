@@ -44,6 +44,7 @@ public:
 	bool IsFinished() const override { return true; }
 	void GetFormat(int&, Format&, int&) const override {}
 	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
+	int GetTicks() const override { return 0; }
 private:
 	int FillBuffer(uint8_t*, int) override { return -1; };
 };

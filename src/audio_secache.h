@@ -50,13 +50,14 @@ typedef std::shared_ptr<AudioSeData> AudioSeRef;
  */
 class AudioSeDecoder : public AudioDecoder {
 public:
-	AudioSeDecoder(AudioSeRef se);
+	explicit AudioSeDecoder(AudioSeRef se);
 
 	bool Open(Filesystem_Stream::InputStream) override { return true; };
 	bool IsFinished() const override;
 	void GetFormat(int& frequency, Format& format, int& channels) const override;
 	int GetPitch() const override;
 	bool Seek(std::streamoff, std::ios_base::seekdir) override { return false; }
+	int GetTicks() const override { return 0; }
 
 private:
 	int FillBuffer(uint8_t* buffer, int size) override;

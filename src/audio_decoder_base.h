@@ -232,7 +232,7 @@ public:
 	 *
 	 * @return Amount of MIDI ticks or position in seconds
 	 */
-	virtual int GetTicks() const;
+	virtual int GetTicks() const = 0;
 
 	/**
 	 * Gets the status of the newly created audio decoder.

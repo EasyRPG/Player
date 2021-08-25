@@ -33,7 +33,7 @@ class XMPDecoder : public AudioDecoder {
 public:
 	XMPDecoder();
 
-	~XMPDecoder();
+	~XMPDecoder() override;
 
 	// Audio Decoder interface
 	bool Open(Filesystem_Stream::InputStream stream) override;
@@ -45,6 +45,8 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
+
+	int GetTicks() const override;
 
 	static bool IsModule(Filesystem_Stream::InputStream& stream);
 private:
