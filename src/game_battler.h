@@ -716,6 +716,11 @@ public:
 	 */
 	virtual bool PreventsCritical() const = 0;
 
+	/**
+	 * @return If the battler has an increased physical evasion rate.
+	 */
+	virtual bool HasPhysicalEvasionUp() const = 0;
+
 
 	enum BattlerType {
 		Type_Ally,

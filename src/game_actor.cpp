@@ -1419,6 +1419,9 @@ bool Game_Actor::PreventsTerrainDamage() const {
 }
 
 bool Game_Actor::HasPhysicalEvasionUp() const {
+	if (dbActor->easyrpg_raise_evasion) {
+		return true;
+	}
 	bool rc = false;
 	ForEachEquipment<false, true>(GetWholeEquipment(), [&](auto& item) { rc |= item.raise_evasion; });
 	return rc;

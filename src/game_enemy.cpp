@@ -151,6 +151,10 @@ bool Game_Enemy::PreventsCritical() const {
 	return enemy->easyrpg_prevent_critical;
 }
 
+bool Game_Enemy::HasPhysicalEvasionUp() const {
+	return enemy->easyrpg_raise_evasion;
+}
+
 int Game_Enemy::GetFlyingOffset() const {
 	// 2k does not support flying, albeit mentioned in the help file
 	if (!Player::IsRPG2k3() || !IsFlying()) {

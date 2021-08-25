@@ -166,6 +166,11 @@ public:
 	 */
 	bool PreventsCritical() const override;
 
+	/**
+	 * @return If the enemy has an increased physical evasion rate.
+	 */
+	bool HasPhysicalEvasionUp() const override;
+
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;

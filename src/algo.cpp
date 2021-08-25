@@ -93,8 +93,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, weapon);
 
 	// If target has physical dodge evasion:
-	if (target.GetType() == Game_Battler::Type_Ally
-			&& static_cast<const Game_Actor&>(target).HasPhysicalEvasionUp()) {
+	if (target.HasPhysicalEvasionUp()) {
 		to_hit -= 25;
 	}
 
@@ -140,8 +139,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, Game_Battler::WeaponAll);
 
 	// If target has physical dodge evasion:
-	if (target.GetType() == Game_Battler::Type_Ally
-			&& static_cast<const Game_Actor&>(target).HasPhysicalEvasionUp()) {
+	if (target.HasPhysicalEvasionUp()) {
 		to_hit -= 25;
 	}
 

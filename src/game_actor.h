@@ -854,9 +854,9 @@ public:
 	bool PreventsCritical() const override;
 
 	/**
-	 * @return If the actor has an equipment that with physical evasion up.
+	 * @return If the actor has an increased physical evasion rate.
 	 */
-	bool HasPhysicalEvasionUp() const;
+	bool HasPhysicalEvasionUp() const override;
 
 	/**
 	 * @return If the actor has an equipment with half sp cost.
