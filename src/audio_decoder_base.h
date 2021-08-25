@@ -136,11 +136,10 @@ public:
 	 * To do a fade out begin must be larger then end.
 	 * Call Update to do the fade.
 	 *
-	 * @param begin Begin volume (from 0-100)
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	virtual void SetFade(int begin, int end, std::chrono::milliseconds duration) = 0;
+	virtual void SetFade(int end, std::chrono::milliseconds duration) = 0;
 
 	/**
 	 * Seeks in the audio stream. The value of offset is implementation

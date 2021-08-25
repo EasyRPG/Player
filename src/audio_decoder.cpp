@@ -34,6 +34,16 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+	static double AdjustVolume(double volume) {
+		// Adjust to RPG_RT (Direct Sound) volume scale
+		if (volume > 0) {
+			return 100 * std::pow(10, (-100 + volume) / 60.0);
+		}
+		return 0.0;
+	}
+}
+
 class WMAUnsupportedFormatDecoder : public AudioDecoder {
 public:
 	WMAUnsupportedFormatDecoder() {
@@ -171,22 +181,22 @@ void AudioDecoder::Update(std::chrono::microseconds delta) {
 	}
 
 	fade_time -= delta;
-	volume += std::chrono::duration_cast<std::chrono::microseconds>(delta).count() * delta_volume_step;
 
-	volume = volume > 100.0 ? 100.0 :
-		volume < 0.0 ? 0.0 :
-		volume;
+	volume += static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(delta).count()) * delta_volume_step;
+	volume = Utils::Clamp<double>(static_cast<double>(volume), 0.0, 100.0);
+	log_volume = AdjustVolume(volume);
 }
 
 int AudioDecoder::GetVolume() const {
-	return (int)volume;
+	return static_cast<int>(log_volume);
 }
 
-void AudioDecoder::SetVolume(int volume) {
-	this->volume = (double)volume;
+void AudioDecoder::SetVolume(int new_volume) {
+	volume = Utils::Clamp<double>(static_cast<double>(new_volume), 0.0, 100.0);
+	log_volume = AdjustVolume(volume);
 }
 
-void AudioDecoder::SetFade(int begin, int end, std::chrono::milliseconds duration) {
+void AudioDecoder::SetFade(int end, std::chrono::milliseconds duration) {
 	fade_time = 0ms;
 
 	if (duration <= 0ms) {
@@ -194,15 +204,9 @@ void AudioDecoder::SetFade(int begin, int end, std::chrono::milliseconds duratio
 		return;
 	}
 
-	if (begin == end) {
-		SetVolume(end);
-		return;
-	}
-
-	SetVolume(begin);
 	fade_volume_end = end;
 	fade_time = duration;
-	delta_volume_step = (static_cast<double>(fade_volume_end) - GetVolume()) / fade_time.count();
+	delta_volume_step = (static_cast<double>(fade_volume_end) - volume) / fade_time.count();
 }
 
 int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {

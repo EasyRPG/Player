@@ -211,8 +211,8 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 			auto& midi_out = midi_thread->GetMidiOut();
 			if (midi_out.Open(std::move(filestream))) {
 				midi_out.SetPitch(pitch);
-				midi_out.SetVolume(volume);
-				midi_out.SetFade(0, volume, std::chrono::milliseconds(fadein));
+				midi_out.SetVolume(0);
+				midi_out.SetFade(volume, std::chrono::milliseconds(fadein));
 				midi_out.SetLooping(true);
 				midi_out.Resume();
 				chan.paused = false;
@@ -233,7 +233,8 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	if (chan.decoder && chan.decoder->Open(std::move(filestream))) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-		chan.decoder->SetFade(0, volume, std::chrono::milliseconds(fadein));
+		chan.decoder->SetVolume(0);
+		chan.decoder->SetFade(volume, std::chrono::milliseconds(fadein));
 		chan.decoder->SetLooping(true);
 		chan.paused = false; // Unpause channel -> Play it.
 
@@ -490,9 +491,9 @@ int GenericAudio::BgmChannel::GetTicks() const {
 
 void GenericAudio::BgmChannel::SetFade(int fade) {
 	if (midi_out_used) {
-		midi_thread->GetMidiOut().SetFade(midi_thread->GetMidiOut().GetVolume(), 0, std::chrono::milliseconds(fade));
+		midi_thread->GetMidiOut().SetFade(0, std::chrono::milliseconds(fade));
 	} else if (decoder) {
-		decoder->SetFade(decoder->GetVolume(), 0, std::chrono::milliseconds(fade));
+		decoder->SetFade(0, std::chrono::milliseconds(fade));
 	}
 }
 

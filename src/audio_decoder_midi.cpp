@@ -148,14 +148,16 @@ void AudioDecoderMidi::Resume() {
 }
 
 int AudioDecoderMidi::GetVolume() const {
+	// When handled by Midi messages fake a 100 otherwise it is double-silenced
+
 	if (!mididec->SupportsMidiMessages()) {
 		if (fade_steps > 0) {
 			return static_cast<int>(fade_volume_end * 100);
 		}
-		return static_cast<int>(volume * 100);
+		return 100;
 	}
 
-	return static_cast<int>(volume * 100);
+	return 100;
 }
 
 void AudioDecoderMidi::SetVolume(int new_volume) {
@@ -169,7 +171,7 @@ void AudioDecoderMidi::SetVolume(int new_volume) {
 	}
 }
 
-void AudioDecoderMidi::SetFade(int begin, int end, std::chrono::milliseconds duration) {
+void AudioDecoderMidi::SetFade(int end, std::chrono::milliseconds duration) {
 	fade_steps = 0;
 	last_fade_mtime = 0us;
 
@@ -178,12 +180,6 @@ void AudioDecoderMidi::SetFade(int begin, int end, std::chrono::milliseconds dur
 		return;
 	}
 
-	if (begin == end) {
-		SetVolume(end);
-		return;
-	}
-
-	volume = begin / 100.0f;
 	fade_volume_end = end / 100.0f;
 	fade_steps = duration.count() / 100;
 	delta_volume_step = (fade_volume_end - volume) / fade_steps;

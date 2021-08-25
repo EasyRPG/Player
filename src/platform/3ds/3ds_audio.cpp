@@ -81,7 +81,8 @@ void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, i
 
 		bgm_decoder->SetPitch(is_new_3ds ? pitch : 100);
 		bgm_decoder->GetFormat(frequency, format, channels);
-		bgm_decoder->SetFade(0,volume, std::chrono::milliseconds(fadein));
+		bgm_decoder->SetVolume(0);
+		bgm_decoder->SetFade(volume, std::chrono::milliseconds(fadein));
 		bgm_decoder->SetLooping(true);
 
 		if (!set_channel_format(bgm_channel, format, channels, out_format)) {
@@ -150,7 +151,7 @@ int CtrAudio::BGM_GetTicks() const {
 void CtrAudio::BGM_Fade(int fade) {
 	if (bgm_decoder) {
 		bgm_starttick = Game_Clock::now();
-		bgm_decoder->SetFade(bgm_decoder->GetVolume(),0, std::chrono::milliseconds(fade));
+		bgm_decoder->SetFade(0, std::chrono::milliseconds(fade));
 	}
 }
 
