@@ -1144,8 +1144,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAn
 Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
 	action->Execute();
 	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+			|| action->GetType() == Game_BattleAlgorithm::Type::Skill
 			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
-		SetWait(4,4);
+		if (action->GetType() != Game_BattleAlgorithm::Type::Skill) {
+			SetWait(4,4);
+		}
 		if (action->IsSuccess() && action->IsCriticalHit()) {
 			SetBattleActionState(BattleActionState_Critical);
 			return BattleActionReturn::eContinue;

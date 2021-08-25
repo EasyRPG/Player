@@ -146,8 +146,8 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	return to_hit;
 }
 
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
-	auto crit_chance = static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0);
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon, int fixed_chance) {
+	auto crit_chance = (fixed_chance < 0 ? static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0) : fixed_chance);
 	if (target.PreventsCritical()) {
 		crit_chance = 0;
 	}
@@ -221,7 +221,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
-		bool apply_variance) {
+		bool apply_variance,
+		bool is_critical_hit) {
 
 	auto effect = skill.power;
 	effect += skill.physical_rate * source.GetAtk() / 20;
@@ -235,6 +236,10 @@ int CalcSkillEffect(const Game_Battler& source,
 	effect = std::max<int>(0, effect);
 
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
+
+	if (is_critical_hit) {
+		effect *= 3;
+	}
 
 	if (apply_variance) {
 		effect = VarianceAdjustEffect(effect, skill.variance);

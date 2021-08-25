@@ -624,7 +624,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 	auto& target = *GetTarget();
 
 	auto to_hit = Algo::CalcNormalAttackToHit(source, target, weapon, Game_Battle::GetBattleCondition(), true);
-	auto crit_chance = Algo::CalcCriticalHitChance(source, target, weapon);
+	auto crit_chance = Algo::CalcCriticalHitChance(source, target, weapon, -1);
 
 	// Damage calculation
 	if (!Rand::PercentChance(to_hit)) {
@@ -875,7 +875,13 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	SetIsPositive(Algo::SkillTargetsAllies(skill));
 
 	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
-	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true);
+	auto crit_chance = Algo::CalcCriticalHitChance(*source, *target, Game_Battler::WeaponAll, skill.easyrpg_critical_hit_chance);
+
+	if (Rand::PercentChance(crit_chance)) {
+		SetIsCriticalHit(true);
+	}
+
+	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true, IsCriticalHit());
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
 	if (!IsPositive()) {
