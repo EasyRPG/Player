@@ -393,7 +393,7 @@ std::string GetTransformStartMessage(const Game_Battler& source, const lcf::rpg:
 	return ToString(source.GetName()) + ToString(lcf::Data::terms.enemy_transform);
 }
 
-static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill, StringView usage) {
+static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill, StringView usage, bool second_message = false) {
 	StringView target_name = "???";
 	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
 		target_name = target->GetName();
@@ -405,7 +405,11 @@ static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const
 				Utils::MakeSvArray(source.GetName(), target_name, skill.name)
 				);
 	}
-	return ToString(source.GetName()) + ToString(usage);
+	if (second_message) {
+		return ToString(usage);
+	} else {
+		return ToString(source.GetName()) + ToString(usage);
+	}
 }
 
 std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
@@ -413,7 +417,7 @@ std::string GetSkillFirstStartMessage2k(const Game_Battler& source, const Game_B
 }
 
 std::string GetSkillSecondStartMessage2k(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
-	return GetSkillStartMessageGeneric(source, target, skill, skill.using_message2);
+	return GetSkillStartMessageGeneric(source, target, skill, skill.using_message2, true);
 }
 
 std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::Item& item) {
