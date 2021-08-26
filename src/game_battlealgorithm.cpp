@@ -1072,15 +1072,17 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	int to_hit_attribute_shift = (skill.easyrpg_attribute_hit != -1 ? skill.easyrpg_attribute_hit : to_hit);
 	if (skill.affect_attr_defence) {
 		auto shift = IsPositive() ? 1 : -1;
-		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
-			auto id = i + 1;
-			if (skill.attribute_effects[i]
-					&& GetTarget()->CanShiftAttributeRate(id, shift)
-					&& Rand::PercentChance(to_hit_attribute_shift)
-					)
-			{
-				AddAffectedAttribute({ id, shift});
-				SetIsSuccess();
+		if (shift >= 0 || !GetTarget()->IsImmuneToAttributeDownshifts()) {
+			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
+				auto id = i + 1;
+				if (skill.attribute_effects[i]
+						&& GetTarget()->CanShiftAttributeRate(id, shift)
+						&& Rand::PercentChance(to_hit_attribute_shift)
+						)
+				{
+					AddAffectedAttribute({ id, shift});
+					SetIsSuccess();
+				}
 			}
 		}
 	}

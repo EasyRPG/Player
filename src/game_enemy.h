@@ -66,6 +66,13 @@ public:
 	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
+	 * Checks if the enemy is immune to attribute downshifts.
+	 *
+	 * @return if the enemy is immune to attribute downshifts.
+	 */
+	bool IsImmuneToAttributeDownshifts() const override;
+
+	/**
 	 * Gets the enemy ID.
 	 *
 	 * @return Enemy ID

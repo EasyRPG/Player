@@ -228,6 +228,13 @@ public:
 	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
+	 * Checks if the actor is immune to attribute downshifts.
+	 *
+	 * @return if the actor is immune to attribute downshifts.
+	 */
+	bool IsImmuneToAttributeDownshifts() const override;
+
+	/**
 	 * Gets actor name.
 	 *
 	 * @return name.

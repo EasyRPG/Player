@@ -695,6 +695,10 @@ int Game_Actor::GetBaseAttributeRate(int attribute_id) const {
 	return Utils::Clamp(rate, 0, 4);
 }
 
+bool Game_Actor::IsImmuneToAttributeDownshifts() const {
+	return dbActor->easyrpg_immune_to_attribute_downshifts;
+}
+
 int Game_Actor::GetWeaponId() const {
 	int item_id = GetWholeEquipment()[0];
 	return item_id <= (int)lcf::Data::items.size() ? item_id : 0;

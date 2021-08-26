@@ -100,6 +100,10 @@ int Game_Enemy::GetBaseAttributeRate(int attribute_id) const {
 	return rate;
 }
 
+bool Game_Enemy::IsImmuneToAttributeDownshifts() const {
+	return enemy->easyrpg_immune_to_attribute_downshifts;
+}
+
 int Game_Enemy::SetHp(int _hp) {
 	hp = Utils::Clamp(_hp, 0, GetMaxHp());
 	return hp;

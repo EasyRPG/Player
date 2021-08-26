@@ -214,6 +214,13 @@ public:
 	int GetAttributeRateShift(int attribute_id) const;
 
 	/**
+	 * Checks if the battler is immune to attribute downshifts.
+	 *
+	 * @return if the battler is immune to attribute downshifts.
+	 */
+	virtual bool IsImmuneToAttributeDownshifts() const = 0;
+
+	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
 	 * @param state_id State to test
