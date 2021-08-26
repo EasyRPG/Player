@@ -152,13 +152,13 @@ void AlsaMidiOutDevice::SendMidiMessage(uint32_t message) {
 	}
 }
 
-void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
+void AlsaMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	snd_seq_event_t evt = {};
 	snd_seq_ev_set_source(&evt, 0);
 	evt.queue = queue;
 	snd_seq_ev_set_dest(&evt, dst_client, dst_port);
 
-	snd_seq_ev_set_sysex(&evt, size, const_cast<void*>(data));
+	snd_seq_ev_set_sysex(&evt, size, const_cast<void*>(reinterpret_cast<const void*>(data)));
 
 	int status = snd_seq_event_output_direct(midi_out, &evt);
 	if (status < 0) {
@@ -167,7 +167,7 @@ void AlsaMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
 }
 
 void AlsaMidiOutDevice::SendMidiReset() {
-	unsigned char gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
+	const uint8_t gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
 	SendSysExMessage(gm_reset, sizeof(gm_reset));
 }
 

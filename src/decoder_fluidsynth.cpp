@@ -119,6 +119,10 @@ namespace {
 
 static fluid_synth_t* create_synth(std::string& error_message) {
 	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
+	if (!syn) {
+		error_message = "new_fluid_synth failed";
+		return nullptr;
+	}
 
 #if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 	fluid_synth_add_sfloader(syn, global_loader);
@@ -178,6 +182,9 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 
 	if (!global_settings) {
 		global_settings.reset(new_fluid_settings());
+		if (!global_settings) {
+			return false;
+		}
 		fluid_settings_setstr(global_settings.get(), "player.timing-source", "sample");
 		fluid_settings_setint(global_settings.get(), "synth.lock-memory", 0);
 
@@ -268,12 +275,14 @@ void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
 	}
 }
 
-void FluidSynthDecoder::SendMidiReset() {
-	if (!instance_synth || shutdown) {
+void FluidSynthDecoder::SendSysExMessage(const uint8_t* data, std::size_t size) {
+	// FmMidi has F0 and F7 in SysEx, Fluidsynth wants them removed
+	if (size <= 2) {
 		return;
 	}
 
-	fluid_synth_system_reset(instance_synth);
+	fluid_synth_sysex(instance_synth, reinterpret_cast<const char*>(data + 1), static_cast<int>(size - 2),
+		nullptr, nullptr, nullptr, 0);
 }
 
 #endif

@@ -51,7 +51,7 @@ void Win32MidiOutDevice::SendMidiMessage(uint32_t message) {
 	midiOutShortMsg(midi_out, message);
 }
 
-void Win32MidiOutDevice::SendSysExMessage(const void* data, size_t size) {
+void Win32MidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	MIDIHDR hdr;
 	MMRESULT res;
 	hdr.dwBufferLength = size;

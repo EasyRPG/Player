@@ -149,7 +149,7 @@ public:
 	 * @param data sysex content
 	 * @param size length of sysex content (data)
 	 */
-	virtual void SendSysExMessage(const void* data, size_t size) {
+	virtual void SendSysExMessage(const uint8_t* data, size_t size) {
 		(void)data;
 		(void)size;
 	}

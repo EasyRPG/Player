@@ -30,7 +30,7 @@ public:
 	~CoreAudioMidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;
-	void SendSysExMessage(const void* data, size_t size) override;
+	void SendSysExMessage(const uint8_t* data, size_t size) override;
 	void SendMidiReset() override;
 	std::string GetName() override;
 	bool IsInitialized() const;

@@ -344,7 +344,7 @@ void AudioDecoderMidi::midi_message(int, uint_least32_t message) {
 }
 
 void AudioDecoderMidi::sysex_message(int, const void* data, std::size_t size) {
-	mididec->SendSysExMessage(data, size);
+	mididec->SendSysExMessage(reinterpret_cast<const uint8_t*>(data), size);
 }
 
 void AudioDecoderMidi::meta_event(int event, const void* data, std::size_t size) {
