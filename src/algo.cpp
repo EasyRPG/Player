@@ -84,8 +84,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 	to_hit = (to_hit * source.GetHitChanceModifierFromStates()) / 100;
 
 	// Stop here if attacker ignores evasion.
-	if (source.GetType() == Game_Battler::Type_Ally
-		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(weapon)) {
+	if (source.AttackIgnoresEvasion(weapon)) {
 		return to_hit;
 	}
 
@@ -130,8 +129,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	to_hit = (to_hit * source.GetHitChanceModifierFromStates()) / 100;
 
 	// Stop here if attacker ignores evasion.
-	if (source.GetType() == Game_Battler::Type_Ally
-		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(Game_Battler::WeaponAll)) {
+	if (source.AttackIgnoresEvasion(Game_Battler::WeaponAll)) {
 		return to_hit;
 	}
 

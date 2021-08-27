@@ -843,12 +843,12 @@ public:
 	bool HasAttackAll(Weapon weapon = WeaponAll) const override;
 
 	/**
-	 * Tests if the battler has a weapon which ignores evasion.
+	 * Tests if the actor has a weapon which ignores evasion.
 	 *
 	 * @param weapon Which weapons to include in calculating result.
 	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const;
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * @return If the actor has equipment that protects against terrain damage.

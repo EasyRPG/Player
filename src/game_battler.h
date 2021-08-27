@@ -719,6 +719,14 @@ public:
 	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const;
 
 	/**
+	 * Tests if the battler has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return If the actor has weapon that ignores evasion
+	 */
+	virtual bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const = 0;
+
+	/**
 	 * @return If the battler is protected against critical hits.
 	 */
 	virtual bool PreventsCritical() const = 0;

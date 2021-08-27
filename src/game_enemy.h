@@ -169,6 +169,14 @@ public:
 	float GetCriticalHitChance(Weapon = WeaponAll) const override;
 
 	/**
+	 * Tests if the enemy has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return If the actor has weapon that ignores evasion
+	 */
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const override;
+
+	/**
 	 * @return If the enemy is protected against critical hits.
 	 */
 	bool PreventsCritical() const override;

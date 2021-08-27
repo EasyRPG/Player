@@ -1402,6 +1402,9 @@ bool Game_Actor::HasAttackAll(Weapon weapon) const {
 }
 
 bool Game_Actor::AttackIgnoresEvasion(Weapon weapon) const {
+	if (GetWeapon() == nullptr && Get2ndWeapon() == nullptr) {
+		return dbActor->easyrpg_ignore_evasion;
+	}
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.ignore_evasion; }, weapon);
 	return rc;
