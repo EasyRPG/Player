@@ -1238,7 +1238,15 @@ int Game_Actor::GetHitChance(Weapon weapon) const {
 	int hit = INT_MIN;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { hit = std::max(hit, static_cast<int>(item.hit)); }, weapon);
 
-	return hit != INT_MIN ? hit : 90;
+	if (hit != INT_MIN) {
+		return hit;
+	} else {
+		if (dbActor->easyrpg_unarmed_hit != -1) {
+			return dbActor->easyrpg_unarmed_hit;
+		} else {
+			return 90;
+		}
+	}
 }
 
 float Game_Actor::GetCriticalHitChance(Weapon weapon) const {

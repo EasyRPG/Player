@@ -144,7 +144,11 @@ void Game_Enemy::Transform(int new_enemy_id) {
 }
 
 int Game_Enemy::GetHitChance(Weapon) const {
-	return enemy->miss ? 70 : 90;
+	if (enemy->easyrpg_hit != -1) {
+		return enemy->easyrpg_hit;
+	} else {
+		return enemy->miss ? 70 : 90;
+	}
 }
 
 float Game_Enemy::GetCriticalHitChance(Weapon) const {
