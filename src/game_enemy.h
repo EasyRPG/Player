@@ -395,7 +395,7 @@ inline bool Game_Enemy::IsFlying() const {
 }
 
 inline int Game_Enemy::GetUnarmedBattleAnimationId() const {
-        return (Player::IsPatchManiac() ? enemy->maniac_unarmed_animation : 1);
+	return enemy->maniac_unarmed_animation;
 }
 
 inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
