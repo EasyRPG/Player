@@ -63,6 +63,9 @@ constexpr Var_t VarMod(Var_t n, Var_t d) {
 Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
 	: _min(minval), _max(maxval)
 {
+	if (minval >= maxval) {
+		Output::Error("Variables: Invalid var range: [{}, {}]", minval, maxval);
+	}
 	_variables.reserve(lcf::Data::variables.size());
 }
 
