@@ -294,7 +294,13 @@ protected:
 		eCancel,
 		eShift,
 		eNumbers,
-		eOperators
+		eOperators,
+		// ManiacPatch
+		eMouseLeft,
+		eMouseRight,
+		eMouseMiddle,
+		eMouseScrollDown,
+		eMouseScrollUp
 	};
 
 	struct KeyInputState {
