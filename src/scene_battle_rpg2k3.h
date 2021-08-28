@@ -226,6 +226,7 @@ protected:
 	int battle_end_timer = 0;
 
 	std::unique_ptr<Window_ActorSp> sp_window;
+	void RecreateSpWindow(Game_Battler* battler);
 
 	FileRequestBinding request_id;
 	std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> pending_battle_action = {};

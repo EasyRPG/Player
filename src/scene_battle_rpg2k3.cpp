@@ -48,6 +48,7 @@
 #include "autobattle.h"
 #include "enemyai.h"
 #include <algorithm>
+#include <memory>
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -292,10 +293,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleStatusWindow();
 	CreateBattleCommandWindow();
 
-	int spwindow_size = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 72 : 60;
-	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32));
-	sp_window->SetVisible(false);
-	sp_window->SetZ(Priority_Window + 2);
+	RecreateSpWindow(nullptr);
 
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
@@ -1350,7 +1348,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 						case lcf::rpg::BattleCommand::Type_skill:
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 							skill_window->SetSubsetFilter(0);
-							sp_window->SetBattler(*active_actor);
+							RecreateSpWindow(active_actor);
 							SetState(State_SelectSkill);
 							break;
 						case lcf::rpg::BattleCommand::Type_special:
@@ -2675,7 +2673,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected(int command) {
 	// skill subset is 4 (Type_subskill) + counted subsets
 	skill_window->SetSubsetFilter(subskill);
 	SetState(State_SelectSkill);
-	sp_window->SetBattler(*active_actor);
+	RecreateSpWindow(active_actor);
 }
 
 void Scene_Battle_Rpg2k3::SpecialSelected() {
@@ -2806,6 +2804,19 @@ void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
 			battler->GetBattlePosition().y,
 			hp < 0 ? Font::ColorDefault : Font::ColorHeal,
 			std::to_string(std::abs(hp)));
+}
+
+void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
+	int spwindow_size = 60;
+	if (battler && battler->MaxSpValue() >= 1000) {
+		spwindow_size = 72;
+	}
+	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, 136, 60, 32);
+	sp_window->SetVisible(false);
+	sp_window->SetZ(Priority_Window + 2);
+	if (battler) {
+		sp_window->SetBattler(*battler);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CBAInit() {
