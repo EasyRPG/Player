@@ -718,16 +718,20 @@ int Game_Actor::GetAccessoryId() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return std::max<int32_t>(1, std::min<int32_t>(dbActor->final_level, lcf::Data::system.easyrpg_max_level == -1 ? (Player::IsRPG2k() ? max_level_2k : max_level_2k3) : lcf::Data::system.easyrpg_max_level));
+	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
+	if (lcf::Data::system.easyrpg_max_level > -1) {
+		max_level = lcf::Data::system.easyrpg_max_level;
+	}
+	return Utils::Clamp<int32_t>(max_level, 1, dbActor->final_level);
 }
 
 void Game_Actor::SetExp(int _exp) {
-	data.exp = min(max(_exp, 0), MaxExpValue());
+	data.exp = Utils::Clamp<int32_t>(_exp, 0, MaxExpValue());
 }
 
 void Game_Actor::ChangeExp(int exp, PendingMessage* pm) {
 	int new_level = GetLevel();
-	int new_exp = min(max(exp, 0), MaxExpValue());
+	int new_exp = Utils::Clamp<int>(exp, 0, MaxExpValue());
 
 	if (new_exp > GetExp()) {
 		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {
