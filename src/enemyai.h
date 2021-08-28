@@ -44,6 +44,9 @@ class AlgorithmBase {
 public:
 	virtual ~AlgorithmBase() {}
 
+	/** @return the id of this algorithm */
+	virtual int GetId() const = 0;
+
 	/** @return the name of this algorithm */
 	virtual StringView GetName() const = 0;
 
@@ -65,7 +68,11 @@ private:
  */
 class RpgRtCompat: public AlgorithmBase {
 public:
+	static constexpr auto id = 0;
+
 	static constexpr auto name = "RPG_RT";
+
+	int GetId() const override { return id; }
 
 	StringView GetName() const override { return name; }
 private:
@@ -77,7 +84,11 @@ private:
  */
 class RpgRtImproved: public AlgorithmBase {
 public:
+	static constexpr auto id = 1;
+
 	static constexpr auto name = "RPG_RT+";
+
+	int GetId() const override { return id; }
 
 	StringView GetName() const override { return name; }
 private:

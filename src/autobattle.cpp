@@ -45,13 +45,17 @@ constexpr decltype(AttackOnly::name) AttackOnly::name;
 constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
 
 std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
-	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
+	int id = lcf::Data::system.easyrpg_default_actorai;
+	if (Player::debug_flag && name.size() > 0) {
+		id = -1;
+	}
+	if (id == RpgRtImproved::id || (id == -1 && Utils::StrICmp(name, RpgRtImproved::name) == 0)) {
 		return std::make_unique<RpgRtImproved>();
 	}
-	if (Utils::StrICmp(name, AttackOnly::name) == 0) {
+	if (id == AttackOnly::id || (id == -1 && Utils::StrICmp(name, AttackOnly::name) == 0)) {
 		return std::make_unique<AttackOnly>();
 	}
-	if (Utils::StrICmp(name, RpgRtCompat::name) != 0) {
+	if (id == -1 && name.size() > 0 && Utils::StrICmp(name, RpgRtCompat::name) != 0) {
 		static bool warned = false;
 		if (!warned) {
 			Output::Debug("Invalid AutoBattle algo name `{}' falling back to {} ...", name, RpgRtCompat::name);
