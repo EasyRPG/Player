@@ -22,6 +22,7 @@
 #include <lcf/data.h>
 #include "game_battler.h"
 #include "game_actor.h"
+#include "game_enemy.h"
 #include "output.h"
 #include "player.h"
 #include <climits>
@@ -117,20 +118,31 @@ int ApplyAttributeMultiplier(int effect, const Game_Battler& target, Span<const 
 }
 
 int ApplyAttributeNormalAttackMultiplier(int effect, const Game_Battler& source_battler, const Game_Battler& target, Game_Battler::Weapon weapon) {
-	if (source_battler.GetType() != Game_Battler::Type_Ally) {
+	if (source_battler.GetType() != Game_Battler::Type_Ally && source_battler.GetType() != Game_Battler::Type_Enemy) {
 		return effect;
 	}
-	auto& source = static_cast<const Game_Actor&>(source_battler);
 
 	std::array<const lcf::DBBitArray*, 2> attribute_sets = {{}};
 
 	size_t n = 0;
 	auto add = [&](int i) {
-		if (weapon == Game_Battler::Weapon(i + 1) || weapon == Game_Battler::WeaponAll) {
-			auto* item = source.GetEquipment(i + 1);
-			if (item && item->type == lcf::rpg::Item::Type_weapon) {
-				attribute_sets[n++] = &item->attribute_set;
+		if (source_battler.GetType() == Game_Battler::Type_Ally) {
+			auto& source = static_cast<const Game_Actor&>(source_battler);
+			if (source.GetWeapon() == nullptr && source.Get2ndWeapon() == nullptr) {
+				lcf::rpg::Actor* allydata = lcf::ReaderUtil::GetElement(lcf::Data::actors, source.GetId());
+				attribute_sets[n++] = &allydata->easyrpg_unarmed_attribute_set;
+			} else {
+				if (weapon == Game_Battler::Weapon(i + 1) || weapon == Game_Battler::WeaponAll) {
+					auto* item = source.GetEquipment(i + 1);
+					if (item && item->type == lcf::rpg::Item::Type_weapon) {
+						attribute_sets[n++] = &item->attribute_set;
+					}
+				}
 			}
+		} else if (source_battler.GetType() == Game_Battler::Type_Enemy) {
+			auto& source = static_cast<const Game_Enemy&>(source_battler);
+			lcf::rpg::Enemy* enemydata = lcf::ReaderUtil::GetElement(lcf::Data::enemies, source.GetId());
+			attribute_sets[n++] = &enemydata->easyrpg_attribute_set;
 		}
 	};
 
