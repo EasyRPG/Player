@@ -82,8 +82,8 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			if (Player::IsRPG2k()) {
-				int hpdigits = (lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 ? 4 : 3;
-				int spdigits = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 4 : 3;
+				int hpdigits = (actor->GetMaxHp() >= 1000) ? 4 : 3;
+				int spdigits = (actor->GetMaxSp() >= 1000) ? 4 : 3;
 				DrawActorState(*actor, (hpdigits < 4 && spdigits < 4) ? 86 : 80, y);
 				DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
 				DrawActorSp(*actor, 220 - spdigits * 6, y, spdigits, false);
@@ -164,8 +164,8 @@ void Window_BattleStatus::RefreshGauge() {
 					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (2 + index * 16 != y)) {
 						DrawGauge(*actor, 202 - 10, y - 2, lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ? 96 : 255);
 					}
-					int hpdigits = (lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp) >= 1000 ? 4 : 3;
-					int spdigits = (lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp) >= 1000 ? 4 : 3;
+					int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
+					int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
 					DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
 					DrawActorSp(*actor, 220 - spdigits * 6, y, spdigits, false);
 				} else {

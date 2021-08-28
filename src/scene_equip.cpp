@@ -126,7 +126,7 @@ void Scene_Equip::UpdateStatusWindow() {
 		}
 		add_item(current_item, 1);
 
-		int limit = lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
+		int limit = actor.MaxStatBaseValue();
 
 		atk = Utils::Clamp(atk, 1, limit);
 		def = Utils::Clamp(def, 1, limit);

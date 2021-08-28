@@ -87,26 +87,27 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	StringView name;
 	int value;
 	int new_value;
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	switch (type) {
 	case 0:
 		name = lcf::Data::terms.attack;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetAtk();
+		value = actor->GetAtk();
 		new_value = atk;
 		break;
 	case 1:
 		name = lcf::Data::terms.defense;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetDef();
+		value = actor->GetDef();
 		new_value = def;
 		break;
 	case 2:
 		name = lcf::Data::terms.spirit;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetSpi();
+		value = actor->GetSpi();
 		new_value = spi;
 		break;
 	case 3:
 		name = lcf::Data::terms.agility;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetAgi();
+		value = actor->GetAgi();
 		new_value = agi;
 		break;
 	default:
@@ -114,7 +115,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	}
 
 	// Check if 4 digits are needed instead of 3
-	int limit = lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
+	int limit = actor->MaxStatBaseValue();
 	bool more_space_needed = (Player::IsRPG2k3() && limit >= 500) || limit >= 1000;
 
 	// Draw Term

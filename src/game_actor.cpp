@@ -40,24 +40,44 @@
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 
-static int max_exp_value() {
-	return lcf::Data::system.easyrpg_max_exp == -1 ? (Player::IsRPG2k() ? 999999 : 9999999) : lcf::Data::system.easyrpg_max_exp;
-}
-
 int Game_Actor::MaxHpValue() const {
-	return lcf::Data::system.easyrpg_max_actor_hp == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_actor_hp;
+	auto& val = lcf::Data::system.easyrpg_max_actor_hp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999 : 9999;
+	}
+	return val;
 }
 
 int Game_Actor::MaxSpValue() const {
-	return lcf::Data::system.easyrpg_max_actor_sp == -1 ? 999 : lcf::Data::system.easyrpg_max_actor_sp;
+	auto& val = lcf::Data::system.easyrpg_max_actor_sp;
+	if (val == -1) {
+		return 999;
+	}
+	return val;
 }
 
 int Game_Actor::MaxStatBattleValue() const {
-	return lcf::Data::system.easyrpg_max_stat_battle_value == -1 ? 9999 : lcf::Data::system.easyrpg_max_stat_battle_value;
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	if (val == -1) {
+		return 9999;
+	}
+	return val;
 }
 
 int Game_Actor::MaxStatBaseValue() const {
-	return lcf::Data::system.easyrpg_max_stat_base_value == -1 ? 999 : lcf::Data::system.easyrpg_max_stat_base_value;
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int Game_Actor::MaxExpValue() const {
+	auto& val = lcf::Data::system.easyrpg_max_exp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999999 : 9999999;
+	}
+	return val;
 }
 
 Game_Actor::Game_Actor(int actor_id) {
@@ -549,7 +569,10 @@ int Game_Actor::GetBaseAgi(Weapon weapon) const {
 int Game_Actor::CalculateExp(int level) const {
 	const lcf::rpg::Class* klass = lcf::ReaderUtil::GetElement(lcf::Data::classes, data.class_id);
 
-	int exp_curve = (lcf::Data::system.easyrpg_alternative_exp == 0 ? (Player::IsRPG2k() ? 1 : 2) : lcf::Data::system.easyrpg_alternative_exp);
+	int exp_curve = Player::IsRPG2k() ? 1 : 2;
+	if (lcf::Data::system.easyrpg_alternative_exp > 0) {
+		exp_curve = lcf::Data::system.easyrpg_alternative_exp;
+	}
 
 	double base, inflation, correction;
 	if (klass) {
@@ -582,7 +605,7 @@ int Game_Actor::CalculateExp(int level) const {
 			result += (int)correction;
 		}
 	}
-	return min(result, max_exp_value());
+	return min(result, MaxExpValue());
 }
 
 void Game_Actor::MakeExpList() {
@@ -595,13 +618,13 @@ void Game_Actor::MakeExpList() {
 std::string Game_Actor::GetExpString(bool status_scene) const {
 	// RPG_RT displays dashes for max level. As a customization
 	// we always display the amount of EXP.
-	// if (GetNextExp() == -1) { return (max_exp_value() >= 1000000 || status_scene) ? "-------" : "------"; }
+	// if (GetNextExp() == -1) { return (MaxExpValue() >= 1000000 || status_scene) ? "-------" : "------"; }
 	return std::to_string(GetExp());
 }
 
 std::string Game_Actor::GetNextExpString(bool status_scene) const {
 	if (GetNextExp() == -1) {
-		return (max_exp_value() >= 1000000 || status_scene) ? "-------" : "------";
+		return (MaxExpValue() >= 1000000 || status_scene) ? "-------" : "------";
 	}
 	return std::to_string(GetNextExp());
 }
@@ -699,12 +722,12 @@ int Game_Actor::GetMaxLevel() const {
 }
 
 void Game_Actor::SetExp(int _exp) {
-	data.exp = min(max(_exp, 0), max_exp_value());
+	data.exp = min(max(_exp, 0), MaxExpValue());
 }
 
 void Game_Actor::ChangeExp(int exp, PendingMessage* pm) {
 	int new_level = GetLevel();
-	int new_exp = min(max(exp, 0), max_exp_value());
+	int new_exp = min(max(exp, 0), MaxExpValue());
 
 	if (new_exp > GetExp()) {
 		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {

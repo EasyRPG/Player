@@ -148,7 +148,7 @@ void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) cons
 void Window_Base::DrawActorExp(const Game_Actor& actor, int cx, int cy) const {
 	// Draw EXP-String
 	int width = 7;
-	if ((lcf::Data::system.easyrpg_max_exp == -1 ? (Player::IsRPG2k() ? 999999 : 9999999) : lcf::Data::system.easyrpg_max_exp) < 1000000) {
+	if (actor.MaxExpValue() < 1000000) {
 		width = 6;
 		contents->TextDraw(cx, cy, 1, lcf::Data::terms.exp_short);
 	}

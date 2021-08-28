@@ -57,6 +57,8 @@ public:
 
 	int MaxStatBaseValue() const override;
 
+	int MaxExpValue() const;
+
 	virtual PermanentStates GetPermanentStates() const override;
 
 	Point GetOriginalPosition() const override;
@@ -219,7 +221,7 @@ public:
 
 	/**
 	 * Gets the base attribute rate when actor is damaged.
-	 * 
+	 *
 	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
@@ -889,7 +891,7 @@ public:
 	 */
 	int IsControllable() const;
 
-	/** 
+	/**
 	 * Reset all equipment inflicted states
 	 *
 	 * @param allow_battle_states allow battle states to be added.
