@@ -102,13 +102,14 @@ private:
  * @param source the user of the skill
  * @param target the target of the skill
  * @param skill the skill
+ * @param cond the battle condition
  * @param apply_variance If true, apply variance to the damage
  * @param emulate_bugs Emulate all RPG_RT bugs for accuracy
  *
  * @pre skill Must be a normal or subskill or the result is undefined.
  * @pre skill must target self, ally, or ally party or the result is undefined.
  */
-double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs);
+double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs);
 
 /**
  * Calculate the auto battle effectiveness rank of source using damage skill on target.
@@ -116,23 +117,25 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
  * @param source the user of the skill
  * @param target the target of the skill
  * @param skill the skill
+ * @param cond the battle condition
  * @param apply_variance If true, apply variance to the damage
  * @param emulate_bugs Emulate all RPG_RT bugs for accuracy
  *
  * @pre skill Must be a normal or subskill or the result is undefined.
  * @pre skill must target enemy, or enemy party or the result is undefined.
  */
-double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs);
+double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs);
 
 /**
  * Calculate the auto battle total effectiveness rank of using a skill.
  *
  * @param source the user of the skill
  * @param skill the skill
+ * @param cond the battle condition
  * @param apply_variance If true, apply variance to the damage
  * @param emulate_bugs Emulate all RPG_RT bugs for accuracy
  */
-double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs);
+double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs);
 
 /**
  * Calculate the auto battle effectiveness rank of source attacking target.

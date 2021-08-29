@@ -208,11 +208,11 @@ static void testAgi(int src, int tgt, int res) {
 	auto& target = *MakeAgiEnemy(0, tgt);
 
 	REQUIRE_EQ(res, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
-	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
-	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[1]));
+	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
+	REQUIRE_EQ(res, Algo::CalcSkillToHit(source, target, lcf::Data::skills[1], lcf::rpg::System::BattleCondition_none, false));
 	for (int i = 2; i < 6; ++i) {
 		CAPTURE(i);
-		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[i]));
+		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[i], lcf::rpg::System::BattleCondition_none, false));
 
 	}
 }
@@ -233,14 +233,14 @@ static void testStates(Game_Battler& source, Game_Battler& target, int base) {
 	SUBCASE("Cannot act") {
 		target.AddState(2, true);
 		REQUIRE_EQ(100, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
-		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 	}
 
 	SUBCASE("Avoid attacks") {
 		target.AddState(3, true);
 		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		// RPG_RT bug
-		REQUIRE_EQ(base, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(base, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 	}
 
 	SUBCASE("Avoid attacks and cannot act") {
@@ -248,7 +248,7 @@ static void testStates(Game_Battler& source, Game_Battler& target, int base) {
 		target.AddState(3, true);
 		REQUIRE_EQ(0, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
 		// RPG_RT bug
-		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 	}
 }
 
@@ -267,7 +267,7 @@ TEST_CASE("HitRateStates") {
 	SUBCASE("source blind50") {
 		source.AddState(4, true);
 		REQUIRE_EQ(45, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponAll, lcf::rpg::System::BattleCondition_none, true));
-		REQUIRE_EQ(45, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(45, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 
 		testStates(source, target, 45);
 	}
@@ -303,7 +303,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 			SUBCASE("no armor") {
 				testHitRateRow(source, target, 90, 65, 65, 90, 65, 65);
 
-				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 			}
 
 			SUBCASE("phys eva up") {
@@ -312,7 +312,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 
 				testHitRateRow(source, target, 65, 40, 40, 65, 40, 40);
 
-				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 			}
 		}
 
@@ -322,7 +322,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 			SUBCASE("no armor") {
 				testHitRateRow(source, target, 65, 90, 65, 90, 90, 65);
 
-				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+				REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 			}
 
 			SUBCASE("phys eva up") {
@@ -331,7 +331,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 
 				testHitRateRow(source, target, 40, 65, 40, 65, 65, 40);
 
-				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+				REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 			}
 		}
 	}
@@ -341,7 +341,7 @@ TEST_CASE("HitRateArmorAndRow2k3") {
 
 		testHitRateRow(source, target, 90, 65, 65, 90, 90, 90);
 
-		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 	}
 }
 
@@ -362,7 +362,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 		SUBCASE("no armor") {
 			testHitRateRow2k(source, target, 90);
 
-			REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+			REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 		}
 
 		SUBCASE("phys eva up") {
@@ -371,7 +371,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 
 			testHitRateRow2k(source, target, 65);
 
-			REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+			REQUIRE_EQ(65, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 		}
 	}
 
@@ -380,7 +380,7 @@ TEST_CASE("HitRateArmorAndRow2k") {
 
 		testHitRateRow2k(source, target, 90);
 
-		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+		REQUIRE_EQ(90, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 	}
 }
 
@@ -411,7 +411,7 @@ TEST_CASE("HitRateWeapons") {
 	REQUIRE_FALSE(source.AttackIgnoresEvasion(Game_Battler::WeaponSecondary));
 	REQUIRE_EQ(88, Algo::CalcNormalAttackToHit(source, target, Game_Battler::WeaponSecondary, lcf::rpg::System::BattleCondition_none, true));
 
-	REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0]));
+	REQUIRE_EQ(100, Algo::CalcSkillToHit(source, target, lcf::Data::skills[0], lcf::rpg::System::BattleCondition_none, false));
 }
 
 TEST_CASE("CritRate") {
@@ -604,35 +604,35 @@ static void testSkillStats(int power, int phys, int mag, Game_Battler& source, G
 	lcf::Data::skills[19].ignore_defense = true;
 
 	SUBCASE("baseline") {
-		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[0], false, false));
-		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[1], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[2], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[3], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[4], false, false));
+		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[0], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[1], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[2], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[3], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[4], false, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 
 	SUBCASE("attr2x") {
-		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[5], false, false));
-		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[6], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[7], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[8], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[9], false, false));
+		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[5], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[6], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[7], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[8], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[9], false, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 
 	SUBCASE("ignore_defense") {
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[10], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[11], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[12], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[13], false, false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[14], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[10], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[11], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[12], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[13], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[14], false, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 
 	SUBCASE("ignore_defense+attr2x") {
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[15], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[16], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[17], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[18], false, false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[19], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[15], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[16], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[17], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[18], false, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[19], false, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 }
 
@@ -918,13 +918,13 @@ static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, in
 
 	SUBCASE("max") {
 		Rand::LockGuard lk(INT32_MAX);
-		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true, false));
-		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true, false));
+		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 	SUBCASE("min") {
 		Rand::LockGuard lk(INT32_MIN);
-		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true, false));
-		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true, false));
+		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true, false, lcf::rpg::System::BattleCondition_none, false));
+		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true, false, lcf::rpg::System::BattleCondition_none, false));
 	}
 }
 

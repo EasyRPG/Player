@@ -88,10 +88,12 @@ int CalcNormalAttackToHit(const Game_Battler& source,
  * @param source The source of the action
  * @param target The target of the action
  * @param skill Which skill to calculate hit rate for
+ * @param cond The current battle condition
+ * @param emulate_2k3_enemy_row_bug Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row
  *
  * @return Success hit rate
  */
-int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill);
+int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug);
 
 /**
  * Compute the critical hit rate if source attacks target.
@@ -150,6 +152,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
  * @param skill The skill to use
  * @param apply_variance If true, apply variance to the damage
  * @param is_critical_hit If true, apply critical hit bonus
+ * @param cond The current battle condition
+ * @param emulate_2k3_enemy_row_bug Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row
  *
  * @return effect amount
  */
@@ -157,7 +161,9 @@ int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
 		bool apply_variance,
-		bool is_critical_hit);
+		bool is_critical_hit,
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug);
 
 /**
  * Compute the base damage for self-destruct

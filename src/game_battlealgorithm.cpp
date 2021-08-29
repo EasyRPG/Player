@@ -904,14 +904,14 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 
 	SetIsPositive(Algo::SkillTargetsAllies(skill));
 
-	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
+	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill, Game_Battle::GetBattleCondition(), true);
 	auto crit_chance = Algo::CalcCriticalHitChance(*source, *target, Game_Battler::WeaponAll, skill.easyrpg_critical_hit_chance);
 
 	if (Rand::PercentChance(crit_chance)) {
 		SetIsCriticalHit(true);
 	}
 
-	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true, IsCriticalHit());
+	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true, IsCriticalHit(), Game_Battle::GetBattleCondition(), treat_enemies_asif_in_front_row);
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
 	if (!IsPositive()) {

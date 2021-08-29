@@ -2036,8 +2036,12 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 
 	// Emulate an RPG_RT bug where whenver actors attack, the damage and evasion calculations are performed
 	// as if the enemies are in the front row.
-	if (source->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Normal) {
-		static_cast<Game_BattleAlgorithm::Normal*>(action)->SetTreatEnemiesAsIfInFrontRow(true);
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		if (action->GetType() == Game_BattleAlgorithm::Type::Normal) {
+			static_cast<Game_BattleAlgorithm::Normal*>(action)->SetTreatEnemiesAsIfInFrontRow(true);
+		} else if (action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+			static_cast<Game_BattleAlgorithm::Skill*>(action)->SetTreatEnemiesAsIfInFrontRow(true);
+		}
 	}
 
 	// Setup enemy targets
