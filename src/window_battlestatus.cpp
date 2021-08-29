@@ -82,8 +82,8 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			if (Player::IsRPG2k()) {
-				int hpdigits = (actor->GetMaxHp() >= 1000) ? 4 : 3;
-				int spdigits = (actor->GetMaxSp() >= 1000) ? 4 : 3;
+				int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
+				int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
 				DrawActorState(*actor, (hpdigits < 4 && spdigits < 4) ? 86 : 80, y);
 				DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
 				DrawActorSp(*actor, 220 - spdigits * 6, y, spdigits, false);
