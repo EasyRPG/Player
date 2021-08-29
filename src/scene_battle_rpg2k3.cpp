@@ -775,7 +775,11 @@ void Scene_Battle_Rpg2k3::CreateEnemyActions() {
 	for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
 		if (enemy->IsAtbGaugeFull() && !enemy->GetBattleAlgorithm()) {
 			if (!EnemyAi::SetStateRestrictedAction(*enemy)) {
-				enemyai_algo->SetEnemyAiAction(*enemy);
+				if (enemy->GetEnemyAi() == -1) {
+					enemyai_algos[default_enemyai_algo]->SetEnemyAiAction(*enemy);
+				} else {
+					enemyai_algos[enemy->GetEnemyAi()]->SetEnemyAiAction(*enemy);
+				}
 			}
 			assert(enemy->GetBattleAlgorithm() != nullptr);
 			ActionSelectedCallback(enemy);
@@ -817,7 +821,11 @@ void Scene_Battle_Rpg2k3::CreateActorAutoActions() {
 		if (random_target) {
 			actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(actor, random_target));
 		} else {
-			this->autobattle_algo->SetAutoBattleAction(*actor);
+			if (actor->GetActorAi() == -1) {
+				this->autobattle_algos[default_autobattle_algo]->SetAutoBattleAction(*actor);
+			} else {
+				this->autobattle_algos[actor->GetActorAi()]->SetAutoBattleAction(*actor);
+			}
 			assert(actor->GetBattleAlgorithm() != nullptr);
 		}
 

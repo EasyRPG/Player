@@ -93,10 +93,40 @@ void Scene_Battle::Start() {
 		return;
 	}
 
-	autobattle_algo = AutoBattle::CreateAlgorithm(Player::player_config.autobattle_algo.Get());
-	enemyai_algo = EnemyAi::CreateAlgorithm(Player::player_config.enemyai_algo.Get());
+	autobattle_algos.push_back(AutoBattle::CreateAlgorithm(AutoBattle::RpgRtCompat::name));
+	autobattle_algos.push_back(AutoBattle::CreateAlgorithm(AutoBattle::RpgRtImproved::name));
+	autobattle_algos.push_back(AutoBattle::CreateAlgorithm(AutoBattle::AttackOnly::name));
+	enemyai_algos.push_back(EnemyAi::CreateAlgorithm(EnemyAi::RpgRtCompat::name));
+	enemyai_algos.push_back(EnemyAi::CreateAlgorithm(EnemyAi::RpgRtImproved::name));
 
-	Output::Debug("Starting battle {} ({}): algos=({}/{})", troop_id, troop->name, autobattle_algo->GetName(), enemyai_algo->GetName());
+	if (lcf::Data::system.easyrpg_default_actorai == -1 || (Player::debug_flag && !Player::player_config.autobattle_algo.Get().empty())) {
+		if (Player::player_config.autobattle_algo.Get().empty()) {
+			Player::player_config.autobattle_algo.Set(ToString(autobattle_algos[0]->GetName()));
+		}
+		for (auto& algo : autobattle_algos) {
+			if (algo->GetName() == Player::player_config.autobattle_algo.Get()) {
+				default_autobattle_algo = algo->GetId();
+				break;
+			}
+		}
+	} else {
+		default_autobattle_algo = lcf::Data::system.easyrpg_default_actorai;
+	}
+	if (lcf::Data::system.easyrpg_default_enemyai == -1 || (Player::debug_flag && !Player::player_config.enemyai_algo.Get().empty())) {
+		if (Player::player_config.enemyai_algo.Get().empty()) {
+			Player::player_config.enemyai_algo.Set(ToString(enemyai_algos[0]->GetName()));
+		}
+		for (auto& algo : enemyai_algos) {
+			if (algo->GetName() == Player::player_config.enemyai_algo.Get()) {
+				default_enemyai_algo = algo->GetId();
+				break;
+			}
+		}
+	} else {
+		default_enemyai_algo = lcf::Data::system.easyrpg_default_enemyai;
+	}
+
+	Output::Debug("Starting battle {} ({}): algos=({}/{})", troop_id, troop->name, autobattle_algos[default_autobattle_algo]->GetName(), enemyai_algos[default_enemyai_algo]->GetName());
 
 	Game_Battle::Init(troop_id);
 

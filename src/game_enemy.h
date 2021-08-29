@@ -419,6 +419,9 @@ inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
 	return static_cast<Sprite_Enemy*>(Game_Battler::GetBattleSprite());
 }
 
+inline int Game_Enemy::GetEnemyAi() const {
+	return enemy->easyrpg_enemyai;
+}
 
 inline bool Game_Enemy::HasStrongDefense() const {
 	return enemy->easyrpg_super_guard;

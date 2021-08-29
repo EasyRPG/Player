@@ -54,14 +54,10 @@ static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttackAllies(Gam
 
 
 std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
-	int id = lcf::Data::system.easyrpg_default_enemyai;
-	if (Player::debug_flag && name.size() > 0) {
-		id = -1;
-	}
-	if (id == RpgRtImproved::id || (id == -1 && Utils::StrICmp(name, RpgRtImproved::name) == 0)) {
+	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
 		return std::make_unique<RpgRtImproved>();
 	}
-	if (id == -1 && name.size() > 0 && Utils::StrICmp(name, RpgRtCompat::name) != 0) {
+	if (Utils::StrICmp(name, RpgRtCompat::name) != 0) {
 		static bool warned = false;
 		if (!warned) {
 			Output::Debug("Invalid AutoBattle algo name `{}' falling back to {} ...", name, RpgRtCompat::name);
