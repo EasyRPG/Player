@@ -2811,7 +2811,7 @@ void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
 	if (battler && battler->MaxSpValue() >= 1000) {
 		spwindow_size = 72;
 	}
-	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, 136, 60, 32);
+	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32);
 	sp_window->SetVisible(false);
 	sp_window->SetZ(Priority_Window + 2);
 	if (battler) {
