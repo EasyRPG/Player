@@ -98,7 +98,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 		// RPG_RT < 1.11 bug, map messages were not transparent if the battle type was mode A.
 		&& (Player::IsRPG2k3E() || lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional);
 	if (msg_transparent) {
-		SetBackOpacity(128);
+		SetBackOpacity(160);
 	}
 	gold_window->SetBackOpacity(GetBackOpacity());
 
