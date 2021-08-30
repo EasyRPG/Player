@@ -58,7 +58,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 
 #ifdef GEKKO
 	extern "C" {
-		extern void WII_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
+		extern void OGC_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
 	}
 
 	static void GekkoResetCallback(u32 irq, void *ctx);
@@ -68,8 +68,6 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	auto fs_flag = cfg.fullscreen.Get();
 #ifdef GEKKO
-	WPAD_Init();
-
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
@@ -103,7 +101,7 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	Output::WiiSetConsole();
 
 	// Eliminate overscan / add 5% borders
-	WII_ChangeSquare(304, 228, 0, 0);
+	OGC_ChangeSquare(304, 228, 0, 0);
 #endif
 
 	SetTitle(GAME_TITLE);

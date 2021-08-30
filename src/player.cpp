@@ -30,8 +30,6 @@
 #  include "platform/windows/utils.h"
 #  include <windows.h>
 #  include <shellapi.h>
-#elif defined(GEKKO)
-#  include <fat.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
 #elif defined(PSP2)
@@ -183,12 +181,7 @@ void Player::Init(int argc, char *argv[]) {
 	header << std::setfill('=') << std::setw(header_width) << "=";
 	Output::Debug("{}", header.str());
 
-#ifdef GEKKO
-	// Init libfat (Mount SD/USB)
-	if (!fatInitDefault()) {
-		Output::Error("Couldn't mount any storage medium!");
-	}
-#elif defined(_3DS)
+#ifdef _3DS
 	romfsInit();
 #endif
 

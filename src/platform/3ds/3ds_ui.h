@@ -68,7 +68,6 @@ public:
 private:
 	C3D_RenderTarget *top_screen, *bottom_screen;
 	C2D_Image top_image, bottom_image;
-	C2D_SpriteSheet assets;
 	bool fullscreen;
 	bool trigger_state;
 	bool show_touchscreen;

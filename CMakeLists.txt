@@ -433,11 +433,6 @@ add_library(${PROJECT_NAME} STATIC
 )
 
 # These are actually unused when building in CMake
-#	src/sdl_ui.cpp
-#	src/sdl_ui.h
-#	src/platform/wii/wii_clock.cpp
-#	src/platform/wii/wii_clock.h
-#	src/platform/wii/wii_input_buttons.cpp
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
 
@@ -452,8 +447,8 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # Platform setup
-set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita")
-set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro psvita)
+set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita 3ds switch wii")
+set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro psvita 3ds switch wii)
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
@@ -486,21 +481,31 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
+	if(NOT NINTENDO_3DS)
+		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/3DS.cmake' option.")
+	endif()
+	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
+	# generate gfx assets
+	enable_language(ASM)
+	ctr_add_graphics_target(keyboard IMAGE
+		INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/keyboard.png
+		OPTIONS -f rgba)
+	dkp_generate_binary_embed_sources(PLAYER_3DS_ASSETS keyboard)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/3ds/3ds_audio.cpp
 		src/platform/3ds/3ds_audio.h
 		src/platform/3ds/3ds_clock.cpp
 		src/platform/3ds/3ds_clock.h
 		src/platform/3ds/3ds_ui.cpp
-		src/platform/3ds/3ds_ui.h)
+		src/platform/3ds/3ds_ui.h
+		${PLAYER_3DS_ASSETS})
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
 	endif()
 	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
-	set(CMAKE_DL_LIBS "") # hack4icu!
-	set(PLAYER_ENABLE_TESTS OFF)
-	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
+	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/psvita/psp2_audio.cpp
 		src/platform/psvita/psp2_audio.h
@@ -509,23 +514,56 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		src/platform/psvita/psp2_ui.cpp
 		src/platform/psvita/psp2_ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
+	if(NOT NINTENDO_SWITCH)
+		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake' option.")
+	endif()
+	find_package(OpenGL CONFIG REQUIRED)
+	find_library(GLAD glad REQUIRED)
+	# generate gfx assets
+	enable_language(ASM)
+	dkp_generate_binary_embed_sources(PLAYER_SWITCH_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
+	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/switch/switch_audio.cpp
 		src/platform/switch/switch_audio.h
 		src/platform/switch/switch_clock.cpp
 		src/platform/switch/switch_clock.h
 		src/platform/switch/switch_ui.cpp
-		src/platform/switch/switch_ui.h)
+		src/platform/switch/switch_ui.h
+		${PLAYER_SWITCH_ASSETS})
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
+	if(NOT NINTENDO_WII)
+		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
+	endif()
+	find_package(SDL REQUIRED)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/wii_clock.cpp
+		src/platform/wii/wii_clock.h
+		src/platform/wii/wii_input_buttons.cpp
+		src/sdl_ui.cpp
+		src/sdl_ui.h)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
+# Shared by homebrew platforms
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
+	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
+	set(CMAKE_DL_LIBS "") # hack4icu!
+	set(PLAYER_ENABLE_TESTS OFF)
+endif()
+
 # These are shared by libretro and native builds
 if(N3DS)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC _3DS)
+	# fixme: libretro
+	target_compile_definitions(${PROJECT_NAME} PUBLIC __3DS__)
 elseif(VITA)
+	# fixme: better use __vita__, as defined by preprocessor
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PSP2)
 elseif(NSWITCH)
+	# fixme: libretro
 	target_compile_definitions(${PROJECT_NAME} PUBLIC __SWITCH__)
 endif()
 
@@ -614,7 +652,7 @@ if(PLAYER_BUILD_LIBLCF)
 	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
-	find_package(liblcf REQUIRED)
+	find_package(liblcf REQUIRED CONFIG)
 	target_link_libraries(${PROJECT_NAME} liblcf::liblcf)
 endif()
 
@@ -629,7 +667,7 @@ find_package(fmt REQUIRED)
 target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch)$")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -669,7 +707,7 @@ else()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
@@ -730,7 +768,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -904,40 +942,75 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
+elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	add_executable(easyrpg-player "src/main.cpp")
-	target_link_libraries(easyrpg-player
-		${PROJECT_NAME}
-		vita2d
-		-Wl,--whole-archive pthread -Wl,--no-whole-archive
-		SceLibKernel_stub
-		SceDisplay_stub
-		SceGxm_stub
-		vitashaders
-		SceSysmodule_stub
-		SceCtrl_stub
-		SceTouch_stub
-		ScePgf_stub
-		ScePower_stub
-		SceCommonDialog_stub
-		SceAudio_stub)
-	vita_create_self(eboot.bin easyrpg-player $<$<NOT:CONFIG:Debug>:STRIPPED>)
-	set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
-	# a kludge to match the valid version format
-	if(NOT PROJECT_VERSION_PATCH)
-		set(PROJECT_VERSION_PATCH 0)
+	if(NINTENDO_3DS)
+		target_link_libraries(easyrpg-player
+			${PROJECT_NAME}
+			-lcitro2d
+			-lcitro3d)
+		ctr_generate_smdh(easyrpg-player.smdh
+			NAME "EasyRPG Player"
+			DESCRIPTION "Play your RPG Maker 2000/2003 games everywhere"
+			AUTHOR "EasyRPG Team"
+			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
+		ctr_create_3dsx(easyrpg-player
+			SMDH easyrpg-player.smdh)
+	elseif(NINTENDO_SWITCH)
+		target_link_libraries(easyrpg-player
+			${PROJECT_NAME}
+			${GLAD}
+			OpenGL::EGL)
+		nx_generate_nacp(easyrpg-player.nacp
+			NAME "EasyRPG Player"
+			AUTHOR "EasyRPG Team"
+			VERSION "${PROJECT_VERSION}")
+		nx_create_nro(easyrpg-player
+			NACP easyrpg-player.nacp
+			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg")
+	elseif(NINTENDO_WII)
+		target_link_libraries(easyrpg-player
+			${PROJECT_NAME}
+			${SDL_LIBRARIES}
+			-laesnd
+			-lfat
+			-lwiikeyboard)
+		ogc_create_dol(easyrpg-player)
+	elseif(VITA)
+		set(CMAKE_EXECUTABLE_SUFFIX .elf)
+		target_link_libraries(easyrpg-player
+			${PROJECT_NAME}
+			vita2d
+			-Wl,--whole-archive pthread -Wl,--no-whole-archive
+			SceLibKernel_stub
+			SceDisplay_stub
+			SceGxm_stub
+			vitashaders
+			SceSysmodule_stub
+			SceCtrl_stub
+			SceTouch_stub
+			ScePgf_stub
+			ScePower_stub
+			SceCommonDialog_stub
+			SceAudio_stub)
+		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:CONFIG:Debug>:STRIPPED>)
+		set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
+		# a kludge to match the valid version format
+		if(NOT PROJECT_VERSION_PATCH)
+			set(PROJECT_VERSION_PATCH 0)
+		endif()
+		if(NOT PROJECT_VERSION_TWEAK)
+			set(PROJECT_VERSION_TWEAK 0)
+		endif()
+		vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
+			VERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}"
+			NAME "EasyRPG Player"
+			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
+			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
+			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
+			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
+			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 	endif()
-	if(NOT PROJECT_VERSION_TWEAK)
-		set(PROJECT_VERSION_TWEAK 0)
-	endif()
-	vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
-		VERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}"
-		NAME "EasyRPG Player"
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
@@ -1098,7 +1171,7 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
 	message(STATUS "")
 
 	set(WAV_LIBS)
