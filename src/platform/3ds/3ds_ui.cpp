@@ -325,6 +325,7 @@ void CtrUi::UpdateDisplay() {
 		u8 row = touch_y / button_height;
 		u8 pos_x = col * button_width;
 		u8 pos_y = row * button_height;
+		u8 draw_width = button_width;
 
 		// darkened button with outline
 		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
