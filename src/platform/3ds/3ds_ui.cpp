@@ -221,10 +221,11 @@ void CtrUi::ProcessEvents() {
 			u8 row = pos.py / button_height;
 
 			if (row == 0 && col == 3) { // Turn off touchscreen for top right button
-				show_touchscreen = false;
-				gspLcdInit();
-				GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
-				gspLcdExit();
+				if (R_SUCCEEDED(gspLcdInit())) {
+					show_touchscreen = false;
+					GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+					gspLcdExit();
+				}
 
 			} else {
 				keys[keys_tbl[col + (row * 4)]] = true;
@@ -233,7 +234,6 @@ void CtrUi::ProcessEvents() {
 			touch_x = pos.px;
 			touch_y = pos.py;
 		} else {
-			gspLcdInit();
 			if (R_SUCCEEDED(gspLcdInit())) {
 				show_touchscreen = true;
 				GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
