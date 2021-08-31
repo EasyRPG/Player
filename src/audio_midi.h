@@ -22,7 +22,7 @@ class AudioDecoderMidi;
 
 #include "audio_decoder_base.h"
 
-#if defined(GEKKO) || defined(_3DS)
+#if defined(GEKKO) || defined(__3DS__)
 #  define EP_MIDI_FREQ 22050
 #else
 #  define EP_MIDI_FREQ 44100

@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "3ds_clock.h"
 
-#ifdef _3DS
 constexpr bool CtrClock::is_steady;
 constexpr int64_t CtrClock::ticks_per_sec;
-#endif

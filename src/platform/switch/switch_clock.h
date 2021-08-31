@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_SWITCH_CLOCK_H
 #define EP_PLATFORM_SWITCH_CLOCK_H
 
-#ifdef __SWITCH__
-
 #include <switch.h>
 #include <cstdint>
 #include <chrono>
@@ -57,5 +55,4 @@ constexpr const char* NxClock::Name() {
 	return "NxClock";
 }
 
-#endif
 #endif

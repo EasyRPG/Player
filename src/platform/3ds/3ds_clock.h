@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_3DS_CLOCK_H
 #define EP_PLATFORM_3DS_CLOCK_H
 
-#ifdef _3DS
-
 #include <3ds.h>
 #include <cstdint>
 #include <chrono>
@@ -57,5 +55,4 @@ constexpr const char* CtrClock::Name() {
 	return "CtrClock";
 }
 
-#endif
 #endif

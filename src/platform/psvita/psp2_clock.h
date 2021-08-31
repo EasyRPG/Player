@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_PSP2_CLOCK_H
 #define EP_PLATFORM_PSP2_CLOCK_H
 
-#ifdef PSP2
-
 #include <psp2/kernel/threadmgr.h>
 #include <psp2/kernel/processmgr.h>
 #include <cstdint>
@@ -56,5 +54,4 @@ constexpr const char* Psp2Clock::Name() {
 	return "Psp2Clock";
 }
 
-#endif
 #endif

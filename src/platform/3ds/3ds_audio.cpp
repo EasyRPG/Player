@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(_3DS) && defined(SUPPORT_AUDIO)
+#ifdef SUPPORT_AUDIO
 
 #include <cstring>
 

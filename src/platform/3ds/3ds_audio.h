@@ -20,7 +20,6 @@
 
 #include "audio.h"
 
-#ifdef _3DS
 #include <3ds.h>
 #include <3ds/synchronization.h>
 #include <memory>
@@ -63,7 +62,5 @@ private:
 	Game_Clock::time_point bgm_starttick;
 	uint32_t* bgm_audio_buffer;
 }; // class CtrAudio
-
-#endif
 
 #endif

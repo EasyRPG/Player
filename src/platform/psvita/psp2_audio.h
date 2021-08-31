@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef EP_PLATFORM_PSP2_AUDIO_H
 #define EP_PLATFORM_PSP2_AUDIO_H
-
-#if defined(PSP2)
 
 #include <psp2/types.h>
 
@@ -37,7 +36,5 @@ private:
 	SceUID audio_mutex;
 	SceUID audio_thread;
 }; // class Psp2Audio
-
-#endif
 
 #endif

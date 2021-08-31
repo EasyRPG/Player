@@ -161,7 +161,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = "timidity.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
-#elif defined(_3DS)
+#elif defined(__3DS__)
 	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
 
 	// Shipped in a romfs (for CIA and newer 3dsx files)
@@ -200,7 +200,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = path + "/timidity.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
-#elif defined(PSP2)
+#elif defined(__vita__)
 	// Only wildmidi paths, no timidity because it was never used on PSVita
 
 	// Shipped

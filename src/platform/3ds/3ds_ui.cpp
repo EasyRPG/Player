@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _3DS
-
 // Headers
 #include "3ds_ui.h"
 #include "color.h"
@@ -349,5 +347,3 @@ void CtrUi::SetTitle(const std::string& /* title */) {
 bool CtrUi::ShowCursor(bool /* flag */) {
 	return true;
 }
-
-#endif

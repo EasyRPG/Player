@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "switch_clock.h"
 
-#ifdef __SWITCH__
 constexpr bool NxClock::is_steady;
 constexpr int64_t NxClock::ticks_per_sec;
-#endif

@@ -555,18 +555,6 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
 	set(PLAYER_ENABLE_TESTS OFF)
 endif()
 
-# These are shared by libretro and native builds
-if(N3DS)
-	# fixme: libretro
-	target_compile_definitions(${PROJECT_NAME} PUBLIC __3DS__)
-elseif(VITA)
-	# fixme: better use __vita__, as defined by preprocessor
-	target_compile_definitions(${PROJECT_NAME} PUBLIC PSP2)
-elseif(NSWITCH)
-	# fixme: libretro
-	target_compile_definitions(${PROJECT_NAME} PUBLIC __SWITCH__)
-endif()
-
 if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 	# Need fPIC when compiling a shared library (e.g. libretro.so)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)

@@ -34,13 +34,10 @@ _android_commits=`git rev-list HEAD --count`
 sed -i -e "/VERSION_NAME/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
        -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" builds/android/gradle.properties
 
-echo "  builds/switch/Makefile"
-sed -i "/APP_VERSION/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" builds/switch/Makefile
-
-echo "  builds/wii/meta.xml"
+echo "  resources/wii/meta.xml"
 _wiidate=$(date +%Y%m%d000000)
 sed -i -e "/version/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
-       -e "/release_date/,1 s/[0-9]\{14\}/$_wiidate/" builds/wii/meta.xml
+       -e "/release_date/,1 s/[0-9]\{14\}/$_wiidate/" resourses/wii/meta.xml
 
 echo "  resources/psvita/template.xml"
 sed -i "/EasyRPG Player/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" resources/psvita/template.xml

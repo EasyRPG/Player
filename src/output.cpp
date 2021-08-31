@@ -332,7 +332,7 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#if defined (GEKKO) || defined(__SWITCH__) || defined(_3DS)
+#if defined (GEKKO) || defined(__SWITCH__) || defined(__3DS__)
 		// stdin is non-blocking
 		Game_Clock::SleepFor(5s);
 #elif defined (EMSCRIPTEN)
