@@ -160,15 +160,13 @@ void Scene_Battle::DrawBackground(Bitmap& dst) {
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
 
-	for (std::vector<int16_t>::iterator it = lcf::Data::system.easyrpg_battle_options.begin();
-		it != lcf::Data::system.easyrpg_battle_options.end(); ++it) {
-			battle_options.push_back((BattleOptionType)*it);
+	for (auto option: lcf::Data::system.easyrpg_battle_options) {
+		battle_options.push_back((BattleOptionType)option);
 	}
 
 	// Add all menu items
-	std::vector<BattleOptionType>::iterator it;
-	for (it = battle_options.begin(); it != battle_options.end(); ++it) {
-		switch(*it) {
+	for (auto option: battle_options) {
+		switch(option) {
 		case Battle:
 			commands.push_back(ToString(lcf::Data::terms.battle_fight));
 			break;
