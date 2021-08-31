@@ -35,6 +35,16 @@
  */
 class AudioDecoderBase {
 public:
+	/**
+	 * Takes a linear volume and converts it to a logarithmic used by
+	 * RPG_RT (Direct Sound).
+	 * Do not use this for Midi, is already logarithmic by design.
+	 *
+	 * @param volume linear volume
+	 * @return logarithmic volume
+	 */
+	static float AdjustVolume(float volume);
+
 	virtual ~AudioDecoderBase() = default;
 
 	/** Sample format */

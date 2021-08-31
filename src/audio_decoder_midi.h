@@ -170,12 +170,13 @@ private:
 	std::chrono::microseconds mtime = std::chrono::microseconds(0);
 	float pitch = 1.0f;
 	bool paused = false;
-	float volume = 0;
+	float volume = 0.0f;
+	float log_volume = 0.0f; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
 	int fade_steps = 0;
-	double fade_volume_end = 0;
-	double delta_volume_step = 0;
+	float fade_volume_end = 0;
+	float delta_volume_step = 0;
 	std::chrono::microseconds last_fade_mtime = std::chrono::microseconds(0);
 
 	int frequency = EP_MIDI_FREQ;

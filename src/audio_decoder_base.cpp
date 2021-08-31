@@ -23,6 +23,14 @@
 #include "system.h"
 #include "utils.h"
 
+float AudioDecoderBase::AdjustVolume(float volume) {
+	// Adjust to RPG_RT (Direct Sound) volume scale
+	if (volume > 0) {
+		return 100.0f * std::pow(10.0f, (-100 + volume) / 60.0f);
+	}
+	return 0.0f;
+}
+
 int AudioDecoderBase::Decode(uint8_t* buffer, int length) {
 	return Decode(buffer, length, 0);
 }

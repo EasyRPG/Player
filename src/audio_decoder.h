@@ -102,12 +102,12 @@ public:
 	void Update(std::chrono::microseconds delta) final override;
 private:
 	bool paused = false;
-	double volume = 0.0;
-	double log_volume = 0.0; // as used by RPG_RT
+	float volume = 0.0f;
+	float log_volume = 0.0f; // as used by RPG_RT
 
 	int fade_volume_end = 0;
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);
-	double delta_volume_step = 0.0;
+	float delta_volume_step = 0.0f;
 };
 
 #endif
