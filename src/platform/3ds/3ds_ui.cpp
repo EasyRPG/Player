@@ -54,7 +54,7 @@ namespace {
 	u32 old_time_limit;
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
-	constexpr int button_height = 48;
+	constexpr int button_height = 60;
 	constexpr int joy_threshold = 25;
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
@@ -199,9 +199,9 @@ void CtrUi::ProcessEvents() {
 	// Touchscreen support
 	u32 keys_tbl[16] = {
 		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::KP_DIVIDE,
-		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_MULTIPLY,
-		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_SUBTRACT,
-		Input::Keys::N0, Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD
+		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_DIVIDE,
+		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_MULTIPLY,
+		Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT
 	};
 
 	if (touch_state == 1) {
@@ -218,9 +218,9 @@ void CtrUi::ProcessEvents() {
 			touchPosition pos;
 			hidTouchRead(&pos);
 			u8 col = pos.px / button_width;
-			u8 row = pos.py / button_height - 1;
+			u8 row = pos.py / button_height;
 
-			if (row < 0) { // Turn off touchscreen for top "row" of buttons
+			if (row == 0 && col == 3) { // Turn off touchscreen for top right button
 				show_touchscreen = false;
 				gspLcdInit();
 				GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
@@ -325,22 +325,6 @@ void CtrUi::UpdateDisplay() {
 		u8 row = touch_y / button_height;
 		u8 pos_x = col * button_width;
 		u8 pos_y = row * button_height;
-
-		// "Show Buttons" is handled specially
-		u8 draw_width = button_width;
-		if (row == 0) {
-			draw_width *= 4;
-			if (col > 0)
-				pos_x = 0;
-		}
-
-		// "0" is handled specially
-		draw_width = button_width;
-		if (col < 2 && row == 4) {
-			draw_width *= 2;
-			if (col == 1)
-				pos_x = 0;
-		}
 
 		// darkened button with outline
 		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
