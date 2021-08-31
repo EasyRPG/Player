@@ -35,6 +35,9 @@ _wiidate=$(date +%Y%m%d000000)
 sed -i -e "/version/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
        -e "/release_date/,1 s/[0-9]\{14\}/$_wiidate/" builds/wii/meta.xml
 
+echo "  resources/psvita/template.xml"
+sed -i "/EasyRPG Player/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" resources/psvita/template.xml
+
 echo "  resources/osx/Info.plist"
 sed -i "/CFBundleShortVersionString/,+1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
   resources/osx/Info.plist

@@ -451,8 +451,8 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # Platform setup
-set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
-set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
+set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita")
+set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro psvita)
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
@@ -493,6 +493,13 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/3ds_ui.cpp
 		src/platform/3ds/3ds_ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
+	if(NOT VITA)
+		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
+	endif()
+	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
+	set(CMAKE_DL_LIBS "") # hack4icu!
+	set(PLAYER_ENABLE_TESTS OFF)
+	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/psvita/psp2_audio.cpp
 		src/platform/psvita/psp2_audio.h
@@ -512,6 +519,7 @@ else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
+# These are shared by libretro and native builds
 if(N3DS)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _3DS)
 elseif(VITA)
@@ -616,8 +624,8 @@ target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 find_package(fmt REQUIRED)
 target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
-# Always enable Wine registry support on non-Windows
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+# Always enable Wine registry support on non-Windows, but not for console ports
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch)$")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -657,7 +665,7 @@ else()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
@@ -718,7 +726,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -827,7 +835,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 endif()
 
 # Executable
-if (${PLAYER_BUILD_EXECUTABLE})
+if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -892,6 +900,39 @@ if (${PLAYER_BUILD_EXECUTABLE})
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
+	add_executable(easyrpg-player "src/main.cpp")
+	target_link_libraries(easyrpg-player
+		${PROJECT_NAME}
+		vita2d
+		-Wl,--whole-archive pthread -Wl,--no-whole-archive
+		SceLibKernel_stub
+		SceDisplay_stub
+		SceGxm_stub
+		vitashaders
+		SceSysmodule_stub
+		SceCtrl_stub
+		SceTouch_stub
+		ScePgf_stub
+		ScePower_stub
+		SceCommonDialog_stub
+		SceAudio_stub)
+	vita_create_self(eboot.bin easyrpg-player $<$<NOT:CONFIG:Debug>:STRIPPED>)
+	set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
+	# a kludge to match the valid version format
+	if(NOT PROJECT_VERSION_PATCH)
+		set(PROJECT_VERSION_PATCH 0)
+	endif()
+	if(NOT PROJECT_VERSION_TWEAK)
+		set(PROJECT_VERSION_TWEAK 0)
+	endif()
+	vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
+		VERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}"
+		NAME "EasyRPG Player"
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml)
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
@@ -1052,7 +1093,7 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
 	message(STATUS "")
 
 	set(WAV_LIBS)
