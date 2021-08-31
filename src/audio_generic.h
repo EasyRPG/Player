@@ -83,7 +83,6 @@ private:
 	struct SeChannel {
 		int id;
 		std::unique_ptr<AudioDecoderBase> decoder;
-		int volume;
 		bool paused;
 		bool stopped;
 	};

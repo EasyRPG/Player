@@ -255,7 +255,7 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, Filesystem_Stream::InputStream
 		chan.decoder = cache->CreateSeDecoder();
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-		chan.volume = volume;
+		chan.decoder->SetVolume(volume);
 		chan.paused = false; // Unpause channel -> Play it.
 		return true;
 	} else {
@@ -338,7 +338,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 				if (currently_mixed_channel.stopped) {
 					currently_mixed_channel.decoder.reset();
 				} else {
-					volume = current_master_volume * (currently_mixed_channel.volume / 100.0);
+					volume = current_master_volume * (currently_mixed_channel.decoder->GetVolume() / 100.0);
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
