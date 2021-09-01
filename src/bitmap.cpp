@@ -569,14 +569,14 @@ namespace {
 	}
 } // anonymous namespace
 
-void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
+void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
 
 	auto mask = CreateMask(opacity, src_rect);
 
-	pixman_image_composite32(src.GetOperator(mask.get()),
+	pixman_image_composite32(src.GetOperator(mask.get(), blend_mode),
 							 src.bitmap.get(),
 							 mask.get(), bitmap.get(),
 							 src_rect.x, src_rect.y,
@@ -605,11 +605,11 @@ PixmanImagePtr Bitmap::GetSubimage(Bitmap const& src, const Rect& src_rect) {
 									(uint32_t*) pixels, src.pitch()) };
 }
 
-void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity) {
-	TiledBlit(0, 0, src_rect, src, dst_rect, opacity);
+void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, int blend_mode) {
+	TiledBlit(0, 0, src_rect, src, dst_rect, opacity, blend_mode);
 }
 
-void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity) {
+void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -625,7 +625,7 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 
 	auto mask = CreateMask(opacity, src_rect);
 
-	pixman_image_composite32(src.GetOperator(mask.get()),
+	pixman_image_composite32(src.GetOperator(mask.get(), blend_mode),
 							 src_bm.get(), mask.get(), bitmap.get(),
 							 ox, oy,
 							 0, 0,
@@ -633,11 +633,11 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 							 dst_rect.width, dst_rect.height);
 }
 
-void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const& opacity) {
-	StretchBlit(GetRect(), src, src_rect, opacity);
+void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
+	StretchBlit(GetRect(), src, src_rect, opacity, blend_mode);
 }
 
-void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
+void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -651,7 +651,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 
 	auto mask = CreateMask(opacity, src_rect, &xform);
 
-	pixman_image_composite32(src.GetOperator(mask.get()),
+	pixman_image_composite32(src.GetOperator(mask.get(), blend_mode),
 							 src.bitmap.get(), mask.get(), bitmap.get(),
 							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
@@ -661,7 +661,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	pixman_image_set_transform(src.bitmap.get(), nullptr);
 }
 
-void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity) {
+void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -686,7 +686,7 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 		const double sy = (i - yclip) * (2 * M_PI) / (32.0 * zoom_y);
 		const int offset = 2 * zoom_x * depth * std::sin(phase + sy);
 
-		pixman_image_composite32(src.GetOperator(mask.get()),
+		pixman_image_composite32(src.GetOperator(mask.get(), blend_mode),
 								 src.bitmap.get(), mask.get(), bitmap.get(),
 								 xoff, yoff + i,
 								 0, i,
@@ -946,7 +946,7 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 							 src_rect.width, src_rect.height);
 }
 
-void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity) {
+void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -967,7 +967,7 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 		rect = Rect{ src_x, src_y, src_rect.width, src_rect.height };
 	}
 
-	Blit(x, y, src, rect, opacity);
+	Blit(x, y, src, rect, opacity, blend_mode);
 
 	if (has_xform) {
 		pixman_image_set_transform(src.bitmap.get(), nullptr);
@@ -1043,7 +1043,7 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 						 Bitmap const& src, Rect const& src_rect,
 						 Opacity const& opacity,
 						 double zoom_x, double zoom_y, double angle,
-						 int waver_depth, double waver_phase) {
+						 int waver_depth, double waver_phase, int blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -1054,22 +1054,22 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 
 	if (waver) {
 		WaverBlit(x - ox * zoom_x, y - oy * zoom_y, zoom_x, zoom_y, src, src_rect,
-				  waver_depth, waver_phase, opacity);
+				  waver_depth, waver_phase, opacity, blend_mode);
 	}
 	else if (rotate) {
-		RotateZoomOpacityBlit(x, y, ox, oy, src, src_rect, angle, zoom_x, zoom_y, opacity);
+		RotateZoomOpacityBlit(x, y, ox, oy, src, src_rect, angle, zoom_x, zoom_y, opacity, blend_mode);
 	}
 	else if (scale) {
-		ZoomOpacityBlit(x, y, ox, oy, src, src_rect, zoom_x, zoom_y, opacity);
+		ZoomOpacityBlit(x, y, ox, oy, src, src_rect, zoom_x, zoom_y, opacity, blend_mode);
 	}
 	else {
-		Blit(x - ox, y - oy, src, src_rect, opacity);
+		Blit(x - ox, y - oy, src, src_rect, opacity, blend_mode);
 	}
 }
 
 void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 		Bitmap const& src, Rect const& src_rect,
-		double angle, double zoom_x, double zoom_y, Opacity const& opacity)
+		double angle, double zoom_x, double zoom_y, Opacity const& opacity, int blend_mode)
 {
 	if (opacity.IsTransparent()) {
 		return;
@@ -1101,7 +1101,7 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 
 	auto mask = CreateMask(opacity, src_rect, &inv);
 
-	pixman_image_composite32(PIXMAN_OP_OVER,
+	pixman_image_composite32((pixman_op_t)blend_mode,
 							 src_img, mask.get(), bitmap.get(),
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.x, dst_rect.y,
@@ -1114,7 +1114,7 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
 							 double zoom_x, double zoom_y,
-							 Opacity const& opacity)
+							 Opacity const& opacity, int blend_mode)
 {
 	if (opacity.IsTransparent()) {
 		return;
@@ -1125,10 +1125,14 @@ void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 		y - static_cast<int>(std::floor(oy * zoom_y)),
 		static_cast<int>(std::floor(src_rect.width * zoom_x)),
 		static_cast<int>(std::floor(src_rect.height * zoom_y)));
-	StretchBlit(dst_rect, src, src_rect, opacity);
+	StretchBlit(dst_rect, src, src_rect, opacity, blend_mode);
 }
 
-pixman_op_t Bitmap::GetOperator(pixman_image_t* mask) const {
+pixman_op_t Bitmap::GetOperator(pixman_image_t* mask, int blend_mode) const {
+	if (blend_mode >= 0) {
+		return (pixman_op_t)blend_mode;
+	}
+
 	if (!mask && (!GetTransparent() || GetImageOpacity() == ImageOpacity::Opaque)) {
 		return PIXMAN_OP_SRC;
 	}

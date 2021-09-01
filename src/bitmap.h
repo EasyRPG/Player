@@ -248,8 +248,10 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
+	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap to this one ignoring alpha (faster)
@@ -260,7 +262,8 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void BlitFast(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
+	void BlitFast(int x, int y, Bitmap const& src, Rect const& src_rect,
+		Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap in tiles to this one.
@@ -269,8 +272,10 @@ public:
 	 * @param src source bitmap.
 	 * @param dst_rect destination rect.
 	 * @param opacity opacity for blending with bitmap.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity);
+	void TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap in tiles to this one.
@@ -281,8 +286,10 @@ public:
 	 * @param src source bitmap.
 	 * @param dst_rect destination rect.
 	 * @param opacity opacity for blending with bitmap.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity);
+	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap to this one, making clones across the edges if src crossed a boundary of this.
@@ -303,8 +310,10 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void StretchBlit(Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
+	void StretchBlit(Bitmap const& src, Rect const& src_rect,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap stretched to this one.
@@ -313,8 +322,10 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
+	void StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blit source bitmap flipped.
@@ -326,8 +337,10 @@ public:
 	 * @param horizontal flip horizontally.
 	 * @param vertical flip vertically.
 	 * @param opacity opacity to apply.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity);
+	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap with waver, zoom, and opacity effects.
@@ -341,8 +354,10 @@ public:
 	 * @param depth wave magnitude.
 	 * @param phase wave phase.
 	 * @param opacity opacity.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
-	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity);
+	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Blits source bitmap with rotation, zoom, and opacity effects.
@@ -357,10 +372,12 @@ public:
 	 * @param zoom_x x scale factor.
 	 * @param zoom_y y scale factor.
 	 * @param opacity opacity.
+	 * @param blend_mode Blend mode to use. default: OP_OVER
 	 */
 	void RotateZoomOpacityBlit(int x, int y, int ox, int oy,
-			Bitmap const& src, Rect const& src_rect,
-			double angle, double zoom_x, double zoom_y, Opacity const& opacity);
+		Bitmap const& src, Rect const& src_rect,
+		double angle, double zoom_x, double zoom_y,
+		Opacity const& opacity, int blend_mode = PIXMAN_OP_OVER);
 
 	/**
 	 * Blits source bitmap with zoom and opacity scaling.
@@ -374,12 +391,12 @@ public:
 	 * @param zoom_x x scale factor.
 	 * @param zoom_y y scale factor.
 	 * @param opacity opacity.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
 	void ZoomOpacityBlit(int x, int y, int ox, int oy,
-						 Bitmap const& src, Rect const& src_rect,
-						 double zoom_x, double zoom_y,
-						 Opacity const& opacity);
-
+		Bitmap const& src, Rect const& src_rect,
+		double zoom_x, double zoom_y,
+		Opacity const& opacity, int blend_mode = -1);
 
 	/**
 	 * Fills entire bitmap with color.
@@ -509,12 +526,14 @@ public:
 	 * @param angle rotation angle.
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
+	 * @param blend_mode Blend mode to use. default: OP_SRC/OP_OVER; depends on the image
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
-					 Bitmap const& src, Rect const& src_rect,
-					 Opacity const& opacity,
-					 double zoom_x, double zoom_y, double angle,
-					 int waver_depth, double waver_phase);
+		Bitmap const& src, Rect const& src_rect,
+		Opacity const& opacity,
+		double zoom_x, double zoom_y, double angle,
+		int waver_depth, double waver_phase,
+		int blend_mode = -1);
 
 	static DynamicFormat ChooseFormat(const DynamicFormat& format);
 	static void SetFormat(const DynamicFormat& format);
@@ -566,7 +585,15 @@ protected:
 
 	static pixman_format_code_t find_format(const DynamicFormat& format);
 
-	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
+	/*
+	 * Determines the fastest operator for the operation.
+	 * When a blend_mode is specified the blend mode is used.
+	 *
+	 * @param mask Image mask
+	 * @param blend_mode When >= 0: Force this blend mode as operator
+	 * @return blend mode
+	 */
+	pixman_op_t GetOperator(pixman_image_t* mask = nullptr, int blend_mode = -1) const;
 	bool read_only = false;
 };
 
