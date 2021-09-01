@@ -355,7 +355,8 @@ namespace midisequencer{
                             s[i] = static_cast<char>(fgetc(fp));
                         }
                         if(s[n] != '\xF7'){
-                            Output::Warning("Midi sequencer: missing sysex terminator");
+                            Output::Debug("Midi sequencer: missing sysex terminator");
+                            s += static_cast<char>(0xF7);
                         }
                         track_length -= n;
                         msg.message = 0xF0 | (long_messages.size() << 8);
