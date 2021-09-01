@@ -1057,6 +1057,29 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 	Game_Actor* actor = nullptr;
 	Game_Character* character = nullptr;
 
+	/* TODO
+	Param0: 0: Single, 1: Range, 2: Indirect, 3: Range Indirect (Maniac)
+	Param1: Start
+	Param2: End
+	Param3: Math Op
+ 	Param4: Where to fetch value from
+	Param5: Arg1
+	Param6: Arg2
+
+	parameter 7: Lookup type for parameter 5
+	  (Equals ValueOrVariable)
+
+	parameter 4 == 9:
+	 	Like "Player" but for Party Members
+
+	parameter 4 == 10:
+	 	Switch
+	 	Arg 1 = Value
+	 	Arg 2 = Switch or Indirect
+
+
+	*/
+
 	switch (com.parameters[4]) {
 		case 0:
 			// Constant
@@ -1157,7 +1180,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = actor->GetHelmetId();
 					break;
 				case 14:
-					// Accesory ID
+					// Accessory ID
 					value = actor->GetAccessoryId();
 					break;
 			}
@@ -1165,7 +1188,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		case 6:
 			// Characters
 			character = GetCharacter(com.parameters[5]);
-			if (character != NULL) {
+			if (character != nullptr) {
 				int event_id = com.parameters[5];
 				switch (com.parameters[6]) {
 					case 0:
@@ -1321,24 +1344,55 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAgi();
 					break;
 			}
+			break;
+		case 10:
+			// Switch
+			if (!Player::IsPatchManiac()) {
+				break;
+			}
+
 		default:
 			;
 	}
 
-	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
-		// Param0: 0: Single, 1: Range, 2: Indirect
+	int target = com.parameters[0];
+	if (target >= 0 && target <= 4) {
 		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-		int start = com.parameters[0] == 2 ? Main_Data::game_variables->Get(com.parameters[1]) : com.parameters[1];
-		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
+		int start, end;
+		if (target == 0) {
+			// Single
+			start = com.parameters[1];
+			end = start;
+		} else if (target == 1) {
+			// Range
+			start = com.parameters[1];
+			end = com.parameters[2];
+		} else if (target == 2) {
+			// Indirect
+			start = Main_Data::game_variables->Get(com.parameters[1]);
+			end = start;
+		} else if (target == 3 && Player::IsPatchManiac()) {
+			// Range Indirect (Maniac)
+			start = Main_Data::game_variables->Get(com.parameters[1]);
+			end = Main_Data::game_variables->Get(com.parameters[2]);
+		} else if (target == 4 && Player::IsPatchManiac()) {
+			// Expression (Maniac)
+			Output::Warning("ControlVariables: Maniac Patch expressions not supported");
+			return true;
+		} else {
+			return true;
+		}
 
-		if (com.parameters[3] > 5 && !Player::IsPatchManiac()) {
+		int operation = com.parameters[3];
+		if (EP_UNLIKELY(operation >= 5 && !Player::IsPatchManiac())) {
+			Output::Warning("ControlVariables: Unsupported operation {}", operation);
 			return true;
 		}
 
 		if (start == end) {
 			// Single variable case - if this is random value, we already called the RNG earlier.
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->Set(start, value);
 					break;
@@ -1376,7 +1430,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		} else if (com.parameters[4] == 1) {
 			// Multiple variables - Direct variable lookup
 			int var_id = com.parameters[5];
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeVariable(start, end, var_id);
 					break;
@@ -1414,7 +1468,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		} else if (com.parameters[4] == 2) {
 			// Multiple variables - Indirect variable lookup
 			int var_id = com.parameters[5];
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeVariableIndirect(start, end, var_id);
 					break;
@@ -1453,7 +1507,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Multiple variables - random
 			int rmax = max(com.parameters[5], com.parameters[6]);
 			int rmin = min(com.parameters[5], com.parameters[6]);
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeRandom(start, end, rmin, rmax);
 					break;
@@ -1490,7 +1544,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			}
 		} else {
 			// Multiple variables - constant
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRange(start, end, value);
 					break;
