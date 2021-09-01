@@ -2639,8 +2639,9 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 	Game_Pictures::ShowParams params = {};
 	params.name = ToString(com.string);
-	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	// Maniac Patch uses the upper bits for X/Y origin, mask it away
+	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
 	params.magnify = com.parameters[5];
 	params.use_transparent_color = com.parameters[7] > 0;
@@ -2658,7 +2659,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		// RPG2k3 sets this chunk. Versions < 1.12 let you specify separate top and bottom
 		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
 		// both chunks here.
-		params.bottom_trans = com.parameters[14];
+		// Maniac Patch uses the upper bits for flags, mask it away
+		params.bottom_trans = com.parameters[14] & 0xFF;
 	} else if (Player::IsRPG2k3() && !Player::IsRPG2k3E()) {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		params.bottom_trans = params.top_trans;
@@ -2694,6 +2696,20 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		params.map_layer = com.parameters[27];
 		params.battle_layer = com.parameters[28];
 		params.flags = com.parameters[29];
+
+		if (Player::IsPatchManiac()) {
+			int flags = com.parameters[14] >> 8;
+			int blend_mode = flags & 3;
+			if (blend_mode == 1) {
+				params.blend_mode = PIXMAN_OP_MULTIPLY;
+			} else if (blend_mode == 2) {
+				params.blend_mode = PIXMAN_OP_ADD;
+			} else if (blend_mode == 3) {
+				params.blend_mode = PIXMAN_OP_OVERLAY;
+			}
+			params.flip_x = (flags & 16) == 16;
+			params.flip_y = (flags & 32) == 32;
+		}
 	}
 
 	PicPointerPatch::AdjustShowParams(pic_id, params);

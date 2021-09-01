@@ -142,7 +142,9 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		SetFlashEffect(Main_Data::game_screen->GetFlashColor());
 	}
 
+	SetFlipX((data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) == lcf::rpg::SavePicture::EasyRpgFlip_x);
+	SetFlipY((data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) == lcf::rpg::SavePicture::EasyRpgFlip_y);
+	SetBlendType(data.easyrpg_blend_mode);
+
 	Sprite::Draw(dst);
 }
-
-

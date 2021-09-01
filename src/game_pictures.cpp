@@ -210,6 +210,8 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 
 	const auto num_frames = NumSpriteSheetFrames();
 
+	bool result = true;
+
 	// If an invalid frame is specified and no animation, skip loading picture data.
 	if (num_frames > 0
 			&& data.spritesheet_speed == 0
@@ -218,10 +220,15 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 		if (sprite) {
 			sprite->SetBitmap(nullptr);
 		}
-		return false;
+		result = false;
 	}
 
-	return true;
+	// Extensions
+	data.easyrpg_flip |= params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
+	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
+	data.easyrpg_blend_mode = params.blend_mode;
+
+	return result;
 }
 
 void Game_Pictures::Show(int id, const ShowParams& params) {
