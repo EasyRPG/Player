@@ -224,7 +224,7 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	}
 
 	// Extensions
-	data.easyrpg_flip |= params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
+	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
 
@@ -284,6 +284,10 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 		data.current_effect_power = params.effect_power;
 		data.finish_effect_power = params.effect_power;
 	}
+
+	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
+	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
+	data.easyrpg_blend_mode = params.blend_mode;
 }
 
 void Game_Pictures::Move(int id, const MoveParams& params) {

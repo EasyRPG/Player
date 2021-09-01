@@ -54,6 +54,10 @@ public:
 		int saturation = 100;
 		int effect_mode = 0;
 		int effect_power = 0;
+		// Extensions
+		bool flip_x = false;
+		bool flip_y = false;
+		int blend_mode = -1;
 	};
 	struct ShowParams : Params {
 		std::string name;
@@ -69,10 +73,6 @@ public:
 		bool spritesheet_play_once = false;
 		bool use_transparent_color = false;
 		bool fixed_to_map = false;
-		// Extensions
-		bool flip_x = false;
-		bool flip_y = false;
-		int blend_mode = -1;
 	};
 
 	struct MoveParams : Params {

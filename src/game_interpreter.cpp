@@ -2740,8 +2740,9 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	int pic_id = com.parameters[0];
 
 	Game_Pictures::MoveParams params;
-	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	// Maniac Patch uses the upper bits for X/Y origin, mask it away
+	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
 	params.magnify = com.parameters[5];
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
@@ -2769,6 +2770,20 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
+
+		if (Player::IsPatchManiac()) {
+			int flags = com.parameters[16] >> 8;
+			int blend_mode = flags & 3;
+			if (blend_mode == 1) {
+				params.blend_mode = PIXMAN_OP_MULTIPLY;
+			} else if (blend_mode == 2) {
+				params.blend_mode = PIXMAN_OP_ADD;
+			} else if (blend_mode == 3) {
+				params.blend_mode = PIXMAN_OP_OVERLAY;
+			}
+			params.flip_x = (flags & 16) == 16;
+			params.flip_y = (flags & 32) == 32;
+		}
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
