@@ -185,6 +185,26 @@ Game_Variables::Var_t Game_Variables::Mod(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarMod, "Invalid write var[{}] %= {}!");
 }
 
+Game_Variables::Var_t Game_Variables::BitOr(int variable_id, Var_t value) {
+	return SetOp(variable_id, value, VarBitOr, "Invalid write var[{}] |= {}!");
+}
+
+Game_Variables::Var_t Game_Variables::BitAnd(int variable_id, Var_t value) {
+	return SetOp(variable_id, value, VarBitAnd, "Invalid write var[{}] &= {}!");
+}
+
+Game_Variables::Var_t Game_Variables::BitXor(int variable_id, Var_t value) {
+	return SetOp(variable_id, value, VarBitXor, "Invalid write var[{}] ^= {}!");
+}
+
+Game_Variables::Var_t Game_Variables::BitShiftLeft(int variable_id, Var_t value) {
+	return SetOp(variable_id, value, VarBitShiftLeft, "Invalid write var[{}] <<= {}!");
+}
+
+Game_Variables::Var_t Game_Variables::BitShiftRight(int variable_id, Var_t value) {
+	return SetOp(variable_id, value, VarBitShiftRight, "Invalid write var[{}] >>= {}!");
+}
+
 void Game_Variables::SetRange(int first_id, int last_id, Var_t value) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = {}!", value);
 	WriteRange(first_id, last_id, [value](){ return value; }, VarSet);
@@ -213,6 +233,31 @@ void Game_Variables::DivRange(int first_id, int last_id, Var_t value) {
 void Game_Variables::ModRange(int first_id, int last_id, Var_t value) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] %= {}!", value);
 	WriteRange(first_id, last_id, [value](){ return value; }, VarMod);
+}
+
+void Game_Variables::BitOrRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] |= {}!", value);
+	WriteRange(first_id, last_id, [value](){ return value; }, VarBitOr);
+}
+
+void Game_Variables::BitAndRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] &= {}!", value);
+	WriteRange(first_id, last_id, [value](){ return value; }, VarBitAnd);
+}
+
+void Game_Variables::BitXorRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] ^= {}!", value);
+	WriteRange(first_id, last_id, [value](){ return value; }, VarBitXor);
+}
+
+void Game_Variables::BitShiftLeftRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] <<= {}!", value);
+	WriteRange(first_id, last_id, [value](){ return value; }, VarBitShiftLeft);
+}
+
+void Game_Variables::BitShiftRightRange(int first_id, int last_id, Var_t value) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] >>= {}!", value);
+	WriteRange(first_id, last_id, [value](){ return value; }, VarBitShiftRight);
 }
 
 template <typename F>
@@ -257,6 +302,31 @@ void Game_Variables::ModRangeVariable(int first_id, int last_id, int var_id) {
 	WriteRangeVariable(first_id, last_id, var_id, VarMod);
 }
 
+void Game_Variables::BitOrRangeVariable(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] |= var[{}]!", var_id);
+	WriteRangeVariable(first_id, last_id, var_id, VarBitOr);
+}
+
+void Game_Variables::BitAndRangeVariable(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] &= var[{}]!", var_id);
+	WriteRangeVariable(first_id, last_id, var_id, VarBitAnd);
+}
+
+void Game_Variables::BitXorRangeVariable(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] ^= var[{}]!", var_id);
+	WriteRangeVariable(first_id, last_id, var_id, VarBitXor);
+}
+
+void Game_Variables::BitShiftLeftRangeVariable(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] <<= var[{}]!", var_id);
+	WriteRangeVariable(first_id, last_id, var_id, VarBitShiftLeft);
+}
+
+void Game_Variables::BitShiftRightRangeVariable(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] >>= var[{}]!", var_id);
+	WriteRangeVariable(first_id, last_id, var_id, VarBitShiftRight);
+}
+
 void Game_Variables::SetRangeVariableIndirect(int first_id, int last_id, int var_id) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = var[var[{}]]!", var_id);
 	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarSet);
@@ -287,6 +357,31 @@ void Game_Variables::ModRangeVariableIndirect(int first_id, int last_id, int var
 	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarMod);
 }
 
+void Game_Variables::BitOrRangeVariableIndirect(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] |= var[var[{}]]!", var_id);
+	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarBitOr);
+}
+
+void Game_Variables::BitAndRangeVariableIndirect(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] &= var[var[{}]]!", var_id);
+	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarBitAnd);
+}
+
+void Game_Variables::BitXorRangeVariableIndirect(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] ^= var[var[{}]]!", var_id);
+	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarBitXor);
+}
+
+void Game_Variables::BitShiftLeftRangeVariableIndirect(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] <<= var[var[{}]]!", var_id);
+	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarBitShiftLeft);
+}
+
+void Game_Variables::BitShiftRightRangeVariableIndirect(int first_id, int last_id, int var_id) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] >>= var[var[{}]]!", var_id);
+	WriteRange(first_id, last_id, [this,var_id](){ return Get(Get(var_id)); }, VarBitShiftRight);
+}
+
 void Game_Variables::SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = rand({},{})!", minval, maxval);
 	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSet);
@@ -315,6 +410,31 @@ void Game_Variables::DivRangeRandom(int first_id, int last_id, Var_t minval, Var
 void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] %= rand({},{})!", minval, maxval);
 	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMod);
+}
+
+void Game_Variables::BitOrRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] |= rand({},{})!", minval, maxval);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitOr);
+}
+
+void Game_Variables::BitAndRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] &= rand({},{})!", minval, maxval);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitAnd);
+}
+
+void Game_Variables::BitXorRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] ^= rand({},{})!", minval, maxval);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitXor);
+}
+
+void Game_Variables::BitShiftLeftRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] <<= rand({},{})!", minval, maxval);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftLeft);
+}
+
+void Game_Variables::BitShiftRightRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
+	PrepareRange(first_id, last_id, "Invalid write var[{},{}] >>= rand({},{})!", minval, maxval);
+	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftRight);
 }
 
 void Game_Variables::EnumerateRange(int first_id, int last_id, Var_t value) {
