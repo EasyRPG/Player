@@ -3582,10 +3582,16 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	// BreakLoop will jump to the end of the event if there is no loop.
 
-	//FIXME: This emulates an RPG_RT bug where break loop ignores scopes and
-	//unconditionally jumps to the next EndLoop command.
-	auto pcode = static_cast<Cmd>(list[index].code);
+	bool has_bug = !Player::IsPatchManiac();
+	if (!has_bug) {
+		SkipToNextConditional({ Cmd::EndLoop }, list[index].indent - 1);
+		++index;
+		return true;
+	}
 
+	// This emulates an RPG_RT bug where break loop ignores scopes and
+	// unconditionally jumps to the next EndLoop command.
+	auto pcode = static_cast<Cmd>(list[index].code);
 	for (++index; index < (int)list.size(); ++index) {
 		if (pcode == Cmd::EndLoop) {
 			break;
