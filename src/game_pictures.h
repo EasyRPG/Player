@@ -57,7 +57,7 @@ public:
 		// Extensions
 		bool flip_x = false;
 		bool flip_y = false;
-		int blend_mode = -1;
+		int blend_mode = 0;
 	};
 	struct ShowParams : Params {
 		std::string name;

@@ -569,7 +569,7 @@ namespace {
 	}
 } // anonymous namespace
 
-void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
+void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -605,11 +605,11 @@ PixmanImagePtr Bitmap::GetSubimage(Bitmap const& src, const Rect& src_rect) {
 									(uint32_t*) pixels, src.pitch()) };
 }
 
-void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, int blend_mode) {
+void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	TiledBlit(0, 0, src_rect, src, dst_rect, opacity, blend_mode);
 }
 
-void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, int blend_mode) {
+void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -633,11 +633,11 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 							 dst_rect.width, dst_rect.height);
 }
 
-void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
+void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	StretchBlit(GetRect(), src, src_rect, opacity, blend_mode);
 }
 
-void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, int blend_mode) {
+void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -661,7 +661,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	pixman_image_set_transform(src.bitmap.get(), nullptr);
 }
 
-void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity, int blend_mode) {
+void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -946,7 +946,7 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 							 src_rect.width, src_rect.height);
 }
 
-void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity, int blend_mode) {
+void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -1043,7 +1043,7 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 						 Bitmap const& src, Rect const& src_rect,
 						 Opacity const& opacity,
 						 double zoom_x, double zoom_y, double angle,
-						 int waver_depth, double waver_phase, int blend_mode) {
+						 int waver_depth, double waver_phase, Bitmap::BlendMode blend_mode) {
 	if (opacity.IsTransparent()) {
 		return;
 	}
@@ -1069,7 +1069,7 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 
 void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 		Bitmap const& src, Rect const& src_rect,
-		double angle, double zoom_x, double zoom_y, Opacity const& opacity, int blend_mode)
+		double angle, double zoom_x, double zoom_y, Opacity const& opacity, Bitmap::BlendMode blend_mode)
 {
 	if (opacity.IsTransparent()) {
 		return;
@@ -1101,7 +1101,7 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 
 	auto mask = CreateMask(opacity, src_rect, &inv);
 
-	pixman_image_composite32((pixman_op_t)blend_mode,
+	pixman_image_composite32(GetOperator(mask.get(), blend_mode),
 							 src_img, mask.get(), bitmap.get(),
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.x, dst_rect.y,
@@ -1114,7 +1114,7 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
 							 double zoom_x, double zoom_y,
-							 Opacity const& opacity, int blend_mode)
+							 Opacity const& opacity, Bitmap::BlendMode blend_mode)
 {
 	if (opacity.IsTransparent()) {
 		return;
@@ -1128,9 +1128,42 @@ void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 	StretchBlit(dst_rect, src, src_rect, opacity, blend_mode);
 }
 
-pixman_op_t Bitmap::GetOperator(pixman_image_t* mask, int blend_mode) const {
-	if (blend_mode >= 0) {
-		return (pixman_op_t)blend_mode;
+pixman_op_t Bitmap::GetOperator(pixman_image_t* mask, Bitmap::BlendMode blend_mode) const {
+	if (blend_mode != BlendMode::Default) {
+		switch (blend_mode) {
+			case BlendMode::Normal:
+				return PIXMAN_OP_OVER;
+			case BlendMode::NormalWithoutAlpha:
+				return PIXMAN_OP_SRC;
+			case BlendMode::XOR:
+				return PIXMAN_OP_XOR;
+			case BlendMode::Additive:
+				return PIXMAN_OP_ADD;
+			case BlendMode::Multiply:
+				return PIXMAN_OP_MULTIPLY;
+			case BlendMode::Overlay:
+				return PIXMAN_OP_OVERLAY;
+			case BlendMode::Saturate:
+				return PIXMAN_OP_SATURATE;
+			case BlendMode::Darken:
+				return PIXMAN_OP_DARKEN;
+			case BlendMode::Lighten:
+				return PIXMAN_OP_LIGHTEN;
+			case BlendMode::ColorDodge:
+				return PIXMAN_OP_COLOR_DODGE;
+			case BlendMode::ColorBurn:
+				return PIXMAN_OP_COLOR_BURN;
+			case BlendMode::Difference:
+				return PIXMAN_OP_DIFFERENCE;
+			case BlendMode::Exclusion:
+				return PIXMAN_OP_EXCLUSION;
+			case BlendMode::SoftLight:
+				return PIXMAN_OP_SOFT_LIGHT;
+			case BlendMode::HardLight:
+				return PIXMAN_OP_HARD_LIGHT;
+			default:
+				return PIXMAN_OP_CLEAR;
+		}
 	}
 
 	if (!mask && (!GetTransparent() || GetImageOpacity() == ImageOpacity::Opaque)) {

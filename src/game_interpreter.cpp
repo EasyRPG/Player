@@ -2701,11 +2701,11 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			int flags = com.parameters[14] >> 8;
 			int blend_mode = flags & 3;
 			if (blend_mode == 1) {
-				params.blend_mode = PIXMAN_OP_MULTIPLY;
+				params.blend_mode = (int)Bitmap::BlendMode::Multiply;
 			} else if (blend_mode == 2) {
-				params.blend_mode = PIXMAN_OP_ADD;
+				params.blend_mode = (int)Bitmap::BlendMode::Additive;
 			} else if (blend_mode == 3) {
-				params.blend_mode = PIXMAN_OP_OVERLAY;
+				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
@@ -2775,11 +2775,11 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			int flags = com.parameters[16] >> 8;
 			int blend_mode = flags & 3;
 			if (blend_mode == 1) {
-				params.blend_mode = PIXMAN_OP_MULTIPLY;
+				params.blend_mode = (int)Bitmap::BlendMode::Multiply;
 			} else if (blend_mode == 2) {
-				params.blend_mode = PIXMAN_OP_ADD;
+				params.blend_mode = (int)Bitmap::BlendMode::Additive;
 			} else if (blend_mode == 3) {
-				params.blend_mode = PIXMAN_OP_OVERLAY;
+				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
