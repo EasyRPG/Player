@@ -3291,37 +3291,8 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 	case 1:
 		// Variable
 		value1 = Main_Data::game_variables->Get(com.parameters[1]);
-		if (com.parameters[2] == 0) {
-			value2 = com.parameters[3];
-		} else {
-			value2 = Main_Data::game_variables->Get(com.parameters[3]);
-		}
-		switch (com.parameters[4]) {
-		case 0:
-			// Equal to
-			result = (value1 == value2);
-			break;
-		case 1:
-			// Greater than or equal
-			result = (value1 >= value2);
-			break;
-		case 2:
-			// Less than or equal
-			result = (value1 <= value2);
-			break;
-		case 3:
-			// Greater than
-			result = (value1 > value2);
-			break;
-		case 4:
-			// Less than
-			result = (value1 < value2);
-			break;
-		case 5:
-			// Different
-			result = (value1 != value2);
-			break;
-		}
+		value2 = ValueOrVariable(com.parameters[2], com.parameters[3]);
+		result = CheckOperator(value1, value2, com.parameters[4]);
 		break;
 	case 2:
 		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
@@ -4080,6 +4051,25 @@ bool Game_Interpreter::IsWaitingForWaitCommand() const {
 	return (_state.wait_time > 0) || _state.wait_key_enter;
 }
 
+bool Game_Interpreter::CheckOperator(int val, int val2, int op) const {
+	switch (op) {
+		case 0:
+			return val == val2;
+		case 1:
+			return val >= val2;
+		case 2:
+			return val <= val2;
+		case 3:
+			return val > val2;
+		case 4:
+			return val < val2;
+		case 5:
+			return val != val2;
+		default:
+			return false;
+	}
+}
+
 bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int op) const {
 	switch (type) {
 		case 0: // Infinite loop
@@ -4092,23 +4082,7 @@ bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int 
 			return val >= val2;
 		case 4: // While
 		case 5: // Do While
-			switch (op) {
-				case 0:
-					return val == val2;
-				case 1:
-					return val >= val2;
-				case 2:
-					return val <= val2;
-				case 3:
-					return val > val2;
-				case 4:
-					return val < val2;
-				case 5:
-					return val != val2;
-				default:
-					return false;
-			}
-			break;
+			return CheckOperator(val, val2, op);
 		default:
 			return false;
 	}
