@@ -133,6 +133,14 @@ public:
 	int GetItemTotalCount(int item_id) const;
 
 	/**
+	 * Gets maximum number of item allowed in inventory.
+	 *
+	 * @param item_id database item ID.
+	 * @return maximum number of items.
+	 */
+	int GetMaxItemCount(int item_id) const;
+
+	/**
 	 * Gains an amount of items.
 	 *
 	 * @param item_id database item ID.

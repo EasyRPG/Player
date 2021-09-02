@@ -49,15 +49,35 @@ Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 }
 
 int Game_Enemy::MaxHpValue() const {
-	return Player::IsRPG2k() ? 9999 : 99999;
+	auto& val = lcf::Data::system.easyrpg_max_enemy_hp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 9999 : 99999;
+	}
+	return val;
+}
+
+int Game_Enemy::MaxSpValue() const {
+	auto& val = lcf::Data::system.easyrpg_max_enemy_sp;
+	if (val == -1) {
+		return 9999;
+	}
+	return val;
 }
 
 int Game_Enemy::MaxStatBattleValue() const {
-	return 9999;
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	if (val == -1) {
+		return 9999;
+	}
+	return val;
 }
 
 int Game_Enemy::MaxStatBaseValue() const {
-	return 999;
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	if (val == -1) {
+		return 999;
+	}
+	return val;
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {

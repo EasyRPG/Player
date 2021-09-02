@@ -859,8 +859,14 @@ void Player::ResetGameObjects() {
 
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 
-	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
+	if (min_var == 0) {
+		min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+	}
+	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
+	if (max_var == 0) {
+		max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+	}
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 
 	// Prevent a crash when Game_Map wants to reset the screen content
@@ -1137,6 +1143,8 @@ void Player::SetupNewGame() {
 	if (title) {
 		static_cast<Scene_Title*>(title.get())->OnGameStart();
 	}
+
+	Main_Data::game_system->SetAtbMode(static_cast<Game_System::AtbMode>(lcf::Data::battlecommands.easyrpg_default_atb_mode));
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();

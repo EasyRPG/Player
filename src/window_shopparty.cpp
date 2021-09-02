@@ -101,10 +101,12 @@ static int CmpEquip(const Game_Actor* actor, const lcf::rpg::Item* new_item) {
 	}
 	add_item(new_item, 1);
 
-	atk = Utils::Clamp(atk, 1, 999);
-	def = Utils::Clamp(def, 1, 999);
-	spi = Utils::Clamp(spi, 1, 999);
-	agi = Utils::Clamp(agi, 1, 999);
+	int limit = actor->MaxStatBaseValue();
+
+	atk = Utils::Clamp(atk, 1, limit);
+	def = Utils::Clamp(def, 1, limit);
+	spi = Utils::Clamp(spi, 1, limit);
+	agi = Utils::Clamp(agi, 1, limit);
 
 	int new_score = atk + def + spi + agi;
 

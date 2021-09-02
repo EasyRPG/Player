@@ -159,9 +159,26 @@ void Scene_Battle::DrawBackground(Bitmap& dst) {
 
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
-	commands.push_back(ToString(lcf::Data::terms.battle_fight));
-	commands.push_back(ToString(lcf::Data::terms.battle_auto));
-	commands.push_back(ToString(lcf::Data::terms.battle_escape));
+
+	for (auto option: lcf::Data::system.easyrpg_battle_options) {
+		battle_options.push_back((BattleOptionType)option);
+	}
+
+	// Add all menu items
+	for (auto option: battle_options) {
+		switch(option) {
+		case Battle:
+			commands.push_back(ToString(lcf::Data::terms.battle_fight));
+			break;
+		case AutoBattle:
+			commands.push_back(ToString(lcf::Data::terms.battle_auto));
+			break;
+		case Escape:
+			commands.push_back(ToString(lcf::Data::terms.battle_escape));
+			break;
+		}
+	}
+
 	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);

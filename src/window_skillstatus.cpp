@@ -47,8 +47,10 @@ void Window_SkillStatus::Refresh() {
 	DrawActorLevel(actor, x, y);
 	x += 44;
 	DrawActorState(actor, x, y);
-	x += 54;
-	DrawActorHp(actor, x + (Player::IsRPG2k() ? 6 : 0), y, (Player::IsRPG2k() ? 3 : 4));
-	x += 72;
-	DrawActorSp(actor, x, y, 3);
+	int hpdigits = (actor.MaxHpValue() >= 1000) ? 4 : 3;
+	int spdigits = (actor.MaxSpValue() >= 1000) ? 4 : 3;
+	x += (96 - hpdigits * 6 - spdigits * 6);
+	DrawActorHp(actor, x, y, hpdigits);
+	x += (66 + hpdigits * 6 - spdigits * 6);
+	DrawActorSp(actor, x, y, spdigits);
 }

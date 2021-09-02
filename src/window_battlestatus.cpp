@@ -82,9 +82,11 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			if (Player::IsRPG2k()) {
-				DrawActorState(*actor, 86, y);
-				DrawActorHp(*actor, 142, y, 3, true);
-				DrawActorSp(*actor, 202, y, 3, false);
+				int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
+				int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
+				DrawActorState(*actor, (hpdigits < 4 && spdigits < 4) ? 86 : 80, y);
+				DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
+				DrawActorSp(*actor, 220 - spdigits * 6, y, spdigits, false);
 			} else {
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
 					DrawActorState(*actor, 84, y);
@@ -162,8 +164,10 @@ void Window_BattleStatus::RefreshGauge() {
 					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (2 + index * 16 != y)) {
 						DrawGauge(*actor, 202 - 10, y - 2, lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ? 96 : 255);
 					}
-					DrawActorHp(*actor, 136, y, 4, true);
-					DrawActorSp(*actor, 202, y, 3, false);
+					int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
+					int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
+					DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
+					DrawActorSp(*actor, 220 - spdigits * 6, y, spdigits, false);
 				} else {
 					DrawGauge(*actor, 156, y - 2);
 				}

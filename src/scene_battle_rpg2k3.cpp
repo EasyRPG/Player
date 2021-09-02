@@ -48,6 +48,7 @@
 #include "autobattle.h"
 #include "enemyai.h"
 #include <algorithm>
+#include <memory>
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -292,9 +293,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleStatusWindow();
 	CreateBattleCommandWindow();
 
-	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
-	sp_window->SetVisible(false);
-	sp_window->SetZ(Priority_Window + 2);
+	RecreateSpWindow(nullptr);
 
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
@@ -563,7 +562,9 @@ std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_A
 			commands.push_back(ToString(cmd->name));
 		}
 	}
-	commands.push_back(ToString(lcf::Data::terms.row));
+	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
+		commands.push_back(ToString(lcf::Data::terms.row));
+	}
 
 	return commands;
 }
@@ -1080,16 +1081,24 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		ResetWindows(true);
 		target_window->SetIndex(-1);
 
-		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(-options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		options_window->SetActive(true);
+
 		if (IsEscapeAllowedFromOptionWindow()) {
-			options_window->EnableItem(2);
+			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
+			if (it != battle_options.end()) {
+				options_window->EnableItem(std::distance(battle_options.begin(), it));
+			}
 		} else {
-			options_window->DisableItem(2);
+			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
+			if (it != battle_options.end()) {
+				options_window->DisableItem(std::distance(battle_options.begin(), it));
+			}
 		}
 
 		options_window->SetVisible(true);
@@ -1115,18 +1124,18 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 			if (message_window->IsVisible()) {
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
-			switch (options_window->GetIndex()) {
-				case 0: // Battle
+			switch (battle_options[options_window->GetIndex()]) {
+				case Battle: // Battle
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					MoveCommandWindows(-options_window->GetWidth(), 8);
 					SetState(State_SelectActor);
 					break;
-				case 1: // Auto Battle
+				case AutoBattle: // Auto Battle
 					MoveCommandWindows(-options_window->GetWidth(), 8);
 					SetState(State_AutoBattle);
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					break;
-				case 2: // Escape
+				case Escape: // Escape
 					if (IsEscapeAllowedFromOptionWindow()) {
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 						SetState(State_Escape);
@@ -1168,6 +1177,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(true);
+		}
+
+		if (lcf::Data::battlecommands.easyrpg_sequential_order) {
+			SetSceneActionSubState(eWaitActor);
+			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		SetSceneActionSubState(eWaitInput);
@@ -1224,6 +1238,15 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 			command_window->SetIndex(0);
 			SetState(State_SelectCommand);
 			return SceneActionReturn::eWaitTillNextFrame;
+		}
+
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				SetActiveActor(-1);
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+				SetState(State_SelectOption);
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
@@ -1303,7 +1326,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 		if (Input::IsTriggered(Input::DECISION)) {
 			int index = command_window->GetIndex();
 			// Row command always uses the last index
-			if (index < command_window->GetRowMax() - 1) {
+			if (!lcf::Data::battlecommands.easyrpg_enable_battle_row_command || index < command_window->GetRowMax() - 1) {
 				const auto* command = active_actor->GetBattleCommand(index);
 
 				if (command) {
@@ -1325,7 +1348,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 						case lcf::rpg::BattleCommand::Type_skill:
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 							skill_window->SetSubsetFilter(0);
-							sp_window->SetBattler(*active_actor);
+							RecreateSpWindow(active_actor);
 							SetState(State_SelectSkill);
 							break;
 						case lcf::rpg::BattleCommand::Type_special:
@@ -1747,6 +1770,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		message_window->SetHeight(32);
 		message_window->SetMaxLinesPerPage(1);
 		Game_Message::SetPendingMessage(std::move(pm));
+
+		status_window->Refresh();
 
 		SetSceneActionSubState(eEnd);
 		return SceneActionReturn::eContinueThisFrame;
@@ -2648,7 +2673,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected(int command) {
 	// skill subset is 4 (Type_subskill) + counted subsets
 	skill_window->SetSubsetFilter(subskill);
 	SetState(State_SelectSkill);
-	sp_window->SetBattler(*active_actor);
+	RecreateSpWindow(active_actor);
 }
 
 void Scene_Battle_Rpg2k3::SpecialSelected() {
@@ -2779,6 +2804,19 @@ void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
 			battler->GetBattlePosition().y,
 			hp < 0 ? Font::ColorDefault : Font::ColorHeal,
 			std::to_string(std::abs(hp)));
+}
+
+void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
+	int spwindow_size = 60;
+	if (battler && battler->MaxSpValue() >= 1000) {
+		spwindow_size = 72;
+	}
+	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32);
+	sp_window->SetVisible(false);
+	sp_window->SetZ(Priority_Window + 2);
+	if (battler) {
+		sp_window->SetBattler(*battler);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CBAInit() {

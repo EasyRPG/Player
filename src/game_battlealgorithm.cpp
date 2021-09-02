@@ -51,7 +51,7 @@
 #include "spriteset_battle.h"
 
 static inline int MaxDamageValue() {
-	return Player::IsRPG2k() ? 999 : 9999;
+	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
@@ -973,6 +973,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto atk = target->CanChangeAtkModifier(effect);
 		if (atk != 0) {
 			SetAffectedAtk(atk);
+			if (skill.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbAtk(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -980,6 +983,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto def = target->CanChangeDefModifier(effect);
 		if (def != 0) {
 			SetAffectedDef(def);
+			if (skill.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbDef(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -987,6 +993,9 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto spi = target->CanChangeSpiModifier(effect);
 		if (spi != 0) {
 			SetAffectedSpi(spi);
+			if (skill.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbSpi(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
@@ -994,12 +1003,16 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 		const auto agi = target->CanChangeAgiModifier(effect);
 		if (agi != 0) {
 			SetAffectedAgi(agi);
+			if (skill.easyrpg_enable_stat_absorbing) {
+				SetIsAbsorbAgi(absorb);
+			}
 			SetIsSuccess();
 		}
 	}
 
 	bool heals_states = IsPositive() ^ (Player::IsRPG2k3() && skill.reverse_state_effect);
 	bool affected_death = false;
+	int to_hit_states = (skill.easyrpg_state_hit != -1 ? skill.easyrpg_state_hit : to_hit);
 	for (int i = 0; i < static_cast<int>(skill.state_effects.size()); i++) {
 		if (!skill.state_effects[i])
 			continue;
@@ -1013,7 +1026,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 			continue;
 		}
 
-		if (!Rand::PercentChance(to_hit)) {
+		if (!Rand::PercentChance(to_hit_states)) {
 			continue;
 		}
 
@@ -1050,13 +1063,14 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	}
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
+	int to_hit_attribute_shift = (skill.easyrpg_attribute_hit != -1 ? skill.easyrpg_attribute_hit : to_hit);
 	if (skill.affect_attr_defence) {
 		auto shift = IsPositive() ? 1 : -1;
 		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
 			auto id = i + 1;
 			if (skill.attribute_effects[i]
 					&& GetTarget()->CanShiftAttributeRate(id, shift)
-					&& Rand::PercentChance(to_hit)
+					&& Rand::PercentChance(to_hit_attribute_shift)
 					)
 			{
 				AddAffectedAttribute({ id, shift});
@@ -1149,8 +1163,7 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected(const Game_Battler& target) const {
-	// Skills invoked by items ignore reflect
-	if (item) {
+	if (item || skill.easyrpg_ignore_reflect) {
 		return false;
 	}
 	return IsTargetValid(target) && target.HasReflectState() && target.GetType() != GetSource()->GetType();

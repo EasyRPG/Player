@@ -66,7 +66,10 @@ void Scene_Battle_Rpg2k::CreateUi() {
 	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 
 	if (!IsEscapeAllowed()) {
-		options_window->DisableItem(2);
+		auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
+		if (it != battle_options.end()) {
+			options_window->DisableItem(std::distance(battle_options.begin(), it));
+		}
 	}
 
 	SetCommandWindows(0);
@@ -443,18 +446,18 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 
 		if (Input::IsTriggered(Input::DECISION)) {
 			if (!message_window->IsVisible()) {
-				switch (options_window->GetIndex()) {
-					case 0: // Battle
+				switch (battle_options[options_window->GetIndex()]) {
+					case Battle: // Battle
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 						RefreshTargetWindow();
 						target_window->SetVisible(false);
 						SetState(State_SelectActor);
 						break;
-					case 1: // Auto Battle
+					case AutoBattle: // Auto Battle
 						SetState(State_AutoBattle);
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 						break;
-					case 2: // Escape
+					case Escape: // Escape
 						if (!IsEscapeAllowed()) {
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 						}

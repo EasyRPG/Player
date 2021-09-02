@@ -87,37 +87,42 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	StringView name;
 	int value;
 	int new_value;
+	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	switch (type) {
 	case 0:
 		name = lcf::Data::terms.attack;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetAtk();
+		value = actor->GetAtk();
 		new_value = atk;
 		break;
 	case 1:
 		name = lcf::Data::terms.defense;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetDef();
+		value = actor->GetDef();
 		new_value = def;
 		break;
 	case 2:
 		name = lcf::Data::terms.spirit;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetSpi();
+		value = actor->GetSpi();
 		new_value = spi;
 		break;
 	case 3:
 		name = lcf::Data::terms.agility;
-		value = Main_Data::game_actors->GetActor(actor_id)->GetAgi();
+		value = actor->GetAgi();
 		new_value = agi;
 		break;
 	default:
 		return;
 	}
 
+	// Check if 4 digits are needed instead of 3
+	int limit = actor->MaxStatBaseValue();
+	bool more_space_needed = (Player::IsRPG2k3() && limit >= 500) || limit >= 1000;
+
 	// Draw Term
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
-	cx += (Player::IsRPG2k3() ? (8 * 6 + 6 * 4) : (10 * 6 + 6 * 3));
+	cx += (more_space_needed ? (8 * 6 + 6 * 4) : (10 * 6 + 6 * 3));
 	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
@@ -136,7 +141,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		}
 
 		// Draw New Value
-		cx += 6 * 2 + (Player::IsRPG2k3() ? (6 * 4) : (6 * 3));
+		cx += 6 * 2 + (more_space_needed ? (6 * 4) : (6 * 3));
 		int color = GetNewParameterColor(value, new_value);
 		contents->TextDraw(cx, cy, color, std::to_string(new_value), Text::AlignRight);
 	}
