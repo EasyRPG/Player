@@ -291,8 +291,8 @@ void AudioResampler::SetVolume(int volume) {
 	wrapped_decoder->SetVolume(volume);
 }
 
-void AudioResampler::SetFade(int begin, int end, std::chrono::milliseconds duration) {
-	wrapped_decoder->SetFade(begin, end, duration);
+void AudioResampler::SetFade(int end, std::chrono::milliseconds duration) {
+	wrapped_decoder->SetFade(end, duration);
 }
 
 bool AudioResampler::Seek(std::streamoff offset, std::ios_base::seekdir origin) {

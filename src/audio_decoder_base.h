@@ -35,6 +35,16 @@
  */
 class AudioDecoderBase {
 public:
+	/**
+	 * Takes a linear volume and converts it to a logarithmic used by
+	 * RPG_RT (Direct Sound).
+	 * Do not use this for Midi, is already logarithmic by design.
+	 *
+	 * @param volume linear volume
+	 * @return logarithmic volume
+	 */
+	static float AdjustVolume(float volume);
+
 	virtual ~AudioDecoderBase() = default;
 
 	/** Sample format */
@@ -136,11 +146,10 @@ public:
 	 * To do a fade out begin must be larger then end.
 	 * Call Update to do the fade.
 	 *
-	 * @param begin Begin volume (from 0-100)
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	virtual void SetFade(int begin, int end, std::chrono::milliseconds duration) = 0;
+	virtual void SetFade(int end, std::chrono::milliseconds duration) = 0;
 
 	/**
 	 * Seeks in the audio stream. The value of offset is implementation
@@ -232,7 +241,7 @@ public:
 	 *
 	 * @return Amount of MIDI ticks or position in seconds
 	 */
-	virtual int GetTicks() const;
+	virtual int GetTicks() const = 0;
 
 	/**
 	 * Gets the status of the newly created audio decoder.

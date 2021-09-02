@@ -46,10 +46,13 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
+	int GetTicks() const override;
+
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 	Filesystem_Stream::InputStream stream;
 	bool finished = false;
+	int decoded_samples = 0;
 	bool init = false;
 	drwav handle = {};
 	uint32_t bytes_per_frame = 0;

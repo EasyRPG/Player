@@ -59,11 +59,9 @@ void LibretroMidiOutDevice::SendMidiMessage(uint32_t message) {
 	midi_out.flush();
 }
 
-void LibretroMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
-	auto mdata = reinterpret_cast<const uint8_t*>(data);
-
+void LibretroMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	for (size_t i = 0; i < size; ++i) {
-		midi_out.write(mdata[i], 0);
+		midi_out.write(data[i], 0);
 	}
 	midi_out.flush();
 }

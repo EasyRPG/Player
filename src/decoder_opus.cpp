@@ -74,15 +74,60 @@ bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
 		return false;
 	}
 
+	const OpusTags* ot = op_tags(oof, -1);
+	if (ot) {
+		// RPG VX loop support
+		const char* str = opus_tags_query(ot, "LOOPSTART", 0);
+		if (str) {
+			auto total = op_pcm_total(oof, -1) ;
+			loop.start = std::min<int64_t>(atoi(str), total);
+			if (loop.start >= 0) {
+				loop.looping = true;
+				loop.end = total;
+				str = opus_tags_query(ot, "LOOPLENGTH", 0);
+				if (str) {
+					int len = atoi(str);
+					if (len >= 0) {
+						loop.end = std::min<int64_t>(loop.start + len, total);
+					}
+				} else {
+					str = opus_tags_query(ot, "LOOPEND", 0);
+					if (str) {
+						int end = atoi(str);
+						if (end >= 0) {
+							loop.end = Utils::Clamp<int64_t>(end, loop.start, total);
+						}
+					}
+				}
+
+				if (loop.start == total) {
+					loop.end = total;
+				}
+			}
+		}
+	}
+
+	if (!loop.looping) {
+		loop.start = 0;
+		loop.end = -1;
+	}
+
 	return true;
 }
 
 bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (offset == 0 && origin == std::ios::beg) {
-		if (oof) {
-			op_raw_seek(oof, 0);
-		}
 		finished = false;
+
+		if (oof) {
+			// Seeks to 0 when not looping
+			op_pcm_seek(oof, loop.start);
+		}
+
+		if (loop.looping && loop.start == loop.end) {
+			loop.to_end = true;
+		}
+
 		return true;
 	}
 
@@ -90,8 +135,13 @@ bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 }
 
 bool OpusDecoder::IsFinished() const {
-	if (!oof)
+	if (!oof) {
 		return false;
+	}
+
+	if (loop.to_end) {
+		return false;
+	}
 
 	return finished;
 }
@@ -122,6 +172,11 @@ int OpusDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!oof)
 		return -1;
 
+	if (loop.to_end) {
+		memset(buffer, '\0', length);
+		return length;
+	}
+
 	// op_read_stereo doesn't overwrite the buffer completely, must be cleared to prevent noise
 	memset(buffer, '\0', length);
 
@@ -138,6 +193,15 @@ int OpusDecoder::FillBuffer(uint8_t* buffer, int length) {
 		// stop decoding when error or end of file
 		if (read <= 0)
 			break;
+
+		// stop when loop end is reached
+		if (loop.looping) {
+			auto pos = op_pcm_tell(oof);
+			if (pos >= loop.end) {
+				finished = true;
+				break;
+			}
+		}
 
 		// "read" contains number of samples per channel and the function filled 2 channels
 		to_read -= read * 2;

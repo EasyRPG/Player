@@ -154,6 +154,17 @@ bool XMPDecoder::SetFormat(int freq, AudioDecoder::Format frmt, int chans) {
 	return xmp_start_player(ctx, frequency, player_flags) == 0;
 }
 
+int XMPDecoder::GetTicks() const {
+	if (!ctx) {
+		return 0;
+	}
+
+	xmp_frame_info info;
+	xmp_get_frame_info(ctx, &info);
+
+	return info.time / 1000;
+}
+
 bool XMPDecoder::IsModule(Filesystem_Stream::InputStream& stream) {
 	int res = xmp_test_module_from_callbacks(&stream, vio, nullptr);
 	stream.clear();

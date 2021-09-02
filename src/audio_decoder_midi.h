@@ -70,11 +70,10 @@ public:
 	 * To do a fade out begin must be larger then end.
 	 * Call Update to do the fade.
 	 *
-	 * @param begin Begin volume (from 0-100)
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	void SetFade(int begin, int end, std::chrono::milliseconds duration) override;
+	void SetFade(int end, std::chrono::milliseconds duration) override;
 
 	/**
 	 * Seeks in the midi stream. The value of offset is in Midi ticks.
@@ -171,12 +170,13 @@ private:
 	std::chrono::microseconds mtime = std::chrono::microseconds(0);
 	float pitch = 1.0f;
 	bool paused = false;
-	float volume = 0;
+	float volume = 0.0f;
+	float log_volume = 0.0f; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
 	int fade_steps = 0;
-	double fade_volume_end = 0;
-	double delta_volume_step = 0;
+	float fade_volume_end = 0;
+	float delta_volume_step = 0;
 	std::chrono::microseconds last_fade_mtime = std::chrono::microseconds(0);
 
 	int frequency = EP_MIDI_FREQ;

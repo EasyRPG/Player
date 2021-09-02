@@ -87,11 +87,10 @@ public:
 	 * To do a fade out begin must be larger then end.
 	 * Call Update to do the fade.
 	 *
-	 * @param begin Begin volume (from 0-100)
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	void SetFade(int begin, int end, std::chrono::milliseconds duration) final override;
+	void SetFade(int end, std::chrono::milliseconds duration) final override;
 
 	/**
 	 * Updates the volume for the fade in/out effect.
@@ -103,11 +102,12 @@ public:
 	void Update(std::chrono::microseconds delta) final override;
 private:
 	bool paused = false;
-	double volume = 0;
+	float volume = 0.0f;
+	float log_volume = 0.0f; // as used by RPG_RT
 
 	int fade_volume_end = 0;
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);
-	double delta_volume_step = 0.0;
+	float delta_volume_step = 0.0f;
 };
 
 #endif

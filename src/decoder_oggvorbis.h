@@ -56,13 +56,21 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
-	OggVorbis_File *ovf = NULL;
+	OggVorbis_File *ovf = nullptr;
 #endif
 
 	Filesystem_Stream::InputStream stream;
 	bool finished = false;
 	int frequency = 44100;
 	int channels = 2;
+
+	struct {
+		bool looping = false;
+		// When true start & end are the same, keeps the stream alive to match Midi loop behaviour
+		bool to_end = false;
+		int64_t start = -1;
+		int64_t end = -1;
+	} loop;
 };
 
 #endif

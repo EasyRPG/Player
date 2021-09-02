@@ -39,14 +39,6 @@ Game_System::Game_System()
 	: dbsys(&lcf::Data::system)
 { }
 
-static int32_t AdjustVolume(int32_t volume) {
-	// Adjust to RPG_RT (Direct Sound) volume scale
-	if (volume > 0) {
-		return static_cast<int32_t>(100 * std::pow(10, (-100 + volume) / 60.0));
-	}
-	return 0;
-}
-
 void Game_System::SetupFromSave(lcf::rpg::SaveSystem save) {
 	data = std::move(save);
 }
@@ -569,7 +561,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		return;
 	}
 
-	Audio().SE_Play(std::move(stream), AdjustVolume(se.volume), se.tempo);
+	Audio().SE_Play(std::move(stream), se.volume, se.tempo);
 }
 
 bool Game_System::IsMessageTransparent() {

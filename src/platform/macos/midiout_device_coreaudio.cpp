@@ -90,7 +90,7 @@ void CoreAudioMidiOutDevice::SendMidiMessage(uint32_t message) {
 	MusicDeviceMIDIEvent(midi_out, status, value1, value2, 0);
 }
 
-void CoreAudioMidiOutDevice::SendSysExMessage(const void* data, size_t size) {
+void CoreAudioMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	MusicDeviceSysEx(midi_out, (const UInt8*) data, (UInt32) size);
 }
 

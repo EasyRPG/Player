@@ -45,7 +45,7 @@ void FmMidiDecoder::SendMidiMessage(uint32_t message) {
 	synth->midi_event(message);
 }
 
-void FmMidiDecoder::SendSysExMessage(const void * data, std::size_t size) {
+void FmMidiDecoder::SendSysExMessage(const uint8_t* data, std::size_t size) {
 	synth->sysex_message(data, size);
 }
 

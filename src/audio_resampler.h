@@ -103,11 +103,10 @@ public:
 	 * To do a fade out begin must be larger then end.
 	 * Call Update to do the fade.
 	 *
-	 * @param begin Begin volume (from 0-100)
 	 * @param end End volume (from 0-100)
 	 * @param duration Fade duration in ms
 	 */
-	void SetFade(int begin, int end, std::chrono::milliseconds duration) override;
+	void SetFade(int end, std::chrono::milliseconds duration) override;
 
 	/**
 	 * Wraps the seek function of the contained decoder
