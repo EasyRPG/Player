@@ -65,6 +65,8 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 
+	show_touchscreen = true;
+
 	fullscreen = false;
 	trigger_state = false;
 
@@ -197,9 +199,9 @@ void CtrUi::ProcessEvents() {
 	// Touchscreen support
 	u32 keys_tbl[16] = {
 		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::KP_DIVIDE,
-		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_MULTIPLY,
-		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_SUBTRACT,
-		Input::Keys::N0, Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD
+		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_DIVIDE,
+		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_MULTIPLY,
+		Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT
 	};
 
 	if (touch_state == 1) {
@@ -211,15 +213,33 @@ void CtrUi::ProcessEvents() {
 		keys[keys_tbl[i]] = false;
 
 	if (input & KEY_TOUCH) {
-		touch_state = 1;
-		touchPosition pos;
-		hidTouchRead(&pos);
-		u8 col = pos.px / button_width;
-		u8 row = pos.py / button_height;
-		touch_x = pos.px;
-		touch_y = pos.py;
+		if(show_touchscreen) {
+			touch_state = 1;
+			touchPosition pos;
+			hidTouchRead(&pos);
+			u8 col = pos.px / button_width;
+			u8 row = pos.py / button_height;
 
-		keys[keys_tbl[col + (row * 4)]] = true;
+			if (row == 0 && col == 3) { // Turn off touchscreen for top right button
+				if (R_SUCCEEDED(gspLcdInit())) {
+					show_touchscreen = false;
+					GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+					gspLcdExit();
+				}
+
+			} else {
+				keys[keys_tbl[col + (row * 4)]] = true;
+			}
+
+			touch_x = pos.px;
+			touch_y = pos.py;
+		} else {
+			if (R_SUCCEEDED(gspLcdInit())) {
+				show_touchscreen = true;
+				GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+				gspLcdExit();
+			}
+		}
 	}
 #endif
 }
@@ -306,19 +326,11 @@ void CtrUi::UpdateDisplay() {
 		u8 pos_x = col * button_width;
 		u8 pos_y = row * button_height;
 
-		// "0" is handled specially
-		u8 draw_width = button_width;
-		if (col < 2 && row == 3) {
-			draw_width *= 2;
-			if (col == 1)
-				pos_x = 0;
-		}
-
 		// darkened button with outline
-		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
-		C2D_DrawRectSolid(pos_x + draw_width - 2, pos_y, 0.5f, 2, button_height, white); // right
-		C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, draw_width, 2, white); // bottom
-		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, draw_width, 2, gray); // top
+		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, button_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
+		C2D_DrawRectSolid(pos_x + button_width - 2, pos_y, 0.5f, 2, button_height, white); // right
+		C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, button_width, 2, white); // bottom
+		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, button_width, 2, gray); // top
 		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
 	}
 #endif
