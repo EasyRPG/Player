@@ -555,7 +555,9 @@ if(APPLE)
 		src/platform/macos/midiout_device_coreaudio.h)
 
 	find_library(MACOSFOUNDATION Foundation)
-	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION})
+	find_Library(MACOSAUDIOUNIT AudioUnit)
+	find_library(MACOSAUDIOTOOLBOX AudioToolbox)
+	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION} ${MACOSAUDIOUNIT} ${MACOSAUDIOTOOLBOX})
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
