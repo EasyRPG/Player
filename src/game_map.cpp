@@ -1262,8 +1262,25 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 
 	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
 
-	if (Rand::GetRandomNumber(1, 32) == 1) {
-		args.first_strike = true;
+	if (Player::IsRPG2k()) {
+		if (Rand::ChanceOf(1, 32)) {
+			args.first_strike = true;
+		}
+	} else {
+		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
+		if (!terrain) {
+			Output::Warning("PrepareEncounter: Invalid terrain at ({}, {})", x, y);
+		} else {
+			if (terrain->special_flags.back_party && Rand::PercentChance(terrain->special_back_party)) {
+				args.condition = lcf::rpg::System::BattleCondition_initiative;
+			} else if (terrain->special_flags.back_enemies && Rand::PercentChance(terrain->special_back_enemies)) {
+				args.condition = lcf::rpg::System::BattleCondition_back;
+			} else if (terrain->special_flags.lateral_party && Rand::PercentChance(terrain->special_lateral_party)) {
+				args.condition = lcf::rpg::System::BattleCondition_surround;
+			} else if (terrain->special_flags.lateral_enemies && Rand::PercentChance(terrain->special_lateral_enemies)) {
+				args.condition = lcf::rpg::System::BattleCondition_pincers;
+			}
+		}
 	}
 
 	SetupBattle(args);
