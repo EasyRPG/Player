@@ -123,8 +123,11 @@ void Game_System::BgmStop() {
 	Audio().BGM_Stop();
 }
 
-void Game_System::BgmFade(int duration) {
+void Game_System::BgmFade(int duration, bool clear_current_music) {
 	Audio().BGM_Fade(duration);
+	if (clear_current_music) {
+		data.current_music.name = "(OFF)";
+	}
 	data.music_stopping = true;
 }
 
