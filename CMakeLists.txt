@@ -934,7 +934,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
 		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
 		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
-		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml)
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
+		FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
