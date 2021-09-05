@@ -2877,6 +2877,13 @@ void Scene_Battle_Rpg2k3::CBAMove() {
 			offset_y = (cba_end_pos.y - cba_start_pos.y) * frame / cba_num_move_frames;
 		}
 		source->SetBattlePosition(Point(cba_start_pos.x + offset_x, cba_start_pos.y + offset_y));
+
+		if (source->GetType() == Game_Battler::Type_Ally) {
+			auto* sprite = static_cast<Game_Actor*>(source)->GetActorBattleSprite();
+			if (sprite) {
+				sprite->ResetZ();
+			}
+		}
 	}
 
 	if (cba_move_frame >= cba_num_move_frames) {
