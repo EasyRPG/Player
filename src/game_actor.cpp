@@ -353,8 +353,8 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	}
 
 	// In case you have a two_handed weapon equipped, the other weapon is removed.
-	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, GetWeaponId());
-	const lcf::rpg::Item* item2 = lcf::ReaderUtil::GetElement(lcf::Data::items, GetShieldId());
+	const lcf::rpg::Item* item = GetWeapon();
+	const lcf::rpg::Item* item2 = Get2ndWeapon();
 	if (item && item2 && (item->two_handed || item2->two_handed)) {
 		ChangeEquipment(equip_type == lcf::rpg::Item::Type_weapon ? equip_type + 1 : equip_type - 1, 0);
 	}
