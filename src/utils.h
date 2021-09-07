@@ -329,7 +329,7 @@ namespace Utils {
 	 * @param s
 	 * @return true when s contains only ASCII
 	 */
-	bool StringIsAscii(std::string& s);
+	bool StringIsAscii(StringView s);
 
 	/**
 	 * Formats a date.
@@ -420,7 +420,7 @@ inline bool Utils::IsControlCharacter(T ch) {
 	return (ch >= 0x0 && ch <= 0x1F) || ch == 0x7F;
 }
 
-inline bool Utils::StringIsAscii(std::string &s) {
+inline bool Utils::StringIsAscii(StringView s) {
 	return std::all_of(s.begin(), s.end(), [](char c) {
 		return isascii(static_cast<int>(c));
 	});

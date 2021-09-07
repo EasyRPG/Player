@@ -1221,37 +1221,63 @@ std::string Player::GetEncoding() {
 		std::string ldb = FileFinder::Game().FindFile(fileext_map.MakeFilename(RPG_RT_PREFIX, SUFFIX_LDB));
 		auto ldb_stream = FileFinder::Game().OpenInputStream(ldb);
 		if (ldb_stream) {
-			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(ldb_stream);
+			auto db = lcf::LDB_Reader::Load(ldb_stream);
+			if (db) {
+				std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(*db);
 
-	#ifndef EMSCRIPTEN
-			for (std::string& enc : encodings) {
-				// Heuristic: Check if encoded title and system name matches the one on the filesystem
-				// When yes is a good encoding. Otherwise try the next ones.
+#ifndef EMSCRIPTEN
+				for (std::string &enc : encodings) {
+					// Heuristic: Check title graphic, system graphic, cursor SE, title BGM
+					// Pure ASCII is skipped as it provides no added value
+					escape_symbol = lcf::ReaderUtil::Recode("\\", enc);
+					if (escape_symbol.empty()) {
+						// Bad encoding
+						Output::Debug("Bad encoding: {}. Trying next.", enc);
+						continue;
+					}
+					escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 
-				escape_symbol = lcf::ReaderUtil::Recode("\\", enc);
-				if (escape_symbol.empty()) {
-					// Bad encoding
-					Output::Debug("Bad encoding: {}. Trying next.", enc);
-					continue;
+					const auto& title_name = db->system.title_name;
+					const auto& system_name = db->system.system_name;
+					const auto& cursor_se = db->system.cursor_se.name;
+					const auto& title_music = db->system.title_music.name;
+					int check_max = 0;
+					int check_okay = 0;
+
+					if (db->system.show_title && !Utils::StringIsAscii(title_name)) {
+						++check_max;
+						check_okay += FileFinder::FindImage("Title", lcf::ReaderUtil::Recode(title_name, enc)).empty() ? 0 : 1;
+					}
+
+					if (!Utils::StringIsAscii(system_name)) {
+						++check_max;
+						check_okay += FileFinder::FindImage("System", lcf::ReaderUtil::Recode(system_name, enc)).empty() ? 0 : 1;
+					}
+
+					if (!Utils::StringIsAscii(cursor_se)) {
+						++check_max;
+						check_okay += FileFinder::FindSound(lcf::ReaderUtil::Recode(cursor_se, enc)).empty() ? 0 : 1;
+					}
+
+					if (db->system.show_title && !Utils::StringIsAscii(title_music)) {
+						++check_max;
+						check_okay += FileFinder::FindMusic(lcf::ReaderUtil::Recode(title_music, enc)).empty() ? 0 : 1;
+					}
+
+					if (check_max == check_okay) {
+						// Looks like a good encoding
+						encoding = enc;
+						break;
+					} else {
+						Output::Debug("Detected encoding: {}. Files not found ({}/{}). Trying next.", enc, check_okay, check_max);
+					}
 				}
-				escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
-
-				if ((lcf::Data::system.title_name.empty() ||
-						!FileFinder::FindImage("Title", lcf::ReaderUtil::Recode(lcf::Data::system.title_name, enc)).empty()) &&
-					(lcf::Data::system.system_name.empty() ||
-						!FileFinder::FindImage("System", lcf::ReaderUtil::Recode(lcf::Data::system.system_name, enc)).empty())) {
-					// Looks like a good encoding
-					encoding = enc;
-					break;
-				} else {
-					Output::Debug("Detected encoding: {}. Files not found. Trying next.", enc);
+#endif
+				if (!encodings.empty() && encoding.empty()) {
+					// No encoding found that matches the files, maybe RTP missing.
+					// Use the first one instead
+					encoding = encodings.front();
 				}
-			}
-	#endif
-			if (!encodings.empty() && encoding.empty()) {
-				// No encoding found that matches the files, maybe RTP missing.
-				// Use the first one instead
-				encoding = encodings[0];
 			}
 		}
 
