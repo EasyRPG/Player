@@ -35,14 +35,14 @@ namespace Input {
 	 * to be maintained pressed before being
 	 * repeated for fist time.
 	 */
-	constexpr int start_repeat_time = 20;
+	constexpr int start_repeat_time = 23;
 
 	/**
 	 * Repeat time (in frames) a key has to be
 	 * maintained pressed after the start repeat time
 	 * has passed for being repeated again.
 	 */
-	constexpr int repeat_time = 5;
+	constexpr int repeat_time = 4;
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
