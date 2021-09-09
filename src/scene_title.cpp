@@ -79,6 +79,8 @@ void Scene_Title::Continue(SceneType prev_scene) {
 		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 
 		Start();
+
+		restart_title_cache = false;
 	} else if (CheckEnableTitleGraphicAndMusic()) {
 		CreateTitleGraphic();
 	}
