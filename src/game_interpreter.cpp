@@ -2709,6 +2709,15 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
+
+			if ((com.parameters[1] >> 8) != 0) {
+				Output::Warning("Maniac ShowPicture: X/Y origin not supported");
+			}
+
+			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+				Output::Warning("Maniac ShowPicture: Fixed angle not supported");
+				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+			}
 		}
 	}
 
@@ -2783,6 +2792,15 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
+
+			if ((com.parameters[1] >> 8) != 0) {
+				Output::Warning("Maniac MovePicture: X/Y origin not supported");
+			}
+
+			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+				Output::Warning("Maniac MovePicture: Fixed angle not supported");
+				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+			}
 		}
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
