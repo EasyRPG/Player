@@ -41,10 +41,11 @@ void Sprite_Battler::ResetZ() {
 	int y = battler->GetBattlePosition().y;
 	if (battler->GetType() == Game_Battler::Type_Enemy && graphic) {
 		y += graphic->GetHeight() / 2;
+	} else if (battler->GetType() == Game_Battler::Type_Ally) {
+		y += 24;
 	}
 
 	int z = battler->GetType();
-	z *= SCREEN_TARGET_HEIGHT * 2;
 	z += y;
 	z *= id_limit;
 	z += id_limit - battle_index;
