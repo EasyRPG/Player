@@ -215,6 +215,14 @@ public:
 	 */
 	Color GetShadowColor() const;
 
+	/**
+	 * Gets the filename this bitmap was loaded from.
+	 * This will be empty when the origin was not a file.
+	 *
+	 * @return filename
+	 */
+	StringView GetFilename() const;
+
 	void CheckPixels(uint32_t flags);
 
 	/**
@@ -578,6 +586,8 @@ protected:
 	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
+	std::string filename;
+
 	/** Bitmap data. */
 	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;
@@ -645,6 +655,10 @@ inline Rect Bitmap::GetRect() const {
 
 inline bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
+}
+
+inline StringView Bitmap::GetFilename() const {
+	return filename;
 }
 
 #endif

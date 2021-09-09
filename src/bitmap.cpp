@@ -130,6 +130,8 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 	ConvertImage(w, h, pixels, transparent);
 
 	CheckPixels(flags);
+
+	filename = ToString(stream.GetName());
 }
 
 Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
