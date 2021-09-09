@@ -127,8 +127,9 @@ public:
 	 * Fades out the current BGM
 	 *
 	 * @param duration Duration in ms
+	 * @param clear_current_music If true then current_music is set to (OFF). Only needed on starting a new game.
 	 */
-	void BgmFade(int duration);
+	void BgmFade(int duration, bool clear_current_music = false);
 
 	/**
 	 * Plays a Sound.

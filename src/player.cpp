@@ -1137,7 +1137,7 @@ static void OnMapFileReady(FileRequestResult*) {
 }
 
 void Player::SetupNewGame() {
-	Main_Data::game_system->BgmFade(800);
+	Main_Data::game_system->BgmFade(800, true);
 	Main_Data::game_system->ResetFrameCounter();
 	auto title = Scene::Find(Scene::Title);
 	if (title) {
