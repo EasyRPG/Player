@@ -37,6 +37,14 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
 
+	if (Player::IsRPG2k3() && lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
+		height = 68;
+		menu_item_height = 14;
+		actor_face_height = 17;
+		SetBorderY(5);
+		SetContents(Bitmap::Create(width - 8, height - 10));
+	}
+
 	index = -1;
 
 	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
@@ -75,10 +83,10 @@ void Window_BattleStatus::Refresh() {
 		}
 
 		if (!enemy && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
-			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
+			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, actor_face_height);
 		}
 		else {
-			int y = 2 + i * 16;
+			int y = menu_item_height / 8 + i * menu_item_height;
 
 			DrawActorName(*actor, 4, y);
 			if (Player::IsRPG2k()) {
@@ -121,15 +129,15 @@ void Window_BattleStatus::RefreshGauge() {
 				BitmapRef system2 = Cache::System2();
 				if (system2) {
 					// Clear number and gauge drawing area
-					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 48));
+					contents->ClearRect(Rect(40 + 80 * i, actor_face_height, 8 * 4, 48));
 
 					// Number clearing removed part of the face, but both, clear and redraw
 					// are needed because some games don't have face graphics that are huge enough
 					// to clear the number area (e.g. Ara Fell)
-					DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
+					DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, actor_face_height);
 
 					int x = 32 + i * 80;
-					int y = 24;
+					int y = actor_face_height;
 
 					// Left Gauge
 					contents->Blit(x, y, *system2, Rect(0, 32, 16, 48), Opacity::Opaque());
@@ -157,11 +165,11 @@ void Window_BattleStatus::RefreshGauge() {
 				}
 			}
 			else {
-				int y = 2 + i * 16;
+				int y = menu_item_height / 8 + i * menu_item_height;
 
 				if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 					// RPG_RT Bug (?): Gauge hidden when selected due to transparency (wrong color when rendering)
-					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (2 + index * 16 != y)) {
+					if (lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque || (menu_item_height / 8 + index * menu_item_height != y)) {
 						DrawGauge(*actor, 202 - 10, y - 2, lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ? 96 : 255);
 					}
 					int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
@@ -304,7 +312,7 @@ void Window_BattleStatus::UpdateCursorRect() {
 	if (index < 0)
 		SetCursorRect(Rect());
 	else
-		SetCursorRect(Rect(0, index * 16, contents->GetWidth(), 16));
+		SetCursorRect(Rect(0, index * menu_item_height, contents->GetWidth(), menu_item_height));
 }
 
 bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {

@@ -29,7 +29,7 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) { }
 
 void Window_Selectable::CreateContents() {
-	SetContents(Bitmap::Create(width - 16, max(height - 16, GetRowMax() * 16)));
+	SetContents(Bitmap::Create(width - 16, max(height - border_y * 2, GetRowMax() * menu_item_height)));
 }
 
 // Properties
@@ -48,15 +48,15 @@ int Window_Selectable::GetRowMax() const {
 	return (item_max + column_max - 1) / column_max;
 }
 int Window_Selectable::GetTopRow() const {
-	return oy / 16;
+	return oy / menu_item_height;
 }
 void Window_Selectable::SetTopRow(int row) {
 	if (row < 0) row = 0;
 	if (row > GetRowMax() - 1) row = GetRowMax() - 1;
-	SetOy(row * 16);
+	SetOy(row * menu_item_height);
 }
 int Window_Selectable::GetPageRowMax() const {
-	return (height - 16) / 16;
+	return (height - border_y * 2) / menu_item_height;
 }
 int Window_Selectable::GetPageItemMax() {
 	return GetPageRowMax() * column_max;
@@ -66,8 +66,8 @@ Rect Window_Selectable::GetItemRect(int index) {
 	Rect rect = Rect();
 	rect.width = (width / column_max - 16);
 	rect.x = (index % column_max * (rect.width + 16));
-	rect.height = 12;
-	rect.y = index / column_max * 16 + 2;
+	rect.height = menu_item_height - 4;
+	rect.y = index / column_max * menu_item_height + menu_item_height / 8;
 	return rect;
 }
 
@@ -106,8 +106,8 @@ void Window_Selectable::UpdateCursorRect() {
 	cursor_width = (width / column_max - 16) + 8;
 	x = (index % column_max * (cursor_width + 8)) - 4;
 
-	int y = index / column_max * 16 - oy;
-	SetCursorRect(Rect(x, y, cursor_width, 16));
+	int y = index / column_max * menu_item_height - oy;
+	SetCursorRect(Rect(x, y, cursor_width, menu_item_height));
 }
 
 void Window_Selectable::UpdateArrows() {
@@ -190,4 +190,9 @@ void Window_Selectable::Update() {
 // Set endless scrolling state
 void Window_Selectable::SetEndlessScrolling(bool state) {
 	endless_scrolling = state;
+}
+
+// Set menu item height
+void Window_Selectable::SetMenuItemHeight(int height) {
+	menu_item_height = height;
 }

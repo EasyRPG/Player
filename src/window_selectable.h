@@ -80,6 +80,13 @@ public:
 	 */
 	void SetEndlessScrolling(bool state);
 
+	/**
+	 * Sets the menu item height.
+	 *
+	 * @param height the menu item height.
+	 */
+	void SetMenuItemHeight(int height);
+
 protected:
 	void UpdateArrows();
 
@@ -90,6 +97,8 @@ protected:
 	int arrow_frame = 0;
 
 	bool endless_scrolling = true;
+
+	int menu_item_height = 16;
 };
 
 #endif

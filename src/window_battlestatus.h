@@ -97,6 +97,8 @@ protected:
 	bool enemy;
 
 	FileRequestBinding request_id;
+
+	int actor_face_height = 24;
 };
 
 #endif
