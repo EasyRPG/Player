@@ -491,6 +491,14 @@ public:
 	virtual int CalculateSkillCost(int skill_id) const;
 
 	/**
+	 * Calculates the Skill hp costs including all modifiers.
+	 *
+	 * @param skill_id ID of skill to calculate.
+	 * @return needed skill hp cost.
+	 */
+	virtual int CalculateSkillHpCost(int skill_id) const;
+
+	/**
 	 * Calculates the Sp cost for attacking with a weapon.
 	 *
 	 * @param weapon which weapons to include in calculating result.

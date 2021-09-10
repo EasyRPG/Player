@@ -870,6 +870,7 @@ bool Game_BattleAlgorithm::Skill::vStart() {
 		Main_Data::game_party->ConsumeItemUse(item->ID);
 	} else {
 		source->ChangeSp(-source->CalculateSkillCost(skill.ID));
+		source->ChangeHp(-source->CalculateSkillHpCost(skill.ID), false);
 	}
 	return true;
 }
@@ -952,7 +953,8 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 			? effect
 			: Algo::AdjustDamageForDefend(effect, *target);
 
-		const auto cur_hp = target->GetHp();
+		const auto hp_cost = (source == target) ? source->CalculateSkillHpCost(skill.ID) : 0;
+		const auto cur_hp = target->GetHp() - hp_cost;
 
 		if (absorb) {
 			// Cannot aborb more hp than the target has.

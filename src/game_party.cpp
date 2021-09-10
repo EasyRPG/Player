@@ -451,6 +451,7 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 
 	if (was_used) {
 		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill_id));
+		source->SetHp(source->GetHp() - source->CalculateSkillHpCost(skill_id));
 	}
 
 	return was_used;

@@ -187,6 +187,16 @@ int CalcSelfDestructEffect(const Game_Battler& source,
  */
 int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost);
 
+/**
+ * Calculates the hp cost for a skill.
+ *
+ * @param skill The skill to compute
+ * @param max_sp the max hp of the user
+ *
+ * @return hp cost
+ */
+int CalcSkillHpCost(const lcf::rpg::Skill& skill, int max_hp);
+
 /*
  * Determine whether a skill is usable.
  *
