@@ -258,6 +258,15 @@ public:
 
 	Sprite_Enemy* GetEnemyBattleSprite() const;
 
+	int GetEnemyAi() const;
+
+	/**
+	 * Checks if the enemies defense skill is stronger the usual.
+	 *
+	 * @return true if strong defense
+	 */
+	bool HasStrongDefense() const override;
+
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
 	const lcf::rpg::TroopMember* troop_member = nullptr;
@@ -402,5 +411,9 @@ inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
 	return static_cast<Sprite_Enemy*>(Game_Battler::GetBattleSprite());
 }
 
+
+inline bool Game_Enemy::HasStrongDefense() const {
+	return enemy->easyrpg_super_guard;
+}
 
 #endif
