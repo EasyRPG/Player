@@ -1235,17 +1235,17 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 				case 10:
 					// Current date (YYMMDD)
 					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(0);
+						std::time_t t = std::time(nullptr);
 						std::tm* tm = std::localtime(&t);
-						value = (tm->tm_year - 100) * 10000 + (tm->tm_mon + 1) * 100 + tm->tm_mday;
+						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str());
 					}
 					break;
 				case 11:
 					// Current time (HHMMSS)
 					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(0);
+						std::time_t t = std::time(nullptr);
 						std::tm* tm = std::localtime(&t);
-						value = tm->tm_hour * 10000 + tm->tm_min * 100 + tm->tm_sec;
+						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str());
 					}
 					break;
 				case 12:
@@ -3637,10 +3637,8 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	std::time_t t = lcf::LSD_Reader::ToUnixTimestamp(save->title.timestamp);
 	std::tm* tm = std::gmtime(&t);
 
-	// YYMMDD
-	Main_Data::game_variables->Set(com.parameters[2], (tm->tm_year - 100) * 10000 + (tm->tm_mon + 1) * 100 + tm->tm_mday);
-	// HHMMSS
-	Main_Data::game_variables->Set(com.parameters[3], tm->tm_hour * 10000 + tm->tm_min * 100 + tm->tm_sec);
+	Main_Data::game_variables->Set(com.parameters[2], atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str()));
+	Main_Data::game_variables->Set(com.parameters[3], atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str()));
 	Main_Data::game_variables->Set(com.parameters[4], save->title.hero_level);
 	Main_Data::game_variables->Set(com.parameters[5], save->title.hero_hp);
 	Game_Map::SetNeedRefresh(true);

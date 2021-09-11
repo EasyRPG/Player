@@ -623,3 +623,12 @@ std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char
 
 	return str;
 }
+
+std::string Utils::FormatDate(const std::tm *tm, StringView format) {
+	constexpr int buf_size = 128;
+	char buffer[buf_size];
+
+	auto res = strftime(buffer, buf_size, ToString(format).c_str(), tm);
+
+	return std::string(buffer, res);
+}
