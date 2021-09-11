@@ -32,6 +32,7 @@ public:
 		eTroop,
 		eMap,
 		eHeal,
+		eLevel,
 		eCommonEvent,
 		eMapEvent,
 	};
