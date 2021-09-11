@@ -2969,21 +2969,24 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	_keyinput.wait = wait;
 	_keyinput.variable = var_id;
 
+	const size_t param_size = com.parameters.size();
+
 	// Maniac Patch aware check functions for parameters that handle
 	// keyboard and mouse through a bitmask
 	bool is_maniac = Player::IsPatchManiac();
-	auto check_key = [&](auto idx) {
-		if (is_maniac) {
+	auto check_key = [&](auto idx, bool handle_maniac = false) {
+		if (param_size <= idx) {
+			return false;
+		}
+		if (handle_maniac && is_maniac) {
 			return (com.parameters[idx] & 1) != 0;
 		} else {
 			return com.parameters[idx] != 0;
 		}
 	};
 
-	_keyinput.keys[Keys::eDecision] = check_key(3);
-	_keyinput.keys[Keys::eCancel] = check_key(4);
-
-	const size_t param_size = com.parameters.size();
+	_keyinput.keys[Keys::eDecision] = check_key(3, true);
+	_keyinput.keys[Keys::eCancel] = check_key(4, true);
 
 	// All engines support older versions of the command depending on the
 	// length of the parameter list
@@ -2999,10 +3002,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		} else {
 			// For Rpg2k >=1.50
 			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-			_keyinput.keys[Keys::eDown] = param_size > 6 && com.parameters[6] != 0;
-			_keyinput.keys[Keys::eLeft] = param_size > 7 && com.parameters[7] != 0;
-			_keyinput.keys[Keys::eRight] = param_size > 8 && com.parameters[8] != 0;
-			_keyinput.keys[Keys::eUp] = param_size > 9 && com.parameters[9] != 0;
+			_keyinput.keys[Keys::eDown] = check_key(6);
+			_keyinput.keys[Keys::eLeft] = check_key(7);
+			_keyinput.keys[Keys::eRight] = check_key(8);
+			_keyinput.keys[Keys::eUp] = check_key(9);
 		}
 	} else {
 		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
@@ -3013,19 +3016,19 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 				_keyinput.keys[Keys::eRight] = true;
 				_keyinput.keys[Keys::eUp] = true;
 			}
-			_keyinput.keys[Keys::eNumbers] = param_size > 5 && com.parameters[5] != 0;
-			_keyinput.keys[Keys::eOperators] = param_size > 6 && com.parameters[6] != 0;
+			_keyinput.keys[Keys::eNumbers] = check_key(5);
+			_keyinput.keys[Keys::eOperators] = check_key(6);
 			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : 0; // Attention: int, not bool
-			_keyinput.timed = param_size > 8 && com.parameters[8] != 0;
+			_keyinput.timed = check_key(8);
 			if (param_size > 10 && Player::IsMajorUpdatedVersion()) {
 				// For Rpg2k3 >=1.05
 				// ManiacPatch Middle & Wheel only handled for 2k3 Major Updated,
 				// the only version that has this patch
-				_keyinput.keys[Keys::eShift] = check_key(9);
-				_keyinput.keys[Keys::eDown] = check_key(10);
-				_keyinput.keys[Keys::eLeft] = param_size > 11 && com.parameters[11] != 0;
-				_keyinput.keys[Keys::eRight] = param_size > 12 && com.parameters[12] != 0;
-				_keyinput.keys[Keys::eUp] = param_size > 13 && check_key(13);
+				_keyinput.keys[Keys::eShift] = check_key(9, true);
+				_keyinput.keys[Keys::eDown] = check_key(10, true);
+				_keyinput.keys[Keys::eLeft] = check_key(11);
+				_keyinput.keys[Keys::eRight] = check_key(12);
+				_keyinput.keys[Keys::eUp] = check_key(13, true);
 			}
 		} else {
 			// Since RPG2k3 1.05
@@ -3040,6 +3043,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 
 	if (is_maniac) {
 		auto check_mouse = [&](auto idx) {
+			if (param_size <= idx) {
+				return false;
+			}
+
 			bool result = (com.parameters[idx] & 2) != 0;
 #if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
 			if (result) {
@@ -3052,9 +3059,9 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		};
 		_keyinput.keys[Keys::eMouseLeft] = check_mouse(3);
 		_keyinput.keys[Keys::eMouseRight] = check_mouse(4);
-		_keyinput.keys[Keys::eMouseMiddle] = param_size > 9 && check_mouse(9);
-		_keyinput.keys[Keys::eMouseScrollDown] = param_size > 10 && check_mouse(10);
-		_keyinput.keys[Keys::eMouseScrollUp] = param_size > 13 && check_mouse(13);
+		_keyinput.keys[Keys::eMouseMiddle] = check_mouse(9);
+		_keyinput.keys[Keys::eMouseScrollDown] = check_mouse(10);
+		_keyinput.keys[Keys::eMouseScrollUp] = check_mouse(13);
 	}
 
 	if (_keyinput.wait) {
