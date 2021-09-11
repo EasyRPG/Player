@@ -782,7 +782,7 @@ void Player::CreateGameObjects() {
 					Output::Debug("Using RPG2k3 Interpreter");
 				}
 			} else {
-				engine |= EngineEnglish;
+				engine |= EngineEnglish | EngineMajorUpdated;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		} else {
