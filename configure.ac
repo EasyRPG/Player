@@ -79,7 +79,7 @@ AS_IF([test "x$with_audio" != "xno"],[
 		EP_PKG_CHECK([FLUIDLITE],[fluidlite],[Midi support (Soundfonts). Liteweight version of FluidSynth. Alternative to internal fmmidi.])
 	], [AC_SUBST([with_fluidlite], "no"]))
 	EP_PKG_CHECK([ALSA],[alsa],[Midi support (Daemon)])
-	EP_PKG_CHECK([OGGVORBIS],[vorbisfile],[Ogg Vorbis support.])
+	EP_PKG_CHECK([OGGVORBIS],[vorbisfile vorbis],[Ogg Vorbis support.])
 	EP_PKG_CHECK([OPUS],[opusfile],[Opus support.])
 	EP_PKG_CHECK([LIBSNDFILE],[sndfile],[Improved WAV support. Fallback when unsupported by dr_wav.])
 	EP_PKG_CHECK([LIBXMP],[libxmp >= 4.5.0],[Tracker module support.])
