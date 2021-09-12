@@ -2856,7 +2856,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	// length of the parameter list
 	if (Player::IsRPG2k()) {
 		if (param_size < 6 || Player::IsRPG2kLegacy()) {
-			// For Rpg2k <1.50
+			// For Rpg2k <1.50 (later versions got individual key checks)
 			if (com.parameters[2] != 0) {
 				_keyinput.keys[Keys::eDown] = true;
 				_keyinput.keys[Keys::eLeft] = true;
@@ -2873,7 +2873,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		}
 	} else {
 		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
-			if (param_size < 10 && com.parameters[2] != 0) {
+			if ((param_size < 10 || Player::IsRPG2k3Legacy()) && com.parameters[2] != 0) {
 				// For RPG2k3 <1.05 (later versions got individual key checks)
 				_keyinput.keys[Keys::eDown] = true;
 				_keyinput.keys[Keys::eLeft] = true;
