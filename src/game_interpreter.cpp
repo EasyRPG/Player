@@ -1691,13 +1691,13 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 		// For simplicity it is enabled for all here
 		if (mode == 2) {
 			// Variable indirect
-			return Main_Data::game_variables->Get(Main_Data::game_variables->Get(val));
+			return Main_Data::game_variables->GetIndirect(val);
 		} else if (mode == 3) {
 			// Switch (F = 0, T = 1)
-			return Main_Data::game_switches->Get(val) ? 1 : 0;
+			return Main_Data::game_switches->GetInt(val);
 		} else if (mode == 4) {
-			// Switch through Variable indirect
-			return Main_Data::game_switches->Get(Main_Data::game_variables->Get(val)) ? 1 : 0;
+			// Switch through Variable (F = 0, T = 1)
+			return Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(val));
 		}
 	}
 	return -1;

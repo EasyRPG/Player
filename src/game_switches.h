@@ -39,6 +39,7 @@ public:
 	const Switches_t& GetData() const;
 
 	bool Get(int switch_id) const;
+	int GetInt(int switch_id) const;
 
 	bool Set(int switch_id, bool value);
 	void SetRange(int first_id, int last_id, bool value);
@@ -92,6 +93,10 @@ inline bool Game_Switches::Get(int switch_id) const {
 		return false;
 	}
 	return _switches[switch_id - 1];
+}
+
+inline int Game_Switches::GetInt(int switch_id) const {
+	return Get(switch_id) ? 1 : 0;
 }
 
 inline void Game_Switches::SetWarning(int w) {
