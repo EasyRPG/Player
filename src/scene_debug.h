@@ -63,6 +63,7 @@ public:
 		eBattle,
 		eMap,
 		eFullHeal,
+		eLevel,
 		eCallCommonEvent,
 		eCallMapEvent,
 		eCallBattleEvent,
@@ -104,6 +105,7 @@ private:
 	void DoBattle();
 	void DoMap();
 	void DoFullHeal();
+	void DoLevel();
 	void DoCallCommonEvent();
 	void DoCallMapEvent();
 	void DoCallBattleEvent();

@@ -86,6 +86,13 @@ void Window_VarList::DrawItemValue(int index){
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
 			}
 			break;
+		case eLevel:
+			{
+				auto value = Main_Data::game_party->GetActors()[first_var + index - 1]->GetLevel();
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, std::to_string(value), Text::AlignRight);
+			}
+			break;
 		case eNone:
 			break;
 	}
@@ -136,6 +143,12 @@ void Window_VarList::UpdateList(int first_value){
 					ss << actor->GetName() << " " << actor->GetHp() << " / " << actor->GetMaxHp();
 				}
 				break;
+			case eLevel:
+				if (first_value + i >= 1) {
+					auto* actor = Main_Data::game_party->GetActors()[first_value + i-1];
+					ss << actor->GetName();
+				}
+				break;
 			case eCommonEvent:
 				ss << lcf::ReaderUtil::GetElement(lcf::Data::commonevents, first_value+i)->name;
 				break;
@@ -169,6 +182,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= (lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0);
 		case eHeal:
 			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size()) + 1;
+		case eLevel:
+			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size());
 		case eCommonEvent:
 			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::commonevents.size());
 		case eMapEvent:

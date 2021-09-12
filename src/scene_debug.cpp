@@ -109,6 +109,8 @@ Window_VarList::Mode Scene_Debug::GetWindowMode() const {
 			return Window_VarList::eMap;
 		case eFullHeal:
 			return Window_VarList::eHeal;
+		case eLevel:
+			return Window_VarList::eLevel;
 		case eCallCommonEvent:
 			return Window_VarList::eCommonEvent;
 		case eCallMapEvent:
@@ -392,6 +394,18 @@ void Scene_Debug::Update() {
 					PushUiVarList();
 				}
 				break;
+			case eLevel:
+				if (sz > 2) {
+					DoLevel();
+				} else if (sz > 1) {
+					if (frame.value <= static_cast<int>(Main_Data::game_party->GetActors().size())) {
+						auto* actor = Main_Data::game_party->GetActors()[frame.value - 1];
+						PushUiNumberInput(actor->GetLevel(), actor->GetMaxLevel() >= 100 ? 3 : 2, false);
+					}
+				} else {
+					PushUiVarList();
+				}
+				break;
 			case eCallCommonEvent:
 				if (sz > 2) {
 					DoCallCommonEvent();
@@ -494,8 +508,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Battle", !is_battle);
 				addItem("Goto Map", !is_battle);
 				addItem("Full Heal");
-				addItem("Call ComEvent");
+				addItem("Level");
 			} else {
+				addItem("Call ComEvent");
 				addItem("Call MapEvent", !is_battle);
 				addItem("Call BtlEvent", is_battle);
 			}
@@ -554,6 +569,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 			break;
 		case eFullHeal:
 			addItem("Full Heal");
+			break;
+		case eLevel:
+			addItem("Level");
 			break;
 		case eCallBattleEvent:
 			if (is_battle) {
@@ -622,6 +640,9 @@ int Scene_Debug::GetLastPage() {
 			break;
 		case eFullHeal:
 			num_elements = Main_Data::game_party->GetBattlerCount() + 1;
+			break;
+		case eLevel:
+			num_elements = Main_Data::game_party->GetBattlerCount();
 			break;
 		case eCallCommonEvent:
 			num_elements = lcf::Data::commonevents.size();
@@ -735,6 +756,21 @@ void Scene_Debug::DoFullHeal() {
 	}
 	var_window->UpdateList(1);
 	var_window->Refresh();
+}
+
+void Scene_Debug::DoLevel() {
+	const auto id = GetFrame(1).value;
+	const auto level = GetFrame(0).value;
+
+	auto actors = Main_Data::game_party->GetActors();
+	int idx = id - 1;
+	if (idx < static_cast<int>(actors.size())) {
+		if (actors[idx]->GetLevel() != level) {
+			actors[idx]->ChangeLevel(level, nullptr);
+		}
+	}
+
+	Pop();
 }
 
 void Scene_Debug::DoCallCommonEvent() {
