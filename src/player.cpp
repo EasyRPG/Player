@@ -232,7 +232,7 @@ void Player::Run() {
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
 #ifndef USE_LIBRETRO
-	while (Transition::instance().IsActive() || Scene::instance->type != Scene::Null) {
+	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
 #  if defined(_3DS)
 		if (!aptMainLoop())
 			Exit();
