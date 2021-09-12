@@ -730,7 +730,7 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::JumpToLabel:
 			return CommandJumpToLabel(com);
 		case Cmd::Loop:
-			return true;
+			return CommandLoop(com);
 		case Cmd::BreakLoop:
 			return CommandBreakLoop(com);
 		case Cmd::EndLoop:
@@ -3498,6 +3498,16 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 		break;
 	}
 
+	return true;
+}
+
+bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 12210
+	if (!Player::IsPatchManiac() || com.parameters.empty() || com.parameters[0] == 0) {
+		// Infinite Loop
+		return true;
+	}
+
+	Output::Warning("Maniac CommandLoop: Conditional loops unsupported");
 	return true;
 }
 
