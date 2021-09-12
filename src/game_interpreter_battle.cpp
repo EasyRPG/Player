@@ -40,7 +40,7 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage>
 {
 }
 
-bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition) {
+bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageCondition& condition, Game_Battler* source) {
 	if (!condition.flags.switch_a &&
 		!condition.flags.switch_b &&
 		!condition.flags.variable &&
@@ -100,19 +100,24 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 			return false;
 	}
 
-	// FIXME: This also requires current acting hero db id
-	if (condition.flags.command_actor &&
-		condition.command_id != Main_Data::game_actors->GetActor(condition.command_actor_id)->GetLastBattleAction())
-		return false;
+	if (condition.flags.command_actor) {
+		if (!source)
+			return false;
+		const auto* actor = Main_Data::game_actors->GetActor(condition.command_actor_id);
+		if (source != actor)
+			return false;
+		if (condition.command_id != actor->GetLastBattleAction())
+			return false;
+	}
 
 	return true;
 }
 
-int Game_Interpreter_Battle::ScheduleNextPage() {
+int Game_Interpreter_Battle::ScheduleNextPage(Game_Battler* source) {
 	lcf::rpg::TroopPageCondition::Flags f;
 	for (auto& ff: f.flags) ff = true;
 
-	return ScheduleNextPage(f);
+	return ScheduleNextPage(f, source);
 }
 
 static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::rpg::TroopPageCondition::Flags required) {
@@ -124,7 +129,7 @@ static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::
 	return false;
 }
 
-int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions) {
+int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions, Game_Battler* source) {
 	if (IsRunning()) {
 		return 0;
 	}
@@ -133,7 +138,7 @@ int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flag
 		auto& page = pages[i];
 		if (executed[i]
 				|| !HasRequiredCondition(page.condition.flags, required_conditions)
-				|| !AreConditionsMet(page.condition)) {
+				|| !AreConditionsMet(page.condition, source)) {
 			continue;
 		}
 		Clear();

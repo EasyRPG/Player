@@ -917,7 +917,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndConditions() {
 }
 
 
-bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt) {
+bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt, Game_Battler* source) {
 	auto& interp = Game_Battle::GetInterpreterBattle();
 
 	if (interp.IsRunning()) {
@@ -946,7 +946,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt) {
 			break;
 	}
 
-	int page = interp.ScheduleNextPage(flags);
+	int page = interp.ScheduleNextPage(flags, source);
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	if (page) {
 		Output::Debug("Battle2k3 ScheduleNextEventPage Scheduled Page {} frame={}", page, Main_Data::game_system->GetFrameCounter());
@@ -1059,7 +1059,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSt
 	}
 
 	if (scene_action_substate == eUpdateEvents) {
-		if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAll)) {
+		if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAll, nullptr)) {
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
@@ -2044,7 +2044,7 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	auto* source = action->GetSource();
 
 	// RPG_RT always runs the interpreter before starting the action.
-	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eBeforeBattleAction)) {
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eBeforeBattleAction, source)) {
 		return BattleActionReturn::eContinue;
 	}
 
@@ -2444,9 +2444,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionSwitchEvents(Game_BattleAlgorithm::AlgorithmBase* action) {
-	(void)action;
 	// RPG_RT always runs the interpreter before starting the action.
-	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction)) {
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction, action->GetSource())) {
 		return BattleActionReturn::eContinue;
 	}
 
@@ -2618,9 +2617,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 }
 
 Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action) {
-	(void)action;
 	// RPG_RT always runs the interpreter before starting the action.
-	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction)) {
+	if (!CheckBattleEndAndScheduleEvents(EventTriggerType::eAfterBattleAction, action->GetSource())) {
 		return BattleActionReturn::eContinue;
 	}
 
