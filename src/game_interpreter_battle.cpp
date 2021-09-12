@@ -68,13 +68,21 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 	if (condition.flags.turn && !Game_Battle::CheckTurns(Game_Battle::GetTurn(), condition.turn_b, condition.turn_a))
 		return false;
 
-	if (condition.flags.turn_enemy &&
-		!Game_Battle::CheckTurns((*Main_Data::game_enemyparty)[condition.turn_enemy_id].GetBattleTurn(),	condition.turn_enemy_b, condition.turn_enemy_a))
-		return false;
+	if (condition.flags.turn_enemy) {
+		const auto& enemy = (*Main_Data::game_enemyparty)[condition.turn_enemy_id];
+		if (source && source != &enemy)
+			return false;
+		if (!Game_Battle::CheckTurns(enemy.GetBattleTurn(), condition.turn_enemy_b, condition.turn_enemy_a))
+			return false;
+	}
 
-	if (condition.flags.turn_actor &&
-		!Game_Battle::CheckTurns(Main_Data::game_actors->GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
-		return false;
+	if (condition.flags.turn_actor) {
+		const auto* actor = Main_Data::game_actors->GetActor(condition.turn_actor_id);
+		if (source && source != actor)
+			return false;
+		if (!Game_Battle::CheckTurns(actor->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
+			return false;
+	}
 
 	if (condition.flags.fatigue) {
 		int fatigue = Main_Data::game_party->GetFatigue();
