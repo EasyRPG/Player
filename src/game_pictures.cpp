@@ -310,6 +310,12 @@ void Game_Pictures::Erase(int id) {
 	}
 }
 
+void Game_Pictures::EraseAll() {
+	for (auto& pic: pictures) {
+		pic.Erase();
+	}
+}
+
 bool Game_Pictures::Picture::Exists() const {
 	// Incompatible with the Yume2kki edge-case that uses empty filenames
 	return !data.name.empty();

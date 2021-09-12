@@ -82,6 +82,7 @@ public:
 	void Show(int id, const ShowParams& params);
 	void Move(int id, const MoveParams& params);
 	void Erase(int id);
+	void EraseAll();
 
 	void Update(bool is_battle);
 

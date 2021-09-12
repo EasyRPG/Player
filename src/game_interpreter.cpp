@@ -2839,15 +2839,45 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 		// Handling of RPG2k3 1.12 chunks
 		int id_type = com.parameters[1];
 
-		int max;
-		if (id_type < 2) {
-			pic_id = ValueOrVariable(id_type, pic_id);
-			max = pic_id;
-		} else {
-			max = com.parameters[2];
+		int pic_id_max;
+		switch (id_type) {
+			case 1:
+				// Erase single picture referenced by variable
+				pic_id = Main_Data::game_variables->Get(pic_id);
+				pic_id_max = pic_id;
+				break;
+			case 2:
+				// Erase [Arg0, Arg2]
+				pic_id_max = com.parameters[2];
+				break;
+			case 3:
+				// Erase [V[Arg0], V[Arg2]]
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				pic_id = Main_Data::game_variables->Get(pic_id);
+				pic_id_max = Main_Data::game_variables->Get(com.parameters[2]);
+				break;
+			case 4:
+				// Erase single picture referenced by variable indirect
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				pic_id = Main_Data::game_variables->GetIndirect(pic_id);
+				pic_id_max = pic_id;
+				break;
+			case 5:
+				// Erase all pictures
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				Main_Data::game_pictures->EraseAll();
+				return true;
+			default:
+				return true;
 		}
 
-		for (int i = pic_id; i <= max; ++i) {
+		for (int i = pic_id; i <= pic_id_max; ++i) {
 			if (i <= 0) {
 				Output::Error("ErasePicture: Requested invalid picture id ({})", i);
 			}
