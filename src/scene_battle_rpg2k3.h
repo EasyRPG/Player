@@ -178,7 +178,7 @@ protected:
 	SceneActionReturn ProcessSceneActionEscape();
 
 	void NextTurn(Game_Battler* battler);
-	bool CheckBattleEndAndScheduleEvents(EventTriggerType tt);
+	bool CheckBattleEndAndScheduleEvents(EventTriggerType tt, Game_Battler* source);
 	bool CheckBattleEndConditions();
 
 	void SetBattleActionState(BattleActionState state);

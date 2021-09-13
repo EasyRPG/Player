@@ -45,10 +45,10 @@ public:
 	bool IsValidPage(int page_id) const;
 	bool HasPageExecuted(int page_id) const;
 
-	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition);
+	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition, Game_Battler* source);
 
-	int ScheduleNextPage();
-	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions);
+	int ScheduleNextPage(Game_Battler* source);
+	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions, Game_Battler* source);
 	void ResetPagesExecuted();
 
 	void SetCurrentEnemyTargetIndex(int idx);
