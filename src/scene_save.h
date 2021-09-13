@@ -40,8 +40,8 @@ public:
 	bool IsSlotValid(int index) override;
 
 	static std::string GetSaveFilename(const FilesystemView& tree, int slot_id);
-	static void Save(const FilesystemView& tree, int slot_id, bool prepare_save = true);
-	static void Save(std::ostream& os, int slot_id, bool prepare_save = true);
+	static bool Save(const FilesystemView& tree, int slot_id, bool prepare_save = true);
+	static bool Save(std::ostream& os, int slot_id, bool prepare_save = true);
 };
 
 #endif

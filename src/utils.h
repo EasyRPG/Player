@@ -18,6 +18,7 @@
 #ifndef EP_UTILS_H
 #define EP_UTILS_H
 
+#include <ctime>
 #include <functional>
 #include <string>
 #include <sstream>
@@ -28,6 +29,9 @@
 #include "span.h"
 
 namespace Utils {
+	constexpr StringView DateFormat_YYMMDD = "%y%m%d";
+	constexpr StringView DateFormat_HHMMSS = "%H%M%S";
+
 	/**
 	 * Converts a string to lower case (ASCII only)
 	 *
@@ -326,6 +330,15 @@ namespace Utils {
 	 * @return true when s contains only ASCII
 	 */
 	bool StringIsAscii(std::string& s);
+
+	/**
+	 * Formats a date.
+	 *
+	 * @param tm Time structure
+	 * @param format Format string (See strftime)
+	 * @return formatted date
+	 */
+	std::string FormatDate(const std::tm* tm, StringView format);
 
 	/**
 	 * RPG_RT / Delphi compatible rounding of floating point.

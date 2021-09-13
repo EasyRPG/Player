@@ -21,6 +21,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <ctime>
 #include "game_interpreter.h"
 #include "audio.h"
 #include "dynrpg.h"
@@ -43,6 +44,7 @@
 #include "sprite_character.h"
 #include "scene_gameover.h"
 #include "scene_map.h"
+#include "scene_save.h"
 #include "scene.h"
 #include "game_clock.h"
 #include "input.h"
@@ -51,6 +53,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include <lcf/reader_util.h>
+#include <lcf/lsd/reader.h>
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
@@ -121,6 +124,20 @@ void Game_Interpreter::Push(
 void Game_Interpreter::KeyInputState::fromSave(const lcf::rpg::SaveEventExecState& save) {
 	*this = {};
 
+	// Maniac Patch aware check functions for parameters that handle
+	// keyboard and mouse through a bitmask
+	bool is_maniac = Player::IsPatchManiac();
+	auto check_key = [&](auto& var) {
+		if (is_maniac) {
+			return (var & 1) != 0;
+		} else {
+			return var != 0;
+		}
+	};
+	auto check_mouse = [&](auto& var) {
+		return (var & 2) != 0;
+	};
+
 	wait = save.keyinput_wait;
 	// FIXME: There is an RPG_RT bug where keyinput_variable is uint8_t
 	// which we currently have to emulate. So the value from the save could be wrong.
@@ -133,27 +150,35 @@ void Game_Interpreter::KeyInputState::fromSave(const lcf::rpg::SaveEventExecStat
 		keys[Keys::eUp] = true;
 	} else {
 		if (Player::IsRPG2k3()) {
-			keys[Keys::eDown] = save.keyinput_2k3down;
-			keys[Keys::eLeft] = save.keyinput_2k3left;
-			keys[Keys::eRight] = save.keyinput_2k3right;
-			keys[Keys::eUp] = save.keyinput_2k3up;
+			keys[Keys::eDown] = check_key(save.keyinput_2k3down);
+			keys[Keys::eLeft] = check_key(save.keyinput_2k3left);
+			keys[Keys::eRight] = check_key(save.keyinput_2k3right);
+			keys[Keys::eUp] = check_key(save.keyinput_2k3up);
 		} else {
-			keys[Keys::eDown] = save.keyinput_2kdown_2k3operators	;
-			keys[Keys::eLeft] = save.keyinput_2kleft_2k3shift;
-			keys[Keys::eRight] = save.keyinput_2kright;
-			keys[Keys::eUp] = save.keyinput_2kup;
+			keys[Keys::eDown] = check_key(save.keyinput_2kdown_2k3operators);
+			keys[Keys::eLeft] = check_key(save.keyinput_2kleft_2k3shift);
+			keys[Keys::eRight] = check_key(save.keyinput_2kright);
+			keys[Keys::eUp] = check_key(save.keyinput_2kup);
 		}
 	}
 
-	keys[Keys::eDecision] = save.keyinput_decision;
-	keys[Keys::eCancel] = save.keyinput_cancel;
+	keys[Keys::eDecision] = check_key(save.keyinput_decision);
+	keys[Keys::eCancel] = check_key(save.keyinput_cancel);
 
 	if (Player::IsRPG2k3()) {
-		keys[Keys::eShift] = save.keyinput_2kleft_2k3shift;
-		keys[Keys::eNumbers] = save.keyinput_2kshift_2k3numbers;
-		keys[Keys::eOperators] = save.keyinput_2kdown_2k3operators;
+		keys[Keys::eShift] = check_key(save.keyinput_2kleft_2k3shift);
+		keys[Keys::eNumbers] = check_key(save.keyinput_2kshift_2k3numbers);
+		keys[Keys::eOperators] = check_key(save.keyinput_2kdown_2k3operators);
+
+		if (is_maniac) {
+			keys[Keys::eMouseLeft] = check_mouse(save.keyinput_decision);
+			keys[Keys::eMouseRight] = check_mouse(save.keyinput_cancel);
+			keys[Keys::eMouseMiddle] = check_mouse(save.keyinput_2kleft_2k3shift);
+			keys[Keys::eMouseScrollUp] = check_mouse(save.keyinput_2k3up);
+			keys[Keys::eMouseScrollDown] = check_mouse(save.keyinput_2k3down);
+		}
 	} else {
-		keys[Keys::eShift] = save.keyinput_2kshift_2k3numbers;
+		keys[Keys::eShift] = check_key(save.keyinput_2kshift_2k3numbers);
 	}
 
 	time_variable = save.keyinput_time_variable;
@@ -212,6 +237,24 @@ void Game_Interpreter::KeyInputState::toSave(lcf::rpg::SaveEventExecState& save)
 		save.keyinput_2kleft_2k3shift = keys[Keys::eShift];
 		save.keyinput_2kshift_2k3numbers = keys[Keys::eNumbers];
 		save.keyinput_2kdown_2k3operators = keys[Keys::eOperators];
+
+		if (Player::IsPatchManiac()) {
+			if (keys[Keys::eMouseLeft]) {
+				save.keyinput_decision |= 2;
+			}
+			if (keys[Keys::eMouseRight]) {
+				save.keyinput_cancel |= 2;
+			}
+			if (keys[Keys::eMouseMiddle]) {
+				save.keyinput_2kleft_2k3shift |= 2;
+			}
+			if (keys[Keys::eMouseScrollUp]) {
+				save.keyinput_2k3up |= 2;
+			}
+			if (keys[Keys::eMouseScrollDown]) {
+				save.keyinput_2k3down |= 2;
+			}
+		}
 	} else {
 		save.keyinput_2kshift_2k3numbers = keys[Keys::eShift];
 	}
@@ -1154,6 +1197,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
+					// Timer 1 remaining time
 					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
 					break;
 				case 2:
@@ -1185,7 +1229,37 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					value = Main_Data::game_ineluki->GetMidiTicks();
 					break;
 				case 9:
+					// Timer 2 remaining time
 					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+					break;
+				case 10:
+					// Current date (YYMMDD)
+					if (Player::IsPatchManiac()) {
+						std::time_t t = std::time(nullptr);
+						std::tm* tm = std::localtime(&t);
+						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str());
+					}
+					break;
+				case 11:
+					// Current time (HHMMSS)
+					if (Player::IsPatchManiac()) {
+						std::time_t t = std::time(nullptr);
+						std::tm* tm = std::localtime(&t);
+						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str());
+					}
+					break;
+				case 12:
+					// Frames
+					if (Player::IsPatchManiac()) {
+						value = Main_Data::game_system->GetFrameCounter();
+					}
+					break;
+				case 13:
+					// Patch version
+					if (Player::IsPatchManiac()) {
+						// Latest version before the engine rewrite
+						value = 200128;
+					}
 					break;
 			}
 			break;
@@ -1608,14 +1682,25 @@ bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { /
 }
 
 int Game_Interpreter::ValueOrVariable(int mode, int val) {
-	switch (mode) {
-		case 0:
-			return val;
-		case 1:
-			return Main_Data::game_variables->Get(val);
-		default:
-			return -1;
+	if (mode == 0) {
+		return val;
+	} else if (mode == 1) {
+		return Main_Data::game_variables->Get(val);
+	} else if (Player::IsPatchManiac()) {
+		// Maniac Patch does not implement all modes for all commands
+		// For simplicity it is enabled for all here
+		if (mode == 2) {
+			// Variable indirect
+			return Main_Data::game_variables->Get(Main_Data::game_variables->Get(val));
+		} else if (mode == 3) {
+			// Switch (F = 0, T = 1)
+			return Main_Data::game_switches->Get(val) ? 1 : 0;
+		} else if (mode == 4) {
+			// Switch through Variable indirect
+			return Main_Data::game_switches->Get(Main_Data::game_variables->Get(val)) ? 1 : 0;
+		}
 	}
+	return -1;
 }
 
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
@@ -2782,9 +2867,46 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* 
 	return true;
 }
 
-
 int Game_Interpreter::KeyInputState::CheckInput() const {
 	auto check = wait ? Input::IsTriggered : Input::IsPressed;
+
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	// FIXME: Refactor input system to make mouse buttons individual keys
+	auto check_raw = wait ? Input::IsRawKeyTriggered : Input::IsRawKeyPressed;
+
+	// Mouse buttons checked first (Maniac checks them last) to prevent conflict
+	// with DECISION that is mapped to MOUSE_LEFT
+	// The order of checking matches the Maniac behaviour
+	if (keys[Keys::eMouseScrollDown]) {
+		if (check_raw(Input::Keys::MOUSE_SCROLLDOWN)) {
+			return 1001;
+		}
+	}
+
+	if (keys[Keys::eMouseScrollUp]) {
+		if (check_raw(Input::Keys::MOUSE_SCROLLUP)) {
+			return 1004;
+		}
+	}
+
+	if (keys[Keys::eMouseMiddle]) {
+		if (check_raw(Input::Keys::MOUSE_MIDDLE)) {
+			return 1007;
+		}
+	}
+
+	if (keys[Keys::eMouseRight]) {
+		if (check_raw(Input::Keys::MOUSE_RIGHT)) {
+			return 1006;
+		}
+	}
+
+	if (keys[Keys::eMouseLeft]) {
+		if (check_raw(Input::Keys::MOUSE_LEFT)) {
+			return 1005;
+		}
+	}
+#endif
 
 	// RPG processes keys from highest variable value to lowest.
 	if (keys[Keys::eOperators]) {
@@ -2847,10 +2969,24 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	_keyinput.wait = wait;
 	_keyinput.variable = var_id;
 
-	_keyinput.keys[Keys::eDecision] = com.parameters[3] != 0;
-	_keyinput.keys[Keys::eCancel] = com.parameters[4] != 0;
-
 	const size_t param_size = com.parameters.size();
+
+	// Maniac Patch aware check functions for parameters that handle
+	// keyboard and mouse through a bitmask
+	bool is_maniac = Player::IsPatchManiac();
+	auto check_key = [&](auto idx, bool handle_maniac = false) {
+		if (param_size <= idx) {
+			return false;
+		}
+		if (handle_maniac && is_maniac) {
+			return (com.parameters[idx] & 1) != 0;
+		} else {
+			return com.parameters[idx] != 0;
+		}
+	};
+
+	_keyinput.keys[Keys::eDecision] = check_key(3, true);
+	_keyinput.keys[Keys::eCancel] = check_key(4, true);
 
 	// All engines support older versions of the command depending on the
 	// length of the parameter list
@@ -2866,10 +3002,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		} else {
 			// For Rpg2k >=1.50
 			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-			_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
-			_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
-			_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
-			_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
+			_keyinput.keys[Keys::eDown] = check_key(6);
+			_keyinput.keys[Keys::eLeft] = check_key(7);
+			_keyinput.keys[Keys::eRight] = check_key(8);
+			_keyinput.keys[Keys::eUp] = check_key(9);
 		}
 	} else {
 		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
@@ -2880,17 +3016,19 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 				_keyinput.keys[Keys::eRight] = true;
 				_keyinput.keys[Keys::eUp] = true;
 			}
-			_keyinput.keys[Keys::eNumbers] = param_size > 5 ? com.parameters[5] != 0 : false;
-			_keyinput.keys[Keys::eOperators] = param_size > 6 ? com.parameters[6] != 0 : false;
-			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : false;
-			_keyinput.timed = param_size > 8 ? com.parameters[8] != 0 : false;
+			_keyinput.keys[Keys::eNumbers] = check_key(5);
+			_keyinput.keys[Keys::eOperators] = check_key(6);
+			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : 0; // Attention: int, not bool
+			_keyinput.timed = check_key(8);
 			if (param_size > 10 && Player::IsMajorUpdatedVersion()) {
 				// For Rpg2k3 >=1.05
-				_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
-				_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
-				_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
-				_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
-				_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
+				// ManiacPatch Middle & Wheel only handled for 2k3 Major Updated,
+				// the only version that has this patch
+				_keyinput.keys[Keys::eShift] = check_key(9, true);
+				_keyinput.keys[Keys::eDown] = check_key(10, true);
+				_keyinput.keys[Keys::eLeft] = check_key(11);
+				_keyinput.keys[Keys::eRight] = check_key(12);
+				_keyinput.keys[Keys::eUp] = check_key(13, true);
 			}
 		} else {
 			// Since RPG2k3 1.05
@@ -2901,6 +3039,29 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 			_keyinput.keys[Keys::eRight] = com.parameters[8] != 0;
 			_keyinput.keys[Keys::eUp] = com.parameters[9] != 0;
 		}
+	}
+
+	if (is_maniac) {
+		auto check_mouse = [&](auto idx) {
+			if (param_size <= idx) {
+				return false;
+			}
+
+			bool result = (com.parameters[idx] & 2) != 0;
+#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+			if (result) {
+				Output::Warning("ManiacPatch: Mouse input is not supported on this platform");
+				return false;
+			}
+#else
+			return result;
+#endif
+		};
+		_keyinput.keys[Keys::eMouseLeft] = check_mouse(3);
+		_keyinput.keys[Keys::eMouseRight] = check_mouse(4);
+		_keyinput.keys[Keys::eMouseMiddle] = check_mouse(9);
+		_keyinput.keys[Keys::eMouseScrollDown] = check_mouse(10);
+		_keyinput.keys[Keys::eMouseScrollUp] = check_mouse(13);
 	}
 
 	if (_keyinput.wait) {
@@ -3456,39 +3617,130 @@ bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* 
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command GetSaveInfo not supported");
+	int save_number = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	// Error case, set to YYMMDD later on success
+	Main_Data::game_variables->Set(com.parameters[2], 0);
+
+	if (save_number <= 0) {
+		Output::Debug("ManiacGetSaveInfo: Invalid save number {}", save_number);
+		return true;
+	}
+
+	auto savefs = FileFinder::Save();
+	std::string save_name = Scene_Save::GetSaveFilename(savefs, save_number);
+	auto save = lcf::LSD_Reader::Load(save_name, Player::encoding);
+
+	if (!save) {
+		Output::Debug("ManiacGetSaveInfo: Save not found {}", save_number);
+		return true;
+	}
+
+	std::time_t t = lcf::LSD_Reader::ToUnixTimestamp(save->title.timestamp);
+	std::tm* tm = std::gmtime(&t);
+
+	Main_Data::game_variables->Set(com.parameters[2], atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str()));
+	Main_Data::game_variables->Set(com.parameters[3], atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str()));
+	Main_Data::game_variables->Set(com.parameters[4], save->title.hero_level);
+	Main_Data::game_variables->Set(com.parameters[5], save->title.hero_hp);
+	Game_Map::SetNeedRefresh(true);
+
+	auto face_ids = Utils::MakeArray(save->title.face1_id, save->title.face2_id, save->title.face3_id, save->title.face4_id);
+	auto face_names = Utils::MakeArray(save->title.face1_name, save->title.face2_name, save->title.face3_name, save->title.face4_name);
+
+	for (int i = 0; i <= 3; ++i) {
+		const int param = 8 + i;
+
+		int pic_id = ValueOrVariable(com.parameters[7], com.parameters[param]);
+		if (pic_id <= 0) {
+			continue;
+		}
+
+		if (face_names[i].empty()) {
+			Main_Data::game_pictures->Erase(pic_id);
+			continue;
+		}
+
+		// When the picture exists: Data is reused and effects finish immediately
+		// When not: Default data is used
+		// New features (spritesheets etc.) are always set due to how the patch works
+		// We are incompatible here and only set name and spritesheet and reuse stuff like the layer
+		Game_Pictures::ShowParams params;
+		auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+		if (pic.Exists()) {
+			params = pic.GetShowParams();
+		} else {
+			params.map_layer = 7;
+			params.battle_layer = 7;
+		}
+		params.name = FileFinder::MakePath("..\\FaceSet", face_names[i]);
+		params.spritesheet_cols = 4;
+		params.spritesheet_rows = 4;
+		params.spritesheet_frame = face_ids[i];
+		params.spritesheet_speed = 0;
+		Main_Data::game_pictures->Show(pic_id, params);
+	}
+
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacSave(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacSave(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command Save not supported");
+	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (slot <= 0) {
+		Output::Debug("ManiacSave: Invalid save slot {}", slot);
+		return true;
+	}
+
+	int out_var = com.parameters[2] != 0 ? com.parameters[3] : -1;
+
+	// Maniac Patch saves directly and game data could be in an undefined state
+	// We yield first to the Update loop and then do a save.
+	_async_op = AsyncOp::MakeSave(slot, out_var);
+
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command Load not supported");
+	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (slot <= 0) {
+		Output::Debug("ManiacLoad: Invalid save slot {}", slot);
+		return true;
+	}
+
+	// Not implemented (kinda useless feature):
+	// When com.parameters[2] is 1 the check whether the file exists is skipped
+	// When skipped and missing RPG_RT will crash
+	auto savefs = FileFinder::Save();
+	std::string save_name = Scene_Save::GetSaveFilename(savefs, slot);
+	auto save = lcf::LSD_Reader::Load(save_name, Player::encoding);
+
+	if (!save) {
+		Output::Debug("ManiacLoad: Save not found {}", slot);
+		return true;
+	}
+
+	// FIXME: In Maniac the load causes a blackscreen followed by a fade-in that can be cancelled by a transition event
+	// This is not implemented yet, the loading is instant without fading
+	_async_op = AsyncOp::MakeLoad(slot);
+
 	return true;
 }
 
 bool Game_Interpreter::CommandManiacEndLoadProcess(lcf::rpg::EventCommand const&) {
-	if (!Player::IsPatchManiac()) {
-		return true;
-	}
-
-	Output::Warning("Maniac Patch: Command EndLoadProcess not supported");
+	// no-op
 	return true;
 }
 

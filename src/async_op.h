@@ -39,6 +39,8 @@ class AsyncOp {
 			eToTitle,
 			eExitGame,
 			eTerminateBattle,
+			eSave,
+			eLoad
 		};
 
 		AsyncOp() = default;
@@ -63,6 +65,12 @@ class AsyncOp {
 
 		/** @return a TerminateBattle async operation */
 		static AsyncOp MakeTerminateBattle(int result);
+
+		/** @return a Save async operation */
+		static AsyncOp MakeSave(int save_slot, int save_result_var);
+
+		/** @return a Load async operation */
+		static AsyncOp MakeLoad(int save_slot);
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -99,6 +107,18 @@ class AsyncOp {
 		 * @pre If GetType() is not eTerminateBattle, the return value is undefined.
 		 **/
 		int GetBattleResult() const;
+
+		/**
+		 * @return the desired slot to save or load
+		 * @pre If GetType() is not eSave or eLoad, the return value is undefined.
+		 **/
+		 int GetSaveSlot() const;
+
+		/**
+		 * @return the variable to set to 1 when the save was a success.
+		 * @pre If GetType() is not eSave, the return value is undefined.
+		 **/
+		int GetSaveResultVar() const;
 
 	private:
 		Type _type = eNone;
@@ -142,6 +162,17 @@ inline int AsyncOp::GetBattleResult() const {
 	return _args[0];
 }
 
+inline int AsyncOp::GetSaveSlot() const {
+	assert(GetType() == eSave || GetType() == eLoad);
+	return _args[0];
+}
+
+inline int AsyncOp::GetSaveResultVar() const {
+	assert(GetType() == eSave);
+	return _args[1];
+}
+
+
 template <typename... Args>
 inline AsyncOp::AsyncOp(Type type, Args&&... args)
 	: _type(type), _args{std::forward<Args>(args)...}
@@ -173,6 +204,14 @@ inline AsyncOp AsyncOp::MakeExitGame() {
 
 inline AsyncOp AsyncOp::MakeTerminateBattle(int transition_type) {
 	return AsyncOp(eTerminateBattle, transition_type);
+}
+
+inline AsyncOp AsyncOp::MakeSave(int save_slot, int save_result_var) {
+	return AsyncOp(eSave, save_slot, save_result_var);
+}
+
+inline AsyncOp AsyncOp::MakeLoad(int save_slot) {
+	return AsyncOp(eLoad, save_slot);
 }
 
 #endif

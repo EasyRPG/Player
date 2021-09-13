@@ -86,9 +86,7 @@ namespace {
 			init = true;
 		}
 		std::time_t t = std::time(nullptr);
-		char timestr[100];
-		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
-		return LOG_FILE << timestr;
+		return LOG_FILE << Utils::FormatDate(std::localtime(&t), "[%Y-%m-%d %H:%M:%S] ");
 	}
 
 	bool ignore_pause = false;

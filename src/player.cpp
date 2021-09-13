@@ -1037,12 +1037,16 @@ static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 
 void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Output::Debug("Loading Save {}", save_name);
-	Main_Data::game_system->BgmFade(800);
 
-	// We erase the screen now before loading the saved game. This prevents an issue where
-	// if the save game has a different system graphic, the load screen would change before
-	// transitioning out.
-	Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get(), 6);
+	bool load_on_map = Scene::instance->type == Scene::Map;
+
+	if (!load_on_map) {
+		Main_Data::game_system->BgmFade(800);
+		// We erase the screen now before loading the saved game. This prevents an issue where
+		// if the save game has a different system graphic, the load screen would change before
+		// transitioning out.
+		Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get(), 6);
+	}
 
 	auto title_scene = Scene::Find(Scene::Title);
 	if (title_scene) {
@@ -1094,7 +1098,9 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 		save->airship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
 	}
 
-	Scene::PopUntil(Scene::Title);
+	if (!load_on_map) {
+		Scene::PopUntil(Scene::Title);
+	}
 	Game_Map::Dispose();
 
 	Main_Data::game_switches->SetData(std::move(save->system.switches));
@@ -1116,7 +1122,9 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
-	Scene::Push(std::make_shared<Scene_Map>(save_id));
+	if (!load_on_map) {
+		Scene::Push(std::make_shared<Scene_Map>(save_id));
+	}
 }
 
 static void OnMapFileReady(FileRequestResult*) {
