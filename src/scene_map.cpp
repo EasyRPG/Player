@@ -169,12 +169,6 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	Scene::TransitionIn(prev_scene);
 }
 
-void Scene_Map::Suspend(SceneType next_scene) {
-	if (next_scene == Scene::Title) {
-		Main_Data::game_system->BgmStop();
-	}
-}
-
 void Scene_Map::TransitionOut(SceneType next_scene) {
 	auto& transition = Transition::instance();
 
@@ -204,10 +198,16 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 		}
 		return;
 	}
+
 	if (next_scene == Scene::Gameover) {
 		transition.InitErase(Transition::TransitionFadeOut, this);
 		return;
 	}
+
+	if (next_scene == Scene::Title) {
+		Main_Data::game_system->BgmStop();
+	}
+
 	Scene::TransitionOut(next_scene);
 }
 

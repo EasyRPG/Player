@@ -102,30 +102,30 @@ public:
 	virtual void Continue(SceneType prev_scene);
 
 	/**
-	 * Suspend processing.
-	 * This function is executed before the fade out for
-	 * the scene change, either when terminating the scene
-	 * or switching to a nested scene
-	 *
-	 * @param next_scene the scene we will transition to
-	 */
-	virtual void Suspend(SceneType next_scene);
-
-	/**
-	 * Does the transition upon starting or resuming
-	 * the scene
+	 * Used to configure the transition upon starting or resuming
+	 * the scene.
 	 *
 	 * @param prev_scene the scene we transitioned from
 	 */
 	virtual void TransitionIn(SceneType prev_scene);
 
 	/**
-	 * Does the transition upon ending or suspending
-	 * the scene
+	 * Used to configure the transition upon ending or suspending
+	 * the scene.
 	 *
 	 * @param next_scene the scene we will transition to
 	 */
 	virtual void TransitionOut(SceneType next_scene);
+
+	/**
+	 * This function is executed after the fade out transition is finished.
+	 * Use this for clean up before terminating the scene or switching to
+	 * a nested scene.
+	 * In case of termination this is called right before the destructor.
+	 *
+	 * @param next_scene the scene we will transition to
+	 */
+	virtual void Suspend(SceneType next_scene);
 
 	/**
 	 * Called when a transition or async load is finished.
