@@ -1407,6 +1407,9 @@ int Game_Actor::GetNumberOfAttacks(Weapon weapon) const {
 }
 
 bool Game_Actor::HasAttackAll(Weapon weapon) const {
+	if (GetWeapon() == nullptr && Get2ndWeapon() == nullptr) {
+		return dbActor->easyrpg_attack_all;
+	}
 	bool rc = false;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { rc |= item.attack_all; }, weapon);
 	return rc;
