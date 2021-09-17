@@ -1398,6 +1398,9 @@ bool Game_Actor::HasPreemptiveAttack(Weapon weapon) const {
 }
 
 int Game_Actor::GetNumberOfAttacks(Weapon weapon) const {
+	if (GetWeapon() == nullptr && Get2ndWeapon() == nullptr && dbActor->easyrpg_dual_attack) {
+		return 2;
+	}
 	int hits = 1;
 	ForEachEquipment<true, false>(GetWholeEquipment(), [&](auto& item) { hits = std::max(hits, Algo::GetNumberOfAttacks(GetId(), item)); }, weapon);
 	return hits;
