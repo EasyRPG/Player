@@ -112,7 +112,11 @@ void Window_BattleStatus::Refresh() {
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
-			contents->ClearRect(Rect(192, 0, 45, 64));
+			if (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
+				contents->ClearRect(Rect(192, 0, 45, 58));
+			} else {
+				contents->ClearRect(Rect(192, 0, 45, 64));
+			}
 		}
 
 		for (int i = 0; i < item_max; ++i) {
