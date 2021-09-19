@@ -511,6 +511,7 @@ void Cache::Clear() {
 
 	cache_tiles.clear();
 
+	system_name.clear();
 	system2_name.clear();
 }
 

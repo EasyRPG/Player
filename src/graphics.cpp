@@ -57,6 +57,9 @@ void Graphics::Quit() {
 	message_overlay.reset();
 
 	Cache::Clear();
+
+	Scene::PopUntil(Scene::Null);
+	Scene::Pop();
 }
 
 void Graphics::Update() {

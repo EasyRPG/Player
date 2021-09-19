@@ -223,7 +223,7 @@ void Scene::TransitionOut(SceneType) {
 
 void Scene::OnFinishAsync() {
 	if (async_continuation) {
-		// The continuation could set another continuation, so move this 
+		// The continuation could set another continuation, so move this
 		// one out of the way first before we call it.
 		AsyncContinuation continuation;
 		async_continuation.swap(continuation);
@@ -258,11 +258,7 @@ void Scene::Pop() {
 	old_instances.push_back(instances.back());
 	instances.pop_back();
 
-	if (instances.size() == 0) {
-		Push(std::make_shared<Scene>()); // Null-scene
-	}
-
-	instance = instances.back();
+	instance = instances.empty() ? nullptr : instances.back();
 
 	push_pop_operation = ScenePopped;
 
