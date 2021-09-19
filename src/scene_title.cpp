@@ -101,9 +101,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 	Transition::instance().InitShow(Transition::TransitionFadeIn, this);
 }
 
-void Scene_Title::TransitionOut(Scene::SceneType next_scene) {
-	Scene::TransitionOut(next_scene);
-
+void Scene_Title::Suspend(Scene::SceneType next_scene) {
 	// Unload title graphic to save memory
 	title.reset();
 }

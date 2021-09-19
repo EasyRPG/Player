@@ -194,7 +194,7 @@ void Scene::MainFunction() {
 		Graphics::Update();
 
 		auto next_scene = instance ? instance->type : Null;
-		Suspend(next_scene);
+
 		// Scene could have manually triggered transition earlier
 		if (!Transition::instance().IsActive()) {
 			TransitionOut(next_scene);
@@ -210,15 +210,15 @@ void Scene::Start() {
 void Scene::Continue(SceneType /* prev_scene */) {
 }
 
-void Scene::Suspend(SceneType /* next_scene */) {
-}
-
 void Scene::TransitionIn(SceneType) {
 	Transition::instance().InitShow(Transition::TransitionFadeIn, this, 6);
 }
 
 void Scene::TransitionOut(SceneType) {
 	Transition::instance().InitErase(Transition::TransitionFadeOut, this, 6);
+}
+
+void Scene::Suspend(SceneType /* next_scene */) {
 }
 
 void Scene::OnFinishAsync() {

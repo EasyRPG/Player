@@ -136,6 +136,7 @@ std::shared_ptr<Scene> Graphics::UpdateSceneCallback() {
 
 	if (current_scene) {
 		if (prev_scene) {
+			prev_scene->Suspend(current_scene->type);
 			current_scene->TransferDrawablesFrom(*prev_scene);
 		}
 		DrawableMgr::SetLocalList(&current_scene->GetDrawableList());
