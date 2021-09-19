@@ -61,15 +61,16 @@ public:
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
-	std::unique_ptr<AudioInterface> audio_;
 #endif
 
 	/** @} */
-	int frame;
-	bool trigger_state;
-	int touch_x_start;
-	SceUID GPU_Thread;
-	
+
+private:
+
+#ifdef SUPPORT_AUDIO
+	std::unique_ptr<AudioInterface> audio_;
+#endif
+
 };
 
 #endif
