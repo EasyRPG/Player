@@ -832,7 +832,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita)$")
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/decoder_drwav.cpp
 			src/decoder_drwav.h
-			src/dr_wav.h)
+			src/external/dr_wav.h)
 	endif()
 endif()
 

@@ -11,7 +11,7 @@
 
 tests/doctest.h -diff linguist-vendored
 builds/autoconf/m4/ax_*.m4 -diff linguist-vendored
-src/dr_wav.h -diff linguist-vendored
+src/external/* -diff linguist-vendored
 src/midiprogram.h -diff linguist-vendored
 src/midisequencer.* -diff linguist-vendored
 src/midisynth.* -diff linguist-vendored

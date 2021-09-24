@@ -434,7 +434,7 @@ if WANT_DRWAV
 libeasyrpg_player_a_SOURCES += \
 	src/decoder_drwav.cpp \
 	src/decoder_drwav.h \
-	src/dr_wav.h
+	src/external/dr_wav.h
 endif
 
 if HAVE_ALSA
