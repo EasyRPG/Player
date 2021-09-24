@@ -62,7 +62,7 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 			-DHAVE_LIBMPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_LIBXMP -DHAVE_LIBWILDMIDI -DHAVE_OPUS \
-			-DHAVE_LIBSAMPLERATE -DHAVE_FLUIDLITE \
+			-DHAVE_LIBSAMPLERATE -DHAVE_FLUIDSYNTH \
 			-DWANT_DRWAV -DWANT_FMMIDI
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
@@ -74,7 +74,7 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 		-licuuc -licui18n -licudata -lfmt \
 		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
 		-lsndfile -lvorbisidec -logg -lxmp-lite \
-		-lWildMidi -lsamplerate -lopusfile -lopus -lfluidlite \
+		-lWildMidi -lopusfile -lopus -lfluidsynth -lsamplerate \
 		-lglad -lEGL -lglapi -ldrm_nouveau -lnx -lm
 
 #---------------------------------------------------------------------------------
