@@ -228,7 +228,6 @@ add_library(${PROJECT_NAME} STATIC
 	src/output.h
 	src/pending_message.h
 	src/pending_message.cpp
-	src/picojson.h
 	src/pixel_format.h
 	src/pixman_image_ptr.h
 	src/plane.cpp
@@ -565,6 +564,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
 	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
 	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
+	target_sources(${PROJECT_NAME} PRIVATE src/external/picojson.h)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

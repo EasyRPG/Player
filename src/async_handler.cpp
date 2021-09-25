@@ -22,7 +22,9 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #  include <lcf/reader_util.h>
-#  include "picojson.h"
+#  define PICOJSON_USE_LOCALE 0
+#  define PICOJSON_ASSERT(e) do { if (! (e)) assert(false && #e); } while (0)
+#  include "external/picojson.h"
 #endif
 
 #include "async_handler.h"
