@@ -3051,11 +3051,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 #if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
 			if (result) {
 				Output::Warning("ManiacPatch: Mouse input is not supported on this platform");
-				return false;
+				result = false;
 			}
-#else
-			return result;
 #endif
+			return result;
 		};
 		_keyinput.keys[Keys::eMouseLeft] = check_mouse(3);
 		_keyinput.keys[Keys::eMouseRight] = check_mouse(4);

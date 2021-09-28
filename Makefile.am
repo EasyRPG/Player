@@ -214,7 +214,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/output.h \
 	src/pending_message.h \
 	src/pending_message.cpp \
-	src/picojson.h \
 	src/pixel_format.h \
 	src/pixman_image_ptr.h \
 	src/plane.cpp \
@@ -434,7 +433,7 @@ if WANT_DRWAV
 libeasyrpg_player_a_SOURCES += \
 	src/decoder_drwav.cpp \
 	src/decoder_drwav.h \
-	src/dr_wav.h
+	src/external/dr_wav.h
 endif
 
 if HAVE_ALSA
@@ -451,7 +450,7 @@ libeasyrpg_player_a_SOURCES += \
 	src/platform/macos/midiout_device_coreaudio.h
 endif
 
-# These are only taken in by the legacy homebrew Makefiles
+# These are mostly taken in by the legacy homebrew Makefiles and CMake
 EXTRA_DIST += \
 	src/platform/3ds/3ds_clock.cpp \
 	src/platform/3ds/3ds_clock.h \
@@ -488,7 +487,8 @@ EXTRA_DIST += \
 	src/platform/windows/midiout_device_win32.cpp \
 	src/platform/windows/midiout_device_win32.h \
 	src/platform/windows/utils.cpp \
-	src/platform/windows/utils.h
+	src/platform/windows/utils.h \
+	src/external/picojson.h
 
 libeasyrpg_player_a_CXXFLAGS = \
 	-fno-math-errno \

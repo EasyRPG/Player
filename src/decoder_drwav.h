@@ -23,7 +23,8 @@
 
 // Headers
 #include "audio_decoder.h"
-#include "dr_wav.h"
+#define DR_WAV_NO_STDIO
+#include "external/dr_wav.h"
 #include <string>
 #include <memory>
 
