@@ -205,11 +205,11 @@ void Scene_File::Update() {
 	}
 
 	if (index > top_index + 2) {
-		MoveFileWindows((top_index + 2 - index) * 64, 8);
+		MoveFileWindows((top_index + 2 - index) * 64, 7);
 		top_index = std::max(top_index, index - 3 + 1);
 	}
 	else if (index < top_index) {
-		MoveFileWindows((top_index - index) * 64, 8);
+		MoveFileWindows((top_index - index) * 64, 7);
 		top_index = std::min(top_index, index);
 	}
 
