@@ -99,6 +99,9 @@ protected:
 	bool endless_scrolling = true;
 
 	int menu_item_height = 16;
+
+	int scroll_dir = 0;
+	int scroll_progress = 0;
 };
 
 #endif
