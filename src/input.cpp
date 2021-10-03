@@ -341,6 +341,11 @@ bool Input::IsRecording() {
 	return source->IsRecording();
 }
 
+Input::Source *Input::GetInputSource() {
+	assert(source);
+	return source.get();
+}
+
 Input::KeyStatus Input::GetMask() {
 	assert(source);
 	return source->GetMask();
@@ -374,3 +379,4 @@ void Input::ResetMask() {
 	assert(source);
 	SetMask(source->GetMask());
 }
+

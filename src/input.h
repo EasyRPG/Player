@@ -280,6 +280,13 @@ namespace Input {
 	/** @return If the input is recorded */
 	bool IsRecording();
 
+	/**
+	 * Used to access the underlying input source.
+	 * Only use this for low level access!
+	 * @return the input source
+	 */
+	 Source* GetInputSource();
+
 	/** Buttons press time (in frames). */
 	extern std::array<int, BUTTON_COUNT> press_time;
 

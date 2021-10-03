@@ -19,6 +19,7 @@
 #include <sstream>
 #include "window_settings.h"
 #include "game_config.h"
+#include "input.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "output.h"
@@ -191,25 +192,16 @@ void Window_Settings::RefreshLicense() {
 }
 
 void Window_Settings::RefreshInput() {
-#if 0
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
-
-		if (!Player::debug_flag && (
-					button == Input::DEBUG_MENU
-					|| button == Input::DEBUG_SAVE
-					|| button == Input::DEBUG_THROUGH)) {
-			continue;
-		}
 
 		auto name = Input::kButtonNames.tag(button);
 		auto help = Input::kButtonHelp.tag(button);
 
-		auto& keys = Input::buttons[i];
-
 		std::stringstream ss;
-		for (auto ki: keys) {
-			auto key = static_cast<Input::Keys::InputKey>(ki);
+		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
+			auto key = static_cast<Input::Keys::InputKey>(ki->second);
 			auto kname = Input::Keys::kNames.tag(key);
 			ss << kname << " ";
 		}
@@ -220,6 +212,5 @@ void Window_Settings::RefreshInput() {
 				[](){},
 				help);
 	}
-#endif
 }
 
