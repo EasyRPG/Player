@@ -32,6 +32,7 @@ public:
 		eInput,
 		eVideo,
 		eAudio,
+		eLicense
 	};
 
 	/** Constructor  */
@@ -81,6 +82,7 @@ private:
 	void RefreshInput();
 	void RefreshVideo();
 	void RefreshAudio();
+	void RefreshLicense();
 
 	void UpdateHelp() override;
 
@@ -91,7 +93,7 @@ private:
 		int index = 0;
 		int top_row = 0;
 	};
-	Memory memory[eAudio] = {};
+	Memory memory[eLicense] = {};
 
 	void SavePosition();
 	void RestorePosition();

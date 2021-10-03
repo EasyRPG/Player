@@ -25,6 +25,7 @@
 #include "baseui.h"
 #include "bitmap.h"
 #include "player.h"
+#include "system.h"
 
 Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -80,6 +81,9 @@ void Window_Settings::Refresh() {
 			break;
 		case eAudio:
 			RefreshAudio();
+			break;
+		case eLicense:
+			RefreshLicense();
 			break;
 	}
 
@@ -175,6 +179,15 @@ void Window_Settings::RefreshAudio() {
 	AddOption("Midi Soundfont", LockedConfigParam<std::string>("Default"), "",
 			[](){},
 			"Which MIDI soundfont to use");
+}
+
+void Window_Settings::RefreshLicense() {
+	AddOption("EasyRPG Player", ConfigParam<std::string>("MIT"), "", [](){}, "The engine you are using :)");
+#ifdef HAVE_LIBSNDFILE
+	AddOption("libsndfile", ConfigParam<std::string>("LGPLv2+"), "", [](){}, "A library for reading and writing files containing WAV audio");
+#endif
+	AddOption("libpng", ConfigParam<std::string>("zlib"), "", [](){}, "Used to handle PNG graphic files");
+	AddOption("zlib", ConfigParam<std::string>("zlib"), "", [](){}, "Implements the deflate compression method (ZIP)");
 }
 
 void Window_Settings::RefreshInput() {

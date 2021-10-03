@@ -73,6 +73,7 @@ private:
 		eInput,
 		eVideo,
 		eAudio,
+		eLicense
 	};
 	Mode mode = eMain;
 

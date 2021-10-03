@@ -45,6 +45,7 @@ void Scene_Settings::CreateMainWindow() {
 		"Input",
 		"Video",
 		"Audio",
+		"License"
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options), 96);
 	main_window->SetHeight(176);
@@ -98,6 +99,12 @@ void Scene_Settings::SetMode(Mode mode) {
 			options_window->SetVisible(true);
 			options_window->SetMode(Window_Settings::eVideo);
 			break;
+		case eLicense:
+			help_window->SetVisible(true);
+			options_window->SetActive(true);
+			options_window->SetVisible(true);
+			options_window->SetMode(Window_Settings::eLicense);
+			break;
 	}
 }
 
@@ -115,6 +122,7 @@ void Scene_Settings::Update() {
 			case eInput:
 			case eAudio:
 			case eVideo:
+			case eLicense:
 				SetMode(eMain);
 				break;
 		}
@@ -128,6 +136,7 @@ void Scene_Settings::Update() {
 		case eInput:
 		case eVideo:
 		case eAudio:
+		case eLicense:
 			UpdateOptions();
 			break;
 	}
