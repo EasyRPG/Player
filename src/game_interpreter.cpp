@@ -346,6 +346,17 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		return;
 	}
 
+	if (Input::IsTriggered(Input::DEBUG_ABORT_EVENT) && Player::debug_flag && !Game_Battle::IsBattleRunning()) {
+		if (Game_Message::IsMessageActive()) {
+			Game_Message::GetWindow()->FinishMessageProcessing();
+		}
+		if (!Main_Data::game_player->GetMoveRoute().move_commands.empty()) {
+			Main_Data::game_player->CancelMoveRoute();
+		}
+		EndEventProcessing();
+		return;
+	}
+
 	for (; loop_count < loop_limit; ++loop_count) {
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
 		// RPG_RT compatible behavior.
