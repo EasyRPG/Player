@@ -95,6 +95,7 @@ lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
 		case Teleport:
 		case Order:
 		case End:
+		case Settings:
 			return lcf::rpg::SaveSystem::Scene_menu;
 		case File:
 		case Save:
