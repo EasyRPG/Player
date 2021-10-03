@@ -70,6 +70,7 @@ void Translation::Reset()
 {
 	ClearTranslationLookups();
 
+	translation_root_fs = FilesystemView();
 	languages.clear();
 	current_language = "";
 }
@@ -81,7 +82,12 @@ void Translation::InitTranslations()
 
 	// Determine if the "languages" directory exists, and convert its case.
 	auto fs = FileFinder::Game();
-	translation_root_fs = fs.Subtree(TRDIR_NAME);
+	auto game_tree = fs.ListDirectory();
+	for (const auto& tr_name : *game_tree) {
+		if (tr_name.first == TRDIR_NAME) {
+			translation_root_fs = fs.Subtree(tr_name.second.name);
+		}
+	}
 	if (translation_root_fs) {
 		// Now list all directories within the translate dir
 		auto translation_tree = translation_root_fs.ListDirectory();
