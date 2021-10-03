@@ -69,4 +69,28 @@ TEST_CASE("ReplaceAll") {
 	}
 }
 
+TEST_CASE("TrimWhitespace") {
+	SUBCASE("left") {
+		REQUIRE(Utils::TrimWhitespace(" le ft") == "le ft");
+		REQUIRE(Utils::TrimWhitespace("   le ft") == "le ft");
+	}
+
+	SUBCASE("right") {
+		REQUIRE(Utils::TrimWhitespace("ri ght ") == "ri ght");
+		REQUIRE(Utils::TrimWhitespace("ri ght  ") == "ri ght");
+	}
+
+	SUBCASE("both") {
+		REQUIRE(Utils::TrimWhitespace(" bot h ") == "bot h");
+		REQUIRE(Utils::TrimWhitespace("    bot h  ") == "bot h");
+		REQUIRE(Utils::TrimWhitespace(" bot h    ") == "bot h");
+	}
+
+	SUBCASE("other") {
+		REQUIRE(Utils::TrimWhitespace("") == "");
+		REQUIRE(Utils::TrimWhitespace("    ") == "");
+		REQUIRE(Utils::TrimWhitespace("T ex t") == "T ex t");
+	}
+}
+
 TEST_SUITE_END();

@@ -624,6 +624,30 @@ std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char
 	return str;
 }
 
+StringView Utils::TrimWhitespace(StringView s) {
+	size_t left = 0;
+	for (auto& c: s) {
+		if (std::isspace(static_cast<int>(c))) {
+			++left;
+		} else {
+			break;
+		}
+	}
+	s.remove_prefix(left);
+
+	size_t right = 0;
+	for (auto it = s.crbegin(); it != s.crend(); ++it) {
+		if (std::isspace(static_cast<int>(*it))) {
+			++right;
+		} else {
+			break;
+		}
+	}
+	s.remove_suffix(right);
+
+	return s;
+}
+
 std::string Utils::FormatDate(const std::tm *tm, StringView format) {
 	constexpr int buf_size = 128;
 	char buffer[buf_size];
