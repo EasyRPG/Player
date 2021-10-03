@@ -81,13 +81,12 @@ public:
 	/**
 	 * Super simple parser.
 	 * Only parses msgstr, msgid and msgctx
-	 * Returns false on failure.
+	 * Program aborts on error
 	 *
 	 * @param res The dictionary to store the translated entries in.
 	 * @param in The stream to load the translated entries from.
-	 * @param return True if the file was loaded without error; false otherwise.
 	 */
-	static bool FromPo(Dictionary& res, std::istream& in);
+	static void FromPo(Dictionary& res, std::istream& in);
 
 	/**
 	 * Replace an original string with the translated string.

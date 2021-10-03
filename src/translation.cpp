@@ -643,11 +643,8 @@ void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map&
 
 void Translation::ParsePoFile(Filesystem_Stream::InputStream is, Dictionary& out)
 {
-	if (is.good()) {
-		if (!Dictionary::FromPo(out, is)) {
-			Output::Warning("Failure parsing PO file, resetting");
-			out = Dictionary();
-		}
+	if (is) {
+		Dictionary::FromPo(out, is);
 	}
 }
 
@@ -676,25 +673,35 @@ void Dictionary::addEntry(const Entry& entry)
 }
 
 // Returns success
-bool Dictionary::FromPo(Dictionary& res, std::istream& in)
-{
+void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 	std::string line;
+	lcf::StringView line_view;
 	bool found_header = false;
 	bool parse_item = false;
+	int line_number = 0;
 
 	Entry e;
 
-	auto extract_string = [&line](int offset, bool& error) {
+	auto extract_string = [&](int offset) -> std::string {
+		if (offset >= line_view.size()) {
+			Output::Error("Parse error (Line {}) is empty", line_number);
+			return "";
+		}
+
 		std::stringstream out;
 		bool slash = false;
 		bool first_quote = false;
 
-		for (char c : line.substr(offset)) {
-			if (c == ' ' && !first_quote) {
-				continue;
-			} else if (c == '"' && !first_quote) {
-				first_quote = true;
-				continue;
+		for (char c : line_view.substr(offset)) {
+			if (!first_quote) {
+				if (c == ' ') {
+					continue;
+				} else if (c == '"') {
+					first_quote = true;
+					continue;
+				}
+				Output::Error("Parse error (Line {}): Expected \", got \"{}\": {}", line_number, c, line);
+				return "";
 			}
 
 			if (!slash && c == '\\') {
@@ -712,8 +719,7 @@ bool Dictionary::FromPo(Dictionary& res, std::istream& in)
 						out << '"';
 						break;
 					default:
-						Output::Error("Parse error {} ({})", line, c);
-						error = true;
+						Output::Error("Parse error (Line {}): Expected \\, \\n or \", got \"{}\": {}", line_number, c, line);
 						break;
 				}
 			} else {
@@ -726,68 +732,68 @@ bool Dictionary::FromPo(Dictionary& res, std::istream& in)
 			}
 		}
 
-		Output::Error("Parse error: Unterminated line: {}", line);
-		error = true;
+		Output::Error("Parse error (Line {}): Unterminated line: {}", line_number, line);
 		return out.str();
 	};
 
-	auto read_msgstr = [&](bool& error) {
+	auto read_msgstr = [&]() {
 		// Parse multiply lines until empty line or comment
-		e.translation = extract_string(6, error);
+		e.translation = extract_string(6);
 
 		while (Utils::ReadLine(in, line)) {
-			if (line.empty() || ToStringView(line).starts_with("#")) {
+			line_view = Utils::TrimWhitespace(line);
+			++line_number;
+			if (line_view.empty() || line_view.starts_with("#")) {
 				break;
 			}
-			e.translation += extract_string(0, error);
+			e.translation += extract_string(0);
 		}
 
 		parse_item = false;
 		res.addEntry(e);
+		e = Entry();
 	};
 
-	auto read_msgid = [&](bool& error) {
+	auto read_msgid = [&]() {
 		// Parse multiply lines until empty line or msgstr is encountered
-		e.original = extract_string(5, error);
+		e.original = extract_string(5);
 
 		while (Utils::ReadLine(in, line)) {
-			if (line.empty() || ToStringView(line).starts_with("msgstr")) {
-				read_msgstr(error);
+			line_view = Utils::TrimWhitespace(line);
+			++line_number;
+			if (line_view.empty() || line_view.starts_with("msgstr")) {
+				read_msgstr();
 				return;
 			}
-			e.original += extract_string(0, error);
+			e.original += extract_string(0);
 		}
 	};
 
-	bool error = false;
 	while (Utils::ReadLine(in, line)) {
-		auto lineSV = ToStringView(line);
+		line_view = Utils::TrimWhitespace(line);
+		++line_number;
 		if (!found_header) {
-			if (lineSV.starts_with("msgstr")) {
+			if (line_view.starts_with("msgstr")) {
 				found_header = true;
 			}
 			continue;
 		}
 
 		if (!parse_item) {
-			if (lineSV.starts_with("msgctxt")) {
-				e.context = extract_string(7, error);
+			if (line_view.starts_with("msgctxt")) {
+				e.context = extract_string(7);
+
 				parse_item = true;
-			} else if (lineSV.starts_with("msgid")) {
+			} else if (line_view.starts_with("msgid")) {
 				parse_item = true;
-				read_msgid(error);
+				read_msgid();
 			}
 		} else {
-			if (lineSV.starts_with("msgid")) {
-				read_msgid(error);
-			} else if (lineSV.starts_with("msgstr")) {
-				read_msgstr(error);
+			if (line_view.starts_with("msgid")) {
+				read_msgid();
+			} else if (line_view.starts_with("msgstr")) {
+				read_msgstr();
 			}
 		}
 	}
-	return !error;
 }
-
-
-
-
