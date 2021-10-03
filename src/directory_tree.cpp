@@ -154,11 +154,12 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 
 	if (args.translate && !Tr::GetCurrentTranslationId().empty()) {
 		// Search in the active language tree but do not translate again and swallow not found warnings
-		auto translated_file = Tr::GetCurrentTranslationFilesystem().FindFile(
+		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
+		auto translated_file = tr_fs.FindFile(
 				{args.path, args.exts, args.canonical_initial_deepness, false, false});
 		if (!translated_file.empty()) {
 			DebugLog("Translated {} as {}", args.path, translated_file);
-			return translated_file;
+			return tr_fs.MakePath(translated_file);
 		}
 	}
 
