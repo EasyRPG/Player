@@ -315,8 +315,8 @@ namespace {
 		}
 
 		/** Retrieve the string of the EventCommand at the index */
-		std::string CurrentCmdString() const {
-			return ToString(commands[index].string);
+		lcf::DBString& CurrentCmdString() const {
+			return commands[index].string;
 		}
 
 		/** Retrieve the indent level of the EventCommand at the index */
@@ -355,6 +355,16 @@ namespace {
 		/** Returns true if the current Event Command is ShowChoiceEnd */
 		bool CurrentIsShowChoiceEnd() const {
 			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceEnd;
+		}
+
+		/** Returns true if the current Event Command is ChangeHeroName */
+		bool CurrentIsChangeHeroName() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ChangeHeroName;
+		}
+
+		/** Returns true if the current Event Command is ChangeHeroTitle */
+		bool CurrentIsChangeHeroTitle() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ChangeHeroTitle;
 		}
 
 		/**
@@ -602,15 +612,15 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			commands.BuildChoiceString(choice_str, choice_indexes);
 
 			// Go through choices.
-			if (choice_indexes.size()>0) {
+			if (choice_indexes.size() > 0) {
 				// Translate, break back into lines.
 				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, choice_str, '\n');
-				if (msgs.size()>0) {
+				if (msgs.size() > 0) {
 					// Logic here is also based on the last message box.
-					std::vector<std::string>& lines = msgs.back();
+					std::vector<std::string> &lines = msgs.back();
 
 					// We only pick the first X entries from the translation, since we can't change the Choice count.
-					for (size_t num=0; num<choice_indexes.size()&&num<lines.size(); num++) {
+					for (size_t num = 0; num < choice_indexes.size() && num < lines.size(); num++) {
 						commands.ReWriteString(choice_indexes[num], lines[num]);
 					}
 
@@ -622,6 +632,12 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			}
 
 			// Note that commands.Advance() has already happened within the above code.
+		} else if (commands.CurrentIsChangeHeroName()) {
+			dict.TranslateString("actors.name", commands.CurrentCmdString());
+			commands.Advance();
+		} else if (commands.CurrentIsChangeHeroTitle()) {
+			dict.TranslateString("actors.title", commands.CurrentCmdString());
+			commands.Advance();
 		} else {
 			commands.Advance();
 		}

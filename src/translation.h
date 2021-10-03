@@ -118,7 +118,7 @@ template <class StringType>
 bool Dictionary::TranslateString(const std::string& context, StringType& original) const
 {
 	std::stringstream key;
-	key <<original;
+	key << original;
 	auto it = entries.find(context);
 	if (it != entries.end()) {
 		auto it2 = it->second.find(key.str());
