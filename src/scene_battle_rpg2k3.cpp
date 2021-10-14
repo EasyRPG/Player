@@ -321,6 +321,36 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 		SetupSystem2Graphics();
 	}
 
+	if (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
+		int height = 68;
+		int y = SCREEN_TARGET_HEIGHT - height;
+
+		auto small_window = [&](auto& window) {
+			if (window) {
+				window->SetHeight(height);
+				window->SetY(y);
+				window->SetBorderY(5);
+				window->SetContents(Bitmap::Create(window->GetWidth() - window->GetBorderX() * 2, window->GetHeight() - window->GetBorderY() * 2));
+				window->SetMenuItemHeight(14);
+			}
+		};
+
+		small_window(options_window);
+		small_window(command_window);
+		small_window(skill_window);
+		small_window(item_window);
+		small_window(target_window);
+
+		options_window->Refresh();
+		status_window->SetY(y);
+
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
+			command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2 + 12);
+			item_window->SetY(76);
+			skill_window->SetY(76);
+		}
+	}
+
 	ResetWindows(true);
 }
 
@@ -2805,12 +2835,16 @@ void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
 }
 
 void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
+	bool small_window = (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small);
 	int spwindow_size = 60;
+	int spwindow_height = (small_window ? 20 : 32);
 	if (battler && battler->MaxSpValue() >= 1000) {
 		spwindow_size = 72;
 	}
-	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, 136, spwindow_size, 32);
+	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, (small_window ? 154 : 136), spwindow_size, spwindow_height);
 	sp_window->SetVisible(false);
+	sp_window->SetBorderY(small_window ? 2 : 8);
+	sp_window->SetContents(Bitmap::Create(sp_window->GetWidth() - sp_window->GetBorderX() / 2, sp_window->GetHeight() - sp_window->GetBorderY() * 2));
 	sp_window->SetZ(Priority_Window + 2);
 	if (battler) {
 		sp_window->SetBattler(*battler);

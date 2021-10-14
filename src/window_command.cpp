@@ -47,8 +47,8 @@ void Window_Command::Refresh() {
 }
 
 void Window_Command::DrawItem(int index, Font::SystemColor color) {
-	contents->ClearRect(Rect(0, 16 * index, contents->GetWidth() - 0, 16));
-	contents->TextDraw(0, 16 * index + 2, color, commands[index]);
+	contents->ClearRect(Rect(0, menu_item_height * index, contents->GetWidth() - 0, menu_item_height));
+	contents->TextDraw(0, menu_item_height * index + menu_item_height / 8, color, commands[index]);
 }
 
 void Window_Command::DisableItem(int i) {
@@ -71,7 +71,7 @@ void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
 	index = 0;
 	item_max = commands.size();
 	const int num_contents = item_max > 0 ? item_max : 1;
-	SetContents(Bitmap::Create(this->width - 16, num_contents * 16));
+	SetContents(Bitmap::Create(this->width - 16, num_contents * menu_item_height));
 	SetTopRow(0);
 
 	Refresh();
