@@ -65,9 +65,9 @@ void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap, Rect const
 	double zoom_y = zoom_y_effect;
 
 	dst.EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
-					 Opacity(opacity_top_effect, opacity_bottom_effect, bush_effect),
-					 zoom_x, zoom_y, angle_effect,
-					 waver_effect_depth, waver_effect_phase);
+		Opacity(opacity_top_effect, opacity_bottom_effect, bush_effect),
+		zoom_x, zoom_y, angle_effect,
+		waver_effect_depth, waver_effect_phase, static_cast<Bitmap::BlendMode>(blend_type_effect));
 }
 
 BitmapRef Sprite::Refresh(Rect& rect) {

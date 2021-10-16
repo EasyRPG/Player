@@ -44,6 +44,7 @@ public:
 	const Variables_t& GetData() const;
 
 	Var_t Get(int variable_id) const;
+	Var_t GetIndirect(int variable_id) const;
 
 	Var_t Set(int variable_id, Var_t value);
 	Var_t Add(int variable_id, Var_t value);
@@ -138,6 +139,11 @@ inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
 		return 0;
 	}
 	return _variables[variable_id - 1];
+}
+
+inline Game_Variables::Var_t Game_Variables::GetIndirect(int variable_id) const {
+	auto val_indirect = Get(variable_id);
+	return Get(static_cast<int>(val_indirect));
 }
 
 inline void Game_Variables::SetWarning(int w) {

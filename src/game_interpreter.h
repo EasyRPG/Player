@@ -248,6 +248,7 @@ protected:
 	bool CommandElseBranch(lcf::rpg::EventCommand const& com);
 	bool CommandEndBranch(lcf::rpg::EventCommand const& com);
 	bool CommandJumpToLabel(lcf::rpg::EventCommand const& com);
+	bool CommandLoop(lcf::rpg::EventCommand const& com);
 	bool CommandBreakLoop(lcf::rpg::EventCommand const& com);
 	bool CommandEndLoop(lcf::rpg::EventCommand const& com);
 	bool CommandEraseEvent(lcf::rpg::EventCommand const& com);

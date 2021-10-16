@@ -730,7 +730,7 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::JumpToLabel:
 			return CommandJumpToLabel(com);
 		case Cmd::Loop:
-			return true;
+			return CommandLoop(com);
 		case Cmd::BreakLoop:
 			return CommandBreakLoop(com);
 		case Cmd::EndLoop:
@@ -1691,13 +1691,13 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 		// For simplicity it is enabled for all here
 		if (mode == 2) {
 			// Variable indirect
-			return Main_Data::game_variables->Get(Main_Data::game_variables->Get(val));
+			return Main_Data::game_variables->GetIndirect(val);
 		} else if (mode == 3) {
 			// Switch (F = 0, T = 1)
-			return Main_Data::game_switches->Get(val) ? 1 : 0;
+			return Main_Data::game_switches->GetInt(val);
 		} else if (mode == 4) {
-			// Switch through Variable indirect
-			return Main_Data::game_switches->Get(Main_Data::game_variables->Get(val)) ? 1 : 0;
+			// Switch through Variable (F = 0, T = 1)
+			return Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(val));
 		}
 	}
 	return -1;
@@ -2639,8 +2639,9 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 	Game_Pictures::ShowParams params = {};
 	params.name = ToString(com.string);
-	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	// Maniac Patch uses the upper bits for X/Y origin, mask it away
+	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
 	params.magnify = com.parameters[5];
 	params.use_transparent_color = com.parameters[7] > 0;
@@ -2658,7 +2659,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		// RPG2k3 sets this chunk. Versions < 1.12 let you specify separate top and bottom
 		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
 		// both chunks here.
-		params.bottom_trans = com.parameters[14];
+		// Maniac Patch uses the upper bits for flags, mask it away
+		params.bottom_trans = com.parameters[14] & 0xFF;
 	} else if (Player::IsRPG2k3() && !Player::IsRPG2k3E()) {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		params.bottom_trans = params.top_trans;
@@ -2694,6 +2696,29 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		params.map_layer = com.parameters[27];
 		params.battle_layer = com.parameters[28];
 		params.flags = com.parameters[29];
+
+		if (Player::IsPatchManiac()) {
+			int flags = com.parameters[14] >> 8;
+			int blend_mode = flags & 3;
+			if (blend_mode == 1) {
+				params.blend_mode = (int)Bitmap::BlendMode::Multiply;
+			} else if (blend_mode == 2) {
+				params.blend_mode = (int)Bitmap::BlendMode::Additive;
+			} else if (blend_mode == 3) {
+				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
+			}
+			params.flip_x = (flags & 16) == 16;
+			params.flip_y = (flags & 32) == 32;
+
+			if ((com.parameters[1] >> 8) != 0) {
+				Output::Warning("Maniac ShowPicture: X/Y origin not supported");
+			}
+
+			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+				Output::Warning("Maniac ShowPicture: Fixed angle not supported");
+				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+			}
+		}
 	}
 
 	PicPointerPatch::AdjustShowParams(pic_id, params);
@@ -2724,8 +2749,9 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	int pic_id = com.parameters[0];
 
 	Game_Pictures::MoveParams params;
-	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	// Maniac Patch uses the upper bits for X/Y origin, mask it away
+	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
 	params.magnify = com.parameters[5];
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
@@ -2753,6 +2779,29 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
+
+		if (Player::IsPatchManiac()) {
+			int flags = com.parameters[16] >> 8;
+			int blend_mode = flags & 3;
+			if (blend_mode == 1) {
+				params.blend_mode = (int)Bitmap::BlendMode::Multiply;
+			} else if (blend_mode == 2) {
+				params.blend_mode = (int)Bitmap::BlendMode::Additive;
+			} else if (blend_mode == 3) {
+				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
+			}
+			params.flip_x = (flags & 16) == 16;
+			params.flip_y = (flags & 32) == 32;
+
+			if ((com.parameters[1] >> 8) != 0) {
+				Output::Warning("Maniac MovePicture: X/Y origin not supported");
+			}
+
+			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+				Output::Warning("Maniac MovePicture: Fixed angle not supported");
+				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+			}
+		}
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
@@ -2790,15 +2839,45 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 		// Handling of RPG2k3 1.12 chunks
 		int id_type = com.parameters[1];
 
-		int max;
-		if (id_type < 2) {
-			pic_id = ValueOrVariable(id_type, pic_id);
-			max = pic_id;
-		} else {
-			max = com.parameters[2];
+		int pic_id_max;
+		switch (id_type) {
+			case 1:
+				// Erase single picture referenced by variable
+				pic_id = Main_Data::game_variables->Get(pic_id);
+				pic_id_max = pic_id;
+				break;
+			case 2:
+				// Erase [Arg0, Arg2]
+				pic_id_max = com.parameters[2];
+				break;
+			case 3:
+				// Erase [V[Arg0], V[Arg2]]
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				pic_id = Main_Data::game_variables->Get(pic_id);
+				pic_id_max = Main_Data::game_variables->Get(com.parameters[2]);
+				break;
+			case 4:
+				// Erase single picture referenced by variable indirect
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				pic_id = Main_Data::game_variables->GetIndirect(pic_id);
+				pic_id_max = pic_id;
+				break;
+			case 5:
+				// Erase all pictures
+				if (!Player::IsPatchManiac()) {
+					return true;
+				}
+				Main_Data::game_pictures->EraseAll();
+				return true;
+			default:
+				return true;
 		}
 
-		for (int i = pic_id; i <= max; ++i) {
+		for (int i = pic_id; i <= pic_id_max; ++i) {
 			if (i <= 0) {
 				Output::Error("ErasePicture: Requested invalid picture id ({})", i);
 			}
@@ -3418,6 +3497,16 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 		break;
 	}
 
+	return true;
+}
+
+bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 12210
+	if (!Player::IsPatchManiac() || com.parameters.empty() || com.parameters[0] == 0) {
+		// Infinite Loop
+		return true;
+	}
+
+	Output::Warning("Maniac CommandLoop: Conditional loops unsupported");
 	return true;
 }
 

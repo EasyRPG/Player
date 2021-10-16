@@ -119,7 +119,7 @@ private:
 	double zoom_x_effect = 1.0;
 	double zoom_y_effect = 1.0;
 	double angle_effect = 0.0;
-	int blend_type_effect;
+	int blend_type_effect = 0;
 	Color blend_color_effect;
 	int waver_effect_depth = 0;
 	double waver_effect_phase = 0.0;

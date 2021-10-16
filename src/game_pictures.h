@@ -54,6 +54,10 @@ public:
 		int saturation = 100;
 		int effect_mode = 0;
 		int effect_power = 0;
+		// Extensions
+		bool flip_x = false;
+		bool flip_y = false;
+		int blend_mode = 0;
 	};
 	struct ShowParams : Params {
 		std::string name;
@@ -78,6 +82,7 @@ public:
 	void Show(int id, const ShowParams& params);
 	void Move(int id, const MoveParams& params);
 	void Erase(int id);
+	void EraseAll();
 
 	void Update(bool is_battle);
 
