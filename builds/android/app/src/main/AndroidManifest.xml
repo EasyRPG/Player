@@ -49,8 +49,8 @@
             android:noHistory="true"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:preferMinimalPostProcessing="true">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <!--android:preferMinimalPostProcessing="true">--><!-- uncomment on API 30+ for lower HDMI latency-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
