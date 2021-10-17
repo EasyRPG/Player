@@ -126,6 +126,24 @@ void Window_Selectable::UpdateArrows() {
 void Window_Selectable::Update() {
 	Window_Base::Update();
 	if (active && item_max > 0 && index >= 0) {
+		if (scroll_dir != 0) {
+			scroll_progress++;
+			SetOy(GetOy() + (menu_item_height * scroll_progress / 4 - menu_item_height * (scroll_progress - 1) / 4) * scroll_dir);
+			UpdateArrows();
+			if (scroll_progress < 4) {
+				return;
+			} else {
+				scroll_dir = 0;
+				scroll_progress = 0;
+				if (active && help_window != NULL) {
+					UpdateHelp();
+				}
+				UpdateCursorRect();
+			}
+		}
+
+		int old_index = index;
+
 		auto move_down = [&]() {
 			if (index < item_max - column_max || column_max == 1 ) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
@@ -177,6 +195,17 @@ void Window_Selectable::Update() {
 			if (column_max >= 2 && index > 0) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index -= 1;
+			}
+		}
+
+		if (std::abs(index - old_index) <= column_max) {
+			int row = index / column_max;
+			if (row < GetTopRow() && old_index < item_max - 1) {
+				scroll_dir = -1;
+				return;
+			} else if (row > GetTopRow() + (GetPageRowMax() - 1) && old_index > 0) {
+				scroll_dir = 1;
+				return;
 			}
 		}
 	}
