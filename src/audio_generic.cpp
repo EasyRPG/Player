@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include <cassert>
+#include <memory>
 #include "audio_decoder_midi.h"
 #include "audio_generic.h"
 #include "audio_generic_midiout.h"
@@ -203,24 +204,30 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		// There should be a way to configure the order
 		if (!MidiDecoder::CreateFluidsynth(filestream, true) && !MidiDecoder::CreateWildMidi(filestream, true)) {
 			if (!midi_thread) {
-				midi_thread.reset(new GenericAudioMidiOut());
-				midi_thread->StartThread();
+				midi_thread = std::make_unique<GenericAudioMidiOut>();
+				if (midi_thread->IsInitialized()) {
+					midi_thread->StartThread();
+				} else {
+					midi_thread.reset();
+				}
 			}
 
-			midi_thread->LockMutex();
-			auto& midi_out = midi_thread->GetMidiOut();
-			if (midi_out.Open(std::move(filestream))) {
-				midi_out.SetPitch(pitch);
-				midi_out.SetVolume(0);
-				midi_out.SetFade(volume, std::chrono::milliseconds(fadein));
-				midi_out.SetLooping(true);
-				midi_out.Resume();
-				chan.paused = false;
-				chan.midi_out_used = true;
+			if (midi_thread) {
+				midi_thread->LockMutex();
+				auto &midi_out = midi_thread->GetMidiOut();
+				if (midi_out.Open(std::move(filestream))) {
+					midi_out.SetPitch(pitch);
+					midi_out.SetVolume(0);
+					midi_out.SetFade(volume, std::chrono::milliseconds(fadein));
+					midi_out.SetLooping(true);
+					midi_out.Resume();
+					chan.paused = false;
+					chan.midi_out_used = true;
+					midi_thread->UnlockMutex();
+					return true;
+				}
 				midi_thread->UnlockMutex();
-				return true;
 			}
-			midi_thread->UnlockMutex();
 		}
 	}
 

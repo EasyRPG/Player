@@ -158,6 +158,10 @@ void GenericAudioMidiOut::ThreadFunction() {
 	}
 }
 
+bool GenericAudioMidiOut::IsInitialized() const {
+	return midi_out != nullptr;
+}
+
 bool GenericAudioMidiOut::IsSupported(Filesystem_Stream::InputStream& stream) {
 	char magic[4] = { 0 };
 	if (!stream.ReadIntoObj(magic)) {
