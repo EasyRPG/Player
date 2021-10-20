@@ -52,6 +52,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -614,7 +615,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     static final int COMMAND_CHANGE_TITLE = 1;
     static final int COMMAND_CHANGE_WINDOW_STYLE = 2;
     static final int COMMAND_TEXTEDIT_HIDE = 3;
-    static final int COMMAND_CHANGE_SURFACEVIEW_FORMAT = 4;
     static final int COMMAND_SET_KEEP_SCREEN_ON = 5;
 
     protected static final int COMMAND_USER = 0x8000;
@@ -712,32 +712,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 }
                 break;
             }
-            case COMMAND_CHANGE_SURFACEVIEW_FORMAT:
-            {
-                int format = (Integer) msg.obj;
-                int pf;
-
-                if (SDLActivity.mSurface == null) {
-                    return;
-                }
-
-                SurfaceHolder holder = SDLActivity.mSurface.getHolder();
-                if (holder == null) {
-                    return;
-                }
-
-                if (format == 1) {
-                    pf = PixelFormat.RGBA_8888;
-                } else if (format == 2) {
-                    pf = PixelFormat.RGBX_8888;
-                } else {
-                    pf = PixelFormat.RGB_565;
-                }
-
-                holder.setFormat(pf);
-
-                break;
-            }
             default:
                 if ((context instanceof SDLActivity) && !((SDLActivity) context).onUnhandledMessage(msg.arg1, msg.obj)) {
                     Log.e(TAG, "error handling message, command is " + msg.arg1);
@@ -821,7 +795,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static native void nativeResume();
     public static native void nativeFocusChanged(boolean hasFocus);
     public static native void onNativeDropFile(String filename);
-    public static native void nativeSetScreenResolution(int surfaceWidth, int surfaceHeight, int deviceWidth, int deviceHeight, int format, float rate);
+    public static native void nativeSetScreenResolution(int surfaceWidth, int surfaceHeight, int deviceWidth, int deviceHeight, float rate);
     public static native void onNativeResize();
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
@@ -996,11 +970,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      */
     public static boolean supportsRelativeMouse()
     {
-        // ChromeOS doesn't provide relative mouse motion via the Android 7 APIs
-        if (isChromebook()) {
-            return false;
-        }
-
         // DeX mode in Samsung Experience 9.0 and earlier doesn't support relative mice properly under
         // Android 7 APIs, and simply returns no data under Android 8 APIs.
         //
@@ -1230,13 +1199,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             return null;
         }
         return SDLActivity.mSurface.getNativeSurface();
-    }
-
-    /**
-     * This method is called by SDL using JNI.
-     */
-    public static void setSurfaceViewFormat(int format) {
-        mSingleton.sendCommand(COMMAND_CHANGE_SURFACEVIEW_FORMAT, format);
     }
 
     // Input
@@ -1640,6 +1602,52 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }
         return 0;
     }
+
+    /**
+     * This method is called by SDL using JNI.
+     */
+    public static int showToast(String message, int duration, int gravity, int xOffset, int yOffset)
+    {
+        if(null == mSingleton) {
+            return - 1;
+        }
+
+        try
+        {
+            class OneShotTask implements Runnable {
+                String mMessage;
+                int mDuration;
+                int mGravity;
+                int mXOffset;
+                int mYOffset;
+
+                OneShotTask(String message, int duration, int gravity, int xOffset, int yOffset) {
+                    mMessage  = message;
+                    mDuration = duration;
+                    mGravity  = gravity;
+                    mXOffset  = xOffset;
+                    mYOffset  = yOffset;
+                }
+
+                public void run() {
+                    try
+                    {
+                        Toast toast = Toast.makeText(mSingleton, mMessage, mDuration);
+                        if (mGravity >= 0) {
+                            toast.setGravity(mGravity, mXOffset, mYOffset);
+                        }
+                        toast.show();
+                    } catch(Exception ex) {
+                        Log.e(TAG, ex.getMessage());
+                    }
+                }
+            }
+            mSingleton.runOnUiThread(new OneShotTask(message, duration, gravity, xOffset, yOffset));
+        } catch(Exception ex) {
+            return -1;
+        }
+        return 0;
+    }
 }
 
 /**
@@ -1768,30 +1776,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             return;
         }
 
-        int sdlFormat = 0x15151002; // SDL_PIXELFORMAT_RGB565 by default
-        switch (format) {
-        case PixelFormat.RGBA_8888:
-            Log.v("SDL", "pixel format RGBA_8888");
-            sdlFormat = 0x16462004; // SDL_PIXELFORMAT_RGBA8888
-            break;
-        case PixelFormat.RGBX_8888:
-            Log.v("SDL", "pixel format RGBX_8888");
-            sdlFormat = 0x16261804; // SDL_PIXELFORMAT_RGBX8888
-            break;
-        case PixelFormat.RGB_565:
-            Log.v("SDL", "pixel format RGB_565");
-            sdlFormat = 0x15151002; // SDL_PIXELFORMAT_RGB565
-            break;
-        case PixelFormat.RGB_888:
-            Log.v("SDL", "pixel format RGB_888");
-            // Not sure this is right, maybe SDL_PIXELFORMAT_RGB24 instead?
-            sdlFormat = 0x16161804; // SDL_PIXELFORMAT_RGB888
-            break;
-        default:
-            Log.v("SDL", "pixel format unknown " + format);
-            break;
-        }
-
         mWidth = width;
         mHeight = height;
         int nDeviceWidth = width;
@@ -1814,7 +1798,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
         Log.v("SDL", "Window size: " + width + "x" + height);
         Log.v("SDL", "Device size: " + nDeviceWidth + "x" + nDeviceHeight);
-        SDLActivity.nativeSetScreenResolution(width, height, nDeviceWidth, nDeviceHeight, sdlFormat, mDisplay.getRefreshRate());
+        SDLActivity.nativeSetScreenResolution(width, height, nDeviceWidth, nDeviceHeight, mDisplay.getRefreshRate());
         SDLActivity.onNativeResize();
 
         // Prevent a screen distortion glitch,
