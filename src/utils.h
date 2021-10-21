@@ -271,7 +271,6 @@ namespace Utils {
 	template <typename F>
 	void ForEachLine(StringView line, F&& f);
 
-
 	/**
 	 * Reads a stream until EOF and returns the read bytes.
 	 *
@@ -330,6 +329,14 @@ namespace Utils {
 	 * @return true when s contains only ASCII
 	 */
 	bool StringIsAscii(StringView s);
+
+	/**
+	 * Trims whitespace from the start and the end of a string
+	 *
+	 * @param s String to trim
+	 * @return View on the trimmed string
+	 */
+	StringView TrimWhitespace(StringView s);
 
 	/**
 	 * Formats a date.

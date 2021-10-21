@@ -70,6 +70,7 @@ void Translation::Reset()
 {
 	ClearTranslationLookups();
 
+	translation_root_fs = FilesystemView();
 	languages.clear();
 	current_language = "";
 }
@@ -81,7 +82,12 @@ void Translation::InitTranslations()
 
 	// Determine if the "languages" directory exists, and convert its case.
 	auto fs = FileFinder::Game();
-	translation_root_fs = fs.Subtree(TRDIR_NAME);
+	auto game_tree = fs.ListDirectory();
+	for (const auto& tr_name : *game_tree) {
+		if (tr_name.first == TRDIR_NAME) {
+			translation_root_fs = fs.Subtree(tr_name.second.name);
+		}
+	}
 	if (translation_root_fs) {
 		// Now list all directories within the translate dir
 		auto translation_tree = translation_root_fs.ListDirectory();
@@ -181,32 +187,32 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 
 		if (tr_name.first == TRFILE_RPG_RT_LDB) {
 			sys = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *sys);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_BATTLE) {
 			battle = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *battle);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_COMMON) {
 			common = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *common);
 			}
 		} else if (tr_name.first == TRFILE_RPG_RT_LMT) {
 			mapnames = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *mapnames);
 			}
 		} else {
 			std::unique_ptr<Dictionary> dict;
 			dict = std::make_unique<Dictionary>();
-			auto is = FileFinder::Game().OpenInputStream(language_tree.FindFile(tr_name.first));
+			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
@@ -309,8 +315,8 @@ namespace {
 		}
 
 		/** Retrieve the string of the EventCommand at the index */
-		std::string CurrentCmdString() const {
-			return ToString(commands[index].string);
+		lcf::DBString& CurrentCmdString() const {
+			return commands[index].string;
 		}
 
 		/** Retrieve the indent level of the EventCommand at the index */
@@ -349,6 +355,16 @@ namespace {
 		/** Returns true if the current Event Command is ShowChoiceEnd */
 		bool CurrentIsShowChoiceEnd() const {
 			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ShowChoiceEnd;
+		}
+
+		/** Returns true if the current Event Command is ChangeHeroName */
+		bool CurrentIsChangeHeroName() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ChangeHeroName;
+		}
+
+		/** Returns true if the current Event Command is ChangeHeroTitle */
+		bool CurrentIsChangeHeroTitle() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ChangeHeroTitle;
 		}
 
 		/**
@@ -596,15 +612,15 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			commands.BuildChoiceString(choice_str, choice_indexes);
 
 			// Go through choices.
-			if (choice_indexes.size()>0) {
+			if (choice_indexes.size() > 0) {
 				// Translate, break back into lines.
 				std::vector<std::vector<std::string>> msgs = TranslateMessageStream(dict, choice_str, '\n');
-				if (msgs.size()>0) {
+				if (msgs.size() > 0) {
 					// Logic here is also based on the last message box.
-					std::vector<std::string>& lines = msgs.back();
+					std::vector<std::string> &lines = msgs.back();
 
 					// We only pick the first X entries from the translation, since we can't change the Choice count.
-					for (size_t num=0; num<choice_indexes.size()&&num<lines.size(); num++) {
+					for (size_t num = 0; num < choice_indexes.size() && num < lines.size(); num++) {
 						commands.ReWriteString(choice_indexes[num], lines[num]);
 					}
 
@@ -616,6 +632,12 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			}
 
 			// Note that commands.Advance() has already happened within the above code.
+		} else if (commands.CurrentIsChangeHeroName()) {
+			dict.TranslateString("actors.name", commands.CurrentCmdString());
+			commands.Advance();
+		} else if (commands.CurrentIsChangeHeroTitle()) {
+			dict.TranslateString("actors.title", commands.CurrentCmdString());
+			commands.Advance();
 		} else {
 			commands.Advance();
 		}
@@ -637,11 +659,8 @@ void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map&
 
 void Translation::ParsePoFile(Filesystem_Stream::InputStream is, Dictionary& out)
 {
-	if (is.good()) {
-		if (!Dictionary::FromPo(out, is)) {
-			Output::Warning("Failure parsing PO file, resetting");
-			out = Dictionary();
-		}
+	if (is) {
+		Dictionary::FromPo(out, is);
 	}
 }
 
@@ -670,25 +689,35 @@ void Dictionary::addEntry(const Entry& entry)
 }
 
 // Returns success
-bool Dictionary::FromPo(Dictionary& res, std::istream& in)
-{
+void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 	std::string line;
+	lcf::StringView line_view;
 	bool found_header = false;
 	bool parse_item = false;
+	int line_number = 0;
 
 	Entry e;
 
-	auto extract_string = [&line](int offset, bool& error) {
+	auto extract_string = [&](int offset) -> std::string {
+		if (offset >= line_view.size()) {
+			Output::Error("Parse error (Line {}) is empty", line_number);
+			return "";
+		}
+
 		std::stringstream out;
 		bool slash = false;
 		bool first_quote = false;
 
-		for (char c : line.substr(offset)) {
-			if (c == ' ' && !first_quote) {
-				continue;
-			} else if (c == '"' && !first_quote) {
-				first_quote = true;
-				continue;
+		for (char c : line_view.substr(offset)) {
+			if (!first_quote) {
+				if (c == ' ') {
+					continue;
+				} else if (c == '"') {
+					first_quote = true;
+					continue;
+				}
+				Output::Error("Parse error (Line {}): Expected \", got \"{}\": {}", line_number, c, line);
+				return "";
 			}
 
 			if (!slash && c == '\\') {
@@ -706,8 +735,7 @@ bool Dictionary::FromPo(Dictionary& res, std::istream& in)
 						out << '"';
 						break;
 					default:
-						Output::Error("Parse error {} ({})", line, c);
-						error = true;
+						Output::Error("Parse error (Line {}): Expected \\, \\n or \", got \"{}\": {}", line_number, c, line);
 						break;
 				}
 			} else {
@@ -720,68 +748,68 @@ bool Dictionary::FromPo(Dictionary& res, std::istream& in)
 			}
 		}
 
-		Output::Error("Parse error: Unterminated line: {}", line);
-		error = true;
+		Output::Error("Parse error (Line {}): Unterminated line: {}", line_number, line);
 		return out.str();
 	};
 
-	auto read_msgstr = [&](bool& error) {
+	auto read_msgstr = [&]() {
 		// Parse multiply lines until empty line or comment
-		e.translation = extract_string(6, error);
+		e.translation = extract_string(6);
 
 		while (Utils::ReadLine(in, line)) {
-			if (line.empty() || ToStringView(line).starts_with("#")) {
+			line_view = Utils::TrimWhitespace(line);
+			++line_number;
+			if (line_view.empty() || line_view.starts_with("#")) {
 				break;
 			}
-			e.translation += extract_string(0, error);
+			e.translation += extract_string(0);
 		}
 
 		parse_item = false;
 		res.addEntry(e);
+		e = Entry();
 	};
 
-	auto read_msgid = [&](bool& error) {
+	auto read_msgid = [&]() {
 		// Parse multiply lines until empty line or msgstr is encountered
-		e.original = extract_string(5, error);
+		e.original = extract_string(5);
 
 		while (Utils::ReadLine(in, line)) {
-			if (line.empty() || ToStringView(line).starts_with("msgstr")) {
-				read_msgstr(error);
+			line_view = Utils::TrimWhitespace(line);
+			++line_number;
+			if (line_view.empty() || line_view.starts_with("msgstr")) {
+				read_msgstr();
 				return;
 			}
-			e.original += extract_string(0, error);
+			e.original += extract_string(0);
 		}
 	};
 
-	bool error = false;
 	while (Utils::ReadLine(in, line)) {
-		auto lineSV = ToStringView(line);
+		line_view = Utils::TrimWhitespace(line);
+		++line_number;
 		if (!found_header) {
-			if (lineSV.starts_with("msgstr")) {
+			if (line_view.starts_with("msgstr")) {
 				found_header = true;
 			}
 			continue;
 		}
 
 		if (!parse_item) {
-			if (lineSV.starts_with("msgctxt")) {
-				e.context = extract_string(7, error);
+			if (line_view.starts_with("msgctxt")) {
+				e.context = extract_string(7);
+
 				parse_item = true;
-			} else if (lineSV.starts_with("msgid")) {
+			} else if (line_view.starts_with("msgid")) {
 				parse_item = true;
-				read_msgid(error);
+				read_msgid();
 			}
 		} else {
-			if (lineSV.starts_with("msgid")) {
-				read_msgid(error);
-			} else if (lineSV.starts_with("msgstr")) {
-				read_msgstr(error);
+			if (line_view.starts_with("msgid")) {
+				read_msgid();
+			} else if (line_view.starts_with("msgstr")) {
+				read_msgstr();
 			}
 		}
 	}
-	return !error;
 }
-
-
-
-
