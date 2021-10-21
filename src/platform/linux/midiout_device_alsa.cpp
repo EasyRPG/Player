@@ -31,9 +31,10 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 	snd_seq_client_info_alloca(&client_info);
 	snd_seq_port_info_alloca(&port_info);
 
-	// TODO: This simply enumerates all devices and connects to the last matching one
+	// TODO: This simply enumerates all devices and attempts to find a suitable device
+	// Currently prefers fluidsynth or timidity
+	// If they are not found connects to a different one and likely has no sound
 	// There should be a way to configure this
-	// The last is usually timidity++ or fluidsynth, so this works
 	std::string dst_client_name;
 	std::string dst_port_name;
 	bool candidate_found = false;
@@ -41,6 +42,10 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 	snd_seq_client_info_set_client(client_info, -1);
 	while (snd_seq_query_next_client(midi_out, client_info) == 0) {
 		const char* client_name = snd_seq_client_info_get_name(client_info);
+		if (StringView(client_name) == "Midi Through") {
+			continue;
+		}
+
 		int dst_client_candidate = snd_seq_client_info_get_client(client_info);
 		snd_seq_port_info_set_client(port_info, dst_client_candidate);
 		snd_seq_port_info_set_port(port_info, -1);
@@ -58,9 +63,16 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 				dst_port = snd_seq_port_info_get_port(port_info);
 				dst_port_name = snd_seq_port_info_get_name(port_info);
 				candidate_found = true;
+
+				// FIXME: Hardcoded, no config scene yet
+				if (StringView(client_name).starts_with("FLUID") || StringView(client_name).starts_with("TiMidity")) {
+					// Perfect candidate found, stop searching
+					goto done;
+				}
 			}
 		}
 	}
+	done:;
 
 	if (!candidate_found) {
 		Output::Debug("ALSA MIDI: No suitable client found");

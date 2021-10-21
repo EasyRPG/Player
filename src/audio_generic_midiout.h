@@ -52,6 +52,7 @@ public:
 	void StartThread();
 	void StopThread();
 	void ThreadFunction();
+	bool IsInitialized() const;
 
 	static bool IsSupported(Filesystem_Stream::InputStream& stream);
 private:
@@ -80,6 +81,9 @@ public:
 
 	void StartThread() {};
 	void StopThread() {};
+	bool IsInitialized() const {
+		return false;
+	}
 
 	static bool IsSupported(Filesystem_Stream::InputStream&) {
 		return false;
