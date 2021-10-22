@@ -2852,9 +2852,11 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 
 		int pic_id_max;
 		switch (id_type) {
+			case 0:
+				// Erase single picture specified by constant
 			case 1:
 				// Erase single picture referenced by variable
-				pic_id = Main_Data::game_variables->Get(pic_id);
+				pic_id = ValueOrVariable(id_type, pic_id);
 				pic_id_max = pic_id;
 				break;
 			case 2:
