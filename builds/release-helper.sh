@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # release-helper.sh - maintainer utility script to change the release version
-# by carstene1ns 2020, released under the MIT license
+# by carstene1ns 2021, released under the MIT license
+
+set -e
 
 version=$1
 
@@ -26,6 +28,11 @@ sed -i "/EasyRPG_Player VERSION/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" CMakeLists.t
 
 echo "  configure.ac"
 sed -i "/AC_INIT/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" configure.ac
+
+echo "  builds/android/gradle.properties"
+_android_commits=`git rev-list HEAD --count`
+sed -i -e "/VERSION_NAME/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
+       -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" builds/android/gradle.properties
 
 echo "  builds/switch/Makefile"
 sed -i "/APP_VERSION/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" builds/switch/Makefile
