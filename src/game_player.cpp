@@ -215,7 +215,23 @@ void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 		return;
 	}
 
-	Game_Map::Scroll(sx * amount, sy * amount);
+	int move_sx = 0;
+	int move_sy = 0;
+	const auto d = GetDirection();
+	if (sy < 0 && (d == Up || d == UpRight || d == UpLeft)) {
+		move_sy = sy;
+	}
+	if (sy > 0 && (d == Down || d == DownRight || d == DownLeft)) {
+		move_sy = sy;
+	}
+	if (sx > 0 && (d == Right || d == UpRight || d == DownRight)) {
+		move_sx = sx;
+	}
+	if (sx < 0 && (d == Left || d == UpLeft || d == DownLeft)) {
+		move_sx = sx;
+	}
+
+	Game_Map::Scroll(move_sx * amount, move_sy * amount);
 }
 
 bool Game_Player::UpdateAirship() {
