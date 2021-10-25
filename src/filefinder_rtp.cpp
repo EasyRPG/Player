@@ -168,7 +168,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 
 void FileFinder_RTP::AddPath(StringView p) {
 	using namespace FileFinder;
-	auto fs = FileFinder::Root().Create(ToString(p));
+	auto fs = FileFinder::Root().Create(FileFinder::MakeCanonical(p));
 	if (fs) {
 		Output::Debug("Adding {} to RTP path", p);
 
