@@ -47,7 +47,7 @@ INCLUDES	:=	../../src
 
 APP_TITLE	:= EasyRPG Player
 APP_AUTHOR	:= EasyRPG Team & Rinnegatamante
-APP_VERSION	:= 0.6.2
+APP_VERSION	:= 0.7.0
 ICON		:= icon.jpg
 
 #---------------------------------------------------------------------------------
