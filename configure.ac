@@ -87,10 +87,10 @@ AS_IF([test "x$with_audio" != "xno"],[
 
 	AS_IF([test "$with_alsa" = "yes"],[
 		AC_DEFINE(HAVE_NATIVE_MIDI,[1],[Native Midi support])
-		AM_CONDITIONAL([HAVE_ALSA], [test "$with_alsa" = "yes"])
 		AX_PTHREAD
 	])
 ])
+AM_CONDITIONAL([HAVE_ALSA], [test "$with_alsa" = "yes"])
 
 # bash completion
 AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
