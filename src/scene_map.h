@@ -23,6 +23,7 @@
 #include "spriteset_map.h"
 #include "window_message.h"
 #include "window_varlist.h"
+#include "game_clock.h"
 #include "game_map.h"
 
 /**
@@ -97,6 +98,7 @@ private:
 	lcf::rpg::Music music_before_inn = {};
 	bool activate_inn = false;
 	bool inn_started = false;
+	Game_Clock::time_point inn_timer = {};
 };
 
 #endif
