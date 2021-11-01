@@ -1103,6 +1103,8 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 
 	auto mask = CreateMask(opacity, src_rect, &inv);
 
+	// OP_SRC draws a black rectangle around the rotated image making this operator unusable here
+	blend_mode = (blend_mode == BlendMode::Default ? BlendMode::Normal : blend_mode);
 	pixman_image_composite32(GetOperator(mask.get(), blend_mode),
 							 src_img, mask.get(), bitmap.get(),
 							 dst_rect.x, dst_rect.y,
