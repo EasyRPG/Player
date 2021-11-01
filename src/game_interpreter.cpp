@@ -3495,7 +3495,7 @@ bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 	frame.maniac_loop_info.resize((com.indent + 1) * 2);
-	frame.maniac_loop_info_size = static_cast<int32_t>(frame.maniac_loop_info.size());
+	frame.maniac_loop_info_size = static_cast<int32_t>(frame.maniac_loop_info.size() / 2);
 
 	int32_t& begin_loop_val = frame.maniac_loop_info[frame.maniac_loop_info.size() - 2];
 	int32_t& end_loop_val = frame.maniac_loop_info[frame.maniac_loop_info.size() - 1];
@@ -3508,7 +3508,7 @@ bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 
 
 	switch (type) {
 		case 1: // X times
-			end_loop_val = begin_arg;
+			end_loop_val = begin_arg - 1;
 			break;
 		case 2: // Count up
 		case 3: // Count down
@@ -3586,7 +3586,7 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 
 		if (frame.maniac_loop_info.size() < (offset + 1) * 2) {
 			frame.maniac_loop_info.resize((offset + 1) * 2);
-			frame.maniac_loop_info_size = frame.maniac_loop_info.size();
+			frame.maniac_loop_info_size = frame.maniac_loop_info.size() / 2;
 		}
 
 		int32_t& cur_loop_val = frame.maniac_loop_info[offset];
@@ -3619,7 +3619,7 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 		if (!ManiacCheckContinueLoop(check_cur, check_end, type, op)) {
 			// End loop
 			frame.maniac_loop_info.resize(offset);
-			frame.maniac_loop_info_size = offset;
+			frame.maniac_loop_info_size = offset / 2;
 			++index;
 			return true;
 		}
@@ -4075,7 +4075,6 @@ bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int 
 		case 0: // Infinite loop
 			return true;
 		case 1: // X times
-			return val < val2;
 		case 2: // Count up
 			return val <= val2;
 		case 3: // Count down
