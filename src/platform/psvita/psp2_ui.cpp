@@ -74,11 +74,9 @@ namespace {
 	vita2d_texture* touch_texture;
 	uint8_t zoom_state;
 	int in_use_shader;
-	bool set_shader;
-	bool zoom_trigger;
+	bool set_shader, shader_trigger, zoom_trigger, is_pstv;
 	SceUID GPU_Thread;
 	SceUID GPU_Mutex, GPU_Cleanup_Mutex;
-	bool is_pstv = false;
 
 	const int touch_left[] = {
 		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::N4,
@@ -168,6 +166,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	in_use_shader = 0;
 	zoom_trigger = false;
 	set_shader = true;
+	shader_trigger = false;
 	is_pstv = sceKernelIsPSVitaTV();
 	vita2d_init();
 	vita2d_set_vblank_wait(cfg.vsync.Get());
@@ -281,7 +280,7 @@ void Psp2Ui::ProcessEvents() {
 	// Resolution changing support
 	bool old_state = zoom_trigger;
 	zoom_trigger = (input.buttons & SCE_CTRL_R1);
-	if ((zoom_trigger != old_state) && zoom_trigger)
+	if (zoom_trigger && !old_state)
 		zoom_state = ((zoom_state + 1) % 3);
 
 	// Left analog support
@@ -292,10 +291,13 @@ void Psp2Ui::ProcessEvents() {
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {
+		old_state = shader_trigger;
+		shader_trigger = false;
+
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		for (int i = 0; i < touch.reportNum; ++i) {
-			int xpos = touch.report[i].x;
-			int ypos = touch.report[i].y;
+			int xpos = touch.report[i].x / 2;
+			int ypos = touch.report[i].y / 2;
 			if (ypos < SCREEN_HEIGHT) {
 				int btn = ypos / touch_buttons_height;
 				if (xpos < touch_buttons_width) {
@@ -304,8 +306,11 @@ void Psp2Ui::ProcessEvents() {
 				} else if (xpos >= touch_buttons_right_x) {
 					if (ypos < touch_buttons_height) {
 						// shader changes
-						set_shader = true;
-						in_use_shader = ((in_use_shader + 1) % SHADERS_NUM);
+						shader_trigger = true;
+						if (shader_trigger && !old_state){
+							set_shader = true;
+							in_use_shader = ((in_use_shader + 1) % SHADERS_NUM);
+						}
 					} else {
 						keys[touch_right[btn]] = true;
 						touched_buttons[btn+8] = true;
