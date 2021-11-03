@@ -146,6 +146,14 @@ namespace FileFinder {
 	std::string MakePath(StringView dir, StringView name);
 
 	/**
+	 * Creates a path out of multiple components
+	 *
+	 * @param path Path to join
+	 */
+	template<typename T>
+	std::string MakePath(lcf::Span<T> components);
+
+	/**
 	 * Converts a path to the canonical equivalent.
 	 * This generates a path that does not contain ".." or "." directories.
 	 *
@@ -284,5 +292,14 @@ namespace FileFinder {
 	 */
 	void DumpFilesystem(FilesystemView fs);
 } // namespace FileFinder
+
+template<typename T>
+std::string FileFinder::MakePath(lcf::Span<T> components) {
+	std::string path;
+	for (auto& c: components) {
+		path = MakePath(path, c);
+	}
+	return path;
+}
 
 #endif
