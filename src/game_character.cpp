@@ -116,8 +116,7 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 		z = Priority_EventsAbove;
 	}
 
-	// For events on the screen, this should be inside a 0-40 range
-	z += GetScreenY(apply_shift, false) >> 3;
+	z += GetScreenY(apply_shift, false);
 
 	return z;
 }
