@@ -29,7 +29,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_2}, // 1
 		{DECISION, Keys::JOY_3}, // 2
 		{FAST_FORWARD, Keys::JOY_4}, // -
-		{PLUS, Keys::JOY_5}, // +
+		{FAST_FORWARD_PLUS, Keys::JOY_5}, // +
 		{CANCEL, Keys::JOY_6}, // Home
 
 		// Nunchuck
@@ -46,7 +46,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N9, Keys::JOY_15}, // Zl
 		{TOGGLE_FPS, Keys::JOY_16}, // Zr
 		{FAST_FORWARD, Keys::JOY_17}, // -
-		{PLUS, Keys::JOY_18}, // +
+		{FAST_FORWARD_PLUS, Keys::JOY_18}, // +
 		{CANCEL, Keys::JOY_19}, // Home
 
 		{DOWN, Keys::JOY_HAT_DOWN},
