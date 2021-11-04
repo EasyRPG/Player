@@ -91,21 +91,22 @@ FilesystemView FileFinder::Save() {
 		// and the filesystem has no write support do a redirection to a folder with ".save" appended
 		FilesystemView parent = game_fs;
 		FilesystemView redir;
-		std::string child_path;
+		std::vector<std::string> comps;
 		for (;;) {
-			std::string owner_path = parent.GetBasePath();
-			std::string sub_path = parent.GetSubPath();
+			comps.emplace_back(parent.GetSubPath());
+			comps.emplace_back(parent.GetBasePath());
 			parent = parent.GetOwner().GetParent();
 			if (!parent) {
 				break;
 			}
 			if (parent.IsFeatureSupported(Filesystem::Feature::Write)) {
-				std::string path;
-				std::string name;
-				std::string save_path = MakePath(MakePath(owner_path + ".save", sub_path), child_path);
-
-				parent.MakeDirectory(save_path, true);
-				redir = Root().Create(save_path);
+				comps.back() += ".save";
+				std::reverse(comps.begin(), comps.end());
+				std::string save_path = MakePath(lcf::MakeSpan(comps));
+				if (!parent.IsDirectory(save_path, true)) {
+					parent.MakeDirectory(save_path, true);
+				}
+				redir = parent.Subtree(save_path);
 
 				if (!redir) {
 					Output::Error("Invalid save directory {}", save_path);
@@ -113,8 +114,12 @@ FilesystemView FileFinder::Save() {
 
 				break;
 			}
-			child_path = MakePath(MakePath(owner_path, sub_path), child_path);
 		}
+
+		if (!redir) {
+			Output::Error("No suitable save directory found");
+		}
+
 		return redir;
 	}
 

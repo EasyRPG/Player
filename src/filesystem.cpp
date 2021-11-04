@@ -58,17 +58,35 @@ FilesystemView Filesystem::Create(StringView path) const {
 
 	// When the path doesn't exist check if the path contains a file that can
 	// be handled by another filesystem
-	std::string path_prefix = "";
-
 	if (!IsDirectory(path, true)) {
+		std::string dir_of_file;
+		std::string path_prefix;
 		std::vector<std::string> components = FileFinder::SplitPath(path);
 
 		// TODO this should probably move to a static function in the FS classes
+		// Search for the deepest directory
+		int i = 0;
+		for (const auto& comp : components) {
+			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+			// Some systems do not consider them directories
+			if (i > 0 || comp.back() != ':') {
+				if (!IsDirectory(FileFinder::MakePath(dir_of_file, comp), true)) {
+					break;
+				}
+			}
+			dir_of_file += comp + "/";
+			++i;
+		}
 
+		if (!dir_of_file.empty()) {
+			dir_of_file.pop_back();
+		}
+
+		// The next component must be a file
 		// search for known file extensions and "do magic"
 		std::string internal_path;
 		bool handle_internal = false;
-		for (const std::string& comp : components) {
+		for (const auto& comp : lcf::MakeSpan(components).subspan(i)) {
 			if (handle_internal) {
 				internal_path += comp + "/";
 			} else {
@@ -85,7 +103,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 			internal_path.pop_back();
 		}
 
-		auto filesystem = std::make_shared<ZipFilesystem>(path_prefix, Subtree(""));
+		auto filesystem = std::make_shared<ZipFilesystem>(path_prefix, Subtree(dir_of_file));
 		if (!filesystem->IsValid()) {
 			return FilesystemView();
 		}

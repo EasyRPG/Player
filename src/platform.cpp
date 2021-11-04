@@ -138,12 +138,23 @@ bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 		cur_path += "/";
 	}
 
+	bool first = true;
 	for (const auto& comp : components) {
 		if (comp.empty() || comp == ".") {
 			continue;
 		}
 
 		cur_path = FileFinder::MakePath(cur_path, comp);
+
+		if (first) {
+			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+			// Some systems do not consider them directories
+			first = false;
+			if (comp.back() == ':') {
+				continue;
+			}
+		}
+
 		File cf(cur_path);
 		if (cf.IsDirectory(follow_symlinks)) {
 			continue;
