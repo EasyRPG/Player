@@ -41,6 +41,8 @@
 #include "output.h"
 #include "dynrpg.h"
 
+using namespace std::chrono_literals;
+
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
 		case TeleportTarget::eForegroundTeleport:
@@ -501,12 +503,13 @@ void Scene_Map::UpdateInn() {
 	if (!inn_started) {
 		Transition::instance().InitErase(Transition::TransitionFadeOut, Scene::instance.get());
 		inn_started = true;
+		inn_timer = Game_Clock::GetFrameTime();
 
 		AsyncNext([=]() { StartInn(); });
 		return;
 	}
 
-	if (Audio().BGM_IsPlaying() && !Audio().BGM_PlayedOnce()) {
+	if (Audio().BGM_IsPlaying() && !Audio().BGM_PlayedOnce() && (Game_Clock::GetFrameTime() - inn_timer < 10s)) {
 		return;
 	}
 
