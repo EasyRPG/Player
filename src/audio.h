@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include "filesystem_stream.h"
+#include "audio_secache.h"
 
 /**
  * Base Audio class.
@@ -36,7 +37,7 @@ struct AudioInterface {
 	/**
 	 * Plays a background music.
 	 *
-	 * @param file file to play.
+	 * @param stream file to play.
 	 * @param volume volume.
 	 * @param pitch pitch.
 	 * @param fadein fadein.
@@ -100,11 +101,11 @@ struct AudioInterface {
 	/**
 	 * Plays a sound effect.
 	 *
-	 * @param file file to play.
+	 * @param se se to play.
 	 * @param volume volume.
 	 * @param pitch pitch.
 	 */
-	virtual void SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) = 0;
+	virtual void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) = 0;
 
 	/**
 	 * Stops the currently playing sound effect.
@@ -124,7 +125,7 @@ public:
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
-	void SE_Play(Filesystem_Stream::InputStream, int, int) override {}
+	void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}
 

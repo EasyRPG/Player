@@ -68,19 +68,15 @@ namespace {
 	}
 }
 
-std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStream stream) {
-	std::unique_ptr<AudioSeCache> se;
+std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStream stream, StringView name) {
+	auto se = std::make_unique<AudioSeCache>();
+	se->name = ToString(name);
 
-	auto const it = cache.find(ToString(stream.GetName()));
-
-	se = std::make_unique<AudioSeCache>();
-	se->filename = ToString(stream.GetName());
-
+	auto const it = cache.find(ToString(name));
 	if (it == cache.end()) {
 		// Not in cache
 		if (!stream) {
-			se.reset();
-			return se;
+			return {};
 		}
 
 		se->audio_decoder = AudioDecoder::Create(stream, false);
@@ -92,8 +88,7 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStrea
 		}
 
 		if (!se->audio_decoder) {
-			se.reset();
-			return se;
+			return {};
 		}
 	}
 
@@ -112,12 +107,20 @@ void AudioSeCache::GetFormat(int& frequency, AudioDecoder::Format& format, int& 
 	audio_decoder->GetFormat(frequency, format, channels);
 }
 
-bool AudioSeCache::IsCached() const {
-	return cache.find(filename) != cache.end();
+std::unique_ptr<AudioSeCache> AudioSeCache::GetCachedSe(StringView name) {
+	auto se = std::make_unique<AudioSeCache>();
+	se->name = ToString(name);
+
+	auto const it = cache.find(se->name);
+	if (it == cache.end()) {
+		return {};
+	}
+
+	return se;
 }
 
 bool AudioSeCache::GetCachedFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
-	cache_type::const_iterator it = cache.find(filename);
+	cache_type::const_iterator it = cache.find(name);
 
 	if (it != cache.end()) {
 		frequency = (*it).second->frequency;
@@ -133,8 +136,9 @@ bool AudioSeCache::GetCachedFormat(int& frequency, AudioDecoder::Format& format,
 std::unique_ptr<AudioDecoderBase> AudioSeCache::CreateSeDecoder() {
 	AudioSeRef se;
 
-	if (IsCached()) {
-		se = cache.find(filename)->second;
+	auto it = cache.find(name);
+	if (it != cache.end()) {
+		se = it->second;
 		se->last_access = Game_Clock::GetFrameTime();
 
 		std::unique_ptr<AudioDecoderBase> dec = std::make_unique<AudioSeDecoder>(se);
@@ -157,7 +161,7 @@ std::unique_ptr<AudioDecoderBase> AudioSeCache::CreateSeDecoder() {
 	audio_decoder->GetFormat(se->frequency, se->format, se->channels);
 	se->buffer = audio_decoder->DecodeAll();
 
-	cache.insert(std::make_pair(filename, se));
+	cache.insert(std::make_pair(name, se));
 
 	cache_size += se->buffer.size();
 
@@ -177,9 +181,10 @@ std::unique_ptr<AudioDecoderBase> AudioSeCache::CreateSeDecoder() {
 }
 
 AudioSeRef AudioSeCache::GetSeData() const {
-    assert(IsCached());
+	auto it = cache.find(name);
+	assert(it == cache.end());
 
-    return cache.find(filename)->second;
+	return it->second;
 };
 
 void AudioSeCache::Clear() {
@@ -187,7 +192,11 @@ void AudioSeCache::Clear() {
 	cache.clear();
 }
 
-AudioSeDecoder::AudioSeDecoder(AudioSeRef se) :
+StringView AudioSeCache::GetName() const {
+	return name;
+}
+
+AudioSeDecoder::AudioSeDecoder(const AudioSeRef& se) :
 	se(se) {
 	se->last_access = Game_Clock::GetFrameTime();
 }

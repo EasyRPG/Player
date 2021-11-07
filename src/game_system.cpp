@@ -34,6 +34,7 @@
 #include "scene_save.h"
 #include "scene_map.h"
 #include "utils.h"
+#include "audio_secache.h"
 
 Game_System::Game_System()
 	: dbsys(&lcf::Data::system)
@@ -547,24 +548,33 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		se_request_ids.erase(item);
 	}
 
-	if (StringView(se.name).ends_with(".script")) {
+	if (StringView(result->file).ends_with(".script")) {
 		// Is a Ineluki Script File
 		Main_Data::game_ineluki->Execute(se);
 		return;
 	}
 
-	Filesystem_Stream::InputStream stream;
-	if (IsStopSoundFilename(result->file, stream)) {
-		if (stop_sounds) {
-			Audio().SE_Stop();
+	auto se_cache = AudioSeCache::GetCachedSe(result->file);
+	if (!se_cache) {
+		Filesystem_Stream::InputStream stream;
+		if (IsStopSoundFilename(result->file, stream)) {
+			if (stop_sounds) {
+				Audio().SE_Stop();
+			}
+			return;
+		} else if (!stream) {
+			Output::Debug("Sound not found: {}", result->file);
+			return;
 		}
-		return;
-	} else if (!stream) {
-		Output::Debug("Sound not found: {}", result->file);
+		se_cache = std::move(AudioSeCache::Create(std::move(stream), result->file));
+	}
+
+	if (!se_cache) {
+		Output::Warning("Sound {}: Format not supported", result->file);
 		return;
 	}
 
-	Audio().SE_Play(std::move(stream), se.volume, se.tempo);
+	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo);
 }
 
 bool Game_System::IsMessageTransparent() {

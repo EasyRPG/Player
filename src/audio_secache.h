@@ -50,7 +50,7 @@ typedef std::shared_ptr<AudioSeData> AudioSeRef;
  */
 class AudioSeDecoder : public AudioDecoder {
 public:
-	explicit AudioSeDecoder(AudioSeRef se);
+	explicit AudioSeDecoder(const AudioSeRef& se);
 
 	bool Open(Filesystem_Stream::InputStream) override { return true; };
 	bool IsFinished() const override;
@@ -80,9 +80,10 @@ public:
 	 * Opens the passed filename with the internal audio decoder.
 	 *
 	 * @param stream Stream to the audio file
+	 * @param name Name for the cache entry
 	 * @return An AudioSeCache instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioSeCache> Create(Filesystem_Stream::InputStream stream);
+	static std::unique_ptr<AudioSeCache> Create(Filesystem_Stream::InputStream stream, StringView name);
 
 	/**
 	 * Retrieves the format of the internal audio decoder.
@@ -95,12 +96,12 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;
 
 	/**
-	 * Tells if Decode will have a cache hit when executed.
-	 * SetFormat will fail when this returns true.
+	 * If already cached returns the cached SE
 	 *
-	 * @return true if SE is already in cache, false otherwise.
+	 * @param name Cache entry name
+	 * @return SE is already in cache, nullptr otherwise
 	 */
-	bool IsCached() const;
+	static std::unique_ptr<AudioSeCache> GetCachedSe(StringView name);
 
 	/**
 	 * Retrieves the format of the cached file.
@@ -131,11 +132,16 @@ public:
 	 */
 	AudioSeRef GetSeData() const;
 
+	/**
+	 * @return name of the cached SE
+	 */
+	StringView GetName() const;
+
 	static void Clear();
 private:
 	std::unique_ptr<AudioDecoderBase> audio_decoder;
 
-	std::string filename;
+	std::string name;
 };
 
 #endif
