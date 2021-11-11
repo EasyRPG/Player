@@ -43,7 +43,7 @@
 #define TRFILE_RPG_RT_COMMON "rpg_rt.ldb.common.po"
 #define TRFILE_RPG_RT_BATTLE "rpg_rt.ldb.battle.po"
 #define TRFILE_RPG_RT_LMT    "rpg_rt.lmt.po"
-#define TRFILE_META_INI      "META.INI"
+#define TRFILE_META_INI      "meta.ini"
 
 // Message box commands to remove a message box or add one in place.
 // These commands are added by translators in the .po files to manipulate
@@ -98,10 +98,10 @@ void Translation::InitTranslations()
 			item.lang_dir = tr_name.second.name;
 			item.lang_name = tr_name.second.name;
 
-			// If there's a manifest file, read the language name and help text from that.
-			std::string meta_name = translation_root_fs.FindFile(item.lang_dir, TRFILE_META_INI);
-			if (!meta_name.empty()) {
-				lcf::INIReader ini(meta_name);
+			// If there's a manifest file, read the language name and help text from that
+			auto meta_file = translation_root_fs.OpenFile(item.lang_dir, TRFILE_META_INI);
+			if (meta_file) {
+				lcf::INIReader ini(meta_file);
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
 			}
