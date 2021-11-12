@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class GameBrowserHelper {
      * @param dir Directory to test
      * @return true if RPG2k game
      */
-    public static boolean isRpg2kGame(File dir) {
+    public static boolean isRpg2kGame(DocumentFile dir) {
         if (!dir.isDirectory() || !dir.canRead()) {
             return false;
         }
@@ -51,7 +53,7 @@ public class GameBrowserHelper {
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
         int rpgrtCount = 0;
 
-        for (File entry : dir.listFiles()) {
+        for (DocumentFile entry : dir.listFiles()) {
             if (entry.isFile() && entry.canRead()) {
                 if (!databaseFound && entry.getName().equalsIgnoreCase(DATABASE_NAME)) {
                     databaseFound = true;
@@ -183,7 +185,7 @@ public class GameBrowserHelper {
         }
     }
 
-    private static boolean saveDirectoryContainsSave(GameInformation project) {
+    private static boolean saveDirectoryContainsSave(Game project) {
         if (project.getGameFolderPath().equals(project.getSavePath())) {
             // Doesn't matter because this is used for the copying logic to the save directory
             return true;
@@ -193,7 +195,7 @@ public class GameBrowserHelper {
         return files.length > 0;
     }
 
-    private static void copySavesFromGameDirectoryToSaveDirectory(GameInformation project) {
+    private static void copySavesFromGameDirectoryToSaveDirectory(Game project) {
         if (project.getGameFolderPath().equals(project.getSavePath())) {
             return;
         }
@@ -222,17 +224,17 @@ public class GameBrowserHelper {
         return saveFiles.toArray(new File[saveFiles.size()]);
     }
 
-    public static void launchGame(Context context, GameInformation project) {
+    public static void launchGame(Context context, Game game) {
         // Prepare savegames, copy them to the save directory on launch to prevent unwanted side effects
         // e.g. games copied from PC with savegames, or from internal storage.
-        if (!saveDirectoryContainsSave(project)) {
-            copySavesFromGameDirectoryToSaveDirectory(project);
+        if (!saveDirectoryContainsSave(game)) {
+            copySavesFromGameDirectoryToSaveDirectory(game);
         }
 
-        String path = project.getGameFolderPath();
+        String path = game.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
-        if (GameBrowserHelper.isRpg2kGame(new File(path))) {
+        if (GameBrowserHelper.isRpg2kGame(game.getGameFolder())) {
             Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
             ArrayList<String> args = new ArrayList<String>();
 
@@ -242,13 +244,13 @@ public class GameBrowserHelper {
             args.add(path);
 
             args.add("--save-path");
-            args.add(project.getSavePath());
+            args.add(game.getSavePath());
 
             args.add("--encoding");
-            if (project.getEncoding() == null || project.getEncoding().length() == 0) {
+            if (game.getEncoding() == null || game.getEncoding().length() == 0) {
                 args.add("auto");
             } else {
-                args.add(project.getEncoding());
+                args.add(game.getEncoding());
             }
 
             // Disable audio depending on user preferences
@@ -256,12 +258,12 @@ public class GameBrowserHelper {
                 args.add("--disable-audio");
             }
 
-            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
+            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
             intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
             intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
             context.startActivity(intent);
         } else {
-            String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
+            String msg = context.getString(R.string.not_valid_game).replace("$PATH", game.getTitle());
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         }
     }

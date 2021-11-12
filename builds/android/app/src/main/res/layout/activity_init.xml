@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	android:padding="10dp"
+	tools:context=".InitActivity"
+	android:orientation="vertical">
+
+	<include
+		layout="@layout/browser_app_bar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Select a game folder.\nPlease note that this folder should only contains RPG Maker games"
+		/>
+
+	<Button
+		android:id="@+id/set_games_folder"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Set the game folder" />
+
+
+
+</LinearLayout>

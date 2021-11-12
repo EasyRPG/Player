@@ -2,23 +2,23 @@
  * This file is part of EasyRPG Player
  *
  * Copyright (c) 2017 EasyRPG Project. All rights reserved.
- *  
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"), 
- * to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
- * and/or sell copies of the Software, and to permit persons to whom the 
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *  
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *  
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
 
@@ -53,7 +53,7 @@ public class AssetUtils {
 			try {
 				files = assetManager.list(source);
 			} catch (IOException e) {
-				Log.e("ERROR", "Failed to get asset file list.", e);
+				Log.e("EasyRPG", "Failed to get asset file list.", e);
 			}
 			// Analyzing all file on assets subfolder
 			for (String filename : files) {
@@ -86,11 +86,11 @@ public class AssetUtils {
 						try {
 							assetManager.list(sourceFile);
 						} catch (IOException f) {
-							Log.e("ERROR",
+							Log.e("EasyRPG",
 									"Failed to copy asset file: " + filename, f);
 							continue;
 						}
-						
+
 						copyFolder(assetManager, sourceFile, targetFile);
 					}
 				} else {
@@ -163,14 +163,14 @@ public class AssetUtils {
 			out.write(buffer, 0, read);
 		}
 	}
-	
+
 	public static boolean exists(AssetManager assetManager, String source) {
 		try {
 			String[] s = assetManager.list(source);
 			if (s == null || s.length == 0) {
 				return false;
 			}
-			
+
 			return true;
 		} catch (IOException e) {
 			return false;

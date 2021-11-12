@@ -2,15 +2,11 @@ package org.easyrpg.player.settings;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.LayoutInflater;
+
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import org.easyrpg.player.DirectoryChooser;
 import org.easyrpg.player.R;
 
 public class SettingsGamesFoldersActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,7 +22,7 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity implements V
 
         // Setting UI components
         gamesFoldersListLayout = (LinearLayout) findViewById(R.id.games_folders_list);
-        updateGameFoldersList();
+        //updateGameFoldersList();
         addGameFolderButton = (Button) findViewById(R.id.settings_add_game_folder_button);
         addGameFolderButton.setOnClickListener(this);
     }
@@ -35,11 +31,11 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity implements V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.settings_add_game_folder_button:
-                addAGameFolder();
+                //addAGameFolder();
                 break;
         }
     }
-
+/*
     private void updateGameFoldersList() {
         gamesFoldersListLayout.removeAllViews();
 
@@ -90,4 +86,6 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity implements V
             }
         });
     }
+
+ */
 }

@@ -3,12 +3,18 @@ package org.easyrpg.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
-import org.easyrpg.player.game_browser.GameInformation;
+import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.player.AssetUtils;
 import org.easyrpg.player.settings.SettingsManager;
 
@@ -20,20 +26,65 @@ import java.io.File;
  * To start the standalone mode : put your project in assets/games
  * ("game" is the project directory, no sub folder)
  */
-public class MainActivity extends Activity {
+public class InitActivity extends AppCompatActivity {
     private boolean standaloneMode = false;
+    private static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retrieve User's preferences
+        SettingsManager.init(getApplicationContext());
+
+        setContentView(R.layout.activity_init);
+
+        ((Button) findViewById(R.id.set_games_folder)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickAGamesFolder();
+            }
+        });
+
         prepareData();
 
-        // if the app is called in a game folder : start the game
+        // If the app is called in a game folder : start the game
         startGameStandalone();
+    }
 
-        // else : launch the gamebrowser activity
+    @Override
+    public void onResume() {
+        super.onResume();
+
         if (!standaloneMode) {
-            launchProperBrowser();
+            // If we have a games folder which is accessible, start the GameBrowser
+            DocumentFile gamesFolder = SettingsManager.getGameFolder();
+            if (gamesFolder != null) {
+
+                // Do we have read/right access to the game folder?
+                if (gamesFolder.canRead() && gamesFolder.canWrite()) {
+                    launchGamesBrowser();
+                }
+            }
+        }
+    }
+
+    /** Called when the user has chosen a game folder */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+
+        if (requestCode == FOLDER_HAS_BEEN_CHOSEN && resultCode == Activity.RESULT_OK
+            && resultData != null) {
+            // Uri contains the chosen folder
+            Uri uri = resultData.getData();
+            Log.w("EasyRPG", "The selected games folder is : " + uri.getPath());
+
+            SettingsManager.setGameFolder(uri);
+
+            // Create RTP folders and the .nomedia file
+            DocumentFile gamesFolder = SettingsManager.getGameFolder();
+            Helper.createEasyRPGDirectories(gamesFolder);
         }
     }
 
@@ -41,8 +92,10 @@ public class MainActivity extends Activity {
      * Copies required runtime data from assets folder to data directory
      */
     public void prepareData() {
+        // TODO : Verify that this method isn't broken
         AssetManager assetManager = getAssets();
         String dataDir = getApplication().getApplicationInfo().dataDir;
+        Log.w("EasyRPG", "The application folder is : " + dataDir);
 
         // Copy timidity to data folder
         if (AssetUtils.exists(assetManager, "timidity")) {
@@ -57,6 +110,7 @@ public class MainActivity extends Activity {
      * copied to internal memory and executed.
      */
     private void startGameStandalone() {
+        // TODO : Verify that the standalone mode isn't broken
         AssetManager assetManager = getAssets();
         String dataDir = getApplication().getApplicationInfo().dataDir;
 
@@ -85,29 +139,31 @@ public class MainActivity extends Activity {
 
         if (standaloneMode) {
             // Launch the game
-            retrieveUserPreferences();
-            GameInformation project = new GameInformation(dataDir + "/game");
+            DocumentFile gameFolder = DocumentFile.fromFile(new File(dataDir + "/game"));
+            Game project = new Game(gameFolder);
             GameBrowserHelper.launchGame(this, project);
             finish();
         }
     }
 
     /**
-     * Launch the proper game browser depending on the API.
+     * Launch the game browsers depending on the API.
      */
-    private void launchProperBrowser() {
-        retrieveUserPreferences();
-
-        // Create the easyrpg's directories if they don't exist
-        Helper.createEasyRPGDirectories(SettingsManager.getEasyRPGFolder());
-
+    private void launchGamesBrowser() {
         //Launch the proper game browser
         Intent intent;
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
     }
 
-    private void retrieveUserPreferences() {
-        SettingsManager.init(getApplicationContext());
+    private void pickAGamesFolder(){
+        // Choose a directory using the system's file picker.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+        // Optionally, specify a URI for the directory that should be opened in the system file picker when it loads.
+        // TODO : Open the file picker is the "root" folder
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, XXX);
+
+        startActivityForResult(intent, FOLDER_HAS_BEEN_CHOSEN);
     }
 }

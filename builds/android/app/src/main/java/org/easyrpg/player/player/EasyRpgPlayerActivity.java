@@ -2,23 +2,23 @@
  * This file is part of EasyRPG Player
  *
  * Copyright (c) 2017 EasyRPG Project. All rights reserved.
- *  
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"), 
- * to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
- * and/or sell copies of the Software, and to permit persons to whom the 
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *  
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *  
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
 
@@ -56,8 +56,9 @@ import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
-import org.easyrpg.player.game_browser.GameInformation;
+import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
@@ -133,7 +134,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Project preferences
         buttonMappingManager = ButtonMappingManager.getInstance(this);
-        GameInformation project = new GameInformation(getProjectPath());
+        Game project = getProjectPath();
         project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
@@ -189,7 +190,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LAYOUT_EDIT) {
-            GameInformation project = new GameInformation(getProjectPath());
+            Game project = getProjectPath();
             project.getProjectInputLayout(buttonMappingManager);
 
             // Choose the proper InputLayout
@@ -199,22 +200,22 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             addButtons();
         }
     }
-    
+
     private void editLayout() {
         Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
-        GameInformation project = new GameInformation(getProjectPath());
+        Game project = getProjectPath();
         project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
         intent.putExtra(ButtonMappingActivity.TAG_ID, project.getId_input_layout());
-        
+
         for (VirtualButton v : inputLayout.getButtonList()) {
             mLayout.removeView(v);
         }
-        
+
         startActivityForResult(intent, LAYOUT_EDIT);
     }
-    
+
     private void reportBug() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.app_name);
@@ -337,8 +338,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      *
      * @return Full path to game
      */
-    public String getProjectPath() {
-        return getIntent().getStringExtra(TAG_PROJECT_PATH);
+    public Game getProjectPath() {
+        return GameBrowserActivity.getSelectedGame();
     }
 
 
@@ -348,6 +349,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      *
      * @return Full path to the timidity.cfg
      */
+    // TODO : Return Timidity
+    /*
     public String getTimidityPath() {
         // Log.v("SDL", "getTimidity " +
         // getApplication().getApplicationInfo().dataDir);
@@ -358,6 +361,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         return SettingsManager.getEasyRPGFolder() + "/timidity"; //Shouldn't be called anymore
     }
+    */
 
     /**
      * Used by the native code to retrieve the RTP directory. Invoked via JNI.
@@ -365,9 +369,11 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      * @return Full path to the RTP
      */
     public String getRtpPath() {
-        String str = SettingsManager.getEasyRPGFolder() + "/rtp";
+        // TODO : Return RTP
+        return "";
+        //String str = SettingsManager.getEasyRPGFolder() + "/rtp";
         // Log.v("SDL", "getRtpPath " + str);
-        return str;
+        //return str;
     }
 
     /**

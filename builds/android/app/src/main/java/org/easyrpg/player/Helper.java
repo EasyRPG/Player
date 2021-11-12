@@ -23,11 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
+import androidx.documentfile.provider.DocumentFile;
+
 public class Helper {
 	/**
 	 * Converts density independent pixel to real screen pixel. 160 dip = 1 inch
 	 * ~ 2.5 cm
-	 * 
+	 *
 	 * @param dipValue
 	 *            dip
 	 * @return pixel
@@ -49,7 +51,7 @@ public class Helper {
 	/**
 	 * Moves a view to a screen position. Position is from 0 to 1 and converted
 	 * to screen pixel. Alignment is top left.
-	 * 
+	 *
 	 * @param view
 	 *            View to move
 	 * @param x
@@ -74,7 +76,7 @@ public class Helper {
 	/**
 	 * Moves a view to a screen position. Position is from 0 to 1 and converted
 	 * to screen pixel. Alignment is top right.
-	 * 
+	 *
 	 * @param view
 	 *            View to move
 	 * @param x
@@ -155,34 +157,19 @@ public class Helper {
 		}
 		return file;
 	}
-	
-	/** Create the EasyRPG's directories in path it's possible */
-	public static boolean createEasyRPGDirectories(String path){
-		//Main folder
-		File dir = new File(path);
-		dir.mkdir();
-		
-		//Games' folder
-		File dirGames = new File(dir, "games/");
-		dirGames.mkdir();
-		
+
+	/** Create RTP folders and .nomedia file in the games folder */
+	public static void createEasyRPGDirectories(DocumentFile gamesFolder){
 		//RTP's folders
-		File dirRtp = new File(dir, "rtp/");
-		dirRtp.mkdir();
-		File dirRtp2000 = new File(dirRtp, "2000");
-		dirRtp2000.mkdir();
-		File dirRtp2003 = new File(dirRtp, "2003");
-		dirRtp2003.mkdir();
-		
-		// The .nomedia file (to not let app scan games and RTP's folders)
-		File nomediafile = new File(dir, ".nomedia");
-		try {
-			nomediafile.createNewFile();
-		} catch (IOException e) {
-			Log.e("Create File", "Error creating .nomedia file");
-		}
-		
-		//TODO : Verify if all the folders exists
-		return true;
+        DocumentFile RTPFolder = gamesFolder.createDirectory("RTP");
+        if (RTPFolder != null) {
+            RTPFolder.createDirectory("2000");
+            RTPFolder.createDirectory("2003");
+        } else {
+            Log.e("EasyRPG", "Problem creating RTP folders");
+        }
+
+        // The .nomedia file (avoid media app to scan games and RTP's folders)
+        gamesFolder.createFile("", ".nomedia");
 	}
 }

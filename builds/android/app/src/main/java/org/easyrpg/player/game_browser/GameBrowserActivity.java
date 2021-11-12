@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
-import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +39,7 @@ public class GameBrowserActivity extends AppCompatActivity
     public static Boolean libraryLoaded = false;
 
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 290;
+    private static Game selectedGame;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -48,12 +48,12 @@ public class GameBrowserActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         if (!libraryLoaded) {
             try {
                 System.loadLibrary("gamebrowser");
                 libraryLoaded = true;
-            } catch (UnsatisfiedLinkError e) { 
+            } catch (UnsatisfiedLinkError e) {
                 Log.e("EasyRPG Player", "Couldn't load libgamebrowser. XYZ parsing will be unavailable: " + e.getMessage());
             }
         }
@@ -78,12 +78,6 @@ public class GameBrowserActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
-        // Retrieve user's preferences (for application's folder)
-        SettingsManager.init(getApplicationContext());
-
-        // Display the "How to use EasyRPG" on the first startup
-        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
-
         /// Display the game list
         recyclerView = (RecyclerView) findViewById(R.id.game_browser_api15_recycleview);
         recyclerView.setHasFixedSize(true);
@@ -94,6 +88,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        // Open the lateral menu
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -116,13 +111,12 @@ public class GameBrowserActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.refresh:
-                displayGameList(this);
-                return true;
-            case R.id.menu:
-                GameBrowserHelper.openSettingsActivity(this);
-                return true;
+        if (id == R.id.refresh) {
+            displayGameList(this);
+            return true;
+        } else if (id == R.id.menu) {
+            GameBrowserHelper.openSettingsActivity(this);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,14 +174,18 @@ public class GameBrowserActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
     }
 
+    public static Game getSelectedGame() {
+        return selectedGame;
+    }
+
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private List<GameInformation> gameList;
+        private List<Game> gameList;
         private Activity activity;
         private int nbOfGamesPerLine;
 
         IniEncodingReader iniReader;
 
-        public MyAdapter(Activity activity, List<GameInformation> gameList, int nbOfGamesPerLine) {
+        public MyAdapter(Activity activity, List<Game> gameList, int nbOfGamesPerLine) {
             this.gameList = gameList;
             this.activity = activity;
             this.nbOfGamesPerLine = nbOfGamesPerLine;
@@ -216,22 +214,23 @@ public class GameBrowserActivity extends AppCompatActivity
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final GameInformation game = gameList.get(position);
+            final Game game = gameList.get(position);
 
-            // NB : Un film a forcement un titre, une annee et un poster
-            // Titre
+            // Title
             holder.title.setText(game.getTitle());
 
             // TitleScreen Image
             // TODO : Implement a caching system for not load
-            holder.titleScreen.setImageBitmap(GameScanner.getGameTitleScreen(game));
+            holder.titleScreen.setImageBitmap(GameScanner.getGameTitleScreen(game, activity));
             holder.titleScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GameInformation pi = gameList.get(position);
+                    Game selectedGame = gameList.get(position);
+                    GameBrowserActivity.selectedGame = selectedGame;
 
-                    if (!pi.read_project_preferences_encoding()) {
-                        File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
+                    if (!selectedGame.read_project_preferences_encoding()) {
+                        // TODO : API30 use DocumentFile instead of File class
+                        File iniFile = GameBrowserHelper.getIniOfGame(selectedGame.getGameFolderPath(), false);
 
                         // Retrieve the current region (to check the correct radio button)
                         if (iniFile != null) {
@@ -239,13 +238,13 @@ public class GameBrowserActivity extends AppCompatActivity
                             try {
                                 iniReader = new IniEncodingReader(iniFile);
                                 String encoding = iniReader.getEncoding();
-                                pi.setEncoding(encoding);
+                                selectedGame.setEncoding(encoding);
                             } catch (IOException e) {
                             }
                         }
                     }
 
-                    GameBrowserHelper.launchGame(activity, pi);
+                    GameBrowserHelper.launchGame(activity, selectedGame);
                 }
             });
 
@@ -289,7 +288,7 @@ public class GameBrowserActivity extends AppCompatActivity
             });
         }
 
-        public void updateFavoriteButton(ViewHolder holder, GameInformation game){
+        public void updateFavoriteButton(ViewHolder holder, Game game){
             int buttonImageResource;
 
             if (game.isFavorite()) {
@@ -309,7 +308,7 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.favoriteButton.setImageResource(buttonImageResource);
         }
 
-        public void chooseLayout(final Context context, final GameInformation pi) {
+        public void chooseLayout(final Context context, final Game pi) {
             final ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(context);
             String[] layout_name_array = buttonMappingManager.getLayoutsNames();
 
@@ -347,7 +346,7 @@ public class GameBrowserActivity extends AppCompatActivity
             builder.show();
         }
 
-        public void chooseRegion(final Context context, final GameInformation pi) {
+        public void chooseRegion(final Context context, final Game pi) {
             //The list of region choices
             String[] region_array = {
                     context.getString(R.string.autodetect),

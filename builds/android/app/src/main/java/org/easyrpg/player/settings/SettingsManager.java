@@ -2,12 +2,12 @@ package org.easyrpg.player.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.game_browser.GameBrowserHelper;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,9 +22,10 @@ import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
-import static org.easyrpg.player.settings.SettingsEnum.MAIN_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
+
+import androidx.documentfile.provider.DocumentFile;
 
 public class SettingsManager {
     private final static long VIBRATION_DURATION = 20; // ms
@@ -39,8 +40,9 @@ public class SettingsManager {
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
-    private static String easyRPGFolder;
-    private static List<String> gamesFolderList = new ArrayList<>();
+    //private static String easyRPGFolder;
+    private static String gamesFolderString;
+    private static DocumentFile gameFolder;
     private static List<String> favoriteGamesList = new ArrayList<>();
 
     private SettingsManager() {
@@ -63,25 +65,20 @@ public class SettingsManager {
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), false);
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
-        easyRPGFolder = sharedPref.getString(MAIN_DIRECTORY.toString(),
-                Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
-        // Fetch the games directories :
-        gamesFolderList = new ArrayList<>();
-        // 1) The default directory (cannot be modified)
-        gamesFolderList.add(easyRPGFolder + "/games");
-        // 2) Others defined by users (separator : "*")
-        String gameFolderListString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
-        if (!gameFolderListString.isEmpty()) {
-            for (String folder : gameFolderListString.split("\\*")) {
-                if (!gamesFolderList.contains(folder)) {
-                    gamesFolderList.add(folder);
-                }
-            }
+        // Fetch the games directory
+        gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
+        if(gamesFolderString == null || gamesFolderString.isEmpty()) {
+            gameFolder = null;
+        } else {
+            Uri uri = Uri.parse(gamesFolderString);
+            gameFolder = DocumentFile.fromTreeUri(context, uri);
         }
+
+        // TODO : Ask for a folder in case of "*" in the string (the path should lead to a absent folder)
 
         // Fetch the favorite game list :
         favoriteGamesList = new ArrayList<>();
@@ -96,14 +93,17 @@ public class SettingsManager {
         }
     }
 
+    /*
     public static List<String> getGamesFolderList() {
         return gamesFolderList;
     }
+     */
 
     public static List<String> getFavoriteGamesList() {
         return favoriteGamesList;
     }
 
+    /*
     public static void addGameDirectory(String pathToAdd) {
         pathToAdd = pathToAdd.trim();
 
@@ -130,6 +130,7 @@ public class SettingsManager {
         setGameFolderList(gamesFolderList);
     }
 
+
     public static void removeAGameFolder(String path) {
         gamesFolderList.remove(path);
         setGameFolderList(gamesFolderList);
@@ -145,24 +146,17 @@ public class SettingsManager {
         editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), sb.toString());
         editor.commit();
     }
+    */
+    public static void addFavoriteGame(String gameTitle) {
+        gameTitle = gameTitle.trim();
 
-    public static void addFavoriteGame(String pathToAdd) {
-        pathToAdd = pathToAdd.trim();
-
-        // 1) The game folder must not be already in the list
-        if (favoriteGamesList.contains(pathToAdd)) {
-            return;
-        }
-
-        // 2) Verify read permission
-        File f = new File(pathToAdd);
-        if (!f.canRead()) {
-            Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", pathToAdd), Toast.LENGTH_LONG).show();
+        // The game folder must not be already in the list
+        if (favoriteGamesList.contains(gameTitle)) {
             return;
         }
 
         // Update user's preferences
-        favoriteGamesList.add(pathToAdd);
+        favoriteGamesList.add(gameTitle);
 
         setFavoriteGamesList(favoriteGamesList);
     }
@@ -181,10 +175,6 @@ public class SettingsManager {
         }
         editor.putString(FAVORITE_GAMES.toString(), sb.toString());
         editor.commit();
-    }
-
-    public static String getEasyRPGFolder() {
-        return easyRPGFolder;
     }
 
     public static long getVibrationDuration() {
@@ -279,6 +269,17 @@ public class SettingsManager {
     public static void setForcedLandscape(boolean b) {
         forcedLandscape = b;
         editor.putBoolean(SettingsEnum.FORCED_LANDSCAPE.toString(), b);
+        editor.commit();
+    }
+
+    public static DocumentFile getGameFolder() {
+        return gameFolder;
+    }
+
+    public static void setGameFolder(Uri uri) {
+        SettingsManager.gamesFolderString = uri.toString();
+        SettingsManager.gameFolder = DocumentFile.fromTreeUri(context, uri);
+        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderString);
         editor.commit();
     }
 }

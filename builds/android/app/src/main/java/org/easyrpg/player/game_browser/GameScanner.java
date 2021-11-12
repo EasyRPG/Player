@@ -2,14 +2,16 @@ package org.easyrpg.player.game_browser;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,12 +21,12 @@ public class GameScanner {
     // (Such as caching games' thumbnail, avoiding some syscall ...)
     private static volatile GameScanner instance = null;
 
-    private List<GameInformation> gameList;
-    private List<String> errorList;
+    private List<Game> gameList;
+    private List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
     private Activity context;
 
     private GameScanner(Activity activity) {
-        this.gameList = new ArrayList<GameInformation>();
+        this.gameList = new ArrayList<Game>();
         this.errorList = new ArrayList<String>();
         this.context = activity;
     }
@@ -41,6 +43,7 @@ public class GameScanner {
         GameScanner.instance.context = activity;
 
         // Verify and Ask for permissions
+        // TODO : Do we need that ?
         GameBrowserHelper.askForStoragePermission(activity);
 
         //Scan the folder
@@ -53,61 +56,63 @@ public class GameScanner {
         gameList.clear();
         errorList.clear();
 
+        // Check that the storage is available
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             errorList.add(context.getString(R.string.no_external_storage));
             return;
         }
 
-        // Scanning all the games folders
-        boolean first_directory = true;
-        for(String path : SettingsManager.getGamesFolderList()){
-            File dir = new File(path);
-            // Verification
-            // 1) The folder must exist
-            if (!dir.exists() && !dir.mkdirs()) {
-                String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
-                Log.e("refreshScanGames( )", msg);
-                errorList.add(msg);
+        // Scanning all the games in the games folder
+        DocumentFile gamesFolder = SettingsManager.getGameFolder();
 
-                continue;
-            }
+        // 1) The folder must exist
+        if (!gamesFolder.exists() || !gamesFolder.isDirectory()) {
+            // TODO Replace the text by a R.string
+            //String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", dir.getName());
+            String msg = "The games folder doesn't exist or isn't a folder";
+            Log.e("EasyRPG", msg);
+            errorList.add(msg);
 
-            // 2) The folder must be readable
-            if (!dir.canRead() || !dir.isDirectory()) {
-                String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
-                Log.e("refreshScanGames( )", msg);
-                errorList.add(msg);
-
-                continue;
-            }
-
-            // Scan the folder
-            File[] list = dir.listFiles();
-            // Go 2 directores deep to find games in /easyrpg/games, otherwise only 1
-            scanFolder(list, first_directory ? 2 : 1);
-            first_directory = false;
+            return;
         }
+
+        // 2) The folder must be readable and writable
+        if (!gamesFolder.canRead() || !gamesFolder.canWrite()) {
+            // TODO Replace the text by a R.string
+            // String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
+            String msg = "The app doesn't have read or write access to the games folder";
+            Log.e("EasyRPG", msg);
+            errorList.add(msg);
+
+            return;
+        }
+
+        // Scan the games folder
+        DocumentFile[] filesList = gamesFolder.listFiles();
+        // Go 2 directories deep to find games in /easyrpg/games, otherwise only 1
+        // TODO : Retablir le depth
+        scanFolder(filesList, 2);
 
         // Sort the games list : alphabetically ordered, favorite in first
         Collections.sort(gameList);
 
-        // If the scan bring nothing in this folder : we notifiate the errorList
+        // If the scan bring nothing in this folder : we notify the errorList
         if (gameList.size() == 0) {
             String error = context.getString(R.string.no_games_found_and_explanation);
             errorList.add(error);
         }
 
-        Log.i("Browser", gameList.size() + " games found : " + gameList);
+        Log.i("EasyRPG", gameList.size() + " games found : " + gameList);
     }
 
-    private void scanFolder(File[] list, int depth) {
-        if (list != null) {
-            for (File file : list) {
+    private void scanFolder(DocumentFile[] list, int depth) {
+        if (depth > 0 && list != null) {
+            for (DocumentFile file : list) {
                 if (!file.getName().startsWith(".")) {
                     if (GameBrowserHelper.isRpg2kGame(file)) {
-                        gameList.add(new GameInformation(file.getName(), file.getAbsolutePath()));
-                    } else if (file.isDirectory() && file.canRead() && depth > 0) {
+                        gameList.add(new Game(file));
+                    } else if (file.isDirectory() && file.canRead()) {
                         // Not a RPG2k Game but a directory -> recurse
                         scanFolder(file.listFiles(), depth - 1);
                     }
@@ -116,7 +121,7 @@ public class GameScanner {
         }
     }
 
-    public List<GameInformation> getGameList() {
+    public List<Game> getGameList() {
         return gameList;
     }
 
@@ -131,29 +136,45 @@ public class GameScanner {
     /** Return the game title screen, in a dumb way following last Enterbrain conventions to avoid
      *  numerous syscalls.
      */
-    public static Bitmap getGameTitleScreen(GameInformation gameInformation) {
-        // Search the title folder : the dumb way
-        File dir = new File(gameInformation.getGameFolderPath() + "/Title");
-        if(dir.isDirectory() && dir.canRead()) {
-            File[] files = dir.listFiles();
-            for (File f : files) {
-                String name = f.getName().toLowerCase().trim();
-                if (!f.getName().startsWith(".") && (name.endsWith("png") || name.endsWith("bmp") || name.endsWith("xyz"))) {
-                    Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath());
-                    if (b == null && GameBrowserActivity.libraryLoaded) {
-                        // Check for XYZ
-                        byte[] xyz = decodeXYZ(f.getAbsolutePath());
-                        if (xyz == null) {
-                            return null;
+    public static Bitmap getGameTitleScreen(Game game, Activity context) {
+        // Retrieve the Title folder, containing titles screens
+        DocumentFile titleFolder = game.getGameFolder().findFile("Title");
+
+        // Display the first image found
+        if (titleFolder != null && titleFolder.isDirectory()) {
+            for (DocumentFile file : titleFolder.listFiles()) {
+                String fileName = file.getName().toLowerCase().trim();
+                try {
+                    if (!fileName.startsWith(".")) {
+                        if (fileName.endsWith("png") || fileName.endsWith("bmp")) {
+                            Uri imageUri = file.getUri();
+                            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
                         }
-                        return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
+                        // TODO : Fix XYZ file which is probably broken because of lack of absolute path
+                        /*
+                        else if (fileName.endsWith("xyz")) {
+                            Uri imageUri = file.getUri();
+                            Bitmap b = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                            if (b == null && GameBrowserActivity.libraryLoaded) {
+                                // Check for XYZ
+                                byte[] xyz = decodeXYZ(f.getAbsolutePath());
+                                if (xyz == null) {
+                                    return null;
+                                }
+                                return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
+                            }
+                            return b;
+                        }
+                        */
                     }
-                    return b;
+                } catch (Exception e) {
+                    continue;
                 }
             }
         }
+
         return null;
     }
-    
+
     private static native byte[] decodeXYZ(String path);
 }
