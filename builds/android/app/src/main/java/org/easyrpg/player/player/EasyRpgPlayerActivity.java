@@ -87,6 +87,10 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mBrokenLibraries) {
+            return;
+        }
+
         EasyRpgPlayerActivity.instance = this;
 
         SettingsManager.init(getApplicationContext());
@@ -350,18 +354,18 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      * @return Full path to the timidity.cfg
      */
     // TODO : Return Timidity
-    /*
     public String getTimidityPath() {
         // Log.v("SDL", "getTimidity " +
         // getApplication().getApplicationInfo().dataDir);
-        String s = getApplication().getApplicationInfo().dataDir + "/timidity";
+        /*String s = getApplication().getApplicationInfo().dataDir + "/timidity";
         if (new File(s).exists()) {
             return s;
         }
 
         return SettingsManager.getEasyRPGFolder() + "/timidity"; //Shouldn't be called anymore
+        */
+        return "";
     }
-    */
 
     /**
      * Used by the native code to retrieve the RTP directory. Invoked via JNI.
@@ -374,6 +378,10 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         //String str = SettingsManager.getEasyRPGFolder() + "/rtp";
         // Log.v("SDL", "getRtpPath " + str);
         //return str;
+    }
+
+    public SafFile getHandleForPath(String path) {
+        return SafFile.fromPath(getContext(), path);
     }
 
     /**

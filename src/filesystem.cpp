@@ -34,12 +34,20 @@ Filesystem::Filesystem(std::string base_path, FilesystemView parent_fs) : base_p
 };
 
 Filesystem_Stream::InputStream Filesystem::OpenInputStream(StringView name, std::ios_base::openmode m) const {
+	if (name.empty()) {
+		return Filesystem_Stream::InputStream();
+	}
+
 	std::streambuf* buf = CreateInputStreambuffer(name, m | std::ios_base::in);
 	Filesystem_Stream::InputStream is(buf, ToString(name));
 	return is;
 }
 
 Filesystem_Stream::OutputStream Filesystem::OpenOutputStream(StringView name, std::ios_base::openmode m) const {
+	if (name.empty()) {
+		return Filesystem_Stream::OutputStream();
+	}
+
 	std::streambuf* buf = CreateOutputStreambuffer(name, m | std::ios_base::out);
 
 	std::string path;

@@ -574,7 +574,7 @@ if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 endif()
 
 if(ANDROID)
-	target_link_libraries(${PROJECT_NAME} log)
+	target_link_libraries(${PROJECT_NAME} android log)
 endif()
 
 if(WIN32)
@@ -1062,8 +1062,11 @@ else()
 		add_library(easyrpg_android
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
+			src/platform/android/filesystem_saf.cpp
+			src/platform/android/filesystem_saf.h
 			src/main.cpp)
 		target_link_libraries(easyrpg_android ${PROJECT_NAME})
+		set_target_properties(easyrpg_android PROPERTIES DEBUG_POSTFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_android")
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
