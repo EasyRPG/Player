@@ -61,6 +61,11 @@ void Scene_Title::Start() {
 
 void Scene_Title::CreateHelpWindow() {
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+
+	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
+		help_window->SetBackOpacity(160);
+	}
+
 	help_window->SetVisible(false);
 	translate_window->SetHelpWindow(help_window.get());
 }
@@ -219,7 +224,7 @@ void Scene_Title::CreateCommandWindow() {
 	}
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
-		command_window->SetBackOpacity(128);
+		command_window->SetBackOpacity(160);
 	}
 
 	command_window->SetVisible(true);
@@ -250,7 +255,7 @@ void Scene_Title::CreateTranslationWindow() {
 	RepositionWindow(*translate_window, Player::hide_title_flag);
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
-		translate_window->SetBackOpacity(128);
+		translate_window->SetBackOpacity(160);
 	}
 
 	translate_window->SetVisible(false);
