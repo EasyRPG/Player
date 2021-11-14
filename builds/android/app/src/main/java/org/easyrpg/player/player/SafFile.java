@@ -120,7 +120,7 @@ public class SafFile {
         }
 
         try (ParcelFileDescriptor fd = context.getContentResolver().openFile(actualFile, mode, null)) {
-            return fd.getFd();
+            return fd.detachFd();
         } catch (IOException e) {
             return -1;
         }

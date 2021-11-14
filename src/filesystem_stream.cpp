@@ -23,7 +23,7 @@ Filesystem_Stream::InputStream::InputStream(std::streambuf* sb, std::string name
 	std::istream(sb), name(std::move(name)) {}
 
 Filesystem_Stream::InputStream::~InputStream() {
-	delete rdbuf();
+	Close();
 }
 
 Filesystem_Stream::InputStream::InputStream(InputStream&& is) noexcept : std::istream(std::move(is)) {
@@ -45,11 +45,16 @@ StringView Filesystem_Stream::InputStream::GetName() const {
 	return name;
 }
 
+void Filesystem_Stream::InputStream::Close() {
+	delete rdbuf();
+	set_rdbuf(nullptr);
+}
+
 Filesystem_Stream::OutputStream::OutputStream(std::streambuf* sb, FilesystemView fs, std::string name) :
 	std::ostream(sb), fs(std::move(fs)), name(std::move(name)) {};
 
 Filesystem_Stream::OutputStream::~OutputStream() {
-	delete rdbuf();
+	Close();
 	if (fs) {
 		fs.ClearCache();
 	}
@@ -72,6 +77,11 @@ Filesystem_Stream::OutputStream& Filesystem_Stream::OutputStream::operator=(Outp
 
 StringView Filesystem_Stream::OutputStream::GetName() const {
 	return name;
+}
+
+void Filesystem_Stream::OutputStream::Close() {
+	delete rdbuf();
+	set_rdbuf(nullptr);
 }
 
 Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(Span<uint8_t> buffer)

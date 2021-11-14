@@ -197,7 +197,7 @@ public:
 			}
 		}
 
-		return static_cast<int>(*gptr());
+		return c;
 	}
 
 	int sync() override {
