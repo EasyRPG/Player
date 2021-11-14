@@ -57,16 +57,20 @@ GenericAudio::GenericAudio() {
 }
 
 void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) {
-	bool bgm_set = false;
+	if (!stream) {
+		Output::Warning("Couldn't play BGM {}: File not readable", stream.GetName());
+		return;
+	}
+
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
-		if (!BGM_Channel.IsUsed() && !bgm_set) {
+		if (!BGM_Channel.IsUsed()) {
 			// If there is an unused bgm channel
-			bgm_set = true;
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
 			UnlockMutex();
 			PlayOnChannel(BGM_Channel, std::move(stream), volume, pitch, fadein);
+			return;
 		}
 	}
 }
@@ -159,6 +163,11 @@ void GenericAudio::BGM_Pitch(int pitch) {
 }
 
 void GenericAudio::SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) {
+	if (!se) {
+		Output::Warning("SE_Play: AudioSeCache data is NULL");
+		return;
+	}
+
 	for (auto& SE_Channel : SE_Channels) {
 		if (!SE_Channel.decoder) {
 			//If there is an unused se channel

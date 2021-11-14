@@ -171,6 +171,11 @@ void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) 
 	if (!dsp_inited)
 		return;
 
+	if (!se) {
+		Output::Warning("SE_Play: AudioSeCache data is NULL");
+		return;
+	}
+
 	// Important!
 	// When indexing se_buf use se_channel
 	// In ndsp-Api functions use ndsp_channel
