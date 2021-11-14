@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     org_easyrpg_player_game_browser_GameScanner
  * Method:    decodeXYZ
- * Signature: (Ljava/lang/String;)[B
+ * Signature: (Ljava/lang/String;)[I
  */
 JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZ
-  (JNIEnv *, jclass, jstring);
+  (JNIEnv *, jclass, jint);
 
 #ifdef __cplusplus
 }

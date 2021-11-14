@@ -2,8 +2,10 @@ package org.easyrpg.player.game_browser;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -12,6 +14,7 @@ import androidx.documentfile.provider.DocumentFile;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -149,23 +152,23 @@ public class GameScanner {
                         if (fileName.endsWith("png") || fileName.endsWith("bmp")) {
                             Uri imageUri = file.getUri();
                             return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                        }
-                        // TODO : Fix XYZ file which is probably broken because of lack of absolute path
-                        /*
-                        else if (fileName.endsWith("xyz")) {
+                        } else if (fileName.endsWith("xyz")) {
                             Uri imageUri = file.getUri();
                             Bitmap b = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ
-                                byte[] xyz = decodeXYZ(f.getAbsolutePath());
-                                if (xyz == null) {
+                                try (ParcelFileDescriptor fd = context.getContentResolver().openFile(imageUri, "r", null)) {
+                                    byte[] xyz = decodeXYZ(fd.detachFd());
+                                    if (xyz == null) {
+                                        return null;
+                                    }
+                                    return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
+                                } catch (IOException e) {
                                     return null;
                                 }
-                                return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
                             }
                             return b;
                         }
-                        */
                     }
                 } catch (Exception e) {
                     continue;
@@ -176,5 +179,5 @@ public class GameScanner {
         return null;
     }
 
-    private static native byte[] decodeXYZ(String path);
+    private static native byte[] decodeXYZ(int fd);
 }

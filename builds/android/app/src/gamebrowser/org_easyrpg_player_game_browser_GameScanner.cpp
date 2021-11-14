@@ -1,24 +1,24 @@
 /*
  * This file is part of EasyRPG Player
  *
- * Copyright (c) 2017 EasyRPG Project. All rights reserved.
- *  
+ * Copyright (c) 2021 EasyRPG Project. All rights reserved.
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"), 
- * to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
- * and/or sell copies of the Software, and to permit persons to whom the 
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *  
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *  
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
 
@@ -29,7 +29,31 @@
 #include <cstring>
 #include <fstream>
 #include <vector>
-#include <stdint.h>
+#include <array>
+
+class FdStreamBufIn : public std::streambuf {
+public:
+	FdStreamBufIn(int fd) : std::streambuf(), fd(fd) {
+		setg(buffer.data(), buffer.data() + buffer.size(), buffer.data() + buffer.size());
+	}
+
+	~FdStreamBufIn() override {
+		close(fd);
+	}
+
+	int underflow() override {
+		ssize_t res = read(fd, buffer.data(), buffer.size());
+		if (res <= 0) {
+			return traits_type::eof();
+		}
+		setg(buffer.data(), buffer.data(), buffer.data() + res);
+		return traits_type::to_int_type(*gptr());
+	}
+
+private:
+	int fd = 0;
+	std::array<char, 4096> buffer;
+};
 
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
@@ -39,46 +63,37 @@ static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size
 
 extern "C"
 JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZ
-  (JNIEnv * env, jclass, jstring j_filename)
+  (JNIEnv * env, jclass, jint fd)
 {
-	const char* filename = env->GetStringUTFChars( j_filename, 0);
+	std::istream stream(new FdStreamBufIn(fd));
 
-	std::ifstream file(filename, std::ios::binary | std::ios::ate);
+	char header[4];
 
-	env->ReleaseStringUTFChars(j_filename, filename);
-	
-	if (!file) {
-		return nullptr;
-	}
-
-	long size = file.tellg();
-	char* header = new char[4];
-
-	file.seekg(0, std::ios::beg);
-	file.read((char*) header, 4);
+	stream.read(header, 4);
 	if(memcmp(header, "XYZ1", 4) != 0) {
-		delete[] header;
 		return nullptr;
 	}
-	delete[] header;
 
 	unsigned short width;
 	unsigned short height;
-	file.read((char*) &width, 2);
-	file.read((char*) &height, 2);
+	stream.read((char*) &width, 2);
+	stream.read((char*) &height, 2);
 
-	int compressed_xyz_size = size - 8;
-	Bytef* compressed_xyz_data = new Bytef[compressed_xyz_size];
-
-	file.read((char*) compressed_xyz_data, compressed_xyz_size);
+	constexpr int buffer_incr = 8192;
+	std::vector<char> compressed_xyz_data;
+	do {
+		compressed_xyz_data.resize(compressed_xyz_data.size() + buffer_incr);
+		stream.read(compressed_xyz_data.data() + compressed_xyz_data.size() - buffer_incr, buffer_incr);
+	} while (stream.gcount() == buffer_incr);
+	compressed_xyz_data.resize(compressed_xyz_data.size() - buffer_incr + stream.gcount());
 
 	uLongf xyz_size = 768 + (width * height);
 	std::vector<Bytef> xyz_data(
 		xyz_size);
 
 	int status = uncompress(&xyz_data.front(),
-		&xyz_size, compressed_xyz_data,
-		compressed_xyz_size);
+		&xyz_size, reinterpret_cast<const Bytef *>(compressed_xyz_data.data()),
+		compressed_xyz_data.size());
 
 	if(status != Z_OK) {
 		return nullptr;
@@ -109,9 +124,9 @@ JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_d
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		return nullptr;
 	}
-	
+
 	std::vector<uint8_t> png_outbuf;
-	
+
 	png_set_write_fn(png_ptr, &png_outbuf, custom_png_write_func, nullptr);
 
 	// Set compression parameters
@@ -165,6 +180,6 @@ JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_d
 	env->SetByteArrayRegion(result, 0, png_outbuf.size(), reinterpret_cast<jbyte*>(png_outbuf.data()));
 
 	png_destroy_write_struct(&png_ptr, &info_ptr);
-	
+
 	return result;
 }
