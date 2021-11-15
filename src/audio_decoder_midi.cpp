@@ -109,6 +109,7 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 
 	file_buffer_pos = 0;
 	file_buffer = Utils::ReadStream(stream);
+	loop_count = 0;
 
 	if (!seq->load(this, read_func)) {
 		error_message = "Midi: Error reading file";
