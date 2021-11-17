@@ -97,6 +97,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/exe_reader.cpp \
 	src/exe_reader.h \
 	src/exfont.h \
+	src/feature.cpp \
+	src/feature.h \
 	src/filefinder.cpp \
 	src/filefinder.h \
 	src/filefinder_rtp.cpp \

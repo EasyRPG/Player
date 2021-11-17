@@ -24,6 +24,7 @@
 #include "font.h"
 #include "utils.h"
 #include "output.h"
+#include "feature.h"
 
 Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight)
@@ -44,7 +45,7 @@ void Window_BattleMessage::Push(StringView message) {
 }
 
 void Window_BattleMessage::PushLine(StringView line) {
-	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
+	if (Feature::HasPlaceholders()) {
 		Game_Message::WordWrap(
 				line,
 				GetWidth() - 20,
@@ -61,7 +62,7 @@ void Window_BattleMessage::PushLine(StringView line) {
 }
 
 void Window_BattleMessage::PushWithSubject(StringView message, StringView subject) {
-	if (Player::IsRPG2kE() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system && lcf::Data::system.easyrpg_battle_use_rpg2ke_strings)) {
+	if (Feature::HasPlaceholders()) {
 		Push(Utils::ReplacePlaceholders(
 			message,
 			Utils::MakeArray('S'),

@@ -49,6 +49,7 @@
 #include "algo.h"
 #include "attribute.h"
 #include "spriteset_battle.h"
+#include "feature.h"
 
 static inline int MaxDamageValue() {
 	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
@@ -544,7 +545,7 @@ Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* targ
 }
 
 Game_BattleAlgorithm::Normal::Style Game_BattleAlgorithm::Normal::GetDefaultStyle() {
-	return (Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system) ? Style_MultiHit : Style_Combined;
+	return Feature::HasRpg2k3BattleSystem() ? Style_MultiHit : Style_Combined;
 }
 
 Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
@@ -610,7 +611,7 @@ int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 		return 0;
 	}
 	if (source->GetType() == Game_Battler::Type_Enemy
-			&& (Player::IsRPG2k3() && !lcf::Data::system.easyrpg_use_rpg2k_battle_system)
+			&& Feature::HasRpg2k3BattleSystem()
 			&& !lcf::Data::animations.empty()) {
 		Game_Enemy* enemy = static_cast<Game_Enemy*>(source);
 		return enemy->GetUnarmedBattleAnimationId();
@@ -754,7 +755,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
 		if (GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2) {
@@ -838,7 +839,7 @@ const lcf::rpg::Item* Game_BattleAlgorithm::Normal::GetWeaponData() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
-	if ((Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) && GetSource()->GetType() == Game_Battler::Type_Enemy) {
+	if (Feature::HasRpg2kBattleSystem() && GetSource()->GetType() == Game_Battler::Type_Enemy) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
 	}
 	return nullptr;
@@ -1136,7 +1137,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 	if (item && item->using_message == 0) {
 		if (line == 0) {
-			if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+			if (Feature::HasRpg2kBattleSystem()) {
 				return BattleMessage::GetItemStartMessage2k(*GetSource(), *item);
 			} else {
 				return BattleMessage::GetItemStartMessage2k3(*GetSource(), *item);
@@ -1147,7 +1148,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 
 	const auto* target = GetOriginalSingleTarget();
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			if (!skill.using_message1.empty()) {
 				return BattleMessage::GetSkillFirstStartMessage2k(*GetSource(), target, skill);
 			} else {
@@ -1157,7 +1158,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 			return BattleMessage::GetSkillStartMessage2k3(*GetSource(), target, skill);
 		}
 	}
-	if (line == 1 && (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) && !skill.using_message2.empty()) {
+	if (line == 1 && Feature::HasRpg2kBattleSystem() && !skill.using_message2.empty()) {
 		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), target, skill);
 	}
 	return "";
@@ -1312,7 +1313,7 @@ bool Game_BattleAlgorithm::Item::vExecute() {
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetItemStartMessage2k(*GetSource(), item);
 		} else {
 			return BattleMessage::GetItemStartMessage2k3(*GetSource(), item);
@@ -1354,7 +1355,7 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetDefendStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetDefendStartMessage2k3(*GetSource());
@@ -1374,7 +1375,7 @@ AlgorithmBase(Type::Observe, source, source) {
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetObserveStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetObserveStartMessage2k3(*GetSource());
@@ -1390,7 +1391,7 @@ AlgorithmBase(Type::Charge, source, source) {
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetChargeUpStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetChargeUpStartMessage2k3(*GetSource());
@@ -1410,7 +1411,7 @@ AlgorithmBase(Type::SelfDestruct, source, target) {
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetSelfDestructStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetSelfDestructStartMessage2k3(*GetSource());
@@ -1464,7 +1465,7 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetEscapeStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetEscapeStartMessage2k3(*GetSource());
@@ -1500,7 +1501,7 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
-	if (line == 0 && (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system)) {
+	if (line == 0 && Feature::HasRpg2kBattleSystem()) {
 		auto* enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id);
 		return BattleMessage::GetTransformStartMessage(*GetSource(), *enemy);
 	}

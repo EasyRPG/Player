@@ -51,6 +51,7 @@
 #include <lcf/scope_guard.h>
 #include <lcf/rpg/save.h>
 #include "scene_gameover.h"
+#include "feature.h"
 
 namespace {
 	lcf::rpg::SaveMapInfo map_info;
@@ -1271,7 +1272,7 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 
 	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
 
-	if (Player::IsRPG2k() || lcf::Data::system.easyrpg_use_rpg2k_battle_system) {
+	if (Feature::HasRpg2kBattleSystem()) {
 		if (Rand::ChanceOf(1, 32)) {
 			args.first_strike = true;
 		}

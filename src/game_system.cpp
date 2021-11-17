@@ -35,6 +35,7 @@
 #include "scene_map.h"
 #include "utils.h"
 #include "audio_secache.h"
+#include "feature.h"
 
 Game_System::Game_System()
 	: dbsys(&lcf::Data::system)
@@ -578,7 +579,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 }
 
 bool Game_System::IsMessageTransparent() {
-	if ((Player::IsRPG2k() || (Player::IsRPG2k3() && lcf::Data::system.easyrpg_use_rpg2k_battle_system)) && Game_Battle::IsBattleRunning()) {
+	if (Feature::HasRpg2kBattleSystem() && Game_Battle::IsBattleRunning()) {
 		return false;
 	}
 

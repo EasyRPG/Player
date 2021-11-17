@@ -109,6 +109,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h
+	src/feature.cpp
+	src/feature.h
 	src/filefinder.cpp
 	src/filefinder.h
 	src/filefinder_rtp.cpp
