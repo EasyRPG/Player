@@ -160,16 +160,27 @@ public class Helper {
 
 	/** Create RTP folders and .nomedia file in the games folder */
 	public static void createEasyRPGDirectories(DocumentFile gamesFolder){
-		//RTP's folders
-        DocumentFile RTPFolder = gamesFolder.createDirectory("RTP");
-        if (RTPFolder != null) {
-            RTPFolder.createDirectory("2000");
-            RTPFolder.createDirectory("2003");
-        } else {
-            Log.e("EasyRPG", "Problem creating RTP folders");
-        }
+		// RTP folder
+        DocumentFile RTPFolder = createFolder(gamesFolder, "RTP");
+        createFolder(RTPFolder, "2000");
+        createFolder(RTPFolder, "2003");
 
         // The .nomedia file (avoid media app to scan games and RTP's folders)
-        gamesFolder.createFile("", ".nomedia");
+        if (gamesFolder.findFile(".nomedia") == null) {
+            gamesFolder.createFile("", ".nomedia");
+        }
 	}
+
+	private static DocumentFile createFolder(DocumentFile location, String folderName) {
+        DocumentFile folder = location.findFile(folderName);
+        if (folder == null || !folder.isDirectory()) {
+            folder = location.createDirectory(folderName);
+        }
+
+        if (folder == null) {
+            Log.e("EasyRPG", "Problem creating folder " + folderName);
+        }
+
+        return folder;
+    }
 }
