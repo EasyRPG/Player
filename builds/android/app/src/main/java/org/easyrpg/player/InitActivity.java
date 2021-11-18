@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.game_browser.GameBrowserActivity;
@@ -158,6 +159,11 @@ public class InitActivity extends AppCompatActivity {
     private void pickAGamesFolder(){
         // Choose a directory using the system's file picker.
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        // TODO : Understand why persistable permission doesn't work all the time
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
 
         // Optionally, specify a URI for the directory that should be opened in the system file picker when it loads.
         // TODO : Open the file picker is the "root" folder

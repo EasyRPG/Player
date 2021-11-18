@@ -55,16 +55,18 @@ public class GameBrowserHelper {
 
         for (DocumentFile entry : dir.listFiles()) {
             if (entry.isFile() && entry.canRead()) {
-                if (!databaseFound && entry.getName().equalsIgnoreCase(DATABASE_NAME)) {
+                String entryName = entry.getName();
+
+                if (!databaseFound && entryName.equalsIgnoreCase(DATABASE_NAME)) {
                     databaseFound = true;
-                } else if (!treemapFound && entry.getName().equalsIgnoreCase(TREEMAP_NAME)) {
+                } else if (!treemapFound && entryName.equalsIgnoreCase(TREEMAP_NAME)) {
                     treemapFound = true;
                 }
 
                 // Count non-standard files.
                 // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
-                if (entry.getName().toLowerCase().startsWith("rpg_rt.")) {
-                    if (!(entry.getName().equalsIgnoreCase(INI_FILE) || entry.getName().equalsIgnoreCase(EXE_FILE))) {
+                if (entryName.toLowerCase().startsWith("rpg_rt.")) {
+                    if (!(entryName.equalsIgnoreCase(INI_FILE) || entryName.equalsIgnoreCase(EXE_FILE))) {
                         rpgrtCount += 1;
                     }
                 }

@@ -28,7 +28,6 @@ public class Game implements Comparable<Game> {
 		this.gameFolder = gameFolder;
 	    this.title = gameFolder.getName();
 	    this.gameFolderPath = gameFolder.getUri().toString();
-		File f = new File(gameFolderPath);
 
 		// SavePath
         this.savePath = gameFolderPath;

@@ -60,17 +60,18 @@ public class GameScanner {
         errorList.clear();
 
         // Check that the storage is available
+        // TODO : Is it still necessary?
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             errorList.add(context.getString(R.string.no_external_storage));
             return;
         }
 
-        // Scanning all the games in the games folder
+        // Retrieve the games folder
         DocumentFile gamesFolder = SettingsManager.getGameFolder();
 
         // 1) The folder must exist
-        if (!gamesFolder.exists() || !gamesFolder.isDirectory()) {
+        if (gamesFolder == null || !gamesFolder.isDirectory()) {
             // TODO Replace the text by a R.string
             //String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", dir.getName());
             String msg = "The games folder doesn't exist or isn't a folder";
@@ -92,16 +93,14 @@ public class GameScanner {
         }
 
         // Scan the games folder
-        DocumentFile[] filesList = gamesFolder.listFiles();
-        // Go 2 directories deep to find games in /easyrpg/games, otherwise only 1
-        // TODO : Retablir le depth
-        scanFolder(filesList, 2);
+        // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
+        scanFolder(gamesFolder, 1);
 
         // Sort the games list : alphabetically ordered, favorite in first
         Collections.sort(gameList);
 
-        // If the scan bring nothing in this folder : we notify the errorList
-        if (gameList.size() == 0) {
+        // If the scan brings nothing in this folder : we notify the errorList
+        if (gameList.size() <= 0) {
             String error = context.getString(R.string.no_games_found_and_explanation);
             errorList.add(error);
         }
@@ -109,15 +108,17 @@ public class GameScanner {
         Log.i("EasyRPG", gameList.size() + " games found : " + gameList);
     }
 
-    private void scanFolder(DocumentFile[] list, int depth) {
-        if (depth > 0 && list != null) {
-            for (DocumentFile file : list) {
+    private void scanFolder(DocumentFile gamesFolder, int depth) {
+        if (depth > 0) {
+            for (DocumentFile file : gamesFolder.listFiles()) {
                 if (!file.getName().startsWith(".")) {
                     if (GameBrowserHelper.isRpg2kGame(file)) {
                         gameList.add(new Game(file));
-                    } else if (file.isDirectory() && file.canRead()) {
+                    } else if (depth > 1) {
                         // Not a RPG2k Game but a directory -> recurse
-                        scanFolder(file.listFiles(), depth - 1);
+                        // (We don't check if it's a directory or if its readable  because of slow
+                        // Android SAF calls and scanFolder(...) already check that)
+                        scanFolder(file, depth - 1);
                     }
                 }
             }
