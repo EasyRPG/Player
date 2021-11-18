@@ -32,13 +32,14 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
+
 		<!-- Startup Activity -->
         <activity
             android:name=".InitActivity"
             android:alwaysRetainTaskState="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme">
 
             <!-- android:preferMinimalPostProcessing="true"> -->
             <!-- uncomment on API 30+ for lower HDMI latency -->
@@ -50,7 +51,9 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
-        </activity> <!-- GameBrowsers' Activity -->
+        </activity>
+
+		<!-- GameBrowsers' Activity -->
         <activity
             android:name=".game_browser.GameBrowserActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -70,6 +73,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".game_browser.GameBrowserActivity" />
         </activity>
+
         <activity
             android:name=".settings.SettingsVideoActivity"
             android:label="@string/video"

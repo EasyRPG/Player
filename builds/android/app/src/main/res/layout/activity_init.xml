@@ -9,24 +9,23 @@
 	android:fitsSystemWindows="true"
 	android:padding="10dp"
 	tools:context=".InitActivity"
-	android:orientation="vertical">
-
-	<include
-		layout="@layout/browser_app_bar"
-		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"/>
+	android:orientation="vertical"
+	android:gravity="center"
+	>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="Select a game folder.\nPlease note that this folder should only contains RPG Maker games"
+		android:text="Select a game folder.\nThis folder should only contains RPG Maker 2000/2003 games."
+		android:textSize="25dp"
+		android:gravity="center"
 		/>
 
 	<Button
 		android:id="@+id/set_games_folder"
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Set the game folder" />
+		android:text="Select the games folder" />
 
 
 
