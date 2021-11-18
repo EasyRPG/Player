@@ -243,7 +243,7 @@ Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView name, Span<St
 
 Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView dir, StringView name, Span<StringView> exts) const {
 	assert(fs);
-	return fs->OpenFile(MakePath(name), dir, exts);
+	return fs->OpenFile(MakePath(dir), name, exts);
 }
 
 Filesystem_Stream::InputStream FilesystemView::OpenFile(const DirectoryTree::Args &args) const {
