@@ -13,8 +13,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.widget.Toast;
 
+import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
 import org.easyrpg.player.settings.SettingsMainActivity;
@@ -34,6 +37,7 @@ public class GameBrowserHelper {
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     private static int GRANTED_PERMISSION = 0;
+    public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
     /**
      * Tests if a folder is a RPG2k Game.
@@ -310,6 +314,40 @@ public class GameBrowserHelper {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(context,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, GRANTED_PERMISSION);
+        }
+    }
+
+    /** Open the SAF to ask for a games folder */
+    public static void pickAGamesFolder(Activity activity){
+        // Choose a directory using the system's file picker.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        // TODO : Understand why persistable permissions won't work with API 30
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+
+        // Optionally, specify a URI for the directory that should be opened in the system file picker when it loads.
+        // TODO : Find a way to open the file picker in the user's root folder
+        // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("/tree/primary"));
+
+        activity.startActivityForResult(intent, GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN);
+    }
+
+    /** Take into account the games folder choosed by the user */
+    public static void dealAfterFolderSelected(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN
+            && resultCode == Activity.RESULT_OK
+            && resultData != null) {
+            // Uri contains the chosen folder
+            Uri uri = resultData.getData();
+            Log.w("EasyRPG", "The selected games folder is : " + uri.getPath());
+
+            SettingsManager.setGameFolder(uri);
+
+            // Create RTP folders and the .nomedia file
+            DocumentFile gamesFolder = SettingsManager.getGameFolder();
+            Helper.createEasyRPGDirectories(gamesFolder);
         }
     }
 }

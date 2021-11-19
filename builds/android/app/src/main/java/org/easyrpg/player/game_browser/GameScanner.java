@@ -47,7 +47,7 @@ public class GameScanner {
 
         // Verify and Ask for permissions
         // TODO : Do we need that ?
-        GameBrowserHelper.askForStoragePermission(activity);
+        // GameBrowserHelper.askForStoragePermission(activity);
 
         //Scan the folder
         instance.scanGames();
@@ -61,14 +61,17 @@ public class GameScanner {
 
         // Check that the storage is available
         // TODO : Is it still necessary?
+        /*
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             errorList.add(context.getString(R.string.no_external_storage));
             return;
         }
+        */
 
         // Retrieve the games folder
         DocumentFile gamesFolder = SettingsManager.getGameFolder();
+        Log.e("EasyRPG", "Game folder : " + gamesFolder.getName());
 
         // 1) The folder must exist
         if (gamesFolder == null || !gamesFolder.isDirectory()) {

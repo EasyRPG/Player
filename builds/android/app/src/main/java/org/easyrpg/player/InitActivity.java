@@ -29,7 +29,6 @@ import java.io.File;
  */
 public class InitActivity extends AppCompatActivity {
     private boolean standaloneMode = false;
-    private static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +38,11 @@ public class InitActivity extends AppCompatActivity {
         // Retrieve User's preferences
         SettingsManager.init(getApplicationContext());
 
+        Activity thisActivity = this;
         ((Button) findViewById(R.id.set_games_folder)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickAGamesFolder();
+                GameBrowserHelper.pickAGamesFolder(thisActivity);
             }
         });
 
@@ -74,18 +74,7 @@ public class InitActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        if (requestCode == FOLDER_HAS_BEEN_CHOSEN && resultCode == Activity.RESULT_OK
-            && resultData != null) {
-            // Uri contains the chosen folder
-            Uri uri = resultData.getData();
-            Log.w("EasyRPG", "The selected games folder is : " + uri.getPath());
-
-            SettingsManager.setGameFolder(uri);
-
-            // Create RTP folders and the .nomedia file
-            DocumentFile gamesFolder = SettingsManager.getGameFolder();
-            Helper.createEasyRPGDirectories(gamesFolder);
-        }
+        GameBrowserHelper.dealAfterFolderSelected(requestCode, resultCode, resultData);
     }
 
     /**
@@ -156,19 +145,5 @@ public class InitActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void pickAGamesFolder(){
-        // Choose a directory using the system's file picker.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        // TODO : Understand why persistable permission doesn't work all the time
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-            | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
 
-        // Optionally, specify a URI for the directory that should be opened in the system file picker when it loads.
-        // TODO : Open the file picker is the "root" folder
-        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, XXX);
-
-        startActivityForResult(intent, FOLDER_HAS_BEEN_CHOSEN);
-    }
 }

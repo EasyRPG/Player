@@ -1,17 +1,25 @@
 package org.easyrpg.player.settings;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.easyrpg.player.game_browser.GameBrowserActivity;
+import org.easyrpg.player.game_browser.GameBrowserHelper;
 
-public class SettingsGamesFoldersActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsGamesFoldersActivity extends AppCompatActivity {
     private LinearLayout gamesFoldersListLayout;
-    private Button addGameFolderButton;
+    private Button setGamesFolderButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,72 +28,30 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity implements V
 
         SettingsManager.init(getApplicationContext());
 
-        // Setting UI components
-        gamesFoldersListLayout = (LinearLayout) findViewById(R.id.games_folders_list);
-        //updateGameFoldersList();
-        addGameFolderButton = (Button) findViewById(R.id.settings_add_game_folder_button);
-        addGameFolderButton.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.settings_add_game_folder_button:
-                //addAGameFolder();
-                break;
-        }
-    }
-/*
-    private void updateGameFoldersList() {
-        gamesFoldersListLayout.removeAllViews();
-
-        for (String gameDirPath : SettingsManager.getGamesFolderList()) {
-            LayoutInflater inflater = LayoutInflater.from(this);
-            RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.settings_item_list, null);
-
-            // The name
-            TextView nameTextView = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
-            nameTextView.setText(gameDirPath);
-            nameTextView.setTextSize(14);
-
-            // Option button (not present in the default folder)
-            final String path = gameDirPath;
-            ImageButton remove_button = (ImageButton) layout.findViewById(R.id.controls_settings_preset_option_button);
-            remove_button.setImageResource(R.drawable.ic_clear_black_24dp);
-            if (path.equals(SettingsManager.getEasyRPGFolder() + "/games")) {
-                layout.removeView(remove_button);
-            } else {
-                remove_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        removeAGameFolder(path);
-                    }
-                });
-            }
-
-            gamesFoldersListLayout.addView(layout);
-        }
-    }
-
-    private void removeAGameFolder(String path) {
-        SettingsManager.removeAGameFolder(path);
-
-        // Update UI
-        updateGameFoldersList();
-    }
-
-    private void addAGameFolder() {
-        new DirectoryChooser(this, SettingsManager.getEasyRPGFolder(), new Runnable() {
+        Activity thisActivity = this;
+        setGamesFolderButton = (Button) findViewById(R.id.set_games_folder);
+        setGamesFolderButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                String pathToAdd = DirectoryChooser.getSelectedPath();
-                SettingsManager.addGameDirectory(pathToAdd);
-
-                // Update UI
-                updateGameFoldersList();
+            public void onClick(View v) {
+                GameBrowserHelper.pickAGamesFolder(thisActivity);
             }
         });
     }
 
- */
+    /** Called when the user has chosen a game folder */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+
+        GameBrowserHelper.dealAfterFolderSelected(requestCode, resultCode, resultData);
+
+        // <!> Important <!>
+        // We directly start a new GameBrowser activity because the folder permission seems the be
+        // active just for new activities
+        // If the player choose a folder through SAF and then go back to Gamebrowser by clicking
+        // back button, the GameBrowser don't have the permission to read the directory
+        Intent intent;
+        intent = new Intent(this, GameBrowserActivity.class);
+        startActivity(intent);
+    }
 }

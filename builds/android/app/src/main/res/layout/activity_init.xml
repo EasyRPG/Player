@@ -16,8 +16,8 @@
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="Select a game folder.\nThis folder should only contains RPG Maker 2000/2003 games."
-		android:textSize="25dp"
+		android:text="@string/id_select_games_folder_explanation"
+		android:textSize="25sp"
 		android:gravity="center"
 		/>
 
@@ -25,7 +25,8 @@
 		android:id="@+id/set_games_folder"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Select the games folder" />
+		android:text="@string/select_the_games_folder"
+		/>
 
 
 

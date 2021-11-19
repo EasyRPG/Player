@@ -95,4 +95,6 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
+    <string name="select_the_games_folder">Select the games folder</string>
+	<string name="id_select_games_folder_explanation">Select a games folder.\nThis folder should only contains RPG Maker 2000/2003 games.</string>
 </resources>
