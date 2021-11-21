@@ -44,6 +44,7 @@ public class SettingsManager {
     private static String gamesFolderString;
     private static DocumentFile gameFolder;
     private static List<String> favoriteGamesList = new ArrayList<>();
+    private static DocumentFile soundFountFile;
 
     private SettingsManager() {
     }
@@ -281,6 +282,14 @@ public class SettingsManager {
         SettingsManager.gameFolder = DocumentFile.fromTreeUri(context, uri);
         editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderString);
         editor.commit();
+    }
+
+    public static DocumentFile getSoundFountFile() {
+        return soundFountFile;
+    }
+
+    public static void setSoundFountFile(DocumentFile soundFountFile) {
+       SettingsManager.soundFountFile = soundFountFile;
     }
 }
 

@@ -28,6 +28,8 @@ public class GameScanner {
     private List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
     private Activity context;
 
+    private static int GAME_SCANNING_DEPTH = 1; // 1 = no recursive scanning
+
     private GameScanner(Activity activity) {
         this.gameList = new ArrayList<Game>();
         this.errorList = new ArrayList<String>();
@@ -97,7 +99,7 @@ public class GameScanner {
 
         // Scan the games folder
         // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
-        scanFolder(gamesFolder, 1);
+        scanFolder(gamesFolder, GAME_SCANNING_DEPTH);
 
         // Sort the games list : alphabetically ordered, favorite in first
         Collections.sort(gameList);
@@ -114,8 +116,15 @@ public class GameScanner {
     private void scanFolder(DocumentFile gamesFolder, int depth) {
         if (depth > 0) {
             for (DocumentFile file : gamesFolder.listFiles()) {
-                if (!file.getName().startsWith(".")) {
-                    if (GameBrowserHelper.isRpg2kGame(file)) {
+                String name = file.getName();
+                if (!name.startsWith(".")) {
+                    // Is it a soundfont file ?
+                    // We test this case here during the game scanning in order to avoid further syscalls
+                    if (depth == GAME_SCANNING_DEPTH && name.toLowerCase().endsWith(".sf2")) {
+                        SettingsManager.setSoundFountFile(file);
+                    }
+                    // Is the file/folder a RPG Maker game?
+                    else if (GameBrowserHelper.isRpg2kGame(file)) {
                         gameList.add(new Game(file));
                     } else if (depth > 1) {
                         // Not a RPG2k Game but a directory -> recurse

@@ -259,6 +259,13 @@ public class GameBrowserHelper {
                 args.add(game.getEncoding());
             }
 
+            // Soundfont
+            DocumentFile soundfont = SettingsManager.getSoundFountFile();
+            if (soundfont != null) {
+                args.add("--soundfont");
+                args.add(soundfont.getUri().toString());
+            }
+
             // Disable audio depending on user preferences
             if (!SettingsManager.isAudioEnabled()) {
                 args.add("--disable-audio");
@@ -267,6 +274,8 @@ public class GameBrowserHelper {
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
             intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
             intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
+
+            Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args.toString());
             context.startActivity(intent);
         } else {
             String msg = context.getString(R.string.not_valid_game).replace("$PATH", game.getTitle());
