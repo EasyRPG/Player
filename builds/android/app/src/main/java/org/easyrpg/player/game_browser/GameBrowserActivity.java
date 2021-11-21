@@ -44,6 +44,7 @@ public class GameBrowserActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private int nbOfGamesPerLine;
+    private boolean isScanProcessing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
         setContentView(R.layout.browser_activity);
 
+        // Configure the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,7 +71,6 @@ public class GameBrowserActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -151,15 +152,37 @@ public class GameBrowserActivity extends AppCompatActivity
     }
 
     public void displayGameList(Activity activity) {
-        // Scan games
-        GameScanner gameScanner = GameScanner.getInstance(activity);
-
-        // Populate the list view
-        if (gameScanner.hasError()) {
-            recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList(), this));
-        } else {
-            recyclerView.setAdapter(new MyAdapter(this, gameScanner.getGameList(), nbOfGamesPerLine));
+        // TODO : Make the use of isScanProcessing synchronized (not really useful)
+        if (isScanProcessing){
+            return;
         }
+        isScanProcessing = true;
+
+        // Empty the games list
+        recyclerView.setAdapter(null);
+
+        // Start the scan asynchronously
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Scan games
+                GameScanner gameScanner = GameScanner.getInstance(activity);
+
+                // "Only the original thread that created a view hierarchy can touch its views."
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Populate the list view
+                        if (gameScanner.hasError()) {
+                            recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList(), activity));
+                        } else {
+                            recyclerView.setAdapter(new MyAdapter(activity, gameScanner.getGameList(), nbOfGamesPerLine));
+                        }
+                        isScanProcessing = false;
+                    }
+                });
+            }
+            }).start();
     }
 
     /**
