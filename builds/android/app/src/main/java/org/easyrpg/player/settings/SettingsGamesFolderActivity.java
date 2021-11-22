@@ -17,7 +17,7 @@ import org.easyrpg.player.R;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 
-public class SettingsGamesFoldersActivity extends AppCompatActivity {
+public class SettingsGamesFolderActivity extends AppCompatActivity {
     private LinearLayout gamesFoldersListLayout;
     private Button setGamesFolderButton;
 
@@ -50,6 +50,7 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity {
         // active just for new activities
         // If the player choose a folder through SAF and then go back to Gamebrowser by clicking
         // back button, the GameBrowser don't have the permission to read the directory
+        GameBrowserActivity.resetGamesList();
         Intent intent;
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);

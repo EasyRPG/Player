@@ -39,7 +39,7 @@ public class SettingsMainActivity extends AppCompatActivity implements View.OnCl
                 intent = new Intent(this, SettingsAudioActivity.class);
                 break;
             case R.id.settings_main_game_folder:
-                intent = new Intent(this, SettingsGamesFoldersActivity.class);
+                intent = new Intent(this, SettingsGamesFolderActivity.class);
                 break;
             case R.id.settings_main_input:
                 intent = new Intent(this, SettingsInputActivity.class);

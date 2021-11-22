@@ -95,7 +95,7 @@
                 android:value=".settings.SettingsMainActivity" />
         </activity>
         <activity
-            android:name=".settings.SettingsGamesFoldersActivity"
+            android:name=".settings.SettingsGamesFolderActivity"
             android:label="@string/game_folders"
             android:parentActivityName=".settings.SettingsMainActivity">
 

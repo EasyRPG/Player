@@ -45,6 +45,7 @@ public class GameBrowserActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private int nbOfGamesPerLine;
     private boolean isScanProcessing;
+    private static List<Game> displayedGamesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,13 @@ public class GameBrowserActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         setLayoutManager(this.getResources().getConfiguration());
 
-        displayGameList(this);
+        // To limit the number of syscalls, we only scan for games at startup and when the user
+        // ask to refresh the games list
+        if (GameBrowserActivity.displayedGamesList == null) {
+            scanAndDisplayGamesList(this);
+        } else {
+            recyclerView.setAdapter(new MyAdapter(this, GameBrowserActivity.displayedGamesList, nbOfGamesPerLine));
+        }
     }
 
     @Override
@@ -113,7 +120,7 @@ public class GameBrowserActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.refresh) {
-            displayGameList(this);
+            scanAndDisplayGamesList(this);
             return true;
         } else if (id == R.id.menu) {
             GameBrowserHelper.openSettingsActivity(this);
@@ -148,18 +155,23 @@ public class GameBrowserActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
 
         setLayoutManager(newConfig);
-        displayGameList(this);
+        scanAndDisplayGamesList(this);
     }
 
-    public void displayGameList(Activity activity) {
+    public void scanAndDisplayGamesList(Activity activity) {
+        resetGamesList();
+        
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
         if (isScanProcessing){
             return;
         }
         isScanProcessing = true;
 
-        // Empty the games list
-        recyclerView.setAdapter(null);
+        // Empty the games list and display a loading message
+        ArrayList<String> loadingMessageList = new ArrayList<String>();
+        // TODO : Externalize this string
+        loadingMessageList.add("Loading...\nYes, Android files listing became really slow.");
+        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList, activity));
 
         // Start the scan asynchronously
         new Thread(new Runnable() {
@@ -176,7 +188,9 @@ public class GameBrowserActivity extends AppCompatActivity
                         if (gameScanner.hasError()) {
                             recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList(), activity));
                         } else {
-                            recyclerView.setAdapter(new MyAdapter(activity, gameScanner.getGameList(), nbOfGamesPerLine));
+                            List<Game> gameList = gameScanner.getGameList();
+                            GameBrowserActivity.displayedGamesList = gameList;
+                            recyclerView.setAdapter(new MyAdapter(activity, gameList, nbOfGamesPerLine));
                         }
                         isScanProcessing = false;
                     }
@@ -199,6 +213,10 @@ public class GameBrowserActivity extends AppCompatActivity
 
     public static Game getSelectedGame() {
         return selectedGame;
+    }
+
+    public static void resetGamesList() {
+        GameBrowserActivity.displayedGamesList = null;
     }
 
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -306,7 +324,7 @@ public class GameBrowserActivity extends AppCompatActivity
                 public void onClick(View v) {
                     game.setFavorite(!game.isFavorite());
                     updateFavoriteButton(holder, game);
-                    ((GameBrowserActivity)activity).displayGameList(activity);
+                    ((GameBrowserActivity)activity).scanAndDisplayGamesList(activity);
                 }
             });
         }
