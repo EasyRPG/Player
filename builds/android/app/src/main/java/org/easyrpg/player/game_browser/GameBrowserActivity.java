@@ -160,7 +160,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
     public void scanAndDisplayGamesList(Activity activity) {
         resetGamesList();
-        
+
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
         if (isScanProcessing){
             return;
@@ -262,7 +262,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
             // TitleScreen Image
             // TODO : Implement a caching system for not load
-            holder.titleScreen.setImageBitmap(GameScanner.getGameTitleScreen(game, activity));
+            holder.titleScreen.setImageBitmap(game.getTitleScreen());
             holder.titleScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

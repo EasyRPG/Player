@@ -1,5 +1,7 @@
 package org.easyrpg.player.game_browser;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
@@ -23,11 +25,14 @@ public class Game implements Comparable<Game> {
 	private String title, gameFolderPath, savePath;
 	private boolean isFavorite;
     private DocumentFile gameFolder;
+    private Uri folderURI;
+    private Bitmap titleScreen;
 
 	public Game(DocumentFile gameFolder) {
 		this.gameFolder = gameFolder;
 	    this.title = gameFolder.getName();
-	    this.gameFolderPath = gameFolder.getUri().toString();
+	    this.folderURI = gameFolder.getUri();
+	    this.gameFolderPath = this.folderURI.toString();
 
 		// SavePath
         this.savePath = gameFolderPath;
@@ -48,6 +53,11 @@ public class Game implements Comparable<Game> {
 		// isFavorite
 		this.isFavorite = isFavoriteFromSettings();
 	}
+
+	public Game(DocumentFile gameFolder, Bitmap titleScreen) {
+	    this(gameFolder);
+	    this.titleScreen = titleScreen;
+    }
 
 	public String getTitle() {
 		return title;
@@ -167,5 +177,13 @@ public class Game implements Comparable<Game> {
 
     public DocumentFile getGameFolder() {
         return gameFolder;
+    }
+
+    public Uri getFolderURI() {
+        return folderURI;
+    }
+
+    public Bitmap getTitleScreen() {
+        return titleScreen;
     }
 }

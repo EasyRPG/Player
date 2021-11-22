@@ -13,7 +13,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,63 +31,12 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class GameBrowserHelper {
-    //Files' names
-    private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini", EXE_FILE = "RPG_RT.exe";
+
+    private final static String INI_FILE = "RPG_RT.ini";
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     private static int GRANTED_PERMISSION = 0;
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
-
-    /**
-     * Tests if a folder is a RPG2k Game.
-     * (contains DATABASE_NAME and TREEMAP_NAME)
-     *
-     * @param dir Directory to test
-     * @return true if RPG2k game
-     */
-    public static boolean isRpg2kGame(DocumentFile dir) {
-        if (!dir.isDirectory() || !dir.canRead()) {
-            return false;
-        }
-
-        boolean databaseFound = false;
-        boolean treemapFound = false;
-
-        // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
-        int rpgrtCount = 0;
-
-        for (DocumentFile entry : dir.listFiles()) {
-            if (entry.isFile() && entry.canRead()) {
-                String entryName = entry.getName();
-
-                if (!databaseFound && entryName.equalsIgnoreCase(DATABASE_NAME)) {
-                    databaseFound = true;
-                } else if (!treemapFound && entryName.equalsIgnoreCase(TREEMAP_NAME)) {
-                    treemapFound = true;
-                }
-
-                // Count non-standard files.
-                // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
-                if (entryName.toLowerCase().startsWith("rpg_rt.")) {
-                    if (!(entryName.equalsIgnoreCase(INI_FILE) || entryName.equalsIgnoreCase(EXE_FILE))) {
-                        rpgrtCount += 1;
-                    }
-                }
-
-                if (databaseFound && treemapFound) {
-                    return true;
-                }
-            }
-        }
-
-        // We might be dealing with a non-standard extension.
-        // Show it, and let the C++ code sort out which file is which.
-        if (rpgrtCount == 2) {
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Returns Ini File of game at index.
@@ -240,7 +188,7 @@ public class GameBrowserHelper {
         String path = game.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
-        if (GameBrowserHelper.isRpg2kGame(game.getGameFolder())) {
+        if (game.getGameFolder().isDirectory() && game.getGameFolder().canRead()) {
             Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
             ArrayList<String> args = new ArrayList<String>();
 
