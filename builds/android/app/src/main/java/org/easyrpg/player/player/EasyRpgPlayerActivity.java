@@ -132,7 +132,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             e.printStackTrace();
         }
 
-        // Put the gamescreen
+        // Put the gameScreen
         surface = mSurface;
         mLayout = (RelativeLayout) findViewById(R.id.main_layout);
         mLayout.addView(surface);
@@ -346,27 +346,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      */
     public Game getProjectPath() {
         return GameBrowserActivity.getSelectedGame();
-    }
-
-
-    /**
-     * Used by timidity of SDL_mixer to find the timidity folder for the
-     * instruments. Invoked via JNI.
-     *
-     * @return Full path to the timidity.cfg
-     */
-    // TODO : Return Timidity
-    public String getTimidityPath() {
-        // Log.v("SDL", "getTimidity " +
-        // getApplication().getApplicationInfo().dataDir);
-        /*String s = getApplication().getApplicationInfo().dataDir + "/timidity";
-        if (new File(s).exists()) {
-            return s;
-        }
-
-        return SettingsManager.getEasyRPGFolder() + "/timidity"; //Shouldn't be called anymore
-        */
-        return "";
     }
 
     /**

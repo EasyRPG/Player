@@ -85,6 +85,7 @@ public class InitActivity extends AppCompatActivity {
         Log.i("EasyRPG", "The application folder is : " + dataDir);
 
         /*
+        // We leave the timidity part here just to show how loading a library works
         // Copy timidity to data folder
         if (AssetUtils.exists(assetManager, "timidity")) {
             if (!(new File(dataDir + "/timidity").exists())) {
