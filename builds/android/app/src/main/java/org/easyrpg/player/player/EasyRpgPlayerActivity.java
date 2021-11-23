@@ -32,10 +32,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -50,15 +46,21 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
+
+import com.google.android.material.navigation.NavigationView;
+
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
-import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 

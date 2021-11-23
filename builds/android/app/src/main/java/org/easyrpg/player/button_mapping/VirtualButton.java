@@ -1,9 +1,5 @@
 package org.easyrpg.player.button_mapping;
 
-import org.easyrpg.player.Helper;
-import org.easyrpg.player.settings.SettingsManager;
-import org.libsdl.app.SDLActivity;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +8,10 @@ import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.settings.SettingsManager;
+import org.libsdl.app.SDLActivity;
 
 public class VirtualButton extends View {
     protected int keyCode;

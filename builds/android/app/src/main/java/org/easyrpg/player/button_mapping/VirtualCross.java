@@ -1,15 +1,15 @@
 package org.easyrpg.player.button_mapping;
 
-import org.easyrpg.player.Helper;
-import org.easyrpg.player.settings.SettingsManager;
-import org.libsdl.app.SDLActivity;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.settings.SettingsManager;
+import org.libsdl.app.SDLActivity;
 
 public class VirtualCross extends VirtualButton {
     private Rect boundLeft, boundRight, boundUp, boundDown;

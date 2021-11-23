@@ -6,14 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,12 +18,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
+
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameBrowserActivity extends AppCompatActivity
@@ -88,7 +91,7 @@ public class GameBrowserActivity extends AppCompatActivity
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
         if (GameBrowserActivity.displayedGamesList == null) {
-            scanAndDisplayGamesList(this);
+            scanAndDisplayGamesList();
         } else {
             recyclerView.setAdapter(new MyAdapter(this, GameBrowserActivity.displayedGamesList, nbOfGamesPerLine));
         }
@@ -120,7 +123,7 @@ public class GameBrowserActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.refresh) {
-            scanAndDisplayGamesList(this);
+            scanAndDisplayGamesList();
             return true;
         } else if (id == R.id.menu) {
             GameBrowserHelper.openSettingsActivity(this);
@@ -155,10 +158,10 @@ public class GameBrowserActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
 
         setLayoutManager(newConfig);
-        scanAndDisplayGamesList(this);
+        scanAndDisplayGamesList();
     }
 
-    public void scanAndDisplayGamesList(Activity activity) {
+    public void scanAndDisplayGamesList() {
         resetGamesList();
 
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
@@ -171,9 +174,10 @@ public class GameBrowserActivity extends AppCompatActivity
         ArrayList<String> loadingMessageList = new ArrayList<String>();
         // TODO : Externalize this string
         loadingMessageList.add("Loading...\nYes, Android files listing became really slow.");
-        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList, activity));
+        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList, this));
 
         // Start the scan asynchronously
+        Activity activity = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -190,13 +194,20 @@ public class GameBrowserActivity extends AppCompatActivity
                         } else {
                             List<Game> gameList = gameScanner.getGameList();
                             GameBrowserActivity.displayedGamesList = gameList;
-                            recyclerView.setAdapter(new MyAdapter(activity, gameList, nbOfGamesPerLine));
+                            displayGameList();
                         }
                         isScanProcessing = false;
                     }
                 });
             }
             }).start();
+    }
+
+    /** Reorder the displayed game list */
+    public void displayGameList() {
+        // Sort the games list : alphabetically ordered, favorite in first
+        Collections.sort(displayedGamesList);
+        recyclerView.setAdapter(new MyAdapter(this, displayedGamesList, nbOfGamesPerLine));
     }
 
     /**
@@ -220,9 +231,9 @@ public class GameBrowserActivity extends AppCompatActivity
     }
 
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private List<Game> gameList;
-        private Activity activity;
-        private int nbOfGamesPerLine;
+        private final List<Game> gameList;
+        private final Activity activity;
+        private final int nbOfGamesPerLine;
 
         IniEncodingReader iniReader;
 
@@ -324,7 +335,7 @@ public class GameBrowserActivity extends AppCompatActivity
                 public void onClick(View v) {
                     game.setFavorite(!game.isFavorite());
                     updateFavoriteButton(holder, game);
-                    ((GameBrowserActivity)activity).scanAndDisplayGamesList(activity);
+                    ((GameBrowserActivity)activity).displayGameList();
                 }
             });
         }

@@ -1,20 +1,16 @@
 package org.easyrpg.player.game_browser;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.documentfile.provider.DocumentFile;
-
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
@@ -25,7 +21,6 @@ import org.easyrpg.player.settings.SettingsManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -35,7 +30,6 @@ public class GameBrowserHelper {
     private final static String INI_FILE = "RPG_RT.ini";
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
-    private static int GRANTED_PERMISSION = 0;
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
     /**
@@ -73,47 +67,6 @@ public class GameBrowserHelper {
         }
 
         return null;
-    }
-
-    public static Boolean canWrite(File f) {
-        if (f.isDirectory()) {
-            FileWriter w = null;
-            String testFilename = f.getPath() + "/.EASYRPG_WRITE_TEST";
-            try {
-                w = new FileWriter(testFilename);
-                // Permissions are checked on open, but it is Android, better be save
-                w.write("Android >.<");
-            } catch (IOException e) {
-                return false;
-            } finally {
-                try {
-                    if (w != null) {
-                        w.close();
-                    }
-                } catch (IOException e) {
-                }
-            }
-
-            File testFile = new File(testFilename);
-            if (testFile.exists()) {
-                // Does not throw
-                testFile.delete();
-            }
-        } else {
-            boolean deleteAfter = f.exists();
-            try {
-                FileWriter w = new FileWriter(f, true);
-                w.close();
-            } catch (IOException e) {
-                return false;
-            }
-
-            if (deleteAfter) {
-                f.delete();
-            }
-        }
-
-        return true;
     }
 
     // https://stackoverflow.com/q/106770/
@@ -264,14 +217,6 @@ public class GameBrowserHelper {
 
         builder.create();
         builder.show();
-    }
-
-    public static void askForStoragePermission(Activity context) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, GRANTED_PERMISSION);
-        }
     }
 
     /** Open the SAF to ask for a games folder */

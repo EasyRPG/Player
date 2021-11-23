@@ -7,8 +7,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.os.Build;
-import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,13 +14,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.hardware.usb.*;
+import android.hardware.usb.UsbConstants;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbInterface;
+import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class HIDDeviceManager {
@@ -122,7 +124,7 @@ public class HIDDeviceManager {
                         // If our context is an activity, exit rather than crashing when we can't
                         // call our native functions.
                         Activity activity = (Activity)context;
-        
+
                         activity.finish();
                     }
                     catch (ClassCastException cce) {
@@ -134,7 +136,7 @@ public class HIDDeviceManager {
 
             return;
         }
-        
+
         HIDDeviceRegisterCallback();
 
         mSharedPreferences = mContext.getSharedPreferences("hidapi", Context.MODE_PRIVATE);
@@ -200,7 +202,7 @@ public class HIDDeviceManager {
                 Log.i(TAG,"  Interface protocol: " + mUsbInterface.getInterfaceProtocol());
                 Log.i(TAG,"  Endpoint count: " + mUsbInterface.getEndpointCount());
 
-                // Get endpoint details 
+                // Get endpoint details
                 for (int epi = 0; epi < mUsbInterface.getEndpointCount(); epi++)
                 {
                     UsbEndpoint mEndpoint = mUsbInterface.getEndpoint(epi);
@@ -549,7 +551,7 @@ public class HIDDeviceManager {
             for (HIDDevice device : mDevicesById.values()) {
                 device.setFrozen(frozen);
             }
-        }        
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////

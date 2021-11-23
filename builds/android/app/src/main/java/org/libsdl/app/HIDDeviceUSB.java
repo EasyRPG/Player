@@ -1,8 +1,13 @@
 package org.libsdl.app;
 
-import android.hardware.usb.*;
+import android.hardware.usb.UsbConstants;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbEndpoint;
+import android.hardware.usb.UsbInterface;
 import android.os.Build;
 import android.util.Log;
+
 import java.util.Arrays;
 
 class HIDDeviceUSB implements HIDDevice {

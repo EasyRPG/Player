@@ -53,10 +53,6 @@ public class GameScanner {
         }
         GameScanner.instance.context = activity;
 
-        // Verify and Ask for permissions
-        // TODO : Do we need that ?
-        // GameBrowserHelper.askForStoragePermission(activity);
-
         //Scan the folder
         instance.scanGames();
 
@@ -67,19 +63,8 @@ public class GameScanner {
         gameList.clear();
         errorList.clear();
 
-        // Check that the storage is available
-        // TODO : Is it still necessary?
-        /*
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            errorList.add(context.getString(R.string.no_external_storage));
-            return;
-        }
-        */
-
         // Retrieve the games folder
         DocumentFile gamesFolder = SettingsManager.getGameFolder();
-        Log.e("EasyRPG", "Game folder : " + gamesFolder.getName());
 
         // 1) The folder must exist
         if (gamesFolder == null || !gamesFolder.isDirectory()) {
@@ -107,27 +92,28 @@ public class GameScanner {
         // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
         scanFolderRecursive(gamesFolder, GAME_SCANNING_DEPTH);
 
-        // Sort the games list : alphabetically ordered, favorite in first
-        Collections.sort(gameList);
-
         // If the scan brings nothing in this folder : we notify the errorList
         if (gameList.size() <= 0) {
             String error = context.getString(R.string.no_games_found_and_explanation);
             errorList.add(error);
         }
 
-        Log.i("EasyRPG", gameList.size() + " games found : " + gameList);
+        Log.i("EasyRPG", gameList.size() + " game(s) found.");
     }
 
     private void scanFolderRecursive(DocumentFile gamesFolder, int depth) {
-        // TODO : Avoid to use listFile() by
+        // TODO : Avoid to use listFile() for the root of the game folder
         if (depth > 0) {
             for (DocumentFile file : gamesFolder.listFiles()) {
                 String name = file.getName();
+                if (name == null) {
+                    continue;
+                }
                 if (!name.startsWith(".")) {
                     // Is it a soundfont file ?
                     // We test this case here during the game scanning in order to avoid further syscalls
                     if (depth == GAME_SCANNING_DEPTH && name.toLowerCase().endsWith(".sf2")) {
+                        Log.i("EasyRPG", "Soundfont found : " + file.getName());
                         SettingsManager.setSoundFountFile(file);
                     }
                     if (file.isDirectory() && file.canRead()) {
@@ -218,6 +204,9 @@ public class GameScanner {
         for (DocumentFile entry : dir.listFiles()) {
             if (entry.isFile() && entry.canRead()) {
                 String entryName = entry.getName();
+                if (entryName == null) {
+                    continue;
+                }
 
                 if (!databaseFound && entryName.equalsIgnoreCase(DATABASE_NAME)) {
                     databaseFound = true;
@@ -310,7 +299,7 @@ public class GameScanner {
                         }
                     }
                 } catch (Exception e) {
-                    continue;
+                    Log.e("EasyRPG", e.getMessage());
                 }
             }
         }

@@ -1,23 +1,20 @@
 package org.libsdl.app;
 
-import android.content.Context;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.bluetooth.BluetoothGattService;
+import android.content.Context;
 import android.hardware.usb.UsbDevice;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.os.*;
 
-//import com.android.internal.util.HexDump;
-
-import java.lang.Runnable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -429,7 +426,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                     }
                 });
             }
-        } 
+        }
         else if (newState == 0) {
             mIsConnected = false;
         }

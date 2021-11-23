@@ -1,18 +1,5 @@
 package org.easyrpg.player.settings;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
-
-import org.easyrpg.player.R;
-import org.w3c.dom.Document;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
@@ -25,7 +12,15 @@ import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+
 import androidx.documentfile.provider.DocumentFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsManager {
     private final static long VIBRATION_DURATION = 20; // ms

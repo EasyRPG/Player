@@ -22,7 +22,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/id_select_games_folder_explanation"
-				android:textSize="25sp"
+				android:textSize="20sp"
 				android:gravity="center" />
 
 			<Button

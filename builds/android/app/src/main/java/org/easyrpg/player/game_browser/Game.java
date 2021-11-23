@@ -12,7 +12,6 @@ import org.easyrpg.player.settings.SettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileWriter;
 
 public class Game implements Comparable<Game> {
