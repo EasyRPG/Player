@@ -43,7 +43,7 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        GameBrowserHelper.dealAfterFolderSelected(requestCode, resultCode, resultData);
+        GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
 
         // <!> Important <!>
         // We directly start a new GameBrowser activity because the folder permission seems the be

@@ -46,7 +46,7 @@ public class InitActivity extends AppCompatActivity {
             }
         });
 
-        prepareData();
+        // prepareData();
 
         // If the app is called in a game folder : start the game
         startGameStandalone();
@@ -74,24 +74,26 @@ public class InitActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        GameBrowserHelper.dealAfterFolderSelected(requestCode, resultCode, resultData);
+        GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
     }
 
     /**
      * Copies required runtime data from assets folder to data directory
+     * We don't use it because we dropped Timidity, but it may be useful later
      */
     public void prepareData() {
-        // TODO : Verify that this method isn't broken
         AssetManager assetManager = getAssets();
         String dataDir = getApplication().getApplicationInfo().dataDir;
         Log.w("EasyRPG", "The application folder is : " + dataDir);
 
+        /*
         // Copy timidity to data folder
         if (AssetUtils.exists(assetManager, "timidity")) {
             if (!(new File(dataDir + "/timidity").exists())) {
                 AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
             }
         }
+        */
     }
 
     /**
@@ -144,6 +146,4 @@ public class InitActivity extends AppCompatActivity {
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
     }
-
-
 }

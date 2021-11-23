@@ -291,15 +291,22 @@ public class GameBrowserHelper {
         activity.startActivityForResult(intent, GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN);
     }
 
-    /** Take into account the games folder choosed by the user */
-    public static void dealAfterFolderSelected(int requestCode, int resultCode, Intent resultData) {
+    /** Take into account the games folder chose by the user */
+    public static void dealAfterFolderSelected(Activity activity, int requestCode, int resultCode, Intent resultData) {
         if (requestCode == GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN
             && resultCode == Activity.RESULT_OK
             && resultData != null) {
-            // Uri contains the chosen folder
-            Uri uri = resultData.getData();
-            Log.w("EasyRPG", "The selected games folder is : " + uri.getPath());
 
+            // Extract the selected folder from the URI
+            Uri uri = resultData.getData();
+            Log.i("EasyRPG", "The selected games folder is : " + uri.getPath());
+
+            // Ask for permanent access to this folder
+            final int takeFlags = resultData.getFlags()
+                & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+            // Save the settings
             SettingsManager.setGameFolder(uri);
 
             // Create RTP folders and the .nomedia file
