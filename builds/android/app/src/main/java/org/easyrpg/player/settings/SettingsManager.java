@@ -9,6 +9,7 @@ import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
+import static org.easyrpg.player.settings.SettingsEnum.RTP_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
 
@@ -36,8 +37,8 @@ public class SettingsManager {
     private static boolean forcedLandscape;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     //private static String easyRPGFolder;
-    private static String gamesFolderString;
-    private static DocumentFile gameFolder;
+    private static String gamesFolderString, rtpFolderString;
+    private static DocumentFile gameFolder, rtpFolder;
     private static List<String> favoriteGamesList = new ArrayList<>();
     private static DocumentFile soundFountFile;
 
@@ -74,7 +75,14 @@ public class SettingsManager {
             gameFolder = DocumentFile.fromTreeUri(context, uri);
         }
 
-        // TODO : Ask for a folder in case of "*" in the string (the path should lead to a absent folder)
+        // Fetch the rtp directory
+        rtpFolderString = sharedPref.getString(RTP_DIRECTORY.toString(), "");
+        if(rtpFolderString == null || rtpFolderString.isEmpty()) {
+            rtpFolder = null;
+        } else {
+            Uri uri = Uri.parse(rtpFolderString);
+            rtpFolder = DocumentFile.fromTreeUri(context, uri);
+        }
 
         // Fetch the favorite game list :
         favoriteGamesList = new ArrayList<>();
@@ -89,60 +97,10 @@ public class SettingsManager {
         }
     }
 
-    /*
-    public static List<String> getGamesFolderList() {
-        return gamesFolderList;
-    }
-     */
-
     public static List<String> getFavoriteGamesList() {
         return favoriteGamesList;
     }
 
-    /*
-    public static void addGameDirectory(String pathToAdd) {
-        pathToAdd = pathToAdd.trim();
-
-        // 1) The game folder must not be already in the list
-        if (gamesFolderList.contains(pathToAdd)) {
-            return;
-        }
-
-        // 2) Verify read permission
-        File f = new File(pathToAdd);
-        if (!f.canRead()) {
-            Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", pathToAdd), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // 3) When the user selects a directory containing a game, select automatically the folder above
-        if (GameBrowserHelper.isRpg2kGame(f)) {
-            pathToAdd = pathToAdd.substring(0, pathToAdd.lastIndexOf("/"));
-        }
-
-        // Update user's preferences
-        gamesFolderList.add(pathToAdd);
-
-        setGameFolderList(gamesFolderList);
-    }
-
-
-    public static void removeAGameFolder(String path) {
-        gamesFolderList.remove(path);
-        setGameFolderList(gamesFolderList);
-    }
-
-    private static void setGameFolderList(List<String> folderList) {
-        gamesFolderList = folderList;
-
-        StringBuilder sb = new StringBuilder();
-        for (String folder : gamesFolderList) {
-            sb.append(folder).append('*');
-        }
-        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), sb.toString());
-        editor.commit();
-    }
-    */
     public static void addFavoriteGame(String gameTitle) {
         gameTitle = gameTitle.trim();
 
@@ -276,6 +234,24 @@ public class SettingsManager {
         SettingsManager.gamesFolderString = uri.toString();
         SettingsManager.gameFolder = DocumentFile.fromTreeUri(context, uri);
         editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderString);
+        editor.commit();
+    }
+
+    public static DocumentFile getRtpFolder() {
+        return rtpFolder;
+    }
+
+    public static void setRtpFolder(Uri uri) {
+        DocumentFile rtpFolder = DocumentFile.fromTreeUri(context, uri);
+        if (rtpFolder != null) {
+            setRtpFolder(rtpFolder);
+        }
+    }
+
+    public static void setRtpFolder(DocumentFile folder) {
+        SettingsManager.rtpFolder = folder;
+        SettingsManager.rtpFolderString = folder.getUri().toString();
+        editor.putString(SettingsEnum.RTP_DIRECTORY.toString(), rtpFolderString);
         editor.commit();
     }
 

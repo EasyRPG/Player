@@ -354,11 +354,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      * @return Full path to the RTP
      */
     public String getRtpPath() {
-        // TODO : Return RTP
-        return "";
-        //String str = SettingsManager.getEasyRPGFolder() + "/rtp";
-        // Log.v("SDL", "getRtpPath " + str);
-        //return str;
+        return SettingsManager.getRtpFolder().toString();
     }
 
     public SafFile getHandleForPath(String path) {

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.settings.SettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,6 +165,9 @@ public class Helper {
         DocumentFile RTPFolder = createFolder(gamesFolder, "RTP");
         createFolder(RTPFolder, "2000");
         createFolder(RTPFolder, "2003");
+
+        // Save the RTP folder in Settings
+        SettingsManager.setRtpFolder(RTPFolder);
 
         // The .nomedia file (avoid media app to scan games and RTP's folders)
         if (gamesFolder.findFile(".nomedia") == null) {

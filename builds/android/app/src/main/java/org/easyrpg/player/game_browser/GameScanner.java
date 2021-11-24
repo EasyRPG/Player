@@ -268,14 +268,15 @@ public class GameScanner {
 
     /** Return the game title screen, in a dumb way following last Enterbrain conventions */
     public static Bitmap extractTitleScreenImage(Context context, Uri titleScreenFolderURI) {
-        // Retrieve the Title folder, containing titles screens
-        DocumentFile titleFolder = DocumentFile.fromTreeUri(context, titleScreenFolderURI);
+        try {
+            // Retrieve the Title folder, containing titles screens
+            DocumentFile titleFolder = DocumentFile.fromTreeUri(context, titleScreenFolderURI);
 
-        // Display the first image found
-        if (titleFolder != null && titleFolder.isDirectory()) {
-            for (DocumentFile file : titleFolder.listFiles()) {
-                String fileName = file.getName().toLowerCase().trim();
-                try {
+            // Display the first image found
+            if (titleFolder != null && titleFolder.isDirectory()) {
+                for (DocumentFile file : titleFolder.listFiles()) {
+                    String fileName = file.getName().toLowerCase().trim();
+
                     if (!fileName.startsWith(".")) {
                         if (fileName.endsWith("png") || fileName.endsWith("bmp")) {
                             Uri imageUri = file.getUri();
@@ -298,10 +299,10 @@ public class GameScanner {
                             return b;
                         }
                     }
-                } catch (Exception e) {
-                    Log.e("EasyRPG", e.getMessage());
                 }
             }
+        } catch (Exception e) {
+            Log.e("EasyRPG", e.getMessage());
         }
 
         return null;
