@@ -73,24 +73,22 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		std::string parent_dir, child_dir;
 		std::tie(parent_dir, child_dir) = FileFinder::GetPathAndFilename(fs_path);
 
-		if (!parent_dir.empty()) {
-			// Go up and determine the proper casing of the folder
-			auto* parent_tree = ListDirectory(parent_dir);
-			if (!parent_tree) {
-				return nullptr;
-			}
+		// Go up and determine the proper casing of the folder
+		auto* parent_tree = ListDirectory(parent_dir);
+		if (!parent_tree) {
+			return nullptr;
+		}
 
-			auto parent_key = make_key(parent_dir);
-			auto parent_it = dir_cache.find(parent_key);
-			assert(parent_it != dir_cache.end());
+		auto parent_key = make_key(parent_dir);
+		auto parent_it = dir_cache.find(parent_key);
+		assert(parent_it != dir_cache.end());
 
-			auto child_key = make_key(child_dir);
-			auto child_it = parent_tree->find(child_key);
-			if (child_it != parent_tree->end()) {
-				fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
-			} else {
-				return nullptr;
-			}
+		auto child_key = make_key(child_dir);
+		auto child_it = parent_tree->find(child_key);
+		if (child_it != parent_tree->end()) {
+			fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
+		} else {
+			return nullptr;
 		}
 	}
 

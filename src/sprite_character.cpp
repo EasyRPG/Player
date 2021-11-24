@@ -51,10 +51,15 @@ void Sprite_Character::Update() {
 			request_id = char_request->Bind(&Sprite_Character::OnCharSpriteReady, this);
 			char_request->Start();
 		} else {
-			FileRequestAsync* tile_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
-			tile_request->SetGraphicFile(true);
-			request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
-			tile_request->Start();
+			const auto chipset_name = Game_Map::GetChipsetName();
+			if (chipset_name.empty()) {
+				OnTileSpriteReady(nullptr);
+			} else {
+				FileRequestAsync *tile_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+				tile_request->SetGraphicFile(true);
+				request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
+				tile_request->Start();
+			}
 		}
 	}
 
