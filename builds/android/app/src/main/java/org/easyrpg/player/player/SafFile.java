@@ -1,14 +1,18 @@
 package org.easyrpg.player.player;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A wrapper around SAF for use from JNI
@@ -82,7 +86,7 @@ public class SafFile {
         }
 
         // No difference between read mode and binary read mode
-        try (ParcelFileDescriptor fd = context.getContentResolver().openFile(root.getUri(), "r", null)) {
+        try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(root.getUri(), "r")) {
             return fd.detachFd();
         } catch (IOException e) {
             return -1;
@@ -119,7 +123,7 @@ public class SafFile {
             actualFile = df.getUri();
         }
 
-        try (ParcelFileDescriptor fd = context.getContentResolver().openFile(actualFile, mode, null)) {
+        try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(actualFile, mode)) {
             return fd.detachFd();
         } catch (IOException e) {
             return -1;
@@ -131,13 +135,33 @@ public class SafFile {
             return null;
         }
 
+        Uri root_uri = root.getUri();
+
         ArrayList<String> files = new ArrayList<>();
         ArrayList<Boolean> is_dir = new ArrayList<>();
 
-        for (DocumentFile file: root.listFiles()) {
-            files.add(file.getName());
-            is_dir.add(file.isDirectory());
+        final ContentResolver resolver = context.getContentResolver();
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(root_uri, DocumentsContract.getDocumentId(root_uri));
+
+        Cursor c = resolver.query(childrenUri,new String[] {
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_MIME_TYPE },
+                null, null, null);
+        while (c.moveToNext()) {
+            // The name can be something like ``primary:path/of/the/folder/the_file.txt
+            // Get rid of all that junk
+            String file_path = c.getString(0);
+            int slash_pos = file_path.lastIndexOf('/');
+            if (slash_pos != -1) {
+                file_path = file_path.substring(slash_pos + 1);
+            }
+
+            String mime_type = c.getString(1);
+
+            files.add(file_path);
+            is_dir.add(mime_type.equals(DocumentsContract.Document.MIME_TYPE_DIR));
         }
+        c.close();
 
         return new DirectoryTree(files, is_dir);
     }
