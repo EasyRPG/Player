@@ -117,6 +117,7 @@ public class GameBrowserHelper {
     }
 
     public static File[] getSavegames(File folder) {
+        // TODO : Could we avoid the listFiles (to study)
         File[] files = folder.listFiles();
         ArrayList<File> saveFiles = new ArrayList<File>();
         if (files != null) {
@@ -256,7 +257,7 @@ public class GameBrowserHelper {
 
             // Create RTP folders and the .nomedia file
             DocumentFile gamesFolder = SettingsManager.getGameFolder();
-            Helper.createEasyRPGDirectories(gamesFolder);
+            Helper.createEasyRPGDirectories(activity, gamesFolder);
         }
     }
 }

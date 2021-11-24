@@ -1,11 +1,15 @@
 package org.easyrpg.player;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -25,6 +29,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Helper {
 	/**
@@ -160,23 +166,23 @@ public class Helper {
 	}
 
 	/** Create RTP folders and .nomedia file in the games folder */
-	public static void createEasyRPGDirectories(DocumentFile gamesFolder){
+	public static void createEasyRPGDirectories(Context context, DocumentFile gamesFolder){
 		// RTP folder
-        DocumentFile RTPFolder = createFolder(gamesFolder, "RTP");
-        createFolder(RTPFolder, "2000");
-        createFolder(RTPFolder, "2003");
+        DocumentFile RTPFolder = createFolder(context, gamesFolder, "RTP");
+        createFolder(context, RTPFolder, "2000");
+        createFolder(context, RTPFolder, "2003");
 
         // Save the RTP folder in Settings
         SettingsManager.setRtpFolder(RTPFolder);
 
         // The .nomedia file (avoid media app to scan games and RTP's folders)
-        if (gamesFolder.findFile(".nomedia") == null) {
+        if (Helper.findFile(context, gamesFolder.getUri(), ".nomedia") == null) {
             gamesFolder.createFile("", ".nomedia");
         }
 	}
 
-	private static DocumentFile createFolder(DocumentFile location, String folderName) {
-        DocumentFile folder = location.findFile(folderName);
+	private static DocumentFile createFolder(Context context, DocumentFile location, String folderName) {
+        DocumentFile folder = Helper.findFile(context, location.getUri(), folderName);
         if (folder == null || !folder.isDirectory()) {
             folder = location.createDirectory(folderName);
         }
@@ -186,5 +192,92 @@ public class Helper {
         }
 
         return folder;
+    }
+
+    /** List files (with DOCUMENT_ID) in the folder pointed by "folderURI" */
+    public static List<String> listChildrenDocumentID(Context context, Uri folderUri){
+        final ContentResolver resolver = context.getContentResolver();
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
+        List<String> filesList = new ArrayList<>();
+        try {
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            while (c.moveToNext()) {
+                String filePath = c.getString(0);
+                filesList.add(filePath);
+            }
+            c.close();
+        } catch (Exception e) {
+            Log.e("EasyRPG", "Failed query: " + e);
+        }
+        return filesList;
+    }
+
+    /** List files (with DOCUMENT_ID and MIME_TYPE) in the folder pointed by "folderURI" */
+    public static List<String[]> listChildrenDocumentIDAndType(Context context, Uri folderUri){
+        final ContentResolver resolver = context.getContentResolver();
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
+        List<String[]> filesList = new ArrayList<>();
+        try {
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_MIME_TYPE }, null, null, null);
+            while (c.moveToNext()) {
+                String documentID = c.getString(0);
+                String mimeType = c.getString(1);
+                filesList.add(new String[] {documentID, mimeType});
+            }
+            c.close();
+        } catch (Exception e) {
+            Log.e("EasyRPG", "Failed query: " + e);
+        }
+        return filesList;
+    }
+
+    public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
+        final ContentResolver resolver = context.getContentResolver();
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
+        try {
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            while (c.moveToNext()) {
+                String documentID = c.getString(0);
+                String fileName = getFileNameFromDocumentID(documentID);
+                if (fileName.equals(fileNameToFind)) {
+                    Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
+                    c.close();
+                    return getFileFromURI(context, uri);
+                }
+            }
+            c.close();
+        } catch (Exception e) {
+            Log.e("EasyRPG", "Failed query: " + e);
+        }
+        return null;
+    }
+
+    public static String getFileNameFromDocumentID(String documentID) {
+        if (documentID != null) {
+            return documentID.substring(documentID.lastIndexOf('/') + 1);
+        }
+        return "";
+    }
+
+    public static DocumentFile getFileFromURI (Context context, Uri fileURI) {
+        return DocumentFile.fromTreeUri(context, fileURI);
+    }
+
+    /** A DocumentID is obtained from ContentResolver, it is not a URI converted to String */
+    public static Uri getURIFromDocumentID(Uri parentFileURI, String documentID) {
+        return DocumentsContract.buildDocumentUriUsingTree(parentFileURI, documentID);
+    }
+
+    /** A DocumentID is obtained from ContentResolver, it is not a URI converted to String */
+    public static DocumentFile getFileFromDocumentID(Context context, Uri parentFileURI, String documentID) {
+        Uri uri = getURIFromDocumentID(parentFileURI, documentID);
+        return DocumentFile.fromTreeUri(context, uri);
+    }
+
+    public static boolean isDirectoryFromMimeType(String mimeType) {
+        if (mimeType != null) {
+            return mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR);
+        }
+        return false;
     }
 }

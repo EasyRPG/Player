@@ -140,7 +140,8 @@ public class InitActivity extends AppCompatActivity {
      */
     private void launchGamesBrowser() {
         // Recreate RTP folders and .nomedia file if necessary
-        Helper.createEasyRPGDirectories(SettingsManager.getGameFolder());
+        // TODO : This method might do some unnecessary actions, to verify
+        Helper.createEasyRPGDirectories(this, SettingsManager.getGameFolder());
 
         //Launch the proper game browser
         Intent intent;

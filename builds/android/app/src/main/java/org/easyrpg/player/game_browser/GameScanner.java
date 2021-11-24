@@ -1,9 +1,7 @@
 package org.easyrpg.player.game_browser;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -14,12 +12,12 @@ import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GameScanner {
@@ -30,11 +28,11 @@ public class GameScanner {
     //Files' names
     private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini", EXE_FILE = "RPG_RT.exe";
 
-    private List<Game> gameList;
-    private List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
+    private final List<Game> gameList;
+    private final List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
     private Activity context;
 
-    private static final int GAME_SCANNING_DEPTH = 1; // 1 = no recursive scanning
+    private static final int GAME_SCANNING_DEPTH = 2; // 1 = no recursive scanning
 
     private GameScanner(Activity activity) {
         this.gameList = new ArrayList<Game>();
@@ -90,7 +88,7 @@ public class GameScanner {
 
         // Scan the games folder
         // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
-        scanFolderRecursive(gamesFolder, GAME_SCANNING_DEPTH);
+        scanFolderRecursive(gamesFolder.getUri(), GAME_SCANNING_DEPTH);
 
         // If the scan brings nothing in this folder : we notify the errorList
         if (gameList.size() <= 0) {
@@ -101,24 +99,29 @@ public class GameScanner {
         Log.i("EasyRPG", gameList.size() + " game(s) found.");
     }
 
-    private void scanFolderRecursive(DocumentFile gamesFolder, int depth) {
-        // TODO : Avoid to use listFile() for the root of the game folder
+    private void scanFolderRecursive(Uri folderURI, int depth) {
         if (depth > 0) {
-            for (DocumentFile file : gamesFolder.listFiles()) {
-                String name = file.getName();
-                if (name == null) {
+            for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
+                String fileDocumentID = array[0];
+                String fileDocumentType = array[1];
+
+                String name = Helper.getFileNameFromDocumentID(fileDocumentID);
+                if (name.equals("")) {
                     continue;
                 }
                 if (!name.startsWith(".")) {
                     // Is it a soundfont file ?
                     // We test this case here during the game scanning in order to avoid further syscalls
                     if (depth == GAME_SCANNING_DEPTH && name.toLowerCase().endsWith(".sf2")) {
-                        Log.i("EasyRPG", "Soundfont found : " + file.getName());
-                        SettingsManager.setSoundFountFile(file);
+                        DocumentFile soundFontFile = Helper.getFileFromDocumentID(context, folderURI, fileDocumentID);
+                        Log.i("EasyRPG", "Soundfont found : " + soundFontFile.getName());
+                        SettingsManager.setSoundFountFile(soundFontFile);
                     }
-                    if (file.isDirectory() && file.canRead()) {
+                    boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
+                    if (isDirectory) {
                         // Is the file/folder a RPG Maker game?
-                        Game game = isAGame(context, file);
+                        Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
+                        Game game = isAGame(context, fileURI);
                         if (game != null) {
                             gameList.add(game);
                         }
@@ -126,7 +129,7 @@ public class GameScanner {
                             // Not a RPG2k Game but a directory -> recurse
                             // (We don't check if it's a directory or if its readable  because of slow
                             // Android SAF calls and scanFolder(...) already check that)
-                            scanFolderRecursive(file, depth - 1);
+                            scanFolderRecursive(fileURI, depth - 1);
                         }
                     }
                 }
@@ -136,9 +139,8 @@ public class GameScanner {
 
     /** Return a game if "folder" is a game folder, or return null.
      *  This method is designed to reduce the number of syscalls */
-    public static Game isAGame(Context context, DocumentFile folder) {
+    public static Game isAGame(Context context, Uri uri) {
         Game game = null;
-        Uri uri = folder.getUri();
         Uri titleFolderURI = null;
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
@@ -147,8 +149,8 @@ public class GameScanner {
         boolean treemapFound = false;
         boolean isARpgGame = false;
 
-        for (String filePath : listFilesWithPathQuickVersion(context, uri)) {
-            String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+        for (String filePath : Helper.listChildrenDocumentID(context, uri)) {
+            String fileName = Helper.getFileNameFromDocumentID(filePath);
 
             if (!databaseFound && fileName.equalsIgnoreCase(DATABASE_NAME)) {
                 databaseFound = true;
@@ -178,7 +180,7 @@ public class GameScanner {
 
         if (isARpgGame) {
             Bitmap titleScreen = GameScanner.extractTitleScreenImage(context, titleFolderURI);
-            game = new Game(folder, titleScreen);
+            game = new Game(Helper.getFileFromURI(context, uri), titleScreen);
         }
 
         return game;
@@ -190,7 +192,7 @@ public class GameScanner {
      * @return true if RPG2k game
      */
     @Deprecated
-    public static boolean isAGame(DocumentFile dir) {
+    public static boolean isAGameSlowWay(DocumentFile dir) {
         if (!dir.isDirectory() || !dir.canRead()) {
             return false;
         }
@@ -230,28 +232,7 @@ public class GameScanner {
 
         // We might be dealing with a non-standard extension.
         // Show it, and let the C++ code sort out which file is which.
-        if (rpgrtCount == 2) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static List<String> listFilesWithPathQuickVersion (Context context, Uri self){
-        final ContentResolver resolver = context.getContentResolver();
-        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(self, DocumentsContract.getDocumentId(self));
-        List<String> filesList = new ArrayList<>();
-        try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
-            while (c.moveToNext()) {
-                String filePath = c.getString(0);
-                filesList.add(filePath);
-            }
-            c.close();
-        } catch (Exception e) {
-            Log.e("EasyRPG", "Failed query: " + e);
-        }
-        return filesList;
+        return rpgrtCount == 2;
     }
 
     public List<Game> getGameList() {
@@ -270,19 +251,21 @@ public class GameScanner {
     public static Bitmap extractTitleScreenImage(Context context, Uri titleScreenFolderURI) {
         try {
             // Retrieve the Title folder, containing titles screens
-            DocumentFile titleFolder = DocumentFile.fromTreeUri(context, titleScreenFolderURI);
+            DocumentFile titleFolder = Helper.getFileFromURI(context, titleScreenFolderURI);
 
-            // Display the first image found
             if (titleFolder != null && titleFolder.isDirectory()) {
-                for (DocumentFile file : titleFolder.listFiles()) {
-                    String fileName = file.getName().toLowerCase().trim();
+
+                // Display the first image found in the Title folder
+                for (String fileID : Helper.listChildrenDocumentID(context, titleScreenFolderURI)) {
+                    String fileName = Helper.getFileNameFromDocumentID(fileID).toLowerCase().trim();
 
                     if (!fileName.startsWith(".")) {
                         if (fileName.endsWith("png") || fileName.endsWith("bmp")) {
-                            Uri imageUri = file.getUri();
+                            Uri imageUri = Helper.getURIFromDocumentID(titleScreenFolderURI, fileID);
                             return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                        } else if (fileName.endsWith("xyz")) {
-                            Uri imageUri = file.getUri();
+                        }
+                        else if (fileName.endsWith("xyz")) {
+                            Uri imageUri = Helper.getURIFromDocumentID(titleScreenFolderURI, fileID);
                             Bitmap b = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ

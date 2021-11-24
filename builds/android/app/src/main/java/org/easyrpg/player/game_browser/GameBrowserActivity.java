@@ -172,8 +172,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
         // Empty the games list and display a loading message
         ArrayList<String> loadingMessageList = new ArrayList<String>();
-        // TODO : Externalize this string
-        loadingMessageList.add("Loading...\nYes, Android files listing became really slow.");
+        loadingMessageList.add(getResources().getString(R.string.Loading));
         recyclerView.setAdapter(new ErrorAdapter(loadingMessageList, this));
 
         // Start the scan asynchronously
