@@ -32,44 +32,8 @@ public class GameBrowserHelper {
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
-    /**
-     * Returns Ini File of game at index.
-     * Optionally creates it.
-     *
-     * @param create create ini if not found
-     * @return ini
-     */
-    public static File getIniOfGame(String path, boolean create) {
-        File dir = new File(path);
-
-        if (!dir.isDirectory() || !dir.canRead()) {
-            return null;
-        }
-
-        for (File entry : dir.listFiles()) {
-            if (entry.isFile() && entry.canRead()) {
-                if (entry.getName().equalsIgnoreCase(INI_FILE)) {
-                    return entry;
-                }
-            }
-        }
-
-        if (create) {
-            File newIni = new File(dir.getAbsolutePath() + "/RPG_RT.ini");
-
-            try {
-                newIni.createNewFile();
-            } catch (IOException e) {
-                return null;
-            }
-
-            return newIni;
-        }
-
-        return null;
-    }
-
     // https://stackoverflow.com/q/106770/
+    // TODO : Convert to SAF ?
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if (!destFile.exists()) {
             destFile.createNewFile();
@@ -92,6 +56,7 @@ public class GameBrowserHelper {
         }
     }
 
+    // TODO : Convert to SAF
     private static boolean saveDirectoryContainsSave(Game project) {
         if (project.getGameFolderPath().equals(project.getSavePath())) {
             // Doesn't matter because this is used for the copying logic to the save directory
@@ -102,6 +67,7 @@ public class GameBrowserHelper {
         return files.length > 0;
     }
 
+    // TODO : Convert to SAF
     private static void copySavesFromGameDirectoryToSaveDirectory(Game project) {
         if (project.getGameFolderPath().equals(project.getSavePath())) {
             return;
@@ -116,6 +82,7 @@ public class GameBrowserHelper {
         }
     }
 
+    // TODO : Convert to SAF
     public static File[] getSavegames(File folder) {
         // TODO : Could we avoid the listFiles (to study)
         File[] files = folder.listFiles();
@@ -155,11 +122,7 @@ public class GameBrowserHelper {
             args.add(game.getSavePath());
 
             args.add("--encoding");
-            if (game.getEncoding() == null || game.getEncoding().length() == 0) {
-                args.add("auto");
-            } else {
-                args.add(game.getEncoding());
-            }
+            args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
             DocumentFile soundfont = SettingsManager.getSoundFountFile();

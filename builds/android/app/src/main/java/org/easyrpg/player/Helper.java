@@ -231,7 +231,7 @@ public class Helper {
         return filesList;
     }
 
-    public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
+    public static Uri findFileUri(Context context, Uri folderUri, String fileNameToFind) {
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         try {
@@ -242,7 +242,7 @@ public class Helper {
                 if (fileName.equals(fileNameToFind)) {
                     Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
                     c.close();
-                    return getFileFromURI(context, uri);
+                    return uri;
                 }
             }
             c.close();
@@ -250,6 +250,11 @@ public class Helper {
             Log.e("EasyRPG", "Failed query: " + e);
         }
         return null;
+    }
+
+    public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
+        Uri uri = findFileUri(context, folderUri, fileNameToFind);
+        return getFileFromURI(context, uri);
     }
 
     public static String getFileNameFromDocumentID(String documentID) {

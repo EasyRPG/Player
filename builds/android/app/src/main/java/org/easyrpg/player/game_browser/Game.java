@@ -1,5 +1,6 @@
 package org.easyrpg.player.game_browser;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
@@ -19,13 +20,13 @@ public class Game implements Comparable<Game> {
 	public static final String TAG_ENCODING = "encoding";
 	public static final String preferenceFileName = "easyrpg-pref.txt";
 	private int id_input_layout = -1;
-	private String encoding = "";
 
 	private String title, gameFolderPath, savePath;
 	private boolean isFavorite;
     private DocumentFile gameFolder;
-    private Uri folderURI;
+    private Uri folderURI, iniFile;
     private Bitmap titleScreen;
+    private IniFileManager iniFileManager; // Always use initIniFileManager() before using iniFileManager
 
 	public Game(DocumentFile gameFolder) {
 		this.gameFolder = gameFolder;
@@ -53,8 +54,9 @@ public class Game implements Comparable<Game> {
 		this.isFavorite = isFavoriteFromSettings();
 	}
 
-	public Game(DocumentFile gameFolder, Bitmap titleScreen) {
+	public Game(DocumentFile gameFolder, Uri iniFileUri, Bitmap titleScreen) {
 	    this(gameFolder);
+        this.iniFile = iniFileUri;
 	    this.titleScreen = titleScreen;
     }
 
@@ -85,44 +87,6 @@ public class Game implements Comparable<Game> {
 			return false;
 		}
 		return true;
-	}
-
-	public boolean read_project_preferences_encoding() {
-		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
-		if (jso == null) {
-			return false;
-		}
-
-		try {
-			encoding = jso.getString(TAG_ENCODING);
-		} catch (JSONException e) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public void write_project_preferences() {
-		try {
-			FileWriter file = new FileWriter(savePath + "/" + preferenceFileName);
-			JSONObject o = new JSONObject();
-
-			if (id_input_layout != -1) {
-				o.put(TAG_ID_INPUT_LAYOUT, id_input_layout);
-			}
-
-			if (encoding.length() > 0) {
-				o.put(TAG_ENCODING, encoding);
-			}
-
-			file.write(o.toString(2));
-			file.flush();
-			file.close();
-		} catch (Exception e) {
-			Log.e("Write pref project",
-					"Error while writing preference project file : " + e.getLocalizedMessage());
-		}
-
 	}
 
 	public boolean isFavorite() {
@@ -161,12 +125,25 @@ public class Game implements Comparable<Game> {
 		this.id_input_layout = id_input_layout;
 	}
 
-	public String getEncoding() {
-		return encoding;
+    /** We initiate the IniFileManager only if necessary to prevent from unnecessary syscall */
+    public void initIniFileManager(Context context) {
+        if (iniFileManager == null) {
+            this.iniFileManager = new IniFileManager(context, iniFile);
+        }
+    }
+
+	public IniFileManager.Encoding getEncoding(Context context) {
+        // We initiate the IniFileManager only if necessary to prevent from unnecessary syscalls */
+        initIniFileManager(context);
+
+        return this.iniFileManager.getEncoding();
 	}
 
-	public void setEncoding(String encoding) {
-		this.encoding = encoding;
+	public void setEncoding(Context context, IniFileManager.Encoding encoding) {
+        // We initiate the IniFileManager only if necessary to prevent from unnecessary syscalls */
+        initIniFileManager(context);
+
+        this.iniFileManager.setEncoding(context, encoding);
 	}
 
     @Override

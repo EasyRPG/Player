@@ -142,6 +142,7 @@ public class GameScanner {
     public static Game isAGame(Context context, Uri uri) {
         Game game = null;
         Uri titleFolderURI = null;
+        Uri iniFileURI = null;
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
         int rpgrtCount = 0;
@@ -176,11 +177,15 @@ public class GameScanner {
             if (fileName.equals("Title")) {
                 titleFolderURI = DocumentsContract.buildDocumentUriUsingTree(uri, filePath);
             }
+            // If we encounter a .ini file, we keep it for later (we don't analyze it now for performance purpose)
+            if (fileName.equalsIgnoreCase(INI_FILE)) {
+                iniFileURI = DocumentsContract.buildDocumentUriUsingTree(uri, filePath);
+            }
         }
 
         if (isARpgGame) {
             Bitmap titleScreen = GameScanner.extractTitleScreenImage(context, titleFolderURI);
-            game = new Game(Helper.getFileFromURI(context, uri), titleScreen);
+            game = new Game(Helper.getFileFromURI(context, uri), iniFileURI, titleScreen);
         }
 
         return game;

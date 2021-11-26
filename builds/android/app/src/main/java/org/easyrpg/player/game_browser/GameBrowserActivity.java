@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +30,6 @@ import com.google.android.material.navigation.NavigationView;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -234,8 +231,6 @@ public class GameBrowserActivity extends AppCompatActivity
         private final Activity activity;
         private final int nbOfGamesPerLine;
 
-        IniEncodingReader iniReader;
-
         public MyAdapter(Activity activity, List<Game> gameList, int nbOfGamesPerLine) {
             this.gameList = gameList;
             this.activity = activity;
@@ -271,29 +266,12 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.title.setText(game.getTitle());
 
             // TitleScreen Image
-            // TODO : Implement a caching system for not load
             holder.titleScreen.setImageBitmap(game.getTitleScreen());
             holder.titleScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Game selectedGame = gameList.get(position);
                     GameBrowserActivity.selectedGame = selectedGame;
-
-                    if (!selectedGame.read_project_preferences_encoding()) {
-                        // TODO : API30 use DocumentFile instead of File class
-                        File iniFile = GameBrowserHelper.getIniOfGame(selectedGame.getGameFolderPath(), false);
-
-                        // Retrieve the current region (to check the correct radio button)
-                        if (iniFile != null) {
-                            iniReader = null;
-                            try {
-                                iniReader = new IniEncodingReader(iniFile);
-                                String encoding = iniReader.getEncoding();
-                                selectedGame.setEncoding(encoding);
-                            } catch (IOException e) {
-                            }
-                        }
-                    }
 
                     GameBrowserHelper.launchGame(activity, selectedGame);
                 }
@@ -389,7 +367,6 @@ public class GameBrowserActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id) {
                             if (!selected.isEmpty()) {
                                 pi.setId_input_layout(buttonMappingManager.getLayoutList().get(selected.get(0)).getId());
-                                pi.write_project_preferences();
                             }
                         }
                     })
@@ -397,114 +374,30 @@ public class GameBrowserActivity extends AppCompatActivity
             builder.show();
         }
 
-        public void chooseRegion(final Context context, final Game pi) {
-            //The list of region choices
-            String[] region_array = {
-                    context.getString(R.string.autodetect),
-                    context.getString(R.string.west_europe),
-                    context.getString(R.string.east_europe),
-                    context.getString(R.string.japan),
-                    context.getString(R.string.cyrillic),
-                    context.getString(R.string.korean),
-                    context.getString(R.string.chinese_simple),
-                    context.getString(R.string.chinese_traditional),
-                    context.getString(R.string.greek),
-                    context.getString(R.string.turkish),
-                    context.getString(R.string.baltic)
-            };
+        public void chooseRegion(final Context context, final Game game) {
+            // The list of region choices
+            String[] region_array = IniFileManager.Encoding.getEncodingDescriptions(context);
 
-            //Retrieve the project's .ini file
-            String encoding = null;
+            // Retrieve the game's current encoding settings
+            IniFileManager.Encoding encoding = game.getEncoding(context);
 
-            if (!pi.read_project_preferences_encoding()) {
-                File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
-
-                // Retrieve the current region (to check the correct radio button)
-                if (iniFile != null) {
-                    iniReader = null;
-                    try {
-                        iniReader = new IniEncodingReader(iniFile);
-                        encoding = iniReader.getEncoding();
-                    } catch (IOException e) {
-                    }
-                }
-            } else {
-                encoding = pi.getEncoding();
-            }
-
-            int id = -1;
-
-            if (encoding == null || encoding.equals("auto")) {
-                id = 0;
-            } else if (encoding.equals("1252")) {
-                id = 1;
-            } else if (encoding.equals("1250")) {
-                id = 2;
-            } else if (encoding.equals("932")) {
-                id = 3;
-            } else if (encoding.equals("1251")) {
-                id = 4;
-            } else if (encoding.equals("949")) {
-                id = 5;
-            } else if (encoding.equals("936")) {
-                id = 6;
-            } else if (encoding.equals("950")) {
-                id = 7;
-            } else if (encoding.equals("1253")) {
-                id = 8;
-            } else if (encoding.equals("1254")) {
-                id = 9;
-            } else if (encoding.equals("1257")) {
-                id = 10;
-            }
-
-            if (id == -1) {
-                Toast.makeText(context, context.getString(R.string.unknown_region), Toast.LENGTH_LONG).show();
-            }
-
-            //Building the dialog
+            // Building the dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder
-                    .setTitle(R.string.select_game_region)
-                    .setSingleChoiceItems(region_array, id, null)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                            String encoding = null;
+                .setTitle(R.string.select_game_region)
+                .setSingleChoiceItems(region_array, encoding.getIndex(), null)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        IniFileManager.Encoding selectedEncoding = IniFileManager.Encoding.AUTO.getEncodingByIndex(selectedPosition);
 
-                            if (selectedPosition == 0) {
-                                encoding = "auto";
-                            } else if (selectedPosition == 1) {
-                                encoding = "1252";
-                            } else if (selectedPosition == 2) {
-                                encoding = "1250";
-                            } else if (selectedPosition == 3) {
-                                encoding = "932";
-                            } else if (selectedPosition == 4) {
-                                encoding = "1251";
-                            } else if (selectedPosition == 5) {
-                                encoding = "949";
-                            } else if (selectedPosition == 6) {
-                                encoding = "936";
-                            } else if (selectedPosition == 7) {
-                                encoding = "950";
-                            } else if (selectedPosition == 8) {
-                                encoding = "1253";
-                            } else if (selectedPosition == 9) {
-                                encoding = "1254";
-                            } else if (selectedPosition == 10) {
-                                encoding = "1257";
-                            }
-
-                            if (encoding != null) {
-                                pi.setEncoding(encoding);
-
-                                pi.write_project_preferences();
-                            }
+                        if (!selectedEncoding.equals(encoding)) {
+                            game.setEncoding(context, selectedEncoding);
                         }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null);
             builder.show();
         }
 
