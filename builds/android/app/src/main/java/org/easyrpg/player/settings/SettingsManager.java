@@ -20,6 +20,8 @@ import android.preference.PreferenceManager;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.Helper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +74,7 @@ public class SettingsManager {
             gameFolder = null;
         } else {
             Uri uri = Uri.parse(gamesFolderString);
-            gameFolder = DocumentFile.fromTreeUri(context, uri);
+            gameFolder = Helper.getFileFromURI(context, uri);
         }
 
         // Fetch the rtp directory
@@ -81,7 +83,7 @@ public class SettingsManager {
             rtpFolder = null;
         } else {
             Uri uri = Uri.parse(rtpFolderString);
-            rtpFolder = DocumentFile.fromTreeUri(context, uri);
+            rtpFolder = Helper.getFileFromURI(context, uri);
         }
 
         // Fetch the favorite game list :
@@ -232,7 +234,7 @@ public class SettingsManager {
 
     public static void setGameFolder(Uri uri) {
         SettingsManager.gamesFolderString = uri.toString();
-        SettingsManager.gameFolder = DocumentFile.fromTreeUri(context, uri);
+        SettingsManager.gameFolder = Helper.getFileFromURI(context, uri);
         editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderString);
         editor.commit();
     }
@@ -242,7 +244,7 @@ public class SettingsManager {
     }
 
     public static void setRtpFolder(Uri uri) {
-        DocumentFile rtpFolder = DocumentFile.fromTreeUri(context, uri);
+        DocumentFile rtpFolder = Helper.getFileFromURI(context, uri);
         if (rtpFolder != null) {
             setRtpFolder(rtpFolder);
         }

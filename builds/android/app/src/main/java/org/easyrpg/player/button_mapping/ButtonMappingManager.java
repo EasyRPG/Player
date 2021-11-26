@@ -23,7 +23,7 @@ public class ButtonMappingManager {
             TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
     public static final String FILE_NAME = "button_mapping.txt";
 
-    private List<InputLayout> layoutList = new ArrayList<>();
+    private final List<InputLayout> layoutList = new ArrayList<>();
     private int idDefaultLayout;
     private Context context;
 
@@ -33,7 +33,7 @@ public class ButtonMappingManager {
     private ButtonMappingManager() {
     }
 
-    public final static ButtonMappingManager getInstance(Context context) {
+    public static ButtonMappingManager getInstance(Context context) {
         if (ButtonMappingManager.instance == null) {
             synchronized (ButtonMappingManager.class) {
                 if (ButtonMappingManager.instance == null) {
@@ -286,7 +286,7 @@ public class ButtonMappingManager {
         }
 
         public static LinkedList<VirtualButton> getDefaultButtonList(Context context) {
-            LinkedList<VirtualButton> l = new LinkedList<VirtualButton>();
+            LinkedList<VirtualButton> l = new LinkedList<>();
             l.add(new VirtualCross(context, 0.0, 0.5, 100));
             l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.80, 0.7, 100));
             l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.90, 0.6, 100));

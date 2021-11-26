@@ -124,10 +124,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Hardware acceleration
         try {
-            if (Build.VERSION.SDK_INT >= 11) {
-                // Api 11: FLAG_HARDWARE_ACCELERATED
-                getWindow().setFlags(0x01000000, 0x01000000);
-            }
+            // Api > 11: FLAG_HARDWARE_ACCELERATED
+            // TODO : Is it still useful?
+            getWindow().setFlags(0x01000000, 0x01000000);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -39,7 +39,8 @@
             android:alwaysRetainTaskState="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-			android:theme="@style/AppTheme">
+			android:theme="@style/AppTheme"
+			android:noHistory="true">
 
             <!-- android:preferMinimalPostProcessing="true"> -->
             <!-- uncomment on API 30+ for lower HDMI latency -->

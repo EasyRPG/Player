@@ -3,7 +3,6 @@ package org.easyrpg.player.game_browser;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -12,8 +11,6 @@ import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.settings.SettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.FileWriter;
 
 public class Game implements Comparable<Game> {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";

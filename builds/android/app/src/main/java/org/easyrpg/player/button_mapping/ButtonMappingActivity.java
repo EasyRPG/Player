@@ -58,7 +58,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         inputLayout = buttonMappingManager.getLayoutById(id);
 
         //We does a copy of the inputLayout's button list
-        layoutList = new LinkedList<VirtualButton>();
+        layoutList = new LinkedList<>();
         VirtualButton vb = null;
         for (VirtualButton b : inputLayout.getButtonList()) {
             if (b instanceof VirtualCross) {
@@ -148,11 +148,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.add_a_button));
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                //Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
-                addAButton(items[item].toString());
-            }
+        builder.setItems(items, (dialog, item) -> {
+            //Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+            addAButton(items[item].toString());
         });
         AlertDialog alert = builder.create();
         alert.show();

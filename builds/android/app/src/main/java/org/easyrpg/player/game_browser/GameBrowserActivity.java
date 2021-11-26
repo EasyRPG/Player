@@ -3,7 +3,6 @@ package org.easyrpg.player.game_browser;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +41,6 @@ public class GameBrowserActivity extends AppCompatActivity
     private static Game selectedGame;
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private int nbOfGamesPerLine;
     private boolean isScanProcessing;
     private static List<Game> displayedGamesList;
@@ -70,7 +68,7 @@ public class GameBrowserActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -83,7 +81,7 @@ public class GameBrowserActivity extends AppCompatActivity
         /// Display the game list
         recyclerView = (RecyclerView) findViewById(R.id.game_browser_api15_recycleview);
         recyclerView.setHasFixedSize(true);
-        setLayoutManager(this.getResources().getConfiguration());
+        setLayoutManager();
 
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
@@ -130,7 +128,6 @@ public class GameBrowserActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -151,10 +148,10 @@ public class GameBrowserActivity extends AppCompatActivity
      * Change the grid depending on the orientation
      */
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        setLayoutManager(newConfig);
+        setLayoutManager();
         scanAndDisplayGamesList();
     }
 
@@ -168,35 +165,28 @@ public class GameBrowserActivity extends AppCompatActivity
         isScanProcessing = true;
 
         // Empty the games list and display a loading message
-        ArrayList<String> loadingMessageList = new ArrayList<String>();
+        ArrayList<String> loadingMessageList = new ArrayList<>();
         loadingMessageList.add(getResources().getString(R.string.Loading));
-        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList, this));
+        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList));
 
         // Start the scan asynchronously
         Activity activity = this;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Scan games
-                GameScanner gameScanner = GameScanner.getInstance(activity);
+        new Thread(() -> {
+            // Scan games
+            GameScanner gameScanner = GameScanner.getInstance(activity);
 
-                // "Only the original thread that created a view hierarchy can touch its views."
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Populate the list view
-                        if (gameScanner.hasError()) {
-                            recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList(), activity));
-                        } else {
-                            List<Game> gameList = gameScanner.getGameList();
-                            GameBrowserActivity.displayedGamesList = gameList;
-                            displayGameList();
-                        }
-                        isScanProcessing = false;
-                    }
-                });
-            }
-            }).start();
+            // "Only the original thread that created a view hierarchy can touch its views."
+            runOnUiThread(() -> {
+                // Populate the list view
+                if (gameScanner.hasError()) {
+                    recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList()));
+                } else {
+                    GameBrowserActivity.displayedGamesList = gameScanner.getGameList();
+                    displayGameList();
+                }
+                isScanProcessing = false;
+            });
+        }).start();
     }
 
     /** Reorder the displayed game list */
@@ -209,7 +199,7 @@ public class GameBrowserActivity extends AppCompatActivity
     /**
      * Set the layout manager depending on the screen orientation
      */
-    public void setLayoutManager(Configuration configuration) {
+    public void setLayoutManager() {
         // Determine the layout template (List or Grid, number of element per line for the grid)
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -243,6 +233,7 @@ public class GameBrowserActivity extends AppCompatActivity
         }
 
         // Create new views (invoked by the layout manager)
+        @NonNull
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -267,53 +258,34 @@ public class GameBrowserActivity extends AppCompatActivity
 
             // TitleScreen Image
             holder.titleScreen.setImageBitmap(game.getTitleScreen());
-            holder.titleScreen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Game selectedGame = gameList.get(position);
-                    GameBrowserActivity.selectedGame = selectedGame;
+            holder.titleScreen.setOnClickListener(v -> {
+                Game selectedGame = gameList.get(position);
+                GameBrowserActivity.selectedGame = selectedGame;
 
-                    GameBrowserHelper.launchGame(activity, selectedGame);
-                }
+                GameBrowserHelper.launchGame(activity, selectedGame);
             });
 
             // Settings Button
-            holder.settingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String[] choices_list = {activity.getResources().getString(R.string.select_game_region), activity.getString(R.string.change_the_layout)};
+            holder.settingsButton.setOnClickListener(v -> {
+                String[] choices_list = {activity.getResources().getString(R.string.select_game_region)};
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder
-                            .setTitle(R.string.settings)
-                            .setItems(choices_list, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switch (which) {
-                                        case 0:
-                                            chooseRegion(activity, gameList.get(position));
-                                            break;
-                                        case 1:
-                                            chooseLayout(activity, gameList.get(position));
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            });
-                    builder.show();
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder
+                        .setTitle(R.string.settings)
+                        .setItems(choices_list, (dialog, which) -> {
+                            if (which == 0) {
+                                chooseRegion(activity, gameList.get(position));
+                            }
+                        });
+                builder.show();
             });
 
             // FavoriteButton
             updateFavoriteButton(holder, game);
-            holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    game.setFavorite(!game.isFavorite());
-                    updateFavoriteButton(holder, game);
-                    ((GameBrowserActivity)activity).displayGameList();
-                }
+            holder.favoriteButton.setOnClickListener(v -> {
+                game.setFavorite(!game.isFavorite());
+                updateFavoriteButton(holder, game);
+                ((GameBrowserActivity)activity).displayGameList();
             });
         }
 
@@ -337,43 +309,6 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.favoriteButton.setImageResource(buttonImageResource);
         }
 
-        public void chooseLayout(final Context context, final Game pi) {
-            final ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(context);
-            String[] layout_name_array = buttonMappingManager.getLayoutsNames();
-
-            //Detect default layout
-            pi.getProjectInputLayout(buttonMappingManager);
-            int id = -1;
-            for (int i = 0; i < buttonMappingManager.getLayoutList().size(); i++) {
-                if (buttonMappingManager.getLayoutList().get(i).getId() == pi.getId_input_layout()) {
-                    id = i;
-                    break;
-                }
-            }
-
-            final ArrayList<Integer> selected = new ArrayList<Integer>();
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder
-                    .setTitle(R.string.choose_layout)
-                    .setSingleChoiceItems(layout_name_array, id, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selected.clear();
-                            selected.add(Integer.valueOf(which));
-                        }
-                    })
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            if (!selected.isEmpty()) {
-                                pi.setId_input_layout(buttonMappingManager.getLayoutList().get(selected.get(0)).getId());
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            builder.show();
-        }
-
         public void chooseRegion(final Context context, final Game game) {
             // The list of region choices
             String[] region_array = IniFileManager.Encoding.getEncodingDescriptions(context);
@@ -386,15 +321,12 @@ public class GameBrowserActivity extends AppCompatActivity
             builder
                 .setTitle(R.string.select_game_region)
                 .setSingleChoiceItems(region_array, encoding.getIndex(), null)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        IniFileManager.Encoding selectedEncoding = IniFileManager.Encoding.AUTO.getEncodingByIndex(selectedPosition);
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                    IniFileManager.Encoding selectedEncoding = IniFileManager.Encoding.AUTO.getEncodingByIndex(selectedPosition);
 
-                        if (!selectedEncoding.equals(encoding)) {
-                            game.setEncoding(context, selectedEncoding);
-                        }
+                    if (!selectedEncoding.equals(encoding)) {
+                        game.setEncoding(context, selectedEncoding);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);
@@ -419,21 +351,21 @@ public class GameBrowserActivity extends AppCompatActivity
     static class ErrorAdapter extends RecyclerView.Adapter<ErrorAdapter.ErrorViewHolder> {
         List<String> errorList;
 
-        public ErrorAdapter(List<String> errorList, Context context) {
+        public ErrorAdapter(List<String> errorList) {
             this.errorList = errorList;
         }
 
+        @NonNull
         @Override
         public ErrorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.browser_error_text, parent, false);
-            ErrorViewHolder viewHolder = new ErrorViewHolder(v);
-            return viewHolder;
+            return new ErrorViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ErrorViewHolder holder, int position) {
-            holder.text.setText(errorList.get(position).toString());
+            holder.text.setText(errorList.get(position));
         }
 
         @Override

@@ -19,7 +19,7 @@ public class VirtualButton extends View {
     protected int originalSize, originalLetterSize, resizeFactor, realSize;
     protected char charButton; // The char displayed on the button
     protected Paint painter;
-    protected Rect bound, letterBound = new Rect();
+    protected Rect bound;
     protected boolean isPressed; // To know when the touch go out the button
     protected boolean debug_mode;
     protected Context context;
@@ -244,10 +244,6 @@ public class VirtualButton extends View {
 
     public int getKeyCode() {
         return keyCode;
-    }
-
-    public char getCharButton() {
-        return charButton;
     }
 
     public int getSize() {

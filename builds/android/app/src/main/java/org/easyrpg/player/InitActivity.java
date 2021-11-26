@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,12 +36,7 @@ public class InitActivity extends AppCompatActivity {
         SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
-        ((Button) findViewById(R.id.set_games_folder)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameBrowserHelper.pickAGamesFolder(thisActivity);
-            }
-        });
+        ((Button) findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
         // prepareData();
 

@@ -14,7 +14,7 @@ import org.libsdl.app.SDLActivity;
 public class VirtualCross extends VirtualButton {
     private Rect boundLeft, boundRight, boundUp, boundDown;
     private int key_pressed;
-    private Path path = new Path(); // For the drawing
+    private final Path path = new Path(); // For the drawing
 
     private boolean hasVibrate;
 

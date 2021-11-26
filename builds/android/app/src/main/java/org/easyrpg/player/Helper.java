@@ -265,7 +265,12 @@ public class Helper {
     }
 
     public static DocumentFile getFileFromURI (Context context, Uri fileURI) {
-        return DocumentFile.fromTreeUri(context, fileURI);
+        try {
+            return DocumentFile.fromTreeUri(context, fileURI);
+        } catch (Exception e) {
+            Log.e("EasyRPG", e.getMessage());
+            return null;
+        }
     }
 
     /** A DocumentID is obtained from ContentResolver, it is not a URI converted to String */
@@ -275,8 +280,13 @@ public class Helper {
 
     /** A DocumentID is obtained from ContentResolver, it is not a URI converted to String */
     public static DocumentFile getFileFromDocumentID(Context context, Uri parentFileURI, String documentID) {
-        Uri uri = getURIFromDocumentID(parentFileURI, documentID);
-        return DocumentFile.fromTreeUri(context, uri);
+        try {
+            Uri uri = getURIFromDocumentID(parentFileURI, documentID);
+            return DocumentFile.fromTreeUri(context, uri);
+        } catch (Exception e) {
+            Log.e("EasyRPG", e.getMessage());
+            return null;
+        }
     }
 
     public static boolean isDirectoryFromMimeType(String mimeType) {

@@ -27,8 +27,6 @@ import java.util.ArrayList;
 
 public class GameBrowserHelper {
 
-    private final static String INI_FILE = "RPG_RT.ini";
-
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
@@ -86,7 +84,7 @@ public class GameBrowserHelper {
     public static File[] getSavegames(File folder) {
         // TODO : Could we avoid the listFiles (to study)
         File[] files = folder.listFiles();
-        ArrayList<File> saveFiles = new ArrayList<File>();
+        ArrayList<File> saveFiles = new ArrayList<>();
         if (files != null) {
             for (final File fileEntry : files) {
                 if (fileEntry.isFile()) {
@@ -111,7 +109,7 @@ public class GameBrowserHelper {
         // Test again in case somebody messed with the file system
         if (game.getGameFolder().isDirectory() && game.getGameFolder().canRead()) {
             Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
-            ArrayList<String> args = new ArrayList<String>();
+            ArrayList<String> args = new ArrayList<>();
 
             // Path of game passed to PlayerActivity via intent "project_path"
             // Command line passed via intent "command_line"
@@ -164,7 +162,7 @@ public class GameBrowserHelper {
             // Set FIRST_LAUNCH to false
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(TAG_FIRST_LAUNCH, false);
-            editor.commit();
+            editor.apply();
         }
     }
 

@@ -12,7 +12,6 @@ import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A wrapper around SAF for use from JNI

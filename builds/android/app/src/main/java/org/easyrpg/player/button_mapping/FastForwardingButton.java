@@ -34,7 +34,7 @@ public class FastForwardingButton extends VirtualButton {
             if (isPressed) {
                 isPressed = false;
 
-                if (!isTapMode() || (isTapMode() && alreadyActivated)) {
+                if (!isTapMode() || alreadyActivated) {
                     SDLActivity.onNativeKeyUp(this.keyCode);
                     alreadyActivated = false;
                 } else {
