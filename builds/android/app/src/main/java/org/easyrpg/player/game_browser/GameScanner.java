@@ -278,7 +278,7 @@ public class GameScanner {
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ
                                 // TODO : Change this open() to support API < 29
-                                try (ParcelFileDescriptor fd = context.getContentResolver().openFile(imageUri, "r", null)) {
+                                try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(imageUri, "r")) {
                                     byte[] xyz = decodeXYZ(fd.detachFd());
                                     if (xyz == null) {
                                         return null;

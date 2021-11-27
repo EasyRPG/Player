@@ -92,7 +92,7 @@ public class GameBrowserHelper {
                 }
             }
         }
-        return saveFiles.toArray(new File[saveFiles.size()]);
+        return saveFiles.toArray(new File[0]);
     }
 
     public static void launchGame(Context context, Game game) {
