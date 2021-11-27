@@ -80,7 +80,7 @@ public class Game implements Comparable<Game> {
 		try {
 			this.id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
 		} catch (JSONException e) {
-			this.id_input_layout = bmm.getDefaultLayoutId();
+			this.id_input_layout = bmm.getSelectedLayoutId();
 			return false;
 		}
 		return true;

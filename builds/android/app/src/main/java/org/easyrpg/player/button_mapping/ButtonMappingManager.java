@@ -24,7 +24,7 @@ public class ButtonMappingManager {
     public static final String FILE_NAME = "button_mapping.txt";
 
     private final List<InputLayout> layoutList = new ArrayList<>();
-    private int idDefaultLayout;
+    private int idSelectedLayout;
     private Context context;
 
     // Singleton pattern
@@ -53,7 +53,7 @@ public class ButtonMappingManager {
 
         // Set the default layout if there is no one
         if (layoutList.size() == 1) {
-            setDefaultLayout(p.getId());
+            setSelectedInputLayout(p.getId());
         }
     }
 
@@ -70,8 +70,8 @@ public class ButtonMappingManager {
         }
 
         // If p was the default layout : the first layout become the new default layout
-        if (p.id == idDefaultLayout) {
-            idDefaultLayout = layoutList.get(0).getId();
+        if (p.id == idSelectedLayout) {
+            idSelectedLayout = layoutList.get(0).getId();
         }
 
         // Save the result
@@ -86,16 +86,16 @@ public class ButtonMappingManager {
         }
 
         // The layout doesn't exist : return the default one
-        return getLayoutById(idDefaultLayout);
+        return getLayoutById(idSelectedLayout);
     }
 
-    public void setDefaultLayout(int id) {
+    public void setSelectedInputLayout(int id) {
         // TODO : Verify if the id is in the input layout's list
-        idDefaultLayout = id;
+        idSelectedLayout = id;
     }
 
-    public int getDefaultLayoutId() {
-        return idDefaultLayout;
+    public int getSelectedLayoutId() {
+        return idSelectedLayout;
     }
 
     public List<InputLayout> getLayoutList() {
@@ -127,7 +127,7 @@ public class ButtonMappingManager {
             }
 
             o.put(TAG_VERSION, NUM_VERSION);
-            o.put(TAG_DEFAULT_LAYOUT, idDefaultLayout);
+            o.put(TAG_DEFAULT_LAYOUT, idSelectedLayout);
             o.put(TAG_PRESETS, presets);
         } catch (JSONException e) {
             Log.e("Button Maping Model", "Impossible to serialize the button mapping model");
@@ -146,7 +146,7 @@ public class ButtonMappingManager {
     private static ButtonMappingManager getDefaultButtonMapping(Context context) {
         ButtonMappingManager m = new ButtonMappingManager();
         m.add(InputLayout.getDefaultInputLayout(context));
-        m.idDefaultLayout = 0;
+        m.idSelectedLayout = 0;
         return m;
     }
 
@@ -173,7 +173,7 @@ public class ButtonMappingManager {
 
             // Default layout
             // TODO : Verify that the default layout exists
-            m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
+            m.setSelectedInputLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
 
             return m;
         } catch (JSONException e) {
@@ -295,8 +295,8 @@ public class ButtonMappingManager {
             return l;
         }
 
-        public boolean isDefaultInputLayout(ButtonMappingManager bmm) {
-            return id == bmm.getDefaultLayoutId();
+        public boolean isChosenInputLayout(ButtonMappingManager bmm) {
+            return id == bmm.getSelectedLayoutId();
         }
 
         public String getName() {

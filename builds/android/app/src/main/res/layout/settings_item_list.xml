@@ -3,15 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/settings_input_layout_item">
-    <TextView
+    <RadioButton
+		android:id="@+id/controls_settings_preset_radio_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:layout_alignParentStart="true"/>
+	<TextView
         android:id="@+id/controls_settings_preset_name"
         android:textSize="20sp"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/controls_settings_preset_option_button"/>
+		android:layout_toEndOf="@+id/controls_settings_preset_radio_button"
+        android:layout_toStartOf="@+id/controls_settings_preset_option_button"		/>
 
     <ImageButton
         android:id="@+id/controls_settings_preset_option_button"
@@ -19,7 +25,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="0dp"
 
