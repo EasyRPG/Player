@@ -62,7 +62,7 @@ public class GameScanner {
         errorList.clear();
 
         // Retrieve the games folder
-        DocumentFile gamesFolder = SettingsManager.getGameFolder();
+        DocumentFile gamesFolder = SettingsManager.getGameFolder(context);
 
         // 1) The folder must exist
         if (gamesFolder == null || !gamesFolder.isDirectory()) {

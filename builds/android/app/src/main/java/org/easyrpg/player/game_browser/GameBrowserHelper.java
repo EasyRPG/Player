@@ -212,7 +212,7 @@ public class GameBrowserHelper {
             SettingsManager.setGameFolder(uri);
 
             // Create RTP folders and the .nomedia file
-            DocumentFile gamesFolder = SettingsManager.getGameFolder();
+            DocumentFile gamesFolder = SettingsManager.getGameFolder(activity);
             Helper.createEasyRPGDirectories(activity, gamesFolder);
         }
     }

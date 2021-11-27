@@ -55,6 +55,7 @@ public class SettingsManager {
         loadSettings();
     }
 
+    // TODO : Totally remove loadSettings (in case of the crash of an application, some field can be set to null)
     private static void loadSettings() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -67,15 +68,6 @@ public class SettingsManager {
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
-
-        // Fetch the games directory
-        gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
-        if(gamesFolderString == null || gamesFolderString.isEmpty()) {
-            gameFolder = null;
-        } else {
-            Uri uri = Uri.parse(gamesFolderString);
-            gameFolder = Helper.getFileFromURI(context, uri);
-        }
 
         // Fetch the rtp directory
         rtpFolderString = sharedPref.getString(RTP_DIRECTORY.toString(), "");
@@ -228,7 +220,17 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static DocumentFile getGameFolder() {
+    public static DocumentFile getGameFolder(Context context) {
+        if (gameFolder == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
+            if (gamesFolderString == null || gamesFolderString.isEmpty()) {
+                gameFolder = null;
+            } else {
+                Uri uri = Uri.parse(gamesFolderString);
+                gameFolder = Helper.getFileFromURI(context, uri);
+            }
+        }
         return gameFolder;
     }
 
