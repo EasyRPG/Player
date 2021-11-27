@@ -18,10 +18,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
-import androidx.documentfile.provider.DocumentFile;
-
-import org.easyrpg.player.Helper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +26,6 @@ public class SettingsManager {
 
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
-    private static Context context;
 
     private static boolean vibrationEnabled;
     private static boolean vibrateWhenSlidingDirectionEnabled;
@@ -38,25 +33,23 @@ public class SettingsManager {
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
-    //private static String easyRPGFolder;
-    private static String gamesFolderString, rtpFolderString;
-    private static DocumentFile gameFolder, rtpFolder;
+    // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
+    // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
+    private static Uri gamesFolderURI, rtpFolderURI, soundFountFileURI;
     private static List<String> favoriteGamesList = new ArrayList<>();
-    private static DocumentFile soundFountFile;
 
     private SettingsManager() {
     }
 
     public static void init(Context context) {
-        SettingsManager.context = context;
         SettingsManager.pref = PreferenceManager.getDefaultSharedPreferences(context);
         SettingsManager.editor = pref.edit();
 
-        loadSettings();
+        loadSettings(context);
     }
 
-    // TODO : Totally remove loadSettings (in case of the crash of an application, some field can be set to null)
-    private static void loadSettings() {
+    // TODO : Totally remove loadSettings & init? (in case of the crash of an application, some field can be set to null?)
+    private static void loadSettings(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
@@ -68,15 +61,6 @@ public class SettingsManager {
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
-
-        // Fetch the rtp directory
-        rtpFolderString = sharedPref.getString(RTP_DIRECTORY.toString(), "");
-        if(rtpFolderString == null || rtpFolderString.isEmpty()) {
-            rtpFolder = null;
-        } else {
-            Uri uri = Uri.parse(rtpFolderString);
-            rtpFolder = Helper.getFileFromURI(context, uri);
-        }
 
         // Fetch the favorite game list :
         favoriteGamesList = new ArrayList<>();
@@ -220,51 +204,50 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static DocumentFile getGameFolder(Context context) {
-        if (gameFolder == null) {
+    public static Uri getGamesFolderURI(Context context) {
+        if (gamesFolderURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
+            String gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
             if (gamesFolderString == null || gamesFolderString.isEmpty()) {
-                gameFolder = null;
+                gamesFolderURI = null;
             } else {
-                Uri uri = Uri.parse(gamesFolderString);
-                gameFolder = Helper.getFileFromURI(context, uri);
+                gamesFolderURI = Uri.parse(gamesFolderString);
             }
         }
-        return gameFolder;
+        return gamesFolderURI;
     }
 
-    public static void setGameFolder(Uri uri) {
-        SettingsManager.gamesFolderString = uri.toString();
-        SettingsManager.gameFolder = Helper.getFileFromURI(context, uri);
-        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderString);
+    public static void setGamesFolderURI(Uri gamesFolderURI) {
+        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderURI.toString());
         editor.commit();
     }
 
-    public static DocumentFile getRtpFolder() {
-        return rtpFolder;
-    }
-
-    public static void setRtpFolder(Uri uri) {
-        DocumentFile rtpFolder = Helper.getFileFromURI(context, uri);
-        if (rtpFolder != null) {
-            setRtpFolder(rtpFolder);
+    public static Uri getRTPFolderURI(Context context) {
+        if (rtpFolderURI == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            // Fetch the rtp directory
+            String rtpFolderString = sharedPref.getString(RTP_DIRECTORY.toString(), "");
+            if (rtpFolderString == null || rtpFolderString.isEmpty()) {
+                rtpFolderURI = null;
+            } else {
+                rtpFolderURI = Uri.parse(rtpFolderString);
+            }
         }
+
+        return rtpFolderURI;
     }
 
-    public static void setRtpFolder(DocumentFile folder) {
-        SettingsManager.rtpFolder = folder;
-        SettingsManager.rtpFolderString = folder.getUri().toString();
-        editor.putString(SettingsEnum.RTP_DIRECTORY.toString(), rtpFolderString);
+    public static void setRTPFolderURI(Uri rtpFolderUri) {
+        editor.putString(SettingsEnum.RTP_DIRECTORY.toString(), rtpFolderUri.toString());
         editor.commit();
     }
 
-    public static DocumentFile getSoundFountFile() {
-        return soundFountFile;
+    public static Uri getSoundFountFileURI() {
+        return soundFountFileURI;
     }
 
-    public static void setSoundFountFile(DocumentFile soundFountFile) {
-       SettingsManager.soundFountFile = soundFountFile;
+    public static void setSoundFountFileURI(Uri soundFountFileURI) {
+       SettingsManager.soundFountFileURI = soundFountFileURI;
     }
 }
 

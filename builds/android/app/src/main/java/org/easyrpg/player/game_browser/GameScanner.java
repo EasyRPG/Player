@@ -35,8 +35,8 @@ public class GameScanner {
     private static final int GAME_SCANNING_DEPTH = 2; // 1 = no recursive scanning
 
     private GameScanner(Activity activity) {
-        this.gameList = new ArrayList<Game>();
-        this.errorList = new ArrayList<String>();
+        this.gameList = new ArrayList<>();
+        this.errorList = new ArrayList<>();
         this.context = activity;
     }
 
@@ -62,7 +62,8 @@ public class GameScanner {
         errorList.clear();
 
         // Retrieve the games folder
-        DocumentFile gamesFolder = SettingsManager.getGameFolder(context);
+        Uri gamesFolderURI = SettingsManager.getGamesFolderURI(context);
+        DocumentFile gamesFolder = Helper.getFileFromURI(context, gamesFolderURI);
 
         // 1) The folder must exist
         if (gamesFolder == null || !gamesFolder.isDirectory()) {
@@ -114,8 +115,10 @@ public class GameScanner {
                     // We test this case here during the game scanning in order to avoid further syscalls
                     if (depth == GAME_SCANNING_DEPTH && name.toLowerCase().endsWith(".sf2")) {
                         DocumentFile soundFontFile = Helper.getFileFromDocumentID(context, folderURI, fileDocumentID);
-                        Log.i("EasyRPG", "Soundfont found : " + soundFontFile.getName());
-                        SettingsManager.setSoundFountFile(soundFontFile);
+                        if (soundFontFile != null) {
+                            Log.i("EasyRPG", "Soundfont found : " + soundFontFile.getName());
+                            SettingsManager.setSoundFountFileURI(soundFontFile.getUri());
+                        }
                     }
                     boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
                     if (isDirectory) {

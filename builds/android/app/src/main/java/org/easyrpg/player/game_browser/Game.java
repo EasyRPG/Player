@@ -4,24 +4,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
-import org.easyrpg.player.Helper;
-import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.settings.SettingsManager;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Game implements Comparable<Game> {
-	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";
-	public static final String TAG_ENCODING = "encoding";
-	public static final String preferenceFileName = "easyrpg-pref.txt";
-	private int id_input_layout = -1;
-
-	private String title, gameFolderPath, savePath;
+	private final String title;
+    private final String gameFolderPath;
+    private final String savePath;
 	private boolean isFavorite;
-    private DocumentFile gameFolder;
-    private Uri folderURI, iniFile;
+    private final DocumentFile gameFolder;
+    private final Uri folderURI;
+    private Uri iniFile;
     private Bitmap titleScreen;
     private IniFileManager iniFileManager; // Always use initIniFileManager() before using iniFileManager
 
@@ -69,23 +64,6 @@ public class Game implements Comparable<Game> {
 		return savePath;
 	}
 
-	/** Set the inputLayout preferences depending on the preferences file */
-	public boolean getProjectInputLayout(ButtonMappingManager bmm) {
-        // Try to obtain the preferences file.
-		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
-		if (jso == null) {
-			return false;
-		}
-
-		try {
-			this.id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
-		} catch (JSONException e) {
-			this.id_input_layout = bmm.getSelectedLayoutId();
-			return false;
-		}
-		return true;
-	}
-
 	public boolean isFavorite() {
 		return isFavorite;
 	}
@@ -114,14 +92,6 @@ public class Game implements Comparable<Game> {
 		return this.title.compareTo(game.title);
 	}
 
-	public int getId_input_layout() {
-		return id_input_layout;
-	}
-
-	public void setId_input_layout(int id_input_layout) {
-		this.id_input_layout = id_input_layout;
-	}
-
     /** We initiate the IniFileManager only if necessary to prevent from unnecessary syscall */
     public void initIniFileManager(Context context) {
         if (iniFileManager == null) {
@@ -143,6 +113,7 @@ public class Game implements Comparable<Game> {
         this.iniFileManager.setEncoding(context, encoding);
 	}
 
+    @NonNull
     @Override
     public String toString() {
         return getTitle();

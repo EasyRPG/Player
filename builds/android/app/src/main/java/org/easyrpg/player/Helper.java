@@ -16,7 +16,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -25,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,8 +41,7 @@ public class Helper {
 	 */
 	public static int getPixels(Resources r, double dipValue) {
 		int dValue = (int) dipValue;
-		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dValue, r.getDisplayMetrics());
-		return px;
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dValue, r.getDisplayMetrics());
 	}
 
 	public static int getPixels(View v, double dipValue) {
@@ -112,15 +109,10 @@ public class Helper {
 		return uiPaint;
 	}
 
-	public static void showWrongAPIVersion(Context context) {
-		Toast.makeText(context, "Not avaible on this API", Toast.LENGTH_SHORT).show();
-	}
-
 	public static JSONObject readJSON(String contentFile) {
 		try {
 			// Parse the JSON
-			JSONObject jso = new JSONObject(contentFile);
-			return jso;
+            return new JSONObject(contentFile);
 		} catch (JSONException e) {
 			Log.e("JSO reading", "Error parsing a JSO file : " + e.getMessage());
 		}
@@ -129,18 +121,18 @@ public class Helper {
 	}
 
 	public static JSONObject readJSONFile(String path) {
-		String file = new String(), tmp;
-		try {
+		StringBuilder file = new StringBuilder();
+        String tmp;
+        try {
 			// Read the file
-			BufferedReader bf = new BufferedReader(new FileReader(new File(path)));
+			BufferedReader bf = new BufferedReader(new FileReader(path));
 			while ((tmp = bf.readLine()) != null) {
-				file += tmp;
+				file.append(tmp);
 			}
 			bf.close();
 
 			// Parse the JSON
-			JSONObject jso = new JSONObject(file);
-			return jso;
+            return new JSONObject(file.toString());
 		} catch (JSONException e) {
 			Log.e("JSO reading", "Error parsing the JSO file " + path + "\n" + e.getMessage());
 		} catch (IOException e) {
@@ -151,36 +143,40 @@ public class Helper {
 	}
 
 	public static String readInternalFileContent(Context content, String fileName) {
-		String file = new String(), tmp;
-		try {
+		StringBuilder file = new StringBuilder();
+        String tmp;
+        try {
 			// Read the file
 			BufferedReader bf = new BufferedReader(new InputStreamReader(content.openFileInput(fileName)));
 			while ((tmp = bf.readLine()) != null) {
-				file += tmp;
+				file.append(tmp);
 			}
 			bf.close();
 		} catch (IOException e) {
 			Log.e("JSO reading", "Error reading the file " + fileName + "\n" + e.getMessage());
 		}
-		return file;
+		return file.toString();
 	}
 
 	/** Create RTP folders and .nomedia file in the games folder */
-	public static void createEasyRPGDirectories(Context context, DocumentFile gamesFolder){
+	public static void createEasyRPGDirectories(Context context, Uri gamesFolderURI){
 		// RTP folder
         // Note : we name the folder "rtp" and not "RTP" because existing user might have this folder
         // from previous EasyRPG version, and creating folder is case insensitive on Android
         // (At each startup, if would create a RTP (x) folder)
-        DocumentFile RTPFolder = createFolder(context, gamesFolder, "rtp");
-        createFolder(context, RTPFolder, "2000");
-        createFolder(context, RTPFolder, "2003");
+        DocumentFile gamesFolder = Helper.getFileFromURI(context, gamesFolderURI);
+        if (gamesFolder != null) {
+            DocumentFile RTPFolder = createFolder(context, gamesFolder, "rtp");
+            createFolder(context, RTPFolder, "2000");
+            createFolder(context, RTPFolder, "2003");
 
-        // Save the RTP folder in Settings
-        SettingsManager.setRtpFolder(RTPFolder);
+            // Save the RTP folder in Settings
+            SettingsManager.setRTPFolderURI(RTPFolder.getUri());
 
-        // The .nomedia file (avoid media app to scan games and RTP's folders)
-        if (Helper.findFile(context, gamesFolder.getUri(), ".nomedia") == null) {
-            gamesFolder.createFile("", ".nomedia");
+            // The .nomedia file (avoid media app to scan games and RTP's folders)
+            if (Helper.findFile(context, gamesFolder.getUri(), ".nomedia") == null) {
+                gamesFolder.createFile("", ".nomedia");
+            }
         }
 	}
 

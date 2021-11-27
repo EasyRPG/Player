@@ -28,10 +28,8 @@ public class SettingsAudioActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        switch (v.getId()) {
-            case R.id.settings_audio:
-                SettingsManager.setAudioEnabled(((CheckBox)v).isChecked());
-                break;
+        if (v.getId() == R.id.settings_audio) {
+            SettingsManager.setAudioEnabled(((CheckBox)v).isChecked());
         }
     }
 }

@@ -3,6 +3,7 @@ package org.easyrpg.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -50,7 +51,8 @@ public class InitActivity extends AppCompatActivity {
 
         if (!standaloneMode) {
             // If we have a games folder which is accessible, start the GameBrowser
-            DocumentFile gamesFolder = SettingsManager.getGameFolder(this);
+            Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
+            DocumentFile gamesFolder = Helper.getFileFromURI(this, gamesFolderURI);
             if (gamesFolder != null) {
 
                 // Do we have read/right access to the game folder?
@@ -135,7 +137,8 @@ public class InitActivity extends AppCompatActivity {
     private void launchGamesBrowser() {
         // Recreate RTP folders and .nomedia file if necessary
         // TODO : This method might do some unnecessary actions, to verify
-        Helper.createEasyRPGDirectories(this, SettingsManager.getGameFolder(this));
+        Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
+        Helper.createEasyRPGDirectories(this, gamesFolderURI);
 
         //Launch the proper game browser
         Intent intent;

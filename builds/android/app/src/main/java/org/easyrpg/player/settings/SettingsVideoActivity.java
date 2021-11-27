@@ -1,6 +1,5 @@
 package org.easyrpg.player.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,11 +26,8 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
-        switch (v.getId()) {
-            case R.id.force_landscape_mode:
-                SettingsManager.setForcedLandscape(((CheckBox)v).isChecked());
-                break;
+        if (v.getId() == R.id.force_landscape_mode) {
+            SettingsManager.setForcedLandscape(((CheckBox)v).isChecked());
         }
     }
 }

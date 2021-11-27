@@ -10,8 +10,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.documentfile.provider.DocumentFile;
-
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
@@ -123,10 +121,10 @@ public class GameBrowserHelper {
             args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
-            DocumentFile soundfont = SettingsManager.getSoundFountFile();
-            if (soundfont != null) {
+            Uri soundfontUri = SettingsManager.getSoundFountFileURI();
+            if (soundfontUri != null) {
                 args.add("--soundfont");
-                args.add(soundfont.getUri().toString());
+                args.add(soundfontUri.toString());
             }
 
             // Disable audio depending on user preferences
@@ -136,7 +134,7 @@ public class GameBrowserHelper {
 
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
             intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
-            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
+            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray());
 
             Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args.toString());
             context.startActivity(intent);
@@ -209,11 +207,11 @@ public class GameBrowserHelper {
             activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
             // Save the settings
-            SettingsManager.setGameFolder(uri);
+            SettingsManager.setGamesFolderURI(uri);
 
             // Create RTP folders and the .nomedia file
-            DocumentFile gamesFolder = SettingsManager.getGameFolder(activity);
-            Helper.createEasyRPGDirectories(activity, gamesFolder);
+            Uri gamesFolderURI = SettingsManager.getGamesFolderURI(activity);
+            Helper.createEasyRPGDirectories(activity, gamesFolderURI);
         }
     }
 }

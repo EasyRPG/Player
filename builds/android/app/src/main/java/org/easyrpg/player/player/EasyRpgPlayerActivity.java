@@ -71,7 +71,7 @@ import java.util.ArrayList;
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
  */
-
+// TODO : Clean warnings
 public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
@@ -137,13 +137,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         mLayout.addView(surface);
         updateScreenPosition();
 
-        // Project preferences
-        buttonMappingManager = ButtonMappingManager.getInstance(this);
-        Game project = getProjectPath();
-        project.getProjectInputLayout(buttonMappingManager);
-
         // Choose the proper InputLayout
-        inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
+        buttonMappingManager = ButtonMappingManager.getInstance(this);
+        inputLayout = buttonMappingManager.getLayoutById(buttonMappingManager.getSelectedLayoutId());
 
         // Add buttons
         addButtons();
@@ -196,10 +192,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LAYOUT_EDIT) {
             Game project = getProjectPath();
-            project.getProjectInputLayout(buttonMappingManager);
 
             // Choose the proper InputLayout
-            inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
+            inputLayout = buttonMappingManager.getLayoutById(buttonMappingManager.getSelectedLayoutId());
 
             // Add buttons
             addButtons();
@@ -208,11 +203,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
     private void editLayout() {
         Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
-        Game project = getProjectPath();
-        project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
-        intent.putExtra(ButtonMappingActivity.TAG_ID, project.getId_input_layout());
+        intent.putExtra(ButtonMappingActivity.TAG_ID, buttonMappingManager.getSelectedLayoutId());
 
         for (VirtualButton v : inputLayout.getButtonList()) {
             mLayout.removeView(v);
@@ -353,7 +346,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      * @return Full path to the RTP
      */
     public String getRtpPath() {
-        return SettingsManager.getRtpFolder().getUri().toString();
+        return SettingsManager.getRTPFolderURI(this).toString();
     }
 
     public SafFile getHandleForPath(String path) {

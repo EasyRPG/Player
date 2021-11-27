@@ -40,6 +40,7 @@ import java.util.zip.ZipInputStream;
 
 // based on https://stackoverflow.com/q/15574983/
 
+// TODO : Convert to SAF?
 public class AssetUtils {
 	public static void copyFolder(AssetManager assetManager, String source, String target) {
 		// "Name" is the name of your folder!
