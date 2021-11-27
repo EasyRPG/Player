@@ -168,7 +168,10 @@ public class Helper {
 	/** Create RTP folders and .nomedia file in the games folder */
 	public static void createEasyRPGDirectories(Context context, DocumentFile gamesFolder){
 		// RTP folder
-        DocumentFile RTPFolder = createFolder(context, gamesFolder, "RTP");
+        // Note : we name the folder "rtp" and not "RTP" because existing user might have this folder
+        // from previous EasyRPG version, and creating folder is case insensitive on Android
+        // (At each startup, if would create a RTP (x) folder)
+        DocumentFile RTPFolder = createFolder(context, gamesFolder, "rtp");
         createFolder(context, RTPFolder, "2000");
         createFolder(context, RTPFolder, "2003");
 
