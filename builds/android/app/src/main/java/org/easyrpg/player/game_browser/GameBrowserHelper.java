@@ -185,15 +185,10 @@ public class GameBrowserHelper {
     public static void pickAGamesFolder(Activity activity){
         // Choose a directory using the system's file picker.
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        // TODO : Understand why persistable permissions won't work with API 30
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
             | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
-
-        // Optionally, specify a URI for the directory that should be opened in the system file picker when it loads.
-        // TODO : Find a way to open the file picker in the user's root folder
-        // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.parse("/tree/primary"));
 
         activity.startActivityForResult(intent, GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN);
     }

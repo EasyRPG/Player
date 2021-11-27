@@ -141,5 +141,6 @@ public class InitActivity extends AppCompatActivity {
         Intent intent;
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
+        finish();
     }
 }

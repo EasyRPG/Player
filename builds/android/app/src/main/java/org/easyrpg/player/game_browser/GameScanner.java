@@ -274,6 +274,7 @@ public class GameScanner {
                             Bitmap b = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ
+                                // TODO : Change this open() to support API < 29
                                 try (ParcelFileDescriptor fd = context.getContentResolver().openFile(imageUri, "r", null)) {
                                     byte[] xyz = decodeXYZ(fd.detachFd());
                                     if (xyz == null) {
