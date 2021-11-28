@@ -1,6 +1,7 @@
 package org.easyrpg.player.settings;
 
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
+import static org.easyrpg.player.settings.SettingsEnum.CUSTOM_SOUNDFONT_ENABLED;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
@@ -27,9 +28,8 @@ public class SettingsManager {
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
 
-    private static boolean vibrationEnabled;
-    private static boolean vibrateWhenSlidingDirectionEnabled;
-    private static boolean audioEnabled;
+    private static boolean vibrationEnabled, vibrateWhenSlidingDirectionEnabled;
+    private static boolean audioEnabled, customSoundFountsEnabled;
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
@@ -54,6 +54,7 @@ public class SettingsManager {
 
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         audioEnabled = sharedPref.getBoolean(AUDIO_ENABLED.toString(), true);
+        customSoundFountsEnabled = sharedPref.getBoolean(CUSTOM_SOUNDFONT_ENABLED.toString(), false);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), false);
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
@@ -160,6 +161,16 @@ public class SettingsManager {
     public static void setAudioEnabled(boolean b) {
         audioEnabled = b;
         editor.putBoolean(SettingsEnum.AUDIO_ENABLED.toString(), b);
+        editor.commit();
+    }
+
+    public static boolean isCustomSoundFountsEnabled() {
+        return customSoundFountsEnabled;
+    }
+
+    public static void setCustomSoundFountsEnabled(boolean b) {
+        customSoundFountsEnabled = b;
+        editor.putBoolean(CUSTOM_SOUNDFONT_ENABLED.toString(), b);
         editor.commit();
     }
 

@@ -121,10 +121,12 @@ public class GameBrowserHelper {
             args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
-            Uri soundfontUri = SettingsManager.getSoundFountFileURI();
-            if (soundfontUri != null) {
-                args.add("--soundfont");
-                args.add(soundfontUri.toString());
+            if (SettingsManager.isCustomSoundFountsEnabled()) {
+                Uri soundfontUri = SettingsManager.getSoundFountFileURI();
+                if (soundfontUri != null) {
+                    args.add("--soundfont");
+                    args.add(soundfontUri.toString());
+                }
             }
 
             // Disable audio depending on user preferences
