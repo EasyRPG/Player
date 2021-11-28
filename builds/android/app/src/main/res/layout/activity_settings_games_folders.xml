@@ -22,14 +22,23 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/id_select_games_folder_explanation"
-				android:textSize="20sp"
-				android:gravity="center" />
+				android:textSize="20sp" />
 
 			<Button
 				android:id="@+id/set_games_folder"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/select_the_games_folder" />
+
+			<include layout="@layout/separator"/>
+
+			<TextView
+				android:id="@+id/settings_rtp_explanation"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/rtp_explanation"
+				android:textSize="20sp" />
+
 		</LinearLayout>
     </ScrollView>
 

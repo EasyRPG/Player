@@ -139,6 +139,7 @@ public class GameBrowserHelper {
             intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
 
             Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args.toString());
+            Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));
             context.startActivity(intent);
         } else {
             String msg = context.getString(R.string.not_valid_game).replace("$PATH", game.getTitle());

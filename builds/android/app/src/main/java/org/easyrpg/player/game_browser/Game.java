@@ -42,7 +42,6 @@ public class Game implements Comparable<Game> {
 		}
         */
 
-		// isFavorite
 		this.isFavorite = isFavoriteFromSettings();
 	}
 

@@ -32,7 +32,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
         this.enableSoundfontCheckbox.setChecked(SettingsManager.isCustomSoundFountsEnabled());
         this.enableSoundfontCheckbox.setOnClickListener(v -> SettingsManager.setCustomSoundFountsEnabled(((CheckBox)v).isChecked()));
 
-        // Update the games folder name & the soundfount
+        // Update the games folder path
         TextView soundFontExplanationView = (TextView) findViewById(R.id.settings_soundfont_explanation);
         String soundfontExplanation = soundFontExplanationView.getText().toString();
         Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
@@ -42,7 +42,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
             soundFontExplanationView.setText(soundfontExplanation);
         }
 
-        // Update the games folder name & the soundfount
+        // Update the SoundFont file path
         TextView soundFontFoundView = (TextView) findViewById(R.id.settings_soundfont_found);
         String soundFontFound = soundFontFoundView.getText().toString();
         Uri soundFountURI  = SettingsManager.getSoundFountFileURI();

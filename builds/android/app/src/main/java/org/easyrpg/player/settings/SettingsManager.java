@@ -56,7 +56,7 @@ public class SettingsManager {
         audioEnabled = sharedPref.getBoolean(AUDIO_ENABLED.toString(), true);
         customSoundFountsEnabled = sharedPref.getBoolean(CUSTOM_SOUNDFONT_ENABLED.toString(), false);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
-        vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), false);
+        vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
@@ -233,6 +233,7 @@ public class SettingsManager {
         editor.commit();
     }
 
+    // TODO : Do we keep handling RTP that way? In the current state rtp folder is always inside the games folder
     public static Uri getRTPFolderURI(Context context) {
         if (rtpFolderURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
