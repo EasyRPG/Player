@@ -134,7 +134,7 @@ public class GameBrowserHelper {
 
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
             intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
-            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray());
+            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
 
             Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args.toString());
             context.startActivity(intent);
