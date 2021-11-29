@@ -103,8 +103,7 @@ namespace {
 		Input::Keys::KP_MULTIPLY, Input::Keys::KP_DIVIDE
 	};
 
-	PadState pad;
-	HidTouchScreenState touch = {0};
+	int ui_mode = 0;
 }
 
 extern "C" void userAppInit() {
@@ -225,8 +224,79 @@ static GLuint createAndCompileShader(GLenum type, const char* source) {
 	return handle;
 }
 
-NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
-{
+static AppletHookCookie applet_hook_cookie;
+
+static void appletHookCallback(AppletHookType hook, void* param) {
+	bool show_message = (bool *)param;
+	static bool restore_touch_ui = false;
+	// HOS sends one focus event on application start (but not in applet mode), we ignore this
+	static bool first_time = true;
+
+	switch (hook) {
+		case AppletHookType_OnExitRequest:
+			Output::Warning("Got close request from home menu.");
+			Player::Exit();
+			break;
+
+		case AppletHookType_OnFocusState:
+			if (appletGetFocusState() == AppletFocusState_InFocus) {
+				if (first_time) {
+					first_time = false;
+					break;
+				}
+				if (show_message)
+					Output::Debug("Gained Focus, resuming execution.");
+				Player::Resume();
+				appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
+			} else {
+				if (first_time)
+					first_time = false;
+				if (show_message)
+					Output::Debug("Lost focus, pausing execution.");
+				Player::Pause();
+				// allow suspend
+				appletSetFocusHandlingMode(AppletFocusHandlingMode_SuspendHomeSleepNotify);
+			}
+			break;
+
+		case AppletHookType_OnOperationMode:
+			int width, height;
+			if (appletGetOperationMode() == AppletOperationMode_Console) {
+				if (show_message)
+					Output::Debug("Switched from handheld to docked mode.");
+
+				// full res
+				width = 1920;
+				height = 1080;
+
+				// disable touch input
+				if (ui_mode == 0) {
+					restore_touch_ui = true;
+					ui_mode++;
+				} else
+					restore_touch_ui = false;
+			} else {
+				if (show_message)
+					Output::Debug("Switched from docked to handheld mode.");
+
+				// half res
+				width = 1280;
+				height = 720;
+
+				// restore touch ui
+				if (restore_touch_ui)
+					ui_mode = 0;
+			}
+			nwindowSetCrop(nwindowGetDefault(), 0, 0, width, height);
+			glViewport(0, 1080-height, width, height);
+			break;
+
+		default:
+			break;
+	}
+}
+
+NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg) {
 #if 1
 	setenv("MESA_NO_ERROR", "1", 1);
 #else
@@ -240,6 +310,15 @@ NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	setenv("NV50_PROG_CHIPSET", "0x120", 1);
 #endif
 	SetIsFullscreen(true);
+
+	auto ver = hosversionGet();
+	Output::Debug("Running on Nintendo Switch ({}.{}.{}{} CFW)",
+		HOSVER_MAJOR(ver), HOSVER_MINOR(ver), HOSVER_MICRO(ver),
+		(hosversionIsAtmosphere() ? ", Atmosphere" : ", unknown/no"));
+
+	appletLockExit();
+	appletHook(&applet_hook_cookie, appletHookCallback, (void *)true);
+	appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
 
 	nwindowSetDimensions(nwindowGetDefault(), 1920, 1080);
 	initEgl();
@@ -310,6 +389,9 @@ NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	glUseProgram(shaderProgramm);
 
+	// manually check once, if in handheld or docked mode
+	appletHookCallback(AppletHookType_OnOperationMode, (void *)false);
+
 #ifdef SUPPORT_AUDIO
 	audio_.reset(new NxAudio());
 #endif
@@ -329,6 +411,12 @@ NxUi::~NxUi() {
 	glDeleteVertexArrays(1, &shaderVAO);
 
 	deinitEgl();
+
+	appletSetFocusHandlingMode(AppletFocusHandlingMode_SuspendHomeSleep);
+	appletUnhook(&applet_hook_cookie);
+	// HOS will close us immediately afterwards, if requested by home menu.
+	// So no further cleanup possible.
+	appletUnlockExit();
 }
 
 void NxUi::ToggleFullscreen() {
@@ -387,19 +475,6 @@ void NxUi::ProcessEvents() {
 void NxUi::UpdateDisplay() {
 	float aspectX = 1.0f;
 	float aspectY = 1.0f;
-
-	// full res when docked
-	int width = 1280, height = 720;
-	if (appletGetOperationMode() == AppletOperationMode_Console) {
-		width = 1920;
-		height = 1080;
-
-		// disable touch input
-		if (ui_mode == 0)
-			ui_mode++;
-	}
-	nwindowSetCrop(nwindowGetDefault(), 0, 0, width, height);
-	glViewport(0, 1080-height, width, height);
 
 	// clear
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

@@ -65,8 +65,8 @@ public:
 
 private:
 	BitmapRef touch_ui;
-	bool update_ui = true;
-	int ui_mode = 0;
+	PadState pad;
+	HidTouchScreenState touch = {0};
 
 #ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
