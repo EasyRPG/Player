@@ -57,16 +57,20 @@ GenericAudio::GenericAudio() {
 }
 
 void GenericAudio::BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) {
-	bool bgm_set = false;
+	if (!stream) {
+		Output::Warning("Couldn't play BGM {}: File not readable", stream.GetName());
+		return;
+	}
+
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.stopped = true; //Stop all running background music
-		if (!BGM_Channel.IsUsed() && !bgm_set) {
+		if (!BGM_Channel.IsUsed()) {
 			// If there is an unused bgm channel
-			bgm_set = true;
 			LockMutex();
 			BGM_PlayedOnceIndicator = false;
 			UnlockMutex();
 			PlayOnChannel(BGM_Channel, std::move(stream), volume, pitch, fadein);
+			return;
 		}
 	}
 }
@@ -158,16 +162,21 @@ void GenericAudio::BGM_Pitch(int pitch) {
 	UnlockMutex();
 }
 
-void GenericAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) {
+void GenericAudio::SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) {
+	if (!se) {
+		Output::Warning("SE_Play: AudioSeCache data is NULL");
+		return;
+	}
+
 	for (auto& SE_Channel : SE_Channels) {
 		if (!SE_Channel.decoder) {
 			//If there is an unused se channel
-			PlayOnChannel(SE_Channel, std::move(stream), volume, pitch);
+			PlayOnChannel(SE_Channel, std::move(se), volume, pitch);
 			return;
 		}
 	}
 	// FIXME Not displaying as warning because multiple games exhaust free channels available, see #1356
-	Output::Debug("Couldn't play {} SE. No free channel available", stream.GetName());
+	Output::Debug("Couldn't play {} SE. No free channel available", se->GetName());
 }
 
 void GenericAudio::SE_Stop() {
@@ -253,23 +262,16 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	return false;
 }
 
-bool GenericAudio::PlayOnChannel(SeChannel& chan, Filesystem_Stream::InputStream filestream, int volume, int pitch) {
+bool GenericAudio::PlayOnChannel(SeChannel& chan, std::unique_ptr<AudioSeCache> se, int volume, int pitch) {
 	chan.paused = true; // Pause channel so the audio thread doesn't work on it
 	chan.stopped = false; // Unstop channel so the audio thread doesn't delete it
 
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(std::move(filestream));
-	if (cache) {
-		chan.decoder = cache->CreateSeDecoder();
-		chan.decoder->SetPitch(pitch);
-		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
-		chan.decoder->SetVolume(volume);
-		chan.paused = false; // Unpause channel -> Play it.
-		return true;
-	} else {
-		Output::Warning("Couldn't play SE {}. Format not supported", filestream.GetName());
-	}
-
-	return false;
+	chan.decoder = se->CreateSeDecoder();
+	chan.decoder->SetPitch(pitch);
+	chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
+	chan.decoder->SetVolume(volume);
+	chan.paused = false; // Unpause channel -> Play it.
+	return true;
 }
 
 void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {

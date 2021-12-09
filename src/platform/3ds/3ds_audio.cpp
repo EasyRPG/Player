@@ -167,9 +167,14 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	}
 }
 
-void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pitch) {
+void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) {
 	if (!dsp_inited)
 		return;
+
+	if (!se) {
+		Output::Warning("SE_Play: AudioSeCache data is NULL");
+		return;
+	}
 
 	// Important!
 	// When indexing se_buf use se_channel
@@ -186,17 +191,11 @@ void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pi
 	}
 
 	if (se_channel == -1) {
-		Output::Warning("Couldn't play SE {}: No free channel available", stream.GetName());
+		Output::Warning("Couldn't play SE {}: No free channel available", se->GetName());
 		return;
 	}
 
-	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(std::move(stream));
-	if (!cache) {
-		Output::Warning("Couldn't play SE {}: Format not supported", stream.GetName());
-		return;
-	}
-
-	auto dec = cache->CreateSeDecoder();
+	auto dec = se->CreateSeDecoder();
 	dec->SetPitch(pitch);
 
 	int frequency;
@@ -216,7 +215,7 @@ void CtrAudio::SE_Play(Filesystem_Stream::InputStream stream, int volume, int pi
 	}
 
 	if (use_raw_buf) {
-		se_ref = cache->GetSeData();
+		se_ref = se->GetSeData();
 		out_buf = &se_ref->buffer;
 	} else {
 		dec->SetFormat(frequency, out_format, channels);
