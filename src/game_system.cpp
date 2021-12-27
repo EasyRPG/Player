@@ -84,8 +84,9 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 		Output::Debug("BGM {} has invalid fadein {}", bgm.name, bgm.fadein);
 	}
 
-	if (bgm.tempo < 50 || bgm.tempo > 200) {
-		data.current_music.tempo = Utils::Clamp<int32_t>(bgm.tempo, 50, 200);
+	// Normal pitch is 50 to 200 but Yume2kki uses out of range values
+	if (bgm.tempo < 10 || bgm.tempo > 400) {
+		data.current_music.tempo = Utils::Clamp<int32_t>(bgm.tempo, 10, 400);
 
 		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
@@ -156,9 +157,10 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 		volume = Utils::Clamp<int32_t>(volume, 0, 100);
 	}
 
-	if (tempo < 50 || tempo > 200) {
+	// Normal pitch is 50 to 200 but Yume2kki uses out of range values
+	if (tempo < 10 || tempo > 400) {
 		Output::Debug("SE {} has invalid tempo {}", se.name, tempo);
-		tempo = Utils::Clamp<int32_t>(se.tempo, 50, 200);
+		tempo = Utils::Clamp<int32_t>(se.tempo, 10, 400);
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
