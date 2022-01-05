@@ -35,6 +35,7 @@
 #include "game_screen.h"
 #include "game_pictures.h"
 #include "scene_battle.h"
+#include "scene_map.h"
 #include <lcf/lmu/reader.h>
 #include <lcf/reader_lcf.h>
 #include "map_data.h"
@@ -1761,6 +1762,11 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 
 	reset_panorama_x_on_next_init = !Game_Map::LoopHorizontal() && !map_info.parallax_horz;
 	reset_panorama_y_on_next_init = !Game_Map::LoopVertical() && !map_info.parallax_vert;
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	if (!scene || !scene->spriteset)
+		return;
+	scene->spriteset->ParallaxUpdated();
 }
 
 void Game_Map::Parallax::ClearChangedBG() {

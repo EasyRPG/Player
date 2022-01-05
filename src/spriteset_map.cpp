@@ -33,12 +33,29 @@
 
 // Constructor
 Spriteset_Map::Spriteset_Map() {
+	panorama.reset(new Plane());
+	panorama->SetZ(Priority_Background);
+
+	timer1.reset(new Sprite_Timer(0));
+	timer2.reset(new Sprite_Timer(1));
+
+	screen.reset(new Screen());
+	frame.reset(new Frame());
+
+	ParallaxUpdated();
+
+	Refresh();
+
+	Update();
+}
+
+void Spriteset_Map::Refresh() {
 	tilemap.reset(new Tilemap());
 	tilemap->SetWidth(Game_Map::GetWidth());
 	tilemap->SetHeight(Game_Map::GetHeight());
 
-	panorama.reset(new Plane());
-	panorama->SetZ(Priority_Background);
+	airship_shadows.clear();
+	character_sprites.clear();
 
 	ChipsetUpdated();
 
@@ -52,14 +69,6 @@ Spriteset_Map::Spriteset_Map() {
 	CreateAirshipShadowSprite(need_x_clone, need_y_clone);
 
 	CreateSprite(Main_Data::game_player.get(), need_x_clone, need_y_clone);
-
-	timer1.reset(new Sprite_Timer(0));
-	timer2.reset(new Sprite_Timer(1));
-
-	screen.reset(new Screen());
-	frame.reset(new Frame());
-
-	Update();
 }
 
 // Update
@@ -75,18 +84,6 @@ void Spriteset_Map::Update() {
 		character_sprites[i]->SetTone(new_tone);
 	}
 
-	std::string name = Game_Map::Parallax::GetName();
-	if (name != panorama_name) {
-		panorama_name = name;
-		if (name.empty()) {
-			panorama->SetBitmap(BitmapRef());
-		} else {
-			FileRequestAsync *request = AsyncHandler::RequestFile("Panorama", panorama_name);
-			request->SetGraphicFile(true);
-			panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
-			request->Start();
-		}
-	}
 	panorama->SetOx(Game_Map::Parallax::GetX());
 	panorama->SetOy(Game_Map::Parallax::GetY());
 	panorama->SetTone(new_tone);
@@ -136,6 +133,23 @@ void Spriteset_Map::ChipsetUpdated() {
 
 	for (auto& sprite: character_sprites) {
 		sprite->ChipsetUpdated();
+	}
+}
+
+void Spriteset_Map::ParallaxUpdated() {
+	std::string name = Game_Map::Parallax::GetName();
+	if (name != panorama_name) {
+		panorama_name = name;
+		if (name.empty()) {
+			panorama->SetBitmap(BitmapRef());
+		}
+		else {
+			FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
+			request->SetGraphicFile(true);
+			request->SetImportantFile(true);
+			panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+			request->Start();
+		}
 	}
 }
 

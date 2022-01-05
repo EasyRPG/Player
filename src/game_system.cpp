@@ -195,10 +195,8 @@ void Game_System::OnChangeSystemGraphicReady(FileRequestResult* result) {
 	bg_color = Cache::SystemOrBlack()->GetBackgroundColor();
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-
-	if (!scene)
+	if (!scene || !scene->spriteset)
 		return;
-
 	scene->spriteset->SystemGraphicUpdated();
 }
 
