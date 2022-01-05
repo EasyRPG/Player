@@ -150,17 +150,6 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	// to files outside of the actual directory.
 	canonical_path = FileFinder::MakeCanonical(args.path, args.canonical_initial_deepness);
 
-	if (args.translate && !Tr::GetCurrentTranslationId().empty()) {
-		// Search in the active language tree but do not translate again and swallow not found warnings
-		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
-		auto translated_file = tr_fs.FindFile(
-				{args.path, args.exts, args.canonical_initial_deepness, false, false});
-		if (!translated_file.empty()) {
-			DebugLog("Translated {} as {}", args.path, translated_file);
-			return tr_fs.MakePath(translated_file);
-		}
-	}
-
 	std::tie(dir, name) = FileFinder::GetPathAndFilename(canonical_path);
 
 	DebugLog("FindFile: {} | {} | {} | {}", args.path, canonical_path, dir, name);

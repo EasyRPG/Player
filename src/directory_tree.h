@@ -73,11 +73,6 @@ public:
 		 * Off by default because file probing would spam the terminal alot.
 		 */
 		bool file_not_found_warning = false;
-		/**
-		 * When true the currently active translation folder is checked for
-		 * the existance of the requested asset and redirected.
-		 */
-		bool translate = false;
 	};
 
 	using DirectoryListType = std::unordered_map<std::string, Entry>;
