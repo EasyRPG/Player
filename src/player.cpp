@@ -150,6 +150,10 @@ void Player::Init(int argc, char *argv[]) {
 	// Must be called before the first call to Output
 	Graphics::Init();
 
+#ifdef _WIN32
+	SetConsoleOutputCP(65001);
+#endif
+
 	// FIXME: actual command line parsing is too late for setting this,
 	// it should be refactored after release to not break things now
 	for (int i = 1; i < argc; ++i) {
