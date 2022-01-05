@@ -926,7 +926,6 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 				return;
 			}
 			new_cmds.push_back(id);
-			std::sort(new_cmds.begin(), new_cmds.end());
 			new_cmds.push_back(0);
 			cmds = new_cmds;
 		}
