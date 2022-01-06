@@ -86,6 +86,7 @@ void Game_Screen::OnMapChange() {
 	movie_res_x = 0;
 	movie_res_y = 0;
 
+	data.battleanim_active = false;
 	animation.reset();
 }
 
