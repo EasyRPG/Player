@@ -28,6 +28,7 @@
 #include "output.h"
 #include "logo.h"
 #include "utils.h"
+#include "rand.h"
 
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
@@ -36,8 +37,12 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
-		logo.reset(new Sprite());
+		if (Rand::ChanceOf(1, 64)) {
+			logo_img = Bitmap::Create(easteregg_logo, sizeof(easteregg_logo), false);
+		} else {
+			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+		}
+		logo = std::make_unique<Sprite>();
 		logo->SetBitmap(logo_img);
 		logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
 		logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
@@ -84,7 +89,7 @@ void Scene_Logo::vUpdate() {
 
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
-		frame_counter == 60 ||
+		frame_counter == 600 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
