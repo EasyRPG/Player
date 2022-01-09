@@ -649,11 +649,17 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
-		/** Reset the x position of the BG. */
-		void ResetPositionX();
+		/**
+		 * Reset the x position of the BG.
+		 * @param did_teleport When true does additional repositioning required after a teleport
+		 */
+		void ResetPositionX(bool did_teleport);
 
-		/** Reset the y position of the BG. */
-		void ResetPositionY();
+		/**
+		 * Reset the x position of the BG.
+		 * @param did_teleport When true does additional repositioning required after a teleport
+		 */
+		void ResetPositionY(bool did_teleport);
 
 		/**
 		 * To be called when the map scrolls right.

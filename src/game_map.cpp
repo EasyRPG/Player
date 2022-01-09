@@ -1345,7 +1345,7 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	}
 	map_info.position_x = x;
 	if (reset_panorama) {
-		Parallax::ResetPositionX();
+		Parallax::ResetPositionX(true);
 	}
 }
 
@@ -1366,7 +1366,7 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	}
 	map_info.position_y = y;
 	if (reset_panorama) {
-		Parallax::ResetPositionY();
+		Parallax::ResetPositionY(true);
 	}
 }
 
@@ -1626,40 +1626,58 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	Params params = GetParallaxParams();
 
 	if (reset_panorama_x_on_next_init) {
-		ResetPositionX();
+		ResetPositionX(false);
 	}
 	if (reset_panorama_y_on_next_init) {
-		ResetPositionY();
+		ResetPositionY(false);
 	}
 }
 
-void Game_Map::Parallax::ResetPositionX() {
+void Game_Map::Parallax::ResetPositionX(bool did_teleport) {
 	Params params = GetParallaxParams();
 
 	panorama.pan_x = 0;
 	if (params.name.empty()) {
 		return;
 	}
-	if (params.scroll_horz || LoopHorizontal()) {
-		panorama.pan_x = map_info.position_x;
-	} else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
-		panorama.pan_x = std::min(map_info.position_x * (parallax_width - SCREEN_TARGET_WIDTH) * 2 / ((GetWidth() - 20) * TILE_SIZE)
-				, map_info.position_x * 2);
+
+	if (did_teleport && parallax_width != 0) {
+		const int w = parallax_width * TILE_SIZE * 2;
+		panorama.pan_x = (map_info.position_x + w) % w;
+	}
+
+	if (!params.scroll_horz && !LoopHorizontal()) {
+		if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
+			const int w = (GetWidth() - 20) * TILE_SIZE;
+			panorama.pan_x = 2 * std::min(w, parallax_width - SCREEN_TARGET_WIDTH) * map_info.position_x / w;
+		} else {
+			panorama.pan_x = 0;
+		}
 	}
 }
 
-void Game_Map::Parallax::ResetPositionY() {
+void Game_Map::Parallax::ResetPositionY(bool did_teleport) {
 	Params params = GetParallaxParams();
 
 	panorama.pan_y = 0;
 	if (params.name.empty()) {
 		return;
 	}
-	if (params.scroll_vert || Game_Map::LoopVertical()) {
-		panorama.pan_y = map_info.position_y;
-	} else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
-		panorama.pan_y = std::min(map_info.position_y * (parallax_height - SCREEN_TARGET_HEIGHT) * 2 / ((GetHeight() - 15) * TILE_SIZE)
-				, map_info.position_y * 2);
+
+	if (did_teleport && parallax_height != 0) {
+		const int h = parallax_height * TILE_SIZE * 2;
+		panorama.pan_y = (map_info.position_y + h) % h;
+	}
+
+	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
+		if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
+			const int h = (GetHeight() - 15) * TILE_SIZE;
+			const int pv = 2 * std::min(h, parallax_height - SCREEN_TARGET_HEIGHT) * map_info.position_y / h;
+			const int ph = parallax_height * TILE_SIZE * 2;
+			panorama.pan_y = (pv + ph) % ph;
+		} else {
+			panorama.pan_y = 0;
+		}
 	}
 }
 
@@ -1687,7 +1705,7 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 		return;
 	}
 
-	ResetPositionX();
+	ResetPositionX(false);
 }
 
 void Game_Map::Parallax::ScrollDown(int distance) {
@@ -1714,7 +1732,7 @@ void Game_Map::Parallax::ScrollDown(int distance) {
 		return;
 	}
 
-	ResetPositionY();
+	ResetPositionY(false);
 }
 
 void Game_Map::Parallax::Update() {
