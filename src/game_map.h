@@ -649,17 +649,23 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
-		/**
-		 * Reset the x position of the BG.
-		 * @param did_teleport When true does additional repositioning required after a teleport
-		 */
-		void ResetPositionX(bool did_teleport);
+		/** Adds x to the panorama x-position MOD parallax_width * TILE_SIZE * 2 */
+		void AddPositionX(int x);
 
-		/**
-		 * Reset the x position of the BG.
-		 * @param did_teleport When true does additional repositioning required after a teleport
-		 */
-		void ResetPositionY(bool did_teleport);
+		/** Adds y to the panorama y-position MOD parallax_width * TILE_SIZE * 2 */
+		void AddPositionY(int y);
+
+		/** Sets the panorama x-position MOD parallax_width * TILE_SIZE * 2 */
+		void SetPositionX(int x);
+
+		/** Sets the panorama y-position MOD parallax_width * TILE_SIZE * 2 */
+		void SetPositionY(int y);
+
+		/** Reset the x position of the BG. */
+		void ResetPositionX();
+
+		/** Reset the x position of the BG. */
+		void ResetPositionY();
 
 		/**
 		 * To be called when the map scrolls right.

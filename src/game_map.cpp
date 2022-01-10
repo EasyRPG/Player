@@ -73,6 +73,7 @@ namespace {
 	lcf::rpg::Chipset* chipset;
 
 	//FIXME: Find a better way to do this.
+	bool panorama_on_map_init = true;
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
 }
@@ -133,6 +134,7 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	map = std::move(map_in);
 
 	SetupCommon();
+	panorama_on_map_init = true;
 	reset_panorama_x_on_next_init = true;
 	reset_panorama_y_on_next_init = true;
 
@@ -1345,7 +1347,8 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	}
 	map_info.position_x = x;
 	if (reset_panorama) {
-		Parallax::ResetPositionX(true);
+		Parallax::SetPositionX(map_info.position_x);
+		Parallax::ResetPositionX();
 	}
 }
 
@@ -1366,7 +1369,8 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	}
 	map_info.position_y = y;
 	if (reset_panorama) {
-		Parallax::ResetPositionY(true);
+		Parallax::SetPositionY(map_info.position_y);
+		Parallax::ResetPositionY();
 	}
 }
 
@@ -1625,56 +1629,85 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 
 	Params params = GetParallaxParams();
 
+	if (panorama_on_map_init) {
+		AddPositionX(map_info.position_x);
+		AddPositionY(map_info.position_y);
+	}
+
 	if (reset_panorama_x_on_next_init) {
-		ResetPositionX(false);
+		ResetPositionX();
 	}
 	if (reset_panorama_y_on_next_init) {
-		ResetPositionY(false);
+		ResetPositionY();
+	}
+
+	if (Player::IsRPG2k() && !panorama_on_map_init) {
+		SetPositionX(panorama.pan_x);
+		SetPositionY(panorama.pan_y);
 	}
 }
 
-void Game_Map::Parallax::ResetPositionX(bool did_teleport) {
+void Game_Map::Parallax::AddPositionX(int off_x) {
+	SetPositionX(panorama.pan_x + off_x);
+}
+
+void Game_Map::Parallax::AddPositionY(int off_y) {
+	SetPositionY(panorama.pan_y + off_y);
+}
+
+void Game_Map::Parallax::SetPositionX(int x) {
+	// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+	// Real fix TBD
+	if (parallax_width != 0) {
+		const int w = parallax_width * TILE_SIZE * 2;
+		panorama.pan_x = (x + w) % w;
+	}
+}
+
+void Game_Map::Parallax::SetPositionY(int y) {
+	// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+	// Real fix TBD
+	if (parallax_height) {
+		const int h = parallax_height * TILE_SIZE * 2;
+		panorama.pan_y = (y + h) % h;
+	}
+}
+
+void Game_Map::Parallax::ResetPositionX() {
 	Params params = GetParallaxParams();
 
-	panorama.pan_x = 0;
 	if (params.name.empty()) {
 		return;
-	}
-
-	if (did_teleport && parallax_width != 0) {
-		const int w = parallax_width * TILE_SIZE * 2;
-		panorama.pan_x = (map_info.position_x + w) % w;
 	}
 
 	if (!params.scroll_horz && !LoopHorizontal()) {
 		if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
 			const int w = (GetWidth() - 20) * TILE_SIZE;
-			panorama.pan_x = 2 * std::min(w, parallax_width - SCREEN_TARGET_WIDTH) * map_info.position_x / w;
+			const int ph = 2 * std::min(w, parallax_width - SCREEN_TARGET_WIDTH) * map_info.position_x / w;
+			if (Player::IsRPG2k()) {
+				SetPositionX(ph);
+			} else {
+				// 2k3 does not do the (% parallax_width * TILE_SIZE * 2) here
+				panorama.pan_x = ph;
+			}
 		} else {
 			panorama.pan_x = 0;
 		}
 	}
 }
 
-void Game_Map::Parallax::ResetPositionY(bool did_teleport) {
+void Game_Map::Parallax::ResetPositionY() {
 	Params params = GetParallaxParams();
 
-	panorama.pan_y = 0;
 	if (params.name.empty()) {
 		return;
-	}
-
-	if (did_teleport && parallax_height != 0) {
-		const int h = parallax_height * TILE_SIZE * 2;
-		panorama.pan_y = (map_info.position_y + h) % h;
 	}
 
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
 		if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
 			const int h = (GetHeight() - 15) * TILE_SIZE;
 			const int pv = 2 * std::min(h, parallax_height - SCREEN_TARGET_HEIGHT) * map_info.position_y / h;
-			const int ph = parallax_height * TILE_SIZE * 2;
-			panorama.pan_y = (pv + ph) % ph;
+			SetPositionY(pv);
 		} else {
 			panorama.pan_y = 0;
 		}
@@ -1692,12 +1725,7 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 	}
 
 	if (params.scroll_horz) {
-		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
-		// Real fix TBD
-		if (parallax_width != 0) {
-			const auto w = parallax_width * TILE_SIZE * 2;
-			panorama.pan_x = (panorama.pan_x + distance + w) % w;
-		}
+		AddPositionX(distance);
 		return;
 	}
 
@@ -1705,7 +1733,7 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 		return;
 	}
 
-	ResetPositionX(false);
+	ResetPositionX();
 }
 
 void Game_Map::Parallax::ScrollDown(int distance) {
@@ -1719,12 +1747,7 @@ void Game_Map::Parallax::ScrollDown(int distance) {
 	}
 
 	if (params.scroll_vert) {
-		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
-		// Real fix TBD
-		if (parallax_height != 0) {
-			const auto h = parallax_height * TILE_SIZE * 2;
-			panorama.pan_y = (panorama.pan_y + distance + h) % h;
-		}
+		AddPositionY(distance);
 		return;
 	}
 
@@ -1732,7 +1755,7 @@ void Game_Map::Parallax::ScrollDown(int distance) {
 		return;
 	}
 
-	ResetPositionY(false);
+	ResetPositionY();
 }
 
 void Game_Map::Parallax::Update() {
@@ -1748,23 +1771,14 @@ void Game_Map::Parallax::Update() {
 	if (params.scroll_horz
 			&& params.scroll_horz_auto
 			&& params.scroll_horz_speed != 0) {
-
-		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
-		// Real fix TBD
-		if (parallax_width != 0) {
-			const auto w = parallax_width * TILE_SIZE * 2;
-			panorama.pan_x = (panorama.pan_x + scroll_amt(params.scroll_horz_speed) + w) % w;
-		}
+		AddPositionX(scroll_amt(params.scroll_horz_speed));
 	}
 
 	if (params.scroll_vert
 			&& params.scroll_vert_auto
 			&& params.scroll_vert_speed != 0) {
-		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
-		// Real fix TBD
 		if (parallax_height != 0) {
-			const auto h = parallax_height * TILE_SIZE * 2;
-			panorama.pan_y = (panorama.pan_y + scroll_amt(params.scroll_vert_speed) + h) % h;
+			AddPositionY(scroll_amt(params.scroll_vert_speed));
 		}
 	}
 }
@@ -1778,6 +1792,7 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 	map_info.parallax_vert_auto = params.scroll_vert_auto;
 	map_info.parallax_vert_speed = params.scroll_vert_speed;
 
+	panorama_on_map_init = false;
 	reset_panorama_x_on_next_init = !Game_Map::LoopHorizontal() && !map_info.parallax_horz;
 	reset_panorama_y_on_next_init = !Game_Map::LoopVertical() && !map_info.parallax_vert;
 
