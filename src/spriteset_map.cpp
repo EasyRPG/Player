@@ -142,6 +142,7 @@ void Spriteset_Map::ParallaxUpdated() {
 		panorama_name = name;
 		if (name.empty()) {
 			panorama->SetBitmap(BitmapRef());
+			Game_Map::Parallax::Initialize(0, 0);
 		}
 		else {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
