@@ -408,7 +408,7 @@ std::string get_filename(int slot) {
 	std::string found = fs.FindFile(filename);
 
 	if (found.empty()) {
-		found = fs.MakePath(filename);
+		found = filename;
 	}
 
 	return found;
