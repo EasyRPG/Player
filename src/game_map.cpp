@@ -575,6 +575,14 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		if (vehicle_type == Game_Vehicle::None) {
 			// Check that we are allowed to step off of the current tile.
 			// Note: Vehicles can always step off a tile.
+
+			// The current coordinate can be invalid due to an out-of-bounds teleport or a "Set Location" event.
+			// Round it for looping maps to ensure the check passes
+			// This is not fully bug compatible to RPG_RT. Assuming the Y-Coordinate is out-of-bounds: When moving
+			// left or right the invalid Y will stay in RPG_RT preventing events from being triggered, but we wrap it
+			// inbounds after the first move.
+			from_x = Game_Map::RoundX(from_x);
+			from_y = Game_Map::RoundY(from_y);
 			if (!IsPassableTile(&self, bit_from, from_x, from_y)) {
 				return false;
 			}
