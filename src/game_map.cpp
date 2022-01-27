@@ -1625,7 +1625,10 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_width = width;
 	parallax_height = height;
 
-	Params params = GetParallaxParams();
+	if (panorama_on_map_init) {
+		Parallax::SetPositionX(map_info.position_x);
+		Parallax::SetPositionY(map_info.position_y);
+	}
 
 	if (reset_panorama_x_on_next_init) {
 		ResetPositionX();
@@ -1638,6 +1641,8 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 		SetPositionX(panorama.pan_x);
 		SetPositionY(panorama.pan_y);
 	}
+
+	panorama_on_map_init = false;
 }
 
 void Game_Map::Parallax::AddPositionX(int off_x) {
@@ -1651,7 +1656,7 @@ void Game_Map::Parallax::AddPositionY(int off_y) {
 void Game_Map::Parallax::SetPositionX(int x) {
 	// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
 	// Real fix TBD
-	if (parallax_width != 0) {
+	if (parallax_width) {
 		const int w = parallax_width * TILE_SIZE * 2;
 		panorama.pan_x = (x + w) % w;
 	}
@@ -1797,5 +1802,4 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 void Game_Map::Parallax::ClearChangedBG() {
 	Params params {}; // default Param indicates no override
 	ChangeBG(params);
-	panorama_on_map_init = false;
 }
