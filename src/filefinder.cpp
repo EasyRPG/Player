@@ -306,7 +306,7 @@ std::string GetFontFilename(StringView name) {
 
 std::string FileFinder::FindFont(StringView name) {
 	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
-	std::string path = Game().FindFile({ MakePath("Font", name), FONTS_TYPES, 1, true, true });
+	std::string path = Game().FindFile({ MakePath("Font", name), FONTS_TYPES, 1, true });
 
 #if defined(_WIN32) && !defined(_ARM_)
 	if (!path.empty()) {
@@ -378,27 +378,48 @@ int FileFinder::GetSavegames() {
 	return false;
 }
 
+std::string find_generic(const DirectoryTree::Args& args) {
+	if (!Tr::GetCurrentTranslationId().empty()) {
+		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
+		auto translated_file = tr_fs.FindFile(args);
+		if (!translated_file.empty()) {
+			return translated_file;
+		}
+	}
+
+	return FileFinder::Game().FindFile(args);
+}
+
 std::string FileFinder::FindImage(StringView dir, StringView name) {
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
-	return FileFinder::Game().FindFile(args);
+	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
+	return find_generic(args);
 }
 
 std::string FileFinder::FindMusic(StringView name) {
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
-	return FileFinder::Game().FindFile(args);
+	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
+	return find_generic(args);
+
 }
 
 std::string FileFinder::FindSound(StringView name) {
 	auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
-	return FileFinder::Game().FindFile(args);
+	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
+	return find_generic(args);
 }
 
 Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, DirectoryTree::Args& args) {
+	if (!Tr::GetCurrentTranslationId().empty()) {
+		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
+		auto is = tr_fs.OpenFile(args);
+		if (is) {
+			return is;
+		}
+	}
+
 	auto is = FileFinder::Game().OpenFile(args);
 	if (!is) {
 		is = Main_Data::filefinder_rtp->Lookup(dir, name, args.exts);
@@ -411,21 +432,21 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
 	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false, true };
+	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return open_generic(dir, name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
 	auto MUSIC_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false, true };
+	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
 	return open_generic("Music", name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
 	auto SOUND_TYPES = Utils::MakeSvArray(
 		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false, true };
+	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
 	return open_generic("Sound", name, args);
 }
 
