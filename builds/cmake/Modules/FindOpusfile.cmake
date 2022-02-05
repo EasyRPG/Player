@@ -43,6 +43,9 @@ if(NOT OPUSFILE_LIBRARY)
 endif()
 
 # Additional dependencies
+find_library(OGG_LIBRARY
+	NAMES libogg ogg)
+
 find_library(OPUS_LIBRARY
 	NAMES libopus opus)
 
@@ -61,7 +64,7 @@ if(OPUSFILE_FOUND)
 		add_library(Opusfile::Opusfile UNKNOWN IMPORTED)
 		set_target_properties(Opusfile::Opusfile PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${OPUSFILE_INCLUDE_DIRS}"
-			INTERFACE_LINK_LIBRARIES ${OPUS_LIBRARY}
+			INTERFACE_LINK_LIBRARIES "${OGG_LIBRARY};${OPUS_LIBRARY}"
 			IMPORTED_LOCATION "${OPUSFILE_LIBRARY}")
 	endif()
 endif()

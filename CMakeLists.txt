@@ -813,6 +813,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
 		DEFINITION HAVE_OGGVORBIS
 		TARGET Vorbisfile::Vorbisfile)
 
+	if(NOT VORBISFILE_FOUND)
+		player_find_package(NAME Tremor
+			CONDITION PLAYER_WITH_OGGVORBIS
+			DEFINITION HAVE_TREMOR
+			TARGET Tremor::Tremor)
+	endif()
+
 	# opusfile
 	player_find_package(NAME Opusfile
 		CONDITION PLAYER_WITH_OPUS
@@ -1207,6 +1214,8 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
 
 	if(VORBISFILE_FOUND)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
+	elseif(TREMOR_FOUND)
+		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
 		message(STATUS "Ogg Vorbis playback: None")
 	endif()
