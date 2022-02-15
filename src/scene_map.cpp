@@ -319,7 +319,7 @@ void Scene_Map::FinishPendingTeleport(TeleportParams tp) {
 	Main_Data::game_player->PerformTeleport();
 
 	if (Game_Map::GetMapId() != old_map_id) {
-		spriteset.reset(new Spriteset_Map());
+		spriteset->Refresh();
 	}
 	FinishPendingTeleport2(MapUpdateAsyncContext(), tp);
 }
@@ -384,7 +384,7 @@ void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 	Main_Data::game_player->PerformTeleport();
 	Main_Data::game_player->ResetTeleportTarget(original_tt);
 
-	spriteset.reset(new Spriteset_Map());
+	spriteset->Refresh();
 
 	AsyncNext(std::move(map_async_continuation));
 }

@@ -649,10 +649,22 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
+		/** Adds x to the panorama x-position MOD parallax_width * TILE_SIZE * 2 */
+		void AddPositionX(int x);
+
+		/** Adds y to the panorama y-position MOD parallax_width * TILE_SIZE * 2 */
+		void AddPositionY(int y);
+
+		/** Sets the panorama x-position MOD parallax_width * TILE_SIZE * 2 */
+		void SetPositionX(int x);
+
+		/** Sets the panorama y-position MOD parallax_width * TILE_SIZE * 2 */
+		void SetPositionY(int y);
+
 		/** Reset the x position of the BG. */
 		void ResetPositionX();
 
-		/** Reset the y position of the BG. */
+		/** Reset the x position of the BG. */
 		void ResetPositionY();
 
 		/**

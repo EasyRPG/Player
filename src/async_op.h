@@ -40,7 +40,8 @@ class AsyncOp {
 			eExitGame,
 			eTerminateBattle,
 			eSave,
-			eLoad
+			eLoad,
+			eYield
 		};
 
 		AsyncOp() = default;
@@ -71,6 +72,9 @@ class AsyncOp {
 
 		/** @return a Load async operation */
 		static AsyncOp MakeLoad(int save_slot);
+
+		/** @return a Yield for one frame to e.g. fetch an important asset */
+		static AsyncOp MakeYield();
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -214,5 +218,8 @@ inline AsyncOp AsyncOp::MakeLoad(int save_slot) {
 	return AsyncOp(eLoad, save_slot);
 }
 
-#endif
+inline AsyncOp AsyncOp::MakeYield() {
+	return AsyncOp(eYield);
+}
 
+#endif

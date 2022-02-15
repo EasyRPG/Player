@@ -42,6 +42,8 @@ class Spriteset_Map {
 public:
 	Spriteset_Map();
 
+	void Refresh();
+
 	void Update();
 
 	/**
@@ -53,6 +55,11 @@ public:
 	 * Notifies that the map's chipset has changed.
 	 */
 	void ChipsetUpdated();
+
+	/**
+	 * Notifies that the map's parallax has changed.
+	 */
+	void ParallaxUpdated();
 
 	/**
 	 * Notifies that the System graphic has changed.
