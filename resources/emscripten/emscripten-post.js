@@ -2,15 +2,15 @@
 FS.mkdir("easyrpg");
 FS.chdir("easyrpg");
 
-if (Module.EASYRPG_GAME.length > 0) {
-  FS.mkdir(Module.EASYRPG_GAME);
-  FS.chdir(Module.EASYRPG_GAME);
+if (Module.game.length > 0) {
+  FS.mkdir(Module.game);
+  FS.chdir(Module.game);
 }
 
 // Use IDBFS for save file storage when the filesystem was not
 // overwritten by a custom emscripten shell file
 if (typeof Module.EASYRPG_FS === "undefined") {
-  Module.EASYRPG_FS = IDBFS;
+  Module.saveFs = IDBFS;
 }
 
 // Display the nice end message forever
