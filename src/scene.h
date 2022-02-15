@@ -137,6 +137,11 @@ public:
 	static bool IsAsyncPending();
 
 	/**
+	 * Called when data was modified from the outside and must be reloaded.
+	 */
+	virtual void Refresh() {}
+
+	/**
 	 * Called every frame.
 	 */
 	void Update();
