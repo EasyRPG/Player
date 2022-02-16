@@ -65,7 +65,6 @@ FilesystemView Tr::GetCurrentTranslationFilesystem() {
 	return Player::translation.GetRootTree().Subtree(GetCurrentTranslationId());
 }
 
-
 void Translation::Reset()
 {
 	ClearTranslationLookups();
@@ -132,14 +131,42 @@ const std::vector<Language>& Translation::GetLanguages() const
 }
 
 
-void Translation::SelectLanguage(const std::string& lang_id)
+void Translation::SelectLanguage(StringView lang_id)
 {
 	// Try to read in our language files.
 	Output::Debug("Changing language to: '{}'", (!lang_id.empty() ? lang_id : "<Default>"));
+
+	if (!lang_id.empty()) {
+		FilesystemView language_tree = GetRootTree().Subtree(lang_id);
+		if (language_tree) {
+			request_counter = 4;
+			for (auto s: {TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT}) {
+				FileRequestAsync* request = AsyncHandler::RequestFile(language_tree.GetFullPath(), s);
+				request->SetImportantFile(true);
+				requests.emplace_back(request->Bind(&Translation::SelectLanguageAsync, this, lang_id));
+				request->Start();
+			}
+		}
+	} else {
+		// Default language, no request needed
+		request_counter = 1;
+		SelectLanguageAsync(nullptr, lang_id);
+	}
+}
+
+void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang_id) {
+	--request_counter;
+	if (request_counter == 0) {
+		requests.clear();
+	} else {
+		// Waiting for remaining callbacks
+		return;
+	}
+
 	if (!ParseLanguageFiles(lang_id)) {
 		return;
 	}
-	current_language = lang_id;
+	current_language = ToString(lang_id);
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
@@ -159,7 +186,7 @@ void Translation::SelectLanguage(const std::string& lang_id)
 	Scene::instance->OnTranslationChanged();
 }
 
-bool Translation::ParseLanguageFiles(const std::string& lang_id)
+bool Translation::ParseLanguageFiles(StringView lang_id)
 {
 	FilesystemView language_tree;
 
@@ -211,13 +238,13 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 				ParsePoFile(std::move(is), *mapnames);
 			}
 		} else {
-			std::unique_ptr<Dictionary> dict;
+			/*std::unique_ptr<Dictionary> dict;
 			dict = std::make_unique<Dictionary>();
 			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
-			}
+			}*/
 		}
 	}
 
@@ -435,7 +462,7 @@ namespace {
 		}
 
 		/** Change the string value of the EventCommand at position "idx" to "newStr" */
-		void ReWriteString(size_t idx, const std::string& newStr) {
+		void ReWriteString(size_t idx, StringView newStr) {
 			if (idx < commands.size()) {
 				commands[idx].string = lcf::DBString(newStr);
 			}
@@ -446,7 +473,7 @@ namespace {
 		 * Sets the string value to "line". Note that ShowMessage_2 is chosen if baseMsgBox is false.
 		 * This also updates the index if relevant, but it does not update external index caches.
 		 */
-		void PutShowMessageBeforeIndex(const std::string& line, size_t idx, bool baseMsgBox) {
+		void PutShowMessageBeforeIndex(StringView line, size_t idx, bool baseMsgBox) {
 			// We need a reference index for the indent.
 			size_t refIndent = 0;
 			if (idx < commands.size()) {
@@ -521,7 +548,7 @@ std::vector<std::vector<std::string>> Translation::TranslateMessageStream(const 
 
 		// Now, break into message boxes based on the ADDMSG string
 		res.push_back(std::vector<std::string>());
-		for (const std::string& line : lines) {
+		for (const auto& line : lines) {
 			if (line == TRCUST_ADDMSG) {
 				res.push_back(std::vector<std::string>());
 			} else {
@@ -646,9 +673,9 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	}
 }
 
-void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map& map) {
+void Translation::RewriteMapMessages(StringView map_name, lcf::rpg::Map& map) {
 	// Retrieve lookup for this map.
-	auto mapIt = maps.find(map_name);
+	auto mapIt = maps.find(ToString(map_name));
 	if (mapIt==maps.end()) { return; }
 
 	// Rewrite all event commands on all pages.
@@ -674,7 +701,6 @@ void Translation::ClearTranslationLookups()
 	mapnames.reset();
 	maps.clear();
 }
-
 
 //////////////////////////////////////////////////////////
 // NOTE: The code from here on out is duplicated in LcfTrans.

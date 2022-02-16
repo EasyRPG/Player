@@ -145,6 +145,15 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 				FileFinder::Game().OpenOutputStream(s);
 			}
 		}
+
+		// Look for Meta.ini files and fetch them. They are required for detecting the translations.
+		for (const auto& item: file_mapping) {
+			if (StringView(item.first).ends_with("meta.ini")) {
+				auto* request = AsyncHandler::RequestFile(item.second);
+				request->SetImportantFile(true);
+				request->Start();
+			}
+		}
 	}
 #else
 	// no-op

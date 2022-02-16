@@ -24,6 +24,7 @@
 #include <memory>
 #include <unordered_map>
 
+#include "async_handler.h"
 #include "filefinder.h"
 
 namespace lcf {
@@ -98,7 +99,7 @@ public:
 	 * @return True if the original string was replaced; false otherwise.
 	 */
 	template <class StringType>
-	bool TranslateString(const std::string& context, StringType& original) const;
+	bool TranslateString(StringView context, StringType& original) const;
 
 private:
 	/**
@@ -115,11 +116,11 @@ private:
 
 // Template implementation
 template <class StringType>
-bool Dictionary::TranslateString(const std::string& context, StringType& original) const
+bool Dictionary::TranslateString(StringView context, StringType& original) const
 {
 	std::stringstream key;
 	key << original;
-	auto it = entries.find(context);
+	auto it = entries.find(ToString(context));
 	if (it != entries.end()) {
 		auto it2 = it->second.find(key.str());
 		if (it2 != it->second.end()) {
@@ -178,7 +179,7 @@ public:
 	 *
 	 * @param lang_id The language ID (or "" for "Default")
 	 */
-	void SelectLanguage(const std::string& lang_id);
+	void SelectLanguage(StringView lang_id);
 
 	/**
 	 * Rewrite all Messages and Choices in this Map
@@ -186,7 +187,7 @@ public:
 	 * @param map_name The name of the map with formatting similar to the .po file; e.g., "map0104.po"
 	 * @param map The map object itself (for modifying).
 	 */
-	void RewriteMapMessages(const std::string& map_name, lcf::rpg::Map& map);
+	void RewriteMapMessages(StringView map_name, lcf::rpg::Map& map);
 
 	/**
 	 * Retrieve the ID of the current (active) language.
@@ -197,6 +198,8 @@ public:
 
 
 private:
+	void SelectLanguageAsync(FileRequestResult* result, StringView lang_id);
+
 	/**
 	 * Reset all saved language data and revert to "no translation".
 	 */
@@ -214,14 +217,6 @@ private:
 	 * @param out The Dictionary to save these entries in (output).
 	 */
 	void ParsePoFile(Filesystem_Stream::InputStream is, Dictionary& out);
-
-	/**
-	 * Parse all .po files for the given language.
-	 *
-	 * @param lang_id The ID of the language to parse, or "" for Default (no parsing is done)
-	 * @return True if the language directory was found; false otherwise
-	 */
-	bool ParseLanguageFiles(const std::string& lang_id);
 
 	/**
 	 * Rewrite RPG_RT.ldb with the current translation entries
@@ -266,6 +261,14 @@ private:
 
 
 private:
+	/**
+	 * Parse all .po files for the given language.
+	 *
+	 * @param lang_id The ID of the language to parse, or "" for Default (no parsing is done)
+	 * @return True if the language directory was found; false otherwise
+	 */
+	bool ParseLanguageFiles(StringView lang_id);
+
 	// Our translations are broken apart into multiple files; we store a lookup for each one.
 	std::unique_ptr<Dictionary> sys;       // RPG_RT.ldb.po
 	std::unique_ptr<Dictionary> common;    // RPG_RT.ldb.common.po
@@ -281,6 +284,9 @@ private:
 
 	// The translation we are currently showing (e.g., "English_1")
 	std::string current_language;
+
+	std::vector<FileRequestBinding> requests;
+	int request_counter = -1;
 };
 
 #endif  // EP_TRANSLATION_H
