@@ -41,6 +41,8 @@ public:
 	void Suspend(SceneType next_scene) override;
 	void Update() override;
 
+	void OnTranslationChanged() override;
+
 	/**
 	 * Creates the background graphic of the scene.
 	 */

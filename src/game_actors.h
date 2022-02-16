@@ -63,6 +63,8 @@ public:
 	 */
 	void ResetBattle();
 
+	void ReloadActors();
+
 private:
 	std::vector<Game_Actor> data;
 };

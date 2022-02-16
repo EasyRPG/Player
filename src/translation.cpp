@@ -33,7 +33,7 @@
 #include "player.h"
 #include "output.h"
 #include "utils.h"
-
+#include "scene.h"
 
 // Name of the translate directory
 #define TRDIR_NAME "languages"
@@ -155,8 +155,9 @@ void Translation::SelectLanguage(const std::string& lang_id)
 
 	// Reset the cache, so that all images load fresh.
 	Cache::Clear();
-}
 
+	Scene::instance->OnTranslationChanged();
+}
 
 bool Translation::ParseLanguageFiles(const std::string& lang_id)
 {
@@ -222,6 +223,7 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 
 	// Log
 	Output::Debug("Translation loaded {} sys, {} common, {} battle, and {} map .po files", (sys==nullptr?0:1), (battle==nullptr?0:1), (common==nullptr?0:1), maps.size());
+
 	return true;
 }
 

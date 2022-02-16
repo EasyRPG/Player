@@ -383,3 +383,6 @@ void Scene::OnPartyChanged(Game_Actor*, bool) {
 
 void Scene::OnEventHpChanged(Game_Battler*, int) {
 }
+
+void Scene::OnTranslationChanged() {
+}

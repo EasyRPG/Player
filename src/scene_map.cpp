@@ -23,6 +23,7 @@
 #include "scene_debug.h"
 #include "main_data.h"
 #include "game_map.h"
+#include "game_actors.h"
 #include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
@@ -217,6 +218,13 @@ void Scene_Map::DrawBackground(Bitmap& dst) {
 	if (spriteset->RequireClear(GetDrawableList())) {
 		dst.Clear();
 	}
+}
+
+void Scene_Map::OnTranslationChanged() {
+	// FIXME: Map events are not reloaded
+	// They require leaving and reentering the map
+	Game_Map::ReloadChipset();
+	Main_Data::game_actors->ReloadActors();
 }
 
 void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {

@@ -58,6 +58,7 @@ namespace Cache {
 	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend);
 
 	void Clear();
+	void ClearAll();
 
 	/** @return the configured system bitmap, or nullptr if there is no system */
 	BitmapRef System();

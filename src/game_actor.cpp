@@ -85,7 +85,7 @@ Game_Actor::Game_Actor(int actor_id) {
 	if (actor_id == 0) {
 		return;
 	}
-	dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, GetId());
+	ReloadDbActor();
 
 	data.two_weapon = dbActor->two_weapon;
 	data.lock_equipment = dbActor->lock_equipment;
@@ -142,6 +142,10 @@ void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
 
 	MakeExpList();
 	Fixup();
+}
+
+void Game_Actor::ReloadDbActor() {
+	dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, GetId());
 }
 
 lcf::rpg::SaveActor Game_Actor::GetSaveData() const {

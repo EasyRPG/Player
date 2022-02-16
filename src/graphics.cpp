@@ -56,7 +56,7 @@ void Graphics::Quit() {
 	fps_overlay.reset();
 	message_overlay.reset();
 
-	Cache::Clear();
+	Cache::ClearAll();
 
 	Scene::PopUntil(Scene::Null);
 	Scene::Pop();

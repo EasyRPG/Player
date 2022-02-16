@@ -45,7 +45,7 @@ void Scene_GameBrowser::Start() {
 void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Main_Data::game_system->BgmStop();
 
-	Cache::Clear();
+	Cache::ClearAll();
 	AudioSeCache::Clear();
 	lcf::Data::Clear();
 	Main_Data::Cleanup();

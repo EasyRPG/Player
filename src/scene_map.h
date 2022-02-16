@@ -44,6 +44,7 @@ public:
 	void TransitionIn(SceneType prev_scene) override;
 	void TransitionOut(SceneType next_scene) override;
 	void DrawBackground(Bitmap& dst) override;
+	void OnTranslationChanged() override;
 
 	std::unique_ptr<Spriteset_Map> spriteset;
 

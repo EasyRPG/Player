@@ -77,7 +77,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 	if (restart_title_cache) {
 		// Clear the cache when the game returns to the title screen
 		// e.g. by pressing F12, except the Title Load menu
-		Cache::Clear();
+		Cache::ClearAll();
 		AudioSeCache::Clear();
 
 		Player::ResetGameObjects();
@@ -156,6 +156,13 @@ void Scene_Title::Update() {
 			HideTranslationWindow();
 		}
 	}
+}
+
+void Scene_Title::OnTranslationChanged() {
+	Start();
+
+	command_window->SetIndex(indices.translate);
+	HideTranslationWindow();
 }
 
 void Scene_Title::CreateTitleGraphic() {
@@ -327,9 +334,6 @@ void Scene_Title::ChangeLanguage(const std::string& lang_str) {
 
 	// First change the language
 	Player::translation.SelectLanguage(lang_str);
-
-	// Now reset the scene (force asset reload)
-	Scene::Push(std::make_shared<Scene_Title>(), true);
 }
 
 void Scene_Title::HideTranslationWindow() {
