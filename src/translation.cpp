@@ -186,6 +186,28 @@ void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang
 	Scene::instance->OnTranslationChanged();
 }
 
+void Translation::RequestAndAddMap(int map_id) {
+	if (current_language.empty()) {
+		return;
+	}
+
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".po";
+	std::string map_name = ss.str();
+	FileRequestAsync* request = AsyncHandler::RequestFile(Tr::GetCurrentTranslationFilesystem().GetFullPath(), map_name);
+	request->SetImportantFile(true);
+	map_request = request->Bind([this, map_name, map_id](FileRequestResult* res) {
+		std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
+		auto is = Tr::GetCurrentTranslationFilesystem().OpenInputStream(map_name);
+		if (is) {
+			ParsePoFile(std::move(is), *dict);
+			maps[Utils::LowerCase(map_name)] = std::move(dict);
+			Output::Debug("Loaded {} map .po file ({} map files loaded)", map_name, maps.size());
+		}
+	});
+	request->Start();
+}
+
 bool Translation::ParseLanguageFiles(StringView lang_id)
 {
 	FilesystemView language_tree;
@@ -238,13 +260,16 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 				ParsePoFile(std::move(is), *mapnames);
 			}
 		} else {
-			/*std::unique_ptr<Dictionary> dict;
+			// This will fail in the web player but is intentional
+			// The fetching happens on map load instead
+			// Still parsing all files locally to get syntax errors early
+			std::unique_ptr<Dictionary> dict;
 			dict = std::make_unique<Dictionary>();
 			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
-			}*/
+			}
 		}
 	}
 

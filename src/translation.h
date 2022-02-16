@@ -182,6 +182,14 @@ public:
 	void SelectLanguage(StringView lang_id);
 
 	/**
+	 * Does a async fetch of a map po file.
+	 * Only used by the web player.
+	 *
+	 * @param map_id map whose po file to fetch
+	 */
+	void RequestAndAddMap(int map_id);
+
+	/**
 	 * Rewrite all Messages and Choices in this Map
 	 *
 	 * @param map_name The name of the map with formatting similar to the .po file; e.g., "map0104.po"
@@ -286,6 +294,7 @@ private:
 	std::string current_language;
 
 	std::vector<FileRequestBinding> requests;
+	FileRequestBinding map_request;
 	int request_counter = -1;
 };
 

@@ -1581,6 +1581,10 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 }
 
 FileRequestAsync* Game_Map::RequestMap(int map_id) {
+#ifdef EMSCRIPTEN
+	Player::translation.RequestAndAddMap(map_id);
+#endif
+
 	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
 }
 
