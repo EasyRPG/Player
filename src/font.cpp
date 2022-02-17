@@ -71,11 +71,23 @@ namespace {
 	}
 
 	BitmapFontGlyph const* find_gothic_glyph(char32_t code) {
+		if (Player::IsCP936()) {
+			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
+			if (wqy != NULL) {
+				return wqy;
+			}
+		}		
 		auto* gothic = find_glyph(SHINONOME_GOTHIC, code);
 		return gothic != NULL ? gothic : find_fallback_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
+		if (Player::IsCP936()) {
+			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
+			if (wqy != NULL) {
+				return wqy;
+			}
+		}		
 		auto* mincho = find_glyph(SHINONOME_MINCHO, code);
 		return mincho == NULL ? find_gothic_glyph(code) : mincho;
 	}
