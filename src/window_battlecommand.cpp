@@ -25,6 +25,7 @@
 #include "game_actors.h"
 #include "window_battlecommand.h"
 #include "bitmap.h"
+#include "feature.h"
 
 Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
 	Window_Base(x, y, width, height) {
@@ -133,7 +134,7 @@ void Window_BattleCommand::SetIndex(int _index) {
 }
 
 void Window_BattleCommand::SetActor(int _actor_id) {
-	actor_id = (Player::IsRPG2k()) ? 0 : _actor_id;
+	actor_id = Feature::HasRpg2kBattleSystem() ? 0 : _actor_id;
 	commands.clear();
 
 	if (actor_id == 0) {

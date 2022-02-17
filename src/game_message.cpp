@@ -30,6 +30,7 @@
 #include <lcf/data.h>
 #include <lcf/reader_util.h>
 #include "output.h"
+#include "feature.h"
 
 #include <cctype>
 
@@ -45,7 +46,7 @@ Window_Message* Game_Message::GetWindow() {
 
 int Game_Message::GetRealPosition() {
 	if (Game_Battle::IsBattleRunning()) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return 2;
 		}
 		else {

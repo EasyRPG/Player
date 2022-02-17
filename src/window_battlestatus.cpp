@@ -29,6 +29,7 @@
 #include "font.h"
 #include "output.h"
 #include "window_battlestatus.h"
+#include "feature.h"
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
 	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
@@ -89,7 +90,7 @@ void Window_BattleStatus::Refresh() {
 			int y = menu_item_height / 8 + i * menu_item_height;
 
 			DrawActorName(*actor, 4, y);
-			if (Player::IsRPG2k()) {
+			if (Feature::HasRpg2kBattleSystem()) {
 				int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
 				int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
 				DrawActorState(*actor, (hpdigits < 4 && spdigits < 4) ? 86 : 80, y);
@@ -110,7 +111,7 @@ void Window_BattleStatus::Refresh() {
 }
 
 void Window_BattleStatus::RefreshGauge() {
-	if (Player::IsRPG2k3()) {
+	if (Feature::HasRpg2k3BattleSystem()) {
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_alternative) {
 			if (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
 				contents->ClearRect(Rect(192, 0, 45, 58));
@@ -277,7 +278,7 @@ void Window_BattleStatus::Update() {
 
 	if (item_max != old_item_max) {
 		Refresh();
-	} else if (Player::IsRPG2k3()) {
+	} else if (Feature::HasRpg2k3BattleSystem()) {
 		RefreshGauge();
 	}
 

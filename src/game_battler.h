@@ -214,6 +214,13 @@ public:
 	int GetAttributeRateShift(int attribute_id) const;
 
 	/**
+	 * Checks if the battler is immune to attribute downshifts.
+	 *
+	 * @return if the battler is immune to attribute downshifts.
+	 */
+	virtual bool IsImmuneToAttributeDownshifts() const = 0;
+
+	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
 	 * @param state_id State to test
@@ -484,6 +491,14 @@ public:
 	virtual int CalculateSkillCost(int skill_id) const;
 
 	/**
+	 * Calculates the Skill hp costs including all modifiers.
+	 *
+	 * @param skill_id ID of skill to calculate.
+	 * @return needed skill hp cost.
+	 */
+	virtual int CalculateSkillHpCost(int skill_id) const;
+
+	/**
 	 * Calculates the Sp cost for attacking with a weapon.
 	 *
 	 * @param weapon which weapons to include in calculating result.
@@ -709,7 +724,25 @@ public:
 	 * @param weapon Which weapons to include in calculating result.
 	 * @return true if a weapon is having attack all attribute
 	 */
-	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const;
+	virtual bool HasAttackAll(Weapon weapon = WeaponAll) const = 0;
+
+	/**
+	 * Tests if the battler has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return If the actor has weapon that ignores evasion
+	 */
+	virtual bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const = 0;
+
+	/**
+	 * @return If the battler is protected against critical hits.
+	 */
+	virtual bool PreventsCritical() const = 0;
+
+	/**
+	 * @return If the battler has an increased physical evasion rate.
+	 */
+	virtual bool HasPhysicalEvasionUp() const = 0;
 
 
 	enum BattlerType {

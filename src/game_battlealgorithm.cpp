@@ -49,6 +49,7 @@
 #include "algo.h"
 #include "attribute.h"
 #include "spriteset_battle.h"
+#include "feature.h"
 
 static inline int MaxDamageValue() {
 	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
@@ -544,7 +545,7 @@ Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* targ
 }
 
 Game_BattleAlgorithm::Normal::Style Game_BattleAlgorithm::Normal::GetDefaultStyle() {
-	return Player::IsRPG2k3() ? Style_MultiHit : Style_Combined;
+	return Feature::HasRpg2k3BattleSystem() ? Style_MultiHit : Style_Combined;
 }
 
 Game_Battler::Weapon Game_BattleAlgorithm::Normal::GetWeapon() const {
@@ -610,7 +611,7 @@ int Game_BattleAlgorithm::Normal::GetAnimationId(int idx) const {
 		return 0;
 	}
 	if (source->GetType() == Game_Battler::Type_Enemy
-			&& Player::IsRPG2k3()
+			&& Feature::HasRpg2k3BattleSystem()
 			&& !lcf::Data::animations.empty()) {
 		Game_Enemy* enemy = static_cast<Game_Enemy*>(source);
 		return enemy->GetUnarmedBattleAnimationId();
@@ -624,7 +625,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 	auto& target = *GetTarget();
 
 	auto to_hit = Algo::CalcNormalAttackToHit(source, target, weapon, Game_Battle::GetBattleCondition(), true);
-	auto crit_chance = Algo::CalcCriticalHitChance(source, target, weapon);
+	auto crit_chance = Algo::CalcCriticalHitChance(source, target, weapon, -1);
 
 	// Damage calculation
 	if (!Rand::PercentChance(to_hit)) {
@@ -653,6 +654,27 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 
 	// Conditions healed by physical attack:
 	BattlePhysicalStateHeal(100, target_states, target_perm_states);
+
+	auto easyrpg_state_set = [&](const auto& state_set, const auto& state_chance) {
+		int num_states = static_cast<int>(state_set.size());
+		for (int i = 0; i < num_states; ++i) {
+			int inflict_pct = 0;
+			if (i < static_cast<int>(num_states) && state_set[i]) {
+				inflict_pct = static_cast<int>(state_chance);
+			}
+			auto state_id = (i + 1);
+
+			if (inflict_pct > 0) {
+				inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
+				if (Rand::PercentChance(inflict_pct)) {
+					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
+						AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
+					}
+				}
+				inflict_pct = 0;
+			}
+		}
+	};
 
 	// Conditions caused / healed by weapon.
 	if (source.GetType() == Game_Battler::Type_Ally) {
@@ -705,7 +727,14 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 					}
 				}
 			}
+		} else {
+			lcf::rpg::Actor* allydata = lcf::ReaderUtil::GetElement(lcf::Data::actors, ally.GetId());
+			easyrpg_state_set(allydata->easyrpg_unarmed_state_set, allydata->easyrpg_unarmed_state_chance);
 		}
+	} else if (source.GetType() == Game_Battler::Type_Enemy) {
+		auto& enemy = static_cast<Game_Enemy&>(source);
+		lcf::rpg::Enemy* enemydata = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy.GetId());
+		easyrpg_state_set(enemydata->easyrpg_state_set, enemydata->easyrpg_state_chance);
 	}
 
 	return SetIsSuccess();
@@ -713,7 +742,7 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
 		if (GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2) {
@@ -797,7 +826,7 @@ const lcf::rpg::Item* Game_BattleAlgorithm::Normal::GetWeaponData() const {
 }
 
 const lcf::rpg::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
-	if (Player::IsRPG2k() && GetSource()->GetType() == Game_Battler::Type_Enemy) {
+	if (Feature::HasRpg2kBattleSystem() && GetSource()->GetType() == Game_Battler::Type_Enemy) {
 		return &Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyAttacks);
 	}
 	return nullptr;
@@ -829,6 +858,7 @@ bool Game_BattleAlgorithm::Skill::vStart() {
 		Main_Data::game_party->ConsumeItemUse(item->ID);
 	} else {
 		source->ChangeSp(-source->CalculateSkillCost(skill.ID));
+		source->ChangeHp(-source->CalculateSkillHpCost(skill.ID), false);
 	}
 	return true;
 }
@@ -875,7 +905,13 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	SetIsPositive(Algo::SkillTargetsAllies(skill));
 
 	auto to_hit = Algo::CalcSkillToHit(*source, *target, skill);
-	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true);
+	auto crit_chance = Algo::CalcCriticalHitChance(*source, *target, Game_Battler::WeaponAll, skill.easyrpg_critical_hit_chance);
+
+	if (Rand::PercentChance(crit_chance)) {
+		SetIsCriticalHit(true);
+	}
+
+	auto effect = Algo::CalcSkillEffect(*source, *target, skill, true, IsCriticalHit());
 	effect = Utils::Clamp(effect, -MaxDamageValue(), MaxDamageValue());
 
 	if (!IsPositive()) {
@@ -905,7 +941,8 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 			? effect
 			: Algo::AdjustDamageForDefend(effect, *target);
 
-		const auto cur_hp = target->GetHp();
+		const auto hp_cost = (source == target) ? source->CalculateSkillHpCost(skill.ID) : 0;
+		const auto cur_hp = target->GetHp() - hp_cost;
 
 		if (absorb) {
 			// Cannot aborb more hp than the target has.
@@ -1066,15 +1103,17 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 	int to_hit_attribute_shift = (skill.easyrpg_attribute_hit != -1 ? skill.easyrpg_attribute_hit : to_hit);
 	if (skill.affect_attr_defence) {
 		auto shift = IsPositive() ? 1 : -1;
-		for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
-			auto id = i + 1;
-			if (skill.attribute_effects[i]
-					&& GetTarget()->CanShiftAttributeRate(id, shift)
-					&& Rand::PercentChance(to_hit_attribute_shift)
-					)
-			{
-				AddAffectedAttribute({ id, shift});
-				SetIsSuccess();
+		if (shift >= 0 || !GetTarget()->IsImmuneToAttributeDownshifts()) {
+			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
+				auto id = i + 1;
+				if (skill.attribute_effects[i]
+						&& GetTarget()->CanShiftAttributeRate(id, shift)
+						&& Rand::PercentChance(to_hit_attribute_shift)
+						)
+				{
+					AddAffectedAttribute({ id, shift});
+					SetIsSuccess();
+				}
 			}
 		}
 	}
@@ -1085,7 +1124,7 @@ bool Game_BattleAlgorithm::Skill::vExecute() {
 std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 	if (item && item->using_message == 0) {
 		if (line == 0) {
-			if (Player::IsRPG2k()) {
+			if (Feature::HasRpg2kBattleSystem()) {
 				return BattleMessage::GetItemStartMessage2k(*GetSource(), *item);
 			} else {
 				return BattleMessage::GetItemStartMessage2k3(*GetSource(), *item);
@@ -1096,7 +1135,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 
 	const auto* target = GetOriginalSingleTarget();
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			if (!skill.using_message1.empty()) {
 				return BattleMessage::GetSkillFirstStartMessage2k(*GetSource(), target, skill);
 			} else {
@@ -1106,7 +1145,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage(int line) const {
 			return BattleMessage::GetSkillStartMessage2k3(*GetSource(), target, skill);
 		}
 	}
-	if (line == 1 && Player::IsRPG2k() && !skill.using_message2.empty()) {
+	if (line == 1 && Feature::HasRpg2kBattleSystem() && !skill.using_message2.empty()) {
 		return BattleMessage::GetSkillSecondStartMessage2k(*GetSource(), target, skill);
 	}
 	return "";
@@ -1261,7 +1300,7 @@ bool Game_BattleAlgorithm::Item::vExecute() {
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetItemStartMessage2k(*GetSource(), item);
 		} else {
 			return BattleMessage::GetItemStartMessage2k3(*GetSource(), item);
@@ -1303,7 +1342,7 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetDefendStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetDefendStartMessage2k3(*GetSource());
@@ -1323,7 +1362,7 @@ AlgorithmBase(Type::Observe, source, source) {
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetObserveStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetObserveStartMessage2k3(*GetSource());
@@ -1339,7 +1378,7 @@ AlgorithmBase(Type::Charge, source, source) {
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetChargeUpStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetChargeUpStartMessage2k3(*GetSource());
@@ -1359,7 +1398,7 @@ AlgorithmBase(Type::SelfDestruct, source, target) {
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetSelfDestructStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetSelfDestructStartMessage2k3(*GetSource());
@@ -1413,7 +1452,7 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 	if (line == 0) {
-		if (Player::IsRPG2k()) {
+		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetEscapeStartMessage2k(*GetSource());
 		} else if (GetSource()->GetType() == Game_Battler::Type_Enemy) {
 			return BattleMessage::GetEscapeStartMessage2k3(*GetSource());
@@ -1449,7 +1488,7 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
-	if (line == 0 && Player::IsRPG2k()) {
+	if (line == 0 && Feature::HasRpg2kBattleSystem()) {
 		auto* enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id);
 		return BattleMessage::GetTransformStartMessage(*GetSource(), *enemy);
 	}

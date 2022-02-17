@@ -21,6 +21,7 @@
 #include "game_party.h"
 #include "player.h"
 #include "bitmap.h"
+#include "feature.h"
 
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -48,7 +49,11 @@ void Window_MenuStatus::Refresh() {
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;
+			if (!Feature::HasRow()) {
+				face_x = 4;
+			} else {
+				face_x = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? 8 : 0;
+			}
 		}
 		DrawActorFace(actor, face_x, i*48 + y);
 

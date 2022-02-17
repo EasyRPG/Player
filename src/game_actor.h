@@ -228,6 +228,13 @@ public:
 	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
+	 * Checks if the actor is immune to attribute downshifts.
+	 *
+	 * @return if the actor is immune to attribute downshifts.
+	 */
+	bool IsImmuneToAttributeDownshifts() const override;
+
+	/**
 	 * Gets actor name.
 	 *
 	 * @return name.
@@ -836,12 +843,12 @@ public:
 	bool HasAttackAll(Weapon weapon = WeaponAll) const override;
 
 	/**
-	 * Tests if the battler has a weapon which ignores evasion.
+	 * Tests if the actor has a weapon which ignores evasion.
 	 *
 	 * @param weapon Which weapons to include in calculating result.
 	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const;
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const override;
 
 	/**
 	 * @return If the actor has equipment that protects against terrain damage.
@@ -849,14 +856,14 @@ public:
 	bool PreventsTerrainDamage() const;
 
 	/**
-	 * @return If the actor has an equipment that protects against critical hits.
+	 * @return If the actor is protected against critical hits.
 	 */
-	bool PreventsCritical() const;
+	bool PreventsCritical() const override;
 
 	/**
-	 * @return If the actor has an equipment that with physical evasion up.
+	 * @return If the actor has an increased physical evasion rate.
 	 */
-	bool HasPhysicalEvasionUp() const;
+	bool HasPhysicalEvasionUp() const override;
 
 	/**
 	 * @return If the actor has an equipment with half sp cost.

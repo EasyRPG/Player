@@ -153,7 +153,7 @@ void Scene_ActorTarget::UpdateSkill() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_Actor* actor = &(*Main_Data::game_party)[actor_index];
 
-		if (actor->GetSp() < actor->CalculateSkillCost(id)) {
+		if (actor->GetSp() < actor->CalculateSkillCost(id) || actor->GetHp() <= actor->CalculateSkillHpCost(id)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
 		}

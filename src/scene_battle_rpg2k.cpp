@@ -41,6 +41,7 @@
 #include "autobattle.h"
 #include "enemyai.h"
 #include "battle_message.h"
+#include "feature.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
 	Scene_Battle(args)
@@ -780,7 +781,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVict
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.SetWordWrapped(Player::IsRPG2kE());
+		pm.SetWordWrapped(Feature::HasPlaceholders());
 		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 
 		std::stringstream ss;
@@ -837,7 +838,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionDefe
 		auto pm = PendingMessage();
 		pm.SetEnableFace(false);
 
-		pm.SetWordWrapped(Player::IsRPG2kE());
+		pm.SetWordWrapped(Feature::HasPlaceholders());
 
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 
@@ -1144,8 +1145,11 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAn
 Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
 	action->Execute();
 	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+			|| action->GetType() == Game_BattleAlgorithm::Type::Skill
 			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
-		SetWait(4,4);
+		if (action->GetType() != Game_BattleAlgorithm::Type::Skill) {
+			SetWait(4,4);
+		}
 		if (action->IsSuccess() && action->IsCriticalHit()) {
 			SetBattleActionState(BattleActionState_Critical);
 			return BattleActionReturn::eContinue;
@@ -1822,7 +1826,7 @@ bool Scene_Battle_Rpg2k::CheckWait() {
 }
 
 void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp) {
-	if (Player::IsRPG2kE()) {
+	if (Feature::HasPlaceholders()) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.exp_received,
@@ -1840,7 +1844,7 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp
 
 void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) {
 
-	if (Player::IsRPG2kE()) {
+	if (Feature::HasPlaceholders()) {
 		pm.PushLine(
 			Utils::ReplacePlaceholders(
 				lcf::Data::terms.gold_recieved_a,
@@ -1864,7 +1868,7 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vecto
 		// No Output::Warning needed here, reported later when the item is added
 		StringView item_name = item ? StringView(item->name) : StringView("??? BAD ITEM ???");
 
-		if (Player::IsRPG2kE()) {
+		if (Feature::HasPlaceholders()) {
 			pm.PushLine(
 				Utils::ReplacePlaceholders(
 					lcf::Data::terms.item_recieved,

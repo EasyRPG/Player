@@ -99,10 +99,11 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
  * @param source The attacker
  * @param target The defender
  * @param weapon Which weapon to use or kWeaponAll for combined
+ * @param fixed_chance Fixed critical hit rate percentage
  *
  * @return Critical hit rate.
  */
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon);
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon, int fixed_chance);
 
 /**
  * Check if target is defending and perform damage adjustment if so.
@@ -148,13 +149,15 @@ int CalcNormalAttackEffect(const Game_Battler& source,
  * @param target The target of the action
  * @param skill The skill to use
  * @param apply_variance If true, apply variance to the damage
+ * @param is_critical_hit If true, apply critical hit bonus
  *
  * @return effect amount
  */
 int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
-		bool apply_variance);
+		bool apply_variance,
+		bool is_critical_hit);
 
 /**
  * Compute the base damage for self-destruct
@@ -183,6 +186,16 @@ int CalcSelfDestructEffect(const Game_Battler& source,
  * @return sp cost
  */
 int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost);
+
+/**
+ * Calculates the hp cost for a skill.
+ *
+ * @param skill The skill to compute
+ * @param max_sp the max hp of the user
+ *
+ * @return hp cost
+ */
+int CalcSkillHpCost(const lcf::rpg::Skill& skill, int max_hp);
 
 /*
  * Determine whether a skill is usable.

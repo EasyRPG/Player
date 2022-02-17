@@ -101,7 +101,7 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 			return 0.0;
 		}
 
-		const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance);
+		const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false);
 		const double max_effect = std::min(base_effect, tgt_max_hp - tgt_hp);
 
 		auto rank = static_cast<double>(max_effect) / static_cast<double>(tgt_max_hp);
@@ -136,7 +136,7 @@ double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Bat
 	const double src_max_sp = source.GetMaxSp();
 	const double tgt_hp = target.GetHp();
 
-	const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance);
+	const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false);
 	rank = std::min(base_effect, tgt_hp) / tgt_hp;
 	if (rank == 1.0) {
 		rank = 1.5;

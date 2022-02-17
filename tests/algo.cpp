@@ -430,7 +430,7 @@ TEST_CASE("CritRate") {
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
-		REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
+		REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
 	}
 
 	SUBCASE("enemy -> enemy - always fails") {
@@ -439,7 +439,7 @@ TEST_CASE("CritRate") {
 
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
-		REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
+		REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
 	}
 
 	SUBCASE("actor -> enemy") {
@@ -449,20 +449,20 @@ TEST_CASE("CritRate") {
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
 		SUBCASE("baseline") {
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary, -1));
 		}
 
 		SUBCASE("weapons") {
 			source.SetEquipment(1, 1);
 			source.SetEquipment(2, 2);
 
-			REQUIRE_EQ(83, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone));
-			REQUIRE_EQ(53, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary));
-			REQUIRE_EQ(83, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary));
+			REQUIRE_EQ(83, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone, -1));
+			REQUIRE_EQ(53, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary, -1));
+			REQUIRE_EQ(83, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary, -1));
 		}
 	}
 
@@ -473,19 +473,19 @@ TEST_CASE("CritRate") {
 		REQUIRE_GT(source.GetCriticalHitChance(), 0.0f);
 
 		SUBCASE("baseline") {
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary));
-			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary, -1));
+			REQUIRE_EQ(3, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary, -1));
 		}
 
 		SUBCASE("armor prevents critical") {
 			target.SetEquipment(3, 3);
 
-			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll));
-			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone));
-			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary));
-			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary));
+			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponAll, -1));
+			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponNone, -1));
+			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponPrimary, -1));
+			REQUIRE_EQ(0, Algo::CalcCriticalHitChance(source, target, Game_Battler::WeaponSecondary, -1));
 		}
 	}
 }
@@ -604,35 +604,35 @@ static void testSkillStats(int power, int phys, int mag, Game_Battler& source, G
 	lcf::Data::skills[19].ignore_defense = true;
 
 	SUBCASE("baseline") {
-		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[0], false));
-		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[1], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[2], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[3], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[4], false));
+		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[0], false, false));
+		REQUIRE_EQ(dmg, Algo::CalcSkillEffect(source, target, lcf::Data::skills[1], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[2], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[3], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[4], false, false));
 	}
 
 	SUBCASE("attr2x") {
-		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[5], false));
-		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[6], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[7], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[8], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[9], false));
+		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[5], false, false));
+		REQUIRE_EQ(dmg * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[6], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[7], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[8], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[9], false, false));
 	}
 
 	SUBCASE("ignore_defense") {
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[10], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[11], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[12], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[13], false));
-		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[14], false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[10], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[11], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[12], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[13], false, false));
+		REQUIRE_EQ(heal, Algo::CalcSkillEffect(source, target, lcf::Data::skills[14], false, false));
 	}
 
 	SUBCASE("ignore_defense+attr2x") {
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[15], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[16], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[17], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[18], false));
-		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[19], false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[15], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[16], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[17], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[18], false, false));
+		REQUIRE_EQ(heal * 2, Algo::CalcSkillEffect(source, target, lcf::Data::skills[19], false, false));
 	}
 }
 
@@ -918,13 +918,13 @@ static void testSkillVar(Game_Battler& source, Game_Battler& target, int var, in
 
 	SUBCASE("max") {
 		Rand::LockGuard lk(INT32_MAX);
-		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true));
-		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true));
+		REQUIRE_EQ(dmg_high, Algo::CalcSkillEffect(source, target, *skill1, true, false));
+		REQUIRE_EQ(heal_high, Algo::CalcSkillEffect(source, target, *skill2, true, false));
 	}
 	SUBCASE("min") {
 		Rand::LockGuard lk(INT32_MIN);
-		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true));
-		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true));
+		REQUIRE_EQ(dmg_low, Algo::CalcSkillEffect(source, target, *skill1, true, false));
+		REQUIRE_EQ(heal_low, Algo::CalcSkillEffect(source, target, *skill2, true, false));
 	}
 }
 

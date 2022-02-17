@@ -49,6 +49,7 @@
 #include "enemyai.h"
 #include <algorithm>
 #include <memory>
+#include "feature.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
@@ -592,7 +593,7 @@ std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_A
 			commands.push_back(ToString(cmd->name));
 		}
 	}
-	if (lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
+	if (Feature::HasRow() && lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
 		commands.push_back(ToString(lcf::Data::terms.row));
 	}
 
@@ -1356,7 +1357,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 		if (Input::IsTriggered(Input::DECISION)) {
 			int index = command_window->GetIndex();
 			// Row command always uses the last index
-			if (!lcf::Data::battlecommands.easyrpg_enable_battle_row_command || index < command_window->GetRowMax() - 1) {
+			if (!Feature::HasRow() || !lcf::Data::battlecommands.easyrpg_enable_battle_row_command || index < command_window->GetRowMax() - 1) {
 				const auto* command = active_actor->GetBattleCommand(index);
 
 				if (command) {

@@ -48,6 +48,13 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_b
 		if (lcf::Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
 			states[i] = 0;
 		}
+		if (states[i]) {
+			for (int j = 0; j < (int)lcf::Data::states[i].easyrpg_immune_states.size(); ++j) {
+				if (lcf::Data::states[i].easyrpg_immune_states[j] && !ps.Has(j + 1)) {
+					states[j] = 0;
+				}
+			}
+		}
 	}
 
 	return states[state_id - 1] != 0;

@@ -125,7 +125,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 		return false;
 	}
 
-	if (CalculateSkillCost(skill_id) > GetSp()) {
+	if (CalculateSkillCost(skill_id) > GetSp() || CalculateSkillHpCost(skill_id) >= GetHp()) {
 		return false;
 	}
 
@@ -237,7 +237,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true);
+		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true, false);
 
 		// Negative attributes do damage but cannot kill
 		bool negative_effect = false;
@@ -315,6 +315,15 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 		return 0;
 	}
 	return Algo::CalcSkillCost(*skill, GetMaxSp(), false);
+}
+
+int Game_Battler::CalculateSkillHpCost(int skill_id) const {
+	const lcf::rpg::Skill* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
+	if (!skill) {
+		Output::Warning("CalculateSkillHpCost: Invalid skill ID {}", skill_id);
+		return 0;
+	}
+	return Algo::CalcSkillHpCost(*skill, GetMaxHp());
 }
 
 bool Game_Battler::AddState(int state_id, bool allow_battle_states) {

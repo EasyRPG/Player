@@ -33,6 +33,7 @@
 #include "scene_save.h"
 #include "scene_status.h"
 #include "bitmap.h"
+#include "feature.h"
 
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
@@ -84,7 +85,21 @@ void Scene_Menu::CreateCommandWindow() {
 	} else {
 		for (std::vector<int16_t>::iterator it = lcf::Data::system.menu_commands.begin();
 			it != lcf::Data::system.menu_commands.end(); ++it) {
-				command_options.push_back((CommandOptionType)*it);
+				switch (*it) {
+				case Row:
+					if (Feature::HasRow()) {
+						command_options.push_back((CommandOptionType)*it);
+					}
+					break;
+				case Wait:
+					if (Feature::HasRpg2k3BattleSystem()) {
+						command_options.push_back((CommandOptionType)*it);
+					}
+					break;
+				default:
+					command_options.push_back((CommandOptionType)*it);
+					break;
+				}
 		}
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);

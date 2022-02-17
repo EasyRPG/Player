@@ -66,6 +66,13 @@ public:
 	int GetBaseAttributeRate(int attribute_id) const override;
 
 	/**
+	 * Checks if the enemy is immune to attribute downshifts.
+	 *
+	 * @return if the enemy is immune to attribute downshifts.
+	 */
+	bool IsImmuneToAttributeDownshifts() const override;
+
+	/**
 	 * Gets the enemy ID.
 	 *
 	 * @return Enemy ID
@@ -160,6 +167,33 @@ public:
 	 * @return hit rate. [0-100]
 	 */
 	float GetCriticalHitChance(Weapon = WeaponAll) const override;
+
+	/**
+	 * Tests if the enemy has a weapon that grants attack all
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return true if a weapon is having attack all attribute
+	 */
+	bool HasAttackAll(Weapon weapon = WeaponAll) const override;
+
+	/**
+	 * Tests if the enemy has a weapon which ignores evasion.
+	 *
+	 * @param weapon Which weapons to include in calculating result.
+	 * @return If the actor has weapon that ignores evasion
+	 */
+	bool AttackIgnoresEvasion(Weapon weapon = WeaponAll) const override;
+
+	/**
+	 * @return If the enemy is protected against critical hits.
+	 */
+	bool PreventsCritical() const override;
+
+	/**
+	 * @return If the enemy has an increased physical evasion rate.
+	 */
+	bool HasPhysicalEvasionUp() const override;
+
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;
@@ -231,6 +265,15 @@ public:
 	int GetUnarmedBattleAnimationId() const;
 
 	Sprite_Enemy* GetEnemyBattleSprite() const;
+
+	int GetEnemyAi() const;
+
+	/**
+	 * Checks if the enemies defense skill is stronger the usual.
+	 *
+	 * @return true if strong defense
+	 */
+	bool HasStrongDefense() const override;
 
 protected:
 	const lcf::rpg::Enemy* enemy = nullptr;
@@ -369,12 +412,16 @@ inline bool Game_Enemy::IsFlying() const {
 }
 
 inline int Game_Enemy::GetUnarmedBattleAnimationId() const {
-        return (Player::IsPatchManiac() ? enemy->maniac_unarmed_animation : 1);
+	return enemy->maniac_unarmed_animation;
 }
 
 inline Sprite_Enemy* Game_Enemy::GetEnemyBattleSprite() const {
 	return static_cast<Sprite_Enemy*>(Game_Battler::GetBattleSprite());
 }
 
+
+inline bool Game_Enemy::HasStrongDefense() const {
+	return enemy->easyrpg_super_guard;
+}
 
 #endif

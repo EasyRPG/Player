@@ -45,6 +45,7 @@
 #include "rand.h"
 #include "autobattle.h"
 #include "enemyai.h"
+#include "feature.h"
 
 Scene_Battle::Scene_Battle(const BattleArgs& args)
 	: troop_id(args.troop_id),
@@ -473,7 +474,7 @@ void Scene_Battle::AssignSkill(const lcf::rpg::Skill* skill, const lcf::rpg::Ite
 
 std::shared_ptr<Scene_Battle> Scene_Battle::Create(const BattleArgs& args)
 {
-	if (Player::IsRPG2k()) {
+	if (Feature::HasRpg2kBattleSystem()) {
 		return std::make_shared<Scene_Battle_Rpg2k>(args);
 	}
 	else {

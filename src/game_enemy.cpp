@@ -100,6 +100,10 @@ int Game_Enemy::GetBaseAttributeRate(int attribute_id) const {
 	return rate;
 }
 
+bool Game_Enemy::IsImmuneToAttributeDownshifts() const {
+	return enemy->easyrpg_immune_to_attribute_downshifts;
+}
+
 int Game_Enemy::SetHp(int _hp) {
 	hp = Utils::Clamp(_hp, 0, GetMaxHp());
 	return hp;
@@ -140,11 +144,31 @@ void Game_Enemy::Transform(int new_enemy_id) {
 }
 
 int Game_Enemy::GetHitChance(Weapon) const {
-	return enemy->miss ? 70 : 90;
+	if (enemy->easyrpg_hit != -1) {
+		return enemy->easyrpg_hit;
+	} else {
+		return enemy->miss ? 70 : 90;
+	}
 }
 
 float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
+}
+
+bool Game_Enemy::HasAttackAll(Weapon weapon) const {
+	return enemy->easyrpg_attack_all;
+}
+
+bool Game_Enemy::AttackIgnoresEvasion(Weapon weapon) const {
+	return enemy->easyrpg_ignore_evasion;
+}
+
+bool Game_Enemy::PreventsCritical() const {
+	return enemy->easyrpg_prevent_critical;
+}
+
+bool Game_Enemy::HasPhysicalEvasionUp() const {
+	return enemy->easyrpg_raise_evasion;
 }
 
 int Game_Enemy::GetFlyingOffset() const {

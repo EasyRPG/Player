@@ -28,6 +28,7 @@
 #include "rand.h"
 #include <lcf/rpg/skill.h>
 #include <lcf/reader_util.h>
+#include "feature.h"
 
 #include <algorithm>
 
@@ -84,8 +85,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 	to_hit = (to_hit * source.GetHitChanceModifierFromStates()) / 100;
 
 	// Stop here if attacker ignores evasion.
-	if (source.GetType() == Game_Battler::Type_Ally
-		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(weapon)) {
+	if (source.AttackIgnoresEvasion(weapon)) {
 		return to_hit;
 	}
 
@@ -93,13 +93,12 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, weapon);
 
 	// If target has physical dodge evasion:
-	if (target.GetType() == Game_Battler::Type_Ally
-			&& static_cast<const Game_Actor&>(target).HasPhysicalEvasionUp()) {
+	if (target.HasPhysicalEvasionUp()) {
 		to_hit -= 25;
 	}
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+	if (Feature::HasRow() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
 		to_hit -= 25;
 	}
 
@@ -108,7 +107,11 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 
 
 int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	auto to_hit = skill.hit;
+	auto to_hit = (skill.hit == -1 ? source.GetHitChance(Game_Battler::WeaponAll) : skill.hit);
+
+	if (!SkillTargetsAllies(skill) && skill.easyrpg_affected_by_evade_all_physical_attacks && target.EvadesAllPhysicalAttacks()) {
+		return 0;
+	}
 
 	// RPG_RT BUG: rm2k3 editor doesn't let you set the failure message for skills, and so you can't make them physical type anymore.
 	// Despite that, RPG_RT still checks the flag and run the below code?
@@ -127,8 +130,7 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	to_hit = (to_hit * source.GetHitChanceModifierFromStates()) / 100;
 
 	// Stop here if attacker ignores evasion.
-	if (source.GetType() == Game_Battler::Type_Ally
-		&& static_cast<const Game_Actor&>(source).AttackIgnoresEvasion(Game_Battler::WeaponAll)) {
+	if (source.AttackIgnoresEvasion(Game_Battler::WeaponAll)) {
 		return to_hit;
 	}
 
@@ -136,17 +138,16 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 	to_hit = CalcToHitAgiAdjustment(to_hit, source, target, Game_Battler::WeaponAll);
 
 	// If target has physical dodge evasion:
-	if (target.GetType() == Game_Battler::Type_Ally
-			&& static_cast<const Game_Actor&>(target).HasPhysicalEvasionUp()) {
+	if (target.HasPhysicalEvasionUp()) {
 		to_hit -= 25;
 	}
 
 	return to_hit;
 }
 
-int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon) {
-	auto crit_chance = static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0);
-	if (target.GetType() == Game_Battler::Type_Ally && static_cast<const Game_Actor&>(target).PreventsCritical()) {
+int CalcCriticalHitChance(const Game_Battler& source, const Game_Battler& target, Game_Battler::Weapon weapon, int fixed_chance) {
+	auto crit_chance = (fixed_chance < 0 ? static_cast<int>(source.GetCriticalHitChance(weapon) * 100.0) : fixed_chance);
+	if (target.PreventsCritical()) {
 		crit_chance = 0;
 	}
 	if (source.GetType() == target.GetType()) {
@@ -190,7 +191,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	auto dmg = std::max(0, atk / 2 - def / 4);
 
 	// Attacker row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(source, cond, true, false)) {
+	if (Feature::HasRow() && IsRowAdjusted(source, cond, true, false)) {
 		dmg = 125 * dmg / 100;
 	}
 
@@ -198,7 +199,7 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 	dmg = Attribute::ApplyAttributeNormalAttackMultiplier(dmg, source, target, weapon);
 
 	// Defender row adjustment
-	if (Player::IsRPG2k3() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+	if (Feature::HasRow() && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
 		dmg = 75 * dmg / 100;
 	}
 
@@ -219,7 +220,8 @@ int CalcNormalAttackEffect(const Game_Battler& source,
 int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
-		bool apply_variance) {
+		bool apply_variance,
+		bool is_critical_hit) {
 
 	auto effect = skill.power;
 	effect += skill.physical_rate * source.GetAtk() / 20;
@@ -233,6 +235,10 @@ int CalcSkillEffect(const Game_Battler& source,
 	effect = std::max<int>(0, effect);
 
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
+
+	if (is_critical_hit) {
+		effect *= 3;
+	}
 
 	if (apply_variance) {
 		effect = VarianceAdjustEffect(effect, skill.variance);
@@ -260,6 +266,12 @@ int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost) {
 	return (Player::IsRPG2k3() && skill.sp_type == lcf::rpg::Skill::SpType_percent)
 		? max_sp * skill.sp_percent / 100 / div
 		: (skill.sp_cost + static_cast<int>(half_sp_cost)) / div;
+}
+
+int CalcSkillHpCost(const lcf::rpg::Skill& skill, int max_hp) {
+	return (Player::IsRPG2k3() && skill.easyrpg_hp_type == lcf::rpg::Skill::HpType_percent)
+		? std::min(max_hp - 1, max_hp * skill.easyrpg_hp_percent / 100)
+		: skill.easyrpg_hp_cost;
 }
 
 bool IsSkillUsable(const lcf::rpg::Skill& skill,
