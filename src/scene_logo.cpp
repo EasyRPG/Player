@@ -86,6 +86,9 @@ void Scene_Logo::Update() {
 		Input::IsTriggered(Input::CANCEL)) {
 
 		if (is_valid) {
+			if (!Player::startup_language.empty()) {
+				Player::translation.SelectLanguage(Player::startup_language);
+			}
 			Scene::Push(std::make_shared<Scene_Title>(), true);
 			if (Player::load_game_id > 0) {
 				auto save = FileFinder::Save();

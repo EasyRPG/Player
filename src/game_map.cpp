@@ -1472,8 +1472,7 @@ void Game_Map::SetChipset(int id) {
 	}
 	map_info.chipset_id = id;
 
-	chipset = lcf::ReaderUtil::GetElement(lcf::Data::chipsets, map_info.chipset_id);
-	if (!chipset) {
+	if (!ReloadChipset()) {
 		Output::Warning("SetChipset: Invalid chipset ID {}", map_info.chipset_id);
 	} else {
 		passages_down = chipset->passable_data_lower;
@@ -1486,6 +1485,14 @@ void Game_Map::SetChipset(int id) {
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
 		passages_up.resize(144, (unsigned char) 0x0F);
+}
+
+bool Game_Map::ReloadChipset() {
+	chipset = lcf::ReaderUtil::GetElement(lcf::Data::chipsets, map_info.chipset_id);
+	if (!chipset) {
+		return false;
+	}
+	return true;
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
@@ -1575,6 +1582,10 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 }
 
 FileRequestAsync* Game_Map::RequestMap(int map_id) {
+#ifdef EMSCRIPTEN
+	Player::translation.RequestAndAddMap(map_id);
+#endif
+
 	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
 }
 

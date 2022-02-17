@@ -145,11 +145,24 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 				FileFinder::Game().OpenOutputStream(s);
 			}
 		}
+
+		// Look for Meta.ini files and fetch them. They are required for detecting the translations.
+		for (const auto& item: file_mapping) {
+			if (StringView(item.first).ends_with("meta.ini")) {
+				auto* request = AsyncHandler::RequestFile(item.second);
+				request->SetImportantFile(true);
+				request->Start();
+			}
+		}
 	}
 #else
 	// no-op
 	(void)file;
 #endif
+}
+
+void AsyncHandler::ClearRequests() {
+	async_requests.clear();
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(StringView folder_name, StringView file_name) {
@@ -256,6 +269,15 @@ void FileRequestAsync::Start() {
 		if (directory != ".") {
 			// Don't alter the path when the file is in the main directory
 			modified_path = FileFinder::MakeCanonical(modified_path, 1);
+		}
+	}
+
+	if (graphic && !Player::translation.GetCurrentLanguageId().empty()) {
+		// FIXME: Asset replacement will only work once for translations
+		std::string modified_path_trans = FileFinder::MakePath(lcf::ReaderUtil::Normalize(Tr::GetCurrentTranslationFilesystem().GetFullPath()), modified_path);
+		auto it = file_mapping.find(modified_path_trans);
+		if (it != file_mapping.end()) {
+			modified_path = modified_path_trans;
 		}
 	}
 

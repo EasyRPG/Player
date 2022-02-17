@@ -49,6 +49,8 @@ public:
 	void SetSaveData(lcf::rpg::SaveActor save);
 	lcf::rpg::SaveActor GetSaveData() const;
 
+	void ReloadDbActor();
+
 	int MaxHpValue() const override;
 
 	int MaxSpValue() const override;

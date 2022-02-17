@@ -66,3 +66,9 @@ void Game_Actors::ResetBattle() {
 		actor.ResetBattle();
 	}
 }
+
+void Game_Actors::ReloadActors() {
+	for (auto& actor: data) {
+		actor.ReloadDbActor();
+	}
+}

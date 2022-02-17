@@ -121,6 +121,7 @@ namespace Player {
 	int patch;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
+	std::string startup_language;
 	Translation translation;
 	int frames;
 	std::string replay_input_path;
@@ -680,6 +681,15 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		if (cp.ParseNext(arg, 0, "--no-log-color")) {
 			Output::SetTermColor(false);
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--language")) {
+			if (arg.NumValues() > 0) {
+				startup_language = arg.Value(0);
+				if (startup_language == "default") {
+					startup_language.clear();
+				}
+			}
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
@@ -1383,6 +1393,7 @@ Options:
       --start-party A B... Overwrite the starting party members with the actors
                            with IDs A, B, C...
                            Incompatible with --load-game-id.
+      --language LANG      Loads the game translation in language/LANG folder.
       --test-play          Enable TestPlay mode.
       --window             Start in window mode.
   -v, --version            Display program version and exit.

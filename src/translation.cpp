@@ -33,10 +33,11 @@
 #include "player.h"
 #include "output.h"
 #include "utils.h"
-
+#include "scene.h"
 
 // Name of the translate directory
-#define TRDIR_NAME "languages"
+#define TRDIR_NAME "language"
+#define TRDIR_NAME_LEGACY "languages"
 
 // Name of expected files
 #define TRFILE_RPG_RT_LDB    "rpg_rt.ldb.po"
@@ -65,7 +66,6 @@ FilesystemView Tr::GetCurrentTranslationFilesystem() {
 	return Player::translation.GetRootTree().Subtree(GetCurrentTranslationId());
 }
 
-
 void Translation::Reset()
 {
 	ClearTranslationLookups();
@@ -84,7 +84,10 @@ void Translation::InitTranslations()
 	auto fs = FileFinder::Game();
 	auto game_tree = fs.ListDirectory();
 	for (const auto& tr_name : *game_tree) {
-		if (tr_name.first == TRDIR_NAME) {
+		if (tr_name.first == TRDIR_NAME_LEGACY) {
+			Output::Warning("Deprecation warning: Please rename \"languages\" directory to \"language\"");
+			translation_root_fs = fs.Subtree(tr_name.second.name);
+		} else if (tr_name.first == TRDIR_NAME) {
 			translation_root_fs = fs.Subtree(tr_name.second.name);
 		}
 	}
@@ -132,14 +135,52 @@ const std::vector<Language>& Translation::GetLanguages() const
 }
 
 
-void Translation::SelectLanguage(const std::string& lang_id)
+void Translation::SelectLanguage(StringView lang_id)
 {
 	// Try to read in our language files.
 	Output::Debug("Changing language to: '{}'", (!lang_id.empty() ? lang_id : "<Default>"));
+
+	AsyncHandler::ClearRequests();
+
+	if (!lang_id.empty()) {
+		auto root = GetRootTree();
+		if (!root) {
+			Output::Error("Cannot load translation. 'Language' folder does not exist");
+			return;
+		}
+
+		FilesystemView language_tree = root.Subtree(lang_id);
+		if (language_tree) {
+			request_counter = 4;
+			for (auto s: {TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT}) {
+				FileRequestAsync* request = AsyncHandler::RequestFile(language_tree.GetFullPath(), s);
+				request->SetImportantFile(true);
+				requests.emplace_back(request->Bind(&Translation::SelectLanguageAsync, this, lang_id));
+				request->Start();
+			}
+		} else {
+			Output::Warning("Translation for '{}' does not appear to exist", lang_id);
+		}
+	} else {
+		// Default language, no request needed
+		request_counter = 1;
+		SelectLanguageAsync(nullptr, lang_id);
+	}
+}
+
+void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang_id) {
+	--request_counter;
+	if (request_counter == 0) {
+		requests.clear();
+	} else {
+		// Waiting for remaining callbacks
+		return;
+	}
+
 	if (!ParseLanguageFiles(lang_id)) {
 		return;
 	}
-	current_language = lang_id;
+	current_language = ToString(lang_id);
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
@@ -155,10 +196,39 @@ void Translation::SelectLanguage(const std::string& lang_id)
 
 	// Reset the cache, so that all images load fresh.
 	Cache::Clear();
+
+	Scene::instance->OnTranslationChanged();
 }
 
+void Translation::RequestAndAddMap(int map_id) {
+	if (current_language.empty()) {
+		return;
+	}
 
-bool Translation::ParseLanguageFiles(const std::string& lang_id)
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".po";
+	std::string map_name = ss.str();
+
+	if (maps.find(Utils::LowerCase(map_name)) != maps.end()) {
+		// Already loaded
+		return;
+	}
+
+	FileRequestAsync* request = AsyncHandler::RequestFile(Tr::GetCurrentTranslationFilesystem().GetFullPath(), map_name);
+	request->SetImportantFile(true);
+	map_request = request->Bind([this, map_name, map_id](FileRequestResult* res) {
+		std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
+		auto is = Tr::GetCurrentTranslationFilesystem().OpenInputStream(map_name);
+		if (is) {
+			ParsePoFile(std::move(is), *dict);
+			maps[Utils::LowerCase(map_name)] = std::move(dict);
+			Output::Debug("Loaded {} map .po file ({} map files loaded)", map_name, maps.size());
+		}
+	});
+	request->Start();
+}
+
+bool Translation::ParseLanguageFiles(StringView lang_id)
 {
 	FilesystemView language_tree;
 
@@ -210,6 +280,9 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 				ParsePoFile(std::move(is), *mapnames);
 			}
 		} else {
+			// This will fail in the web player but is intentional
+			// The fetching happens on map load instead
+			// Still parsing all files locally to get syntax errors early
 			std::unique_ptr<Dictionary> dict;
 			dict = std::make_unique<Dictionary>();
 			auto is = language_tree.OpenInputStream(tr_name.second.name);
@@ -222,6 +295,7 @@ bool Translation::ParseLanguageFiles(const std::string& lang_id)
 
 	// Log
 	Output::Debug("Translation loaded {} sys, {} common, {} battle, and {} map .po files", (sys==nullptr?0:1), (battle==nullptr?0:1), (common==nullptr?0:1), maps.size());
+
 	return true;
 }
 
@@ -433,7 +507,7 @@ namespace {
 		}
 
 		/** Change the string value of the EventCommand at position "idx" to "newStr" */
-		void ReWriteString(size_t idx, const std::string& newStr) {
+		void ReWriteString(size_t idx, StringView newStr) {
 			if (idx < commands.size()) {
 				commands[idx].string = lcf::DBString(newStr);
 			}
@@ -444,7 +518,7 @@ namespace {
 		 * Sets the string value to "line". Note that ShowMessage_2 is chosen if baseMsgBox is false.
 		 * This also updates the index if relevant, but it does not update external index caches.
 		 */
-		void PutShowMessageBeforeIndex(const std::string& line, size_t idx, bool baseMsgBox) {
+		void PutShowMessageBeforeIndex(StringView line, size_t idx, bool baseMsgBox) {
 			// We need a reference index for the indent.
 			size_t refIndent = 0;
 			if (idx < commands.size()) {
@@ -519,7 +593,7 @@ std::vector<std::vector<std::string>> Translation::TranslateMessageStream(const 
 
 		// Now, break into message boxes based on the ADDMSG string
 		res.push_back(std::vector<std::string>());
-		for (const std::string& line : lines) {
+		for (const auto& line : lines) {
 			if (line == TRCUST_ADDMSG) {
 				res.push_back(std::vector<std::string>());
 			} else {
@@ -644,9 +718,9 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	}
 }
 
-void Translation::RewriteMapMessages(const std::string& map_name, lcf::rpg::Map& map) {
+void Translation::RewriteMapMessages(StringView map_name, lcf::rpg::Map& map) {
 	// Retrieve lookup for this map.
-	auto mapIt = maps.find(map_name);
+	auto mapIt = maps.find(ToString(map_name));
 	if (mapIt==maps.end()) { return; }
 
 	// Rewrite all event commands on all pages.
@@ -672,7 +746,6 @@ void Translation::ClearTranslationLookups()
 	mapnames.reset();
 	maps.clear();
 }
-
 
 //////////////////////////////////////////////////////////
 // NOTE: The code from here on out is duplicated in LcfTrans.

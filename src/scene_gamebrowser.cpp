@@ -45,7 +45,7 @@ void Scene_GameBrowser::Start() {
 void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Main_Data::game_system->BgmStop();
 
-	Cache::Clear();
+	Cache::ClearAll();
 	AudioSeCache::Clear();
 	lcf::Data::Clear();
 	Main_Data::Cleanup();
@@ -203,6 +203,9 @@ void Scene_GameBrowser::BootGame() {
 	FileFinder::SetGameFilesystem(fs);
 	Player::CreateGameObjects();
 
+	if (!Player::startup_language.empty()) {
+		Player::translation.SelectLanguage(Player::startup_language);
+	}
 	Scene::Push(std::make_shared<Scene_Title>());
 
 	game_loading = false;

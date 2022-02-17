@@ -555,6 +555,8 @@ namespace Game_Map {
 	 */
 	void SetChipset(int id);
 
+	bool ReloadChipset();
+
 	Game_Vehicle* GetVehicle(Game_Vehicle::Type which);
 	int SubstituteDown(int old_id, int new_id);
 	int SubstituteUp(int old_id, int new_id);
