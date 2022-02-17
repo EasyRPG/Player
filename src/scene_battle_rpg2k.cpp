@@ -114,6 +114,19 @@ void Scene_Battle_Rpg2k::RefreshTargetWindow() {
 	target_window->ReplaceCommands(std::move(commands));
 }
 
+std::vector<std::string> Scene_Battle_Rpg2k::GetBattleCommandNames2k3(const Game_Actor* actor) {
+	std::vector<std::string> commands;
+	if (actor) {
+		for (auto* cmd: actor->GetBattleCommands()) {
+			if (cmd->type != lcf::rpg::BattleCommand::Type_escape) {
+				commands.push_back(ToString(cmd->name));
+			}
+		}
+	}
+
+	return commands;
+}
+
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	std::vector<std::string> commands = {
 		ToString(lcf::Data::terms.command_attack),
@@ -129,7 +142,14 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
-	command_window->SetItemText(1, active_actor->GetSkillName());
+	if (Player::IsRPG2k3() && Feature::HasRpg2kBattleSystem() && !lcf::Data::system.easyrpg_use_rpg2k_battle_commands) {
+		int index = command_window->GetIndex();
+		auto commands = GetBattleCommandNames2k3(active_actor);
+		command_window->ReplaceCommands(std::move(commands));
+		command_window->SetIndex(index);
+	} else {
+		command_window->SetItemText(1, active_actor->GetSkillName());
+	}
 }
 
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
@@ -511,24 +531,58 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionComm
 	if (scene_action_substate == eWaitForInput) {
 		command_window->SetActive(true);
 		if (Input::IsTriggered(Input::DECISION)) {
-			switch (command_window->GetIndex()) {
-				case 0: // Attack
-					AttackSelected();
-					break;
-				case 1: // Skill
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-					SetState(State_SelectSkill);
-					break;
-				case 2: // Defense
-					DefendSelected();
-					break;
-				case 3: // Item
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-					SetState(State_SelectItem);
-					break;
-				default:
-					// no-op
-					break;
+			if (Player::IsRPG2k3() && Feature::HasRpg2kBattleSystem() && !lcf::Data::system.easyrpg_use_rpg2k_battle_commands) {
+				int index = command_window->GetIndex();
+				const auto* command = active_actor->GetBattleCommand(index);
+
+				if (command) {
+					active_actor->SetLastBattleAction(command->ID);
+					switch (command->type) {
+						case lcf::rpg::BattleCommand::Type_attack:
+							AttackSelected();
+							break;
+						case lcf::rpg::BattleCommand::Type_defense:
+							DefendSelected();
+							break;
+						case lcf::rpg::BattleCommand::Type_item:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							SetState(State_SelectItem);
+							break;
+						case lcf::rpg::BattleCommand::Type_skill:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							skill_window->SetSubsetFilter(0);
+							SetState(State_SelectSkill);
+							break;
+						case lcf::rpg::BattleCommand::Type_special:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							SpecialSelected2k3();
+							break;
+						case lcf::rpg::BattleCommand::Type_subskill:
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+							SubskillSelected2k3(command->ID);
+							break;
+					}
+				}
+			} else {
+				switch (command_window->GetIndex()) {
+					case 0: // Attack
+						AttackSelected();
+						break;
+					case 1: // Skill
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+						SetState(State_SelectSkill);
+						break;
+					case 2: // Defense
+						DefendSelected();
+						break;
+					case 3: // Item
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+						SetState(State_SelectItem);
+						break;
+					default:
+						// no-op
+						break;
+				}
 			}
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
@@ -1764,6 +1818,35 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		assert(enemy->GetBattleAlgorithm() != nullptr);
 		ActionSelectedCallback(enemy);
 	}
+}
+
+void Scene_Battle_Rpg2k::SubskillSelected2k3(int command) {
+	auto idx = command - 1;
+	// Resolving a subskill battle command to skill id
+	int subskill = lcf::rpg::Skill::Type_subskill;
+
+	// Loop through all battle commands smaller then that ID and count subsets
+	for (int i = 0; i < static_cast<int>(lcf::Data::battlecommands.commands.size()); ++i) {
+		auto& cmd = lcf::Data::battlecommands.commands[i];
+		if (i >= idx) {
+			break;
+		}
+		if (cmd.type == lcf::rpg::BattleCommand::Type_subskill) {
+			++subskill;
+		}
+	}
+
+	// skill subset is 4 (Type_subskill) + counted subsets
+	skill_window->SetSubsetFilter(subskill);
+	SetState(State_SelectSkill);
+}
+
+void Scene_Battle_Rpg2k::SpecialSelected2k3() {
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::DoNothing>(active_actor));
+
+	ActionSelectedCallback(active_actor);
 }
 
 void Scene_Battle_Rpg2k::ActionSelectedCallback(Game_Battler* for_battler) {

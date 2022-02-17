@@ -634,7 +634,7 @@ bool Game_Player::Move(int dir) {
 						red_flash = true;
 					}
 					if (terrain->easyrpg_damage_in_percent) {
-						int value = std::max(1, std::abs(hero->GetMaxHp() * terrain->damage / 100));
+						int value = std::max<int>(1, std::abs(hero->GetMaxHp() * terrain->damage / 100));
 						hero->ChangeHp((terrain->damage > 0 ? -value : value), terrain->easyrpg_damage_can_kill);
 					} else {
 						hero->ChangeHp(-terrain->damage, terrain->easyrpg_damage_can_kill);
