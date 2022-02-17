@@ -138,6 +138,9 @@ NOTE: Incompatible with *--load-game-id*.
 
 NOTE: Incompatible with *--load-game-id*.
 
+*--language* 'LANG'::
+  Loads the game translation in language/LANG folder.
+
 *--test-play*::
   Enable TestPlay mode.
 

@@ -203,6 +203,9 @@ void Scene_GameBrowser::BootGame() {
 	FileFinder::SetGameFilesystem(fs);
 	Player::CreateGameObjects();
 
+	if (!Player::startup_language.empty()) {
+		Player::translation.SelectLanguage(Player::startup_language);
+	}
 	Scene::Push(std::make_shared<Scene_Title>());
 
 	game_loading = false;

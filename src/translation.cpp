@@ -143,7 +143,13 @@ void Translation::SelectLanguage(StringView lang_id)
 	AsyncHandler::ClearRequests();
 
 	if (!lang_id.empty()) {
-		FilesystemView language_tree = GetRootTree().Subtree(lang_id);
+		auto root = GetRootTree();
+		if (!root) {
+			Output::Error("Cannot load translation. 'Language' folder does not exist");
+			return;
+		}
+
+		FilesystemView language_tree = root.Subtree(lang_id);
 		if (language_tree) {
 			request_counter = 4;
 			for (auto s: {TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT}) {
@@ -152,6 +158,8 @@ void Translation::SelectLanguage(StringView lang_id)
 				requests.emplace_back(request->Bind(&Translation::SelectLanguageAsync, this, lang_id));
 				request->Start();
 			}
+		} else {
+			Output::Warning("Translation for '{}' does not appear to exist", lang_id);
 		}
 	} else {
 		// Default language, no request needed
