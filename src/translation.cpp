@@ -136,6 +136,8 @@ void Translation::SelectLanguage(StringView lang_id)
 	// Try to read in our language files.
 	Output::Debug("Changing language to: '{}'", (!lang_id.empty() ? lang_id : "<Default>"));
 
+	AsyncHandler::ClearRequests();
+
 	if (!lang_id.empty()) {
 		FilesystemView language_tree = GetRootTree().Subtree(lang_id);
 		if (language_tree) {

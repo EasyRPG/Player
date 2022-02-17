@@ -161,6 +161,10 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #endif
 }
 
+void AsyncHandler::ClearRequests() {
+	async_requests.clear();
+}
+
 FileRequestAsync* AsyncHandler::RequestFile(StringView folder_name, StringView file_name) {
 	auto path = FileFinder::MakePath(folder_name, file_name);
 

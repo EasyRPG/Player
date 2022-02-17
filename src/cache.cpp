@@ -239,13 +239,10 @@ namespace {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 
-#ifndef NDEBUG
-		// Test if the file was requested asynchronously before.
-		// If not the file can't be expected to exist -> bug.
-		// This test is expensive and turned off in release builds.
-		auto* req = AsyncHandler::RequestFile(s.directory, filename);
-		assert(req != nullptr && req->IsReady());
-#endif
+		// This assert is triggered by the request cache clear when switching languages
+		// Remove comment to test if all assets are requested correctly
+		//auto* req = AsyncHandler::RequestFile(s.directory, filename);
+		//assert(req != nullptr && req->IsReady());
 
 		BitmapRef bmp;
 
