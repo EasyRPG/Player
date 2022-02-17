@@ -94,6 +94,8 @@
 #include "exe_reader.h"
 #endif
 
+using namespace std::chrono_literals;
+
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -241,8 +243,13 @@ void Player::Run() {
 		if (!aptMainLoop())
 			Exit();
 #  elif defined(__SWITCH__)
-		if(!appletMainLoop())
-			Exit();
+		// handle events
+		appletMainLoop();
+		// skipping our main loop, when out of focus
+		if(appletGetFocusState() != AppletFocusState_InFocus) {
+			Game_Clock::SleepFor(10ms);
+			continue;
+		}
 #  endif
 		MainLoop();
 	}
@@ -422,7 +429,6 @@ void Player::Exit() {
 	Text::Draw(*surface, 84, DisplayUi->GetHeight() / 2 - 30, *Font::Default(), Color(221, 123, 64, 255), message);
 	DisplayUi->UpdateDisplay();
 #endif
-
 	Player::ResetGameObjects();
 	Font::Dispose();
 	DynRpg::Reset();
