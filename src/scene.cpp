@@ -25,6 +25,7 @@
 #include "output.h"
 #include "audio.h"
 #include "transition.h"
+#include "game_actors.h"
 #include "game_interpreter.h"
 #include "game_system.h"
 #include "main_data.h"
@@ -385,4 +386,7 @@ void Scene::OnEventHpChanged(Game_Battler*, int) {
 }
 
 void Scene::OnTranslationChanged() {
+	if (Main_Data::game_actors) {
+		Main_Data::game_actors->ReloadActors();
+	}
 }

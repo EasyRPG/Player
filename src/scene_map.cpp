@@ -223,8 +223,8 @@ void Scene_Map::DrawBackground(Bitmap& dst) {
 void Scene_Map::OnTranslationChanged() {
 	// FIXME: Map events are not reloaded
 	// They require leaving and reentering the map
+	Scene::OnTranslationChanged();
 	Game_Map::ReloadChipset();
-	Main_Data::game_actors->ReloadActors();
 }
 
 void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {

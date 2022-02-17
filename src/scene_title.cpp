@@ -163,6 +163,8 @@ void Scene_Title::OnTranslationChanged() {
 
 	command_window->SetIndex(indices.translate);
 	HideTranslationWindow();
+
+	Scene::OnTranslationChanged();
 }
 
 void Scene_Title::CreateTitleGraphic() {
