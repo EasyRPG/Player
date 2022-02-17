@@ -270,7 +270,7 @@ int CalcSkillCost(const lcf::rpg::Skill& skill, int max_sp, bool half_sp_cost) {
 
 int CalcSkillHpCost(const lcf::rpg::Skill& skill, int max_hp) {
 	return (Player::IsRPG2k3() && skill.easyrpg_hp_type == lcf::rpg::Skill::HpType_percent)
-		? std::min(max_hp - 1, max_hp * skill.easyrpg_hp_percent / 100)
+		? std::min<int>(max_hp - 1, max_hp * skill.easyrpg_hp_percent / 100)
 		: skill.easyrpg_hp_cost;
 }
 
