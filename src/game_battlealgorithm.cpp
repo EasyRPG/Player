@@ -655,6 +655,27 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 	// Conditions healed by physical attack:
 	BattlePhysicalStateHeal(100, target_states, target_perm_states);
 
+	auto easyrpg_state_set = [&](const auto& state_set, const auto& state_chance) {
+		int num_states = static_cast<int>(state_set.size());
+		for (int i = 0; i < num_states; ++i) {
+			int inflict_pct = 0;
+			if (i < static_cast<int>(num_states) && state_set[i]) {
+				inflict_pct = static_cast<int>(state_chance);
+			}
+			auto state_id = (i + 1);
+
+			if (inflict_pct > 0) {
+				inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
+				if (Rand::PercentChance(inflict_pct)) {
+					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
+						AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
+					}
+				}
+				inflict_pct = 0;
+			}
+		}
+	};
+
 	// Conditions caused / healed by weapon.
 	if (source.GetType() == Game_Battler::Type_Ally) {
 		auto& ally = static_cast<Game_Actor&>(source);
@@ -708,46 +729,12 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 			}
 		} else {
 			lcf::rpg::Actor* allydata = lcf::ReaderUtil::GetElement(lcf::Data::actors, ally.GetId());
-			int num_states = allydata->easyrpg_unarmed_state_set.size();
-			for (int i = 0; i < num_states; ++i) {
-				int inflict_pct = 0;
-				if (i < static_cast<int>(allydata->easyrpg_unarmed_state_set.size()) && allydata->easyrpg_unarmed_state_set[i]) {
-					inflict_pct = static_cast<int>(allydata->easyrpg_unarmed_state_chance);
-				}
-				auto state_id = (i + 1);
-
-				if (inflict_pct > 0) {
-					inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
-					if (Rand::PercentChance(inflict_pct)) {
-						if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-							AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
-						}
-					}
-					inflict_pct = 0;
-				}
-			}
+			easyrpg_state_set(allydata->easyrpg_unarmed_state_set, allydata->easyrpg_unarmed_state_chance);
 		}
 	} else if (source.GetType() == Game_Battler::Type_Enemy) {
 		auto& enemy = static_cast<Game_Enemy&>(source);
 		lcf::rpg::Enemy* enemydata = lcf::ReaderUtil::GetElement(lcf::Data::enemies, enemy.GetId());
-		int num_states = enemydata->easyrpg_state_set.size();
-		for (int i = 0; i < num_states; ++i) {
-			int inflict_pct = 0;
-			if (i < static_cast<int>(enemydata->easyrpg_state_set.size()) && enemydata->easyrpg_state_set[i]) {
-				inflict_pct = static_cast<int>(enemydata->easyrpg_state_chance);
-			}
-			auto state_id = (i + 1);
-
-			if (inflict_pct > 0) {
-				inflict_pct = inflict_pct * target.GetStateProbability(state_id) / 100;
-				if (Rand::PercentChance(inflict_pct)) {
-					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
-						AddAffectedState(StateEffect{state_id, StateEffect::Inflicted});
-					}
-				}
-				inflict_pct = 0;
-			}
-		}
+		easyrpg_state_set(enemydata->easyrpg_state_set, enemydata->easyrpg_state_chance);
 	}
 
 	return SetIsSuccess();
