@@ -268,6 +268,15 @@ void FileRequestAsync::Start() {
 		}
 	}
 
+	if (graphic && !Player::translation.GetCurrentLanguageId().empty()) {
+		// FIXME: Asset replacement will only work once for translations
+		std::string modified_path_trans = FileFinder::MakePath(lcf::ReaderUtil::Normalize(Tr::GetCurrentTranslationFilesystem().GetFullPath()), modified_path);
+		auto it = file_mapping.find(modified_path_trans);
+		if (it != file_mapping.end()) {
+			modified_path = modified_path_trans;
+		}
+	}
+
 	auto it = file_mapping.find(modified_path);
 	if (it != file_mapping.end()) {
 		request_path += it->second;

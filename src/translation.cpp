@@ -194,6 +194,12 @@ void Translation::RequestAndAddMap(int map_id) {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".po";
 	std::string map_name = ss.str();
+
+	if (maps.find(Utils::LowerCase(map_name)) != maps.end()) {
+		// Already loaded
+		return;
+	}
+
 	FileRequestAsync* request = AsyncHandler::RequestFile(Tr::GetCurrentTranslationFilesystem().GetFullPath(), map_name);
 	request->SetImportantFile(true);
 	map_request = request->Bind([this, map_name, map_id](FileRequestResult* res) {
