@@ -19,6 +19,7 @@
 #define EP_GAME_CONFIG_H
 
 #include "config_param.h"
+#include "filesystem.h"
 #include "options.h"
 
 class CmdlineParser;
@@ -56,9 +57,6 @@ struct Game_ConfigInput {
 };
 
 struct Game_Config {
-	/** Path to last config file we read from */
-	std::string config_path;
-
 	/** Gameplay subsystem options */
 	Game_ConfigPlayer player;
 
@@ -77,21 +75,37 @@ struct Game_Config {
 	 */
 	static Game_Config Create(CmdlineParser& cp);
 
-	/** Return config file path from command line args if found */
+	/** @return config file path from command line args if found */
 	static std::string GetConfigPath(CmdlineParser& cp);
 
 	/**
-	 * Returns the default config path for your system.
+	 * Returns the a filesystem view to the global config directory
 	 */
-	static std::string GetDefaultConfigPath();
+	static FilesystemView GetGlobalConfigFilesystem();
 
 	/**
-	 * Load configuration values from a config file.
+	 * Returns a handle to the global config file for reading.
+	 * The file is created if it does not exist.
 	 *
-	 * @param path the path to config file.
-	 * @post values of this are updated with values found in config file.
+	 * @return handle to the global file
 	 */
-	void LoadFromConfig(const std::string& path);
+	static Filesystem_Stream::InputStream GetGlobalConfigFileInput();
+
+	/**
+	 * Returns a handle to the global config file for writing.
+	 * The file is created if it does not exist.
+	 *
+	 * @return handle to the global file
+	 */
+	static Filesystem_Stream::OutputStream GetGlobalConfigFileOutput();
+
+	/**
+	 * Load configuration values from a stream;
+	 *
+	 * @param is stream to read from.
+	 * @post values of this are updated with values found in the stream.
+	 */
+	void LoadFromStream(Filesystem_Stream::InputStream& is);
 
 	/**
 	 * Load configuration values from a command line arguments.
@@ -102,11 +116,11 @@ struct Game_Config {
 	void LoadFromArgs(CmdlineParser& cp);
 
 	/**
-	 * Writes our configuration to the given config file
+	 * Writes our configuration to the given stream.
 	 *
-	 * @param path
+	 * @param os stream to write to
 	 */
-	void WriteToConfig(const std::string& path) const;
+	void WriteToStream(Filesystem_Stream::OutputStream& os) const;
 };
 
 #endif

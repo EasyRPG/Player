@@ -22,15 +22,24 @@
 #include <lcf/inireader.h>
 #include <cstring>
 
+namespace {
+	StringView config_name = "config.ini";
+}
+
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
-	auto default_path = GetDefaultConfigPath();
 	cp.Rewind();
 	auto arg_path = GetConfigPath(cp);
-	const auto& path = (arg_path.empty()) ? default_path : arg_path;
+	auto cli_config = FileFinder::Root().OpenInputStream(arg_path);
 
-	if (!path.empty()) {
-		cfg.LoadFromConfig(path);
+	if (!cli_config) {
+		auto global_config = GetGlobalConfigFileInput();
+		if (!global_config) {
+			return cfg;
+		}
+		cfg.LoadFromStream(global_config);
+	} else {
+		cfg.LoadFromStream(cli_config);
 	}
 
 	cp.Rewind();
@@ -39,11 +48,94 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	return cfg;
 }
 
-std::string Game_Config::GetDefaultConfigPath() {
-	// FIXME: Platform specific add this.
+FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	// FIXME: Game specific configs?
+	std::string path;
 
-	return "";
+#ifdef GEKKO
+	path = "sd:/data";
+#elif defined(__SWITCH__)
+	path = "/switch/easyrpg-player";
+#elif defined(_3DS)
+	path = "sdmc:/data";
+#elif defined(PSP2)
+	path = "ux0:/data/easyrpg-player";
+#elif defined(USE_LIBRETRO)
+	const char* dir = nullptr;
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+		path = std::string(dir);
+	}
+#elif defined(__ANDROID__)
+	// FIXME
+#elif defined(_WIN32)
+	// FIXME
+#else
+	char* home = getenv("XDG_CONFIG_HOME");
+	if (home) {
+		path = home;
+	} else {
+		home = getenv("HOME");
+		if (home) {
+			path = FileFinder::MakePath(home, ".config");
+		}
+	}
+#endif
+
+	auto print_err = []() {
+		Output::Debug("Could not determine global config path");
+	};
+
+	if (path.empty()) {
+		print_err();
+		return {};
+	}
+
+	std::string sub_path = FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME);
+	path = FileFinder::MakePath(path, sub_path);
+
+	auto fs = FileFinder::Root().Create(path);
+	if (!fs) {
+		// Attempt creating directories and try again
+		if (FileFinder::Root().MakeDirectory(path, true)) {
+			fs = FileFinder::Root().Create(path);
+		}
+	}
+
+	if (!fs) {
+		print_err();
+		return {};
+	}
+
+	return fs;
+}
+
+Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput() {
+	auto fs = GetGlobalConfigFilesystem();
+
+	if (fs) {
+		auto is = fs.OpenInputStream(config_name, std::ios_base::in);
+		if (!is) {
+			// Create the file
+			{
+				fs.OpenOutputStream(config_name);
+			}
+			is = fs.OpenInputStream(config_name, std::ios_base::in);
+		}
+
+		return is;
+	}
+
+	return Filesystem_Stream::InputStream();
+}
+
+Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
+	auto fs = GetGlobalConfigFilesystem();
+
+	if (fs) {
+		return fs.OpenOutputStream(config_name, std::ios_base::out);
+	}
+
+	return Filesystem_Stream::OutputStream();
 }
 
 std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
@@ -135,19 +227,11 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 	}
 }
 
-void Game_Config::LoadFromConfig(const std::string& path) {
-	this->config_path = path;
-
-	auto is = FileFinder::Root().OpenInputStream(path);
-	if (!is) {
-		Output::Debug("Ini config file {} not found", path);
-		return;
-	}
-
+void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	lcf::INIReader ini(is);
 
 	if (ini.ParseError()) {
-		Output::Debug("Failed to parse ini config file {}", path);
+		Output::Debug("Failed to parse ini config file {}", is.GetName());
 		return;
 	}
 
@@ -189,42 +273,35 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 	/** INPUT SECTION */
 }
 
-void Game_Config::WriteToConfig(const std::string& path) const {
-	auto of = FileFinder::Root().OpenOutputStream(path);
-
-	if (!of) {
-		Output::Debug("Failed to open {} for writing: {}", path, strerror(errno));
-		return;
-	}
-
+void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	/** PLAYER SECTION */
-	of << "[player]\n";
-	of << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
-	of << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
-	of << "\n";
+	os << "[player]\n";
+	os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
+	os << "\n";
 
 	/** VIDEO SECTION */
 
-	of << "[video]\n";
+	os << "[video]\n";
 	if (video.vsync.Enabled()) {
-		of << "vsync=" << int(video.vsync.Get()) << "\n";
+		os << "vsync=" << int(video.vsync.Get()) << "\n";
 	}
 	if (video.fullscreen.Enabled()) {
-		of << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
+		os << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
 	}
 	if (video.show_fps.Enabled()) {
-		of << "show-fps=" << int(video.show_fps.Get()) << "\n";
+		os << "show-fps=" << int(video.show_fps.Get()) << "\n";
 	}
 	if (video.fps_render_window.Enabled()) {
-		of << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
+		os << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
 	}
 	if (video.fps_limit.Enabled()) {
-		of << "fps-limit=" << video.fps_limit.Get() << "\n";
+		os << "fps-limit=" << video.fps_limit.Get() << "\n";
 	}
 	if (video.window_zoom.Enabled()) {
-		of << "window-zoom=" << video.window_zoom.Get() << "\n";
+		os << "window-zoom=" << video.window_zoom.Get() << "\n";
 	}
-	of << "\n";
+	os << "\n";
 
 	/** AUDIO SECTION */
 

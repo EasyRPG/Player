@@ -94,6 +94,10 @@ bool RootFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryT
 	return FilesystemForPath(path).GetDirectoryContent(path, tree);
 }
 
+bool RootFilesystem::MakeDirectory(StringView path, bool follow_symlinks) const {
+	return FilesystemForPath(path).MakeDirectory(path, follow_symlinks);
+}
+
 std::string RootFilesystem::Describe() const {
 	return "[Root]";
 }
