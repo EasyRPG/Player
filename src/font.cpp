@@ -71,25 +71,18 @@ namespace {
 	}
 
 	BitmapFontGlyph const* find_gothic_glyph(char32_t code) {
-		if (Player::IsCP936()) {
-			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
-			if (wqy != NULL) {
-				return wqy;
-			}
-		}		
 		auto* gothic = find_glyph(SHINONOME_GOTHIC, code);
 		return gothic != NULL ? gothic : find_fallback_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
-		if (Player::IsCP936()) {
-			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
-			if (wqy != NULL) {
-				return wqy;
-			}
-		}		
 		auto* mincho = find_glyph(SHINONOME_MINCHO, code);
 		return mincho == NULL ? find_gothic_glyph(code) : mincho;
+	}
+
+	BitmapFontGlyph const* find_wqy_glyph(char32_t code) {
+		auto* wqy = find_glyph(BITMAPFONT_WQY, code);
+		return wqy != NULL ? wqy : find_mincho_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_rmg2000_glyph(char32_t code) {
@@ -159,10 +152,16 @@ namespace {
 	}; // class FTFont
 #endif
 
-	/* Bitmap fonts used for the official Japanese version.
+	/* Bitmap fonts used for the official Chinese version.
+	   Also used as the last fallback when all the other fonts fail.
+	*/
+	FontRef const wqy = std::make_shared<BitmapFont>("WQY", &find_wqy_glyph);
+
+	/* Bitmap fonts used for the official Japanese version.       
 	   Compatible with MS Gothic and MS Mincho. Feature a closing quote in place of straight quote,
 	   double-width Cyrillic letters (unusable for Russian, only useful for smileys and things like that)
 	   and ellipsis in the middle of the line.
+	   Also used as fallback when WQY fonts fail.
 	*/
 	FontRef const gothic = std::make_shared<BitmapFont>("Shinonome Gothic", &find_gothic_glyph);
 	FontRef const mincho = std::make_shared<BitmapFont>("Shinonome Mincho", &find_mincho_glyph);
@@ -369,6 +368,9 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
+	if (Player::IsBig5() || Player::IsCP936()) {
+		return wqy;
+	}
 	const bool mincho = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
 	return Default(mincho);
 }
