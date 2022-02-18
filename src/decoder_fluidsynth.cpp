@@ -138,6 +138,16 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 	}
 	sf_paths.emplace_back("easyrpg.soundfont");
 
+#if FLUIDSYNTH_VERSION_MAJOR >= 2
+	char* default_sf = nullptr;
+	if (fluid_settings_dupstr(global_settings.get(), "synth.default-soundfont", &default_sf) == FLUID_OK) {
+		if (default_sf != nullptr && default_sf[0] != '\0') {
+			sf_paths.emplace_back(default_sf);
+		}
+	}
+	fluid_free(default_sf);
+#endif
+
 	if (getenv("SDL_SOUNDFONTS")) {
 		auto sdl_sfs = Utils::Tokenize(getenv("SDL_SOUNDFONTS"), [](char32_t t) {
 #ifdef _WIN32
@@ -149,7 +159,7 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 		sf_paths.insert(sf_paths.end(), sdl_sfs.begin(), sdl_sfs.end());
 	}
 
-	auto sf_files = {"default.sf2", "FluidR3_GM.sf2"};
+	auto sf_files = {"FluidR3_GM.sf2"};
 	for (const auto& sf_file: sf_files) {
 		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/soundfonts", sf_file));
 		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/sounds/sf2", sf_file));
