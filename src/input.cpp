@@ -198,6 +198,17 @@ void Input::ResetTriggerKeys() {
 	triggered.reset();
 }
 
+void Input::ResetDefaultMapping(Input::InputButton button) {
+	auto def_mappings = GetDefaultButtonMappings();
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+
+	mappings.RemoveAll(button);
+
+	for (auto ki = def_mappings.LowerBound(button); ki != def_mappings.end() && ki->first == button;++ki) {
+		mappings.Add(*ki);
+	}
+}
+
 bool Input::IsPressed(InputButton button) {
 	assert(!IsSystemButton(button));
 	WaitInput(true);

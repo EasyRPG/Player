@@ -42,31 +42,6 @@ public:
 	void Update() override;
 	void DrawBackground(Bitmap& dst) override;
 
-	/**
-	 * Updates the range list window.
-	 */
-	void UpdateRangeListWindow();
-
-	/**
-	 * Updates the var list window.
-	 */
-	void UpdateVarListWindow();
-
-	/**
-	 * Updates the item window.
-	 */
-	void UpdateItemSelection();
-
-	/**
-	 * Gets an int with the current switch/variable selected.
-	 */
-	int GetIndex();
-
-	/**
-	 * Resets the remembered indices
-	 */
-	static void ResetPrevIndices();
-
 private:
 	void CreateMainWindow();
 	void CreateOptionsWindow();
@@ -74,8 +49,7 @@ private:
 	void CreateTitleGraphic();
 	void OnTitleSpriteReady(FileRequestResult* result);
 
-	void SetMode(Window_Settings::UiMode mode);
-	void RefreshOptionsWindow();
+	void SetMode(Window_Settings::UiMode new_mode);
 
 	void UpdateMain();
 	void UpdateOptions();
@@ -86,6 +60,9 @@ private:
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;
+
+	Window_Settings::UiMode mode = Window_Settings::eNone;
 };
+
 
 #endif

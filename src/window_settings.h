@@ -20,6 +20,7 @@
 
 // Headers
 #include <vector>
+#include "input.h"
 #include "window_selectable.h"
 
 /**
@@ -31,7 +32,8 @@ public:
 		eNone,
 		eMain,
 		eInput,
-		eChangeInput,
+		eInputButton,
+		eInputRemap,
 		eVideo,
 		eAudio,
 		eLicense
@@ -47,6 +49,8 @@ public:
 				&& static_cast<bool>(options[index].action));
 	}
 
+	void UpdateMode();
+
 	/** Execute the action pointed to by index */
 	void DoCurrentAction() {
 		options[index].action();
@@ -54,8 +58,8 @@ public:
 
 	UiMode GetMode() const;
 
-	void Push(UiMode ui);
-	UiMode Pop();
+	void Push(UiMode ui, int arg = -1);
+	void Pop();
 
 	/**
 	 * Refreshes the item list.
@@ -89,7 +93,8 @@ private:
 	void RefreshAudio();
 	void RefreshLicense();
 
-	void RefreshChangeInput();
+	void RefreshInputButton();
+	void RefreshInputRemap();
 
 	void UpdateHelp() override;
 
@@ -103,9 +108,11 @@ private:
 
 	struct StackFrame {
 		UiMode uimode = eNone;
+		int arg = -1;
 	};
 	std::array<StackFrame,8> stack;
 	int stack_index = 0;
+	int timer = 0;
 
 	StackFrame& GetFrame(int n = 0);
 	const StackFrame& GetFrame(int n = 0) const;

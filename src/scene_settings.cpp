@@ -68,7 +68,12 @@ void Scene_Settings::Start() {
 	SetMode(Window_Settings::eMain);
 }
 
-void Scene_Settings::SetMode(Window_Settings::UiMode mode) {
+void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
+	if (new_mode == mode) {
+		return;
+	}
+	mode = new_mode;
+
 	main_window->SetActive(false);
 	main_window->SetVisible(false);
 	options_window->SetActive(false);
@@ -93,20 +98,19 @@ void Scene_Settings::Update() {
 	help_window->Update();
 	options_window->Update();
 
-	if (Input::IsTriggered(Input::CANCEL)) {
+	SetMode(options_window->GetMode());
+	if (mode != Window_Settings::eInputRemap && Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cancel));
-		auto cur_mode = options_window->Pop();
-		switch (cur_mode) {
-			case Window_Settings::eNone:
-				Scene::Pop();
-				break;
-			default:
-				SetMode(cur_mode);
-				break;
+		options_window->Pop();
+		SetMode(options_window->GetMode());
+		if (mode == Window_Settings::eNone) {
+			Scene::Pop();
 		}
 	}
 
 	switch (options_window->GetMode()) {
+		case Window_Settings::eNone:
+			break;
 		case Window_Settings::eMain:
 			UpdateMain();
 			break;
@@ -114,11 +118,14 @@ void Scene_Settings::Update() {
 		case Window_Settings::eVideo:
 		case Window_Settings::eAudio:
 		case Window_Settings::eLicense:
+		case Window_Settings::eInputButton:
 			UpdateOptions();
+			break;
+		case Window_Settings::eInputRemap:
+			options_window->UpdateMode();
 			break;
 	}
 }
-
 
 void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(Cache::Title(result->file));
@@ -141,11 +148,14 @@ void Scene_Settings::UpdateMain() {
 }
 
 void Scene_Settings::UpdateOptions() {
+	options_window->UpdateMode();
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (options_window->IsCurrentActionEnabled()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			options_window->DoCurrentAction();
 			options_window->Refresh();
+		} else {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}
 }

@@ -74,6 +74,13 @@ namespace Input {
 	void ResetTriggerKeys();
 
 	/**
+	 * Loads the default mapping for a button
+	 *
+	 * @param button Button to restore mapping of
+	 */
+	void ResetDefaultMapping(InputButton button);
+
+	/**
 	 * Gets if a button is being pressed.
 	 *
 	 * @param button button ID.
