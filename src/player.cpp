@@ -88,6 +88,9 @@
 #include <lcf/scope_guard.h>
 #include "baseui.h"
 #include "game_clock.h"
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+#include "decoder_fluidsynth.h"
+#endif
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -692,6 +695,14 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 			}
 			continue;
 		}
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+		if (cp.ParseNext(arg, 1, "--soundfont")) {
+			if (arg.NumValues() > 0) {
+				FluidSynthDecoder::SetSoundfont(arg.Value(0));
+			}
+			continue;
+		}
+#endif
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
 			PrintVersion();
 			exit(0);
@@ -1394,6 +1405,7 @@ Options:
                            with IDs A, B, C...
                            Incompatible with --load-game-id.
       --language LANG      Loads the game translation in language/LANG folder.
+      --soundfont FILE     Soundfont in sf2 format to use when playing MIDI files.
       --test-play          Enable TestPlay mode.
       --window             Start in window mode.
   -v, --version            Display program version and exit.
