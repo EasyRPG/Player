@@ -42,9 +42,9 @@ void Scene_Settings::CreateTitleGraphic() {
 
 void Scene_Settings::CreateMainWindow() {
 	std::vector<std::string> options = {
-		"Input",
 		"Video",
 		"Audio",
+		"Input",
 		"License"
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options), 96);
@@ -64,46 +64,26 @@ void Scene_Settings::Start() {
 	CreateMainWindow();
 	CreateOptionsWindow();
 
-	SetMode(eMain);
+	options_window->Push(Window_Settings::eMain);
+	SetMode(Window_Settings::eMain);
 }
 
-void Scene_Settings::SetMode(Mode mode) {
+void Scene_Settings::SetMode(Window_Settings::UiMode mode) {
 	main_window->SetActive(false);
 	main_window->SetVisible(false);
 	options_window->SetActive(false);
 	options_window->SetVisible(false);
 	help_window->SetVisible(false);
 
-	this->mode = mode;
-
 	switch (mode) {
-		case eMain:
+		case Window_Settings::eMain:
 			main_window->SetActive(true);
 			main_window->SetVisible(true);
 			break;
-		case eInput:
+		default:
 			help_window->SetVisible(true);
 			options_window->SetActive(true);
 			options_window->SetVisible(true);
-			options_window->SetMode(Window_Settings::eInput);
-			break;
-		case eAudio:
-			help_window->SetVisible(true);
-			options_window->SetActive(true);
-			options_window->SetVisible(true);
-			options_window->SetMode(Window_Settings::eAudio);
-			break;
-		case eVideo:
-			help_window->SetVisible(true);
-			options_window->SetActive(true);
-			options_window->SetVisible(true);
-			options_window->SetMode(Window_Settings::eVideo);
-			break;
-		case eLicense:
-			help_window->SetVisible(true);
-			options_window->SetActive(true);
-			options_window->SetVisible(true);
-			options_window->SetMode(Window_Settings::eLicense);
 			break;
 	}
 }
@@ -115,28 +95,25 @@ void Scene_Settings::Update() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cancel));
-		switch (mode) {
-			case eMain:
+		auto cur_mode = options_window->Pop();
+		switch (cur_mode) {
+			case Window_Settings::eNone:
 				Scene::Pop();
 				break;
-			case eInput:
-			case eAudio:
-			case eVideo:
-			case eLicense:
-				SetMode(eMain);
+			default:
+				SetMode(cur_mode);
 				break;
 		}
-
 	}
 
-	switch (mode) {
-		case eMain:
+	switch (options_window->GetMode()) {
+		case Window_Settings::eMain:
 			UpdateMain();
 			break;
-		case eInput:
-		case eVideo:
-		case eAudio:
-		case eLicense:
+		case Window_Settings::eInput:
+		case Window_Settings::eVideo:
+		case Window_Settings::eAudio:
+		case Window_Settings::eLicense:
 			UpdateOptions();
 			break;
 	}
@@ -148,10 +125,18 @@ void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 }
 
 void Scene_Settings::UpdateMain() {
+	const auto modes = Utils::MakeArray(
+		Window_Settings::eVideo,
+		Window_Settings::eAudio,
+		Window_Settings::eInput,
+		Window_Settings::eLicense
+	);
+
 	if (Input::IsTriggered(Input::DECISION)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		auto idx = main_window->GetIndex();
-		SetMode(static_cast<Mode>(idx + 1));
+		SetMode(modes[idx]);
+		options_window->Push(modes[idx]);
 	}
 }
 

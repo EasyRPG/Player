@@ -45,7 +45,46 @@ void Window_Settings::DrawOption(int index) {
 	contents->TextDraw(rect.x, rect.y, color, option.text);
 }
 
+Window_Settings::StackFrame& Window_Settings::GetFrame(int n) {
+	auto i = stack_index - n;
+	assert(i >= 0 && i < static_cast<int>(stack.size()));
+	return stack[i];
+}
+
+const Window_Settings::StackFrame& Window_Settings::GetFrame(int n) const {
+	auto i = stack_index - n;
+	assert(i >= 0 && i < static_cast<int>(stack.size()));
+	return stack[i];
+}
+
+int Window_Settings::GetStackSize() const {
+	return stack_index + 1;
+}
+
+void Window_Settings::Push(UiMode ui) {
+	SavePosition();
+
+	++stack_index;
+	assert(stack_index < static_cast<int>(stack.size()));
+	stack[stack_index] = { ui };
+
+	Refresh();
+	RestorePosition();
+}
+
+Window_Settings::UiMode Window_Settings::Pop() {
+	SavePosition();
+	--stack_index;
+	assert(stack_index >= 0);
+
+	Refresh();
+	RestorePosition();
+
+	return GetFrame().uimode;
+}
+
 void Window_Settings::SavePosition() {
+	auto mode = GetFrame().uimode;
 	if (mode != eNone) {
 		auto& mem = memory[mode - 1];
 		mem.index = index;
@@ -54,6 +93,7 @@ void Window_Settings::SavePosition() {
 }
 
 void Window_Settings::RestorePosition() {
+	auto mode = GetFrame().uimode;
 	if (mode != eNone) {
 		auto& mem = memory[mode - 1];
 		index = mem.index;
@@ -61,17 +101,14 @@ void Window_Settings::RestorePosition() {
 	}
 }
 
-void Window_Settings::SetMode(Mode nmode) {
-	SavePosition();
-	mode = nmode;
-	RestorePosition();
-	Refresh();
+Window_Settings::UiMode Window_Settings::GetMode() const {
+	return GetFrame().uimode;
 }
 
 void Window_Settings::Refresh() {
 	options.clear();
 
-	switch (mode) {
+	switch (GetFrame().uimode) {
 		case eNone:
 			break;
 		case eInput:
@@ -92,7 +129,7 @@ void Window_Settings::Refresh() {
 
 	CreateContents();
 
-	if (mode == eNone || options.empty()) {
+	if (GetFrame().uimode == eNone || options.empty()) {
 		SetIndex(-1);
 	} else {
 		SetIndex(index);
@@ -206,11 +243,15 @@ void Window_Settings::RefreshInput() {
 			ss << kname << " ";
 		}
 
-		// FIXME: Example for now.
-		auto param = LockedConfigParam<std::string>(ss.str());
+		auto param = ConfigParam<std::string>(ss.str());
 		AddOption(std::string("Key ") + name, param, "",
-				[](){},
-				help);
+				[button](){
+
+			}, help);
 	}
+}
+
+void Window_Settings::RefreshChangeInput() {
+
 }
 

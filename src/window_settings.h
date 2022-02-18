@@ -27,9 +27,11 @@
  */
 class Window_Settings : public Window_Selectable {
 public:
-	enum Mode {
+	enum UiMode {
 		eNone,
+		eMain,
 		eInput,
+		eChangeInput,
 		eVideo,
 		eAudio,
 		eLicense
@@ -50,7 +52,10 @@ public:
 		options[index].action();
 	}
 
-	void SetMode(Mode);
+	UiMode GetMode() const;
+
+	void Push(UiMode ui);
+	UiMode Pop();
 
 	/**
 	 * Refreshes the item list.
@@ -84,16 +89,28 @@ private:
 	void RefreshAudio();
 	void RefreshLicense();
 
+	void RefreshChangeInput();
+
 	void UpdateHelp() override;
 
 	std::vector<Option> options;
 
-	Mode mode = eNone;
 	struct Memory {
 		int index = 0;
 		int top_row = 0;
 	};
 	Memory memory[eLicense] = {};
+
+	struct StackFrame {
+		UiMode uimode = eNone;
+	};
+	std::array<StackFrame,8> stack;
+	int stack_index = 0;
+
+	StackFrame& GetFrame(int n = 0);
+	const StackFrame& GetFrame(int n = 0) const;
+
+	int GetStackSize() const;
 
 	void SavePosition();
 	void RestorePosition();

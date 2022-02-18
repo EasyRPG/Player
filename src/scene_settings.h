@@ -68,22 +68,13 @@ public:
 	static void ResetPrevIndices();
 
 private:
-	enum Mode {
-		eMain,
-		eInput,
-		eVideo,
-		eAudio,
-		eLicense
-	};
-	Mode mode = eMain;
-
 	void CreateMainWindow();
 	void CreateOptionsWindow();
 
 	void CreateTitleGraphic();
 	void OnTitleSpriteReady(FileRequestResult* result);
 
-	void SetMode(Mode mode);
+	void SetMode(Window_Settings::UiMode mode);
 	void RefreshOptionsWindow();
 
 	void UpdateMain();
