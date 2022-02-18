@@ -148,7 +148,12 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 		});
 		sf_paths.insert(sf_paths.end(), sdl_sfs.begin(), sdl_sfs.end());
 	}
-	sf_paths.emplace_back("/usr/share/sounds/sf2/FluidR3_GM.sf2");
+
+	auto sf_files = {"default.sf2", "FluidR3_GM.sf2"};
+	for (const auto& sf_file: sf_files) {
+		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/soundfonts", sf_file));
+		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/sounds/sf2", sf_file));
+	}
 
 	bool sf_load_success = false;
 	for (const auto& sf_name: sf_paths) {
