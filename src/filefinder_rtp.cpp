@@ -117,7 +117,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 #ifdef _WIN32
 		return t == ';';
 #else
-		return t == ':';
+		return t == ':' || t == ';';
 #endif
 	};
 
