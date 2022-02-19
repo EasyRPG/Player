@@ -21,6 +21,7 @@
 #include "config_param.h"
 #include "filesystem.h"
 #include "options.h"
+#include "input_buttons.h"
 
 class CmdlineParser;
 
@@ -54,6 +55,7 @@ struct Game_ConfigAudio {
 };
 
 struct Game_ConfigInput {
+	Input::ButtonMappingArray buttons;
 };
 
 struct Game_Config {
@@ -67,7 +69,7 @@ struct Game_Config {
 	Game_ConfigAudio audio;
 
 	/** Input subsystem options */
-	Game_ConfigAudio input;
+	Game_ConfigInput input;
 
 	/**
 	 * Create an application config. This first determines the config file path if any,

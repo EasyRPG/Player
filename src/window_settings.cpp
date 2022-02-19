@@ -216,10 +216,11 @@ void Window_Settings::AddOption(const std::string& prefix,
 		return;
 	}
 	Option opt;
-	opt.text = prefix + ": " + ParamToText(param.Get()) + suffix;
+	std::string suffix_ = ParamToText(param.Get()) + suffix;
+	opt.text = prefix + (suffix_.empty() ? "" : ": " + suffix_);
 	opt.help = help;
 	if (!param.Locked()) {
-		opt.action = std::move(action);
+		opt.action = std::forward<Action>(action);
 	}
 	options.push_back(std::move(opt));
 }

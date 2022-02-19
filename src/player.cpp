@@ -187,7 +187,7 @@ void Player::Init(std::vector<std::string> arguments) {
 		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg.video);
 	}
 
-	auto buttons = Input::GetDefaultButtonMappings();
+	auto buttons = cfg.input.buttons;
 	auto directions = Input::GetDefaultDirectionMappings();
 
 	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);

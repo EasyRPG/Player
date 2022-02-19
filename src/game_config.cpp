@@ -19,6 +19,7 @@
 #include "cmdline_parser.h"
 #include "filefinder.h"
 #include "output.h"
+#include "input.h"
 #include <lcf/inireader.h>
 #include <cstring>
 
@@ -271,6 +272,28 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	/** AUDIO SECTION */
 
 	/** INPUT SECTION */
+	input.buttons = Input::GetDefaultButtonMappings();
+	auto& mappings = input.buttons;
+
+	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
+		auto button = static_cast<Input::InputButton>(i);
+
+		auto name = Input::kButtonNames.tag(button);
+		if (ini.HasValue("input", name)) {
+			auto values = ini.GetString("input", name, "");
+			mappings.RemoveAll(button);
+
+			auto keys = Utils::Tokenize(values, [](char32_t c) { return c == ','; });
+
+			for (const auto& key: keys) {
+				const auto& kNames = Input::Keys::kNames;
+				auto it = std::find(kNames.begin(), kNames.end(), key);
+				if (it != Input::Keys::kNames.end()) {
+					mappings.Add({button, static_cast<Input::Keys::InputKey>(std::distance(kNames.begin(), it))});
+				}
+			}
+		}
+	}
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -306,5 +329,26 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	/** AUDIO SECTION */
 
 	/** INPUT SECTION */
-}
+	os << "[input]\n";
 
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
+		auto button = static_cast<Input::InputButton>(i);
+
+		auto name = Input::kButtonNames.tag(button);
+		os << name << "=";
+
+		std::stringstream ss;
+		bool first = true;
+		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
+			if (!first) {
+				os << ",";
+			}
+			first = false;
+
+			auto key = static_cast<Input::Keys::InputKey>(ki->second);
+			auto kname = Input::Keys::kNames.tag(key);
+			os << kname;
+		}
+	}
+}
