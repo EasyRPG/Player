@@ -139,7 +139,11 @@ NOTE: Incompatible with *--load-game-id*.
 NOTE: Incompatible with *--load-game-id*.
 
 *--language* 'LANG'::
-  Loads the game translation in language/LANG folder.
+  Loads the game translation in language/'LANG' folder.
+
+*--soundfont 'FILE'::
+  Adds 'FILE' to the list of soundfonts used for playing MIDI files and use
+  this one with highest precedence. The soundfont must be in SF2 format.
 
 *--test-play*::
   Enable TestPlay mode.
@@ -188,6 +192,13 @@ NOTE: All '*_RTP_PATH' variables support directory lists, using colon (':') or
 semicolon (';') as separator. Useful when you have multiple translated RTP
 versions or directories with extra files. The '--rtp-path' command line
 option supports directory lists as well.
+
+'SDL_SOUNDFONTS'::
+  List of soundfonts in sf2 format to use when playing MIDI files. The first
+  existing soundfont is used.
+
+NOTE: Use colon (':') or semicolon (';') as separator. Use '--soundfont'
+to specify a soundfont on the command line.
 
 
 == FILES

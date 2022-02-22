@@ -35,8 +35,10 @@ static void* vio_open(fluid_fileapi_t*, const char* filename) {
 #endif
 	auto is = FileFinder::Game().OpenInputStream(filename);
 	if (!is) {
-		Output::Warning("Fluidsynth: vio_open failed for {}", filename);
-		return nullptr;
+		is = FileFinder::Root().OpenInputStream(filename);
+		if (!is) {
+			return nullptr;
+		}
 	}
 	return new Filesystem_Stream::InputStream { std::move(is) };
 }
@@ -93,6 +95,7 @@ static fluid_fileapi_t fluidlite_vio = {
 
 namespace {
 	bool shutdown = false;
+	std::string preferred_soundfont;
 }
 
 struct FluidSettingsDeleter {
@@ -128,9 +131,49 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 	fluid_synth_add_sfloader(syn, global_loader);
 #endif
 
-	std::string sf_name = "easyrpg.soundfont";
+	// Attempt loading a soundfont
+	std::vector<std::string> sf_paths;
+	if (!preferred_soundfont.empty()) {
+		sf_paths.emplace_back(preferred_soundfont);
+	}
+	sf_paths.emplace_back("easyrpg.soundfont");
 
-	if (!FileFinder::Game().Exists(sf_name) || fluid_synth_sfload(syn, sf_name.c_str(), 1) == FLUID_FAILED) {
+#if FLUIDSYNTH_VERSION_MAJOR >= 2
+	char* default_sf = nullptr;
+	if (fluid_settings_dupstr(global_settings.get(), "synth.default-soundfont", &default_sf) == FLUID_OK) {
+		if (default_sf != nullptr && default_sf[0] != '\0') {
+			sf_paths.emplace_back(default_sf);
+		}
+	}
+	fluid_free(default_sf);
+#endif
+
+	if (getenv("SDL_SOUNDFONTS")) {
+		auto sdl_sfs = Utils::Tokenize(getenv("SDL_SOUNDFONTS"), [](char32_t t) {
+#ifdef _WIN32
+			return t == ';';
+#else
+			return t == ':' || t == ';';
+#endif
+		});
+		sf_paths.insert(sf_paths.end(), sdl_sfs.begin(), sdl_sfs.end());
+	}
+
+	auto sf_files = {"FluidR3_GM.sf2"};
+	for (const auto& sf_file: sf_files) {
+		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/soundfonts", sf_file));
+		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/sounds/sf2", sf_file));
+	}
+
+	bool sf_load_success = false;
+	for (const auto& sf_name: sf_paths) {
+		if (fluid_synth_sfload(syn, sf_name.c_str(), 1) != FLUID_FAILED) {
+			sf_load_success = true;
+			break;
+		}
+	}
+
+	if (!sf_load_success) {
 		error_message = "Could not load soundfont.";
 		return nullptr;
 	}
@@ -219,6 +262,10 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 	init = true;
 
 	return init;
+}
+
+void FluidSynthDecoder::SetSoundfont(StringView sf) {
+	preferred_soundfont = ToString(sf);
 }
 
 int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
