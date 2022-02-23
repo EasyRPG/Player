@@ -3761,10 +3761,48 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			break;
 		}
 		break;
+	case 12:
+		// Maniac: Other
+		if (Player::IsPatchManiac()) {
+			switch (com.parameters[1]) {
+				case 0:
+					// FIXME: Game was loaded in this frame
+					Output::Warning("Maniac: Condition 'Loaded' not implemented");
+					result = false;
+					break;
+				case 1:
+					// Joypad is active (We always read from Controller so simply report 'true')
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+					result = true;
+#else
+					result = false;
+#endif
+					break;
+				case 2:
+					// FIXME: Window has focus. Needs function exposed in DisplayUi
+					// Assuming 'true' as Player usually suspends when loosing focus
+					result = true;
+					break;
+			}
+		}
+		break;
+	case 13:
+		// Maniac: Switch through Variable
+		if (Player::IsPatchManiac()) {
+			result = Main_Data::game_switches->Get(Main_Data::game_variables->Get(com.parameters[1])) == (com.parameters[2] == 0);
+		}
+		break;
+	case 14:
+		// Maniac: Variable indirect
+		if (Player::IsPatchManiac()) {
+			value1 = Main_Data::game_variables->GetIndirect(com.parameters[1]);
+			value2 = ValueOrVariable(com.parameters[2], com.parameters[3]);
+			result = CheckOperator(value1, value2, com.parameters[4]);
+		}
+		break;
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
-
 
 	int sub_idx = subcommand_sentinel;
 	if (!result) {
