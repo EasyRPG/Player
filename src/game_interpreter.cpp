@@ -4004,16 +4004,20 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 
 	switch (com.parameters[1]) {
 		case 0:
-			x = static_cast<int>(data.start_x);
-			y = static_cast<int>(data.start_y);
+			x = Utils::RoundTo<int>(data.current_x);
+			y = Utils::RoundTo<int>(data.current_y);
 			break;
 		case 1:
-			x = static_cast<int>(data.current_x);
-			y = static_cast<int>(data.current_y);
+			x = Utils::RoundTo<int>(data.current_x);
+			y = Utils::RoundTo<int>(data.current_y);
+			width = Utils::RoundTo<int>(width * data.current_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.current_magnify / 100.0);
 			break;
 		case 2:
-			x = static_cast<int>(data.finish_x);
-			y = static_cast<int>(data.finish_y);
+			x = Utils::RoundTo<int>(data.finish_x);
+			y = Utils::RoundTo<int>(data.finish_y);
+			width = Utils::RoundTo<int>(width * data.finish_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.finish_magnify / 100.0);
 			break;
 	}
 
@@ -4023,13 +4027,14 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			x -= (width / 2);
 			y -= (height / 2);
 			break;
-		case 2:
+		case 2: {
 			// Left, Top, Right, Bottom
 			x -= (width / 2);
 			y -= (height / 2);
-			width += (width / 2);
-			height += (height / 2);
+			width += x;
+			height += y;
 			break;
+		}
 	}
 
 	Main_Data::game_variables->Set(com.parameters[4], x);
