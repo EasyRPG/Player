@@ -40,6 +40,7 @@
 #include "game_message.h"
 #include "game_pictures.h"
 #include "game_screen.h"
+#include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -1506,8 +1507,8 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		}
 		case 21:
 			// Expression (Maniac)
-			Output::Warning("ControlVariables: Maniac Patch expressions not supported");
-			return true;
+			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]));
+			break;
 		default:
 			Output::Warning("ControlVariables: Unsupported operand {}", operand);
 			return true;
@@ -1536,8 +1537,9 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			end = Main_Data::game_variables->Get(com.parameters[2]);
 		} else if (target == 4 && Player::IsPatchManiac()) {
 			// Expression (Maniac)
-			Output::Warning("ControlVariables: Maniac Patch expressions not supported");
-			return true;
+			int idx = com.parameters[1];
+			start = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(idx + 1, com.parameters[idx]));
+			end = start;
 		} else {
 			return true;
 		}

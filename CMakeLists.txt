@@ -228,6 +228,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/logo.h
 	src/main_data.cpp
 	src/main_data.h
+	src/maniac_patch.cpp
+	src/maniac_patch.h
 	src/map_data.h
 	src/memory_management.h
 	src/message_overlay.cpp
