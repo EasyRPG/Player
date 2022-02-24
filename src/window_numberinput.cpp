@@ -161,6 +161,26 @@ void Window_NumberInput::Update() {
 			index = (index + digits_max - 1 + (int)show_operator) % (digits_max + (int)show_operator);
 		}
 
+		// Extension: Allow number input through numpad
+		if (!show_operator || index > 0) {
+			for (int btn = static_cast<int>(Input::N0); btn <= static_cast<int>(Input::N9); ++btn) {
+				if (Input::IsTriggered(static_cast<Input::InputButton>(btn))) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+
+					int place = 1;
+					for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
+						place *= 10;
+					}
+					int64_t n = number / place % 10;
+					number -= n * place;
+					number += (btn - static_cast<int>(Input::N0)) * static_cast<int64_t>(place);
+					index = (index + 1) % (digits_max + (int)show_operator);
+					Refresh();
+					break;
+				}
+			}
+		}
+
 		UpdateCursorRect();
 	}
 }
