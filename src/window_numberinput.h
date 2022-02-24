@@ -47,7 +47,7 @@ public:
 	 *
 	 * @return the currently input number.
 	 */
-	int GetNumber();
+	int GetNumber() const;
 
 	/**
 	 * Sets a new number value.
@@ -61,7 +61,7 @@ public:
 	 *
 	 * @return number of displayed digits.
 	 */
-	int GetMaxDigits();
+	int GetMaxDigits() const;
 
 	/**
 	 * Sets the maximal displayed digits.
@@ -76,7 +76,7 @@ public:
 	 *
 	 * @return the current operator state
 	 */
-	bool GetShowOperator();
+	bool GetShowOperator() const;
 
 	/**
 	 * Enables or Disables the +- operator before the numbers.

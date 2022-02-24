@@ -92,7 +92,7 @@ void Window_NumberInput::SetNumber(int inumber) {
 	Refresh();
 }
 
-int Window_NumberInput::GetMaxDigits() {
+int Window_NumberInput::GetMaxDigits() const {
 	return digits_max;
 }
 
@@ -108,7 +108,7 @@ void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	Refresh();
 }
 
-bool Window_NumberInput::GetShowOperator() {
+bool Window_NumberInput::GetShowOperator() const {
 	return show_operator;
 }
 
