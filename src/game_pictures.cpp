@@ -321,6 +321,15 @@ bool Game_Pictures::Picture::Exists() const {
 	return !data.name.empty();
 }
 
+bool Game_Pictures::Picture::IsRequestPending() const {
+	return request_id != nullptr;
+}
+
+void Game_Pictures::Picture::MakeRequestImportant() const {
+	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", data.name);
+	request->SetImportantFile(true);
+}
+
 void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	const auto& name = pic.data.name;
 	if (name.empty()) {
@@ -333,13 +342,13 @@ void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	int pic_id = pic.data.ID;
 
 	pic.request_id = request->Bind([this, pic_id](FileRequestResult*) {
-			OnPictureSpriteReady(pic_id);
-			});
+		OnPictureSpriteReady(pic_id);
+	});
 	request->Start();
 }
 
 
-void Game_Pictures::Picture::OnPictureSpriteReady() {
+void Game_Pictures::Picture::OnPictureSpriteReady() const {
 	auto bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	sprite->SetBitmap(bitmap);
@@ -350,6 +359,7 @@ void Game_Pictures::Picture::OnPictureSpriteReady() {
 void Game_Pictures::OnPictureSpriteReady(int id) {
 	auto* pic = GetPicturePtr(id);
 	if (EP_LIKELY(pic)) {
+		pic->request_id = nullptr;
 		if (!pic->sprite) {
 			sprites.emplace_back(pic->data.ID, Drawable::Flags::Shared);
 			pic->sprite = &sprites.back();

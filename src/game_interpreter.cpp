@@ -366,6 +366,13 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		// Previous command triggered an async operation.
 		if (IsAsyncPending()) {
+			if (_async_op.GetType() == AsyncOp::Type::eYieldRepeat) {
+				// This will cause an incorrect execution when the yielding
+				// command changed the index.
+				// Only use YieldRepeat for commands that do not do this!
+				auto& frame = GetFrame();
+				--frame.current_command;
+			}
 			break;
 		}
 
@@ -3978,10 +3985,16 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	// FIXME Emscripten: This will give incorrect values when the image was not downloaded yet
-
 	int pic_id = ValueOrVariable(com.parameters[0], com.parameters[3]);
-	auto pic = Main_Data::game_pictures->GetPicture(pic_id);
+	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+
+	if (pic.IsRequestPending()) {
+		// Cannot do anything useful here without the dimensions
+		pic.MakeRequestImportant();
+		_async_op = AsyncOp::MakeYieldRepeat();
+		return true;
+	}
+
 	const auto& data = pic.data;
 
 	int x = 0;

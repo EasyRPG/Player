@@ -113,7 +113,10 @@ public:
 		void Erase();
 		bool Exists() const;
 
-		void OnPictureSpriteReady();
+		bool IsRequestPending() const;
+		void MakeRequestImportant() const;
+
+		void OnPictureSpriteReady() const;
 		void OnMapScrolled(int dx, int dy);
 	};
 
