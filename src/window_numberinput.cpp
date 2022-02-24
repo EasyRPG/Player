@@ -79,11 +79,11 @@ int Window_NumberInput::GetNumber() const {
 }
 
 void Window_NumberInput::SetNumber(int inumber) {
-	int num = 1;
+	int64_t num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
 	}
-	number = min(max(abs(inumber), 0), num - 1);
+	number = Utils::Clamp<int64_t>(std::llabs(inumber), 0, num - 1);
 	ResetIndex();
 
 	plus = inumber >= 0;
