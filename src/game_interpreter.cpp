@@ -3973,12 +3973,59 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command GetPictureInfo not supported");
+	// FIXME Emscripten: This will give incorrect values when the image was not downloaded yet
+
+	int pic_id = ValueOrVariable(com.parameters[0], com.parameters[3]);
+	auto pic = Main_Data::game_pictures->GetPicture(pic_id);
+	const auto& data = pic.data;
+
+	int x = 0;
+	int y = 0;
+	int width = pic.sprite->GetWidth();
+	int height = pic.sprite->GetHeight();
+
+	switch (com.parameters[1]) {
+		case 0:
+			x = static_cast<int>(data.start_x);
+			y = static_cast<int>(data.start_y);
+			break;
+		case 1:
+			x = static_cast<int>(data.current_x);
+			y = static_cast<int>(data.current_y);
+			break;
+		case 2:
+			x = static_cast<int>(data.finish_x);
+			y = static_cast<int>(data.finish_y);
+			break;
+	}
+
+	switch (com.parameters[2]) {
+		case 1:
+			// X/Y is top-left corner
+			x -= (width / 2);
+			y -= (height / 2);
+			break;
+		case 2:
+			// Left, Top, Right, Bottom
+			x -= (width / 2);
+			y -= (height / 2);
+			width += (width / 2);
+			height += (height / 2);
+			break;
+	}
+
+	Main_Data::game_variables->Set(com.parameters[4], x);
+	Main_Data::game_variables->Set(com.parameters[5], y);
+	Main_Data::game_variables->Set(com.parameters[6], width);
+	Main_Data::game_variables->Set(com.parameters[7], height);
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 
