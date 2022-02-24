@@ -494,6 +494,48 @@ TEST_CASE("RangeRandom") {
 	REQUIRE_NE(first_diff, 0);
 }
 
+TEST_CASE("Overflow/Underflow") {
+	lcf::Data::variables.resize(max_vars);
+
+	auto _min = std::numeric_limits<Game_Variables::Var_t>::min();
+	auto _max = std::numeric_limits<Game_Variables::Var_t>::max();
+
+	Game_Variables v(_min, _max);
+	v.SetWarning(0);
+
+	v.Set(1, _max);
+	v.Add(1, 1);
+	REQUIRE(v.Get(1) == _max);
+
+	v.Set(1, _min);
+	v.Add(1, -1);
+	REQUIRE(v.Get(1) == _min);
+
+	v.Set(1, _max);
+	v.Sub(1, -1);
+	REQUIRE(v.Get(1) == _max);
+
+	v.Set(1, _min);
+	v.Sub(1, 1);
+	REQUIRE(v.Get(1) == _min);
+
+	v.Set(1, _max);
+	v.Mult(1, 2);
+	REQUIRE(v.Get(1) == _max);
+
+	v.Set(1, _min);
+	v.Mult(1, -2);
+	REQUIRE(v.Get(1) == _max);
+
+	v.Set(1, _max);
+	v.Mult(1, -2);
+	REQUIRE(v.Get(1) == _min);
+
+	v.Set(1, _min);
+	v.Mult(1, 2);
+	REQUIRE(v.Get(1) == _min);
+}
+
 TEST_CASE("Enumerate") {
 	auto s = make();
 
