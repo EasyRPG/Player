@@ -62,8 +62,20 @@ void Window_NumberInput::Refresh() {
 	}
 }
 
-int Window_NumberInput::GetNumber() {
-	return number * (plus ? 1 : -1);
+int Window_NumberInput::GetNumber() const {
+	if (plus) {
+		if (number > std::numeric_limits<int>::max()) {
+			return std::numeric_limits<int>::max();
+		} else {
+			return static_cast<int>(number);
+		}
+	} else {
+		if (number * -1 < std::numeric_limits<int>::min()) {
+			return std::numeric_limits<int>::min();
+		} else {
+			return static_cast<int>(-number);
+		}
+	}
 }
 
 void Window_NumberInput::SetNumber(int inumber) {
@@ -85,9 +97,8 @@ int Window_NumberInput::GetMaxDigits() {
 }
 
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
-	// At least 7 digits because of gold input in debug scene
-	// (free space and 6 digits for the gold value)
-	int top = std::max(7, idigits_max);
+	// Up to 10 digits (highest 32 bit number)
+	int top = std::max(10, idigits_max);
 	digits_max =
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
@@ -122,7 +133,7 @@ void Window_NumberInput::Update() {
 				for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
 					place *= 10;
 				}
-				int n = number / place % 10;
+				int64_t n = number / place % 10;
 				number -= n * place;
 				if (Input::IsRepeated(Input::UP)) {
 					n = (n + 1) % 10;

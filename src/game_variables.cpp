@@ -617,5 +617,5 @@ StringView Game_Variables::GetName(int _id) const {
 
 int Game_Variables::GetMaxDigits() const {
 	auto val = std::max(std::abs(_max), std::abs(_min));
-	return std::log10(val) + 1;
+	return static_cast<int>(std::log10(val) + 1);
 }

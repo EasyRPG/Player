@@ -97,7 +97,7 @@ public:
 	void Update() override;
 
 protected:
-	int number;
+	int64_t number;
 	int digits_max;
 	int cursor_width;
 	int index;
