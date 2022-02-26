@@ -242,7 +242,10 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	}
 	zipfile.read(reinterpret_cast<char*>(filename_buffer.data()), filepath_length);
 	filename = std::string(filename_buffer.data(), filepath_length);
-	zipfile.seekg(comment_length + extra_field_length, std::ios_base::cur); // Jump over currently not needed entries
+	// Jump over currently not needed entries
+	zipfile.seekg(comment_length + extra_field_length, std::ios_base::cur);
+	// Workaround ZIP archives containing invalid "\" paths created by .net or Powershell
+	std::replace(filename.begin(), filename.end(), '\\', '/');
 	return true;
 }
 
