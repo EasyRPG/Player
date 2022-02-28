@@ -3999,8 +3999,8 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 
 	int x = 0;
 	int y = 0;
-	int width = pic.sprite->GetWidth();
-	int height = pic.sprite->GetHeight();
+	int width = pic.sprite ? pic.sprite->GetWidth() : 0;
+	int height = pic.sprite ? pic.sprite->GetHeight() : 0;
 
 	switch (com.parameters[1]) {
 		case 0:
