@@ -251,7 +251,11 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 	const bool ignore_position = Player::IsLegacy() && data.fixed_to_map;
 
 	SetNonEffectParams(params, !ignore_position);
-	data.time_left = params.duration * DEFAULT_FPS / 10;
+	if (params.duration < 0) {
+		data.time_left = -params.duration;
+	} else {
+		data.time_left = params.duration * DEFAULT_FPS / 10;
+	}
 
 	// Note that data.effect_mode doesn't necessarily reflect the
 	// last effect set. Possible states are:

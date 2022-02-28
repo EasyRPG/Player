@@ -2910,7 +2910,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	params.magnify = std::max(0, std::min(params.magnify, 2000));
 	params.top_trans = std::max(0, std::min(params.top_trans, 100));
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
-	params.duration = std::max(0, std::min(params.duration, 10000));
+	params.duration = std::max(Player::IsPatchManiac() ? -10000 : 0, std::min(params.duration, 10000));
 
 	if (pic_id <= 0) {
 		Output::Error("MovePicture: Requested invalid picture id ({})", pic_id);
