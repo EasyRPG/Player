@@ -189,7 +189,11 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	SyncCurrentToFinish<true>(data);
 	data.start_x = data.current_x;
 	data.start_y = data.current_y;
-	data.current_rotation = 0.0;
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+		data.current_rotation = data.finish_effect_power;
+	} else {
+		data.current_rotation = 0.0;
+	}
 	data.current_waver = 0;
 	data.time_left = 0;
 
@@ -456,6 +460,11 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 	// Update waver phase
 	if (data.effect_mode == lcf::rpg::SavePicture::Effect_wave) {
 		data.current_waver += 8;
+	}
+
+	// Update fixed angle
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+		data.current_rotation = data.current_effect_power;
 	}
 
 	// RPG Maker 2k3 1.12: Animated spritesheets
