@@ -469,8 +469,22 @@ void Game_Variables::ShuffleRange(int first_id, int last_id) {
 }
 
 void Game_Variables::SetArray(int first_id_a, int last_id_a, int first_id_b) {
-	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] -> var[{},{}]!");
-	WriteArray(first_id_a, last_id_a, first_id_b, VarSet);
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] = var[{},{}]!");
+	// Maniac Patch uses memcpy which is actually a memmove
+	// This ensures overlapping areas are copied properly
+	if (first_id_a < first_id_b) {
+		WriteArray(first_id_a, last_id_a, first_id_b, VarSet);
+	} else {
+		auto& vv = _variables;
+		const int steps = std::max(0, last_id_a - first_id_a + 1);
+		int out_b = std::max(0, first_id_b + steps - 2);
+		int out_a = std::max(0, last_id_a - 1);
+		for (int i = 0; i < steps; ++i) {
+			auto& v_a = vv[out_a--];
+			auto v_b = vv[out_b--];
+			v_a = Utils::Clamp(VarSet(v_a, v_b), _min, _max);
+		}
+	}
 }
 
 void Game_Variables::AddArray(int first_id_a, int last_id_a, int first_id_b) {
@@ -526,9 +540,11 @@ void Game_Variables::BitShiftRightArray(int first_id_a, int last_id_a, int first
 void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
 	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
 	auto& vv = _variables;
-	int out_b = std::max(0, first_id_b - 1);
-	for (int i = std::max(0, first_id_a - 1); i < last_id_a; ++i) {
-		std::swap(vv[i], vv[out_b++]);
+	const int steps = std::max(0, last_id_a - first_id_a + 1);
+	int out_b = std::max(0, first_id_b + steps - 2);
+	int out_a = std::max(0, last_id_a - 1);
+	for (int i = 0; i < steps; ++i) {
+		std::swap(vv[out_a--], vv[out_b--]);
 	}
 }
 
