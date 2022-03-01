@@ -169,12 +169,13 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 	for (const auto& sf_name: sf_paths) {
 		if (fluid_synth_sfload(syn, sf_name.c_str(), 1) != FLUID_FAILED) {
 			sf_load_success = true;
+			Output::Debug("Fluidsynth: Using soundfont {}", sf_name);
 			break;
 		}
 	}
 
 	if (!sf_load_success) {
-		error_message = "Could not load soundfont.";
+		error_message = "Fluidsynth: Could not load soundfont.";
 		return nullptr;
 	}
 

@@ -53,9 +53,19 @@ public class SafFile {
             path = encoded + to_encode;
         }
 
-        Uri uri = Uri.parse("content://" + path);
+        if (!path.startsWith("content://")) {
+            path = "content://" + path;
+        }
+        Uri uri = Uri.parse(path);
 
         DocumentFile f = DocumentFile.fromTreeUri(context, uri);
+
+        if (!f.getUri().toString().equals(uri.toString())) {
+            // When providing a non-existent file fromTreeUri sometimes returns a tree to the root.
+            // Prevent this nonsense.
+            return null;
+        }
+
         return new SafFile(context, f);
     }
 
@@ -87,7 +97,7 @@ public class SafFile {
         // No difference between read mode and binary read mode
         try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(root.getUri(), "r")) {
             return fd.detachFd();
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             return -1;
         }
     }
