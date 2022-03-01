@@ -115,13 +115,6 @@
       opacity: 0.4;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-      #apad,
-      #dpad {
-        display: none;
-      }
-    }
-
     @media (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
     @media (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
     @media (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
@@ -249,7 +242,7 @@ function bindKey(node, key, keyCode) {
 
     keysDown.delete(event.target.id);
     node.classList.remove('active');
-  
+
     if (lastTouchedId) {
       document.getElementById(lastTouchedId).classList.remove('active');
     }
@@ -279,6 +272,203 @@ function bindKey(node, key, keyCode) {
   })
 }
 
+/** @type {{[key: number]: Gamepad}} */
+let gamepads = {};
+const haveEvents = 'ongamepadonnected' in window;
+
+let buttonMapping = {
+  0: {
+    key: "Escape",
+    code: "27"
+  },
+  1: {
+    key: "Enter",
+    code: "13"
+  },
+  12: {
+    key: "ArrowUp",
+    code: "38"
+  },
+  13: {
+    key: "ArrowDown",
+    code: "40"
+  },
+  14: {
+    key: "ArrowLeft",
+    code: "37"
+  },
+  15: {
+    key: "ArrowRight",
+    code: "39"
+  }
+};
+
+let axisMapping = {
+  0: {
+    threshold: 0.55,
+    negative: {
+      button: 14
+    },
+    positive: {
+      button: 15
+    }
+  },
+  1: {
+    threshold: 0.55,
+    negative: {
+      button: 12
+    },
+    positive: {
+      button: 13
+    }
+  }
+};
+
+let virtualKeyState = new Map();
+// Set all the keys in the state to "up"
+for (const k in buttonMapping) {
+  const keyMap = buttonMapping[k];
+  virtualKeyState.set(keyMap.key, 'up');
+}
+
+function addGamepad(gamepad) {
+  gamepads[gamepad.index] = gamepad;
+  requestAnimationFrame(updateGamepadStatus);
+  updateTouchControlsVisibility();
+}
+
+function removeGamepad(gamepad) {
+  delete gamepads[gamepad.index];
+  updateTouchControlsVisibility();
+}
+
+/** @returns {Gamepad[]} */
+function getGamepads() {
+  var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+  return pads;
+}
+
+function scanGamePads() {
+  var pads = getGamepads();
+  for (var i = 0; i < pads.length; i++) {
+    if (pads[i]) {
+      if (pads[i].index in gamepads) {
+        gamepads[pads[i].index] = pads[i];
+      } else {
+        addGamepad(pads[i]);
+      }
+    }
+  }
+}
+
+/**
+ * @param buttonId {number}
+ * @param button {GamepadButton}
+ */
+function updateButtonState(buttonId, button) {
+  const mapping = buttonMapping[buttonId];
+  if (button.pressed && virtualKeyState.get(mapping.key) === 'up') {
+    simulateKeyboardEvent('keydown', mapping.key, mapping.code);
+    virtualKeyState.set(mapping.key, 'down');
+  } else if (!button.pressed && virtualKeyState.get(mapping.key) === 'down') {
+    simulateKeyboardEvent('keyup', mapping.key, mapping.code);
+    virtualKeyState.set(mapping.key, 'up');
+  }
+}
+
+/**
+ * @param buttonId {number}
+ * @param axisValue {number}
+ * @param gamepad {Gamepad}
+ */
+function updateAxisState(axisId, axisValue, gamepad) {
+  const mapping = axisMapping[axisId];
+  const positiveButton = gamepad.buttons[mapping.positive.button];
+  const negativeButton = gamepad.buttons[mapping.negative.button];
+  const positiveMap = buttonMapping[mapping.positive.button];
+  const negativeMap = buttonMapping[mapping.negative.button];
+  let button;
+  let buttonMap;
+  if (axisValue > mapping.threshold) {
+    button = positiveButton;
+    buttonMap = positiveMap;
+  } else if (axisValue < (mapping.threshold * -1)) {
+    button = negativeButton;
+    buttonMap = negativeMap;
+  } else {
+    // Handle axis returning to a neutral position
+    if (!positiveButton.pressed && virtualKeyState.get(positiveMap.key) === 'down') {
+      simulateKeyboardEvent('keyup', positiveMap.key, positiveMap.code);
+      virtualKeyState.set(positiveMap.key, 'up');
+    } else if (!negativeButton.pressed && virtualKeyState.get(negativeMap.key) === 'down') {
+      simulateKeyboardEvent('keyup', negativeMap.key, negativeMap.code);
+      virtualKeyState.set(negativeMap.key, 'up');
+    }
+    return;
+  }
+
+  if (button.pressed === false && virtualKeyState.get(buttonMap.key) === 'up') {
+    simulateKeyboardEvent('keydown', buttonMap.key, buttonMap.code);
+    virtualKeyState.set(buttonMap.key, 'down');
+  }
+}
+
+function updateGamepadStatus() {
+  if (!haveEvents) {
+    scanGamePads();
+  }
+
+  for (const index in gamepads) {
+    /** @type {Gamepad} */
+    const gamepad = gamepads[index];
+    if (gamepad.mapping !== 'standard') {
+      // Skip this controller, we only support "standard" (i.e Xbox/PS-like controllers)
+      continue;
+    }
+    for (let i = 0; i < gamepad.buttons.length; i++) {
+      if (!buttonMapping[i]) {
+        // Unmapped button -- skip it.
+        continue;
+      }
+      updateButtonState(i, gamepad.buttons[i]);
+    }
+    for (let i = 0; i < gamepad.axes.length; i++) {
+      if (!axisMapping[i]) {
+        // Unmapped analog stick -- skip it.
+        continue;
+      }
+      updateAxisState(i, gamepad.axes[i], gamepad);
+    }
+  }
+  requestAnimationFrame(updateGamepadStatus);
+}
+
+if (!haveEvents) {
+  setInterval(scanGamePads, 500);
+}
+
+window.addEventListener('gamepadconnected', function(e) {
+  addGamepad(e.gamepad);
+});
+
+window.addEventListener('gamepaddisconnected', function(e) {
+  removeGamepad(e.gamepad);
+})
+
+function updateTouchControlsVisibility() {
+  if (hasTouchscreen && getGamepads().length === 0) {
+    for (const elem of document.querySelectorAll('#dpad, #apad')) {
+      elem.style.display = '';
+    }
+  } else {
+    // If we don't have a touch screen, OR any gamepads are connected...
+    for (const elem of document.querySelectorAll('#dpad, #apad')) {
+      // Hide the touch controls
+      elem.style.display = 'none';
+    }
+  }
+}
+
 // Bind all elements providing a `data-key` attribute with the
 // given key on touch-based devices
 if (hasTouchscreen) {
@@ -302,6 +492,8 @@ if (hasTouchscreen) {
   //   simulateKeyboardInput('Enter', 13);
   // });
 }
+
+updateTouchControlsVisibility();
 </script>
 
 </body>
