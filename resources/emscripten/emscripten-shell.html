@@ -115,13 +115,6 @@
       opacity: 0.4;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-      #apad,
-      #dpad {
-        display: none;
-      }
-    }
-
     @media (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
     @media (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
     @media (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
@@ -249,7 +242,7 @@ function bindKey(node, key, keyCode) {
 
     keysDown.delete(event.target.id);
     node.classList.remove('active');
-  
+
     if (lastTouchedId) {
       document.getElementById(lastTouchedId).classList.remove('active');
     }
@@ -279,6 +272,65 @@ function bindKey(node, key, keyCode) {
   })
 }
 
+/** @type {{[key: number]: Gamepad}} */
+let gamepads = {};
+const haveEvents = 'ongamepadonnected' in window;
+
+function addGamepad(gamepad) {
+  gamepads[gamepad.index] = gamepad;
+  updateTouchControlsVisibility();
+}
+
+function removeGamepad(gamepad) {
+  delete gamepads[gamepad.index];
+  updateTouchControlsVisibility();
+}
+
+/** @returns {Gamepad[]} */
+function getGamepads() {
+  var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+  return pads;
+}
+
+function scanGamePads() {
+  var pads = getGamepads();
+  for (var i = 0; i < pads.length; i++) {
+    if (pads[i]) {
+      if (pads[i].index in gamepads) {
+        gamepads[pads[i].index] = pads[i];
+      } else {
+        addGamepad(pads[i]);
+      }
+    }
+  }
+}
+
+if (!haveEvents) {
+  setInterval(scanGamePads, 500);
+}
+
+window.addEventListener('gamepadconnected', function(e) {
+  addGamepad(e.gamepad);
+});
+
+window.addEventListener('gamepaddisconnected', function(e) {
+  removeGamepad(e.gamepad);
+})
+
+function updateTouchControlsVisibility() {
+  if (hasTouchscreen && Object.keys(gamepads).length === 0) {
+    for (const elem of document.querySelectorAll('#dpad, #apad')) {
+      elem.style.display = '';
+    }
+  } else {
+    // If we don't have a touch screen, OR any gamepads are connected...
+    for (const elem of document.querySelectorAll('#dpad, #apad')) {
+      // Hide the touch controls
+      elem.style.display = 'none';
+    }
+  }
+}
+
 // Bind all elements providing a `data-key` attribute with the
 // given key on touch-based devices
 if (hasTouchscreen) {
@@ -302,6 +354,8 @@ if (hasTouchscreen) {
   //   simulateKeyboardInput('Enter', 13);
   // });
 }
+
+updateTouchControlsVisibility();
 </script>
 
 </body>

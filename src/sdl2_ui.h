@@ -95,6 +95,8 @@ private:
 	void ProcessKeyUpEvent(SDL_Event &evnt);
 	void ProcessMouseMotionEvent(SDL_Event &evnt);
 	void ProcessMouseButtonEvent(SDL_Event &evnt);
+	void ProcessJoystickAdded(SDL_Event &evnt);
+	void ProcessJoystickRemoved(SDL_Event &evnt);
 	void ProcessJoystickButtonEvent(SDL_Event &evnt);
 	void ProcessJoystickHatEvent(SDL_Event &evnt);
 	void ProcessJoystickAxisEvent(SDL_Event &evnt);

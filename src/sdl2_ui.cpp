@@ -159,7 +159,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
 
-	SDL_JoystickEventState(1);
+	SDL_JoystickEventState(SDL_ENABLE);
 	SDL_JoystickOpen(0);
 #endif
 
@@ -515,6 +515,14 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 			ProcessMouseButtonEvent(evnt);
 			return;
 
+		case SDL_JOYDEVICEADDED:
+			ProcessJoystickAdded(evnt);
+			return;
+
+		case SDL_JOYDEVICEREMOVED:
+			ProcessJoystickRemoved(evnt);
+			return;
+
 		case SDL_JOYBUTTONDOWN:
 		case SDL_JOYBUTTONUP:
 			ProcessJoystickButtonEvent(evnt);
@@ -656,6 +664,19 @@ void Sdl2Ui::ProcessMouseButtonEvent(SDL_Event& evnt) {
 #else
 	/* unused */
 	(void) evnt;
+#endif
+}
+
+void Sdl2Ui::ProcessJoystickAdded(SDL_Event &evnt) {
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+	SDL_JoystickOpen(evnt.jdevice.which);
+#endif
+}
+
+void Sdl2Ui::ProcessJoystickRemoved(SDL_Event &evnt) {
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+	SDL_Joystick *joystick = SDL_JoystickFromInstanceID(evnt.jdevice.which);
+	SDL_JoystickClose(joystick);
 #endif
 }
 
