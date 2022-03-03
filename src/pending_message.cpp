@@ -76,10 +76,10 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 
 	std::string output;
 
-	auto iter = input.data();
+	const char* iter = input.data();
 	const auto end = input.data() + input.size();
 
-	auto start_copy = iter;
+	const char* start_copy = iter;
 	while (iter != end) {
 		auto ret = Utils::UTF8Next(iter, end);
 		if (ret.ch != escape_char) {
@@ -92,7 +92,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			break;
 		}
 
-		output.append(start_copy, iter);
+		output.append(start_copy, iter - start_copy);
 		start_copy = iter;
 
 		iter = ret.next;
@@ -132,7 +132,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 		// Fast path - no substitutions occured, so just move the input into the return value.
 		output = std::move(input);
 	} else {
-		output.append(start_copy, end);
+		output.append(start_copy, end - start_copy);
 	}
 
 	return output;
