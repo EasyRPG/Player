@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <!--GameBrowser Activity-->
   <string name="autodetect">Automático (Recomendado)</string>
@@ -21,7 +21,7 @@
   <string name="do_want_quit">Deseja realmente sair?</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
-  <string name="creating_dir_failed">Criação de diretório $PATH falhou</string>
+  <string name="creating_dir_failed">Falha ao criar o diretório $PATH</string>
   <string name="path_not_readable">$PATH não legível</string>
   <string name="no_games_found_and_explanation">Não foram encontrados jogos de RPG Maker 2000/2003.
 Você pode adicionar novos diretórios de jogos nas configurações.</string>
@@ -62,6 +62,11 @@ Por favor nos diga em detalhes o que deu errado.\n\n
   <string name="no_read_access_on_dir">Sem acesso de leitura em %1$s</string>
   <string name="quick_access">Acesso rápido</string>
   <string name="force_landscape_mode">Forçar modo de orientação Paisagem</string>
+  <string name="fast_forward">Modo do botão de avanço rápido:</string>
+  <string-array name="fast_forward_mode">
+    <item>segure</item>
+    <item>toque</item>
+  </string-array>
   <string name="fast_forward_factor">Multiplicador de velocidade:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Gerenciar layouts de entrada</string>

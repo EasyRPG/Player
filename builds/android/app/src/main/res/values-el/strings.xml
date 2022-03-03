@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--GameBrowser Activity-->
+  <string name="ok">OK</string>
+  <string name="cancel">Άκυρο</string>
+  <string name="yes">Ναι</string>
+  <string name="no">Όχι</string>
+  <!--Ingame menu-->
+  <!--Settings Activities-->
+  <string name="settings">Ρυθμίσεις</string>
+  <string name="enable_audio">Ενεργοποίηση ήχου</string>
+  <string name="quick_access">Γρήγορη πρόσβαση</string>
+  <!--InputLayout Managing-->
+  <string name="delete">Διαγραφή</string>
+  <!--ButtonMapping Activity-->
+  <string name="exit_without_saving">Έξοδος χωρίς αποθήκευση</string>
+  <!--GameBrowserAPI15-->
+  <string name="menu">Άνοιγμα μενού Android</string>
+</resources>
