@@ -13,5 +13,4 @@ file_filter = builds/android/app/src/main/res/values-<lang>/strings.xml
 source_file = builds/android/app/src/main/res/values/strings.xml
 source_lang = en
 type        = ANDROID
-lang_map    = id: in, pt_BR: pt-rBR, zh_TW: zh-rTW
-
+lang_map    = id: in, pt_BR: pt-rBR, zh_TW: zh-rTW, tr_TR: tr
