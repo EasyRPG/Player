@@ -10,6 +10,7 @@ project(EasyRPG_Player VERSION 0.7.0 LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 include(ConfigureWindows)
 include(PlayerFindPackage)
+include(PlayerBuildType)
 
 # C++14 is required
 set(CMAKE_CXX_STANDARD 14)
@@ -595,10 +596,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	target_sources(${PROJECT_NAME} PRIVATE src/external/picojson.h)
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
-endif()
-
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	include(TestBigEndian)
@@ -881,15 +878,13 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		set_target_properties("${EXE_NAME}" PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
-		add_executable(${EXE_NAME} WIN32 "src/main.cpp")
+		add_executable(${EXE_NAME} "src/main.cpp")
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
 
 	if(WIN32)
 		# Open console for Debug builds
-		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-			set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
-		endif()
+		set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE $<NOT:CONFIG:Debug>)
 
 		# Add resources
 		target_sources(${EXE_NAME} PRIVATE "resources/player.rc")
