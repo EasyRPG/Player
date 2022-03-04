@@ -555,6 +555,15 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
 endif()
+# Make romfs available
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$")
+	option(PLAYER_ROMFS "Embedd a directory in the executable" OFF)
+	set(PLAYER_ROMFS_PATH "romfs" CACHE PATH "Directory to include in executable as romfs:/ path")
+	set(ROMFS_ARG "NO_ROMFS_IGNORE_ME")
+	if(PLAYER_ROMFS)
+		set(ROMFS_ARG "ROMFS")
+	endif()
+endif()
 
 if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 	# Need fPIC when compiling a shared library (e.g. libretro.so)
@@ -945,7 +954,8 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			AUTHOR "EasyRPG Team"
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
 		ctr_create_3dsx(easyrpg-player
-			SMDH easyrpg-player.smdh)
+			SMDH easyrpg-player.smdh
+			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
 	elseif(NINTENDO_SWITCH)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
@@ -957,7 +967,8 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			VERSION "${PROJECT_VERSION}")
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
-			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg")
+			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
+			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
 	elseif(NINTENDO_WII)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
@@ -1153,6 +1164,9 @@ endif()
 # Print summary
 message(STATUS "")
 message(STATUS "Target system: ${PLAYER_TARGET_PLATFORM}")
+if(PLAYER_ROMFS)
+	message(STATUS "RomFS: Embedding directory \"${PLAYER_ROMFS_PATH}\"")
+endif()
 message(STATUS "")
 
 if(PLAYER_BUILD_LIBLCF)
