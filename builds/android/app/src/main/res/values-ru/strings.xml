@@ -35,7 +35,7 @@
   <string name="refresh">Обновить</string>
   <string name="change_default_mapping">Изменить стандартные значения кнопок</string>
   <string name="how_to_use_easy_rpg">Как использовать EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Инструкции по установке:\n\nПо умолчанию игры ищутся в  /easyrpg/games. Вы можете указать дополнительные директории с играми в настройках.\n\nНеобязательно: Разместите RTP в /easyrpg/rtp/2000 (RPG Maker 2000 RTP) и в /easyrpg/rtp/2003 (RPG Maker 2003 RTP).\n\nЧтобы игры правильно определялись, они должны находиться в поддиректории внутри /easyrpg/games (по умолчанию), например:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame.zip — НЕВЕРНО. Файлы ZIP и EXE не поддерживаются.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Инструкции по установке:\n\nПо умолчанию игры ищутся в  /easyrpg/games. Вы можете указать дополнительные директории с играми в настройках.\n\nНеобязательно: Разместите RTP в /easyrpg/rtp/2000 (RPG Maker 2000 RTP) и в /easyrpg/rtp/2003 (RPG Maker 2003 RTP).\n\nЧтобы игры правильно определялись, они должны находиться в поддиректории внутри /easyrpg/games (по умолчанию), например:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame.zip — НЕВЕРНО. Файлы ZIP и EXE не поддерживаются.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Показ FPS</string>
   <string name="toggle_ui">Показ виртуальных кнопок</string>

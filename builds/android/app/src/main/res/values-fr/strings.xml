@@ -35,7 +35,7 @@ Vous pouvez ajouter des dossiers de jeux dans les paramètres.</string>
   <string name="refresh">Raffraichir</string>
   <string name="change_default_mapping">Changer les boutons virtuels</string>
   <string name="how_to_use_easy_rpg">Aide</string>
-  <string name="how_to_use_easy_rpg_explanation">Instruction :\n\nPar défaut les jeux sont scannés dans le dossier /easyrpg/games de l\'application.\nVous pouvez définir de nouveaux dossiers de jeux dans les paramètres.\nAttention, vos jeux doivent être sous forme de dossiers décompressés, les .zip et .exe ne sont pas supportés.\n\nOptionnel :\nPlacez les RTP dans les dossiers /easyrpg/rtp/2000 et /easyrpg/rtp/2003.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Instruction :\n\nPar défaut les jeux sont scannés dans le dossier /easyrpg/games de l\'application.\nVous pouvez définir de nouveaux dossiers de jeux dans les paramètres.\nAttention, vos jeux doivent être sous forme de dossiers décompressés, les .zip et .exe ne sont pas supportés.\n\nOptionnel :\nPlacez les RTP dans les dossiers /easyrpg/rtp/2000 et /easyrpg/rtp/2003.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Afficher les FPS</string>
   <string name="toggle_ui">Afficher les boutons virtuels</string>

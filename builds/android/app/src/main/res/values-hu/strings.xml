@@ -35,7 +35,7 @@ A beállítások közt tud további játékkönyvtárakat felvenni.</string>
   <string name="refresh">Frissítés</string>
   <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
   <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
-  <string name="how_to_use_easy_rpg_explanation">Telepítési útmutató:\n\nAlapértelmezett beállításként a /easyrpg/games mappába keresi a program a játékokat. A beállítások közt hozzáadhat további játékkönyvtárakat.\n\nOpcionális: Helyezze az RTP mappáit a /easyrpg/rtp/2000 mappába RPG Maker 2000 RTP esetén, a /easyrpg/rtp/2003 mappába RPG Maker 2003 RTP esetén.\n\nA játékok megfelelő felismeréséhez alkönyvtárakba kell őket tenni a  /easyrpg/games-en belül (alapértelmezett könyvtár), pl.:\n\n\tez HELYES: /easyrpg/games/Amnezia\RPG_RT.ldb\n\tez HIBÁS: /easyrpg/games/Amnezia.zip A telepítők, tömörített állományok (EXE vagy ZIP) nem támogatottak.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Telepítési útmutató:\n\nAlapértelmezett beállításként a /easyrpg/games mappába keresi a program a játékokat. A beállítások közt hozzáadhat további játékkönyvtárakat.\n\nOpcionális: Helyezze az RTP mappáit a /easyrpg/rtp/2000 mappába RPG Maker 2000 RTP esetén, a /easyrpg/rtp/2003 mappába RPG Maker 2003 RTP esetén.\n\nA játékok megfelelő felismeréséhez alkönyvtárakba kell őket tenni a  /easyrpg/games-en belül (alapértelmezett könyvtár), pl.:\n\n\tez HELYES: /easyrpg/games/Amnezia\RPG_RT.ldb\n\tez HIBÁS: /easyrpg/games/Amnezia.zip A telepítők, tömörített állományok (EXE vagy ZIP) nem támogatottak.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPS ki/be</string>
   <string name="toggle_ui">Virtuális gombok ki/be</string>

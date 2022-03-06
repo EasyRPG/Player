@@ -35,7 +35,7 @@
   <string name="refresh">새로고침</string>
   <string name="change_default_mapping">버튼 지정 바꾸기</string>
   <string name="how_to_use_easy_rpg">EasyRPG 플레이어 사용법</string>
-  <string name="how_to_use_easy_rpg_explanation">설치안내:\n\n기본적으로 /easyrpg/games 안쪽의 게임 폴더를 찾도록 되어 있으며, 설정에서 다른 디렉토리를 추가할 수도 있습니다.\n\n선택사항: RPG 만들기 2000의 RTP는 /easyrpg/rtp/2000, RPG 만들기 2003의 RTP는 /easyrpg/rtp/2003 디렉토리에 넣어주세요.\n\n게임을 제대로 인식하려면 /easyrpg/games (기본설정) 아래의 서브 디렉토리에 넣어주어야 합니다. 예를 들어:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 는 괜찮습니다.\n\t/easyrpg/games/MyGame/RPG_RT.ldb 도 괜찮습니다.\n\t/easyrpg/games/MyGame.zip 은 안 됩니다. ZIP과 EXE는 지원하지 않습니다.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">설치안내:\n\n기본적으로 /easyrpg/games 안쪽의 게임 폴더를 찾도록 되어 있으며, 설정에서 다른 디렉토리를 추가할 수도 있습니다.\n\n선택사항: RPG 만들기 2000의 RTP는 /easyrpg/rtp/2000, RPG 만들기 2003의 RTP는 /easyrpg/rtp/2003 디렉토리에 넣어주세요.\n\n게임을 제대로 인식하려면 /easyrpg/games (기본설정) 아래의 서브 디렉토리에 넣어주어야 합니다. 예를 들어:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 는 괜찮습니다.\n\t/easyrpg/games/MyGame/RPG_RT.ldb 도 괜찮습니다.\n\t/easyrpg/games/MyGame.zip 은 안 됩니다. ZIP과 EXE는 지원하지 않습니다.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPS 표시</string>
   <string name="toggle_ui">가상버튼 표시</string>

@@ -35,7 +35,7 @@
   <string name="refresh">Анавіць</string>
   <string name="change_default_mapping">Змяніць стандартныя значэнні кнопак</string>
   <string name="how_to_use_easy_rpg">Інструкцыя да EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Інструкцыі па ўсталёўцы:\n\nПа змаўчанні адкрываюцца гульні з дырэкторыі /easyrpg/games. Вы можаце выбраць дадактовыя дырэкторыі ў наладах.\n\nНеабавязковае: Распакуйце RTP для RPG Maker 2000 у /easyrpg/rtp/2000, а RTP для RPG Maker 2003 у /easyrpg/rtp/2003.\n\nКаб праграма магла знайсці гульні, іх трэба распакаваць у паддырэкторыю ўсярэдзіне /easyrpg/games (па змаўчанні), напрыклад:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame.zip — НЯПРАВІЛЬНА. ZIP і EXE не падтрымліваюцца.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Інструкцыі па ўсталёўцы:\n\nПа змаўчанні адкрываюцца гульні з дырэкторыі /easyrpg/games. Вы можаце выбраць дадактовыя дырэкторыі ў наладах.\n\nНеабавязковае: Распакуйце RTP для RPG Maker 2000 у /easyrpg/rtp/2000, а RTP для RPG Maker 2003 у /easyrpg/rtp/2003.\n\nКаб праграма магла знайсці гульні, іх трэба распакаваць у паддырэкторыю ўсярэдзіне /easyrpg/games (па змаўчанні), напрыклад:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame.zip — НЯПРАВІЛЬНА. ZIP і EXE не падтрымліваюцца.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Паказ FPS</string>
   <string name="toggle_ui">Паказ віртуальных кнопак</string>

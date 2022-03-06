@@ -18,19 +18,25 @@
 			android:orientation="vertical"
 			android:gravity="center" >
 
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/id_select_games_folder_explanation"
-				android:textSize="20sp" />
-
 			<Button
 				android:id="@+id/set_games_folder"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/select_the_games_folder" />
 
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/id_select_games_folder_explanation"
+				android:textSize="20sp" />
+
 			<include layout="@layout/separator"/>
+
+			<Button
+				android:id="@+id/open_rtp_folder"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/open_rtp_folder" />
 
 			<TextView
 				android:id="@+id/settings_rtp_explanation"

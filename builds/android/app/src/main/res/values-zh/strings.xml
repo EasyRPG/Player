@@ -35,7 +35,7 @@
   <string name="refresh">刷新</string>
   <string name="change_default_mapping">更改默认按键映射</string>
   <string name="how_to_use_easy_rpg">EasyRPG模拟器使用教程</string>
-  <string name="how_to_use_easy_rpg_explanation">安装教程：\n\n默认游戏保存在 /easyrpg/games. 你可以在设置里添加新的游戏目录。\n\n可选项: 将RPG Maker 2000 RTP放置在 /easyrpg/rtp/2000 并将RPG Maker 2003 RTP放置在 /easyrpg/rtp/2003 。\n\n游戏必须被放置于 /easyrpg/games (默认)的子目录中以被正常侦测，例如.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 是正确的.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip 是错误的。. 不支持ZIP格式和EXE格式。</string>
+  <string name="how_to_use_easy_rpg_explanation_old">安装教程：\n\n默认游戏保存在 /easyrpg/games. 你可以在设置里添加新的游戏目录。\n\n可选项: 将RPG Maker 2000 RTP放置在 /easyrpg/rtp/2000 并将RPG Maker 2003 RTP放置在 /easyrpg/rtp/2003 。\n\n游戏必须被放置于 /easyrpg/games (默认)的子目录中以被正常侦测，例如.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 是正确的.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip 是错误的。. 不支持ZIP格式和EXE格式。</string>
   <!--Ingame menu-->
   <string name="toggle_fps">切换FPS</string>
   <string name="toggle_ui">设置虚拟按钮</string>

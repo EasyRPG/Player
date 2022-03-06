@@ -36,7 +36,8 @@ You can add additional game directories in the settings.</string>
     <string name="refresh">Refresh</string>
     <string name="change_default_mapping">Change the default button mapping</string>
     <string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
-    <string name="how_to_use_easy_rpg_explanation">Installation instructions:\n\nBy default games are searched in /easyrpg/games. You can add additional game directories in the settings.\n\nOptional: Place the RTP in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and in /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n\nTo get games properly detected they must be put in a subdirectory of /easyrpg/games (by default), e.g.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip is WRONG. ZIP and EXE are unsupported.</string>
+    <string name="how_to_use_easy_rpg_explanation_old">Installation instructions:\n\nBy default games are searched in /easyrpg/games. You can add additional game directories in the settings.\n\nOptional: Place the RTP in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and in /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n\nTo get games properly detected they must be put in a subdirectory of /easyrpg/games (by default), e.g.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip is WRONG. ZIP and EXE are unsupported.</string>
+	<string name="how_to_use_easy_rpg_explanation_android_12">Place your RPG Maker 2000/2003 games in the games folder.\nGames have to be uncompressed, subdirectories are supported.\nZIP, RAR and EXE files are not supported.\n\nOptional: RTP can be provided, please refer to Settings.\n\nOptional: a soundfont can be provided, please refer to Settings.</string>
 
     <!--Ingame menu-->
     <string name="toggle_fps">Toggle FPS</string>
@@ -95,11 +96,12 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
-    <string name="select_the_games_folder">Select the games folder</string>
-	<string name="id_select_games_folder_explanation">Select a games folder.\nThis folder should only contains RPG Maker 2000/2003 games and should only be used by EasyRPG.\nDon\'t select folders like the root of internal storage or the Download folder.</string>
+;wq    <string name="select_the_games_folder">Select EasyRPG folder</string>
+	<string name="id_select_games_folder_explanation">This folder may only be used for RPG Maker 2000/2003 games.\nDo not select folders that contain other things, such as the download folder.</string>
 	<string name="Loading">Loading...</string>
     <string name="enable_custom_soundfonts">Enable custom SoundFonts</string>
 	<string name="enable_custom_soundfont_explanation">Place a .sf2 file in the games folder (%).</string>
 	<string name="custom_soundfont_found">File found: %</string>
-	<string name="rtp_explanation">You can add RTP resources in the \'rtp\' folder created inside the games folder.\nIt\'s useful if a game doesn\'t contains the RTP resources.\nCurrent rtp folder: %</string>
+	<string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".</string>
+	<string name="open_rtp_folder">OPEN RTP FOLDER</string>
 </resources>

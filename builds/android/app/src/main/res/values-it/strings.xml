@@ -35,7 +35,7 @@ Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.</string>
   <string name="refresh">Aggiorna</string>
   <string name="change_default_mapping">Cambia il mapping dei tasti predefinito</string>
   <string name="how_to_use_easy_rpg">Come utilizzare EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Istruzioni per l\'installazione:\n\nNormalmente i giochi vengono ricercati in /easyrpg/games. Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.\n\nOpzionale: Posiziona i RTP in /easyrpg/rtp/2000 per RPG Maker 2000 e in /easyrpg/rtp/2003 per RPG Maker 2003.\n\nPer far si che i gichi siano rilevati correttamente, devono essere posizionati in sottocartelle di /easyrpg/games, es.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb va bene.\n\t/easyrpg/games/MyGame/RPG_RT.ldb va bene\n\t/easyrpg/games/MyGame.zip è SBAGLIATO. ZIP ed EXE non sono supportati.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Istruzioni per l\'installazione:\n\nNormalmente i giochi vengono ricercati in /easyrpg/games. Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.\n\nOpzionale: Posiziona i RTP in /easyrpg/rtp/2000 per RPG Maker 2000 e in /easyrpg/rtp/2003 per RPG Maker 2003.\n\nPer far si che i gichi siano rilevati correttamente, devono essere posizionati in sottocartelle di /easyrpg/games, es.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb va bene.\n\t/easyrpg/games/MyGame/RPG_RT.ldb va bene\n\t/easyrpg/games/MyGame.zip è SBAGLIATO. ZIP ed EXE non sono supportati.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Mostra FPS</string>
   <string name="toggle_ui">Mostra Tasti Virtuali</string>

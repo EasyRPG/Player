@@ -174,7 +174,7 @@ public class GameBrowserHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Dialog construction
-        builder.setMessage(R.string.how_to_use_easy_rpg_explanation)
+        builder.setMessage(R.string.how_to_use_easy_rpg_explanation_android_12)
                 .setTitle(R.string.how_to_use_easy_rpg)
                 .setNeutralButton(R.string.ok, null);
 
