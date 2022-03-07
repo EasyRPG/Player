@@ -1,16 +1,16 @@
 [main]
 host = https://www.transifex.com
 
-[player-android.stringsxml]
-file_filter = builds/android/app/src/main/res/values-<lang>/strings.xml
-source_file = builds/android/app/src/main/res/values/strings.xml
-source_lang = en
-lang_map = id: in, pt_BR: pt-rBR, zh_TW: zh-rTW
-type = ANDROID
-
-[player-android.playstorexml]
+[o:easyrpg:p:player-android:r:playstorexml]
 file_filter = builds/android/metadata/<lang>/playstore.xml
 source_file = builds/android/metadata/en-US/playstore.xml
 source_lang = en
-lang_map = de: de-DE, el: el-GR, es: es-ES, fr: fr-FR, hu: hu-HU, it: it-IT, ja: ja-JP, ko: ko-KR, pt_BR: pt-BR, ru: ru-RU, zh: zh-CN, zh_TW: zh-TW
-type = ANDROID
+type        = ANDROID
+lang_map    = zh_TW: zh-TW, de: de-DE, el: el-GR, es: es-ES, hu: hu-HU, it: it-IT, ko: ko-KR, fr: fr-FR, ja: ja-JP, pt_BR: pt-BR, ru: ru-RU, zh: zh-CN
+
+[o:easyrpg:p:player-android:r:stringsxml]
+file_filter = builds/android/app/src/main/res/values-<lang>/strings.xml
+source_file = builds/android/app/src/main/res/values/strings.xml
+source_lang = en
+type        = ANDROID
+lang_map    = id: in, pt_BR: pt-rBR, zh_TW: zh-rTW, tr_TR: tr

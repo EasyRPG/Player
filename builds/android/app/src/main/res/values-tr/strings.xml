@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Ülke Otomatik Tanıma (Önerilen)</string>
+  <!--Ingame menu-->
+  <!--Settings Activities-->
+  <string name="enable_vibration">Titreşimleri etkinleştir</string>
+  <string name="quick_access">Çabuk erişim</string>
+  <!--InputLayout Managing-->
+  <!--ButtonMapping Activity-->
+  <!--GameBrowserAPI15-->
+  <string name="menu">Android menüsünü aç</string>
+</resources>
