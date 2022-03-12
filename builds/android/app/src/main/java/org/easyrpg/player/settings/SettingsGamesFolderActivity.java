@@ -26,19 +26,7 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
         Button setGamesFolderButton = (Button) findViewById(R.id.set_games_folder);
         setGamesFolderButton.setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
-        // Update the SoundFont file path
-        // TODO: Update the path in OnResume()
-        TextView rtpExplanationView = (TextView) findViewById(R.id.settings_rtp_explanation);
-        String rtpExplanationText = rtpExplanationView.getText().toString();
-        Uri rtpFolderURI  = SettingsManager.getRTPFolderURI(this);
-        String rtpFolderPath;
-        if (rtpFolderURI != null) {
-            rtpFolderPath = rtpFolderURI.getPath();
-        } else {
-            rtpFolderPath = "N/A";
-        }
-        rtpExplanationText = rtpExplanationText.replace("%", rtpFolderPath);
-        rtpExplanationView.setText(rtpExplanationText);
+        // TODO : Make the Open RTP folder work
     }
 
     /** Called when the user has chosen a game folder */

@@ -210,11 +210,11 @@ public class GameBrowserHelper {
             activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
             // Save the settings
-            SettingsManager.setGamesFolderURI(uri);
+            SettingsManager.setEasyRPGFolderURI(uri);
 
             // Create EasyRPG folders and the .nomedia file
-            Uri gamesFolderURI = SettingsManager.getGamesFolderURI(activity);
-            Helper.createEasyRPGFolders(activity, gamesFolderURI);
+            Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(activity);
+            Helper.createEasyRPGFolders(activity, easyRPGFolderURI);
         }
     }
 }

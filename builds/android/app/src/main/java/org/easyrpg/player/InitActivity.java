@@ -50,13 +50,13 @@ public class InitActivity extends AppCompatActivity {
         super.onResume();
 
         if (!standaloneMode) {
-            // If we have a games folder which is accessible, start the GameBrowser
-            Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
-            DocumentFile gamesFolder = Helper.getFileFromURI(this, gamesFolderURI);
-            if (gamesFolder != null) {
+            // If we have a readable EasyRPG folder, start the GameBrowser
+            Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
+            DocumentFile easyRPGFolder = Helper.getFileFromURI(this, easyRPGFolderURI);
+            if (easyRPGFolder != null) {
 
-                // Do we have read/right access to the game folder?
-                if (gamesFolder.canRead() && gamesFolder.canWrite()) {
+                // Do we have read/right access to the EasyRPG folder?
+                if (easyRPGFolder.canRead() && easyRPGFolder.canWrite()) {
                     launchGamesBrowser();
                 }
             }
@@ -135,10 +135,10 @@ public class InitActivity extends AppCompatActivity {
      * Launch the game browsers depending on the API.
      */
     private void launchGamesBrowser() {
-        // Recreate RTP folders and .nomedia file if necessary
+        // Recreate EasyRPG's folders and .nomedia file if necessary
         // TODO : This method might do some unnecessary actions, to verify
-        Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
-        Helper.createEasyRPGFolders(this, gamesFolderURI);
+        Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
+        Helper.createEasyRPGFolders(this, easyRPGFolderURI);
 
         //Launch the proper game browser
         Intent intent;

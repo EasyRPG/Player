@@ -32,13 +32,13 @@ public class SettingsAudioActivity extends AppCompatActivity {
         this.enableSoundfontCheckbox.setChecked(SettingsManager.isCustomSoundFountsEnabled());
         this.enableSoundfontCheckbox.setOnClickListener(v -> SettingsManager.setCustomSoundFountsEnabled(((CheckBox)v).isChecked()));
 
-        // Update the games folder path
+        // Update the EasyRPG folder path
         TextView soundFontExplanationView = (TextView) findViewById(R.id.settings_soundfont_explanation);
         String soundfontExplanation = soundFontExplanationView.getText().toString();
-        Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
-        if (gamesFolderURI != null) {
-            String gamesFolderName = gamesFolderURI.getPath();
-            soundfontExplanation = soundfontExplanation.replace("%", gamesFolderName);
+        Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
+        if (easyRPGFolderURI != null) {
+            String easyRPGFolderName = easyRPGFolderURI.getPath();
+            soundfontExplanation = soundfontExplanation.replace("%", easyRPGFolderName);
             soundFontExplanationView.setText(soundfontExplanation);
         }
 

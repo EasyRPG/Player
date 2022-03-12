@@ -6,11 +6,10 @@ import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
-import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
+import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
-import static org.easyrpg.player.settings.SettingsEnum.RTP_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
 
@@ -18,6 +17,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+
+import androidx.documentfile.provider.DocumentFile;
+
+import org.easyrpg.player.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,11 @@ public class SettingsManager {
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
     // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
-    private static Uri gamesFolderURI, rtpFolderURI, soundFountFileURI;
+    private static Uri easyRPGFolderURI, rtpFolderURI, soundFountFileURI;
     private static List<String> favoriteGamesList = new ArrayList<>();
+    public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
+        RTP_2003_FOLDER_NAME = "2003", SOUNDFONTS_FOLDER_NAME = "soundfonts",
+        GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
 
     private SettingsManager() {
     }
@@ -215,43 +221,42 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static Uri getGamesFolderURI(Context context) {
-        if (gamesFolderURI == null) {
+    public static Uri getEasyRPGFolderURI(Context context) {
+        if (easyRPGFolderURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            String gamesFolderString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
+            String gamesFolderString = sharedPref.getString(EASYRPG_DIRECTORY.toString(), "");
             if (gamesFolderString == null || gamesFolderString.isEmpty()) {
-                gamesFolderURI = null;
+                easyRPGFolderURI = null;
             } else {
-                gamesFolderURI = Uri.parse(gamesFolderString);
+                easyRPGFolderURI = Uri.parse(gamesFolderString);
             }
         }
-        return gamesFolderURI;
+        return easyRPGFolderURI;
     }
 
-    public static void setGamesFolderURI(Uri gamesFolderURI) {
-        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), gamesFolderURI.toString());
+    public static void setEasyRPGFolderURI(Uri easyRPGFolderURI) {
+        editor.putString(SettingsEnum.EASYRPG_DIRECTORY.toString(), easyRPGFolderURI.toString());
         editor.commit();
     }
 
-    // TODO : Do we keep handling RTP that way? In the current state rtp folder is always inside the games folder
+    // TODO : Cache the result?
+    public static Uri getGamesFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), GAMES_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
+    // TODO : Cache the result?
     public static Uri getRTPFolderURI(Context context) {
-        if (rtpFolderURI == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            // Fetch the rtp directory
-            String rtpFolderString = sharedPref.getString(RTP_DIRECTORY.toString(), "");
-            if (rtpFolderString == null || rtpFolderString.isEmpty()) {
-                rtpFolderURI = null;
-            } else {
-                rtpFolderURI = Uri.parse(rtpFolderString);
-            }
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), RTP_FOLDER_NAME);
+        } else {
+            return null;
         }
-
-        return rtpFolderURI;
-    }
-
-    public static void setRTPFolderURI(Uri rtpFolderUri) {
-        editor.putString(SettingsEnum.RTP_DIRECTORY.toString(), rtpFolderUri.toString());
-        editor.commit();
     }
 
     public static Uri getSoundFountFileURI() {
