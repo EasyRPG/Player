@@ -23,7 +23,7 @@
   <string name="no">No</string>
   <string name="creating_dir_failed">Creazione della cartella $PATH fallita</string>
   <string name="path_not_readable">$PATH non è leggibile</string>
-  <string name="no_games_found_and_explanation">Nessun gioco per RPG Maker 2000/2003 rilevato.
+  <string name="no_games_found_and_explanation_old">Nessun gioco per RPG Maker 2000/2003 rilevato.
 Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.</string>
   <string name="no_external_storage">Nessun archivio rimovibile (es. SD card) rilevato.</string>
   <string name="not_valid_game">$PATH non è un gioco valido</string>

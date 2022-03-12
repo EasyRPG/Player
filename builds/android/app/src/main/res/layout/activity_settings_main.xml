@@ -28,10 +28,10 @@
         style="?android:attr/borderlessButtonStyle" />
 
     <Button
-        android:id="@+id/settings_main_game_folder"
+        android:id="@+id/settings_main_easyrpg_folders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/game_folders"
+        android:text="@string/easyrpg_folders"
         android:drawableLeft="@drawable/ic_folder_open_black_36dp"
         style="?android:attr/borderlessButtonStyle" />
 

@@ -23,7 +23,7 @@
   <string name="no">Nie</string>
   <string name="creating_dir_failed">Tworzenie folderu $PATH nie powiodło się</string>
   <string name="path_not_readable">Nie można odczytać ścieżki $PATH</string>
-  <string name="no_games_found_and_explanation">Nie znaleziono gier RPG Maker 2000/2003.
+  <string name="no_games_found_and_explanation_old">Nie znaleziono gier RPG Maker 2000/2003.
 Możesz dodać kolejne foldery gier w ustawieniach.</string>
   <string name="no_external_storage">Nie znaleziono pamięci zewnętrznej (np. karty SD)</string>
   <string name="not_valid_game">$PATH nie jest prawidłową grą</string>

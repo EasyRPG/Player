@@ -93,7 +93,7 @@ public class GameScanner {
 
         // If the scan brings nothing in this folder : we notify the errorList
         if (gameList.size() <= 0) {
-            String error = context.getString(R.string.no_games_found_and_explanation);
+            String error = context.getString(R.string.no_games_found_and_explanation_android_30);
             errorList.add(error);
         }
 

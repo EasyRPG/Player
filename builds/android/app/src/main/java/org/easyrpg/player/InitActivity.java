@@ -138,7 +138,7 @@ public class InitActivity extends AppCompatActivity {
         // Recreate RTP folders and .nomedia file if necessary
         // TODO : This method might do some unnecessary actions, to verify
         Uri gamesFolderURI = SettingsManager.getGamesFolderURI(this);
-        Helper.createEasyRPGDirectories(this, gamesFolderURI);
+        Helper.createEasyRPGFolders(this, gamesFolderURI);
 
         //Launch the proper game browser
         Intent intent;

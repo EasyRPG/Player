@@ -24,7 +24,7 @@ public class SettingsMainActivity extends AppCompatActivity implements View.OnCl
         audioButton.setOnClickListener(this);
         Button inputsButton = (Button) findViewById(R.id.settings_main_input);
         inputsButton.setOnClickListener(this);
-        Button folderButton = (Button) findViewById(R.id.settings_main_game_folder);
+        Button folderButton = (Button) findViewById(R.id.settings_main_easyrpg_folders);
         folderButton.setOnClickListener(this);
     }
 
@@ -37,7 +37,7 @@ public class SettingsMainActivity extends AppCompatActivity implements View.OnCl
             intent = new Intent(this, SettingsVideoActivity.class);
         } else if (id == R.id.settings_main_audio) {
             intent = new Intent(this, SettingsAudioActivity.class);
-        } else if (id == R.id.settings_main_game_folder) {
+        } else if (id == R.id.settings_main_easyrpg_folders) {
             intent = new Intent(this, SettingsGamesFolderActivity.class);
         } else if (id == R.id.settings_main_input) {
             intent = new Intent(this, SettingsInputActivity.class);

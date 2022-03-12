@@ -158,24 +158,27 @@ public class Helper {
 		return file.toString();
 	}
 
-	/** Create RTP folders and .nomedia file in the games folder */
-	public static void createEasyRPGDirectories(Context context, Uri gamesFolderURI){
+	/** Create EasyRPG's folders and .nomedia file */
+	public static void createEasyRPGFolders(Context context, Uri easyRPGFolderURI){
 		// RTP folder
         // Note : we name the folder "rtp" and not "RTP" because existing user might have this folder
         // from previous EasyRPG version, and creating folder is case insensitive on Android
         // (At each startup, if would create a RTP (x) folder)
-        DocumentFile gamesFolder = Helper.getFileFromURI(context, gamesFolderURI);
-        if (gamesFolder != null) {
-            DocumentFile RTPFolder = createFolder(context, gamesFolder, "rtp");
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            DocumentFile RTPFolder = createFolder(context, easyRPGFolder, "rtp");
             createFolder(context, RTPFolder, "2000");
             createFolder(context, RTPFolder, "2003");
+            createFolder(context, easyRPGFolder, "games");
+            createFolder(context, easyRPGFolder, "soundfonts");
+            createFolder(context, easyRPGFolder, "saves");
 
             // Save the RTP folder in Settings
             SettingsManager.setRTPFolderURI(RTPFolder.getUri());
 
             // The .nomedia file (avoid media app to scan games and RTP's folders)
-            if (Helper.findFile(context, gamesFolder.getUri(), ".nomedia") == null) {
-                gamesFolder.createFile("", ".nomedia");
+            if (Helper.findFile(context, easyRPGFolder.getUri(), ".nomedia") == null) {
+                easyRPGFolder.createFile("", ".nomedia");
             }
         }
 	}

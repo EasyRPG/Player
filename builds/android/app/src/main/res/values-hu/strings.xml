@@ -23,7 +23,7 @@
   <string name="no">Nem</string>
   <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt!</string>
   <string name="path_not_readable">$PATH nem olvasható!</string>
-  <string name="no_games_found_and_explanation">Nem találhatók RPG Maker 2000/2003 játékok.
+  <string name="no_games_found_and_explanation_old">Nem találhatók RPG Maker 2000/2003 játékok.
 A beállítások közt tud további játékkönyvtárakat felvenni.</string>
   <string name="no_external_storage">Nem található külső adattárolót (pl: SD kártya)!</string>
   <string name="not_valid_game">$PATH nem egy érvényes játékot tárol!</string>

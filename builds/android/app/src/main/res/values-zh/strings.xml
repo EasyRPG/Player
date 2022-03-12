@@ -23,7 +23,7 @@
   <string name="no">取消</string>
   <string name="creating_dir_failed">创建路径目录失败</string>
   <string name="path_not_readable">无法读取路径目录</string>
-  <string name="no_games_found_and_explanation">未找到RPG Maker 2000/2003游戏。
+  <string name="no_games_found_and_explanation_old">未找到RPG Maker 2000/2003游戏。
 你可以从设置里添加新的游戏目录。</string>
   <string name="no_external_storage">没有发现外部储存卡(如SD卡)</string>
   <string name="not_valid_game">游戏路径里并不是有效的游戏</string>

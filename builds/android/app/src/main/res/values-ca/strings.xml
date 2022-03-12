@@ -23,7 +23,7 @@
   <string name="no">No</string>
   <string name="creating_dir_failed">Ha fallat la creació del directori $PATH</string>
   <string name="path_not_readable">No es pot llegir $PATH</string>
-  <string name="no_games_found_and_explanation">No s\'han trobat jocs de RPG Maker 2000/2003.
+  <string name="no_games_found_and_explanation_old">No s\'han trobat jocs de RPG Maker 2000/2003.
 Pots afegir directoris addicionals a la configuració.</string>
   <string name="no_external_storage">No s\'ha trobat emmagatzematge extern (per exemple targeta SD)</string>
   <string name="not_valid_game">$PATH no és un joc vàlid</string>

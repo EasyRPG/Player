@@ -23,7 +23,7 @@
   <string name="no">Нет</string>
   <string name="creating_dir_failed">Не удалось создать директорию $PATH</string>
   <string name="path_not_readable">Невозможно прочитать $PATH</string>
-  <string name="no_games_found_and_explanation">Не найдены игры для RPG Maker 2000/2003.
+  <string name="no_games_found_and_explanation_old">Не найдены игры для RPG Maker 2000/2003.
 Дополнительные папки с играми можно задать в настройках.</string>
   <string name="no_external_storage">Не найден внешний диск (например, SD-карта)</string>
   <string name="not_valid_game">$PATH не является поддерживаемой игрой</string>

@@ -23,7 +23,7 @@
   <string name="no">いいえ</string>
   <string name="creating_dir_failed">ディレクトリ $PATH の作成に失敗しました。</string>
   <string name="path_not_readable">$PATH が読み込めませんでした。</string>
-  <string name="no_games_found_and_explanation">RPG ツクール 2000/2003 ゲームが見つかりません。
+  <string name="no_games_found_and_explanation_old">RPG ツクール 2000/2003 ゲームが見つかりません。
 設定で、追加のゲームディレクトリを追加することができます。</string>
   <string name="no_external_storage">外部ストレージ(SDカードなど)が見つかりませんでした。</string>
   <string name="not_valid_game">$PATHのゲームは対応していません。</string>

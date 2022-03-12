@@ -23,7 +23,7 @@
   <string name="no">Tidak</string>
   <string name="creating_dir_failed">Gagal membuat direktori $PATH</string>
   <string name="path_not_readable">$PATH tidak terbaca</string>
-  <string name="no_games_found_and_explanation">Tidak ada permainan RPG Maker 2000/2003 yang ditemukan.
+  <string name="no_games_found_and_explanation_old">Tidak ada permainan RPG Maker 2000/2003 yang ditemukan.
 Anda bisa menambah direktori permainan di pengaturan.</string>
   <string name="no_external_storage">Tidak ada penyimpanan eksternal (misal: kartu SD) yang ditemukan</string>
   <string name="not_valid_game">$PATH bukan permainan yang valid</string>

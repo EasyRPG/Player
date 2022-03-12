@@ -174,7 +174,7 @@ public class GameBrowserHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Dialog construction
-        builder.setMessage(R.string.how_to_use_easy_rpg_explanation_android_12)
+        builder.setMessage(R.string.how_to_use_easy_rpg_explanation_android_30)
                 .setTitle(R.string.how_to_use_easy_rpg)
                 .setNeutralButton(R.string.ok, null);
 
@@ -202,7 +202,7 @@ public class GameBrowserHelper {
 
             // Extract the selected folder from the URI
             Uri uri = resultData.getData();
-            Log.i("EasyRPG", "The selected games folder is : " + uri.getPath());
+            Log.i("EasyRPG", "The selected EasyRPG folder is : " + uri.getPath());
 
             // Ask for permanent access to this folder
             final int takeFlags = resultData.getFlags()
@@ -212,9 +212,9 @@ public class GameBrowserHelper {
             // Save the settings
             SettingsManager.setGamesFolderURI(uri);
 
-            // Create RTP folders and the .nomedia file
+            // Create EasyRPG folders and the .nomedia file
             Uri gamesFolderURI = SettingsManager.getGamesFolderURI(activity);
-            Helper.createEasyRPGDirectories(activity, gamesFolderURI);
+            Helper.createEasyRPGFolders(activity, gamesFolderURI);
         }
     }
 }

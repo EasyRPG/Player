@@ -23,7 +23,7 @@
   <string name="no">아니요</string>
   <string name="creating_dir_failed">$PATH 디렉토리를 만들 수 없습니다.</string>
   <string name="path_not_readable">$PATH 디렉토리를 읽을 수 없습니다.</string>
-  <string name="no_games_found_and_explanation">RPG 만들기 2000/2003 게임이 없습니다.
+  <string name="no_games_found_and_explanation_old">RPG 만들기 2000/2003 게임이 없습니다.
 설정에서 게임 디렉토리를 추가해보세요.</string>
   <string name="no_external_storage">외부 저장소(예: SD 카드)가 없습니다.</string>
   <string name="not_valid_game">$PATH 디렉토리의 게임은 지원하지 않습니다.</string>

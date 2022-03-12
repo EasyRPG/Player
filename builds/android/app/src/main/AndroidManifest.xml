@@ -97,7 +97,7 @@
         </activity>
         <activity
             android:name=".settings.SettingsGamesFolderActivity"
-            android:label="@string/game_folders"
+            android:label="@string/easyrpg_folders"
             android:parentActivityName=".settings.SettingsMainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
