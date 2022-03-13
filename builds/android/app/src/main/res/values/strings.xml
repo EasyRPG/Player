@@ -60,6 +60,10 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
     <string name="enable_audio">Enable audio</string>
+	<string name="enable_custom_soundfonts">Enable custom Soundfonts</string>
+	<string name="enable_custom_soundfont_explanation">Place a .sf2 file in the games folder (%).</string>
+	<string name="custom_soundfont_found">File found: %</string>
+	<string name="settings_default_soundfont">Default Soundfont</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
@@ -71,6 +75,11 @@ Please tell us in detail what went wrong.\n\n
         <item>tap</item>
     </string-array>
     <string name="fast_forward_factor">Speed multiplier:</string>
+	<string name="select_the_games_folder">Select EasyRPG folder</string>
+	<string name="id_select_games_folder_explanation">This folder may only be used for RPG Maker 2000/2003 games.\nDo not select folders that contain other things, such as the download folder.</string>
+	<string name="Loading">Loading…</string>
+	<string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".</string>
+	<string name="open_rtp_folder">OPEN RTP FOLDER</string>
 
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage input layouts:</string>
@@ -95,12 +104,4 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
-;wq    <string name="select_the_games_folder">Select EasyRPG folder</string>
-	<string name="id_select_games_folder_explanation">This folder may only be used for RPG Maker 2000/2003 games.\nDo not select folders that contain other things, such as the download folder.</string>
-	<string name="Loading">Loading…</string>
-    <string name="enable_custom_soundfonts">Enable custom SoundFonts</string>
-	<string name="enable_custom_soundfont_explanation">Place a .sf2 file in the games folder (%).</string>
-	<string name="custom_soundfont_found">File found: %</string>
-	<string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".</string>
-	<string name="open_rtp_folder">OPEN RTP FOLDER</string>
 </resources>

@@ -33,4 +33,11 @@
 		android:layout_height="wrap_content"
 		android:text="@string/custom_soundfont_found"
 		android:textSize="20sp" />
+
+	<LinearLayout
+		android:id="@+id/settings_soundfonts_list"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		android:orientation="vertical"/>
 </LinearLayout>

@@ -305,7 +305,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         public InputLayoutItemListView(Context context, final ButtonMappingManager.InputLayout input_layout) {
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            layout = (RelativeLayout) inflater.inflate(R.layout.settings_item_list, null);
+            layout = (RelativeLayout) inflater.inflate(R.layout.settings_input_layout_item_list, null);
 
             // The Radio Button
             RadioButton radioButton = (RadioButton) layout.findViewById(R.id.controls_settings_preset_radio_button);

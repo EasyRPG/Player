@@ -111,15 +111,6 @@ public class GameScanner {
                     continue;
                 }
                 if (!name.startsWith(".")) {
-                    // Is it a soundfont file ?
-                    // We test this case here during the game scanning in order to avoid further syscalls
-                    if (depth == GAME_SCANNING_DEPTH && name.toLowerCase().endsWith(".sf2")) {
-                        DocumentFile soundFontFile = Helper.getFileFromDocumentID(context, folderURI, fileDocumentID);
-                        if (soundFontFile != null) {
-                            Log.i("EasyRPG", "Soundfont found : " + soundFontFile.getName());
-                            SettingsManager.setSoundFountFileURI(soundFontFile.getUri());
-                        }
-                    }
                     boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
                     if (isDirectory) {
                         // Is the file/folder a RPG Maker game?

@@ -259,6 +259,16 @@ public class SettingsManager {
         }
     }
 
+    // TODO : Cache the result?
+    public static Uri getSoundfontsFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), SOUNDFONTS_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
     public static Uri getSoundFountFileURI() {
         return soundFountFileURI;
     }
