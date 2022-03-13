@@ -6,27 +6,13 @@
               android:padding="10dp"
               tools:context="org.easyrpg.player.settings.SettingsAudioActivity">
 
-    <CheckBox
-        android:id="@+id/settings_checkbox_enable_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enable_audio"
-        android:textSize="20sp"/>
-
-	<include layout="@layout/separator"/>
-
-	<CheckBox
-		android:id="@+id/settings_checkbox_enable_soundfonts"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/enable_custom_soundfonts"
-		android:textSize="20sp"/>
 	<TextView
 		android:id="@+id/settings_soundfont_explanation"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/enable_custom_soundfont_explanation"
-		android:textSize="20sp" />
+		android:textSize="20sp"
+		android:textColor="#000000"/>
 	<TextView
 		android:id="@+id/settings_soundfont_found"
 		android:layout_width="wrap_content"

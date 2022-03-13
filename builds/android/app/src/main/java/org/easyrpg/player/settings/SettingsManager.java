@@ -1,7 +1,5 @@
 package org.easyrpg.player.settings;
 
-import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
-import static org.easyrpg.player.settings.SettingsEnum.CUSTOM_SOUNDFONT_ENABLED;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
@@ -59,8 +57,6 @@ public class SettingsManager {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
-        audioEnabled = sharedPref.getBoolean(AUDIO_ENABLED.toString(), true);
-        customSoundFountsEnabled = sharedPref.getBoolean(CUSTOM_SOUNDFONT_ENABLED.toString(), false);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
@@ -157,26 +153,6 @@ public class SettingsManager {
     public static void setVibrateWhenSlidingDirectionEnabled(boolean b) {
         vibrateWhenSlidingDirectionEnabled = b;
         editor.putBoolean(SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION.toString(), b);
-        editor.commit();
-    }
-
-    public static boolean isAudioEnabled() {
-        return audioEnabled;
-    }
-
-    public static void setAudioEnabled(boolean b) {
-        audioEnabled = b;
-        editor.putBoolean(SettingsEnum.AUDIO_ENABLED.toString(), b);
-        editor.commit();
-    }
-
-    public static boolean isCustomSoundFountsEnabled() {
-        return customSoundFountsEnabled;
-    }
-
-    public static void setCustomSoundFountsEnabled(boolean b) {
-        customSoundFountsEnabled = b;
-        editor.putBoolean(CUSTOM_SOUNDFONT_ENABLED.toString(), b);
         editor.commit();
     }
 

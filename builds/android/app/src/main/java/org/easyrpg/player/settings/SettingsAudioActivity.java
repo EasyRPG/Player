@@ -30,17 +30,6 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
         SettingsManager.init(getApplicationContext());
 
-        // Setting UI components
-        // Enable audio
-        CheckBox enableAudioCheckbox = (CheckBox) findViewById(R.id.settings_checkbox_enable_audio);
-        enableAudioCheckbox.setChecked(SettingsManager.isAudioEnabled());
-        enableAudioCheckbox.setOnClickListener(v -> SettingsManager.setAudioEnabled(((CheckBox)v).isChecked()));
-
-        // Enable custom SoundFonts
-        CheckBox enableSoundfontCheckbox = (CheckBox) findViewById(R.id.settings_checkbox_enable_soundfonts);
-        enableSoundfontCheckbox.setChecked(SettingsManager.isCustomSoundFountsEnabled());
-        enableSoundfontCheckbox.setOnClickListener(v -> SettingsManager.setCustomSoundFountsEnabled(((CheckBox)v).isChecked()));
-
         // Update the EasyRPG folder path
         TextView soundFontExplanationView = (TextView) findViewById(R.id.settings_soundfont_explanation);
         String soundfontExplanation = soundFontExplanationView.getText().toString();
@@ -50,19 +39,6 @@ public class SettingsAudioActivity extends AppCompatActivity {
             soundfontExplanation = soundfontExplanation.replace("%", easyRPGFolderName);
             soundFontExplanationView.setText(soundfontExplanation);
         }
-
-        // Update the SoundFont file path
-        TextView soundFontFoundView = (TextView) findViewById(R.id.settings_soundfont_found);
-        String soundFontFound = soundFontFoundView.getText().toString();
-        Uri soundFountURI  = SettingsManager.getSoundFountFileURI();
-        String soundFontFoundName;
-        if (soundFountURI != null) {
-            soundFontFoundName = soundFountURI.getPath();
-        } else {
-            soundFontFoundName = "N/A";
-        }
-        soundFontFound = soundFontFound.replace("%", soundFontFoundName);
-        soundFontFoundView.setText(soundFontFound);
     }
 
     @Override

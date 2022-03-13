@@ -121,17 +121,10 @@ public class GameBrowserHelper {
             args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
-            if (SettingsManager.isCustomSoundFountsEnabled()) {
-                Uri soundfontUri = SettingsManager.getSoundFountFileURI();
-                if (soundfontUri != null) {
-                    args.add("--soundfont");
-                    args.add(soundfontUri.toString());
-                }
-            }
-
-            // Disable audio depending on user preferences
-            if (!SettingsManager.isAudioEnabled()) {
-                args.add("--disable-audio");
+            Uri soundfontUri = SettingsManager.getSoundFountFileURI();
+            if (soundfontUri != null) {
+                args.add("--soundfont");
+                args.add(soundfontUri.toString());
             }
 
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
