@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="10dp"
-              tools:context="org.easyrpg.player.settings.SettingsAudioActivity">
-
-	<TextView
-		android:id="@+id/settings_soundfont_explanation"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/enable_custom_soundfont_explanation"
-		android:textSize="20sp"
-		android:textColor="#000000"/>
-	<TextView
-		android:id="@+id/settings_soundfont_found"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/custom_soundfont_found"
-		android:textSize="20sp" />
-
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 	<LinearLayout
-		android:id="@+id/settings_soundfonts_list"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		tools:context="org.easyrpg.player.settings.SettingsAudioActivity"
+		android:padding="10dp">
 
-		android:orientation="vertical"/>
-</LinearLayout>
+		<TextView
+			android:id="@+id/settings_soundfont_explanation"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/enable_custom_soundfont_explanation"
+			android:textSize="20sp"
+			android:textColor="#000000"/>
+		<TextView
+			android:id="@+id/settings_soundfont_found"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/custom_soundfont_found"
+			android:textSize="20sp" />
+
+		<LinearLayout
+			android:id="@+id/settings_soundfonts_list"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			android:orientation="vertical"/>
+	</LinearLayout>
+</ScrollView>
