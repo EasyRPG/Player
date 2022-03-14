@@ -121,7 +121,7 @@ public class GameBrowserHelper {
             args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
-            Uri soundfontUri = SettingsManager.getSoundFountFileURI();
+            Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
             if (soundfontUri != null) {
                 args.add("--soundfont");
                 args.add(soundfontUri.toString());

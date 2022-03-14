@@ -96,8 +96,8 @@ public class SettingsAudioActivity extends AppCompatActivity {
         return new SoundfontItemList(context, context.getString(R.string.settings_default_soundfont), null);
     }
 
-    public static boolean isSelectedSoundfontFile(Uri soundfontUri) {
-        Uri selectedSoundFontUri = SettingsManager.getSoundFountFileURI();
+    public static boolean isSelectedSoundfontFile(Context context, Uri soundfontUri) {
+        Uri selectedSoundFontUri = SettingsManager.getSoundFountFileURI(context);
         if (soundfontUri == null && selectedSoundFontUri == null) {
             return true;
         }
@@ -127,7 +127,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
             radioButton.setOnClickListener(v -> {
                 select();
             });
-            if (isSelectedSoundfontFile(uri)) {
+            if (isSelectedSoundfontFile(context, uri)) {
                 setSelected(true);
             }
 

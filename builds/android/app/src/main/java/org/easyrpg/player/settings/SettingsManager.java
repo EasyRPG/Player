@@ -4,7 +4,7 @@ import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
-import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_DIRECTORY;
+import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_FOLDER_URI;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
@@ -200,7 +200,7 @@ public class SettingsManager {
     public static Uri getEasyRPGFolderURI(Context context) {
         if (easyRPGFolderURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            String gamesFolderString = sharedPref.getString(EASYRPG_DIRECTORY.toString(), "");
+            String gamesFolderString = sharedPref.getString(EASYRPG_FOLDER_URI.toString(), "");
             if (gamesFolderString == null || gamesFolderString.isEmpty()) {
                 easyRPGFolderURI = null;
             } else {
@@ -211,7 +211,7 @@ public class SettingsManager {
     }
 
     public static void setEasyRPGFolderURI(Uri easyRPGFolderURI) {
-        editor.putString(SettingsEnum.EASYRPG_DIRECTORY.toString(), easyRPGFolderURI.toString());
+        editor.putString(SettingsEnum.EASYRPG_FOLDER_URI.toString(), easyRPGFolderURI.toString());
         editor.commit();
     }
 
@@ -245,12 +245,27 @@ public class SettingsManager {
         }
     }
 
-    public static Uri getSoundFountFileURI() {
+    public static Uri getSoundFountFileURI(Context context) {
+        if (soundFountFileURI == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String soundfontURI = sharedPref.getString(SettingsEnum.SOUNDFONT_URI.toString(), "");
+            if (soundfontURI == null || soundfontURI.isEmpty()) {
+                soundFountFileURI = null;
+            } else {
+                soundFountFileURI = Uri.parse(soundfontURI);
+            }
+        }
         return soundFountFileURI;
     }
 
     public static void setSoundFountFileURI(Uri soundFountFileURI) {
-       SettingsManager.soundFountFileURI = soundFountFileURI;
+        String st = "";
+        SettingsManager.soundFountFileURI = soundFountFileURI;
+        if (soundFountFileURI != null) {
+            st = soundFountFileURI.toString();
+        }
+        editor.putString(SettingsEnum.SOUNDFONT_URI.toString(), st);
+        editor.commit();
     }
 }
 
