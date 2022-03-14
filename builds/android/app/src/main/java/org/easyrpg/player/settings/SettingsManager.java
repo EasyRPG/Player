@@ -1,5 +1,6 @@
 package org.easyrpg.player.settings;
 
+import static org.easyrpg.player.settings.SettingsEnum.ENABLE_RTP_SCANNING;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
@@ -33,6 +34,7 @@ public class SettingsManager {
     private static boolean audioEnabled, customSoundFountsEnabled;
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
+    private static boolean rtpScanningEnabled;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
     // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
@@ -56,6 +58,7 @@ public class SettingsManager {
     private static void loadSettings(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
+        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), false);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
@@ -123,6 +126,16 @@ public class SettingsManager {
     public static void setVibrationEnabled(boolean b) {
         vibrationEnabled = b;
         editor.putBoolean(SettingsEnum.VIBRATION_ENABLED.toString(), b);
+        editor.commit();
+    }
+
+    public static boolean isRTPScanningEnabled() {
+        return rtpScanningEnabled;
+    }
+
+    public static void setRTPScanningEnabled(boolean rtpScanningEnabled) {
+        SettingsManager.rtpScanningEnabled = rtpScanningEnabled;
+        editor.putBoolean(ENABLE_RTP_SCANNING.toString(), rtpScanningEnabled);
         editor.commit();
     }
 
@@ -225,7 +238,7 @@ public class SettingsManager {
         }
     }
 
-    // TODO : Cache the result?
+    // TODO : Cache the result : it could be heavily used in a game session if RTP scanning is activated
     public static Uri getRTPFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
         if (easyRPGFolder != null) {

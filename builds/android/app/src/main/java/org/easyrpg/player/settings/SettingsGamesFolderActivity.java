@@ -2,10 +2,9 @@ package org.easyrpg.player.settings;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,13 +17,18 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_settings_games_folders);
+        this.setContentView(R.layout.activity_settings_easyrpg_folders);
 
         SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
         Button setGamesFolderButton = (Button) findViewById(R.id.set_games_folder);
         setGamesFolderButton.setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
+
+        // Setting UI components
+        CheckBox enableRTPScanning = (CheckBox) findViewById(R.id.settings_enable_rtp_scanning);
+        enableRTPScanning.setChecked(SettingsManager.isRTPScanningEnabled());
+        enableRTPScanning.setOnClickListener(view -> SettingsManager.setRTPScanningEnabled(enableRTPScanning.isChecked()));
 
         // TODO : Make the Open RTP folder work
     }
