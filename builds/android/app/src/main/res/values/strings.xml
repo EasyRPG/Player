@@ -60,7 +60,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
 	<string name="enable_custom_soundfont_explanation">Custom Soundfont:</string>
-	<string name="custom_soundfont_found">Place soundfont files in the \"soundfonts\" folder.\nSoundfont found:</string>
+	<string name="custom_soundfont_found">Place soundfont files in the \"soundfonts\" folder.\nPlease quit and restart the app after selecting a soundfont.\nSoundfont found:</string>
 	<string name="settings_default_soundfont">Default Soundfont</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
