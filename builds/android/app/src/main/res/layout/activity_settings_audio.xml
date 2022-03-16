@@ -5,24 +5,39 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<LinearLayout
+		android:id="@+id/settings_audio_linear_layout"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		tools:context="org.easyrpg.player.settings.SettingsAudioActivity"
-		android:padding="10dp">
+		android:padding="20dp"
+		android:gravity="center">
 
 		<TextView
-			android:id="@+id/settings_soundfont_explanation"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/enable_custom_soundfont_explanation"
+			android:text="@string/settings_custom_soundfont"
 			android:textSize="20sp"
 			android:textColor="#000000"/>
-		<TextView
-			android:id="@+id/settings_soundfont_found"
+		<Button
+			android:id="@+id/button_open_soundfont_folder"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/custom_soundfont_found"
+			android:text="@string/open_the_soundfonts_folder" />
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/settings_soundfont_explanation"
+			android:textSize="20sp" />
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/settings_soundfont_restart_app"
+			android:textSize="20sp" />
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/settings_soundfont_found"
 			android:textSize="20sp" />
 
 		<LinearLayout

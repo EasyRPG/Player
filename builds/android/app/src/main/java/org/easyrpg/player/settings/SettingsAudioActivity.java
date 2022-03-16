@@ -1,10 +1,13 @@
 package org.easyrpg.player.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
-import android.widget.CheckBox;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -30,14 +33,23 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
         SettingsManager.init(getApplicationContext());
 
-        // Update the EasyRPG folder path
-        TextView soundFontExplanationView = (TextView) findViewById(R.id.settings_soundfont_explanation);
-        String soundfontExplanation = soundFontExplanationView.getText().toString();
-        Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
-        if (easyRPGFolderURI != null) {
-            String easyRPGFolderName = easyRPGFolderURI.getPath();
-            soundfontExplanation = soundfontExplanation.replace("%", easyRPGFolderName);
-            soundFontExplanationView.setText(soundfontExplanation);
+        // Setup UI components
+        // The Soundfont Button
+        Button button = this.findViewById(R.id.button_open_soundfont_folder);
+        // We can open the file picker in a specific folder only with API >= 26
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            button.setOnClickListener(v -> {
+                // Open the file explorer in the "soundfont" folder
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("*/*");
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getSoundfontsFolderURI(this));
+                startActivity(intent);
+            });
+        } else {
+            ViewGroup layout = (ViewGroup) button.getParent();
+            if(layout != null) {
+                layout.removeView(button);
+            }
         }
     }
 
@@ -50,7 +62,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
     private void updateSoundfontsListView() {
         if (soundfontsListLayout == null) {
-            soundfontsListLayout = (LinearLayout) findViewById(R.id.settings_soundfonts_list);
+            soundfontsListLayout = findViewById(R.id.settings_soundfonts_list);
         }
         soundfontsListLayout.removeAllViews();
 
@@ -123,20 +135,16 @@ public class SettingsAudioActivity extends AppCompatActivity {
             this.layout = (RelativeLayout) inflater.inflate(R.layout.settings_soundfont_item_list, null);
 
             // The Radio Button
-            this.radioButton = (RadioButton) layout.findViewById(R.id.settings_soundfont_radio_button);
-            radioButton.setOnClickListener(v -> {
-                select();
-            });
+            this.radioButton = layout.findViewById(R.id.settings_soundfont_radio_button);
+            radioButton.setOnClickListener(v -> select());
             if (isSelectedSoundfontFile(context, uri)) {
                 setSelected(true);
             }
 
             // The name
-            TextView nameTextView = (TextView) layout.findViewById(R.id.settings_soundfont_name);
+            TextView nameTextView = layout.findViewById(R.id.settings_soundfont_name);
             nameTextView.setText(name);
-            nameTextView.setOnClickListener(v -> {
-                select();
-            });
+            nameTextView.setOnClickListener(v -> select());
         }
 
         public void select() {

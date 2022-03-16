@@ -132,7 +132,7 @@ public class InitActivity extends AppCompatActivity {
     }
 
     /**
-     * Launch the game browsers depending on the API.
+     * Launch the game browsers
      */
     private void launchGamesBrowser() {
         // Recreate EasyRPG's folders and .nomedia file if necessary

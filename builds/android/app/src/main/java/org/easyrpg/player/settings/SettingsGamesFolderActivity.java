@@ -3,6 +3,8 @@ package org.easyrpg.player.settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
@@ -22,15 +24,32 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
         SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
-        Button setGamesFolderButton = (Button) findViewById(R.id.set_games_folder);
+        Button setGamesFolderButton = findViewById(R.id.set_games_folder);
         setGamesFolderButton.setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
         // Setting UI components
-        CheckBox enableRTPScanning = (CheckBox) findViewById(R.id.settings_enable_rtp_scanning);
+        CheckBox enableRTPScanning = findViewById(R.id.settings_enable_rtp_scanning);
         enableRTPScanning.setChecked(SettingsManager.isRTPScanningEnabled());
         enableRTPScanning.setOnClickListener(view -> SettingsManager.setRTPScanningEnabled(enableRTPScanning.isChecked()));
 
-        // TODO : Make the Open RTP folder work
+        // Setup UI components
+        // The "Open RTP Folder" Button
+        Button button = this.findViewById(R.id.open_rtp_folder);
+        // We can open the file picker in a specific folder only with API >= 26
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            button.setOnClickListener(v -> {
+                // Open the file explorer in the "soundfont" folder
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("*/*");
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getRTPFolderURI(this));
+                startActivity(intent);
+            });
+        } else {
+            ViewGroup layout = (ViewGroup) button.getParent();
+            if(layout != null) {
+                layout.removeView(button);
+            }
+        }
     }
 
     /** Called when the user has chosen a game folder */
