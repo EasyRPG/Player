@@ -30,7 +30,13 @@ static void Mpg123Decoder_deinit(void) {
 	mpg123_exit();
 }
 
-static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
+#ifdef _MSC_VER
+using MPG123_SIZE_TYPE = ptrdiff_t;
+#else
+using MPG123_SIZE_TYPE = ssize_t;
+#endif
+
+static MPG123_SIZE_TYPE custom_read(void* io, void* buffer, size_t nbyte) {
 	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(io);
 	return f->read(reinterpret_cast<char*>(buffer), nbyte).gcount();
 }
