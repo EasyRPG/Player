@@ -1748,7 +1748,11 @@ void Scene_Battle_Rpg2k::SelectNextActor(bool auto_battle) {
 	}
 
 	if (auto_battle || active_actor->GetAutoBattle()) {
-		this->autobattle_algo->SetAutoBattleAction(*active_actor);
+		if (active_actor->GetActorAi() == -1) {
+			this->autobattle_algos[default_autobattle_algo]->SetAutoBattleAction(*active_actor);
+		} else {
+			this->autobattle_algos[active_actor->GetActorAi()]->SetAutoBattleAction(*active_actor);
+		}
 		assert(active_actor->GetBattleAlgorithm() != nullptr);
 		battle_actions.push_back(active_actor);
 
@@ -1813,7 +1817,11 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 
 	for (auto* enemy : Main_Data::game_enemyparty->GetEnemies()) {
 		if (!EnemyAi::SetStateRestrictedAction(*enemy)) {
-			enemyai_algo->SetEnemyAiAction(*enemy);
+			if (enemy->GetEnemyAi() == -1) {
+				enemyai_algos[default_enemyai_algo]->SetEnemyAiAction(*enemy);
+			} else {
+				enemyai_algos[enemy->GetEnemyAi()]->SetEnemyAiAction(*enemy);
+			}
 		}
 		assert(enemy->GetBattleAlgorithm() != nullptr);
 		ActionSelectedCallback(enemy);

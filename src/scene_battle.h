@@ -191,8 +191,10 @@ protected:
 	std::unique_ptr<Window_Message> message_window;
 
 	std::deque<Game_Battler*> battle_actions;
-	std::unique_ptr<AutoBattle::AlgorithmBase> autobattle_algo;
-	std::unique_ptr<EnemyAi::AlgorithmBase> enemyai_algo;
+	std::vector<std::unique_ptr<AutoBattle::AlgorithmBase>> autobattle_algos;
+	std::vector<std::unique_ptr<EnemyAi::AlgorithmBase>> enemyai_algos;
+	int default_autobattle_algo;
+	int default_enemyai_algo;
 
 	BattleContinuation on_battle_end;
 

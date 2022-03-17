@@ -24,8 +24,8 @@
 class CmdlineParser;
 
 struct Game_ConfigPlayer {
-	StringConfigParam autobattle_algo{ "RPG_RT" };
-	StringConfigParam enemyai_algo{ "RPG_RT" };
+	StringConfigParam autobattle_algo{ "" };
+	StringConfigParam enemyai_algo{ "" };
 };
 
 struct Game_ConfigVideo {

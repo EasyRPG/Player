@@ -928,6 +928,8 @@ public:
 
 	Sprite_Actor* GetActorBattleSprite() const;
 
+	int GetActorAi() const;
+
 private:
 	void AdjustEquipmentStates(const lcf::rpg::Item* item, bool add, bool allow_battle_states);
 	void Fixup();
@@ -1094,6 +1096,10 @@ inline void Game_Actor::SetStrongDefense(bool value) {
 
 inline Sprite_Actor* Game_Actor::GetActorBattleSprite() const {
 	return static_cast<Sprite_Actor*>(Game_Battler::GetBattleSprite());
+}
+
+inline int Game_Actor::GetActorAi() const {
+	return dbActor->easyrpg_actorai;
 }
 
 #endif
