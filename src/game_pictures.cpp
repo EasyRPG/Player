@@ -232,10 +232,13 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
 
+	// Not saved as the coordinate system is directly transformed to "center"
+	origin = params.origin;
+
 	return result;
 }
 
-void Game_Pictures::Show(int id, const ShowParams& params) {
+bool Game_Pictures::Show(int id, const ShowParams& params) {
 	auto& pic = GetPicture(id);
 	if (pic.Show(params)) {
 		if (pic.sprite && !pic.data.name.empty()) {
@@ -244,7 +247,9 @@ void Game_Pictures::Show(int id, const ShowParams& params) {
 			pic.sprite->SetVisible(false);
 		}
 		RequestPictureSprite(pic);
+		return true;
 	}
+	return false;
 }
 
 void Game_Pictures::Picture::Move(const MoveParams& params) {
@@ -296,6 +301,10 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
+
+	// Not saved as the coordinate system is directly transformed to "center"
+	origin = params.origin;
+	ApplyOrigin(true);
 }
 
 void Game_Pictures::Move(int id, const MoveParams& params) {
@@ -346,25 +355,21 @@ void Game_Pictures::RequestPictureSprite(Picture& pic) {
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
 	request->SetGraphicFile(true);
-
-	int pic_id = pic.data.ID;
-
-	pic.request_id = request->Bind([this, pic_id](FileRequestResult*) {
-		OnPictureSpriteReady(pic_id);
-	});
+	pic.request_id = request->Bind(&Game_Pictures::OnPictureSpriteReady, this, pic.data.ID);
 	request->Start();
 }
 
-
-void Game_Pictures::Picture::OnPictureSpriteReady() const {
+void Game_Pictures::Picture::OnPictureSpriteReady() {
 	auto bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	sprite->SetBitmap(bitmap);
 	sprite->OnPictureShow();
 	sprite->SetVisible(true);
+
+	ApplyOrigin(false);
 }
 
-void Game_Pictures::OnPictureSpriteReady(int id) {
+void Game_Pictures::OnPictureSpriteReady(FileRequestResult*, int id) {
 	auto* pic = GetPicturePtr(id);
 	if (EP_LIKELY(pic)) {
 		pic->request_id = nullptr;
@@ -374,6 +379,74 @@ void Game_Pictures::OnPictureSpriteReady(int id) {
 		}
 		pic->OnPictureSpriteReady();
 	}
+}
+
+void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
+	if (origin == 0) {
+		return;
+	}
+
+	double x;
+	double y;
+
+	if (is_move) {
+		x = data.finish_x;
+		y = data.finish_y;
+	} else {
+		x = data.current_x;
+		y = data.current_y;
+	}
+
+	double width = sprite->GetWidth();
+	double height = sprite->GetHeight();
+
+	switch (origin) {
+		case 1:
+			// Top-Left
+			x += width / 2;
+			y += height / 2;
+			break;
+		case 2:
+			// Bottom-Left
+			x += (width / 2);
+			y -= (height / 2);
+			break;
+		case 3:
+			// Top-Right
+			x -= (width / 2);
+			y += (height / 2);
+			break;
+		case 4:
+			// Bottom-Right
+			x -= (width / 2);
+			y -= (height / 2);
+			break;
+		case 5:
+			// Top
+			y += (height / 2);
+			break;
+		case 6:
+			// Bottom
+			y -= (height / 2);
+			break;
+		case 7:
+			// Left
+			x += (width / 2);
+			break;
+		case 8:
+			// Right
+			x -= (width / 2);
+			break;
+	}
+
+	if (!is_move) {
+		data.current_x = x;
+		data.current_y = y;
+		data.start_x = x;
+		data.start_y = y;
+	}
+	data.finish_x = x;
+	data.finish_y = y;
 }
 
 void Game_Pictures::Picture::OnMapScrolled(int dx16, int dy16) {

@@ -2806,6 +2806,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
+			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
 				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
@@ -2832,7 +2833,15 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	// RPG_RT will crash if you ask for a picture id greater than the limit that
 	// version of the engine allows. We allow an arbitrary number of pictures in Player.
 
-	Main_Data::game_pictures->Show(pic_id, params);
+	if (Main_Data::game_pictures->Show(pic_id, params)) {
+		if (params.origin > 0) {
+			auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+			if (pic.IsRequestPending()) {
+				pic.MakeRequestImportant();
+				_async_op = AsyncOp::MakeYield();
+			}
+		}
+	}
 
 	return true;
 }
@@ -2889,6 +2898,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
+			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
 				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
@@ -2917,6 +2927,14 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	}
 
 	Main_Data::game_pictures->Move(pic_id, params);
+
+	if (params.origin > 0) {
+		auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+		if (pic.IsRequestPending()) {
+			pic.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYield();
+		}
+	}
 
 	if (wait)
 		SetupWait(params.duration);
