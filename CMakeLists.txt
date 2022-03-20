@@ -520,6 +520,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	endif()
 	find_package(OpenGL CONFIG REQUIRED)
 	find_library(GLAD glad REQUIRED)
+	target_link_libraries(${PROJECT_NAME} OpenGL::EGL)
 	# generate gfx assets
 	enable_language(ASM)
 	dkp_generate_binary_embed_sources(PLAYER_SWITCH_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
@@ -959,8 +960,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	elseif(NINTENDO_SWITCH)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
-			${GLAD}
-			OpenGL::EGL)
+			${GLAD})
 		nx_generate_nacp(easyrpg-player.nacp
 			NAME "EasyRPG Player"
 			AUTHOR "EasyRPG Team"
