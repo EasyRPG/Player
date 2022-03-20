@@ -31,7 +31,7 @@
 #    include "dirent_win.h"
 #  endif
 #else
-#  ifdef PSP2
+#  ifdef __vita__
 #    include <psp2/io/dirent.h>
 #    include <psp2/io/stat.h>
 #  else
@@ -149,7 +149,7 @@ namespace Platform {
 #if defined(_WIN32)
 		_WDIR* dir_handle = nullptr;
 		struct _wdirent* entry = nullptr;
-#elif defined(PSP2)
+#elif defined(__vita__)
 		int dir_handle = -1;
 		struct SceIoDirent entry = {};
 #else
@@ -160,7 +160,7 @@ namespace Platform {
 	};
 
 	inline Directory::operator bool() const noexcept {
-#ifdef PSP2
+#ifdef __vita__
 		return dir_handle >= 0;
 #else
 		return dir_handle != nullptr;

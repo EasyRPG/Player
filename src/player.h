@@ -374,7 +374,7 @@ namespace Player {
 	extern std::string emscripten_game_name;
 #endif
 
-#ifdef _3DS
+#ifdef __3DS__
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif

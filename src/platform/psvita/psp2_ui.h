@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_PSP2_UI_H
 #define EP_PLATFORM_PSP2_UI_H
 
-#ifdef PSP2
-
 // Headers
 #include "baseui.h"
 #include "color.h"
@@ -72,7 +70,5 @@ private:
 #endif
 
 };
-
-#endif
 
 #endif

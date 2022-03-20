@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_3DS_UI_H
 #define EP_PLATFORM_3DS_UI_H
 
-#ifdef _3DS
-
 // Headers
 #include "baseui.h"
 #include "color.h"
@@ -68,7 +66,6 @@ public:
 private:
 	C3D_RenderTarget *top_screen, *bottom_screen;
 	C2D_Image top_image, bottom_image;
-	C2D_SpriteSheet assets;
 	bool fullscreen;
 	bool trigger_state;
 	bool show_touchscreen;
@@ -78,7 +75,5 @@ private:
 #endif
 	
 };
-
-#endif
 
 #endif

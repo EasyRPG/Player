@@ -110,3 +110,20 @@ local.properties
 
 # libretro
 easyrpg_libretro.*
+
+# switch
+*.nacp
+*.nro
+
+# 3ds
+*.3dsx
+*.smdh
+*.cia
+
+# wii
+*.dol
+
+# psvita
+eboot.bin
+*.vpk
+*.velf

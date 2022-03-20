@@ -15,7 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(PSP2) && defined(SUPPORT_AUDIO)
+#ifdef SUPPORT_AUDIO
+
 #include "psp2_audio.h"
 #include "output.h"
 

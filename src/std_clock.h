@@ -21,7 +21,6 @@
 #include <chrono>
 #include <thread>
 
-#if !defined(_3DS) && !defined(__SWITCH__) && !defined(PSP2)
 struct StdClock {
 	using clock = std::chrono::steady_clock;
 
@@ -63,5 +62,3 @@ constexpr const char* StdClock::Name() {
 }
 
 #endif
-#endif
-

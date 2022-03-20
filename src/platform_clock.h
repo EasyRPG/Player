@@ -22,7 +22,7 @@
 #include <type_traits>
 #include <thread>
 
-#if defined(_3DS)
+#if defined(__3DS__)
 #include "platform/3ds/3ds_clock.h"
 using Platform_Clock = CtrClock;
 #elif defined(GEKKO)
@@ -31,7 +31,7 @@ using Platform_Clock = WiiClock;
 #elif defined(__SWITCH__)
 #include "platform/switch/switch_clock.h"
 using Platform_Clock = NxClock;
-#elif defined(PSP2)
+#elif defined(__vita__)
 #include "platform/psvita/psp2_clock.h"
 using Platform_Clock = Psp2Clock;
 #elif defined(USE_LIBRETRO)

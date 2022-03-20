@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _3DS
-
 // Headers
 #include "3ds_ui.h"
 #include "color.h"
@@ -34,8 +32,7 @@
 #include <cstring>
 #include <stdio.h>
 
-#include "assets.h"
-#include "assets_t3x.h"
+#include "keyboard_t3x.h"
 
 // 8 MB required for booting and need extra linear memory for the sound
 // effect cache
@@ -87,7 +84,7 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-#ifndef NDEBUG
+#ifdef _DEBUG
 	consoleInit(GFX_BOTTOM, nullptr);
 #endif
 
@@ -107,28 +104,32 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	main_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
 	main_surface = Bitmap::Create(main_buffer, width, height, width_pow2*4, format);
 
+	// default for both screens
 	subt3x.width = width_pow2;
 	subt3x.height = height_pow2;
 	subt3x.left = 0.0f;
 	subt3x.top = 1.0f;
 	subt3x.right = 1.0f;
 	subt3x.bottom = 0.0f;
-	top_image.subtex = &subt3x;
+
 	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
 	C3D_TexInit(tex, width_pow2, height_pow2, GPU_RGB8);
 	memset(tex->data, 0, tex->size);
 	tex->border = 0xFFFFFFFF;
 	C3D_TexSetWrap(tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
 	top_image.tex = tex;
+	top_image.subtex = &subt3x;
 
 #ifdef SUPPORT_AUDIO
 	audio_.reset(new CtrAudio());
 #endif
 
-#ifdef NDEBUG
-	// Loading bottom screen keyboard
-	assets = C2D_SpriteSheetLoadFromMem(assets_t3x, assets_t3x_size);
-	bottom_image = C2D_SpriteSheetGetImage(assets, assets_keyboard_idx);
+#ifndef _DEBUG
+	C3D_Tex* keyb_tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
+	Tex3DS_Texture keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, keyb_tex, nullptr, false);
+	Tex3DS_TextureFree(keyb_t3x);
+	bottom_image.tex = keyb_tex;
+	bottom_image.subtex = &subt3x;
 #endif
 }
 
@@ -136,8 +137,9 @@ CtrUi::~CtrUi() {
 	C3D_TexDelete(top_image.tex);
 	free(top_image.tex);
 
-#ifdef NDEBUG
-	C2D_SpriteSheetFree(assets);
+#ifndef _DEBUG
+	C3D_TexDelete(bottom_image.tex);
+	free(bottom_image.tex);
 #endif
 
 	C2D_Fini();
@@ -195,7 +197,7 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::JOY_AXIS_X_LEFT] = (circlepad.dx < -joy_threshold);
 #endif
 
-#ifdef NDEBUG
+#ifndef _DEBUG
 	// Touchscreen support
 	u32 keys_tbl[16] = {
 		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::KP_DIVIDE,
@@ -295,7 +297,7 @@ void CtrUi::UpdateDisplay() {
 		C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
 	}
 
-#if NDEBUG
+#ifndef _DEBUG
 	// bottom screen
 	C2D_SceneBegin(bottom_screen);
 
@@ -345,5 +347,3 @@ void CtrUi::SetTitle(const std::string& /* title */) {
 bool CtrUi::ShowCursor(bool /* flag */) {
 	return true;
 }
-
-#endif

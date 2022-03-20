@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "psp2_clock.h"
 
-#ifdef PSP2
 constexpr bool Psp2Clock::is_steady;
-#endif

@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef PSP2
-
 // Headers
 #include "psp2_ui.h"
 #include "color.h"
@@ -336,5 +334,3 @@ void Psp2Ui::SetTitle(const std::string& /* title */) {
 bool Psp2Ui::ShowCursor(bool /* flag */) {
 	return true;
 }
-
-#endif

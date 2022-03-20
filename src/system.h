@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !(defined(USE_SDL) || defined(_3DS) || defined(PSP2) || defined(__SWITCH__) || defined(USE_LIBRETRO))
+#if !(defined(USE_SDL) || defined(__3DS__) || defined(__vita__) || defined(__SWITCH__) || defined(USE_LIBRETRO))
 #  error "This build doesn't target a backend"
 #endif
 
@@ -61,9 +61,9 @@
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(_3DS)
+#elif defined(__3DS__)
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(PSP2)
+#elif defined(__vita__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(GEKKO)

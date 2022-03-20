@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<livearea style="a1" format-ver="01.00" content-rev="1">
+	<livearea-background>
+		<image>bg.png</image>
+	</livearea-background>
+
+	<gate>
+		<startup-image>startup.png</startup-image>
+	</gate>
+
+	<frame id="frame3">
+		<liveitem>
+			<text valign="bottom" text-valign="bottom" align="right" text-align="right"  line-space="3" ellipsis="on">
+				<str color="#ffffff" size="16" bold="on" shadow="on">powered by EasyRPG</str>
+			</text>
+		</liveitem>
+	</frame>
+
+</livearea>

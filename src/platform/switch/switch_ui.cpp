@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef __SWITCH__
-
 // Headers
 #include "switch_ui.h"
 #include "color.h"
@@ -512,5 +510,3 @@ void NxUi::SetTitle(const std::string& /* title */) {
 bool NxUi::ShowCursor(bool /* flag */) {
 	return true;
 }
-
-#endif

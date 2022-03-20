@@ -54,10 +54,10 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 #elif defined(__SWITCH__)
 	AddPath("./rtp/" + version_str);
 	AddPath("/switch/easyrpg-player/rtp/" + version_str);
-#elif defined(_3DS)
+#elif defined(__3DS__)
 	AddPath("romfs:/data/rtp/" + version_str);
 	AddPath("sdmc:/data/rtp/" + version_str);
-#elif defined(PSP2)
+#elif defined(__vita__)
 	AddPath("ux0:/data/easyrpg-player/rtp/" + version_str);
 #elif defined(USE_LIBRETRO)
 	const char* dir = nullptr;

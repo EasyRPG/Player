@@ -45,10 +45,10 @@
 #if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
-#elif defined(_3DS)
+#elif defined(__3DS__)
 #  include <3ds.h>
 #  include <cstdio>
-#elif defined(PSP2)
+#elif defined(__vita__)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
 #elif defined(__APPLE__) && TARGET_OS_OSX
@@ -92,7 +92,7 @@ void Main_Data::Init() {
 			char working_dir[256];
 			getcwd(working_dir, 255);
 			project_path = std::string(working_dir);
-#elif defined(PSP2)
+#elif defined(__vita__)
 			// Check if app0 filesystem contains the title id reference file
 			FILE* f = fopen("app0:/titleid.txt","r");
 			if (f == NULL)
@@ -113,7 +113,7 @@ void Main_Data::Init() {
 				}
 				FileFinder::SetSaveFilesystem(savefs);
 			}
-#elif defined(_3DS)
+#elif defined(__3DS__)
 			// Check if romFs has some files inside or not
 			FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
 			if (testfile != NULL) {
