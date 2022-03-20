@@ -24,40 +24,40 @@
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Remote
 	return {
-		{TOGGLE_FPS, Keys::JOY_0}, // A
-		{SHIFT, Keys::JOY_1}, // B
-		{CANCEL, Keys::JOY_2}, // 1
-		{DECISION, Keys::JOY_3}, // 2
-		{FAST_FORWARD, Keys::JOY_4}, // -
-		{FAST_FORWARD_PLUS, Keys::JOY_5}, // +
-		{CANCEL, Keys::JOY_6}, // Home
+		{TOGGLE_FPS, Keys::JOY_OTHER_1}, // A
+		{SHIFT, Keys::JOY_OTHER_2}, // B
+		{CANCEL, Keys::JOY_OTHER_3}, // 1
+		{DECISION, Keys::JOY_OTHER_4}, // 2
+		{FAST_FORWARD, Keys::JOY_OTHER_5}, // -
+		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_6}, // +
+		{CANCEL, Keys::JOY_OTHER_7}, // Home
 
 		// Nunchuck
-		{DECISION, Keys::JOY_7}, // Z
-		{CANCEL, Keys::JOY_8}, // C
+		{DECISION, Keys::JOY_OTHER_8}, // Z
+		{CANCEL, Keys::JOY_OTHER_9}, // C
 
 		// Classic Controller
-		{DECISION, Keys::JOY_9}, // A
-		{CANCEL, Keys::JOY_10}, // B
-		{SHIFT, Keys::JOY_11}, // X
-		{N1, Keys::JOY_12}, // Y
-		{N3, Keys::JOY_13}, // L
-		{N5, Keys::JOY_14}, // R
-		{N9, Keys::JOY_15}, // Zl
-		{TOGGLE_FPS, Keys::JOY_16}, // Zr
-		{FAST_FORWARD, Keys::JOY_17}, // -
-		{FAST_FORWARD_PLUS, Keys::JOY_18}, // +
-		{CANCEL, Keys::JOY_19}, // Home
+		{DECISION, Keys::JOY_OTHER_10}, // A
+		{CANCEL, Keys::JOY_OTHER_11}, // B
+		{SHIFT, Keys::JOY_OTHER_12}, // X
+		{N1, Keys::JOY_OTHER_13}, // Y
+		{N3, Keys::JOY_OTHER_14}, // L
+		{N5, Keys::JOY_OTHER_15}, // R
+		{N9, Keys::JOY_OTHER_16}, // Zl
+		{TOGGLE_FPS, Keys::JOY_OTHER_17}, // Zr
+		{FAST_FORWARD, Keys::JOY_OTHER_18}, // -
+		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_19}, // +
+		{CANCEL, Keys::JOY_OTHER_20}, // Home
 
-		{DOWN, Keys::JOY_HAT_DOWN},
-		{LEFT, Keys::JOY_HAT_LEFT},
-		{RIGHT, Keys::JOY_HAT_RIGHT},
-		{UP, Keys::JOY_HAT_UP},
+		{LEFT, Keys::JOY_STICK_LEFT_X_LEFT},
+		{RIGHT, Keys::JOY_STICK_LEFT_X_RIGHT},
+		{DOWN, Keys::JOY_STICK_LEFT_Y_DOWN},
+		{UP, Keys::JOY_STICK_LEFT_Y_UP},
 
-		{LEFT, Keys::JOY_AXIS_X_LEFT},
-		{RIGHT, Keys::JOY_AXIS_X_RIGHT},
-		{DOWN, Keys::JOY_AXIS_Y_DOWN},
-		{UP, Keys::JOY_AXIS_Y_UP},
+		{LEFT, Keys::JOY_STICK_RIGHT_X_LEFT},
+		{RIGHT, Keys::JOY_STICK_RIGHT_X_RIGHT},
+		{DOWN, Keys::JOY_STICK_RIGHT_Y_DOWN},
+		{UP, Keys::JOY_STICK_RIGHT_Y_UP},
 	};
 }
 

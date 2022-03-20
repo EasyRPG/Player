@@ -106,7 +106,7 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	SetTitle(GAME_TITLE);
 
-#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
+#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
 		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
@@ -598,41 +598,25 @@ void SdlUi::ProcessJoystickButtonEvent(SDL_Event &evnt) {
 }
 
 void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
+#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
 	// Set all states to false
-	keys[Input::Keys::JOY_HAT_LOWER_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_DOWN] = false;
-	keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = false;
-	keys[Input::Keys::JOY_HAT_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_RIGHT] = false;
-	keys[Input::Keys::JOY_HAT_UPPER_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_UP] = false;
-	keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = false;
+	keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = false;
+	keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = false;
+	keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = false;
+	keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = false;
 
 	// Check hat states
-	if ((evnt.jhat.value & SDL_HAT_RIGHTUP) == SDL_HAT_RIGHTUP)
-		keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_RIGHTDOWN)  == SDL_HAT_RIGHTDOWN)
-		keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_LEFTUP)  == SDL_HAT_LEFTUP)
-		keys[Input::Keys::JOY_HAT_UPPER_LEFT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_LEFTDOWN)  == SDL_HAT_LEFTDOWN)
-		keys[Input::Keys::JOY_HAT_LOWER_LEFT] = true;
-
-	else if (evnt.jhat.value & SDL_HAT_UP)
-		keys[Input::Keys::JOY_HAT_UP] = true;
+	if (evnt.jhat.value & SDL_HAT_UP)
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = true;
 
 	else if (evnt.jhat.value & SDL_HAT_RIGHT)
-		keys[Input::Keys::JOY_HAT_RIGHT] = true;
+		keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = true;
 
 	else if (evnt.jhat.value & SDL_HAT_DOWN)
-		keys[Input::Keys::JOY_HAT_DOWN] = true;
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = true;
 
 	else if (evnt.jhat.value & SDL_HAT_LEFT)
-		keys[Input::Keys::JOY_HAT_LEFT] = true;
+		keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = true;
 #endif
 }
 
@@ -641,27 +625,27 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 	// Horizontal axis
 	if (evnt.jaxis.axis == 0) {
 		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = true;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = true;
+			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
 		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = true;
+			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = true;
 		} else {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
 		}
 
 	// Vertical Axis
 	} else if (evnt.jaxis.axis == 1) {
 		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = true;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = true;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
 		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = true;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = true;
 		} else {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
+			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
 		}
 	}
 #endif
@@ -779,38 +763,30 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 	switch (button_index) {
-		case 0	: return Input::Keys::JOY_0;
-		case 1	: return Input::Keys::JOY_1;
-		case 2	: return Input::Keys::JOY_2;
-		case 3	: return Input::Keys::JOY_3;
-		case 4	: return Input::Keys::JOY_4;
-		case 5	: return Input::Keys::JOY_5;
-		case 6	: return Input::Keys::JOY_6;
-		case 7	: return Input::Keys::JOY_7;
-		case 8	: return Input::Keys::JOY_8;
-		case 9	: return Input::Keys::JOY_9;
-		case 10	: return Input::Keys::JOY_10;
-		case 11	: return Input::Keys::JOY_11;
-		case 12	: return Input::Keys::JOY_12;
-		case 13	: return Input::Keys::JOY_13;
-		case 14	: return Input::Keys::JOY_14;
-		case 15	: return Input::Keys::JOY_15;
-		case 16	: return Input::Keys::JOY_16;
-		case 17	: return Input::Keys::JOY_17;
-		case 18	: return Input::Keys::JOY_18;
-		case 19	: return Input::Keys::JOY_19;
-		case 20	: return Input::Keys::JOY_20;
-		case 21	: return Input::Keys::JOY_21;
-		case 22	: return Input::Keys::JOY_22;
-		case 23	: return Input::Keys::JOY_23;
-		case 24	: return Input::Keys::JOY_24;
-		case 25	: return Input::Keys::JOY_25;
-		case 26	: return Input::Keys::JOY_23;
-		case 27	: return Input::Keys::JOY_27;
-		case 28	: return Input::Keys::JOY_28;
-		case 29	: return Input::Keys::JOY_29;
-		case 30	: return Input::Keys::JOY_30;
-		case 31	: return Input::Keys::JOY_31;
+		case 0	: return Input::Keys::JOY_OTHER_1;
+		case 1	: return Input::Keys::JOY_OTHER_2;
+		case 2	: return Input::Keys::JOY_OTHER_3;
+		case 3	: return Input::Keys::JOY_OTHER_4;
+		case 4	: return Input::Keys::JOY_OTHER_5;
+		case 5	: return Input::Keys::JOY_OTHER_6;
+		case 6	: return Input::Keys::JOY_OTHER_7;
+		case 7	: return Input::Keys::JOY_OTHER_8;
+		case 8	: return Input::Keys::JOY_OTHER_9;
+		case 9	: return Input::Keys::JOY_OTHER_10;
+		case 10	: return Input::Keys::JOY_OTHER_11;
+		case 11	: return Input::Keys::JOY_OTHER_12;
+		case 12	: return Input::Keys::JOY_OTHER_13;
+		case 13	: return Input::Keys::JOY_OTHER_14;
+		case 14	: return Input::Keys::JOY_OTHER_15;
+		case 15	: return Input::Keys::JOY_OTHER_16;
+		case 16	: return Input::Keys::JOY_OTHER_17;
+		case 17	: return Input::Keys::JOY_OTHER_18;
+		case 18	: return Input::Keys::JOY_OTHER_19;
+		case 19	: return Input::Keys::JOY_OTHER_20;
+		case 20	: return Input::Keys::JOY_OTHER_21;
+		case 21	: return Input::Keys::JOY_OTHER_22;
+		case 22	: return Input::Keys::JOY_OTHER_23;
+		case 23	: return Input::Keys::JOY_OTHER_24;
 		default : return Input::Keys::NONE;
 	}
 }

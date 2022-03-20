@@ -88,7 +88,7 @@ static int renderThread(unsigned int args, void* arg){
 		sceKernelWaitSema(GPU_Cleanup_Mutex, 1, nullptr);
 
 		if (main_texture == nullptr) sceKernelExitDeleteThread(0); // Exit procedure
-		
+
 		vita2d_start_drawing();
 
 		vita2d_clear_screen();
@@ -156,28 +156,28 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(vita2d_texture_get_datap(main_texture),
 		width, height, vita2d_texture_get_stride(main_texture), format);
-	
+
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new Psp2Audio());
 	#endif
-	
+
 	scePowerSetArmClockFrequency(444);
 	scePowerSetBusClockFrequency(222);
 	scePowerSetGpuClockFrequency(222);
 	scePowerSetGpuXbarClockFrequency(222);
-	
+
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceCtrlSetSamplingModeExt(SCE_CTRL_MODE_ANALOG_WIDE);
 	if (!is_pstv) {
 		sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	}
-	
+
 	GPU_Mutex = sceKernelCreateSema("GPU Mutex", 0, 1, 1, nullptr);
 	GPU_Cleanup_Mutex = sceKernelCreateSema("GPU Cleanup Mutex", 0, 1, 1, nullptr);
 	GPU_Thread = sceKernelCreateThread("GPU Thread", &renderThread,
 		0x10000100, 0x10000, 0, 0, nullptr);
 	sceKernelStartThread(GPU_Thread, 0, nullptr);
-	
+
 	// shiny green bar for ds4 controllers
 	if (is_pstv) {
 		sceCtrlSetLightBar(1, 0x54, 0x92, 0x36);
@@ -238,10 +238,10 @@ void Psp2Ui::ProcessEvents() {
 		zoom_state = ((zoom_state + 1) % 3);
 
 	// Left analog support
-	keys[Input::Keys::JOY_AXIS_X_LEFT] = (input.lx < 50);
-	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (input.lx > 170);
-	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (input.ly > 170);
-	keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
+	keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = (input.lx < 50);
+	keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = (input.lx > 170);
+	keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = (input.ly > 170);
+	keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = (input.ly < 50);
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {

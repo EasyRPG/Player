@@ -158,13 +158,6 @@ void LibretroUi::ProcessEvents() {
 		keys[RetroJKey2InputKey(button_id)] = CheckInputState(0, RETRO_DEVICE_JOYPAD, 0, button_id) != 0;
 	};
 
-#	if defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT)
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_UP);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_DOWN);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_LEFT);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_RIGHT);
-#	endif
-
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_A);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_B);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_Y);
@@ -182,26 +175,50 @@ void LibretroUi::ProcessEvents() {
 #	if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	int16_t axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_X);
 	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
-		keys[Input::Keys::JOY_AXIS_X_LEFT] = true;
-		keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = true;
+		keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
 	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
-		keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-		keys[Input::Keys::JOY_AXIS_X_RIGHT] = true;
+		keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = true;
 	} else {
-		keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-		keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
 	}
 
 	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_Y);
 	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
-		keys[Input::Keys::JOY_AXIS_Y_UP] = true;
-		keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = true;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
 	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
-		keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-		keys[Input::Keys::JOY_AXIS_Y_DOWN] = true;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = true;
 	} else {
-		keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-		keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
+		keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
+	}
+
+	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X);
+	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+		keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = true;
+		keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = false;
+	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+		keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = false;
+		keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = true;
+	} else {
+		keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = false;
+		keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = false;
+	}
+
+	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y);
+	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = true;
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = false;
+	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = false;
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = true;
+	} else {
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = false;
+		keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = false;
 	}
 #	endif
 #	endif
@@ -263,7 +280,7 @@ void LibretroUi::UpdateVariables() {
 		button_remapper[i] = Input::Keys::NONE;
 		for (int j = 0; j < 17; ++j) {
 			if (strcmp(variables[i].value, buttons[j]) == 0) {
-				button_remapper[i] = Input::Keys::JOY_10 + j;
+				button_remapper[i] = Input::Keys::JOY_OTHER_1 + j;
 				break;
 			}
 		}
@@ -403,15 +420,15 @@ Input::Keys::InputKey RetroKey2InputKey(int retrokey) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 	switch (button_index) {
-		case RETRO_DEVICE_ID_JOYPAD_UP		: return Input::Keys::JOY_0;
-		case RETRO_DEVICE_ID_JOYPAD_DOWN	: return Input::Keys::JOY_1;
-		case RETRO_DEVICE_ID_JOYPAD_LEFT	: return Input::Keys::JOY_2;
-		case RETRO_DEVICE_ID_JOYPAD_RIGHT	: return Input::Keys::JOY_3;
-		case RETRO_DEVICE_ID_JOYPAD_A		: return Input::Keys::JOY_4;
-		case RETRO_DEVICE_ID_JOYPAD_B		: return Input::Keys::JOY_5;
-		case RETRO_DEVICE_ID_JOYPAD_Y		: return Input::Keys::JOY_6;
-		case RETRO_DEVICE_ID_JOYPAD_START	: return Input::Keys::JOY_7;
-		case RETRO_DEVICE_ID_JOYPAD_SELECT	: return Input::Keys::JOY_8;
+		case RETRO_DEVICE_ID_JOYPAD_UP		: return Input::Keys::JOY_DPAD_UP;
+		case RETRO_DEVICE_ID_JOYPAD_DOWN	: return Input::Keys::JOY_DPAD_DOWN;
+		case RETRO_DEVICE_ID_JOYPAD_LEFT	: return Input::Keys::JOY_DPAD_LEFT;
+		case RETRO_DEVICE_ID_JOYPAD_RIGHT	: return Input::Keys::JOY_DPAD_RIGHT;
+		case RETRO_DEVICE_ID_JOYPAD_A		: return Input::Keys::JOY_A;
+		case RETRO_DEVICE_ID_JOYPAD_B		: return Input::Keys::JOY_B;
+		case RETRO_DEVICE_ID_JOYPAD_Y		: return Input::Keys::JOY_Y;
+		case RETRO_DEVICE_ID_JOYPAD_START	: return Input::Keys::JOY_START;
+		case RETRO_DEVICE_ID_JOYPAD_SELECT	: return Input::Keys::JOY_BACK;
 
 		case RETRO_DEVICE_ID_JOYPAD_X		: return (Input::Keys::InputKey)button_remapper[0];
 		case RETRO_DEVICE_ID_JOYPAD_L		: return (Input::Keys::InputKey)button_remapper[1];

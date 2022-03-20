@@ -109,46 +109,37 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-		// FIXME: Random joystick keys mapping, better to read joystick configuration from .ini
-		{UP, Keys::JOY_8},
-		{DOWN, Keys::JOY_2},
-		{LEFT, Keys::JOY_4},
-		{RIGHT, Keys::JOY_6},
-		{DECISION, Keys::JOY_1},
-		{CANCEL, Keys::JOY_3},
-		{SHIFT, Keys::JOY_5},
-		{N0, Keys::JOY_10},
-		{N1, Keys::JOY_11},
-		{N2, Keys::JOY_12},
-		{N3, Keys::JOY_13},
-		{N4, Keys::JOY_14},
-		{N5, Keys::JOY_15},
-		{N6, Keys::JOY_16},
-		{N7, Keys::JOY_17},
-		{N8, Keys::JOY_18},
-		{N9, Keys::JOY_19},
-		{PLUS, Keys::JOY_20},
-		{MINUS, Keys::JOY_21},
-		{MULTIPLY, Keys::JOY_22},
-		{DIVIDE, Keys::JOY_23},
-		{PERIOD, Keys::JOY_24},
-		{DEBUG_MENU, Keys::JOY_7},
-		{DEBUG_THROUGH, Keys::JOY_9},
-#endif
-
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
-		{DOWN, Keys::JOY_HAT_DOWN},
-		{LEFT, Keys::JOY_HAT_LEFT},
-		{RIGHT, Keys::JOY_HAT_RIGHT},
-		{UP, Keys::JOY_HAT_UP},
-
+		{UP, Keys::JOY_DPAD_UP},
+		{DOWN, Keys::JOY_DPAD_DOWN},
+		{LEFT, Keys::JOY_DPAD_LEFT},
+		{RIGHT, Keys::JOY_DPAD_RIGHT},
+		{DECISION, Keys::JOY_A},
+		{CANCEL, Keys::JOY_B},
+		{SHIFT, Keys::JOY_X},
+		{FAST_FORWARD, Keys::JOY_Y},
+		{N0, Keys::JOY_STICK_LEFT},
+		{N2, Keys::JOY_REAR_LEFT_2},
+		{N4, Keys::JOY_REAR_LEFT_1},
+		{N5, Keys::JOY_STICK_RIGHT},
+		{N6, Keys::JOY_REAR_RIGHT_2},
+		{N8, Keys::JOY_REAR_RIGHT_1},
+		{TOGGLE_FPS, Keys::JOY_SHOULDER_LEFT},
+		{DEBUG_THROUGH, Keys::JOY_SHOULDER_RIGHT},
+		{SETTINGS_MENU, Keys::JOY_START},
+		{RESET, Keys::JOY_BACK},
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-		{LEFT, Keys::JOY_AXIS_X_LEFT},
-		{RIGHT, Keys::JOY_AXIS_X_RIGHT},
-		{DOWN, Keys::JOY_AXIS_Y_DOWN},
-		{UP, Keys::JOY_AXIS_Y_UP},
+		{LEFT, Keys::JOY_STICK_LEFT_X_LEFT},
+		{RIGHT, Keys::JOY_STICK_LEFT_X_RIGHT},
+		{DOWN, Keys::JOY_STICK_LEFT_Y_DOWN},
+		{UP, Keys::JOY_STICK_LEFT_Y_UP},
+		{N1, Keys::JOY_STICK_RIGHT_X_LEFT},
+		{N3, Keys::JOY_STICK_RIGHT_Y_DOWN},
+		{N7, Keys::JOY_STICK_RIGHT_Y_UP},
+		{N9, Keys::JOY_STICK_RIGHT_X_RIGHT},
+		{FAST_FORWARD_PLUS, Keys::JOY_TRIGGER_RIGHT},
+		{DEBUG_MENU, Keys::JOY_TRIGGER_LEFT},
 #endif
 
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
