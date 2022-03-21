@@ -109,6 +109,8 @@ private:
 	struct StackFrame {
 		UiMode uimode = eNone;
 		int arg = -1;
+		int scratch = 0;
+		int scratch2 = 0;
 	};
 	std::array<StackFrame,8> stack;
 	int stack_index = 0;

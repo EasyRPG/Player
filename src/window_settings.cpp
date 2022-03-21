@@ -34,18 +34,29 @@ Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
 }
 
 void Window_Settings::UpdateMode() {
-	auto frame = GetFrame();
+	auto& frame = GetFrame();
 	auto mode = frame.uimode;
 
 	if (mode == eInputRemap) {
 		const Input::KeyStatus* keys;
+		int& started = frame.scratch;
+		int& cancel_timer = frame.scratch2;
+		// Delay button reading on startup until 0 keys are pressed
+		// Prevents that CONFIRM is directly detected as pressed key
+		// on some platforms
+		if (started == 0) {
+			keys = &Input::GetAllRawPressed();
+			if (keys->count() != 0) {
+				return;
+			}
+			started = 1;
+		}
 
 		// Determine if a CANCEL key is for aborting or for mapping
 		// depending on how long the key was held
 		if (Input::IsPressed(Input::CANCEL)) {
-			++timer;
-			if (timer == 30) {
-				Input::ResetKeys();
+			++cancel_timer;
+			if (cancel_timer == 30) {
 				Pop();
 			}
 			return;
@@ -62,7 +73,6 @@ void Window_Settings::UpdateMode() {
 				auto button = static_cast<Input::InputButton>(GetFrame().arg);
 				auto& mappings = Input::GetInputSource()->GetButtonMappings();
 				mappings.Add({button, static_cast<Input::Keys::InputKey>(i) });
-				Input::ResetKeys();
 				Pop();
 				break;
 			}
@@ -103,7 +113,7 @@ void Window_Settings::Push(UiMode ui, int arg) {
 
 	++stack_index;
 	assert(stack_index < static_cast<int>(stack.size()));
-	stack[stack_index] = { ui, arg  };
+	stack[stack_index] = { ui, arg, 0, 0};
 
 	Refresh();
 	RestorePosition();
@@ -142,7 +152,6 @@ Window_Settings::UiMode Window_Settings::GetMode() const {
 
 void Window_Settings::Refresh() {
 	options.clear();
-	timer = 0;
 
 	switch (GetFrame().uimode) {
 		case eNone:
@@ -341,7 +350,6 @@ void Window_Settings::RefreshInputButton() {
 
 	AddOption("<Add new>", ConfigParam<std::string>(""), "", [=](){
 		Push(eInputRemap, static_cast<int>(button));
-		Input::ResetKeys();
 	}, key_label);
 	AddOption("<Reset>", ConfigParam<std::string>(""), "", [=](){
 		Input::ResetDefaultMapping(button);
