@@ -44,7 +44,6 @@
 #if defined(USE_LIBRETRO)
 // libretro must be first to prevent conflicts with other defines
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #  define JOYSTICK_AXIS_SENSIBILITY 20000
 #elif defined(OPENDINGUX)
@@ -52,13 +51,11 @@
 #elif defined(__ANDROID__)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(EMSCRIPTEN)
 #  define SUPPORT_MOUSE
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(__3DS__)
 #  define SUPPORT_JOYSTICK_AXIS
@@ -69,14 +66,12 @@
 #  include <cstdint>
 #  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(_WIN32)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(__SWITCH__)
 #elif defined(__MORPHOS__) || defined(__amigaos4__)
@@ -84,7 +79,6 @@
 #  define SUPPORT_MOUSE
 #  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #else // Everything not catched above, e.g. Linux/*BSD/macOS
 #  define USE_WINE_REGISTRY
@@ -93,7 +87,6 @@
 #  define SUPPORT_MOUSE
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #endif
 
