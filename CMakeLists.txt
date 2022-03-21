@@ -555,6 +555,7 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
+	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
 endif()
 # Make romfs available
 if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$")
@@ -944,6 +945,7 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	add_executable(easyrpg-player "src/main.cpp")
+	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	if(NINTENDO_3DS)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
@@ -957,6 +959,9 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		ctr_create_3dsx(easyrpg-player
 			SMDH easyrpg-player.smdh
 			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.3dsx
+				resources/3ds/easyrpg-player.xml # consider removing, *hax² is mostly obsolete
+			DESTINATION easyrpg-player COMPONENT 3ds)
 	elseif(NINTENDO_SWITCH)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
@@ -969,6 +974,8 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
 			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
+			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
@@ -977,6 +984,9 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			-lfat
 			-lwiikeyboard)
 		ogc_create_dol(easyrpg-player)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.dol RENAME boot.dol
+			DESTINATION easyrpg-player COMPONENT wii)
+		install(DIRECTORY resources/wii/ DESTINATION easyrpg-player COMPONENT wii)
 	elseif(VITA)
 		set(CMAKE_EXECUTABLE_SUFFIX .elf)
 		target_link_libraries(easyrpg-player
@@ -1011,7 +1021,27 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
+			DESTINATION . COMPONENT psvita)
 	endif()
+	# debug information
+	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$")
+		dkp_target_generate_symbol_list(easyrpg-player)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.map
+				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
+			DESTINATION . COMPONENT debug)
+	endif()
+	# packaging for distribution
+	set(CPACK_GENERATOR "ZIP")
+	set(CPACK_SOURCE_GENERATOR ";") # disable source archive
+	set(CPACK_ARCHIVE_COMPONENT_INSTALL ON) # split archives
+	set(CPACK_PACKAGE_FILE_NAME "easyrpg-player")
+	if(PLAYER_VERSIONED_PACKAGES)
+		string(APPEND CPACK_PACKAGE_FILE_NAME "-${PROJECT_VERSION}")
+	endif()
+	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${PLAYER_TARGET_PLATFORM}-debug")
+	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
+	include(CPack)
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
