@@ -43,7 +43,6 @@
 
 #if defined(USE_LIBRETRO)
 // libretro must be first to prevent conflicts with other defines
-#  define SUPPORT_KEYBOARD
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS

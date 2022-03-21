@@ -38,14 +38,6 @@
 #include <cmath>
 
 namespace Options {
-	const char* retropad_x = "easyrpg_retropad_x";
-	const char* retropad_l = "easyrpg_retropad_l";
-	const char* retropad_r = "easyrpg_retropad_r";
-	const char* retropad_l2 = "easyrpg_retropad_l2";
-	const char* retropad_r2 = "easyrpg_retropad_r2";
-	const char* retropad_l3 = "easyrpg_retropad_l3";
-	const char* retropad_r3 = "easyrpg_retropad_r3";
-	const char* input = "easyrpg_input";
 	const char* debug_mode = "easyrpg_debug_mode";
 }
 
@@ -60,19 +52,9 @@ retro_environment_t LibretroUi::environ_cb = nullptr;
 retro_input_poll_t LibretroUi::input_poll_cb = nullptr;
 bool LibretroUi::player_exit_called = false;
 
-#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-static Input::Keys::InputKey RetroKey2InputKey(int retrokey);
-#endif
-
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 static Input::Keys::InputKey RetroJKey2InputKey(int button_index);
-static int button_remapper[7];
 #endif
-
-enum PadInputState {
-	PadInputState_RetroPad = 1,
-	PadInputState_Keyboard = 2
-};
 
 LibretroUi::LibretroUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
@@ -148,20 +130,17 @@ void LibretroUi::ProcessEvents() {
 		UpdateVariables();
 	}
 
-	if ((keyboard_retropad_state & PadInputState_RetroPad) == 0) {
-		return;
-	}
-
 	auto check_pressed = [this] (int button_id) {
 		keys[RetroJKey2InputKey(button_id)] = CheckInputState(0, RETRO_DEVICE_JOYPAD, 0, button_id) != 0;
 	};
 
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_UP);
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_DOWN);
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_LEFT);
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_RIGHT);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_A);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_B);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_Y);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_START);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_SELECT);
-
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_X);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_L);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_R);
@@ -169,6 +148,8 @@ void LibretroUi::ProcessEvents() {
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_R2);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_L3);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_R3);
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_START);
+	check_pressed(RETRO_DEVICE_ID_JOYPAD_SELECT);
 
 #	if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	int16_t axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_X);
@@ -232,188 +213,12 @@ void LibretroUi::SetRetroInputStateCallback(retro_input_state_t cb) {
 	CheckInputState = cb;
 }
 
-void LibretroUi::UpdateKeyboardCallback(bool down, unsigned keycode) {
-	if ((keyboard_retropad_state & PadInputState_Keyboard) == PadInputState_Keyboard) {
-		keys[RetroKey2InputKey(keycode)] = down;
-	}
-}
-
 void LibretroUi::UpdateVariables() {
-	static const char* none = "None (See Core Options)";
-
 	static struct retro_variable debug = { Options::debug_mode, nullptr };
-	static struct retro_variable input = { Options::input, nullptr };
-	static struct retro_variable variables[] = {
-		{ Options::retropad_x, nullptr },
-		{ Options::retropad_l, nullptr },
-		{ Options::retropad_r, nullptr },
-		{ Options::retropad_l2, nullptr },
-		{ Options::retropad_r2, nullptr },
-		{ Options::retropad_l3, nullptr },
-		{ Options::retropad_r3, nullptr }
-	};
-
-	static const char buttons[][24] = {
-		"0", "1", "2", "3", "4",
-		"5", "6", "7", "8", "9",
-		"+", "-", "*", "/", ".",
-		"Open Debug Menu", "Walk through walls"
-	};
 
 	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &debug);
 	Player::debug_flag = strcmp(debug.value, "Enabled") == 0;
-
-	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &input);
-	if (strcmp(input.value, "Use Both") == 0) {
-		keyboard_retropad_state = PadInputState_Keyboard | PadInputState_RetroPad;
-	} else if (strcmp(input.value, "Only Keyboard") == 0) {
-		keyboard_retropad_state = PadInputState_Keyboard;
-	} else if (strcmp(input.value, "Only RetroPad") == 0) {
-		keyboard_retropad_state = PadInputState_RetroPad;
-	}
-
-	// Button remapping from settings
-	for (int i = 0; i < 7; ++i) {
-		LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &variables[i]);
-		button_remapper[i] = Input::Keys::NONE;
-		for (int j = 0; j < 17; ++j) {
-			if (strcmp(variables[i].value, buttons[j]) == 0) {
-				button_remapper[i] = Input::Keys::JOY_OTHER_1 + j;
-				break;
-			}
-		}
-		if (button_remapper[i] == Input::Keys::NONE) {
-			variables[i].value = none;
-		}
-	}
-
-	struct retro_input_descriptor desc[] = {
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "Up" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN, "Down" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT, "Left" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT, "Right" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "Confirm" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "Cancel" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "Shift" },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Reset" },
-
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, variables[0].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, variables[1].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, variables[2].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L2, variables[3].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2, variables[4].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3, variables[5].value },
-		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3, variables[6].value },
-
-		{ 0 }
-	};
-
-	LibretroUi::environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, &desc);
 }
-
-#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-Input::Keys::InputKey RetroKey2InputKey(int retrokey) {
-	switch (retrokey) {
-		case RETROK_BACKSPACE	: return Input::Keys::BACKSPACE;
-		case RETROK_TAB			: return Input::Keys::TAB;
-		case RETROK_CLEAR		: return Input::Keys::CLEAR;
-		case RETROK_RETURN		: return Input::Keys::RETURN;
-		case RETROK_PAUSE		: return Input::Keys::PAUSE;
-		case RETROK_ESCAPE		: return Input::Keys::ESCAPE;
-		case RETROK_SPACE		: return Input::Keys::SPACE;
-		case RETROK_PAGEUP		: return Input::Keys::PGUP;
-		case RETROK_PAGEDOWN	: return Input::Keys::PGDN;
-		case RETROK_END			: return Input::Keys::ENDS;
-		case RETROK_HOME		: return Input::Keys::HOME;
-		case RETROK_LEFT		: return Input::Keys::LEFT;
-		case RETROK_UP			: return Input::Keys::UP;
-		case RETROK_RIGHT		: return Input::Keys::RIGHT;
-		case RETROK_DOWN		: return Input::Keys::DOWN;
-		case RETROK_PRINT		: return Input::Keys::SNAPSHOT;
-		case RETROK_INSERT		: return Input::Keys::INSERT;
-		case RETROK_DELETE		: return Input::Keys::DEL;
-		case RETROK_LSHIFT		: return Input::Keys::LSHIFT;
-		case RETROK_RSHIFT		: return Input::Keys::RSHIFT;
-		case RETROK_LCTRL		: return Input::Keys::LCTRL;
-		case RETROK_RCTRL		: return Input::Keys::RCTRL;
-		case RETROK_LALT		: return Input::Keys::LALT;
-		case RETROK_RALT		: return Input::Keys::RALT;
-		case RETROK_0			: return Input::Keys::N0;
-		case RETROK_1			: return Input::Keys::N1;
-		case RETROK_2			: return Input::Keys::N2;
-		case RETROK_3			: return Input::Keys::N3;
-		case RETROK_4			: return Input::Keys::N4;
-		case RETROK_5			: return Input::Keys::N5;
-		case RETROK_6			: return Input::Keys::N6;
-		case RETROK_7			: return Input::Keys::N7;
-		case RETROK_8			: return Input::Keys::N8;
-		case RETROK_9			: return Input::Keys::N9;
-		case RETROK_a			: return Input::Keys::A;
-		case RETROK_b			: return Input::Keys::B;
-		case RETROK_c			: return Input::Keys::C;
-		case RETROK_d			: return Input::Keys::D;
-		case RETROK_e			: return Input::Keys::E;
-		case RETROK_f			: return Input::Keys::F;
-		case RETROK_g			: return Input::Keys::G;
-		case RETROK_h			: return Input::Keys::H;
-		case RETROK_i			: return Input::Keys::I;
-		case RETROK_j			: return Input::Keys::J;
-		case RETROK_k			: return Input::Keys::K;
-		case RETROK_l			: return Input::Keys::L;
-		case RETROK_m			: return Input::Keys::M;
-		case RETROK_n			: return Input::Keys::N;
-		case RETROK_o			: return Input::Keys::O;
-		case RETROK_p			: return Input::Keys::P;
-		case RETROK_q			: return Input::Keys::Q;
-		case RETROK_r			: return Input::Keys::R;
-		case RETROK_s			: return Input::Keys::S;
-		case RETROK_t			: return Input::Keys::T;
-		case RETROK_u			: return Input::Keys::U;
-		case RETROK_v			: return Input::Keys::V;
-		case RETROK_w			: return Input::Keys::W;
-		case RETROK_x			: return Input::Keys::X;
-		case RETROK_y			: return Input::Keys::Y;
-		case RETROK_z			: return Input::Keys::Z;
-		case RETROK_MENU		: return Input::Keys::MENU;
-		case RETROK_KP0			: return Input::Keys::KP0;
-		case RETROK_KP1			: return Input::Keys::KP1;
-		case RETROK_KP2			: return Input::Keys::KP2;
-		case RETROK_KP3			: return Input::Keys::KP3;
-		case RETROK_KP4			: return Input::Keys::KP4;
-		case RETROK_KP5			: return Input::Keys::KP5;
-		case RETROK_KP6			: return Input::Keys::KP6;
-		case RETROK_KP7			: return Input::Keys::KP7;
-		case RETROK_KP8			: return Input::Keys::KP8;
-		case RETROK_KP9			: return Input::Keys::KP9;
-		case RETROK_KP_MULTIPLY	: return Input::Keys::KP_MULTIPLY;
-		case RETROK_KP_PLUS		: return Input::Keys::KP_ADD;
-		case RETROK_KP_ENTER	: return Input::Keys::RETURN;
-		case RETROK_KP_MINUS	: return Input::Keys::KP_SUBTRACT;
-		case RETROK_KP_PERIOD	: return Input::Keys::KP_PERIOD;
-		case RETROK_KP_DIVIDE	: return Input::Keys::KP_DIVIDE;
-		case RETROK_COMMA		: return Input::Keys::COMMA;
-		case RETROK_PERIOD		: return Input::Keys::PERIOD;
-		case RETROK_SLASH		: return Input::Keys::SLASH;
-		case RETROK_F1			: return Input::Keys::F1;
-		case RETROK_F2			: return Input::Keys::F2;
-		case RETROK_F3			: return Input::Keys::F3;
-		case RETROK_F4			: return Input::Keys::F4;
-		case RETROK_F5			: return Input::Keys::F5;
-		case RETROK_F6			: return Input::Keys::F6;
-		case RETROK_F7			: return Input::Keys::F7;
-		case RETROK_F8			: return Input::Keys::F8;
-		case RETROK_F9			: return Input::Keys::F9;
-		case RETROK_F10			: return Input::Keys::F10;
-		case RETROK_F11			: return Input::Keys::F11;
-		case RETROK_F12			: return Input::Keys::F12;
-		case RETROK_CAPSLOCK	: return Input::Keys::CAPS_LOCK;
-		case RETROK_NUMLOCK		: return Input::Keys::NUM_LOCK;
-		case RETROK_SCROLLOCK	: return Input::Keys::SCROLL_LOCK;
-
-		default					: return Input::Keys::NONE;
-	}
-}
-#endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
@@ -424,17 +229,16 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 		case RETRO_DEVICE_ID_JOYPAD_RIGHT	: return Input::Keys::JOY_DPAD_RIGHT;
 		case RETRO_DEVICE_ID_JOYPAD_A		: return Input::Keys::JOY_A;
 		case RETRO_DEVICE_ID_JOYPAD_B		: return Input::Keys::JOY_B;
+		case RETRO_DEVICE_ID_JOYPAD_X		: return Input::Keys::JOY_X;
 		case RETRO_DEVICE_ID_JOYPAD_Y		: return Input::Keys::JOY_Y;
 		case RETRO_DEVICE_ID_JOYPAD_START	: return Input::Keys::JOY_START;
 		case RETRO_DEVICE_ID_JOYPAD_SELECT	: return Input::Keys::JOY_BACK;
-
-		case RETRO_DEVICE_ID_JOYPAD_X		: return (Input::Keys::InputKey)button_remapper[0];
-		case RETRO_DEVICE_ID_JOYPAD_L		: return (Input::Keys::InputKey)button_remapper[1];
-		case RETRO_DEVICE_ID_JOYPAD_R		: return (Input::Keys::InputKey)button_remapper[2];
-		case RETRO_DEVICE_ID_JOYPAD_L2		: return (Input::Keys::InputKey)button_remapper[3];
-		case RETRO_DEVICE_ID_JOYPAD_R2		: return (Input::Keys::InputKey)button_remapper[4];
-		case RETRO_DEVICE_ID_JOYPAD_L3		: return (Input::Keys::InputKey)button_remapper[5];
-		case RETRO_DEVICE_ID_JOYPAD_R3		: return (Input::Keys::InputKey)button_remapper[6];
+		case RETRO_DEVICE_ID_JOYPAD_L		: return Input::Keys::JOY_SHOULDER_LEFT;
+		case RETRO_DEVICE_ID_JOYPAD_R		: return Input::Keys::JOY_SHOULDER_RIGHT;
+		case RETRO_DEVICE_ID_JOYPAD_L2		: return Input::Keys::JOY_TRIGGER_LEFT;
+		case RETRO_DEVICE_ID_JOYPAD_R2		: return Input::Keys::JOY_TRIGGER_RIGHT;
+		case RETRO_DEVICE_ID_JOYPAD_L3		: return Input::Keys::JOY_STICK_LEFT;
+		case RETRO_DEVICE_ID_JOYPAD_R3		: return Input::Keys::JOY_STICK_RIGHT;
 
 		default : return Input::Keys::NONE;
 	}
@@ -456,12 +260,6 @@ RETRO_CALLCONV void retro_write_audio() {
 
 RETRO_CALLCONV void retro_enable_audio(bool enabled) {
 	LibretroAudio::EnableAudio(enabled);
-}
-
-RETRO_CALLCONV void retro_keyboard_event(bool down, unsigned keycode, uint32_t, uint16_t) {
-	if (DisplayUi) {
-		static_cast<LibretroUi*>(DisplayUi.get())->UpdateKeyboardCallback(down, keycode);
-	}
 }
 
 static void fallback_log(enum retro_log_level level, const char *fmt, ...) {
@@ -492,10 +290,6 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 		retro_enable_audio
 	};
 
-	static retro_keyboard_callback keyboard_callback_definition = {
-		retro_keyboard_event
-	};
-
 	static struct retro_log_callback logging;
 
 	LibretroUi::environ_cb = cb;
@@ -503,24 +297,13 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 	cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_content);
 	cb(RETRO_ENVIRONMENT_SET_AUDIO_CALLBACK, &audio_callback_definition);
 	cb(RETRO_ENVIRONMENT_SET_FRAME_TIME_CALLBACK, &frame_time_definition);
-	cb(RETRO_ENVIRONMENT_SET_KEYBOARD_CALLBACK, &keyboard_callback_definition);
 
 	if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
 		log_cb = logging.log;
 	else
 		log_cb = fallback_log;
 
-#	define EP_RETRO_OPTIONS "None|0|1|2|3|4|5|6|7|8|9|+|-|*|/|.|Open Debug Menu|Walk through walls"
-
 	struct retro_variable variables[] = {
-		{ Options::retropad_x, "Button mapping of RetroPad X; " EP_RETRO_OPTIONS },
-		{ Options::retropad_l, "Button mapping of RetroPad L; " EP_RETRO_OPTIONS },
-		{ Options::retropad_r, "Button mapping of RetroPad R; " EP_RETRO_OPTIONS },
-		{ Options::retropad_l2, "Button mapping of RetroPad L2; " EP_RETRO_OPTIONS },
-		{ Options::retropad_r2, "Button mapping of RetroPad R2; " EP_RETRO_OPTIONS },
-		{ Options::retropad_l3, "Button mapping of RetroPad L3; " EP_RETRO_OPTIONS },
-		{ Options::retropad_r3, "Button mapping of RetroPad R3; " EP_RETRO_OPTIONS },
-		{ Options::input, "Keyboard and RetroPad; Use Both|Only Keyboard|Only RetroPad" },
 		{ Options::debug_mode, "Debug menu and walk through walls; Disabled|Enabled" },
 		{ nullptr, nullptr }
 	};
