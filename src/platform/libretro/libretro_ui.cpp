@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef USE_LIBRETRO
-
 // Headers
 #include "libretro_ui.h"
 #include "libretro_clock.h"
@@ -32,12 +30,12 @@
 #include "scene.h"
 
 #include <cstring>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdarg.h>
+#include <cstdio>
+#include <cstdint>
+#include <cstdlib>
+#include <cstdarg>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 namespace Options {
 	const char* retropad_x = "easyrpg_retropad_x";
@@ -761,5 +759,3 @@ RETRO_API size_t retro_get_memory_size(unsigned id) {
 	// no-op
 	return 0;
 }
-
-#endif

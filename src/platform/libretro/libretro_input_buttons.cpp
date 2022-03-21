@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(USE_LIBRETRO)
-
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
@@ -130,5 +128,3 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 		{ Direction::UP, UP },
 	};
 }
-
-#endif
