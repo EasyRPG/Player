@@ -366,6 +366,13 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		// Previous command triggered an async operation.
 		if (IsAsyncPending()) {
+			if (_async_op.GetType() == AsyncOp::Type::eYieldRepeat) {
+				// This will cause an incorrect execution when the yielding
+				// command changed the index.
+				// Only use YieldRepeat for commands that do not do this!
+				auto& frame = GetFrame();
+				--frame.current_command;
+			}
 			break;
 		}
 
@@ -3975,12 +3982,70 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command GetPictureInfo not supported");
+	int pic_id = ValueOrVariable(com.parameters[0], com.parameters[3]);
+	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+
+	if (pic.IsRequestPending()) {
+		// Cannot do anything useful here without the dimensions
+		pic.MakeRequestImportant();
+		_async_op = AsyncOp::MakeYieldRepeat();
+		return true;
+	}
+
+	const auto& data = pic.data;
+
+	int x = 0;
+	int y = 0;
+	int width = pic.sprite ? pic.sprite->GetWidth() : 0;
+	int height = pic.sprite ? pic.sprite->GetHeight() : 0;
+
+	switch (com.parameters[1]) {
+		case 0:
+			x = Utils::RoundTo<int>(data.current_x);
+			y = Utils::RoundTo<int>(data.current_y);
+			break;
+		case 1:
+			x = Utils::RoundTo<int>(data.current_x);
+			y = Utils::RoundTo<int>(data.current_y);
+			width = Utils::RoundTo<int>(width * data.current_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.current_magnify / 100.0);
+			break;
+		case 2:
+			x = Utils::RoundTo<int>(data.finish_x);
+			y = Utils::RoundTo<int>(data.finish_y);
+			width = Utils::RoundTo<int>(width * data.finish_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.finish_magnify / 100.0);
+			break;
+	}
+
+	switch (com.parameters[2]) {
+		case 1:
+			// X/Y is top-left corner
+			x -= (width / 2);
+			y -= (height / 2);
+			break;
+		case 2: {
+			// Left, Top, Right, Bottom
+			x -= (width / 2);
+			y -= (height / 2);
+			width += x;
+			height += y;
+			break;
+		}
+	}
+
+	Main_Data::game_variables->Set(com.parameters[4], x);
+	Main_Data::game_variables->Set(com.parameters[5], y);
+	Main_Data::game_variables->Set(com.parameters[6], width);
+	Main_Data::game_variables->Set(com.parameters[7], height);
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 

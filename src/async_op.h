@@ -41,7 +41,8 @@ class AsyncOp {
 			eTerminateBattle,
 			eSave,
 			eLoad,
-			eYield
+			eYield,
+			eYieldRepeat
 		};
 
 		AsyncOp() = default;
@@ -75,6 +76,9 @@ class AsyncOp {
 
 		/** @return a Yield for one frame to e.g. fetch an important asset */
 		static AsyncOp MakeYield();
+
+		/** @return a Yield for one frame and repeat the command to e.g. fetch an important asset */
+		static AsyncOp MakeYieldRepeat();
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -220,6 +224,10 @@ inline AsyncOp AsyncOp::MakeLoad(int save_slot) {
 
 inline AsyncOp AsyncOp::MakeYield() {
 	return AsyncOp(eYield);
+}
+
+inline AsyncOp AsyncOp::MakeYieldRepeat() {
+	return AsyncOp(eYieldRepeat);
 }
 
 #endif
