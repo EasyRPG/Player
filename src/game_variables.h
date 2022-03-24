@@ -52,6 +52,11 @@ public:
 	Var_t Mult(int variable_id, Var_t value);
 	Var_t Div(int variable_id, Var_t value);
 	Var_t Mod(int variable_id, Var_t value);
+	Var_t BitOr(int variable_id, Var_t value);
+	Var_t BitAnd(int variable_id, Var_t value);
+	Var_t BitXor(int variable_id, Var_t value);
+	Var_t BitShiftLeft(int variable_id, Var_t value);
+	Var_t BitShiftRight(int variable_id, Var_t value);
 
 	void SetRange(int first_id, int last_id, Var_t value);
 	void AddRange(int first_id, int last_id, Var_t value);
@@ -59,6 +64,11 @@ public:
 	void MultRange(int first_id, int last_id, Var_t value);
 	void DivRange(int first_id, int last_id, Var_t value);
 	void ModRange(int first_id, int last_id, Var_t value);
+	void BitOrRange(int first_id, int last_id, Var_t value);
+	void BitAndRange(int first_id, int last_id, Var_t value);
+	void BitXorRange(int first_id, int last_id, Var_t value);
+	void BitShiftLeftRange(int first_id, int last_id, Var_t value);
+	void BitShiftRightRange(int first_id, int last_id, Var_t value);
 
 	void SetRangeVariable(int first_id, int last_id, int var_id);
 	void AddRangeVariable(int first_id, int last_id, int var_id);
@@ -66,6 +76,11 @@ public:
 	void MultRangeVariable(int first_id, int last_id, int var_id);
 	void DivRangeVariable(int first_id, int last_id, int var_id);
 	void ModRangeVariable(int first_id, int last_id, int var_id);
+	void BitOrRangeVariable(int first_id, int last_id, int var_id);
+	void BitAndRangeVariable(int first_id, int last_id, int var_id);
+	void BitXorRangeVariable(int first_id, int last_id, int var_id);
+	void BitShiftLeftRangeVariable(int first_id, int last_id, int var_id);
+	void BitShiftRightRangeVariable(int first_id, int last_id, int var_id);
 
 	void SetRangeVariableIndirect(int first_id, int last_id, int var_id);
 	void AddRangeVariableIndirect(int first_id, int last_id, int var_id);
@@ -73,6 +88,11 @@ public:
 	void MultRangeVariableIndirect(int first_id, int last_id, int var_id);
 	void DivRangeVariableIndirect(int first_id, int last_id, int var_id);
 	void ModRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void BitOrRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void BitAndRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void BitXorRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void BitShiftLeftRangeVariableIndirect(int first_id, int last_id, int var_id);
+	void BitShiftRightRangeVariableIndirect(int first_id, int last_id, int var_id);
 
 	void SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 	void AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
@@ -80,6 +100,28 @@ public:
 	void MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 	void DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
 	void ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void BitOrRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void BitAndRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void BitXorRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void BitShiftLeftRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+	void BitShiftRightRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval);
+
+	void EnumerateRange(int first_id, int last_id, Var_t value);
+	void SortRange(int first_id, int last_id, bool asc);
+	void ShuffleRange(int first_id, int last_id);
+
+	void SetArray(int first_id_a, int last_id_a, int first_id_b);
+	void AddArray(int first_id_a, int last_id_a, int first_id_b);
+	void SubArray(int first_id_a, int last_id_a, int first_id_b);
+	void MultArray(int first_id_a, int last_id_a, int first_id_b);
+	void DivArray(int first_id_a, int last_id_a, int first_id_b);
+	void ModArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitOrArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitAndArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitXorArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitShiftLeftArray(int first_id_a, int last_id_a, int first_id_b);
+	void BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b);
+	void SwapArray(int first_id_a, int last_id_a, int first_id_b);
 
 	StringView GetName(int _id) const;
 
@@ -100,10 +142,14 @@ private:
 		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
 	template <typename... Args>
 		void PrepareRange(const int first_id, const int last_id, const char* warn, Args... args);
+	template <typename... Args>
+		void PrepareArray(const int first_id_a, const int last_id_a, const int first_id_b, const char* warn, Args... args);
 	template <typename V, typename F>
 		void WriteRange(const int first_id, const int last_id, V&& value, F&& op);
 	template <typename F>
 		void WriteRangeVariable(const int first_id, const int last_id, int var_id, F&& op);
+	template <typename F>
+		void WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op);
 private:
 	Variables_t _variables;
 	Var_t _min = 0;

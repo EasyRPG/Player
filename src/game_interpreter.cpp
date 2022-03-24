@@ -1332,6 +1332,10 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		int start = com.parameters[0] == 2 ? Main_Data::game_variables->Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
+		if (com.parameters[3] > 5 && !Player::IsPatchManiac()) {
+			return true;
+		}
+
 		if (start == end) {
 			// Single variable case - if this is random value, we already called the RNG earlier.
 			switch (com.parameters[3]) {
@@ -1352,6 +1356,21 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 				case 5:
 					Main_Data::game_variables->Mod(start, value);
+					break;
+				case 6:
+					Main_Data::game_variables->BitOr(start, value);
+					break;
+				case 7:
+					Main_Data::game_variables->BitAnd(start, value);
+					break;
+				case 8:
+					Main_Data::game_variables->BitXor(start, value);
+					break;
+				case 9:
+					Main_Data::game_variables->BitShiftLeft(start, value);
+					break;
+				case 10:
+					Main_Data::game_variables->BitShiftRight(start, value);
 					break;
 			}
 		} else if (com.parameters[4] == 1) {
@@ -1376,6 +1395,21 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 				case 5:
 					Main_Data::game_variables->ModRangeVariable(start, end, var_id);
 					break;
+				case 6:
+					Main_Data::game_variables->BitOrRangeVariable(start, end, var_id);
+					break;
+				case 7:
+					Main_Data::game_variables->BitAndRangeVariable(start, end, var_id);
+					break;
+				case 8:
+					Main_Data::game_variables->BitXorRangeVariable(start, end, var_id);
+					break;
+				case 9:
+					Main_Data::game_variables->BitShiftLeftRangeVariable(start, end, var_id);
+					break;
+				case 10:
+					Main_Data::game_variables->BitShiftRightRangeVariable(start, end, var_id);
+					break;
 			}
 		} else if (com.parameters[4] == 2) {
 			// Multiple variables - Indirect variable lookup
@@ -1398,6 +1432,21 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 				case 5:
 					Main_Data::game_variables->ModRangeVariableIndirect(start, end, var_id);
+					break;
+				case 6:
+					Main_Data::game_variables->BitOrRangeVariableIndirect(start, end, var_id);
+					break;
+				case 7:
+					Main_Data::game_variables->BitAndRangeVariableIndirect(start, end, var_id);
+					break;
+				case 8:
+					Main_Data::game_variables->BitXorRangeVariableIndirect(start, end, var_id);
+					break;
+				case 9:
+					Main_Data::game_variables->BitShiftLeftRangeVariableIndirect(start, end, var_id);
+					break;
+				case 10:
+					Main_Data::game_variables->BitShiftRightRangeVariableIndirect(start, end, var_id);
 					break;
 			}
 		} else if (com.parameters[4] == 3) {
@@ -1423,6 +1472,21 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 				case 5:
 					Main_Data::game_variables->ModRangeRandom(start, end, rmin, rmax);
 					break;
+				case 6:
+					Main_Data::game_variables->BitOrRangeRandom(start, end, rmin, rmax);
+					break;
+				case 7:
+					Main_Data::game_variables->BitAndRangeRandom(start, end, rmin, rmax);
+					break;
+				case 8:
+					Main_Data::game_variables->BitXorRangeRandom(start, end, rmin, rmax);
+					break;
+				case 9:
+					Main_Data::game_variables->BitShiftLeftRangeRandom(start, end, rmin, rmax);
+					break;
+				case 10:
+					Main_Data::game_variables->BitShiftRightRangeRandom(start, end, rmin, rmax);
+					break;
 			}
 		} else {
 			// Multiple variables - constant
@@ -1444,6 +1508,21 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 				case 5:
 					Main_Data::game_variables->ModRange(start, end, value);
+					break;
+				case 6:
+					Main_Data::game_variables->BitOrRange(start, end, value);
+					break;
+				case 7:
+					Main_Data::game_variables->BitAndRange(start, end, value);
+					break;
+				case 8:
+					Main_Data::game_variables->BitXorRange(start, end, value);
+					break;
+				case 9:
+					Main_Data::game_variables->BitShiftLeftRange(start, end, value);
+					break;
+				case 10:
+					Main_Data::game_variables->BitShiftRightRange(start, end, value);
 					break;
 			}
 		}
@@ -4049,12 +4128,99 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlVarArray not supported");
+	int op = com.parameters[0];
+	int mode = com.parameters[1];
+	int mode_a = mode & 0xF;
+	int mode_size = (mode >> 4) & 0xF;
+	int mode_b = (mode >> 8) & 0xF;
+
+	int target_a = ValueOrVariable(mode_a, com.parameters[2]);
+	int length = ValueOrVariable(mode_size, com.parameters[3]);
+	int target_b = ValueOrVariable(mode_b, com.parameters[4]);
+	int last_target_a = target_a + length - 1;
+
+	if (target_a < 1 || length <= 0) {
+		return true;
+	}
+
+	switch (op) {
+		case 0: {
+			// Copy, assigns left to right, the others apply right to left
+			int last_target_b = target_b + length - 1;
+			Main_Data::game_variables->SetArray(target_b, last_target_b, target_a);
+			break;
+		}
+		case 1:
+			// Swap
+			Main_Data::game_variables->SwapArray(target_a, last_target_a, target_b);
+			break;
+		case 2:
+			// Sort asc
+			Main_Data::game_variables->SortRange(target_a, last_target_a, true);
+			break;
+		case 3:
+			// Sort desc
+			Main_Data::game_variables->SortRange(target_a, last_target_a, false);
+			break;
+		case 4:
+			// Shuffle
+			Main_Data::game_variables->ShuffleRange(target_a, last_target_a);
+			break;
+		case 5:
+			// Enumerate (target_b is a single value here, not an array)
+			Main_Data::game_variables->EnumerateRange(target_a, last_target_a, target_b);
+			break;
+		case 6:
+			// Add
+			Main_Data::game_variables->AddArray(target_a, last_target_a, target_b);
+			break;
+		case 7:
+			// Sub
+			Main_Data::game_variables->SubArray(target_a, last_target_a, target_b);
+			break;
+		case 8:
+			// Mul
+			Main_Data::game_variables->MultArray(target_a, last_target_a, target_b);
+			break;
+		case 9:
+			// Div
+			Main_Data::game_variables->DivArray(target_a, last_target_a, target_b);
+			break;
+		case 10:
+			// Mod
+			Main_Data::game_variables->ModArray(target_a, last_target_a, target_b);
+			break;
+		case 11:
+			// OR
+			Main_Data::game_variables->BitOrArray(target_a, last_target_a, target_b);
+			break;
+		case 12:
+			// AND
+			Main_Data::game_variables->BitAndArray(target_a, last_target_a, target_b);
+			break;
+		case 13:
+			// XOR
+			Main_Data::game_variables->BitXorArray(target_a, last_target_a, target_b);
+			break;
+		case 14:
+			// Shift left
+			Main_Data::game_variables->BitShiftLeftArray(target_a, last_target_a, target_b);
+			break;
+		case 15:
+			// Shift right
+			Main_Data::game_variables->BitShiftRightArray(target_a, last_target_a, target_b);
+			break;
+		default:
+			Output::Warning("ManiacControlVarArray: Unknown operation {}", op);
+	}
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 

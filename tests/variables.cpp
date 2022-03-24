@@ -62,6 +62,42 @@ TEST_CASE("SetRange") {
 	REQUIRE_EQ(s.Get(n + 1), 0);
 }
 
+TEST_CASE("SetArray") {
+	auto s = make();
+
+	for (int i = 0; i < max_vars * 2; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.SetArray(2, 6, 4);
+
+	REQUIRE_EQ(s.Get(1), 1);
+	REQUIRE_EQ(s.Get(2), 4);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 6);
+	REQUIRE_EQ(s.Get(5), 7);
+	REQUIRE_EQ(s.Get(6), 8);
+	REQUIRE_EQ(s.Get(7), 7);
+	REQUIRE_EQ(s.Get(8), 8);
+	REQUIRE_EQ(s.Get(9), 9);
+
+	for (int i = 0; i < max_vars * 2; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.SetArray(4, 8, 2);
+
+	REQUIRE_EQ(s.Get(1), 1);
+	REQUIRE_EQ(s.Get(2), 2);
+	REQUIRE_EQ(s.Get(3), 3);
+	REQUIRE_EQ(s.Get(4), 2);
+	REQUIRE_EQ(s.Get(5), 3);
+	REQUIRE_EQ(s.Get(6), 4);
+	REQUIRE_EQ(s.Get(7), 5);
+	REQUIRE_EQ(s.Get(8), 6);
+	REQUIRE_EQ(s.Get(9), 9);
+}
+
 TEST_CASE("Add") {
 	auto s = make();
 
@@ -80,6 +116,26 @@ TEST_CASE("Add") {
 	s.AddRange(1, 2, 22);
 	REQUIRE_EQ(s.Get(1), 42);
 	REQUIRE_EQ(s.Get(2), 42);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.AddArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 + 4);
+	REQUIRE_EQ(s.Get(3), 3 + 5);
+	REQUIRE_EQ(s.Get(4), 4 + 6);
+	REQUIRE_EQ(s.Get(5), 5 + 7);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.AddArray(4, 7, 2);
+	REQUIRE_EQ(s.Get(4), 2 + 4);
+	REQUIRE_EQ(s.Get(5), 3 + 5);
+	REQUIRE_EQ(s.Get(6), (2+4) + 6); // Test write order
+	REQUIRE_EQ(s.Get(7), (3+5) + 7);
 }
 
 TEST_CASE("Sub") {
@@ -100,6 +156,16 @@ TEST_CASE("Sub") {
 	s.SubRange(1, 2, 22);
 	REQUIRE_EQ(s.Get(1), -2);
 	REQUIRE_EQ(s.Get(2), -2);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.SubArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 - 4);
+	REQUIRE_EQ(s.Get(3), 3 - 5);
+	REQUIRE_EQ(s.Get(4), 4 - 6);
+	REQUIRE_EQ(s.Get(5), 5 - 7);
 }
 
 TEST_CASE("Mult") {
@@ -120,6 +186,16 @@ TEST_CASE("Mult") {
 	s.MultRange(1, 2, 22);
 	REQUIRE_EQ(s.Get(1), 440);
 	REQUIRE_EQ(s.Get(2), 440);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.MultArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 * 4);
+	REQUIRE_EQ(s.Get(3), 3 * 5);
+	REQUIRE_EQ(s.Get(4), 4 * 6);
+	REQUIRE_EQ(s.Get(5), 5 * 7);
 }
 
 TEST_CASE("Div") {
@@ -147,6 +223,14 @@ TEST_CASE("Div") {
 	s.DivRange(1, 2, 0);
 	REQUIRE_EQ(s.Get(1), 10);
 	REQUIRE_EQ(s.Get(2), 10);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.DivArray(4, 5, 2);
+	REQUIRE_EQ(s.Get(4), 4 / 2);
+	REQUIRE_EQ(s.Get(5), 5 / 3);
 }
 
 TEST_CASE("Mod") {
@@ -174,6 +258,137 @@ TEST_CASE("Mod") {
 	s.ModRange(1, 2, 0);
 	REQUIRE_EQ(s.Get(1), 0);
 	REQUIRE_EQ(s.Get(2), 0);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.ModArray(4, 5, 2);
+	REQUIRE_EQ(s.Get(4), 4 % 2);
+	REQUIRE_EQ(s.Get(5), 5 % 3);
+}
+
+TEST_CASE("BitOr") {
+	auto s = make();
+
+	s.Set(1, 0xF1);
+
+	REQUIRE_EQ(s.BitOr(1, 0x3), 0xF3);
+	REQUIRE_EQ(s.Get(1), 0xF3);
+
+	s.SetRange(1, 2, 0xF1);
+
+	s.BitOrRange(1, 2, 0x3);
+	REQUIRE_EQ(s.Get(1), 0xF3);
+	REQUIRE_EQ(s.Get(2), 0xF3);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.BitOrArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 | 4);
+	REQUIRE_EQ(s.Get(3), 3 | 5);
+	REQUIRE_EQ(s.Get(4), 4 | 6);
+	REQUIRE_EQ(s.Get(5), 5 | 7);
+}
+
+TEST_CASE("BitAnd") {
+	auto s = make();
+
+	s.Set(1, 0xF1);
+
+	REQUIRE_EQ(s.BitAnd(1, 0x3), 0x1);
+	REQUIRE_EQ(s.Get(1), 0x1);
+
+	s.SetRange(1, 2, 0xF1);
+
+	s.BitAndRange(1, 2, 0x3);
+	REQUIRE_EQ(s.Get(1), 0x1);
+	REQUIRE_EQ(s.Get(2), 0x1);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.BitAndArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 & 4);
+	REQUIRE_EQ(s.Get(3), 3 & 5);
+	REQUIRE_EQ(s.Get(4), 4 & 6);
+	REQUIRE_EQ(s.Get(5), 5 & 7);
+}
+
+TEST_CASE("BitXor") {
+	auto s = make();
+
+	s.Set(1, 0xF1);
+
+	REQUIRE_EQ(s.BitXor(1, 0xF2), 0x3);
+	REQUIRE_EQ(s.Get(1), 0x3);
+
+	s.SetRange(1, 2, 0xF1);
+
+	s.BitXorRange(1, 2, 0xF2);
+	REQUIRE_EQ(s.Get(1), 0x3);
+	REQUIRE_EQ(s.Get(2), 0x3);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.BitXorArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 ^ 4);
+	REQUIRE_EQ(s.Get(3), 3 ^ 5);
+	REQUIRE_EQ(s.Get(4), 4 ^ 6);
+	REQUIRE_EQ(s.Get(5), 5 ^ 7);
+}
+
+TEST_CASE("BitShiftLeft") {
+	auto s = make();
+
+	s.Set(1, 0x1010);
+
+	REQUIRE_EQ(s.BitShiftLeft(1, 0x2), 0x4040);
+	REQUIRE_EQ(s.Get(1), 0x4040);
+
+	s.SetRange(1, 2, 0x1010);
+
+	s.BitShiftLeftRange(1, 2, 0x2);
+	REQUIRE_EQ(s.Get(1), 0x4040);
+	REQUIRE_EQ(s.Get(2), 0x4040);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.BitShiftLeftArray(2, 5, 4);
+	REQUIRE_EQ(s.Get(2), 2 << 4);
+	REQUIRE_EQ(s.Get(3), 3 << 5);
+	REQUIRE_EQ(s.Get(4), 4 << 6);
+	REQUIRE_EQ(s.Get(5), 5 << 7);
+}
+
+TEST_CASE("BitShiftRight") {
+	auto s = make();
+
+	s.Set(1, 0x4040);
+
+	REQUIRE_EQ(s.BitShiftRight(1, 0x2), 0x1010);
+	REQUIRE_EQ(s.Get(1), 0x1010);
+
+	s.SetRange(1, 2, 0x4040);
+
+	s.BitShiftRightRange(1, 2, 0x2);
+	REQUIRE_EQ(s.Get(1), 0x1010);
+	REQUIRE_EQ(s.Get(2), 0x1010);
+
+	for (int i = 0; i < 8; ++i) {
+		s.Set(i + 1, i + 1);
+	}
+
+	s.BitShiftRightArray(4, 5, 2);
+	REQUIRE_EQ(s.Get(4), 4 >> 2);
+	REQUIRE_EQ(s.Get(5), 5 >> 3);
 }
 
 TEST_CASE("RangeVariable") {
@@ -279,6 +494,56 @@ TEST_CASE("RangeRandom") {
 	REQUIRE_NE(first_diff, 0);
 }
 
+TEST_CASE("Enumerate") {
+	auto s = make();
 
+	s.EnumerateRange(2, 5, 3);
+
+	REQUIRE_EQ(s.Get(2), 3);
+	REQUIRE_EQ(s.Get(3), 4);
+	REQUIRE_EQ(s.Get(4), 5);
+	REQUIRE_EQ(s.Get(5), 6);
+}
+
+TEST_CASE("Swap") {
+	auto s = make();
+
+	s.EnumerateRange(1, 9, 1);
+
+	s.SwapArray(2, 6, 4);
+
+	REQUIRE_EQ(s.Get(2), 8);
+	REQUIRE_EQ(s.Get(3), 7);
+	REQUIRE_EQ(s.Get(4), 2);
+	REQUIRE_EQ(s.Get(5), 3);
+	REQUIRE_EQ(s.Get(6), 4);
+	REQUIRE_EQ(s.Get(7), 5);
+	REQUIRE_EQ(s.Get(8), 6);
+	REQUIRE_EQ(s.Get(9), 9);
+}
+
+TEST_CASE("Sort") {
+	auto s = make();
+
+	s.Set(2, 4);
+	s.Set(3, 6);
+	s.Set(4, 5);
+
+	s.SortRange(2, 4, true);
+
+	REQUIRE_EQ(s.Get(2), 4);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 6);
+
+	s.Set(2, 4);
+	s.Set(3, 6);
+	s.Set(4, 5);
+
+	s.SortRange(2, 4, false);
+
+	REQUIRE_EQ(s.Get(2), 6);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 4);
+}
 
 TEST_SUITE_END();
