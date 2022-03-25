@@ -58,6 +58,7 @@ public:
 		bool flip_x = false;
 		bool flip_y = false;
 		int blend_mode = 0;
+		int origin = 0;
 	};
 	struct ShowParams : Params {
 		std::string name;
@@ -79,7 +80,7 @@ public:
 		int duration = 0;
 	};
 
-	void Show(int id, const ShowParams& params);
+	bool Show(int id, const ShowParams& params);
 	void Move(int id, const MoveParams& params);
 	void Erase(int id);
 	void EraseAll();
@@ -98,6 +99,7 @@ public:
 		lcf::rpg::SavePicture data;
 		FileRequestBinding request_id;
 		bool needs_update = false;
+		int origin = 0;
 
 		void Update(bool is_battle);
 
@@ -116,7 +118,8 @@ public:
 		bool IsRequestPending() const;
 		void MakeRequestImportant() const;
 
-		void OnPictureSpriteReady() const;
+		void OnPictureSpriteReady();
+		void ApplyOrigin(bool is_move);
 		void OnMapScrolled(int dx, int dy);
 	};
 
@@ -125,7 +128,7 @@ public:
 
 private:
 	void RequestPictureSprite(Picture& pic);
-	void OnPictureSpriteReady(int id);
+	void OnPictureSpriteReady(FileRequestResult*, int id);
 
 	std::vector<Picture> pictures;
 	std::deque<Sprite_Picture> sprites;

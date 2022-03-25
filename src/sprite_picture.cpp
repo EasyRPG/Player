@@ -110,7 +110,13 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	SetOx(sr.width / 2);
 	SetOy(sr.height / 2);
 
-	SetAngle(data.effect_mode != lcf::rpg::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
+	if (data.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+		SetAngle(data.current_rotation * (2 * M_PI) / 360);
+	} else if (data.effect_mode != lcf::rpg::SavePicture::Effect_wave) {
+		SetAngle(data.current_rotation * (2 * M_PI) / 256);
+	} else {
+		SetAngle(0.0);
+	}
 	SetWaverPhase(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
 	SetWaverDepth(data.effect_mode == lcf::rpg::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 

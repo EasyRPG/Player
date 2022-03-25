@@ -2806,14 +2806,15 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
-
-			if ((com.parameters[1] >> 8) != 0) {
-				Output::Warning("Maniac ShowPicture: X/Y origin not supported");
-			}
+			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-				Output::Warning("Maniac ShowPicture: Fixed angle not supported");
-				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
+				int divisor = ValueOrVariable((com.parameters[16] & 0xF0) >> 4, com.parameters[15]);
+				if (divisor == 0) {
+					divisor = 1;
+				}
+				params.effect_power /= divisor;
 			}
 		}
 	}
@@ -2832,7 +2833,15 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	// RPG_RT will crash if you ask for a picture id greater than the limit that
 	// version of the engine allows. We allow an arbitrary number of pictures in Player.
 
-	Main_Data::game_pictures->Show(pic_id, params);
+	if (Main_Data::game_pictures->Show(pic_id, params)) {
+		if (params.origin > 0) {
+			auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+			if (pic.IsRequestPending()) {
+				pic.MakeRequestImportant();
+				_async_op = AsyncOp::MakeYield();
+			}
+		}
+	}
 
 	return true;
 }
@@ -2889,14 +2898,15 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
-
-			if ((com.parameters[1] >> 8) != 0) {
-				Output::Warning("Maniac MovePicture: X/Y origin not supported");
-			}
+			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-				Output::Warning("Maniac MovePicture: Fixed angle not supported");
-				params.effect_mode = lcf::rpg::SavePicture::Effect_none;
+				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
+				int divisor = ValueOrVariable((com.parameters[16] & 0xF0) >> 4, com.parameters[15]);
+				if (divisor == 0) {
+					divisor = 1;
+				}
+				params.effect_power /= divisor;
 			}
 		}
 	} else {
@@ -2910,13 +2920,21 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	params.magnify = std::max(0, std::min(params.magnify, 2000));
 	params.top_trans = std::max(0, std::min(params.top_trans, 100));
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
-	params.duration = std::max(0, std::min(params.duration, 10000));
+	params.duration = std::max(Player::IsPatchManiac() ? -10000 : 0, std::min(params.duration, 10000));
 
 	if (pic_id <= 0) {
 		Output::Error("MovePicture: Requested invalid picture id ({})", pic_id);
 	}
 
 	Main_Data::game_pictures->Move(pic_id, params);
+
+	if (params.origin > 0) {
+		auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+		if (pic.IsRequestPending()) {
+			pic.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYield();
+		}
+	}
 
 	if (wait)
 		SetupWait(params.duration);
