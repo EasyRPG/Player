@@ -62,16 +62,28 @@ void Window_NumberInput::Refresh() {
 	}
 }
 
-int Window_NumberInput::GetNumber() {
-	return number * (plus ? 1 : -1);
+int Window_NumberInput::GetNumber() const {
+	if (plus) {
+		if (number > std::numeric_limits<int>::max()) {
+			return std::numeric_limits<int>::max();
+		} else {
+			return static_cast<int>(number);
+		}
+	} else {
+		if (number * -1 < std::numeric_limits<int>::min()) {
+			return std::numeric_limits<int>::min();
+		} else {
+			return static_cast<int>(-number);
+		}
+	}
 }
 
 void Window_NumberInput::SetNumber(int inumber) {
-	int num = 1;
+	int64_t num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
 	}
-	number = min(max(abs(inumber), 0), num - 1);
+	number = Utils::Clamp<int64_t>(std::llabs(inumber), 0, num - 1);
 	ResetIndex();
 
 	plus = inumber >= 0;
@@ -80,14 +92,13 @@ void Window_NumberInput::SetNumber(int inumber) {
 	Refresh();
 }
 
-int Window_NumberInput::GetMaxDigits() {
+int Window_NumberInput::GetMaxDigits() const {
 	return digits_max;
 }
 
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
-	// At least 7 digits because of gold input in debug scene
-	// (free space and 6 digits for the gold value)
-	int top = std::max(7, idigits_max);
+	// Up to 10 digits (highest 32 bit number)
+	int top = std::max(10, idigits_max);
 	digits_max =
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
@@ -97,7 +108,7 @@ void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	Refresh();
 }
 
-bool Window_NumberInput::GetShowOperator() {
+bool Window_NumberInput::GetShowOperator() const {
 	return show_operator;
 }
 
@@ -122,7 +133,7 @@ void Window_NumberInput::Update() {
 				for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
 					place *= 10;
 				}
-				int n = number / place % 10;
+				int64_t n = number / place % 10;
 				number -= n * place;
 				if (Input::IsRepeated(Input::UP)) {
 					n = (n + 1) % 10;
@@ -148,6 +159,26 @@ void Window_NumberInput::Update() {
 		if (Input::IsRepeated(Input::LEFT)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index = (index + digits_max - 1 + (int)show_operator) % (digits_max + (int)show_operator);
+		}
+
+		// Extension: Allow number input through numpad
+		if (!show_operator || index > 0) {
+			for (int btn = static_cast<int>(Input::N0); btn <= static_cast<int>(Input::N9); ++btn) {
+				if (Input::IsTriggered(static_cast<Input::InputButton>(btn))) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+
+					int place = 1;
+					for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
+						place *= 10;
+					}
+					int64_t n = number / place % 10;
+					number -= n * place;
+					number += (btn - static_cast<int>(Input::N0)) * static_cast<int64_t>(place);
+					index = (index + 1) % (digits_max + (int)show_operator);
+					Refresh();
+					break;
+				}
+			}
 		}
 
 		UpdateCursorRect();

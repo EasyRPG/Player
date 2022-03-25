@@ -40,15 +40,71 @@ constexpr Var_t VarSet(Var_t o, Var_t n) {
 }
 
 constexpr Var_t VarAdd(Var_t l, Var_t r) {
-	return l + r;
+	Var_t res = 0;
+
+#ifdef _MSC_VER
+	res = l + r;
+	if (res < 0 && l > 0 && r > 0) {
+		return std::numeric_limits<Var_t>::max();
+	} else if (res > 0 && l < 0 && r < 0) {
+		return std::numeric_limits<Var_t>::min();
+	}
+#else
+	if (EP_UNLIKELY(__builtin_add_overflow(l, r, &res))) {
+		if (l >= 0 && r >= 0) {
+			return std::numeric_limits<Var_t>::max();
+		}
+		return std::numeric_limits<Var_t>::min();
+	}
+#endif
+
+	return res;
 }
 
 constexpr Var_t VarSub(Var_t l, Var_t r) {
-	return l - r;
+	Var_t res = 0;
+
+#ifdef _MSC_VER
+	res = l - r;
+	if (res < 0 && l > 0 && r < 0) {
+		return std::numeric_limits<Var_t>::max();
+	} else if (res > 0 && l < 0 && r > 0) {
+		return std::numeric_limits<Var_t>::min();
+	}
+#else
+	if (EP_UNLIKELY(__builtin_sub_overflow(l, r, &res))) {
+		if (r < 0) {
+			return std::numeric_limits<Var_t>::max();
+		}
+		return std::numeric_limits<Var_t>::min();
+	}
+#endif
+
+	return res;
 }
 
 constexpr Var_t VarMult(Var_t l, Var_t r) {
-	return l * r;
+	Var_t res = 0;
+
+#ifdef _MSC_VER
+	res = l * r;
+	if (l != 0 && res / l != r) {
+		if ((l > 0 && r > 0) || (l < 0 && r < 0)) {
+			return std::numeric_limits<Var_t>::max();
+		} else {
+			return std::numeric_limits<Var_t>::min();
+		}
+	}
+#else
+	if (EP_UNLIKELY(__builtin_mul_overflow(l, r, &res))) {
+		if ((l > 0 && r > 0) || (l < 0 && r < 0)) {
+			return std::numeric_limits<Var_t>::max();
+		}
+		return std::numeric_limits<Var_t>::min();
+	}
+#endif
+
+	return res;
 }
 
 constexpr Var_t VarDiv(Var_t n, Var_t d) {
@@ -560,6 +616,6 @@ StringView Game_Variables::GetName(int _id) const {
 }
 
 int Game_Variables::GetMaxDigits() const {
-	auto val = std::max(std::abs(_max), std::abs(_min));
-	return std::log10(val) + 1;
+	auto val = std::max(std::llabs(_max), std::llabs(_min));
+	return static_cast<int>(std::log10(val) + 1);
 }
