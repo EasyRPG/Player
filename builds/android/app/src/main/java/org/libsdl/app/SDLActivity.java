@@ -223,7 +223,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }
 
         // EasyRPG modification: overwrite layout
-        setContentView(R.layout.player_activity);
+        setContentView(R.layout.activity_player);
 
         // Load shared libraries
         String errorMsgBrokenLib = "";

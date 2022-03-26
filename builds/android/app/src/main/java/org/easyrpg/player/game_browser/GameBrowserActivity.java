@@ -3,8 +3,10 @@ package org.easyrpg.player.game_browser;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,8 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.settings.SettingsManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +46,7 @@ public class GameBrowserActivity extends AppCompatActivity
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 290;
     private static Game selectedGame;
 
-    private RecyclerView recyclerView;
+    private RecyclerView gamesGridRecyclerView;
     private int nbOfGamesPerLine;
     private boolean isScanProcessing;
     private static List<Game> displayedGamesList;
@@ -58,7 +64,7 @@ public class GameBrowserActivity extends AppCompatActivity
             }
         }
 
-        setContentView(R.layout.browser_activity);
+        setContentView(R.layout.activity_games_browser);
 
         // Configure the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,17 +84,12 @@ public class GameBrowserActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
-        /// Display the game list
-        recyclerView = (RecyclerView) findViewById(R.id.game_browser_api15_recycleview);
-        recyclerView.setHasFixedSize(true);
-        setLayoutManager();
-
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
         if (GameBrowserActivity.displayedGamesList == null) {
             scanAndDisplayGamesList();
         } else {
-            recyclerView.setAdapter(new MyAdapter(this, GameBrowserActivity.displayedGamesList, nbOfGamesPerLine));
+            gamesGridRecyclerView.setAdapter(new MyAdapter(this, GameBrowserActivity.displayedGamesList, nbOfGamesPerLine));
         }
     }
 
@@ -151,7 +152,7 @@ public class GameBrowserActivity extends AppCompatActivity
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        setLayoutManager();
+        setGamesGridSize();
         scanAndDisplayGamesList();
     }
 
@@ -164,10 +165,10 @@ public class GameBrowserActivity extends AppCompatActivity
         }
         isScanProcessing = true;
 
-        // Empty the games list and display a loading message
-        ArrayList<String> loadingMessageList = new ArrayList<>();
-        loadingMessageList.add(getResources().getString(R.string.Loading));
-        recyclerView.setAdapter(new ErrorAdapter(loadingMessageList));
+        // Empty the games list and display a loading icon
+        RelativeLayout content_layout = findViewById(R.id.browser_layout);
+        content_layout.removeAllViews();
+        getLayoutInflater().inflate(R.layout.loading_panel, content_layout);
 
         // Start the scan asynchronously
         Activity activity = this;
@@ -178,34 +179,72 @@ public class GameBrowserActivity extends AppCompatActivity
             // "Only the original thread that created a view hierarchy can touch its views."
             runOnUiThread(() -> {
                 // Populate the list view
-                if (gameScanner.hasError()) {
-                    recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList()));
-                } else {
+                if (!gameScanner.hasError()) {
+                    // Display the game grid
+                    content_layout.removeAllViews();
+                    getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
+
+                    gamesGridRecyclerView = (RecyclerView) findViewById(R.id.games_grid_recycle_view);
+                    gamesGridRecyclerView.setHasFixedSize(true);
+                    setGamesGridSize();
+
                     GameBrowserActivity.displayedGamesList = gameScanner.getGameList();
-                    displayGameList();
+                    reorderGameList();
+                } else {
+                    // Display the errors list
+                    content_layout.removeAllViews();
+                    getLayoutInflater().inflate(R.layout.browser_error_panel, content_layout);
+
+                    // Set the error text
+                    List<String> errorList = gameScanner.getErrorList();
+                    StringBuilder errorString = new StringBuilder();
+                    for (String error : errorList) {
+                        errorString.append(error).append("\n");
+                    }
+                    TextView errorLayout = (TextView) findViewById(R.id.error_text);
+                    errorLayout.setText(errorString.toString());
+
+                    // The "Open the games folder" button
+                    Button button = findViewById(R.id.open_game_folder);
+                    // We can open the file picker in a specific folder only with API >= 26
+                    if (android.os.Build.VERSION.SDK_INT >= 26) {
+                        button.setOnClickListener(v -> {
+                            // Open the file explorer in the "soundfont" folder
+                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                            intent.setType("*/*");
+                            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getGamesFolderURI(this));
+                            startActivity(intent);
+                        });
+                    } else {
+                        ViewGroup layout = (ViewGroup) button.getParent();
+                        if(layout != null) {
+                            layout.removeView(button);
+                        }
+                    }
                 }
+
                 isScanProcessing = false;
             });
         }).start();
     }
 
     /** Reorder the displayed game list */
-    public void displayGameList() {
+    public void reorderGameList() {
         // Sort the games list : alphabetically ordered, favorite in first
         Collections.sort(displayedGamesList);
-        recyclerView.setAdapter(new MyAdapter(this, displayedGamesList, nbOfGamesPerLine));
+        gamesGridRecyclerView.setAdapter(new MyAdapter(this, displayedGamesList, nbOfGamesPerLine));
     }
 
     /**
      * Set the layout manager depending on the screen orientation
      */
-    public void setLayoutManager() {
+    public void setGamesGridSize() {
         // Determine the layout template (List or Grid, number of element per line for the grid)
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         this.nbOfGamesPerLine = (int)(dpWidth / THUMBNAIL_HORIZONTAL_SIZE_DPI);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
+        gamesGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
     }
 
     public static Game getSelectedGame() {
@@ -285,7 +324,7 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.favoriteButton.setOnClickListener(v -> {
                 game.setFavorite(!game.isFavorite());
                 updateFavoriteButton(holder, game);
-                ((GameBrowserActivity)activity).displayGameList();
+                ((GameBrowserActivity)activity).reorderGameList();
             });
         }
 
@@ -344,41 +383,6 @@ public class GameBrowserActivity extends AppCompatActivity
                 this.titleScreen = (ImageView) v.findViewById(R.id.screen);
                 this.settingsButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_option_button);
                 this.favoriteButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_favorite_button);
-            }
-        }
-    }
-
-    static class ErrorAdapter extends RecyclerView.Adapter<ErrorAdapter.ErrorViewHolder> {
-        List<String> errorList;
-
-        public ErrorAdapter(List<String> errorList) {
-            this.errorList = errorList;
-        }
-
-        @NonNull
-        @Override
-        public ErrorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.browser_error_text, parent, false);
-            return new ErrorViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(ErrorViewHolder holder, int position) {
-            holder.text.setText(errorList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return errorList.size();
-        }
-
-        public static class ErrorViewHolder extends RecyclerView.ViewHolder {
-            protected TextView text;
-
-            public ErrorViewHolder(View itemView) {
-                super(itemView);
-                text = (TextView) itemView.findViewById(R.id.error_code);
             }
         }
     }
