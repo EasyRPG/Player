@@ -224,6 +224,7 @@ public class SettingsManager {
     }
 
     public static void setEasyRPGFolderURI(Uri easyRPGFolderURI) {
+        SettingsManager.easyRPGFolderURI = easyRPGFolderURI;
         editor.putString(SettingsEnum.EASYRPG_FOLDER_URI.toString(), easyRPGFolderURI.toString());
         editor.commit();
     }
