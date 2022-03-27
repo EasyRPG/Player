@@ -247,6 +247,28 @@ public class Helper {
         return null;
     }
 
+    public static List<Uri> findFileUriWithRegex(Context context, Uri folderUri, String regex) {
+        List<Uri> uriList = new ArrayList<>();
+
+        final ContentResolver resolver = context.getContentResolver();
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
+        try {
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            while (c.moveToNext()) {
+                String documentID = c.getString(0);
+                String fileName = getFileNameFromDocumentID(documentID);
+                if (fileName.matches(regex)) {
+                    Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
+                    uriList.add(uri);
+                }
+            }
+            c.close();
+        } catch (Exception e) {
+            Log.e("EasyRPG", "Failed query: " + e);
+        }
+        return uriList;
+    }
+
     public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
         Uri uri = findFileUri(context, folderUri, fileNameToFind);
         return getFileFromURI(context, uri);

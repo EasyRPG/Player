@@ -25,6 +25,7 @@
 package org.easyrpg.player.player;
 
 import android.app.AlertDialog;
+import android.content.ClipDescription;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -225,12 +226,17 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         alertDialogBuilder.setMessage(bug_msg).setCancelable(false)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        // Attach to the email : the easyrpg log file and savefiles
                         ArrayList<Uri> files = new ArrayList<Uri>();
+                        // The easyrpg_log.txt
                         String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
-                        files.add(Uri.fromFile(new File(savepath + "/easyrpg_log.txt")));
-                        for (File f : GameBrowserHelper.getSavegames(new File(savepath))) {
-                            files.add(Uri.fromFile(f));
+                        Uri saveFolder = Uri.parse(savepath);
+                        Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
+                        if(log != null) {
+                            files.add(log);
                         }
+                        // The save files
+                        files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
 
                         if (Build.VERSION.SDK_INT >= 24) {
                             // Lazy workaround as suggested on https://stackoverflow.com/q/38200282
@@ -243,8 +249,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                         }
 
                         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                        intent.setData(Uri.parse("mailto:"));
-                        intent.setType("*/*");
+                        // intent.setData(Uri.parse("mailto:"));
+                        intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
                         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"easyrpg@easyrpg.org"});
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
                         intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
