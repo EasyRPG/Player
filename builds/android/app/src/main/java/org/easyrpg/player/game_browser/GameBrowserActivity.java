@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -86,11 +84,10 @@ public class GameBrowserActivity extends AppCompatActivity
 
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
-        // TODO : Separate scan and display to solve a bug
         if (GameBrowserActivity.displayedGamesList == null) {
-            scanAndDisplayGamesList();
+            scanGamesAndDisplayResult();
         } else {
-            gamesGridRecyclerView.setAdapter(new MyAdapter(this, GameBrowserActivity.displayedGamesList, nbOfGamesPerLine));
+            displayGamesList();
         }
     }
 
@@ -120,7 +117,7 @@ public class GameBrowserActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.refresh) {
-            scanAndDisplayGamesList();
+            scanGamesAndDisplayResult();
             return true;
         } else if (id == R.id.menu) {
             GameBrowserHelper.openSettingsActivity(this);
@@ -154,10 +151,10 @@ public class GameBrowserActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
 
         setGamesGridSize();
-        scanAndDisplayGamesList();
+        scanGamesAndDisplayResult();
     }
 
-    public void scanAndDisplayGamesList() {
+    public void scanGamesAndDisplayResult() {
         resetGamesList();
 
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
@@ -181,16 +178,8 @@ public class GameBrowserActivity extends AppCompatActivity
             runOnUiThread(() -> {
                 // Populate the list view
                 if (!gameScanner.hasError()) {
-                    // Display the game grid
-                    content_layout.removeAllViews();
-                    getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
-
-                    gamesGridRecyclerView = (RecyclerView) findViewById(R.id.games_grid_recycle_view);
-                    gamesGridRecyclerView.setHasFixedSize(true);
-                    setGamesGridSize();
-
                     GameBrowserActivity.displayedGamesList = gameScanner.getGameList();
-                    reorderGameList();
+                    displayGamesList();
                 } else {
                     // Display the errors list
                     content_layout.removeAllViews();
@@ -227,6 +216,21 @@ public class GameBrowserActivity extends AppCompatActivity
                 isScanProcessing = false;
             });
         }).start();
+    }
+
+    /** Only use when the scan is cached */
+    public void displayGamesList() {
+        RelativeLayout content_layout = findViewById(R.id.browser_layout);
+
+        // Display the game grid
+        content_layout.removeAllViews();
+        getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
+
+        gamesGridRecyclerView = (RecyclerView) findViewById(R.id.games_grid_recycle_view);
+        gamesGridRecyclerView.setHasFixedSize(true);
+        setGamesGridSize();
+
+        reorderGameList();
     }
 
     /** Reorder the displayed game list */
