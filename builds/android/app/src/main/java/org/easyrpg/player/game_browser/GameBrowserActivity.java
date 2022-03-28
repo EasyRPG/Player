@@ -82,13 +82,18 @@ public class GameBrowserActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
-        // To limit the number of syscalls, we only scan for games at startup and when the user
-        // ask to refresh the games list
-        if (GameBrowserActivity.displayedGamesList == null) {
-            scanGamesAndDisplayResult();
-        } else {
-            displayGamesList();
-        }
+        scanGamesAndDisplayResult(false);
+    }
+
+    /**
+     * Change the grid depending on the orientation
+     */
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        setGamesGridSize();
+        scanGamesAndDisplayResult(false);
     }
 
     @Override
@@ -117,7 +122,7 @@ public class GameBrowserActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.refresh) {
-            scanGamesAndDisplayResult();
+            scanGamesAndDisplayResult(true);
             return true;
         } else if (id == R.id.menu) {
             GameBrowserHelper.openSettingsActivity(this);
@@ -143,18 +148,7 @@ public class GameBrowserActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Change the grid depending on the orientation
-     */
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        setGamesGridSize();
-        scanGamesAndDisplayResult();
-    }
-
-    public void scanGamesAndDisplayResult() {
+    public void scanGamesAndDisplayResult(boolean forceScan) {
         resetGamesList();
 
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
@@ -168,54 +162,62 @@ public class GameBrowserActivity extends AppCompatActivity
         content_layout.removeAllViews();
         getLayoutInflater().inflate(R.layout.loading_panel, content_layout);
 
-        // Start the scan asynchronously
-        Activity activity = this;
-        new Thread(() -> {
-            // Scan games
-            GameScanner gameScanner = GameScanner.getInstance(activity);
+        // To limit the number of syscalls, we only scan for games at startup and when the user
+        // ask to refresh the games list
+        if (forceScan || GameBrowserActivity.displayedGamesList == null) {
+            // Start the scan asynchronously
+            Activity activity = this;
+            new Thread(() -> {
+                // Scan games
+                GameScanner gameScanner = GameScanner.getInstance(activity);
 
-            // "Only the original thread that created a view hierarchy can touch its views."
-            runOnUiThread(() -> {
-                // Populate the list view
-                if (!gameScanner.hasError()) {
-                    GameBrowserActivity.displayedGamesList = gameScanner.getGameList();
-                    displayGamesList();
-                } else {
-                    // Display the errors list
-                    content_layout.removeAllViews();
-                    getLayoutInflater().inflate(R.layout.browser_error_panel, content_layout);
-
-                    // Set the error text
-                    List<String> errorList = gameScanner.getErrorList();
-                    StringBuilder errorString = new StringBuilder();
-                    for (String error : errorList) {
-                        errorString.append(error).append("\n");
-                    }
-                    TextView errorLayout = (TextView) findViewById(R.id.error_text);
-                    errorLayout.setText(errorString.toString());
-
-                    // The "Open the games folder" button
-                    Button button = findViewById(R.id.open_game_folder);
-                    // We can open the file picker in a specific folder only with API >= 26
-                    if (android.os.Build.VERSION.SDK_INT >= 26) {
-                        button.setOnClickListener(v -> {
-                            // Open the file explorer in the "soundfont" folder
-                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                            intent.setType("*/*");
-                            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getGamesFolderURI(this));
-                            startActivity(intent);
-                        });
+                // "Only the original thread that created a view hierarchy can touch its views."
+                runOnUiThread(() -> {
+                    // Populate the list view
+                    if (!gameScanner.hasError()) {
+                        GameBrowserActivity.displayedGamesList = gameScanner.getGameList();
+                        displayGamesList();
                     } else {
-                        ViewGroup layout = (ViewGroup) button.getParent();
-                        if(layout != null) {
-                            layout.removeView(button);
+                        // Display the errors list
+                        content_layout.removeAllViews();
+                        getLayoutInflater().inflate(R.layout.browser_error_panel, content_layout);
+
+                        // Set the error text
+                        List<String> errorList = gameScanner.getErrorList();
+                        StringBuilder errorString = new StringBuilder();
+                        for (String error : errorList) {
+                            errorString.append(error).append("\n");
+                        }
+                        TextView errorLayout = (TextView) findViewById(R.id.error_text);
+                        errorLayout.setText(errorString.toString());
+
+                        // The "Open the games folder" button
+                        Button button = findViewById(R.id.open_game_folder);
+                        // We can open the file picker in a specific folder only with API >= 26
+                        if (android.os.Build.VERSION.SDK_INT >= 26) {
+                            button.setOnClickListener(v -> {
+                                // Open the file explorer in the "soundfont" folder
+                                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                                intent.setType("*/*");
+                                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getGamesFolderURI(this));
+                                startActivity(intent);
+                            });
+                        } else {
+                            ViewGroup layout = (ViewGroup) button.getParent();
+                            if(layout != null) {
+                                layout.removeView(button);
+                            }
                         }
                     }
-                }
 
-                isScanProcessing = false;
-            });
-        }).start();
+                    isScanProcessing = false;
+                });
+            }).start();
+        } else {
+            displayGamesList();
+        }
+
+
     }
 
     /** Only use when the scan is cached */
