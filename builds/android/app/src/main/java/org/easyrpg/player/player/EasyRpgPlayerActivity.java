@@ -419,11 +419,29 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 LayoutParams.WRAP_CONTENT);
         params.leftMargin = 0;
 
+        // Determine the multiplier
+        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+
+        int x_multiplier = screenWidth / 320;
+        int y_multiplier = screenHeight / 240;
+        int multiplier = Integer.min(x_multiplier, y_multiplier);
+        int width = 320 * multiplier;
+        int height = 240 * multiplier;
+
+        params.width = width;
+        params.height = height;
+
+        int topMargin, leftMargin;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            params.topMargin = -(getWindowManager().getDefaultDisplay().getHeight() / 2);
+            topMargin = ((screenHeight/2) - height) / 2;
+            leftMargin = (screenWidth - width) / 2;
         } else {
-            params.topMargin = 0;
+            topMargin = (screenHeight - height) / 2;
+            leftMargin = (screenWidth - width) / 2;
         }
+        params.topMargin = topMargin;
+        params.leftMargin = leftMargin;
         surface.setLayoutParams(params);
     }
 
