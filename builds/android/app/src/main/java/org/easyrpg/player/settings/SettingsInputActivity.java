@@ -1,19 +1,12 @@
 package org.easyrpg.player.settings;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -22,12 +15,10 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingManager;
+import org.easyrpg.player.button_mapping.InputLayout;
 
 public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
     private CheckBox enableVibrateWhenSlidingCheckbox;
-    private ButtonMappingManager buttonMappingManager;
-    private LinearLayout inputLayoutList;
     private SeekBar layoutTransparencyLayout, layoutSizeSeekBar, fastForwardMultiplierSeekBar;
     private TextView layoutTransparencyTextView, layoutSizeTextView, fastForwardMultiplierTextView;
 
@@ -37,8 +28,6 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         this.setContentView(R.layout.activity_settings_inputs);
 
         SettingsManager.init(getApplicationContext());
-
-        this.buttonMappingManager = ButtonMappingManager.getInstance(this);
 
         // Setting UI components
         CheckBox enableVibrationCheckBox = (CheckBox) findViewById(R.id.settings_enable_vibration);
@@ -53,11 +42,11 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         configureLayoutTransparencySystem();
         configureLayoutSizeSystem();
 
-        // Input Layouts
-        updateInputLayoutList();
-        // Button for adding input layouts
-        Button addInputLayoutButton = (Button) findViewById(R.id.settings_add_input_layout_button);
-        addInputLayoutButton.setOnClickListener(this);
+        ImageButton horizontalLayoutSettingsButton = (ImageButton) findViewById(R.id.settings_horizontal_input_layout_settings_button);
+        horizontalLayoutSettingsButton.setOnClickListener(view -> editInputLayout(InputLayout.Orientation.ORIENTATION_HORIZONTAL));
+
+        ImageButton verticalLayoutSettingsButton = (ImageButton) findViewById(R.id.settings_vertical_input_layout_settings_button);
+        verticalLayoutSettingsButton.setOnClickListener(view -> editInputLayout(InputLayout.Orientation.ORIENTATION_VERTICAL));
     }
 
     @Override
@@ -69,8 +58,6 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
             enableVibrateWhenSlidingCheckbox.setEnabled(c.isChecked());
         } else if (id == R.id.settings_vibrate_when_sliding){
             SettingsManager.setVibrateWhenSlidingDirectionEnabled(((CheckBox) v).isChecked());
-        } else if (id == R.id.settings_add_input_layout_button) {
-            addAnInputLayout();
         }
     }
 
@@ -186,148 +173,16 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         layoutSizeTextView.setEnabled(ignoreLayoutSizeCheckbox.isChecked());
     }
 
-    private void updateInputLayoutList() {
-        if (inputLayoutList == null) {
-            inputLayoutList = (LinearLayout) findViewById(R.id.controls_settings_layout_list);
-        }
-        inputLayoutList.removeAllViews();
-
-        for (ButtonMappingManager.InputLayout i : buttonMappingManager.getLayoutList()) {
-            InputLayoutItemListView view = new InputLayoutItemListView(this, i);
-            inputLayoutList.addView(view.layout);
-        }
-    }
-
-    private void refreshInputLayoutList() {
-        updateInputLayoutList();
-    }
-
-    /**
-     * Open a dialog box to add an InputLayout
-     */
-    public void addAnInputLayout() {
-        final EditText input = new EditText(this);
-        // TODO : Restrict the edit text to alpha numeric characters
-
-        // The dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.add_an_input_layout).setView(input)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    String text = input.getText().toString();
-                    if (!text.isEmpty()) {
-                        // Create a new input layout, with the default layout
-                        ButtonMappingManager.InputLayout newInputLayout = new ButtonMappingManager.InputLayout(text);
-                        newInputLayout.setButtonList(
-                                ButtonMappingManager.InputLayout.getDefaultButtonList(getApplicationContext()));
-
-                        // Add it to the input layout list, and open the activity to modify it
-                        buttonMappingManager.add(newInputLayout);
-                        buttonMappingManager.save();
-                        //editInputLayout(newInputLayout);
-
-                        refreshInputLayoutList();
-                    }
-                }).setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
-    /**
-     * Open a dialog box to configure an InputLayout
-     */
-    private void configureInputLayout(final ButtonMappingManager.InputLayout gameLayout) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        String[] choiceArray = {getString(R.string.edit_name),
-                getString(R.string.edit_layout), getString(R.string.delete)};
-
-        builder.setTitle(gameLayout.getName()).setItems(choiceArray, (dialog, which) -> {
-            switch (which) {
-                case 0:
-                    editInputLayoutName(gameLayout);
-                    break;
-                case 1:
-                    editInputLayout(gameLayout);
-                    break;
-                case 2:
-                    deleteInputLayout(gameLayout);
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        builder.show();
-    }
-
-    /**
-     * Open a dialog box to configure an InputLayout's name
-     */
-    private void editInputLayoutName(final ButtonMappingManager.InputLayout inputLayout) {
-        // The editText field
-        final EditText input = new EditText(this);
-        input.setText(inputLayout.getName());
-
-        // The dialog box
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.edit_name).setView(input)
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    String text = input.getText().toString();
-                    if (!text.isEmpty()) {
-                        inputLayout.setName(text);
-                    }
-                    buttonMappingManager.save();
-                    refreshInputLayoutList();
-                }).setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
     /**
      * Edit an InputLayout by opening the ButtonMapping activity
      */
-    private void editInputLayout(final ButtonMappingManager.InputLayout game_layout) {
+    private void editInputLayout(InputLayout.Orientation orientation) {
         Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
-        intent.putExtra(ButtonMappingActivity.TAG_ID, game_layout.getId());
-        startActivity(intent);
-    }
-
-    /**
-     * Delete an InputLayout
-     */
-    private void deleteInputLayout(final ButtonMappingManager.InputLayout game_layout) {
-        // TODO : Ask confirmation
-        buttonMappingManager.delete(this, game_layout);
-        refreshInputLayoutList();
-    }
-
-    private class InputLayoutItemListView {
-        private final RelativeLayout layout;
-
-        public InputLayoutItemListView(Context context, final ButtonMappingManager.InputLayout input_layout) {
-
-            LayoutInflater inflater = LayoutInflater.from(context);
-            layout = (RelativeLayout) inflater.inflate(R.layout.settings_input_layout_item_list, null);
-
-            // The Radio Button
-            RadioButton radioButton = (RadioButton) layout.findViewById(R.id.controls_settings_preset_radio_button);
-            radioButton.setOnClickListener(v -> {
-                buttonMappingManager.setSelectedInputLayout(input_layout.getId());
-                buttonMappingManager.save();
-                updateInputLayoutList();
-            });
-            if (input_layout.isChosenInputLayout(buttonMappingManager)) {
-                radioButton.setChecked(true);
-            }
-
-            // The name
-            TextView input_layout_name = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
-            input_layout_name.setText(input_layout.getName());
-
-            // Option button
-            ImageButton settings_button = (ImageButton) layout.findViewById(R.id.controls_settings_preset_option_button);
-            settings_button.setOnClickListener(v -> configureInputLayout(input_layout));
-
-            // Edit the layout by clicking on the view
-            layout.setOnClickListener(v -> editInputLayout(input_layout));
+        if (orientation == InputLayout.Orientation.ORIENTATION_HORIZONTAL) {
+            intent.putExtra(ButtonMappingActivity.TAG_ORIENTATION, ButtonMappingActivity.TAG_ORIENTATION_VALUE_HORIZONTAL);
+        } else {
+            intent.putExtra(ButtonMappingActivity.TAG_ORIENTATION, ButtonMappingActivity.TAG_ORIENTATION_VALUE_VERTICAL);
         }
+        startActivity(intent);
     }
 }

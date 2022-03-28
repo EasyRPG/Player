@@ -3,7 +3,7 @@ package org.easyrpg.player.button_mapping;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -20,19 +20,20 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
+import org.easyrpg.player.settings.SettingsManager;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ButtonMappingActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawer;
-    ViewGroup layoutManager;
-    List<VirtualButton> layoutList;
-    ButtonMappingManager buttonMappingManager;
-    InputLayout inputLayout;
+    private DrawerLayout drawer;
+    private ViewGroup layoutManager;
+    private List<VirtualButton> buttonList;
+    private InputLayout inputLayout;
+    private InputLayout.Orientation orientation;
 
-    public static final String TAG_ID = "id";
+    public static final String TAG_ORIENTATION = "orientation";
+    public static final int TAG_ORIENTATION_VALUE_HORIZONTAL = 0,TAG_ORIENTATION_VALUE_VERTICAL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +49,20 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         // Hide the status bar
         hideStatusBar();
 
+        // Setup the activity depending on the orientation of the inputLayout to modify
         layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
+        if (getIntent().getIntExtra(TAG_ORIENTATION, TAG_ORIENTATION_VALUE_HORIZONTAL) == TAG_ORIENTATION_VALUE_HORIZONTAL) {
+            this.inputLayout = SettingsManager.getInputLayoutHorizontal(this);
+            this.orientation = InputLayout.Orientation.ORIENTATION_HORIZONTAL;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            this.inputLayout = SettingsManager.getInputLayoutVertical(this);
+            this.orientation = InputLayout.Orientation.ORIENTATION_VERTICAL;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
-        //Retrive the InputLayout to work with
-        Intent intent = getIntent();
-        int id = intent.getIntExtra(TAG_ID, 0);
-        buttonMappingManager = ButtonMappingManager.getInstance(this);
-        inputLayout = buttonMappingManager.getLayoutById(id);
-
-        //We does a copy of the inputLayout's button list
-        layoutList = new LinkedList<>();
+        // Copy the inputLayout's buttons (to be able to reset later)
+        buttonList = new LinkedList<>();
         VirtualButton vb = null;
         for (VirtualButton b : inputLayout.getButtonList()) {
             if (b instanceof VirtualCross) {
@@ -67,33 +72,43 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             } else if (b.keyCode == MenuButton.MENU_BUTTON_KEY) {
                 vb = new MenuButton(this, b.getPosX(), b.getPosY(), b.getSize());
             }
-            vb.setDebug_mode(true);
-            layoutList.add(vb);
+            buttonList.add(vb);
+
+            drawButtons();
         }
+    }
+
+    /**
+     * Called after a screen orientation changement
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // We draw the button again to match the positions
         drawButtons();
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.button_mapping_menu_add_button:
-                showSupportedButton();
-                openOrCloseMenu();
-                break;
-            case R.id.button_mapping_menu_reset:
-                layoutList = InputLayout.getDefaultInputLayout(this).getButtonList();
-                drawButtons();
-                openOrCloseMenu();
-                break;
-            case R.id.button_mapping_menu_exit_without_saving:
-                this.finish();
-                break;
-            case R.id.button_mapping_menu_save_and_quit:
-                save();
-                this.finish();
-                break;
-            default:
-                return false;
+        if (item.getItemId() == R.id.button_mapping_menu_add_button) {
+            showSupportedButton();
+            openOrCloseMenu();
+        } else if (item.getItemId() == R.id.button_mapping_menu_reset) {
+            if (orientation == InputLayout.Orientation.ORIENTATION_HORIZONTAL) {
+                buttonList = InputLayout.getDefaultInputLayoutHorizontal(this).getButtonList();
+            } else {
+                buttonList = InputLayout.getDefaultInputLayoutVertical(this).getButtonList();
+            }
+            drawButtons();
+            openOrCloseMenu();
+        } else if (item.getItemId() == R.id.button_mapping_menu_exit_without_saving) {
+            this.finish();
+        } else if (item.getItemId() == R.id.button_mapping_menu_save_and_quit) {
+            save();
+            this.finish();
+        } else {
+            return false;
         }
         return true;
     }
@@ -120,7 +135,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
     public void save() {
         //Copy the button from layoutList to the InputLayout
         inputLayout.getButtonList().clear();
-        for (VirtualButton b : layoutList) {
+        for (VirtualButton b : buttonList) {
             if (b instanceof VirtualCross) {
                 inputLayout.getButtonList().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
             }
@@ -132,7 +147,11 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         }
 
         //Save the ButtonMappingModel
-        buttonMappingManager.save();
+        if (orientation == InputLayout.Orientation.ORIENTATION_HORIZONTAL) {
+            SettingsManager.setInputLayoutHorizontal(inputLayout);
+        } else {
+            SettingsManager.setInputLayoutVertical(inputLayout);
+        }
     }
 
     public void showSupportedButton() {
@@ -186,16 +205,12 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         } else if (s.equals("9")) {
             keyCode = KeyEvent.KEYCODE_9;
         } else if (s.equals("+")) {
-            // API11: KeyEvent.KEYCODE_NUMPAD_ADD
             keyCode = 157;
         } else if (s.equals("-")) {
-            // API11: KeyEvent.KEYCODE_NUMPAD_SUBTRACT
             keyCode = 156;
         } else if (s.equals("*")) {
-            // API11: KeyEvent.KEYCODE_NUMPAD_MULTIPLY
             keyCode = 155;
         } else if (s.equals("/")) {
-            // API11: KeyEvent.KEYCODE_NUMPAD_DIVIDE
             keyCode = 154;
         } else if (s.equals(ctx.getString(R.string.menu))) {
             keyCode = MenuButton.MENU_BUTTON_KEY;
@@ -209,8 +224,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         } else if (keyCode == MenuButton.MENU_BUTTON_KEY){
             vb = new MenuButton(this, 0.5, 0.5, 100);
         }
-        vb.setDebug_mode(true);
-        layoutList.add(vb);
+        buttonList.add(vb);
         drawButtons();
     }
 
@@ -219,10 +233,10 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
      */
     private void drawButtons() {
         layoutManager.removeAllViews();
-        for (VirtualButton b : layoutList) {
+        for (VirtualButton b : buttonList) {
             b.setDebug_mode(true);
-            Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
             layoutManager.addView(b);
+            Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
         }
     }
 
@@ -248,16 +262,5 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
                 return;
             default:
         }
-    }
-
-    /**
-     * Called after a screen orientation changement
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        // We draw the button again to match the positions
-        drawButtons();
     }
 }

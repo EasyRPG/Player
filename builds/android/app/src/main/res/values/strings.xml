@@ -83,13 +83,13 @@ Please tell us in detail what went wrong.\n\n
 	<string name="open_rtp_folder">Open the RTP folder</string>
 
     <!--InputLayout Managing-->
-    <string name="manage_input_layouts">Manage input layouts:</string>
-    <string name="add_an_input_layout">Add an input layout</string>
-    <string name="set_as_default">Set as default</string>
+    <string name="manage_input_layouts">Manage Input Layouts:</string>
     <string name="edit_name">Edit name</string>
     <string name="edit_layout">Edit layout</string>
     <string name="delete">Delete</string>
     <string name="default_layout">Default</string>
+	<string name="horizontal_input_layout">Horizontal Input Layout</string>
+	<string name="vertical_input_layout">Vertical Input Layout</string>
 
     <!--ButtonMapping Activity-->
     <string name="add_a_button">Add a button</string>

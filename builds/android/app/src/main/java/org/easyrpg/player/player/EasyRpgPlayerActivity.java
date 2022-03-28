@@ -56,16 +56,13 @@ import com.google.android.material.navigation.NavigationView;
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingManager;
-import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
+import org.easyrpg.player.button_mapping.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
 import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
-import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -82,7 +79,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     private static EasyRpgPlayerActivity instance;
 
     DrawerLayout drawer;
-    ButtonMappingManager buttonMappingManager;
     InputLayout inputLayout;
     private boolean uiVisible = true;
     SurfaceView surface;
@@ -138,15 +134,21 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         mLayout.addView(surface);
         updateScreenPosition();
 
-        // Choose the proper InputLayout
-        buttonMappingManager = ButtonMappingManager.getInstance(this);
-        inputLayout = buttonMappingManager.getLayoutById(buttonMappingManager.getSelectedLayoutId());
-
-        // Add buttons
-        addButtons();
-
         // Set speed multiplier
         setFastForwardMultiplier(SettingsManager.getFastForwardMultiplier());
+
+        showInputLayout();
+    }
+
+    /**
+     * Called after a screen orientation change
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        updateScreenPosition();
+        showInputLayout();
     }
 
     @Override
@@ -157,15 +159,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 toggleFps();
                 break;
             case R.id.toggle_ui:
-                if (uiVisible) {
-                    for (VirtualButton v : inputLayout.getButtonList()) {
-                        mLayout.removeView(v);
-                    }
-                    updateButtonsPosition();
-                } else {
-                    addButtons();
-                }
                 uiVisible = !uiVisible;
+                showInputLayout();
                 break;
             case R.id.edit_layout:
                 editLayout();
@@ -192,13 +187,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LAYOUT_EDIT) {
-            Game project = getProjectPath();
-
-            // Choose the proper InputLayout
-            inputLayout = buttonMappingManager.getLayoutById(buttonMappingManager.getSelectedLayoutId());
-
-            // Add buttons
-            addButtons();
+            showInputLayout();
         }
     }
 
@@ -206,7 +195,12 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
 
         // Choose the proper InputLayout
-        intent.putExtra(ButtonMappingActivity.TAG_ID, buttonMappingManager.getSelectedLayoutId());
+        int display_mode = getResources().getConfiguration().orientation;
+        if (display_mode == Configuration.ORIENTATION_LANDSCAPE) {
+            intent.putExtra(ButtonMappingActivity.TAG_ORIENTATION, ButtonMappingActivity.TAG_ORIENTATION_VALUE_HORIZONTAL);
+        } else {
+            intent.putExtra(ButtonMappingActivity.TAG_ORIENTATION, ButtonMappingActivity.TAG_ORIENTATION_VALUE_VERTICAL);
+        }
 
         for (VirtualButton v : inputLayout.getButtonList()) {
             mLayout.removeView(v);
@@ -387,45 +381,35 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         return (int) screenWidthDp;
     }
 
-    /**
-     * Draws all buttons.
-     */
-    private void addButtons() {
-        // Adding the buttons
-        for (VirtualButton b : inputLayout.getButtonList()) {
-            // We add it, if it's not the case already
-            if (b.getParent() != mLayout) {
-                if (b.getParent() != null) {
-                    ((ViewGroup) b.getParent()).removeAllViews();
-                }
-                mLayout.addView(b);
+    public void showInputLayout() {
+        // Remove all buttons from the UI
+        if (inputLayout != null) {
+            for (VirtualButton b : inputLayout.getButtonList()) {
+                mLayout.removeView(b);
             }
         }
-        updateButtonsPosition();
-    }
 
-    public void updateButtonsPosition() {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
+        if (uiVisible) {
+            // Retrieve the proper layout depending on the screen orientation
+            int display_mode = getResources().getConfiguration().orientation;
+            if (display_mode == Configuration.ORIENTATION_LANDSCAPE) {
+                this.inputLayout = SettingsManager.getInputLayoutHorizontal(this);
+            } else {
+                this.inputLayout = SettingsManager.getInputLayoutVertical(this);
+            }
 
-        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-        int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-
-        for (VirtualButton b : inputLayout.getButtonList()) {
-            Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
-
-            // We have to adjust the position in portrait configuration
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                params = (RelativeLayout.LayoutParams) b.getLayoutParams();
-                // vertical : use approximatively the second part of the screen
-                params.topMargin += (int) (screenHeight / 6);
-                // horizontal : use a little gap to avoid button to be out of
-                // the screen for button to the right
-                if (b.getPosX() > 0.5) {
-                    params.leftMargin -= screenWidth / 8;
+            for (VirtualButton b : inputLayout.getButtonList()) {
+                // We add it, if it's not the case already
+                if (b.getParent() != mLayout) {
+                    if (b.getParent() != null) {
+                        ((ViewGroup) b.getParent()).removeAllViews();
+                    }
+                    mLayout.addView(b);
                 }
+            }
 
-                b.setLayoutParams(params);
+            for (VirtualButton b : this.inputLayout.getButtonList()) {
+                Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
             }
         }
     }
@@ -444,23 +428,12 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     }
 
     /**
-     * Called after a screen orientation changement
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        updateScreenPosition();
-        updateButtonsPosition();
-    }
-
-    /**
      * Called after the activity is being re-displayed
      */
     @Override
     public void onRestart() {
         super.onRestart();
         updateScreenPosition();
-        updateButtonsPosition();
+        showInputLayout();
     }
 }

@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.button_mapping.InputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class SettingsManager {
     private static boolean forcedLandscape;
     private static boolean rtpScanningEnabled;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
+    private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
     // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
     private static Uri easyRPGFolderURI, rtpFolderURI, soundFountFileURI;
@@ -65,7 +67,7 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
+        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 1);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
         // Fetch the favorite game list :
@@ -279,6 +281,44 @@ public class SettingsManager {
             st = soundFountFileURI.toString();
         }
         editor.putString(SettingsEnum.SOUNDFONT_URI.toString(), st);
+        editor.commit();
+    }
+
+    public static InputLayout getInputLayoutHorizontal(Context context) {
+        if (inputLayoutHorizontal == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), null);
+            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+                SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(context);
+            } else {
+                SettingsManager.inputLayoutHorizontal = InputLayout.parse(context, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
+            }
+        }
+        return SettingsManager.inputLayoutHorizontal;
+    }
+
+    public static InputLayout getInputLayoutVertical(Context context) {
+        if (inputLayoutVertical == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
+            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+                SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(context);
+            } else {
+                SettingsManager.inputLayoutVertical = InputLayout.parse(context, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
+            }
+        }
+        return SettingsManager.inputLayoutVertical;
+    }
+
+    public static void setInputLayoutHorizontal(InputLayout inputLayoutHorizontal) {
+        SettingsManager.inputLayoutHorizontal = inputLayoutHorizontal;
+        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toString());
+        editor.commit();
+    }
+
+    public static void setInputLayoutVertical(InputLayout inputLayoutVertical) {
+        SettingsManager.inputLayoutVertical = inputLayoutVertical;
+        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toString());
         editor.commit();
     }
 }

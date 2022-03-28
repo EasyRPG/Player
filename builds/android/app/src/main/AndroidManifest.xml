@@ -117,9 +117,8 @@
         </activity>
         <activity
             android:name=".button_mapping.ButtonMappingActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape" />
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

@@ -86,6 +86,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
+        // TODO : Separate scan and display to solve a bug
         if (GameBrowserActivity.displayedGamesList == null) {
             scanAndDisplayGamesList();
         } else {
