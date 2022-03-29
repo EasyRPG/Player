@@ -301,14 +301,14 @@ public class GameBrowserActivity extends AppCompatActivity
 
             // Title
             holder.title.setText(game.getTitle());
+            holder.title.setOnClickListener(v -> {
+                launchGame(position);
+            });
 
             // TitleScreen Image
             holder.titleScreen.setImageBitmap(game.getTitleScreen());
             holder.titleScreen.setOnClickListener(v -> {
-                Game selectedGame = gameList.get(position);
-                GameBrowserActivity.selectedGame = selectedGame;
-
-                GameBrowserHelper.launchGame(activity, selectedGame);
+                launchGame(position);
             });
 
             // Settings Button
@@ -333,6 +333,13 @@ public class GameBrowserActivity extends AppCompatActivity
                 updateFavoriteButton(holder, game);
                 ((GameBrowserActivity)activity).reorderGameList();
             });
+        }
+
+        private void launchGame(int position){
+            Game selectedGame = gameList.get(position);
+            GameBrowserActivity.selectedGame = selectedGame;
+
+            GameBrowserHelper.launchGame(activity, selectedGame);
         }
 
         public void updateFavoriteButton(ViewHolder holder, Game game){

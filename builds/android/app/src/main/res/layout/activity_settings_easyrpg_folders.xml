@@ -21,7 +21,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/id_select_games_folder_explanation"
-			android:textSize="20sp" />
+			android:textSize="18sp" />
 
 		<include layout="@layout/separator"/>
 
@@ -51,7 +51,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/rtp_explanation"
-			android:textSize="20sp" />
+			android:textSize="18sp" />
 
 	</LinearLayout>
 </ScrollView>
