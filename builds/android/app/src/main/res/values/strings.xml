@@ -56,6 +56,10 @@ Please tell us in detail what went wrong.\n\n
     <string name="input">Input</string>
 	<string name="easyrpg_folders">EasyRPG Folders</string>
     <string name="settings">Settings</string>
+	<string name="screen_size">Screen size:</string>
+	<string name="force_landscape_mode">Force landscape orientation</string>
+	<string name="uniform_pixel_size_best_image_quality">Uniform pixel size (best image quality)</string>
+	<string name="stretch_the_image_wider_image">Stretch the image (wider image)</string>
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
 	<string name="settings_custom_soundfont">Custom Soundfont:</string>
@@ -68,7 +72,6 @@ Please tell us in detail what went wrong.\n\n
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="quick_access">Quick access</string>
-    <string name="force_landscape_mode">Force landscape orientation</string>
     <string name="fast_forward">Fast-forward button mode:</string>
     <string-array name="fast_forward_mode">
         <item>hold</item>
@@ -90,6 +93,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="default_layout">Default</string>
 	<string name="horizontal_input_layout">Horizontal (Landscape) Input Layout</string>
 	<string name="vertical_input_layout">Vertical (Portrait) Input Layout</string>
+	<string name="settings_edit_layout_explanation">When editing an input layout, a button can be added (ex. a Shift button).\n Just press the back button and select \"add a button\".</string>
 
     <!--ButtonMapping Activity-->
     <string name="add_a_button">Add a button</string>
@@ -105,7 +109,4 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
-	<string name="uniform_pixel_size_best_image_quality">Uniform pixel size (best image quality)</string>
-	<string name="stretch_the_image_wider_image">Stretch the image (wider image)</string>
-	<string name="screen_size">Screen size:</string>
 </resources>

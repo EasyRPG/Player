@@ -1,11 +1,11 @@
 package org.easyrpg.player.settings;
 
+import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_FOLDER_URI;
 import static org.easyrpg.player.settings.SettingsEnum.ENABLE_RTP_SCANNING;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
-import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_FOLDER_URI;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.IMAGE_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;

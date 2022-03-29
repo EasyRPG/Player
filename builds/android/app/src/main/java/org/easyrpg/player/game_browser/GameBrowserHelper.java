@@ -16,11 +16,6 @@ import org.easyrpg.player.player.EasyRpgPlayerActivity;
 import org.easyrpg.player.settings.SettingsMainActivity;
 import org.easyrpg.player.settings.SettingsManager;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class GameBrowserHelper {

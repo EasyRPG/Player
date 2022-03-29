@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
@@ -30,6 +28,8 @@ public class SettingsAudioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_audio);
+
+        soundfontsListLayout = findViewById(R.id.settings_soundfonts_list);
 
         SettingsManager.init(getApplicationContext());
 
@@ -61,15 +61,12 @@ public class SettingsAudioActivity extends AppCompatActivity {
     }
 
     private void updateSoundfontsListView() {
-        if (soundfontsListLayout == null) {
-            soundfontsListLayout = findViewById(R.id.settings_soundfonts_list);
-        }
         soundfontsListLayout.removeAllViews();
 
         boolean thereIsASelectedSoundfont = false;
         soundfontList = scanAvailableSoundfonts();
         for (SoundfontItemList i : soundfontList) {
-            soundfontsListLayout.addView(i.getLayout());
+            soundfontsListLayout.addView(i.getRadioButton());
             if (i.isSelected()) {
                 thereIsASelectedSoundfont = true;
             }
@@ -82,11 +79,11 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
     private List<SoundfontItemList> scanAvailableSoundfonts(){
         List<SoundfontItemList> soundfontList = new ArrayList<>();
-        soundfontList.add(getDefaultSoundfont(this));
+        soundfontList.add(getDefaultSoundfont(this, soundfontsListLayout));
 
-        Uri soundfontsFolder = SettingsManager.getSoundfontsFolderURI(this);
-        if (soundfontsFolder != null) {
-            for (String[] array : Helper.listChildrenDocumentIDAndType(this, soundfontsFolder)) {
+        Uri soundFontsFolder = SettingsManager.getSoundfontsFolderURI(this);
+        if (soundFontsFolder != null) {
+            for (String[] array : Helper.listChildrenDocumentIDAndType(this, soundFontsFolder)) {
                 String fileDocumentID = array[0];
                 String fileDocumentType = array[1];
 
@@ -94,9 +91,9 @@ public class SettingsAudioActivity extends AppCompatActivity {
                 boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
                 String name = Helper.getFileNameFromDocumentID(fileDocumentID);
                 if (!isDirectory && name.toLowerCase().endsWith(".sf2")) {
-                    DocumentFile soundFontFile = Helper.getFileFromDocumentID(this, soundfontsFolder, fileDocumentID);
+                    DocumentFile soundFontFile = Helper.getFileFromDocumentID(this, soundFontsFolder, fileDocumentID);
                     if (soundFontFile != null) {
-                        soundfontList.add(new SoundfontItemList(this, name, soundFontFile.getUri()));
+                        soundfontList.add(new SoundfontItemList(this, name, soundFontFile.getUri(), soundfontsListLayout));
                     }
                 }
             }
@@ -104,8 +101,8 @@ public class SettingsAudioActivity extends AppCompatActivity {
         return soundfontList;
     }
 
-    public SoundfontItemList getDefaultSoundfont(Context context) {
-        return new SoundfontItemList(context, context.getString(R.string.settings_default_soundfont), null);
+    public SoundfontItemList getDefaultSoundfont(Context context, ViewGroup parentView) {
+        return new SoundfontItemList(context, context.getString(R.string.settings_default_soundfont), null, parentView);
     }
 
     public static boolean isSelectedSoundfontFile(Context context, Uri soundfontUri) {
@@ -123,18 +120,14 @@ public class SettingsAudioActivity extends AppCompatActivity {
     class SoundfontItemList {
         private final String name;
         private final Uri uri;
-        private final RelativeLayout layout;
         private final RadioButton radioButton;
 
-        public SoundfontItemList(Context context, String name, Uri uri) {
+        public SoundfontItemList(Context context, String name, Uri uri, ViewGroup parent) {
             this.name = name;
             this.uri = uri;
 
-            // Create the view
-            LayoutInflater inflater = LayoutInflater.from(context);
-            this.layout = (RelativeLayout) inflater.inflate(R.layout.settings_soundfont_item_list, null);
-
             // The Radio Button
+            View layout = getLayoutInflater().inflate(R.layout.settings_soundfont_item_list, null);
             this.radioButton = layout.findViewById(R.id.settings_soundfont_radio_button);
             radioButton.setOnClickListener(v -> select());
             if (isSelectedSoundfontFile(context, uri)) {
@@ -142,9 +135,8 @@ public class SettingsAudioActivity extends AppCompatActivity {
             }
 
             // The name
-            TextView nameTextView = layout.findViewById(R.id.settings_soundfont_name);
-            nameTextView.setText(name);
-            nameTextView.setOnClickListener(v -> select());
+            radioButton.setText(name);
+            radioButton.setOnClickListener(v -> select());
         }
 
         public void select() {
@@ -163,10 +155,6 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
         public Uri getUri() {
             return uri;
-        }
-
-        public RelativeLayout getLayout() {
-            return layout;
         }
 
         public boolean isSelected() {

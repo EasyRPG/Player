@@ -203,6 +203,16 @@
 
 				android:src="@drawable/ic_action_settings_black" />
 		</RelativeLayout>
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+
+			android:text="@string/settings_edit_layout_explanation"
+			android:textSize="18sp"
+
+			android:paddingHorizontal="20dp"
+			android:paddingVertical="10dp"
+			/>
     </LinearLayout>
 </ScrollView>
 
