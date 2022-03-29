@@ -7,6 +7,7 @@ import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
 import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_FOLDER_URI;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
+import static org.easyrpg.player.settings.SettingsEnum.IMAGE_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
@@ -36,7 +37,7 @@ public class SettingsManager {
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static boolean rtpScanningEnabled;
-    private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
+    private static int imageSize, layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
     // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
@@ -45,6 +46,7 @@ public class SettingsManager {
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUNDFONTS_FOLDER_NAME = "soundfonts",
         GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
+    public static int IMAGE_SIZE_UNIFORM_PIXEL_SIZE = 0, IMAGE_SIZE_STRETCH_IMAGE = 1;
 
     private SettingsManager() {
     }
@@ -60,6 +62,7 @@ public class SettingsManager {
     private static void loadSettings(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
+        imageSize = sharedPref.getInt(IMAGE_SIZE.toString(), IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
         rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), false);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
@@ -114,6 +117,16 @@ public class SettingsManager {
             sb.append(folder).append('*');
         }
         editor.putString(FAVORITE_GAMES.toString(), sb.toString());
+        editor.commit();
+    }
+
+    public static int getImageSize() {
+        return imageSize;
+    }
+
+    public static void setImageSize(int imageSize) {
+        SettingsManager.imageSize = imageSize;
+        editor.putInt(IMAGE_SIZE.toString(), imageSize);
         editor.commit();
     }
 

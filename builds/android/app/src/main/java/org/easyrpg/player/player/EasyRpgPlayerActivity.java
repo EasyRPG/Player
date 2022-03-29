@@ -417,28 +417,35 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public void updateScreenPosition() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
-        params.leftMargin = 0;
+        int topMargin, leftMargin;
 
         // Determine the multiplier
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
         int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
-        int x_multiplier = screenWidth / 320;
-        int y_multiplier = screenHeight / 240;
-        int multiplier = Integer.min(x_multiplier, y_multiplier);
-        int width = 320 * multiplier;
-        int height = 240 * multiplier;
+        if (SettingsManager.getImageSize() == SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE) {
+            int x_multiplier = screenWidth / 320;
+            int y_multiplier = screenHeight / 240;
+            int multiplier = Math.min(x_multiplier, y_multiplier);
+            int width = 320 * multiplier;
+            int height = 240 * multiplier;
 
-        params.width = width;
-        params.height = height;
+            params.width = width;
+            params.height = height;
 
-        int topMargin, leftMargin;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            topMargin = ((screenHeight/2) - height) / 2;
             leftMargin = (screenWidth - width) / 2;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                topMargin = ((screenHeight / 2) - height) / 2;
+            } else {
+                topMargin = (screenHeight - height) / 2;
+            }
         } else {
-            topMargin = (screenHeight - height) / 2;
-            leftMargin = (screenWidth - width) / 2;
+            leftMargin = 0;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                topMargin = -(getWindowManager().getDefaultDisplay().getHeight() / 2);
+            } else {
+                topMargin = 0;
+            }
         }
         params.topMargin = topMargin;
         params.leftMargin = leftMargin;

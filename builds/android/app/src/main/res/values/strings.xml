@@ -105,4 +105,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
+	<string name="uniform_pixel_size_best_image_quality">Uniform pixel size (best image quality)</string>
+	<string name="stretch_the_image_wider_image">Stretch the image (wider image)</string>
+	<string name="screen_size">Screen size:</string>
 </resources>
