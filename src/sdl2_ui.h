@@ -121,7 +121,7 @@ private:
 	DisplayMode last_display_mode;
 
 	/** Main SDL window. */
-	SDL_Texture* sdl_texture = nullptr;
+	SDL_Texture* sdl_texture_game = nullptr;
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
 

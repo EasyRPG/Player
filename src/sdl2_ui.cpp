@@ -180,8 +180,8 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 }
 
 Sdl2Ui::~Sdl2Ui() {
-	if (sdl_texture) {
-		SDL_DestroyTexture(sdl_texture);
+	if (sdl_texture_game) {
+		SDL_DestroyTexture(sdl_texture_game);
 	}
 	if (sdl_renderer) {
 		SDL_DestroyRenderer(sdl_renderer);
@@ -344,12 +344,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SDL_RenderClear(sdl_renderer);
 		SDL_RenderPresent(sdl_renderer);
 
-		sdl_texture = SDL_CreateTexture(sdl_renderer,
+		sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 			texture_format,
 			SDL_TEXTUREACCESS_STREAMING,
 			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
-		if (!sdl_texture) {
+		if (!sdl_texture_game) {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
@@ -381,7 +381,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	uint32_t sdl_pixel_fmt = GetDefaultFormat();
 	int a, w, h;
 
-	if (SDL_QueryTexture(sdl_texture, &sdl_pixel_fmt, &a, &w, &h) != 0) {
+	if (SDL_QueryTexture(sdl_texture_game, &sdl_pixel_fmt, &a, &w, &h) != 0) {
 		Output::Debug("SDL_QueryTexture failed : {}", SDL_GetError());
 		return false;
 	}
@@ -460,7 +460,7 @@ void Sdl2Ui::ProcessEvents() {
 
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
-	SDL_UpdateTexture(sdl_texture, nullptr, main_surface->pixels(), main_surface->pitch());
+	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
 
 	if (window.size_changed) {
 		// Based on SDL2 function UpdateLogicalSize
@@ -512,7 +512,7 @@ void Sdl2Ui::UpdateDisplay() {
 	}
 
 	SDL_RenderClear(sdl_renderer);
-	SDL_RenderCopy(sdl_renderer, sdl_texture, nullptr, nullptr);
+	SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
 	SDL_RenderPresent(sdl_renderer);
 }
 
