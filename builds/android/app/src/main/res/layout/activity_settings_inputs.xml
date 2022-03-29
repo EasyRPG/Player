@@ -152,11 +152,13 @@
 			<TextView
 				android:textSize="20sp"
 				android:paddingStart="20sp"
+				android:paddingEnd="20sp"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
 				android:layout_alignParentStart="true"
+				android:layout_toStartOf="@+id/settings_horizontal_input_layout_settings_button"
 				android:text="@string/horizontal_input_layout"
 				/>
 
@@ -179,11 +181,13 @@
 			<TextView
 				android:textSize="20sp"
 				android:paddingStart="20sp"
+				android:paddingEnd="20sp"
 
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
 				android:layout_alignParentStart="true"
+				android:layout_toStartOf="@+id/settings_vertical_input_layout_settings_button"
 				android:text="@string/vertical_input_layout"
 				/>
 

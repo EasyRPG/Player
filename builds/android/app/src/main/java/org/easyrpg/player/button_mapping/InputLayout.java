@@ -82,21 +82,21 @@ public class InputLayout {
     private static LinkedList<VirtualButton> getDefaultHorizontalButtonList(Context context) {
         LinkedList<VirtualButton> l = new LinkedList<>();
         l.add(new MenuButton(context, 0.01, 0.01, 90));
-        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.01, 0.2, 90));
-        l.add(new VirtualCross(context, 0.01, 0.5, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.80, 0.7, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
+        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.8, 0.01, 90));
+        l.add(new VirtualCross(context, 0.01, 0.4, 100));
+        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.70, 0.7, 100));
+        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.80, 0.6, 100));
 
         return l;
     }
 
     private static LinkedList<VirtualButton> getDefaultVerticalButtonList(Context context) {
         LinkedList<VirtualButton> l = new LinkedList<>();
-        l.add(new MenuButton(context, 0.01, 0.5, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.01, 0.6, 100));
-        l.add(new VirtualCross(context, 0.05, 0.7, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.65, 0.8, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.75, 0.7, 100));
+        l.add(new MenuButton(context, 0.01, 0.5, 90));
+        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.75, 0.5, 90));
+        l.add(new VirtualCross(context, 0.05, 0.65, 100));
+        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.60, 0.75, 100));
+        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.70, 0.65, 100));
 
         return l;
     }

@@ -249,9 +249,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             case (MotionEvent.ACTION_DOWN):
             case (MotionEvent.ACTION_MOVE):
                 // Calculation of the new view position
-                x = (v.getLeft() + event.getX() - v.getWidth() / 2)
+                x = (v.getLeft() + event.getX() - v.getWidth() / 2f)
                         / v.getResources().getDisplayMetrics().widthPixels;
-                y = (v.getTop() + event.getY() - v.getHeight() / 2)
+                y = (v.getTop() + event.getY() - v.getHeight() / 2f)
                         / v.getResources().getDisplayMetrics().heightPixels;
 
                 // Rounding (x,y) in order to place the buttons on a grid

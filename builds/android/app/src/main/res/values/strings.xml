@@ -88,8 +88,8 @@ Please tell us in detail what went wrong.\n\n
     <string name="edit_layout">Edit layout</string>
     <string name="delete">Delete</string>
     <string name="default_layout">Default</string>
-	<string name="horizontal_input_layout">Horizontal Input Layout</string>
-	<string name="vertical_input_layout">Vertical Input Layout</string>
+	<string name="horizontal_input_layout">Horizontal (Landscape) Input Layout</string>
+	<string name="vertical_input_layout">Vertical (Portrait) Input Layout</string>
 
     <!--ButtonMapping Activity-->
     <string name="add_a_button">Add a button</string>
