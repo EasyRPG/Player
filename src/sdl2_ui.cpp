@@ -183,6 +183,9 @@ Sdl2Ui::~Sdl2Ui() {
 	if (sdl_texture_game) {
 		SDL_DestroyTexture(sdl_texture_game);
 	}
+	if (sdl_texture_scaled) {
+		SDL_DestroyTexture(sdl_texture_scaled);
+	}
 	if (sdl_renderer) {
 		SDL_DestroyRenderer(sdl_renderer);
 	}
@@ -462,12 +465,11 @@ void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
 
-	if (window.size_changed) {
+	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
 
 		SDL_Rect viewport;
-		float scale;
 		float width_float = static_cast<float>(window.width);
 		float height_float = static_cast<float>(window.height);
 
@@ -477,42 +479,65 @@ void Sdl2Ui::UpdateDisplay() {
 		if (scaling_mode == ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
-				scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
+				window.scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
 			} else {
-				scale = static_cast<float>(window.height / SCREEN_TARGET_HEIGHT);
+				window.scale = static_cast<float>(window.height / SCREEN_TARGET_HEIGHT);
 			}
 
-			viewport.w = (int)SDL_ceil(SCREEN_TARGET_WIDTH * scale);
+			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
-			viewport.h = (int)SDL_ceil(SCREEN_TARGET_HEIGHT * scale);
+			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
 
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
-			// The aspect ratios are the same, just scale appropriately
-			scale = width_float / SCREEN_TARGET_WIDTH;
+			// The aspect ratios are the same, let SDL2 scale it
+			window.scale = -1.0f;
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
-			scale = width_float / SCREEN_TARGET_WIDTH;
+			window.scale = width_float / SCREEN_TARGET_WIDTH;
 			viewport.x = 0;
 			viewport.w = window.width;
-			viewport.h = (int)SDL_ceil(SCREEN_TARGET_HEIGHT * scale);
+			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else {
 			// black bars left and right
-			scale = height_float / SCREEN_TARGET_HEIGHT;
+			window.scale = height_float / SCREEN_TARGET_HEIGHT;
 			viewport.y = 0;
 			viewport.h = window.height;
-			viewport.w = (int)SDL_ceil(SCREEN_TARGET_WIDTH * scale);
+			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		}
+
+		if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+			if (sdl_texture_scaled) {
+				SDL_DestroyTexture(sdl_texture_scaled);
+			}
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+			sdl_texture_scaled = SDL_CreateTexture(sdl_renderer, texture_format, SDL_TEXTUREACCESS_TARGET,
+			   static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_WIDTH, static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_HEIGHT);
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+			if (!sdl_texture_scaled) {
+				Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
+			}
 		}
 	}
 
 	SDL_RenderClear(sdl_renderer);
-	SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+	if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+		// Render game texture on the scaled texture
+		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
+		SDL_RenderClear(sdl_renderer);
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+
+		SDL_SetRenderTarget(sdl_renderer, nullptr);
+		SDL_RenderCopy(sdl_renderer, sdl_texture_scaled, nullptr, nullptr);
+	} else {
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+	}
 	SDL_RenderPresent(sdl_renderer);
 }
 

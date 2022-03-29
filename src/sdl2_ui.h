@@ -122,6 +122,7 @@ private:
 
 	/** Main SDL window. */
 	SDL_Texture* sdl_texture_game = nullptr;
+	SDL_Texture* sdl_texture_scaled = nullptr;
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
 
@@ -129,6 +130,7 @@ private:
 		int width = 0;
 		int height = 0;
 		bool size_changed = true;
+		float scale = 0.f;
 	} window = {};
 
 	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
