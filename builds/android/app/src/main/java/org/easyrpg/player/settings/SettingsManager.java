@@ -13,6 +13,7 @@ import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -293,41 +294,41 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static InputLayout getInputLayoutHorizontal(Context context) {
+    public static InputLayout getInputLayoutHorizontal(Activity activity) {
         if (inputLayoutHorizontal == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
             String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), null);
             if (inputLayoutString == null || inputLayoutString.isEmpty()) {
-                SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(context);
+                SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(activity);
             } else {
-                SettingsManager.inputLayoutHorizontal = InputLayout.parse(context, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
+                SettingsManager.inputLayoutHorizontal = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
             }
         }
         return SettingsManager.inputLayoutHorizontal;
     }
 
-    public static InputLayout getInputLayoutVertical(Context context) {
+    public static InputLayout getInputLayoutVertical(Activity activity) {
         if (inputLayoutVertical == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
             String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
             if (inputLayoutString == null || inputLayoutString.isEmpty()) {
-                SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(context);
+                SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(activity);
             } else {
-                SettingsManager.inputLayoutVertical = InputLayout.parse(context, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
+                SettingsManager.inputLayoutVertical = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
             }
         }
         return SettingsManager.inputLayoutVertical;
     }
 
-    public static void setInputLayoutHorizontal(Context context, InputLayout inputLayoutHorizontal) {
+    public static void setInputLayoutHorizontal(Activity activity, InputLayout inputLayoutHorizontal) {
         SettingsManager.inputLayoutHorizontal = inputLayoutHorizontal;
-        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toStringForSave(context));
+        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toStringForSave(activity));
         editor.commit();
     }
 
-    public static void setInputLayoutVertical(Context context, InputLayout inputLayoutVertical) {
+    public static void setInputLayoutVertical(Activity activity, InputLayout inputLayoutVertical) {
         SettingsManager.inputLayoutVertical = inputLayoutVertical;
-        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(context));
+        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(activity));
         editor.commit();
     }
 }

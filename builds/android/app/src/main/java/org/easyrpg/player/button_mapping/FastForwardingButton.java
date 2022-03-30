@@ -1,6 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Canvas;
 
 import org.easyrpg.player.settings.SettingsManager;
@@ -9,8 +9,8 @@ import org.libsdl.app.SDLActivity;
 public class FastForwardingButton extends VirtualButton {
     boolean alreadyActivated;
 
-    protected FastForwardingButton(Context context, int keyCode, double posX, double posY, int size) {
-        super(context, keyCode, posX, posY, size);
+    protected FastForwardingButton(Activity activity, int keyCode, double posX, double posY, int size) {
+        super(activity, keyCode, posX, posY, size);
     }
 
     @Override

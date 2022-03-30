@@ -1,6 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import android.content.Context;
+import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ public class InputLayout {
         buttonList.add(v);
     }
 
-    public static InputLayout parse(Context context, Orientation orientation, String inputLayoutString) {
+    public static InputLayout parse(Activity activity, Orientation orientation, String inputLayoutString) {
         InputLayout inputLayout = new InputLayout(orientation);
 
         try {
@@ -38,24 +38,24 @@ public class InputLayout {
                 double posX = Double.parseDouble(buttonInfo[2]);
                 double posY = Double.parseDouble(buttonInfo[3]);
                 if (keyCode == VirtualButton.DPAD) {
-                    inputLayout.add(new VirtualCross(context, posX, posY, size));
+                    inputLayout.add(new VirtualCross(activity, posX, posY, size));
                 } else if (keyCode == MenuButton.MENU_BUTTON_KEY) {
-                    inputLayout.add(new MenuButton(context, posX, posY, size));
+                    inputLayout.add(new MenuButton(activity, posX, posY, size));
                 } else {
-                    inputLayout.add(VirtualButton.Create(context, keyCode, posX, posY, size));
+                    inputLayout.add(VirtualButton.Create(activity, keyCode, posX, posY, size));
                 }
             }
             return inputLayout;
         } catch (Exception e) {
             if(orientation == Orientation.ORIENTATION_HORIZONTAL) {
-                return getDefaultInputLayoutHorizontal(context);
+                return getDefaultInputLayoutHorizontal(activity);
             } else {
-                return getDefaultInputLayoutVertical(context);
+                return getDefaultInputLayoutVertical(activity);
             }
         }
     }
 
-    public String toStringForSave(Context context) {
+    public String toStringForSave(Activity activity) {
         try {
             StringBuilder sb = new StringBuilder();
 
@@ -69,41 +69,41 @@ public class InputLayout {
             return sb.toString();
         } catch (Exception e) {
             if (orientation == Orientation.ORIENTATION_HORIZONTAL) {
-                return getDefaultInputLayoutHorizontal(context).toString();
+                return getDefaultInputLayoutHorizontal(activity).toString();
             } else {
-                return getDefaultInputLayoutVertical(context).toString();
+                return getDefaultInputLayoutVertical(activity).toString();
             }
         }
     }
 
-    private static LinkedList<VirtualButton> getDefaultHorizontalButtonList(Context context) {
+    private static LinkedList<VirtualButton> getDefaultHorizontalButtonList(Activity activity) {
         LinkedList<VirtualButton> l = new LinkedList<>();
-        l.add(new MenuButton(context, 0.01, 0.01, 90));
-        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.8, 0.01, 90));
-        l.add(new VirtualCross(context, 0.01, 0.4, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.70, 0.7, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.80, 0.6, 100));
+        l.add(new MenuButton(activity, 0.01, 0.01, 90));
+        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.8, 0.01, 90));
+        l.add(new VirtualCross(activity, 0.01, 0.4, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.70, 0.7, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.80, 0.6, 100));
 
         return l;
     }
 
-    private static LinkedList<VirtualButton> getDefaultVerticalButtonList(Context context) {
+    private static LinkedList<VirtualButton> getDefaultVerticalButtonList(Activity activity) {
         LinkedList<VirtualButton> l = new LinkedList<>();
-        l.add(new MenuButton(context, 0.01, 0.5, 90));
-        l.add(VirtualButton.Create(context, VirtualButton.KEY_FAST_FORWARD, 0.75, 0.5, 90));
-        l.add(new VirtualCross(context, 0.05, 0.65, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.60, 0.75, 100));
-        l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.70, 0.65, 100));
+        l.add(new MenuButton(activity, 0.01, 0.5, 90));
+        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.75, 0.5, 90));
+        l.add(new VirtualCross(activity, 0.05, 0.65, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.60, 0.75, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.70, 0.65, 100));
 
         return l;
     }
 
-    public static InputLayout getDefaultInputLayoutHorizontal(Context context) {
-        return new InputLayout(getDefaultHorizontalButtonList(context));
+    public static InputLayout getDefaultInputLayoutHorizontal(Activity activity) {
+        return new InputLayout(getDefaultHorizontalButtonList(activity));
     }
 
-    public static InputLayout getDefaultInputLayoutVertical(Context context) {
-        return new InputLayout(getDefaultVerticalButtonList(context));
+    public static InputLayout getDefaultInputLayoutVertical(Activity activity) {
+        return new InputLayout(getDefaultVerticalButtonList(activity));
     }
 
     public List<VirtualButton> getButtonList() {

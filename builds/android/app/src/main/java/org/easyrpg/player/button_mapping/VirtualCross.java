@@ -1,6 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -18,8 +18,8 @@ public class VirtualCross extends VirtualButton {
 
     private boolean hasVibrate;
 
-    public VirtualCross(Context context, double posX, double posY, int size) {
-        super(context, VirtualButton.DPAD, posX, posY, size);
+    public VirtualCross(Activity activity, double posX, double posY, int size) {
+        super(activity, VirtualButton.DPAD, posX, posY, size);
 
         // Base size: ~1 cm
         originalSize = Helper.getPixels(this, 150);

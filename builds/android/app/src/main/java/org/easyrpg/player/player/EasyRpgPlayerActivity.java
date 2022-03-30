@@ -26,7 +26,6 @@ package org.easyrpg.player.player;
 
 import android.app.AlertDialog;
 import android.content.ClipDescription;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -36,7 +35,6 @@ import android.os.StrictMode;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
@@ -67,14 +65,11 @@ import java.util.ArrayList;
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
  */
-// TODO : Clean warnings
 public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
     public static final int LAYOUT_EDIT = 12345;
-
-    private static EasyRpgPlayerActivity instance;
 
     DrawerLayout drawer;
     InputLayout inputLayout;
@@ -88,15 +83,13 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             return;
         }
 
-        EasyRpgPlayerActivity.instance = this;
-
         SettingsManager.init(getApplicationContext());
 
         // Menu configuration
         this.drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         hideStatusBar();
 
@@ -116,7 +109,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Put the gameScreen
         surface = mSurface;
-        mLayout = (RelativeLayout) findViewById(R.id.main_layout);
+        mLayout = findViewById(R.id.main_layout);
         mLayout.addView(surface);
         updateScreenPosition();
 
@@ -140,25 +133,17 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.toggle_fps:
-                toggleFps();
-                break;
-            case R.id.toggle_ui:
-                uiVisible = !uiVisible;
-                showInputLayout();
-                break;
-            case R.id.edit_layout:
-                editLayout();
-                break;
-            case R.id.report_bug:
-                reportBug();
-                break;
-            case R.id.end_game:
-                showEndGameDialog();
-                break;
-            default:
-                return false;
+        if (item.getItemId() == R.id.toggle_fps) {
+            toggleFps();
+        } else if (item.getItemId() == R.id.toggle_ui) {
+            uiVisible = !uiVisible;
+            showInputLayout();
+        } else if (item.getItemId() == R.id.edit_layout) {
+            editLayout();
+        } else if (item.getItemId() == R.id.report_bug) {
+            reportBug();
+        } else if (item.getItemId() == R.id.end_game) {
+            showEndGameDialog();
         }
         openOrCloseMenu();
         return false;
@@ -204,46 +189,40 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // set dialog message
         alertDialogBuilder.setMessage(bug_msg).setCancelable(false)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Attach to the email : the easyrpg log file and savefiles
-                        ArrayList<Uri> files = new ArrayList<Uri>();
-                        // The easyrpg_log.txt
-                        String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
-                        Uri saveFolder = Uri.parse(savepath);
-                        Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
-                        if(log != null) {
-                            files.add(log);
-                        }
-                        // The save files
-                        files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    // Attach to the email : the easyrpg log file and savefiles
+                    ArrayList<Uri> files = new ArrayList<>();
+                    // The easyrpg_log.txt
+                    String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
+                    Uri saveFolder = Uri.parse(savepath);
+                    Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
+                    if(log != null) {
+                        files.add(log);
+                    }
+                    // The save files
+                    files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
 
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            // Lazy workaround as suggested on https://stackoverflow.com/q/38200282
-                            try {
-                                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-                                m.invoke(null);
-                            } catch (Exception e) {
-                                Log.i("EasyRPG", "Bug report: Calling disableDeathOnFileUriExposure failed");
-                            }
-                        }
-
-                        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                        // intent.setData(Uri.parse("mailto:"));
-                        intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"easyrpg@easyrpg.org"});
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
-                        intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
-                        intent.putExtra(Intent.EXTRA_STREAM, files);
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        // Lazy workaround as suggested on https://stackoverflow.com/q/38200282
+                        try {
+                            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                            m.invoke(null);
+                        } catch (Exception e) {
+                            Log.i("EasyRPG", "Bug report: Calling disableDeathOnFileUriExposure failed");
                         }
                     }
-                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+
+                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    // intent.setData(Uri.parse("mailto:"));
+                    intent.setType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"easyrpg@easyrpg.org"});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
+                    intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
+                    intent.putExtra(Intent.EXTRA_STREAM, files);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }).setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
 
         AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -270,9 +249,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     /**
      * This function permit to open the menu, in a static way
      */
-    public static void staticOpenOrCloseMenu() {
-        if (instance != null) {
-            instance.openOrCloseMenu();
+    public static void staticOpenOrCloseMenu(EasyRpgPlayerActivity activity) {
+        if (activity != null) {
+            activity.openOrCloseMenu();
         }
     }
 
@@ -290,15 +269,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // set dialog message
         alertDialogBuilder.setMessage(R.string.do_want_quit).setCancelable(false)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        endGame();
-                    }
-                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+                .setPositiveButton(R.string.yes, (dialog, id) -> endGame()).setNegativeButton(R.string.no, (dialog, id) -> dialog.cancel());
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -327,6 +298,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
     /**
      * Used by the native code to retrieve the RTP directory. Invoked via JNI.
+     * DO NOT DELETE, IT IS USED BY THE NATIVE CODE (the warning is a lie)
      *
      * @return Full path to the RTP
      */
@@ -342,28 +314,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
     public SafFile getHandleForPath(String path) {
         return SafFile.fromPath(getContext(), path);
-    }
-
-    /**
-     * Gets the display height in pixel.
-     *
-     * @return display height in pixel
-     */
-    public int getScreenHeight() {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.heightPixels;
-        return (int) screenWidthDp;
-    }
-
-    /**
-     * Gets the display width in pixel.
-     *
-     * @return display width in pixel
-     */
-    public int getScreenWidth() {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.widthPixels;
-        return (int) screenWidthDp;
     }
 
     public void showInputLayout() {

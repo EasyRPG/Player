@@ -1,5 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -22,7 +23,7 @@ public class VirtualButton extends View {
     protected Rect bound;
     protected boolean isPressed; // To know when the touch go out the button
     protected boolean debug_mode;
-    protected Context context;
+    protected Activity activity;
     protected Vibrator vibrator;
 
     public static final int DPAD = -1, ENTER = KeyEvent.KEYCODE_SPACE, CANCEL = KeyEvent.KEYCODE_B,
@@ -32,19 +33,19 @@ public class VirtualButton extends View {
             KEY_8 = KeyEvent.KEYCODE_8, KEY_9 = KeyEvent.KEYCODE_9, KEY_PLUS = 157, KEY_MINUS = 156, KEY_MULTIPLY = 155,
             KEY_DIVIDE = 154, KEY_FAST_FORWARD = KeyEvent.KEYCODE_F;
 
-    public static VirtualButton Create(Context context, int keyCode, double posX, double posY, int size) {
+    public static VirtualButton Create(Activity activity, int keyCode, double posX, double posY, int size) {
         if (keyCode == KEY_FAST_FORWARD) {
-            return new FastForwardingButton(context, keyCode, posX, posY, size);
+            return new FastForwardingButton(activity, keyCode, posX, posY, size);
         }
 
-        return new VirtualButton(context, keyCode, posX, posY, size);
+        return new VirtualButton(activity, keyCode, posX, posY, size);
     }
 
-    protected VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
-        super(context);
-        this.context = context;
+    protected VirtualButton(Activity activity, int keyCode, double posX, double posY, int size) {
+        super(activity);
+        this.activity = activity;
 
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
 
         this.keyCode = keyCode;
         this.posX = posX;
