@@ -41,9 +41,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         setContentView(R.layout.button_mapping_activity);
 
         // Menu configuration
-        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        this.drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Hide the status bar

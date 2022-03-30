@@ -95,20 +95,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         SettingsManager.init(getApplicationContext());
 
         // Menu configuration
-        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        this.drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-        drawer.setDrawerListener(new DrawerListener() {
-            @Override
-            public void onDrawerSlide(View view, float arg1) {
-                drawer.bringChildToFront(view);
-                drawer.requestLayout();
-            }
-
-            @Override public void onDrawerStateChanged(int arg0) {}
-            @Override public void onDrawerOpened(View arg0) {}
-            @Override public void onDrawerClosed(View arg0) {}
-        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -295,7 +283,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             drawer.closeDrawer(GravityCompat.START);
         } else {
             drawer.openDrawer(GravityCompat.START);
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         }
     }
 
