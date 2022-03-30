@@ -79,10 +79,10 @@ public class InputLayout {
     private static LinkedList<VirtualButton> getDefaultHorizontalButtonList(Activity activity) {
         LinkedList<VirtualButton> l = new LinkedList<>();
         l.add(new MenuButton(activity, 0.01, 0.01, 90));
-        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.8, 0.01, 90));
+        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.9, 0.01, 90));
         l.add(new VirtualCross(activity, 0.01, 0.4, 100));
-        l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.70, 0.7, 100));
-        l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.80, 0.6, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.80, 0.55, 100));
+        l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.90, 0.45, 100));
 
         return l;
     }
