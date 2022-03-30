@@ -63,7 +63,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
 	<string name="settings_custom_soundfont">Custom Soundfont:</string>
-	<string name="open_the_soundfonts_folder">Open the soundfonts folder</string>
+	<string name="open_the_sound_fonts_folder">Open the soundfonts folder</string>
 	<string name="settings_soundfont_explanation">Put soundfonts in SF2-format in the \"soundfonts\" folder. Soundfonts alter how MIDI music sounds.</string>
 	<string name="settings_soundfont_restart_app">Please quit and restart the app after selecting a soundfont.</string>
 	<string name="settings_soundfont_found">Soundfonts found:</string>

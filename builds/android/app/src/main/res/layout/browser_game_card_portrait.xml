@@ -21,7 +21,7 @@
             android:layout_height="90dp"
             android:scaleType="centerCrop"
 
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"/>
         <TextView
             android:id="@+id/title"
@@ -29,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_toRightOf="@+id/screen"
-            android:layout_toLeftOf="@+id/game_browser_thumbnail_option_button"
+            android:layout_toEndOf="@+id/screen"
+            android:layout_toStartOf="@+id/game_browser_thumbnail_option_button"
             android:padding="4dp"
 
             android:textColor="#222"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_below="@+id/title"
             android:padding="4dp"
@@ -57,9 +57,9 @@
             android:layout_height="wrap_content"
 
             android:layout_below="@+id/game_browser_thumbnail_option_button"
-            android:layout_alignLeft="@id/game_browser_thumbnail_option_button"
+            android:layout_alignStart="@id/game_browser_thumbnail_option_button"
             android:padding="4dp"
-            
+
             android:background="@android:color/transparent"
             />
     </RelativeLayout>

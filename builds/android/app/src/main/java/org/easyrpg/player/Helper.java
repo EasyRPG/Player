@@ -20,11 +20,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.settings.SettingsManager;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -77,31 +74,7 @@ public class Helper {
 		view.setLayoutParams(params);
 	}
 
-	/**
-	 * Moves a view to a screen position. Position is from 0 to 1 and converted
-	 * to screen pixel. Alignment is top right.
-	 *
-	 * @param view
-	 *            View to move
-	 * @param x
-	 *            X position from 0 to 1
-	 * @param y
-	 *            Y position from 0 to 1
-	 */
-	public static void setLayoutPositionRight(Activity a, View view, double x, double y) {
-		DisplayMetrics displayMetrics = a.getResources().getDisplayMetrics();
-		float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-		float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
-
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-		params.rightMargin = Helper.getPixels(a, screenWidthDp * x);
-		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
-		view.setLayoutParams(params);
-	}
-
-	public static Paint getUIPainter() {
+    public static Paint getUIPainter() {
 		Paint uiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		uiPaint.setColor(Color.argb(128, 255, 255, 255));
 		uiPaint.setStyle(Style.STROKE);
@@ -109,40 +82,7 @@ public class Helper {
 		return uiPaint;
 	}
 
-	public static JSONObject readJSON(String contentFile) {
-		try {
-			// Parse the JSON
-            return new JSONObject(contentFile);
-		} catch (JSONException e) {
-			Log.e("JSO reading", "Error parsing a JSO file : " + e.getMessage());
-		}
-
-		return null;
-	}
-
-	public static JSONObject readJSONFile(String path) {
-		StringBuilder file = new StringBuilder();
-        String tmp;
-        try {
-			// Read the file
-			BufferedReader bf = new BufferedReader(new FileReader(path));
-			while ((tmp = bf.readLine()) != null) {
-				file.append(tmp);
-			}
-			bf.close();
-
-			// Parse the JSON
-            return new JSONObject(file.toString());
-		} catch (JSONException e) {
-			Log.e("JSO reading", "Error parsing the JSO file " + path + "\n" + e.getMessage());
-		} catch (IOException e) {
-			Log.e("JSO reading", "Error reading the file " + path + "\n" + e.getMessage());
-		}
-
-		return null;
-	}
-
-	public static String readInternalFileContent(Context content, String fileName) {
+    public static String readInternalFileContent(Context content, String fileName) {
 		StringBuilder file = new StringBuilder();
         String tmp;
         try {
@@ -166,10 +106,10 @@ public class Helper {
             createFolder(context, RTPFolder, SettingsManager.RTP_2000_FOLDER_NAME);
             createFolder(context, RTPFolder, SettingsManager.RTP_2003_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.GAMES_FOLDER_NAME);
-            createFolder(context, easyRPGFolder, SettingsManager.SOUNDFONTS_FOLDER_NAME);
+            createFolder(context, easyRPGFolder, SettingsManager.SOUND_FONTS_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.SAVES_FOLDER_NAME);
 
-            // The .nomedia file (avoid media app to scan games and RTP's folders)
+            // The .nomedia file (avoid media app to scan games and RTP folders)
             if (Helper.findFile(context, easyRPGFolder.getUri(), ".nomedia") == null) {
                 easyRPGFolder.createFile("", ".nomedia");
             }

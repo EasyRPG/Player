@@ -1,5 +1,7 @@
 package org.easyrpg.player.settings;
 
+import androidx.annotation.NonNull;
+
 enum SettingsEnum {
     IMAGE_SIZE("PREF_IMAGE_SIZE"),
     VIBRATION_ENABLED("PREF_ENABLE_VIBRATION"),
@@ -23,6 +25,7 @@ enum SettingsEnum {
         this.label = s;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return label;

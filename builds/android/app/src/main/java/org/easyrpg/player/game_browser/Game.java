@@ -15,7 +15,6 @@ public class Game implements Comparable<Game> {
     private final String savePath;
 	private boolean isFavorite;
     private final DocumentFile gameFolder;
-    private final Uri folderURI;
     private Uri iniFile;
     private Bitmap titleScreen;
     private IniFileManager iniFileManager; // Always use initIniFileManager() before using iniFileManager
@@ -23,8 +22,8 @@ public class Game implements Comparable<Game> {
 	public Game(DocumentFile gameFolder) {
 		this.gameFolder = gameFolder;
 	    this.title = gameFolder.getName();
-	    this.folderURI = gameFolder.getUri();
-	    this.gameFolderPath = this.folderURI.toString();
+        Uri folderURI = gameFolder.getUri();
+	    this.gameFolderPath = folderURI.toString();
 
 		// SavePath
         this.savePath = gameFolderPath;
@@ -120,10 +119,6 @@ public class Game implements Comparable<Game> {
 
     public DocumentFile getGameFolder() {
         return gameFolder;
-    }
-
-    public Uri getFolderURI() {
-        return folderURI;
     }
 
     public Bitmap getTitleScreen() {

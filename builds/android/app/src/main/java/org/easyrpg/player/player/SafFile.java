@@ -17,8 +17,8 @@ import java.util.ArrayList;
  * A wrapper around SAF for use from JNI
  */
 public class SafFile {
-    private Context context = null;
-    private DocumentFile root = null;
+    private final Context context;
+    private final DocumentFile root;
 
     private SafFile(Context context, DocumentFile root) {
         this.context = context;
@@ -60,7 +60,7 @@ public class SafFile {
 
         DocumentFile f = DocumentFile.fromTreeUri(context, uri);
 
-        if (!f.getUri().toString().equals(uri.toString())) {
+        if (f == null || !f.getUri().toString().equals(uri.toString())) {
             // When providing a non-existent file fromTreeUri sometimes returns a tree to the root.
             // Prevent this nonsense.
             return null;

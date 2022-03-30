@@ -47,7 +47,7 @@ public class FastForwardingButton extends VirtualButton {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        setProperTransparency(canvas);
+        setProperTransparency();
 
         // Draw the rectangle surrounding the button's letter
         int border = 5;
@@ -58,6 +58,6 @@ public class FastForwardingButton extends VirtualButton {
     }
 
     private boolean isTapMode() {
-        return (SettingsManager.getFastForwardMode() == 1);
+        return (SettingsManager.getFastForwardMode() == SettingsManager.FAST_FORWARD_MODE_TAP);
     }
 }

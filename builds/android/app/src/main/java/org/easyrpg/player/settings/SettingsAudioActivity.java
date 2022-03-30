@@ -29,7 +29,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_audio);
 
-        soundfontsListLayout = findViewById(R.id.settings_soundfonts_list);
+        soundfontsListLayout = findViewById(R.id.settings_sound_fonts_list);
 
         SettingsManager.init(getApplicationContext());
 
@@ -42,7 +42,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
                 // Open the file explorer in the "soundfont" folder
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("*/*");
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getSoundfontsFolderURI(this));
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getSoundFontsFolderURI(this));
                 startActivity(intent);
             });
         } else {
@@ -79,9 +79,9 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
     private List<SoundfontItemList> scanAvailableSoundfonts(){
         List<SoundfontItemList> soundfontList = new ArrayList<>();
-        soundfontList.add(getDefaultSoundfont(this, soundfontsListLayout));
+        soundfontList.add(getDefaultSoundfont(this));
 
-        Uri soundFontsFolder = SettingsManager.getSoundfontsFolderURI(this);
+        Uri soundFontsFolder = SettingsManager.getSoundFontsFolderURI(this);
         if (soundFontsFolder != null) {
             for (String[] array : Helper.listChildrenDocumentIDAndType(this, soundFontsFolder)) {
                 String fileDocumentID = array[0];
@@ -93,7 +93,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
                 if (!isDirectory && name.toLowerCase().endsWith(".sf2")) {
                     DocumentFile soundFontFile = Helper.getFileFromDocumentID(this, soundFontsFolder, fileDocumentID);
                     if (soundFontFile != null) {
-                        soundfontList.add(new SoundfontItemList(this, name, soundFontFile.getUri(), soundfontsListLayout));
+                        soundfontList.add(new SoundfontItemList(this, name, soundFontFile.getUri()));
                     }
                 }
             }
@@ -101,8 +101,8 @@ public class SettingsAudioActivity extends AppCompatActivity {
         return soundfontList;
     }
 
-    public SoundfontItemList getDefaultSoundfont(Context context, ViewGroup parentView) {
-        return new SoundfontItemList(context, context.getString(R.string.settings_default_soundfont), null, parentView);
+    public SoundfontItemList getDefaultSoundfont(Context context) {
+        return new SoundfontItemList(context, context.getString(R.string.settings_default_soundfont), null);
     }
 
     public static boolean isSelectedSoundfontFile(Context context, Uri soundfontUri) {
@@ -122,7 +122,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
         private final Uri uri;
         private final RadioButton radioButton;
 
-        public SoundfontItemList(Context context, String name, Uri uri, ViewGroup parent) {
+        public SoundfontItemList(Context context, String name, Uri uri) {
             this.name = name;
             this.uri = uri;
 

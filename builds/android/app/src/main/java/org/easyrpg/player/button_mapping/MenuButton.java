@@ -24,7 +24,7 @@ public class MenuButton extends VirtualButton {
         int height = realSize / 7;
         for (int i = 0; i < 7; i++) {
             if (i % 2 == 1) {
-                canvas.drawRect(realSize / 6, i * height, (realSize * 5) / 6, (i + 1) * height, painter);
+                canvas.drawRect(realSize / 6f, i * height, (realSize * 5) / 6f, (i + 1) * height, painter);
             }
         }
     }

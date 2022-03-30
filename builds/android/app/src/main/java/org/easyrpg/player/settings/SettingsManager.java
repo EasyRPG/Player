@@ -33,20 +33,19 @@ public class SettingsManager {
     private static SharedPreferences.Editor editor;
 
     private static boolean vibrationEnabled, vibrateWhenSlidingDirectionEnabled;
-    private static boolean audioEnabled, customSoundFountsEnabled;
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static boolean rtpScanningEnabled;
     private static int imageSize, layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
-    // Note: don't store DocumentFile as they can be nullify if there is a problem with the Context
-    // TODO : Should we store String instead of URI? Maybe Uri can be nullify too
-    private static Uri easyRPGFolderURI, rtpFolderURI, soundFountFileURI;
+    // Note: don't store DocumentFile as they can be nullify with a change of context
+    private static Uri easyRPGFolderURI, soundFountFileURI;
     private static List<String> favoriteGamesList = new ArrayList<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
-        RTP_2003_FOLDER_NAME = "2003", SOUNDFONTS_FOLDER_NAME = "soundfonts",
+        RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
         GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
     public static int IMAGE_SIZE_UNIFORM_PIXEL_SIZE = 0, IMAGE_SIZE_STRETCH_IMAGE = 1;
+    public static int FAST_FORWARD_MODE_HOLD = 0, FAST_FORWARD_MODE_TAP = 1;
 
     private SettingsManager() {
     }
@@ -70,7 +69,7 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 1);
+        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
         // Fetch the favorite game list :
@@ -244,7 +243,6 @@ public class SettingsManager {
         editor.commit();
     }
 
-    // TODO : Cache the result?
     public static Uri getGamesFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
         if (easyRPGFolder != null) {
@@ -254,7 +252,6 @@ public class SettingsManager {
         }
     }
 
-    // TODO : Cache the result : it could be heavily used in a game session if RTP scanning is activated
     public static Uri getRTPFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
         if (easyRPGFolder != null) {
@@ -264,11 +261,10 @@ public class SettingsManager {
         }
     }
 
-    // TODO : Cache the result?
-    public static Uri getSoundfontsFolderURI(Context context) {
+    public static Uri getSoundFontsFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
         if (easyRPGFolder != null) {
-            return Helper.findFileUri(context, easyRPGFolder.getUri(), SOUNDFONTS_FOLDER_NAME);
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), SOUND_FONTS_FOLDER_NAME);
         } else {
             return null;
         }
@@ -323,15 +319,15 @@ public class SettingsManager {
         return SettingsManager.inputLayoutVertical;
     }
 
-    public static void setInputLayoutHorizontal(InputLayout inputLayoutHorizontal) {
+    public static void setInputLayoutHorizontal(Context context, InputLayout inputLayoutHorizontal) {
         SettingsManager.inputLayoutHorizontal = inputLayoutHorizontal;
-        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toString());
+        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toStringForSave(context));
         editor.commit();
     }
 
-    public static void setInputLayoutVertical(InputLayout inputLayoutVertical) {
+    public static void setInputLayoutVertical(Context context, InputLayout inputLayoutVertical) {
         SettingsManager.inputLayoutVertical = inputLayoutVertical;
-        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toString());
+        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(context));
         editor.commit();
     }
 }

@@ -21,7 +21,7 @@ import java.io.File;
 
 /**
  * The activity called at launch.
- * Prepare data, launch the standalone mode or the proper gamebrowser (depending on api's version)
+ * Prepare data, launch the standalone mode or the proper GameBrowser (depending on api's version)
  * To start the standalone mode : put your project in assets/games
  * ("game" is the project directory, no sub folder)
  */
@@ -37,7 +37,7 @@ public class InitActivity extends AppCompatActivity {
         SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
-        ((Button) findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
+        (findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
         // prepareData();
 

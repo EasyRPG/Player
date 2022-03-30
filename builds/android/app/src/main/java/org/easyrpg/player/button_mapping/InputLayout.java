@@ -8,14 +8,12 @@ import java.util.List;
 
 public class InputLayout {
 
-    private List<VirtualButton> buttonList = new ArrayList<>();
+    private final List<VirtualButton> buttonList = new ArrayList<>();
     private Orientation orientation;
-    private Context context;
 
     public enum Orientation { ORIENTATION_HORIZONTAL, ORIENTATION_VERTICAL }
 
-    public InputLayout(Context context, Orientation orientation) {
-        this.context = context;
+    public InputLayout(Orientation orientation) {
         this.orientation = orientation;
     }
 
@@ -28,7 +26,7 @@ public class InputLayout {
     }
 
     public static InputLayout parse(Context context, Orientation orientation, String inputLayoutString) {
-        InputLayout inputLayout = new InputLayout(context, orientation);
+        InputLayout inputLayout = new InputLayout(orientation);
 
         try {
             String[] buttonStringList = inputLayoutString.split(";");
@@ -57,8 +55,7 @@ public class InputLayout {
         }
     }
 
-    @Override
-    public String toString() {
+    public String toStringForSave(Context context) {
         try {
             StringBuilder sb = new StringBuilder();
 
@@ -113,7 +110,4 @@ public class InputLayout {
         return buttonList;
     }
 
-    public void setButtonList(List<VirtualButton> buttonList) {
-        this.buttonList = buttonList;
-    }
 }

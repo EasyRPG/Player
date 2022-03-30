@@ -65,16 +65,16 @@ public class GameBrowserActivity extends AppCompatActivity
         setContentView(R.layout.activity_games_browser);
 
         // Configure the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Configure the lateral menu
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -83,6 +83,7 @@ public class GameBrowserActivity extends AppCompatActivity
         super.onResume();
 
         scanGamesAndDisplayResult(false);
+        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
     }
 
     /**
@@ -99,7 +100,7 @@ public class GameBrowserActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         // Open the lateral menu
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -143,7 +144,7 @@ public class GameBrowserActivity extends AppCompatActivity
             GameBrowserHelper.openSettingsActivity(this);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -156,7 +157,7 @@ public class GameBrowserActivity extends AppCompatActivity
         }
         isScanProcessing = true;
 
-        // To limit the number of syscalls, we only scan for games at startup and when the user
+        // To limit the number of sys calls, we only scan for games at startup and when the user
         // ask to refresh the games list
         if (forceScan || GameBrowserActivity.displayedGamesList == null) {
             resetGamesList();
@@ -189,7 +190,7 @@ public class GameBrowserActivity extends AppCompatActivity
                         for (String error : errorList) {
                             errorString.append(error).append("\n");
                         }
-                        TextView errorLayout = (TextView) findViewById(R.id.error_text);
+                        TextView errorLayout = findViewById(R.id.error_text);
                         errorLayout.setText(errorString.toString());
 
                         // The "Open the games folder" button
@@ -228,7 +229,7 @@ public class GameBrowserActivity extends AppCompatActivity
         content_layout.removeAllViews();
         getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
 
-        gamesGridRecyclerView = (RecyclerView) findViewById(R.id.games_grid_recycle_view);
+        gamesGridRecyclerView = findViewById(R.id.games_grid_recycle_view);
         gamesGridRecyclerView.setHasFixedSize(true);
         setGamesGridSize();
 
@@ -286,7 +287,7 @@ public class GameBrowserActivity extends AppCompatActivity
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-            // On inflate la vue et on la remplie
+            // Inflate the view and fill it
             View v;
             if (this.nbOfGamesPerLine <= 1) {
                 v = inflater.inflate(R.layout.browser_game_card_portrait, parent, false);
@@ -303,15 +304,11 @@ public class GameBrowserActivity extends AppCompatActivity
 
             // Title
             holder.title.setText(game.getTitle());
-            holder.title.setOnClickListener(v -> {
-                launchGame(position);
-            });
+            holder.title.setOnClickListener(v -> launchGame(position));
 
             // TitleScreen Image
             holder.titleScreen.setImageBitmap(game.getTitleScreen());
-            holder.titleScreen.setOnClickListener(v -> {
-                launchGame(position);
-            });
+            holder.titleScreen.setOnClickListener(v -> launchGame(position));
 
             // Settings Button
             holder.settingsButton.setOnClickListener(v -> {
@@ -395,10 +392,10 @@ public class GameBrowserActivity extends AppCompatActivity
 
             public ViewHolder(View v) {
                 super(v);
-                this.title = (TextView) v.findViewById(R.id.title);
-                this.titleScreen = (ImageView) v.findViewById(R.id.screen);
-                this.settingsButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_option_button);
-                this.favoriteButton = (ImageButton) v.findViewById(R.id.game_browser_thumbnail_favorite_button);
+                this.title = v.findViewById(R.id.title);
+                this.titleScreen = v.findViewById(R.id.screen);
+                this.settingsButton = v.findViewById(R.id.game_browser_thumbnail_option_button);
+                this.favoriteButton = v.findViewById(R.id.game_browser_thumbnail_favorite_button);
             }
         }
     }

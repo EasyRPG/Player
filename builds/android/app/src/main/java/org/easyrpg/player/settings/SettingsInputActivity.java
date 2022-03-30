@@ -29,11 +29,11 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         SettingsManager.init(getApplicationContext());
 
         // Setting UI components
-        CheckBox enableVibrationCheckBox = (CheckBox) findViewById(R.id.settings_enable_vibration);
+        CheckBox enableVibrationCheckBox = findViewById(R.id.settings_enable_vibration);
         enableVibrationCheckBox.setChecked(SettingsManager.isVibrationEnabled());
         enableVibrationCheckBox.setOnClickListener(this);
 
-        enableVibrateWhenSlidingCheckbox = (CheckBox) findViewById(R.id.settings_vibrate_when_sliding);
+        enableVibrateWhenSlidingCheckbox = findViewById(R.id.settings_vibrate_when_sliding);
         enableVibrateWhenSlidingCheckbox.setChecked(SettingsManager.isVibrateWhenSlidingDirectionEnabled());
         enableVibrateWhenSlidingCheckbox.setOnClickListener(this);
 
@@ -41,10 +41,10 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         configureLayoutTransparencySystem();
         configureLayoutSizeSystem();
 
-        ImageButton horizontalLayoutSettingsButton = (ImageButton) findViewById(R.id.settings_horizontal_input_layout_settings_button);
+        ImageButton horizontalLayoutSettingsButton = findViewById(R.id.settings_horizontal_input_layout_settings_button);
         horizontalLayoutSettingsButton.setOnClickListener(view -> editInputLayout(InputLayout.Orientation.ORIENTATION_HORIZONTAL));
 
-        ImageButton verticalLayoutSettingsButton = (ImageButton) findViewById(R.id.settings_vertical_input_layout_settings_button);
+        ImageButton verticalLayoutSettingsButton = findViewById(R.id.settings_vertical_input_layout_settings_button);
         verticalLayoutSettingsButton.setOnClickListener(view -> editInputLayout(InputLayout.Orientation.ORIENTATION_VERTICAL));
     }
 
@@ -61,7 +61,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
     }
 
     private void configureFastForwardButton() {
-        AppCompatSpinner chooseFastForwardModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_fast_forward_mode);
+        AppCompatSpinner chooseFastForwardModeSpinner = findViewById(R.id.settings_fast_forward_mode);
         chooseFastForwardModeSpinner.setSelection(SettingsManager.getFastForwardMode());
         chooseFastForwardModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -75,7 +75,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        fastForwardMultiplierSeekBar = (SeekBar) findViewById(R.id.settings_fast_forward_multiplier);
+        fastForwardMultiplierSeekBar = findViewById(R.id.settings_fast_forward_multiplier);
         fastForwardMultiplierSeekBar.setProgress(SettingsManager.getFastForwardMultiplier() - 2);
         fastForwardMultiplierSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -97,14 +97,14 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         });
 
         // The textview displays the current multiplier value
-        fastForwardMultiplierTextView = (TextView) findViewById(R.id.settings_fast_forward_multiplier_text_view);
+        fastForwardMultiplierTextView = findViewById(R.id.settings_fast_forward_multiplier_text_view);
         String text = getString(R.string.fast_forward_factor) + " " + (fastForwardMultiplierSeekBar.getProgress() + 2) + "x";
         fastForwardMultiplierTextView.setText(text);
     }
 
     private void configureLayoutTransparencySystem() {
         // The seekbar permit to modify this value
-        layoutTransparencyLayout = (SeekBar) findViewById(R.id.settings_layout_transparency);
+        layoutTransparencyLayout = findViewById(R.id.settings_layout_transparency);
         layoutTransparencyLayout.setProgress(SettingsManager.getLayoutTransparency());
         layoutTransparencyLayout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -125,14 +125,14 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         });
 
         // The textview display the current transparency value
-        layoutTransparencyTextView = (TextView) findViewById(R.id.settings_layout_transparency_text_view);
+        layoutTransparencyTextView = findViewById(R.id.settings_layout_transparency_text_view);
         String text = (layoutTransparencyLayout.getProgress() * 100 / 255) + "%";
         layoutTransparencyTextView.setText(text);
     }
 
     public void configureLayoutSizeSystem() {
         // Checkbox : Ignore the predefined layout size
-        CheckBox ignoreLayoutSizeCheckbox = (CheckBox) findViewById(R.id.settings_ignore_layout_size);
+        CheckBox ignoreLayoutSizeCheckbox = findViewById(R.id.settings_ignore_layout_size);
         ignoreLayoutSizeCheckbox.setChecked(SettingsManager.isIgnoreLayoutSizePreferencesEnabled());
         ignoreLayoutSizeCheckbox.setOnClickListener(v -> {
             CheckBox b = (CheckBox) v;
@@ -144,7 +144,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         });
 
         // Seekbar : modify the layout size
-        layoutSizeSeekBar = (SeekBar) findViewById(R.id.settings_layout_size);
+        layoutSizeSeekBar = findViewById(R.id.settings_layout_size);
         layoutSizeSeekBar.setProgress(SettingsManager.getLayoutSize());
         layoutSizeSeekBar.setEnabled(SettingsManager.isIgnoreLayoutSizePreferencesEnabled());
         layoutSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -166,7 +166,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         });
 
         // Textview : display the current transparency value
-        layoutSizeTextView = (TextView) findViewById(R.id.settings_input_size_text_view);
+        layoutSizeTextView = findViewById(R.id.settings_input_size_text_view);
         String text = layoutSizeSeekBar.getProgress() + "%";
         layoutSizeTextView.setText(text);
         layoutSizeTextView.setEnabled(ignoreLayoutSizeCheckbox.isChecked());

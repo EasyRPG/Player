@@ -69,17 +69,17 @@ public class VirtualButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        setProperTransparency(canvas);
+        setProperTransparency();
 
         // Draw the circle surrounding the button's letter
         int border = 5;
-        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - border, painter);
+        canvas.drawCircle(realSize / 2f, realSize / 2f, realSize / 2f - border, painter);
 
         // Draw the letter, centered in the circle
         drawCenter(canvas, painter, String.valueOf(charButton));
     }
 
-    protected void setProperTransparency(Canvas canvas) {
+    protected void setProperTransparency() {
         if (!debug_mode) {
             painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
         }

@@ -18,13 +18,13 @@ public class SettingsMainActivity extends AppCompatActivity implements View.OnCl
         this.setContentView(R.layout.activity_settings_main);
 
         // Setting UI components
-        Button graphicsButton = (Button) findViewById(R.id.settings_main_video);
+        Button graphicsButton = findViewById(R.id.settings_main_video);
         graphicsButton.setOnClickListener(this);
-        Button audioButton = (Button) findViewById(R.id.settings_main_audio);
+        Button audioButton = findViewById(R.id.settings_main_audio);
         audioButton.setOnClickListener(this);
-        Button inputsButton = (Button) findViewById(R.id.settings_main_input);
+        Button inputsButton = findViewById(R.id.settings_main_input);
         inputsButton.setOnClickListener(this);
-        Button folderButton = (Button) findViewById(R.id.settings_main_easyrpg_folders);
+        Button folderButton = findViewById(R.id.settings_main_easyrpg_folders);
         folderButton.setOnClickListener(this);
     }
 

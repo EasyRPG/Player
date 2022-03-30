@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -50,7 +49,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         hideStatusBar();
 
         // Setup the activity depending on the orientation of the inputLayout to modify
-        layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
+        layoutManager = findViewById(R.id.button_mapping_activity_layout);
         if (getIntent().getIntExtra(TAG_ORIENTATION, TAG_ORIENTATION_VALUE_HORIZONTAL) == TAG_ORIENTATION_VALUE_HORIZONTAL) {
             this.inputLayout = SettingsManager.getInputLayoutHorizontal(this);
             this.orientation = InputLayout.Orientation.ORIENTATION_HORIZONTAL;
@@ -148,9 +147,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
         //Save the ButtonMappingModel
         if (orientation == InputLayout.Orientation.ORIENTATION_HORIZONTAL) {
-            SettingsManager.setInputLayoutHorizontal(inputLayout);
+            SettingsManager.setInputLayoutHorizontal(this, inputLayout);
         } else {
-            SettingsManager.setInputLayoutVertical(inputLayout);
+            SettingsManager.setInputLayoutVertical(this, inputLayout);
         }
     }
 

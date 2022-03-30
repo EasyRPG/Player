@@ -23,7 +23,7 @@
 			android:id="@+id/button_open_soundfont_folder"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/open_the_soundfonts_folder" />
+			android:text="@string/open_the_sound_fonts_folder" />
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
 			android:paddingTop="10dp"/>
 
 		<LinearLayout
-			android:id="@+id/settings_soundfonts_list"
+			android:id="@+id/settings_sound_fonts_list"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 

@@ -1,6 +1,5 @@
 package org.easyrpg.player.game_browser;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,7 +21,7 @@ import java.util.List;
 
 public class GameScanner {
     // We use a singleton pattern to allow further optimizations
-    // (Such as caching games' thumbnail, avoiding some syscall ...)
+    // (Such as caching games' thumbnail, avoiding some sys call ...)
     private static volatile GameScanner instance = null;
 
     //Files' names
@@ -30,34 +29,31 @@ public class GameScanner {
 
     private final List<Game> gameList;
     private final List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
-    private Activity context;
 
     private static final int GAME_SCANNING_DEPTH = 2; // 1 = no recursive scanning
 
-    private GameScanner(Activity activity) {
+    private GameScanner() {
         this.gameList = new ArrayList<>();
         this.errorList = new ArrayList<>();
-        this.context = activity;
     }
 
-    public static GameScanner getInstance(Activity activity) {
+    public static GameScanner getInstance(Context context) {
         // Singleton pattern
         if (GameScanner.instance == null) {
             synchronized(GameScanner.class) {
                 if (GameScanner.instance == null) {
-                    GameScanner.instance = new GameScanner(activity);
+                    GameScanner.instance = new GameScanner();
                 }
             }
         }
-        GameScanner.instance.context = activity;
 
         //Scan the folder
-        instance.scanGames();
+        instance.scanGames(context);
 
         return instance;
     }
 
-    private void scanGames(){
+    private void scanGames(Context context){
         gameList.clear();
         errorList.clear();
 
@@ -89,7 +85,7 @@ public class GameScanner {
 
         // Scan the games folder
         // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
-        scanFolderRecursive(gamesFolder.getUri(), GAME_SCANNING_DEPTH);
+        scanFolderRecursive(context, gamesFolder.getUri(), GAME_SCANNING_DEPTH);
 
         // If the scan brings nothing in this folder : we notify the errorList
         if (gameList.size() <= 0) {
@@ -100,7 +96,7 @@ public class GameScanner {
         Log.i("EasyRPG", gameList.size() + " game(s) found.");
     }
 
-    private void scanFolderRecursive(Uri folderURI, int depth) {
+    private void scanFolderRecursive(Context context, Uri folderURI, int depth) {
         if (depth > 0) {
             for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
                 String fileDocumentID = array[0];
@@ -123,7 +119,7 @@ public class GameScanner {
                             // Not a RPG2k Game but a directory -> recurse
                             // (We don't check if it's a directory or if its readable  because of slow
                             // Android SAF calls and scanFolder(...) already check that)
-                            scanFolderRecursive(fileURI, depth - 1);
+                            scanFolderRecursive(context, fileURI, depth - 1);
                         }
                     }
                 }
@@ -132,14 +128,14 @@ public class GameScanner {
     }
 
     /** Return a game if "folder" is a game folder, or return null.
-     *  This method is designed to reduce the number of syscalls */
+     *  This method is designed to reduce the number of sys calls */
     public static Game isAGame(Context context, Uri uri) {
         Game game = null;
         Uri titleFolderURI = null;
         Uri iniFileURI = null;
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
-        int rpgrtCount = 0;
+        int rpgRtCount = 0;
         boolean databaseFound = false;
         boolean treemapFound = false;
         boolean isARpgGame = false;
@@ -158,11 +154,11 @@ public class GameScanner {
             // Show it, and let the C++ code sort out which file is which.
             if (fileName.toLowerCase().startsWith("rpg_rt.")) {
                 if (!(fileName.equalsIgnoreCase(INI_FILE) || fileName.equalsIgnoreCase(EXE_FILE))) {
-                    rpgrtCount += 1;
+                    rpgRtCount += 1;
                 }
             }
 
-            if ((databaseFound && treemapFound) || rpgrtCount == 2) {
+            if ((databaseFound && treemapFound) || rpgRtCount == 2) {
                 isARpgGame = true;
             }
 
@@ -200,7 +196,7 @@ public class GameScanner {
         boolean treemapFound = false;
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
-        int rpgrtCount = 0;
+        int rpgRtCount = 0;
 
         for (DocumentFile entry : dir.listFiles()) {
             if (entry.isFile() && entry.canRead()) {
@@ -219,7 +215,7 @@ public class GameScanner {
                 // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
                 if (entryName.toLowerCase().startsWith("rpg_rt.")) {
                     if (!(entryName.equalsIgnoreCase(INI_FILE) || entryName.equalsIgnoreCase(EXE_FILE))) {
-                        rpgrtCount += 1;
+                        rpgRtCount += 1;
                     }
                 }
 
@@ -231,7 +227,7 @@ public class GameScanner {
 
         // We might be dealing with a non-standard extension.
         // Show it, and let the C++ code sort out which file is which.
-        return rpgrtCount == 2;
+        return rpgRtCount == 2;
     }
 
     public List<Game> getGameList() {

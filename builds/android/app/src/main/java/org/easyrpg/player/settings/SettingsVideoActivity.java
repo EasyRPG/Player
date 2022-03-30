@@ -25,29 +25,23 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
         SettingsManager.init(getApplicationContext());
 
         // Setting UI components
-        this.forceLandscapeModeCheckbox = (CheckBox) findViewById(R.id.force_landscape_mode);
+        this.forceLandscapeModeCheckbox = findViewById(R.id.force_landscape_mode);
         this.forceLandscapeModeCheckbox.setChecked(SettingsManager.isForcedLandscape());
         this.forceLandscapeModeCheckbox.setOnClickListener(this);
 
         // Image size
         this.imageSizeUniformPixelRadioButton  = findViewById(R.id.settings_image_uniform_pixel_size_radio_button);
         imageSizeRadioButtonList.add(imageSizeUniformPixelRadioButton);
-        imageSizeUniformPixelRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
-                updateImageSizeRadioButtonCheckStatus();
-            }
+        imageSizeUniformPixelRadioButton.setOnClickListener(view -> {
+            SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
+            updateImageSizeRadioButtonCheckStatus();
         });
 
         this.imageSizeStretchPixelRadioButton  = findViewById(R.id.settings_image_stretch_radio_button);
         imageSizeRadioButtonList.add(imageSizeStretchPixelRadioButton);
-        imageSizeStretchPixelRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_STRETCH_IMAGE);
-                updateImageSizeRadioButtonCheckStatus();
-            }
+        imageSizeStretchPixelRadioButton.setOnClickListener(view -> {
+            SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_STRETCH_IMAGE);
+            updateImageSizeRadioButtonCheckStatus();
         });
 
         updateImageSizeRadioButtonCheckStatus();
