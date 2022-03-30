@@ -149,22 +149,23 @@ public class GameBrowserActivity extends AppCompatActivity
     }
 
     public void scanGamesAndDisplayResult(boolean forceScan) {
-        resetGamesList();
-
+        // Verify that a scan isn't processing
         // TODO : Make the use of isScanProcessing synchronized (not really useful)
         if (isScanProcessing){
             return;
         }
         isScanProcessing = true;
 
-        // Empty the games list and display a loading icon
-        RelativeLayout content_layout = findViewById(R.id.browser_layout);
-        content_layout.removeAllViews();
-        getLayoutInflater().inflate(R.layout.loading_panel, content_layout);
-
         // To limit the number of syscalls, we only scan for games at startup and when the user
         // ask to refresh the games list
         if (forceScan || GameBrowserActivity.displayedGamesList == null) {
+            resetGamesList();
+
+            // Empty the games list and display a loading icon
+            RelativeLayout content_layout = findViewById(R.id.browser_layout);
+            content_layout.removeAllViews();
+            getLayoutInflater().inflate(R.layout.loading_panel, content_layout);
+
             // Start the scan asynchronously
             Activity activity = this;
             new Thread(() -> {
@@ -215,9 +216,8 @@ public class GameBrowserActivity extends AppCompatActivity
             }).start();
         } else {
             displayGamesList();
+            isScanProcessing = false;
         }
-
-
     }
 
     /** Only use when the scan is cached */
@@ -246,12 +246,14 @@ public class GameBrowserActivity extends AppCompatActivity
      * Set the layout manager depending on the screen orientation
      */
     public void setGamesGridSize() {
-        // Determine the layout template (List or Grid, number of element per line for the grid)
-        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        this.nbOfGamesPerLine = (int)(dpWidth / THUMBNAIL_HORIZONTAL_SIZE_DPI);
+        if (gamesGridRecyclerView != null) {
+            // Determine the layout template (List or Grid, number of element per line for the grid)
+            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            this.nbOfGamesPerLine = (int) (dpWidth / THUMBNAIL_HORIZONTAL_SIZE_DPI);
 
-        gamesGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
+            gamesGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
+        }
     }
 
     public static Game getSelectedGame() {

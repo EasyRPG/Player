@@ -93,7 +93,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="default_layout">Default</string>
 	<string name="horizontal_input_layout">Horizontal (Landscape) Input Layout</string>
 	<string name="vertical_input_layout">Vertical (Portrait) Input Layout</string>
-	<string name="settings_edit_layout_explanation">When editing an input layout, a button can be added (ex. a Shift button).\n Just press the back button and select \"add a button\".</string>
+	<string name="settings_edit_layout_explanation">When editing an input layout, buttons can be added (e.g. a Shift button).\n To add a button press the back button and select "Add a button".</string>
 
     <!--ButtonMapping Activity-->
     <string name="add_a_button">Add a button</string>
