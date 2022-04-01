@@ -1,9 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import org.easyrpg.player.Helper;
-import org.easyrpg.player.settings.SettingsManager;
-import org.libsdl.app.SDLActivity;
-
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -13,16 +10,20 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.settings.SettingsManager;
+import org.libsdl.app.SDLActivity;
+
 public class VirtualButton extends View {
     protected int keyCode;
     protected double posX, posY; // Relative position on the screen
     protected int originalSize, originalLetterSize, resizeFactor, realSize;
     protected char charButton; // The char displayed on the button
     protected Paint painter;
-    protected Rect bound, letterBound = new Rect();
+    protected Rect bound;
     protected boolean isPressed; // To know when the touch go out the button
     protected boolean debug_mode;
-    protected Context context;
+    protected Activity activity;
     protected Vibrator vibrator;
 
     public static final int DPAD = -1, ENTER = KeyEvent.KEYCODE_SPACE, CANCEL = KeyEvent.KEYCODE_B,
@@ -32,19 +33,19 @@ public class VirtualButton extends View {
             KEY_8 = KeyEvent.KEYCODE_8, KEY_9 = KeyEvent.KEYCODE_9, KEY_PLUS = 157, KEY_MINUS = 156, KEY_MULTIPLY = 155,
             KEY_DIVIDE = 154, KEY_FAST_FORWARD = KeyEvent.KEYCODE_F;
 
-    public static VirtualButton Create(Context context, int keyCode, double posX, double posY, int size) {
+    public static VirtualButton Create(Activity activity, int keyCode, double posX, double posY, int size) {
         if (keyCode == KEY_FAST_FORWARD) {
-            return new FastForwardingButton(context, keyCode, posX, posY, size);
+            return new FastForwardingButton(activity, keyCode, posX, posY, size);
         }
 
-        return new VirtualButton(context, keyCode, posX, posY, size);
+        return new VirtualButton(activity, keyCode, posX, posY, size);
     }
 
-    protected VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
-        super(context);
-        this.context = context;
+    protected VirtualButton(Activity activity, int keyCode, double posX, double posY, int size) {
+        super(activity);
+        this.activity = activity;
 
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
 
         this.keyCode = keyCode;
         this.posX = posX;
@@ -69,17 +70,17 @@ public class VirtualButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        setProperTransparency(canvas);
+        setProperTransparency();
 
         // Draw the circle surrounding the button's letter
         int border = 5;
-        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - border, painter);
+        canvas.drawCircle(realSize / 2f, realSize / 2f, realSize / 2f - border, painter);
 
         // Draw the letter, centered in the circle
         drawCenter(canvas, painter, String.valueOf(charButton));
     }
 
-    protected void setProperTransparency(Canvas canvas) {
+    protected void setProperTransparency() {
         if (!debug_mode) {
             painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
         }
@@ -244,10 +245,6 @@ public class VirtualButton extends View {
 
     public int getKeyCode() {
         return keyCode;
-    }
-
-    public char getCharButton() {
-        return charButton;
     }
 
     public int getSize() {

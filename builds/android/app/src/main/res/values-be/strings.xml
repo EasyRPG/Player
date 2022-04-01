@@ -23,7 +23,7 @@
   <string name="no">Не</string>
   <string name="creating_dir_failed">Не атрымалася стварыць дырэкторыю $PATH</string>
   <string name="path_not_readable">Немагчыма прачытаць $PATH</string>
-  <string name="no_games_found_and_explanation">Гульні для RPG Maker 2000/2003 не знойдзеныя.
+  <string name="no_games_found_and_explanation_old">Гульні для RPG Maker 2000/2003 не знойдзеныя.
 Дадатковыя дэрэкторыі для гульняў можна выбраць у наладах.</string>
   <string name="no_external_storage">Не знойдзены знешні дыск (напр. SD-карта)</string>
   <string name="not_valid_game">$PATH — не гульня ці не падтрымліваецца.</string>
@@ -35,7 +35,7 @@
   <string name="refresh">Анавіць</string>
   <string name="change_default_mapping">Змяніць стандартныя значэнні кнопак</string>
   <string name="how_to_use_easy_rpg">Інструкцыя да EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Інструкцыі па ўсталёўцы:\n\nПа змаўчанні адкрываюцца гульні з дырэкторыі /easyrpg/games. Вы можаце выбраць дадактовыя дырэкторыі ў наладах.\n\nНеабавязковае: Распакуйце RTP для RPG Maker 2000 у /easyrpg/rtp/2000, а RTP для RPG Maker 2003 у /easyrpg/rtp/2003.\n\nКаб праграма магла знайсці гульні, іх трэба распакаваць у паддырэкторыю ўсярэдзіне /easyrpg/games (па змаўчанні), напрыклад:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame.zip — НЯПРАВІЛЬНА. ZIP і EXE не падтрымліваюцца.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Інструкцыі па ўсталёўцы:\n\nПа змаўчанні адкрываюцца гульні з дырэкторыі /easyrpg/games. Вы можаце выбраць дадактовыя дырэкторыі ў наладах.\n\nНеабавязковае: Распакуйце RTP для RPG Maker 2000 у /easyrpg/rtp/2000, а RTP для RPG Maker 2003 у /easyrpg/rtp/2003.\n\nКаб праграма магла знайсці гульні, іх трэба распакаваць у паддырэкторыю ўсярэдзіне /easyrpg/games (па змаўчанні), напрыклад:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правільна.\n\t/easyrpg/games/MyGame.zip — НЯПРАВІЛЬНА. ZIP і EXE не падтрымліваюцца.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Паказ FPS</string>
   <string name="toggle_ui">Паказ віртуальных кнопак</string>

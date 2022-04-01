@@ -1,87 +1,77 @@
 package org.easyrpg.player.settings;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.widget.Toast;
-
-import org.easyrpg.player.R;
-import org.easyrpg.player.game_browser.GameBrowserHelper;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
+import static org.easyrpg.player.settings.SettingsEnum.EASYRPG_FOLDER_URI;
+import static org.easyrpg.player.settings.SettingsEnum.ENABLE_RTP_SCANNING;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
 import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FAVORITE_GAMES;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
-import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
+import static org.easyrpg.player.settings.SettingsEnum.IMAGE_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_TRANSPARENCY;
-import static org.easyrpg.player.settings.SettingsEnum.MAIN_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION;
 import static org.easyrpg.player.settings.SettingsEnum.VIBRATION_ENABLED;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+
+import androidx.documentfile.provider.DocumentFile;
+
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.button_mapping.InputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsManager {
     private final static long VIBRATION_DURATION = 20; // ms
 
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
-    private static Context context;
 
-    private static boolean vibrationEnabled;
-    private static boolean vibrateWhenSlidingDirectionEnabled;
-    private static boolean audioEnabled;
+    private static boolean vibrationEnabled, vibrateWhenSlidingDirectionEnabled;
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
-    private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
-    private static String easyRPGFolder;
-    private static List<String> gamesFolderList = new ArrayList<>();
+    private static boolean rtpScanningEnabled;
+    private static int imageSize, layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
+    private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
+    // Note: don't store DocumentFile as they can be nullify with a change of context
+    private static Uri easyRPGFolderURI, soundFountFileURI;
     private static List<String> favoriteGamesList = new ArrayList<>();
+    public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
+        RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
+        GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
+    public static int IMAGE_SIZE_UNIFORM_PIXEL_SIZE = 0, IMAGE_SIZE_STRETCH_IMAGE = 1;
+    public static int FAST_FORWARD_MODE_HOLD = 0, FAST_FORWARD_MODE_TAP = 1;
 
     private SettingsManager() {
     }
 
     public static void init(Context context) {
-        SettingsManager.context = context;
         SettingsManager.pref = PreferenceManager.getDefaultSharedPreferences(context);
         SettingsManager.editor = pref.edit();
 
-        loadSettings();
+        loadSettings(context);
     }
 
-    private static void loadSettings() {
+    // TODO : Totally remove loadSettings & init? (in case of the crash of an application, some field can be set to null?)
+    private static void loadSettings(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
+        imageSize = sharedPref.getInt(IMAGE_SIZE.toString(), IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
+        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), false);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
-        audioEnabled = sharedPref.getBoolean(AUDIO_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
-        vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), false);
+        vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
-        easyRPGFolder = sharedPref.getString(MAIN_DIRECTORY.toString(),
-                Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
+        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
-
-        // Fetch the games directories :
-        gamesFolderList = new ArrayList<>();
-        // 1) The default directory (cannot be modified)
-        gamesFolderList.add(easyRPGFolder + "/games");
-        // 2) Others defined by users (separator : "*")
-        String gameFolderListString = sharedPref.getString(GAMES_DIRECTORY.toString(), "");
-        if (!gameFolderListString.isEmpty()) {
-            for (String folder : gameFolderListString.split("\\*")) {
-                if (!gamesFolderList.contains(folder)) {
-                    gamesFolderList.add(folder);
-                }
-            }
-        }
 
         // Fetch the favorite game list :
         favoriteGamesList = new ArrayList<>();
@@ -96,73 +86,20 @@ public class SettingsManager {
         }
     }
 
-    public static List<String> getGamesFolderList() {
-        return gamesFolderList;
-    }
-
     public static List<String> getFavoriteGamesList() {
         return favoriteGamesList;
     }
 
-    public static void addGameDirectory(String pathToAdd) {
-        pathToAdd = pathToAdd.trim();
+    public static void addFavoriteGame(String gameTitle) {
+        gameTitle = gameTitle.trim();
 
-        // 1) The game folder must not be already in the list
-        if (gamesFolderList.contains(pathToAdd)) {
-            return;
-        }
-
-        // 2) Verify read permission
-        File f = new File(pathToAdd);
-        if (!f.canRead()) {
-            Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", pathToAdd), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // 3) When the user selects a directory containing a game, select automatically the folder above
-        if (GameBrowserHelper.isRpg2kGame(f)) {
-            pathToAdd = pathToAdd.substring(0, pathToAdd.lastIndexOf("/"));
-        }
-
-        // Update user's preferences
-        gamesFolderList.add(pathToAdd);
-
-        setGameFolderList(gamesFolderList);
-    }
-
-    public static void removeAGameFolder(String path) {
-        gamesFolderList.remove(path);
-        setGameFolderList(gamesFolderList);
-    }
-
-    private static void setGameFolderList(List<String> folderList) {
-        gamesFolderList = folderList;
-
-        StringBuilder sb = new StringBuilder();
-        for (String folder : gamesFolderList) {
-            sb.append(folder).append('*');
-        }
-        editor.putString(SettingsEnum.GAMES_DIRECTORY.toString(), sb.toString());
-        editor.commit();
-    }
-
-    public static void addFavoriteGame(String pathToAdd) {
-        pathToAdd = pathToAdd.trim();
-
-        // 1) The game folder must not be already in the list
-        if (favoriteGamesList.contains(pathToAdd)) {
-            return;
-        }
-
-        // 2) Verify read permission
-        File f = new File(pathToAdd);
-        if (!f.canRead()) {
-            Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", pathToAdd), Toast.LENGTH_LONG).show();
+        // The game folder must not be already in the list
+        if (favoriteGamesList.contains(gameTitle)) {
             return;
         }
 
         // Update user's preferences
-        favoriteGamesList.add(pathToAdd);
+        favoriteGamesList.add(gameTitle);
 
         setFavoriteGamesList(favoriteGamesList);
     }
@@ -183,8 +120,14 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static String getEasyRPGFolder() {
-        return easyRPGFolder;
+    public static int getImageSize() {
+        return imageSize;
+    }
+
+    public static void setImageSize(int imageSize) {
+        SettingsManager.imageSize = imageSize;
+        editor.putInt(IMAGE_SIZE.toString(), imageSize);
+        editor.commit();
     }
 
     public static long getVibrationDuration() {
@@ -198,6 +141,16 @@ public class SettingsManager {
     public static void setVibrationEnabled(boolean b) {
         vibrationEnabled = b;
         editor.putBoolean(SettingsEnum.VIBRATION_ENABLED.toString(), b);
+        editor.commit();
+    }
+
+    public static boolean isRTPScanningEnabled() {
+        return rtpScanningEnabled;
+    }
+
+    public static void setRTPScanningEnabled(boolean rtpScanningEnabled) {
+        SettingsManager.rtpScanningEnabled = rtpScanningEnabled;
+        editor.putBoolean(ENABLE_RTP_SCANNING.toString(), rtpScanningEnabled);
         editor.commit();
     }
 
@@ -228,16 +181,6 @@ public class SettingsManager {
     public static void setVibrateWhenSlidingDirectionEnabled(boolean b) {
         vibrateWhenSlidingDirectionEnabled = b;
         editor.putBoolean(SettingsEnum.VIBRATE_WHEN_SLIDING_DIRECTION.toString(), b);
-        editor.commit();
-    }
-
-    public static boolean isAudioEnabled() {
-        return audioEnabled;
-    }
-
-    public static void setAudioEnabled(boolean b) {
-        audioEnabled = b;
-        editor.putBoolean(SettingsEnum.AUDIO_ENABLED.toString(), b);
         editor.commit();
     }
 
@@ -279,6 +222,113 @@ public class SettingsManager {
     public static void setForcedLandscape(boolean b) {
         forcedLandscape = b;
         editor.putBoolean(SettingsEnum.FORCED_LANDSCAPE.toString(), b);
+        editor.commit();
+    }
+
+    public static Uri getEasyRPGFolderURI(Context context) {
+        if (easyRPGFolderURI == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String gamesFolderString = sharedPref.getString(EASYRPG_FOLDER_URI.toString(), "");
+            if (gamesFolderString == null || gamesFolderString.isEmpty()) {
+                easyRPGFolderURI = null;
+            } else {
+                easyRPGFolderURI = Uri.parse(gamesFolderString);
+            }
+        }
+        return easyRPGFolderURI;
+    }
+
+    public static void setEasyRPGFolderURI(Uri easyRPGFolderURI) {
+        SettingsManager.easyRPGFolderURI = easyRPGFolderURI;
+        editor.putString(SettingsEnum.EASYRPG_FOLDER_URI.toString(), easyRPGFolderURI.toString());
+        editor.commit();
+    }
+
+    public static Uri getGamesFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), GAMES_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
+    public static Uri getRTPFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), RTP_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
+    public static Uri getSoundFontsFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), SOUND_FONTS_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
+    public static Uri getSoundFountFileURI(Context context) {
+        if (soundFountFileURI == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String soundfontURI = sharedPref.getString(SettingsEnum.SOUNDFONT_URI.toString(), "");
+            if (soundfontURI == null || soundfontURI.isEmpty()) {
+                soundFountFileURI = null;
+            } else {
+                soundFountFileURI = Uri.parse(soundfontURI);
+            }
+        }
+        return soundFountFileURI;
+    }
+
+    public static void setSoundFountFileURI(Uri soundFountFileURI) {
+        String st = "";
+        SettingsManager.soundFountFileURI = soundFountFileURI;
+        if (soundFountFileURI != null) {
+            st = soundFountFileURI.toString();
+        }
+        editor.putString(SettingsEnum.SOUNDFONT_URI.toString(), st);
+        editor.commit();
+    }
+
+    public static InputLayout getInputLayoutHorizontal(Activity activity) {
+        if (inputLayoutHorizontal == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), null);
+            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+                SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(activity);
+            } else {
+                SettingsManager.inputLayoutHorizontal = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
+            }
+        }
+        return SettingsManager.inputLayoutHorizontal;
+    }
+
+    public static InputLayout getInputLayoutVertical(Activity activity) {
+        if (inputLayoutVertical == null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
+            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+                SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(activity);
+            } else {
+                SettingsManager.inputLayoutVertical = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
+            }
+        }
+        return SettingsManager.inputLayoutVertical;
+    }
+
+    public static void setInputLayoutHorizontal(Activity activity, InputLayout inputLayoutHorizontal) {
+        SettingsManager.inputLayoutHorizontal = inputLayoutHorizontal;
+        editor.putString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), inputLayoutHorizontal.toStringForSave(activity));
+        editor.commit();
+    }
+
+    public static void setInputLayoutVertical(Activity activity, InputLayout inputLayoutVertical) {
+        SettingsManager.inputLayoutVertical = inputLayoutVertical;
+        editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(activity));
         editor.commit();
     }
 }

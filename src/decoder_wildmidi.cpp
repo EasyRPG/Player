@@ -33,36 +33,10 @@
 #include "platform/libretro/libretro_ui.h"
 #endif
 
-#if defined(USE_SDL) && defined(__ANDROID__)
-#  include <jni.h>
-#  include "SDL_system.h"
-#  include "string.h"
-#endif
-
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
  * however, they cause high cpu usage, so not using them for now.
  */
 #define WILDMIDI_OPTS 0
-
-#if defined(USE_SDL) && defined(__ANDROID__)
-std::string get_timidity_path_jni() {
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getTimidityPath = env->GetMethodID(cls, "getTimidityPath", "()Ljava/lang/String;");
-	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getTimidityPath);
-
-	const char *js = env->GetStringUTFChars(return_string, nullptr);
-
-	std::string ret_str = js;
-
-	env->ReleaseStringUTFChars(return_string, js);
-	env->DeleteLocalRef(sdl_activity);
-	env->DeleteLocalRef(cls);
-
-	return ret_str;
-}
-#endif
 
 static void WildMidiDecoder_deinit() {
 	WildMidi_Shutdown();
@@ -187,20 +161,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = "/switch/easyrpg-player/wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
-#elif defined(__ANDROID__)
-	// Use JNI to obtain the path
-	std::string path = get_timidity_path_jni();
-
-	config_file = path + "/wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// Support old app installs where wildmidi.cfg wasn't bundled
-	// (the timidity folder is only extracted on first run)
-	if (!found) {
-		config_file = path + "/timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__vita__)
+#elif defined(PSP2)
 	// Only wildmidi paths, no timidity because it was never used on PSVita
 
 	// Shipped

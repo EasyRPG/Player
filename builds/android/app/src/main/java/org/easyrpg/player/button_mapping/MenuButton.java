@@ -1,6 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Canvas;
 
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
@@ -10,8 +10,8 @@ public class MenuButton extends VirtualButton {
     public static final int MENU_BUTTON_KEY = -2;
 
 
-    public MenuButton(Context context, double posX, double posY, int size) {
-        super(context, MENU_BUTTON_KEY, posX, posY, size);
+    public MenuButton(Activity activity, double posX, double posY, int size) {
+        super(activity, MENU_BUTTON_KEY, posX, posY, size);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class MenuButton extends VirtualButton {
         int height = realSize / 7;
         for (int i = 0; i < 7; i++) {
             if (i % 2 == 1) {
-                canvas.drawRect(realSize / 6, i * height, (realSize * 5) / 6, (i + 1) * height, painter);
+                canvas.drawRect(realSize / 6f, i * height, (realSize * 5) / 6f, (i + 1) * height, painter);
             }
         }
     }
@@ -45,7 +45,7 @@ public class MenuButton extends VirtualButton {
     public void onReleased() {
         // Open the menu
         if (!debug_mode) {
-            EasyRpgPlayerActivity.staticOpenOrCloseMenu();
+            EasyRpgPlayerActivity.staticOpenOrCloseMenu((EasyRpgPlayerActivity) activity);
         }
     }
 }

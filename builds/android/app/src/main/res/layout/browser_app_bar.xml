@@ -22,5 +22,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/browser_games_grid"/>
+    <RelativeLayout
+        android:id="@+id/browser_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+        android:padding="@dimen/activity_vertical_margin"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="10dp"
-              tools:context="org.easyrpg.player.settings.SettingsAudioActivity">
-
-    <CheckBox
-        android:id="@+id/settings_audio"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/settings_audio_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/enable_audio"
-        android:textSize="20sp"/>
-</LinearLayout>
+        android:orientation="vertical"
+        tools:context="org.easyrpg.player.settings.SettingsAudioActivity"
+        android:padding="20dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_custom_soundfont"
+            android:textSize="20sp"
+            android:textColor="#000000"/>
+        <Button
+            android:id="@+id/button_open_soundfont_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_the_sound_fonts_folder" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_soundfont_explanation"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_soundfont_restart_app"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_soundfont_found"
+            android:textSize="20sp"
+            android:paddingTop="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/settings_sound_fonts_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical"/>
+    </LinearLayout>
+</ScrollView>

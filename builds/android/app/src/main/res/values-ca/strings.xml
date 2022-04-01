@@ -23,7 +23,7 @@
   <string name="no">No</string>
   <string name="creating_dir_failed">Ha fallat la creació del directori $PATH</string>
   <string name="path_not_readable">No es pot llegir $PATH</string>
-  <string name="no_games_found_and_explanation">No s\'han trobat jocs de RPG Maker 2000/2003.
+  <string name="no_games_found_and_explanation_old">No s\'han trobat jocs de RPG Maker 2000/2003.
 Pots afegir directoris addicionals a la configuració.</string>
   <string name="no_external_storage">No s\'ha trobat emmagatzematge extern (per exemple targeta SD)</string>
   <string name="not_valid_game">$PATH no és un joc vàlid</string>
@@ -35,7 +35,7 @@ Pots afegir directoris addicionals a la configuració.</string>
   <string name="refresh">Refresca</string>
   <string name="change_default_mapping">Canvia la disposició dels botons predeterminada</string>
   <string name="how_to_use_easy_rpg">Com fer servir l\'EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Instruccions d’instal·lació:\n\nDe manera predeterminada, els jocs es cerquen a /easyrpg/games. Pots afegir directoris addicionals de jocs a la configuració.\n\nOpcional: posa el RTP a /easyrpg/rtp/2000 per al RTP del RPG Maker 2000 i /easyrpg/rtp/2003 per al RTP del RPG Maker 2003.\n\nPer a poder detectar els jocs correctament, s\'han de posar en un subdirectori de /easyrpg/games (de manera predeterminada), per exemple: \n\n\t/easyrpg/games/ElMeuJoc/Data/ RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc/RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc.zip és INCORRECTE. Els formats ZIP i EXE no són compatibles.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Instruccions d’instal·lació:\n\nDe manera predeterminada, els jocs es cerquen a /easyrpg/games. Pots afegir directoris addicionals de jocs a la configuració.\n\nOpcional: posa el RTP a /easyrpg/rtp/2000 per al RTP del RPG Maker 2000 i /easyrpg/rtp/2003 per al RTP del RPG Maker 2003.\n\nPer a poder detectar els jocs correctament, s\'han de posar en un subdirectori de /easyrpg/games (de manera predeterminada), per exemple: \n\n\t/easyrpg/games/ElMeuJoc/Data/ RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc/RPG_RT.ldb és correcte.\n\t/easyrpg/games/ElMeuJoc.zip és INCORRECTE. Els formats ZIP i EXE no són compatibles.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Commutar FPS</string>
   <string name="toggle_ui">Commutar botons virtuals</string>

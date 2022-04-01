@@ -24,8 +24,8 @@
     <string name="no">No</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
-    <string name="no_games_found_and_explanation">No RPG Maker 2000/2003 games found.
-You can add additional game directories in the settings.</string>
+    <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found. Put them in subdirectories of the "games" folder.\nThe EasyRPG folder can be changed in the settings.</string>
+    <string name="open_games_folder">Open the games folder</string>
     <string name="no_external_storage">No external storage (e.g. SD card) found</string>
     <string name="not_valid_game">$PATH is not a valid game</string>
     <string name="select_game_region">Select game region</string>
@@ -36,7 +36,7 @@ You can add additional game directories in the settings.</string>
     <string name="refresh">Refresh</string>
     <string name="change_default_mapping">Change the default button mapping</string>
     <string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
-    <string name="how_to_use_easy_rpg_explanation">Installation instructions:\n\nBy default games are searched in /easyrpg/games. You can add additional game directories in the settings.\n\nOptional: Place the RTP in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and in /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n\nTo get games properly detected they must be put in a subdirectory of /easyrpg/games (by default), e.g.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip is WRONG. ZIP and EXE are unsupported.</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the "games" folder.\nGames have to be uncompressed.\nZIP, RAR, LZH and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
 
     <!--Ingame menu-->
     <string name="toggle_fps">Toggle FPS</string>
@@ -54,32 +54,46 @@ Please tell us in detail what went wrong.\n\n
     <string name="video">Video</string>
     <string name="audio">Audio</string>
     <string name="input">Input</string>
-    <string name="game_folders">Game folders</string>
+    <string name="easyrpg_folders">EasyRPG Folders</string>
     <string name="settings">Settings</string>
-    <string name="add_game_folder">Add a game folder</string>
+    <string name="screen_size">Screen size:</string>
+    <string name="force_landscape_mode">Force landscape orientation</string>
+    <string name="uniform_pixel_size_best_image_quality">Uniform pixel size (best image quality)</string>
+    <string name="stretch_the_image_wider_image">Stretch the image (wider image)</string>
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
-    <string name="enable_audio">Enable audio</string>
+    <string name="settings_custom_soundfont">Custom Soundfont:</string>
+    <string name="open_the_sound_fonts_folder">Open the soundfonts folder</string>
+    <string name="settings_soundfont_explanation">Put soundfonts in SF2-format in the \"soundfonts\" folder. Soundfonts alter how MIDI music sounds.</string>
+    <string name="settings_soundfont_restart_app">Please quit and restart the app after selecting a soundfont.</string>
+    <string name="settings_soundfont_found">Soundfonts found:</string>
+    <string name="settings_default_soundfont">Default Soundfont</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="quick_access">Quick access</string>
-    <string name="force_landscape_mode">Force landscape orientation</string>
     <string name="fast_forward">Fast-forward button mode:</string>
     <string-array name="fast_forward_mode">
         <item>hold</item>
         <item>tap</item>
     </string-array>
     <string name="fast_forward_factor">Speed multiplier:</string>
+    <string name="select_the_games_folder">Select EasyRPG folder</string>
+    <string name="id_select_games_folder_explanation">For using EasyRPG Player you must select a folder.\nThis folder is exclusive to EasyRPG Player.\n\nDo not select a folder that contains other things, such as the download folder.\nRPG Maker 2000/2003 games must be put in the "games" subdirectory of this folder.</string>
+    <string name="Loading">Loading…</string>
+    <string name="enable_rtp_support">Enable RTP support</string>
+    <string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".\nPlease note that enabling RTP support will significantly increase the initial loading time of a game.</string>
+    <string name="open_rtp_folder">Open the RTP folder</string>
 
     <!--InputLayout Managing-->
-    <string name="manage_input_layouts">Manage input layouts:</string>
-    <string name="add_an_input_layout">Add an input layout</string>
-    <string name="set_as_default">Set as default</string>
+    <string name="manage_input_layouts">Manage Input Layouts:</string>
     <string name="edit_name">Edit name</string>
     <string name="edit_layout">Edit layout</string>
     <string name="delete">Delete</string>
     <string name="default_layout">Default</string>
+    <string name="horizontal_input_layout">Horizontal (Landscape) Input Layout</string>
+    <string name="vertical_input_layout">Vertical (Portrait) Input Layout</string>
+    <string name="settings_edit_layout_explanation">When editing an input layout, buttons can be added (e.g. a Shift button).\n To add a button press the back button and select "Add a button".</string>
 
     <!--ButtonMapping Activity-->
     <string name="add_a_button">Add a button</string>
@@ -91,7 +105,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="key_shift">Shift</string>
     <string name="key_fast_forward">Fast forward</string>
 
-    <!--GameBrowserAPI15-->
+    <!--GameBrowser Activity-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>

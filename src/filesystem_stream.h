@@ -37,6 +37,7 @@ namespace Filesystem_Stream {
 		InputStream& operator=(InputStream&& is) noexcept;
 
 		StringView GetName() const;
+		void Close();
 
 		template <typename T>
 		bool ReadIntoObj(T& obj);
@@ -59,6 +60,7 @@ namespace Filesystem_Stream {
 		OutputStream& operator=(OutputStream&& os) noexcept;
 
 		StringView GetName() const;
+		void Close();
 
 	private:
 		FilesystemView fs;

@@ -23,7 +23,7 @@
   <string name="no">Tidak</string>
   <string name="creating_dir_failed">Gagal membuat direktori $PATH</string>
   <string name="path_not_readable">$PATH tidak terbaca</string>
-  <string name="no_games_found_and_explanation">Tidak ada permainan RPG Maker 2000/2003 yang ditemukan.
+  <string name="no_games_found_and_explanation_old">Tidak ada permainan RPG Maker 2000/2003 yang ditemukan.
 Anda bisa menambah direktori permainan di pengaturan.</string>
   <string name="no_external_storage">Tidak ada penyimpanan eksternal (misal: kartu SD) yang ditemukan</string>
   <string name="not_valid_game">$PATH bukan permainan yang valid</string>
@@ -35,7 +35,7 @@ Anda bisa menambah direktori permainan di pengaturan.</string>
   <string name="refresh">Segarkan ulang</string>
   <string name="change_default_mapping">Ubah pemetaan tombol bawaan</string>
   <string name="how_to_use_easy_rpg">Cara memakai EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">Instruksi pemasangan:\n\nSecara bawaan permainan akan dicari di /easyrpg/games. Anda bisa menambah direktori permainan di Pengaturan.\n\nOpsional: Tempatkan RTP di /easyrpg/rtp/2000 untuk RTP RPG Maker 2000 dan di /easyrpg/rtp/2003 untuk RTP RPG Maker 2003.\n\nAgar permainan di deteksi dengan benar, permainannya harus di letakkan di sub direktori dari /easyrpg/games (secara bawaan), misal:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame.zip adalah SALAH. ZIP dan EXE tidak di dukung.</string>
+  <string name="how_to_use_easy_rpg_explanation_old">Instruksi pemasangan:\n\nSecara bawaan permainan akan dicari di /easyrpg/games. Anda bisa menambah direktori permainan di Pengaturan.\n\nOpsional: Tempatkan RTP di /easyrpg/rtp/2000 untuk RTP RPG Maker 2000 dan di /easyrpg/rtp/2003 untuk RTP RPG Maker 2003.\n\nAgar permainan di deteksi dengan benar, permainannya harus di letakkan di sub direktori dari /easyrpg/games (secara bawaan), misal:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame.zip adalah SALAH. ZIP dan EXE tidak di dukung.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Aktifkan FPS</string>
   <string name="toggle_ui">Aktifkan tombol virtual</string>

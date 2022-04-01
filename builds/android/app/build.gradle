@@ -1,14 +1,22 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '31.0.0'
     ndkVersion '21.4.7075529'
     defaultConfig {
         applicationId "org.easyrpg.player"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 30
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
+    }
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
     }
     buildTypes {
         debug {
@@ -24,15 +32,20 @@ android {
             }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
     }
     externalNativeBuild {
         cmake {
             path "../../../CMakeLists.txt"
-            version "3.10.2"
+            version "3.18.1"
         }
     }
-    defaultConfig {
+	lint {
+		abortOnError false
+		disable 'MissingTranslation'
+	}
+	defaultConfig {
         externalNativeBuild {
             cmake {
                 arguments "-DPLAYER_GRADLE_BUILD=ON",
@@ -49,10 +62,6 @@ android {
             }
         }
     }
-    lintOptions {
-        disable 'MissingTranslation'
-        abortOnError false
-    }
 }
 
 allprojects {
@@ -64,8 +73,11 @@ allprojects {
 }
 
 dependencies {
+    // TODO: Bump appcompat & material when targetSdkVersion is 31+
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
 }

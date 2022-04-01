@@ -264,7 +264,7 @@ static void HandleErrorOutput(const std::string& err) {
 
 void Output::Quit() {
 	if (LOG_FILE) {
-		LOG_FILE.clear();
+		LOG_FILE.Close();
 	}
 
 	int log_size = 1024 * 100;
@@ -280,6 +280,7 @@ void Output::Quit() {
 			in.getline(buf, 1024 * 100);
 			in.read(buf, 1024 * 100);
 			size_t read = in.gcount();
+			in.Close();
 
 			auto out = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out);
 			if (out) {
@@ -289,6 +290,7 @@ void Output::Quit() {
 	}
 
 	delete[] buf;
+	init = false;
 }
 
 bool Output::TakeScreenshot() {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/set_games_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_the_games_folder" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/id_select_games_folder_explanation"
+            android:textSize="18sp" />
+
+        <include layout="@layout/separator"/>
+
+        <Button
+            android:id="@+id/open_game_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_games_folder" />
+
+        <include layout="@layout/separator"/>
+
+        <CheckBox
+            android:id="@+id/settings_enable_rtp_scanning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_rtp_support"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/open_rtp_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_rtp_folder" />
+
+        <TextView
+            android:id="@+id/settings_rtp_explanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rtp_explanation"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</ScrollView>

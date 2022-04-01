@@ -18,10 +18,17 @@
 #include "filesystem_root.h"
 #include "output.h"
 
+#ifdef __ANDROID__
+#  include "platform/android/filesystem_saf.h"
+#endif
+
 constexpr const StringView root_ns = "root://";
 
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 	// Add platform specific namespaces here
+#ifdef __ANDROID__
+	fs_list.push_back(std::make_pair("content", std::make_unique<SafFilesystem>("", FilesystemView())));
+#endif
 
 	// IMPORTANT: This must be the last filesystem in the list, do not push anything to fs_list afterwards!
 	fs_list.push_back(std::make_pair("file", std::make_unique<NativeFilesystem>("", FilesystemView())));

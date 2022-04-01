@@ -1,6 +1,6 @@
 package org.easyrpg.player.button_mapping;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Canvas;
 
 import org.easyrpg.player.settings.SettingsManager;
@@ -9,8 +9,8 @@ import org.libsdl.app.SDLActivity;
 public class FastForwardingButton extends VirtualButton {
     boolean alreadyActivated;
 
-    protected FastForwardingButton(Context context, int keyCode, double posX, double posY, int size) {
-        super(context, keyCode, posX, posY, size);
+    protected FastForwardingButton(Activity activity, int keyCode, double posX, double posY, int size) {
+        super(activity, keyCode, posX, posY, size);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class FastForwardingButton extends VirtualButton {
             if (isPressed) {
                 isPressed = false;
 
-                if (!isTapMode() || (isTapMode() && alreadyActivated)) {
+                if (!isTapMode() || alreadyActivated) {
                     SDLActivity.onNativeKeyUp(this.keyCode);
                     alreadyActivated = false;
                 } else {
@@ -47,7 +47,7 @@ public class FastForwardingButton extends VirtualButton {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        setProperTransparency(canvas);
+        setProperTransparency();
 
         // Draw the rectangle surrounding the button's letter
         int border = 5;
@@ -58,6 +58,6 @@ public class FastForwardingButton extends VirtualButton {
     }
 
     private boolean isTapMode() {
-        return (SettingsManager.getFastForwardMode() == 1);
+        return (SettingsManager.getFastForwardMode() == SettingsManager.FAST_FORWARD_MODE_TAP);
     }
 }
