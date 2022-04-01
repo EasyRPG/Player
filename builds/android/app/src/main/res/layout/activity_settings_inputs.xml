@@ -146,73 +146,73 @@
             android:textSize="20sp"/>
 
         <RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/settings_horizontal_input_layout">
-			<TextView
-				android:textSize="20sp"
-				android:paddingStart="20sp"
-				android:paddingEnd="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/settings_horizontal_input_layout">
+            <TextView
+                android:textSize="20sp"
+                android:paddingStart="20sp"
+                android:paddingEnd="20sp"
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerVertical="true"
-				android:layout_alignParentStart="true"
-				android:layout_toStartOf="@+id/settings_horizontal_input_layout_settings_button"
-				android:text="@string/horizontal_input_layout"
-				/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/settings_horizontal_input_layout_settings_button"
+                android:text="@string/horizontal_input_layout"
+                />
 
-			<ImageButton
-				android:id="@+id/settings_horizontal_input_layout_settings_button"
-				style="?android:attr/borderlessButtonStyle"
+            <ImageButton
+                android:id="@+id/settings_horizontal_input_layout_settings_button"
+                style="?android:attr/borderlessButtonStyle"
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentEnd="true"
-				android:layout_centerVertical="true"
-				android:padding="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="0dp"
 
-				android:src="@drawable/ic_action_settings_black" />
-		</RelativeLayout>
-		<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/settings_vertical_input_layout">
-			<TextView
-				android:textSize="20sp"
-				android:paddingStart="20sp"
-				android:paddingEnd="20sp"
+                android:src="@drawable/ic_action_settings_black" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/settings_vertical_input_layout">
+            <TextView
+                android:textSize="20sp"
+                android:paddingStart="20sp"
+                android:paddingEnd="20sp"
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerVertical="true"
-				android:layout_alignParentStart="true"
-				android:layout_toStartOf="@+id/settings_vertical_input_layout_settings_button"
-				android:text="@string/vertical_input_layout"
-				/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/settings_vertical_input_layout_settings_button"
+                android:text="@string/vertical_input_layout"
+                />
 
-			<ImageButton
-				android:id="@+id/settings_vertical_input_layout_settings_button"
-				style="?android:attr/borderlessButtonStyle"
+            <ImageButton
+                android:id="@+id/settings_vertical_input_layout_settings_button"
+                style="?android:attr/borderlessButtonStyle"
 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentEnd="true"
-				android:layout_centerVertical="true"
-				android:padding="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="0dp"
 
-				android:src="@drawable/ic_action_settings_black" />
-		</RelativeLayout>
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_settings_black" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-			android:text="@string/settings_edit_layout_explanation"
-			android:textSize="18sp"
+            android:text="@string/settings_edit_layout_explanation"
+            android:textSize="18sp"
 
-			android:paddingHorizontal="20dp"
-			android:paddingVertical="10dp"
-			/>
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            />
     </LinearLayout>
 </ScrollView>
 

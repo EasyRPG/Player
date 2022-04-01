@@ -22,13 +22,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-	<RelativeLayout
-		android:id="@+id/browser_layout"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+    <RelativeLayout
+        android:id="@+id/browser_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-		android:padding="@dimen/activity_vertical_margin"
-		/>
+        android:padding="@dimen/activity_vertical_margin"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
