@@ -204,13 +204,13 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         } else if (s.equals("9")) {
             keyCode = KeyEvent.KEYCODE_9;
         } else if (s.equals("+")) {
-            keyCode = 157;
+            keyCode = KeyEvent.KEYCODE_NUMPAD_ADD;
         } else if (s.equals("-")) {
-            keyCode = 156;
+            keyCode = KeyEvent.KEYCODE_NUMPAD_SUBTRACT;
         } else if (s.equals("*")) {
-            keyCode = 155;
+            keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
         } else if (s.equals("/")) {
-            keyCode = 154;
+            keyCode = KeyEvent.KEYCODE_NUMPAD_DIVIDE;
         } else if (s.equals(ctx.getString(R.string.menu))) {
             keyCode = MenuButton.MENU_BUTTON_KEY;
         } else if (s.equals(ctx.getString(R.string.key_fast_forward))) {
