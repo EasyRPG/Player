@@ -87,7 +87,7 @@ static int CalcSkillCostAutoBattle(const Game_Actor& source, const lcf::rpg::Ski
 		: source.CalculateSkillCost(skill.ID);
 }
 
-double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
+double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs) {
 	assert(Algo::IsNormalOrSubskill(skill));
 	assert(Algo::SkillTargetsAllies(skill));
 
@@ -101,7 +101,7 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 			return 0.0;
 		}
 
-		const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false);
+		const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false, cond, false);
 		const double max_effect = std::min(base_effect, tgt_max_hp - tgt_hp);
 
 		auto rank = static_cast<double>(max_effect) / static_cast<double>(tgt_max_hp);
@@ -123,7 +123,7 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 	return 0.0;
 }
 
-double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
+double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs) {
 	assert(Algo::IsNormalOrSubskill(skill));
 	assert(Algo::SkillTargetsEnemies(skill));
 	(void)emulate_bugs;
@@ -136,7 +136,7 @@ double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Bat
 	const double src_max_sp = source.GetMaxSp();
 	const double tgt_hp = target.GetHp();
 
-	const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false);
+	const double base_effect = Algo::CalcSkillEffect(source, target, skill, apply_variance, false, cond, false);
 	rank = std::min(base_effect, tgt_hp) / tgt_hp;
 	if (rank == 1.0) {
 		rank = 1.5;
@@ -160,7 +160,7 @@ double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Bat
 	return rank;
 }
 
-double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& skill, bool apply_variance, bool emulate_bugs) {
+double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs) {
 	if (!source.IsSkillUsable(skill.ID)) {
 		return 0.0;
 	}
@@ -172,34 +172,34 @@ double CalcSkillAutoBattleRank(const Game_Actor& source, const lcf::rpg::Skill& 
 	switch (skill.scope) {
 		case lcf::rpg::Skill::Scope_ally:
 			for (auto* target: Main_Data::game_party->GetActors()) {
-				auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, skill, apply_variance, emulate_bugs);
+				auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, skill, cond, apply_variance, emulate_bugs);
 				rank = std::max(rank, target_rank);
 				DebugLog("AUTOBATTLE: Actor {} Check Skill Single Ally {} Rank : {}({}): {} -> {}", source.GetName(), target->GetName(), skill.name, skill.ID, rank, target_rank);
 			}
 			break;
 		case lcf::rpg::Skill::Scope_party:
 			for (auto* target: Main_Data::game_party->GetActors()) {
-				auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, skill, apply_variance, emulate_bugs);
+				auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, skill, cond, apply_variance, emulate_bugs);
 				rank += target_rank;
 				DebugLog("AUTOBATTLE: Actor {} Check Skill Party Ally {} Rank : {}({}): {} -> {}", source.GetName(), target->GetName(), skill.name, skill.ID, rank, target_rank);
 			}
 			break;
 		case lcf::rpg::Skill::Scope_enemy:
 			for (auto* target: Main_Data::game_enemyparty->GetEnemies()) {
-				auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, skill, apply_variance, emulate_bugs);
+				auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, skill, cond, apply_variance, emulate_bugs);
 				rank = std::max(rank, target_rank);
 				DebugLog("AUTOBATTLE: Actor {} Check Skill Single Enemy {} Rank : {}({}): {} -> {}", source.GetName(), target->GetName(), skill.name, skill.ID, rank, target_rank);
 			}
 			break;
 		case lcf::rpg::Skill::Scope_enemies:
 			for (auto* target: Main_Data::game_enemyparty->GetEnemies()) {
-				auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, skill, apply_variance, emulate_bugs);
+				auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, skill, cond, apply_variance, emulate_bugs);
 				rank += target_rank;
 				DebugLog("AUTOBATTLE: Actor {} Check Skill Party Enemy {} Rank : {}({}): {} -> {}", source.GetName(), target->GetName(), skill.name, skill.ID, rank, target_rank);
 			}
 			break;
 		case lcf::rpg::Skill::Scope_self:
-			rank = CalcSkillHealAutoBattleTargetRank(source, source, skill, apply_variance, emulate_bugs);
+			rank = CalcSkillHealAutoBattleTargetRank(source, source, skill, cond, apply_variance, emulate_bugs);
 			DebugLog("AUTOBATTLE: Actor {} Check Skill Self Rank : {}({}): {}", source.GetName(), skill.name, skill.ID, rank);
 			break;
 	}
@@ -297,7 +297,7 @@ void SelectAutoBattleAction(Game_Actor& source,
 		for (auto& skill_id: source.GetSkills()) {
 			auto* candidate_skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, skill_id);
 			if (candidate_skill) {
-				const auto rank = CalcSkillAutoBattleRank(source, *candidate_skill, skill_variance, emulate_bugs);
+				const auto rank = CalcSkillAutoBattleRank(source, *candidate_skill, cond, skill_variance, emulate_bugs);
 				DebugLog("AUTOBATTLE: Actor {} Check Skill Rank : {}({}): {}", source.GetName(), candidate_skill->name, candidate_skill->ID, rank);
 				if (rank > skill_rank) {
 					skill_rank = rank;
@@ -328,7 +328,7 @@ void SelectAutoBattleAction(Game_Actor& source,
 				return;
 			case lcf::rpg::Skill::Scope_enemy:
 				for (auto* target: Main_Data::game_enemyparty->GetEnemies()) {
-					const auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, *skill, skill_variance, emulate_bugs);
+					const auto target_rank = CalcSkillDmgAutoBattleTargetRank(source, *target, *skill, cond, skill_variance, emulate_bugs);
 					if (target_rank > best_target_rank) {
 						best_target_rank = target_rank;
 						best_target = target;
@@ -337,7 +337,7 @@ void SelectAutoBattleAction(Game_Actor& source,
 				break;
 			case lcf::rpg::Skill::Scope_ally:
 				for (auto* target: Main_Data::game_party->GetActors()) {
-					const auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, *skill, skill_variance, emulate_bugs);
+					const auto target_rank = CalcSkillHealAutoBattleTargetRank(source, *target, *skill, cond, skill_variance, emulate_bugs);
 					if (target_rank > best_target_rank) {
 						best_target_rank = target_rank;
 						best_target = target;

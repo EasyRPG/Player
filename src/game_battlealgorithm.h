@@ -684,12 +684,17 @@ public:
 	const lcf::rpg::Skill& GetSkill() const;
 	const lcf::rpg::Item* GetItem() const;
 
+	// Emulates an RPG_RT bug where whenver an actor attacks an enemy, the hit rate and damage
+	// is adjusted as if the enemy were in the front row.
+	void SetTreatEnemiesAsIfInFrontRow(bool v);
+
 private:
 	void Init();
 	std::string GetFirstStartMessage() const;
 	std::string GetSecondStartMessage() const;
 	const lcf::rpg::Skill& skill;
 	const lcf::rpg::Item* item;
+	bool treat_enemies_asif_in_front_row = false;
 };
 
 class Item : public AlgorithmBase {
@@ -1026,6 +1031,10 @@ inline const lcf::rpg::Skill& Game_BattleAlgorithm::Skill::GetSkill() const {
 
 inline const lcf::rpg::Item* Game_BattleAlgorithm::Skill::GetItem() const {
 	return item;
+}
+
+inline void Game_BattleAlgorithm::Skill::SetTreatEnemiesAsIfInFrontRow(bool v) {
+	treat_enemies_asif_in_front_row = v;
 }
 
 } //namespace Game_BattleAlgorithm

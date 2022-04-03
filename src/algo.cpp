@@ -106,7 +106,7 @@ int CalcNormalAttackToHit(const Game_Battler &source,
 }
 
 
-int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
+int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug) {
 	auto to_hit = (skill.hit == -1 ? source.GetHitChance(Game_Battler::WeaponAll) : skill.hit);
 
 	if (!SkillTargetsAllies(skill) && skill.easyrpg_affected_by_evade_all_physical_attacks && target.EvadesAllPhysicalAttacks()) {
@@ -139,6 +139,11 @@ int CalcSkillToHit(const Game_Battler& source, const Game_Battler& target, const
 
 	// If target has physical dodge evasion:
 	if (target.HasPhysicalEvasionUp()) {
+		to_hit -= 25;
+	}
+
+	// Defender row adjustment
+	if (Feature::HasRow() && skill.easyrpg_affected_by_row_modifiers && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
 		to_hit -= 25;
 	}
 
@@ -221,7 +226,9 @@ int CalcSkillEffect(const Game_Battler& source,
 		const Game_Battler& target,
 		const lcf::rpg::Skill& skill,
 		bool apply_variance,
-		bool is_critical_hit) {
+		bool is_critical_hit,
+		lcf::rpg::System::BattleCondition cond,
+		bool emulate_2k3_enemy_row_bug) {
 
 	auto effect = skill.power;
 	effect += skill.physical_rate * source.GetAtk() / 20;
@@ -234,7 +241,15 @@ int CalcSkillEffect(const Game_Battler& source,
 
 	effect = std::max<int>(0, effect);
 
+	if (Feature::HasRow() && skill.easyrpg_affected_by_row_modifiers && IsRowAdjusted(source, cond, true, false)) {
+		effect = 125 * effect / 100;
+	}
+
 	effect = Attribute::ApplyAttributeSkillMultiplier(effect, target, skill);
+
+	if (Feature::HasRow() && skill.easyrpg_affected_by_row_modifiers && IsRowAdjusted(target, cond, false, emulate_2k3_enemy_row_bug)) {
+		effect = 75 * effect / 100;
+	}
 
 	if (is_critical_hit) {
 		effect *= 3;

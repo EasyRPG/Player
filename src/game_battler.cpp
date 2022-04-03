@@ -237,7 +237,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		}
 
 		// Calculate effect:
-		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true, false);
+		auto effect = Algo::CalcSkillEffect(*source, *this, *skill, true, false, lcf::rpg::System::BattleCondition_none, false);
 
 		// Negative attributes do damage but cannot kill
 		bool negative_effect = false;
