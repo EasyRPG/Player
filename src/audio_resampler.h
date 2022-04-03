@@ -121,6 +121,29 @@ public:
 	bool Seek(std::streamoff offset, std::ios_base::seekdir origin) override;
 
 	/**
+	 * Gets if the audio stream will loop when the stream finishes.
+	 *
+	 * @return if looping
+	 */
+	bool GetLooping() const override;
+
+	/**
+	 * Enables/Disables audio stream looping.
+	 * When looping is enabled IsFinished will never return true and the stream
+	 * auto-rewinds (assuming Rewind is supported)
+	 *
+	 * @param enable Enable/Disable looping
+	 */
+	void SetLooping(bool enable) override;
+
+	/**
+	 * Gets the number of loops
+	 *
+	 * @return loop count
+	 */
+	int GetLoopCount() const override;
+
+	/**
 	 * Wraps the tell function of the contained decoder
 	 *
 	 * @return Position in the stream
@@ -135,7 +158,7 @@ public:
 	int GetTicks() const override;
 
 	/**
-	 * Returns wheter the resampled audio stream is finished
+	 * Returns whether the resampled is exhausted and the audio stream is finished.
 	 *
 	 * @return true if the stream has reached it's end
 	 */

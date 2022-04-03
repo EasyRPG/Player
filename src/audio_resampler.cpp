@@ -309,7 +309,18 @@ bool AudioResampler::Seek(std::streamoff offset, std::ios_base::seekdir origin) 
 		return true;
 	}
 	return false;
+}
 
+bool AudioResampler::GetLooping() const {
+	return wrapped_decoder->GetLooping();
+}
+
+void AudioResampler::SetLooping(bool enable) {
+	wrapped_decoder->SetLooping(enable);
+}
+
+int AudioResampler::GetLoopCount() const {
+	return wrapped_decoder->GetLoopCount();
 }
 
 std::streampos AudioResampler::Tell() const {
