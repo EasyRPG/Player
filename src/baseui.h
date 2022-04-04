@@ -232,6 +232,9 @@ protected:
 
 	/** If we will render fps on the screen even in windowed mode */
 	bool fps_render_window = false;
+
+	/** How to scale the viewport when larger than 320x240 */
+	ScalingMode scaling_mode = ScalingMode::Bilinear;
 };
 
 /** Global DisplayUi variable. */

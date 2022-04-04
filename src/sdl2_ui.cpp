@@ -180,8 +180,11 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 }
 
 Sdl2Ui::~Sdl2Ui() {
-	if (sdl_texture) {
-		SDL_DestroyTexture(sdl_texture);
+	if (sdl_texture_game) {
+		SDL_DestroyTexture(sdl_texture_game);
+	}
+	if (sdl_texture_scaled) {
+		SDL_DestroyTexture(sdl_texture_scaled);
 	}
 	if (sdl_renderer) {
 		SDL_DestroyRenderer(sdl_renderer);
@@ -286,10 +289,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
+		SDL_GetWindowSize(sdl_window, &window.width, &window.height);
+		window.size_changed = true;
+
 		auto window_sg = lcf::makeScopeGuard([&]() {
 				SDL_DestroyWindow(sdl_window);
 				sdl_window = nullptr;
-				});
+		});
 
 		SetAppIcon();
 
@@ -311,8 +317,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 				SDL_DestroyRenderer(sdl_renderer);
 				sdl_renderer = nullptr;
 				});
-
-		uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
 		SDL_RendererInfo rinfo = {};
 		if (SDL_GetRendererInfo(sdl_renderer, &rinfo) == 0) {
@@ -343,15 +347,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SDL_RenderClear(sdl_renderer);
 		SDL_RenderPresent(sdl_renderer);
 
-		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
-
-
-		sdl_texture = SDL_CreateTexture(sdl_renderer,
+		sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 			texture_format,
 			SDL_TEXTUREACCESS_STREAMING,
 			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
-		if (!sdl_texture) {
+		if (!sdl_texture_game) {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
@@ -383,7 +384,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	uint32_t sdl_pixel_fmt = GetDefaultFormat();
 	int a, w, h;
 
-	if (SDL_QueryTexture(sdl_texture, &sdl_pixel_fmt, &a, &w, &h) != 0) {
+	if (SDL_QueryTexture(sdl_texture_game, &sdl_pixel_fmt, &a, &w, &h) != 0) {
 		Output::Debug("SDL_QueryTexture failed : {}", SDL_GetError());
 		return false;
 	}
@@ -462,9 +463,81 @@ void Sdl2Ui::ProcessEvents() {
 
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
-	SDL_UpdateTexture(sdl_texture, NULL, main_surface->pixels(), main_surface->pitch());
+	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
+
+	if (window.size_changed && window.width > 0 && window.height > 0) {
+		// Based on SDL2 function UpdateLogicalSize
+		window.size_changed = false;
+
+		SDL_Rect viewport;
+		float width_float = static_cast<float>(window.width);
+		float height_float = static_cast<float>(window.height);
+
+		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
+		float real_aspect = width_float / height_float;
+
+		if (scaling_mode == ScalingMode::Integer) {
+			// Integer division on purpose
+			if (want_aspect > real_aspect) {
+				window.scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
+			} else {
+				window.scale = static_cast<float>(window.height / SCREEN_TARGET_HEIGHT);
+			}
+
+			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
+			viewport.x = (window.width - viewport.w) / 2;
+			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
+			viewport.y = (window.height - viewport.h) / 2;
+
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
+			// The aspect ratios are the same, let SDL2 scale it
+			window.scale = -1.0f;
+			SDL_RenderSetViewport(sdl_renderer, nullptr);
+		} else if (want_aspect > real_aspect) {
+			// Letterboxing (black bars top and bottom)
+			window.scale = width_float / SCREEN_TARGET_WIDTH;
+			viewport.x = 0;
+			viewport.w = window.width;
+			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
+			viewport.y = (window.height - viewport.h) / 2;
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		} else {
+			// black bars left and right
+			window.scale = height_float / SCREEN_TARGET_HEIGHT;
+			viewport.y = 0;
+			viewport.h = window.height;
+			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
+			viewport.x = (window.width - viewport.w) / 2;
+			SDL_RenderSetViewport(sdl_renderer, &viewport);
+		}
+
+		if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+			if (sdl_texture_scaled) {
+				SDL_DestroyTexture(sdl_texture_scaled);
+			}
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+			sdl_texture_scaled = SDL_CreateTexture(sdl_renderer, texture_format, SDL_TEXTUREACCESS_TARGET,
+			   static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_WIDTH, static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_HEIGHT);
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+			if (!sdl_texture_scaled) {
+				Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
+			}
+		}
+	}
+
 	SDL_RenderClear(sdl_renderer);
-	SDL_RenderCopy(sdl_renderer, sdl_texture, NULL, NULL);
+	if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+		// Render game texture on the scaled texture
+		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
+		SDL_RenderClear(sdl_renderer);
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+
+		SDL_SetRenderTarget(sdl_renderer, nullptr);
+		SDL_RenderCopy(sdl_renderer, sdl_texture_scaled, nullptr, nullptr);
+	} else {
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+	}
 	SDL_RenderPresent(sdl_renderer);
 }
 
@@ -487,7 +560,7 @@ bool Sdl2Ui::ShowCursor(bool flag) {
 void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
 		case SDL_WINDOWEVENT:
-			ProcessActiveEvent(evnt);
+			ProcessWindowEvent(evnt);
 			return;
 
 		case SDL_QUIT:
@@ -544,7 +617,7 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 	}
 }
 
-void Sdl2Ui::ProcessActiveEvent(SDL_Event &evnt) {
+void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 	int state = evnt.window.event;
 #if PAUSE_GAME_WHEN_FOCUS_LOST
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
@@ -580,6 +653,11 @@ void Sdl2Ui::ProcessActiveEvent(SDL_Event &evnt) {
 		mouse_focus = false;
 	}
 #endif
+	if (state == SDL_WINDOWEVENT_SIZE_CHANGED || state == SDL_WINDOWEVENT_RESIZED) {
+		window.width = evnt.window.data1;
+		window.height = evnt.window.data2;
+		window.size_changed = true;
+	}
 }
 
 void Sdl2Ui::ProcessKeyDownEvent(SDL_Event &evnt) {

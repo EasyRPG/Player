@@ -23,6 +23,15 @@
 
 class CmdlineParser;
 
+enum class ScalingMode {
+	/** Nearest neighbour to fit screen */
+	Nearest,
+	/** Like NN but only scales to integers */
+	Integer,
+	/** Integer followed by Bilinear downscale to fit screen */
+	Bilinear,
+};
+
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "" };
 	StringConfigParam enemyai_algo{ "" };
@@ -35,6 +44,7 @@ struct Game_ConfigVideo {
 	BoolConfigParam fps_render_window{ false };
 	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
 	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
+	EnumConfigParam<ScalingMode> scaling_mode{ ScalingMode::Bilinear };
 };
 
 struct Game_ConfigAudio {

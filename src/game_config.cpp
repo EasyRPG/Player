@@ -180,6 +180,9 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 	if (ini.HasValue("video", "window-zoom")) {
 		video.window_zoom.Set(ini.GetInteger("video", "window-zoom", 0));
 	}
+	if (ini.HasValue("video", "scaling-mode")) {
+		video.scaling_mode.Set(static_cast<ScalingMode>(ini.GetInteger("video", "scaling-mode", 0)));
+	}
 
 	/** AUDIO SECTION */
 
