@@ -390,7 +390,7 @@ namespace Input {
 			"TWO_FINGERS",
 #endif
 			"KEYS_COUNT"
-			);
+		);
 	}
 }
 

@@ -230,11 +230,17 @@ namespace Input {
 		return os;
 	}
 
+	/** Provides platform-specific, human readable name for an input key */
+	using KeyNamesArray = std::vector<std::pair<Keys::InputKey, std::string>>;
+
 	/** Returns default button mappings */
 	ButtonMappingArray GetDefaultButtonMappings();
 
 	/** Returns default direction mappings */
 	DirectionMappingArray GetDefaultDirectionMappings();
+
+	/** Returns platform-specific, human readable name for an input key */
+	KeyNamesArray GetInputKeyNames();
 }
 
 #endif

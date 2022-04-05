@@ -48,4 +48,8 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 	};
 }
 
+Input::KeyNamesArray Input::GetInputKeyNames() {
+	return {};
+}
+
 #endif

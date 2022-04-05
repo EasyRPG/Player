@@ -64,3 +64,7 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 		{ Direction::UP, UP },
 	};
 }
+
+Input::KeyNamesArray Input::GetInputKeyNames() {
+	return {};
+}
