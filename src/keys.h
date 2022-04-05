@@ -301,11 +301,14 @@ namespace Input {
 			"KP7",
 			"KP8",
 			"KP9",
-			"MULTIPLY",
-			"ADD",
-			"SUBTRACT",
+			"KP_MULTIPLY",
+			"KP_ADD",
+			"KP_SUBTRACT",
+			"KP_PERIOD",
+			"KP_DIVIDE",
+			"COMMA",
 			"PERIOD",
-			"DIVIDE",
+			"SLASH",
 			"F1",
 			"F2",
 			"F3",
@@ -323,6 +326,11 @@ namespace Input {
 			"SCROLL_LOCK",
 			"AC_BACK",
 			"SELECT",
+			"LEFT_BRACKET", // After P: [, ], '\'
+			"RIGHT_BRACKET",
+			"BACKSLASH", // On some keyboards after '
+			"SEMICOLON", // After L: ;, '
+			"APOSTROPH",
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			"MOUSE_LEFT",

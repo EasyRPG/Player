@@ -624,10 +624,10 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
 	// Horizontal axis
 	if (evnt.jaxis.axis == 0) {
-		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
+		if (evnt.jaxis.value < -JOYSTICK_STICK_SENSIBILITY) {
 			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = true;
 			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
-		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
+		} else if (evnt.jaxis.value > JOYSTICK_STICK_SENSIBILITY) {
 			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
 			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = true;
 		} else {
@@ -637,10 +637,10 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 
 	// Vertical Axis
 	} else if (evnt.jaxis.axis == 1) {
-		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
+		if (evnt.jaxis.value < -JOYSTICK_STICK_SENSIBILITY) {
 			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = true;
 			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
-		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
+		} else if (evnt.jaxis.value > JOYSTICK_STICK_SENSIBILITY) {
 			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
 			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = true;
 		} else {

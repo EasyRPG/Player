@@ -153,10 +153,10 @@ void LibretroUi::ProcessEvents() {
 
 #	if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	int16_t axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_X);
-	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+	if (axis < -JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = true;
 		keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
-	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+	} else if (axis > JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
 		keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = true;
 	} else {
@@ -165,10 +165,10 @@ void LibretroUi::ProcessEvents() {
 	}
 
 	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_Y);
-	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+	if (axis < -JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_PRIMARY_UP] = true;
 		keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
-	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+	} else if (axis > JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
 		keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = true;
 	} else {
@@ -177,10 +177,10 @@ void LibretroUi::ProcessEvents() {
 	}
 
 	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X);
-	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+	if (axis < -JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = true;
 		keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = false;
-	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+	} else if (axis > JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = false;
 		keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = true;
 	} else {
@@ -189,10 +189,10 @@ void LibretroUi::ProcessEvents() {
 	}
 
 	axis = CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y);
-	if (axis < -JOYSTICK_AXIS_SENSIBILITY) {
+	if (axis < -JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
 		keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = false;
-	} else if (axis > JOYSTICK_AXIS_SENSIBILITY) {
+	} else if (axis > JOYSTICK_STICK_SENSIBILITY) {
 		keys[Input::Keys::JOY_STICK_SECONDARY_UP] = false;
 		keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
 	} else {

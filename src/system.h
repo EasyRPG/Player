@@ -45,7 +45,6 @@
 // libretro must be first to prevent conflicts with other defines
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
-#  define JOYSTICK_AXIS_SENSIBILITY 20000
 #elif defined(OPENDINGUX)
 #  include <sys/types.h>
 #elif defined(__ANDROID__)
@@ -91,10 +90,12 @@
 #endif
 
 #ifdef USE_SDL
-
 #  define SUPPORT_KEYBOARD
-#  define JOYSTICK_AXIS_SENSIBILITY 20000
+#endif
 
+#ifdef SUPPORT_JOYSTICK_AXIS
+#  define JOYSTICK_STICK_SENSIBILITY 0.6
+#  define JOYSTICK_TRIGGER_SENSIBILITY 0.2
 #endif
 
 #if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)

@@ -36,14 +36,23 @@ namespace Input {
 		GameTitle = 'N'
 	};
 
+	/**
+	 * Primary and Secondary range from -1.0 to +1.0
+	 *       ^ -1
+	 *       |
+	 * -1 <-----> 1
+	 *       |
+	 *       v 1
+	 * Trigger range from 0.0 (neutral) to 1.0 (pressed)
+	 */
 	struct AnalogInput {
-		Point primary = {};
-		Point secondary = {};
-		int trigger_left = 0;
-		int trigger_right = 0;
+		PointF primary;
+		PointF secondary;
+		float trigger_left = 0;
+		float trigger_right = 0;
 
-		static const int kMaxValue = 32767;
-		static const int kMinValue = -32768;
+		static constexpr float kMaxValue = 1.0f;
+		static constexpr float kMinValue = -1.0f;
 	};
 
 	/**
@@ -114,6 +123,7 @@ namespace Input {
 
 	protected:
 		void Record();
+		void UpdateGamepad();
 
 		std::bitset<BUTTON_COUNT> pressed_buttons;
 		ButtonMappingArray button_mappings;

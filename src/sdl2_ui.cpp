@@ -775,24 +775,28 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 	int axis = evnt.caxis.axis;
 	int value = evnt.caxis.value;
 
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / 32768.f;
+	};
+
 	switch (axis) {
 		case SDL_CONTROLLER_AXIS_LEFTX:
-			analog_input.primary.x = value;
+			analog_input.primary.x = normalize(value);
 			break;
 		case SDL_CONTROLLER_AXIS_LEFTY:
-			analog_input.primary.y = value;
+			analog_input.primary.y = -normalize(value);
 			break;
 		case SDL_CONTROLLER_AXIS_RIGHTX:
-			analog_input.secondary.x = value;
+			analog_input.secondary.x = normalize(value);
 			break;
 		case SDL_CONTROLLER_AXIS_RIGHTY:
-			analog_input.secondary.y = value;
+			analog_input.secondary.y = -normalize(value);
 			break;
 		case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-			analog_input.trigger_left = value;
+			analog_input.trigger_left = normalize(value);
 			break;
 		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-			analog_input.trigger_right = value;
+			analog_input.trigger_right = normalize(value);
 			break;
 	}
 #endif
