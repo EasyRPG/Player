@@ -55,6 +55,21 @@ void Input::UiSource::DoUpdate(bool system_only) {
 
 	pressed_buttons = {};
 
+	analog_input = DisplayUi->GetAnalogInput();
+	keystates[Input::Keys::JOY_TRIGGER_LEFT_FULL] = (analog_input.trigger_left > AnalogInput::kMaxValue * 0.9);
+	keystates[Input::Keys::JOY_TRIGGER_LEFT_PARTIAL] =
+		(analog_input.trigger_left > JOYSTICK_AXIS_SENSIBILITY) &&
+		!keystates[Input::Keys::JOY_TRIGGER_LEFT_FULL];
+	keystates[Input::Keys::JOY_TRIGGER_RIGHT_FULL] = (analog_input.trigger_right > AnalogInput::kMaxValue * 0.9);
+	keystates[Input::Keys::JOY_TRIGGER_RIGHT_PARTIAL] =
+			(analog_input.trigger_right > JOYSTICK_AXIS_SENSIBILITY) &&
+			!keystates[Input::Keys::JOY_TRIGGER_RIGHT_FULL];
+
+	std::array<int, 4> axis = {abs(analog_input.primary.x), abs(analog_input.primary.y), abs(analog_input.secondary.x), abs(analog_input.secondary.y)};
+	if (std::any_of(axis.begin(), axis.end(),[](auto& val) { return val > JOYSTICK_AXIS_SENSIBILITY; })) {
+		// TODO
+	}
+
 	for (auto& bm: button_mappings) {
 		if (keymask[bm.second]) {
 			continue;

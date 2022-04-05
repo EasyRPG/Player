@@ -36,6 +36,16 @@ namespace Input {
 		GameTitle = 'N'
 	};
 
+	struct AnalogInput {
+		Point primary = {};
+		Point secondary = {};
+		int trigger_left = 0;
+		int trigger_right = 0;
+
+		static const int kMaxValue = 32767;
+		static const int kMinValue = -32768;
+	};
+
 	/**
 	 * A source for button presses.
 	 */
@@ -95,7 +105,9 @@ namespace Input {
 
 		bool InitRecording(const std::string& record_to_path);
 
-		Point GetMousePosition() const { return mouse_pos; }
+		const Point& GetMousePosition() const { return mouse_pos; }
+
+		const AnalogInput& GetAnalogInput() const { return analog_input; };
 
 		const KeyStatus& GetMask() const { return keymask; }
 		KeyStatus& GetMask() { return keymask; }
@@ -111,6 +123,7 @@ namespace Input {
 		KeyStatus keystates;
 		KeyStatus keymask;
 		Point mouse_pos;
+		AnalogInput analog_input;
 
 		int last_written_frame = -1;
 	};

@@ -775,54 +775,25 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 	int axis = evnt.caxis.axis;
 	int value = evnt.caxis.value;
 
-	if (axis == SDL_CONTROLLER_AXIS_LEFTX) {
-		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = true;
-			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
-		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = true;
-		} else {
-			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
-		}
-	} else if (axis == SDL_CONTROLLER_AXIS_LEFTY) {
-		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = true;
-			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
-		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
-			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = true;
-		} else {
-			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
-			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
-		}
-	} else if (axis == SDL_CONTROLLER_AXIS_RIGHTX) {
-		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = true;
-			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = false;
-		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = true;
-		} else {
-			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = false;
-		}
-	} else if (axis == SDL_CONTROLLER_AXIS_RIGHTY) {
-		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
-			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = false;
-		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = false;
-			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
-		} else {
-			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = false;
-			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = false;
-		}
-	} else if (axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT) {
-		keys[Input::Keys::JOY_TRIGGER_LEFT_FULL] = value > JOYSTICK_AXIS_SENSIBILITY;
-	} else if (axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
-		keys[Input::Keys::JOY_TRIGGER_RIGHT_FULL] = value > JOYSTICK_AXIS_SENSIBILITY;
+	switch (axis) {
+		case SDL_CONTROLLER_AXIS_LEFTX:
+			analog_input.primary.x = value;
+			break;
+		case SDL_CONTROLLER_AXIS_LEFTY:
+			analog_input.primary.y = value;
+			break;
+		case SDL_CONTROLLER_AXIS_RIGHTX:
+			analog_input.secondary.x = value;
+			break;
+		case SDL_CONTROLLER_AXIS_RIGHTY:
+			analog_input.secondary.y = value;
+			break;
+		case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+			analog_input.trigger_left = value;
+			break;
+		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+			analog_input.trigger_right = value;
+			break;
 	}
 #endif
 }
