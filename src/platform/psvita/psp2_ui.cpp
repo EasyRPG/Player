@@ -238,10 +238,10 @@ void Psp2Ui::ProcessEvents() {
 		zoom_state = ((zoom_state + 1) % 3);
 
 	// Left analog support
-	keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = (input.lx < 50);
-	keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = (input.lx > 170);
-	keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = (input.ly > 170);
-	keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = (input.ly < 50);
+	keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = (input.lx < 50);
+	keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = (input.lx > 170);
+	keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = (input.ly > 170);
+	keys[Input::Keys::JOY_STICK_PRIMARY_UP] = (input.ly < 50);
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {

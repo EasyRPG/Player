@@ -777,52 +777,52 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 
 	if (axis == SDL_CONTROLLER_AXIS_LEFTX) {
 		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = true;
-			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = true;
+			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
 		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = true;
+			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = true;
 		} else {
-			keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = false;
 		}
 	} else if (axis == SDL_CONTROLLER_AXIS_LEFTY) {
 		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = true;
-			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = true;
+			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
 		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
-			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = true;
+			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = true;
 		} else {
-			keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = false;
-			keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_UP] = false;
+			keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = false;
 		}
 	} else if (axis == SDL_CONTROLLER_AXIS_RIGHTX) {
 		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = true;
-			keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = true;
+			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = false;
 		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = true;
+			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = true;
 		} else {
-			keys[Input::Keys::JOY_STICK_RIGHT_X_LEFT] = false;
-			keys[Input::Keys::JOY_STICK_RIGHT_X_RIGHT] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_LEFT] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = false;
 		}
 	} else if (axis == SDL_CONTROLLER_AXIS_RIGHTY) {
 		if (value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = true;
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
+			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = false;
 		} else if (value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = false;
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = true;
+			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
 		} else {
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_UP] = false;
-			keys[Input::Keys::JOY_STICK_RIGHT_Y_DOWN] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_UP] = false;
+			keys[Input::Keys::JOY_STICK_SECONDARY_DOWN] = false;
 		}
 	} else if (axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT) {
-		keys[Input::Keys::JOY_TRIGGER_LEFT] = value > JOYSTICK_AXIS_SENSIBILITY;
+		keys[Input::Keys::JOY_TRIGGER_LEFT_FULL] = value > JOYSTICK_AXIS_SENSIBILITY;
 	} else if (axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
-		keys[Input::Keys::JOY_TRIGGER_RIGHT] = value > JOYSTICK_AXIS_SENSIBILITY;
+		keys[Input::Keys::JOY_TRIGGER_RIGHT_FULL] = value > JOYSTICK_AXIS_SENSIBILITY;
 	}
 #endif
 }
@@ -1047,8 +1047,8 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 		case SDL_CONTROLLER_BUTTON_BACK: return Input::Keys::JOY_BACK;
 		case SDL_CONTROLLER_BUTTON_GUIDE: return Input::Keys::JOY_GUIDE;
 		case SDL_CONTROLLER_BUTTON_START: return Input::Keys::JOY_START;
-		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_STICK_LEFT;
-		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_STICK_RIGHT;
+		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_STICK_PRIMARY;
+		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_STICK_SECONDARY;
 		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER	: return Input::Keys::JOY_SHOULDER_LEFT;
 		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Input::Keys::JOY_SHOULDER_RIGHT;
 		case SDL_CONTROLLER_BUTTON_DPAD_UP: return Input::Keys::JOY_DPAD_UP;

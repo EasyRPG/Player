@@ -191,10 +191,10 @@ void CtrUi::ProcessEvents() {
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
-	keys[Input::Keys::JOY_STICK_LEFT_Y_UP] = (circlepad.dy > joy_threshold);
-	keys[Input::Keys::JOY_STICK_LEFT_Y_DOWN] = (circlepad.dy < -joy_threshold);
-	keys[Input::Keys::JOY_STICK_LEFT_X_RIGHT] = (circlepad.dx > joy_threshold);
-	keys[Input::Keys::JOY_STICK_LEFT_X_LEFT] = (circlepad.dx < -joy_threshold);
+	keys[Input::Keys::JOY_STICK_PRIMARY_UP] = (circlepad.dy > joy_threshold);
+	keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = (circlepad.dy < -joy_threshold);
+	keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = (circlepad.dx > joy_threshold);
+	keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = (circlepad.dx < -joy_threshold);
 #endif
 
 #ifndef _DEBUG
