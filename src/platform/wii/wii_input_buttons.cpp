@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(GEKKO)
-
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
@@ -54,10 +52,14 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
 		{UP, Keys::JOY_STICK_PRIMARY_UP},
 
-		{LEFT, Keys::JOY_STICK_SECONDARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_SECONDARY_RIGHT},
-		{DOWN, Keys::JOY_STICK_SECONDARY_DOWN},
-		{UP, Keys::JOY_STICK_SECONDARY_UP},
+		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
+		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
+		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
+		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
+		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
+		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
+		{N8, Keys::JOY_STICK_SECONDARY_UP},
+		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT}
 	};
 }
 
@@ -73,5 +75,3 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
 }
-
-#endif

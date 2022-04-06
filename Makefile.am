@@ -451,14 +451,16 @@ libeasyrpg_player_a_SOURCES += \
 	src/platform/macos/midiout_device_coreaudio.h
 endif
 
-# These are mostly taken in by the legacy homebrew Makefiles and CMake
+# These are mostly taken by CMake
 EXTRA_DIST += \
-	src/platform/3ds/3ds_clock.cpp \
-	src/platform/3ds/3ds_clock.h \
-	src/platform/3ds/3ds_ui.cpp \
-	src/platform/3ds/3ds_ui.h \
+	src/external/picojson.h \
 	src/platform/3ds/3ds_audio.cpp \
 	src/platform/3ds/3ds_audio.h \
+	src/platform/3ds/3ds_clock.cpp \
+	src/platform/3ds/3ds_clock.h \
+	src/platform/3ds/3ds_input_buttons.cpp \
+	src/platform/3ds/3ds_ui.cpp \
+	src/platform/3ds/3ds_ui.h \
 	src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
 	src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h \
 	src/platform/libretro/libretro_audio.cpp \
@@ -468,28 +470,29 @@ EXTRA_DIST += \
 	src/platform/libretro/libretro_input_buttons.cpp \
 	src/platform/libretro/libretro_ui.cpp \
 	src/platform/libretro/libretro_ui.h \
-	src/platform/psvita/psp2_clock.cpp \
-	src/platform/psvita/psp2_clock.h \
-	src/platform/psvita/psp2_ui.cpp \
-	src/platform/psvita/psp2_ui.h \
-	src/platform/psvita/psp2_audio.cpp \
-	src/platform/psvita/psp2_audio.h \
-	src/platform/switch/switch_clock.cpp \
-	src/platform/switch/switch_clock.h \
-	src/platform/switch/switch_ui.cpp \
-	src/platform/switch/switch_ui.h \
-	src/platform/switch/switch_audio.cpp \
-	src/platform/switch/switch_audio.h \
-	src/platform/wii/wii_clock.h \
-	src/platform/wii/wii_clock.cpp \
-	src/platform/wii/wii_input_buttons.cpp \
 	src/platform/opendingux/opendingux_input_buttons.cpp \
 	src/platform/psp/psp_input_buttons.cpp \
+	src/platform/psvita/psp2_audio.cpp \
+	src/platform/psvita/psp2_audio.h \
+	src/platform/psvita/psp2_clock.cpp \
+	src/platform/psvita/psp2_clock.h \
+	src/platform/psvita/psp2_input_buttons.cpp \
+	src/platform/psvita/psp2_ui.cpp \
+	src/platform/psvita/psp2_ui.h \
+	src/platform/switch/switch_audio.cpp \
+	src/platform/switch/switch_audio.h \
+	src/platform/switch/switch_clock.cpp \
+	src/platform/switch/switch_clock.h \
+	src/platform/switch/switch_input_buttons.cpp \
+	src/platform/switch/switch_ui.cpp \
+	src/platform/switch/switch_ui.h \
+	src/platform/wii/wii_clock.cpp \
+	src/platform/wii/wii_clock.h \
+	src/platform/wii/wii_input_buttons.cpp \
 	src/platform/windows/midiout_device_win32.cpp \
 	src/platform/windows/midiout_device_win32.h \
 	src/platform/windows/utils.cpp \
-	src/platform/windows/utils.h \
-	src/external/picojson.h
+	src/platform/windows/utils.h
 
 libeasyrpg_player_a_CXXFLAGS = \
 	-fno-math-errno \

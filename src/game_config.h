@@ -42,6 +42,7 @@ struct Game_ConfigVideo {
 	BoolConfigParam fullscreen{ true };
 	BoolConfigParam show_fps{ false };
 	BoolConfigParam fps_render_window{ false };
+	BoolConfigParam stretch_width{ true };
 	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
 	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
 	EnumConfigParam<ScalingMode> scaling_mode{ ScalingMode::Bilinear };

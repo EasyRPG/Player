@@ -15,7 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO))
+// FIXME: Move in platform/generic (?) and handle with CMake
+#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO) || defined(__vita__) || defined(__3DS__) || defined(__SWITCH__))
 
 // Headers
 #include "input_buttons.h"
@@ -130,10 +131,10 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+		{UP, Keys::JOY_STICK_PRIMARY_UP},
+		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
 		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
 		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
 		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
 		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
 		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
