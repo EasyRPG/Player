@@ -88,7 +88,7 @@ public:
 	 *
 	 * @return if looping
 	 */
-	bool GetLooping() const;
+	virtual bool GetLooping() const;
 
 	/**
 	 * Enables/Disables audio stream looping.
@@ -97,14 +97,14 @@ public:
 	 *
 	 * @param enable Enable/Disable looping
 	 */
-	void SetLooping(bool enable);
+	virtual void SetLooping(bool enable);
 
 	/**
 	 * Gets the number of loops
 	 *
 	 * @return loop count
 	 */
-	int GetLoopCount() const;
+	virtual int GetLoopCount() const;
 
 	// Functions to be implemented by the audio decoder
 	/**
