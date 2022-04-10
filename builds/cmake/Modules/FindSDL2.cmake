@@ -266,8 +266,10 @@ if(SDL2_FOUND)
 			# Remove -lSDL2 -lSDL2main from the pkg-config linker line,
 			# to prevent linking against the system library
 			list(REMOVE_ITEM SDL2PC_STATIC_LIBRARIES SDL2main SDL2)
-			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
+			set_property(TARGET SDL2::SDL2 APPEND PROPERTY
 				INTERFACE_LINK_LIBRARIES "${SDL2PC_STATIC_LIBRARIES}")
+			set_property(TARGET SDL2::SDL2 APPEND PROPERTY
+				INTERFACE_INCLUDE_DIRECTORIES "${SDL2PC_STATIC_LIBRARY_DIRS}")
 		endif()
 	endif()
 	mark_as_advanced(SDL2_ROOT_DIR)
