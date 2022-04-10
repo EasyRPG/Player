@@ -241,22 +241,23 @@ if(SDL2_FOUND)
 			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
 				INTERFACE_LINK_LIBRARIES "winmm;imm32;version;setupapi")
 		elseif(APPLE)
-			find_library(COREVIDEO CoreVideo)
-			find_library(COCOA_LIBRARY Cocoa)
-			find_library(IOKIT IOKit)
-			find_library(FORCEFEEDBACK ForceFeedback)
-			find_library(CARBON_LIBRARY Carbon)
-			find_library(COREAUDIO CoreAudio)
-			find_library(AUDIOTOOLBOX AudioToolbox)
-			find_library(AUDIOUNIT AudioUnit)
-			find_library(METAL Metal)
-			find_library(GAMECONTROLLER GameController)
-			find_library(ICONV_LIBRARY iconv)
-			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
+			find_library(COREVIDEO CoreVideo REQUIRED)
+			find_library(COCOA_LIBRARY Cocoa REQUIRED)
+			find_library(IOKIT IOKit REQUIRED)
+			find_library(FORCEFEEDBACK ForceFeedback REQUIRED)
+			find_library(CARBON_LIBRARY Carbon REQUIRED)
+			find_library(COREAUDIO CoreAudio REQUIRED)
+			find_library(AUDIOTOOLBOX AudioToolbox REQUIRED)
+			find_library(AUDIOUNIT AudioUnit REQUIRED)
+			find_library(METAL Metal REQUIRED)
+			find_library(GAMECONTROLLER GameController REQUIRED)
+			find_library(ICONV_LIBRARY iconv REQUIRED)
+			find_library(COREHAPTICS CoreHaptics REQUIRED)
+			set_property(TARGET SDL2::SDL2 APPEND PROPERTY
 				INTERFACE_LINK_LIBRARIES ${COREVIDEO} ${COCOA_LIBRARY}
 					${IOKIT} ${FORCEFEEDBACK} ${CARBON_LIBRARY}
 					${COREAUDIO} ${AUDIOTOOLBOX} ${AUDIOUNIT} ${METAL}
-					${GAMECONTROLLER} ${ICONV_LIBRARY})
+					${GAMECONTROLLER} ${COREHAPTICS} ${ICONV_LIBRARY})
 		elseif(ANDROID)
 			find_library(HIDAPI hidapi)
 			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
