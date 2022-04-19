@@ -92,19 +92,15 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 
 	if (condition.flags.enemy_hp) {
 		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
-		int hp = enemy.GetHp();
-		int hpmin = enemy.GetMaxHp() * condition.enemy_hp_min / 100;
-		int hpmax = enemy.GetMaxHp() * condition.enemy_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
+		int result = 100 * enemy.GetHp() / enemy.GetMaxHp();
+		if (result < condition.enemy_hp_min || result > condition.enemy_hp_max)
 			return false;
 	}
 
 	if (condition.flags.actor_hp) {
 		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
-		int hp = actor->GetHp();
-		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
-		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
-		if (hp < hpmin || hp > hpmax)
+		int result = 100 * actor->GetHp() / actor->GetMaxHp();
+		if (result < condition.actor_hp_min || result > condition.actor_hp_max)
 			return false;
 	}
 
