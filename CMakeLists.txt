@@ -20,6 +20,19 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
+# ninja/parallel builds disable output colors, forcing them here. global scope to
+# catch all targets. cmake will have this build into 3.24
+if(CMAKE_VERSION VERSION_LESS "3.24")
+	option(CMAKE_COLOR_DIAGNOSTICS "Always produce ANSI-colored output" OFF)
+	if(CMAKE_COLOR_DIAGNOSTICS)
+		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+			add_compile_options("-fdiagnostics-color=always")
+		elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+			add_compile_options("-fcolor-diagnostics")
+		endif()
+	endif()
+endif()
+
 # Source Files
 add_library(${PROJECT_NAME} STATIC
 	src/lcf_data.cpp
@@ -1222,7 +1235,10 @@ if(PLAYER_ENABLE_TESTS)
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	endif()
 	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
-	add_custom_target(check_player COMMAND test_runner_player)
+	if(CMAKE_COLOR_DIAGNOSTICS)
+		set(DOCTEST_COLOROPT "--force-colors")
+	endif()
+	add_custom_target(check_player COMMAND test_runner_player ${DOCTEST_COLOROPT})
 	if(NOT TARGET check)
 		add_custom_target(check)
 	endif()
