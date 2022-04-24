@@ -978,7 +978,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt, G
 			flags.turn = flags.turn_actor = flags.turn_enemy = flags.command_actor = true;
 			break;
 		case EventTriggerType::eAfterBattleAction:
-			flags.switch_a = flags.switch_b = flags.fatigue = flags.enemy_hp = flags.actor_hp = true;
+			flags.switch_a = flags.switch_b = flags.variable = flags.fatigue = flags.enemy_hp = flags.actor_hp = true;
 			break;
 		case EventTriggerType::eAll:
 			for (auto& ff: flags.flags) ff = true;
