@@ -349,6 +349,7 @@ add_library(${PROJECT_NAME} STATIC
 	src/util_macro.h
 	src/utils.cpp
 	src/utils.h
+	src/version.cpp
 	src/version.h
 	src/weather.cpp
 	src/weather.h
@@ -446,6 +447,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sr
 if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
 endif()
+
+# Version setup
+string(TIMESTAMP PLAYER_DATE "(%Y-%m-%d)")
+set(PLAYER_VERSION_APPEND ${PLAYER_DATE} CACHE STRING "Additional version information to include")
+set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
+	EP_VERSION="${PROJECT_VERSION}";
+	EP_VERSION_MAJOR=${PROJECT_VERSION_MAJOR};
+	EP_VERSION_MINOR=${PROJECT_VERSION_MINOR};
+	EP_VERSION_PATCH=${PROJECT_VERSION_PATCH};
+	EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}"
+)
 
 # Platform setup
 set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita 3ds switch wii")

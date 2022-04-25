@@ -168,18 +168,11 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 	// Display a nice version string
-	std::stringstream header;
-	std::string addtl_ver(PLAYER_ADDTL);
-	header << "EasyRPG Player " << PLAYER_VERSION;
-	if (!addtl_ver.empty())
-		header << " " << addtl_ver;
-	header << " started";
-	Output::Debug("{}", header.str());
-
-	unsigned int header_width = header.str().length();
-	header.str("");
-	header << std::setfill('=') << std::setw(header_width) << "=";
-	Output::Debug("{}", header.str());
+	auto header = GetFullVersionString() + " started";
+	Output::Debug("{}", header);
+	for (auto& c : header)
+		c = '=';
+	Output::Debug("{}", header);
 
 #ifdef __3DS__
 	romfsInit();
@@ -1118,7 +1111,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 
 	if (ver > PLAYER_SAVEGAME_VERSION) {
 		Output::Warning("This savegame was created with {} which is newer than the current version of EasyRPG Player ({})",
-			verstr.str(), PLAYER_VERSION);
+			verstr.str(), Version::STRING);
 	}
 
 	// Compatibility hacks for old EasyRPG Player saves.
@@ -1327,16 +1320,20 @@ std::string Player::GetEncoding() {
 	return encoding;
 }
 
-void Player::PrintVersion() {
-	std::string additional(PLAYER_ADDTL);
+std::string Player::GetFullVersionString() {
 	std::stringstream version;
+	version << "EasyRPG Player " << Version::STRING;
+	if (std::strlen(Version::GIT) > 0) {
+		version << " " << Version::GIT;
+	}
+	if (std::strlen(Version::APPEND) > 0) {
+		version << " " << Version::APPEND;
+	}
+	return version.str();
+}
 
-	version << PLAYER_VERSION;
-
-	if (!additional.empty())
-		version << " " << additional;
-
-	std::cout << "EasyRPG Player " << version.str() << std::endl;
+void Player::PrintVersion() {
+	std::cout << GetFullVersionString() << std::endl;
 }
 
 void Player::PrintUsage() {

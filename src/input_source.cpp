@@ -155,7 +155,7 @@ bool Input::Source::InitRecording(const std::string& record_to_path) {
 		}
 
 		*record_log << "H EasyRPG Player Recording\n";
-		*record_log << "V 2 " PLAYER_VERSION "\n";
+		*record_log << "V 2 " << Version::STRING << "\n";
 
 		std::time_t t = std::time(nullptr);
 		// trigraph ?-escapes

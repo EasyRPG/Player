@@ -5,7 +5,7 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
 
-noinst_LIBRARIES = libeasyrpg-player.a
+noinst_LIBRARIES = libeasyrpg-player.a libplayer-version.a
 libeasyrpg_player_a_SOURCES = \
 	src/lcf_data.cpp \
 	src/lcf/data.h \
@@ -341,7 +341,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/util_macro.h \
 	src/utils.cpp \
 	src/utils.h \
-	src/version.h \
 	src/weather.cpp \
 	src/weather.h \
 	src/window.cpp \
@@ -517,9 +516,29 @@ libeasyrpg_player_a_CXXFLAGS = \
 
 libeasyrpg_player_a_OBJCXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 
+# extra lib to only add version definitions here
+libplayer_version_a_SOURCES = \
+	src/version.cpp \
+	src/version.h
+libplayer_version_a_CXXFLAGS = \
+	-DEP_VERSION_MAJOR=$(EP_VERSION_MAJOR) \
+	-DEP_VERSION_MINOR=$(EP_VERSION_MINOR) \
+	-DEP_VERSION_PATCH=$(EP_VERSION_PATCH) \
+	-DEP_VERSION='"$(EP_VERSION)"' \
+	-DEP_VERSION_APPEND='"$(EP_VERSION_APPEND)"'
+
+# regenerate lib when version has changed
+$(libplayer_version_a_OBJECTS): $(builddir)/.version-append
+
+CLEANFILES = $(builddir)/.version-append
+.PHONY: update_version
+$(builddir)/.version-append: update_version
+	$(AM_V_at)[ -f $@ ] || touch $@
+	$(AM_V_at)echo "$(EP_VERSION_APPEND)" | cmp -s $@ - || echo "$(EP_VERSION_APPEND)" > $@
+
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-easyrpg_player_LDADD = libeasyrpg-player.a \
+easyrpg_player_LDADD = libeasyrpg-player.a libplayer-version.a \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
@@ -626,4 +645,4 @@ check-local:
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests
-CLEANFILES = easyrpg_log.txt
+CLEANFILES += easyrpg_log.txt
