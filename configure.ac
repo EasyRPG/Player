@@ -169,6 +169,7 @@ AC_SUBST(EP_VERSION_MAJOR)
 AC_SUBST(EP_VERSION_MINOR)
 AC_SUBST(EP_VERSION_PATCH)
 AC_SUBST(EP_VERSION)
+git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
 
 # manual page
 AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
@@ -200,6 +201,11 @@ if test "yes" != "$silent"; then
 
 	echo "EasyRPG Player $VERSION configuration summary:"
 	echo ""
+
+	if test -n "$git_version"; then
+		echo "$git_version"
+		echo ""
+	fi
 
 	echo "Paths:"
 	echo "  prefix: $prefix"

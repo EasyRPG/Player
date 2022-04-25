@@ -449,6 +449,34 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # Version setup
+include(GetGitRevisionDescription)
+set(PLAYER_VERSION_GIT "")
+git_get_exact_tag(GIT_TAG)
+# Do not include a hash, if we are building a release tag
+if(NOT GIT_TAG)
+	# otherwise concatenate a version with hash
+	git_describe_working_tree(GIT_DESCRIPTION "--long" "--tags")
+	if(GIT_DESCRIPTION)
+		string(REPLACE "-" ";" GIT_DESCRIPTION_PARTS ${GIT_DESCRIPTION})
+		list(GET GIT_DESCRIPTION_PARTS 0 GIT_TAG)
+		list(GET GIT_DESCRIPTION_PARTS 1 GIT_COMMITS)
+		list(GET GIT_DESCRIPTION_PARTS 2 GIT_HASH)
+		# strip the g prefix
+		string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
+		set(PLAYER_VERSION_GIT "git+${GIT_COMMITS}@${GIT_HASH}")
+		list(LENGTH GIT_DESCRIPTION_PARTS GIT_DESCRIPTION_LENGTH)
+		set(GIT_DIRTY_MESSAGE)
+		if(GIT_DESCRIPTION_LENGTH EQUAL 4)
+			list(GET GIT_DESCRIPTION_PARTS 3 GIT_DIRTY)
+			string(APPEND PLAYER_VERSION_GIT "-${GIT_DIRTY}")
+			set(GIT_DIRTY_MESSAGE ", you have uncommitted changes")
+		endif()
+
+		message(STATUS "Found git info: ${GIT_COMMITS} commits since tag"
+			" \"${GIT_TAG}\", object hash is ${GIT_HASH}${GIT_DIRTY_MESSAGE}")
+	endif()
+endif()
+
 string(TIMESTAMP PLAYER_DATE "(%Y-%m-%d)")
 set(PLAYER_VERSION_APPEND ${PLAYER_DATE} CACHE STRING "Additional version information to include")
 set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
@@ -456,7 +484,8 @@ set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
 	EP_VERSION_MAJOR=${PROJECT_VERSION_MAJOR};
 	EP_VERSION_MINOR=${PROJECT_VERSION_MINOR};
 	EP_VERSION_PATCH=${PROJECT_VERSION_PATCH};
-	EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}"
+	EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}";
+	EP_VERSION_GIT="${PLAYER_VERSION_GIT}"
 )
 
 # Platform setup
