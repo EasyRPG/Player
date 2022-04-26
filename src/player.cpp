@@ -690,7 +690,7 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 #endif
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
-			PrintVersion();
+			std::cout << GetFullVersionString() << std::endl;
 			exit(0);
 			break;
 		}
@@ -1321,19 +1321,7 @@ std::string Player::GetEncoding() {
 }
 
 std::string Player::GetFullVersionString() {
-	std::stringstream version;
-	version << "EasyRPG Player " << Version::STRING;
-	if (std::strlen(Version::GIT) > 0) {
-		version << " " << Version::GIT;
-	}
-	if (std::strlen(Version::APPEND) > 0) {
-		version << " " << Version::APPEND;
-	}
-	return version.str();
-}
-
-void Player::PrintVersion() {
-	std::cout << GetFullVersionString() << std::endl;
+	return std::string(GAME_TITLE) + " " + Version::GetVersionString();
 }
 
 void Player::PrintUsage() {

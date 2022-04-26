@@ -267,9 +267,6 @@ namespace Player {
 	/** @return full version string */
 	std::string GetFullVersionString();
 
-	/** Output program version on stdout */
-	void PrintVersion();
-
 	/** Output program usage information on stdout */
 	void PrintUsage();
 

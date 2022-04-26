@@ -18,6 +18,9 @@
 #ifndef EP_VERSION_H
 #define EP_VERSION_H
 
+#include <cstring>
+#include <string>
+
 /**
  * Version of Player.
  */
@@ -30,6 +33,13 @@ namespace Version {
 	extern const char GIT[];
 	extern const char APPEND[];
 
+	/**
+	 * Generates a version string.
+	 *
+	 * @param with_git Append git information (if available)
+	 * @param with_append Append additional information (if available, by default the build date)
+	 */
+	std::string GetVersionString(bool with_git = true, bool with_append = true);
 }
 
 /**

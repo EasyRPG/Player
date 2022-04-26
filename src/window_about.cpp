@@ -36,7 +36,7 @@ void Window_About::Refresh() {
 		"interpreter.",
 		"Licensed under the GPLv3",
 		"",
-		"Version: " + std::string(Version::STRING),
+		"Version: " + Version::GetVersionString(true, false),
 		"Website: easyrpg.org",
 		"",
 		"Contact us:",
