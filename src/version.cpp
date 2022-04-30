@@ -23,6 +23,8 @@
 
 // Fallback if buildsystem has not provided a version
 #ifndef EP_VERSION
+	#warning "No version specified by build system, using defaults."
+
 	#define EP_VERSION_MAJOR 0
 	#define EP_VERSION_MINOR 7
 	#define EP_VERSION_PATCH 0

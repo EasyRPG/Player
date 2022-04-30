@@ -44,12 +44,12 @@ AS_IF([test "x$enable_drwav" = "xyes"],
 AM_CONDITIONAL([WANT_DRWAV],[test "x$enable_drwav" = "xyes"])
 
 # additional version
-m4_define([ep_date], m4_esyscmd_s(date +%Y-%m-%d))
+AX_BUILD_DATE_EPOCH(ep_date, [%Y-%m-%d])
 AC_ARG_ENABLE([append-version],
 	[AS_HELP_STRING([--enable-append-version@<:@=TEXT@:>@],
-	[Additional version information to include. @<:@default=(current date)@:>@])])
+	[Additional version information to include. @<:@default=(build date)@:>@])])
 AS_IF([test "x$enable_append_version" = "xyes" -o "x$enable_append_version" = "x"],
-	[enable_append_version="(ep_date)"],
+	[enable_append_version="($ep_date)"],
 	[test "x$enable_append_version" = "xno"], [enable_append_version=""])
 EP_VERSION_APPEND=$enable_append_version
 AC_SUBST([EP_VERSION_APPEND])
@@ -161,14 +161,10 @@ AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([malloc floor getcwd memset putenv strerror])
 
 # version setup
-EP_VERSION_MAJOR=ep_version_major
-EP_VERSION_MINOR=ep_version_minor
-EP_VERSION_PATCH=ep_version_patch
-EP_VERSION=ep_version
-AC_SUBST(EP_VERSION_MAJOR)
-AC_SUBST(EP_VERSION_MINOR)
-AC_SUBST(EP_VERSION_PATCH)
-AC_SUBST(EP_VERSION)
+AC_SUBST(EP_VERSION_MAJOR, ep_version_major)
+AC_SUBST(EP_VERSION_MINOR, ep_version_minor)
+AC_SUBST(EP_VERSION_PATCH, ep_version_patch)
+AC_SUBST(EP_VERSION, ep_version)
 git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
 
 # manual page
