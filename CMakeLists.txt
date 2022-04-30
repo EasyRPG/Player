@@ -455,7 +455,7 @@ git_get_exact_tag(GIT_TAG)
 # Do not include a hash, if we are building a release tag
 if(NOT GIT_TAG)
 	# otherwise concatenate a version with hash
-	git_describe_working_tree(GIT_DESCRIPTION "--long" "--tags")
+	git_describe(GIT_DESCRIPTION)
 	if(GIT_DESCRIPTION)
 		string(REPLACE "-" ";" GIT_DESCRIPTION_PARTS ${GIT_DESCRIPTION})
 		list(GET GIT_DESCRIPTION_PARTS 0 GIT_TAG)
@@ -464,11 +464,10 @@ if(NOT GIT_TAG)
 		# strip the g prefix
 		string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
 		set(PLAYER_VERSION_GIT "git+${GIT_COMMITS}@${GIT_HASH}")
-		list(LENGTH GIT_DESCRIPTION_PARTS GIT_DESCRIPTION_LENGTH)
 		set(GIT_DIRTY_MESSAGE)
-		if(GIT_DESCRIPTION_LENGTH EQUAL 4)
-			list(GET GIT_DESCRIPTION_PARTS 3 GIT_DIRTY)
-			string(APPEND PLAYER_VERSION_GIT "-${GIT_DIRTY}")
+		git_local_changes(GIT_DIRTY)
+		if(GIT_DIRTY STREQUAL "DIRTY")
+			string(APPEND PLAYER_VERSION_GIT "-dirty")
 			set(GIT_DIRTY_MESSAGE ", you have uncommitted changes")
 		endif()
 
