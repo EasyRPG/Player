@@ -956,8 +956,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		# Add resources
 		string(REPLACE "." "," RC_VERSION ${PROJECT_VERSION})
 		string(TIMESTAMP RC_YEAR "%Y")
-		configure_file(resources/player.rc.in resources/player.rc @ONLY)
-		target_sources(${EXE_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/resources/player.rc")
+		configure_file(resources/windows/player.rc.in resources/windows/player.rc @ONLY)
+		target_sources(${EXE_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
 
 		# Change executable name
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
@@ -1137,17 +1137,20 @@ set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 set(MANUAL_STATUS "Unavailable")
 if(A2X_EXECUTABLE)
-	add_custom_command(OUTPUT resources/${MAN_NAME}
-		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources
-		COMMAND ${A2X_EXECUTABLE} -a player_version="${PLAYER_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
-		DEPENDS resources/${MAN_NAME}.adoc
+	add_custom_command(OUTPUT resources/unix/${MAN_NAME}
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
+		COMMAND ${A2X_EXECUTABLE} -a player_version="${PLAYER_VERSION}"
+			-f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME}.adoc
+		DEPENDS resources/unix/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
 	if(UNIX)
-		add_custom_target(player_man ALL DEPENDS resources/${MAN_NAME})
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/${MAN_NAME} DESTINATION ${CMAKE_INSTALL_MANDIR}/man6)
+		add_custom_target(player_man ALL DEPENDS resources/unix/${MAN_NAME})
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/unix/${MAN_NAME}
+			DESTINATION ${CMAKE_INSTALL_MANDIR}/man6)
 	else()
-		add_custom_target(player_man DEPENDS resources/${MAN_NAME})
+		add_custom_target(player_man DEPENDS resources/unix/${MAN_NAME})
 	endif()
 	if(NOT TARGET man)
 		add_custom_target(man)
@@ -1156,8 +1159,8 @@ if(A2X_EXECUTABLE)
 	set(MANUAL_STATUS "Generated")
 else()
 	# no a2x, distribution archive?
-	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME})
-		install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
+	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME})
+		install(FILES resources/unix/${MAN_NAME} DESTINATION share/man/man6)
 		set(MANUAL_STATUS "Bundled")
 	endif()
 endif()

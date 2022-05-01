@@ -178,9 +178,9 @@ git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
 AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
-AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"],
-  AC_MSG_WARN([a2x is required to create the manual page]))
-AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
+AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/unix/easyrpg-player.6"],
+	AC_MSG_WARN([a2x is required to create the manual page]))
+AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/unix/easyrpg-player.6"])
 
 # Doxygen source documentation
 DX_DOXYGEN_FEATURE(OFF)
@@ -241,7 +241,7 @@ if test "yes" != "$silent"; then
 
 	echo "Documentation:"
 	echo -n "  manual page: "
-	if test "$A2X" = "no" -a -f "${srcdir}/resources/easyrpg-player.6"; then
+	if test "$A2X" = "no" -a -f "${srcdir}/resources/unix/easyrpg-player.6"; then
 		echo "shipped"
 	elif test "x$A2X" != "xno"; then
 		echo "generated"

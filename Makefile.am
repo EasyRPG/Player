@@ -572,14 +572,14 @@ endif
 
 # manual page
 if HAVE_A2X
-resources/easyrpg-player.6: resources/easyrpg-player.6.adoc
-	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources $<
+resources/unix/easyrpg-player.6: resources/unix/easyrpg-player.6.adoc
+	$(AM_V_GEN)$(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources/unix $<
 
-dist_man6_MANS = resources/easyrpg-player.6
-MOSTLYCLEANFILES += resources/easyrpg-player.6
+dist_man6_MANS = resources/unix/easyrpg-player.6
+MOSTLYCLEANFILES += resources/unix/easyrpg-player.6
 else
 if HAVE_MANUAL
-dist_man6_MANS = resources/easyrpg-player.6
+dist_man6_MANS = resources/unix/easyrpg-player.6
 endif
 endif
 
