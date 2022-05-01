@@ -3,10 +3,16 @@
 
 AC_PREREQ([2.69])
 
+# version magic
 m4_define([ep_version_major], [0])
 m4_define([ep_version_minor], [7])
 m4_define([ep_version_patch], [0])
-m4_define([ep_version], [ep_version_major.ep_version_minor.ep_version_patch])
+m4_define([ep_version_tweak], [0])
+m4_define([ep_version], [ep_version_major.ep_version_minor])
+m4_append([ep_version], m4_if(ep_version_tweak, 0,
+		m4_if(ep_version_patch, 0,, [.ep_version_patch]),
+	[.ep_version_patch.ep_version_tweak]))
+
 AC_INIT([easyrpg-player],[ep_version],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
 AC_CONFIG_AUX_DIR([builds/autoconf/aux])
@@ -164,6 +170,7 @@ AC_CHECK_FUNCS([malloc floor getcwd memset putenv strerror])
 AC_SUBST(EP_VERSION_MAJOR, ep_version_major)
 AC_SUBST(EP_VERSION_MINOR, ep_version_minor)
 AC_SUBST(EP_VERSION_PATCH, ep_version_patch)
+AC_SUBST(EP_VERSION_TWEAK, ep_version_tweak)
 AC_SUBST(EP_VERSION, ep_version)
 git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
 
@@ -176,7 +183,6 @@ AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"]
 AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
 
 # Doxygen source documentation
-m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])
 DX_DOXYGEN_FEATURE(OFF)
 DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)

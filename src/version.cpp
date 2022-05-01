@@ -17,19 +17,32 @@
 
 #include "version.h"
 
-// Helper Macros
-#define STRINGIFY(x) #x
-#define TO_STRING(x) STRINGIFY(x)
-
 // Fallback if buildsystem has not provided a version
 #ifndef EP_VERSION
 	#warning "No version specified by build system, using defaults."
 
+	// Helper Macros
+	#define STRINGIFY(x) #x
+	#define TO_STRING(x) STRINGIFY(x)
+
+	// Set by release-helper.sh
 	#define EP_VERSION_MAJOR 0
 	#define EP_VERSION_MINOR 7
 	#define EP_VERSION_PATCH 0
-	#define EP_VERSION TO_STRING(EP_VERSION_MAJOR) "." \
-			TO_STRING(EP_VERSION_MINOR) "." TO_STRING(EP_VERSION_PATCH)
+	#define EP_VERSION_TWEAK 0
+
+	// concatenate short version string
+	#define _VER1 TO_STRING(EP_VERSION_MAJOR) "." TO_STRING(EP_VERSION_MINOR)
+	#if EP_VERSION_TWEAK > 0
+		#define _VER2 TO_STRING(EP_VERSION_PATCH) "." TO_STRING(EP_VERSION_TWEAK)
+	#elif EP_VERSION_PATCH > 0
+		#define _VER2 TO_STRING(EP_VERSION_PATCH)
+	#endif
+	#ifdef _VER2
+		#define EP_VERSION _VER1 "." _VER2
+	#else
+		#define EP_VERSION _VER1
+	#endif
 #endif
 
 // These can be undefined
@@ -46,6 +59,7 @@ namespace Version {
 	const int MAJOR = EP_VERSION_MAJOR;
 	const int MINOR = EP_VERSION_MINOR;
 	const int PATCH = EP_VERSION_PATCH;
+	const int TWEAK = EP_VERSION_TWEAK;
 	const char GIT[] = EP_VERSION_GIT;
 	const char APPEND[] = EP_VERSION_APPEND;
 

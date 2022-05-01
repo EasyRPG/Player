@@ -12,7 +12,7 @@
 	<frame id="frame3">
 		<liveitem>
 			<text valign="bottom" text-valign="bottom" align="center" text-align="center"  line-space="3" ellipsis="on">
-				<str color="#ffffff" size="30" bold="on" shadow="on">EasyRPG Player 0.7.0</str>
+				<str color="#ffffff" size="30" bold="on" shadow="on">EasyRPG Player @PLAYER_VERSION_HOMEBREW@</str>
 			</text>
 		</liveitem>
 	</frame>

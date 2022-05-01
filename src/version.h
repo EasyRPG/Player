@@ -29,6 +29,7 @@ namespace Version {
 	extern const int MAJOR;
 	extern const int MINOR;
 	extern const int PATCH;
+	extern const int TWEAK;
 	extern const char STRING[];
 	extern const char GIT[];
 	extern const char APPEND[];

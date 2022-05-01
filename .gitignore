@@ -32,6 +32,8 @@ stamp-h1
 /output
 /utils
 /directorytree
+/.version-append
+/.version-git
 
 # cmake
 CMakeFiles/
@@ -58,6 +60,7 @@ install_manifest.txt
 *.exp
 *.ilk
 *.pdb
+/resources/player.rc
 
 # ninja
 .ninja_*
@@ -90,6 +93,7 @@ easyrpg-player-*.tar.*
 # osx
 __MACOSX
 .DS_Store
+/resources/osx/Info.plist
 
 # Xcode
 /*.xcodeproj
@@ -121,9 +125,11 @@ easyrpg_libretro.*
 *.cia
 
 # wii
+/resources/wii/meta.xml
 *.dol
 
 # psvita
+/resources/psvita/template.xml
 eboot.bin
 *.vpk
 *.velf

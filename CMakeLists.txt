@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(EasyRPG_Player VERSION 0.7.0 LANGUAGES CXX)
+project(EasyRPG_Player VERSION 0.7 LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -449,6 +449,19 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # Version setup
+set(PLAYER_VERSION ${PROJECT_VERSION})
+if(NOT PROJECT_VERSION_TWEAK)
+	# a kludge to match the valid version format
+	set(PROJECT_VERSION_TWEAK 0)
+	if(NOT PROJECT_VERSION_PATCH)
+		set(PROJECT_VERSION_PATCH 0)
+	endif()
+endif()
+set(PLAYER_VERSION_HOMEBREW ${PLAYER_VERSION})
+string(CONCAT PROJECT_VERSION
+	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
+	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
+
 include(GetGitRevisionDescription)
 set(PLAYER_VERSION_GIT "")
 git_get_exact_tag(GIT_TAG)
@@ -470,6 +483,7 @@ if(NOT GIT_TAG)
 			string(APPEND PLAYER_VERSION_GIT "-dirty")
 			set(GIT_DIRTY_MESSAGE ", you have uncommitted changes")
 		endif()
+		string(APPEND PLAYER_VERSION_HOMEBREW "-${PLAYER_VERSION_GIT}")
 
 		message(STATUS "Found git info: ${GIT_COMMITS} commits since tag"
 			" \"${GIT_TAG}\", object hash is ${GIT_HASH}${GIT_DIRTY_MESSAGE}")
@@ -479,10 +493,11 @@ endif()
 string(TIMESTAMP PLAYER_DATE "(%Y-%m-%d)")
 set(PLAYER_VERSION_APPEND ${PLAYER_DATE} CACHE STRING "Additional version information to include")
 set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
-	EP_VERSION="${PROJECT_VERSION}";
+	EP_VERSION="${PLAYER_VERSION}";
 	EP_VERSION_MAJOR=${PROJECT_VERSION_MAJOR};
 	EP_VERSION_MINOR=${PROJECT_VERSION_MINOR};
 	EP_VERSION_PATCH=${PROJECT_VERSION_PATCH};
+	EP_VERSION_TWEAK=${PROJECT_VERSION_TWEAK};
 	EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}";
 	EP_VERSION_GIT="${PLAYER_VERSION_GIT}"
 )
@@ -925,7 +940,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 		add_executable("${EXE_NAME}" MACOSX_BUNDLE "src/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
-		set_target_properties("${EXE_NAME}" PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/resources/osx/Info.plist")
+		configure_file(resources/osx/Info.plist.in resources/osx/Info.plist @ONLY)
+		set_target_properties("${EXE_NAME}" PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/osx/Info.plist")
 		set_target_properties("${EXE_NAME}" PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
@@ -938,7 +954,10 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE $<NOT:CONFIG:Debug>)
 
 		# Add resources
-		target_sources(${EXE_NAME} PRIVATE "resources/player.rc")
+		string(REPLACE "." "," RC_VERSION ${PROJECT_VERSION})
+		string(TIMESTAMP RC_YEAR "%Y")
+		configure_file(resources/player.rc.in resources/player.rc @ONLY)
+		target_sources(${EXE_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/resources/player.rc")
 
 		# Change executable name
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
@@ -992,7 +1011,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			-lcitro2d
 			-lcitro3d)
 		ctr_generate_smdh(easyrpg-player.smdh
-			NAME "EasyRPG Player"
+			NAME "EasyRPG Player ${PLAYER_VERSION_HOMEBREW}"
 			DESCRIPTION "Play your RPG Maker 2000/2003 games everywhere"
 			AUTHOR "EasyRPG Team"
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
@@ -1009,7 +1028,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		nx_generate_nacp(easyrpg-player.nacp
 			NAME "EasyRPG Player"
 			AUTHOR "EasyRPG Team"
-			VERSION "${PROJECT_VERSION}")
+			VERSION "${PLAYER_VERSION_HOMEBREW}")
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
@@ -1024,9 +1043,14 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			-lfat
 			-lwiikeyboard)
 		ogc_create_dol(easyrpg-player)
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.dol RENAME boot.dol
+		string(TIMESTAMP WII_DATE "%Y%m%d000000")
+		configure_file(resources/wii/meta.xml.in resources/wii/meta.xml @ONLY)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.dol
+			RENAME boot.dol
 			DESTINATION easyrpg-player COMPONENT wii)
-		install(DIRECTORY resources/wii/ DESTINATION easyrpg-player COMPONENT wii)
+		install(FILES resources/wii/icon.png
+			${CMAKE_CURRENT_BINARY_DIR}/resources/wii/meta.xml
+			DESTINATION easyrpg-player COMPONENT wii)
 	elseif(VITA)
 		set(CMAKE_EXECUTABLE_SUFFIX .elf)
 		target_link_libraries(easyrpg-player
@@ -1046,20 +1070,14 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			SceAudio_stub)
 		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:CONFIG:Debug>:STRIPPED>)
 		set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
-		# a kludge to match the valid version format
-		if(NOT PROJECT_VERSION_PATCH)
-			set(PROJECT_VERSION_PATCH 0)
-		endif()
-		if(NOT PROJECT_VERSION_TWEAK)
-			set(PROJECT_VERSION_TWEAK 0)
-		endif()
+		configure_file(resources/psvita/template.xml.in resources/psvita/template.xml @ONLY)
 		vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
 			VERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}"
 			NAME "EasyRPG Player"
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/icon0.png" sce_sys/icon0.png
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/bg.png" sce_sys/livearea/contents/bg.png
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/startup.png" sce_sys/livearea/contents/startup.png
-			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
+			FILE "${CMAKE_CURRENT_BINARY_DIR}/resources/psvita/template.xml" sce_sys/livearea/contents/template.xml
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
 			DESTINATION . COMPONENT psvita)
@@ -1077,7 +1095,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	set(CPACK_ARCHIVE_COMPONENT_INSTALL ON) # split archives
 	set(CPACK_PACKAGE_FILE_NAME "easyrpg-player")
 	if(PLAYER_VERSIONED_PACKAGES)
-		string(APPEND CPACK_PACKAGE_FILE_NAME "-${PROJECT_VERSION}")
+		string(APPEND CPACK_PACKAGE_FILE_NAME "-${PLAYER_VERSION}")
 	endif()
 	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${PLAYER_TARGET_PLATFORM}-debug")
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
@@ -1121,7 +1139,7 @@ set(MANUAL_STATUS "Unavailable")
 if(A2X_EXECUTABLE)
 	add_custom_command(OUTPUT resources/${MAN_NAME}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources
-		COMMAND ${A2X_EXECUTABLE} -a player_version="${PROJECT_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
+		COMMAND ${A2X_EXECUTABLE} -a player_version="${PLAYER_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
 		DEPENDS resources/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
@@ -1159,9 +1177,11 @@ set(DOXYGEN_STATUS "Unavailable")
 if(DOXYGEN_FOUND)
 	set(DOXYGEN_STATUS "Available (target \"doc\")")
 	# fake autotools variables
+	set(PACKAGE_VERSION ${PLAYER_VERSION})
 	set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
 	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 	configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
+	unset(PACKAGE_VERSION)
 	unset(DX_DOCDIR)
 	unset(srcdir)
 
