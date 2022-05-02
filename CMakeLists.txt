@@ -457,7 +457,7 @@ if(NOT PROJECT_VERSION_TWEAK)
 		set(PROJECT_VERSION_PATCH 0)
 	endif()
 endif()
-set(PLAYER_VERSION_HOMEBREW ${PLAYER_VERSION})
+set(PLAYER_VERSION_FULL ${PLAYER_VERSION})
 string(CONCAT PROJECT_VERSION
 	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
 	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
@@ -483,7 +483,7 @@ if(NOT GIT_TAG)
 			string(APPEND PLAYER_VERSION_GIT "-dirty")
 			set(GIT_DIRTY_MESSAGE ", you have uncommitted changes")
 		endif()
-		string(APPEND PLAYER_VERSION_HOMEBREW "-${PLAYER_VERSION_GIT}")
+		string(APPEND PLAYER_VERSION_FULL "-${PLAYER_VERSION_GIT}")
 
 		message(STATUS "Found git info: ${GIT_COMMITS} commits since tag"
 			" \"${GIT_TAG}\", object hash is ${GIT_HASH}${GIT_DIRTY_MESSAGE}")
@@ -1011,7 +1011,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			-lcitro2d
 			-lcitro3d)
 		ctr_generate_smdh(easyrpg-player.smdh
-			NAME "EasyRPG Player ${PLAYER_VERSION_HOMEBREW}"
+			NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
 			DESCRIPTION "Play your RPG Maker 2000/2003 games everywhere"
 			AUTHOR "EasyRPG Team"
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
@@ -1028,7 +1028,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		nx_generate_nacp(easyrpg-player.nacp
 			NAME "EasyRPG Player"
 			AUTHOR "EasyRPG Team"
-			VERSION "${PLAYER_VERSION_HOMEBREW}")
+			VERSION "${PLAYER_VERSION_FULL}")
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
@@ -1112,6 +1112,9 @@ else()
 			src/platform/libretro/libretro_ui.h
 			src/platform/libretro/midiout_device_libretro.cpp
 			src/platform/libretro/midiout_device_libretro.h
+		)
+		set_property(SOURCE src/platform/libretro/libretro_ui.cpp
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION_FULL="${PLAYER_VERSION_FULL}"
 		)
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
