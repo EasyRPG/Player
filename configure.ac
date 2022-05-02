@@ -2,7 +2,18 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([easyrpg-player],[0.7.0],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
+
+# version magic
+m4_define([ep_version_major], [0])
+m4_define([ep_version_minor], [7])
+m4_define([ep_version_patch], [0])
+m4_define([ep_version_tweak], [0])
+m4_define([ep_version], [ep_version_major.ep_version_minor])
+m4_append([ep_version], m4_if(ep_version_tweak, 0,
+		m4_if(ep_version_patch, 0,, [.ep_version_patch]),
+	[.ep_version_patch.ep_version_tweak]))
+
+AC_INIT([easyrpg-player],[ep_version],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
 AC_CONFIG_AUX_DIR([builds/autoconf/aux])
 AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall dist-xz])
@@ -37,6 +48,17 @@ AS_IF([test "x$enable_drwav" = "xyes"],
 	[AC_DEFINE([WANT_DRWAV],[1],[use internal WAV library dr_wav])],
 	[enable_drwav="no"])
 AM_CONDITIONAL([WANT_DRWAV],[test "x$enable_drwav" = "xyes"])
+
+# additional version
+AX_BUILD_DATE_EPOCH(ep_date, [%Y-%m-%d])
+AC_ARG_ENABLE([append-version],
+	[AS_HELP_STRING([--enable-append-version@<:@=TEXT@:>@],
+	[Additional version information to include. @<:@default=(build date)@:>@])])
+AS_IF([test "x$enable_append_version" = "xyes" -o "x$enable_append_version" = "x"],
+	[enable_append_version="($ep_date)"],
+	[test "x$enable_append_version" = "xno"], [enable_append_version=""])
+EP_VERSION_APPEND=$enable_append_version
+AC_SUBST([EP_VERSION_APPEND])
 
 # Checks for libraries.
 AC_DEFUN([EP_PKG_CHECK],[ dnl VARIABLE-PREFIX, MODULES, [DESCRIPTION], [DEFAULT=auto]
@@ -144,16 +166,23 @@ AC_TYPE_UINT8_T
 AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([malloc floor getcwd memset putenv strerror])
 
+# version setup
+AC_SUBST(EP_VERSION_MAJOR, ep_version_major)
+AC_SUBST(EP_VERSION_MINOR, ep_version_minor)
+AC_SUBST(EP_VERSION_PATCH, ep_version_patch)
+AC_SUBST(EP_VERSION_TWEAK, ep_version_tweak)
+AC_SUBST(EP_VERSION, ep_version)
+git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
+
 # manual page
 AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
-AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"],
-  AC_MSG_WARN([a2x is required to create the manual page]))
-AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
+AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/unix/easyrpg-player.6"],
+	AC_MSG_WARN([a2x is required to create the manual page]))
+AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/unix/easyrpg-player.6"])
 
 # Doxygen source documentation
-m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])
 DX_DOXYGEN_FEATURE(OFF)
 DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)
@@ -174,6 +203,11 @@ if test "yes" != "$silent"; then
 
 	echo "EasyRPG Player $VERSION configuration summary:"
 	echo ""
+
+	if test -n "$git_version"; then
+		echo "$git_version"
+		echo ""
+	fi
 
 	echo "Paths:"
 	echo "  prefix: $prefix"
@@ -207,7 +241,7 @@ if test "yes" != "$silent"; then
 
 	echo "Documentation:"
 	echo -n "  manual page: "
-	if test "$A2X" = "no" -a -f "${srcdir}/resources/easyrpg-player.6"; then
+	if test "$A2X" = "no" -a -f "${srcdir}/resources/unix/easyrpg-player.6"; then
 		echo "shipped"
 	elif test "x$A2X" != "xno"; then
 		echo "generated"

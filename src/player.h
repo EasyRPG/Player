@@ -264,8 +264,8 @@ namespace Player {
 	int EngineVersion();
 	std::string GetEngineVersion();
 
-	/** Output program version on stdout */
-	void PrintVersion();
+	/** @return full version string */
+	std::string GetFullVersionString();
 
 	/** Output program usage information on stdout */
 	void PrintUsage();

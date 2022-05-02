@@ -36,7 +36,7 @@ void Window_About::Refresh() {
 		"interpreter.",
 		"Licensed under the GPLv3",
 		"",
-		"Version: " PLAYER_VERSION,
+		"Version: " + Version::GetVersionString(true, false),
 		"Website: easyrpg.org",
 		"",
 		"Contact us:",

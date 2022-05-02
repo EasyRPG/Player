@@ -6,6 +6,7 @@
 set -e
 
 version=$1
+verbose=${2:-quiet}
 
 if [[ -z $version ]]; then
 
@@ -14,57 +15,84 @@ if [[ -z $version ]]; then
 
 fi
 
-if [[ ! $version =~ ^[0-9]\.[0-9]\.[0-9]$ ]]; then
+if [[ ! $version =~ ^[0-9](\.[0-9]){1,3}$ ]]; then
 
   echo "Invalid version argument. Only digits and dots allowed."
+  echo "Example: 0.8 or 0.7.0.1"
   exit 1
 
 fi
 
+# helpers
+reset="\e[0m"
+red="\e[31m"
+yellow="\e[33m"
+blue="\e[36m"
+bold="\e[1m"
+function print_file() {
+  if [ $verbose == "verbose" ]; then
+    echo -e "$yellow  $file:$reset"
+  else
+    echo -e "$yellow  $file$reset"
+  fi
+}
+
+function print_verbose() {
+  if [ $verbose == "verbose" ]; then
+    echo -ne "$blue"
+    grep "$1" $2
+    echo -e "$reset"
+  fi
+}
+
+# convenience variables
+IFS='.' read -r _maj _min _pat _twk <<< $version
+# default to zero
+_pat=${_pat:-0}
+_twk=${_twk:-0}
+
 echo "Updating Version in:"
 
-echo "  CMakeLists.txt"
-sed -i "/EasyRPG_Player VERSION/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" CMakeLists.txt
+file="CMakeLists.txt"
+print_file
+sed -i "/EasyRPG_Player VERSION/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" $file
+print_verbose " VERSION " $file
 
-echo "  configure.ac"
-sed -i "/AC_INIT/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" configure.ac
+file=configure.ac
+print_file
+sed -i -e "/ep_version_major/,1 s/\[[0-9]\+\]/[$_maj]/" \
+       -e "/ep_version_minor/,1 s/\[[0-9]\+\]/[$_min]/" \
+       -e "/ep_version_patch/,1 s/\[[0-9]\+\]/[$_pat]/" \
+       -e "/ep_version_tweak/,1 s/\[[0-9]\+\]/[$_twk]/" $file
+print_verbose 'm4_define(\[ep_version_' $file
 
-echo "  builds/android/gradle.properties"
+file="builds/android/gradle.properties"
+print_file
 _android_commits=`git rev-list HEAD --count`
-sed -i -e "/VERSION_NAME/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
-       -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" builds/android/gradle.properties
+sed -i -e "/VERSION_NAME/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" \
+       -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" $file
+print_verbose 'VERSION_.*=[0-9]' $file
 
-echo "  resources/wii/meta.xml"
-_wiidate=$(date +%Y%m%d000000)
-sed -i -e "/version/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
-       -e "/release_date/,1 s/[0-9]\{14\}/$_wiidate/" resourses/wii/meta.xml
+file="src/version.cpp"
+print_file
+sed -i -e "s/\(#define EP_VERSION_MAJOR\).*/\1 $_maj/" \
+       -e "s/\(#define EP_VERSION_MINOR\).*/\1 $_min/" \
+       -e "s/\(#define EP_VERSION_PATCH\).*/\1 $_pat/" \
+       -e "s/\(#define EP_VERSION_TWEAK\).*/\1 $_twk/" $file
+print_verbose "define EP_VERSION_.*[0-9]" $file
 
-echo "  resources/psvita/template.xml"
-sed -i "/EasyRPG Player/,1 s/[0-9]\.[0-9]\.[0-9]/$version/" resources/psvita/template.xml
+file="README.md"
+print_file
+sed -i "s/\(easyrpg-player-\)[0-9]\(.[0-9]\)\{1,3\}/\1$version/g" $file
+print_verbose "easyrpg-player-[0-9]" $file
 
-echo "  resources/osx/Info.plist"
-sed -i "/CFBundleShortVersionString/,+1 s/[0-9]\.[0-9]\.[0-9]/$version/" \
-  resources/osx/Info.plist
+echo -e "$(
+cat << EOM
 
-echo "  resources/player.rc"
-sed -i "s/[0-9]\.[0-9]\.[0-9]/$version/; s/[0-9],[0-9],[0-9]/${version//./,}/" \
-  resources/player.rc
-
-echo "  src/version.h"
-_maj=${version%%.*}
-_pat=${version##*.}
-_min=${version%.*}
-_min=${_min#*.}
-sed -i -e "s/\(#define PLAYER_MAJOR\).*/\1 $_maj/" \
-       -e "s/\(#define PLAYER_MINOR\).*/\1 $_min/" \
-       -e "s/\(#define PLAYER_PATCH\).*/\1 $_pat/" src/version.h
-
-echo "  README.md"
-sed -i "s/\(easyrpg-player-\)[0-9]\.[0-9]\.[0-9]/\1$version/g" README.md
-
-cat << EOF
+${red}Please check the ${bold}README.md${reset}${red} for whitespace problems.${reset}
 
 If everything is ready and committed, use these commands to publish the git tag:
-$ git tag -a (-s) $version -m "Codename \"\fancy codename\""
+$ git tag -a (-s) $version -m "Codename \"fancy codename\""
 $ git push (-n) --tags upstream
-EOF
+EOM
+)"

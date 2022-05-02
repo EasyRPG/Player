@@ -77,10 +77,10 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.7.0.tar.xz # unpack the tarball
-    cd easyrpg-player-0.7.0            # enter in the package directory
-    ./configure                        # find libraries, set options
-    make                               # compile the executable
+    tar xf easyrpg-player-0.7.tar.xz # unpack the tarball
+    cd easyrpg-player-0.7            # enter in the package directory
+    ./configure                      # find libraries, set options
+    make                             # compile the executable
 
 Additional building requirements when using the source tree (git):
 
@@ -106,8 +106,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.7.0.tar.xz    # unpack the tarball
-    cd easyrpg-player-0.7.0               # enter in the package directory
+    tar xf easyrpg-player-0.7.tar.xz      # unpack the tarball
+    cd easyrpg-player-0.7                 # enter in the package directory
     cmake . -DCMAKE_BUILD_TYPE=Release    # configure project
     cmake --build .                       # compile the executable
     sudo cmake --build . --target install # install system-wide
@@ -145,8 +145,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.7.0.tar.xz     # unpack the tarball
-    cd easyrpg-player-0.7.0/builds/android # enter in the android directory
+    tar xf easyrpg-player-0.7.tar.xz     # unpack the tarball
+    cd easyrpg-player-0.7/builds/android # enter in the android directory
     ./gradlew -PtoolchainDirs="DIR1;DIR2" assembleRelease # create the APK
 
 Replace ``DIR1`` etc. with the path to the player dependencies. You can use

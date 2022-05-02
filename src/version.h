@@ -18,24 +18,35 @@
 #ifndef EP_VERSION_H
 #define EP_VERSION_H
 
-// Helper Macros
-#define STRINGIFY(x) #x
-#define TO_STRING(x) STRINGIFY(x)
+#include <cstring>
+#include <string>
 
 /**
  * Version of Player.
- * FIXME: Make this a proper, generated version header redefined by the build system.
  */
-#define PLAYER_MAJOR 0
-#define PLAYER_MINOR 7
-#define PLAYER_PATCH 0
-#define PLAYER_ADDTL ""
-#define PLAYER_VERSION TO_STRING(PLAYER_MAJOR) "." TO_STRING(PLAYER_MINOR) "." TO_STRING(PLAYER_PATCH)
+namespace Version {
+
+	extern const int MAJOR;
+	extern const int MINOR;
+	extern const int PATCH;
+	extern const int TWEAK;
+	extern const char STRING[];
+	extern const char GIT[];
+	extern const char APPEND[];
+
+	/**
+	 * Generates a version string.
+	 *
+	 * @param with_git Append git information (if available)
+	 * @param with_append Append additional information (if available, by default the build date)
+	 */
+	std::string GetVersionString(bool with_git = true, bool with_append = true);
+}
 
 /**
  * Version written to the easyrpg_data.version field in savegames.
  * Increment the last digit (0) only when having a good reason.
  */
-#define PLAYER_SAVEGAME_VERSION (PLAYER_MAJOR * 1000 + PLAYER_MINOR * 100 + PLAYER_PATCH * 10 + 0)
+#define PLAYER_SAVEGAME_VERSION (Version::MAJOR * 1000 + Version::MINOR * 100 + Version::PATCH * 10 + 0)
 
-#endif /* EP_VERSION_H */
+#endif
