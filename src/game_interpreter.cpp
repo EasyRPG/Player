@@ -2886,7 +2886,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
 
-		if (Player::IsPatchManiac()) {
+		if (Player::IsPatchManiac() && param_size > 16) {
 			int flags = com.parameters[16] >> 8;
 			int blend_mode = flags & 3;
 			if (blend_mode == 1) {
