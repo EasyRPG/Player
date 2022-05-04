@@ -831,7 +831,6 @@ void Player::CreateGameObjects() {
 
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
 			patch |= PatchManiac;
-			Output::Warning("This game uses the Maniac Patch and will not run properly.");
 		}
 	}
 
