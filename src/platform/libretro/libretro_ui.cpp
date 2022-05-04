@@ -30,7 +30,6 @@
 #include "output.h"
 #include "player.h"
 #include "scene.h"
-#include "version.h"
 
 #include <cstring>
 #include <stdio.h>
@@ -565,11 +564,8 @@ RETRO_API unsigned retro_api_version() {
  * Can be called at any time, even before retro_init(). */
 RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 	memset(info, 0, sizeof(*info));
-	info->library_name = "EasyRPG Player";
-	#ifndef GIT_VERSION
-	#define GIT_VERSION ""
-	#endif
-	info->library_version = PLAYER_VERSION GIT_VERSION;
+	info->library_name = GAME_TITLE;
+	info->library_version = PLAYER_VERSION_FULL;
 	info->need_fullpath = true;
 	info->valid_extensions = "ldb|zip|easyrpg";
 	info->block_extract = true;

@@ -2,7 +2,7 @@
 <app version="1">
   <name>EasyRPG Player</name>
   <coder>EasyRPG Team</coder>
-  <version>@PLAYER_VERSION_HOMEBREW@</version>
+  <version>@PLAYER_VERSION_FULL@</version>
   <release_date>@WII_DATE@</release_date>
   <short_description>RPG Maker 2000/2003 player</short_description>
   <long_description>EasyRPG Player is a Role Playing Game interpreter for playing games created by RPG Maker 2000/2003.

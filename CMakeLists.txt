@@ -20,6 +20,19 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
+# ninja/parallel builds disable output colors, forcing them here. global scope to
+# catch all targets. cmake will have this build into 3.24
+if(CMAKE_VERSION VERSION_LESS "3.24")
+	option(CMAKE_COLOR_DIAGNOSTICS "Always produce ANSI-colored output" OFF)
+	if(CMAKE_COLOR_DIAGNOSTICS)
+		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+			add_compile_options("-fdiagnostics-color=always")
+		elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+			add_compile_options("-fcolor-diagnostics")
+		endif()
+	endif()
+endif()
+
 # Source Files
 add_library(${PROJECT_NAME} STATIC
 	src/lcf_data.cpp
@@ -457,7 +470,7 @@ if(NOT PROJECT_VERSION_TWEAK)
 		set(PROJECT_VERSION_PATCH 0)
 	endif()
 endif()
-set(PLAYER_VERSION_HOMEBREW ${PLAYER_VERSION})
+set(PLAYER_VERSION_FULL ${PLAYER_VERSION})
 string(CONCAT PROJECT_VERSION
 	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
 	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
@@ -470,23 +483,31 @@ if(NOT GIT_TAG)
 	# otherwise concatenate a version with hash
 	git_describe(GIT_DESCRIPTION)
 	if(GIT_DESCRIPTION)
-		string(REPLACE "-" ";" GIT_DESCRIPTION_PARTS ${GIT_DESCRIPTION})
-		list(GET GIT_DESCRIPTION_PARTS 0 GIT_TAG)
-		list(GET GIT_DESCRIPTION_PARTS 1 GIT_COMMITS)
-		list(GET GIT_DESCRIPTION_PARTS 2 GIT_HASH)
+		string(REPLACE "-" ";" GIT_DESCRIPTION ${GIT_DESCRIPTION})
+		list(LENGTH GIT_DESCRIPTION GIT_DESCRIPTION_PARTS)
+		set(GIT_MESSAGE "Found git info: ")
+		if(GIT_DESCRIPTION_PARTS EQUAL 3)
+			list(GET GIT_DESCRIPTION 0 GIT_TAG)
+			list(GET GIT_DESCRIPTION 1 GIT_COMMITS)
+			list(GET GIT_DESCRIPTION 2 GIT_HASH)
+			string(APPEND GIT_MESSAGE "${GIT_COMMITS} commits since tag \"${GIT_TAG}\", ")
+			string(PREPEND GIT_COMMITS "+")
+		else()
+			# no tags found, only hash
+			list(GET GIT_DESCRIPTION 0 GIT_HASH)
+		endif()
 		# strip the g prefix
 		string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
-		set(PLAYER_VERSION_GIT "git+${GIT_COMMITS}@${GIT_HASH}")
-		set(GIT_DIRTY_MESSAGE)
+		set(PLAYER_VERSION_GIT "git${GIT_COMMITS}@${GIT_HASH}")
+		string(APPEND GIT_MESSAGE "object hash is ${GIT_HASH}")
 		git_local_changes(GIT_DIRTY)
 		if(GIT_DIRTY STREQUAL "DIRTY")
 			string(APPEND PLAYER_VERSION_GIT "-dirty")
-			set(GIT_DIRTY_MESSAGE ", you have uncommitted changes")
+			string(APPEND GIT_MESSAGE ", you have uncommitted changes")
 		endif()
-		string(APPEND PLAYER_VERSION_HOMEBREW "-${PLAYER_VERSION_GIT}")
+		string(APPEND PLAYER_VERSION_FULL "-${PLAYER_VERSION_GIT}")
 
-		message(STATUS "Found git info: ${GIT_COMMITS} commits since tag"
-			" \"${GIT_TAG}\", object hash is ${GIT_HASH}${GIT_DIRTY_MESSAGE}")
+		message(STATUS "${GIT_MESSAGE}")
 	endif()
 endif()
 
@@ -1011,7 +1032,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			-lcitro2d
 			-lcitro3d)
 		ctr_generate_smdh(easyrpg-player.smdh
-			NAME "EasyRPG Player ${PLAYER_VERSION_HOMEBREW}"
+			NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
 			DESCRIPTION "Play your RPG Maker 2000/2003 games everywhere"
 			AUTHOR "EasyRPG Team"
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
@@ -1028,7 +1049,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		nx_generate_nacp(easyrpg-player.nacp
 			NAME "EasyRPG Player"
 			AUTHOR "EasyRPG Team"
-			VERSION "${PLAYER_VERSION_HOMEBREW}")
+			VERSION "${PLAYER_VERSION_FULL}")
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
@@ -1112,6 +1133,9 @@ else()
 			src/platform/libretro/libretro_ui.h
 			src/platform/libretro/midiout_device_libretro.cpp
 			src/platform/libretro/midiout_device_libretro.h
+		)
+		set_property(SOURCE src/platform/libretro/libretro_ui.cpp
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION_FULL="${PLAYER_VERSION_FULL}"
 		)
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
@@ -1219,7 +1243,10 @@ if(PLAYER_ENABLE_TESTS)
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	endif()
 	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
-	add_custom_target(check_player COMMAND test_runner_player)
+	if(CMAKE_COLOR_DIAGNOSTICS)
+		set(DOCTEST_COLOROPT "--force-colors")
+	endif()
+	add_custom_target(check_player COMMAND test_runner_player ${DOCTEST_COLOROPT})
 	if(NOT TARGET check)
 		add_custom_target(check)
 	endif()
