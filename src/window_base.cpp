@@ -132,7 +132,7 @@ void Window_Base::DrawActorLevel(const Game_Actor& actor, int cx, int cy) const 
 	contents->TextDraw(cx, cy, 1, lcf::Data::terms.lvl_short);
 
 	// Draw Level of the Actor
-	contents->TextDraw(cx + (actor.GetMaxLevel() >= 100 ? 30 : 24), cy, Font::ColorDefault, std::to_string(actor.GetLevel()), Text::AlignRight);
+	contents->TextDraw(cx + (lcf::Data::system.easyrpg_max_level >= 100 ? 30 : 24), cy, Font::ColorDefault, std::to_string(actor.GetLevel()), Text::AlignRight);
 }
 
 void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) const {
