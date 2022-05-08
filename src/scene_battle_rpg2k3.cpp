@@ -1407,11 +1407,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCo
 			}
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
-		if (Input::IsTriggered(Input::CANCEL)) {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-			SetState(State_SelectOption);
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+				SetState(State_SelectOption);
 
-			return SceneActionReturn::eWaitTillNextFrame;
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
 		}
 		return SceneActionReturn::eWaitTillNextFrame;
 	}
