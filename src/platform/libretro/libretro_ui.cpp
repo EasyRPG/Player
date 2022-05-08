@@ -144,8 +144,6 @@ void LibretroUi::ProcessEvents() {
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_X);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_L);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_R);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_L2);
-	check_pressed(RETRO_DEVICE_ID_JOYPAD_R2);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_L3);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_R3);
 	check_pressed(RETRO_DEVICE_ID_JOYPAD_START);
@@ -157,9 +155,11 @@ void LibretroUi::ProcessEvents() {
 	};
 
 	analog_input.primary.x = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_X));
-	analog_input.primary.y = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_Y));
+	analog_input.primary.y = -normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_Y));
 	analog_input.secondary.x = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
-	analog_input.secondary.y = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
+	analog_input.secondary.y = -normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
+	analog_input.trigger_left = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_BUTTON, RETRO_DEVICE_ID_JOYPAD_L2));
+	analog_input.trigger_right = normalize(CheckInputState(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_BUTTON, RETRO_DEVICE_ID_JOYPAD_R2));
 #	endif
 #	endif
 }
@@ -196,8 +196,6 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 		case RETRO_DEVICE_ID_JOYPAD_SELECT	: return Input::Keys::JOY_BACK;
 		case RETRO_DEVICE_ID_JOYPAD_L		: return Input::Keys::JOY_SHOULDER_LEFT;
 		case RETRO_DEVICE_ID_JOYPAD_R		: return Input::Keys::JOY_SHOULDER_RIGHT;
-		case RETRO_DEVICE_ID_JOYPAD_L2		: return Input::Keys::JOY_TRIGGER_LEFT_FULL;
-		case RETRO_DEVICE_ID_JOYPAD_R2		: return Input::Keys::JOY_TRIGGER_RIGHT_FULL;
 		case RETRO_DEVICE_ID_JOYPAD_L3		: return Input::Keys::JOY_STICK_PRIMARY;
 		case RETRO_DEVICE_ID_JOYPAD_R3		: return Input::Keys::JOY_STICK_SECONDARY;
 
