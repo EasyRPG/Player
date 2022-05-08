@@ -45,9 +45,6 @@ Platform::File::File(std::string name) :
 bool Platform::File::Exists() const {
 #ifdef _WIN32
 	return ::GetFileAttributesW(filename.c_str()) != (DWORD)-1;
-#elif (defined(GEKKO) || defined(__3DS__) || defined(__SWITCH__))
-	struct stat sb;
-	return ::stat(filename.c_str(), &sb) == 0;
 #elif defined(__vita__)
 	struct SceIoStat sb;
 	return (::sceIoGetstat(filename.c_str(), &sb) >= 0);
@@ -88,7 +85,8 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 	return FileType::Unknown;
 #else
 	struct stat sb = {};
-#  if (defined(GEKKO) || defined(__3DS__) || defined(__SWITCH__))
+#  if defined(PLAYER_NINTENDO)
+	// no symlink support (FAT)
 	(void)follow_symlinks;
 	auto fn = ::stat;
 #  else

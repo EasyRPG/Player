@@ -40,14 +40,8 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_Con
 	return std::make_shared<Sdl2Ui>(width, height, cfg);
 #elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, cfg);
-#elif defined(USE_LIBRETRO)
-	return std::make_shared<LibretroUi>(width, height, cfg);
-#elif defined(__3DS__)
-	return std::make_shared<CtrUi>(width, height, cfg);
-#elif defined(__vita__)
-	return std::make_shared<Psp2Ui>(width, height, cfg);
-#elif defined(__SWITCH__)
-	return std::make_shared<NxUi>(width, height, cfg);
+#elif defined(PLAYER_UI)
+	return std::make_shared<PLAYER_UI>(width, height, cfg);
 #else
 #  error cannot create UI
 #endif
@@ -71,4 +65,3 @@ BitmapRef BaseUi::CaptureScreen() {
 void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
-
