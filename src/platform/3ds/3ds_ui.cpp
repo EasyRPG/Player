@@ -52,7 +52,6 @@ namespace {
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
-	constexpr int joy_threshold = 25;
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
 	u32* main_buffer;
@@ -184,10 +183,12 @@ void CtrUi::ProcessEvents() {
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
-	keys[Input::Keys::JOY_STICK_PRIMARY_UP] = (circlepad.dy > joy_threshold);
-	keys[Input::Keys::JOY_STICK_PRIMARY_DOWN] = (circlepad.dy < -joy_threshold);
-	keys[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = (circlepad.dx > joy_threshold);
-	keys[Input::Keys::JOY_STICK_PRIMARY_LEFT] = (circlepad.dx < -joy_threshold);
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / 0x9C;
+	};
+
+	analog_input.primary.x = normalize(circlepad.dx);
+	analog_input.primary.y = normalize(circlepad.dy);
 #endif
 
 #ifndef _DEBUG

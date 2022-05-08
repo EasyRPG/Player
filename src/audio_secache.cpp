@@ -182,7 +182,7 @@ std::unique_ptr<AudioDecoderBase> AudioSeCache::CreateSeDecoder() {
 
 AudioSeRef AudioSeCache::GetSeData() const {
 	auto it = cache.find(name);
-	assert(it == cache.end());
+	assert(it != cache.end());
 
 	return it->second;
 };
