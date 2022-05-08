@@ -447,37 +447,22 @@ void NxUi::ProcessEvents() {
 	keys[Input::Keys::JOY_STICK_SECONDARY] = (input & HidNpadButton_StickR);
 	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input & (HidNpadButton_L|HidNpadButton_AnySL)) > 0;
 	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input & (HidNpadButton_R|HidNpadButton_AnySR)) > 0;
-	keys[Input::Keys::JOY_TRIGGER_LEFT_FULL] = (input & HidNpadButton_ZL);
-	keys[Input::Keys::JOY_TRIGGER_RIGHT_FULL] = (input & HidNpadButton_ZR);
 	keys[Input::Keys::JOY_BACK] = (input & HidNpadButton_Minus);
 	keys[Input::Keys::JOY_START] = (input & HidNpadButton_Plus);
 
-	analog_input.primary = {};
-	analog_input.secondary = {};
+	HidAnalogStickState analog_left = padGetStickPos(&pad, 0);
+	HidAnalogStickState analog_right = padGetStickPos(&pad, 1);
 
-	if (input & HidNpadButton_StickLLeft) {
-		analog_input.primary.x = -1.f;
-	} else if (input & HidNpadButton_StickLRight) {
-		analog_input.primary.x = 1.f;
-	}
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / JOYSTICK_MAX;
+	};
 
-	if (input & HidNpadButton_StickLUp) {
-		analog_input.primary.y = -1.f;
-	} else if (input & HidNpadButton_StickLDown) {
-		analog_input.primary.y = 1.f;
-	}
-
-	if (input & HidNpadButton_StickRLeft) {
-		analog_input.secondary.x = -1.f;
-	} else if (input & HidNpadButton_StickRRight) {
-		analog_input.secondary.x = 1.f;
-	}
-
-	if (input & HidNpadButton_StickRUp) {
-		analog_input.secondary.y = -1.f;
-	} else if (input & HidNpadButton_StickRDown) {
-		analog_input.secondary.y = 1.f;
-	}
+	analog_input.primary.x = normalize(analog_left.x);
+	analog_input.primary.y = normalize(analog_left.y);
+	analog_input.secondary.x = normalize(analog_right.x);
+	analog_input.secondary.y = normalize(analog_right.y);
+	analog_input.trigger_left = (input & HidNpadButton_ZL) ? Input::AnalogInput::kMaxValue : 0.f;
+	analog_input.trigger_right = (input & HidNpadButton_ZR) ? Input::AnalogInput::kMaxValue : 0.f;
 
 	// cycle through GUI layouts: FIXME Move to settings ui
 	input = padGetButtonsDown(&pad);
