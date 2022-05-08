@@ -24,6 +24,7 @@
 #include "filesystem_stream.h"
 #include "input_buttons.h"
 #include "keys.h"
+#include "point.h"
 
 namespace Input {
 	using KeyStatus = std::bitset<Input::Keys::KEYS_COUNT>;
@@ -38,11 +39,11 @@ namespace Input {
 
 	/**
 	 * Primary and Secondary range from -1.0 to +1.0
-	 *       ^ -1
+	 *       ^ 1
 	 *       |
 	 * -1 <-----> 1
 	 *       |
-	 *       v 1
+	 *       v -1
 	 * Trigger range from 0.0 (neutral) to 1.0 (pressed)
 	 */
 	struct AnalogInput {

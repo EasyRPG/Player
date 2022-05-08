@@ -35,7 +35,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{SHIFT, Keys::JOY_Y},
 		{N0, Keys::JOY_STICK_PRIMARY},
 		{N5, Keys::JOY_STICK_SECONDARY},
-		{DEBUG_ABORT_EVENT, Keys::JOY_SHOULDER_LEFT},
+		{DEBUG_THROUGH, Keys::JOY_SHOULDER_LEFT},
 		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
 		{RESET, Keys::JOY_BACK},
