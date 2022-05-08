@@ -22,6 +22,7 @@
 
 #include <zlib.h>
 #include <lcf/reader_util.h>
+#include <lcf/scope_guard.h>
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -353,6 +354,9 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 				zlib_stream.next_out = reinterpret_cast<Bytef*>(dec_buf.data());
 				zlib_stream.avail_out = static_cast<uInt>(dec_buf.size());
 				inflateInit2(&zlib_stream, -MAX_WBITS);
+				auto inflate_sg = lcf::makeScopeGuard([&]() {
+					inflateEnd(&zlib_stream);
+				});
 
 				int zlib_error = inflate(&zlib_stream, Z_NO_FLUSH);
 				if (zlib_error == Z_OK) {
