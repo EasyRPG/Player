@@ -145,7 +145,7 @@ const Bitmap* Weather::ApplyToneEffect(const Bitmap& bitmap, Rect rect) {
 	}
 
 	if (tone_dirty) {
-		tone_bitmap->ToneBlit(0, 0, bitmap, rect, tone_effect, Opacity::Opaque(), true);
+		tone_bitmap->ToneBlit(0, 0, bitmap, rect, tone_effect, Opacity::Opaque());
 	}
 	return tone_bitmap.get();
 }
