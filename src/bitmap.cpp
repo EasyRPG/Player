@@ -522,7 +522,7 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 
 	Bitmap src(pixels, width, height, 0, img_format);
 	Clear();
-	Blit(0, 0, src, src.GetRect(), Opacity::Opaque());
+	BlitFast(0, 0, src, src.GetRect(), Opacity::Opaque());
 	free(pixels);
 }
 
