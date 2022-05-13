@@ -735,13 +735,25 @@ static bool BattlerReadyToAct(const Game_Battler* battler) {
 	return battler->IsAtbGaugeFull() && battler->Exists() && battler->CanAct();
 }
 
-static int GetFirstReadyActor() {
+void Scene_Battle_Rpg2k3::UpdateReadyActors() {
 	const auto& actors = Main_Data::game_party->GetActors();
-	for (size_t i = 0; i < actors.size(); ++i) {
-		auto* actor = actors[i];
+	for (auto actor: actors) {
+		auto position = std::find(atb_order.begin(), atb_order.end(), actor->GetId());
 		if (BattlerReadyToAct(actor)) {
-			return i;
+			if (position == atb_order.end()) {
+				atb_order.push_back(actor->GetId());
+			}
+		} else {
+			if (position != atb_order.end()) {
+				atb_order.erase(position);
+			}
 		}
+	}
+}
+
+int Scene_Battle_Rpg2k3::GetNextReadyActor() {
+	if (!atb_order.empty()) {
+		return Main_Data::game_party->GetActorPositionInParty(atb_order.front());
 	}
 	return -1;
 }
@@ -1227,10 +1239,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	}
 
 	if (scene_action_substate == eWaitInput) {
+		UpdateReadyActors();
+
 		auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
 		if (selected_actor == nullptr || !BattlerReadyToAct(selected_actor)) {
 			// If current selection is no longer valid, force a new selection
-			const auto idx = GetFirstReadyActor();
+			const auto idx = GetNextReadyActor();
 			if (idx != status_window->GetIndex()) {
 				SetActiveActor(idx);
 			}
@@ -1271,7 +1285,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	}
 
 	if (scene_action_substate == eWaitActor) {
-		const auto idx = GetFirstReadyActor();
+		const auto idx = GetNextReadyActor();
 		SetActiveActor(idx);
 		if (idx >= 0) {
 			command_window->SetIndex(0);
@@ -2765,7 +2779,7 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	for_battler->SetAtbGauge(0);
 
 	if (for_battler == active_actor) {
-		auto idx = GetFirstReadyActor();
+		auto idx = GetNextReadyActor();
 		SetActiveActor(idx);
 	}
 
