@@ -64,8 +64,10 @@ struct Opacity {
  * operations
  */
 enum class ImageOpacity {
-	/** Image has alpha and needs an alpha blit */
-	Partial,
+	/** Image uses the alpha channel, no optimisations possible */
+	Alpha_8Bit,
+	/** Image has pixels that are either full opaque or transparent (1 Bit Alpha) */
+	Alpha_1Bit,
 	/** Image is full opaque and can be blitted fast */
 	Opaque,
 	/** Image is completely transparent and blitting can be skipped entirely */
@@ -110,7 +112,7 @@ inline ImageOpacity TileOpacity::Get(int x, int y) const {
 	assert(y >= 0);
 
 	if (x >= _w || y >= _h) {
-		return ImageOpacity::Partial;
+		return ImageOpacity::Alpha_8Bit;
 	}
 
 	return static_cast<ImageOpacity>(_p[x + y * _w]);

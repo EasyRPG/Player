@@ -198,6 +198,7 @@ size_t Bitmap::GetSize() const {
 ImageOpacity Bitmap::ComputeImageOpacity() const {
 	bool all_opaque = true;
 	bool all_transp = true;
+	bool alpha_1bit = true;
 
 	auto* p = reinterpret_cast<const uint32_t*>(pixels());
 	const auto mask = pixel_format.rgba_to_uint32_t(0, 0, 0, 0xFF);
@@ -205,19 +206,24 @@ ImageOpacity Bitmap::ComputeImageOpacity() const {
 	int n = GetSize() / sizeof(uint32_t);
 	for (int i = 0; i < n; ++i ) {
 		auto px = p[i] & mask;
-		all_opaque &= (px == mask);
-		all_transp &= (px == 0);
+		bool transp = (px == 0);
+		bool opaque = (px == mask);
+		all_transp &= transp;
+		all_opaque &= opaque;
+		alpha_1bit &= (transp | opaque);
 	}
 
 	return
 		all_transp ? ImageOpacity::Transparent :
 		all_opaque ? ImageOpacity::Opaque :
-		ImageOpacity::Partial;
+		alpha_1bit ? ImageOpacity::Alpha_1Bit :
+		ImageOpacity::Alpha_8Bit;
 }
 
 ImageOpacity Bitmap::ComputeImageOpacity(Rect rect) const {
 	bool all_opaque = true;
 	bool all_transp = true;
+	bool alpha_1bit = true;
 
 	const auto full_rect = GetRect();
 	rect = full_rect.GetSubRect(rect);
@@ -231,15 +237,19 @@ ImageOpacity Bitmap::ComputeImageOpacity(Rect rect) const {
 	for (int y = rect.y * stride; y < yend * stride; y += stride) {
 		for (int x = rect.x; x < xend; ++x) {
 			auto px = p[x + y] & mask;
-			all_transp &= (px == 0);
-			all_opaque &= (px == mask);
+			bool transp = (px == 0);
+			bool opaque = (px == mask);
+			all_transp &= transp;
+			all_opaque &= opaque;
+			alpha_1bit &= (transp | opaque);
 		}
 	}
 
 	return
 		all_transp ? ImageOpacity::Transparent :
 		all_opaque ? ImageOpacity::Opaque :
-		ImageOpacity::Partial;
+		alpha_1bit ? ImageOpacity::Alpha_1Bit :
+		ImageOpacity::Alpha_8Bit;
 }
 
 void Bitmap::CheckPixels(uint32_t flags) {
@@ -512,7 +522,7 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 
 	Bitmap src(pixels, width, height, 0, img_format);
 	Clear();
-	Blit(0, 0, src, src.GetRect(), Opacity::Opaque());
+	BlitFast(0, 0, src, src.GetRect(), Opacity::Opaque());
 	free(pixels);
 }
 
@@ -773,8 +783,9 @@ static constexpr HardLightTable make_hard_light_lookup() {
 
 constexpr auto hard_light = make_hard_light_lookup();
 
+
 // Saturation Tone Inline: Changes a pixel saturation
-static inline void saturation_tone(uint32_t &src_pixel, int saturation, int rs, int gs, int bs, int as) {
+static inline void saturation_tone(uint32_t &src_pixel, const int saturation, const int rs, const int gs, const int bs, const int as) {
 	// Algorithm from OpenPDN (MIT license)
 	// Transformation in Y'CbCr color space
 	uint8_t r = (src_pixel >> rs) & 0xFF;
@@ -797,15 +808,35 @@ static inline void saturation_tone(uint32_t &src_pixel, int saturation, int rs, 
 }
 
 // Color Tone Inline: Changes color of a pixel by hard light table
-static inline void color_tone(uint32_t &src_pixel, Tone tone, int rs, int gs, int bs, int as) {
+static inline void color_tone(uint32_t &src_pixel, const Tone& tone, const int rs, const int gs, const int bs, const int as) {
 	src_pixel = ((uint32_t)hard_light.table[tone.red][(src_pixel >> rs) & 0xFF] << rs)
 		| ((uint32_t)hard_light.table[tone.green][(src_pixel >> gs) & 0xFF] << gs)
 		| ((uint32_t)hard_light.table[tone.blue][(src_pixel >> bs) & 0xFF] << bs)
 		| ((uint32_t)((src_pixel >> as) & 0xFF) << as);
 }
 
-void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity, bool check_alpha) {
+static inline void color_tone_alpha(uint32_t &src_pixel, const Tone& tone, const int rs, const int gs, const int bs, const int as) {
+	uint8_t a = (src_pixel >> as) & 0xFF;
+	uint8_t r = ((uint32_t)hard_light.table[tone.red][(src_pixel >> rs) & 0xFF]) * a / 255;
+	uint8_t g = ((uint32_t)hard_light.table[tone.green][(src_pixel >> gs) & 0xFF]) * a / 255;
+	uint8_t b = ((uint32_t)hard_light.table[tone.blue][(src_pixel >> bs) & 0xFF]) * a / 255;
+	src_pixel = ((uint32_t)r << rs) | ((uint32_t)g << gs) | ((uint32_t)b << bs) | ((uint32_t)a << as);
+}
+
+void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity) {
 	if (opacity.IsTransparent()) {
+		return;
+	}
+
+	// Optimisations based on Opacity:
+	// Transparent: Nothing to do
+	// Opaque: Alpha check can be skipped
+	// 1 Bit: Premultiplied Alpha can be skipped
+	// 8 Bit: No optimisations possible
+
+	auto src_opacity = src.GetImageOpacity();
+
+	if (src_opacity == ImageOpacity::Transparent) {
 		return;
 	}
 
@@ -821,71 +852,88 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		return;
 	}
 
-	if (&src != this)
+	if (&src != this) {
 		pixman_image_composite32(src.GetOperator(),
 		src.bitmap.get(), nullptr, bitmap.get(),
 		src_rect.x, src_rect.y,
 		0, 0,
 		x, y,
 		src_rect.width, src_rect.height);
+	}
 
-	int as = pixel_format.a.shift;
-	int rs = pixel_format.r.shift;
-	int gs = pixel_format.g.shift;
-	int bs = pixel_format.b.shift;
+	const int as = pixel_format.a.shift;
+	const int rs = pixel_format.r.shift;
+	const int gs = pixel_format.g.shift;
+	const int bs = pixel_format.b.shift;
 	int next_row = pitch() / sizeof(uint32_t);
 	uint32_t* pixels = (uint32_t*)this->pixels();
 	pixels = pixels + (y - 1) * next_row + x;
 
-	uint16_t limit_height = std::min<uint16_t>(src_rect.height, height());
-	uint16_t limit_width = std::min<uint16_t>(src_rect.width, width());
+	const uint16_t limit_height = std::min<uint16_t>(src_rect.height, height());
+	const uint16_t limit_width = std::min<uint16_t>(src_rect.width, width());
+
+	const bool apply_sat = tone.gray != 128;
+	const bool apply_tone = (tone.red != 128 || tone.green != 128 || tone.blue != 128);
 
 	// If Saturation + Color:
-	if (tone.gray != 128 && (tone.red != 128 || tone.green != 128 || tone.blue != 128)) {
+	if (apply_sat && apply_tone) {
 		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
 
-		if (&src != this || check_alpha) {
+		if (src_opacity == ImageOpacity::Opaque) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
-					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
+					saturation_tone(pixels[j], sat, rs, gs, bs, as);
+					color_tone(pixels[j], tone, rs, gs, bs, as);
+				}
+			}
+		} else if (src_opacity == ImageOpacity::Alpha_1Bit) {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					uint8_t a = (uint8_t)((pixels[j] >> as) & 0xFF);
+					if (a == 0)
 						continue;
 
 					saturation_tone(pixels[j], sat, rs, gs, bs, as);
 					color_tone(pixels[j], tone, rs, gs, bs, as);
 				}
 			}
-		}
-		else {
+		} else { // 8 Bit Alpha
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
+					uint8_t a = (uint8_t)((pixels[j] >> as) & 0xFF);
+					if (a == 0) {
+						continue;
+					}
+
 					saturation_tone(pixels[j], sat, rs, gs, bs, as);
-					color_tone(pixels[j], tone, rs, gs, bs, as);
+					color_tone_alpha(pixels[j], tone, rs, gs, bs, as);
 				}
 			}
 		}
 	}
 
 	// If Only Saturation:
-	else if (tone.gray != 128) {
+	else if (apply_sat) {
 		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
 
-		if (&src != this || check_alpha) {
+		if (src_opacity == ImageOpacity::Opaque) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
-					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
-						continue;
-
 					saturation_tone(pixels[j], sat, rs, gs, bs, as);
 				}
 			}
-		}
-		else {
+		} else { // Any kind of alpha
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
+					uint8_t a = (uint8_t)((pixels[j] >> as) & 0xFF);
+					if (a == 0)
+						continue;
+
 					saturation_tone(pixels[j], sat, rs, gs, bs, as);
 				}
 			}
@@ -893,29 +941,41 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 	}
 
 	// If Only Color:
-	else if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
-		if (&src != this || check_alpha) {
+	else if (apply_tone) {
+		if (src_opacity == ImageOpacity::Opaque) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
-					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
+					color_tone(pixels[j], tone, rs, gs, bs, as);
+				}
+			}
+		} else if (src_opacity == ImageOpacity::Alpha_1Bit) {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					uint8_t a = (uint8_t)((pixels[j] >> as) & 0xFF);
+					if (a == 0)
 						continue;
 
 					color_tone(pixels[j], tone, rs, gs, bs, as);
 				}
 			}
-		}
-		else {
+		} else { // 8 Bit Alpha
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
-					color_tone(pixels[j], tone, rs, gs, bs, as);
+					uint8_t a = (uint8_t)((pixels[j] >> as) & 0xFF);
+					if (a == 0)
+						continue;
+					else if (a == 255) {
+						color_tone(pixels[j], tone, rs, gs, bs, as);
+					} else {
+						color_tone_alpha(pixels[j], tone, rs, gs, bs, as);
+					}
 				}
 			}
 		}
-
 	}
-
 }
 
 void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color, Opacity const& opacity) {

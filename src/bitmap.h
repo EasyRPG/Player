@@ -472,7 +472,7 @@ public:
 	 * @param tone tone to apply.
 	 * @param opacity opacity to apply.
 	 */
-	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity, bool check_alpha = false);
+	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity);
 
 	/**
 	 * Blends bitmap with color.
@@ -582,7 +582,7 @@ public:
 protected:
 	DynamicFormat format;
 
-	ImageOpacity image_opacity = ImageOpacity::Partial;
+	ImageOpacity image_opacity = ImageOpacity::Alpha_8Bit;
 	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
