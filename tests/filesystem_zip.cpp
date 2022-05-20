@@ -29,6 +29,7 @@ TEST_CASE("IsRPG2kProject") {
 
 	auto ext = Utils::MakeSvArray(".png");
 	CHECK(!fs.FindFile("ExFont", ext).empty());
+	CHECK(!fs.FindFile("Charset", "Chara1", ext).empty());
 }
 
 TEST_CASE("IsNotRPG2kProject") {
