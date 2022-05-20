@@ -216,7 +216,8 @@ std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) con
 	std::string found = fs->FindFile(MakePath(name), exts);
 	if (!found.empty() && !sub_path.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size() + 1);
+		// substr calculation must consider if the subpath is / or drive:/
+		return found.substr(sub_path.size() + (sub_path.back() == '/' ? 0 : 1));
 	}
 	return found;
 }
@@ -226,7 +227,8 @@ std::string FilesystemView::FindFile(StringView dir, StringView name, Span<Strin
 	std::string found = fs->FindFile(MakePath(dir), name, exts);
 	if (!found.empty() && !sub_path.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size() + 1);
+		// substr calculation must consider if the subpath is / or drive:/
+		return found.substr(sub_path.size() + (sub_path.back() == '/' ? 0 : 1));
 	}
 	return found;
 }
@@ -239,7 +241,8 @@ std::string FilesystemView::FindFile(const DirectoryTree::Args& args) const {
 	std::string found = fs->FindFile(args_cp);
 	if (!found.empty() && !sub_path.empty()) {
 		assert(StringView(found).starts_with(sub_path));
-		return found.substr(sub_path.size() + 1);
+		// substr calculation must consider if the subpath is / or drive:/
+		return found.substr(sub_path.size() + (sub_path.back() == '/' ? 0 : 1));
 	}
 	return found;
 }
