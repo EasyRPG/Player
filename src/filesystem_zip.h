@@ -66,7 +66,6 @@ private:
 	bool ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressed_size) const;
 	const ZipEntry* Find(StringView what) const;
 
-	mutable std::unordered_map<std::string, std::vector<uint8_t>> input_pool;
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries;
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries_cp437;
 	std::string encoding;
