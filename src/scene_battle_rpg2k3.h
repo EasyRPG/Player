@@ -249,6 +249,12 @@ protected:
 	Point cba_ranged_center;
 	int cba_ranged_weapon_move_frame = 0;
 	int cba_num_ranged_weapon_move_frames = 60;
+
+	// ATB order stuff
+	void UpdateReadyActors();
+	int GetNextReadyActor();
+
+	std::vector<int> atb_order;
 };
 
 #endif
