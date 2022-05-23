@@ -22,6 +22,7 @@
 
 #include <zlib.h>
 #include <lcf/reader_util.h>
+#include <lcf/scope_guard.h>
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -325,11 +326,6 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry && !entry->is_directory) {
-		auto pool_it = input_pool.find(path_normalized);
-		if (pool_it != input_pool.end()) {
-			return new Filesystem_Stream::InputMemoryStreamBuf(pool_it->second);
-		}
-
 		auto zip_file = GetParent().OpenInputStream(GetPath());
 		zip_file.seekg(entry->fileoffset);
 		StorageMethod method;
@@ -340,8 +336,7 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 			if (method == StorageMethod::Plain) {
 				auto data = std::vector<uint8_t>(entry->filesize);
 				zip_file.read(reinterpret_cast<char*>(data.data()), data.size());
-				input_pool[path_normalized] = std::move(data);
-				return new Filesystem_Stream::InputMemoryStreamBuf(input_pool[path_normalized]);
+				return new Filesystem_Stream::InputMemoryStreamBuf(std::move(data));
 			} else if (method == StorageMethod::Deflate) {
 				std::vector<uint8_t> comp_buf;
 				comp_buf.resize(compressed_size);
@@ -353,6 +348,9 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 				zlib_stream.next_out = reinterpret_cast<Bytef*>(dec_buf.data());
 				zlib_stream.avail_out = static_cast<uInt>(dec_buf.size());
 				inflateInit2(&zlib_stream, -MAX_WBITS);
+				auto inflate_sg = lcf::makeScopeGuard([&]() {
+					inflateEnd(&zlib_stream);
+				});
 
 				int zlib_error = inflate(&zlib_stream, Z_NO_FLUSH);
 				if (zlib_error == Z_OK) {
@@ -363,8 +361,7 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 					Output::Warning("ZipFS: zlib failed for {}: {}", path_normalized, zlib_stream.msg);
 					return nullptr;
 				}
-				input_pool[path_normalized] = std::move(dec_buf);
-				return new Filesystem_Stream::InputMemoryStreamBuf(input_pool[path_normalized]);
+				return new Filesystem_Stream::InputMemoryStreamBuf(std::move(dec_buf));
 			} else {
 				Output::Warning("ZipFS: {} has unsupported compression format. Only Deflate is supported", path_normalized);
 				return nullptr;

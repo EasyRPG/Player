@@ -67,18 +67,30 @@ namespace Filesystem_Stream {
 		std::string name;
 	};
 
-	class InputMemoryStreamBuf : public std::streambuf {
+	/** Streambuf interface for an in-memory buffer. Does not take ownership of the buffer. */
+	class InputMemoryStreamBufView : public std::streambuf {
 	public:
-		explicit InputMemoryStreamBuf(Span<uint8_t> buffer);
-		InputMemoryStreamBuf(InputMemoryStreamBuf const& other) = delete;
-		InputMemoryStreamBuf const& operator=(InputMemoryStreamBuf const& other) = delete;
+		explicit InputMemoryStreamBufView(Span<uint8_t> buffer_view);
+		InputMemoryStreamBufView(InputMemoryStreamBufView const& other) = delete;
+		InputMemoryStreamBufView const& operator=(InputMemoryStreamBufView const& other) = delete;
 
 	protected:
 		std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override;
 		std::streambuf::pos_type seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) override;
 
 	private:
-		Span<uint8_t> buffer;
+		Span<uint8_t> buffer_view;
+	};
+
+	/** Streambuf interface for an in-memory buffer. Takes ownership of the buffer. */
+	class InputMemoryStreamBuf : public InputMemoryStreamBufView {
+	public:
+		explicit InputMemoryStreamBuf(std::vector<uint8_t> buffer);
+		InputMemoryStreamBuf(InputMemoryStreamBuf const& other) = delete;
+		InputMemoryStreamBuf const& operator=(InputMemoryStreamBuf const& other) = delete;
+
+	private:
+		std::vector<uint8_t> buffer;
 	};
 
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
