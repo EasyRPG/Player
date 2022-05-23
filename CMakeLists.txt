@@ -1088,7 +1088,8 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			ScePgf_stub
 			ScePower_stub
 			SceCommonDialog_stub
-			SceAudio_stub)
+			SceAudio_stub
+			SceAppMgr_stub)
 		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:CONFIG:Debug>:STRIPPED>)
 		set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
 		configure_file(resources/psvita/template.xml.in resources/psvita/template.xml @ONLY)
