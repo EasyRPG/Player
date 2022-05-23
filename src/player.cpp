@@ -134,9 +134,6 @@ namespace Player {
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
-#ifdef __3DS__
-	bool is_3dsx;
-#endif
 }
 
 namespace {
@@ -435,10 +432,6 @@ void Player::Exit() {
 }
 
 Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
-#ifdef __3DS__
-	is_3dsx = argc > 0;
-#endif
-
 #if defined(_WIN32) && !defined(__WINRT__)
 	int argc_w;
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
