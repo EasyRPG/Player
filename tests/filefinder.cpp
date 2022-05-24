@@ -95,6 +95,18 @@ TEST_CASE("GetPathAndFilename") {
 	CHECK(path == "X:/folder");
 	CHECK(file == "file");
 
+	std::tie(path, file) = FileFinder::GetPathAndFilename("/");
+	CHECK(path == "/");
+	CHECK(file == "");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("X:/");
+	CHECK(path == "X:/");
+	CHECK(file == "");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("");
+	CHECK(path == "");
+	CHECK(file == "");
+
 	Player::escape_symbol = "\\";
 	std::tie(path, file) = FileFinder::GetPathAndFilename("folder\\folder2\\file");
 	CHECK(path == "folder/folder2");

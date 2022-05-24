@@ -74,6 +74,12 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		std::string parent_dir, child_dir;
 		std::tie(parent_dir, child_dir) = FileFinder::GetPathAndFilename(fs_path);
 
+		if (parent_dir == fs_path) {
+			// When the path stays we are in a non-existant root -> give up
+			DebugLog("ListDirectory Bad root: {} | {}", fs_path, parent_dir);
+			return nullptr;
+		}
+
 		// Go up and determine the proper casing of the folder
 		auto* parent_tree = ListDirectory(parent_dir);
 		if (!parent_tree) {

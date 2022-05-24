@@ -373,11 +373,6 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
-
-#ifdef __3DS__
-	/** Is executed from a .3dsx (otherwise .cia) */
-	extern bool is_3dsx;
-#endif
 }
 
 inline bool Player::IsRPG2k() {
