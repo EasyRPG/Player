@@ -412,9 +412,11 @@ void Player::Exit() {
 #ifdef EMSCRIPTEN
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
-
 	Text::Draw(*surface, 84, DisplayUi->GetHeight() / 2 - 30, *Font::Default(), Color(221, 123, 64, 255), message);
 	DisplayUi->UpdateDisplay();
+
+	auto ret = FileFinder::Root().OpenOutputStream("/tmp/message.png", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+	if (ret) Output::TakeScreenshot(ret);
 #endif
 	Player::ResetGameObjects();
 	Font::Dispose();
