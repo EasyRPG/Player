@@ -219,8 +219,8 @@ void Psp2Ui::ProcessEvents() {
 	}
 
 	sceCtrlPeekBufferPositiveExt2(is_pstv ? 1 : 0, &input, 1);
-	keys[Input::Keys::JOY_A] = (input.buttons & SCE_CTRL_CROSS);
-	keys[Input::Keys::JOY_B] = (input.buttons & SCE_CTRL_CIRCLE);
+	keys[Input::Keys::JOY_A] = (input.buttons & SCE_CTRL_CIRCLE);
+	keys[Input::Keys::JOY_B] = (input.buttons & SCE_CTRL_CROSS);
 	keys[Input::Keys::JOY_X] = (input.buttons & SCE_CTRL_TRIANGLE);
 	keys[Input::Keys::JOY_Y] = (input.buttons & SCE_CTRL_SQUARE);
 	keys[Input::Keys::JOY_BACK] = (input.buttons & SCE_CTRL_SELECT);
@@ -240,13 +240,13 @@ void Psp2Ui::ProcessEvents() {
 
 	// Analog support
 	auto normalize = [](int value) {
-		return static_cast<float>(value - 127) / 255.f;
+		return static_cast<float>(value - 127) / 128.f;
 	};
 
 	analog_input.primary.x = normalize(input.lx);
-	analog_input.primary.y = normalize(input.ly);
+	analog_input.primary.y = -normalize(input.ly);
 	analog_input.secondary.x = normalize(input.rx);
-	analog_input.secondary.y = normalize(input.ry);
+	analog_input.secondary.y = -normalize(input.ry);
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {
