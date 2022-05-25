@@ -1081,7 +1081,6 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			SceLibKernel_stub
 			SceDisplay_stub
 			SceGxm_stub
-			vitashaders
 			SceSysmodule_stub
 			SceCtrl_stub
 			SceTouch_stub

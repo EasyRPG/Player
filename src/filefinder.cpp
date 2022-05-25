@@ -164,7 +164,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 		path = path.substr(ns_pos + 3);
 	}
 
-	bool initial_slash = !path.empty() && path[0] == '/';
+	std::string root_slash = (!path.empty() && path[0] == '/') ? "/" : "";
 
 	std::vector<std::string> path_components = SplitPath(path);
 	std::vector<std::string> path_can;
@@ -191,7 +191,14 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 		ret = MakePath(ret, s);
 	}
 
-	return ToString(ns) + (initial_slash ? "/" : "") + ret;
+	// Determine if the slash of a filesystem root (drive:/) was removed and readd it
+	auto psize = path.size();
+	std::string drive_slash;
+	if (psize >= 2 && path[psize - 1] == '/' && path[psize - 2] == ':') {
+		drive_slash = "/";
+	}
+
+	return ToString(ns) + root_slash + ret + drive_slash;
 }
 
 std::vector<std::string> FileFinder::SplitPath(StringView path) {
@@ -210,6 +217,10 @@ std::vector<std::string> FileFinder::SplitPath(StringView path) {
 }
 
 std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView path) {
+	if (path.empty()) {
+		return {"", ""};
+	}
+
 	std::string path_copy = ToString(path);
 	ConvertPathDelimiters(path_copy);
 
@@ -218,8 +229,17 @@ std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView pa
 		return {ToString(""), path_copy};
 	}
 
+	// Determine if the file is located at the filesystem root (e.g. / or drive:/)
+	// In that case do not remove the slash
+	std::string root_slash;
+	const size_t first_slash_idx = path_copy.find_first_of('/');
+	if (first_slash_idx == last_slash_idx &&
+		(first_slash_idx == 0 || path[first_slash_idx - 1] == ':')) {
+		root_slash = "/";
+	}
+
 	return {
-		path_copy.substr(0, last_slash_idx),
+		path_copy.substr(0, last_slash_idx) + root_slash,
 		path_copy.substr(last_slash_idx + 1)
 	};
 }

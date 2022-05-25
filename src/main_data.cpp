@@ -47,7 +47,8 @@
 #  include <SDL_system.h>
 #elif defined(__3DS__)
 #  include <3ds.h>
-#  include <cstdio>
+#  include <unistd.h>
+   extern int __system_argc; // inside ctrulib
 #elif defined(__vita__)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
@@ -123,40 +124,38 @@ void Main_Data::Init() {
 				}
 			}
 #elif defined(__3DS__)
-			// Check if romFs has some files inside or not
-			FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
-			if (testfile != NULL) {
-				Output::Debug("Detected a project on romFs filesystem...");
-				fclose(testfile);
-				project_path = "romfs:";
+			bool is_cia = __system_argc == 0;
+			char tmp_path[64] = "sdmc:/3ds/easyrpg-player";
 
-				if (!Player::is_3dsx) {
-					// Create savepath for CIA - unique for any ID
+			// Check if romfs has some files inside or not
+			if(::access("romfs:/RPG_RT.lmt", F_OK) == 0) {
+				Output::Debug("Loading game from romfs...");
+				project_path = "romfs:/";
 
-					// Generating save_path
+				if (is_cia) {
+					// CIA savepath is unique for any ID
 					u64 titleID;
 					APT_GetProgramID(&titleID);
-					char mainDir[64];
-					sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
+					sprintf(tmp_path, "sdmc:/easyrpg-player/%016llX", titleID);
 
 					// Creating dirs if they don't exist
 					FS_Archive archive;
 					FSUSER_OpenArchive(&archive, ARCHIVE_SDMC, {PATH_EMPTY, 1, (u8*)""});
 					FS_Path filePath=fsMakePath(PATH_ASCII, "/easyrpg-player");
 					FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
-					FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
+					FS_Path filePath2=fsMakePath(PATH_ASCII, &tmp_path[5]);
 					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
 					FSUSER_CloseArchive(archive);
-
-					auto savefs = FileFinder::Root().Create(mainDir);
-					if (!savefs) {
-						Output::Error("3DS: Invalid save path {}", mainDir);
-					}
-					FileFinder::SetSaveFilesystem(savefs);
 				}
-			} else if (!Player::is_3dsx) {
+
+				auto savefs = FileFinder::Root().Create(tmp_path);
+				if (!savefs) {
+					Output::Error("3DS: Invalid save path {}", tmp_path);
+				}
+				FileFinder::SetSaveFilesystem(savefs);
+			} else if(is_cia) {
 				// No RomFS -> load games from hardcoded path
-				project_path = "sdmc:/3ds/easyrpg-player";
+				project_path = tmp_path;
 			}
 #elif defined(__APPLE__) && TARGET_OS_OSX
 			// Apple Finder does not set the working directory

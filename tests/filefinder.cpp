@@ -35,7 +35,9 @@ TEST_CASE("MakeCanonical") {
 	};
 
 	CHECK(make_canonical("/folder/file", 1) == "/folder/file");
+	CHECK(make_canonical("/folder/file/", 1) == "/folder/file");
 	CHECK(make_canonical("folder/file", 1) == "folder/file");
+	CHECK(make_canonical("folder/file/", 1) == "folder/file");
 	CHECK(make_canonical("file", 1) == "file");
 	CHECK(make_canonical("/path/../path2", 1) == "/path2");
 	CHECK(make_canonical("folder/././//file", 0) == "folder/file");
@@ -43,6 +45,11 @@ TEST_CASE("MakeCanonical") {
 	CHECK(make_canonical("folder/../file", 1) == "file");
 	CHECK(make_canonical("../folder/folder2/../file", 1) == "folder/file");
 	CHECK(make_canonical("folder/../../file", 1) == "file");
+	CHECK(make_canonical("/", 0) == "/");
+	CHECK(make_canonical("X:/", 0) == "X:/");
+	CHECK(make_canonical("X:/folder/../folder2/", 1) == "X:/folder2");
+	CHECK(make_canonical("drive:/", 0) == "drive:/");
+	CHECK(make_canonical("drive:/folder/../folder2/", 1) == "drive:/folder2");
 
 	Player::escape_symbol = "\\";
 	CHECK(make_canonical("..\\folder\\folder2\\..\\file", 1) == "folder/file");
@@ -61,7 +68,7 @@ TEST_CASE("GetPathAndFilename") {
 	CHECK(file == "file");
 
 	std::tie(path, file) = FileFinder::GetPathAndFilename("/file");
-	CHECK(path == "");
+	CHECK(path == "/");
 	CHECK(file == "file");
 
 	std::tie(path, file) = FileFinder::GetPathAndFilename("file");
@@ -71,6 +78,34 @@ TEST_CASE("GetPathAndFilename") {
 	std::tie(path, file) = FileFinder::GetPathAndFilename("folder/folder2/file");
 	CHECK(path == "folder/folder2");
 	CHECK(file == "file");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("drive:/file");
+	CHECK(path == "drive:/");
+	CHECK(file == "file");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("drive:/folder/file");
+	CHECK(path == "drive:/folder");
+	CHECK(file == "file");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("X:/file");
+	CHECK(path == "X:/");
+	CHECK(file == "file");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("X:/folder/file");
+	CHECK(path == "X:/folder");
+	CHECK(file == "file");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("/");
+	CHECK(path == "/");
+	CHECK(file == "");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("X:/");
+	CHECK(path == "X:/");
+	CHECK(file == "");
+
+	std::tie(path, file) = FileFinder::GetPathAndFilename("");
+	CHECK(path == "");
+	CHECK(file == "");
 
 	Player::escape_symbol = "\\";
 	std::tie(path, file) = FileFinder::GetPathAndFilename("folder\\folder2\\file");

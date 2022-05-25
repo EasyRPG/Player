@@ -84,26 +84,31 @@ void Filesystem_Stream::OutputStream::Close() {
 	set_rdbuf(nullptr);
 }
 
-Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(Span<uint8_t> buffer)
-		: std::streambuf(), buffer(buffer) {
-	char* cbuffer = reinterpret_cast<char*>(buffer.data());
-	setg(cbuffer, cbuffer, cbuffer + buffer.size());
+Filesystem_Stream::InputMemoryStreamBufView::InputMemoryStreamBufView(Span<uint8_t> buffer_view)
+		: std::streambuf(), buffer_view(buffer_view) {
+	char* cbuffer = reinterpret_cast<char*>(buffer_view.data());
+	setg(cbuffer, cbuffer, cbuffer + buffer_view.size());
 }
 
-std::streambuf::pos_type Filesystem_Stream::InputMemoryStreamBuf::seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) {
+std::streambuf::pos_type Filesystem_Stream::InputMemoryStreamBufView::seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) {
 	std::streambuf::pos_type off;
 	if (dir == std::ios_base::beg) {
 		off = offset;
 	} else if (dir == std::ios_base::cur) {
 		off = gptr() - eback() + offset;
 	} else {
-		off = buffer.size() + offset;
+		off = buffer_view.size() + offset;
 	}
 	return seekpos(off, mode);
 }
 
-std::streambuf::pos_type Filesystem_Stream::InputMemoryStreamBuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode) {
-	auto off = Utils::Clamp<std::streambuf::pos_type>(pos, 0, buffer.size());
+std::streambuf::pos_type Filesystem_Stream::InputMemoryStreamBufView::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode) {
+	auto off = Utils::Clamp<std::streambuf::pos_type>(pos, 0, buffer_view.size());
 	setg(eback(), eback() + off, egptr());
 	return off;
+}
+
+Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(std::vector<uint8_t> buffer)
+		: InputMemoryStreamBufView(buffer), buffer(std::move(buffer)) {
+
 }

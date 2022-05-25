@@ -23,6 +23,7 @@
 #include "player.h"
 #include <lcf/reader_util.h>
 
+//#define EP_DEBUG_DIRECTORYTREE
 #ifdef EP_DEBUG_DIRECTORYTREE
 template <typename... Args>
 static void DebugLog(const char* fmt, Args&&... args) {
@@ -73,9 +74,16 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		std::string parent_dir, child_dir;
 		std::tie(parent_dir, child_dir) = FileFinder::GetPathAndFilename(fs_path);
 
+		if (parent_dir == fs_path) {
+			// When the path stays we are in a non-existant root -> give up
+			DebugLog("ListDirectory Bad root: {} | {}", fs_path, parent_dir);
+			return nullptr;
+		}
+
 		// Go up and determine the proper casing of the folder
 		auto* parent_tree = ListDirectory(parent_dir);
 		if (!parent_tree) {
+			DebugLog("ListDirectory No parent: {} | {}", fs_path, parent_dir);
 			return nullptr;
 		}
 
@@ -93,12 +101,17 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	}
 
 	if (!fs->GetDirectoryContent(fs_path, entries)) {
+		DebugLog("ListDirectory GetDirectoryContent Failed: {}", fs_path);
 		return nullptr;
 	}
 
 	dir_cache[dir_key] = fs_path;
 
 	DirectoryListType fs_cache_entry;
+
+#ifdef EP_DEBUG_DIRECTORYTREE
+	std::stringstream ss;
+#endif
 
 	for (auto& entry : entries) {
 		std::string new_entry_key = make_key(entry.name);
@@ -110,7 +123,18 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 			}
 		}
 		fs_cache_entry.emplace(std::make_pair(std::move(new_entry_key), entry));
+
+#ifdef EP_DEBUG_DIRECTORYTREE
+		std::string t = entry.type == FileType::Regular ? "" :
+				entry.type == FileType::Directory ? "(d)" : "(?)";
+		ss << entry.name << t << ", ";
+#endif
 	}
+
+#ifdef EP_DEBUG_DIRECTORYTREE
+	DebugLog("ListDirectory Content: {} | {}", fs_path, ss.str());
+#endif
+
 	fs_cache.emplace(dir_key, fs_cache_entry);
 
 	return &fs_cache.find(dir_key)->second;
@@ -159,6 +183,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 		if (args.file_not_found_warning) {
 			Output::Debug("Cannot find: {}/{}", dir, name);
 		}
+		DebugLog("FindFile ListDirectory Failed: {} | {}", dir, name);
 		return "";
 	}
 
@@ -170,14 +195,18 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	if (args.exts.empty()) {
 		auto entry_it = entries->find(name_key);
 		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
-			return FileFinder::MakePath(dir_it->second, entry_it->second.name);
+			auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
+			DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
+			return full_path;
 		}
 	} else {
 		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
 			auto entry_it = entries->find(full_name_key);
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
-				return FileFinder::MakePath(dir_it->second, entry_it->second.name);
+				auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
+				DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
+				return full_path;
 			}
 		}
 	}
@@ -185,6 +214,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	if (args.file_not_found_warning) {
 		Output::Debug("Cannot find: {}/{}", dir, name);
 	}
+	DebugLog("FindFile Not Found: {} | {}", dir, name);
 
 	return "";
 }
