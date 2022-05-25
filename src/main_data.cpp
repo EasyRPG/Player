@@ -51,6 +51,7 @@
 #elif defined(__vita__)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
+#  include <psp2/appmgr.h>
 #elif defined(__APPLE__) && TARGET_OS_OSX
 #  include <sys/syslimits.h>
 #  include "platform/macos/utils.h"
@@ -93,25 +94,33 @@ void Main_Data::Init() {
 			getcwd(working_dir, 255);
 			project_path = std::string(working_dir);
 #elif defined(__vita__)
-			// Check if app0 filesystem contains the title id reference file
-			FILE* f = fopen("app0:/titleid.txt","r");
-			if (f == NULL)
-				project_path = "ux0:/data/easyrpg-player";
+			// Check if app is invoked with an externalized game path
+			char boot_params[1024];
+			sceAppMgrGetAppParam(boot_params);
+			if (strstr(boot_params,"psgm:play") && strstr(boot_params, "&project-path=")) {
+				project_path = std::string(strstr(boot_params, "&project-path=") + 14);
+			}
 			else {
-				char titleID[10];
-				char psp2_dir[256];
-				fread(titleID, 1, 9, f);
-				titleID[9] = 0;
-				sprintf(psp2_dir, "ux0:/data/%s",titleID);
-				fclose(f);
-				project_path = "app0:";
-				// Creating saves dir if it doesn't exist
-				sceIoMkdir(psp2_dir, 0777);
-				auto savefs = FileFinder::Root().Create(psp2_dir);
-				if (!savefs) {
-					Output::Error("PSP2: Invalid save path {}", psp2_dir);
+				// Check if app0 filesystem contains the title id reference file
+				FILE* f = fopen("app0:/titleid.txt","r");
+				if (f == NULL)
+					project_path = "ux0:/data/easyrpg-player";
+				else {
+					char titleID[10];
+					char psp2_dir[256];
+					fread(titleID, 1, 9, f);
+					titleID[9] = 0;
+					sprintf(psp2_dir, "ux0:/data/%s",titleID);
+					fclose(f);
+					project_path = "app0:";
+					// Creating saves dir if it doesn't exist
+					sceIoMkdir(psp2_dir, 0777);
+					auto savefs = FileFinder::Root().Create(psp2_dir);
+					if (!savefs) {
+						Output::Error("PSP2: Invalid save path {}", psp2_dir);
+					}
+					FileFinder::SetSaveFilesystem(savefs);
 				}
-				FileFinder::SetSaveFilesystem(savefs);
 			}
 #elif defined(__3DS__)
 			// Check if romFs has some files inside or not
