@@ -54,6 +54,7 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
+	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 
 #ifdef SUPPORT_AUDIO

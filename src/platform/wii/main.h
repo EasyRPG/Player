@@ -24,6 +24,8 @@ namespace Wii {
 	 * and redirect to USB Gekko, if present.
 	 */
 	void SetConsole();
+
+	bool LogMessage(const std::string &message);
 };
 
 #endif

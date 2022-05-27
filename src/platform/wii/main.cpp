@@ -95,3 +95,15 @@ void Wii::SetConsole() {
 		devoptab_list[STD_ERR] = &dotab_stdnull;
 	}
 }
+
+bool Wii::LogMessage(const std::string &message) {
+	if (usbgecko) return false;
+
+	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
+
+	// HLE in dolphin emulator
+	printf("%s", m.c_str());
+
+	// additional usbgecko output not needed
+	return true;
+}

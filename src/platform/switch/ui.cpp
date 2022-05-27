@@ -514,3 +514,16 @@ void NxUi::SetTitle(const std::string& /* title */) {
 bool NxUi::ShowCursor(bool /* flag */) {
 	return true;
 }
+
+bool NxUi::LogMessage(const std::string &message) {
+	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
+
+	// HLE in yuzu emulator
+	svcOutputDebugString(m.c_str(), m.length());
+
+	// additional to nxlink server
+	if(envHasArgv())
+		return false;
+	else
+		return true;
+}

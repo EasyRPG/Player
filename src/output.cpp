@@ -28,6 +28,8 @@
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(__vita__)
+#  include <psp2/kernel/processmgr.h>
 #endif
 #include "external/rang.hpp"
 
@@ -184,9 +186,18 @@ EM_ASM({
 #  ifdef __ANDROID__
 	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, GAME_TITLE, "%s", msg.c_str());
 #  else
+	bool message_eaten = false;
+	// try custom logger
+	if (DisplayUi) {
+		std::string m = prefix + msg;
+		message_eaten = DisplayUi->LogMessage(m);
+	}
+
 	// terminal output
-	std::cerr << rang::style::bold << lvl << prefix << rang::style::reset
+	if (!message_eaten) {
+		std::cerr << rang::style::bold << lvl << prefix << rang::style::reset
 		<< lvl << msg << rang::fg::reset << std::endl;
+	}
 #  endif
 
 #endif
@@ -298,7 +309,7 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#if defined (PLAYER_NINTENDO)
+#if defined (PLAYER_NINTENDO) || defined(__vita__)
 		// stdin is non-blocking
 		Game_Clock::SleepFor(5s);
 #elif defined (EMSCRIPTEN)
@@ -310,6 +321,10 @@ void Output::ErrorStr(std::string const& err) {
 #endif
 	}
 
+	// FIXME: This does not go through platform teardown code
+#ifdef __vita__
+	sceKernelExitProcess(EXIT_FAILURE);
+#endif
 	exit(EXIT_FAILURE);
 }
 

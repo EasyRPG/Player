@@ -34,6 +34,7 @@
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
+#include <psp2/kernel/clib.h>
 #include <vita2d.h>
 #include <cstring>
 #include <stdio.h>
@@ -280,5 +281,13 @@ void Psp2Ui::SetTitle(const std::string& /* title */) {
 }
 
 bool Psp2Ui::ShowCursor(bool /* flag */) {
+	return true;
+}
+
+bool Psp2Ui::LogMessage(const std::string &message) {
+	// HLE in psp2shell
+	sceClibPrintf("[%s] %s\n", GAME_TITLE, message.c_str());
+
+	// skip useless stderr output
 	return true;
 }

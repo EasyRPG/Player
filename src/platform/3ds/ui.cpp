@@ -321,3 +321,17 @@ void CtrUi::SetTitle(const std::string& /* title */) {
 bool CtrUi::ShowCursor(bool /* flag */) {
 	return true;
 }
+
+bool CtrUi::LogMessage(const std::string &message) {
+	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
+
+	// HLE in citra emulator
+	svcOutputDebugString(m.c_str(), m.length());
+
+#ifdef _DEBUG
+	// log additionally to bottom console
+	return false;
+#else
+	return true;
+#endif
+}

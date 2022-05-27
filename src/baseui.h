@@ -103,6 +103,14 @@ public:
 	virtual bool ShowCursor(bool flag) = 0;
 
 	/**
+	 * Outputs a debug message over custom logger. Useful for emulators.
+	 *
+	 * @param message message string.
+	 * @return wether message has been logged
+	 */
+	virtual bool LogMessage(const std::string & /* message */) { return false; }
+
+	/**
 	 * Gets if fullscreen mode is active.
 	 *
 	 * @return whether fullscreen mode is active.

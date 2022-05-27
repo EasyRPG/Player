@@ -375,6 +375,15 @@ bool SdlUi::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
+bool SdlUi::LogMessage(const std::string &message) {
+#ifdef GEKKO
+	return Wii::LogMessage(message);
+#else
+	// not logged
+	return false;
+#endif
+}
+
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
