@@ -58,12 +58,12 @@ public:
 	/**
 	 * Toggles fullscreen.
 	 */
-	virtual void ToggleFullscreen() = 0;
+	virtual void ToggleFullscreen() {};
 
 	/**
 	 * Toggles zoom.
 	 */
-	virtual void ToggleZoom() = 0;
+	virtual void ToggleZoom() {};
 
 	/**
 	 * Processes events queue.
@@ -92,7 +92,7 @@ public:
 	 *
 	 * @param title title string.
 	 */
-	virtual void SetTitle(const std::string &title) = 0;
+	virtual void SetTitle(const std::string & /* title */) {};
 
 	/**
 	 * Sets if the cursor should be shown.
@@ -100,7 +100,7 @@ public:
 	 * @param flag cursor visibility flag.
 	 * @return previous state.
 	 */
-	virtual bool ShowCursor(bool flag) = 0;
+	virtual bool ShowCursor(bool /* flag */) { return true; };
 
 	/**
 	 * Outputs a debug message over custom logger. Useful for emulators.

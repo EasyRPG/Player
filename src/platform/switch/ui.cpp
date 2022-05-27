@@ -396,14 +396,6 @@ NxUi::~NxUi() {
 	appletUnhook(&applet_hook_cookie);
 }
 
-void NxUi::ToggleFullscreen() {
-	// no-op
-}
-
-void NxUi::ToggleZoom() {
-	// no-op
-}
-
 void NxUi::ProcessEvents() {
 	// handle system events
 	appletMainLoop();
@@ -505,14 +497,6 @@ void NxUi::UpdateDisplay() {
 
 	// display
 	eglSwapBuffers(eglDisplay, eglSurface);
-}
-
-void NxUi::SetTitle(const std::string& /* title */) {
-	// no-op
-}
-
-bool NxUi::ShowCursor(bool /* flag */) {
-	return true;
 }
 
 bool NxUi::LogMessage(const std::string &message) {

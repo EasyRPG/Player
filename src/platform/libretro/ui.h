@@ -30,7 +30,7 @@
 /**
  * LibretroUi class.
  */
-class LibretroUi : public BaseUi {
+class LibretroUi final : public BaseUi {
 public:
 	/**
 	 * Constructor.
@@ -45,12 +45,7 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
-	void ToggleFullscreen() override;
-	void ToggleZoom() override;
 	void UpdateDisplay() override;
-	void SetTitle(const std::string &title) override;
-	bool ShowCursor(bool flag) override;
-
 	void ProcessEvents() override;
 
 #ifdef SUPPORT_AUDIO

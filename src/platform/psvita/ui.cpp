@@ -198,14 +198,6 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::ToggleFullscreen() {
-	// no-op
-}
-
-void Psp2Ui::ToggleZoom() {
-	// no-op
-}
-
 void Psp2Ui::ProcessEvents() {
 	SceCtrlData input;
 	SceTouchData touch;
@@ -274,14 +266,6 @@ void Psp2Ui::UpdateDisplay() {
 		vita2d_texture_get_datap(main_texture),
 		vita2d_texture_get_stride(main_texture)*240);
 	sceKernelSignalSema(GPU_Mutex, 1);
-}
-
-void Psp2Ui::SetTitle(const std::string& /* title */) {
-	// no-op
-}
-
-bool Psp2Ui::ShowCursor(bool /* flag */) {
-	return true;
 }
 
 bool Psp2Ui::LogMessage(const std::string &message) {

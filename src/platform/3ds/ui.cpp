@@ -129,14 +129,6 @@ CtrUi::~CtrUi() {
 	C3D_Fini();
 }
 
-void CtrUi::ToggleFullscreen() {
-	// no-op
-}
-
-void CtrUi::ToggleZoom() {
-	// no-op
-}
-
 void CtrUi::ProcessEvents() {
 	if (!aptMainLoop())
 		Player::Exit();
@@ -312,14 +304,6 @@ void CtrUi::UpdateDisplay() {
 #endif
 
 	C3D_FrameEnd(0);
-}
-
-void CtrUi::SetTitle(const std::string& /* title */) {
-	// no-op
-}
-
-bool CtrUi::ShowCursor(bool /* flag */) {
-	return true;
 }
 
 bool CtrUi::LogMessage(const std::string &message) {

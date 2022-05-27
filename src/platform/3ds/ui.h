@@ -29,7 +29,7 @@
 /**
  * CtrUi class.
  */
-class CtrUi : public BaseUi {
+class CtrUi final : public BaseUi {
 public:
 	/**
 	 * Constructor.
@@ -49,19 +49,13 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
-
-	void ToggleFullscreen() override;
-	void ToggleZoom() override;
 	void UpdateDisplay() override;
-	void SetTitle(const std::string &title) override;
-	bool ShowCursor(bool flag) override;
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
 #endif
-
 	/** @} */
 
 private:

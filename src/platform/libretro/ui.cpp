@@ -92,28 +92,12 @@ LibretroUi::LibretroUi(int width, int height, const Game_ConfigVideo& cfg) : Bas
 	UpdateVariables();
 }
 
-void LibretroUi::ToggleFullscreen() {
-	// no-op
-}
-
-void LibretroUi::ToggleZoom() {
-	// no-op
-}
-
 void LibretroUi::UpdateDisplay() {
 	if (UpdateWindow == nullptr) {
 		return;
 	}
 
 	UpdateWindow(main_surface->pixels(), current_display_mode.width, current_display_mode.height, main_surface->pitch());
-}
-
-void LibretroUi::SetTitle(const std::string &title){
-	// no-op
-}
-
-bool LibretroUi::ShowCursor(bool flag) {
-	return false;
 }
 
 void LibretroUi::ProcessEvents() {

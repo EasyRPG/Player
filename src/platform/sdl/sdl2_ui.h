@@ -38,7 +38,7 @@ struct AudioInterface;
 /**
  * Sdl2Ui class.
  */
-class Sdl2Ui : public BaseUi {
+class Sdl2Ui final : public BaseUi {
 public:
 	/**
 	 * Constructor.
