@@ -972,7 +972,7 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 
 	if(WIN32)
 		# Open console for Debug builds
-		set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE $<NOT:CONFIG:Debug>)
+		set_target_properties(${EXE_NAME} PROPERTIES WIN32_EXECUTABLE $<$<NOT:$<CONFIG:Debug>>:TRUE>)
 
 		# Add resources
 		string(REPLACE "." "," RC_VERSION ${PROJECT_VERSION})
@@ -1089,7 +1089,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			SceCommonDialog_stub
 			SceAudio_stub
 			SceAppMgr_stub)
-		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:CONFIG:Debug>:STRIPPED>)
+		vita_create_self(eboot.bin easyrpg-player.elf $<$<NOT:$<CONFIG:Debug>>:STRIPPED>)
 		set(VITA_MKSFOEX_FLAGS "-d ATTRIBUTE2=12")
 		configure_file(resources/psvita/template.xml.in resources/psvita/template.xml @ONLY)
 		vita_create_vpk(EasyRPG-Player.vpk "EASYRPG01" eboot.bin
