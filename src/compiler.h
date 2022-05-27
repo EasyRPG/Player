@@ -27,15 +27,15 @@
 
 #elif _MSC_VER
 
-#define EP_LIKELY(x) (x)
-#define EP_UNLIKELY(x) (x)
+#define EP_LIKELY(x) x
+#define EP_UNLIKELY(x) x
 
 #define EP_ALWAYS_INLINE __forceinline
 
 #else
 
-#define EP_LIKELY(x) (x)
-#define EP_UNLIKELY(x) (x)
+#define EP_LIKELY(x) x
+#define EP_UNLIKELY(x) x
 
 #define EP_ALWAYS_INLINE inline
 

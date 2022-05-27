@@ -81,7 +81,7 @@ build/
 /doc/
 
 # manual
-/resources/easyrpg-player.6
+/resources/unix/easyrpg-player.6
 
 # test/run artifacts
 easyrpg_log.txt
