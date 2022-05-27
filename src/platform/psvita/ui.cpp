@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "psp2_ui.h"
+#include "ui.h"
 #include "color.h"
 #include "graphics.h"
 #include "keys.h"
@@ -34,17 +34,16 @@
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
+#include <vita2d.h>
 #include <cstring>
 #include <stdio.h>
 
 #ifdef SUPPORT_AUDIO
-#include "psp2_audio.h"
+#include "audio.h"
 AudioInterface& Psp2Ui::GetAudio() {
 	return *audio_;
 }
 #endif
-
-int _newlib_heap_size_user = 330 * 1024 * 1024;
 
 namespace {
 	vita2d_texture* gpu_texture;

@@ -32,12 +32,6 @@
 #  include <shellapi.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
-#elif defined(__vita__)
-#  include <psp2/kernel/processmgr.h>
-#elif defined(__3DS__)
-#  include <3ds.h>
-#elif defined(__SWITCH__)
-#  include <switch.h>
 #endif
 
 #include "async_handler.h"
@@ -171,10 +165,6 @@ void Player::Init(int argc, char *argv[]) {
 		c = '=';
 	Output::Debug("{}", header);
 
-#ifdef __3DS__
-	romfsInit();
-#endif
-
 #if defined(_WIN32)
 	WindowsUtils::InitMiniDumpWriter();
 #endif
@@ -226,18 +216,6 @@ void Player::Run() {
 	// libretro invokes the MainLoop through a retro_run-callback
 #ifndef USE_LIBRETRO
 	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
-#  if defined(__3DS__)
-		if (!aptMainLoop())
-			Exit();
-#  elif defined(__SWITCH__)
-		// handle events
-		appletMainLoop();
-		// skipping our main loop, when out of focus
-		if(appletGetFocusState() != AppletFocusState_InFocus) {
-			Game_Clock::SleepFor(10ms);
-			continue;
-		}
-#  endif
 		MainLoop();
 	}
 #endif
@@ -425,12 +403,6 @@ void Player::Exit() {
 	Output::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
-
-#ifdef __vita__
-	sceKernelExitProcess(0);
-#elif defined(__3DS__)
-	romfsExit();
-#endif
 }
 
 Game_Config Player::ParseCommandLine(int argc, char *argv[]) {

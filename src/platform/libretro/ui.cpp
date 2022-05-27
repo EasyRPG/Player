@@ -16,8 +16,8 @@
  */
 
 // Headers
-#include "libretro_ui.h"
-#include "libretro_clock.h"
+#include "ui.h"
+#include "clock.h"
 #include "bitmap.h"
 #include "color.h"
 #include "graphics.h"
@@ -42,7 +42,7 @@ namespace Options {
 }
 
 #ifdef SUPPORT_AUDIO
-#include "libretro_audio.h"
+#include "audio.h"
 AudioInterface& LibretroUi::GetAudio() {
 	return *audio_;
 }

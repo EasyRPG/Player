@@ -17,7 +17,7 @@
 
 #ifdef SUPPORT_AUDIO
 
-#include "psp2_audio.h"
+#include "audio.h"
 #include "output.h"
 
 #include <psp2/audioout.h>

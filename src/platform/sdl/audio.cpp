@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#if defined(USE_SDL) && defined(SUPPORT_AUDIO)
+#ifdef SUPPORT_AUDIO
 
 #include <cassert>
 #include <chrono>
@@ -29,7 +29,7 @@
 #  include <emscripten.h>
 #endif
 
-#include "audio_sdl.h"
+#include "audio.h"
 #include "output.h"
 
 using namespace std::chrono_literals;

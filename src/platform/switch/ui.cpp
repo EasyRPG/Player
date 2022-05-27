@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "switch_ui.h"
+#include "ui.h"
 #include "color.h"
 #include "graphics.h"
 #include "keys.h"
@@ -37,7 +37,9 @@
 #include "touch_ui_png.h"
 
 #ifdef SUPPORT_AUDIO
-#include "switch_audio.h"
+#include "audio.h"
+
+using namespace std::chrono_literals;
 
 AudioInterface& NxUi::GetAudio() {
 	return *audio_;
@@ -45,8 +47,6 @@ AudioInterface& NxUi::GetAudio() {
 #endif
 
 namespace {
-	int nxlinkSocket = -1;
-
 	EGLDisplay eglDisplay;
 	EGLContext eglContext;
 	EGLSurface eglSurface;
@@ -102,23 +102,6 @@ namespace {
 	};
 
 	int ui_mode = 0;
-}
-
-extern "C" void userAppInit() {
-	if (R_FAILED(socketInitializeDefault()))
-		return;
-
-	nxlinkSocket = nxlinkStdio();
-	if (nxlinkSocket < 0)
-		socketExit();
-}
-
-extern "C" void userAppExit() {
-	if (nxlinkSocket >= 0) {
-		close(nxlinkSocket);
-		socketExit();
-		nxlinkSocket = -1;
-	}
 }
 
 static void initEgl() {
@@ -314,7 +297,6 @@ NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg) {
 		HOSVER_MAJOR(ver), HOSVER_MINOR(ver), HOSVER_MICRO(ver),
 		(hosversionIsAtmosphere() ? ", Atmosphere" : ", unknown/no"));
 
-	appletLockExit();
 	appletHook(&applet_hook_cookie, appletHookCallback, (void *)true);
 	appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
 
@@ -412,9 +394,6 @@ NxUi::~NxUi() {
 
 	appletSetFocusHandlingMode(AppletFocusHandlingMode_SuspendHomeSleep);
 	appletUnhook(&applet_hook_cookie);
-	// HOS will close us immediately afterwards, if requested by home menu.
-	// So no further cleanup possible.
-	appletUnlockExit();
 }
 
 void NxUi::ToggleFullscreen() {
@@ -426,6 +405,14 @@ void NxUi::ToggleZoom() {
 }
 
 void NxUi::ProcessEvents() {
+	// handle system events
+	appletMainLoop();
+
+	// idle, when out of focus
+	while(appletGetFocusState() != AppletFocusState_InFocus) {
+		Game_Clock::SleepFor(10ms);
+	}
+
 	padUpdate(&pad);
 
 	// reset touch keys

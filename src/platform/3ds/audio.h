@@ -18,7 +18,8 @@
 #ifndef EP_PLATFORM_3DS_AUDIO_H
 #define EP_PLATFORM_3DS_AUDIO_H
 
-#include "audio.h"
+// TODO: make this relative with source restructure, e.g. "engine/audio.h"
+#include_next "audio.h"
 
 #include <3ds.h>
 #include <3ds/synchronization.h>

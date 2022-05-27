@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "3ds_ui.h"
+#include "ui.h"
 #include "color.h"
 #include "graphics.h"
 #include "keys.h"
@@ -34,12 +34,8 @@
 
 #include "keyboard_t3x.h"
 
-// 8 MB required for booting and need extra linear memory for the sound
-// effect cache
-u32 __ctru_linear_heap_size = 12*1024*1024;
-
 #ifdef SUPPORT_AUDIO
-#include "3ds_audio.h"
+#include "audio.h"
 AudioInterface& CtrUi::GetAudio() {
 	return *audio_;
 }
@@ -48,7 +44,6 @@ AudioInterface& CtrUi::GetAudio() {
 namespace {
 	int touch_x, touch_y;
 	int touch_state = 0; // 0 not, 1 touched, 2 touched before, wait clear
-	u32 old_time_limit;
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
@@ -63,26 +58,11 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	show_touchscreen = true;
 
-	APT_GetAppCpuTimeLimit(&old_time_limit);
-	APT_SetAppCpuTimeLimit(30);
-
-	// Enable 804 Mhz mode if on N3DS
-	bool isN3DS;
-	APT_CheckNew3DS(&isN3DS);
-	if (isN3DS) {
-		osSetSpeedupEnable(true);
-	}
-
-	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 	C2D_Prepare();
 	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-
-#ifdef _DEBUG
-	consoleInit(GFX_BOTTOM, nullptr);
-#endif
 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -147,11 +127,6 @@ CtrUi::~CtrUi() {
 
 	C2D_Fini();
 	C3D_Fini();
-	gfxExit();
-
-	if (old_time_limit != UINT32_MAX) {
-		APT_SetAppCpuTimeLimit(old_time_limit);
-	}
 }
 
 void CtrUi::ToggleFullscreen() {
@@ -163,6 +138,9 @@ void CtrUi::ToggleZoom() {
 }
 
 void CtrUi::ProcessEvents() {
+	if (!aptMainLoop())
+		Player::Exit();
+
 	hidScanInput();
 	u32 input = hidKeysHeld();
 	keys[Input::Keys::JOY_DPAD_UP] = (input & KEY_DUP);

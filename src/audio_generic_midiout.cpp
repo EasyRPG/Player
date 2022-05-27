@@ -25,7 +25,7 @@
 #include "game_clock.h"
 
 #ifdef USE_LIBRETRO
-#include "platform/libretro/midiout_device_libretro.h"
+#include "platform/libretro/midiout_device.h"
 #endif
 
 #ifdef HAVE_ALSA

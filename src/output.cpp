@@ -20,27 +20,19 @@
 #include <cstdarg>
 #include <ctime>
 #include <cstdio>
-
 #include <iostream>
 #include <fstream>
 #include <thread>
 #include <chrono>
-
-#include "graphics.h"
-#include "output.h"
-
-#ifdef GEKKO
-#  include <gccore.h>
-#  include <sys/iosupport.h>
-#elif defined(__ANDROID__)
+#ifdef __ANDROID__
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
 #endif
-
 #include "external/rang.hpp"
 
 #include "output.h"
+#include "graphics.h"
 #include "filefinder.h"
 #include "input.h"
 #include "options.h"
@@ -98,34 +90,6 @@ namespace {
 		std::string msg;
 		LogLevel lvl = {};
 	} last_message;
-
-#ifdef GEKKO
-	/* USBGecko Debugging on Wii */
-	bool usbgecko = false;
-	mutex_t usbgecko_mutex = 0;
-
-	static ssize_t __usbgecko_write(struct _reent * /* r */, void* /* fd */, const char *ptr, size_t len) {
-		uint32_t level;
-
-		if (!ptr || !len || !usbgecko)
-			return 0;
-
-		LWP_MutexLock(usbgecko_mutex);
-		level = IRQ_Disable();
-		usb_sendbuffer(1, ptr, len);
-		IRQ_Restore(level);
-		LWP_MutexUnlock(usbgecko_mutex);
-
-		return len;
-	}
-
-	const devoptab_t dotab_geckoout = {
-		"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL
-	};
-#endif
-
 }
 
 LogLevel Output::GetLogLevel() {
@@ -369,20 +333,3 @@ void Output::DebugStr(std::string const& msg) {
 	}
 	WriteLog(LogLevel::Debug, msg, Color(128, 128, 128, 255));
 }
-
-#ifdef GEKKO
-extern const devoptab_t dotab_stdnull;
-
-void Output::WiiSetConsole() {
-	LWP_MutexInit(&usbgecko_mutex, false);
-	usbgecko = usb_isgeckoalive(1);
-
-	if (usbgecko) {
-		devoptab_list[STD_OUT] = &dotab_geckoout;
-		devoptab_list[STD_ERR] = &dotab_geckoout;
-	} else {
-		devoptab_list[STD_OUT] = &dotab_stdnull;
-		devoptab_list[STD_ERR] = &dotab_stdnull;
-	}
-}
-#endif

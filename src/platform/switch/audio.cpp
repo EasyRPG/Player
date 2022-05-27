@@ -17,7 +17,7 @@
 
 #ifdef SUPPORT_AUDIO
 
-#include "switch_audio.h"
+#include "audio.h"
 #include "output.h"
 
 #include <switch.h>

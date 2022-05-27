@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "clock.h"
 
-#include "psp2_clock.h"
+constexpr bool LibretroClock::is_steady;
 
-constexpr bool Psp2Clock::is_steady;
+retro_usec_t LibretroClock::time_in_microseconds = 0;

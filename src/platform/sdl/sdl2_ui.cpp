@@ -17,11 +17,7 @@
 
 #include <cstdlib>
 #include <cstring>
-
 #include "system.h"
-
-#if USE_SDL==2
-
 #include "sdl2_ui.h"
 
 #ifdef _WIN32
@@ -43,14 +39,12 @@
 #include "bitmap.h"
 #include "lcf/scope_guard.h"
 
-#include "audio.h"
-
 #ifdef SUPPORT_AUDIO
-#  include "audio_sdl.h"
+#  include "audio.h"
 
-#if defined(__APPLE__) && TARGET_OS_OSX
-#  include "platform/macos/utils.h"
-#endif
+#  if defined(__APPLE__) && TARGET_OS_OSX
+#    include "platform/macos/utils.h"
+#  endif
 
 
 AudioInterface& Sdl2Ui::GetAudio() {
@@ -1056,5 +1050,3 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		return 0;
 	}
 }
-
-#endif // USE_SDL

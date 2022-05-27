@@ -14,9 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "wii_clock.h"
 
-#ifdef GEKKO
-constexpr bool WiiClock::is_steady;
-constexpr int64_t WiiClock::ticks_per_sec;
+#ifndef EP_PLATFORM_WII_MAIN_H
+#define EP_PLATFORM_WII_MAIN_H
+
+namespace Wii {
+	/**
+	 * Helper function to disable the console on Wii
+	 * and redirect to USB Gekko, if present.
+	 */
+	void SetConsole();
+};
+
 #endif

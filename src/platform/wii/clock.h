@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_WII_CLOCK_H
 #define EP_PLATFORM_WII_CLOCK_H
 
-#ifdef GEKKO
-
 #include <ogc/lwp_watchdog.h>
 #include <cstdint>
 #include <chrono>
@@ -57,5 +55,4 @@ constexpr const char* WiiClock::Name() {
 	return "WiiClock";
 }
 
-#endif
 #endif

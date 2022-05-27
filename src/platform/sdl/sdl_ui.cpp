@@ -20,15 +20,7 @@
 
 #include "system.h"
 
-#if USE_SDL==1
-
 #include "sdl_ui.h"
-
-#if defined(GEKKO)
-#  include <gccore.h>
-#  include <wiiuse/wpad.h>
-#endif
-
 #include "color.h"
 #include "graphics.h"
 #include "keys.h"
@@ -36,10 +28,12 @@
 #include "player.h"
 #include "bitmap.h"
 
-#include "audio.h"
+#ifdef GEKKO
+#  include "platform/wii/main.h"
+#endif
 
 #ifdef SUPPORT_AUDIO
-#  include "audio_sdl.h"
+#  include "audio.h"
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -56,21 +50,9 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-#ifdef GEKKO
-	extern "C" {
-		extern void OGC_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
-	}
-
-	static void GekkoResetCallback(u32 irq, void *ctx);
-#endif
-
 SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	auto fs_flag = cfg.fullscreen.Get();
-#ifdef GEKKO
-	SYS_SetResetCallback(GekkoResetCallback);
-#endif
-
 	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG
@@ -98,10 +80,7 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 #ifdef GEKKO
 	// Eliminate debug spew in on-screen console
-	Output::WiiSetConsole();
-
-	// Eliminate overscan / add 5% borders
-	OGC_ChangeSquare(304, 228, 0, 0);
+	Wii::SetConsole();
 #endif
 
 	SetTitle(GAME_TITLE);
@@ -295,6 +274,11 @@ bool SdlUi::RefreshDisplayMode() {
 
 	int bpp = current_display_mode.bpp;
 
+#ifdef GEKKO
+	// force for SDL-wii, otherwise 16 bit is used
+	bpp = 24;
+#endif
+
 	// Free non zoomed surface
 	main_surface.reset();
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
@@ -394,7 +378,7 @@ bool SdlUi::ShowCursor(bool flag) {
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
-#if defined(__MORPHOS__) || defined(__amigaos4__)
+#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(GEKKO)
 	// Quick & dirty big endian 2x zoom blitter
 	int blit_height = src.height() * 2;
 	int blit_width = src.width();
@@ -790,11 +774,3 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		return 0;
 	}
 }
-
-#ifdef GEKKO
-void GekkoResetCallback(u32, void*) {
-	Player::reset_flag = true;
-}
-#endif
-
-#endif // USE_SDL

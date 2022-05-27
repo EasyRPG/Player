@@ -30,7 +30,7 @@
 #include "decoder_wildmidi.h"
 
 #ifdef USE_LIBRETRO
-#include "platform/libretro/libretro_ui.h"
+#  include "platform/libretro/ui.h"
 #endif
 
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING

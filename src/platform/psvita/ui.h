@@ -15,15 +15,14 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_PSP2_UI_H
-#define EP_PLATFORM_PSP2_UI_H
+#ifndef EP_PLATFORM_PSVITA_UI_H
+#define EP_PLATFORM_PSVITA_UI_H
 
 // Headers
 #include "baseui.h"
 #include "color.h"
 #include "rect.h"
 #include "system.h"
-#include <vita2d.h>
 #include <vector>
 
 /**

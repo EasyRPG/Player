@@ -14,8 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "libretro_clock.h"
 
-constexpr bool LibretroClock::is_steady;
+#include "player.h"
+#include <cstdlib>
 
-retro_usec_t LibretroClock::time_in_microseconds = 0;
+#ifdef USE_SDL // This is needed on Windows, SDL wraps main()
+#  include <SDL.h>
+#endif
+
+/**
+ * If the main function ever needs to change, be sure to update the `main()`
+ * functions of the other platforms as well.
+ */
+extern "C" int main(int argc, char* argv[]) {
+	Player::Init(argc, argv);
+	Player::Run();
+
+	return EXIT_SUCCESS;
+}

@@ -15,26 +15,32 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_PSP2_AUDIO_H
-#define EP_PLATFORM_PSP2_AUDIO_H
+#ifndef EP_PLATFORM_CLOCK_H
+#define EP_PLATFORM_CLOCK_H
 
-#include <psp2/types.h>
+#include <chrono>
+#include <type_traits>
+#include <thread>
 
-#include "audio_generic.h"
-
-class Psp2Audio : public GenericAudio {
-public:
-	Psp2Audio();
-	~Psp2Audio();
-
-	void LockMutex() const override;
-	void UnlockMutex() const override;
-
-	volatile bool termStream = false;
-
-private:
-	SceUID audio_mutex;
-	SceUID audio_thread;
-}; // class Psp2Audio
+#if defined(__3DS__)
+#include "platform/3ds/clock.h"
+using Platform_Clock = CtrClock;
+#elif defined(GEKKO)
+#include "platform/wii/clock.h"
+using Platform_Clock = WiiClock;
+#elif defined(__SWITCH__)
+#include "platform/switch/clock.h"
+using Platform_Clock = NxClock;
+#elif defined(__vita__)
+#include "platform/psvita/clock.h"
+using Platform_Clock = Psp2Clock;
+#elif defined(USE_LIBRETRO)
+// Only use libretro clock on platforms with no custom clock
+#include "platform/libretro/clock.h"
+using Platform_Clock = LibretroClock;
+#else
+#include "std_clock.h"
+using Platform_Clock = StdClock;
+#endif
 
 #endif

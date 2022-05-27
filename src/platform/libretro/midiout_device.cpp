@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "midiout_device_libretro.h"
-#include "libretro_ui.h"
+#include "midiout_device.h"
+#include "ui.h"
 #include "output.h"
 
 LibretroMidiOutDevice::LibretroMidiOutDevice() {
