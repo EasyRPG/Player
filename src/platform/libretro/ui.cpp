@@ -292,8 +292,9 @@ RETRO_API void retro_set_input_state(retro_input_state_t cb) {
 static void init_easy_rpg() {
 	Player::exit_flag = false;
 	LibretroUi::player_exit_called = false;
+	std::vector<std::string> args;
 
-	Player::Init(0, nullptr);
+	Player::Init(args);
 
 	auto buttons = Input::GetDefaultButtonMappings();
 	auto directions = Input::GetDefaultDirectionMappings();

@@ -29,7 +29,6 @@
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
 #  include <windows.h>
-#  include <shellapi.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
 #endif
@@ -139,7 +138,7 @@ namespace {
 	FileRequestBinding map_request_id;
 }
 
-void Player::Init(int argc, char *argv[]) {
+void Player::Init(std::vector<std::string> arguments) {
 	frames = 0;
 
 	// Must be called before the first call to Output
@@ -149,14 +148,20 @@ void Player::Init(int argc, char *argv[]) {
 	SetConsoleOutputCP(65001);
 #endif
 
-	// FIXME: actual command line parsing is too late for setting this,
-	// it should be refactored after release to not break things now
-	for (int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "--no-log-color") == 0) {
-			Output::SetTermColor(false);
-			break;
-		}
-	}
+#ifdef EMSCRIPTEN
+	Output::IgnorePause(true);
+
+	// Retrieve save directory from persistent storage before using it
+	EM_ASM(({
+		FS.mkdir("Save");
+		FS.mount(Module.EASYRPG_FS, {}, 'Save');
+		FS.syncfs(true, function(err) {
+		});
+	}));
+#endif
+
+	// First parse command line arguments
+	auto cfg = ParseCommandLine(std::move(arguments));
 
 	// Display a nice version string
 	auto header = GetFullVersionString() + " started";
@@ -169,22 +174,10 @@ void Player::Init(int argc, char *argv[]) {
 	WindowsUtils::InitMiniDumpWriter();
 #endif
 
+	Output::Debug("CLI: {}", command_line);
+
 	Game_Clock::logClockInfo();
 	Rand::SeedRandomNumberGenerator(time(NULL));
-
-#ifdef EMSCRIPTEN
-	Output::IgnorePause(true);
-
-	// Retrieve save directory from persistent storage
-	EM_ASM(({
-		FS.mkdir("Save");
-		FS.mount(Module.EASYRPG_FS, {}, 'Save');
-		FS.syncfs(true, function(err) {
-		});
-	}));
-#endif
-
-	auto cfg = ParseCommandLine(argc, argv);
 
 	Main_Data::Init();
 
@@ -405,12 +398,7 @@ void Player::Exit() {
 	DisplayUi.reset();
 }
 
-Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
-#if defined(_WIN32) && !defined(__WINRT__)
-	int argc_w;
-	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
-#endif
-
+Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 	engine = EngineNone;
 	patch = PatchNone;
 	debug_flag = false;
@@ -430,18 +418,12 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 	Game_Battle::battle_test.enabled = false;
 
 	std::stringstream ss;
-	for (int i = 1; i < argc; ++i) {
-		ss << argv[i] << " ";
+	for (size_t i = 1; i < arguments.size(); ++i) {
+		ss << arguments[i] << " ";
 	}
-	Output::Debug("CLI: {}", ss.str());
 	command_line = ss.str();
 
-#if defined(_WIN32) && !defined(__WINRT__)
-	CmdlineParser cp(argc, argv_w);
-#else
-	CmdlineParser cp(argc, argv);
-#endif
-
+	CmdlineParser cp(arguments);
 	auto cfg = Game_Config::Create(cp);
 
 	cp.Rewind();
@@ -676,10 +658,6 @@ Game_Config Player::ParseCommandLine(int argc, char *argv[]) {
 #endif
 		cp.SkipNext();
 	}
-
-#if defined(_WIN32) && !defined(__WINRT__)
-	LocalFree(argv_w);
-#endif
 
 	return cfg;
 }

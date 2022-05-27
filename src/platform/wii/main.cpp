@@ -19,6 +19,9 @@
 #include <gccore.h>
 #include <ogcsys.h>
 #include <unistd.h>
+#include <string>
+#include <vector>
+#include <algorithm>
 #include "baseui.h"
 #include <sys/iosupport.h>
 #include <wiiuse/wpad.h>
@@ -41,20 +44,33 @@ static void GekkoResetCallback(u32 /* irq */ , void* /* ctx */) {
 }
 
 extern "C" int main(int argc, char* argv[]) {
+	std::vector<std::string> args(argv, argv + argc);
+
+	// dolphin
+	bool is_emu = argc == 0;
+	if(is_emu) {
+		// set arbitrary application path
+		args.push_back("/easyrpg-player");
+	}
+
 	SYS_SetResetCallback(GekkoResetCallback);
 
 	// Eliminate overscan / add 5% borders
 	OGC_ChangeSquare(304, 228, 0, 0);
 
-	// Working directory not correctly handled
-	char working_dir[256];
-	getcwd(working_dir, 255);
-	auto gamefs = FileFinder::Root().Create(working_dir);
-	if (gamefs)
-		FileFinder::SetGameFilesystem(gamefs);
+	// Check if a game directory was provided
+	if (std::none_of(args.cbegin(), args.cend(),
+		[](const std::string& a) { return a == "--project-path"; })) {
+
+		// Working directory not correctly handled, provide it manually
+		char working_dir[256];
+		getcwd(working_dir, 255);
+		args.push_back("--project-path");
+		args.push_back(working_dir);
+	}
 
 	// Run Player
-	Player::Init(argc, argv);
+	Player::Init(std::move(args));
 	Player::Run();
 
 	return EXIT_SUCCESS;

@@ -19,7 +19,11 @@
 #include <cstdio>
 
 #include "player.h"
+#include <string>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <string>
+#include <vector>
 
 // 8 MB required for booting and need extra linear memory for the sound
 // effect cache
@@ -28,6 +32,14 @@ u32 __ctru_linear_heap_size = 12*1024*1024;
 static u32 old_time_limit;
 
 int main(int argc, char* argv[]) {
+	std::vector<std::string> args(argv, argv + argc);
+
+	// cia/citra
+	if(!envIsHomebrew()) {
+		// set arbitrary application path
+		args.push_back("none:/easyrpg-player");
+	}
+
 	APT_GetAppCpuTimeLimit(&old_time_limit);
 	APT_SetAppCpuTimeLimit(30);
 
@@ -58,29 +70,25 @@ int main(int argc, char* argv[]) {
 			APT_GetProgramID(&title_id);
 			sprintf(tmp_path, "sdmc:/easyrpg-player/%016llX", title_id);
 
-			// Creating dirs if they don't exist
-			FS_Archive archive;
-			FSUSER_OpenArchive(&archive, ARCHIVE_SDMC, {PATH_EMPTY, 1, (u8*)""});
-			FS_Path filePath = fsMakePath(PATH_ASCII, "/easyrpg-player");
-			FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
-			FS_Path filePath2 = fsMakePath(PATH_ASCII, &tmp_path[5]);
-			FSUSER_CreateDirectory(archive, filePath2, FS_ATTRIBUTE_DIRECTORY);
-			FSUSER_CloseArchive(archive);
+			// Create dirs if they don't exist
+			mkdir("sdmc:/easyrpg-player", 0777);
+			mkdir(tmp_path, 0777);
 		}
 
-		auto savefs = FileFinder::Root().Create(tmp_path);
-		if (savefs)
-			FileFinder::SetSaveFilesystem(savefs);
+		args.push_back("--save-path");
+		args.push_back(tmp_path);
 	} else if(is_cia) {
 		// No RomFS -> load games from hardcoded path
 		ctr_dir = tmp_path;
 	}
-	auto gamefs = FileFinder::Root().Create(ctr_dir);
-	if (gamefs)
-		FileFinder::SetGameFilesystem(gamefs);
+	// otherwise uses cwd by default or 3dslink argument
+	if (!ctr_dir.empty()) {
+		args.push_back("--project-path");
+		args.push_back(ctr_dir);
+	}
 
 	// Run Player
-	Player::Init(argc, argv);
+	Player::Init(std::move(args));
 	Player::Run();
 
 	romfsExit();

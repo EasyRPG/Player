@@ -17,15 +17,26 @@
 
 #include <switch.h>
 #include <unistd.h>
+#include <string>
+#include <vector>
 #include "player.h"
 
 static int nxlinkSocket = -1;
 
 int main(int argc, char* argv[]) {
+	std::vector<std::string> args(argv, argv + argc);
+
 	appletLockExit();
 
+	// yuzu/nso
+	bool is_nro = envHasArgv();
+	if(!is_nro) {
+		// set arbitrary application path
+		args.push_back("none:/easyrpg-player");
+	}
+
 	// Debug log over network
-	if(R_SUCCEEDED(socketInitializeDefault())) {
+	if(is_nro && R_SUCCEEDED(socketInitializeDefault())) {
 		nxlinkSocket = nxlinkStdio();
 		if (nxlinkSocket < 0)
 			socketExit();
@@ -33,14 +44,23 @@ int main(int argc, char* argv[]) {
 
 	romfsInit();
 
-	char working_dir[256];
-	getcwd(working_dir, 255);
-	auto gamefs = FileFinder::Root().Create(working_dir);
-	if (gamefs)
-		FileFinder::SetGameFilesystem(gamefs);
+	// Check if romfs has some files inside or not
+	if(::access("romfs:/RPG_RT.lmt", F_OK) == 0) {
+		args.push_back("--project-path");
+		args.push_back("romfs:/");
+
+		// Use cwd as savepath, assuming each packaged game has an own directory
+		// This will not work if somebody ever packages a game as nso
+		if (is_nro) {
+			char working_dir[256];
+			getcwd(working_dir, 255);
+			args.push_back("--save-path");
+			args.push_back(working_dir);
+		}
+	}
 
 	// Run Player
-	Player::Init(argc, argv);
+	Player::Init(std::move(args));
 	Player::Run();
 
 	romfsExit();
