@@ -93,10 +93,10 @@ Testing/
 easyrpg-player-*.tar.*
 *.zip
 
-# osx
+# macos
 __MACOSX
 .DS_Store
-/resources/osx/Info.plist
+/resources/macos/Info.plist
 
 # Xcode
 /*.xcodeproj
