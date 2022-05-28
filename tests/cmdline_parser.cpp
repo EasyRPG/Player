@@ -5,12 +5,11 @@
 TEST_SUITE_BEGIN("CmdlineParser");
 
 TEST_CASE("SkipAll") {
-	const int argc = 4;
-	const char* argv[] = { "testapp", "--bool", "--value", "val" };
+	std::vector<std::string> args = { "testapp", "--bool", "--value", "val" };
 
-	CmdlineParser cp(argc, const_cast<char**>(argv));
+	CmdlineParser cp(args);
 
-	for (int i = 0; i < argc - 1; ++ i) {
+	for (size_t i = 0; i < args.size() - 1; ++ i) {
 		REQUIRE(!cp.Done());
 		cp.SkipNext();
 	}
@@ -18,11 +17,9 @@ TEST_CASE("SkipAll") {
 }
 
 TEST_CASE("ParseFound") {
-	const int argc = 4;
-	const char* argv[] = { "testapp", "--bool", "--value", "val" };
+	std::vector<std::string> args = { "testapp", "--bool", "--value", "val" };
 
-	CmdlineParser cp(argc, const_cast<char**>(argv));
-
+	CmdlineParser cp(args);
 
 	CmdlineArg arg;
 	REQUIRE(!cp.Done());
@@ -35,10 +32,9 @@ TEST_CASE("ParseFound") {
 }
 
 TEST_CASE("ParseMissing") {
-	const int argc = 4;
-	const char* argv[] = { "testapp", "--bool", "--value", "v" };
+	std::vector<std::string> args = { "testapp", "--bool", "--value", "v" };
 
-	CmdlineParser cp(argc, const_cast<char**>(argv));
+	CmdlineParser cp(args);
 
 	while (!cp.Done()) {
 		CmdlineArg arg;
@@ -50,10 +46,9 @@ TEST_CASE("ParseMissing") {
 }
 
 TEST_CASE("ParseMulti") {
-	const int argc = 5;
-	const char* argv[] = { "testapp", "battletest", "0", "1", "2" };
+	std::vector<std::string> args = { "testapp", "battletest", "0", "1", "2" };
 
-	CmdlineParser cp(argc, const_cast<char**>(argv));
+	CmdlineParser cp(args);
 
 	CmdlineArg arg;
 	REQUIRE(!cp.Done());
@@ -75,6 +70,7 @@ TEST_CASE("ParseMulti") {
 }
 
 TEST_CASE("ParseNull") {
-	CmdlineParser cp(0, (char**)nullptr);
+	std::vector<std::string> args;
+	CmdlineParser cp(args);
 	REQUIRE(cp.Done());
 }

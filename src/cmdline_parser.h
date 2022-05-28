@@ -90,20 +90,11 @@ private:
 class CmdlineParser {
 public:
 	/** 
-	 * Construct with given argc/argv pair
+	 * Construct with given arguments
 	 *
-	 * @param argc main() argc
-	 * @param argv main() argv
+	 * @param arguments main() argv as vector of strings
 	 */
-	CmdlineParser(int argc, char** argv);
-
-	/** 
-	 * Construct with given argc/argv pair
-	 *
-	 * @param argc main() argc
-	 * @param argv main() argv
-	 */
-	CmdlineParser(int argc, wchar_t** argv);
+	CmdlineParser(std::vector<std::string> arguments);
 
 	/**
 	 * Parses the next command line argument if there is a match in longval or shortval.

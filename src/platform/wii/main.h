@@ -15,30 +15,17 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_COMPILER_H
-#define EP_COMPILER_H
+#ifndef EP_PLATFORM_WII_MAIN_H
+#define EP_PLATFORM_WII_MAIN_H
 
-#ifdef __GNUC__
+namespace Wii {
+	/**
+	 * Helper function to disable the console on Wii
+	 * and redirect to USB Gekko, if present.
+	 */
+	void SetConsole();
 
-#define EP_LIKELY(x) __builtin_expect(!!(x), 1)
-#define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
-
-#define EP_ALWAYS_INLINE __attribute__((always_inline)) inline
-
-#elif _MSC_VER
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE __forceinline
-
-#else
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE inline
-
-#endif
+	bool LogMessage(const std::string &message);
+};
 
 #endif

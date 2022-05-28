@@ -15,30 +15,32 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_COMPILER_H
-#define EP_COMPILER_H
+#ifndef EP_PLATFORM_CLOCK_H
+#define EP_PLATFORM_CLOCK_H
 
-#ifdef __GNUC__
+#include <chrono>
+#include <type_traits>
+#include <thread>
 
-#define EP_LIKELY(x) __builtin_expect(!!(x), 1)
-#define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
-
-#define EP_ALWAYS_INLINE __attribute__((always_inline)) inline
-
-#elif _MSC_VER
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE __forceinline
-
+#if defined(__3DS__)
+#include "platform/3ds/clock.h"
+using Platform_Clock = CtrClock;
+#elif defined(GEKKO)
+#include "platform/wii/clock.h"
+using Platform_Clock = WiiClock;
+#elif defined(__SWITCH__)
+#include "platform/switch/clock.h"
+using Platform_Clock = NxClock;
+#elif defined(__vita__)
+#include "platform/psvita/clock.h"
+using Platform_Clock = Psp2Clock;
+#elif defined(USE_LIBRETRO)
+// Only use libretro clock on platforms with no custom clock
+#include "platform/libretro/clock.h"
+using Platform_Clock = LibretroClock;
 #else
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE inline
-
+#include "std_clock.h"
+using Platform_Clock = StdClock;
 #endif
 
 #endif

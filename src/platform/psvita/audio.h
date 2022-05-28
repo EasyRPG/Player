@@ -15,30 +15,26 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_COMPILER_H
-#define EP_COMPILER_H
+#ifndef EP_PLATFORM_PSVITA_AUDIO_H
+#define EP_PLATFORM_PSVITA_AUDIO_H
 
-#ifdef __GNUC__
+#include <psp2/types.h>
 
-#define EP_LIKELY(x) __builtin_expect(!!(x), 1)
-#define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
+#include "audio_generic.h"
 
-#define EP_ALWAYS_INLINE __attribute__((always_inline)) inline
+class Psp2Audio : public GenericAudio {
+public:
+	Psp2Audio();
+	~Psp2Audio();
 
-#elif _MSC_VER
+	void LockMutex() const override;
+	void UnlockMutex() const override;
 
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
+	volatile bool termStream = false;
 
-#define EP_ALWAYS_INLINE __forceinline
-
-#else
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE inline
-
-#endif
+private:
+	SceUID audio_mutex;
+	SceUID audio_thread;
+}; // class Psp2Audio
 
 #endif

@@ -60,8 +60,6 @@ add_library(${PROJECT_NAME} STATIC
 	src/audio_midi.h
 	src/audio_resampler.cpp
 	src/audio_resampler.h
-	src/audio_sdl.cpp
-	src/audio_sdl.h
 	src/audio_secache.cpp
 	src/audio_secache.h
 	src/autobattle.cpp
@@ -250,7 +248,7 @@ add_library(${PROJECT_NAME} STATIC
 	src/plane.h
 	src/platform.cpp
 	src/platform.h
-	src/platform_clock.h
+	src/platform/clock.h
 	src/player.cpp
 	src/player.h
 	src/point.h
@@ -540,8 +538,10 @@ endif()
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/sdl2_ui.cpp
-		src/sdl2_ui.h)
+		src/platform/sdl/audio.cpp
+		src/platform/sdl/audio.h
+		src/platform/sdl/sdl2_ui.cpp
+		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
 	find_package(SDL2 2.0.5 REQUIRED)
@@ -553,7 +553,7 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
@@ -561,6 +561,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 	if(NOT NINTENDO_3DS)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/3DS.cmake' option.")
 	endif()
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi PLAYER_NINTENDO)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
 	# generate gfx assets
 	enable_language(ASM)
@@ -570,32 +571,34 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 	dkp_generate_binary_embed_sources(PLAYER_3DS_ASSETS keyboard)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/3ds/3ds_audio.cpp
-		src/platform/3ds/3ds_audio.h
-		src/platform/3ds/3ds_clock.cpp
-		src/platform/3ds/3ds_clock.h
-		src/platform/3ds/3ds_input_buttons.cpp
-		src/platform/3ds/3ds_ui.cpp
-		src/platform/3ds/3ds_ui.h
+		src/platform/3ds/audio.cpp
+		src/platform/3ds/audio.h
+		src/platform/3ds/clock.cpp
+		src/platform/3ds/clock.h
+		src/platform/3ds/input_buttons.cpp
+		src/platform/3ds/ui.cpp
+		src/platform/3ds/ui.h
 		${PLAYER_3DS_ASSETS})
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
 	endif()
 	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=Psp2Ui)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/psvita/psp2_audio.cpp
-		src/platform/psvita/psp2_audio.h
-		src/platform/psvita/psp2_clock.cpp
-		src/platform/psvita/psp2_clock.h
-		src/platform/psvita/psp2_input_buttons.cpp
-		src/platform/psvita/psp2_ui.cpp
-		src/platform/psvita/psp2_ui.h)
+		src/platform/psvita/audio.cpp
+		src/platform/psvita/audio.h
+		src/platform/psvita/clock.cpp
+		src/platform/psvita/clock.h
+		src/platform/psvita/input_buttons.cpp
+		src/platform/psvita/ui.cpp
+		src/platform/psvita/ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	if(NOT NINTENDO_SWITCH)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake' option.")
 	endif()
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi PLAYER_NINTENDO)
 	find_package(OpenGL CONFIG REQUIRED)
 	find_library(GLAD glad REQUIRED)
 	target_link_libraries(${PROJECT_NAME} OpenGL::EGL)
@@ -604,27 +607,29 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	dkp_generate_binary_embed_sources(PLAYER_SWITCH_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/switch/switch_audio.cpp
-		src/platform/switch/switch_audio.h
-		src/platform/switch/switch_clock.cpp
-		src/platform/switch/switch_clock.h
-		src/platform/switch/switch_input_buttons.cpp
-		src/platform/switch/switch_ui.cpp
-		src/platform/switch/switch_ui.h
+		src/platform/switch/audio.cpp
+		src/platform/switch/audio.h
+		src/platform/switch/clock.cpp
+		src/platform/switch/clock.h
+		src/platform/switch/input_buttons.cpp
+		src/platform/switch/ui.cpp
+		src/platform/switch/ui.h
 		${PLAYER_SWITCH_ASSETS})
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
 	endif()
 	find_package(SDL REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/wii/wii_clock.cpp
-		src/platform/wii/wii_clock.h
-		src/platform/wii/wii_input_buttons.cpp
-		src/sdl_ui.cpp
-		src/sdl_ui.h)
+		src/platform/wii/clock.cpp
+		src/platform/wii/clock.h
+		src/platform/wii/input_buttons.cpp
+		src/platform/sdl/audio.cpp
+		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_ui.cpp
+		src/platform/sdl/sdl_ui.h)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
@@ -696,7 +701,7 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 endif()
 
 # App Icon (for macOS)
-set(${PROJECT_NAME}_BUNDLE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/osx/Player.icns")
+set(${PROJECT_NAME}_BUNDLE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/macos/Player.icns")
 
 # Do not code sign on Macs
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
@@ -963,13 +968,13 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-		add_executable("${EXE_NAME}" MACOSX_BUNDLE "src/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
-		configure_file(resources/osx/Info.plist.in resources/osx/Info.plist @ONLY)
-		set_target_properties("${EXE_NAME}" PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/osx/Info.plist")
-		set_target_properties("${EXE_NAME}" PROPERTIES OUTPUT_NAME "EasyRPG Player")
+		add_executable(${EXE_NAME} MACOSX_BUNDLE "src/platform/sdl/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
+		configure_file(resources/macos/Info.plist.in resources/macos/Info.plist @ONLY)
+		set_target_properties(${EXE_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/macos/Info.plist")
+		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
-		add_executable(${EXE_NAME} "src/main.cpp")
+		add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
 
@@ -995,7 +1000,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
 
 		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT -s MINIFY_HTML=0 --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext','$dynCall']")
-		set_source_files_properties("src/main.cpp" PROPERTIES OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS};${PLAYER_JS_SHELL}")
+		set_source_files_properties("src/platform/sdl/main.cpp" PROPERTIES
+			OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS};${PLAYER_JS_SHELL}")
 
 		if(PLAYER_JS_BUILD_SHELL)
 			set_target_properties(${EXE_NAME} PROPERTIES SUFFIX ".html")
@@ -1027,9 +1033,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
-	add_executable(easyrpg-player "src/main.cpp")
-	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	if(NINTENDO_3DS)
+		add_executable(easyrpg-player src/platform/3ds/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			-lcitro2d
@@ -1046,6 +1051,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 				resources/3ds/easyrpg-player.xml # consider removing, *hax² is mostly obsolete
 			DESTINATION easyrpg-player COMPONENT 3ds)
 	elseif(NINTENDO_SWITCH)
+		add_executable(easyrpg-player src/platform/switch/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			${GLAD})
@@ -1060,6 +1066,9 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
+		add_executable(easyrpg-player
+			src/platform/wii/main.h
+			src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			${SDL_LIBRARIES}
@@ -1077,6 +1086,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			DESTINATION easyrpg-player COMPONENT wii)
 	elseif(VITA)
 		set(CMAKE_EXECUTABLE_SUFFIX .elf)
+		add_executable(easyrpg-player src/platform/psvita/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			vita2d
@@ -1106,6 +1116,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
 			DESTINATION . COMPONENT psvita)
 	endif()
+	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	# debug information
 	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$")
 		dkp_target_generate_symbol_list(easyrpg-player)
@@ -1127,17 +1138,17 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
-			src/platform/libretro/libretro_audio.cpp
-			src/platform/libretro/libretro_audio.h
-			src/platform/libretro/libretro_clock.cpp
-			src/platform/libretro/libretro_clock.h
-			src/platform/libretro/libretro_input_buttons.cpp
-			src/platform/libretro/libretro_ui.cpp
-			src/platform/libretro/libretro_ui.h
-			src/platform/libretro/midiout_device_libretro.cpp
-			src/platform/libretro/midiout_device_libretro.h
+			src/platform/libretro/audio.cpp
+			src/platform/libretro/audio.h
+			src/platform/libretro/clock.cpp
+			src/platform/libretro/clock.h
+			src/platform/libretro/input_buttons.cpp
+			src/platform/libretro/ui.cpp
+			src/platform/libretro/ui.h
+			src/platform/libretro/midiout_device.cpp
+			src/platform/libretro/midiout_device.h
 		)
-		set_property(SOURCE src/platform/libretro/libretro_ui.cpp
+		set_property(SOURCE src/platform/libretro/ui.cpp
 			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION_FULL="${PLAYER_VERSION_FULL}"
 		)
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
@@ -1149,7 +1160,7 @@ else()
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
 			src/platform/android/filesystem_saf.cpp
 			src/platform/android/filesystem_saf.h
-			src/main.cpp)
+			src/platform/sdl/main.cpp)
 		target_link_libraries(easyrpg_android ${PROJECT_NAME})
 		set_target_properties(easyrpg_android PROPERTIES DEBUG_POSTFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_android")

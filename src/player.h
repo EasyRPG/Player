@@ -58,8 +58,10 @@ namespace Player {
 
 	/**
 	 * Initializes EasyRPG Player.
+	 *
+	 * @param arguments Array of command line arguments
 	 */
-	void Init(int argc, char *argv[]);
+	void Init(std::vector<std::string> arguments);
 
 	/**
 	 * Runs the game engine.
@@ -118,8 +120,10 @@ namespace Player {
 
 	/**
 	 * Parses the command line arguments.
+	 *
+	 * @param arguments Array of command line arguments
 	 */
-	Game_Config ParseCommandLine(int argc, char *argv[]);
+	Game_Config ParseCommandLine(std::vector<std::string> arguments);
 
 	/**
 	 * Initializes all game objects

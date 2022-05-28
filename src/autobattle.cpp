@@ -126,7 +126,6 @@ double CalcSkillHealAutoBattleTargetRank(const Game_Actor& source, const Game_Ba
 double CalcSkillDmgAutoBattleTargetRank(const Game_Actor& source, const Game_Battler& target, const lcf::rpg::Skill& skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs) {
 	assert(Algo::IsNormalOrSubskill(skill));
 	assert(Algo::SkillTargetsEnemies(skill));
-	(void)emulate_bugs;
 
 	if (!(skill.affect_hp && target.Exists())) {
 		return 0.0;

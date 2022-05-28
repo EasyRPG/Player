@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !(defined(USE_SDL) || defined(__3DS__) || defined(__vita__) || defined(__SWITCH__) || defined(USE_LIBRETRO))
+#if !(defined(USE_SDL) || defined(PLAYER_UI))
 #  error "This build doesn't target a backend"
 #endif
 

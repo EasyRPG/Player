@@ -81,7 +81,7 @@ sed -i -e "s/\(#define EP_VERSION_MAJOR\).*/\1 $_maj/" \
        -e "s/\(#define EP_VERSION_TWEAK\).*/\1 $_twk/" $file
 print_verbose "define EP_VERSION_.*[0-9]" $file
 
-file="README.md"
+file="docs/BUILDING.md"
 print_file
 sed -i "s/\(easyrpg-player-\)[0-9]\(.[0-9]\)\{1,3\}/\1$version/g" $file
 print_verbose "easyrpg-player-[0-9]" $file
@@ -89,7 +89,7 @@ print_verbose "easyrpg-player-[0-9]" $file
 echo -e "$(
 cat << EOM
 
-${red}Please check the ${bold}README.md${reset}${red} for whitespace problems.${reset}
+${red}Please check ${bold}docs/BUILDING.md${reset}${red} file for whitespace problems.${reset}
 
 If everything is ready and committed, use these commands to publish the git tag:
 $ git tag -a (-s) $version -m "Codename \"fancy codename\""

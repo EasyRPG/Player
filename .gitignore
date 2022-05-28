@@ -81,7 +81,7 @@ build/
 /doc/
 
 # manual
-/resources/easyrpg-player.6
+/resources/unix/easyrpg-player.6
 
 # test/run artifacts
 easyrpg_log.txt
@@ -93,10 +93,10 @@ Testing/
 easyrpg-player-*.tar.*
 *.zip
 
-# osx
+# macos
 __MACOSX
 .DS_Store
-/resources/osx/Info.plist
+/resources/macos/Info.plist
 
 # Xcode
 /*.xcodeproj

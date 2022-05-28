@@ -20,7 +20,7 @@
 
 #include "options.h"
 #include <chrono>
-#include "platform_clock.h"
+#include "platform/clock.h"
 #include <type_traits>
 #include <algorithm>
 

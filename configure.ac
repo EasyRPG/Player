@@ -21,7 +21,7 @@ AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_MACRO_DIR([builds/autoconf/m4])
-AC_CONFIG_SRCDIR([src/main.cpp])
+AC_CONFIG_SRCDIR([src/player.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_LANG([C++])
 
@@ -83,9 +83,14 @@ PKG_CHECK_MODULES([FMT],[fmt],,[
 		AC_MSG_ERROR([Could not find libfmt! Consider installing version 5.3 or newer.])
 	],[AC_MSG_RESULT([yes])])
 ])
-PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[AC_DEFINE(USE_SDL,[2],[Enable SDL2])],[
-	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
+PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[sdl_version=2],[
+	PKG_CHECK_MODULES([SDL],[sdl],[sdl_version=1],[
+		AC_MSG_ERROR([Could not find SDL! Consider installing version 2.0.5 or newer.])
+	])
 ])
+AC_DEFINE_UNQUOTED([USE_SDL],[$sdl_version],[Enable SDL, version 2 or 1.2])
+AM_CONDITIONAL([HAVE_SDL2], [test "x$sdl_version" = "x2"])
+AM_CONDITIONAL([HAVE_SDL1], [test "x$sdl_version" = "x1"])
 EP_PKG_CHECK([FREETYPE],[freetype2],[Custom Font rendering.])
 AS_IF([test "$with_freetype" = "yes"],[
 	EP_PKG_CHECK([HARFBUZZ],[harfbuzz],[Custom Font text shaping.])
@@ -93,7 +98,7 @@ AS_IF([test "$with_freetype" = "yes"],[
 
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
 AS_IF([test "x$with_audio" != "xno"],[
-	AC_DEFINE(SUPPORT_AUDIO,[1],[Enable Audio Support])
+	AC_DEFINE([SUPPORT_AUDIO],[1],[Enable Audio Support])
 	EP_PKG_CHECK([LIBMPG123],[libmpg123],[MP3 support.])
 	EP_PKG_CHECK([LIBWILDMIDI],[wildmidi],[Midi support (GUS patches). Alternative to internal fmmidi.])
 	EP_PKG_CHECK([FLUIDSYNTH],[fluidsynth],[Midi support (Soundfonts). Alternative to internal fmmidi.])
@@ -108,7 +113,7 @@ AS_IF([test "x$with_audio" != "xno"],[
 	EP_PKG_CHECK([LIBSPEEXDSP],[speexdsp],[Resampling support.])
 
 	AS_IF([test "$with_alsa" = "yes"],[
-		AC_DEFINE(HAVE_NATIVE_MIDI,[1],[Native Midi support])
+		AC_DEFINE([HAVE_NATIVE_MIDI],[1],[Native Midi support])
 		AX_PTHREAD
 	])
 ])
@@ -213,8 +218,10 @@ if test "yes" != "$silent"; then
 	echo "  prefix: $prefix"
 	echo "  bash completion: $BASHCOMPLETION_DIR"
 
-	# FIXME SDL version
-	echo "Backend: SDL"
+	test "$sdl_version" = "2" && \
+		echo "Backend: SDL2"
+	test "$sdl_version" = "1" && \
+		echo "Backend: SDL1.2 (legacy version, may be removed soon!)"
 
 	echo "Optional features:"
 	echo "  -custom Font rendering (freetype2):   $with_freetype"

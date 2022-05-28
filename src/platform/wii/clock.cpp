@@ -14,31 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "clock.h"
 
-#ifndef EP_COMPILER_H
-#define EP_COMPILER_H
-
-#ifdef __GNUC__
-
-#define EP_LIKELY(x) __builtin_expect(!!(x), 1)
-#define EP_UNLIKELY(x) __builtin_expect(!!(x), 0)
-
-#define EP_ALWAYS_INLINE __attribute__((always_inline)) inline
-
-#elif _MSC_VER
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE __forceinline
-
-#else
-
-#define EP_LIKELY(x) x
-#define EP_UNLIKELY(x) x
-
-#define EP_ALWAYS_INLINE inline
-
-#endif
-
-#endif
+constexpr bool WiiClock::is_steady;
+constexpr int64_t WiiClock::ticks_per_sec;

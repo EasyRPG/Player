@@ -45,14 +45,6 @@
 #if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
-#elif defined(__3DS__)
-#  include <3ds.h>
-#  include <unistd.h>
-   extern int __system_argc; // inside ctrulib
-#elif defined(__vita__)
-#  include <cstdio>
-#  include <psp2/io/stat.h>
-#  include <psp2/appmgr.h>
 #elif defined(__APPLE__) && TARGET_OS_OSX
 #  include <sys/syslimits.h>
 #  include "platform/macos/utils.h"
@@ -80,83 +72,21 @@ namespace Main_Data {
 
 void Main_Data::Init() {
 	if (project_path.empty()) {
+		// First use environment variables
 		project_path =
 			getenv("RPG_TEST_GAME_PATH") ? getenv("RPG_TEST_GAME_PATH") :
 			getenv("RPG_GAME_PATH") ? getenv("RPG_GAME_PATH") :
 			"";
 
 		if (project_path.empty()) {
-			// first set to current directory for all platforms
+			// Set to current directory
 			project_path = "";
 
-#if defined(GEKKO) || defined(__SWITCH__) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
+#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 			// Working directory not correctly handled
 			char working_dir[256];
 			getcwd(working_dir, 255);
 			project_path = std::string(working_dir);
-#elif defined(__vita__)
-			// Check if app is invoked with an externalized game path
-			char boot_params[1024];
-			sceAppMgrGetAppParam(boot_params);
-			if (strstr(boot_params,"psgm:play") && strstr(boot_params, "&project-path=")) {
-				project_path = std::string(strstr(boot_params, "&project-path=") + 14);
-			}
-			else {
-				// Check if app0 filesystem contains the title id reference file
-				FILE* f = fopen("app0:/titleid.txt","r");
-				if (f == NULL)
-					project_path = "ux0:/data/easyrpg-player";
-				else {
-					char titleID[10];
-					char psp2_dir[256];
-					fread(titleID, 1, 9, f);
-					titleID[9] = 0;
-					sprintf(psp2_dir, "ux0:/data/%s",titleID);
-					fclose(f);
-					project_path = "app0:";
-					// Creating saves dir if it doesn't exist
-					sceIoMkdir(psp2_dir, 0777);
-					auto savefs = FileFinder::Root().Create(psp2_dir);
-					if (!savefs) {
-						Output::Error("PSP2: Invalid save path {}", psp2_dir);
-					}
-					FileFinder::SetSaveFilesystem(savefs);
-				}
-			}
-#elif defined(__3DS__)
-			bool is_cia = __system_argc == 0;
-			char tmp_path[64] = "sdmc:/3ds/easyrpg-player";
-
-			// Check if romfs has some files inside or not
-			if(::access("romfs:/RPG_RT.lmt", F_OK) == 0) {
-				Output::Debug("Loading game from romfs...");
-				project_path = "romfs:/";
-
-				if (is_cia) {
-					// CIA savepath is unique for any ID
-					u64 titleID;
-					APT_GetProgramID(&titleID);
-					sprintf(tmp_path, "sdmc:/easyrpg-player/%016llX", titleID);
-
-					// Creating dirs if they don't exist
-					FS_Archive archive;
-					FSUSER_OpenArchive(&archive, ARCHIVE_SDMC, {PATH_EMPTY, 1, (u8*)""});
-					FS_Path filePath=fsMakePath(PATH_ASCII, "/easyrpg-player");
-					FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
-					FS_Path filePath2=fsMakePath(PATH_ASCII, &tmp_path[5]);
-					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
-					FSUSER_CloseArchive(archive);
-				}
-
-				auto savefs = FileFinder::Root().Create(tmp_path);
-				if (!savefs) {
-					Output::Error("3DS: Invalid save path {}", tmp_path);
-				}
-				FileFinder::SetSaveFilesystem(savefs);
-			} else if(is_cia) {
-				// No RomFS -> load games from hardcoded path
-				project_path = tmp_path;
-			}
 #elif defined(__APPLE__) && TARGET_OS_OSX
 			// Apple Finder does not set the working directory
 			// It points to HOME instead. When it is HOME change it to
@@ -172,7 +102,6 @@ void Main_Data::Init() {
 		}
 	}
 }
-
 
 void Main_Data::Cleanup() {
 	Game_Map::Quit();

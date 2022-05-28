@@ -47,23 +47,12 @@ bool CmdlineArg::ParseValue(int i, long& value) const {
 	return true;
 }
 
-CmdlineParser::CmdlineParser(int argc, char** argv)
+CmdlineParser::CmdlineParser(std::vector<std::string> arguments)
 {
+	size_t argc = arguments.size();
 	if (argc > 0) {
 		args.reserve(argc - 1);
-	}
-	for (int i = 1; i < argc; ++i) {
-		args.push_back(argv[i]);
-	}
-}
-
-CmdlineParser::CmdlineParser(int argc, wchar_t** argv)
-{
-	if (argc > 0) {
-		args.reserve(argc - 1);
-	}
-	for (int i = 1; i < argc; ++i) {
-		args.push_back(Utils::FromWideString(argv[i]));
+		copy(arguments.begin() + 1, arguments.end(), back_inserter(args));
 	}
 }
 
