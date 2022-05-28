@@ -131,7 +131,9 @@ namespace Utils {
 	 */
 	UtfNextResult UTF8Next(const char* iter, const char* end);
 
-#if !defined(__amigaos4__) && !defined(__AROS__)
+// Some platforms do not like UTF16
+#if _WIN32
+
 	/**
 	 * Converts UTF-8 string to std::wstring.
 	 *
@@ -147,6 +149,7 @@ namespace Utils {
 	 * @return the converted string.
 	 */
 	std::string FromWideString(const std::wstring& str);
+
 #endif
 
 	struct ExFontRet {

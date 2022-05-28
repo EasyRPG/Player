@@ -424,7 +424,8 @@ Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escap
 	return ret;
 }
 
-#if !defined(__amigaos4__) && !defined(__AROS__)
+#if _WIN32
+
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(StringView);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
@@ -462,6 +463,7 @@ std::string FromWideStringImpl<2>(const std::wstring& str) {
 std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
+
 #endif
 
 int Utils::PositiveModulo(int i, int m) {

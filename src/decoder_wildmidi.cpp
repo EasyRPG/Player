@@ -215,7 +215,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 
 	// TODO: We need some installer which creates registry keys for wildmidi
 
-#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
+#  elif defined(PLAYER_AMIGA)
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
 		found = FileFinder::Root().Exists(config_file);
@@ -273,7 +273,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		return false;
 	}
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
+#if defined(PLAYER_AMIGA)
 	// the default volume is way too quiet with the SDL_mixer patches
 	WildMidi_MasterVolume(127);
 #endif

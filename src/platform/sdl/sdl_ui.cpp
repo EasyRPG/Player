@@ -61,7 +61,7 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
-#if !defined(GEKKO) && !defined(__MORPHOS__)
+#ifndef GEKKO
 	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
@@ -387,7 +387,7 @@ bool SdlUi::LogMessage(const std::string &message) {
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(GEKKO)
+#if (defined(PLAYER_AMIGA) && !defined(__AROS__)) || defined(GEKKO)
 	// Quick & dirty big endian 2x zoom blitter
 	int blit_height = src.height() * 2;
 	int blit_width = src.width();
