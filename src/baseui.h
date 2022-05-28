@@ -30,6 +30,7 @@
 #include "keys.h"
 #include "game_config.h"
 #include "game_clock.h"
+#include "input.h"
 
 #ifdef SUPPORT_AUDIO
 	struct AudioInterface;
@@ -141,7 +142,12 @@ public:
 	/**
 	 * @return mouse position.
 	 */
-	Point GetMousePosition() const;
+	const Point& GetMousePosition() const;
+
+	/**
+	 * @return Axis of the analog controller inputs
+	 */
+	const Input::AnalogInput& GetAnalogInput() const;
 
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();
@@ -205,6 +211,9 @@ protected:
 
 	/** Mouse position on screen relative to the window. */
 	Point mouse_pos;
+
+	/** Axis of game controllers */
+	Input::AnalogInput analog_input;
 
 	/** Color for display background. */
 	Color back_color = Color{ 0, 0, 0, 255 };
@@ -280,8 +289,12 @@ inline bool BaseUi::GetMouseFocus() const {
 	return mouse_focus;
 }
 
-inline Point BaseUi::GetMousePosition() const {
+inline const Point& BaseUi::GetMousePosition() const {
 	return mouse_pos;
+}
+
+inline const Input::AnalogInput& BaseUi::GetAnalogInput() const {
+	return analog_input;
 }
 
 inline bool BaseUi::RenderFps() const {

@@ -154,8 +154,8 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 
 	SetTitle(GAME_TITLE);
 
-#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
-	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
+#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS))
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
 		Output::Warning("Couldn't initialize joystick. {}", SDL_GetError());
 	}
 
@@ -588,25 +588,21 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 			ProcessMouseButtonEvent(evnt);
 			return;
 
-		case SDL_JOYDEVICEADDED:
-			ProcessJoystickAdded(evnt);
+		case SDL_CONTROLLERDEVICEADDED:
+			ProcessControllerAdded(evnt);
 			return;
 
-		case SDL_JOYDEVICEREMOVED:
-			ProcessJoystickRemoved(evnt);
+		case SDL_CONTROLLERDEVICEREMOVED:
+			ProcessControllerRemoved(evnt);
 			return;
 
-		case SDL_JOYBUTTONDOWN:
-		case SDL_JOYBUTTONUP:
-			ProcessJoystickButtonEvent(evnt);
+		case SDL_CONTROLLERBUTTONDOWN:
+		case SDL_CONTROLLERBUTTONUP:
+			ProcessControllerButtonEvent(evnt);
 			return;
 
-		case SDL_JOYHATMOTION:
-			ProcessJoystickHatEvent(evnt);
-			return;
-
-		case SDL_JOYAXISMOTION:
-			ProcessJoystickAxisEvent(evnt);
+		case SDL_CONTROLLERAXISMOTION:
+			ProcessControllerAxisEvent(evnt);
 			return;
 
 		case SDL_FINGERDOWN:
@@ -745,91 +741,63 @@ void Sdl2Ui::ProcessMouseButtonEvent(SDL_Event& evnt) {
 #endif
 }
 
-void Sdl2Ui::ProcessJoystickAdded(SDL_Event &evnt) {
+void Sdl2Ui::ProcessControllerAdded(SDL_Event& evnt) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	SDL_JoystickOpen(evnt.jdevice.which);
+	int id = evnt.cdevice.which;
+	if (SDL_IsGameController(id)) {
+		SDL_GameController* controller = SDL_GameControllerOpen(id);
+		if (controller) {
+			Output::Debug("Controller {} ({}) added", id, SDL_GameControllerName(controller));
+		}
+	}
 #endif
 }
 
-void Sdl2Ui::ProcessJoystickRemoved(SDL_Event &evnt) {
+void Sdl2Ui::ProcessControllerRemoved(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	SDL_Joystick *joystick = SDL_JoystickFromInstanceID(evnt.jdevice.which);
-	SDL_JoystickClose(joystick);
+	int id = evnt.cdevice.which;
+	SDL_GameController* controller = SDL_GameControllerFromInstanceID(id);
+	if (controller) {
+		Output::Debug("Controller {} ({}) removed", id, SDL_GameControllerName(controller));
+		SDL_GameControllerClose(controller);
+	}
 #endif
 }
 
-void Sdl2Ui::ProcessJoystickButtonEvent(SDL_Event &evnt) {
+void Sdl2Ui::ProcessControllerButtonEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	keys[SdlJKey2InputKey(evnt.jbutton.button)] = evnt.jbutton.state == SDL_PRESSED;
+	keys[SdlJKey2InputKey(evnt.cbutton.button)] = evnt.cbutton.state == SDL_PRESSED;
 #endif
 }
 
-void Sdl2Ui::ProcessJoystickHatEvent(SDL_Event &evnt) {
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
-	// Set all states to false
-	keys[Input::Keys::JOY_HAT_LOWER_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_DOWN] = false;
-	keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = false;
-	keys[Input::Keys::JOY_HAT_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_RIGHT] = false;
-	keys[Input::Keys::JOY_HAT_UPPER_LEFT] = false;
-	keys[Input::Keys::JOY_HAT_UP] = false;
-	keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = false;
-
-	// Check hat states
-	if ((evnt.jhat.value & SDL_HAT_RIGHTUP) == SDL_HAT_RIGHTUP)
-		keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_RIGHTDOWN)  == SDL_HAT_RIGHTDOWN)
-		keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_LEFTUP)  == SDL_HAT_LEFTUP)
-		keys[Input::Keys::JOY_HAT_UPPER_LEFT] = true;
-
-	else if ((evnt.jhat.value & SDL_HAT_LEFTDOWN)  == SDL_HAT_LEFTDOWN)
-		keys[Input::Keys::JOY_HAT_LOWER_LEFT] = true;
-
-	else if (evnt.jhat.value & SDL_HAT_UP)
-		keys[Input::Keys::JOY_HAT_UP] = true;
-
-	else if (evnt.jhat.value & SDL_HAT_RIGHT)
-		keys[Input::Keys::JOY_HAT_RIGHT] = true;
-
-	else if (evnt.jhat.value & SDL_HAT_DOWN)
-		keys[Input::Keys::JOY_HAT_DOWN] = true;
-
-	else if (evnt.jhat.value & SDL_HAT_LEFT)
-		keys[Input::Keys::JOY_HAT_LEFT] = true;
-#endif
-}
-
-void Sdl2Ui::ProcessJoystickAxisEvent(SDL_Event &evnt) {
+void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-	// Horizontal axis
-	if (evnt.jaxis.axis == 0) {
-		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = true;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
-		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = true;
-		} else {
-			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
-		}
+	int axis = evnt.caxis.axis;
+	int value = evnt.caxis.value;
 
-	// Vertical Axis
-	} else if (evnt.jaxis.axis == 1) {
-		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = true;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
-		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = true;
-		} else {
-			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
-		}
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / 32768.f;
+	};
+
+	switch (axis) {
+		case SDL_CONTROLLER_AXIS_LEFTX:
+			analog_input.primary.x = normalize(value);
+			break;
+		case SDL_CONTROLLER_AXIS_LEFTY:
+			analog_input.primary.y = -normalize(value);
+			break;
+		case SDL_CONTROLLER_AXIS_RIGHTX:
+			analog_input.secondary.x = normalize(value);
+			break;
+		case SDL_CONTROLLER_AXIS_RIGHTY:
+			analog_input.secondary.y = -normalize(value);
+			break;
+		case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+			analog_input.trigger_left = normalize(value);
+			break;
+		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+			analog_input.trigger_right = normalize(value);
+			break;
 	}
 #endif
 }
@@ -1045,39 +1013,29 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
+	// Constants starting from 15 require newer SDL2 versions
 	switch (button_index) {
-		case 0	: return Input::Keys::JOY_0;
-		case 1	: return Input::Keys::JOY_1;
-		case 2	: return Input::Keys::JOY_2;
-		case 3	: return Input::Keys::JOY_3;
-		case 4	: return Input::Keys::JOY_4;
-		case 5	: return Input::Keys::JOY_5;
-		case 6	: return Input::Keys::JOY_6;
-		case 7	: return Input::Keys::JOY_7;
-		case 8	: return Input::Keys::JOY_8;
-		case 9	: return Input::Keys::JOY_9;
-		case 10	: return Input::Keys::JOY_10;
-		case 11	: return Input::Keys::JOY_11;
-		case 12	: return Input::Keys::JOY_12;
-		case 13	: return Input::Keys::JOY_13;
-		case 14	: return Input::Keys::JOY_14;
-		case 15	: return Input::Keys::JOY_15;
-		case 16	: return Input::Keys::JOY_16;
-		case 17	: return Input::Keys::JOY_17;
-		case 18	: return Input::Keys::JOY_18;
-		case 19	: return Input::Keys::JOY_19;
-		case 20	: return Input::Keys::JOY_20;
-		case 21	: return Input::Keys::JOY_21;
-		case 22	: return Input::Keys::JOY_22;
-		case 23	: return Input::Keys::JOY_23;
-		case 24	: return Input::Keys::JOY_24;
-		case 25	: return Input::Keys::JOY_25;
-		case 26	: return Input::Keys::JOY_23;
-		case 27	: return Input::Keys::JOY_27;
-		case 28	: return Input::Keys::JOY_28;
-		case 29	: return Input::Keys::JOY_29;
-		case 30	: return Input::Keys::JOY_30;
-		case 31	: return Input::Keys::JOY_31;
+		case SDL_CONTROLLER_BUTTON_A: return Input::Keys::JOY_A;
+		case SDL_CONTROLLER_BUTTON_B: return Input::Keys::JOY_B;
+		case SDL_CONTROLLER_BUTTON_X: return Input::Keys::JOY_X;
+		case SDL_CONTROLLER_BUTTON_Y: return Input::Keys::JOY_Y;
+		case SDL_CONTROLLER_BUTTON_BACK: return Input::Keys::JOY_BACK;
+		case SDL_CONTROLLER_BUTTON_GUIDE: return Input::Keys::JOY_GUIDE;
+		case SDL_CONTROLLER_BUTTON_START: return Input::Keys::JOY_START;
+		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_STICK_PRIMARY;
+		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_STICK_SECONDARY;
+		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER	: return Input::Keys::JOY_SHOULDER_LEFT;
+		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Input::Keys::JOY_SHOULDER_RIGHT;
+		case SDL_CONTROLLER_BUTTON_DPAD_UP: return Input::Keys::JOY_DPAD_UP;
+		case SDL_CONTROLLER_BUTTON_DPAD_DOWN: return Input::Keys::JOY_DPAD_DOWN;
+		case SDL_CONTROLLER_BUTTON_DPAD_LEFT: return Input::Keys::JOY_DPAD_LEFT;
+		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return Input::Keys::JOY_DPAD_RIGHT;
+		case 15	: return Input::Keys::JOY_OTHER_1; // SDL_CONTROLLER_BUTTON_MISC1 (2.0.14)
+		case 16	: return Input::Keys::JOY_REAR_RIGHT_1; // SDL_CONTROLLER_BUTTON_PADDLE1 (2.0.14)
+		case 17	: return Input::Keys::JOY_REAR_RIGHT_2; // SDL_CONTROLLER_BUTTON_PADDLE2 (2.0.14)
+		case 18	: return Input::Keys::JOY_REAR_LEFT_1; // SDL_CONTROLLER_BUTTON_PADDLE3 (2.0.14)
+		case 19	: return Input::Keys::JOY_REAR_LEFT_2; // SDL_CONTROLLER_BUTTON_PADDLE4 (2.0.14)
+		case 20	: return Input::Keys::JOY_TOUCH; // SDL_CONTROLLER_BUTTON_TOUCHPAD (2.0.14)
 		default : return Input::Keys::NONE;
 	}
 }

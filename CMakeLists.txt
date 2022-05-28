@@ -574,6 +574,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/3ds_audio.h
 		src/platform/3ds/3ds_clock.cpp
 		src/platform/3ds/3ds_clock.h
+		src/platform/3ds/3ds_input_buttons.cpp
 		src/platform/3ds/3ds_ui.cpp
 		src/platform/3ds/3ds_ui.h
 		${PLAYER_3DS_ASSETS})
@@ -588,6 +589,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		src/platform/psvita/psp2_audio.h
 		src/platform/psvita/psp2_clock.cpp
 		src/platform/psvita/psp2_clock.h
+		src/platform/psvita/psp2_input_buttons.cpp
 		src/platform/psvita/psp2_ui.cpp
 		src/platform/psvita/psp2_ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
@@ -606,6 +608,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/switch_audio.h
 		src/platform/switch/switch_clock.cpp
 		src/platform/switch/switch_clock.h
+		src/platform/switch/switch_input_buttons.cpp
 		src/platform/switch/switch_ui.cpp
 		src/platform/switch/switch_ui.h
 		${PLAYER_SWITCH_ASSETS})

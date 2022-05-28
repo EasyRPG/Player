@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(USE_LIBRETRO) && defined(SUPPORT_AUDIO)
+#if defined(SUPPORT_AUDIO)
 #include "libretro_audio.h"
 #include "output.h"
 #include "game_clock.h"

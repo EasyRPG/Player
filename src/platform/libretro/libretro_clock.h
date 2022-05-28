@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_LIBRETRO_CLOCK_H
 #define EP_PLATFORM_LIBRETRO_CLOCK_H
 
-#ifdef USE_LIBRETRO
-
 #include <cstdint>
 #include <chrono>
 
@@ -57,5 +55,4 @@ constexpr const char* LibretroClock::Name() {
 	return "LibretroClock";
 }
 
-#endif
 #endif

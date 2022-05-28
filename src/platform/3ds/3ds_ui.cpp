@@ -52,7 +52,6 @@ namespace {
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
-	constexpr int joy_threshold = 25;
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
 	u32* main_buffer;
@@ -63,9 +62,6 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	SetIsFullscreen(true);
 
 	show_touchscreen = true;
-
-	fullscreen = false;
-	trigger_state = false;
 
 	APT_GetAppCpuTimeLimit(&old_time_limit);
 	APT_SetAppCpuTimeLimit(30);
@@ -120,6 +116,13 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	top_image.tex = tex;
 	top_image.subtex = &subt3x;
 
+	// FIXME: Add option to settings Ui
+	if (cfg.stretch_width.Get()) {
+		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+	} else {
+		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+	}
+
 #ifdef SUPPORT_AUDIO
 	audio_.reset(new CtrAudio());
 #endif
@@ -162,39 +165,30 @@ void CtrUi::ToggleZoom() {
 void CtrUi::ProcessEvents() {
 	hidScanInput();
 	u32 input = hidKeysHeld();
-	keys[Input::Keys::UP] = (input & KEY_DUP);
-	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
-	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
-	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
-	keys[Input::Keys::Z] = (input & KEY_A);
-	keys[Input::Keys::X] = (input & KEY_B);
-	keys[Input::Keys::F] = (input & KEY_X);
-	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
-	keys[Input::Keys::F2] = (input & KEY_L);
-	keys[Input::Keys::F12] = (input & KEY_SELECT);
-	keys[Input::Keys::ESCAPE] = (input & KEY_START);
-
-	// Fullscreen mode support
-	bool old_state = trigger_state;
-	trigger_state = (input & KEY_R);
-	if ((trigger_state != old_state) && trigger_state) {
-		fullscreen = !fullscreen;
-		if (fullscreen) {
-			C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
-		} else {
-			C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
-		}
-	}
+	keys[Input::Keys::JOY_DPAD_UP] = (input & KEY_DUP);
+	keys[Input::Keys::JOY_DPAD_DOWN] = (input & KEY_DDOWN);
+	keys[Input::Keys::JOY_DPAD_RIGHT] = (input & KEY_DRIGHT);
+	keys[Input::Keys::JOY_DPAD_LEFT] = (input & KEY_DLEFT);
+	keys[Input::Keys::JOY_A] = (input & KEY_A);
+	keys[Input::Keys::JOY_B] = (input & KEY_B);
+	keys[Input::Keys::JOY_X] = (input & KEY_X);
+	keys[Input::Keys::JOY_Y] = (input & KEY_Y);
+	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input & KEY_L);
+	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input & KEY_R);
+	keys[Input::Keys::JOY_BACK] = (input & KEY_SELECT);
+	keys[Input::Keys::JOY_START] = (input & KEY_START);
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	// CirclePad support
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
-	keys[Input::Keys::JOY_AXIS_Y_UP] = (circlepad.dy > joy_threshold);
-	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (circlepad.dy < -joy_threshold);
-	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (circlepad.dx > joy_threshold);
-	keys[Input::Keys::JOY_AXIS_X_LEFT] = (circlepad.dx < -joy_threshold);
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / 0x9C;
+	};
+
+	analog_input.primary.x = normalize(circlepad.dx);
+	analog_input.primary.y = normalize(circlepad.dy);
 #endif
 
 #ifndef _DEBUG
@@ -291,11 +285,13 @@ void CtrUi::UpdateDisplay() {
 	C2D_SceneBegin(top_screen);
 	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
 
-	if (fullscreen) {
+	// FIXME: All video options must be accesible during runtime
+	/*if (cfg.stretch_width) {
 		C2D_DrawImageAt(top_image, 0, 0, 0.5f, NULL, 1.25f, 1.0f);
 	} else {
 		C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
-	}
+	}*/
+	C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
 
 #ifndef _DEBUG
 	// bottom screen

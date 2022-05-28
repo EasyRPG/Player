@@ -24,6 +24,7 @@
 #include "filesystem_stream.h"
 #include "input_buttons.h"
 #include "keys.h"
+#include "point.h"
 
 namespace Input {
 	using KeyStatus = std::bitset<Input::Keys::KEYS_COUNT>;
@@ -34,6 +35,25 @@ namespace Input {
 		Hash = 'L',
 		MoveRoute = 'M', // unused - reserved
 		GameTitle = 'N'
+	};
+
+	/**
+	 * Primary and Secondary range from -1.0 to +1.0
+	 *       ^ 1
+	 *       |
+	 * -1 <-----> 1
+	 *       |
+	 *       v -1
+	 * Trigger range from 0.0 (neutral) to 1.0 (pressed)
+	 */
+	struct AnalogInput {
+		PointF primary;
+		PointF secondary;
+		float trigger_left = 0;
+		float trigger_right = 0;
+
+		static constexpr float kMaxValue = 1.0f;
+		static constexpr float kMinValue = -1.0f;
 	};
 
 	/**
@@ -95,13 +115,16 @@ namespace Input {
 
 		bool InitRecording(const std::string& record_to_path);
 
-		Point GetMousePosition() const { return mouse_pos; }
+		const Point& GetMousePosition() const { return mouse_pos; }
+
+		const AnalogInput& GetAnalogInput() const { return analog_input; };
 
 		const KeyStatus& GetMask() const { return keymask; }
 		KeyStatus& GetMask() { return keymask; }
 
 	protected:
 		void Record();
+		void UpdateGamepad();
 
 		std::bitset<BUTTON_COUNT> pressed_buttons;
 		ButtonMappingArray button_mappings;
@@ -111,6 +134,7 @@ namespace Input {
 		KeyStatus keystates;
 		KeyStatus keymask;
 		Point mouse_pos;
+		AnalogInput analog_input;
 
 		int last_written_frame = -1;
 	};

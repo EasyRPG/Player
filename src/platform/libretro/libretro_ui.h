@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_LIBRETRO_UI_H
 #define EP_PLATFORM_LIBRETRO_UI_H
 
-#ifdef USE_LIBRETRO
-
 // Headers
 #include "libretro_audio.h"
 #include "baseui.h"
@@ -61,8 +59,6 @@ public:
 #endif
 	/** @} */
 
-	void UpdateKeyboardCallback(bool down, unsigned keycode);
-
 	static void SetRetroVideoCallback(retro_video_refresh_t cb);
 	static void SetRetroInputStateCallback(retro_input_state_t cb);
 
@@ -72,10 +68,8 @@ public:
 private:
 	static retro_video_refresh_t UpdateWindow;
 	static retro_input_state_t CheckInputState;
-	uint32_t keyboard_retropad_state = 0;
 
 	void UpdateVariables();
 };
 
-#endif
 #endif

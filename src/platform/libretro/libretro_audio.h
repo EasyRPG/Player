@@ -18,8 +18,6 @@
 #ifndef EP_PLATFORM_LIBRETRO_AUDIO_H
 #define EP_PLATFORM_LIBRETRO_AUDIO_H
 
-#if defined(USE_LIBRETRO)
-
 #include "libretro.h"
 #include "audio_generic.h"
 
@@ -36,5 +34,4 @@ public:
 	static void SetRetroAudioCallback(retro_audio_sample_batch_t cb);
 };
 
-#endif
 #endif

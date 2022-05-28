@@ -15,7 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO))
+// FIXME: Move in platform/generic (?) and handle with CMake
+#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO) || defined(__vita__) || defined(__3DS__) || defined(__SWITCH__))
 
 // Headers
 #include "input_buttons.h"
@@ -109,51 +110,49 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-		// FIXME: Random joystick keys mapping, better to read joystick configuration from .ini
-		{UP, Keys::JOY_8},
-		{DOWN, Keys::JOY_2},
-		{LEFT, Keys::JOY_4},
-		{RIGHT, Keys::JOY_6},
-		{DECISION, Keys::JOY_1},
-		{CANCEL, Keys::JOY_3},
-		{SHIFT, Keys::JOY_5},
-		{N0, Keys::JOY_10},
-		{N1, Keys::JOY_11},
-		{N2, Keys::JOY_12},
-		{N3, Keys::JOY_13},
-		{N4, Keys::JOY_14},
-		{N5, Keys::JOY_15},
-		{N6, Keys::JOY_16},
-		{N7, Keys::JOY_17},
-		{N8, Keys::JOY_18},
-		{N9, Keys::JOY_19},
-		{PLUS, Keys::JOY_20},
-		{MINUS, Keys::JOY_21},
-		{MULTIPLY, Keys::JOY_22},
-		{DIVIDE, Keys::JOY_23},
-		{PERIOD, Keys::JOY_24},
-		{DEBUG_MENU, Keys::JOY_7},
-		{DEBUG_THROUGH, Keys::JOY_9},
-#endif
-
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
-		{DOWN, Keys::JOY_HAT_DOWN},
-		{LEFT, Keys::JOY_HAT_LEFT},
-		{RIGHT, Keys::JOY_HAT_RIGHT},
-		{UP, Keys::JOY_HAT_UP},
-
+		{UP, Keys::JOY_DPAD_UP},
+		{DOWN, Keys::JOY_DPAD_DOWN},
+		{LEFT, Keys::JOY_DPAD_LEFT},
+		{RIGHT, Keys::JOY_DPAD_RIGHT},
+		{DECISION, Keys::JOY_A},
+		{CANCEL, Keys::JOY_B},
+		{CANCEL, Keys::JOY_X},
+		{SHIFT, Keys::JOY_Y},
+		{N0, Keys::JOY_STICK_PRIMARY},
+		{N5, Keys::JOY_STICK_SECONDARY},
+		{MULTIPLY, Keys::JOY_REAR_LEFT_1},
+		{DIVIDE, Keys::JOY_REAR_LEFT_2},
+		{PLUS, Keys::JOY_REAR_RIGHT_1},
+		{MINUS, Keys::JOY_REAR_RIGHT_2},
+		{DEBUG_ABORT_EVENT, Keys::JOY_SHOULDER_LEFT},
+		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
+		{SETTINGS_MENU, Keys::JOY_START},
+		{RESET, Keys::JOY_BACK},
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-		{LEFT, Keys::JOY_AXIS_X_LEFT},
-		{RIGHT, Keys::JOY_AXIS_X_RIGHT},
-		{DOWN, Keys::JOY_AXIS_Y_DOWN},
-		{UP, Keys::JOY_AXIS_Y_UP},
+		{UP, Keys::JOY_STICK_PRIMARY_UP},
+		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
+		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
+		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
+		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
+		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
+		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
+		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
+		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
+		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
+		{N8, Keys::JOY_STICK_SECONDARY_UP},
+		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT},
+		{FAST_FORWARD, Keys::JOY_TRIGGER_RIGHT_PARTIAL},
+		{FAST_FORWARD_PLUS, Keys::JOY_TRIGGER_RIGHT_FULL},
+		{DEBUG_THROUGH, Keys::JOY_TRIGGER_LEFT_PARTIAL},
+		{DEBUG_MENU, Keys::JOY_TRIGGER_LEFT_FULL},
 #endif
 
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 		{DECISION, Keys::ONE_FINGER},
 		{CANCEL, Keys::TWO_FINGERS},
+		{SHIFT, Keys::THREE_FINGERS},
 #endif
 	};
 }
@@ -165,6 +164,10 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 		{ Direction::RIGHT, RIGHT },
 		{ Direction::UP, UP },
 	};
+}
+
+Input::KeyNamesArray Input::GetInputKeyNames() {
+	return {};
 }
 
 #endif

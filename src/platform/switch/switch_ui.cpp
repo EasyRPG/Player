@@ -96,7 +96,7 @@ namespace {
 	};
 
 	const int touch_right[] = {
-		Input::Keys::ESCAPE, Input::Keys::N9, Input::Keys::N0,
+		Input::Keys::JOY_TOUCH, Input::Keys::N9, Input::Keys::N0,
 		Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT,
 		Input::Keys::KP_MULTIPLY, Input::Keys::KP_DIVIDE
 	};
@@ -435,19 +435,36 @@ void NxUi::ProcessEvents() {
 	}
 
 	u64 input = padGetButtons(&pad);
-	keys[Input::Keys::UP] = (input & (HidNpadButton_Up|HidNpadButton_StickLUp)) > 0;
-	keys[Input::Keys::DOWN] = (input & (HidNpadButton_Down|HidNpadButton_StickLDown)) > 0;
-	keys[Input::Keys::RIGHT] = (input & (HidNpadButton_Right|HidNpadButton_StickLRight)) > 0;
-	keys[Input::Keys::LEFT] = (input & (HidNpadButton_Left|HidNpadButton_StickLLeft)) > 0;
-	keys[Input::Keys::Z] = (input & HidNpadButton_A);
-	keys[Input::Keys::X] = (input & (HidNpadButton_B|HidNpadButton_X)) > 0;
-	keys[Input::Keys::LSHIFT] = (input & HidNpadButton_Y);
-	keys[Input::Keys::F2] = (input & HidNpadButton_L);
-	keys[Input::Keys::F] = (input & HidNpadButton_R);
-	keys[Input::Keys::F12] = (input & HidNpadButton_Minus);
-	keys[Input::Keys::ESCAPE] = (input & HidNpadButton_Plus);
+	keys[Input::Keys::JOY_DPAD_UP] = (input & HidNpadButton_Up);
+	keys[Input::Keys::JOY_DPAD_DOWN] = (input & HidNpadButton_Down);
+	keys[Input::Keys::JOY_DPAD_RIGHT] = (input & HidNpadButton_Right);
+	keys[Input::Keys::JOY_DPAD_LEFT] = (input & HidNpadButton_Left);
+	keys[Input::Keys::JOY_A] = (input & HidNpadButton_A);
+	keys[Input::Keys::JOY_B] = (input & HidNpadButton_B);
+	keys[Input::Keys::JOY_X] = (input & HidNpadButton_X);
+	keys[Input::Keys::JOY_Y] = (input & HidNpadButton_Y);
+	keys[Input::Keys::JOY_STICK_PRIMARY] = (input & HidNpadButton_StickL);
+	keys[Input::Keys::JOY_STICK_SECONDARY] = (input & HidNpadButton_StickR);
+	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input & (HidNpadButton_L|HidNpadButton_AnySL)) > 0;
+	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input & (HidNpadButton_R|HidNpadButton_AnySR)) > 0;
+	keys[Input::Keys::JOY_BACK] = (input & HidNpadButton_Minus);
+	keys[Input::Keys::JOY_START] = (input & HidNpadButton_Plus);
 
-	// cycle through GUI layouts
+	HidAnalogStickState analog_left = padGetStickPos(&pad, 0);
+	HidAnalogStickState analog_right = padGetStickPos(&pad, 1);
+
+	auto normalize = [](int value) {
+		return static_cast<float>(value) / JOYSTICK_MAX;
+	};
+
+	analog_input.primary.x = normalize(analog_left.x);
+	analog_input.primary.y = normalize(analog_left.y);
+	analog_input.secondary.x = normalize(analog_right.x);
+	analog_input.secondary.y = normalize(analog_right.y);
+	analog_input.trigger_left = (input & HidNpadButton_ZL) ? Input::AnalogInput::kMaxValue : 0.f;
+	analog_input.trigger_right = (input & HidNpadButton_ZR) ? Input::AnalogInput::kMaxValue : 0.f;
+
+	// cycle through GUI layouts: FIXME Move to settings ui
 	input = padGetButtonsDown(&pad);
 	if (input & HidNpadButton_ZL)
 		ui_mode = (ui_mode + 1) % 3;

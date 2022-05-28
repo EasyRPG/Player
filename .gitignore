@@ -68,10 +68,13 @@ install_manifest.txt
 
 # IntelliJ
 .idea/
+cmake-build*/
 
 # VS Code
 .vscode/
+.cache/
 compile_commands.json
+build/
 
 # doxygen
 /resources/Doxyfile

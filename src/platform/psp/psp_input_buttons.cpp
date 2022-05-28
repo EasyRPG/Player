@@ -23,20 +23,19 @@
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
-		{DECISION, Keys::JOY_1}, // Circle
-		{DECISION, Keys::JOY_2}, // Cross
-		{CANCEL, Keys::JOY_3}, // Square
+		{CANCEL, Keys::JOY_A}, // Cross
+		{DECISION, Keys::JOY_B}, // Circle
+		{FAST_FORWARD, Keys::JOY_X}, // Square
+		{SHIFT, Keys::JOY_Y}, // Triangle
 
-		{TOGGLE_FPS, Keys::JOY_0}, // Triangle
+		{N1, Keys::JOY_SHOULDER_LEFT}, // Left trigger
+		{N2, Keys::JOY_SHOULDER_RIGHT}, // Right trigger
 
-		{N1, Keys::JOY_4}, // Left trigger
-		{N2, Keys::JOY_5}, // Right trigger
-
-		{DOWN, Keys::JOY_6}, // Down
-		{LEFT, Keys::JOY_7}, // Left
-		{UP, Keys::JOY_8}, // Up
-		{RIGHT, Keys::JOY_9}, // Right
-	};
+		{DOWN, Keys::JOY_DPAD_DOWN}, // Down
+		{LEFT, Keys::JOY_DPAD_LEFT}, // Left
+		{UP, Keys::JOY_DPAD_UP}, // Up
+		{RIGHT, Keys::JOY_DPAD_RIGHT}, // Right
+	}
 }
 
 Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
@@ -46,6 +45,10 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 		{ Direction::RIGHT, RIGHT },
 		{ Direction::UP, UP },
 	};
+}
+
+Input::KeyNamesArray Input::GetInputKeyNames() {
+	return {};
 }
 
 #endif

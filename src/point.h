@@ -23,12 +23,13 @@
 /**
  * Point.
  */
-class Point {
+template<typename T>
+class PointT {
 public:
 	/**
-	 * Constructor. All values are set to 0.
+	 * Constructor. All values are set to default (0).
 	 */
-	constexpr Point() = default;
+	constexpr PointT() = default;
 
 	/**
 	 * Constructor.
@@ -36,40 +37,50 @@ public:
 	 * @param x initial x.
 	 * @param y initial y.
 	 */
-	constexpr Point(int x, int y) : x(x), y(y) {}
+	constexpr PointT(T x, T y) : x(x), y(y) {}
 
 	/** X coordinate. */
-	int x = 0;
+	T x = T();
 
 	/** Y coordinate. */
-	int y = 0;
+	T y = T();
 };
 
-inline bool operator==(const Point &l, const Point& r) {
+using Point = PointT<int>;
+using PointF = PointT<float>;
+
+template<typename T>
+inline bool operator==(const PointT<T> &l, const PointT<T>& r) {
 	return l.x == r.x && l.y == r.y;
 }
 
-inline bool operator!=(const Point &l, const Point& r) {
+template<typename T>
+inline bool operator!=(const PointT<T> &l, const PointT<T>& r) {
 	return !(l == r);
 }
 
-inline bool operator<(const Point &l, const Point& r) {
+template<typename T>
+inline bool operator<(const PointT<T> &l, const PointT<T>& r) {
 	return l.x < r.x || (l.x == r.x && l.y < r.y);
 }
 
-inline bool operator>(const Point &l, const Point& r) {
+template<typename T>
+inline bool operator>(const PointT<T> &l, const PointT<T>& r) {
 	return l.x > r.x || (l.x == r.x && l.y > r.y);
 }
 
-inline bool operator<=(const Point &l, const Point& r) {
+template<typename T>
+inline bool operator<=(const PointT<T> &l, const PointT<T>& r) {
 	return !(l > r);
 }
 
-inline bool operator>=(const Point &l, const Point& r) {
+template<typename T>
+inline bool operator>=(const PointT<T> &l, const PointT<T>& r) {
 	return !(l < r);
 }
 
-inline std::ostream& operator<<(std::ostream& os, Point r) {
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, PointT<T> r) {
 	os << "Point{" << r.x << "," << r.y << "}";
 	return os;
 }

@@ -66,14 +66,12 @@ public:
 private:
 	C3D_RenderTarget *top_screen, *bottom_screen;
 	C2D_Image top_image, bottom_image;
-	bool fullscreen;
-	bool trigger_state;
 	bool show_touchscreen;
 
 #ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
 #endif
-	
+
 };
 
 #endif

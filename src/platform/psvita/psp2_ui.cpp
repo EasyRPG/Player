@@ -62,7 +62,7 @@ namespace {
 	};
 
 	const int touch_right[] = {
-		Input::Keys::ESCAPE, Input::Keys::N9, Input::Keys::N0,
+		Input::Keys::JOY_TOUCH, Input::Keys::N9, Input::Keys::N0,
 		Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT,
 		Input::Keys::KP_MULTIPLY, Input::Keys::KP_DIVIDE
 	};
@@ -88,7 +88,7 @@ static int renderThread(unsigned int args, void* arg){
 		sceKernelWaitSema(GPU_Cleanup_Mutex, 1, nullptr);
 
 		if (main_texture == nullptr) sceKernelExitDeleteThread(0); // Exit procedure
-		
+
 		vita2d_start_drawing();
 
 		vita2d_clear_screen();
@@ -156,28 +156,28 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(vita2d_texture_get_datap(main_texture),
 		width, height, vita2d_texture_get_stride(main_texture), format);
-	
+
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new Psp2Audio());
 	#endif
-	
+
 	scePowerSetArmClockFrequency(444);
 	scePowerSetBusClockFrequency(222);
 	scePowerSetGpuClockFrequency(222);
 	scePowerSetGpuXbarClockFrequency(222);
-	
+
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceCtrlSetSamplingModeExt(SCE_CTRL_MODE_ANALOG_WIDE);
 	if (!is_pstv) {
 		sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	}
-	
+
 	GPU_Mutex = sceKernelCreateSema("GPU Mutex", 0, 1, 1, nullptr);
 	GPU_Cleanup_Mutex = sceKernelCreateSema("GPU Cleanup Mutex", 0, 1, 1, nullptr);
 	GPU_Thread = sceKernelCreateThread("GPU Thread", &renderThread,
 		0x10000100, 0x10000, 0, 0, nullptr);
 	sceKernelStartThread(GPU_Thread, 0, nullptr);
-	
+
 	// shiny green bar for ds4 controllers
 	if (is_pstv) {
 		sceCtrlSetLightBar(1, 0x54, 0x92, 0x36);
@@ -219,29 +219,34 @@ void Psp2Ui::ProcessEvents() {
 	}
 
 	sceCtrlPeekBufferPositiveExt2(is_pstv ? 1 : 0, &input, 1);
-	keys[Input::Keys::Z] = (input.buttons & SCE_CTRL_CROSS);
-	keys[Input::Keys::X] = (input.buttons & SCE_CTRL_CIRCLE);
-	keys[Input::Keys::F] = (input.buttons & SCE_CTRL_TRIANGLE);
-	keys[Input::Keys::LSHIFT] = (input.buttons & SCE_CTRL_SQUARE);
-	keys[Input::Keys::F12] = (input.buttons & SCE_CTRL_SELECT);
-	keys[Input::Keys::ESCAPE] = (input.buttons & SCE_CTRL_START);
-	keys[Input::Keys::RIGHT] = (input.buttons & SCE_CTRL_RIGHT);
-	keys[Input::Keys::LEFT] = (input.buttons & SCE_CTRL_LEFT);
-	keys[Input::Keys::UP] = (input.buttons & SCE_CTRL_UP);
-	keys[Input::Keys::DOWN] = (input.buttons & SCE_CTRL_DOWN);
-	keys[Input::Keys::F2] = (input.buttons & SCE_CTRL_L1);
+	keys[Input::Keys::JOY_A] = (input.buttons & SCE_CTRL_CIRCLE);
+	keys[Input::Keys::JOY_B] = (input.buttons & SCE_CTRL_CROSS);
+	keys[Input::Keys::JOY_X] = (input.buttons & SCE_CTRL_TRIANGLE);
+	keys[Input::Keys::JOY_Y] = (input.buttons & SCE_CTRL_SQUARE);
+	keys[Input::Keys::JOY_BACK] = (input.buttons & SCE_CTRL_SELECT);
+	keys[Input::Keys::JOY_START] = (input.buttons & SCE_CTRL_START);
+	keys[Input::Keys::JOY_DPAD_RIGHT] = (input.buttons & SCE_CTRL_RIGHT);
+	keys[Input::Keys::JOY_DPAD_LEFT] = (input.buttons & SCE_CTRL_LEFT);
+	keys[Input::Keys::JOY_DPAD_UP] = (input.buttons & SCE_CTRL_UP);
+	keys[Input::Keys::JOY_DPAD_DOWN] = (input.buttons & SCE_CTRL_DOWN);
+	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input.buttons & SCE_CTRL_L1);
+	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input.buttons & SCE_CTRL_R1);
 
-	// Resolution changing support
+	// Resolution changing support (FIXME: Move this to the config scene)
 	bool old_state = zoom_trigger;
 	zoom_trigger = (input.buttons & SCE_CTRL_R1);
 	if (zoom_trigger && !old_state)
 		zoom_state = ((zoom_state + 1) % 3);
 
-	// Left analog support
-	keys[Input::Keys::JOY_AXIS_X_LEFT] = (input.lx < 50);
-	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (input.lx > 170);
-	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (input.ly > 170);
-	keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
+	// Analog support
+	auto normalize = [](int value) {
+		return static_cast<float>(value - 127) / 128.f;
+	};
+
+	analog_input.primary.x = normalize(input.lx);
+	analog_input.primary.y = -normalize(input.ly);
+	analog_input.secondary.x = normalize(input.rx);
+	analog_input.secondary.y = -normalize(input.ry);
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {
