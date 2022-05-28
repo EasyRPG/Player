@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 
-EXTRA_DIST = AUTHORS.md CMakeLists.txt README.md builds resources
+EXTRA_DIST = CMakeLists.txt README.md builds docs resources
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
