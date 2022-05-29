@@ -1558,6 +1558,11 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			return true;
 		}
 
+		if (Player::IsPatchManiac() && end < start) {
+			// Vanilla does not support end..start, Maniac does
+			std::swap(start, end);
+		}
+
 		int operation = com.parameters[3];
 		if (EP_UNLIKELY(operation >= 5 && !Player::IsPatchManiac())) {
 			Output::Warning("ControlVariables: Unsupported operation {}", operation);
