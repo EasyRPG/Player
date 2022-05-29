@@ -19,10 +19,15 @@
 #ifndef EP_MANIAC_PATCH
 #define EP_MANIAC_PATCH
 
+#include <array>
 #include "span.h"
 
 namespace ManiacPatch {
 	int32_t ParseExpression(Span<const int32_t> op_codes);
+
+	std::array<bool, 50> GetKeyRange();
+
+	bool GetKeyState(uint32_t key_id);
 }
 
 #endif

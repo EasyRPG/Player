@@ -4494,12 +4494,35 @@ bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command KeyInputProcEx not supported");
+#if !defined(SUPPORT_KEYBOARD)
+	Output::Warning("Maniac KeyInputProc: Keyboard input is not supported on this platform");
+	// Fallthrough: Variables are still set to 0
+#endif
+
+	int operation = com.parameters[0];
+	int start_var_id = com.parameters[1];
+
+	if (operation == 0 || operation == 1) {
+		// The difference between 0 and 1 is whether the Joypad is checked
+		// We do not implement the Joypad code so both behave the same
+		auto keys = ManiacPatch::GetKeyRange();
+
+		for (int i = 0; i < static_cast<int>(keys.size()); ++i) {
+			Main_Data::game_variables->Set(start_var_id + i, keys[i] ? 1 : 0);
+		}
+	} else if (operation == 2) {
+		int key_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
+		ManiacPatch::GetKeyState(key_id);
+		Main_Data::game_variables->Set(start_var_id, key_id ? 1 : 0);
+	} else {
+		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");
+	}
+
 	return true;
 }
 
