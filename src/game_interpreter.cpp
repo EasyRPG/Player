@@ -55,6 +55,8 @@
 #include "util_macro.h"
 #include <lcf/reader_util.h>
 #include <lcf/lsd/reader.h>
+#include <lcf/reader_lcf.h>
+#include <lcf/writer_lcf.h>
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
@@ -4542,6 +4544,8 @@ bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&
 		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");
 	}
 
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 
@@ -4554,12 +4558,119 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const&) {
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlGlobalSave not supported");
+	int operation = com.parameters[0];
+
+	static bool was_loaded = false; // FIXME
+
+	if (operation == 0 || (!was_loaded && (operation == 4 || operation == 5))) {
+		was_loaded = true;
+		// Load
+		auto lgs = FileFinder::Save().OpenFile("Save.lgs");
+		if (!lgs) {
+			return true;
+		}
+
+		lcf::LcfReader reader(lgs);
+		std::string header;
+		reader.ReadString(header, reader.ReadInt());
+		if (header.length() != 13 || header != "LcfGlobalSave") {
+			Output::Debug("This is not a valid global save.");
+			return true;
+		}
+
+		lcf::LcfReader::Chunk chunk;
+
+		while (!reader.Eof()) {
+			chunk.ID = reader.ReadInt();
+			chunk.length = reader.ReadInt();
+			switch (chunk.ID) {
+				case 1: {
+					Game_Switches::Switches_t switches;
+					reader.Read(switches, chunk.length);
+					Main_Data::game_switches_global->SetData(std::move(switches));
+					break;
+				}
+				case 2: {
+					Game_Variables::Variables_t variables;
+					reader.Read(variables, chunk.length);
+					Main_Data::game_variables_global->SetData(std::move(variables));
+					break;
+				}
+				default:
+					reader.Skip(chunk, "CommandManiacControlGlobalSave");
+			}
+		}
+	}
+
+
+	if (operation == 1) {
+		// Close (no-op)
+	} else if (operation == 2 || operation == 3) {
+		// 2: Save (write to file)
+		// 3: Save and Close
+		if (!was_loaded) {
+			return true;
+		}
+
+		auto savelgs_name = FileFinder::Save().FindFile("Save.lgs");
+		if (savelgs_name.empty()) {
+			savelgs_name = "Save.lgs";
+		}
+
+		auto lgs_out = FileFinder::Save().OpenOutputStream(savelgs_name);
+		if (!lgs_out) {
+			Output::Warning("Maniac ControlGlobalSave: Saving failed");
+			return true;
+		}
+
+		lcf::LcfWriter writer(lgs_out, lcf::EngineVersion::e2k3);
+		writer.WriteInt(13);
+		const std::string header = "LcfGlobalSave";
+		writer.Write(header);
+		writer.Write(1);
+		writer.Write(Main_Data::game_switches_global->GetSize());
+		writer.Write(Main_Data::game_switches_global->GetData());
+		writer.Write(2);
+		writer.Write(Main_Data::game_variables_global->GetSize());
+		writer.Write(Main_Data::game_variables_global->GetData());
+	} else if (operation == 4 || operation == 5) {
+		int type = com.parameters[2];
+		int game_state_idx = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[3]);
+		int global_save_idx = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[4]);
+		int length = ValueOrVariable((com.parameters[1] >> 8) & 0xF, com.parameters[5]);
+
+		if (operation == 4) {
+			// Copy from global save to game state
+			for (int i = 0; i < length; ++i) {
+				if (type == 0) {
+					Main_Data::game_switches->Set(game_state_idx, Main_Data::game_switches_global->Get(global_save_idx));
+				} else if (type == 1) {
+					Main_Data::game_variables->Set(game_state_idx, Main_Data::game_variables_global->Get(global_save_idx));
+				}
+				++game_state_idx;
+				++global_save_idx;
+			}
+
+			Game_Map::SetNeedRefresh(true);
+		} else {
+			// Copy from game state to global save
+			for (int i = 0; i < length; ++i) {
+				if (type == 0) {
+					Main_Data::game_switches_global->Set(global_save_idx, Main_Data::game_switches->Get(game_state_idx));
+				} else if (type == 1) {
+					Main_Data::game_variables_global->Set(global_save_idx, Main_Data::game_variables->Get(game_state_idx));
+				}
+				++game_state_idx;
+				++global_save_idx;
+			}
+		}
+	}
+
 	return true;
 }
 
