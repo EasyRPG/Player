@@ -1396,8 +1396,10 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Sqrt (Maniac)
 			int arg = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int mul = com.parameters[6];
-			if (arg >= 0) {
-				value = static_cast<int>(sqrt(arg) * mul);
+			// This is not how negative sqrt works, just following the implementation here
+			value = static_cast<int>(sqrt(abs(arg)) * mul);
+			if (arg < 0) {
+				value = -value;
 			}
 			break;
 		}
@@ -1405,20 +1407,24 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Sin (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
-			int mul = com.parameters[6];
+			float mul = static_cast<float>(com.parameters[6]);
+			float res = static_cast<float>(arg1);
 			if (arg2 != 0) {
-				value = static_cast<int>(std::sin(static_cast<float>(arg1) / arg2) * mul);
+				res /= static_cast<float>(arg2);
 			}
+			value = static_cast<int>(std::sin(res * M_PI / 180.f) * mul);
 			break;
 		}
 		case 14: {
 			// Cos (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
-			int mul = com.parameters[6];
+			float mul = static_cast<float>(com.parameters[6]);
+			float res = static_cast<float>(arg1);
 			if (arg2 != 0) {
-				value = static_cast<int>(std::cos(static_cast<float>(arg1) / arg2) * mul);
+				res /= static_cast<float>(arg2);
 			}
+			value = static_cast<int>(std::cos(res * M_PI / 180.f) * mul);
 			break;
 		}
 		case 15: {
@@ -1426,7 +1432,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[6]);
 			int mul = com.parameters[7];
-			value = static_cast<int>(std::atan2(arg1, arg2) * mul);
+			value = static_cast<int>(std::atan2(arg1, arg2) * 180.f / M_PI * mul);
 			break;
 		}
 		case 16: {
@@ -1450,58 +1456,66 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		}
 		case 19: {
-			// Binary (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
-			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
+			// Binary (Maniac), 64 bit for Overflow protection
+			int64_t arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
+			int64_t arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
+			int64_t result = 0;
 
 			switch (com.parameters[5]) {
 				case 1:
-					value = arg1 + arg2;
+					result = arg1 + arg2;
 					break;
 				case 2:
-					value = arg1 - arg2;
+					result = arg1 - arg2;
 					break;
 				case 3:
-					value = arg1 * arg2;
+					result = arg1 * arg2;
 					break;
 				case 4:
 					if (arg2 != 0) {
-						value = arg1 / arg2;
+						result = arg1 / arg2;
+					} else {
+						result = arg1;
 					}
 					break;
 				case 5:
 					if (arg2 != 0) {
-						value = arg1 % arg2;
+						result = arg1 % arg2;
+					} else {
+						result = arg1;
 					}
 					break;
 				case 6:
-					value = arg1 | arg2;
+					result = arg1 | arg2;
 					break;
 				case 7:
-					value = arg1 & arg2;
+					result = arg1 & arg2;
 					break;
 				case 8:
-					value = arg1 ^ arg2;
+					result = arg1 ^ arg2;
 					break;
 				case 9:
-					value = arg1 << arg2;
+					result = arg1 << arg2;
 					break;
 				case 10:
-					value = arg1 >> arg2;
+					result = arg1 >> arg2;
 					break;
 			}
+
+			value = static_cast<int>(Utils::Clamp<int64_t>(result, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
+
 			break;
 		}
 		case 20: {
 			// Ternary (Maniac)
 			int mode = com.parameters[10];
 			int arg1 = ValueOrVariable(mode & 0xF, com.parameters[6]);
-			int arg2 = ValueOrVariable((mode >> 4) & 0xF, com.parameters[6]);
+			int arg2 = ValueOrVariable((mode >> 4) & 0xF, com.parameters[7]);
 			int op = com.parameters[5];
 			if (CheckOperator(arg1, arg2, op)) {
-				value = ValueOrVariable((mode >> 8) & 0xF, com.parameters[6]);
+				value = ValueOrVariable((mode >> 8) & 0xF, com.parameters[8]);
 			} else {
-				value = ValueOrVariable((mode >> 12) & 0xF, com.parameters[6]);
+				value = ValueOrVariable((mode >> 12) & 0xF, com.parameters[9]);
 			}
 			break;
 		}
