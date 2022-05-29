@@ -16,7 +16,6 @@
  */
 
 // Headers
-#define _USE_MATH_DEFINES
 #include "game_variables.h"
 #include "output.h"
 #include <lcf/reader_util.h>

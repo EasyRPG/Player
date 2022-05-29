@@ -16,7 +16,6 @@
  */
 
 // Headers
-#define _USE_MATH_DEFINES
 #include <vector>
 #include <sstream>
 #include <cmath>

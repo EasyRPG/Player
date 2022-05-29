@@ -19,7 +19,6 @@
 #include <cstring>
 #include <cerrno>
 #include <ctime>
-#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include "baseui.h"

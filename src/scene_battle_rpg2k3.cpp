@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "scene_battle_rpg2k3.h"
 #include <lcf/rpg/battlecommand.h>
