@@ -154,7 +154,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 	}
 
 	SDL_JoystickEventState(SDL_ENABLE);
-	SDL_JoystickOpen(0);
+	sdl_joystick = SDL_JoystickOpen(0);
 #endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
@@ -174,6 +174,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 }
 
 Sdl2Ui::~Sdl2Ui() {
+	if (sdl_joystick) {
+		SDL_JoystickClose(sdl_joystick);
+	}
 	if (sdl_texture_game) {
 		SDL_DestroyTexture(sdl_texture_game);
 	}

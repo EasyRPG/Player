@@ -124,6 +124,7 @@ private:
 	SDL_Texture* sdl_texture_scaled = nullptr;
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
+	SDL_Joystick *sdl_joystick = nullptr;
 
 	struct {
 		int width = 0;
