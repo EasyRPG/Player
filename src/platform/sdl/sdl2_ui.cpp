@@ -293,15 +293,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		SetAppIcon();
 
-		uint32_t rendered_flag = 0;
-
-#ifndef __MORPHOS__
+		uint32_t renderer_flags = 0;
 		if (vsync) {
-			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
+			renderer_flags |= SDL_RENDERER_PRESENTVSYNC;
 		}
-#endif
 
-		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
+		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, renderer_flags);
 		if (!sdl_renderer) {
 			Output::Debug("SDL_CreateRenderer failed : {}", SDL_GetError());
 			return false;

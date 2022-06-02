@@ -179,6 +179,16 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = "wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
+#elif defined(__MORPHOS__)
+	// Shipped with library
+	config_file = "LIBS:timidity/timidity.cfg";
+	found = FileFinder::Root().Exists(config_file);
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+	}
 #else
 	// Prefer wildmidi in current directory
 	config_file = "wildmidi.cfg";

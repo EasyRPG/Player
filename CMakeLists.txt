@@ -667,10 +667,14 @@ if(AMIGA)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_AMIGA)
 	if(MORPHOS)
-		# FIXME: needed?
 		target_compile_definitions(${PROJECT_NAME} PUBLIC
 			_GLIBCXX_USE_C99 _NO_PPCINLINE __MORPHOS_SHAREDLIBS)
 		# -noixemul handled as "M68K_CRT" in toolchain file
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/morphos/integration.cpp)
+		set_property(SOURCE src/platform/morphos/integration.cpp
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION="${PLAYER_VERSION_FULL}"
+		)
 	endif()
 	if(AMIGAOS4)
 		# FIXME: needed?

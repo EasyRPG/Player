@@ -59,6 +59,8 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 	AddPath("sdmc:/data/rtp/" + version_str);
 #elif defined(__vita__)
 	AddPath("ux0:/data/easyrpg-player/rtp/" + version_str);
+#elif defined(__MORPHOS__)
+	AddPath("PROGDIR:rtp/" + version_str);
 #elif defined(USE_LIBRETRO)
 	const char* dir = nullptr;
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
