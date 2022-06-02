@@ -82,7 +82,7 @@ void Main_Data::Init() {
 			// Set to current directory
 			project_path = "";
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
+#if defined(PLAYER_AMIGA)
 			// Working directory not correctly handled
 			char working_dir[256];
 			getcwd(working_dir, 255);

@@ -154,7 +154,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 	}
 
 	SDL_JoystickEventState(SDL_ENABLE);
-	SDL_JoystickOpen(0);
+	sdl_joystick = SDL_JoystickOpen(0);
 #endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
@@ -174,6 +174,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 }
 
 Sdl2Ui::~Sdl2Ui() {
+	if (sdl_joystick) {
+		SDL_JoystickClose(sdl_joystick);
+	}
 	if (sdl_texture_game) {
 		SDL_DestroyTexture(sdl_texture_game);
 	}
@@ -293,15 +296,12 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		SetAppIcon();
 
-		uint32_t rendered_flag = 0;
-
-#ifndef __MORPHOS__
+		uint32_t renderer_flags = 0;
 		if (vsync) {
-			rendered_flag |= SDL_RENDERER_PRESENTVSYNC;
+			renderer_flags |= SDL_RENDERER_PRESENTVSYNC;
 		}
-#endif
 
-		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
+		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, renderer_flags);
 		if (!sdl_renderer) {
 			Output::Debug("SDL_CreateRenderer failed : {}", SDL_GetError());
 			return false;

@@ -76,7 +76,7 @@
 #elif defined(__SWITCH__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(__MORPHOS__) || defined(__amigaos4__)
+#elif defined(PLAYER_AMIGA) && !defined(__AROS__)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
 #  define WORDS_BIGENDIAN

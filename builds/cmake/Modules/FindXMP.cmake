@@ -26,7 +26,7 @@
 
 find_package(PkgConfig QUIET)
 
-pkg_check_modules(PC_XMP QUIET xmp)
+pkg_search_module(PC_XMP QUIET libxmp libxmp-lite)
 
 # Look for the header file.
 find_path(XMP_INCLUDE_DIR

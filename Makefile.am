@@ -485,6 +485,7 @@ EXTRA_DIST += \
 	src/platform/libretro/midiout_device.h \
 	src/platform/libretro/ui.cpp \
 	src/platform/libretro/ui.h \
+	src/platform/morphos/integration.cpp \
 	src/platform/opendingux/opendingux_input_buttons.cpp \
 	src/platform/psp/psp_input_buttons.cpp \
 	src/platform/psvita/audio.cpp \

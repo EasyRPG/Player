@@ -522,8 +522,8 @@ set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
 )
 
 # Platform setup
-set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita 3ds switch wii")
-set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro psvita 3ds switch wii)
+set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro psvita 3ds switch wii amigaos4")
+set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro psvita 3ds switch wii amigaos4)
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
@@ -630,7 +630,18 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 		src/platform/sdl/audio.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
-else()
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
+	if(NOT AMIGAOS4)
+		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=path/to/ppc-amigaos.cmake' option.")
+	endif()
+	find_package(SDL REQUIRED)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/sdl/audio.cpp
+		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_ui.cpp
+		src/platform/sdl/sdl_ui.h)
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
@@ -648,6 +659,32 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$")
 	set(ROMFS_ARG "NO_ROMFS_IGNORE_ME")
 	if(PLAYER_ROMFS)
 		set(ROMFS_ARG "ROMFS")
+	endif()
+endif()
+
+# Amiga
+if(AMIGA)
+	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_AMIGA)
+	if(MORPHOS)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC
+			_GLIBCXX_USE_C99 _NO_PPCINLINE __MORPHOS_SHAREDLIBS)
+		# -noixemul handled as "M68K_CRT" in toolchain file
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/morphos/integration.cpp)
+		set_property(SOURCE src/platform/morphos/integration.cpp
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION="${PLAYER_VERSION_FULL}"
+		)
+	endif()
+	if(AMIGAOS4)
+		# FIXME: needed?
+		target_compile_definitions(${PROJECT_NAME} PUBLIC
+			_GLIBCXX_USE_C99_STDINT_TR1 _GLIBCXX_USE_C99_STDIO)
+		target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
+			${CMAKE_CURRENT_SOURCE_DIR}/src/platform/amigaos4)
+	endif()
+	if(AROS)
+		message(WARNING "AROS is unsupported currently. Patches welcome!")
 	endif()
 endif()
 
@@ -787,7 +824,7 @@ else()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii|amigaos4)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
@@ -848,7 +885,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro|psvita|3ds|switch|wii|amigaos4)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -1135,6 +1172,12 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${PLAYER_TARGET_PLATFORM}-debug")
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
 	include(CPack)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
+	add_executable(easyrpg-player "src/platform/sdl/main.cpp")
+	target_link_libraries(easyrpg-player
+		${PROJECT_NAME}
+		${SDL_LIBRARIES})
+	# FIXME: packaging?
 else()
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
