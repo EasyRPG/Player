@@ -53,17 +53,23 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 template <typename T>
 static void detect_helper(const FilesystemView& fs, std::vector<struct RTP::RtpHitInfo>& hit_list,
 		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list) {
-	for (int i = range.first; i < range.second; ++i) {
-		const char* category = rtp_table[i][0];
-		for (int j = 1; j <= num_rtps; ++j) {
+	std::string ret;
+	for (int j = 1; j <= num_rtps; ++j) {
+		int cur_miss = 0;
+		for (int i = range.first; i < range.second; ++i) {
+			const char* category = rtp_table[i][0];
 			const char* name = rtp_table[i][j];
 			if (name != nullptr) {
-				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
 				DirectoryTree::Args args = { FileFinder::MakePath(category, name), ext_list, 1, false };
 				ret = fs.FindFile(args);
 				if (!ret.empty()) {
 					hit_list[offset + j - 1].hits++;
+				} else {
+					++cur_miss;
+					if (cur_miss > 10) {
+						break;
+					}
 				}
 			}
 		}
