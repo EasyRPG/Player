@@ -146,7 +146,7 @@ private:
 	mutable std::vector<std::string> dir_missing_cache;
 
 	template<class T>
-	const auto Find(T& cache, StringView what) const {
+	auto Find(T& cache, StringView what) const {
 		auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {
 			return e.first < w;
 		});
@@ -162,7 +162,7 @@ private:
 		auto it = std::lower_bound(cache.begin(), cache.end(), key, [](const auto& e, const auto& k) {
 			return e.first < k;
 		});
-		assert(it->first != key);
+		assert(it == cache.end() || it->first != key);
 		cache.insert(it, std::make_pair(key, value));
 	}
 };

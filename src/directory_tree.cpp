@@ -75,7 +75,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		return nullptr;
 	}
 
-	assert(fs_cache.find(dir_key) == fs_cache.end());
+	assert(Find(fs_cache, dir_key) == fs_cache.end());
 
 	if (!fs->Exists(fs_path)) {
 		std::string parent_dir, child_dir;
