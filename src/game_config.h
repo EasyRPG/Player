@@ -52,9 +52,13 @@ struct Game_ConfigVideo {
 };
 
 struct Game_ConfigAudio {
+	RangeConfigParam<int> music_volume{ 100, 0, 100 };
+	RangeConfigParam<int> sound_volume{ 100, 0, 100 };
 };
 
 struct Game_ConfigInput {
+	BoolConfigParam swap_analog{ false };
+	BoolConfigParam swap_buttons{ false };
 	Input::ButtonMappingArray buttons;
 };
 
