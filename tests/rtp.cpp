@@ -1,3 +1,4 @@
+#include <limits>
 #include <ostream>
 #include "filefinder.h"
 #include "player.h"
@@ -36,7 +37,7 @@ TEST_CASE("RTP 2000: Detection") {
 	Player::escape_symbol = "\\";
 
 	auto tree = make_tree();
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree, 2000);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(tree, 2000, std::numeric_limits<int>::max());
 
 	REQUIRE(hits.size() == 2);
 
@@ -52,7 +53,7 @@ TEST_CASE("RTP 2000: Detection") {
 TEST_CASE("RTP 2003: Detection") {
 	Player::escape_symbol = "\\";
 
-	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree(), 2003);
+	std::vector<RTP::RtpHitInfo> hits = RTP::Detect(make_tree(), 2003, std::numeric_limits<int>::max());
 
 	REQUIRE(hits.size() == 2);
 
