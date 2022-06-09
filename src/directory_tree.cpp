@@ -68,6 +68,13 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		return &file_it->second;
 	}
 
+	auto dir_missing_it = std::find(dir_missing_cache.begin(), dir_missing_cache.end(), dir_key);
+	if (dir_missing_it != dir_missing_cache.end()) {
+		// Cached and known to be missing
+		DebugLog("ListDirectory Cache Hit Dir Missing: {}", dir_key);
+		return nullptr;
+	}
+
 	assert(fs_cache.find(dir_key) == fs_cache.end());
 
 	if (!fs->Exists(fs_path)) {
@@ -77,6 +84,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		if (parent_dir == fs_path) {
 			// When the path stays we are in a non-existant root -> give up
 			DebugLog("ListDirectory Bad root: {} | {}", fs_path, parent_dir);
+			dir_missing_cache.push_back(make_key(parent_dir));
 			return nullptr;
 		}
 
@@ -84,6 +92,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		auto* parent_tree = ListDirectory(parent_dir);
 		if (!parent_tree) {
 			DebugLog("ListDirectory No parent: {} | {}", fs_path, parent_dir);
+			dir_missing_cache.push_back(make_key(parent_dir));
 			return nullptr;
 		}
 
@@ -96,12 +105,15 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		if (child_it != parent_tree->end()) {
 			fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
 		} else {
+			DebugLog("ListDirectory Child not in Parent: {} | {} | {}", fs_path, parent_dir, child_dir);
+			dir_missing_cache.push_back(FileFinder::MakePath(parent_key, child_key));
 			return nullptr;
 		}
 	}
 
 	if (!fs->GetDirectoryContent(fs_path, entries)) {
 		DebugLog("ListDirectory GetDirectoryContent Failed: {}", fs_path);
+		dir_missing_cache.push_back(make_key(fs_path));
 		return nullptr;
 	}
 
@@ -161,6 +173,10 @@ void DirectoryTree::ClearCache(StringView path) const {
 	auto dir_it = Find(dir_cache, dir_key);
 	if (dir_it != dir_cache.end()) {
 		dir_cache.erase(dir_it);
+	}
+	auto dir_missing_it = std::find(dir_missing_cache.begin(), dir_missing_cache.end(), dir_key);
+	if (dir_missing_it != dir_missing_cache.end()) {
+		dir_missing_cache.erase(dir_missing_it);
 	}
 }
 

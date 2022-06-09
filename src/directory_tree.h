@@ -131,13 +131,19 @@ public:
 private:
 	Filesystem* fs = nullptr;
 
-	/** lowered dir (full path from root) -> <map of> lowered file -> Entry */
+	// Cache vectors are sorted for a binary search
+	// Except dir_missing_cache as this vector will be (almost) empty usually
+
+	/** lowered dir (full path from root) -> <list of> lowered file -> Entry */
 	using fs_cache_pair = std::pair<std::string, DirectoryListType>;
 	mutable std::vector<fs_cache_pair> fs_cache;
 
 	/** lowered dir -> real dir (both full path from root) */
 	using dir_cache_pair = std::pair<std::string, std::string>;
 	mutable std::vector<dir_cache_pair> dir_cache;
+
+	/** lowered dir (full path from root) of missing directories */
+	mutable std::vector<std::string> dir_missing_cache;
 
 	template<class T>
 	const auto Find(T& cache, StringView what) const {
