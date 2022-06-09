@@ -59,11 +59,11 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 
 	auto dir_key = make_key(fs_path);
 
-	auto dir_it = dir_cache.find(dir_key);
+	auto dir_it = Find(dir_cache, dir_key);
 	if (dir_it != dir_cache.end()) {
 		// Already cached
 		DebugLog("ListDirectory Cache Hit: {}", dir_key);
-		auto file_it = fs_cache.find(dir_key);
+		auto file_it = Find(fs_cache, dir_key);
 		assert(file_it != fs_cache.end());
 		return &file_it->second;
 	}
@@ -88,11 +88,11 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		}
 
 		auto parent_key = make_key(parent_dir);
-		auto parent_it = dir_cache.find(parent_key);
+		auto parent_it = Find(dir_cache, parent_key);
 		assert(parent_it != dir_cache.end());
 
 		auto child_key = make_key(child_dir);
-		auto child_it = parent_tree->find(child_key);
+		auto child_it = Find(*parent_tree, child_key);
 		if (child_it != parent_tree->end()) {
 			fs_path = FileFinder::MakePath(parent_it->second, child_it->second.name);
 		} else {
@@ -105,7 +105,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		return nullptr;
 	}
 
-	dir_cache[dir_key] = fs_path;
+	InsertSorted(dir_cache, dir_key, std::move(fs_path));
 
 	DirectoryListType fs_cache_entry;
 
@@ -117,12 +117,12 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 		std::string new_entry_key = make_key(entry.name);
 
 		if (entry.type == FileType::Directory) {
-			if (fs_cache_entry.find(new_entry_key) != fs_cache_entry.end()) {
+			if (Find(fs_cache_entry, new_entry_key) != fs_cache_entry.end()) {
 				Output::Warning("The folder \"{}\" exists twice.", entry.name);
 				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
 		}
-		fs_cache_entry.emplace(std::make_pair(std::move(new_entry_key), entry));
+		fs_cache_entry.emplace_back(std::make_pair(std::move(new_entry_key), entry));
 
 #ifdef EP_DEBUG_DIRECTORYTREE
 		std::string t = entry.type == FileType::Regular ? "" :
@@ -131,13 +131,17 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 #endif
 	}
 
+	std::sort(fs_cache_entry.begin(), fs_cache_entry.end(), [](auto& left, auto& right) {
+		return left.first < right.first;
+	});
+
 #ifdef EP_DEBUG_DIRECTORYTREE
-	DebugLog("ListDirectory Content: {} | {}", fs_path, ss.str());
+	DebugLog("ListDirectory Content: {}", ss.str());
 #endif
 
-	fs_cache.emplace(dir_key, fs_cache_entry);
+	InsertSorted(fs_cache, dir_key, std::move(fs_cache_entry));
 
-	return &fs_cache.find(dir_key)->second;
+	return &Find(fs_cache, dir_key)->second;
 }
 
 void DirectoryTree::ClearCache(StringView path) const {
@@ -150,11 +154,11 @@ void DirectoryTree::ClearCache(StringView path) const {
 	}
 
 	auto dir_key = make_key(path);
-	auto fs_it = fs_cache.find(dir_key);
+	auto fs_it = Find(fs_cache, dir_key);
 	if (fs_it != fs_cache.end()) {
 		fs_cache.erase(fs_it);
 	}
-	auto dir_it = dir_cache.find(dir_key);
+	auto dir_it = Find(dir_cache, dir_key);
 	if (dir_it != dir_cache.end()) {
 		dir_cache.erase(dir_it);
 	}
@@ -188,12 +192,12 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	}
 
 	std::string dir_key = make_key(dir);
-	auto dir_it = dir_cache.find(dir_key);
+	auto dir_it = Find(dir_cache, dir_key);
 	assert(dir_it != dir_cache.end());
 
 	std::string name_key = make_key(name);
 	if (args.exts.empty()) {
-		auto entry_it = entries->find(name_key);
+		auto entry_it = Find(*entries, name_key);
 		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 			auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 			DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
@@ -202,7 +206,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	} else {
 		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
-			auto entry_it = entries->find(full_name_key);
+			auto entry_it = Find(*entries, full_name_key);
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 				DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
