@@ -272,7 +272,7 @@ static void BM_ToneBlit(benchmark::State& state) {
 	auto rect = src->GetRect();
 	auto tone = Tone(255,255,255,128);
 	for (auto _: state) {
-		dest->ToneBlit(0, 0, *src, rect, tone, opacity, false);
+		dest->ToneBlit(0, 0, *src, rect, tone, opacity);
 	}
 }
 

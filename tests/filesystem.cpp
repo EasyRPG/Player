@@ -28,11 +28,11 @@ TEST_CASE("ListDirectory") {
 
 	auto charset = fs.ListDirectory("Charset");
 	CHECK(charset->size() == 1);
-	CHECK(charset->find("chara1.png") != charset->end());
+	CHECK((*charset)[0].first == "chara1.png");
 
 	charset = fs.ListDirectory("cHaRsEt");
 	CHECK(charset->size() == 1);
-	CHECK(charset->find("chara1.png") != charset->end());
+	CHECK((*charset)[0].first == "chara1.png");
 
 	CHECK(!fs.ListDirectory("!!!invaliddir!!!"));
 }
@@ -60,7 +60,7 @@ TEST_CASE("ListDirectorySubtree") {
 	Player::escape_symbol = "\\";
 	auto charset = subtree.Subtree("charset").ListDirectory();
 	CHECK(charset->size() == 1);
-	CHECK(charset->find("chara1.png") != charset->end());
+	CHECK((*charset)[0].first == "chara1.png");
 	Player::escape_symbol = "";
 }
 

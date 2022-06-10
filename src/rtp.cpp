@@ -52,25 +52,31 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 
 template <typename T>
 static void detect_helper(const FilesystemView& fs, std::vector<struct RTP::RtpHitInfo>& hit_list,
-		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list) {
-	for (int i = range.first; i < range.second; ++i) {
-		const char* category = rtp_table[i][0];
-		for (int j = 1; j <= num_rtps; ++j) {
+		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, Span<StringView> ext_list, int miss_limit) {
+	std::string ret;
+	for (int j = 1; j <= num_rtps; ++j) {
+		int cur_miss = 0;
+		for (int i = range.first; i < range.second; ++i) {
+			const char* category = rtp_table[i][0];
 			const char* name = rtp_table[i][j];
 			if (name != nullptr) {
-				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
 				DirectoryTree::Args args = { FileFinder::MakePath(category, name), ext_list, 1, false };
 				ret = fs.FindFile(args);
 				if (!ret.empty()) {
 					hit_list[offset + j - 1].hits++;
+				} else {
+					++cur_miss;
+					if (cur_miss > miss_limit) {
+						break;
+					}
 				}
 			}
 		}
 	}
 }
 
-std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version) {
+std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version, int miss_limit) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
 		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, fs},
 		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, fs},
@@ -107,7 +113,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version) 
 			const char* category = rtp_table_2k_categories[i];
 			std::pair<int, int> range = {rtp_table_2k_categories_idx[i], rtp_table_2k_categories_idx[i+1]};
 			auto ext_list = ext_for_cat(category);
-			detect_helper(fs, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
+			detect_helper(fs, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list, miss_limit);
 		}
 	}
 	if (version == 2003 || version == 0) {
@@ -115,7 +121,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version) 
 			const char* category = rtp_table_2k3_categories[i];
 			std::pair<int, int> range = {rtp_table_2k3_categories_idx[i], rtp_table_2k3_categories_idx[i+1]};
 			auto ext_list = ext_for_cat(category);
-			detect_helper(fs, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
+			detect_helper(fs, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list, miss_limit);
 		}
 	}
 

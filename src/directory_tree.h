@@ -75,7 +75,7 @@ public:
 		bool file_not_found_warning = false;
 	};
 
-	using DirectoryListType = std::unordered_map<std::string, Entry>;
+	using DirectoryListType = std::vector<std::pair<std::string, Entry>>;
 
 	/** @return Constructs an empty, invalid DirectoryTree */
 	static std::unique_ptr<DirectoryTree> Create();
@@ -131,11 +131,40 @@ public:
 private:
 	Filesystem* fs = nullptr;
 
-	/** lowered dir (full path from root) -> <map of> lowered file -> Entry */
-	mutable std::unordered_map<std::string, DirectoryListType> fs_cache;
+	// Cache vectors are sorted for a binary search
+	// Except dir_missing_cache as this vector will be (almost) empty usually
+
+	/** lowered dir (full path from root) -> <list of> lowered file -> Entry */
+	using fs_cache_pair = std::pair<std::string, DirectoryListType>;
+	mutable std::vector<fs_cache_pair> fs_cache;
 
 	/** lowered dir -> real dir (both full path from root) */
-	mutable std::unordered_map<std::string, std::string> dir_cache;
+	using dir_cache_pair = std::pair<std::string, std::string>;
+	mutable std::vector<dir_cache_pair> dir_cache;
+
+	/** lowered dir (full path from root) of missing directories */
+	mutable std::vector<std::string> dir_missing_cache;
+
+	template<class T>
+	auto Find(T& cache, StringView what) const {
+		auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {
+			return e.first < w;
+		});
+		if (it != cache.end() && it->first == what) {
+			return it;
+		}
+
+		return cache.end();
+	}
+
+	template<class T, class U>
+	void InsertSorted(T& cache, std::string key, U&& value) const {
+		auto it = std::lower_bound(cache.begin(), cache.end(), key, [](const auto& e, const auto& k) {
+			return e.first < k;
+		});
+		assert(it == cache.end() || it->first != key);
+		cache.insert(it, std::make_pair(key, value));
+	}
 };
 
 inline bool operator<(const DirectoryTree::Entry& l, const DirectoryTree::Entry& r) {

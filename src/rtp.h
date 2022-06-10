@@ -69,9 +69,10 @@ namespace RTP {
 	 *
 	 * @param fs Filesystem tree
 	 * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
+	 * @param miss_limit How many RTP files required to be missing to stop scanning early.
 	 * @return List of detected RTP types
 	 */
-	std::vector<RtpHitInfo> Detect(const FilesystemView& fs, int version);
+	std::vector<RtpHitInfo> Detect(const FilesystemView& fs, int version, int miss_limit = 10);
 
 	/**
 	 * Takes an asset name and returns all RTP that match

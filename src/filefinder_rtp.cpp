@@ -178,6 +178,12 @@ void FileFinder_RTP::AddPath(StringView p) {
 	using namespace FileFinder;
 	auto fs = FileFinder::Root().Create(FileFinder::MakeCanonical(p));
 	if (fs) {
+		auto files = fs.ListDirectory();
+		if (files->size() == 0) {
+			Output::Debug("RTP path {} is empty, not adding", p);
+			return;
+		}
+
 		Output::Debug("Adding {} to RTP path", p);
 
 		auto hit_info = RTP::Detect(fs, Player::EngineVersion());
