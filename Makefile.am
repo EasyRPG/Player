@@ -612,6 +612,31 @@ bashcompletiondir = $(BASHCOMPLETION_DIR)
 dist_bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
 endif
 
+# desktop integration
+if !MACOS
+desktopdir = $(datadir)/applications
+dist_desktop_DATA = resources/unix/easyrpg-player.desktop
+metainfodir = $(datadir)/metainfo
+dist_metainfo_DATA = resources/unix/easyrpg-player.metainfo.xml
+icondir = $(datadir)/icons/hicolor
+scalabledir = $(icondir)/scalable/apps
+dist_scalable_DATA = resources/unix/easyrpg-player.svg
+pixmapdir = $(datadir)/pixmaps
+
+install-data-hook:
+	@echo " $(MKDIR_P) '$(DESTDIR)$(pixmapdir)'"; \
+	$(MKDIR_P) "$(DESTDIR)$(pixmapdir)" || exit 1; \
+	echo " $(INSTALL_DATA) resources/unix/icon-48.png '$(DESTDIR)$(pixmapdir)/easyrpg-player.png'"; \
+	$(INSTALL_DATA) $(srcdir)/resources/unix/icon-48.png "$(DESTDIR)$(pixmapdir)/easyrpg-player.png" || exit $$?; \
+	for files in $(srcdir)/resources/unix/icon-*.png; do \
+	  size=`basename $$files .png | tr -cd '[0-9]'`; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(icondir)/$${size}x$${size}/apps'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(icondir)/$${size}x$${size}/apps" || exit 1; \
+	  echo " $(INSTALL_DATA) resources/unix/icon-$${size}.png; '$(DESTDIR)$(icondir)/$${size}x$${size}/apps/easyrpg-player.png'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(icondir)/$${size}x$${size}/apps/easyrpg-player.png" || exit $$?; \
+	done
+endif
+
 # doxygen
 @DX_RULES@
 

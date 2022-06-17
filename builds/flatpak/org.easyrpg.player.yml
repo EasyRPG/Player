@@ -1,0 +1,98 @@
+app-id: org.easyrpg.player
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+command: easyrpg-player
+rename-desktop-file: easyrpg-player.desktop
+rename-appdata-file: easyrpg-player.metainfo.xml
+rename-icon: easyrpg-player
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --filesystem=host # insecure
+#  - --filesystem=home # more secure
+  - --device=all # needed for gamepad
+  - --allow=devel
+modules:
+  - name: liblcf
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DLIBLCF_ENABLE_TOOLS=OFF
+      - -DLIBLCF_WITH_XML=OFF
+      - -DLIBLCF_ENABLE_TESTS=OFF
+    sources:
+      - type: git
+        url: https://github.com/EasyRPG/liblcf.git
+        #tag: '0.7.0'
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/cmake
+      - /share
+  - name: libfmt
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DFMT_TEST=OFF
+      - -DBUILD_SHARED_LIBS=TRUE
+    sources:
+      - type: git
+        url: https://github.com/fmtlib/fmt.git
+        tag: '8.1.1'
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/cmake
+  # this is copied from shared-modules
+  - name: libfluidsynth
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DLIB_SUFFIX=
+    sources:
+      - type: git
+        url: https://github.com/FluidSynth/fluidsynth.git
+        tag: v2.2.7
+    cleanup:
+      - /bin
+      - /include
+      - /lib/pkgconfig
+      - /share
+  - name: libxmp
+    # use cmake when 4.5.1 is ready
+    #buildsystem: cmake-ninja
+    #config-opts:
+    #  - -DBUILD_STATIC=OFF
+    #  - -DLIBXMP_DISABLE_DEPACKERS=ON
+    #  - -DLIBXMP_DISABLE_PROWIZARD=ON
+    buildsystem: autotools
+    config-opts:
+      - --disable-depackers
+      - --disable-prowizard
+    sources:
+      - type: git
+        url: https://github.com/libxmp/libxmp.git
+        tag: libxmp-4.5.0
+      # hack, see https://github.com/flatpak/flatpak-builder/issues/111
+      - type: script
+        dest-filename: autogen.sh
+        commands:
+          - "autoreconf -fi"
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+  - name: player
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    sources:
+      - type: git
+        url: https://github.com/EasyRPG/Player.git
+    cleanup:
+      - /share/bash-completion
+      - /share/pixmaps
+    post-install:
+      # Fixup for app id (since rename-* options leave out things)
+      - sed -i 's|easyrpg-player.desktop|org.easyrpg.player.desktop|' /app/share/metainfo/easyrpg-player.metainfo.xml

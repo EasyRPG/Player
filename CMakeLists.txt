@@ -760,9 +760,10 @@ if(PLAYER_BUILD_LIBLCF)
 	endif()
 	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 
-	# Always build static liblcf
+	# Always build static liblcf and do not install it
 	function(add_liblcf)
 		set(BUILD_SHARED_LIBS OFF)
+		set(LIBLCF_ENABLE_INSTALL OFF)
 		add_subdirectory(${LIBLCF_PATH})
 	endfunction()
 	add_liblcf()
@@ -1056,6 +1057,15 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION BUNDLE DESTINATION "${CMAKE_BINARY_DIR}/Package")
 	else()
 		install(TARGETS ${EXE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+	endif()
+
+	if(UNIX)
+		# Install desktop entry, icons and metainfo
+		install(FILES resources/unix/easyrpg-player.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png DESTINATION ${CMAKE_INSTALL_DATADIR}/pixmaps) # legacy
+		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps)
+		install(FILES resources/unix/easyrpg-player.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+		install(FILES resources/unix/easyrpg-player.metainfo.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 	endif()
 
 	if(MSVC)
