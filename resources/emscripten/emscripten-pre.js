@@ -92,7 +92,12 @@ Module.setStatus('Downloading...');
 Module.arguments = ["easyrpg-player", ...parseArgs()];
 
 // Catch all errors occuring inside the window
-window.addEventListener('error', () => {
+window.addEventListener('error', (event) => {
+  // workaround chrome bug: See https://github.com/EasyRPG/Player/issues/2806
+  if (event.error.message.includes("side-effect in debug-evaluate") && event.defaultPrevented) {
+    return;
+  }
+
   Module.setStatus('Exception thrown, see JavaScript console…');
   Module.setStatus = text => {
     if (text) Module.printErr(`[post-exception status] ${text}`);
