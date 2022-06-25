@@ -325,10 +325,6 @@ void Translation::RewriteDatabase()
 			return;
 		}
 	});
-
-	// Game_Actors caches some values; we need to force re-write them here.
-	// As far as I can tell, this is the best way to accomplish this.
-	Main_Data::game_actors = std::make_unique<Game_Actors>();
 }
 
 void Translation::RewriteTreemapNames()
