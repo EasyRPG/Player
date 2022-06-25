@@ -289,7 +289,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 			map_stream.clear();
 			map_stream.seekg(0);
 			Input::AddRecordingData(Input::RecordingData::Hash,
-						   fmt::format("map{} {:#08x}", Utils::CRC32(map_stream)));
+						   fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
 		}
 	} else {
 		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
