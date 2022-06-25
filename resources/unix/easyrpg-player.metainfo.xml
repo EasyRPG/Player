@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>org.easyrpg.player</id>
+	<name>EasyRPG Player</name>
+	<summary>Play your RPG Maker games everywhere</summary>
+	<developer_name>EasyRPG Team</developer_name>
+	<update_contact>easyrpg_AT_easyrpg.org</update_contact>
+
+	<!-- Copyright 2022 EasyRPG team -->
+	<metadata_license>FSFAP</metadata_license>
+	<project_license>GPL-3.0-or-later</project_license>
+
+	<recommends>
+		<display_length compare="ge">320</display_length>
+	</recommends>
+	<supports>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>gamepad</control>
+	</supports>
+
+	<description>
+		<p>
+			EasyRPG Player is a program that allows to play games created with RPG Maker 2000 and 2003.
+		</p>
+		<p>
+			It aims to be a free (as in freedom) cross-platform RPG Maker 2000/2003 interpreter.
+			The main goal is to play all games created with them as the original game interpreter (RPG_RT) does.
+		</p>
+	</description>
+
+	<categories>
+		<category>Game</category>
+		<category>RolePlaying</category>
+	</categories>
+
+	<keywords>
+		<keyword>RPG Maker</keyword>
+	</keywords>
+
+	<url type="homepage">https://easyrpg.org</url>
+	<url type="help">https://easyrpg.org/player/manual</url>
+	<url type="contact">https://easyrpg.org/contact</url>
+	<url type="bugtracker">https://github.com/EasyRPG/Player/issues</url>
+	<url type="translate">https://translate.easyrpg.org</url>
+	<!-- these tags are reported as invalid currently, old appstream-util: https://github.com/ximion/appstream/blob/v0.15.4/NEWS#L31
+		<url type="contribute">https://easyrpg.org/contribute</url>
+		<url type="vcs-browser">https://github.com/EasyRPG/Player</url>
+	-->
+
+	<launchable type="desktop-id">easyrpg-player.desktop</launchable>
+	<screenshots>
+		<screenshot type="default">
+			<image>https://easyrpg.org/images/player/testgame.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://easyrpg.org/images/player/name_input.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://easyrpg.org/images/player/yume_nikki.png</image>
+		</screenshot>
+	</screenshots>
+
+	<content_rating type="oars-1.0">
+		<!-- intentionally left blank :) -->
+	</content_rating>
+
+	<releases>
+		<release version="0.7.0" date="2021-10-29" />
+		<release version="0.6.2.3" date="2020-10-03" />
+		<release version="0.6.2.2" date="2020-09-08" />
+		<release version="0.6.2.1" date="2020-05-22" />
+		<release version="0.6.2" date="2020-04-26" />
+		<release version="0.6.1" date="2019-07-25" />
+		<release version="0.6.0" date="2019-03-03" />
+		<release version="0.5.4" date="2018-10-27" />
+		<release version="0.5.3" date="2017-10-22" />
+		<release version="0.5.2" date="2017-06-28" />
+		<release version="0.5.1" date="2017-04-09" />
+		<release version="0.5.0" date="2016-09-19" />
+		<release version="0.4.1" date="2016-03-19" />
+		<release version="0.4.0" date="2015-12-23" />
+		<release version="0.3.2" date="2015-09-14" />
+		<release version="0.3.1" date="2015-09-06" />
+		<release version="0.3" date="2015-05-14" />
+		<release version="0.2.2" date="2014-11-27" />
+		<release version="0.2.1" date="2014-07-02" />
+		<release version="0.2" date="2014-05-31" />
+		<release version="0.1.2" date="2013-10-14" />
+		<release version="0.1.1" date="2013-04-20" />
+		<release version="0.1" date="2013-03-17" />
+	</releases>
+</component>

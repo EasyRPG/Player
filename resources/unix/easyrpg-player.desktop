@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=EasyRPG Player
+Comment=Play RPG Maker games
+Categories=Game;RolePlaying;
+Icon=easyrpg-player
+Exec=easyrpg-player
+StartupNotify=true
+StartupWMClass=EasyRPG Player
+Terminal=false
