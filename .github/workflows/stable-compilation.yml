@@ -84,17 +84,3 @@ jobs:
           build/easyrpg-player --version
           # run unit tests
           cmake --build build --target check
-
-  flatpak:
-    name: "Flatpak"
-    runs-on: ubuntu-latest
-    container:
-      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
-      options: --privileged
-    steps:
-    - uses: actions/checkout@v2
-    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
-      with:
-        bundle: EasyRPG-Player.flatpak
-        manifest-path: builds/flatpak/org.easyrpg.player.yml
-        cache-key: flatpak-builder-${{ github.sha }}
