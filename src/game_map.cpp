@@ -229,6 +229,7 @@ void Game_Map::SetupFromSave(
 		}
 	}
 	map_info.events.clear();
+	interpreter->Clear();
 
 	GetVehicle(Game_Vehicle::Boat)->SetSaveData(std::move(save_boat));
 	GetVehicle(Game_Vehicle::Ship)->SetSaveData(std::move(save_ship));
