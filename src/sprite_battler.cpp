@@ -45,7 +45,7 @@ void Sprite_Battler::ResetZ() {
 		y += 24;
 	}
 
-	int z = battler->GetType();
+	Drawable::Z_t z = battler->GetType();
 	z += y;
 	z *= id_limit;
 	z += id_limit - battle_index;

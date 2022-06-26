@@ -23,12 +23,12 @@ Drawable::~Drawable() {
 	DrawableMgr::Remove(this);
 }
 
-void Drawable::SetZ(int nz) {
+void Drawable::SetZ(Z_t nz) {
 	if (_z != nz) DrawableMgr::OnUpdateZ(this);
 	_z = nz;
 }
 
-int Drawable::GetPriorityForMapLayer(int which) {
+Drawable::Z_t Drawable::GetPriorityForMapLayer(int which) {
 	switch (which) {
 		case lcf::rpg::SavePicture::MapLayer_parallax:
 			return Priority_Background;
@@ -55,7 +55,7 @@ int Drawable::GetPriorityForMapLayer(int which) {
 	}
 }
 
-int Drawable::GetPriorityForBattleLayer(int which) {
+Drawable::Z_t Drawable::GetPriorityForBattleLayer(int which) {
 	switch (which) {
 		case lcf::rpg::SavePicture::BattleLayer_background:
 			return Priority_Background;

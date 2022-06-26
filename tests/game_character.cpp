@@ -85,7 +85,7 @@ static_assert(!Game_Character::IsDirectionFixedAnimationType(lcf::rpg::EventPage
 	/** @return the direction we would need to face away from hero. */
 	int GetDirectionAwayHero();
 
-	virtual int GetScreenZ(bool apply_shift = false) const;
+	virtual Drawable::Z_t GetScreenZ(bool apply_shift = false) const;
 
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;
@@ -137,7 +137,7 @@ static void testInit(Game_Character& ch, int max_stop_count = 0) {
 	REQUIRE_EQ(ch.GetOpacity(), 255);
 	REQUIRE_EQ(ch.GetTransparency(), 0);
 	// FIXME: MAP
-	//REQUIRE(ch.IsVisible()); 
+	//REQUIRE(ch.IsVisible());
 	REQUIRE(!ch.IsSpriteHidden());
 	REQUIRE(ch.IsAnimated());
 	REQUIRE(!ch.IsContinuous());
@@ -346,7 +346,7 @@ static void testBasicSet(Game_Character& ch) {
 	REQUIRE_EQ(ch.GetAnimCount(), 78);
 
 	// FIXME: Test anim count basic increment logic
-	// FIXME: Test anim count real 
+	// FIXME: Test anim count real
 
 	// FIXME: Test movement sequence
 	ch.SetRemainingStep(889);

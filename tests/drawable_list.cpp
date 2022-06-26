@@ -12,13 +12,13 @@ namespace {
 
 class TestSprite : public Drawable {
 	public:
-		TestSprite(int z = 0) : Drawable(z, Drawable::Flags::Global) {}
+		TestSprite(Drawable::Z_t z = 0) : Drawable(z, Drawable::Flags::Global) {}
 		void Draw(Bitmap&) override {}
 };
 
 class TestFrame : public Drawable {
 	public:
-		TestFrame(int z = 0) : Drawable(z, Drawable::Flags::Global | Drawable::Flags::Shared) {}
+		TestFrame(Drawable::Z_t z = 0) : Drawable(z, Drawable::Flags::Global | Drawable::Flags::Shared) {}
 		void Draw(Bitmap&) override {}
 };
 

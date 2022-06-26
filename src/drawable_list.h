@@ -43,9 +43,9 @@ class DrawableList {
 		/** Return true if drawables are sorted */
 		bool IsSorted() const;
 
-		/** 
+		/**
 		 * Add a drawable to the list.
-		 * 
+		 *
 		 * @param drawable the Drawable to add
 		 */
 		void Append(Drawable* drawable);
@@ -100,7 +100,7 @@ class DrawableList {
 
 		/**
 		 * Return drawable at i'th index
-		 * 
+		 *
 		 * @param i index of drawable
 		 * @pre if i < 0 and i >= size(), the result is undefined.
 		 * @return the drawable at i
@@ -129,7 +129,7 @@ class DrawableList {
 		 * @param min_z Skip any drawables with z < min_z
 		 * @param max_z Skip any drawables with z > max_z
 		 */
-		void Draw(Bitmap& dst, int min_z, int max_z);
+		void Draw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z);
 
 	private:
 		std::vector<Drawable*> _list;
@@ -188,7 +188,7 @@ inline void DrawableList::SetClean() {
 }
 
 inline void DrawableList::Draw(Bitmap& dst) {
-	Draw(dst, std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+	Draw(dst, std::numeric_limits<Drawable::Z_t>::min(), std::numeric_limits<Drawable::Z_t>::max());
 }
 
 #endif

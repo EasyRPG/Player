@@ -108,8 +108,8 @@ void Graphics::UpdateTitle() {
 void Graphics::Draw(Bitmap& dst) {
 	auto& transition = Transition::instance();
 
-	int min_z = std::numeric_limits<int>::min();
-	int max_z = std::numeric_limits<int>::max();
+	auto min_z = std::numeric_limits<Drawable::Z_t>::min();
+	auto max_z = std::numeric_limits<Drawable::Z_t>::max();
 	if (transition.IsActive()) {
 		min_z = transition.GetZ();
 	} else if (transition.IsErasedNotActive()) {
@@ -119,10 +119,10 @@ void Graphics::Draw(Bitmap& dst) {
 	LocalDraw(dst, min_z, max_z);
 }
 
-void Graphics::LocalDraw(Bitmap& dst, int min_z, int max_z) {
+void Graphics::LocalDraw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
-	if (!drawable_list.empty() && min_z == std::numeric_limits<int>::min()) {
+	if (!drawable_list.empty() && min_z == std::numeric_limits<Drawable::Z_t>::min()) {
 		current_scene->DrawBackground(dst);
 	}
 

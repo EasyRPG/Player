@@ -103,8 +103,8 @@ int Game_Character::GetScreenY(bool apply_shift, bool apply_jump) const {
 	return y;
 }
 
-int Game_Character::GetScreenZ(bool apply_shift) const {
-	int z = 0;
+Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
+	Drawable::Z_t z = 0;
 
 	if (IsFlying()) {
 		z = Priority_EventsFlying;

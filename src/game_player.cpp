@@ -64,7 +64,7 @@ lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
 	return *data();
 }
 
-int Game_Player::GetScreenZ(bool apply_shift) const {
+Drawable::Z_t Game_Player::GetScreenZ(bool apply_shift) const {
 	// Player is always slightly above events
 	// (and always on "same layer as hero" obviously)
 	return Game_Character::GetScreenZ(apply_shift) + 1;

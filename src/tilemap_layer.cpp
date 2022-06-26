@@ -205,7 +205,7 @@ static uint32_t MakeAbTileHash(int id, int anim_step) {
 	return static_cast<uint32_t>((id + (anim_step << 12)) | (4 << 24));
 }
 
-void TilemapLayer::Draw(Bitmap& dst, int z_order) {
+void TilemapLayer::Draw(Bitmap& dst, Drawable::Z_t z_order) {
 	// Get the number of tiles that can be displayed on window
 	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);
@@ -669,7 +669,7 @@ void TilemapLayer::OnSubstitute() {
 	CreateTileCache(map_data);
 }
 
-TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
+TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, Drawable::Z_t z) :
 	Drawable(z),
 	tilemap(tilemap)
 {
