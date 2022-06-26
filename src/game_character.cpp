@@ -116,7 +116,11 @@ Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
 		z = Priority_EventsAbove;
 	}
 
-	z += GetScreenY(apply_shift, false);
+	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(apply_shift, false));
+
+	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX(apply_shift));
+
+	z += (y << 32) + (x << 16);
 
 	return z;
 }
