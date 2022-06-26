@@ -29,45 +29,53 @@ void Drawable::SetZ(Z_t nz) {
 }
 
 Drawable::Z_t Drawable::GetPriorityForMapLayer(int which) {
+	Z_t layer = 0;
+
 	switch (which) {
 		case lcf::rpg::SavePicture::MapLayer_parallax:
-			return Priority_Background;
+			layer = Priority_Background;
 		case lcf::rpg::SavePicture::MapLayer_tilemap_below:
-			return Priority_TilesetBelow;
+			layer = Priority_TilesetBelow;
 		case lcf::rpg::SavePicture::MapLayer_events_below:
-			return Priority_EventsBelow;
+			layer = Priority_EventsBelow;
 		case lcf::rpg::SavePicture::MapLayer_events_same_as_player:
-			return Priority_Player;
+			layer = Priority_Player;
 		case lcf::rpg::SavePicture::MapLayer_tilemap_above:
-			return Priority_TilesetAbove;
+			layer = Priority_TilesetAbove;
 		case lcf::rpg::SavePicture::MapLayer_events_above:
-			return Priority_EventsFlying;
+			layer = Priority_EventsFlying;
 		case lcf::rpg::SavePicture::MapLayer_weather:
-			return Priority_PictureNew;
+			layer = Priority_PictureNew;
 		case lcf::rpg::SavePicture::MapLayer_animations:
-			return Priority_BattleAnimation;
+			layer = Priority_BattleAnimation;
 		case lcf::rpg::SavePicture::MapLayer_windows:
-			return Priority_Window;
+			layer = Priority_Window;
 		case lcf::rpg::SavePicture::MapLayer_timers:
-			return Priority_Timer;
+			layer = Priority_Timer;
 		default:
-			return 0;
+			return layer;
 	}
+
+	return layer + (1ULL << z_offset);
 }
 
 Drawable::Z_t Drawable::GetPriorityForBattleLayer(int which) {
+	Z_t layer = 0;
+
 	switch (which) {
 		case lcf::rpg::SavePicture::BattleLayer_background:
-			return Priority_Background;
+			layer = Priority_Background;
 		case lcf::rpg::SavePicture::BattleLayer_battlers_and_animations:
-			return Priority_Battler;
+			layer = Priority_Battler;
 		case lcf::rpg::SavePicture::BattleLayer_weather:
-			return Priority_PictureNew;
+			layer = Priority_PictureNew;
 		case lcf::rpg::SavePicture::BattleLayer_windows_and_status:
-			return Priority_Window;
+			layer = Priority_Window;
 		case lcf::rpg::SavePicture::BattleLayer_timers:
-			return Priority_Timer;
+			layer = Priority_Timer;
 		default:
-			return 0;
+			return layer;
 	}
+
+	return layer + (1ULL << z_offset);
 }

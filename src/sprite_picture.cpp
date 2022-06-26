@@ -25,10 +25,6 @@
 #include "player.h"
 #include "bitmap.h"
 
-
-// Applied to ensure that all pictures are above "normal" objects on this layer
-constexpr int z_mask = (1 << 16);
-
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	: Sprite(flags),
 	pic_id(pic_id),
@@ -57,7 +53,7 @@ void Sprite_Picture::OnPictureShow() {
 			priority = Drawable::GetPriorityForMapLayer(pic.data.map_layer);
 		}
 		if (priority > 0) {
-			SetZ(priority + z_mask + pic_id);
+			SetZ(priority + pic_id);
 		}
 	}
 }
