@@ -162,6 +162,7 @@ void DirectoryTree::ClearCache(StringView path) const {
 	if (path.empty()) {
 		fs_cache.clear();
 		dir_cache.clear();
+		dir_missing_cache.clear();
 		return;
 	}
 
@@ -174,10 +175,9 @@ void DirectoryTree::ClearCache(StringView path) const {
 	if (dir_it != dir_cache.end()) {
 		dir_cache.erase(dir_it);
 	}
-	auto dir_missing_it = std::find(dir_missing_cache.begin(), dir_missing_cache.end(), dir_key);
-	if (dir_missing_it != dir_missing_cache.end()) {
-		dir_missing_cache.erase(dir_missing_it);
-	}
+	dir_missing_cache.erase(std::remove_if(dir_missing_cache.begin(), dir_missing_cache.end(), [&path] (const auto& dir) {
+		return StringView(dir).starts_with(path);
+	}), dir_missing_cache.end());
 }
 
 std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) const {

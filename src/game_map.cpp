@@ -77,6 +77,8 @@ namespace {
 	bool panorama_on_map_init = true;
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
+
+	bool translation_changed = false;
 }
 
 namespace Game_Map {
@@ -229,6 +231,7 @@ void Game_Map::SetupFromSave(
 		}
 	}
 	map_info.events.clear();
+	interpreter->Clear();
 
 	GetVehicle(Game_Vehicle::Boat)->SetSaveData(std::move(save_boat));
 	GetVehicle(Game_Vehicle::Ship)->SetSaveData(std::move(save_ship));
@@ -289,7 +292,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 			map_stream.clear();
 			map_stream.seekg(0);
 			Input::AddRecordingData(Input::RecordingData::Hash,
-						   fmt::format("map{} {:#08x}", Utils::CRC32(map_stream)));
+						   fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
 		}
 	} else {
 		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
@@ -332,6 +335,17 @@ void Game_Map::SetupCommon() {
 		ss << lcf::Data::treemap.maps[cur].name.c_str();
 	}
 	Output::Debug("Tree: {}", ss.str());
+
+	// Restart all common events after translation change
+	// Otherwise new strings are not applied
+	if (translation_changed) {
+		translation_changed = false;
+		common_events.clear();
+		common_events.reserve(lcf::Data::commonevents.size());
+		for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
+			common_events.emplace_back(ev.ID);
+		}
+	}
 
 	// Create the map events
 	events.reserve(map->events.size());
@@ -1493,6 +1507,13 @@ bool Game_Map::ReloadChipset() {
 		return false;
 	}
 	return true;
+}
+
+void Game_Map::OnTranslationChanged() {
+	ReloadChipset();
+	// Marks common events for reload on map change
+	// This is not save to do while they are executing
+	translation_changed = true;
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {

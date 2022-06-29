@@ -305,6 +305,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 
 			SetMaxStopCountForStep();
 		} else if (cmd >= Code::face_up && cmd <= Code::face_away_from_hero) {
+			SetDirection(GetFacing());
 			switch (cmd) {
 				case Code::face_up:
 					SetDirection(Up);

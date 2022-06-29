@@ -224,7 +224,7 @@ void Scene_Map::OnTranslationChanged() {
 	// FIXME: Map events are not reloaded
 	// They require leaving and reentering the map
 	Scene::OnTranslationChanged();
-	Game_Map::ReloadChipset();
+	Game_Map::OnTranslationChanged();
 }
 
 void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
