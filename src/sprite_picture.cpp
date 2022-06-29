@@ -46,7 +46,7 @@ void Sprite_Picture::OnPictureShow() {
 
 	if (feature_priority_layers) {
 		// Battle Animations are above pictures
-		int priority = 0;
+		Drawable::Z_t priority;
 		if (is_battle) {
 			priority = Drawable::GetPriorityForBattleLayer(pic.data.battle_layer);
 		} else {
