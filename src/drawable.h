@@ -137,6 +137,7 @@ inline void Drawable::SetVisible(bool value) {
 	_flags = value ? _flags & ~Flags::Invisible : _flags | Flags::Invisible;
 }
 
+// Upper 8 bit are reserved for the layer 
 static constexpr uint64_t z_offset = 64 - 8;
 
 // Lower 56 Bit are free to use
