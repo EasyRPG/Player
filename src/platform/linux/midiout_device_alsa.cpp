@@ -178,11 +178,6 @@ void AlsaMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	}
 }
 
-void AlsaMidiOutDevice::SendMidiReset() {
-	const uint8_t gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
-	SendSysExMessage(gm_reset, sizeof(gm_reset));
-}
-
 std::string AlsaMidiOutDevice::GetName() {
 	return "ALSA MIDI";
 }

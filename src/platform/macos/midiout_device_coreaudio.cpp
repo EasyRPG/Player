@@ -94,10 +94,6 @@ void CoreAudioMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) 
 	MusicDeviceSysEx(midi_out, (const UInt8*) data, (UInt32) size);
 }
 
-void CoreAudioMidiOutDevice::SendMidiReset() {
-	// TODO: how do you MIDI reset a MusicDevice?
-}
-
 std::string CoreAudioMidiOutDevice::GetName() {
 	return "CoreAudio MIDI";
 }

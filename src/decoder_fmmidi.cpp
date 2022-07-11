@@ -49,10 +49,6 @@ void FmMidiDecoder::SendSysExMessage(const uint8_t* data, std::size_t size) {
 	synth->sysex_message(data, size);
 }
 
-void FmMidiDecoder::SendMidiReset() {
-	synth->reset();
-}
-
 void FmMidiDecoder::load_programs() {
 	// beautiful
 	#include "midiprogram.h"

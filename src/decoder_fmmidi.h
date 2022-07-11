@@ -36,7 +36,6 @@ public:
 
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const uint8_t* data, size_t size) override;
-	void SendMidiReset() override;
 
 	std::unique_ptr<midisynth::synthesizer> synth;
 	std::unique_ptr<midisynth::fm_note_factory> note_factory;
