@@ -1360,8 +1360,7 @@ bool Player::IsCP932() {
 }
 
 bool Player::IsCP949() {
-	return (encoding == "windows-949-2000" ||
-			encoding == "949");
+	return (encoding == "windows-949-2000" || encoding == "windows-949" || encoding == "949");
 }
 
 bool Player::IsBig5() {
@@ -1369,8 +1368,7 @@ bool Player::IsBig5() {
 }
 
 bool Player::IsCP936() {
-	return (encoding == "windows-936-2000" ||
-			encoding == "936");
+	return (encoding == "windows-936-2000" || encoding == "windows-936" || encoding == "936");
 }
 
 bool Player::IsCJK() {
@@ -1378,8 +1376,7 @@ bool Player::IsCJK() {
 }
 
 bool Player::IsCP1251() {
-	return (encoding == "ibm-5347_P100-1998" ||
-			encoding == "windows-1251" || encoding == "1251");
+	return (encoding == "ibm-5347_P100-1998" || encoding == "windows-1251" || encoding == "1251");
 }
 
 int Player::EngineVersion() {
