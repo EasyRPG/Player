@@ -49,6 +49,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
+	Drawable::Z_t GetScreenZ(bool apply_shift = false) const override;
 	bool Move(int dir) override;
 	void UpdateNextMovementAction() override;
 	bool IsVisible() const override;
@@ -116,7 +117,7 @@ public:
 	 */
 	bool ScheduleForegroundExecution(bool triggered_by_decision_key, bool face_player);
 
-	/** 
+	/**
 	 * Update this for the current frame
 	 *
 	 * @param resume_async If we're resuming from an async operation.

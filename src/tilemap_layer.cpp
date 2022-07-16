@@ -145,10 +145,10 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	layer(ilayer),
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer
-	lower_layer(this, Priority_TilesetBelow + layer),
+	lower_layer(this, Priority_TilesetBelow + TileBelow + layer),
 	// SubLayer for the tiles with Wall or Above passability
 	// Its z-value should be between the z of the events in the upper layer and the hero
-	upper_layer(this, Priority_TilesetAbove + layer)
+	upper_layer(this, Priority_TilesetAbove + TileAbove + layer)
 {
 }
 
@@ -205,7 +205,7 @@ static uint32_t MakeAbTileHash(int id, int anim_step) {
 	return static_cast<uint32_t>((id + (anim_step << 12)) | (4 << 24));
 }
 
-void TilemapLayer::Draw(Bitmap& dst, int z_order) {
+void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order) {
 	// Get the number of tiles that can be displayed on window
 	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);
@@ -277,7 +277,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 			if (z_order == tile.z) {
 				if (layer == 0) {
 					// If lower layer
-					bool allow_fast_blit = (tile.z == Priority_TilesetBelow);
+					bool allow_fast_blit = (tile.z == TileBelow);
 
 					if (tile.ID >= BLOCK_E && tile.ID < BLOCK_E + BLOCK_E_TILES) {
 						int id = substitutions[tile.ID - BLOCK_E];
@@ -381,15 +381,15 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 			// Get the tile ID
 			tile.ID = nmap_data[x + y * width];
 
-			tile.z = Priority_TilesetBelow;
+			tile.z = TileBelow;
 
 			// Calculate the tile Z
 			if (!passable.empty()) {
 				if (tile.ID >= BLOCK_F) { // Upper layer
 					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-						tile.z = Priority_TilesetAbove + 1; // Upper sublayer
+						tile.z = TileAbove + 1; // Upper sublayer
 					else
-						tile.z = Priority_TilesetBelow + 1; // Lower sublayer
+						tile.z = TileBelow + 1; // Lower sublayer
 
 				} else { // Lower layer
 					int chip_index =
@@ -398,9 +398,9 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 						tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
 						tile.ID / 1000;
 					if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
-						tile.z = Priority_TilesetAbove; // Upper sublayer
+						tile.z = TileAbove; // Upper sublayer
 					else
-						tile.z = Priority_TilesetBelow; // Lower sublayer
+						tile.z = TileBelow; // Lower sublayer
 
 				}
 			}
@@ -669,9 +669,10 @@ void TilemapLayer::OnSubstitute() {
 	CreateTileCache(map_data);
 }
 
-TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
+TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, Drawable::Z_t z) :
 	Drawable(z),
-	tilemap(tilemap)
+	tilemap(tilemap),
+	internal_z(static_cast<uint8_t>(z))
 {
 	DrawableMgr::Register(this);
 }

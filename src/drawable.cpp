@@ -23,51 +23,74 @@ Drawable::~Drawable() {
 	DrawableMgr::Remove(this);
 }
 
-void Drawable::SetZ(int nz) {
+void Drawable::SetZ(Z_t nz) {
 	if (_z != nz) DrawableMgr::OnUpdateZ(this);
 	_z = nz;
 }
 
-int Drawable::GetPriorityForMapLayer(int which) {
+Drawable::Z_t Drawable::GetPriorityForMapLayer(int which) {
+	Z_t layer = 0;
+
 	switch (which) {
 		case lcf::rpg::SavePicture::MapLayer_parallax:
-			return Priority_Background;
+			layer = Priority_Background;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_tilemap_below:
-			return Priority_TilesetBelow;
+			layer = Priority_TilesetBelow;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_events_below:
-			return Priority_EventsBelow;
+			layer = Priority_EventsBelow;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_events_same_as_player:
-			return Priority_Player;
+			layer = Priority_Player;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_tilemap_above:
-			return Priority_TilesetAbove;
+			layer = Priority_TilesetAbove;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_events_above:
-			return Priority_EventsFlying;
+			layer = Priority_EventsFlying;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_weather:
-			return Priority_PictureNew;
+			layer = Priority_PictureNew;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_animations:
-			return Priority_BattleAnimation;
+			layer = Priority_BattleAnimation;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_windows:
-			return Priority_Window;
+			layer = Priority_Window;
+			break;
 		case lcf::rpg::SavePicture::MapLayer_timers:
-			return Priority_Timer;
+			layer = Priority_Timer;
+			break;
 		default:
-			return 0;
+			return layer;
 	}
+
+	return layer + (1ULL << z_offset);
 }
 
-int Drawable::GetPriorityForBattleLayer(int which) {
+Drawable::Z_t Drawable::GetPriorityForBattleLayer(int which) {
+	Z_t layer = 0;
+
 	switch (which) {
 		case lcf::rpg::SavePicture::BattleLayer_background:
-			return Priority_Background;
+			layer = Priority_Background;
+			break;
 		case lcf::rpg::SavePicture::BattleLayer_battlers_and_animations:
-			return Priority_Battler;
+			layer = Priority_Battler;
+			break;
 		case lcf::rpg::SavePicture::BattleLayer_weather:
-			return Priority_PictureNew;
+			layer = Priority_PictureNew;
+			break;
 		case lcf::rpg::SavePicture::BattleLayer_windows_and_status:
-			return Priority_Window;
+			layer = Priority_Window;
+			break;
 		case lcf::rpg::SavePicture::BattleLayer_timers:
-			return Priority_Timer;
+			layer = Priority_Timer;
+			break;
 		default:
-			return 0;
+			return layer;
 	}
+
+	return layer + (1ULL << z_offset);
 }

@@ -27,33 +27,13 @@ class Drawable;
 template <typename T>
 static constexpr bool IsDrawable = std::is_base_of<Drawable,T>::value;
 
-enum Priority {
-	Priority_Background = 5 << 24,
-	Priority_TilesetBelow = 10 << 24,
-	Priority_EventsBelow = 15 << 24,
-	Priority_Player = 20 << 24, // In Map, shared with "same as hero" events
-	Priority_Battler = 20 << 24, // In Battle (includes animations)
-	Priority_TilesetAbove = 25 << 24,
-	Priority_EventsAbove = 30 << 24,
-	Priority_EventsFlying = 35 << 24,
-	Priority_Weather = 36 << 24,
-	Priority_Screen = 40 << 24,
-	Priority_PictureNew = 45 << 24, // Pictures in RPG2k Value! and RPG2k3 >=1.05, shared
-	Priority_BattleAnimation = 50 << 24,
-	Priority_PictureOld = 55 << 24, // Picture in RPG2k <1.5 and RPG2k3 <1.05, shared
-	Priority_Window = 60 << 24,
-	Priority_Timer = 65 << 24,
-	Priority_Frame = 70 << 24,
-	Priority_Transition = 75 << 24,
-	Priority_Overlay = 80 << 24,
-	Priority_Maximum = 100 << 24
-};
-
 /**
  * Drawable virtual
  */
 class Drawable {
 public:
+	using Z_t = uint64_t;
+
 	/** Flags with dictate certain attributes of drawables */
 	enum class Flags : uint32_t {
 		/** No flags */
@@ -68,7 +48,7 @@ public:
 		Default = None
 	};
 
-	Drawable(int z, Flags flags = Flags::Default);
+	Drawable(Z_t z, Flags flags = Flags::Default);
 
 	Drawable(const Drawable&) = delete;
 	Drawable& operator=(const Drawable&) = delete;
@@ -77,9 +57,9 @@ public:
 
 	virtual void Draw(Bitmap& dst) = 0;
 
-	int GetZ() const;
+	Z_t GetZ() const;
 
-	void SetZ(int z);
+	void SetZ(Z_t z);
 
 	/* @return true if this drawable should appear in all scenes */
 	bool IsGlobal() const;
@@ -102,16 +82,16 @@ public:
 	 *
 	 * @return Priority or 0 when not found
 	 */
-	static int GetPriorityForMapLayer(int which);
+	static Z_t GetPriorityForMapLayer(int which);
 
 	/**
 	 * Converts a RPG Maker battle layer value into a EasyRPG priority value.
 	 *
 	 * @return Priority or 0 when not found
 	 */
-	static int GetPriorityForBattleLayer(int which);
+	static Z_t GetPriorityForBattleLayer(int which);
 private:
-	int32_t _z = 0;
+	Z_t _z = 0;
 	Flags _flags = Flags::Default;
 };
 
@@ -131,13 +111,13 @@ inline Drawable::Flags operator~(Drawable::Flags f) {
 	return static_cast<Drawable::Flags>(~static_cast<unsigned>(f));
 }
 
-inline Drawable::Drawable(int z, Flags flags)
+inline Drawable::Drawable(Z_t z, Flags flags)
 	: _z(z),
 	_flags(flags)
 {
 }
 
-inline int Drawable::GetZ() const {
+inline Drawable::Z_t Drawable::GetZ() const {
 	return _z;
 }
 
@@ -156,5 +136,32 @@ inline bool Drawable::IsVisible() const {
 inline void Drawable::SetVisible(bool value) {
 	_flags = value ? _flags & ~Flags::Invisible : _flags | Flags::Invisible;
 }
+
+// Upper 8 bit are reserved for the layer 
+static constexpr uint64_t z_offset = 64 - 8;
+
+// Lower 56 Bit are free to use
+// Keep a gap of 1 between layers everywhere because Pictures on the same layer have a z_offset of + 1
+enum Priority : Drawable::Z_t {
+	Priority_Background = 10ULL << z_offset,
+	Priority_TilesetBelow = 20ULL << z_offset,
+	Priority_EventsBelow = 30ULL << z_offset,
+	Priority_Player = 40ULL << z_offset, // In Map, shared with "same as hero" events
+	Priority_Battler = 40ULL << z_offset, // In Battle (includes animations)
+	Priority_TilesetAbove = 50ULL << z_offset,
+	Priority_EventsAbove = 60ULL << z_offset,
+	Priority_EventsFlying = 70ULL << z_offset,
+	Priority_Weather = 80ULL << z_offset,
+	Priority_Screen = 90ULL << z_offset,
+	Priority_PictureNew = 100ULL << z_offset, // Pictures in RPG2k Value! and RPG2k3 >=1.05, shared
+	Priority_BattleAnimation = 110ULL << z_offset,
+	Priority_PictureOld = 120ULL << z_offset, // Picture in RPG2k <1.5 and RPG2k3 <1.05, shared
+	Priority_Window = 130ULL << z_offset,
+	Priority_Timer = 140ULL << z_offset,
+	Priority_Frame = 150ULL << z_offset,
+	Priority_Transition = 160ULL << z_offset,
+	Priority_Overlay = 170ULL << z_offset,
+	Priority_Maximum = 255ULL << z_offset // Higher values will overflow
+};
 
 #endif

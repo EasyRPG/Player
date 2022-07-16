@@ -90,7 +90,7 @@ void DrawableList::TakeFrom(DrawableList& other) noexcept {
 	other.SetClean();
 }
 
-void DrawableList::Draw(Bitmap& dst, int min_z, int max_z) {
+void DrawableList::Draw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z) {
 	if (IsDirty()) {
 		Sort();
 	} else {

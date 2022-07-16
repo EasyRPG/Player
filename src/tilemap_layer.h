@@ -36,12 +36,15 @@ class TilemapLayer;
  */
 class TilemapSubLayer : public Drawable {
 public:
-	TilemapSubLayer(TilemapLayer* tilemap, int z);
+	TilemapSubLayer(TilemapLayer* tilemap, Drawable::Z_t z);
 
 	void Draw(Bitmap& dst) override;
 
 private:
 	TilemapLayer* tilemap = nullptr;
+
+	// z value truncated to lower 8 bits for tile cache
+	uint8_t internal_z = 0;
 };
 
 /**
@@ -49,9 +52,14 @@ private:
  */
 class TilemapLayer {
 public:
+	// For performance reasons the tile cache only uses 8-bit z-layer because it only contains 4 values
+	// Do not change anything here to Drawable::Z_t
+	static constexpr uint8_t TileBelow = 0;
+	static constexpr uint8_t TileAbove = 100;
+
 	TilemapLayer(int ilayer);
 
-	void Draw(Bitmap& dst, int z_order);
+	void Draw(Bitmap& dst, uint8_t z_order);
 
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
@@ -137,7 +145,7 @@ private:
 
 	struct TileData {
 		short ID;
-		int z;
+		uint8_t z;
 	};
 
 	TileData& GetDataCache(int x, int y);

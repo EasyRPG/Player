@@ -103,8 +103,8 @@ int Game_Character::GetScreenY(bool apply_shift, bool apply_jump) const {
 	return y;
 }
 
-int Game_Character::GetScreenZ(bool apply_shift) const {
-	int z = 0;
+Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
+	Drawable::Z_t z = 0;
 
 	if (IsFlying()) {
 		z = Priority_EventsFlying;
@@ -116,7 +116,19 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 		z = Priority_EventsAbove;
 	}
 
-	z += GetScreenY(apply_shift, false);
+	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(apply_shift, false));
+
+	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX(apply_shift));
+
+	// The rendering order of characters is: Highest Y-coordinate, Highest X-coordinate, Highest ID
+	// To encode this behaviour all of them get 16 Bit in the Z value
+	// L- YY XX II (1 letter = 8 bit)
+	// L: Layer (specified by the event page)
+	// -: Unused
+	// Y: Y-coordinate
+	// X: X-coordinate
+	// I: ID (This is only applied by subclasses, characters itself put nothing (0) here
+	z += (y << 32) + (x << 16);
 
 	return z;
 }

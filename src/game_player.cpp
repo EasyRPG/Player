@@ -64,10 +64,12 @@ lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
 	return *data();
 }
 
-int Game_Player::GetScreenZ(bool apply_shift) const {
+Drawable::Z_t Game_Player::GetScreenZ(bool apply_shift) const {
 	// Player is always slightly above events
 	// (and always on "same layer as hero" obviously)
-	return Game_Character::GetScreenZ(apply_shift) + 1;
+	// To ensure this fake an ID of 65535 (all bit set)
+	// See base function for full explanation
+	return Game_Character::GetScreenZ(apply_shift) + 65535;
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt) {

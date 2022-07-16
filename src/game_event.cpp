@@ -115,6 +115,12 @@ lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
 	return save;
 }
 
+Drawable::Z_t Game_Event::GetScreenZ(bool apply_shift) const {
+	// Lowest 16 bit are reserved for the ID
+	// See base function for full explanation
+	return Game_Character::GetScreenZ(apply_shift) + GetId();
+}
+
 int Game_Event::GetOriginalMoveRouteIndex() const {
 	return data()->original_move_route_index;
 }

@@ -25,6 +25,7 @@
 #include <lcf/rpg/moveroute.h>
 #include <lcf/rpg/eventpage.h>
 #include <lcf/rpg/savemapeventbase.h>
+#include "drawable.h"
 #include "utils.h"
 
 /**
@@ -690,7 +691,7 @@ public:
 	 * @param apply_shift Forwarded to GetScreenY
 	 * @return screen z coordinate in pixels.
 	 */
-	virtual int GetScreenZ(bool apply_shift = false) const;
+	virtual Drawable::Z_t GetScreenZ(bool apply_shift = false) const;
 
 	/**
 	 * Gets tile graphic ID.
