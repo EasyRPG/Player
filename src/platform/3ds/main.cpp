@@ -25,10 +25,10 @@
 #include <string>
 #include <vector>
 
-// 8 MB required for booting and need extra linear memory for the sound
-// effect cache
+/* 8 MB required for booting and need extra linear memory for the sound
+ * effect cache and frame buffers
+ */
 u32 __ctru_linear_heap_size = 12*1024*1024;
-
 static u32 old_time_limit;
 
 int main(int argc, char* argv[]) {

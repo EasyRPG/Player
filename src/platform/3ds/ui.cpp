@@ -33,6 +33,7 @@
 #include <stdio.h>
 
 #include "keyboard_t3x.h"
+#include "battery_t3x.h"
 
 #ifdef SUPPORT_AUDIO
 #include "audio.h"
@@ -41,28 +42,95 @@ AudioInterface& CtrUi::GetAudio() {
 }
 #endif
 
+#ifndef _DEBUG
+using namespace std::chrono_literals;
+#endif
+
 namespace {
-	int touch_x, touch_y;
-	int touch_state = 0; // 0 not, 1 touched, 2 touched before, wait clear
+	Point touch_pos;
+	enum class screen_state { off, keep, touched, refresh };
+	screen_state bottom_state = screen_state::refresh;
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
+	constexpr int z = 0.5f;
 	u32* main_buffer;
+	aptHookCookie cookie;
+#ifndef _DEBUG
+	struct _batt {
+		u8 level = 0;
+		bool adapter = false;
+		C2D_SpriteSheet sheet;
+		C2D_Image image;
+		bool warned = false;
+	};
+	struct _batt battery;
+	Game_Clock::time_point info_tick;
+#endif
+}
+
+static void _aptHook(APT_HookType hook, void*) {
+	switch (hook) {
+		case APTHOOK_ONSUSPEND:
+			Output::Debug("app is going to suspend.");
+			Player::Pause();
+			break;
+		case APTHOOK_ONRESTORE:
+			Output::Debug("app has been restored.");
+			Player::Resume();
+			break;
+		case APTHOOK_ONSLEEP:
+			Output::Debug("3ds is going to sleep.");
+			Player::Pause();
+			break;
+		case APTHOOK_ONWAKEUP:
+			Output::Debug("3ds is waking up.");
+			Player::Resume();
+			break;
+		case APTHOOK_ONEXIT:
+			Output::Debug("3ds is going to home menu...");
+			Player::Exit();
+			break;
+		default:
+			Output::Debug("Unhandled 3ds hook.");
+			break;
+	}
+}
+
+void CtrUi::ToggleBottomScreen(bool state) {
+	// no need to access service
+	if ((state && bottom_state != screen_state::off) ||
+		(!state && bottom_state == screen_state::off))
+		return;
+
+	if (R_SUCCEEDED(gspLcdInit())) {
+		if (state) {
+			GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
+			bottom_state = screen_state::refresh;
+			Output::Debug("Turned Backlight on.");
+		} else {
+			GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
+			bottom_state = screen_state::off;
+			Output::Debug("Turned Backlight off.");
+		}
+		gspLcdExit();
+	} else {
+		Output::Warning("Could not turn Backlight state.");
+	}
 }
 
 CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
-
-	show_touchscreen = true;
+	aptHook(&cookie, _aptHook, 0);
+	ptmuInit();
 
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 	C2D_Prepare();
 	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -108,11 +176,19 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 #endif
 
 #ifndef _DEBUG
+	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+
 	C3D_Tex* keyb_tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
 	Tex3DS_Texture keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, keyb_tex, nullptr, false);
 	Tex3DS_TextureFree(keyb_t3x);
 	bottom_image.tex = keyb_tex;
 	bottom_image.subtex = &subt3x;
+
+	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
+	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
+
+	// force refresh
+	info_tick = Game_Clock::now() - 10s;
 #endif
 }
 
@@ -123,10 +199,18 @@ CtrUi::~CtrUi() {
 #ifndef _DEBUG
 	C3D_TexDelete(bottom_image.tex);
 	free(bottom_image.tex);
+
+	C2D_SpriteSheetFree(battery.sheet);
 #endif
 
 	C2D_Fini();
 	C3D_Fini();
+
+	ptmuExit();
+	aptUnhook(&cookie);
+
+	// Always turn bottom screen on
+	ToggleBottomScreen(true);
 }
 
 void CtrUi::ProcessEvents() {
@@ -164,47 +248,64 @@ void CtrUi::ProcessEvents() {
 #ifndef _DEBUG
 	// Touchscreen support
 	u32 keys_tbl[16] = {
-		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::KP_DIVIDE,
+		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::NONE,
 		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::KP_DIVIDE,
 		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::KP_MULTIPLY,
 		Input::Keys::N0, Input::Keys::KP_PERIOD, Input::Keys::KP_ADD, Input::Keys::KP_SUBTRACT
 	};
 
-	if (touch_state == 1) {
-		// Touch finished, do final redraw in UpdateDisplay
-		touch_state = 2;
-	}
-
 	for (int i = 0; i < 16; i++)
 		keys[keys_tbl[i]] = false;
 
 	if (input & KEY_TOUCH) {
-		if(show_touchscreen) {
-			touch_state = 1;
+		if(bottom_state != screen_state::off) {
+			bottom_state = screen_state::touched;
 			touchPosition pos;
 			hidTouchRead(&pos);
 			u8 col = pos.px / button_width;
 			u8 row = pos.py / button_height;
 
-			if (row == 0 && col == 3) { // Turn off touchscreen for top right button
-				if (R_SUCCEEDED(gspLcdInit())) {
-					show_touchscreen = false;
-					GSPLCD_PowerOffBacklight(GSPLCD_SCREEN_BOTTOM);
-					gspLcdExit();
-				}
-
+			// Turn off touchscreen for top right button
+			if (row == 0 && col == 3) {
+				ToggleBottomScreen(false);
 			} else {
 				keys[keys_tbl[col + (row * 4)]] = true;
 			}
 
-			touch_x = pos.px;
-			touch_y = pos.py;
+			touch_pos.x = pos.px;
+			touch_pos.y = pos.py;
 		} else {
-			if (R_SUCCEEDED(gspLcdInit())) {
-				show_touchscreen = true;
-				GSPLCD_PowerOnBacklight(GSPLCD_SCREEN_BOTTOM);
-				gspLcdExit();
-			}
+			ToggleBottomScreen(true);
+		}
+	}
+
+	// info display, query every 10s
+	auto t = Game_Clock::now();
+	auto s = std::chrono::duration_cast<std::chrono::seconds>(t - info_tick);
+	if (s > 10s) {
+		info_tick = t;
+
+		struct _batt old = battery;
+		PTMU_GetAdapterState(&battery.adapter);
+		PTMU_GetBatteryLevel(&battery.level); // 0-5
+
+		if (!battery.warned && !battery.adapter && !battery.level) {
+			Output::Warning("Your 3DS may run out of battery soon.");
+			battery.warned = true;
+		}
+
+		if (battery.adapter) {
+			battery.warned = false;
+			battery.image = C2D_SpriteSheetGetImage(battery.sheet, 6);
+		} else {
+			battery.image = C2D_SpriteSheetGetImage(battery.sheet, battery.level);
+		}
+
+		// only refresh for battery, when something changed
+		if ((old.adapter != battery.adapter
+			|| old.level != battery.level) &&
+			bottom_state == screen_state::keep) {
+			bottom_state = screen_state::refresh;
 		}
 	}
 #endif
@@ -257,49 +358,65 @@ void CtrUi::UpdateDisplay() {
 
 	// FIXME: All video options must be accesible during runtime
 	/*if (cfg.stretch_width) {
-		C2D_DrawImageAt(top_image, 0, 0, 0.5f, NULL, 1.25f, 1.0f);
+		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, 1.25f, 1.0f);
 	} else {
-		C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
+		C2D_DrawImageAt(top_image, 40, 0, z);
 	}*/
-	C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
+	C2D_DrawImageAt(top_image, 40, 0, z);
 
-#ifndef _DEBUG
 	// bottom screen
-	C2D_SceneBegin(bottom_screen);
+#ifndef _DEBUG
+	// darkened button with outline
+	auto draw_button = [this](Point p, int w, int h) {
+		u8 col = p.x / w;
+		u8 row = p.y / h;
+		int x = col * w;
+		int y = row * h;
+		int b = 2; // border width
+		constexpr u32 white = C2D_Color32f(1, 1, 1, 1);
+		constexpr u32 darkgray = C2D_Color32f(0.5f, 0.5f, 0.5f, 1);
+		constexpr u32 lightgray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
+		constexpr u32 transblack = C2D_Color32f(0, 0, 0, 0.3f);
 
-	// More low hanging fruit optimisation:
-	// Only refresh the bottom when a touch happens and one frame after
-	static bool once = false;
-	if (!once || touch_state == 2) {
+		C2D_DrawRectSolid(x + b, y + b, z, w - b * 2, h - b * 2, transblack); // inner layer
+		C2D_DrawRectangle(x, y, z, w, b, darkgray, lightgray, darkgray, lightgray); // top
+		C2D_DrawRectangle(x, y, z, b, h, darkgray, darkgray, lightgray, lightgray); // left
+		C2D_DrawRectangle(x + w - b, y, z, b, h, lightgray, lightgray, white, white); // right
+		C2D_DrawRectangle(x, y + h - b, z, w, b, lightgray, white, lightgray, white); // bottom
+	};
+
+	// "circle" cursor
+	auto draw_cursor = [this](Point p) {
+		constexpr u32 green = C2D_Color32f(0.1f, 0.7f, 0.1f, 0.9f);
+		C2D_DrawRectSolid(p.x-1, p.y, z, 3, 1, green);
+		C2D_DrawRectSolid(p.x, p.y-1, z, 1, 3, green);
+		// real circle, requires state change, so slower
+		//C2D_DrawCircleSolid(p.x, p.y, z, 2, green);
+	};
+
+	/* More low hanging fruit optimisation: Only refresh the bottom screen
+	 * when there is something to draw (a touch happens, battery level changed,
+	 * etc) and one frame after
+	 */
+	if (bottom_state > screen_state::keep) {
+		C2D_SceneBegin(bottom_screen);
+
 		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
-		touch_state = 0;
-		once = true;
-	}
+		C2D_DrawImageAt(bottom_image, 0, 0, z);
 
-	if (touch_state == 1) {
-		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+		if (bottom_state == screen_state::touched) {
+			draw_button(touch_pos, button_width, button_height);
+			draw_cursor(touch_pos);
 
-		u32 gray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
-		u32 white = C2D_Color32f(1, 1, 1, 1);
+			// Touch finished, do final redraw
+			bottom_state = screen_state::refresh;
+		} else if (bottom_state == screen_state::refresh) {
+			// nothing new anymore, keep framebuffer
+			bottom_state = screen_state::keep;
+		}
 
-		// "circle" cursor
-		C2D_DrawRectSolid(touch_x - 1, touch_y, 0.5f, 3, 1, gray);
-		C2D_DrawRectSolid(touch_x, touch_y - 1, 0.5f, 1, 3, gray);
-
-		// get touched button
-		u8 col = touch_x / button_width;
-		u8 row = touch_y / button_height;
-		u8 pos_x = col * button_width;
-		u8 pos_y = row * button_height;
-
-		// darkened button with outline
-		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, button_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
-		C2D_DrawRectSolid(pos_x + button_width - 2, pos_y, 0.5f, 2, button_height, white); // right
-		C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, button_width, 2, white); // bottom
-		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, button_width, 2, gray); // top
-		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
+		// image is 41*12, position with 2 pixels border at bottom right
+		C2D_DrawImageAt(battery.image, 320-41-2, 240-12-2, z);
 	}
 #endif
 
