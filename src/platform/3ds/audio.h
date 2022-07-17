@@ -28,7 +28,7 @@
 #include "audio_decoder.h"
 #include "game_clock.h"
 
-class CtrAudio : public AudioInterface {
+class CtrAudio final : public AudioInterface {
 public:
 	CtrAudio();
 	~CtrAudio();
@@ -45,23 +45,10 @@ public:
 	void BGM_Pitch(int pitch) override;
 	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) override;
 	void SE_Stop() override;
-	virtual void Update() override;
-
-	volatile bool term_stream = false;
+	void Update() override;
 
 	void LockMutex() const;
 	void UnlockMutex() const;
-
-	ndspWaveBuf bgm_buf[2];
-	std::unique_ptr<AudioDecoderBase> bgm_decoder;
-	LightEvent audio_event;
-
-private:
-	mutable LightLock audio_mutex;
-
-	ndspWaveBuf se_buf[23];
-	Game_Clock::time_point bgm_starttick;
-	uint32_t* bgm_audio_buffer;
 }; // class CtrAudio
 
 #endif
