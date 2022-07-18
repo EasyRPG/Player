@@ -66,11 +66,6 @@ void LibretroMidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	midi_out.flush();
 }
 
-void LibretroMidiOutDevice::SendMidiReset() {
-	unsigned char gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
-	SendSysExMessage(gm_reset, sizeof(gm_reset));
-}
-
 std::string LibretroMidiOutDevice::GetName() {
 	return "libretro MIDI";
 }

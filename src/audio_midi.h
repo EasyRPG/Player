@@ -61,7 +61,6 @@ public:
 	 * The library must implement the following commands:
 	 * - SendMidiMessage
 	 * - SendSysExMessage (nice to have)
-	 * - SendMidiReset
 	 *
 	 * When Midi messages are not supported (library uses own sequencer)
 	 * - Open
@@ -153,11 +152,6 @@ public:
 		(void)data;
 		(void)size;
 	}
-
-	/**
-	 * Requests a reset of the Midi Sequencer
-	 */
-	virtual void SendMidiReset() {}
 
 	/**
 	 * Called when the synthesizer shall write data in a buffer.

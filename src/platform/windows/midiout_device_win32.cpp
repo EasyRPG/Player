@@ -42,8 +42,9 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 
 Win32MidiOutDevice::~Win32MidiOutDevice() {
 	if (midi_out) {
+		midiOutReset(midi_out);
 		midiOutClose(midi_out);
-		midi_out = NULL;
+		midi_out = nullptr;
 	}
 }
 
@@ -71,10 +72,6 @@ void Win32MidiOutDevice::SendSysExMessage(const uint8_t* data, size_t size) {
 	if (res != MMSYSERR_NOERROR) {
 		Output::Debug("Win32 midiOutUnprepareHeader failed: ({}) {}", res, get_error_str(res));
 	}
-}
-
-void Win32MidiOutDevice::SendMidiReset() {
-	midiOutReset(midi_out);
 }
 
 std::string Win32MidiOutDevice::GetName() {

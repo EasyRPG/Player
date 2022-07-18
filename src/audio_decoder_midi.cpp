@@ -368,7 +368,10 @@ void AudioDecoderMidi::reset() {
 	// MIDI reset event
 	SendMessageToAllChannels(midimsg_all_sound_off(0));
 	SendMessageToAllChannels(midimsg_reset_all_controller(0));
-	mididec->SendMidiReset();
+
+	// GM system on (resets most parameters)
+	const unsigned char gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
+	mididec->SendSysExMessage(gm_reset, sizeof(gm_reset));
 }
 
 void AudioDecoderMidi::reset_tempos_after_loop() {
