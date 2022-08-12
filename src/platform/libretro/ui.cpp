@@ -280,9 +280,11 @@ static void init_easy_rpg() {
 
 	Player::Init(args);
 
-	auto buttons = Input::GetDefaultButtonMappings();
+	// Fixme: Input configuration is not loaded
+	Game_ConfigInput cfg;
+	cfg.buttons = Input::GetDefaultButtonMappings();
 
-	Input::Init(std::move(buttons), "", "");
+	Input::Init(cfg, "", "");
 }
 
 /* Library global initialization/deinitialization. */

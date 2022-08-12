@@ -58,7 +58,7 @@ bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
 void Input::Init(
-	ButtonMappingArray buttons,
+	const Game_ConfigInput& cfg,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
@@ -77,7 +77,7 @@ void Input::Init(
 		{ Direction::UP, UP }
 	};
 
-	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
+	source = Source::Create(cfg, std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
 
 	ResetMask();

@@ -26,6 +26,7 @@
 #include "input_buttons.h"
 #include "input_source.h"
 #include "keys.h"
+#include "game_config.h"
 
 /**
  * Input namespace.
@@ -39,14 +40,14 @@ namespace Input {
 	/**
 	 * Initializes Input.
 	 *
-	 * @param buttons the button mappings to use
+	 * @param cfg input configuration
 	 * @param replay_from_path path to a log file to
 	 *  replay from, or the empty string if not replaying
 	 * @param record_to_path path to a file to record
 	 *  input to, or the empty string if not recording
 	 */
 	void Init(
-		ButtonMappingArray buttons,
+		const Game_ConfigInput& cfg,
 		const std::string& replay_from_path,
 		const std::string& record_to_path
 	);

@@ -30,25 +30,22 @@
 #include "version.h"
 
 std::unique_ptr<Input::Source> Input::Source::Create(
-		Input::ButtonMappingArray buttons,
+		const Game_ConfigInput& cfg,
 		Input::DirectionMappingArray directions,
 		const std::string& replay_from_path)
 {
 	if (!replay_from_path.empty()) {
 		auto path = replay_from_path.c_str();
 
-		auto log_src = std::make_unique<Input::LogSource>(path, std::move(buttons), std::move(directions));
+		auto log_src = std::make_unique<Input::LogSource>(path, cfg, std::move(directions));
 
 		if (*log_src) {
 			return log_src;
 		}
-		Output::Warning("Failed to open file for input replaying: {}", path);
-
-		buttons = std::move(log_src->GetButtonMappings());
-		directions = std::move(log_src->GetDirectionMappings());
+		Output::Error("Failed to open file for input replaying: {}", path);
 	}
 
-	return std::make_unique<Input::UiSource>(std::move(buttons), std::move(directions));
+	return std::make_unique<Input::UiSource>(cfg, std::move(directions));
 }
 
 void Input::UiSource::DoUpdate(bool system_only) {
@@ -58,7 +55,7 @@ void Input::UiSource::DoUpdate(bool system_only) {
 
 	UpdateGamepad();
 
-	for (auto& bm: button_mappings) {
+	for (auto& bm: cfg.buttons) {
 		if (keymask[bm.second]) {
 			continue;
 		}
@@ -81,8 +78,8 @@ void Input::UiSource::UpdateSystem() {
 	DoUpdate(true);
 }
 
-Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
-	: Source(std::move(buttons), std::move(directions)),
+Input::LogSource::LogSource(const char* log_path, const Game_ConfigInput& cfg, DirectionMappingArray directions)
+	: Source(cfg, std::move(directions)),
 	log_file(FileFinder::Root().OpenInputStream(log_path, std::ios::in))
 {
 	if (!log_file) {
@@ -202,6 +199,30 @@ void Input::Source::Record() {
 }
 
 void Input::Source::UpdateGamepad() {
+	// Configuration
+	if (cfg.gamepad_swap_analog.Get()) {
+		std::swap(analog_input.primary, analog_input.secondary);
+	}
+
+	auto bit_swap = [&](Input::Keys::InputKey first, Input::Keys::InputKey second) {
+		// No std::swap support for std::bitset
+		bool tmp = keystates[first];
+		keystates[first] = keystates[second];
+		keystates[second] = tmp;
+	};
+
+	if (cfg.gamepad_swap_ab_and_xy.Get()) {
+		bit_swap(Input::Keys::JOY_A, Input::Keys::JOY_B);
+		bit_swap(Input::Keys::JOY_X, Input::Keys::JOY_Y);
+	}
+
+	if (cfg.gamepad_swap_dpad_with_buttons.Get()) {
+		bit_swap(Input::Keys::JOY_DPAD_UP, Input::Keys::JOY_Y);
+		bit_swap(Input::Keys::JOY_DPAD_DOWN, Input::Keys::JOY_A);
+		bit_swap(Input::Keys::JOY_DPAD_LEFT, Input::Keys::JOY_X);
+		bit_swap(Input::Keys::JOY_DPAD_RIGHT, Input::Keys::JOY_B);
+	}
+
 	// Primary Analog Stick (For directions, does not support diagonals)
 	keystates[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = analog_input.primary.x > JOYSTICK_STICK_SENSIBILITY;
 	keystates[Input::Keys::JOY_STICK_PRIMARY_LEFT] = analog_input.primary.x < -JOYSTICK_STICK_SENSIBILITY;

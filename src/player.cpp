@@ -187,9 +187,7 @@ void Player::Init(std::vector<std::string> arguments) {
 		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg);
 	}
 
-	auto buttons = cfg.input.buttons;
-
-	Input::Init(std::move(buttons), replay_input_path, record_input_path);
+	Input::Init(cfg.input, replay_input_path, record_input_path);
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);

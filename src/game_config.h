@@ -57,8 +57,9 @@ struct Game_ConfigAudio {
 };
 
 struct Game_ConfigInput {
-	BoolConfigParam swap_analog{ false };
-	BoolConfigParam swap_buttons{ false };
+	BoolConfigParam gamepad_swap_analog{ false };
+	BoolConfigParam gamepad_swap_dpad_with_buttons{ false };
+	BoolConfigParam gamepad_swap_ab_and_xy{ false };
 	Input::ButtonMappingArray buttons;
 };
 
