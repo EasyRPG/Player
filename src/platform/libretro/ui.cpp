@@ -56,7 +56,7 @@ bool LibretroUi::player_exit_called = false;
 static Input::Keys::InputKey RetroJKey2InputKey(int button_index);
 #endif
 
-LibretroUi::LibretroUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	// Handled by libretro
 	// FIXME: There is currently no callback from libretro telling us whether or not fullscreen is enabled.

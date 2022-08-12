@@ -50,9 +50,9 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 {
-	auto fs_flag = cfg.fullscreen.Get();
+	auto fs_flag = cfg.video.fullscreen.Get();
 	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG

@@ -126,7 +126,7 @@ static int renderThread(unsigned int args, void* arg){
 	}
 }
 
-Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+Psp2Ui::Psp2Ui(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 
@@ -134,7 +134,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	zoom_trigger = false;
 	is_pstv = sceKernelIsPSVitaTV();
 	vita2d_init();
-	vita2d_set_vblank_wait(cfg.vsync.Get());
+	vita2d_set_vblank_wait(cfg.video.vsync.Get());
 	gpu_texture = vita2d_create_empty_texture_format(width, height,
 		SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);

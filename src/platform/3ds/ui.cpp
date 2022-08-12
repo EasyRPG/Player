@@ -121,7 +121,7 @@ void CtrUi::ToggleBottomScreen(bool state) {
 	}
 }
 
-CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 	aptHook(&cookie, _aptHook, 0);
@@ -165,7 +165,7 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	top_image.subtex = &subt3x;
 
 	// FIXME: Add option to settings Ui
-	if (cfg.stretch_width.Get()) {
+	if (cfg.video.stretch_width.Get()) {
 		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
 		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);

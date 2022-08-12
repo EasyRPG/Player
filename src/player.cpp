@@ -184,7 +184,7 @@ void Player::Init(std::vector<std::string> arguments) {
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
-		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg.video);
+		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg);
 	}
 
 	auto buttons = cfg.input.buttons;

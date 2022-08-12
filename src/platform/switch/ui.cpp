@@ -277,7 +277,7 @@ static void appletHookCallback(AppletHookType hook, void* param) {
 	}
 }
 
-NxUi::NxUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg) {
+NxUi::NxUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg) {
 #if 1
 	setenv("MESA_NO_ERROR", "1", 1);
 #else

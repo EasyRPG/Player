@@ -51,9 +51,9 @@ public:
 	 *
 	 * @param width display client width.
 	 * @param height display client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_ConfigVideo& cfg);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_Config& cfg);
 
 	/**
 	 * Toggles fullscreen.
@@ -196,7 +196,7 @@ protected:
 	/**
 	 * Protected Constructor. Use CreateBaseUi instead.
 	 */
-	explicit BaseUi(const Game_ConfigVideo& cfg);
+	explicit BaseUi(const Game_Config& cfg);
 
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);

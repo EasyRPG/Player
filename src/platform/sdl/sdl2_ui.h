@@ -45,9 +45,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg);
+	Sdl2Ui(long width, long height, const Game_Config& cfg);
 
 	/**
 	 * Destructor.

@@ -125,7 +125,7 @@ static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
@@ -142,9 +142,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 	}
 
 	RequestVideoMode(width, height,
-			cfg.window_zoom.Get(),
-			cfg.fullscreen.Get(),
-			cfg.vsync.Get());
+			cfg.video.window_zoom.Get(),
+			cfg.video.fullscreen.Get(),
+			cfg.video.vsync.Get());
 
 	SetTitle(GAME_TITLE);
 

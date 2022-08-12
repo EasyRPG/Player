@@ -35,7 +35,7 @@
 
 std::shared_ptr<BaseUi> DisplayUi;
 
-std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_ConfigVideo& cfg) {
+std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_Config& cfg) {
 #if USE_SDL==2
 	return std::make_shared<Sdl2Ui>(width, height, cfg);
 #elif USE_SDL==1
@@ -47,15 +47,17 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_Con
 #endif
 }
 
-BaseUi::BaseUi(const Game_ConfigVideo& cfg)
+BaseUi::BaseUi(const Game_Config& cfg)
 {
 	keys.reset();
 
-	show_fps = cfg.show_fps.Get();
-	fps_render_window = cfg.fps_render_window.Get();
-	fps_limit = cfg.fps_limit.Get();
+	const Game_ConfigVideo& vcfg = cfg.video;
+
+	show_fps = vcfg.show_fps.Get();
+	fps_render_window = vcfg.fps_render_window.Get();
+	fps_limit = vcfg.fps_limit.Get();
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
-	scaling_mode = cfg.scaling_mode.Get();
+	scaling_mode = vcfg.scaling_mode.Get();
 }
 
 BitmapRef BaseUi::CaptureScreen() {
