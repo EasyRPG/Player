@@ -281,9 +281,8 @@ static void init_easy_rpg() {
 	Player::Init(args);
 
 	auto buttons = Input::GetDefaultButtonMappings();
-	auto directions = Input::GetDefaultDirectionMappings();
 
-	Input::Init(std::move(buttons), std::move(directions), "", "");
+	Input::Init(std::move(buttons), "", "");
 }
 
 /* Library global initialization/deinitialization. */

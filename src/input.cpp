@@ -59,7 +59,6 @@ void Input::WaitInput(bool v) { wait_input = v; }
 
 void Input::Init(
 	ButtonMappingArray buttons,
-	DirectionMappingArray directions,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
@@ -70,6 +69,13 @@ void Input::Init(
 	raw_triggered.reset();
 	raw_pressed.reset();
 	raw_released.reset();
+
+	DirectionMappingArray directions = {
+		{ Direction::DOWN, DOWN },
+		{ Direction::LEFT, LEFT },
+		{ Direction::RIGHT, RIGHT },
+		{ Direction::UP, UP }
+	};
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);

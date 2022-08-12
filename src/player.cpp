@@ -188,9 +188,8 @@ void Player::Init(std::vector<std::string> arguments) {
 	}
 
 	auto buttons = cfg.input.buttons;
-	auto directions = Input::GetDefaultDirectionMappings();
 
-	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
+	Input::Init(std::move(buttons), replay_input_path, record_input_path);
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);

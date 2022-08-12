@@ -240,9 +240,6 @@ namespace Input {
 	/** Returns default button mappings */
 	ButtonMappingArray GetDefaultButtonMappings();
 
-	/** Returns default direction mappings */
-	DirectionMappingArray GetDefaultDirectionMappings();
-
 	/** Returns platform-specific, human readable name for an input key */
 	KeyNamesArray GetInputKeyNames();
 
