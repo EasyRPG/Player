@@ -22,12 +22,20 @@
 #include <string>
 #include "filesystem_stream.h"
 #include "audio_secache.h"
+#include "game_config.h"
 
 /**
  * Base Audio class.
  */
 struct AudioInterface {
+	explicit AudioInterface(const Game_ConfigAudio& cfg);
+
 	virtual ~AudioInterface() = default;
+
+	/**
+ 	 * @return current audio options.
+ 	 */
+	Game_ConfigAudio GetConfig() const;
 
 	/**
 	 * Update audio. Must be called each frame.
@@ -111,10 +119,14 @@ struct AudioInterface {
 	 * Stops the currently playing sound effect.
 	 */
 	virtual void SE_Stop() = 0;
+
+protected:
+	Game_ConfigAudio cfg;
 };
 
 struct EmptyAudio : public AudioInterface {
 public:
+	explicit EmptyAudio(const Game_ConfigAudio& cfg);
 	void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override;
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}

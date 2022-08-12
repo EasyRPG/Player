@@ -60,8 +60,8 @@ static int psp2_audio_thread(unsigned int, void*){
 	}
 }
 
-Psp2Audio::Psp2Audio() :
-	GenericAudio()
+Psp2Audio::Psp2Audio(const Game_ConfigAudio& cfg) :
+	GenericAudio(cfg)
 {
 	instance = this;
 

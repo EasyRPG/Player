@@ -194,7 +194,7 @@ public:
 
 protected:
 	/**
-	 * Protected Constructor. Use CreateBaseUi instead.
+	 * Protected Constructor. Use CreateUi instead.
 	 */
 	explicit BaseUi(const Game_Config& cfg);
 

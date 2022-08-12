@@ -373,7 +373,7 @@ NxUi::NxUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg) {
 	appletHookCallback(AppletHookType_OnOperationMode, (void *)false);
 
 #ifdef SUPPORT_AUDIO
-	audio_.reset(new NxAudio());
+	audio_ = std::make_unique<NxAudio>(cfg.audio);
 #endif
 
 	padConfigureInput(1, HidNpadStyleSet_NpadStandard);

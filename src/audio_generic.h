@@ -41,7 +41,7 @@ class GenericAudioMidiOut;
  */
 class GenericAudio : public AudioInterface {
 public:
-	GenericAudio();
+	GenericAudio(const Game_ConfigAudio& cfg);
 	virtual ~GenericAudio() = default;
 
 	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;

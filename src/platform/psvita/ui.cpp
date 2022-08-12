@@ -158,7 +158,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 		width, height, vita2d_texture_get_stride(main_texture), format);
 
 	#ifdef SUPPORT_AUDIO
-		audio_.reset(new Psp2Audio());
+	audio_ = std::make_unique<Psp2Audio>(cfg.audio);
 	#endif
 
 	scePowerSetArmClockFrequency(444);

@@ -24,7 +24,7 @@
 
 class NxAudio : public GenericAudio {
 public:
-	NxAudio();
+	NxAudio(const Game_ConfigAudio& cfg);
 	~NxAudio();
 
 	void LockMutex() const override;

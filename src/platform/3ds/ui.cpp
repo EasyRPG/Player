@@ -172,7 +172,7 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	}
 
 #ifdef SUPPORT_AUDIO
-	audio_.reset(new CtrAudio());
+	audio_ = std::make_unique<CtrAudio>(cfg.audio);
 #endif
 
 #ifndef _DEBUG

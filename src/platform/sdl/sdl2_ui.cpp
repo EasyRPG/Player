@@ -165,11 +165,11 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlAudio());
+		audio_ = std::make_unique<SdlAudio>(cfg.audio);
 		return;
 	}
 #else
-	audio_.reset(new EmptyAudio());
+	audio_ = std::make_unique<EmptyAudio>(cfg.audio);
 #endif
 }
 

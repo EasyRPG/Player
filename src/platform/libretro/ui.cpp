@@ -86,7 +86,7 @@ LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(c
 	);
 
 	#ifdef SUPPORT_AUDIO
-	audio_.reset(new LibretroAudio());
+	audio_ = std::make_unique<LibretroAudio>(cfg.audio);
 	#endif
 
 	UpdateVariables();

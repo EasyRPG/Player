@@ -23,7 +23,8 @@
 #include "game_clock.h"
 
 AudioInterface& Audio() {
-	static EmptyAudio default_;
+	static Game_ConfigAudio cfg;
+	static EmptyAudio default_(cfg);
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag && DisplayUi)
 		return DisplayUi->GetAudio();
@@ -52,4 +53,16 @@ int EmptyAudio::BGM_GetTicks() const {
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
 	return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
+}
+
+EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
+
+}
+
+AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) {
+
+}
+
+Game_ConfigAudio AudioInterface::GetConfig() const {
+	return cfg;
 }

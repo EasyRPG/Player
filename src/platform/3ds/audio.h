@@ -30,7 +30,7 @@
 
 class CtrAudio final : public AudioInterface {
 public:
-	CtrAudio();
+	CtrAudio(const Game_ConfigAudio& cfg);
 	~CtrAudio();
 
 	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;

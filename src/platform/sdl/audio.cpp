@@ -69,8 +69,8 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 	return (AudioDecoder::Format)-1;
 }
 
-SdlAudio::SdlAudio() :
-	GenericAudio()
+SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
+	GenericAudio(cfg)
 {
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 		Output::Warning("Couldn't init audio: {}", SDL_GetError());

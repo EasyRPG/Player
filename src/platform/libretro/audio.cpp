@@ -55,8 +55,8 @@ void LibretroAudio::EnableAudio(bool enabled) {
 	enable_audio = enabled;
 }
 
-LibretroAudio::LibretroAudio() :
-	GenericAudio() {
+LibretroAudio::LibretroAudio(const Game_ConfigAudio& cfg) :
+	GenericAudio(cfg) {
 	instance = this;
 
 	mutex = slock_new();
