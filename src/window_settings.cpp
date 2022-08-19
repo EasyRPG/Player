@@ -27,6 +27,8 @@
 #include "bitmap.h"
 #include "player.h"
 #include "system.h"
+#include "audio.h"
+
 
 Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -202,22 +204,9 @@ void Window_Settings::UpdateHelp() {
 	}
 }
 
-static const std::string& ParamToText(const std::string& s) {
-	return s;
-}
-
-static std::string ParamToText(bool b) {
-	return b ? "ON" : "OFF";
-}
-
-static std::string ParamToText(int i) {
-	return std::to_string(i);
-}
-
 template <typename Param, typename Action>
 void Window_Settings::AddOption(const std::string& prefix,
 		const Param& param,
-		const std::string& suffix,
 		Action&& action,
 		const std::string& help)
 {
@@ -225,9 +214,24 @@ void Window_Settings::AddOption(const std::string& prefix,
 		return;
 	}
 	Option opt;
-	std::string suffix_ = ParamToText(param.Get()) + suffix;
-	opt.text = prefix + (suffix_.empty() ? "" : ": " + suffix_);
+	opt.text = prefix;
 	opt.help = help;
+	if (!param.Locked()) {
+		opt.action = std::forward<Action>(action);
+	}
+	options.push_back(std::move(opt));
+}
+
+template <typename Param, typename Action>
+void Window_Settings::AddOption(const Param& param,
+		Action&& action)
+{
+	if (!param.Enabled()) {
+		return;
+	}
+	Option opt;
+	opt.text = ToString(param.GetName());
+	opt.help = ToString(param.GetDescription());
 	if (!param.Locked()) {
 		opt.action = std::forward<Action>(action);
 	}
@@ -237,118 +241,105 @@ void Window_Settings::AddOption(const std::string& prefix,
 void Window_Settings::RefreshVideo() {
 	auto cfg = DisplayUi->GetConfig();
 
-	AddOption("Renderer", cfg.renderer, "",
-			[](){},
-			"The rendering engine");
-	AddOption("FullScreen", cfg.fullscreen, "",
-			[](){ DisplayUi->ToggleFullscreen(); },
-			"Toggle between fullscreen and window mode");
-	AddOption("Window Zoom", cfg.window_zoom, "",
-			[](){ DisplayUi->ToggleZoom(); },
-			"Toggle the window zoom level");
-	AddOption("Vsync", cfg.vsync, "",
-			[](){},
-			"Toogle Vsync mode (Recommended: ON)");
-	AddOption("Frame Limiter", cfg.fps_limit, " FPS",
-			[](){},
-			"Toggle the frames per second limit (Recommended: 60)");
-	AddOption("Show FPS", cfg.show_fps, "",
-			[](){ DisplayUi->ToggleShowFps(); },
-			"Toggle display of the FPS counter");
+	AddOption(cfg.renderer,	[](){});
+	AddOption(cfg.fullscreen, [](){ DisplayUi->ToggleFullscreen(); });
+	AddOption(cfg.window_zoom, [](){ DisplayUi->ToggleZoom(); });
+	AddOption(cfg.vsync, [](){});
+	AddOption(cfg.fps_limit, [](){});
+	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
+	AddOption(cfg.scaling_mode, [](){ /*DisplayUi->SetScalingMode();*/ });
 }
 
 void Window_Settings::RefreshAudio() {
-	AddOption("BGM Volume", LockedConfigParam<int>(100), "%",
-			[](){},
-			"Music Volumne");
-	AddOption("SFX Volume", LockedConfigParam<int>(100), "%",
-			[](){},
-			"Sound Effect Volume");
-	AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
+	auto cfg = DisplayUi->GetAudio().GetConfig();
+
+	AddOption(cfg.music_volume,	[](){});
+	AddOption(cfg.sound_volume, [](){});
+	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
 			[](){},
 			"Which MIDI backend to use");
 	AddOption("Midi Soundfont", LockedConfigParam<std::string>("Default"), "",
 			[](){},
-			"Which MIDI soundfont to use");
+			"Which MIDI soundfont to use");*/
 }
 
 void Window_Settings::RefreshLicense() {
-	AddOption("EasyRPG Player", ConfigParam<std::string>("GPLv3+"), "", [](){}, "The engine you are using :)");
-	AddOption("liblcf", ConfigParam<std::string>("MIT"), "", [](){}, "Handles RPG Maker 2000/2003 and EasyRPG projects");
-	AddOption("libpng", ConfigParam<std::string>("zlib"), "", [](){}, "For reading and writing PNG image files");
-	AddOption("zlib", ConfigParam<std::string>("zlib"), "", [](){}, "Implements deflate used in ZIP archives and PNG images");
-	AddOption("Pixman", ConfigParam<std::string>("MIT"), "", [](){}, "Pixel-manipulation library");
-	AddOption("fmtlib", ConfigParam<std::string>("BSD"), "", [](){}, "Text formatting library");
+	AddOption("EasyRPG Player", ConfigParam<std::string>("", "", "GPLv3+"), [](){}, "The engine you are using :)");
+	AddOption("liblcf", ConfigParam<std::string>("", "", "MIT"), [](){}, "Handles RPG Maker 2000/2003 and EasyRPG projects");
+	AddOption("libpng", ConfigParam<std::string>("", "", "zlib"), [](){}, "For reading and writing PNG image files");
+	AddOption("zlib", ConfigParam<std::string>("", "", "zlib"), [](){}, "Implements deflate used in ZIP archives and PNG images");
+	AddOption("Pixman", ConfigParam<std::string>("", "", "MIT"), [](){}, "Pixel-manipulation library");
+	AddOption("fmtlib", ConfigParam<std::string>("", "", "BSD"), [](){}, "Text formatting library");
 	// No way to detect them - Used by liblcf
-	AddOption("expat", ConfigParam<std::string>("MIT"), "", [](){}, "XML parser");
-	AddOption("ICU", ConfigParam<std::string>("ICU"), "", [](){}, "Unicode library");
+	AddOption("expat", ConfigParam<std::string>("", "", "MIT"), [](){}, "XML parser");
+	AddOption("ICU", ConfigParam<std::string>("", "", "ICU"), [](){}, "Unicode library");
 #if USE_SDL == 1
-	AddOption("SDL", ConfigParam<std::string>("LGPLv2.1+"), "", [](){}, "Abstraction layer for graphic, audio, input and more");
+	AddOption("SDL", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Abstraction layer for graphic, audio, input and more");
 #endif
 #if USE_SDL == 2
-	AddOption("SDL2", ConfigParam<std::string>("zlib"), "", [](){}, "Abstraction layer for graphic, audio, input and more");
+	AddOption("SDL2", ConfigParam<std::string>("", "", "zlib"), [](){}, "Abstraction layer for graphic, audio, input and more");
 #endif
 #ifdef HAVE_FREETYPE
-	AddOption("Freetype", ConfigParam<std::string>("Freetype"), "", [](){}, "Font parsing and rasterization library");
+	AddOption("Freetype", ConfigParam<std::string>("", "", "Freetype"), [](){}, "Font parsing and rasterization library");
 #endif
 #ifdef HAVE_HARFBUZZ
-	AddOption("Harfbuzz", ConfigParam<std::string>("MIT"), "", [](){}, "Text shaping engine");
+	AddOption("Harfbuzz", ConfigParam<std::string>("", "", "MIT"), [](){}, "Text shaping engine");
 #endif
 #ifdef SUPPORT_AUDIO
 	// Always shown because the Midi synth is compiled in
-	AddOption("FmMidi", ConfigParam<std::string>("BSD"), "", [](){}, "MIDI file parser and Yamaha YM2608 FM synthesizer");
+	AddOption("FmMidi", ConfigParam<std::string>("", "", "BSD"), [](){}, "MIDI file parser and Yamaha YM2608 FM synthesizer");
 #ifdef HAVE_LIBMPG123
-	AddOption("mpg123", ConfigParam<std::string>("LGPLv2.1+"), "", [](){}, "Decodes MPEG Audio Layer 1, 2 and 3");
+	AddOption("mpg123", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Decodes MPEG Audio Layer 1, 2 and 3");
 #endif
 #ifdef HAVE_LIBSNDFILE
-	AddOption("libsndfile", ConfigParam<std::string>("LGPLv2.1+"), "", [](){}, "Decodes sampled audio data (WAV)");
+	AddOption("libsndfile", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Decodes sampled audio data (WAV)");
 #endif
 #ifdef HAVE_OGGVORBIS
-	AddOption("ogg", ConfigParam<std::string>("BSD"), "", [](){}, "Ogg container format library");
-	AddOption("vorbis", ConfigParam<std::string>("BSD"), "", [](){}, "Decodes the free Ogg Vorbis audio codec");
+	AddOption("ogg", ConfigParam<std::string>("", "", "BSD"), [](){}, "Ogg container format library");
+	AddOption("vorbis", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free Ogg Vorbis audio codec");
 #endif
 #ifdef HAVE_TREMOR
-	AddOption("tremor", ConfigParam<std::string>("BSD"), "", [](){}, "Decodes the free Ogg Vorbis audio format");
+	AddOption("tremor", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free Ogg Vorbis audio format");
 #endif
 #ifdef HAVE_OPUS
-	AddOption("opus", ConfigParam<std::string>("BSD"), "", [](){}, "Decodes the free OPUS audio codec");
+	AddOption("opus", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free OPUS audio codec");
 #endif
 #ifdef HAVE_WILDMIDI
-	AddOption("WildMidi", ConfigParam<std::string>("LGPLv3+"), "", [](){}, "MIDI synthesizer");
+	AddOption("WildMidi", ConfigParam<std::string>("", "", "LGPLv3+"), [](){}, "MIDI synthesizer");
 #endif
 #ifdef HAVE_FLUIDSYNTH
-	AddOption("FluidSynth", ConfigParam<std::string>("LGPLv2.1+"), "", [](){}, "MIDI synthesizer supporting SoundFont 2");
+	AddOption("FluidSynth", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "MIDI synthesizer supporting SoundFont 2");
 #endif
 #ifdef HAVE_FLUIDLITE
-	AddOption("FluidLite", ConfigParam<std::string>("LGPLv2.1+"), "", [](){}, "MIDI synthesizer supporting SoundFont 2 (lite version)");
+	AddOption("FluidLite", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "MIDI synthesizer supporting SoundFont 2 (lite version)");
 #endif
 #ifdef HAVE_XMP
-	AddOption("xmp-lite", ConfigParam<std::string>("MIT"), "", [](){}, "Module (MOD, S3M, XM and IT) synthesizer");
+	AddOption("xmp-lite", ConfigParam<std::string>("", "", "MIT"), [](){}, "Module (MOD, S3M, XM and IT) synthesizer");
 #endif
 #ifdef HAVE_LIBSPEEXDSP
-	AddOption("speexdsp", ConfigParam<std::string>("BSD"), "", [](){}, "Audio resampler");
+	AddOption("speexdsp", ConfigParam<std::string>("", "", "BSD"), [](){}, "Audio resampler");
 #endif
 #ifdef HAVE_LIBSAMPLERATE
-	AddOption("samplerate", ConfigParam<std::string>("BSD"), "", [](){}, "Audio resampler");
+	AddOption("samplerate", ConfigParam<std::string>("", "", "BSD"), [](){}, "Audio resampler");
 #endif
 #ifdef WANT_DRWAV
-	AddOption("dr_wav", ConfigParam<std::string>("MIT-0"), "", [](){}, "Decodes sampled audio data (WAV)");
+	AddOption("dr_wav", ConfigParam<std::string>("", "", "MIT-0"), [](){}, "Decodes sampled audio data (WAV)");
 #endif
 #ifdef HAVE_ALSA
-	AddOption("ALSA", ConfigParam<std::string>("LGPL2.1+"), "", [](){}, "Linux sound support (used for MIDI playback)");
+	AddOption("ALSA", ConfigParam<std::string>("", "", "LGPL2.1+"), [](){}, "Linux sound support (used for MIDI playback)");
 #endif
 #endif
-	AddOption("rang", ConfigParam<std::string>("Unlicense"), "", [](){}, "Colors the terminal output");
+	AddOption("rang", ConfigParam<std::string>("", "", "Unlicense"), [](){}, "Colors the terminal output");
 #ifdef _WIN32
-	AddOption("dirent", ConfigParam<std::string>("MIT"), "", [](){}, "Dirent interface for Microsoft Visual Studio");
+	AddOption("dirent", ConfigParam<std::string>("", "", "MIT"), [](){}, "Dirent interface for Microsoft Visual Studio");
 #endif
-	AddOption("Baekmuk", ConfigParam<std::string>("Baekmuk"), "", [](){}, "Korean font family");
-	AddOption("Shinonome", ConfigParam<std::string>("Public Domain"), "", [](){}, "Japanese font family");
-	AddOption("ttyp0", ConfigParam<std::string>("ttyp0"), "", [](){}, "ttyp0 font family");
-	AddOption("WenQuanYi", ConfigParam<std::string>("GPLv2+ with FE"), "", [](){}, "WenQuanYi font family (CJK)");
+	AddOption("Baekmuk", ConfigParam<std::string>("", "", "Baekmuk"), [](){}, "Korean font family");
+	AddOption("Shinonome", ConfigParam<std::string>("", "", "Public Domain"), [](){}, "Japanese font family");
+	AddOption("ttyp0", ConfigParam<std::string>("", "", "ttyp0"), [](){}, "ttyp0 font family");
+	AddOption("WenQuanYi", ConfigParam<std::string>("", "", "GPLv2+ with FE"), [](){}, "WenQuanYi font family (CJK)");
 #ifdef EMSCRIPTEN
-	AddOption("PicoJSON", ConfigParam<std::string>("BSD"), "", [](){}, "JSON parser/serializer");
-	AddOption("Teenyicons", ConfigParam<std::string>("MIT"), "", [](){}, "Tiny minimal 1px icons");
+	AddOption("PicoJSON", ConfigParam<std::string>("", "", "BSD"), [](){}, "JSON parser/serializer");
+	AddOption("Teenyicons", ConfigParam<std::string>("", "", "MIT"), [](){}, "Tiny minimal 1px icons");
 #endif
 }
 
@@ -367,12 +358,12 @@ void Window_Settings::RefreshInput() {
 			ss << kname << " ";
 		}
 
-		auto param = ConfigParam<std::string>(ss.str());
+		auto param = ConfigParam<std::string>(name, help, ss.str());
 		std::string prefix = std::string("Key ") + name;
-		AddOption(prefix, param, "",
+		AddOption(param,
 				[this, button, prefix](){
 				Push(eInputButton, static_cast<int>(button));
-			}, help);
+			});
 	}
 }
 
@@ -409,20 +400,20 @@ void Window_Settings::RefreshInputButton() {
 		auto kname = Input::Keys::kNames.tag(key);
 
 		if (std::find(protected_buttons.begin(), protected_buttons.end(), *ki) != protected_buttons.end()) {
-			AddOption(kname, LockedConfigParam<std::string>(""), "", [](){
+			AddOption(kname, LockedConfigParam<std::string>("", "", ""), [](){
 			}, key_label);
 		} else {
-			AddOption(kname, ConfigParam<std::string>(""), "", [=]() mutable {
+			AddOption(kname, ConfigParam<std::string>("", "", ""), [=]() mutable {
 				Input::GetInputSource()->GetButtonMappings().Remove({button, key});
 				Refresh();
 			}, key_label);
 		}
 	}
 
-	AddOption("<Add new>", ConfigParam<std::string>(""), "", [=](){
+	AddOption("<Add new>", ConfigParam<std::string>("", "", ""), [=](){
 		Push(eInputRemap, static_cast<int>(button));
 	}, key_label);
-	AddOption("<Reset>", ConfigParam<std::string>(""), "", [=](){
+	AddOption("<Reset>", ConfigParam<std::string>("", "", ""), [=](){
 		Input::ResetDefaultMapping(button);
 		Refresh();
 	}, key_label);
@@ -432,6 +423,6 @@ void Window_Settings::RefreshInputRemap() {
 	auto button = static_cast<Input::InputButton>(GetFrame().arg);
 	auto name = Input::kButtonNames.tag(button);
 
-	AddOption("Press the new key", ConfigParam<std::string>(""), "", [](){}, fmt::format("Remapping {}", name));
-	AddOption("Hold CANCEL to abort", ConfigParam<std::string>(""), "", [](){}, "");
+	AddOption("Press the new key", ConfigParam<std::string>("", "", ""), [](){}, fmt::format("Remapping {}", name));
+	AddOption("Hold CANCEL to abort", ConfigParam<std::string>("", "", ""), [](){}, "");
 }

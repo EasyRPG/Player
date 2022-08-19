@@ -22,6 +22,7 @@
 #include "filesystem.h"
 #include "options.h"
 #include "input_buttons.h"
+#include "utils.h"
 
 class CmdlineParser;
 
@@ -35,31 +36,30 @@ enum class ScalingMode {
 };
 
 struct Game_ConfigPlayer {
-	StringConfigParam autobattle_algo{ "" };
-	StringConfigParam enemyai_algo{ "" };
+	StringConfigParam autobattle_algo{ "", "", "" };
+	StringConfigParam enemyai_algo{ "", "", "" };
 };
 
 struct Game_ConfigVideo {
-	LockedConfigParam<std::string> renderer{ "auto" };
-	BoolConfigParam vsync{ true };
-	BoolConfigParam fullscreen{ true };
-	BoolConfigParam show_fps{ false };
-	BoolConfigParam fps_render_window{ false };
-	BoolConfigParam stretch_width{ true };
-	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
-	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
-	EnumConfigParam<ScalingMode> scaling_mode{ ScalingMode::Bilinear };
+	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
+	BoolConfigParam vsync{ "Vsync", "Toggle Vsync mode (Recommended: ON)", true };
+	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", true };
+	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
+	BoolConfigParam fps_render_window{ "", "", false };
+	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
+	RangeConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2, 1, std::numeric_limits<int>::max() };
+	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "", ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"), Utils::MakeSvArray("", "", "")};
 };
 
 struct Game_ConfigAudio {
-	RangeConfigParam<int> music_volume{ 100, 0, 100 };
-	RangeConfigParam<int> sound_volume{ 100, 0, 100 };
+	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", 100, 0, 100 };
+	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", 100, 0, 100 };
 };
 
 struct Game_ConfigInput {
-	BoolConfigParam gamepad_swap_analog{ false };
-	BoolConfigParam gamepad_swap_dpad_with_buttons{ false };
-	BoolConfigParam gamepad_swap_ab_and_xy{ false };
+	BoolConfigParam gamepad_swap_analog{ "Swap Analog Sticks", "Swap left and right stick", false };
+	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
+	BoolConfigParam gamepad_swap_ab_and_xy{ "Swap AB and XY", "Swap A and B with X and Y", false };
 	Input::ButtonMappingArray buttons;
 };
 

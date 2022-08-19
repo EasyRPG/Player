@@ -78,9 +78,12 @@ private:
 	template <typename Param, typename Action>
 	void AddOption(const std::string& prefix,
 			const Param& p,
-			const std::string& suffix,
 			Action&& action,
 			const std::string& help);
+
+	template <typename Param, typename Action>
+	void AddOption(const Param& p,
+			Action&& action);
 
 	struct Option {
 		std::string text;

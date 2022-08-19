@@ -470,7 +470,7 @@ void Sdl2Ui::UpdateDisplay() {
 		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
 		float real_aspect = width_float / height_float;
 
-		if (scaling_mode == ScalingMode::Integer) {
+		if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
 				window.scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
@@ -506,7 +506,7 @@ void Sdl2Ui::UpdateDisplay() {
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		}
 
-		if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+		if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
 			if (sdl_texture_scaled) {
 				SDL_DestroyTexture(sdl_texture_scaled);
 			}
@@ -521,7 +521,7 @@ void Sdl2Ui::UpdateDisplay() {
 	}
 
 	SDL_RenderClear(sdl_renderer);
-	if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+	if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
 		// Render game texture on the scaled texture
 		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
 		SDL_RenderClear(sdl_renderer);

@@ -202,6 +202,8 @@ protected:
 	void SetIsFullscreen(bool value);
 	virtual void vGetConfig(Game_ConfigVideo& cfg) const = 0;
 
+	Game_ConfigVideo vcfg;
+
 	/**
 	 * Display mode data struct.
 	 */
@@ -235,9 +237,6 @@ protected:
 	/** Mouse hovering the window flag. */
 	bool mouse_focus = false;
 
-	/** The frames per second limit */
-	int fps_limit = Game_Clock::GetTargetGameFps();
-
 	/** The amount of time each frame should take, based on fps limit */
 	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
 
@@ -246,18 +245,6 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
-
-	/** Whether UI is currently fullscreen */
-	bool is_fullscreen = false;
-
-	/** Whether we will show fps counter the screen */
-	bool show_fps = false;
-
-	/** If we will render fps on the screen even in windowed mode */
-	bool fps_render_window = false;
-
-	/** How to scale the viewport when larger than 320x240 */
-	ScalingMode scaling_mode = ScalingMode::Bilinear;
 };
 
 /** Global DisplayUi variable. */
@@ -272,11 +259,11 @@ inline void BaseUi::SetFrameRateSynchronized(bool value) {
 }
 
 inline bool BaseUi::IsFullscreen() const {
-	return is_fullscreen;
+	return vcfg.fullscreen.Get();
 }
 
 inline void BaseUi::SetIsFullscreen(bool fs) {
-	is_fullscreen = fs;
+	vcfg.fullscreen.Set(fs);
 }
 
 inline BaseUi::KeyStatus& BaseUi::GetKeyStates() {
@@ -312,15 +299,15 @@ inline const Input::AnalogInput& BaseUi::GetAnalogInput() const {
 }
 
 inline bool BaseUi::RenderFps() const {
-	return show_fps && (IsFullscreen() || fps_render_window);
+	return vcfg.show_fps.Get() && (IsFullscreen() || vcfg.fps_render_window.Get());
 }
 
 inline bool BaseUi::ShowFpsOnTitle() const {
-	return show_fps;
+	return vcfg.show_fps.Get();
 }
 
 inline void BaseUi::ToggleShowFps() {
-	show_fps = !show_fps;
+	vcfg.show_fps.Toggle();
 }
 
 inline Game_Clock::duration BaseUi::GetFrameLimit() const {

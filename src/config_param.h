@@ -18,6 +18,8 @@
 #ifndef EP_CONFIG_PARAM_H
 #define EP_CONFIG_PARAM_H
 
+#include "string_view.h"
+#include <array>
 #include <cstdint>
 #include <limits>
 #include <string>
@@ -26,13 +28,28 @@
 #include <type_traits>
 #include <lcf/flag_set.h>
 
+namespace {
+	inline const std::string& ParamValueToString(const std::string& s) {
+		return s;
+	}
+
+	inline std::string ParamValueToString(bool b) {
+		return b ? "ON" : "OFF";
+	}
+
+	inline std::string ParamValueToString(int i) {
+		return std::to_string(i);
+	}
+}
+
 /** A configuration parameter with no restrictions */
 template <typename T>
 class ConfigParam {
 public:
 	using value_type = T;
 
-	explicit ConfigParam(T value = {}) : _value(std::move(value)) {}
+	explicit ConfigParam(StringView name, StringView description, T value = {}) :
+		_name(name), _description(description), _value(std::move(value)) {}
 
 	const T& Get() const { return _value; }
 
@@ -56,7 +73,21 @@ public:
 		return false;
 	}
 
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return ParamValueToString(_value);
+	}
+
 private:
+	StringView _name;
+	StringView _description;
 	T _value = {};
 };
 
@@ -66,7 +97,8 @@ class LockedConfigParam {
 public:
 	using value_type = T;
 
-    explicit LockedConfigParam(T value) : _value(std::move(value)) {}
+    explicit LockedConfigParam(StringView name, StringView description, T value = {}) :
+		_name(name), _description(description), _value(std::move(value)) {}
 
     const T& Get() const { return _value; }
 
@@ -90,7 +122,21 @@ public:
 		_value = std::move(value);
 	}
 
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return ParamValueToString(_value);
+	}
+
 private:
+	StringView _name;
+	StringView _description;
     T _value = {};
 };
 
@@ -103,12 +149,12 @@ public:
 	using value_type = T;
 
 	/** Construct with name and initial value */
-	constexpr explicit RangeConfigParam(T value = {})
-		: _value(value) {}
+	constexpr explicit RangeConfigParam(StringView name, StringView description, T value = {}) :
+		_name(name), _description(description), _value(std::move(value)) {}
 
 	/** Construct with name and initial value, min, and max */
-	constexpr RangeConfigParam(T value, T minval, T maxval)
-		: _value(value) { SetRange(minval, maxval); }
+	constexpr RangeConfigParam(StringView name, StringView description, T value, T minval, T maxval)
+		: _name(name), _description(description), _value(value) { SetRange(minval, maxval); }
 
 	/**
 	 * Attempts to change the value to value. If IsValid(value), the new value
@@ -146,7 +192,7 @@ public:
 		return _min >= _max;
 	}
 
-	/** 
+	/**
 	 * Set minimum allowed value.
 	 * @param minval the new minimum
 	 * @post If the current value is < minval, it will be set equal to minval
@@ -154,7 +200,7 @@ public:
 	 */
 	constexpr void SetMin(T minval) { SetRange(minval, _max); }
 
-	/** 
+	/**
 	 * Set maximum allowed value.
 	 * @param maxval the new maximum
 	 * @post If the current value is > maxval, it will be set equal to maxval
@@ -162,7 +208,7 @@ public:
 	 */
 	constexpr void SetMax(T maxval) { SetRange(_min, maxval); }
 
-	/** 
+	/**
 	 * Set allowed range of values.
 	 * @param minval the new maximum
 	 * @param maxval the new maximum
@@ -190,8 +236,22 @@ public:
 	constexpr void Lock(T value) {
 		_value = _min = _max = value;
 	}
+
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return ParamValueToString(_value);
+	}
+
 private:
-	// FIXME: Storage can be optimized to 1 byte for bool case.
+	StringView _name;
+	StringView _description;
 	T _value = {};
 	T _min = std::numeric_limits<T>::min();
 	T _max = std::numeric_limits<T>::max();
@@ -209,7 +269,8 @@ class BoolConfigParam {
 public:
 	using value_type = bool;
 
-	explicit constexpr BoolConfigParam(bool value = false) : _value(value) {}
+	explicit constexpr BoolConfigParam(StringView name, StringView description, bool value = false) :
+		_name(name), _description(description), _value(std::move(value)) {}
 
 	constexpr bool Get() const { return _value & 1; }
 
@@ -241,7 +302,30 @@ public:
 		_value = 0b110;
 	}
 
+	constexpr void Toggle() {
+		if (Get()) {
+			Set(false);
+		} else {
+			Set(true);
+		}
+	}
+
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return Enabled() ? "ON" : "OFF";
+	}
+
 private:
+	StringView _name;
+	StringView _description;
+
 	//1st bit: value, 2nd bit: false disabled, 3rd bit: true disabled
 	uint8_t _value = 0;
 };
@@ -252,8 +336,11 @@ class SetConfigParam {
 public:
 	using value_type = T;
 
-	explicit SetConfigParam(T value = {}) : _value{ value }, _valid{ {value} } {}
-	SetConfigParam(T value, std::initializer_list<T> valid) : _value{ value }, _valid{ valid } { AddToValidSet(_value); }
+	explicit SetConfigParam(StringView name, StringView description, T value = {}) :
+		_name{ name }, _description{ description }, _value{ value }, _valid{ {value} } {}
+
+	SetConfigParam(StringView name, StringView description, T value, std::initializer_list<T> valid) :
+		_name{ name }, _description{ description }, _value{ value }, _valid{ valid } { AddToValidSet(_value); }
 
 	bool Set(T value) {
 		if (IsValid(value)) {
@@ -312,18 +399,37 @@ public:
 		_value = value;
 		_valid = { _value };
 	}
+
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return ParamValueToString(_value);
+	}
+
 private:
+	StringView _name;
+	StringView _description;
 	T _value = {};
 	std::vector<T> _valid = {};
 };
 
-template <typename E>
+template <typename E, size_t S>
 class EnumConfigParam {
 public:
 	using value_type = E;
 
-	explicit EnumConfigParam(E value = {}) : _value{ value } {}
-	EnumConfigParam(E value, std::initializer_list<E> valid) : _value{ value }, _valid{ valid } { _valid[_value] = true; }
+	EnumConfigParam(StringView name, StringView description, E value, std::array<StringView, S> values, std::array<StringView, S> value_descriptions) :
+		_name{ name}, _description{ description }, _value{ value }, _values{ values }, _value_descriptions{ value_descriptions } {
+		for (size_t i = 0; i < S; ++i) {
+			_valid[static_cast<E>(S)] = true;
+		}
+	}
 
 	bool Set(E value) {
 		if (IsValid(value)) {
@@ -376,9 +482,34 @@ public:
 		_valid = {};
 		_valid[value] = true;
 	}
+
+	StringView GetName() const {
+		return _name;
+	}
+
+	StringView GetDescription() const {
+		return _description;
+	}
+
+	std::string ValueToString() const {
+		return ToString(_values[static_cast<int>(_value)]);
+	}
+
+	const std::array<StringView, S> GetValues() {
+		return _values;
+	}
+
+	const std::array<StringView, S> GetDescriptions() {
+		return _value_descriptions;
+	}
+
 private:
+	StringView _name;
+	StringView _description;
 	E _value = {};
 	lcf::FlagSet<E> _valid = ~lcf::FlagSet<E>();
+	std::array<StringView, S> _values;
+	std::array<StringView, S> _value_descriptions;
 
 	E GetFirstValid() const {
 		for (size_t i = 0; i < _valid.size(); ++i) {
@@ -402,7 +533,10 @@ private:
 			 typename = decltype(std::declval<U>().Set(std::declval<T>())),
 			 typename = decltype(std::declval<U>().IsValid(std::declval<T>())),
 			 typename = decltype(std::declval<U>().Enabled()),
-			 typename = decltype(std::declval<U>().Locked())
+			 typename = decltype(std::declval<U>().Locked()),
+			 typename = decltype(std::declval<U>().ValueToString()),
+			 typename = decltype(std::declval<U>().GetName()),
+			 typename = decltype(std::declval<U>().GetDescription())
 				 > static std::true_type test(U&&);
 public:
 	static constexpr auto value = decltype(test(std::declval<CP>()))::value;

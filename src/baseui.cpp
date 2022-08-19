@@ -51,13 +51,10 @@ BaseUi::BaseUi(const Game_Config& cfg)
 {
 	keys.reset();
 
-	const Game_ConfigVideo& vcfg = cfg.video;
+	vcfg = cfg.video;
 
-	show_fps = vcfg.show_fps.Get();
-	fps_render_window = vcfg.fps_render_window.Get();
-	fps_limit = vcfg.fps_limit.Get();
+	auto fps_limit = vcfg.fps_limit.Get();
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
-	scaling_mode = vcfg.scaling_mode.Get();
 }
 
 BitmapRef BaseUi::CaptureScreen() {
@@ -69,12 +66,7 @@ void BaseUi::CleanDisplay() {
 }
 
 Game_ConfigVideo BaseUi::GetConfig() const {
-	Game_ConfigVideo cfg;
-
-	cfg.fullscreen.Set(IsFullscreen());
-	cfg.show_fps.Set(show_fps);
-	cfg.fps_render_window.Set(fps_render_window);
-	cfg.fps_limit.Set(fps_limit);
+	Game_ConfigVideo cfg = vcfg;
 
 	vGetConfig(cfg);
 
