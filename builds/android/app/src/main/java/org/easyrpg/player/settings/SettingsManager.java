@@ -310,7 +310,7 @@ public class SettingsManager {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
         if (inputLayoutString == null || inputLayoutString.isEmpty()) {
-            SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(activity);
+            SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutVertical(activity);
         } else {
             SettingsManager.inputLayoutVertical = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
         }
