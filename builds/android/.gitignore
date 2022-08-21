@@ -1,6 +1,7 @@
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the dex VM
 *.dex
@@ -57,9 +58,6 @@ app/src/main/assets
 assets/src/main/assets
 app/src/main/jniLibs
 
-# Keystore files
-*.jks
-
 ### Android Patch ###
 gen-external-apklibs
 
@@ -74,3 +72,5 @@ metadata/*/playstore.xml
 # immediate changelog files
 metadata/en-US/changelogs/*.txt
 
+# heap dumps
+*.hprof
