@@ -3,6 +3,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion '31.0.0'
     ndkVersion '21.4.7075529'
+    assetPacks = [":assets"]
     defaultConfig {
         applicationId "org.easyrpg.player"
         minSdkVersion 21

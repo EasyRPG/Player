@@ -54,6 +54,7 @@ obj/
 
 # immediate files and libraries
 app/src/main/assets
+assets/src/main/assets
 app/src/main/jniLibs
 
 # Keystore files
