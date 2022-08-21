@@ -63,7 +63,7 @@ public class SettingsManager {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         imageSize = sharedPref.getInt(IMAGE_SIZE.toString(), IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
-        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), false);
+        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), true);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
