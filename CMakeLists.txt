@@ -175,6 +175,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/game_ineluki.h
 	src/game_interpreter_battle.cpp
 	src/game_interpreter_battle.h
+	src/game_interpreter_control_variables.cpp
+	src/game_interpreter_control_variables.h
 	src/game_interpreter.cpp
 	src/game_interpreter.h
 	src/game_interpreter_map.cpp

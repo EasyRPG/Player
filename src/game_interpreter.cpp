@@ -40,6 +40,7 @@
 #include "game_message.h"
 #include "game_pictures.h"
 #include "game_screen.h"
+#include "game_interpreter_control_variables.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
@@ -1078,9 +1079,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		case 3: {
 			// Random between range
-			int rmax = max(com.parameters[5], com.parameters[6]);
-			int rmin = min(com.parameters[5], com.parameters[6]);
-			value = Rand::GetRandomNumber(rmin, rmax);
+			value = ControlVariables::Random(com.parameters[5], com.parameters[6]);
 			break;
 		}
 		case 4: {
@@ -1089,110 +1088,16 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
 				item = ValueOrVariable(com.parameters[7], item);
 			}
-			switch (com.parameters[6]) {
-				case 0:
-					// Number of items posessed
-					value = Main_Data::game_party->GetItemCount(item);
-					break;
-				case 1:
-					// How often the item is equipped
-					value = Main_Data::game_party->GetEquippedItemCount(item);
-					break;
-			}
+
+			value = ControlVariables::Item(com.parameters[6], item);
 			break;
 		}
-		case 5: // Hero
-		case 9: { // Party Member (Maniac)
+		case 5: { // Hero
 			int actor_id = com.parameters[5];
-			Game_Actor* actor;
 			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
 				actor_id = ValueOrVariable(com.parameters[7], actor_id);
 			}
-			if (operand == 5) {
-				actor = Main_Data::game_actors->GetActor(actor_id);
-			} else {
-				actor = Main_Data::game_party->GetActor(actor_id);
-			}
-
-			if (!actor) {
-				Output::Warning("ControlVariables: Invalid actor ID {}", actor_id);
-				return true;
-			}
-
-			switch (com.parameters[6]) {
-				case 0:
-					// Level
-					value = actor->GetLevel();
-					break;
-				case 1:
-					// Experience
-					value = actor->GetExp();
-					break;
-				case 2:
-					// Current HP
-					value = actor->GetHp();
-					break;
-				case 3:
-					// Current MP
-					value = actor->GetSp();
-					break;
-				case 4:
-					// Max HP
-					value = actor->GetMaxHp();
-					break;
-				case 5:
-					// Max MP
-					value = actor->GetMaxSp();
-					break;
-				case 6:
-					// Attack
-					value = actor->GetAtk();
-					break;
-				case 7:
-					// Defense
-					value = actor->GetDef();
-					break;
-				case 8:
-					// Intelligence
-					value = actor->GetSpi();
-					break;
-				case 9:
-					// Agility
-					value = actor->GetAgi();
-					break;
-				case 10:
-					// Weapon ID
-					value = actor->GetWeaponId();
-					break;
-				case 11:
-					// Shield ID
-					value = actor->GetShieldId();
-					break;
-				case 12:
-					// Armor ID
-					value = actor->GetArmorId();
-					break;
-				case 13:
-					// Helmet ID
-					value = actor->GetHelmetId();
-					break;
-				case 14:
-					// Accessory ID
-					value = actor->GetAccessoryId();
-					break;
-				case 15:
-					// ID
-					if (Player::IsPatchManiac()) {
-						value = actor->GetId();
-					}
-					break;
-				case 16:
-					// ATB
-					if (Player::IsPatchManiac()) {
-						value = actor->GetAtbGauge();
-					}
-					break;
-			}
+			value = ControlVariables::Actor(com.parameters[6], actor_id);
 			break;
 		}
 		case 6: {
@@ -1201,122 +1106,12 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
 				event_id = ValueOrVariable(com.parameters[7], event_id);
 			}
-			auto character = GetCharacter(event_id);
-			if (character != nullptr) {
-				switch (com.parameters[6]) {
-					case 0:
-						// Map ID
-						if (!Player::IsRPG2k()
-							|| event_id == Game_Character::CharPlayer
-							|| event_id == Game_Character::CharBoat
-							|| event_id == Game_Character::CharShip
-							|| event_id == Game_Character::CharAirship) {
-							value = character->GetMapId();
-						} else {
-							// This is an RPG_RT bug for 2k only. Requesting the map id of an event always returns 0.
-							value = 0;
-						}
-						break;
-					case 1:
-						// X Coordinate
-						value = character->GetX();
-						break;
-					case 2:
-						// Y Coordinate
-						value = character->GetY();
-						break;
-					case 3:
-						// Orientation
-						int dir;
-						dir = character->GetFacing();
-						value = dir == 0 ? 8 :
-								dir == 1 ? 6 :
-								dir == 2 ? 2 : 4;
-						break;
-					case 4:
-						// Screen X
-						value = character->GetScreenX();
-						break;
-					case 5:
-						// Screen Y
-						value = character->GetScreenY();
-				}
-			}
+			value = ControlVariables::Event(com.parameters[6], event_id, *this);
 			break;
 		}
 		case 7:
 			// More
-			switch (com.parameters[5]) {
-				case 0:
-					// Gold
-					value = Main_Data::game_party->GetGold();
-					break;
-				case 1:
-					// Timer 1 remaining time
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
-					break;
-				case 2:
-					// Number of heroes in party
-					value = Main_Data::game_party->GetActors().size();
-					break;
-				case 3:
-					// Number of saves
-					value = Main_Data::game_system->GetSaveCount();
-					break;
-				case 4:
-					// Number of battles
-					value = Main_Data::game_party->GetBattleCount();
-					break;
-				case 5:
-					// Number of wins
-					value = Main_Data::game_party->GetWinCount();
-					break;
-				case 6:
-					// Number of defeats
-					value = Main_Data::game_party->GetDefeatCount();
-					break;
-				case 7:
-					// Number of escapes (aka run away)
-					value = Main_Data::game_party->GetRunCount();
-					break;
-				case 8:
-					// MIDI play position
-					value = Main_Data::game_ineluki->GetMidiTicks();
-					break;
-				case 9:
-					// Timer 2 remaining time
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
-					break;
-				case 10:
-					// Current date (YYMMDD)
-					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(nullptr);
-						std::tm* tm = std::localtime(&t);
-						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str());
-					}
-					break;
-				case 11:
-					// Current time (HHMMSS)
-					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(nullptr);
-						std::tm* tm = std::localtime(&t);
-						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str());
-					}
-					break;
-				case 12:
-					// Frames
-					if (Player::IsPatchManiac()) {
-						value = Main_Data::game_system->GetFrameCounter();
-					}
-					break;
-				case 13:
-					// Patch version
-					if (Player::IsPatchManiac()) {
-						// Latest version before the engine rewrite
-						value = 200128;
-					}
-					break;
-			}
+			value = ControlVariables::Other(com.parameters[5]);
 			break;
 		case 8: {
 			int enemy_id = com.parameters[5];
@@ -1325,56 +1120,15 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			}
 
 			// Battle related
-			if (Main_Data::game_enemyparty.get()->GetBattlerCount() < enemy_id) {
-				break;
+			value = ControlVariables::Enemy(com.parameters[6], enemy_id);
+			break;
+		}
+		case 9: { // Party Member (Maniac)
+			int party_idx = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				party_idx = ValueOrVariable(com.parameters[7], party_idx);
 			}
-
-			switch (com.parameters[6]) {
-				case 0:
-					// Enemy HP
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetHp();
-					break;
-				case 1:
-					// Enemy SP
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetSp();
-					break;
-				case 2:
-					// Enemy MaxHP
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetMaxHp();
-					break;
-				case 3:
-					// Enemy MaxSP
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetMaxSp();
-					break;
-				case 4:
-					// Enemy Attack
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetAtk();
-					break;
-				case 5:
-					// Enemy Defense
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetDef();
-					break;
-				case 6:
-					// Enemy Spirit
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetSpi();
-					break;
-				case 7:
-					// Enemy Agility
-					value = (*Main_Data::game_enemyparty)[enemy_id].GetAgi();
-					break;
-				case 8:
-					// ID
-					if (Player::IsPatchManiac()) {
-						value = (*Main_Data::game_enemyparty)[enemy_id].GetId();
-					}
-					break;
-				case 9:
-					// ATB
-					if (Player::IsPatchManiac()) {
-						value = (*Main_Data::game_enemyparty)[enemy_id].GetAtbGauge();
-					}
-					break;
-			}
+			value = ControlVariables::Party(com.parameters[6], party_idx);
 			break;
 		}
 		case 10: {
@@ -1391,18 +1145,14 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Pow (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
-			value = static_cast<int>(std::pow(arg1, arg2));
+			value = ControlVariables::Pow(arg1, arg2);
 			break;
 		}
 		case 12: {
 			// Sqrt (Maniac)
 			int arg = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int mul = com.parameters[6];
-			// This is not how negative sqrt works, just following the implementation here
-			value = static_cast<int>(sqrt(abs(arg)) * mul);
-			if (arg < 0) {
-				value = -value;
-			}
+			value = ControlVariables::Sqrt(arg, mul);
 			break;
 		}
 		case 13: {
@@ -1410,23 +1160,15 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
 			float mul = static_cast<float>(com.parameters[6]);
-			float res = static_cast<float>(arg1);
-			if (arg2 != 0) {
-				res /= static_cast<float>(arg2);
-			}
-			value = static_cast<int>(std::sin(res * M_PI / 180.f) * mul);
+			value = ControlVariables::Sin(arg1, arg2, mul);
 			break;
 		}
 		case 14: {
 			// Cos (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
-			float mul = static_cast<float>(com.parameters[6]);
-			float res = static_cast<float>(arg1);
-			if (arg2 != 0) {
-				res /= static_cast<float>(arg2);
-			}
-			value = static_cast<int>(std::cos(res * M_PI / 180.f) * mul);
+			int mul = com.parameters[6];
+			value = ControlVariables::Cos(arg1, arg2, mul);
 			break;
 		}
 		case 15: {
@@ -1434,78 +1176,34 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[6]);
 			int mul = com.parameters[7];
-			value = static_cast<int>(std::atan2(arg1, arg2) * 180.f / M_PI * mul);
+			value = ControlVariables::Atan2(arg1, arg2, mul);
 			break;
 		}
 		case 16: {
 			// Min (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
-			value = std::min(arg1, arg2);
+			value = ControlVariables::Min(arg1, arg2);
 			break;
 		}
 		case 17: {
 			// Max (Maniac)
 			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
 			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
-			value = std::max(arg1, arg2);
+			value = ControlVariables::Max(arg1, arg2);
 			break;
 		}
 		case 18: {
 			// Abs (Maniac)
 			int arg = ValueOrVariable(com.parameters[6] & 0xF, com.parameters[5]);
-			value = abs(arg);
+			value = ControlVariables::Abs(arg);
 			break;
 		}
 		case 19: {
-			// Binary (Maniac), 64 bit for Overflow protection
-			int64_t arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
-			int64_t arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
-			int64_t result = 0;
-
-			switch (com.parameters[5]) {
-				case 1:
-					result = arg1 + arg2;
-					break;
-				case 2:
-					result = arg1 - arg2;
-					break;
-				case 3:
-					result = arg1 * arg2;
-					break;
-				case 4:
-					if (arg2 != 0) {
-						result = arg1 / arg2;
-					} else {
-						result = arg1;
-					}
-					break;
-				case 5:
-					if (arg2 != 0) {
-						result = arg1 % arg2;
-					} else {
-						result = arg1;
-					}
-					break;
-				case 6:
-					result = arg1 | arg2;
-					break;
-				case 7:
-					result = arg1 & arg2;
-					break;
-				case 8:
-					result = arg1 ^ arg2;
-					break;
-				case 9:
-					result = arg1 << arg2;
-					break;
-				case 10:
-					result = arg1 >> arg2;
-					break;
-			}
-
-			value = static_cast<int>(Utils::Clamp<int64_t>(result, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
-
+			// Binary (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
+			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
+			value = ControlVariables::Binary(com.parameters[5], arg1, arg2);
 			break;
 		}
 		case 20: {
@@ -1523,7 +1221,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		}
 		case 21:
 			// Expression (Maniac)
-			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]));
+			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]), *this);
 			break;
 		default:
 			Output::Warning("ControlVariables: Unsupported operand {}", operand);
@@ -1554,7 +1252,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		} else if (target == 4 && Player::IsPatchManiac()) {
 			// Expression (Maniac)
 			int idx = com.parameters[1];
-			start = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(idx + 1, com.parameters[idx]));
+			start = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(idx + 1, com.parameters[idx]), *this);
 			end = start;
 		} else {
 			return true;

@@ -16,13 +16,26 @@
  */
 
 #include "maniac_patch.h"
+#include "game_interpreter_control_variables.h"
 #include "main_data.h"
+#include "game_interpreter.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "output.h"
 #include "input.h"
 
 #include <vector>
+
+/*
+The following operations are unsupported:
+
+All array functions (Array, Range and Subscript):
+They could be implemented but are not very useful
+
+All Inplace functions:
+Inplace assigns to variables while the ControlVariables event command is executed.
+This violates how the command is supposed to work because more variables than the target variables can be set.
+*/
 
 namespace {
 	enum class Op {
@@ -75,9 +88,31 @@ namespace {
 		Ternary = 72,
 		Function = 78
 	};
+
+	enum class Fn {
+		Rand = 0,
+		Item,
+		Event,
+		Actor,
+		Party,
+		Enemy,
+		Misc,
+		Pow,
+		Sqrt,
+		Sin,
+		Cos,
+		Atan2,
+		Min,
+		Max,
+		Abs,
+		Clamp,
+		Muldiv,
+		Divmul,
+		Between
+	};
 }
 
-int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator end) {
+int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator end, const Game_Interpreter& ip) {
 	int value = 0;
 	int imm = 0;
 	int imm2 = 0;
@@ -126,121 +161,254 @@ int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator e
 			value = (value << 24) + (imm3 << 16) + (imm2 << 8) + imm;
 			return value;
 		case Op::Var:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return Main_Data::game_variables->Get(imm);
 		case Op::Switch:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return Main_Data::game_switches->GetInt(imm);
 		case Op::VarIndirect:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return Main_Data::game_variables->GetIndirect(imm);
 		case Op::SwitchIndirect:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(imm));
 		case Op::Negate:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return -imm;
 		case Op::Not:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return !imm ? 0 : 1;
 		case Op::Flip:
-			imm = process(it, end);
+			imm = process(it, end, ip);
 			return ~imm;
 		case Op::Add:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(imm) + imm2, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
 		case Op::Sub:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(imm) - imm2, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
 		case Op::Mul:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(imm) * imm2, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
 		case Op::Div:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			if (imm2 == 0) {
 				return imm;
 			}
 			return imm / imm2;
 		case Op::Mod:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			if (imm2 == 0) {
 				return imm;
 			}
 			return imm % imm2;
 		case Op::BitOr:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm | imm2;
 		case Op::BitAnd:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm & imm2;
 		case Op::BitXor:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm ^ imm2;
 		case Op::BitShiftLeft:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm << imm2;
 		case Op::BitShiftRight:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm >> imm2;
 		case Op::Equal:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm == imm2 ? 1 : 0;
 		case Op::GreaterEqual:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm >= imm2 ? 1 : 0;
 		case Op::LessEqual:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm <= imm2 ? 1 : 0;
 		case Op::Greater:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm > imm2 ? 1 : 0;
 		case Op::Less:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm < imm2 ? 1 : 0;
 		case Op::NotEqual:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return imm != imm2 ? 1 : 0;
 		case Op::Or:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return !!imm || !!imm2 ? 1 : 0;
 		case Op::And:
-			imm = process(it, end);
-			imm2 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
 			return !!imm && !!imm2 ? 1 : 0;
-		case Op::Subscript:
-			// TODO
-			imm = process(it, end);
-			imm2 = process(it, end);
-			return 0;
 		case Op::Ternary:
-			imm = process(it, end);
-			imm2 = process(it, end);
-			imm3 = process(it, end);
+			imm = process(it, end, ip);
+			imm2 = process(it, end, ip);
+			imm3 = process(it, end, ip);
 			return imm != 0 ? imm2 : imm3;
+		case Op::Function:
+			imm = *it++; // function
+			imm2 = *it++; // arguments
+
+			if ((imm2 & 0x80) != 0) {
+				// Argument count is 4 bytes, that mode is not supported
+				Output::Warning("Maniac: Expression func long args unsupported");
+				return 0;
+			}
+
+			switch (static_cast<Fn>(imm)) {
+				case Fn::Rand:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression rnd args {} != 2", imm2);
+						return 0;
+					}
+					imm3 = process(it, end, ip);
+					return ControlVariables::Random(process(it, end, ip), imm3);
+				case Fn::Item:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression item args {} != 2", imm2);
+						return 0;
+					}
+					imm3 = process(it, end, ip);
+					return ControlVariables::Item(process(it, end, ip), imm3);
+				case Fn::Event:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression event args {} != 2", imm2);
+						return 0;
+					}
+					imm3 = process(it, end, ip);
+					return ControlVariables::Event(process(it, end, ip), imm3, ip);
+				case Fn::Actor:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression actor args {} != 2", imm2);
+						return 0;
+					}
+					return ControlVariables::Actor(process(it, end, ip), imm3);
+				case Fn::Party:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression member args {} != 2", imm2);
+						return 0;
+					}
+					imm3 = process(it, end, ip);
+					return ControlVariables::Party(process(it, end, ip), imm3);
+				case Fn::Enemy:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression enemy args {} != 2", imm2);
+						return 0;
+					}
+					imm3 = process(it, end, ip);
+					return ControlVariables::Enemy(process(it, end, ip), imm3);
+					break;
+				case Fn::Misc:
+					if (imm2 != 1) {
+						Output::Warning("Maniac: Expression misc args {} != 1", imm2);
+						return 0;
+					}
+					return ControlVariables::Other(process(it, end, ip));
+				case Fn::Pow:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression pow args {} != 2", imm2);
+						return 0;
+					}
+					return ControlVariables::Pow(process(it, end, ip), process(it, end, ip));
+				case Fn::Sqrt:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression sqrt args {} != 2", imm2);
+						return 0;
+					}
+					return ControlVariables::Sqrt(process(it, end, ip), process(it, end, ip));
+				case Fn::Sin:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression sin args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Sin(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Cos:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression cos args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Cos(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Atan2:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression atan2 args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Atan2(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Min:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression min args {} != 2", imm2);
+						return 0;
+					}
+					return ControlVariables::Min(process(it, end, ip), process(it, end, ip));
+				case Fn::Max:
+					if (imm2 != 2) {
+						Output::Warning("Maniac: Expression max args {} != 2", imm2);
+						return 0;
+					}
+					return ControlVariables::Max(process(it, end, ip), process(it, end, ip));
+				case Fn::Abs:
+					if (imm2 != 1) {
+						Output::Warning("Maniac: Expression abs args {} != 1", imm2);
+						return 0;
+					}
+					return ControlVariables::Abs(process(it, end, ip));
+				case Fn::Clamp:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression clamp args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Clamp(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Muldiv:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression muldiv args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Muldiv(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Divmul:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression divmul args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Divmul(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				case Fn::Between:
+					if (imm2 != 3) {
+						Output::Warning("Maniac: Expression between args {} != 3", imm2);
+						return 0;
+					}
+					return ControlVariables::Between(process(it, end, ip), process(it, end, ip), process(it, end, ip));
+				default:
+					Output::Warning("Maniac: Expression Unknown Func {}", imm);
+					for (int i = 0; i < imm2; ++i) {
+						process(it, end, ip);
+					}
+					return 0;
+			}
 		default:
 			Output::Warning("Maniac: Expression contains unsupported operation {}", static_cast<int>(op));
 			return 0;
 	}
 }
 
-int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes) {
+int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes, const Game_Interpreter& interpreter) {
 	std::vector<int32_t> ops;
 	for (auto &o: op_codes) {
 		auto uo = static_cast<uint32_t>(o);
@@ -250,7 +418,7 @@ int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes) {
 		ops.push_back(static_cast<int32_t>((uo & 0xFF000000) >> 24));
 	}
 	auto beg = ops.begin();
-	return process(beg, ops.end());
+	return process(beg, ops.end(), interpreter);
 }
 
 std::array<bool, 50> ManiacPatch::GetKeyRange() {
@@ -306,6 +474,12 @@ std::array<bool, 50> ManiacPatch::GetKeyRange() {
 		Input::Keys::MOUSE_MIDDLE,
 		Input::Keys::MOUSE_SCROLLUP,
 		Input::Keys::MOUSE_SCROLLDOWN
+#else
+		Input::Keys::NONE,
+		Input::Keys::NONE,
+		Input::Keys::NONE,
+		Input::Keys::NONE,
+		Input::Keys::NONE
 #endif
 	};
 
