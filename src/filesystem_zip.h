@@ -56,14 +56,15 @@ protected:
 private:
 	enum class StorageMethod {Unknown, Plain, Deflate};
 	struct ZipEntry {
-		uint32_t filesize;
+		uint32_t compressed_size;
+		uint32_t uncompressed_size;
 		uint32_t fileoffset;
 		bool is_directory;
 	};
 
 	bool FindCentralDirectory(std::istream& stream, uint32_t& offset, uint32_t& size, uint16_t& num_entries) const;
-	bool ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filepath, uint32_t& offset, uint32_t& uncompressed_size, bool& is_utf8) const;
-	bool ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressed_size) const;
+	bool ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filepath, ZipEntry& entry, bool& is_utf8) const;
+	bool ReadLocalHeader(std::istream& zipfile, StorageMethod& method, ZipEntry& entry) const;
 	const ZipEntry* Find(StringView what) const;
 
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries;
