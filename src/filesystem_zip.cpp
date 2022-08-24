@@ -148,6 +148,15 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 				if (!filepath_cp437.empty()) {
 					zip_entries_cp437.emplace_back(filepath_cp437, entry);
 				}
+
+				// Determine intermediate directories
+				for (;;) {
+					filepath = std::get<0>(FileFinder::GetPathAndFilename(filepath));
+					if (filepath.empty()) {
+						break;
+					}
+					paths.push_back(filepath);
+				}
 			}
 		}
 		// Build directories
