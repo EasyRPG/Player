@@ -76,7 +76,7 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 
 			// Guess the encoding first
 			int items = 0;
-			while (ReadCentralDirectoryEntry(zipfile, filepath, entry.fileoffset, entry.filesize, is_utf8)) {
+			while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
 				// Only consider Non-ASCII & Non-UTF8 for encoding detection
 				// Skip directories, files already contain the paths
 				if (is_utf8 || filepath.back() == '/' || Utils::StringIsAscii(filepath)) {
@@ -123,7 +123,7 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 		zipfile.seekg(central_directory_offset);
 
 		std::vector<std::string> paths;
-		while (ReadCentralDirectoryEntry(zipfile, filepath, entry.fileoffset, entry.filesize, is_utf8)) {
+		while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
 			if (is_utf8 || enc_is_utf8 || Utils::StringIsAscii(filepath)) {
 				// No reencoding necessary
 				filepath_cp437.clear();
@@ -148,11 +148,19 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 				if (!filepath_cp437.empty()) {
 					zip_entries_cp437.emplace_back(filepath_cp437, entry);
 				}
+
+				// Determine intermediate directories
+				for (;;) {
+					filepath = std::get<0>(FileFinder::GetPathAndFilename(filepath));
+					if (filepath.empty()) {
+						break;
+					}
+					paths.push_back(filepath);
+				}
 			}
 		}
 		// Build directories
-		entry.fileoffset = 0;
-		entry.filesize = 0;
+		entry = {};
 		entry.is_directory = true;
 
 		// add root path
@@ -212,7 +220,7 @@ bool ZipFilesystem::FindCentralDirectory(std::istream& zipfile, uint32_t& offset
 	}
 }
 
-bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filename, uint32_t& offset, uint32_t& uncompressed_size, bool& is_utf8) const {
+bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filename, ZipEntry& entry, bool& is_utf8) const {
 	uint32_t magic = 0;
 	uint16_t flags;
 	uint16_t filepath_length;
@@ -226,9 +234,11 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	zipfile.read(reinterpret_cast<char*>(&flags), sizeof(uint16_t));
 	Utils::SwapByteOrder(flags);
 	is_utf8 = (flags & 0x800) == 0x800;
-	zipfile.seekg(14, std::ios_base::cur); // Jump over currently not needed entries
-	zipfile.read(reinterpret_cast<char*>(&uncompressed_size), sizeof(uint32_t));
-	Utils::SwapByteOrder(uncompressed_size);
+	zipfile.seekg(10, std::ios_base::cur); // Jump over currently not needed entries
+	zipfile.read(reinterpret_cast<char*>(&entry.compressed_size), sizeof(uint32_t));
+	Utils::SwapByteOrder(entry.compressed_size);
+	zipfile.read(reinterpret_cast<char*>(&entry.uncompressed_size), sizeof(uint32_t));
+	Utils::SwapByteOrder(entry.uncompressed_size);
 	zipfile.read(reinterpret_cast<char*>(&filepath_length), sizeof(uint16_t));
 	Utils::SwapByteOrder(filepath_length);
 	zipfile.read(reinterpret_cast<char*>(&extra_field_length), sizeof(uint16_t));
@@ -236,8 +246,8 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	zipfile.read(reinterpret_cast<char*>(&comment_length), sizeof(uint16_t));
 	Utils::SwapByteOrder(comment_length);
 	zipfile.seekg(8, std::ios_base::cur); // Jump over currently not needed entries
-	zipfile.read(reinterpret_cast<char*>(&offset), sizeof(uint32_t));
-	Utils::SwapByteOrder(offset);
+	zipfile.read(reinterpret_cast<char*>(&entry.fileoffset), sizeof(uint32_t));
+	Utils::SwapByteOrder(entry.fileoffset);
 	if (filename_buffer.capacity() < filepath_length + 1) {
 		filename_buffer.resize(filepath_length + 1);
 	}
@@ -250,7 +260,7 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	return true;
 }
 
-bool ZipFilesystem::ReadLocalHeader(std::istream& zipfile, uint32_t& offset, StorageMethod& method, uint32_t& compressedSize) const {
+bool ZipFilesystem::ReadLocalHeader(std::istream& zipfile, StorageMethod& method, ZipEntry& entry) const {
 	uint32_t magic = 0;
 	uint16_t filepath_length;
 	uint16_t extra_field_length;
@@ -266,9 +276,10 @@ bool ZipFilesystem::ReadLocalHeader(std::istream& zipfile, uint32_t& offset, Sto
 	zipfile.read(reinterpret_cast<char*>(&compression), sizeof(uint16_t));
 	Utils::SwapByteOrder(compression);
 	zipfile.seekg(8, std::ios_base::cur); // Jump over currently not needed entries
-	zipfile.read(reinterpret_cast<char*>(&compressedSize), sizeof(uint32_t));
-	Utils::SwapByteOrder(compressedSize);
-	zipfile.seekg(4, std::ios_base::cur); // Jump over currently not needed entries
+	zipfile.read(reinterpret_cast<char*>(&entry.compressed_size), sizeof(uint32_t));
+	Utils::SwapByteOrder(entry.compressed_size);
+	zipfile.read(reinterpret_cast<char*>(&entry.uncompressed_size), sizeof(uint32_t));
+	Utils::SwapByteOrder(entry.uncompressed_size);
 	zipfile.read(reinterpret_cast<char*>(&filepath_length), sizeof(uint16_t));
 	Utils::SwapByteOrder(filepath_length);
 	zipfile.read(reinterpret_cast<char*>(&extra_field_length), sizeof(uint16_t));
@@ -285,7 +296,7 @@ bool ZipFilesystem::ReadLocalHeader(std::istream& zipfile, uint32_t& offset, Sto
 		method = StorageMethod::Unknown;
 		break;
 	}
-	offset = local_header_size + filepath_length + extra_field_length;
+	entry.fileoffset = local_header_size + filepath_length + extra_field_length;
 	return true;
 }
 
@@ -317,31 +328,54 @@ int64_t ZipFilesystem::GetFilesize(StringView path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
-		return entry->filesize;
+		return entry->uncompressed_size;
 	}
 	return 0;
 }
 
 std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode) const {
 	std::string path_normalized = normalize_path(path);
-	auto entry = Find(path);
-	if (entry && !entry->is_directory) {
+	auto central_entry = Find(path);
+	if (central_entry && !central_entry->is_directory) {
 		auto zip_file = GetParent().OpenInputStream(GetPath());
-		zip_file.seekg(entry->fileoffset);
+		zip_file.seekg(central_entry->fileoffset);
 		StorageMethod method;
 		uint32_t local_offset = 0;
-		uint32_t compressed_size = 0;
-		if (ReadLocalHeader(zip_file, local_offset, method, compressed_size)) {
-			zip_file.seekg(entry->fileoffset + local_offset);
+		ZipEntry local_entry = {};
+		if (ReadLocalHeader(zip_file, method, local_entry)) {
+			if (central_entry->compressed_size != local_entry.compressed_size) {
+				if (local_entry.compressed_size == 0) {
+					local_entry.compressed_size = central_entry->compressed_size;
+				} else {
+					Output::Warning("ZipFS: Compressed size mismatch {}: {} != {}", path_normalized, central_entry->compressed_size, local_entry.compressed_size);
+					return nullptr;
+				}
+			}
+
+			if (central_entry->uncompressed_size != local_entry.uncompressed_size) {
+				if (local_entry.uncompressed_size == 0) {
+					local_entry.uncompressed_size = central_entry->uncompressed_size;
+				} else {
+					Output::Warning("ZipFS: Uncompressed size mismatch {}: {} != {}", path_normalized, central_entry->uncompressed_size, local_entry.uncompressed_size);
+					return nullptr;
+				}
+			}
+
+			if (local_entry.compressed_size == 0xffffffff || local_entry.uncompressed_size == 0xffffffff) {
+				Output::Warning("ZipFS: Zip64 is not supported {}", path_normalized);
+				return nullptr;
+			}
+
+			zip_file.seekg(central_entry->fileoffset + local_entry.fileoffset);
 			if (method == StorageMethod::Plain) {
-				auto data = std::vector<uint8_t>(entry->filesize);
+				auto data = std::vector<uint8_t>(local_entry.uncompressed_size);
 				zip_file.read(reinterpret_cast<char*>(data.data()), data.size());
 				return new Filesystem_Stream::InputMemoryStreamBuf(std::move(data));
 			} else if (method == StorageMethod::Deflate) {
 				std::vector<uint8_t> comp_buf;
-				comp_buf.resize(compressed_size);
+				comp_buf.resize(local_entry.compressed_size);
 				zip_file.read(reinterpret_cast<char*>(comp_buf.data()), comp_buf.size());
-				auto dec_buf = std::vector<uint8_t>(entry->filesize);
+				auto dec_buf = std::vector<uint8_t>(local_entry.uncompressed_size);
 				z_stream zlib_stream = {};
 				zlib_stream.next_in = reinterpret_cast<Bytef*>(comp_buf.data());
 				zlib_stream.avail_in = static_cast<uInt>(comp_buf.size());
@@ -358,7 +392,7 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 					return nullptr;
 				}
 				else if (zlib_error != Z_STREAM_END) {
-					Output::Warning("ZipFS: zlib failed for {}: {}", path_normalized, zlib_stream.msg);
+					Output::Warning("ZipFS: zlib failed for {}: {} ({})", path_normalized, zlib_error, zlib_stream.msg ? zlib_stream.msg : "No error message");
 					return nullptr;
 				}
 				return new Filesystem_Stream::InputMemoryStreamBuf(std::move(dec_buf));
