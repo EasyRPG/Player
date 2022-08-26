@@ -395,7 +395,7 @@ namespace {
 		}
 
 		/** Retrieve parameter at position 'pos' of the EventCommand at the current index, or the devValue if no such parameter exists. */
-		int CurrentCmdParam(size_t pos, int defVal) const {
+		int CurrentCmdParam(size_t pos, int defVal = 0) const {
 			if (pos < commands[index].parameters.size()) {
 				return commands[index].parameters[pos];
 			}
@@ -435,6 +435,12 @@ namespace {
 		/** Returns true if the current Event Command is ChangeHeroTitle */
 		bool CurrentIsChangeHeroTitle() const {
 			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ChangeHeroTitle;
+		}
+
+		/** Returns true if the current Event Command is ChangeHeroTitle */
+		bool CurrentIsConditionActorName() const {
+			return CurrentCmdCode() == lcf::rpg::EventCommand::Code::ConditionalBranch &&
+				CurrentCmdParam(0) == 5 && CurrentCmdParam(2) == 1;
 		}
 
 		/**
@@ -707,6 +713,9 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			commands.Advance();
 		} else if (commands.CurrentIsChangeHeroTitle()) {
 			dict.TranslateString("actors.title", commands.CurrentCmdString());
+			commands.Advance();
+		} else if (commands.CurrentIsConditionActorName()) {
+			dict.TranslateString("actors.name", commands.CurrentCmdString());
 			commands.Advance();
 		} else {
 			commands.Advance();
