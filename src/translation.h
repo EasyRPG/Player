@@ -46,10 +46,20 @@ namespace Tr {
 	FilesystemView GetTranslationFilesystem();
 
 	/**
+	 * @return Whether a translation is active.
+	 */
+	bool HasActiveTranslation();
+
+	/**
 	 * The id of the current translation (e.g., "Spanish"). If empty, there is no active translation.
 	 * @return The translation ID
 	 */
 	std::string GetCurrentTranslationId();
+
+	/**
+	 * @return Language code of the current active translation. If empty none was set or no active translation.
+	 */
+	std::string GetCurrentLanguageCode();
 
 	/**
 	 * @return The directory tree of the active translation.
@@ -139,6 +149,7 @@ struct Language {
 	std::string lang_dir;  // Language directory (e.g., "en", "English_Localization")
 	std::string lang_name; // Display name for this language (e.g., "English")
 	std::string lang_desc; // Helper text to show when the menu is highlighted
+	std::string lang_code; // Language code used by font selection and input scene
 };
 
 
@@ -198,11 +209,11 @@ public:
 	void RewriteMapMessages(StringView map_name, lcf::rpg::Map& map);
 
 	/**
-	 * Retrieve the ID of the current (active) language.
+	 * Retrieve the current language.
 	 *
-	 * @return the current language ID, or "" for the Default language
+	 * @return the current language, or nullptr for default language
 	 */
-	std::string GetCurrentLanguageId() const;
+	const Language& GetCurrentLanguage() const;
 
 
 private:
@@ -291,7 +302,7 @@ private:
 	FilesystemView translation_root_fs;
 
 	// The translation we are currently showing (e.g., "English_1")
-	std::string current_language;
+	Language current_language;
 
 	std::vector<FileRequestBinding> requests;
 	FileRequestBinding map_request;

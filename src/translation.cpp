@@ -58,8 +58,16 @@ FilesystemView Tr::GetTranslationFilesystem() {
 	return Player::translation.GetRootTree();
 }
 
+bool Tr::HasActiveTranslation() {
+	return !GetCurrentTranslationId().empty();
+}
+
 std::string Tr::GetCurrentTranslationId() {
-	return Player::translation.GetCurrentLanguageId();
+	return Player::translation.GetCurrentLanguage().lang_dir;
+}
+
+std::string Tr::GetCurrentLanguageCode() {
+	return Player::translation.GetCurrentLanguage().lang_code;
 }
 
 FilesystemView Tr::GetCurrentTranslationFilesystem() {
@@ -72,7 +80,7 @@ void Translation::Reset()
 
 	translation_root_fs = FilesystemView();
 	languages.clear();
-	current_language = "";
+	current_language = {};
 }
 
 void Translation::InitTranslations()
@@ -107,6 +115,7 @@ void Translation::InitTranslations()
 				lcf::INIReader ini(meta_file);
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
+				item.lang_code = ini.GetString("Language", "Code", "");
 			}
 
 			languages.push_back(item);
@@ -114,7 +123,7 @@ void Translation::InitTranslations()
 	}
 }
 
-std::string Translation::GetCurrentLanguageId() const
+const Language& Translation::GetCurrentLanguage() const
 {
 	return current_language;
 }
@@ -180,14 +189,13 @@ void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang
 	if (!ParseLanguageFiles(lang_id)) {
 		return;
 	}
-	current_language = ToString(lang_id);
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.
-	if (!current_language.empty()) {
+	if (!current_language.lang_dir.empty()) {
 		RewriteDatabase();
 		RewriteTreemapNames();
 		RewriteBattleEventMessages();
@@ -201,7 +209,7 @@ void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang
 }
 
 void Translation::RequestAndAddMap(int map_id) {
-	if (current_language.empty()) {
+	if (current_language.lang_dir.empty()) {
 		return;
 	}
 
@@ -246,6 +254,7 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 
 	// For default, this is all we need.
 	if (!language_tree) {
+		current_language = {};
 		return true;
 	}
 
@@ -292,6 +301,12 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 			}
 		}
 	}
+
+	auto it = std::find_if(languages.begin(), languages.end(), [&lang_id](const auto& lang) {
+		return lang_id == lang.lang_dir;
+	});
+	assert(it != languages.end());
+	current_language = *it;
 
 	// Log
 	Output::Debug("Translation loaded {} sys, {} common, {} battle, and {} map .po files", (sys==nullptr?0:1), (battle==nullptr?0:1), (common==nullptr?0:1), maps.size());

@@ -329,7 +329,7 @@ void Scene_Title::ChangeLanguage(const std::string& lang_str) {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	// No-op?
-	if (lang_str == Player::translation.GetCurrentLanguageId()) {
+	if (lang_str == Player::translation.GetCurrentLanguage().lang_dir) {
 		HideTranslationWindow();
 		return;
 	}
