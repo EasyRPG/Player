@@ -64,7 +64,6 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
     <string name="fast_forward_factor">Geschwindigkeit:</string>
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
-    <string name="set_as_default">Als Standard festlegen</string>
     <string name="edit_name">Umbenennen</string>
     <string name="edit_layout">Layout bearbeiten</string>
     <string name="delete">Löschen</string>
