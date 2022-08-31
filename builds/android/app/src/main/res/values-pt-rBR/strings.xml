@@ -81,4 +81,5 @@ Por favor nos diga em detalhes o que deu errado.\n\n
     <string name="navigation_drawer_open">Abrir menu</string>
     <string name="navigation_drawer_close">Fechar menu</string>
     <string name="menu">Abrir menu Android</string>
+    <string name="open_games_folder">Abrir a pasta de jogos</string>
 </resources>
