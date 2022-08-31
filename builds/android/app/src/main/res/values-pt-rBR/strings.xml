@@ -63,7 +63,7 @@ Por favor nos diga em detalhes o que deu errado.\n\n
     </string-array>
     <string name="fast_forward_factor">Multiplicador de velocidade:</string>
     <!--InputLayout Managing-->
-    <string name="manage_input_layouts">Gerenciar layouts de entrada</string>
+    <string name="manage_input_layouts">Gerenciar layouts de entrada:</string>
     <string name="edit_name">Editar nome</string>
     <string name="edit_layout">Editar layout</string>
     <string name="delete">Deletar</string>

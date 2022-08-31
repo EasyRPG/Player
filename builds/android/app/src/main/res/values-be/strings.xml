@@ -24,7 +24,7 @@
     <string name="creating_dir_failed">Не атрымалася стварыць дырэкторыю $PATH</string>
     <string name="path_not_readable">Немагчыма прачытаць $PATH</string>
     <string name="no_external_storage">Не знойдзены знешні дыск (напр. SD-карта)</string>
-    <string name="not_valid_game">$PATH — не гульня ці не падтрымліваецца.</string>
+    <string name="not_valid_game">$PATH — не гульня ці не падтрымліваецца</string>
     <string name="select_game_region">Выбраць рэгіён гульні</string>
     <string name="change_the_layout">Змяніць інтэрфейс</string>
     <string name="choose_layout">Выбраць інтэрфейс</string>
