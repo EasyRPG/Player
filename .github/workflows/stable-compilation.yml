@@ -24,23 +24,14 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - ubuntu:18.04  # LTS       | CMake 3.10.2 | G++ 7.4.0  | SDL 2.0.8
           - debian:10     # oldstable | CMake 3.13.4 | G++ 8.3.0  | SDL 2.0.9
           - ubuntu:20.04  # LTS       | CMake 3.16.3 | G++ 9.3.0  | SDL 2.0.10
           - debian:11     # stable    | CMake 3.18.4 | G++ 10.2.1 | SDL 2.0.14
-        # - ubuntu:22.04  # LTS       | CMake 3.22.1 | G++ 11.2.0 | SDL 2.0.20
+          - ubuntu:22.04  # LTS       | CMake 3.22.1 | G++ 11.2.0 | SDL 2.0.20
 
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.8.0
-
-      - name: Install ppa for new libfmt and git
-        if: matrix.image == 'ubuntu:18.04'
-        run: |
-          apt-get update
-          apt-get install -yqq software-properties-common
-          add-apt-repository ppa:team-xbmc/ppa -y
-          add-apt-repository ppa:git-core/ppa -y
 
       - name: Install dependencies
         run: |
@@ -65,13 +56,10 @@ jobs:
       - name: Compile
         run: |
           VER="(GA, `date +%Y-%m-%d`)"
-          mkdir build
-          cd build
-          # cmake < 3.13 does not support '-B'
-          cmake -G Ninja .. \
+          cmake -G Ninja -B build . \
             -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
             -DPLAYER_BUILD_LIBLCF=ON -DPLAYER_VERSION_APPEND="$VER"
-          cmake --build .
+          cmake --build build
 
       - name: Install
         run: |
