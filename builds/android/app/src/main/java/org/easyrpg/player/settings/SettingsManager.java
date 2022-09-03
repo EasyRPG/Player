@@ -26,6 +26,7 @@ import org.easyrpg.player.button_mapping.InputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class SettingsManager {
     private final static long VIBRATION_DURATION = 20; // ms
@@ -63,7 +64,7 @@ public class SettingsManager {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         imageSize = sharedPref.getInt(IMAGE_SIZE.toString(), IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
-        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), false);
+        rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), true);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
         vibrateWhenSlidingDirectionEnabled = sharedPref.getBoolean(VIBRATE_WHEN_SLIDING_DIRECTION.toString(), true);
@@ -295,27 +296,23 @@ public class SettingsManager {
     }
 
     public static InputLayout getInputLayoutHorizontal(Activity activity) {
-        if (inputLayoutHorizontal == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), null);
-            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
-                SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(activity);
-            } else {
-                SettingsManager.inputLayoutHorizontal = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
-            }
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_HORIZONTAL.toString(), null);
+        if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+            SettingsManager.inputLayoutHorizontal = InputLayout.getDefaultInputLayoutHorizontal(activity);
+        } else {
+            SettingsManager.inputLayoutHorizontal = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_HORIZONTAL, inputLayoutString);
         }
         return SettingsManager.inputLayoutHorizontal;
     }
 
     public static InputLayout getInputLayoutVertical(Activity activity) {
-        if (inputLayoutVertical == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-            String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
-            if (inputLayoutString == null || inputLayoutString.isEmpty()) {
-                SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutHorizontal(activity);
-            } else {
-                SettingsManager.inputLayoutVertical = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
-            }
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String inputLayoutString = sharedPref.getString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), null);
+        if (inputLayoutString == null || inputLayoutString.isEmpty()) {
+            SettingsManager.inputLayoutVertical = InputLayout.getDefaultInputLayoutVertical(activity);
+        } else {
+            SettingsManager.inputLayoutVertical = InputLayout.parse(activity, InputLayout.Orientation.ORIENTATION_VERTICAL, inputLayoutString);
         }
         return SettingsManager.inputLayoutVertical;
     }

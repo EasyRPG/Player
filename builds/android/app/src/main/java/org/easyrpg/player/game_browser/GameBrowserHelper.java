@@ -27,7 +27,7 @@ public class GameBrowserHelper {
         String path = game.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
-        if (game.getGameFolder().isDirectory() && game.getGameFolder().canRead()) {
+        if (game.isStandalone() || (game.getGameFolder().isDirectory() && game.getGameFolder().canRead())) {
             Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
             ArrayList<String> args = new ArrayList<>();
 
@@ -40,6 +40,7 @@ public class GameBrowserHelper {
             args.add(game.getSavePath());
 
             args.add("--encoding");
+
             args.add(game.getEncoding(context).getRegionCode());
 
             // Soundfont
@@ -52,6 +53,7 @@ public class GameBrowserHelper {
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
             intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
             intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
+            intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
 
             Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args);
             Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));

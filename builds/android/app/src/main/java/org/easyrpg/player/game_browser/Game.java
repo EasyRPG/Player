@@ -50,6 +50,20 @@ public class Game implements Comparable<Game> {
 	    this.titleScreen = titleScreen;
     }
 
+    /**
+     * Constructor for standalone mode
+     *
+     * @param gameFolder
+     * @param saveFolder
+     */
+    public Game(String gameFolder, String saveFolder) {
+        this.title = "Standalone";
+        this.gameFolderPath = gameFolder;
+        this.savePath = saveFolder;
+        this.gameFolder = null;
+        this.isFavorite = false;
+    }
+
 	public String getTitle() {
 		return title;
 	}
@@ -123,5 +137,9 @@ public class Game implements Comparable<Game> {
 
     public Bitmap getTitleScreen() {
         return titleScreen;
+    }
+
+    public Boolean isStandalone() {
+        return gameFolder == null;
     }
 }

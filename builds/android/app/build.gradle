@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion '31.0.0'
     ndkVersion '21.4.7075529'
+    assetPacks = [":assets"]
     defaultConfig {
         applicationId "org.easyrpg.player"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
     }
