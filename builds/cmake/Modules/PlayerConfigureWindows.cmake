@@ -1,17 +1,15 @@
 if(WIN32)
 	# Target Unicode API
-	add_definitions(-D_UNICODE)
-	add_definitions(-DUNICODE)
+	add_compile_definitions(_UNICODE UNICODE)
 
 	# Disable API deprecation warnings
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 
 	# Prevent some Windows.h global namespace pollution
-	add_definitions(-DNOMINMAX)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
+	add_compile_definitions(NOMINMAX WIN32_LEAN_AND_MEAN)
 
 	# Make math constants available
-	add_definitions(-D_USE_MATH_DEFINES)
+	add_compile_definitions(_USE_MATH_DEFINES)
 endif()
 
 if(MSVC)

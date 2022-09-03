@@ -15,9 +15,9 @@ endif()
 # Ensure needed debugging flags are passed
 string(TOLOWER "${CMAKE_BUILD_TYPE}" current_build_type)
 if(current_build_type STREQUAL "debug")
-	add_definitions(-D_DEBUG)
+	add_compile_definitions(DEBUG)
 elseif(current_build_type MATCHES "^(release|minsizerel|relwithdebinfo)$")
-	add_definitions(-DNDEBUG)
+	add_compile_definitions(NDEBUG)
 endif()
 
 # Since dkp is disabling default flags, add optimizing here

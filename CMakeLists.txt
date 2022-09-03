@@ -1,16 +1,19 @@
-cmake_minimum_required(VERSION 3.10...3.20 FATAL_ERROR)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-	# Use most recent policies, even for older cmake
-	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-endif()
+cmake_minimum_required(VERSION 3.13...3.24 FATAL_ERROR)
 
-project(EasyRPG_Player VERSION 0.7 LANGUAGES CXX)
+project(EasyRPG_Player
+	VERSION 0.7
+	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
+	HOMEPAGE_URL "https://easyrpg.org"
+	LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
-include(ConfigureWindows)
+include(CMakeDependentOption)
+include(PlayerConfigureWindows)
 include(PlayerFindPackage)
 include(PlayerBuildType)
+include(PlayerMisc)
+include(GetGitRevisionDescription)
 
 # C++14 is required
 set(CMAKE_CXX_STANDARD 14)
@@ -19,19 +22,6 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
-
-# ninja/parallel builds disable output colors, forcing them here. global scope to
-# catch all targets. cmake will have this build into 3.24
-if(CMAKE_VERSION VERSION_LESS "3.24")
-	option(CMAKE_COLOR_DIAGNOSTICS "Always produce ANSI-colored output" OFF)
-	if(CMAKE_COLOR_DIAGNOSTICS)
-		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-			add_compile_options("-fdiagnostics-color=always")
-		elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-			add_compile_options("-fcolor-diagnostics")
-		endif()
-	endif()
-endif()
 
 # Source Files
 add_library(${PROJECT_NAME} STATIC
@@ -453,8 +443,6 @@ add_library(${PROJECT_NAME} STATIC
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
 
-include(CMakeDependentOption)
-
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -477,7 +465,6 @@ string(CONCAT PROJECT_VERSION
 	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
 	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
 
-include(GetGitRevisionDescription)
 set(PLAYER_VERSION_GIT "")
 git_get_exact_tag(GIT_TAG)
 # Do not include a hash, if we are building a release tag
