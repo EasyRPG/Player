@@ -559,7 +559,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 	ctr_add_graphics_target(keyboard IMAGE
 		INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/keyboard.png
 		OPTIONS -f rgba)
-	dkp_generate_binary_embed_sources(PLAYER_3DS_ASSETS keyboard)
+	dkp_add_embedded_binary_library(3ds-assets keyboard)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/3ds/audio.cpp
@@ -568,8 +568,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/clock.h
 		src/platform/3ds/input_buttons.cpp
 		src/platform/3ds/ui.cpp
-		src/platform/3ds/ui.h
-		${PLAYER_3DS_ASSETS})
+		src/platform/3ds/ui.h)
+	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
@@ -595,7 +595,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	target_link_libraries(${PROJECT_NAME} OpenGL::EGL)
 	# generate gfx assets
 	enable_language(ASM)
-	dkp_generate_binary_embed_sources(PLAYER_SWITCH_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
+	dkp_add_embedded_binary_library(switch-assets "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/switch/audio.cpp
@@ -604,8 +604,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/clock.h
 		src/platform/switch/input_buttons.cpp
 		src/platform/switch/ui.cpp
-		src/platform/switch/ui.h
-		${PLAYER_SWITCH_ASSETS})
+		src/platform/switch/ui.h)
+	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
