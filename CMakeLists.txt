@@ -1231,13 +1231,13 @@ endif()
 # manpage
 # Handled as extra target "man"
 set(MAN_NAME easyrpg-player.6)
-find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
+find_program(ASCIIDOCTOR_EXECUTABLE asciidoctor)
 set(MANUAL_STATUS "Unavailable")
-if(A2X_EXECUTABLE)
+if(ASCIIDOCTOR_EXECUTABLE)
 	add_custom_command(OUTPUT resources/unix/${MAN_NAME}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
-		COMMAND ${A2X_EXECUTABLE} -a player_version="${PLAYER_VERSION}"
-			-f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
+		COMMAND ${ASCIIDOCTOR_EXECUTABLE} -a player_version="${PLAYER_VERSION}"
+			-b manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
 			${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME}.adoc
 		DEPENDS resources/unix/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
@@ -1255,7 +1255,7 @@ if(A2X_EXECUTABLE)
 	add_dependencies(man player_man)
 	set(MANUAL_STATUS "Generated")
 else()
-	# no a2x, distribution archive?
+	# no asciidoctor, distribution archive?
 	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME})
 		install(FILES resources/unix/${MAN_NAME} DESTINATION share/man/man6)
 		set(MANUAL_STATUS "Bundled")

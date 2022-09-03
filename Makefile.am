@@ -598,9 +598,9 @@ easyrpg_player_LDFLAGS = -framework Foundation
 endif
 
 # manual page
-if HAVE_A2X
+if HAVE_ASCIIDOCTOR
 resources/unix/easyrpg-player.6: resources/unix/easyrpg-player.6.adoc
-	$(AM_V_GEN)$(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources/unix $<
+	$(AM_V_GEN)$(ASCIIDOCTOR) -a player_version=$(PACKAGE_VERSION) -b manpage -D $(builddir)/resources/unix $<
 
 dist_man6_MANS = resources/unix/easyrpg-player.6
 MOSTLYCLEANFILES += resources/unix/easyrpg-player.6
