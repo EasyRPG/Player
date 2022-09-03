@@ -9,6 +9,9 @@ if(WIN32)
 	# Prevent some Windows.h global namespace pollution
 	add_definitions(-DNOMINMAX)
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
+
+	# Make math constants available
+	add_definitions(-D_USE_MATH_DEFINES)
 endif()
 
 if(MSVC)

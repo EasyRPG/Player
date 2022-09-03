@@ -16,7 +16,6 @@
  */
 
 // Headers
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <algorithm>
 #include <lcf/data.h>

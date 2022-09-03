@@ -151,6 +151,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_interpreter.h \
 	src/game_interpreter_battle.cpp \
 	src/game_interpreter_battle.h \
+	src/game_interpreter_control_variables.cpp \
+	src/game_interpreter_control_variables.h \
 	src/game_interpreter_map.cpp \
 	src/game_interpreter_map.h \
 	src/game_map.cpp \
@@ -200,6 +202,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/logo.h \
 	src/main_data.cpp \
 	src/main_data.h \
+	src/maniac_patch.cpp \
+	src/maniac_patch.h \
 	src/map_data.h \
 	src/memory_management.h \
 	src/message_overlay.cpp \

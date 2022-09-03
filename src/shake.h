@@ -18,7 +18,6 @@
 #ifndef EP_SHAKE_H
 #define EP_SHAKE_H
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "utils.h"
 

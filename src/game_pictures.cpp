@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "bitmap.h"
 #include "options.h"

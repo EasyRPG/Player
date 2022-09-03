@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <benchmark/benchmark.h>
 #include <rect.h>

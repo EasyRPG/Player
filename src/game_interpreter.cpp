@@ -40,6 +40,8 @@
 #include "game_message.h"
 #include "game_pictures.h"
 #include "game_screen.h"
+#include "game_interpreter_control_variables.h"
+#include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -54,6 +56,8 @@
 #include "util_macro.h"
 #include <lcf/reader_util.h>
 #include <lcf/lsd/reader.h>
+#include <lcf/reader_lcf.h>
+#include <lcf/writer_lcf.h>
 #include "game_battle.h"
 #include "utils.h"
 #include "transition.h"
@@ -1053,11 +1057,14 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 
 bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com) { // code 10220
 	int value = 0;
+	int operand = com.parameters[4];
 
-	Game_Actor* actor = nullptr;
-	Game_Character* character = nullptr;
+	if (EP_UNLIKELY(operand >= 9 && !Player::IsPatchManiac())) {
+		Output::Warning("ControlVariables: Unsupported operand {}", operand);
+		return true;
+	}
 
-	switch (com.parameters[4]) {
+	switch (operand) {
 		case 0:
 			// Constant
 			value = com.parameters[5];
@@ -1068,277 +1075,203 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		case 2:
 			// Number of var A ops B
-			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			value = Main_Data::game_variables->GetIndirect(com.parameters[5]);
 			break;
 		case 3: {
 			// Random between range
-			int rmax = max(com.parameters[5], com.parameters[6]);
-			int rmin = min(com.parameters[5], com.parameters[6]);
-			value = Rand::GetRandomNumber(rmin, rmax);
+			value = ControlVariables::Random(com.parameters[5], com.parameters[6]);
 			break;
 		}
-		case 4:
+		case 4: {
 			// Items
-			switch (com.parameters[6]) {
-				case 0:
-					// Number of items posessed
-					value = Main_Data::game_party->GetItemCount(com.parameters[5]);
-					break;
-				case 1:
-					// How often the item is equipped
-					value = Main_Data::game_party->GetEquippedItemCount(com.parameters[5]);
-					break;
-			}
-			break;
-		case 5:
-			// Hero
-			actor = Main_Data::game_actors->GetActor(com.parameters[5]);
-
-			if (!actor) {
-				Output::Warning("ControlVariables: Invalid actor ID {}", com.parameters[5]);
-				return true;
+			int item = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				item = ValueOrVariable(com.parameters[7], item);
 			}
 
-			switch (com.parameters[6]) {
-				case 0:
-					// Level
-					value = actor->GetLevel();
-					break;
-				case 1:
-					// Experience
-					value = actor->GetExp();
-					break;
-				case 2:
-					// Current HP
-					value = actor->GetHp();
-					break;
-				case 3:
-					// Current MP
-					value = actor->GetSp();
-					break;
-				case 4:
-					// Max HP
-					value = actor->GetMaxHp();
-					break;
-				case 5:
-					// Max MP
-					value = actor->GetMaxSp();
-					break;
-				case 6:
-					// Attack
-					value = actor->GetAtk();
-					break;
-				case 7:
-					// Defense
-					value = actor->GetDef();
-					break;
-				case 8:
-					// Intelligence
-					value = actor->GetSpi();
-					break;
-				case 9:
-					// Agility
-					value = actor->GetAgi();
-					break;
-				case 10:
-					// Weapon ID
-					value = actor->GetWeaponId();
-					break;
-				case 11:
-					// Shield ID
-					value = actor->GetShieldId();
-					break;
-				case 12:
-					// Armor ID
-					value = actor->GetArmorId();
-					break;
-				case 13:
-					// Helmet ID
-					value = actor->GetHelmetId();
-					break;
-				case 14:
-					// Accesory ID
-					value = actor->GetAccessoryId();
-					break;
-			}
+			value = ControlVariables::Item(com.parameters[6], item);
 			break;
-		case 6:
+		}
+		case 5: { // Hero
+			int actor_id = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				actor_id = ValueOrVariable(com.parameters[7], actor_id);
+			}
+			value = ControlVariables::Actor(com.parameters[6], actor_id);
+			break;
+		}
+		case 6: {
 			// Characters
-			character = GetCharacter(com.parameters[5]);
-			if (character != NULL) {
-				int event_id = com.parameters[5];
-				switch (com.parameters[6]) {
-					case 0:
-						// Map ID
-						if (!Player::IsRPG2k()
-								|| event_id == Game_Character::CharPlayer
-								|| event_id == Game_Character::CharBoat
-								|| event_id == Game_Character::CharShip
-								|| event_id == Game_Character::CharAirship) {
-							value = character->GetMapId();
-						} else {
-							// This is an RPG_RT bug for 2k only. Requesting the map id of an event always returns 0.
-							value = 0;
-						}
-						break;
-					case 1:
-						// X Coordinate
-						value = character->GetX();
-						break;
-					case 2:
-						// Y Coordinate
-						value = character->GetY();
-						break;
-					case 3:
-						// Orientation
-						int dir;
-						dir = character->GetFacing();
-						value = dir == 0 ? 8 :
-								dir == 1 ? 6 :
-								dir == 2 ? 2 : 4;
-						break;
-					case 4:
-						// Screen X
-						value = character->GetScreenX();
-						break;
-					case 5:
-						// Screen Y
-						value = character->GetScreenY();
-				}
+			int event_id = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				event_id = ValueOrVariable(com.parameters[7], event_id);
 			}
+			value = ControlVariables::Event(com.parameters[6], event_id, *this);
 			break;
+		}
 		case 7:
 			// More
-			switch (com.parameters[5]) {
-				case 0:
-					// Gold
-					value = Main_Data::game_party->GetGold();
-					break;
-				case 1:
-					// Timer 1 remaining time
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
-					break;
-				case 2:
-					// Number of heroes in party
-					value = Main_Data::game_party->GetActors().size();
-					break;
-				case 3:
-					// Number of saves
-					value = Main_Data::game_system->GetSaveCount();
-					break;
-				case 4:
-					// Number of battles
-					value = Main_Data::game_party->GetBattleCount();
-					break;
-				case 5:
-					// Number of wins
-					value = Main_Data::game_party->GetWinCount();
-					break;
-				case 6:
-					// Number of defeats
-					value = Main_Data::game_party->GetDefeatCount();
-					break;
-				case 7:
-					// Number of escapes (aka run away)
-					value = Main_Data::game_party->GetRunCount();
-					break;
-				case 8:
-					// MIDI play position
-					value = Main_Data::game_ineluki->GetMidiTicks();
-					break;
-				case 9:
-					// Timer 2 remaining time
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
-					break;
-				case 10:
-					// Current date (YYMMDD)
-					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(nullptr);
-						std::tm* tm = std::localtime(&t);
-						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_YYMMDD).c_str());
-					}
-					break;
-				case 11:
-					// Current time (HHMMSS)
-					if (Player::IsPatchManiac()) {
-						std::time_t t = std::time(nullptr);
-						std::tm* tm = std::localtime(&t);
-						value = atoi(Utils::FormatDate(tm, Utils::DateFormat_HHMMSS).c_str());
-					}
-					break;
-				case 12:
-					// Frames
-					if (Player::IsPatchManiac()) {
-						value = Main_Data::game_system->GetFrameCounter();
-					}
-					break;
-				case 13:
-					// Patch version
-					if (Player::IsPatchManiac()) {
-						// Latest version before the engine rewrite
-						value = 200128;
-					}
-					break;
+			value = ControlVariables::Other(com.parameters[5]);
+			break;
+		case 8: {
+			int enemy_id = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				enemy_id = ValueOrVariable(com.parameters[7], enemy_id);
+			}
+
+			// Battle related
+			value = ControlVariables::Enemy(com.parameters[6], enemy_id);
+			break;
+		}
+		case 9: { // Party Member (Maniac)
+			int party_idx = com.parameters[5];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				party_idx = ValueOrVariable(com.parameters[7], party_idx);
+			}
+			value = ControlVariables::Party(com.parameters[6], party_idx);
+			break;
+		}
+		case 10: {
+			// Switch (Maniac)
+			value = com.parameters[5];
+			if (com.parameters[6] == 1) {
+				value = Main_Data::game_switches->GetInt(value);
+			} else {
+				value = Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(value));
 			}
 			break;
-		case 8:
-			// Battle related
-			if (Main_Data::game_enemyparty.get()->GetBattlerCount() < com.parameters[5]) {
-				break;
+		}
+		case 11: {
+			// Pow (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			value = ControlVariables::Pow(arg1, arg2);
+			break;
+		}
+		case 12: {
+			// Sqrt (Maniac)
+			int arg = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int mul = com.parameters[6];
+			value = ControlVariables::Sqrt(arg, mul);
+			break;
+		}
+		case 13: {
+			// Sin (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
+			float mul = static_cast<float>(com.parameters[6]);
+			value = ControlVariables::Sin(arg1, arg2, mul);
+			break;
+		}
+		case 14: {
+			// Cos (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
+			int mul = com.parameters[6];
+			value = ControlVariables::Cos(arg1, arg2, mul);
+			break;
+		}
+		case 15: {
+			// Atan2 (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[6]);
+			int mul = com.parameters[7];
+			value = ControlVariables::Atan2(arg1, arg2, mul);
+			break;
+		}
+		case 16: {
+			// Min (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			value = ControlVariables::Min(arg1, arg2);
+			break;
+		}
+		case 17: {
+			// Max (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			value = ControlVariables::Max(arg1, arg2);
+			break;
+		}
+		case 18: {
+			// Abs (Maniac)
+			int arg = ValueOrVariable(com.parameters[6] & 0xF, com.parameters[5]);
+			value = ControlVariables::Abs(arg);
+			break;
+		}
+		case 19: {
+			// Binary (Maniac)
+			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
+			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
+			value = ControlVariables::Binary(com.parameters[5], arg1, arg2);
+			break;
+		}
+		case 20: {
+			// Ternary (Maniac)
+			int mode = com.parameters[10];
+			int arg1 = ValueOrVariable(mode & 0xF, com.parameters[6]);
+			int arg2 = ValueOrVariable((mode >> 4) & 0xF, com.parameters[7]);
+			int op = com.parameters[5];
+			if (CheckOperator(arg1, arg2, op)) {
+				value = ValueOrVariable((mode >> 8) & 0xF, com.parameters[8]);
+			} else {
+				value = ValueOrVariable((mode >> 12) & 0xF, com.parameters[9]);
 			}
-
-			switch (com.parameters[6]) {
-				case 0:
-					// Enemy HP
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetHp();
-					break;
-				case 1:
-					// Enemy SP
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSp();
-					break;
-				case 2:
-					// Enemy MaxHP
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxHp();
-					break;
-				case 3:
-					// Enemy MaxSP
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxSp();
-					break;
-				case 4:
-					// Enemy Attack
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAtk();
-					break;
-				case 5:
-					// Enemy Defense
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetDef();
-					break;
-				case 6:
-					// Enemy Spirit
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSpi();
-					break;
-				case 7:
-					// Enemy Agility
-					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAgi();
-					break;
-			}
+			break;
+		}
+		case 21:
+			// Expression (Maniac)
+			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]), *this);
+			break;
 		default:
-			;
+			Output::Warning("ControlVariables: Unsupported operand {}", operand);
+			return true;
 	}
 
-	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
-		// Param0: 0: Single, 1: Range, 2: Indirect
+	int target = com.parameters[0];
+	if (target >= 0 && target <= 4) {
 		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-		int start = com.parameters[0] == 2 ? Main_Data::game_variables->Get(com.parameters[1]) : com.parameters[1];
-		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
+		int start, end;
+		if (target == 0) {
+			// Single
+			start = com.parameters[1];
+			end = start;
+		} else if (target == 1) {
+			// Range
+			start = com.parameters[1];
+			end = com.parameters[2];
+		} else if (target == 2) {
+			// Indirect
+			start = Main_Data::game_variables->Get(com.parameters[1]);
+			end = start;
+		} else if (target == 3 && Player::IsPatchManiac()) {
+			// Range Indirect (Maniac)
+			start = Main_Data::game_variables->Get(com.parameters[1]);
+			end = Main_Data::game_variables->Get(com.parameters[2]);
+		} else if (target == 4 && Player::IsPatchManiac()) {
+			// Expression (Maniac)
+			int idx = com.parameters[1];
+			start = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(idx + 1, com.parameters[idx]), *this);
+			end = start;
+		} else {
+			return true;
+		}
 
-		if (com.parameters[3] > 5 && !Player::IsPatchManiac()) {
+		if (Player::IsPatchManiac() && end < start) {
+			// Vanilla does not support end..start, Maniac does
+			std::swap(start, end);
+		}
+
+		int operation = com.parameters[3];
+		if (EP_UNLIKELY(operation >= 5 && !Player::IsPatchManiac())) {
+			Output::Warning("ControlVariables: Unsupported operation {}", operation);
 			return true;
 		}
 
 		if (start == end) {
 			// Single variable case - if this is random value, we already called the RNG earlier.
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->Set(start, value);
 					break;
@@ -1376,7 +1309,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		} else if (com.parameters[4] == 1) {
 			// Multiple variables - Direct variable lookup
 			int var_id = com.parameters[5];
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeVariable(start, end, var_id);
 					break;
@@ -1414,7 +1347,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		} else if (com.parameters[4] == 2) {
 			// Multiple variables - Indirect variable lookup
 			int var_id = com.parameters[5];
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeVariableIndirect(start, end, var_id);
 					break;
@@ -1453,7 +1386,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Multiple variables - random
 			int rmax = max(com.parameters[5], com.parameters[6]);
 			int rmin = min(com.parameters[5], com.parameters[6]);
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRangeRandom(start, end, rmin, rmax);
 					break;
@@ -1490,7 +1423,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			}
 		} else {
 			// Multiple variables - constant
-			switch (com.parameters[3]) {
+			switch (operation) {
 				case 0:
 					Main_Data::game_variables->SetRange(start, end, value);
 					break;
@@ -3549,10 +3482,48 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			break;
 		}
 		break;
+	case 12:
+		// Maniac: Other
+		if (Player::IsPatchManiac()) {
+			switch (com.parameters[1]) {
+				case 0:
+					// FIXME: Game was loaded in this frame
+					Output::Warning("Maniac: Condition 'Loaded' not implemented");
+					result = false;
+					break;
+				case 1:
+					// Joypad is active (We always read from Controller so simply report 'true')
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+					result = true;
+#else
+					result = false;
+#endif
+					break;
+				case 2:
+					// FIXME: Window has focus. Needs function exposed in DisplayUi
+					// Assuming 'true' as Player usually suspends when loosing focus
+					result = true;
+					break;
+			}
+		}
+		break;
+	case 13:
+		// Maniac: Switch through Variable
+		if (Player::IsPatchManiac()) {
+			result = Main_Data::game_switches->Get(Main_Data::game_variables->Get(com.parameters[1])) == (com.parameters[2] == 0);
+		}
+		break;
+	case 14:
+		// Maniac: Variable indirect
+		if (Player::IsPatchManiac()) {
+			value1 = Main_Data::game_variables->GetIndirect(com.parameters[1]);
+			value2 = ValueOrVariable(com.parameters[2], com.parameters[3]);
+			result = CheckOperator(value1, value2, com.parameters[4]);
+		}
+		break;
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
-
 
 	int sub_idx = subcommand_sentinel;
 	if (!result) {
@@ -4242,12 +4213,37 @@ bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command KeyInputProcEx not supported");
+#if !defined(SUPPORT_KEYBOARD)
+	Output::Warning("Maniac KeyInputProc: Keyboard input is not supported on this platform");
+	// Fallthrough: Variables are still set to 0
+#endif
+
+	int operation = com.parameters[0];
+	int start_var_id = com.parameters[1];
+
+	if (operation == 0 || operation == 1) {
+		// The difference between 0 and 1 is whether the Joypad is checked
+		// We do not implement the Joypad code so both behave the same
+		auto keys = ManiacPatch::GetKeyRange();
+
+		for (int i = 0; i < static_cast<int>(keys.size()); ++i) {
+			Main_Data::game_variables->Set(start_var_id + i, keys[i] ? 1 : 0);
+		}
+	} else if (operation == 2) {
+		int key_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
+		ManiacPatch::GetKeyState(key_id);
+		Main_Data::game_variables->Set(start_var_id, key_id ? 1 : 0);
+	} else {
+		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");
+	}
+
+	Game_Map::SetNeedRefresh(true);
+
 	return true;
 }
 
@@ -4260,12 +4256,119 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const&) {
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlGlobalSave not supported");
+	int operation = com.parameters[0];
+
+	static bool was_loaded = false; // FIXME
+
+	if (operation == 0 || (!was_loaded && (operation == 4 || operation == 5))) {
+		was_loaded = true;
+		// Load
+		auto lgs = FileFinder::Save().OpenFile("Save.lgs");
+		if (!lgs) {
+			return true;
+		}
+
+		lcf::LcfReader reader(lgs);
+		std::string header;
+		reader.ReadString(header, reader.ReadInt());
+		if (header.length() != 13 || header != "LcfGlobalSave") {
+			Output::Debug("This is not a valid global save.");
+			return true;
+		}
+
+		lcf::LcfReader::Chunk chunk;
+
+		while (!reader.Eof()) {
+			chunk.ID = reader.ReadInt();
+			chunk.length = reader.ReadInt();
+			switch (chunk.ID) {
+				case 1: {
+					Game_Switches::Switches_t switches;
+					reader.Read(switches, chunk.length);
+					Main_Data::game_switches_global->SetData(std::move(switches));
+					break;
+				}
+				case 2: {
+					Game_Variables::Variables_t variables;
+					reader.Read(variables, chunk.length);
+					Main_Data::game_variables_global->SetData(std::move(variables));
+					break;
+				}
+				default:
+					reader.Skip(chunk, "CommandManiacControlGlobalSave");
+			}
+		}
+	}
+
+
+	if (operation == 1) {
+		// Close (no-op)
+	} else if (operation == 2 || operation == 3) {
+		// 2: Save (write to file)
+		// 3: Save and Close
+		if (!was_loaded) {
+			return true;
+		}
+
+		auto savelgs_name = FileFinder::Save().FindFile("Save.lgs");
+		if (savelgs_name.empty()) {
+			savelgs_name = "Save.lgs";
+		}
+
+		auto lgs_out = FileFinder::Save().OpenOutputStream(savelgs_name);
+		if (!lgs_out) {
+			Output::Warning("Maniac ControlGlobalSave: Saving failed");
+			return true;
+		}
+
+		lcf::LcfWriter writer(lgs_out, lcf::EngineVersion::e2k3);
+		writer.WriteInt(13);
+		const std::string header = "LcfGlobalSave";
+		writer.Write(header);
+		writer.Write(1);
+		writer.Write(Main_Data::game_switches_global->GetSize());
+		writer.Write(Main_Data::game_switches_global->GetData());
+		writer.Write(2);
+		writer.Write(Main_Data::game_variables_global->GetSize());
+		writer.Write(Main_Data::game_variables_global->GetData());
+	} else if (operation == 4 || operation == 5) {
+		int type = com.parameters[2];
+		int game_state_idx = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[3]);
+		int global_save_idx = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[4]);
+		int length = ValueOrVariable((com.parameters[1] >> 8) & 0xF, com.parameters[5]);
+
+		if (operation == 4) {
+			// Copy from global save to game state
+			for (int i = 0; i < length; ++i) {
+				if (type == 0) {
+					Main_Data::game_switches->Set(game_state_idx, Main_Data::game_switches_global->Get(global_save_idx));
+				} else if (type == 1) {
+					Main_Data::game_variables->Set(game_state_idx, Main_Data::game_variables_global->Get(global_save_idx));
+				}
+				++game_state_idx;
+				++global_save_idx;
+			}
+
+			Game_Map::SetNeedRefresh(true);
+		} else {
+			// Copy from game state to global save
+			for (int i = 0; i < length; ++i) {
+				if (type == 0) {
+					Main_Data::game_switches_global->Set(global_save_idx, Main_Data::game_switches->Get(game_state_idx));
+				} else if (type == 1) {
+					Main_Data::game_variables_global->Set(global_save_idx, Main_Data::game_variables->Get(game_state_idx));
+				}
+				++game_state_idx;
+				++global_save_idx;
+			}
+		}
+	}
+
 	return true;
 }
 

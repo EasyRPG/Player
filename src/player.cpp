@@ -853,6 +853,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
+	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
+	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
 
 	DynRpg::Reset();
