@@ -1264,7 +1264,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		}
 
 		int operation = com.parameters[3];
-		if (EP_UNLIKELY(operation >= 5 && !Player::IsPatchManiac())) {
+		if (EP_UNLIKELY(operation >= 6 && !Player::IsPatchManiac())) {
 			Output::Warning("ControlVariables: Unsupported operation {}", operation);
 			return true;
 		}
