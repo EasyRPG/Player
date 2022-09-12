@@ -260,8 +260,10 @@ if(SDL2_FOUND)
 					${GAMECONTROLLER} ${COREHAPTICS} ${ICONV_LIBRARY})
 		elseif(ANDROID)
 			find_library(HIDAPI hidapi)
-			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
-				INTERFACE_LINK_LIBRARIES ${HIDAPI})
+			if(HIDAPI)
+				set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
+					INTERFACE_LINK_LIBRARIES ${HIDAPI})
+			endif()
 		else()
 			# Remove -lSDL2 -lSDL2main from the pkg-config linker line,
 			# to prevent linking against the system library

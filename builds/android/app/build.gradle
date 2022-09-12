@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 33
-    buildToolsVersion '31.0.0'
+    buildToolsVersion '33.0.0'
     ndkVersion '21.4.7075529'
     assetPacks = [":assets"]
     defaultConfig {
@@ -39,7 +39,7 @@ android {
     externalNativeBuild {
         cmake {
             path "../../../CMakeLists.txt"
-            version "3.18.1"
+            version "3.22.1"
         }
     }
 	lint {
