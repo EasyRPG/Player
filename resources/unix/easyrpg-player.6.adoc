@@ -1,26 +1,26 @@
-easyrpg-player(6)
-=================
-:doctype: manpage
-:man source:   EasyRPG Player
-:man version:  {player_version}
-:man manual:   EasyRPG Manual
+= easyrpg-player(6)
+:manmanual: EasyRPG Manual
+:mansource: EasyRPG Player {player_version}
 
+== Name
 
-== NAME
 easyrpg-player - Interpreter for RPG Maker 2000/2003 games
 
 
-== SYNOPSIS
+== Synopsis
+
 *easyrpg-player* [<optional flags>...]
 
 
-== DESCRIPTION
+== Description
+
 EasyRPG Player is an open source interpreter for RPG Maker 2000 and 2003 games.
 It aims to support all features of unmodified games and also has some support
 for some additional binary patches.
 
 
-== OPTIONS
+== Options
+
 *--battle-test* 'MONSTERPARTY'::
   Starts a battle test with the specified monster party.
 
@@ -141,7 +141,7 @@ NOTE: Incompatible with *--load-game-id*.
 *--language* 'LANG'::
   Loads the game translation in language/'LANG' folder.
 
-*--soundfont 'FILE'::
+*--soundfont* 'FILE'::
   Adds 'FILE' to the list of soundfonts used for playing MIDI files and use
   this one with highest precedence. The soundfont must be in SF2 format.
 
@@ -177,7 +177,8 @@ arguments are supported:
   Same as *--window*.
 
 
-== ENVIRONMENT
+== Environment
+
 'RPG2K_RTP_PATH'::
   Full path to a directory containing an extracted RPG Maker 2000
   Run-Time-Package(RTP).
@@ -201,7 +202,8 @@ NOTE: Use colon (':') or semicolon (';') as separator. Use '--soundfont'
 to specify a soundfont on the command line.
 
 
-== FILES
+== Files
+
 'RPG_RT.ini'::
   The game configuration file. It follows a simple *Key*='Value' syntax in
   multiple sections. Specific options can be set in the [EasyRPG] section.
@@ -215,12 +217,14 @@ Encoding=1252
 NOTE: Values in the configuration file will overwrite auto detected ones,
 however command line parameters will take precedence.
 
-== REPORTING BUGS
+== Reporting Bugs
+
 Bugs should be reported at the issue tracker:
 https://github.com/EasyRPG/Player/issues
 
 
-== COPYRIGHT / AUTHORS
+== Copyright / Authors
+
 EasyRPG Player is Copyright (C) 2007-2021 the EasyRPG authors, see file
 AUTHORS.md for details.
 
@@ -229,7 +233,8 @@ the terms of the GNU GPL version 3.
 See the file COPYING or http://gnu.org/licenses/gpl.html for details.
 
 
-== SEE ALSO
+== See Also
+
 mkxp - An open source RGSS (Ruby Game Scripting System) interface
 implementation that aims to support games created by "RPG Maker XP",
 "RPG Maker VX" and "RPG Maker VX Ace"

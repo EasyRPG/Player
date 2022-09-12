@@ -1,16 +1,19 @@
-cmake_minimum_required(VERSION 3.10...3.20 FATAL_ERROR)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-	# Use most recent policies, even for older cmake
-	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-endif()
+cmake_minimum_required(VERSION 3.13...3.24 FATAL_ERROR)
 
-project(EasyRPG_Player VERSION 0.7 LANGUAGES CXX)
+project(EasyRPG_Player
+	VERSION 0.7
+	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
+	HOMEPAGE_URL "https://easyrpg.org"
+	LANGUAGES CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
-include(ConfigureWindows)
+include(CMakeDependentOption)
+include(PlayerConfigureWindows)
 include(PlayerFindPackage)
 include(PlayerBuildType)
+include(PlayerMisc)
+include(GetGitRevisionDescription)
 
 # C++14 is required
 set(CMAKE_CXX_STANDARD 14)
@@ -19,19 +22,6 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
-
-# ninja/parallel builds disable output colors, forcing them here. global scope to
-# catch all targets. cmake will have this build into 3.24
-if(CMAKE_VERSION VERSION_LESS "3.24")
-	option(CMAKE_COLOR_DIAGNOSTICS "Always produce ANSI-colored output" OFF)
-	if(CMAKE_COLOR_DIAGNOSTICS)
-		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-			add_compile_options("-fdiagnostics-color=always")
-		elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-			add_compile_options("-fcolor-diagnostics")
-		endif()
-	endif()
-endif()
 
 # Source Files
 add_library(${PROJECT_NAME} STATIC
@@ -453,8 +443,6 @@ add_library(${PROJECT_NAME} STATIC
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
 
-include(CMakeDependentOption)
-
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -477,7 +465,6 @@ string(CONCAT PROJECT_VERSION
 	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
 	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
 
-include(GetGitRevisionDescription)
 set(PLAYER_VERSION_GIT "")
 git_get_exact_tag(GIT_TAG)
 # Do not include a hash, if we are building a release tag
@@ -572,7 +559,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 	ctr_add_graphics_target(keyboard IMAGE
 		INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/keyboard.png
 		OPTIONS -f rgba)
-	dkp_generate_binary_embed_sources(PLAYER_3DS_ASSETS keyboard)
+	dkp_add_embedded_binary_library(3ds-assets keyboard)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/3ds/audio.cpp
@@ -581,8 +568,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/clock.h
 		src/platform/3ds/input_buttons.cpp
 		src/platform/3ds/ui.cpp
-		src/platform/3ds/ui.h
-		${PLAYER_3DS_ASSETS})
+		src/platform/3ds/ui.h)
+	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
@@ -608,7 +595,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	target_link_libraries(${PROJECT_NAME} OpenGL::EGL)
 	# generate gfx assets
 	enable_language(ASM)
-	dkp_generate_binary_embed_sources(PLAYER_SWITCH_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
+	dkp_add_embedded_binary_library(switch-assets "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/switch/audio.cpp
@@ -617,8 +604,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/clock.h
 		src/platform/switch/input_buttons.cpp
 		src/platform/switch/ui.cpp
-		src/platform/switch/ui.h
-		${PLAYER_SWITCH_ASSETS})
+		src/platform/switch/ui.h)
+	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
@@ -1231,13 +1218,13 @@ endif()
 # manpage
 # Handled as extra target "man"
 set(MAN_NAME easyrpg-player.6)
-find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
+find_program(ASCIIDOCTOR_EXECUTABLE asciidoctor)
 set(MANUAL_STATUS "Unavailable")
-if(A2X_EXECUTABLE)
+if(ASCIIDOCTOR_EXECUTABLE)
 	add_custom_command(OUTPUT resources/unix/${MAN_NAME}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
-		COMMAND ${A2X_EXECUTABLE} -a player_version="${PLAYER_VERSION}"
-			-f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
+		COMMAND ${ASCIIDOCTOR_EXECUTABLE} -a player_version="${PLAYER_VERSION}"
+			-b manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources/unix
 			${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME}.adoc
 		DEPENDS resources/unix/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
@@ -1255,7 +1242,7 @@ if(A2X_EXECUTABLE)
 	add_dependencies(man player_man)
 	set(MANUAL_STATUS "Generated")
 else()
-	# no a2x, distribution archive?
+	# no asciidoctor, distribution archive?
 	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/unix/${MAN_NAME})
 		install(FILES resources/unix/${MAN_NAME} DESTINATION share/man/man6)
 		set(MANUAL_STATUS "Bundled")

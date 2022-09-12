@@ -180,11 +180,10 @@ AC_SUBST(EP_VERSION, ep_version)
 git_version=`$srcdir/builds/autoconf/git-version.sh --pretty`
 
 # manual page
-AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
-AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
-AC_SUBST([A2X])
-AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/unix/easyrpg-player.6"],
-	AC_MSG_WARN([a2x is required to create the manual page]))
+AC_CHECK_PROG([ASCIIDOCTOR], [asciidoctor], [asciidoctor], [no])
+AM_CONDITIONAL([HAVE_ASCIIDOCTOR], [test x"$ASCIIDOCTOR" != "xno"])
+AS_IF([test x"$ASCIIDOCTOR" = "xno" && test ! -f "${srcdir}/resources/unix/easyrpg-player.6"],
+	AC_MSG_WARN([asciidoctor is required to create the manual page]))
 AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/unix/easyrpg-player.6"])
 
 # Doxygen source documentation
@@ -248,9 +247,9 @@ if test "yes" != "$silent"; then
 
 	echo "Documentation:"
 	echo -n "  manual page: "
-	if test "$A2X" = "no" -a -f "${srcdir}/resources/unix/easyrpg-player.6"; then
+	if test "$ASCIIDOCTOR" = "no" -a -f "${srcdir}/resources/unix/easyrpg-player.6"; then
 		echo "shipped"
-	elif test "x$A2X" != "xno"; then
+	elif test "x$ASCIIDOCTOR" != "xno"; then
 		echo "generated"
 	else
 		echo "not available"
