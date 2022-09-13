@@ -1264,7 +1264,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		}
 
 		int operation = com.parameters[3];
-		if (EP_UNLIKELY(operation >= 5 && !Player::IsPatchManiac())) {
+		if (EP_UNLIKELY(operation >= 6 && !Player::IsPatchManiac())) {
 			Output::Warning("ControlVariables: Unsupported operation {}", operation);
 			return true;
 		}
@@ -4330,11 +4330,11 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 		writer.WriteInt(13);
 		const std::string header = "LcfGlobalSave";
 		writer.Write(header);
-		writer.Write(1);
-		writer.Write(Main_Data::game_switches_global->GetSize());
+		writer.Write<uint32_t>(1);
+		writer.Write<uint32_t>(Main_Data::game_switches_global->GetSize());
 		writer.Write(Main_Data::game_switches_global->GetData());
-		writer.Write(2);
-		writer.Write(Main_Data::game_variables_global->GetSize());
+		writer.Write<uint32_t>(2);
+		writer.Write<uint32_t>(Main_Data::game_variables_global->GetSize());
 		writer.Write(Main_Data::game_variables_global->GetData());
 	} else if (operation == 4 || operation == 5) {
 		int type = com.parameters[2];
