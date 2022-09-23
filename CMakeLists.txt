@@ -559,7 +559,17 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 	ctr_add_graphics_target(keyboard IMAGE
 		INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/keyboard.png
 		OPTIONS -f rgba)
-	dkp_add_embedded_binary_library(3ds-assets keyboard)
+	ctr_add_graphics_target(battery ATLAS
+		INPUTS
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/empty.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/1bar.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/2bars.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/3bars.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/4bars.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/full.png
+			${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/battery/adapter.png
+		OPTIONS -f rgba)
+	dkp_add_embedded_binary_library(3ds-assets keyboard battery)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/3ds/audio.cpp
