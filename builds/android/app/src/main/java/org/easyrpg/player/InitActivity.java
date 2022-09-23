@@ -106,8 +106,8 @@ public class InitActivity extends AppCompatActivity {
         }
 
         if (standaloneMode) {
-            // Launch the game: FIXME
-            String saveDir = getApplication().getApplicationInfo().dataDir + "/Save";
+            // Launch the game
+            String saveDir = getExternalFilesDir(null).getAbsolutePath() + "/Save";
             new File(saveDir).mkdirs();
 
             Game project = new Game(gameDir, saveDir);
