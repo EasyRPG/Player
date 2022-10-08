@@ -322,7 +322,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 Point Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
-	int dx = text_rect.width - rect.width;
+	int dx = rect.width - text_rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
@@ -349,7 +349,7 @@ Point Bitmap::TextDraw(int x, int y, int color, StringView text, Text::Alignment
 Point Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
-	int dx = text_rect.width - rect.width;
+	int dx = rect.width - text_rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:

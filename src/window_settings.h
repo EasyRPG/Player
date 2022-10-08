@@ -21,6 +21,7 @@
 // Headers
 #include <vector>
 #include "input.h"
+#include "window_numberinput.h"
 #include "window_selectable.h"
 
 /**
@@ -36,7 +37,28 @@ public:
 		eInputRemap,
 		eVideo,
 		eAudio,
-		eLicense
+		eLicense,
+		eLastMode
+	};
+
+	enum OptionMode {
+		eOptionNone,
+		eOptionRangeInput,
+		eOptionPicker
+	};
+
+	struct Option {
+		std::string text;
+		std::string value_text;
+		std::string help;
+		std::function<void(void)> action;
+		OptionMode mode;
+		int current_value;
+		int original_value;
+		int min_value;
+		int max_value;
+		std::vector<std::string> options_text;
+		std::vector<std::string> options_help;
 	};
 
 	/** Constructor  */
@@ -52,8 +74,8 @@ public:
 	void UpdateMode();
 
 	/** Execute the action pointed to by index */
-	void DoCurrentAction() {
-		options[index].action();
+	Option& GetCurrentOption() {
+		return options[index];
 	}
 
 	UiMode GetMode() const;
@@ -85,11 +107,15 @@ private:
 	void AddOption(const Param& p,
 			Action&& action);
 
-	struct Option {
-		std::string text;
-		std::string help;
-		std::function<void(void)> action;
-	};
+	template <typename T, typename Action>
+	void AddOption(const RangeConfigParam<T>& p,
+			Action&& action
+	);
+
+	template <typename T, typename Action, size_t S>
+	void AddOption(const EnumConfigParam<T, S>& p,
+			Action&& action
+	);
 
 	void RefreshInput();
 	void RefreshVideo();
@@ -107,7 +133,7 @@ private:
 		int index = 0;
 		int top_row = 0;
 	};
-	Memory memory[eLicense] = {};
+	Memory memory[eLastMode] = {};
 
 	struct StackFrame {
 		UiMode uimode = eNone;
@@ -118,6 +144,7 @@ private:
 	std::array<StackFrame,8> stack;
 	int stack_index = 0;
 	int timer = 0;
+	std::vector<std::string> picker_options;
 
 	StackFrame& GetFrame(int n = 0);
 	const StackFrame& GetFrame(int n = 0) const;

@@ -59,10 +59,26 @@ EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
 
 }
 
-AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) {
+AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) : cfg(cfg) {
 
 }
 
 Game_ConfigAudio AudioInterface::GetConfig() const {
 	return cfg;
+}
+
+int AudioInterface::BGM_GetGlobalVolume() const {
+	return cfg.music_volume.Get();
+}
+
+void AudioInterface::BGM_SetGlobalVolume(int volume) {
+	cfg.music_volume.Set(volume);
+}
+
+int AudioInterface::SE_GetGlobalVolume() const {
+	return cfg.sound_volume.Get();
+}
+
+void AudioInterface::SE_SetGlobalVolume(int volume) {
+	cfg.sound_volume.Set(volume);
 }

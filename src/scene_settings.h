@@ -57,6 +57,8 @@ private:
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;
 	std::unique_ptr<Window_Settings> options_window;
+	std::unique_ptr<Window_Command> picker_window;
+	std::unique_ptr<Window_NumberInput> number_window;
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;

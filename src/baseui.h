@@ -187,6 +187,8 @@ public:
 	 */
 	Game_Clock::duration GetFrameLimit() const;
 
+	void SetScalingMode(ScalingMode mode);
+
 	/**
 	 * @return current video options.
 	 */
@@ -312,6 +314,10 @@ inline void BaseUi::ToggleShowFps() {
 
 inline Game_Clock::duration BaseUi::GetFrameLimit() const {
 	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
+}
+
+inline void BaseUi::SetScalingMode(ScalingMode mode) {
+	vcfg.scaling_mode.Set(mode);
 }
 
 #endif

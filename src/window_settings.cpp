@@ -18,6 +18,8 @@
 // Headers
 #include <sstream>
 #include <utility>
+#include "game_map.h"
+#include "text.h"
 #include "window_settings.h"
 #include "game_config.h"
 #include "input_buttons.h"
@@ -91,7 +93,8 @@ void Window_Settings::DrawOption(int index) {
 	bool enabled = bool(option.action);
 	Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 
-	contents->TextDraw(rect.x, rect.y, color, option.text);
+	contents->TextDraw(rect, color, option.text);
+	contents->TextDraw(rect, color, option.value_text, Text::AlignRight);
 }
 
 Window_Settings::StackFrame& Window_Settings::GetFrame(int n) {
@@ -216,6 +219,7 @@ void Window_Settings::AddOption(const std::string& prefix,
 	Option opt;
 	opt.text = prefix;
 	opt.help = help;
+	opt.mode = eOptionNone;
 	if (!param.Locked()) {
 		opt.action = std::forward<Action>(action);
 	}
@@ -224,7 +228,7 @@ void Window_Settings::AddOption(const std::string& prefix,
 
 template <typename Param, typename Action>
 void Window_Settings::AddOption(const Param& param,
-		Action&& action)
+	Action&& action)
 {
 	if (!param.Enabled()) {
 		return;
@@ -232,6 +236,56 @@ void Window_Settings::AddOption(const Param& param,
 	Option opt;
 	opt.text = ToString(param.GetName());
 	opt.help = ToString(param.GetDescription());
+	opt.value_text = param.ValueToString();
+	opt.mode = eOptionNone;
+	if (!param.Locked()) {
+		opt.action = std::forward<Action>(action);
+	}
+	options.push_back(std::move(opt));
+}
+
+template <typename T, typename Action>
+void Window_Settings::AddOption(const RangeConfigParam<T>& param,
+		Action&& action
+	) {
+	if (!param.Enabled()) {
+		return;
+	}
+	Option opt;
+	opt.text = ToString(param.GetName());
+	opt.help = ToString(param.GetDescription());
+	opt.value_text = param.ValueToString();
+	opt.mode = eOptionRangeInput;
+	opt.current_value = static_cast<int>(param.Get());
+	opt.original_value = opt.current_value;
+	opt.min_value = param.GetMin();
+	opt.max_value = param.GetMax();
+	if (!param.Locked()) {
+		opt.action = std::forward<Action>(action);
+	}
+	options.push_back(std::move(opt));
+}
+
+template <typename T, typename Action, size_t S>
+void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
+			Action&& action
+	) {
+	if (!param.Enabled()) {
+		return;
+	}
+	Option opt;
+	opt.text = ToString(param.GetName());
+	opt.help = ToString(param.GetDescription());
+	opt.value_text = param.ValueToString();
+	opt.mode = eOptionPicker;
+	opt.current_value = static_cast<int>(param.Get());
+	opt.original_value = opt.current_value;
+	for (auto& s: param.GetValues()) {
+		opt.options_text.push_back(ToString(s));
+	}
+	for (auto& s: param.GetDescriptions()) {
+		opt.options_help.push_back(ToString(s));
+	}
 	if (!param.Locked()) {
 		opt.action = std::forward<Action>(action);
 	}
@@ -247,14 +301,14 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.vsync, [](){});
 	AddOption(cfg.fps_limit, [](){});
 	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
-	AddOption(cfg.scaling_mode, [](){ /*DisplayUi->SetScalingMode();*/ });
+	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
 }
 
 void Window_Settings::RefreshAudio() {
 	auto cfg = DisplayUi->GetAudio().GetConfig();
 
-	AddOption(cfg.music_volume,	[](){});
-	AddOption(cfg.sound_volume, [](){});
+	AddOption(cfg.music_volume,	[this](){ DisplayUi->GetAudio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
+	AddOption(cfg.sound_volume, [this](){ DisplayUi->GetAudio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
 	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
 			[](){},
 			"Which MIDI backend to use");

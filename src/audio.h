@@ -120,6 +120,13 @@ struct AudioInterface {
 	 */
 	virtual void SE_Stop() = 0;
 
+
+	int BGM_GetGlobalVolume() const;
+	void BGM_SetGlobalVolume(int volume);
+
+	int SE_GetGlobalVolume() const;
+	void SE_SetGlobalVolume(int volume);
+
 protected:
 	Game_ConfigAudio cfg;
 };

@@ -21,6 +21,9 @@
 #include "player.h"
 #include "baseui.h"
 #include "output.h"
+#include "window_help.h"
+#include "window_numberinput.h"
+#include "window_settings.h"
 
 constexpr int option_window_num_items = 10;
 
@@ -80,6 +83,8 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	options_window->SetVisible(false);
 	help_window->SetVisible(false);
 
+	picker_window.reset();
+
 	switch (mode) {
 		case Window_Settings::eMain:
 			main_window->SetActive(true);
@@ -101,6 +106,25 @@ void Scene_Settings::Update() {
 	SetMode(options_window->GetMode());
 	if (mode != Window_Settings::eInputRemap && Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cancel));
+
+		if (number_window) {
+			number_window.reset();
+			auto& option = options_window->GetCurrentOption();
+			option.current_value = option.original_value;
+			option.action();
+			options_window->SetActive(true);
+			return;
+		}
+
+		if (picker_window) {
+			picker_window.reset();
+			auto& option = options_window->GetCurrentOption();
+			option.current_value = option.original_value;
+			option.action();
+			options_window->SetActive(true);
+			return;
+		}
+
 		options_window->Pop();
 		SetMode(options_window->GetMode());
 		if (mode == Window_Settings::eNone) {
@@ -124,6 +148,11 @@ void Scene_Settings::Update() {
 		case Window_Settings::eInputRemap:
 			options_window->UpdateMode();
 			break;
+		/*case Window_Settings::ePicker:
+			UpdatePicker();
+			break;*/
+		case Window_Settings::eLastMode:
+			assert(false);
 	}
 }
 
@@ -149,11 +178,61 @@ void Scene_Settings::UpdateMain() {
 
 void Scene_Settings::UpdateOptions() {
 	options_window->UpdateMode();
+
+	if (number_window) {
+		number_window->Update();
+		auto& option = options_window->GetCurrentOption();
+		option.current_value = number_window->GetNumber();
+		option.action();
+
+		if (Input::IsTriggered(Input::DECISION)) {
+			options_window->Refresh();
+			number_window.reset();
+			options_window->SetActive(true);
+		}
+		return;
+	} else if (picker_window) {
+		picker_window->Update();
+		auto& option = options_window->GetCurrentOption();
+		option.current_value = picker_window->GetIndex();
+		option.action();
+
+		if (Input::IsTriggered(Input::DECISION)) {
+			options_window->Refresh();
+			picker_window.reset();
+			options_window->SetActive(true);
+		}
+		return;
+	}
+
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (options_window->IsCurrentActionEnabled()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-			options_window->DoCurrentAction();
-			options_window->Refresh();
+			auto& option = options_window->GetCurrentOption();
+			if (option.mode == Window_Settings::eOptionNone) {
+				option.action();
+				options_window->Refresh();
+			} else if (option.mode == Window_Settings::eOptionRangeInput) {
+				number_window.reset(new Window_NumberInput(200, 200));
+				number_window->SetNumber(option.current_value);
+				number_window->SetMaxDigits(3);
+				number_window->SetZ(options_window->GetZ() + 1);
+				number_window->SetOpacity(255);
+				number_window->SetActive(true);
+				options_window->SetActive(false);
+			} else if (option.mode == Window_Settings::eOptionPicker) {
+				picker_window.reset(new Window_Command(option.options_text));
+				picker_window->SetX(100);
+				picker_window->SetY(100);
+				picker_window->SetZ(options_window->GetZ() + 1);
+				picker_window->SetIndex(option.current_value);
+				picker_window->SetHelpWindow(help_window.get());
+				picker_window->SetActive(true);
+				options_window->SetActive(false);
+				picker_window->UpdateHelpFn = [this](Window_Help& win, int index) {
+					win.SetText(options_window->GetCurrentOption().options_help[index]);
+				};
+			}
 		} else {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
 		}

@@ -192,6 +192,14 @@ public:
 		return _min >= _max;
 	}
 
+	constexpr T GetMin() const {
+		return _min;
+	}
+
+	constexpr T GetMax() const {
+		return _max;
+	}
+
 	/**
 	 * Set minimum allowed value.
 	 * @param minval the new minimum
@@ -495,11 +503,11 @@ public:
 		return ToString(_values[static_cast<int>(_value)]);
 	}
 
-	const std::array<StringView, S> GetValues() {
+	std::array<StringView, S> GetValues() const {
 		return _values;
 	}
 
-	const std::array<StringView, S> GetDescriptions() {
+	std::array<StringView, S> GetDescriptions() const {
 		return _value_descriptions;
 	}
 
