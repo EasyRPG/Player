@@ -53,6 +53,7 @@ private:
 
 	void UpdateMain();
 	void UpdateOptions();
+	void UpdateSave();
 
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;

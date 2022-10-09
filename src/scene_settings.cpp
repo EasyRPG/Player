@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scene_settings.h"
+#include "audio.h"
 #include "input.h"
 #include "game_system.h"
 #include "cache.h"
@@ -50,7 +51,8 @@ void Scene_Settings::CreateMainWindow() {
 		"Audio",
 		"Input",
 		"Game",
-		"License"
+		"License",
+		"<Save>"
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options), 96);
 	main_window->SetHeight(176);
@@ -166,12 +168,19 @@ void Scene_Settings::UpdateMain() {
 		Window_Settings::eAudio,
 		Window_Settings::eInput,
 		Window_Settings::eNone, // TODO
-		Window_Settings::eLicense
+		Window_Settings::eLicense,
+		Window_Settings::eSave
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		auto idx = main_window->GetIndex();
+
+		if (modes[idx] == Window_Settings::eSave) {
+			UpdateSave();
+			return;
+		}
+
 		SetMode(modes[idx]);
 		options_window->Push(modes[idx]);
 	}
@@ -239,6 +248,24 @@ void Scene_Settings::UpdateOptions() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}
+}
+
+void Scene_Settings::UpdateSave() {
+	auto cfg_out = Game_Config::GetGlobalConfigFileOutput();
+
+	if (!cfg_out) {
+		Output::Warning("Saving configuration file failed!");
+		return;
+	}
+
+	Game_Config cfg;
+	cfg.video = DisplayUi->GetConfig();
+	cfg.audio = DisplayUi->GetAudio().GetConfig();
+	cfg.input = Input::GetInputSource()->GetConfig();
+	cfg.player = Player::player_config;
+	cfg.WriteToStream(cfg_out);
+
+	Output::Info("Configuration saved");
 }
 
 void Scene_Settings::DrawBackground(Bitmap& dst) {

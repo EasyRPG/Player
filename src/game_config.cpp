@@ -236,15 +236,6 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		return;
 	}
 
-	/** PLAYER SECTION */
-
-	if (ini.HasValue("player", "autobattle-algo")) {
-		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
-	}
-	if (ini.HasValue("player", "enemyai-algo")) {
-		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", ""));
-	}
-
 	/** VIDEO SECTION */
 
 	if (ini.HasValue("video", "vsync")) {
@@ -268,8 +259,17 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	if (ini.HasValue("video", "scaling-mode")) {
 		video.scaling_mode.Set(static_cast<ScalingMode>(ini.GetInteger("video", "scaling-mode", 0)));
 	}
+	if (ini.HasValue("video", "stretch")) {
+		video.stretch.Set(ini.GetInteger("video", "stretch", 0));
+	}
 
 	/** AUDIO SECTION */
+	if (ini.HasValue("audio", "music-volume")) {
+		audio.music_volume.Set(ini.GetInteger("audio", "music-volume", 100));
+	}
+	if (ini.HasValue("audio", "sound-volume")) {
+		audio.sound_volume.Set(ini.GetInteger("audio", "sound-volume", 100));
+	}
 
 	/** INPUT SECTION */
 	input.buttons = Input::GetDefaultButtonMappings();
@@ -294,15 +294,28 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 			}
 		}
 	}
+
+	if (ini.HasValue("input", "gamepad-swap-analog")) {
+		input.gamepad_swap_analog.Set(ini.GetInteger("input", "gamepad-swap-analog", 0));
+	}
+	if (ini.HasValue("input", "gamepad-swap-dpad")) {
+		input.gamepad_swap_dpad_with_buttons.Set(ini.GetInteger("input", "gamepad-swap-dpad", 0));
+	}
+	if (ini.HasValue("input", "gamepad-swap-abxy")) {
+		input.gamepad_swap_ab_and_xy.Set(ini.GetInteger("input", "gamepad-swap-abxy", 0));
+	}
+
+	/** PLAYER SECTION */
+
+	if (ini.HasValue("player", "autobattle-algo")) {
+		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
+	}
+	if (ini.HasValue("player", "enemyai-algo")) {
+		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", ""));
+	}
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
-	/** PLAYER SECTION */
-	os << "[player]\n";
-	os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
-	os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
-	os << "\n";
-
 	/** VIDEO SECTION */
 
 	os << "[video]\n";
@@ -324,9 +337,24 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	if (video.window_zoom.Enabled()) {
 		os << "window-zoom=" << video.window_zoom.Get() << "\n";
 	}
+	if (video.stretch.Enabled()) {
+		os << "stretch=" << int(video.stretch.Get()) << "\n";
+	}
+	if (video.scaling_mode.Enabled()) {
+		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
+	}
 	os << "\n";
 
 	/** AUDIO SECTION */
+	os << "[audio]\n";
+
+	if (audio.music_volume.Enabled()) {
+		os << "music-volume=" << audio.music_volume.Get() << "\n";
+	}
+	if (audio.sound_volume.Enabled()) {
+		os << "sound-volume=" << audio.sound_volume.Get() << "\n";
+	}
+	os << "\n";
 
 	/** INPUT SECTION */
 	os << "[input]\n";
@@ -350,5 +378,25 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 			auto kname = Input::Keys::kNames.tag(key);
 			os << kname;
 		}
+
+		os << "\n";
 	}
+
+	if (input.gamepad_swap_analog.Enabled()) {
+		os << "gamepad-swap-analog=" << int(input.gamepad_swap_analog.Get()) << "\n";
+	}
+	if (input.gamepad_swap_dpad_with_buttons.Enabled()) {
+		os << "gamepad-swap-dpad=" << int(input.gamepad_swap_dpad_with_buttons.Get()) << "\n";
+	}
+	if (input.gamepad_swap_ab_and_xy.Enabled()) {
+		os << "gamepad-swap-abxy=" << int(input.gamepad_swap_ab_and_xy.Get()) << "\n";
+	}
+
+	os << "\n";
+
+	/** PLAYER SECTION */
+	os << "[player]\n";
+	os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
+	os << "\n";
 }

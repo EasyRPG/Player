@@ -386,12 +386,11 @@ void Window_Settings::RefreshLicense() {
 void Window_Settings::RefreshInput() {
 	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
 
+	AddOption(ConfigParam<std::string>("Button Mapping", "Change the button mapping", ""),
+		[this]() { Push(eInputMapping); });
 	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); });
 	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); });
 	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); });
-	AddOption(ConfigParam<std::string>("Button Mapping", "Change the button mapping", ""),
-		[this]() { Push(eInputMapping); });
-
 }
 
 void Window_Settings::RefreshInputMapping() {

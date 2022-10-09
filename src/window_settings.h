@@ -39,6 +39,7 @@ public:
 		eVideo,
 		eAudio,
 		eLicense,
+		eSave,
 		eLastMode
 	};
 

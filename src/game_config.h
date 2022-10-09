@@ -60,9 +60,9 @@ struct Game_ConfigAudio {
 };
 
 struct Game_ConfigInput {
-	BoolConfigParam gamepad_swap_analog{ "Swap Analog Sticks", "Swap left and right stick", false };
-	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
-	BoolConfigParam gamepad_swap_ab_and_xy{ "Swap AB and XY", "Swap A and B with X and Y", false };
+	BoolConfigParam gamepad_swap_analog{ "Gamepad: Swap Analog Sticks", "Swap left and right stick", false };
+	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
+	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", false };
 	Input::ButtonMappingArray buttons;
 };
 
