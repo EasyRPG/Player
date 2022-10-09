@@ -82,5 +82,9 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 		cfg.window_zoom.Lock(cfg.window_zoom.Get());
 	}
 
+	// FIXME: Support these options
+	cfg.vsync.Disable();
+	cfg.fps_limit.Disable();
+
 	return cfg;
 }

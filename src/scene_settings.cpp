@@ -51,7 +51,6 @@ void Scene_Settings::CreateMainWindow() {
 		"Video",
 		"Audio",
 		"Input",
-		"Game",
 		"License",
 		"<Save>"
 	};
@@ -168,7 +167,6 @@ void Scene_Settings::UpdateMain() {
 		Window_Settings::eVideo,
 		Window_Settings::eAudio,
 		Window_Settings::eInput,
-		Window_Settings::eNone, // TODO
 		Window_Settings::eLicense,
 		Window_Settings::eSave
 	);
