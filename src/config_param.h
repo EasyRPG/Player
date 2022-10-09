@@ -181,17 +181,17 @@ public:
 	 * @return true if this value can be set
 	 */
 	constexpr bool IsValid(T value) const {
-		return value >= _min && value <= _max;
+		return Enabled() && value >= _min && value <= _max;
 	}
 
 	/** @return true if this parameter can take a value, or false if disabled */
 	constexpr bool Enabled() const {
-		return _min <= _max;
+		return enabled;
 	}
 
 	/** @return true if this parameter is either disabled or locked to a single value and cannot be changed */
 	constexpr bool Locked() const {
-		return _min >= _max;
+		return !Enabled() || _min == _max;
 	}
 
 	constexpr T GetMin() const {
@@ -226,6 +226,7 @@ public:
 	 * @post If the minval > maxval, this parameter is disabled.
 	 */
 	constexpr void SetRange(T minval, T maxval) {
+		enabled = true;
 		_min = minval;
 		_max = maxval;
 		_value = (_value < _min) ? _min : _value;
@@ -234,9 +235,7 @@ public:
 
 	/** Disable this parameter, not allowing it to take on any valid values */
 	constexpr void Disable() {
-		_value = {};
-		_min = std::numeric_limits<T>::max();
-		_max = std::numeric_limits<T>::min();
+		enabled = false;
 	}
 
 	/**
@@ -265,6 +264,7 @@ private:
 	T _value = {};
 	T _min = std::numeric_limits<T>::min();
 	T _max = std::numeric_limits<T>::max();
+	bool enabled = true;
 };
 
 using IntConfigParam = RangeConfigParam<int>;
@@ -543,7 +543,7 @@ private:
 			 typename = decltype(std::declval<U>().Set(std::declval<T>())),
 			 typename = decltype(std::declval<U>().IsValid(std::declval<T>())),
 			 typename = decltype(std::declval<U>().Enabled()),
-			 typename = decltype(std::declval<U>().Lock(std::declval<T>)),
+			 typename = decltype(std::declval<U>().Lock(std::declval<T>())),
 			 typename = decltype(std::declval<U>().Locked()),
 			 typename = decltype(std::declval<U>().ValueToString()),
 			 typename = decltype(std::declval<U>().GetName()),

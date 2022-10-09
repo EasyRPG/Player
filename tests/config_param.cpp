@@ -20,20 +20,19 @@ template class SetConfigParam<int>;
 template class SetConfigParam<float>;
 template class SetConfigParam<std::string>;
 
-
-template class EnumConfigParam<Color>;
+template class EnumConfigParam<Color, 3>;
 
 static_assert(IsConfigParamT<ConfigParam<int>>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<LockedConfigParam<int>>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<RangeConfigParam<int>>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<BoolConfigParam>::value, "ConfigParam Broken");
 static_assert(IsConfigParamT<SetConfigParam<int>>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<EnumConfigParam<Color>>::value, "ConfigParam Broken");
+static_assert(IsConfigParamT<EnumConfigParam<Color, 3>>::value, "ConfigParam Broken");
 
 TEST_SUITE_BEGIN("ConfigParam");
 
 TEST_CASE("Bool") {
-	BoolConfigParam p;
+	BoolConfigParam p("Unit Test", "");
 
 	REQUIRE(p.Enabled());
 	REQUIRE(!p.Locked());
@@ -41,7 +40,7 @@ TEST_CASE("Bool") {
 	REQUIRE(p.IsValid(false));
 	REQUIRE(p.IsValid(true));
 
-	p = BoolConfigParam(true);
+	p = BoolConfigParam("Unit Test", "", true);
 
 	REQUIRE(p.Enabled());
 	REQUIRE(!p.Locked());
@@ -85,7 +84,7 @@ TEST_CASE("Bool") {
 }
 
 TEST_CASE("Int") {
-	IntConfigParam p;
+	IntConfigParam p("Unit Test", "");
 
 	REQUIRE(p.Enabled());
 	REQUIRE(!p.Locked());
@@ -119,7 +118,7 @@ TEST_CASE("Int") {
 }
 
 TEST_CASE("String") {
-	StringConfigParam p("Hello World");
+	StringConfigParam p("Unit Test", "", "Hello World");
 
 	REQUIRE(p.Enabled());
 	REQUIRE(!p.Locked());
