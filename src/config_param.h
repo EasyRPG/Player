@@ -33,10 +33,6 @@ namespace {
 		return s;
 	}
 
-	inline std::string ParamValueToString(bool b) {
-		return b ? "ON" : "OFF";
-	}
-
 	inline std::string ParamValueToString(int i) {
 		return std::to_string(i);
 	}
@@ -69,8 +65,13 @@ public:
 		return true;
 	}
 
+	void Lock(T value) {
+		locked = true;
+		_value = std::move(value);
+	}
+
 	bool Locked() const {
-		return false;
+		return locked;
 	}
 
 	StringView GetName() const {
@@ -89,6 +90,7 @@ private:
 	StringView _name;
 	StringView _description;
 	T _value = {};
+	bool locked = false;
 };
 
 /** A configuration parameter which is always locked */
@@ -327,7 +329,7 @@ public:
 	}
 
 	std::string ValueToString() const {
-		return Enabled() ? "ON" : "OFF";
+		return Get() ? "ON" : "OFF";
 	}
 
 private:
@@ -541,6 +543,7 @@ private:
 			 typename = decltype(std::declval<U>().Set(std::declval<T>())),
 			 typename = decltype(std::declval<U>().IsValid(std::declval<T>())),
 			 typename = decltype(std::declval<U>().Enabled()),
+			 typename = decltype(std::declval<U>().Lock(std::declval<T>)),
 			 typename = decltype(std::declval<U>().Locked()),
 			 typename = decltype(std::declval<U>().ValueToString()),
 			 typename = decltype(std::declval<U>().GetName()),

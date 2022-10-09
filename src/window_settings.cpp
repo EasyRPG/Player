@@ -19,6 +19,7 @@
 #include <sstream>
 #include <utility>
 #include "game_map.h"
+#include "input.h"
 #include "text.h"
 #include "window_settings.h"
 #include "game_config.h"
@@ -165,6 +166,9 @@ void Window_Settings::Refresh() {
 		case eInput:
 			RefreshInput();
 			break;
+		case eInputMapping:
+			RefreshInputMapping();
+			break;
 		case eVideo:
 			RefreshVideo();
 			break;
@@ -205,25 +209,6 @@ void Window_Settings::UpdateHelp() {
 	} else {
 		help_window->SetText("");
 	}
-}
-
-template <typename Param, typename Action>
-void Window_Settings::AddOption(const std::string& prefix,
-		const Param& param,
-		Action&& action,
-		const std::string& help)
-{
-	if (!param.Enabled()) {
-		return;
-	}
-	Option opt;
-	opt.text = prefix;
-	opt.help = help;
-	opt.mode = eOptionNone;
-	if (!param.Locked()) {
-		opt.action = std::forward<Action>(action);
-	}
-	options.push_back(std::move(opt));
 }
 
 template <typename Param, typename Action>
@@ -301,6 +286,7 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.vsync, [](){});
 	AddOption(cfg.fps_limit, [](){});
 	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
+	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
 	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
 }
 
@@ -318,101 +304,110 @@ void Window_Settings::RefreshAudio() {
 }
 
 void Window_Settings::RefreshLicense() {
-	AddOption("EasyRPG Player", ConfigParam<std::string>("", "", "GPLv3+"), [](){}, "The engine you are using :)");
-	AddOption("liblcf", ConfigParam<std::string>("", "", "MIT"), [](){}, "Handles RPG Maker 2000/2003 and EasyRPG projects");
-	AddOption("libpng", ConfigParam<std::string>("", "", "zlib"), [](){}, "For reading and writing PNG image files");
-	AddOption("zlib", ConfigParam<std::string>("", "", "zlib"), [](){}, "Implements deflate used in ZIP archives and PNG images");
-	AddOption("Pixman", ConfigParam<std::string>("", "", "MIT"), [](){}, "Pixel-manipulation library");
-	AddOption("fmtlib", ConfigParam<std::string>("", "", "BSD"), [](){}, "Text formatting library");
+	AddOption(ConfigParam<std::string>("EasyRPG Player", "The engine you are using :)", "GPLv3+"), [](){});
+	AddOption(ConfigParam<std::string>("liblcf", "Handles RPG Maker 2000/2003 and EasyRPG projects", "MIT"), [](){});
+	AddOption(ConfigParam<std::string>("libpng", "For reading and writing PNG image files", "zlib"), [](){});
+	AddOption(ConfigParam<std::string>("zlib", "Implements deflate used in ZIP archives and PNG images", "zlib"), [](){});
+	AddOption(ConfigParam<std::string>("Pixman", "Pixel-manipulation library", "MIT"), [](){});
+	AddOption(ConfigParam<std::string>("fmtlib", "Text formatting library", "BSD"), [](){});
 	// No way to detect them - Used by liblcf
-	AddOption("expat", ConfigParam<std::string>("", "", "MIT"), [](){}, "XML parser");
-	AddOption("ICU", ConfigParam<std::string>("", "", "ICU"), [](){}, "Unicode library");
+	AddOption(ConfigParam<std::string>("expat", "XML parser", "MIT"), [](){});
+	AddOption(ConfigParam<std::string>("ICU", "Unicode library", "ICU"), [](){});
 #if USE_SDL == 1
-	AddOption("SDL", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Abstraction layer for graphic, audio, input and more");
+	AddOption(ConfigParam<std::string>("SDL", "Abstraction layer for graphic, audio, input and more", "LGPLv2.1+"), [](){});
 #endif
 #if USE_SDL == 2
-	AddOption("SDL2", ConfigParam<std::string>("", "", "zlib"), [](){}, "Abstraction layer for graphic, audio, input and more");
+	AddOption(ConfigParam<std::string>("SDL2", "Abstraction layer for graphic, audio, input and more", "zlib"), [](){});
 #endif
 #ifdef HAVE_FREETYPE
-	AddOption("Freetype", ConfigParam<std::string>("", "", "Freetype"), [](){}, "Font parsing and rasterization library");
+	AddOption(ConfigParam<std::string>("Freetype", "Font parsing and rasterization library", "Freetype"), [](){});
 #endif
 #ifdef HAVE_HARFBUZZ
-	AddOption("Harfbuzz", ConfigParam<std::string>("", "", "MIT"), [](){}, "Text shaping engine");
+	AddOption(ConfigParam<std::string>("Harfbuzz", "Text shaping engine", "MIT"), [](){});
 #endif
 #ifdef SUPPORT_AUDIO
 	// Always shown because the Midi synth is compiled in
-	AddOption("FmMidi", ConfigParam<std::string>("", "", "BSD"), [](){}, "MIDI file parser and Yamaha YM2608 FM synthesizer");
+	AddOption(ConfigParam<std::string>("FmMidi", "MIDI file parser and Yamaha YM2608 FM synthesizer", "BSD"), [](){});
 #ifdef HAVE_LIBMPG123
-	AddOption("mpg123", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Decodes MPEG Audio Layer 1, 2 and 3");
+	AddOption(ConfigParam<std::string>("mpg123", "Decodes MPEG Audio Layer 1, 2 and 3", "LGPLv2.1+"), [](){});
 #endif
 #ifdef HAVE_LIBSNDFILE
-	AddOption("libsndfile", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "Decodes sampled audio data (WAV)");
+	AddOption(ConfigParam<std::string>("libsndfile", "Decodes sampled audio data (WAV)", "LGPLv2.1+"), [](){});
 #endif
 #ifdef HAVE_OGGVORBIS
-	AddOption("ogg", ConfigParam<std::string>("", "", "BSD"), [](){}, "Ogg container format library");
-	AddOption("vorbis", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free Ogg Vorbis audio codec");
+	AddOption(ConfigParam<std::string>("ogg", "Ogg container format library", "BSD"), [](){});
+	AddOption(ConfigParam<std::string>("vorbis", "Decodes the free Ogg Vorbis audio codec", "BSD"), [](){});
 #endif
 #ifdef HAVE_TREMOR
-	AddOption("tremor", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free Ogg Vorbis audio format");
+	AddOption(ConfigParam<std::string>("tremor", "Decodes the free Ogg Vorbis audio format", "BSD"), [](){});
 #endif
 #ifdef HAVE_OPUS
-	AddOption("opus", ConfigParam<std::string>("", "", "BSD"), [](){}, "Decodes the free OPUS audio codec");
+	AddOption(ConfigParam<std::string>("opus", "Decodes the free OPUS audio codec", "BSD"), [](){});
 #endif
 #ifdef HAVE_WILDMIDI
-	AddOption("WildMidi", ConfigParam<std::string>("", "", "LGPLv3+"), [](){}, "MIDI synthesizer");
+	AddOption(ConfigParam<std::string>("WildMidi", "MIDI synthesizer", "LGPLv3+"), [](){});
 #endif
 #ifdef HAVE_FLUIDSYNTH
-	AddOption("FluidSynth", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "MIDI synthesizer supporting SoundFont 2");
+	AddOption(ConfigParam<std::string>("FluidSynth", "MIDI synthesizer supporting SoundFont 2", "LGPLv2.1+"), [](){});
 #endif
 #ifdef HAVE_FLUIDLITE
-	AddOption("FluidLite", ConfigParam<std::string>("", "", "LGPLv2.1+"), [](){}, "MIDI synthesizer supporting SoundFont 2 (lite version)");
+	AddOption(ConfigParam<std::string>("FluidLite", "MIDI synthesizer supporting SoundFont 2 (lite version)", "LGPLv2.1+"), [](){});
 #endif
 #ifdef HAVE_XMP
-	AddOption("xmp-lite", ConfigParam<std::string>("", "", "MIT"), [](){}, "Module (MOD, S3M, XM and IT) synthesizer");
+	AddOption(ConfigParam<std::string>("xmp-lite", "Module (MOD, S3M, XM and IT) synthesizer", "MIT"), [](){});
 #endif
 #ifdef HAVE_LIBSPEEXDSP
-	AddOption("speexdsp", ConfigParam<std::string>("", "", "BSD"), [](){}, "Audio resampler");
+	AddOption(ConfigParam<std::string>("speexdsp", "Audio resampler", "BSD"), [](){});
 #endif
 #ifdef HAVE_LIBSAMPLERATE
-	AddOption("samplerate", ConfigParam<std::string>("", "", "BSD"), [](){}, "Audio resampler");
+	AddOption(ConfigParam<std::string>("samplerate", "Audio resampler", "BSD"), [](){});
 #endif
 #ifdef WANT_DRWAV
-	AddOption("dr_wav", ConfigParam<std::string>("", "", "MIT-0"), [](){}, "Decodes sampled audio data (WAV)");
+	AddOption(ConfigParam<std::string>("dr_wav", "Decodes sampled audio data (WAV)", "MIT-0"), [](){});
 #endif
 #ifdef HAVE_ALSA
-	AddOption("ALSA", ConfigParam<std::string>("", "", "LGPL2.1+"), [](){}, "Linux sound support (used for MIDI playback)");
+	AddOption(ConfigParam<std::string>("ALSA", "Linux sound support (used for MIDI playback)", "LGPL2.1+"), [](){});
 #endif
 #endif
-	AddOption("rang", ConfigParam<std::string>("", "", "Unlicense"), [](){}, "Colors the terminal output");
+	AddOption(ConfigParam<std::string>("rang", "Colors the terminal output", "Unlicense"), [](){});
 #ifdef _WIN32
-	AddOption("dirent", ConfigParam<std::string>("", "", "MIT"), [](){}, "Dirent interface for Microsoft Visual Studio");
+	AddOption(ConfigParam<std::string>("dirent", "Dirent interface for Microsoft Visual Studio", "MIT"), [](){});
 #endif
-	AddOption("Baekmuk", ConfigParam<std::string>("", "", "Baekmuk"), [](){}, "Korean font family");
-	AddOption("Shinonome", ConfigParam<std::string>("", "", "Public Domain"), [](){}, "Japanese font family");
-	AddOption("ttyp0", ConfigParam<std::string>("", "", "ttyp0"), [](){}, "ttyp0 font family");
-	AddOption("WenQuanYi", ConfigParam<std::string>("", "", "GPLv2+ with FE"), [](){}, "WenQuanYi font family (CJK)");
+	AddOption(ConfigParam<std::string>("Baekmuk", "Korean font family", "Baekmuk"), [](){});
+	AddOption(ConfigParam<std::string>("Shinonome", "Japanese font family", "Public Domain"), [](){});
+	AddOption(ConfigParam<std::string>("ttyp0", "ttyp0 font family", "ttyp0"), [](){});
+	AddOption(ConfigParam<std::string>("WenQuanYi", "WenQuanYi font family (CJK)", "GPLv2+ with FE"), [](){});
 #ifdef EMSCRIPTEN
-	AddOption("PicoJSON", ConfigParam<std::string>("", "", "BSD"), [](){}, "JSON parser/serializer");
-	AddOption("Teenyicons", ConfigParam<std::string>("", "", "MIT"), [](){}, "Tiny minimal 1px icons");
+	AddOption(ConfigParam<std::string>("PicoJSON", "JSON parser/serializer", "BSD"), [](){});
+	AddOption(ConfigParam<std::string>("Teenyicons", "Tiny minimal 1px icons", "MIT"), [](){});
 #endif
 }
 
 void Window_Settings::RefreshInput() {
+	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
+
+	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); });
+	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); });
+	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); });
+	AddOption(ConfigParam<std::string>("Button Mapping", "Change the button mapping", ""),
+		[this]() { Push(eInputMapping); });
+
+}
+
+void Window_Settings::RefreshInputMapping() {
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
 		auto name = Input::kButtonNames.tag(button);
 		auto help = Input::kButtonHelp.tag(button);
-
-		std::stringstream ss;
-		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
-			auto key = static_cast<Input::Keys::InputKey>(ki->second);
-			auto kname = Input::Keys::kNames.tag(key);
-			ss << kname << " ";
+		std::string value = "";
+		auto ki = mappings.LowerBound(button);
+		if (ki != mappings.end() && ki->first == button) {
+			value = Input::Keys::kNames.tag(ki->second);
 		}
 
-		auto param = ConfigParam<std::string>(name, help, ss.str());
+		auto param = ConfigParam<std::string>(name, help, value);
 		std::string prefix = std::string("Key ") + name;
 		AddOption(param,
 				[this, button, prefix](){
@@ -425,10 +420,6 @@ void Window_Settings::RefreshInputButton() {
 	auto button = static_cast<Input::InputButton>(GetFrame().arg);
 
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
-
-	auto name = Input::kButtonNames.tag(button);
-	auto help = Input::kButtonHelp.tag(button);
-	std::string key_label = fmt::format("{}: {}", name, help);
 
 	// Protect buttons where unmapping makes the Player unusable
 	auto def_mappings = Input::GetDefaultButtonMappings();
@@ -454,29 +445,29 @@ void Window_Settings::RefreshInputButton() {
 		auto kname = Input::Keys::kNames.tag(key);
 
 		if (std::find(protected_buttons.begin(), protected_buttons.end(), *ki) != protected_buttons.end()) {
-			AddOption(kname, LockedConfigParam<std::string>("", "", ""), [](){
-			}, key_label);
+			AddOption(LockedConfigParam<std::string>(kname, "Mapping is essential and cannot be removed", ""), [](){
+			});
 		} else {
-			AddOption(kname, ConfigParam<std::string>("", "", ""), [=]() mutable {
+			AddOption(ConfigParam<std::string>(kname, "Select to remove this mapping", ""), [=]() mutable {
 				Input::GetInputSource()->GetButtonMappings().Remove({button, key});
 				Refresh();
-			}, key_label);
+			});
 		}
 	}
 
-	AddOption("<Add new>", ConfigParam<std::string>("", "", ""), [=](){
+	AddOption(ConfigParam<std::string>("<Add new>", "Add a new button mapping", ""), [=](){
 		Push(eInputRemap, static_cast<int>(button));
-	}, key_label);
-	AddOption("<Reset>", ConfigParam<std::string>("", "", ""), [=](){
+	});
+	AddOption(ConfigParam<std::string>("<Reset>", "Revert to default mapping", ""), [=](){
 		Input::ResetDefaultMapping(button);
 		Refresh();
-	}, key_label);
+	});
 }
 
 void Window_Settings::RefreshInputRemap() {
 	auto button = static_cast<Input::InputButton>(GetFrame().arg);
 	auto name = Input::kButtonNames.tag(button);
 
-	AddOption("Press the new key", ConfigParam<std::string>("", "", ""), [](){}, fmt::format("Remapping {}", name));
-	AddOption("Hold CANCEL to abort", ConfigParam<std::string>("", "", ""), [](){}, "");
+	AddOption(ConfigParam<std::string>("Press the new key", fmt::format("Remapping {}", name), ""), [](){});
+	AddOption(ConfigParam<std::string>("Hold CANCEL to abort", "", ""), [](){});
 }

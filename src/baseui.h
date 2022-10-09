@@ -126,6 +126,10 @@ public:
 	virtual AudioInterface& GetAudio() = 0;
 #endif
 
+	virtual void SetScalingMode(ScalingMode) {};
+
+	virtual void ToggleStretch() {};
+
 	/**
 	 * Gets client width size.
 	 *
@@ -186,8 +190,6 @@ public:
 	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
 	 */
 	Game_Clock::duration GetFrameLimit() const;
-
-	void SetScalingMode(ScalingMode mode);
 
 	/**
 	 * @return current video options.
@@ -314,10 +316,6 @@ inline void BaseUi::ToggleShowFps() {
 
 inline Game_Clock::duration BaseUi::GetFrameLimit() const {
 	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
-}
-
-inline void BaseUi::SetScalingMode(ScalingMode mode) {
-	vcfg.scaling_mode.Set(mode);
 }
 
 #endif

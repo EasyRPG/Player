@@ -21,6 +21,7 @@
 #include "player.h"
 #include "baseui.h"
 #include "output.h"
+#include "utils.h"
 #include "window_help.h"
 #include "window_numberinput.h"
 #include "window_settings.h"
@@ -48,6 +49,7 @@ void Scene_Settings::CreateMainWindow() {
 		"Video",
 		"Audio",
 		"Input",
+		"Game",
 		"License"
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options), 96);
@@ -143,14 +145,12 @@ void Scene_Settings::Update() {
 		case Window_Settings::eAudio:
 		case Window_Settings::eLicense:
 		case Window_Settings::eInputButton:
+		case Window_Settings::eInputMapping:
 			UpdateOptions();
 			break;
 		case Window_Settings::eInputRemap:
 			options_window->UpdateMode();
 			break;
-		/*case Window_Settings::ePicker:
-			UpdatePicker();
-			break;*/
 		case Window_Settings::eLastMode:
 			assert(false);
 	}
@@ -165,6 +165,7 @@ void Scene_Settings::UpdateMain() {
 		Window_Settings::eVideo,
 		Window_Settings::eAudio,
 		Window_Settings::eInput,
+		Window_Settings::eNone, // TODO
 		Window_Settings::eLicense
 	);
 
@@ -182,7 +183,7 @@ void Scene_Settings::UpdateOptions() {
 	if (number_window) {
 		number_window->Update();
 		auto& option = options_window->GetCurrentOption();
-		option.current_value = number_window->GetNumber();
+		option.current_value = Utils::Clamp(number_window->GetNumber(), option.min_value, option.max_value);
 		option.action();
 
 		if (Input::IsTriggered(Input::DECISION)) {
@@ -213,12 +214,13 @@ void Scene_Settings::UpdateOptions() {
 				option.action();
 				options_window->Refresh();
 			} else if (option.mode == Window_Settings::eOptionRangeInput) {
-				number_window.reset(new Window_NumberInput(200, 200));
+				number_window.reset(new Window_NumberInput(100, 100, 128, 32));
 				number_window->SetNumber(option.current_value);
-				number_window->SetMaxDigits(3);
+				number_window->SetMaxDigits(std::log10(option.max_value) + 1);
 				number_window->SetZ(options_window->GetZ() + 1);
 				number_window->SetOpacity(255);
 				number_window->SetActive(true);
+				help_window->SetText(fmt::format("Input a value from {} to {}", option.min_value, option.max_value));
 				options_window->SetActive(false);
 			} else if (option.mode == Window_Settings::eOptionPicker) {
 				picker_window.reset(new Window_Command(option.options_text));

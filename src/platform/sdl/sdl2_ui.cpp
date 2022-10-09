@@ -17,6 +17,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include "game_config.h"
 #include "system.h"
 #include "sdl2_ui.h"
 
@@ -397,10 +398,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP) {
 		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
-	else
+	} else {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+	}
 	EndDisplayModeChange();
 }
 
@@ -455,6 +457,16 @@ void Sdl2Ui::ProcessEvents() {
 	}
 }
 
+void Sdl2Ui::SetScalingMode(ScalingMode mode) {
+	window.size_changed = true;
+	vcfg.scaling_mode.Set(mode);
+}
+
+void Sdl2Ui::ToggleStretch() {
+	window.size_changed = true;
+	vcfg.stretch.Toggle();
+}
+
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
@@ -470,6 +482,13 @@ void Sdl2Ui::UpdateDisplay() {
 		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
 		float real_aspect = width_float / height_float;
 
+		auto do_stretch = [this, &viewport]() {
+			if (vcfg.stretch.Get()) {
+				viewport.x = 0;
+				viewport.w = window.width;
+			}
+		};
+
 		if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
@@ -482,6 +501,7 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.x = (window.width - viewport.w) / 2;
 			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
+			do_stretch();
 
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
@@ -495,6 +515,7 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.w = window.width;
 			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
+			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else {
 			// black bars left and right
@@ -503,6 +524,7 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.h = window.height;
 			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
+			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		}
 

@@ -33,6 +33,7 @@ public:
 		eNone,
 		eMain,
 		eInput,
+		eInputMapping,
 		eInputButton,
 		eInputRemap,
 		eVideo,
@@ -98,12 +99,6 @@ private:
 	void DrawOption(int index);
 
 	template <typename Param, typename Action>
-	void AddOption(const std::string& prefix,
-			const Param& p,
-			Action&& action,
-			const std::string& help);
-
-	template <typename Param, typename Action>
 	void AddOption(const Param& p,
 			Action&& action);
 
@@ -118,6 +113,7 @@ private:
 	);
 
 	void RefreshInput();
+	void RefreshInputMapping();
 	void RefreshVideo();
 	void RefreshAudio();
 	void RefreshLicense();

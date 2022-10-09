@@ -113,6 +113,9 @@ namespace Input {
 		DirectionMappingArray& GetDirectionMappings() { return direction_mappings; }
 		const DirectionMappingArray& GetDirectionMappings() const { return direction_mappings; }
 
+		Game_ConfigInput& GetConfig() { return cfg; }
+		const Game_ConfigInput& GetConfig() const { return cfg; }
+
 		bool InitRecording(const std::string& record_to_path);
 
 		const Point& GetMousePosition() const { return mouse_pos; }

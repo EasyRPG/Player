@@ -389,10 +389,11 @@ bool SdlUi::RefreshDisplayMode() {
 void SdlUi::ToggleFullscreen() {
 	BeginDisplayModeChange();
 	if (toggle_fs_available && mode_changing) {
-		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
+		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN) {
 			current_display_mode.flags &= ~SDL_FULLSCREEN;
-		else
+		} else {
 			current_display_mode.flags |= SDL_FULLSCREEN;
+		}
 	}
 	EndDisplayModeChange();
 }

@@ -47,8 +47,11 @@ struct Game_ConfigVideo {
 	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
 	BoolConfigParam fps_render_window{ "", "", false };
 	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
-	RangeConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2, 1, std::numeric_limits<int>::max() };
-	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "", ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"), Utils::MakeSvArray("", "", "")};
+	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
+	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
+		ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
+		Utils::MakeSvArray("Scale to the size of screen (Fast & Low quality) ABCDEFGHIJKL 1234567890", "Scales to a multiple of the game resolution (Fast & Good quality)", "Like Nearest, but avoids artifacts (Slow & High Quality)")};
+	BoolConfigParam stretch{ "Stretch", "Stretches the window to display width", false };
 };
 
 struct Game_ConfigAudio {
