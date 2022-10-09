@@ -329,7 +329,7 @@ public:
 	}
 
 	std::string ValueToString() const {
-		return Get() ? "ON" : "OFF";
+		return Get() ? "[ON]" : "[OFF]";
 	}
 
 private:

@@ -19,6 +19,7 @@
 #include "input.h"
 #include "game_system.h"
 #include "cache.h"
+#include "main_data.h"
 #include "player.h"
 #include "baseui.h"
 #include "output.h"
@@ -246,6 +247,48 @@ void Scene_Settings::UpdateOptions() {
 			}
 		} else {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+		}
+	}
+
+	if (Input::IsTriggered(Input::LEFT) || Input::IsRepeated(Input::LEFT)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cursor));
+		if (options_window->IsCurrentActionEnabled()) {
+			auto& option = options_window->GetCurrentOption();
+			if (option.mode == Window_Settings::eOptionRangeInput) {
+				--option.current_value;
+				if (option.current_value < option.min_value) {
+					option.current_value = option.max_value;
+				}
+				option.action();
+			} else if (option.mode == Window_Settings::eOptionPicker) {
+				--option.current_value;
+				if (option.current_value < 0) {
+					option.current_value = static_cast<int>(option.options_text.size() - 1);
+				}
+			}
+			option.action();
+			options_window->Refresh();
+		}
+	}
+
+	if (Input::IsTriggered(Input::RIGHT) || Input::IsRepeated(Input::RIGHT)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cursor));
+		if (options_window->IsCurrentActionEnabled()) {
+			auto& option = options_window->GetCurrentOption();
+			if (option.mode == Window_Settings::eOptionRangeInput) {
+				++option.current_value;
+				if (option.current_value > option.max_value) {
+					option.current_value = option.min_value;
+				}
+				option.action();
+			} else if (option.mode == Window_Settings::eOptionPicker) {
+				++option.current_value;
+				if (option.current_value >= static_cast<int>(option.options_text.size())) {
+					option.current_value = 0;
+				}
+			}
+			option.action();
+			options_window->Refresh();
 		}
 	}
 }
