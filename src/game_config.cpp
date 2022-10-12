@@ -23,6 +23,10 @@
 #include <lcf/inireader.h>
 #include <cstring>
 
+#ifdef _WIN32
+#  include <shlobj.h>
+#endif
+
 namespace {
 	StringView config_name = "config.ini";
 }
@@ -69,7 +73,14 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 #elif defined(__ANDROID__)
 	// FIXME
 #elif defined(_WIN32)
-	// FIXME
+	PWSTR knownPath;
+	const auto hresult = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &knownPath);
+	if (SUCCEEDED(hresult)) {
+		path = Utils::FromWideString(knownPath);
+		CoTaskMemFree(knownPath);
+	} else {
+		Output::Debug("Config: SHGetKnownFolderPath failed");
+	}
 #else
 	char* home = getenv("XDG_CONFIG_HOME");
 	if (home) {
@@ -91,7 +102,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 		return {};
 	}
 
-	std::string sub_path = FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME);
+	const std::string sub_path = FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME);
 	path = FileFinder::MakePath(path, sub_path);
 
 	auto fs = FileFinder::Root().Create(path);
