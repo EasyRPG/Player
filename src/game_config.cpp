@@ -39,10 +39,12 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 
 	if (!cli_config) {
 		auto global_config = GetGlobalConfigFileInput();
-		if (!global_config) {
-			return cfg;
+		if (global_config) {
+			cfg.LoadFromStream(global_config);
+		} else {
+			// Game_Config only loads an empty layout
+			cfg.input.buttons = Input::GetDefaultButtonMappings();
 		}
-		cfg.LoadFromStream(global_config);
 	} else {
 		cfg.LoadFromStream(cli_config);
 	}
