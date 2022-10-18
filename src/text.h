@@ -18,6 +18,7 @@
 #ifndef EP_TEXT_H
 #define EP_TEXT_H
 
+#include "point.h"
 #include "system.h"
 #include "memory_management.h"
 #include "rect.h"
@@ -51,9 +52,9 @@ namespace Text {
 	 * @param text the utf8 / exfont text to render.
 	 * @param align the text alignment to use
 	 *
-	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws the text onto dest bitmap with given parameters. Does not draw a shadow.
@@ -65,9 +66,9 @@ namespace Text {
 	 * @param color which color to use.
 	 * @param text the utf8 / exfont text to render.
 	 *
-	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, StringView text);
+	Point Draw(Bitmap& dest, int x, int y, Font& font, Color color, StringView text);
 
 	/**
 	 * Draws the character onto dest bitmap with given parameters.
@@ -79,11 +80,11 @@ namespace Text {
 	 * @param system the system graphic to use to render.
 	 * @param color which color from the system graphic to use.
 	 * @param ch the character to render.
-	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character. 
+	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character.
 	 *
-	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont);
+	Point Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont);
 
 
 	/**
@@ -95,10 +96,10 @@ namespace Text {
 	 * @param font the font used to render.
 	 * @param color which color to use.
 	 * @param ch the character to render.
-	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character. 
+	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character.
 	 *
-	 * @return Rect describing the sub-rect of dest that was rendered to. Does *not* include shadow pixels.
+	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Rect Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont);
+	Point Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont);
 }
 #endif

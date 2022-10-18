@@ -28,7 +28,7 @@
 #include <cctype>
 #include <iterator>
 
-Rect Text::Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont) {
+Point Text::Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont) {
 	if (is_exfont) {
 		return Font::exfont->Render(dest, x, y, system, color, ch);
 	} else {
@@ -36,7 +36,7 @@ Rect Text::Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, in
 	}
 }
 
-Rect Text::Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont) {
+Point Text::Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont) {
 	if (is_exfont) {
 		return Font::exfont->Render(dest, x, y, color, ch);
 	} else {
@@ -44,8 +44,8 @@ Rect Text::Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch
 	}
 }
 
-Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
-	if (text.length() == 0) return { x, y, 0, 0 };
+Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
+	if (text.length() == 0) return { 0, 0 };
 
 	Rect dst_rect = font.GetSize(text);
 
@@ -63,7 +63,7 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap
 
 	dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
-	if (dst_rect.IsOutOfBounds(dest.GetWidth(), dest.GetHeight())) return { x, y, 0, 0 };
+	if (dst_rect.IsOutOfBounds(dest.GetWidth(), dest.GetHeight())) return { 0, 0 };
 
 	const int iy = dst_rect.y;
 	const int ix = dst_rect.x;
@@ -82,13 +82,13 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap
 		if (EP_UNLIKELY(!ret)) {
 			continue;
 		}
-		next_glyph_pos += Text::Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).width;
+		next_glyph_pos += Text::Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
 	}
-	return { x, y, next_glyph_pos, ih };
+	return { next_glyph_pos, ih };
 }
 
-Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color color, StringView text) {
-	if (text.length() == 0) return { x, y, 0, 0 };
+Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color color, StringView text) {
+	if (text.length() == 0) return { 0, 0 };
 
 	int dx = x;
 	int mx = x;
@@ -118,14 +118,12 @@ Rect Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color 
 		}
 
 		auto rect = font.Render(dest, dx, dy, color, ret.ch);
-		dx += rect.width;
-		assert(ny == 0 || ny == rect.height);
-		ny = rect.height;
+		dx += rect.x;
+		assert(ny == 0 || ny == rect.y);
+		ny = rect.y;
 	}
 	dy += ny;
 	mx = std::max(mx, dx);
 
-	return Rect(x, y, mx - x , dy - y);
+	return { mx - x , dy - y };
 }
-
-

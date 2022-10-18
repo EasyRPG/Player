@@ -19,6 +19,8 @@
 #define EP_FONT_H
 
 // Headers
+#include "filesystem_stream.h"
+#include "point.h"
 #include "system.h"
 #include "memory_management.h"
 #include "rect.h"
@@ -51,10 +53,15 @@ class Font {
 	virtual Rect GetSize(char32_t ch) const = 0;
 
 	struct GlyphRet {
-		/* bitmap which the glyph pixels are located within */
+		/** bitmap which the glyph pixels are located within */
 		BitmapRef bitmap;
-		/* sub-rect of the bitmap which contains glyph pixels */
-		Rect rect;
+		/**
+		 * How far to advance the x/y offset after drawing for the next glyph.
+		 * y value is only relevant for vertical layouts.
+		 */
+		Point advance;
+		/** x/y position in the buffer where the glyph is rendered at */
+		Point offset;
 	};
 
 	/* Returns a bitmap and rect containing the pixels of the glyph.
@@ -78,7 +85,7 @@ class Font {
 	 *
 	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
 	 */
-	Rect Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -91,9 +98,9 @@ class Font {
 	 *
 	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest.
 	 */
-	Rect Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
-	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
+	static FontRef Create(StringView name, int size, bool bold, bool italic);
 	static FontRef Default();
 	static FontRef Default(bool mincho);
 	static void Dispose();
@@ -120,7 +127,7 @@ class Font {
 
 	size_t pixel_size() const { return size * 96 / 72; }
  protected:
-	Font(const std::string& name, int size, bool bold, bool italic);
+	Font(StringView name, int size, bool bold, bool italic);
 };
 
 #endif
