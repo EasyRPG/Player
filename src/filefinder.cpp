@@ -470,6 +470,12 @@ Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
 	return open_generic("Sound", name, args);
 }
 
+Filesystem_Stream::InputStream FileFinder::OpenFont(StringView name) {
+	auto FONT_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
+	DirectoryTree::Args args = { MakePath("Font", name), FONT_TYPES, 1, false };
+	return open_generic("Font", name, args);
+}
+
 bool FileFinder::IsMajorUpdatedTree() {
 	auto fs = Game();
 	assert(fs);

@@ -811,6 +811,8 @@ void Player::CreateGameObjects() {
 
 	ResetGameObjects();
 
+	LoadFonts();
+
 	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 }
 
@@ -991,6 +993,24 @@ void Player::LoadDatabase() {
 			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::Game(), *meta, fileext_map);
 		}
 	}
+}
+
+void Player::LoadFonts() {
+	Font::SetDefault(nullptr, true);
+	Font::SetDefault(nullptr, false);
+
+#ifdef HAVE_FREETYPE
+	// Look for bundled fonts
+	auto gothic = FileFinder::OpenFont("Font");
+	if (gothic) {
+		Font::SetDefault(Font::CreateFtFont(std::move(gothic), 12, false, false), false);
+	}
+
+	auto mincho = FileFinder::OpenFont("Font2");
+	if (mincho) {
+		Font::SetDefault(Font::CreateFtFont(std::move(mincho), 12, false, false), true);
+	}
+#endif
 }
 
 static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {

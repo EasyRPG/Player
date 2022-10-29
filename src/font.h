@@ -100,9 +100,10 @@ class Font {
 	 */
 	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
-	static FontRef Create(StringView name, int size, bool bold, bool italic);
+	static FontRef CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 	static FontRef Default();
 	static FontRef Default(bool mincho);
+	static void SetDefault(FontRef new_default, bool mincho);
 	static void Dispose();
 
 	static FontRef exfont;

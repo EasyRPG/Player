@@ -160,8 +160,9 @@ void Translation::SelectLanguage(StringView lang_id)
 
 		FilesystemView language_tree = root.Subtree(lang_id);
 		if (language_tree) {
-			request_counter = 4;
-			for (auto s: {TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT}) {
+			auto files = Utils::MakeSvArray(TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT, "Font/Font", "Font/Font2");
+			request_counter = static_cast<int>(files.size());
+			for (auto s: files) {
 				FileRequestAsync* request = AsyncHandler::RequestFile(language_tree.GetFullPath(), s);
 				request->SetImportantFile(true);
 				requests.emplace_back(request->Bind(&Translation::SelectLanguageAsync, this, lang_id));
@@ -177,7 +178,7 @@ void Translation::SelectLanguage(StringView lang_id)
 	}
 }
 
-void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang_id) {
+void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 	--request_counter;
 	if (request_counter == 0) {
 		requests.clear();
@@ -192,6 +193,9 @@ void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
+
+	// Translation could provide custom fonts
+	Player::LoadFonts();
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.

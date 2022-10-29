@@ -166,7 +166,8 @@ namespace {
 	FontRef const rmg2000 = std::make_shared<BitmapFont>("RMG2000-compatible", &find_rmg2000_glyph);
 	FontRef const ttyp0 = std::make_shared<BitmapFont>("ttyp0", &find_ttyp0_glyph);
 
-	FontRef const freetype = std::make_shared<FTFont>(FileFinder::Root().OpenInputStream("/usr/share/fonts/TTF/DejaVuSans.ttf"), 12, false, false);
+	FontRef default_gothic;
+	FontRef default_mincho;
 
 	struct ExFont : public Font {
 		public:
@@ -335,24 +336,33 @@ FontRef Font::Default() {
 }
 
 FontRef Font::Default(bool const m) {
-	return freetype;
-	/*
+	if (m && default_mincho) {
+		return default_mincho;
+	} else if (m && default_gothic) {
+		return default_gothic;
+	}
+
 	if (Player::IsCJK()) {
 		return m ? mincho : gothic;
 	}
 	else {
 		return m ? rmg2000 : ttyp0;
 	}
-	*/
 }
 
-FontRef Font::Create(StringView name, int size, bool bold, bool italic) {
+void Font::SetDefault(FontRef new_default, bool mincho) {
+	if (mincho) {
+		default_mincho = new_default;
+	} else {
+		default_gothic = new_default;
+	}
+}
+
+FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic) {
 #ifdef HAVE_FREETYPE
-	//return std::make_shared<FTFont>(Filesystem_Stream::InputStream(), size, bold, italic);
-	return nullptr;
+	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
 #else
-	(void)name; (void)size; (void)bold; (void)italic;
-	return Font::Default();
+	return nullptr;
 #endif
 }
 
@@ -363,6 +373,9 @@ void Font::Dispose() {
 		library = nullptr;
 	}
 #endif
+
+	SetDefault(nullptr, true);
+	SetDefault(nullptr, false);
 }
 
 // Constructor.
