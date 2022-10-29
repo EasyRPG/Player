@@ -25,10 +25,10 @@ TEST_CASE("TextDrawSystemStrReturn") {
 		return Text::Draw(*surface, x, y, *font, *system, 0, text);
 	};
 
-	REQUIRE_EQ(draw(0, 0, ""), Rect(0, 0, 0, 0));
-	REQUIRE_EQ(draw(0, 0, "abc"), Rect(0, 0, cwh * 3, ch));
-	REQUIRE_EQ(draw(3, 17, "$A"), Rect(3, 17, cwf, ch));
-	REQUIRE_EQ(draw(3, 17, "$A $B"), Rect(3, 17, cwf * 2 + cwh, ch));
+	REQUIRE_EQ(draw(0, 0, ""), Point(0, 0));
+	REQUIRE_EQ(draw(0, 0, "abc"), Point(cwh * 3, ch));
+	REQUIRE_EQ(draw(3, 17, "$A"), Point(cwf, ch));
+	REQUIRE_EQ(draw(3, 17, "$A $B"), Point(cwf * 2 + cwh, ch));
 }
 
 TEST_CASE("TextDrawColorStrReturn") {
@@ -41,11 +41,11 @@ TEST_CASE("TextDrawColorStrReturn") {
 		return Text::Draw(*surface, x, y, *font, color, text);
 	};
 
-	REQUIRE_EQ(draw(0, 0, ""), Rect(0, 0, 0, 0));
-	REQUIRE_EQ(draw(0, 0, "abc"), Rect(0, 0, cwh * 3, ch));
-	REQUIRE_EQ(draw(3, 17, "\n"), Rect(3, 17, 0, ch));
-	REQUIRE_EQ(draw(3, 17, "x\nyz"), Rect(3, 17, cwh * 2, ch *2));
-	REQUIRE_EQ(draw(10, 0, "xy\nz"), Rect(10, 0, cwh * 2, ch *2));
+	REQUIRE_EQ(draw(0, 0, ""), Point(0, 0));
+	REQUIRE_EQ(draw(0, 0, "abc"), Point(cwh * 3, 0));
+	REQUIRE_EQ(draw(3, 17, "\n"), Point(0, 12));
+	REQUIRE_EQ(draw(3, 17, "x\nyz"), Point(cwh * 2, 12));
+	REQUIRE_EQ(draw(10, 0, "xy\nz"), Point(cwh * 2, 12));
 }
 
 TEST_SUITE_END();

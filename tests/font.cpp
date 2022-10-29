@@ -56,18 +56,18 @@ TEST_CASE("FontSizeCharEx") {
 TEST_CASE("FontGlyphChar") {
 	Bitmap::SetFormat(format_R8G8B8A8_a().format());
 	auto font = Font::Default();
-	auto check = [&](char32_t ch, Rect r) {
+	auto check = [&](char32_t ch, Point p) {
 		auto ret = font->Glyph(ch);
 		REQUIRE(ret.bitmap != nullptr);
-		REQUIRE_EQ(ret.rect, r);
+		REQUIRE_EQ(ret.advance, p);
 	};
 
-	check(0, Rect(0, 0, 0, ch));
-	check(U' ', Rect(0, 0, cwh, ch));
-	check(U'\n', Rect(0, 0, 0, ch));
-	check(U'X', Rect(0, 0, cwh, ch));
-	check(U'ぽ', Rect(0, 0, cwf, ch));
-	check(U'下', Rect(0, 0, cwf, ch));
+	check(0, Point(0, 0));
+	check(U' ', Point(cwh, 0));
+	check(U'\n', Point(0, 0));
+	check(U'X', Point(cwh, 0));
+	check(U'ぽ', Point(cwf, 0));
+	check(U'下', Point(cwf, 0));
 }
 
 TEST_CASE("FontGlyphCharEx") {
@@ -77,7 +77,7 @@ TEST_CASE("FontGlyphCharEx") {
 	for (char32_t i = 0; i < 52; ++i) {
 		auto ret = font->Glyph(i);
 		REQUIRE(ret.bitmap != nullptr);
-		REQUIRE_EQ(ret.rect, Rect(0, 0, cwf, ch));
+		REQUIRE_EQ(ret.advance, Point(cwf, 0));
 	}
 }
 
@@ -87,16 +87,16 @@ TEST_CASE("FontGlyphChar") {
 	auto system = Cache::SysBlack();
 	auto surface = Bitmap::Create(width, height);
 	int color = 0;
-	auto check = [&](char32_t ch, Rect r) {
-		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, ch), r);
+	auto check = [&](char32_t ch, Point p) {
+		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, ch), p);
 	};
 
-	check(0, Rect(0, 0, 0, ch));
-	check(U' ', Rect(0, 0, cwh, ch));
-	check(U'\n', Rect(0, 0, 0, ch));
-	check(U'X', Rect(0, 0, cwh, ch));
-	check(U'ぽ', Rect(0, 0, cwf, ch));
-	check(U'下', Rect(0, 0, cwf, ch));
+	check(0, Point(0, 0));
+	check(U' ', Point(cwh, 0));
+	check(U'\n', Point(0, 0));
+	check(U'X', Point(cwh, 0));
+	check(U'ぽ', Point(cwf, 0));
+	check(U'下', Point(cwf, 0));
 }
 
 TEST_CASE("FontGlyphCharEx") {
@@ -107,7 +107,7 @@ TEST_CASE("FontGlyphCharEx") {
 	int color = 0;
 
 	for (char32_t i = 0; i < 52; ++i) {
-		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, ch), Rect(0, 0, cwf, ch));
+		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, ch), Point(cwf, 0));
 	}
 }
 
