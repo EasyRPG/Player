@@ -247,6 +247,11 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 
 	FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), 0, &face);
 
+	if (face->num_charmaps > 0) {
+		// Force first charmap. Is enabled by default for Unicode fonts but not for legacy fonts (FON, BDF, etc.)
+		FT_Set_Charmap(face, face->charmaps[0]);
+	}
+
 	FT_Set_Pixel_Sizes(face, 0, HEIGHT);
 }
 
