@@ -148,6 +148,8 @@ namespace {
 	private:
 		FT_Face face = nullptr;
 		std::vector<uint8_t> ft_buffer;
+		/** Workaround for bad kerning in RM2000 and RMG2000 fonts */
+		bool rm2000_workaround = false;
 	}; // class FTFont
 #endif
 
@@ -253,6 +255,11 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 	}
 
 	FT_Set_Pixel_Sizes(face, 0, HEIGHT);
+
+	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
+		// Workaround for bad kerning in RM2000 and RMG2000 fonts
+		rm2000_workaround = true;
+	}
 }
 
 FTFont::~FTFont() {
@@ -287,7 +294,19 @@ Rect FTFont::GetSize(char32_t ch) const {
 	FT_GlyphSlot slot = face->glyph;
 	FT_Bitmap* ft_bitmap = &slot->bitmap;
 
-	return {0, 0, static_cast<int>(slot->bitmap_left + slot->advance.x / 64), static_cast<int>(slot->bitmap_top - OFFSET)};
+	Point advance;
+	Point offset;
+
+	advance.x = slot->advance.x / 64;
+	advance.y = slot->advance.y / 64;
+	offset.x = slot->bitmap_left;
+	offset.y = slot->bitmap_top - OFFSET;
+
+	if (rm2000_workaround) {
+		advance.x = 6;
+	}
+
+	return {0, 0, offset.x + advance.x, offset.y};
 }
 
 Font::GlyphRet FTFont::Glyph(char32_t glyph) {
@@ -330,6 +349,10 @@ Font::GlyphRet FTFont::Glyph(char32_t glyph) {
 	advance.y = slot->advance.y / 64;
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - OFFSET;
+
+	if (rm2000_workaround) {
+		advance.x = 6;
+	}
 
 	return { bm, advance, offset };
 }
