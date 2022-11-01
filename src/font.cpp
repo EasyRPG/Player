@@ -363,23 +363,23 @@ FontRef Font::Default() {
 	return Default(mincho);
 }
 
-FontRef Font::Default(bool const m) {
-	if (m && default_mincho) {
+FontRef Font::Default(bool const use_mincho) {
+	if (use_mincho && default_mincho) {
 		return default_mincho;
-	} else if (m && default_gothic) {
+	} else if (!use_mincho && default_gothic) {
 		return default_gothic;
 	}
 
 	if (Player::IsCJK()) {
-		return m ? mincho : gothic;
+		return use_mincho ? mincho : gothic;
 	}
 	else {
-		return m ? rmg2000 : ttyp0;
+		return use_mincho ? rmg2000 : ttyp0;
 	}
 }
 
-void Font::SetDefault(FontRef new_default, bool mincho) {
-	if (mincho) {
+void Font::SetDefault(FontRef new_default, bool use_mincho) {
+	if (use_mincho) {
 		default_mincho = new_default;
 	} else {
 		default_gothic = new_default;
