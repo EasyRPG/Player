@@ -112,7 +112,7 @@ namespace {
 		return ttyp0 != NULL ? ttyp0 : find_gothic_glyph(code);
 	}
 
-	struct BitmapFont : public Font {
+	struct BitmapFont final : public Font {
 		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2 };
 
 		using function_type = BitmapFontGlyph const*(*)(char32_t);
@@ -132,13 +132,13 @@ namespace {
 #ifdef HAVE_FREETYPE
 	FT_Library library = nullptr;
 
-	struct FTFont : public Font  {
+	struct FTFont final : public Font  {
 		// Freetype uses the baseline as 0 and the built-in fonts the top
 		// OFFSET is substracted from the baseline to get a proper rendering position
 		// FIXME: 10 will not work for all fonts. Determine a good baseline value when loading the font
 		enum { HEIGHT = 12, OFFSET = 10 };
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
-		~FTFont();
+		~FTFont() override;
 
 		Rect GetSize(StringView txt) const override;
 		Rect GetSize(char32_t ch) const override;
@@ -171,7 +171,7 @@ namespace {
 	FontRef default_gothic;
 	FontRef default_mincho;
 
-	struct ExFont : public Font {
+	struct ExFont final : public Font {
 		public:
 			enum { HEIGHT = 12, WIDTH = 12 };
 			ExFont();
@@ -209,7 +209,7 @@ Rect BitmapFont::GetSize(StringView txt) const {
 			units += glyph->is_full? 2 : 1;
 		}
 	}
-	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
+	return {0, 0, static_cast<int>(units * HALF_WIDTH), HEIGHT};
 }
 
 Font::GlyphRet BitmapFont::Glyph(char32_t code) {
@@ -263,6 +263,11 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 }
 
 FTFont::~FTFont() {
+	if (!library) {
+		// Freetype already shut down because of Player cleanup
+		return;
+	}
+
 	if (face != nullptr) {
 		FT_Done_Face(face);
 	}
@@ -272,8 +277,8 @@ Rect FTFont::GetSize(StringView txt) const {
 	Rect rect = {0, 0, 0, static_cast<int>(size)};
 
 	std::u32string txt32 = Utils::DecodeUTF32(txt);
-	for (size_t i = 0; i < txt32.size(); ++i) {
-		Rect grect = GetSize(txt32[i]);
+	for (char32_t i: txt32) {
+		Rect grect = GetSize(i);
 		rect.width += grect.width;
 	}
 
@@ -292,7 +297,6 @@ Rect FTFont::GetSize(char32_t ch) const {
 	}
 
 	FT_GlyphSlot slot = face->glyph;
-	FT_Bitmap* ft_bitmap = &slot->bitmap;
 
 	Point advance;
 	Point offset;
@@ -309,15 +313,15 @@ Rect FTFont::GetSize(char32_t ch) const {
 	return {0, 0, offset.x + advance.x, offset.y};
 }
 
-Font::GlyphRet FTFont::Glyph(char32_t glyph) {
-    auto glyph_index = FT_Get_Char_Index(face, glyph);
+Font::GlyphRet FTFont::Glyph(char32_t code) {
+    auto glyph_index = FT_Get_Char_Index(face, code);
 
 	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_NO_BITMAP | FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
 	}
 
 	if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
+		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
 	}
 
 	FT_GlyphSlot slot = face->glyph;
@@ -395,15 +399,15 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 }
 
 void Font::Dispose() {
+	SetDefault(nullptr, true);
+	SetDefault(nullptr, false);
+
 #ifdef HAVE_FREETYPE
 	if (library) {
 		FT_Done_Library(library);
 		library = nullptr;
 	}
 #endif
-
-	SetDefault(nullptr, true);
-	SetDefault(nullptr, false);
 }
 
 // Constructor.

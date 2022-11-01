@@ -35,7 +35,7 @@ class Rect;
  */
 class Font {
  public:
-	virtual ~Font() {}
+	virtual ~Font() = default;
 
 	/**
 	 * Returns the size of the rendered string, not including shadows.
@@ -107,10 +107,6 @@ class Font {
 	static void Dispose();
 
 	static FontRef exfont;
-
-	static const int default_size = 9;
-	static const bool default_bold = false;
-	static const bool default_italic = false;
 
 	enum SystemColor {
 		ColorShadow = -1,
