@@ -784,7 +784,12 @@ void Player::CreateGameObjects() {
 	// ExFont parsing
 	Cache::exfont_custom.clear();
 	// Check for bundled ExFont
-	auto exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	auto exfont_stream = FileFinder::OpenImage("Font", "ExFont");
+	if (!exfont_stream) {
+		// Backwards compatible with older Player versions
+		exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	}
+
 #ifndef EMSCRIPTEN
 	if (!exfont_stream) {
 		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,

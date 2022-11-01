@@ -128,7 +128,7 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	tree->SetImportantFile(true);
 	FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
 	ini->SetImportantFile(true);
-	FileRequestAsync* exfont = AsyncHandler::RequestFile("ExFont");
+	FileRequestAsync* exfont = AsyncHandler::RequestFile("Font/ExFont");
 	exfont->SetImportantFile(true);
 	FileRequestAsync* soundfont = AsyncHandler::RequestFile("easyrpg.soundfont");
 	soundfont->SetImportantFile(true);
