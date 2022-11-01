@@ -133,10 +133,6 @@ namespace {
 	FT_Library library = nullptr;
 
 	struct FTFont final : public Font  {
-		// Freetype uses the baseline as 0 and the built-in fonts the top
-		// OFFSET is substracted from the baseline to get a proper rendering position
-		// FIXME: 10 will not work for all fonts. Determine a good baseline value when loading the font
-		enum { HEIGHT = 12, OFFSET = 10 };
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 		~FTFont() override;
 
@@ -148,6 +144,9 @@ namespace {
 	private:
 		FT_Face face = nullptr;
 		std::vector<uint8_t> ft_buffer;
+		// Freetype uses the baseline as 0 and the built-in fonts the top
+		// baseline_offset is subtracted from the baseline to get a proper rendering position
+		int baseline_offset = 0;
 		/** Workaround for bad kerning in RM2000 and RMG2000 fonts */
 		bool rm2000_workaround = false;
 	}; // class FTFont
@@ -254,7 +253,8 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 		FT_Set_Charmap(face, face->charmaps[0]);
 	}
 
-	FT_Set_Pixel_Sizes(face, 0, HEIGHT);
+	FT_Set_Pixel_Sizes(face, 0, size);
+	baseline_offset = static_cast<int>(size * (10.0 / 12.0));
 
 	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
 		// Workaround for bad kerning in RM2000 and RMG2000 fonts
@@ -288,7 +288,7 @@ Rect FTFont::GetSize(StringView txt) const {
 Rect FTFont::GetSize(char32_t ch) const {
 	auto glyph_index = FT_Get_Char_Index(face, ch);
 
-	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_NO_BITMAP | FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
+	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(ch));
 	}
 
@@ -304,9 +304,9 @@ Rect FTFont::GetSize(char32_t ch) const {
 	advance.x = slot->advance.x / 64;
 	advance.y = slot->advance.y / 64;
 	offset.x = slot->bitmap_left;
-	offset.y = slot->bitmap_top - OFFSET;
+	offset.y = slot->bitmap_top - baseline_offset;
 
-	if (rm2000_workaround) {
+	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
 	}
 
@@ -352,9 +352,9 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 	advance.x = slot->advance.x / 64;
 	advance.y = slot->advance.y / 64;
 	offset.x = slot->bitmap_left;
-	offset.y = slot->bitmap_top - OFFSET;
+	offset.y = slot->bitmap_top - baseline_offset;
 
-	if (rm2000_workaround) {
+	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
 	}
 
