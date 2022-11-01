@@ -228,7 +228,7 @@ void Translation::RequestAndAddMap(int map_id) {
 
 	FileRequestAsync* request = AsyncHandler::RequestFile(Tr::GetCurrentTranslationFilesystem().GetFullPath(), map_name);
 	request->SetImportantFile(true);
-	map_request = request->Bind([this, map_name, map_id](FileRequestResult* res) {
+	map_request = request->Bind([this, map_name](FileRequestResult*) {
 		std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
 		auto is = Tr::GetCurrentTranslationFilesystem().OpenInputStream(map_name);
 		if (is) {
@@ -292,14 +292,13 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 			if (is) {
 				ParsePoFile(std::move(is), *mapnames);
 			}
-		} else {
+		} else if (StringView(tr_name.first).ends_with(".po")) {
 			// This will fail in the web player but is intentional
 			// The fetching happens on map load instead
 			// Still parsing all files locally to get syntax errors early
-			std::unique_ptr<Dictionary> dict;
-			dict = std::make_unique<Dictionary>();
 			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
+				std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
 			}
@@ -321,6 +320,10 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 
 void Translation::RewriteDatabase()
 {
+	if (!sys) {
+		return;
+	}
+
 	lcf::rpg::ForEachString(lcf::Data::data, [this](lcf::DBString& value, auto& ctxt) {
 		// When we re-write the database, we only care about translations that are exactly one level deep.
 		if (ctxt.parent==nullptr || ctxt.parent->parent!=nullptr) {
