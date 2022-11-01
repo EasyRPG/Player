@@ -62,6 +62,8 @@ class Font {
 		Point advance;
 		/** x/y position in the buffer where the glyph is rendered at */
 		Point offset;
+		/** When enabled the glyph is colored and not masked with the system graphic */
+		bool has_color = false;
 	};
 
 	/* Returns a bitmap and rect containing the pixels of the glyph.

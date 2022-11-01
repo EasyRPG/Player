@@ -335,7 +335,6 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 
 	BitmapRef bm = Bitmap::Create(width, height);
 	uint32_t* data = reinterpret_cast<uint32_t*>(bm->pixels());
-	int dst_pitch = bm->pitch();
 
 	for (int row = 0; row < height; ++row) {
 		for (int col = 0; col < width; ++col) {
@@ -439,7 +438,11 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
 		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - gret.bitmap->height();
 
-	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+	if (!gret.has_color) {
+		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+	} else {
+		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
+	}
 
 	return gret.advance;
 }
@@ -465,7 +468,20 @@ Font::GlyphRet ExFont::Glyph(char32_t code) {
 	Rect const rect((code % 13) * WIDTH, (code / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();
 	bm->Blit(0, 0, *exfont, rect, Opacity::Opaque());
-	return { bm, {WIDTH, 0}, {0, 0} };
+
+	// EasyRPG Extension: Support for colored ExFont
+	bool has_color = false;
+	const auto* pixels = reinterpret_cast<uint8_t*>(bm->pixels());
+	// For performance reasons only check the red channel of every 4th pixel (16 = 4 * 4 RGBA pixel) for color
+	for (int i = 0; i < bm->pitch() * bm->height(); i += 16) {
+		auto pixel = pixels[i];
+		if (pixel != 0 && pixel != 255) {
+			has_color = true;
+			break;
+		}
+	}
+
+	return { bm, {WIDTH, 0}, {0, 0}, has_color };
 }
 
 Rect ExFont::GetSize(StringView) const {
