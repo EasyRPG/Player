@@ -288,7 +288,7 @@ Rect FTFont::GetSize(StringView txt) const {
 Rect FTFont::GetSize(char32_t ch) const {
 	auto glyph_index = FT_Get_Char_Index(face, ch);
 
-	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
+	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME) != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(ch));
 	}
 
@@ -316,7 +316,7 @@ Rect FTFont::GetSize(char32_t ch) const {
 Font::GlyphRet FTFont::Glyph(char32_t code) {
     auto glyph_index = FT_Get_Char_Index(face, code);
 
-	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
+	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME) != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
 	}
 
