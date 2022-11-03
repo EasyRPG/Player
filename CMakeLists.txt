@@ -1034,6 +1034,10 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_link_libraries(${EXE_NAME} ${PROJECT_NAME})
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+		# Do not confuse this with our own -DUSE_SDL
+		# Prevent Emscripten from pulling in bundled SDL headers that break the build
+		target_compile_options(${PROJECT_NAME} PUBLIC "-sUSE_SDL=0")
+
 		set(PLAYER_JS_PREJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-pre.js")
 		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
 		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
