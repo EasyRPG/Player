@@ -319,53 +319,57 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::Opaque());
 }
 
-void Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align) {
+Point Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(rect.x, rect.y, color, text);
+		return TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(rect.x + dx / 2, rect.y, color, text);
+		return TextDraw(rect.x + dx / 2, rect.y, color, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(rect.x + dx, rect.y, color, text);
+		return TextDraw(rect.x + dx, rect.y, color, text);
 		break;
 	default: assert(false);
 	}
+
+	return Point();
 }
 
-void Bitmap::TextDraw(int x, int y, int color, StringView text, Text::Alignment align) {
+Point Bitmap::TextDraw(int x, int y, int color, StringView text, Text::Alignment align) {
 	auto font = Font::Default();
 	auto system = Cache::SystemOrBlack();
-	Text::Draw(*this, x, y, *font, *system, color, text, align);
+	return Text::Draw(*this, x, y, *font, *system, color, text, align);
 }
 
-void Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Alignment align) {
+Point Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Alignment align) {
 	FontRef font = Font::Default();
 	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(rect.x, rect.y, color, text);
+		return TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(rect.x + dx / 2, rect.y, color, text);
+		return TextDraw(rect.x + dx / 2, rect.y, color, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(rect.x + dx, rect.y, color, text);
+		return TextDraw(rect.x + dx, rect.y, color, text);
 		break;
 	default: assert(false);
 	}
+
+	return Point();
 }
 
-void Bitmap::TextDraw(int x, int y, Color color, StringView text) {
+Point Bitmap::TextDraw(int x, int y, Color color, StringView text) {
 	auto font = Font::Default();
-	Text::Draw(*this, x, y, *font, color, text);
+	return Text::Draw(*this, x, y, *font, color, text);
 }
 
 Rect Bitmap::TransformRectangle(const Transform& xform, const Rect& rect) {
