@@ -253,7 +253,12 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 		FT_Set_Charmap(face, face->charmaps[0]);
 	}
 
-	FT_Set_Pixel_Sizes(face, 0, size);
+	if (FT_HAS_COLOR(face)) {
+		FT_Select_Size(face, 0);
+	} else {
+		FT_Set_Pixel_Sizes(face, 0, size);
+	}
+
 	baseline_offset = static_cast<int>(size * (10.0 / 12.0));
 
 	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
@@ -320,32 +325,55 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 		return fallback_font->Glyph(code);
 	}
 
-	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
-	}
+	auto render_glyph = [&](auto flags, auto mode) {
+		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+		}
 
-	if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
+		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
+			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
+		}
+	};
+
+	if (FT_HAS_COLOR(face)) {
+		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+
+		// When it is a color font check if the glyph is a color glyph
+		// If it is not then rerender the glyph monochrome
+		// FIXME: This is inefficient
+		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
+			render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+		}
+	} else {
+		render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
 	}
 
 	FT_GlyphSlot slot = face->glyph;
 	FT_Bitmap* ft_bitmap = &slot->bitmap;
 
-	assert(ft_bitmap->pixel_mode == FT_PIXEL_MODE_MONO);
+	assert(ft_bitmap->pixel_mode == FT_PIXEL_MODE_MONO || ft_bitmap->pixel_mode == FT_PIXEL_MODE_BGRA);
 
 	size_t const pitch = std::abs(ft_bitmap->pitch);
 	const int width = ft_bitmap->width;
 	const int height = ft_bitmap->rows;
 
-	BitmapRef bm = Bitmap::Create(width, height);
-	uint32_t* data = reinterpret_cast<uint32_t*>(bm->pixels());
+	BitmapRef bm;
+	bool has_color = false;
 
-	for (int row = 0; row < height; ++row) {
-		for (int col = 0; col < width; ++col) {
-			unsigned c = ft_bitmap->buffer[pitch * row + (col/8)];
-			unsigned bit = 7 - (col%8);
-			c = c & (0x01 << bit) ? 255 : 0;
-			data[row * width + col] = (c << 24) + (c << 16) + (c << 8) + c;
+	if (ft_bitmap->pixel_mode == FT_PIXEL_MODE_BGRA) {
+		bm = Bitmap::Create(ft_bitmap->buffer, width, height, 0, format_B8G8R8A8_a().format());
+		has_color = true;
+	} else {
+		bm = Bitmap::Create(width, height);
+		auto* data = reinterpret_cast<uint32_t*>(bm->pixels());
+
+		for (int row = 0; row < height; ++row) {
+			for (int col = 0; col < width; ++col) {
+				unsigned c = ft_bitmap->buffer[pitch * row + (col / 8)];
+				unsigned bit = 7 - (col % 8);
+				c = c & (0x01 << bit) ? 255 : 0;
+				data[row * width + col] = (c << 24) + (c << 16) + (c << 8) + c;
+			}
 		}
 	}
 
@@ -361,7 +389,7 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 		advance.x = 6;
 	}
 
-	return { bm, advance, offset };
+	return { bm, advance, offset, has_color };
 }
 #endif
 
