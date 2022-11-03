@@ -290,15 +290,34 @@ Rect FTFont::GetSize(StringView txt) const {
 	return rect;
 }
 
-Rect FTFont::GetSize(char32_t ch) const {
-	auto glyph_index = FT_Get_Char_Index(face, ch);
+Rect FTFont::GetSize(char32_t code) const {
+	auto glyph_index = FT_Get_Char_Index(face, code);
 
-	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(ch));
+	if (glyph_index == 0 && code != 0 && fallback_font) {
+		return fallback_font->GetSize(code);
 	}
 
-	if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(ch));
+	auto render_glyph = [&](auto flags, auto mode) {
+		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+		}
+
+		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
+			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
+		}
+	};
+
+	if (FT_HAS_COLOR(face)) {
+		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+
+		// When it is a color font check if the glyph is a color glyph
+		// If it is not then rerender the glyph monochrome
+		// FIXME: This is inefficient
+		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
+			render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+		}
+	} else {
+		render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
 	}
 
 	FT_GlyphSlot slot = face->glyph;
