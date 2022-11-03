@@ -316,6 +316,10 @@ Rect FTFont::GetSize(char32_t ch) const {
 Font::GlyphRet FTFont::Glyph(char32_t code) {
     auto glyph_index = FT_Get_Char_Index(face, code);
 
+	if (glyph_index == 0 && code != 0 && fallback_font) {
+		return fallback_font->Glyph(code);
+	}
+
 	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME) != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
 	}
@@ -373,6 +377,10 @@ FontRef Font::Default(bool const use_mincho) {
 		return default_gothic;
 	}
 
+	return DefaultBitmapFont(use_mincho);
+}
+
+FontRef Font::DefaultBitmapFont(bool use_mincho) {
 	if (Player::IsCJK()) {
 		return use_mincho ? mincho : gothic;
 	}
@@ -386,6 +394,10 @@ void Font::SetDefault(FontRef new_default, bool use_mincho) {
 		default_mincho = new_default;
 	} else {
 		default_gothic = new_default;
+	}
+
+	if (new_default) {
+		new_default->SetFallbackFont(DefaultBitmapFont(use_mincho));
 	}
 }
 
@@ -466,6 +478,10 @@ Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t code
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);
 
 	return gret.advance;
+}
+
+void Font::SetFallbackFont(FontRef fallback_font) {
+	this->fallback_font = fallback_font;
 }
 
 ExFont::ExFont() : Font("exfont", 12, false, false) {

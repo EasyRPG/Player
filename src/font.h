@@ -102,9 +102,18 @@ class Font {
 	 */
 	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
+	/**
+	 * Defines a fallback font that shall be used when a glyph is not found in the current font.
+	 * Currently only used by FreeType Fonts.
+	 *
+	 * @param fallback_font Font to fallback to
+	 */
+	void SetFallbackFont(FontRef fallback_font);
+
 	static FontRef CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 	static FontRef Default();
 	static FontRef Default(bool use_mincho);
+	static FontRef DefaultBitmapFont(bool use_mincho);
 	static void SetDefault(FontRef new_default, bool use_mincho);
 	static void Dispose();
 
@@ -127,6 +136,8 @@ class Font {
 	size_t pixel_size() const { return size * 96 / 72; }
  protected:
 	Font(StringView name, int size, bool bold, bool italic);
+
+	FontRef fallback_font;
 };
 
 #endif
