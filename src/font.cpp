@@ -497,8 +497,10 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	unsigned src_y;
 
 	if (color != ColorShadow) {
-		auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
-		dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
+		if (!gret.has_color) {
+			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
+		}
 
 		src_x = color % 10 * 16 + 2;
 		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
