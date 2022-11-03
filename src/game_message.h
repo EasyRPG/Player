@@ -24,6 +24,7 @@
 #include <functional>
 #include "string_view.h"
 #include "pending_message.h"
+#include "memory_management.h"
 
 class Window_Message;
 class AsyncOp;
@@ -79,6 +80,7 @@ namespace Game_Message {
 	 * @param callback a function to be called for each word-wrapped line
 	 */
 	int WordWrap(StringView line, int limit, const WordWrapCallback& callback);
+	int WordWrap(StringView line, int limit, const WordWrapCallback& callback, const Font& font);
 
 	/**
 	 * Return if it's legal to show a new message box.

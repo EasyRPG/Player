@@ -394,8 +394,8 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 #endif
 
 FontRef Font::Default() {
-	const bool mincho = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
-	return Default(mincho);
+	const bool m = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
+	return Default(m);
 }
 
 FontRef Font::Default(bool const use_mincho) {
@@ -406,6 +406,11 @@ FontRef Font::Default(bool const use_mincho) {
 	}
 
 	return DefaultBitmapFont(use_mincho);
+}
+
+FontRef Font::DefaultBitmapFont() {
+	const bool m = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
+	return DefaultBitmapFont(m);
 }
 
 FontRef Font::DefaultBitmapFont(bool use_mincho) {
