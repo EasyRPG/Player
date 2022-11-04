@@ -46,7 +46,7 @@ void Window_Name::Set(std::string text) {
 void Window_Name::Append(StringView text) {
 	// Avoid string copies by reusing the buffer in name
 	name.append(text.begin(), text.end());
-	if(Font::Default()->GetSize(name).width <= (12 * 6)) {
+	if (Text::GetSize(*Font::Default(), name).width <= (12 * 6)) {
 		Refresh();
 	} else {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
@@ -55,7 +55,7 @@ void Window_Name::Append(StringView text) {
 }
 
 void Window_Name::Update() {
-	Rect const name_size = Font::Default()->GetSize(name);
+	Rect const name_size = Text::GetSize(*Font::Default(), name);
 	SetCursorRect(Rect(name_size.width + 2, 0, 16, 16));
 }
 

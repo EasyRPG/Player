@@ -28,26 +28,26 @@
 #include <cctype>
 #include <iterator>
 
-Point Text::Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont) {
+Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
-		return Font::exfont->Render(dest, x, y, system, color, ch);
+		return Font::exfont->Render(dest, x, y, system, color, glyph);
 	} else {
-		return font.Render(dest, x, y, system, color, ch);
+		return font.Render(dest, x, y, system, color, glyph);
 	}
 }
 
-Point Text::Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont) {
+Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, Color color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
-		return Font::exfont->Render(dest, x, y, color, ch);
+		return Font::exfont->Render(dest, x, y, color, glyph);
 	} else {
-		return font.Render(dest, x, y, color, ch);
+		return font.Render(dest, x, y, color, glyph);
 	}
 }
 
-Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
+Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
 	if (text.length() == 0) return { 0, 0 };
 
-	Rect dst_rect = font.GetSize(text);
+	Rect dst_rect = Text::GetSize(font, text);
 
 	const int ih = dst_rect.height;
 
@@ -87,7 +87,7 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Bitma
 	return { next_glyph_pos, ih };
 }
 
-Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color color, StringView text) {
+Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Color color, StringView text) {
 	if (text.length() == 0) return { 0, 0 };
 
 	int dx = x;
@@ -126,4 +126,34 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, Font& font, const Color
 	mx = std::max(mx, dx);
 
 	return { mx - x , dy - y };
+}
+
+Rect Text::GetSize(const Font& font, StringView text) {
+	Rect rect;
+
+	//if (font.CanShape()) {
+		//auto text_shaped = font.Shape()
+	//} else {
+		auto iter = text.data();
+		const auto end = iter + text.size();
+		while (iter != end) {
+			auto ret = Utils::TextNext(iter, end, 0);
+
+			iter = ret.next;
+			if (EP_UNLIKELY(!ret)) {
+				continue;
+			}
+			rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+		}
+	//}
+	int a = 0;
+	return rect;
+}
+
+Rect Text::GetSize(const Font& font, char32_t glyph, bool is_exfont) {
+	if (is_exfont) {
+		return Font::exfont->GetSize(glyph);
+	} else {
+		return font.GetSize(glyph);
+	}
 }

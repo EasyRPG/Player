@@ -61,7 +61,7 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 
 		// Special handling for proportional fonts: If the "normal" space is already small do not half it again
 		if (nextpos != decltype(text)::npos) {
-			int space_width = Font::Default()->GetSize(" ").width;
+			int space_width = Text::GetSize(*Font::Default(), " ").width;
 
 			if (halfwidthspace && space_width >= 6) {
 				text_x_offset += space_width / 2;

@@ -32,26 +32,12 @@ class Rect;
 
 /**
  * Font class.
+ *
+ * All methods in this class are private API.
+ * Use the API in Text instead.
  */
 class Font {
  public:
-	virtual ~Font() = default;
-
-	/**
-	 * Returns the size of the rendered string, not including shadows.
-	 *
-	 * @param txt the string to measure
-	 * @return Rect describing the rendered string boundary
-	 */
-	virtual Rect GetSize(StringView txt) const = 0;
-	/**
-	 * Returns the size of the rendered utf32 character, not including shadows.
-	 *
-	 * @param ch the character to measure
-	 * @return Rect describing the rendered character boundary
-	 */
-	virtual Rect GetSize(char32_t ch) const = 0;
-
 	struct GlyphRet {
 		/** bitmap which the glyph pixels are located within */
 		BitmapRef bitmap;
@@ -66,14 +52,29 @@ class Font {
 		bool has_color = false;
 	};
 
-	/* Returns a bitmap and rect containing the pixels of the glyph.
-	 * The bitmap may be larger than the size of the glyph, and so the
-	 * rect must be used to get the pixels out of the bitmap
+	struct ShapeRet {
+		/** Codepoint of this glyph after shaping */
+		char32_t code;
+		/**
+		 * How far to advance the x/y offset after drawing for the next glyph.
+		 * y value is only relevant for vertical layouts.
+		 */
+		Point advance;
+		/** x/y position in the buffer where the glyph is rendered at */
+		Point offset;
+	};
+
+	virtual ~Font() = default;
+
+	/**
+	 * Determines the size of a bitmap required to render a single character.
+	 * The dimensions of the Rect describe a bounding box to fit the text.
 	 *
-	 * @param code which utf32 glyph to return.
-	 * @return @refer GlyphRet
+	 * @param glyph the glyph to measure.
+	 * @see Text::GetSize
+	 * @return Rect describing the rendered string boundary
 	 */
-	virtual GlyphRet Glyph(char32_t code) = 0;
+	Rect GetSize(char32_t glyph) const;
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -87,7 +88,7 @@ class Font {
 	 *
 	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph) const;
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -100,7 +101,25 @@ class Font {
 	 *
 	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const;
+
+	/**
+	 * Determines if the used font supports shaping.
+	 * This will only return true when the font uses FreeType and HarfBuzz is enabled.
+	 *
+	 * @return Whether shaping is supported.
+	 */
+	bool CanShape() const;
+
+	/**
+	 * Shapes the passed text and returns new codepoints and positioning information.
+	 * This method will abort when shaping is not supported.
+	 *
+	 * @see CanShape()
+	 * @param text Text to shape
+	 * @return Shaping information. See Font::ShapeRet
+	 */
+	std::vector<ShapeRet> Shape(U32StringView text) const;
 
 	/**
 	 * Defines a fallback font that shall be used when a glyph is not found in the current font.
@@ -130,15 +149,20 @@ class Font {
 		ColorHeal = 9
 	};
 
+	size_t pixel_size() const { return size * 96 / 72; }
+
+	virtual Rect vGetSize(char32_t glyph) const = 0;
+	virtual GlyphRet vRender(char32_t glyph) const = 0;
+	virtual bool vCanShape() const { return false; }
+	virtual std::vector<ShapeRet> vShape(U32StringView) const { assert(false); return {}; }
+
+ protected:
+	Font(StringView name, int size, bool bold, bool italic);
+
 	std::string name;
 	unsigned size;
 	bool bold;
 	bool italic;
-
-	size_t pixel_size() const { return size * 96 / 72; }
- protected:
-	Font(StringView name, int size, bool bold, bool italic);
-
 	FontRef fallback_font;
 };
 

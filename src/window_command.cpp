@@ -25,7 +25,7 @@ static int CalculateWidth(const std::vector<std::string>& commands, int width) {
 	if (width < 0) {
 		int max = 0;
 		for (size_t i = 0; i < commands.size(); ++i) {
-			max = std::max(max, Font::Default()->GetSize(commands[i]).width);
+			max = std::max(max, Text::GetSize(*Font::Default(), commands[i]).width);
 		}
 		return max + 16;
 	} else {

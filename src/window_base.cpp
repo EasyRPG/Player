@@ -292,7 +292,7 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 	std::stringstream gold;
 	gold << money;
 
-	Rect gold_text_size = Font::Default()->GetSize(lcf::Data::terms.gold);
+	Rect gold_text_size = Text::GetSize(*Font::Default(), lcf::Data::terms.gold);
 	contents->TextDraw(cx, cy, 1, lcf::Data::terms.gold, Text::AlignRight);
 
 	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);

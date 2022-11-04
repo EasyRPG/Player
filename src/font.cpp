@@ -120,14 +120,12 @@ namespace {
 
 		BitmapFont(StringView name, function_type func);
 
-		Rect GetSize(StringView txt) const override;
-		Rect GetSize(char32_t ch) const override;
-
-		GlyphRet Glyph(char32_t code) override;
+		Rect vGetSize(char32_t glyph) const override;
+		GlyphRet vRender(char32_t glyph) const override;
 
 	private:
 		function_type func;
-		BitmapRef glyph_bm;
+		mutable BitmapRef glyph_bm;
 	}; // class BitmapFont
 
 #ifdef HAVE_FREETYPE
@@ -137,10 +135,10 @@ namespace {
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 		~FTFont() override;
 
-		Rect GetSize(StringView txt) const override;
-		Rect GetSize(char32_t ch) const override;
-
-		GlyphRet Glyph(char32_t code) override;
+		Rect vGetSize(char32_t glyph) const override;
+		GlyphRet vRender(char32_t glyph) const override;
+		bool vCanShape() const override;
+		std::vector<ShapeRet> vShape(U32StringView txt) const override;
 
 	private:
 		FT_Face face = nullptr;
@@ -175,11 +173,10 @@ namespace {
 		public:
 			enum { HEIGHT = 12, WIDTH = 12 };
 			ExFont();
-			Rect GetSize(StringView txt) const override;
-			Rect GetSize(char32_t ch) const override;
-			GlyphRet Glyph(char32_t code) override;
+			Rect vGetSize(char32_t glyph) const override;
+			GlyphRet vRender(char32_t glyph) const override;
 		private:
-			BitmapRef bm;
+			mutable BitmapRef bm;
 	};
 } // anonymous namespace
 
@@ -187,47 +184,27 @@ BitmapFont::BitmapFont(StringView name, function_type func)
 	: Font(name, HEIGHT, false, false), func(func)
 {}
 
-Rect BitmapFont::GetSize(char32_t ch) const {
-	size_t units = 0;
-	if (EP_LIKELY(!Utils::IsControlCharacter(ch))) {
-		auto glyph = func(ch);
-		units += glyph->is_full? 2 : 1;
-	}
-	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
-}
-
-Rect BitmapFont::GetSize(StringView txt) const {
-	size_t units = 0;
-	const auto* iter = txt.data();
-	const auto* end = txt.data() + txt.size();
-	while (iter != end) {
-		auto resp = Utils::UTF8Next(iter, end);
-		auto ch = resp.ch;
-		iter = resp.next;
-		if (EP_LIKELY(!Utils::IsControlCharacter(resp.ch))) {
-			auto glyph = func(ch);
-			units += glyph->is_full? 2 : 1;
-		}
-	}
+Rect BitmapFont::vGetSize(char32_t glyph) const {
+	auto bm_glyph = func(glyph);
+	size_t units = bm_glyph->is_full ? 2 : 1;
 	return {0, 0, static_cast<int>(units * HALF_WIDTH), HEIGHT};
 }
 
-Font::GlyphRet BitmapFont::Glyph(char32_t code) {
+Font::GlyphRet BitmapFont::vRender(char32_t glyph) const {
+	std::vector<Font::GlyphRet> glyphs;
+
 	if (EP_UNLIKELY(!glyph_bm)) {
-		glyph_bm = Bitmap::Create(nullptr, FULL_WIDTH, HEIGHT, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+		glyph_bm = Bitmap::Create(nullptr, FULL_WIDTH, HEIGHT, 0, DynamicFormat(8, 8, 0, 8, 0, 8, 0, 8, 0, PF::Alpha));
 	}
-	if (EP_UNLIKELY(Utils::IsControlCharacter(code))) {
-		return { glyph_bm, {0, 0}, {0, 0} };
-	}
-	auto glyph = func(code);
-	auto width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
+	auto bm_glyph = func(glyph);
+	auto width = bm_glyph->is_full ? FULL_WIDTH : HALF_WIDTH;
 
 	glyph_bm->Clear();
 	uint8_t* data = reinterpret_cast<uint8_t*>(glyph_bm->pixels());
 	int pitch = glyph_bm->pitch();
-	for(size_t y_ = 0; y_ < HEIGHT; ++y_)
-		for(size_t x_ = 0; x_ < width; ++x_)
-			data[y_*pitch+x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
+	for (size_t y_ = 0; y_ < HEIGHT; ++y_)
+		for (size_t x_ = 0; x_ < width; ++x_)
+			data[y_ * pitch + x_] = (bm_glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
 
 	return { glyph_bm, {width, 0}, {0, 0} };
 }
@@ -282,28 +259,16 @@ FTFont::~FTFont() {
 	}
 }
 
-Rect FTFont::GetSize(StringView txt) const {
-	Rect rect = {0, 0, 0, static_cast<int>(size)};
+Rect FTFont::vGetSize(char32_t glyph) const {
+	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	std::u32string txt32 = Utils::DecodeUTF32(txt);
-	for (char32_t i: txt32) {
-		Rect grect = GetSize(i);
-		rect.width += grect.width;
-	}
-
-	return rect;
-}
-
-Rect FTFont::GetSize(char32_t code) const {
-	auto glyph_index = FT_Get_Char_Index(face, code);
-
-	if (glyph_index == 0 && code != 0 && fallback_font) {
-		return fallback_font->GetSize(code);
+	if (glyph_index == 0 && glyph != 0 && fallback_font) {
+		return fallback_font->vGetSize(glyph);
 	}
 
 	auto load_glyph = [&](auto flags) {
 		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
 		}
 	};
 
@@ -332,20 +297,20 @@ Rect FTFont::GetSize(char32_t code) const {
 	return {0, 0, advance.x, advance.y};
 }
 
-Font::GlyphRet FTFont::Glyph(char32_t code) {
-    auto glyph_index = FT_Get_Char_Index(face, code);
+Font::GlyphRet FTFont::vRender(char32_t glyph) const {
+    auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && code != 0 && fallback_font) {
-		return fallback_font->Glyph(code);
+	if (glyph_index == 0 && glyph != 0 && fallback_font) {
+		return fallback_font->vRender(glyph);
 	}
 
 	auto render_glyph = [&](auto flags, auto mode) {
 		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
 		}
 
 		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
-			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
+			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
 		}
 	};
 
@@ -405,6 +370,21 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 
 	return { bm, advance, offset, has_color };
 }
+
+bool FTFont::vCanShape() const {
+#ifdef HAVE_HARFBUZZ
+	return true;
+#else
+	return false;
+#endif
+}
+
+#ifdef HAVE_HARFBUZZ
+std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
+
+}
+#endif
+
 #endif
 
 FontRef Font::Default() {
@@ -481,8 +461,20 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 {
 }
 
-Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t code) {
-	auto gret = Glyph(code);
+Rect Font::GetSize(char32_t glyph) const {
+	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
+		return {};
+	}
+
+	return vGetSize(glyph);
+}
+
+Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t glyph) const {
+	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
+		return {};
+	}
+
+	auto gret = vRender(glyph);
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	if (EP_UNLIKELY(rect.width == 0)) {
@@ -524,13 +516,25 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	return gret.advance;
 }
 
-Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t code) {
-	auto gret = Glyph(code);
+Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const {
+	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
+		return {};
+	}
+
+	auto gret = vRender(glyph);
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);
 
 	return gret.advance;
+}
+
+bool Font::CanShape() const {
+
+}
+
+std::vector<Font::ShapeRet> Font::Shape(U32StringView text) const {
+
 }
 
 void Font::SetFallbackFont(FontRef fallback_font) {
@@ -542,11 +546,11 @@ ExFont::ExFont() : Font("exfont", 12, false, false) {
 
 FontRef Font::exfont = std::make_shared<ExFont>();
 
-Font::GlyphRet ExFont::Glyph(char32_t code) {
+Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
 
-	Rect const rect((code % 13) * WIDTH, (code / 13) * HEIGHT, WIDTH, HEIGHT);
+	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();
 	bm->Blit(0, 0, *exfont, rect, Opacity::Opaque());
 
@@ -565,10 +569,6 @@ Font::GlyphRet ExFont::Glyph(char32_t code) {
 	return { bm, {WIDTH, 0}, {0, 0}, has_color };
 }
 
-Rect ExFont::GetSize(StringView) const {
-	return Rect(0, 0, 12, 12);
-}
-
-Rect ExFont::GetSize(char32_t) const {
-	return Rect(0, 0, 12, 12);
+Rect ExFont::vGetSize(char32_t) const {
+	return Rect(0, 0, WIDTH, HEIGHT);
 }

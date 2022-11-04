@@ -66,7 +66,7 @@ void FpsOverlay::Draw(Bitmap& dst) {
 	if (draw_fps) {
 		if (fps_dirty) {
 			std::string text = GetFpsString();
-			Rect rect = Font::DefaultBitmapFont()->GetSize(text);
+			Rect rect = Text::GetSize(*Font::DefaultBitmapFont(), text);
 
 			if (!fps_bitmap || fps_bitmap->GetWidth() < rect.width + 1) {
 				// Height never changes
@@ -89,7 +89,7 @@ void FpsOverlay::Draw(Bitmap& dst) {
 		if (speedup_dirty) {
 			std::string text = "> x" + std::to_string(last_speed_mod);
 
-			Rect rect = Font::DefaultBitmapFont()->GetSize(text);
+			Rect rect = Text::GetSize(*Font::DefaultBitmapFont(), text);
 
 			if (!speedup_bitmap || speedup_bitmap->GetWidth() < rect.width + 1) {
 				// Height never changes

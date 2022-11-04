@@ -563,7 +563,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '_':
 				// Insert half size space
-				contents_x += Font::Default()->GetSize(" ").width / 2;
+				contents_x += Text::GetSize(*Font::Default(), " ").width / 2;
 				DebugLogText("{}: MSG HalfWait \\_");
 				SetWaitForCharacter(1);
 				break;

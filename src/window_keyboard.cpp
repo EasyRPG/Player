@@ -243,7 +243,7 @@ std::string const& Window_Keyboard::GetSelected() const {
 Rect Window_Keyboard::GetItemRect(int row, int col) const {
 	return Rect(col * col_spacing + border_x,
 				row * row_spacing + border_y,
-				Font::Default()->GetSize(GetKey(row, col)).width + 8,
+				Text::GetSize(*Font::Default(), GetKey(row, col)).width + 8,
 				row_spacing);
 }
 

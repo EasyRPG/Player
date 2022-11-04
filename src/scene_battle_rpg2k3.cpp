@@ -497,7 +497,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 }
 
 void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text) {
-	Rect rect = Font::Default()->GetSize(text);
+	Rect rect = Text::GetSize(*Font::Default(), text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
