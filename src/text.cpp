@@ -173,6 +173,7 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 
 Rect Text::GetSize(const Font& font, StringView text) {
 	Rect rect;
+	Rect rect_tmp;
 
 	auto iter = text.data();
 	const auto end = iter + text.size();
@@ -188,7 +189,9 @@ Rect Text::GetSize(const Font& font, StringView text) {
 			}
 
 			if (EP_UNLIKELY(Utils::IsControlCharacter(ret.ch))) {
-				rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+				rect_tmp = GetSize(font, ret.ch, ret.is_exfont);
+				rect.width += rect_tmp.width;
+				rect.height = std::max(rect.height, rect_tmp.height);
 				continue;
 			}
 
@@ -202,7 +205,9 @@ Rect Text::GetSize(const Font& font, StringView text) {
 					}
 				}
 
-				rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+				rect_tmp = GetSize(font, ret.ch, ret.is_exfont);
+				rect.width += rect_tmp.width;
+				rect.height = std::max(rect.height, rect_tmp.height);
 				continue;
 			}
 
@@ -213,7 +218,8 @@ Rect Text::GetSize(const Font& font, StringView text) {
 			auto shape_ret = font.Shape(text32);
 
 			for (const auto& ch: shape_ret) {
-				rect.width += ch.advance.x;
+				rect.width += ch.offset.x + ch.advance.x;
+				rect.height = std::max(rect.height, ch.offset.y);
 			}
 		}
 	} else {
@@ -224,7 +230,10 @@ Rect Text::GetSize(const Font& font, StringView text) {
 			if (EP_UNLIKELY(!ret)) {
 				continue;
 			}
-			rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+
+			rect_tmp = GetSize(font, ret.ch, ret.is_exfont);
+			rect.width += rect_tmp.width;
+			rect.height = std::max(rect.height, rect_tmp.height);
 		}
 	}
 

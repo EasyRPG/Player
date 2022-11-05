@@ -520,6 +520,11 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 
 Rect Font::GetSize(char32_t glyph) const {
 	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
+		if (glyph == '\n') {
+			// FIXME: Does not work for larger fonts
+			return {0, 0, 0, 12};
+		}
+
 		return {};
 	}
 
