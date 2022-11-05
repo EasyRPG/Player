@@ -91,6 +91,21 @@ class Font {
 	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph) const;
 
 	/**
+	 * Renders the glyph onto bitmap at the given position with system graphic and color.
+	 * For glyph positioning pre-calculated shaping data can be specified.
+	 *
+	 * @param dest the bitmap to render to
+	 * @param x X offset to render glyph
+	 * @param y Y offset to render glyph
+	 * @param sys system graphic to use
+	 * @param color which color in the system graphic
+	 * @param shape shaping information for the glyph
+	 *
+	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
+	 */
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, const ShapeRet& shape) const;
+
+	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
 	 *
 	 * @param dest the bitmap to render to
@@ -153,8 +168,9 @@ class Font {
 
 	virtual Rect vGetSize(char32_t glyph) const = 0;
 	virtual GlyphRet vRender(char32_t glyph) const = 0;
+	virtual GlyphRet vRenderShaped(char32_t glyph) const { return vRender(glyph); };
 	virtual bool vCanShape() const { return false; }
-	virtual std::vector<ShapeRet> vShape(U32StringView) const { assert(false); return {}; }
+	virtual std::vector<ShapeRet> vShape(U32StringView) const { return {}; }
 
  protected:
 	Font(StringView name, int size, bool bold, bool italic);

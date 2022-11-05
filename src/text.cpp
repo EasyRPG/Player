@@ -75,14 +75,57 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 	// it onto the text_surface (including the drop shadow)
 	auto iter = text.data();
 	const auto end = iter + text.size();
-	while (iter != end) {
-		auto ret = Utils::TextNext(iter, end, 0);
 
-		iter = ret.next;
-		if (EP_UNLIKELY(!ret)) {
-			continue;
+	if (font.CanShape()) {
+		// Collect all glyphs until ExFont or end of string and then shape and render
+		std::u32string text32;
+		while (iter != end) {
+			auto ret = Utils::TextNext(iter, end, 0);
+
+			iter = ret.next;
+			if (EP_UNLIKELY(!ret)) {
+				continue;
+			}
+
+			if (EP_UNLIKELY(Utils::IsControlCharacter(ret.ch))) {
+				next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
+				continue;
+			}
+
+			if (ret.is_exfont) {
+				if (!text32.empty()) {
+					auto shape_ret = font.Shape(text32);
+					text32.clear();
+
+					for (const auto& ch: shape_ret) {
+						next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
+					}
+				}
+
+				next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, true).x;
+				continue;
+			}
+
+			text32 += ret.ch;
 		}
-		next_glyph_pos += Text::Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
+
+		if (!text32.empty()) {
+			auto shape_ret = font.Shape(text32);
+
+			for (const auto& ch: shape_ret) {
+				next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
+			}
+		}
+	} else {
+		while (iter != end) {
+			auto ret = Utils::TextNext(iter, end, 0);
+
+			iter = ret.next;
+			if (EP_UNLIKELY(!ret)) {
+				continue;
+			}
+			next_glyph_pos += Text::Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
+		}
 	}
 	return { next_glyph_pos, ih };
 }
@@ -131,11 +174,49 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 Rect Text::GetSize(const Font& font, StringView text) {
 	Rect rect;
 
-	//if (font.CanShape()) {
-		//auto text_shaped = font.Shape()
-	//} else {
-		auto iter = text.data();
-		const auto end = iter + text.size();
+	auto iter = text.data();
+	const auto end = iter + text.size();
+
+	if (font.CanShape()) {
+		std::u32string text32;
+		while (iter != end) {
+			auto ret = Utils::TextNext(iter, end, 0);
+
+			iter = ret.next;
+			if (EP_UNLIKELY(!ret)) {
+				continue;
+			}
+
+			if (EP_UNLIKELY(Utils::IsControlCharacter(ret.ch))) {
+				rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+				continue;
+			}
+
+			if (ret.is_exfont) {
+				if (!text32.empty()) {
+					auto shape_ret = font.Shape(text32);
+					text32.clear();
+
+					for (const auto& ch: shape_ret) {
+						rect.width += ch.advance.x;
+					}
+				}
+
+				rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
+				continue;
+			}
+
+			text32 += ret.ch;
+		}
+
+		if (!text32.empty()) {
+			auto shape_ret = font.Shape(text32);
+
+			for (const auto& ch: shape_ret) {
+				rect.width += ch.advance.x;
+			}
+		}
+	} else {
 		while (iter != end) {
 			auto ret = Utils::TextNext(iter, end, 0);
 
@@ -145,8 +226,8 @@ Rect Text::GetSize(const Font& font, StringView text) {
 			}
 			rect.width += GetSize(font, ret.ch, ret.is_exfont).width;
 		}
-	//}
-	int a = 0;
+	}
+
 	return rect;
 }
 

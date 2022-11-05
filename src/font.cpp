@@ -137,6 +137,7 @@ namespace {
 
 		Rect vGetSize(char32_t glyph) const override;
 		GlyphRet vRender(char32_t glyph) const override;
+		GlyphRet vRenderShaped(char32_t glyph) const override;
 		bool vCanShape() const override;
 		std::vector<ShapeRet> vShape(U32StringView txt) const override;
 
@@ -148,6 +149,11 @@ namespace {
 		int baseline_offset = 0;
 		/** Workaround for bad kerning in RM2000 and RMG2000 fonts */
 		bool rm2000_workaround = false;
+
+#ifdef HAVE_HARFBUZZ
+		hb_buffer_t* hb_buffer = nullptr;
+		hb_font_t* hb_font = nullptr;
+#endif
 	}; // class FTFont
 #endif
 
@@ -240,6 +246,12 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 		FT_Set_Pixel_Sizes(face, 0, size);
 	}
 
+#ifdef HAVE_HARFBUZZ
+	hb_buffer = hb_buffer_create();
+    hb_font = hb_ft_font_create_referenced(face);
+	hb_ft_font_set_funcs(hb_font);
+#endif
+
 	baseline_offset = static_cast<int>(size * (10.0 / 12.0));
 
 	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
@@ -254,7 +266,13 @@ FTFont::~FTFont() {
 		return;
 	}
 
-	if (face != nullptr) {
+#ifdef HAVE_HARFBUZZ
+	if (hb_buffer) {
+		hb_buffer_destroy(hb_buffer);
+	}
+#endif
+
+	if (face) {
 		FT_Done_Face(face);
 	}
 }
@@ -304,8 +322,16 @@ Font::GlyphRet FTFont::vRender(char32_t glyph) const {
 		return fallback_font->vRender(glyph);
 	}
 
+	return vRenderShaped(glyph_index);
+}
+
+Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
+	if (glyph == 0 && fallback_font) {
+		return fallback_font->vRender(glyph);
+	}
+
 	auto render_glyph = [&](auto flags, auto mode) {
-		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
+		if (FT_Load_Glyph(face, glyph, flags) != FT_Err_Ok) {
 			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
 		}
 
@@ -373,6 +399,10 @@ Font::GlyphRet FTFont::vRender(char32_t glyph) const {
 
 bool FTFont::vCanShape() const {
 #ifdef HAVE_HARFBUZZ
+	if (EP_UNLIKELY(rm2000_workaround)) {
+		return false;
+	}
+
 	return true;
 #else
 	return false;
@@ -381,7 +411,34 @@ bool FTFont::vCanShape() const {
 
 #ifdef HAVE_HARFBUZZ
 std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
+	hb_buffer_clear_contents(hb_buffer);
 
+	hb_buffer_add_utf32(hb_buffer, reinterpret_cast<const uint32_t*>(txt.data()), txt.size(), 0, txt.size());
+	hb_buffer_guess_segment_properties(hb_buffer);
+
+	hb_shape(hb_font, hb_buffer, nullptr, 0);
+
+    unsigned int glyph_count;
+    hb_glyph_info_t* glyph_info = hb_buffer_get_glyph_infos(hb_buffer, &glyph_count);
+    hb_glyph_position_t* glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
+
+	std::vector<Font::ShapeRet> ret;
+	Point advance;
+	Point offset;
+
+	for (unsigned int i = 0; i < glyph_count; ++i) {
+		auto& info = glyph_info[i];
+		auto& pos = glyph_pos[i];
+
+		advance.x = pos.x_advance / 64;
+		advance.y = pos.y_advance / 64;
+		offset.x = pos.x_offset / 64;
+		offset.y = pos.y_offset / 64;
+
+		ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset});
+	}
+
+	return ret;
 }
 #endif
 
@@ -516,6 +573,49 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	return gret.advance;
 }
 
+Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const Font::ShapeRet& shape) const {
+	auto gret = vRenderShaped(shape.code);
+
+	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
+	if (EP_UNLIKELY(rect.width == 0)) {
+		return {};
+	}
+
+	rect.x += shape.offset.x + gret.offset.x;
+	rect.y -= shape.offset.y + gret.offset.y;
+
+	unsigned src_x;
+	unsigned src_y;
+
+	if (color != ColorShadow) {
+		if (!gret.has_color) {
+			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
+		}
+
+		src_x = color % 10 * 16 + 2;
+		src_y = color / 10 * 16 + 48 + 16 - 12 - shape.offset.y - gret.offset.y;
+
+		// When the glyph is large the system graphic color mask will be outside the rectangle
+		// Move the mask slightly up to avoid this
+		int offset = gret.bitmap->height() - shape.offset.y - gret.offset.y;
+		if (offset > 12) {
+			src_y -= offset - 12;
+		}
+	} else {
+		src_x = 16;
+		src_y = 32;
+	}
+
+	if (!gret.has_color) {
+		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+	} else {
+		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
+	}
+
+	return shape.advance;
+}
+
 Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const {
 	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
 		return {};
@@ -530,11 +630,13 @@ Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyp
 }
 
 bool Font::CanShape() const {
-
+	return vCanShape();
 }
 
 std::vector<Font::ShapeRet> Font::Shape(U32StringView text) const {
+	assert(vCanShape());
 
+	return vShape(text);
 }
 
 void Font::SetFallbackFont(FontRef fallback_font) {
@@ -549,6 +651,9 @@ FontRef Font::exfont = std::make_shared<ExFont>();
 Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
+
+	// Remove offset introduced by Utils::ExFontNext to bypass ControlCharacter detection
+	glyph -= 32;
 
 	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();
