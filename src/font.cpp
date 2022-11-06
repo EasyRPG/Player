@@ -297,44 +297,35 @@ Rect FTFont::GetSize(char32_t code) const {
 		return fallback_font->GetSize(code);
 	}
 
-	auto render_glyph = [&](auto flags, auto mode) {
+	auto load_glyph = [&](auto flags) {
 		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
 			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
-		}
-
-		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
-			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
 		}
 	};
 
 	if (FT_HAS_COLOR(face)) {
-		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+		load_glyph(FT_LOAD_COLOR);
 
 		// When it is a color font check if the glyph is a color glyph
-		// If it is not then rerender the glyph monochrome
-		// FIXME: This is inefficient
+		// If it is not then reload the glyph monochrome
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
 		}
 	} else {
-		render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+		load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
 	}
 
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	Point offset;
-
 	advance.x = slot->advance.x / 64;
 	advance.y = slot->advance.y / 64;
-	offset.x = slot->bitmap_left;
-	offset.y = slot->bitmap_top - baseline_offset;
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
 	}
 
-	return {0, 0, offset.x + advance.x, offset.y};
+	return {0, 0, advance.x, advance.y};
 }
 
 Font::GlyphRet FTFont::Glyph(char32_t code) {
@@ -361,10 +352,10 @@ Font::GlyphRet FTFont::Glyph(char32_t code) {
 		// If it is not then rerender the glyph monochrome
 		// FIXME: This is inefficient
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
 		}
 	} else {
-		render_glyph(FT_LOAD_MONOCHROME, FT_RENDER_MODE_MONO);
+		render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
 	}
 
 	FT_GlyphSlot slot = face->glyph;

@@ -85,7 +85,7 @@ class Font {
 	 * @param color which color in the system graphic
 	 * @param glyph which utf32 glyph to render
 	 *
-	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
+	 * @return Point containing how far to advance in x/y direction.
 	 */
 	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
 
@@ -98,7 +98,7 @@ class Font {
 	 * @param color which color in the system graphic
 	 * @param glyph which utf32 glyph to render
 	 *
-	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest.
+	 * @return Point containing how far to advance in x/y direction.
 	 */
 	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
