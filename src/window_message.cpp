@@ -21,6 +21,7 @@
 #include <iterator>
 
 #include "compiler.h"
+#include "utils.h"
 #include "window_message.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -469,6 +470,15 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
+		if (!shape_ret.empty()) {
+			if (!DrawGlyph(*font, *system, shape_ret[0])) {
+				continue;
+			}
+
+			shape_ret.erase(shape_ret.begin());
+			continue;
+		}
+
 		if (GetPause() || GetIndex() >= 0 || number_input_window->GetActive()) {
 			break;
 		}
@@ -621,9 +631,39 @@ void Window_Message::UpdateMessage() {
 			continue;
 		}
 
-		if (!DrawGlyph(*font, *system, ch, false)) {
-			text_index = text_prev;
+		if (font->CanShape()) {
+			assert(shape_ret.empty());
+
+			auto text_index_shape = text_index;
+			std::u32string text32;
+			text32 += ch;
+
+			while (true) {
+				tret = Utils::TextNext(text_index_shape, end, Player::escape_char);
+
+				if (EP_UNLIKELY(!tret)) {
+					break;
+				}
+
+				auto text_prev_shape = text_index_shape;
+				text_index_shape = tret.next;
+				auto chs = tret.ch;
+
+				if (text_index_shape == end || tret.is_exfont || tret.is_escape || Utils::IsControlCharacter(chs)) {
+					text_index = text_prev_shape;
+					break;
+				}
+
+				text32 += tret.ch;
+			}
+
+			shape_ret = font->Shape(text32);
 			continue;
+		} else {
+			if (!DrawGlyph(*font, *system, ch, false)) {
+				text_index = text_prev;
+				continue;
+			}
 		}
 	}
 }
@@ -659,6 +699,37 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 	}
 
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
+
+	// FIXME: When using Freetype the detection is incorrect due to dynamic width
+	int glyph_width = rect.x;
+	contents_x += glyph_width;
+	int width = get_width(glyph_width);
+	SetWaitForCharacter(width);
+
+	return true;
+}
+
+bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, const Font::ShapeRet& shape) {
+	DebugLogText("{}: MSG DrawGlyph Shape {}", static_cast<uint32_t>(shape.code));
+
+	// RPG_RT compatible for half-width (6) and full-width (12)
+	// generalizes the algo for even bigger glyphs
+	auto get_width = [](int w) {
+		return (w > 0) ? (w - 1) / 6 + 1 : 0;
+	};
+
+	// Wide characters cause an extra wait if the last printed character did not wait.
+	if (prev_char_printable && !prev_char_waited) {
+		auto width = get_width(shape.advance.x);
+		if (width >= 2) {
+			prev_char_waited = true;
+			++line_char_counter;
+			SetWait(1);
+			return false;
+		}
+	}
+
+	auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
 
 	// FIXME: When using Freetype the detection is incorrect due to dynamic width
 	int glyph_width = rect.x;
