@@ -62,6 +62,11 @@ class Font {
 		Point advance;
 		/** x/y position in the buffer where the glyph is rendered at */
 		Point offset;
+		/**
+		 * When true the glyph was not found.
+		 * In that case code contains the original codepoint usable for a fallback.
+		 */
+		bool not_found;
 	};
 
 	virtual ~Font() = default;

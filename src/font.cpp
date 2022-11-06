@@ -280,7 +280,7 @@ FTFont::~FTFont() {
 Rect FTFont::vGetSize(char32_t glyph) const {
 	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && glyph != 0 && fallback_font) {
+	if (glyph_index == 0 && fallback_font) {
 		return fallback_font->vGetSize(glyph);
 	}
 
@@ -318,7 +318,7 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 Font::GlyphRet FTFont::vRender(char32_t glyph) const {
     auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && glyph != 0 && fallback_font) {
+	if (glyph_index == 0 && fallback_font) {
 		return fallback_font->vRender(glyph);
 	}
 
@@ -435,7 +435,11 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 		offset.x = pos.x_offset / 64;
 		offset.y = pos.y_offset / 64;
 
-		ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset});
+		if (info.codepoint == 0) {
+			ret.push_back({txt[info.cluster], advance, offset, true});
+		} else {
+			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
+		}
 	}
 
 	return ret;
@@ -579,6 +583,10 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 }
 
 Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const Font::ShapeRet& shape) const {
+	if (shape.not_found) {
+		return Render(dest, x, y, sys, color, shape.code);
+	}
+
 	auto gret = vRenderShaped(shape.code);
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
