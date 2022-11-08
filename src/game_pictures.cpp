@@ -23,6 +23,7 @@
 #include "game_map.h"
 #include "game_pictures.h"
 #include "game_screen.h"
+#include "game_windows.h"
 #include "player.h"
 #include "main_data.h"
 #include "scene.h"
@@ -317,6 +318,10 @@ void Game_Pictures::Picture::Erase() {
 	if (sprite) {
 		sprite->SetBitmap(nullptr);
 	}
+	if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+		data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
+		Main_Data::game_windows->Erase(data.ID);
+	}
 }
 
 void Game_Pictures::Erase(int id) {
@@ -471,6 +476,10 @@ void Game_Pictures::OnMapScrolled(int dx, int dy) {
 	for (auto& pic: pictures) {
 		pic.OnMapScrolled(dx, dy);
 	}
+}
+
+void Game_Pictures::Picture::AttachWindow() {
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_window;
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {

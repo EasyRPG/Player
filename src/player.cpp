@@ -56,6 +56,7 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_targets.h"
+#include "game_windows.h"
 #include "graphics.h"
 #include <lcf/inireader.h>
 #include "input.h"
@@ -937,6 +938,7 @@ void Player::ResetGameObjects() {
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
 	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
+	Main_Data::game_windows = std::make_unique<Game_Windows>();
 
 	Main_Data::game_actors = std::make_unique<Game_Actors>();
 

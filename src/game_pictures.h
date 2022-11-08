@@ -121,6 +121,8 @@ public:
 		void OnPictureSpriteReady();
 		void ApplyOrigin(bool is_move);
 		void OnMapScrolled(int dx, int dy);
+
+		void AttachWindow();
 	};
 
 	Picture& GetPicture(int id);
