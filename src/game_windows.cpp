@@ -16,11 +16,17 @@
  */
 
 #include "game_windows.h"
-#include "game_pictures.h"
+#include "game_message.h"
 #include "main_data.h"
 #include "compiler.h"
+#include "text.h"
+#include "cache.h"
+#include "pending_message.h"
+#include "filefinder.h"
+#include "output.h"
+#include "player.h"
 
-Game_Windows::Window::Window(lcf::rpg::SaveEasyRpgWindow save)
+Game_Windows::Window_User::Window_User(lcf::rpg::SaveEasyRpgWindow save)
 	: data(std::move(save))
 {
 
@@ -59,7 +65,7 @@ std::vector<lcf::rpg::SaveEasyRpgWindow> Game_Windows::GetSaveData() const {
 	return save;
 }
 
-Game_Windows::Window& Game_Windows::GetWindow(int id) {
+Game_Windows::Window_User& Game_Windows::GetWindow(int id) {
 	if (EP_UNLIKELY(id > static_cast<int>(windows.size()))) {
 		windows.reserve(id);
 		while (static_cast<int>(windows.size()) < id) {
@@ -69,12 +75,12 @@ Game_Windows::Window& Game_Windows::GetWindow(int id) {
 	return windows[id - 1];
 }
 
-Game_Windows::Window* Game_Windows::GetWindowPtr(int id) {
+Game_Windows::Window_User* Game_Windows::GetWindowPtr(int id) {
 	return id <= static_cast<int>(windows.size())
 		? &windows[id - 1] : nullptr;
 }
 
-bool Game_Windows::Window::Create(const WindowParams& params) {
+bool Game_Windows::Window_User::Create(const WindowParams& params) {
 	data.width = params.width;
 	data.height = params.height;
 	data.system_name = lcf::DBString(params.system_name);
@@ -84,6 +90,7 @@ bool Game_Windows::Window::Create(const WindowParams& params) {
 
 	for (const auto& text: params.texts) {
 		lcf::rpg::SaveEasyRpgText data_text;
+
 		data_text.text = lcf::DBString(text.text);
 		data_text.position_x = text.position_x;
 		data_text.position_y = text.position_y;
@@ -99,6 +106,8 @@ bool Game_Windows::Window::Create(const WindowParams& params) {
 		data.texts.push_back(data_text);
 	}
 
+	Refresh();
+
 	return true;
 }
 
@@ -106,9 +115,10 @@ bool Game_Windows::Create(int id, const WindowParams& params) {
 	auto& window = GetWindow(id);
 
 	if (window.Create(params)) {
-		auto& pic = Main_Data::game_pictures->GetPicture(id);
-		if (pic.Show(params)) {
-			pic.AttachWindow();
+		if (Main_Data::game_pictures->Show(id, params)) {
+			Main_Data::game_pictures->AttachWindow(id);
+			auto& pic = Main_Data::game_pictures->GetPicture(id);
+			pic.CreateEmptyBitmap(window.window->GetWidth(), window.window->GetHeight());
 			return true;
 		} else {
 			window.Erase();
@@ -119,8 +129,145 @@ bool Game_Windows::Create(int id, const WindowParams& params) {
 	return false;
 }
 
-void Game_Windows::Window::Erase() {
+void Game_Windows::Window_User::Erase() {
 	data = {};
+}
+
+void Game_Windows::Window_User::Refresh() {
+	int w = data.width;
+	int h = data.height;
+
+	if (w == 0 && h == 0) {
+		// TODO: Parse entire text to figure out w and h
+
+		// Border size
+		w += 16;
+		h += 16;
+	}
+
+
+	window = std::make_unique<Window_Selectable>(0, 0, w, h);
+	window->CreateContents();
+	window->SetVisible(false);
+
+	if (data.message_stretch == lcf::rpg::System::Stretch_easyrpg_none) {
+		window->SetWindowskin(nullptr);
+	} else {
+		BitmapRef system;
+		if (!data.system_name.empty()) {
+			// TODO: Async request
+			system = Cache::System(data.system_name);
+		} else {
+			system = Cache::SystemOrBlack();
+		}
+
+		window->SetWindowskin(system);
+		window->SetStretch(data.message_stretch == lcf::rpg::System::Stretch_stretch);
+	}
+
+	if (!data.flags.draw_frame) {
+		window->SetFrameOpacity(0);
+	}
+
+	if (!data.flags.border_margin) {
+		window->SetBorderX(0);
+		window->SetBorderY(0);
+	}
+
+	for (const auto& text: data.texts) {
+		// TODO: Async requests
+		FontRef font;
+
+		Filesystem_Stream::InputStream font_file;
+		std::string font_name = ToString(text.font_name);
+		// Try to find best fitting font
+		if (text.flags.bold && text.flags.italic) {
+			font_file = FileFinder::OpenFont(font_name + "-BoldItalic");
+		}
+
+		if (!font_file && text.flags.bold) {
+			font_file = FileFinder::OpenFont(font_name + "-Bold");
+		}
+
+		if (!font_file && text.flags.italic) {
+			font_file = FileFinder::OpenFont(font_name + "-Italic");
+		}
+
+		if (!font_file) {
+			font_file = FileFinder::OpenFont(font_name);
+		}
+
+		if (!font_file) {
+			Output::Warning("Font not found: {}", text.font_name);
+			font = Font::Default();
+		} else {
+			font = Font::CreateFtFont(std::move(font_file), text.font_size, text.flags.bold, text.flags.italic);
+		}
+
+		std::stringstream ss(ToString(text.text));
+
+		std::string out;
+		PendingMessage pm;
+		while (Utils::ReadLine(ss, out)) {
+			pm.PushLine(out);
+		}
+
+		int x = 0;
+		int y = 0;
+		int text_color = 0;
+		for (const auto& line: pm.GetLines()) {
+			std::u32string line32;
+			auto* text_index = line.data();
+			const auto* end = line.data() + line.size();
+
+			while (text_index != end) {
+				auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+				text_index = tret.next;
+
+				if (EP_UNLIKELY(!tret)) {
+					continue;
+				}
+
+				const auto ch = tret.ch;
+
+				if (Utils::IsControlCharacter(ch)) {
+					// control characters not handled
+					continue;
+				}
+
+				if (tret.is_escape && ch != Player::escape_char) {
+					if (!line32.empty()) {
+						x += Text::Draw(*window->GetContents(), x, y, *font, *Cache::System(), text_color, Utils::EncodeUTF(line32)).x;
+						line32.clear();
+					}
+
+					// Special message codes
+					switch (ch) {
+						case 'c':
+						case 'C':
+						{
+							// Color
+							auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+							auto value = pres.value;
+							text_index = pres.next;
+							text_color = value > 19 ? 0 : value;
+						}
+						break;
+					}
+					continue;
+				}
+
+				line32 += static_cast<char32_t>(ch);
+			}
+
+			if (!line32.empty()) {
+				Text::Draw(*window->GetContents(), x, y, *font, *Cache::System(), text_color, Utils::EncodeUTF(line32));
+			}
+
+			x = 0;
+			y += text.font_size + text.line_spacing;
+		}
+	}
 }
 
 void Game_Windows::Erase(int id) {

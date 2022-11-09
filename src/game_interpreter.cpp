@@ -4128,9 +4128,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	int pic_id = ValueOrVariable(com.parameters[0] & 0xF, com.parameters[1]);
 
 	Game_Windows::WindowParams params = {};
-	Game_Windows::Text text;
+	Game_Windows::WindowText text;
 
-	params.name = ToString(com.string);
 	params.position_x = ValueOrVariable((com.parameters[0] & 0xF0) >> 4, com.parameters[2]);
 	params.position_y = ValueOrVariable((com.parameters[0] & 0xF0) >> 4, com.parameters[3]);
 	params.magnify = ValueOrVariable((com.parameters[0] & 0xF00) >> 8, com.parameters[4]);

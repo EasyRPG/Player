@@ -123,10 +123,13 @@ public:
 		void OnMapScrolled(int dx, int dy);
 
 		void AttachWindow();
+		void CreateEmptyBitmap(int width, int height);
 	};
 
 	Picture& GetPicture(int id);
 	Picture* GetPicturePtr(int id);
+
+	void AttachWindow(int id);
 
 private:
 	void RequestPictureSprite(Picture& pic);

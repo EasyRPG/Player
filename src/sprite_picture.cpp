@@ -21,6 +21,7 @@
 #include "game_pictures.h"
 #include "game_battle.h"
 #include "game_screen.h"
+#include "game_windows.h"
 #include "player.h"
 #include "bitmap.h"
 
@@ -66,6 +67,12 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	if (!bitmap) {
 		return;
+	}
+
+	if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+		// Paint the Window on the Picture
+		const auto& window = Main_Data::game_windows->GetWindow(pic_id);
+		window.window->Draw(*bitmap.get());
 	}
 
 	const bool is_battle = Game_Battle::IsBattleRunning();

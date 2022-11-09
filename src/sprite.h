@@ -37,6 +37,7 @@ public:
 	virtual int GetWidth() const;
 	virtual int GetHeight() const;
 
+	BitmapRef& GetBitmap();
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);
 	Rect const& GetSrcRect() const;
@@ -149,6 +150,10 @@ inline int Sprite::GetWidth() const {
 
 inline int Sprite::GetHeight() const {
 	return src_rect.height;
+}
+
+inline BitmapRef& Sprite::GetBitmap() {
+	return bitmap;
 }
 
 inline BitmapRef const& Sprite::GetBitmap() const {

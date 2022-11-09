@@ -46,7 +46,7 @@ public:
 	/**
 	 * Updates the window.
 	 */
-	virtual void Update();
+	void Update() override;
 
 	/**
 	 * Draw helpers.

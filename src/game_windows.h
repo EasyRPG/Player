@@ -24,7 +24,23 @@
 #include <lcf/rpg/saveeasyrpgwindow.h>
 #include <lcf/rpg/system.h>
 #include "game_pictures.h"
-#include "window.h"
+#include "window_selectable.h"
+
+/*
+TODO:
+Automatic Picture Size
+Font size (Mismatch with ManiacPatch)
+Letter Spacing
+Bold when Font has no Bold Typeface
+Disable Text Gradient
+Disable Text Shadow
+
+Async (System & Font)
+Font Cache
+
+lcftrans support
+*/
+
 
 /**
  * Manages user generated windows.
@@ -36,7 +52,7 @@ public:
 	void SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save);
 	std::vector<lcf::rpg::SaveEasyRpgWindow> GetSaveData() const;
 
-	struct Text {
+	struct WindowText {
 		std::string text;
 		int position_x = 0;
 		int position_y = 0;
@@ -55,7 +71,7 @@ public:
 		int width = 0;
 		int height = 0;
 		int message_stretch = lcf::rpg::System::Stretch_easyrpg_none;
-		std::vector<Text> texts;
+		std::vector<WindowText> texts;
 		bool draw_frame = true;
 		bool border_margin = true;
 	};
@@ -63,21 +79,25 @@ public:
 	bool Create(int id, const WindowParams& params);
 	void Erase(int id);
 
-	struct Window {
-		Window(int id) { data.ID = id; }
-		Window(lcf::rpg::SaveEasyRpgWindow data);
+	struct Window_User {
+		explicit Window_User(int id) { data.ID = id; }
+		explicit Window_User(lcf::rpg::SaveEasyRpgWindow data);
 
 		lcf::rpg::SaveEasyRpgWindow data;
 
 		bool Create(const WindowParams& params);
 		void Erase();
+
+		void Refresh();
+
+		std::unique_ptr<Window_Selectable> window;
 	};
 
-	Window& GetWindow(int id);
-	Window* GetWindowPtr(int id);
+	Window_User& GetWindow(int id);
+	Window_User* GetWindowPtr(int id);
 
 private:
-	std::vector<Window> windows;
+	std::vector<Window_User> windows;
 };
 
 #endif

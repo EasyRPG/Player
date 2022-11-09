@@ -32,7 +32,7 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
-	void Update();
+	virtual void Update();
 	BitmapRef const& GetWindowskin() const;
 	void SetWindowskin(BitmapRef const& nwindowskin);
 	BitmapRef GetContents() const;
@@ -71,6 +71,8 @@ public:
 	void SetBorderY(int noy);
 	int GetOpacity() const;
 	void SetOpacity(int nopacity);
+	int GetFrameOpacity() const;
+	void SetFrameOpacity(int nframe_opacity);
 	int GetBackOpacity() const;
 	void SetBackOpacity(int nback_opacity);
 	int GetContentsOpacity() const;
@@ -104,6 +106,7 @@ protected:
 	int border_x = 8;
 	int border_y = 8;
 	int opacity = 255;
+	int frame_opacity = 255;
 	int back_opacity = 255;
 	int contents_opacity = 255;
 
@@ -271,6 +274,14 @@ inline int Window::GetOpacity() const {
 
 inline void Window::SetOpacity(int nopacity) {
 	opacity = nopacity;
+}
+
+inline int Window::GetFrameOpacity() const {
+	return frame_opacity;
+}
+
+inline void Window::SetFrameOpacity(int nframe_opacity) {
+	frame_opacity = nframe_opacity;
 }
 
 inline int Window::GetBackOpacity() const {

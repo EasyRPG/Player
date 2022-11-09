@@ -478,8 +478,27 @@ void Game_Pictures::OnMapScrolled(int dx, int dy) {
 	}
 }
 
+void Game_Pictures::AttachWindow(int id) {
+	auto& pic = GetPicture(id);
+	pic.AttachWindow();
+
+	if (!pic.sprite) {
+		sprites.emplace_back(id, Drawable::Flags::Shared);
+		pic.sprite = &sprites.back();
+	}
+}
+
 void Game_Pictures::Picture::AttachWindow() {
 	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_window;
+}
+
+// TODO: Unify with AttachWindow
+void Game_Pictures::Picture::CreateEmptyBitmap(int width, int height) {
+	assert(sprite);
+
+	sprite->SetBitmap(std::make_shared<Bitmap>(width, height, data.use_transparent_color));
+	sprite->OnPictureShow();
+	sprite->SetVisible(true);
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {
