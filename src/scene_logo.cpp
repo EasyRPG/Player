@@ -128,12 +128,16 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	tree->SetImportantFile(true);
 	FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
 	ini->SetImportantFile(true);
-	FileRequestAsync* exfont = AsyncHandler::RequestFile("ExFont");
+	FileRequestAsync* exfont = AsyncHandler::RequestFile("Font/ExFont");
 	exfont->SetImportantFile(true);
 	FileRequestAsync* soundfont = AsyncHandler::RequestFile("easyrpg.soundfont");
 	soundfont->SetImportantFile(true);
 	FileRequestAsync* autorun_ineluki = AsyncHandler::RequestFile("autorun.script");
 	autorun_ineluki->SetImportantFile(true);
+	FileRequestAsync* font_gothic = AsyncHandler::RequestFile("Font/Font");
+	font_gothic->SetImportantFile(true);
+	FileRequestAsync* font_mincho = AsyncHandler::RequestFile("Font/Font2");
+	font_mincho->SetImportantFile(true);
 
 	db->Start();
 	tree->Start();
@@ -141,4 +145,6 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	exfont->Start();
 	soundfont->Start();
 	autorun_ineluki->Start();
+	font_gothic->Start();
+	font_mincho->Start();
 }

@@ -81,9 +81,12 @@ int Game_Message::GetRealPosition() {
 }
 
 int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallback& callback) {
+	return WordWrap(line, limit, callback, *Font::Default());
+}
+
+int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallback& callback, const Font& font) {
 	int start = 0;
 	int line_count = 0;
-	FontRef font = Font::Default();
 
 	do {
 		int next = start;
@@ -94,7 +97,7 @@ int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallb
 			}
 
 			auto wrapped = line.substr(start, found - start);
-			auto width = font->GetSize(wrapped).width;
+			auto width = font.GetSize(wrapped).width;
 			if (width > limit) {
 				if (next == start) {
 					next = found + 1;

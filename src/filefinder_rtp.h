@@ -41,12 +41,12 @@ public:
 	 * @param exts Extensions to probe
 	 * @return A handle to the file or an invalid handle if not found
 	 */
-	 Filesystem_Stream::InputStream Lookup(StringView dir, StringView name, Span<StringView> exts) const;
+	 Filesystem_Stream::InputStream Lookup(StringView dir, StringView name, const Span<const StringView> exts) const;
 
 private:
 	void AddPath(StringView p);
 	void ReadRegistry(StringView company, StringView product, StringView key);
-	Filesystem_Stream::InputStream LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const;
+	Filesystem_Stream::InputStream LookupInternal(StringView dir, StringView name, const Span<const StringView> exts, bool& is_rtp_asset) const;
 
 	using search_path_list = std::vector<FilesystemView>;
 

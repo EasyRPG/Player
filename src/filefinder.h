@@ -128,6 +128,15 @@ namespace FileFinder {
 	Filesystem_Stream::InputStream OpenSound(StringView name);
 
 	/**
+	 * Finds a font file and opens a file handle to it.
+	 * Searches through the Font folder of the current RPG Maker game.
+	 *
+	 * @param name the font path and name.
+	 * @return read handle on success or invalid handle if not found
+	 */
+	Filesystem_Stream::InputStream OpenFont(StringView name);
+
+	/**
 	 * Finds a font file.
 	 * Searches through the current RPG Maker game and the RTP directories.
 	 *

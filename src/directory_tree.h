@@ -62,7 +62,7 @@ public:
 		/** File relative to the current tree to search */
 		std::string path;
 		/** File extensions to append to the filename when searching */
-		Span<StringView> exts;
+		const Span<const StringView> exts;
 		/**
 		 * How often moving upwards when ".." is encountered in the path is
 		 * allowed (to prevent directory traversal)
@@ -95,7 +95,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -106,7 +106,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.

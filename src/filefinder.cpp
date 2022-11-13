@@ -61,6 +61,13 @@ namespace {
 	std::shared_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
 	FilesystemView save_fs;
+
+	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
+	constexpr const auto MUSIC_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
+	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon", ".fnt", ".bdf", ".woff2", ".woff");
 }
 
 FilesystemView FileFinder::Game() {
@@ -278,85 +285,6 @@ std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
 	return ToString(path_in);
 }
 
-#if defined(_WIN32) && !defined(_ARM_)
-std::string GetFontsPath() {
-	static std::string fonts_path = "";
-	static bool init = false;
-
-	if (init) {
-		return fonts_path;
-	} else {
-		// Retrieve the Path of the Font Directory
-		TCHAR path[MAX_PATH];
-
-		if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) == S_OK)	{
-			char fpath[MAX_PATH];
-#ifdef UNICODE
-			WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
-#endif
-			fonts_path = FileFinder::MakePath(fpath, "");
-		}
-
-		init = true;
-
-		return fonts_path;
-	}
-}
-
-std::string GetFontFilename(StringView name) {
-	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
-	if (real_name.length() > 0) {
-		if (FileFinder::Root().Exists(real_name))
-			return real_name;
-		if (FileFinder::Root().Exists(GetFontsPath() + real_name))
-			return GetFontsPath() + real_name;
-	}
-
-	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", ToString(name) + " (TrueType)");
-	if (real_name.length() > 0) {
-		if (FileFinder::Root().Exists(real_name))
-			return real_name;
-		if (FileFinder::Root().Exists(GetFontsPath() + real_name))
-			return GetFontsPath() + real_name;
-	}
-
-	return ToString(name);
-}
-#endif
-
-std::string FileFinder::FindFont(StringView name) {
-	auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon");
-	std::string path = Game().FindFile({ MakePath("Font", name), FONTS_TYPES, 1, true });
-
-#if defined(_WIN32) && !defined(_ARM_)
-	if (!path.empty()) {
-		return path;
-	}
-
-	std::string folder_path = "";
-	std::string filename = ToString(name);
-
-	size_t separator_pos = path.rfind('\\');
-	if (separator_pos != std::string::npos) {
-		folder_path = path.substr(0, separator_pos);
-		filename = path.substr(separator_pos, path.length() - separator_pos);
-	}
-
-	std::string font_filename = GetFontFilename(filename);
-	if (!font_filename.empty()) {
-		if (FileFinder::Root().Exists(folder_path + font_filename))
-			return folder_path + font_filename;
-
-		if (FileFinder::Root().Exists(fonts_path + font_filename))
-			return fonts_path + font_filename;
-	}
-
-	return "";
-#else
-	return path;
-#endif
-}
-
 void FileFinder::Quit() {
 	root_fs.reset();
 }
@@ -411,24 +339,25 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string FileFinder::FindImage(StringView dir, StringView name) {
-	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return find_generic(args);
 }
 
 std::string FileFinder::FindMusic(StringView name) {
-	auto MUSIC_TYPES = Utils::MakeSvArray(
-			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
 	return find_generic(args);
 
 }
 
 std::string FileFinder::FindSound(StringView name) {
-	auto SOUND_TYPES = Utils::MakeSvArray(
-			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
 	return find_generic(args);
+}
+
+std::string FileFinder::FindFont(StringView name) {
+	std::string path = Game().FindFile({ MakePath("Font", name), FONTS_TYPES, 1, true });
+
+	return path;
 }
 
 Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, DirectoryTree::Args& args) {
@@ -451,23 +380,23 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
-	auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return open_generic(dir, name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
-	auto MUSIC_TYPES = Utils::MakeSvArray(
-		".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
 	return open_generic("Music", name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
-	auto SOUND_TYPES = Utils::MakeSvArray(
-		".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
 	return open_generic("Sound", name, args);
+}
+
+Filesystem_Stream::InputStream FileFinder::OpenFont(StringView name) {
+	DirectoryTree::Args args = { MakePath("Font", name), FONTS_TYPES, 1, false };
+	return open_generic("Font", name, args);
 }
 
 bool FileFinder::IsMajorUpdatedTree() {

@@ -142,7 +142,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -153,7 +153,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -173,7 +173,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView filename, Span<StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific directory
@@ -184,7 +184,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file and opens a read handle.
@@ -283,7 +283,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -294,7 +294,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -314,7 +314,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView filename, Span<StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific directory
@@ -325,7 +325,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, Span<StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file and opens a read handle.

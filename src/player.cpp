@@ -383,7 +383,7 @@ void Player::Exit() {
 #ifdef EMSCRIPTEN
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
-	Text::Draw(*surface, 84, DisplayUi->GetHeight() / 2 - 30, *Font::Default(), Color(221, 123, 64, 255), message);
+	Text::Draw(*surface, 84, DisplayUi->GetHeight() / 2 - 30, *Font::DefaultBitmapFont(), Color(221, 123, 64, 255), message);
 	DisplayUi->UpdateDisplay();
 
 	auto ret = FileFinder::Root().OpenOutputStream("/tmp/message.png", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
@@ -784,7 +784,12 @@ void Player::CreateGameObjects() {
 	// ExFont parsing
 	Cache::exfont_custom.clear();
 	// Check for bundled ExFont
-	auto exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	auto exfont_stream = FileFinder::OpenImage("Font", "ExFont");
+	if (!exfont_stream) {
+		// Backwards compatible with older Player versions
+		exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	}
+
 #ifndef EMSCRIPTEN
 	if (!exfont_stream) {
 		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
@@ -810,6 +815,8 @@ void Player::CreateGameObjects() {
 	}
 
 	ResetGameObjects();
+
+	LoadFonts();
 
 	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 }
@@ -991,6 +998,24 @@ void Player::LoadDatabase() {
 			FileExtGuesser::GuessAndAddLmuExtension(FileFinder::Game(), *meta, fileext_map);
 		}
 	}
+}
+
+void Player::LoadFonts() {
+	Font::SetDefault(nullptr, true);
+	Font::SetDefault(nullptr, false);
+
+#ifdef HAVE_FREETYPE
+	// Look for bundled fonts
+	auto gothic = FileFinder::OpenFont("Font");
+	if (gothic) {
+		Font::SetDefault(Font::CreateFtFont(std::move(gothic), 12, false, false), false);
+	}
+
+	auto mincho = FileFinder::OpenFont("Font2");
+	if (mincho) {
+		Font::SetDefault(Font::CreateFtFont(std::move(mincho), 12, false, false), true);
+	}
+#endif
 }
 
 static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {

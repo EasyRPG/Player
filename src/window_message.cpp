@@ -644,7 +644,8 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
 
-	int glyph_width = rect.width;
+	// FIXME: When using Freetype the detection is incorrect due to dynamic width
+	int glyph_width = rect.x;
 	contents_x += glyph_width;
 	int width = get_width(glyph_width);
 	SetWaitForCharacter(width);

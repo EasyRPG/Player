@@ -160,8 +160,9 @@ void Translation::SelectLanguage(StringView lang_id)
 
 		FilesystemView language_tree = root.Subtree(lang_id);
 		if (language_tree) {
-			request_counter = 4;
-			for (auto s: {TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT}) {
+			auto files = Utils::MakeSvArray(TRFILE_RPG_RT_LDB, TRFILE_RPG_RT_BATTLE, TRFILE_RPG_RT_COMMON, TRFILE_RPG_RT_LMT, "Font/Font", "Font/Font2");
+			request_counter = static_cast<int>(files.size());
+			for (auto s: files) {
 				FileRequestAsync* request = AsyncHandler::RequestFile(language_tree.GetFullPath(), s);
 				request->SetImportantFile(true);
 				requests.emplace_back(request->Bind(&Translation::SelectLanguageAsync, this, lang_id));
@@ -177,7 +178,7 @@ void Translation::SelectLanguage(StringView lang_id)
 	}
 }
 
-void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang_id) {
+void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 	--request_counter;
 	if (request_counter == 0) {
 		requests.clear();
@@ -192,6 +193,9 @@ void Translation::SelectLanguageAsync(FileRequestResult* result, StringView lang
 
 	// We reload the entire database as a precaution.
 	Player::LoadDatabase();
+
+	// Translation could provide custom fonts
+	Player::LoadFonts();
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.
@@ -224,7 +228,7 @@ void Translation::RequestAndAddMap(int map_id) {
 
 	FileRequestAsync* request = AsyncHandler::RequestFile(Tr::GetCurrentTranslationFilesystem().GetFullPath(), map_name);
 	request->SetImportantFile(true);
-	map_request = request->Bind([this, map_name, map_id](FileRequestResult* res) {
+	map_request = request->Bind([this, map_name](FileRequestResult*) {
 		std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
 		auto is = Tr::GetCurrentTranslationFilesystem().OpenInputStream(map_name);
 		if (is) {
@@ -288,14 +292,13 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 			if (is) {
 				ParsePoFile(std::move(is), *mapnames);
 			}
-		} else {
+		} else if (StringView(tr_name.first).ends_with(".po")) {
 			// This will fail in the web player but is intentional
 			// The fetching happens on map load instead
 			// Still parsing all files locally to get syntax errors early
-			std::unique_ptr<Dictionary> dict;
-			dict = std::make_unique<Dictionary>();
 			auto is = language_tree.OpenInputStream(tr_name.second.name);
 			if (is) {
+				std::unique_ptr<Dictionary> dict = std::make_unique<Dictionary>();
 				ParsePoFile(std::move(is), *dict);
 				maps[tr_name.first] = std::move(dict);
 			}
@@ -317,6 +320,10 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 
 void Translation::RewriteDatabase()
 {
+	if (!sys) {
+		return;
+	}
+
 	lcf::rpg::ForEachString(lcf::Data::data, [this](lcf::DBString& value, auto& ctxt) {
 		// When we re-write the database, we only care about translations that are exactly one level deep.
 		if (ctxt.parent==nullptr || ctxt.parent->parent!=nullptr) {

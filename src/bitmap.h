@@ -233,8 +233,9 @@ public:
 	 * @param color system color index.
 	 * @param text text to draw.
 	 * @param align text alignment.
+	 * @return Where to draw the next glyph
 	 */
-	void TextDraw(int x, int y, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(int x, int y, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap using the Font::Default() font.
@@ -243,8 +244,9 @@ public:
 	 * @param color system color index.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
+	 * @return Where to draw the next glyph
 	 */
-	void TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap using the Font::Default() font.
@@ -253,8 +255,9 @@ public:
 	 * @param y y coordinate where text rendering starts.
 	 * @param color text color.
 	 * @param text text to draw.
+	 * @return Where to draw the next glyph
 	 */
-	void TextDraw(int x, int y, Color color, StringView text);
+	Point TextDraw(int x, int y, Color color, StringView text);
 
 	/**
 	 * Draws text to bitmap using the Font::Default() font.
@@ -264,7 +267,7 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, Color color, StringView, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(Rect const& rect, Color color, StringView, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Blits source bitmap to this one.

@@ -157,11 +157,11 @@ bool Filesystem::IsValid() const {
 	return Exists("");
 }
 
-std::string Filesystem::FindFile(StringView filename, Span<StringView> exts) const {
+std::string Filesystem::FindFile(StringView filename, const Span<const StringView> exts) const {
 	return tree->FindFile(filename, exts);
 }
 
-std::string Filesystem::FindFile(StringView directory, StringView filename, Span<StringView> exts) const {
+std::string Filesystem::FindFile(StringView directory, StringView filename, const Span<const StringView> exts) const {
 	return tree->FindFile(directory, filename, exts);
 }
 
@@ -169,11 +169,11 @@ std::string Filesystem::FindFile(const DirectoryTree::Args& args) const {
 	return tree->FindFile(args);
 }
 
-Filesystem_Stream::InputStream Filesystem::OpenFile(StringView filename, Span<StringView> exts) const {
+Filesystem_Stream::InputStream Filesystem::OpenFile(StringView filename, const Span<const StringView> exts) const {
 	return OpenInputStream(tree->FindFile(filename, exts));
 }
 
-Filesystem_Stream::InputStream Filesystem::OpenFile(StringView directory, StringView filename, Span<StringView> exts) const {
+Filesystem_Stream::InputStream Filesystem::OpenFile(StringView directory, StringView filename, const Span<const StringView> exts) const {
 	return OpenInputStream(tree->FindFile(directory, filename, exts));
 }
 
@@ -211,7 +211,7 @@ void FilesystemView::ClearCache() const {
 	fs->ClearCache(GetSubPath());
 }
 
-std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) const {
+std::string FilesystemView::FindFile(StringView name, const Span<const StringView> exts) const {
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(name), exts);
 	if (!found.empty() && !sub_path.empty()) {
@@ -222,7 +222,7 @@ std::string FilesystemView::FindFile(StringView name, Span<StringView> exts) con
 	return found;
 }
 
-std::string FilesystemView::FindFile(StringView dir, StringView name, Span<StringView> exts) const {
+std::string FilesystemView::FindFile(StringView dir, StringView name, const Span<const StringView> exts) const {
 	assert(fs);
 	std::string found = fs->FindFile(MakePath(dir), name, exts);
 	if (!found.empty() && !sub_path.empty()) {
@@ -247,12 +247,12 @@ std::string FilesystemView::FindFile(const DirectoryTree::Args& args) const {
 	return found;
 }
 
-Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView name, Span<StringView> exts) const {
+Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView name, const Span<const StringView> exts) const {
 	assert(fs);
 	return fs->OpenFile(MakePath(name), exts);
 }
 
-Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView dir, StringView name, Span<StringView> exts) const {
+Filesystem_Stream::InputStream FilesystemView::OpenFile(StringView dir, StringView name, const Span<const StringView> exts) const {
 	assert(fs);
 	return fs->OpenFile(MakePath(dir), name, exts);
 }

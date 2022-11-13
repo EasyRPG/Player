@@ -56,14 +56,17 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 	while (nextpos != std::string::npos) {
 		nextpos = text.find(' ', pos);
 		auto segment = ToStringView(text).substr(pos, nextpos - pos);
-		contents->TextDraw(text_x_offset, 2, color, segment, align);
-		text_x_offset += Font::Default()->GetSize(segment).width;
+		auto offset = contents->TextDraw(text_x_offset, 2, color, segment, align);
+		text_x_offset += offset.x;
 
+		// Special handling for proportional fonts: If the "normal" space is already small do not half it again
 		if (nextpos != decltype(text)::npos) {
-			if (halfwidthspace) {
-				text_x_offset += Font::Default()->GetSize(" ").width / 2;
+			int space_width = Font::Default()->GetSize(" ").width;
+
+			if (halfwidthspace && space_width >= 6) {
+				text_x_offset += space_width / 2;
 			} else {
-				text_x_offset += Font::Default()->GetSize(" ").width;
+				text_x_offset += space_width;
 			}
 			pos = nextpos + 1;
 		}

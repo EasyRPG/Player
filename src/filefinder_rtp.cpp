@@ -229,7 +229,7 @@ void FileFinder_RTP::ReadRegistry(StringView company, StringView product, String
 #endif
 }
 
-Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, StringView name, Span<StringView> exts, bool& is_rtp_asset) const {
+Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, StringView name, const Span<const StringView> exts, bool& is_rtp_asset) const {
 	int version = Player::EngineVersion();
 
 	auto normal_search = [&]() {
@@ -302,7 +302,7 @@ Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, St
 	return normal_search();
 }
 
-Filesystem_Stream::InputStream FileFinder_RTP::Lookup(StringView dir, StringView name, Span<StringView> exts) const {
+Filesystem_Stream::InputStream FileFinder_RTP::Lookup(StringView dir, StringView name, const Span<const StringView> exts) const {
 	if (!disable_rtp) {
 		bool is_rtp_asset;
 		auto is = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);

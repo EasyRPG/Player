@@ -180,11 +180,11 @@ void DirectoryTree::ClearCache(StringView path) const {
 	}), dir_missing_cache.end());
 }
 
-std::string DirectoryTree::FindFile(StringView filename, Span<StringView> exts) const {
+std::string DirectoryTree::FindFile(StringView filename, const Span<const StringView> exts) const {
 	return FindFile({ ToString(filename), exts });
 }
 
-std::string DirectoryTree::FindFile(StringView directory, StringView filename, Span<StringView> exts) const {
+std::string DirectoryTree::FindFile(StringView directory, StringView filename, const Span<const StringView> exts) const {
 	return FindFile({ FileFinder::MakePath(directory, filename), exts });
 }
 

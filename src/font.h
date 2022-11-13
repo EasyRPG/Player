@@ -19,6 +19,8 @@
 #define EP_FONT_H
 
 // Headers
+#include "filesystem_stream.h"
+#include "point.h"
 #include "system.h"
 #include "memory_management.h"
 #include "rect.h"
@@ -33,7 +35,7 @@ class Rect;
  */
 class Font {
  public:
-	virtual ~Font() {}
+	virtual ~Font() = default;
 
 	/**
 	 * Returns the size of the rendered string, not including shadows.
@@ -51,10 +53,17 @@ class Font {
 	virtual Rect GetSize(char32_t ch) const = 0;
 
 	struct GlyphRet {
-		/* bitmap which the glyph pixels are located within */
+		/** bitmap which the glyph pixels are located within */
 		BitmapRef bitmap;
-		/* sub-rect of the bitmap which contains glyph pixels */
-		Rect rect;
+		/**
+		 * How far to advance the x/y offset after drawing for the next glyph.
+		 * y value is only relevant for vertical layouts.
+		 */
+		Point advance;
+		/** x/y position in the buffer where the glyph is rendered at */
+		Point offset;
+		/** When enabled the glyph is colored and not masked with the system graphic */
+		bool has_color = false;
 	};
 
 	/* Returns a bitmap and rect containing the pixels of the glyph.
@@ -76,9 +85,9 @@ class Font {
 	 * @param color which color in the system graphic
 	 * @param glyph which utf32 glyph to render
 	 *
-	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
+	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Rect Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -89,20 +98,27 @@ class Font {
 	 * @param color which color in the system graphic
 	 * @param glyph which utf32 glyph to render
 	 *
-	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest.
+	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Rect Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
 
-	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
+	/**
+	 * Defines a fallback font that shall be used when a glyph is not found in the current font.
+	 * Currently only used by FreeType Fonts.
+	 *
+	 * @param fallback_font Font to fallback to
+	 */
+	void SetFallbackFont(FontRef fallback_font);
+
+	static FontRef CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 	static FontRef Default();
-	static FontRef Default(bool mincho);
+	static FontRef Default(bool use_mincho);
+	static FontRef DefaultBitmapFont();
+	static FontRef DefaultBitmapFont(bool use_mincho);
+	static void SetDefault(FontRef new_default, bool use_mincho);
 	static void Dispose();
 
 	static FontRef exfont;
-
-	static const int default_size = 9;
-	static const bool default_bold = false;
-	static const bool default_italic = false;
 
 	enum SystemColor {
 		ColorShadow = -1,
@@ -120,7 +136,9 @@ class Font {
 
 	size_t pixel_size() const { return size * 96 / 72; }
  protected:
-	Font(const std::string& name, int size, bool bold, bool italic);
+	Font(StringView name, int size, bool bold, bool italic);
+
+	FontRef fallback_font;
 };
 
 #endif

@@ -21,6 +21,7 @@
 #include <vector>
 #include <iterator>
 
+#include "filesystem_stream.h"
 #include "system.h"
 #include "game_system.h"
 #include "main_data.h"
@@ -30,6 +31,10 @@
 #	include FT_FREETYPE_H
 #	include FT_BITMAP_H
 #	include FT_MODULE_H
+#endif
+
+#ifdef HAVE_HARFBUZZ
+#   include <hb-ft.h>
 #endif
 
 #include <lcf/reader_util.h>
@@ -76,7 +81,7 @@ namespace {
 			if (wqy != NULL) {
 				return wqy;
 			}
-		}		
+		}
 		auto* gothic = find_glyph(SHINONOME_GOTHIC, code);
 		return gothic != NULL ? gothic : find_fallback_glyph(code);
 	}
@@ -87,7 +92,7 @@ namespace {
 			if (wqy != NULL) {
 				return wqy;
 			}
-		}		
+		}
 		auto* mincho = find_glyph(SHINONOME_MINCHO, code);
 		return mincho == NULL ? find_gothic_glyph(code) : mincho;
 	}
@@ -107,12 +112,12 @@ namespace {
 		return ttyp0 != NULL ? ttyp0 : find_gothic_glyph(code);
 	}
 
-	struct BitmapFont : public Font {
+	struct BitmapFont final : public Font {
 		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2 };
 
 		using function_type = BitmapFontGlyph const*(*)(char32_t);
 
-		BitmapFont(const std::string& name, function_type func);
+		BitmapFont(StringView name, function_type func);
 
 		Rect GetSize(StringView txt) const override;
 		Rect GetSize(char32_t ch) const override;
@@ -125,23 +130,11 @@ namespace {
 	}; // class BitmapFont
 
 #ifdef HAVE_FREETYPE
-	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
-	face_cache_type face_cache;
+	FT_Library library = nullptr;
 
-	void delete_face(FT_Face f) {
-		if(FT_Done_Face(f) != FT_Err_Ok) {
-			Output::Warning("FT_Face deleting error.");
-		}
-	}
-
-	void delete_library(FT_Library f) {
-		if(FT_Done_Library(f) != FT_Err_Ok) {
-			Output::Warning("FT_Library deleting error.");
-		}
-	}
-
-	struct FTFont : public Font  {
-		FTFont(const std::string& name, int size, bool bold, bool italic);
+	struct FTFont final : public Font  {
+		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
+		~FTFont() override;
 
 		Rect GetSize(StringView txt) const override;
 		Rect GetSize(char32_t ch) const override;
@@ -149,13 +142,13 @@ namespace {
 		GlyphRet Glyph(char32_t code) override;
 
 	private:
-		static std::weak_ptr<std::remove_pointer<FT_Library>::type> library_checker_;
-		std::shared_ptr<std::remove_pointer<FT_Library>::type> library_;
-		std::shared_ptr<std::remove_pointer<FT_Face>::type> face_;
-		std::string face_name_;
-		unsigned current_size_;
-
-		bool check_face();
+		FT_Face face = nullptr;
+		std::vector<uint8_t> ft_buffer;
+		// Freetype uses the baseline as 0 and the built-in fonts the top
+		// baseline_offset is subtracted from the baseline to get a proper rendering position
+		int baseline_offset = 0;
+		/** Workaround for bad kerning in RM2000 and RMG2000 fonts */
+		bool rm2000_workaround = false;
 	}; // class FTFont
 #endif
 
@@ -174,7 +167,10 @@ namespace {
 	FontRef const rmg2000 = std::make_shared<BitmapFont>("RMG2000-compatible", &find_rmg2000_glyph);
 	FontRef const ttyp0 = std::make_shared<BitmapFont>("ttyp0", &find_ttyp0_glyph);
 
-	struct ExFont : public Font {
+	FontRef default_gothic;
+	FontRef default_mincho;
+
+	struct ExFont final : public Font {
 		public:
 			enum { HEIGHT = 12, WIDTH = 12 };
 			ExFont();
@@ -186,7 +182,7 @@ namespace {
 	};
 } // anonymous namespace
 
-BitmapFont::BitmapFont(const std::string& name, function_type func)
+BitmapFont::BitmapFont(StringView name, function_type func)
 	: Font(name, HEIGHT, false, false), func(func)
 {}
 
@@ -212,7 +208,7 @@ Rect BitmapFont::GetSize(StringView txt) const {
 			units += glyph->is_full? 2 : 1;
 		}
 	}
-	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
+	return {0, 0, static_cast<int>(units * HALF_WIDTH), HEIGHT};
 }
 
 Font::GlyphRet BitmapFont::Glyph(char32_t code) {
@@ -220,7 +216,7 @@ Font::GlyphRet BitmapFont::Glyph(char32_t code) {
 		glyph_bm = Bitmap::Create(nullptr, FULL_WIDTH, HEIGHT, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
 	}
 	if (EP_UNLIKELY(Utils::IsControlCharacter(code))) {
-		return { glyph_bm, Rect(0, 0, 0, HEIGHT) };
+		return { glyph_bm, {0, 0}, {0, 0} };
 	}
 	auto glyph = func(code);
 	auto width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
@@ -232,214 +228,305 @@ Font::GlyphRet BitmapFont::Glyph(char32_t code) {
 		for(size_t x_ = 0; x_ < width; ++x_)
 			data[y_*pitch+x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
 
-	return { glyph_bm, Rect(0, 0, width, HEIGHT) };
+	return { glyph_bm, {width, 0}, {0, 0} };
 }
 
 #ifdef HAVE_FREETYPE
-std::weak_ptr<std::remove_pointer<FT_Library>::type> FTFont::library_checker_;
+FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic)
+	: Font(is.GetName(), size, bold, italic) {
 
-FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
-	: Font(name, size, bold, italic), current_size_(0) {}
+	if (!library) {
+		if (FT_Init_FreeType(&library) != FT_Err_Ok) {
+			Output::Error("Couldn't initialize FreeType");
+			return;
+		}
+	}
+
+	assert(is);
+
+	ft_buffer = Utils::ReadStream(is);
+
+	FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), 0, &face);
+
+	if (face->num_charmaps > 0) {
+		// Force first charmap. Is enabled by default for Unicode fonts but not for legacy fonts (FON, BDF, etc.)
+		FT_Set_Charmap(face, face->charmaps[0]);
+	}
+
+	if (FT_HAS_COLOR(face)) {
+		FT_Select_Size(face, 0);
+	} else {
+		FT_Set_Pixel_Sizes(face, 0, size);
+	}
+
+	baseline_offset = static_cast<int>(size * (10.0 / 12.0));
+
+	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
+		// Workaround for bad kerning in RM2000 and RMG2000 fonts
+		rm2000_workaround = true;
+	}
+}
+
+FTFont::~FTFont() {
+	if (!library) {
+		// Freetype already shut down because of Player cleanup
+		return;
+	}
+
+	if (face != nullptr) {
+		FT_Done_Face(face);
+	}
+}
 
 Rect FTFont::GetSize(StringView txt) const {
-	int const s = Font::Default()->GetSize(txt).width;
+	Rect rect = {0, 0, 0, static_cast<int>(size)};
 
-	if (s == -1) {
-		Output::Warning("Text contains invalid chars. Is the encoding correct?");
+	std::u32string txt32 = Utils::DecodeUTF32(txt);
+	for (char32_t i: txt32) {
+		Rect grect = GetSize(i);
+		rect.width += grect.width;
+	}
 
-		return Rect(0, 0, pixel_size() * txt.length() / 2, pixel_size());
+	return rect;
+}
+
+Rect FTFont::GetSize(char32_t code) const {
+	auto glyph_index = FT_Get_Char_Index(face, code);
+
+	if (glyph_index == 0 && code != 0 && fallback_font) {
+		return fallback_font->GetSize(code);
+	}
+
+	auto load_glyph = [&](auto flags) {
+		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+		}
+	};
+
+	if (FT_HAS_COLOR(face)) {
+		load_glyph(FT_LOAD_COLOR);
+
+		// When it is a color font check if the glyph is a color glyph
+		// If it is not then reload the glyph monochrome
+		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
+			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
+		}
 	} else {
-		return Rect(0, 0, s, pixel_size());
+		load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
 	}
+
+	FT_GlyphSlot slot = face->glyph;
+
+	Point advance;
+	advance.x = slot->advance.x / 64;
+	advance.y = slot->advance.y / 64;
+
+	if (EP_UNLIKELY(rm2000_workaround)) {
+		advance.x = 6;
+	}
+
+	return {0, 0, advance.x, advance.y};
 }
 
-Rect FTFont::GetSize(char32_t ch) const {
-	int const s = Font::Default()->GetSize(ch).width;
+Font::GlyphRet FTFont::Glyph(char32_t code) {
+    auto glyph_index = FT_Get_Char_Index(face, code);
 
-	if (s == -1) {
-		Output::Warning("Text contains invalid chars. Is the encoding correct?");
+	if (glyph_index == 0 && code != 0 && fallback_font) {
+		return fallback_font->Glyph(code);
+	}
 
-		return Rect(0, 0, pixel_size() / 2, pixel_size());
+	auto render_glyph = [&](auto flags, auto mode) {
+		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
+			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(code));
+		}
+
+		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
+			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(code));
+		}
+	};
+
+	if (FT_HAS_COLOR(face)) {
+		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+
+		// When it is a color font check if the glyph is a color glyph
+		// If it is not then rerender the glyph monochrome
+		// FIXME: This is inefficient
+		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
+			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
+		}
 	} else {
-		return Rect(0, 0, s, pixel_size());
-	}
-}
-
-
-
-Font::GlyphRet FTFont::Glyph(char32_t glyph) {
-	if(!check_face()) {
-		return Font::Default()->Glyph(glyph);
+		render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
 	}
 
-	if (FT_Load_Char(face_.get(), glyph, FT_LOAD_NO_BITMAP) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
-	}
+	FT_GlyphSlot slot = face->glyph;
+	FT_Bitmap* ft_bitmap = &slot->bitmap;
 
-	if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
-	}
+	assert(ft_bitmap->pixel_mode == FT_PIXEL_MODE_MONO || ft_bitmap->pixel_mode == FT_PIXEL_MODE_BGRA);
 
-	FT_Bitmap const& ft_bitmap = face_->glyph->bitmap;
-	assert(face_->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_MONO);
+	size_t const pitch = std::abs(ft_bitmap->pitch);
+	const int width = ft_bitmap->width;
+	const int height = ft_bitmap->rows;
 
-	size_t const pitch = std::abs(ft_bitmap.pitch);
-	int const width = ft_bitmap.width;
-	int const height = ft_bitmap.rows;
+	BitmapRef bm;
+	bool has_color = false;
 
-	BitmapRef bm = Bitmap::Create(nullptr, width, height, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
-	uint8_t* data = reinterpret_cast<uint8_t*>(bm->pixels());
-	int dst_pitch = bm->pitch();
+	if (ft_bitmap->pixel_mode == FT_PIXEL_MODE_BGRA) {
+		bm = Bitmap::Create(ft_bitmap->buffer, width, height, 0, format_B8G8R8A8_a().format());
+		has_color = true;
+	} else {
+		bm = Bitmap::Create(width, height);
+		auto* data = reinterpret_cast<uint32_t*>(bm->pixels());
 
-	for(int row = 0; row < height; ++row) {
-		for(int col = 0; col < width; ++col) {
-			unsigned c = ft_bitmap.buffer[pitch * row + (col/8)];
-			unsigned bit = 7 - (col%8);
-			data[row * dst_pitch + col] = (c & (0x01 << bit)) ? 255 : 0;
-		}
-	}
-
-	return { bm, Rect(0, 0, width, height) };
-}
-
-bool FTFont::check_face() {
-	if (!library_) {
-		if (library_checker_.expired()) {
-			FT_Library lib;
-			if (FT_Init_FreeType(&lib) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType");
-				return false;
+		for (int row = 0; row < height; ++row) {
+			for (int col = 0; col < width; ++col) {
+				unsigned c = ft_bitmap->buffer[pitch * row + (col / 8)];
+				unsigned bit = 7 - (col % 8);
+				c = c & (0x01 << bit) ? 255 : 0;
+				data[row * width + col] = (c << 24) + (c << 16) + (c << 8) + c;
 			}
-			library_.reset(lib, delete_library);
-			library_checker_ = library_;
-		} else {
-			library_ = library_checker_.lock();
 		}
 	}
 
-	if (!face_ || face_name_ != name) {
-		face_cache_type::const_iterator it = face_cache.find(name);
-		if (it == face_cache.end() || it->second.expired()) {
-			std::string const face_path = FileFinder::FindFont(name);
-			FT_Face face;
-			if (FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType face: {}({})",
-					name, face_path);
-				return false;
-			}
+	Point advance;
+	Point offset;
 
-			for (int i = 0; i < face_->num_fixed_sizes; i++) {
-				FT_Bitmap_Size* size = &face_->available_sizes[i];
-				Output::Debug("Font Size {}: {} {} {} {} {}", i,
-					size->width, size->height, size->size / 64.0,
-					size->x_ppem / 64.0, size->y_ppem / 64.0);
-			}
+	advance.x = slot->advance.x / 64;
+	advance.y = slot->advance.y / 64;
+	offset.x = slot->bitmap_left;
+	offset.y = slot->bitmap_top - baseline_offset;
 
-			face_.reset(face, delete_face);
-			face_cache[name] = face_;
-		} else {
-			face_ = it->second.lock();
-		}
-		face_name_ = name;
+	if (EP_UNLIKELY(rm2000_workaround)) {
+		advance.x = 6;
 	}
 
-	face_->style_flags =
-		(bold ? FT_STYLE_FLAG_BOLD : 0) |
-		(italic ? FT_STYLE_FLAG_ITALIC : 0);
-
-	if (current_size_ != size) {
-		int sz, dpi;
-		if (face_->num_fixed_sizes == 1) {
-			sz = face_->available_sizes[0].size;
-			dpi = 96;
-		} else {
-			sz = size * 64;
-			dpi = 72;
-		}
-
-		if (FT_Set_Char_Size(face_.get(), sz, sz, dpi, dpi) != FT_Err_Ok) {
-			Output::Error("Couldn't set FreeType face size");
-			return false;
-		}
-		current_size_ = size;
-	}
-
-	return true;
+	return { bm, advance, offset, has_color };
 }
 #endif
 
 FontRef Font::Default() {
-	const bool mincho = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
-	return Default(mincho);
+	const bool m = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
+	return Default(m);
 }
 
-FontRef Font::Default(bool const m) {
+FontRef Font::Default(bool const use_mincho) {
+	if (use_mincho && default_mincho) {
+		return default_mincho;
+	} else if (!use_mincho && default_gothic) {
+		return default_gothic;
+	}
+
+	return DefaultBitmapFont(use_mincho);
+}
+
+FontRef Font::DefaultBitmapFont() {
+	const bool m = (Main_Data::game_system && Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho);
+	return DefaultBitmapFont(m);
+}
+
+FontRef Font::DefaultBitmapFont(bool use_mincho) {
 	if (Player::IsCJK()) {
-		return m ? mincho : gothic;
+		return use_mincho ? mincho : gothic;
 	}
 	else {
-		return m ? rmg2000 : ttyp0;
+		return use_mincho ? rmg2000 : ttyp0;
 	}
 }
 
-FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {
+void Font::SetDefault(FontRef new_default, bool use_mincho) {
+	if (use_mincho) {
+		default_mincho = new_default;
+	} else {
+		default_gothic = new_default;
+	}
+
+	if (new_default) {
+		new_default->SetFallbackFont(DefaultBitmapFont(use_mincho));
+	}
+}
+
+FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic) {
 #ifdef HAVE_FREETYPE
-	return std::make_shared<FTFont>(name, size, bold, italic);
+	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
 #else
-	(void)name; (void)size; (void)bold; (void)italic;
-	return Font::Default();
+	return nullptr;
 #endif
 }
 
 void Font::Dispose() {
+	SetDefault(nullptr, true);
+	SetDefault(nullptr, false);
+
 #ifdef HAVE_FREETYPE
-	for(face_cache_type::const_iterator i = face_cache.begin(); i != face_cache.end(); ++i) {
-		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached font face {}", i->first);
+	if (library) {
+		FT_Done_Library(library);
+		library = nullptr;
 	}
-	face_cache.clear();
 #endif
 }
 
 // Constructor.
-Font::Font(const std::string& name, int size, bool bold, bool italic)
-	: name(name)
+Font::Font(StringView name, int size, bool bold, bool italic)
+	: name(ToString(name))
 	, size(size)
 	, bold(bold)
 	, italic(italic)
 {
 }
 
-Rect Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t code) {
+Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t code) {
 	auto gret = Glyph(code);
 
-	auto rect = Rect(x, y, gret.rect.width, gret.rect.height);
+	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	if (EP_UNLIKELY(rect.width == 0)) {
-		return rect;
+		return {};
 	}
 
-	if(color != ColorShadow) {
-		auto shadow_rect = Rect(x + 1, y + 1, rect.width, rect.height);
-		dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
+	rect.x += gret.offset.x;
+	rect.y -= gret.offset.y;
+
+	unsigned src_x;
+	unsigned src_y;
+
+	if (color != ColorShadow) {
+		if (!gret.has_color) {
+			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
+		}
+
+		src_x = color % 10 * 16 + 2;
+		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
+
+		// When the glyph is large the system graphic color mask will be outside the rectangle
+		// Move the mask slightly up to avoid this
+		int offset = gret.bitmap->height() - gret.offset.y;
+		if (offset > 12) {
+			src_y -= offset - 12;
+		}
+	} else {
+		src_x = 16;
+		src_y = 32;
 	}
 
-	unsigned const
-		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
-		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - gret.bitmap->height();
+	if (!gret.has_color) {
+		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+	} else {
+		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
+	}
 
-
-	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
-
-	return rect;
+	return gret.advance;
 }
 
-Rect Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t code) {
+Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t code) {
 	auto gret = Glyph(code);
 
-	auto rect = Rect(x, y, gret.rect.width, gret.rect.height);
+	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);
 
-	return rect;
+	return gret.advance;
+}
+
+void Font::SetFallbackFont(FontRef fallback_font) {
+	this->fallback_font = fallback_font;
 }
 
 ExFont::ExFont() : Font("exfont", 12, false, false) {
@@ -454,7 +541,20 @@ Font::GlyphRet ExFont::Glyph(char32_t code) {
 	Rect const rect((code % 13) * WIDTH, (code / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();
 	bm->Blit(0, 0, *exfont, rect, Opacity::Opaque());
-	return { bm, Rect(0, 0, WIDTH, HEIGHT) };
+
+	// EasyRPG Extension: Support for colored ExFont
+	bool has_color = false;
+	const auto* pixels = reinterpret_cast<uint8_t*>(bm->pixels());
+	// For performance reasons only check the red channel of every 4th pixel (16 = 4 * 4 RGBA pixel) for color
+	for (int i = 0; i < bm->pitch() * bm->height(); i += 16) {
+		auto pixel = pixels[i];
+		if (pixel != 0 && pixel != 255) {
+			has_color = true;
+			break;
+		}
+	}
+
+	return { bm, {WIDTH, 0}, {0, 0}, has_color };
 }
 
 Rect ExFont::GetSize(StringView) const {

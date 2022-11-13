@@ -137,7 +137,7 @@ namespace Player {
 	void ResetGameObjects();
 
 	/**
-	 * Determine if the LDB and LMT files are not present, and if so, guess 
+	 * Determine if the LDB and LMT files are not present, and if so, guess
 	 * if they may have been renamed. Populates fileext_map.
 	 */
 	void GuessNonStandardExtensions();
@@ -146,6 +146,11 @@ namespace Player {
 	 * Loads all databases.
 	 */
 	void LoadDatabase();
+
+	/**
+	 * Loads the default fonts.for text rendering.
+	 */
+	void LoadFonts();
 
 	/**
 	 * Loads savegame data.

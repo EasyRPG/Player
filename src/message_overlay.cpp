@@ -52,12 +52,7 @@ void MessageOverlay::Draw(Bitmap& dst) {
 				text += " [" + std::to_string(message.repeat_count + 1) + "x]";
 			}
 
-			bitmap->TextDraw(Rect(2,
-						i * text_height,
-						bitmap->GetWidth(),
-						text_height),
-				message.color,
-				text);
+			Text::Draw(*bitmap, 2, i * text_height, *Font::DefaultBitmapFont(), message.color, text);
 			++i;
 		}
 	}
@@ -88,7 +83,7 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 			SCREEN_TARGET_WIDTH - 6, // hardcoded to screen width because the bitmap is not initialized early enough
 			[&](StringView line) {
 				messages.emplace_back(std::string(line), color);
-			}
+			}, *Font::DefaultBitmapFont()
 	);
 
 	while (messages.size() > (unsigned)message_max) {
