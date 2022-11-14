@@ -1,92 +1,121 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--GameBrowser Activity-->
-  <string name="autodetect">Region automatisch erkennen (Empfohlen)</string>
-  <string name="west_europe">Westeuropa</string>
-  <string name="east_europe">Mittel-/Osteuropa</string>
-  <string name="cyrillic">Kyrillisch</string>
-  <string name="japan">Japanisch</string>
-  <string name="korean">Koreanisch</string>
-  <string name="chinese_simple">Chinesisch (Vereinfacht)</string>
-  <string name="chinese_traditional">Chinesisch (Traditionell)</string>
-  <string name="greek">Griechisch</string>
-  <string name="turkish">Türkisch</string>
-  <string name="hebrew">Hebräisch</string>
-  <string name="arabic">Arabisch</string>
-  <string name="baltic">Baltisch</string>
-  <string name="thai">Thai</string>
-  <string name="vietnamese">Vietnamesisch</string>
-  <string name="ok">OK</string>
-  <string name="cancel">Abbrechen</string>
-  <string name="do_want_quit">Möchtest du wirklich beenden?</string>
-  <string name="yes">Ja</string>
-  <string name="no">Nein</string>
-  <string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden.</string>
-  <string name="path_not_readable">$PATH ist nicht lesbar</string>
-  <string name="no_games_found_and_explanation_old">Keine RPG Maker 2000/2003-Spiele gefunden.
-Du kannst in den Einstellungen Spielverzeichnisse hinzufügen.</string>
-  <string name="no_external_storage">Kein externer Speicher (z.B. SD-Karte) gefunden.</string>
-  <string name="not_valid_game">$PATH ist kein gültiges Spiel</string>
-  <string name="select_game_region">Spielregion auswählen</string>
-  <string name="change_the_layout">Layout ändern</string>
-  <string name="choose_layout">Layout auswählen</string>
-  <string name="unknown_region">Unbekannte Region</string>
-  <string name="region_modification_failed">Ändern der Region fehlgeschlagen</string>
-  <string name="refresh">Aktualisieren</string>
-  <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
-  <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation_old">Installationsanleitung:\n\nStandardmäßig werden Spiele in /easyrpg/games gesucht. Du kannst weitere Spieleordner in den Einstellungen hinzufügen.\n\nOptional: Platziere das RTP in /easyrpg/rtp/2000 für das RPG Maker 2000 RTP bzw. in /easyrpg/rtp/2003 für das RPG Maker 2003 RTP.\n\nDamit Spiele korrekt erkannt werden, müssen sie in ein Unterverzeichnis von /easyrpg/games (Standardverzeichnis) extrahiert werden, z.B.:\n\n\t/easyrpg/games/MeinSpiel/Data/RPG_RT.ldb ist OK.\n\t/easyrpg/games/MeinSpiel/RPG_RT.ldb ist OK.\n\t/easyrpg/games/MeinSpiel.zip ist FALSCH. ZIP und EXE werden nicht unterstützt.</string>
-  <!--Ingame menu-->
-  <string name="toggle_fps">FPS ein-/ausblenden</string>
-  <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
-  <string name="end_game">Spiel beenden</string>
-  <string name="report_bug">Fehler melden</string>
-  <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
-  <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.\n
+    <!--GameBrowser Activity-->
+    <string name="autodetect">Region automatisch erkennen (Empfohlen)</string>
+    <string name="west_europe">Westeuropa</string>
+    <string name="east_europe">Mittel-/Osteuropa</string>
+    <string name="cyrillic">Kyrillisch</string>
+    <string name="japan">Japanisch</string>
+    <string name="korean">Koreanisch</string>
+    <string name="chinese_simple">Chinesisch (Vereinfacht)</string>
+    <string name="chinese_traditional">Chinesisch (Traditionell)</string>
+    <string name="greek">Griechisch</string>
+    <string name="turkish">Türkisch</string>
+    <string name="hebrew">Hebräisch</string>
+    <string name="arabic">Arabisch</string>
+    <string name="baltic">Baltisch</string>
+    <string name="thai">Thai</string>
+    <string name="vietnamese">Vietnamesisch</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="do_want_quit">Möchtest du wirklich beenden?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden</string>
+    <string name="path_not_readable">$PATH ist nicht lesbar</string>
+    <string name="no_external_storage">Kein externer Speicher (z.B. SD-Karte) gefunden</string>
+    <string name="not_valid_game">$PATH ist kein gültiges Spiel</string>
+    <string name="select_game_region">Spielregion auswählen</string>
+    <string name="change_the_layout">Layout ändern</string>
+    <string name="choose_layout">Layout auswählen</string>
+    <string name="unknown_region">Unbekannte Region</string>
+    <string name="region_modification_failed">Ändern der Region fehlgeschlagen</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
+    <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
+    <!--Ingame menu-->
+    <string name="toggle_fps">FPS ein-/ausblenden</string>
+    <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
+    <string name="end_game">Spiel beenden</string>
+    <string name="report_bug">Fehler melden</string>
+    <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
+    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.\n
 Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.\n
 Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.\n
 Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
 </string>
-  <!--Settings Activities-->
-  <string name="video">Anzeige</string>
-  <string name="audio">Audio</string>
-  <string name="input">Steuerung</string>
-  <string name="game_folders">Spielverzeichnisse</string>
-  <string name="settings">Einstellungen</string>
-  <string name="add_game_folder">Spielverzeichnis hinzufügen</string>
-  <string name="enable_vibration">Vibrationen aktivieren</string>
-  <string name="vibrate_when_sliding_direction">Vibrieren, wenn in eine andere Bewegungsrichtung gewischt wird</string>
-  <string name="enable_audio">Ton aktivieren</string>
-  <string name="input_layout_transparency">Layout-Transparenz:</string>
-  <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
-  <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
-  <string name="quick_access">Schnellzugriff</string>
-  <string name="force_landscape_mode">Querformat erzwingen</string>
-  <string name="fast_forward">Modus Beschleunigungsbutton:</string>
-  <string-array name="fast_forward_mode">
-    <item>halten</item>
-    <item>antippen</item>
-  </string-array>
-  <string name="fast_forward_factor">Geschwindigkeit:</string>
-  <!--InputLayout Managing-->
-  <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
-  <string name="add_an_input_layout">Eingabe-Layout hinzufügen</string>
-  <string name="set_as_default">Als Standard festlegen</string>
-  <string name="edit_name">Umbenennen</string>
-  <string name="edit_layout">Layout bearbeiten</string>
-  <string name="delete">Löschen</string>
-  <string name="default_layout">Standard</string>
-  <!--ButtonMapping Activity-->
-  <string name="add_a_button">Taste hinzufügen</string>
-  <string name="reset_button_mapping">Tastenbelegung zurücksetzen</string>
-  <string name="exit_without_saving">Änderungen verwerfen und beenden</string>
-  <string name="save_and_quit">Speichern und beenden</string>
-  <string name="key_enter">Bestätigen (Z)</string>
-  <string name="key_cancel">Abbrechen (ESC und X)</string>
-  <string name="key_shift">Umschalttaste (Shift)</string>
-  <string name="key_fast_forward">Beschleunigen</string>
-  <!--GameBrowserAPI15-->
-  <string name="navigation_drawer_open">Navigation einblenden</string>
-  <string name="navigation_drawer_close">Navigation ausblenden</string>
-  <string name="menu">Android-Menü öffnen</string>
+    <!--Settings Activities-->
+    <string name="video">Anzeige</string>
+    <string name="audio">Audio</string>
+    <string name="input">Steuerung</string>
+    <string name="settings">Einstellungen</string>
+    <string name="enable_vibration">Vibrationen aktivieren</string>
+    <string name="vibrate_when_sliding_direction">Vibrieren, wenn in eine andere Bewegungsrichtung gewischt wird</string>
+    <string name="input_layout_transparency">Layout-Transparenz:</string>
+    <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
+    <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
+    <string name="quick_access">Schnellzugriff</string>
+    <string name="force_landscape_mode">Querformat erzwingen</string>
+    <string name="fast_forward">Modus Beschleunigungsbutton:</string>
+    <string-array name="fast_forward_mode">
+        <item>halten</item>
+        <item>antippen</item>
+    </string-array>
+    <string name="fast_forward_factor">Geschwindigkeit:</string>
+    <!--InputLayout Managing-->
+    <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
+    <string name="edit_name">Umbenennen</string>
+    <string name="edit_layout">Layout bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="default_layout">Standard</string>
+    <!--ButtonMapping Activity-->
+    <string name="add_a_button">Taste hinzufügen</string>
+    <string name="reset_button_mapping">Tastenbelegung zurücksetzen</string>
+    <string name="exit_without_saving">Änderungen verwerfen und beenden</string>
+    <string name="save_and_quit">Speichern und beenden</string>
+    <string name="key_enter">Bestätigen (Z)</string>
+    <string name="key_cancel">Abbrechen (ESC und X)</string>
+    <string name="key_shift">Umschalttaste (Shift)</string>
+    <string name="key_fast_forward">Beschleunigen</string>
+    <!--GameBrowserAPI15-->
+    <string name="navigation_drawer_open">Navigation einblenden</string>
+    <string name="navigation_drawer_close">Navigation ausblenden</string>
+    <string name="menu">Android-Menü öffnen</string>
+    <string name="app_name" translate="false">EasyRPG Player</string>
+    <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden. Diese müssen im Ordner \"games\" liegen.
+\nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
+    <string name="open_games_folder">Den Spiele-Ordner (games) öffnen</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003-Spiele müssen im Unterverzeichnis \"games\" platziert werden.
+\nDie Spiele müssen unkomprimiert sein.
+\nZIP, RAR, LZH und EXE-Dateien werden NICHT unterstützt.
+\n
+\nOptionale Funktionen (wirf einen Blick in die Einstellungen):
+\n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Assets) kann bereitgestellt werden
+\n- Ein benutzerdefinierter Soundfont zum Ändern des Klangs von MIDI-Musik kann bereitgestellt werden</string>
+    <string name="easyrpg_folders">EasyRPG-Ordner</string>
+    <string name="screen_size">Bildschirmgröße:</string>
+    <string name="uniform_pixel_size_best_image_quality">Gleichmäßiges Pixel-Seitenverhältnis (Beste Qualität)</string>
+    <string name="stretch_the_image_wider_image">Bild strecken (Größere Bild)</string>
+    <string name="settings_custom_soundfont">Eigener Soundfont:</string>
+    <string name="open_the_sound_fonts_folder">Soundfont-Ordner öffnen</string>
+    <string name="settings_soundfont_explanation">Platziere Soundfonts im SF2-Format im \"soundfonts\"-Ordner. Soundfonts ändern den Klang von MIDI-Dateien.</string>
+    <string name="settings_soundfont_restart_app">Bitte starte nach dem ändern des Soundfonts die App neu.</string>
+    <string name="settings_soundfont_found">Gefundene Soundfonts:</string>
+    <string name="settings_default_soundfont">Standard-Soundfont (Integriert)</string>
+    <string name="select_the_games_folder">EasyRPG-Ordner auswählen</string>
+    <string name="id_select_games_folder_explanation">Um EasyRPG Player verwenden zu können, musst du einen Ordner festlegen.
+\nDieser Ordner wird exklusiv von EasyRPG Player verwendet werden.
+\n
+\nWähle keinen Ordner aus, der bereits von anderen Dingen verwendet wird. Dies wäre beispielsweise der Download-Ordner.
+\nRPG Maker 2000/2003 müssen im \"games\"-Verzeichnis in diesem Ordner platziert werden.</string>
+    <string name="Loading">Laden…</string>
+    <string name="enable_rtp_support">RTP-Unterstützung aktivieren</string>
+    <string name="rtp_explanation">Das RTP stellt gemeinsame Assets bereit, die von einigen Spielen verwendet werden.
+\nDas RPG Maker 2000 RTP musst du in \"rtp/2000\" und das RPG Maker 2003 RTP in \"rtp/2003\" platzieren.
+\nBeachte bitte, dass aktivierte RTP-Unterstützung den Start von Spielen spürbar verlangsamt.</string>
+    <string name="open_rtp_folder">RTP-Ordner öffnen</string>
+    <string name="horizontal_input_layout">Horizontales (Landschaft) Eingabe-Layout</string>
+    <string name="vertical_input_layout">Vertikales (Portrait) Eingabe-Layout</string>
+    <string name="settings_edit_layout_explanation">Beim Bearbeiten des Eingabe-Layouts kannst du weitere Tasten, beispielsweise die Umschalttaste, hinzufügen.
+\nDrücke dazu die Zurück-Taste und wähle \"Taste hinzufügen\" aus.</string>
 </resources>

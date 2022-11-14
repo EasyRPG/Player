@@ -1,37 +1,35 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--GameBrowser Activity-->
-  <string name="autodetect">Autodetectar region (Recommendate)</string>
-  <string name="chinese_simple">Chinese (Simplificate)</string>
-  <string name="chinese_traditional">Chinese (Traditional)</string>
-  <string name="greek">Grec</string>
-  <string name="turkish">Turc</string>
-  <string name="hebrew">Hebree</string>
-  <string name="thai">Thai</string>
-  <string name="vietnamese">Vietnamese</string>
-  <string name="ok">OK</string>
-  <string name="cancel">Cancellar</string>
-  <string name="yes">Si</string>
-  <string name="no">Non</string>
-  <string name="path_not_readable">$PATH non es legibile</string>
-  <string name="not_valid_game">$PATH non es un joco valide
+    <!--GameBrowser Activity-->
+    <string name="autodetect">Autodetectar region (Recommendate)</string>
+    <string name="chinese_simple">Chinese (Simplificate)</string>
+    <string name="chinese_traditional">Chinese (Traditional)</string>
+    <string name="greek">Grec</string>
+    <string name="turkish">Turc</string>
+    <string name="hebrew">Hebree</string>
+    <string name="thai">Thai</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancellar</string>
+    <string name="yes">Si</string>
+    <string name="no">Non</string>
+    <string name="path_not_readable">$PATH non es legibile</string>
+    <string name="not_valid_game">$PATH non es un joco valide
 </string>
-  <string name="unknown_region">Region incognite</string>
-  <string name="refresh">Refrescar</string>
-  <string name="how_to_use_easy_rpg">Como usar le reproductor EasyRPG</string>
-  <!--Ingame menu-->
-  <string name="report_bug">Reportar un falta</string>
-  <!--Settings Activities-->
-  <string name="settings">Preferentias</string>
-  <string name="add_game_folder">Adder un dossier de joco</string>
-  <string name="enable_vibration">Habilitar vibrationes</string>
-  <string name="enable_audio">Habilitar audio</string>
-  <string name="no_read_access_on_dir">%1$s non ha accesso de lectura
+    <string name="unknown_region">Region incognite</string>
+    <string name="refresh">Refrescar</string>
+    <string name="how_to_use_easy_rpg">Como usar le reproductor EasyRPG</string>
+    <!--Ingame menu-->
+    <string name="report_bug">Reportar un falta</string>
+    <!--Settings Activities-->
+    <string name="settings">Preferentias</string>
+    <string name="enable_vibration">Habilitar vibrationes</string>
+    <string name="no_read_access_on_dir">%1$s non ha accesso de lectura
 </string>
-  <string name="quick_access">Accesso rapide</string>
-  <!--InputLayout Managing-->
-  <string name="edit_name">Editar nomine</string>
-  <string name="delete">Deler</string>
-  <!--ButtonMapping Activity-->
-  <!--GameBrowserAPI15-->
+    <string name="quick_access">Accesso rapide</string>
+    <!--InputLayout Managing-->
+    <string name="edit_name">Editar nomine</string>
+    <string name="delete">Deler</string>
+    <!--ButtonMapping Activity-->
+    <!--GameBrowserAPI15-->
 </resources>
