@@ -65,11 +65,12 @@ lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
 }
 
 Drawable::Z_t Game_Player::GetScreenZ(bool apply_shift) const {
-	// Player is always slightly above events
-	// (and always on "same layer as hero" obviously)
-	// To ensure this fake an ID of 65535 (all bit set)
-	// See base function for full explanation
-	return Game_Character::GetScreenZ(apply_shift) + 65535;
+	// Player is always "same layer as hero".
+	// When the Player is on the same Y-coordinate as an event the Player is always rendered first.
+	// This is different to events where, when Y is the same, the highest X-coordinate is rendered first.
+	// To ensure this, fake a very high X-coordinate of 65535 (all bits set)
+	// See base function for full explanation of the bitmask
+	return Game_Character::GetScreenZ(apply_shift) | (0xFFFFu << 16u);
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt) {
