@@ -148,7 +148,7 @@ namespace Player {
 	void LoadDatabase();
 
 	/**
-	 * Loads the default fonts.for text rendering.
+	 * Loads the default fonts for text rendering.
 	 */
 	void LoadFonts();
 
