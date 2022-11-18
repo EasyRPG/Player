@@ -212,9 +212,17 @@ public:
 	/**
 	 * Retrieve the current language.
 	 *
-	 * @return the current language, or nullptr for default language
+	 * @return the current language
 	 */
 	const Language& GetCurrentLanguage() const;
+
+	/**
+	 * Retrieves information about the builtin language of the game.
+	 * This is obtained from Meta.ini in the "default" directory.
+	 *
+	 * @return the default language
+	 */
+	const Language& GetDefaultLanguage() const;
 
 
 private:
@@ -304,6 +312,10 @@ private:
 
 	// The translation we are currently showing (e.g., "English_1")
 	Language current_language;
+
+	// The normal language of the game
+	// Provides data from the Meta.ini in "default" folder when available
+	Language default_language;
 
 	std::vector<FileRequestBinding> requests;
 	FileRequestBinding map_request;

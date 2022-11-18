@@ -82,6 +82,7 @@ void Translation::Reset()
 	translation_root_fs = FilesystemView();
 	languages.clear();
 	current_language = {};
+	default_language = {};
 }
 
 void Translation::InitTranslations()
@@ -119,6 +120,12 @@ void Translation::InitTranslations()
 				item.lang_code = ini.GetString("Language", "Code", "");
 				item.lang_term = ini.GetString("Language", "Term", "Language");
 				item.use_builtin_font = Utils::LowerCase(ini.GetString("Language", "Font", "")) == "builtin";
+
+				if (item.lang_dir == "default") {
+					// Metadata for the normal game language
+					default_language = item;
+					continue;
+				}
 			}
 
 			languages.push_back(item);
@@ -129,6 +136,11 @@ void Translation::InitTranslations()
 const Language& Translation::GetCurrentLanguage() const
 {
 	return current_language;
+}
+
+const Language& Translation::GetDefaultLanguage() const
+{
+	return default_language;
 }
 
 FilesystemView Translation::GetRootTree() const

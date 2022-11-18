@@ -253,6 +253,15 @@ void Scene_Title::CreateTranslationWindow() {
 		lang_helps.push_back(lg.lang_desc);
 	}
 
+	// Allow overwriting text of the default language
+	const Language& def = Player::translation.GetDefaultLanguage();
+	if (!def.lang_name.empty()) {
+		lang_names.front() = def.lang_name;
+	}
+	if (!def.lang_desc.empty()) {
+		lang_helps.front() = def.lang_desc;
+	}
+
 	translate_window = std::make_unique<Window_Command>(lang_names, -1, lang_names.size() > 9 ? 9 : lang_names.size());
 	translate_window->UpdateHelpFn = [this](Window_Help& win, int index) {
 		if (index >= 0 && index < static_cast<int>(lang_helps.size())) {

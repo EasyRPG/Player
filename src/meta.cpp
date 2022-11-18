@@ -232,7 +232,14 @@ std::string Meta::GetExVocabImportSaveTitleText() const {
 }
 
 std::string Meta::GetExVocabTranslateTitleText() const {
-	std::string term = Player::translation.GetCurrentLanguage().lang_term;
+	std::string term;
+
+	if (Tr::HasActiveTranslation()) {
+		term = Player::translation.GetCurrentLanguage().lang_term;
+	} else {
+		term = Player::translation.GetDefaultLanguage().lang_term;
+	}
+
 	if (!term.empty()) {
 		return term;
 	}
