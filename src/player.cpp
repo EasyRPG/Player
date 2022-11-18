@@ -1001,8 +1001,7 @@ void Player::LoadDatabase() {
 }
 
 void Player::LoadFonts() {
-	Font::SetDefault(nullptr, true);
-	Font::SetDefault(nullptr, false);
+	Font::ResetDefault();
 
 #ifdef HAVE_FREETYPE
 	// Look for bundled fonts

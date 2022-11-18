@@ -455,9 +455,13 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 #endif
 }
 
-void Font::Dispose() {
+void Font::ResetDefault() {
 	SetDefault(nullptr, true);
 	SetDefault(nullptr, false);
+}
+
+void Font::Dispose() {
+	ResetDefault();
 
 #ifdef HAVE_FREETYPE
 	if (library) {

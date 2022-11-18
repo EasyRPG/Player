@@ -27,6 +27,7 @@
 #include "lcf/rpg/mapinfo.h"
 
 #include "cache.h"
+#include "font.h"
 #include "main_data.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -116,6 +117,7 @@ void Translation::InitTranslations()
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
 				item.lang_code = ini.GetString("Language", "Code", "");
+				item.use_builtin_font = ini.GetString("Language", "Font", "") == "Builtin";
 			}
 
 			languages.push_back(item);
@@ -195,7 +197,11 @@ void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 	Player::LoadDatabase();
 
 	// Translation could provide custom fonts
-	Player::LoadFonts();
+	if (current_language.use_builtin_font) {
+		Font::ResetDefault();
+	} else {
+		Player::LoadFonts();
+	}
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.
