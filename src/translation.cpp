@@ -117,7 +117,8 @@ void Translation::InitTranslations()
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
 				item.lang_code = ini.GetString("Language", "Code", "");
-				item.use_builtin_font = ini.GetString("Language", "Font", "") == "Builtin";
+				item.lang_term = ini.GetString("Language", "Term", "Language");
+				item.use_builtin_font = Utils::LowerCase(ini.GetString("Language", "Font", "")) == "builtin";
 			}
 
 			languages.push_back(item);

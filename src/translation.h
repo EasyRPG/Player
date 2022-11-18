@@ -150,6 +150,7 @@ struct Language {
 	std::string lang_name; // Display name for this language (e.g., "English")
 	std::string lang_desc; // Helper text to show when the menu is highlighted
 	std::string lang_code; // Language code used by font selection and input scene
+	std::string lang_term; // Term to use for "Language"
 	bool use_builtin_font = false;
 };
 
