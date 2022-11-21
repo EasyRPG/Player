@@ -139,7 +139,9 @@ namespace {
 		GlyphRet vRender(char32_t glyph) const override;
 		GlyphRet vRenderShaped(char32_t glyph) const override;
 		bool vCanShape() const override;
+#ifdef HAVE_HARFBUZZ
 		std::vector<ShapeRet> vShape(U32StringView txt) const override;
+#endif
 
 	private:
 		FT_Face face = nullptr;
