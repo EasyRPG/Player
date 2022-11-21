@@ -58,7 +58,7 @@ bool Emscripten_Interface_Private::UploadSavegameStep2(int slot, int buffer_addr
 	auto fs = FileFinder::Save();
 	std::string name = Scene_Save::GetSaveFilename(fs, slot);
 
-	std::istream is(new Filesystem_Stream::InputMemoryStreamBuf(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
+	std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
 
 	if (!lcf::LSD_Reader::Load(is)) {
 		Output::Warning("Selected file is not a valid savegame");

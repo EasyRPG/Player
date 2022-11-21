@@ -214,8 +214,11 @@ void Player::Run() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
+#ifdef EMSCRIPTEN
+	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+#elif defined(USE_LIBRETRO)
 	// libretro invokes the MainLoop through a retro_run-callback
-#ifndef USE_LIBRETRO
+#else
 	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
 		MainLoop();
 	}
@@ -259,9 +262,6 @@ void Player::MainLoop() {
 
 	auto frame_limit = DisplayUi->GetFrameLimit();
 	if (frame_limit == Game_Clock::duration()) {
-#ifdef EMSCRIPTEN
-		emscripten_sleep(0);
-#endif
 		return;
 	}
 
@@ -271,11 +271,6 @@ void Player::MainLoop() {
 	if (Game_Clock::now() < next) {
 		iframe.End();
 		Game_Clock::SleepFor(next - now);
-	} else {
-#ifdef EMSCRIPTEN
-		// Yield back to browser once per frame
-		emscripten_sleep(0);
-#endif
 	}
 }
 
@@ -399,6 +394,8 @@ void Player::Exit() {
 
 	Graphics::UpdateSceneCallback();
 #ifdef EMSCRIPTEN
+	emscripten_cancel_main_loop();
+
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
 	DisplayUi->CleanDisplay();

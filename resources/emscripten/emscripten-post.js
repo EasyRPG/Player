@@ -40,10 +40,9 @@ Module.initApi = function() {
           const result = new Uint8Array(file.currentTarget.result);
           var buf = Module._malloc(result.length);
           Module.HEAPU8.set(result, buf);
-          Module.api_private.uploadSavegameStep2(slot, buf, result.length).then(function() {
-            Module._free(buf);
-            Module.api.refreshScene();
-          });
+          Module.api_private.uploadSavegameStep2(slot, buf, result.length);
+          Module._free(buf);
+          Module.api.refreshScene();
         };
         reader.readAsArrayBuffer(save);
       });
