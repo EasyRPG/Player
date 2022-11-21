@@ -156,7 +156,7 @@ const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' 
 const keys = new Map();
 const keysDown = new Map();
 const canvas = document.getElementById('canvas');
-let player;
+let easyrpgPlayer;
 let lastTouchedId;
 
 // Launch the Player and configure it
@@ -166,8 +166,8 @@ window.addEventListener('load', (event) => {
       saveFs: undefined
     }).then(function(Module) {
       // Module is ready
-      player = Module;
-      player.initApi();
+      easyrpgPlayer = Module;
+      easyrpgPlayer.initApi();
 
       // Custom code here
     });
