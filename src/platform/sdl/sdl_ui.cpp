@@ -78,6 +78,46 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 		}
 	EndDisplayModeChange();
 
+	// Create the surface we draw on
+	DynamicFormat format;
+
+	if (Utils::IsBigEndian()) {
+		format = DynamicFormat(
+			32,
+			0x0000FF00,
+			0x00FF0000,
+			0xFF000000,
+			0x000000FF,
+			PF::NoAlpha);
+	} else {
+		format = DynamicFormat(
+			32,
+			0x00FF0000,
+			0x0000FF00,
+			0x000000FF,
+			0xFF000000,
+			PF::NoAlpha);
+	}
+
+	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
+	main_surface.reset();
+	main_surface = Bitmap::Create(
+		SCREEN_TARGET_WIDTH,
+		SCREEN_TARGET_HEIGHT,
+		false,
+		32
+	);
+
+	main_surface_sdl = SDL_CreateRGBSurfaceFrom(main_surface->pixels(),
+		SCREEN_TARGET_WIDTH,
+		SCREEN_TARGET_HEIGHT,
+		32,
+		main_surface->pitch(),
+		format.r.mask,
+		format.g.mask,
+		format.b.mask,
+		format.a.mask);
+
 #ifdef GEKKO
 	// Eliminate debug spew in on-screen console
 	Wii::SetConsole();
@@ -108,6 +148,10 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 }
 
 SdlUi::~SdlUi() {
+	if (main_surface_sdl) {
+		SDL_FreeSurface(main_surface_sdl);
+	}
+
 	SDL_Quit();
 }
 
@@ -279,8 +323,7 @@ bool SdlUi::RefreshDisplayMode() {
 	bpp = 24;
 #endif
 
-	// Free non zoomed surface
-	main_surface.reset();
+	// Free surface
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
 
 	if (!sdl_surface)
@@ -291,33 +334,6 @@ bool SdlUi::RefreshDisplayMode() {
 		return false;
 
 	current_display_mode.bpp = sdl_surface->format->BitsPerPixel;
-
-	const DynamicFormat format(
-		sdl_surface->format->BitsPerPixel,
-		sdl_surface->format->Rmask,
-		sdl_surface->format->Gmask,
-		sdl_surface->format->Bmask,
-		sdl_surface->format->Amask,
-		PF::NoAlpha);
-
-	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-
-	if (zoom_available && current_display_mode.zoom == 2) {
-		// Create a non zoomed surface as drawing surface
-		main_surface = Bitmap::Create(current_display_mode.width,
-											  current_display_mode.height,
-											  false,
-											  current_display_mode.bpp);
-
-		if (!main_surface)
-			return false;
-
-	} else {
-		void *pixels = (uint8_t*) sdl_surface->pixels;
-		// Drawing surface will be the window itself
-		main_surface = Bitmap::Create(
-			pixels, sdl_surface->w, sdl_surface->h, sdl_surface->pitch, format);
-	}
 
 	return true;
 }
@@ -360,6 +376,8 @@ void SdlUi::UpdateDisplay() {
 	if (zoom_available && current_display_mode.zoom == 2) {
 		// Blit drawing surface x2 scaled over window surface
 		Blit2X(*main_surface, sdl_surface);
+	} else {
+		SDL_BlitSurface(main_surface_sdl, nullptr, sdl_surface, nullptr);
 	}
 	SDL_UpdateRect(sdl_surface, 0, 0, 0, 0);
 }

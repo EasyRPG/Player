@@ -128,6 +128,9 @@ private:
 	/** Main SDL window. */
 	SDL_Surface* sdl_surface;
 
+	/** Surface we draw on */
+	SDL_Surface* main_surface_sdl;
+
 	std::unique_ptr<AudioInterface> audio_;
 };
 
