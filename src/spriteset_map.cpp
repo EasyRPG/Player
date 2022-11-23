@@ -69,6 +69,10 @@ void Spriteset_Map::Refresh() {
 	CreateAirshipShadowSprite(need_x_clone, need_y_clone);
 
 	CreateSprite(Main_Data::game_player.get(), need_x_clone, need_y_clone);
+
+	for (bool& v: vehicle_loaded) {
+		v = false;
+	}
 }
 
 // Update
