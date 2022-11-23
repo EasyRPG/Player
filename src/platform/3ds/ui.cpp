@@ -242,7 +242,7 @@ void CtrUi::ProcessEvents() {
 	};
 
 	analog_input.primary.x = normalize(circlepad.dx);
-	analog_input.primary.y = normalize(circlepad.dy);
+	analog_input.primary.y = -normalize(circlepad.dy);
 #endif
 
 #ifndef _DEBUG

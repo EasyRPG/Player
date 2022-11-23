@@ -205,8 +205,8 @@ void Input::Source::UpdateGamepad() {
 	// Primary Analog Stick (For directions, does not support diagonals)
 	keystates[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = analog_input.primary.x > JOYSTICK_STICK_SENSIBILITY;
 	keystates[Input::Keys::JOY_STICK_PRIMARY_LEFT] = analog_input.primary.x < -JOYSTICK_STICK_SENSIBILITY;
-	keystates[Input::Keys::JOY_STICK_PRIMARY_UP] = analog_input.primary.y > JOYSTICK_STICK_SENSIBILITY;
-	keystates[Input::Keys::JOY_STICK_PRIMARY_DOWN] = analog_input.primary.y < -JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_STICK_PRIMARY_UP] = analog_input.primary.y < -JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_STICK_PRIMARY_DOWN] = analog_input.primary.y > JOYSTICK_STICK_SENSIBILITY;
 
 	// Secondary Analog Stick (For other things, supports diagonals)
 	if (analog_input.secondary.x > JOYSTICK_STICK_SENSIBILITY || analog_input.secondary.x < -JOYSTICK_STICK_SENSIBILITY ||
@@ -216,19 +216,19 @@ void Input::Source::UpdateGamepad() {
 		if (angle >= -22 && angle <= 22) {
 			keystates[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = true;
 		} else if (angle >= 23 && angle <= 67) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_RIGHT] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_RIGHT] = true;
 		} else if (angle >= 68 && angle <= 112) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
 		} else if (angle >= 113 && angle <= 157) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_LEFT] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_LEFT] = true;
 		} else if (angle >= 158 || angle <= -158) {
 			keystates[Input::Keys::JOY_STICK_SECONDARY_LEFT] = true;
 		} else if (angle >= -157 && angle <= -113) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_LEFT] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_LEFT] = true;
 		} else if (angle >= -112 && angle <= -68) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
 		} else if (angle >= -67 && angle <= -23) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_RIGHT] = true;
+			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_RIGHT] = true;
 		}
 	}
 
