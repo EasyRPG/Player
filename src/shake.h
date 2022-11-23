@@ -35,7 +35,7 @@ static constexpr int kShakeContinuousTimeStart = 65535;
  */
 inline int NextPosition(int strength, int speed, int time_left, int position) {
 	int amplitude = 1 + 2 * strength;
-	int newpos = amplitude * sin((time_left * 4 * (speed + 2)) % 256 * M_PI / 128);
+	int newpos = amplitude * sin((time_left * 4 * (speed + 2)) % 256 * M_PI / 128) * -1;
 	int cutoff = (speed * amplitude / 8) + 1;
 
 	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
