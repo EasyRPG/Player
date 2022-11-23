@@ -667,30 +667,30 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 	switch (button_index) {
-		case 0	: return Input::Keys::JOY_OTHER_1;
-		case 1	: return Input::Keys::JOY_OTHER_2;
-		case 2	: return Input::Keys::JOY_OTHER_3;
-		case 3	: return Input::Keys::JOY_OTHER_4;
-		case 4	: return Input::Keys::JOY_OTHER_5;
-		case 5	: return Input::Keys::JOY_OTHER_6;
-		case 6	: return Input::Keys::JOY_OTHER_7;
-		case 7	: return Input::Keys::JOY_OTHER_8;
-		case 8	: return Input::Keys::JOY_OTHER_9;
-		case 9	: return Input::Keys::JOY_OTHER_10;
-		case 10	: return Input::Keys::JOY_OTHER_11;
-		case 11	: return Input::Keys::JOY_OTHER_12;
-		case 12	: return Input::Keys::JOY_OTHER_13;
-		case 13	: return Input::Keys::JOY_OTHER_14;
-		case 14	: return Input::Keys::JOY_OTHER_15;
-		case 15	: return Input::Keys::JOY_OTHER_16;
-		case 16	: return Input::Keys::JOY_OTHER_17;
-		case 17	: return Input::Keys::JOY_OTHER_18;
-		case 18	: return Input::Keys::JOY_OTHER_19;
-		case 19	: return Input::Keys::JOY_OTHER_20;
-		case 20	: return Input::Keys::JOY_OTHER_21;
-		case 21	: return Input::Keys::JOY_OTHER_22;
-		case 22	: return Input::Keys::JOY_OTHER_23;
-		case 23	: return Input::Keys::JOY_OTHER_24;
+		case 0	: return Input::Keys::JOY_OTHER_0;
+		case 1	: return Input::Keys::JOY_OTHER_1;
+		case 2	: return Input::Keys::JOY_OTHER_2;
+		case 3	: return Input::Keys::JOY_OTHER_3;
+		case 4	: return Input::Keys::JOY_OTHER_4;
+		case 5	: return Input::Keys::JOY_OTHER_5;
+		case 6	: return Input::Keys::JOY_OTHER_6;
+		case 7	: return Input::Keys::JOY_OTHER_7;
+		case 8	: return Input::Keys::JOY_OTHER_8;
+		case 9	: return Input::Keys::JOY_OTHER_9;
+		case 10	: return Input::Keys::JOY_OTHER_10;
+		case 11	: return Input::Keys::JOY_OTHER_11;
+		case 12	: return Input::Keys::JOY_OTHER_12;
+		case 13	: return Input::Keys::JOY_OTHER_13;
+		case 14	: return Input::Keys::JOY_OTHER_14;
+		case 15	: return Input::Keys::JOY_OTHER_15;
+		case 16	: return Input::Keys::JOY_OTHER_16;
+		case 17	: return Input::Keys::JOY_OTHER_17;
+		case 18	: return Input::Keys::JOY_OTHER_18;
+		case 19	: return Input::Keys::JOY_OTHER_19;
+		case 20	: return Input::Keys::JOY_OTHER_20;
+		case 21	: return Input::Keys::JOY_OTHER_21;
+		case 22	: return Input::Keys::JOY_OTHER_22;
+		case 23	: return Input::Keys::JOY_OTHER_23;
 		default : return Input::Keys::NONE;
 	}
 }
