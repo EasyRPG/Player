@@ -120,3 +120,8 @@ void CmdlineParser::SkipNext() {
 	++index;
 }
 
+void CmdlineParser::RewindBy(int rewind) {
+	assert(rewind >= 0);
+	index -= rewind;
+	assert(index >= 0);
+}

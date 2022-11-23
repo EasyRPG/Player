@@ -426,6 +426,46 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 	CmdlineParser cp(arguments);
 	auto cfg = Game_Config::Create(cp);
 
+	bool battletest_handled = false;
+
+	cp.Rewind();
+	if (!cp.Done()) {
+		// BattleTest argument handling in a RPG_RT compatible way is very ugly because the arguments do not follow
+		// directly. Try to parse it and afterwards rewind the parser to parse the rest.
+		CmdlineArg arg;
+		long li_value = 0;
+
+		// Legacy BattleTest handling: When BattleTest is argument 1, then the values are:
+		// - arg4: troop_id
+		// - arg5-7: formation, condition, terrain_id (2k3 only)
+		// - arg2-3 are unrelated ("ShowTitle Window")
+		if (cp.ParseNext(arg, 6, {"battletest"})) {
+			Game_Battle::battle_test.enabled = true;
+			Game_Battle::battle_test.troop_id = 0;
+
+			// Starting from 3 to reach arg4 from arg1
+			if (arg.NumValues() >= 3) {
+				if (arg.ParseValue(2, li_value)) {
+					Game_Battle::battle_test.troop_id = li_value;
+				}
+			}
+
+			if (arg.NumValues() >= 6) {
+				if (arg.ParseValue(3, li_value)) {
+					Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(li_value);
+				}
+				if (arg.ParseValue(4, li_value)) {
+					Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(li_value);
+				}
+				if (arg.ParseValue(5, li_value)) {
+					Game_Battle::battle_test.terrain_id = static_cast<lcf::rpg::System::BattleFormation>(li_value);
+				}
+			}
+
+			battletest_handled = true;
+		}
+	}
+
 	cp.Rewind();
 	while (!cp.Done()) {
 		CmdlineArg arg;
@@ -453,7 +493,7 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			hide_title_flag = true;
 			continue;
 		}
-		if(cp.ParseNext(arg, 4, {"battletest", "--battle-test"})) {
+		if(!battletest_handled && cp.ParseNext(arg, 4, {"battletest", "--battle-test"})) {
 			// Legacy RPG_RT argument - battletest
 			Game_Battle::battle_test.enabled = true;
 			Game_Battle::battle_test.troop_id = 0;
@@ -468,13 +508,22 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 				// 2k3 passes formation, condition and terrain_id as args 5-7
 				if (arg.ParseValue(1, li_value)) {
 					Game_Battle::battle_test.formation = static_cast<lcf::rpg::System::BattleFormation>(li_value);
+				} else {
+					// When the argument is not a number, args5-7 were likely not specified and are something different
+					// Rewind to prevent losing other args
+					cp.RewindBy(3);
+					continue;
 				}
+
 				if (arg.ParseValue(2, li_value)) {
 					Game_Battle::battle_test.condition = static_cast<lcf::rpg::System::BattleCondition>(li_value);
 				}
 				if (arg.ParseValue(3, li_value)) {
 					Game_Battle::battle_test.terrain_id = static_cast<lcf::rpg::System::BattleFormation>(li_value);
 				}
+			} else if (arg.NumValues() >= 2) {
+				// Only troop-id was provided: Rewind to prevent losing other args
+				cp.RewindBy(arg.NumValues() - 1);
 			}
 			continue;
 		}
