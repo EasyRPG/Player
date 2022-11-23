@@ -18,6 +18,7 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "platform/sdl/axis.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	// Remote
@@ -74,4 +75,10 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
+}
+
+SdlAxis Input::GetSdlAxis() {
+	return {
+		0, 1, 2, 3, 5, 4, true, true
+	};
 }

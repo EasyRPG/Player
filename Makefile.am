@@ -434,7 +434,8 @@ libeasyrpg_player_a_SOURCES += \
 	src/platform/sdl/sdl_ui.cpp \
 	src/platform/sdl/sdl_ui.h \
 	src/platform/sdl/audio.cpp \
-	src/platform/sdl/audio.h
+	src/platform/sdl/audio.h \
+	src/platform/sdl/axis.h
 endif
 
 if WANT_FMMIDI

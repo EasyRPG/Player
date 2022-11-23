@@ -23,6 +23,7 @@
 #include "color.h"
 #include "rect.h"
 #include "system.h"
+#include "axis.h"
 
 #include <SDL.h>
 
@@ -126,6 +127,8 @@ private:
 	SDL_Surface* main_surface_sdl;
 
 	std::unique_ptr<AudioInterface> audio_;
+
+	SdlAxis sdl_axis;
 };
 
 #endif

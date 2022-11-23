@@ -136,6 +136,42 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	// No mouse support
 	ShowCursor(false);
 
+	// Axis mapping (see doc in axis.h)
+	if (getenv("EP_SDL_AXIS")) {
+		auto axis = Utils::Tokenize(getenv("EP_SDL_AXIS"), [](char32_t t) { return t == ','; });
+		for (size_t i = 0; i < axis.size(); ++i) {
+			int num = atoi(axis[i].c_str());
+			switch (i) {
+				case 0:
+					sdl_axis.stick_primary_x = num;
+					break;
+				case 1:
+					sdl_axis.stick_primary_y = num;
+					break;
+				case 2:
+					sdl_axis.stick_secondary_x = num;
+					break;
+				case 3:
+					sdl_axis.stick_secondary_y = num;
+					break;
+				case 4:
+					sdl_axis.trigger_left = num;
+					break;
+				case 5:
+					sdl_axis.trigger_right = num;
+					break;
+				case 6:
+					sdl_axis.stick_invert_y = num > 0;
+					break;
+				case 7:
+					sdl_axis.hat_invert_y = num > 0;
+					break;
+			}
+		}
+	} else {
+		sdl_axis = Input::GetSdlAxis();
+	}
+
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
 		audio_.reset(new SdlAudio());
@@ -520,21 +556,17 @@ void SdlUi::ProcessJoystickButtonEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-	// Set all states to false
-	analog_input.secondary = {};
-
 	// Check hat states
-	if (evnt.jhat.value & SDL_HAT_UP)
-		analog_input.secondary.y = -1.f;
+	if (sdl_axis.stick_invert_y) {
+		keys[Input::Keys::JOY_DPAD_DOWN] = (evnt.jhat.value & SDL_HAT_UP) > 0;
+		keys[Input::Keys::JOY_DPAD_UP] = (evnt.jhat.value & SDL_HAT_DOWN) > 0;
+	} else {
+		keys[Input::Keys::JOY_DPAD_UP] = (evnt.jhat.value & SDL_HAT_UP) > 0;
+		keys[Input::Keys::JOY_DPAD_DOWN] = (evnt.jhat.value & SDL_HAT_DOWN) > 0;
+	}
 
-	else if (evnt.jhat.value & SDL_HAT_RIGHT)
-		analog_input.secondary.x = 1.f;
-
-	else if (evnt.jhat.value & SDL_HAT_DOWN)
-		analog_input.secondary.y = 1.f;
-
-	else if (evnt.jhat.value & SDL_HAT_LEFT)
-		analog_input.secondary.x = -1.f;
+	keys[Input::Keys::JOY_DPAD_RIGHT] = (evnt.jhat.value & SDL_HAT_RIGHT) > 0;
+	keys[Input::Keys::JOY_DPAD_LEFT] = (evnt.jhat.value & SDL_HAT_LEFT) > 0;
 #endif
 }
 
@@ -544,13 +576,21 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 		return static_cast<float>(value) / 32768.f;
 	};
 
-	switch (evnt.jaxis.axis) {
-		case 0: // horizontal
-			analog_input.primary.x = normalize(evnt.jaxis.value);
-			break;
-		case 1: // vertical
-			analog_input.primary.y = -normalize(evnt.jaxis.value);
-			break;
+	int axis = evnt.jaxis.axis;
+	int value = evnt.jaxis.value;
+
+	if (axis == sdl_axis.stick_primary_x) {
+		analog_input.primary.x = normalize(value);
+	} else if (axis == sdl_axis.stick_primary_y) {
+		analog_input.primary.y = normalize(value * (sdl_axis.hat_invert_y ? -1 : 1));
+	} else if (axis == sdl_axis.stick_secondary_x) {
+		analog_input.secondary.x = normalize(value);
+	} else if (axis == sdl_axis.stick_secondary_y) {
+		analog_input.secondary.y = normalize(value * (sdl_axis.hat_invert_y ? -1 : 1));
+	} else if (axis == sdl_axis.trigger_left) {
+		analog_input.trigger_left = normalize(value);
+	} else if (axis == sdl_axis.trigger_right) {
+		analog_input.trigger_right = normalize(value);
 	}
 #endif
 }
