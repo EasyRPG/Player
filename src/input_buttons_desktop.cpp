@@ -128,6 +128,17 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
 		{RESET, Keys::JOY_BACK},
+
+#if USE_SDL==1
+		// Arbitrary: Remap this when porting to a embedded platform with SDL1
+		// (or even better: Provide your own input_buttons.cpp file)
+		{DECISION, Keys::JOY_OTHER_0},
+		{CANCEL, Keys::JOY_OTHER_1},
+		{SHIFT, Keys::JOY_OTHER_2},
+		{TOGGLE_FPS, Keys::JOY_OTHER_3},
+		{SETTINGS_MENU, Keys::JOY_OTHER_4},
+		{RESET, Keys::JOY_OTHER_5},
+#endif
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
@@ -169,5 +180,14 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
 }
+
+#if USE_SDL==1
+#include "platform/sdl/axis.h"
+SdlAxis Input::GetSdlAxis() {
+	return {
+		0, 1, 2, 3, 4, 5, false, false
+	};
+}
+#endif
 
 #endif

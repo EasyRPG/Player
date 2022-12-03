@@ -30,6 +30,10 @@
 #include "flat_map.h"
 #include "keys.h"
 
+#if USE_SDL==1
+#include "platform/sdl/axis.h"
+#endif
+
 /**
  * Input namespace.
  */
@@ -241,6 +245,10 @@ namespace Input {
 
 	/** Returns platform-specific, human readable name for an input key */
 	KeyNamesArray GetInputKeyNames();
+
+#if USE_SDL==1
+	SdlAxis GetSdlAxis();
+#endif
 }
 
 #endif

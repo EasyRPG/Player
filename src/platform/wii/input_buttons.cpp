@@ -18,39 +18,35 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "platform/sdl/axis.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
-	// Remote
 	return {
-		{TOGGLE_FPS, Keys::JOY_OTHER_1}, // A
-		{SHIFT, Keys::JOY_OTHER_2}, // B
-		{CANCEL, Keys::JOY_OTHER_3}, // 1
-		{DECISION, Keys::JOY_OTHER_4}, // 2
-		{FAST_FORWARD, Keys::JOY_OTHER_5}, // -
-		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_6}, // +
-		{CANCEL, Keys::JOY_OTHER_7}, // Home
+		// Wiimote
+		{CANCEL, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
+		{DECISION, Keys::JOY_OTHER_1}, // B, shared with CC
+		{CANCEL, Keys::JOY_OTHER_2}, // 1
+		{DECISION, Keys::JOY_OTHER_3}, // 2
+		{RESET, Keys::JOY_OTHER_4}, // -, shared with CC
+		{FAST_FORWARD, Keys::JOY_OTHER_5}, // +, shared with CC
+		{SETTINGS_MENU, Keys::JOY_OTHER_6}, // Home, shared with CC
 
 		// Nunchuck
-		{DECISION, Keys::JOY_OTHER_8}, // Z
-		{CANCEL, Keys::JOY_OTHER_9}, // C
+		{DECISION, Keys::JOY_OTHER_7}, // Z
+		{TOGGLE_FPS, Keys::JOY_OTHER_8}, // C
 
 		// Classic Controller
-		{DECISION, Keys::JOY_OTHER_10}, // A
-		{CANCEL, Keys::JOY_OTHER_11}, // B
-		{SHIFT, Keys::JOY_OTHER_12}, // X
-		{N1, Keys::JOY_OTHER_13}, // Y
-		{N3, Keys::JOY_OTHER_14}, // L
-		{N5, Keys::JOY_OTHER_15}, // R
-		{N9, Keys::JOY_OTHER_16}, // Zl
-		{TOGGLE_FPS, Keys::JOY_OTHER_17}, // Zr
-		{FAST_FORWARD, Keys::JOY_OTHER_18}, // -
-		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_19}, // +
-		{CANCEL, Keys::JOY_OTHER_20}, // Home
+		{SHIFT, Keys::JOY_OTHER_9}, // X
+		{CANCEL, Keys::JOY_OTHER_10}, // Y
+		{N0, Keys::JOY_OTHER_11}, // L
+		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_12}, // R
+		{N5, Keys::JOY_OTHER_13}, // ZL
+		{TOGGLE_FPS, Keys::JOY_OTHER_14}, // ZR
 
+		{UP, Keys::JOY_STICK_PRIMARY_UP},
+		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
 		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
 		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
 
 		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
 		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
@@ -59,7 +55,13 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
 		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
 		{N8, Keys::JOY_STICK_SECONDARY_UP},
-		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT}
+		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT},
+
+		// D-Pad on Wiimote & Classic Controller
+		{UP, Keys::JOY_DPAD_UP},
+		{DOWN, Keys::JOY_DPAD_DOWN},
+		{LEFT, Keys::JOY_DPAD_LEFT},
+		{RIGHT, Keys::JOY_DPAD_RIGHT},
 	};
 }
 
@@ -74,4 +76,12 @@ Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
+}
+
+SdlAxis Input::GetSdlAxis() {
+	// Classic Controller L/R Trigger axis do not report proper values
+	// Handled above as Button 11/12
+	return {
+		0, 1, 2, 3, -1, -1, false, false
+	};
 }

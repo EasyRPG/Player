@@ -23,6 +23,7 @@
 #include "color.h"
 #include "rect.h"
 #include "system.h"
+#include "axis.h"
 
 #include <SDL.h>
 
@@ -100,15 +101,6 @@ private:
 
 	/** @} */
 
-
-	/**
-	 * Blits a bitmap scaled x2 to an SDL surface.
-	 *
-	 * @param src source bitmap.
-	 * @param dst destination surface.
-	 */
-	void Blit2X(Bitmap const& src, SDL_Surface* dst);
-
 	/**
 	 * Resets keys states.
 	 */
@@ -128,7 +120,15 @@ private:
 	/** Main SDL window. */
 	SDL_Surface* sdl_surface;
 
+	/** Bitmap handle to sdl_surface */
+	BitmapRef sdl_surface_bmp;
+
+	/** SDL_Surface handle to main_surface */
+	SDL_Surface* main_surface_sdl;
+
 	std::unique_ptr<AudioInterface> audio_;
+
+	SdlAxis sdl_axis;
 };
 
 #endif

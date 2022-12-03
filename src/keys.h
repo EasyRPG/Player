@@ -169,7 +169,8 @@ namespace Input {
 			JOY_REAR_LEFT_2,
 			JOY_REAR_RIGHT_1,
 			JOY_REAR_RIGHT_2,
-			JOY_OTHER_1, // Additional buttons and fallback for SDL1
+			JOY_OTHER_0, // Additional buttons and fallback for SDL1
+			JOY_OTHER_1,
 			JOY_OTHER_2,
 			JOY_OTHER_3,
 			JOY_OTHER_4,
@@ -192,7 +193,6 @@ namespace Input {
 			JOY_OTHER_21,
 			JOY_OTHER_22,
 			JOY_OTHER_23,
-			JOY_OTHER_24,
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
@@ -365,6 +365,7 @@ namespace Input {
 			"JOY_REAR_LEFT_2",
 			"JOY_REAR_RIGHT_1",
 			"JOY_REAR_RIGHT_2",
+			"JOY_OTHER_0",
 			"JOY_OTHER_1",
 			"JOY_OTHER_2",
 			"JOY_OTHER_3",
@@ -388,7 +389,6 @@ namespace Input {
 			"JOY_OTHER_21",
 			"JOY_OTHER_22",
 			"JOY_OTHER_23",
-			"JOY_OTHER_24",
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)

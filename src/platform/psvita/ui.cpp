@@ -236,9 +236,9 @@ void Psp2Ui::ProcessEvents() {
 	};
 
 	analog_input.primary.x = normalize(input.lx);
-	analog_input.primary.y = -normalize(input.ly);
+	analog_input.primary.y = normalize(input.ly);
 	analog_input.secondary.x = normalize(input.rx);
-	analog_input.secondary.y = -normalize(input.ry);
+	analog_input.secondary.y = normalize(input.ry);
 
 	// Touchpad support
 	if (zoom_state != 2 && !is_pstv) {

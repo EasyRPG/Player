@@ -78,6 +78,45 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 		}
 	EndDisplayModeChange();
 
+	// Create the surface we draw on
+	DynamicFormat format;
+
+	if (Utils::IsBigEndian()) {
+		format = DynamicFormat(
+			32,
+			0x0000FF00,
+			0x00FF0000,
+			0xFF000000,
+			0x000000FF,
+			PF::NoAlpha);
+	} else {
+		format = DynamicFormat(
+			32,
+			0x00FF0000,
+			0x0000FF00,
+			0x000000FF,
+			0xFF000000,
+			PF::NoAlpha);
+	}
+
+	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
+	main_surface = Bitmap::Create(
+		SCREEN_TARGET_WIDTH,
+		SCREEN_TARGET_HEIGHT,
+		false,
+		32
+	);
+
+	main_surface_sdl = SDL_CreateRGBSurfaceFrom(main_surface->pixels(),
+		SCREEN_TARGET_WIDTH,
+		SCREEN_TARGET_HEIGHT,
+		32,
+		main_surface->pitch(),
+		format.r.mask,
+		format.g.mask,
+		format.b.mask,
+		format.a.mask);
+
 #ifdef GEKKO
 	// Eliminate debug spew in on-screen console
 	Wii::SetConsole();
@@ -97,6 +136,42 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	// No mouse support
 	ShowCursor(false);
 
+	// Axis mapping (see doc in axis.h)
+	if (getenv("EP_SDL_AXIS")) {
+		auto axis = Utils::Tokenize(getenv("EP_SDL_AXIS"), [](char32_t t) { return t == ','; });
+		for (size_t i = 0; i < axis.size(); ++i) {
+			int num = atoi(axis[i].c_str());
+			switch (i) {
+				case 0:
+					sdl_axis.stick_primary_x = num;
+					break;
+				case 1:
+					sdl_axis.stick_primary_y = num;
+					break;
+				case 2:
+					sdl_axis.stick_secondary_x = num;
+					break;
+				case 3:
+					sdl_axis.stick_secondary_y = num;
+					break;
+				case 4:
+					sdl_axis.trigger_left = num;
+					break;
+				case 5:
+					sdl_axis.trigger_right = num;
+					break;
+				case 6:
+					sdl_axis.stick_invert_y = num > 0;
+					break;
+				case 7:
+					sdl_axis.hat_invert_y = num > 0;
+					break;
+			}
+		}
+	} else {
+		sdl_axis = Input::GetSdlAxis();
+	}
+
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
 		audio_.reset(new SdlAudio());
@@ -108,6 +183,10 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 }
 
 SdlUi::~SdlUi() {
+	if (main_surface_sdl) {
+		SDL_FreeSurface(main_surface_sdl);
+	}
+
 	SDL_Quit();
 }
 
@@ -279,8 +358,7 @@ bool SdlUi::RefreshDisplayMode() {
 	bpp = 24;
 #endif
 
-	// Free non zoomed surface
-	main_surface.reset();
+	// Free surface
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
 
 	if (!sdl_surface)
@@ -290,34 +368,20 @@ bool SdlUi::RefreshDisplayMode() {
 	if (sdl_surface->format->BitsPerPixel < 15)
 		return false;
 
+	sdl_surface_bmp = Bitmap::Create(
+		sdl_surface->pixels,
+		sdl_surface->w,
+		sdl_surface->h,
+		sdl_surface->pitch,
+		DynamicFormat(
+			sdl_surface->format->BitsPerPixel,
+			sdl_surface->format->Rmask,
+			sdl_surface->format->Gmask,
+			sdl_surface->format->Bmask,
+			sdl_surface->format->Amask,
+			PF::NoAlpha));
+
 	current_display_mode.bpp = sdl_surface->format->BitsPerPixel;
-
-	const DynamicFormat format(
-		sdl_surface->format->BitsPerPixel,
-		sdl_surface->format->Rmask,
-		sdl_surface->format->Gmask,
-		sdl_surface->format->Bmask,
-		sdl_surface->format->Amask,
-		PF::NoAlpha);
-
-	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-
-	if (zoom_available && current_display_mode.zoom == 2) {
-		// Create a non zoomed surface as drawing surface
-		main_surface = Bitmap::Create(current_display_mode.width,
-											  current_display_mode.height,
-											  false,
-											  current_display_mode.bpp);
-
-		if (!main_surface)
-			return false;
-
-	} else {
-		void *pixels = (uint8_t*) sdl_surface->pixels;
-		// Drawing surface will be the window itself
-		main_surface = Bitmap::Create(
-			pixels, sdl_surface->w, sdl_surface->h, sdl_surface->pitch, format);
-	}
 
 	return true;
 }
@@ -357,10 +421,16 @@ void SdlUi::ProcessEvents() {
 }
 
 void SdlUi::UpdateDisplay() {
+	if (SDL_MUSTLOCK(sdl_surface)) SDL_LockSurface(sdl_surface);
+
 	if (zoom_available && current_display_mode.zoom == 2) {
-		// Blit drawing surface x2 scaled over window surface
-		Blit2X(*main_surface, sdl_surface);
+		sdl_surface_bmp->Blit2x(sdl_surface_bmp->GetRect(), *main_surface, main_surface->GetRect());
+	} else {
+		sdl_surface_bmp->BlitFast(0, 0, *main_surface, main_surface->GetRect(), Opacity::Opaque());
 	}
+
+	if (SDL_MUSTLOCK(sdl_surface)) SDL_UnlockSurface(sdl_surface);
+
 	SDL_UpdateRect(sdl_surface, 0, 0, 0, 0);
 }
 
@@ -382,112 +452,6 @@ bool SdlUi::LogMessage(const std::string &message) {
 	// not logged
 	return false;
 #endif
-}
-
-void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
-	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
-
-#if (defined(PLAYER_AMIGA) && !defined(__AROS__)) || defined(GEKKO)
-	// Quick & dirty big endian 2x zoom blitter
-	int blit_height = src.height() * 2;
-	int blit_width = src.width();
-	int src_pitch = src.pitch();
-	int dst_pitch = dst_surf->pitch;
-	int dst_bpp = sdl_surface->format->BitsPerPixel;
-
-	uint8_t* src_pixels = (uint8_t*)src.pixels();
-	uint8_t* dst_pixels = (uint8_t*)dst_surf->pixels;
-
-	switch (dst_bpp) {
-		case 32:
-			for (int i = 0; i < blit_height; i++) {
-				uint32_t* src = (uint32_t*)src_pixels;
-				uint32_t* dst = (uint32_t*)dst_pixels;
-				for (int j = 0; j < blit_width; j++) {
-					uint32_t pixel = *src;
-					*dst++ = pixel;
-					*dst++ = pixel;
-					src++;
-				}
-				dst_pixels += dst_pitch;
-				if (i & 1) {
-					src_pixels += src_pitch;
-				}
-			}
-			break;
-		case 24:
-			for (int i = 0; i < blit_height; i++) {
-				uint32_t* src = (uint32_t*)src_pixels;
-				uint8_t* dst = (uint8_t*)dst_pixels;
-				for (int j = 0; j < blit_width; j++) {
-					uint8_t* pixels = (uint8_t*)src + 1;
-					*dst++ = *pixels++;
-					*dst++ = *pixels++;
-					*dst++ = *pixels;
-					pixels = (uint8_t*)src + 1;
-					*dst++ = *pixels++;
-					*dst++ = *pixels++;
-					*dst++ = *pixels;
-					src++;
-				}
-				dst_pixels += dst_pitch;
-				if (i & 1) {
-					src_pixels += src_pitch;
-				}
-			}
-			break;
-		case 16:
-			for (int i = 0; i < blit_height; i++) {
-				uint16_t* src = (uint16_t*)src_pixels;
-				uint16_t* dst = (uint16_t*)dst_pixels;
-				for (int j = 0; j < blit_width; j++) {
-					// 5:5:5:1 RGBA to 6:5:5 RGB
-					uint16_t pixel = (*src & 0x7FE0) << 1 | (*src & 0x001F);
-					*dst++ = pixel;
-					*dst++ = pixel;
-					src++;
-				}
-				dst_pixels += dst_pitch;
-				if (i & 1) {
-					src_pixels += src_pitch;
-				}
-			}
-			break;
-		case 15:
-			for (int i = 0; i < blit_height; i++) {
-				uint16_t* src = (uint16_t*)src_pixels;
-				uint16_t* dst = (uint16_t*)dst_pixels;
-				for (int j = 0; j < blit_width; j++) {
-					uint16_t pixel = *src;
-					*dst++ = pixel;
-					*dst++ = pixel;
-					src++;
-				}
-				dst_pixels += dst_pitch;
-				if (i & 1) {
-					src_pixels += src_pitch;
-				}
-			}
-			break;
-	}
-#else
-	BitmapRef dst = Bitmap::Create(
-		dst_surf->pixels,
-		dst_surf->w,
-		dst_surf->h,
-		dst_surf->pitch,
-		DynamicFormat(
-			dst_surf->format->BitsPerPixel,
-			dst_surf->format->Rmask,
-			dst_surf->format->Gmask,
-			dst_surf->format->Bmask,
-			dst_surf->format->Amask,
-			PF::NoAlpha));
-
-	dst->Blit2x(dst->GetRect(), src, src.GetRect());
-#endif
-
-	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }
 
 void SdlUi::ProcessEvent(SDL_Event &evnt) {
@@ -592,21 +556,17 @@ void SdlUi::ProcessJoystickButtonEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-	// Set all states to false
-	analog_input.secondary = {};
-
 	// Check hat states
-	if (evnt.jhat.value & SDL_HAT_UP)
-		analog_input.secondary.y = -1.f;
+	if (sdl_axis.stick_invert_y) {
+		keys[Input::Keys::JOY_DPAD_DOWN] = (evnt.jhat.value & SDL_HAT_UP) > 0;
+		keys[Input::Keys::JOY_DPAD_UP] = (evnt.jhat.value & SDL_HAT_DOWN) > 0;
+	} else {
+		keys[Input::Keys::JOY_DPAD_UP] = (evnt.jhat.value & SDL_HAT_UP) > 0;
+		keys[Input::Keys::JOY_DPAD_DOWN] = (evnt.jhat.value & SDL_HAT_DOWN) > 0;
+	}
 
-	else if (evnt.jhat.value & SDL_HAT_RIGHT)
-		analog_input.secondary.x = 1.f;
-
-	else if (evnt.jhat.value & SDL_HAT_DOWN)
-		analog_input.secondary.y = 1.f;
-
-	else if (evnt.jhat.value & SDL_HAT_LEFT)
-		analog_input.secondary.x = -1.f;
+	keys[Input::Keys::JOY_DPAD_RIGHT] = (evnt.jhat.value & SDL_HAT_RIGHT) > 0;
+	keys[Input::Keys::JOY_DPAD_LEFT] = (evnt.jhat.value & SDL_HAT_LEFT) > 0;
 #endif
 }
 
@@ -616,13 +576,21 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 		return static_cast<float>(value) / 32768.f;
 	};
 
-	switch (evnt.jaxis.axis) {
-		case 0: // horizontal
-			analog_input.primary.x = normalize(evnt.jaxis.value);
-			break;
-		case 1: // vertical
-			analog_input.primary.y = -normalize(evnt.jaxis.value);
-			break;
+	int axis = evnt.jaxis.axis;
+	int value = evnt.jaxis.value;
+
+	if (axis == sdl_axis.stick_primary_x) {
+		analog_input.primary.x = normalize(value);
+	} else if (axis == sdl_axis.stick_primary_y) {
+		analog_input.primary.y = normalize(value * (sdl_axis.hat_invert_y ? -1 : 1));
+	} else if (axis == sdl_axis.stick_secondary_x) {
+		analog_input.secondary.x = normalize(value);
+	} else if (axis == sdl_axis.stick_secondary_y) {
+		analog_input.secondary.y = normalize(value * (sdl_axis.hat_invert_y ? -1 : 1));
+	} else if (axis == sdl_axis.trigger_left) {
+		analog_input.trigger_left = normalize(value);
+	} else if (axis == sdl_axis.trigger_right) {
+		analog_input.trigger_right = normalize(value);
 	}
 #endif
 }
@@ -739,30 +707,30 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 	switch (button_index) {
-		case 0	: return Input::Keys::JOY_OTHER_1;
-		case 1	: return Input::Keys::JOY_OTHER_2;
-		case 2	: return Input::Keys::JOY_OTHER_3;
-		case 3	: return Input::Keys::JOY_OTHER_4;
-		case 4	: return Input::Keys::JOY_OTHER_5;
-		case 5	: return Input::Keys::JOY_OTHER_6;
-		case 6	: return Input::Keys::JOY_OTHER_7;
-		case 7	: return Input::Keys::JOY_OTHER_8;
-		case 8	: return Input::Keys::JOY_OTHER_9;
-		case 9	: return Input::Keys::JOY_OTHER_10;
-		case 10	: return Input::Keys::JOY_OTHER_11;
-		case 11	: return Input::Keys::JOY_OTHER_12;
-		case 12	: return Input::Keys::JOY_OTHER_13;
-		case 13	: return Input::Keys::JOY_OTHER_14;
-		case 14	: return Input::Keys::JOY_OTHER_15;
-		case 15	: return Input::Keys::JOY_OTHER_16;
-		case 16	: return Input::Keys::JOY_OTHER_17;
-		case 17	: return Input::Keys::JOY_OTHER_18;
-		case 18	: return Input::Keys::JOY_OTHER_19;
-		case 19	: return Input::Keys::JOY_OTHER_20;
-		case 20	: return Input::Keys::JOY_OTHER_21;
-		case 21	: return Input::Keys::JOY_OTHER_22;
-		case 22	: return Input::Keys::JOY_OTHER_23;
-		case 23	: return Input::Keys::JOY_OTHER_24;
+		case 0	: return Input::Keys::JOY_OTHER_0;
+		case 1	: return Input::Keys::JOY_OTHER_1;
+		case 2	: return Input::Keys::JOY_OTHER_2;
+		case 3	: return Input::Keys::JOY_OTHER_3;
+		case 4	: return Input::Keys::JOY_OTHER_4;
+		case 5	: return Input::Keys::JOY_OTHER_5;
+		case 6	: return Input::Keys::JOY_OTHER_6;
+		case 7	: return Input::Keys::JOY_OTHER_7;
+		case 8	: return Input::Keys::JOY_OTHER_8;
+		case 9	: return Input::Keys::JOY_OTHER_9;
+		case 10	: return Input::Keys::JOY_OTHER_10;
+		case 11	: return Input::Keys::JOY_OTHER_11;
+		case 12	: return Input::Keys::JOY_OTHER_12;
+		case 13	: return Input::Keys::JOY_OTHER_13;
+		case 14	: return Input::Keys::JOY_OTHER_14;
+		case 15	: return Input::Keys::JOY_OTHER_15;
+		case 16	: return Input::Keys::JOY_OTHER_16;
+		case 17	: return Input::Keys::JOY_OTHER_17;
+		case 18	: return Input::Keys::JOY_OTHER_18;
+		case 19	: return Input::Keys::JOY_OTHER_19;
+		case 20	: return Input::Keys::JOY_OTHER_20;
+		case 21	: return Input::Keys::JOY_OTHER_21;
+		case 22	: return Input::Keys::JOY_OTHER_22;
+		case 23	: return Input::Keys::JOY_OTHER_23;
 		default : return Input::Keys::NONE;
 	}
 }

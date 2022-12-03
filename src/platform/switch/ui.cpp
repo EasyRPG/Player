@@ -437,9 +437,9 @@ void NxUi::ProcessEvents() {
 	};
 
 	analog_input.primary.x = normalize(analog_left.x);
-	analog_input.primary.y = normalize(analog_left.y);
+	analog_input.primary.y = -normalize(analog_left.y);
 	analog_input.secondary.x = normalize(analog_right.x);
-	analog_input.secondary.y = normalize(analog_right.y);
+	analog_input.secondary.y = -normalize(analog_right.y);
 	analog_input.trigger_left = (input & HidNpadButton_ZL) ? Input::AnalogInput::kMaxValue : 0.f;
 	analog_input.trigger_right = (input & HidNpadButton_ZR) ? Input::AnalogInput::kMaxValue : 0.f;
 
