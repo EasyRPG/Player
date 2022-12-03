@@ -150,8 +150,9 @@ struct Language {
 	std::string lang_name; // Display name for this language (e.g., "English")
 	std::string lang_desc; // Helper text to show when the menu is highlighted
 	std::string lang_code; // Language code used by font selection and input scene
+	std::string lang_term; // Term to use for "Language"
+	bool use_builtin_font = false;
 };
-
 
 /**
  * Class that holds a list of all available translations and tracks the current one.
@@ -211,9 +212,17 @@ public:
 	/**
 	 * Retrieve the current language.
 	 *
-	 * @return the current language, or nullptr for default language
+	 * @return the current language
 	 */
 	const Language& GetCurrentLanguage() const;
+
+	/**
+	 * Retrieves information about the builtin language of the game.
+	 * This is obtained from Meta.ini in the "default" directory.
+	 *
+	 * @return the default language
+	 */
+	const Language& GetDefaultLanguage() const;
 
 
 private:
@@ -303,6 +312,10 @@ private:
 
 	// The translation we are currently showing (e.g., "English_1")
 	Language current_language;
+
+	// The normal language of the game
+	// Provides data from the Meta.ini in "default" folder when available
+	Language default_language;
 
 	std::vector<FileRequestBinding> requests;
 	FileRequestBinding map_request;

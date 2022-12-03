@@ -1299,6 +1299,8 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 				SetState(State_SelectOption);
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
+		} else {
+			UpdateReadyActors();
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;

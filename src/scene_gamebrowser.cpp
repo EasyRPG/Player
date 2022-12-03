@@ -53,6 +53,8 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 
+	Font::ResetDefault();
+
 	Main_Data::game_system = std::make_unique<Game_System>();
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 

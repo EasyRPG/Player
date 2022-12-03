@@ -127,6 +127,12 @@ public:
 
 	/** Resets the parser back to the first argument */
 	void Rewind();
+
+	/**
+	 * Rewinds the parser by the specified amount
+	 * @param rewind how far to rewind
+	 */
+	void RewindBy(int rewind);
 private:
 	template <typename F>
 		bool DoParseNext(CmdlineArg& arg, int max_values, F&& is_longval, char shortval);

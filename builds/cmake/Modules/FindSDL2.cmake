@@ -68,7 +68,7 @@ include(FindPackageHandleStandardArgs)
 
 find_library(SDL2_LIBRARY
 	NAMES
-	SDL2
+	SDL2 SDL2-static
 	HINTS
 	${SDL2_LIB_HINTS}
 	PATHS

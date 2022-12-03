@@ -27,6 +27,7 @@
 #include "lcf/rpg/mapinfo.h"
 
 #include "cache.h"
+#include "font.h"
 #include "main_data.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -81,6 +82,7 @@ void Translation::Reset()
 	translation_root_fs = FilesystemView();
 	languages.clear();
 	current_language = {};
+	default_language = {};
 }
 
 void Translation::InitTranslations()
@@ -116,6 +118,14 @@ void Translation::InitTranslations()
 				item.lang_name = ini.GetString("Language", "Name", item.lang_name);
 				item.lang_desc = ini.GetString("Language", "Description", "");
 				item.lang_code = ini.GetString("Language", "Code", "");
+				item.lang_term = ini.GetString("Language", "Term", "Language");
+				item.use_builtin_font = Utils::LowerCase(ini.GetString("Language", "Font", "")) == "builtin";
+
+				if (item.lang_dir == "default") {
+					// Metadata for the normal game language
+					default_language = item;
+					continue;
+				}
 			}
 
 			languages.push_back(item);
@@ -126,6 +136,11 @@ void Translation::InitTranslations()
 const Language& Translation::GetCurrentLanguage() const
 {
 	return current_language;
+}
+
+const Language& Translation::GetDefaultLanguage() const
+{
+	return default_language;
 }
 
 FilesystemView Translation::GetRootTree() const
@@ -195,7 +210,11 @@ void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 	Player::LoadDatabase();
 
 	// Translation could provide custom fonts
-	Player::LoadFonts();
+	if (current_language.use_builtin_font) {
+		Font::ResetDefault();
+	} else {
+		Player::LoadFonts();
+	}
 
 	// Rewrite our database+messages (unless we are on the Default language).
 	// Note that map Message boxes are changed on map load, to avoid slowdown here.

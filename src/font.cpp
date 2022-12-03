@@ -249,8 +249,11 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 	FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), 0, &face);
 
 	if (face->num_charmaps > 0) {
-		// Force first charmap. Is enabled by default for Unicode fonts but not for legacy fonts (FON, BDF, etc.)
-		FT_Set_Charmap(face, face->charmaps[0]);
+		// Force unicode charmap
+		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0) {
+			// If this fails, force the first for legacy fonts (FON, BDF, etc.)
+			FT_Set_Charmap(face, face->charmaps[0]);
+		}
 	}
 
 	if (FT_HAS_COLOR(face)) {
@@ -452,9 +455,13 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 #endif
 }
 
-void Font::Dispose() {
+void Font::ResetDefault() {
 	SetDefault(nullptr, true);
 	SetDefault(nullptr, false);
+}
+
+void Font::Dispose() {
+	ResetDefault();
 
 #ifdef HAVE_FREETYPE
 	if (library) {

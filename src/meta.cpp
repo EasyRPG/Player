@@ -30,6 +30,7 @@
 #include "meta.h"
 #include "output.h"
 #include "player.h"
+#include "translation.h"
 #include <lcf/reader_util.h>
 
 
@@ -49,7 +50,7 @@
 #define MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY "Vocab_ImportSave"
 #define MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE "Import Save"
 #define MTINI_EXVOCAB_TRANSLATE_TITLE_KEY "Vocab_Translate"
-#define MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE "Translation"
+#define MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE "Language"
 
 
 // Helper: Get the CRC32 of a given file as a hex string
@@ -231,6 +232,18 @@ std::string Meta::GetExVocabImportSaveTitleText() const {
 }
 
 std::string Meta::GetExVocabTranslateTitleText() const {
+	std::string term;
+
+	if (Tr::HasActiveTranslation()) {
+		term = Player::translation.GetCurrentLanguage().lang_term;
+	} else {
+		term = Player::translation.GetDefaultLanguage().lang_term;
+	}
+
+	if (!term.empty()) {
+		return term;
+	}
+
 	return GetExVocab(MTINI_EXVOCAB_TRANSLATE_TITLE_KEY, MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE);
 }
 
