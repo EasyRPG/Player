@@ -30,14 +30,14 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_B},
 		{CANCEL, Keys::JOY_X},
 		{SHIFT, Keys::JOY_Y},
-		{N0, Keys::JOY_STICK_PRIMARY},
-		{N5, Keys::JOY_STICK_SECONDARY},
+		{N0, Keys::JOY_LSTICK},
+		{N5, Keys::JOY_RSTICK},
 		{DEBUG_THROUGH, Keys::JOY_SHOULDER_LEFT},
 		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
 		{RESET, Keys::JOY_BACK},
-		{FAST_FORWARD, Keys::JOY_TRIGGER_RIGHT_FULL},
-		{DEBUG_MENU, Keys::JOY_TRIGGER_LEFT_FULL},
+		{FAST_FORWARD, Keys::JOY_RTRIGGER_FULL},
+		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
 #endif
 		// Touchscreen
 		{N0, Keys::N0},
@@ -58,18 +58,18 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_TOUCH},
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
-		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
-		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
-		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
-		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
-		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
-		{N8, Keys::JOY_STICK_SECONDARY_UP},
-		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT}
+		{UP, Keys::JOY_LSTICK_UP},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
+		{N1, Keys::JOY_RSTICK_DOWN_LEFT},
+		{N2, Keys::JOY_RSTICK_DOWN},
+		{N3, Keys::JOY_RSTICK_DOWN_RIGHT},
+		{N4, Keys::JOY_RSTICK_LEFT},
+		{N6, Keys::JOY_RSTICK_RIGHT},
+		{N7, Keys::JOY_RSTICK_UP_LEFT},
+		{N8, Keys::JOY_RSTICK_UP},
+		{N9, Keys::JOY_RSTICK_UP_RIGHT}
 #endif
 	};
 }
@@ -86,8 +86,8 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::JOY_Y, "Y"},
 		{Keys::JOY_SHOULDER_LEFT, "L"},
 		{Keys::JOY_SHOULDER_RIGHT, "R"},
-		{Keys::JOY_TRIGGER_LEFT_FULL, "ZL"},
-		{Keys::JOY_TRIGGER_RIGHT_FULL, "ZR"},
+		{Keys::JOY_LTRIGGER_FULL, "ZL"},
+		{Keys::JOY_RTRIGGER_FULL, "ZR"},
 		{Keys::JOY_BACK, "Select"},
 		{Keys::JOY_START, "Start"},
 		// Touchscreen

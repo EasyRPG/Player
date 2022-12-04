@@ -422,8 +422,8 @@ void NxUi::ProcessEvents() {
 	keys[Input::Keys::JOY_B] = (input & HidNpadButton_B);
 	keys[Input::Keys::JOY_X] = (input & HidNpadButton_X);
 	keys[Input::Keys::JOY_Y] = (input & HidNpadButton_Y);
-	keys[Input::Keys::JOY_STICK_PRIMARY] = (input & HidNpadButton_StickL);
-	keys[Input::Keys::JOY_STICK_SECONDARY] = (input & HidNpadButton_StickR);
+	keys[Input::Keys::JOY_LSTICK] = (input & HidNpadButton_StickL);
+	keys[Input::Keys::JOY_RSTICK] = (input & HidNpadButton_StickR);
 	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input & (HidNpadButton_L|HidNpadButton_AnySL)) > 0;
 	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input & (HidNpadButton_R|HidNpadButton_AnySR)) > 0;
 	keys[Input::Keys::JOY_BACK] = (input & HidNpadButton_Minus);

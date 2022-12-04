@@ -180,8 +180,8 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 		case RETRO_DEVICE_ID_JOYPAD_SELECT	: return Input::Keys::JOY_BACK;
 		case RETRO_DEVICE_ID_JOYPAD_L		: return Input::Keys::JOY_SHOULDER_LEFT;
 		case RETRO_DEVICE_ID_JOYPAD_R		: return Input::Keys::JOY_SHOULDER_RIGHT;
-		case RETRO_DEVICE_ID_JOYPAD_L3		: return Input::Keys::JOY_STICK_PRIMARY;
-		case RETRO_DEVICE_ID_JOYPAD_R3		: return Input::Keys::JOY_STICK_SECONDARY;
+		case RETRO_DEVICE_ID_JOYPAD_L3		: return Input::Keys::JOY_LSTICK;
+		case RETRO_DEVICE_ID_JOYPAD_R3		: return Input::Keys::JOY_RSTICK;
 
 		default : return Input::Keys::NONE;
 	}

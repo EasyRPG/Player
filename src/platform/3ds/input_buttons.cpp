@@ -51,10 +51,10 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{PERIOD, Keys::KP_PERIOD},
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
-		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{UP, Keys::JOY_LSTICK_UP},
 #endif
 	};
 }
@@ -65,10 +65,10 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
 		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
 		{Keys::JOY_DPAD_RIGHT, "D-Pad Up"},
-		{Keys::JOY_STICK_PRIMARY_UP, "Circle Pad Up"},
-		{Keys::JOY_STICK_PRIMARY_DOWN, "Circle Pad Down"},
-		{Keys::JOY_STICK_PRIMARY_LEFT, "Circle Pad Left"},
-		{Keys::JOY_STICK_PRIMARY_RIGHT, "Circle Pad Up"},
+		{Keys::JOY_LSTICK_UP, "Circle Pad Up"},
+		{Keys::JOY_LSTICK_DOWN, "Circle Pad Down"},
+		{Keys::JOY_LSTICK_LEFT, "Circle Pad Left"},
+		{Keys::JOY_LSTICK_RIGHT, "Circle Pad Up"},
 		{Keys::JOY_A, "A"},
 		{Keys::JOY_B, "B"},
 		{Keys::JOY_X, "X"},
