@@ -33,9 +33,10 @@ public:
 		eNone,
 		eMain,
 		eInput,
-		eInputMapping,
-		eInputButton,
-		eInputRemap,
+		eInputListButtons,
+		eInputButtonOption,
+		eInputButtonAdd,
+		eInputButtonRemove,
 		eVideo,
 		eAudio,
 		eLicense,
@@ -63,6 +64,13 @@ public:
 		std::vector<std::string> options_help;
 	};
 
+	struct StackFrame {
+		UiMode uimode = eNone;
+		int arg = -1;
+		int scratch = 0;
+		int scratch2 = 0;
+	};
+
 	/** Constructor  */
 	Window_Settings(int ix, int iy, int iwidth, int iheight);
 
@@ -84,6 +92,9 @@ public:
 
 	void Push(UiMode ui, int arg = -1);
 	void Pop();
+
+	StackFrame& GetFrame(int n = 0);
+	const StackFrame& GetFrame(int n = 0) const;
 
 	/**
 	 * Refreshes the item list.
@@ -119,9 +130,6 @@ private:
 	void RefreshAudio();
 	void RefreshLicense();
 
-	void RefreshInputButton();
-	void RefreshInputRemap();
-
 	void UpdateHelp() override;
 
 	std::vector<Option> options;
@@ -132,19 +140,10 @@ private:
 	};
 	Memory memory[eLastMode] = {};
 
-	struct StackFrame {
-		UiMode uimode = eNone;
-		int arg = -1;
-		int scratch = 0;
-		int scratch2 = 0;
-	};
 	std::array<StackFrame,8> stack;
 	int stack_index = 0;
 	int timer = 0;
 	std::vector<std::string> picker_options;
-
-	StackFrame& GetFrame(int n = 0);
-	const StackFrame& GetFrame(int n = 0) const;
 
 	int GetStackSize() const;
 

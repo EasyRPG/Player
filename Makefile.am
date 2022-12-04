@@ -381,6 +381,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_help.h \
 	src/window_import_progress.cpp \
 	src/window_import_progress.h \
+	src/window_input_settings.cpp \
+	src/window_input_settings.h \
 	src/window_item.cpp \
 	src/window_item.h \
 	src/window_keyboard.cpp \

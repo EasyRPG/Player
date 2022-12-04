@@ -38,6 +38,8 @@ public:
 
 	int GetIndex() const;
 	void SetIndex(int nindex);
+	int GetColumnMax() const;
+	void SetColumnMax(int ncolmax);
 	int GetRowMax() const;
 	int GetTopRow() const;
 	void SetTopRow(int row);
@@ -53,7 +55,7 @@ public:
 	 * @param index index of item.
 	 * @return Rect where the item is drawn.
 	 */
-	Rect GetItemRect(int index);
+	virtual Rect GetItemRect(int index);
 
 	/**
 	 * Function called by the base UpdateHelp() implementation.

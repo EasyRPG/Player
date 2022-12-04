@@ -41,48 +41,6 @@ Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
 void Window_Settings::UpdateMode() {
 	auto& frame = GetFrame();
 	auto mode = frame.uimode;
-
-	if (mode == eInputRemap) {
-		const Input::KeyStatus* keys;
-		int& started = frame.scratch;
-		int& cancel_timer = frame.scratch2;
-		// Delay button reading on startup until 0 keys are pressed
-		// Prevents that CONFIRM is directly detected as pressed key
-		// on some platforms
-		if (started == 0) {
-			keys = &Input::GetAllRawPressed();
-			if (keys->count() != 0) {
-				return;
-			}
-			started = 1;
-		}
-
-		// Determine if a CANCEL key is for aborting or for mapping
-		// depending on how long the key was held
-		if (Input::IsPressed(Input::CANCEL)) {
-			++cancel_timer;
-			if (cancel_timer == 30) {
-				Pop();
-			}
-			return;
-		} else if (Input::IsReleased(Input::CANCEL)) {
-			keys = &Input::GetAllRawReleased();
-		} else {
-			keys = &Input::GetAllRawPressed();
-		}
-		if (keys->count() != 1) {
-			return;
-		}
-		for (size_t i = 0; i < keys->size(); ++i) {
-			if ((*keys)[i]) {
-				auto button = static_cast<Input::InputButton>(GetFrame().arg);
-				auto& mappings = Input::GetInputSource()->GetButtonMappings();
-				mappings.Add({button, static_cast<Input::Keys::InputKey>(i) });
-				Pop();
-				break;
-			}
-		}
-	}
 }
 
 void Window_Settings::DrawOption(int index) {
@@ -166,9 +124,6 @@ void Window_Settings::Refresh() {
 		case eInput:
 			RefreshInput();
 			break;
-		case eInputMapping:
-			RefreshInputMapping();
-			break;
 		case eVideo:
 			RefreshVideo();
 			break;
@@ -178,11 +133,8 @@ void Window_Settings::Refresh() {
 		case eLicense:
 			RefreshLicense();
 			break;
-		case eInputButton:
-			RefreshInputButton();
-			break;
-		case eInputRemap:
-			RefreshInputRemap();
+		case eInputListButtons:
+			RefreshInputMapping();
 			break;
 	}
 
@@ -386,8 +338,8 @@ void Window_Settings::RefreshLicense() {
 void Window_Settings::RefreshInput() {
 	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
 
-	AddOption(ConfigParam<std::string>("Button Mapping", "Change the button mapping", ""),
-		[this]() { Push(eInputMapping); });
+	AddOption(ConfigParam<std::string>("Key/Button mapping", "Change the keybindings", ""),
+		[this]() { Push(eInputListButtons); });
 	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); });
 	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); });
 	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); });
@@ -410,63 +362,7 @@ void Window_Settings::RefreshInputMapping() {
 		std::string prefix = std::string("Key ") + name;
 		AddOption(param,
 				[this, button, prefix](){
-				Push(eInputButton, static_cast<int>(button));
+				Push(eInputButtonOption, static_cast<int>(button));
 			});
 	}
-}
-
-void Window_Settings::RefreshInputButton() {
-	auto button = static_cast<Input::InputButton>(GetFrame().arg);
-
-	auto& mappings = Input::GetInputSource()->GetButtonMappings();
-
-	// Protect buttons where unmapping makes the Player unusable
-	auto def_mappings = Input::GetDefaultButtonMappings();
-	auto protected_buttons = std::array<std::pair<Input::InputButton, Input::Keys::InputKey>, 7> {{
-		{Input::InputButton::UP,            Input::Keys::InputKey::NONE},
-		{Input::InputButton::DOWN,          Input::Keys::InputKey::NONE},
-		{Input::InputButton::LEFT,          Input::Keys::InputKey::NONE},
-		{Input::InputButton::RIGHT,         Input::Keys::InputKey::NONE},
-		{Input::InputButton::DECISION,      Input::Keys::InputKey::NONE},
-		{Input::InputButton::CANCEL,        Input::Keys::InputKey::NONE},
-		{Input::InputButton::SETTINGS_MENU, Input::Keys::InputKey::NONE}
-	}};
-	for (auto& p: protected_buttons) {
-		for (auto ki = def_mappings.LowerBound(button); ki != def_mappings.end() && ki->first == button; ++ki) {
-			p.second = ki->second;
-			break;
-		}
-	}
-
-	std::stringstream ss;
-	for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
-		auto key = static_cast<Input::Keys::InputKey>(ki->second);
-		auto kname = Input::Keys::kNames.tag(key);
-
-		if (std::find(protected_buttons.begin(), protected_buttons.end(), *ki) != protected_buttons.end()) {
-			AddOption(LockedConfigParam<std::string>(kname, "Mapping is essential and cannot be removed", ""), [](){
-			});
-		} else {
-			AddOption(ConfigParam<std::string>(kname, "Select to remove this mapping", ""), [=]() mutable {
-				Input::GetInputSource()->GetButtonMappings().Remove({button, key});
-				Refresh();
-			});
-		}
-	}
-
-	AddOption(ConfigParam<std::string>("<Add new>", "Add a new button mapping", ""), [=](){
-		Push(eInputRemap, static_cast<int>(button));
-	});
-	AddOption(ConfigParam<std::string>("<Reset>", "Revert to default mapping", ""), [=](){
-		Input::ResetDefaultMapping(button);
-		Refresh();
-	});
-}
-
-void Window_Settings::RefreshInputRemap() {
-	auto button = static_cast<Input::InputButton>(GetFrame().arg);
-	auto name = Input::kButtonNames.tag(button);
-
-	AddOption(ConfigParam<std::string>("Press the new key", fmt::format("Remapping {}", name), ""), [](){});
-	AddOption(ConfigParam<std::string>("Hold CANCEL to abort", "", ""), [](){});
 }
