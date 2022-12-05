@@ -29,7 +29,6 @@
 /*
 TODO:
 Automatic Picture Size
-Font size (Mismatch with ManiacPatch)
 Letter Spacing
 Bold when Font has no Bold Typeface
 Disable Text Gradient

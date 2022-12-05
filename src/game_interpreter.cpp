@@ -4200,6 +4200,15 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	text.line_spacing = (flags & (0xFF << 16)) >> 16;
 	text.font_size = ValueOrVariable((com.parameters[0] & (0xF << 20)) >> 20, com.parameters[20]);
 
+	// Windows uses pt but we use px
+	int font_px = Utils::RoundTo<int>(text.font_size * (72 / 96.0));
+	// Maniac Patch appears to confuse pt and px causing large padding everywhere
+	// The next two lines emulate this problem
+	text.position_y = text.font_size - font_px;
+	text.line_spacing += text.font_size - font_px;
+
+	text.font_size = font_px;
+
 	size_t param_size = com.parameters.size();
 
 	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
