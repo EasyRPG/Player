@@ -35,8 +35,6 @@ Disable Text Shadow
 
 Async (System & Font)
 Font Cache
-
-lcftrans support
 */
 
 
