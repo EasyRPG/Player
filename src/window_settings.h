@@ -60,6 +60,7 @@ public:
 		int original_value;
 		int min_value;
 		int max_value;
+		std::vector<int> options_index;
 		std::vector<std::string> options_text;
 		std::vector<std::string> options_help;
 	};

@@ -280,7 +280,7 @@ void Scene_Settings::UpdateOptions() {
 	} else if (picker_window) {
 		picker_window->Update();
 		auto& option = options_window->GetCurrentOption();
-		option.current_value = picker_window->GetIndex();
+		option.current_value = option.options_index[picker_window->GetIndex()];
 		option.action();
 
 		if (Input::IsTriggered(Input::DECISION)) {
@@ -337,10 +337,15 @@ void Scene_Settings::UpdateOptions() {
 				}
 				option.action();
 			} else if (option.mode == Window_Settings::eOptionPicker) {
-				--option.current_value;
-				if (option.current_value < 0) {
-					option.current_value = static_cast<int>(option.options_text.size() - 1);
+				auto it = std::find(option.options_index.begin(), option.options_index.end(), option.current_value);
+				assert(it != option.options_index.end());
+
+				if (it == option.options_index.begin()) {
+					it = std::prev(option.options_index.end());
+				} else {
+					std::advance(it, -1);
 				}
+				option.current_value = *it;
 			}
 			option.action();
 			options_window->Refresh();
@@ -358,10 +363,14 @@ void Scene_Settings::UpdateOptions() {
 				}
 				option.action();
 			} else if (option.mode == Window_Settings::eOptionPicker) {
-				++option.current_value;
-				if (option.current_value >= static_cast<int>(option.options_text.size())) {
-					option.current_value = 0;
+				auto it = std::find(option.options_index.begin(), option.options_index.end(), option.current_value);
+				assert(it != option.options_index.end());
+
+				std::advance(it, 1);
+				if (it == option.options_index.end()) {
+					it = option.options_index.begin();
 				}
+				option.current_value = *it;
 			}
 			option.action();
 			options_window->Refresh();

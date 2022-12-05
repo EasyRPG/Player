@@ -512,9 +512,14 @@ bool NxUi::LogMessage(const std::string &message) {
 		return true;
 }
 
+void NxUi::ToggleStretch() {
+	vcfg.stretch.Toggle();
+}
+
 void NxUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("Switch NX (Software)");
 	cfg.vsync.Disable();
 	cfg.window_zoom.Disable();
 	cfg.fullscreen.Lock(IsFullscreen());
+	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
 }

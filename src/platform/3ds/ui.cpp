@@ -164,8 +164,7 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	top_image.tex = tex;
 	top_image.subtex = &subt3x;
 
-	// FIXME: Add option to settings Ui
-	if (cfg.video.stretch_width.Get()) {
+	if (cfg.video.stretch.Get()) {
 		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
 		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
@@ -356,12 +355,11 @@ void CtrUi::UpdateDisplay() {
 	C2D_SceneBegin(top_screen);
 	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
 
-	// FIXME: All video options must be accesible during runtime
-	/*if (cfg.stretch_width) {
+	if (vcfg.stretch.Get()) {
 		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, 1.25f, 1.0f);
 	} else {
 		C2D_DrawImageAt(top_image, 40, 0, z);
-	}*/
+	}
 	C2D_DrawImageAt(top_image, 40, 0, z);
 
 	// bottom screen
@@ -437,9 +435,21 @@ bool CtrUi::LogMessage(const std::string &message) {
 #endif
 }
 
+void Ctr2Ui::ToggleStretch() {
+	vcfg.stretch.Toggle();
+
+	if (cfg.video.stretch.Get()) {
+		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+	} else {
+		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+	}
+}
+
 void Ctr2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("3DS Citro (Software)");
 	cfg.vsync.Disable();
 	cfg.window_zoom.Disable();
+	cfg.scaling_mode.Disable();
 	cfg.fullscreen.Lock(IsFullscreen());
+	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
 }

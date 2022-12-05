@@ -217,11 +217,21 @@ void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
 	opt.mode = eOptionPicker;
 	opt.current_value = static_cast<int>(param.Get());
 	opt.original_value = opt.current_value;
+	int idx = 0;
 	for (auto& s: param.GetValues()) {
-		opt.options_text.push_back(ToString(s));
+		if (param.IsValid(static_cast<T>(idx))) {
+			opt.options_text.push_back(ToString(s));
+			opt.options_index.push_back(idx);
+		}
+		++idx;
 	}
+
+	idx = 0;
 	for (auto& s: param.GetDescriptions()) {
-		opt.options_help.push_back(ToString(s));
+		if (param.IsValid(static_cast<T>(idx))) {
+			opt.options_help.push_back(ToString(s));
+		}
+		++idx;
 	}
 	if (!param.Locked()) {
 		opt.action = std::forward<Action>(action);
@@ -350,7 +360,7 @@ void Window_Settings::RefreshInputMapping() {
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
-		auto name = Input::kButtonNames.tag(button);
+		std::string name = Input::kButtonNames.tag(button);
 		auto help = Input::kButtonHelp.tag(button);
 		std::string value = "";
 		auto ki = mappings.LowerBound(button);
@@ -358,10 +368,23 @@ void Window_Settings::RefreshInputMapping() {
 			value = Input::Keys::kNames.tag(ki->second);
 		}
 
+		bool first_letter = true;
+		for (size_t i = 0; i < name.size(); ++i) {
+			auto& ch = name[i];
+			if (ch >= 'A' && ch <= 'Z') {
+				if (!first_letter) {
+					ch += 32;
+				}
+				first_letter = false;
+			} else if (ch == '_') {
+				ch = ' ';
+				first_letter = true;
+			}
+		}
+
 		auto param = ConfigParam<std::string>(name, help, value);
-		std::string prefix = std::string("Key ") + name;
 		AddOption(param,
-				[this, button, prefix](){
+				[this, button](){
 				Push(eInputButtonOption, static_cast<int>(button));
 			});
 	}
