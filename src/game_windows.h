@@ -28,7 +28,6 @@
 
 /*
 TODO:
-Automatic Picture Size
 Letter Spacing
 Bold when Font has no Bold Typeface
 Disable Text Gradient

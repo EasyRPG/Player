@@ -134,19 +134,133 @@ void Game_Windows::Window_User::Erase() {
 }
 
 void Game_Windows::Window_User::Refresh() {
-	int w = data.width;
-	int h = data.height;
+	std::vector<FontRef> fonts;
+	std::vector<PendingMessage> messages;
 
-	if (w == 0 && h == 0) {
-		// TODO: Parse entire text to figure out w and h
+	for (const auto& text: data.texts) {
+		// TODO: Async requests
+		FontRef font;
 
-		// Border size
-		w += 16;
-		h += 16;
+		Filesystem_Stream::InputStream font_file;
+		std::string font_name = ToString(text.font_name);
+		// Try to find best fitting font
+		if (text.flags.bold && text.flags.italic) {
+			font_file = FileFinder::OpenFont(font_name + "-BoldItalic");
+		}
+
+		if (!font_file && text.flags.bold) {
+			font_file = FileFinder::OpenFont(font_name + "-Bold");
+		}
+
+		if (!font_file && text.flags.italic) {
+			font_file = FileFinder::OpenFont(font_name + "-Italic");
+		}
+
+		if (!font_file) {
+			font_file = FileFinder::OpenFont(font_name+ "-Regular");
+		}
+
+		if (!font_file) {
+			font_file = FileFinder::OpenFont(font_name);
+		}
+
+		if (!font_file) {
+			Output::Warning("Font not found: {}", text.font_name);
+			font = Font::Default();
+		} else {
+			font = Font::CreateFtFont(std::move(font_file), text.font_size, text.flags.bold, text.flags.italic);
+		}
+
+		fonts.emplace_back(font);
+
+		std::stringstream ss(ToString(text.text));
+		std::string out;
+		PendingMessage pm;
+		while (Utils::ReadLine(ss, out)) {
+			pm.PushLine(out);
+		}
+		messages.emplace_back(pm);
 	}
 
+	if (data.width == 0 && data.height == 0) {
+		// Automatic window size
+		int x_max = 0;
+		int y_max = 0;
 
-	window = std::make_unique<Window_Selectable>(0, 0, w, h);
+		for (size_t i = 0; i < data.texts.size(); ++i) {
+			// Lots of duplication with the rendering code below but cannot be easily reduced more
+			const auto& font = fonts[i];
+			const auto& pm = messages[i];
+			const auto& text = data.texts[i];
+
+			int x = text.position_x;
+			int y = text.position_y;
+			for (const auto& line: pm.GetLines()) {
+				std::u32string line32;
+				auto* text_index = line.data();
+				const auto* end = line.data() + line.size();
+
+				while (text_index != end) {
+					auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+					text_index = tret.next;
+
+					if (EP_UNLIKELY(!tret)) {
+						continue;
+					}
+
+					const auto ch = tret.ch;
+
+					if (Utils::IsControlCharacter(ch)) {
+						// control characters not handled
+						continue;
+					}
+
+					if (tret.is_escape && ch != Player::escape_char) {
+						if (!line32.empty()) {
+							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+							line32.clear();
+						}
+
+						// Special message codes
+						switch (ch) {
+							case 'c':
+							case 'C':
+							{
+								// Color
+								Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+							}
+							break;
+						}
+						continue;
+					}
+
+					line32 += static_cast<char32_t>(ch);
+				}
+
+				if (!line32.empty()) {
+					x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+				}
+
+				x_max = std::max(x, x_max);
+
+				x = 0;
+				y += text.font_size + text.line_spacing;
+			}
+
+			y -= text.line_spacing;
+
+			y_max = std::max(y, y_max);
+		}
+
+		// Border size
+		x_max += 16;
+		y_max += 20; // 16 looks better but this matches better with Maniac Patch
+
+		data.width = x_max;
+		data.height = y_max;
+	}
+
+	window = std::make_unique<Window_Selectable>(0, 0, data.width, data.height);
 	window->CreateContents();
 	window->SetVisible(false);
 
@@ -174,46 +288,14 @@ void Game_Windows::Window_User::Refresh() {
 		window->SetBorderY(0);
 	}
 
-	for (const auto& text: data.texts) {
-		// TODO: Async requests
-		FontRef font;
+	for (size_t i = 0; i < data.texts.size(); ++i) {
+		// Lots of duplication with the rendering code below but cannot be easily reduced more
+		const auto& font = fonts[i];
+		const auto& pm = messages[i];
+		const auto& text = data.texts[i];
 
-		Filesystem_Stream::InputStream font_file;
-		std::string font_name = ToString(text.font_name);
-		// Try to find best fitting font
-		if (text.flags.bold && text.flags.italic) {
-			font_file = FileFinder::OpenFont(font_name + "-BoldItalic");
-		}
-
-		if (!font_file && text.flags.bold) {
-			font_file = FileFinder::OpenFont(font_name + "-Bold");
-		}
-
-		if (!font_file && text.flags.italic) {
-			font_file = FileFinder::OpenFont(font_name + "-Italic");
-		}
-
-		if (!font_file) {
-			font_file = FileFinder::OpenFont(font_name);
-		}
-
-		if (!font_file) {
-			Output::Warning("Font not found: {}", text.font_name);
-			font = Font::Default();
-		} else {
-			font = Font::CreateFtFont(std::move(font_file), text.font_size, text.flags.bold, text.flags.italic);
-		}
-
-		std::stringstream ss(ToString(text.text));
-
-		std::string out;
-		PendingMessage pm;
-		while (Utils::ReadLine(ss, out)) {
-			pm.PushLine(out);
-		}
-
-		int x = 0;
-		int y = 0;
+		int x = text.position_x;
+		int y = text.position_y;
 		int text_color = 0;
 		for (const auto& line: pm.GetLines()) {
 			std::u32string line32;
