@@ -186,6 +186,50 @@ namespace {
 		private:
 			mutable BitmapRef bm;
 	};
+
+	/** FreeType Font Cache */
+	struct CacheItem {
+		FontRef font;
+		Game_Clock::time_point last_access;
+	};
+
+	using key_type = std::string;
+	std::unordered_map<key_type, CacheItem> ft_cache;
+
+	// Hard to track the size of a font
+	// Instead limit the cache to the last 3 referenced fonts
+	constexpr int cache_limit = 3;
+	size_t cache_size = 0;
+
+	using namespace std::chrono_literals;
+
+	void FreeFontMemory() {
+		auto cur_ticks = Game_Clock::GetFrameTime();
+
+		for (auto it = ft_cache.begin(); it != ft_cache.end();) {
+			if (it->second.font.use_count() != 1) {
+				// Font is referenced
+				++it;
+				continue;
+			}
+
+			auto last_access = cur_ticks - it->second.last_access;
+			bool cache_exhausted = cache_size > cache_limit;
+			if (cache_exhausted) {
+				if (last_access <= 50ms) {
+					// Used during the last 3 frames, must be important, keep it.
+					++it;
+					continue;
+				}
+			} else if (last_access <= 3s) {
+				++it;
+				continue;
+			}
+			cache_size -= 1;
+
+			it = ft_cache.erase(it);
+		}
+	}
 } // anonymous namespace
 
 BitmapFont::BitmapFont(StringView name, function_type func)
@@ -495,6 +539,26 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 #ifdef HAVE_FREETYPE
 	if (!is) {
 		return nullptr;
+	}
+
+	FreeFontMemory();
+
+	std::string key = ToString(is.GetName()) + ":" + (bold ? "T" : "F") + (italic ? "T" : "F");
+
+	auto it = ft_cache.find(key);
+
+	if (it == ft_cache.end()) {
+		auto ft_font = std::make_shared<FTFont>(std::move(is), size, bold, italic);
+		if (!ft_font) {
+			return nullptr;
+		}
+
+		++cache_size;
+
+		return (ft_cache[key] = {ft_font, Game_Clock::GetFrameTime()}).font;
+	} else {
+		it->second.last_access = Game_Clock::GetFrameTime();
+		return it->second.font;
 	}
 
 	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
