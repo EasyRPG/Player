@@ -27,9 +27,11 @@
 #include "window_selectable.h"
 
 /*
+FIXME:
+Letter Spacing: Not supported by HarfBuzz and doing it manual will fail for any non-trivial case
+Bold/Italic: Will only work when the font provides a bold/italic typeface
+
 TODO:
-Letter Spacing
-Bold when Font has no Bold Typeface
 Disable Text Gradient
 Disable Text Shadow
 

@@ -148,32 +148,41 @@ void Game_Windows::Window_User::Refresh() {
 
 		Filesystem_Stream::InputStream font_file;
 		std::string font_name = ToString(text.font_name);
-		// Try to find best fitting font
-		if (text.flags.bold && text.flags.italic) {
-			font_file = FileFinder::OpenFont(font_name + "-BoldItalic");
-		}
 
-		if (!font_file && text.flags.bold) {
-			font_file = FileFinder::OpenFont(font_name + "-Bold");
-		}
+		if (!font_name.empty()) {
+			// Try to find best fitting font
+			if (text.flags.bold && text.flags.italic) {
+				font_file = FileFinder::OpenFont(font_name + "-BoldItalic");
+			}
 
-		if (!font_file && text.flags.italic) {
-			font_file = FileFinder::OpenFont(font_name + "-Italic");
-		}
+			if (!font_file && text.flags.bold) {
+				font_file = FileFinder::OpenFont(font_name + "-Bold");
+			}
 
-		if (!font_file) {
-			font_file = FileFinder::OpenFont(font_name+ "-Regular");
-		}
+			if (!font_file && text.flags.italic) {
+				font_file = FileFinder::OpenFont(font_name + "-Italic");
+			}
 
-		if (!font_file) {
-			font_file = FileFinder::OpenFont(font_name);
-		}
+			if (!font_file) {
+				font_file = FileFinder::OpenFont(font_name+ "-Regular");
+			}
 
-		if (!font_file) {
-			Output::Warning("Font not found: {}", text.font_name);
-			font = Font::Default();
+			if (!font_file) {
+				font_file = FileFinder::OpenFont(font_name);
+			}
+
+			if (!font_file) {
+				Output::Warning("Font not found: {}", text.font_name);
+				font = Font::Default();
+			} else {
+				font = Font::CreateFtFont(std::move(font_file), text.font_size, text.flags.bold, text.flags.italic);
+				if (!font) {
+					Output::Warning("Error loading font: {}", text.font_name);
+					font = Font::Default();
+				}
+			}
 		} else {
-			font = Font::CreateFtFont(std::move(font_file), text.font_size, text.flags.bold, text.flags.italic);
+			font = Font::Default();
 		}
 
 		fonts.emplace_back(font);

@@ -4127,6 +4127,11 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	int pic_id = ValueOrVariable(com.parameters[0] & 0xF, com.parameters[1]);
 
+	if (pic_id <= 0) {
+		Output::Error("ShowStringPic: Requested invalid picture id ({})", pic_id);
+		return true;
+	}
+
 	Game_Windows::WindowParams params = {};
 	Game_Windows::WindowText text;
 
@@ -4197,6 +4202,11 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	flags = com.parameters[14];
 	params.use_transparent_color = (flags & 0xFF) > 0;
 	text.letter_spacing = (flags & (0xFF << 8)) >> 8;
+
+	if (text.letter_spacing > 0) {
+		Output::Warning("ShowStringPic: Letter spacing != 0 is unsupported (id={})", pic_id);
+	}
+
 	text.line_spacing = (flags & (0xFF << 16)) >> 16;
 	text.font_size = ValueOrVariable((com.parameters[0] & (0xF << 20)) >> 20, com.parameters[20]);
 
@@ -4216,7 +4226,7 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	});
 
 	if (components.size() < 4) {
-		Output::Warning("ShowStringPic: Bad text arg");
+		Output::Warning("ShowStringPic: Bad text arg (id={})", pic_id);
 		return true;
 	}
 
