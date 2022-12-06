@@ -36,6 +36,7 @@
 #include "game_targets.h"
 #include "game_screen.h"
 #include "game_pictures.h"
+#include "game_windows.h"
 #include <lcf/lsd/reader.h>
 #include "output.h"
 #include "player.h"
@@ -76,7 +77,7 @@ std::string Scene_Save::GetSaveFilename(const FilesystemView& fs, int slot_id) {
 bool Scene_Save::Save(const FilesystemView& fs, int slot_id, bool prepare_save) {
 	const auto filename = GetSaveFilename(fs, slot_id);
 	Output::Debug("Saving to {}", filename);
-	
+
 	auto save_stream = FileFinder::Save().OpenOutputStream(filename);
 
 	if (!save_stream) {
@@ -137,6 +138,7 @@ bool Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 
 	save.screen = Main_Data::game_screen->GetSaveData();
 	save.pictures = Main_Data::game_pictures->GetSaveData();
+	save.easyrpg_data.windows = Main_Data::game_windows->GetSaveData();
 
 	save.system.scene = Scene::instance ? Scene::rpgRtSceneFromSceneType(Scene::instance->type) : -1;
 

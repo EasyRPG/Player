@@ -1197,6 +1197,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
 	Main_Data::game_targets->SetSaveData(std::move(save->targets));
 	Main_Data::game_player->SetSaveData(save->party_location);
+	Main_Data::game_windows->SetSaveData(std::move(save->easyrpg_data.windows));
 
 	int map_id = Main_Data::game_player->GetMapId();
 

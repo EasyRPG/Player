@@ -342,6 +342,12 @@ bool Game_Pictures::Picture::Exists() const {
 	return !data.name.empty();
 }
 
+void Game_Pictures::Picture::CreateSprite() {
+	if (!sprite) {
+		sprite = std::make_unique<Sprite_Picture>(data.ID, Drawable::Flags::Shared);
+	}
+}
+
 bool Game_Pictures::Picture::IsRequestPending() const {
 	return request_id != nullptr;
 }
@@ -377,10 +383,7 @@ void Game_Pictures::OnPictureSpriteReady(FileRequestResult*, int id) {
 	auto* pic = GetPicturePtr(id);
 	if (EP_LIKELY(pic)) {
 		pic->request_id = nullptr;
-		if (!pic->sprite) {
-			sprites.emplace_back(pic->data.ID, Drawable::Flags::Shared);
-			pic->sprite = &sprites.back();
-		}
+		pic->CreateSprite();
 		pic->OnPictureSpriteReady();
 	}
 }
@@ -478,25 +481,12 @@ void Game_Pictures::OnMapScrolled(int dx, int dy) {
 	}
 }
 
-void Game_Pictures::AttachWindow(int id) {
-	auto& pic = GetPicture(id);
-	pic.AttachWindow();
-
-	if (!pic.sprite) {
-		sprites.emplace_back(id, Drawable::Flags::Shared);
-		pic.sprite = &sprites.back();
-	}
-}
-
-void Game_Pictures::Picture::AttachWindow() {
+void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_window;
-}
 
-// TODO: Unify with AttachWindow
-void Game_Pictures::Picture::CreateEmptyBitmap(int width, int height) {
-	assert(sprite);
+	CreateSprite();
 
-	sprite->SetBitmap(std::make_shared<Bitmap>(width, height, data.use_transparent_color));
+	sprite->SetBitmap(std::make_shared<Bitmap>(window.GetWidth(), window.GetHeight(), data.use_transparent_color));
 	sprite->OnPictureShow();
 	sprite->SetVisible(true);
 }

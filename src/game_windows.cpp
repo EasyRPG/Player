@@ -32,14 +32,20 @@ Game_Windows::Window_User::Window_User(lcf::rpg::SaveEasyRpgWindow save)
 
 }
 
-void Game_Windows::SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save)
-{
+void Game_Windows::SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save) {
 	windows.clear();
 
 	int num_windows = static_cast<int>(save.size());
 	windows.reserve(num_windows);
 	for (int i = 0; i < num_windows; ++i) {
 		windows.emplace_back(std::move(save[i]));
+		auto& win = windows.back();
+		int id = win.data.ID;
+		if (id > 0) {
+			win.Refresh();
+			auto& pic = Main_Data::game_pictures->GetPicture(id);
+			pic.AttachWindow(*win.window);
+		}
 	}
 }
 
@@ -116,9 +122,8 @@ bool Game_Windows::Create(int id, const WindowParams& params) {
 
 	if (window.Create(params)) {
 		if (Main_Data::game_pictures->Show(id, params)) {
-			Main_Data::game_pictures->AttachWindow(id);
 			auto& pic = Main_Data::game_pictures->GetPicture(id);
-			pic.CreateEmptyBitmap(window.window->GetWidth(), window.window->GetHeight());
+			pic.AttachWindow(*window.window);
 			return true;
 		} else {
 			window.Erase();
