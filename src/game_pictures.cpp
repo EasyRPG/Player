@@ -389,7 +389,7 @@ void Game_Pictures::OnPictureSpriteReady(FileRequestResult*, int id) {
 }
 
 void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
-	if (origin == 0) {
+	if (origin == 0 || !sprite) {
 		return;
 	}
 
