@@ -320,7 +320,7 @@ void Game_Player::UpdateNextMovementAction() {
 			break;
 	}
 	if (move_dir >= 0) {
-		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->route_through);
+		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->move_route_through);
 		Move(move_dir);
 		ResetThrough();
 		if (IsStopping()) {
@@ -527,7 +527,7 @@ bool Game_Player::GetOnVehicle() {
 
 		SetThrough(true);
 		Move(GetDirection());
-		// FIXME: RPG_RT resets through to route_through || not visible?
+		// FIXME: RPG_RT resets through to move_route_through || not visible?
 		ResetThrough();
 
 		data()->vehicle = vehicle->GetVehicleType();

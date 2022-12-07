@@ -169,7 +169,7 @@ void Game_Character::UpdateMovement(int amount) {
 
 		auto& move_route = GetMoveRoute();
 		if (IsMoveRouteOverwritten() && GetMoveRouteIndex() >= static_cast<int>(move_route.move_commands.size())) {
-			SetMoveRouteRepeated(true);
+			SetMoveRouteFinished(true);
 			SetMoveRouteIndex(0);
 			if (!move_route.repeat) {
 				// If the last command of a move route is a move or jump,
@@ -253,7 +253,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 		//Move route is finished
 		if (current_index >= num_commands) {
 			if (is_overwrite) {
-				SetMoveRouteRepeated(true);
+				SetMoveRouteFinished(true);
 			}
 			if (!current_route.repeat) {
 				if (is_overwrite) {
@@ -434,11 +434,11 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					break;
 				case Code::walk_everywhere_on:
 					SetThrough(true);
-					data()->route_through = true;
+					data()->move_route_through = true;
 					break;
 				case Code::walk_everywhere_off:
 					SetThrough(false);
-					data()->route_through = false;
+					data()->move_route_through = false;
 					break;
 				case Code::stop_animation:
 					SetAnimPaused(true);
@@ -759,7 +759,7 @@ void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 	SetPaused(false);
 	SetStopCount(0xFFFF);
 	SetMoveRouteIndex(0);
-	SetMoveRouteRepeated(false);
+	SetMoveRouteFinished(false);
 	SetMoveFrequency(frequency);
 	SetMoveRouteOverwritten(true);
 	SetMoveRoute(new_route);
@@ -779,7 +779,7 @@ void Game_Character::CancelMoveRoute() {
 		SetMaxStopCountForStep();
 	}
 	SetMoveRouteOverwritten(false);
-	SetMoveRouteRepeated(false);
+	SetMoveRouteFinished(false);
 }
 
 int Game_Character::GetSpriteX() const {

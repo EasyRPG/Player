@@ -103,7 +103,7 @@ static void testInit(Game_Character& ch, int max_stop_count = 0) {
 	// FIXME: Check move route
 	REQUIRE_EQ(ch.GetMoveRouteIndex(), 0);
 	REQUIRE(!ch.IsMoveRouteOverwritten());
-	REQUIRE(!ch.IsMoveRouteRepeated());
+	REQUIRE(!ch.IsMoveRouteFinished());
 	REQUIRE_EQ(ch.GetSpriteName(), "");
 	REQUIRE(ch.HasTileSprite());
 	REQUIRE_EQ(ch.GetSpriteIndex(), 0);

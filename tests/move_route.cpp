@@ -42,7 +42,7 @@ static void testMoveRoute(
 	REQUIRE_EQ(ch.GetMaxStopCount(), max_stop_count);
 	REQUIRE_EQ(ch.GetMoveRouteIndex(), move_route_idx);
 	REQUIRE_EQ(ch.IsMoveRouteOverwritten(), overwritten);
-	REQUIRE_EQ(ch.IsMoveRouteRepeated(), done);
+	REQUIRE_EQ(ch.IsMoveRouteFinished(), done);
 	REQUIRE_EQ(ch.GetMoveRoute(), mr);
 	REQUIRE_EQ(ch.IsStopCountActive(), stop_count < max_stop_count);
 }

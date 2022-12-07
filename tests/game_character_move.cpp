@@ -50,7 +50,7 @@ static void testChar(
 	REQUIRE_EQ(ch.GetMaxStopCount(), max_stop_count);
 	REQUIRE_EQ(ch.GetMoveRouteIndex(), 0);
 	REQUIRE_EQ(ch.IsMoveRouteOverwritten(), false);
-	REQUIRE_EQ(ch.IsMoveRouteRepeated(), false);
+	REQUIRE_EQ(ch.IsMoveRouteFinished(), false);
 	REQUIRE_EQ(ch.GetMoveRoute(), lcf::rpg::MoveRoute());
 
 	REQUIRE_EQ(ch.IsStopCountActive(), stop_count < max_stop_count);
