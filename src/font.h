@@ -26,6 +26,7 @@
 #include "rect.h"
 #include "string_view.h"
 #include <string>
+#include <lcf/scope_guard.h>
 
 class Color;
 class Rect;
@@ -67,6 +68,13 @@ class Font {
 		 * In that case code contains the original codepoint usable for a fallback.
 		 */
 		bool not_found;
+	};
+
+	struct Style {
+		int size = -1;
+		bool bold = false;
+		bool italic = false;
+		bool draw_shadow = false;
 	};
 
 	virtual ~Font() = default;
@@ -149,6 +157,24 @@ class Font {
 	 */
 	void SetFallbackFont(FontRef fallback_font);
 
+	using StyleScopeGuard = lcf::ScopeGuard<std::function<void()>>;
+
+	/**
+	 * Returns the current font style used for rendering.
+	 *
+	 * @return current style
+	 */
+	Style GetCurrentStyle() const;
+
+	/**
+	 * Applies a new text style for rendering.
+	 * The style is reverted to the original style afterwards through the returned scope guard.
+	 *
+	 * @param new_style new style to apply
+	 * @return StyleScopeGuard When destroyed, reverts to the old style
+	 */
+	StyleScopeGuard ApplyStyle(Style new_style);
+
 	/**
 	 * Uses the FreeType library to load a font from the provided stream.
 	 *
@@ -178,21 +204,19 @@ class Font {
 		ColorHeal = 9
 	};
 
-	size_t pixel_size() const { return size * 96 / 72; }
-
 	virtual Rect vGetSize(char32_t glyph) const = 0;
 	virtual GlyphRet vRender(char32_t glyph) const = 0;
 	virtual GlyphRet vRenderShaped(char32_t glyph) const { return vRender(glyph); };
 	virtual bool vCanShape() const { return false; }
 	virtual std::vector<ShapeRet> vShape(U32StringView) const { return {}; }
+	virtual void vApplyStyle(const Style& style) { (void)style; };
 
  protected:
 	Font(StringView name, int size, bool bold, bool italic);
 
 	std::string name;
-	unsigned size;
-	bool bold;
-	bool italic;
+	Style original_style;
+	Style current_style;
 	FontRef fallback_font;
 };
 

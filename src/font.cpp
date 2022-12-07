@@ -142,6 +142,7 @@ namespace {
 #ifdef HAVE_HARFBUZZ
 		std::vector<ShapeRet> vShape(U32StringView txt) const override;
 #endif
+		void vApplyStyle(const Style& style) override;
 
 	private:
 		FT_Face face = nullptr;
@@ -287,6 +288,7 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 	}
 
 	if (FT_HAS_COLOR(face)) {
+		// FIXME: Find the best size
 		FT_Select_Size(face, 0);
 	} else {
 		FT_Set_Pixel_Sizes(face, 0, size);
@@ -315,6 +317,10 @@ FTFont::~FTFont() {
 #ifdef HAVE_HARFBUZZ
 	if (hb_buffer) {
 		hb_buffer_destroy(hb_buffer);
+	}
+
+	if (hb_font) {
+		hb_font_destroy(hb_font);
 	}
 #endif
 
@@ -492,6 +498,26 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 }
 #endif
 
+void FTFont::vApplyStyle(const Style& style) {
+	if (current_style.size == style.size) {
+		return;
+	}
+
+	if (FT_HAS_COLOR(face)) {
+		// FIXME: Find the best size
+		FT_Select_Size(face, 0);
+	} else {
+		FT_Set_Pixel_Sizes(face, 0, style.size);
+	}
+
+#ifdef HAVE_HARFBUZZ
+	// Without this the sizes become desynchronized
+	hb_font_destroy(hb_font);
+	hb_font = hb_ft_font_create_referenced(face);
+	hb_ft_font_set_funcs(hb_font);
+#endif
+}
+
 #endif
 
 FontRef Font::Default() {
@@ -586,16 +612,15 @@ void Font::Dispose() {
 // Constructor.
 Font::Font(StringView name, int size, bool bold, bool italic)
 	: name(ToString(name))
-	, size(size)
-	, bold(bold)
-	, italic(italic)
 {
+	original_style = {size, bold, italic, true};
+	current_style = original_style;
 }
 
 Rect Font::GetSize(char32_t glyph) const {
 	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
 		if (glyph == '\n') {
-			return {0, 0, 0, static_cast<int>(size)};
+			return {0, 0, 0, static_cast<int>(current_style.size)};
 		}
 
 		return {};
@@ -623,7 +648,7 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	unsigned src_y;
 
 	if (color != ColorShadow) {
-		if (!gret.has_color) {
+		if (!gret.has_color && current_style.draw_shadow) {
 			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
 			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
 		}
@@ -670,7 +695,7 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	unsigned src_y;
 
 	if (color != ColorShadow) {
-		if (!gret.has_color) {
+		if (!gret.has_color && current_style.draw_shadow) {
 			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
 			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
 		}
@@ -723,6 +748,20 @@ std::vector<Font::ShapeRet> Font::Shape(U32StringView text) const {
 
 void Font::SetFallbackFont(FontRef fallback_font) {
 	this->fallback_font = fallback_font;
+}
+
+Font::Style Font::GetCurrentStyle() const {
+	return current_style;
+}
+
+Font::StyleScopeGuard Font::ApplyStyle(Style new_style) {
+	vApplyStyle(new_style);
+	current_style = new_style;
+
+	return lcf::ScopeGuard<std::function<void()>>([&]() {
+		vApplyStyle(original_style);
+		current_style = original_style;
+	});
 }
 
 ExFont::ExFont() : Font("exfont", 12, false, false) {
