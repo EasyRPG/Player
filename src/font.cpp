@@ -493,6 +493,10 @@ void Font::SetDefault(FontRef new_default, bool use_mincho) {
 
 FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic) {
 #ifdef HAVE_FREETYPE
+	if (!is) {
+		return nullptr;
+	}
+
 	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
 #else
 	return nullptr;
@@ -527,8 +531,7 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 Rect Font::GetSize(char32_t glyph) const {
 	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
 		if (glyph == '\n') {
-			// FIXME: Does not work for larger fonts
-			return {0, 0, 0, 12};
+			return {0, 0, 0, static_cast<int>(size)};
 		}
 
 		return {};

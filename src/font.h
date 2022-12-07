@@ -149,6 +149,15 @@ class Font {
 	 */
 	void SetFallbackFont(FontRef fallback_font);
 
+	/**
+	 * Uses the FreeType library to load a font from the provided stream.
+	 *
+	 * @param is Stream to read from
+	 * @param size Font size (height) in px
+	 * @param bold Configure for bold rendering. This option is ignored.
+	 * @param italic Configure for italic rendering. This option is ignored.
+	 * @return font handle or nullptr on failure or if FreeType is unavailable
+	 */
 	static FontRef CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 	static FontRef Default();
 	static FontRef Default(bool use_mincho);
