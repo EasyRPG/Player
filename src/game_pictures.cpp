@@ -231,6 +231,7 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 
 	// Not saved as the coordinate system is directly transformed to "center"
 	origin = params.origin;
@@ -489,6 +490,8 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	sprite->SetBitmap(std::make_shared<Bitmap>(window.GetWidth(), window.GetHeight(), data.use_transparent_color));
 	sprite->OnPictureShow();
 	sprite->SetVisible(true);
+
+	ApplyOrigin(false);
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {

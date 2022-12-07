@@ -87,6 +87,8 @@ Game_Windows::Window_User* Game_Windows::GetWindowPtr(int id) {
 }
 
 bool Game_Windows::Window_User::Create(const WindowParams& params) {
+	Erase();
+
 	data.width = params.width;
 	data.height = params.height;
 	data.system_name = lcf::DBString(params.system_name);
