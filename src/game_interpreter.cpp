@@ -3056,9 +3056,8 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* 
 int Game_Interpreter::KeyInputState::CheckInput() const {
 	auto check = wait ? Input::IsTriggered : Input::IsPressed;
 
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Mouse buttons checked first (Maniac checks them last) to prevent conflict
-	// with DECISION that is mapped to MOUSE_LEFT
+	// when DECISION is mapped to MOUSE_LEFT
 	// The order of checking matches the Maniac behaviour
 	if (keys[Keys::eMouseScrollDown] && check(Input::SCROLL_DOWN)) {
 		return 1001;
@@ -3079,7 +3078,6 @@ int Game_Interpreter::KeyInputState::CheckInput() const {
 	if (keys[Keys::eMouseLeft] && check(Input::MOUSE_LEFT)) {
 		return 1005;
 	}
-#endif
 
 	// RPG processes keys from highest variable value to lowest.
 	if (keys[Keys::eOperators]) {

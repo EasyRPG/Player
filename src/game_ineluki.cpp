@@ -152,13 +152,11 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			if (mouse_support) {
 				Output::Warning("Ineluki: Mouse input is not supported on this platform");
 			}
-#else
+#endif
 			if (prev_mouse_support != mouse_support) {
 				Output::Debug("Ineluki: Mouse support is now {}", mouse_support ? "Enabled" : "Disabled");
 			}
-#endif
 		} else if (cmd.name == "getmouseposition") {
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			if (!mouse_support) {
 				return true;
 			}
@@ -173,7 +171,6 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			output_list.push_back(mouse_pos.y);
 			output_list.push_back(mouse_pos.x);
 			output_list.push_back(mouse_id_prefix);
-#endif
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
 		} else if (cmd.name == "registercheatevent") {
