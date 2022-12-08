@@ -103,9 +103,9 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{FAST_FORWARD_PLUS, Keys::G},
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-		{DECISION, Keys::MOUSE_LEFT},
-		{CANCEL, Keys::MOUSE_RIGHT},
-		{SHIFT, Keys::MOUSE_MIDDLE},
+		{MOUSE_LEFT, Keys::MOUSE_LEFT},
+		{MOUSE_RIGHT, Keys::MOUSE_RIGHT},
+		{MOUSE_MIDDLE, Keys::MOUSE_MIDDLE},
 		{SCROLL_UP, Keys::MOUSE_SCROLLUP},
 		{SCROLL_DOWN, Keys::MOUSE_SCROLLDOWN},
 #endif
@@ -162,9 +162,9 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 #endif
 
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-		{DECISION, Keys::ONE_FINGER},
-		{CANCEL, Keys::TWO_FINGERS},
-		{SHIFT, Keys::THREE_FINGERS},
+		{MOUSE_LEFT, Keys::ONE_FINGER},
+		{MOUSE_RIGHT, Keys::TWO_FINGERS},
+		{MOUSE_MIDDLE, Keys::THREE_FINGERS},
 #endif
 	};
 }
