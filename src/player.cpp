@@ -119,8 +119,6 @@ namespace Player {
 	std::string rtp_path;
 	bool no_audio_flag;
 	bool is_easyrpg_project;
-	bool mouse_flag;
-	bool touch_flag;
 	std::string encoding;
 	std::string escape_symbol;
 	uint32_t escape_char;
@@ -423,8 +421,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 	no_rtp_flag = false;
 	no_audio_flag = false;
 	is_easyrpg_project = false;
-	mouse_flag = false;
-	touch_flag = false;
 	Game_Battle::battle_test.enabled = false;
 
 	std::stringstream ss;
@@ -483,14 +479,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 		if (cp.ParseNext(arg, 0, "window")) {
 			// Legacy RPG_RT argument - window
 			cfg.video.fullscreen.Set(false);
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--enable-mouse")) {
-			mouse_flag = true;
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--enable-touch")) {
-			touch_flag = true;
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, {"testplay", "--test-play"})) {
@@ -1416,8 +1404,6 @@ Options:
                            This option is not supported on all platforms.
       --no-vsync           Disable vertical sync and use fps-limit. Even without
                            this option, vsync may not be supported on all platforms.
-      --enable-mouse       Use mouse click for decision and scroll wheel for lists
-      --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the
                            command menu.
       --load-game-id N     Skip the title scene and load SaveN.lsd

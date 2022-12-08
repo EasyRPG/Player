@@ -502,10 +502,8 @@ void Sdl2Ui::ProcessEvents() {
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Reset Mouse scroll
-	if (Player::mouse_flag) {
-		keys[Input::Keys::MOUSE_SCROLLUP] = false;
-		keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
-	}
+	keys[Input::Keys::MOUSE_SCROLLUP] = false;
+	keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
 #endif
 
 	// Poll SDL events and process them
@@ -920,9 +918,6 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 	SDL_TouchID touchid;
 	int fingers = 0;
-
-	if (!Player::touch_flag)
-		return;
 
 	// We currently ignore swipe gestures
 	if (evnt.type != SDL_FINGERMOTION) {
