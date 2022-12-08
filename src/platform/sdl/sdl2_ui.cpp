@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include "game_config.h"
@@ -505,6 +506,31 @@ void Sdl2Ui::ProcessEvents() {
 	keys[Input::Keys::MOUSE_SCROLLUP] = false;
 	keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
 #endif
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+	// process touch input
+	keys[Input::Keys::ONE_FINGER] = false;
+	keys[Input::Keys::TWO_FINGERS] = false;
+	keys[Input::Keys::THREE_FINGERS] = false;
+	keys[Input::Keys::FOUR_FINGERS] = false;
+	keys[Input::Keys::FIVE_FINGERS] = false;
+
+	// Do not evaluate when there is still a press
+	if (!std::any_of(finger_down.begin(), finger_down.end(), [](bool arg) { return arg; })) {
+		// Event timestamps are based on SDL_GetTicks, use it instead of our own Clock
+		int ticks = SDL_GetTicks();
+
+		// The fingers do not leave the touchpad at the exact same millisecond
+		// To prevent wrong detections (e.g. one finger when two fingers left) wait, until one finger left for 100ms (totally arbitrary)
+		if (std::count_if(finger_timestamps_up.begin(), finger_timestamps_up.end(), [ticks](int timestamp) {
+			return ticks - timestamp >= 100;
+		}) >= 1) {
+			int fingers = std::count_if(finger_timestamps_up.begin(), finger_timestamps_up.end(), [ticks](int timestamp) {
+				return ticks - timestamp <= 200;
+			});
+			keys[Input::Keys::ONE_FINGER + fingers - 1] = true;
+		}
+	}
+#endif
 
 	// Poll SDL events and process them
 	while (SDL_PollEvent(&evnt)) {
@@ -917,21 +943,27 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 	SDL_TouchID touchid;
-	int fingers = 0;
 
 	// We currently ignore swipe gestures
-	if (evnt.type != SDL_FINGERMOTION) {
-		/* FIXME: To simplify things, we lazily only get the current number of
-		   fingers touching the first device (hoping nobody actually uses
-		   multiple devices). This way we do not need to keep track on finger
-		   IDs and deal with the timing.
-		*/
-		touchid = SDL_GetTouchDevice(0);
-		if (touchid != 0)
-			fingers = SDL_GetNumTouchFingers(touchid);
+	// A finger touch is detected when the fingers go up a brief delay after going down
+	if (evnt.type == SDL_FINGERDOWN) {
+		int finger = evnt.tfinger.fingerId;
+		if (finger < static_cast<int>(finger_down.size())) {
+			finger_down[finger] = true;
+			finger_timestamps_down[finger] = evnt.tfinger.timestamp;
+		}
+	} else if (evnt.type == SDL_FINGERUP) {
+		int finger = evnt.tfinger.fingerId;
 
-		keys[Input::Keys::ONE_FINGER] = fingers == 1;
-		keys[Input::Keys::TWO_FINGERS] = fingers == 2;
+		if (finger < static_cast<int>(finger_down.size())) {
+			finger_down[finger] = false;
+			// Do not report finger up when the press was too long, indicating a motion
+			if (evnt.tfinger.timestamp - finger_timestamps_down[finger] < 200) {
+				finger_timestamps_up[finger] = evnt.tfinger.timestamp;
+			} else {
+				finger_timestamps_up[finger] = 0;
+			}
+		}
 	}
 #else
 	/* unused */
