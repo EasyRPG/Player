@@ -715,8 +715,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandMovePicture(com);
 		case Cmd::ErasePicture:
 			return CommandErasePicture(com);
-		case Cmd::SpriteTransparency:
-			return CommandSpriteTransparency(com);
+		case Cmd::PlayerVisibility:
+			return CommandPlayerVisibility(com);
 		case Cmd::MoveEvent:
 			return CommandMoveEvent(com);
 		case Cmd::MemorizeBGM:
@@ -2947,7 +2947,7 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 	return true;
 }
 
-bool Game_Interpreter::CommandSpriteTransparency(lcf::rpg::EventCommand const& com) { // code 11310
+bool Game_Interpreter::CommandPlayerVisibility(lcf::rpg::EventCommand const& com) { // code 11310
 	bool hidden = (com.parameters[0] == 0);
 	Game_Character* player = Main_Data::game_player.get();
 	player->SetSpriteHidden(hidden);

@@ -1540,7 +1540,7 @@ bool Game_Map::IsAnyEventStarting() {
 
 bool Game_Map::IsAnyMovePending() {
 	auto check = [](auto& ev) {
-		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteRepeated();
+		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteFinished();
 	};
 	const auto map_id = GetMapId();
 	if (check(*Main_Data::game_player)) {
