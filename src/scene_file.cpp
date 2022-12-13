@@ -57,7 +57,7 @@ std::unique_ptr<Sprite> Scene_File::MakeArrowSprite(bool down) {
 	sprite->SetZ(Priority_Window + 2);
 	sprite->SetBitmap(bitmap);
 	sprite->SetX(SCREEN_TARGET_WIDTH / 2 - 8);
-	sprite->SetY(down ? 232 : 32);
+	sprite->SetY(down ? SCREEN_TARGET_HEIGHT - 8 : 32);
 	return sprite;
 }
 
@@ -125,7 +125,7 @@ void Scene_File::Start() {
 		file_windows.push_back(w);
 	}
 
-	border_bottom = Scene_File::MakeBorderSprite(232);
+	border_bottom = Scene_File::MakeBorderSprite(SCREEN_TARGET_HEIGHT - 8);
 
 	up_arrow = Scene_File::MakeArrowSprite(false);
 	down_arrow = Scene_File::MakeArrowSprite(true);
