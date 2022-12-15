@@ -213,7 +213,7 @@ void Window_Message::StartChoiceProcessing() {
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
 	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
-		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
+		number_input_window->SetX(MESSAGE_BOX_OFFSET_X + LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
 	}
