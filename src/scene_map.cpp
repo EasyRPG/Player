@@ -73,7 +73,7 @@ Scene_Map::~Scene_Map() {
 void Scene_Map::Start() {
 	Scene_Debug::ResetPrevIndices();
 	spriteset.reset(new Spriteset_Map());
-	message_window.reset(new Window_Message((SCREEN_TARGET_WIDTH - 320) / 2, SCREEN_TARGET_HEIGHT - 80, 320, 80));
+	message_window.reset(new Window_Message(MESSAGE_BOX_OFFSET_X, SCREEN_TARGET_HEIGHT - MESSAGE_BOX_HEIGHT, MESSAGE_BOX_WIDTH, MESSAGE_BOX_HEIGHT));
 
 	Game_Message::SetWindow(message_window.get());
 

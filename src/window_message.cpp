@@ -258,7 +258,8 @@ void Window_Message::InsertNewPage() {
 	prev_char_printable = false;
 	prev_char_waited = true;
 
-	y = Game_Message::GetRealPosition() * 80;
+	float factor = Game_Message::GetRealPosition() / (float)2;
+	y = (SCREEN_TARGET_HEIGHT * factor) - (MESSAGE_BOX_HEIGHT * factor);
 
 	if (Main_Data::game_system->IsMessageTransparent()) {
 		SetOpacity(0);
