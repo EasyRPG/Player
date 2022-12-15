@@ -27,6 +27,10 @@
 /** Targeted screen default height. */
 #define SCREEN_TARGET_HEIGHT 240
 
+/** Menus width and offset */
+#define MENU_WIDTH 320
+const int MENU_OFFSET_X = (SCREEN_TARGET_WIDTH - MENU_WIDTH) / 2;
+
 /** Working with hi resolutions. default 16 */
 #define TILE_SIZE 16
 
