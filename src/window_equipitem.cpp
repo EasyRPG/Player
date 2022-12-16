@@ -22,8 +22,8 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
-	Window_Item(0, 128, SCREEN_TARGET_WIDTH, (SCREEN_TARGET_HEIGHT-128)),
+Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight, int actor_id, int equip_type) :
+	Window_Item(ix, iy, iwidth, iheight),
 	actor_id(actor_id) {
 	this->equip_type = equip_type;
 	if (equip_type > 4 || equip_type < 0) {
