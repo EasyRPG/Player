@@ -29,13 +29,24 @@ Scene_Status::Scene_Status(int actor_index) :
 }
 
 void Scene_Status::Start() {
+	int window_actor_info_width = 124;
+	int window_actor_info_height = 208;
+	int window_gold_width = 124;
+	int window_gold_height = 32;
+	int window_actor_status_width = 196;
+	int window_actor_status_height = 64;
+	int window_param_status_width = 196;
+	int window_param_status_height = 80;
+	int window_equip_width = 196;
+	int window_equip_height = 96;
+
 	int actor = Main_Data::game_party->GetActors()[actor_index]->GetId();
 
-	actorinfo_window.reset(new Window_ActorInfo(0, 0, 124, 208, actor));
-	actorstatus_window.reset(new Window_ActorStatus(124, 0, 196, 64, actor));
-	gold_window.reset(new Window_Gold(0, 208, 124, 32));
-	paramstatus_window.reset(new Window_ParamStatus(124, 64, 196, 80, actor));
-	equip_window.reset(new Window_Equip(124, 144, 196, 96, actor));
+	actorinfo_window.reset(new Window_ActorInfo(MENU_OFFSET_X, MENU_OFFSET_Y, window_actor_info_width, window_actor_info_height, actor));
+	gold_window.reset(new Window_Gold(MENU_OFFSET_X, MENU_OFFSET_Y + window_actor_info_height, window_gold_width, window_gold_height));
+	actorstatus_window.reset(new Window_ActorStatus(MENU_OFFSET_X + window_actor_info_width, MENU_OFFSET_Y, window_actor_status_width, window_actor_status_height, actor));
+	paramstatus_window.reset(new Window_ParamStatus(MENU_OFFSET_X + window_actor_info_width, MENU_OFFSET_Y + window_actor_status_height, window_param_status_width, window_param_status_height, actor));
+	equip_window.reset(new Window_Equip(MENU_OFFSET_X + window_actor_info_width, MENU_OFFSET_Y + window_actor_status_height + window_param_status_height, window_equip_width, window_equip_height, actor));
 
 	equip_window->SetActive(false);
 	paramstatus_window->SetActive(false);
