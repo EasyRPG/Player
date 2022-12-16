@@ -50,16 +50,27 @@ void Scene_Shop::Start() {
 		}
 	}
 
-	shop_window.reset(new Window_Shop(shop_type, 0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
-	gold_window.reset(new Window_Gold(184, 128, 136, 32));
-	empty_window.reset(new Window_Base(0, 32, SCREEN_TARGET_WIDTH, 128));
-	empty_window2.reset(new Window_Base(0, 32, 184, 128));
-	buy_window.reset(new Window_ShopBuy(goods, 0, 32, 184, 128));
-	party_window.reset(new Window_ShopParty(184, 32, 136, 48));
-	sell_window.reset(new Window_ShopSell(0, 32, SCREEN_TARGET_WIDTH, 128));
-	status_window.reset(new Window_ShopStatus(184, 80, 136, 48));
-	number_window.reset(new Window_ShopNumber(0, 32, 184, 128));
+	int window_help_height = 32;
+	int window_buy_width = 184;
+	int window_buy_height = 128;
+	int window_party_width = 136;
+	int window_party_height = 48;
+	int window_status_width = 136;
+	int window_status_height = 48;
+	int window_gold_width = 136;
+	int window_gold_height = 32;
+	int window_shop_height = 80;
+
+	help_window.reset(new Window_Help(MENU_OFFSET_X, MENU_OFFSET_Y, MENU_WIDTH, window_help_height));
+	buy_window.reset(new Window_ShopBuy(goods, MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height, window_buy_width, window_buy_height));
+	number_window.reset(new Window_ShopNumber(MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height, window_buy_width, window_buy_height));
+	party_window.reset(new Window_ShopParty(MENU_OFFSET_X + window_buy_width, MENU_OFFSET_Y + window_help_height, window_party_width, window_party_height));
+	status_window.reset(new Window_ShopStatus(MENU_OFFSET_X + window_buy_width, MENU_OFFSET_Y + window_help_height + window_party_height, window_status_width, window_status_height));
+	gold_window.reset(new Window_Gold(MENU_OFFSET_X + window_buy_width, MENU_OFFSET_Y + window_help_height + window_party_height + window_status_height, window_gold_width, window_gold_height));
+	shop_window.reset(new Window_Shop(shop_type, MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height + window_party_height + window_status_height + window_gold_height, MENU_WIDTH, window_shop_height));
+	sell_window.reset(new Window_ShopSell(MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height, MENU_WIDTH, window_buy_height));
+	empty_window.reset(new Window_Base(MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height, MENU_WIDTH, window_buy_height));
+	empty_window2.reset(new Window_Base(MENU_OFFSET_X, MENU_OFFSET_Y + window_help_height, window_buy_width, window_buy_height));
 
 	buy_window->SetActive(false);
 	buy_window->SetVisible(false);
