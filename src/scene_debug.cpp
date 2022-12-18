@@ -472,8 +472,10 @@ void Scene_Debug::CreateRangeWindow() {
 		ranges.push_back("");
 	range_window.reset(new Window_Command(ranges, 96));
 
-	range_window->SetHeight(176);
-	range_window->SetY(32);
+	int height = 176;
+	range_window->SetHeight(height);
+	range_window->SetX(MENU_OFFSET_X);
+	range_window->SetY(MENU_OFFSET_Y + ((MENU_HEIGHT - height) / 2));
 }
 
 void Scene_Debug::UpdateRangeListWindow() {
@@ -597,7 +599,7 @@ void Scene_Debug::CreateVarListWindow() {
 	for (int i = 0; i < 10; i++)
 		vars.push_back("");
 	var_window.reset(new Window_VarList(vars));
-	var_window->SetX(range_window->GetWidth());
+	var_window->SetX(MENU_OFFSET_X + range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->SetVisible(false);
 	var_window->SetIndex(-1);
@@ -606,7 +608,7 @@ void Scene_Debug::CreateVarListWindow() {
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
-	numberinput_window.reset(new Window_NumberInput(160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, 104,
+	numberinput_window.reset(new Window_NumberInput(MENU_OFFSET_X + 160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, MENU_OFFSET_Y + 104,
 		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16, 32));
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
