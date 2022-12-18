@@ -260,8 +260,21 @@ void Window_Message::InsertNewPage() {
 	prev_char_printable = false;
 	prev_char_waited = true;
 
+	// Position the message box vertically
+	// Game_Message::GetRealPosition() specify top/middle/bottom
 	float factor = Game_Message::GetRealPosition() / (float)2;
-	y = (SCREEN_TARGET_HEIGHT * factor) - (MESSAGE_BOX_HEIGHT * factor);
+	// In case of hight vertical resolution, we add a margin for top/bottom
+	int off_set_y = 0;
+	if (SCREEN_TARGET_HEIGHT > 240) {
+		int margin_y = SCREEN_TARGET_HEIGHT * 0.03;
+		if (Game_Message::GetRealPosition() == 0) {
+			off_set_y = margin_y;
+		}
+		else if (Game_Message::GetRealPosition() == 2) {
+			off_set_y = (-1) * margin_y;
+		}
+	}
+	y = (SCREEN_TARGET_HEIGHT * factor) - (MESSAGE_BOX_HEIGHT * factor) + off_set_y;
 
 	if (Main_Data::game_system->IsMessageTransparent()) {
 		SetOpacity(0);
