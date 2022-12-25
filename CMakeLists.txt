@@ -598,7 +598,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/input_buttons.cpp
 		src/platform/3ds/ui.cpp
 		src/platform/3ds/ui.h)
-	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} 3ds-assets)
+	target_link_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
@@ -634,7 +634,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/input_buttons.cpp
 		src/platform/switch/ui.cpp
 		src/platform/switch/ui.h)
-	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} switch-assets)
+	target_link_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
