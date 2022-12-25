@@ -436,3 +436,15 @@ bool CtrUi::LogMessage(const std::string &message) {
 	return true;
 #endif
 }
+
+bool CtrUi::HandleErrorOutput(const std::string &message) {
+	errorConf errCnf;
+	std::string error = Player::GetFullVersionString();
+	error += "\n\n" + message;
+
+	errorInit(&errCnf, ERROR_TEXT_WORD_WRAP, CFG_LANGUAGE_EN);
+	errorText(&errCnf, error.c_str());
+	errorDisp(&errCnf);
+
+	return true;
+}

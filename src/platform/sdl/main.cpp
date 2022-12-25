@@ -20,6 +20,7 @@
 #include <vector>
 #include "player.h"
 #include "utils.h"
+#include "main.h"
 
 #ifdef USE_SDL // This is needed on Windows, SDL wraps main()
 #  include <SDL.h>
@@ -54,5 +55,11 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
-	return EXIT_SUCCESS;
+	// Close
+	return Platform::Exit();
+}
+
+int Platform::Exit(bool without_error) {
+	if(without_error) return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }

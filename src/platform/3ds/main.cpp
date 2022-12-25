@@ -19,6 +19,7 @@
 #include <cstdio>
 
 #include "player.h"
+#include "main.h"
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -91,6 +92,11 @@ int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
+	// Close
+	return Platform::Exit();
+}
+
+int Platform::Exit(bool without_error) {
 	romfsExit();
 	gfxExit();
 
@@ -98,5 +104,6 @@ int main(int argc, char* argv[]) {
 		APT_SetAppCpuTimeLimit(old_time_limit);
 	}
 
-	return EXIT_SUCCESS;
+	if(without_error) return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }

@@ -218,6 +218,7 @@ add_library(${PROJECT_NAME} STATIC
 	src/instrumentation.h
 	src/keys.h
 	src/logo.h
+	src/main.h
 	src/main_data.cpp
 	src/main_data.h
 	src/maniac_patch.cpp

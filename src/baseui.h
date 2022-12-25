@@ -111,6 +111,14 @@ public:
 	virtual bool LogMessage(const std::string & /* message */) { return false; }
 
 	/**
+	 * Outputs the error message in a custom way depending on platform
+	 *
+	 * @param message message string.
+	 * @return wether error has been handled
+	 */
+	virtual bool HandleErrorOutput(const std::string & /* message */) { return false; }
+
+	/**
 	 * Gets if fullscreen mode is active.
 	 *
 	 * @return whether fullscreen mode is active.

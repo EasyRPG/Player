@@ -73,7 +73,8 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
-	return EXIT_SUCCESS;
+	// Close
+	return Platform::Exit();
 }
 
 static ssize_t __usbgecko_write(struct _reent * /* r */, void* /* fd */, const char *ptr, size_t len) {
@@ -122,4 +123,9 @@ bool Wii::LogMessage(const std::string &message) {
 
 	// additional usbgecko output not needed
 	return true;
+}
+
+int Platform::Exit(bool without_error) {
+	if(without_error) return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }

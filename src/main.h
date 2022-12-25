@@ -15,19 +15,19 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_MAIN_H
+#define EP_MAIN_H
 
-#include "main.h"
+namespace Platform {
 
-namespace Wii {
 	/**
-	 * Helper function to disable the console on Wii
-	 * and redirect to USB Gekko, if present.
+	 * Run Platform teardown code and set return status code when
+	 * program terminates.
+	 *
+	 * @param without_error Whether to set an error exit code
 	 */
-	void SetConsole();
+	int Exit(bool without_error = true);
 
-	bool LogMessage(const std::string &message);
-};
+}
 
 #endif

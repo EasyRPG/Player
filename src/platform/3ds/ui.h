@@ -52,6 +52,7 @@ public:
 	void UpdateDisplay() override;
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
+	bool HandleErrorOutput(const std::string &message) override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
