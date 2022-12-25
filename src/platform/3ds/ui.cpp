@@ -51,11 +51,15 @@ namespace {
 	enum class screen_state { off, keep, touched, refresh };
 	screen_state bottom_state = screen_state::refresh;
 	Tex3DS_SubTexture subt3x;
+	Tex3DS_Texture keyb_t3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
-	constexpr int width_pow2 = 512;
-	constexpr int height_pow2 = 256;
 	constexpr int z = 0.5f;
+	struct _render_parms {
+		int top, left;
+		float stretch_x, stretch_y;
+	};
+	struct _render_parms renderer;
 	u32* main_buffer;
 	aptHookCookie cookie;
 #ifndef _DEBUG
@@ -69,6 +73,11 @@ namespace {
 	struct _batt battery;
 	Game_Clock::time_point info_tick;
 #endif
+}
+
+__attribute__ ((const)) static inline u32 tex_dim(u32 x) {
+	if (x < 32) return 32;
+	return 1 << (32 - __builtin_clz(x - 1));
 }
 
 static void _aptHook(APT_HookType hook, void*) {
@@ -121,8 +130,7 @@ void CtrUi::ToggleBottomScreen(bool state) {
 	}
 }
 
-CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
-{
+CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg) {
 	SetIsFullscreen(true);
 	aptHook(&cookie, _aptHook, 0);
 	ptmuInit();
@@ -136,6 +144,15 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 
+	// compute render params to center/stretch image
+	renderer.top = (GSP_SCREEN_WIDTH - height) / 2;
+	renderer.left = (GSP_SCREEN_HEIGHT_TOP - width) / 2;
+	renderer.stretch_x = (float)GSP_SCREEN_HEIGHT_TOP / width;
+	renderer.stretch_y = (float)GSP_SCREEN_WIDTH / height;
+
+	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
+	C3D_TexInit(tex, tex_dim(width), tex_dim(height), GPU_RGB8);
+
 	const DynamicFormat format(
 		32,
 		0x00FF0000,
@@ -145,19 +162,16 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 		PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
-	main_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
-	main_surface = Bitmap::Create(main_buffer, width, height, width_pow2*4, format);
+	main_buffer = (u32*)linearAlloc(tex->width * tex->height * 4);
+	main_surface = Bitmap::Create(main_buffer, width, height, tex->width * 4, format);
 
-	// default for both screens
-	subt3x.width = width_pow2;
-	subt3x.height = height_pow2;
+	subt3x.width = tex->width;
+	subt3x.height = tex->height;
 	subt3x.left = 0.0f;
 	subt3x.top = 1.0f;
 	subt3x.right = 1.0f;
 	subt3x.bottom = 0.0f;
 
-	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
-	C3D_TexInit(tex, width_pow2, height_pow2, GPU_RGB8);
 	memset(tex->data, 0, tex->size);
 	tex->border = 0xFFFFFFFF;
 	C3D_TexSetWrap(tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
@@ -179,10 +193,9 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
 	C3D_Tex* keyb_tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
-	Tex3DS_Texture keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, keyb_tex, nullptr, false);
-	Tex3DS_TextureFree(keyb_t3x);
+	keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, keyb_tex, nullptr, false);
 	bottom_image.tex = keyb_tex;
-	bottom_image.subtex = &subt3x;
+	bottom_image.subtex = Tex3DS_GetSubTexture(keyb_t3x, 0);
 
 	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
 	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
@@ -198,6 +211,7 @@ CtrUi::~CtrUi() {
 
 #ifndef _DEBUG
 	C3D_TexDelete(bottom_image.tex);
+	Tex3DS_TextureFree(keyb_t3x);
 	free(bottom_image.tex);
 
 	C2D_SpriteSheetFree(battery.sheet);
@@ -311,46 +325,28 @@ void CtrUi::ProcessEvents() {
 #endif
 }
 
-static __attribute__((always_inline, optimize(3))) inline u32 NDS3D_Reverse32(u32 val)
-{
-	__asm("ROR %0, %1, #24" : "=r" (val) : "r" (val));
-
-	return val;
-}
-
 void CtrUi::UpdateDisplay() {
-	// rotate ARGB buffer to RGBA buffer
-	// required because pixman has no fast-paths for non AXXX buffers
-	u32* line = main_buffer;
-	for (int i = 0; i <= 240; ++i) {
-		for (int j = 0; j <= 320; ++j) {
-			u32* val = line + j;
-			*val = NDS3D_Reverse32(*val);
+	// shift to RGBA buffer, required because of pixman ARGB fast-paths
+	u32* val = main_buffer;
+	for (int i = 0; i <= current_display_mode.height; ++i) {
+		for (int j = 0; j <= current_display_mode.width; ++j) {
+			// ARM: rotate right by 24 bits
+			__asm__("ROR %0, %1, #24" : "=r" (*val) : "r" (*val));
+			val++;
 		}
-		line += width_pow2;
+		val += top_image.tex->width - current_display_mode.width - 1;
 	}
+	GSPGPU_FlushDataCache(main_buffer, top_image.tex->width * top_image.tex->height * 4);
 
-	GSPGPU_FlushDataCache(main_buffer, (width_pow2*height_pow2*4));
-
-	// Using RGB8 as output format is faster and improves framerate ¯\_(ツ)_/¯
-	const u32 flags = (GX_TRANSFER_FLIP_VERT(0) |
-		GX_TRANSFER_OUT_TILED(1) |
-		GX_TRANSFER_RAW_COPY(0) |
+	// Convert the texture before starting a frame, so this uses a safe transfer
+	u32 dim = GX_BUFFER_DIM(top_image.tex->width, top_image.tex->height);
+	C3D_SyncDisplayTransfer(main_buffer, dim, (u32*)top_image.tex->data, dim,
+		(GX_TRANSFER_FLIP_VERT(0) |	GX_TRANSFER_OUT_TILED(1) | GX_TRANSFER_RAW_COPY(0) |
 		GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
 		GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
-		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO));
+		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO)));
 
-	// Doing this after FrameBegin corrupts the output, probably because this
-	// is asynchronous and FrameBegin will block until it finishes
-	C3D_SyncDisplayTransfer(
-		(u32*)main_buffer,
-		GX_BUFFER_DIM(width_pow2, height_pow2),
-		(u32*)top_image.tex->data,
-		GX_BUFFER_DIM(width_pow2, height_pow2),
-		flags
-	 );
-
-	C3D_FrameBegin(0);
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 	// top screen
 	C2D_SceneBegin(top_screen);
@@ -358,11 +354,11 @@ void CtrUi::UpdateDisplay() {
 
 	// FIXME: All video options must be accesible during runtime
 	/*if (cfg.stretch_width) {
-		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, 1.25f, 1.0f);
+		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, renderer.stretch_x, renderer.stretch_y);
 	} else {
-		C2D_DrawImageAt(top_image, 40, 0, z);
+		C2D_DrawImageAt(top_image, renderer.left, renderer.top, z);
 	}*/
-	C2D_DrawImageAt(top_image, 40, 0, z);
+	C2D_DrawImageAt(top_image, renderer.left, renderer.top, z);
 
 	// bottom screen
 #ifndef _DEBUG
@@ -416,7 +412,7 @@ void CtrUi::UpdateDisplay() {
 		}
 
 		// image is 41*12, position with 2 pixels border at bottom right
-		C2D_DrawImageAt(battery.image, 320-41-2, 240-12-2, z);
+		C2D_DrawImageAt(battery.image, GSP_SCREEN_HEIGHT_BOTTOM-41-2, GSP_SCREEN_WIDTH-12-2, z);
 	}
 #endif
 
