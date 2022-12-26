@@ -1984,13 +1984,32 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 	return false;
 }
 
+template <size_t N>
+std::array<int, N> Game_Interpreter::formatParams(lcf::rpg::EventCommand const& target, std::array<int, N> item) {
+	std::array<int, N> params;
+
+	// copy the raw parameters from the EventCommand object to the params array
+	std::transform(item.begin(), item.end(), params.begin(), [&](int i) { return target.parameters[i]; });
+
+	if (Player::IsPatchManiac() && target.parameters.size() > N) {
+		for (size_t i = 0; i < N; ++i) {
+			params[i] = ValueOrVariable((target.parameters[N] & (0xF << (4 * i))) >> (4 * i), params[i]);
+		}
+	}
+
+	return params;
+}
+
+
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
+	std::array<int, 4> params = formatParams<4>(com, { 0, 1, 2, 3 });
+
 	music.name = ToString(com.string);
-	music.fadein = com.parameters[0];
-	music.volume = com.parameters[1];
-	music.tempo = com.parameters[2];
-	music.balance = com.parameters[3];
+	music.fadein = params[0];
+	music.volume = params[1];
+	music.tempo = params[2];
+	music.balance = params[3];
 	Main_Data::game_system->BgmPlay(music);
 	return true;
 }
@@ -2003,10 +2022,12 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
+	std::array<int, 3> params = formatParams<3>(com, { 0, 1, 2 });
+
 	sound.name = ToString(com.string);
-	sound.volume = com.parameters[0];
-	sound.tempo = com.parameters[1];
-	sound.balance = com.parameters[2];
+	sound.volume = params[0];
+	sound.tempo = params[1];
+	sound.balance = params[2];
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }

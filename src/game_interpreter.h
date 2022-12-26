@@ -325,6 +325,8 @@ protected:
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
+	template<size_t N>
+	std::array<int, N> formatParams(lcf::rpg::EventCommand const& target, std::array<int, N> item);
 };
 
 inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {
