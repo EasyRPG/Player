@@ -113,18 +113,18 @@ void Scene_Order::CreateCommandWindow() {
 	options_confirm.push_back(lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_order_scene_redo, "Redo"));
 
 	window_left.reset(new Window_Command(options_left, 88, 4));
-	window_left->SetX(68);
-	window_left->SetY(48);
+	window_left->SetX(MENU_OFFSET_X + 68);
+	window_left->SetY(MENU_OFFSET_Y + 48);
 
 	window_right.reset(new Window_Command(options_right, 88, 4));
-	window_right->SetX(164);
-	window_right->SetY(48);
+	window_right->SetX(MENU_OFFSET_X + 164);
+	window_right->SetY(MENU_OFFSET_Y + 48);
 	window_right->SetActive(false);
 	window_right->SetIndex(-1);
 
 	window_confirm.reset(new Window_Command(options_confirm, 80));
-	window_confirm->SetX(120);
-	window_confirm->SetY(144);
+	window_confirm->SetX(MENU_OFFSET_X + 120);
+	window_confirm->SetY(MENU_OFFSET_Y + 144);
 	window_confirm->SetActive(false);
 	window_confirm->SetVisible(false);
 }

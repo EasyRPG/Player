@@ -41,13 +41,22 @@ void Scene_Name::Start() {
 	auto *actor = Main_Data::game_actors->GetActor(actor_id);
 	assert(actor);
 
-	name_window.reset(new Window_Name(96, 40, 192, 32));
-	name_window->Set(use_default_name ? ToString(actor->GetName()) : "");
-	name_window->Refresh();
+	int margin_x = 32;
+	int margin_y = 8;
+	int window_face_width = 64;
+	int window_face_height = 64;
+	int window_name_width = 192;
+	int window_name_height = 32;
+	int window_keyboard_width = 256;
+	int window_keyboard_height = 160;
 
-	face_window.reset(new Window_Face(32, 8, 64, 64));
+	face_window.reset(new Window_Face(MENU_OFFSET_X + margin_x, MENU_OFFSET_Y + margin_y, window_face_width, window_face_height));
 	face_window->Set(actor_id);
 	face_window->Refresh();
+
+	name_window.reset(new Window_Name(MENU_OFFSET_X + window_face_width + margin_x, MENU_OFFSET_Y + margin_y + 32, window_name_width, window_name_height));
+	name_window->Set(use_default_name ? ToString(actor->GetName()) : "");
+	name_window->Refresh();
 
 	const char* done = Window_Keyboard::DONE;
 	// Japanese pages
@@ -79,7 +88,7 @@ void Scene_Name::Start() {
 	// Letter and symbol pages are used everywhere
 	layouts.push_back(Window_Keyboard::Letter);
 	layouts.push_back(Window_Keyboard::Symbol);
-	kbd_window.reset(new Window_Keyboard(32, 72, 256, SCREEN_TARGET_WIDTH / 2, done));
+	kbd_window.reset(new Window_Keyboard(MENU_OFFSET_X + margin_x, MENU_OFFSET_Y + window_face_height + margin_y, window_keyboard_width, window_keyboard_height, done));
 
 	auto next_index = layout_index + 1;
 	if (next_index >= static_cast<int>(layouts.size())) {

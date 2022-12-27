@@ -35,6 +35,13 @@
 #include "bitmap.h"
 #include "feature.h"
 
+constexpr int menu_command_width = 88;
+
+constexpr int menu_status_offset_x = MENU_OFFSET_X + 88;
+
+constexpr int gold_window_width = 88;
+constexpr int gold_window_height = 32;
+
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
 	type = Scene::Menu;
@@ -44,10 +51,10 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window.reset(new Window_Gold(0, (SCREEN_TARGET_HEIGHT-32), 88, 32));
+	gold_window.reset(new Window_Gold(MENU_OFFSET_X, (SCREEN_TARGET_HEIGHT - gold_window_height - MENU_OFFSET_Y), gold_window_width, gold_window_height));
 
 	// Status Window
-	menustatus_window.reset(new Window_MenuStatus(88, 0, (SCREEN_TARGET_WIDTH-88), SCREEN_TARGET_HEIGHT));
+	menustatus_window.reset(new Window_MenuStatus(menu_status_offset_x, MENU_OFFSET_Y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT));
 	menustatus_window->SetActive(false);
 }
 
@@ -144,7 +151,9 @@ void Scene_Menu::CreateCommandWindow() {
 		}
 	}
 
-	command_window.reset(new Window_Command(options, 88));
+	command_window.reset(new Window_Command(options, menu_command_width));
+	command_window->SetX(MENU_OFFSET_X);
+	command_window->SetY(MENU_OFFSET_Y);
 	command_window->SetIndex(menu_index);
 
 	// Disable items

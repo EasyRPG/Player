@@ -35,14 +35,19 @@ Scene_Equip::Scene_Equip(Game_Actor& actor, int equip_index) :
 
 void Scene_Equip::Start() {
 	// Create the windows
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
-	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor.GetId()));
-	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH-124),96, actor.GetId()));
+	int menu_help_height = 32;
+	int menu_equip_status_width = 124;
+	int menu_equip_status_height = 96;
+	int menu_equip_height = 96;
+
+	help_window.reset(new Window_Help(MENU_OFFSET_X, MENU_OFFSET_Y, MENU_WIDTH, menu_help_height));
+	equipstatus_window.reset(new Window_EquipStatus(MENU_OFFSET_X, MENU_OFFSET_Y + menu_help_height, menu_equip_status_width, menu_equip_status_height, actor.GetId()));
+	equip_window.reset(new Window_Equip(MENU_OFFSET_X + menu_equip_status_width, MENU_OFFSET_Y + menu_help_height, (MENU_WIDTH - menu_equip_status_width), menu_equip_height, actor.GetId()));
 
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(std::make_shared<Window_EquipItem>(actor.GetId(), i));
+		item_windows.push_back(std::make_shared<Window_EquipItem>(MENU_OFFSET_X, MENU_OFFSET_Y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height,actor.GetId(), i));
 	}
 
 	// Assign the help windows

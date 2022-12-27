@@ -39,30 +39,34 @@ Scene_File::Scene_File(std::string message) :
 }
 
 std::unique_ptr<Sprite> Scene_File::MakeBorderSprite(int y) {
-	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::System()->GetBackgroundColor());
+	int border_height = 8;
+	auto bitmap = Bitmap::Create(MENU_WIDTH, border_height, Cache::System()->GetBackgroundColor());
 	auto sprite = std::unique_ptr<Sprite>(new Sprite());
 	sprite->SetVisible(true);
 	sprite->SetZ(Priority_Window + 1);
 	sprite->SetBitmap(bitmap);
-	sprite->SetX(0);
+	sprite->SetX(MENU_OFFSET_X);
 	sprite->SetY(y);
 	return sprite;
 }
 
 std::unique_ptr<Sprite> Scene_File::MakeArrowSprite(bool down) {
-	Rect rect = Rect(40, (down ? 16 : 8), 16, 8);
+	int sprite_width = 8;
+	int sprite_height = 8;
+
+	Rect rect = Rect(40, (down ? 16 : sprite_height), 16, sprite_height);
 	auto bitmap = Bitmap::Create(*(Cache::System()), rect);
 	auto sprite = std::unique_ptr<Sprite>(new Sprite());
 	sprite->SetVisible(false);
 	sprite->SetZ(Priority_Window + 2);
 	sprite->SetBitmap(bitmap);
-	sprite->SetX(SCREEN_TARGET_WIDTH / 2 - 8);
-	sprite->SetY(down ? 232 : 32);
+	sprite->SetX((MENU_WIDTH / 2) - sprite_width + MENU_OFFSET_X);
+	sprite->SetY(down ? SCREEN_TARGET_HEIGHT - sprite_height : 32);
 	return sprite;
 }
 
 void Scene_File::CreateHelpWindow() {
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	help_window.reset(new Window_Help(MENU_OFFSET_X, 0, MENU_WIDTH, 32));
 	help_window->SetText(message);
 	help_window->SetZ(Priority_Window + 1);
 }
@@ -116,7 +120,7 @@ void Scene_File::Start() {
 
 	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
 		std::shared_ptr<Window_SaveFile>
-			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
+			w(new Window_SaveFile(MENU_OFFSET_X, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
 		w->SetZ(Priority_Window);
 		PopulateSaveWindow(*w, i);
@@ -125,7 +129,7 @@ void Scene_File::Start() {
 		file_windows.push_back(w);
 	}
 
-	border_bottom = Scene_File::MakeBorderSprite(232);
+	border_bottom = Scene_File::MakeBorderSprite(SCREEN_TARGET_HEIGHT - 8);
 
 	up_arrow = Scene_File::MakeArrowSprite(false);
 	down_arrow = Scene_File::MakeArrowSprite(true);

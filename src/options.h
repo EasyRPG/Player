@@ -27,6 +27,17 @@
 /** Targeted screen default height. */
 #define SCREEN_TARGET_HEIGHT 240
 
+/** Menus width and offset */
+#define MENU_WIDTH 320
+#define MENU_HEIGHT 240
+const int MENU_OFFSET_X = (SCREEN_TARGET_WIDTH - MENU_WIDTH) / 2;
+const int MENU_OFFSET_Y = (SCREEN_TARGET_HEIGHT - MENU_HEIGHT) / 2;
+
+/** MessageBox dimension and offset */
+#define MESSAGE_BOX_WIDTH 320
+#define MESSAGE_BOX_HEIGHT 80
+const int MESSAGE_BOX_OFFSET_X = (SCREEN_TARGET_WIDTH - MENU_WIDTH) / 2;
+
 /** Working with hi resolutions. default 16 */
 #define TILE_SIZE 16
 

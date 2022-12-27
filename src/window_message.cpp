@@ -40,6 +40,8 @@
 
 // FIXME: Off by 1 bug in window base class
 constexpr int message_animation_frames = 7;
+constexpr int gold_window_width = 88;
+constexpr int gold_window_height = 32;
 
 namespace {
 #if defined(EP_DEBUG_MESSAGE) || defined(EP_DEBUG_MESSAGE_TEXT)
@@ -85,7 +87,7 @@ void DebugLogText(const char*, Args&&...) { }
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	number_input_window(new Window_NumberInput(0, 0)),
-	gold_window(new Window_Gold(232, 0, 88, 32))
+	gold_window(new Window_Gold(SCREEN_TARGET_WIDTH - gold_window_width, 0, gold_window_width, gold_window_height))
 {
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -213,7 +215,7 @@ void Window_Message::StartChoiceProcessing() {
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
 	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
-		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
+		number_input_window->SetX(MESSAGE_BOX_OFFSET_X + LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
 	}
@@ -258,7 +260,21 @@ void Window_Message::InsertNewPage() {
 	prev_char_printable = false;
 	prev_char_waited = true;
 
-	y = Game_Message::GetRealPosition() * 80;
+	// Position the message box vertically
+	// Game_Message::GetRealPosition() specify top/middle/bottom
+	float factor = Game_Message::GetRealPosition() / (float)2;
+	// In case of hight vertical resolution, we add a margin for top/bottom
+	int off_set_y = 0;
+	if (SCREEN_TARGET_HEIGHT > 240) {
+		int margin_y = SCREEN_TARGET_HEIGHT * 0.03;
+		if (Game_Message::GetRealPosition() == 0) {
+			off_set_y = margin_y;
+		}
+		else if (Game_Message::GetRealPosition() == 2) {
+			off_set_y = (-1) * margin_y;
+		}
+	}
+	y = (SCREEN_TARGET_HEIGHT * factor) - (MESSAGE_BOX_HEIGHT * factor) + off_set_y;
 
 	if (Main_Data::game_system->IsMessageTransparent()) {
 		SetOpacity(0);

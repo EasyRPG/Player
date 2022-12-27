@@ -38,6 +38,8 @@ void Scene_Logo::Start() {
 		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		logo.reset(new Sprite());
 		logo->SetBitmap(logo_img);
+		logo->SetX((SCREEN_TARGET_WIDTH - logo->GetWidth()) / 2);
+		logo->SetY((SCREEN_TARGET_HEIGHT - logo->GetHeight()) / 2);
 	}
 }
 

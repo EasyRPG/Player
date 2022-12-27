@@ -42,8 +42,8 @@ struct BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
-constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_SIZE;
-constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_SIZE;
+constexpr int SCREEN_WIDTH = (SCREEN_TARGET_WIDTH / 16) * SCREEN_TILE_SIZE;
+constexpr int SCREEN_HEIGHT = (SCREEN_TARGET_HEIGHT / 16) * SCREEN_TILE_SIZE;
 
 class MapUpdateAsyncContext {
 	public:
