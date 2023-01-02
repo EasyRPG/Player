@@ -16,6 +16,7 @@ src/midiprogram.h -diff linguist-vendored
 src/midisequencer.* -diff linguist-vendored
 src/midisynth.* -diff linguist-vendored
 src/picojson.h -diff linguist-vendored
+CMakePresets.json -diff linguist-generated
 builds/android/app/src/main/java/org/libsdl/app/SDL*.java -diff linguist-vendored
 builds/android/app/src/main/java/org/libsdl/app/SDLActivity.java diff
 builds/android/app/src/main/java/org/libsdl/app/HID*.java -diff linguist-vendored

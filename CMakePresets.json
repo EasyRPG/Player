@@ -1,0 +1,2588 @@
+{
+    "vendor": {
+        "README": {
+            "line1": "!!! GENERATED FILE. DO NOT EDIT !!!",
+            "line2": "Modify builds/cmake/CMakePresets.json.template instead",
+            "line3": "and run gen-cmake-presets.py to regenerate this file."
+        }
+    },
+    "version": 4,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23,
+        "patch": 0
+    },
+    "include": [
+        "builds/cmake/CMakePresetsUser.json"
+    ],
+    "configurePresets": [
+        {
+            "name": "debug",
+            "displayName": "Use system environment (Debug)",
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/debug"
+        },
+        {
+            "name": "relwithdebinfo",
+            "displayName": "Use system environment (RelWithDebInfo)",
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/relwithdebinfo"
+        },
+        {
+            "name": "release",
+            "displayName": "Use system environment (Release)",
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/release"
+        },
+        {
+            "name": "liblcf-debug",
+            "displayName": "Use system environment + Build liblcf (Debug)",
+            "cacheVariables": {
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/liblcf-debug"
+        },
+        {
+            "name": "liblcf-relwithdebinfo",
+            "displayName": "Use system environment + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/liblcf-relwithdebinfo"
+        },
+        {
+            "name": "liblcf-release",
+            "displayName": "Use system environment + Build liblcf (Release)",
+            "cacheVariables": {
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/liblcf-release"
+        },
+        {
+            "name": "libretro-debug",
+            "displayName": "Use system environment (libretro core) (Debug)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-debug"
+        },
+        {
+            "name": "libretro-relwithdebinfo",
+            "displayName": "Use system environment (libretro core) (RelWithDebInfo)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-relwithdebinfo"
+        },
+        {
+            "name": "libretro-release",
+            "displayName": "Use system environment (libretro core) (Release)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-release"
+        },
+        {
+            "name": "libretro-liblcf-debug",
+            "displayName": "Use system environment (libretro core) + Build liblcf (Debug)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-liblcf-debug"
+        },
+        {
+            "name": "libretro-liblcf-relwithdebinfo",
+            "displayName": "Use system environment (libretro core) + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "libretro-liblcf-release",
+            "displayName": "Use system environment (libretro core) + Build liblcf (Release)",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/libretro-liblcf-release"
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Linux (Debug)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-debug"
+        },
+        {
+            "name": "linux-relwithdebinfo",
+            "displayName": "Linux (RelWithDebInfo)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-relwithdebinfo"
+        },
+        {
+            "name": "linux-release",
+            "displayName": "Linux (Release)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-release"
+        },
+        {
+            "name": "linux-liblcf-debug",
+            "displayName": "Linux + Build liblcf (Debug)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-liblcf-debug"
+        },
+        {
+            "name": "linux-liblcf-relwithdebinfo",
+            "displayName": "Linux + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "linux-liblcf-release",
+            "displayName": "Linux + Build liblcf (Release)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-liblcf-release"
+        },
+        {
+            "name": "linux-libretro-debug",
+            "displayName": "Linux (libretro core) (Debug)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-debug"
+        },
+        {
+            "name": "linux-libretro-relwithdebinfo",
+            "displayName": "Linux (libretro core) (RelWithDebInfo)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-relwithdebinfo"
+        },
+        {
+            "name": "linux-libretro-release",
+            "displayName": "Linux (libretro core) (Release)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-release"
+        },
+        {
+            "name": "linux-libretro-liblcf-debug",
+            "displayName": "Linux (libretro core) + Build liblcf (Debug)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-liblcf-debug"
+        },
+        {
+            "name": "linux-libretro-liblcf-relwithdebinfo",
+            "displayName": "Linux (libretro core) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "linux-libretro-liblcf-release",
+            "displayName": "Linux (libretro core) + Build liblcf (Release)",
+            "toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/linux-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-debug",
+            "displayName": "Windows (x86) (Debug)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-debug"
+        },
+        {
+            "name": "windows-x86-relwithdebinfo",
+            "displayName": "Windows (x86) (RelWithDebInfo)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-release",
+            "displayName": "Windows (x86) (Release)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-release"
+        },
+        {
+            "name": "windows-x86-liblcf-debug",
+            "displayName": "Windows (x86) + Build liblcf (Debug)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-liblcf-release",
+            "displayName": "Windows (x86) + Build liblcf (Release)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-liblcf-release"
+        },
+        {
+            "name": "windows-x86-libretro-debug",
+            "displayName": "Windows (x86) (libretro core) (Debug)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-debug"
+        },
+        {
+            "name": "windows-x86-libretro-relwithdebinfo",
+            "displayName": "Windows (x86) (libretro core) (RelWithDebInfo)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-libretro-release",
+            "displayName": "Windows (x86) (libretro core) (Release)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-release"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-debug",
+            "displayName": "Windows (x86) (libretro core) + Build liblcf (Debug)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) (libretro core) + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-release",
+            "displayName": "Windows (x86) (libretro core) + Build liblcf (Release)",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2019-debug",
+            "displayName": "Windows (x86) using Visual Studio 2019 (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2019 (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-release",
+            "displayName": "Windows (x86) using Visual Studio 2019 (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-release"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-debug",
+            "displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-release",
+            "displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-debug",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-release",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-release"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-debug",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-release",
+            "displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2019-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2022-debug",
+            "displayName": "Windows (x86) using Visual Studio 2022 (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2022 (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-release",
+            "displayName": "Windows (x86) using Visual Studio 2022 (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-release"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-debug",
+            "displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-release",
+            "displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-debug",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-release",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-release"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-debug",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-release",
+            "displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "Win32",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x86-vs2022-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-debug",
+            "displayName": "Windows (x64) (Debug)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-debug"
+        },
+        {
+            "name": "windows-x64-relwithdebinfo",
+            "displayName": "Windows (x64) (RelWithDebInfo)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-release",
+            "displayName": "Windows (x64) (Release)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-release"
+        },
+        {
+            "name": "windows-x64-liblcf-debug",
+            "displayName": "Windows (x64) + Build liblcf (Debug)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) + Build liblcf (RelWithDebInfo)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-liblcf-release",
+            "displayName": "Windows (x64) + Build liblcf (Release)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-liblcf-release"
+        },
+        {
+            "name": "windows-x64-libretro-debug",
+            "displayName": "Windows (x64) (libretro core) (Debug)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-debug"
+        },
+        {
+            "name": "windows-x64-libretro-relwithdebinfo",
+            "displayName": "Windows (x64) (libretro core) (RelWithDebInfo)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-libretro-release",
+            "displayName": "Windows (x64) (libretro core) (Release)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-release"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-debug",
+            "displayName": "Windows (x64) (libretro core) + Build liblcf (Debug)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) (libretro core) + Build liblcf (RelWithDebInfo)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-release",
+            "displayName": "Windows (x64) (libretro core) + Build liblcf (Release)",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2019-debug",
+            "displayName": "Windows (x64) using Visual Studio 2019 (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2019 (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-release",
+            "displayName": "Windows (x64) using Visual Studio 2019 (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-release"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-debug",
+            "displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-release",
+            "displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-debug",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-release",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-release"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-debug",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (Debug)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-release",
+            "displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (Release)",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2019-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2022-debug",
+            "displayName": "Windows (x64) using Visual Studio 2022 (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2022 (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-release",
+            "displayName": "Windows (x64) using Visual Studio 2022 (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-release"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-debug",
+            "displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-release",
+            "displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-debug",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-release",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-release"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-debug",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (Debug)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (RelWithDebInfo)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-release",
+            "displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (Release)",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "win-user",
+            "binaryDir": "${sourceDir}/build/windows-x64-vs2022-libretro-liblcf-release"
+        },
+        {
+            "name": "macos-debug",
+            "displayName": "macOS (Debug)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-debug"
+        },
+        {
+            "name": "macos-relwithdebinfo",
+            "displayName": "macOS (RelWithDebInfo)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-relwithdebinfo"
+        },
+        {
+            "name": "macos-release",
+            "displayName": "macOS (Release)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-release"
+        },
+        {
+            "name": "macos-liblcf-debug",
+            "displayName": "macOS + Build liblcf (Debug)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-liblcf-debug"
+        },
+        {
+            "name": "macos-liblcf-relwithdebinfo",
+            "displayName": "macOS + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "macos-liblcf-release",
+            "displayName": "macOS + Build liblcf (Release)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-liblcf-release"
+        },
+        {
+            "name": "macos-libretro-debug",
+            "displayName": "macOS (libretro core) (Debug)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-debug"
+        },
+        {
+            "name": "macos-libretro-relwithdebinfo",
+            "displayName": "macOS (libretro core) (RelWithDebInfo)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-relwithdebinfo"
+        },
+        {
+            "name": "macos-libretro-release",
+            "displayName": "macOS (libretro core) (Release)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-release"
+        },
+        {
+            "name": "macos-libretro-liblcf-debug",
+            "displayName": "macOS (libretro core) + Build liblcf (Debug)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-liblcf-debug"
+        },
+        {
+            "name": "macos-libretro-liblcf-relwithdebinfo",
+            "displayName": "macOS (libretro core) + Build liblcf (RelWithDebInfo)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "macos-libretro-liblcf-release",
+            "displayName": "macOS (libretro core) + Build liblcf (Release)",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/macos-libretro-liblcf-release"
+        },
+        {
+            "name": "emscripten-debug",
+            "displayName": "Emscripten (Web) (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-debug"
+        },
+        {
+            "name": "emscripten-relwithdebinfo",
+            "displayName": "Emscripten (Web) (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-relwithdebinfo"
+        },
+        {
+            "name": "emscripten-release",
+            "displayName": "Emscripten (Web) (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-release"
+        },
+        {
+            "name": "emscripten-liblcf-debug",
+            "displayName": "Emscripten (Web) + Build liblcf (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-liblcf-debug"
+        },
+        {
+            "name": "emscripten-liblcf-relwithdebinfo",
+            "displayName": "Emscripten (Web) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "emscripten-liblcf-release",
+            "displayName": "Emscripten (Web) + Build liblcf (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+            "cacheVariables": {
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+                "PLAYER_JS_BUILD_SHELL": "ON",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/emscripten-liblcf-release"
+        },
+        {
+            "name": "3ds-debug",
+            "displayName": "Nintendo 3DS (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-debug"
+        },
+        {
+            "name": "3ds-relwithdebinfo",
+            "displayName": "Nintendo 3DS (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-relwithdebinfo"
+        },
+        {
+            "name": "3ds-release",
+            "displayName": "Nintendo 3DS (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-release"
+        },
+        {
+            "name": "3ds-liblcf-debug",
+            "displayName": "Nintendo 3DS + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-liblcf-debug"
+        },
+        {
+            "name": "3ds-liblcf-relwithdebinfo",
+            "displayName": "Nintendo 3DS + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "3ds-liblcf-release",
+            "displayName": "Nintendo 3DS + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "3ds",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-liblcf-release"
+        },
+        {
+            "name": "3ds-libretro-debug",
+            "displayName": "Nintendo 3DS (libretro core) (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-debug"
+        },
+        {
+            "name": "3ds-libretro-relwithdebinfo",
+            "displayName": "Nintendo 3DS (libretro core) (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-relwithdebinfo"
+        },
+        {
+            "name": "3ds-libretro-release",
+            "displayName": "Nintendo 3DS (libretro core) (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-release"
+        },
+        {
+            "name": "3ds-libretro-liblcf-debug",
+            "displayName": "Nintendo 3DS (libretro core) + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-liblcf-debug"
+        },
+        {
+            "name": "3ds-libretro-liblcf-relwithdebinfo",
+            "displayName": "Nintendo 3DS (libretro core) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "3ds-libretro-liblcf-release",
+            "displayName": "Nintendo 3DS (libretro core) + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/3ds-libretro-liblcf-release"
+        },
+        {
+            "name": "switch-debug",
+            "displayName": "Nintendo Switch (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-debug"
+        },
+        {
+            "name": "switch-relwithdebinfo",
+            "displayName": "Nintendo Switch (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-relwithdebinfo"
+        },
+        {
+            "name": "switch-release",
+            "displayName": "Nintendo Switch (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-release"
+        },
+        {
+            "name": "switch-liblcf-debug",
+            "displayName": "Nintendo Switch + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-liblcf-debug"
+        },
+        {
+            "name": "switch-liblcf-relwithdebinfo",
+            "displayName": "Nintendo Switch + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "switch-liblcf-release",
+            "displayName": "Nintendo Switch + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "switch",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-liblcf-release"
+        },
+        {
+            "name": "switch-libretro-debug",
+            "displayName": "Nintendo Switch (libretro core) (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-debug"
+        },
+        {
+            "name": "switch-libretro-relwithdebinfo",
+            "displayName": "Nintendo Switch (libretro core) (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-relwithdebinfo"
+        },
+        {
+            "name": "switch-libretro-release",
+            "displayName": "Nintendo Switch (libretro core) (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-release"
+        },
+        {
+            "name": "switch-libretro-liblcf-debug",
+            "displayName": "Nintendo Switch (libretro core) + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-liblcf-debug"
+        },
+        {
+            "name": "switch-libretro-liblcf-relwithdebinfo",
+            "displayName": "Nintendo Switch (libretro core) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "switch-libretro-liblcf-release",
+            "displayName": "Nintendo Switch (libretro core) + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/switch-libretro-liblcf-release"
+        },
+        {
+            "name": "wii-debug",
+            "displayName": "Nintendo Wii (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-debug"
+        },
+        {
+            "name": "wii-relwithdebinfo",
+            "displayName": "Nintendo Wii (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-relwithdebinfo"
+        },
+        {
+            "name": "wii-release",
+            "displayName": "Nintendo Wii (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-release"
+        },
+        {
+            "name": "wii-liblcf-debug",
+            "displayName": "Nintendo Wii + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-liblcf-debug"
+        },
+        {
+            "name": "wii-liblcf-relwithdebinfo",
+            "displayName": "Nintendo Wii + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "wii-liblcf-release",
+            "displayName": "Nintendo Wii + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "Wii",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-liblcf-release"
+        },
+        {
+            "name": "wii-libretro-debug",
+            "displayName": "Nintendo Wii (libretro core) (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-debug"
+        },
+        {
+            "name": "wii-libretro-relwithdebinfo",
+            "displayName": "Nintendo Wii (libretro core) (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-relwithdebinfo"
+        },
+        {
+            "name": "wii-libretro-release",
+            "displayName": "Nintendo Wii (libretro core) (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-release"
+        },
+        {
+            "name": "wii-libretro-liblcf-debug",
+            "displayName": "Nintendo Wii (libretro core) + Build liblcf (Debug)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-liblcf-debug"
+        },
+        {
+            "name": "wii-libretro-liblcf-relwithdebinfo",
+            "displayName": "Nintendo Wii (libretro core) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "wii-libretro-liblcf-release",
+            "displayName": "Nintendo Wii (libretro core) + Build liblcf (Release)",
+            "toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "dkp-user",
+            "binaryDir": "${sourceDir}/build/wii-libretro-liblcf-release"
+        },
+        {
+            "name": "psvita-debug",
+            "displayName": "PlayStation Vita (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-debug"
+        },
+        {
+            "name": "psvita-relwithdebinfo",
+            "displayName": "PlayStation Vita (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-relwithdebinfo"
+        },
+        {
+            "name": "psvita-release",
+            "displayName": "PlayStation Vita (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-release"
+        },
+        {
+            "name": "psvita-liblcf-debug",
+            "displayName": "PlayStation Vita + Build liblcf (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-liblcf-debug"
+        },
+        {
+            "name": "psvita-liblcf-relwithdebinfo",
+            "displayName": "PlayStation Vita + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "psvita-liblcf-release",
+            "displayName": "PlayStation Vita + Build liblcf (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "psvita",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-liblcf-release"
+        },
+        {
+            "name": "psvita-libretro-debug",
+            "displayName": "PlayStation Vita (libretro core) (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-debug"
+        },
+        {
+            "name": "psvita-libretro-relwithdebinfo",
+            "displayName": "PlayStation Vita (libretro core) (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-relwithdebinfo"
+        },
+        {
+            "name": "psvita-libretro-release",
+            "displayName": "PlayStation Vita (libretro core) (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-release"
+        },
+        {
+            "name": "psvita-libretro-liblcf-debug",
+            "displayName": "PlayStation Vita (libretro core) + Build liblcf (Debug)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-liblcf-debug"
+        },
+        {
+            "name": "psvita-libretro-liblcf-relwithdebinfo",
+            "displayName": "PlayStation Vita (libretro core) + Build liblcf (RelWithDebInfo)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "psvita-libretro-liblcf-release",
+            "displayName": "PlayStation Vita (libretro core) + Build liblcf (Release)",
+            "toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+            "cacheVariables": {
+                "PLAYER_TARGET_PLATFORM": "libretro",
+                "BUILD_SHARED_LIBS": "OFF",
+                "PLAYER_BUILD_LIBLCF": "ON"
+            },
+            "inherits": "base-user",
+            "binaryDir": "${sourceDir}/build/psvita-libretro-liblcf-release"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "relwithdebinfo",
+            "configurePreset": "relwithdebinfo"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release"
+        },
+        {
+            "name": "liblcf-debug",
+            "configurePreset": "liblcf-debug"
+        },
+        {
+            "name": "liblcf-relwithdebinfo",
+            "configurePreset": "liblcf-relwithdebinfo"
+        },
+        {
+            "name": "liblcf-release",
+            "configurePreset": "liblcf-release"
+        },
+        {
+            "name": "libretro-debug",
+            "configurePreset": "libretro-debug"
+        },
+        {
+            "name": "libretro-relwithdebinfo",
+            "configurePreset": "libretro-relwithdebinfo"
+        },
+        {
+            "name": "libretro-release",
+            "configurePreset": "libretro-release"
+        },
+        {
+            "name": "libretro-liblcf-debug",
+            "configurePreset": "libretro-liblcf-debug"
+        },
+        {
+            "name": "libretro-liblcf-relwithdebinfo",
+            "configurePreset": "libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "libretro-liblcf-release",
+            "configurePreset": "libretro-liblcf-release"
+        },
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-debug"
+        },
+        {
+            "name": "linux-relwithdebinfo",
+            "configurePreset": "linux-relwithdebinfo"
+        },
+        {
+            "name": "linux-release",
+            "configurePreset": "linux-release"
+        },
+        {
+            "name": "linux-liblcf-debug",
+            "configurePreset": "linux-liblcf-debug"
+        },
+        {
+            "name": "linux-liblcf-relwithdebinfo",
+            "configurePreset": "linux-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "linux-liblcf-release",
+            "configurePreset": "linux-liblcf-release"
+        },
+        {
+            "name": "linux-libretro-debug",
+            "configurePreset": "linux-libretro-debug"
+        },
+        {
+            "name": "linux-libretro-relwithdebinfo",
+            "configurePreset": "linux-libretro-relwithdebinfo"
+        },
+        {
+            "name": "linux-libretro-release",
+            "configurePreset": "linux-libretro-release"
+        },
+        {
+            "name": "linux-libretro-liblcf-debug",
+            "configurePreset": "linux-libretro-liblcf-debug"
+        },
+        {
+            "name": "linux-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "linux-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "linux-libretro-liblcf-release",
+            "configurePreset": "linux-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-debug",
+            "configurePreset": "windows-x86-debug"
+        },
+        {
+            "name": "windows-x86-relwithdebinfo",
+            "configurePreset": "windows-x86-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-release",
+            "configurePreset": "windows-x86-release"
+        },
+        {
+            "name": "windows-x86-liblcf-debug",
+            "configurePreset": "windows-x86-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-liblcf-release",
+            "configurePreset": "windows-x86-liblcf-release"
+        },
+        {
+            "name": "windows-x86-libretro-debug",
+            "configurePreset": "windows-x86-libretro-debug"
+        },
+        {
+            "name": "windows-x86-libretro-relwithdebinfo",
+            "configurePreset": "windows-x86-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-libretro-release",
+            "configurePreset": "windows-x86-libretro-release"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-debug",
+            "configurePreset": "windows-x86-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-libretro-liblcf-release",
+            "configurePreset": "windows-x86-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2019-debug",
+            "configurePreset": "windows-x86-vs2019-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2019-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-release",
+            "configurePreset": "windows-x86-vs2019-release"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-debug",
+            "configurePreset": "windows-x86-vs2019-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2019-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-liblcf-release",
+            "configurePreset": "windows-x86-vs2019-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-debug",
+            "configurePreset": "windows-x86-vs2019-libretro-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2019-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-release",
+            "configurePreset": "windows-x86-vs2019-libretro-release"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-debug",
+            "configurePreset": "windows-x86-vs2019-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2019-libretro-liblcf-release",
+            "configurePreset": "windows-x86-vs2019-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2022-debug",
+            "configurePreset": "windows-x86-vs2022-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2022-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-release",
+            "configurePreset": "windows-x86-vs2022-release"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-debug",
+            "configurePreset": "windows-x86-vs2022-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2022-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-liblcf-release",
+            "configurePreset": "windows-x86-vs2022-liblcf-release"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-debug",
+            "configurePreset": "windows-x86-vs2022-libretro-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2022-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-release",
+            "configurePreset": "windows-x86-vs2022-libretro-release"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-debug",
+            "configurePreset": "windows-x86-vs2022-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x86-vs2022-libretro-liblcf-release",
+            "configurePreset": "windows-x86-vs2022-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-debug",
+            "configurePreset": "windows-x64-debug"
+        },
+        {
+            "name": "windows-x64-relwithdebinfo",
+            "configurePreset": "windows-x64-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-release",
+            "configurePreset": "windows-x64-release"
+        },
+        {
+            "name": "windows-x64-liblcf-debug",
+            "configurePreset": "windows-x64-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-liblcf-release",
+            "configurePreset": "windows-x64-liblcf-release"
+        },
+        {
+            "name": "windows-x64-libretro-debug",
+            "configurePreset": "windows-x64-libretro-debug"
+        },
+        {
+            "name": "windows-x64-libretro-relwithdebinfo",
+            "configurePreset": "windows-x64-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-libretro-release",
+            "configurePreset": "windows-x64-libretro-release"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-debug",
+            "configurePreset": "windows-x64-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-libretro-liblcf-release",
+            "configurePreset": "windows-x64-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2019-debug",
+            "configurePreset": "windows-x64-vs2019-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2019-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-release",
+            "configurePreset": "windows-x64-vs2019-release"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-debug",
+            "configurePreset": "windows-x64-vs2019-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2019-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-liblcf-release",
+            "configurePreset": "windows-x64-vs2019-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-debug",
+            "configurePreset": "windows-x64-vs2019-libretro-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2019-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-release",
+            "configurePreset": "windows-x64-vs2019-libretro-release"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-debug",
+            "configurePreset": "windows-x64-vs2019-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2019-libretro-liblcf-release",
+            "configurePreset": "windows-x64-vs2019-libretro-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2022-debug",
+            "configurePreset": "windows-x64-vs2022-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2022-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-release",
+            "configurePreset": "windows-x64-vs2022-release"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-debug",
+            "configurePreset": "windows-x64-vs2022-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2022-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-liblcf-release",
+            "configurePreset": "windows-x64-vs2022-liblcf-release"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-debug",
+            "configurePreset": "windows-x64-vs2022-libretro-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2022-libretro-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-release",
+            "configurePreset": "windows-x64-vs2022-libretro-release"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-debug",
+            "configurePreset": "windows-x64-vs2022-libretro-liblcf-debug"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "windows-x64-vs2022-libretro-liblcf-release",
+            "configurePreset": "windows-x64-vs2022-libretro-liblcf-release"
+        },
+        {
+            "name": "macos-debug",
+            "configurePreset": "macos-debug"
+        },
+        {
+            "name": "macos-relwithdebinfo",
+            "configurePreset": "macos-relwithdebinfo"
+        },
+        {
+            "name": "macos-release",
+            "configurePreset": "macos-release"
+        },
+        {
+            "name": "macos-liblcf-debug",
+            "configurePreset": "macos-liblcf-debug"
+        },
+        {
+            "name": "macos-liblcf-relwithdebinfo",
+            "configurePreset": "macos-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "macos-liblcf-release",
+            "configurePreset": "macos-liblcf-release"
+        },
+        {
+            "name": "macos-libretro-debug",
+            "configurePreset": "macos-libretro-debug"
+        },
+        {
+            "name": "macos-libretro-relwithdebinfo",
+            "configurePreset": "macos-libretro-relwithdebinfo"
+        },
+        {
+            "name": "macos-libretro-release",
+            "configurePreset": "macos-libretro-release"
+        },
+        {
+            "name": "macos-libretro-liblcf-debug",
+            "configurePreset": "macos-libretro-liblcf-debug"
+        },
+        {
+            "name": "macos-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "macos-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "macos-libretro-liblcf-release",
+            "configurePreset": "macos-libretro-liblcf-release"
+        },
+        {
+            "name": "emscripten-debug",
+            "configurePreset": "emscripten-debug"
+        },
+        {
+            "name": "emscripten-relwithdebinfo",
+            "configurePreset": "emscripten-relwithdebinfo"
+        },
+        {
+            "name": "emscripten-release",
+            "configurePreset": "emscripten-release"
+        },
+        {
+            "name": "emscripten-liblcf-debug",
+            "configurePreset": "emscripten-liblcf-debug"
+        },
+        {
+            "name": "emscripten-liblcf-relwithdebinfo",
+            "configurePreset": "emscripten-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "emscripten-liblcf-release",
+            "configurePreset": "emscripten-liblcf-release"
+        },
+        {
+            "name": "3ds-debug",
+            "configurePreset": "3ds-debug"
+        },
+        {
+            "name": "3ds-relwithdebinfo",
+            "configurePreset": "3ds-relwithdebinfo"
+        },
+        {
+            "name": "3ds-release",
+            "configurePreset": "3ds-release"
+        },
+        {
+            "name": "3ds-liblcf-debug",
+            "configurePreset": "3ds-liblcf-debug"
+        },
+        {
+            "name": "3ds-liblcf-relwithdebinfo",
+            "configurePreset": "3ds-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "3ds-liblcf-release",
+            "configurePreset": "3ds-liblcf-release"
+        },
+        {
+            "name": "3ds-libretro-debug",
+            "configurePreset": "3ds-libretro-debug"
+        },
+        {
+            "name": "3ds-libretro-relwithdebinfo",
+            "configurePreset": "3ds-libretro-relwithdebinfo"
+        },
+        {
+            "name": "3ds-libretro-release",
+            "configurePreset": "3ds-libretro-release"
+        },
+        {
+            "name": "3ds-libretro-liblcf-debug",
+            "configurePreset": "3ds-libretro-liblcf-debug"
+        },
+        {
+            "name": "3ds-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "3ds-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "3ds-libretro-liblcf-release",
+            "configurePreset": "3ds-libretro-liblcf-release"
+        },
+        {
+            "name": "switch-debug",
+            "configurePreset": "switch-debug"
+        },
+        {
+            "name": "switch-relwithdebinfo",
+            "configurePreset": "switch-relwithdebinfo"
+        },
+        {
+            "name": "switch-release",
+            "configurePreset": "switch-release"
+        },
+        {
+            "name": "switch-liblcf-debug",
+            "configurePreset": "switch-liblcf-debug"
+        },
+        {
+            "name": "switch-liblcf-relwithdebinfo",
+            "configurePreset": "switch-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "switch-liblcf-release",
+            "configurePreset": "switch-liblcf-release"
+        },
+        {
+            "name": "switch-libretro-debug",
+            "configurePreset": "switch-libretro-debug"
+        },
+        {
+            "name": "switch-libretro-relwithdebinfo",
+            "configurePreset": "switch-libretro-relwithdebinfo"
+        },
+        {
+            "name": "switch-libretro-release",
+            "configurePreset": "switch-libretro-release"
+        },
+        {
+            "name": "switch-libretro-liblcf-debug",
+            "configurePreset": "switch-libretro-liblcf-debug"
+        },
+        {
+            "name": "switch-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "switch-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "switch-libretro-liblcf-release",
+            "configurePreset": "switch-libretro-liblcf-release"
+        },
+        {
+            "name": "wii-debug",
+            "configurePreset": "wii-debug"
+        },
+        {
+            "name": "wii-relwithdebinfo",
+            "configurePreset": "wii-relwithdebinfo"
+        },
+        {
+            "name": "wii-release",
+            "configurePreset": "wii-release"
+        },
+        {
+            "name": "wii-liblcf-debug",
+            "configurePreset": "wii-liblcf-debug"
+        },
+        {
+            "name": "wii-liblcf-relwithdebinfo",
+            "configurePreset": "wii-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "wii-liblcf-release",
+            "configurePreset": "wii-liblcf-release"
+        },
+        {
+            "name": "wii-libretro-debug",
+            "configurePreset": "wii-libretro-debug"
+        },
+        {
+            "name": "wii-libretro-relwithdebinfo",
+            "configurePreset": "wii-libretro-relwithdebinfo"
+        },
+        {
+            "name": "wii-libretro-release",
+            "configurePreset": "wii-libretro-release"
+        },
+        {
+            "name": "wii-libretro-liblcf-debug",
+            "configurePreset": "wii-libretro-liblcf-debug"
+        },
+        {
+            "name": "wii-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "wii-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "wii-libretro-liblcf-release",
+            "configurePreset": "wii-libretro-liblcf-release"
+        },
+        {
+            "name": "psvita-debug",
+            "configurePreset": "psvita-debug"
+        },
+        {
+            "name": "psvita-relwithdebinfo",
+            "configurePreset": "psvita-relwithdebinfo"
+        },
+        {
+            "name": "psvita-release",
+            "configurePreset": "psvita-release"
+        },
+        {
+            "name": "psvita-liblcf-debug",
+            "configurePreset": "psvita-liblcf-debug"
+        },
+        {
+            "name": "psvita-liblcf-relwithdebinfo",
+            "configurePreset": "psvita-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "psvita-liblcf-release",
+            "configurePreset": "psvita-liblcf-release"
+        },
+        {
+            "name": "psvita-libretro-debug",
+            "configurePreset": "psvita-libretro-debug"
+        },
+        {
+            "name": "psvita-libretro-relwithdebinfo",
+            "configurePreset": "psvita-libretro-relwithdebinfo"
+        },
+        {
+            "name": "psvita-libretro-release",
+            "configurePreset": "psvita-libretro-release"
+        },
+        {
+            "name": "psvita-libretro-liblcf-debug",
+            "configurePreset": "psvita-libretro-liblcf-debug"
+        },
+        {
+            "name": "psvita-libretro-liblcf-relwithdebinfo",
+            "configurePreset": "psvita-libretro-liblcf-relwithdebinfo"
+        },
+        {
+            "name": "psvita-libretro-liblcf-release",
+            "configurePreset": "psvita-libretro-liblcf-release"
+        }
+    ],
+    "testPresets": []
+}

@@ -1,0 +1,33 @@
+{
+	"version": 4,
+	"configurePresets": [
+		{
+			"name": "base",
+			"displayName": "base preset",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+			}
+		},
+		{
+			"name": "win-base",
+			"displayName": "windows base preset",
+			"hidden": true,
+			"cacheVariables": {
+				"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake"
+			},
+			"inherits": "base",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			}
+		},
+		{
+			"name": "dkp",
+			"displayName": "devkitPro base preset (does nothing, maybe useful later)",
+			"hidden": true,
+			"inherits": "base"
+		}
+	]
+}
