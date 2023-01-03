@@ -551,7 +551,8 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	# Manually add the dependencies
 	player_find_package(NAME SDL2
 		VERSION 2.0.5
-		TARGET SDL2::SDL2)
+		TARGET SDL2::SDL2
+		REQUIRED)
 
 	if(TARGET SDL2::SDL2main)
 		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
@@ -570,8 +571,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 		src/platform/sdl/sdl_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
 
-	find_package(SDL1 REQUIRED)
-	target_link_libraries(${PROJECT_NAME} SDL::SDLmain)
+	player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -807,14 +807,9 @@ else()
 endif()
 
 # Detect all required libraries
-find_package(PNG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PNG::PNG)
-
-find_package(Pixman REQUIRED)
-target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
-
-find_package(fmt REQUIRED)
-target_link_libraries(${PROJECT_NAME} fmt::fmt)
+player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
+player_find_package(NAME Pixman TARGET PIXMAN::PIXMAN REQUIRED)
+player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
@@ -1381,8 +1376,7 @@ set_property(CACHE PLAYER_ENABLE_INSTRUMENTATION PROPERTY STRINGS OFF VTune)
 if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_INSTRUMENTATION=${PLAYER_ENABLE_INSTRUMENTATION})
 	if (${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
-		find_package(VTune REQUIRED)
-		target_link_libraries(${PROJECT_NAME} VTune::ITT)
+		player_find_package(NAME VTune TARGET VTune::ITT REQUIRED)
 	endif()
 endif()
 

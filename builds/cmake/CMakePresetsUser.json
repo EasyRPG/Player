@@ -9,6 +9,8 @@
 			"displayName": "user overrides",
 			"hidden": true,
 			"inherits": "base",
+			"cacheVariables":{
+			},
 			"environment": {
 				"#EASYRPG_BUILDSCRIPTS": "/path/to/easyrpg/buildscripts"
 			},
