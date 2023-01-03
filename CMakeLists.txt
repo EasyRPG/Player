@@ -23,6 +23,10 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
+	option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
+endif()
+
 # Source Files
 add_library(${PROJECT_NAME} STATIC
 	src/lcf_data.cpp
