@@ -1,5 +1,5 @@
 #.rst:
-# FindHarfbuzz
+# Findharfbuzz
 # -----------
 #
 # Find the Harfbuzz Library
@@ -9,7 +9,7 @@
 #
 # This module defines the following :prop_tgt:`IMPORTED` targets:
 #
-# ``Harfbuzz::Harfbuzz``
+# ``harfbuzz::harfbuzz``
 #   The ``Harfbuzz`` library, if found.
 #
 # Result Variables
@@ -43,7 +43,7 @@ if(NOT HARFBUZZ_LIBRARY)
 endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Harfbuzz
+find_package_handle_standard_args(harfbuzz
 	REQUIRED_VARS HARFBUZZ_LIBRARY HARFBUZZ_INCLUDE_DIR)
 
 if(HARFBUZZ_FOUND)
@@ -53,16 +53,16 @@ if(HARFBUZZ_FOUND)
 		set(HARFBUZZ_LIBRARIES ${HARFBUZZ_LIBRARIES})
 	endif()
 
-	if(NOT TARGET Harfbuzz::Harfbuzz)
-		add_library(Harfbuzz::Harfbuzz UNKNOWN IMPORTED)
+	if(NOT TARGET harfbuzz::harfbuzz)
+		add_library(harfbuzz::harfbuzz UNKNOWN IMPORTED)
 
-		if(NOT TARGET Freetype::Freetype)
-			find_package(Freetype REQUIRED)
+		if(NOT TARGET freetype)
+			find_package(freetype MODULE REQUIRED)
 		endif()
 
-		set_target_properties(Harfbuzz::Harfbuzz PROPERTIES
+		set_target_properties(harfbuzz::harfbuzz PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${HARFBUZZ_INCLUDE_DIRS}"
-			INTERFACE_LINK_LIBRARIES Freetype::Freetype
+			INTERFACE_LINK_LIBRARIES freetype
 			IMPORTED_LOCATION "${HARFBUZZ_LIBRARY}")
 
 		if(APPLE)

@@ -9,7 +9,7 @@
 #
 # This module defines the following :prop_tgt:`IMPORTED` targets:
 #
-# ``mpg123::mpg123``
+# ``MPG123::libmpg123``
 #   The ``mpg123`` library, if found.
 #
 # Result Variables
@@ -53,13 +53,13 @@ if(MPG123_FOUND)
 		set(MPG123_LIBRARIES ${MPG123_LIBRARIES})
 	endif()
 
-	if(NOT TARGET mpg123::mpg123)
-		add_library(mpg123::mpg123 UNKNOWN IMPORTED)
-		set_target_properties(mpg123::mpg123 PROPERTIES
+	if(NOT TARGET MPG123::libmpg123)
+		add_library(MPG123::libmpg123 UNKNOWN IMPORTED)
+		set_target_properties(MPG123::libmpg123 PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${MPG123_INCLUDE_DIRS}"
 			IMPORTED_LOCATION "${MPG123_LIBRARY}")
 		if(WIN32)
-			set_property(TARGET mpg123::mpg123 APPEND_STRING PROPERTY
+			set_property(TARGET MPG123::libmpg123 APPEND_STRING PROPERTY
 				INTERFACE_LINK_LIBRARIES "shlwapi")
 		endif()
 	endif()
