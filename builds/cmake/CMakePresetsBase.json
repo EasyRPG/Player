@@ -5,6 +5,7 @@
 			"name": "base",
 			"displayName": "base preset",
 			"hidden": true,
+			"binaryDir": "${sourceDir}/build/${presetName}",
 			"cacheVariables": {
 				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
 			}
@@ -16,7 +17,7 @@
 			"cacheVariables": {
 				"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake"
 			},
-			"inherits": "base",
+			"inherits": ["base"],
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
@@ -27,7 +28,23 @@
 			"name": "dkp",
 			"displayName": "devkitPro base preset (does nothing, maybe useful later)",
 			"hidden": true,
-			"inherits": "base"
+			"inherits": ["base"]
+		},
+		{
+			"name": "build-liblcf",
+			"displayName": "enables building of liblcf",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_BUILD_LIBLCF": "ON"
+			}
+		},
+		{
+			"name": "build-libretro",
+			"displayName": "enables building of a libretro core",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "libretro"
+			}
 		}
 	]
 }

@@ -46,42 +46,51 @@ for base_item in cp:
 		cp_out.append(base_item)
 		continue
 
+	# Create "base class" the build types inherit from
+	item = deepcopy(base_item)
+	append_name("parent")
+	del item["displayName"]
+	item["hidden"] = True
+
+	if item.get("inherits") is None:
+		item["inherits"] = "base-user"
+
+	parent_item = item
+	cp_out.append(parent_item)
+
 	for libretro in False, True:
 		for lcf in False, True:
 			# Ugly: Generates a huge amount of configurePresets
 			# Cannot be improved until limitations in buildPresets are resolved
 			# (see comment below)
 			for build_type in ["Debug", "RelWithDebInfo", "Release"]:
-				item = deepcopy(base_item)
+				item = dict(name=base_item["name"], displayName=base_item["displayName"])
 				name = item["name"]
 
 				if libretro and name in no_libretro:
 					continue
 
-				variables = item.get("cacheVariables", dict())
-				item["cacheVariables"] = variables
+				item["inherits"] = [parent_item["name"]]
 
 				if libretro:
 					append_name("libretro")
 					item["displayName"] += " (libretro core)"
-					variables["PLAYER_TARGET_PLATFORM"] = "libretro"
+					item["inherits"].insert(0, "build-libretro")
 
 				if lcf:
 					append_name("liblcf")
 
 					item["displayName"] += " + Build liblcf"
-					variables["PLAYER_BUILD_LIBLCF"] = "ON"
+					item["inherits"].insert(0, "build-liblcf")
+
+				if len(item["inherits"]) == 1:
+					item["inherits"] = item["inherits"][0]
 
 				append_name(build_type.lower())
 				item["displayName"] += f" ({build_type})"
 
-				if item.get("inherits") is None:
-					item["inherits"] = "base-user"
-
-				if not item["cacheVariables"]:
-					del item["cacheVariables"]
-
-				item["binaryDir"] = "${sourceDir}/build/" + item["name"]
+				# Not a valid preset key. Used in buildPresets and deleted afterwards
+				item["build_type"] = build_type
 
 				cp_out.append(item)
 
@@ -106,7 +115,8 @@ for item in cp_out:
 	#		configurePreset=conf_preset,
 	#		configuration=build_type))
 
-	bp.append(dict(name=item["name"], configurePreset=item["name"]))
+	bp.append(dict(name=item["name"], configurePreset=item["name"], configuration=item["build_type"]))
+	del item["build_type"]
 
 # Add note that the file is auto-generated to the beginning
 vendor = dict(vendor=dict(
@@ -120,5 +130,5 @@ vendor = dict(vendor=dict(
 j = {**vendor, **j}
 
 with open(f"{repo_dir}/CMakePresets.json", "w") as f:
-	json.dump(j, f, indent=4)
+	json.dump(j, f, indent='\t')
 	f.write("\n")
