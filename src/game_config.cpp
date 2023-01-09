@@ -34,8 +34,13 @@ namespace {
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 	cp.Rewind();
+
 	auto arg_path = GetConfigPath(cp);
-	auto cli_config = FileFinder::Root().OpenInputStream(arg_path);
+	if (!arg_path.empty()) {
+		arg_path = FileFinder::MakePath(arg_path, config_name);
+	}
+
+	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(arg_path);
 
 	if (!cli_config) {
 		auto global_config = GetGlobalConfigFileInput();
@@ -60,20 +65,20 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	std::string path;
 
 #ifdef GEKKO
-	path = "sd:/data";
+	path = "sd:/data/easyrpg-player";
 #elif defined(__SWITCH__)
 	path = "/switch/easyrpg-player";
 #elif defined(_3DS)
-	path = "sdmc:/data";
+	path = "sdmc:/data/easyrpg-player";
 #elif defined(PSP2)
 	path = "ux0:/data/easyrpg-player";
 #elif defined(USE_LIBRETRO)
 	const char* dir = nullptr;
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
-		path = std::string(dir);
+		path = FileFinder::MakePath(dir, "easyrpg-player");
 	}
 #elif defined(__ANDROID__)
-	// FIXME
+	// Never called, passed as argument on startup
 #elif defined(_WIN32)
 	PWSTR knownPath;
 	const auto hresult = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &knownPath);
@@ -82,6 +87,10 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 		CoTaskMemFree(knownPath);
 	} else {
 		Output::Debug("Config: SHGetKnownFolderPath failed");
+	}
+
+	if (!path.empty()) {
+		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
 	}
 #else
 	char* home = getenv("XDG_CONFIG_HOME");
@@ -92,6 +101,10 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 		if (home) {
 			path = FileFinder::MakePath(home, ".config");
 		}
+	}
+
+	if (!path.empty()) {
+		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
 	}
 #endif
 
@@ -104,16 +117,12 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 		return {};
 	}
 
-	const std::string sub_path = FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME);
-	path = FileFinder::MakePath(path, sub_path);
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		print_err();
+		return {};
+	}
 
 	auto fs = FileFinder::Root().Create(path);
-	if (!fs) {
-		// Attempt creating directories and try again
-		if (FileFinder::Root().MakeDirectory(path, true)) {
-			fs = FileFinder::Root().Create(path);
-		}
-	}
 
 	if (!fs) {
 		print_err();
@@ -127,16 +136,7 @@ Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput() {
 	auto fs = GetGlobalConfigFilesystem();
 
 	if (fs) {
-		auto is = fs.OpenInputStream(config_name, std::ios_base::in);
-		if (!is) {
-			// Create the file
-			{
-				fs.OpenOutputStream(config_name);
-			}
-			is = fs.OpenInputStream(config_name, std::ios_base::in);
-		}
-
-		return is;
+		return fs.OpenOrCreateInputStream(config_name, std::ios_base::in);
 	}
 
 	return Filesystem_Stream::InputStream();
@@ -157,14 +157,22 @@ std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 
 	while (!cp.Done()) {
 		CmdlineArg arg;
-		if (cp.ParseNext(arg, 1, "--config", 'c')) {
+		if (cp.ParseNext(arg, 1, "--config-path", 'c')) {
 			if (arg.NumValues() > 0) {
 				path = arg.Value(0);
+				path = FileFinder::MakeCanonical(path, 0);
 			}
 			continue;
 		}
 
 		cp.SkipNext();
+	}
+
+	if (!path.empty()) {
+		if (!FileFinder::Root().MakeDirectory(path, true)) {
+			Output::Debug("Could not create global config directory {}", path);
+			path.clear();
+		}
 	}
 
 	return path;
