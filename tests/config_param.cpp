@@ -4,7 +4,7 @@
 #include <climits>
 
 namespace {
-enum class Color { Red, Blue, Green };
+enum class TestColor { Red, Blue, Green };
 }
 
 template class ConfigParam<int>;
@@ -16,34 +16,23 @@ template class LockedConfigParam<std::string>;
 template class RangeConfigParam<int>;
 template class RangeConfigParam<float>;
 
-template class SetConfigParam<int>;
-template class SetConfigParam<float>;
-template class SetConfigParam<std::string>;
-
-template class EnumConfigParam<Color, 3>;
-
-static_assert(IsConfigParamT<ConfigParam<int>>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<LockedConfigParam<int>>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<RangeConfigParam<int>>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<BoolConfigParam>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<SetConfigParam<int>>::value, "ConfigParam Broken");
-static_assert(IsConfigParamT<EnumConfigParam<Color, 3>>::value, "ConfigParam Broken");
+template class EnumConfigParam<TestColor, 3>;
 
 TEST_SUITE_BEGIN("ConfigParam");
 
 TEST_CASE("Bool") {
 	BoolConfigParam p("Unit Test", "");
 
-	REQUIRE(p.Enabled());
-	REQUIRE(!p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(!p.IsLocked());
 	REQUIRE_EQ(p.Get(), false);
 	REQUIRE(p.IsValid(false));
 	REQUIRE(p.IsValid(true));
 
 	p = BoolConfigParam("Unit Test", "", true);
 
-	REQUIRE(p.Enabled());
-	REQUIRE(!p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(!p.IsLocked());
 	REQUIRE_EQ(p.Get(), true);
 	REQUIRE(p.IsValid(false));
 	REQUIRE(p.IsValid(true));
@@ -56,8 +45,8 @@ TEST_CASE("Bool") {
 
 	p.Lock(true);
 
-	REQUIRE(p.Enabled());
-	REQUIRE(p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(p.IsLocked());
 	REQUIRE_EQ(p.Get(), true);
 	REQUIRE(!p.IsValid(false));
 	REQUIRE(p.IsValid(true));
@@ -67,8 +56,8 @@ TEST_CASE("Bool") {
 
 	p.Lock(false);
 
-	REQUIRE(p.Enabled());
-	REQUIRE(p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(p.IsLocked());
 	REQUIRE_EQ(p.Get(), false);
 	REQUIRE(p.IsValid(false));
 	REQUIRE(!p.IsValid(true));
@@ -76,9 +65,9 @@ TEST_CASE("Bool") {
 	REQUIRE(!p.Set(true));
 	REQUIRE_EQ(p.Get(), false);
 
-	p.Disable();
-	REQUIRE(!p.Enabled());
-	REQUIRE(p.Locked());
+	p.SetOptionVisible(false);
+	REQUIRE(!p.IsOptionVisible());
+	REQUIRE(p.IsLocked());
 	REQUIRE(!p.IsValid(false));
 	REQUIRE(!p.IsValid(true));
 }
@@ -86,16 +75,16 @@ TEST_CASE("Bool") {
 TEST_CASE("Int") {
 	IntConfigParam p("Unit Test", "");
 
-	REQUIRE(p.Enabled());
-	REQUIRE(!p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(!p.IsLocked());
 	REQUIRE(p.IsValid(0));
 	REQUIRE_EQ(p.Get(), 0);
 	REQUIRE(p.IsValid(INT_MIN));
 	REQUIRE(p.IsValid(INT_MAX));
 
 	p.Lock(5);
-	REQUIRE(p.Enabled());
-	REQUIRE(p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(p.IsLocked());
 	REQUIRE_EQ(p.Get(), 5);
 	REQUIRE(!p.IsValid(4));
 	REQUIRE(p.IsValid(5));
@@ -106,9 +95,9 @@ TEST_CASE("Int") {
 	REQUIRE(!p.Set(0));
 	REQUIRE_EQ(p.Get(), 5);
 
-	p.Disable();
-	REQUIRE(!p.Enabled());
-	REQUIRE(p.Locked());
+	p.SetOptionVisible(false);
+	REQUIRE(!p.IsOptionVisible());
+	REQUIRE(p.IsLocked());
 	REQUIRE(!p.IsValid(0));
 	REQUIRE(!p.IsValid(5));
 	REQUIRE(!p.IsValid(INT_MIN));
@@ -120,8 +109,8 @@ TEST_CASE("Int") {
 TEST_CASE("String") {
 	StringConfigParam p("Unit Test", "", "Hello World");
 
-	REQUIRE(p.Enabled());
-	REQUIRE(!p.Locked());
+	REQUIRE(p.IsOptionVisible());
+	REQUIRE(!p.IsLocked());
 	REQUIRE(p.IsValid(""));
 	REQUIRE_EQ(p.Get(), "Hello World");
 

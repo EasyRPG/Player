@@ -518,8 +518,8 @@ void NxUi::ToggleStretch() {
 
 void NxUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("Switch NX (Software)");
-	cfg.vsync.Disable();
-	cfg.window_zoom.Disable();
+	cfg.vsync.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
 	cfg.fullscreen.Lock(IsFullscreen());
 	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
 }

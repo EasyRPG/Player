@@ -447,9 +447,9 @@ void Ctr2Ui::ToggleStretch() {
 
 void Ctr2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("3DS Citro (Software)");
-	cfg.vsync.Disable();
-	cfg.window_zoom.Disable();
-	cfg.scaling_mode.Disable();
+	cfg.vsync.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	cfg.scaling_mode.SetOptionVisible(false);
 	cfg.fullscreen.Lock(IsFullscreen());
 	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
 }

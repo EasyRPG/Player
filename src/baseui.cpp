@@ -70,21 +70,25 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 
 	vGetConfig(cfg);
 
-	if (cfg.vsync.Enabled()
+	if (cfg.fullscreen.IsOptionVisible()) {
+		cfg.fps_render_window.SetOptionVisible(true);
+	}
+
+	if (cfg.vsync.IsOptionVisible()
 			&& cfg.vsync.Get()
-			&& cfg.fps_limit.Enabled()) {
+			&& cfg.fps_limit.IsOptionVisible()) {
 		cfg.fps_limit.Lock(cfg.fps_limit.Get());
 	}
 
-	if (cfg.fullscreen.Enabled()
+	if (cfg.fullscreen.IsOptionVisible()
 			&& cfg.fullscreen.Get()
-			&& cfg.window_zoom.Enabled()) {
+			&& cfg.window_zoom.IsOptionVisible()) {
 		cfg.window_zoom.Lock(cfg.window_zoom.Get());
 	}
 
 	// FIXME: Support these options
-	cfg.vsync.Disable();
-	cfg.fps_limit.Disable();
+	cfg.vsync.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
 
 	return cfg;
 }

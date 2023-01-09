@@ -167,7 +167,7 @@ template <typename Param, typename Action>
 void Window_Settings::AddOption(const Param& param,
 	Action&& action)
 {
-	if (!param.Enabled()) {
+	if (!param.IsOptionVisible()) {
 		return;
 	}
 	Option opt;
@@ -175,7 +175,7 @@ void Window_Settings::AddOption(const Param& param,
 	opt.help = ToString(param.GetDescription());
 	opt.value_text = param.ValueToString();
 	opt.mode = eOptionNone;
-	if (!param.Locked()) {
+	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
 	options.push_back(std::move(opt));
@@ -185,7 +185,7 @@ template <typename T, typename Action>
 void Window_Settings::AddOption(const RangeConfigParam<T>& param,
 		Action&& action
 	) {
-	if (!param.Enabled()) {
+	if (!param.IsOptionVisible()) {
 		return;
 	}
 	Option opt;
@@ -197,7 +197,7 @@ void Window_Settings::AddOption(const RangeConfigParam<T>& param,
 	opt.original_value = opt.current_value;
 	opt.min_value = param.GetMin();
 	opt.max_value = param.GetMax();
-	if (!param.Locked()) {
+	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
 	options.push_back(std::move(opt));
@@ -207,7 +207,7 @@ template <typename T, typename Action, size_t S>
 void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
 			Action&& action
 	) {
-	if (!param.Enabled()) {
+	if (!param.IsOptionVisible()) {
 		return;
 	}
 	Option opt;
@@ -233,7 +233,7 @@ void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
 		}
 		++idx;
 	}
-	if (!param.Locked()) {
+	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
 	options.push_back(std::move(opt));

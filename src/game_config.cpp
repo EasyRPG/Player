@@ -340,28 +340,28 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	/** VIDEO SECTION */
 
 	os << "[video]\n";
-	if (video.vsync.Enabled()) {
+	if (video.vsync.IsOptionVisible()) {
 		os << "vsync=" << int(video.vsync.Get()) << "\n";
 	}
-	if (video.fullscreen.Enabled()) {
+	if (video.fullscreen.IsOptionVisible()) {
 		os << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
 	}
-	if (video.show_fps.Enabled()) {
+	if (video.show_fps.IsOptionVisible()) {
 		os << "show-fps=" << int(video.show_fps.Get()) << "\n";
 	}
-	if (video.fps_render_window.Enabled()) {
+	if (video.fps_render_window.IsOptionVisible()) {
 		os << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
 	}
-	if (video.fps_limit.Enabled()) {
+	if (video.fps_limit.IsOptionVisible()) {
 		os << "fps-limit=" << video.fps_limit.Get() << "\n";
 	}
-	if (video.window_zoom.Enabled()) {
+	if (video.window_zoom.IsOptionVisible()) {
 		os << "window-zoom=" << video.window_zoom.Get() << "\n";
 	}
-	if (video.stretch.Enabled()) {
+	if (video.stretch.IsOptionVisible()) {
 		os << "stretch=" << int(video.stretch.Get()) << "\n";
 	}
-	if (video.scaling_mode.Enabled()) {
+	if (video.scaling_mode.IsOptionVisible()) {
 		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
 	}
 	os << "\n";
@@ -369,10 +369,10 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	/** AUDIO SECTION */
 	os << "[audio]\n";
 
-	if (audio.music_volume.Enabled()) {
+	if (audio.music_volume.IsOptionVisible()) {
 		os << "music-volume=" << audio.music_volume.Get() << "\n";
 	}
-	if (audio.sound_volume.Enabled()) {
+	if (audio.sound_volume.IsOptionVisible()) {
 		os << "sound-volume=" << audio.sound_volume.Get() << "\n";
 	}
 	os << "\n";
@@ -403,13 +403,13 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 		os << "\n";
 	}
 
-	if (input.gamepad_swap_analog.Enabled()) {
+	if (input.gamepad_swap_analog.IsOptionVisible()) {
 		os << "gamepad-swap-analog=" << int(input.gamepad_swap_analog.Get()) << "\n";
 	}
-	if (input.gamepad_swap_dpad_with_buttons.Enabled()) {
+	if (input.gamepad_swap_dpad_with_buttons.IsOptionVisible()) {
 		os << "gamepad-swap-dpad=" << int(input.gamepad_swap_dpad_with_buttons.Get()) << "\n";
 	}
-	if (input.gamepad_swap_ab_and_xy.Enabled()) {
+	if (input.gamepad_swap_ab_and_xy.IsOptionVisible()) {
 		os << "gamepad-swap-abxy=" << int(input.gamepad_swap_ab_and_xy.Get()) << "\n";
 	}
 

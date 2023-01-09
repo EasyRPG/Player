@@ -490,8 +490,8 @@ RETRO_API size_t retro_get_memory_size(unsigned id) {
 
 void LibRetroUi::vGetConfig(Config_GameVideo& cfg) const {
 	cfg.renderer.Lock("LibRetro (Software)");
-	cfg.vsync.Disable();
-	cfg.fps_limit.Disable();
-	cfg.window_zoom.Disable();
+	cfg.vsync.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
 	cfg.fullscreen.Lock(IsFullscreen());
 }

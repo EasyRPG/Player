@@ -760,7 +760,7 @@ void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("SDL1 (Software)");
 #endif
 
-	cfg.vsync.Lock(false);
+	cfg.vsync.SetOptionVisible(false);
 	if (zoom_available) {
 		cfg.window_zoom.Set(current_display_mode.zoom);
 	} else {
@@ -771,4 +771,6 @@ void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	} else {
 		cfg.fullscreen.Lock(IsFullscreen());
 	}
+	cfg.scaling_mode.SetOptionVisible(false);
+	cfg.stretch.SetOptionVisible(false);
 }
