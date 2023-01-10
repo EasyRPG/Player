@@ -38,15 +38,32 @@ namespace {
 	}
 }
 
+/**
+ * Base class for all ConfigParams
+ */
 template <typename T>
 class ConfigParamBase {
 public:
 	using value_type = T;
 
+	/**
+	 * @param name Name shown in the settings scene
+	 * @param description Description shown in the help window of the settings scene
+	 * @param value Initial value
+	 */
 	ConfigParamBase(StringView name, StringView description, T value) : _name(name), _description(description), _value(value) {}
 
+	/** @return current assigned value */
 	T Get() const { return _value; }
 
+	/**
+	 * Sets the value.
+	 * Setting fails when the option is locked or invisible or the value is not
+	 * in a supported range of the option.
+	 *
+	 * @param value Value to set to
+	 * @return Whether the setting succeeded. When it fails the old value remains.
+	 */
 	bool Set(const T& value) {
 		if (IsLocked()) {
 			return false;
@@ -59,6 +76,14 @@ public:
 		return false;
 	}
 
+	/**
+	 * Check whether a value is acceptable for this setting.
+	 * This function is used for internal purposes.
+	 *
+	 * @see Set
+	 * @param value Value to set to
+	 * @return Whether the value is okay
+	 */
 	bool IsValid(const T& value) const {
 		if (!IsOptionVisible()) {
 			return false;
@@ -71,20 +96,36 @@ public:
 		return vIsValid(value);
 	}
 
-	virtual bool vIsValid(const T& value) const = 0;
-
+	/** @return Whether the option is displayed and supported */
 	bool IsOptionVisible() const {
 		return _visible;
 	}
 
+	/**
+	 * Sets the visibility of the option in the settings scene.
+	 * Additionally this indicates wheter the setting is supported at all.
+	 * When not visible all write operations to the setting will fail.
+	 *
+	 * @see Lock To indicate that the setting is supported but currently constant
+	 * @param visible Turns visibility on/off
+	 */
 	void SetOptionVisible(bool visible) {
 		_visible = visible;
 	}
 
+	/** @return Whether the option is currently locked and cannot be altered */
 	bool IsLocked() const {
 		return _locked;
 	}
 
+	/**
+	 * Locks the option. A locked option cannot be altered.
+	 * Use this when the option is supported but cannot be altered currently due
+	 * to a dependency on another option.
+	 *
+	 * @param value Value to lock the option with
+	 * @return Whether the locking succeeded. When it fails the old value remains.
+	 */
 	bool Lock(T value) {
 		_locked = false;
 
@@ -97,21 +138,32 @@ public:
 		return true;
 	}
 
+	/**
+	 * Locks or unlocks the option. The current value stays.
+	 *
+	 * @see Lock
+	 * @param locked turn locking on/off
+	 */
 	void SetLocked(bool locked) {
 		_locked = locked;
 	}
 
+	/** @return name displayed in the settings scene */
 	StringView GetName() const {
 		return _name;
 	}
 
+	/** @return help text displayed in the settings scene */
 	StringView GetDescription() const {
 		return _description;
 	}
 
+	/** @return human readable representation of the value for the settings scene */
 	virtual std::string ValueToString() const = 0;
 
 protected:
+	virtual bool vIsValid(const T& value) const = 0;
+
 	T _value = {};
 	StringView _name;
 	StringView _description;
