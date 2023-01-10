@@ -104,7 +104,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	}
 
 	if (!path.empty()) {
-		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
+		path = FileFinder::MakePath(path, Utils::LowerCase(FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME)));
 	}
 #endif
 

@@ -47,6 +47,8 @@ public:
 	void SE_Stop() override;
 	void Update() override;
 
+	void vGetConfig(Game_ConfigAudio&) const override {}
+
 	void LockMutex() const;
 	void UnlockMutex() const;
 }; // class CtrAudio

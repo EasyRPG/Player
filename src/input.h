@@ -47,7 +47,7 @@ namespace Input {
 	 *  input to, or the empty string if not recording
 	 */
 	void Init(
-		const Game_ConfigInput& cfg,
+		Game_ConfigInput cfg,
 		const std::string& replay_from_path,
 		const std::string& record_to_path
 	);

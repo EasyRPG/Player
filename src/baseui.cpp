@@ -68,6 +68,20 @@ void BaseUi::CleanDisplay() {
 Game_ConfigVideo BaseUi::GetConfig() const {
 	Game_ConfigVideo cfg = vcfg;
 
+	// All options are opt-in
+	// Implementors must invoke Enable() when supported
+
+	// Always enabled by default:
+	// - renderer (name of the renderer)
+	// - show_fps (Rendering of FPS, engine feature)
+
+	cfg.vsync.SetOptionVisible(false);
+	cfg.fullscreen.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	cfg.scaling_mode.SetOptionVisible(false);
+	cfg.stretch.SetOptionVisible(false);
+
 	vGetConfig(cfg);
 
 	if (cfg.fullscreen.IsOptionVisible()) {

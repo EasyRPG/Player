@@ -76,7 +76,7 @@ void Scene_Settings::CreateOptionsWindow() {
 	input_window->SetHelpWindow(help_window.get());
 
 	input_mode_window = std::make_unique<Window_Selectable>(32, SCREEN_TARGET_HEIGHT - 32, SCREEN_TARGET_WIDTH - 64, 32);
-	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int index) {
+	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int) {
 		win.SetText("Remove this keybinding");
 	};
 	input_mode_window->SetItemMax(3);

@@ -82,3 +82,10 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::JOY_START, "Start"}
 	};
 }
+
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
+	cfg.gamepad_swap_analog.SetOptionVisible(true);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
+}
+

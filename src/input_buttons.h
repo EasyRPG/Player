@@ -30,6 +30,8 @@
 #include "flat_map.h"
 #include "keys.h"
 
+class Game_ConfigInput;
+
 #if USE_SDL==1
 #include "platform/sdl/axis.h"
 #endif
@@ -242,6 +244,9 @@ namespace Input {
 
 	/** Returns platform-specific, human readable name for an input key */
 	KeyNamesArray GetInputKeyNames();
+
+	/** Used to declare which config options are available */
+	void GetSupportedConfig(Game_ConfigInput& cfg);
 
 #if USE_SDL==1
 	SdlAxis GetSdlAxis();

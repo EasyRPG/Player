@@ -43,4 +43,6 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
 }
 
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {}
+
 #endif

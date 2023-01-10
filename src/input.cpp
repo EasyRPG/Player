@@ -17,6 +17,8 @@
 
 // Headers
 #include "input.h"
+#include "game_config.h"
+#include "input_buttons.h"
 #include "input_source.h"
 #include "output.h"
 #include "player.h"
@@ -58,7 +60,7 @@ bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
 void Input::Init(
-	const Game_ConfigInput& cfg,
+	Game_ConfigInput cfg,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
@@ -76,6 +78,11 @@ void Input::Init(
 		{ Direction::RIGHT, RIGHT },
 		{ Direction::UP, UP }
 	};
+
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(false);
+	cfg.gamepad_swap_analog.SetOptionVisible(false);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(false);
+	Input::GetSupportedConfig(cfg);
 
 	source = Source::Create(cfg, std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);

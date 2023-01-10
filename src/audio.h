@@ -37,6 +37,8 @@ struct AudioInterface {
  	 */
 	Game_ConfigAudio GetConfig() const;
 
+	virtual void vGetConfig(Game_ConfigAudio& cfg) const = 0;
+
 	/**
 	 * Update audio. Must be called each frame.
 	 */
@@ -120,7 +122,6 @@ struct AudioInterface {
 	 */
 	virtual void SE_Stop() = 0;
 
-
 	int BGM_GetGlobalVolume() const;
 	void BGM_SetGlobalVolume(int volume);
 
@@ -147,6 +148,7 @@ public:
 	void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}
+	void vGetConfig(Game_ConfigAudio& cfg) const override;
 
 private:
 	unsigned bgm_starttick = 0;

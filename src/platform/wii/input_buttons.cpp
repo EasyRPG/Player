@@ -69,6 +69,12 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
 }
 
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
+	cfg.gamepad_swap_analog.SetOptionVisible(true);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
+}
+
 SdlAxis Input::GetSdlAxis() {
 	// Classic Controller L/R Trigger axis do not report proper values
 	// Handled above as Button 11/12
@@ -76,3 +82,4 @@ SdlAxis Input::GetSdlAxis() {
 		0, 1, 2, 3, -1, -1, false, false
 	};
 }
+

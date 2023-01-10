@@ -50,8 +50,8 @@ struct Game_ConfigVideo {
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
 	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
 		ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
-		Utils::MakeSvArray("Scale to screen size (Fast & Low quality)", "Scale to multiple of the game resolution (Fast & Good quality)", "Like Nearest, avoids artifacts (Slow & High Quality)")};
-	BoolConfigParam stretch{ "Stretch", "Stretches the window to display width", false };
+		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
+	BoolConfigParam stretch{ "Stretch", "Stretches the window to screen width", false };
 };
 
 struct Game_ConfigAudio {
