@@ -256,11 +256,11 @@ void Input::Source::UpdateGamepad() {
 	// Trigger
 	analog_input = DisplayUi->GetAnalogInput();
 	keystates[Input::Keys::JOY_LTRIGGER_FULL] = (analog_input.trigger_left > AnalogInput::kMaxValue * 0.9);
-	keystates[Input::Keys::JOY_LTRIGGER_PARTIAL] =
+	keystates[Input::Keys::JOY_LTRIGGER_SOFT] =
 			(analog_input.trigger_left > JOYSTICK_TRIGGER_SENSIBILITY) &&
 			!keystates[Input::Keys::JOY_LTRIGGER_FULL];
 	keystates[Input::Keys::JOY_RTRIGGER_FULL] = (analog_input.trigger_right > AnalogInput::kMaxValue * 0.9);
-	keystates[Input::Keys::JOY_RTRIGGER_PARTIAL] =
+	keystates[Input::Keys::JOY_RTRIGGER_SOFT] =
 			(analog_input.trigger_right > JOYSTICK_TRIGGER_SENSIBILITY) &&
 			!keystates[Input::Keys::JOY_RTRIGGER_FULL];
 }

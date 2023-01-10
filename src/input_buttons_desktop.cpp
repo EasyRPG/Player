@@ -41,7 +41,6 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{RIGHT, Keys::L},
 		{RIGHT, Keys::KP6},
 		{RIGHT, Keys::D},
-		{DECISION, Keys::Z},
 		{DECISION, Keys::Y},
 		{DECISION, Keys::SPACE},
 		{DECISION, Keys::RETURN},
@@ -156,9 +155,9 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N7, Keys::JOY_RSTICK_UP_LEFT},
 		{N8, Keys::JOY_RSTICK_UP},
 		{N9, Keys::JOY_RSTICK_UP_RIGHT},
-		{FAST_FORWARD, Keys::JOY_RTRIGGER_PARTIAL},
+		{FAST_FORWARD, Keys::JOY_RTRIGGER_SOFT},
 		{FAST_FORWARD_PLUS, Keys::JOY_RTRIGGER_FULL},
-		{DEBUG_THROUGH, Keys::JOY_LTRIGGER_PARTIAL},
+		{DEBUG_THROUGH, Keys::JOY_LTRIGGER_SOFT},
 		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
 #endif
 
