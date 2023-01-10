@@ -18,6 +18,7 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "game_config.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {

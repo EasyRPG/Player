@@ -27,6 +27,10 @@
 #  include <shlobj.h>
 #endif
 
+#ifdef USE_LIBRETRO
+#   include "platform/libretro/ui.h"
+#endif
+
 namespace {
 	StringView config_name = "config.ini";
 }

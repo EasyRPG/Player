@@ -188,6 +188,14 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 }
 #endif
 
+void LibretroUi::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("LibRetro (Software)");
+	cfg.vsync.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	cfg.fullscreen.Lock(IsFullscreen());
+}
+
 /* libretro api implementation */
 static const unsigned AUDIO_SAMPLERATE = 48000;
 
@@ -486,12 +494,4 @@ RETRO_API void* retro_get_memory_data(unsigned id) {
 RETRO_API size_t retro_get_memory_size(unsigned id) {
 	// no-op
 	return 0;
-}
-
-void LibRetroUi::vGetConfig(Config_GameVideo& cfg) const {
-	cfg.renderer.Lock("LibRetro (Software)");
-	cfg.vsync.SetOptionVisible(false);
-	cfg.fps_limit.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.fullscreen.Lock(IsFullscreen());
 }

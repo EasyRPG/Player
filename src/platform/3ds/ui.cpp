@@ -164,7 +164,7 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	top_image.tex = tex;
 	top_image.subtex = &subt3x;
 
-	if (cfg.video.stretch.Get()) {
+	if (vcfg.stretch.Get()) {
 		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
 		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
@@ -435,17 +435,17 @@ bool CtrUi::LogMessage(const std::string &message) {
 #endif
 }
 
-void Ctr2Ui::ToggleStretch() {
+void CtrUi::ToggleStretch() {
 	vcfg.stretch.Toggle();
 
-	if (cfg.video.stretch.Get()) {
+	if (vcfg.stretch.Get()) {
 		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
 		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
 	}
 }
 
-void Ctr2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+void CtrUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("3DS Citro (Software)");
 	cfg.vsync.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);

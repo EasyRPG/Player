@@ -74,6 +74,8 @@ namespace {
 	constexpr int touch_buttons_height = SCREEN_HEIGHT/8;
 	constexpr int touch_buttons_right_x = SCREEN_WIDTH - touch_buttons_width;
 	std::vector<bool> touched_buttons(16, false);
+
+	Game_ConfigVideo* vcfg_ref;
 }
 
 static int renderThread(unsigned int args, void* arg){
@@ -92,20 +94,20 @@ static int renderThread(unsigned int args, void* arg){
 		vita2d_start_drawing();
 
 		vita2d_clear_screen();
-		if (!is_pstv && touch_texture && cfg. !vcfg.stretch.Get()) {
+		if (!is_pstv && touch_texture && !vcfg_ref->stretch.Get()) {
 			vita2d_draw_texture(touch_texture, 0, 0);
 		}
 
-		if (vcfg.scaling_mode.Get() == ScalingMode::Nearest) {
-			if (!vcfg.stretch.Get()) {
+		if (vcfg_ref->scaling_mode.Get() == ScalingMode::Nearest) {
+			if (!vcfg_ref->stretch.Get()) {
 				// 725x544 (scaled)
 				vita2d_draw_texture_scale(gpu_texture, 117, 0, 2.266, 2.266);
 			} else {
 				// 960x544 (full-stretched)
 				vita2d_draw_texture_scale(gpu_texture, 0, 0, 3, 2.266);
 			}
-		} else if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
-			if (!vcfg.stretch.Get()) {
+		} else if (vcfg_ref->scaling_mode.Get() == ScalingMode::Integer) {
+			if (!vcfg_ref->stretch.Get()) {
 				// 640x480 (doubled)
 				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
 			} else {
@@ -115,7 +117,7 @@ static int renderThread(unsigned int args, void* arg){
 		}
 
 		// draw touched keys
-		if (!is_pstv && touch_texture && !vcfg.stretch.Get()) {
+		if (!is_pstv && touch_texture && !vcfg_ref->stretch.Get()) {
 			for (int i = 0; i < 16; ++i) {
 				if (touched_buttons[i]) {
 					vita2d_draw_rectangle(i < 8 ? 0 : touch_buttons_right_x,
@@ -134,6 +136,8 @@ static int renderThread(unsigned int args, void* arg){
 
 Psp2Ui::Psp2Ui(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
+	vcfg_ref = &vcfg;
+
 	SetIsFullscreen(true);
 
 	is_pstv = sceKernelIsPSVitaTV();
