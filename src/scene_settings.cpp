@@ -35,6 +35,10 @@
 #include "window_settings.h"
 #include <memory>
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
 constexpr int option_window_num_items = 10;
 
 Scene_Settings::Scene_Settings() {
@@ -458,7 +462,15 @@ void Scene_Settings::UpdateSave() {
 	cfg.player = Player::player_config;
 	cfg.WriteToStream(cfg_out);
 
-	Output::Info("Configuration saved");
+#ifdef EMSCRIPTEN
+	// Save changed file system
+	EM_ASM({
+		FS.syncfs(function(err) {
+		});
+	});
+#endif
+
+	Output::Info("Configuration saved to {}", cfg_out.GetName());
 }
 
 void Scene_Settings::DrawBackground(Bitmap& dst) {
