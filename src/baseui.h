@@ -126,10 +126,6 @@ public:
 	virtual AudioInterface& GetAudio() = 0;
 #endif
 
-	virtual void SetScalingMode(ScalingMode) {};
-
-	virtual void ToggleStretch() {};
-
 	/**
 	 * Gets client width size.
 	 *
@@ -185,11 +181,31 @@ public:
 	/** Toggle whether we should show fps */
 	void ToggleShowFps();
 
+	/** Toggle wheter we should show fps on the titlebar */
+	void ToggleShowFpsOnTitle();
+
 	/**
 	 * @return the minimum amount of time each physical frame should take.
 	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
 	 */
 	Game_Clock::duration GetFrameLimit() const;
+
+	/**
+	 * Sets the frame limit.
+	 * Note that this uses int instead of Game_Clock to make the invocation easier.
+	 *
+	 * @param fps_limit new fps limit
+	 */
+	void SetFrameLimit(int fps_limit);
+
+	/** Sets the scaling mode of the window */
+	virtual void SetScalingMode(ScalingMode) {};
+
+	/** Toggles "stretch to screen width" on or off */
+	virtual void ToggleStretch() {};
+
+	/** Turns vsync on or off */
+	virtual void ToggleVsync() {};
 
 	/**
 	 * @return current video options.
@@ -314,8 +330,18 @@ inline void BaseUi::ToggleShowFps() {
 	vcfg.show_fps.Toggle();
 }
 
+inline void BaseUi::ToggleShowFpsOnTitle() {
+	vcfg.fps_render_window.Toggle();
+}
+
 inline Game_Clock::duration BaseUi::GetFrameLimit() const {
 	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
+}
+
+inline void BaseUi::SetFrameLimit(int fps_limit) {
+	vcfg.fps_limit.Set(fps_limit);
+
+	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
 }
 
 #endif

@@ -45,8 +45,8 @@ struct Game_ConfigVideo {
 	BoolConfigParam vsync{ "Vsync", "Toggle Vsync mode (Recommended: ON)", true };
 	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", true };
 	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
-	BoolConfigParam fps_render_window{ "", "", false };
-	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
+	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", false };
+	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, 99999 };
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
 	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
 		ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),

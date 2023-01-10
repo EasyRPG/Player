@@ -245,9 +245,10 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.renderer,	[](){});
 	AddOption(cfg.fullscreen, [](){ DisplayUi->ToggleFullscreen(); });
 	AddOption(cfg.window_zoom, [](){ DisplayUi->ToggleZoom(); });
-	AddOption(cfg.vsync, [](){}); // FIXME
-	AddOption(cfg.fps_limit, [](){}); // FIXME
+	AddOption(cfg.vsync, [](){ DisplayUi->ToggleVsync(); });
+	AddOption(cfg.fps_limit, [this](){ DisplayUi->SetFrameLimit(GetCurrentOption().current_value); });
 	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
+	AddOption(cfg.fps_render_window, [](){ DisplayUi->ToggleShowFpsOnTitle(); });
 	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
 	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
 }

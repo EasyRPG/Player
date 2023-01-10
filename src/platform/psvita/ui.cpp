@@ -282,6 +282,11 @@ void Psp2Ui::ToggleStretch() {
 	vcfg.stretch.Toggle();
 }
 
+void Psp2Ui::ToggleVsync() {
+	vcfg.vsync.Toggle();
+	vita2d_set_vblank_wait(vcfg.vsync.Get());
+}
+
 void Psp2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("Vita (Software)");
 	cfg.vsync.SetOptionVisible(false);

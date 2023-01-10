@@ -467,6 +467,22 @@ void Sdl2Ui::ToggleStretch() {
 	vcfg.stretch.Toggle();
 }
 
+void Sdl2Ui::ToggleVsync() {
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+	// Modifying vsync requires recreating the renderer
+	vcfg.vsync.Toggle();
+
+	if (SDL_RenderSetVSync(sdl_renderer, int(vcfg.vsync.Get())) == 0) {
+		current_display_mode.vsync = vcfg.vsync.Get();
+		SetFrameRateSynchronized(vcfg.vsync.Get());
+	} else {
+		Output::Warning("Unable to toggle vsync. This is likely a problem with your system configuration.");
+	}
+#else
+	Output::Warning("Cannot toogle vsync: SDL2 version too old (must be 2.0.18)");
+#endif
+}
+
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
@@ -1079,6 +1095,17 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #else
 	cfg.renderer.Lock("SDL2 (Software)");
 #endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+	cfg.vsync.SetOptionVisible(true);
+#endif
+	cfg.fullscreen.SetOptionVisible(true);
+	cfg.fps_limit.SetOptionVisible(true);
+	cfg.fps_render_window.SetOptionVisible(true);
+	cfg.window_zoom.SetOptionVisible(true);
+	cfg.scaling_mode.SetOptionVisible(true);
+	cfg.stretch.SetOptionVisible(true);
+
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);
 	cfg.fullscreen.Set(IsFullscreen());

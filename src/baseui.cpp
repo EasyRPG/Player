@@ -69,7 +69,7 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 	Game_ConfigVideo cfg = vcfg;
 
 	// All options are opt-in
-	// Implementors must invoke Enable() when supported
+	// Implementors must invoke SetOptionVisible() when supported
 
 	// Always enabled by default:
 	// - renderer (name of the renderer)
@@ -78,6 +78,7 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 	cfg.vsync.SetOptionVisible(false);
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.fps_limit.SetOptionVisible(false);
+	cfg.fps_render_window.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	cfg.scaling_mode.SetOptionVisible(false);
 	cfg.stretch.SetOptionVisible(false);
@@ -85,24 +86,24 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 	vGetConfig(cfg);
 
 	if (cfg.fullscreen.IsOptionVisible()) {
-		cfg.fps_render_window.SetOptionVisible(true);
+		cfg.fps_render_window.SetLocked(cfg.fullscreen.Get());
+	}
+
+	if (!cfg.fps_render_window.IsLocked()) {
+		cfg.fps_render_window.SetLocked(!cfg.show_fps.Get());
 	}
 
 	if (cfg.vsync.IsOptionVisible()
 			&& cfg.vsync.Get()
 			&& cfg.fps_limit.IsOptionVisible()) {
-		cfg.fps_limit.Lock(cfg.fps_limit.Get());
+		cfg.fps_limit.SetLocked(true);
 	}
 
 	if (cfg.fullscreen.IsOptionVisible()
 			&& cfg.fullscreen.Get()
 			&& cfg.window_zoom.IsOptionVisible()) {
-		cfg.window_zoom.Lock(cfg.window_zoom.Get());
+		cfg.window_zoom.SetLocked(true);
 	}
-
-	// FIXME: Support these options
-	cfg.vsync.SetOptionVisible(false);
-	cfg.fps_limit.SetOptionVisible(false);
 
 	return cfg;
 }

@@ -53,6 +53,7 @@ public:
 	void ProcessEvents() override;
 	void SetScalingMode(ScalingMode) override;
 	void ToggleStretch() override;
+	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
