@@ -177,7 +177,8 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 	auto& transition = Transition::instance();
 
 	if (next_scene != Scene::Battle
-			&& next_scene != Scene::Debug) {
+			&& next_scene != Scene::Debug
+			&& next_scene != Scene::Settings) {
 		screen_erased_by_event = false;
 	}
 
