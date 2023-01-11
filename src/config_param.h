@@ -153,9 +153,23 @@ public:
 		return _name;
 	}
 
+	/**
+	 * @param name new name of the setting
+	 */
+	void SetName(StringView name) {
+		_name = name;
+	}
+
 	/** @return help text displayed in the settings scene */
 	StringView GetDescription() const {
 		return _description;
+	}
+
+	/**
+	 * @param description new description of the setting
+	 */
+	void SetDescription(StringView description) {
+		_description = description;
 	}
 
 	/** @return human readable representation of the value for the settings scene */

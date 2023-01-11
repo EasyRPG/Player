@@ -342,8 +342,7 @@ void n3ds_audio_thread(void* userdata) {
 				reinterpret_cast<uint8_t*>(bgm.buf[target_block].data_pcm16),
 				bgm.buf_size);
 			DSP_FlushDataCache(bgm.buf[target_block].data_pcm16, bgm.buf_size);
-
-			mix[0] = mix[1] = bgm.decoder->GetVolume() / 100.0f;
+			mix[0] = mix[1] = bgm.decoder->GetVolume() / 100.0f * audio->GetConfig().music_volume.Get() / 100.0f;
 			ndspChnSetMix(bgm.channel, mix);
 			ndspChnWaveBufAdd(bgm.channel, &bgm.buf[target_block]);
 		} else {

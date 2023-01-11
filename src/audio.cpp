@@ -70,6 +70,7 @@ AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) : cfg(cfg) {
 
 Game_ConfigAudio AudioInterface::GetConfig() const {
 	auto acfg = cfg;
+	acfg.Hide();
 	vGetConfig(acfg);
 	return acfg;
 }

@@ -79,9 +79,7 @@ void Input::Init(
 		{ Direction::UP, UP }
 	};
 
-	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(false);
-	cfg.gamepad_swap_analog.SetOptionVisible(false);
-	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(false);
+	cfg.Hide();
 	Input::GetSupportedConfig(cfg);
 
 	source = Source::Create(cfg, std::move(directions), replay_from_path);

@@ -38,6 +38,8 @@ enum class ScalingMode {
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "", "", "" };
 	StringConfigParam enemyai_algo{ "", "", "" };
+
+	void Hide();
 };
 
 struct Game_ConfigVideo {
@@ -52,11 +54,16 @@ struct Game_ConfigVideo {
 		ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
 	BoolConfigParam stretch{ "Stretch", "Stretches the window to screen width", false };
+	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", true };
+
+	void Hide();
 };
 
 struct Game_ConfigAudio {
 	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", 100, 0, 100 };
 	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", 100, 0, 100 };
+
+	void Hide();
 };
 
 struct Game_ConfigInput {
@@ -64,6 +71,8 @@ struct Game_ConfigInput {
 	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
 	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", false };
 	Input::ButtonMappingArray buttons;
+
+	void Hide();
 };
 
 struct Game_Config {

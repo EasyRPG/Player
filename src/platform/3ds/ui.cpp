@@ -186,6 +186,8 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
 	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
 
+	ToggleBottomScreen(cfg.video.touch_ui.Get());
+
 	// force refresh
 	info_tick = Game_Clock::now() - 10s;
 #endif
@@ -360,7 +362,6 @@ void CtrUi::UpdateDisplay() {
 	} else {
 		C2D_DrawImageAt(top_image, 40, 0, z);
 	}
-	C2D_DrawImageAt(top_image, 40, 0, z);
 
 	// bottom screen
 #ifndef _DEBUG
@@ -445,11 +446,16 @@ void CtrUi::ToggleStretch() {
 	}
 }
 
+void CtrUi::ToggleTouchUi() {
+	ToggleBottomScreen(bottom_state == screen_state::off);
+}
+
 void CtrUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("3DS Citro (Software)");
-	cfg.vsync.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.scaling_mode.SetOptionVisible(false);
-	cfg.fullscreen.Lock(IsFullscreen());
-	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
+
+	cfg.stretch.SetOptionVisible(true);
+	cfg.touch_ui.SetOptionVisible(true);
+	cfg.touch_ui.SetName("Backlight");
+	cfg.touch_ui.SetDescription("Toggle the backlight of the bottom screen");
+	cfg.touch_ui.Set(bottom_state != screen_state::off);
 }

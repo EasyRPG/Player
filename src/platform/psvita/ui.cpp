@@ -94,7 +94,7 @@ static int renderThread(unsigned int args, void* arg){
 		vita2d_start_drawing();
 
 		vita2d_clear_screen();
-		if (!is_pstv && touch_texture && !vcfg_ref->stretch.Get()) {
+		if (!is_pstv && touch_texture && vcfg_ref->touch_ui.Get() && !vcfg_ref->touch_ui.IsLocked()) {
 			vita2d_draw_texture(touch_texture, 0, 0);
 		}
 
@@ -293,8 +293,15 @@ void Psp2Ui::ToggleVsync() {
 
 void Psp2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("Vita (Software)");
-	cfg.vsync.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.fullscreen.Lock(IsFullscreen());
+
+	cfg.vsync.SetOptionVisible(true);
+	cfg.fps_limit.SetOptionVisible(true);
+	cfg.scaling_mode.SetOptionVisible(true);
 	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
+	cfg.stretch.SetOptionVisible(true);
+	cfg.touch_ui.SetOptionVisible(!is_pstv);
+
+	if (cfg.stretch.Get()) {
+		cfg.touch_ui.SetLocked(true);
+	}
 }

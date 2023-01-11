@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
 
 	// Check if app is invoked with an externalized game path
-	char boot_params[1024];
+	char boot_params[1024] = {};
 	sceAppMgrGetAppParam(boot_params);
 	std::string bp(boot_params);
 	if (!bp.empty()) {

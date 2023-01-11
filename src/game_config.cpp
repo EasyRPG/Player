@@ -35,6 +35,41 @@ namespace {
 	StringView config_name = "config.ini";
 }
 
+void Game_ConfigPlayer::Hide() {
+	// Game specific settings unsupported
+}
+
+void Game_ConfigVideo::Hide() {
+	// Options that are platform dependent are opt-in
+	// Implementors must invoke SetOptionVisible() when supported
+
+        // Always enabled by default:
+	// - renderer (name of the renderer)
+	// - show_fps (Rendering of FPS, engine feature)
+
+	vsync.SetOptionVisible(false);
+	fullscreen.SetOptionVisible(false);
+	fps_limit.SetOptionVisible(false);
+	fps_render_window.SetOptionVisible(false);
+	window_zoom.SetOptionVisible(false);
+	scaling_mode.SetOptionVisible(false);
+	stretch.SetOptionVisible(false);
+	touch_ui.SetOptionVisible(false);
+}
+
+void Game_ConfigAudio::Hide() {
+	// Music and SE volume control are opt-out
+	// Nothing else available currently
+}
+
+void Game_ConfigInput::Hide() {
+	// These features are handled by our input system but showing them only
+	// makes sense on hardware with the required sticks and buttons
+	gamepad_swap_ab_and_xy.SetOptionVisible(false);
+	gamepad_swap_analog.SetOptionVisible(false);
+	gamepad_swap_dpad_with_buttons.SetOptionVisible(false);	
+}
+
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 	cp.Rewind();
@@ -72,7 +107,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	path = "sd:/data/easyrpg-player";
 #elif defined(__SWITCH__)
 	path = "/switch/easyrpg-player";
-#elif defined(_3DS)
+#elif defined(__3DS__)
 	path = "sdmc:/data/easyrpg-player";
 #elif defined(PSP2)
 	path = "ux0:/data/easyrpg-player";
@@ -289,7 +324,10 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		video.scaling_mode.Set(static_cast<ScalingMode>(ini.GetInteger("video", "scaling-mode", 0)));
 	}
 	if (ini.HasValue("video", "stretch")) {
-		video.stretch.Set(ini.GetInteger("video", "stretch", 0));
+		video.stretch.Set(ini.GetBoolean("video", "stretch", 0));
+	}
+	if (ini.HasValue("video", "touch-ui")) {
+		video.touch_ui.Set(ini.GetBoolean("video", "touch-ui", 1));
 	}
 
 	/** AUDIO SECTION */
@@ -366,11 +404,14 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	if (video.window_zoom.IsOptionVisible()) {
 		os << "window-zoom=" << video.window_zoom.Get() << "\n";
 	}
+	if (video.scaling_mode.IsOptionVisible()) {
+		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
+	}
 	if (video.stretch.IsOptionVisible()) {
 		os << "stretch=" << int(video.stretch.Get()) << "\n";
 	}
-	if (video.scaling_mode.IsOptionVisible()) {
-		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
+	if (video.touch_ui.IsOptionVisible()) {
+		os << "touch-ui=" << int(video.touch_ui.Get()) << "\n";
 	}
 	os << "\n";
 

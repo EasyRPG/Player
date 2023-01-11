@@ -207,6 +207,9 @@ public:
 	/** Turns vsync on or off */
 	virtual void ToggleVsync() {};
 
+	/** Turns a touch ui on or off. */
+	virtual void ToggleTouchUi() {};
+
 	/**
 	 * @return current video options.
 	 */
