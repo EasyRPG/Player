@@ -80,6 +80,11 @@ namespace Input {
 	void ResetDefaultMapping(InputButton button);
 
 	/**
+	 * Loads the default mapping for all buttons
+	 */
+	void ResetAllMappings();
+
+	/**
 	 * Gets if a button is being pressed.
 	 *
 	 * @param button button ID.

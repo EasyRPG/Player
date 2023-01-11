@@ -211,16 +211,16 @@ void Input::Source::UpdateGamepad() {
 		keystates[second] = tmp;
 	};
 
-	if (cfg.gamepad_swap_ab_and_xy.Get()) {
-		bit_swap(Input::Keys::JOY_A, Input::Keys::JOY_B);
-		bit_swap(Input::Keys::JOY_X, Input::Keys::JOY_Y);
-	}
-
 	if (cfg.gamepad_swap_dpad_with_buttons.Get()) {
 		bit_swap(Input::Keys::JOY_DPAD_UP, Input::Keys::JOY_Y);
 		bit_swap(Input::Keys::JOY_DPAD_DOWN, Input::Keys::JOY_A);
 		bit_swap(Input::Keys::JOY_DPAD_LEFT, Input::Keys::JOY_X);
 		bit_swap(Input::Keys::JOY_DPAD_RIGHT, Input::Keys::JOY_B);
+	}
+
+	if (cfg.gamepad_swap_ab_and_xy.Get()) {
+		bit_swap(Input::Keys::JOY_A, Input::Keys::JOY_B);
+		bit_swap(Input::Keys::JOY_X, Input::Keys::JOY_Y);
 	}
 
 	// Primary Analog Stick (For directions, does not support diagonals)

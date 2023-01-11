@@ -614,6 +614,21 @@ TEST_CASE("ReplaceAllWithNew") {
 	REQUIRE(mp.Has({ 9, 8 }));
 }
 
+TEST_CASE("Count") {
+	IntUMMap mp = {
+		{ 1, 0 },
+		{ 1, 2 },
+		{ 2, 1 },
+		{ 2, 3 },
+		{ 2, 4 },
+		{ 3, 1 }
+	};
+
+	REQUIRE(mp.Count(1) == 2);
+	REQUIRE(mp.Count(2) == 3);
+	REQUIRE(mp.Count(3) == 1);
+	REQUIRE(mp.Count(4) == 0);
+}
 
 #if 0
 

@@ -29,6 +29,10 @@ Window_InputSettings::Window_InputSettings(int ix, int iy, int iwidth, int iheig
 	SetContents(Bitmap::Create(width - 16, height - 16));
 }
 
+Input::InputButton Window_InputSettings::GetInputButton() const {
+	return button;
+}
+
 void Window_InputSettings::SetInputButton(Input::InputButton button) {
 	this->button = button;
 	Refresh();
@@ -64,24 +68,6 @@ void Window_InputSettings::Refresh() {
 
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	auto custom_names = Input::GetInputKeyNames();
-
-	// Protect buttons where unmapping makes the Player unusable
-	auto def_mappings = Input::GetDefaultButtonMappings();
-	auto protected_buttons = std::array<std::pair<Input::InputButton, Input::Keys::InputKey>, 7> {{
-		{Input::InputButton::UP,            Input::Keys::InputKey::NONE},
-		{Input::InputButton::DOWN,          Input::Keys::InputKey::NONE},
-		{Input::InputButton::LEFT,          Input::Keys::InputKey::NONE},
-		{Input::InputButton::RIGHT,         Input::Keys::InputKey::NONE},
-		{Input::InputButton::DECISION,      Input::Keys::InputKey::NONE},
-		{Input::InputButton::CANCEL,        Input::Keys::InputKey::NONE},
-		{Input::InputButton::SETTINGS_MENU, Input::Keys::InputKey::NONE}
-	}};
-	for (auto& p: protected_buttons) {
-		for (auto ki = def_mappings.LowerBound(button); ki != def_mappings.end() && ki->first == button; ++ki) {
-			p.second = ki->second;
-			break;
-		}
-	}
 
 	std::vector<std::string> items;
 

@@ -18,6 +18,7 @@
 #include "game_config.h"
 #include "cmdline_parser.h"
 #include "filefinder.h"
+#include "input_buttons.h"
 #include "output.h"
 #include "input.h"
 #include <lcf/inireader.h>
@@ -359,6 +360,15 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 					mappings.Add({button, static_cast<Input::Keys::InputKey>(std::distance(kNames.begin(), it))});
 				}
 			}
+
+			// When it is a protected (important) button with zero mappings load the default
+			// For all other buttons having no mapping is fine
+			if (Input::IsProtectedButton(button) && !mappings.Has(button)) {
+				Input::ResetDefaultMapping(button);
+			}
+		} else {
+			// When the button is completely missing in the config load the default
+			Input::ResetDefaultMapping(button);
 		}
 	}
 

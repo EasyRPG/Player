@@ -60,16 +60,22 @@ private:
 	void UpdateButtonRemove();
 	void UpdateSave();
 
+	bool RefreshInputEmergencyReset();
+	void RefreshInputRemoveAllowed();
+
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;
 	std::unique_ptr<Window_Settings> options_window;
 	std::unique_ptr<Window_InputSettings> input_window;
+	std::unique_ptr<Window_Help> input_help_window;
 	std::unique_ptr<Window_Selectable> input_mode_window;
 	std::unique_ptr<Window_Command> picker_window;
 	std::unique_ptr<Window_NumberInput> number_window;
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;
+	bool input_mode_window_remove_allowed = true;
+	int input_reset_counter = 0;
 
 	Window_Settings::UiMode mode = Window_Settings::eNone;
 };

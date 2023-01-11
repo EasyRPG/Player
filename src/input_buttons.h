@@ -187,6 +187,25 @@ namespace Input {
 		}
 	}
 
+	/**
+	 * Protected buttons are buttons where unmapping them makes the Player unusable.
+	 * @return true when the button is protected
+	 */
+	constexpr bool IsProtectedButton(InputButton b) {
+		switch (b) {
+			case UP:
+			case DOWN:
+			case LEFT:
+			case RIGHT:
+			case DECISION:
+			case CANCEL:
+			case SETTINGS_MENU: // Not really critical but needs a way to enter it
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	namespace Direction {
 		enum InputDirection : uint8_t {
 			NONE = 0,

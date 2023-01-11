@@ -21,6 +21,7 @@
 #include "game_system.h"
 #include "cache.h"
 #include "input_buttons.h"
+#include "input_source.h"
 #include "keys.h"
 #include "main_data.h"
 #include "options.h"
@@ -76,7 +77,7 @@ void Scene_Settings::CreateOptionsWindow() {
 	options_window = std::make_unique<Window_Settings>(32, 32, SCREEN_TARGET_WIDTH - 64, 176);
 	options_window->SetHelpWindow(help_window.get());
 
-	input_window = std::make_unique<Window_InputSettings>(0, 32, SCREEN_TARGET_WIDTH, 176);
+	input_window = std::make_unique<Window_InputSettings>(0, 32, SCREEN_TARGET_WIDTH, 176 - 32);
 	input_window->SetHelpWindow(help_window.get());
 
 	input_mode_window = std::make_unique<Window_Selectable>(32, SCREEN_TARGET_HEIGHT - 32, SCREEN_TARGET_WIDTH - 64, 32);
@@ -97,9 +98,8 @@ void Scene_Settings::CreateOptionsWindow() {
 		}
 	};
 
-	// TODO: Too many mappings
-	// Cannot remove essential
-	// Shorter button names
+	input_help_window = std::make_unique<Window_Help>(0, SCREEN_TARGET_HEIGHT - 64, SCREEN_TARGET_WIDTH, 32);
+
 	Rect rect = input_mode_window->GetItemRect(0);
 	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, Font::ColorDefault, "<Add>");
 	rect = input_mode_window->GetItemRect(1);
@@ -133,11 +133,13 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	input_window->SetVisible(false);
 	input_mode_window->SetActive(false);
 	input_mode_window->SetVisible(false);
+	input_help_window->SetVisible(false);
 	help_window->SetVisible(false);
 
 	picker_window.reset();
 
 	switch (mode) {
+		case Window_Settings::eNone:
 		case Window_Settings::eMain:
 			main_window->SetActive(true);
 			main_window->SetVisible(true);
@@ -149,21 +151,26 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 			input_window->SetIndex(-1);
 			input_mode_window->SetActive(true);
 			input_mode_window->SetVisible(true);
+			input_help_window->SetVisible(true);
+			input_help_window->SetText("Emergency reset: Hold 4 keys and follow instructions");
+			RefreshInputRemoveAllowed();
 			break;
 		case Window_Settings::eInputButtonAdd:
 			help_window->SetVisible(true);
 			input_window->SetVisible(true);
 			input_window->SetInputButton(static_cast<Input::InputButton>(options_window->GetFrame().arg));
-			input_window->GetContents()->TextDraw(4, 146, Font::ColorDefault, "Press a key or wait 5 seconds to cancel");
 			input_mode_window->SetVisible(true);
+			input_help_window->SetVisible(true);
+			input_help_window->SetText("Press a key to bind. To abort the mapping wait 3 seconds");
 			break;
 		case Window_Settings::eInputButtonRemove:
 			help_window->SetVisible(true);
 			input_window->SetActive(true);
 			input_window->SetVisible(true);
 			input_window->SetIndex(0);
-			input_window->GetContents()->TextDraw(4, 146, Font::ColorDefault, "Select the keybinding you want to remove");
 			input_mode_window->SetVisible(true);
+			input_help_window->SetVisible(true);
+			input_help_window->SetText("Select the keybinding you want to remove");
 			break;
 		default:
 			help_window->SetVisible(true);
@@ -174,6 +181,10 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 }
 
 void Scene_Settings::Update() {
+	if (RefreshInputEmergencyReset()) {
+		return;
+	}
+
 	main_window->Update();
 	help_window->Update();
 	options_window->Update();
@@ -183,6 +194,7 @@ void Scene_Settings::Update() {
 	auto opt_mode = options_window->GetMode();
 
 	SetMode(opt_mode);
+
 	if (Input::IsTriggered(Input::CANCEL) && opt_mode != Window_Settings::eInputButtonAdd) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Cancel));
 
@@ -384,16 +396,23 @@ void Scene_Settings::UpdateOptions() {
 
 void Scene_Settings::UpdateButtonOption() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		switch (input_mode_window->GetIndex()) {
 			case 0:
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 				options_window->Push(Window_Settings::eInputButtonAdd, options_window->GetFrame().arg);
 				break;
 			case 1:
-				options_window->Push(Window_Settings::eInputButtonRemove, options_window->GetFrame().arg);
+				if (!input_mode_window_remove_allowed) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+					options_window->Push(Window_Settings::eInputButtonRemove, options_window->GetFrame().arg);
+				}
 				break;
 			case 2:
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 				input_window->ResetMapping();
+				RefreshInputRemoveAllowed();
 				break;
 		}
 	}
@@ -406,7 +425,7 @@ void Scene_Settings::UpdateButtonAdd() {
 	int& started = frame.scratch;
 	int& cancel_timer = frame.scratch2;
 
-	if (cancel_timer == Game_Clock::GetTargetGameFps() * 5) {
+	if (cancel_timer == Game_Clock::GetTargetGameFps() * 3) {
 		options_window->Pop();
 		input_window->Refresh();
 		return;
@@ -471,6 +490,71 @@ void Scene_Settings::UpdateSave() {
 #endif
 
 	Output::Info("Configuration saved to {}", cfg_out.GetName());
+}
+
+bool Scene_Settings::RefreshInputEmergencyReset() {
+	if (Input::GetAllRawPressed().count() >= 4) {
+		if (input_reset_counter == 0) {
+			Output::InfoStr("Input emergency reset started");
+			Output::InfoStr("Hold the keys for 3 seconds");
+		}
+		input_reset_counter++;
+
+		if (input_reset_counter == Game_Clock::GetTargetGameFps() * 3) {
+			if (input_window->GetInputButton() == Input::InputButton::BUTTON_COUNT) {
+				// No last button yet: reset everything
+				Output::InfoStr("All buttons reset to default");
+				if (input_window->GetActive()) {
+					input_window->SetIndex(0);
+				}
+				Input::ResetAllMappings();
+			} else {
+				Output::Info("Button {} reset to default", Input::kButtonNames.tag(input_window->GetInputButton()));
+				Output::Info("To reset all buttons hold 3 seconds longer");
+				if (input_window->GetActive()) {
+					input_window->SetIndex(0);
+				}
+				input_window->ResetMapping();
+			}
+		} else if (input_reset_counter == Game_Clock::GetTargetGameFps() * 6) {
+			Output::InfoStr("All buttons reset to default");
+			if (input_window->GetActive()) {
+				input_window->SetIndex(0);
+			}
+			Input::ResetAllMappings();
+		}
+	} else {
+		if (input_reset_counter > 0) {
+			Output::InfoStr("Input emergency reset ended");
+			input_reset_counter = 0;
+		}
+	}
+
+	return input_reset_counter > 0;
+}
+
+void Scene_Settings::RefreshInputRemoveAllowed() {
+	// Protect buttons where unmapping the last one makes the Player unusable
+	auto protected_buttons = Utils::MakeArray(
+		Input::InputButton::UP,
+		Input::InputButton::DOWN,
+		Input::InputButton::LEFT,
+		Input::InputButton::RIGHT,
+		Input::InputButton::DECISION,
+		Input::InputButton::CANCEL,
+		Input::InputButton::SETTINGS_MENU
+	);
+
+	auto button = static_cast<Input::InputButton>(options_window->GetFrame().arg);
+
+	if (std::find(protected_buttons.begin(), protected_buttons.end(), button) != protected_buttons.end()) {
+		input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > 1;
+	} else {
+		input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > 0;
+	}
+
+	Rect rect = input_mode_window->GetItemRect(1);
+	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, input_mode_window_remove_allowed ? Font::ColorDefault : Font::ColorDisabled, "<Remove>");
 }
 
 void Scene_Settings::DrawBackground(Bitmap& dst) {

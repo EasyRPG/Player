@@ -21,6 +21,7 @@
 // Headers
 #include <vector>
 #include "input.h"
+#include "input_buttons.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
 
@@ -32,6 +33,7 @@ public:
 	/** Constructor  */
 	Window_InputSettings(int ix, int iy, int iwidth, int iheight);
 
+	Input::InputButton GetInputButton() const;
 	void SetInputButton(Input::InputButton button);
 
 	bool RemoveMapping();
@@ -43,7 +45,7 @@ public:
 	void Refresh();
 
 private:
-	Input::InputButton button;
+	Input::InputButton button = Input::InputButton::BUTTON_COUNT;
 };
 
 #endif

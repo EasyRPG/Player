@@ -220,6 +220,11 @@ void Input::ResetDefaultMapping(Input::InputButton button) {
 	}
 }
 
+void Input::ResetAllMappings() {
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	mappings = GetDefaultButtonMappings();
+}
+
 bool Input::IsPressed(InputButton button) {
 	assert(!IsSystemButton(button));
 	WaitInput(true);
