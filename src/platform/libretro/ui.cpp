@@ -60,7 +60,7 @@ LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(c
 {
 	// Handled by libretro
 	// FIXME: There is currently no callback from libretro telling us whether or not fullscreen is enabled.
-	SetIsFullscreen(false);
+	SetIsFullscreen(true);
 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -189,11 +189,7 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 #endif
 
 void LibretroUi::vGetConfig(Game_ConfigVideo& cfg) const {
-	cfg.renderer.Lock("LibRetro (Software)");
-	cfg.vsync.SetOptionVisible(false);
-	cfg.fps_limit.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.fullscreen.Lock(IsFullscreen());
+	cfg.renderer.Lock("Libretro (Software)");
 }
 
 /* libretro api implementation */

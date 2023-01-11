@@ -81,14 +81,12 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 	}
 
 	if (cfg.vsync.IsOptionVisible()
-			&& cfg.vsync.Get()
-			&& cfg.fps_limit.IsOptionVisible()) {
+			&& cfg.vsync.Get()) {
 		cfg.fps_limit.SetLocked(true);
 	}
 
 	if (cfg.fullscreen.IsOptionVisible()
-			&& cfg.fullscreen.Get()
-			&& cfg.window_zoom.IsOptionVisible()) {
+			&& cfg.fullscreen.Get()) {
 		cfg.window_zoom.SetLocked(true);
 	}
 

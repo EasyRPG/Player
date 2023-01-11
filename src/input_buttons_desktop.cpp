@@ -174,9 +174,11 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 }
 
 void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
 	cfg.gamepad_swap_analog.SetOptionVisible(true);
 	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
+#endif
 }
 
 #if USE_SDL==1

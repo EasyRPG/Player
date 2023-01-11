@@ -67,7 +67,28 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 }
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
-	return {};
+	return {
+		{Keys::JOY_OTHER_0, "A (Wiimote / CC)"},
+		{Keys::JOY_OTHER_1, "B (Wiimote / CC)"},
+		{Keys::JOY_OTHER_2, "1 (Wiimote"},
+		{Keys::JOY_OTHER_3, "2 (Wiimote)"},
+		{Keys::JOY_OTHER_4, "- (Wiimote /CC )"},
+		{Keys::JOY_OTHER_5, "+ (Wiimote / CC)"},
+		{Keys::JOY_OTHER_6, "Home (Wiimote / CC)"},
+		{Keys::JOY_OTHER_7, "Z (Nunchuck)"},
+		{Keys::JOY_OTHER_8, "C (Wiimote)"},
+		{Keys::JOY_OTHER_9, "X (CC)"},
+		{Keys::JOY_OTHER_10, "Y (CC)"},
+		{Keys::JOY_OTHER_11, "L (CC)"},
+		{Keys::JOY_OTHER_12, "R (CC)"},
+		{Keys::JOY_OTHER_13, "ZL (CC)"},
+		{Keys::JOY_OTHER_14, "ZR (CC)"},
+
+		{Keys::JOY_DPAD_UP, "D-Pad Up"},
+		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
+		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
+		{Keys::JOY_DPAD_RIGHT, "D-Pad Up"}
+	};
 }
 
 void Input::GetSupportedConfig(Game_ConfigInput& cfg) {

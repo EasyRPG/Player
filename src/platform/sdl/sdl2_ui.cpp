@@ -1102,7 +1102,9 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
 	cfg.fps_render_window.SetOptionVisible(true);
+#ifdef SUPPORT_ZOOM
 	cfg.window_zoom.SetOptionVisible(true);
+#endif
 	cfg.scaling_mode.SetOptionVisible(true);
 	cfg.stretch.SetOptionVisible(true);
 
