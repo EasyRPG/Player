@@ -79,6 +79,8 @@
 #include <lcf/scope_guard.h>
 #include "baseui.h"
 #include "game_clock.h"
+#include "message_overlay.h"
+
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 #include "decoder_fluidsynth.h"
 #endif
@@ -227,6 +229,8 @@ void Player::MainLoop() {
 
 		Scene::old_instances.clear();
 		Scene::instance->MainFunction();
+
+		Graphics::GetMessageOverlay().Update();
 
 		++num_updates;
 	}
