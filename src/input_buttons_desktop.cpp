@@ -41,7 +41,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{RIGHT, Keys::L},
 		{RIGHT, Keys::KP6},
 		{RIGHT, Keys::D},
-		{DECISION, Keys::Y},
+		{DECISION, Keys::Z},
 		{DECISION, Keys::SPACE},
 		{DECISION, Keys::RETURN},
 		{DECISION, Keys::SELECT},
