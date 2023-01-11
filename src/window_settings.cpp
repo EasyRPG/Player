@@ -358,15 +358,26 @@ void Window_Settings::RefreshInput() {
 
 void Window_Settings::RefreshInputMapping() {
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	auto custom_names = Input::GetInputKeyNames();
+
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
 		std::string name = Input::kButtonNames.tag(button);
+
 		auto help = Input::kButtonHelp.tag(button);
 		std::string value = "";
 		auto ki = mappings.LowerBound(button);
 		if (ki != mappings.end() && ki->first == button) {
-			value = Input::Keys::kNames.tag(ki->second);
+			auto custom_name = std::find_if(custom_names.begin(), custom_names.end(), [&](auto& key_pair) {
+				return key_pair.first == ki->second;
+			});
+
+			if (custom_name != custom_names.end()) {
+				value = custom_name->second;
+			} else {
+				value = Input::Keys::kNames.tag(ki->second);
+			}
 		}
 
 		bool first_letter = true;

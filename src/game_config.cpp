@@ -112,8 +112,12 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	}
 #endif
 
-	auto print_err = []() {
-		Output::Debug("Could not determine global config path");
+	auto print_err = [&path]() {
+		if (path.empty()) {
+			Output::Warning("Could not determine config path");
+		} else {
+			Output::Warning("Could not access config path {}", path);
+		}
 	};
 
 	if (path.empty()) {

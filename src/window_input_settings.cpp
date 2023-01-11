@@ -18,6 +18,7 @@
 // Headers
 #include "window_input_settings.h"
 #include "bitmap.h"
+#include "input_buttons.h"
 #include "window_selectable.h"
 
 
@@ -62,6 +63,7 @@ void Window_InputSettings::Refresh() {
 	contents->Clear();
 
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	auto custom_names = Input::GetInputKeyNames();
 
 	// Protect buttons where unmapping makes the Player unusable
 	auto def_mappings = Input::GetDefaultButtonMappings();
@@ -86,9 +88,16 @@ void Window_InputSettings::Refresh() {
 	std::stringstream ss;
 	for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
 		auto key = static_cast<Input::Keys::InputKey>(ki->second);
-		auto kname = Input::Keys::kNames.tag(key);
 
-		items.push_back(kname);
+		auto custom_name = std::find_if(custom_names.begin(), custom_names.end(), [&](auto& key_pair) {
+			return key_pair.first == key;
+		});
+
+		if (custom_name != custom_names.end()) {
+			items.push_back(custom_name->second);
+		} else {
+			items.push_back(Input::Keys::kNames.tag(key));
+		}
 	}
 
 	item_max = static_cast<int>(items.size());
