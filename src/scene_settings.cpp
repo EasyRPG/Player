@@ -233,7 +233,11 @@ void Scene_Settings::Update() {
 		case Window_Settings::eVideo:
 		case Window_Settings::eAudio:
 		case Window_Settings::eLicense:
-		case Window_Settings::eInputListButtons:
+		case Window_Settings::eEngine:
+		case Window_Settings::eInputButtonCategory:
+		case Window_Settings::eInputListButtonsGame:
+		case Window_Settings::eInputListButtonsEngine:
+		case Window_Settings::eInputListButtonsDeveloper:
 			UpdateOptions();
 			break;
 		case Window_Settings::eInputButtonOption:

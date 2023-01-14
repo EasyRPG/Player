@@ -133,8 +133,13 @@ void Window_Settings::Refresh() {
 		case eLicense:
 			RefreshLicense();
 			break;
-		case eInputListButtons:
-			RefreshInputMapping();
+		case eInputButtonCategory:
+			RefreshButtonCategory();
+			break;
+		case eInputListButtonsGame:
+		case eInputListButtonsEngine:
+		case eInputListButtonsDeveloper:
+			RefreshButtonList();
 			break;
 	}
 
@@ -351,36 +356,49 @@ void Window_Settings::RefreshInput() {
 	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
 
 	AddOption(ConfigParam<std::string>("Key/Button mapping", "Change the keybindings", ""),
-		[this]() { Push(eInputListButtons); });
-	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); });
-	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); });
-	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); });
+		[this]() { Push(eInputButtonCategory); });
+	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); Input::ResetKeys(); });
+	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); Input::ResetKeys(); });
+	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); Input::ResetKeys(); });
 }
 
-void Window_Settings::RefreshInputMapping() {
+void Window_Settings::RefreshButtonCategory() {
+	AddOption(ConfigParam<std::string>("Game", "Buttons used by games", ""),
+		[this]() { Push(eInputListButtonsGame, 0); });
+	AddOption(ConfigParam<std::string>("Engine", "Buttons to access engine features", ""),
+		[this]() { Push(eInputListButtonsEngine, 1); });
+	AddOption(ConfigParam<std::string>("Developer", "Buttons useful for developers", ""),
+		[this]() { Push(eInputListButtonsDeveloper, 2); });
+}
+
+void Window_Settings::RefreshButtonList() {
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	auto custom_names = Input::GetInputKeyNames();
 
-	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
-		auto button = static_cast<Input::InputButton>(i);
+	std::vector<Input::InputButton> buttons;
+	switch (GetFrame().arg) {
+		case 0:
+			buttons = {	Input::UP, Input::DOWN, Input::LEFT, Input::RIGHT, Input::DECISION, Input::CANCEL, Input::SHIFT,
+				Input::N0, Input::N1, Input::N2, Input::N3, Input::N4, Input::N5, Input::N6, Input::N7, Input::N8, Input::N9,
+				Input::PLUS, Input::MINUS, Input::MULTIPLY, Input::DIVIDE, Input::PERIOD};
+			break;
+		case 1:
+			buttons = {Input::SETTINGS_MENU, Input::TOGGLE_FPS, Input::TOGGLE_FULLSCREEN, Input::TOGGLE_ZOOM,
+				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD, Input::FAST_FORWARD_PLUS,
+				Input::PAGE_UP, Input::PAGE_DOWN, Input::SCROLL_UP, Input::SCROLL_DOWN };
+			break;
+		case 2:
+			buttons = {	Input::DEBUG_MENU, Input::DEBUG_THROUGH, Input::DEBUG_SAVE, Input::DEBUG_ABORT_EVENT,
+				Input::SHOW_LOG };
+			break;
+	}
+
+	for (auto b: buttons) {
+		auto button = static_cast<Input::InputButton>(b);
 
 		std::string name = Input::kButtonNames.tag(button);
 
-		auto help = Input::kButtonHelp.tag(button);
-		std::string value = "";
-		auto ki = mappings.LowerBound(button);
-		if (ki != mappings.end() && ki->first == button) {
-			auto custom_name = std::find_if(custom_names.begin(), custom_names.end(), [&](auto& key_pair) {
-				return key_pair.first == ki->second;
-			});
-
-			if (custom_name != custom_names.end()) {
-				value = custom_name->second;
-			} else {
-				value = Input::Keys::kNames.tag(ki->second);
-			}
-		}
-
+		// Improve readability of the names
 		bool first_letter = true;
 		for (size_t i = 0; i < name.size(); ++i) {
 			auto& ch = name[i];
@@ -393,6 +411,40 @@ void Window_Settings::RefreshInputMapping() {
 				ch = ' ';
 				first_letter = true;
 			}
+		}
+
+		auto help = Input::kButtonHelp.tag(button);
+		std::string value = "";
+
+		// Append as many buttons as fit on the screen, then add ...
+		int contents_w = GetContents()->width();
+		int name_size = Font::Default()->GetSize(name).width;
+		int value_size = 0;
+
+		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button; ++ki) {
+			auto custom_name = std::find_if(custom_names.begin(), custom_names.end(), [&](auto& key_pair) {
+				return key_pair.first == ki->second;
+			});
+
+			std::string cur_value;
+			if (custom_name != custom_names.end()) {
+				cur_value = custom_name->second;
+			} else {
+				cur_value = Input::Keys::kNames.tag(ki->second);
+			}
+
+			int cur_value_size = Font::Default()->GetSize(cur_value + ",").width;
+
+			if (value.empty()) {
+				value = cur_value;
+			} else if (name_size + value_size + cur_value_size + 24 > contents_w) {
+				value += ",…";
+				break;
+			} else {
+				value += "," + cur_value;
+			}
+
+			value_size += cur_value_size;
 		}
 
 		auto param = ConfigParam<std::string>(name, help, value);

@@ -33,13 +33,17 @@ public:
 		eNone,
 		eMain,
 		eInput,
-		eInputListButtons,
+		eInputButtonCategory,
+		eInputListButtonsGame,
+		eInputListButtonsEngine,
+		eInputListButtonsDeveloper,
 		eInputButtonOption,
 		eInputButtonAdd,
 		eInputButtonRemove,
 		eVideo,
 		eAudio,
 		eLicense,
+		eEngine,
 		eSave,
 		eLastMode
 	};
@@ -126,7 +130,8 @@ private:
 	);
 
 	void RefreshInput();
-	void RefreshInputMapping();
+	void RefreshButtonCategory();
+	void RefreshButtonList();
 	void RefreshVideo();
 	void RefreshAudio();
 	void RefreshLicense();
