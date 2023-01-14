@@ -72,22 +72,29 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 
 	vGetConfig(cfg);
 
+	Rect metrics = GetWindowMetrics();
+	cfg.window_x.Set(metrics.x);
+	cfg.window_y.Set(metrics.y);
+	cfg.window_width.Set(metrics.width);
+	cfg.window_height.Set(metrics.height);
+
 	if (cfg.fullscreen.IsOptionVisible()) {
 		cfg.fps_render_window.SetLocked(cfg.fullscreen.Get());
-	}
-
-	if (!cfg.fps_render_window.IsLocked()) {
-		cfg.fps_render_window.SetLocked(!cfg.show_fps.Get());
+		if (cfg.fps_render_window.IsLocked()) {
+			cfg.fps_render_window.SetDescription("This options requires to be in windowed mode");
+		}
 	}
 
 	if (cfg.vsync.IsOptionVisible()
 			&& cfg.vsync.Get()) {
 		cfg.fps_limit.SetLocked(true);
+		cfg.fps_limit.SetDescription("This option requires V-Sync to be disabled");
 	}
 
 	if (cfg.fullscreen.IsOptionVisible()
 			&& cfg.fullscreen.Get()) {
 		cfg.window_zoom.SetLocked(true);
+		cfg.window_zoom.SetDescription("This option requires to be in windowed mode");
 	}
 
 	return cfg;

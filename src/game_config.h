@@ -44,7 +44,7 @@ struct Game_ConfigPlayer {
 
 struct Game_ConfigVideo {
 	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
-	BoolConfigParam vsync{ "Vsync", "Toggle Vsync mode (Recommended: ON)", true };
+	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", true };
 	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", true };
 	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
 	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", false };
@@ -55,6 +55,12 @@ struct Game_ConfigVideo {
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
 	BoolConfigParam stretch{ "Stretch", "Stretches the window to screen width", false };
 	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", true };
+
+	// These are never shown and are used to restore the window to the previous position
+	ConfigParam<int> window_x{ "", "", -1 };
+	ConfigParam<int> window_y{ "", "", -1 };
+	ConfigParam<int> window_width{ "", "", -1 };
+	ConfigParam<int> window_height{ "", "", -1 };
 
 	void Hide();
 };

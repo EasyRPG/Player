@@ -69,6 +69,7 @@ public:
 	void ToggleStretch() override;
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
+	Rect GetWindowMetrics() const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
@@ -130,6 +131,7 @@ private:
 	SDL_Renderer* sdl_renderer = nullptr;
 	SDL_Joystick *sdl_joystick = nullptr;
 
+	Rect window_mode_metrics;
 	struct {
 		int width = 0;
 		int height = 0;

@@ -474,11 +474,19 @@ void Scene_Settings::UpdateSave() {
 		return;
 	}
 
+	Rect metrics = DisplayUi->GetWindowMetrics();
+
 	Game_Config cfg;
 	cfg.video = DisplayUi->GetConfig();
 	cfg.audio = DisplayUi->GetAudio().GetConfig();
 	cfg.input = Input::GetInputSource()->GetConfig();
 	cfg.player = Player::player_config;
+
+	cfg.video.window_x.Set(metrics.x);
+	cfg.video.window_y.Set(metrics.y);
+	cfg.video.window_width.Set(metrics.width);
+	cfg.video.window_height.Set(metrics.height);
+
 	cfg.WriteToStream(cfg_out);
 
 #ifdef EMSCRIPTEN

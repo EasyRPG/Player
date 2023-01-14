@@ -44,7 +44,7 @@ void Game_ConfigVideo::Hide() {
 	// Options that are platform dependent are opt-in
 	// Implementors must invoke SetOptionVisible() when supported
 
-        // Always enabled by default:
+    // Always enabled by default:
 	// - renderer (name of the renderer)
 	// - show_fps (Rendering of FPS, engine feature)
 
@@ -68,7 +68,7 @@ void Game_ConfigInput::Hide() {
 	// makes sense on hardware with the required sticks and buttons
 	gamepad_swap_ab_and_xy.SetOptionVisible(false);
 	gamepad_swap_analog.SetOptionVisible(false);
-	gamepad_swap_dpad_with_buttons.SetOptionVisible(false);	
+	gamepad_swap_dpad_with_buttons.SetOptionVisible(false);
 }
 
 Game_Config Game_Config::Create(CmdlineParser& cp) {
@@ -144,7 +144,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	}
 
 	if (!path.empty()) {
-		path = FileFinder::MakePath(path, Utils::LowerCase(FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME)));
+		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
 	}
 #endif
 
@@ -330,6 +330,12 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	if (ini.HasValue("video", "touch-ui")) {
 		video.touch_ui.Set(ini.GetBoolean("video", "touch-ui", 1));
 	}
+	if (ini.HasValue("video", "window-x") && ini.HasValue("video", "window-y") && ini.HasValue("video", "window-width") && ini.HasValue("video", "window-height")) {
+		video.window_x.Set(ini.GetInteger("video", "window-x", 0));
+		video.window_y.Set(ini.GetInteger("video", "window-y", 0));
+		video.window_width.Set(ini.GetInteger("video", "window-width", SCREEN_TARGET_WIDTH));
+		video.window_height.Set(ini.GetInteger("video", "window-height", SCREEN_TARGET_HEIGHT));
+	}
 
 	/** AUDIO SECTION */
 	if (ini.HasValue("audio", "music-volume")) {
@@ -422,6 +428,13 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	}
 	if (video.touch_ui.IsOptionVisible()) {
 		os << "touch-ui=" << int(video.touch_ui.Get()) << "\n";
+	}
+	// only preserve when toggling between window and fullscreen is supported
+	if (video.fullscreen.IsOptionVisible()) {
+		os << "window-x=" << int(video.window_x.Get()) << "\n";
+		os << "window-y=" << int(video.window_y.Get()) << "\n";
+		os << "window-width=" << int(video.window_width.Get()) << "\n";
+		os << "window-height=" << int(video.window_height.Get()) << "\n";
 	}
 	os << "\n";
 

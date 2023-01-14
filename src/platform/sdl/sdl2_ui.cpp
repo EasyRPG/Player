@@ -276,11 +276,19 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		#endif
 
 		// Create our window
-		sdl_window = SDL_CreateWindow(GAME_TITLE,
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			display_width, display_height,
-			SDL_WINDOW_RESIZABLE | flags);
+		if (vcfg.window_x.Get() < 0 || vcfg.window_y.Get() < 0 || vcfg.window_height.Get() <= 0 || vcfg.window_width.Get() <= 0) {
+			sdl_window = SDL_CreateWindow(GAME_TITLE,
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				display_width, display_height,
+				SDL_WINDOW_RESIZABLE | flags);
+		} else {
+			sdl_window = SDL_CreateWindow(GAME_TITLE,
+				vcfg.window_x.Get(),
+				vcfg.window_y.Get(),
+				vcfg.window_width.Get(), vcfg.window_height.Get(),
+				SDL_WINDOW_RESIZABLE | flags);
+		}
 
 		if (!sdl_window) {
 			Output::Debug("SDL_CreateWindow failed : {}", SDL_GetError());
@@ -402,6 +410,9 @@ void Sdl2Ui::ToggleFullscreen() {
 		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
 	} else {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_GetWindowPosition(sdl_window, &window_mode_metrics.x, &window_mode_metrics.y);
+		window_mode_metrics.width = window.width;
+		window_mode_metrics.height = window.height;
 	}
 	EndDisplayModeChange();
 }
@@ -1111,4 +1122,15 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);
 	cfg.fullscreen.Set(IsFullscreen());
+}
+
+Rect Sdl2Ui::GetWindowMetrics() const {
+	if (!IsFullscreen()) {
+		Rect metrics;
+		SDL_GetWindowSize(sdl_window, &metrics.width, &metrics.height);
+		SDL_GetWindowPosition(sdl_window, &metrics.x, &metrics.y);
+		return metrics;
+	} else {
+		return window_mode_metrics;
+	}
 }

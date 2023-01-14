@@ -33,7 +33,7 @@
 #include "input.h"
 
 #ifdef SUPPORT_AUDIO
-	struct AudioInterface;
+struct AudioInterface;
 #endif
 
 /**
@@ -125,6 +125,9 @@ public:
 	 */
 	virtual AudioInterface& GetAudio() = 0;
 #endif
+
+	/** @return dimensions of the window */
+	virtual Rect GetWindowMetrics() const;
 
 	/**
 	 * Gets client width size.
@@ -272,6 +275,10 @@ protected:
 
 /** Global DisplayUi variable. */
 extern std::shared_ptr<BaseUi> DisplayUi;
+
+inline Rect BaseUi::GetWindowMetrics() const {
+	return {-1, -1, -1, -1};
+}
 
 inline bool BaseUi::IsFrameRateSynchronized() const {
 	return external_frame_rate;
