@@ -18,6 +18,7 @@
 #ifndef EP_FILEEXTGUESSER_H
 #define EP_FILEEXTGUESSER_H
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 #include <utility>

@@ -22,6 +22,7 @@
 #include "game_clock.h"
 
 #include <vector>
+#include <cstdint>
 #include <cstdlib>
 #include <stddef.h>
 

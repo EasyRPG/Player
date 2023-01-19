@@ -22,6 +22,7 @@
 #include <vector>
 #include <array>
 #include <cassert>
+#include <cstdint>
 #include <initializer_list>
 #include <algorithm>
 #include <ostream>

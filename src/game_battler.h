@@ -19,6 +19,7 @@
 #define EP_GAME_BATTLER_H
 
 // Headers
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <limits>

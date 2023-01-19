@@ -17,6 +17,7 @@
 
 #ifndef EP_PENDING_MESSAGE_H
 #define EP_PENDING_MESSAGE_H
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <bitset>

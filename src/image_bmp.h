@@ -18,6 +18,7 @@
 #ifndef EP_IMAGE_BMP_H
 #define EP_IMAGE_BMP_H
 
+#include <cstdint>
 #include "filesystem_stream.h"
 
 namespace ImageBMP {

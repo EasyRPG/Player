@@ -18,6 +18,7 @@
 #ifndef EP_UTILS_H
 #define EP_UTILS_H
 
+#include <cstdint>
 #include <ctime>
 #include <functional>
 #include <string>

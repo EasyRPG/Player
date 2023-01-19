@@ -22,6 +22,7 @@
 
 #include <switch.h>
 #include <vector>
+#include <cstdint>
 #include <cstdlib>
 #include <malloc.h>
 

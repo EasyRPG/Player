@@ -19,6 +19,7 @@
 #define EP_IMAGE_XYZ_H
 
 #include <cstdio>
+#include <cstdint>
 #include "filesystem_stream.h"
 
 namespace ImageXYZ {

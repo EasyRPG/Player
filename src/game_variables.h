@@ -22,6 +22,7 @@
 #include <lcf/data.h>
 #include "compiler.h"
 #include "string_view.h"
+#include <cstdint>
 #include <string>
 
 /**

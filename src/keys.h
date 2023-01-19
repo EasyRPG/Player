@@ -19,6 +19,7 @@
 #define EP_KEYS_H
 
 // Headers
+#include <cstdint>
 #include "system.h"
 #include <lcf/enum_tags.h>
 

@@ -19,6 +19,7 @@
 #define EP_BASEUI_H
 
 // Headers
+#include <cstdint>
 #include <string>
 #include <bitset>
 

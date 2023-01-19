@@ -19,6 +19,7 @@
 #define EP_SPRITE_ACTOR_H
 
 // Headers
+#include <cstdint>
 #include "sprite_battler.h"
 #include "async_handler.h"
 

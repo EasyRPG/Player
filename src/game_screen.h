@@ -18,6 +18,7 @@
 #ifndef EP_GAME_SCREEN_H
 #define EP_GAME_SCREEN_H
 
+#include <cstdint>
 #include <vector>
 #include <cassert>
 #include "system.h"

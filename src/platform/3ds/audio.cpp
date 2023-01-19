@@ -17,6 +17,7 @@
 
 #ifdef SUPPORT_AUDIO
 
+#include <cstdint>
 #include <cstring>
 
 #include "audio.h"

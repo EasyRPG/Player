@@ -19,6 +19,7 @@
 #define EP_GAME_CHARACTER_H
 
 // Headers
+#include <cstdint>
 #include <string>
 #include "color.h"
 #include "flash.h"
