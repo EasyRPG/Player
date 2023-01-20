@@ -22,6 +22,7 @@
 #include <vector>
 #include "scene.h"
 #include "window_command.h"
+#include "window_command_horizontal.h"
 #include "window_selectable.h"
 #include "window_settings.h"
 #include "window_input_settings.h"
@@ -74,7 +75,7 @@ private:
 	std::unique_ptr<Window_Settings> options_window;
 	std::unique_ptr<Window_InputSettings> input_window;
 	std::unique_ptr<Window_Help> input_help_window;
-	std::unique_ptr<Window_Selectable> input_mode_window;
+	std::unique_ptr<Window_Command_Horizontal> input_mode_window;
 	std::unique_ptr<Window_Command> picker_window;
 	std::unique_ptr<Window_NumberInput> number_window;
 

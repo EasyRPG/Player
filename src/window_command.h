@@ -60,6 +60,22 @@ public:
 	void EnableItem(int index);
 
 	/**
+	 * Enables or disables a command.
+	 *
+	 * @param index command index.
+	 * @param enabled true: enable, false: disable
+	 */
+	void SetItemEnabled(int index, bool enabled);
+
+	/**
+	 * Tests if an item is enabled.
+	 *
+	 * @param index command index.
+	 * @return if enabled.
+	 */
+	bool IsItemEnabled(int index);
+
+	/**
 	 * Replaces the text of an item.
 	 *
 	 * @param index command index.
@@ -77,8 +93,9 @@ public:
 
 protected:
 	std::vector<std::string> commands;
+	std::vector<bool> commands_enabled;
 
-	void DrawItem(int index, Font::SystemColor color);
+	virtual void DrawItem(int index, Font::SystemColor color);
 };
 
 #endif

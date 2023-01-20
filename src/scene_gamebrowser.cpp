@@ -19,6 +19,7 @@
 #include "scene_gamebrowser.h"
 
 #include <memory>
+#include "options.h"
 #include "scene_settings.h"
 #include "audio_secache.h"
 #include "cache.h"
@@ -84,15 +85,15 @@ void Scene_GameBrowser::CreateWindows() {
 	std::vector<std::string> options;
 
 	options.push_back("Games");
-	options.push_back("About");
 	options.push_back("Settings");
+	options.push_back("About");
 	options.push_back("Exit");
 
-	command_window = std::make_unique<Window_Command>(options, 60);
+	command_window = std::make_unique<Window_Command_Horizontal>(options, SCREEN_TARGET_WIDTH);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window = std::make_unique<Window_GameList>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
+	gamelist_window = std::make_unique<Window_GameList>(0, 64, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT - 64);
 	gamelist_window->Refresh(stack.back().filesystem, false);
 
 	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
@@ -106,7 +107,7 @@ void Scene_GameBrowser::CreateWindows() {
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
 
-	about_window = std::make_unique<Window_About>(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32);
+	about_window = std::make_unique<Window_About>(0, 64, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT - 64);
 	about_window->Refresh();
 	about_window->SetVisible(false);
 }

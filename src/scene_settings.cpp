@@ -29,6 +29,7 @@
 #include "baseui.h"
 #include "output.h"
 #include "utils.h"
+#include "window_command_horizontal.h"
 #include "window_help.h"
 #include "window_input_settings.h"
 #include "window_numberinput.h"
@@ -81,13 +82,10 @@ void Scene_Settings::CreateOptionsWindow() {
 	input_window = std::make_unique<Window_InputSettings>(0, 32, SCREEN_TARGET_WIDTH, 176 - 32);
 	input_window->SetHelpWindow(help_window.get());
 
-	input_mode_window = std::make_unique<Window_Selectable>(32, SCREEN_TARGET_HEIGHT - 32, SCREEN_TARGET_WIDTH - 64, 32);
-	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int) {
-		win.SetText("Remove this keybinding");
-	};
-	input_mode_window->SetItemMax(3);
-	input_mode_window->SetColumnMax(3);
-	input_mode_window->CreateContents();
+	std::vector<std::string> input_mode_items = {"Add", "Remove", "Reset"};
+	input_mode_window = std::make_unique<Window_Command_Horizontal>(input_mode_items, SCREEN_TARGET_WIDTH - 64);
+	input_mode_window->SetX(32);
+	input_mode_window->SetY(SCREEN_TARGET_HEIGHT - 32);
 	input_mode_window->SetHelpWindow(help_window.get());
 	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int index) {
 		if (index == 0) {
@@ -100,15 +98,6 @@ void Scene_Settings::CreateOptionsWindow() {
 	};
 
 	input_help_window = std::make_unique<Window_Help>(0, SCREEN_TARGET_HEIGHT - 64, SCREEN_TARGET_WIDTH, 32);
-
-	Rect rect = input_mode_window->GetItemRect(0);
-	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, Font::ColorDefault, "<Add>");
-	rect = input_mode_window->GetItemRect(1);
-	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, Font::ColorDefault, "<Remove>");
-	rect = input_mode_window->GetItemRect(2);
-	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, Font::ColorDefault, "<Reset>");
-
-	input_mode_window->SetIndex(0);
 }
 
 void Scene_Settings::Start() {
@@ -514,27 +503,9 @@ bool Scene_Settings::RefreshInputEmergencyReset() {
 }
 
 void Scene_Settings::RefreshInputRemoveAllowed() {
-	// Protect buttons where unmapping the last one makes the Player unusable
-	auto protected_buttons = Utils::MakeArray(
-		Input::InputButton::UP,
-		Input::InputButton::DOWN,
-		Input::InputButton::LEFT,
-		Input::InputButton::RIGHT,
-		Input::InputButton::DECISION,
-		Input::InputButton::CANCEL,
-		Input::InputButton::SETTINGS_MENU
-	);
-
 	auto button = static_cast<Input::InputButton>(options_window->GetFrame().arg);
-
-	if (std::find(protected_buttons.begin(), protected_buttons.end(), button) != protected_buttons.end()) {
-		input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > 1;
-	} else {
-		input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > 0;
-	}
-
-	Rect rect = input_mode_window->GetItemRect(1);
-	input_mode_window->GetContents()->TextDraw(rect.x, rect.y, input_mode_window_remove_allowed ? Font::ColorDefault : Font::ColorDisabled, "<Remove>");
+	input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > Input::IsProtectedButton(button) ? 1 : 0;
+	input_mode_window->SetItemEnabled(1, input_mode_window_remove_allowed);
 }
 
 void Scene_Settings::DrawBackground(Bitmap& dst) {

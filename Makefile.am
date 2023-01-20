@@ -365,6 +365,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_battlestatus.h \
 	src/window_command.cpp \
 	src/window_command.h \
+	src/window_command_horizontal.cpp \
+	src/window_command_horizontal.h \
 	src/window_equip.cpp \
 	src/window_equip.h \
 	src/window_equipitem.cpp \
