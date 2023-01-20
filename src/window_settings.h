@@ -134,6 +134,7 @@ private:
 	void RefreshButtonList();
 	void RefreshVideo();
 	void RefreshAudio();
+	void RefreshEngine();
 	void RefreshLicense();
 
 	void UpdateHelp() override;

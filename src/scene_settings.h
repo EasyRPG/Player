@@ -44,6 +44,13 @@ public:
 	void Update() override;
 	void DrawBackground(Bitmap& dst) override;
 
+	/**
+	 * Saves the configuration to the global config file.
+	 * @param silent When true only log messages instead of displaying them
+	 * @return whether saving was successful
+	 */
+	static bool SaveConfig(bool silent = false);
+
 private:
 	void CreateMainWindow();
 	void CreateOptionsWindow();
@@ -58,7 +65,6 @@ private:
 	void UpdateButtonOption();
 	void UpdateButtonAdd();
 	void UpdateButtonRemove();
-	void UpdateSave();
 
 	bool RefreshInputEmergencyReset();
 	void RefreshInputRemoveAllowed();

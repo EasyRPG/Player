@@ -38,6 +38,13 @@ enum class ScalingMode {
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "", "", "" };
 	StringConfigParam enemyai_algo{ "", "", "" };
+	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit"};
+	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen" };
+	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen"};
+	//EnumConfigParam<lcf::rpg::SaveSystem::AtbMode, 2> atb_mode("Default ATB mode for new games",
+	//	lcf::rpg::SaveSystem::AtbMode_atb_wait, lcf::rpg::SaveSystem::AtbMode_);
+
+	// autosave config on exit
 
 	void Hide();
 };

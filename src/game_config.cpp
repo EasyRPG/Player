@@ -389,7 +389,15 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	/** PLAYER SECTION */
-
+	if (ini.HasValue("player", "settings-autosave")) {
+		player.settings_autosave.Set(ini.GetBoolean("player", "settings-autosave", 0));
+	}
+	if (ini.HasValue("player", "settings-in-title")) {
+		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-title", 0));
+	}
+	if (ini.HasValue("player", "settings-in-menu")) {
+		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-menu", 0));
+	}
 	if (ini.HasValue("player", "autobattle-algo")) {
 		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
 	}
@@ -489,7 +497,11 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 
 	/** PLAYER SECTION */
 	os << "[player]\n";
-	os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
-	os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
+	//os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	//os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
+	os << "settings-autosave=" << player.settings_autosave.Get() << "\n";
+	os << "settings-in-title=" << player.settings_in_title.Get() << "\n";
+	os << "settings-in-menu=" << player.settings_in_menu.Get() << "\n";
+
 	os << "\n";
 }

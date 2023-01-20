@@ -73,6 +73,7 @@
 #include "utils.h"
 #include "version.h"
 #include "game_quit.h"
+#include "scene_settings.h"
 #include "scene_title.h"
 #include "instrumentation.h"
 #include "transition.h"
@@ -380,6 +381,10 @@ int Player::GetFrames() {
 }
 
 void Player::Exit() {
+	if (player_config.settings_autosave.Get()) {
+		Scene_Settings::SaveConfig(true);
+	}
+
 	Graphics::UpdateSceneCallback();
 #ifdef EMSCRIPTEN
 	BitmapRef surface = DisplayUi->GetDisplaySurface();

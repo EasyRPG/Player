@@ -63,6 +63,7 @@ void Scene_Settings::CreateMainWindow() {
 		"Video",
 		"Audio",
 		"Input",
+		"Engine",
 		"License",
 		"<Save Settings>"
 	};
@@ -263,6 +264,7 @@ void Scene_Settings::UpdateMain() {
 		Window_Settings::eVideo,
 		Window_Settings::eAudio,
 		Window_Settings::eInput,
+		Window_Settings::eEngine,
 		Window_Settings::eLicense,
 		Window_Settings::eSave
 	);
@@ -272,7 +274,7 @@ void Scene_Settings::UpdateMain() {
 		auto idx = main_window->GetIndex();
 
 		if (modes[idx] == Window_Settings::eSave) {
-			UpdateSave();
+			SaveConfig();
 			return;
 		}
 
@@ -470,40 +472,6 @@ void Scene_Settings::UpdateButtonRemove() {
 	}
 }
 
-void Scene_Settings::UpdateSave() {
-	auto cfg_out = Game_Config::GetGlobalConfigFileOutput();
-
-	if (!cfg_out) {
-		Output::Warning("Saving configuration file failed!");
-		return;
-	}
-
-	Rect metrics = DisplayUi->GetWindowMetrics();
-
-	Game_Config cfg;
-	cfg.video = DisplayUi->GetConfig();
-	cfg.audio = DisplayUi->GetAudio().GetConfig();
-	cfg.input = Input::GetInputSource()->GetConfig();
-	cfg.player = Player::player_config;
-
-	cfg.video.window_x.Set(metrics.x);
-	cfg.video.window_y.Set(metrics.y);
-	cfg.video.window_width.Set(metrics.width);
-	cfg.video.window_height.Set(metrics.height);
-
-	cfg.WriteToStream(cfg_out);
-
-#ifdef EMSCRIPTEN
-	// Save changed file system
-	EM_ASM({
-		FS.syncfs(function(err) {
-		});
-	});
-#endif
-
-	Output::Info("Configuration saved to {}", cfg_out.GetName());
-}
-
 bool Scene_Settings::RefreshInputEmergencyReset() {
 	if (Input::GetAllRawPressed().count() >= 4) {
 		if (input_reset_counter == 0) {
@@ -575,3 +543,39 @@ void Scene_Settings::DrawBackground(Bitmap& dst) {
 	}
 }
 
+bool Scene_Settings::SaveConfig(bool silent) {
+	auto cfg_out = Game_Config::GetGlobalConfigFileOutput();
+
+	if (!cfg_out) {
+		if (silent) {
+			Output::Debug("Saving configuration file failed!");
+		} else {
+			Output::Warning("Saving configuration file failed!");
+		}
+		return false;
+	}
+
+	Game_Config cfg;
+	cfg.video = DisplayUi->GetConfig();
+	cfg.audio = DisplayUi->GetAudio().GetConfig();
+	cfg.input = Input::GetInputSource()->GetConfig();
+	cfg.player = Player::player_config;
+
+	cfg.WriteToStream(cfg_out);
+
+#ifdef EMSCRIPTEN
+	// Save changed file system
+	EM_ASM({
+		FS.syncfs(function(err) {
+		});
+	});
+#endif
+
+	if (silent) {
+		Output::Debug("Configuration saved to {}", cfg_out.GetName());
+	} else {
+		Output::Info("Configuration saved to {}", cfg_out.GetName());
+	}
+
+	return true;
+}

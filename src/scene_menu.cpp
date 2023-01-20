@@ -86,7 +86,9 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options.push_back(Skill);
 		command_options.push_back(Equipment);
 		command_options.push_back(Save);
-		command_options.push_back(Settings);
+		if (Player::player_config.settings_in_menu.Get()) {
+			command_options.push_back(Settings);
+		}
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);
 		}
@@ -110,7 +112,9 @@ void Scene_Menu::CreateCommandWindow() {
 					break;
 				}
 		}
-		command_options.push_back(Settings);
+		if (Player::player_config.settings_in_menu.Get()) {
+			command_options.push_back(Settings);
+		}
 		if (Player::debug_flag) {
 			command_options.push_back(Debug);
 		}

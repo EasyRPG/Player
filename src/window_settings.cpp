@@ -130,6 +130,9 @@ void Window_Settings::Refresh() {
 		case eAudio:
 			RefreshAudio();
 			break;
+		case eEngine:
+			RefreshEngine();
+			break;
 		case eLicense:
 			RefreshLicense();
 			break;
@@ -141,17 +144,17 @@ void Window_Settings::Refresh() {
 		case eInputListButtonsDeveloper:
 			RefreshButtonList();
 			break;
+		default:
+			break;
 	}
 
-	item_max = options.size();
-
-	CreateContents();
+	SetItemMax(options.size());
 
 	if (GetFrame().uimode == eNone || options.empty()) {
 		SetIndex(-1);
-	} else {
-		SetIndex(index);
 	}
+
+	CreateContents();
 
 	contents->Clear();
 
@@ -270,6 +273,14 @@ void Window_Settings::RefreshAudio() {
 	AddOption("Midi Soundfont", LockedConfigParam<std::string>("Default"), "",
 			[](){},
 			"Which MIDI soundfont to use");*/
+}
+
+void Window_Settings::RefreshEngine() {
+	auto& cfg = Player::player_config;
+
+	AddOption(cfg.settings_autosave, [this](){ cfg.settings_autosave.Toggle(); });
+	AddOption(cfg.settings_in_title, [this](){ cfg.settings_in_title.Toggle(); });
+	AddOption(cfg.settings_in_menu, [this](){ cfg.settings_in_menu.Toggle(); });
 }
 
 void Window_Settings::RefreshLicense() {
