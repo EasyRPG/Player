@@ -101,7 +101,7 @@ namespace {
 		Input::Keys::KP_MULTIPLY, Input::Keys::KP_DIVIDE
 	};
 
-	int ui_mode = 0;
+	bool is_docked = false;
 }
 
 static void initEgl() {
@@ -209,7 +209,6 @@ static AppletHookCookie applet_hook_cookie;
 
 static void appletHookCallback(AppletHookType hook, void* param) {
 	bool show_message = (bool *)param;
-	static bool restore_touch_ui = false;
 	// HOS sends one focus event on application start (but not in applet mode), we ignore this
 	static bool first_time = true;
 
@@ -246,27 +245,20 @@ static void appletHookCallback(AppletHookType hook, void* param) {
 				if (show_message)
 					Output::Debug("Switched from handheld to docked mode.");
 
+				is_docked = true;
+
 				// full res
 				width = 1920;
 				height = 1080;
-
-				// disable touch input
-				if (ui_mode == 0) {
-					restore_touch_ui = true;
-					ui_mode++;
-				} else
-					restore_touch_ui = false;
 			} else {
 				if (show_message)
 					Output::Debug("Switched from docked to handheld mode.");
 
+				is_docked = false;
+
 				// half res
 				width = 1280;
 				height = 720;
-
-				// restore touch ui
-				if (restore_touch_ui)
-					ui_mode = 0;
 			}
 			nwindowSetCrop(nwindowGetDefault(), 0, 0, width, height);
 			glViewport(0, 1080-height, width, height);
@@ -379,6 +371,8 @@ NxUi::NxUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg) {
 	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
 	padInitializeDefault(&pad);
 	hidInitializeTouchScreen();
+
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
 }
 
 NxUi::~NxUi() {
@@ -443,13 +437,8 @@ void NxUi::ProcessEvents() {
 	analog_input.trigger_left = (input & HidNpadButton_ZL) ? Input::AnalogInput::kMaxValue : 0.f;
 	analog_input.trigger_right = (input & HidNpadButton_ZR) ? Input::AnalogInput::kMaxValue : 0.f;
 
-	// cycle through GUI layouts: FIXME Move to settings ui
-	input = padGetButtonsDown(&pad);
-	if (input & HidNpadButton_ZL)
-		ui_mode = (ui_mode + 1) % 3;
-
 	// do not handle touch when not displaying buttons or no touch happened
-	if (ui_mode != 0 || !hidGetTouchScreenStates(&touch, 1))
+	if (is_docked || vcfg.touch_ui.IsLocked() || !vcfg.touch_ui.Get() || !hidGetTouchScreenStates(&touch, 1))
 		return;
 
 	for (int32_t i = 0; i < touch.count; ++i) {
@@ -475,7 +464,7 @@ void NxUi::UpdateDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// touch texture
-	if (ui_mode == 0) {
+	if (!is_docked && !vcfg.touch_ui.IsLocked() && vcfg.touch_ui.Get()) {
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(texLocation, 0);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
@@ -490,7 +479,7 @@ void NxUi::UpdateDisplay() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, main_surface->GetWidth(),
 		main_surface->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 		main_surface->pixels());
-	if (ui_mode != 2)
+	if (!vcfg.stretch.Get())
 		aspectX = 0.75f;
 	glUniform2f(dimsLocation, aspectX, aspectY);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -514,13 +503,23 @@ bool NxUi::LogMessage(const std::string &message) {
 
 void NxUi::ToggleStretch() {
 	vcfg.stretch.Toggle();
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
+}
+
+void NxUi::ToggleTouchUi() {
+	vcfg.touch_ui.Toggle();
 }
 
 void NxUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("Switch NX (Software)");
-	cfg.scaling_mode.SetOptionVisible(true);
-	cfg.scaling_mode.SetOptionVisible(true);
-	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
 	cfg.stretch.SetOptionVisible(true);
 	cfg.touch_ui.SetOptionVisible(true);
+
+	if (is_docked) {
+		cfg.touch_ui.SetLocked(true);
+		cfg.touch_ui.SetDescription("Only available in handheld mode");
+	} else if (cfg.stretch.Get()) {
+		cfg.touch_ui.SetLocked(true);
+		cfg.touch_ui.SetDescription("Not available when stretch is enabled");
+	}
 }

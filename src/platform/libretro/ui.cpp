@@ -51,6 +51,7 @@ AudioInterface& LibretroUi::GetAudio() {
 retro_environment_t LibretroUi::environ_cb = nullptr;
 retro_input_poll_t LibretroUi::input_poll_cb = nullptr;
 bool LibretroUi::player_exit_called = false;
+Game_ConfigInput LibretroUi::cfg_input;
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 static Input::Keys::InputKey RetroJKey2InputKey(int button_index);
@@ -88,6 +89,8 @@ LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(c
 	#ifdef SUPPORT_AUDIO
 	audio_ = std::make_unique<LibretroAudio>(cfg.audio);
 	#endif
+
+	cfg_input = cfg.input;
 
 	UpdateVariables();
 }
@@ -284,11 +287,7 @@ static void init_easy_rpg() {
 
 	Player::Init(args);
 
-	// Fixme: Input configuration is not loaded
-	Game_ConfigInput cfg;
-	cfg.buttons = Input::GetDefaultButtonMappings();
-
-	Input::Init(cfg, "", "");
+	Input::Init(LibretroUi::cfg_input, "", "");
 }
 
 /* Library global initialization/deinitialization. */

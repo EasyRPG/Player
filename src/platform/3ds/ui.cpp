@@ -186,7 +186,7 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
 	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
 
-	ToggleBottomScreen(cfg.video.touch_ui.Get());
+	ToggleBottomScreen(vcfg.touch_ui.Get());
 
 	// force refresh
 	info_tick = Game_Clock::now() - 10s;

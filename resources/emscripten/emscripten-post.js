@@ -13,12 +13,6 @@ if (typeof Module.EASYRPG_FS === "undefined") {
   Module.EASYRPG_FS = IDBFS;
 }
 
-// For preserving the configuration
-// Player configuration is shared across the website
-FS.mkdir("/home/web_user/.config");
-FS.mount(IDBFS, {}, '/home/web_user/.config');
-FS.syncfs(true, function(err) {});
-
 // Display the nice end message forever
 Module["onExit"] = function() {
   // load image

@@ -1122,6 +1122,16 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);
 	cfg.fullscreen.Set(IsFullscreen());
+
+#ifdef EMSCRIPTEN
+	// Fullscreen is handled by the browser
+	cfg.fullscreen.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
+	cfg.fps_render_window.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	// Toggling this freezes the web player
+	cfg.vsync.SetOptionVisible(false);
+#endif
 }
 
 Rect Sdl2Ui::GetWindowMetrics() const {

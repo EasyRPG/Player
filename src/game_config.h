@@ -58,9 +58,9 @@ struct Game_ConfigVideo {
 	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, 99999 };
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
 	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
-		ScalingMode::Bilinear, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
+		ScalingMode::Nearest, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
-	BoolConfigParam stretch{ "Stretch", "Stretches the window to screen width", false };
+	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", false };
 	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", true };
 
 	// These are never shown and are used to restore the window to the previous position

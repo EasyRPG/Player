@@ -1037,7 +1037,11 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
-		add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
+		if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+			add_executable(${EXE_NAME} "src/platform/emscripten/main.cpp")
+		else()
+			add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
+		endif()
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
 

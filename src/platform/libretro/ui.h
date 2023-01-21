@@ -61,6 +61,8 @@ public:
 	static retro_environment_t environ_cb;
 	static retro_input_poll_t input_poll_cb;
 	static bool player_exit_called;
+
+	static Game_ConfigInput cfg_input;
 private:
 	static retro_video_refresh_t UpdateWindow;
 	static retro_input_state_t CheckInputState;

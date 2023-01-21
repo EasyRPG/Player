@@ -151,18 +151,6 @@ void Player::Init(std::vector<std::string> arguments) {
 	SetConsoleOutputCP(65001);
 #endif
 
-#ifdef EMSCRIPTEN
-	Output::IgnorePause(true);
-
-	// Retrieve save directory from persistent storage before using it
-	EM_ASM(({
-		FS.mkdir("Save");
-		FS.mount(Module.EASYRPG_FS, {}, 'Save');
-		FS.syncfs(true, function(err) {
-		});
-	}));
-#endif
-
 	// First parse command line arguments
 	auto cfg = ParseCommandLine(std::move(arguments));
 

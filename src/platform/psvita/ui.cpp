@@ -190,6 +190,8 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	if (is_pstv) {
 		sceCtrlSetLightBar(1, 0x54, 0x92, 0x36);
 	}
+
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
 }
 
 Psp2Ui::~Psp2Ui() {
@@ -243,7 +245,7 @@ void Psp2Ui::ProcessEvents() {
 	analog_input.secondary.y = normalize(input.ry);
 
 	// Touchpad support
-	if (!vcfg.stretch.Get() && !is_pstv) {
+	if (!vcfg.touch_ui.IsLocked() && vcfg.touch_ui.Get() && !is_pstv) {
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		for (int i = 0; i < touch.reportNum; ++i) {
 			int xpos = touch.report[i].x / 2;
@@ -284,6 +286,11 @@ void Psp2Ui::SetScalingMode(ScalingMode mode) {
 
 void Psp2Ui::ToggleStretch() {
 	vcfg.stretch.Toggle();
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
+}
+
+void Psp2Ui::ToggleTouchUi() {
+	vcfg.touch_ui.Toggle();
 }
 
 void Psp2Ui::ToggleVsync() {
@@ -303,5 +310,6 @@ void Psp2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 
 	if (cfg.stretch.Get()) {
 		cfg.touch_ui.SetLocked(true);
+		cfg.touch_ui.SetDescription("Not available when stretch is enabled");
 	}
 }

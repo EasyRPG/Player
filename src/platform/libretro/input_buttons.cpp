@@ -68,7 +68,7 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::JOY_DPAD_UP, "D-Pad Up"},
 		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
 		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
-		{Keys::JOY_DPAD_RIGHT, "D-Pad Up"},
+		{Keys::JOY_DPAD_RIGHT, "D-Pad Right"},
 		{Keys::JOY_A, "A"},
 		{Keys::JOY_B, "B"},
 		{Keys::JOY_X, "X"},

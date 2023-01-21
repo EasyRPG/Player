@@ -44,7 +44,7 @@ void Game_ConfigVideo::Hide() {
 	// Options that are platform dependent are opt-in
 	// Implementors must invoke SetOptionVisible() when supported
 
-    // Always enabled by default:
+	// Always enabled by default:
 	// - renderer (name of the renderer)
 	// - show_fps (Rendering of FPS, engine feature)
 
@@ -73,6 +73,11 @@ void Game_ConfigInput::Hide() {
 
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
+
+#if USE_SDL >= 2
+	cfg.video.scaling_mode.Set(ScalingMode::Bilinear);
+#endif
+
 	cp.Rewind();
 
 	auto arg_path = GetConfigPath(cp);
@@ -81,7 +86,6 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	}
 
 	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(arg_path);
-
 	if (!cli_config) {
 		auto global_config = GetGlobalConfigFileInput();
 		if (global_config) {
@@ -110,7 +114,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	path = "/switch/easyrpg-player";
 #elif defined(__3DS__)
 	path = "sdmc:/data/easyrpg-player";
-#elif defined(PSP2)
+#elif defined(__vita__)
 	path = "ux0:/data/easyrpg-player";
 #elif defined(USE_LIBRETRO)
 	const char* dir = nullptr;
@@ -302,7 +306,6 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	/** VIDEO SECTION */
-
 	if (ini.HasValue("video", "vsync")) {
 		video.vsync.Set(ini.GetBoolean("video", "vsync", false));
 	}

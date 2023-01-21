@@ -51,6 +51,7 @@ public:
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 	void ToggleStretch() override;
+	void ToggleTouchUi() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
