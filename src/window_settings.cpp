@@ -278,9 +278,9 @@ void Window_Settings::RefreshAudio() {
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
-	AddOption(cfg.settings_autosave, [this](){ cfg.settings_autosave.Toggle(); });
-	AddOption(cfg.settings_in_title, [this](){ cfg.settings_in_title.Toggle(); });
-	AddOption(cfg.settings_in_menu, [this](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
+	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
+	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
 }
 
 void Window_Settings::RefreshLicense() {

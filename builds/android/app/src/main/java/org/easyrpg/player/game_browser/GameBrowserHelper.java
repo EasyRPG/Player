@@ -44,7 +44,7 @@ public class GameBrowserHelper {
             args.add(game.getEncoding(context).getRegionCode());
 
             args.add("--config-path");
-            args.add(getExternalFilesDir(null).getAbsolutePath());
+            args.add(context.getExternalFilesDir(null).getAbsolutePath());
 
             // Soundfont
             Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
