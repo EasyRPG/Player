@@ -40,7 +40,7 @@ void Scene_Teleport::Start() {
 	teleport_window->SetIndex(0);
 }
 
-void Scene_Teleport::Update() {
+void Scene_Teleport::vUpdate() {
 	teleport_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {

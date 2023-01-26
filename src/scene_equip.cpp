@@ -60,7 +60,7 @@ void Scene_Equip::Start() {
 	equip_window->SetHelpWindow(help_window.get());
 }
 
-void Scene_Equip::Update() {
+void Scene_Equip::vUpdate() {
 	help_window->Update();
 
 	UpdateEquipWindow();

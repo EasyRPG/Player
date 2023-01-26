@@ -64,7 +64,7 @@ void Scene_Menu::Continue(SceneType /* prev_scene */) {
 	gold_window->Refresh();
 }
 
-void Scene_Menu::Update() {
+void Scene_Menu::vUpdate() {
 	command_window->Update();
 	gold_window->Update();
 	menustatus_window->Update();

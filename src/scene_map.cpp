@@ -239,7 +239,7 @@ void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	UpdateGraphics();
 }
 
-void Scene_Map::Update() {
+void Scene_Map::vUpdate() {
 	if (activate_inn) {
 		UpdateInn();
 		return;
@@ -282,12 +282,13 @@ void Scene_Map::UpdateSceneCalling() {
 
 	auto call = TakeRequestedScene();
 
-	if (call == nullptr && !Game_Message::IsMessageActive())
-	{
+	if (call == nullptr) {
 		if (Input::IsTriggered(Input::SETTINGS_MENU)) {
 			call = std::make_shared<Scene_Settings>();
 		}
+	}
 
+	if (call == nullptr && !Game_Message::IsMessageActive()) {
 		if (Player::debug_flag) {
 			if (call == nullptr) {
 				// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT

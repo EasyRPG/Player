@@ -35,7 +35,7 @@ public:
 	Scene_Import();
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 	void Action(int index) override;
 	bool IsSlotValid(int index) override;

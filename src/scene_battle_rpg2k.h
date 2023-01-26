@@ -135,7 +135,7 @@ public:
 	~Scene_Battle_Rpg2k() override;
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 protected:
 	bool UpdateBattleState();

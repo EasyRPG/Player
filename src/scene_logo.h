@@ -39,7 +39,7 @@ public:
 	Scene_Logo();
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 	void DrawBackground(Bitmap& dst) override;
 
 private:

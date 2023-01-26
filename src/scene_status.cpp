@@ -54,7 +54,7 @@ void Scene_Status::Start() {
 	equip_window->SetIndex(-1);
 }
 
-void Scene_Status::Update() {
+void Scene_Status::vUpdate() {
 	gold_window->Update();
 	paramstatus_window->Update();
 	equip_window->Update();

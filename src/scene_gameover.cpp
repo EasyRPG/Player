@@ -39,7 +39,7 @@ void Scene_Gameover::Start() {
 	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetSystemBGM(Main_Data::game_system->BGM_GameOver));
 }
 
-void Scene_Gameover::Update() {
+void Scene_Gameover::vUpdate() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Scene::ReturnToTitleScene();
 	}

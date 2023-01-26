@@ -264,7 +264,7 @@ void Scene_Debug::Pop() {
 	var_window->Refresh();
 }
 
-void Scene_Debug::Update() {
+void Scene_Debug::vUpdate() {
 	range_window->Update();
 	if (range_index != range_window->GetIndex()){
 		range_index = range_window->GetIndex();

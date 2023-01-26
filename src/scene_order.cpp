@@ -38,7 +38,7 @@ void Scene_Order::Start() {
 	CreateCommandWindow();
 }
 
-void Scene_Order::Update() {
+void Scene_Order::vUpdate() {
 	window_left->Update();
 	window_right->Update();
 	window_confirm->Update();

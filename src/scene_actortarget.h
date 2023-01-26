@@ -47,7 +47,7 @@ public:
 	Scene_ActorTarget(int skill_id, int actor_index);
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 	/**
 	 * Update function used when an item will be used.

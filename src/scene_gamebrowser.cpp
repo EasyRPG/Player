@@ -63,7 +63,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::debug_flag = initial_debug_flag;
 }
 
-void Scene_GameBrowser::Update() {
+void Scene_GameBrowser::vUpdate() {
 	if (game_loading) {
 		BootGame();
 		return;

@@ -35,7 +35,7 @@ public:
 
 	void Start() override;
 	void Terminate();
-	void Update() override;
+	void vUpdate() override;
 
 private:
 	/** Contains new actor order or 0 if actor wasnt rearranged yet. */

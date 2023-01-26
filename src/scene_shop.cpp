@@ -189,7 +189,7 @@ void Scene_Shop::SetMode(int nmode) {
 	shop_window->SetMode(mode);
 }
 
-void Scene_Shop::Update() {
+void Scene_Shop::vUpdate() {
 	buy_window->Update();
 	sell_window->Update();
 	shop_window->Update();

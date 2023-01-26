@@ -112,7 +112,7 @@ void Scene_Title::Suspend(Scene::SceneType next_scene) {
 	title.reset();
 }
 
-void Scene_Title::Update() {
+void Scene_Title::vUpdate() {
 	if (Game_Battle::battle_test.enabled) {
 		Player::SetupBattleTest();
 		return;

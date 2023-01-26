@@ -42,7 +42,7 @@ public:
 	Scene_Settings();
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 	void DrawBackground(Bitmap& dst) override;
 
 	/**

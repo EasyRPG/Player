@@ -53,7 +53,7 @@ void Scene_Skill::Continue(SceneType) {
 	skill_window->Refresh();
 }
 
-void Scene_Skill::Update() {
+void Scene_Skill::vUpdate() {
 	help_window->Update();
 	skillstatus_window->Update();
 	skill_window->Update();

@@ -153,7 +153,7 @@ void Scene_File::Refresh() {
 	}
 }
 
-void Scene_File::Update() {
+void Scene_File::vUpdate() {
 	UpdateArrows();
 
 	if (IsWindowMoving()) {

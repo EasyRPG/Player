@@ -92,7 +92,7 @@ void Scene_ActorTarget::Start() {
 	}
 }
 
-void Scene_ActorTarget::Update() {
+void Scene_ActorTarget::vUpdate() {
 	help_window->Update();
 	target_window->Update();
 	status_window->Update();

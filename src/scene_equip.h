@@ -42,7 +42,7 @@ public:
 	Scene_Equip(Game_Actor& actor, int equip_index = 0);
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 	/**
 	 * Updates the item windows.

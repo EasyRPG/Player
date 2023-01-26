@@ -37,7 +37,7 @@ public:
 
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
-	void Update() override;
+	void vUpdate() override;
 
 	/**
 	 * Creates the window displaying the options.

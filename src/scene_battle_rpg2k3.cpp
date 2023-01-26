@@ -908,7 +908,7 @@ bool Scene_Battle_Rpg2k3::UpdateBattleState() {
 	return true;
 }
 
-void Scene_Battle_Rpg2k3::Update() {
+void Scene_Battle_Rpg2k3::vUpdate() {
 	const auto process_scene = UpdateBattleState();
 
 	while (process_scene) {
