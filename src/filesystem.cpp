@@ -52,7 +52,7 @@ Filesystem_Stream::InputStream Filesystem::OpenOrCreateInputStream(StringView na
 	auto is = OpenInputStream(name, m);
 
 	if (!is) {
-		auto os = OpenOutputStream(name, m);
+		auto os = OpenOutputStream(name, (std::ios_base::openmode)0);
 		if (!os) {
 			return Filesystem_Stream::InputStream();
 		}

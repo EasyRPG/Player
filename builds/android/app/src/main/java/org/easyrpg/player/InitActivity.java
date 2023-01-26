@@ -125,6 +125,9 @@ public class InitActivity extends AppCompatActivity {
         Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
         Helper.createEasyRPGFolders(this, easyRPGFolderURI);
 
+        // Create storage location for the config.ini
+        new File(getExternalFilesDir(null).getAbsolutePath()).mkdirs();
+
         //Launch the proper game browser
         Intent intent;
         intent = new Intent(this, GameBrowserActivity.class);

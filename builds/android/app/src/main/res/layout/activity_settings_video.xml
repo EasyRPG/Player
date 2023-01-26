@@ -28,20 +28,36 @@
             android:text="@string/screen_size"
             android:textSize="20sp"/>
 
+		<RadioButton
+			android:id="@+id/settings_scale_nearest_radio_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/scale_nearest"
+			android:textSize="20sp"
+			android:paddingHorizontal="5dp"/>
         <RadioButton
-            android:id="@+id/settings_image_uniform_pixel_size_radio_button"
+            android:id="@+id/settings_scale_integer_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/uniform_pixel_size_best_image_quality"
+            android:text="@string/scale_integer"
             android:textSize="20sp"
             android:paddingHorizontal="5dp"/>
         <RadioButton
-            android:id="@+id/settings_image_stretch_radio_button"
+            android:id="@+id/settings_scale_bilinear_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/stretch_the_image_wider_image"
+            android:text="@string/scale_bilinear"
             android:textSize="20sp"
             android:paddingHorizontal="5dp"/>
         <include layout="@layout/separator"/>
+
+		<CheckBox
+			android:id="@+id/settings_stretch"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/stretch"
+			android:textSize="20sp"/>
+
+		<include layout="@layout/separator"/>
     </LinearLayout>
 </ScrollView>

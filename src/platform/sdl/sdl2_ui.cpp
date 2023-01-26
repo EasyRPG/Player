@@ -533,7 +533,7 @@ void Sdl2Ui::UpdateDisplay() {
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
 			// The aspect ratios are the same, let SDL2 scale it
-			window.scale = -1.0f;
+			window.scale = width_float / SCREEN_TARGET_WIDTH;
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
@@ -1113,7 +1113,8 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
 	cfg.fps_render_window.SetOptionVisible(true);
-#ifdef SUPPORT_ZOOM
+#if defined(SUPPORT_ZOOM) && !defined(__ANDROID__)
+	// An initial zoom level is needed on Android however changing it looks awful
 	cfg.window_zoom.SetOptionVisible(true);
 #endif
 	cfg.scaling_mode.SetOptionVisible(true);

@@ -82,6 +82,10 @@
 #include "game_clock.h"
 #include "message_overlay.h"
 
+#ifdef __ANDROID__
+#include "platform/android/android.h"
+#endif
+
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 #include "decoder_fluidsynth.h"
 #endif
@@ -349,6 +353,10 @@ void Player::Update(bool update_scene) {
 
 		Scene::instance->Update();
 	}
+
+#ifdef __ANDROID__
+	EpAndroid::invoke();
+#endif
 }
 
 void Player::Draw() {

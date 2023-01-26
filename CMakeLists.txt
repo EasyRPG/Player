@@ -1242,6 +1242,7 @@ else()
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")
 	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_library(easyrpg_android
+			src/platform/android/android.h
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
 			src/platform/android/filesystem_apk.cpp
