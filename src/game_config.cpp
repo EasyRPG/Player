@@ -362,6 +362,27 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 
 			auto keys = Utils::Tokenize(values, [](char32_t c) { return c == ','; });
 
+			// When it is a protected (important) button with zero mappings keep the default
+			// For all other buttons having no mapping is fine
+			bool has_mapping = false;
+			if (Input::IsProtectedButton(button)) {
+				// Check for protected (important) buttons if they have more than zero mappings
+				for (const auto& key: keys) {
+					const auto& kNames = Input::Keys::kNames;
+					auto it = std::find(kNames.begin(), kNames.end(), key);
+					if (it != Input::Keys::kNames.end()) {
+						has_mapping = true;
+						break;
+					}
+				}
+
+				// If not, keep the default mapping
+				if (!has_mapping) {
+					continue;
+				}
+			}
+
+			// Load mappings from ini
 			for (const auto& key: keys) {
 				const auto& kNames = Input::Keys::kNames;
 				auto it = std::find(kNames.begin(), kNames.end(), key);
@@ -369,15 +390,6 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 					mappings.Add({button, static_cast<Input::Keys::InputKey>(std::distance(kNames.begin(), it))});
 				}
 			}
-
-			// When it is a protected (important) button with zero mappings load the default
-			// For all other buttons having no mapping is fine
-			if (Input::IsProtectedButton(button) && !mappings.Has(button)) {
-				Input::ResetDefaultMapping(button);
-			}
-		} else {
-			// When the button is completely missing in the config load the default
-			Input::ResetDefaultMapping(button);
 		}
 	}
 
