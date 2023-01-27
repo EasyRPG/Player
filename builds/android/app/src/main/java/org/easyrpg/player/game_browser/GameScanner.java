@@ -1,5 +1,6 @@
 package org.easyrpg.player.game_browser;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,9 +16,18 @@ import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class GameScanner {
     // We use a singleton pattern to allow further optimizations
@@ -121,6 +131,12 @@ public class GameScanner {
                             // Android SAF calls and scanFolder(...) already check that)
                             scanFolderRecursive(context, fileURI, depth - 1);
                         }
+                    } else if (fileDocumentID.endsWith(".zip")) {
+                        Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
+                        Game game = isAGameZipped(context, fileURI);
+                        if (game != null) {
+                            gameList.add(game);
+                        }
                     }
                 }
             }
@@ -179,6 +195,92 @@ public class GameScanner {
         }
 
         return game;
+    }
+
+    static class ZipFoundStats {
+        int rpgRtCount = 0;
+        boolean databaseFound = false;
+        boolean treemapFound = false;
+        boolean isARpgGame = false;
+
+        ZipFoundStats() {
+        }
+    }
+
+    /** Return a game if "folder" is a game folder, or return null.
+     *  This method is designed to reduce the number of sys calls */
+    public static Game isAGameZipped(Context context, Uri zipUri) {
+        Uri titleFolderURI = null;
+        Uri iniFileURI = null;
+        ContentResolver resolver = context.getContentResolver();
+
+        // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
+        Map<String, ZipFoundStats> games = new HashMap<>();
+
+        try (InputStream zipIStream = resolver.openInputStream(zipUri)) {
+            ZipInputStream zipStream = new ZipInputStream(zipIStream);
+            ZipEntry entry;
+
+            while ((entry = zipStream.getNextEntry()) != null) {
+                Path fullPath = Paths.get(entry.getName());
+                String fileName = fullPath.getFileName().toString();
+
+                String gameDirectory;
+                Path parent = fullPath.getParent();
+                if (parent != null) {
+                    gameDirectory = parent.toString();
+                } else {
+                    gameDirectory = "";
+                }
+
+                ZipFoundStats stats = games.get(gameDirectory);
+
+                if (stats == null) {
+                    stats = new ZipFoundStats();
+                    games.put(gameDirectory, stats);
+                }
+
+                if (!stats.databaseFound && fileName.equalsIgnoreCase(DATABASE_NAME)) {
+                    stats.databaseFound = true;
+                } else if (!stats.treemapFound && fileName.equalsIgnoreCase(TREEMAP_NAME)) {
+                    stats.treemapFound = true;
+                }
+
+                // Count non-standard files.
+                // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
+                // We might be dealing with a non-standard extension.
+                // Show it, and let the C++ code sort out which file is which.
+                if (fileName.toLowerCase().startsWith("rpg_rt.")) {
+                    if (!(fileName.equalsIgnoreCase(INI_FILE) || fileName.equalsIgnoreCase(EXE_FILE))) {
+                        stats.rpgRtCount += 1;
+                    }
+                }
+
+                if ((stats.databaseFound && stats.treemapFound) || stats.rpgRtCount == 2) {
+                    stats.isARpgGame = true;
+                }
+
+                if (fileName.equals("Title")) {
+                    // Fixme: Handling of title graphic
+                }
+
+                if (fileName.equalsIgnoreCase(INI_FILE)) {
+                    // Fixme: Handling of INI
+                }
+            }
+        } catch (IOException e) {
+            return null;
+        }
+
+        for (Map.Entry<String, ZipFoundStats> entry : games.entrySet()) {
+            if (entry.getValue().isARpgGame) {
+                String name = new File(zipUri.getPath()).getName();
+                String saveFolder = name.substring(0, name.lastIndexOf("."));
+                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, null, null);
+            }
+        }
+
+        return null;
     }
 
     /** The VERY SLOW way of testing if a folder is a RPG2k Game. (contains DATABASE_NAME and TREEMAP_NAME)

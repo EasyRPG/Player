@@ -12,14 +12,16 @@ import org.easyrpg.player.settings.SettingsManager;
 public class Game implements Comparable<Game> {
 	private final String title;
     private final String gameFolderPath;
-    private final String savePath;
+    private String savePath;
 	private boolean isFavorite;
     private final DocumentFile gameFolder;
     private Uri iniFile;
     private Bitmap titleScreen;
     private IniFileManager iniFileManager; // Always use initIniFileManager() before using iniFileManager
+    /** Path to the game folder inside of the zip */
+    private String zipInnerPath;
 
-	public Game(DocumentFile gameFolder) {
+	private Game(DocumentFile gameFolder) {
 		this.gameFolder = gameFolder;
 	    this.title = gameFolder.getName();
         Uri folderURI = gameFolder.getUri();
@@ -64,6 +66,18 @@ public class Game implements Comparable<Game> {
         this.isFavorite = false;
     }
 
+    private Game(DocumentFile gameFolder, String pathInZip, Uri iniFileUri, Bitmap titleScreen) {
+        this(gameFolder, iniFileUri, titleScreen);
+        zipInnerPath = pathInZip;
+    }
+
+    public static Game fromZip(DocumentFile gameFolder, String pathInZip, String saveFolder, Uri iniFileUri, Bitmap titleScreen) {
+        Game game = new Game(gameFolder, pathInZip, iniFileUri, titleScreen);
+        // is only relative here, launchGame will put this in the "saves" directory
+        game.setSavePath(saveFolder);
+        return game;
+    }
+
 	public String getTitle() {
 		return title;
 	}
@@ -75,6 +89,10 @@ public class Game implements Comparable<Game> {
 	public String getSavePath() {
 		return savePath;
 	}
+
+    public void setSavePath(String path) {
+        savePath = path;
+    }
 
 	public boolean isFavorite() {
 		return isFavorite;
@@ -141,5 +159,13 @@ public class Game implements Comparable<Game> {
 
     public Boolean isStandalone() {
         return gameFolder == null;
+    }
+
+    public Boolean isZipArchive() {
+        return zipInnerPath != null;
+    }
+
+    public String getZipInnerPath() {
+        return zipInnerPath;
     }
 }

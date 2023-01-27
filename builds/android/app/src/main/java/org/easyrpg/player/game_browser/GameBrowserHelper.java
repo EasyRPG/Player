@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.documentfile.provider.DocumentFile;
+
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
@@ -27,21 +29,43 @@ public class GameBrowserHelper {
         String path = game.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
-        if (game.isStandalone() || (game.getGameFolder().isDirectory() && game.getGameFolder().canRead())) {
+        boolean valid = game.isStandalone() ||
+            (game.isZipArchive() && game.getGameFolder().canRead()) ||
+            (game.getGameFolder().isDirectory() && game.getGameFolder().canRead());
+
+        if (valid) {
             Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
             ArrayList<String> args = new ArrayList<>();
 
-            // Path of game passed to PlayerActivity via intent "project_path"
             // Command line passed via intent "command_line"
-            args.add("--project-path");
-            args.add(path);
+            String savePath;
 
-            args.add("--save-path");
-            args.add(game.getSavePath());
+            if (game.isZipArchive()) {
+                // Create the redirected save folder
+                DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
 
-            args.add("--encoding");
+                args.add("--project-path");
+                args.add(path + "/" + game.getZipInnerPath());
 
-            args.add(game.getEncoding(context).getRegionCode());
+                // In error case the native code will try to put a save folder next to the zip
+                if (saveFolder != null) {
+                    savePath = saveFolder.getUri().toString();
+                    args.add("--save-path");
+                    args.add(savePath);
+                } else {
+                    savePath = path;
+                }
+            } else {
+                args.add("--project-path");
+                args.add(path);
+
+                savePath = game.getSavePath();
+                args.add("--save-path");
+                args.add(savePath);
+
+                args.add("--encoding");
+                args.add(game.getEncoding(context).getRegionCode());
+            }
 
             args.add("--config-path");
             args.add(context.getExternalFilesDir(null).getAbsolutePath());
@@ -53,8 +77,7 @@ public class GameBrowserHelper {
                 args.add(soundfontUri.toString());
             }
 
-            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, game.getSavePath());
-            intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
+            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
             intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
             intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
 

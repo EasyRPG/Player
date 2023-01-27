@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -362,6 +363,13 @@ public class GameBrowserActivity extends AppCompatActivity
         }
 
         public void chooseRegion(final Context context, final Game game) {
+            if (game.isZipArchive()) {
+                // Fixme: Resource
+                String msg = "Setting the region is unsupported for zip archives";
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                return;
+            }
+
             // The list of region choices
             String[] region_array = IniFileManager.Encoding.getEncodingDescriptions(context);
 
