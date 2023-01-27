@@ -311,9 +311,11 @@ void Scene_Settings::UpdateOptions() {
 				option.action();
 				options_window->Refresh();
 			} else if (option.mode == Window_Settings::eOptionRangeInput) {
-				number_window.reset(new Window_NumberInput(100, 100, 128, 32));
+				number_window.reset(new Window_NumberInput(0, 0, 128, 32));
 				number_window->SetNumber(option.current_value);
 				number_window->SetMaxDigits(std::log10(option.max_value) + 1);
+				number_window->SetX(options_window->GetX() + options_window->GetWidth() / 2 - number_window->GetWidth() / 2);
+				number_window->SetY(options_window->GetY() + options_window->GetHeight() / 2 - number_window->GetHeight() / 2);
 				number_window->SetZ(options_window->GetZ() + 1);
 				number_window->SetOpacity(255);
 				number_window->SetActive(true);
@@ -321,8 +323,8 @@ void Scene_Settings::UpdateOptions() {
 				options_window->SetActive(false);
 			} else if (option.mode == Window_Settings::eOptionPicker) {
 				picker_window.reset(new Window_Command(option.options_text));
-				picker_window->SetX(100);
-				picker_window->SetY(100);
+				picker_window->SetX(options_window->GetX() + options_window->GetWidth() / 2 - picker_window->GetWidth() / 2);
+				picker_window->SetY(options_window->GetY() + options_window->GetHeight() / 2 - picker_window->GetHeight() / 2);
 				picker_window->SetZ(options_window->GetZ() + 1);
 				picker_window->SetIndex(option.current_value);
 				picker_window->SetHelpWindow(help_window.get());
