@@ -681,6 +681,7 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 
 	// RPG_RT compatible for half-width (6) and full-width (12)
 	// generalizes the algo for even bigger glyphs
+	// FIXME: When using Freetype this can cause slow rendering speeds due to dynamic width
 	auto get_width = [](int w) {
 		return (w > 0) ? (w - 1) / 6 + 1 : 0;
 	};
@@ -700,7 +701,6 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
 
-	// FIXME: When using Freetype the detection is incorrect due to dynamic width
 	int glyph_width = rect.x;
 	contents_x += glyph_width;
 	int width = get_width(glyph_width);
@@ -714,6 +714,7 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, const Font::Sha
 
 	// RPG_RT compatible for half-width (6) and full-width (12)
 	// generalizes the algo for even bigger glyphs
+	// FIXME: This can cause slow rendering speeds for complex shapes
 	auto get_width = [](int w) {
 		return (w > 0) ? (w - 1) / 6 + 1 : 0;
 	};
@@ -731,7 +732,6 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, const Font::Sha
 
 	auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
 
-	// FIXME: When using Freetype the detection is incorrect due to dynamic width
 	int glyph_width = rect.x;
 	contents_x += glyph_width;
 	int width = get_width(glyph_width);

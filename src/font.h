@@ -35,10 +35,14 @@ class Rect;
  * Font class.
  *
  * All methods in this class are private API.
+ * Only use it when low level access is required.
  * Use the API in Text instead.
+ *
+ * @see Text
  */
 class Font {
  public:
+	/** Contains bitmap and metrics of a glyph */
 	struct GlyphRet {
 		/** bitmap which the glyph pixels are located within */
 		BitmapRef bitmap;
@@ -53,6 +57,7 @@ class Font {
 		bool has_color = false;
 	};
 
+	/** Contains metrics of a glyph shaped by Harfbuzz */
 	struct ShapeRet {
 		/** Codepoint of this glyph after shaping */
 		char32_t code;
@@ -70,10 +75,15 @@ class Font {
 		bool not_found;
 	};
 
+	/** Contains style informations */
 	struct Style {
+		/** Size in pixel to render at. -1 will use the size specified during initialisation */
 		int size = -1;
+		/** Whether to render text in bold (currently unsupported) */
 		bool bold = false;
+		/** Whether to render text in italic (currently unsupported) */
 		bool italic = false;
+		/** Whether to render a drop shadow */
 		bool draw_shadow = false;
 	};
 
