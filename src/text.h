@@ -120,7 +120,7 @@ namespace Text {
 	 * For continuous rendering use the "width" property.
 	 *
 	 * @param font the font used to render.
-	 * @param ch the character to mesaure.
+	 * @param glyph the character to mesaure.
 	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character.
 	 *
 	 * @return Rect describing the rendered string boundary
