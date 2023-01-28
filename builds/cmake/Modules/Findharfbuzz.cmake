@@ -72,7 +72,7 @@ if(HARFBUZZ_FOUND)
 				find_library(CORETEXT CoreText REQUIRED)
 				find_library(COREGRAPHICS CoreGraphics REQUIRED)
 
-				set_property(TARGET Harfbuzz::Harfbuzz APPEND PROPERTY
+				set_property(TARGET harfbuzz::harfbuzz APPEND PROPERTY
 					INTERFACE_LINK_LIBRARIES ${COREFOUNDATION} ${CORETEXT}
 						${COREGRAPHICS})
 
@@ -82,7 +82,7 @@ if(HARFBUZZ_FOUND)
 			else()
 				find_library(APPLICATION_SERVICES ApplicationServices REQUIRED)
 
-				set_property(TARGET Harfbuzz::Harfbuzz APPEND PROPERTY
+				set_property(TARGET harfbuzz::harfbuzz APPEND PROPERTY
 					INTERFACE_LINK_LIBRARIES ${APPLICATION_SERVICES})
 
 				mark_as_advanced(APPLICATION_SERVICES)
