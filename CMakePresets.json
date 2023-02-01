@@ -24,96 +24,54 @@
 		{
 			"name": "debug",
 			"displayName": "Use system environment (Debug)",
-			"inherits": "parent"
+			"inherits": [
+				"parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "relwithdebinfo",
 			"displayName": "Use system environment (RelWithDebInfo)",
-			"inherits": "parent"
+			"inherits": [
+				"parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "release",
 			"displayName": "Use system environment (Release)",
-			"inherits": "parent"
-		},
-		{
-			"name": "liblcf-debug",
-			"displayName": "Use system environment + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"parent"
-			]
-		},
-		{
-			"name": "liblcf-relwithdebinfo",
-			"displayName": "Use system environment + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"parent"
-			]
-		},
-		{
-			"name": "liblcf-release",
-			"displayName": "Use system environment + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"parent"
+				"parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "libretro-debug",
 			"displayName": "Use system environment (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"parent"
+				"parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "libretro-relwithdebinfo",
 			"displayName": "Use system environment (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"parent"
+				"parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "libretro-release",
 			"displayName": "Use system environment (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"parent"
-			]
-		},
-		{
-			"name": "libretro-liblcf-debug",
-			"displayName": "Use system environment (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"parent"
-			]
-		},
-		{
-			"name": "libretro-liblcf-relwithdebinfo",
-			"displayName": "Use system environment (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"parent"
-			]
-		},
-		{
-			"name": "libretro-liblcf-release",
-			"displayName": "Use system environment (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"parent"
+				"parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "linux-parent",
-			"toolchainFile": "builds/cmake/LinuxToolchain.cmake",
+			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
 			"cacheVariables": {
 				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
 			},
@@ -123,689 +81,91 @@
 		{
 			"name": "linux-debug",
 			"displayName": "Linux (Debug)",
-			"inherits": "linux-parent"
+			"inherits": [
+				"linux-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "linux-relwithdebinfo",
 			"displayName": "Linux (RelWithDebInfo)",
-			"inherits": "linux-parent"
+			"inherits": [
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "linux-release",
 			"displayName": "Linux (Release)",
-			"inherits": "linux-parent"
-		},
-		{
-			"name": "linux-liblcf-debug",
-			"displayName": "Linux + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"linux-parent"
-			]
-		},
-		{
-			"name": "linux-liblcf-relwithdebinfo",
-			"displayName": "Linux + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"linux-parent"
-			]
-		},
-		{
-			"name": "linux-liblcf-release",
-			"displayName": "Linux + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"linux-parent"
+				"linux-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "linux-libretro-debug",
 			"displayName": "Linux (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"linux-parent"
+				"linux-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "linux-libretro-relwithdebinfo",
 			"displayName": "Linux (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"linux-parent"
+				"linux-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "linux-libretro-release",
 			"displayName": "Linux (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"linux-parent"
+				"linux-parent",
+				"type-release"
 			]
 		},
 		{
-			"name": "linux-libretro-liblcf-debug",
-			"displayName": "Linux (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"linux-parent"
-			]
-		},
-		{
-			"name": "linux-libretro-liblcf-relwithdebinfo",
-			"displayName": "Linux (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"linux-parent"
-			]
-		},
-		{
-			"name": "linux-libretro-liblcf-release",
-			"displayName": "Linux (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"linux-parent"
-			]
-		},
-		{
-			"name": "windows-x86-parent",
+			"name": "windows-x86",
+			"displayName": "Windows (x86)",
+			"hidden": true,
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
 			},
-			"inherits": "win-user",
-			"hidden": true
+			"inherits": "win-user"
 		},
 		{
-			"name": "windows-x86-debug",
-			"displayName": "Windows (x86) (Debug)",
-			"inherits": "windows-x86-parent"
-		},
-		{
-			"name": "windows-x86-relwithdebinfo",
-			"displayName": "Windows (x86) (RelWithDebInfo)",
-			"inherits": "windows-x86-parent"
-		},
-		{
-			"name": "windows-x86-release",
-			"displayName": "Windows (x86) (Release)",
-			"inherits": "windows-x86-parent"
-		},
-		{
-			"name": "windows-x86-liblcf-debug",
-			"displayName": "Windows (x86) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-liblcf-release",
-			"displayName": "Windows (x86) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-debug",
-			"displayName": "Windows (x86) (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-relwithdebinfo",
-			"displayName": "Windows (x86) (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-release",
-			"displayName": "Windows (x86) (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-debug",
-			"displayName": "Windows (x86) (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-release",
-			"displayName": "Windows (x86) (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-parent",
-			"generator": "Visual Studio 16 2019",
-			"architecture": "Win32",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
-			},
-			"inherits": "win-user",
-			"hidden": true
-		},
-		{
-			"name": "windows-x86-vs2019-debug",
-			"displayName": "Windows (x86) using Visual Studio 2019 (Debug)",
-			"inherits": "windows-x86-vs2019-parent"
-		},
-		{
-			"name": "windows-x86-vs2019-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2019 (RelWithDebInfo)",
-			"inherits": "windows-x86-vs2019-parent"
-		},
-		{
-			"name": "windows-x86-vs2019-release",
-			"displayName": "Windows (x86) using Visual Studio 2019 (Release)",
-			"inherits": "windows-x86-vs2019-parent"
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-debug",
-			"displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-release",
-			"displayName": "Windows (x86) using Visual Studio 2019 + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-debug",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-release",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-debug",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-release",
-			"displayName": "Windows (x86) using Visual Studio 2019 (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-parent",
+			"name": "windows-x86-vs2022",
+			"displayName": "Windows (x86) using Visual Studio 2022",
+			"hidden": true,
 			"generator": "Visual Studio 17 2022",
 			"architecture": "Win32",
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
 			},
-			"inherits": "win-user",
-			"hidden": true
+			"inherits": "win-user"
 		},
 		{
-			"name": "windows-x86-vs2022-debug",
-			"displayName": "Windows (x86) using Visual Studio 2022 (Debug)",
-			"inherits": "windows-x86-vs2022-parent"
-		},
-		{
-			"name": "windows-x86-vs2022-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2022 (RelWithDebInfo)",
-			"inherits": "windows-x86-vs2022-parent"
-		},
-		{
-			"name": "windows-x86-vs2022-release",
-			"displayName": "Windows (x86) using Visual Studio 2022 (Release)",
-			"inherits": "windows-x86-vs2022-parent"
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-debug",
-			"displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-release",
-			"displayName": "Windows (x86) using Visual Studio 2022 + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-debug",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-release",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-debug",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-release",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x86-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-parent",
+			"name": "windows-x64",
+			"displayName": "Windows (x64)",
+			"hidden": true,
 			"architecture": "x64",
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
 			},
-			"inherits": "win-user",
-			"hidden": true
+			"inherits": "win-user"
 		},
 		{
-			"name": "windows-x64-debug",
-			"displayName": "Windows (x64) (Debug)",
-			"inherits": "windows-x64-parent"
-		},
-		{
-			"name": "windows-x64-relwithdebinfo",
-			"displayName": "Windows (x64) (RelWithDebInfo)",
-			"inherits": "windows-x64-parent"
-		},
-		{
-			"name": "windows-x64-release",
-			"displayName": "Windows (x64) (Release)",
-			"inherits": "windows-x64-parent"
-		},
-		{
-			"name": "windows-x64-liblcf-debug",
-			"displayName": "Windows (x64) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-liblcf-release",
-			"displayName": "Windows (x64) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-debug",
-			"displayName": "Windows (x64) (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-relwithdebinfo",
-			"displayName": "Windows (x64) (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-release",
-			"displayName": "Windows (x64) (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-debug",
-			"displayName": "Windows (x64) (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-release",
-			"displayName": "Windows (x64) (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-parent",
-			"generator": "Visual Studio 16 2019",
-			"architecture": "x64",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
-			},
-			"inherits": "win-user",
-			"hidden": true
-		},
-		{
-			"name": "windows-x64-vs2019-debug",
-			"displayName": "Windows (x64) using Visual Studio 2019 (Debug)",
-			"inherits": "windows-x64-vs2019-parent"
-		},
-		{
-			"name": "windows-x64-vs2019-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2019 (RelWithDebInfo)",
-			"inherits": "windows-x64-vs2019-parent"
-		},
-		{
-			"name": "windows-x64-vs2019-release",
-			"displayName": "Windows (x64) using Visual Studio 2019 (Release)",
-			"inherits": "windows-x64-vs2019-parent"
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-debug",
-			"displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-release",
-			"displayName": "Windows (x64) using Visual Studio 2019 + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-debug",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-release",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-debug",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-release",
-			"displayName": "Windows (x64) using Visual Studio 2019 (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2019-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-parent",
+			"name": "windows-x64-vs2022",
+			"displayName": "Windows (x64) using Visual Studio 2022",
+			"hidden": true,
 			"generator": "Visual Studio 17 2022",
 			"architecture": "x64",
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
 			},
-			"inherits": "win-user",
-			"hidden": true
-		},
-		{
-			"name": "windows-x64-vs2022-debug",
-			"displayName": "Windows (x64) using Visual Studio 2022 (Debug)",
-			"inherits": "windows-x64-vs2022-parent"
-		},
-		{
-			"name": "windows-x64-vs2022-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2022 (RelWithDebInfo)",
-			"inherits": "windows-x64-vs2022-parent"
-		},
-		{
-			"name": "windows-x64-vs2022-release",
-			"displayName": "Windows (x64) using Visual Studio 2022 (Release)",
-			"inherits": "windows-x64-vs2022-parent"
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-debug",
-			"displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-release",
-			"displayName": "Windows (x64) using Visual Studio 2022 + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-debug",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-release",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-debug",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-release",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"windows-x64-vs2022-parent"
-			]
+			"inherits": "win-user"
 		},
 		{
 			"name": "macos-parent",
@@ -824,91 +184,49 @@
 		{
 			"name": "macos-debug",
 			"displayName": "macOS (Debug)",
-			"inherits": "macos-parent"
+			"inherits": [
+				"macos-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "macos-relwithdebinfo",
 			"displayName": "macOS (RelWithDebInfo)",
-			"inherits": "macos-parent"
+			"inherits": [
+				"macos-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "macos-release",
 			"displayName": "macOS (Release)",
-			"inherits": "macos-parent"
-		},
-		{
-			"name": "macos-liblcf-debug",
-			"displayName": "macOS + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"macos-parent"
-			]
-		},
-		{
-			"name": "macos-liblcf-relwithdebinfo",
-			"displayName": "macOS + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"macos-parent"
-			]
-		},
-		{
-			"name": "macos-liblcf-release",
-			"displayName": "macOS + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"macos-parent"
+				"macos-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "macos-libretro-debug",
 			"displayName": "macOS (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"macos-parent"
+				"macos-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "macos-libretro-relwithdebinfo",
 			"displayName": "macOS (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"macos-parent"
+				"macos-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "macos-libretro-release",
 			"displayName": "macOS (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"macos-parent"
-			]
-		},
-		{
-			"name": "macos-libretro-liblcf-debug",
-			"displayName": "macOS (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"macos-parent"
-			]
-		},
-		{
-			"name": "macos-libretro-liblcf-relwithdebinfo",
-			"displayName": "macOS (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"macos-parent"
-			]
-		},
-		{
-			"name": "macos-libretro-liblcf-release",
-			"displayName": "macOS (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"macos-parent"
+				"macos-parent",
+				"type-release"
 			]
 		},
 		{
@@ -925,40 +243,25 @@
 		{
 			"name": "emscripten-debug",
 			"displayName": "Emscripten (Web) (Debug)",
-			"inherits": "emscripten-parent"
+			"inherits": [
+				"emscripten-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "emscripten-relwithdebinfo",
 			"displayName": "Emscripten (Web) (RelWithDebInfo)",
-			"inherits": "emscripten-parent"
+			"inherits": [
+				"emscripten-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "emscripten-release",
 			"displayName": "Emscripten (Web) (Release)",
-			"inherits": "emscripten-parent"
-		},
-		{
-			"name": "emscripten-liblcf-debug",
-			"displayName": "Emscripten (Web) + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"emscripten-parent"
-			]
-		},
-		{
-			"name": "emscripten-liblcf-relwithdebinfo",
-			"displayName": "Emscripten (Web) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"emscripten-parent"
-			]
-		},
-		{
-			"name": "emscripten-liblcf-release",
-			"displayName": "Emscripten (Web) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"emscripten-parent"
+				"emscripten-parent",
+				"type-release"
 			]
 		},
 		{
@@ -966,8 +269,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "3ds",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds",
-				"BUILD_SHARED_LIBS": "OFF"
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -975,91 +277,49 @@
 		{
 			"name": "3ds-debug",
 			"displayName": "Nintendo 3DS (Debug)",
-			"inherits": "3ds-parent"
+			"inherits": [
+				"3ds-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "3ds-relwithdebinfo",
 			"displayName": "Nintendo 3DS (RelWithDebInfo)",
-			"inherits": "3ds-parent"
+			"inherits": [
+				"3ds-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "3ds-release",
 			"displayName": "Nintendo 3DS (Release)",
-			"inherits": "3ds-parent"
-		},
-		{
-			"name": "3ds-liblcf-debug",
-			"displayName": "Nintendo 3DS + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"3ds-parent"
-			]
-		},
-		{
-			"name": "3ds-liblcf-relwithdebinfo",
-			"displayName": "Nintendo 3DS + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"3ds-parent"
-			]
-		},
-		{
-			"name": "3ds-liblcf-release",
-			"displayName": "Nintendo 3DS + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"3ds-parent"
+				"3ds-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "3ds-libretro-debug",
 			"displayName": "Nintendo 3DS (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"3ds-parent"
+				"3ds-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "3ds-libretro-relwithdebinfo",
 			"displayName": "Nintendo 3DS (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"3ds-parent"
+				"3ds-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "3ds-libretro-release",
 			"displayName": "Nintendo 3DS (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"3ds-parent"
-			]
-		},
-		{
-			"name": "3ds-libretro-liblcf-debug",
-			"displayName": "Nintendo 3DS (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"3ds-parent"
-			]
-		},
-		{
-			"name": "3ds-libretro-liblcf-relwithdebinfo",
-			"displayName": "Nintendo 3DS (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"3ds-parent"
-			]
-		},
-		{
-			"name": "3ds-libretro-liblcf-release",
-			"displayName": "Nintendo 3DS (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"3ds-parent"
+				"3ds-parent",
+				"type-release"
 			]
 		},
 		{
@@ -1067,8 +327,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "switch",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch",
-				"BUILD_SHARED_LIBS": "OFF"
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -1076,91 +335,49 @@
 		{
 			"name": "switch-debug",
 			"displayName": "Nintendo Switch (Debug)",
-			"inherits": "switch-parent"
+			"inherits": [
+				"switch-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "switch-relwithdebinfo",
 			"displayName": "Nintendo Switch (RelWithDebInfo)",
-			"inherits": "switch-parent"
+			"inherits": [
+				"switch-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "switch-release",
 			"displayName": "Nintendo Switch (Release)",
-			"inherits": "switch-parent"
-		},
-		{
-			"name": "switch-liblcf-debug",
-			"displayName": "Nintendo Switch + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"switch-parent"
-			]
-		},
-		{
-			"name": "switch-liblcf-relwithdebinfo",
-			"displayName": "Nintendo Switch + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"switch-parent"
-			]
-		},
-		{
-			"name": "switch-liblcf-release",
-			"displayName": "Nintendo Switch + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"switch-parent"
+				"switch-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "switch-libretro-debug",
 			"displayName": "Nintendo Switch (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"switch-parent"
+				"switch-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "switch-libretro-relwithdebinfo",
 			"displayName": "Nintendo Switch (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"switch-parent"
+				"switch-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "switch-libretro-release",
 			"displayName": "Nintendo Switch (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"switch-parent"
-			]
-		},
-		{
-			"name": "switch-libretro-liblcf-debug",
-			"displayName": "Nintendo Switch (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"switch-parent"
-			]
-		},
-		{
-			"name": "switch-libretro-liblcf-relwithdebinfo",
-			"displayName": "Nintendo Switch (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"switch-parent"
-			]
-		},
-		{
-			"name": "switch-libretro-liblcf-release",
-			"displayName": "Nintendo Switch (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"switch-parent"
+				"switch-parent",
+				"type-release"
 			]
 		},
 		{
@@ -1168,8 +385,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "Wii",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii",
-				"BUILD_SHARED_LIBS": "OFF"
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -1177,91 +393,49 @@
 		{
 			"name": "wii-debug",
 			"displayName": "Nintendo Wii (Debug)",
-			"inherits": "wii-parent"
+			"inherits": [
+				"wii-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "wii-relwithdebinfo",
 			"displayName": "Nintendo Wii (RelWithDebInfo)",
-			"inherits": "wii-parent"
+			"inherits": [
+				"wii-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "wii-release",
 			"displayName": "Nintendo Wii (Release)",
-			"inherits": "wii-parent"
-		},
-		{
-			"name": "wii-liblcf-debug",
-			"displayName": "Nintendo Wii + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"wii-parent"
-			]
-		},
-		{
-			"name": "wii-liblcf-relwithdebinfo",
-			"displayName": "Nintendo Wii + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"wii-parent"
-			]
-		},
-		{
-			"name": "wii-liblcf-release",
-			"displayName": "Nintendo Wii + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"wii-parent"
+				"wii-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "wii-libretro-debug",
 			"displayName": "Nintendo Wii (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"wii-parent"
+				"wii-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "wii-libretro-relwithdebinfo",
 			"displayName": "Nintendo Wii (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"wii-parent"
+				"wii-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "wii-libretro-release",
 			"displayName": "Nintendo Wii (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"wii-parent"
-			]
-		},
-		{
-			"name": "wii-libretro-liblcf-debug",
-			"displayName": "Nintendo Wii (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"wii-parent"
-			]
-		},
-		{
-			"name": "wii-libretro-liblcf-relwithdebinfo",
-			"displayName": "Nintendo Wii (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"wii-parent"
-			]
-		},
-		{
-			"name": "wii-libretro-liblcf-release",
-			"displayName": "Nintendo Wii (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"wii-parent"
+				"wii-parent",
+				"type-release"
 			]
 		},
 		{
@@ -1277,904 +451,232 @@
 		{
 			"name": "psvita-debug",
 			"displayName": "PlayStation Vita (Debug)",
-			"inherits": "psvita-parent"
+			"inherits": [
+				"psvita-parent",
+				"type-debug"
+			]
 		},
 		{
 			"name": "psvita-relwithdebinfo",
 			"displayName": "PlayStation Vita (RelWithDebInfo)",
-			"inherits": "psvita-parent"
+			"inherits": [
+				"psvita-parent",
+				"type-relwithdebinfo"
+			]
 		},
 		{
 			"name": "psvita-release",
 			"displayName": "PlayStation Vita (Release)",
-			"inherits": "psvita-parent"
-		},
-		{
-			"name": "psvita-liblcf-debug",
-			"displayName": "PlayStation Vita + Build liblcf (Debug)",
 			"inherits": [
-				"build-liblcf",
-				"psvita-parent"
-			]
-		},
-		{
-			"name": "psvita-liblcf-relwithdebinfo",
-			"displayName": "PlayStation Vita + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"psvita-parent"
-			]
-		},
-		{
-			"name": "psvita-liblcf-release",
-			"displayName": "PlayStation Vita + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"psvita-parent"
+				"psvita-parent",
+				"type-release"
 			]
 		},
 		{
 			"name": "psvita-libretro-debug",
 			"displayName": "PlayStation Vita (libretro core) (Debug)",
 			"inherits": [
-				"build-libretro",
-				"psvita-parent"
+				"psvita-parent",
+				"type-debug"
 			]
 		},
 		{
 			"name": "psvita-libretro-relwithdebinfo",
 			"displayName": "PlayStation Vita (libretro core) (RelWithDebInfo)",
 			"inherits": [
-				"build-libretro",
-				"psvita-parent"
+				"psvita-parent",
+				"type-relwithdebinfo"
 			]
 		},
 		{
 			"name": "psvita-libretro-release",
 			"displayName": "PlayStation Vita (libretro core) (Release)",
 			"inherits": [
-				"build-libretro",
-				"psvita-parent"
-			]
-		},
-		{
-			"name": "psvita-libretro-liblcf-debug",
-			"displayName": "PlayStation Vita (libretro core) + Build liblcf (Debug)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"psvita-parent"
-			]
-		},
-		{
-			"name": "psvita-libretro-liblcf-relwithdebinfo",
-			"displayName": "PlayStation Vita (libretro core) + Build liblcf (RelWithDebInfo)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"psvita-parent"
-			]
-		},
-		{
-			"name": "psvita-libretro-liblcf-release",
-			"displayName": "PlayStation Vita (libretro core) + Build liblcf (Release)",
-			"inherits": [
-				"build-liblcf",
-				"build-libretro",
-				"psvita-parent"
+				"psvita-parent",
+				"type-release"
 			]
 		}
 	],
 	"buildPresets": [
 		{
 			"name": "debug",
-			"configurePreset": "debug",
-			"configuration": "Debug"
+			"configurePreset": "debug"
 		},
 		{
 			"name": "relwithdebinfo",
-			"configurePreset": "relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "relwithdebinfo"
 		},
 		{
 			"name": "release",
-			"configurePreset": "release",
-			"configuration": "Release"
-		},
-		{
-			"name": "liblcf-debug",
-			"configurePreset": "liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "liblcf-relwithdebinfo",
-			"configurePreset": "liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "liblcf-release",
-			"configurePreset": "liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "release"
 		},
 		{
 			"name": "libretro-debug",
-			"configurePreset": "libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "libretro-debug"
 		},
 		{
 			"name": "libretro-relwithdebinfo",
-			"configurePreset": "libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "libretro-relwithdebinfo"
 		},
 		{
 			"name": "libretro-release",
-			"configurePreset": "libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "libretro-liblcf-debug",
-			"configurePreset": "libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "libretro-liblcf-relwithdebinfo",
-			"configurePreset": "libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "libretro-liblcf-release",
-			"configurePreset": "libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "libretro-release"
 		},
 		{
 			"name": "linux-debug",
-			"configurePreset": "linux-debug",
-			"configuration": "Debug"
+			"configurePreset": "linux-debug"
 		},
 		{
 			"name": "linux-relwithdebinfo",
-			"configurePreset": "linux-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "linux-relwithdebinfo"
 		},
 		{
 			"name": "linux-release",
-			"configurePreset": "linux-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "linux-liblcf-debug",
-			"configurePreset": "linux-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "linux-liblcf-relwithdebinfo",
-			"configurePreset": "linux-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "linux-liblcf-release",
-			"configurePreset": "linux-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "linux-release"
 		},
 		{
 			"name": "linux-libretro-debug",
-			"configurePreset": "linux-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "linux-libretro-debug"
 		},
 		{
 			"name": "linux-libretro-relwithdebinfo",
-			"configurePreset": "linux-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "linux-libretro-relwithdebinfo"
 		},
 		{
 			"name": "linux-libretro-release",
-			"configurePreset": "linux-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "linux-libretro-liblcf-debug",
-			"configurePreset": "linux-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "linux-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "linux-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "linux-libretro-liblcf-release",
-			"configurePreset": "linux-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-debug",
-			"configurePreset": "windows-x86-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-relwithdebinfo",
-			"configurePreset": "windows-x86-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-release",
-			"configurePreset": "windows-x86-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-liblcf-debug",
-			"configurePreset": "windows-x86-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-liblcf-release",
-			"configurePreset": "windows-x86-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-libretro-debug",
-			"configurePreset": "windows-x86-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-libretro-relwithdebinfo",
-			"configurePreset": "windows-x86-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-libretro-release",
-			"configurePreset": "windows-x86-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-debug",
-			"configurePreset": "windows-x86-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-libretro-liblcf-release",
-			"configurePreset": "windows-x86-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2019-debug",
-			"configurePreset": "windows-x86-vs2019-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2019-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2019-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2019-release",
-			"configurePreset": "windows-x86-vs2019-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-debug",
-			"configurePreset": "windows-x86-vs2019-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2019-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2019-liblcf-release",
-			"configurePreset": "windows-x86-vs2019-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-debug",
-			"configurePreset": "windows-x86-vs2019-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2019-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-release",
-			"configurePreset": "windows-x86-vs2019-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-debug",
-			"configurePreset": "windows-x86-vs2019-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2019-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2019-libretro-liblcf-release",
-			"configurePreset": "windows-x86-vs2019-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2022-debug",
-			"configurePreset": "windows-x86-vs2022-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2022-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2022-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2022-release",
-			"configurePreset": "windows-x86-vs2022-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-debug",
-			"configurePreset": "windows-x86-vs2022-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2022-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2022-liblcf-release",
-			"configurePreset": "windows-x86-vs2022-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-debug",
-			"configurePreset": "windows-x86-vs2022-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2022-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-release",
-			"configurePreset": "windows-x86-vs2022-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-debug",
-			"configurePreset": "windows-x86-vs2022-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x86-vs2022-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x86-vs2022-libretro-liblcf-release",
-			"configurePreset": "windows-x86-vs2022-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-debug",
-			"configurePreset": "windows-x64-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-relwithdebinfo",
-			"configurePreset": "windows-x64-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-release",
-			"configurePreset": "windows-x64-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-liblcf-debug",
-			"configurePreset": "windows-x64-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-liblcf-release",
-			"configurePreset": "windows-x64-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-libretro-debug",
-			"configurePreset": "windows-x64-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-libretro-relwithdebinfo",
-			"configurePreset": "windows-x64-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-libretro-release",
-			"configurePreset": "windows-x64-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-debug",
-			"configurePreset": "windows-x64-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-libretro-liblcf-release",
-			"configurePreset": "windows-x64-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2019-debug",
-			"configurePreset": "windows-x64-vs2019-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2019-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2019-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2019-release",
-			"configurePreset": "windows-x64-vs2019-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-debug",
-			"configurePreset": "windows-x64-vs2019-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2019-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2019-liblcf-release",
-			"configurePreset": "windows-x64-vs2019-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-debug",
-			"configurePreset": "windows-x64-vs2019-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2019-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-release",
-			"configurePreset": "windows-x64-vs2019-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-debug",
-			"configurePreset": "windows-x64-vs2019-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2019-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2019-libretro-liblcf-release",
-			"configurePreset": "windows-x64-vs2019-libretro-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2022-debug",
-			"configurePreset": "windows-x64-vs2022-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2022-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2022-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2022-release",
-			"configurePreset": "windows-x64-vs2022-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-debug",
-			"configurePreset": "windows-x64-vs2022-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2022-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2022-liblcf-release",
-			"configurePreset": "windows-x64-vs2022-liblcf-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-debug",
-			"configurePreset": "windows-x64-vs2022-libretro-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2022-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-release",
-			"configurePreset": "windows-x64-vs2022-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-debug",
-			"configurePreset": "windows-x64-vs2022-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "windows-x64-vs2022-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "windows-x64-vs2022-libretro-liblcf-release",
-			"configurePreset": "windows-x64-vs2022-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "linux-libretro-release"
 		},
 		{
 			"name": "macos-debug",
-			"configurePreset": "macos-debug",
-			"configuration": "Debug"
+			"configurePreset": "macos-debug"
 		},
 		{
 			"name": "macos-relwithdebinfo",
-			"configurePreset": "macos-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "macos-relwithdebinfo"
 		},
 		{
 			"name": "macos-release",
-			"configurePreset": "macos-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "macos-liblcf-debug",
-			"configurePreset": "macos-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "macos-liblcf-relwithdebinfo",
-			"configurePreset": "macos-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "macos-liblcf-release",
-			"configurePreset": "macos-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "macos-release"
 		},
 		{
 			"name": "macos-libretro-debug",
-			"configurePreset": "macos-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "macos-libretro-debug"
 		},
 		{
 			"name": "macos-libretro-relwithdebinfo",
-			"configurePreset": "macos-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "macos-libretro-relwithdebinfo"
 		},
 		{
 			"name": "macos-libretro-release",
-			"configurePreset": "macos-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "macos-libretro-liblcf-debug",
-			"configurePreset": "macos-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "macos-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "macos-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "macos-libretro-liblcf-release",
-			"configurePreset": "macos-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "macos-libretro-release"
 		},
 		{
 			"name": "emscripten-debug",
-			"configurePreset": "emscripten-debug",
-			"configuration": "Debug"
+			"configurePreset": "emscripten-debug"
 		},
 		{
 			"name": "emscripten-relwithdebinfo",
-			"configurePreset": "emscripten-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "emscripten-relwithdebinfo"
 		},
 		{
 			"name": "emscripten-release",
-			"configurePreset": "emscripten-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "emscripten-liblcf-debug",
-			"configurePreset": "emscripten-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "emscripten-liblcf-relwithdebinfo",
-			"configurePreset": "emscripten-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "emscripten-liblcf-release",
-			"configurePreset": "emscripten-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "emscripten-release"
 		},
 		{
 			"name": "3ds-debug",
-			"configurePreset": "3ds-debug",
-			"configuration": "Debug"
+			"configurePreset": "3ds-debug"
 		},
 		{
 			"name": "3ds-relwithdebinfo",
-			"configurePreset": "3ds-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "3ds-relwithdebinfo"
 		},
 		{
 			"name": "3ds-release",
-			"configurePreset": "3ds-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "3ds-liblcf-debug",
-			"configurePreset": "3ds-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "3ds-liblcf-relwithdebinfo",
-			"configurePreset": "3ds-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "3ds-liblcf-release",
-			"configurePreset": "3ds-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "3ds-release"
 		},
 		{
 			"name": "3ds-libretro-debug",
-			"configurePreset": "3ds-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "3ds-libretro-debug"
 		},
 		{
 			"name": "3ds-libretro-relwithdebinfo",
-			"configurePreset": "3ds-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "3ds-libretro-relwithdebinfo"
 		},
 		{
 			"name": "3ds-libretro-release",
-			"configurePreset": "3ds-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "3ds-libretro-liblcf-debug",
-			"configurePreset": "3ds-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "3ds-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "3ds-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "3ds-libretro-liblcf-release",
-			"configurePreset": "3ds-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "3ds-libretro-release"
 		},
 		{
 			"name": "switch-debug",
-			"configurePreset": "switch-debug",
-			"configuration": "Debug"
+			"configurePreset": "switch-debug"
 		},
 		{
 			"name": "switch-relwithdebinfo",
-			"configurePreset": "switch-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "switch-relwithdebinfo"
 		},
 		{
 			"name": "switch-release",
-			"configurePreset": "switch-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "switch-liblcf-debug",
-			"configurePreset": "switch-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "switch-liblcf-relwithdebinfo",
-			"configurePreset": "switch-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "switch-liblcf-release",
-			"configurePreset": "switch-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "switch-release"
 		},
 		{
 			"name": "switch-libretro-debug",
-			"configurePreset": "switch-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "switch-libretro-debug"
 		},
 		{
 			"name": "switch-libretro-relwithdebinfo",
-			"configurePreset": "switch-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "switch-libretro-relwithdebinfo"
 		},
 		{
 			"name": "switch-libretro-release",
-			"configurePreset": "switch-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "switch-libretro-liblcf-debug",
-			"configurePreset": "switch-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "switch-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "switch-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "switch-libretro-liblcf-release",
-			"configurePreset": "switch-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "switch-libretro-release"
 		},
 		{
 			"name": "wii-debug",
-			"configurePreset": "wii-debug",
-			"configuration": "Debug"
+			"configurePreset": "wii-debug"
 		},
 		{
 			"name": "wii-relwithdebinfo",
-			"configurePreset": "wii-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "wii-relwithdebinfo"
 		},
 		{
 			"name": "wii-release",
-			"configurePreset": "wii-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "wii-liblcf-debug",
-			"configurePreset": "wii-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "wii-liblcf-relwithdebinfo",
-			"configurePreset": "wii-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "wii-liblcf-release",
-			"configurePreset": "wii-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "wii-release"
 		},
 		{
 			"name": "wii-libretro-debug",
-			"configurePreset": "wii-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "wii-libretro-debug"
 		},
 		{
 			"name": "wii-libretro-relwithdebinfo",
-			"configurePreset": "wii-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "wii-libretro-relwithdebinfo"
 		},
 		{
 			"name": "wii-libretro-release",
-			"configurePreset": "wii-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "wii-libretro-liblcf-debug",
-			"configurePreset": "wii-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "wii-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "wii-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "wii-libretro-liblcf-release",
-			"configurePreset": "wii-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "wii-libretro-release"
 		},
 		{
 			"name": "psvita-debug",
-			"configurePreset": "psvita-debug",
-			"configuration": "Debug"
+			"configurePreset": "psvita-debug"
 		},
 		{
 			"name": "psvita-relwithdebinfo",
-			"configurePreset": "psvita-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "psvita-relwithdebinfo"
 		},
 		{
 			"name": "psvita-release",
-			"configurePreset": "psvita-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "psvita-liblcf-debug",
-			"configurePreset": "psvita-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "psvita-liblcf-relwithdebinfo",
-			"configurePreset": "psvita-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "psvita-liblcf-release",
-			"configurePreset": "psvita-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "psvita-release"
 		},
 		{
 			"name": "psvita-libretro-debug",
-			"configurePreset": "psvita-libretro-debug",
-			"configuration": "Debug"
+			"configurePreset": "psvita-libretro-debug"
 		},
 		{
 			"name": "psvita-libretro-relwithdebinfo",
-			"configurePreset": "psvita-libretro-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
+			"configurePreset": "psvita-libretro-relwithdebinfo"
 		},
 		{
 			"name": "psvita-libretro-release",
-			"configurePreset": "psvita-libretro-release",
-			"configuration": "Release"
-		},
-		{
-			"name": "psvita-libretro-liblcf-debug",
-			"configurePreset": "psvita-libretro-liblcf-debug",
-			"configuration": "Debug"
-		},
-		{
-			"name": "psvita-libretro-liblcf-relwithdebinfo",
-			"configurePreset": "psvita-libretro-liblcf-relwithdebinfo",
-			"configuration": "RelWithDebInfo"
-		},
-		{
-			"name": "psvita-libretro-liblcf-release",
-			"configurePreset": "psvita-libretro-liblcf-release",
-			"configuration": "Release"
+			"configurePreset": "psvita-libretro-release"
 		}
 	],
 	"testPresets": []

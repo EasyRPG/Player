@@ -29,17 +29,16 @@ def append_name(name):
 # This creates the following configurePresets from the one in the template:
 # - As specified in the template
 # - As specified but build a libretro core
-# - As specified and build liblcf (-DPLAYER_BUILD_LIBLCF=ON)
-# - liblcf + libretro
+# - libretro
 # For all of them the build types Debug, RelWithDebInfo and Release are generated.
 # Making this 4 * 3 entries per preset.
 
 # The resulting "triplet" is always:
-# {name_from_template}-{libretro}-{liblcf}-{build_type}
-# Omit libretro or liblcf to disable them
+# {name_from_template}-{libretro}-{build_type}
+# Omit libretro to disable it
 
 # The build dirs are always:
-# build/{name_from_template}-{libretro}-{liblcf}-{build_type}
+# build/{name_from_template}-{libretro}-{build_type}
 
 for base_item in cp:
 	if base_item.get("hidden"):
@@ -59,40 +58,29 @@ for base_item in cp:
 	cp_out.append(parent_item)
 
 	for libretro in False, True:
-		for lcf in False, True:
-			# Ugly: Generates a huge amount of configurePresets
-			# Cannot be improved until limitations in buildPresets are resolved
-			# (see comment below)
-			for build_type in ["Debug", "RelWithDebInfo", "Release"]:
-				item = dict(name=base_item["name"], displayName=base_item["displayName"])
-				name = item["name"]
+		# Ugly: Generates a huge amount of configurePresets
+		# Cannot be improved until limitations in buildPresets are resolved
+		# (see comment below)
+		for build_type in ["Debug", "RelWithDebInfo", "Release"]:
+			item = dict(name=base_item["name"], displayName=base_item["displayName"])
+			name = item["name"]
 
-				if libretro and name in no_libretro:
-					continue
+			if libretro and name in no_libretro:
+				continue
 
-				item["inherits"] = [parent_item["name"]]
+			item["inherits"] = [parent_item["name"]]
 
-				if libretro:
-					append_name("libretro")
-					item["displayName"] += " (libretro core)"
-					item["inherits"].insert(0, "build-libretro")
+			if libretro:
+				append_name("libretro")
+				item["displayName"] += " (libretro core)"
+				item["inherits"].insert(0, "build-libretro")
 
-				if lcf:
-					append_name("liblcf")
+			item["inherits"] = [parent_item["name"], f"type-{build_type.lower()}"]
 
-					item["displayName"] += " + Build liblcf"
-					item["inherits"].insert(0, "build-liblcf")
+			append_name(build_type.lower())
+			item["displayName"] += f" ({build_type})"
 
-				if len(item["inherits"]) == 1:
-					item["inherits"] = item["inherits"][0]
-
-				append_name(build_type.lower())
-				item["displayName"] += f" ({build_type})"
-
-				# Not a valid preset key. Used in buildPresets and deleted afterwards
-				item["build_type"] = build_type
-
-				cp_out.append(item)
+			cp_out.append(item)
 
 j["configurePresets"] = cp_out
 
@@ -115,8 +103,7 @@ for item in cp_out:
 	#		configurePreset=conf_preset,
 	#		configuration=build_type))
 
-	bp.append(dict(name=item["name"], configurePreset=item["name"], configuration=item["build_type"]))
-	del item["build_type"]
+	bp.append(dict(name=item["name"], configurePreset=item["name"]))
 
 # Add note that the file is auto-generated to the beginning
 vendor = dict(vendor=dict(

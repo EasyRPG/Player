@@ -11,6 +11,30 @@
 			}
 		},
 		{
+			"name": "type-debug",
+			"displayName": "build Debug",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "type-relwithdebinfo",
+			"displayName": "build RelWithDebInfo",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+			}
+		},
+		{
+			"name": "type-release",
+			"displayName": "build release",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
 			"name": "win-base",
 			"displayName": "windows base preset",
 			"hidden": true,
@@ -26,16 +50,11 @@
 		},
 		{
 			"name": "dkp",
-			"displayName": "devkitPro base preset (does nothing, maybe useful later)",
+			"displayName": "devkitPro base preset",
 			"hidden": true,
-			"inherits": ["base"]
-		},
-		{
-			"name": "build-liblcf",
-			"displayName": "enables building of liblcf",
-			"hidden": true,
+			"inherits": "base",
 			"cacheVariables": {
-				"PLAYER_BUILD_LIBLCF": "ON"
+				"BUILD_SHARED_LIBS": "OFF"
 			}
 		},
 		{
