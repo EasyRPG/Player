@@ -19,6 +19,7 @@
 #define EP_WINDOW_NUMBERINPUT_H
 
 // Headers
+#include <cstdint>
 #include "window_selectable.h"
 
 /**

@@ -24,6 +24,7 @@
 #include <psp2/kernel/threadmgr.h>
 #include <psp2/kernel/processmgr.h>
 #include <vector>
+#include <cstdint>
 #include <cstdlib>
 
 namespace {

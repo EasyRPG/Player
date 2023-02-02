@@ -19,6 +19,7 @@
 #define EP_GAME_MAP_H
 
 // Headers
+#include <cstdint>
 #include <vector>
 #include <string>
 #include "system.h"

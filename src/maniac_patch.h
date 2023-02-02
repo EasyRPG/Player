@@ -20,6 +20,7 @@
 #define EP_MANIAC_PATCH
 
 #include <array>
+#include <cstdint>
 #include "span.h"
 
 class Game_Interpreter;

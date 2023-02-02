@@ -19,6 +19,7 @@
 #define EP_TILEMAP_LAYER_H
 
 // Headers
+#include <cstdint>
 #include <vector>
 #include <map>
 #include <unordered_set>

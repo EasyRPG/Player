@@ -18,6 +18,7 @@
 #ifndef EP_GAME_MESSAGE_H
 #define EP_GAME_MESSAGE_H
 
+#include <cstdint>
 #include <vector>
 #include <bitset>
 #include <string>

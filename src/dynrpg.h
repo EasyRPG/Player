@@ -18,6 +18,7 @@
 #ifndef EP_DYNRPG_H
 #define EP_DYNRPG_H
 
+#include <cstdint>
 #include <locale>
 #include <vector>
 #include <sstream>

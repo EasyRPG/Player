@@ -20,6 +20,7 @@
 
 // Headers
 #include "system.h"
+#include <cstdint>
 #include <string>
 #ifdef _WIN32
 #  include <windows.h>

@@ -19,6 +19,7 @@
 #define EP_GAME_PARTY_H
 
 // Headers
+#include <cstdint>
 #include <vector>
 #include "game_party_base.h"
 #include "game_actor.h"

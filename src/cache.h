@@ -19,6 +19,7 @@
 #define EP_CACHE_H
 
 // Headers
+#include <cstdint>
 #include <string>
 #include <vector>
 

@@ -26,6 +26,7 @@
 #include "game_config.h"
 #include <vector>
 #include <memory>
+#include <cstdint>
 
 /**
  * Player namespace.

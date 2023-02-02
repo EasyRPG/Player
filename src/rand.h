@@ -18,6 +18,7 @@
 #ifndef EP_RANDOM_H
 #define EP_RANDOM_H
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <sstream>

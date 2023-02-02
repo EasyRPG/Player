@@ -19,6 +19,7 @@
 #define EP_SHAKE_H
 
 #include <cmath>
+#include <cstdint>
 #include "utils.h"
 
 /** Contains helper functions for flash effect */

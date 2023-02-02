@@ -18,6 +18,7 @@
 #ifndef EP_IMAGE_PNG_H
 #define EP_IMAGE_PNG_H
 
+#include <cstdint>
 #include "filesystem_stream.h"
 
 namespace ImagePNG {

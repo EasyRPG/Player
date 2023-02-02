@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include "audio_decoder.h"
 #include "audio_midi.h"

@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cstdint>
 #include <map>
 #include <type_traits>
 #include <vector>

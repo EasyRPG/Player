@@ -18,6 +18,7 @@
 #ifndef EP_FLASH_H
 #define EP_FLASH_H
 
+#include <cstdint>
 #include "color.h"
 
 /** Contains helper functions for flash effect */

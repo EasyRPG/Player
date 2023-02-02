@@ -19,6 +19,7 @@
 #define EP_BITMAP_H
 
 // Headers
+#include <cstdint>
 #include <string>
 #include <map>
 #include <vector>

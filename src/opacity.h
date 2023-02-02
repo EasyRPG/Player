@@ -19,6 +19,7 @@
 #define EP_OPACITY_H
 
 #include <cassert>
+#include <cstdint>
 #include <climits>
 #include <memory>
 

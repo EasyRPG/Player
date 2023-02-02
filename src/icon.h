@@ -20,6 +20,8 @@
 // Include icons only for SDL2 builds without special treatment
 #if SDL_MAJOR_VERSION>1 && !defined(_WIN32)
 
+#include <stdint.h>
+
 #define ICON_SIZE 32
 
 uint8_t icon32[] = {

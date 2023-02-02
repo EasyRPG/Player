@@ -18,6 +18,7 @@
 #ifndef EP_GAME_BATTLEALGORITHM_H
 #define EP_GAME_BATTLEALGORITHM_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <bitset>

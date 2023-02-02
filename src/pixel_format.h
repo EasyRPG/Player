@@ -19,6 +19,7 @@
 #define EP_PIXEL_FORMAT_H
 
 // Headers
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>

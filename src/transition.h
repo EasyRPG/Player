@@ -19,6 +19,7 @@
 #define EP_TRANSITION_H
 
 // Headers
+#include <cstdint>
 #include <vector>
 #include <string>
 #include "drawable.h"

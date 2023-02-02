@@ -20,6 +20,7 @@
 
 // Headers
 #include <cassert>
+#include <cstdint>
 #include <memory>
 #include <istream>
 #include <ostream>
