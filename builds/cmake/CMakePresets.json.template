@@ -110,7 +110,7 @@
 			"displayName": "Nintendo Wii",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "Wii",
+				"PLAYER_TARGET_PLATFORM": "wii",
 				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user"

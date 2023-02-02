@@ -2,8 +2,8 @@
 
 # Script to generate all combinations for the CMakePresets.json
 # Edit the CMakePresets.json.template and run this script
-# This script and all json files under CC0
-# (c) 2023 Ghabry
+# License for the script and all json files including generated: Unlicense
+# (c) Ghabry
 
 from copy import deepcopy
 import json
