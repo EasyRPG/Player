@@ -502,14 +502,13 @@ void Sdl2Ui::UpdateDisplay() {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
 
-		SDL_Rect viewport;
 		float width_float = static_cast<float>(window.width);
 		float height_float = static_cast<float>(window.height);
 
 		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
 		float real_aspect = width_float / height_float;
 
-		auto do_stretch = [this, &viewport]() {
+		auto do_stretch = [this]() {
 			if (vcfg.stretch.Get()) {
 				viewport.x = 0;
 				viewport.w = window.width;
@@ -535,6 +534,12 @@ void Sdl2Ui::UpdateDisplay() {
 			// The aspect ratios are the same, let SDL2 scale it
 			window.scale = width_float / SCREEN_TARGET_WIDTH;
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
+
+			// Only used here for the mouse coordinates
+			viewport.x = 0;
+			viewport.y = 0;
+			viewport.w = window.width;
+			viewport.h = window.height;
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
 			window.scale = width_float / SCREEN_TARGET_WIDTH;
@@ -734,7 +739,17 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
-	mouse_pos = {evnt.motion.x, evnt.motion.y};
+
+	int xw = viewport.w;
+	int yh = viewport.h;
+
+	if (xw == 0 || yh == 0) {
+		// Startup. No viewport yet
+		return;
+	}
+
+	mouse_pos.x = (evnt.motion.x - viewport.x) * SCREEN_TARGET_WIDTH / xw;
+	mouse_pos.y = (evnt.motion.y - viewport.y) * SCREEN_TARGET_HEIGHT / yh;
 #else
 	/* unused */
 	(void) evnt;

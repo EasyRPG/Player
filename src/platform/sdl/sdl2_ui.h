@@ -132,6 +132,7 @@ private:
 	SDL_Joystick *sdl_joystick = nullptr;
 
 	Rect window_mode_metrics;
+	SDL_Rect viewport = {};
 	struct {
 		int width = 0;
 		int height = 0;
