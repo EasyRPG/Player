@@ -50,6 +50,8 @@
 #include <memory>
 #include "feature.h"
 
+//#define EP_DEBUG_BATTLE2K3_STATE_MACHINE
+
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 	Scene_Battle(args),
 	first_strike(args.first_strike)
@@ -740,10 +742,16 @@ void Scene_Battle_Rpg2k3::UpdateReadyActors() {
 		auto position = std::find(atb_order.begin(), atb_order.end(), actor->GetId());
 		if (BattlerReadyToAct(actor)) {
 			if (position == atb_order.end()) {
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+				Output::Debug("Battle2k3 UpdateReadyActors add={} frame={}", actor->GetId(), Main_Data::game_system->GetFrameCounter());
+#endif
 				atb_order.push_back(actor->GetId());
 			}
 		} else {
 			if (position != atb_order.end()) {
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+				Output::Debug("Battle2k3 UpdateReadyActors remove={} frame={}", actor->GetId(), Main_Data::game_system->GetFrameCounter());
+#endif
 				atb_order.erase(position);
 			}
 		}
@@ -752,8 +760,14 @@ void Scene_Battle_Rpg2k3::UpdateReadyActors() {
 
 int Scene_Battle_Rpg2k3::GetNextReadyActor() {
 	if (!atb_order.empty()) {
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+		Output::Debug("Battle2k3 GetNextReadyActor actor={} frame={}", atb_order.front(), Main_Data::game_system->GetFrameCounter());
+#endif
 		return Main_Data::game_party->GetActorPositionInParty(atb_order.front());
 	}
+#ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
+	Output::Debug("Battle2k3 GetNextReadyActor (none) frame={}", Main_Data::game_system->GetFrameCounter());
+#endif
 	return -1;
 }
 
@@ -795,7 +809,7 @@ void Scene_Battle_Rpg2k3::CreateEnemyActions() {
 			assert(enemy->GetBattleAlgorithm() != nullptr);
 			ActionSelectedCallback(enemy);
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
-			Output::Debug("Battle2k3 ScheduleEnemyAction name={} type={} frame={}", enemy->GetName(), enemy->GetBattleAlgorithm()->GetType(), Main_Data::game_system->GetFrameCounter());
+			Output::Debug("Battle2k3 ScheduleEnemyAction name={} type={} frame={}", enemy->GetName(), static_cast<int>(enemy->GetBattleAlgorithm()->GetType()), Main_Data::game_system->GetFrameCounter());
 #endif
 		}
 	}
@@ -1258,6 +1272,13 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 		}
 	}
 
+	if (scene_action_substate == eWaitActor) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) {
+			UpdateReadyActors();
+			SetActiveActor(GetNextReadyActor());
+		}
+	}
+
 	// If any battler is waiting to attack, immediately interrupt and do the attack.
 	if (IsBattleActionPending()) {
 		SetState(State_Battle);
@@ -1299,8 +1320,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 				SetState(State_SelectOption);
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
-		} else {
-			UpdateReadyActors();
 		}
 
 		return SceneActionReturn::eWaitTillNextFrame;
@@ -2793,7 +2812,7 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 #ifdef EP_DEBUG_BATTLE2K3_STATE_MACHINE
 	Output::Debug("Battle2k3 ScheduleAction {} name={} type={} frame={}",
 			((for_battler->GetType() == Game_Battler::Type_Ally) ? "Actor" : "Enemy"),
-			for_battler->GetName(), for_battler->GetBattleAlgorithm()->GetType(), Main_Data::game_system->GetFrameCounter());
+			for_battler->GetName(), static_cast<int>(for_battler->GetBattleAlgorithm()->GetType()), Main_Data::game_system->GetFrameCounter());
 #endif
 }
 
