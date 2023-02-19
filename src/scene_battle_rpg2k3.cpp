@@ -301,8 +301,10 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	enemy_cursor.reset(new Sprite());
 
 	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
-		item_window->SetY(64);
-		skill_window->SetY(64);
+		item_window->SetX(MENU_OFFSET_X);
+		item_window->SetY(MENU_OFFSET_Y + 64);
+		skill_window->SetX(MENU_OFFSET_X);
+		skill_window->SetY(MENU_OFFSET_Y + 64);
 	}
 
 	if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) {
@@ -325,7 +327,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 
 	if (lcf::Data::battlecommands.window_size == lcf::rpg::BattleCommands::WindowSize_small) {
 		int height = 68;
-		int y = SCREEN_TARGET_HEIGHT - height;
+		int y = SCREEN_TARGET_HEIGHT - MENU_OFFSET_Y - height;
 
 		auto small_window = [&](auto& window) {
 			if (window) {
@@ -539,10 +541,12 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	auto commands = GetEnemyTargetNames();
 
 	int width = (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) ? 104 : 136;
+	int height = 80;
 
 	target_window.reset(new Window_Command(std::move(commands), width, 4));
-	target_window->SetHeight(80);
-	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	target_window->SetHeight(height);
+	target_window->SetX(MENU_OFFSET_X);
+	target_window->SetY(SCREEN_TARGET_HEIGHT - MENU_OFFSET_Y - height);
 	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
 
@@ -562,24 +566,24 @@ void Scene_Battle_Rpg2k3::RefreshTargetWindow() {
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
-	int x = 0;
-	int y = SCREEN_TARGET_HEIGHT - 80;
-	int w = SCREEN_TARGET_WIDTH;
+	int w = MENU_WIDTH;
 	int h = 80;
-
+	int x = MENU_OFFSET_X;
+	int y = SCREEN_TARGET_HEIGHT - MENU_OFFSET_Y - h;
+	
 	switch (lcf::Data::battlecommands.battle_type) {
 		case lcf::rpg::BattleCommands::BattleType_traditional:
-			x = target_window->GetWidth();
-			w = SCREEN_TARGET_WIDTH - x;
+			x = MENU_OFFSET_X + target_window->GetWidth();
+			w = MENU_WIDTH - target_window->GetWidth();
 			break;
 		case lcf::rpg::BattleCommands::BattleType_alternative:
-			x = options_window->GetWidth();
-			w = SCREEN_TARGET_WIDTH - x;
+			x = MENU_OFFSET_X + options_window->GetWidth();
+			w = MENU_WIDTH - options_window->GetWidth();
 			break;
 		case lcf::rpg::BattleCommands::BattleType_gauge:
-			x = options_window->GetWidth();
+			x = MENU_OFFSET_X + options_window->GetWidth();
 			// Default window too small for 4 actors
-			w = SCREEN_TARGET_WIDTH;
+			w = MENU_WIDTH;
 			break;
 	}
 
@@ -621,19 +625,21 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 	SetBattleCommandsDisable(*command_window, actor);
 
-	command_window->SetHeight(80);
+	int height = 80;
+
+	command_window->SetHeight(height);
 	switch (lcf::Data::battlecommands.battle_type) {
 		case lcf::rpg::BattleCommands::BattleType_traditional:
-			command_window->SetX(target_window->GetWidth() - command_window->GetWidth());
-			command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
+			command_window->SetX(MENU_OFFSET_X + target_window->GetWidth() - command_window->GetWidth());
+			command_window->SetY(SCREEN_TARGET_HEIGHT - MENU_OFFSET_Y - height);
 			break;
 		case lcf::rpg::BattleCommands::BattleType_alternative:
-			command_window->SetX(SCREEN_TARGET_WIDTH);
-			command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
+			command_window->SetX(MENU_OFFSET_X + MENU_WIDTH);
+			command_window->SetY(SCREEN_TARGET_HEIGHT - MENU_OFFSET_Y - height);
 			break;
 		case lcf::rpg::BattleCommands::BattleType_gauge:
-			command_window->SetX(0);
-			command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2);
+			command_window->SetX(MENU_OFFSET_X);
+			command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - height / 2);
 			break;
 	}
 	// Above the target window
@@ -1146,7 +1152,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		target_window->SetIndex(-1);
 
 		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
-			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(-options_window->GetWidth(), 1);
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(MENU_OFFSET_X - options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
 			return SceneActionReturn::eContinueThisFrame;
 		}
@@ -1176,7 +1182,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		command_window->SetIndex(-1);
 
 		if (previous_state != State_Start) {
-			MoveCommandWindows(0, 8);
+			MoveCommandWindows(MENU_OFFSET_X, 8);
 		}
 
 		SetSceneActionSubState(eWaitInput);
@@ -1191,11 +1197,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 			switch (battle_options[options_window->GetIndex()]) {
 				case Battle: // Battle
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-					MoveCommandWindows(-options_window->GetWidth(), 8);
+					MoveCommandWindows(MENU_OFFSET_X - options_window->GetWidth(), 8);
 					SetState(State_SelectActor);
 					break;
 				case AutoBattle: // Auto Battle
-					MoveCommandWindows(-options_window->GetWidth(), 8);
+					MoveCommandWindows(MENU_OFFSET_X - options_window->GetWidth(), 8);
 					SetState(State_AutoBattle);
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					break;
@@ -2890,7 +2896,7 @@ void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
 	if (battler && battler->MaxSpValue() >= 1000) {
 		spwindow_size = 72;
 	}
-	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - spwindow_size, (small_window ? 154 : 136), spwindow_size, spwindow_height);
+	sp_window = std::make_unique<Window_ActorSp>(SCREEN_TARGET_WIDTH - MENU_OFFSET_X - spwindow_size, (small_window ? MENU_OFFSET_Y + 154 : MENU_OFFSET_Y + 136), spwindow_size, spwindow_height);
 	sp_window->SetVisible(false);
 	sp_window->SetBorderY(small_window ? 2 : 8);
 	sp_window->SetContents(Bitmap::Create(sp_window->GetWidth() - sp_window->GetBorderX() / 2, sp_window->GetHeight() - sp_window->GetBorderY() * 2));
