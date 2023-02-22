@@ -509,9 +509,9 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text
 	floating_text->SetBitmap(graphic);
 	floating_text->SetOx(rect.width / 2);
 	floating_text->SetOy(rect.height + 5);
-	floating_text->SetX(x);
+	floating_text->SetX(MENU_OFFSET_X + x);
 	// Move 5 pixel down because the number "jumps" with the intended y as the peak
-	floating_text->SetY(y + 5);
+	floating_text->SetY(MENU_OFFSET_Y + y + 5);
 	floating_text->SetZ(Priority_Window + y);
 
 	FloatText float_text;
