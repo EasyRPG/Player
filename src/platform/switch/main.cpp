@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include "player.h"
+#include "main.h"
 
 static int nxlinkSocket = -1;
 
@@ -63,6 +64,11 @@ int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
+	// Close
+	return Platform::Exit();
+}
+
+int Platform::Exit(bool without_error) {
 	romfsExit();
 
 	// Close debug log
@@ -75,5 +81,7 @@ int main(int argc, char* argv[]) {
 	// HOS will close us immediately afterwards, if requested by home menu.
 	// So no further cleanup possible.
 	appletUnlockExit();
-	return EXIT_SUCCESS;
+
+	if(without_error) return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }

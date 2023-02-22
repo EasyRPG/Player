@@ -200,6 +200,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/instrumentation.h \
 	src/keys.h \
 	src/logo.h \
+	src/main.h \
 	src/main_data.cpp \
 	src/main_data.h \
 	src/maniac_patch.cpp \

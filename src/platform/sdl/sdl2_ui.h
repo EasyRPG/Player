@@ -65,6 +65,7 @@ public:
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
 	void ProcessEvents() override;
+	bool HandleErrorOutput(const std::string &message) override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;

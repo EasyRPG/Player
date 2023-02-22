@@ -91,8 +91,8 @@
 using namespace std::chrono_literals;
 
 namespace Player {
-	bool exit_flag;
-	bool reset_flag;
+	bool exit_flag = false;
+	bool reset_flag = false;
 	bool debug_flag;
 	bool hide_title_flag;
 	bool new_game_flag;
@@ -403,8 +403,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 	patch = PatchNone;
 	debug_flag = false;
 	hide_title_flag = false;
-	exit_flag = false;
-	reset_flag = false;
 	new_game_flag = false;
 	load_game_id = -1;
 	party_x_position = -1;

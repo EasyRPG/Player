@@ -22,6 +22,7 @@
 #include <psp2/kernel/processmgr.h>
 #include <psp2/appmgr.h>
 #include "player.h"
+#include "main.h"
 
 int _newlib_heap_size_user = 330 * 1024 * 1024;
 
@@ -93,6 +94,13 @@ int main(int argc, char* argv[]) {
 	Player::Run();
 
 	// Close
-	sceKernelExitProcess(EXIT_SUCCESS);
-	return EXIT_SUCCESS;
+	return Platform::Exit();
+}
+
+int Platform::Exit(bool without_error) {
+	if(without_error) return sceKernelExitProcess(EXIT_SUCCESS);
+	sceKernelExitProcess(EXIT_FAILURE);
+
+	// Does not matter
+	return 0;
 }

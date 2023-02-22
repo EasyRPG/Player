@@ -5,6 +5,8 @@
 #include <emscripten.h>
 #endif
 
+#include "main.h"
+
 int main(int argc, char** argv) {
 #ifdef EMSCRIPTEN
 	EM_ASM({
@@ -15,4 +17,9 @@ int main(int argc, char** argv) {
 	);
 #endif
 	return doctest::Context(argc, argv).run();
+}
+
+int Platform::Exit(bool) {
+	// Empty on purpose
+	return 0;
 }
