@@ -435,8 +435,8 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 				ally_cursor->SetSrcRect(Rect(sprite_frame * 16, 16, 16, 16));
 
 				ally_cursor->SetVisible(true);
-				ally_cursor->SetX(actor->GetBattlePosition().x);
-				ally_cursor->SetY(actor->GetBattlePosition().y - 40);
+				ally_cursor->SetX(MENU_OFFSET_X + actor->GetBattlePosition().x);
+				ally_cursor->SetY(MENU_OFFSET_Y + actor->GetBattlePosition().y - 40);
 
 				if (frame_counter % 30 == 0) {
 					SelectionFlash(actor);
@@ -464,8 +464,8 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 					enemy_cursor->SetSrcRect(Rect(sprite_frame * 16, 0, 16, 16));
 
 					enemy_cursor->SetVisible(true);
-					enemy_cursor->SetX(enemy->GetBattlePosition().x + sprite->GetWidth() / 2);
-					enemy_cursor->SetY(enemy->GetBattlePosition().y);
+					enemy_cursor->SetX(MENU_OFFSET_X + enemy->GetBattlePosition().x + sprite->GetWidth() / 2);
+					enemy_cursor->SetY(MENU_OFFSET_Y + enemy->GetBattlePosition().y);
 
 					std::vector<lcf::rpg::State*> ordered_states = enemy->GetInflictedStatesOrderedByPriority();
 					if (ordered_states.size() > 0) {
