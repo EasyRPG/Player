@@ -117,6 +117,16 @@ int Background::Scale(int x) {
 void Background::Draw(Bitmap& dst) {
 	Rect dst_rect = dst.GetRect();
 
+	// If the background doesn't fill the screen, center it to support custom resolutions
+	if (bg_bitmap->GetWidth() < SCREEN_TARGET_WIDTH) {
+		dst_rect.x += MENU_OFFSET_X;
+		dst_rect.width = MENU_WIDTH;
+	}
+	if (bg_bitmap->GetHeight() < SCREEN_TARGET_HEIGHT) {
+		dst_rect.y += MENU_OFFSET_Y;
+		dst_rect.height = MENU_HEIGHT;
+	}
+
 	dst_rect.x += Main_Data::game_screen->GetShakeOffsetX();
 	dst_rect.y += Main_Data::game_screen->GetShakeOffsetY();
 
