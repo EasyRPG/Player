@@ -378,7 +378,18 @@ void Scene_Title::CommandShutdown() {
 }
 
 void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
-	title->SetBitmap(Cache::Title(result->file));
+	BitmapRef bitmapRef = Cache::Title(result->file);
+
+	title->SetBitmap(bitmapRef);
+
+	// If the title sprite doesn't fill the screen, center it to support custom resolutions
+	Rect rect = title->GetBitmap()->GetRect();
+	if (bitmapRef->GetWidth() < SCREEN_TARGET_WIDTH) {
+		title->SetX(MENU_OFFSET_X);
+	}
+	if (bitmapRef->GetHeight() < SCREEN_TARGET_HEIGHT) {
+		title->SetY(MENU_OFFSET_Y);
+	}
 }
 
 void Scene_Title::OnGameStart() {
