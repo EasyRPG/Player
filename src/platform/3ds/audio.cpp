@@ -109,6 +109,7 @@ void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, i
 	LockMutex();
 	bgm.decoder = AudioDecoder::Create(filestream);
 	if (bgm.decoder && bgm.decoder->Open(std::move(filestream))) {
+		// Fixme: music volume setting unsupported
 		int frequency;
 		AudioDecoder::Format format, out_format;
 		int channels;
@@ -279,7 +280,7 @@ void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se_cache, int volume, int p
 	DSP_FlushDataCache(se.buf[chan].data_pcm16, aligned_bsize);
 
 	float mix[12] = {0};
-	mix[0] = mix[1] = volume / 100.0f;
+	mix[0] = mix[1] = volume / 100.0f * cfg.sound_volume.Get() / 100.0f;
 	ndspChnSetMix(chan, mix);
 	ndspChnWaveBufAdd(chan, &se.buf[chan]);
 }
@@ -342,8 +343,7 @@ void n3ds_audio_thread(void* userdata) {
 				reinterpret_cast<uint8_t*>(bgm.buf[target_block].data_pcm16),
 				bgm.buf_size);
 			DSP_FlushDataCache(bgm.buf[target_block].data_pcm16, bgm.buf_size);
-
-			mix[0] = mix[1] = bgm.decoder->GetVolume() / 100.0f;
+			mix[0] = mix[1] = bgm.decoder->GetVolume() / 100.0f * audio->GetConfig().music_volume.Get() / 100.0f;
 			ndspChnSetMix(bgm.channel, mix);
 			ndspChnWaveBufAdd(bgm.channel, &bgm.buf[target_block]);
 		} else {
@@ -354,7 +354,9 @@ void n3ds_audio_thread(void* userdata) {
 	threadExit(0);
 }
 
-CtrAudio::CtrAudio() {
+CtrAudio::CtrAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
+	LightLock_Init(&audio_mutex);
+
 	Result res = ndspInit();
 	if (R_FAILED(res)) {
 		Output::Warning("Couldn't initialize audio");

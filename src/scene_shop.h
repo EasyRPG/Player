@@ -65,7 +65,7 @@ public:
 
 	void SetMode(int nmode);
 
-	void Update() override;
+	void vUpdate() override;
 	void UpdateCommandSelection();
 	void UpdateBuySelection();
 	void UpdateSellSelection();

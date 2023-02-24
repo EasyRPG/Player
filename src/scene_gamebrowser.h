@@ -21,7 +21,7 @@
 // Headers
 #include "scene.h"
 #include "window_about.h"
-#include "window_command.h"
+#include "window_command_horizontal.h"
 #include "window_help.h"
 #include "window_gamelist.h"
 
@@ -37,7 +37,7 @@ public:
 
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
-	void Update() override;
+	void vUpdate() override;
 
 	/**
 	 * Creates the window displaying the options.
@@ -62,13 +62,14 @@ public:
 	/** Options available in a Rpg2k3 menu. */
 	enum CommandOptionType {
 		GameList = 0,
+		Options,
 		About,
 		Quit
 	};
 
 private:
 	/** Window displaying settings */
-	std::unique_ptr<Window_Command> command_window;
+	std::unique_ptr<Window_Command_Horizontal> command_window;
 
 	/** Window displaying the games. */
 	std::unique_ptr<Window_GameList> gamelist_window;

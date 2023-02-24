@@ -286,6 +286,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_skill.h \
 	src/scene_status.cpp \
 	src/scene_status.h \
+	src/scene_settings.cpp \
+	src/scene_settings.h \
 	src/scene_teleport.cpp \
 	src/scene_teleport.h \
 	src/scene_title.cpp \
@@ -363,6 +365,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_battlestatus.h \
 	src/window_command.cpp \
 	src/window_command.h \
+	src/window_command_horizontal.cpp \
+	src/window_command_horizontal.h \
 	src/window_equip.cpp \
 	src/window_equip.h \
 	src/window_equipitem.cpp \
@@ -379,6 +383,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_help.h \
 	src/window_import_progress.cpp \
 	src/window_import_progress.h \
+	src/window_input_settings.cpp \
+	src/window_input_settings.h \
 	src/window_item.cpp \
 	src/window_item.h \
 	src/window_keyboard.cpp \
@@ -397,6 +403,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_savefile.h \
 	src/window_selectable.cpp \
 	src/window_selectable.h \
+	src/window_settings.cpp \
+	src/window_settings.h \
 	src/window_shop.cpp \
 	src/window_shop.h \
 	src/window_shopbuy.cpp \

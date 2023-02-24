@@ -22,7 +22,7 @@
 
 class SdlAudio : public GenericAudio {
 public:
-	SdlAudio();
+	SdlAudio(const Game_ConfigAudio& cfg);
 	~SdlAudio();
 
 	void LockMutex() const override;

@@ -27,7 +27,7 @@
 #include <ostream>
 #include <utility>
 
-/** An ordered associative container which maps keys to values. 
+/** An ordered associative container which maps keys to values.
  * Each key may appear multiple times, but each (key, value) pair
  * must be unique. The elements are ordered by (key, value) lexicographically.
  * The data is stored in a flat array, which means read operations are fast
@@ -85,6 +85,13 @@ class FlatUniqueMultiMap {
 		 * @return true if key is in the map.
 		 */
 		bool Has(const first_type& key) const;
+
+		/**
+		 * Counts how many items with a given key are in the map.
+		 * @param key the key to check.
+		 * @return size_t how often the key appears
+		 */
+		size_t Count(const first_type& key) const;
 
 		/**
 		 * Adds the (key, value) pair to the map if it doesn't already exist.
@@ -158,6 +165,21 @@ template <typename K, typename V>
 bool FlatUniqueMultiMap<K, V>::Has(const first_type& key) const {
 	auto iter = LowerBound(key);
 	return iter != mappings.end() && iter->first == key;
+}
+
+template <typename K, typename V>
+size_t FlatUniqueMultiMap<K, V>::Count(const first_type& key) const {
+	auto iter = LowerBound(key);
+
+	auto start_iter = iter;
+
+	if (iter != mappings.end() && iter->first == key) {
+		while (iter != mappings.end() && iter->first == key) {
+			++iter;
+		}
+	}
+
+	return std::distance(start_iter, iter);
 }
 
 template <typename K, typename V>

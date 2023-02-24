@@ -29,6 +29,7 @@
 #include "game_interpreter.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "scene_settings.h"
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -95,6 +96,7 @@ lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
 		case Teleport:
 		case Order:
 		case End:
+		case Settings:
 			return lcf::rpg::SaveSystem::Scene_menu;
 		case File:
 		case Save:
@@ -239,6 +241,16 @@ bool Scene::IsAsyncPending() {
 }
 
 void Scene::Update() {
+	// Allow calling of settings scene everywhere except from Logo (Player is currently starting up)
+	// and from Map (has own handling to prevent breakage)
+	if (instance->type != Scene::Logo &&
+		instance->type != Scene::Map &&
+		Input::IsTriggered(Input::SETTINGS_MENU) &&
+		!Scene::Find(Scene::Settings)) {
+			Scene::Push(std::make_shared<Scene_Settings>());
+	}
+
+	vUpdate();
 }
 
 void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {

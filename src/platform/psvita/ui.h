@@ -35,9 +35,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	Psp2Ui(int width, int height, const Game_ConfigVideo& cfg);
+	Psp2Ui(int width, int height, const Game_Config& cfg);
 
 	/**
 	 * Destructor.
@@ -51,6 +51,11 @@ public:
 	void UpdateDisplay() override;
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
+	void SetScalingMode(ScalingMode) override;
+	void ToggleStretch() override;
+	void ToggleTouchUi() override;
+	void ToggleVsync() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();

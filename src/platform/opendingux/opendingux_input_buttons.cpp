@@ -39,17 +39,10 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	};
 }
 
-Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
-	return {
-		{ Direction::DOWN, DOWN },
-		{ Direction::LEFT, LEFT },
-		{ Direction::RIGHT, RIGHT },
-		{ Direction::UP, UP },
-	};
-}
-
 Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {};
 }
+
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {}
 
 #endif

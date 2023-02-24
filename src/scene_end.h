@@ -36,7 +36,7 @@ public:
 	Scene_End();
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 	/**
 	 * Creates the Window displaying the yes and no option.

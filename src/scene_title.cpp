@@ -19,6 +19,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "scene_settings.h"
 #include "scene_title.h"
 #include "audio.h"
 #include "audio_secache.h"
@@ -111,7 +112,7 @@ void Scene_Title::Suspend(Scene::SceneType next_scene) {
 	title.reset();
 }
 
-void Scene_Title::Update() {
+void Scene_Title::vUpdate() {
 	if (Game_Battle::battle_test.enabled) {
 		Player::SetupBattleTest();
 		return;
@@ -140,6 +141,8 @@ void Scene_Title::Update() {
 				CommandContinue();
 			} else if (index == indices.import) {  // Import (multi-part games)
 				CommandImport();
+			} else if (index == indices.settings) {
+				CommandSettings();
 			} else if (index == indices.translate) { // Choose a Translation (Language)
 				CommandTranslation();
 			} else if (index == indices.exit) {  // Exit Game
@@ -204,6 +207,14 @@ void Scene_Title::CreateCommandWindow() {
 	if (Player::meta->IsImportEnabled()) {
 		options.push_back(Player::meta->GetExVocabImportSaveTitleText());
 		indices.import = indices.exit;
+		indices.exit++;
+	}
+
+	// Set "Settings" based on the configuration
+	if (Player::player_config.settings_in_title.Get()) {
+		// FIXME: Translation? Not shown by default though
+		options.push_back("Settings");
+		indices.settings = indices.exit;
 		indices.exit++;
 	}
 
@@ -322,6 +333,12 @@ void Scene_Title::CommandImport() {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 	Scene::Push(std::make_shared<Scene_Import>());
+}
+
+void Scene_Title::CommandSettings() {
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+
+	Scene::Push(std::make_unique<Scene_Settings>());
 }
 
 void Scene_Title::CommandTranslation() {

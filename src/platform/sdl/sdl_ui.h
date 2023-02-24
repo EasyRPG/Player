@@ -44,9 +44,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	SdlUi(long width, long height, const Game_ConfigVideo& cfg);
+	SdlUi(long width, long height, const Game_Config& cfg);
 
 	/**
 	 * Destructor.
@@ -65,6 +65,7 @@ public:
 	bool ShowCursor(bool flag) override;
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;

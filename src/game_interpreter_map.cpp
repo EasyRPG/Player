@@ -145,8 +145,6 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandOpenLoadMenu(com);
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
-		case Cmd::OpenVideoOptions:
-			return CommandOpenVideoOptions(com);
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -666,15 +664,6 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* 
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /* com */) {
 	Main_Data::game_system->ToggleAtbMode();
-	return true;
-}
-
-bool Game_Interpreter_Map::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* com */) {
-	if (Game_Message::IsMessageActive()) {
-		return false;
-	}
-
-	Output::Warning("OpenVideoOptions: Command not supported");
 	return true;
 }
 

@@ -21,6 +21,14 @@
 /** Window title to show. */
 #define GAME_TITLE "EasyRPG Player"
 
+// These two defines control the name of the folder structure in the global
+// configuration directory
+/** Parent folder name for global configuration */
+#define ORGANIZATION_NAME "EasyRPG"
+
+/** Subfolder name for global configuration */
+#define APPLICATION_NAME "Player"
+
 /** Targeted screen default width. */
 #define SCREEN_TARGET_WIDTH 320
 

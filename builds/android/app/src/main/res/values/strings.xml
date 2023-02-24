@@ -39,7 +39,6 @@
     <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the "games" folder.\nGames have to be uncompressed.\nZIP, RAR, LZH and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
 
     <!--Ingame menu-->
-    <string name="toggle_fps">Toggle FPS</string>
     <string name="toggle_ui">Toggle virtual buttons</string>
     <string name="end_game">End game</string>
     <string name="report_bug">Report a bug</string>
@@ -56,10 +55,12 @@ Please tell us in detail what went wrong.\n\n
     <string name="input">Input</string>
     <string name="easyrpg_folders">EasyRPG Folders</string>
     <string name="settings">Settings</string>
-    <string name="screen_size">Screen size:</string>
+    <string name="screen_size">Screen scaling:</string>
     <string name="force_landscape_mode">Force landscape orientation</string>
-    <string name="uniform_pixel_size_best_image_quality">Uniform pixel size (best image quality)</string>
-    <string name="stretch_the_image_wider_image">Stretch the image (wider image)</string>
+    <string name="scale_nearest">Scale to screen size (Fast, bad quality)</string>
+    <string name="scale_integer">Uniform pixel size (Fast, smaller image, good quality)</string>
+    <string name="scale_bilinear">Upscale, then downscale to screen size (Slow, good quality)</string>
+    <string name="stretch">Ignore aspect ratio (Stretch to the width of the screen)</string>
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
     <string name="settings_custom_soundfont">Custom Soundfont:</string>
@@ -68,6 +69,8 @@ Please tell us in detail what went wrong.\n\n
     <string name="settings_soundfont_restart_app">Please quit and restart the app after selecting a soundfont.</string>
     <string name="settings_soundfont_found">Soundfonts found:</string>
     <string name="settings_default_soundfont">Default Soundfont</string>
+    <string name="music_volume">Music volume</string>
+    <string name="sound_volume">Sound effect volume</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>

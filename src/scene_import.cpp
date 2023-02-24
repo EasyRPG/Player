@@ -79,7 +79,7 @@ void Scene_Import::Start() {
 	Update();
 }
 
-void Scene_Import::Update() {
+void Scene_Import::vUpdate() {
 	if (progress_window->IsVisible()) {
 		UpdateScanAndProgress();
 		return;

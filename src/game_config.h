@@ -19,7 +19,10 @@
 #define EP_GAME_CONFIG_H
 
 #include "config_param.h"
+#include "filesystem.h"
 #include "options.h"
+#include "input_buttons.h"
+#include "utils.h"
 
 class CmdlineParser;
 
@@ -33,31 +36,59 @@ enum class ScalingMode {
 };
 
 struct Game_ConfigPlayer {
-	StringConfigParam autobattle_algo{ "" };
-	StringConfigParam enemyai_algo{ "" };
+	StringConfigParam autobattle_algo{ "", "", "" };
+	StringConfigParam enemyai_algo{ "", "", "" };
+	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit"};
+	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen" };
+	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen"};
+	//EnumConfigParam<lcf::rpg::SaveSystem::AtbMode, 2> atb_mode("Default ATB mode for new games",
+	//	lcf::rpg::SaveSystem::AtbMode_atb_wait, lcf::rpg::SaveSystem::AtbMode_);
+
+	// autosave config on exit
+
+	void Hide();
 };
 
 struct Game_ConfigVideo {
-	BoolConfigParam vsync{ true };
-	BoolConfigParam fullscreen{ true };
-	BoolConfigParam show_fps{ false };
-	BoolConfigParam fps_render_window{ false };
-	BoolConfigParam stretch_width{ true };
-	RangeConfigParam<int> fps_limit{ DEFAULT_FPS, 0, std::numeric_limits<int>::max() };
-	RangeConfigParam<int> window_zoom{ 2, 1, std::numeric_limits<int>::max() };
-	EnumConfigParam<ScalingMode> scaling_mode{ ScalingMode::Bilinear };
+	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
+	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", true };
+	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", true };
+	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
+	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", false };
+	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, 99999 };
+	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
+	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
+		ScalingMode::Nearest, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
+		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
+	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", false };
+	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", true };
+
+	// These are never shown and are used to restore the window to the previous position
+	ConfigParam<int> window_x{ "", "", -1 };
+	ConfigParam<int> window_y{ "", "", -1 };
+	ConfigParam<int> window_width{ "", "", -1 };
+	ConfigParam<int> window_height{ "", "", -1 };
+
+	void Hide();
 };
 
 struct Game_ConfigAudio {
+	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", 100, 0, 100 };
+	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", 100, 0, 100 };
+
+	void Hide();
 };
 
 struct Game_ConfigInput {
+	BoolConfigParam gamepad_swap_analog{ "Gamepad: Swap Analog Sticks", "Swap left and right stick", false };
+	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
+	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", false };
+	Input::ButtonMappingArray buttons;
+
+	void Hide();
 };
 
 struct Game_Config {
-	/** Path to last config file we read from */
-	std::string config_path;
-
 	/** Gameplay subsystem options */
 	Game_ConfigPlayer player;
 
@@ -68,7 +99,7 @@ struct Game_Config {
 	Game_ConfigAudio audio;
 
 	/** Input subsystem options */
-	Game_ConfigAudio input;
+	Game_ConfigInput input;
 
 	/**
 	 * Create an application config. This first determines the config file path if any,
@@ -76,21 +107,37 @@ struct Game_Config {
 	 */
 	static Game_Config Create(CmdlineParser& cp);
 
-	/** Return config file path from command line args if found */
+	/** @return config file path from command line args if found */
 	static std::string GetConfigPath(CmdlineParser& cp);
 
 	/**
-	 * Returns the default config path for your system.
+	 * Returns the a filesystem view to the global config directory
 	 */
-	static std::string GetDefaultConfigPath();
+	static FilesystemView GetGlobalConfigFilesystem();
 
 	/**
-	 * Load configuration values from a config file.
+	 * Returns a handle to the global config file for reading.
+	 * The file is created if it does not exist.
 	 *
-	 * @param path the path to config file.
-	 * @post values of this are updated with values found in config file.
+	 * @return handle to the global file
 	 */
-	void LoadFromConfig(const std::string& path);
+	static Filesystem_Stream::InputStream GetGlobalConfigFileInput();
+
+	/**
+	 * Returns a handle to the global config file for writing.
+	 * The file is created if it does not exist.
+	 *
+	 * @return handle to the global file
+	 */
+	static Filesystem_Stream::OutputStream GetGlobalConfigFileOutput();
+
+	/**
+	 * Load configuration values from a stream;
+	 *
+	 * @param is stream to read from.
+	 * @post values of this are updated with values found in the stream.
+	 */
+	void LoadFromStream(Filesystem_Stream::InputStream& is);
 
 	/**
 	 * Load configuration values from a command line arguments.
@@ -101,11 +148,11 @@ struct Game_Config {
 	void LoadFromArgs(CmdlineParser& cp);
 
 	/**
-	 * Writes our configuration to the given config file
+	 * Writes our configuration to the given stream.
 	 *
-	 * @param path
+	 * @param os stream to write to
 	 */
-	void WriteToConfig(const std::string& path) const;
+	void WriteToStream(Filesystem_Stream::OutputStream& os) const;
 };
 
 #endif

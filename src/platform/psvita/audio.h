@@ -24,7 +24,7 @@
 
 class Psp2Audio : public GenericAudio {
 public:
-	Psp2Audio();
+	Psp2Audio(const Game_ConfigAudio& cfg);
 	~Psp2Audio();
 
 	void LockMutex() const override;

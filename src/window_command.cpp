@@ -42,7 +42,7 @@ Window_Command::Window_Command(std::vector<std::string> in_commands, int width, 
 void Window_Command::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < item_max; i++) {
-		DrawItem(i, Font::ColorDefault);
+		DrawItem(i, IsItemEnabled(i) ? Font::ColorDefault : Font::ColorDisabled);
 	}
 }
 
@@ -52,22 +52,37 @@ void Window_Command::DrawItem(int index, Font::SystemColor color) {
 }
 
 void Window_Command::DisableItem(int i) {
-	DrawItem(i, Font::ColorDisabled);
+	SetItemEnabled(i, false);
 }
 
 void Window_Command::EnableItem(int i) {
-	DrawItem(i, Font::ColorDefault);
+	SetItemEnabled(i, true);
+}
+
+void Window_Command::SetItemEnabled(int index, bool enabled) {
+	DrawItem(index, enabled ? Font::ColorDefault : Font::ColorDisabled);
+	commands_enabled[index] = enabled;
+}
+
+bool Window_Command::IsItemEnabled(int index) {
+	if (index < 0 || index >= static_cast<int>(commands_enabled.size())) {
+		return false;
+	}
+
+	return commands_enabled[index];
 }
 
 void Window_Command::SetItemText(unsigned index, StringView text) {
 	if (index < commands.size()) {
 		commands[index] = ToString(text);
-		DrawItem(index, Font::ColorDefault);
+		DrawItem(index, IsItemEnabled(index) ? Font::ColorDefault : Font::ColorDisabled);
 	}
 }
 
 void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
 	commands = std::move(in_commands);
+	commands_enabled.clear();
+	commands_enabled.resize(commands.size(), true);
 	index = 0;
 	item_max = commands.size();
 	const int num_contents = item_max > 0 ? item_max : 1;

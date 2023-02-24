@@ -22,6 +22,7 @@
 #include <fstream>
 #include <memory>
 #include "filesystem_stream.h"
+#include "game_config.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "point.h"
@@ -61,14 +62,13 @@ namespace Input {
 	 */
 	class Source {
 	public:
-
 		static std::unique_ptr<Source> Create(
-				ButtonMappingArray buttons,
+				const Game_ConfigInput& cfg,
 				DirectionMappingArray directions,
 				const std::string& replay_from_path);
 
-		Source(ButtonMappingArray buttons, DirectionMappingArray directions)
-			: button_mappings(std::move(buttons)), direction_mappings(std::move(directions)) {}
+		Source(const Game_ConfigInput& cfg, DirectionMappingArray directions)
+			: cfg(cfg), direction_mappings(std::move(directions)) {}
 
 		virtual ~Source() = default;
 
@@ -107,11 +107,14 @@ namespace Input {
 			return keystates;
 		}
 
-		ButtonMappingArray& GetButtonMappings() { return button_mappings; }
-		const ButtonMappingArray& GetButtonMappings() const { return button_mappings; }
+		ButtonMappingArray& GetButtonMappings() { return cfg.buttons; }
+		const ButtonMappingArray& GetButtonMappings() const { return cfg.buttons; }
 
 		DirectionMappingArray& GetDirectionMappings() { return direction_mappings; }
 		const DirectionMappingArray& GetDirectionMappings() const { return direction_mappings; }
+
+		Game_ConfigInput& GetConfig() { return cfg; }
+		const Game_ConfigInput& GetConfig() const { return cfg; }
 
 		bool InitRecording(const std::string& record_to_path);
 
@@ -126,8 +129,9 @@ namespace Input {
 		void Record();
 		void UpdateGamepad();
 
+		Game_ConfigInput cfg;
+
 		std::bitset<BUTTON_COUNT> pressed_buttons;
-		ButtonMappingArray button_mappings;
 		DirectionMappingArray direction_mappings;
 		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
 
@@ -159,7 +163,7 @@ namespace Input {
 	 */
 	class LogSource : public Source {
 	public:
-		LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions);
+		LogSource(const char* log_path, const Game_ConfigInput& cfg, DirectionMappingArray directions);
 
 		void Update() override;
 		void UpdateSystem() override;

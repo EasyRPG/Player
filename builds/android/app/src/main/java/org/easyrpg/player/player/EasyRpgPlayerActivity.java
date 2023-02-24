@@ -136,8 +136,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle item selection
-        if (item.getItemId() == R.id.toggle_fps) {
-            toggleFps();
+        if (item.getItemId() == R.id.open_settings) {
+            openSettings();
         } else if (item.getItemId() == R.id.toggle_ui) {
             uiVisible = !uiVisible;
             showInputLayout();
@@ -286,7 +286,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         alertDialog.show();
     }
 
-    public static native void toggleFps();
+    public static native void openSettings();
 
     public static native void endGame();
 
@@ -365,34 +365,10 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Determine the multiplier
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-        int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-
-        if (SettingsManager.getImageSize() == SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE) {
-            int x_multiplier = screenWidth / 320;
-            int y_multiplier = screenHeight / 240;
-            int multiplier = Math.min(x_multiplier, y_multiplier);
-            int width = 320 * multiplier;
-            int height = 240 * multiplier;
-
-            params.width = width;
-            params.height = height;
-
-            leftMargin = (screenWidth - width) / 2;
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                topMargin = ((screenHeight / 2) - height) / 2;
-            } else {
-                topMargin = (screenHeight - height) / 2;
-            }
-        } else {
-            leftMargin = 0;
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                topMargin = -(getWindowManager().getDefaultDisplay().getHeight() / 2);
-            } else {
-                topMargin = 0;
-            }
-        }
-        params.topMargin = topMargin;
-        params.leftMargin = leftMargin;
+        params.topMargin = 0;
+        params.leftMargin = 0;
+        params.width = screenWidth;
+        params.height = (int)(screenWidth * 0.75);
         surface.setLayoutParams(params);
     }
 

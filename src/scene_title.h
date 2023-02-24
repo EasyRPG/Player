@@ -39,7 +39,7 @@ public:
 	void Continue(SceneType prev_scene) override;
 	void TransitionIn(SceneType prev_scene) override;
 	void Suspend(SceneType next_scene) override;
-	void Update() override;
+	void vUpdate() override;
 
 	void OnTranslationChanged() override;
 
@@ -102,6 +102,11 @@ public:
 	void CommandImport();
 
 	/**
+	 * Options the settings to configure the Player.
+	 */
+	void CommandSettings();
+
+	/**
 	 * Option Translation.
 	 * Shows the Translation menu, for picking between multiple languages or localizations
 	 */
@@ -161,7 +166,7 @@ private:
 	 */
 	int active_window = 0;
 
-	/** 
+	/**
 	 * Offsets for each selection, in case "Import" or "Translate" is enabled.
 	 *   Listed in the order they may appear; exit_index will always be last,
 	 *   and import appears before translate, if it exists.
@@ -171,6 +176,7 @@ private:
 		int new_game =  0;
 		int continue_game =  1;
 		int import = -1;
+		int settings = -1;
 		int translate = -1;
 		int exit =  2;
 	};

@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
@@ -51,6 +55,9 @@ public class SettingsAudioActivity extends AppCompatActivity {
                 layout.removeView(button);
             }
         }
+
+        configureMusicVolume();
+        configureSoundVolume();
     }
 
     @Override
@@ -169,6 +176,57 @@ public class SettingsAudioActivity extends AppCompatActivity {
             return radioButton;
         }
     }
-}
 
+    private void configureMusicVolume() {
+        SeekBar musicVolumeSeekBar = findViewById(R.id.settings_music_volume);
+        musicVolumeSeekBar.setProgress(SettingsManager.getMusicVolume());
+
+        TextView t = findViewById(R.id.settings_music_volume_text_view);
+
+        musicVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                SettingsManager.setMusicVolume(seekBar.getProgress() );
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                t.setText(String.valueOf(musicVolumeSeekBar.getProgress()));
+            }
+        });
+
+        t.setText(String.valueOf(musicVolumeSeekBar.getProgress()));
+    }
+
+    private void configureSoundVolume() {
+        SeekBar soundVolumeSeekBar = findViewById(R.id.settings_sound_volume);
+        soundVolumeSeekBar.setProgress(SettingsManager.getSoundVolume());
+
+        TextView t = findViewById(R.id.settings_sound_volume_text_view);
+
+        soundVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                SettingsManager.setSoundVolume(seekBar.getProgress() );
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                t.setText(String.valueOf(soundVolumeSeekBar.getProgress()));
+            }
+        });
+
+        t.setText(String.valueOf(soundVolumeSeekBar.getProgress()));
+    }
+}
 

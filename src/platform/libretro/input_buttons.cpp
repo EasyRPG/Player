@@ -18,6 +18,7 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "game_config.h"
 #include "libretro.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
@@ -33,8 +34,8 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_B},
 		{CANCEL, Keys::JOY_X},
 		{SHIFT, Keys::JOY_Y},
-		{N0, Keys::JOY_STICK_PRIMARY},
-		{N5, Keys::JOY_STICK_SECONDARY},
+		{N0, Keys::JOY_LSTICK},
+		{N5, Keys::JOY_RSTICK},
 		{DEBUG_ABORT_EVENT, Keys::JOY_SHOULDER_LEFT},
 		{DEBUG_SAVE, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
@@ -42,32 +43,23 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 #endif
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
-		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
-		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
-		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
-		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
-		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
-		{N8, Keys::JOY_STICK_SECONDARY_UP},
-		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT},
-		{FAST_FORWARD, Keys::JOY_TRIGGER_RIGHT_PARTIAL},
-		{FAST_FORWARD_PLUS, Keys::JOY_TRIGGER_RIGHT_FULL},
-		{DEBUG_THROUGH, Keys::JOY_TRIGGER_LEFT_PARTIAL},
-		{DEBUG_MENU, Keys::JOY_TRIGGER_LEFT_FULL},
+		{UP, Keys::JOY_LSTICK_UP},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
+		{N1, Keys::JOY_RSTICK_DOWN_LEFT},
+		{N2, Keys::JOY_RSTICK_DOWN},
+		{N3, Keys::JOY_RSTICK_DOWN_RIGHT},
+		{N4, Keys::JOY_RSTICK_LEFT},
+		{N6, Keys::JOY_RSTICK_RIGHT},
+		{N7, Keys::JOY_RSTICK_UP_LEFT},
+		{N8, Keys::JOY_RSTICK_UP},
+		{N9, Keys::JOY_RSTICK_UP_RIGHT},
+		{FAST_FORWARD, Keys::JOY_RTRIGGER_SOFT},
+		{FAST_FORWARD_PLUS, Keys::JOY_RTRIGGER_FULL},
+		{DEBUG_THROUGH, Keys::JOY_LTRIGGER_SOFT},
+		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
 #endif
-	};
-}
-
-Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
-	return {
-		{ Direction::DOWN, DOWN },
-		{ Direction::LEFT, LEFT },
-		{ Direction::RIGHT, RIGHT },
-		{ Direction::UP, UP },
 	};
 }
 
@@ -76,18 +68,25 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::JOY_DPAD_UP, "D-Pad Up"},
 		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
 		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
-		{Keys::JOY_DPAD_RIGHT, "D-Pad Up"},
+		{Keys::JOY_DPAD_RIGHT, "D-Pad Right"},
 		{Keys::JOY_A, "A"},
 		{Keys::JOY_B, "B"},
 		{Keys::JOY_X, "X"},
 		{Keys::JOY_Y, "Y"},
 		{Keys::JOY_SHOULDER_LEFT, "L"},
 		{Keys::JOY_SHOULDER_RIGHT, "R"},
-		{Keys::JOY_TRIGGER_LEFT_FULL, "L2"},
-		{Keys::JOY_TRIGGER_RIGHT_FULL, "R2"},
-		{Keys::JOY_STICK_PRIMARY, "L3"},
-		{Keys::JOY_STICK_SECONDARY, "R3"},
+		{Keys::JOY_LTRIGGER_FULL, "L2"},
+		{Keys::JOY_RTRIGGER_FULL, "R2"},
+		{Keys::JOY_LSTICK, "L3"},
+		{Keys::JOY_RSTICK, "R3"},
 		{Keys::JOY_BACK, "Select"},
 		{Keys::JOY_START, "Start"}
 	};
 }
+
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
+	cfg.gamepad_swap_analog.SetOptionVisible(true);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
+}
+

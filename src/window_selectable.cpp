@@ -44,6 +44,12 @@ void Window_Selectable::SetIndex(int nindex) {
 	}
 	UpdateCursorRect();
 }
+int Window_Selectable::GetColumnMax() const {
+	return column_max;
+}
+void Window_Selectable::SetColumnMax(int ncolmax) {
+	column_max = ncolmax;
+}
 int Window_Selectable::GetRowMax() const {
 	return (item_max + column_max - 1) / column_max;
 }

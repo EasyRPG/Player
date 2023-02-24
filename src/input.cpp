@@ -17,6 +17,8 @@
 
 // Headers
 #include "input.h"
+#include "game_config.h"
+#include "input_buttons.h"
 #include "input_source.h"
 #include "output.h"
 #include "player.h"
@@ -58,8 +60,7 @@ bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
 void Input::Init(
-	ButtonMappingArray buttons,
-	DirectionMappingArray directions,
+	Game_ConfigInput cfg,
 	const std::string& replay_from_path,
 	const std::string& record_to_path
 ) {
@@ -71,7 +72,17 @@ void Input::Init(
 	raw_pressed.reset();
 	raw_released.reset();
 
-	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
+	DirectionMappingArray directions = {
+		{ Direction::DOWN, DOWN },
+		{ Direction::LEFT, LEFT },
+		{ Direction::RIGHT, RIGHT },
+		{ Direction::UP, UP }
+	};
+
+	cfg.Hide();
+	Input::GetSupportedConfig(cfg);
+
+	source = Source::Create(cfg, std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
 
 	ResetMask();
@@ -196,6 +207,22 @@ void Input::ResetKeys() {
 
 void Input::ResetTriggerKeys() {
 	triggered.reset();
+}
+
+void Input::ResetDefaultMapping(Input::InputButton button) {
+	auto def_mappings = GetDefaultButtonMappings();
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+
+	mappings.RemoveAll(button);
+
+	for (auto ki = def_mappings.LowerBound(button); ki != def_mappings.end() && ki->first == button;++ki) {
+		mappings.Add(*ki);
+	}
+}
+
+void Input::ResetAllMappings() {
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	mappings = GetDefaultButtonMappings();
 }
 
 bool Input::IsPressed(InputButton button) {
@@ -341,6 +368,11 @@ bool Input::IsRecording() {
 	return source->IsRecording();
 }
 
+Input::Source *Input::GetInputSource() {
+	assert(source);
+	return source.get();
+}
+
 Input::KeyStatus Input::GetMask() {
 	assert(source);
 	return source->GetMask();
@@ -374,3 +406,4 @@ void Input::ResetMask() {
 	assert(source);
 	SetMask(source->GetMask());
 }
+

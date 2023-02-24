@@ -18,19 +18,84 @@
 #include "game_config.h"
 #include "cmdline_parser.h"
 #include "filefinder.h"
+#include "input_buttons.h"
 #include "output.h"
+#include "input.h"
 #include <lcf/inireader.h>
 #include <cstring>
 
+#ifdef _WIN32
+#  include <shlobj.h>
+#endif
+
+#ifdef USE_LIBRETRO
+#   include "platform/libretro/ui.h"
+#endif
+
+namespace {
+	StringView config_name = "config.ini";
+}
+
+void Game_ConfigPlayer::Hide() {
+	// Game specific settings unsupported
+}
+
+void Game_ConfigVideo::Hide() {
+	// Options that are platform dependent are opt-in
+	// Implementors must invoke SetOptionVisible() when supported
+
+	// Always enabled by default:
+	// - renderer (name of the renderer)
+	// - show_fps (Rendering of FPS, engine feature)
+
+	vsync.SetOptionVisible(false);
+	fullscreen.SetOptionVisible(false);
+	fps_limit.SetOptionVisible(false);
+	fps_render_window.SetOptionVisible(false);
+	window_zoom.SetOptionVisible(false);
+	scaling_mode.SetOptionVisible(false);
+	stretch.SetOptionVisible(false);
+	touch_ui.SetOptionVisible(false);
+}
+
+void Game_ConfigAudio::Hide() {
+	// Music and SE volume control are opt-out
+	// Nothing else available currently
+}
+
+void Game_ConfigInput::Hide() {
+	// These features are handled by our input system but showing them only
+	// makes sense on hardware with the required sticks and buttons
+	gamepad_swap_ab_and_xy.SetOptionVisible(false);
+	gamepad_swap_analog.SetOptionVisible(false);
+	gamepad_swap_dpad_with_buttons.SetOptionVisible(false);
+}
+
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
-	auto default_path = GetDefaultConfigPath();
-	cp.Rewind();
-	auto arg_path = GetConfigPath(cp);
-	const auto& path = (arg_path.empty()) ? default_path : arg_path;
 
-	if (!path.empty()) {
-		cfg.LoadFromConfig(path);
+#if USE_SDL >= 2
+	cfg.video.scaling_mode.Set(ScalingMode::Bilinear);
+#endif
+
+	cp.Rewind();
+
+	auto arg_path = GetConfigPath(cp);
+	if (!arg_path.empty()) {
+		arg_path = FileFinder::MakePath(arg_path, config_name);
+	}
+
+	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(arg_path);
+	if (!cli_config) {
+		auto global_config = GetGlobalConfigFileInput();
+		if (global_config) {
+			cfg.LoadFromStream(global_config);
+		} else {
+			// Game_Config only loads an empty layout
+			cfg.input.buttons = Input::GetDefaultButtonMappings();
+		}
+	} else {
+		cfg.LoadFromStream(cli_config);
 	}
 
 	cp.Rewind();
@@ -39,11 +104,100 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	return cfg;
 }
 
-std::string Game_Config::GetDefaultConfigPath() {
-	// FIXME: Platform specific add this.
+FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	// FIXME: Game specific configs?
+	std::string path;
 
-	return "";
+#ifdef GEKKO
+	path = "sd:/data/easyrpg-player";
+#elif defined(__SWITCH__)
+	path = "/switch/easyrpg-player";
+#elif defined(__3DS__)
+	path = "sdmc:/data/easyrpg-player";
+#elif defined(__vita__)
+	path = "ux0:/data/easyrpg-player";
+#elif defined(USE_LIBRETRO)
+	const char* dir = nullptr;
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+		path = FileFinder::MakePath(dir, "easyrpg-player");
+	}
+#elif defined(__ANDROID__)
+	// Never called, passed as argument on startup
+#elif defined(_WIN32)
+	PWSTR knownPath;
+	const auto hresult = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &knownPath);
+	if (SUCCEEDED(hresult)) {
+		path = Utils::FromWideString(knownPath);
+		CoTaskMemFree(knownPath);
+	} else {
+		Output::Debug("Config: SHGetKnownFolderPath failed");
+	}
+
+	if (!path.empty()) {
+		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
+	}
+#else
+	char* home = getenv("XDG_CONFIG_HOME");
+	if (home) {
+		path = home;
+	} else {
+		home = getenv("HOME");
+		if (home) {
+			path = FileFinder::MakePath(home, ".config");
+		}
+	}
+
+	if (!path.empty()) {
+		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
+	}
+#endif
+
+	auto print_err = [&path]() {
+		if (path.empty()) {
+			Output::Warning("Could not determine config path");
+		} else {
+			Output::Warning("Could not access config path {}", path);
+		}
+	};
+
+	if (path.empty()) {
+		print_err();
+		return {};
+	}
+
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		print_err();
+		return {};
+	}
+
+	auto fs = FileFinder::Root().Create(path);
+
+	if (!fs) {
+		print_err();
+		return {};
+	}
+
+	return fs;
+}
+
+Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput() {
+	auto fs = GetGlobalConfigFilesystem();
+
+	if (fs) {
+		return fs.OpenOrCreateInputStream(config_name, std::ios_base::in);
+	}
+
+	return Filesystem_Stream::InputStream();
+}
+
+Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
+	auto fs = GetGlobalConfigFilesystem();
+
+	if (fs) {
+		return fs.OpenOutputStream(config_name, std::ios_base::out);
+	}
+
+	return Filesystem_Stream::OutputStream();
 }
 
 std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
@@ -51,14 +205,22 @@ std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 
 	while (!cp.Done()) {
 		CmdlineArg arg;
-		if (cp.ParseNext(arg, 1, "--config", 'c')) {
+		if (cp.ParseNext(arg, 1, "--config-path", 'c')) {
 			if (arg.NumValues() > 0) {
 				path = arg.Value(0);
+				path = FileFinder::MakeCanonical(path, 0);
 			}
 			continue;
 		}
 
 		cp.SkipNext();
+	}
+
+	if (!path.empty()) {
+		if (!FileFinder::Root().MakeDirectory(path, true)) {
+			Output::Debug("Could not create global config directory {}", path);
+			path.clear();
+		}
 	}
 
 	return path;
@@ -135,33 +297,15 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 	}
 }
 
-void Game_Config::LoadFromConfig(const std::string& path) {
-	this->config_path = path;
-
-	auto is = FileFinder::Root().OpenInputStream(path);
-	if (!is) {
-		Output::Debug("Ini config file {} not found", path);
-		return;
-	}
-
+void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	lcf::INIReader ini(is);
 
 	if (ini.ParseError()) {
-		Output::Debug("Failed to parse ini config file {}", path);
+		Output::Debug("Failed to parse ini config file {}", is.GetName());
 		return;
 	}
 
-	/** PLAYER SECTION */
-
-	if (ini.HasValue("player", "autobattle-algo")) {
-		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
-	}
-	if (ini.HasValue("player", "enemyai-algo")) {
-		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", ""));
-	}
-
 	/** VIDEO SECTION */
-
 	if (ini.HasValue("video", "vsync")) {
 		video.vsync.Set(ini.GetBoolean("video", "vsync", false));
 	}
@@ -183,51 +327,196 @@ void Game_Config::LoadFromConfig(const std::string& path) {
 	if (ini.HasValue("video", "scaling-mode")) {
 		video.scaling_mode.Set(static_cast<ScalingMode>(ini.GetInteger("video", "scaling-mode", 0)));
 	}
+	if (ini.HasValue("video", "stretch")) {
+		video.stretch.Set(ini.GetBoolean("video", "stretch", 0));
+	}
+	if (ini.HasValue("video", "touch-ui")) {
+		video.touch_ui.Set(ini.GetBoolean("video", "touch-ui", 1));
+	}
+	if (ini.HasValue("video", "window-x") && ini.HasValue("video", "window-y") && ini.HasValue("video", "window-width") && ini.HasValue("video", "window-height")) {
+		video.window_x.Set(ini.GetInteger("video", "window-x", 0));
+		video.window_y.Set(ini.GetInteger("video", "window-y", 0));
+		video.window_width.Set(ini.GetInteger("video", "window-width", SCREEN_TARGET_WIDTH));
+		video.window_height.Set(ini.GetInteger("video", "window-height", SCREEN_TARGET_HEIGHT));
+	}
 
 	/** AUDIO SECTION */
+	if (ini.HasValue("audio", "music-volume")) {
+		audio.music_volume.Set(ini.GetInteger("audio", "music-volume", 100));
+	}
+	if (ini.HasValue("audio", "sound-volume")) {
+		audio.sound_volume.Set(ini.GetInteger("audio", "sound-volume", 100));
+	}
 
 	/** INPUT SECTION */
-}
+	input.buttons = Input::GetDefaultButtonMappings();
+	auto& mappings = input.buttons;
 
-void Game_Config::WriteToConfig(const std::string& path) const {
-	auto of = FileFinder::Root().OpenOutputStream(path);
+	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
+		auto button = static_cast<Input::InputButton>(i);
 
-	if (!of) {
-		Output::Debug("Failed to open {} for writing: {}", path, strerror(errno));
-		return;
+		auto name = Input::kButtonNames.tag(button);
+		if (ini.HasValue("input", name)) {
+			auto values = ini.GetString("input", name, "");
+			mappings.RemoveAll(button);
+
+			auto keys = Utils::Tokenize(values, [](char32_t c) { return c == ','; });
+
+			// When it is a protected (important) button with zero mappings keep the default
+			// For all other buttons having no mapping is fine
+			bool has_mapping = false;
+			if (Input::IsProtectedButton(button)) {
+				// Check for protected (important) buttons if they have more than zero mappings
+				for (const auto& key: keys) {
+					const auto& kNames = Input::Keys::kNames;
+					auto it = std::find(kNames.begin(), kNames.end(), key);
+					if (it != Input::Keys::kNames.end()) {
+						has_mapping = true;
+						break;
+					}
+				}
+
+				// If not, keep the default mapping
+				if (!has_mapping) {
+					continue;
+				}
+			}
+
+			// Load mappings from ini
+			for (const auto& key: keys) {
+				const auto& kNames = Input::Keys::kNames;
+				auto it = std::find(kNames.begin(), kNames.end(), key);
+				if (it != Input::Keys::kNames.end()) {
+					mappings.Add({button, static_cast<Input::Keys::InputKey>(std::distance(kNames.begin(), it))});
+				}
+			}
+		}
+	}
+
+	if (ini.HasValue("input", "gamepad-swap-analog")) {
+		input.gamepad_swap_analog.Set(ini.GetInteger("input", "gamepad-swap-analog", 0));
+	}
+	if (ini.HasValue("input", "gamepad-swap-dpad")) {
+		input.gamepad_swap_dpad_with_buttons.Set(ini.GetInteger("input", "gamepad-swap-dpad", 0));
+	}
+	if (ini.HasValue("input", "gamepad-swap-abxy")) {
+		input.gamepad_swap_ab_and_xy.Set(ini.GetInteger("input", "gamepad-swap-abxy", 0));
 	}
 
 	/** PLAYER SECTION */
-	of << "[player]\n";
-	of << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
-	of << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
-	of << "\n";
-
-	/** VIDEO SECTION */
-
-	of << "[video]\n";
-	if (video.vsync.Enabled()) {
-		of << "vsync=" << int(video.vsync.Get()) << "\n";
+	if (ini.HasValue("player", "settings-autosave")) {
+		player.settings_autosave.Set(ini.GetBoolean("player", "settings-autosave", 0));
 	}
-	if (video.fullscreen.Enabled()) {
-		of << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
+	if (ini.HasValue("player", "settings-in-title")) {
+		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-title", 0));
 	}
-	if (video.show_fps.Enabled()) {
-		of << "show-fps=" << int(video.show_fps.Get()) << "\n";
+	if (ini.HasValue("player", "settings-in-menu")) {
+		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-menu", 0));
 	}
-	if (video.fps_render_window.Enabled()) {
-		of << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
+	if (ini.HasValue("player", "autobattle-algo")) {
+		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
 	}
-	if (video.fps_limit.Enabled()) {
-		of << "fps-limit=" << video.fps_limit.Get() << "\n";
+	if (ini.HasValue("player", "enemyai-algo")) {
+		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", ""));
 	}
-	if (video.window_zoom.Enabled()) {
-		of << "window-zoom=" << video.window_zoom.Get() << "\n";
-	}
-	of << "\n";
-
-	/** AUDIO SECTION */
-
-	/** INPUT SECTION */
 }
 
+void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
+	/** VIDEO SECTION */
+
+	os << "[video]\n";
+	if (video.vsync.IsOptionVisible()) {
+		os << "vsync=" << int(video.vsync.Get()) << "\n";
+	}
+	if (video.fullscreen.IsOptionVisible()) {
+		os << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
+	}
+	if (video.show_fps.IsOptionVisible()) {
+		os << "show-fps=" << int(video.show_fps.Get()) << "\n";
+	}
+	if (video.fps_render_window.IsOptionVisible()) {
+		os << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
+	}
+	if (video.fps_limit.IsOptionVisible()) {
+		os << "fps-limit=" << video.fps_limit.Get() << "\n";
+	}
+	if (video.window_zoom.IsOptionVisible()) {
+		os << "window-zoom=" << video.window_zoom.Get() << "\n";
+	}
+	if (video.scaling_mode.IsOptionVisible()) {
+		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
+	}
+	if (video.stretch.IsOptionVisible()) {
+		os << "stretch=" << int(video.stretch.Get()) << "\n";
+	}
+	if (video.touch_ui.IsOptionVisible()) {
+		os << "touch-ui=" << int(video.touch_ui.Get()) << "\n";
+	}
+	// only preserve when toggling between window and fullscreen is supported
+	if (video.fullscreen.IsOptionVisible()) {
+		os << "window-x=" << int(video.window_x.Get()) << "\n";
+		os << "window-y=" << int(video.window_y.Get()) << "\n";
+		os << "window-width=" << int(video.window_width.Get()) << "\n";
+		os << "window-height=" << int(video.window_height.Get()) << "\n";
+	}
+	os << "\n";
+
+	/** AUDIO SECTION */
+	os << "[audio]\n";
+
+	if (audio.music_volume.IsOptionVisible()) {
+		os << "music-volume=" << audio.music_volume.Get() << "\n";
+	}
+	if (audio.sound_volume.IsOptionVisible()) {
+		os << "sound-volume=" << audio.sound_volume.Get() << "\n";
+	}
+	os << "\n";
+
+	/** INPUT SECTION */
+	os << "[input]\n";
+
+	auto& mappings = Input::GetInputSource()->GetButtonMappings();
+	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
+		auto button = static_cast<Input::InputButton>(i);
+
+		auto name = Input::kButtonNames.tag(button);
+		os << name << "=";
+
+		std::stringstream ss;
+		bool first = true;
+		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button;++ki) {
+			if (!first) {
+				os << ",";
+			}
+			first = false;
+
+			auto key = static_cast<Input::Keys::InputKey>(ki->second);
+			auto kname = Input::Keys::kNames.tag(key);
+			os << kname;
+		}
+
+		os << "\n";
+	}
+
+	if (input.gamepad_swap_analog.IsOptionVisible()) {
+		os << "gamepad-swap-analog=" << int(input.gamepad_swap_analog.Get()) << "\n";
+	}
+	if (input.gamepad_swap_dpad_with_buttons.IsOptionVisible()) {
+		os << "gamepad-swap-dpad=" << int(input.gamepad_swap_dpad_with_buttons.Get()) << "\n";
+	}
+	if (input.gamepad_swap_ab_and_xy.IsOptionVisible()) {
+		os << "gamepad-swap-abxy=" << int(input.gamepad_swap_ab_and_xy.Get()) << "\n";
+	}
+
+	os << "\n";
+
+	/** PLAYER SECTION */
+	os << "[player]\n";
+	//os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
+	//os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
+	os << "settings-autosave=" << player.settings_autosave.Get() << "\n";
+	os << "settings-in-title=" << player.settings_in_title.Get() << "\n";
+	os << "settings-in-menu=" << player.settings_in_menu.Get() << "\n";
+
+	os << "\n";
+}

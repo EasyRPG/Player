@@ -45,9 +45,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg);
+	Sdl2Ui(long width, long height, const Game_Config& cfg);
 
 	/**
 	 * Destructor.
@@ -65,6 +65,11 @@ public:
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
 	void ProcessEvents() override;
+	void SetScalingMode(ScalingMode) override;
+	void ToggleStretch() override;
+	void ToggleVsync() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
+	Rect GetWindowMetrics() const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
@@ -126,6 +131,8 @@ private:
 	SDL_Renderer* sdl_renderer = nullptr;
 	SDL_Joystick *sdl_joystick = nullptr;
 
+	Rect window_mode_metrics;
+	SDL_Rect viewport = {};
 	struct {
 		int width = 0;
 		int height = 0;

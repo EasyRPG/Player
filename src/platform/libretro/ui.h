@@ -39,7 +39,7 @@ public:
 	 * @param height window client height.
 	 * @param cfg video config options
 	 */
-	LibretroUi(int width, int height, const Game_ConfigVideo& cfg);
+	LibretroUi(int width, int height, const Game_Config& cfg);
 
 	/**
 	 * Inherited from BaseUi.
@@ -47,6 +47,7 @@ public:
 	/** @{ */
 	void UpdateDisplay() override;
 	void ProcessEvents() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
@@ -60,6 +61,8 @@ public:
 	static retro_environment_t environ_cb;
 	static retro_input_poll_t input_poll_cb;
 	static bool player_exit_called;
+
+	static Game_ConfigInput cfg_input;
 private:
 	static retro_video_refresh_t UpdateWindow;
 	static retro_input_state_t CheckInputState;

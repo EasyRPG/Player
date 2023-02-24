@@ -100,7 +100,7 @@ void Scene_Name::Start() {
 	kbd_window->UpdateCursorRect();
 }
 
-void Scene_Name::Update() {
+void Scene_Name::vUpdate() {
 	kbd_window->Update();
 	name_window->Update();
 

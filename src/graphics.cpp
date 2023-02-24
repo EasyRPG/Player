@@ -69,7 +69,6 @@ void Graphics::Update() {
 	if (fps_overlay->Update()) {
 		UpdateTitle();
 	}
-	message_overlay->Update();
 }
 
 void Graphics::UpdateTitle() {

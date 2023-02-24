@@ -47,6 +47,7 @@
 #include "scene_gameover.h"
 #include "scene_map.h"
 #include "scene_save.h"
+#include "scene_settings.h"
 #include "scene.h"
 #include "game_clock.h"
 #include "input.h"
@@ -775,6 +776,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandExitGame(com);
 		case Cmd::ToggleFullscreen:
 			return CommandToggleFullscreen(com);
+		case Cmd::OpenVideoOptions:
+			return CommandOpenVideoOptions(com);
 		case Cmd::Maniac_GetSaveInfo:
 			return CommandManiacGetSaveInfo(com);
 		case Cmd::Maniac_Load:
@@ -3876,6 +3879,26 @@ bool Game_Interpreter::CommandExitGame(lcf::rpg::EventCommand const& /* com */) 
 bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* com */) {
 	DisplayUi->ToggleFullscreen();
 	return true;
+}
+
+bool Game_Interpreter::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* com */) {
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
+
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
+	// Don't interrupt other pending game scenes for the settings menu.
+	if (Scene::instance->HasRequestedScene()) {
+		return false;
+	}
+
+	// FIXME: RPG_RT pops up an immediate modal dialog, while this
+	// does a normal scene call. This could result in interpreter timing differences.
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Settings>());
+	++index;
+	return false;
 }
 
 bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com) {

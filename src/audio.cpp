@@ -23,7 +23,8 @@
 #include "game_clock.h"
 
 AudioInterface& Audio() {
-	static EmptyAudio default_;
+	static Game_ConfigAudio cfg;
+	static EmptyAudio default_(cfg);
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag && DisplayUi)
 		return DisplayUi->GetAudio();
@@ -49,7 +50,43 @@ int EmptyAudio::BGM_GetTicks() const {
 	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
 }
 
+void EmptyAudio::vGetConfig(Game_ConfigAudio& cfg) const {
+	cfg.music_volume.SetOptionVisible(false);
+	cfg.sound_volume.SetOptionVisible(false);
+}
+
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
 	return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
+}
+
+EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
+
+}
+
+AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) : cfg(cfg) {
+
+}
+
+Game_ConfigAudio AudioInterface::GetConfig() const {
+	auto acfg = cfg;
+	acfg.Hide();
+	vGetConfig(acfg);
+	return acfg;
+}
+
+int AudioInterface::BGM_GetGlobalVolume() const {
+	return cfg.music_volume.Get();
+}
+
+void AudioInterface::BGM_SetGlobalVolume(int volume) {
+	cfg.music_volume.Set(volume);
+}
+
+int AudioInterface::SE_GetGlobalVolume() const {
+	return cfg.sound_volume.Get();
+}
+
+void AudioInterface::SE_SetGlobalVolume(int volume) {
+	cfg.sound_volume.Set(volume);
 }

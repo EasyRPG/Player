@@ -121,7 +121,7 @@ void CtrUi::ToggleBottomScreen(bool state) {
 	}
 }
 
-CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	SetIsFullscreen(true);
 	aptHook(&cookie, _aptHook, 0);
@@ -164,15 +164,14 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	top_image.tex = tex;
 	top_image.subtex = &subt3x;
 
-	// FIXME: Add option to settings Ui
-	if (cfg.stretch_width.Get()) {
+	if (vcfg.stretch.Get()) {
 		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
 		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
 	}
 
 #ifdef SUPPORT_AUDIO
-	audio_.reset(new CtrAudio());
+	audio_ = std::make_unique<CtrAudio>(cfg.audio);
 #endif
 
 #ifndef _DEBUG
@@ -186,6 +185,8 @@ CtrUi::CtrUi(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
 	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
+
+	ToggleBottomScreen(vcfg.touch_ui.Get());
 
 	// force refresh
 	info_tick = Game_Clock::now() - 10s;
@@ -356,13 +357,11 @@ void CtrUi::UpdateDisplay() {
 	C2D_SceneBegin(top_screen);
 	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
 
-	// FIXME: All video options must be accesible during runtime
-	/*if (cfg.stretch_width) {
+	if (vcfg.stretch.Get()) {
 		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, 1.25f, 1.0f);
 	} else {
 		C2D_DrawImageAt(top_image, 40, 0, z);
-	}*/
-	C2D_DrawImageAt(top_image, 40, 0, z);
+	}
 
 	// bottom screen
 #ifndef _DEBUG
@@ -435,4 +434,28 @@ bool CtrUi::LogMessage(const std::string &message) {
 #else
 	return true;
 #endif
+}
+
+void CtrUi::ToggleStretch() {
+	vcfg.stretch.Toggle();
+
+	if (vcfg.stretch.Get()) {
+		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+	} else {
+		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+	}
+}
+
+void CtrUi::ToggleTouchUi() {
+	ToggleBottomScreen(bottom_state == screen_state::off);
+}
+
+void CtrUi::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("3DS Citro (Software)");
+
+	cfg.stretch.SetOptionVisible(true);
+	cfg.touch_ui.SetOptionVisible(true);
+	cfg.touch_ui.SetName("Backlight");
+	cfg.touch_ui.SetDescription("Toggle the backlight of the bottom screen");
+	cfg.touch_ui.Set(bottom_state != screen_state::off);
 }

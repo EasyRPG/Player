@@ -15,13 +15,37 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_GAME_CONFIG_DATA_H
-#define EP_GAME_CONFIG_DATA_H
+#ifndef EP_WINDOW_INPUT_SETTINGS_H
+#define EP_WINDOW_INPUT_SETTINGS_H
 
-struct DisplayMode {
-    int width = 0;
-    int height = 0;
-    int refresh_rate = 0;
+// Headers
+#include <vector>
+#include "input.h"
+#include "input_buttons.h"
+#include "window_numberinput.h"
+#include "window_selectable.h"
+
+/**
+ * Window_InputSettings class.
+ */
+class Window_InputSettings : public Window_Selectable {
+public:
+	/** Constructor  */
+	Window_InputSettings(int ix, int iy, int iwidth, int iheight);
+
+	Input::InputButton GetInputButton() const;
+	void SetInputButton(Input::InputButton button);
+
+	bool RemoveMapping();
+	void ResetMapping();
+
+	/**
+	 * Refreshes the item list.
+	 */
+	void Refresh();
+
+private:
+	Input::InputButton button = Input::InputButton::BUTTON_COUNT;
 };
 
 #endif

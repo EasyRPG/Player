@@ -18,6 +18,7 @@
 // Headers
 #include "ui.h"
 #include "color.h"
+#include "game_config.h"
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
@@ -51,8 +52,7 @@ namespace {
 	vita2d_texture* next_texture;
 	vita2d_texture* main_texture;
 	vita2d_texture* touch_texture;
-	uint8_t zoom_state;
-	bool zoom_trigger, is_pstv;
+	bool is_pstv;
 	SceUID GPU_Thread;
 	SceUID GPU_Mutex, GPU_Cleanup_Mutex;
 
@@ -74,6 +74,8 @@ namespace {
 	constexpr int touch_buttons_height = SCREEN_HEIGHT/8;
 	constexpr int touch_buttons_right_x = SCREEN_WIDTH - touch_buttons_width;
 	std::vector<bool> touched_buttons(16, false);
+
+	Game_ConfigVideo* vcfg_ref;
 }
 
 static int renderThread(unsigned int args, void* arg){
@@ -92,24 +94,30 @@ static int renderThread(unsigned int args, void* arg){
 		vita2d_start_drawing();
 
 		vita2d_clear_screen();
-		if (!is_pstv && touch_texture && zoom_state != 2) {
+		if (!is_pstv && touch_texture && vcfg_ref->touch_ui.Get() && !vcfg_ref->touch_ui.IsLocked()) {
 			vita2d_draw_texture(touch_texture, 0, 0);
 		}
 
-		switch (zoom_state){
-			case 0: // 640x480 (doubled)
-				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
-				break;
-			case 1: // 725x544 (scaled)
+		if (vcfg_ref->scaling_mode.Get() == ScalingMode::Nearest) {
+			if (!vcfg_ref->stretch.Get()) {
+				// 725x544 (scaled)
 				vita2d_draw_texture_scale(gpu_texture, 117, 0, 2.266, 2.266);
-				break;
-			case 2: // 960x544 (full-stretched)
+			} else {
+				// 960x544 (full-stretched)
 				vita2d_draw_texture_scale(gpu_texture, 0, 0, 3, 2.266);
-				break;
+			}
+		} else if (vcfg_ref->scaling_mode.Get() == ScalingMode::Integer) {
+			if (!vcfg_ref->stretch.Get()) {
+				// 640x480 (doubled)
+				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
+			} else {
+				// 960x480 (doubled & stretched)
+				vita2d_draw_texture_scale(gpu_texture, 0, 32, 3.0, 2.0);
+			}
 		}
 
 		// draw touched keys
-		if (!is_pstv && touch_texture && zoom_state != 2) {
+		if (!is_pstv && touch_texture && !vcfg_ref->stretch.Get()) {
 			for (int i = 0; i < 16; ++i) {
 				if (touched_buttons[i]) {
 					vita2d_draw_rectangle(i < 8 ? 0 : touch_buttons_right_x,
@@ -126,15 +134,15 @@ static int renderThread(unsigned int args, void* arg){
 	}
 }
 
-Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+Psp2Ui::Psp2Ui(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
+	vcfg_ref = &vcfg;
+
 	SetIsFullscreen(true);
 
-	zoom_state = 0;
-	zoom_trigger = false;
 	is_pstv = sceKernelIsPSVitaTV();
 	vita2d_init();
-	vita2d_set_vblank_wait(cfg.vsync.Get());
+	vita2d_set_vblank_wait(cfg.video.vsync.Get());
 	gpu_texture = vita2d_create_empty_texture_format(width, height,
 		SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);
@@ -158,7 +166,7 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 		width, height, vita2d_texture_get_stride(main_texture), format);
 
 	#ifdef SUPPORT_AUDIO
-		audio_.reset(new Psp2Audio());
+	audio_ = std::make_unique<Psp2Audio>(cfg.audio);
 	#endif
 
 	scePowerSetArmClockFrequency(444);
@@ -182,6 +190,8 @@ Psp2Ui::Psp2Ui(int width, int height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 	if (is_pstv) {
 		sceCtrlSetLightBar(1, 0x54, 0x92, 0x36);
 	}
+
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
 }
 
 Psp2Ui::~Psp2Ui() {
@@ -224,12 +234,6 @@ void Psp2Ui::ProcessEvents() {
 	keys[Input::Keys::JOY_SHOULDER_LEFT] = (input.buttons & SCE_CTRL_L1);
 	keys[Input::Keys::JOY_SHOULDER_RIGHT] = (input.buttons & SCE_CTRL_R1);
 
-	// Resolution changing support (FIXME: Move this to the config scene)
-	bool old_state = zoom_trigger;
-	zoom_trigger = (input.buttons & SCE_CTRL_R1);
-	if (zoom_trigger && !old_state)
-		zoom_state = ((zoom_state + 1) % 3);
-
 	// Analog support
 	auto normalize = [](int value) {
 		return static_cast<float>(value - 127) / 128.f;
@@ -241,7 +245,7 @@ void Psp2Ui::ProcessEvents() {
 	analog_input.secondary.y = normalize(input.ry);
 
 	// Touchpad support
-	if (zoom_state != 2 && !is_pstv) {
+	if (!vcfg.touch_ui.IsLocked() && vcfg.touch_ui.Get() && !is_pstv) {
 		sceTouchPeek(SCE_TOUCH_PORT_FRONT, &touch, 1);
 		for (int i = 0; i < touch.reportNum; ++i) {
 			int xpos = touch.report[i].x / 2;
@@ -274,4 +278,38 @@ bool Psp2Ui::LogMessage(const std::string &message) {
 
 	// skip useless stderr output
 	return true;
+}
+
+void Psp2Ui::SetScalingMode(ScalingMode mode) {
+	vcfg.scaling_mode.Set(mode);
+}
+
+void Psp2Ui::ToggleStretch() {
+	vcfg.stretch.Toggle();
+	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());
+}
+
+void Psp2Ui::ToggleTouchUi() {
+	vcfg.touch_ui.Toggle();
+}
+
+void Psp2Ui::ToggleVsync() {
+	vcfg.vsync.Toggle();
+	vita2d_set_vblank_wait(vcfg.vsync.Get());
+}
+
+void Psp2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+	cfg.renderer.Lock("Vita (Software)");
+
+	cfg.vsync.SetOptionVisible(true);
+	cfg.fps_limit.SetOptionVisible(true);
+	cfg.scaling_mode.SetOptionVisible(true);
+	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
+	cfg.stretch.SetOptionVisible(true);
+	cfg.touch_ui.SetOptionVisible(!is_pstv);
+
+	if (cfg.stretch.Get()) {
+		cfg.touch_ui.SetLocked(true);
+		cfg.touch_ui.SetDescription("Not available when stretch is enabled");
+	}
 }

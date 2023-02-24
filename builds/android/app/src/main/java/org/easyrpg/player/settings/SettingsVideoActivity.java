@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsVideoActivity extends AppCompatActivity implements View.OnClickListener {
-    CheckBox forceLandscapeModeCheckbox;
     List<RadioButton> imageSizeRadioButtonList = new ArrayList<>();
-    RadioButton imageSizeUniformPixelRadioButton, imageSizeStretchPixelRadioButton;
+    RadioButton imageSizeNearestRadioButton, imageSizeIntegerRadioButton, imageSizeBilinearRadioButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,26 +24,38 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
         SettingsManager.init(getApplicationContext());
 
         // Setting UI components
-        this.forceLandscapeModeCheckbox = findViewById(R.id.force_landscape_mode);
-        this.forceLandscapeModeCheckbox.setChecked(SettingsManager.isForcedLandscape());
-        this.forceLandscapeModeCheckbox.setOnClickListener(this);
+        CheckBox forceLandscapeModeCheckbox = findViewById(R.id.force_landscape_mode);
+        forceLandscapeModeCheckbox.setChecked(SettingsManager.isForcedLandscape());
+        forceLandscapeModeCheckbox.setOnClickListener(this);
 
-        // Image size
-        this.imageSizeUniformPixelRadioButton  = findViewById(R.id.settings_image_uniform_pixel_size_radio_button);
-        imageSizeRadioButtonList.add(imageSizeUniformPixelRadioButton);
-        imageSizeUniformPixelRadioButton.setOnClickListener(view -> {
-            SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
+        // Scaling mode
+        this.imageSizeNearestRadioButton = findViewById(R.id.settings_scale_nearest_radio_button);
+        imageSizeRadioButtonList.add(imageSizeNearestRadioButton);
+        imageSizeNearestRadioButton.setOnClickListener(view -> {
+            SettingsManager.setImageSize(0);
             updateImageSizeRadioButtonCheckStatus();
         });
 
-        this.imageSizeStretchPixelRadioButton  = findViewById(R.id.settings_image_stretch_radio_button);
-        imageSizeRadioButtonList.add(imageSizeStretchPixelRadioButton);
-        imageSizeStretchPixelRadioButton.setOnClickListener(view -> {
-            SettingsManager.setImageSize(SettingsManager.IMAGE_SIZE_STRETCH_IMAGE);
+        this.imageSizeIntegerRadioButton = findViewById(R.id.settings_scale_integer_radio_button);
+        imageSizeRadioButtonList.add(imageSizeIntegerRadioButton);
+        imageSizeIntegerRadioButton.setOnClickListener(view -> {
+            SettingsManager.setImageSize(1);
+            updateImageSizeRadioButtonCheckStatus();
+        });
+
+        this.imageSizeBilinearRadioButton = findViewById(R.id.settings_scale_bilinear_radio_button);
+        imageSizeRadioButtonList.add(imageSizeBilinearRadioButton);
+        imageSizeBilinearRadioButton.setOnClickListener(view -> {
+            SettingsManager.setImageSize(2);
             updateImageSizeRadioButtonCheckStatus();
         });
 
         updateImageSizeRadioButtonCheckStatus();
+
+        // Stretch
+        CheckBox stretchCheckbox = findViewById(R.id.settings_stretch);
+        stretchCheckbox.setChecked(SettingsManager.isStretch());
+        stretchCheckbox.setOnClickListener(this);
     }
 
     @Override
@@ -52,10 +63,15 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
         if (v.getId() == R.id.force_landscape_mode) {
             SettingsManager.setForcedLandscape(((CheckBox)v).isChecked());
         }
+
+        if (v.getId() == R.id.settings_stretch) {
+            SettingsManager.setStretch(((CheckBox)v).isChecked());
+        }
     }
 
     private void updateImageSizeRadioButtonCheckStatus() {
-        imageSizeUniformPixelRadioButton.setChecked(SettingsManager.getImageSize() == SettingsManager.IMAGE_SIZE_UNIFORM_PIXEL_SIZE);
-        imageSizeStretchPixelRadioButton.setChecked(SettingsManager.getImageSize() == SettingsManager.IMAGE_SIZE_STRETCH_IMAGE);
+        imageSizeNearestRadioButton.setChecked(SettingsManager.getImageSize() == 0);
+        imageSizeIntegerRadioButton.setChecked(SettingsManager.getImageSize() == 1);
+        imageSizeBilinearRadioButton.setChecked(SettingsManager.getImageSize() == 2);
     }
 }

@@ -50,9 +50,9 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 {
-	auto fs_flag = cfg.fullscreen.Get();
+	auto fs_flag = cfg.video.fullscreen.Get();
 	uint32_t flags = SDL_INIT_VIDEO;
 
 #ifndef NDEBUG
@@ -174,11 +174,11 @@ SdlUi::SdlUi(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
 
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlAudio());
+		audio_ = std::make_unique<SdlAudio>(cfg.audio);
 		return;
 	}
 #else
-	audio_.reset(new EmptyAudio());
+	audio_ = std::make_unique<EmptyAudio>(cfg.audio);
 #endif
 }
 
@@ -389,10 +389,11 @@ bool SdlUi::RefreshDisplayMode() {
 void SdlUi::ToggleFullscreen() {
 	BeginDisplayModeChange();
 	if (toggle_fs_available && mode_changing) {
-		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
+		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN) {
 			current_display_mode.flags &= ~SDL_FULLSCREEN;
-		else
+		} else {
 			current_display_mode.flags |= SDL_FULLSCREEN;
+		}
 	}
 	EndDisplayModeChange();
 }
@@ -750,4 +751,18 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 	default:
 		return 0;
 	}
+}
+
+void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
+#ifdef GEKKO
+	cfg.renderer.Lock("SDL1 (Software, Wii)");
+#else
+	cfg.renderer.Lock("SDL1 (Software)");
+#endif
+
+	cfg.fullscreen.SetOptionVisible(toggle_fs_available);
+#ifdef SUPPORT_ZOOM
+	cfg.window_zoom.SetOptionVisible(true);
+	cfg.window_zoom.Set(current_display_mode.zoom);
+#endif
 }

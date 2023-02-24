@@ -30,7 +30,7 @@
 
 class CtrAudio final : public AudioInterface {
 public:
-	CtrAudio();
+	CtrAudio(const Game_ConfigAudio& cfg);
 	~CtrAudio();
 
 	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;
@@ -46,6 +46,8 @@ public:
 	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) override;
 	void SE_Stop() override;
 	void Update() override;
+
+	void vGetConfig(Game_ConfigAudio&) const override {}
 
 	void LockMutex() const;
 	void UnlockMutex() const;

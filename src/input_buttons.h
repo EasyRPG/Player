@@ -31,6 +31,8 @@
 #include "flat_map.h"
 #include "keys.h"
 
+class Game_ConfigInput;
+
 #if USE_SDL==1
 #include "platform/sdl/axis.h"
 #endif
@@ -130,8 +132,8 @@ namespace Input {
 		"Down Direction",
 		"Left Direction",
 		"Right Direction",
-		"Decision Key",
-		"Cancel Key",
+		"Decision (Enter) Key",
+		"Cancel (ESC) Key",
 		"Shift Key",
 		"Number 0",
 		"Number 1",
@@ -152,17 +154,17 @@ namespace Input {
 		"(Test Play) Walk through walls",
 		"(Test Play) Open the save menu",
 		"(Test Play) Aborts current active event",
-		"Open the settings menu",
+		"Open this settings menu",
 		"Toggle the FPS display",
 		"Take a screenshot",
 		"Show the console log on the screen",
 		"Reset to the title screen",
-		"Page up key",
-		"Page down key",
-		"Scroll up key",
-		"Scroll down key",
-		"Fast forward key",
-		"Fast forward plus key",
+		"Move up one page in menus",
+		"Move down one page in menus",
+		"Scroll up key in menus",
+		"Scroll down key in menus",
+		"Fast forward the game (x3)",
+		"Fast forward the game even more (x10)",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
 		"Total Button Count");
@@ -180,6 +182,25 @@ namespace Input {
 			case TOGGLE_ZOOM:
 			case FAST_FORWARD:
 			case FAST_FORWARD_PLUS:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Protected buttons are buttons where unmapping them makes the Player unusable.
+	 * @return true when the button is protected
+	 */
+	constexpr bool IsProtectedButton(InputButton b) {
+		switch (b) {
+			case UP:
+			case DOWN:
+			case LEFT:
+			case RIGHT:
+			case DECISION:
+			case CANCEL:
+			case SETTINGS_MENU: // Not really critical but needs a way to enter it
 				return true;
 			default:
 				return false;
@@ -241,11 +262,11 @@ namespace Input {
 	/** Returns default button mappings */
 	ButtonMappingArray GetDefaultButtonMappings();
 
-	/** Returns default direction mappings */
-	DirectionMappingArray GetDefaultDirectionMappings();
-
 	/** Returns platform-specific, human readable name for an input key */
 	KeyNamesArray GetInputKeyNames();
+
+	/** Used to declare which config options are available */
+	void GetSupportedConfig(Game_ConfigInput& cfg);
 
 #if USE_SDL==1
 	SdlAxis GetSdlAxis();

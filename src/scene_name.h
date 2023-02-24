@@ -35,7 +35,7 @@ public:
 	Scene_Name(int actor_id, int charset, bool use_default_name);
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 protected:
 	std::vector<Window_Keyboard::Mode> layouts;

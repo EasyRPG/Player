@@ -161,7 +161,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = "/switch/easyrpg-player/wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
-#elif defined(PSP2)
+#elif defined(__vita__)
 	// Only wildmidi paths, no timidity because it was never used on PSVita
 
 	// Shipped

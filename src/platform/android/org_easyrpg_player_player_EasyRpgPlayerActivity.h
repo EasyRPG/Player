@@ -17,14 +17,6 @@ extern "C" {
 #define org_easyrpg_player_player_EasyRpgPlayerActivity_COMMAND_USER 32768L
 /*
  * Class:     org_easyrpg_player_EasyRpgPlayerActivity
- * Method:    toggleFps
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps
-  (JNIEnv *, jclass);
-
-/*
- * Class:     org_easyrpg_player_EasyRpgPlayerActivity
  * Method:    endGame
  * Signature: ()V
  */
@@ -38,6 +30,9 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endG
  */
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_setFastForwardMultiplier
   (JNIEnv *, jclass, jint);
+
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings(JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }

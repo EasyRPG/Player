@@ -36,7 +36,7 @@ public:
 	Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill& skill);
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 	void TransitionOut(SceneType next_scene) override;
 private:
 	std::unique_ptr<Window_Teleport> teleport_window;

@@ -76,8 +76,8 @@ void switch_audio_thread(void*) {
 	}
 }
 
-NxAudio::NxAudio() :
-	GenericAudio()
+NxAudio::NxAudio(const Game_ConfigAudio& cfg) :
+	GenericAudio(cfg)
 {
 	instance = this;
 

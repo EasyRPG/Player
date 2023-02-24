@@ -18,6 +18,7 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "game_config.h"
 #include "platform/sdl/axis.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
@@ -43,19 +44,19 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N5, Keys::JOY_OTHER_13}, // ZL
 		{TOGGLE_FPS, Keys::JOY_OTHER_14}, // ZR
 
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
+		{UP, Keys::JOY_LSTICK_UP},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
 
-		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
-		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
-		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
-		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
-		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
-		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
-		{N8, Keys::JOY_STICK_SECONDARY_UP},
-		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT},
+		{N1, Keys::JOY_RSTICK_DOWN_LEFT},
+		{N2, Keys::JOY_RSTICK_DOWN},
+		{N3, Keys::JOY_RSTICK_DOWN_RIGHT},
+		{N4, Keys::JOY_RSTICK_LEFT},
+		{N6, Keys::JOY_RSTICK_RIGHT},
+		{N7, Keys::JOY_RSTICK_UP_LEFT},
+		{N8, Keys::JOY_RSTICK_UP},
+		{N9, Keys::JOY_RSTICK_UP_RIGHT},
 
 		// D-Pad on Wiimote & Classic Controller
 		{UP, Keys::JOY_DPAD_UP},
@@ -65,17 +66,35 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	};
 }
 
-Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
+Input::KeyNamesArray Input::GetInputKeyNames() {
 	return {
-		{ Direction::DOWN, DOWN },
-		{ Direction::LEFT, LEFT },
-		{ Direction::RIGHT, RIGHT },
-		{ Direction::UP, UP },
+		{Keys::JOY_OTHER_0, "A (Wiimote / CC)"},
+		{Keys::JOY_OTHER_1, "B (Wiimote / CC)"},
+		{Keys::JOY_OTHER_2, "1 (Wiimote"},
+		{Keys::JOY_OTHER_3, "2 (Wiimote)"},
+		{Keys::JOY_OTHER_4, "- (Wiimote /CC )"},
+		{Keys::JOY_OTHER_5, "+ (Wiimote / CC)"},
+		{Keys::JOY_OTHER_6, "Home (Wiimote / CC)"},
+		{Keys::JOY_OTHER_7, "Z (Nunchuck)"},
+		{Keys::JOY_OTHER_8, "C (Wiimote)"},
+		{Keys::JOY_OTHER_9, "X (CC)"},
+		{Keys::JOY_OTHER_10, "Y (CC)"},
+		{Keys::JOY_OTHER_11, "L (CC)"},
+		{Keys::JOY_OTHER_12, "R (CC)"},
+		{Keys::JOY_OTHER_13, "ZL (CC)"},
+		{Keys::JOY_OTHER_14, "ZR (CC)"},
+
+		{Keys::JOY_DPAD_UP, "D-Pad Up"},
+		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
+		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
+		{Keys::JOY_DPAD_RIGHT, "D-Pad Up"}
 	};
 }
 
-Input::KeyNamesArray Input::GetInputKeyNames() {
-	return {};
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
+	cfg.gamepad_swap_analog.SetOptionVisible(true);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
 }
 
 SdlAxis Input::GetSdlAxis() {
@@ -85,3 +104,4 @@ SdlAxis Input::GetSdlAxis() {
 		0, 1, 2, 3, -1, -1, false, false
 	};
 }
+

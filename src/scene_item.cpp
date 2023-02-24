@@ -50,7 +50,7 @@ void Scene_Item::Continue(SceneType /* prev_scene */) {
 	item_window->Refresh();
 }
 
-void Scene_Item::Update() {
+void Scene_Item::vUpdate() {
 	help_window->Update();
 	item_window->Update();
 

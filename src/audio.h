@@ -22,12 +22,22 @@
 #include <string>
 #include "filesystem_stream.h"
 #include "audio_secache.h"
+#include "game_config.h"
 
 /**
  * Base Audio class.
  */
 struct AudioInterface {
+	explicit AudioInterface(const Game_ConfigAudio& cfg);
+
 	virtual ~AudioInterface() = default;
+
+	/**
+ 	 * @return current audio options.
+ 	 */
+	Game_ConfigAudio GetConfig() const;
+
+	virtual void vGetConfig(Game_ConfigAudio& cfg) const = 0;
 
 	/**
 	 * Update audio. Must be called each frame.
@@ -111,10 +121,20 @@ struct AudioInterface {
 	 * Stops the currently playing sound effect.
 	 */
 	virtual void SE_Stop() = 0;
+
+	int BGM_GetGlobalVolume() const;
+	void BGM_SetGlobalVolume(int volume);
+
+	int SE_GetGlobalVolume() const;
+	void SE_SetGlobalVolume(int volume);
+
+protected:
+	Game_ConfigAudio cfg;
 };
 
 struct EmptyAudio : public AudioInterface {
 public:
+	explicit EmptyAudio(const Game_ConfigAudio& cfg);
 	void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override;
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}
@@ -128,6 +148,7 @@ public:
 	void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}
+	void vGetConfig(Game_ConfigAudio& cfg) const override;
 
 private:
 	unsigned bgm_starttick = 0;

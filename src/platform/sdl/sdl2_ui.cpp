@@ -17,6 +17,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include "game_config.h"
 #include "system.h"
 #include "sdl2_ui.h"
 
@@ -125,7 +126,7 @@ static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cfg)
+Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
@@ -142,9 +143,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 	}
 
 	RequestVideoMode(width, height,
-			cfg.window_zoom.Get(),
-			cfg.fullscreen.Get(),
-			cfg.vsync.Get());
+			cfg.video.window_zoom.Get(),
+			cfg.video.fullscreen.Get(),
+			cfg.video.vsync.Get());
 
 	SetTitle(GAME_TITLE);
 
@@ -165,11 +166,11 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_ConfigVideo& cfg) : BaseUi(cf
 
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlAudio());
+		audio_ = std::make_unique<SdlAudio>(cfg.audio);
 		return;
 	}
 #else
-	audio_.reset(new EmptyAudio());
+	audio_ = std::make_unique<EmptyAudio>(cfg.audio);
 #endif
 }
 
@@ -275,11 +276,19 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		#endif
 
 		// Create our window
-		sdl_window = SDL_CreateWindow(GAME_TITLE,
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			display_width, display_height,
-			SDL_WINDOW_RESIZABLE | flags);
+		if (vcfg.window_x.Get() < 0 || vcfg.window_y.Get() < 0 || vcfg.window_height.Get() <= 0 || vcfg.window_width.Get() <= 0) {
+			sdl_window = SDL_CreateWindow(GAME_TITLE,
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				display_width, display_height,
+				SDL_WINDOW_RESIZABLE | flags);
+		} else {
+			sdl_window = SDL_CreateWindow(GAME_TITLE,
+				vcfg.window_x.Get(),
+				vcfg.window_y.Get(),
+				vcfg.window_width.Get(), vcfg.window_height.Get(),
+				SDL_WINDOW_RESIZABLE | flags);
+		}
 
 		if (!sdl_window) {
 			Output::Debug("SDL_CreateWindow failed : {}", SDL_GetError());
@@ -397,10 +406,14 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 void Sdl2Ui::ToggleFullscreen() {
 	BeginDisplayModeChange();
-	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP) {
 		current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
-	else
+	} else {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_GetWindowPosition(sdl_window, &window_mode_metrics.x, &window_mode_metrics.y);
+		window_mode_metrics.width = window.width;
+		window_mode_metrics.height = window.height;
+	}
 	EndDisplayModeChange();
 }
 
@@ -455,6 +468,32 @@ void Sdl2Ui::ProcessEvents() {
 	}
 }
 
+void Sdl2Ui::SetScalingMode(ScalingMode mode) {
+	window.size_changed = true;
+	vcfg.scaling_mode.Set(mode);
+}
+
+void Sdl2Ui::ToggleStretch() {
+	window.size_changed = true;
+	vcfg.stretch.Toggle();
+}
+
+void Sdl2Ui::ToggleVsync() {
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+	// Modifying vsync requires recreating the renderer
+	vcfg.vsync.Toggle();
+
+	if (SDL_RenderSetVSync(sdl_renderer, int(vcfg.vsync.Get())) == 0) {
+		current_display_mode.vsync = vcfg.vsync.Get();
+		SetFrameRateSynchronized(vcfg.vsync.Get());
+	} else {
+		Output::Warning("Unable to toggle vsync. This is likely a problem with your system configuration.");
+	}
+#else
+	Output::Warning("Cannot toogle vsync: SDL2 version too old (must be 2.0.18)");
+#endif
+}
+
 void Sdl2Ui::UpdateDisplay() {
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
@@ -463,14 +502,20 @@ void Sdl2Ui::UpdateDisplay() {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
 
-		SDL_Rect viewport;
 		float width_float = static_cast<float>(window.width);
 		float height_float = static_cast<float>(window.height);
 
 		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
 		float real_aspect = width_float / height_float;
 
-		if (scaling_mode == ScalingMode::Integer) {
+		auto do_stretch = [this]() {
+			if (vcfg.stretch.Get()) {
+				viewport.x = 0;
+				viewport.w = window.width;
+			}
+		};
+
+		if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
 				window.scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
@@ -482,12 +527,19 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.x = (window.width - viewport.w) / 2;
 			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
+			do_stretch();
 
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
 			// The aspect ratios are the same, let SDL2 scale it
-			window.scale = -1.0f;
+			window.scale = width_float / SCREEN_TARGET_WIDTH;
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
+
+			// Only used here for the mouse coordinates
+			viewport.x = 0;
+			viewport.y = 0;
+			viewport.w = window.width;
+			viewport.h = window.height;
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
 			window.scale = width_float / SCREEN_TARGET_WIDTH;
@@ -495,6 +547,7 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.w = window.width;
 			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
+			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else {
 			// black bars left and right
@@ -503,10 +556,11 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.h = window.height;
 			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
+			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		}
 
-		if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+		if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
 			if (sdl_texture_scaled) {
 				SDL_DestroyTexture(sdl_texture_scaled);
 			}
@@ -521,7 +575,7 @@ void Sdl2Ui::UpdateDisplay() {
 	}
 
 	SDL_RenderClear(sdl_renderer);
-	if (scaling_mode == ScalingMode::Bilinear && window.scale > 0.f) {
+	if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
 		// Render game texture on the scaled texture
 		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
 		SDL_RenderClear(sdl_renderer);
@@ -685,7 +739,17 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
-	mouse_pos = {evnt.motion.x, evnt.motion.y};
+
+	int xw = viewport.w;
+	int yh = viewport.h;
+
+	if (xw == 0 || yh == 0) {
+		// Startup. No viewport yet
+		return;
+	}
+
+	mouse_pos.x = (evnt.motion.x - viewport.x) * SCREEN_TARGET_WIDTH / xw;
+	mouse_pos.y = (evnt.motion.y - viewport.y) * SCREEN_TARGET_HEIGHT / yh;
 #else
 	/* unused */
 	(void) evnt;
@@ -1016,8 +1080,8 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 		case SDL_CONTROLLER_BUTTON_BACK: return Input::Keys::JOY_BACK;
 		case SDL_CONTROLLER_BUTTON_GUIDE: return Input::Keys::JOY_GUIDE;
 		case SDL_CONTROLLER_BUTTON_START: return Input::Keys::JOY_START;
-		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_STICK_PRIMARY;
-		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_STICK_SECONDARY;
+		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_LSTICK;
+		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_RSTICK;
 		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER	: return Input::Keys::JOY_SHOULDER_LEFT;
 		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Input::Keys::JOY_SHOULDER_RIGHT;
 		case SDL_CONTROLLER_BUTTON_DPAD_UP: return Input::Keys::JOY_DPAD_UP;
@@ -1048,5 +1112,51 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 
 	default:
 		return 0;
+	}
+}
+
+void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
+#ifdef EMSCRIPTEN
+	cfg.renderer.Lock("SDL2 (Software, Emscripten)");
+#else
+	cfg.renderer.Lock("SDL2 (Software)");
+#endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+	cfg.vsync.SetOptionVisible(true);
+#endif
+	cfg.fullscreen.SetOptionVisible(true);
+	cfg.fps_limit.SetOptionVisible(true);
+	cfg.fps_render_window.SetOptionVisible(true);
+#if defined(SUPPORT_ZOOM) && !defined(__ANDROID__)
+	// An initial zoom level is needed on Android however changing it looks awful
+	cfg.window_zoom.SetOptionVisible(true);
+#endif
+	cfg.scaling_mode.SetOptionVisible(true);
+	cfg.stretch.SetOptionVisible(true);
+
+	cfg.vsync.Set(current_display_mode.vsync);
+	cfg.window_zoom.Set(current_display_mode.zoom);
+	cfg.fullscreen.Set(IsFullscreen());
+
+#ifdef EMSCRIPTEN
+	// Fullscreen is handled by the browser
+	cfg.fullscreen.SetOptionVisible(false);
+	cfg.fps_limit.SetOptionVisible(false);
+	cfg.fps_render_window.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	// Toggling this freezes the web player
+	cfg.vsync.SetOptionVisible(false);
+#endif
+}
+
+Rect Sdl2Ui::GetWindowMetrics() const {
+	if (!IsFullscreen()) {
+		Rect metrics;
+		SDL_GetWindowSize(sdl_window, &metrics.width, &metrics.height);
+		SDL_GetWindowPosition(sdl_window, &metrics.x, &metrics.y);
+		return metrics;
+	} else {
+		return window_mode_metrics;
 	}
 }

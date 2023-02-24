@@ -42,7 +42,7 @@ public:
 	Scene_File(std::string message);
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 
 	virtual void Action(int index) = 0;
 

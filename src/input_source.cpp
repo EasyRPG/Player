@@ -30,25 +30,22 @@
 #include "version.h"
 
 std::unique_ptr<Input::Source> Input::Source::Create(
-		Input::ButtonMappingArray buttons,
+		const Game_ConfigInput& cfg,
 		Input::DirectionMappingArray directions,
 		const std::string& replay_from_path)
 {
 	if (!replay_from_path.empty()) {
 		auto path = replay_from_path.c_str();
 
-		auto log_src = std::make_unique<Input::LogSource>(path, std::move(buttons), std::move(directions));
+		auto log_src = std::make_unique<Input::LogSource>(path, cfg, std::move(directions));
 
 		if (*log_src) {
 			return log_src;
 		}
-		Output::Warning("Failed to open file for input replaying: {}", path);
-
-		buttons = std::move(log_src->GetButtonMappings());
-		directions = std::move(log_src->GetDirectionMappings());
+		Output::Error("Failed to open file for input replaying: {}", path);
 	}
 
-	return std::make_unique<Input::UiSource>(std::move(buttons), std::move(directions));
+	return std::make_unique<Input::UiSource>(cfg, std::move(directions));
 }
 
 void Input::UiSource::DoUpdate(bool system_only) {
@@ -58,7 +55,7 @@ void Input::UiSource::DoUpdate(bool system_only) {
 
 	UpdateGamepad();
 
-	for (auto& bm: button_mappings) {
+	for (auto& bm: cfg.buttons) {
 		if (keymask[bm.second]) {
 			continue;
 		}
@@ -81,8 +78,8 @@ void Input::UiSource::UpdateSystem() {
 	DoUpdate(true);
 }
 
-Input::LogSource::LogSource(const char* log_path, ButtonMappingArray buttons, DirectionMappingArray directions)
-	: Source(std::move(buttons), std::move(directions)),
+Input::LogSource::LogSource(const char* log_path, const Game_ConfigInput& cfg, DirectionMappingArray directions)
+	: Source(cfg, std::move(directions)),
 	log_file(FileFinder::Root().OpenInputStream(log_path, std::ios::in))
 {
 	if (!log_file) {
@@ -202,11 +199,35 @@ void Input::Source::Record() {
 }
 
 void Input::Source::UpdateGamepad() {
+	// Configuration
+	if (cfg.gamepad_swap_analog.Get()) {
+		std::swap(analog_input.primary, analog_input.secondary);
+	}
+
+	auto bit_swap = [&](Input::Keys::InputKey first, Input::Keys::InputKey second) {
+		// No std::swap support for std::bitset
+		bool tmp = keystates[first];
+		keystates[first] = keystates[second];
+		keystates[second] = tmp;
+	};
+
+	if (cfg.gamepad_swap_dpad_with_buttons.Get()) {
+		bit_swap(Input::Keys::JOY_DPAD_UP, Input::Keys::JOY_Y);
+		bit_swap(Input::Keys::JOY_DPAD_DOWN, Input::Keys::JOY_A);
+		bit_swap(Input::Keys::JOY_DPAD_LEFT, Input::Keys::JOY_X);
+		bit_swap(Input::Keys::JOY_DPAD_RIGHT, Input::Keys::JOY_B);
+	}
+
+	if (cfg.gamepad_swap_ab_and_xy.Get()) {
+		bit_swap(Input::Keys::JOY_A, Input::Keys::JOY_B);
+		bit_swap(Input::Keys::JOY_X, Input::Keys::JOY_Y);
+	}
+
 	// Primary Analog Stick (For directions, does not support diagonals)
-	keystates[Input::Keys::JOY_STICK_PRIMARY_RIGHT] = analog_input.primary.x > JOYSTICK_STICK_SENSIBILITY;
-	keystates[Input::Keys::JOY_STICK_PRIMARY_LEFT] = analog_input.primary.x < -JOYSTICK_STICK_SENSIBILITY;
-	keystates[Input::Keys::JOY_STICK_PRIMARY_UP] = analog_input.primary.y < -JOYSTICK_STICK_SENSIBILITY;
-	keystates[Input::Keys::JOY_STICK_PRIMARY_DOWN] = analog_input.primary.y > JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_LSTICK_RIGHT] = analog_input.primary.x > JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_LSTICK_LEFT] = analog_input.primary.x < -JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_LSTICK_UP] = analog_input.primary.y < -JOYSTICK_STICK_SENSIBILITY;
+	keystates[Input::Keys::JOY_LSTICK_DOWN] = analog_input.primary.y > JOYSTICK_STICK_SENSIBILITY;
 
 	// Secondary Analog Stick (For other things, supports diagonals)
 	if (analog_input.secondary.x > JOYSTICK_STICK_SENSIBILITY || analog_input.secondary.x < -JOYSTICK_STICK_SENSIBILITY ||
@@ -214,34 +235,34 @@ void Input::Source::UpdateGamepad() {
 
 		auto angle = static_cast<int>(std::atan2(analog_input.secondary.y, analog_input.secondary.x) * 180.0f / M_PI);
 		if (angle >= -22 && angle <= 22) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_RIGHT] = true;
+			keystates[Input::Keys::JOY_RSTICK_RIGHT] = true;
 		} else if (angle >= 23 && angle <= 67) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_RIGHT] = true;
+			keystates[Input::Keys::JOY_RSTICK_DOWN_RIGHT] = true;
 		} else if (angle >= 68 && angle <= 112) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN] = true;
+			keystates[Input::Keys::JOY_RSTICK_DOWN] = true;
 		} else if (angle >= 113 && angle <= 157) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_DOWN_LEFT] = true;
+			keystates[Input::Keys::JOY_RSTICK_DOWN_LEFT] = true;
 		} else if (angle >= 158 || angle <= -158) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_LEFT] = true;
+			keystates[Input::Keys::JOY_RSTICK_LEFT] = true;
 		} else if (angle >= -157 && angle <= -113) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_LEFT] = true;
+			keystates[Input::Keys::JOY_RSTICK_UP_LEFT] = true;
 		} else if (angle >= -112 && angle <= -68) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP] = true;
+			keystates[Input::Keys::JOY_RSTICK_UP] = true;
 		} else if (angle >= -67 && angle <= -23) {
-			keystates[Input::Keys::JOY_STICK_SECONDARY_UP_RIGHT] = true;
+			keystates[Input::Keys::JOY_RSTICK_UP_RIGHT] = true;
 		}
 	}
 
 	// Trigger
 	analog_input = DisplayUi->GetAnalogInput();
-	keystates[Input::Keys::JOY_TRIGGER_LEFT_FULL] = (analog_input.trigger_left > AnalogInput::kMaxValue * 0.9);
-	keystates[Input::Keys::JOY_TRIGGER_LEFT_PARTIAL] =
+	keystates[Input::Keys::JOY_LTRIGGER_FULL] = (analog_input.trigger_left > AnalogInput::kMaxValue * 0.9);
+	keystates[Input::Keys::JOY_LTRIGGER_SOFT] =
 			(analog_input.trigger_left > JOYSTICK_TRIGGER_SENSIBILITY) &&
-			!keystates[Input::Keys::JOY_TRIGGER_LEFT_FULL];
-	keystates[Input::Keys::JOY_TRIGGER_RIGHT_FULL] = (analog_input.trigger_right > AnalogInput::kMaxValue * 0.9);
-	keystates[Input::Keys::JOY_TRIGGER_RIGHT_PARTIAL] =
+			!keystates[Input::Keys::JOY_LTRIGGER_FULL];
+	keystates[Input::Keys::JOY_RTRIGGER_FULL] = (analog_input.trigger_right > AnalogInput::kMaxValue * 0.9);
+	keystates[Input::Keys::JOY_RTRIGGER_SOFT] =
 			(analog_input.trigger_right > JOYSTICK_TRIGGER_SENSIBILITY) &&
-			!keystates[Input::Keys::JOY_TRIGGER_RIGHT_FULL];
+			!keystates[Input::Keys::JOY_RTRIGGER_FULL];
 }
 
 void Input::Source::AddRecordingData(Input::RecordingData type, StringView data) {

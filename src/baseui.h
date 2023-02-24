@@ -34,7 +34,7 @@
 #include "input.h"
 
 #ifdef SUPPORT_AUDIO
-	struct AudioInterface;
+struct AudioInterface;
 #endif
 
 /**
@@ -52,9 +52,9 @@ public:
 	 *
 	 * @param width display client width.
 	 * @param height display client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_ConfigVideo& cfg);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, const Game_Config& cfg);
 
 	/**
 	 * Toggles fullscreen.
@@ -127,6 +127,9 @@ public:
 	virtual AudioInterface& GetAudio() = 0;
 #endif
 
+	/** @return dimensions of the window */
+	virtual Rect GetWindowMetrics() const;
+
 	/**
 	 * Gets client width size.
 	 *
@@ -182,20 +185,51 @@ public:
 	/** Toggle whether we should show fps */
 	void ToggleShowFps();
 
+	/** Toggle wheter we should show fps on the titlebar */
+	void ToggleShowFpsOnTitle();
+
 	/**
 	 * @return the minimum amount of time each physical frame should take.
 	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
 	 */
 	Game_Clock::duration GetFrameLimit() const;
 
+	/**
+	 * Sets the frame limit.
+	 * Note that this uses int instead of Game_Clock to make the invocation easier.
+	 *
+	 * @param fps_limit new fps limit
+	 */
+	void SetFrameLimit(int fps_limit);
+
+	/** Sets the scaling mode of the window */
+	virtual void SetScalingMode(ScalingMode) {};
+
+	/** Toggles "stretch to screen width" on or off */
+	virtual void ToggleStretch() {};
+
+	/** Turns vsync on or off */
+	virtual void ToggleVsync() {};
+
+	/** Turns a touch ui on or off. */
+	virtual void ToggleTouchUi() {};
+
+	/**
+	 * @return current video options.
+	 */
+	Game_ConfigVideo GetConfig() const;
+
 protected:
 	/**
-	 * Protected Constructor. Use CreateBaseUi instead.
+	 * Protected Constructor. Use CreateUi instead.
 	 */
-	explicit BaseUi(const Game_ConfigVideo& cfg);
+	explicit BaseUi(const Game_Config& cfg);
 
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);
+	virtual void vGetConfig(Game_ConfigVideo& cfg) const = 0;
+
+	Game_ConfigVideo vcfg;
 
 	/**
 	 * Display mode data struct.
@@ -230,9 +264,6 @@ protected:
 	/** Mouse hovering the window flag. */
 	bool mouse_focus = false;
 
-	/** The frames per second limit */
-	int fps_limit = Game_Clock::GetTargetGameFps();
-
 	/** The amount of time each frame should take, based on fps limit */
 	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
 
@@ -241,22 +272,14 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
-
-	/** Whether UI is currently fullscreen */
-	bool is_fullscreen = false;
-
-	/** Whether we will show fps counter the screen */
-	bool show_fps = false;
-
-	/** If we will render fps on the screen even in windowed mode */
-	bool fps_render_window = false;
-
-	/** How to scale the viewport when larger than 320x240 */
-	ScalingMode scaling_mode = ScalingMode::Bilinear;
 };
 
 /** Global DisplayUi variable. */
 extern std::shared_ptr<BaseUi> DisplayUi;
+
+inline Rect BaseUi::GetWindowMetrics() const {
+	return {-1, -1, -1, -1};
+}
 
 inline bool BaseUi::IsFrameRateSynchronized() const {
 	return external_frame_rate;
@@ -267,11 +290,11 @@ inline void BaseUi::SetFrameRateSynchronized(bool value) {
 }
 
 inline bool BaseUi::IsFullscreen() const {
-	return is_fullscreen;
+	return vcfg.fullscreen.Get();
 }
 
 inline void BaseUi::SetIsFullscreen(bool fs) {
-	is_fullscreen = fs;
+	vcfg.fullscreen.Set(fs);
 }
 
 inline BaseUi::KeyStatus& BaseUi::GetKeyStates() {
@@ -307,19 +330,29 @@ inline const Input::AnalogInput& BaseUi::GetAnalogInput() const {
 }
 
 inline bool BaseUi::RenderFps() const {
-	return show_fps && (IsFullscreen() || fps_render_window);
+	return vcfg.show_fps.Get() && (IsFullscreen() || vcfg.fps_render_window.Get());
 }
 
 inline bool BaseUi::ShowFpsOnTitle() const {
-	return show_fps;
+	return vcfg.show_fps.Get();
 }
 
 inline void BaseUi::ToggleShowFps() {
-	show_fps = !show_fps;
+	vcfg.show_fps.Toggle();
+}
+
+inline void BaseUi::ToggleShowFpsOnTitle() {
+	vcfg.fps_render_window.Toggle();
 }
 
 inline Game_Clock::duration BaseUi::GetFrameLimit() const {
 	return IsFrameRateSynchronized() ? Game_Clock::duration(0) : frame_limit;
+}
+
+inline void BaseUi::SetFrameLimit(int fps_limit) {
+	vcfg.fps_limit.Set(fps_limit);
+
+	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
 }
 
 #endif

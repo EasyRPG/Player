@@ -38,7 +38,7 @@ public:
 	Scene_Debug();
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 	void TransitionIn(SceneType prev_scene) override;
 	void TransitionOut(SceneType next_scene) override;
 

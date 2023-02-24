@@ -58,6 +58,7 @@ public:
 		Order,
 		GameBrowser,
 		Teleport,
+		Settings,
 		SceneMax
 	};
 
@@ -137,9 +138,8 @@ public:
 
 	/**
 	 * Called every frame.
-	 * The scene should redraw all elements.
 	 */
-	virtual void Update();
+	void Update();
 
 	/**
 	 * Update graphics in scene stack
@@ -151,7 +151,7 @@ public:
 	 *
 	 * @param new_scene new scene.
 	 * @param pop_stack_top if the scene that is currently
-	 *                      on the top should be popped.
+	 *	                  on the top should be popped.
 	 */
 	static void Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top = false);
 
@@ -231,7 +231,7 @@ public:
 
 	/**
 	 * Set number of frames to wait before start/continue the scene
-	 * 
+	 *
 	 * @frames number of frames to wait
 	 */
 	void SetDelayFrames(int frames);
@@ -242,14 +242,14 @@ public:
 	/** Decrement delay frames by 1 if we're waiting */
 	void UpdateDelayFrames();
 
-	/** 
+	/**
 	 * Pops the stack until the title screen and sets proper delay.
 	 *
 	 * @return false if there is no title scene in the stack, or we're already on the title scene
 	 */
 	static bool ReturnToTitleScene();
 
-	/** 
+	/**
 	 * Transfer drawables from the previous scene. This is called
 	 * when we do a scene change.
 	 *
@@ -267,6 +267,12 @@ public:
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;
+
+	/**
+	 * Called every frame from Update.
+	 * The scene should redraw all elements.
+	 */
+	virtual void vUpdate() {};
 
 	/**
 	 * Set whether or not this scene will use shared drawables.

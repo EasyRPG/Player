@@ -43,7 +43,7 @@ void Scene_Logo::Start() {
 	}
 }
 
-void Scene_Logo::Update() {
+void Scene_Logo::vUpdate() {
 	static bool is_valid = false;
 
 	if (frame_counter == 0) {

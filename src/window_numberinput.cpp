@@ -31,7 +31,7 @@
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	digits_max(Main_Data::game_variables->GetMaxDigits()) {
+	digits_max(10) {
 	number = 0;
 	plus = true;
 

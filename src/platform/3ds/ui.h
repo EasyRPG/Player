@@ -36,9 +36,9 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param cfg video config options
+	 * @param cfg config options
 	 */
-	CtrUi(int width, int height, const Game_ConfigVideo& cfg);
+	CtrUi(int width, int height, const Game_Config& cfg);
 
 	/**
 	 * Destructor.
@@ -52,6 +52,9 @@ public:
 	void UpdateDisplay() override;
 	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
+	void ToggleStretch() override;
+	void ToggleTouchUi() override;
+	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();

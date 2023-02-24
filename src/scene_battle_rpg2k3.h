@@ -86,7 +86,7 @@ public:
 	~Scene_Battle_Rpg2k3() override;
 
 	void Start() override;
-	void Update() override;
+	void vUpdate() override;
 	void OnPartyChanged(Game_Actor* actor, bool add) override;
 	void OnEventHpChanged(Game_Battler* battler, int hp) override;
 

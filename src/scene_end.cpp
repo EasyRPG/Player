@@ -37,7 +37,7 @@ void Scene_End::Start() {
 	CreateHelpWindow();
 }
 
-void Scene_End::Update() {
+void Scene_End::vUpdate() {
 	command_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {

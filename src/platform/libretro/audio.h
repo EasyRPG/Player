@@ -23,7 +23,7 @@
 
 class LibretroAudio : public GenericAudio {
 public:
-	LibretroAudio();
+	LibretroAudio(const Game_ConfigAudio& cfg);
 	~LibretroAudio();
 
 	void LockMutex() const override;

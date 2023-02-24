@@ -301,6 +301,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/scene_skill.h
 	src/scene_status.cpp
 	src/scene_status.h
+	src/scene_settings.h
+	src/scene_settings.cpp
 	src/scene_teleport.cpp
 	src/scene_teleport.h
 	src/scene_title.cpp
@@ -378,6 +380,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/window_battlestatus.h
 	src/window_command.cpp
 	src/window_command.h
+	src/window_command_horizontal.cpp
+	src/window_command_horizontal.h
 	src/window.cpp
 	src/window_equip.cpp
 	src/window_equip.h
@@ -396,6 +400,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/window_help.h
 	src/window_import_progress.cpp
 	src/window_import_progress.h
+	src/window_input_settings.cpp
+	src/window_input_settings.h
 	src/window_item.cpp
 	src/window_item.h
 	src/window_keyboard.cpp
@@ -414,6 +420,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/window_savefile.h
 	src/window_selectable.cpp
 	src/window_selectable.h
+	src/window_settings.cpp
+	src/window_settings.h
 	src/window_shopbuy.cpp
 	src/window_shopbuy.h
 	src/window_shop.cpp
@@ -1029,7 +1037,11 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
-		add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
+		if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+			add_executable(${EXE_NAME} "src/platform/emscripten/main.cpp")
+		else()
+			add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
+		endif()
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
 	endif()
 
@@ -1230,6 +1242,7 @@ else()
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")
 	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_library(easyrpg_android
+			src/platform/android/android.h
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
 			src/platform/android/filesystem_apk.cpp

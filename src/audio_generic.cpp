@@ -37,7 +37,7 @@ std::vector<float> GenericAudio::mixer_buffer = {};
 
 std::unique_ptr<GenericAudioMidiOut> GenericAudio::midi_thread;
 
-GenericAudio::GenericAudio() {
+GenericAudio::GenericAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
 	int i = 0;
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.id = i++;
@@ -307,7 +307,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 		if (is_bgm_channel) {
 			BgmChannel& currently_mixed_channel = BGM_Channels[i];
-			float current_master_volume = 1.0;
+			float current_master_volume = cfg.music_volume.Get() / 100.0f;
 
 			if (currently_mixed_channel.decoder && !currently_mixed_channel.paused) {
 				if (currently_mixed_channel.stopped) {
@@ -341,7 +341,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 			}
 		} else {
 			SeChannel& currently_mixed_channel = SE_Channels[i - nr_of_bgm_channels];
-			float current_master_volume = 1.0;
+			float current_master_volume = cfg.sound_volume.Get() / 100.0f;
 
 			if (currently_mixed_channel.decoder && !currently_mixed_channel.paused) {
 				if (currently_mixed_channel.stopped) {

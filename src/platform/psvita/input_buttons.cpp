@@ -18,6 +18,7 @@
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "game_config.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
@@ -54,28 +55,19 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_TOUCH},
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
-		{LEFT, Keys::JOY_STICK_PRIMARY_LEFT},
-		{RIGHT, Keys::JOY_STICK_PRIMARY_RIGHT},
-		{DOWN, Keys::JOY_STICK_PRIMARY_DOWN},
-		{UP, Keys::JOY_STICK_PRIMARY_UP},
-		{N1, Keys::JOY_STICK_SECONDARY_DOWN_LEFT},
-		{N2, Keys::JOY_STICK_SECONDARY_DOWN},
-		{N3, Keys::JOY_STICK_SECONDARY_DOWN_RIGHT},
-		{N4, Keys::JOY_STICK_SECONDARY_LEFT},
-		{N6, Keys::JOY_STICK_SECONDARY_RIGHT},
-		{N7, Keys::JOY_STICK_SECONDARY_UP_LEFT},
-		{N8, Keys::JOY_STICK_SECONDARY_UP},
-		{N9, Keys::JOY_STICK_SECONDARY_UP_RIGHT}
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{UP, Keys::JOY_LSTICK_UP},
+		{N1, Keys::JOY_RSTICK_DOWN_LEFT},
+		{N2, Keys::JOY_RSTICK_DOWN},
+		{N3, Keys::JOY_RSTICK_DOWN_RIGHT},
+		{N4, Keys::JOY_RSTICK_LEFT},
+		{N6, Keys::JOY_RSTICK_RIGHT},
+		{N7, Keys::JOY_RSTICK_UP_LEFT},
+		{N8, Keys::JOY_RSTICK_UP},
+		{N9, Keys::JOY_RSTICK_UP_RIGHT}
 #endif
-	};
-}
-
-Input::DirectionMappingArray Input::GetDefaultDirectionMappings() {
-	return {
-		{ Direction::DOWN, DOWN },
-		{ Direction::LEFT, LEFT },
-		{ Direction::RIGHT, RIGHT },
-		{ Direction::UP, UP },
 	};
 }
 
@@ -111,4 +103,10 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 		{Keys::KP_PERIOD, "Touch ."},
 		{Keys::JOY_TOUCH, "Touch Logo"}
 	};
+}
+
+void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
+	cfg.gamepad_swap_ab_and_xy.SetOptionVisible(true);
+	cfg.gamepad_swap_analog.SetOptionVisible(true);
+	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
 }

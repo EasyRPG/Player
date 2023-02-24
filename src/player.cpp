@@ -73,12 +73,19 @@
 #include "utils.h"
 #include "version.h"
 #include "game_quit.h"
+#include "scene_settings.h"
 #include "scene_title.h"
 #include "instrumentation.h"
 #include "transition.h"
 #include <lcf/scope_guard.h>
 #include "baseui.h"
 #include "game_clock.h"
+#include "message_overlay.h"
+
+#ifdef __ANDROID__
+#include "platform/android/android.h"
+#endif
+
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 #include "decoder_fluidsynth.h"
 #endif
@@ -148,18 +155,6 @@ void Player::Init(std::vector<std::string> arguments) {
 	SetConsoleOutputCP(65001);
 #endif
 
-#ifdef EMSCRIPTEN
-	Output::IgnorePause(true);
-
-	// Retrieve save directory from persistent storage before using it
-	EM_ASM(({
-		FS.mkdir("Save");
-		FS.mount(Module.EASYRPG_FS, {}, 'Save');
-		FS.syncfs(true, function(err) {
-		});
-	}));
-#endif
-
 	// First parse command line arguments
 	auto cfg = ParseCommandLine(std::move(arguments));
 
@@ -184,13 +179,10 @@ void Player::Init(std::vector<std::string> arguments) {
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
-		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg.video);
+		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg);
 	}
 
-	auto buttons = Input::GetDefaultButtonMappings();
-	auto directions = Input::GetDefaultDirectionMappings();
-
-	Input::Init(std::move(buttons), std::move(directions), replay_input_path, record_input_path);
+	Input::Init(cfg.input, replay_input_path, record_input_path);
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);
@@ -230,6 +222,8 @@ void Player::MainLoop() {
 
 		Scene::old_instances.clear();
 		Scene::instance->MainFunction();
+
+		Graphics::GetMessageOverlay().Update();
 
 		++num_updates;
 	}
@@ -359,6 +353,10 @@ void Player::Update(bool update_scene) {
 
 		Scene::instance->Update();
 	}
+
+#ifdef __ANDROID__
+	EpAndroid::invoke();
+#endif
 }
 
 void Player::Draw() {
@@ -379,6 +377,10 @@ int Player::GetFrames() {
 }
 
 void Player::Exit() {
+	if (player_config.settings_autosave.Get()) {
+		Scene_Settings::SaveConfig(true);
+	}
+
 	Graphics::UpdateSceneCallback();
 #ifdef EMSCRIPTEN
 	BitmapRef surface = DisplayUi->GetDisplaySurface();

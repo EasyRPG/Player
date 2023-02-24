@@ -90,6 +90,17 @@ public:
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
+	 * Creates stream from filename for reading.
+	 * When the file is missing it is created.
+	 *
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed.
+	 */
+	Filesystem_Stream::InputStream OpenOrCreateInputStream(StringView name,
+		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
+
+	/**
 	 * Creates stream from filename for writing.
 	 *
 	 * @param name filename.
@@ -386,6 +397,17 @@ public:
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
 	Filesystem_Stream::InputStream OpenInputStream(StringView name,
+		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
+
+	/**
+	 * Creates stream from filename for reading.
+	 * When the file is missing it is created.
+	 *
+	 * @param name filename.
+	 * @param m stream mode. Default is binary.
+	 * @return A Stream. The stream is invalid when the open failed.
+	 */
+	Filesystem_Stream::InputStream OpenOrCreateInputStream(StringView name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**

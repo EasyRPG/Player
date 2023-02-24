@@ -38,11 +38,16 @@ public:
 
 	int GetIndex() const;
 	void SetIndex(int nindex);
+	int GetColumnMax() const;
+	void SetColumnMax(int ncolmax);
 	int GetRowMax() const;
 	int GetTopRow() const;
 	void SetTopRow(int row);
 	int GetPageRowMax() const;
 	int GetPageItemMax();
+
+	/** Change the max item */
+	void SetItemMax(int value);
 
 	/**
 	 * Returns the Item Rect used for item drawing.
@@ -50,7 +55,7 @@ public:
 	 * @param index index of item.
 	 * @return Rect where the item is drawn.
 	 */
-	Rect GetItemRect(int index);
+	virtual Rect GetItemRect(int index);
 
 	/**
 	 * Function called by the base UpdateHelp() implementation.
@@ -103,5 +108,9 @@ protected:
 	int scroll_dir = 0;
 	int scroll_progress = 0;
 };
+
+inline void Window_Selectable::SetItemMax(int value) {
+	item_max = value;
+}
 
 #endif

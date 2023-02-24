@@ -39,8 +39,26 @@ Filesystem_Stream::InputStream Filesystem::OpenInputStream(StringView name, std:
 	}
 
 	std::streambuf* buf = CreateInputStreambuffer(name, m | std::ios_base::in);
+
+	if (!buf) {
+		return Filesystem_Stream::InputStream();
+	}
+
 	Filesystem_Stream::InputStream is(buf, ToString(name));
 	return is;
+}
+
+Filesystem_Stream::InputStream Filesystem::OpenOrCreateInputStream(StringView name, std::ios_base::openmode m) const {
+	auto is = OpenInputStream(name, m);
+
+	if (!is) {
+		auto os = OpenOutputStream(name, (std::ios_base::openmode)0);
+		if (!os) {
+			return Filesystem_Stream::InputStream();
+		}
+	}
+
+	return OpenInputStream(name, m);
 }
 
 Filesystem_Stream::OutputStream Filesystem::OpenOutputStream(StringView name, std::ios_base::openmode m) const {
@@ -49,6 +67,10 @@ Filesystem_Stream::OutputStream Filesystem::OpenOutputStream(StringView name, st
 	}
 
 	std::streambuf* buf = CreateOutputStreambuffer(name, m | std::ios_base::out);
+
+	if (!buf) {
+		return Filesystem_Stream::OutputStream();
+	}
 
 	std::string path;
 	std::tie(path, std::ignore) = FileFinder::GetPathAndFilename(name);
@@ -303,6 +325,16 @@ Filesystem_Stream::InputStream FilesystemView::OpenInputStream(StringView name, 
 	}
 
 	return fs->OpenInputStream(MakePath(name), m);
+}
+
+Filesystem_Stream::InputStream FilesystemView::OpenOrCreateInputStream(StringView name, std::ios_base::openmode m) const {
+	assert(fs);
+
+	if (name.empty()) {
+		return Filesystem_Stream::InputStream();
+	}
+
+	return fs->OpenOrCreateInputStream(MakePath(name), m);
 }
 
 Filesystem_Stream::OutputStream FilesystemView::OpenOutputStream(StringView name, std::ios_base::openmode m) const {
