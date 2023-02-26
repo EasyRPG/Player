@@ -52,6 +52,9 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	lcf::Data::Clear();
 	Main_Data::Cleanup();
 
+	// Restore the base resolution
+	Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 

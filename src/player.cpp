@@ -98,6 +98,9 @@
 using namespace std::chrono_literals;
 
 namespace Player {
+	int screen_width = SCREEN_TARGET_WIDTH;
+	int screen_height = SCREEN_TARGET_HEIGHT;
+
 	bool exit_flag;
 	bool reset_flag;
 	bool debug_flag;
@@ -179,7 +182,7 @@ void Player::Init(std::vector<std::string> arguments) {
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
-		DisplayUi = BaseUi::CreateUi(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, cfg);
+		DisplayUi = BaseUi::CreateUi(Player::screen_width, Player::screen_height, cfg);
 	}
 
 	Input::Init(cfg.input, replay_input_path, record_input_path);
@@ -757,6 +760,8 @@ void Player::CreateGameObjects() {
 				std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 				game_title = lcf::ReaderUtil::Recode(title, encoding);
 				no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
+				Player::screen_width = ini.GetInteger("RPG_RT", "WinW", SCREEN_TARGET_WIDTH);
+				Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
 			}
 		}
 	}
@@ -870,6 +875,11 @@ void Player::CreateGameObjects() {
 	LoadFonts();
 
 	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+}
+
+void Player::ChangeResolution(int width, int height) {
+	// TODO : Take the return of the function into account
+	DisplayUi->ChangeDisplaySurfaceResolution(width, height);
 }
 
 void Player::ResetGameObjects() {

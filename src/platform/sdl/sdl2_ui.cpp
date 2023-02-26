@@ -193,6 +193,37 @@ Sdl2Ui::~Sdl2Ui() {
 	SDL_Quit();
 }
 
+bool Sdl2Ui::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+	SDL_Texture* new_sdl_texture_game = SDL_CreateTexture(sdl_renderer,
+		texture_format,
+		SDL_TEXTUREACCESS_STREAMING,
+		new_width, new_height);
+
+	if (!new_sdl_texture_game) {
+		Output::Warning("ChangeDisplaySurfaceResolution SDL_CreateTexture failed: {}", SDL_GetError());
+		return false;
+	}
+
+	if (sdl_texture_game) {
+		SDL_DestroyTexture(sdl_texture_game);
+	}
+
+	sdl_texture_game = new_sdl_texture_game;
+
+	BitmapRef new_main_surface = Bitmap::Create(new_width, new_height, Color(0, 0, 0, 255));
+
+	if (!new_main_surface) {
+		Output::Warning("ChangeDisplaySurfaceResolution Bitmap::Create failed");
+		return false;
+	}
+
+	main_surface = new_main_surface;
+
+	window.size_changed = true;
+
+	return true;
+}
+
 void Sdl2Ui::RequestVideoMode(int width, int height, int zoom, bool fullscreen, bool vsync) {
 	BeginDisplayModeChange();
 
@@ -430,7 +461,7 @@ void Sdl2Ui::ToggleZoom() {
 	// get current window size, calculate next bigger zoom factor
 	int w, h;
 	SDL_GetWindowSize(sdl_window, &w, &h);
-	last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
+	last_display_mode.zoom = std::min(w / main_surface->width(), h / main_surface->height());
 	current_display_mode.zoom = last_display_mode.zoom + 1;
 
 	// get maximum usable window size
@@ -440,8 +471,8 @@ void Sdl2Ui::ToggleZoom() {
 	SDL_GetDisplayUsableBounds(display_index, &max_mode);
 
 	// reset zoom, if it does not fit
-	if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
-		(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
+	if ((max_mode.h < main_surface->height() * current_display_mode.zoom) ||
+		(max_mode.w < main_surface->width() * current_display_mode.zoom)) {
 		current_display_mode.zoom = 1;
 	}
 	EndDisplayModeChange();
@@ -505,7 +536,7 @@ void Sdl2Ui::UpdateDisplay() {
 		float width_float = static_cast<float>(window.width);
 		float height_float = static_cast<float>(window.height);
 
-		constexpr float want_aspect = (float)SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
+		float want_aspect = (float)main_surface->width() / main_surface->height();
 		float real_aspect = width_float / height_float;
 
 		auto do_stretch = [this]() {
@@ -518,14 +549,14 @@ void Sdl2Ui::UpdateDisplay() {
 		if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
-				window.scale = static_cast<float>(window.width / SCREEN_TARGET_WIDTH);
+				window.scale = static_cast<float>(window.width / main_surface->width());
 			} else {
-				window.scale = static_cast<float>(window.height / SCREEN_TARGET_HEIGHT);
+				window.scale = static_cast<float>(window.height / main_surface->height());
 			}
 
-			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
+			viewport.w = static_cast<int>(ceilf(main_surface->width() * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
-			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
+			viewport.h = static_cast<int>(ceilf(main_surface->height() * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
 			do_stretch();
 
@@ -542,19 +573,19 @@ void Sdl2Ui::UpdateDisplay() {
 			viewport.h = window.height;
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
-			window.scale = width_float / SCREEN_TARGET_WIDTH;
+			window.scale = width_float / main_surface->width();
 			viewport.x = 0;
 			viewport.w = window.width;
-			viewport.h = static_cast<int>(ceilf(SCREEN_TARGET_HEIGHT * window.scale));
+			viewport.h = static_cast<int>(ceilf(main_surface->height() * window.scale));
 			viewport.y = (window.height - viewport.h) / 2;
 			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else {
 			// black bars left and right
-			window.scale = height_float / SCREEN_TARGET_HEIGHT;
+			window.scale = height_float / main_surface->height();
 			viewport.y = 0;
 			viewport.h = window.height;
-			viewport.w = static_cast<int>(ceilf(SCREEN_TARGET_WIDTH * window.scale));
+			viewport.w = static_cast<int>(ceilf(main_surface->width() * window.scale));
 			viewport.x = (window.width - viewport.w) / 2;
 			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
@@ -566,7 +597,7 @@ void Sdl2Ui::UpdateDisplay() {
 			}
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 			sdl_texture_scaled = SDL_CreateTexture(sdl_renderer, texture_format, SDL_TEXTUREACCESS_TARGET,
-			   static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_WIDTH, static_cast<int>(ceilf(window.scale)) * SCREEN_TARGET_HEIGHT);
+			   static_cast<int>(ceilf(window.scale)) * main_surface->width(), static_cast<int>(ceilf(window.scale)) * main_surface->height());
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 			if (!sdl_texture_scaled) {
 				Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());

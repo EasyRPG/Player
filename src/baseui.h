@@ -164,6 +164,15 @@ public:
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();
 
+	/**
+	 * Requests a resolution change of the framebuffer.
+	 *
+	 * @param new_width new width
+	 * @param new_height new height
+	 * @return Whether the resolution change was successful
+	 */
+	virtual bool ChangeDisplaySurfaceResolution(int new_width, int new_height);
+
 	typedef std::bitset<Input::Keys::KEYS_COUNT> KeyStatus;
 
 	/**
@@ -307,6 +316,12 @@ inline BitmapRef const& BaseUi::GetDisplaySurface() const {
 
 inline BitmapRef& BaseUi::GetDisplaySurface() {
 	return main_surface;
+}
+
+inline bool BaseUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+	(void)new_width;
+	(void)new_height;
+	return false;
 }
 
 inline long BaseUi::GetWidth() const {

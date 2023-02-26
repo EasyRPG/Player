@@ -32,6 +32,9 @@
  * Player namespace.
  */
 namespace Player {
+	extern int screen_width;
+	extern int screen_height;
+
 	/** Bitmask for type of emulated engine */
 	enum EngineType {
 		EngineNone = 0,
@@ -130,6 +133,8 @@ namespace Player {
 	 * Initializes all game objects
 	 */
 	void CreateGameObjects();
+
+	void ChangeResolution(int width, int height);
 
 	/**
 	 * Resets all game objects. Faster then CreateGameObjects because

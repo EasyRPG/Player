@@ -49,6 +49,9 @@ Scene_Title::Scene_Title() {
 void Scene_Title::Start() {
 	Main_Data::game_system->ResetSystemGraphic();
 
+	// Change the resolution of the window
+	Player::ChangeResolution(Player::screen_width, Player::screen_height);
+
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
 		CreateTitleGraphic();
