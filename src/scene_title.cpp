@@ -64,7 +64,7 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::CreateHelpWindow() {
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	help_window.reset(new Window_Help(0, 0, Player::screen_width, 32));
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		help_window->SetBackOpacity(160);
@@ -189,11 +189,11 @@ void Scene_Title::CreateTitleGraphic() {
 
 void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical) {
 	if (!center_vertical) {
-		window.SetX(SCREEN_TARGET_WIDTH / 2 - window.GetWidth() / 2);
-		window.SetY(SCREEN_TARGET_HEIGHT * 53 / 60 - window.GetHeight());
+		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+		window.SetY(Player::screen_height * 53 / 60 - window.GetHeight());
 	} else {
-		window.SetX(SCREEN_TARGET_WIDTH / 2 - window.GetWidth() / 2);
-		window.SetY(SCREEN_TARGET_HEIGHT / 2 - window.GetHeight() / 2);
+		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+		window.SetY(Player::screen_height / 2 - window.GetHeight() / 2);
 	}
 }
 
@@ -387,11 +387,11 @@ void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 
 	// If the title sprite doesn't fill the screen, center it to support custom resolutions
 	Rect rect = title->GetBitmap()->GetRect();
-	if (bitmapRef->GetWidth() < SCREEN_TARGET_WIDTH) {
-		title->SetX(MENU_OFFSET_X);
+	if (bitmapRef->GetWidth() < Player::screen_width) {
+		title->SetX(Player::menu_offset_x);
 	}
-	if (bitmapRef->GetHeight() < SCREEN_TARGET_HEIGHT) {
-		title->SetY(MENU_OFFSET_Y);
+	if (bitmapRef->GetHeight() < Player::screen_height) {
+		title->SetY(Player::menu_offset_y);
 	}
 }
 

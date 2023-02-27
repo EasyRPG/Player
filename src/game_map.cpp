@@ -53,6 +53,9 @@
 #include "scene_gameover.h"
 #include "feature.h"
 
+int SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+int SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+
 namespace {
 	lcf::rpg::SaveMapInfo map_info;
 	lcf::rpg::SavePanorama panorama;
@@ -92,6 +95,9 @@ void Game_Map::OnContinueFromBattle() {
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
+	SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+
 	Dispose();
 
 	map_info = {};
@@ -1720,9 +1726,9 @@ void Game_Map::Parallax::ResetPositionX() {
 	}
 
 	if (!params.scroll_horz && !LoopHorizontal()) {
-		if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
+		if (GetWidth() > 20 && parallax_width > Player::screen_width) {
 			const int w = (GetWidth() - 20) * TILE_SIZE;
-			const int ph = 2 * std::min(w, parallax_width - SCREEN_TARGET_WIDTH) * map_info.position_x / w;
+			const int ph = 2 * std::min(w, parallax_width - Player::screen_width) * map_info.position_x / w;
 			if (Player::IsRPG2k()) {
 				SetPositionX(ph);
 			} else {
@@ -1743,9 +1749,9 @@ void Game_Map::Parallax::ResetPositionY() {
 	}
 
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
-		if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
+		if (GetHeight() > 15 && parallax_height > Player::screen_height) {
 			const int h = (GetHeight() - 15) * TILE_SIZE;
-			const int pv = 2 * std::min(h, parallax_height - SCREEN_TARGET_HEIGHT) * map_info.position_y / h;
+			const int pv = 2 * std::min(h, parallax_height - Player::screen_height) * map_info.position_y / h;
 			SetPositionY(pv);
 		} else {
 			panorama.pan_y = 0;

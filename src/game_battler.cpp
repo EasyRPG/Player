@@ -569,12 +569,12 @@ int Game_Battler::GetAgi(Weapon weapon) const {
 
 int Game_Battler::GetDisplayX() const {
 	int shake_pos = Main_Data::game_screen->GetShakeOffsetX() + shake.position;
-	return MENU_OFFSET_X + ((GetBattlePosition().x + shake_pos) * MENU_WIDTH / MENU_WIDTH);
+	return Player::menu_offset_x + ((GetBattlePosition().x + shake_pos) * MENU_WIDTH / MENU_WIDTH);
 }
 
 int Game_Battler::GetDisplayY() const {
 	int shake_pos = Main_Data::game_screen->GetShakeOffsetY();
-	return MENU_OFFSET_Y + ((GetBattlePosition().y + GetFlyingOffset() + shake_pos) * MENU_HEIGHT / MENU_HEIGHT);
+	return Player::menu_offset_y + ((GetBattlePosition().y + GetFlyingOffset() + shake_pos) * MENU_HEIGHT / MENU_HEIGHT);
 }
 
 Game_Party_Base& Game_Battler::GetParty() const {

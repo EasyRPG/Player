@@ -53,7 +53,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Main_Data::Cleanup();
 
 	// Restore the base resolution
-	Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+	Player::RestoreBaseResolution();
 
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
@@ -92,25 +92,25 @@ void Scene_GameBrowser::CreateWindows() {
 	options.push_back("About");
 	options.push_back("Exit");
 
-	command_window = std::make_unique<Window_Command_Horizontal>(options, SCREEN_TARGET_WIDTH);
+	command_window = std::make_unique<Window_Command_Horizontal>(options, Player::screen_width);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window = std::make_unique<Window_GameList>(0, 64, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT - 64);
+	gamelist_window = std::make_unique<Window_GameList>(0, 64, Player::screen_width, Player::screen_height - 64);
 	gamelist_window->Refresh(stack.back().filesystem, false);
 
 	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
 
-	help_window = std::make_unique<Window_Help>(0, 0, SCREEN_TARGET_WIDTH, 32);
+	help_window = std::make_unique<Window_Help>(0, 0, Player::screen_width, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
 
-	load_window = std::make_unique<Window_Help>(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32);
+	load_window = std::make_unique<Window_Help>(Player::screen_width / 4, Player::screen_height / 2 - 16, Player::screen_width / 2, 32);
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
 
-	about_window = std::make_unique<Window_About>(0, 64, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT - 64);
+	about_window = std::make_unique<Window_About>(0, 64, Player::screen_width, Player::screen_height - 64);
 	about_window->Refresh();
 	about_window->SetVisible(false);
 }

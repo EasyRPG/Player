@@ -22,6 +22,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "transition.h"
+#include <player.h>
 
 Scene_Teleport::Scene_Teleport(Game_Actor& actor, const lcf::rpg::Skill& skill)
 		: actor(&actor), skill(&skill) {
@@ -35,7 +36,7 @@ Scene_Teleport::Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill
 }
 
 void Scene_Teleport::Start() {
-	teleport_window.reset(new Window_Teleport(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
+	teleport_window.reset(new Window_Teleport(0, Player::screen_height - 80, Player::screen_width, 80));
 	teleport_window->SetActive(true);
 	teleport_window->SetIndex(0);
 }

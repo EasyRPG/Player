@@ -37,9 +37,6 @@
 #include "feature.h"
 
 constexpr int menu_command_width = 88;
-
-constexpr int menu_status_offset_x = MENU_OFFSET_X + 88;
-
 constexpr int gold_window_width = 88;
 constexpr int gold_window_height = 32;
 
@@ -52,10 +49,10 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window.reset(new Window_Gold(MENU_OFFSET_X, (SCREEN_TARGET_HEIGHT - gold_window_height - MENU_OFFSET_Y), gold_window_width, gold_window_height));
+	gold_window.reset(new Window_Gold(Player::menu_offset_x, (Player::screen_height - gold_window_height - Player::menu_offset_y), gold_window_width, gold_window_height));
 
 	// Status Window
-	menustatus_window.reset(new Window_MenuStatus(menu_status_offset_x, MENU_OFFSET_Y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT));
+	menustatus_window.reset(new Window_MenuStatus(Player::menu_offset_x + menu_command_width, Player::menu_offset_y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT));
 	menustatus_window->SetActive(false);
 }
 
@@ -162,8 +159,8 @@ void Scene_Menu::CreateCommandWindow() {
 	}
 
 	command_window.reset(new Window_Command(options, menu_command_width));
-	command_window->SetX(MENU_OFFSET_X);
-	command_window->SetY(MENU_OFFSET_Y);
+	command_window->SetX(Player::menu_offset_x);
+	command_window->SetY(Player::menu_offset_y);
 	command_window->SetIndex(menu_index);
 
 	// Disable items

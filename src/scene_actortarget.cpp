@@ -26,6 +26,7 @@
 #include "scene_skill.h"
 #include "output.h"
 #include <lcf/reader_util.h>
+#include <player.h>
 
 Scene_ActorTarget::Scene_ActorTarget(int item_id) :
 	id(item_id), actor_index(0), use_item(true) {
@@ -41,7 +42,7 @@ Scene_ActorTarget::Scene_ActorTarget(
 void Scene_ActorTarget::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 136, 32));
-	target_window.reset(new Window_ActorTarget(136, 0, 184, SCREEN_TARGET_HEIGHT));
+	target_window.reset(new Window_ActorTarget(136, 0, 184, Player::screen_height));
 	status_window.reset(new Window_TargetStatus(0, 32, 136, 32));
 
 	target_window->SetActive(true);

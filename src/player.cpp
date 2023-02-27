@@ -100,6 +100,9 @@ using namespace std::chrono_literals;
 namespace Player {
 	int screen_width = SCREEN_TARGET_WIDTH;
 	int screen_height = SCREEN_TARGET_HEIGHT;
+	int menu_offset_x = (screen_width - MENU_WIDTH) / 2;
+	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
+	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 
 	bool exit_flag;
 	bool reset_flag;
@@ -878,8 +881,19 @@ void Player::CreateGameObjects() {
 }
 
 void Player::ChangeResolution(int width, int height) {
+	Player::screen_width = width;
+	Player::screen_height = height;
+	Player::menu_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
+	Player::menu_offset_y = (Player::screen_height - MENU_HEIGHT) / 2;
+	Player::message_box_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
+
 	// TODO : Take the return of the function into account
 	DisplayUi->ChangeDisplaySurfaceResolution(width, height);
+}
+
+void Player::RestoreBaseResolution() {
+	// TODO : Take the return of the function into account
+	Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 }
 
 void Player::ResetGameObjects() {

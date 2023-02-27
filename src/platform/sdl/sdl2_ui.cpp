@@ -384,7 +384,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 			texture_format,
 			SDL_TEXTUREACCESS_STREAMING,
-			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+			Player::screen_width, Player::screen_height);
 
 		if (!sdl_texture_game) {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
@@ -429,7 +429,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	if (!main_surface) {
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, Color(0, 0, 0, 255));
+			Player::screen_width, Player::screen_height, Color(0, 0, 0, 255));
 	}
 
 	return true;
@@ -563,7 +563,7 @@ void Sdl2Ui::UpdateDisplay() {
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
 			// The aspect ratios are the same, let SDL2 scale it
-			window.scale = width_float / SCREEN_TARGET_WIDTH;
+			window.scale = width_float / Player::screen_width;
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
 
 			// Only used here for the mouse coordinates
@@ -779,8 +779,8 @@ void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
-	mouse_pos.x = (evnt.motion.x - viewport.x) * SCREEN_TARGET_WIDTH / xw;
-	mouse_pos.y = (evnt.motion.y - viewport.y) * SCREEN_TARGET_HEIGHT / yh;
+	mouse_pos.x = (evnt.motion.x - viewport.x) * Player::screen_width / xw;
+	mouse_pos.y = (evnt.motion.y - viewport.y) * Player::screen_height / yh;
 #else
 	/* unused */
 	(void) evnt;

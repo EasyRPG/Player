@@ -281,21 +281,21 @@ void Game_Screen::UpdateSandstorm() {
 			auto s = std::sin(dist(rng));
 			auto d = Rand::GetRandomNumber(16, 95);
 
-			p.x = static_cast<int>(d * c * 2.0f) * SCREEN_TARGET_WIDTH / 320 + SCREEN_TARGET_WIDTH / 2;
-			p.y = static_cast<int>(d * s) * SCREEN_TARGET_HEIGHT / 240;
+			p.x = static_cast<int>(d * c * 2.0f) * Player::screen_width / 320 + Player::screen_width / 2;
+			p.y = static_cast<int>(d * s) * Player::screen_height / 240;
 
 			p.alpha = 180;
 			p.vx = 0.0;
 			p.vy = 0.0;
-			p.ax = c * 2.0f * SCREEN_TARGET_WIDTH / 320;
-			p.ay = s * 2.0f * SCREEN_TARGET_HEIGHT / 240;
+			p.ax = c * 2.0f * Player::screen_width / 320;
+			p.ay = s * 2.0f * Player::screen_height / 240;
 		}
 	}
 }
 
 void Game_Screen::OnMapScrolled(int dx, int dy) {
-	constexpr auto pan_limit_x = GetPanLimitX();
-	constexpr auto pan_limit_y = GetPanLimitY();
+	auto pan_limit_x = GetPanLimitX();
+	auto pan_limit_y = GetPanLimitY();
 
 	data.pan_x = (data.pan_x - dx + pan_limit_x) % pan_limit_x;
 	data.pan_y = (data.pan_y - dy + pan_limit_y) % pan_limit_y;

@@ -32,8 +32,9 @@
  * Player namespace.
  */
 namespace Player {
-	extern int screen_width;
-	extern int screen_height;
+	extern int screen_width, screen_height;
+	extern int menu_offset_x, menu_offset_y;
+	extern int message_box_offset_x;
 
 	/** Bitmask for type of emulated engine */
 	enum EngineType {
@@ -134,7 +135,15 @@ namespace Player {
 	 */
 	void CreateGameObjects();
 
+	/**
+	 * Change the resolution of the Player
+	 */
 	void ChangeResolution(int width, int height);
+
+	/**
+	 * Restore the resolution of the Player on the base resolution (usually 320x240px)
+	 */
+	void RestoreBaseResolution();
 
 	/**
 	 * Resets all game objects. Faster then CreateGameObjects because

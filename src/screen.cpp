@@ -33,7 +33,7 @@ void Screen::Draw(Bitmap& dst) {
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
 		if (!flash) {
-			flash = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, flash_color);
+			flash = Bitmap::Create(Player::screen_width, Player::screen_height, flash_color);
 		} else {
 			flash->Fill(flash_color);
 		}

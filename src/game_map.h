@@ -37,14 +37,15 @@
 #include <lcf/rpg/savevehiclelocation.h>
 #include <lcf/rpg/savecommonevent.h>
 #include "async_op.h"
+#include <player.h>
 
 class FileRequestAsync;
 struct BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
-constexpr int SCREEN_WIDTH = (SCREEN_TARGET_WIDTH / 16) * SCREEN_TILE_SIZE;
-constexpr int SCREEN_HEIGHT = (SCREEN_TARGET_HEIGHT / 16) * SCREEN_TILE_SIZE;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 
 class MapUpdateAsyncContext {
 	public:

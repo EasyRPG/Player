@@ -75,7 +75,7 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		// Prevent effect sprite creation when not in the viewport
 		// TODO: Out of bounds math adjustments for zoom, angle and waver
 		// but even without this will catch most of the cases
-		if (Rect(x - ox, y - oy, GetWidth(), GetHeight()).IsOutOfBounds(Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT))) {
+		if (Rect(x - ox, y - oy, GetWidth(), GetHeight()).IsOutOfBounds(Rect(0, 0, Player::screen_width, Player::screen_height))) {
 			return BitmapRef();
 		}
 	}

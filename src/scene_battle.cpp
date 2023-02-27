@@ -213,21 +213,21 @@ void Scene_Battle::CreateUi() {
 
 	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
-	options_window->SetX(MENU_OFFSET_X);
-	options_window->SetY(MENU_OFFSET_Y + MENU_HEIGHT - 80);
+	options_window->SetX(Player::menu_offset_x);
+	options_window->SetY(Player::menu_offset_y + MENU_HEIGHT - 80);
 
-	help_window.reset(new Window_Help(MENU_OFFSET_X, MENU_OFFSET_Y, MENU_WIDTH, 32));
+	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, 32));
 	help_window->SetVisible(false);
 
-	item_window.reset(new Window_Item(MENU_OFFSET_X, (MENU_OFFSET_Y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	item_window.reset(new Window_Item(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
 	item_window->SetHelpWindow(help_window.get());
 	item_window->Refresh();
 	item_window->SetIndex(0);
 
-	skill_window.reset(new Window_BattleSkill(MENU_OFFSET_X, (MENU_OFFSET_Y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	skill_window.reset(new Window_BattleSkill(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	message_window.reset(new Window_Message(MENU_OFFSET_X, (MENU_OFFSET_Y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	message_window.reset(new Window_Message(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
 	Game_Message::SetWindow(message_window.get());
 }
 

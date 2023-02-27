@@ -19,6 +19,7 @@
 #include "options.h"
 #include "input.h"
 #include "scene.h"
+#include <player.h>
 
 constexpr int num_seconds = 2;
 constexpr int start_time = num_seconds * DEFAULT_FPS;
@@ -26,7 +27,7 @@ constexpr int start_time = num_seconds * DEFAULT_FPS;
 constexpr int window_height = 32;
 
 Game_Quit::Game_Quit()
-	: window(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - window_height / 2, SCREEN_TARGET_WIDTH / 2, window_height, Drawable::Flags::Global)
+	: window(Player::screen_width / 4, Player::screen_height / 2 - window_height / 2, Player::screen_width / 2, window_height, Drawable::Flags::Global)
 {
 	window.SetBackOpacity(128);
 	window.SetZ(Priority_Overlay - 20);
