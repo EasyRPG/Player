@@ -140,6 +140,9 @@ int Game_Map::GetMapSaveCount() {
 void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Dispose();
 
+	SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+
 	map = std::move(map_in);
 
 	SetupCommon();
