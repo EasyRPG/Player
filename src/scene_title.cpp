@@ -183,7 +183,7 @@ void Scene_Title::CreateTitleGraphic() {
 		request->Start();
 	} else {
 		title.reset(new Sprite());
-		title->SetBitmap(Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255)));
+		title->SetBitmap(Bitmap::Create(Player::screen_width, Player::screen_height, Color(0, 0, 0, 255)));
 	}
 }
 

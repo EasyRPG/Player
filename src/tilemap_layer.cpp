@@ -207,8 +207,8 @@ static uint32_t MakeAbTileHash(int id, int anim_step) {
 
 void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order) {
 	// Get the number of tiles that can be displayed on window
-	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
-	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);
+	int tiles_x = (int)ceil(Player::screen_width / (float)TILE_SIZE);
+	int tiles_y = (int)ceil(Player::screen_height / (float)TILE_SIZE);
 
 	// If ox or oy are not equal to the tile size draw the next tile too
 	// to prevent black (empty) tiles at the borders

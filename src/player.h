@@ -137,11 +137,15 @@ namespace Player {
 
 	/**
 	 * Change the resolution of the Player
+	 *
+	 * @param width new width
+	 * @param height new height
+	 * @return Whether the resolution change was successful
 	 */
-	void ChangeResolution(int width, int height);
+	bool ChangeResolution(int width, int height);
 
 	/**
-	 * Restore the resolution of the Player on the base resolution (usually 320x240px)
+	 * Restore the resolution of the Player on the base resolution (usually 320x240)
 	 */
 	void RestoreBaseResolution();
 

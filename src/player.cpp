@@ -880,20 +880,31 @@ void Player::CreateGameObjects() {
 	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
 }
 
-void Player::ChangeResolution(int width, int height) {
+bool Player::ChangeResolution(int width, int height) {
+	if (!DisplayUi->ChangeDisplaySurfaceResolution(width, height)) {
+		Output::Warning("Resolution change to {}x{} failed", width, height);
+		return false;
+	}
+
 	Player::screen_width = width;
 	Player::screen_height = height;
 	Player::menu_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
 	Player::menu_offset_y = (Player::screen_height - MENU_HEIGHT) / 2;
 	Player::message_box_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
 
-	// TODO : Take the return of the function into account
-	DisplayUi->ChangeDisplaySurfaceResolution(width, height);
+	Graphics::GetMessageOverlay().OnResolutionChange();
+	return true;
 }
 
 void Player::RestoreBaseResolution() {
-	// TODO : Take the return of the function into account
-	Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+	if (Player::screen_width == SCREEN_TARGET_WIDTH && Player::screen_height == SCREEN_TARGET_HEIGHT) {
+		return;
+	}
+
+	if (!Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT)) {
+		// Considering that this is the base resolution this should never fail
+		Output::Error("Failed restoring base resolution");
+	}
 }
 
 void Player::ResetGameObjects() {

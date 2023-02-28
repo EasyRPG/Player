@@ -100,9 +100,7 @@ void MessageOverlay::Update() {
 
 	if (!bitmap) {
 		// Initialisation is delayed because the display is not ready on startup
-		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color(0, 0, 0, 255));
-		bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
-		DrawableMgr::Register(this);
+		OnResolutionChange();
 	}
 
 	if (IsAnyMessageVisible()) {
@@ -123,6 +121,15 @@ void MessageOverlay::Update() {
 void MessageOverlay::SetShowAll(bool show_all) {
 	this->show_all = show_all;
 	dirty = true;
+}
+
+void MessageOverlay::OnResolutionChange() {
+	if (!bitmap) {
+		DrawableMgr::Register(this);
+	}
+
+	black = Bitmap::Create(Player::screen_width, text_height, Color(0, 0, 0, 255));
+	bitmap = Bitmap::Create(Player::screen_width, text_height * message_max, true);
 }
 
 bool MessageOverlay::IsAnyMessageVisible() const {

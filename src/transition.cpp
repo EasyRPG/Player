@@ -21,6 +21,7 @@
 #include <array>
 #include <cmath>
 
+#include "player.h"
 #include "transition.h"
 #include "async_handler.h"
 #include "bitmap.h"
@@ -120,26 +121,25 @@ void Transition::SetAttributesTransitions() {
 	int w, h, beg_i, mid_i, end_i, length;
 
 	zoom_position = std::vector<int>(2);
-	// FIXME: Break this dependency on DisplayUI
-	random_blocks = std::vector<uint32_t>(DisplayUi->GetWidth() * DisplayUi->GetHeight() / (size_random_blocks * size_random_blocks));
+	random_blocks = std::vector<uint32_t>(Player::screen_width * Player::screen_height / (size_random_blocks * size_random_blocks));
 	for (uint32_t i = 0; i < random_blocks.size(); i++) {
 		random_blocks[i] = i;
 	}
 
 	switch (transition_type) {
 	case TransitionRandomBlocks:
-		random_block_transition = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		random_block_transition = Bitmap::Create(Player::screen_width, Player::screen_height, true);
 		current_blocks_print = 0;
 		std::shuffle(random_blocks.begin(), random_blocks.end(), Rand::GetRNG());
 		break;
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
-		random_block_transition = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		random_block_transition = Bitmap::Create(Player::screen_width, Player::screen_height, true);
 		current_blocks_print = 0;
 		if (transition_type == TransitionRandomBlocksUp) { std::reverse(random_blocks.begin(), random_blocks.end()); }
 
-		w = DisplayUi->GetWidth() / 4;
-		h = DisplayUi->GetHeight() / 4;
+		w = Player::screen_width / 4;
+		h = Player::screen_height / 4;
 		length = 10;
 		for (int i = 0; i < h - 1; i++) {
 			end_i = (i < length ? 2 * i + 1 : i <= h - length ? i + length : (i + h) / 2) * w;
@@ -156,12 +156,12 @@ void Transition::SetAttributesTransitions() {
 	case TransitionZoomIn:
 	case TransitionZoomOut:
 		if (scene != nullptr && scene->type == Scene::Map) {
-			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX(), (int)DisplayUi->GetWidth()));
-			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8, (int)DisplayUi->GetHeight()));
+			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX(), (int)Player::screen_width));
+			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8, (int)Player::screen_height));
 		}
 		else {
-			zoom_position[0] = DisplayUi->GetWidth() / 2;
-			zoom_position[1] = DisplayUi->GetHeight() / 2;
+			zoom_position[0] = Player::screen_width / 2;
+			zoom_position[1] = Player::screen_height / 2;
 		}
 		break;
 	default:
@@ -404,13 +404,13 @@ void Transition::Update() {
 			// erase -> erase is ingored
 			// any -> erase - screen1 was drawn in init.
 			assert(ToErase() && !FromErase());
-			screen1 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
+			screen1 =  Bitmap::Create(Player::screen_width, Player::screen_height, false);
 			Graphics::LocalDraw(*screen1, std::numeric_limits<Drawable::Z_t>::min(), GetZ() - 1);
 		}
 		if (ToErase()) {
-			screen2 = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+			screen2 = Bitmap::Create(Player::screen_width, Player::screen_height, Color(0, 0, 0, 255));
 		} else {
-			screen2 =  Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
+			screen2 =  Bitmap::Create(Player::screen_width, Player::screen_height, false);
 			Graphics::LocalDraw(*screen2, std::numeric_limits<Drawable::Z_t>::min(), GetZ() - 1);
 		}
 	}
