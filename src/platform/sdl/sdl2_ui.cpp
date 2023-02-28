@@ -194,8 +194,9 @@ Sdl2Ui::~Sdl2Ui() {
 }
 
 bool Sdl2Ui::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
-	current_display_mode.width = new_width;
-	current_display_mode.height = new_height;
+	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
+		return true;
+	}
 
 	SDL_Texture* new_sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 		texture_format,
@@ -221,8 +222,14 @@ bool Sdl2Ui::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
 	}
 
 	main_surface = new_main_surface;
-
 	window.size_changed = true;
+
+	BeginDisplayModeChange();
+
+	current_display_mode.width = new_width;
+	current_display_mode.height = new_height;
+
+	EndDisplayModeChange();
 
 	return true;
 }
@@ -288,8 +295,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	bool& vsync = current_display_mode.vsync;
 
 #ifdef SUPPORT_ZOOM
-	display_width *= current_display_mode.zoom;
-	display_height *= current_display_mode.zoom;
+	int display_width_zoomed = display_width * current_display_mode.zoom;
+	int display_height_zoomed = display_height * current_display_mode.zoom;
+#else
+	int display_width_zoomed = display_width;
+	int display_height_zoomed = display_height;
 #endif
 
 	if (!sdl_window) {
@@ -314,7 +324,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			sdl_window = SDL_CreateWindow(GAME_TITLE,
 				SDL_WINDOWPOS_CENTERED,
 				SDL_WINDOWPOS_CENTERED,
-				display_width, display_height,
+				display_width_zoomed, display_height_zoomed,
 				SDL_WINDOW_RESIZABLE | flags);
 		} else {
 			sdl_window = SDL_CreateWindow(GAME_TITLE,
@@ -387,7 +397,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 			texture_format,
 			SDL_TEXTUREACCESS_STREAMING,
-			Player::screen_width, Player::screen_height);
+			display_width, display_height);
 
 		if (!sdl_texture_game) {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
@@ -409,7 +419,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 				// Restore to pre-fullscreen size
 				SDL_SetWindowSize(sdl_window, 0, 0);
 			} else {
-				SDL_SetWindowSize(sdl_window, display_width, display_height);
+				SDL_SetWindowSize(sdl_window, display_width_zoomed, display_height_zoomed);
 			}
 		}
 #endif
@@ -432,7 +442,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	if (!main_surface) {
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			Player::screen_width, Player::screen_height, Color(0, 0, 0, 255));
+			display_width, display_height, Color(0, 0, 0, 255));
 	}
 
 	return true;
@@ -566,7 +576,7 @@ void Sdl2Ui::UpdateDisplay() {
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
 			// The aspect ratios are the same, let SDL2 scale it
-			window.scale = width_float / Player::screen_width;
+			window.scale = width_float / main_surface->width();
 			SDL_RenderSetViewport(sdl_renderer, nullptr);
 
 			// Only used here for the mouse coordinates
@@ -782,8 +792,8 @@ void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
-	mouse_pos.x = (evnt.motion.x - viewport.x) * Player::screen_width / xw;
-	mouse_pos.y = (evnt.motion.y - viewport.y) * Player::screen_height / yh;
+	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
+	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
 #else
 	/* unused */
 	(void) evnt;
