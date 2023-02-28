@@ -65,8 +65,8 @@ void Scene_End::CreateCommandWindow() {
 	options.push_back(ToString(lcf::Data::terms.no));
 
 	command_window.reset(new Window_Command(options));
-	command_window->SetX((Player::screen_width /2) - command_window->GetWidth() / 2);
-	command_window->SetY(72 + 48);
+	command_window->SetX((Player::screen_width / 2) - (command_window->GetWidth() / 2));
+	command_window->SetY(Player::menu_offset_y + 72 + 48);
 	command_window->SetIndex(1);
 }
 
