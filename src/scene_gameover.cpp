@@ -23,6 +23,7 @@
 #include "input.h"
 #include "main_data.h"
 #include "transition.h"
+#include "player.h"
 
 Scene_Gameover::Scene_Gameover() {
 	type = Scene::Gameover;
@@ -48,7 +49,18 @@ void Scene_Gameover::vUpdate() {
 void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 	// Load Background Graphic
 	background.reset(new Sprite());
-	background->SetBitmap(Cache::Gameover(result->file));
+
+	BitmapRef bitmapRef = Cache::Gameover(result->file);
+	background->SetBitmap(bitmapRef);
+
+	// If the sprite doesn't fill the screen, center it to support custom resolutions
+	Rect rect = background->GetBitmap()->GetRect();
+	if (bitmapRef->GetWidth() < Player::screen_width) {
+		background->SetX(Player::menu_offset_x);
+	}
+	if (bitmapRef->GetHeight() < Player::screen_height) {
+		background->SetY(Player::menu_offset_y);
+	}
 }
 
 void Scene_Gameover::TransitionIn(SceneType /* prev_scene */) {
