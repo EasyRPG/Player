@@ -53,10 +53,11 @@
 #include "scene_gameover.h"
 #include "feature.h"
 
-int SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
-int SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
-
 namespace {
+	// Intended bad value, Game_Map::Init sets them correctly
+	int screen_width = -1;
+	int screen_height = -1;
+
 	lcf::rpg::SaveMapInfo map_info;
 	lcf::rpg::SavePanorama panorama;
 
@@ -95,8 +96,8 @@ void Game_Map::OnContinueFromBattle() {
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
-	SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
-	SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+	screen_width = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	screen_height = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
 
 	Dispose();
 
@@ -140,8 +141,8 @@ int Game_Map::GetMapSaveCount() {
 void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Dispose();
 
-	SCREEN_WIDTH = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
-	SCREEN_HEIGHT = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+	screen_width = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	screen_height = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
 
 	map = std::move(map_in);
 
@@ -469,7 +470,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 	if (LoopHorizontal()) {
 		screen_x = (screen_x + inc) % map_width;
 	} else {
-		ClampingAdd(0, map_width - SCREEN_WIDTH, screen_x, inc);
+		ClampingAdd(0, map_width - screen_width, screen_x, inc);
 	}
 }
 
@@ -478,7 +479,7 @@ void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	if (LoopVertical()) {
 		screen_y = (screen_y + inc) % map_height;
 	} else {
-		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
+		ClampingAdd(0, map_height - screen_height, screen_y, inc);
 	}
 }
 
@@ -1373,7 +1374,7 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
 	} else {
-		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
+		x = std::max(0, std::min(map_width - screen_width, x));
 	}
 	map_info.position_x = x;
 	if (reset_panorama) {
@@ -1395,7 +1396,7 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
 	} else {
-		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
+		y = std::max(0, std::min(map_height - screen_height, y));
 	}
 	map_info.position_y = y;
 	if (reset_panorama) {

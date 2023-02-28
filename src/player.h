@@ -32,10 +32,6 @@
  * Player namespace.
  */
 namespace Player {
-	extern int screen_width, screen_height;
-	extern int menu_offset_x, menu_offset_y;
-	extern int message_box_offset_x;
-
 	/** Bitmask for type of emulated engine */
 	enum EngineType {
 		EngineNone = 0,
@@ -318,6 +314,21 @@ namespace Player {
 
 	/** Touch flag, if true enables finger taps */
 	extern bool touch_flag;
+
+	/** The width of the screen */
+	extern int screen_width;
+
+	/** The height of the screen */
+	extern int screen_height;
+
+	/** The X offset used to center UI in custom resolutions */
+	extern int menu_offset_x;
+
+	/** The Y offset used to center UI in custom resolutions */
+	extern int menu_offset_y;
+
+	/** The X offset used to center the MessageBox in custom resolutions */
+	extern int message_box_offset_x;
 
 	/** Overwrite party x position */
 	extern int party_x_position;
