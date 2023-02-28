@@ -70,21 +70,21 @@ void Scene_Settings::CreateMainWindow() {
 	};
 	main_window = std::make_unique<Window_Command>(std::move(options));
 	main_window->SetHeight(176);
-	main_window->SetY(32);
+	main_window->SetY((Player::screen_height - main_window->GetHeight()) / 2);
 	main_window->SetX((Player::screen_width - main_window->GetWidth()) / 2);
 }
 
 void Scene_Settings::CreateOptionsWindow() {
-	help_window.reset(new Window_Help(0, 0, Player::screen_width, 32));
-	options_window = std::make_unique<Window_Settings>(32, 32, Player::screen_width - 64, 176);
+	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
+	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
 
-	input_window = std::make_unique<Window_InputSettings>(0, 32, Player::screen_width, 176 - 32);
+	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
 	input_window->SetHelpWindow(help_window.get());
 
 	std::vector<std::string> input_mode_items = {"Add", "Remove", "Reset"};
-	input_mode_window = std::make_unique<Window_Command_Horizontal>(input_mode_items, Player::screen_width - 64);
-	input_mode_window->SetX(32);
+	input_mode_window = std::make_unique<Window_Command_Horizontal>(input_mode_items, MENU_WIDTH - 32 * 2);
+	input_mode_window->SetX(Player::menu_offset_x + 32);
 	input_mode_window->SetY(Player::screen_height - 32);
 	input_mode_window->SetHelpWindow(help_window.get());
 	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int index) {
@@ -97,7 +97,7 @@ void Scene_Settings::CreateOptionsWindow() {
 		}
 	};
 
-	input_help_window = std::make_unique<Window_Help>(0, Player::screen_height - 64, Player::screen_width, 32);
+	input_help_window = std::make_unique<Window_Help>(Player::menu_offset_x, Player::screen_height - 64, MENU_WIDTH, 32);
 }
 
 void Scene_Settings::Start() {
@@ -245,7 +245,18 @@ void Scene_Settings::vUpdate() {
 }
 
 void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
-	title->SetBitmap(Cache::Title(result->file));
+	BitmapRef bitmapRef = Cache::Title(result->file);
+
+	title->SetBitmap(bitmapRef);
+
+	// If the title sprite doesn't fill the screen, center it to support custom resolutions
+	Rect rect = title->GetBitmap()->GetRect();
+	if (bitmapRef->GetWidth() < Player::screen_width) {
+		title->SetX(Player::menu_offset_x);
+	}
+	if (bitmapRef->GetHeight() < Player::screen_height) {
+		title->SetY(Player::menu_offset_y);
+	}
 }
 
 void Scene_Settings::UpdateMain() {
@@ -508,12 +519,6 @@ void Scene_Settings::RefreshInputRemoveAllowed() {
 	auto button = static_cast<Input::InputButton>(options_window->GetFrame().arg);
 	input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > Input::IsProtectedButton(button) ? 1 : 0;
 	input_mode_window->SetItemEnabled(1, input_mode_window_remove_allowed);
-}
-
-void Scene_Settings::DrawBackground(Bitmap& dst) {
-	if (!title || !title->GetBitmap()) {
-		Scene::DrawBackground(dst);
-	}
 }
 
 bool Scene_Settings::SaveConfig(bool silent) {
