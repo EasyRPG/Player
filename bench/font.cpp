@@ -13,7 +13,7 @@ constexpr int height = 80;
 static void BM_FontSizeStr(benchmark::State& state) {
 	auto font = Font::Default();
 	for (auto _: state) {
-		auto rect = font->GetSize(text);
+		auto rect = Text::GetSize(*font, text);
 		(void)rect;
 	}
 }
@@ -30,15 +30,15 @@ static void BM_FontSizeChar(benchmark::State& state) {
 
 BENCHMARK(BM_FontSizeChar);
 
-static void BM_Glyph(benchmark::State& state) {
+static void BM_vRender(benchmark::State& state) {
 	auto font = Font::Default();
 	for (auto _: state) {
-		auto bm = font->Glyph(symbol);
+		auto bm = font->vRender(symbol);
 		(void)bm;
 	}
 }
 
-BENCHMARK(BM_Glyph);
+BENCHMARK(BM_vRender);
 
 static void BM_Render(benchmark::State& state) {
 	Bitmap::SetFormat(format_R8G8B8A8_a().format());

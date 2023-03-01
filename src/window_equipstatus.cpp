@@ -136,7 +136,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 			}
 		} else {
 			// Draw arrow
-			int offset = (12 - Font::Default()->GetSize(lcf::Data::terms.easyrpg_equipment_arrow).width) / 2;
+			int offset = (12 - Text::GetSize(*Font::Default(), lcf::Data::terms.easyrpg_equipment_arrow).width) / 2;
 			contents->TextDraw(cx + offset, cy, 1, lcf::Data::terms.easyrpg_equipment_arrow);
 		}
 

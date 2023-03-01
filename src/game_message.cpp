@@ -97,7 +97,7 @@ int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallb
 			}
 
 			auto wrapped = line.substr(start, found - start);
-			auto width = font.GetSize(wrapped).width;
+			auto width = Text::GetSize(font, wrapped).width;
 			if (width > limit) {
 				if (next == start) {
 					next = found + 1;

@@ -429,7 +429,7 @@ void Window_Settings::RefreshButtonList() {
 
 		// Append as many buttons as fit on the screen, then add ...
 		int contents_w = GetContents()->width();
-		int name_size = Font::Default()->GetSize(name).width;
+		int name_size = Text::GetSize(*Font::Default(), name).width;
 		int value_size = 0;
 
 		for (auto ki = mappings.LowerBound(button); ki != mappings.end() && ki->first == button; ++ki) {
@@ -444,7 +444,7 @@ void Window_Settings::RefreshButtonList() {
 				cur_value = Input::Keys::kNames.tag(ki->second);
 			}
 
-			int cur_value_size = Font::Default()->GetSize(cur_value + ",").width;
+			int cur_value_size = Text::GetSize(*Font::Default(), cur_value + ",").width;
 
 			if (value.empty()) {
 				value = cur_value;

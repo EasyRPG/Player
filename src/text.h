@@ -54,7 +54,7 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws the text onto dest bitmap with given parameters. Does not draw a shadow.
@@ -68,7 +68,7 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, Font& font, Color color, StringView text);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, Color color, StringView text);
 
 	/**
 	 * Draws the character onto dest bitmap with given parameters.
@@ -84,7 +84,7 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, Font& font, const Bitmap& system, int color, char32_t ch, bool is_exfont);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont);
 
 
 	/**
@@ -100,6 +100,31 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, Font& font, Color color, char32_t ch, bool is_exfont);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, Color color, char32_t glyph, bool is_exfont);
+
+	/**
+	 * Determines the size of a bitmap required to render a string.
+	 * The dimensions of the Rect describe a bounding box to fit the text.
+	 * For continuous rendering use the "width" property.
+	 *
+	 * @param font the font used to render.
+	 * @param text the string to measure.
+	 *
+	 * @return Rect describing the rendered string boundary
+	 */
+	Rect GetSize(const Font& font, StringView text);
+
+	/**
+	 * Determines the size of a bitmap required to render a single character.
+	 * The dimensions of the Rect describe a bounding box to fit the character.
+	 * For continuous rendering use the "width" property.
+	 *
+	 * @param font the font used to render.
+	 * @param glyph the character to mesaure.
+	 * @param is_exfont if true, treat ch as an exfont character. Otherwise, a utf32 character.
+	 *
+	 * @return Rect describing the rendered string boundary
+	 */
+	Rect GetSize(const Font& font, char32_t glyph, bool is_exfont);
 }
 #endif

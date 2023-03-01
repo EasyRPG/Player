@@ -131,7 +131,7 @@ public:
 	/** @return the number of lines per page */
 	int GetMaxLinesPerPage() const;
 
-	/** 
+	/**
 	 * Set the number of lines per page
 	 *
 	 * @param lines the number of lines
@@ -186,7 +186,10 @@ protected:
 
 	PendingMessage pending_message;
 
+	std::vector<Font::ShapeRet> shape_ret;
+
 	bool DrawGlyph(Font& font, const Bitmap& system, char32_t glyph, bool is_exfont);
+	bool DrawGlyph(Font& font, const Bitmap& system, const Font::ShapeRet& shape);
 	void IncrementLineCharCounter(int width);
 
 	void SetWaitForCharacter(int width);

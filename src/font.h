@@ -26,32 +26,23 @@
 #include "rect.h"
 #include "string_view.h"
 #include <string>
+#include <lcf/scope_guard.h>
 
 class Color;
 class Rect;
 
 /**
  * Font class.
+ *
+ * All methods in this class are private API.
+ * Only use it when low level access is required.
+ * Use the API in Text instead.
+ *
+ * @see Text
  */
 class Font {
  public:
-	virtual ~Font() = default;
-
-	/**
-	 * Returns the size of the rendered string, not including shadows.
-	 *
-	 * @param txt the string to measure
-	 * @return Rect describing the rendered string boundary
-	 */
-	virtual Rect GetSize(StringView txt) const = 0;
-	/**
-	 * Returns the size of the rendered utf32 character, not including shadows.
-	 *
-	 * @param ch the character to measure
-	 * @return Rect describing the rendered character boundary
-	 */
-	virtual Rect GetSize(char32_t ch) const = 0;
-
+	/** Contains bitmap and metrics of a glyph */
 	struct GlyphRet {
 		/** bitmap which the glyph pixels are located within */
 		BitmapRef bitmap;
@@ -66,14 +57,47 @@ class Font {
 		bool has_color = false;
 	};
 
-	/* Returns a bitmap and rect containing the pixels of the glyph.
-	 * The bitmap may be larger than the size of the glyph, and so the
-	 * rect must be used to get the pixels out of the bitmap
+	/** Contains metrics of a glyph shaped by Harfbuzz */
+	struct ShapeRet {
+		/** Codepoint of this glyph after shaping */
+		char32_t code;
+		/**
+		 * How far to advance the x/y offset after drawing for the next glyph.
+		 * y value is only relevant for vertical layouts.
+		 */
+		Point advance;
+		/** x/y position in the buffer where the glyph is rendered at */
+		Point offset;
+		/**
+		 * When true the glyph was not found.
+		 * In that case code contains the original codepoint usable for a fallback.
+		 */
+		bool not_found;
+	};
+
+	/** Contains style informations */
+	struct Style {
+		/** Size in pixel to render at. -1 will use the size specified during initialisation */
+		int size = -1;
+		/** Whether to render text in bold (currently unsupported) */
+		bool bold = false;
+		/** Whether to render text in italic (currently unsupported) */
+		bool italic = false;
+		/** Whether to render a drop shadow */
+		bool draw_shadow = false;
+	};
+
+	virtual ~Font() = default;
+
+	/**
+	 * Determines the size of a bitmap required to render a single character.
+	 * The dimensions of the Rect describe a bounding box to fit the text.
 	 *
-	 * @param code which utf32 glyph to return.
-	 * @return @refer GlyphRet
+	 * @param glyph the glyph to measure.
+	 * @see Text::GetSize
+	 * @return Rect describing the rendered string boundary
 	 */
-	virtual GlyphRet Glyph(char32_t code) = 0;
+	Rect GetSize(char32_t glyph) const;
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -87,7 +111,22 @@ class Font {
 	 *
 	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, char32_t glyph) const;
+
+	/**
+	 * Renders the glyph onto bitmap at the given position with system graphic and color.
+	 * For glyph positioning pre-calculated shaping data can be specified.
+	 *
+	 * @param dest the bitmap to render to
+	 * @param x X offset to render glyph
+	 * @param y Y offset to render glyph
+	 * @param sys system graphic to use
+	 * @param color which color in the system graphic
+	 * @param shape shaping information for the glyph
+	 *
+	 * @return Rect containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow!
+	 */
+	Point Render(Bitmap& dest, int x, int y, const Bitmap& sys, int color, const ShapeRet& shape) const;
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color
@@ -100,7 +139,25 @@ class Font {
 	 *
 	 * @return Point containing how far to advance in x/y direction.
 	 */
-	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph);
+	Point Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const;
+
+	/**
+	 * Determines if the used font supports shaping.
+	 * This will only return true when the font uses FreeType and HarfBuzz is enabled.
+	 *
+	 * @return Whether shaping is supported.
+	 */
+	bool CanShape() const;
+
+	/**
+	 * Shapes the passed text and returns new codepoints and positioning information.
+	 * This method will abort when shaping is not supported.
+	 *
+	 * @see CanShape()
+	 * @param text Text to shape
+	 * @return Shaping information. See Font::ShapeRet
+	 */
+	std::vector<ShapeRet> Shape(U32StringView text) const;
 
 	/**
 	 * Defines a fallback font that shall be used when a glyph is not found in the current font.
@@ -110,6 +167,33 @@ class Font {
 	 */
 	void SetFallbackFont(FontRef fallback_font);
 
+	using StyleScopeGuard = lcf::ScopeGuard<std::function<void()>>;
+
+	/**
+	 * Returns the current font style used for rendering.
+	 *
+	 * @return current style
+	 */
+	Style GetCurrentStyle() const;
+
+	/**
+	 * Applies a new text style for rendering.
+	 * The style is reverted to the original style afterwards through the returned scope guard.
+	 *
+	 * @param new_style new style to apply
+	 * @return StyleScopeGuard When destroyed, reverts to the old style
+	 */
+	StyleScopeGuard ApplyStyle(Style new_style);
+
+	/**
+	 * Uses the FreeType library to load a font from the provided stream.
+	 *
+	 * @param is Stream to read from
+	 * @param size Font size (height) in px
+	 * @param bold Configure for bold rendering. This option is ignored.
+	 * @param italic Configure for italic rendering. This option is ignored.
+	 * @return font handle or nullptr on failure or if FreeType is unavailable
+	 */
 	static FontRef CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 	static FontRef Default();
 	static FontRef Default(bool use_mincho);
@@ -130,15 +214,19 @@ class Font {
 		ColorHeal = 9
 	};
 
-	std::string name;
-	unsigned size;
-	bool bold;
-	bool italic;
+	virtual Rect vGetSize(char32_t glyph) const = 0;
+	virtual GlyphRet vRender(char32_t glyph) const = 0;
+	virtual GlyphRet vRenderShaped(char32_t glyph) const { return vRender(glyph); };
+	virtual bool vCanShape() const { return false; }
+	virtual std::vector<ShapeRet> vShape(U32StringView) const { return {}; }
+	virtual void vApplyStyle(const Style& style) { (void)style; };
 
-	size_t pixel_size() const { return size * 96 / 72; }
  protected:
 	Font(StringView name, int size, bool bold, bool italic);
 
+	std::string name;
+	Style original_style;
+	Style current_style;
 	FontRef fallback_font;
 };
 

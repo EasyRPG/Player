@@ -21,6 +21,7 @@
 #include <iterator>
 
 #include "compiler.h"
+#include "utils.h"
 #include "window_message.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -42,6 +43,9 @@
 constexpr int message_animation_frames = 7;
 constexpr int gold_window_width = 88;
 constexpr int gold_window_height = 32;
+
+//#define EP_DEBUG_MESSAGE
+//#define EP_DEBUG_MESSAGE_TEXT
 
 namespace {
 #if defined(EP_DEBUG_MESSAGE) || defined(EP_DEBUG_MESSAGE_TEXT)
@@ -469,6 +473,15 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
+		if (!shape_ret.empty()) {
+			if (!DrawGlyph(*font, *system, shape_ret[0])) {
+				continue;
+			}
+
+			shape_ret.erase(shape_ret.begin());
+			continue;
+		}
+
 		if (GetPause() || GetIndex() >= 0 || number_input_window->GetActive()) {
 			break;
 		}
@@ -563,7 +576,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '_':
 				// Insert half size space
-				contents_x += Font::Default()->GetSize(" ").width / 2;
+				contents_x += Text::GetSize(*Font::Default(), " ").width / 2;
 				DebugLogText("{}: MSG HalfWait \\_");
 				SetWaitForCharacter(1);
 				break;
@@ -621,9 +634,39 @@ void Window_Message::UpdateMessage() {
 			continue;
 		}
 
-		if (!DrawGlyph(*font, *system, ch, false)) {
-			text_index = text_prev;
+		if (font->CanShape()) {
+			assert(shape_ret.empty());
+
+			auto text_index_shape = text_index;
+			std::u32string text32;
+			text32 += ch;
+
+			while (true) {
+				tret = Utils::TextNext(text_index_shape, end, Player::escape_char);
+
+				if (EP_UNLIKELY(!tret)) {
+					break;
+				}
+
+				auto text_prev_shape = text_index_shape;
+				text_index_shape = tret.next;
+				auto chs = tret.ch;
+
+				if (text_index_shape == end || tret.is_exfont || tret.is_escape || Utils::IsControlCharacter(chs)) {
+					text_index = text_prev_shape;
+					break;
+				}
+
+				text32 += tret.ch;
+			}
+
+			shape_ret = font->Shape(text32);
 			continue;
+		} else {
+			if (!DrawGlyph(*font, *system, ch, false)) {
+				text_index = text_prev;
+				continue;
+			}
 		}
 	}
 }
@@ -641,6 +684,7 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 
 	// RPG_RT compatible for half-width (6) and full-width (12)
 	// generalizes the algo for even bigger glyphs
+	// FIXME: When using Freetype this can cause slow rendering speeds due to dynamic width
 	auto get_width = [](int w) {
 		return (w > 0) ? (w - 1) / 6 + 1 : 0;
 	};
@@ -660,7 +704,37 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, char32_t glyph,
 
 	auto rect = Text::Draw(*contents, contents_x, contents_y, font, system, text_color, glyph, is_exfont);
 
-	// FIXME: When using Freetype the detection is incorrect due to dynamic width
+	int glyph_width = rect.x;
+	contents_x += glyph_width;
+	int width = get_width(glyph_width);
+	SetWaitForCharacter(width);
+
+	return true;
+}
+
+bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, const Font::ShapeRet& shape) {
+	// RPG_RT compatible for half-width (6) and full-width (12)
+	// generalizes the algo for even bigger glyphs
+	// FIXME: This can cause slow rendering speeds for complex shapes
+	auto get_width = [](int w) {
+		return (w > 0) ? (w - 1) / 6 + 1 : 0;
+	};
+
+	DebugLogText("{}: MSG DrawGlyph Shape {}, {}", static_cast<uint32_t>(shape.code), get_width(shape.advance.x));
+
+	// Wide characters cause an extra wait if the last printed character did not wait.
+	if (prev_char_printable && !prev_char_waited) {
+		auto width = get_width(shape.advance.x);
+		if (width >= 2) {
+			prev_char_waited = true;
+			++line_char_counter;
+			SetWait(1);
+			return false;
+		}
+	}
+
+	auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
+
 	int glyph_width = rect.x;
 	contents_x += glyph_width;
 	int width = get_width(glyph_width);
@@ -765,11 +839,18 @@ void Window_Message::SetWaitForNonPrintable(int frames) {
 void Window_Message::SetWaitForCharacter(int width) {
 	int frames = 0;
 	if (!instant_speed && width > 0) {
-		bool is_last_for_page = (text.data() + text.size() - text_index) < 2 || (*text_index == '\n' && *(text_index + 1) == '\f');
+		bool is_last_for_page;
+		if (!shape_ret.empty()) {
+			is_last_for_page = (shape_ret.size() == 1) && (
+				(text.data() + text.size() - text_index) <= 1 || (*text_index == '\n' && *(text_index + 1) == '\f'));
+		} else {
+			is_last_for_page = (text.data() + text.size() - text_index) <= 1 || (*text_index == '\n' && *(text_index + 1) == '\f');
+		}
 
 		if (is_last_for_page) {
 			// RPG_RT always waits 2 frames for last character on the page.
 			// FIXME: Exfonts / wide last on page?
+			DebugLogText("{}: is_last_for_page");
 			frames = 2;
 		} else {
 			if (speed > 1) {

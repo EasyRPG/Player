@@ -70,7 +70,7 @@ void Scene_End::CreateCommandWindow() {
 }
 
 void Scene_End::CreateHelpWindow() {
-	int text_size = Font::Default()->GetSize(lcf::Data::terms.exit_game_message).width;
+	int text_size = Text::GetSize(*Font::Default(), lcf::Data::terms.exit_game_message).width;
 
 	int window_width = text_size + 16;
 

@@ -41,9 +41,9 @@ void Window_SaveFile::UpdateCursorRect() {
 
 	if (GetActive()) {
 		if (override_index > 0) {
-			rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + 6, 16);
+			rect = Rect(0, 0, Text::GetSize(*Font::Default(), GetSaveFileName()).width + 6, 16);
 		} else {
-			rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + Font::Default()->GetSize(" ").width * 5 / 2 + 8, 16);
+			rect = Rect(0, 0, Text::GetSize(*Font::Default(), GetSaveFileName()).width + Text::GetSize(*Font::Default(), " ").width * 5 / 2 + 8, 16);
 		}
 	}
 
@@ -96,11 +96,11 @@ void Window_SaveFile::Refresh() {
 	Font::SystemColor fc = has_save ? Font::ColorDefault : Font::ColorDisabled;
 
 	contents->TextDraw(4, 2, fc, GetSaveFileName());
-	contents->TextDraw(4 + Font::Default()->GetSize(GetSaveFileName()).width, 2, fc, " ");
+	contents->TextDraw(4 + Text::GetSize(*Font::Default(), GetSaveFileName()).width, 2, fc, " ");
 
 	std::stringstream out;
 	out << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4 + Font::Default()->GetSize(GetSaveFileName()).width + Font::Default()->GetSize(" ").width / 2, 2, fc, out.str());
+	contents->TextDraw(4 + Text::GetSize(*Font::Default(), GetSaveFileName()).width + Text::GetSize(*Font::Default(), " ").width / 2, 2, fc, out.str());
 
 	if (corrupted) {
 		contents->TextDraw(4, 16 + 2, Font::ColorKnockout, "Savegame corrupted");
@@ -126,7 +126,7 @@ void Window_SaveFile::Refresh() {
 
 	contents->TextDraw(4, 32 + 2, 1, lvl_short);
 
-	int lx = Font::Default()->GetSize(lvl_short).width;
+	int lx = Text::GetSize(*Font::Default(), lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << data.hero_level;
 	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
@@ -138,7 +138,7 @@ void Window_SaveFile::Refresh() {
 
 	contents->TextDraw(46, 32 + 2, 1, hp_short);
 
-	int hx = Font::Default()->GetSize(hp_short).width;
+	int hx = Text::GetSize(*Font::Default(), hp_short).width;
 	out.str("");
 	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << data.hero_hp;
 	contents->TextDraw(46 + hx, 32 + 2, fc, out.str());

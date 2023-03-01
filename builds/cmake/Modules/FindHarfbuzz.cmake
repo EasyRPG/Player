@@ -64,6 +64,30 @@ if(HARFBUZZ_FOUND)
 			INTERFACE_INCLUDE_DIRECTORIES "${HARFBUZZ_INCLUDE_DIRS}"
 			INTERFACE_LINK_LIBRARIES Freetype::Freetype
 			IMPORTED_LOCATION "${HARFBUZZ_LIBRARY}")
+
+		if(APPLE)
+			# Framework list taken from Harfbuzz CMakeLists
+			if(IOS)
+				find_library(COREFOUNDATION CoreFoundation REQUIRED)
+				find_library(CORETEXT CoreText REQUIRED)
+				find_library(COREGRAPHICS CoreGraphics REQUIRED)
+
+				set_property(TARGET Harfbuzz::Harfbuzz APPEND PROPERTY
+					INTERFACE_LINK_LIBRARIES ${COREFOUNDATION} ${CORETEXT}
+						${COREGRAPHICS})
+
+				mark_as_advanced(COREFOUNDATION)
+				mark_as_advanced(CORETEXT)
+				mark_as_advanced(COREGRAPHICS)
+			else()
+				find_library(APPLICATION_SERVICES ApplicationServices REQUIRED)
+
+				set_property(TARGET Harfbuzz::Harfbuzz APPEND PROPERTY
+					INTERFACE_LINK_LIBRARIES ${APPLICATION_SERVICES})
+
+				mark_as_advanced(APPLICATION_SERVICES)
+			endif()
+		endif()
 	endif()
 endif()
 

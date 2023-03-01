@@ -28,6 +28,7 @@
 #endif
 
 using StringView = lcf::StringView;
+using U32StringView = lcf::U32StringView;
 
 using lcf::ToString;
 using lcf::ToStringView;
