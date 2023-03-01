@@ -1730,8 +1730,9 @@ void Game_Map::Parallax::ResetPositionX() {
 	}
 
 	if (!params.scroll_horz && !LoopHorizontal()) {
-		if (GetWidth() > 20 && parallax_width > Player::screen_width) {
-			const int w = (GetWidth() - 20) * TILE_SIZE;
+		int tiles_per_screen = (Player::screen_width / TILE_SIZE * TILE_SIZE + 16) / TILE_SIZE;
+		if (GetWidth() > tiles_per_screen && parallax_width > Player::screen_width) {
+			const int w = (GetWidth() - tiles_per_screen) * TILE_SIZE;
 			const int ph = 2 * std::min(w, parallax_width - Player::screen_width) * map_info.position_x / w;
 			if (Player::IsRPG2k()) {
 				SetPositionX(ph);
@@ -1753,8 +1754,9 @@ void Game_Map::Parallax::ResetPositionY() {
 	}
 
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
-		if (GetHeight() > 15 && parallax_height > Player::screen_height) {
-			const int h = (GetHeight() - 15) * TILE_SIZE;
+		int tiles_per_screen = (Player::screen_height / TILE_SIZE * TILE_SIZE + 16) / TILE_SIZE;
+		if (GetHeight() > tiles_per_screen && parallax_height > Player::screen_height) {
+			const int h = (GetHeight() - tiles_per_screen) * TILE_SIZE;
 			const int pv = 2 * std::min(h, parallax_height - Player::screen_height) * map_info.position_y / h;
 			SetPositionY(pv);
 		} else {
