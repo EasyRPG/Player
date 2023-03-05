@@ -808,8 +808,11 @@ endif()
 
 # Detect all required libraries
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
-player_find_package(NAME Pixman TARGET PIXMAN::PIXMAN REQUIRED)
 player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
+
+# Do not use player_find_package. enable_language used by pixman on Android does work properly inside function calls
+find_package(Pixman REQUIRED)
+target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
