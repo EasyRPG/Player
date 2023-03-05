@@ -23,6 +23,10 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
+	option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
+endif()
+
 # Source Files
 add_library(${PROJECT_NAME} STATIC
 	src/lcf_data.cpp
@@ -543,13 +547,20 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
-	find_package(SDL2 2.0.5 REQUIRED)
+	# SDL2 depends on some systems on SDL2::SDL2main but SDL2::SDL2 is not always a dependency of it
+	# Manually add the dependencies
+	player_find_package(NAME SDL2
+		VERSION 2.0.5
+		TARGET SDL2::SDL2
+		REQUIRED)
+
+	if(TARGET SDL2::SDL2main)
+		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+	endif()
+
 	if(ANDROID)
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
-		target_link_libraries(${PROJECT_NAME} SDL2::SDL2)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
-	else()
-		target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
@@ -560,8 +571,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 		src/platform/sdl/sdl_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
 
-	find_package(SDL1 REQUIRED)
-	target_link_libraries(${PROJECT_NAME} SDL::SDLmain)
+	player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -598,7 +608,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/input_buttons.cpp
 		src/platform/3ds/ui.cpp
 		src/platform/3ds/ui.h)
-	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} 3ds-assets)
+	target_link_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	if(NOT VITA)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
@@ -634,7 +644,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/input_buttons.cpp
 		src/platform/switch/ui.cpp
 		src/platform/switch/ui.h)
-	dkp_target_use_embedded_binary_libraries(${PROJECT_NAME} switch-assets)
+	target_link_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	if(NOT NINTENDO_WII)
 		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
@@ -797,14 +807,12 @@ else()
 endif()
 
 # Detect all required libraries
-find_package(PNG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PNG::PNG)
+player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
+player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
 
+# Do not use player_find_package. enable_language used by pixman on Android does work properly inside function calls
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
-
-find_package(fmt REQUIRED)
-target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
@@ -815,17 +823,21 @@ endif()
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
 
-player_find_package(NAME Freetype
+# Freetype is not really broken however only using FT config without HB config causes problems
+player_find_package(NAME freetype
 	CONDITION PLAYER_WITH_FREETYPE
 	DEFINITION HAVE_FREETYPE
-	FOUND Freetype
-	TARGET Freetype::Freetype)
+	TARGET freetype
+	CONFIG_BROKEN)
 
-if(Freetype_FOUND)
-	player_find_package(NAME Harfbuzz
+if(TARGET freetype)
+	# Harfbuzz config is broken (see https://github.com/harfbuzz/harfbuzz/issues/2316)
+	# They do not plan to fix this as they are moving to meson
+	player_find_package(NAME harfbuzz
 		CONDITION PLAYER_WITH_HARFBUZZ
 		DEFINITION HAVE_HARFBUZZ
-		TARGET Harfbuzz::Harfbuzz)
+		TARGET harfbuzz::harfbuzz
+		CONFIG_BROKEN)
 endif()
 
 # Sound system to use
@@ -927,7 +939,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 			CONDITION PLAYER_WITH_SPEEXDSP
 			DEFINITION HAVE_LIBSPEEXDSP
 			TARGET speexdsp::speexdsp)
-		if(NOT SPEEXDSP_FOUND)
+		if(NOT TARGET speexdsp::speexdsp)
 			player_find_package(
 				NAME Samplerate
 				CONDITION PLAYER_WITH_SAMPLERATE
@@ -954,21 +966,21 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 	player_find_package(NAME mpg123
 		CONDITION PLAYER_WITH_MPG123
 		DEFINITION HAVE_LIBMPG123
-		TARGET mpg123::mpg123)
+		TARGET MPG123::libmpg123)
 
 	# libsndfile
-	player_find_package(NAME LibSndFile
+	player_find_package(NAME SndFile
 		CONDITION PLAYER_WITH_LIBSNDFILE
 		DEFINITION HAVE_LIBSNDFILE
-		TARGET LibSndFile::LibSndFile)
+		TARGET SndFile::sndfile)
 
 	# libvorbis
-	player_find_package(NAME Vorbisfile
+	player_find_package(NAME Vorbis
 		CONDITION PLAYER_WITH_OGGVORBIS
 		DEFINITION HAVE_OGGVORBIS
-		TARGET Vorbisfile::Vorbisfile)
+		TARGET Vorbis::vorbisfile)
 
-	if(NOT VORBISFILE_FOUND)
+	if(NOT TARGET Vorbis::vorbisfile)
 		player_find_package(NAME Tremor
 			CONDITION PLAYER_WITH_OGGVORBIS
 			DEFINITION HAVE_TREMOR
@@ -985,20 +997,20 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 	player_find_package(NAME WildMidi
 		CONDITION PLAYER_WITH_WILDMIDI
 		DEFINITION HAVE_LIBWILDMIDI
-		TARGET WildMidi::WildMidi)
+		TARGET "WildMidi::libwildmidi;WildMidi::libwildmidi-static")
 
 	# fluidsynth
 	player_find_package(NAME FluidSynth
 		CONDITION PLAYER_WITH_FLUIDSYNTH
 		DEFINITION HAVE_FLUIDSYNTH
-		TARGET fluidsynth::fluidsynth)
+		TARGET FluidSynth::libfluidsynth)
 
 	# fluidlite
-	if(NOT FLUIDSYNTH_FOUND)
+	if(NOT TARGET FluidSynth::libfluidsynth)
 		player_find_package(NAME FluidLite
 			CONDITION PLAYER_WITH_FLUIDLITE
 			DEFINITION HAVE_FLUIDLITE
-			TARGET fluidlite::fluidlite)
+			TARGET FluidLite::fluidlite)
 	endif()
 
 	# xmp (lite)
@@ -1367,8 +1379,7 @@ set_property(CACHE PLAYER_ENABLE_INSTRUMENTATION PROPERTY STRINGS OFF VTune)
 if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_INSTRUMENTATION=${PLAYER_ENABLE_INSTRUMENTATION})
 	if (${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
-		find_package(VTune REQUIRED)
-		target_link_libraries(${PROJECT_NAME} VTune::ITT)
+		player_find_package(NAME VTune TARGET VTune::ITT REQUIRED)
 	endif()
 endif()
 
@@ -1408,7 +1419,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(PLAYER_ENABLE_DRWAV)
 		list(APPEND WAV_LIBS "built-in (dr_wav)")
 	endif()
-	if(LIBSNDFILE_FOUND)
+	if(TARGET SndFile::sndfile)
 		list(APPEND WAV_LIBS "libsndfile")
 	endif()
 
@@ -1419,13 +1430,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	endif()
 
 	set(MIDI_LIBS)
-	if(FLUIDSYNTH_FOUND)
+	if(TARGET FluidSynth::libfluidsynth)
 		list(APPEND MIDI_LIBS "FluidSynth")
 	endif()
-	if(FLUIDLITE_FOUND)
+	if(TARGET FluidLite::fluidlite)
 		list(APPEND MIDI_LIBS "FluidLite")
 	endif()
-	if(WILDMIDI_FOUND)
+	if(TARGET WildMidi::libwildmidi OR TARGET WildMidi::libwildmidi-static)
 		list(APPEND MIDI_LIBS "WildMidi")
 	endif()
 	if(PLAYER_WITH_NATIVE_MIDI)
@@ -1441,35 +1452,35 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 		message(STATUS "MIDI playback: None")
 	endif()
 
-	if(MPG123_FOUND)
+	if(TARGET MPG123::libmpg123)
 		message(STATUS "MP3 playback: mpg123")
 	else()
 		message(STATUS "MP3 playback: None")
 	endif()
 
-	if(VORBISFILE_FOUND)
+	if(TARGET Vorbis::vorbisfile)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
-	elseif(TREMOR_FOUND)
+	elseif(TARGET tremor::tremor)
 		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
 		message(STATUS "Ogg Vorbis playback: None")
 	endif()
 
-	if(XMP_FOUND)
+	if(TARGET XMP::XMP)
 		message(STATUS "MOD playback: libxmp")
 	else()
 		message(STATUS "MOD playback: None")
 	endif()
 
-	if(OPUSFILE_FOUND)
+	if(TARGET Opusfile::Opusfile)
 		message(STATUS "Opus playback: opusfile")
 	else()
 		message(STATUS "Opus playback: None")
 	endif()
 
-	if(SPEEXDSP_FOUND)
+	if(TARGET speexdsp::speexdsp)
 		message(STATUS "Resampler: speexdsp")
-	elseif(SAMPLERATE_FOUND)
+	elseif(Samplerate::Samplerate)
 		message(STATUS "Resampler: libsamplerate")
 	else()
 		message(STATUS "Resampler: None")
@@ -1478,9 +1489,9 @@ endif()
 
 message(STATUS "")
 
-if(HARFBUZZ_FOUND)
+if(TARGET harfbuzz::harfbuzz)
 	message(STATUS "Font rendering: Freetype with Harfbuzz / built-in")
-elseif(Freetype_FOUND)
+elseif(TARGET freetype)
 	message(STATUS "Font rendering: Freetype and built-in")
 else()
 	message(STATUS "Font rendering: built-in")

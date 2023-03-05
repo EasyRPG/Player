@@ -1,0 +1,61 @@
+{
+	"version": 4,
+	"include": [
+		"CMakePresetsBase.json"
+	],
+	"configurePresets": [
+		{
+			"name": "base-user",
+			"displayName": "user overrides",
+			"hidden": true,
+			"inherits": ["base"],
+			"cacheVariables":{
+			},
+			"environment": {
+				"#EASYRPG_BUILDSCRIPTS": "/path/to/easyrpg/buildscripts"
+			},
+			"vendor": {
+				"README": {
+					"line1": "Instead of setting an environment variable for the buildscripts you can alternatively",
+					"line2": "provide them here (in 'environment').",
+					"line3": "To use this remove the # and set the path for EASYRPG_BUILDSCRIPTS."
+				}
+			}
+		},
+		{
+			"name": "win-user",
+			"displayName": "user overrides for Windows",
+			"hidden": true,
+			"cacheVariables": {
+				"#toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake",
+				"##toolchainFile": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+			},
+			"inherits": ["win-base"],
+			"vendor": {
+				"README": {
+					"line1": "Here you can provide a custom vcpkg root.",
+					"line2": "Two examples are given (in 'cacheVariables'):",
+					"line3": "The first is for a vcpkg from our buildscripts (that is the default).",
+					"line4": "The second is for a vcpkg inside of the Player repository.",
+					"line5": "To use one of them remove the # and set the path."
+				}
+			}
+		},
+		{
+			"name": "dkp-user",
+			"displayName": "user overrides for devkitPro",
+			"hidden": true,
+			"environment": {
+				"#DEVKITPRO": "/path/to/devkitpro"
+			},
+			"inherits": ["dkp"],
+			"vendor": {
+				"README": {
+					"line1": "Instead of setting an environment variable for devkitPro you can alternative provide",
+					"line2": "it here (in 'environment').",
+					"line3": "To use this remove the # and set the path for DEVKITPRO."
+				}
+			}
+		}
+	]
+}

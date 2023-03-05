@@ -2,7 +2,7 @@
 # file Copyright.txt or https://cmake.org/licensing for details.
 
 #.rst:
-# FindFreetype
+# Findfreetype
 # ------------
 #
 # Find the FreeType font renderer includes and library.
@@ -12,7 +12,7 @@
 #
 # This module defines the following :prop_tgt:`IMPORTED` target:
 #
-# ``Freetype::Freetype``
+# ``freetype``
 #   The Freetype ``freetype`` library, if found
 #
 # Result Variables
@@ -154,7 +154,7 @@ endif()
 include(FindPackageHandleStandardArgs)
 
 find_package_handle_standard_args(
-  Freetype
+  freetype
   REQUIRED_VARS
     FREETYPE_LIBRARY
     FREETYPE_INCLUDE_DIRS
@@ -167,39 +167,39 @@ mark_as_advanced(
   FREETYPE_INCLUDE_DIR_ft2build
 )
 
-if(Freetype_FOUND)
-  if(NOT TARGET Freetype::Freetype)
-    add_library(Freetype::Freetype UNKNOWN IMPORTED)
-    set_target_properties(Freetype::Freetype PROPERTIES
+if(FREETYPE_FOUND)
+  if(NOT TARGET freetype)
+    add_library(freetype UNKNOWN IMPORTED)
+    set_target_properties(freetype PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${FREETYPE_INCLUDE_DIRS}")
 
     # Handle circular dependency on harfbuzz
-    if(NOT TARGET Harfbuzz::Harfbuzz)
-      find_package(Harfbuzz QUIET)
+    if(NOT TARGET harfbuzz::harfbuzz)
+      find_package(harfbuzz MODULE QUIET)
       if(HARFBUZZ_FOUND)
-        set_target_properties(Freetype::Freetype PROPERTIES
-          INTERFACE_LINK_LIBRARIES Harfbuzz::Harfbuzz)
+        set_target_properties(freetype PROPERTIES
+          INTERFACE_LINK_LIBRARIES harfbuzz::harfbuzz)
       endif()
     endif()
 
     if(FREETYPE_LIBRARY_RELEASE)
-      set_property(TARGET Freetype::Freetype APPEND PROPERTY
+      set_property(TARGET freetype APPEND PROPERTY
         IMPORTED_CONFIGURATIONS RELEASE)
-      set_target_properties(Freetype::Freetype PROPERTIES
+      set_target_properties(freetype PROPERTIES
         IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "C"
         IMPORTED_LOCATION_RELEASE "${FREETYPE_LIBRARY_RELEASE}")
     endif()
 
     if(FREETYPE_LIBRARY_DEBUG)
-      set_property(TARGET Freetype::Freetype APPEND PROPERTY
+      set_property(TARGET freetype APPEND PROPERTY
         IMPORTED_CONFIGURATIONS DEBUG)
-      set_target_properties(Freetype::Freetype PROPERTIES
+      set_target_properties(freetype PROPERTIES
         IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "C"
         IMPORTED_LOCATION_DEBUG "${FREETYPE_LIBRARY_DEBUG}")
     endif()
 
     if(NOT FREETYPE_LIBRARY_RELEASE AND NOT FREETYPE_LIBRARY_DEBUG)
-      set_target_properties(Freetype::Freetype PROPERTIES
+      set_target_properties(freetype PROPERTIES
         IMPORTED_LINK_INTERFACE_LANGUAGES "C"
         IMPORTED_LOCATION "${FREETYPE_LIBRARY}")
     endif()

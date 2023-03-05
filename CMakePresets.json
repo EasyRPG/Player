@@ -1,0 +1,683 @@
+{
+	"vendor": {
+		"README": {
+			"line1": "!!! GENERATED FILE. DO NOT EDIT !!!",
+			"line2": "Modify builds/cmake/CMakePresets.json.template instead",
+			"line3": "and run gen-cmake-presets.py to regenerate this file."
+		}
+	},
+	"version": 4,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 23,
+		"patch": 0
+	},
+	"include": [
+		"builds/cmake/CMakePresetsUser.json"
+	],
+	"configurePresets": [
+		{
+			"name": "parent",
+			"hidden": true,
+			"inherits": "base-user"
+		},
+		{
+			"name": "debug",
+			"displayName": "Use system environment (Debug)",
+			"inherits": [
+				"parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "relwithdebinfo",
+			"displayName": "Use system environment (RelWithDebInfo)",
+			"inherits": [
+				"parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "release",
+			"displayName": "Use system environment (Release)",
+			"inherits": [
+				"parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "libretro-debug",
+			"displayName": "Use system environment (libretro core) (Debug)",
+			"inherits": [
+				"parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "libretro-relwithdebinfo",
+			"displayName": "Use system environment (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "libretro-release",
+			"displayName": "Use system environment (libretro core) (Release)",
+			"inherits": [
+				"parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "linux-parent",
+			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+			},
+			"hidden": true,
+			"inherits": "base-user"
+		},
+		{
+			"name": "linux-debug",
+			"displayName": "Linux (Debug)",
+			"inherits": [
+				"linux-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "linux-relwithdebinfo",
+			"displayName": "Linux (RelWithDebInfo)",
+			"inherits": [
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "linux-release",
+			"displayName": "Linux (Release)",
+			"inherits": [
+				"linux-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "linux-libretro-debug",
+			"displayName": "Linux (libretro core) (Debug)",
+			"inherits": [
+				"linux-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "linux-libretro-relwithdebinfo",
+			"displayName": "Linux (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "linux-libretro-release",
+			"displayName": "Linux (libretro core) (Release)",
+			"inherits": [
+				"linux-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "windows-x86",
+			"displayName": "Windows (x86)",
+			"hidden": true,
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x86-vs2022",
+			"displayName": "Windows (x86) using Visual Studio 2022",
+			"hidden": true,
+			"generator": "Visual Studio 17 2022",
+			"architecture": "Win32",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x64",
+			"displayName": "Windows (x64)",
+			"hidden": true,
+			"architecture": "x64",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x64-vs2022",
+			"displayName": "Windows (x64) using Visual Studio 2022",
+			"hidden": true,
+			"generator": "Visual Studio 17 2022",
+			"architecture": "x64",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "macos-parent",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Darwin"
+			},
+			"hidden": true,
+			"inherits": "base-user"
+		},
+		{
+			"name": "macos-debug",
+			"displayName": "macOS (Debug)",
+			"inherits": [
+				"macos-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "macos-relwithdebinfo",
+			"displayName": "macOS (RelWithDebInfo)",
+			"inherits": [
+				"macos-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "macos-release",
+			"displayName": "macOS (Release)",
+			"inherits": [
+				"macos-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "macos-libretro-debug",
+			"displayName": "macOS (libretro core) (Debug)",
+			"inherits": [
+				"macos-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "macos-libretro-relwithdebinfo",
+			"displayName": "macOS (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"macos-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "macos-libretro-release",
+			"displayName": "macOS (libretro core) (Release)",
+			"inherits": [
+				"macos-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "emscripten-parent",
+			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_JS_BUILD_SHELL": "ON"
+			},
+			"hidden": true,
+			"inherits": "base-user"
+		},
+		{
+			"name": "emscripten-debug",
+			"displayName": "Emscripten (Web) (Debug)",
+			"inherits": [
+				"emscripten-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "emscripten-relwithdebinfo",
+			"displayName": "Emscripten (Web) (RelWithDebInfo)",
+			"inherits": [
+				"emscripten-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "emscripten-release",
+			"displayName": "Emscripten (Web) (Release)",
+			"inherits": [
+				"emscripten-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "3ds-parent",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "3ds",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
+			},
+			"inherits": "dkp-user",
+			"hidden": true
+		},
+		{
+			"name": "3ds-debug",
+			"displayName": "Nintendo 3DS (Debug)",
+			"inherits": [
+				"3ds-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "3ds-relwithdebinfo",
+			"displayName": "Nintendo 3DS (RelWithDebInfo)",
+			"inherits": [
+				"3ds-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "3ds-release",
+			"displayName": "Nintendo 3DS (Release)",
+			"inherits": [
+				"3ds-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "3ds-libretro-debug",
+			"displayName": "Nintendo 3DS (libretro core) (Debug)",
+			"inherits": [
+				"3ds-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "3ds-libretro-relwithdebinfo",
+			"displayName": "Nintendo 3DS (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"3ds-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "3ds-libretro-release",
+			"displayName": "Nintendo 3DS (libretro core) (Release)",
+			"inherits": [
+				"3ds-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "switch-parent",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "switch",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch"
+			},
+			"inherits": "dkp-user",
+			"hidden": true
+		},
+		{
+			"name": "switch-debug",
+			"displayName": "Nintendo Switch (Debug)",
+			"inherits": [
+				"switch-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "switch-relwithdebinfo",
+			"displayName": "Nintendo Switch (RelWithDebInfo)",
+			"inherits": [
+				"switch-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "switch-release",
+			"displayName": "Nintendo Switch (Release)",
+			"inherits": [
+				"switch-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "switch-libretro-debug",
+			"displayName": "Nintendo Switch (libretro core) (Debug)",
+			"inherits": [
+				"switch-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "switch-libretro-relwithdebinfo",
+			"displayName": "Nintendo Switch (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"switch-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "switch-libretro-release",
+			"displayName": "Nintendo Switch (libretro core) (Release)",
+			"inherits": [
+				"switch-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wii-parent",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "wii",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
+			},
+			"inherits": "dkp-user",
+			"hidden": true
+		},
+		{
+			"name": "wii-debug",
+			"displayName": "Nintendo Wii (Debug)",
+			"inherits": [
+				"wii-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wii-relwithdebinfo",
+			"displayName": "Nintendo Wii (RelWithDebInfo)",
+			"inherits": [
+				"wii-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wii-release",
+			"displayName": "Nintendo Wii (Release)",
+			"inherits": [
+				"wii-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wii-libretro-debug",
+			"displayName": "Nintendo Wii (libretro core) (Debug)",
+			"inherits": [
+				"wii-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wii-libretro-relwithdebinfo",
+			"displayName": "Nintendo Wii (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"wii-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wii-libretro-release",
+			"displayName": "Nintendo Wii (libretro core) (Release)",
+			"inherits": [
+				"wii-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "psvita-parent",
+			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "psvita",
+				"BUILD_SHARED_LIBS": "OFF"
+			},
+			"hidden": true,
+			"inherits": "base-user"
+		},
+		{
+			"name": "psvita-debug",
+			"displayName": "PlayStation Vita (Debug)",
+			"inherits": [
+				"psvita-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "psvita-relwithdebinfo",
+			"displayName": "PlayStation Vita (RelWithDebInfo)",
+			"inherits": [
+				"psvita-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "psvita-release",
+			"displayName": "PlayStation Vita (Release)",
+			"inherits": [
+				"psvita-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "psvita-libretro-debug",
+			"displayName": "PlayStation Vita (libretro core) (Debug)",
+			"inherits": [
+				"psvita-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "psvita-libretro-relwithdebinfo",
+			"displayName": "PlayStation Vita (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"psvita-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "psvita-libretro-release",
+			"displayName": "PlayStation Vita (libretro core) (Release)",
+			"inherits": [
+				"psvita-parent",
+				"type-release"
+			]
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "debug",
+			"configurePreset": "debug"
+		},
+		{
+			"name": "relwithdebinfo",
+			"configurePreset": "relwithdebinfo"
+		},
+		{
+			"name": "release",
+			"configurePreset": "release"
+		},
+		{
+			"name": "libretro-debug",
+			"configurePreset": "libretro-debug"
+		},
+		{
+			"name": "libretro-relwithdebinfo",
+			"configurePreset": "libretro-relwithdebinfo"
+		},
+		{
+			"name": "libretro-release",
+			"configurePreset": "libretro-release"
+		},
+		{
+			"name": "linux-debug",
+			"configurePreset": "linux-debug"
+		},
+		{
+			"name": "linux-relwithdebinfo",
+			"configurePreset": "linux-relwithdebinfo"
+		},
+		{
+			"name": "linux-release",
+			"configurePreset": "linux-release"
+		},
+		{
+			"name": "linux-libretro-debug",
+			"configurePreset": "linux-libretro-debug"
+		},
+		{
+			"name": "linux-libretro-relwithdebinfo",
+			"configurePreset": "linux-libretro-relwithdebinfo"
+		},
+		{
+			"name": "linux-libretro-release",
+			"configurePreset": "linux-libretro-release"
+		},
+		{
+			"name": "macos-debug",
+			"configurePreset": "macos-debug"
+		},
+		{
+			"name": "macos-relwithdebinfo",
+			"configurePreset": "macos-relwithdebinfo"
+		},
+		{
+			"name": "macos-release",
+			"configurePreset": "macos-release"
+		},
+		{
+			"name": "macos-libretro-debug",
+			"configurePreset": "macos-libretro-debug"
+		},
+		{
+			"name": "macos-libretro-relwithdebinfo",
+			"configurePreset": "macos-libretro-relwithdebinfo"
+		},
+		{
+			"name": "macos-libretro-release",
+			"configurePreset": "macos-libretro-release"
+		},
+		{
+			"name": "emscripten-debug",
+			"configurePreset": "emscripten-debug"
+		},
+		{
+			"name": "emscripten-relwithdebinfo",
+			"configurePreset": "emscripten-relwithdebinfo"
+		},
+		{
+			"name": "emscripten-release",
+			"configurePreset": "emscripten-release"
+		},
+		{
+			"name": "3ds-debug",
+			"configurePreset": "3ds-debug"
+		},
+		{
+			"name": "3ds-relwithdebinfo",
+			"configurePreset": "3ds-relwithdebinfo"
+		},
+		{
+			"name": "3ds-release",
+			"configurePreset": "3ds-release"
+		},
+		{
+			"name": "3ds-libretro-debug",
+			"configurePreset": "3ds-libretro-debug"
+		},
+		{
+			"name": "3ds-libretro-relwithdebinfo",
+			"configurePreset": "3ds-libretro-relwithdebinfo"
+		},
+		{
+			"name": "3ds-libretro-release",
+			"configurePreset": "3ds-libretro-release"
+		},
+		{
+			"name": "switch-debug",
+			"configurePreset": "switch-debug"
+		},
+		{
+			"name": "switch-relwithdebinfo",
+			"configurePreset": "switch-relwithdebinfo"
+		},
+		{
+			"name": "switch-release",
+			"configurePreset": "switch-release"
+		},
+		{
+			"name": "switch-libretro-debug",
+			"configurePreset": "switch-libretro-debug"
+		},
+		{
+			"name": "switch-libretro-relwithdebinfo",
+			"configurePreset": "switch-libretro-relwithdebinfo"
+		},
+		{
+			"name": "switch-libretro-release",
+			"configurePreset": "switch-libretro-release"
+		},
+		{
+			"name": "wii-debug",
+			"configurePreset": "wii-debug"
+		},
+		{
+			"name": "wii-relwithdebinfo",
+			"configurePreset": "wii-relwithdebinfo"
+		},
+		{
+			"name": "wii-release",
+			"configurePreset": "wii-release"
+		},
+		{
+			"name": "wii-libretro-debug",
+			"configurePreset": "wii-libretro-debug"
+		},
+		{
+			"name": "wii-libretro-relwithdebinfo",
+			"configurePreset": "wii-libretro-relwithdebinfo"
+		},
+		{
+			"name": "wii-libretro-release",
+			"configurePreset": "wii-libretro-release"
+		},
+		{
+			"name": "psvita-debug",
+			"configurePreset": "psvita-debug"
+		},
+		{
+			"name": "psvita-relwithdebinfo",
+			"configurePreset": "psvita-relwithdebinfo"
+		},
+		{
+			"name": "psvita-release",
+			"configurePreset": "psvita-release"
+		},
+		{
+			"name": "psvita-libretro-debug",
+			"configurePreset": "psvita-libretro-debug"
+		},
+		{
+			"name": "psvita-libretro-relwithdebinfo",
+			"configurePreset": "psvita-libretro-relwithdebinfo"
+		},
+		{
+			"name": "psvita-libretro-release",
+			"configurePreset": "psvita-libretro-release"
+		}
+	],
+	"testPresets": []
+}

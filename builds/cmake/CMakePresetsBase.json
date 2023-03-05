@@ -1,0 +1,69 @@
+{
+	"version": 4,
+	"configurePresets": [
+		{
+			"name": "base",
+			"displayName": "base preset",
+			"hidden": true,
+			"binaryDir": "${sourceDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+			}
+		},
+		{
+			"name": "type-debug",
+			"displayName": "build Debug",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "type-relwithdebinfo",
+			"displayName": "build RelWithDebInfo",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+			}
+		},
+		{
+			"name": "type-release",
+			"displayName": "build release",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "win-base",
+			"displayName": "windows base preset",
+			"hidden": true,
+			"cacheVariables": {
+				"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake"
+			},
+			"inherits": ["base"],
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			}
+		},
+		{
+			"name": "dkp",
+			"displayName": "devkitPro base preset",
+			"hidden": true,
+			"inherits": "base",
+			"cacheVariables": {
+				"BUILD_SHARED_LIBS": "OFF"
+			}
+		},
+		{
+			"name": "build-libretro",
+			"displayName": "enables building of a libretro core",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "libretro"
+			}
+		}
+	]
+}

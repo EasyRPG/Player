@@ -1,0 +1,130 @@
+{
+	"version": 4,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 23,
+		"patch": 0
+	},
+	"include": [
+		"builds/cmake/CMakePresetsUser.json"
+	],
+	"configurePresets": [
+		{
+			"name": "",
+			"displayName": "Use system environment"
+		},
+		{
+			"name": "linux",
+			"displayName": "Linux",
+			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+			}
+		},
+		{
+			"name": "windows-x86",
+			"displayName": "Windows (x86)",
+			"hidden": true,
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x86-vs2022",
+			"displayName": "Windows (x86) using Visual Studio 2022",
+			"hidden": true,
+			"generator": "Visual Studio 17 2022",
+			"architecture": "Win32",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x64",
+			"displayName": "Windows (x64)",
+			"hidden": true,
+			"architecture": "x64",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "windows-x64-vs2022",
+			"displayName": "Windows (x64) using Visual Studio 2022",
+			"hidden": true,
+			"generator": "Visual Studio 17 2022",
+			"architecture": "x64",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+			},
+			"inherits": "win-user"
+		},
+		{
+			"name": "macos",
+			"displayName": "macOS",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Darwin"
+			}
+		},
+		{
+			"name": "emscripten",
+			"displayName": "Emscripten (Web)",
+			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_JS_BUILD_SHELL": "ON"
+			}
+		},
+		{
+			"name": "3ds",
+			"displayName": "Nintendo 3DS",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "3ds",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
+			},
+			"inherits": "dkp-user"
+		},
+		{
+			"name": "switch",
+			"displayName": "Nintendo Switch",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "switch",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch"
+			},
+			"inherits": "dkp-user"
+		},
+		{
+			"name": "wii",
+			"displayName": "Nintendo Wii",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "wii",
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
+			},
+			"inherits": "dkp-user"
+		},
+		{
+			"name": "psvita",
+			"displayName": "PlayStation Vita",
+			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "psvita",
+				"BUILD_SHARED_LIBS": "OFF"
+			}
+		}
+	],
+	"buildPresets": [],
+	"testPresets": []
+}
