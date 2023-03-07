@@ -107,14 +107,14 @@ TEST_CASE("TextNext") {
 	iter = ret.next;
 
 	ret = Utils::TextNext(iter, end, escape);
-	REQUIRE_EQ(ret.ch, 0 + 32);
+	REQUIRE_EQ(ret.ch, 'A');
 	REQUIRE_NE(ret.next, end);
 	REQUIRE(ret.is_exfont);
 	REQUIRE_FALSE(ret.is_escape);
 	iter = ret.next;
 
 	ret = Utils::TextNext(iter, end, escape);
-	REQUIRE_EQ(ret.ch, 1 + 32);
+	REQUIRE_EQ(ret.ch, 'B');
 	REQUIRE_NE(ret.next, end);
 	REQUIRE(ret.is_exfont);
 	REQUIRE_FALSE(ret.is_escape);

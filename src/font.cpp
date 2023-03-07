@@ -773,8 +773,15 @@ Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
 
-	// Remove offset introduced by Utils::ExFontNext to bypass ControlCharacter detection
-	glyph -= 32;
+	bool is_lower = (glyph >= 'a' && glyph <= 'z');
+	bool is_upper = (glyph >= 'A' && glyph <= 'Z');
+
+	if (!is_lower && !is_upper) {
+		// Invalid ExFont
+		return { bm, {WIDTH, 0}, {0, 0}, false };
+	}
+
+	glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
 
 	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();
