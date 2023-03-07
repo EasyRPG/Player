@@ -42,9 +42,9 @@ void Game_Windows::SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save) {
 		auto& win = windows.back();
 		int id = win.data.ID;
 		if (id > 0) {
-			win.Refresh();
-			auto& pic = Main_Data::game_pictures->GetPicture(id);
-			pic.AttachWindow(*win.window);
+			// no special async handling needed, loading will already yield
+			bool async_wait;
+			win.Refresh(async_wait);
 		}
 	}
 }
@@ -114,18 +114,15 @@ bool Game_Windows::Window_User::Create(const WindowParams& params) {
 		data.texts.push_back(data_text);
 	}
 
-	Refresh();
-
 	return true;
 }
 
-bool Game_Windows::Create(int id, const WindowParams& params) {
+bool Game_Windows::Create(int id, const WindowParams& params, bool& async_wait) {
 	auto& window = GetWindow(id);
 
 	if (window.Create(params)) {
 		if (Main_Data::game_pictures->Show(id, params)) {
-			auto& pic = Main_Data::game_pictures->GetPicture(id);
-			pic.AttachWindow(*window.window);
+			window.Refresh(async_wait);
 			return true;
 		} else {
 			window.Erase();
@@ -137,15 +134,29 @@ bool Game_Windows::Create(int id, const WindowParams& params) {
 }
 
 void Game_Windows::Window_User::Erase() {
+	int id = data.ID;
 	data = {};
+	data.ID = id;
+
+	request_ids.clear();
 }
 
-void Game_Windows::Window_User::Refresh() {
+void Game_Windows::Window_User::Refresh(bool& async_wait) {
+	async_wait = !Request();
+
+	if (async_wait) {
+		// Create fake window to prevent crashes
+		if (!window) {
+			window = std::make_unique<Window_Selectable>(0, 0, 0, 0);
+		}
+		return;
+	}
+
 	std::vector<FontRef> fonts;
 	std::vector<PendingMessage> messages;
 
+	// Preprocessing
 	for (const auto& text: data.texts) {
-		// TODO: Async requests
 		FontRef font;
 
 		Filesystem_Stream::InputStream font_file;
@@ -285,7 +296,6 @@ void Game_Windows::Window_User::Refresh() {
 	} else {
 		BitmapRef system;
 		if (!data.system_name.empty()) {
-			// TODO: Async request
 			system = Cache::System(data.system_name);
 		} else {
 			system = Cache::SystemOrBlack();
@@ -304,8 +314,8 @@ void Game_Windows::Window_User::Refresh() {
 		window->SetBorderY(0);
 	}
 
+	// Draw text
 	for (size_t i = 0; i < data.texts.size(); ++i) {
-		// Lots of duplication with the rendering code below but cannot be easily reduced more
 		const auto& font = fonts[i];
 		const auto& pm = messages[i];
 		const auto& text = data.texts[i];
@@ -365,6 +375,89 @@ void Game_Windows::Window_User::Refresh() {
 			x = 0;
 			y += text.font_size + text.line_spacing;
 		}
+	}
+
+	// Add to picture
+	auto& pic = Main_Data::game_pictures->GetPicture(data.ID);
+	pic.AttachWindow(*window);
+}
+
+bool Game_Windows::Window_User::Request() {
+	if (!request_ids.empty()) {
+		return true;
+	}
+
+	std::vector<FileRequestAsync*> requests;
+
+	for (const auto& text: data.texts) {
+		// Create Async requests for all needed resources
+		std::string font_name = ToString(text.font_name);
+		if (!font_name.empty()) {
+			// Request all possible candidates of fonts
+			auto bind = [this, &font_name, &requests](const char* suffix) {
+				std::string name = font_name + suffix;
+				FileRequestAsync* request = AsyncHandler::RequestFile("Font",  name);
+				if (!request->IsReady()) {
+					request->SetImportantFile(true);
+					request_ids.push_back(request->Bind(&Window_User::OnRequestReady, this));
+					requests.push_back(request);
+				}
+			};
+
+			if (text.flags.bold && text.flags.italic) {
+				bind("-BoldItalic");
+			}
+
+			if (text.flags.bold) {
+				bind("-Bold");
+			}
+
+			if (text.flags.italic) {
+				bind("-Italic");
+			}
+
+			bind("-Regular");
+			bind("");
+		}
+	}
+
+	if (!data.system_name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("System", data.system_name);
+		if (!request->IsReady()) {
+			request->SetImportantFile(true);
+			request->SetGraphicFile(true);
+			request_ids.push_back(request->Bind(&Window_User::OnRequestReady, this));
+			requests.push_back(request);
+		}
+	}
+
+	if (request_ids.empty()) {
+		// Every request is already finished
+		return true;
+	}
+
+	for (auto& request: requests) {
+		request->Start();
+	}
+
+	return false;
+}
+
+void Game_Windows::Window_User::OnRequestReady(FileRequestResult* result) {
+	auto it = std::find_if(request_ids.begin(), request_ids.end(), [&result](const auto& what) {
+		return *what == result->request_id;
+	});
+
+	assert(it != request_ids.end());
+
+	request_ids.erase(it);
+
+	if (request_ids.empty()) {
+		// All assets requested, repeat Refresh call
+		bool async_wait;
+		Refresh(async_wait);
+
+		assert(!async_wait);
 	}
 }
 

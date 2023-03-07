@@ -34,11 +34,7 @@ Bold/Italic: Will only work when the font provides a bold/italic typeface
 TODO:
 Disable Text Gradient
 Disable Text Shadow
-
-Async (System & Font)
-Font Cache
 */
-
 
 /**
  * Manages user generated windows.
@@ -74,7 +70,7 @@ public:
 		bool border_margin = true;
 	};
 
-	bool Create(int id, const WindowParams& params);
+	bool Create(int id, const WindowParams& params, bool& async_wait);
 	void Erase(int id);
 
 	struct Window_User {
@@ -86,9 +82,17 @@ public:
 		bool Create(const WindowParams& params);
 		void Erase();
 
-		void Refresh();
+		void Refresh(bool& async_wait);
+
+		/**
+		 * Does an Async request of all assets.
+		 * @return true when all requests are finished
+		 */
+		bool Request();
+		void OnRequestReady(FileRequestResult* result);
 
 		std::unique_ptr<Window_Selectable> window;
+		std::vector<FileRequestBinding> request_ids;
 	};
 
 	Window_User& GetWindow(int id);

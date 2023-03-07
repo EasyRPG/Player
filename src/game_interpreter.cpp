@@ -4236,7 +4236,12 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	params.texts = {text};
 
-	Main_Data::game_windows->Create(pic_id, params);
+	bool async_wait;
+	Main_Data::game_windows->Create(pic_id, params, async_wait);
+
+	if (async_wait) {
+		_async_op = AsyncOp::MakeYield();
+	}
 
 	return true;
 }
