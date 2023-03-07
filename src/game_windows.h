@@ -33,7 +33,6 @@ Bold/Italic: Will only work when the font provides a bold/italic typeface
 
 TODO:
 Disable Text Gradient
-Disable Text Shadow
 */
 
 /**

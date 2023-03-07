@@ -209,16 +209,23 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		messages.emplace_back(pm);
 	}
 
-	if (data.width == 0 && data.height == 0) {
+	if (data.width == 0 || data.height == 0) {
 		// Automatic window size
 		int x_max = 0;
 		int y_max = 0;
 
 		for (size_t i = 0; i < data.texts.size(); ++i) {
 			// Lots of duplication with the rendering code below but cannot be easily reduced more
-			const auto& font = fonts[i];
+			auto& font = fonts[i];
 			const auto& pm = messages[i];
 			const auto& text = data.texts[i];
+
+			Font::Style style = font->GetCurrentStyle();
+			style.size = text.font_size;
+			style.bold = text.flags.bold;
+			style.italic = text.flags.italic;
+			style.draw_shadow = text.flags.draw_shadow;
+			auto style_guard = font->ApplyStyle(style);
 
 			int x = text.position_x;
 			int y = text.position_y;
@@ -285,45 +292,62 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		}
 
 		// Border size
-		x_max += 16;
-		y_max += 20; // 16 looks better but this matches better with Maniac Patch
+		if (data.flags.border_margin) {
+			x_max += 16;
+			y_max += 20; // 16 looks better but this matches better with Maniac Patch
+		} else {
+			x_max += 1;
+			y_max += 1;
+		}
 
-		data.width = x_max;
-		data.height = y_max;
+		if (data.width == 0) {
+			data.width = x_max;
+		}
+
+		if (data.height == 0) {
+			data.height = y_max;
+		}
 	}
 
 	window = std::make_unique<Window_Selectable>(0, 0, data.width, data.height);
+	if (!data.flags.border_margin) {
+		window->SetBorderX(0);
+		// FIXME: Figure out why 0 does not work here (bug in Window class)
+		window->SetBorderY(-3);
+	}
 	window->CreateContents();
 	window->SetVisible(false);
 
-	if (data.message_stretch == lcf::rpg::System::Stretch_easyrpg_none) {
-		window->SetWindowskin(nullptr);
+	BitmapRef system;
+	if (!data.system_name.empty()) {
+		system = Cache::System(data.system_name);
 	} else {
-		BitmapRef system;
-		if (!data.system_name.empty()) {
-			system = Cache::System(data.system_name);
-		} else {
-			system = Cache::SystemOrBlack();
-		}
+		system = Cache::SystemOrBlack();
+	}
 
-		window->SetWindowskin(system);
-		window->SetStretch(data.message_stretch == lcf::rpg::System::Stretch_stretch);
+	window->SetWindowskin(system);
+	window->SetStretch(data.message_stretch == lcf::rpg::System::Stretch_stretch);
+
+	if (data.message_stretch == lcf::rpg::System::Stretch_easyrpg_none) {
+		window->SetBackOpacity(0);
 	}
 
 	if (!data.flags.draw_frame) {
 		window->SetFrameOpacity(0);
 	}
 
-	if (!data.flags.border_margin) {
-		window->SetBorderX(0);
-		window->SetBorderY(0);
-	}
-
 	// Draw text
 	for (size_t i = 0; i < data.texts.size(); ++i) {
-		const auto& font = fonts[i];
+		auto& font = fonts[i];
 		const auto& pm = messages[i];
 		const auto& text = data.texts[i];
+
+		Font::Style style = font->GetCurrentStyle();
+		style.size = text.font_size;
+		style.bold = text.flags.bold;
+		style.italic = text.flags.italic;
+		style.draw_shadow = text.flags.draw_shadow;
+		auto style_guard = font->ApplyStyle(style);
 
 		int x = text.position_x;
 		int y = text.position_y;
@@ -355,7 +379,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 				if (tret.is_escape && ch != Player::escape_char) {
 					if (!line32.empty()) {
-						x += Text::Draw(*window->GetContents(), x, y, *font, *Cache::System(), text_color, Utils::EncodeUTF(line32)).x;
+						x += Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32)).x;
 						line32.clear();
 					}
 
@@ -379,7 +403,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 			}
 
 			if (!line32.empty()) {
-				Text::Draw(*window->GetContents(), x, y, *font, *Cache::System(), text_color, Utils::EncodeUTF(line32));
+				Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
 			}
 
 			x = 0;

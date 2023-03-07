@@ -4189,14 +4189,13 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	text.bold = (flags & (1 << 15)) > 0;
 	params.border_margin = (flags & (1 << 16)) == 0;
 
-	params.width = com.parameters[18];
-	params.height = com.parameters[19];
+	int dim_val = (com.parameters[0] & (0xF << 16)) >> 16;
+	params.width = ValueOrVariable(dim_val, com.parameters[18]);
+	params.height = ValueOrVariable(dim_val, com.parameters[19]);
 
-	// Both 0 = Automatic
-	if (params.width != 0 || params.height != 0) {
-		int dim_val = (com.parameters[0] & (0xF << 16)) >> 16;
-		params.width = ValueOrVariable(dim_val, com.parameters[18]);
-		params.height = ValueOrVariable(dim_val, com.parameters[19]);
+	if (params.width < 0 || params.height < 0) {
+		Output::Warning("ShowStringPic: Invalid window dimension {}x{} (id={})", params.width, params.height, pic_id);
+		return true;
 	}
 
 	flags = com.parameters[14];

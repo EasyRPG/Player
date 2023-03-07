@@ -29,7 +29,7 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) { }
 
 void Window_Selectable::CreateContents() {
-	SetContents(Bitmap::Create(width - 16, max(height - border_y * 2, GetRowMax() * menu_item_height)));
+	SetContents(Bitmap::Create(width - border_x * 2, max(height - border_y * 2, GetRowMax() * menu_item_height)));
 }
 
 // Properties
