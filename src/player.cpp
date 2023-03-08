@@ -893,6 +893,8 @@ bool Player::ChangeResolution(int width, int height) {
 	Player::message_box_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
 
 	Graphics::GetMessageOverlay().OnResolutionChange();
+
+	Output::Debug("Resolution changed to {}x{}", width, height);
 	return true;
 }
 
