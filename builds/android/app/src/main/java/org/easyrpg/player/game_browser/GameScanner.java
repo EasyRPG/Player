@@ -133,7 +133,7 @@ public class GameScanner {
                             // Android SAF calls and scanFolder(...) already check that)
                             scanFolderRecursive(context, fileURI, depth - 1);
                         }
-                    } else if (fileDocumentID.endsWith(".zip")) {
+                    } else if (fileDocumentID.endsWith(".zip") || fileDocumentID.endsWith(".easyrpg")) {
                         Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
                         Game game = isAGameZipped(context, fileURI);
                         if (game != null) {
