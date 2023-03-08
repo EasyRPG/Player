@@ -106,7 +106,7 @@ namespace Game_Map {
 
 	/**
 	 * Setups a map from a savegame.
-	 * 
+	 *
 	 * @param map - The map data
 	 * @param save_map - The map state
 	 * @param save_boat - The boat state
@@ -227,7 +227,7 @@ namespace Game_Map {
 	 *
 	 * @param layer which layer to return
 	 */
-	const std::vector<uint8_t>& GetTilesLayer(int layer);
+	std::vector<uint8_t> GetTilesLayer(int layer);
 
 	/**
 	 * Gets the bush depth at a certain tile.

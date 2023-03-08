@@ -418,7 +418,7 @@ void Game_Map::PlayBgm() {
 	}
 }
 
-const std::vector<uint8_t>& Game_Map::GetTilesLayer(int layer) {
+std::vector<uint8_t> Game_Map::GetTilesLayer(int layer) {
 	return layer >= 1 ? map_info.upper_tiles : map_info.lower_tiles;
 }
 

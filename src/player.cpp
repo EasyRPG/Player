@@ -1211,6 +1211,8 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	map->Start();
 	if (!load_on_map) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
+	} else {
+		Scene::instance->Start();
 	}
 }
 
