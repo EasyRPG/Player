@@ -2341,6 +2341,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 							action_state,
 							Sprite_Actor::LoopState_WaitAfterFinish);
 				}
+			} else {
+				sprite->SetAnimationLoop(Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
 			}
 		}
 	}
