@@ -179,6 +179,11 @@ class Font {
 	using StyleScopeGuard = lcf::ScopeGuard<std::function<void()>>;
 
 	/**
+	 * @return Whether a custom style is currently active
+	 */
+	bool IsStyleApplied() const;
+
+	/**
 	 * Returns the current font style used for rendering.
 	 *
 	 * @return current style
@@ -234,6 +239,7 @@ class Font {
 	Font(StringView name, int size, bool bold, bool italic);
 
 	std::string name;
+	bool style_applied = false;
 	Style original_style;
 	Style current_style;
 	FontRef fallback_font;

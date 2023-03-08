@@ -766,6 +766,10 @@ void Font::SetFallbackFont(FontRef fallback_font) {
 	this->fallback_font = fallback_font;
 }
 
+bool Font::IsStyleApplied() const {
+	return style_applied;
+}
+
 Font::Style Font::GetCurrentStyle() const {
 	return current_style;
 }
@@ -773,14 +777,16 @@ Font::Style Font::GetCurrentStyle() const {
 Font::StyleScopeGuard Font::ApplyStyle(Style new_style) {
 	vApplyStyle(new_style);
 	current_style = new_style;
+	style_applied = true;
 
 	return lcf::ScopeGuard<std::function<void()>>([&]() {
 		vApplyStyle(original_style);
 		current_style = original_style;
+		style_applied = false;
 	});
 }
 
-ExFont::ExFont() : Font("exfont", 12, false, false) {
+ExFont::ExFont() : Font("exfont", HEIGHT, false, false) {
 }
 
 FontRef Font::exfont = std::make_shared<ExFont>();

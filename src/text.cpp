@@ -30,7 +30,13 @@
 
 Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
-		return Font::exfont->Render(dest, x, y, system, color, glyph);
+		if (!font.IsStyleApplied()) {
+			return Font::exfont->Render(dest, x, y, system, color, glyph);
+		} else {
+			auto style = font.GetCurrentStyle();
+			auto style_guard = Font::exfont->ApplyStyle(style);
+			return Font::exfont->Render(dest, x, y, system, color, glyph);
+		}
 	} else {
 		return font.Render(dest, x, y, system, color, glyph);
 	}
@@ -38,7 +44,13 @@ Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& sys
 
 Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, Color color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
-		return Font::exfont->Render(dest, x, y, color, glyph);
+		if (!font.IsStyleApplied()) {
+			return Font::exfont->Render(dest, x, y, color, glyph);
+		} else {
+			auto style = font.GetCurrentStyle();
+			auto style_guard = Font::exfont->ApplyStyle(style);
+			return Font::exfont->Render(dest, x, y, color, glyph);
+		}
 	} else {
 		return font.Render(dest, x, y, color, glyph);
 	}
@@ -242,7 +254,13 @@ Rect Text::GetSize(const Font& font, StringView text) {
 
 Rect Text::GetSize(const Font& font, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
-		return Font::exfont->GetSize(glyph);
+		if (!font.IsStyleApplied()) {
+			return Font::exfont->GetSize(glyph);
+		} else {
+			auto style = font.GetCurrentStyle();
+			auto style_guard = Font::exfont->ApplyStyle(style);
+			return Font::exfont->GetSize(glyph);
+		}
 	} else {
 		return font.GetSize(glyph);
 	}
