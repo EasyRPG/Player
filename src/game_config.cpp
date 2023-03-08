@@ -411,7 +411,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-title", 0));
 	}
 	if (ini.HasValue("player", "settings-in-menu")) {
-		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-menu", 0));
+		player.settings_in_menu.Set(ini.GetBoolean("player", "settings-in-menu", 0));
 	}
 	if (ini.HasValue("player", "autobattle-algo")) {
 		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
