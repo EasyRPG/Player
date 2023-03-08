@@ -84,7 +84,16 @@ class Font {
 		/** Whether to render text in italic (currently unsupported) */
 		bool italic = false;
 		/** Whether to render a drop shadow */
-		bool draw_shadow = false;
+		bool draw_shadow = true;
+		/** Whether to draw the system color using a gradient */
+		bool draw_gradient = true;
+		/** When draw_gradient is false specifies the pixel of the current system color to use */
+		Point color_offset = {};
+		/**
+		 * Specifies how far the drawing cursor is advanced in x direction after rendering a glyph.
+		 * This will yield incorrect results for anything that involves complex shaping.
+		 **/
+		int letter_spacing = 0;
 	};
 
 	virtual ~Font() = default;

@@ -4200,11 +4200,6 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	flags = com.parameters[14];
 	params.use_transparent_color = (flags & 0xFF) > 0;
 	text.letter_spacing = (flags & (0xFF << 8)) >> 8;
-
-	if (text.letter_spacing > 0) {
-		Output::Warning("ShowStringPic: Letter spacing != 0 is unsupported (id={})", pic_id);
-	}
-
 	text.line_spacing = (flags & (0xFF << 16)) >> 16;
 	text.font_size = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[20]);
 

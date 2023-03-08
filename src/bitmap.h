@@ -227,6 +227,13 @@ public:
 	void CheckPixels(uint32_t flags);
 
 	/**
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @return color at the pixel location
+	 */
+	Color GetColorAt(int x, int y) const;
+
+	/**
 	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.

@@ -28,11 +28,10 @@
 
 /*
 FIXME:
-Letter Spacing: Not supported by HarfBuzz and doing it manual will fail for any non-trivial case
 Bold/Italic: Will only work when the font provides a bold/italic typeface
-
-TODO:
-Disable Text Gradient
+Gradient looks broken for larger font sizes
+"pad to N digits" (\d[n]) is unsupported
+Built-in & ExFont is not scaled to larger resolutions
 */
 
 /**

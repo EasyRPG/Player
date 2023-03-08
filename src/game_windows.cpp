@@ -209,6 +209,18 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		messages.emplace_back(pm);
 	}
 
+	auto apply_style = [](auto& font, const auto& text) {
+		Font::Style style = font->GetCurrentStyle();
+		style.size = text.font_size;
+		style.bold = text.flags.bold;
+		style.italic = text.flags.italic;
+		style.draw_shadow = text.flags.draw_shadow;
+		style.draw_gradient = text.flags.draw_gradient;
+		style.color_offset = {};
+		style.letter_spacing = text.letter_spacing;
+		return font->ApplyStyle(style);
+	};
+
 	if (data.width == 0 || data.height == 0) {
 		// Automatic window size
 		int x_max = 0;
@@ -219,13 +231,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 			auto& font = fonts[i];
 			const auto& pm = messages[i];
 			const auto& text = data.texts[i];
-
-			Font::Style style = font->GetCurrentStyle();
-			style.size = text.font_size;
-			style.bold = text.flags.bold;
-			style.italic = text.flags.italic;
-			style.draw_shadow = text.flags.draw_shadow;
-			auto style_guard = font->ApplyStyle(style);
+			auto style_guard = apply_style(font, text);
 
 			int x = text.position_x;
 			int y = text.position_y;
@@ -341,13 +347,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		auto& font = fonts[i];
 		const auto& pm = messages[i];
 		const auto& text = data.texts[i];
-
-		Font::Style style = font->GetCurrentStyle();
-		style.size = text.font_size;
-		style.bold = text.flags.bold;
-		style.italic = text.flags.italic;
-		style.draw_shadow = text.flags.draw_shadow;
-		auto style_guard = font->ApplyStyle(style);
+		auto style_guard = apply_style(font, text);
 
 		int x = text.position_x;
 		int y = text.position_y;

@@ -285,6 +285,21 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	}
 }
 
+Color Bitmap::GetColorAt(int x, int y) const {
+	if (x < 0 || x >= width() || y < 0 || y >= height()) {
+		return {};
+	}
+
+	Color color;
+	int pix = y * width();
+
+	const uint8_t* pos = &reinterpret_cast<const uint8_t*>(pixels())[y * pitch() + x * bpp()];
+	uint32_t pixel = *reinterpret_cast<const uint32_t*>(pos);
+	format.uint32_to_rgba(pixel, color.red, color.green, color.blue, color.alpha);
+
+	return color;
+}
+
 void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double hue_) {
 	Rect dst_rect(x, y, 0, 0), src_rect = src_rect_;
 
