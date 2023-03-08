@@ -16,6 +16,7 @@ import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -35,7 +37,7 @@ public class GameScanner {
     private static volatile GameScanner instance = null;
 
     //Files' names
-    private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini", EXE_FILE = "RPG_RT.exe";
+    private final static String DATABASE_NAME = "rpg_rt.ldb", TREEMAP_NAME = "rpg_rt.lmt", INI_FILE = "rpg_rt.ini", EXE_FILE = "rpg_rt.exe";
 
     private final List<Game> gameList;
     private final List<String> errorList; // The list of errors that will be displayed in case of problems during the scan
@@ -157,18 +159,19 @@ public class GameScanner {
 
         for (String filePath : Helper.listChildrenDocumentID(context, uri)) {
             String fileName = Helper.getFileNameFromDocumentID(filePath);
+            String fileNameLower = fileName.toLowerCase(Locale.ROOT);
 
-            if (!databaseFound && fileName.equalsIgnoreCase(DATABASE_NAME)) {
+            if (!databaseFound && fileName.equals(DATABASE_NAME)) {
                 databaseFound = true;
-            } else if (!treemapFound && fileName.equalsIgnoreCase(TREEMAP_NAME)) {
+            } else if (!treemapFound && fileName.equals(TREEMAP_NAME)) {
                 treemapFound = true;
             }
             // Count non-standard files.
             // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
             // We might be dealing with a non-standard extension.
             // Show it, and let the C++ code sort out which file is which.
-            if (fileName.toLowerCase().startsWith("rpg_rt.")) {
-                if (!(fileName.equalsIgnoreCase(INI_FILE) || fileName.equalsIgnoreCase(EXE_FILE))) {
+            if (fileNameLower.startsWith("rpg_rt.")) {
+                if (!(fileName.equals(INI_FILE) || fileName.equals(EXE_FILE))) {
                     rpgRtCount += 1;
                 }
             }
@@ -179,7 +182,7 @@ public class GameScanner {
 
             // If we encounter a Title folder, we keep it for the title screen
             // We do that here in order to avoid syscalls
-            if (fileName.equals("Title")) {
+            if (fileNameLower.equals("title")) {
                 titleFolderURI = DocumentsContract.buildDocumentUriUsingTree(uri, filePath);
             }
         }
@@ -197,6 +200,7 @@ public class GameScanner {
         boolean databaseFound = false;
         boolean treemapFound = false;
         boolean isARpgGame = false;
+        byte[] titleImage = null;
 
         ZipFoundStats() {
         }
@@ -205,8 +209,6 @@ public class GameScanner {
     /** Return a game if "folder" is a game folder, or return null.
      *  This method is designed to reduce the number of sys calls */
     public static Game isAGameZipped(Context context, Uri zipUri) {
-        Uri titleFolderURI = null;
-        Uri iniFileURI = null;
         ContentResolver resolver = context.getContentResolver();
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
@@ -217,15 +219,57 @@ public class GameScanner {
             ZipEntry entry;
 
             while ((entry = zipStream.getNextEntry()) != null) {
-                Path fullPath = Paths.get(entry.getName());
-                String fileName = fullPath.getFileName().toString();
+                if (entry.isDirectory()) {
+                    continue;
+                }
+
+                String fullPath = entry.getName();
+                String fileName;
+
+                if (fullPath.isEmpty()) {
+                    continue;
+                }
+
+                int slash = fullPath.lastIndexOf('/');
+                if (slash == -1) {
+                    slash = fullPath.lastIndexOf('\\');
+                }
+
+                if (slash == -1) {
+                    fileName = fullPath;
+                } else if (slash == fullPath.length() - 1) {
+                    continue;
+                } else {
+                    fileName = fullPath.substring(slash + 1);
+                }
+
+                String fileNameLower = fileName.toLowerCase(Locale.ROOT);
 
                 String gameDirectory;
-                Path parent = fullPath.getParent();
-                if (parent != null) {
-                    gameDirectory = parent.toString();
-                } else {
+                if (slash <= 0) {
                     gameDirectory = "";
+                } else {
+                    gameDirectory = fullPath.substring(0, slash);
+                }
+
+                String gameDirectoryLower = gameDirectory.toLowerCase(Locale.ROOT);
+                if (gameDirectoryLower.endsWith("/title") || gameDirectoryLower.endsWith("\\title")) {
+                    // Check for a title image
+                    ZipFoundStats stats = games.get(gameDirectory.substring(0, gameDirectory.length() - "/title".length()));
+
+                    if (stats != null) {
+                        if (fileNameLower.endsWith(".xyz") || fileNameLower.endsWith(".png") || fileNameLower.endsWith(".bmp")) {
+                            int count;
+                            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                                byte[] buffer = new byte[16 * 1024];
+                                while ((count = zipStream.read(buffer)) != -1)
+                                    out.write(buffer, 0, count);
+                                stats.titleImage = out.toByteArray();
+                            }
+                        }
+                    }
+
+                    continue;
                 }
 
                 ZipFoundStats stats = games.get(gameDirectory);
@@ -235,9 +279,9 @@ public class GameScanner {
                     games.put(gameDirectory, stats);
                 }
 
-                if (!stats.databaseFound && fileName.equalsIgnoreCase(DATABASE_NAME)) {
+                if (!stats.databaseFound && fileNameLower.equals(DATABASE_NAME)) {
                     stats.databaseFound = true;
-                } else if (!stats.treemapFound && fileName.equalsIgnoreCase(TREEMAP_NAME)) {
+                } else if (!stats.treemapFound && fileNameLower.equalsIgnoreCase(TREEMAP_NAME)) {
                     stats.treemapFound = true;
                 }
 
@@ -245,18 +289,14 @@ public class GameScanner {
                 // NOTE: Do not put this in the 'else' statement, since only 1 extension may be non-standard and we want to count both.
                 // We might be dealing with a non-standard extension.
                 // Show it, and let the C++ code sort out which file is which.
-                if (fileName.toLowerCase().startsWith("rpg_rt.")) {
-                    if (!(fileName.equalsIgnoreCase(INI_FILE) || fileName.equalsIgnoreCase(EXE_FILE))) {
+                if (fileNameLower.startsWith("rpg_rt.")) {
+                    if (!(fileNameLower.equals(INI_FILE) || fileNameLower.equals(EXE_FILE))) {
                         stats.rpgRtCount += 1;
                     }
                 }
 
                 if ((stats.databaseFound && stats.treemapFound) || stats.rpgRtCount == 2) {
                     stats.isARpgGame = true;
-                }
-
-                if (fileName.equals("Title")) {
-                    // Fixme: Handling of title graphic
                 }
             }
         } catch (IOException e) {
@@ -267,7 +307,8 @@ public class GameScanner {
             if (entry.getValue().isARpgGame) {
                 String name = new File(zipUri.getPath()).getName();
                 String saveFolder = name.substring(0, name.lastIndexOf("."));
-                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, null);
+                Bitmap titleScreen = extractTitleScreenImage(context, entry.getValue().titleImage);
+                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, titleScreen);
             }
         }
 
@@ -336,6 +377,25 @@ public class GameScanner {
     }
 
     /** Return the game title screen, in a dumb way following last Enterbrain conventions */
+    public static Bitmap extractTitleScreenImage(Context context, byte[] titleScreenBuffer) {
+        if (titleScreenBuffer == null) {
+            return null;
+        }
+
+        Bitmap bmp = BitmapFactory.decodeByteArray(titleScreenBuffer, 0, titleScreenBuffer.length);
+
+        if (bmp == null) {
+            byte[] xyz = decodeXYZbuffer(titleScreenBuffer);
+            if (xyz == null) {
+                return null;
+            }
+            return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
+        }
+
+        return bmp;
+    }
+
+    /** Return the game title screen, in a dumb way following last Enterbrain conventions */
     public static Bitmap extractTitleScreenImage(Context context, Uri titleScreenFolderURI) {
         try {
             // Retrieve the Title folder, containing titles screens
@@ -358,7 +418,7 @@ public class GameScanner {
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ
                                 try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(imageUri, "r")) {
-                                    byte[] xyz = decodeXYZ(fd.detachFd());
+                                    byte[] xyz = decodeXYZfd(fd.detachFd());
                                     if (xyz == null) {
                                         return null;
                                     }
@@ -379,5 +439,7 @@ public class GameScanner {
         return null;
     }
 
-    private static native byte[] decodeXYZ(int fd);
+    private static native byte[] decodeXYZfd(int fd);
+
+    private static native byte[] decodeXYZbuffer(byte[] buffer);
 }

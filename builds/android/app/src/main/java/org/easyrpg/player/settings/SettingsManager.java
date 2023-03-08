@@ -43,6 +43,7 @@ public class SettingsManager {
     // Note: don't store DocumentFile as they can be nullify with a change of context
     private static Uri easyRPGFolderURI, soundFountFileURI;
     private static Set<String> favoriteGamesList = new HashSet<>();
+    // FIXME: Implement caching of games found by the scanner
     private static Set<String> gamesCache = new HashSet<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",

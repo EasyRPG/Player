@@ -7,13 +7,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     org_easyrpg_player_game_browser_GameScanner
- * Method:    decodeXYZ
- * Signature: (Ljava/lang/String;)[I
- */
-JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZ
-  (JNIEnv *, jclass, jint);
+
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZfd(JNIEnv *env, jclass clazz, jint fd);
+
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZbuffer(JNIEnv *env, jclass clazz,
+																  jbyteArray buffer);
 
 #ifdef __cplusplus
 }

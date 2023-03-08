@@ -55,18 +55,49 @@ private:
 	std::array<char, 4096> buffer;
 };
 
+class BufferStreamBufIn : public std::streambuf {
+public:
+	BufferStreamBufIn(char* buffer, jsize size) : std::streambuf(), buffer(buffer), size(size) {
+		setg(buffer, buffer, buffer + size);
+	}
+
+private:
+	char* buffer;
+	jsize size;
+	jsize index = 0;
+};
+
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
 	std::vector<uint8_t> *p = reinterpret_cast<std::vector<uint8_t>*>(png_get_io_ptr(png_ptr));
 	p->insert(p->end(), data, data + length);
 }
 
-extern "C"
-JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZ
-  (JNIEnv * env, jclass, jint fd)
-{
-	std::istream stream(new FdStreamBufIn(fd));
+jbyteArray readXyz(JNIEnv *env, std::istream& stream);
 
+extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZbuffer(
+		JNIEnv *env, jclass, jbyteArray buffer) {
+	jbyte* elements = env->GetByteArrayElements(buffer, nullptr);
+	jsize size = env->GetArrayLength(buffer);
+
+	std::istream stream(new BufferStreamBufIn(reinterpret_cast<char*>(elements), size));
+	jbyteArray array = readXyz(env, stream);
+
+	env->ReleaseByteArrayElements(buffer, elements, 0);
+
+	return array;
+}
+
+extern "C"
+JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZfd
+  (JNIEnv * env, jclass, jint fd) {
+	std::istream stream(new FdStreamBufIn(fd));
+	return readXyz(env, stream);
+}
+
+jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
 	char header[4];
 
 	stream.read(header, 4);
@@ -175,7 +206,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_d
 	png_free(png_ptr, palette);
 	palette = NULL;
 
-	jbyteArray result=env->NewByteArray(png_outbuf.size());
+	jbyteArray result = env->NewByteArray(png_outbuf.size());
 
 	env->SetByteArrayRegion(result, 0, png_outbuf.size(), reinterpret_cast<jbyte*>(png_outbuf.data()));
 
