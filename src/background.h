@@ -55,7 +55,8 @@ private:
 	int fg_x = 0;
 	int fg_y = 0;
 
-	FileRequestBinding request_id;
+	FileRequestBinding fg_request_id;
+	FileRequestBinding bg_request_id;
 };
 
 inline Tone Background::GetTone() const {
