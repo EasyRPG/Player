@@ -68,7 +68,7 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-		auto midi = MidiDecoder::Create(stream, resample);
+		auto midi = MidiDecoder::Create(resample);
 		if (midi) {
 			return midi;
 		}

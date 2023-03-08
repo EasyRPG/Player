@@ -61,7 +61,7 @@ void Input::UiSource::DoUpdate(bool system_only) {
 		}
 
 		if (!system_only || Input::IsSystemButton(bm.first)) {
-			pressed_buttons[bm.first] = pressed_buttons[bm.first] | keystates[bm.second];
+			pressed_buttons[bm.first] = pressed_buttons[bm.first] || keystates[bm.second];
 		}
 	}
 

@@ -228,7 +228,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(StringView folder_name, StringView filename, bool transparent) {
+	BitmapRef LoadDummyBitmap(StringView, StringView, bool) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 		return s.dummy_renderer();

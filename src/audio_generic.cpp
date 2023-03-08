@@ -211,7 +211,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		// FIXME: Try Fluidsynth and WildMidi first
 		// If they work fallback to the normal AudioDecoder handler below
 		// There should be a way to configure the order
-		if (!MidiDecoder::CreateFluidsynth(filestream, true) && !MidiDecoder::CreateWildMidi(filestream, true)) {
+		if (!MidiDecoder::CreateFluidsynth(true) && !MidiDecoder::CreateWildMidi(true)) {
 			if (!midi_thread) {
 				midi_thread = std::make_unique<GenericAudioMidiOut>();
 				if (midi_thread->IsInitialized()) {

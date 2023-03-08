@@ -154,11 +154,11 @@ float Game_Enemy::GetCriticalHitChance(Weapon) const {
 	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
-bool Game_Enemy::HasAttackAll(Weapon weapon) const {
+bool Game_Enemy::HasAttackAll(Weapon) const {
 	return enemy->easyrpg_attack_all;
 }
 
-bool Game_Enemy::AttackIgnoresEvasion(Weapon weapon) const {
+bool Game_Enemy::AttackIgnoresEvasion(Weapon) const {
 	return enemy->easyrpg_ignore_evasion;
 }
 

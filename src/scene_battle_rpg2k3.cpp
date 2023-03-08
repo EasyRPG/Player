@@ -2278,14 +2278,14 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	return BattleActionReturn::eWait;
 }
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit(Game_BattleAlgorithm::AlgorithmBase*) {
 	CBAInit();
 
 	SetBattleActionState(BattleActionState_CBAMove);
 	return BattleActionReturn::eWait;
 }
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove(Game_BattleAlgorithm::AlgorithmBase*) {
 	CBAMove();
 
 	if (cba_move_frame >= cba_num_move_frames) {
@@ -2666,7 +2666,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			if (source_sprite) {
 				source_sprite->SetNormalAttacking(false);
 				auto* weapon = actor->GetWeaponSprite();
-				int weapon_animation_id = 0;
 				if (weapon) {
 					auto* weapon_animation_data = action->GetWeaponAnimationData();
 					if (weapon_animation_data) {

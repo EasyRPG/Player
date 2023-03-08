@@ -41,8 +41,6 @@
 #  include <emscripten.h>
 #endif
 
-constexpr int option_window_num_items = 10;
-
 Scene_Settings::Scene_Settings() {
 	Scene::type = Scene::Settings;
 }
@@ -87,7 +85,7 @@ void Scene_Settings::CreateOptionsWindow() {
 	input_mode_window->SetX(Player::menu_offset_x + 32);
 	input_mode_window->SetY(Player::screen_height - 32);
 	input_mode_window->SetHelpWindow(help_window.get());
-	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int index) {
+	input_mode_window->UpdateHelpFn = [](Window_Help& win, int index) {
 		if (index == 0) {
 			win.SetText("Add a new keybinding");
 		} else if (index == 1) {
@@ -215,6 +213,7 @@ void Scene_Settings::vUpdate() {
 
 	switch (opt_mode) {
 		case Window_Settings::eNone:
+		case Window_Settings::eSave:
 			break;
 		case Window_Settings::eMain:
 			UpdateMain();
@@ -250,7 +249,6 @@ void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(bitmapRef);
 
 	// If the title sprite doesn't fill the screen, center it to support custom resolutions
-	Rect rect = title->GetBitmap()->GetRect();
 	if (bitmapRef->GetWidth() < Player::screen_width) {
 		title->SetX(Player::menu_offset_x);
 	}
@@ -284,8 +282,6 @@ void Scene_Settings::UpdateMain() {
 }
 
 void Scene_Settings::UpdateOptions() {
-	options_window->UpdateMode();
-
 	if (number_window) {
 		number_window->Update();
 		auto& option = options_window->GetCurrentOption();

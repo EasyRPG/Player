@@ -623,6 +623,7 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString(bool status_scene) const {
+	(void)status_scene;
 	// RPG_RT displays dashes for max level. As a customization
 	// we always display the amount of EXP.
 	// if (GetNextExp() == -1) { return (MaxExpValue() >= 1000000 || status_scene) ? "-------" : "------"; }

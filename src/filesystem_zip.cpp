@@ -248,8 +248,8 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	zipfile.seekg(8, std::ios_base::cur); // Jump over currently not needed entries
 	zipfile.read(reinterpret_cast<char*>(&entry.fileoffset), sizeof(uint32_t));
 	Utils::SwapByteOrder(entry.fileoffset);
-	if (filename_buffer.capacity() < filepath_length + 1) {
-		filename_buffer.resize(filepath_length + 1);
+	if (filename_buffer.capacity() < filepath_length + 1u) {
+		filename_buffer.resize(filepath_length + 1u);
 	}
 	zipfile.read(reinterpret_cast<char*>(filename_buffer.data()), filepath_length);
 	filename = std::string(filename_buffer.data(), filepath_length);
@@ -340,7 +340,6 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		auto zip_file = GetParent().OpenInputStream(GetPath());
 		zip_file.seekg(central_entry->fileoffset);
 		StorageMethod method;
-		uint32_t local_offset = 0;
 		ZipEntry local_entry = {};
 		if (ReadLocalHeader(zip_file, method, local_entry)) {
 			if (central_entry->compressed_size != local_entry.compressed_size) {

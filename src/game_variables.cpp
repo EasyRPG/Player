@@ -439,57 +439,57 @@ void Game_Variables::BitShiftRightRangeVariableIndirect(int first_id, int last_i
 
 void Game_Variables::SetRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSet);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSet);
 }
 
 void Game_Variables::AddRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] += rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarAdd);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarAdd);
 }
 
 void Game_Variables::SubRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] -= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSub);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarSub);
 }
 
 void Game_Variables::MultRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] *= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMult);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMult);
 }
 
 void Game_Variables::DivRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] /= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarDiv);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarDiv);
 }
 
 void Game_Variables::ModRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] %= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMod);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarMod);
 }
 
 void Game_Variables::BitOrRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] |= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitOr);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitOr);
 }
 
 void Game_Variables::BitAndRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] &= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitAnd);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitAnd);
 }
 
 void Game_Variables::BitXorRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] ^= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitXor);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitXor);
 }
 
 void Game_Variables::BitShiftLeftRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] <<= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftLeft);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftLeft);
 }
 
 void Game_Variables::BitShiftRightRangeRandom(int first_id, int last_id, Var_t minval, Var_t maxval) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] >>= rand({},{})!", minval, maxval);
-	WriteRange(first_id, last_id, [this,minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftRight);
+	WriteRange(first_id, last_id, [minval,maxval](){ return Rand::GetRandomNumber(minval, maxval); }, VarBitShiftRight);
 }
 
 void Game_Variables::EnumerateRange(int first_id, int last_id, Var_t value) {

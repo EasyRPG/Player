@@ -38,11 +38,6 @@ Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
 	column_max = 1;
 }
 
-void Window_Settings::UpdateMode() {
-	auto& frame = GetFrame();
-	auto mode = frame.uimode;
-}
-
 void Window_Settings::DrawOption(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
@@ -66,10 +61,6 @@ const Window_Settings::StackFrame& Window_Settings::GetFrame(int n) const {
 	auto i = stack_index - n;
 	assert(i >= 0 && i < static_cast<int>(stack.size()));
 	return stack[i];
-}
-
-int Window_Settings::GetStackSize() const {
-	return stack_index + 1;
 }
 
 void Window_Settings::Push(UiMode ui, int arg) {
@@ -278,9 +269,9 @@ void Window_Settings::RefreshAudio() {
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
-	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
-	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
-	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.settings_autosave, [](){ cfg.settings_autosave.Toggle(); });
+	AddOption(cfg.settings_in_title, [](){ cfg.settings_in_title.Toggle(); });
+	AddOption(cfg.settings_in_menu, [](){ cfg.settings_in_menu.Toggle(); });
 }
 
 void Window_Settings::RefreshLicense() {

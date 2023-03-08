@@ -93,7 +93,7 @@ int DrWavDecoder::FillBuffer(uint8_t* buffer, int length) {
 		return 0;
 	}
 
-	drwav_uint64 decoded = drwav_read_pcm_frames_s16(&handle, length / (handle.channels * 2), reinterpret_cast<drwav_int16*>(buffer));
+	int decoded = static_cast<int>(drwav_read_pcm_frames_s16(&handle, length / (handle.channels * 2), reinterpret_cast<drwav_int16*>(buffer)));
 	decoded_samples += decoded;
 	decoded *= handle.channels * 2;
 

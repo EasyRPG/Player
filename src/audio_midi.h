@@ -183,17 +183,16 @@ public:
 	/**
 	 * Attempts to initialize a Midi library for processing the Midi data.
 	 *
-	 * @param stream handle to parse
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return A Midi decoder instance when the Midi data is supported, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoderBase> Create(Filesystem_Stream::InputStream& stream, bool resample);
+	static std::unique_ptr<AudioDecoderBase> Create(bool resample);
 
-	static std::unique_ptr<AudioDecoderBase> CreateFluidsynth(Filesystem_Stream::InputStream& stream, bool resample);
+	static std::unique_ptr<AudioDecoderBase> CreateFluidsynth(bool resample);
 
-	static std::unique_ptr<AudioDecoderBase> CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample);
+	static std::unique_ptr<AudioDecoderBase> CreateWildMidi(bool resample);
 
-	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample);
+	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(bool resample);
 
 protected:
 	int frequency = EP_MIDI_FREQ;

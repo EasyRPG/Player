@@ -567,7 +567,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 			Output::Debug("Sound not found: {}", result->file);
 			return;
 		}
-		se_cache = std::move(AudioSeCache::Create(std::move(stream), result->file));
+		se_cache = AudioSeCache::Create(std::move(stream), result->file);
 	}
 
 	if (!se_cache) {

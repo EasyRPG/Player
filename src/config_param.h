@@ -178,9 +178,9 @@ public:
 protected:
 	virtual bool vIsValid(const T& value) const = 0;
 
-	T _value = {};
 	StringView _name;
 	StringView _description;
+	T _value = {};
 
 private:
 	bool _visible = true;

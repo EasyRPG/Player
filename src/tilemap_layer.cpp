@@ -684,7 +684,7 @@ void TilemapSubLayer::Draw(Bitmap& dst) {
 		return;
 	}
 
-	tilemap->Draw(dst, GetZ());
+	tilemap->Draw(dst, internal_z);
 }
 
 void TilemapLayer::SetTone(Tone tone) {
