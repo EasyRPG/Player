@@ -25,12 +25,14 @@
 
 /**
  * Audio decoder for Opus powered by opusfile
+ *
+ * Class renamed from OpusDecoder because of a conflict with the library.
  */
-class OpusDecoder : public AudioDecoder {
+class OpusAudioDecoder : public AudioDecoder {
 public:
-	OpusDecoder();
+	OpusAudioDecoder();
 
-	~OpusDecoder();
+	~OpusAudioDecoder();
 
 	// Audio Decoder interface
 	bool Open(Filesystem_Stream::InputStream stream) override;

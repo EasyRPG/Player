@@ -84,7 +84,7 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "Opus", 4)) {
-			return add_resampler(std::make_unique<OpusDecoder>());
+			return add_resampler(std::make_unique<OpusAudioDecoder>());
 		}
 #endif
 
