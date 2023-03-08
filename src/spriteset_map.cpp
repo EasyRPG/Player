@@ -144,17 +144,18 @@ void Spriteset_Map::ParallaxUpdated() {
 	std::string name = Game_Map::Parallax::GetName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		if (name.empty()) {
-			panorama->SetBitmap(BitmapRef());
-			Game_Map::Parallax::Initialize(0, 0);
-		}
-		else {
+		if (!name.empty()) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
 			request->SetGraphicFile(true);
 			request->SetImportantFile(true);
 			panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
 			request->Start();
 		}
+	}
+
+	if (name.empty()) {
+		panorama->SetBitmap(BitmapRef());
+		Game_Map::Parallax::Initialize(0, 0);
 	}
 }
 
