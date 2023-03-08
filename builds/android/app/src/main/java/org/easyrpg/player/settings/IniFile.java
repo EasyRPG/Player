@@ -31,7 +31,7 @@ public class IniFile {
         engine = new SectionView("engine");
     }
 
-    public boolean Save() {
+    public boolean save() {
         try {
             ini.store(ini.getFile());
             return true;
@@ -40,11 +40,11 @@ public class IniFile {
         }
     }
 
-    public boolean Has(String section, String key) {
+    public boolean has(String section, String key) {
         return ini.get(section, key) != null;
     }
 
-    public int GetInteger(String section, String key, int defaultValue) {
+    public int getInteger(String section, String key, int defaultValue) {
         String value = ini.get(section, key);
 
         if (value == null) {
@@ -58,7 +58,7 @@ public class IniFile {
         }
     }
 
-    public boolean GetBoolean(String section, String key, boolean defaultValue) {
+    public boolean getBoolean(String section, String key, boolean defaultValue) {
         String value = ini.get(section, key);
 
         if (value == null) {
@@ -68,7 +68,7 @@ public class IniFile {
         }
     }
 
-    public String GetString(String section, String key, String defaultValue) {
+    public String getString(String section, String key, String defaultValue) {
         String value = ini.get(section, key);
 
         if (value == null) {
@@ -78,15 +78,15 @@ public class IniFile {
         }
     }
 
-    public void Set(String section, String key, int value) {
-        Set(section, key, Integer.toString(value));
+    public void set(String section, String key, int value) {
+        set(section, key, Integer.toString(value));
     }
 
-    public void Set(String section, String key, boolean value) {
-        Set(section, key, value ? "1" : "0");
+    public void set(String section, String key, boolean value) {
+        set(section, key, value ? "1" : "0");
     }
 
-    public void Set(String section, String key, String value) {
+    public void set(String section, String key, String value) {
         ini.put(section, key, value);
     }
 
@@ -97,32 +97,32 @@ public class IniFile {
             this.section = section;
         }
 
-        public boolean Has(String key) {
-            return IniFile.this.Has(section, key);
+        public boolean has(String key) {
+            return IniFile.this.has(section, key);
         }
 
-        public int GetInteger(String key, int defaultValue) {
-            return IniFile.this.GetInteger(section, key, defaultValue);
+        public int getInteger(String key, int defaultValue) {
+            return IniFile.this.getInteger(section, key, defaultValue);
         }
 
-        public boolean GetBoolean(String key, boolean defaultValue) {
-            return IniFile.this.GetBoolean(section, key, defaultValue);
+        public boolean getBoolean(String key, boolean defaultValue) {
+            return IniFile.this.getBoolean(section, key, defaultValue);
         }
 
-        public String GetString(String key, String defaultValue) {
-            return IniFile.this.GetString(section, key, defaultValue);
+        public String getString(String key, String defaultValue) {
+            return IniFile.this.getString(section, key, defaultValue);
         }
 
-        public void Set(String key, int value) {
-            IniFile.this.Set(section, key, value);
+        public void set(String key, int value) {
+            IniFile.this.set(section, key, value);
         }
 
-        public void Set(String key, boolean value) {
-            IniFile.this.Set(section, key, value);
+        public void set(String key, boolean value) {
+            IniFile.this.set(section, key, value);
         }
 
-        public void Set(String key, String value) {
-            IniFile.this.Set(section, key, value);
+        public void set(String key, String value) {
+            IniFile.this.set(section, key, value);
         }
     }
 }

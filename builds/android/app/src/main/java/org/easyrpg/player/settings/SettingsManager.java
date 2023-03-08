@@ -14,14 +14,9 @@ import org.easyrpg.player.Helper;
 import org.easyrpg.player.button_mapping.InputLayout;
 import org.easyrpg.player.game_browser.Encoding;
 import org.easyrpg.player.game_browser.Game;
-import org.ini4j.Ini;
-import org.ini4j.Wini;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SettingsManager {
@@ -66,7 +61,7 @@ public class SettingsManager {
 
         configIni = new IniFile(new File(context.getExternalFilesDir(null).getAbsoluteFile() + "/config.ini"));
 
-        imageSize = configIni.video.GetInteger(IMAGE_SIZE.toString(), 2);
+        imageSize = configIni.video.getInteger(IMAGE_SIZE.toString(), 2);
         rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), true);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
@@ -74,12 +69,12 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        stretch = configIni.video.GetBoolean(STRETCH.toString(), false);
+        stretch = configIni.video.getBoolean(STRETCH.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
-        musicVolume = configIni.audio.GetInteger(MUSIC_VOLUME.toString(), 100);
-        soundVolume = configIni.audio.GetInteger(SOUND_VOLUME.toString(), 100);
+        musicVolume = configIni.audio.getInteger(MUSIC_VOLUME.toString(), 100);
+        soundVolume = configIni.audio.getInteger(SOUND_VOLUME.toString(), 100);
 
         favoriteGamesList = new HashSet<>(sharedPref.getStringSet(FAVORITE_GAMES.toString(), new HashSet<>()));
     }
@@ -111,8 +106,8 @@ public class SettingsManager {
 
     public static void setImageSize(int imageSize) {
         SettingsManager.imageSize = imageSize;
-        configIni.video.Set(IMAGE_SIZE.toString(), imageSize);
-        configIni.Save();
+        configIni.video.set(IMAGE_SIZE.toString(), imageSize);
+        configIni.save();
     }
 
     public static long getVibrationDuration() {
@@ -209,8 +204,8 @@ public class SettingsManager {
 
     public static void setMusicVolume(int i) {
         musicVolume = i;
-        configIni.audio.Set(MUSIC_VOLUME.toString(), i);
-        configIni.Save();
+        configIni.audio.set(MUSIC_VOLUME.toString(), i);
+        configIni.save();
     }
 
     public static int getSoundVolume() {
@@ -219,8 +214,8 @@ public class SettingsManager {
 
     public static void setSoundVolume(int i) {
         soundVolume = i;
-        configIni.audio.Set(SOUND_VOLUME.toString(), i);
-        configIni.Save();
+        configIni.audio.set(SOUND_VOLUME.toString(), i);
+        configIni.save();
     }
 
     public static void setForcedLandscape(boolean b) {
@@ -235,8 +230,8 @@ public class SettingsManager {
 
     public static void setStretch(boolean b) {
         stretch = b;
-        configIni.video.Set(STRETCH.toString(), b);
-        configIni.Save();
+        configIni.video.set(STRETCH.toString(), b);
+        configIni.save();
     }
 
     public static Uri getEasyRPGFolderURI(Context context) {
