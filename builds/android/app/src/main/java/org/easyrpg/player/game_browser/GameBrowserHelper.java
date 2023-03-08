@@ -62,9 +62,13 @@ public class GameBrowserHelper {
                 savePath = game.getSavePath();
                 args.add("--save-path");
                 args.add(savePath);
+            }
 
+            Encoding enc = game.getEncoding();
+            if (enc.getIndex() > 0) {
+                // 0 = Auto, in that case let the Player figure it out
                 args.add("--encoding");
-                args.add(game.getEncoding(context).getRegionCode());
+                args.add(enc.getRegionCode());
             }
 
             args.add("--config-path");

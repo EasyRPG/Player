@@ -12,12 +12,15 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.button_mapping.InputLayout;
+import org.easyrpg.player.game_browser.Encoding;
+import org.easyrpg.player.game_browser.Game;
 import org.ini4j.Ini;
 import org.ini4j.Wini;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +42,8 @@ public class SettingsManager {
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
     private static Uri easyRPGFolderURI, soundFountFileURI;
-    private static List<String> favoriteGamesList = new ArrayList<>();
+    private static Set<String> favoriteGamesList = new HashSet<>();
+    private static Set<String> gamesCache = new HashSet<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
         GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
@@ -76,50 +80,27 @@ public class SettingsManager {
         musicVolume = configIni.audio.GetInteger(MUSIC_VOLUME.toString(), 100);
         soundVolume = configIni.audio.GetInteger(SOUND_VOLUME.toString(), 100);
 
-        // Fetch the favorite game list :
-        favoriteGamesList = new ArrayList<>();
-        String favoriteGamesListString = sharedPref.getString(FAVORITE_GAMES.toString(), "");
-        if (!favoriteGamesListString.isEmpty()) {
-            for (String folder : favoriteGamesListString.split("\\*")) {
-                if (!favoriteGamesList.contains(folder)) {
-                    favoriteGamesList.add(folder);
-                }
-                // TODO : Remove folder that doesn't exist
-            }
-        }
+        favoriteGamesList = new HashSet<>(sharedPref.getStringSet(FAVORITE_GAMES.toString(), new HashSet<>()));
     }
 
-    public static List<String> getFavoriteGamesList() {
+    public static Set<String> getFavoriteGamesList() {
         return favoriteGamesList;
     }
 
-    public static void addFavoriteGame(String gameTitle) {
-        gameTitle = gameTitle.trim();
-
-        // The game folder must not be already in the list
-        if (favoriteGamesList.contains(gameTitle)) {
-            return;
-        }
-
+    public static void addFavoriteGame(Game game) {
         // Update user's preferences
-        favoriteGamesList.add(gameTitle);
+        favoriteGamesList.add(game.getTitle());
 
         setFavoriteGamesList(favoriteGamesList);
     }
 
-    public static void removeAFavoriteGame(String path) {
-        favoriteGamesList.remove(path);
+    public static void removeAFavoriteGame(Game game) {
+        favoriteGamesList.remove(game.getTitle());
         setFavoriteGamesList(favoriteGamesList);
     }
 
-    private static void setFavoriteGamesList(List<String> folderList) {
-        favoriteGamesList = folderList;
-
-        StringBuilder sb = new StringBuilder();
-        for (String folder : favoriteGamesList) {
-            sb.append(folder).append('*');
-        }
-        editor.putString(FAVORITE_GAMES.toString(), sb.toString());
+    private static void setFavoriteGamesList(Set<String> folderList) {
+        editor.putStringSet(FAVORITE_GAMES.toString(), folderList);
         editor.commit();
     }
 
@@ -195,7 +176,6 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = b;
         editor.putBoolean(SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS.toString(), b);
         editor.commit();
-
     }
 
     public static int getLayoutTransparency() {
@@ -360,5 +340,13 @@ public class SettingsManager {
         editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(activity));
         editor.commit();
     }
-}
 
+    public static Encoding getGameEncoding(Game game) {
+        return Encoding.regionCodeToEnum(pref.getString(game.getTitle() + "_Encoding", ""));
+    }
+
+    public static void setGameEncoding(Game game, Encoding encoding) {
+        editor.putString(game.getTitle() + "_Encoding", encoding.getRegionCode());
+        editor.commit();
+    }
+}

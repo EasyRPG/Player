@@ -363,18 +363,11 @@ public class GameBrowserActivity extends AppCompatActivity
         }
 
         public void chooseRegion(final Context context, final Game game) {
-            if (game.isZipArchive()) {
-                // Fixme: Resource
-                String msg = "Setting the region is unsupported for zip archives";
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-                return;
-            }
-
             // The list of region choices
-            String[] region_array = IniFileManager.Encoding.getEncodingDescriptions(context);
+            String[] region_array = Encoding.getEncodingDescriptions(context);
 
             // Retrieve the game's current encoding settings
-            IniFileManager.Encoding encoding = game.getEncoding(context);
+            Encoding encoding = game.getEncoding();
 
             // Building the dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -383,10 +376,10 @@ public class GameBrowserActivity extends AppCompatActivity
                 .setSingleChoiceItems(region_array, encoding.getIndex(), null)
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                    IniFileManager.Encoding selectedEncoding = IniFileManager.Encoding.AUTO.getEncodingByIndex(selectedPosition);
+                    Encoding selectedEncoding = Encoding.AUTO.getEncodingByIndex(selectedPosition);
 
                     if (!selectedEncoding.equals(encoding)) {
-                        game.setEncoding(context, selectedEncoding);
+                        game.setEncoding(selectedEncoding);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);

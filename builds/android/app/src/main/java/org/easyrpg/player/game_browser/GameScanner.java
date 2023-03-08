@@ -148,7 +148,6 @@ public class GameScanner {
     public static Game isAGame(Context context, Uri uri) {
         Game game = null;
         Uri titleFolderURI = null;
-        Uri iniFileURI = null;
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
         int rpgRtCount = 0;
@@ -183,15 +182,11 @@ public class GameScanner {
             if (fileName.equals("Title")) {
                 titleFolderURI = DocumentsContract.buildDocumentUriUsingTree(uri, filePath);
             }
-            // If we encounter a .ini file, we keep it for later (we don't analyze it now for performance purpose)
-            if (fileName.equalsIgnoreCase(INI_FILE)) {
-                iniFileURI = DocumentsContract.buildDocumentUriUsingTree(uri, filePath);
-            }
         }
 
         if (isARpgGame) {
             Bitmap titleScreen = GameScanner.extractTitleScreenImage(context, titleFolderURI);
-            game = new Game(Helper.getFileFromURI(context, uri), iniFileURI, titleScreen);
+            game = new Game(Helper.getFileFromURI(context, uri), titleScreen);
         }
 
         return game;
@@ -263,10 +258,6 @@ public class GameScanner {
                 if (fileName.equals("Title")) {
                     // Fixme: Handling of title graphic
                 }
-
-                if (fileName.equalsIgnoreCase(INI_FILE)) {
-                    // Fixme: Handling of INI
-                }
             }
         } catch (IOException e) {
             return null;
@@ -276,7 +267,7 @@ public class GameScanner {
             if (entry.getValue().isARpgGame) {
                 String name = new File(zipUri.getPath()).getName();
                 String saveFolder = name.substring(0, name.lastIndexOf("."));
-                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, null, null);
+                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, null);
             }
         }
 
@@ -366,7 +357,6 @@ public class GameScanner {
                             Bitmap b = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
                             if (b == null && GameBrowserActivity.libraryLoaded) {
                                 // Check for XYZ
-                                // TODO : Change this open() to support API < 29
                                 try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(imageUri, "r")) {
                                     byte[] xyz = decodeXYZ(fd.detachFd());
                                     if (xyz == null) {
