@@ -45,6 +45,7 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
+	bool ChangeDisplaySurfaceResolution(int new_width, int new_height) override;
 	void UpdateDisplay() override;
 	void ProcessEvents() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;

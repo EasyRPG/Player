@@ -57,6 +57,10 @@ Game_ConfigInput LibretroUi::cfg_input;
 static Input::Keys::InputKey RetroJKey2InputKey(int button_index);
 #endif
 
+// libretro needs an upper limit for the framebuffer set in av_info
+const int fb_max_width = 1920;
+const int fb_max_height = 1080;
+
 LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 {
 	// Handled by libretro
@@ -79,7 +83,7 @@ LibretroUi::LibretroUi(int width, int height, const Game_Config& cfg) : BaseUi(c
 		PF::NoAlpha);
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-	main_surface.reset();
+
 	main_surface = Bitmap::Create(current_display_mode.width,
 		current_display_mode.height,
 		false,
@@ -101,6 +105,39 @@ void LibretroUi::UpdateDisplay() {
 	}
 
 	UpdateWindow(main_surface->pixels(), current_display_mode.width, current_display_mode.height, main_surface->pitch());
+}
+
+bool LibretroUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
+		return true;
+	}
+
+	if (new_width > fb_max_width || new_height > fb_max_height) {
+		Output::Warning("ChangeDisplaySurfaceResolution: {}x{} is too large", new_width, new_height);
+		return false;
+	}
+
+	BitmapRef new_main_surface = Bitmap::Create(new_width, new_height, false, current_display_mode.bpp);
+
+	if (!new_main_surface) {
+		Output::Warning("ChangeDisplaySurfaceResolution Bitmap::Create failed");
+		return false;
+	}
+
+	retro_game_geometry geom = {};
+	geom.base_width = new_width;
+	geom.base_height = new_height;
+	if (!LibretroUi::environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, &geom)) {
+		Output::Warning("ChangeDisplaySurfaceResolution SET_GEOMETRY failed");
+		return false;
+	}
+
+	main_surface = new_main_surface;
+
+	current_display_mode.width = new_width;
+	current_display_mode.height = new_height;
+
+	return true;
 }
 
 void LibretroUi::ProcessEvents() {
@@ -326,8 +363,8 @@ RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 RETRO_API void retro_get_system_av_info(struct retro_system_av_info* info) {
 	info->geometry.base_width = SCREEN_TARGET_WIDTH;
 	info->geometry.base_height = SCREEN_TARGET_HEIGHT;
-	info->geometry.max_width = SCREEN_TARGET_WIDTH;
-	info->geometry.max_height = SCREEN_TARGET_HEIGHT;
+	info->geometry.max_width = fb_max_width;
+	info->geometry.max_height = fb_max_height;
 	info->geometry.aspect_ratio = 0.0f;
 	info->timing.fps = Game_Clock::GetTargetGameFps();
 	info->timing.sample_rate = AUDIO_SAMPLERATE;
