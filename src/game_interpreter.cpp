@@ -4125,7 +4125,7 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	int pic_id = ValueOrVariable(com.parameters[0] & 0xF, com.parameters[1]);
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
 	if (pic_id <= 0) {
 		Output::Error("ShowStringPic: Requested invalid picture id ({})", pic_id);
@@ -4135,10 +4135,10 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	Game_Windows::WindowParams params = {};
 	Game_Windows::WindowText text;
 
-	params.position_x = ValueOrVariable((com.parameters[0] & 0xF0) >> 4, com.parameters[2]);
-	params.position_y = ValueOrVariable((com.parameters[0] & 0xF0) >> 4, com.parameters[3]);
-	params.magnify = ValueOrVariable((com.parameters[0] & 0xF00) >> 8, com.parameters[4]);
-	params.top_trans = ValueOrVariable((com.parameters[0] & 0xF000) >> 12, com.parameters[5]);
+	params.position_x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+	params.position_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
+	params.magnify = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+	params.top_trans = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
 	params.red = com.parameters[6];
 	params.green = com.parameters[7];
 	params.blue = com.parameters[8];
@@ -4165,8 +4165,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	flags = com.parameters[13];
 	if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-		params.effect_power = ValueOrVariable((flags & (0xF << 24)) >> 24, params.effect_power);
-		int divisor = ValueOrVariable((flags & (0xF << 28)) >> 28, com.parameters[21]);
+		params.effect_power = ValueOrVariableBitfield(flags, 6, params.effect_power);
+		int divisor = ValueOrVariableBitfield(flags, 7, com.parameters[21]);
 		if (divisor == 0) {
 			divisor = 1;
 		}
@@ -4189,9 +4189,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	text.bold = (flags & (1 << 15)) > 0;
 	params.border_margin = (flags & (1 << 16)) == 0;
 
-	int dim_val = (com.parameters[0] & (0xF << 16)) >> 16;
-	params.width = ValueOrVariable(dim_val, com.parameters[18]);
-	params.height = ValueOrVariable(dim_val, com.parameters[19]);
+	params.width = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[18]);
+	params.height = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[19]);
 
 	if (params.width < 0 || params.height < 0) {
 		Output::Warning("ShowStringPic: Invalid window dimension {}x{} (id={})", params.width, params.height, pic_id);
@@ -4207,7 +4206,7 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	}
 
 	text.line_spacing = (flags & (0xFF << 16)) >> 16;
-	text.font_size = ValueOrVariable((com.parameters[0] & (0xF << 20)) >> 20, com.parameters[20]);
+	text.font_size = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[20]);
 
 	// Windows uses pt but we use px
 	int font_px = Utils::RoundTo<int>(text.font_size * (72 / 96.0));
