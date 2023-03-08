@@ -4422,8 +4422,8 @@ bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&
 		}
 	} else if (operation == 2) {
 		int key_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
-		ManiacPatch::GetKeyState(key_id);
-		Main_Data::game_variables->Set(start_var_id, key_id ? 1 : 0);
+		bool key_state = ManiacPatch::GetKeyState(key_id);
+		Main_Data::game_variables->Set(start_var_id, key_state ? 1 : 0);
 	} else {
 		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");
 	}
