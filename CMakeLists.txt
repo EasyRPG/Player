@@ -28,7 +28,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
 endif()
 
 # Source Files
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME} OBJECT
 	src/lcf_data.cpp
 	src/lcf/data.h
 	src/async_handler.cpp
