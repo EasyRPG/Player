@@ -156,6 +156,11 @@ protected:
 	void SetupWait(int duration);
 
 	/**
+	 * Sets up a wait using frames (and closes the message box)
+	 */
+	void SetupWaitFrames(int duration);
+
+	/**
 	 * Calculates list of actors.
 	 *
 	 * @param mode 0: party, 1: specific actor, 2: actor referenced by variable.

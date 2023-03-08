@@ -287,6 +287,15 @@ void Game_Interpreter::SetupWait(int duration) {
 	}
 }
 
+void Game_Interpreter::SetupWaitFrames(int duration) {
+	if (duration == 0) {
+		// 0.0 waits 1 frame
+		_state.wait_time = 1;
+	} else {
+		_state.wait_time = duration;
+	}
+}
+
 bool Game_Interpreter::ReachedLoopLimit() const {
 	return loop_count >= loop_limit;
 }
@@ -1972,10 +1981,31 @@ bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 11410
 	auto& index = GetFrame().current_command;
 
+	bool maniac = Player::IsPatchManiac();
+
 	// Wait a given time
 	if (com.parameters.size() <= 1 ||
-		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
+		(!maniac && com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
+		return true;
+	}
+
+	if (maniac && com.parameters.size() > 1) {
+		int wait_type = com.parameters[1];
+		int mode = 0;
+
+		if (com.parameters.size() > 2) {
+			mode = com.parameters[2];
+		}
+
+		int duration = ValueOrVariable(mode, com.parameters[0]);
+
+		if (wait_type == 256) {
+			SetupWaitFrames(duration);
+		} else {
+			SetupWait(duration);
+		}
+
 		return true;
 	}
 
@@ -2032,6 +2062,8 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 		sound.tempo = com.parameters[1];
 		sound.balance = com.parameters[2];
 	}
+
+	Output::Debug("SE {} {} {} {}", sound.name, sound.volume, sound.tempo, sound.balance);
 
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
