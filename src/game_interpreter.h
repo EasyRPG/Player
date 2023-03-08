@@ -163,6 +163,7 @@ protected:
 	 */
 	static std::vector<Game_Actor*> GetActors(int mode, int id);
 	static int ValueOrVariable(int mode, int val);
+	static int ValueOrVariableBitfield(int mode, int shift, int val);
 
 	/**
 	 * When current frame finishes executing we pop the stack

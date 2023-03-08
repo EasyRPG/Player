@@ -61,6 +61,8 @@ install_manifest.txt
 *.ilk
 *.pdb
 /resources/player.rc
+.vs/
+vcpkg/
 
 # ninja
 .ninja_*

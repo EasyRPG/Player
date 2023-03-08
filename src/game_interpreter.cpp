@@ -1736,6 +1736,10 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 	return -1;
 }
 
+int Game_Interpreter::ValueOrVariableBitfield(int mode, int shift, int val) {
+	return ValueOrVariable((mode & (0xF << shift * 4)) >> shift * 4, val);
+}
+
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
 	int value = OperateValue(
 		com.parameters[2],
@@ -1990,10 +1994,20 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
 	music.name = ToString(com.string);
-	music.fadein = com.parameters[0];
-	music.volume = com.parameters[1];
-	music.tempo = com.parameters[2];
-	music.balance = com.parameters[3];
+
+	if (Player::IsPatchManiac() && com.parameters.size() >= 5) {
+		int mode = com.parameters[4];
+		music.fadein = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
+		music.volume = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
+		music.tempo = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
+		music.balance = ValueOrVariableBitfield(mode, 4, com.parameters[3]);
+	} else {
+		music.fadein = com.parameters[0];
+		music.volume = com.parameters[1];
+		music.tempo = com.parameters[2];
+		music.balance = com.parameters[3];
+	}
+
 	Main_Data::game_system->BgmPlay(music);
 	return true;
 }
@@ -2007,9 +2021,18 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
 	sound.name = ToString(com.string);
-	sound.volume = com.parameters[0];
-	sound.tempo = com.parameters[1];
-	sound.balance = com.parameters[2];
+
+	if (Player::IsPatchManiac() && com.parameters.size() >= 4) {
+		int mode = com.parameters[3];
+		sound.volume = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
+		sound.tempo = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
+		sound.balance = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
+	} else {
+		sound.volume = com.parameters[0];
+		sound.tempo = com.parameters[1];
+		sound.balance = com.parameters[2];
+	}
+
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }
