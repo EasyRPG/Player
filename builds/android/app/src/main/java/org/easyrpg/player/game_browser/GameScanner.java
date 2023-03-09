@@ -21,13 +21,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -95,17 +95,59 @@ public class GameScanner {
             return;
         }
 
+        // Scan the first level of the games folder and compute a hash from it
+        int hash = scanFolderHash(context, gamesFolder.getUri());
+        int cacheHash = SettingsManager.getGamesCacheHash();
+        Log.i("EasyRPG", "Hash: " + hash + "/" + cacheHash);
+
+        if (hash == cacheHash) {
+            Set<String> gamesCache = SettingsManager.getGamesCache();
+            for (String gameCache: gamesCache) {
+                Game game = Game.fromCacheEntry(context, gameCache);
+                if (game != null) {
+                    gameList.add(game);
+                }
+            }
+
+            if (gameList.size() > 0) {
+                Log.i("EasyRPG", gameList.size() + " game(s) found in cache.");
+
+                return;
+            }
+
+            // Bad cache, do a scan
+            SettingsManager.clearGamesCache();
+        }
+
         // Scan the games folder
-        // TODO : Bring back depth (2) when the performance hit will be solved, the problem is linked with slow SAF calls
         scanFolderRecursive(context, gamesFolder.getUri(), GAME_SCANNING_DEPTH);
 
         // If the scan brings nothing in this folder : we notify the errorList
         if (gameList.size() <= 0) {
+            SettingsManager.clearGamesCache();
             String error = context.getString(R.string.no_games_found_and_explanation_android_30);
             errorList.add(error);
+        } else {
+            // Store the result in the cache
+            Set<String> gamesCache = new HashSet<>();
+            for (Game game: gameList) {
+                gamesCache.add(game.toCacheEntry());
+            }
+            SettingsManager.setGamesCache(hash, gamesCache);
         }
 
         Log.i("EasyRPG", gameList.size() + " game(s) found.");
+    }
+
+    private int scanFolderHash(Context context, Uri folderURI) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
+            sb.append(array[0]);
+            sb.append(array[1]);
+        }
+
+        return sb.toString().hashCode();
     }
 
     private void scanFolderRecursive(Context context, Uri folderURI, int depth) {
@@ -133,11 +175,14 @@ public class GameScanner {
                             // Android SAF calls and scanFolder(...) already check that)
                             scanFolderRecursive(context, fileURI, depth - 1);
                         }
-                    } else if (fileDocumentID.endsWith(".zip") || fileDocumentID.endsWith(".easyrpg")) {
-                        Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
-                        Game game = isAGameZipped(context, fileURI);
-                        if (game != null) {
-                            gameList.add(game);
+                    } else {
+                        String nameLower = name.toLowerCase(Locale.ROOT);
+                        if (nameLower.endsWith(".zip") || nameLower.endsWith(".easyrpg")) {
+                            Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
+                            Game game = isAGameZipped(context, fileURI);
+                            if (game != null) {
+                                gameList.add(game);
+                            }
                         }
                     }
                 }
@@ -265,6 +310,9 @@ public class GameScanner {
                                 while ((count = zipStream.read(buffer)) != -1)
                                     out.write(buffer, 0, count);
                                 stats.titleImage = out.toByteArray();
+                                if (stats.isARpgGame) {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -297,6 +345,9 @@ public class GameScanner {
 
                 if ((stats.databaseFound && stats.treemapFound) || stats.rpgRtCount == 2) {
                     stats.isARpgGame = true;
+                    if (stats.titleImage != null) {
+                        break;
+                    }
                 }
             }
         } catch (IOException e) {

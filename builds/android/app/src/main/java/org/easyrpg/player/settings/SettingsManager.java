@@ -38,7 +38,7 @@ public class SettingsManager {
     // Note: don't store DocumentFile as they can be nullify with a change of context
     private static Uri easyRPGFolderURI, soundFountFileURI;
     private static Set<String> favoriteGamesList = new HashSet<>();
-    // FIXME: Implement caching of games found by the scanner
+    private static int gamesCacheHash;
     private static Set<String> gamesCache = new HashSet<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
@@ -77,6 +77,9 @@ public class SettingsManager {
         soundVolume = configIni.audio.getInteger(SOUND_VOLUME.toString(), 100);
 
         favoriteGamesList = new HashSet<>(sharedPref.getStringSet(FAVORITE_GAMES.toString(), new HashSet<>()));
+
+        gamesCacheHash = sharedPref.getInt(CACHE_GAMES_HASH.toString(), 0);
+        gamesCache = new HashSet<>(sharedPref.getStringSet(CACHE_GAMES.toString(), new HashSet<>()));
     }
 
     public static Set<String> getFavoriteGamesList() {
@@ -97,6 +100,31 @@ public class SettingsManager {
 
     private static void setFavoriteGamesList(Set<String> folderList) {
         editor.putStringSet(FAVORITE_GAMES.toString(), folderList);
+        editor.commit();
+    }
+
+    public static int getGamesCacheHash() {
+        return gamesCacheHash;
+    }
+
+    public static Set<String> getGamesCache() {
+        return gamesCache;
+    }
+
+    public static void clearGamesCache() {
+        setGamesCache(0, new HashSet<>());
+    }
+
+    public static void setGamesCache(int hash, Set<String> cache) {
+        if (hash == gamesCacheHash) {
+            return;
+        }
+
+        gamesCache = cache;
+        gamesCacheHash = hash;
+
+        editor.putInt(CACHE_GAMES_HASH.toString(), hash);
+        editor.putStringSet(CACHE_GAMES.toString(), cache);
         editor.commit();
     }
 

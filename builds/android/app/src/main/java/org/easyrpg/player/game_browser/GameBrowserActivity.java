@@ -161,6 +161,10 @@ public class GameBrowserActivity extends AppCompatActivity
         // To limit the number of sys calls, we only scan for games at startup and when the user
         // ask to refresh the games list
         if (forceScan || GameBrowserActivity.displayedGamesList == null) {
+            if (forceScan) {
+                SettingsManager.clearGamesCache();
+            }
+
             resetGamesList();
 
             // Empty the games list and display a loading icon
