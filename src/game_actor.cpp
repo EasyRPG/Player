@@ -131,6 +131,11 @@ Game_Actor::Game_Actor(int actor_id) {
 }
 
 void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
+	if (data.ID != save.ID) {
+		Output::Debug("Game_Actor: Fixing actor ID mismatch {} != {}", save.ID, data.ID);
+		save.ID = data.ID;
+	}
+
 	data = std::move(save);
 
 	if (Player::IsRPG2k()) {
