@@ -29,7 +29,7 @@ static unsigned long xmp_vio_read_impl(void* ptr, unsigned long size, unsigned l
 	char* ptrc = reinterpret_cast<char*>(ptr);
 	for (unsigned long i = 0; i < count; ++i) {
 		f->read(reinterpret_cast<char*>(ptrc + i * size), size);
-		if (f->gcount() != size) {
+		if (f->gcount() != static_cast<std::streamsize>(size)) {
 			return i;
 		}
 	}
