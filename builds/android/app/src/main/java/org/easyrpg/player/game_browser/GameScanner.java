@@ -75,22 +75,18 @@ public class GameScanner {
 
         // 1) The folder must exist
         if (gamesFolder == null || !gamesFolder.isDirectory()) {
-            // TODO Replace the text by a R.string
-            //String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", dir.getName());
-            String msg = "The games folder doesn't exist or isn't a folder";
-            Log.e("EasyRPG", msg);
-            errorList.add(msg);
+            String errMsg = context.getString(R.string.error_no_games_folder);
+            Log.e("EasyRPG", errMsg);
+            errorList.add(errMsg);
 
             return;
         }
 
         // 2) The folder must be readable and writable
         if (!gamesFolder.canRead() || !gamesFolder.canWrite()) {
-            // TODO Replace the text by a R.string
-            // String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
-            String msg = "The app doesn't have read or write access to the games folder";
-            Log.e("EasyRPG", msg);
-            errorList.add(msg);
+            String errMsg = context.getString(R.string.error_games_no_rw);
+            Log.e("EasyRPG", errMsg);
+            errorList.add(errMsg);
 
             return;
         }

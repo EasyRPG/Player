@@ -26,6 +26,10 @@ public class GameBrowserHelper {
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
     public static void launchGame(Context context, Game game) {
+        launchGame(context, game, false);
+    }
+
+    public static void launchGame(Context context, Game game, boolean debugMode) {
         String path = game.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
@@ -79,6 +83,10 @@ public class GameBrowserHelper {
             if (soundfontUri != null) {
                 args.add("--soundfont");
                 args.add(soundfontUri.toString());
+            }
+
+            if (debugMode) {
+                args.add("--test-play");
             }
 
             intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);

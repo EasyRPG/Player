@@ -10,6 +10,10 @@
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/how_to_use_easy_rpg"/>
+        <item
+            android:id="@+id/nav_website"
+            android:icon="@drawable/ic_video_label_black_36dp"
+            android:title="@string/visit_website"/>
     </group>
 
     <!--

@@ -309,15 +309,18 @@ public class GameBrowserActivity extends AppCompatActivity
 
             // Title
             holder.title.setText(game.getTitle());
-            holder.title.setOnClickListener(v -> launchGame(position));
+            holder.title.setOnClickListener(v -> launchGame(position, false));
 
             // TitleScreen Image
             holder.titleScreen.setImageBitmap(game.getTitleScreen());
-            holder.titleScreen.setOnClickListener(v -> launchGame(position));
+            holder.titleScreen.setOnClickListener(v -> launchGame(position, false));
 
             // Settings Button
             holder.settingsButton.setOnClickListener(v -> {
-                String[] choices_list = {activity.getResources().getString(R.string.select_game_region)};
+                String[] choices_list = {
+                    activity.getResources().getString(R.string.select_game_region),
+                    activity.getResources().getString(R.string.launch_debug_mode)
+                };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder
@@ -325,6 +328,8 @@ public class GameBrowserActivity extends AppCompatActivity
                         .setItems(choices_list, (dialog, which) -> {
                             if (which == 0) {
                                 chooseRegion(activity, gameList.get(position));
+                            } else if (which == 1) {
+                                launchGame(position, true);
                             }
                         });
                 builder.show();
@@ -339,11 +344,11 @@ public class GameBrowserActivity extends AppCompatActivity
             });
         }
 
-        private void launchGame(int position){
+        private void launchGame(int position, boolean debugMode) {
             Game selectedGame = gameList.get(position);
             GameBrowserActivity.selectedGame = selectedGame;
 
-            GameBrowserHelper.launchGame(activity, selectedGame);
+            GameBrowserHelper.launchGame(activity, selectedGame, debugMode);
         }
 
         public void updateFavoriteButton(ViewHolder holder, Game game){

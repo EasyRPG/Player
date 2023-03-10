@@ -161,7 +161,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
                 ctx.getString(R.string.key_shift),
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/",
                 ctx.getString(R.string.menu),
-                ctx.getString(R.string.key_fast_forward)
+                ctx.getString(R.string.key_fast_forward),
+                ctx.getString(R.string.key_debug_menu),
+                ctx.getString(R.string.key_debug_walk_through_walls)
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.add_a_button));
@@ -215,6 +217,10 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             keyCode = MenuButton.MENU_BUTTON_KEY;
         } else if (s.equals(ctx.getString(R.string.key_fast_forward))) {
             keyCode = KeyEvent.KEYCODE_F;
+        } else if (s.equals(ctx.getString(R.string.key_debug_menu))) {
+            keyCode = KeyEvent.KEYCODE_F9;
+        } else if (s.equals(ctx.getString(R.string.key_debug_walk_through_walls))) {
+            keyCode = KeyEvent.KEYCODE_CTRL_LEFT;
         }
 
         VirtualButton vb = null;
