@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.util.DisplayMetrics;
@@ -143,6 +144,9 @@ public class GameBrowserActivity extends AppCompatActivity
             GameBrowserHelper.displayHowToUseEasyRpgDialog(this);
         } else if (id == R.id.nav_manage) {
             GameBrowserHelper.openSettingsActivity(this);
+        } else if (id == R.id.nav_website) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://easyrpg.org"));
+            startActivity(browserIntent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
