@@ -21,6 +21,7 @@
 // Headers
 #include <vector>
 #include "window_selectable.h"
+#include <player.h>
 
 /**
  * Window Shop Buy Class
@@ -32,7 +33,7 @@ public:
 	 * Constructor.
 	 */
 	Window_ShopBuy(const std::vector<int>& goods,
-			int ix, int iy, int iwidth = SCREEN_TARGET_WIDTH, int iheight = 80);
+			int ix, int iy, int iwidth = Player::screen_width, int iheight = 80);
 
 	/**
 	 * Gets item ID of the selected item.

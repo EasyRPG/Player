@@ -27,6 +27,7 @@
 #include "output.h"
 #include "drawable_mgr.h"
 #include "game_screen.h"
+#include "player.h"
 
 Background::Background(const std::string& name) : Drawable(Priority_Background)
 {
@@ -116,6 +117,16 @@ int Background::Scale(int x) {
 
 void Background::Draw(Bitmap& dst) {
 	Rect dst_rect = dst.GetRect();
+
+	// If the background doesn't fill the screen, center it to support custom resolutions
+	if (bg_bitmap->GetWidth() < Player::screen_width) {
+		dst_rect.x += Player::menu_offset_x;
+		dst_rect.width = MENU_WIDTH;
+	}
+	if (bg_bitmap->GetHeight() < Player::screen_height) {
+		dst_rect.y += Player::menu_offset_y;
+		dst_rect.height = MENU_HEIGHT;
+	}
 
 	dst_rect.x += Main_Data::game_screen->GetShakeOffsetX();
 	dst_rect.y += Main_Data::game_screen->GetShakeOffsetY();

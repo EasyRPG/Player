@@ -45,11 +45,11 @@
 
 namespace {
 	int default_pan_x() {
-		return (Utils::RoundTo<int>(static_cast<float>(SCREEN_TARGET_WIDTH) / TILE_SIZE / 2) - 1) * SCREEN_TILE_SIZE;
+		return (Utils::RoundTo<int>(static_cast<float>(Player::screen_width) / TILE_SIZE / 2) - 1) * SCREEN_TILE_SIZE;
 	}
 
 	int default_pan_y() {
-		return (Utils::RoundTo<int>(static_cast<float>(SCREEN_TARGET_HEIGHT) / TILE_SIZE / 2) - 1) * SCREEN_TILE_SIZE;
+		return (Utils::RoundTo<int>(static_cast<float>(Player::screen_height) / TILE_SIZE / 2) - 1) * SCREEN_TILE_SIZE;
 	}
 }
 

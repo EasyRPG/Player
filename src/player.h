@@ -132,6 +132,20 @@ namespace Player {
 	void CreateGameObjects();
 
 	/**
+	 * Change the resolution of the Player
+	 *
+	 * @param width new width
+	 * @param height new height
+	 * @return Whether the resolution change was successful
+	 */
+	bool ChangeResolution(int width, int height);
+
+	/**
+	 * Restore the resolution of the Player on the base resolution (usually 320x240)
+	 */
+	void RestoreBaseResolution();
+
+	/**
 	 * Resets all game objects. Faster then CreateGameObjects because
 	 * the database is not reparsed.
 	 */
@@ -300,6 +314,21 @@ namespace Player {
 
 	/** Touch flag, if true enables finger taps */
 	extern bool touch_flag;
+
+	/** The width of the screen */
+	extern int screen_width;
+
+	/** The height of the screen */
+	extern int screen_height;
+
+	/** The X offset used to center UI in custom resolutions */
+	extern int menu_offset_x;
+
+	/** The Y offset used to center UI in custom resolutions */
+	extern int menu_offset_y;
+
+	/** The X offset used to center the MessageBox in custom resolutions */
+	extern int message_box_offset_x;
 
 	/** Overwrite party x position */
 	extern int party_x_position;

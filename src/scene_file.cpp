@@ -45,7 +45,7 @@ std::unique_ptr<Sprite> Scene_File::MakeBorderSprite(int y) {
 	sprite->SetVisible(true);
 	sprite->SetZ(Priority_Window + 1);
 	sprite->SetBitmap(bitmap);
-	sprite->SetX(MENU_OFFSET_X);
+	sprite->SetX(Player::menu_offset_x);
 	sprite->SetY(y);
 	return sprite;
 }
@@ -60,13 +60,13 @@ std::unique_ptr<Sprite> Scene_File::MakeArrowSprite(bool down) {
 	sprite->SetVisible(false);
 	sprite->SetZ(Priority_Window + 2);
 	sprite->SetBitmap(bitmap);
-	sprite->SetX((MENU_WIDTH / 2) - sprite_width + MENU_OFFSET_X);
-	sprite->SetY(down ? SCREEN_TARGET_HEIGHT - sprite_height : 32);
+	sprite->SetX((MENU_WIDTH / 2) - sprite_width + Player::menu_offset_x);
+	sprite->SetY(down ? Player::screen_height - sprite_height : 32);
 	return sprite;
 }
 
 void Scene_File::CreateHelpWindow() {
-	help_window.reset(new Window_Help(MENU_OFFSET_X, 0, MENU_WIDTH, 32));
+	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
 	help_window->SetText(message);
 	help_window->SetZ(Priority_Window + 1);
 }
@@ -120,7 +120,7 @@ void Scene_File::Start() {
 
 	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
 		std::shared_ptr<Window_SaveFile>
-			w(new Window_SaveFile(MENU_OFFSET_X, 40 + i * 64, MENU_WIDTH, 64));
+			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
 		w->SetZ(Priority_Window);
 		PopulateSaveWindow(*w, i);
@@ -129,7 +129,7 @@ void Scene_File::Start() {
 		file_windows.push_back(w);
 	}
 
-	border_bottom = Scene_File::MakeBorderSprite(SCREEN_TARGET_HEIGHT - 8);
+	border_bottom = Scene_File::MakeBorderSprite(Player::screen_height - 8);
 
 	up_arrow = Scene_File::MakeArrowSprite(false);
 	down_arrow = Scene_File::MakeArrowSprite(true);

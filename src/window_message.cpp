@@ -91,7 +91,7 @@ void DebugLogText(const char*, Args&&...) { }
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	number_input_window(new Window_NumberInput(0, 0)),
-	gold_window(new Window_Gold(SCREEN_TARGET_WIDTH - gold_window_width, 0, gold_window_width, gold_window_height))
+	gold_window(new Window_Gold(Player::screen_width - Player::menu_offset_x - gold_window_width, Player::menu_offset_y, gold_window_width, gold_window_height))
 {
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -219,7 +219,7 @@ void Window_Message::StartChoiceProcessing() {
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
 	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
-		number_input_window->SetX(MESSAGE_BOX_OFFSET_X + LeftMargin + FaceSize + RightFaceMargin);
+		number_input_window->SetX(Player::message_box_offset_x + LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
 	}
@@ -236,7 +236,7 @@ void Window_Message::ShowGoldWindow() {
 		return;
 	}
 	if (!gold_window->IsVisible()) {
-		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
+		gold_window->SetY(y == 0 ? Player::screen_height - Player::menu_offset_y - 32 : Player::menu_offset_y);
 		gold_window->SetOpenAnimation(message_animation_frames);
 	} else if (gold_window->IsClosing()) {
 		gold_window->SetOpenAnimation(0);
@@ -266,19 +266,15 @@ void Window_Message::InsertNewPage() {
 
 	// Position the message box vertically
 	// Game_Message::GetRealPosition() specify top/middle/bottom
-	float factor = Game_Message::GetRealPosition() / (float)2;
-	// In case of hight vertical resolution, we add a margin for top/bottom
-	int off_set_y = 0;
-	if (SCREEN_TARGET_HEIGHT > 240) {
-		int margin_y = SCREEN_TARGET_HEIGHT * 0.03;
-		if (Game_Message::GetRealPosition() == 0) {
-			off_set_y = margin_y;
-		}
-		else if (Game_Message::GetRealPosition() == 2) {
-			off_set_y = (-1) * margin_y;
-		}
+	if (Game_Message::GetRealPosition() == 0) {
+		y = Player::menu_offset_y;
 	}
-	y = (SCREEN_TARGET_HEIGHT * factor) - (MESSAGE_BOX_HEIGHT * factor) + off_set_y;
+	else if (Game_Message::GetRealPosition() == 1) {
+		y = (Player::screen_height / (float)2) - (MESSAGE_BOX_HEIGHT / (float)2);
+	}
+	else if (Game_Message::GetRealPosition() == 2) {
+		y = Player::screen_height - Player::menu_offset_y - MESSAGE_BOX_HEIGHT ;
+	}
 
 	if (Main_Data::game_system->IsMessageTransparent()) {
 		SetOpacity(0);

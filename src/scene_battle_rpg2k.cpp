@@ -59,12 +59,12 @@ void Scene_Battle_Rpg2k::Start() {
 void Scene_Battle_Rpg2k::CreateUi() {
 	Scene_Battle::CreateUi();
 
-	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
+	status_window.reset(new Window_BattleStatus(Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH - option_command_mov, 80));
 
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
-	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+	battle_message_window.reset(new Window_BattleMessage(Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH, 80));
 
 	if (!IsEscapeAllowed()) {
 		auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
@@ -73,7 +73,7 @@ void Scene_Battle_Rpg2k::CreateUi() {
 		}
 	}
 
-	SetCommandWindows(0);
+	SetCommandWindows(Player::menu_offset_x);
 
 	ResetWindows(true);
 	battle_message_window->SetVisible(true);
@@ -104,7 +104,8 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	auto commands = GetEnemyTargetNames();
 	target_window.reset(new Window_Command(std::move(commands), 136, 4));
 	target_window->SetHeight(80);
-	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	target_window->SetX(Player::menu_offset_x);
+	target_window->SetY(Player::screen_height - Player::menu_offset_y - 80);
 	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
 }
@@ -137,8 +138,8 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 	command_window.reset(new Window_Command(std::move(commands), 76));
 	command_window->SetHeight(80);
-	command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
-	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	command_window->SetX(Player::screen_width - Player::menu_offset_x - option_command_mov);
+	command_window->SetY(Player::screen_height - Player::menu_offset_y - 80);
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
@@ -454,9 +455,9 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 		status_window->Refresh();
 
 		if (previous_state == State_SelectCommand) {
-			MoveCommandWindows(0, 8);
+			MoveCommandWindows(Player::menu_offset_x, 8);
 		} else {
-			SetCommandWindows(0);
+			SetCommandWindows(Player::menu_offset_x);
 		}
 		SetSceneActionSubState(eWaitForInput);
 		return SceneActionReturn::eContinueThisFrame;
@@ -523,7 +524,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionComm
 			command_window->SetIndex(0);
 		}
 
-		MoveCommandWindows(-options_window->GetWidth(), 8);
+		MoveCommandWindows(Player::menu_offset_x - options_window->GetWidth(), 8);
 		SetSceneActionSubState(eWaitForInput);
 		return SceneActionReturn::eContinueThisFrame;
 	}

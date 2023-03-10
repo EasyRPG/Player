@@ -23,6 +23,7 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_battle.h"
+#include <player.h>
 
 Sprite_Timer::Sprite_Timer(int which) :
 	which(which)
@@ -43,10 +44,10 @@ Sprite_Timer::Sprite_Timer(int which) :
 
 	switch (which) {
 		case Game_Party::Timer1:
-			SetX(4);
+			SetX(Player::menu_offset_x + 4);
 			break;
 		case Game_Party::Timer2:
-			SetX(SCREEN_TARGET_WIDTH - 8 * 5 - 4);
+			SetX(Player::screen_width - 8 * 5 - 4 - Player::menu_offset_x);
 			break;
 		default:
 			break;
@@ -87,13 +88,13 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 	digits[4].x = 32 + 8 * secs_1;
 
 	if (Game_Battle::IsBattleRunning()) {
-		SetY(SCREEN_TARGET_HEIGHT / 3 * 2 - 20);
+		SetY((Player::screen_height / 3 * 2) - 20);
 	}
 	else if (Game_Message::IsMessageActive() && Game_Message::GetRealPosition() == 0) {
-		SetY(SCREEN_TARGET_HEIGHT - 20);
+		SetY(Player::screen_height - 20 - Player::menu_offset_y);
 	}
 	else {
-		SetY(4);
+		SetY(Player::menu_offset_y + 4);
 	}
 
 	GetBitmap()->Clear();

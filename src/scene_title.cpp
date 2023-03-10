@@ -49,6 +49,9 @@ Scene_Title::Scene_Title() {
 void Scene_Title::Start() {
 	Main_Data::game_system->ResetSystemGraphic();
 
+	// Change the resolution of the window
+	Player::ChangeResolution(Player::screen_width, Player::screen_height);
+
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
 		CreateTitleGraphic();
@@ -61,7 +64,7 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::CreateHelpWindow() {
-	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
+	help_window.reset(new Window_Help(0, 0, Player::screen_width, 32));
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		help_window->SetBackOpacity(160);
@@ -180,17 +183,17 @@ void Scene_Title::CreateTitleGraphic() {
 		request->Start();
 	} else {
 		title.reset(new Sprite());
-		title->SetBitmap(Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255)));
+		title->SetBitmap(Bitmap::Create(Player::screen_width, Player::screen_height, Color(0, 0, 0, 255)));
 	}
 }
 
 void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical) {
 	if (!center_vertical) {
-		window.SetX(SCREEN_TARGET_WIDTH / 2 - window.GetWidth() / 2);
-		window.SetY(SCREEN_TARGET_HEIGHT * 53 / 60 - window.GetHeight());
+		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+		window.SetY(Player::screen_height * 53 / 60 - window.GetHeight());
 	} else {
-		window.SetX(SCREEN_TARGET_WIDTH / 2 - window.GetWidth() / 2);
-		window.SetY(SCREEN_TARGET_HEIGHT / 2 - window.GetHeight() / 2);
+		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+		window.SetY(Player::screen_height / 2 - window.GetHeight() / 2);
 	}
 }
 
@@ -378,7 +381,18 @@ void Scene_Title::CommandShutdown() {
 }
 
 void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
-	title->SetBitmap(Cache::Title(result->file));
+	BitmapRef bitmapRef = Cache::Title(result->file);
+
+	title->SetBitmap(bitmapRef);
+
+	// If the title sprite doesn't fill the screen, center it to support custom resolutions
+	Rect rect = title->GetBitmap()->GetRect();
+	if (bitmapRef->GetWidth() < Player::screen_width) {
+		title->SetX(Player::menu_offset_x);
+	}
+	if (bitmapRef->GetHeight() < Player::screen_height) {
+		title->SetY(Player::menu_offset_y);
+	}
 }
 
 void Scene_Title::OnGameStart() {

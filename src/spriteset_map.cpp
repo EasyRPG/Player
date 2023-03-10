@@ -183,6 +183,12 @@ bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
 		return true;
 	}
 
+	// When using a custom resolution that is not divisible by 16, clear to avoid
+	// artifacts at the borders
+	if (Player::screen_width % TILE_SIZE != 0 || Player::screen_height % TILE_SIZE != 0) {
+		return true;
+	}
+
 	// Speed optimisation:
 	// When there is nothing below the tilemap it can be drawn opaque (faster)
 	tilemap->SetFastBlitDown(false);

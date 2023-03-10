@@ -554,8 +554,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 
 	constexpr int offset = TILE_SIZE * 2;
 
-	const bool in_sight = (sx >= -offset && sx <= SCREEN_TARGET_WIDTH + offset
-			&& sy >= -offset && sy <= SCREEN_TARGET_HEIGHT + offset);
+	const bool in_sight = (sx >= -offset && sx <= Player::screen_width + offset
+			&& sy >= -offset && sy <= Player::screen_height + offset);
 
 	const auto prev_dir = GetDirection();
 

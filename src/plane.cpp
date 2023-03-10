@@ -58,9 +58,9 @@ void Plane::Draw(Bitmap& dst) {
 	} else {
 		// The panorama occupies the same rectangle as the whole map.
 		// Using coordinates where the top-left of the screen is the origin...
-		// Minimal width is a 20 tile wide map, smaller maps are hacked
+		// Minimal width is a 20 tile wide map by default, smaller maps are hacked
 		int bg_x = -Game_Map::GetDisplayX() / TILE_SIZE + shake_x;
-		int bg_width = std::max(Game_Map::GetWidth() * TILE_SIZE, 20 * TILE_SIZE);
+		int bg_width = std::max(Game_Map::GetWidth() * TILE_SIZE, Player::screen_width);
 
 		// Clip the panorama to the screen
 		if (bg_x < 0) {

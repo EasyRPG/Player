@@ -43,7 +43,6 @@ public:
 
 	void Start() override;
 	void vUpdate() override;
-	void DrawBackground(Bitmap& dst) override;
 
 	/**
 	 * Saves the configuration to the global config file.
