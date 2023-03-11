@@ -219,6 +219,15 @@ public:
 	/** Sets the scaling mode of the window */
 	virtual void SetScalingMode(ScalingMode) {};
 
+	/**
+	 * Sets the game resolution settings.
+	 * Not to be confused with WinW/WinH setting from the ini.
+	 * This is for configuring a resolution that is effective for all games.
+	 *
+	 * @param resolution new resolution
+	 */
+	void SetGameResolution(GameResolution resolution);
+
 	/** Toggles "stretch to screen width" on or off */
 	virtual void ToggleStretch() {};
 

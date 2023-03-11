@@ -324,6 +324,9 @@ namespace Player {
 	/** The X offset used to center the MessageBox in custom resolutions */
 	extern int message_box_offset_x;
 
+	/** Whether the game uses a custom WinW/WinH resolution */
+	extern bool has_custom_resolution;
+
 	/** Overwrite party x position */
 	extern int party_x_position;
 

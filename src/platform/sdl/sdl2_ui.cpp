@@ -1213,6 +1213,7 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #endif
 	cfg.scaling_mode.SetOptionVisible(true);
 	cfg.stretch.SetOptionVisible(true);
+	cfg.game_resolution.SetOptionVisible(true);
 
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);

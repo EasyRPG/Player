@@ -104,6 +104,7 @@ namespace Player {
 	int menu_offset_x = (screen_width - MENU_WIDTH) / 2;
 	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
+	bool has_custom_resolution = false;
 
 	bool exit_flag;
 	bool reset_flag;
@@ -743,6 +744,7 @@ void Player::CreateGameObjects() {
 	LoadDatabase();
 
 	bool no_rtp_warning_flag = false;
+	Player::has_custom_resolution = false;
 	{ // Scope lifetime of variables for ini parsing
 		std::string ini_file = FileFinder::Game().FindFile(INI_NAME);
 
@@ -753,8 +755,11 @@ void Player::CreateGameObjects() {
 				std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 				game_title = lcf::ReaderUtil::Recode(title, encoding);
 				no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
-				Player::screen_width = ini.GetInteger("RPG_RT", "WinW", SCREEN_TARGET_WIDTH);
-				Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
+				if (ini.HasValue("RPG_RT", "WinW") || ini.HasValue("RPG_RT", "WinH")) {
+					Player::screen_width = ini.GetInteger("RPG_RT", "WinW", SCREEN_TARGET_WIDTH);
+					Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
+					Player::has_custom_resolution = true;
+				}
 			}
 		}
 	}

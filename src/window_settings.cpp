@@ -257,6 +257,7 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
 	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
+	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<GameResolution>(GetCurrentOption().current_value)); });
 }
 
 void Window_Settings::RefreshAudio() {

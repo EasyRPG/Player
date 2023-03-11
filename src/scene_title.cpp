@@ -19,6 +19,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "game_config.h"
+#include "options.h"
 #include "scene_settings.h"
 #include "scene_title.h"
 #include "audio.h"
@@ -50,7 +52,21 @@ void Scene_Title::Start() {
 	Main_Data::game_system->ResetSystemGraphic();
 
 	// Change the resolution of the window
-	Player::ChangeResolution(Player::screen_width, Player::screen_height);
+	if (Player::has_custom_resolution) {
+		Player::ChangeResolution(Player::screen_width, Player::screen_height);
+	} else {
+		switch (DisplayUi->GetConfig().game_resolution.Get()) {
+			case GameResolution::Original:
+				Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+				break;
+			case GameResolution::Widescreen:
+				Player::ChangeResolution(416, SCREEN_TARGET_HEIGHT);
+				break;
+			case GameResolution::Ultrawide:
+				Player::ChangeResolution(560, SCREEN_TARGET_HEIGHT);
+				break;
+		}
+	}
 
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
