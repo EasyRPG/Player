@@ -45,6 +45,7 @@ public:
 		eLicense,
 		eEngine,
 		eSave,
+		eEnd,
 		eLastMode
 	};
 
