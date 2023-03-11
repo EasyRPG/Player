@@ -36,49 +36,50 @@ enum class ScalingMode {
 };
 
 struct Game_ConfigPlayer {
-	StringConfigParam autobattle_algo{ "", "", "" };
-	StringConfigParam enemyai_algo{ "", "", "" };
-	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit"};
-	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen" };
-	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen"};
+	StringConfigParam autobattle_algo{ "", "", "", "", "" };
+	StringConfigParam enemyai_algo{ "", "", "", "", "" };
+	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit", "Player", "SettingsAutosave", false };
+	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen", "Player", "SettingsInTitle", false };
+	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen", "Player", "SettingsInMenu", false };
 
 	void Hide();
 };
 
 struct Game_ConfigVideo {
 	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
-	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", true };
-	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", true };
-	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", false };
-	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", false };
-	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", DEFAULT_FPS, 0, 99999 };
-	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", 2 };
-	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled",
-		ScalingMode::Nearest, Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
+	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", "Video", "Vsync", true };
+	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", "Video", "Fullscreen", true };
+	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", "Video", "ShowFps", false };
+	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", "Video", "FpsRenderWindow", false };
+	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", "Video", "FpsLimit", DEFAULT_FPS, 0, 99999 };
+	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", "Video", "WindowZoom", 2 };
+	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode",	ScalingMode::Nearest,
+		Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
+		Utils::MakeSvArray("nearest", "integer", "bilinear"),
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
-	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", false };
-	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", true };
+	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", "Video", "Stretch", false };
+	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", "Video", "TouchUi", true };
 
 	// These are never shown and are used to restore the window to the previous position
-	ConfigParam<int> window_x{ "", "", -1 };
-	ConfigParam<int> window_y{ "", "", -1 };
-	ConfigParam<int> window_width{ "", "", -1 };
-	ConfigParam<int> window_height{ "", "", -1 };
+	ConfigParam<int> window_x{ "", "", "Video", "WindowX", -1 };
+	ConfigParam<int> window_y{ "", "", "Video", "WindowY", -1 };
+	ConfigParam<int> window_width{ "", "", "Video", "WindowWidth", -1 };
+	ConfigParam<int> window_height{ "", "", "Video", "WindowHeight", -1 };
 
 	void Hide();
 };
 
 struct Game_ConfigAudio {
-	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", 100, 0, 100 };
-	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", 100, 0, 100 };
+	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", "Audio", "MusicVolume", 100, 0, 100 };
+	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", "Audio", "SoundVolume", 100, 0, 100 };
 
 	void Hide();
 };
 
 struct Game_ConfigInput {
-	BoolConfigParam gamepad_swap_analog{ "Gamepad: Swap Analog Sticks", "Swap left and right stick", false };
-	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", false };
-	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", false };
+	BoolConfigParam gamepad_swap_analog{ "Gamepad: Swap Analog Sticks", "Swap left and right stick", "Input", "GamepadSwapAnalog", false };
+	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", "Input", "GamepadSwapDpad", false };
+	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", "Input", "GamepadSwapAbxy", false };
 	Input::ButtonMappingArray buttons;
 
 	void Hide();

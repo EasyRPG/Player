@@ -313,47 +313,26 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	/** VIDEO SECTION */
-	if (ini.HasValue("video", "vsync")) {
-		video.vsync.Set(ini.GetBoolean("video", "vsync", false));
-	}
-	if (ini.HasValue("video", "fullscreen")) {
-		video.fullscreen.Set(ini.GetBoolean("video", "fullscreen", false));
-	}
-	if (ini.HasValue("video", "show-fps")) {
-		video.show_fps.Set(ini.GetBoolean("video", "show-fps", false));
-	}
-	if (ini.HasValue("video", "fps-render-window")) {
-		video.fps_render_window.Set(ini.GetBoolean("video", "fps-render-window", false));
-	}
-	if (ini.HasValue("video", "fps-limit")) {
-		video.fps_limit.Set(ini.GetInteger("video", "fps-limit", 0));
-	}
-	if (ini.HasValue("video", "window-zoom")) {
-		video.window_zoom.Set(ini.GetInteger("video", "window-zoom", 0));
-	}
-	if (ini.HasValue("video", "scaling-mode")) {
-		video.scaling_mode.Set(static_cast<ScalingMode>(ini.GetInteger("video", "scaling-mode", 0)));
-	}
-	if (ini.HasValue("video", "stretch")) {
-		video.stretch.Set(ini.GetBoolean("video", "stretch", 0));
-	}
-	if (ini.HasValue("video", "touch-ui")) {
-		video.touch_ui.Set(ini.GetBoolean("video", "touch-ui", 1));
-	}
-	if (ini.HasValue("video", "window-x") && ini.HasValue("video", "window-y") && ini.HasValue("video", "window-width") && ini.HasValue("video", "window-height")) {
-		video.window_x.Set(ini.GetInteger("video", "window-x", 0));
-		video.window_y.Set(ini.GetInteger("video", "window-y", 0));
-		video.window_width.Set(ini.GetInteger("video", "window-width", SCREEN_TARGET_WIDTH));
-		video.window_height.Set(ini.GetInteger("video", "window-height", SCREEN_TARGET_HEIGHT));
+	video.vsync.FromIni(ini);
+	video.fullscreen.FromIni(ini);
+	video.show_fps.FromIni(ini);
+	video.fps_render_window.FromIni(ini);
+	video.fps_limit.FromIni(ini);
+	video.window_zoom.FromIni(ini);
+	video.scaling_mode.FromIni(ini);
+	video.stretch.FromIni(ini);
+	video.touch_ui.FromIni(ini);
+
+	if (ini.HasValue("Video", "WindowX") && ini.HasValue("Video", "WindowY") && ini.HasValue("Video", "WindowWidth") && ini.HasValue("Video", "WindowHeight")) {
+		video.window_x.FromIni(ini);
+		video.window_y.FromIni(ini);
+		video.window_width.FromIni(ini);
+		video.window_height.FromIni(ini);
 	}
 
 	/** AUDIO SECTION */
-	if (ini.HasValue("audio", "music-volume")) {
-		audio.music_volume.Set(ini.GetInteger("audio", "music-volume", 100));
-	}
-	if (ini.HasValue("audio", "sound-volume")) {
-		audio.sound_volume.Set(ini.GetInteger("audio", "sound-volume", 100));
-	}
+	audio.music_volume.FromIni(ini);
+	audio.sound_volume.FromIni(ini);
 
 	/** INPUT SECTION */
 	input.buttons = Input::GetDefaultButtonMappings();
@@ -400,87 +379,48 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		}
 	}
 
-	if (ini.HasValue("input", "gamepad-swap-analog")) {
-		input.gamepad_swap_analog.Set(ini.GetInteger("input", "gamepad-swap-analog", 0));
-	}
-	if (ini.HasValue("input", "gamepad-swap-dpad")) {
-		input.gamepad_swap_dpad_with_buttons.Set(ini.GetInteger("input", "gamepad-swap-dpad", 0));
-	}
-	if (ini.HasValue("input", "gamepad-swap-abxy")) {
-		input.gamepad_swap_ab_and_xy.Set(ini.GetInteger("input", "gamepad-swap-abxy", 0));
-	}
+	input.gamepad_swap_analog.FromIni(ini);
+	input.gamepad_swap_dpad_with_buttons.FromIni(ini);
+	input.gamepad_swap_ab_and_xy.FromIni(ini);
 
 	/** PLAYER SECTION */
-	if (ini.HasValue("player", "settings-autosave")) {
-		player.settings_autosave.Set(ini.GetBoolean("player", "settings-autosave", 0));
-	}
-	if (ini.HasValue("player", "settings-in-title")) {
-		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-title", 0));
-	}
-	if (ini.HasValue("player", "settings-in-menu")) {
-		player.settings_in_menu.Set(ini.GetBoolean("player", "settings-in-menu", 0));
-	}
-	if (ini.HasValue("player", "autobattle-algo")) {
-		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));
-	}
-	if (ini.HasValue("player", "enemyai-algo")) {
-		player.enemyai_algo.Set(ini.GetString("player", "enemyai-algo", ""));
-	}
+	player.settings_autosave.FromIni(ini);
+	player.settings_in_title.FromIni(ini);
+	player.settings_in_menu.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	/** VIDEO SECTION */
 
-	os << "[video]\n";
-	if (video.vsync.IsOptionVisible()) {
-		os << "vsync=" << int(video.vsync.Get()) << "\n";
-	}
-	if (video.fullscreen.IsOptionVisible()) {
-		os << "fullscreen=" << int(video.fullscreen.Get()) << "\n";
-	}
-	if (video.show_fps.IsOptionVisible()) {
-		os << "show-fps=" << int(video.show_fps.Get()) << "\n";
-	}
-	if (video.fps_render_window.IsOptionVisible()) {
-		os << "fps-render-window=" << int(video.fps_render_window.Get()) << "\n";
-	}
-	if (video.fps_limit.IsOptionVisible()) {
-		os << "fps-limit=" << video.fps_limit.Get() << "\n";
-	}
-	if (video.window_zoom.IsOptionVisible()) {
-		os << "window-zoom=" << video.window_zoom.Get() << "\n";
-	}
-	if (video.scaling_mode.IsOptionVisible()) {
-		os << "scaling-mode=" << int(video.scaling_mode.Get()) << "\n";
-	}
-	if (video.stretch.IsOptionVisible()) {
-		os << "stretch=" << int(video.stretch.Get()) << "\n";
-	}
-	if (video.touch_ui.IsOptionVisible()) {
-		os << "touch-ui=" << int(video.touch_ui.Get()) << "\n";
-	}
+	os << "[Video]\n";
+	video.vsync.ToIni(os);
+	video.fullscreen.ToIni(os);
+	video.show_fps.ToIni(os);
+	video.fps_render_window.ToIni(os);
+	video.fps_limit.ToIni(os);
+	video.window_zoom.ToIni(os);
+	video.scaling_mode.ToIni(os);
+	video.stretch.ToIni(os);
+	video.touch_ui.ToIni(os);
+
 	// only preserve when toggling between window and fullscreen is supported
 	if (video.fullscreen.IsOptionVisible()) {
-		os << "window-x=" << int(video.window_x.Get()) << "\n";
-		os << "window-y=" << int(video.window_y.Get()) << "\n";
-		os << "window-width=" << int(video.window_width.Get()) << "\n";
-		os << "window-height=" << int(video.window_height.Get()) << "\n";
+		video.window_x.ToIni(os);
+		video.window_y.ToIni(os);
+		video.window_width.ToIni(os);
+		video.window_height.ToIni(os);
 	}
 	os << "\n";
 
 	/** AUDIO SECTION */
-	os << "[audio]\n";
+	os << "[Audio]\n";
 
-	if (audio.music_volume.IsOptionVisible()) {
-		os << "music-volume=" << audio.music_volume.Get() << "\n";
-	}
-	if (audio.sound_volume.IsOptionVisible()) {
-		os << "sound-volume=" << audio.sound_volume.Get() << "\n";
-	}
+	audio.music_volume.ToIni(os);
+	audio.sound_volume.ToIni(os);
 	os << "\n";
 
 	/** INPUT SECTION */
-	os << "[input]\n";
+	os << "[Input]\n";
 
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
@@ -505,25 +445,20 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 		os << "\n";
 	}
 
-	if (input.gamepad_swap_analog.IsOptionVisible()) {
-		os << "gamepad-swap-analog=" << int(input.gamepad_swap_analog.Get()) << "\n";
-	}
-	if (input.gamepad_swap_dpad_with_buttons.IsOptionVisible()) {
-		os << "gamepad-swap-dpad=" << int(input.gamepad_swap_dpad_with_buttons.Get()) << "\n";
-	}
-	if (input.gamepad_swap_ab_and_xy.IsOptionVisible()) {
-		os << "gamepad-swap-abxy=" << int(input.gamepad_swap_ab_and_xy.Get()) << "\n";
-	}
+	input.gamepad_swap_analog.ToIni(os);
+	input.gamepad_swap_dpad_with_buttons.ToIni(os);
+	input.gamepad_swap_ab_and_xy.ToIni(os);
 
 	os << "\n";
 
 	/** PLAYER SECTION */
-	os << "[player]\n";
+	os << "[Player]\n";
 	//os << "autobattle-algo=" << player.autobattle_algo.Get() << "\n";
 	//os << "enemyai-algo=" << player.enemyai_algo.Get() << "\n";
-	os << "settings-autosave=" << player.settings_autosave.Get() << "\n";
-	os << "settings-in-title=" << player.settings_in_title.Get() << "\n";
-	os << "settings-in-menu=" << player.settings_in_menu.Get() << "\n";
+
+	player.settings_autosave.ToIni(os);
+	player.settings_in_title.ToIni(os);
+	player.settings_in_menu.ToIni(os);
 
 	os << "\n";
 }
