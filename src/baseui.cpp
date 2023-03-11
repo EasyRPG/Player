@@ -111,3 +111,11 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 
 	return cfg;
 }
+
+bool BaseUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
+		return true;
+	}
+
+	return vChangeDisplaySurfaceResolution(new_width, new_height);
+}

@@ -107,11 +107,7 @@ void LibretroUi::UpdateDisplay() {
 	UpdateWindow(main_surface->pixels(), current_display_mode.width, current_display_mode.height, main_surface->pitch());
 }
 
-bool LibretroUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
-	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
-		return true;
-	}
-
+bool LibretroUi::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
 	if (new_width > fb_max_width || new_height > fb_max_height) {
 		Output::Warning("ChangeDisplaySurfaceResolution: {}x{} is too large", new_width, new_height);
 		return false;

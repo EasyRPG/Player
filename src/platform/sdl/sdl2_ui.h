@@ -59,7 +59,7 @@ public:
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
-	bool ChangeDisplaySurfaceResolution(int new_width, int new_height) override;
+	bool vChangeDisplaySurfaceResolution(int new_width, int new_height) override;
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;

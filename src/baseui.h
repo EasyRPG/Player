@@ -176,7 +176,7 @@ public:
 	 * @param new_height new height
 	 * @return Whether the resolution change was successful
 	 */
-	virtual bool ChangeDisplaySurfaceResolution(int new_width, int new_height);
+	bool ChangeDisplaySurfaceResolution(int new_width, int new_height);
 
 	typedef std::bitset<Input::Keys::KEYS_COUNT> KeyStatus;
 
@@ -251,6 +251,7 @@ protected:
 	void SetFrameRateSynchronized(bool value);
 	void SetIsFullscreen(bool value);
 	virtual void vGetConfig(Game_ConfigVideo& cfg) const = 0;
+	virtual bool vChangeDisplaySurfaceResolution(int new_width, int new_height);
 
 	Game_ConfigVideo vcfg;
 
@@ -338,7 +339,7 @@ inline BitmapRef& BaseUi::GetDisplaySurface() {
 	return main_surface;
 }
 
-inline bool BaseUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+inline bool BaseUi::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
 	(void)new_width;
 	(void)new_height;
 	return false;

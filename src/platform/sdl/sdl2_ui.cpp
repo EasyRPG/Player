@@ -194,11 +194,7 @@ Sdl2Ui::~Sdl2Ui() {
 	SDL_Quit();
 }
 
-bool Sdl2Ui::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
-	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
-		return true;
-	}
-
+bool Sdl2Ui::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
 	SDL_Texture* new_sdl_texture_game = SDL_CreateTexture(sdl_renderer,
 		texture_format,
 		SDL_TEXTUREACCESS_STREAMING,
