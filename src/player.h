@@ -327,6 +327,9 @@ namespace Player {
 	/** Whether the game uses a custom WinW/WinH resolution */
 	extern bool has_custom_resolution;
 
+	/** When enabled the Player fakes the metrics to make games run on higher resolutions (with some success) */
+	extern bool fake_resolution;
+
 	/** Overwrite party x position */
 	extern int party_x_position;
 

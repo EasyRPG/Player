@@ -52,6 +52,7 @@ void Scene_Title::Start() {
 	Main_Data::game_system->ResetSystemGraphic();
 
 	// Change the resolution of the window
+	Player::fake_resolution = false;
 	if (Player::has_custom_resolution) {
 		Player::ChangeResolution(Player::screen_width, Player::screen_height);
 	} else {
@@ -61,9 +62,11 @@ void Scene_Title::Start() {
 				break;
 			case GameResolution::Widescreen:
 				Player::ChangeResolution(416, SCREEN_TARGET_HEIGHT);
+				Player::fake_resolution = true;
 				break;
 			case GameResolution::Ultrawide:
 				Player::ChangeResolution(560, SCREEN_TARGET_HEIGHT);
+				Player::fake_resolution = true;
 				break;
 		}
 	}
