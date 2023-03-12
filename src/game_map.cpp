@@ -23,6 +23,7 @@
 #include <climits>
 
 #include "async_handler.h"
+#include "options.h"
 #include "system.h"
 #include "game_battle.h"
 #include "game_battler.h"
@@ -1730,7 +1731,11 @@ void Game_Map::Parallax::ResetPositionX() {
 	}
 
 	if (!params.scroll_horz && !LoopHorizontal()) {
-		int tiles_per_screen = (Player::screen_width / TILE_SIZE * TILE_SIZE + 16) / TILE_SIZE;
+		int tiles_per_screen = Player::screen_width / TILE_SIZE;
+		if (Player::screen_width % TILE_SIZE != 0) {
+			++tiles_per_screen;
+		}
+
 		if (GetWidth() > tiles_per_screen && parallax_width > Player::screen_width) {
 			const int w = (GetWidth() - tiles_per_screen) * TILE_SIZE;
 			const int ph = 2 * std::min(w, parallax_width - Player::screen_width) * map_info.position_x / w;
@@ -1754,9 +1759,13 @@ void Game_Map::Parallax::ResetPositionY() {
 	}
 
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
-		int tiles_per_screen = (Player::screen_height / TILE_SIZE * TILE_SIZE + 16) / TILE_SIZE;
+		int tiles_per_screen = Player::screen_height / TILE_SIZE;
+		if (Player::screen_width % TILE_SIZE != 0) {
+			++tiles_per_screen;
+		}
+
 		if (GetHeight() > tiles_per_screen && parallax_height > Player::screen_height) {
-			const int h = (GetHeight() - tiles_per_screen) * TILE_SIZE;
+			const int h = (GetHeight() - 15) * TILE_SIZE;
 			const int pv = 2 * std::min(h, parallax_height - Player::screen_height) * map_info.position_y / h;
 			SetPositionY(pv);
 		} else {
