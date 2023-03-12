@@ -30,6 +30,8 @@
  */
 class Window_InputSettings : public Window_Selectable {
 public:
+	static constexpr int mapping_limit = 16;
+
 	/** Constructor  */
 	Window_InputSettings(int ix, int iy, int iwidth, int iheight);
 

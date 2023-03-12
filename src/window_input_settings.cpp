@@ -86,6 +86,10 @@ void Window_InputSettings::Refresh() {
 		}
 	}
 
+	if (items.size() > mapping_limit) {
+		items.resize(mapping_limit);
+	}
+
 	item_max = static_cast<int>(items.size());
 
 	for (int i = 0; i < item_max; ++i) {
