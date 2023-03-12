@@ -570,7 +570,7 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 	int h = 80;
 	int x = Player::menu_offset_x;
 	int y = Player::screen_height - Player::menu_offset_y - h;
-	
+
 	switch (lcf::Data::battlecommands.battle_type) {
 		case lcf::rpg::BattleCommands::BattleType_traditional:
 			x = Player::menu_offset_x + target_window->GetWidth();
@@ -612,6 +612,8 @@ void Scene_Battle_Rpg2k3::SetBattleCommandsDisable(Window_Command& window, const
 			auto* cmd = cmds[i];
 			if (cmd->type == lcf::rpg::BattleCommand::Type_escape && !IsEscapeAllowedFromActorCommand()) {
 				window.DisableItem(i);
+			} else {
+				window.EnableItem(i);
 			}
 		}
 	}

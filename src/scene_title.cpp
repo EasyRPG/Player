@@ -237,9 +237,8 @@ void Scene_Title::CreateCommandWindow() {
 	continue_enabled = FileFinder::HasSavegame();
 	if (continue_enabled) {
 		command_window->SetIndex(1);
-	} else {
-		command_window->DisableItem(1);
 	}
+	command_window->SetItemEnabled(1, continue_enabled);
 
 	// Set the number of frames for the opening animation to last
 	if (!Player::hide_title_flag) {
