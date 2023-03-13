@@ -66,12 +66,16 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 320px;
-      height: 240px;
+      width: 100%;
+      height: 100%;
       border: 0;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
       transform: translate(-50%, -50%);
+    }
+
+    img#canvas {
+      object-fit: contain;
     }
 
     #dpad,
@@ -114,29 +118,9 @@
     #apad > *:not(.active) {
       opacity: 0.4;
     }
-
-    @media (min-width: 320px) and (min-height: 240px) { #canvas { width: 320px; height: 240px; } }
-    @media (min-width: 640px) and (min-height: 480px) { #canvas { width: 640px; height: 480px; } }
-    @media (min-width: 960px) and (min-height: 720px) { #canvas { width: 960px; height: 720px; } }
-    @media (min-width: 1280px) and (min-height: 720px) { #canvas { width: 1280px; height: 720px; } }
-    @media (min-width: 1600px) and (min-height: 1200px) { #canvas { width: 1600px; height: 1200px; } }
-    @media (min-width: 1920px) and (min-height: 1440px) { #canvas { width: 1920px; height: 1440px; } }
-    @media (min-width: 2240px) and (min-height: 1680px) { #canvas { width: 2240px; height: 1680px; } }
-    @media (min-width: 2560px) and (min-height: 1920px) { #canvas { width: 2560px; height: 1920px; } }
-    @media (min-width: 2880px) and (min-height: 2160px) { #canvas { width: 2880px; height: 2160px; } }
-    @media (min-width: 3200px) and (min-height: 2400px) { #canvas { width: 3200px; height: 2400px; } }
-    @media (min-width: 3520px) and (min-height: 2640px) { #canvas { width: 3520px; height: 2640px; } }
-    @media (min-width: 3840px) and (min-height: 2880px) { #canvas { width: 3840px; height: 2880px; } }
-    @media (min-width: 4160px) and (min-height: 3120px) { #canvas { width: 4160px; height: 3120px; } }
-    @media (min-width: 4480px) and (min-height: 3360px) { #canvas { width: 4480px; height: 3360px; } }
-    @media (min-width: 4800px) and (min-height: 3600px) { #canvas { width: 4800px; height: 3600px; } }
-    @media (min-width: 5120px) and (min-height: 3840px) { #canvas { width: 5120px; height: 3840px; } }
-    @media (min-width: 5440px) and (min-height: 4080px) { #canvas { width: 5440px; height: 4080px; } }
-    @media (min-width: 5760px) and (min-height: 4320px) { #canvas { width: 5760px; height: 4320px; } }
   </style>
 </head>
 <body>
-
   <div id="controls">
     <button id="controls-fullscreen" class="unselectable">
       <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="25" height="25"><path d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4" stroke="currentColor"></path></svg>
@@ -145,21 +129,23 @@
 
   <div id="status"></div>
 
-  <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
+  <div id="viewport">
+    <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
 
-  <div id="dpad" class="unselectable">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
-      <path id="dpad-up" data-key="ArrowUp" data-key-code="38" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
-      <path id="dpad-right" data-key="ArrowRight" data-key-code="39" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
-      <path id="dpad-down" data-key="ArrowDown" data-key-code="40" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
-      <path id="dpad-left" data-key="ArrowLeft" data-key-code="37" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
-      <rect id="dpad-center" x="24" y="24" width="24" height="24" />
-    </svg>
-  </div>
+    <div id="dpad" class="unselectable">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+        <path id="dpad-up" data-key="ArrowUp" data-key-code="38" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
+        <path id="dpad-right" data-key="ArrowRight" data-key-code="39" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
+        <path id="dpad-down" data-key="ArrowDown" data-key-code="40" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
+        <path id="dpad-left" data-key="ArrowLeft" data-key-code="37" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
+        <rect id="dpad-center" x="24" y="24" width="24" height="24" />
+      </svg>
+    </div>
 
-  <div id="apad" class="unselectable">
-    <div id="apad-escape" data-key="Escape" data-key-code="27"></div>
-    <div id="apad-enter" data-key="Enter" data-key-code="13"></div>
+    <div id="apad" class="unselectable">
+      <div id="apad-escape" data-key="Escape" data-key-code="27"></div>
+      <div id="apad-enter" data-key="Enter" data-key-code="13"></div>
+    </div>
   </div>
 
 {{{ SCRIPT }}}
@@ -178,8 +164,9 @@ canvas.addEventListener('click', () => window.focus());
 
 // Handle clicking on the fullscreen button
 document.querySelector('#controls-fullscreen').addEventListener('click', () => {
-  if (canvas.requestFullscreen) {
-    canvas.requestFullscreen();
+  const viewport = document.getElementById('viewport');
+  if (viewport.requestFullscreen) {
+    viewport.requestFullscreen();
   }
 });
 

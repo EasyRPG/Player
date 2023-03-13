@@ -319,6 +319,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 		#endif
 
+		#if defined(EMSCRIPTEN)
+		// FIXME: Needs work on Windows. see #2764
+		flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		#endif
+
 		// Create our window
 		if (vcfg.window_x.Get() < 0 || vcfg.window_y.Get() < 0 || vcfg.window_height.Get() <= 0 || vcfg.window_width.Get() <= 0) {
 			sdl_window = SDL_CreateWindow(GAME_TITLE,
@@ -744,6 +749,13 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 	if (state == SDL_WINDOWEVENT_SIZE_CHANGED || state == SDL_WINDOWEVENT_RESIZED) {
 		window.width = evnt.window.data1;
 		window.height = evnt.window.data2;
+
+#ifdef EMSCRIPTEN
+		double display_ratio = emscripten_get_device_pixel_ratio();
+		window.width = static_cast<int>(window.width * display_ratio);
+		window.height = static_cast<int>(window.height * display_ratio);
+#endif
+
 		window.size_changed = true;
 	}
 }
