@@ -201,6 +201,8 @@ add_library(${PROJECT_NAME} STATIC
 	src/game_variables.h
 	src/game_vehicle.cpp
 	src/game_vehicle.h
+	src/game_windows.cpp
+	src/game_windows.h
 	src/graphics.cpp
 	src/graphics.h
 	src/hslrgb.cpp

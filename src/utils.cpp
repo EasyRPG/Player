@@ -386,9 +386,7 @@ Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 		bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
 		if (is_lower || is_upper) {
 			ret.next = iter + 2;
-			ret.value = is_lower ? (next_ch - 'a' + 26) : (next_ch - 'A');
-			// Ensure that ExFont is never detected as a control character
-			ret.value += 32;
+			ret.value = next_ch;
 			ret.is_valid = true;
 		}
 	}

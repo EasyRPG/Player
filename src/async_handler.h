@@ -221,11 +221,13 @@ private:
  * Contains the result of an async request.
  * directory: Directory name
  * file: Name of requested file
+ * request_id assigned to the callback that fired
  * success: true if requested was successful, otherwise false.
  */
 struct FileRequestResult {
 	const std::string& directory;
 	const std::string& file;
+	int request_id;
 	bool success;
 };
 

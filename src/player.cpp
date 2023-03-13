@@ -56,6 +56,7 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_targets.h"
+#include "game_windows.h"
 #include "graphics.h"
 #include <lcf/inireader.h>
 #include "input.h"
@@ -937,6 +938,7 @@ void Player::ResetGameObjects() {
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
 	Main_Data::game_pictures = std::make_unique<Game_Pictures>();
+	Main_Data::game_windows = std::make_unique<Game_Windows>();
 
 	Main_Data::game_actors = std::make_unique<Game_Actors>();
 
@@ -1195,6 +1197,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Main_Data::game_pictures->SetSaveData(std::move(save->pictures));
 	Main_Data::game_targets->SetSaveData(std::move(save->targets));
 	Main_Data::game_player->SetSaveData(save->party_location);
+	Main_Data::game_windows->SetSaveData(std::move(save->easyrpg_data.windows));
 
 	int map_id = Main_Data::game_player->GetMapId();
 

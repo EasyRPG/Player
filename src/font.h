@@ -84,7 +84,16 @@ class Font {
 		/** Whether to render text in italic (currently unsupported) */
 		bool italic = false;
 		/** Whether to render a drop shadow */
-		bool draw_shadow = false;
+		bool draw_shadow = true;
+		/** Whether to draw the system color using a gradient */
+		bool draw_gradient = true;
+		/** When draw_gradient is false specifies the pixel of the current system color to use */
+		Point color_offset = {};
+		/**
+		 * Specifies how far the drawing cursor is advanced in x direction after rendering a glyph.
+		 * This will yield incorrect results for anything that involves complex shaping.
+		 **/
+		int letter_spacing = 0;
 	};
 
 	virtual ~Font() = default;
@@ -170,6 +179,11 @@ class Font {
 	using StyleScopeGuard = lcf::ScopeGuard<std::function<void()>>;
 
 	/**
+	 * @return Whether a custom style is currently active
+	 */
+	bool IsStyleApplied() const;
+
+	/**
 	 * Returns the current font style used for rendering.
 	 *
 	 * @return current style
@@ -225,6 +239,7 @@ class Font {
 	Font(StringView name, int size, bool bold, bool italic);
 
 	std::string name;
+	bool style_applied = false;
 	Style original_style;
 	Style current_style;
 	FontRef fallback_font;

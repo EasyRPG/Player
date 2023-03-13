@@ -23,6 +23,7 @@
 #include "game_map.h"
 #include "game_pictures.h"
 #include "game_screen.h"
+#include "game_windows.h"
 #include "player.h"
 #include "main_data.h"
 #include "scene.h"
@@ -230,6 +231,7 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 
 	// Not saved as the coordinate system is directly transformed to "center"
 	origin = params.origin;
@@ -317,6 +319,10 @@ void Game_Pictures::Picture::Erase() {
 	if (sprite) {
 		sprite->SetBitmap(nullptr);
 	}
+	if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+		data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
+		Main_Data::game_windows->Erase(data.ID);
+	}
 }
 
 void Game_Pictures::Erase(int id) {
@@ -335,6 +341,12 @@ void Game_Pictures::EraseAll() {
 bool Game_Pictures::Picture::Exists() const {
 	// Incompatible with the Yume2kki edge-case that uses empty filenames
 	return !data.name.empty();
+}
+
+void Game_Pictures::Picture::CreateSprite() {
+	if (!sprite) {
+		sprite = std::make_unique<Sprite_Picture>(data.ID, Drawable::Flags::Shared);
+	}
 }
 
 bool Game_Pictures::Picture::IsRequestPending() const {
@@ -372,16 +384,13 @@ void Game_Pictures::OnPictureSpriteReady(FileRequestResult*, int id) {
 	auto* pic = GetPicturePtr(id);
 	if (EP_LIKELY(pic)) {
 		pic->request_id = nullptr;
-		if (!pic->sprite) {
-			sprites.emplace_back(pic->data.ID, Drawable::Flags::Shared);
-			pic->sprite = &sprites.back();
-		}
+		pic->CreateSprite();
 		pic->OnPictureSpriteReady();
 	}
 }
 
 void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
-	if (origin == 0) {
+	if (origin == 0 || !sprite) {
 		return;
 	}
 
@@ -471,6 +480,18 @@ void Game_Pictures::OnMapScrolled(int dx, int dy) {
 	for (auto& pic: pictures) {
 		pic.OnMapScrolled(dx, dy);
 	}
+}
+
+void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_window;
+
+	CreateSprite();
+
+	sprite->SetBitmap(std::make_shared<Bitmap>(window.GetWidth(), window.GetHeight(), data.use_transparent_color));
+	sprite->OnPictureShow();
+	sprite->SetVisible(true);
+
+	ApplyOrigin(false);
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {

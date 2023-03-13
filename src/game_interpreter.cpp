@@ -41,6 +41,7 @@
 #include "game_pictures.h"
 #include "game_screen.h"
 #include "game_interpreter_control_variables.h"
+#include "game_windows.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
@@ -4119,12 +4120,122 @@ bool Game_Interpreter::CommandManiacSetMousePosition(lcf::rpg::EventCommand cons
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ShowStringPicture not supported");
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
+
+	if (pic_id <= 0) {
+		Output::Error("ShowStringPic: Requested invalid picture id ({})", pic_id);
+		return true;
+	}
+
+	Game_Windows::WindowParams params = {};
+	Game_Windows::WindowText text;
+
+	params.position_x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+	params.position_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
+	params.magnify = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+	params.top_trans = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
+	params.red = com.parameters[6];
+	params.green = com.parameters[7];
+	params.blue = com.parameters[8];
+	params.saturation = com.parameters[9];
+	params.effect_mode = com.parameters[10];
+	params.effect_power = com.parameters[11];
+
+	params.map_layer = com.parameters[15];
+	params.battle_layer = com.parameters[16];
+	params.flags = com.parameters[17];
+
+	int flags = com.parameters[12];
+	int blend_mode = flags & 0xF;
+	if (blend_mode == 1) {
+		params.blend_mode = (int)Bitmap::BlendMode::Multiply;
+	} else if (blend_mode == 2) {
+		params.blend_mode = (int)Bitmap::BlendMode::Additive;
+	} else if (blend_mode == 3) {
+		params.blend_mode = (int)Bitmap::BlendMode::Overlay;
+	}
+	params.flip_x = (flags & 16) == 16;
+	params.flip_y = (flags & 32) == 32;
+	params.origin = (com.parameters[0] & (0xF << 24)) >> 24;
+
+	flags = com.parameters[13];
+	if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
+		params.effect_power = ValueOrVariableBitfield(flags, 6, params.effect_power);
+		int divisor = ValueOrVariableBitfield(flags, 7, com.parameters[21]);
+		if (divisor == 0) {
+			divisor = 1;
+		}
+		params.effect_power /= divisor;
+	}
+
+	params.fixed_to_map = (flags & 0xFF) > 0;
+	params.message_stretch = (flags & 0xF00) >> 8;
+
+	// Shifting values around to match System::Stretch enum
+	if (params.message_stretch == 0) {
+		params.message_stretch = 2;
+	} else {
+		params.message_stretch -= 1;
+	}
+
+	params.draw_frame = (flags & (1 << 12)) == 0;
+	text.draw_gradient = (flags & (1 << 13)) == 0;
+	text.draw_shadow = (flags & (1 << 14)) == 0;
+	text.bold = (flags & (1 << 15)) > 0;
+	params.border_margin = (flags & (1 << 16)) == 0;
+
+	params.width = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[18]);
+	params.height = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[19]);
+
+	if (params.width < 0 || params.height < 0) {
+		Output::Warning("ShowStringPic: Invalid window dimension {}x{} (id={})", params.width, params.height, pic_id);
+		return true;
+	}
+
+	flags = com.parameters[14];
+	params.use_transparent_color = (flags & 0xFF) > 0;
+	text.letter_spacing = (flags & (0xFF << 8)) >> 8;
+	text.line_spacing = (flags & (0xFF << 16)) >> 16;
+	text.font_size = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[20]);
+
+	// Windows uses pt but we use px
+	int font_px = Utils::RoundTo<int>(text.font_size * (72 / 96.0));
+	// Maniac Patch appears to confuse pt and px causing large padding everywhere
+	// The next two lines emulate this problem
+	text.position_y = text.font_size - font_px;
+	text.line_spacing += text.font_size - font_px;
+
+	text.font_size = font_px;
+
+	size_t param_size = com.parameters.size();
+
+	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
+		return ch == '\x01';
+	});
+
+	if (components.size() < 4) {
+		Output::Warning("ShowStringPic: Bad text arg (id={})", pic_id);
+		return true;
+	}
+
+	text.text = components[1];
+	params.system_name = components[2];
+	text.font_name = components[3];
+
+	params.texts = {text};
+
+	bool async_wait;
+	Main_Data::game_windows->Create(pic_id, params, async_wait);
+
+	if (async_wait) {
+		_async_op = AsyncOp::MakeYield();
+	}
+
 	return true;
 }
 

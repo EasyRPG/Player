@@ -29,7 +29,11 @@ TEST_CASE("FontSizeChar") {
 TEST_CASE("FontSizeCharEx") {
 	auto font = Font::exfont;
 
-	for (char32_t i = 32; i < 32 + 52; ++i) {
+	for (char32_t i = 'a'; i <= 'z'; ++i) {
+		REQUIRE_EQ(font->GetSize(i), Rect(0, 0, cwf, cwf));
+	}
+
+	for (char32_t i = 'A'; i <= 'Z'; ++i) {
 		REQUIRE_EQ(font->GetSize(i), Rect(0, 0, cwf, cwf));
 	}
 }
@@ -54,7 +58,13 @@ TEST_CASE("FontGlyphCharEx") {
 	Bitmap::SetFormat(format_R8G8B8A8_a().format());
 	auto font = Font::exfont;
 
-	for (char32_t i = 0; i < 52; ++i) {
+	for (char32_t i = 'a'; i <= 'z'; ++i) {
+		auto ret = font->vRender(i);
+		REQUIRE(ret.bitmap != nullptr);
+		REQUIRE_EQ(ret.advance, Point(cwf, 0));
+	}
+
+	for (char32_t i = 'A'; i <= 'Z'; ++i) {
 		auto ret = font->vRender(i);
 		REQUIRE(ret.bitmap != nullptr);
 		REQUIRE_EQ(ret.advance, Point(cwf, 0));
@@ -86,7 +96,11 @@ TEST_CASE("FontGlyphCharEx") {
 	auto surface = Bitmap::Create(width, height);
 	int color = 0;
 
-	for (char32_t i = 32; i < 32 + 52; ++i) {
+	for (char32_t i = 'a'; i <= 'z'; ++i) {
+		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, i), Point(cwf, 0));
+	}
+
+	for (char32_t i = 'A'; i <= 'Z'; ++i) {
 		REQUIRE_EQ(font->Render(*surface, 0, 0, *system, color, i), Point(cwf, 0));
 	}
 }

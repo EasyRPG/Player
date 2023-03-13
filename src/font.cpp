@@ -613,7 +613,9 @@ void Font::Dispose() {
 Font::Font(StringView name, int size, bool bold, bool italic)
 	: name(ToString(name))
 {
-	original_style = {size, bold, italic, true};
+	original_style.size = size;
+	original_style.bold = bold;
+	original_style.italic = italic;
 	current_style = original_style;
 }
 
@@ -626,7 +628,10 @@ Rect Font::GetSize(char32_t glyph) const {
 		return {};
 	}
 
-	return vGetSize(glyph);
+	Rect size = vGetSize(glyph);
+	size.x += current_style.letter_spacing;
+
+	return size;
 }
 
 Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t glyph) const {
@@ -655,23 +660,31 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 
 		src_x = color % 10 * 16 + 2;
 		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
-
-		// When the glyph is large the system graphic color mask will be outside the rectangle
-		// Move the mask slightly up to avoid this
-		int offset = gret.bitmap->height() - gret.offset.y;
-		if (offset > 12) {
-			src_y -= offset - 12;
-		}
 	} else {
 		src_x = 16;
 		src_y = 32;
 	}
 
 	if (!gret.has_color) {
-		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+		if (current_style.draw_gradient) {
+			// When the glyph is large the system graphic color mask will be outside the rectangle
+			// Move the mask slightly up to avoid this
+			int offset = gret.bitmap->height() - gret.offset.y;
+			if (offset > 12) {
+				src_y -= offset - 12;
+			}
+
+			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+		} else {
+			auto col = sys.GetColorAt(current_style.color_offset.x + src_x, current_style.color_offset.y + src_y);
+			auto col_bm = Bitmap::Create(gret.bitmap->width(), gret.bitmap->height(), col);
+			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
+		}
 	} else {
 		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
+
+	gret.advance.x += current_style.letter_spacing;
 
 	return gret.advance;
 }
@@ -720,7 +733,8 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
 
-	return shape.advance;
+	Point advance = { shape.advance.x + current_style.letter_spacing, shape.advance.y };
+	return advance;
 }
 
 Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const {
@@ -732,6 +746,8 @@ Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyp
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);
+
+	gret.advance.x += current_style.letter_spacing;
 
 	return gret.advance;
 }
@@ -750,6 +766,10 @@ void Font::SetFallbackFont(FontRef fallback_font) {
 	this->fallback_font = fallback_font;
 }
 
+bool Font::IsStyleApplied() const {
+	return style_applied;
+}
+
 Font::Style Font::GetCurrentStyle() const {
 	return current_style;
 }
@@ -757,14 +777,16 @@ Font::Style Font::GetCurrentStyle() const {
 Font::StyleScopeGuard Font::ApplyStyle(Style new_style) {
 	vApplyStyle(new_style);
 	current_style = new_style;
+	style_applied = true;
 
 	return lcf::ScopeGuard<std::function<void()>>([&]() {
 		vApplyStyle(original_style);
 		current_style = original_style;
+		style_applied = false;
 	});
 }
 
-ExFont::ExFont() : Font("exfont", 12, false, false) {
+ExFont::ExFont() : Font("exfont", HEIGHT, false, false) {
 }
 
 FontRef Font::exfont = std::make_shared<ExFont>();
@@ -773,8 +795,15 @@ Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
 
-	// Remove offset introduced by Utils::ExFontNext to bypass ControlCharacter detection
-	glyph -= 32;
+	bool is_lower = (glyph >= 'a' && glyph <= 'z');
+	bool is_upper = (glyph >= 'A' && glyph <= 'Z');
+
+	if (!is_lower && !is_upper) {
+		// Invalid ExFont
+		return { bm, {WIDTH, 0}, {0, 0}, false };
+	}
+
+	glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
 
 	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
 	bm->Clear();

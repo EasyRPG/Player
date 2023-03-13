@@ -284,9 +284,15 @@ void FileRequestAsync::Start() {
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
-		// Fall through if not found, will fail in the ajax request
-		Output::Debug("{} not in index.json", modified_path);
-		request_path += path;
+		if (file_mapping.empty()) {
+			// index.json not fetched yet, fallthrough and fetch
+			request_path += path;
+		} else {
+			// Fire immediately (error)
+			Output::Debug("{} not in index.json", modified_path);
+			DownloadDone(false);
+			return;
+		}
 	}
 
 	// URL encode %, # and +
@@ -341,10 +347,11 @@ FileRequestBinding FileRequestAsync::Bind(std::function<void(FileRequestResult*)
 }
 
 void FileRequestAsync::CallListeners(bool success) {
-	FileRequestResult result { directory, file, success };
+	FileRequestResult result { directory, file, -1, success };
 
 	for (auto& listener : listeners) {
 		if (!listener.first.expired()) {
+			result.request_id = *listener.first.lock();
 			(listener.second)(&result);
 		} else {
 			Output::Debug("Request cancelled: {}", GetPath());

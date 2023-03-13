@@ -34,6 +34,7 @@
 #include "game_switches.h"
 #include "game_targets.h"
 #include "game_quit.h"
+#include "game_windows.h"
 #include "font.h"
 #include "player.h"
 #include "system.h"
@@ -60,6 +61,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
 	std::unique_ptr<Game_Pictures> game_pictures;
+	std::unique_ptr<Game_Windows> game_windows;
 	std::unique_ptr<Game_Actors> game_actors;
 	std::unique_ptr<Game_Player> game_player;
 	std::unique_ptr<Game_Party> game_party;
@@ -112,6 +114,7 @@ void Main_Data::Cleanup() {
 	game_switches.reset();
 	game_screen.reset();
 	game_pictures.reset();
+	game_windows.reset();
 	game_player.reset();
 	game_party.reset();
 	game_enemyparty.reset();
