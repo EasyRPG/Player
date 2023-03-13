@@ -94,25 +94,21 @@ static fluid_fileapi_t fluidlite_vio = {
 #endif
 
 namespace {
-	bool shutdown = false;
 	std::string preferred_soundfont;
 }
 
-struct FluidSettingsDeleter {
+struct FluidSynthDeleter {
 	void operator()(fluid_settings_t* s) const {
 		delete_fluid_settings(s);
 	}
-};
 
-struct FluidSynthDeleter {
 	void operator()(fluid_synth_t* s) const {
 		delete_fluid_synth(s);
-		shutdown = true;
 	}
 };
 
 namespace {
-	std::unique_ptr<fluid_settings_t, FluidSettingsDeleter> global_settings;
+	std::unique_ptr<fluid_settings_t, FluidSynthDeleter> global_settings;
 	std::unique_ptr<fluid_synth_t, FluidSynthDeleter> global_synth;
 #if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 	fluid_sfloader_t* global_loader; // owned by global_settings
@@ -191,13 +187,13 @@ FluidSynthDecoder::FluidSynthDecoder() {
 	// Sharing is only not possible when a Midi is played as a SE (unlikely)
 	if (instances > 1) {
 		std::string error_message;
-		instance_synth = create_synth(error_message);
-		if (!instance_synth) {
+		local_synth = create_synth(error_message);
+		if (!local_synth) {
 			// unlikely, the SF was already allocated once
 			Output::Debug("FluidSynth failed: {}", error_message);
 		}
 	} else {
-		instance_synth = global_synth.get();
+		use_global_synth = true;
 		fluid_synth_program_reset(global_synth.get());
 	}
 }
@@ -206,8 +202,8 @@ FluidSynthDecoder::~FluidSynthDecoder() {
 	--instances;
 	assert(instances >= 0);
 
-	if (instance_synth != global_synth.get()) {
-		delete_fluid_synth(instance_synth);
+	if (!use_global_synth) {
+		delete_fluid_synth(local_synth);
 	}
 }
 
@@ -270,6 +266,8 @@ void FluidSynthDecoder::SetSoundfont(StringView sf) {
 }
 
 int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
+	auto* instance_synth = GetSynthInstance();
+
 	if (!instance_synth) {
 		return -1;
 	}
@@ -282,6 +280,8 @@ int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {
 }
 
 void FluidSynthDecoder::SendMidiMessage(uint32_t message) {
+	auto* instance_synth = GetSynthInstance();
+
 	if (!instance_synth) {
 		return;
 	}
@@ -329,8 +329,18 @@ void FluidSynthDecoder::SendSysExMessage(const uint8_t* data, std::size_t size) 
 		return;
 	}
 
+	auto* instance_synth = GetSynthInstance();
+
 	fluid_synth_sysex(instance_synth, reinterpret_cast<const char*>(data + 1), static_cast<int>(size - 2),
 		nullptr, nullptr, nullptr, 0);
+}
+
+fluid_synth_t *FluidSynthDecoder::GetSynthInstance() {
+	if (use_global_synth) {
+		return global_synth.get();
+	} else {
+		return local_synth;
+	}
 }
 
 #endif
