@@ -287,6 +287,15 @@ void Game_Interpreter::SetupWait(int duration) {
 	}
 }
 
+void Game_Interpreter::SetupWaitFrames(int duration) {
+	if (duration == 0) {
+		// 0.0 waits 1 frame
+		_state.wait_time = 1;
+	} else {
+		_state.wait_time = duration;
+	}
+}
+
 bool Game_Interpreter::ReachedLoopLimit() const {
 	return loop_count >= loop_limit;
 }
@@ -1146,79 +1155,79 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		}
 		case 11: {
 			// Pow (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[7], 1, com.parameters[6]);
 			value = ControlVariables::Pow(arg1, arg2);
 			break;
 		}
 		case 12: {
 			// Sqrt (Maniac)
-			int arg = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
+			int arg = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
 			int mul = com.parameters[6];
 			value = ControlVariables::Sqrt(arg, mul);
 			break;
 		}
 		case 13: {
 			// Sin (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[7], 1, com.parameters[8]);
 			float mul = static_cast<float>(com.parameters[6]);
 			value = ControlVariables::Sin(arg1, arg2, mul);
 			break;
 		}
 		case 14: {
 			// Cos (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[8]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[7], 1, com.parameters[8]);
 			int mul = com.parameters[6];
 			value = ControlVariables::Cos(arg1, arg2, mul);
 			break;
 		}
 		case 15: {
 			// Atan2 (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[6]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[8], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[8], 1, com.parameters[6]);
 			int mul = com.parameters[7];
 			value = ControlVariables::Atan2(arg1, arg2, mul);
 			break;
 		}
 		case 16: {
 			// Min (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[7], 1, com.parameters[6]);
 			value = ControlVariables::Min(arg1, arg2);
 			break;
 		}
 		case 17: {
 			// Max (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[7] & 0xF, com.parameters[5]);
-			int arg2 = ValueOrVariable((com.parameters[7] >> 4) & 0xF, com.parameters[6]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[7], 0, com.parameters[5]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[7], 1, com.parameters[6]);
 			value = ControlVariables::Max(arg1, arg2);
 			break;
 		}
 		case 18: {
 			// Abs (Maniac)
-			int arg = ValueOrVariable(com.parameters[6] & 0xF, com.parameters[5]);
+			int arg = ValueOrVariableBitfield(com.parameters[6], 0, com.parameters[5]);
 			value = ControlVariables::Abs(arg);
 			break;
 		}
 		case 19: {
 			// Binary (Maniac)
-			int arg1 = ValueOrVariable(com.parameters[8] & 0xF, com.parameters[6]);
-			int arg2 = ValueOrVariable((com.parameters[8] >> 4) & 0xF, com.parameters[7]);
+			int arg1 = ValueOrVariableBitfield(com.parameters[8], 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(com.parameters[8], 1, com.parameters[7]);
 			value = ControlVariables::Binary(com.parameters[5], arg1, arg2);
 			break;
 		}
 		case 20: {
 			// Ternary (Maniac)
 			int mode = com.parameters[10];
-			int arg1 = ValueOrVariable(mode & 0xF, com.parameters[6]);
-			int arg2 = ValueOrVariable((mode >> 4) & 0xF, com.parameters[7]);
+			int arg1 = ValueOrVariableBitfield(mode, 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(mode, 1, com.parameters[7]);
 			int op = com.parameters[5];
 			if (CheckOperator(arg1, arg2, op)) {
-				value = ValueOrVariable((mode >> 8) & 0xF, com.parameters[8]);
+				value = ValueOrVariableBitfield(mode, 2, com.parameters[8]);
 			} else {
-				value = ValueOrVariable((mode >> 12) & 0xF, com.parameters[9]);
+				value = ValueOrVariableBitfield(mode, 3, com.parameters[9]);
 			}
 			break;
 		}
@@ -1736,6 +1745,10 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 	return -1;
 }
 
+int Game_Interpreter::ValueOrVariableBitfield(int mode, int shift, int val) {
+	return ValueOrVariable((mode & (0xF << shift * 4)) >> shift * 4, val);
+}
+
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
 	int value = OperateValue(
 		com.parameters[2],
@@ -1968,10 +1981,31 @@ bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 11410
 	auto& index = GetFrame().current_command;
 
+	bool maniac = Player::IsPatchManiac();
+
 	// Wait a given time
 	if (com.parameters.size() <= 1 ||
-		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
+		(!maniac && com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
+		return true;
+	}
+
+	if (maniac && com.parameters.size() > 1) {
+		int wait_type = com.parameters[1];
+		int mode = 0;
+
+		if (com.parameters.size() > 2) {
+			mode = com.parameters[2];
+		}
+
+		int duration = ValueOrVariable(mode, com.parameters[0]);
+
+		if (wait_type == 256) {
+			SetupWaitFrames(duration);
+		} else {
+			SetupWait(duration);
+		}
+
 		return true;
 	}
 
@@ -1990,10 +2024,20 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
 	music.name = ToString(com.string);
-	music.fadein = com.parameters[0];
-	music.volume = com.parameters[1];
-	music.tempo = com.parameters[2];
-	music.balance = com.parameters[3];
+
+	if (Player::IsPatchManiac() && com.parameters.size() >= 5) {
+		int mode = com.parameters[4];
+		music.fadein = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
+		music.volume = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
+		music.tempo = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
+		music.balance = ValueOrVariableBitfield(mode, 4, com.parameters[3]);
+	} else {
+		music.fadein = com.parameters[0];
+		music.volume = com.parameters[1];
+		music.tempo = com.parameters[2];
+		music.balance = com.parameters[3];
+	}
+
 	Main_Data::game_system->BgmPlay(music);
 	return true;
 }
@@ -2007,9 +2051,20 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
 	sound.name = ToString(com.string);
-	sound.volume = com.parameters[0];
-	sound.tempo = com.parameters[1];
-	sound.balance = com.parameters[2];
+
+	if (Player::IsPatchManiac() && com.parameters.size() >= 4) {
+		int mode = com.parameters[3];
+		sound.volume = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
+		sound.tempo = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
+		sound.balance = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
+	} else {
+		sound.volume = com.parameters[0];
+		sound.tempo = com.parameters[1];
+		sound.balance = com.parameters[2];
+	}
+
+	Output::Debug("SE {} {} {} {}", sound.name, sound.volume, sound.tempo, sound.balance);
+
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }
@@ -2745,8 +2800,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
-				int divisor = ValueOrVariable((com.parameters[16] & 0xF0) >> 4, com.parameters[15]);
+				params.effect_power = ValueOrVariableBitfield(com.parameters[16], 0, params.effect_power);
+				int divisor = ValueOrVariableBitfield(com.parameters[16], 1, com.parameters[15]);
 				if (divisor == 0) {
 					divisor = 1;
 				}
@@ -2837,8 +2892,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-				params.effect_power = ValueOrVariable(com.parameters[16] & 0xF, params.effect_power);
-				int divisor = ValueOrVariable((com.parameters[16] & 0xF0) >> 4, com.parameters[15]);
+				params.effect_power = ValueOrVariableBitfield(com.parameters[16], 0, params.effect_power);
+				int divisor = ValueOrVariableBitfield(com.parameters[16], 1, com.parameters[15]);
 				if (divisor == 0) {
 					divisor = 1;
 				}
@@ -3584,8 +3639,8 @@ bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 
 	begin_loop_val = 0;
 	end_loop_val = 0;
 
-	int begin_arg = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
-	int end_arg = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+	int begin_arg = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[2]);
+	int end_arg = ValueOrVariableBitfield(com.parameters[1], 1, com.parameters[3]);
 	int op = com.parameters[1] >> 8;
 
 	switch (type) {
@@ -3609,8 +3664,8 @@ bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 
 	int check_beg = begin_loop_val;
 	int check_end = end_loop_val;
 	if (type == 4) { // While
-		check_beg = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
-		check_end = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+		check_beg = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[2]);
+		check_end = ValueOrVariableBitfield(com.parameters[1], 1, com.parameters[3]);
 	}
 
 	// Do While (5) always runs the loop at least once
@@ -3694,8 +3749,8 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 		if (type >= 4) {
 			// While (4) and Do While (5) fetch variables each loop
 			// For the others it is constant
-			check_cur = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[2]);
-			check_end = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[3]);
+			check_cur = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[2]);
+			check_end = ValueOrVariableBitfield(com.parameters[1], 1, com.parameters[3]);
 		}
 		int op = com.parameters[1] >> 8;
 		if (!ManiacCheckContinueLoop(check_cur, check_end, type, op)) {
@@ -4147,13 +4202,10 @@ bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const
 
 	int op = com.parameters[0];
 	int mode = com.parameters[1];
-	int mode_a = mode & 0xF;
-	int mode_size = (mode >> 4) & 0xF;
-	int mode_b = (mode >> 8) & 0xF;
 
-	int target_a = ValueOrVariable(mode_a, com.parameters[2]);
-	int length = ValueOrVariable(mode_size, com.parameters[3]);
-	int target_b = ValueOrVariable(mode_b, com.parameters[4]);
+	int target_a = ValueOrVariableBitfield(mode, 0, com.parameters[2]);
+	int length = ValueOrVariableBitfield(mode, 1, com.parameters[3]);
+	int target_b = ValueOrVariableBitfield(mode, 2, com.parameters[4]);
 	int last_target_a = target_a + length - 1;
 
 	if (target_a < 1 || length <= 0) {
@@ -4361,9 +4413,9 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 		writer.Write(Main_Data::game_variables_global->GetData());
 	} else if (operation == 4 || operation == 5) {
 		int type = com.parameters[2];
-		int game_state_idx = ValueOrVariable(com.parameters[1] & 0xF, com.parameters[3]);
-		int global_save_idx = ValueOrVariable((com.parameters[1] >> 4) & 0xF, com.parameters[4]);
-		int length = ValueOrVariable((com.parameters[1] >> 8) & 0xF, com.parameters[5]);
+		int game_state_idx = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[3]);
+		int global_save_idx = ValueOrVariableBitfield(com.parameters[1], 1, com.parameters[4]);
+		int length = ValueOrVariableBitfield(com.parameters[1], 2, com.parameters[5]);
 
 		if (operation == 4) {
 			// Copy from global save to game state

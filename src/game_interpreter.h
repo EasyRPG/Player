@@ -156,6 +156,11 @@ protected:
 	void SetupWait(int duration);
 
 	/**
+	 * Sets up a wait using frames (and closes the message box)
+	 */
+	void SetupWaitFrames(int duration);
+
+	/**
 	 * Calculates list of actors.
 	 *
 	 * @param mode 0: party, 1: specific actor, 2: actor referenced by variable.
@@ -163,6 +168,7 @@ protected:
 	 */
 	static std::vector<Game_Actor*> GetActors(int mode, int id);
 	static int ValueOrVariable(int mode, int val);
+	static int ValueOrVariableBitfield(int mode, int shift, int val);
 
 	/**
 	 * When current frame finishes executing we pop the stack
