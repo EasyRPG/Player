@@ -4212,8 +4212,6 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	text.font_size = font_px;
 
-	size_t param_size = com.parameters.size();
-
 	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
 		return ch == '\x01';
 	});
