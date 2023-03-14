@@ -2064,8 +2064,6 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 		sound.balance = com.parameters[2];
 	}
 
-	Output::Debug("SE {} {} {} {}", sound.name, sound.volume, sound.tempo, sound.balance);
-
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }
