@@ -21,7 +21,7 @@ template class EnumConfigParam<TestColor, 3>;
 TEST_SUITE_BEGIN("ConfigParam");
 
 TEST_CASE("Bool") {
-	BoolConfigParam p("Unit Test", "");
+	BoolConfigParam p("Unit Test", "", "", "", false);
 
 	REQUIRE(p.IsOptionVisible());
 	REQUIRE(!p.IsLocked());
@@ -29,7 +29,7 @@ TEST_CASE("Bool") {
 	REQUIRE(p.IsValid(false));
 	REQUIRE(p.IsValid(true));
 
-	p = BoolConfigParam("Unit Test", "", true);
+	p = BoolConfigParam("Unit Test", "", "", "", true);
 
 	REQUIRE(p.IsOptionVisible());
 	REQUIRE(!p.IsLocked());
@@ -73,7 +73,7 @@ TEST_CASE("Bool") {
 }
 
 TEST_CASE("Int") {
-	IntConfigParam p("Unit Test", "");
+	ConfigParam<int> p("Unit Test", "", "", "");
 
 	REQUIRE(p.IsOptionVisible());
 	REQUIRE(!p.IsLocked());
@@ -107,7 +107,7 @@ TEST_CASE("Int") {
 }
 
 TEST_CASE("String") {
-	StringConfigParam p("Unit Test", "", "Hello World");
+	StringConfigParam p("Unit Test", "", "", "", "Hello World");
 
 	REQUIRE(p.IsOptionVisible());
 	REQUIRE(!p.IsLocked());

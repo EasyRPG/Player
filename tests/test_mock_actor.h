@@ -78,8 +78,8 @@ class MockActor {
 public:
 	MockActor(int eng = Player::EngineRpg2k3 | Player::EngineEnglish)
 	{
-		_engine = Player::engine;
-		Player::engine = eng;
+		_engine = Player::game_config.engine;
+		Player::game_config.engine = eng;
 
 		_ll = Output::GetLogLevel();
 		Output::SetLogLevel(LogLevel::Error);
@@ -103,7 +103,7 @@ public:
 		Main_Data::Cleanup();
 
 		lcf::Data::data = {};
-		Player::engine = _engine;
+		Player::game_config.engine = _engine;
 		Output::SetLogLevel(_ll);
 	}
 private:
