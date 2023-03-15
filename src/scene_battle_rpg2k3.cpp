@@ -570,7 +570,7 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 	int h = 80;
 	int x = Player::menu_offset_x;
 	int y = Player::screen_height - Player::menu_offset_y - h;
-	
+
 	switch (lcf::Data::battlecommands.battle_type) {
 		case lcf::rpg::BattleCommands::BattleType_traditional:
 			x = Player::menu_offset_x + target_window->GetWidth();
@@ -612,6 +612,8 @@ void Scene_Battle_Rpg2k3::SetBattleCommandsDisable(Window_Command& window, const
 			auto* cmd = cmds[i];
 			if (cmd->type == lcf::rpg::BattleCommand::Type_escape && !IsEscapeAllowedFromActorCommand()) {
 				window.DisableItem(i);
+			} else {
+				window.EnableItem(i);
 			}
 		}
 	}
@@ -2278,14 +2280,14 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 	return BattleActionReturn::eWait;
 }
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit(Game_BattleAlgorithm::AlgorithmBase*) {
 	CBAInit();
 
 	SetBattleActionState(BattleActionState_CBAMove);
 	return BattleActionReturn::eWait;
 }
 
-Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove(Game_BattleAlgorithm::AlgorithmBase* action) {
+Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove(Game_BattleAlgorithm::AlgorithmBase*) {
 	CBAMove();
 
 	if (cba_move_frame >= cba_num_move_frames) {
@@ -2341,6 +2343,8 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 							action_state,
 							Sprite_Actor::LoopState_WaitAfterFinish);
 				}
+			} else {
+				sprite->SetAnimationLoop(Sprite_Actor::LoopState_DefaultAnimationAfterFinish);
 			}
 		}
 	}
@@ -2664,7 +2668,6 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 			if (source_sprite) {
 				source_sprite->SetNormalAttacking(false);
 				auto* weapon = actor->GetWeaponSprite();
-				int weapon_animation_id = 0;
 				if (weapon) {
 					auto* weapon_animation_data = action->GetWeaponAnimationData();
 					if (weapon_animation_data) {

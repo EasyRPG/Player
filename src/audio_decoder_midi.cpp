@@ -40,7 +40,7 @@ constexpr int samples_per_play = 64 / sample_divider;
 static const uint8_t midi_event_control_change = 0b1011;
 static const uint8_t midi_control_volume = 7;
 static const uint8_t midi_control_all_sound_off = 120;
-static const uint8_t midi_control_all_note_off = 123;
+//static const uint8_t midi_control_all_note_off = 123;
 static const uint8_t midi_control_reset_all_controller = 121;
 
 static uint32_t midimsg_make(uint8_t event_type, uint8_t channel, uint8_t value1, uint8_t value2) {
@@ -51,9 +51,9 @@ static uint32_t midimsg_make(uint8_t event_type, uint8_t channel, uint8_t value1
 	return msg;
 }
 
-static uint32_t midimsg_all_note_off(uint8_t channel) {
+/*static uint32_t midimsg_all_note_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_note_off, 0);
-}
+}*/
 
 static uint32_t midimsg_all_sound_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_sound_off, 0);
@@ -217,6 +217,8 @@ bool AudioDecoderMidi::IsFinished() const {
 }
 
 void AudioDecoderMidi::Update(std::chrono::microseconds delta) {
+	(void)delta; // FIXME: Why is delta unused?
+
 	if (paused) {
 		return;
 	}

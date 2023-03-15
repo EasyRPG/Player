@@ -300,7 +300,7 @@ void Sprite_Actor::UpdatePosition() {
 
 	if (afterimage_fade >= 0) {
 		++afterimage_fade;
-		if (afterimage_fade >= images.size()) {
+		if (static_cast<size_t>(afterimage_fade) >= images.size()) {
 			// CBA finished, remove afterimages
 			images.resize(1);
 			afterimage_fade = -1;

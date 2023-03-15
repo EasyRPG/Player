@@ -142,6 +142,11 @@ std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent
 
 
 std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
+	(void)parent_fs;
+	(void)child_path;
+	(void)parent_game_name;
+	(void)pivot_map_id;
+
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;

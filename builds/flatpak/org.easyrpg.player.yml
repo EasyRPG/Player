@@ -86,6 +86,8 @@ modules:
   - name: player
     buildsystem: cmake-ninja
     config-opts:
+    # remove this line after switching to 22.08 or newer
+      - -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=OFF
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
     sources:
       - type: git

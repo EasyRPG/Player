@@ -68,7 +68,7 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-		auto midi = MidiDecoder::Create(stream, resample);
+		auto midi = MidiDecoder::Create(resample);
 		if (midi) {
 			return midi;
 		}
@@ -84,7 +84,7 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 		stream.seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "Opus", 4)) {
-			return add_resampler(std::make_unique<OpusDecoder>());
+			return add_resampler(std::make_unique<OpusAudioDecoder>());
 		}
 #endif
 

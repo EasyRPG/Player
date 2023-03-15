@@ -133,6 +133,10 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 				filepath = lcf::ReaderUtil::Recode(filepath, encoding);
 			}
 
+			// Workaround ZIP archives containing invalid "\" paths created by .net or Powershell
+			std::replace(filepath_cp437.begin(), filepath_cp437.end(), '\\', '/');
+			std::replace(filepath.begin(), filepath.end(), '\\', '/');
+
 			// check if the entry is an directory or not (indicated by trailing /)
 			// this will fail when the (game) directory has cp437, but the users can rename it before
 			if (filepath.back() == '/') {
@@ -248,15 +252,13 @@ bool ZipFilesystem::ReadCentralDirectoryEntry(std::istream& zipfile, std::string
 	zipfile.seekg(8, std::ios_base::cur); // Jump over currently not needed entries
 	zipfile.read(reinterpret_cast<char*>(&entry.fileoffset), sizeof(uint32_t));
 	Utils::SwapByteOrder(entry.fileoffset);
-	if (filename_buffer.capacity() < filepath_length + 1) {
-		filename_buffer.resize(filepath_length + 1);
+	if (filename_buffer.capacity() < filepath_length + 1u) {
+		filename_buffer.resize(filepath_length + 1u);
 	}
 	zipfile.read(reinterpret_cast<char*>(filename_buffer.data()), filepath_length);
 	filename = std::string(filename_buffer.data(), filepath_length);
 	// Jump over currently not needed entries
 	zipfile.seekg(comment_length + extra_field_length, std::ios_base::cur);
-	// Workaround ZIP archives containing invalid "\" paths created by .net or Powershell
-	std::replace(filename.begin(), filename.end(), '\\', '/');
 	return true;
 }
 
@@ -340,7 +342,6 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		auto zip_file = GetParent().OpenInputStream(GetPath());
 		zip_file.seekg(central_entry->fileoffset);
 		StorageMethod method;
-		uint32_t local_offset = 0;
 		ZipEntry local_entry = {};
 		if (ReadLocalHeader(zip_file, method, local_entry)) {
 			if (central_entry->compressed_size != local_entry.compressed_size) {

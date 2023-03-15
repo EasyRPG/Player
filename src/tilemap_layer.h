@@ -100,7 +100,7 @@ private:
 	std::unordered_set<uint32_t> chipset_tone_tiles;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
-	Span<const uint8_t> substitutions;
+	std::vector<uint8_t> substitutions;
 	int ox = 0;
 	int oy = 0;
 	int width = 0;

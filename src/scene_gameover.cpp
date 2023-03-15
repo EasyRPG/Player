@@ -54,7 +54,6 @@ void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 	background->SetBitmap(bitmapRef);
 
 	// If the sprite doesn't fill the screen, center it to support custom resolutions
-	Rect rect = background->GetBitmap()->GetRect();
 	if (bitmapRef->GetWidth() < Player::screen_width) {
 		background->SetX(Player::menu_offset_x);
 	}

@@ -110,7 +110,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 	Transition::instance().InitShow(Transition::TransitionFadeIn, this);
 }
 
-void Scene_Title::Suspend(Scene::SceneType next_scene) {
+void Scene_Title::Suspend(Scene::SceneType) {
 	// Unload title graphic to save memory
 	title.reset();
 }
@@ -237,9 +237,8 @@ void Scene_Title::CreateCommandWindow() {
 	continue_enabled = FileFinder::HasSavegame();
 	if (continue_enabled) {
 		command_window->SetIndex(1);
-	} else {
-		command_window->DisableItem(1);
 	}
+	command_window->SetItemEnabled(1, continue_enabled);
 
 	// Set the number of frames for the opening animation to last
 	if (!Player::hide_title_flag) {
@@ -386,7 +385,6 @@ void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(bitmapRef);
 
 	// If the title sprite doesn't fill the screen, center it to support custom resolutions
-	Rect rect = title->GetBitmap()->GetRect();
 	if (bitmapRef->GetWidth() < Player::screen_width) {
 		title->SetX(Player::menu_offset_x);
 	}

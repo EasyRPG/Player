@@ -484,9 +484,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 
 	auto addItem = [&](const auto& name, bool enabled = true) {
 		range_window->SetItemText(idx, name);
-		if (!enabled) {
-			range_window->DisableItem(idx);
-		}
+		range_window->SetItemEnabled(idx, enabled);
 		++idx;
 	};
 

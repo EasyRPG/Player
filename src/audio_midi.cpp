@@ -45,21 +45,21 @@ static struct {
 	bool wildmidi = true;
 } works;
 
-std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-	mididec = CreateFluidsynth(stream, resample);
+	mididec = CreateFluidsynth(resample);
 	if (!mididec) {
-		mididec = CreateWildMidi(stream, resample);
+		mididec = CreateWildMidi(resample);
 		if (!mididec) {
-			mididec = CreateFmMidi(stream, resample);
+			mididec = CreateFmMidi(resample);
 		}
 	}
 
 	return mididec;
 }
 
-std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
@@ -83,7 +83,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(Filesystem_Strea
 	return mididec;
 }
 
-std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
 #ifdef HAVE_LIBWILDMIDI
@@ -107,7 +107,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(Filesystem_Stream:
 	return mididec;
 }
 
-std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(Filesystem_Stream::InputStream& stream, bool resample) {
+std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
 #if WANT_FMMIDI

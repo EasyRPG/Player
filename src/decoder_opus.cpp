@@ -51,17 +51,17 @@ static OpusFileCallbacks vio = {
 		nullptr // close not supported by istream interface
 };
 
-OpusDecoder::OpusDecoder() {
+OpusAudioDecoder::OpusAudioDecoder() {
 	music_type = "opus";
 }
 
-OpusDecoder::~OpusDecoder() {
+OpusAudioDecoder::~OpusAudioDecoder() {
 	if (oof) {
 		op_free(oof);
 	}
 }
 
-bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
+bool OpusAudioDecoder::Open(Filesystem_Stream::InputStream stream) {
 	this->stream = std::move(stream);
 	finished = false;
 
@@ -115,7 +115,7 @@ bool OpusDecoder::Open(Filesystem_Stream::InputStream stream) {
 	return true;
 }
 
-bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
+bool OpusAudioDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (offset == 0 && origin == std::ios::beg) {
 		finished = false;
 
@@ -134,7 +134,7 @@ bool OpusDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	return false;
 }
 
-bool OpusDecoder::IsFinished() const {
+bool OpusAudioDecoder::IsFinished() const {
 	if (!oof) {
 		return false;
 	}
@@ -146,20 +146,20 @@ bool OpusDecoder::IsFinished() const {
 	return finished;
 }
 
-void OpusDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& chans) const {
+void OpusAudioDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& chans) const {
 	freq = frequency;
 	format = Format::S16;
 	chans = channels;
 }
 
-bool OpusDecoder::SetFormat(int freq, AudioDecoder::Format format, int chans) {
+bool OpusAudioDecoder::SetFormat(int freq, AudioDecoder::Format format, int chans) {
 	if (freq != frequency || chans != channels || format != Format::S16)
 		return false;
 
 	return true;
 }
 
-int OpusDecoder::GetTicks() const {
+int OpusAudioDecoder::GetTicks() const {
 	if (!oof) {
 		return 0;
 	}
@@ -168,7 +168,7 @@ int OpusDecoder::GetTicks() const {
 	return op_pcm_tell(oof) / 48000;
 }
 
-int OpusDecoder::FillBuffer(uint8_t* buffer, int length) {
+int OpusAudioDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!oof)
 		return -1;
 

@@ -56,7 +56,6 @@ private:
 	int decoded_samples = 0;
 	bool init = false;
 	drwav handle = {};
-	uint32_t bytes_per_frame = 0;
 };
 
 #endif

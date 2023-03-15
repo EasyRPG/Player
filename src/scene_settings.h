@@ -67,7 +67,7 @@ private:
 	void UpdateButtonRemove();
 
 	bool RefreshInputEmergencyReset();
-	void RefreshInputRemoveAllowed();
+	void RefreshInputActionAllowed();
 
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;
@@ -80,7 +80,6 @@ private:
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;
-	bool input_mode_window_remove_allowed = true;
 	int input_reset_counter = 0;
 
 	Window_Settings::UiMode mode = Window_Settings::eNone;

@@ -832,7 +832,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 
 	Entry e;
 
-	auto extract_string = [&](int offset) -> std::string {
+	auto extract_string = [&](size_t offset) -> std::string {
 		if (offset >= line_view.size()) {
 			Output::Error("Parse error (Line {}) is empty", line_number);
 			return "";
@@ -850,7 +850,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 					first_quote = true;
 					continue;
 				}
-				Output::Error("Parse error (Line {}): Expected \", got \"{}\": {}", line_number, c, line);
+				Output::Error(R"(Parse error (Line {}): Expected ", got "{}": {})", line_number, c, line);
 				return "";
 			}
 
@@ -869,7 +869,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 						out << '"';
 						break;
 					default:
-						Output::Error("Parse error (Line {}): Expected \\, \\n or \", got \"{}\": {}", line_number, c, line);
+						Output::Error(R"(Parse error (Line {}): Expected \, \n or ", got "{}": {})", line_number, c, line);
 						break;
 				}
 			} else {

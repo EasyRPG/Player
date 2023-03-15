@@ -31,7 +31,7 @@
 #include "flat_map.h"
 #include "keys.h"
 
-class Game_ConfigInput;
+struct Game_ConfigInput;
 
 #if USE_SDL==1
 #include "platform/sdl/axis.h"

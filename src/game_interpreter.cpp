@@ -2064,8 +2064,6 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 		sound.balance = com.parameters[2];
 	}
 
-	Output::Debug("SE {} {} {} {}", sound.name, sound.volume, sound.tempo, sound.balance);
-
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
 }
@@ -3173,8 +3171,8 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		}
 	};
 
-	_keyinput.keys[Keys::eDecision] = check_key(3, true);
-	_keyinput.keys[Keys::eCancel] = check_key(4, true);
+	_keyinput.keys[Keys::eDecision] = check_key(3u, true);
+	_keyinput.keys[Keys::eCancel] = check_key(4u, true);
 
 	// All engines support older versions of the command depending on the
 	// length of the parameter list
@@ -3190,10 +3188,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		} else {
 			// For Rpg2k >=1.50
 			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-			_keyinput.keys[Keys::eDown] = check_key(6);
-			_keyinput.keys[Keys::eLeft] = check_key(7);
-			_keyinput.keys[Keys::eRight] = check_key(8);
-			_keyinput.keys[Keys::eUp] = check_key(9);
+			_keyinput.keys[Keys::eDown] = check_key(6u);
+			_keyinput.keys[Keys::eLeft] = check_key(7u);
+			_keyinput.keys[Keys::eRight] = check_key(8u);
+			_keyinput.keys[Keys::eUp] = check_key(9u);
 		}
 	} else {
 		if (param_size != 10 || Player::IsRPG2k3Legacy()) {
@@ -3204,19 +3202,19 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 				_keyinput.keys[Keys::eRight] = true;
 				_keyinput.keys[Keys::eUp] = true;
 			}
-			_keyinput.keys[Keys::eNumbers] = check_key(5);
-			_keyinput.keys[Keys::eOperators] = check_key(6);
+			_keyinput.keys[Keys::eNumbers] = check_key(5u);
+			_keyinput.keys[Keys::eOperators] = check_key(6u);
 			_keyinput.time_variable = param_size > 7 ? com.parameters[7] : 0; // Attention: int, not bool
-			_keyinput.timed = check_key(8);
+			_keyinput.timed = check_key(8u);
 			if (param_size > 10 && Player::IsMajorUpdatedVersion()) {
 				// For Rpg2k3 >=1.05
 				// ManiacPatch Middle & Wheel only handled for 2k3 Major Updated,
 				// the only version that has this patch
-				_keyinput.keys[Keys::eShift] = check_key(9, true);
-				_keyinput.keys[Keys::eDown] = check_key(10, true);
-				_keyinput.keys[Keys::eLeft] = check_key(11);
-				_keyinput.keys[Keys::eRight] = check_key(12);
-				_keyinput.keys[Keys::eUp] = check_key(13, true);
+				_keyinput.keys[Keys::eShift] = check_key(9u, true);
+				_keyinput.keys[Keys::eDown] = check_key(10u, true);
+				_keyinput.keys[Keys::eLeft] = check_key(11u);
+				_keyinput.keys[Keys::eRight] = check_key(12u);
+				_keyinput.keys[Keys::eUp] = check_key(13u, true);
 			}
 		} else {
 			// Since RPG2k3 1.05
@@ -3244,11 +3242,11 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 #endif
 			return result;
 		};
-		_keyinput.keys[Keys::eMouseLeft] = check_mouse(3);
-		_keyinput.keys[Keys::eMouseRight] = check_mouse(4);
-		_keyinput.keys[Keys::eMouseMiddle] = check_mouse(9);
-		_keyinput.keys[Keys::eMouseScrollDown] = check_mouse(10);
-		_keyinput.keys[Keys::eMouseScrollUp] = check_mouse(13);
+		_keyinput.keys[Keys::eMouseLeft] = check_mouse(3u);
+		_keyinput.keys[Keys::eMouseRight] = check_mouse(4u);
+		_keyinput.keys[Keys::eMouseMiddle] = check_mouse(9u);
+		_keyinput.keys[Keys::eMouseScrollDown] = check_mouse(10u);
+		_keyinput.keys[Keys::eMouseScrollUp] = check_mouse(13u);
 	}
 
 	if (_keyinput.wait) {
@@ -3722,7 +3720,7 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 		int type = com.parameters[0];
 		int offset = com.indent * 2;
 
-		if (frame.maniac_loop_info.size() < (offset + 1) * 2) {
+		if (static_cast<int>(frame.maniac_loop_info.size()) < (offset + 1) * 2) {
 			frame.maniac_loop_info.resize((offset + 1) * 2);
 			frame.maniac_loop_info_size = frame.maniac_loop_info.size() / 2;
 		}
@@ -4212,8 +4210,6 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	text.font_size = font_px;
 
-	size_t param_size = com.parameters.size();
-
 	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
 		return ch == '\x01';
 	});
@@ -4422,8 +4418,8 @@ bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&
 		}
 	} else if (operation == 2) {
 		int key_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
-		ManiacPatch::GetKeyState(key_id);
-		Main_Data::game_variables->Set(start_var_id, key_id ? 1 : 0);
+		bool key_state = ManiacPatch::GetKeyState(key_id);
+		Main_Data::game_variables->Set(start_var_id, key_state ? 1 : 0);
 	} else {
 		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");
 	}

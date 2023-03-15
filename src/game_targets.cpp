@@ -40,6 +40,9 @@ void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, i
 	iter->map_y = y;
 	iter->switch_on = switch_on;
 	iter->switch_id = switch_id;
+
+	// Teleports must be sorted by map id.
+	std::sort(teleports.begin(), teleports.end(), [](auto& l, auto& r) { return l.map_id < r.map_id; });
 }
 
 void Game_Targets::RemoveTeleportTarget(int map_id) {

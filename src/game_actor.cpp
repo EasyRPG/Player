@@ -131,6 +131,11 @@ Game_Actor::Game_Actor(int actor_id) {
 }
 
 void Game_Actor::SetSaveData(lcf::rpg::SaveActor save) {
+	if (data.ID != save.ID) {
+		Output::Debug("Game_Actor: Fixing actor ID mismatch {} != {}", save.ID, data.ID);
+		save.ID = data.ID;
+	}
+
 	data = std::move(save);
 
 	if (Player::IsRPG2k()) {
@@ -623,6 +628,7 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString(bool status_scene) const {
+	(void)status_scene;
 	// RPG_RT displays dashes for max level. As a customization
 	// we always display the amount of EXP.
 	// if (GetNextExp() == -1) { return (MaxExpValue() >= 1000000 || status_scene) ? "-------" : "------"; }

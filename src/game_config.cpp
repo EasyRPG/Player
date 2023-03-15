@@ -33,6 +33,7 @@
 #endif
 
 namespace {
+	std::string config_path;
 	StringView config_name = "config.ini";
 }
 
@@ -80,13 +81,15 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 
 	cp.Rewind();
 
-	auto arg_path = GetConfigPath(cp);
-	if (!arg_path.empty()) {
-		arg_path = FileFinder::MakePath(arg_path, config_name);
+	config_path = GetConfigPath(cp);
+	std::string config_file;
+	if (!config_path.empty()) {
+		config_file = FileFinder::MakePath(config_path, config_name);
 	}
 
-	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(arg_path);
+	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(config_file);
 	if (!cli_config) {
+		config_path.clear();
 		auto global_config = GetGlobalConfigFileInput();
 		if (global_config) {
 			cfg.LoadFromStream(global_config);
@@ -108,49 +111,53 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	// FIXME: Game specific configs?
 	std::string path;
 
+	if (config_path.empty()) {
 #ifdef GEKKO
-	path = "sd:/data/easyrpg-player";
+		path = "sd:/data/easyrpg-player";
 #elif defined(__SWITCH__)
-	path = "/switch/easyrpg-player";
+		path = "/switch/easyrpg-player";
 #elif defined(__3DS__)
-	path = "sdmc:/data/easyrpg-player";
+		path = "sdmc:/data/easyrpg-player";
 #elif defined(__vita__)
-	path = "ux0:/data/easyrpg-player";
+		path = "ux0:/data/easyrpg-player";
 #elif defined(USE_LIBRETRO)
-	const char* dir = nullptr;
-	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
-		path = FileFinder::MakePath(dir, "easyrpg-player");
-	}
-#elif defined(__ANDROID__)
-	// Never called, passed as argument on startup
-#elif defined(_WIN32)
-	PWSTR knownPath;
-	const auto hresult = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &knownPath);
-	if (SUCCEEDED(hresult)) {
-		path = Utils::FromWideString(knownPath);
-		CoTaskMemFree(knownPath);
-	} else {
-		Output::Debug("Config: SHGetKnownFolderPath failed");
-	}
-
-	if (!path.empty()) {
-		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
-	}
-#else
-	char* home = getenv("XDG_CONFIG_HOME");
-	if (home) {
-		path = home;
-	} else {
-		home = getenv("HOME");
-		if (home) {
-			path = FileFinder::MakePath(home, ".config");
+		const char* dir = nullptr;
+		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+			path = FileFinder::MakePath(dir, "easyrpg-player");
 		}
-	}
+#elif defined(__ANDROID__)
+		// Never called, passed as argument on startup
+#elif defined(_WIN32)
+		PWSTR knownPath;
+		const auto hresult = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &knownPath);
+		if (SUCCEEDED(hresult)) {
+			path = Utils::FromWideString(knownPath);
+			CoTaskMemFree(knownPath);
+		} else {
+			Output::Debug("Config: SHGetKnownFolderPath failed");
+		}
 
-	if (!path.empty()) {
-		path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
-	}
+		if (!path.empty()) {
+			path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
+		}
+#else
+		char* home = getenv("XDG_CONFIG_HOME");
+		if (home) {
+			path = home;
+		} else {
+			home = getenv("HOME");
+			if (home) {
+				path = FileFinder::MakePath(home, ".config");
+			}
+		}
+
+		if (!path.empty()) {
+			path = FileFinder::MakePath(path, FileFinder::MakePath(ORGANIZATION_NAME, APPLICATION_NAME));
+		}
 #endif
+	} else {
+		path = config_path;
+	}
 
 	auto print_err = [&path]() {
 		if (path.empty()) {
@@ -411,7 +418,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-title", 0));
 	}
 	if (ini.HasValue("player", "settings-in-menu")) {
-		player.settings_in_title.Set(ini.GetBoolean("player", "settings-in-menu", 0));
+		player.settings_in_menu.Set(ini.GetBoolean("player", "settings-in-menu", 0));
 	}
 	if (ini.HasValue("player", "autobattle-algo")) {
 		player.autobattle_algo.Set(ini.GetString("player", "autobattle-algo", ""));

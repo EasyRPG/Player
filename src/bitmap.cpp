@@ -291,7 +291,6 @@ Color Bitmap::GetColorAt(int x, int y) const {
 	}
 
 	Color color;
-	int pix = y * width();
 
 	const uint8_t* pos = &reinterpret_cast<const uint8_t*>(pixels())[y * pitch() + x * bpp()];
 	uint32_t pixel = *reinterpret_cast<const uint32_t*>(pos);

@@ -830,6 +830,8 @@ void Player::CreateGameObjects() {
 	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
 	if ((patch & PatchOverride) == 0) {
+		patch = PatchNone;
+
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
 			patch |= PatchDynRpg;
 			Output::Warning("This game uses DynRPG and will not run properly.");
@@ -1211,6 +1213,8 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	map->Start();
 	if (!load_on_map) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
+	} else {
+		Scene::instance->Start();
 	}
 }
 

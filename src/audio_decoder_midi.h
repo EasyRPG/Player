@@ -181,8 +181,6 @@ private:
 
 	int frequency = EP_MIDI_FREQ;
 
-	// What was the mtime when the last set of volume MIDI messages were sent out
-	std::chrono::microseconds last_fade_msg_sent;
 	std::array<uint8_t, 16> channel_volumes;
 
 	struct MidiTempoData {

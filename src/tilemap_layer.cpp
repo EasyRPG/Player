@@ -665,6 +665,8 @@ void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 }
 
 void TilemapLayer::OnSubstitute() {
+	substitutions = Game_Map::GetTilesLayer(layer);
+
 	// Recalculate z values of all tiles
 	CreateTileCache(map_data);
 }
@@ -682,7 +684,7 @@ void TilemapSubLayer::Draw(Bitmap& dst) {
 		return;
 	}
 
-	tilemap->Draw(dst, GetZ());
+	tilemap->Draw(dst, internal_z);
 }
 
 void TilemapLayer::SetTone(Tone tone) {

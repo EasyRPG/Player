@@ -41,8 +41,6 @@
 #  include <emscripten.h>
 #endif
 
-constexpr int option_window_num_items = 10;
-
 Scene_Settings::Scene_Settings() {
 	Scene::type = Scene::Settings;
 }
@@ -87,7 +85,7 @@ void Scene_Settings::CreateOptionsWindow() {
 	input_mode_window->SetX(Player::menu_offset_x + 32);
 	input_mode_window->SetY(Player::screen_height - 32);
 	input_mode_window->SetHelpWindow(help_window.get());
-	input_mode_window->UpdateHelpFn = [this](Window_Help& win, int index) {
+	input_mode_window->UpdateHelpFn = [](Window_Help& win, int index) {
 		if (index == 0) {
 			win.SetText("Add a new keybinding");
 		} else if (index == 1) {
@@ -143,7 +141,7 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 			input_mode_window->SetVisible(true);
 			input_help_window->SetVisible(true);
 			input_help_window->SetText("Emergency reset: Hold 4 keys and follow instructions");
-			RefreshInputRemoveAllowed();
+			RefreshInputActionAllowed();
 			break;
 		case Window_Settings::eInputButtonAdd:
 			help_window->SetVisible(true);
@@ -215,6 +213,7 @@ void Scene_Settings::vUpdate() {
 
 	switch (opt_mode) {
 		case Window_Settings::eNone:
+		case Window_Settings::eSave:
 			break;
 		case Window_Settings::eMain:
 			UpdateMain();
@@ -250,7 +249,6 @@ void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(bitmapRef);
 
 	// If the title sprite doesn't fill the screen, center it to support custom resolutions
-	Rect rect = title->GetBitmap()->GetRect();
 	if (bitmapRef->GetWidth() < Player::screen_width) {
 		title->SetX(Player::menu_offset_x);
 	}
@@ -284,8 +282,6 @@ void Scene_Settings::UpdateMain() {
 }
 
 void Scene_Settings::UpdateOptions() {
-	options_window->UpdateMode();
-
 	if (number_window) {
 		number_window->Update();
 		auto& option = options_window->GetCurrentOption();
@@ -406,11 +402,15 @@ void Scene_Settings::UpdateButtonOption() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (input_mode_window->GetIndex()) {
 			case 0:
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-				options_window->Push(Window_Settings::eInputButtonAdd, options_window->GetFrame().arg);
+				if (!input_mode_window->IsItemEnabled(0)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+					options_window->Push(Window_Settings::eInputButtonAdd, options_window->GetFrame().arg);
+				}
 				break;
 			case 1:
-				if (!input_mode_window_remove_allowed) {
+				if (!input_mode_window->IsItemEnabled(1)) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
 				} else {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
@@ -420,9 +420,9 @@ void Scene_Settings::UpdateButtonOption() {
 			case 2:
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 				input_window->ResetMapping();
-				RefreshInputRemoveAllowed();
 				break;
 		}
+		RefreshInputActionAllowed();
 	}
 }
 
@@ -515,10 +515,11 @@ bool Scene_Settings::RefreshInputEmergencyReset() {
 	return input_reset_counter > 0;
 }
 
-void Scene_Settings::RefreshInputRemoveAllowed() {
+void Scene_Settings::RefreshInputActionAllowed() {
 	auto button = static_cast<Input::InputButton>(options_window->GetFrame().arg);
-	input_mode_window_remove_allowed = Input::GetInputSource()->GetButtonMappings().Count(button) > Input::IsProtectedButton(button) ? 1 : 0;
-	input_mode_window->SetItemEnabled(1, input_mode_window_remove_allowed);
+	auto mapping_count =  Input::GetInputSource()->GetButtonMappings().Count(button);
+	input_mode_window->SetItemEnabled(0, mapping_count < Window_InputSettings::mapping_limit);
+	input_mode_window->SetItemEnabled(1, mapping_count > Input::IsProtectedButton(button) ? 1 : 0);
 }
 
 bool Scene_Settings::SaveConfig(bool silent) {

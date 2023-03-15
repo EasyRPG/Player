@@ -36,7 +36,7 @@ Background::Background(const std::string& name) : Drawable(Priority_Background)
 	if (!name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
 		request->SetGraphicFile(true);
-		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
+		bg_request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 	}
 }
@@ -56,7 +56,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 	if (terrain->background_type == lcf::rpg::Terrain::BGAssociation_background && !terrain->background_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain->background_name);
 		request->SetGraphicFile(true);
-		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
+		bg_request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 		return;
 	}
@@ -65,7 +65,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 	if (!terrain->background_a_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_a_name);
 		request->SetGraphicFile(true);
-		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
+		bg_request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 
 		bg_hscroll = terrain->background_a_scrollh ? terrain->background_a_scrollh_speed : 0;
@@ -75,7 +75,7 @@ Background::Background(int terrain_id) : Drawable(Priority_Background)
 	if (terrain->background_b && !terrain->background_b_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_b_name);
 		request->SetGraphicFile(true);
-		request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
+		fg_request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
 		request->Start();
 
 		fg_hscroll = terrain->background_b_scrollh ? terrain->background_b_scrollh_speed : 0;

@@ -70,7 +70,10 @@ public:
 
 private:
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-	fluid_synth_t* instance_synth;
+	fluid_synth_t* GetSynthInstance();
+
+	fluid_synth_t* local_synth = nullptr;
+	bool use_global_synth = false;
 #endif
 };
 

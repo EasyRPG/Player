@@ -206,6 +206,11 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.spritesheet_speed = params.spritesheet_speed;
 	data.map_layer = params.map_layer;
 	data.battle_layer = params.battle_layer;
+
+	if (data.map_layer == 0 && data.battle_layer == 0) {
+		data.map_layer = 7;
+	}
+
 	data.flags.erase_on_map_change = (params.flags & 1) == 1;
 	data.flags.erase_on_battle_end = (params.flags & 2) == 2;
 	data.flags.affected_by_tint = (params.flags & 16) == 16;
