@@ -18,6 +18,13 @@
 #ifndef EP_GAME_CONFIG_H
 #define EP_GAME_CONFIG_H
 
+/**
+ * This class manages global engine configuration.
+ * For game specific settings see Game_ConfigGame.
+ *
+ * @see Game_ConfigGame
+ */
+
 #include "config_param.h"
 #include "filesystem.h"
 #include "options.h"

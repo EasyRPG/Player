@@ -105,13 +105,11 @@ namespace Player {
 	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 	bool has_custom_resolution = false;
-	bool fake_resolution = false;
 
 	bool exit_flag;
 	bool reset_flag;
 	bool debug_flag;
 	bool hide_title_flag;
-	bool new_game_flag;
 	int load_game_id;
 	int party_x_position;
 	int party_y_position;
@@ -124,9 +122,7 @@ namespace Player {
 	std::string encoding;
 	std::string escape_symbol;
 	uint32_t escape_char;
-	int engine;
 	std::string game_title;
-	int patch;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	std::string startup_language;
@@ -138,12 +134,15 @@ namespace Player {
 	int speed_modifier = 3;
 	int speed_modifier_plus = 10;
 	Game_ConfigPlayer player_config;
+	Game_ConfigGame game_config;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
 }
 
 namespace {
+	std::vector<std::string> arguments;
+
 	// Overwritten by --encoding
 	std::string forced_encoding;
 
@@ -152,7 +151,7 @@ namespace {
 	FileRequestBinding map_request_id;
 }
 
-void Player::Init(std::vector<std::string> arguments) {
+void Player::Init(std::vector<std::string> args) {
 	frames = 0;
 
 	// Must be called before the first call to Output
@@ -163,7 +162,8 @@ void Player::Init(std::vector<std::string> arguments) {
 #endif
 
 	// First parse command line arguments
-	auto cfg = ParseCommandLine(std::move(arguments));
+	arguments = args;
+	auto cfg = ParseCommandLine();
 
 	// Display a nice version string
 	auto header = GetFullVersionString() + " started";
@@ -408,14 +408,11 @@ void Player::Exit() {
 	DisplayUi.reset();
 }
 
-Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
-	engine = EngineNone;
-	patch = PatchNone;
+Game_Config Player::ParseCommandLine() {
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
 	reset_flag = false;
-	new_game_flag = false;
 	load_game_id = -1;
 	party_x_position = -1;
 	party_y_position = -1;
@@ -547,10 +544,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--new-game")) {
-			new_game_flag = true;
-			continue;
-		}
 		if (cp.ParseNext(arg, 1, "--load-game-id")) {
 			if (arg.ParseValue(0, li_value)) {
 				load_game_id = li_value;
@@ -598,30 +591,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 1, "--engine")) {
-			if (arg.NumValues() > 0) {
-				const auto& v = arg.Value(0);
-				if (v == "rpg2k" || v == "2000") {
-					engine = EngineRpg2k;
-				}
-				else if (v == "rpg2kv150" || v == "2000v150") {
-					engine = EngineRpg2k | EngineMajorUpdated;
-				}
-				else if (v == "rpg2ke" || v == "2000e") {
-					engine = EngineRpg2k | EngineMajorUpdated | EngineEnglish;
-				}
-				else if (v == "rpg2k3" || v == "2003") {
-					engine = EngineRpg2k3;
-				}
-				else if (v == "rpg2k3v105" || v == "2003v105") {
-					engine = EngineRpg2k3 | EngineMajorUpdated;
-				}
-				else if (v == "rpg2k3e") {
-					engine = EngineRpg2k3 | EngineMajorUpdated | EngineEnglish;
-				}
-			}
-			continue;
-		}
 		if (cp.ParseNext(arg, 1, "--record-input")) {
 			if (arg.NumValues() > 0) {
 				record_input_path = arg.Value(0);
@@ -640,29 +609,17 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--disable-audio")) {
+		if (cp.ParseNext(arg, 0, "--no-audio") || cp.ParseNext(arg, 0, "--disable-audio")) {
 			no_audio_flag = true;
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--disable-rtp")) {
+		if (cp.ParseNext(arg, 0, "--no-rtp") || cp.ParseNext(arg, 0, "--disable-rtp")) {
 			no_rtp_flag = true;
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--rtp-path")) {
 			if (arg.NumValues() > 0) {
 				rtp_path = arg.Value(0);
-			}
-			continue;
-		}
-		if (cp.ParseNext(arg, 2, "--patch")) {
-			patch |= PatchOverride;
-			for (int i = 0; i < arg.NumValues(); ++i) {
-				const auto& v = arg.Value(i);
-				if (v == "dynrpg") {
-					patch |= PatchDynRpg;
-				} else if (v == "maniac") {
-					patch |= PatchManiac;
-				}
 			}
 			continue;
 		}
@@ -712,6 +669,10 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 }
 
 void Player::CreateGameObjects() {
+	// Parse game specific settings
+	CmdlineParser cp(arguments);
+	game_config = Game_ConfigGame::Create(cp);
+
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210
 	std::string meta_file = FileFinder::Game().FindFile(META_NAME);
@@ -789,6 +750,8 @@ void Player::CreateGameObjects() {
 		exfont_stream = FileFinder::OpenImage(".", "ExFont");
 	}
 
+	int& engine = game_config.engine;
+
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
@@ -802,11 +765,17 @@ void Player::CreateGameObjects() {
 			Output::Debug("ExFont loaded from RPG_RT");
 		}
 
-		if (Player::engine == EngineNone) {
-		auto version_info = exe_reader->GetFileInfo();
+		if (engine == EngineNone) {
+			auto version_info = exe_reader->GetFileInfo();
 			version_info.Print();
 			engine = version_info.GetEngineType();
 		}
+
+		if (engine == EngineNone) {
+			Output::Debug("Unable to detect version from exe");
+		}
+	} else {
+		Output::Debug("Cannot find RPG_RT");
 	}
 #endif
 
@@ -816,7 +785,6 @@ void Player::CreateGameObjects() {
 	}
 
 	if (engine == EngineNone) {
-		Output::Debug("Could not detect version from EXE. Using old detection strategy");
 		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
 			if (!FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
@@ -834,24 +802,24 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
+
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
-	if ((patch & PatchOverride) == 0) {
-		patch = PatchNone;
-
+	if (!game_config.patch_override) {
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
-			patch |= PatchDynRpg;
+			game_config.patch_dynrpg.Set(true);
 			Output::Warning("This game uses DynRPG and will not run properly.");
 		}
 
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
-			patch |= PatchManiac;
+			game_config.patch_maniac.Set(true);
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={}", Player::IsPatchDynRpg(), Player::IsPatchManiac());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} this-event={} pic-unlock={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get());
 
 	ResetGameObjects();
 
@@ -1371,8 +1339,8 @@ void Player::PrintUsage() {
 R"(EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games.
 Options:
       --battle-test N      Start a battle test with monster party N.
-      --disable-audio      Disable audio (in case you prefer your own music).
-      --disable-rtp        Disable support for the Runtime Package (RTP).
+      --no-audio           Disable audio (in case you prefer your own music).
+      --no-rtp             Disable support for the Runtime Package (RTP).
       --encoding N         Instead of auto detecting the encoding or using
                            the one in RPG_RT.ini, the encoding N is used.
                            Use "auto" for automatic detection.

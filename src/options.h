@@ -63,6 +63,7 @@
 
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
+#define EASYRPG_INI_NAME "EasyRPG.ini"
 
 /** Prefix for .ldb and .lmt files; used when guessing non-standard extensions. */
 #define RPG_RT_PREFIX "RPG_RT"
@@ -87,7 +88,7 @@
 #define TREEMAP_NAME_EASYRPG EASY_RT_PREFIX "." SUFFIX_EMT
 
 /** File name for additional metadata, such as multi-game save imports. */
-#define META_NAME "easyrpg.ini"
+#define META_NAME "Meta.ini"
 
 /**
  * RPG_RT.exe (official engine) filename.

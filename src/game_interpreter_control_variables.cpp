@@ -188,7 +188,7 @@ int ControlVariables::Event(int op, int event_id, const Game_Interpreter& interp
 				break;
 			case 4: {
 				// Screen X
-				if (Player::fake_resolution) {
+				if (Player::game_config.fake_resolution.Get()) {
 					int pan_delta = (Game_Player::GetDefaultPanX() - lcf::rpg::SavePartyLocation::kPanXDefault) / TILE_SIZE;
 					return character->GetScreenX() - pan_delta;
 				} else {
@@ -197,7 +197,7 @@ int ControlVariables::Event(int op, int event_id, const Game_Interpreter& interp
 			}
 			case 5: {
 				// Screen Y
-				if (Player::fake_resolution) {
+				if (Player::game_config.fake_resolution.Get()) {
 					int pan_delta = (Game_Player::GetDefaultPanY() - lcf::rpg::SavePartyLocation::kPanYDefault) / TILE_SIZE;
 					return character->GetScreenY() - pan_delta;
 				} else {

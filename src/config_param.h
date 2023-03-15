@@ -182,25 +182,31 @@ public:
 	virtual std::string ValueToString() const = 0;
 
 	template <typename U = T, typename std::enable_if<std::is_same<U, std::string>::value, int>::type = 0>
-	void FromIni(const lcf::INIReader& ini) {
+	bool FromIni(const lcf::INIReader& ini) {
 		// FIXME: Migrate IniReader to StringView (or std::string_view with C++17)
 		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
 			Set(ini.GetString(ToString(_config_section), ToString(_config_key), T()));
+			return true;
 		}
+		return false;
 	}
 
 	template <typename U = T, typename std::enable_if<std::is_same<U, int>::value, int>::type = 0>
-	void FromIni(const lcf::INIReader& ini) {
+	bool FromIni(const lcf::INIReader& ini) {
 		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
 			Set(ini.GetInteger(ToString(_config_section), ToString(_config_key), T()));
+			return true;
 		}
+		return false;
 	}
 
 	template <typename U = T, typename std::enable_if<std::is_same<U, bool>::value, int>::type = 0>
-	void FromIni(const lcf::INIReader& ini) {
+	bool FromIni(const lcf::INIReader& ini) {
 		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
 			Set(ini.GetBoolean(ToString(_config_section), ToString(_config_key), T()));
+			return true;
 		}
+		return false;
 	}
 
 	template <typename U = T, typename std::enable_if<!std::is_enum<U>::value, int>::type = 0>

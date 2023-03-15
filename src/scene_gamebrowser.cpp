@@ -56,7 +56,6 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::RestoreBaseResolution();
 
 	Player::game_title = "";
-	Player::engine = Player::EngineNone;
 
 	Font::ResetDefault();
 

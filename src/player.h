@@ -24,6 +24,7 @@
 #include "translation.h"
 #include "game_clock.h"
 #include "game_config.h"
+#include "game_config_game.h"
 #include <vector>
 #include <memory>
 #include <cstdint>
@@ -121,10 +122,8 @@ namespace Player {
 
 	/**
 	 * Parses the command line arguments.
-	 *
-	 * @param arguments Array of command line arguments
 	 */
-	Game_Config ParseCommandLine(std::vector<std::string> arguments);
+	Game_Config ParseCommandLine();
 
 	/**
 	 * Initializes all game objects
@@ -327,9 +326,6 @@ namespace Player {
 	/** Whether the game uses a custom WinW/WinH resolution */
 	extern bool has_custom_resolution;
 
-	/** When enabled the Player fakes the metrics to make games run on higher resolutions (with some success) */
-	extern bool fake_resolution;
-
 	/** Overwrite party x position */
 	extern int party_x_position;
 
@@ -341,9 +337,6 @@ namespace Player {
 
 	/** Overwrite start map */
 	extern int start_map_id;
-
-	/** New game flag, if true a new game starts directly. */
-	extern bool new_game_flag;
 
 	/** If set, savegame is loaded directly */
 	extern int load_game_id;
@@ -366,9 +359,6 @@ namespace Player {
 	/** Backslash recoded to character */
 	extern uint32_t escape_char;
 
-	/** Currently interpreted engine. */
-	extern int engine;
-
 	/** Path to replay input log from */
 	extern std::string replay_input_path;
 
@@ -380,9 +370,6 @@ namespace Player {
 
 	/** Game title. */
 	extern std::string game_title;
-
-	/** Currently enabled engine patches */
-	extern int patch;
 
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
@@ -404,9 +391,12 @@ namespace Player {
 	extern int speed_modifier;
 
 	/**
-	 * The game logic configuration
+	 * The engine game logic configuration
 	 */
 	extern Game_ConfigPlayer player_config;
+
+	/** game specific configuration */
+	extern Game_ConfigGame game_config;
 
 #ifdef EMSCRIPTEN
 	/** Name of game emscripten uses */
@@ -415,19 +405,19 @@ namespace Player {
 }
 
 inline bool Player::IsRPG2k() {
-	return (engine & EngineRpg2k) == EngineRpg2k;
+	return (game_config.engine & EngineRpg2k) == EngineRpg2k;
 }
 
 inline bool Player::IsRPG2k3() {
-	return (engine & EngineRpg2k3) == EngineRpg2k3;
+	return (game_config.engine & EngineRpg2k3) == EngineRpg2k3;
 }
 
 inline bool Player::IsRPG2kLegacy() {
-	return engine == EngineRpg2k;
+	return game_config.engine == EngineRpg2k;
 }
 
 inline bool Player::IsRPG2k3Legacy() {
-	return engine == EngineRpg2k3;
+	return game_config.engine == EngineRpg2k3;
 }
 
 inline bool Player::IsLegacy() {
@@ -435,11 +425,11 @@ inline bool Player::IsLegacy() {
 }
 
 inline bool Player::IsMajorUpdatedVersion() {
-	return (engine & EngineMajorUpdated) == EngineMajorUpdated;
+	return (game_config.engine & EngineMajorUpdated) == EngineMajorUpdated;
 }
 
 inline bool Player::IsEnglish() {
-	return (engine & EngineEnglish) == EngineEnglish;
+	return (game_config.engine & EngineEnglish) == EngineEnglish;
 }
 
 inline bool Player::IsRPG2kUpdated() {
@@ -459,11 +449,11 @@ inline bool Player::IsRPG2k3E() {
 }
 
 inline bool Player::IsPatchDynRpg() {
-	return (patch & PatchDynRpg) == PatchDynRpg;
+	return game_config.patch_dynrpg.Get();
 }
 
 inline bool Player::IsPatchManiac() {
-	return (patch & PatchManiac) == PatchManiac;
+	return game_config.patch_maniac.Get();
 }
 
 #endif

@@ -103,7 +103,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		y -= Main_Data::game_screen->GetShakeOffsetY();
 	}
 
-	if (Player::fake_resolution) {
+	if (Player::game_config.fake_resolution.Get()) {
 		SetX(x + Player::menu_offset_x);
 		SetY(y + Player::menu_offset_y);
 	} else {
