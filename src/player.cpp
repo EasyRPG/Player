@@ -818,7 +818,7 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} this-event={} pic-unlock={}",
+	Output::Debug("Patch configuration: dynrpg={} maniac={} common-this={} pic-unlock={}",
 		Player::IsPatchDynRpg(), Player::IsPatchManiac(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get());
 
 	ResetGameObjects();
@@ -1351,6 +1351,8 @@ Engine options:
                                  fixes.
                        ATTACK  - Like RPG_RT+ but only physical attacks, no
                                  skills.
+ -c, --config-path P  Set a custom configuration path. When not specified, the
+                      configuration folder in the users home directory is used.
  --encoding N         Instead of autodetecting the encoding or using the one in
                       RPG_RT.ini, the encoding N is used.
  --enemyai-algo A     Which EnemyAI algorithm to use.
@@ -1374,12 +1376,12 @@ Engine options:
  --no-log-color       Disable colors in terminal log.
  --no-rtp             Disable support for the Runtime Package (RTP).
  --patch PATCH...     Instead of autodetecting patches used by this game, force
-                      emulation of certain patches,
+                      emulation of certain patches.
                       Options:
-                       common-this  - "This Event" in common events
-                       dynrpg       - DynRPG patch by Cherry
-                       maniac       - Maniac Patch by BingShan
-                       pic-unlock   - Pictures are not blocked by messages
+                       common-this - "This Event" in common events
+                       dynrpg      - DynRPG patch by Cherry
+                       maniac      - Maniac Patch by BingShan
+                       pic-unlock  - Pictures are not blocked by messages
  --no-patch           Disable all engine patches.
  --project-path PATH  Instead of using the working directory, the game in PATH
                       is used.
@@ -1416,7 +1418,7 @@ Video options:
                                   avoid artifacts.
  --show-fps           Enable display of the frames per second counter.
                       Disable with --no-show-fps.
- --stretch            Ignore the aspect ratio and stretches video output to the
+ --stretch            Ignore the aspect ratio and stretch video output to the
                       entire width of the screen.
                       Disable with --no-stretch.
  --vsync              Enables vertical sync if supported on this platform.
