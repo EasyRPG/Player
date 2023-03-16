@@ -842,6 +842,10 @@ bool Player::ChangeResolution(int width, int height) {
 
 	Graphics::GetMessageOverlay().OnResolutionChange();
 
+	if (Main_Data::game_quit) {
+		Main_Data::game_quit->OnResolutionChange();
+	}
+
 	Output::Debug("Resolution changed to {}x{}", width, height);
 	return true;
 }
