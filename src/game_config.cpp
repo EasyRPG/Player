@@ -238,6 +238,8 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 	while (!cp.Done()) {
 		CmdlineArg arg;
 		long li_value = 0;
+		std::string str_value;
+
 		if (cp.ParseNext(arg, 0, "--vsync")) {
 			video.vsync.Set(true);
 			continue;
@@ -286,6 +288,26 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, "--stretch")) {
+			video.stretch.Set(true);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--no-stretch")) {
+			video.stretch.Set(false);
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--scaling")) {
+			if (arg.ParseValue(0, str_value)) {
+				video.scaling_mode.SetFromString(str_value);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--game-resolution")) {
+			if (arg.ParseValue(0, str_value)) {
+				video.game_resolution.SetFromString(str_value);
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 1, "--autobattle-algo")) {
 			std::string svalue;
 			if (arg.ParseValue(0, svalue)) {
@@ -297,6 +319,18 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			std::string svalue;
 			if (arg.ParseValue(0, svalue)) {
 				player.enemyai_algo.Set(std::move(svalue));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--music-volume")) {
+			if (arg.ParseValue(0, li_value)) {
+				audio.music_volume.Set(li_value);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--sound-volume")) {
+			if (arg.ParseValue(0, li_value)) {
+				audio.music_volume.Set(li_value);
 			}
 			continue;
 		}

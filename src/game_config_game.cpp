@@ -88,37 +88,22 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_common_this_event.Lock(false);
 			patch_override = true;
 		}
-		if (cp.ParseNext(arg, 0, "--patch-dynrpg")) {
-			patch_dynrpg.Set(true);
+		if (cp.ParseNext(arg, 4, "--patch")) {
+			for (int i = 0; i < arg.NumValues(); ++i) {
+				const auto& v = arg.Value(i);
+				if (v == "dynrpg") {
+					patch_dynrpg.Set(true);
+				} else if (v == "maniac") {
+					patch_maniac.Set(true);
+				} else if (v == "common-this") {
+					patch_common_this_event.Set(true);
+				} else if (v == "pic-unlock") {
+					patch_unlock_pics.Set(true);
+				}
+			}
 			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--no-patch-dynrpg")) {
-			patch_dynrpg.Set(false);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--patch-maniac")) {
-			patch_maniac.Set(true);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--no-patch-maniac")) {
-			patch_maniac.Set(false);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--patch-common-this")) {
-			patch_common_this_event.Set(true);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--no-patch-common-this")) {
-			patch_common_this_event.Set(false);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--patch-unlock-pics")) {
-			patch_unlock_pics.Set(true);
-			patch_override = true;
-		}
-		if (cp.ParseNext(arg, 0, "--no-patch-unlock-pics")) {
-			patch_unlock_pics.Set(false);
-			patch_override = true;
+
+			continue;
 		}
 
 		cp.SkipNext();

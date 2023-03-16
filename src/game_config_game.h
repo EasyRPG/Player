@@ -41,7 +41,7 @@ struct Game_ConfigGame {
 	BoolConfigParam patch_dynrpg{ "DynRPG", "", "Patch", "DynRPG", false };
 	BoolConfigParam patch_maniac{ "Maniac Patch", "", "Patch", "Maniac", false };
 	BoolConfigParam patch_common_this_event{ "Common This Event", "Support \"This Event\" in Common Events", "Patch", "CommonThisEvent", false };
-	BoolConfigParam patch_unlock_pics{ "Unlock Pictures", "Allow picture commands while a message is shown", "Patch", "UnlockPics", false };
+	BoolConfigParam patch_unlock_pics{ "Unlock Pictures", "Allow picture commands while a message is shown", "Patch", "PicUnlock", false };
 
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };

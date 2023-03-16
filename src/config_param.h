@@ -394,17 +394,28 @@ public:
 		return _value_descriptions;
 	}
 
+	bool SetFromString(StringView value) {
+		for (size_t i = 0; i < _tags.size(); ++i) {
+			if (value == _tags[i]) {
+				this->Set(static_cast<E>(i));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	template <typename U = E, typename std::enable_if<std::is_same<U, E>::value, int>::type = 0>
-	void FromIni(const lcf::INIReader& ini) {
+	bool FromIni(const lcf::INIReader& ini) {
 		if (ini.HasValue(ToString(this->_config_section), ToString(this->_config_key))) {
 			std::string s = ini.GetString(ToString(this->_config_section), ToString(this->_config_key), std::string());
 			for (size_t i = 0; i < _tags.size(); ++i) {
 				if (s == _tags[i]) {
 					this->Set(static_cast<E>(i));
-					break;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	void ToIni(std::ostream& ini) const {
