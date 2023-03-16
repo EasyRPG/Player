@@ -10,11 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.easyrpg.player.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SettingsVideoActivity extends AppCompatActivity implements View.OnClickListener {
-    List<RadioButton> imageSizeRadioButtonList = new ArrayList<>();
-    RadioButton imageSizeNearestRadioButton, imageSizeIntegerRadioButton, imageSizeBilinearRadioButton;
+    List<RadioButton> imageSizeRadioButtonList;
+    List<RadioButton> gameResolutionRadioButtonList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,28 +30,35 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
         forceLandscapeModeCheckbox.setOnClickListener(this);
 
         // Scaling mode
-        this.imageSizeNearestRadioButton = findViewById(R.id.settings_scale_nearest_radio_button);
-        imageSizeRadioButtonList.add(imageSizeNearestRadioButton);
-        imageSizeNearestRadioButton.setOnClickListener(view -> {
-            SettingsManager.setImageSize(0);
-            updateImageSizeRadioButtonCheckStatus();
-        });
+        imageSizeRadioButtonList = Arrays.asList(
+            findViewById(R.id.settings_scale_nearest_radio_button),
+            findViewById(R.id.settings_scale_integer_radio_button),
+            findViewById(R.id.settings_scale_bilinear_radio_button));
 
-        this.imageSizeIntegerRadioButton = findViewById(R.id.settings_scale_integer_radio_button);
-        imageSizeRadioButtonList.add(imageSizeIntegerRadioButton);
-        imageSizeIntegerRadioButton.setOnClickListener(view -> {
-            SettingsManager.setImageSize(1);
-            updateImageSizeRadioButtonCheckStatus();
-        });
+        gameResolutionRadioButtonList = Arrays.asList(
+            findViewById(R.id.settings_resolution_original),
+            findViewById(R.id.settings_resolution_widescreen),
+            findViewById(R.id.settings_resolution_ultrawide));
 
-        this.imageSizeBilinearRadioButton = findViewById(R.id.settings_scale_bilinear_radio_button);
-        imageSizeRadioButtonList.add(imageSizeBilinearRadioButton);
-        imageSizeBilinearRadioButton.setOnClickListener(view -> {
-            SettingsManager.setImageSize(2);
-            updateImageSizeRadioButtonCheckStatus();
-        });
-
+        for (int i = 0; i < imageSizeRadioButtonList.size(); ++i) {
+            RadioButton radio = imageSizeRadioButtonList.get(i);
+            final int finalI = i;
+            radio.setOnClickListener(view -> {
+                SettingsManager.setImageSize(finalI);
+                updateImageSizeRadioButtonCheckStatus();
+            });
+        }
         updateImageSizeRadioButtonCheckStatus();
+
+        for (int i = 0; i < gameResolutionRadioButtonList.size(); ++i) {
+            RadioButton radio = gameResolutionRadioButtonList.get(i);
+            final int finalI = i;
+            radio.setOnClickListener(view -> {
+                SettingsManager.setGameResolution(finalI);
+                updateGameResolutionRadioButtonCheckStatus();
+            });
+        }
+        updateGameResolutionRadioButtonCheckStatus();
 
         // Stretch
         CheckBox stretchCheckbox = findViewById(R.id.settings_stretch);
@@ -70,8 +78,14 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateImageSizeRadioButtonCheckStatus() {
-        imageSizeNearestRadioButton.setChecked(SettingsManager.getImageSize() == 0);
-        imageSizeIntegerRadioButton.setChecked(SettingsManager.getImageSize() == 1);
-        imageSizeBilinearRadioButton.setChecked(SettingsManager.getImageSize() == 2);
+        for (int i = 0; i < imageSizeRadioButtonList.size(); ++i) {
+            imageSizeRadioButtonList.get(i).setChecked(SettingsManager.getImageSize() == i);
+        }
+    }
+
+    private void updateGameResolutionRadioButtonCheckStatus() {
+        for (int i = 0; i < gameResolutionRadioButtonList.size(); ++i) {
+            gameResolutionRadioButtonList.get(i).setChecked(SettingsManager.getGameResolution() == i);
+        }
     }
 }

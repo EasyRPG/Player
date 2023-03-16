@@ -26,9 +26,9 @@ public class IniFile {
             throw new RuntimeException("new Wini failed");
         }
 
-        video = new SectionView("video");
-        audio = new SectionView("audio");
-        engine = new SectionView("engine");
+        video = new SectionView("Video");
+        audio = new SectionView("Audio");
+        engine = new SectionView("Engine");
     }
 
     public boolean save() {

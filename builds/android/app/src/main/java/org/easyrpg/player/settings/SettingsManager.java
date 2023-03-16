@@ -16,7 +16,9 @@ import org.easyrpg.player.game_browser.Encoding;
 import org.easyrpg.player.game_browser.Game;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SettingsManager {
@@ -32,7 +34,8 @@ public class SettingsManager {
     private static boolean forcedLandscape;
     private static boolean stretch;
     private static boolean rtpScanningEnabled;
-    private static int imageSize, layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
+    private static int imageSize, gameResolution;
+    private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static int musicVolume, soundVolume;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
@@ -44,6 +47,9 @@ public class SettingsManager {
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
         GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
     public static int FAST_FORWARD_MODE_HOLD = 0, FAST_FORWARD_MODE_TAP = 1;
+
+    private static List<String> imageSizeOption = Arrays.asList("nearest", "integer", "bilinear");
+    private static List<String> gameResolutionOption = Arrays.asList("original", "widescreen", "ultrawide");
 
     private SettingsManager() {
     }
@@ -61,7 +67,6 @@ public class SettingsManager {
 
         configIni = new IniFile(new File(context.getExternalFilesDir(null).getAbsoluteFile() + "/config.ini"));
 
-        imageSize = configIni.video.getInteger(IMAGE_SIZE.toString(), 2);
         rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), true);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
@@ -80,6 +85,16 @@ public class SettingsManager {
 
         gamesCacheHash = sharedPref.getInt(CACHE_GAMES_HASH.toString(), 0);
         gamesCache = new HashSet<>(sharedPref.getStringSet(CACHE_GAMES.toString(), new HashSet<>()));
+
+        imageSize = imageSizeOption.indexOf(configIni.video.getString(IMAGE_SIZE.toString(), ""));
+        if (imageSize == -1) {
+            imageSize = 2;
+        }
+
+        gameResolution = gameResolutionOption.indexOf(configIni.video.getString(GAME_RESOLUTION.toString(), ""));
+        if (gameResolution == -1) {
+            gameResolution = 0;
+        }
     }
 
     public static Set<String> getFavoriteGamesList() {
@@ -134,7 +149,17 @@ public class SettingsManager {
 
     public static void setImageSize(int imageSize) {
         SettingsManager.imageSize = imageSize;
-        configIni.video.set(IMAGE_SIZE.toString(), imageSize);
+        configIni.video.set(IMAGE_SIZE.toString(), imageSizeOption.get(imageSize));
+        configIni.save();
+    }
+
+    public static int getGameResolution() {
+        return gameResolution;
+    }
+
+    public static void setGameResolution(int gameResolution) {
+        SettingsManager.gameResolution = gameResolution;
+        configIni.video.set(GAME_RESOLUTION.toString(), gameResolutionOption.get(gameResolution));
         configIni.save();
     }
 
@@ -266,7 +291,7 @@ public class SettingsManager {
         if (easyRPGFolderURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String gamesFolderString = sharedPref.getString(EASYRPG_FOLDER_URI.toString(), "");
-            if (gamesFolderString == null || gamesFolderString.isEmpty()) {
+            if (gamesFolderString.isEmpty()) {
                 easyRPGFolderURI = null;
             } else {
                 easyRPGFolderURI = Uri.parse(gamesFolderString);
@@ -312,7 +337,7 @@ public class SettingsManager {
         if (soundFountFileURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String soundfontURI = sharedPref.getString(SettingsEnum.SOUNDFONT_URI.toString(), "");
-            if (soundfontURI == null || soundfontURI.isEmpty()) {
+            if (soundfontURI.isEmpty()) {
                 soundFountFileURI = null;
             } else {
                 soundFountFileURI = Uri.parse(soundfontURI);
