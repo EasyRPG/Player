@@ -267,8 +267,12 @@ void FileRequestAsync::Start() {
 	} else {
 		modified_path = Utils::LowerCase(path);
 		if (directory != ".") {
-			// Don't alter the path when the file is in the main directory
 			modified_path = FileFinder::MakeCanonical(modified_path, 1);
+		} else {
+			auto it = file_mapping.find(modified_path);
+			if (it == file_mapping.end()) {
+				modified_path = FileFinder::MakeCanonical(modified_path, 1);
+			}
 		}
 	}
 
