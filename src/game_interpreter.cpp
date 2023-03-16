@@ -3219,7 +3219,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 			}
 
 			bool result = (com.parameters[idx] & 2) != 0;
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 			if (result) {
 				Output::Warning("ManiacPatch: Mouse input is not supported on this platform");
 				result = false;
@@ -4074,7 +4074,7 @@ bool Game_Interpreter::CommandManiacGetMousePosition(lcf::rpg::EventCommand cons
 		return true;
 	}
 
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 	static bool warned = false;
 	if (!warned) {
 		// This command is polled, prevent excessive spam

@@ -1847,9 +1847,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setFocusableInTouchMode(true);
         requestFocus();
         setOnKeyListener(this);
-        /* EasyRPG modification: disable touch input
         setOnTouchListener(this);
-        */
 
         mDisplay = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
@@ -1872,9 +1870,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setFocusableInTouchMode(true);
         requestFocus();
         setOnKeyListener(this);
-        /* EasyRPG modification: disable touch input
         setOnTouchListener(this);
-        */
         enableSensor(Sensor.TYPE_ACCELEROMETER, true);
     }
 

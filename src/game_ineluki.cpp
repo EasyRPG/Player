@@ -148,7 +148,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
 			// TODO: automatic (append mouse pos every 500ms) not implemented
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 			if (mouse_support) {
 				Output::Warning("Ineluki: Mouse input is not supported on this platform");
 			}

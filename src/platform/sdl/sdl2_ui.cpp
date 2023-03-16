@@ -738,7 +738,7 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		return;
 	}
 #endif
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+#if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	if (state == SDL_WINDOWEVENT_ENTER) {
 		mouse_focus = true;
 	} else if (state == SDL_WINDOWEVENT_LEAVE) {
@@ -792,7 +792,7 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 }
 
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+#if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	mouse_focus = true;
 
 	int xw = viewport.w;
