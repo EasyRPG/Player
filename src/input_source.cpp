@@ -273,6 +273,7 @@ void Input::Source::UpdateGamepad() {
 }
 
 void Input::Source::UpdateTouch() {
+#if !defined(_MSC_VER) || _MSC_VER >= 1930
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 	// process touch input
 	// only the exact finger count is true, e.g. when "3 fingers" then "2" and "1" are false
@@ -319,6 +320,7 @@ void Input::Source::UpdateTouch() {
 			}
 		}
 	}
+#endif
 #endif
 }
 
