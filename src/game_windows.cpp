@@ -42,9 +42,12 @@ void Game_Windows::SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save) {
 		auto& win = windows.back();
 		int id = win.data.ID;
 		if (id > 0) {
-			// no special async handling needed, loading will already yield
-			bool async_wait;
-			win.Refresh(async_wait);
+			auto pic = Main_Data::game_pictures->GetPicturePtr(id);
+			if (pic && pic->IsWindowAttached()) {
+				// no special async handling needed, loading will already yield
+				bool async_wait;
+				win.Refresh(async_wait);
+			}
 		}
 	}
 }

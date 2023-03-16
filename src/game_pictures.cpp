@@ -324,7 +324,7 @@ void Game_Pictures::Picture::Erase() {
 	if (sprite) {
 		sprite->SetBitmap(nullptr);
 	}
-	if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+	if (IsWindowAttached()) {
 		data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 		Main_Data::game_windows->Erase(data.ID);
 	}
@@ -497,6 +497,10 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	sprite->SetVisible(true);
 
 	ApplyOrigin(false);
+}
+
+bool Game_Pictures::Picture::IsWindowAttached() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {
