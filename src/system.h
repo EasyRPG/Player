@@ -51,6 +51,7 @@
 #  define SUPPORT_ZOOM
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define SUPPORT_TOUCH
 #elif defined(EMSCRIPTEN)
 #  define SUPPORT_MOUSE
 #  define SUPPORT_TOUCH
@@ -103,6 +104,14 @@
 
 #if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)
 #  define USE_AUDIO_RESAMPLER
+#endif
+
+#if defined(SUPPORT_MOUSE) || defined(SUPPORT_TOUCH)
+#  define SUPPORT_MOUSE_OR_TOUCH
+#endif
+
+#if defined(USE_MOUSE) || defined(USE_TOUCH)
+#  define USE_MOUSE_OR_TOUCH
 #endif
 
 #endif

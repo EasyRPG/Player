@@ -219,6 +219,8 @@ namespace Input {
 			ONE_FINGER,
 			TWO_FINGERS,
 			THREE_FINGERS,
+			FOUR_FINGERS,
+			FIVE_FINGERS,
 #endif
 
 			KEYS_COUNT
@@ -415,6 +417,8 @@ namespace Input {
 			"ONE_FINGER",
 			"TWO_FINGERS",
 			"THREE_FINGERS",
+			"FOUR_FINGERS",
+			"FIVE_FINGERS",
 #endif
 			"KEYS_COUNT"
 		);

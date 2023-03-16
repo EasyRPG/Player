@@ -161,6 +161,11 @@ public:
 	 */
 	const Input::AnalogInput& GetAnalogInput() const;
 
+	/**
+	 * @return Information about touch input
+	 */
+	std::array<Input::TouchInput, 5>& GetTouchInput();
+
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();
 
@@ -267,6 +272,12 @@ protected:
 	/** Axis of game controllers */
 	Input::AnalogInput analog_input;
 
+	/** Touch inputs for up to five finger */
+	std::array<Input::TouchInput, 5> touch_input;
+
+	/** */
+	std::array<bool, 5> finger_input;
+
 	/** Color for display background. */
 	Color back_color = Color{ 0, 0, 0, 255 };
 
@@ -342,6 +353,10 @@ inline const Point& BaseUi::GetMousePosition() const {
 
 inline const Input::AnalogInput& BaseUi::GetAnalogInput() const {
 	return analog_input;
+}
+
+inline std::array<Input::TouchInput, 5>& BaseUi::GetTouchInput() {
+	return touch_input;
 }
 
 inline bool BaseUi::RenderFps() const {

@@ -47,32 +47,12 @@ namespace {
 		Input::SetMask(keymask);
 	}
 #endif
-
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	void mask_mouse(bool mask) {
-		constexpr std::array<Input::Keys::InputKey, 2> keys = {
-			Input::Keys::MOUSE_LEFT,
-			Input::Keys::MOUSE_RIGHT
-		};
-
-		auto keymask = Input::GetMask();
-		for (auto k : keys) {
-			keymask[k] = mask;
-		}
-		Input::SetMask(keymask);
-	}
-#endif
 }
 
 Game_Ineluki::~Game_Ineluki() {
 #if defined(SUPPORT_KEYBOARD)
 	if (key_support) {
 		mask_kb(false);
-	}
-#endif
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	if (mouse_support) {
-		mask_mouse(false);
 	}
 #endif
 }
@@ -168,34 +148,29 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			mouse_support = Utils::LowerCase(cmd.arg) == "true";
 			mouse_id_prefix = atoi(cmd.arg2.c_str());
 			// TODO: automatic (append mouse pos every 500ms) not implemented
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 			if (mouse_support) {
 				Output::Warning("Ineluki: Mouse input is not supported on this platform");
 			}
-#else
+#endif
 			if (prev_mouse_support != mouse_support) {
 				Output::Debug("Ineluki: Mouse support is now {}", mouse_support ? "Enabled" : "Disabled");
 			}
-
-			mask_mouse(mouse_support);
-#endif
 		} else if (cmd.name == "getmouseposition") {
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			if (!mouse_support) {
 				return true;
 			}
 
 			Point mouse_pos = Input::GetMousePosition();
 
-			bool left = Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT);
-			bool right = Input::IsRawKeyPressed(Input::Keys::MOUSE_RIGHT);
+			bool left = Input::IsPressed(Input::MOUSE_LEFT);
+			bool right = Input::IsPressed(Input::MOUSE_RIGHT);
 			int key = left && right ? 3 : right ? 2 : left ? 1 : 0;
 
 			output_list.push_back(key);
 			output_list.push_back(mouse_pos.y);
 			output_list.push_back(mouse_pos.x);
 			output_list.push_back(mouse_id_prefix);
-#endif
 		} else if (cmd.name == "setdebuglevel") {
 			// no-op
 		} else if (cmd.name == "registercheatevent") {

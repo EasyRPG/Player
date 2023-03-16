@@ -120,6 +120,4 @@
 #define USE_JOYSTICK_AXIS
 #define USE_TOUCH
 
-//#define USE_FIXED_TIMESTEP_FPS
-
 #endif

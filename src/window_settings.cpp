@@ -383,12 +383,13 @@ void Window_Settings::RefreshButtonList() {
 		case 0:
 			buttons = {	Input::UP, Input::DOWN, Input::LEFT, Input::RIGHT, Input::DECISION, Input::CANCEL, Input::SHIFT,
 				Input::N0, Input::N1, Input::N2, Input::N3, Input::N4, Input::N5, Input::N6, Input::N7, Input::N8, Input::N9,
-				Input::PLUS, Input::MINUS, Input::MULTIPLY, Input::DIVIDE, Input::PERIOD};
+				Input::PLUS, Input::MINUS, Input::MULTIPLY, Input::DIVIDE, Input::PERIOD, Input::MOUSE_LEFT,
+				Input::MOUSE_MIDDLE, Input::MOUSE_RIGHT, Input::SCROLL_UP, Input::SCROLL_DOWN };
 			break;
 		case 1:
 			buttons = {Input::SETTINGS_MENU, Input::TOGGLE_FPS, Input::TOGGLE_FULLSCREEN, Input::TOGGLE_ZOOM,
 				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD, Input::FAST_FORWARD_PLUS,
-				Input::PAGE_UP, Input::PAGE_DOWN, Input::SCROLL_UP, Input::SCROLL_DOWN };
+				Input::PAGE_UP, Input::PAGE_DOWN };
 			break;
 		case 2:
 			buttons = {	Input::DEBUG_MENU, Input::DEBUG_THROUGH, Input::DEBUG_SAVE, Input::DEBUG_ABORT_EVENT,

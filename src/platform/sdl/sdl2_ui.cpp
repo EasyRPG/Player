@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include "game_config.h"
@@ -502,10 +503,8 @@ void Sdl2Ui::ProcessEvents() {
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Reset Mouse scroll
-	if (Player::mouse_flag) {
-		keys[Input::Keys::MOUSE_SCROLLUP] = false;
-		keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
-	}
+	keys[Input::Keys::MOUSE_SCROLLUP] = false;
+	keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
 #endif
 
 	// Poll SDL events and process them
@@ -739,7 +738,7 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		return;
 	}
 #endif
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+#if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	if (state == SDL_WINDOWEVENT_ENTER) {
 		mouse_focus = true;
 	} else if (state == SDL_WINDOWEVENT_LEAVE) {
@@ -793,7 +792,7 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 }
 
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+#if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	mouse_focus = true;
 
 	int xw = viewport.w;
@@ -804,8 +803,15 @@ void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
+#ifdef EMSCRIPTEN
+	double display_ratio = emscripten_get_device_pixel_ratio();
+	mouse_pos.x = (evnt.motion.x * display_ratio - viewport.x) * main_surface->width() / xw;
+	mouse_pos.y = (evnt.motion.y * display_ratio - viewport.y) * main_surface->height() / yh;
+#else
 	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
 	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
+#endif
+
 #else
 	/* unused */
 	(void) evnt;
@@ -919,24 +925,41 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 	SDL_TouchID touchid;
-	int fingers = 0;
 
-	if (!Player::touch_flag)
+	int xw = viewport.w;
+	int yh = viewport.h;
+
+	if (xw == 0 || yh == 0) {
+		// Startup. No viewport yet
 		return;
+	}
 
 	// We currently ignore swipe gestures
-	if (evnt.type != SDL_FINGERMOTION) {
-		/* FIXME: To simplify things, we lazily only get the current number of
-		   fingers touching the first device (hoping nobody actually uses
-		   multiple devices). This way we do not need to keep track on finger
-		   IDs and deal with the timing.
-		*/
-		touchid = SDL_GetTouchDevice(0);
-		if (touchid != 0)
-			fingers = SDL_GetNumTouchFingers(touchid);
+	// A finger touch is detected when the fingers go up a brief delay after going down
+	if (evnt.type == SDL_FINGERDOWN) {
+		int finger = evnt.tfinger.fingerId;
+		if (finger < static_cast<int>(finger_input.size())) {
+			auto& fi = touch_input[finger];
+			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
 
-		keys[Input::Keys::ONE_FINGER] = fingers == 1;
-		keys[Input::Keys::TWO_FINGERS] = fingers == 2;
+#ifdef EMSCRIPTEN
+			double display_ratio = emscripten_get_device_pixel_ratio();
+			fi.position.x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
+#else
+			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+#endif
+
+			fi.pressed = true;
+		}
+	} else if (evnt.type == SDL_FINGERUP) {
+		int finger = evnt.tfinger.fingerId;
+		if (finger < static_cast<int>(finger_input.size())) {
+			auto& fi = touch_input[finger];
+			fi.pressed = false;
+		}
 	}
 #else
 	/* unused */

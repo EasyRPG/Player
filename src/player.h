@@ -309,12 +309,6 @@ namespace Player {
 	/** Hide Title flag, if true title scene will run without image and music. */
 	extern bool hide_title_flag;
 
-	/** Mouse flag, if true enables mouse click and scroll wheel */
-	extern bool mouse_flag;
-
-	/** Touch flag, if true enables finger taps */
-	extern bool touch_flag;
-
 	/** The width of the screen */
 	extern int screen_width;
 

@@ -63,12 +63,6 @@ for some additional binary patches.
   platforms. Check the engine log to verify whether or not vsync actually is
   being used.
 
-*--enable-mouse*::
-  Use mouse click for decision and scroll wheel for lists.
-
-*--enable-touch*::
-  Use one/two finger tap for decision/cancel.
-
 *--hide-title*::
   Hide the title background image and center the command menu.
 

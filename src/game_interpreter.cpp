@@ -3056,43 +3056,28 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* 
 int Game_Interpreter::KeyInputState::CheckInput() const {
 	auto check = wait ? Input::IsTriggered : Input::IsPressed;
 
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	// FIXME: Refactor input system to make mouse buttons individual keys
-	auto check_raw = wait ? Input::IsRawKeyTriggered : Input::IsRawKeyPressed;
-
 	// Mouse buttons checked first (Maniac checks them last) to prevent conflict
-	// with DECISION that is mapped to MOUSE_LEFT
+	// when DECISION is mapped to MOUSE_LEFT
 	// The order of checking matches the Maniac behaviour
-	if (keys[Keys::eMouseScrollDown]) {
-		if (check_raw(Input::Keys::MOUSE_SCROLLDOWN)) {
-			return 1001;
-		}
+	if (keys[Keys::eMouseScrollDown] && check(Input::SCROLL_DOWN)) {
+		return 1001;
 	}
 
-	if (keys[Keys::eMouseScrollUp]) {
-		if (check_raw(Input::Keys::MOUSE_SCROLLUP)) {
-			return 1004;
-		}
+	if (keys[Keys::eMouseScrollUp] && check(Input::SCROLL_DOWN)) {
+		return 1004;
 	}
 
-	if (keys[Keys::eMouseMiddle]) {
-		if (check_raw(Input::Keys::MOUSE_MIDDLE)) {
-			return 1007;
-		}
+	if (keys[Keys::eMouseMiddle] && check(Input::MOUSE_MIDDLE)) {
+		return 1007;
 	}
 
-	if (keys[Keys::eMouseRight]) {
-		if (check_raw(Input::Keys::MOUSE_RIGHT)) {
-			return 1006;
-		}
+	if (keys[Keys::eMouseRight] && check(Input::MOUSE_RIGHT)) {
+		return 1006;
 	}
 
-	if (keys[Keys::eMouseLeft]) {
-		if (check_raw(Input::Keys::MOUSE_LEFT)) {
-			return 1005;
-		}
+	if (keys[Keys::eMouseLeft] && check(Input::MOUSE_LEFT)) {
+		return 1005;
 	}
-#endif
 
 	// RPG processes keys from highest variable value to lowest.
 	if (keys[Keys::eOperators]) {
@@ -3234,7 +3219,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 			}
 
 			bool result = (com.parameters[idx] & 2) != 0;
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 			if (result) {
 				Output::Warning("ManiacPatch: Mouse input is not supported on this platform");
 				result = false;
@@ -4089,7 +4074,7 @@ bool Game_Interpreter::CommandManiacGetMousePosition(lcf::rpg::EventCommand cons
 		return true;
 	}
 
-#if !defined(USE_MOUSE) || !defined(SUPPORT_MOUSE)
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
 	static bool warned = false;
 	if (!warned) {
 		// This command is polled, prevent excessive spam

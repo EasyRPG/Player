@@ -24,6 +24,7 @@
 #include "rect.h"
 #include "system.h"
 
+#include <array>
 #include <SDL.h>
 
 extern "C" {
