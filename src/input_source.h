@@ -23,6 +23,7 @@
 #include <memory>
 #include "filesystem_stream.h"
 #include "game_config.h"
+#include "game_clock.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "point.h"
@@ -55,6 +56,16 @@ namespace Input {
 
 		static constexpr float kMaxValue = 1.0f;
 		static constexpr float kMinValue = -1.0f;
+	};
+
+	struct TouchInput {
+		bool pressed = false;
+		Point position;
+
+		// Fields for use by InputSource. Do not modify in Ui!
+		bool prev_frame_pressed = false;
+		Game_Clock::time_point touch_begin;
+		Game_Clock::time_point touch_end;
 	};
 
 	/**
@@ -128,6 +139,7 @@ namespace Input {
 	protected:
 		void Record();
 		void UpdateGamepad();
+		void UpdateTouch();
 
 		Game_ConfigInput cfg;
 

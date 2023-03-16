@@ -506,31 +506,6 @@ void Sdl2Ui::ProcessEvents() {
 	keys[Input::Keys::MOUSE_SCROLLUP] = false;
 	keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
 #endif
-#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-	// process touch input
-	keys[Input::Keys::ONE_FINGER] = false;
-	keys[Input::Keys::TWO_FINGERS] = false;
-	keys[Input::Keys::THREE_FINGERS] = false;
-	keys[Input::Keys::FOUR_FINGERS] = false;
-	keys[Input::Keys::FIVE_FINGERS] = false;
-
-	// Do not evaluate when there is still a press
-	if (!std::any_of(finger_down.begin(), finger_down.end(), [](bool arg) { return arg; })) {
-		// Event timestamps are based on SDL_GetTicks, use it instead of our own Clock
-		int ticks = SDL_GetTicks();
-
-		// The fingers do not leave the touchpad at the exact same millisecond
-		// To prevent wrong detections (e.g. one finger when two fingers left) wait, until one finger left for 100ms (totally arbitrary)
-		if (std::count_if(finger_timestamps_up.begin(), finger_timestamps_up.end(), [ticks](int timestamp) {
-			return ticks - timestamp >= 100;
-		}) >= 1) {
-			int fingers = std::count_if(finger_timestamps_up.begin(), finger_timestamps_up.end(), [ticks](int timestamp) {
-				return ticks - timestamp <= 200;
-			});
-			keys[Input::Keys::ONE_FINGER + fingers - 1] = true;
-		}
-	}
-#endif
 
 	// Poll SDL events and process them
 	while (SDL_PollEvent(&evnt)) {
@@ -828,8 +803,15 @@ void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
+#ifdef EMSCRIPTEN
+	double display_ratio = emscripten_get_device_pixel_ratio();
+	mouse_pos.x = (evnt.motion.x * display_ratio - viewport.x) * main_surface->width() / xw;
+	mouse_pos.y = (evnt.motion.y * display_ratio - viewport.y) * main_surface->height() / yh;
+#else
 	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
 	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
+#endif
+
 #else
 	/* unused */
 	(void) evnt;
@@ -944,25 +926,39 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
 	SDL_TouchID touchid;
 
+	int xw = viewport.w;
+	int yh = viewport.h;
+
+	if (xw == 0 || yh == 0) {
+		// Startup. No viewport yet
+		return;
+	}
+
 	// We currently ignore swipe gestures
 	// A finger touch is detected when the fingers go up a brief delay after going down
 	if (evnt.type == SDL_FINGERDOWN) {
 		int finger = evnt.tfinger.fingerId;
-		if (finger < static_cast<int>(finger_down.size())) {
-			finger_down[finger] = true;
-			finger_timestamps_down[finger] = evnt.tfinger.timestamp;
+		if (finger < static_cast<int>(finger_input.size())) {
+			auto& fi = touch_input[finger];
+			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+
+#ifdef EMSCRIPTEN
+			double display_ratio = emscripten_get_device_pixel_ratio();
+			fi.position.x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
+#else
+			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+#endif
+
+			fi.pressed = true;
 		}
 	} else if (evnt.type == SDL_FINGERUP) {
 		int finger = evnt.tfinger.fingerId;
-
-		if (finger < static_cast<int>(finger_down.size())) {
-			finger_down[finger] = false;
-			// Do not report finger up when the press was too long, indicating a motion
-			if (evnt.tfinger.timestamp - finger_timestamps_down[finger] < 200) {
-				finger_timestamps_up[finger] = evnt.tfinger.timestamp;
-			} else {
-				finger_timestamps_up[finger] = 0;
-			}
+		if (finger < static_cast<int>(finger_input.size())) {
+			auto& fi = touch_input[finger];
+			fi.pressed = false;
 		}
 	}
 #else

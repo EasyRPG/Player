@@ -29,6 +29,8 @@
 #include "main_data.h"
 #include "version.h"
 
+using namespace std::chrono_literals;
+
 std::unique_ptr<Input::Source> Input::Source::Create(
 		const Game_ConfigInput& cfg,
 		Input::DirectionMappingArray directions,
@@ -54,6 +56,7 @@ void Input::UiSource::DoUpdate(bool system_only) {
 	pressed_buttons = {};
 
 	UpdateGamepad();
+	UpdateTouch();
 
 	for (auto& bm: cfg.buttons) {
 		if (keymask[bm.second]) {
@@ -211,6 +214,7 @@ void Input::Source::UpdateGamepad() {
 		keystates[second] = tmp;
 	};
 
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 	if (cfg.gamepad_swap_dpad_with_buttons.Get()) {
 		bit_swap(Input::Keys::JOY_DPAD_UP, Input::Keys::JOY_Y);
 		bit_swap(Input::Keys::JOY_DPAD_DOWN, Input::Keys::JOY_A);
@@ -222,7 +226,9 @@ void Input::Source::UpdateGamepad() {
 		bit_swap(Input::Keys::JOY_A, Input::Keys::JOY_B);
 		bit_swap(Input::Keys::JOY_X, Input::Keys::JOY_Y);
 	}
+#endif
 
+#if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	// Primary Analog Stick (For directions, does not support diagonals)
 	keystates[Input::Keys::JOY_LSTICK_RIGHT] = analog_input.primary.x > JOYSTICK_STICK_SENSIBILITY;
 	keystates[Input::Keys::JOY_LSTICK_LEFT] = analog_input.primary.x < -JOYSTICK_STICK_SENSIBILITY;
@@ -263,6 +269,57 @@ void Input::Source::UpdateGamepad() {
 	keystates[Input::Keys::JOY_RTRIGGER_SOFT] =
 			(analog_input.trigger_right > JOYSTICK_TRIGGER_SENSIBILITY) &&
 			!keystates[Input::Keys::JOY_RTRIGGER_FULL];
+#endif
+}
+
+void Input::Source::UpdateTouch() {
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+	// process touch input
+	// only the exact finger count is true, e.g. when "3 fingers" then "2" and "1" are false
+	keystates[Input::Keys::ONE_FINGER] = false;
+	keystates[Input::Keys::TWO_FINGERS] = false;
+	keystates[Input::Keys::THREE_FINGERS] = false;
+	keystates[Input::Keys::FOUR_FINGERS] = false;
+	keystates[Input::Keys::FIVE_FINGERS] = false;
+
+	auto& touch = DisplayUi->GetTouchInput();
+
+	for (auto& finger: touch) {
+		if (!finger.prev_frame_pressed && finger.pressed) {
+			// Touch just started
+			finger.prev_frame_pressed = true;
+			finger.touch_begin = Game_Clock::now();
+		}
+
+		if (finger.prev_frame_pressed && !finger.pressed) {
+			// Touch just ended
+			finger.prev_frame_pressed = false;
+			finger.touch_end = Game_Clock::now();
+		}
+	}
+
+	// How many fingers pressed is evaluated after all fingers left the screen
+	// While they are on screen it is handled like motion / mouse
+	if (!std::any_of(touch.begin(), touch.end(), [](auto& finger) { return finger.pressed; })) {
+		auto now = Game_Clock::now();
+		// The time limits are arbitrary.
+
+		// The fingers do not leave the touchpad at the exact same millisecond
+		// To prevent wrong detections (e.g. one finger when two fingers left) wait, until one finger left for 50ms
+		if (std::count_if(touch.begin(), touch.end(), [now](auto& finger) {
+			return now - finger.touch_end >= 50ms;
+		}) >= 1) {
+			// Count every finger that recently left and wasn't a long press
+			int fingers = std::count_if(touch.begin(), touch.end(), [now](auto& finger) {
+				return now - finger.touch_end <= 200ms && finger.touch_end - finger.touch_begin <= 500ms;
+			});
+
+			if (fingers > 0) {
+				keystates[Input::Keys::ONE_FINGER + fingers - 1] = true;
+			}
+		}
+	}
+#endif
 }
 
 void Input::Source::AddRecordingData(Input::RecordingData type, StringView data) {

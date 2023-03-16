@@ -143,12 +143,6 @@ private:
 
 	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
-#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-	std::array<bool, 5> finger_down;
-	std::array<int, 5> finger_timestamps_down;
-	std::array<int, 5> finger_timestamps_up;
-#endif
-
 	std::unique_ptr<AudioInterface> audio_;
 };
 
