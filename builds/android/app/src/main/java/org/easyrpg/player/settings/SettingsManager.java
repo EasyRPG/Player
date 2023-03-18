@@ -12,13 +12,11 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.button_mapping.InputLayout;
-import org.ini4j.Ini;
-import org.ini4j.Wini;
+import org.easyrpg.player.game_browser.Encoding;
+import org.easyrpg.player.game_browser.Game;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class SettingsManager {
@@ -39,7 +37,9 @@ public class SettingsManager {
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
     private static Uri easyRPGFolderURI, soundFountFileURI;
-    private static List<String> favoriteGamesList = new ArrayList<>();
+    private static Set<String> favoriteGamesList = new HashSet<>();
+    private static int gamesCacheHash;
+    private static Set<String> gamesCache = new HashSet<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
         GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
@@ -61,7 +61,7 @@ public class SettingsManager {
 
         configIni = new IniFile(new File(context.getExternalFilesDir(null).getAbsoluteFile() + "/config.ini"));
 
-        imageSize = configIni.video.GetInteger(IMAGE_SIZE.toString(), 2);
+        imageSize = configIni.video.getInteger(IMAGE_SIZE.toString(), 2);
         rtpScanningEnabled = sharedPref.getBoolean(ENABLE_RTP_SCANNING.toString(), true);
         vibrationEnabled = sharedPref.getBoolean(VIBRATION_ENABLED.toString(), true);
         layoutTransparency = sharedPref.getInt(LAYOUT_TRANSPARENCY.toString(), 100);
@@ -69,57 +69,62 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = sharedPref.getBoolean(IGNORE_LAYOUT_SIZE_SETTINGS.toString(), false);
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        stretch = configIni.video.GetBoolean(STRETCH.toString(), false);
+        stretch = configIni.video.getBoolean(STRETCH.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
         fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
-        musicVolume = configIni.audio.GetInteger(MUSIC_VOLUME.toString(), 100);
-        soundVolume = configIni.audio.GetInteger(SOUND_VOLUME.toString(), 100);
+        musicVolume = configIni.audio.getInteger(MUSIC_VOLUME.toString(), 100);
+        soundVolume = configIni.audio.getInteger(SOUND_VOLUME.toString(), 100);
 
-        // Fetch the favorite game list :
-        favoriteGamesList = new ArrayList<>();
-        String favoriteGamesListString = sharedPref.getString(FAVORITE_GAMES.toString(), "");
-        if (!favoriteGamesListString.isEmpty()) {
-            for (String folder : favoriteGamesListString.split("\\*")) {
-                if (!favoriteGamesList.contains(folder)) {
-                    favoriteGamesList.add(folder);
-                }
-                // TODO : Remove folder that doesn't exist
-            }
-        }
+        favoriteGamesList = new HashSet<>(sharedPref.getStringSet(FAVORITE_GAMES.toString(), new HashSet<>()));
+
+        gamesCacheHash = sharedPref.getInt(CACHE_GAMES_HASH.toString(), 0);
+        gamesCache = new HashSet<>(sharedPref.getStringSet(CACHE_GAMES.toString(), new HashSet<>()));
     }
 
-    public static List<String> getFavoriteGamesList() {
+    public static Set<String> getFavoriteGamesList() {
         return favoriteGamesList;
     }
 
-    public static void addFavoriteGame(String gameTitle) {
-        gameTitle = gameTitle.trim();
+    public static void addFavoriteGame(Game game) {
+        // Update user's preferences
+        favoriteGamesList.add(game.getTitle());
 
-        // The game folder must not be already in the list
-        if (favoriteGamesList.contains(gameTitle)) {
+        setFavoriteGamesList(favoriteGamesList);
+    }
+
+    public static void removeAFavoriteGame(Game game) {
+        favoriteGamesList.remove(game.getTitle());
+        setFavoriteGamesList(favoriteGamesList);
+    }
+
+    private static void setFavoriteGamesList(Set<String> folderList) {
+        editor.putStringSet(FAVORITE_GAMES.toString(), folderList);
+        editor.commit();
+    }
+
+    public static int getGamesCacheHash() {
+        return gamesCacheHash;
+    }
+
+    public static Set<String> getGamesCache() {
+        return gamesCache;
+    }
+
+    public static void clearGamesCache() {
+        setGamesCache(0, new HashSet<>());
+    }
+
+    public static void setGamesCache(int hash, Set<String> cache) {
+        if (hash == gamesCacheHash) {
             return;
         }
 
-        // Update user's preferences
-        favoriteGamesList.add(gameTitle);
+        gamesCache = cache;
+        gamesCacheHash = hash;
 
-        setFavoriteGamesList(favoriteGamesList);
-    }
-
-    public static void removeAFavoriteGame(String path) {
-        favoriteGamesList.remove(path);
-        setFavoriteGamesList(favoriteGamesList);
-    }
-
-    private static void setFavoriteGamesList(List<String> folderList) {
-        favoriteGamesList = folderList;
-
-        StringBuilder sb = new StringBuilder();
-        for (String folder : favoriteGamesList) {
-            sb.append(folder).append('*');
-        }
-        editor.putString(FAVORITE_GAMES.toString(), sb.toString());
+        editor.putInt(CACHE_GAMES_HASH.toString(), hash);
+        editor.putStringSet(CACHE_GAMES.toString(), cache);
         editor.commit();
     }
 
@@ -129,8 +134,8 @@ public class SettingsManager {
 
     public static void setImageSize(int imageSize) {
         SettingsManager.imageSize = imageSize;
-        configIni.video.Set(IMAGE_SIZE.toString(), imageSize);
-        configIni.Save();
+        configIni.video.set(IMAGE_SIZE.toString(), imageSize);
+        configIni.save();
     }
 
     public static long getVibrationDuration() {
@@ -195,7 +200,6 @@ public class SettingsManager {
         ignoreLayoutSizePreferencesEnabled = b;
         editor.putBoolean(SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS.toString(), b);
         editor.commit();
-
     }
 
     public static int getLayoutTransparency() {
@@ -228,8 +232,8 @@ public class SettingsManager {
 
     public static void setMusicVolume(int i) {
         musicVolume = i;
-        configIni.audio.Set(MUSIC_VOLUME.toString(), i);
-        configIni.Save();
+        configIni.audio.set(MUSIC_VOLUME.toString(), i);
+        configIni.save();
     }
 
     public static int getSoundVolume() {
@@ -238,8 +242,8 @@ public class SettingsManager {
 
     public static void setSoundVolume(int i) {
         soundVolume = i;
-        configIni.audio.Set(SOUND_VOLUME.toString(), i);
-        configIni.Save();
+        configIni.audio.set(SOUND_VOLUME.toString(), i);
+        configIni.save();
     }
 
     public static void setForcedLandscape(boolean b) {
@@ -254,8 +258,8 @@ public class SettingsManager {
 
     public static void setStretch(boolean b) {
         stretch = b;
-        configIni.video.Set(STRETCH.toString(), b);
-        configIni.Save();
+        configIni.video.set(STRETCH.toString(), b);
+        configIni.save();
     }
 
     public static Uri getEasyRPGFolderURI(Context context) {
@@ -360,5 +364,13 @@ public class SettingsManager {
         editor.putString(SettingsEnum.INPUT_LAYOUT_VERTICAL.toString(), inputLayoutVertical.toStringForSave(activity));
         editor.commit();
     }
-}
 
+    public static Encoding getGameEncoding(Game game) {
+        return Encoding.regionCodeToEnum(pref.getString(game.getTitle() + "_Encoding", ""));
+    }
+
+    public static void setGameEncoding(Game game, Encoding encoding) {
+        editor.putString(game.getTitle() + "_Encoding", encoding.getRegionCode());
+        editor.commit();
+    }
+}

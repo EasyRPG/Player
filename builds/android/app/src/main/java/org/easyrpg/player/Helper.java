@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Helper {
 	/**
@@ -127,6 +128,23 @@ public class Helper {
         }
 
         return folder;
+    }
+
+    public static DocumentFile createFolderInSave(Context context, String folderName) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, SettingsManager.getEasyRPGFolderURI(context));
+        DocumentFile saveFolder = Helper.findFile(context, easyRPGFolder.getUri(), SettingsManager.SAVES_FOLDER_NAME);
+        if (saveFolder == null) {
+            saveFolder = createFolder(context, easyRPGFolder, SettingsManager.SAVES_FOLDER_NAME);
+            if (saveFolder == null) {
+                return null;
+            }
+        }
+
+        DocumentFile gameSaveFolder = createFolder(context, saveFolder, folderName);
+        if (gameSaveFolder == null) {
+            Log.e("EasyRPG", "Problem creating savegame folder " + folderName);
+        }
+        return gameSaveFolder;
     }
 
     /** List files (with DOCUMENT_ID) in the folder pointed by "folderURI" */
