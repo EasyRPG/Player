@@ -126,6 +126,7 @@ public:
 		void OnMapScrolled(int dx, int dy);
 
 		void AttachWindow(const Window_Base& window);
+		bool IsWindowAttached() const;
 	};
 
 	Picture& GetPicture(int id);
