@@ -774,42 +774,57 @@ void Player::CreateGameObjects() {
 		Output::Debug("Game does not need RTP (FullPackageFlag=1)");
 	}
 
+	// ExFont parsing
+	Cache::exfont_custom.clear();
+	// Check for bundled ExFont
+	auto exfont_stream = FileFinder::OpenImage("Font", "ExFont");
+	if (!exfont_stream) {
+		// Backwards compatible with older Player versions
+		exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	}
+
+#ifndef EMSCRIPTEN
+	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
+	std::unique_ptr<EXEReader> exe_reader;
+	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+
+	if (exeis) {
+		Output::Debug("Analyzing RPG_RT {}", exeis.GetName());
+		exe_reader.reset(new EXEReader(std::move(exeis)));
+		Cache::exfont_custom = exe_reader->GetExFont();
+		if (!Cache::exfont_custom.empty()) {
+			Output::Debug("ExFont loaded from RPG_RT");
+		}
+
+		if (Player::engine == EngineNone) {
+		auto version_info = exe_reader->GetFileInfo();
+			version_info.Print();
+			engine = version_info.GetEngineType();
+		}
+	}
+#endif
+
+	if (exfont_stream) {
+		Output::Debug("Using custom ExFont: {}", exfont_stream.GetName());
+		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
+	}
+
 	if (engine == EngineNone) {
+		Output::Debug("Could not detect version from EXE. Using old detection strategy");
 		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
-
-			if (FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
-				// Heuristic: Detect if game was converted from 2000 to 2003 and
-				// no typical 2003 feature was used at all (breaks .flow e.g.)
-				if (lcf::Data::classes.size() == 1 &&
-					lcf::Data::classes[0].name.empty() &&
-					lcf::Data::system.menu_commands.empty() &&
-					lcf::Data::system.system2_name.empty() &&
-					lcf::Data::battleranimations.size() == 1 &&
-					lcf::Data::battleranimations[0].name.empty()) {
-					engine = EngineRpg2k;
-					Output::Debug("Using RPG2k Interpreter (heuristic)");
-				} else {
-					Output::Debug("Using RPG2k3 Interpreter");
-				}
-			} else {
+			if (!FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
 				engine |= EngineEnglish | EngineMajorUpdated;
-				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		} else {
 			engine = EngineRpg2k;
-			Output::Debug("Using RPG2k Interpreter");
 			if (lcf::Data::data.version >= 1) {
 				engine |= EngineEnglish | EngineMajorUpdated;
-				Output::Debug("RM2k >= v.1.61 (English release) detected");
 			}
 		}
 		if (!(engine & EngineMajorUpdated)) {
 			if (FileFinder::IsMajorUpdatedTree()) {
 				engine |= EngineMajorUpdated;
-				Output::Debug("RPG2k >= v1.50 / RPG2k3 >= v1.05 detected");
-			} else {
-				Output::Debug("RPG2k < v1.50 / RPG2k3 < v1.05 detected");
 			}
 		}
 	}
@@ -831,39 +846,6 @@ void Player::CreateGameObjects() {
 	}
 
 	Output::Debug("Patch configuration: dynrpg={} maniac={}", Player::IsPatchDynRpg(), Player::IsPatchManiac());
-
-	// ExFont parsing
-	Cache::exfont_custom.clear();
-	// Check for bundled ExFont
-	auto exfont_stream = FileFinder::OpenImage("Font", "ExFont");
-	if (!exfont_stream) {
-		// Backwards compatible with older Player versions
-		exfont_stream = FileFinder::OpenImage(".", "ExFont");
-	}
-
-#ifndef EMSCRIPTEN
-	if (!exfont_stream) {
-		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
-		// a ExFont can be manually bundled there)
-		std::string exep = FileFinder::Game().FindFile(EXE_NAME);
-		if (!exep.empty()) {
-			auto exesp = FileFinder::Game().OpenInputStream(exep);
-			if (exesp) {
-				Output::Debug("Loading ExFont from {}", exep);
-				EXEReader exe_reader = EXEReader(exesp);
-				Cache::exfont_custom = exe_reader.GetExFont();
-			} else {
-				Output::Debug("ExFont loading failed: {} not readable", exep);
-			}
-		} else {
-			Output::Debug("ExFont loading failed: {} not found", EXE_NAME);
-		}
-	}
-#endif
-	if (exfont_stream) {
-		Output::Debug("Using custom ExFont: {}", exfont_stream.GetName());
-		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
-	}
 
 	ResetGameObjects();
 

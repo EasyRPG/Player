@@ -23,6 +23,7 @@
 #include <istream>
 #include <vector>
 #include "bitmap.h"
+#include "player.h"
 
 /**
  * Extracts resources from an EXE.
@@ -35,11 +36,25 @@ public:
 	// 1. everywhere else uses "unsigned", which is equally as odd...
 	// 2. max offset value is this size
 
-	EXEReader(Filesystem_Stream::InputStream& core);
+	EXEReader(Filesystem_Stream::InputStream core);
 
 	// Extracts an EXFONT resource with BMP header if present
 	// and returns exfont buffer on success.
 	std::vector<uint8_t> GetExFont();
+
+	struct FileInfo {
+		uint64_t version = 0;
+		int logos = 0;
+		std::string version_str;
+		bool is_i386 = true;
+		bool is_easyrpg_player = false;
+
+		int GetEngineType() const;
+		void Print() const;
+	};
+
+	const FileInfo& GetFileInfo();
+
 private:
 	// Bounds-checked unaligned reader primitives.
 	// In case of out-of-bounds, returns 0 - this will usually result in a harmless error at some other level,
@@ -48,13 +63,16 @@ private:
 	uint16_t GetU16(uint32_t point);
 	uint32_t GetU32(uint32_t point);
 
+	uint32_t ResOffsetByType(uint32_t type);
+	uint32_t GetLogoCount();
 	bool ResNameCheck(uint32_t namepoint, const char* name);
 
 	// 0 if resource section was unfindable.
-	uint32_t resource_ofs;
-	uint32_t resource_rva;
+	uint32_t resource_ofs = 0;
+	uint32_t resource_rva = 0;
 
-	Filesystem_Stream::InputStream& corefile;
+	FileInfo file_info;
+	Filesystem_Stream::InputStream corefile;
 };
 
 #endif

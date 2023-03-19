@@ -369,7 +369,7 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 	}
 
 	auto is = FileFinder::Game().OpenFile(args);
-	if (!is) {
+	if (!is && Main_Data::filefinder_rtp) {
 		is = Main_Data::filefinder_rtp->Lookup(dir, name, args.exts);
 		if (!is) {
 			Output::Debug("Cannot find: {}/{}", dir, name);
