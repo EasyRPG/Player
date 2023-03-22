@@ -3,7 +3,7 @@ package org.easyrpg.player.settings;
 import androidx.annotation.NonNull;
 
 enum SettingsEnum {
-    IMAGE_SIZE("scaling-mode"),
+    IMAGE_SIZE("ScalingMode"),
     VIBRATION_ENABLED("PREF_ENABLE_VIBRATION"),
     VIBRATE_WHEN_SLIDING_DIRECTION("PREF_VIBRATE_WHEN_SLIDING"),
     LAYOUT_TRANSPARENCY("PREF_LAYOUT_TRANSPARENCY"),
@@ -20,9 +20,10 @@ enum SettingsEnum {
     FAST_FORWARD_MULTIPLIER("FAST_FORWARD_MULTIPLIER"),
     INPUT_LAYOUT_HORIZONTAL("INPUT_LAYOUT_HORIZONTAL"),
     INPUT_LAYOUT_VERTICAL("INPUT_LAYOUT_VERTICAL"),
-    MUSIC_VOLUME("music-volume"),
-    SOUND_VOLUME("sound-volume"),
-    STRETCH("stretch")
+    MUSIC_VOLUME("MusicVolume"),
+    SOUND_VOLUME("SoundVolume"),
+    STRETCH("Stretch"),
+    GAME_RESOLUTION("GameResolution")
     ;
 
 

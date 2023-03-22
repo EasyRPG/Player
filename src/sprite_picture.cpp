@@ -103,8 +103,13 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		y -= Main_Data::game_screen->GetShakeOffsetY();
 	}
 
-	SetX(x);
-	SetY(y);
+	if (Player::game_config.fake_resolution.Get()) {
+		SetX(x + Player::menu_offset_x);
+		SetY(y + Player::menu_offset_y);
+	} else {
+		SetX(x);
+		SetY(y);
+	}
 	SetZoomX(data.current_magnify / 100.0);
 	SetZoomY(data.current_magnify / 100.0);
 

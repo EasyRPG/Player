@@ -134,6 +134,9 @@ public:
 	int GetTargetPanX() const;
 	int GetTargetPanY() const;
 
+	static int GetDefaultPanX();
+	static int GetDefaultPanY();
+
 	void LockPan();
 	void UnlockPan();
 	void StartPan(int direction, int distance, int speed);

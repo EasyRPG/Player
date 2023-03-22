@@ -24,13 +24,15 @@
 constexpr int num_seconds = 2;
 constexpr int start_time = num_seconds * DEFAULT_FPS;
 
+constexpr int window_width = SCREEN_TARGET_WIDTH / 2;
 constexpr int window_height = 32;
 
 Game_Quit::Game_Quit()
-	: window(Player::screen_width / 4, Player::screen_height / 2 - window_height / 2, Player::screen_width / 2, window_height, Drawable::Flags::Global)
+	: window(0, 0, window_width, window_height, Drawable::Flags::Global)
 {
 	window.SetBackOpacity(128);
 	window.SetZ(Priority_Overlay - 20);
+	OnResolutionChange();
 	Reset();
 }
 
@@ -54,8 +56,12 @@ void Game_Quit::Update() {
 	window.Update();
 }
 
+void Game_Quit::OnResolutionChange() {
+	window.SetX(Player::screen_width / 2 - window_width / 2);
+	window.SetY(Player::screen_height / 2 - window_height / 2);
+}
+
 void Game_Quit::Reset() {
 	window.SetVisible(false);
 	time_left = DEFAULT_FPS * num_seconds;
 }
-

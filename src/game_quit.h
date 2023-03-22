@@ -24,6 +24,7 @@ class Game_Quit {
 public:
 	Game_Quit();
 	void Update();
+	void OnResolutionChange();
 
 	bool ShouldQuit() const;
 private:

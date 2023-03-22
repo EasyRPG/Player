@@ -29,6 +29,7 @@
 #include "baseui.h"
 #include "output.h"
 #include "utils.h"
+#include "scene_end.h"
 #include "window_command_horizontal.h"
 #include "window_help.h"
 #include "window_input_settings.h"
@@ -66,6 +67,11 @@ void Scene_Settings::CreateMainWindow() {
 		"License",
 		"<Save Settings>"
 	};
+
+	if (Scene::Find(Scene::Title)) {
+		options.push_back("<Exit Game>");
+	}
+
 	main_window = std::make_unique<Window_Command>(std::move(options));
 	main_window->SetHeight(176);
 	main_window->SetY((Player::screen_height - main_window->GetHeight()) / 2);
@@ -214,6 +220,7 @@ void Scene_Settings::vUpdate() {
 	switch (opt_mode) {
 		case Window_Settings::eNone:
 		case Window_Settings::eSave:
+		case Window_Settings::eEnd:
 			break;
 		case Window_Settings::eMain:
 			UpdateMain();
@@ -264,7 +271,8 @@ void Scene_Settings::UpdateMain() {
 		Window_Settings::eInput,
 		Window_Settings::eEngine,
 		Window_Settings::eLicense,
-		Window_Settings::eSave
+		Window_Settings::eSave,
+		Window_Settings::eEnd
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
@@ -273,6 +281,13 @@ void Scene_Settings::UpdateMain() {
 
 		if (modes[idx] == Window_Settings::eSave) {
 			SaveConfig();
+			return;
+		} else if (modes[idx] == Window_Settings::eEnd) {
+			if (Scene::Find(Scene::GameBrowser)) {
+				Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
+			} else {
+				Scene::Push(std::make_unique<Scene_End>(Scene::Null));
+			}
 			return;
 		}
 

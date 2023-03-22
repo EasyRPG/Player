@@ -59,5 +59,42 @@
 			android:textSize="20sp"/>
 
 		<include layout="@layout/separator"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/settings_resolution"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_resolution_desc"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/settings_resolution_original"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_resolution_original"
+            android:textSize="20sp"
+            android:paddingHorizontal="5dp"/>
+        <RadioButton
+            android:id="@+id/settings_resolution_widescreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_resolution_widescreen"
+            android:textSize="20sp"
+            android:paddingHorizontal="5dp"/>
+        <RadioButton
+            android:id="@+id/settings_resolution_ultrawide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_resolution_ultrawide"
+            android:textSize="20sp"
+            android:paddingHorizontal="5dp"/>
+
+        <include layout="@layout/separator"/>
     </LinearLayout>
 </ScrollView>

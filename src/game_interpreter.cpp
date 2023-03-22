@@ -304,7 +304,7 @@ bool Game_Interpreter::ReachedLoopLimit() const {
 int Game_Interpreter::GetThisEventId() const {
 	auto event_id = GetCurrentEventId();
 
-	if (event_id == 0 && Player::IsRPG2k3E()) {
+	if (event_id == 0 && (Player::IsRPG2k3E() || Player::game_config.patch_common_this_event.Get())) {
 		// RM2k3E allows "ThisEvent" commands to run from called
 		// common events. It operates on the last map event in
 		// the call stack.
@@ -2718,7 +2718,7 @@ namespace PicPointerPatch {
 
 bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { // code 11110
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2838,7 +2838,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { // code 11120
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2934,7 +2934,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { // code 11130
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
 		return false;
 	}
 

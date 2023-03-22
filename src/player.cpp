@@ -104,12 +104,12 @@ namespace Player {
 	int menu_offset_x = (screen_width - MENU_WIDTH) / 2;
 	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
+	bool has_custom_resolution = false;
 
 	bool exit_flag;
 	bool reset_flag;
 	bool debug_flag;
 	bool hide_title_flag;
-	bool new_game_flag;
 	int load_game_id;
 	int party_x_position;
 	int party_y_position;
@@ -122,9 +122,7 @@ namespace Player {
 	std::string encoding;
 	std::string escape_symbol;
 	uint32_t escape_char;
-	int engine;
 	std::string game_title;
-	int patch;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	std::string startup_language;
@@ -136,12 +134,15 @@ namespace Player {
 	int speed_modifier = 3;
 	int speed_modifier_plus = 10;
 	Game_ConfigPlayer player_config;
+	Game_ConfigGame game_config;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
 }
 
 namespace {
+	std::vector<std::string> arguments;
+
 	// Overwritten by --encoding
 	std::string forced_encoding;
 
@@ -150,7 +151,7 @@ namespace {
 	FileRequestBinding map_request_id;
 }
 
-void Player::Init(std::vector<std::string> arguments) {
+void Player::Init(std::vector<std::string> args) {
 	frames = 0;
 
 	// Must be called before the first call to Output
@@ -161,7 +162,8 @@ void Player::Init(std::vector<std::string> arguments) {
 #endif
 
 	// First parse command line arguments
-	auto cfg = ParseCommandLine(std::move(arguments));
+	arguments = args;
+	auto cfg = ParseCommandLine();
 
 	// Display a nice version string
 	auto header = GetFullVersionString() + " started";
@@ -406,14 +408,11 @@ void Player::Exit() {
 	DisplayUi.reset();
 }
 
-Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
-	engine = EngineNone;
-	patch = PatchNone;
+Game_Config Player::ParseCommandLine() {
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
 	reset_flag = false;
-	new_game_flag = false;
 	load_game_id = -1;
 	party_x_position = -1;
 	party_y_position = -1;
@@ -545,10 +544,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--new-game")) {
-			new_game_flag = true;
-			continue;
-		}
 		if (cp.ParseNext(arg, 1, "--load-game-id")) {
 			if (arg.ParseValue(0, li_value)) {
 				load_game_id = li_value;
@@ -596,30 +591,6 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 1, "--engine")) {
-			if (arg.NumValues() > 0) {
-				const auto& v = arg.Value(0);
-				if (v == "rpg2k" || v == "2000") {
-					engine = EngineRpg2k;
-				}
-				else if (v == "rpg2kv150" || v == "2000v150") {
-					engine = EngineRpg2k | EngineMajorUpdated;
-				}
-				else if (v == "rpg2ke" || v == "2000e") {
-					engine = EngineRpg2k | EngineMajorUpdated | EngineEnglish;
-				}
-				else if (v == "rpg2k3" || v == "2003") {
-					engine = EngineRpg2k3;
-				}
-				else if (v == "rpg2k3v105" || v == "2003v105") {
-					engine = EngineRpg2k3 | EngineMajorUpdated;
-				}
-				else if (v == "rpg2k3e") {
-					engine = EngineRpg2k3 | EngineMajorUpdated | EngineEnglish;
-				}
-			}
-			continue;
-		}
 		if (cp.ParseNext(arg, 1, "--record-input")) {
 			if (arg.NumValues() > 0) {
 				record_input_path = arg.Value(0);
@@ -638,29 +609,17 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--disable-audio")) {
+		if (cp.ParseNext(arg, 0, "--no-audio") || cp.ParseNext(arg, 0, "--disable-audio")) {
 			no_audio_flag = true;
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--disable-rtp")) {
+		if (cp.ParseNext(arg, 0, "--no-rtp") || cp.ParseNext(arg, 0, "--disable-rtp")) {
 			no_rtp_flag = true;
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--rtp-path")) {
 			if (arg.NumValues() > 0) {
 				rtp_path = arg.Value(0);
-			}
-			continue;
-		}
-		if (cp.ParseNext(arg, 2, "--patch")) {
-			patch |= PatchOverride;
-			for (int i = 0; i < arg.NumValues(); ++i) {
-				const auto& v = arg.Value(i);
-				if (v == "dynrpg") {
-					patch |= PatchDynRpg;
-				} else if (v == "maniac") {
-					patch |= PatchManiac;
-				}
 			}
 			continue;
 		}
@@ -710,6 +669,10 @@ Game_Config Player::ParseCommandLine(std::vector<std::string> arguments) {
 }
 
 void Player::CreateGameObjects() {
+	// Parse game specific settings
+	CmdlineParser cp(arguments);
+	game_config = Game_ConfigGame::Create(cp);
+
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210
 	std::string meta_file = FileFinder::Game().FindFile(META_NAME);
@@ -743,6 +706,7 @@ void Player::CreateGameObjects() {
 	LoadDatabase();
 
 	bool no_rtp_warning_flag = false;
+	Player::has_custom_resolution = false;
 	{ // Scope lifetime of variables for ini parsing
 		std::string ini_file = FileFinder::Game().FindFile(INI_NAME);
 
@@ -753,8 +717,11 @@ void Player::CreateGameObjects() {
 				std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 				game_title = lcf::ReaderUtil::Recode(title, encoding);
 				no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
-				Player::screen_width = ini.GetInteger("RPG_RT", "WinW", SCREEN_TARGET_WIDTH);
-				Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
+				if (ini.HasValue("RPG_RT", "WinW") || ini.HasValue("RPG_RT", "WinH")) {
+					Player::screen_width = ini.GetInteger("RPG_RT", "WinW", SCREEN_TARGET_WIDTH);
+					Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
+					Player::has_custom_resolution = true;
+				}
 			}
 		}
 	}
@@ -783,6 +750,8 @@ void Player::CreateGameObjects() {
 		exfont_stream = FileFinder::OpenImage(".", "ExFont");
 	}
 
+	int& engine = game_config.engine;
+
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
@@ -796,11 +765,17 @@ void Player::CreateGameObjects() {
 			Output::Debug("ExFont loaded from RPG_RT");
 		}
 
-		if (Player::engine == EngineNone) {
-		auto version_info = exe_reader->GetFileInfo();
+		if (engine == EngineNone) {
+			auto version_info = exe_reader->GetFileInfo();
 			version_info.Print();
 			engine = version_info.GetEngineType();
 		}
+
+		if (engine == EngineNone) {
+			Output::Debug("Unable to detect version from exe");
+		}
+	} else {
+		Output::Debug("Cannot find RPG_RT");
 	}
 #endif
 
@@ -810,7 +785,6 @@ void Player::CreateGameObjects() {
 	}
 
 	if (engine == EngineNone) {
-		Output::Debug("Could not detect version from EXE. Using old detection strategy");
 		if (lcf::Data::system.ldb_id == 2003) {
 			engine = EngineRpg2k3;
 			if (!FileFinder::Game().FindFile("ultimate_rt_eb.dll").empty()) {
@@ -828,24 +802,24 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
+
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
-	if ((patch & PatchOverride) == 0) {
-		patch = PatchNone;
-
+	if (!game_config.patch_override) {
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
-			patch |= PatchDynRpg;
+			game_config.patch_dynrpg.Set(true);
 			Output::Warning("This game uses DynRPG and will not run properly.");
 		}
 
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
-			patch |= PatchManiac;
+			game_config.patch_maniac.Set(true);
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={}", Player::IsPatchDynRpg(), Player::IsPatchManiac());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} common-this={} pic-unlock={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get());
 
 	ResetGameObjects();
 
@@ -867,6 +841,10 @@ bool Player::ChangeResolution(int width, int height) {
 	Player::message_box_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
 
 	Graphics::GetMessageOverlay().OnResolutionChange();
+
+	if (Main_Data::game_quit) {
+		Main_Data::game_quit->OnResolutionChange();
+	}
 
 	Output::Debug("Resolution changed to {}x{}", width, height);
 	return true;
@@ -1363,84 +1341,130 @@ std::string Player::GetFullVersionString() {
 void Player::PrintUsage() {
 	std::cout <<
 R"(EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games.
-Options:
-      --battle-test N      Start a battle test with monster party N.
-      --disable-audio      Disable audio (in case you prefer your own music).
-      --disable-rtp        Disable support for the Runtime Package (RTP).
-      --encoding N         Instead of auto detecting the encoding or using
-                           the one in RPG_RT.ini, the encoding N is used.
-                           Use "auto" for automatic detection.
-      --engine ENGINE      Disable auto detection of the simulated engine.
-                           Possible options:
-                            rpg2k      - RPG Maker 2000 engine (v1.00 - v1.10)
-                            rpg2kv150  - RPG Maker 2000 engine (v1.50 - v1.51)
-                            rpg2ke     - RPG Maker 2000 (English release) engine (v1.61)
-                            rpg2k3     - RPG Maker 2003 engine (v1.00 - v1.04)
-                            rpg2k3v105 - RPG Maker 2003 engine (v1.05 - v1.09a)
-                            rpg2k3e    - RPG Maker 2003 (English release) engine
-      --fullscreen         Start in fullscreen mode.
-      --show-fps           Enable frames per second counter.
-      --fps-render-window  Render the frames per second counter in windowed mode.
-      --fps-limit          Set a custom frames per second limit. The default is 60 FPS.
-                           Set to 0 to run with unlimited frames per second.
-                           This option is not supported on all platforms.
-      --no-vsync           Disable vertical sync and use fps-limit. Even without
-                           this option, vsync may not be supported on all platforms.
-      --hide-title         Hide the title background image and center the
-                           command menu.
-      --load-game-id N     Skip the title scene and load SaveN.lsd
-                           (N is padded to two digits).
-      --new-game           Skip the title scene and start a new game directly.
-      --project-path PATH  Instead of using the working directory the game in
-                           PATH is used.
-      --record-input PATH  Record all button input to a log file at PATH.
-      --replay-input PATH  Replays button presses from an input log generated by
-                           --record-input.
-      --save-path PATH     Instead of storing save files in the game directory
-                           they are stored in PATH. The directory must exist.
-                           When using the game browser all games will share
-                           the same save directory!
-      --seed N             Seeds the random number generator with N.
-      --start-map-id N     Overwrite the map used for new games and use.
-                           MapN.lmu instead (N is padded to four digits).
-                           Incompatible with --load-game-id.
-      --autobattle-algo A  Which AutoBattle algorithm to use.
-                           Possible options:
-                            RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
-                            RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
-                            ATTACK     - RPG_RT+ but only physical attacks, no skills
-      --enemyai-algo A     Which EnemyAI algorithm to use.
-                           Possible options:
-                            RPG_RT     - The default RPG_RT compatible algo, including RPG_RT bugs
-                            RPG_RT+    - The default RPG_RT compatible algo, with bug fixes
-      --patch PATCH...     Force emulation of engine patches, disabling auto-detection.
-                           Possible options:
-                            none       - Disable all patches
-                            dynrpg     - DynRPG patch by Cherry
-                            maniac     - Maniac Patch by BingShan
-      --start-position X Y Overwrite the party start position and move the
-                           party to position (X, Y).
-                           Incompatible with --load-game-id.
-      --start-party A B... Overwrite the starting party members with the actors
-                           with IDs A, B, C...
-                           Incompatible with --load-game-id.
-      --language LANG      Loads the game translation in language/LANG folder.
-      --soundfont FILE     Soundfont in sf2 format to use when playing MIDI files.
-      --test-play          Enable TestPlay mode.
-      --window             Start in window mode.
-  -v, --version            Display program version and exit.
-  -h, --help               Display this help and exit.
+
+Engine options:
+ --autobattle-algo A  Which AutoBattle algorithm to use.
+                      Options:
+                       RPG_RT  - The default RPG_RT compatible algo, including
+                                 RPG_RT bugs.
+                       RPG_RT+ - The default RPG_RT compatible algo, with bug-
+                                 fixes.
+                       ATTACK  - Like RPG_RT+ but only physical attacks, no
+                                 skills.
+ -c, --config-path P  Set a custom configuration path. When not specified, the
+                      configuration folder in the users home directory is used.
+ --encoding N         Instead of autodetecting the encoding or using the one in
+                      RPG_RT.ini, the encoding N is used.
+ --enemyai-algo A     Which EnemyAI algorithm to use.
+                      Options:
+                       RPG_RT  - The default RPG_RT compatible algo, including
+                                 RPG_RT bugs.
+                       RPG_RT+ - The default RPG_RT compatible algo, with bug-
+                                 fixes.
+ --engine ENGINE      Disable auto detection of the simulated engine.
+                      Options:
+                       rpg2k      - RPG Maker 2000 (v1.00 - v1.10)
+                       rpg2kv150  - RPG Maker 2000 (v1.50 - v1.51)
+                       rpg2ke     - RPG Maker 2000 (English release, v1.61)
+                       rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
+                       rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
+                       rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --language LANG      Load the game translation in language/LANG folder.
+ --load-game-id N     Skip the title scene and load SaveN.lsd (N is padded to
+                      two digits).
+ --new-game           Skip the title scene and start a new game directly.
+ --no-log-color       Disable colors in terminal log.
+ --no-rtp             Disable support for the Runtime Package (RTP).
+ --patch PATCH...     Instead of autodetecting patches used by this game, force
+                      emulation of certain patches.
+                      Options:
+                       common-this - "This Event" in common events
+                       dynrpg      - DynRPG patch by Cherry
+                       maniac      - Maniac Patch by BingShan
+                       pic-unlock  - Pictures are not blocked by messages
+ --no-patch           Disable all engine patches.
+ --project-path PATH  Instead of using the working directory, the game in PATH
+                      is used.
+ --record-input FILE  Record all button inputs to FILE.
+ --replay-input FILE  Replays button presses from an input log generated by
+                      --record-input.
+ --rtp-path PATH      Add PATH to the RTP directory list and use this one with
+                      highest precedence.
+ --save-path PATH     Instead of storing save files in the game directory,
+                      store them in PATH. When using the game browser all games
+                      will share the same save directory!
+ --seed N             Seeds the random number generator with N.
+
+Video options:
+ --fps-limit          In combination with --no-vsync sets a custom frames per
+                      second limit. The default is 60 FPS. Use --no-fps-limit
+                      to run with unlimited frames per second.
+ --fps-render-window  Render the frames per second counter in both fullscreen
+                      and windowed mode.
+                      Disable with --no-fps-render-window.
+ --fullscreen         Start in fullscreen mode.
+ --game-resolution R  Force a different game resolution. This is experimental
+                      and can cause glitches or break games!
+                      Options:
+                       original   - 320x240 (4:3). Recommended
+                       widescreen - 416x240 (16:9)
+                       ultrawide  - 560x240 (21:9)
+ --scaling S          How the video output is scaled.
+                      Options:
+                       nearest  - Scale to screen size. Fast, but causes scaling
+                                  artifacts.
+                       integer  - Scales to a multiple of the game resolution.
+                       bilinear - Like nearest, but applies a bilinear filter to
+                                  avoid artifacts.
+ --show-fps           Enable display of the frames per second counter.
+                      Disable with --no-show-fps.
+ --stretch            Ignore the aspect ratio and stretch video output to the
+                      entire width of the screen.
+                      Disable with --no-stretch.
+ --vsync              Enables vertical sync if supported on this platform.
+                      Disable with --no-vsync.
+ --window             Start in windowed mode.
+
+Audio options:
+ --no-audio           Disable audio (in case you prefer your own music).
+ --music-volume V     Set volume of background music to V (0-100).
+ --sound-volume V     Set volume of sound effects to V (0-100).
+ --soundfont FILE     Soundfont in sf2 format to use when playing MIDI files.
+
+Debug options:
+ --battle-test N...   Start a battle test.
+                      This option supports two modes:
+                      Providing a single N sets the monster party.
+                      Providing four N sets: monster party, formation,
+                      condition and terrain ID.
+ --hide-title         Hide the title background image and center the command
+                      menu.
+ --start-map-id N     Overwrite the map used for new games and use MapN.lmu
+                      instead (N is padded to four digits).
+                      Incompatible with --load-game-id.
+ --start-party A B... Overwrite the starting party members with the actors with
+                      IDs A, B, C...
+                      Incompatible with --load-game-id.
+ --start-position X Y Overwrite the party start position and move the party to
+                      position (X, Y).
+                      Incompatible with --load-game-id.
+ --test-play          Enable TestPlay (Debug) mode.
+
+Other options:
+ -v, --version        Display program version and exit.
+ -h, --help           Display this help and exit.
 
 For compatibility with the legacy RPG Maker runtime the following arguments
 are supported:
-      BattleTest N         Same as --battle-test. When N is not a valid number
-                           the 4th argument is used as the party id.
-      HideTitle            Same as --hide-title.
-      TestPlay             Same as --test-play.
-      Window               Same as --window.
+ BattleTest N         Same as --battle-test.
+                      The argument list starts at the 4th argument.
+ HideTitle            Same as --hide-title.
+ TestPlay             Same as --test-play.
+ Window               Same as --window.
 
-Game related parameters (e.g. new-game and load-game-id) don't work correctly when the
-startup directory does not contain a valid game (and the game browser loads)
+Game related parameters (e.g. new-game and load-game-id) do not work correctly
+when the startup directory does not contain a valid game (and the game browser
+loads)
 
 Alex, EV0001 and the EasyRPG authors wish you a lot of fun!)" << std::endl;
 }

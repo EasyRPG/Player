@@ -19,6 +19,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "game_config.h"
+#include "options.h"
 #include "scene_settings.h"
 #include "scene_title.h"
 #include "audio.h"
@@ -50,7 +52,23 @@ void Scene_Title::Start() {
 	Main_Data::game_system->ResetSystemGraphic();
 
 	// Change the resolution of the window
-	Player::ChangeResolution(Player::screen_width, Player::screen_height);
+	if (Player::has_custom_resolution) {
+		Player::ChangeResolution(Player::screen_width, Player::screen_height);
+	} else {
+		switch (DisplayUi->GetConfig().game_resolution.Get()) {
+			case GameResolution::Original:
+				Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+				break;
+			case GameResolution::Widescreen:
+				Player::ChangeResolution(416, SCREEN_TARGET_HEIGHT);
+				Player::game_config.fake_resolution.Set(true);
+				break;
+			case GameResolution::Ultrawide:
+				Player::ChangeResolution(560, SCREEN_TARGET_HEIGHT);
+				Player::game_config.fake_resolution.Set(true);
+				break;
+		}
+	}
 
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
@@ -100,7 +118,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 }
 
 void Scene_Title::TransitionIn(SceneType prev_scene) {
-	if (Game_Battle::battle_test.enabled || !lcf::Data::system.show_title || Player::new_game_flag)
+	if (Game_Battle::battle_test.enabled || !lcf::Data::system.show_title || Player::game_config.new_game.Get())
 		return;
 
 	if (prev_scene == Scene::Load || Player::hide_title_flag) {
@@ -121,7 +139,7 @@ void Scene_Title::vUpdate() {
 		return;
 	}
 
-	if (!lcf::Data::system.show_title || Player::new_game_flag) {
+	if (!lcf::Data::system.show_title || Player::game_config.new_game.Get()) {
 		Player::SetupNewGame();
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
@@ -301,7 +319,7 @@ void Scene_Title::PlayTitleMusic() {
 
 bool Scene_Title::CheckEnableTitleGraphicAndMusic() {
 	return lcf::Data::system.show_title &&
-		!Player::new_game_flag &&
+		!Player::game_config.new_game.Get() &&
 		!Game_Battle::battle_test.enabled &&
 		!Player::hide_title_flag;
 }

@@ -18,6 +18,7 @@
 // Headers
 #include "baseui.h"
 #include "bitmap.h"
+#include "player.h"
 
 #if USE_SDL==2
 #  include "platform/sdl/sdl2_ui.h"
@@ -67,6 +68,10 @@ void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
 
+void BaseUi::SetGameResolution(GameResolution resolution) {
+	vcfg.game_resolution.Set(resolution);
+}
+
 Game_ConfigVideo BaseUi::GetConfig() const {
 	Game_ConfigVideo cfg = vcfg;
 
@@ -99,5 +104,18 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 		cfg.window_zoom.SetDescription("This option requires to be in windowed mode");
 	}
 
+	if (Player::has_custom_resolution) {
+		cfg.game_resolution.SetLocked(true);
+		cfg.game_resolution.SetDescription("This game uses a custom resolution");
+	}
+
 	return cfg;
+}
+
+bool BaseUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
+	if (new_width == current_display_mode.width && new_height == current_display_mode.height) {
+		return true;
+	}
+
+	return vChangeDisplaySurfaceResolution(new_width, new_height);
 }

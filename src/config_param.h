@@ -21,6 +21,7 @@
 #include "string_view.h"
 #include <array>
 #include <cstdint>
+#include <lcf/inireader.h>
 #include <limits>
 #include <string>
 #include <vector>
@@ -31,6 +32,10 @@
 namespace {
 	inline const std::string& ParamValueToString(const std::string& s) {
 		return s;
+	}
+
+	inline std::string ParamValueToString(StringView s) {
+		return ToString(s);
 	}
 
 	inline std::string ParamValueToString(int i) {
@@ -51,7 +56,8 @@ public:
 	 * @param description Description shown in the help window of the settings scene
 	 * @param value Initial value
 	 */
-	ConfigParamBase(StringView name, StringView description, T value) : _name(name), _description(description), _value(value) {}
+	ConfigParamBase(StringView name, StringView description, StringView config_section, StringView config_key, T value) :
+		_name(name), _description(description), _config_section(config_section), _config_key(config_key), _value(value) {}
 
 	/** @return current assigned value */
 	T Get() const { return _value; }
@@ -175,11 +181,48 @@ public:
 	/** @return human readable representation of the value for the settings scene */
 	virtual std::string ValueToString() const = 0;
 
+	template <typename U = T, typename std::enable_if<std::is_same<U, std::string>::value, int>::type = 0>
+	bool FromIni(const lcf::INIReader& ini) {
+		// FIXME: Migrate IniReader to StringView (or std::string_view with C++17)
+		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
+			Set(ini.GetString(ToString(_config_section), ToString(_config_key), T()));
+			return true;
+		}
+		return false;
+	}
+
+	template <typename U = T, typename std::enable_if<std::is_same<U, int>::value, int>::type = 0>
+	bool FromIni(const lcf::INIReader& ini) {
+		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
+			Set(ini.GetInteger(ToString(_config_section), ToString(_config_key), T()));
+			return true;
+		}
+		return false;
+	}
+
+	template <typename U = T, typename std::enable_if<std::is_same<U, bool>::value, int>::type = 0>
+	bool FromIni(const lcf::INIReader& ini) {
+		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
+			Set(ini.GetBoolean(ToString(_config_section), ToString(_config_key), T()));
+			return true;
+		}
+		return false;
+	}
+
+	template <typename U = T, typename std::enable_if<!std::is_enum<U>::value, int>::type = 0>
+    void ToIni(std::ostream& ini) const {
+		if (IsOptionVisible()) {
+    		ini << _config_key << '=' << Get() << "\n";
+		}
+    }
+
 protected:
 	virtual bool vIsValid(const T& value) const = 0;
 
 	StringView _name;
 	StringView _description;
+	StringView _config_section;
+	StringView _config_key;
 	T _value = {};
 
 private:
@@ -191,8 +234,8 @@ private:
 template <typename T>
 class ConfigParam : public ConfigParamBase<T> {
 public:
-	explicit ConfigParam(StringView name, StringView description, T value = {}) :
-		ConfigParamBase<T>(name, description, std::move(value)) {}
+	explicit ConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value = {}) :
+		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) {}
 
 	bool vIsValid(const T&) const override {
 		return true;
@@ -208,7 +251,7 @@ template <typename T>
 class LockedConfigParam final : public ConfigParam<T> {
 public:
     explicit LockedConfigParam(StringView name, StringView description, T value = {}) :
-		ConfigParam<T>(name, description, value) {
+		ConfigParam<T>(name, description, "", "", value) {
 		this->Lock(value);
 	}
 };
@@ -220,12 +263,12 @@ template <typename T>
 class RangeConfigParam : public ConfigParamBase<T> {
 public:
 	/** Construct with name and initial value */
-	explicit RangeConfigParam(StringView name, StringView description, T value = {}) :
-		ConfigParamBase<T>(name, description, std::move(value)) {}
+	explicit RangeConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value = {}) :
+		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) {}
 
 	/** Construct with name and initial value, min, and max */
-	RangeConfigParam(StringView name, StringView description, T value, T minval, T maxval) :
-		ConfigParamBase<T>(name, description, std::move(value)) { SetRange(minval, maxval); }
+	RangeConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value, T minval, T maxval) :
+		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) { SetRange(minval, maxval); }
 
 	/**
 	 * Check if a value is valid
@@ -284,18 +327,11 @@ private:
 	T _max = std::numeric_limits<T>::max();
 };
 
-using IntConfigParam = RangeConfigParam<int>;
-using LongConfigParam = RangeConfigParam<long>;
-using Int32ConfigParam = RangeConfigParam<int32_t>;
-using Int64ConfigParam = RangeConfigParam<int64_t>;
-using FloatConfigParam = RangeConfigParam<float>;
-using DoubleConfigParam = RangeConfigParam<double>;
-
 /** A boolean configuration parameter */
 class BoolConfigParam : public ConfigParamBase<bool> {
 public:
-	explicit BoolConfigParam(StringView name, StringView description, bool value = false)  :
-		ConfigParamBase<bool>(name, description, value) {}
+	explicit BoolConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, bool value)  :
+		ConfigParamBase<bool>(name, description, config_section, config_key, value) {}
 
 	bool vIsValid(const bool&) const override {
 		return true;
@@ -317,8 +353,8 @@ public:
 template <typename E, size_t S>
 class EnumConfigParam : public ConfigParamBase<E> {
 public:
-	EnumConfigParam(StringView name, StringView description, E value, std::array<StringView, S> values, std::array<StringView, S> value_descriptions) :
-		ConfigParamBase<E>(name, description, value), _values{ values }, _value_descriptions{ value_descriptions } {
+	EnumConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, E value, std::array<StringView, S> values, std::array<StringView, S> tags, std::array<StringView, S> value_descriptions) :
+		ConfigParamBase<E>(name, description, config_section, config_key, value), _values{ values }, _tags{ tags}, _value_descriptions{ value_descriptions } {
 		for (size_t i = 0; i < S; ++i) {
 			_valid[static_cast<E>(S)] = true;
 		}
@@ -358,9 +394,40 @@ public:
 		return _value_descriptions;
 	}
 
+	bool SetFromString(StringView value) {
+		for (size_t i = 0; i < _tags.size(); ++i) {
+			if (value == _tags[i]) {
+				this->Set(static_cast<E>(i));
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template <typename U = E, typename std::enable_if<std::is_same<U, E>::value, int>::type = 0>
+	bool FromIni(const lcf::INIReader& ini) {
+		if (ini.HasValue(ToString(this->_config_section), ToString(this->_config_key))) {
+			std::string s = ini.GetString(ToString(this->_config_section), ToString(this->_config_key), std::string());
+			for (size_t i = 0; i < _tags.size(); ++i) {
+				if (s == _tags[i]) {
+					this->Set(static_cast<E>(i));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	void ToIni(std::ostream& ini) const {
+		if (this->IsOptionVisible()) {
+    		ini << this->_config_key << '=' << _tags[static_cast<int>(this->Get())] << "\n";
+		}
+	}
+
 private:
 	lcf::FlagSet<E> _valid = ~lcf::FlagSet<E>();
 	std::array<StringView, S> _values;
+	std::array<StringView, S> _tags;
 	std::array<StringView, S> _value_descriptions;
 	bool _enabled = true;
 
