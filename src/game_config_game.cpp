@@ -26,7 +26,7 @@
 Game_ConfigGame Game_ConfigGame::Create(CmdlineParser& cp) {
 	Game_ConfigGame cfg;
 
-	auto cli_config = FileFinder::Game().OpenOrCreateInputStream(EASYRPG_INI_NAME);
+	auto cli_config = FileFinder::Game().OpenFile(EASYRPG_INI_NAME);
 	if (cli_config) {
 		cfg.LoadFromStream(cli_config);
 	}
