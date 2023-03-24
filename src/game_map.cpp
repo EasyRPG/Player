@@ -1627,6 +1627,9 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 namespace {
 	int parallax_width;
 	int parallax_height;
+
+	bool parallax_fake_x;
+	bool parallax_fake_y;
 }
 
 /* Helper function to get the current parallax parameters. If the default
@@ -1678,8 +1681,8 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_height = height;
 
 	if (panorama_on_map_init) {
-		Parallax::SetPositionX(map_info.position_x);
-		Parallax::SetPositionY(map_info.position_y);
+		SetPositionX(map_info.position_x);
+		SetPositionY(map_info.position_y);
 	}
 
 	if (reset_panorama_x_on_next_init) {
@@ -1730,15 +1733,22 @@ void Game_Map::Parallax::ResetPositionX() {
 		return;
 	}
 
+	parallax_fake_x = false;
+
 	if (!params.scroll_horz && !LoopHorizontal()) {
-		int tiles_per_screen = Player::screen_width / TILE_SIZE;
-		if (Player::screen_width % TILE_SIZE != 0) {
+		int screen_width = Player::screen_width;
+		if (Player::game_config.fake_resolution.Get()) {
+			screen_width = SCREEN_TARGET_WIDTH;
+		}
+
+		int tiles_per_screen = screen_width / TILE_SIZE;
+		if (screen_width % TILE_SIZE != 0) {
 			++tiles_per_screen;
 		}
 
-		if (GetWidth() > tiles_per_screen && parallax_width > Player::screen_width) {
+		if (GetWidth() > tiles_per_screen && parallax_width > screen_width) {
 			const int w = (GetWidth() - tiles_per_screen) * TILE_SIZE;
-			const int ph = 2 * std::min(w, parallax_width - Player::screen_width) * map_info.position_x / w;
+			const int ph = 2 * std::min(w, parallax_width - screen_width) * map_info.position_x / w;
 			if (Player::IsRPG2k()) {
 				SetPositionX(ph);
 			} else {
@@ -1747,7 +1757,10 @@ void Game_Map::Parallax::ResetPositionX() {
 			}
 		} else {
 			panorama.pan_x = 0;
+			parallax_fake_x = true;
 		}
+	} else {
+		parallax_fake_x = true;
 	}
 }
 
@@ -1758,19 +1771,29 @@ void Game_Map::Parallax::ResetPositionY() {
 		return;
 	}
 
+	parallax_fake_y = false;
+
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
-		int tiles_per_screen = Player::screen_height / TILE_SIZE;
-		if (Player::screen_width % TILE_SIZE != 0) {
+		int screen_height = Player::screen_height;
+		if (Player::game_config.fake_resolution.Get()) {
+			screen_height = SCREEN_TARGET_HEIGHT;
+		}
+
+		int tiles_per_screen = screen_height / TILE_SIZE;
+		if (screen_height % TILE_SIZE != 0) {
 			++tiles_per_screen;
 		}
 
-		if (GetHeight() > tiles_per_screen && parallax_height > Player::screen_height) {
-			const int h = (GetHeight() - 15) * TILE_SIZE;
-			const int pv = 2 * std::min(h, parallax_height - Player::screen_height) * map_info.position_y / h;
+		if (GetHeight() > tiles_per_screen && parallax_height > screen_height) {
+			const int h = (GetHeight() - tiles_per_screen) * TILE_SIZE;
+			const int pv = 2 * std::min(h, parallax_height - screen_height) * map_info.position_y / h;
 			SetPositionY(pv);
 		} else {
 			panorama.pan_y = 0;
+			parallax_fake_y = true;
 		}
+	} else {
+		parallax_fake_y = true;
 	}
 }
 
@@ -1864,4 +1887,12 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 void Game_Map::Parallax::ClearChangedBG() {
 	Params params {}; // default Param indicates no override
 	ChangeBG(params);
+}
+
+bool Game_Map::Parallax::FakeXPosition() {
+	return parallax_fake_x;
+}
+
+bool Game_Map::Parallax::FakeYPosition() {
+	return parallax_fake_y;
 }

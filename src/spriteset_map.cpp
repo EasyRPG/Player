@@ -88,8 +88,18 @@ void Spriteset_Map::Update() {
 		character_sprites[i]->SetTone(new_tone);
 	}
 
-	panorama->SetOx(Game_Map::Parallax::GetX());
-	panorama->SetOy(Game_Map::Parallax::GetY());
+	int pan_x_off = 0;
+	int pan_y_off = 0;
+	if (Player::game_config.fake_resolution.Get()) {
+		if (Game_Map::Parallax::FakeXPosition()) {
+			pan_x_off = (static_cast<float>(Player::screen_width) - SCREEN_TARGET_WIDTH) / 2;
+		}
+		if (Game_Map::Parallax::FakeYPosition()) {
+			pan_y_off = (static_cast<float>(Player::screen_height) - SCREEN_TARGET_HEIGHT) / 2;
+		}
+	}
+	panorama->SetOx(Game_Map::Parallax::GetX() + pan_x_off);
+	panorama->SetOy(Game_Map::Parallax::GetY() + pan_y_off);
 	panorama->SetTone(new_tone);
 
 	Game_Vehicle* vehicle;

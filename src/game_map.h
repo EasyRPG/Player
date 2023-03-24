@@ -696,6 +696,12 @@ namespace Game_Map {
 		 * the map properties.
 		 */
 		void ClearChangedBG();
+
+		/** @return Whether ox adjustment is required for fake resolution mode */
+		bool FakeXPosition();
+
+		/** @return Whether oy adjustment is required for fake resolution mode */
+		bool FakeYPosition();
 	}
 }
 
