@@ -604,7 +604,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		OPTIONS -f rgba)
 	dkp_add_embedded_binary_library(3ds-assets keyboard battery)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-	target_sources(${PROJECT_NAME} PRIVATE
+	target_sources(${PROJECT_NAME} INTERFACE
+		$<TARGET_OBJECTS:3ds-assets> PRIVATE
 		src/platform/3ds/audio.cpp
 		src/platform/3ds/audio.h
 		src/platform/3ds/clock.cpp
@@ -640,7 +641,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 	enable_language(ASM)
 	dkp_add_embedded_binary_library(switch-assets "${CMAKE_CURRENT_SOURCE_DIR}/resources/switch/touch_ui.png")
 	target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-	target_sources(${PROJECT_NAME} PRIVATE
+	target_sources(${PROJECT_NAME} INTERFACE
+		$<TARGET_OBJECTS:switch-assets> PRIVATE
 		src/platform/switch/audio.cpp
 		src/platform/switch/audio.h
 		src/platform/switch/clock.cpp
