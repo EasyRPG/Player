@@ -451,11 +451,7 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 
 bool FTFont::vCanShape() const {
 #ifdef HAVE_HARFBUZZ
-	if (EP_UNLIKELY(rm2000_workaround)) {
-		return false;
-	}
-
-	return true;
+	return FT_IS_SFNT(face);
 #else
 	return false;
 #endif
