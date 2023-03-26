@@ -18,7 +18,7 @@
     <string name="vietnamese">vietnám</string>
     <string name="ok">OK</string>
     <string name="cancel">Mégse</string>
-    <string name="do_want_quit">Biztosan ki szeretnél lépni?</string>
+    <string name="do_want_quit">Biztosan ki szeretnél lépni\?</string>
     <string name="yes">Igen</string>
     <string name="no">Nem</string>
     <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt!</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
     <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">FPS ki/be</string>
     <string name="toggle_ui">Virtuális gombok ki/be</string>
     <string name="end_game">Játék befejezése</string>
     <string name="report_bug">Hibajelentés</string>
-    <string name="report_bug_msg">Meg fog nyílni a levelezője (pl. Gmail), hogy egy hibajelentést küldjön nekünk.\n\nHa nem szeretne e-mailt küldeni, vagy nincsen beállítva levelezője, bejelentheti a hibát a https://github.com/EasyRPG/Player/issues oldalon is.</string>
-    <string name="report_bug_mail">Köszönjük, hogy támogatja az EasyRPG Player-t.\n
-Egy naplófájl és a játékmentései mellékelve lettek a levélhez.\n
-Kérjük ne távolítsa el a naplófájlt! Szükségünk van egy mentésre, ami közel van a hiba helyéhez.\n
-Kérjük írja le a hiba részleteit!\n\n
-</string>
+    <string name="report_bug_msg">Meg fog nyílni a levelezője (pl. Gmail), hogy egy hibajelentést küldjön nekünk.
+\n
+\nHa nem szeretne e-mailt küldeni, vagy nincsen beállítva levelezője, bejelentheti a hibát a https://github.com/EasyRPG/Player/issues oldalon is.</string>
+    <string name="report_bug_mail">Köszönjük, hogy támogatja az EasyRPG Player-t.
+\n Egy naplófájl és a játékmentései mellékelve lettek a levélhez.
+\n Kérjük ne távolítsa el a naplófájlt! Szükségünk van egy mentésre, ami közel van a hiba helyéhez.
+\n Kérjük írja le a hiba részleteit!
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Videó</string>
     <string name="audio">Hang</string>
@@ -81,4 +83,25 @@ Kérjük írja le a hiba részleteit!\n\n
     <string name="navigation_drawer_open">Navigációs menü megnyitása</string>
     <string name="navigation_drawer_close">Navigációs menü bezárása</string>
     <string name="menu">Android menü megnyitása</string>
+    <string name="app_name" translate="false"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>

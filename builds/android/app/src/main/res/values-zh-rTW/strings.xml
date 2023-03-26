@@ -34,16 +34,18 @@
     <string name="change_default_mapping">修改預設的按鍵配置</string>
     <string name="how_to_use_easy_rpg">EasyRPG Player 使用方式</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">開關 FPS 顯示</string>
     <string name="toggle_ui">隱藏 / 顯示虛擬按鈕</string>
     <string name="end_game">結束遊戲</string>
     <string name="report_bug">回報問題</string>
-    <string name="report_bug_msg">這將會開啟您的 e-mail 程式 (如Gmail) 來寄錯誤回報給我們。\n\n如果不想要寄信或是沒有可用的 e-mail 程式的話，可以到 https://github.com/EasyRPG/Player/issues 來開一個新的 issue。</string>
-    <string name="report_bug_mail">謝謝您支持 EasyRPG Player。\n
-一個紀錄 (logfile) 以及您的存檔已經附加到此 e-mail 上。\n
-請不要移除它們！我們需要存檔以便知道是在遊戲中何處出錯。\n
-請詳細地告訴我們發生了什麼事。\n\n
-</string>
+    <string name="report_bug_msg">這將會開啟您的 e-mail 程式 (如Gmail) 來寄錯誤回報給我們。
+\n
+\n如果不想要寄信或是沒有可用的 e-mail 程式的話，可以到 https://github.com/EasyRPG/Player/issues 來開一個新的 issue。</string>
+    <string name="report_bug_mail">謝謝您支持 EasyRPG Player。
+\n 一個紀錄 (logfile) 以及您的存檔已經附加到此 e-mail 上。
+\n 請不要移除它們！我們需要存檔以便知道是在遊戲中何處出錯。
+\n 請詳細地告訴我們發生了什麼事。
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">影像</string>
     <string name="audio">音效</string>
@@ -103,4 +105,11 @@
     <string name="vertical_input_layout">縱向按鍵配置方案</string>
     <string name="settings_edit_layout_explanation">編輯按鍵配置方案時可以新增如 Shift 鈕的按鈕。
 \n要新增一個按鈕，點擊「返回」鍵後選擇「新增按鈕」。</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
 </resources>

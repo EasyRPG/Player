@@ -18,7 +18,7 @@
     <string name="vietnamese">Vietnamita</string>
     <string name="ok">Aceptar</string>
     <string name="cancel">Cancelar</string>
-    <string name="do_want_quit">¿Realmente quieres salir?</string>
+    <string name="do_want_quit">¿Realmente quieres salir\?</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="creating_dir_failed">Falló la creación de la carpeta $PATH</string>
@@ -34,17 +34,18 @@
     <string name="change_default_mapping">Cambiar el grupo de botones</string>
     <string name="how_to_use_easy_rpg">Cómo usar EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Ver/ocultar FPS</string>
     <string name="toggle_ui">Ver/ocultar botones en pantalla</string>
     <string name="end_game">Salir del juego</string>
     <string name="report_bug">Informar de un fallo</string>
     <string name="report_bug_msg">Esta función abrirá tu programa de correo electrónico (por ejemplo, Gmail) para enviarnos el informe de fallo.
 \n
 \nSi no quieres enviar un correo o no tienes un programa de correo configurado puedes abrir un informe en https://github.com/EasyRPG/Player/issues si lo prefieres.</string>
-    <string name="report_bug_mail">Gracias por apoyar EasyRPG Player.\n
-Se han adjuntado las partidas guardadas y un archivo de informe en este correo electrónico.\n
-No elimines el archivo del informe. Necesitamos una partida guardada que esté cerca de la ubicación del fallo.\n
-Cuéntanos detalladamente qué fue mal.\n\n</string>
+    <string name="report_bug_mail">Gracias por apoyar EasyRPG Player.
+\n Se han adjuntado las partidas guardadas y un archivo de informe en este correo electrónico.
+\n No elimines el archivo del informe. Necesitamos una partida guardada que esté cerca de la ubicación del fallo.
+\n Cuéntanos detalladamente qué fue mal.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Pantalla</string>
     <string name="audio">Sonido</string>
@@ -95,8 +96,6 @@ Cuéntanos detalladamente qué fue mal.\n\n</string>
 \n- Se puede agregar un banco de sonido (SoundFont) personalizado para modificar cómo suena la música MIDI</string>
     <string name="easyrpg_folders">Carpetas de EasyRPG</string>
     <string name="screen_size">Tamaño de la pantalla:</string>
-    <string name="uniform_pixel_size_best_image_quality">Tamaño de pixel uniforme (mejor calidad de imagen)</string>
-    <string name="stretch_the_image_wider_image">Estirar la imagen (más ancha)</string>
     <string name="settings_custom_soundfont">Soundfont personalizado:</string>
     <string name="open_the_sound_fonts_folder">Abrir la carpeta de soundfonts</string>
     <string name="settings_soundfont_explanation">Ubica los soundfont en formato SF2 en la carpeta \"soundfonts\". Los soundfont modifican cómo suena la música MIDI.</string>

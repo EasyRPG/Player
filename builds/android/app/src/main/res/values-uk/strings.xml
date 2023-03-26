@@ -18,7 +18,7 @@
     <string name="vietnamese">В’єтнамський</string>
     <string name="ok">OK</string>
     <string name="cancel">Відміна</string>
-    <string name="do_want_quit">Ви справді бажаєте вийти?</string>
+    <string name="do_want_quit">Ви справді бажаєте вийти\?</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="creating_dir_failed">Не вийшло створити директорію $PATH</string>
@@ -34,15 +34,18 @@
     <string name="change_default_mapping">Змінити стандартні значення кнопок</string>
     <string name="how_to_use_easy_rpg">Як використовувати EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Показ FPS</string>
     <string name="toggle_ui">Показ віртуальних кнопок</string>
     <string name="end_game">Закінчити гру</string>
     <string name="report_bug">Повідомити про помилку</string>
-    <string name="report_bug_msg">Ця функція відкриє вашу поштову програму (напр. Gmail), щоб дослати повідомлення про помилку.\n\nЯкщо ви не хочете досилати повідомлення поштою, або ваша поштова програма не налаштована, можна додати новий опис проблеми на https://github.com/EasyRPG/Player/issues</string>
-    <string name="report_bug_mail">Дякую за падтримку EasyRPG Player!\n
-До цього листа було додано лог-файл та збережені ігри.\n
-Будь ласка, не видаляйте лог-файл! Нам потрібне збереження недалеко від місця, де відбувається помилка.\n
-Будь ласка, детально опишіть, що саме не працює.\n\n</string>
+    <string name="report_bug_msg">Ця функція відкриє вашу поштову програму (напр. Gmail), щоб дослати повідомлення про помилку.
+\n
+\nЯкщо ви не хочете досилати повідомлення поштою, або ваша поштова програма не налаштована, можна додати новий опис проблеми на https://github.com/EasyRPG/Player/issues</string>
+    <string name="report_bug_mail">Дякую за падтримку EasyRPG Player!
+\n До цього листа було додано лог-файл та збережені ігри.
+\n Будь ласка, не видаляйте лог-файл! Нам потрібне збереження недалеко від місця, де відбувається помилка.
+\n Будь ласка, детально опишіть, що саме не працює.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Відео</string>
     <string name="audio">Аудіо</string>
@@ -80,4 +83,25 @@
     <string name="navigation_drawer_open">Відкрити бокове меню</string>
     <string name="navigation_drawer_close">Закрити бокове меню</string>
     <string name="menu">Відкрити меню Android</string>
+    <string name="app_name" translate="false"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>

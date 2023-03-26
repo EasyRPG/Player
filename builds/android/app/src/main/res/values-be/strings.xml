@@ -18,7 +18,7 @@
     <string name="vietnamese">В’етнамскі</string>
     <string name="ok">OK</string>
     <string name="cancel">Адмена</string>
-    <string name="do_want_quit">Вы сапраўды жадаеце выйсці?</string>
+    <string name="do_want_quit">Вы сапраўды жадаеце выйсці\?</string>
     <string name="yes">Так</string>
     <string name="no">Не</string>
     <string name="creating_dir_failed">Не атрымалася стварыць дырэкторыю $PATH</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Змяніць стандартныя значэнні кнопак</string>
     <string name="how_to_use_easy_rpg">Інструкцыя да EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Паказ FPS</string>
     <string name="toggle_ui">Паказ віртуальных кнопак</string>
     <string name="end_game">Закончыць гульню</string>
     <string name="report_bug">Паведаміць пра памылку</string>
-    <string name="report_bug_msg">Гэты пункт адкрые вашу паштовую праграму (напр. Gmail), каб даслаць паведамленне пра памылку.\n\nКалі вы не хочаце дасылаць паведамленне лістом, ці ў вас не налаштаваная паштовая праграма, на https://github.com/EasyRPG/Player/issues можна дадаць новае апісанне праблемы.</string>
-    <string name="report_bug_mail">Дзякуй, што падтрымліваеце EasyRPG Player.\n
-Да гэтага ліста былі даданыя лог-файл і захаваныя гульні.\n
-Калі ласка, не выдаляйце лог-файл! Нам патрэбны файл захаванай гульні недалёка ад месца, дзе зʼяўляецца праблемы.\n
-Калі ласка, падрабязна апішыце праблему.\n\n
-</string>
+    <string name="report_bug_msg">Гэты пункт адкрые вашу паштовую праграму (напр. Gmail), каб даслаць паведамленне пра памылку.
+\n
+\nКалі вы не хочаце дасылаць паведамленне лістом, ці ў вас не налаштаваная паштовая праграма, на https://github.com/EasyRPG/Player/issues можна дадаць новае апісанне праблемы.</string>
+    <string name="report_bug_mail">Дзякуй, што падтрымліваеце EasyRPG Player.
+\n Да гэтага ліста былі даданыя лог-файл і захаваныя гульні.
+\n Калі ласка, не выдаляйце лог-файл! Нам патрэбны файл захаванай гульні недалёка ад месца, дзе зʼяўляецца праблемы.
+\n Калі ласка, падрабязна апішыце праблему.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Відэа</string>
     <string name="audio">Аўдыя</string>
@@ -81,4 +83,25 @@
     <string name="navigation_drawer_open">Адкрыць бакавое меню</string>
     <string name="navigation_drawer_close">Закрыць бакавое меню</string>
     <string name="menu">Адкрыць Android-меню</string>
+    <string name="app_name" translate="false"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>

@@ -18,7 +18,7 @@
     <string name="vietnamese">Vietnamien</string>
     <string name="ok">Ok</string>
     <string name="cancel">Annuler</string>
-    <string name="do_want_quit">Voulez-vous vraiment quitter ?</string>
+    <string name="do_want_quit">Voulez-vous vraiment quitter \?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="creating_dir_failed">La création du dossier $PATH a échoué</string>
@@ -34,7 +34,6 @@
     <string name="change_default_mapping">Changer l\'agencement des boutons par défaut</string>
     <string name="how_to_use_easy_rpg">Comment utiliser EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Afficher les FPS</string>
     <string name="toggle_ui">Afficher les boutons virtuels</string>
     <string name="end_game">Quitter le jeu</string>
     <string name="report_bug">Signaler un bug</string>
@@ -93,8 +92,6 @@
 \n- Un soundfont personnalisé pour altérer comment sonnent les musiques MIDI peut être fournit</string>
     <string name="easyrpg_folders">Dossiers EasyRPG</string>
     <string name="screen_size">Taille de l\'écran :</string>
-    <string name="uniform_pixel_size_best_image_quality">Uniformisation de la taille des pixels (meilleure qualité d\'image)</string>
-    <string name="stretch_the_image_wider_image">Étirer l\'image (image élargie)</string>
     <string name="settings_custom_soundfont">Soundfont personnalisé :</string>
     <string name="open_the_sound_fonts_folder">Ouvrir le dossier des soundfonts</string>
     <string name="settings_soundfont_explanation">Mettez vos soundfonts au format SF2 dans le dossier \"soundfonts\". Les soundfonts altèrent comment sonnent les musiques MIDI.</string>

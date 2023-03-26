@@ -18,7 +18,7 @@
     <string name="vietnamese">เวียดนาม</string>
     <string name="ok">ตกลง</string>
     <string name="cancel">ยกเลิก</string>
-    <string name="do_want_quit">คุณต้องการที่จะออกหรือไม่?</string>
+    <string name="do_want_quit">คุณต้องการที่จะออกหรือไม่\?</string>
     <string name="yes">ใช่</string>
     <string name="no">ไม่</string>
     <string name="creating_dir_failed">สร้างโฟลเดอร์ $PATH ล้มเหลว</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">เปลี่ยนค่าเริ่มต้นการทำงานปุ่ม</string>
     <string name="how_to_use_easy_rpg">วิธีการใช้งาน EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">เปลี่ยน FPS</string>
     <string name="toggle_ui">สลับปุ่มบนหน้าจอ</string>
     <string name="end_game">ปิดเกม</string>
     <string name="report_bug">รายงานปัญหา</string>
-    <string name="report_bug_msg">ความสามารถนี้จะโปรแกรมอีเมลของคุณ (เช่น Gmail) เพื่อส่งรายงานปัญหา\n\nถ้าคุณไม่ต้องการส่งอีเมลหรือไม่มีโปรแกรมที่ใช้อีเมลคุณยังสามารถรายงานปัญหาได้ที่ https://github.com/EasyRPG/Player/issues</string>
-    <string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player.\n
-ไฟล์ประวัติการทำงานและบันทึกเกมของคุณจะถูกแนบไปกับอีเมลนี้\n
-ได้โปรดอย่านำไฟล์ประวัติออก พวกเราต้องการข้อมูลเหล่านี้ในการหาข้อผอดพลาด\n
-กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย\n\n
-</string>
+    <string name="report_bug_msg">ความสามารถนี้จะโปรแกรมอีเมลของคุณ (เช่น Gmail) เพื่อส่งรายงานปัญหา
+\n
+\nถ้าคุณไม่ต้องการส่งอีเมลหรือไม่มีโปรแกรมที่ใช้อีเมลคุณยังสามารถรายงานปัญหาได้ที่ https://github.com/EasyRPG/Player/issues</string>
+    <string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player.
+\n ไฟล์ประวัติการทำงานและบันทึกเกมของคุณจะถูกแนบไปกับอีเมลนี้
+\n ได้โปรดอย่านำไฟล์ประวัติออก พวกเราต้องการข้อมูลเหล่านี้ในการหาข้อผอดพลาด
+\n กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="settings">การตั้งค่า</string>
     <string name="enable_vibration">เปิดการสั่น</string>
@@ -67,4 +69,35 @@
     <string name="key_cancel">Cancel (ESC and X)</string>
     <string name="key_shift">Shift</string>
     <!--GameBrowserAPI15-->
+    <string name="app_name" translate="false"/>
+    <string name="video"/>
+    <string name="audio"/>
+    <string name="input"/>
+    <string name="force_landscape_mode"/>
+    <string name="fast_forward"/>
+    <string name="fast_forward_factor"/>
+    <string name="key_fast_forward"/>
+    <string name="navigation_drawer_open"/>
+    <string name="navigation_drawer_close"/>
+    <string name="menu"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>

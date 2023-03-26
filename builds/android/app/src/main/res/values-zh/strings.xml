@@ -34,16 +34,18 @@
     <string name="change_default_mapping">更改默认按键映射</string>
     <string name="how_to_use_easy_rpg">EasyRPG模拟器使用教程</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">切换FPS</string>
     <string name="toggle_ui">设置虚拟按钮</string>
     <string name="end_game">结束游戏</string>
     <string name="report_bug">报告错误</string>
-    <string name="report_bug_msg">此选项将打开你的电子邮件程序（例如Gmail）来向我们发送错误报告。\n\n如果你不希望发送邮件或者你没有电子邮件程序，你可以在 https://github.com/EasyRPG/Player/issues 发送一个新的报告。</string>
-    <string name="report_bug_mail">感谢你支持EasyRPG Player。\n
-一个日志文件和你的游戏存档已被添加至该邮件的附件。\n
-请勿删除日志文件！我们需要一个接近错误位置的存档。\n
-请详细地告诉我们错误的内容。\n\n
-</string>
+    <string name="report_bug_msg">此选项将打开你的电子邮件程序（例如Gmail）来向我们发送错误报告。
+\n
+\n如果你不希望发送邮件或者你没有电子邮件程序，你可以在 https://github.com/EasyRPG/Player/issues 发送一个新的报告。</string>
+    <string name="report_bug_mail">感谢你支持EasyRPG Player。
+\n 一个日志文件和你的游戏存档已被添加至该邮件的附件。
+\n 请勿删除日志文件！我们需要一个接近错误位置的存档。
+\n 请详细地告诉我们错误的内容。
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">视频</string>
     <string name="audio">声音</string>
@@ -75,4 +77,27 @@
     <string name="navigation_drawer_open">打开导航目录</string>
     <string name="navigation_drawer_close">关闭导航目录</string>
     <string name="menu">打开Android目录</string>
+    <string name="app_name" translate="false"/>
+    <string name="fast_forward"/>
+    <string name="fast_forward_factor"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>

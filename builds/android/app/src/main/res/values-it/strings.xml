@@ -18,7 +18,7 @@
     <string name="vietnamese">Vietnamita</string>
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
-    <string name="do_want_quit">Vuoi veramente uscire?</string>
+    <string name="do_want_quit">Vuoi veramente uscire\?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="creating_dir_failed">Creazione della cartella $PATH fallita</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Cambia il mapping dei tasti predefinito</string>
     <string name="how_to_use_easy_rpg">Come utilizzare EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Mostra FPS</string>
     <string name="toggle_ui">Mostra Tasti Virtuali</string>
     <string name="end_game">Esci dal Gioco</string>
     <string name="report_bug">Segnala un bug</string>
-    <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.\n\nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
-    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.\n
-Un file di log ed i tuoi salvataggi saranno allegati a questa mail.\n
-Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.\n
-Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
-</string>
+    <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.
+\n
+\nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
+    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.
+\n Un file di log ed i tuoi salvataggi saranno allegati a questa mail.
+\n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.
+\n Per favore spiegaci in dettaglio in cosa consiste il bug.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -94,7 +96,6 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
 \n- Un soundfont personalizzato per alterare il suono della colonna MIDI può essere utilizzato</string>
     <string name="easyrpg_folders">Cartelle EasyRPG</string>
     <string name="screen_size">Dimensioni dello schermo:</string>
-    <string name="stretch_the_image_wider_image">Allarga l\'immagine orizzontalmente</string>
     <string name="settings_custom_soundfont">Soundfont personalizzato:</string>
     <string name="open_the_sound_fonts_folder">Apri la cartella soundfonts</string>
     <string name="settings_soundfont_explanation">Metti i soundfonts in formato SF2 nella cartella \"soundfonts\". I soundfonts alterano la musica MIDI.</string>
@@ -115,4 +116,6 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
     <string name="open_rtp_folder">Apri la cartella RTP</string>
     <string name="settings_edit_layout_explanation">Quando si modifica la disposizione degli input, possono essere aggiunti anche tasti differenti.
 \n Per aggiungere un pulsante nuovo, premi il pulsante \"Indietro\" e seleziona \"Aggiungi un pulsante\".</string>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
 </resources>

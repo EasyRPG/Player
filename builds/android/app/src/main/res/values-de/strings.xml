@@ -18,7 +18,7 @@
     <string name="vietnamese">Vietnamesisch</string>
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
-    <string name="do_want_quit">Möchtest du wirklich beenden?</string>
+    <string name="do_want_quit">Möchtest du wirklich beenden\?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
     <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">FPS ein-/ausblenden</string>
     <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
     <string name="end_game">Spiel beenden</string>
     <string name="report_bug">Fehler melden</string>
-    <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
-    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.\n
-Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.\n
-Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.\n
-Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
-</string>
+    <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.
+\n
+\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
+    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.
+\n Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.
+\n Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.
+\n Teile uns zusätzlich in Detail mit, was schiefgegangen ist.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Anzeige</string>
     <string name="audio">Audio</string>
@@ -94,8 +96,6 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
 \n- Ein benutzerdefinierter Soundfont zum Ändern des Klangs von MIDI-Musik kann bereitgestellt werden</string>
     <string name="easyrpg_folders">EasyRPG-Ordner</string>
     <string name="screen_size">Bildschirmgröße:</string>
-    <string name="uniform_pixel_size_best_image_quality">Gleichmäßiges Pixel-Seitenverhältnis (Beste Qualität)</string>
-    <string name="stretch_the_image_wider_image">Bild strecken (Größere Bild)</string>
     <string name="settings_custom_soundfont">Eigener Soundfont:</string>
     <string name="open_the_sound_fonts_folder">Soundfont-Ordner öffnen</string>
     <string name="settings_soundfont_explanation">Platziere Soundfonts im SF2-Format im \"soundfonts\"-Ordner. Soundfonts ändern den Klang von MIDI-Dateien.</string>
