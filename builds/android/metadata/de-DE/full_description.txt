@@ -1,7 +1,7 @@
-Der EasyRPG Player ermöglicht die Ausführung von RPG Maker 2000 und RPG Maker 2003-Spielen (neuere Engines, u.a. XP, VX, VX Ace und MV, werden NICHT unterstützt)
+Mit EasyRPG Player kannst du Spiele genießen, die mit RPG Maker 2000 oder RPG Maker 2003 erstellt wurden. Neuere Engines wie XP, VX, MV und MZ werden nicht unterstützt.
+
+EasyRPG Player ist kein Editor. Du kannst damit keine eigenen Spiele erstellen.
 
 Homepage: https://easyrpg.org/
-Änderungen: https://blog.easyrpg.org/
-Bugs melden: https://github.com/EasyRPG/Player/issues/
 
 Diese App steht in keinerlei Verbindung zu Kadokawa Corporation.
