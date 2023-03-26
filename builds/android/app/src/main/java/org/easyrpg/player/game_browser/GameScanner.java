@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -175,7 +177,7 @@ public class GameScanner {
                         String nameLower = name.toLowerCase(Locale.ROOT);
                         if (nameLower.endsWith(".zip") || nameLower.endsWith(".easyrpg")) {
                             Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
-                            Game game = isAGameZipped(context, fileURI);
+                            Game game = isAGameZipped(context, fileURI, true);
                             if (game != null) {
                                 gameList.add(game);
                             }
@@ -249,14 +251,23 @@ public class GameScanner {
 
     /** Return a game if "folder" is a game folder, or return null.
      *  This method is designed to reduce the number of sys calls */
-    public static Game isAGameZipped(Context context, Uri zipUri) {
+    public static Game isAGameZipped(Context context, Uri zipUri, boolean unicode) {
         ContentResolver resolver = context.getContentResolver();
 
         // Create a lookup by extension as we go, in case we are dealing with non-standard extensions.
         Map<String, ZipFoundStats> games = new HashMap<>();
 
         try (InputStream zipIStream = resolver.openInputStream(zipUri)) {
-            ZipInputStream zipStream = new ZipInputStream(zipIStream);
+            ZipInputStream zipStream;
+            if (unicode) {
+                zipStream = new ZipInputStream(zipIStream);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // arbitrary encoding that does not crash
+                zipStream = new ZipInputStream(zipIStream, StandardCharsets.ISO_8859_1);
+            } else {
+                return null;
+            }
+
             ZipEntry entry;
 
             while ((entry = zipStream.getNextEntry()) != null) {
@@ -348,6 +359,11 @@ public class GameScanner {
             }
         } catch (IOException e) {
             return null;
+        } catch (IllegalArgumentException e) {
+            if (unicode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                return isAGameZipped(context, zipUri, false);
+            }
+            return null;
         }
 
         for (Map.Entry<String, ZipFoundStats> entry : games.entrySet()) {
@@ -355,7 +371,13 @@ public class GameScanner {
                 String name = new File(zipUri.getPath()).getName();
                 String saveFolder = name.substring(0, name.lastIndexOf("."));
                 Bitmap titleScreen = extractTitleScreenImage(context, entry.getValue().titleImage);
-                return Game.fromZip(Helper.getFileFromURI(context, zipUri), entry.getKey(), saveFolder, titleScreen);
+                String key = entry.getKey();
+                if (!unicode) {
+                    // FIXME: This will launch the built-in Game Browser when the ZIP archive contains more than one folder in the root
+                    // But the game can be at least launched this way.
+                    key = "";
+                }
+                return Game.fromZip(Helper.getFileFromURI(context, zipUri), key, saveFolder, titleScreen);
             }
         }
 

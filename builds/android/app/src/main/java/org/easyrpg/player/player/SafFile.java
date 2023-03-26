@@ -107,11 +107,6 @@ public class SafFile {
             return -1;
         }
 
-        String mode = "w";
-        if (append) {
-            mode += "a";
-        }
-
         Uri actualFile = root.getUri();
         if (!exists()) {
             // The file must exist beforehand
@@ -132,10 +127,25 @@ public class SafFile {
             actualFile = df.getUri();
         }
 
-        try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(actualFile, mode)) {
-            return fd.detachFd();
-        } catch (IOException e) {
-            return -1;
+        if (append) {
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(actualFile, "wa")) {
+                return fd.detachFd();
+            } catch (IOException e) {
+                return -1;
+            }
+        } else {
+            // Android 10+ does not truncate anymore when "w" is used (CVE-2023-21036)
+            // See also https://issuetracker.google.com/issues/180526528
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(actualFile, "wt")) {
+                return fd.detachFd();
+            } catch (IOException e) {
+                // Some content providers do not support "wt" but will truncate when using "w"
+                try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(actualFile, "w")) {
+                    return fd.detachFd();
+                } catch (IOException e2) {
+                    return -1;
+                }
+            }
         }
     }
 
