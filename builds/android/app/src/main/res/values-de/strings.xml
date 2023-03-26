@@ -18,7 +18,7 @@
     <string name="vietnamese">Vietnamesisch</string>
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
-    <string name="do_want_quit">Möchtest du wirklich beenden?</string>
+    <string name="do_want_quit">Möchtest du wirklich beenden\?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
     <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">FPS ein-/ausblenden</string>
     <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
     <string name="end_game">Spiel beenden</string>
     <string name="report_bug">Fehler melden</string>
-    <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
-    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.\n
-Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.\n
-Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.\n
-Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
-</string>
+    <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.
+\n
+\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
+    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.
+\n Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.
+\n Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.
+\n Teile uns zusätzlich im Detail mit, was schiefgegangen ist.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Anzeige</string>
     <string name="audio">Audio</string>
@@ -73,7 +75,7 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
     <string name="reset_button_mapping">Tastenbelegung zurücksetzen</string>
     <string name="exit_without_saving">Änderungen verwerfen und beenden</string>
     <string name="save_and_quit">Speichern und beenden</string>
-    <string name="key_enter">Bestätigen (Z)</string>
+    <string name="key_enter">Bestätigen (Eingabe und Z)</string>
     <string name="key_cancel">Abbrechen (ESC und X)</string>
     <string name="key_shift">Umschalttaste (Shift)</string>
     <string name="key_fast_forward">Beschleunigen</string>
@@ -83,23 +85,21 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
     <string name="menu">Android-Menü öffnen</string>
     <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden. Diese müssen im Ordner \"games\" liegen.
-\nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
+\nSpiele können in Ordnern oder ZIP-Archiven sein. Du kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
     <string name="open_games_folder">Den Spiele-Ordner (games) öffnen</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003-Spiele müssen im Unterverzeichnis \"games\" platziert werden.
-\nDie Spiele müssen unkomprimiert sein.
-\nZIP, RAR, LZH und EXE-Dateien werden NICHT unterstützt.
+\nDie Spiele müssen entpackt sein oder in einem ZIP-Archiv vorliegen.
+\nRAR, LZH und EXE-Dateien werden NICHT unterstützt.
 \n
 \nOptionale Funktionen (wirf einen Blick in die Einstellungen):
 \n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Assets) kann bereitgestellt werden
 \n- Ein benutzerdefinierter Soundfont zum Ändern des Klangs von MIDI-Musik kann bereitgestellt werden</string>
     <string name="easyrpg_folders">EasyRPG-Ordner</string>
     <string name="screen_size">Bildschirmgröße:</string>
-    <string name="uniform_pixel_size_best_image_quality">Gleichmäßiges Pixel-Seitenverhältnis (Beste Qualität)</string>
-    <string name="stretch_the_image_wider_image">Bild strecken (Größere Bild)</string>
     <string name="settings_custom_soundfont">Eigener Soundfont:</string>
     <string name="open_the_sound_fonts_folder">Soundfont-Ordner öffnen</string>
-    <string name="settings_soundfont_explanation">Platziere Soundfonts im SF2-Format im \"soundfonts\"-Ordner. Soundfonts ändern den Klang von MIDI-Dateien.</string>
-    <string name="settings_soundfont_restart_app">Bitte starte nach dem ändern des Soundfonts die App neu.</string>
+    <string name="settings_soundfont_explanation">Platziere Soundfonts im SF2-Format im \"soundfonts\"-Ordner. Soundfonts ändern den Klang von MIDI-Musik.</string>
+    <string name="settings_soundfont_restart_app">Bitte starte nach dem Andern des Soundfonts die App neu.</string>
     <string name="settings_soundfont_found">Gefundene Soundfonts:</string>
     <string name="settings_default_soundfont">Standard-Soundfont (Integriert)</string>
     <string name="select_the_games_folder">EasyRPG-Ordner auswählen</string>
@@ -118,4 +118,21 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
     <string name="vertical_input_layout">Vertikales (Portrait) Eingabe-Layout</string>
     <string name="settings_edit_layout_explanation">Beim Bearbeiten des Eingabe-Layouts kannst du weitere Tasten, beispielsweise die Umschalttaste, hinzufügen.
 \nDrücke dazu die Zurück-Taste und wähle \"Taste hinzufügen\" aus.</string>
+    <string name="scale_nearest">Skalierung auf die Bildschirmgröße mit Nearest Neighbour (Schnell, niedrige Qualität)</string>
+    <string name="scale_integer">Skalierung auf ein Vielfaches der Spielauflösung (Schnell, kleineres Bild, gute Qualität)</string>
+    <string name="scale_bilinear">Skalierung auf die Bildschirmgröße mit einem bilinearen Filter (Langsam, gute Qualität)</string>
+    <string name="stretch">Seitenverhältnis ignorieren (Auf Bildschirmbreite strecken)</string>
+    <string name="music_volume">Lautstärke von Musik</string>
+    <string name="sound_volume">Lautstärke von Soundeffekten</string>
+    <string name="launch_debug_mode">Im Debugmodus starten</string>
+    <string name="visit_website">Unsere Website besuchen</string>
+    <string name="error_no_games_folder">Der \"games\"-Ordner existiert nicht oder ist kein Ordner.</string>
+    <string name="error_games_no_rw">Der \"games\"-Ordner ist nicht lesbar oder nicht schreibbar. Wähle einen anderen Ort für den EasyRPG-Ordner. Der EasyRPG-Ordner kann in den Einstellungen geändert werden.</string>
+    <string name="key_debug_walk_through_walls">Durch Wände gehen (nur im Debugmodus)</string>
+    <string name="key_debug_menu">Debugmenü öffnen (nur im Debugmodus)</string>
+    <string name="settings_resolution">Auflösung:</string>
+    <string name="settings_resolution_desc">Achtung: Das Ändern der Auflösung kann zu Grafikfehlern oder einem nicht funktionsfähigen Spiel führen!</string>
+    <string name="settings_resolution_original">Original (320x240, 4:3, Empfohlen)</string>
+    <string name="settings_resolution_widescreen">Breitbild (416x240, 16:9, Experimentell)</string>
+    <string name="settings_resolution_ultrawide">Extrabreit (560x240, 21:9, Experimentell)</string>
 </resources>

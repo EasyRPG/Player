@@ -18,12 +18,12 @@
     <string name="vietnamese">Vietnamita</string>
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
-    <string name="do_want_quit">Vuoi veramente uscire?</string>
+    <string name="do_want_quit">Vuoi veramente uscire\?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="creating_dir_failed">Creazione della cartella $PATH fallita</string>
     <string name="path_not_readable">$PATH non è leggibile</string>
-    <string name="no_external_storage">Nessun archivio rimovibile (es. SD card) rilevato.</string>
+    <string name="no_external_storage">Nessun archivio rimovibile (es. SD card) rilevato</string>
     <string name="not_valid_game">$PATH non è un gioco valido</string>
     <string name="select_game_region">Seleziona Regione di Gioco</string>
     <string name="change_the_layout">Cambia la disposizione</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Cambia il mapping dei tasti predefinito</string>
     <string name="how_to_use_easy_rpg">Come utilizzare EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Mostra FPS</string>
     <string name="toggle_ui">Mostra Tasti Virtuali</string>
     <string name="end_game">Esci dal Gioco</string>
     <string name="report_bug">Segnala un bug</string>
-    <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.\n\nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
-    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.\n
-Un file di log ed i tuoi salvataggi saranno allegati a questa mail.\n
-Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.\n
-Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
-</string>
+    <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.
+\n
+\nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
+    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.
+\n Un file di log ed i tuoi salvataggi saranno allegati a questa mail.
+\n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.
+\n Per favore spiegaci in dettaglio in cosa consiste il bug.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -83,18 +85,16 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
     <string name="menu">Apri Menù Android</string>
     <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="no_games_found_and_explanation_android_30">Non sono stati trovati giochi creati con RPG Maker 2000/2003. Mettili nella sottosezione della cartella giochi.
-\nLa cartella di EasyRPG può essere modificata direttamente dalle Impostazioni.</string>
+\nI giochi posso essere in cartelle o in archivi ZIP. La cartella di EasyRPG può essere modificata direttamente dalle Impostazioni.</string>
     <string name="open_games_folder">Apri la cartella dei giochi</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Inserisci i giochi creati con RPG Maker 2000/2003 nella sottosezione della cartella dei giochi.
-\nI giochi non devono essere compressi.
-\nI formati ZIP, RAR, LZH ed EXE non sono supportati.
+\nI giochi possono essere in cartelle o in formato ZIP.
 \n
 \nFunzioni opzionali (Attivabili dalle Impostazioni):
 \n- Il RPT (assets usati da altri giochi) possono essere utilizzati
 \n- Un soundfont personalizzato per alterare il suono della colonna MIDI può essere utilizzato</string>
     <string name="easyrpg_folders">Cartelle EasyRPG</string>
-    <string name="screen_size">Dimensioni dello schermo:</string>
-    <string name="stretch_the_image_wider_image">Allarga l\'immagine orizzontalmente</string>
+    <string name="screen_size">Ridimensionamento dello schermo:</string>
     <string name="settings_custom_soundfont">Soundfont personalizzato:</string>
     <string name="open_the_sound_fonts_folder">Apri la cartella soundfonts</string>
     <string name="settings_soundfont_explanation">Metti i soundfonts in formato SF2 nella cartella \"soundfonts\". I soundfonts alterano la musica MIDI.</string>
@@ -115,4 +115,23 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
     <string name="open_rtp_folder">Apri la cartella RTP</string>
     <string name="settings_edit_layout_explanation">Quando si modifica la disposizione degli input, possono essere aggiunti anche tasti differenti.
 \n Per aggiungere un pulsante nuovo, premi il pulsante \"Indietro\" e seleziona \"Aggiungi un pulsante\".</string>
+    <string name="horizontal_input_layout">Layout di Input Orizzontale (Landscape)</string>
+    <string name="vertical_input_layout">Layout di Input Verticale (Portrait)</string>
+    <string name="scale_nearest">Ridimensiona in base alle dimensioni dello schermo usando la risoluzione più vicina (Più veloce, bassa qualità)</string>
+    <string name="scale_integer">Ridimensiona ad un multiplo della risoluzione di gioco (Più veloce, immagine più piccola, buona qualità)</string>
+    <string name="scale_bilinear">Ridimensiona in base alle dimensioni dello schermo e applica un filtro bilineare (Più lento, buona qualità)</string>
+    <string name="stretch">Ignora le proporzioni (stretcha rispetto alla larghezza dello schermo)</string>
+    <string name="music_volume">Volume musica</string>
+    <string name="sound_volume">Volume effetti sonori</string>
+    <string name="launch_debug_mode">Avvia in modalità debug</string>
+    <string name="visit_website">Visita il nostro sito</string>
+    <string name="error_no_games_folder">La cartella di gioco (games) non esiste o non è una cartella.</string>
+    <string name="error_games_no_rw">La cartella di gioco non è leggibile o modificabile. Seleziona una cartella differente come directory di EasyRPG. La cartella EasyRGP può essere cambiata nelle impostazioni.</string>
+    <string name="key_debug_walk_through_walls">Cammina attraverso i muri (Richiede modalità debug)</string>
+    <string name="key_debug_menu">Apri Menu debug (Richiede modalità debug)</string>
+    <string name="settings_resolution">Risoluzione del Gioco:</string>
+    <string name="settings_resolution_desc">Modificare la risoluzione può causare glitch grafici o provocare crash. Sei avvisato!</string>
+    <string name="settings_resolution_original">Originale (320x240, 4:3, Consigliata)</string>
+    <string name="settings_resolution_widescreen">Widescreen (416x240, 16:9, Sperimentale)</string>
+    <string name="settings_resolution_ultrawide">Ultrawide (560x240, 21:9, Sperimentale)</string>
 </resources>

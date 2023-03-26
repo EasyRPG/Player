@@ -18,7 +18,7 @@
     <string name="vietnamese">Bahasa Vietnam</string>
     <string name="ok">OKE</string>
     <string name="cancel">Batal</string>
-    <string name="do_want_quit">Apa benar ingin keluar?</string>
+    <string name="do_want_quit">Apa benar ingin keluar\?</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="creating_dir_failed">Gagal membuat direktori $PATH</string>
@@ -34,16 +34,18 @@
     <string name="change_default_mapping">Ubah pemetaan tombol bawaan</string>
     <string name="how_to_use_easy_rpg">Cara memakai EasyRPG Player</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">Aktifkan FPS</string>
     <string name="toggle_ui">Aktifkan tombol virtual</string>
     <string name="end_game">Matikan permainan</string>
     <string name="report_bug">Laporkan kutu</string>
-    <string name="report_bug_msg">Fungsi ini akan membuka aplikasi surel Anda (misal. Gmail) untuk mengirimkan kepada kami laporan kutu.\n\nJika Anda tidak ingin mengirimkan surel atau tidak punya aplikasi surel yang di konfigurasikan, Anda dapat membuka isu baru di https://github.com/EasyRPG/Player/issues sebagai gantinya.</string>
-    <string name="report_bug_mail">Terima kasih telah mendukung EasyRPG Player.\n
-File log dan savegame Anda dilampirkan di surel ini.\n
-Tolong jangan menghapus file log! Kami membutuhkan savegame yang dekat dengan lokasi kutunya.\n
-Tolong beri tahu kami secara detail apa yang salah.\n\n
-</string>
+    <string name="report_bug_msg">Fungsi ini akan membuka aplikasi surel Anda (misal. Gmail) untuk mengirimkan kepada kami laporan kutu.
+\n
+\nJika Anda tidak ingin mengirimkan surel atau tidak punya aplikasi surel yang di konfigurasikan, Anda dapat membuka isu baru di https://github.com/EasyRPG/Player/issues sebagai gantinya.</string>
+    <string name="report_bug_mail">Terima kasih telah mendukung EasyRPG Player.
+\n File log dan savegame Anda dilampirkan di surel ini.
+\n Tolong jangan menghapus file log! Kami membutuhkan savegame yang dekat dengan lokasi kutunya.
+\n Tolong beri tahu kami secara detail apa yang salah.
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -95,8 +97,6 @@ Tolong beri tahu kami secara detail apa yang salah.\n\n
 \n- soundfont kostum untuk mengubah bagaimana suara musik MIDI dapat disajikan</string>
     <string name="easyrpg_folders">folder EasyRPG</string>
     <string name="screen_size">ukuran layar:</string>
-    <string name="uniform_pixel_size_best_image_quality">ukuran pixel pakaian (gambar kualitas terbaik)</string>
-    <string name="stretch_the_image_wider_image">rentangkan gambar (gambar lebih lebar)</string>
     <string name="settings_custom_soundfont">Soundfont kostum:</string>
     <string name="open_the_sound_fonts_folder">buka folder Soundfont</string>
     <string name="settings_soundfont_explanation">letakkan soundfont dalam format SF2 pada folder \"soundfont\". Soundfont mengatur bagaimana suara MIDI terdengar.</string>

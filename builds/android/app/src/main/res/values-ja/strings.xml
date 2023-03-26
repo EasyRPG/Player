@@ -34,15 +34,18 @@
     <string name="change_default_mapping">デフォルトのボタン配置に変更</string>
     <string name="how_to_use_easy_rpg">EasyRPG Playerの使い方</string>
     <!--Ingame menu-->
-    <string name="toggle_fps">FPSの表示</string>
     <string name="toggle_ui">仮想ボタンの切り替え</string>
     <string name="end_game">ゲームを終了</string>
     <string name="report_bug">バグを報告</string>
-    <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。\n\nメールを送信したくないか、メールプログラムを持っていない場合は、代わりに https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
-    <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。\n
-ログファイルとセーブしたゲームが、このメールに添付されました。\n
-ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。\n
-何の問題があったのかを詳細に教えてください。\n\n</string>
+    <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。
+\n
+\nメールを送信したくないか、メールプログラムを持っていない場合は、代わりに https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
+    <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。
+\n ログファイルとセーブしたゲームが、このメールに添付されました。
+\n ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。
+\n 何の問題があったのかを詳細に教えてください。
+\n
+\n</string>
     <!--Settings Activities-->
     <string name="video">ビデオ</string>
     <string name="audio">オーディオ</string>
@@ -80,4 +83,25 @@
     <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
     <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
     <string name="menu">Android メニューを開く</string>
+    <string name="app_name" translate="false"/>
+    <string name="no_games_found_and_explanation_android_30"/>
+    <string name="open_games_folder"/>
+    <string name="how_to_use_easy_rpg_explanation_android_30"/>
+    <string name="easyrpg_folders"/>
+    <string name="screen_size"/>
+    <string name="settings_custom_soundfont"/>
+    <string name="open_the_sound_fonts_folder"/>
+    <string name="settings_soundfont_explanation"/>
+    <string name="settings_soundfont_restart_app"/>
+    <string name="settings_soundfont_found"/>
+    <string name="settings_default_soundfont"/>
+    <string name="select_the_games_folder"/>
+    <string name="id_select_games_folder_explanation"/>
+    <string name="Loading"/>
+    <string name="enable_rtp_support"/>
+    <string name="rtp_explanation"/>
+    <string name="open_rtp_folder"/>
+    <string name="horizontal_input_layout"/>
+    <string name="vertical_input_layout"/>
+    <string name="settings_edit_layout_explanation"/>
 </resources>
