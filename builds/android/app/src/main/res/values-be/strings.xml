@@ -83,7 +83,7 @@
     <string name="navigation_drawer_open">Адкрыць бакавое меню</string>
     <string name="navigation_drawer_close">Закрыць бакавое меню</string>
     <string name="menu">Адкрыць Android-меню</string>
-    <string name="app_name" translate="false"/>
+    <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="no_games_found_and_explanation_android_30"/>
     <string name="open_games_folder"/>
     <string name="how_to_use_easy_rpg_explanation_android_30"/>
