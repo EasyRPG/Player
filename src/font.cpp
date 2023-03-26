@@ -451,11 +451,7 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 
 bool FTFont::vCanShape() const {
 #ifdef HAVE_HARFBUZZ
-	if (EP_UNLIKELY(rm2000_workaround)) {
-		return false;
-	}
-
-	return true;
+	return FT_IS_SFNT(face);
 #else
 	return false;
 #endif
@@ -482,14 +478,16 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 		auto& info = glyph_info[i];
 		auto& pos = glyph_pos[i];
 
-		advance.x = pos.x_advance / 64;
-		advance.y = pos.y_advance / 64;
-		offset.x = pos.x_offset / 64;
-		offset.y = pos.y_offset / 64;
-
 		if (info.codepoint == 0) {
+			auto s = vGetSize(txt[info.cluster]);
+			advance.x = s.width;
+			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
+			advance.x = pos.x_advance / 64;
+			advance.y = pos.y_advance / 64;
+			offset.x = pos.x_offset / 64;
+			offset.y = pos.y_offset / 64;
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
 		}
 	}
