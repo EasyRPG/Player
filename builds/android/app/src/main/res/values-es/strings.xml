@@ -107,7 +107,7 @@
 \nEsta carpeta es exclusiva para el uso de EasyRPG Player.
 \n
 \nNo selecciones una carpeta que contenga otras cosas, como por ejemplo la carpeta de descargas.
-\nLos juegos de RPG Maker 2000/2003 deben colocarse en una subcarpeta de esta carpeta.</string>
+\nLos juegos de RPG Maker 2000/2003 deben colocarse en una subcarpeta de juegos (games) de esta carpeta.</string>
     <string name="Loading">Cargando…</string>
     <string name="enable_rtp_support">Activar soporte RTP</string>
     <string name="rtp_explanation">El RTP proporciona archivos comunes usados por algunos juegos.
@@ -126,8 +126,8 @@
     <string name="sound_volume">Volumen de los efectos de sonido</string>
     <string name="launch_debug_mode">Lanzar en modo depuración</string>
     <string name="visit_website">Visita nuestro sitio web</string>
-    <string name="error_no_games_folder">La carpeta de juegos no existe o no es una carpeta.</string>
-    <string name="error_games_no_rw">La carpeta de juegos no es legible o escribible. Selecciona una ubicación diferente para la carpeta de EasyRPG. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
+    <string name="error_no_games_folder">La carpeta de juegos (games) no existe o no es una carpeta.</string>
+    <string name="error_games_no_rw">La carpeta de juegos (games) no es legible o escribible. Selecciona una ubicación diferente para la carpeta de EasyRPG. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
     <string name="key_debug_walk_through_walls">Caminar a través de las paredes (requiere modo depuración)</string>
     <string name="key_debug_menu">Abrir menú de depuración (requiere modo depuración)</string>
     <string name="settings_resolution">Resolución del juego:</string>
