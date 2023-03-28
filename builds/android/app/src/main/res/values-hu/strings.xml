@@ -83,25 +83,4 @@
     <string name="navigation_drawer_open">Navigációs menü megnyitása</string>
     <string name="navigation_drawer_close">Navigációs menü bezárása</string>
     <string name="menu">Android menü megnyitása</string>
-    <string name="app_name" translate="false"/>
-    <string name="no_games_found_and_explanation_android_30"/>
-    <string name="open_games_folder"/>
-    <string name="how_to_use_easy_rpg_explanation_android_30"/>
-    <string name="easyrpg_folders"/>
-    <string name="screen_size"/>
-    <string name="settings_custom_soundfont"/>
-    <string name="open_the_sound_fonts_folder"/>
-    <string name="settings_soundfont_explanation"/>
-    <string name="settings_soundfont_restart_app"/>
-    <string name="settings_soundfont_found"/>
-    <string name="settings_default_soundfont"/>
-    <string name="select_the_games_folder"/>
-    <string name="id_select_games_folder_explanation"/>
-    <string name="Loading"/>
-    <string name="enable_rtp_support"/>
-    <string name="rtp_explanation"/>
-    <string name="open_rtp_folder"/>
-    <string name="horizontal_input_layout"/>
-    <string name="vertical_input_layout"/>
-    <string name="settings_edit_layout_explanation"/>
 </resources>

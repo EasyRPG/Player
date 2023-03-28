@@ -105,11 +105,4 @@
     <string name="vertical_input_layout">縱向按鍵配置方案</string>
     <string name="settings_edit_layout_explanation">編輯按鍵配置方案時可以新增如 Shift 鈕的按鈕。
 \n要新增一個按鈕，點擊「返回」鍵後選擇「新增按鈕」。</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30"/>
-    <string name="settings_custom_soundfont"/>
-    <string name="open_the_sound_fonts_folder"/>
-    <string name="settings_soundfont_explanation"/>
-    <string name="settings_soundfont_restart_app"/>
-    <string name="settings_soundfont_found"/>
-    <string name="settings_default_soundfont"/>
 </resources>

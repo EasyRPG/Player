@@ -84,26 +84,10 @@
     <string name="navigation_drawer_close">Fechar menu</string>
     <string name="menu">Abrir menu Android</string>
     <string name="open_games_folder">Abrir a pasta de jogos</string>
-    <string name="app_name" translate="false"/>
-    <string name="no_games_found_and_explanation_android_30"/>
-    <string name="how_to_use_easy_rpg_explanation_android_30"/>
-    <string name="easyrpg_folders"/>
     <string name="screen_size">Tamanho da tela:</string>
-    <string name="settings_custom_soundfont"/>
-    <string name="open_the_sound_fonts_folder"/>
-    <string name="settings_soundfont_explanation"/>
-    <string name="settings_soundfont_restart_app"/>
-    <string name="settings_soundfont_found"/>
-    <string name="settings_default_soundfont"/>
-    <string name="select_the_games_folder"/>
-    <string name="id_select_games_folder_explanation"/>
     <string name="Loading">Carregando…</string>
     <string name="enable_rtp_support">Ativar suporte ao RTP</string>
     <string name="rtp_explanation">O RTP fornece ativos compartilhados usados por alguns jogos.
 \nColoque o RPG Maker 2000 RTP em \"rtp/2000\" e o RPG Maker 2003 RTP em \"rtp/2003\".
 \nPor favor, observe que habilitar o suporte RTP aumentará significativamente o tempo de carregamento inicial de um jogo.</string>
-    <string name="open_rtp_folder"/>
-    <string name="horizontal_input_layout"/>
-    <string name="vertical_input_layout"/>
-    <string name="settings_edit_layout_explanation"/>
 </resources>
