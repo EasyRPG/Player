@@ -108,16 +108,20 @@ void Game_Map::Init() {
 
 	interpreter.reset(new Game_Interpreter_Map(true));
 
-	common_events.clear();
-	common_events.reserve(lcf::Data::commonevents.size());
-	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
-		common_events.emplace_back(ev.ID);
-	}
+	InitCommonEvents();
 
 	vehicles.clear();
 	vehicles.emplace_back(Game_Vehicle::Boat);
 	vehicles.emplace_back(Game_Vehicle::Ship);
 	vehicles.emplace_back(Game_Vehicle::Airship);
+}
+
+void Game_Map::InitCommonEvents() {
+	common_events.clear();
+	common_events.reserve(lcf::Data::commonevents.size());
+	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
+		common_events.emplace_back(ev.ID);
+	}
 }
 
 void Game_Map::Dispose() {
@@ -228,6 +232,8 @@ void Game_Map::SetupFromSave(
 
 	const bool is_db_save_compat = Main_Data::game_player->IsDatabaseCompatibleWithSave(lcf::Data::system.save_count);
 	const bool is_map_save_compat = Main_Data::game_player->IsMapCompatibleWithSave(GetMapSaveCount());
+
+	InitCommonEvents();
 
 	if (is_db_save_compat && is_map_save_compat) {
 		for (size_t i = 0; i < std::min(save_ce.size(), common_events.size()); ++i) {
@@ -351,11 +357,7 @@ void Game_Map::SetupCommon() {
 	// Otherwise new strings are not applied
 	if (translation_changed) {
 		translation_changed = false;
-		common_events.clear();
-		common_events.reserve(lcf::Data::commonevents.size());
-		for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
-			common_events.emplace_back(ev.ID);
-		}
+		InitCommonEvents();
 	}
 
 	// Create the map events
