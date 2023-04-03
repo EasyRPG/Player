@@ -201,6 +201,12 @@ public class GameBrowserActivity extends AppCompatActivity
                         }
                         TextView errorLayout = findViewById(R.id.error_text);
                         errorLayout.setText(errorString.toString());
+
+                        // Video button
+                        findViewById(R.id.watch_video).setOnClickListener(v -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+                            startActivity(browserIntent);
+                        });
                     }
 
                     isScanProcessing = false;

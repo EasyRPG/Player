@@ -39,6 +39,7 @@
     <string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the \"games\" folder.\nGames have to be uncompressed or in a ZIP archive.\nRAR, LZH and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
     <string name="visit_website">Visit our website</string>
+    <string name="watch_explanation_video">Getting started and adding games (Video Guide)</string>
     <string name="error_no_games_folder">The \"games\" folder does not exist or is not a folder. Please create it manually or select a different location for the EasyRPG folder. The EasyRPG folder can be changed in the settings.</string>
     <string name="error_games_no_rw">The \"games\" folder is not readable or writable. Please select a different location for the EasyRPG folder. The EasyRPG folder can be changed in the settings.</string>
     <string name="error_saf_title">Bad folder selected</string>
@@ -98,9 +99,11 @@ Please tell us in detail what went wrong.\n\n
     <string name="quick_access">Quick access</string>
     <string name="fast_forward">Fast-forward button mode:</string>
     <string-array name="fast_forward_mode">
-        <item>hold</item>
-        <item>tap</item>
+        <item>@string/fast_forward_mode_hold</item>
+        <item>@string/fast_forward_mode_tap</item>
     </string-array>
+    <string name="fast_forward_mode_hold">hold</string>
+    <string name="fast_forward_mode_tap">tap</string>
     <string name="fast_forward_factor">Speed multiplier:</string>
     <string name="select_the_games_folder">Select EasyRPG folder</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player requires a dedicated folder. After touching the button you are asked to select a folder.\n\nIf you use this app for the first time there is no EasyRPG folder. Create a new EasyRPG folder and then select it.\n\nIf you used this app before, select the existing EasyRPG folder.</string>

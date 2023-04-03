@@ -22,5 +22,9 @@
         android:textSize="25sp"
         android:gravity="center"
         />
-
+    <Button
+        android:id="@+id/watch_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/watch_explanation_video" />
 </LinearLayout>

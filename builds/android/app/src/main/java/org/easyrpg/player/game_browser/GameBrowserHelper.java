@@ -41,6 +41,8 @@ public class GameBrowserHelper {
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
 
+    public static String VIDEO_URL = "https://youtu.be/r9qU-6P3HOs";
+
     public static void launchGame(Context context, Game game) {
         launchGame(context, game, false);
     }

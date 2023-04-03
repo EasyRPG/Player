@@ -7,6 +7,7 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
@@ -42,7 +43,11 @@ public class InitActivity extends AppCompatActivity {
         Activity thisActivity = this;
         (findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
-        // prepareData();
+        // Video button
+        findViewById(R.id.watch_video).setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+            startActivity(browserIntent);
+        });
 
         // If the app is called in a game folder : start the game
         startGameStandalone();

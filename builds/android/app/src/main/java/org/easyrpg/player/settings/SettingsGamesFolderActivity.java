@@ -2,6 +2,7 @@ package org.easyrpg.player.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.ViewGroup;
@@ -71,6 +72,12 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
                 layout.removeView(openRTPFolderButton);
             }
         }
+
+        // Video button
+        findViewById(R.id.watch_video).setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+            startActivity(browserIntent);
+        });
     }
 
     @Override
