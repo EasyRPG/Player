@@ -26,7 +26,15 @@ public class GameBrowserHelper {
         OK,
         ABORTED,
         DOWNLOAD_SELECTED,
-        BAD_CONTENT_PROVIDER,
+        BAD_CONTENT_PROVIDER_CREATE,
+
+        BAD_CONTENT_PROVIDER_READ,
+        BAD_CONTENT_PROVIDER_WRITE,
+        BAD_CONTENT_PROVIDER_DELETE,
+
+        BAD_CONTENT_PROVIDER_FILENAME_IGNORED,
+        BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND,
+        BAD_CONTENT_PROVIDER_FILE_ACCESS,
         FOLDER_NOT_ALMOST_EMPTY
     }
 
@@ -178,14 +186,15 @@ public class GameBrowserHelper {
             activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
             // Check if write operations inside the folder work as expected
-            if (!Helper.testContentProvider(activity, uri)) {
-                return SafError.BAD_CONTENT_PROVIDER;
+            SafError error = Helper.testContentProvider(activity, uri);
+            if (error != SafError.OK) {
+                return error;
             }
 
             // Check if the folder contains too many normal files already
             DocumentFile folder = Helper.getFileFromURI(activity, uri);
             if (folder == null) {
-                return SafError.BAD_CONTENT_PROVIDER;
+                return SafError.BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND;
             }
 
             List<String[]> items = Helper.listChildrenDocumentIDAndType(activity, folder.getUri());
@@ -220,20 +229,50 @@ public class GameBrowserHelper {
         builder.setTitle(R.string.error_saf_title)
             .setNeutralButton(R.string.ok, null);
 
+        String errorMsg = "";
+
         switch (error) {
             case OK:
             case ABORTED:
                 break;
             case DOWNLOAD_SELECTED:
-                builder.setMessage(R.string.error_saf_download_selected);
+                errorMsg = context.getString(R.string.error_saf_download_selected);
                 break;
-            case BAD_CONTENT_PROVIDER:
-                builder.setMessage(R.string.error_saf_bad_content_provider);
+            case BAD_CONTENT_PROVIDER_CREATE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_create);
+                break;
+            case BAD_CONTENT_PROVIDER_READ:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_read);
+                break;
+            case BAD_CONTENT_PROVIDER_WRITE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_write);
+                break;
+            case BAD_CONTENT_PROVIDER_DELETE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_delete);
+                break;
+            case BAD_CONTENT_PROVIDER_FILENAME_IGNORED:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_filename_ignored);
+                break;
+            case BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_base_folder_not_found);
+                break;
+            case BAD_CONTENT_PROVIDER_FILE_ACCESS:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_file_access);
                 break;
             case FOLDER_NOT_ALMOST_EMPTY:
-                builder.setMessage(R.string.error_saf_folder_not_empty);
+                errorMsg = context.getString(R.string.error_saf_folder_not_empty);
                 break;
         }
+
+        errorMsg += "\n\n" + context.getString(R.string.error_saf_select_easyrpg);
+        builder.setMessage(errorMsg);
 
         builder.create();
         builder.show();
