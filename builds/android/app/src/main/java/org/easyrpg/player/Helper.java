@@ -96,7 +96,7 @@ public class Helper {
 		} catch (IOException e) {
 			Log.e("JSO reading", "Error reading the file " + fileName + "\n" + e.getMessage());
 		}
-		return file.toString();
+        return file.toString();
 	}
 
 	/** Create EasyRPG's folders and .nomedia file */
@@ -145,6 +145,36 @@ public class Helper {
             Log.e("EasyRPG", "Problem creating savegame folder " + folderName);
         }
         return gameSaveFolder;
+    }
+
+    public static boolean testContentProvider(Context context, Uri baseURI) {
+        DocumentFile folder = Helper.getFileFromURI(context, baseURI);
+        if (folder != null) {
+            String testName = ".easyrpg_access_test";
+            DocumentFile testFile = Helper.findFile(context, folder.getUri(), testName);
+            if (testFile != null && testFile.exists()) {
+                if (!testFile.delete()) {
+                    return false;
+                }
+            }
+
+            testFile = folder.createFile("", testName);
+            if (testFile == null) {
+                return false;
+            }
+
+            if (!testFile.getUri().toString().endsWith(testName)) {
+                testFile.delete();
+                return false;
+            }
+
+            DocumentFile testFileFound = Helper.findFile(context, folder.getUri(), testName);
+            testFile.delete();
+
+            return testFileFound != null;
+        }
+
+        return false;
     }
 
     /** List files (with DOCUMENT_ID) in the folder pointed by "folderURI" */

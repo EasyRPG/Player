@@ -19,8 +19,16 @@ import org.easyrpg.player.settings.SettingsMainActivity;
 import org.easyrpg.player.settings.SettingsManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameBrowserHelper {
+    public enum SafError {
+        OK,
+        ABORTED,
+        DOWNLOAD_SELECTED,
+        BAD_CONTENT_PROVIDER,
+        FOLDER_NOT_ALMOST_EMPTY
+    }
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
@@ -150,19 +158,47 @@ public class GameBrowserHelper {
     }
 
     /** Take into account the games folder chose by the user */
-    public static void dealAfterFolderSelected(Activity activity, int requestCode, int resultCode, Intent resultData) {
+    public static SafError dealAfterFolderSelected(Activity activity, int requestCode, int resultCode, Intent resultData) {
         if (requestCode == GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN
             && resultCode == Activity.RESULT_OK
             && resultData != null) {
 
             // Extract the selected folder from the URI
             Uri uri = resultData.getData();
-            Log.i("EasyRPG", "The selected EasyRPG folder is : " + uri.getPath());
+
+            if (uri.toString().startsWith("content://com.android.providers.downloads")) {
+                return SafError.DOWNLOAD_SELECTED;
+            }
 
             // Ask for permanent access to this folder
             final int takeFlags = resultData.getFlags()
                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+            // Check if write operations inside the folder work as expected
+            if (!Helper.testContentProvider(activity, uri)) {
+                return SafError.BAD_CONTENT_PROVIDER;
+            }
+
+            // Check if the folder contains too many normal files already
+            DocumentFile folder = Helper.getFileFromURI(activity, uri);
+            if (folder == null) {
+                return SafError.BAD_CONTENT_PROVIDER;
+            }
+
+            List<String[]> items = Helper.listChildrenDocumentIDAndType(activity, folder.getUri());
+            int item_count = 0;
+            for (String[] item: items) {
+                if (item[0] == null || Helper.isDirectoryFromMimeType(item[1]) || item[0].endsWith(".nomedia")) {
+                    continue;
+                }
+
+                item_count += 1;
+
+                if (item_count >= 3) {
+                    return SafError.FOLDER_NOT_ALMOST_EMPTY;
+                }
+            }
 
             // Save the settings
             SettingsManager.setEasyRPGFolderURI(uri);
@@ -170,6 +206,34 @@ public class GameBrowserHelper {
             // Create EasyRPG folders and the .nomedia file
             Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(activity);
             Helper.createEasyRPGFolders(activity, easyRPGFolderURI);
+
+            return SafError.OK;
         }
+
+        return SafError.ABORTED;
+    }
+
+    public static void showErrorMessage(Context context, SafError error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.error_saf_title)
+            .setNeutralButton(R.string.ok, null);
+
+        switch (error) {
+            case OK:
+            case ABORTED:
+                break;
+            case DOWNLOAD_SELECTED:
+                builder.setMessage(R.string.error_saf_download_selected);
+                break;
+            case BAD_CONTENT_PROVIDER:
+                builder.setMessage(R.string.error_saf_bad_content_provider);
+                break;
+            case FOLDER_NOT_ALMOST_EMPTY:
+                builder.setMessage(R.string.error_saf_folder_not_empty);
+                break;
+        }
+
+        builder.create();
+        builder.show();
     }
 }
