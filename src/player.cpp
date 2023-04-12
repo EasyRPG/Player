@@ -808,6 +808,10 @@ void Player::CreateGameObjects() {
 	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
 	if (!game_config.patch_override) {
+		if (!FileFinder::Game().FindFile("harmony.dll").empty()) {
+			game_config.patch_key_patch.Set(true);
+		}
+
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
 			game_config.patch_dynrpg.Set(true);
 			Output::Warning("This game uses DynRPG and will not run properly.");
@@ -818,14 +822,16 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} common-this={} pic-unlock={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get());
 
 	ResetGameObjects();
 
 	LoadFonts();
 
-	Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	if (Player::IsPatchKeyPatch()) {
+		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	}
 }
 
 bool Player::ChangeResolution(int width, int height) {
@@ -1380,8 +1386,11 @@ Engine options:
                       Options:
                        common-this - "This Event" in common events
                        dynrpg      - DynRPG patch by Cherry
+                       key-patch   - Key Patch by Ineluki
                        maniac      - Maniac Patch by BingShan
                        pic-unlock  - Pictures are not blocked by messages
+                       rpg2k3-cmds - Support all RPG Maker 2003 event commands
+                                     in any version of the engine
  --no-patch           Disable all engine patches.
  --project-path PATH  Instead of using the working directory, the game in PATH
                       is used.

@@ -86,9 +86,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_maniac.Lock(false);
 			patch_unlock_pics.Lock(false);
 			patch_common_this_event.Lock(false);
+			patch_key_patch.Lock(false);
+			patch_rpg2k3_commands.Lock(false);
 			patch_override = true;
 		}
-		if (cp.ParseNext(arg, 4, "--patch")) {
+		if (cp.ParseNext(arg, 6, "--patch")) {
 			for (int i = 0; i < arg.NumValues(); ++i) {
 				const auto& v = arg.Value(i);
 				if (v == "dynrpg") {
@@ -99,6 +101,10 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 					patch_common_this_event.Set(true);
 				} else if (v == "pic-unlock") {
 					patch_unlock_pics.Set(true);
+				} else if (v == "key-patch") {
+					patch_key_patch.Set(true);
+				} else if (v == "rpg2k3-cmds" || v == "rpg2k3-commands") {
+					patch_rpg2k3_commands.Set(true);
 				}
 			}
 			patch_override = true;
@@ -135,6 +141,14 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_unlock_pics.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_key_patch.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_rpg2k3_commands.FromIni(ini)) {
 		patch_override = true;
 	}
 }

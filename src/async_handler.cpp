@@ -139,7 +139,7 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		}
 
 		// Create some empty DLL files. Engine & patch detection depend on them.
-		for (const auto& s : {"ultimate_rt_eb.dll", "dynloader.dll", "accord.dll"}) {
+		for (const auto& s : {"harmony.dll", "ultimate_rt_eb.dll", "dynloader.dll", "accord.dll"}) {
 			auto it = file_mapping.find(s);
 			if (it != file_mapping.end()) {
 				FileFinder::Game().OpenOutputStream(s);

@@ -561,7 +561,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		se_request_ids.erase(item);
 	}
 
-	if (StringView(result->file).ends_with(".script")) {
+	if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".script")) {
 		// Is a Ineluki Script File
 		Main_Data::game_ineluki->Execute(se);
 		return;
