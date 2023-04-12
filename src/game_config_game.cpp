@@ -64,7 +64,6 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 
 	while (!cp.Done()) {
 		CmdlineArg arg;
-		long li_value = 0;
 		if (cp.ParseNext(arg, 0, "--new-game")) {
 			new_game.Set(true);
 			continue;
@@ -89,6 +88,7 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_key_patch.Lock(false);
 			patch_rpg2k3_commands.Lock(false);
 			patch_override = true;
+			continue;
 		}
 		if (cp.ParseNext(arg, 6, "--patch")) {
 			for (int i = 0; i < arg.NumValues(); ++i) {
