@@ -3805,8 +3805,19 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 	int event_page;
 
 	switch (com.parameters[0]) {
-	case 0: { // Common Event
-		evt_id = com.parameters[1];
+	case 0:
+	case 3:
+	case 4: { // Common Event
+		if (com.parameters[0] == 0) {
+			evt_id = com.parameters[1];
+		} else if (com.parameters[0] == 3 && Player::IsPatchManiac()) {
+			evt_id = Main_Data::game_variables->Get(com.parameters[1]);
+		} else if (com.parameters[0] == 4 && Player::IsPatchManiac()) {
+			evt_id = Main_Data::game_variables->GetIndirect(com.parameters[1]);
+		} else {
+			return true;
+		}
+
 		Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 		if (!common_event) {
 			Output::Warning("CallEvent: Can't call invalid common event {}", evt_id);
@@ -3826,19 +3837,19 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 		event_page = Main_Data::game_variables->Get(com.parameters[2]);
 		break;
 	default:
-		return false;
+		return true;
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	if (!event) {
-		Output::Warning("CallEvent: Can't call non-existant event {}", evt_id);
-		return false;
+		Output::Warning("CallEvent: Can't call non-existent event {}", evt_id);
+		return true;
 	}
 
 	const lcf::rpg::EventPage* page = event->GetPage(event_page);
 	if (!page) {
-		Output::Warning("CallEvent: Can't call non-existant page {} of event {}", event_page, evt_id);
-		return false;
+		Output::Warning("CallEvent: Can't call non-existent page {} of event {}", event_page, evt_id);
+		return true;
 	}
 
 	Push(page->event_commands, event->GetId(), false);
