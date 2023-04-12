@@ -1991,7 +1991,7 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 		return true;
 	}
 
-	if (maniac && com.parameters.size() > 1) {
+	if (maniac && com.parameters.size() > 1 && com.parameters[1] != 1) {
 		int wait_type = com.parameters[1];
 		int mode = 0;
 
