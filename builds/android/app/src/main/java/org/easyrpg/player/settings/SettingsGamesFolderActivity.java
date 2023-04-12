@@ -2,6 +2,7 @@ package org.easyrpg.player.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.ViewGroup;
@@ -15,11 +16,14 @@ import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 
 public class SettingsGamesFolderActivity extends AppCompatActivity {
+    private GameBrowserHelper.SafError safError = GameBrowserHelper.SafError.OK;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_easyrpg_folders);
+
+        safError = GameBrowserHelper.SafError.OK;
 
         SettingsManager.init(getApplicationContext());
 
@@ -68,6 +72,22 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
                 layout.removeView(openRTPFolderButton);
             }
         }
+
+        // Video button
+        findViewById(R.id.watch_video).setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+            startActivity(browserIntent);
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (safError != GameBrowserHelper.SafError.OK && safError != GameBrowserHelper.SafError.ABORTED) {
+            GameBrowserHelper.showErrorMessage(this, safError);
+            safError = GameBrowserHelper.SafError.OK;
+        }
     }
 
     /** Called when the user has chosen a game folder */
@@ -75,7 +95,10 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
+        safError = GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
+        if (safError != GameBrowserHelper.SafError.OK && safError != GameBrowserHelper.SafError.ABORTED) {
+            return;
+        }
 
         // <!> Important <!>
         // We directly start a new GameBrowser activity because the folder permission seems the be

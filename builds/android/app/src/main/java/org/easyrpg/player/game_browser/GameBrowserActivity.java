@@ -202,23 +202,11 @@ public class GameBrowserActivity extends AppCompatActivity
                         TextView errorLayout = findViewById(R.id.error_text);
                         errorLayout.setText(errorString.toString());
 
-                        // The "Open the games folder" button
-                        Button button = findViewById(R.id.open_game_folder);
-                        // We can open the file picker in a specific folder only with API >= 26
-                        if (android.os.Build.VERSION.SDK_INT >= 26) {
-                            button.setOnClickListener(v -> {
-                                // Open the file explorer in the "soundfont" folder
-                                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                                intent.setType("*/*");
-                                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getGamesFolderURI(this));
-                                startActivity(intent);
-                            });
-                        } else {
-                            ViewGroup layout = (ViewGroup) button.getParent();
-                            if(layout != null) {
-                                layout.removeView(button);
-                            }
-                        }
+                        // Video button
+                        findViewById(R.id.watch_video).setOnClickListener(v -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+                            startActivity(browserIntent);
+                        });
                     }
 
                     isScanProcessing = false;

@@ -275,10 +275,12 @@ bool SafFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 		const char* str = env->GetStringUTFChars(elem, nullptr);
 		entries.emplace_back(str, types[i] == 0 ? DirectoryTree::FileType::Regular : DirectoryTree::FileType::Directory);
 		env->ReleaseStringUTFChars(elem, str);
+		env->DeleteLocalRef(elem);
 	}
 
 	env->DeleteLocalRef(cls_directory_tree);
 	env->DeleteLocalRef(names_arr);
+	env->DeleteLocalRef(types_arr);
 
 	return true;
 }

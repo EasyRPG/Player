@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.BufferedReader;
@@ -96,7 +98,7 @@ public class Helper {
 		} catch (IOException e) {
 			Log.e("JSO reading", "Error reading the file " + fileName + "\n" + e.getMessage());
 		}
-		return file.toString();
+        return file.toString();
 	}
 
 	/** Create EasyRPG's folders and .nomedia file */
@@ -145,6 +147,53 @@ public class Helper {
             Log.e("EasyRPG", "Problem creating savegame folder " + folderName);
         }
         return gameSaveFolder;
+    }
+
+    public static GameBrowserHelper.SafError testContentProvider(Context context, Uri baseURI) {
+        DocumentFile folder = Helper.getFileFromURI(context, baseURI);
+        if (folder != null) {
+            String testName = ".easyrpg_access_test";
+            DocumentFile testFile = Helper.findFile(context, folder.getUri(), testName);
+            if (testFile != null && testFile.exists()) {
+                if (!testFile.delete()) {
+                    return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_DELETE;
+                }
+            }
+
+            testFile = folder.createFile("", testName);
+            if (testFile == null) {
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_CREATE;
+            }
+
+            if (!testFile.getUri().toString().endsWith(testName)) {
+                testFile.delete();
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_FILENAME_IGNORED;
+            }
+
+            DocumentFile testFileFound = Helper.findFile(context, folder.getUri(), testName);
+
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "r")) {
+            } catch (IOException | IllegalArgumentException e) {
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_READ;
+            }
+
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "r")) {
+            } catch (IOException | IllegalArgumentException e) {
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_WRITE;
+            }
+
+            if (!testFile.delete()) {
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_DELETE;
+            }
+
+            if (testFileFound == null) {
+                return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_FILE_ACCESS;
+            }
+
+            return GameBrowserHelper.SafError.OK;
+        }
+
+        return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND;
     }
 
     /** List files (with DOCUMENT_ID) in the folder pointed by "folderURI" */

@@ -1,11 +1,13 @@
 package org.easyrpg.player;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
@@ -26,11 +28,14 @@ import java.io.File;
  */
 public class InitActivity extends AppCompatActivity {
     private boolean standaloneMode = false;
+    private GameBrowserHelper.SafError safError = GameBrowserHelper.SafError.OK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
+
+        safError = GameBrowserHelper.SafError.OK;
 
         // Retrieve User's preferences
         SettingsManager.init(getApplicationContext());
@@ -38,7 +43,11 @@ public class InitActivity extends AppCompatActivity {
         Activity thisActivity = this;
         (findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));
 
-        // prepareData();
+        // Video button
+        findViewById(R.id.watch_video).setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
+            startActivity(browserIntent);
+        });
 
         // If the app is called in a game folder : start the game
         startGameStandalone();
@@ -49,6 +58,12 @@ public class InitActivity extends AppCompatActivity {
         super.onResume();
 
         if (!standaloneMode) {
+            if (safError != GameBrowserHelper.SafError.OK && safError != GameBrowserHelper.SafError.ABORTED) {
+                GameBrowserHelper.showErrorMessage(this, safError);
+                safError = GameBrowserHelper.SafError.OK;
+                return;
+            }
+
             // If we have a readable EasyRPG folder, start the GameBrowser
             Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(this);
             DocumentFile easyRPGFolder = Helper.getFileFromURI(this, easyRPGFolderURI);
@@ -67,7 +82,7 @@ public class InitActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
-        GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
+        safError = GameBrowserHelper.dealAfterFolderSelected(this, requestCode, resultCode, resultData);
     }
 
     /**

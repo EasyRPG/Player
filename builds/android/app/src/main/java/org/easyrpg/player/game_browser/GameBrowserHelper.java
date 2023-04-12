@@ -19,11 +19,29 @@ import org.easyrpg.player.settings.SettingsMainActivity;
 import org.easyrpg.player.settings.SettingsManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameBrowserHelper {
+    public enum SafError {
+        OK,
+        ABORTED,
+        DOWNLOAD_SELECTED,
+        BAD_CONTENT_PROVIDER_CREATE,
+
+        BAD_CONTENT_PROVIDER_READ,
+        BAD_CONTENT_PROVIDER_WRITE,
+        BAD_CONTENT_PROVIDER_DELETE,
+
+        BAD_CONTENT_PROVIDER_FILENAME_IGNORED,
+        BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND,
+        BAD_CONTENT_PROVIDER_FILE_ACCESS,
+        FOLDER_NOT_ALMOST_EMPTY
+    }
 
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     public static int FOLDER_HAS_BEEN_CHOSEN = 1;
+
+    public static String VIDEO_URL = "https://youtu.be/r9qU-6P3HOs";
 
     public static void launchGame(Context context, Game game) {
         launchGame(context, game, false);
@@ -141,6 +159,8 @@ public class GameBrowserHelper {
     public static void pickAGamesFolder(Activity activity){
         // Choose a directory using the system's file picker.
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        // show storage root on some systems by default
+        intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
@@ -150,19 +170,48 @@ public class GameBrowserHelper {
     }
 
     /** Take into account the games folder chose by the user */
-    public static void dealAfterFolderSelected(Activity activity, int requestCode, int resultCode, Intent resultData) {
+    public static SafError dealAfterFolderSelected(Activity activity, int requestCode, int resultCode, Intent resultData) {
         if (requestCode == GameBrowserHelper.FOLDER_HAS_BEEN_CHOSEN
             && resultCode == Activity.RESULT_OK
             && resultData != null) {
 
             // Extract the selected folder from the URI
             Uri uri = resultData.getData();
-            Log.i("EasyRPG", "The selected EasyRPG folder is : " + uri.getPath());
+
+            if (uri.toString().startsWith("content://com.android.providers.downloads")) {
+                return SafError.DOWNLOAD_SELECTED;
+            }
 
             // Ask for permanent access to this folder
             final int takeFlags = resultData.getFlags()
                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             activity.getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+            // Check if write operations inside the folder work as expected
+            SafError error = Helper.testContentProvider(activity, uri);
+            if (error != SafError.OK) {
+                return error;
+            }
+
+            // Check if the folder contains too many normal files already
+            DocumentFile folder = Helper.getFileFromURI(activity, uri);
+            if (folder == null) {
+                return SafError.BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND;
+            }
+
+            List<String[]> items = Helper.listChildrenDocumentIDAndType(activity, folder.getUri());
+            int item_count = 0;
+            for (String[] item: items) {
+                if (item[0] == null || Helper.isDirectoryFromMimeType(item[1]) || item[0].endsWith(".nomedia")) {
+                    continue;
+                }
+
+                item_count += 1;
+
+                if (item_count >= 3) {
+                    return SafError.FOLDER_NOT_ALMOST_EMPTY;
+                }
+            }
 
             // Save the settings
             SettingsManager.setEasyRPGFolderURI(uri);
@@ -170,6 +219,64 @@ public class GameBrowserHelper {
             // Create EasyRPG folders and the .nomedia file
             Uri easyRPGFolderURI = SettingsManager.getEasyRPGFolderURI(activity);
             Helper.createEasyRPGFolders(activity, easyRPGFolderURI);
+
+            return SafError.OK;
         }
+
+        return SafError.ABORTED;
+    }
+
+    public static void showErrorMessage(Context context, SafError error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.error_saf_title)
+            .setNeutralButton(R.string.ok, null);
+
+        String errorMsg = "";
+
+        switch (error) {
+            case OK:
+            case ABORTED:
+                break;
+            case DOWNLOAD_SELECTED:
+                errorMsg = context.getString(R.string.error_saf_download_selected);
+                break;
+            case BAD_CONTENT_PROVIDER_CREATE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_create);
+                break;
+            case BAD_CONTENT_PROVIDER_READ:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_read);
+                break;
+            case BAD_CONTENT_PROVIDER_WRITE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_write);
+                break;
+            case BAD_CONTENT_PROVIDER_DELETE:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_delete);
+                break;
+            case BAD_CONTENT_PROVIDER_FILENAME_IGNORED:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_filename_ignored);
+                break;
+            case BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_base_folder_not_found);
+                break;
+            case BAD_CONTENT_PROVIDER_FILE_ACCESS:
+                errorMsg = context.getString(R.string.error_saf_bad_content_provider);
+                errorMsg += context.getString(R.string.error_saf_bad_content_provider_file_access);
+                break;
+            case FOLDER_NOT_ALMOST_EMPTY:
+                errorMsg = context.getString(R.string.error_saf_folder_not_empty);
+                break;
+        }
+
+        errorMsg += "\n\n" + context.getString(R.string.error_saf_select_easyrpg);
+        builder.setMessage(errorMsg);
+
+        builder.create();
+        builder.show();
     }
 }

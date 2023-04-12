@@ -12,8 +12,8 @@
         android:textSize="20sp"
         android:text=""/>
     <Button
-        android:id="@+id/open_game_folder"
+        android:id="@+id/watch_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_games_folder" />
+        android:text="@string/watch_explanation_video" />
 </LinearLayout>
