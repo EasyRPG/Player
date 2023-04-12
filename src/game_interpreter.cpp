@@ -1550,7 +1550,12 @@ Game_Character* Game_Interpreter::GetCharacter(int event_id) const {
 }
 
 bool Game_Interpreter::CommandTimerOperation(lcf::rpg::EventCommand const& com) { // code 10230
-	int timer_id = (com.parameters.size() <= 5) ? 0 : com.parameters[5];
+	int timer_id = 0;
+
+	if (com.parameters.size() > 5 && Player::IsRPG2k3Commands()) {
+		timer_id = com.parameters[5];
+	}
+
 	int seconds;
 	bool visible, battle;
 
@@ -1985,8 +1990,12 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 	bool maniac = Player::IsPatchManiac();
 
 	// Wait a given time
-	if (com.parameters.size() <= 1 ||
-		(!maniac && com.parameters.size() > 1 && com.parameters[1] == 0)) {
+	if (com.parameters.size() <= 1 || (!maniac && !Player::IsRPG2k3ECommands())) {
+		SetupWait(com.parameters[0]);
+		return true;
+	}
+
+	if (!maniac && com.parameters.size() > 1 && com.parameters[1] == 0) {
 		SetupWait(com.parameters[0]);
 		return true;
 	}
@@ -2560,7 +2569,7 @@ bool Game_Interpreter::CommandFlashScreen(lcf::rpg::EventCommand const& com) { /
 	int tenths = com.parameters[4];
 	bool wait = com.parameters[5] != 0;
 
-	if (com.parameters.size() <= 6) {
+	if (com.parameters.size() <= 6 || !Player::IsRPG2k3Commands()) {
 		screen->FlashOnce(r, g, b, s, tenths * DEFAULT_FPS / 10);
 		if (wait)
 			SetupWait(tenths);
@@ -2590,8 +2599,10 @@ bool Game_Interpreter::CommandShakeScreen(lcf::rpg::EventCommand const& com) { /
 	int tenths = com.parameters[2];
 	bool wait = com.parameters[3] != 0;
 	// params array is size 4 in 2k and 2k games ported to 2k3.
-	int shake_cmd = com.parameters.size() > 4 ?
-		com.parameters[4] : 0;
+	int shake_cmd = 0;
+	if (com.parameters.size() > 4 && Player::IsRPG2k3Commands()) {
+		shake_cmd = com.parameters[4];
+	}
 
 	switch (shake_cmd) {
 		case 0:
@@ -2615,8 +2626,13 @@ bool Game_Interpreter::CommandWeatherEffects(lcf::rpg::EventCommand const& com) 
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int str = com.parameters[1];
-	// Few games use a greater strength value to achieve more intense but glichty weather
+	// Few games use a greater strength value to achieve more intense but glitchy weather
 	int strength = std::min(str, 2);
+
+	if (!Player::IsRPG2k3Commands() && type > 2) {
+		type = 0;
+	}
+
 	screen->SetWeatherEffect(type, strength);
 	return true;
 }
@@ -2681,7 +2697,7 @@ namespace PicPointerPatch {
 		ss << new_pic_name << std::setfill('0') << std::setw(digits) << value;
 		new_pic_name = ss.str();
 
-		if (!Player::IsRPG2k3E()) {
+		if (!Player::IsRPG2k3ECommands()) {
 			// Prevent debug messages because this function is used by ShowPicture of RPG2k3E
 			Output::Debug("PicPointer: File {} replaced with {}", str, new_pic_name);
 		}
@@ -2753,7 +2769,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		params.bottom_trans = params.top_trans;
 	}
 
-	if (param_size > 16) {
+	if (param_size > 16 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
 		// Handling of RPG2k3 1.12 chunks
 		pic_id = ValueOrVariable(com.parameters[17], pic_id);
 		if (com.parameters[19] != 0) {
@@ -2862,8 +2878,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 	size_t param_size = com.parameters.size();
 
-	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
-		if (param_size > 17) {
+	if (Player::IsRPG2k() || Player::IsRPG2k3E() || Player::IsPatchManiac()) {
+		if (param_size > 17 && Player::IsRPG2k3Commands()) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 			// Currently unused by RPG Maker
@@ -2940,7 +2956,7 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 
 	int pic_id = com.parameters[0];
 
-	if (com.parameters.size() > 1) {
+	if (com.parameters.size() > 1 && Player::IsRPG2k3ECommands()) {
 		// Handling of RPG2k3 1.12 chunks
 		int id_type = com.parameters[1];
 
@@ -3492,36 +3508,40 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		result = Main_Data::game_system->BgmPlayedOnce();
 		break;
 	case 10:
-		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
-		value2 = com.parameters[1];
-		switch (com.parameters[2]) {
-		case 0:
-			result = (value1 >= value2);
-			break;
-		case 1:
-			result = (value1 <= value2);
-			break;
+		if (Player::IsRPG2k3Commands()) {
+			value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+			value2 = com.parameters[1];
+			switch (com.parameters[2]) {
+				case 0:
+					result = (value1 >= value2);
+					break;
+				case 1:
+					result = (value1 <= value2);
+					break;
+			}
 		}
 		break;
 	case 11:
 		// RPG Maker 2003 v1.11 features
-		switch (com.parameters[1]) {
-		case 0:
-			// Any savestate available
-			result = FileFinder::HasSavegame();
-			break;
-		case 1:
-			// Is Test Play mode?
-			result = Player::debug_flag;
-			break;
-		case 2:
-			// Is ATB wait on?
-			result = Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait;
-			break;
-		case 3:
-			// Is Fullscreen active?
-			result = DisplayUi->IsFullscreen();
-			break;
+		if (Player::IsRPG2k3ECommands()) {
+			switch (com.parameters[1]) {
+				case 0:
+					// Any savestate available
+					result = FileFinder::HasSavegame();
+					break;
+				case 1:
+					// Is Test Play mode?
+					result = Player::debug_flag;
+					break;
+				case 2:
+					// Is ATB wait on?
+					result = Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait;
+					break;
+				case 3:
+					// Is Fullscreen active?
+					result = DisplayUi->IsFullscreen();
+					break;
+			}
 		}
 		break;
 	case 12:
@@ -3867,6 +3887,10 @@ bool Game_Interpreter::CommandReturnToTitleScreen(lcf::rpg::EventCommand const& 
 }
 
 bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { // code 1008
+	if (!Player::IsRPG2k3Commands()) {
+		return true;
+	}
+
 	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
@@ -3907,6 +3931,10 @@ bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandChangeBattleCommands(lcf::rpg::EventCommand const& com) { // code 1009
+	if (!Player::IsRPG2k3Commands()) {
+		return true;
+	}
+
 	int cmd_id = com.parameters[2];
 	bool add = com.parameters[3] != 0;
 
@@ -3918,6 +3946,10 @@ bool Game_Interpreter::CommandChangeBattleCommands(lcf::rpg::EventCommand const&
 }
 
 bool Game_Interpreter::CommandExitGame(lcf::rpg::EventCommand const& /* com */) {
+	if (!Player::IsRPG2k3ECommands()) {
+		return true;
+	}
+
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
@@ -3927,11 +3959,19 @@ bool Game_Interpreter::CommandExitGame(lcf::rpg::EventCommand const& /* com */) 
 }
 
 bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* com */) {
+	if (!Player::IsRPG2k3ECommands()) {
+		return true;
+	}
+
 	DisplayUi->ToggleFullscreen();
 	return true;
 }
 
 bool Game_Interpreter::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* com */) {
+	if (!Player::IsRPG2k3ECommands()) {
+		return true;
+	}
+
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 

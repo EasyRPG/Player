@@ -40,7 +40,10 @@ Spriteset_Map::Spriteset_Map() {
 	timer2.reset(new Sprite_Timer(1));
 
 	screen.reset(new Screen());
-	frame.reset(new Frame());
+
+	if (Player::IsRPG2k3()) {
+		frame.reset(new Frame());
+	}
 
 	ParallaxUpdated();
 

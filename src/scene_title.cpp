@@ -120,7 +120,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 }
 
 void Scene_Title::TransitionIn(SceneType prev_scene) {
-	if (Game_Battle::battle_test.enabled || !lcf::Data::system.show_title || Player::game_config.new_game.Get())
+	if (Game_Battle::battle_test.enabled || !Check2k3ShowTitle() || Player::game_config.new_game.Get())
 		return;
 
 	if (prev_scene == Scene::Load || Player::hide_title_flag) {
@@ -141,7 +141,7 @@ void Scene_Title::vUpdate() {
 		return;
 	}
 
-	if (!lcf::Data::system.show_title || Player::game_config.new_game.Get()) {
+	if (!Check2k3ShowTitle() || Player::game_config.new_game.Get()) {
 		Player::SetupNewGame();
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
@@ -320,10 +320,14 @@ void Scene_Title::PlayTitleMusic() {
 }
 
 bool Scene_Title::CheckEnableTitleGraphicAndMusic() {
-	return lcf::Data::system.show_title &&
+	return Check2k3ShowTitle() &&
 		!Player::game_config.new_game.Get() &&
 		!Game_Battle::battle_test.enabled &&
 		!Player::hide_title_flag;
+}
+
+bool Scene_Title::Check2k3ShowTitle() {
+	return !Player::IsRPG2k3E() || (Player::IsRPG2k3E() && lcf::Data::system.show_title);
 }
 
 bool Scene_Title::CheckValidPlayerLocation() {

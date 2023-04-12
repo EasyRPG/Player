@@ -307,7 +307,7 @@ bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 	}
 
 	// Timer2
-	if (page.condition.flags.timer2) {
+	if (page.condition.flags.timer2 && Player::IsRPG2k3Commands()) {
 		int secs = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
 		if (secs > page.condition.timer2_sec)
 			return false;

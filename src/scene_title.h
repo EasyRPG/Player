@@ -77,6 +77,11 @@ public:
 	bool CheckEnableTitleGraphicAndMusic();
 
 	/**
+	 * @return Whether the 2k3E chunk for showing the title is set
+	 */
+	bool Check2k3ShowTitle();
+
+	/**
 	 * Checks if there is a player start location.
 	 *
 	 * @return true if there is one, false otherwise.

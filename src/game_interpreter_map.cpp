@@ -488,7 +488,10 @@ bool Game_Interpreter_Map::CommandTeleport(lcf::rpg::EventCommand const& com) { 
 	int y = com.parameters[2];
 
 	// RPG2k3 feature
-	int direction = com.parameters.size() > 3 ? com.parameters[3] - 1 : -1;
+	int direction = -1;
+	if (com.parameters.size() > 3 && Player::IsRPG2k3Commands()) {
+		direction = com.parameters[3] - 1;
+	}
 
 	auto tt = main_flag ? TeleportTarget::eForegroundTeleport : TeleportTarget::eParallelTeleport;
 
@@ -650,6 +653,10 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& /* 
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* com */) {
+	if (!Player::IsRPG2k3ECommands()) {
+		return true;
+	}
+
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -663,7 +670,10 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* 
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /* com */) {
+	if (!Player::IsRPG2k3ECommands()) {
+		return true;
+	}
+
 	Main_Data::game_system->ToggleAtbMode();
 	return true;
 }
-
