@@ -165,7 +165,7 @@ void CtrAudio::BGM_Stop() {
 
 bool CtrAudio::BGM_PlayedOnce() const {
 	if (!bgm.decoder)
-		return true;
+		return false;
 
 	return bgm.decoder->GetLoopCount() > 0;
 }
@@ -203,6 +203,13 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	if (is_new_3ds && bgm.decoder) {
 		bgm.decoder->SetPitch(pitch);
 	}
+}
+
+std::string CtrAudio::BGM_GetType() const {
+	if (bgm.decoder) {
+		return bgm.decoder->GetType();
+	}
+	return "";
 }
 
 void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se_cache, int volume, int pitch) {

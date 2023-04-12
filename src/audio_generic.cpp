@@ -96,6 +96,7 @@ void GenericAudio::BGM_Stop() {
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.Stop();
 	}
+	BGM_PlayedOnceIndicator = false;
 	UnlockMutex();
 }
 
@@ -160,6 +161,26 @@ void GenericAudio::BGM_Pitch(int pitch) {
 		BGM_Channel.SetPitch(pitch);
 	}
 	UnlockMutex();
+}
+
+std::string GenericAudio::BGM_GetType() const {
+	std::string type;
+
+	LockMutex();
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.IsUsed()) {
+			if (BGM_Channel.midi_out_used) {
+				type = "midi";
+				break;
+			} else {
+				type = BGM_Channel.decoder->GetType();
+				break;
+			}
+		}
+	}
+	UnlockMutex();
+
+	return type;
 }
 
 void GenericAudio::SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) {
@@ -359,7 +380,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 					read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
 
-					if (read_bytes < 0) {
+					if (read_bytes <= 0) {
 						// An error occured when reading - the channel is faulty - discard
 						currently_mixed_channel.decoder.reset();
 						continue; // skip this loop run - there is nothing to mix

@@ -3489,7 +3489,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		break;
 	case 9:
 		// BGM looped at least once
-		result = Audio().BGM_PlayedOnce();
+		result = Main_Data::game_system->BgmPlayedOnce();
 		break;
 	case 10:
 		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);

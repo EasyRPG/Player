@@ -132,6 +132,15 @@ public:
 	void BgmFade(int duration, bool clear_current_music = false);
 
 	/**
+	 * Returns whether a Bgm track played once.
+	 * For RPG_RT compatibility always returns false for WAV files.
+	 * Use Audio().BGM_PlayedOnce() if this is not desired.
+	 *
+	 * @return Whether Bgm played once
+	 */
+	bool BgmPlayedOnce();
+
+	/**
 	 * Plays a Sound.
 	 *
 	 * @param se sound data.
