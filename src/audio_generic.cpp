@@ -347,7 +347,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 					read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
 
-					if (read_bytes < 0) {
+					if (read_bytes <= 0) {
 						// An error occured when reading - the channel is faulty - discard
 						currently_mixed_channel.decoder.reset();
 						continue; // skip this loop run - there is nothing to mix
