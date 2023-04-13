@@ -27,6 +27,7 @@
 #include "scene_gamebrowser.h"
 #include "output.h"
 #include "logo.h"
+#include "utils.h"
 
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
@@ -124,29 +125,21 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 
 	AsyncHandler::CreateRequestMapping("index.json");
 
-	FileRequestAsync* db = AsyncHandler::RequestFile(DATABASE_NAME);
-	db->SetImportantFile(true);
-	FileRequestAsync* tree = AsyncHandler::RequestFile(TREEMAP_NAME);
-	tree->SetImportantFile(true);
-	FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
-	ini->SetImportantFile(true);
-	FileRequestAsync* exfont = AsyncHandler::RequestFile("Font/ExFont");
-	exfont->SetImportantFile(true);
-	FileRequestAsync* soundfont = AsyncHandler::RequestFile("easyrpg.soundfont");
-	soundfont->SetImportantFile(true);
-	FileRequestAsync* autorun_ineluki = AsyncHandler::RequestFile("autorun.script");
-	autorun_ineluki->SetImportantFile(true);
-	FileRequestAsync* font_gothic = AsyncHandler::RequestFile("Font/Font");
-	font_gothic->SetImportantFile(true);
-	FileRequestAsync* font_mincho = AsyncHandler::RequestFile("Font/Font2");
-	font_mincho->SetImportantFile(true);
+	auto startup_files = Utils::MakeSvArray(
+		DATABASE_NAME, // Essential game files
+		TREEMAP_NAME,
+		INI_NAME,
+		EASYRPG_INI_NAME, // EasyRPG specific configuration
+		"Font/ExFont", // Custom ExFont
+		"Font/Font", // Custom Gothic Font
+		"Font/Font2", // Custom Mincho Font
+		"easyrpg.soundfont", // Custom SF2 soundfont
+		"autorun.script" // Key Patch Startup script
+	);
 
-	db->Start();
-	tree->Start();
-	ini->Start();
-	exfont->Start();
-	soundfont->Start();
-	autorun_ineluki->Start();
-	font_gothic->Start();
-	font_mincho->Start();
+	for (auto file: startup_files) {
+		FileRequestAsync* req = AsyncHandler::RequestFile(file);
+		req->SetImportantFile(true);
+		req->Start();
+	}
 }
