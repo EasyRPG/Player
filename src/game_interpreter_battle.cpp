@@ -201,6 +201,10 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 // Commands
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsRPG2k3Commands()) {
+		return true;
+	}
+
 	int evt_id = com.parameters[0];
 
 	Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
@@ -215,6 +219,10 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand cons
 }
 
 bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsRPG2k3Commands()) {
+		return true;
+	}
+
 	bool check = com.parameters[2] == 0;
 
 	switch (com.parameters[0]) {
@@ -254,6 +262,10 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 }
 
 bool Game_Interpreter_Battle::CommandEnableCombo(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsRPG2k3Commands()) {
+		return true;
+	}
+
 	int actor_id = com.parameters[0];
 
 	if (!Main_Data::game_party->IsActorInParty(actor_id)) {

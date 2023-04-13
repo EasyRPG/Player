@@ -109,6 +109,11 @@ struct AudioInterface {
 	virtual void BGM_Pitch(int pitch) = 0;
 
 	/**
+	 * @return Type of music being played.
+	 */
+	virtual std::string BGM_GetType() const = 0;
+
+	/**
 	 * Plays a sound effect.
 	 *
 	 * @param se se to play.
@@ -145,6 +150,7 @@ public:
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
+	std::string BGM_GetType() const override { return {}; };
 	void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}

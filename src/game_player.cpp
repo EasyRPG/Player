@@ -652,7 +652,7 @@ bool Game_Player::Move(int dir) {
 				}
 			}
 		}
-		if (!terrain->on_damage_se || red_flash) {
+		if ((!terrain->on_damage_se || red_flash) && Player::IsRPG2k3()) {
 			Main_Data::game_system->SePlay(terrain->footstep);
 		}
 	} else {

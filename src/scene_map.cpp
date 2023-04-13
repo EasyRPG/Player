@@ -529,6 +529,7 @@ void Scene_Map::UpdateInn() {
 		return;
 	}
 
+	// Do not use Game_System::BgmPlayedOnce here as it does not report looping for WAV correctly
 	if (Audio().BGM_IsPlaying() && !Audio().BGM_PlayedOnce() && (Game_Clock::GetFrameTime() - inn_timer < 10s)) {
 		return;
 	}

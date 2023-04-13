@@ -271,6 +271,12 @@ namespace Player {
 	 */
 	bool IsCP1251();
 
+	/** @return true when engine is 2k3 or the 2k3-commands patch is enabled */
+	bool IsRPG2k3Commands();
+
+	/** @return true when engine is 2k3e or the 2k3-commands patch is enabled */
+	bool IsRPG2k3ECommands();
+
 	/**
 	 * @return True when the DynRPG patch is active
 	 */
@@ -280,6 +286,11 @@ namespace Player {
 	 * @return True when the Maniac Patch is active
 	 */
 	bool IsPatchManiac();
+
+	/**
+	 * @return True when Ineluki Key Patch is active
+	 */
+	bool IsPatchKeyPatch();
 
 	/**
 	 * @return Running engine version. 2000 for RPG2k and 2003 for RPG2k3
@@ -448,12 +459,24 @@ inline bool Player::IsRPG2k3E() {
 	return (IsRPG2k3() && IsEnglish());
 }
 
+inline bool Player::IsRPG2k3Commands() {
+	return (IsRPG2k3() || game_config.patch_rpg2k3_commands.Get());
+}
+
+inline bool Player::IsRPG2k3ECommands() {
+	return (IsRPG2k3E() || game_config.patch_rpg2k3_commands.Get());
+}
+
 inline bool Player::IsPatchDynRpg() {
 	return game_config.patch_dynrpg.Get();
 }
 
 inline bool Player::IsPatchManiac() {
 	return game_config.patch_maniac.Get();
+}
+
+inline bool Player::IsPatchKeyPatch() {
+	return game_config.patch_key_patch.Get();
 }
 
 #endif

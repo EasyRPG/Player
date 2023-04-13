@@ -28,6 +28,7 @@
 #include "player.h"
 #include "rand.h"
 #include "utils.h"
+#include "audio.h"
 #include <cmath>
 #include <cstdint>
 #include <lcf/rpg/savepartylocation.h>
@@ -250,7 +251,11 @@ int ControlVariables::Other(int op) {
 			break;
 		case 8:
 			// MIDI play position
-			return Main_Data::game_ineluki->GetMidiTicks();
+			if (Player::IsPatchKeyPatch()) {
+				return Main_Data::game_ineluki->GetMidiTicks();
+			} else {
+				return Audio().BGM_GetTicks();
+			}
 			break;
 		case 9:
 			// Timer 2 remaining time

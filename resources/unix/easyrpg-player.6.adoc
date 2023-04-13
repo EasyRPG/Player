@@ -71,8 +71,10 @@ for some additional binary patches.
   patches.
    - 'common-this' - Support for __This Event__ in common events
    - 'dynrpg'      - DynRPG patch by Cherry
+   - 'key-patch'   - Key Patch by Ineluki
    - 'maniac'      - Maniac Patch by BingShan
-   - 'unlock-pics' - Pictures are not blocked by messages
+   - 'pic-unlock'  - Pictures are not blocked by messages
+   - 'rpg2k3-cmds' - Support RPG Maker 2003 event commands in all engines
 
 *--no-patch*::
   Disable all engine patches.

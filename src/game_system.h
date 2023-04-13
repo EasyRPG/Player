@@ -80,26 +80,6 @@ public:
 
 	using AtbMode = lcf::rpg::SaveSystem::AtbMode;
 
-	class Target {
-	public:
-		int map_id;
-		int x;
-		int y;
-		int switch_id;
-		Target()
-			: map_id(0),
-			  x(0),
-			  y(0),
-			  switch_id(0)
-		{}
-		Target(int map_id, int x, int y, int switch_id)
-			: map_id(map_id),
-			  x(x),
-			  y(y),
-			  switch_id(switch_id)
-		{}
-	};
-
 	/**
 	 * Initializes Game System.
 	 */
@@ -130,6 +110,15 @@ public:
 	 * @param clear_current_music If true then current_music is set to (OFF). Only needed on starting a new game.
 	 */
 	void BgmFade(int duration, bool clear_current_music = false);
+
+	/**
+	 * Returns whether a Bgm track played once.
+	 * For RPG_RT compatibility always returns false for WAV files.
+	 * Use Audio().BGM_PlayedOnce() if this is not desired.
+	 *
+	 * @return Whether Bgm played once
+	 */
+	bool BgmPlayedOnce();
 
 	/**
 	 * Plays a Sound.
@@ -225,48 +214,6 @@ public:
 	 * @param transition the transition.
 	 */
 	void SetTransition(int which, int transition);
-
-	/**
-	 * Sets a teleport target.
-	 *
-	 * @param map_id the destination map.
-	 * @param x the destination X coordinate.
-	 * @param y the destination Y coordinate.
-	 * @param switch_id the switch ID.
-	 */
-	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
-
-	/**
-	 * Removes a teleport target.
-	 *
-	 * @param map_id the map for which the target was used.
-	 */
-	void RemoveTeleportTarget(int map_id);
-
-	/**
-	 * Finds a teleport target.
-	 *
-	 * @param map_id the map for which to obtain the target.
-	 * @return: pointer to a Target structure, or NULL.
-	 */
-	Target* GetTeleportTarget(int map_id);
-
-	/**
-	 * Sets an escape  target.
-	 *
-	 * @param map_id the destination map.
-	 * @param x the destination X coordinate.
-	 * @param y the destination Y coordinate.
-	 * @param switch_id the switch ID.
-	 */
-	void SetEscapeTarget(int map_id, int x, int y, int switch_id);
-
-	/**
-	 * Finds an escape target.
-	 *
-	 * @return pointer to a Target structure, or NULL.
-	 */
-	Target* GetEscapeTarget();
 
 	bool GetAllowTeleport();
 	void SetAllowTeleport(bool allow);

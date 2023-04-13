@@ -87,6 +87,7 @@ AudioDecoderMidi::AudioDecoderMidi(std::unique_ptr<MidiDecoder> mididec)
 	: mididec(std::move(mididec)) {
 	seq = std::make_unique<midisequencer::sequencer>();
 	channel_volumes.fill(127);
+	music_type = "midi";
 }
 
 AudioDecoderMidi::~AudioDecoderMidi() {

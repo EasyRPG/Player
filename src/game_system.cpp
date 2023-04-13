@@ -134,6 +134,18 @@ void Game_System::BgmFade(int duration, bool clear_current_music) {
 	data.music_stopping = true;
 }
 
+bool Game_System::BgmPlayedOnce() {
+	if (Audio().BGM_PlayedOnce()) {
+		if (Audio().BGM_GetType() == "wav") {
+			// RPG_RT does not report looping for WAV
+			return false;
+		}
+		return true;
+	}
+
+	return false;
+}
+
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	if (se.name.empty()) {
 		return;
@@ -549,7 +561,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		se_request_ids.erase(item);
 	}
 
-	if (StringView(result->file).ends_with(".script")) {
+	if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".script")) {
 		// Is a Ineluki Script File
 		Main_Data::game_ineluki->Execute(se);
 		return;

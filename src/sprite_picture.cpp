@@ -28,7 +28,7 @@
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	: Sprite(flags),
 	pic_id(pic_id),
-	feature_spritesheet(Player::IsRPG2k3E()),
+	feature_spritesheet(Player::IsRPG2k3ECommands()),
 	feature_priority_layers(Player::IsMajorUpdatedVersion()),
 	feature_bottom_trans(Player::IsRPG2k3() && !Player::IsRPG2k3E())
 {
