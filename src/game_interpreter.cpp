@@ -2734,7 +2734,7 @@ namespace PicPointerPatch {
 
 bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { // code 11110
 	// Older versions of RPG_RT block pictures when message active.
-	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2854,7 +2854,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { // code 11120
 	// Older versions of RPG_RT block pictures when message active.
-	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2950,7 +2950,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { // code 11130
 	// Older versions of RPG_RT block pictures when message active.
-	if ((!Player::IsEnglish() || !Player::game_config.patch_unlock_pics.Get()) && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
