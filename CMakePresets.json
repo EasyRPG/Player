@@ -49,6 +49,7 @@
 			"name": "libretro-debug",
 			"displayName": "Use system environment (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"parent",
 				"type-debug"
 			]
@@ -57,6 +58,7 @@
 			"name": "libretro-relwithdebinfo",
 			"displayName": "Use system environment (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"parent",
 				"type-relwithdebinfo"
 			]
@@ -65,6 +67,7 @@
 			"name": "libretro-release",
 			"displayName": "Use system environment (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"parent",
 				"type-release"
 			]
@@ -106,6 +109,7 @@
 			"name": "linux-libretro-debug",
 			"displayName": "Linux (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"linux-parent",
 				"type-debug"
 			]
@@ -114,6 +118,7 @@
 			"name": "linux-libretro-relwithdebinfo",
 			"displayName": "Linux (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"linux-parent",
 				"type-relwithdebinfo"
 			]
@@ -122,6 +127,7 @@
 			"name": "linux-libretro-release",
 			"displayName": "Linux (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"linux-parent",
 				"type-release"
 			]
@@ -209,6 +215,7 @@
 			"name": "macos-libretro-debug",
 			"displayName": "macOS (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"macos-parent",
 				"type-debug"
 			]
@@ -217,6 +224,7 @@
 			"name": "macos-libretro-relwithdebinfo",
 			"displayName": "macOS (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"macos-parent",
 				"type-relwithdebinfo"
 			]
@@ -225,6 +233,7 @@
 			"name": "macos-libretro-release",
 			"displayName": "macOS (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"macos-parent",
 				"type-release"
 			]
@@ -302,6 +311,7 @@
 			"name": "3ds-libretro-debug",
 			"displayName": "Nintendo 3DS (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"3ds-parent",
 				"type-debug"
 			]
@@ -310,6 +320,7 @@
 			"name": "3ds-libretro-relwithdebinfo",
 			"displayName": "Nintendo 3DS (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"3ds-parent",
 				"type-relwithdebinfo"
 			]
@@ -318,6 +329,7 @@
 			"name": "3ds-libretro-release",
 			"displayName": "Nintendo 3DS (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"3ds-parent",
 				"type-release"
 			]
@@ -360,6 +372,7 @@
 			"name": "switch-libretro-debug",
 			"displayName": "Nintendo Switch (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"switch-parent",
 				"type-debug"
 			]
@@ -368,6 +381,7 @@
 			"name": "switch-libretro-relwithdebinfo",
 			"displayName": "Nintendo Switch (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"switch-parent",
 				"type-relwithdebinfo"
 			]
@@ -376,6 +390,7 @@
 			"name": "switch-libretro-release",
 			"displayName": "Nintendo Switch (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"switch-parent",
 				"type-release"
 			]
@@ -418,6 +433,7 @@
 			"name": "wii-libretro-debug",
 			"displayName": "Nintendo Wii (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"wii-parent",
 				"type-debug"
 			]
@@ -426,6 +442,7 @@
 			"name": "wii-libretro-relwithdebinfo",
 			"displayName": "Nintendo Wii (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"wii-parent",
 				"type-relwithdebinfo"
 			]
@@ -434,6 +451,7 @@
 			"name": "wii-libretro-release",
 			"displayName": "Nintendo Wii (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"wii-parent",
 				"type-release"
 			]
@@ -476,6 +494,7 @@
 			"name": "psvita-libretro-debug",
 			"displayName": "PlayStation Vita (libretro core) (Debug)",
 			"inherits": [
+				"build-libretro",
 				"psvita-parent",
 				"type-debug"
 			]
@@ -484,6 +503,7 @@
 			"name": "psvita-libretro-relwithdebinfo",
 			"displayName": "PlayStation Vita (libretro core) (RelWithDebInfo)",
 			"inherits": [
+				"build-libretro",
 				"psvita-parent",
 				"type-relwithdebinfo"
 			]
@@ -492,6 +512,7 @@
 			"name": "psvita-libretro-release",
 			"displayName": "PlayStation Vita (libretro core) (Release)",
 			"inherits": [
+				"build-libretro",
 				"psvita-parent",
 				"type-release"
 			]

@@ -75,7 +75,7 @@ for base_item in cp:
 				item["displayName"] += " (libretro core)"
 				item["inherits"].insert(0, "build-libretro")
 
-			item["inherits"] = [parent_item["name"], f"type-{build_type.lower()}"]
+			item["inherits"] += [f"type-{build_type.lower()}"]
 
 			append_name(build_type.lower())
 			item["displayName"] += f" ({build_type})"
