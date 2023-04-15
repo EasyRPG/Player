@@ -1071,7 +1071,10 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		string(REPLACE "." "," RC_VERSION ${PROJECT_VERSION})
 		string(TIMESTAMP RC_YEAR "%Y")
 		configure_file(resources/windows/player.rc.in resources/windows/player.rc @ONLY)
-		target_sources(${EXE_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
+		target_sources(${EXE_NAME} PRIVATE
+			resources/windows/player.manifest
+			"${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
+
 
 		# Change executable name
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
