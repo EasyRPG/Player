@@ -128,7 +128,7 @@ int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator e
 	// When entering the switch it is on the first argument
 	switch (op) {
 		case Op::Null:
-			*it++;
+			it++;
 			return 0;
 		case Op::U8:
 		case Op::UX8:

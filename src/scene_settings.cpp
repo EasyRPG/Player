@@ -534,7 +534,7 @@ void Scene_Settings::RefreshInputActionAllowed() {
 	auto button = static_cast<Input::InputButton>(options_window->GetFrame().arg);
 	auto mapping_count =  Input::GetInputSource()->GetButtonMappings().Count(button);
 	input_mode_window->SetItemEnabled(0, mapping_count < Window_InputSettings::mapping_limit);
-	input_mode_window->SetItemEnabled(1, mapping_count > Input::IsProtectedButton(button) ? 1 : 0);
+	input_mode_window->SetItemEnabled(1, mapping_count > (Input::IsProtectedButton(button) ? 1 : 0));
 }
 
 bool Scene_Settings::SaveConfig(bool silent) {
