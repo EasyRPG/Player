@@ -33,6 +33,7 @@
 #include "rand.h"
 #include "text.h"
 #include "version.h"
+#include <ctime>
 
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
@@ -41,7 +42,10 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		if (Rand::ChanceOf(1, 32)) {
+		std::time_t t = std::time(nullptr);
+		std::tm* tm = std::localtime(&t);
+
+		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
 			logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
 		} else {
 			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
