@@ -20,8 +20,4 @@ CMakePresets.json -diff linguist-generated
 builds/android/app/src/main/java/org/libsdl/app/SDL*.java -diff linguist-vendored
 builds/android/app/src/main/java/org/libsdl/app/SDLActivity.java diff
 builds/android/app/src/main/java/org/libsdl/app/HID*.java -diff linguist-vendored
-src/bitmapfont_rmg2000.h -diff linguist-generated
-src/bitmapfont_ttyp0.h -diff linguist-generated
-src/bitmapfont_wqy.h -diff linguist-generated
-src/shinonome_gothic.h -diff linguist-generated
-src/shinonome_mincho.h -diff linguist-generated
+src/generated/* -diff linguist-generated

@@ -26,7 +26,8 @@
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
 #include "output.h"
-#include "logo.h"
+#include "generated/logo.h"
+#include "generated/logo2.h"
 #include "utils.h"
 #include "rand.h"
 

@@ -69,9 +69,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/bitmap.cpp
 	src/bitmapfont.h
 	src/bitmapfont_glyph.h
-	src/bitmapfont_rmg2000.h
-	src/bitmapfont_ttyp0.h
-	src/bitmapfont_wqy.h
 	src/bitmap.h
 	src/bitmap_hslrgb.h
 	src/cache.cpp
@@ -204,6 +201,13 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_vehicle.h
 	src/game_windows.cpp
 	src/game_windows.h
+	src/generated/bitmapfont_rmg2000.h
+	src/generated/bitmapfont_ttyp0.h
+	src/generated/bitmapfont_wqy.h
+	src/generated/logo.h
+	src/generated/logo2.h
+	src/generated/shinonome_gothic.h
+	src/generated/shinonome_mincho.h
 	src/graphics.cpp
 	src/graphics.h
 	src/hslrgb.cpp
@@ -224,7 +228,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/instrumentation.cpp
 	src/instrumentation.h
 	src/keys.h
-	src/logo.h
 	src/main_data.cpp
 	src/main_data.h
 	src/maniac_patch.cpp
@@ -317,8 +320,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/screen.cpp
 	src/screen.h
 	src/shake.h
-	src/shinonome_gothic.h
-	src/shinonome_mincho.h
 	src/span.h
 	src/sprite_airshipshadow.cpp
 	src/sprite_airshipshadow.h
