@@ -1075,6 +1075,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 			resources/windows/player.manifest
 			"${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
 
+		# Set Visual Studio startup project
+		set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${EXE_NAME})
 
 		# Change executable name
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")
