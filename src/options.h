@@ -29,6 +29,9 @@
 /** Subfolder name for global configuration */
 #define APPLICATION_NAME "Player"
 
+/** Website shown on the logo scene */
+#define WEBSITE_ADDRESS "easyrpg.org"
+
 /** Targeted screen default width. */
 #define SCREEN_TARGET_WIDTH 320
 

@@ -22,6 +22,7 @@
 #include "filefinder.h"
 #include "game_battle.h"
 #include "input.h"
+#include "options.h"
 #include "player.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
@@ -30,6 +31,8 @@
 #include "generated/logo2.h"
 #include "utils.h"
 #include "rand.h"
+#include "text.h"
+#include "version.h"
 
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
@@ -43,6 +46,19 @@ void Scene_Logo::Start() {
 		} else {
 			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		}
+
+		// Draw text on logo
+		Rect text_rect = {17, 215, 320 - 32, 16};
+		Color text_color = {185, 199, 173, 255};
+		Color shadow_color = {69, 69, 69, 255};
+
+		for (auto& color: {shadow_color, text_color}) {
+			logo_img->TextDraw(text_rect, color, Version::GetVersionString(false, false), Text::AlignLeft);
+			logo_img->TextDraw(text_rect, color, WEBSITE_ADDRESS, Text::AlignRight);
+			text_rect.x--;
+			text_rect.y--;
+		}
+
 		logo = std::make_unique<Sprite>();
 		logo->SetBitmap(logo_img);
 		logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
@@ -90,7 +106,7 @@ void Scene_Logo::vUpdate() {
 
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
-		frame_counter == 600 ||
+		frame_counter == 60 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
