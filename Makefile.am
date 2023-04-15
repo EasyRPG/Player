@@ -78,7 +78,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/default_graphics.h \
 	src/directory_tree.cpp \
 	src/directory_tree.h \
-	src/dirent_win.h \
 	src/docmain.h \
 	src/drawable.cpp \
 	src/drawable.h \
