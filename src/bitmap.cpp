@@ -782,6 +782,9 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 		dst_rect.y + dst_rect.height
 	};
 
+	box.x2 = Utils::Clamp(box.x2, 0, width());
+	box.y2 = Utils::Clamp(box.y2, 0, height());
+
 	pixman_image_fill_boxes(PIXMAN_OP_CLEAR, bitmap.get(), &pcolor, 1, &box);
 }
 
