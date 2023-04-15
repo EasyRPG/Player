@@ -38,8 +38,8 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		if (Rand::ChanceOf(1, 64)) {
-			logo_img = Bitmap::Create(easteregg_logo, sizeof(easteregg_logo), false);
+		if (Rand::ChanceOf(1, 32)) {
+			logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
 		} else {
 			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		}
