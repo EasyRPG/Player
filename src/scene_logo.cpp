@@ -53,7 +53,7 @@ void Scene_Logo::Start() {
 		Color shadow_color = {69, 69, 69, 255};
 
 		for (auto& color: {shadow_color, text_color}) {
-			logo_img->TextDraw(text_rect, color, Version::GetVersionString(false, false), Text::AlignLeft);
+			logo_img->TextDraw(text_rect, color, "v" + Version::GetVersionString(false, false), Text::AlignLeft);
 			logo_img->TextDraw(text_rect, color, WEBSITE_ADDRESS, Text::AlignRight);
 			text_rect.x--;
 			text_rect.y--;
