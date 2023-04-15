@@ -283,7 +283,9 @@ void Window_Settings::RefreshEngine() {
 }
 
 void Window_Settings::RefreshLicense() {
-	AddOption(MenuItem("EasyRPG Player", "The engine you are using :)", "GPLv3+"), [](){});
+	AddOption(MenuItem("EasyRPG Player", "The engine you are using :)", "GPLv3+"), [this](){
+		Push(eAbout);
+	});
 	AddOption(MenuItem("liblcf", "Handles RPG Maker 2000/2003 and EasyRPG projects", "MIT"), [](){});
 	AddOption(MenuItem("libpng", "For reading and writing PNG image files", "zlib"), [](){});
 	AddOption(MenuItem("zlib", "Implements deflate used in ZIP archives and PNG images", "zlib"), [](){});

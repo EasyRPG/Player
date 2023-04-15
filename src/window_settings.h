@@ -46,6 +46,7 @@ public:
 		eEngine,
 		eSave,
 		eEnd,
+		eAbout,
 		eLastMode
 	};
 

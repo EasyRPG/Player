@@ -30,6 +30,7 @@
 #include "output.h"
 #include "utils.h"
 #include "scene_end.h"
+#include "window_about.h"
 #include "window_command_horizontal.h"
 #include "window_help.h"
 #include "window_input_settings.h"
@@ -102,6 +103,9 @@ void Scene_Settings::CreateOptionsWindow() {
 	};
 
 	input_help_window = std::make_unique<Window_Help>(Player::menu_offset_x, Player::screen_height - 64, MENU_WIDTH, 32);
+
+	about_window = std::make_unique<Window_About>(Player::menu_offset_x, Player::menu_offset_y + 32, MENU_WIDTH, MENU_HEIGHT - 64);
+	about_window->Refresh();
 }
 
 void Scene_Settings::Start() {
@@ -129,6 +133,7 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	input_mode_window->SetVisible(false);
 	input_help_window->SetVisible(false);
 	help_window->SetVisible(false);
+	about_window->SetVisible(false);
 
 	picker_window.reset();
 
@@ -165,6 +170,9 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 			input_mode_window->SetVisible(true);
 			input_help_window->SetVisible(true);
 			input_help_window->SetText("Select the keybinding you want to remove");
+			break;
+		case Window_Settings::eAbout:
+			about_window->SetVisible(true);
 			break;
 		default:
 			help_window->SetVisible(true);
@@ -221,6 +229,7 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eNone:
 		case Window_Settings::eSave:
 		case Window_Settings::eEnd:
+		case Window_Settings::eAbout:
 			break;
 		case Window_Settings::eMain:
 			UpdateMain();
