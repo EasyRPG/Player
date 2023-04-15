@@ -51,17 +51,7 @@ void Scene_Logo::Start() {
 			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		}
 
-		// Draw text on logo
-		Rect text_rect = {17, 215, 320 - 32, 16};
-		Color text_color = {185, 199, 173, 255};
-		Color shadow_color = {69, 69, 69, 255};
-
-		for (auto& color: {shadow_color, text_color}) {
-			logo_img->TextDraw(text_rect, color, "v" + Version::GetVersionString(false, false), Text::AlignLeft);
-			logo_img->TextDraw(text_rect, color, WEBSITE_ADDRESS, Text::AlignRight);
-			text_rect.x--;
-			text_rect.y--;
-		}
+		DrawText(false);
 
 		logo = std::make_unique<Sprite>();
 		logo->SetBitmap(logo_img);
@@ -108,6 +98,11 @@ void Scene_Logo::vUpdate() {
 
 	++frame_counter;
 
+	if (Input::IsPressed(Input::SHIFT)) {
+		DrawText(true);
+		--frame_counter;
+	}
+
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
 		frame_counter == 60 ||
@@ -139,6 +134,22 @@ void Scene_Logo::vUpdate() {
 
 void Scene_Logo::DrawBackground(Bitmap& dst) {
 	dst.Clear();
+}
+
+void Scene_Logo::DrawText(bool verbose) {
+	Rect text_rect = {17, 215, 320 - 32, 16};
+	Color text_color = {185, 199, 173, 255};
+	Color shadow_color = {69, 69, 69, 255};
+	logo_img->ClearRect(text_rect);
+
+	for (auto& color: {shadow_color, text_color}) {
+		logo_img->TextDraw(text_rect, color, "v" + Version::GetVersionString(verbose, verbose), Text::AlignLeft);
+		if (!verbose) {
+			logo_img->TextDraw(text_rect, color, WEBSITE_ADDRESS, Text::AlignRight);
+		}
+		text_rect.x--;
+		text_rect.y--;
+	}
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {
