@@ -98,7 +98,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/default_graphics.h
 	src/directory_tree.cpp
 	src/directory_tree.h
-	src/dirent_win.h
 	src/docmain.h
 	src/drawable.cpp
 	src/drawable.h
@@ -1071,7 +1070,12 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		string(REPLACE "." "," RC_VERSION ${PROJECT_VERSION})
 		string(TIMESTAMP RC_YEAR "%Y")
 		configure_file(resources/windows/player.rc.in resources/windows/player.rc @ONLY)
-		target_sources(${EXE_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
+		target_sources(${EXE_NAME} PRIVATE
+			resources/windows/player.manifest
+			"${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
+
+		# Set Visual Studio startup project
+		set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${EXE_NAME})
 
 		# Change executable name
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "Player")

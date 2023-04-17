@@ -2785,12 +2785,12 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 	// if at least 2 party members are in front row
 	int current_row = active_actor->GetBattleRow();
 	int front_row_battlers = 0;
-	if (current_row == active_actor->IsDirectionFlipped()) {
+	if (current_row == static_cast<int>(active_actor->IsDirectionFlipped())) {
 		for (auto& actor: Main_Data::game_party->GetActors()) {
-			if (actor->GetBattleRow() == actor->IsDirectionFlipped()) front_row_battlers++;
+			if (actor->GetBattleRow() == static_cast<int>(actor->IsDirectionFlipped())) front_row_battlers++;
 		}
 	}
-	if (current_row != active_actor->IsDirectionFlipped() || front_row_battlers >= 2) {
+	if (current_row != static_cast<int>(active_actor->IsDirectionFlipped()) || front_row_battlers >= 2) {
 		if (active_actor->GetBattleRow() == Game_Actor::RowType::RowType_front) {
 			active_actor->SetBattleRow(Game_Actor::RowType::RowType_back);
 		} else {

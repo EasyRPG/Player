@@ -36,9 +36,9 @@ namespace Algo {
 
 bool IsRowAdjusted(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense) {
 	return (cond == lcf::rpg::System::BattleCondition_surround
-			|| (row != offense
+			|| (row != static_cast<int>(offense)
 				&& (cond == lcf::rpg::System::BattleCondition_none || cond == lcf::rpg::System::BattleCondition_initiative))
-			|| (row == offense
+			|| (row == static_cast<int>(offense)
 				&& (cond == lcf::rpg::System::BattleCondition_back))
 		   );
 }
