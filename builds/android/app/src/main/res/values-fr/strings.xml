@@ -76,7 +76,6 @@
     <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
     <string name="navigation_drawer_close">Fermer le menu de navigation</string>
     <string name="menu">Ouvrir le menu d\'Android</string>
-    <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="fast_forward">Mode du bouton pour l\'avance rapide :</string>
     <string name="fast_forward_factor">Multiplicateur de vitesse :</string>
     <string name="key_fast_forward">Avance rapide</string>
