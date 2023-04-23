@@ -83,7 +83,6 @@
     <string name="navigation_drawer_open">開啟側邊欄</string>
     <string name="navigation_drawer_close">關閉側邊欄</string>
     <string name="menu">開啟 Android 選單</string>
-    <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="no_games_found_and_explanation_android_30">沒有找到 RPG Maker 2000/2003 的遊戲。請將它們放在遊戲資料夾下的子目錄內。
 \nEasyRPG 的資料夾可以在設定裡變更。</string>
     <string name="open_games_folder">開啟遊戲資料夾</string>
