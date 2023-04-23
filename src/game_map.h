@@ -82,6 +82,11 @@ namespace Game_Map {
 	void Init();
 
 	/**
+	 * Initialized Common Events.
+	 */
+	void InitCommonEvents();
+
+	/**
 	 * Quits (frees) Game_Map.
 	 */
 	void Quit();

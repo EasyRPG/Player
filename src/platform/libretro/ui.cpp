@@ -20,6 +20,7 @@
 #include "clock.h"
 #include "bitmap.h"
 #include "color.h"
+#include "filefinder.h"
 #include "graphics.h"
 #include "input.h"
 #include "keys.h"
@@ -28,6 +29,7 @@
 #include "output.h"
 #include "player.h"
 #include "scene.h"
+#include "utils.h"
 
 #include <cstring>
 #include <cstdio>
@@ -404,23 +406,8 @@ RETRO_API void retro_run() {
 	}
 }
 
-static void extract_directory(char *buf, const char *path, size_t size) {
-	strncpy(buf, path, size - 1);
-	buf[size - 1] = '\0';
-
-	char *base = strrchr(buf, '/');
-	if (!base)
-		base = strrchr(buf, '\\');
-
-	if (base)
-		*base = '\0';
-	else
-		buf[0] = '\0';
-}
-
 /* Loads a game. */
 RETRO_API bool retro_load_game(const struct retro_game_info* game) {
-	char parent_dir[1024];
 	enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
 
 	if (!game)
@@ -433,12 +420,18 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 
 	Output::IgnorePause(true);
 
-	auto fs = FileFinder::Root().Create(game->path);
+	std::string game_path = game->path;
+
+	// Convert RetroArch archive paths to paths our VFS understands
+	game_path = Utils::ReplaceAll(game_path, ".zip#", ".zip/");
+	game_path = Utils::ReplaceAll(game_path, ".easyrpg#", ".easyrpg/");
+
+	auto fs = FileFinder::Root().Create(game_path);
 	if (!fs) {
-		extract_directory(parent_dir, game->path, sizeof(parent_dir));
-		fs = FileFinder::Root().Create(parent_dir);
+		std::tie(game_path, std::ignore) = FileFinder::GetPathAndFilename(game_path);
+		fs = FileFinder::Root().Create(game_path);
 		if (!fs || !FileFinder::IsValidProject(fs)) {
-			log_cb(RETRO_LOG_ERROR, "Unsupported game %s\n", parent_dir);
+			log_cb(RETRO_LOG_ERROR, "Unsupported game %s\n", game_path.c_str());
 			return false;
 		}
 	}

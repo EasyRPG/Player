@@ -854,7 +854,15 @@ void Window_Message::SetWaitForCharacter(int width) {
 			} else {
 				frames = width / 2;
 				if (width & 1) {
-					bool is_last_for_line = (*text_index == '\n');
+					bool is_last_for_line;
+					if (!shape_ret.empty()) {
+						is_last_for_line = shape_ret.size() == 1 && (*text_index == '\n');
+					} else {
+						is_last_for_line = (*text_index == '\n');
+					}
+					if (is_last_for_line) {
+						DebugLogText("{}: is_last_for_line");
+					}
 
 					// RPG_RT waits for every even character. Also always waits
 					// for the last character.

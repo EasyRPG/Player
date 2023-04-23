@@ -67,7 +67,7 @@ namespace {
 			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".ttf", ".ttc", ".otf", ".fon", ".fnt", ".bdf", ".woff2", ".woff");
+	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
 }
 
 FilesystemView FileFinder::Game() {

@@ -754,7 +754,7 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			}
 
 			// Note that commands.Advance() has already happened within the above code.
-		} else if (commands.CurrentIsChangeHeroName()) {
+		} else if (commands.CurrentIsChangeHeroName() || commands.CurrentIsConditionActorName()) {
 			dict.TranslateString("actors.name", commands.CurrentCmdString());
 			commands.Advance();
 		} else if (commands.CurrentIsChangeHeroTitle()) {
