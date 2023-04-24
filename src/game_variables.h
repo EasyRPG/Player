@@ -44,6 +44,8 @@ public:
 	void SetData(Variables_t);
 	const Variables_t& GetData() const;
 
+	void SetLowerLimit(size_t limit);
+
 	Var_t Get(int variable_id) const;
 	Var_t GetIndirect(int variable_id) const;
 
@@ -127,6 +129,7 @@ public:
 	StringView GetName(int _id) const;
 
 	int GetSize() const;
+	int GetSizeWithLimit() const;
 
 	bool IsValid(int variable_id) const;
 
@@ -151,10 +154,11 @@ private:
 		void WriteRangeVariable(const int first_id, const int last_id, int var_id, F&& op);
 	template <typename F>
 		void WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op);
-private:
+
 	Variables_t _variables;
 	Var_t _min = 0;
 	Var_t _max = 0;
+	size_t lower_limit = 0;
 	mutable int _warnings = max_warnings;
 };
 
@@ -166,16 +170,24 @@ inline const Game_Variables::Variables_t& Game_Variables::GetData() const {
 	return _variables;
 }
 
+inline void Game_Variables::SetLowerLimit(size_t limit) {
+	lower_limit = limit;
+}
+
 inline int Game_Variables::GetSize() const {
-	return static_cast<int>(lcf::Data::variables.size());
+	return static_cast<int>(_variables.size());
+}
+
+inline int Game_Variables::GetSizeWithLimit() const {
+	return std::max<int>(lower_limit, _variables.size());
 }
 
 inline bool Game_Variables::IsValid(int variable_id) const {
-	return variable_id > 0 && variable_id <= GetSize();
+	return variable_id > 0 && variable_id <= GetSizeWithLimit();
 }
 
 inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > static_cast<int>(lcf::Data::variables.size())) && _warnings > 0;
+	return (first_id <= 0 || last_id > GetSizeWithLimit()) && _warnings > 0;
 }
 
 inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {

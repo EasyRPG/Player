@@ -4535,8 +4535,8 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 	}
 
 
-	if (operation == 1) {
-		// Close (no-op)
+	if (operation == 0 || operation == 1) {
+		// Open / Close (no-op)
 	} else if (operation == 2 || operation == 3) {
 		// 2: Save (write to file)
 		// 3: Save and Close
@@ -4559,11 +4559,11 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 		writer.WriteInt(13);
 		const std::string header = "LcfGlobalSave";
 		writer.Write(header);
-		writer.Write<uint32_t>(1);
-		writer.Write<uint32_t>(Main_Data::game_switches_global->GetSize());
+		writer.WriteInt(1);
+		writer.WriteInt(Main_Data::game_switches_global->GetSize());
 		writer.Write(Main_Data::game_switches_global->GetData());
-		writer.Write<uint32_t>(2);
-		writer.Write<uint32_t>(Main_Data::game_variables_global->GetSize());
+		writer.WriteInt(2);
+		writer.WriteInt(Main_Data::game_variables_global->GetSize() * sizeof(int32_t));
 		writer.Write(Main_Data::game_variables_global->GetData());
 	} else if (operation == 4 || operation == 5) {
 		int type = com.parameters[2];

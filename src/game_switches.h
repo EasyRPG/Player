@@ -33,10 +33,12 @@ public:
 	using Switches_t = std::vector<bool>;
 	static constexpr int kMaxWarnings = 10;
 
-	Game_Switches();
+	Game_Switches() = default;
 
 	void SetData(Switches_t s);
 	const Switches_t& GetData() const;
+
+	void SetLowerLimit(size_t limit);
 
 	bool Get(int switch_id) const;
 	int GetInt(int switch_id) const;
@@ -52,6 +54,7 @@ public:
 	bool IsValid(int switch_id) const;
 
 	int GetSize() const;
+	int GetSizeWithLimit() const;
 
 	void SetWarning(int w);
 
@@ -59,8 +62,8 @@ private:
 	bool ShouldWarn(int first_id, int last_id) const;
 	void WarnGet(int variable_id) const;
 
-private:
 	Switches_t _switches;
+	size_t lower_limit = 0;
 	mutable int _warnings = kMaxWarnings;
 };
 
@@ -73,16 +76,24 @@ inline const Game_Switches::Switches_t& Game_Switches::GetData() const {
 	return _switches;
 }
 
+inline void Game_Switches::SetLowerLimit(size_t limit) {
+	lower_limit = limit;
+}
+
 inline int Game_Switches::GetSize() const {
-	return static_cast<int>(lcf::Data::switches.size());
+	return static_cast<int>(_switches.size());
+}
+
+inline int Game_Switches::GetSizeWithLimit() const {
+	return std::max<int>(lower_limit, _switches.size());
 }
 
 inline bool Game_Switches::IsValid(int variable_id) const {
-	return variable_id > 0 && variable_id <= GetSize();
+	return variable_id > 0 && variable_id <= GetSizeWithLimit();
 }
 
 inline bool Game_Switches::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > static_cast<int>(lcf::Data::switches.size())) && (_warnings > 0);
+	return (first_id <= 0 || last_id > GetSizeWithLimit()) && (_warnings > 0);
 }
 
 inline bool Game_Switches::Get(int switch_id) const {

@@ -10,8 +10,27 @@ constexpr int maxval = Game_Variables::max_2k3;
 static Game_Variables make() {
 	lcf::Data::variables.resize(max_vars);
 	Game_Variables v(minval, maxval);
+	v.SetLowerLimit(max_vars);
 	v.SetWarning(0);
 	return v;
+}
+
+TEST_CASE("GetSize") {
+	auto v = make();
+	REQUIRE_EQ(v.GetSizeWithLimit(), max_vars);
+	REQUIRE_EQ(v.GetSize(), 0);
+}
+
+TEST_CASE("IsValid") {
+	auto v = make();
+	REQUIRE_FALSE(v.IsValid(-1));
+	REQUIRE_FALSE(v.IsValid(0));
+
+	for (int i = 1; i <= max_vars; ++i) {
+		REQUIRE(v.IsValid(i));
+	}
+
+	REQUIRE_FALSE(v.IsValid(max_vars + 1));
 }
 
 TEST_CASE("Set") {

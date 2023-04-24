@@ -8,6 +8,7 @@ constexpr int max_switches = 5;
 static Game_Switches make() {
 	lcf::Data::switches.resize(max_switches);
 	Game_Switches s;
+	s.SetLowerLimit(max_switches);
 	s.SetWarning(0);
 	return s;
 }
@@ -124,7 +125,8 @@ TEST_CASE("FlipRange") {
 
 TEST_CASE("GetSize") {
 	auto s = make();
-	REQUIRE_EQ(s.GetSize(), max_switches);
+	REQUIRE_EQ(s.GetSizeWithLimit(), max_switches);
+	REQUIRE_EQ(s.GetSize(), 0);
 }
 
 TEST_CASE("IsValid") {
