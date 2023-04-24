@@ -268,6 +268,10 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 		data.time_left = params.duration * DEFAULT_FPS / 10;
 	}
 
+	// Not saved as the coordinate system is directly transformed to "center"
+	origin = params.origin;
+	ApplyOrigin(true);
+
 	// Note that data.effect_mode doesn't necessarily reflect the
 	// last effect set. Possible states are:
 	//
@@ -307,10 +311,6 @@ void Game_Pictures::Picture::Move(const MoveParams& params) {
 	data.easyrpg_flip = params.flip_x ? lcf::rpg::SavePicture::EasyRpgFlip_x : 0;
 	data.easyrpg_flip |= params.flip_y ? lcf::rpg::SavePicture::EasyRpgFlip_y : 0;
 	data.easyrpg_blend_mode = params.blend_mode;
-
-	// Not saved as the coordinate system is directly transformed to "center"
-	origin = params.origin;
-	ApplyOrigin(true);
 }
 
 void Game_Pictures::Move(int id, const MoveParams& params) {

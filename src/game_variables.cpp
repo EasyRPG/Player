@@ -142,7 +142,6 @@ Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
 	if (minval >= maxval) {
 		Output::Error("Variables: Invalid var range: [{}, {}]", minval, maxval);
 	}
-	_variables.reserve(lcf::Data::variables.size());
 }
 
 void Game_Variables::WarnGet(int variable_id) const {

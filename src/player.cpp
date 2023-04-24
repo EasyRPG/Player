@@ -872,6 +872,7 @@ void Player::ResetGameObjects() {
 	Main_Data::Cleanup();
 
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
+	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
 	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
 	if (min_var == 0) {
@@ -890,6 +891,7 @@ void Player::ResetGameObjects() {
 		}
 	}
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
+	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
@@ -1145,7 +1147,9 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	}
 	Game_Map::Dispose();
 
+	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 	Main_Data::game_switches->SetData(std::move(save->system.switches));
+	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 	Main_Data::game_variables->SetData(std::move(save->system.variables));
 	Main_Data::game_system->SetupFromSave(std::move(save->system));
 	Main_Data::game_actors->SetSaveData(std::move(save->actors));

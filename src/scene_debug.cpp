@@ -623,10 +623,10 @@ int Scene_Debug::GetLastPage() {
 		case eMain:
 			return GetNumMainMenuItems() / 10;
 		case eSwitch:
-			num_elements = Main_Data::game_switches->GetSize();
+			num_elements = Main_Data::game_switches->GetSizeWithLimit();
 			break;
 		case eVariable:
-			num_elements = Main_Data::game_variables->GetSize();
+			num_elements = Main_Data::game_variables->GetSizeWithLimit();
 			break;
 		case eItem:
 			num_elements = lcf::Data::items.size();
