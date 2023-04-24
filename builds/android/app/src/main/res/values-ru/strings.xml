@@ -83,4 +83,20 @@
     <string name="navigation_drawer_open">Открыть боковое меню</string>
     <string name="navigation_drawer_close">Закрыть боковое меню</string>
     <string name="menu">Открыть меню Android</string>
+    <string name="no_games_found_and_explanation_android_30">RPG Maker 2000/2003 игр не найдено. Положите их в подраздел папки с играми.
+\nИгры могут находится в этом разделе в виде ZIP файла. EasyRPG папка может изменять эти настройки.</string>
+    <string name="easyrpg_folders">Папки EasyRPG</string>
+    <string name="screen_size">Разрешение экрана:</string>
+    <string name="settings_custom_soundfont">Пользовательские звуковые эффекты:</string>
+    <string name="open_the_sound_fonts_folder">Откройте папку звуковых эффектов</string>
+    <string name="scale_bilinear">Масштабирование до размера экрана и применение билинейного фильтра (медленно, но хорошее качество)</string>
+    <string name="stretch">Игнорировать соотношение сторон (растягивать по ширине экрана)</string>
+    <string name="launch_debug_mode">Запустите debug</string>
+    <string name="visit_website">Посетите наш веб-сайт</string>
+    <string name="error_games_no_rw">Папка с играми (games) недоступна для чтения и записи. Выберите другое место для папки EasyRPG. Папку EasyRPG можно изменить в настройках.</string>
+    <string name="settings_resolution">Разрешение экрана в игре:</string>
+    <string name="settings_resolution_desc">Изменение разрешения может вызвать графические ошибки или сломать игру. Вы предупреждены!</string>
+    <string name="settings_resolution_original">Изначально (320х240, 4:3, рекомендовано)</string>
+    <string name="settings_resolution_widescreen">Широкоформатный (416x240, 16:9, Экспериментальный)</string>
+    <string name="settings_resolution_ultrawide">Сверхшироформатный (560x240, 21:9, экспериментальный)</string>
 </resources>

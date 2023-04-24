@@ -21,15 +21,15 @@
     <string name="do_want_quit">終了してもよろしいですか？</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
-    <string name="creating_dir_failed">ディレクトリ $PATH の作成に失敗しました。</string>
-    <string name="path_not_readable">$PATH が読み込めませんでした。</string>
-    <string name="no_external_storage">外部ストレージ(SDカードなど)が見つかりませんでした。</string>
-    <string name="not_valid_game">$PATHのゲームは対応していません。</string>
+    <string name="creating_dir_failed">ディレクトリ $PATH の作成に失敗しました</string>
+    <string name="path_not_readable">$PATH が読み込めませんでした</string>
+    <string name="no_external_storage">外部ストレージ(SDカードなど)が見つかりませんでした</string>
+    <string name="not_valid_game">$PATHのゲームは対応していません</string>
     <string name="select_game_region">ゲームの地域を選択</string>
     <string name="change_the_layout">レイアウトの変更</string>
     <string name="choose_layout">レイアウトの選択</string>
     <string name="unknown_region">不明な言語地域</string>
-    <string name="region_modification_failed">言語地域の変更に失敗しました。</string>
+    <string name="region_modification_failed">言語地域の変更に失敗しました</string>
     <string name="refresh">リフレッシュ</string>
     <string name="change_default_mapping">デフォルトのボタン配置に変更</string>
     <string name="how_to_use_easy_rpg">EasyRPG Playerの使い方</string>
@@ -83,4 +83,20 @@
     <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
     <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
     <string name="menu">Android メニューを開く</string>
+    <string name="no_games_found_and_explanation_android_30">2000/2003のゲームが見つかりません。
+\n
+\nファイルマネージャ等を用いて、プレイしたいゲームを、EasyRPG内の「games」フォルダにコピーしてください。
+\n配置するゲームはzipファイルでも構いません。
+\n
+\nまた、ゲームを配置するフォルダーはEasyRPGの設定で変更可能です。</string>
+    <string name="screen_size">画面スケール:</string>
+    <string name="Loading">ロード中…</string>
+    <string name="music_volume">音楽のボリューム</string>
+    <string name="sound_volume">サウンドエフェクトのボリューム</string>
+    <string name="visit_website">公式ホームページを見てください</string>
+    <string name="settings_resolution_original">オリギナル (320x240, 4:3, 推奨)</string>
+    <string name="settings_resolution_widescreen">ワイドスクリーン (416x240, 16:9, 拡張)</string>
+    <string name="error_saf_select_easyrpg">EasyRPGのアプリで使用する専用の空フォルダーを作成し、アプリ内で設定してください。</string>
+    <string name="fast_forward_mode_hold">ホールド</string>
+    <string name="fast_forward_mode_tap">タップ</string>
 </resources>
