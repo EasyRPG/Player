@@ -3998,8 +3998,11 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 
 	int save_number = ValueOrVariable(com.parameters[0], com.parameters[1]);
 
-	// Error case, set to YYMMDD later on success
+	// Error case, set later on success
 	Main_Data::game_variables->Set(com.parameters[2], 0);
+	Main_Data::game_variables->Set(com.parameters[3], 0);
+	Main_Data::game_variables->Set(com.parameters[4], 0);
+	Main_Data::game_variables->Set(com.parameters[5], 0);
 
 	if (save_number <= 0) {
 		Output::Debug("ManiacGetSaveInfo: Invalid save number {}", save_number);
@@ -4009,10 +4012,17 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	auto savefs = FileFinder::Save();
 	std::string save_name = Scene_Save::GetSaveFilename(savefs, save_number);
 	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
-	auto save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
 
-	if (!save) {
+	if (!save_stream) {
 		Output::Debug("ManiacGetSaveInfo: Save not found {}", save_number);
+		return true;
+	}
+
+	auto save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+	if (!save) {
+		Output::Debug("ManiacGetSaveInfo: Save corrupted {}", save_number);
+		// Maniac Patch writes this for whatever reason
+		Main_Data::game_variables->Set(com.parameters[2], 8991230);
 		return true;
 	}
 
@@ -4050,6 +4060,7 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 		if (pic.Exists()) {
 			params = pic.GetShowParams();
 		} else {
+			params.top_trans = 100;
 			params.map_layer = 7;
 			params.battle_layer = 7;
 		}
