@@ -4710,7 +4710,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 1: //cat <fn(string text)>
 		switch (fn)
 		{
-		case 0: //Base <fn(string text, int min_size)>
+		case 0: //String <fn(string text, int min_size)>
 			switch (modes[0])
 			{
 			case 0: result = (Game_Strings::Str_t)com.string; break;
@@ -4723,6 +4723,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
 			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
 			}
+			break;
+		case 1: //Number <fn(int number, int min_size)>
 			break;
 		case 3: //Database Names <fn(int id, bool dynamic)>
 			break;
@@ -4743,6 +4745,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
 			break;
 		default:
+			Output::Warning("Unknown or unimplemented string sub-operation {}", op);
 			break;
 		}
 		if (op == 0) {
