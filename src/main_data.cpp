@@ -31,6 +31,7 @@
 #include "game_pictures.h"
 #include "game_map.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "game_switches.h"
 #include "game_targets.h"
 #include "game_quit.h"
@@ -59,6 +60,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_System> game_system;
 	std::unique_ptr<Game_Switches> game_switches;
 	std::unique_ptr<Game_Variables> game_variables;
+	std::unique_ptr<Game_Strings> game_strings;
 	std::unique_ptr<Game_Screen> game_screen;
 	std::unique_ptr<Game_Pictures> game_pictures;
 	std::unique_ptr<Game_Windows> game_windows;

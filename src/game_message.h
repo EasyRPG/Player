@@ -131,6 +131,18 @@ namespace Game_Message {
 	 */
 	ParseParamResult ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 
+	/** Parse a \t[] variable string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseString(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
 	/** Parse a \c[] color string
 	 *
 	 * @param iter start of utf8 string

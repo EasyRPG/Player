@@ -34,6 +34,7 @@
 #include "game_targets.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_system.h"
@@ -819,6 +820,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacChangePictureId(com);
 		case Cmd::Maniac_SetGameOption:
 			return CommandManiacSetGameOption(com);
+		case 3020: //Cmd::Maniac_ControlStrings
+			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
 		default:
@@ -4634,6 +4637,145 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const&)
 	return true;
 }
 
+bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+	//*parameter 0 - Modifier of the operation members
+	//	-bits 0..3:
+	//		Refers to the String mode: t[x], t[x..y], t[v[x]], t[v[x]..v[y]]
+	//	-bits 4..7:
+	//		Refers to the first argument, which can change depending on the type of operation:  x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 8..11:
+	//		Refers to the second argument, which can change depending on the type of operation: x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 12..15:
+	//		Refers to the third argument, which can change depending on the type of operation:  x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 16..19:
+	//		Refers to the fourth argument, which can change depending on the type of operation: x, v[x], v[v[x]] | string, t[x], t[v[x]] (edge case for exMatch)
+	// 
+	//*parameter 1 - String index 0
+	// 
+	//*parameter 2 - String index 1 (optional for ranges)
+	// 
+	//*parameter 3 - general flags
+	//	-byte0:
+	//		Refers to the type of operation: asg, cat, toNum...
+	//	-byte1:
+	//		It is a flag that indicates sub-operation: actor[x].name, .actor[x].desc, ins, rep, subs, join... Used only in asg and cat operations
+	//	-byte2:
+	//		Flags, such as: extract, hex... There is also an edge case where the last argument of exRep is here
+	// 
+	//*parameters 4..n - arguments
+	int string_mode = com.parameters[0] & 15;
+	int string_id_0 = com.parameters[1];
+	int string_id_1 = com.parameters[2]; //for ranges
+
+	int is_range    = string_mode & 1;
+
+	if (string_mode >= 2) {
+		string_id_0 = Main_Data::game_variables->Get(string_id_0);
+	}
+	if (string_mode == 3) {
+		string_id_1 = Main_Data::game_variables->Get(string_id_1);
+	}
+
+	int op    = (com.parameters[3] >>  0) & 255;
+	int fn    = (com.parameters[3] >>  8) & 255;
+	int flags = (com.parameters[3] >> 16) & 255;
+
+	int hex_flag     = (flags >> 17) & 1;
+	int extract_flag = (flags >> 18) & 1;
+
+	int args[] = {
+		com.parameters[4],
+		com.parameters[5],
+		com.parameters[6],
+		0
+	};
+	if (com.parameters.size() > 7) {
+		args[3] = com.parameters[7]; //The exMatch command is a edge case that uses 4 arguments
+	}
+	int modes[] = {
+		(com.parameters[0] >>  4) & 15,
+		(com.parameters[0] >>  8) & 15,
+		(com.parameters[0] >> 12) & 15,
+		(com.parameters[0] >> 16) & 15
+	};
+
+	Game_Strings::Str_t result = "";
+
+	switch (op)
+	{
+	case 0: //asg <fn(string text)>
+	case 1: //cat <fn(string text)>
+		switch (fn)
+		{
+		case 0: //Base <fn(string text, int min_size)>
+			switch (modes[0])
+			{
+			case 0: result = (Game_Strings::Str_t)com.string; break;
+			case 1: result = Main_Data::game_strings->Get(args[0]); break;
+			case 2: result = Main_Data::game_strings->GetIndirect(args[0]); break;
+			}
+			switch (modes[1])
+			{
+			case 0: break;
+			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
+			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
+			}
+			break;
+		case 3: //Database Names <fn(int id, bool dynamic)>
+			break;
+		case 4: //Database Descriptions <fn(int id, bool dynamic)>
+			break;
+		case 7: //Insert (ins) <fn(string base, int index, string insert)>
+			break;
+		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
+			break;
+		case 9: //Substring (subs) <fn(string base, int index, int size)>
+			break;
+		case 10: //Join (join) <fn(string delimiter, int var_id, int size)>
+			break;
+		case 12: //File (file) <fn(string filename, int encode)>
+			break;
+		case 13: //Remove (rem) <fn(string base, int index, int size)>
+			break;
+		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
+			break;
+		default:
+			break;
+		}
+		if (op == 0) {
+			Main_Data::game_strings->Asg(string_id_0, result);
+		}
+		else {
+			Main_Data::game_strings->Cat(string_id_0, result);
+		}
+		Output::Debug("t[{}]: {}", string_id_0, Main_Data::game_strings->Get(string_id_0));
+		break;
+	case 2: //toNum <fn(int var_id)>
+		break;
+	case 3: //getLen <fn(int var_id)>
+		break;
+	case 4: //inStr <fn(string text, int var_id, int begin)>
+		break;
+	case 5: //split <fn(string text, int str_id, int var_id)>
+		break;
+	case 7: //toFile <fn(string filename, int encode)>
+		break;
+	case 8: //popLine <fn(int str_id)>
+		break;
+	case 9: //exInStr <fn(string text, int var_id, int begin)>
+		break;
+	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
+		break;
+	default:
+		Output::Warning("Unknown or unimplemented string operation {}", op);
+		break;
+	}
+	return true;
+}
+ 
 bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	if (!Player::IsPatchManiac()) {
 		return true;

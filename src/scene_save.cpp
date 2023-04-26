@@ -30,6 +30,7 @@
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_system.h"
@@ -137,9 +138,9 @@ bool Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	save.system = Main_Data::game_system->GetSaveData();
 	save.system.switches = Main_Data::game_switches->GetData();
 	save.system.variables = Main_Data::game_variables->GetData();
+	save.system.maniac_strings = Main_Data::game_strings->GetData();
 	save.inventory = Main_Data::game_party->GetSaveData();
 	save.actors = Main_Data::game_actors->GetSaveData();
-
 	save.screen = Main_Data::game_screen->GetSaveData();
 	save.pictures = Main_Data::game_pictures->GetSaveData();
 	save.easyrpg_data.windows = Main_Data::game_windows->GetSaveData();
