@@ -27,7 +27,7 @@
 
 	// Set by release-helper.sh
 	#define EP_VERSION_MAJOR 0
-	#define EP_VERSION_MINOR 7
+	#define EP_VERSION_MINOR 8
 	#define EP_VERSION_PATCH 0
 	#define EP_VERSION_TWEAK 0
 

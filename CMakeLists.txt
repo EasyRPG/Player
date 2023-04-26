@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.13...3.24 FATAL_ERROR)
 
-project(EasyRPG_Player
-	VERSION 0.7
+project(EasyRPG_Player VERSION 0.8
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
 	HOMEPAGE_URL "https://easyrpg.org"
 	LANGUAGES CXX)

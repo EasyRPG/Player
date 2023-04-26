@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 
 # version magic
 m4_define([ep_version_major], [0])
-m4_define([ep_version_minor], [7])
+m4_define([ep_version_minor], [8])
 m4_define([ep_version_patch], [0])
 m4_define([ep_version_tweak], [0])
 m4_define([ep_version], [ep_version_major.ep_version_minor])
