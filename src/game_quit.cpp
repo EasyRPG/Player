@@ -37,7 +37,7 @@ Game_Quit::Game_Quit()
 }
 
 void Game_Quit::Update() {
-	if (Scene::instance == nullptr || Scene::instance->type == Scene::Title || !Input::IsPressed(Input::RESET)) {
+	if (Scene::instance == nullptr || Scene::instance->type == Scene::Title || !Scene::Find(Scene::Title) || !Input::IsPressed(Input::RESET)) {
 		if (time_left != start_time) {
 			Reset();
 		}
