@@ -131,7 +131,7 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 	const auto map_changed = (GetMapId() != map_id);
 
 	Game_Character::MoveTo(map_id, x, y);
-	SetEncounterSteps(0);
+	SetTotalEncounterRate(0);
 	SetMenuCalling(false);
 
 	auto* vehicle = GetVehicle();
@@ -683,10 +683,10 @@ void Game_Player::UpdateEncounterSteps() {
 		return;
 	}
 
-	const auto encounter_rate = Game_Map::GetEncounterRate();
+	const auto encounter_steps = Game_Map::GetEncounterSteps();
 
-	if (encounter_rate <= 0) {
-		SetEncounterSteps(0);
+	if (encounter_steps <= 0) {
+		SetTotalEncounterRate(0);
 		return;
 	}
 
@@ -699,7 +699,7 @@ void Game_Player::UpdateEncounterSteps() {
 		return;
 	}
 
-	data()->encounter_steps += terrain->encounter_rate;
+	data()->total_encounter_rate += terrain->encounter_rate;
 
 	struct Row {
 		int ratio;
@@ -730,7 +730,7 @@ void Game_Player::UpdateEncounterSteps() {
 		{ INT_MAX, 3.0 / 2.0 }
 	};
 #endif
-	const auto ratio = GetEncounterSteps() / encounter_rate;
+	const auto ratio = GetTotalEncounterRate() / encounter_steps;
 
 	auto& idx = last_encounter_idx;
 	while (ratio > enc_table[idx+1].ratio) {
@@ -739,19 +739,19 @@ void Game_Player::UpdateEncounterSteps() {
 	const auto& row = enc_table[idx];
 
 	const auto pmod = row.pmod;
-	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
+	const auto p = (1.0f / float(encounter_steps)) * pmod * (float(terrain->encounter_rate) / 100.0f);
 
 	if (!Rand::PercentChance(p)) {
 		return;
 	}
 
-	SetEncounterSteps(0);
+	SetTotalEncounterRate(0);
 	SetEncounterCalling(true);
 }
 
-void Game_Player::SetEncounterSteps(int steps) {
+void Game_Player::SetTotalEncounterRate(int rate) {
 	last_encounter_idx = 0;
-	data()->encounter_steps = steps;
+	data()->total_encounter_rate = rate;
 }
 
 int Game_Player::GetDefaultPanX() {

@@ -206,7 +206,7 @@ TEST_CASE("InitPlayer") {
 	REQUIRE_EQ(ch.GetVehicle(), nullptr);
 
 	REQUIRE(!ch.IsEncounterCalling());
-	REQUIRE_EQ(ch.GetEncounterSteps(), 0);
+	REQUIRE_EQ(ch.GetTotalEncounterRate(), 0);
 	REQUIRE(!ch.IsMenuCalling());
 
 	REQUIRE(!ch.IsPanActive());
@@ -412,8 +412,8 @@ TEST_CASE("BasicSetPlayer") {
 	ch.SetEncounterCalling(true);
 	REQUIRE(ch.IsEncounterCalling());
 
-	ch.SetEncounterSteps(100);
-	REQUIRE_EQ(ch.GetEncounterSteps(), 100);
+	ch.SetTotalEncounterRate(100);
+	REQUIRE_EQ(ch.GetTotalEncounterRate(), 100);
 
 	// FIMXE: Test Panning
 

@@ -19,7 +19,7 @@ static void testPos(Game_Player& ch, int x, int y,
 		int dir, int face,
 		int remaining_step, bool jumping,
 		int stop_count, int max_stop_count,
-		int encounter_steps, bool encounter_calling,
+		int total_encounter_rate, bool encounter_calling,
 		bool menu_calling,
 		int vehicle, bool boarding, bool aboard)
 {
@@ -32,7 +32,7 @@ static void testPos(Game_Player& ch, int x, int y,
 	REQUIRE_EQ(ch.IsJumping(), jumping);
 	REQUIRE_EQ(ch.GetStopCount(), stop_count);
 	REQUIRE_EQ(ch.GetMaxStopCount(), max_stop_count);
-	REQUIRE_EQ(ch.GetEncounterSteps(), encounter_steps);
+	REQUIRE_EQ(ch.GetTotalEncounterRate(), total_encounter_rate);
 	REQUIRE_EQ(ch.IsEncounterCalling(), encounter_calling);
 	REQUIRE_EQ(ch.IsMenuCalling(), menu_calling);
 	REQUIRE_EQ(ch.GetVehicleType(),vehicle);
@@ -70,8 +70,8 @@ static void testMove(bool success, int input_dir, int dir, int x, int y, int dx,
 	Rand::LockGuard lk(INT32_MAX);
 	ForceUpdate(ch);
 	if (success) {
-		int enc_steps = (cheat && debug) ? 0 : 100;
-		testPos(ch, tx, ty, dir, dir, 224, false, 0, 0, enc_steps, false, false, 0, false, false);
+		int acc_rate = (cheat && debug) ? 0 : 100;
+		testPos(ch, tx, ty, dir, dir, 224, false, 0, 0, acc_rate, false, false, 0, false, false);
 	} else {
 		testPos(ch, tx, ty, dir, dir, 0, false, 1, 0, 0, false, false, 0, false, false);
 	}

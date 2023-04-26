@@ -53,7 +53,7 @@ static void testPlayer(Game_Player& ch) {
 	ch.SetTransparency(7);
 	ch.SetSpriteGraphic("GRAPHIC", 1);
 
-	ch.SetEncounterSteps(50);
+	ch.SetTotalEncounterRate(50);
 	ch.SetMenuCalling(true);
 	ch.SetEncounterCalling(true);
 
@@ -61,7 +61,7 @@ static void testPlayer(Game_Player& ch) {
 
 	testChar(ch, 1, 2, 3, 0, true, 77, 88, 9, 2, "", 0);
 
-	REQUIRE_EQ(ch.GetEncounterSteps(), 0);
+	REQUIRE_EQ(ch.GetTotalEncounterRate(), 0);
 	REQUIRE_EQ(ch.GetTransparency(), 0);
 	REQUIRE(!ch.IsMenuCalling());
 

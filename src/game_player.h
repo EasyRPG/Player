@@ -101,7 +101,7 @@ public:
 	bool IsMenuCalling() const;
 
 	/**
-	 * Set the encounter callling flag
+	 * Set the encounter calling flag
 	 *
 	 * @param value the value of the flag to set
 	 */
@@ -111,14 +111,14 @@ public:
 	bool IsEncounterCalling() const;
 
 	/** @return number of encounter steps scaled by terrain encounter rate percentage. */
-	int GetEncounterSteps() const;
+	int GetTotalEncounterRate() const;
 
 	/**
-	 * Sets encounter_steps to steps.
+	 * Sets accumulated encounter rate
 	 *
-	 * @param steps the steps value to set.
+	 * @param rate the rate to set.
 	 */
-	void SetEncounterSteps(int steps);
+	void SetTotalEncounterRate(int rate);
 
 	enum PanDirection {
 		PanUp,
@@ -195,8 +195,8 @@ inline bool Game_Player::IsEncounterCalling() const {
 	return data()->encounter_calling;
 }
 
-inline int Game_Player::GetEncounterSteps() const {
-	return data()->encounter_steps;
+inline int Game_Player::GetTotalEncounterRate() const {
+	return data()->total_encounter_rate;
 }
 
 inline bool Game_Player::IsPanActive() const {

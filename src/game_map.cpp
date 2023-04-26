@@ -156,7 +156,7 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	panorama_on_map_init = true;
 	Parallax::ClearChangedBG();
 
-	SetEncounterRate(GetMapInfo().encounter_steps);
+	SetEncounterSteps(GetMapInfo().encounter_steps);
 	SetChipset(map->chipset_id);
 
 	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
@@ -259,7 +259,7 @@ void Game_Map::SetupFromSave(
 		interpreter->SetState(std::move(save_fg_exec));
 	}
 
-	SetEncounterRate(map_info.encounter_rate);
+	SetEncounterSteps(map_info.encounter_steps);
 	SetChipset(map_info.chipset_id);
 
 	if (!is_map_save_compat) {
@@ -380,8 +380,8 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 		// This emulates RPG_RT behavior, where chipset id == 0 means use the default map chipset.
 		save.map_info.chipset_id = 0;
 	}
-	if (save.map_info.encounter_rate == GetOriginalEncounterRate()) {
-		save.map_info.encounter_rate = -1;
+	if (save.map_info.encounter_steps == GetOriginalEncounterSteps()) {
+		save.map_info.encounter_steps = -1;
 	}
 	// Note: RPG_RT does not use a sentinel for parallax parameters. Once the parallax BG is changed, it stays that way forever.
 
@@ -1201,19 +1201,19 @@ std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
 	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
-int Game_Map::GetOriginalEncounterRate() {
+int Game_Map::GetOriginalEncounterSteps() {
 	return GetMapInfo().encounter_steps;
 }
 
-int Game_Map::GetEncounterRate() {
-	return map_info.encounter_rate;
+int Game_Map::GetEncounterSteps() {
+	return map_info.encounter_steps;
 }
 
-void Game_Map::SetEncounterRate(int step) {
+void Game_Map::SetEncounterSteps(int step) {
 	if (step < 0) {
-		step = GetOriginalEncounterRate();
+		step = GetOriginalEncounterSteps();
 	}
-	map_info.encounter_rate = step;
+	map_info.encounter_steps = step;
 }
 
 std::vector<int> Game_Map::GetEncountersAt(int x, int y) {

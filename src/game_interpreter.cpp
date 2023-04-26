@@ -740,8 +740,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeMapTileset(com);
 		case Cmd::ChangePBG:
 			return CommandChangePBG(com);
-		case Cmd::ChangeEncounterRate:
-			return CommandChangeEncounterRate(com);
+		case Cmd::ChangeEncounterSteps:
+			return CommandChangeEncounterSteps(com);
 		case Cmd::TileSubstitution:
 			return CommandTileSubstitution(com);
 		case Cmd::TeleportTargets:
@@ -3303,10 +3303,10 @@ bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // 
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEncounterRate(lcf::rpg::EventCommand const& com) { // code 11740
+bool Game_Interpreter::CommandChangeEncounterSteps(lcf::rpg::EventCommand const& com) { // code 11740
 	int steps = com.parameters[0];
 
-	Game_Map::SetEncounterRate(steps);
+	Game_Map::SetEncounterSteps(steps);
 
 	return true;
 }
