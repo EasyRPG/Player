@@ -81,9 +81,6 @@ public:
 		_engine = Player::game_config.engine;
 		Player::game_config.engine = eng;
 
-		_ll = Output::GetLogLevel();
-		Output::SetLogLevel(LogLevel::Error);
-
 		InitEmptyDB();
 
 		Main_Data::Cleanup();
@@ -104,11 +101,9 @@ public:
 
 		lcf::Data::data = {};
 		Player::game_config.engine = _engine;
-		Output::SetLogLevel(_ll);
 	}
 private:
 	int _engine = {};
-	LogLevel _ll = {};
 };
 
 struct MockBattle : public MockActor {

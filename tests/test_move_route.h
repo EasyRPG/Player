@@ -62,8 +62,6 @@ class MoveRouteEvent : public Game_Event {
 
 struct MapGuard {
 	MapGuard(int w = 20, int h = 15) {
-		Output::SetLogLevel(LogLevel::Error);
-
 		Input::ResetKeys();
 		Main_Data::game_party = std::make_unique<Game_Party>();
 
@@ -100,7 +98,6 @@ struct MapGuard {
 		map->lower_layer.resize(w * h, 0);
 
 		Game_Map::Setup(std::move(map));
-		Output::SetLogLevel(LogLevel::Debug);
 	}
 
 	~MapGuard() {

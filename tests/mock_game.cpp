@@ -17,9 +17,6 @@ static lcf::rpg::Chipset MakeChipset() {
 }
 
 MockGame::MockGame(MockMap maptag) {
-	auto lvl = Output::GetLogLevel();
-	Output::SetLogLevel(LogLevel::Error);
-
 	Input::ResetKeys();
 
 	lcf::Data::terrains.push_back(MakeTerrain());
@@ -48,7 +45,6 @@ MockGame::MockGame(MockMap maptag) {
 	Main_Data::game_player->SetMapId(1);
 
 	Game_Map::Setup(MakeMockMap(maptag));
-	Output::SetLogLevel(lvl);
 }
 
 Game_Player* MockGame::GetPlayer() {
